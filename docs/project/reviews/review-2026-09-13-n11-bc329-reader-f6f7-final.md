@@ -68,7 +68,7 @@ adding an arbitrary upper duration cap.
 ## Independent Full-Readback Controls
 
 The disposable control script `/private/tmp/bc329-reader-a570-independent.py` built a
-fresh target-free `n=2` synthetic profile, kept the full direction-row and artifact
+fresh target-free $n=2$ synthetic profile, kept the full direction-row and artifact
 inventory, and rebuilt the receipt-size fixed point and affected sidecar hashes for each
 mutation. Its Machine-readable outcomes at
 `/private/tmp/bc329-reader-a570-independent.json` record all 23 controls.
@@ -78,7 +78,7 @@ The script returned `PASS=23/23` and left the clone clean.
 
 | Obligation | Adversarial and boundary results |
 | --- | --- |
-| F6a nested clocks | Source loading `0.9` inside preflight `0.1` refused; equality at `0.1` accepted. Launch `1.1` after observed worker exit `1.05` refused; equality at `1.05` accepted. Cleanup `0.16` after the `0.15` post-exit interval refused; `0.15` accepted. Parent final readback `0.16` refused. |
+| F6a nested clocks | Source loading $0.9$ inside preflight $0.1$ refused; equality at $0.1$ accepted. Launch $1.1$ after observed worker exit $1.05$ refused; equality at $1.05$ accepted. Cleanup $0.16$ after the $0.15$ post-exit interval refused; $0.15$ accepted. Parent final readback $0.16$ refused. |
 | F6b disjoint phase lengths | The serial baseline and seven `2e307` phases totaling `1.4e308` accepted. An ordinary finite total above a `1.3e308` worker lifetime refused. Seven individually finite `4e307` phases whose binary-float total is infinity refused with `worker phase total is not a finite nonnegative number`. The producer schema and coordinator inventory receipt validator accept this same finite-input mutation at their narrower surfaces. |
 | F6b sequential tasks | A legal one-child pooled baseline accepted. Delayed raw tasks with insufficient normalization gap before exact tasks refused; a nearby delayed-exact control with enough gap accepted. A separate case had a **finite** seven-phase total but placed exact tasks near `1.6e308`, so the propagated phase completion overflowed; it refused with `worker phase schedule is not a finite nonnegative number`. All affected sidecar and receipt hashes were rebound. |
 | F6b other derived sums | A terminal external duration sum of two finite `1e308` inputs refused; an absolute calibration deadline formed from finite `1e308 + 1e308` refused. |

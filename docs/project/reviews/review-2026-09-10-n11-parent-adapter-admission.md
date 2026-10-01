@@ -19,7 +19,7 @@ It ran no retained scientific input through the proposed target.
 
 ## What the Adapter Represents
 
-For a retained unit core direction `r`, put
+For a retained unit core direction $r$, put
 
 ```text
 S = |r.x| + |r.y|,
@@ -32,10 +32,10 @@ The adapter computes the exact necessary coordinate half-extent
 e = max((B/2)*S, 1/2, (S-T*D)/(2+D^2)).
 ```
 
-The third term bounds every unit parent whose principal angular mismatch from `r`
+The third term bounds every unit parent whose principal angular mismatch from $r$
 satisfies `tan(|delta|) <= D`. The old strict-core containment term remains in the
-maximum. Production use accepts only the frozen values `B=9977/10000`, `q=96/25`,
-`D=207107/90000000`, and the rule that selects a nearest retained direction before owner
+maximum. Production use accepts only the frozen values $B=9977/10000$, $q=96/25$,
+$D=207107/90000000$, and the rule that selects a nearest retained direction before owner
 routing.
 
 The bound restricts a parent centre to a closed square.
@@ -126,7 +126,7 @@ Before BC326 runs:
    the scientific clock.
    Rebind the independent manifests during result readback; a result’s own frame count
    is not source authority.
-3. Register the fixed exp151 residual, tuple `(0,0,0,7)`, physical owner order, B-only
+3. Register the fixed exp151 residual, tuple $(0,0,0,7)$, physical owner order, B-only
    control, and global-D treatment.
    Test residual self-exclusion first.
 4. Attribute an owner-domain gain only if the matched B-only control has a positive

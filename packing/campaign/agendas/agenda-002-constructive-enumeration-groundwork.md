@@ -472,7 +472,7 @@ agenda:
 # agenda-002 — constructive enumeration groundwork
 
 [agenda-001](agenda-001-basin-confidence-ladder.md) orders the **basin-map** lane, whose
-head is the exact `n = 5` local geometry under `BC-010`. This agenda orders the
+head is the exact $n = 5$ local geometry under `BC-010`. This agenda orders the
 **constructive proposer** lane opened by
 [X-003](../explorations/X-003-stratified-chunk-enumeration.md).
 The two are independent: nothing here waits on terminal-component identity, and nothing
@@ -483,7 +483,7 @@ A coordinator may run both, and should not merge their queues.
 
 The synopsis names proposal, not refinement, as the record-finding lane’s live
 bottleneck: the refiner takes the proved controls to `1e-15` and leaves the tested
-`n = 11` starts at `6e-02`. A constructive enumerator is a proposer, so it inherits
+$n = 11$ starts at `6e-02`. A constructive enumerator is a proposer, so it inherits
 every measurement-system gap the proposer layer already has.
 Three of those gaps are load-bearing for *this* design specifically, which is why they
 sit ahead of the instrument rather than beside it.

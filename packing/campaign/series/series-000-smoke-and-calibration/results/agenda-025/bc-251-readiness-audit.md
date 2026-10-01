@@ -18,7 +18,7 @@ PR 100’s changes cover the large-input screen failure, intermediate cutting de
 float-identical vertices that erase a thin overlap.
 The last defect matters even at small coordinates: its regression uses
 `epsilon = 1/10^20` in a side-four container and requires screened separation and exact
-vertex enumeration to return depth `2`, not `1`. The regression is
+vertex enumeration to return depth $2$, not $1$. The regression is
 `test_float_identical_vertices_cannot_erase_a_thin_overlap` in
 [the cutting tests](../../../../../tests/test_fractional_cutting.py); it is absent on
 the currently recorded main revision.
@@ -37,15 +37,15 @@ uv run --frozen --all-extras --group dev python -m pytest -q \
 ```
 
 The [bridge positive](../../../../../tests/test_freeze_cutting_primal.py) creates a
-small terminal state at `L = 2`, `B = 2/3` on a two-direction net, freezes a covering
-candidate with total in `[9,12)`, and requires the exact sweep to accept it.
-Its companions refuse total at least `n`, missing row convergence, and output overwrite.
+small terminal state at $L = 2$, $B = 2/3$ on a two-direction net, freezes a covering
+candidate with total in $[9,12)$, and requires the exact sweep to accept it.
+Its companions refuse total at least $n$, missing row convergence, and output overwrite.
 The [driver crossing control](../../../../../tests/test_run_fractional_cutting.py)
 separately checks all four output artifacts and passes its stopped state into the
 bridge. Neither optimizes the H-093 target.
 
 One zero-iteration integration control then exercises the actual retained seed through
-the production driver, at its original side rather than `61/16`:
+the production driver, at its original side rather than $61/16$:
 
 ```bash
 scalar_readiness_dir=$(mktemp -d /private/tmp/squares-bc251-readiness.XXXXXX)
@@ -62,14 +62,14 @@ jq -e '.settings.seed_sites == 1121 and .settings.outer_side == "381/100"
   and .frozen == null' "$scalar_readiness_dir/seed-control-summary.json"
 ```
 
-Expected: the summary records all `1,121` seed sites, no iteration, and no frozen
+Expected: the summary records all $1{,}121$ seed sites, no iteration, and no frozen
 family. No state or covering candidate is expected from a zero-iteration control.
-The retained source declares `L = 381/100`, `B = 9977/10000`, 180 steps, total
-`434547/40000`, and minimum `4001/4000`; this audit read its metadata, not its coverage.
+The retained source declares $L = 381/100$, $B = 9977/10000$, 180 steps, total
+$434547/40000$, and minimum $4001/4000$; this audit read its metadata, not its coverage.
 Seeding uses only coordinates, so the source’s old weights and verdict are not imported
 as evidence at another side.
 The changed-side scale map is already covered by the unit test; for the eventual target
-its exact scale factor is `1525/1524`.
+its exact scale factor is $1525/1524$.
 
 ## Assumptions Outside PR 100
 
@@ -83,7 +83,7 @@ its exact scale factor is `1525/1524`.
   `--unpinned` decision.
   PR 100 does not make floating row convergence or a finite-site optimum a theorem.
 - A state stores direction indices, not its direction net.
-  The bridge must receive the frozen `207107/500000`, 180-step net, `n = 11`, and the
+  The bridge must receive the frozen $207107/500000$, 180-step net, $n = 11$, and the
   correct terminal state; its stored side and core side must match the intended
   instance. The bridge reads the state twice, so it must not race an active cutting
   writer. These are existing handoff preconditions, not a request for another checksum
@@ -109,7 +109,7 @@ No additional useful read-only audit remains in this selected slice.
 
 The coordinator integrated PR100 and PR98, then replayed the declared focused controls
 in an isolated checkout of `5267bd34` under project Python 3.14. All 46 passed.
-The real retained-seed driver control also passed at the original side `381/100`: the
+The real retained-seed driver control also passed at the original side $381/100$: the
 [retained summary](bc-251-readiness-seed.json) records all 1,121 seed sites, 4,329
 initial sites in 588 orbits, zero initial rows, no iterations and no frozen family.
 The safe-stop flag is true, and the net, side and scale-map checks agree with the frozen

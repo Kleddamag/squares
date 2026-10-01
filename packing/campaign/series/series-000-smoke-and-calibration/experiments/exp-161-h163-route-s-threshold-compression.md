@@ -121,7 +121,7 @@ Until this artifact existed, no optimizer, candidate, or coverage target was all
 Session 139 ran encode-only; `timeout` 10800 exited at 15:24:31Z with no JSON. That
 timeout is unresolved.
 `--search` did not run.
-The record-shape row scores source U025 `N+=119`, not a post-encode measurement.
+The record-shape row scores source U025 $N+=119$, not a post-encode measurement.
 
 ## Source
 
@@ -129,7 +129,7 @@ The control is
 [`certificate.json`](../../../../cases/n11_threshold_certificate/certificate.json) at
 revision `5ce2839f17b2f5a337260dc3f649e05ab974bd25`. The admitted inventory catalog
 SHA-256 is `8de1d9646efef5c49367b679a78ff20961f7f5c1d43b11ff28b5f9a6b41f0e75` (119
-orbits, 904 atoms, budget `685457679/62500000`). T-026’s 720- and 1440-step certificates
+orbits, 904 atoms, budget $685457679/62500000$). T-026’s 720- and 1440-step certificates
 check support identity and the documented uniform rescaling only.
 They are not controls, targets, or a promise that a compressed certificate keeps the
 dilation-limit bound.
@@ -151,12 +151,12 @@ admission controls cannot resolve H-163.
 - **Accept H-163** only when all five X-032 confirmation clauses hold, including
   source-distinct replay of the manifest, reconstructed certificate, and both coverage
   routes; the live `admit_threshold_compression --check` passed immediately before the
-  target; the receipt carries `generating_account` and `selected_orbits` equal to `N+`;
+  target; the receipt carries `generating_account` and `selected_orbits` equal to $N+$;
   and the candidate manifest SHA-256 is none of
   `53fbe28bd6dd022600515663ea1e3609ed2bd36a83e69e350b4bb3b45d7b7176`,
   `007b394f48b0b11565ca87d09ad961258534c426bfd623a3e9bfc15aa6495e8a`, or
   `194f1f9f47fc94e7f945920c38a4efdb43476719eba025ea446a1d7b91fde27e`. Smaller files,
-  simpler denominators, or fewer distinct weights do not meet `N+`. Decompressing,
+  simpler denominators, or fewer distinct weights do not meet $N+$. Decompressing,
   coverage-checking, and scoring an admission-control manifest is not confirmation.
 - **Refute H-163** (`rejected`) only with an exact infeasibility certificate that no
   family member with `N+ <= 23` meets the frozen budget and coverage constraints.

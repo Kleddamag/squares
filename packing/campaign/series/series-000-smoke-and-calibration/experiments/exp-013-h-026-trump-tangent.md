@@ -72,7 +72,7 @@ one-sided branch linearization has only the zero direction.
 
 The exact witness has 33 pose variables, 11 square-wall incidences, 20 tied-corner wall
 rows, and 14 true pair contacts.
-Two strict pairs, `(0,4)` and `(2,5)`, have an incidental zero projection but another
+Two strict pairs, $(0,4)$ and $(2,5)$, have an incidental zero projection but another
 strictly separating feature, so they are locally interior and impose no row.
 
 The contacts supply 24 raw zero-gap SAT features.
@@ -86,22 +86,22 @@ Every matrix has 42 rows and exact rank 33.
 
 ## Exact certificate
 
-For one branch, let `A` be its 42-by-33 exact matrix over `Q(u)` and suppose `Av ≥ 0`.
-The checker retains a strictly positive vector `λ` with `Aᵀλ = 0`.
+For one branch, let $A$ be its 42-by-33 exact matrix over $Q(u)$ and suppose `Av ≥ 0`.
+The checker retains a strictly positive vector $\lambda$ with `Aᵀλ = 0`.
 
 Then `λᵀAv = 0` is a strictly positive weighted sum of nonnegative row products.
-Every row product must be zero; full column rank forces `v = 0`. The floating LP
+Every row product must be zero; full column rank forces $v = 0$. The floating LP
 proposes nine free stress weights only.
 Deterministic exact elimination selects the other 33 rows, reconstructs every remaining
-weight in `Q(u)`, and checks rank, positivity, and the zero residual exactly.
+weight in $Q(u)$, and checks rank, positivity, and the zero residual exactly.
 
 All 128 certificates pass.
-The generation record reports `47.121073` internal seconds; the retained exact replay
-reports `10.186803` seconds.
-End-to-end process timings were `47.85` and `11.01` wall seconds, respectively.
+The generation record reports $47.121073$ internal seconds; the retained exact replay
+reports $10.186803$ seconds.
+End-to-end process timings were $47.85$ and $11.01$ wall seconds, respectively.
 
-The field guard independently checks that the degree-eight polynomial for `u` is
-irreducible and squarefree over `Q` and has exactly one root in `(0.36,0.37)`. The
+The field guard independently checks that the degree-eight polynomial for $u$ is
+irreducible and squarefree over $Q$ and has exactly one root in $(0.36,0.37)$. The
 known-flexible control deletes square 0’s left-wall incidence and exactly verifies the
 nonzero direction `dx₀ = −1`. A second control rejects duplicate branch records.
 
@@ -110,12 +110,12 @@ nonzero direction `dx₀ = −1`. A second control rejects duplicate branch reco
 The computation decides linearized cones, not feasible motions.
 The stronger local consequence requires a separate compactness argument.
 
-Assume distinct fixed-side feasible poses `q_k` approach the exact pose `q`. Normalize
-their displacements and pass to a convergent subsequence with unit limit `v`. There are
+Assume distinct fixed-side feasible poses $q_k$ approach the exact pose $q$. Normalize
+their displacements and pass to a convergent subsequence with unit limit $v$. There are
 only finitely many SAT-feature selections, so pass again to a subsequence using one
 fixed selection; tied wall supports remain simultaneous active corner inequalities.
-First-order expansion of every inequality in that branch gives `A v ≥ 0`. Its
-certificate forces `v = 0`, contradicting unit norm.
+First-order expansion of every inequality in that branch gives $A v \ge 0$. Its
+certificate forces $v = 0$, contradicting unit norm.
 
 Thus the labeled fixed-side pose is locally isolated.
 D4 actions and relabellings are finite, so a sufficiently small neighborhood excludes

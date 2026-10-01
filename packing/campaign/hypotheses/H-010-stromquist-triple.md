@@ -78,16 +78,16 @@ The source transcription and the final certificate need independent checks becau
 faithfully executed experiment on the wrong point set answers nothing.
 
 The checker must also replay the unsquared sign condition in Lemma 4. The paper’s
-`24.1°/.926` table entry at `a = √(4/5)` comes from an extraneous cubic root; the actual
-minimum is about `.9145377886`, still above the `.9` used in that particular Lemma 4
-application.
+$24.1^\circ/.926$ table entry at $a = \sqrt{4/5}$ comes from an extraneous cubic root;
+the actual minimum is about `.9145377886`, still above the `.9` used in that particular
+Lemma 4 application.
 
 ## Current falsifier
 
-The source audit found a candidate open square of side `10001/10000`, with
+The source audit found a candidate open square of side $10001/10000$, with
 `tan(theta) = 27/10` and center `(37L/(2 sqrt(829)), 11/8)`, that fits in the container
 and avoids every printed Figure 14 point.
-Its smallest computed avoidance margin is about `4.94e-5`, at `G`.
+Its smallest computed avoidance margin is about `4.94e-5`, at $G$.
 
 H-010 is not rewritten around that observation.
 The retained checker must bind the printed point tuple, certify every strict inequality,

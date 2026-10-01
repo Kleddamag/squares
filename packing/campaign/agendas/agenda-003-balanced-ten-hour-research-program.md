@@ -483,7 +483,7 @@ polling an unchanged run inside a research slice.
 The `n = 1..100` atlas is calibration-only and cannot confirm H-044 or H-045. The 11,013
 contact scaffolds carry no geometry or feasibility claim.
 A fixed-angle local realization is not a packing-feasibility result.
-No target `n = 11` constructive run starts before the grammar freeze.
+No target $n = 11$ constructive run starts before the grammar freeze.
 Local n=5 path results do not decide whole-component identity, connectivity, or
 frequency. Numerical promotion requires exact or rigorous interval evidence.
 The unattended numerical runner remains **NO-GO**.

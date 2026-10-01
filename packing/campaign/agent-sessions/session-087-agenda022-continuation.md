@@ -447,12 +447,12 @@ that block on nothing.
 ## What this block is doing
 
 **Two lanes, one core each.** `BC-213` runs the remaining rung of `H-062`’s
-pre-registered bisection at `973/200`, which is the one measurement that resolves that
-hypothesis either way: a certificate leaves the bracket `[973/200, 39/8]` at width
-`0.010`, a wall leaves `[97/20, 973/200]` at `0.015`, and both sit inside the `0.02` the
+pre-registered bisection at $973/200$, which is the one measurement that resolves that
+hypothesis either way: a certificate leaves the bracket $[973/200, 39/8]$ at width
+$0.010$, a wall leaves $[97/20, 973/200]$ at $0.015$, and both sit inside the $0.02$ the
 hypothesis registered.
-`BC-206` runs the `n = 12` ladder above `99/25` at four pre-registered sides, the last
-of them `0.0008` below the method’s own ceiling.
+`BC-206` runs the $n = 12$ ladder above $99/25$ at four pre-registered sides, the last
+of them $0.0008$ below the method’s own ceiling.
 
 **The coordinator holds the gate.** Neither lane runs `git` at all.
 Session-086 ended with a half-built census tool swept into a commit by a broad
@@ -464,7 +464,7 @@ block’s lanes write files and report, and the coordinator stages by explicit p
 CI’s `validate` job failed on head `6313eee4` with three steps red.
 The lint and type floors were the census tool and three cross-module imports of private
 helpers. The fast behavioural tier was seven tests, and they were not noise: `T-021`
-moved the `n = 20` package from certifying `n = 19` to certifying `n = 20`, and six
+moved the $n = 20$ package from certifying $n = 19$ to certifying $n = 20$, and six
 tests plus one register row still described the corpus as it stood before that.
 The register row is `D-458`, and it is the one that mattered — a `frozen_artifact` path
 naming the moving `certificate.json` pointer, so a superseded rung quoted its own
@@ -480,8 +480,8 @@ atlas build, and the split of the surface into two concurrent jobs.
 
 **What it bought and what it did not.** `T-021` is on `main` at `663ca37e`:
 `s(20), s(21) >= 97/20`, from a certificate retained through the gate on both routes.
-`H-062` is accepted at bracket width `0.015` and the `n = 12` ladder is walled at about
-`3.96004`. The surface is still about four minutes against a
+`H-062` is accepted at bracket width $0.015$ and the $n = 12$ ladder is walled at about
+$3.96004$. The surface is still about four minutes against a
 two-to-two-and-a-half-minute target, and `BC-215`’s tree-id cache is priced and not
 wired — 20.2 per cent of deep-run work repeated, 92 per cent of it trees that did not
 move — which is why it is the handoff.

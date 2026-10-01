@@ -2,14 +2,14 @@
 
 Status: **site set refuted, unconverged**. The side stays open.
 
-Session-139 probe: BC-191 auto `(32, 42, 52)` unioned with T-019’s 1184 atom sites
-scaled from `459/100` to `23/5`,
+Session-139 probe: BC-191 auto $(32, 42, 52)$ unioned with T-019’s 1184 atom sites
+scaled from $459/100$ to $23/5$,
 `(n, L, B, net) = (17, 23/5, 9977/10000, 181 directions)`. The unseeded auto grid
-stopped at `17.331710` after 300 s. The seed dropped that to `17.049597` at the 600 s
+stopped at $17.331710$ after 300 s. The seed dropped that to $17.049597$ at the 600 s
 deadline (40 LP rounds, 183 still violated).
-Crossed seventeen at round 16 (`17.002464`). Remaining rows can only raise this value.
-Adding sites can still lower it, so `23/5` is not barred.
-T-019 at `459/100` is unchanged.
+Crossed seventeen at round 16 ($17.002464$). Remaining rows can only raise this value.
+Adding sites can still lower it, so $23/5$ is not barred.
+T-019 at $459/100$ is unchanged.
 
 ## Command
 
@@ -34,11 +34,11 @@ Wall 628.0 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `17.049597` |
+| Restricted optimum | $17.049597$ |
 | Sites / orbits / rows | 6668 / 873 / 11189 |
 | Seed sites | 1184 |
 | LP rounds | 40 |
-| Crossing | round 16 (`17.002464`) |
+| Crossing | round 16 ($17.002464$) |
 | Wall | 628.0 s |
 | `least_covered` | 0.993656 |
 | Converged | no (`violated == 183` at stop) |

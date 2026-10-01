@@ -81,9 +81,9 @@ order.
 
 X-007 gives the candidate closing argument.
 A semialgebraic curve through a nonisolated pose has a first nonzero coefficient at some
-order `m`. In one explicit intrinsic chart, the first-order certificates force that
-coefficient, and every coefficient before order `2m`, into the same one-dimensional
-kernel. At order `2m`, the retained self-stress contradicts feasibility.
+order $m$. In one explicit intrinsic chart, the first-order certificates force that
+coefficient, and every coefficient before order $2m$, into the same one-dimensional
+kernel. At order $2m$, the retained self-stress contradicts feasibility.
 The argument becomes a result only after the chart-to-certificate transfer, the full
 local nonoverlap system and the curve-selection hypotheses are checked independently.
 Only a feasible arc through the pose or an exact accumulating family can refute local
@@ -99,31 +99,31 @@ The criterion above is **frozen and byte-unchanged**: it was written before the 
 work, never amended for the round or for the review, and met as registered — which is
 the point, and is what makes the acceptance mean anything.
 
-**What is established, and it is the whole of the claim.** For `s = 2 + √2/2` and
-Goebel’s labeled pose `P⁰` in `C = (ℝ² × S¹)⁵`, `P⁰` is an isolated point of `Feas(s)`
-(closed unit squares in `[0, s]²`, pairwise disjoint interiors); equivalently there is
-no nonconstant continuous feasible path from `P⁰` and no sequence of distinct feasible
-poses converging to it; hence Kingbird-rigid at fixed side.
-Proved exactly over `Q(√2)` by the registered route — one intrinsic half-angle chart,
-the complete accounting of all 400 elementary inequalities, curve selection on the
-punctured feasible set, and the order-`2m` coefficient induction closed by `T-012`’s
+**What is established, and it is the whole of the claim.** For $s = 2 + \sqrt{2}/2$ and
+Goebel’s labeled pose $P^0$ in $C = (\mathbb{R}^2 \times S^1)^5$, $P^0$ is an isolated
+point of `Feas(s)` (closed unit squares in $[0, s]^2$, pairwise disjoint interiors);
+equivalently there is no nonconstant continuous feasible path from $P^0$ and no sequence
+of distinct feasible poses converging to it; hence Kingbird-rigid at fixed side.
+Proved exactly over $Q(\sqrt{2})$ by the registered route — one intrinsic half-angle
+chart, the complete accounting of all 400 elementary inequalities, curve selection on
+the punctured feasible set, and the order-`2m` coefficient induction closed by `T-012`’s
 non-negative self-stress — and corroborated by an independent second route with weaker
 hypotheses that discharges no registered obligation.
 
 **Not established and not claimed:** any isolation radius; rigidity with the container
-side free, which `X-007` measured to be false; global uniqueness of the `n = 5` optimum;
-rigidity of any other `n = 5` optimal packing; applicability of the Connelly–Whiteley
+side free, which `X-007` measured to be false; global uniqueness of the $n = 5$ optimum;
+rigidity of any other $n = 5$ optimal packing; applicability of the Connelly–Whiteley
 tensegrity theorems as stated; and any novelty of method — the closing principle is the
 classical second-order sufficient optimality condition and the `[CW96]` Theorem 4.3.1
 proof shape is not new.
 
 **Novelty, `S3`, independently accepted by the reviewer:** the first exact *proof* of
-fixed-side local rigidity of Goebel’s `n = 5` optimum — a property asserted without
+fixed-side local rigidity of Goebel’s $n = 5$ optimum — a property asserted without
 proof by Kingbird, not stated by Goebel, and not stated by Friedman, whose `DS7` Theorem
 2 is a lower bound only.
 
 **What the pass moved**, and it is the complete list: `needs_review` cleared on
-`exp-058`; the `n = 5` frontier rigidity property set to locally rigid at fixed side on
+`exp-058`; the $n = 5$ frontier rigidity property set to locally rigid at fixed side on
 a new evidence record `E-n005-fixed-side-local-rigidity`; and the theorem registered as
 `T-014`, which discharges `T-012`’s recorded next action.
 
@@ -134,7 +134,7 @@ memory, on the non-acceptance route only; the prior-art scoping carried outside 
 claim; the instrument’s restricted-jet binding, which is sufficient because only
 `eᵀ H_j e` is consumed; its interior-only reduction audit, irrelevant because `N` is
 defined by sign persistence; the unresolved Kingbird thirteen-versus-four list tension,
-non-load-bearing because `n = 5` is on both lists; and one terse sentence in `X-012`
+non-load-bearing because $n = 5$ is on both lists; and one terse sentence in `X-012`
 §1.3 (i). Each is stated in full in `exp-058`’s amendment.
 
 ## Instrument Readiness, and What It Does Not Decide

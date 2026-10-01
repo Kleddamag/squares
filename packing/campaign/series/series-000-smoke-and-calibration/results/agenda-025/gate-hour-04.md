@@ -71,10 +71,10 @@ It excludes import and uv startup, the final summary write, and teardown.
 
 | Measurement | Seconds | Clock form |
 | --- | ---: | ---: |
-| Loop wall | `7172.188873416046` | 1:59:32.188873 |
-| Driver wall before summary | `7278.912243166007` | 2:01:18.912243 |
-| Loop CPU | `7140.585076` | 1:59:00.585076 |
-| Driver CPU before summary | `7247.051695` | 2:00:47.051695 |
+| Loop wall | $7172.188873416046$ | 1:59:32.188873 |
+| Driver wall before summary | $7278.912243166007$ | 2:01:18.912243 |
+| Loop CPU | $7140.585076$ | 1:59:00.585076 |
+| Driver CPU before summary | $7247.051695$ | 2:00:47.051695 |
 
 The state and log mtimes are `2026-09-06T13:47:13.687606Z` and `2026-09-06T13:47:14Z`.
 The family and summary mtimes are approximately `2026-09-06T13:48:58.996Z`. From the
@@ -82,8 +82,8 @@ second-resolution launch receipt to the summary mtime, observed elapsed wall tim
 approximately 7,280 seconds, or 2 hours 1 minute 20 seconds.
 
 The configured 101-minute value equals 6,060 seconds.
-Loop wall exceeded it by `1112.188873416046` seconds, and recorded driver wall exceeded
-it by `1218.912243166007` seconds.
+Loop wall exceeded it by $1112.188873416046$ seconds, and recorded driver wall exceeded
+it by $1218.912243166007$ seconds.
 The setting is therefore a cooperative deadline, not a hard process cap.
 The runner completed the current operation and terminal exact-family verification before
 it wrote the final outputs.
@@ -92,14 +92,14 @@ does not infer final OS CPU from wall time.
 
 ### Four-CPU-Hour Budget
 
-Leg 1’s last live process sample supplies only a CPU lower bound of `6290.95` seconds.
-Adding recovery’s measured driver CPU gives a cumulative lower bound of `13538.001695`
+Leg 1’s last live process sample supplies only a CPU lower bound of $6290.95$ seconds.
+Adding recovery’s measured driver CPU gives a cumulative lower bound of $13538.001695$
 CPU seconds. This deliberately omits leg 1’s unobserved terminal tail, the failed
 original leg-02 process, recovery startup, summary serialization, and teardown.
 
-Against the frozen 14,400-second budget, at most `861.998305` CPU seconds, or 14 minutes
+Against the frozen 14,400-second budget, at most $861.998305$ CPU seconds, or 14 minutes
 21.998305 seconds, can remain.
-The literal 30-minute leg 03 would exceed that upper bound by at least `938.001695`
+The literal 30-minute leg 03 would exceed that upper bound by at least $938.001695$
 seconds. The earlier plan to retain a 30-minute final leg is no longer compatible with
 the frozen four-CPU-hour cap.
 This manager gives leg 03 a **NO-GO**; the coordinator must dispose the budget
@@ -117,8 +117,8 @@ computational upper endpoint.
 | Row-converged upper endpoint | `11.055616942909783` at iteration 0 | None | `11.055616942909783` |
 
 The cumulative width is `0.67140453453256783753999204953407439382...`. Relative to the
-retained initial width `1.147711347927249`, this is a `41.500575406428...` percent
-reduction. It is below the declared threshold `0.86078351094543675`, but the rule also
+retained initial width $1.147711347927249$, this is a `41.500575406428...` percent
+reduction. It is below the declared threshold $0.86078351094543675$, but the rule also
 requires the full four-CPU-hour evidence budget.
 The exact terminal CPU total is unavailable, so this packet does not issue the
 25-percent routing verdict.
@@ -127,11 +127,11 @@ All five recovery row solves were unconverged:
 
 | Iteration | `rows_objective` | `rows_converged` |
 | ---: | ---: | --- |
-| 0 | `11.003820224719098` | `false` |
-| 1 | `10.999999999999936` | `false` |
-| 2 | `11.00000000000002` | `false` |
-| 3 | `10.99999999999993` | `false` |
-| 4 | `11.000000000000014` | `false` |
+| 0 | $11.003820224719098$ | `false` |
+| 1 | $10.999999999999936$ | `false` |
+| 2 | $11.00000000000002$ | `false` |
+| 3 | $10.99999999999993$ | `false` |
+| 4 | $11.000000000000014$ | `false` |
 
 The two displayed floats below eleven do not open the covering bridge and prove no
 bound.
@@ -146,10 +146,10 @@ interpreter. The replay returned:
 | --- | --- |
 | `proved` | `false` |
 | Failures | `K3 total weight at least n` only |
-| Total weight | `21101380004/2114368269` |
-| Maximum depth | `1` |
+| Total weight | $\frac{21101380004}{2114368269}$ |
+| Maximum depth | $1$ |
 | Arrangement vertices | `2607444` |
-| Vertices decided exactly | `64` |
+| Vertices decided exactly | $64$ |
 | Regime | `net`, D4-symmetric |
 
 The exact maximum-depth guard passes, but total weight is below eleven.

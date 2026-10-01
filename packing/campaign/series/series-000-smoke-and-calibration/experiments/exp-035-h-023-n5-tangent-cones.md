@@ -72,7 +72,7 @@ At endpoint A, an exact interior point, and endpoint B, the checker must derive 
 active wall and separating-axis inventory from the pose itself.
 It must not reuse a contact differential across slide strata.
 
-For pair `(3,4)`, the owner-axis choice is the only disjunction.
+For pair $(3,4)$, the owner-axis choice is the only disjunction.
 Within each of the two owner-axis branches, both tied support-feature derivatives are
 simultaneous inequalities.
 Acceptance requires the complete matrices for both owner branches and an exact
@@ -80,7 +80,7 @@ normalized direction outside exp-034’s sheet that satisfies every active row a
 three strata.
 
 The controls must reject a missing owner branch, a missing tied support row, reuse of
-endpoint A’s pair `(0,4)` coefficient in the interior, a false nonlinear-continuation
+endpoint A’s pair $(0,4)$ coefficient in the interior, a false nonlinear-continuation
 claim, an invalid angle sign, and loss of diagonal angle motion.
 Generation and replay had independent 30-second caps.
 

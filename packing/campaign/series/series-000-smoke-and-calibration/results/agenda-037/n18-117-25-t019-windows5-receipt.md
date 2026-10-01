@@ -2,16 +2,16 @@
 
 Status: **site set refuted, unconverged**. Locked at 18. The side stays open.
 
-Session-139 probe: BC-191 auto `(32, 43, 53)` unioned with T-019’s 1184 atom sites
-scaled from `459/100` to `117/25`, plus `--seed-windows 5`,
+Session-139 probe: BC-191 auto $(32, 43, 53)$ unioned with T-019’s 1184 atom sites
+scaled from $459/100$ to $117/25$, plus `--seed-windows 5`,
 `(n, L, B, net) = (18, 117/25, 9977/10000, 181 directions)`. Seed sites 1584 = 1184
 T-019 plus 400 ceiling-window lattice sites.
-The T-019-seeded auto `(32, 43, 54)` without windows converged at exact mass
-`18.000043`. Windows on `(32, 43, 53)` sat at `18.000000` from round 10 through the 900
+The T-019-seeded auto $(32, 43, 54)$ without windows converged at exact mass
+$18.000043$. Windows on $(32, 43, 53)$ sat at $18.000000$ from round 10 through the 900
 s deadline (57 LP rounds, 495 still violated).
 Remaining rows can only raise this value.
-Adding sites can still lower it, so `117/25` is not barred.
-T-027 at `467/100` is unchanged.
+Adding sites can still lower it, so $117/25$ is not barred.
+T-027 at $467/100$ is unchanged.
 
 ## Command
 
@@ -37,11 +37,11 @@ Wall 912.6 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `18.000000` |
+| Restricted optimum | $18.000000$ |
 | Sites / orbits / rows | 7253 / 975 / 18858 |
 | Seed sites | 1584 |
 | LP rounds | 57 |
-| Crossing | round 10 (`18.000000`) |
+| Crossing | round 10 ($18.000000$) |
 | Wall | 912.6 s |
 | `least_covered` | 0.960216 |
 | Converged | no (`violated == 495` at stop) |

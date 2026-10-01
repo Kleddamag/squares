@@ -7,7 +7,7 @@ middle-angle theorem, these leave the closed remainder
 
 $$
 \bigl([1/24,1/3]\cup[1/2,23/25]\bigr)
-\times\bigl(\{a,b\ge0\}\cup\{a,b\le0\}\bigr),
+\times\bigl(\lbrace a,b\ge0\rbrace\cup\lbrace a,b\le0\rbrace\bigr),
 $$
 
 with every other defining parameter and geometric condition retained.
@@ -45,10 +45,10 @@ and write $A=e\cdot p$, $B=f\cdot p$. The needed centers are exactly
 
 $$
 \begin{aligned}
-C_0&=(1/2,1/2),& C_1&=(L-1/2,1/2),\\
-C_2&=(z+1/2,L-1/2),& C_3&=(1/2,L-1/2),\\
-C_4&=(3/2,L-1/2),& C_5&=(1/2,L-3/2),\\
-C_6&=p,& C_7&=p+ae-f,\\
+C_0&=(1/2,1/2),& C_1&=(L-1/2,1/2),\cr
+C_2&=(z+1/2,L-1/2),& C_3&=(1/2,L-1/2),\cr
+C_4&=(3/2,L-1/2),& C_5&=(1/2,L-3/2),\cr
+C_6&=p,& C_7&=p+ae-f,\cr
 C_8&=p+e+bf,& C_9&=p+(1+a)e+(b-1)f.
 \end{aligned}
 $$
@@ -133,7 +133,7 @@ $T-q/2$, so
 
 $$
 \begin{aligned}
-x_V-x_H&\le T-2q<q,& x_H-x_V&\le T-r-q<q,\\
+x_V-x_H&\le T-2q<q,& x_H-x_V&\le T-r-q<q,\cr
 y_V-y_H&\le T-2q<q,& y_H-y_V&\le T-r-q<q.
 \end{aligned}
 $$
@@ -433,7 +433,7 @@ right base endpoint and square 6’s left base endpoint then give
 
 $$
 \begin{aligned}
-G&\ge(X-X_6)+(s/c)\delta+(c/s)\delta_6\\
+G&\ge(X-X_6)+(s/c)\delta+(c/s)\delta_6\cr
 &=\frac1c+\frac{\delta_6}{cs}>\frac54>\frac{21}{25},
 \end{aligned}
 $$
@@ -512,7 +512,7 @@ $$
 s\xi_7+cY_7\ge sD+c(D-s+\beta c)=D+\beta c^2\ge D.
 $$
 
-The remaining negative-$e$ alternative gives
+The remaining negative-`e` alternative gives
 
 $$
 s\xi_7+cY_7\ge\frac{sD+Y_7}{c}

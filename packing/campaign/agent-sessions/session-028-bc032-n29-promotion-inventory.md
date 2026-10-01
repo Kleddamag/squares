@@ -179,7 +179,7 @@ dilation ladder at the default `rational_digits = 36`?
 
 **Why this and not the agenda’s question.** BC-032 asks for the smallest well-posed
 system that can test the next exact-or-interval promotion boundary *without pretending
-that more decimal precision is a certificate*. At `n = 29` that boundary is already
+that more decimal precision is a certificate*. At $n = 29$ that boundary is already
 crossed: the exact rational upper bound is `verified`, and the interval route is both
 unnecessary for it and blocked by a declared unbuilt instrument.
 What remains open is not the boundary but the size of the relaxation paid to reach it,
@@ -187,28 +187,28 @@ and that is a tool-validation question the existing instruments can decide.
 
 **Inputs.** `witnesses/schadt-n029-2025-decimal.yaml`, unchanged;
 `packing-witness promote --strategy robust-rational --rational-digits d` over a finite
-set of `d` fixed and recorded before the first run; the existing `--max-side-increase`
+set of $d$ fixed and recorded before the first run; the existing `--max-side-increase`
 bound.
 
 **Checker.** `devtools/check_rational_witness_independent.py`, which shares no geometry
 or verification code with the promotion path and is already gated in `packing-validate`.
 
-**Accept rule.** The relaxation is *route-dependent* if at least one declared `d` yields
+**Accept rule.** The relaxation is *route-dependent* if at least one declared $d$ yields
 an independently verified 29-square rational witness whose exact side is strictly less
-than `296694289993118242899906513/50000000000000000000000000`. It is *route-independent
-on this ladder* if no declared `d` does.
+than $296694289993118242899906513/50000000000000000000000000$. It is *route-independent
+on this ladder* if no declared $d$ does.
 
 **Falsifier.** A single independently verified witness at a strictly smaller exact side.
 
 **Claim boundary.** Any smaller certified side remains an upper bound on the true
-`n = 29` optimum and a weaker bound than the reported record.
+$n = 29$ optimum and a weaker bound than the reported record.
 No answer certifies the source decimals, improves a record, establishes rigidity, or
 proves optimality.
 A negative answer is a real result about the promotion tool, not about
 the packing.
 
 **Cost.** One sub-second promotion and one 0.23-second independent check per declared
-`d`.
+$d$.
 
 ## What the n = 29 case measures
 

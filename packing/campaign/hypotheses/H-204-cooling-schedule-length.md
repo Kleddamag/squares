@@ -63,15 +63,15 @@ hotter search wearing a structural costume.
 
 [exp-201](../series/series-000-smoke-and-calibration/experiments/exp-201-arm-calibration.md)
 pass 3 ran that ablation on the held-out cells.
-Raising `t_hot` from `0.25` to `0.5`, `1.0`, `2.0` and `4.0` changed **nothing**: every
+Raising `t_hot` from $0.25$ to $0.5$, $1.0$, $2.0$ and $4.0$ changed **nothing**: every
 seed still returned exactly the trivial grid, so arm B’s effect is not exploration
 temperature. Turning off reseeding changed nothing either.
 
 The seventh arm in that pass was not a temperature change.
 `--steps 4000000` lengthens each anneal tenfold, so the same pair-test budget buys a
 tenth as many restarts, each cooled ten times more slowly.
-It left the grid on three seeds of six, at a median of `4.9146` against the control’s
-`5.0`.
+It left the grid on three seeds of six, at a median of $4.9146$ against the control’s
+$5.0$.
 
 That is a positive from an ablation designed to produce a negative, and it is exactly
 the kind of result that must become a registered prediction rather than a sentence in
@@ -96,8 +96,8 @@ survey measured it.
 
 ## What would refute it
 
-Fewer than six of eleven cells improving by `0.01` with disjoint seed ranges.
-The most likely shape of a refutation is that the effect is real at `n = 18` and absent
+Fewer than six of eleven cells improving by $0.01$ with disjoint seed ranges.
+The most likely shape of a refutation is that the effect is real at $n = 18$ and absent
 everywhere else, which would make it a fact about one case rather than about schedules,
 and the sweep is what can tell those apart.
 

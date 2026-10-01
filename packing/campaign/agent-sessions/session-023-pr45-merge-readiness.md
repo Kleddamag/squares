@@ -592,7 +592,7 @@ write scopes do not overlap.
 
 | Slice | Bound | Objective and expected evidence | Defer or kill rule |
 | --- | ---: | --- | --- |
-| Partition correction | 30 min | Evaluate every `F = 0,1,2` slice; retain the `n = 26` and later-cap regressions | Stop on a changed candidate universe or hidden cap |
+| Partition correction | 30 min | Evaluate every $F = 0,1,2$ slice; retain the $n = 26$ and later-cap regressions | Stop on a changed candidate universe or hidden cap |
 | Dependent evidence | 30 min | Regenerate partition/profile JSON and SVG; independently reproduce `3/2/23/8` | Stop on cross-artifact disagreement |
 | Source governance | 30 min | Replace raw Kingbird SVG retention with attributed metadata and retained numerical facts | Stop before acquiring or retaining another raw asset |
 | Solver and hash policy | 30 min | Reject mixed angle classes before LP and retain only upstream-declared UnitSquare digests | Stop on changed atlas counts, geometry, or trust boundaries |

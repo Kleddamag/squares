@@ -77,7 +77,7 @@ validity screen, seed, or quench budget changes.
 
 All four outcomes are retained and replay.
 Seeds 0 through 2 converge at side 3 and are admissible.
-Seed 3 reaches valid side `3.040392660291`, hits the time budget, and remains
+Seed 3 reaches valid side $3.040392660291$, hits the time budget, and remains
 non-admissible with `producer_not_converged`. The archive contains 18,462 fixed-point
 evaluations, all settled and none unsettled, in 34.43 seconds of quench wall time.
 

@@ -10,13 +10,13 @@ They are not the same object and should not travel together.
 ## Part 1: the bound that moved
 
 **`s(11) >= 955000*sqrt(2073600042893309449)/359341754646249 = 3.826997548829543624`**,
-against `T-026`’s registered `3.826447410572939744`. A movement of `+0.000550138257`.
+against `T-026`’s registered $3.826447410572939744$. A movement of $+0.000550138257$.
 
 The frozen `T-025` threshold atoms re-certify at the 2880-step net; the crossing shrink
 does not rise under refinement, so halving the net gap moves the dilation-limit supremum
 with no new mathematics.
 Both retention routes accept the frozen bytes and agree at exactly 1 — interval
-enclosure `(1, 1)` over 5,761 directions and 23,785,079 boxes with no stalls, exact
+enclosure $(1, 1)$ over 5,761 directions and 23,785,079 boxes with no stalls, exact
 route independently at direction 1828 — and the run’s own 1440 leg reproduces `T-026`’s
 surd exactly as a control.
 
@@ -56,41 +56,41 @@ registering, not part of this session.
 
 None of these moved a bound, and each is worth more than an absence.
 
-- **The `n = 17` triples are load-bearing** (`H-235`). With `threshold_orbits` emptied
-  the least point-only charge is `370792263/500000000 = 0.741585` against `0.861183`, at
+- **The $n = 17$ triples are load-bearing** (`H-235`). With `threshold_orbits` emptied
+  the least point-only charge is $370792263/500000000 = 0.741585$ against $0.861183$, at
   row 5130. Row 0 alone already refutes.
 - **The parent-centre restriction is load-bearing**, with an exact witness at row 6512
-  charging `199827543/200000000` against `M/17 = 0.999907492`, and no rescaling saves
+  charging $199827543/200000000$ against $M/17 = 0.999907492$, and no rescaling saves
   it. Two lanes derived that independently and agreed to the last digit.
   Read unrestricted through the gate’s exact route the measure’s least charge is
-  `0.305414321` at direction 0, so it is refuted at every net.
+  $0.305414321$ at direction 0, so it is refuted at every net.
 - **Re-pricing is capped.** Any re-priced measure on the artifact’s support at fixed
-  `(L, A)` has mass at least `33945829752/2000000005 = 16.972914834`, against the
-  artifact’s `16.998078606`. The whole avenue is worth at most `0.0252` of mass, about
-  `+0.0034` in the bound, and the floor had not converged.
+  $(L, A)$ has mass at least $33945829752/2000000005 = 16.972914834$, against the
+  artifact’s $16.998078606$. The whole avenue is worth at most $0.0252$ of mass, about
+  $+0.0034$ in the bound, and the floor had not converged.
   **The slate’s weight should move off `A2` and onto the sites side.**
-- **The grid escape is the null, and total.** At `n = 12`, `20`, `21` all fifteen runs
+- **The grid escape is the null, and total.** At $n = 12$, $20$, $21$ all fifteen runs
   and all 120 chains returned the grid exactly, spread zero, and the quench returns the
   integer again.
 
 ## Part 3: what is now known to be blocked, and by what
 
 - **The gate cannot reach external measures at this scale.** `MAX_INTERVAL_ATOMS` is
-  4,096 and the external `n = 17` measure expands to 6,744 point atoms; retention needs
+  4,096 and the external $n = 17$ measure expands to 6,744 point atoms; retention needs
   both routes, so no measure above the cap can be retained as the gate is built.
   `AtomData.of` is the point route’s loader too, so this binds first-party colgen at
   this scale as well. The fix is chunking the boxes-by-atoms mask, not raising the cap.
-- **The `n = 27`/`n = 28` candidate is refused on agreement, not on the bound.** The
-  retained `n = 29` candidate at `548/100` certifies every `n >= 27` by Condition 2 —
-  the tool prints that itself — and a `103/100` re-bump clears its Condition 5 stall
+- **The $n = 27$/`n = 28` candidate is refused on agreement, not on the bound.** The
+  retained $n = 29$ candidate at $548/100$ certifies every `n >= 27` by Condition 2 —
+  the tool prints that itself — and a $103/100$ re-bump clears its Condition 5 stall
   completely at the theorem’s own threshold.
   The gate still refuses because it encloses against the *exact minimum*, where the
   shortfall is relative and reweighting moves both ends together.
   All 272 stalls are in direction 0, below the `1e-12` resolution floor.
   Whether an escape from the agreement requirement is sound policy is a `W7` question
   for the gate’s owner; `D-435` is why it is asked in both modes.
-- **`fold_ceiling_family` is one-sided.** A fold at or above `n` proves a ceiling; a
-  fold below `n` proves nothing.
+- **`fold_ceiling_family` is one-sided.** A fold at or above $n$ proves a ceiling; a
+  fold below $n$ proves nothing.
   `X-041`’s `A6` kill rests on the invalid negative branch.
 
 ## Part 4: three corrections a next agent must not re-introduce
@@ -99,12 +99,12 @@ None of these moved a bound, and each is worth more than an absence.
    the interior convention and `H-228` is stated for closed unit squares.
    It stays blocked, and what the episode leaves is a specification constraint: the
    `BC-365` verifier must decide closed cores.
-2. **The `n = 19` “0.073 short” figure is the annealer’s stopping point, not the
-   repository’s best.** Polishing `exp-202`’s own archived poses reaches `4.915913`;
-   four times the budget reaches `4.888119`, `2.501e-03` from Wainwright.
+2. **The $n = 19$ “0.073 short” figure is the annealer’s stopping point, not the
+   repository’s best.** Polishing `exp-202`’s own archived poses reaches $4.915913$;
+   four times the budget reaches $4.888119$, `2.501e-03` from Wainwright.
    Where the annealer only just escapes the grid, its reported side is not a local
    optimum.
-3. **The `4.888109` Stromquist `n = 19` value is not in this repository.** It travelled
+3. **The $4.888109$ Stromquist $n = 19$ value is not in this repository.** It travelled
    through this block’s briefs and nothing verifies it.
 
 ## Practical notes for the next agent

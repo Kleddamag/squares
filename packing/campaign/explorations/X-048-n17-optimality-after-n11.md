@@ -337,14 +337,14 @@ The
 [October source audit](../../../docs/project/reviews/review-2026-10-01-evand-source-coverage.md)
 recovers public support files for the side-4 and side-5 obstructions at revision
 `08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5`. They have mathematical review but no fresh
-local replay. The newer side-3.99 mass is `48112643084/3999999987`, approximately
+local replay. The newer side-3.99 mass is $48112643084/3999999987$, approximately
 12.02816; its support file remains absent from the public tree.
 Check the recovered evidence before declaring the entire additive route closed.
 An accepted closed-depth dual would obstruct every finite nonnegative spatial measure,
 including segments and area, rather than just a fixed point dictionary.
 Conditional occupancy is therefore a better initial bet than blindly transferring n21’s
 endpoint measure. At side 5, the source’s exact fractional mass is
-`10323890641/499999999`, approximately 20.64778, which would obstruct a plain additive
+$10323890641/499999999$, approximately 20.64778, which would obstruct a plain additive
 proof of n20 if its exact premises are verified.
 T-052’s existing cover has exact mass 20.89474919732: a conditional adaptation must
 obtain more than 0.89474919732 of valid budget saving to get strictly below 20, or prove
@@ -369,7 +369,7 @@ The
 and
 [Astra mathematical review](../../../docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md)
 separate newly reported theorems from research mechanisms.
-The source reports `s(60) = s(61) = 8` and `s(k² − 3) = k` for every integer `k ≥ 6`.
+The source reports $s(60) = s(61) = 8$ and $s(k^2 - 3) = k$ for every integer $k \ge 6$.
 The latter reduces all sizes to a finite covering premise in a 7 × 7 box; the Lean
 reduction assumes that premise, and the source currently supplies only one exact
 implementation for checking it.
@@ -380,7 +380,7 @@ These reports neither settle n17 nor replace the obligations in R1–R9.
 | Exact limiting configurations for R1/R7 | A continuum cover can fail arbitrarily close to a tight contact even when sampled angles pass. The source uses exact limiting constraints before searching for endpoint weights. | Derive necessary constraints on the proposed n17 sliding/contact family. Test exact feasibility before a global sweep; an infeasible subsystem rejects that certificate template, not optimality. |
 | Continuum clique resources for n12 | The source already explores cliques defined by a point and a region, beyond ordinary spatial measures. Its finite box-clique gains nearly disappear at grazing contacts. | Start with an exact finite primal/dual comparison, then seek a uniform bound over the full continuum. Use the mathematical review’s corrected threshold argument if needed; a sampled gain without coverage of grazing contacts is inconclusive. |
 | Higher-order local obstructions | The n12 source reports exact witnesses for proper subsets of a proposed obstruction; its claim that the whole leaf has no positive separation remains numerical. First-order certificates can miss a zero-margin plateau. | Identify the first nonzero exact order on a specific candidate family; retain a feasible adversary or unresolved term instead of inferring a global theorem from local derivatives. |
-| A periodic family with deficit four | The reported deficit-three proof separates fixed corners, periodic walls and an area interior. A wider boundary pattern might have enough mass saving for `k² − 4`. | Price the source’s width-three LP first and require the exact saving condition `D > 1` before any global checker run. The source estimates 5–10 CPU-hours for that LP and 50–80 for a subsequent check, so this is a reserve campaign, not an automatic overnight job. |
+| A periodic family with deficit four | The reported deficit-three proof separates fixed corners, periodic walls and an area interior. A wider boundary pattern might have enough mass saving for $k^2 - 4$. | Price the source’s width-three LP first and require the exact saving condition $D > 1$ before any global checker run. The source estimates 5–10 CPU-hours for that LP and 50–80 for a subsequent check, so this is a reserve campaign, not an automatic overnight job. |
 
 W10 may select a small discriminator from these leads without waiting for every large
 external replay. It must state which unverified source premise it assumes.

@@ -17,9 +17,9 @@ are reconciled.
 
 | Lane | Document | What it settled |
 | --- | --- | --- |
-| A | [Corner and wall structure](lane-a-corner-structure.md) | Seven proved corner and wall lemmas, two sound unrun certificate shapes, and the proof that no positive corner penetration or blocker angle can be forced by any argument valid up to `U` |
-| B | [Orientation-class constraints](lane-b-angle-classes.md) | The nine-point theorem with exact constants, exact-verified band counts at `96/25` and `U`, Stromquist’s Theorem 3 transported to `96/25`, and three precise obstructions to H-121 |
-| C | [The transfer of the `s(10)` proof](lane-c-n10-transfer.md) | Theorem 2 read as an anchored certificate, the rigidity of the ten-point scheme at `2 + 4/√5`, and the weighted ownership and transfer lemmas with the four-corner corollary |
+| A | [Corner and wall structure](lane-a-corner-structure.md) | Seven proved corner and wall lemmas, two sound unrun certificate shapes, and the proof that no positive corner penetration or blocker angle can be forced by any argument valid up to $U$ |
+| B | [Orientation-class constraints](lane-b-angle-classes.md) | The nine-point theorem with exact constants, exact-verified band counts at $\frac{96}{25}$ and $U$, Stromquist’s Theorem 3 transported to $\frac{96}{25}$, and three precise obstructions to H-121 |
+| C | [The transfer of the `s(10)` proof](lane-c-n10-transfer.md) | Theorem 2 read as an anchored certificate, the rigidity of the ten-point scheme at $2 + 4/\sqrt{5}$, and the weighted ownership and transfer lemmas with the four-corner corollary |
 | D | [Contact lemmas and the closing route](lane-d-contacts-and-closing-route.md) | The spanning, chain, LP-vertex and robust-transfer lemmas, the duality lemma that prices every conditional certificate, and the priced closing route |
 
 ## Lane result documents
@@ -44,15 +44,15 @@ nothing else in this directory.
   independent replays of Theorem E.4 (a second interval reader: agrees at both
   constants, decides the 8/100 segments too), the corner-pair theorem (agrees) and
   Theorem C (agrees to the fraction); the selection funds the segment cover toward
-  ownership and the `B = 1` depth polisher, and states the claim to freeze.
+  ownership and the $B = 1$ depth polisher, and states the claim to freeze.
 
 - [Lane G, what the segment cover and the corner pair localise at `96/25`](lane-g-anchors-at-q.md)
   (BC-299, H-126, H-111): every core avoiding Stromquist’s ten points grazes a segment
-  within `1/100`, so Lemma B’s branch 1 is free and the anchor is a thin grazing class
+  within $1/100$, so Lemma B’s branch 1 is free and the anchor is a thin grazing class
   in one of four types; the corner square is not pinned; an anchor proved by the
-  ownership lemma is unpriceable on its own site set (charge `1.0024`); only the row
-  types survive the free dual’s reading; an exact interior escape at `13.05°` answers
-  the band question.
+  ownership lemma is unpriceable on its own site set (charge $1.0024$); only the row
+  types survive the free dual’s reading; an exact interior escape at $13.05^\circ$
+  answers the band question.
 
 - [Lane A, Session-109: the corner-class LP under the corner-pair condition at `96/25`](lane-a-corner-structure.md#session-109--the-corner-class-lp-under-the-corner-pair-condition-at-9625-2026-09-08)
   (BC-292, H-126, H-127): pricing the four mark-holding corner cores buys about half a

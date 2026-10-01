@@ -91,6 +91,13 @@ This is that detector. For every `frontier/n-*.md`, it does three things:
    and unrelated to which `n` a figure is about: `189/50 = 3.78` in `n-011`'s body is checked
    the same way regardless of whose bound it is illustrating.
 
+**The bodies write their figures as math** (`$s(19) \\ge 22529/5000 = 4.5058$`) since
+`devtools.migrate_math` moved them off code spans, and every shape above was learned from
+code spans. So each body is read with its math spans turned back into the code spans they
+were written from, through `migrate_math.plain` (`Reading`): the shapes stay the corpus's
+own, a body not yet migrated reads as itself, and `--fix` maps the digits it rewrites back
+to where they sit in the LaTeX.
+
 What this does **not** cover: a bound figure written in some sixth shape none of the above
 recognises. Every shape here was added after a body drifted in it -- the `s(n) >=` form for
 `D-442`, the pinned interval for `D-445`, the named-field sentence for `D-451` -- because a
@@ -117,7 +124,9 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
+from devtools.check_math_spans import located_math_spans
 from devtools.check_rung_figures import decimal_matches, round_to
+from devtools.migrate_math import plain
 from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -145,7 +154,7 @@ _FRACTION_EQUALS_DECIMAL = re.compile(r"(?<![\w.])(\d+)/(\d+)\s*=\s*(-?\d+\.\d+)
 #: The corpus's own markers for "this figure is deliberately historical", read case-
 #: insensitively anywhere in the figure's sentence. See the module docstring, point 2.
 _HISTORICAL_MARKER = re.compile(
-    r"now weaker|previously|second strongest|\buntil\b|superseded|\bwas\b", re.IGNORECASE
+    r"now\s+weaker|previously|second\s+strongest|\buntil\b|superseded|\bwas\b", re.IGNORECASE
 )
 
 _OP_GE = r"(?:≥|>=)"
@@ -167,15 +176,15 @@ _BOUND_LE = re.compile(rf"s\((\d+)\)\s*{_OP_LE}\s*(?:s\(\d+\)\s*{_OP_LE}\s*)*{_F
 #: read as a lower and an upper bound. The n = 11 body wrote its bound this way and
 #: stayed on the 19/5 rung for eleven hours after the front matter moved (D-445).
 _PINNED_INTERVAL = re.compile(
-    r"`?s\((\d+)\)`?\s+is pinned to\s+`?\[\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\]"
+    r"`?s\((\d+)\)`?\s+is\s+pinned\s+to\s+`?\[\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\]"
 )
 
 #: `` a gap of `0.067084` `` in the same sentence as a pinned interval: the difference of
 #: the file's own verified bounds, at the precision written. The 19/5-era n = 11 body
 #: passed the interval check at one decimal (3.8 is 3.81 truncated) and failed only here.
-_GAP_OF = re.compile(r"a gap of\s+`?(\d+\.\d+)`?")
+_GAP_OF = re.compile(r"a\s+gap\s+of\s+`?(\d+\.\d+)`?")
 
-_BEST_PROVED = re.compile(r"best proved (lower|upper) bound\s+is\s+`(-?\d+(?:\.\d+)?)`")
+_BEST_PROVED = re.compile(r"best\s+proved\s+(lower|upper)\s+bound\s+is\s+`(-?\d+(?:\.\d+)?)`")
 
 #: This wording names the verified field, even though its bare figure has no `s(n)`.
 _STRONGEST_VERIFIED = re.compile(
@@ -191,13 +200,15 @@ _VERIFIED_BOUND_PREFIX = re.compile(
 #: "Nagamochi's general `4.316625`" or "Nagamochi's general `1 + √12 ≈ 4.464102`" -- this
 #: corpus's other recurring bare-decimal shape, always this file's own reported (and, unless
 #: displaced, verified) lower bound, so also always about this file's own `n`.
-_NAGAMOCHI_GENERAL = re.compile(r"Nagamochi[\u2019']s general\s*`(?:[^`]*?≈\s*)?(-?\d+\.\d+)`")
+_NAGAMOCHI_GENERAL = re.compile(
+    r"Nagamochi[\u2019']s\s+general\s*`(?:[^`]*?≈\s*)?(-?\d+\.\d+)`"
+)
 
 #: "`verified_upper_bound` for this case is `5`" -- the ceiling-disclaimer's own explicit
 #: claim, naming the front-matter field it is about, so it is checked against that field
 #: directly with no reported-bound fallback and no historical exemption.
 _VERIFIED_FIELD = re.compile(
-    r"`verified_(upper|lower)_bound`\s+for this case is\s+`(-?\d+(?:\.\d+)?)`"
+    r"`verified_(upper|lower)_bound`\s+for\s+this\s+case\s+is\s+`(-?\d+(?:\.\d+)?)`"
 )
 
 #: "The verified lower bound is `99/25 = 3.96`" -- the same claim written in words rather
@@ -210,7 +221,7 @@ _VERIFIED_FIELD = re.compile(
 #: and when the prose writes the exact fraction too, that is checked against `exact_form`.
 #: The `s(n)` sibling keeps these field and fraction checks through `BoundClaim` instead.
 _VERIFIED_BOUND_SENTENCE = re.compile(
-    rf"[Tt]he verified (lower|upper) bound is\s+`?{_FIGURE}`?"
+    rf"[Tt]he\s+verified\s+(lower|upper)\s+bound\s+is\s+`?{_FIGURE}`?"
 )
 
 
@@ -337,6 +348,68 @@ def split_front_matter(text: str) -> tuple[str, str, int]:
     body = "".join(lines[second + 1 :])
     body_start_line = second + 2  # 1-indexed line number of the body's first line
     return front_matter, body, body_start_line
+
+
+@dataclass(frozen=True, slots=True)
+class Reading:
+    """A case body with each math span read back as the code span it was written from.
+
+    `$s(19) \\ge 22529/5000 = 4.5058$` reads `` `s(19) ≥ 22529/5000 = 4.5058` `` and
+    `$\\frac{99}{25} = 3.96$` reads `` `99/25 = 3.96` ``, so every pattern in this module
+    matches a migrated body as it matched the code spans it was written against. `plain`
+    keeps a span's newlines and its digits, so a line number counted in `text` is the
+    body's, and a figure found in `text` is found again, digit for digit, in the LaTeX.
+    """
+
+    body: str
+    text: str
+    spans: tuple[tuple[int, int, int, int], ...]
+    """Each read-back span as `(text_start, text_end, body_start, body_end)`, in order."""
+
+    @classmethod
+    def of(cls, body: str) -> Reading:
+        pieces: list[str] = []
+        spans: list[tuple[int, int, int, int]] = []
+        position = length = 0
+        for start, end, latex in located_math_spans(body):
+            pieces.append(body[position:start])
+            length += start - position
+            code = f"`{plain(latex.strip())}`"
+            spans.append((length, length + len(code), start, end))
+            pieces.append(code)
+            length += len(code)
+            position = end
+        pieces.append(body[position:])
+        return cls(body, "".join(pieces), tuple(spans))
+
+    def body_offset(self, offset: int, figure: str) -> int | None:
+        """Where the `figure` at `offset` in `text` sits in `body`, if it can be found.
+
+        Outside a math span the two differ by a constant shift. Inside one, the figure is
+        the same digits in the LaTeX, found by counting its earlier occurrences in the span.
+        """
+        shift = 0
+        for text_start, text_end, body_start, body_end in self.spans:
+            if offset < text_start:
+                break
+            if offset < text_end:
+                read = _occurrences(self.text[text_start:text_end], figure)
+                found = _occurrences(self.body[body_start:body_end], figure)
+                if offset - text_start not in read or len(read) != len(found):
+                    return None
+                return body_start + found[read.index(offset - text_start)]
+            shift = body_end - text_end
+        return offset + shift
+
+
+def _occurrences(text: str, figure: str) -> list[int]:
+    """Every index at which `figure` starts in `text`, overlapping ones included."""
+    found: list[int] = []
+    index = text.find(figure)
+    while index >= 0:
+        found.append(index)
+        index = text.find(figure, index + 1)
+    return found
 
 
 @dataclass(frozen=True, slots=True)
@@ -637,9 +710,11 @@ def _line_at(body_start_line: int, body: str, offset: int) -> int:
 
 def check_case_file(path: Path) -> list[Finding]:
     text = path.read_text(encoding="utf-8")
-    front_matter_yaml, body, body_start_line = split_front_matter(text)
+    front_matter_yaml, source, body_start_line = split_front_matter(text)
     document = safe_load(front_matter_yaml)
     front_matter = parse_front_matter(document)
+    # Offsets below are into the reading, whose line breaks are the body's own.
+    body = Reading.of(source).text
 
     findings: list[Finding] = []
     for claim in bound_claims(body, front_matter.n):
@@ -703,9 +778,15 @@ def rewrite_directionally_safe_figures(path: Path) -> int:
     front_matter_yaml, body, _body_start_line = split_front_matter(text)
     prefix = text[: len(text) - len(body)]
     front_matter = parse_front_matter(safe_load(front_matter_yaml))
+    reading = Reading.of(body)
     rewrites: dict[int, tuple[int, str]] = {}
 
-    for claim in bound_claims(body, front_matter.n):
+    def rewrite(offset: int, figure: str, rendered: Decimal) -> None:
+        # A figure the LaTeX does not hold digit for digit is left for a person.
+        if (at := reading.body_offset(offset, figure)) is not None:
+            rewrites[at] = (len(figure), format(rendered, "f"))
+
+    for claim in bound_claims(reading.text, front_matter.n):
         if check_bound_claim(claim, front_matter) is None:
             continue
         field = _field_for_rewrite(claim, front_matter)
@@ -713,9 +794,9 @@ def rewrite_directionally_safe_figures(path: Path) -> int:
             continue
         rendered = field.safe_decimal_at(_digits_of(claim.figure), claim.kind)
         if rendered is not None:
-            rewrites[claim.offset] = (len(claim.figure), format(rendered, "f"))
+            rewrite(claim.offset, claim.figure, rendered)
 
-    for field_claim in verified_field_claims(body):
+    for field_claim in verified_field_claims(reading.text):
         if check_verified_field_claim(field_claim, front_matter) is None:
             continue
         digits = _digits_of(field_claim.figure)
@@ -728,7 +809,7 @@ def rewrite_directionally_safe_figures(path: Path) -> int:
             continue
         rendered = verified.safe_decimal_at(digits, field_claim.kind)
         if rendered is not None:
-            rewrites[field_claim.offset] = (len(field_claim.figure), format(rendered, "f"))
+            rewrite(field_claim.offset, field_claim.figure, rendered)
 
     for offset, (length, replacement) in sorted(rewrites.items(), reverse=True):
         body = body[:offset] + replacement + body[offset + length :]

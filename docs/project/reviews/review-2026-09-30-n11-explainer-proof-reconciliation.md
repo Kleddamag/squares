@@ -43,7 +43,7 @@ This exposition review adds no proof credit to a cached success flag.
 | Symmetry Reduces the Four Survivors to One | Original §6; [D4 checker][d4-check], `check_overlay`, `check_bans`, `solve_non_target_cases` | The argument concerns physical symmetries and independently chosen closed labels, not a permutation of irregular cells. All 220 regions, including eight singletons, and 1,572 strict bans belong to an exhaustive relaxation. An unrealizable assignment being allowed only weakens that relaxation. |
 | Capture Forces Case 438 Near the Construction | Original §8; [child checker][child-check], `conditional_view`, `check_step`; [composition joins][joins], `capture_conditions`, `reviewed_capture_states` | The three closed splits cover all possibilities. All ten nodes and nine parent joins matter; a near-state file alone is insufficient. Empty far leaves and the live near enclosure have different conclusions. Trailing partial updates promote no state. |
 | The Local Argument Excludes Every Nonzero Motion; Appendix B | Original §7; [local checker][local-check], `bridge_features`, `strict_feature_margin`, `strict_dual_margin`, `audit` | The feature census covers changing separation choices. Gradient aliases do not lose their nonlinear curvature bounds. All signed-coordinate duals and unavailable-feature estimates are needed; infinitesimal rigidity alone would not prove the declared finite rectangle. |
-| Closing the Gap Between the Rational Cap and the Exact Optimum | Original §§3, 8 and 10; [pose inclusion][pose-check], `inverse_center`, `axis_angle_bound`, `slanted_angle_bound`, `check_pose` | The exact map divides out the field scale, undoes the checked quarter-turn and includes the $U-T$ translation. A concentric side-$S$ container becomes a side-$S$ container inside $[0,T]^2$. No physical small square is rescaled in the final deduction. |
+| Closing the Gap Between the Rational Cap and the Exact Optimum | Original §§3, 8 and 10; [pose inclusion][pose-check], `inverse_center`, `axis_angle_bound`, `slanted_angle_bound`, `check_pose` | The exact map divides out the field scale, undoes the checked quarter-turn and includes the $U-T$ translation. A concentric side-`S` container becomes a side-`S` container inside $[0,T]^2$. No physical small square is rescaled in the final deduction. |
 | What Was Verified; Sources and Verification Record | Original §§9–15; [final composer][composer]; [epistemic policy][levels]; [reproduction guide][reproduction] | Mathematical rules, checked instances and composition are separate obligations. The article discloses shared primitives, same-method confirmation, the publisher’s stale bindings and the independent rerun-automation limit. It claims neither a distinct proof method nor proof-assistant verification. |
 
 ## Findings Ranked by Severity
@@ -167,7 +167,7 @@ another’s.
 **The local theorem is not an impossibility theorem at $U$.** For an arbitrary
 hypothetical $S<T$ packing, concentric embedding into $U$, physical D4 symmetry,
 capture, and the checked inverse frame put that same packing in
-$[(T-S)/2,(T+S)/2]^2\subset[0,T]^2$. The fixed-$T$ local theorem now applies.
+$[(T-S)/2,(T+S)/2]^2\subset[0,T]^2$. The fixed-`T` local theorem now applies.
 It forces the spanning construction and contradicts $S<T$. This argument uses neither
 compactness nor a limiting sequence, and does not assert that the cap itself has only
 one feasible packing.
@@ -217,10 +217,10 @@ Their labels must retain the following distinctions:
   One displayed distance ban cannot replace the exhaustive finite search.
 - Capture edges denote dependencies.
   All cut labels are closed; the near leaf gives an enclosure whose inclusion and
-  fixed-$T$ isolation are separate premises.
+  fixed-`T` isolation are separate premises.
 - The $\tau$ diagram is an algebraic consequence of all signed-coordinate certificates,
   not a sampled physical motion or a projection establishing a 33-dimensional theorem.
-  The cap-to-$T$ diagram must show the rigid physical map after undoing field scaling.
+  The cap-to-`T` diagram must show the rigid physical map after undoing field scaling.
 
 The initially proposed first capture row has an additional complexity: its single
 supplied `collision_regions` entry is a universal partner-core region checked against

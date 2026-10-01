@@ -74,12 +74,12 @@ hypothesis:
 ---
 # H-049 — Do 20 Unit Squares Pack Squeezably in a 4 by 6 Rectangle?
 
-Arslanov, Mustafin and Shangitbayev prove `s(m² − m) < m` for every `m ≥ 12` by
+Arslanov, Mustafin and Shangitbayev prove $s(m^2 - m) < m$ for every $m \ge 12$ by
 splitting the container into two integer rectangles and two squeezable ones, and their
-scheme stops at `m = 12` only because their smallest retained primitive is
-`δ((4,8), 26)`. At `m = 10` the same scheme needs `δ((4,6), 20) > 0` and nothing else.
-The question is finite, small, and exactly the size of instrument this repository
-already runs at `n = 29`.
+scheme stops at $m = 12$ only because their smallest retained primitive is
+$\delta((4,8), 26)$. At $m = 10$ the same scheme needs $\delta((4,6), 20) > 0$ and
+nothing else. The question is finite, small, and exactly the size of instrument this
+repository already runs at $n = 29$.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -44,7 +44,7 @@ unrestricted optimum and τP(S) for the point-only residual effective-mass optim
 Atoms on P may be deleted from a residual measure because its cores avoid them.
 The construction proves
 
-`τ0(S) ≤ τP(S)+k`, hence `τ0(S)−τP(S)−k ≤ 0`.
+$\tau0(S) \le \tau P(S)+k$, hence $\tau0(S)-\tau P(S)-k \le 0$.
 
 The same holds with unrestricted atom support.
 If S omits a mark, the direct conclusion instead uses the augmented global support S∪P;

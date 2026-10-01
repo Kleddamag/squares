@@ -42,7 +42,7 @@ exact necessary translation bounds
 
 $$
 \begin{aligned}
-h&\le p_x\le L-h-(a+1)c-(1-b)s,\\
+h&\le p_x\le L-h-(a+1)c-(1-b)s,\cr
 h+c-as&\le p_y\le L-h-s-bc.
 \end{aligned}
 $$
@@ -302,7 +302,7 @@ Seven of the eight core-versus-square-2 SAT alternatives are impossible:
 For the below-coordinate row, the expression is increasing in $L$ and decreasing in the
 actual block angle. At $L=96/25$ its angle derivative is at most
 $47/250-(9/20)(24/25)<0$, because $c^2-s^2\ge0$ and $2cs\ge24/25$. Its maximum is
-therefore at $(c,s)=(4/5,3/5)$, where it is $1219/500$. For the positive-$f$ row,
+therefore at $(c,s)=(4/5,3/5)$, where it is $1219/500$. For the positive-`f` row,
 $z\le L-1$ was used; the final strict bound follows from $Lk<27168/5000$, $c\ge18/25$
 and $[(7/10)+c\lambda/2]/s>73/50$.
 

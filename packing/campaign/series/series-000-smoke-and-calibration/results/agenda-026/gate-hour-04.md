@@ -70,10 +70,10 @@ replay of the full radius generator.
 ### Bound Values and Claim Scope
 
 The frozen packet records an anchored, labelled, fixed-side 33-variable sup-norm chart,
-box radius `1/64`, 128 derivative-distinct branches, and 42 active rows per branch.
-Its uniform radius lower bound is `288616983/125000000000`; its preferred per-row
-weighted radius lower bound is `808514697/200000000000`. The corresponding
-quadratic-constant upper bounds are `2808470331/125000000` and `2574612531/200000000`.
+box radius $1/64$, 128 derivative-distinct branches, and 42 active rows per branch.
+Its uniform radius lower bound is $288616983/125000000000$; its preferred per-row
+weighted radius lower bound is $808514697/200000000000$. The corresponding
+quadratic-constant upper bounds are $2808470331/125000000$ and $2574612531/200000000$.
 
 BC-241 reviews only local fixed-side isolation and side stability in that chart.
 It may not claim global capture, global uniqueness, global optimality, a different
@@ -111,7 +111,7 @@ The closure manager will not run or repeat it.
 The reviewer must recompute retained aggregate arithmetic, require `factor_j = 2/K_j`
 and `factor_j * K_j = 2` for every audited row, and run the three frozen mutations: an
 active-row coefficient change, a selected-axis row reversal with the retained stress,
-and a `2/K_j` to `1/K_j` change that changes the exact product from two to one.
+and a $2/K_j$ to $1/K_j$ change that changes the exact product from two to one.
 
 ## First-Receipt Pending State
 
@@ -171,10 +171,10 @@ or claim promotion.
 | --- | --- |
 | Frozen inputs and source drift | The first receipt retains the original hash audit. The revised checker compares complete input content with Git revision `f9ba790a` and reads historical sources at `01ca830a`; no duplicate SHA-256 manifest is required. The declared drift remains the reviewed unused-argument removal, its caller changes, and the radius-source provenance-comment expansion. |
 | Single tangent replay | Exactly one invocation began at `2026-09-06T11:39:48Z` and exited zero: 128 of 128 exact zero certificates, no unresolved cone, no exact nonzero direction, and all seven replay self-tests true. Reported process time was 11.73 seconds wall and 11.56 seconds CPU. The timing environment emitted an unrelated Java-runtime warning before the valid replay JSON; it did not change the exit status or structured result. |
-| Aggregate arithmetic | Exact retained candidates, binding minima, shared caps, and outward rounding reproduce uniform radius `288616983/125000000000`, preferred weighted radius `808514697/200000000000`, uniform quadratic constant `2808470331/125000000`, and preferred per-row constant `2574612531/200000000`. |
+| Aggregate arithmetic | Exact retained candidates, binding minima, shared caps, and outward rounding reproduce uniform radius $\frac{288616983}{125000000000}$, preferred weighted radius $\frac{808514697}{200000000000}$, uniform quadratic constant $\frac{2808470331}{125000000}$, and preferred per-row constant $\frac{2574612531}{200000000}$. |
 | Rows and norm conversion | The checker independently reconstructed 56 distinct tied elementary gradients. Every audited row uses `factor_j = 2/K_j` and satisfies `factor_j * K_j = 2` exactly. |
 | Branch constants | All 128 retained stresses are strictly positive with exact zero residual; near- and far-wall stress sums agree; both uniform and per-row quadratic constants reproduce their published outward bounds. |
-| Required mutations | Changing an active-row coefficient fails exact gradient identity; reversing a selected separating-axis row while retaining its stress fails the exact stress residual; changing `2/K_j` to `1/K_j` changes the product from two to one and is rejected before weighted-radius use. |
+| Required mutations | Changing an active-row coefficient fails exact gradient identity; reversing a selected separating-axis row while retaining its stress fails the exact stress residual; changing $2/K_j$ to $1/K_j$ changes the product from two to one and is rejected before weighted-radius use. |
 | Selected faces | Uniform and weighted faces for branches 0 and 4 each have an exact feasible primal, exact nonnegative simplex dual, and exact zero primal-dual gap. Floating output proposes a basis only; no tolerance decides acceptance. |
 | Focused validation | Five tests passed in 34.24 seconds; Ruff reported no findings; BasedPyright reported zero errors, warnings, or notes; the standalone checker exited zero in 31.67 seconds wall and 31.15 seconds CPU; `git diff --check` passed. The closure manager inspected these retained validation receipts and did not repeat the scientific review. |
 | Forbidden work | The BC-241 reviewer and closure manager did not rerun `cases.trump11.verify_exact`; the root-run edit gate’s global regression is outside this lane. They did not run `cases.trump11.isolation_radius` or its full generator, and the checker does not invoke the tangent replay. A terminal host query at `2026-09-06T16:13:54Z` found no matching verifier, tangent, radius, checker, or BC-241 review process. |

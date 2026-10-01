@@ -100,8 +100,8 @@ arithmetic obligation succeeds.
 Static inspection of `trump_specification` found the seven archived centers, radius,
 representatives, sizes, original counts and multipliers unchanged.
 The lazy `check_trump` entry point checks the current polynomial divided by its leading
-coefficient five, the declared interval `[9/25,37/100]`, eleven seeds, sixty placements
-and eight orbits. The interval is exactly the archived `(36/100,37/100)` interval in
+coefficient five, the declared interval $[9/25,37/100]$, eleven seeds, sixty placements
+and eight orbits. The interval is exactly the archived $(36/100,37/100)$ interval in
 canonical rational serialization.
 The source constructor and this specification were not called during review.
 
@@ -153,7 +153,7 @@ The final frozen-code comparison confirmed the acceptance literals:
 `baseline_mass="11"` and literal `baseline_verified=true`. The full 88/60/8 quotient,
 seven fixed rows, 41 selected incidences and every literal
 `strict_inclusions_verified=true` remain required; exit zero alone is insufficient.
-The result’s kind is `d4-positive-inclusion-support-ceiling`, with version `1`. The
+The result’s kind is `d4-positive-inclusion-support-ceiling`, with version $1$. The
 protocol retains the whole-child timeout and does not invent a second producer or reader
 invocation.
 

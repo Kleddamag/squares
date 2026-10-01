@@ -3,15 +3,15 @@
 Status: **replay holds at the printed constants; both one-spare cases leave structures
 the paper’s toolkit does not close**. The 24-row replay of Theorem 11 passes 24 of 24 at
 the printed constants and fails at the pre-`D-505` line, so the lane’s stop condition
-was not triggered. The `n = 22` control reproduces Theorem 11 on all 73 blue structures,
-and the `n = 33` zero-spare control of the side-6 model is forced by six distinct full
+was not triggered. The $n = 22$ control reproduces Theorem 11 on all 73 blue structures,
+and the $n = 33$ zero-spare control of the side-6 model is forced by six distinct full
 boxes on both wall lines.
-At `n = 21` the inventory reports 3,461 kill orbits and 22,603 needs-geometry orbits
-after the merge propagation the review of the model added; at `n = 32`, 3,997 kill
+At $n = 21$ the inventory reports 3,461 kill orbits and 22,603 needs-geometry orbits
+after the merge propagation the review of the model added; at $n = 32$, 3,997 kill
 orbits and no needs-geometry.
 Under `H-226`’s and `H-227`’s own registered kill criteria those are kills of the proof
 strategy as stated.
-**They produce no packing and say nothing about `s(21)` or `s(32)`.**
+**They produce no packing and say nothing about $s(21)$ or $s(32)$.**
 
 Session-144 BC-362, Fable mathematical lane, ported to `devtools/bentz2016/` under
 `OR-1` and re-run here.
@@ -53,7 +53,7 @@ uv run --frozen --all-extras --group dev python -m devtools.bentz2016.replay_the
 
 Wall times: replay 15.1 s, `--check` 0.7 s, `--n 21` 39.3 s, `--n 32` 22.8 s (15.8 s
 before the guard-margin measurement the second review asked for was added to it).
-The negative control is 15.0 s and exits 1. The `n = 21` run was 6.6 s before the merge
+The negative control is 15.0 s and exits 1. The $n = 21$ run was 6.6 s before the merge
 propagation, which runs on each of the 122,323 pairs the wall-line count leaves
 non-forced.
 
@@ -71,12 +71,12 @@ is dropped. The other three files are written by the tool unaltered;
 | --- | --- |
 | Rows | 24 |
 | Rows that hold | 24 |
-| Finishing line `l` | `sqrt(2) - 1/2` = 0.914214 (`D-505`) |
-| Lemma 5 on the wall and `l` (row 11) | `1` exactly |
-| Chord infimum over `[0.4, 1] x {y}` (row 15) | `1` |
-| Chord infimum over `[0.5, 1] x {y}` (row 16) | `2 sqrt(2) - 2` = 0.828427 |
-| Case 1 sup, target `(3/2, 5/2)` (row 21) | 0.381333 < 1/2 |
-| Case 2 sup, target `(c, 1)` at `y_1 = 0.9` (row 23) | 0.497328 < 1/2 |
+| Finishing line $l$ | `sqrt(2) - 1/2` = 0.914214 (`D-505`) |
+| Lemma 5 on the wall and $l$ (row 11) | $1$ exactly |
+| Chord infimum over $[0.4, 1] \times \lbrace y\rbrace$ (row 15) | $1$ |
+| Chord infimum over $[0.5, 1] \times \lbrace y\rbrace$ (row 16) | `2 sqrt(2) - 2` = 0.828427 |
+| Case 1 sup, target $(\frac{3}{2}, \frac{5}{2})$ (row 21) | 0.381333 < 1/2 |
+| Case 2 sup, target $(c, 1)$ at $y_1 = 0.9$ (row 23) | 0.497328 < 1/2 |
 | Case 2 sup at the PDF’s own end point (row 24) | 0.484441 < 1/2 |
 | Configurations tiled exactly in row 3 | 619 |
 | Negative control at `(sqrt(2)-1)/2` | 12 of 24 hold; rows 11 and 15 fail; exit 1 |
@@ -115,7 +115,7 @@ Both readings are reported everywhere, in the tool’s output and in the JSON
 (`classes_raw_before_propagation`, `classes_orbits_before_propagation`,
 `orbits_converted_by_propagation`).
 
-It is carried at side 5 only; the `n = 32` side-6 model does not have it, so that case’s
+It is carried at side 5 only; the $n = 32$ side-6 model does not have it, so that case’s
 counts below are wall-line counts alone.
 
 ## `n = 21` (red one spare, blue two spares)
@@ -177,9 +177,9 @@ Forced by mechanism: 352 raw by Theorem 8, 49 raw by six distinct full boxes.
 
 | Control or constant | Value |
 | --- | --- |
-| `n = 33`, zero spares | forced, six distinct full boxes on both lines |
+| $n = 33$, zero spares | forced, six distinct full boxes on both lines |
 | Theorem 9 budget over the side 6 | 0.0265033361 (`D-507`) |
-| Numeric finish against the exact `m = 5` table | agrees to 1e-18 |
+| Numeric finish against the exact $m = 5$ table | agrees to 1e-18 |
 | Orbit count at the reported 25-digit decimal keys | 4,146 |
 | Orbit count on exact integer keys | 3,089 |
 
@@ -195,15 +195,15 @@ so all 12,100 raw pairs and every class above are independent of the key precisi
 
 Two limits, both cutting against the kill class, stated rather than smoothed over:
 
-- **The second point of a five-point row** can be moved within `[1.5, 1.6]` once that
-  row’s end point sits at `x = 1`, which Lemma 1 allows.
+- **The second point of a five-point row** can be moved within $[1.5, 1.6]$ once that
+  row’s end point sits at $x = 1$, which Lemma 1 allows.
   It is not modelled because it earns nothing: the segment it sweeps reaches neither
   wall line, so it adds no charge.
-- **Every wall line means four lines, not two.** The two horizontal lines `y = c`,
-  `y = 5 - c` cannot be charged by these row moves at all, because a column cannot move:
+- **Every wall line means four lines, not two.** The two horizontal lines $y = c$,
+  $y = 5 - c$ cannot be charged by these row moves at all, because a column cannot move:
   displacing one point vertically stretches a triangle side to `sqrt(1 + delta^2)`. They
-  are charged instead by the transposed configurations `R^T`, `B^T`, whose structures
-  this toolkit cannot correlate with `(R, B)`. So a kill counted here is a kill on all
+  are charged instead by the transposed configurations $R^T$, $B^T$, whose structures
+  this toolkit cannot correlate with $(R, B)$. So a kill counted here is a kill on all
   four lines for the structure paired with its own transposed twin; for an arbitrary
   pair the transposed lines are an independent draw that doubles the chances and changes
   no per-structure verdict.
@@ -222,14 +222,14 @@ needs-geometry orbits, and it reaches them by a single interval sweep per row ra
 than the reviewer’s fixed point over component pairs, which is the same transitive
 closure at a fraction of the cost.
 
-For `n = 32` the port reproduces the scratch file’s class counts, reason table and
+For $n = 32$ the port reproduces the scratch file’s class counts, reason table and
 orbit-size distribution exactly, including the 4,146 orbits.
 
 `tests/test_bentz2016_tools.py` pins both sides: the red structure `U[(1/2,17/10)]`
 against all 2,365 blue structures is 240 forced, 1,516 needs-geometry and 609 kill
 before the propagation and 405, 1,381 and 579 after, and a slow-marked test pins the
 whole inventory’s orbit counts on both sides.
-A second slow-marked test pins the whole `n = 32` inventory -- its four counts, its
+A second slow-marked test pins the whole $n = 32$ inventory -- its four counts, its
 reason breakdown and its zero needs-geometry -- which the second review found nothing
 doing.
 
@@ -243,31 +243,31 @@ all of them.
   other’s end point satisfy although one box holding one point of each colour explains
   both. The predicate now carries witness *identity*: distinct when some colour has two
   different known points between the two boxes.
-  Every `n = 32` count was re-derived under it and **nothing moved**; the two predicates
-  agree on all 72,698 counted-box pairs this case reaches, and the `n = 22` control and
-  the `n = 21` counts are untouched, as they must be -- the predicate is side-6 only.
+  Every $n = 32$ count was re-derived under it and **nothing moved**; the two predicates
+  agree on all 72,698 counted-box pairs this case reaches, and the $n = 22$ control and
+  the $n = 21$ counts are untouched, as they must be -- the predicate is side-6 only.
   The direction is worth stating: a loose distinctness test inflates `forced`, so it
   pushed toward a false *confirm* of `H-227`, and `exp-217` recorded a rejection.
-- **The merge propagation was exercised only where it decided nothing.** At `n = 22` the
+- **The merge propagation was exercised only where it decided nothing.** At $n = 22$ the
   wall-line pass forces every pair before the propagation runs.
   A test now defers the wall-line verdict and lets the propagation decide alone: it
   refuses 8 of the 73, four by an uncovered blue point swept into a merged box and four
   by a merged box holding a singly covered red end point together with its neighbour,
   each pinned by its reason string.
-  At `n = 22` no packing exists, so every refusal it makes there is correct.
+  At $n = 22$ no packing exists, so every refusal it makes there is correct.
 - **The sampled orientation slack is now measured, not asserted.**
   `_min_enclosing_square` samples 1,000 orientations in float and refuses a merged box
   above `1.01 + 4e-3`; a sampling overshoot would manufacture a forcing.
   The run reports the closest any decision came to that threshold.
-  At `n = 21` it is **0.0332**, 8.3 slacks away over 144 sampled decisions, and **none
+  At $n = 21$ it is **0.0332**, 8.3 slacks away over 144 sampled decisions, and **none
   of them refused**: every “does not fit a square of side 1.01” refusal in the run comes
   from the exact rational diameter test instead.
-  The `n = 22` control never reaches the sampler at all, and with the wall lines
+  The $n = 22$ control never reaches the sampler at all, and with the wall lines
   deferred it reaches it 8 times, no closer than 0.0518.
 - **The side-6 `EPS` guard is measured the same way.** Every comparison guarded by
   `1e-30` reports how far it stood from its threshold.
-  Over the `n = 32` run the closest deciding margins are 0.0660 (a rectangle against a
-  trajectory’s height range), 0.1 (a trajectory’s `x` against a rectangle’s span),
+  Over the $n = 32$ run the closest deciding margins are 0.0660 (a rectangle against a
+  trajectory’s height range), 0.1 (a trajectory’s $x$ against a rectangle’s span),
   0.0752 (feasibility of a system of row moves) and 0.9598 (the close-pair test) -- 28
   orders of magnitude above the guard, and of the order `1e-2` the module docstring
   claimed. The remaining comparisons are exact ties, where a point sits on a rectangle’s
@@ -285,10 +285,10 @@ Two findings against the archived transcription,
   is false. The factor 2 is the two wall gaps of the seven the sum counts.
   Filed as `D-507`, fixed in the file with an inline note.
 - **Lines 191 to 194, not corrected.** The PDF itself names case 2’s end point
-  `(0.5, sqrt(2) - 1/2)` where Figure 3 has `(0.5, 0.9)`. This is the source’s slip, not
+  `(0.5, sqrt(2) - 1/2)` where Figure 3 has $(0.5, 0.9)$. This is the source’s slip, not
   the transcription’s, so the text stands and only an inline note is added.
   Replay row 24 runs the step at the printed point: the region’s sup is 0.484441 there
-  against 0.497328 at `y_1 = 0.9`, both under 1/2, so the step holds either way and no
+  against 0.497328 at $y_1 = 0.9$, both under 1/2, so the step holds either way and no
   defect is filed against the source.
 
 The archive annotation census for this file rises from seven to nine.
@@ -300,19 +300,19 @@ What the tools decided, and nothing beyond it:
 - Every quantitative step of Theorem 11 holds at the printed constants, and the table
   fails at the constant the transcription carried before `D-505`. The replay’s stop
   condition for the lane was not triggered.
-- At `n = 22` and at `n = 33`, where the theorems are theorems, every structure is
+- At $n = 22$ and at $n = 33$, where the theorems are theorems, every structure is
   forced by the paper’s own mechanisms, with no help from the propagation.
-- At `n = 21`, after the propagation, 3,461 of 42,124 orbits leave at most four counted
+- At $n = 21$, after the propagation, 3,461 of 42,124 orbits leave at most four counted
   boxes on both vertical wall lines with no forced partial-box point, which is `H-226`’s
   registered kill for the proof strategy as stated; 22,603 more need a geometric claim
   the paper does not make, stated per structure in each record’s reason.
-- At `n = 32`, 3,997 of 4,146 orbits are the same kind of kill under `H-227`, and no
+- At $n = 32$, 3,997 of 4,146 orbits are the same kind of kill under `H-227`, and no
   structure reaches needs-geometry: with 0.0265 of vertical budget, one frozen row
   removes the shift of every interior six-point row on its side.
   The side-6 model does not carry the merge propagation, so that count is a wall-line
   count alone.
 - A kill here names the case that would need new geometry.
-  It exhibits no packing and bears on neither `s(21)` nor `s(32)`.
+  It exhibits no packing and bears on neither $s(21)$ nor $s(32)$.
 
 The Fable review verdict on the model, and the `H-226` and `H-227` verdicts it supports,
 are recorded by the coordinator in `exp-216` and `exp-217`; this receipt records only

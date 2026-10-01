@@ -38,7 +38,7 @@ experiment outcomes, assurance semantics, or search policy.
 
 The governing decision is **assurance proportional to reuse and consequence**. Shared
 mechanisms and trust boundaries receive stable contracts and strong tests.
-Code retained for one `n`, source, theorem, hypothesis, or checkpoint remains explicit
+Code retained for one $n$, source, theorem, hypothesis, or checkpoint remains explicit
 E1 case code and is not forced through a speculative abstraction.
 
 ## Starting Evidence
@@ -69,7 +69,7 @@ The latter became a failing test before its command boundary was corrected.
 | `src/sqpack/campaign/` | E3 | Campaign state machine, schema-wide invariants, persistence, and generated ledger. Durable state remains under `campaign/`. |
 | `src/sqpack/cli/` | E3 | Validation orchestration and stable installed command boundaries. |
 | `cases/trump11/` | E1 | Exact Trump packing, verifier limits, field derivation, independent LP reconstruction, tangent cones, and f64 seed export. |
-| `cases/gobel10/`, `n5/`, `small_n/`, `stromquist/`, `kingbird29/` | E1 | Retained checks tied to a named case, source, theorem, or value of `n`. |
+| `cases/gobel10/`, `n5/`, `small_n/`, `stromquist/`, `kingbird29/` | E1 | Retained checks tied to a named case, source, theorem, or value of $n$. |
 | `cases/campaign_smoke/` | E1 | H-002 quench, basin-event, baseline, and basin-entry experiment programs whose policy is campaign-specific. |
 | `devtools/` | Developer-only | Fifteen checkers, renderers, schema tools, and the isolated mutation-control harness. No runtime package imports them. |
 | `benchmarks/` | Measurement | Exact-verification performance probe, deliberately separate from pass/fail tests. |

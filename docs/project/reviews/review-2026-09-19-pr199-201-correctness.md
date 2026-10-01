@@ -31,10 +31,10 @@ novelty search.
 
 | Result | PR | Lower bound | Exact total mass | Exact least covered mass | Fresh interval replay |
 | --- | --- | --- | --- | --- | --- |
-| T-027 | 199 | `s(18) >= 467/100 = 4.67` | `8937839/500000 < 18` | `2000007/2000000 > 1` | Accepted; 2,543,909 boxes, zero stalls |
-| T-028 | 200 | `s(18) >= 187/40 = 4.675` | `35758287/2000000 < 18` | `4000013/4000000 > 1` | Accepted; 2,684,845 boxes, zero stalls |
-| T-029 | 201 | `s(18) >= 1871/400 = 4.6775` | `17889361/1000000 < 18` | `250001/250000 > 1` | Accepted; 2,997,789 boxes, zero stalls |
-| T-030 | 201 | `s(18) >= 4679/1000 = 4.679` | `71573611/4000000 < 18` | `200001/200000 > 1` | Accepted; 3,449,053 boxes, zero stalls |
+| T-027 | 199 | `s(18) >= 467/100 = 4.67` | $\frac{8937839}{500000} < 18$ | $\frac{2000007}{2000000} > 1$ | Accepted; 2,543,909 boxes, zero stalls |
+| T-028 | 200 | `s(18) >= 187/40 = 4.675` | $\frac{35758287}{2000000} < 18$ | $\frac{4000013}{4000000} > 1$ | Accepted; 2,684,845 boxes, zero stalls |
+| T-029 | 201 | `s(18) >= 1871/400 = 4.6775` | $\frac{17889361}{1000000} < 18$ | $\frac{250001}{250000} > 1$ | Accepted; 2,997,789 boxes, zero stalls |
+| T-030 | 201 | `s(18) >= 4679/1000 = 4.679` | $\frac{71573611}{4000000} < 18$ | $\frac{200001}{200000} > 1$ | Accepted; 3,449,053 boxes, zero stalls |
 
 The exact sweep and interval route agree for each certificate.
 The proof bridge is appropriate: nonnegative D4-symmetric atom weights, sufficient
@@ -91,9 +91,9 @@ Tracker: `think-qpcq`.
 checks only that the half-angle limit is positive.
 Values above 1 introduce negative cosines into a centre-domain calculation that assumes
 nonnegative sine and cosine.
-For the single site `(1,1)` in a side-2 container, unit squares, two steps, and limit 2,
-the encoder returns `[[0]]` and reports `infeasible / killed_coarse_net`. With limit 1/2
-it returns `[[1]]` and feasible.
+For the single site $(1,1)$ in a side-2 container, unit squares, two steps, and limit 2,
+the encoder returns $[[0]]$ and reports `infeasible / killed_coarse_net`. With limit 1/2
+it returns $[[1]]$ and feasible.
 The centre pierces every contained closed unit square: for folded direction components
 c,s, its maximum projected offset is `(c+s)*(1-(c+s)/2) <= 1/2`. **Fix:** Refuse limits
 above 1 before first-quadrant geometry, or generalize the geometry using absolute
@@ -166,7 +166,7 @@ parallel source of truth.
 
 - `threshold_separation.atom_columns` accepts general threshold atoms but ignores
   multiplicities in costs and coverage.
-  For two sites with multiplicities `(3,3)` and threshold 2, it returns cost 1 instead
+  For two sites with multiplicities $(3,3)$ and threshold 2, it returns cost 1 instead
   of 3 and misses a charge from one contained site.
   Current callers generate ordinary 2-of-3 atoms, so current outputs are unaffected.
   Guard that restricted input contract or implement token counting before widening use.
@@ -177,8 +177,8 @@ parallel source of truth.
   than this basename assumption.
 
 The n=29 frozen candidate deserves a separate disposition.
-A fresh exact-only replay accepts all five conditions at side `137/25 = 5.48`, mass
-`52081879/2000000 < 27`, and minimum `4000013/4000000`. If the independent interval
+A fresh exact-only replay accepts all five conditions at side $137/25 = 5.48$, mass
+$52081879/2000000 < 27$, and minimum $4000013/4000000$. If the independent interval
 route can also complete, the certificate would improve the current verified floors for
 n=27,28,29. The retained interval attempt stalled in 272 boxes.
 **It remains unpromoted under the two-route retention policy.** This is a possible
@@ -232,8 +232,8 @@ above. The selected research continuation and the existing open beads `think-qqz
 The dispatched checkpoints found an additional finding, **R9 / think-63r2**:
 `test_known_best_composite_contains_every_case_and_square` failed because both retained
 composite SVGs still display `s(18) >= 4.67`, while the current case and figure data
-declare `4.679`. PR 201’s slow lane completed 145 other tests successfully.
-PR 200 failed the same test with expected label `4.675` and retained label `4.67`. This
+declare $4.679$. PR 201’s slow lane completed 145 other tests successfully.
+PR 200 failed the same test with expected label $4.675$ and retained label $4.67$. This
 was generated-artifact drift, not an infrastructure or time-budget failure.
 The correction regenerates the owned SVG/PNG/PDF export families and adds a cheap
 claim-label consistency check to the existing fast atlas surface.

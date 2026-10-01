@@ -285,9 +285,9 @@ Block 1 of [agenda-006](../agendas/agenda-006-overnight-research-blocks.md), adv
 ## What this block was for
 
 The exact promotion route recovers a minimal polynomial and discharges it.
-At `n = 29` that route is stalled: [X-004](../explorations/X-004-n29-exact-promotion.md)
-found no integer relation through degree twenty with coefficients below `10^22`, so the
-polynomial is large and may not be recoverable at all.
+At $n = 29$ that route is stalled: [X-004](../explorations/X-004-n29-exact-promotion.md)
+found no integer relation through degree twenty with coefficients below $10^{22}$, so
+the polynomial is large and may not be recoverable at all.
 
 Interval certification does not need the polynomial.
 It proves that a root exists and is unique inside a box, propagates that box to square
@@ -324,7 +324,7 @@ so the operator proved something true and then wrote down something false.
 Endpoints now round strictly outward.
 
 The second was in the **iteration**. Contraction eventually drives a box tight enough
-that the operator’s own rounding makes `K(X)` marginally wider than `X`; the loop
+that the operator’s own rounding makes $K(X)$ marginally wider than $X$; the loop
 reported that final state and discarded a uniqueness proof it had obtained two
 iterations earlier. A proof about a box is not undone by a later iteration, so the
 verdict and the box that earned it are now kept.
@@ -350,7 +350,7 @@ claim nobody rechecked.
 
 ## Claim boundary
 
-Nothing here certifies `n = 29`, and nothing here touches `verified_upper_bound`.
+Nothing here certifies $n = 29$, and nothing here touches `verified_upper_bound`.
 `exact_verify` still raises `checker-not-built`, because no witness branch was written
 in this block: the schema decision that gates it — whether a fourth `scalar.kind` is a
 `Witness/v1` extension or a `v2` migration — is block 2’s, taken with the calibration

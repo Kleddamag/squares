@@ -62,8 +62,9 @@ experiment:
 # exp-037 — six numerical classes reject H-042
 
 The deterministic replay found the same six classes as exp-012: one aligned class and
-five nonzero classes with multiplicities `15, 1, 9, 1, 2, 1`. The minimum gap between
-classes is `0.296067318913687…°`, far above the declared `1e-90°` interval radius.
+five nonzero classes with multiplicities $15, 1, 9, 1, 2, 1$. The minimum gap between
+classes is $0.296067318913687\ldots^\circ$, far above the declared `1e-90°` interval
+radius.
 
 [`exp-037-h-042-n29-numerical-angle-classes.json`](../results/exp-037-h-042-n29-numerical-angle-classes.json)
 records all 29 reconstructed squares, 406 pair checks, the arithmetic settings, source

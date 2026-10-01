@@ -95,18 +95,18 @@ engine and archive: five deterministic seeds, eight chains each, 100M moves per 
 
 |  |  |
 | --- | --- |
-| best | `4.0000000000` |
-| median | `4.0000000000` |
-| range across seeds | `[4.0000000, 4.0000000]` |
-| standing best | `4.0000000000` |
+| best | $4.0000000000$ |
+| median | $4.0000000000$ |
+| range across seeds | $[4.0000000, 4.0000000]$ |
+| standing best | $4.0000000000$ |
 | gap | `+0.000e+00` |
 
 ## Why this round exists
 
 **Correction (D-042).** This round was originally labeled a negative control.
-That role was invalid because `s(12) = 4` is not proved.
+That role was invalid because $s(12) = 4$ is not proved.
 The measurements remain a reproducible baseline at the standing best; they provide no
-known-answer evidence that a value below `4` must be a bug.
+known-answer evidence that a value below $4$ must be a bug.
 
 [The standing review of PR #5](../../../../../docs/project/reviews/review-2026-08-23-experiment-loop-and-campaign.md)
 found that exp-001’s archive kept only summary lines, discarding the configurations, and
@@ -134,7 +134,7 @@ and every stored configuration has recomputed overlap of exactly zero.
 ## Limits
 
 - `f64` screening. Nothing here is certified and none of it may claim a record.
-- One cell. This is the sweep’s `n = 12` point and says nothing about the others; the
+- One cell. This is the sweep’s $n = 12$ point and says nothing about the others; the
   companion rounds carry those.
 - Five seeds is enough to see the spread, not enough for a confirmatory interval.
 

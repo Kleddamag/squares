@@ -729,8 +729,8 @@ is the reopen path after exp-163 terminals.
 | Block | Window (UTC) | Workflow | Focus |
 | ---: | --- | --- | --- |
 | 1 | 07:26–08:26 | W10 | Plan, register, stacked PR |
-| 2 | 08:26–09:26 | W6 | H-219 leftover n=18 `1871/400` |
-| 3 | 09:26–10:26 | W6 | H-218 n=20 `971/200` new four-grid, or continue n=18 |
+| 2 | 08:26–09:26 | W6 | H-219 leftover n=18 $\frac{1871}{400}$ |
+| 3 | 09:26–10:26 | W6 | H-218 n=20 $\frac{971}{200}$ new four-grid, or continue n=18 |
 | 4 | 10:26–11:26 | W5 | `think-g4n9` hosted walls; covering paused |
 | 5 | 11:26–12:26 | W6 | Resume covering; H-210/H-211 off-CPU if Node permits |
 | 6 | 12:26–13:26 | W6 | H-220 second wave or optional follow-ups |
@@ -754,7 +754,7 @@ The record says so here and on `think-36n1`.
    Only one in-progress experiment at a time.
 3. Run `run_covering_queue` on one core.
 4. Record every restricted optimum on `covering-values.yaml`.
-5. If freeze mass `< n`, stop the queue and run both decide routes.
+5. If freeze mass $< n$, stop the queue and run both decide routes.
 6. Land a T-id only on `RETAINABLE`.
 7. Re-screen: a retain eats later sides on that n. A float crossing above n is a
    numerical observation and may guide the remaining session budget; it does not
@@ -770,40 +770,40 @@ T-030 is landed: `s(18) >= 4679/1000`. Next T-id is T-031. Copy the T-030 landin
 pattern, not a new case class.
 Score S3. `produced_by.session` is `session-141`.
 
-- n=20 `243/50` finished `19.887914` unconverged, and n=20 `971/200` four-grid finished
-  `19.857588` unconverged.
+- n=20 $243/50$ finished $19.887914$ unconverged, and n=20 $971/200$ four-grid finished
+  $19.857588$ unconverged.
   Both sets remain unresolved; the session deferred them after their allocations.
   H-218 stays unconfirmed.
-- n=32 `29/5`, n=31 `57/10`, n=30 `559/100`, n=26 `513/100`, and n=27 `525/100` all
-  finished unconverged below `n`. Session-141 deferred them after their 1200 s
+- n=32 $29/5$, n=31 $57/10$, n=30 $559/100$, n=26 $513/100$, and n=27 $525/100$ all
+  finished unconverged below $n$. Session-141 deferred them after their 1200 s
   allocations; none is a site-set refutation.
-- n=29 `548/100` converged and froze at mass `26.0409395`; the interval route stalled.
+- n=29 $548/100$ converged and froze at mass $26.0409395$; the interval route stalled.
   The LP need not be rerun, but the verification decision is unresolved.
-- n=45 `684/100` finished `42.137360` unconverged, and n=44 `675/100` finished
-  `41.236782` unconverged.
+- n=45 $684/100$ finished $42.137360$ unconverged, and n=44 $675/100$ finished
+  $41.236782$ unconverged.
   Session-141 deferred them after their allocations.
   The eight H-220 Nagamochi sides are measured and unresolved.
   None retained.
-- n=19 `481/100` four-grid finished `19.111435` unconverged after crossing 19;
+- n=19 $481/100$ four-grid finished $19.111435$ unconverged after crossing 19;
   Session-141 deferred another run after its allocation.
   The site set is unresolved.
-- n=12 `793/200` auto finished `12.067502` unconverged after crossing 12; Session-141
+- n=12 $793/200$ auto finished $12.067502$ unconverged after crossing 12; Session-141
   deferred another run after its allocation.
   The site set is unresolved.
-- n=12 `397/100` auto finished `12.097146` unconverged after crossing 12; Session-141
+- n=12 $397/100$ auto finished $12.097146$ unconverged after crossing 12; Session-141
   deferred another run after its allocation.
   The site set is unresolved.
-- n=19 `241/50` four-grid finished `19.224565` unconverged after crossing 19;
+- n=19 $241/50$ four-grid finished $19.224565$ unconverged after crossing 19;
   Session-141 deferred another run after its allocation.
   The site set is unresolved.
-- n=12 `793/200` four-grid finished `12.066995` unconverged after crossing 12;
+- n=12 $793/200$ four-grid finished $12.066995$ unconverged after crossing 12;
   Session-141 deferred another run after its allocation.
   The site set is unresolved.
-- A H-221 RETAINABLE at n=18 `4679/1000` is T-030 and is landed.
+- A H-221 RETAINABLE at n=18 $4679/1000$ is T-030 and is landed.
   Do not more-wall 4679/1000. Remaining interval to 117/25 is 0.001.
-- n=18 `4679/1000` is H-221, not a replay of H-219. exp-179 accepted T-030.
+- n=18 $4679/1000$ is H-221, not a replay of H-219. exp-179 accepted T-030.
 - Do not mint a T-id on an unconverged freeze, a freeze with mass `>= n`, or n=21
-  `97/20`.
+  $97/20$.
 
 Correctness review (2026-09-19): the original closeout treated every stopped below-`n`
 LP and the stalled n=29 interval route as a terminal site-set result.

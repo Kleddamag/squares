@@ -215,8 +215,8 @@ session:
 # Intake of Kleddamag’s 4.640020, Daniel’s s(32) = 6 and wand125’s Rectangle Bounds
 
 On 2026-09-26 and 27 three collaborating repositories published results the record did
-not hold: Kleddamag’s `s(17) > 232001/50000`, Daniel’s `s(32) = 6` with new bounds at
-`n = 12` and `n = 21`, and wand125’s rectangle certificates for `n = 18` to `78`. The
+not hold: Kleddamag’s $s(17) > 232001/50000$, Daniel’s $s(32) = 6$ with new bounds at
+$n = 12$ and $n = 21$, and wand125’s rectangle certificates for $n = 18$ to $78$. The
 owner asked for PR 235 to be made mergeable, for this work to be taken in on a stacked
 pull request, and for the overnight CPU work it makes worthwhile to be queued.
 This session retains each source, replays it, has Fable max review it, and registers

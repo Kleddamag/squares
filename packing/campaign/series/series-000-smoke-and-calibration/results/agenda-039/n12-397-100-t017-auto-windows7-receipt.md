@@ -5,18 +5,18 @@ No freeze.
 
 Session-141 exp-176: T-017 seed plus auto grids plus `--seed-windows 7`,
 `(n, L, B, net) = (12, 397/100, 9977/10000, 181 directions)`. Auto resolved to
-`(26, 35, 43)`. Seed sites 2533. The 1200 s deadline stopped the row loop after 34 LP
-rounds at `12.097146` (33 still violated).
-It crossed 12 at round 8 (`12.021858`). The objective sat at `12.097146` from round 32.
+$(26, 35, 43)$. Seed sites 2533. The 1200 s deadline stopped the row loop after 34 LP
+rounds at $12.097146$ (33 still violated).
+It crossed 12 at round 8 ($12.021858$). The objective sat at $12.097146$ from round 32.
 
-Remaining rows can only raise this value, so `12.097146` is not a covering below 12. Do
+Remaining rows can only raise this value, so $12.097146$ is not a covering below 12. Do
 not more-wall this set.
 T-017 stands. T-030 was not offered.
 H-218 stays unconfirmed.
 
-Side `3.97` already exists.
+Side $3.97$ already exists.
 This is a new named site set at that side.
-Closer than four-grid plus windows 7 at this side (`12.133391`).
+Closer than four-grid plus windows 7 at this side ($12.133391$).
 
 ## Command
 
@@ -37,19 +37,19 @@ uv run --frozen --all-extras --group dev python -m devtools.run_fractional_colge
 ```
 
 No freeze file: the 1200 s deadline stopped the row loop after 34 rounds.
-Wall 1212.9 s. The walker then started n=19 `241/50` T-020 four-grid plus windows 7 as
+Wall 1212.9 s. The walker then started n=19 $241/50$ T-020 four-grid plus windows 7 as
 exp-177.
 
 ## Covering
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `12.097146` |
+| Restricted optimum | $12.097146$ |
 | Sites / orbits / rows | 6269 / 885 / 8086 |
 | Seed sites | 2533 |
-| Auto grids | `(26, 35, 43)` |
+| Auto grids | $(26, 35, 43)$ |
 | LP rounds | 34 |
-| Crossing | round 8 (`12.021858`) |
+| Crossing | round 8 ($12.021858$) |
 | Wall | 1212.9 s |
 | `least_covered` | 0.998924 |
 | Converged | no (`violated == 33` at stop) |

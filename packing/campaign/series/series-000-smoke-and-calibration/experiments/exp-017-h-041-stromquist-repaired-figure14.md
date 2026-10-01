@@ -69,7 +69,7 @@ experiment:
 H-041 meets its preregistered criterion.
 Replace only the printed Figure 14 point
 
-`G = (4/5, 37/20)`
+$G = (4/5, 37/20)$
 
 by the source-distinct point
 
@@ -92,7 +92,7 @@ The exact checker then certifies every node of the lower-bound argument.
    ten other boxes for only nine points.
 
 The repair closes precisely the cell that killed H-010. For the `G'`–`A1` quadrilateral,
-Lemma 4 has `a=.95,b=.79`; its exact threshold lies above `.7981` and hence above `.79`.
+Lemma 4 has $a=.95,b=.79$; its exact threshold lies above `.7981` and hence above `.79`.
 The printed `.8` value remains an executable negative control.
 Every edge in the thirteen-triangle central mesh remains shorter than one, and the
 checker separately proves closure of shared edges and vertices under the strict open-box
@@ -111,7 +111,7 @@ point set and is not attributed to him.
 The result has not undergone external peer review, and it does not close the gap to
 Trump’s upper bound.
 
-Generation and complete replay each took `0.35` wall seconds.
+Generation and complete replay each took $0.35$ wall seconds.
 All thirteen mutations passed.
 The retained result is
 [`exp-017-h-041-stromquist-repaired-figure14.json`](../results/exp-017-h-041-stromquist-repaired-figure14.json).

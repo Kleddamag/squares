@@ -1824,33 +1824,33 @@ checkable version disagreed with the prose in a way that mattered.
 
 `X-005` had declared the relation `Atlas.add` implements at the wrong level, and refuted
 it on a control that cannot carry that refutation.
-`D-034` had described an `n = 5` pair for a week without retaining either endpoint, so
+`D-034` had described an $n = 5$ pair for a week without retaining either endpoint, so
 the one control capable of separating the two surviving candidate relations could not be
 constructed. Neither correction changes the conclusion; both change what supports it.
 
 ## Handoff
 
 The session ran twenty-three phases against a plan that expected seventeen, and nine of
-them were one continuous line of work on `n = 40` that nobody had planned at all.
+them were one continuous line of work on $n = 40$ that nobody had planned at all.
 This is what someone picking it up cold needs.
 
 ### `BC-049` is not closed, and its three instances are in three different states
 
-`n = 5` is **done**: second-order rigid on first-party exact evidence, recorded,
+$n = 5$ is **done**: second-order rigid on first-party exact evidence, recorded,
 replayed in the gate, and the remaining gap — second-order rigidity is not local
 rigidity — is written out in `X-007` as prose, not machine-checked.
 That gap is the only thing left there and it is a hand argument by design.
 
-`n = 40` is **decided at first order and open beyond it**. It is infinitesimally
+$n = 40$ is **decided at first order and open beyond it**. It is infinitesimally
 flexible: seven directions retained, each verified in `Q(sqrt 2)`, each refused at
 second order by its own verified self-stress, each turning the tilted block and leaving
 the frame fixed. Fifty-two of the frame’s seventy-two coordinates are proved zero in
 every branch, and twelve of the block’s sixteen squares are proved to turn at one rate.
 The cone is bounded to dimension 45 and the known directions span 6.
 
-`n = 28` is **untouched**. It retains decimal witnesses and no exact construction, and
+$n = 28$ is **untouched**. It retains decimal witnesses and no exact construction, and
 `D-389` is the reason to check the literature before pricing machinery against it —
-`n = 40` turned out to be published all along.
+$n = 40$ turned out to be published all along.
 
 ### What `n = 40` would take to finish
 
@@ -1859,7 +1859,7 @@ The route is exhausted, and the shape of the wall is measured rather than guesse
 
 - The all-branch rows can never bound the cone below the relaxed cone’s own span, which
   is rank 41. So 41 to 45 is the ceiling of every certificate this session can write.
-- Branch enumeration is `2^42` and does not reduce: with fifty-six coordinates pinned,
+- Branch enumeration is $2^{42}$ and does not reduce: with fifty-six coordinates pinned,
   not one of the forty-two disjunctions becomes vacuous on what remains.
 - A linear program’s vertex cannot be rationalized back into its own cone.
   What works is re-solving its *active set* exactly, and that is how the six wider rays
@@ -1868,7 +1868,7 @@ The route is exhausted, and the shape of the wall is measured rather than guesse
 What is needed is an instrument that reasons about the disjunctions without enumerating
 them.
 `cases/trump11/tangent_cones.py` is the only thing in the repository that decides a
-branchwise cone, and it does it by enumerating `2^7`.
+branchwise cone, and it does it by enumerating $2^{7}$.
 
 ### What this run cost
 
@@ -1876,7 +1876,7 @@ Five defects, four of them in tools this session had written hours earlier:
 [`D-390`](../../../defects.md) and [`D-391`](../../../defects.md) in the rigidity
 assessor, [`D-392`](../../../defects.md) and [`D-394`](../../../defects.md) in a
 contract sweep, and [`D-393`](../../../defects.md) in the session’s own gate discipline.
-`D-391` is the one to carry forward: it is **outstanding**, and it inverts the `n = 40`
+`D-391` is the one to carry forward: it is **outstanding**, and it inverts the $n = 40$
 answer rather than merely weakening it.
 
 The process failure worth repeating out loud is `D-393`. `--edit` is the pre-push floor
@@ -1886,20 +1886,20 @@ The tiers are right; using one as though it were the other was not.
 
 ### A last finding, and two sizes it opens
 
-`D-389` was specific to `n = 40`: a route priced while the construction sat published.
+`D-389` was specific to $n = 40$: a route priced while the construction sat published.
 Asking the general question took twenty minutes and answers two more sizes.
-Göbel’s family reaches twelve `n` below 100 and its side is *exactly* the best known at
-four of them — `n = 5`, `40`, `65` and `89`. Two are built here; **`n = 65` and `n = 89`
+Göbel’s family reaches twelve $n$ below 100 and its side is *exactly* the best known at
+four of them — $n = 5$, $40$, $65$ and $89$. Two are built here; **$n = 65$ and $n = 89$
 are not**, and both verify exactly in seconds from the same rule.
 Neither is promoted: feasible at the retained side is not optimal, and moving either to
 an exact witness is a change to those records that `devtools/price_gobel_family.py` only
 makes possible.
 
 The near miss is the part that saves someone an afternoon.
-At `a = 2, b = 4` the family gives `n = 28` — a *valid* packing, `0.004` worse than the
+At $a = 2, b = 4$ the family gives $n = 28$ — a *valid* packing, $0.004$ worse than the
 best known, whose optimum is at algebraic degree 6 and is not in this family.
-So the `n = 40` answer does not carry over to `n = 28`, which is why no exact
-construction is retained there, and why noticing that `28 = 2(4) + 4 + 16` is not the
+So the $n = 40$ answer does not carry over to $n = 28$, which is why no exact
+construction is retained there, and why noticing that $28 = 2(4) + 4 + 16$ is not the
 shortcut it looks like.
 
 ### Two things owed

@@ -38,8 +38,8 @@ d8c50db8770b12d43baa6d9e2c7384a52a0f250f8cee26b6a036c99b3cb3350e  bc-232-leg-01-
 The warm input is
 `packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-leg-01-state.json`
 at SHA-256 `f91999b452bf89f49e2d4cda9827efbf57623a4196688b5feba0819bc7e851e2`. Its
-retained exact lower endpoint is `21342289572/2055263195`; the only row-converged upper
-endpoint is `11.055616942909783` from iteration 0.
+retained exact lower endpoint is $21342289572/2055263195$; the only row-converged upper
+endpoint is $11.055616942909783$ from iteration 0.
 
 ## Fresh-Path and Process Receipt
 

@@ -56,10 +56,10 @@ hypothesis:
 # H-221: T-029-Seeded Colgen Raises s(18)
 
 [X-039](../explorations/X-039-n100-re-rank-after-session-140.md) left a 0.0025-wide
-interval between T-029 `1871/400` and the `117/25` plateau.
+interval between T-029 $1871/400$ and the $117/25$ plateau.
 This claim is that interval.
 
-Confirm only on `RETAINABLE` at n=18. `117/25` is not a target.
+Confirm only on `RETAINABLE` at n=18. $117/25$ is not a target.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

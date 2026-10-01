@@ -131,11 +131,11 @@ The round tests
 hypothesis that a serious budget on a general-purpose annealer reaches the best known
 packing — and establishes the numbers every later round is measured against.
 
-| `n` | role | best | median | range across seeds | standing best | gap |
+| $n$ | role | best | median | range across seeds | standing best | gap |
 | --- | --- | --- | --- | --- | --- | --- |
-| 10 | positive control | `3.7075262001` | `3.7076711818` | `[3.7075262, 3.7091188]` | `3.7071067812` | `+4.19e-04` |
-| 11 | target | `3.9144165418` | `3.9279396177` | `[3.9144165, 3.9361125]` | `3.8770835900` | `+3.73e-02` |
-| 12 | open-case calibration | `4.0000000000` | `4.0000000000` | `[4.0000000, 4.0000000]` | `4.0000000000` | `0` |
+| 10 | positive control | $3.7075262001$ | $3.7076711818$ | $[3.7075262, 3.7091188]$ | $3.7071067812$ | `+4.19e-04` |
+| 11 | target | $3.9144165418$ | $3.9279396177$ | $[3.9144165, 3.9361125]$ | $3.8770835900$ | `+3.73e-02` |
+| 12 | open-case calibration | $4.0000000000$ | $4.0000000000$ | $[4.0000000, 4.0000000]$ | $4.0000000000$ | $0$ |
 
 ## What was tried
 
@@ -149,10 +149,10 @@ decides when an anneal has failed, and it starts from the trivial grid, which is
 jammed: shrinking it by any amount at all is infeasible, and only a wholly different
 tilted configuration helps.
 Two versions were built and measured.
-The first crawled — `2.875` on `n = 5`, where the answer is `2.707`. The second, with
+The first crawled — $2.875$ on $n = 5$, where the answer is $2.707$. The second, with
 the move size tied to the shrink being attempted, never left the grid basin at all and
-returned the grid for every `n`. Both would have produced a night of confident,
-meaningless numbers at `n = 11`.
+returned the grid for every $n$. Both would have produced a night of confident,
+meaningless numbers at $n = 11$.
 
 The replacement removes the container from the variables entirely.
 The smallest axis-aligned square holding a configuration is computable from the
@@ -167,42 +167,42 @@ closes.
 `--budget-moves` did, so the budget was inert and two strategies compared “at equal
 budget” would have had unequal work.
 The tell was that results got *worse* at a larger declared budget.
-After the fix the `s(5)` control improved 18-fold, from a gap of `2.97e-04` to
+After the fix the $s(5)$ control improved 18-fold, from a gap of `2.97e-04` to
 `1.64e-05`.
 
 ## Result
 
-**H-016 is refuted.** Its claim was `1e-4` on *every* cell, and only `n = 12` meets
-that: `n = 10` misses by `4.19e-04` and `n = 11` by `3.73e-02`. The two failures are
+**H-016 is refuted.** Its claim was `1e-4` on *every* cell, and only $n = 12$ meets
+that: $n = 10$ misses by `4.19e-04` and $n = 11$ by `3.73e-02`. The two failures are
 nothing alike, and separating them is the round’s real output.
 
 The positive-control cell behaves.
 It lands `4.19e-04` from a proved optimum that is *not* the grid — it needs a genuine
 45° tilted family, so recovering it exercises the part of the search that matters.
-The `n=12` calibration returns exactly `4.0` on all five seeds, but D-042 records why
+The $n=12$ calibration returns exactly $4.0$ on all five seeds, but D-042 records why
 that observation cannot certify the geometry or serve as a known-answer guard.
 
-At `n = 11` the seed range is `[3.9144, 3.9361]`, a spread of `2.2e-02` — five times
+At $n = 11$ the seed range is $[3.9144, 3.9361]$, a spread of `2.2e-02` — five times
 narrower than the `3.73e-02` distance still to Trump.
 Every seed lands well short, in a band of its own.
 That is not the signature of a search that is nearly there.
 
 ## What the prediction got wrong
 
-Nothing about `n = 11`; that failure was expected, and it is a failure of *exploration*
+Nothing about $n = 11$; that failure was expected, and it is a failure of *exploration*
 — the search never reaches the right region at all.
 
-The surprise was `n = 10`, and it was surprising enough to be written down wrong first:
-the draft of this artifact called `n = 10` a confirmation, because the search plainly
+The surprise was $n = 10$, and it was surprising enough to be written down wrong first:
+the draft of this artifact called $n = 10$ a confirmation, because the search plainly
 found the right basin.
 It did not meet the criterion.
 `4.19e-04` is outside the `1e-4` H-016 declared, and the generated frontmatter said so
 while the prose did not.
 Measuring, missing, and calling it a pass is exactly what pre-registration exists to
 stop, and it took the generated table sitting next to the prose to catch it.
-So `n = 10` is a failure of *polish*: the annealer finds the right basin and then stops
+So $n = 10$ is a failure of *polish*: the annealer finds the right basin and then stops
 improving inside it.
-That is a different defect from `n = 11`’s, it has a different fix, and one criterion
+That is a different defect from $n = 11$’s, it has a different fix, and one criterion
 could not tell them apart.
 The tier-2 numerical refinement step is more urgent than it looked when the tiers were
 laid out, and a future criterion should probably score basin-finding and basin-polishing
@@ -217,7 +217,7 @@ actually measured and they stand.
 
 **The archive carries no configurations.** `run_baseline.sh` filtered the engine’s
 output to `"kind":"summary"` lines, discarding the per-chain records that carry the
-packings (`x`, `y`, `t`) and their overlap.
+packings ($x$, $y$, $t$) and their overlap.
 So the table above can be recomputed from the archive — the review re-derived every
 number and they matched — but the *packings* cannot.
 The guard this artifact claims in `checked_by` is therefore not auditable from the
@@ -245,12 +245,12 @@ Their numbers are identical to this one’s.
 
 The contract says a sweep is ordinary rounds viewed together — one instance per round,
 with `sweep.points` declared on the hypothesis so the ledger can show which cells are
-filled. This round measured `n = 10, 11, 12` in a single artifact carrying
+filled. This round measured $n = 10, 11, 12$ in a single artifact carrying
 `instance: {point: 11}`, so the generated ledger shows H-016’s coverage as
 `n: 10 11* 12` with two measured cells reading as unfilled.
 
 Since an unfilled cell is a queue item, an unattended runner following the ledger would
-re-run `n = 10` and `n = 12`. Nothing here is wrong about the measurement; the *shape*
+re-run $n = 10$ and $n = 12$. Nothing here is wrong about the measurement; the *shape*
 of the record misreports it.
 
 Later sweep rounds are split one-per-cell, which is what the contract intended.
@@ -271,7 +271,7 @@ for parallel campaigns, and it is recorded here rather than erased.
   No claim here is certified, and none may be: a record packing has pairs touching at
   exactly zero separation — 14 of Trump’s 55 — which no floating-point check can decide.
 - `reached_basin` is scored by a `1e-4` numerical proxy, not by comparing contact
-  graphs. At `n = 10` the search may have found a different configuration of nearly equal
+  graphs. At $n = 10$ the search may have found a different configuration of nearly equal
   side.
 - One host, one engine version, one parameter set.
   Nothing here says anything about other schedules, move sets, or restart policies;

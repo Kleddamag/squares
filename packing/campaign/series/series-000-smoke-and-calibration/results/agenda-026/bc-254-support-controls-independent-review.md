@@ -60,7 +60,7 @@ incidence.
 Thus each row is necessary for almost-everywhere feasible weights; an isolated
 sampled point is not being treated as a positive-area obstruction.
 
-The LP adapter implements `min -mᵀa` with rows `A` and `-I`, right-hand sides one and
+The LP adapter implements `min -mᵀa` with rows $A$ and `-I`, right-hand sides one and
 zero, and explicit `Fraction` zero and one.
 The `-I` rows give an independent active basis at the feasible point zero.
 Positive integer multiplicities and a positive coefficient somewhere in each column
@@ -68,7 +68,7 @@ imply finite coordinate bounds before solving.
 The zero-budget refusal is preserved as an LP failure, not a research verdict.
 
 The extracted incidence multipliers have the correct upper-bound sign.
-The solver equation is `Aᵀy - z = m`; replay’s scalar check directly requires `y ≥ 0`
+The solver equation is `Aᵀy - z = m`; replay’s scalar check directly requires $y \ge 0$
 and `Aᵀy ≥ m`, and returns `sum(y)`. The adapter separately checks primal nonnegativity,
 every row inequality, and equality of primal objective, upper bound, and negated solver
 objective.

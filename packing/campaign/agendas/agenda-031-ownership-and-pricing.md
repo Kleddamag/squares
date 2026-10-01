@@ -192,7 +192,7 @@ can improve the covering margin beyond the four units already accounted for.
 Its global successor should use **ownership-defined classes with exhaustive
 alternatives**, not a conjectured normalization to flush corners.
 BC-303’s four distinct corner-pair core owners and BC-305’s segment-owner restrictions
-are proved premises available at `q = 96/25`. They do not fix the owners’ centres or
+are proved premises available at $q = 96/25$. They do not fix the owners’ centres or
 angles.
 
 Three published mechanisms inform this continuation:
@@ -211,7 +211,7 @@ Three published mechanisms inform this continuation:
   combines point weights, line-intersection lengths and interior area.
   Boundary, corner and central poses consume those resources differently.
   This is a published mixed-resource model, not an already implemented or verified
-  `B < 1` extension of the project’s atomic solver.
+  $B < 1$ extension of the project’s atomic solver.
 
 The next conditional program should preserve joint compatibility: subdivide a proved
 owner class until it supplies a common occupied region, or an explicit set of

@@ -53,13 +53,13 @@ hypothesis:
 ---
 # H-133 — The Plateau’s Cheapest Test
 
-At `3.82` two independent site sets stopped at a restricted covering value of exactly
+At $3.82$ two independent site sets stopped at a restricted covering value of exactly
 eleven, and the record warns against reading that round number as the true value.
 [X-021](../explorations/X-021-what-can-be-proved-about-eleven-squares.md) offers a
-mechanism: Trump’s eleven cores scaled to `3.82` overlap only in strips a grid of pitch
-`0.047` never samples, which is how the `n = 21` artefact arose.
+mechanism: Trump’s eleven cores scaled to $3.82$ overlap only in strips a grid of pitch
+$0.047$ never samples, which is how the $n = 21$ artefact arose.
 
-If the test confirms the mechanism, the ladder at `3.82` is an instrument question; if
+If the test confirms the mechanism, the ladder at $3.82$ is an instrument question; if
 it refutes it, the plateau is geometric and the exact-cover certificate is the only
 route left. [Agenda 030](../agendas/agenda-030-parallel-structural-lanes-at-n11.md) owns
 both halves in BC-297.
@@ -74,7 +74,7 @@ Its failure to find a different Trump-shaped explanation in a finite search is n
 nonexistence proof for that family.
 
 The exactly-eleven states and measures were not retained.
-The million-cell census was run on a different measure of mass `11.118805`; it prices
+The million-cell census was run on a different measure of mass $11.118805$; it prices
 that measure’s near-tight enumeration, not an exact cover of an unavailable mass-eleven
 measure. Thus the first part has a scoped negative result, while `τ*_B(191/50) < 11` and
 the exact-cover part remain open.

@@ -40,7 +40,7 @@ BC-303, the full reflected owner net, and the strict-core transfer in
 
 Let h=B/2. At an owner’s selected net orientation (u,v), write its centre as
 
-`z = m + a*u + b*v`, with `a,b ∈ [-h,h]`.
+`z = m + a*u + b*v`, with $a,b \in [-h,h]$.
 
 This follows exactly from the selected core containing m. Partition each displacement
 coordinate into the four closed intervals
@@ -71,7 +71,7 @@ Successful residual-ten certificates may differ between classes; every class mus
 or be exactly excluded to close the partition.
 
 Diagonal reflection maps m1 to m2, a folded block to its reflected block, and
-displacement indices `(i,j)` to `(i,3−j)`: the reflected u-axis agrees with the target
+displacement indices $(i,j)$ to $(i,3-j)$: the reflected u-axis agrees with the target
 u-axis, while the reflected v-axis is its negative.
 With matching support and variable grouping, this gives 128 representative pairs.
 Certificates must be explicitly transported; it does not justify D4 averaging within an
@@ -161,7 +161,7 @@ jointly.
 For a fixed residual orientation, let its centre be x. For each allowed owner
 orientation o and its nonempty exact centre polygon Z_o, take signed axes
 
-`n ∈ {±u_o, ±v_o, ±u_r, ±v_r}`.
+$n \in \lbrace\pm u_o, \pm v_o, \pm u_r, \pm v_r\rbrace$.
 
 Define the projection radii
 
@@ -209,9 +209,9 @@ their occupied regions first.
 
 ## Predetermined First Discriminator
 
-Choose m1, the first folded angle block, and displacement bins i=j=2, so `a,b∈[0,B/4]`.
-This refines the previous inward sector j=0: choose the signed rays toward the centre
-along +u,+v, including zero-coordinate boundaries.
+Choose m1, the first folded angle block, and displacement bins i=j=2, so
+$a,b\in[0,B/4]$. This refines the previous inward sector j=0: choose the signed rays
+toward the centre along +u,+v, including zero-coordinate boundaries.
 Construct
 
 `A_ref = conv(old_sector_endpoint_footprint ∪ R)`.

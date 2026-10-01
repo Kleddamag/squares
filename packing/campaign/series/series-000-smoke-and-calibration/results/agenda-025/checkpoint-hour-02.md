@@ -25,14 +25,14 @@ manager root was written by this context.
   `8df0b9aa530149b44367842a2e6389949b27189df038d68e9d1afa8fd87df8c6` and started the
   exact 105-minute leg-01 command once.
   It exited zero with a time-limited checkpoint and exact lower endpoint
-  `21342289572/2055263195`; leg 2 remained forbidden and absent before landing.
+  $21342289572/2055263195$; leg 2 remained forbidden and absent before landing.
 - BC-233 (`think-jbat`, exp-071, H-070) passed its source and strict-JSON controls.
   All three exact screens finished eligible.
-  The inset `1/2` candidate, SHA-256
+  The inset $1/2$ candidate, SHA-256
   `628d7e55d664c5256a9331b9a68166306a30c275432a997bfe9fab1a9ca0fc5a`, is the unique
   exact screen minimum and the frozen selected seed.
   The matched released and control arms later finished with byte-identical candidates of
-  mass `11142893/1000000`, so the frozen strict-improvement rule rejects H-070 and
+  mass $11142893/1000000$, so the frozen strict-improvement rule rejects H-070 and
   exp-071.
 
 No screen produced mass below eleven, so no exact lower-bound decision route opened.
@@ -82,8 +82,8 @@ boundary.
 Completed work comprises the BC-230 author drafts, all BC-233 controls and screens, and
 the matched BC-233 comparison and rejected disposition.
 BC-232 has completed iterations 0 through 9; iteration 0 remains the only converged row
-solve, with row objective `11.055616942909783`, and iteration 8 remains the exact scaled
-incumbent `44049209132/4277680141`. The latest completed row is iteration 9, which
+solve, with row objective $11.055616942909783$, and iteration 8 remains the exact scaled
+incumbent $44049209132/4277680141$. The latest completed row is iteration 9, which
 stopped at the two-round limit and is not an upper endpoint.
 
 BC-232 remains open on its original leg-01 process and output stems.
@@ -136,10 +136,10 @@ No research time is borrowed past this boundary.
   is the declared 15-minute reconciliation slice, not implementation.
 - **BC-232: time-limited checkpoint.** The sole leg ended after 14 iterations with
   `deadline reached before iteration 14`. The exact lower endpoint is
-  `21342289572/2055263195 ≈ 10.384212408377215`; the only row-converged computational
-  upper endpoint is `11.055616942909783`. Width is approximately `0.671404534532568`,
-  41.5006 percent below the retained width, but the 25-percent route cannot fire before
-  the full four-CPU-hour budget.
+  $21342289572/2055263195 \approx 10.384212408377215$; the only row-converged
+  computational upper endpoint is $11.055616942909783$. Width is approximately
+  $0.671404534532568$, 41.5006 percent below the retained width, but the 25-percent
+  route cannot fire before the full four-CPU-hour budget.
   The frozen family’s exact maximum depth is one and its total is below eleven, so
   `verify_ceiling` does not close the formulation.
   No converged row fell below eleven and no bridge opened.
@@ -147,12 +147,12 @@ No research time is borrowed past this boundary.
   absent. Budget remaining is 135 CPU-minutes.
 - **BC-233: rejected.** All three screens were eligible, but the released and unseeded
   arms completed the same eight-round scientific trajectory and emitted byte-identical
-  candidates of mass `11142893/1000000`. The strict-improvement rule rejects H-070 and
+  candidates of mass $11142893/1000000$. The strict-improvement rule rejects H-070 and
   exp-071. No decision route, replacement, continuation, or successor opens.
 
 ### Process Cost and Terminal Evidence
 
-BC-232’s timed loop recorded `6560.285289000021` seconds.
+BC-232’s timed loop recorded $6560.285289000021$ seconds.
 Observed command wall from the second-resolution start to terminal-file time was about
 6,686 seconds. The last live CPU sample was `104:50.95` at `2026-09-06T05:24:29Z`; final
 CPU is unavailable because the PID exited before the next sample, so that value is a

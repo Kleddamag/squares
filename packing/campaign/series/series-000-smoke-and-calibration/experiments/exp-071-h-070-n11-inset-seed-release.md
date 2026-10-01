@@ -88,7 +88,7 @@ experiment:
 
 The screens chose the inset-`1/2` proposal.
 The matched unrestricted arms then converged after eight rounds to byte-identical
-candidates of exact mass `11142893/1000000`. H-070 is therefore rejected: the seed
+candidates of exact mass $11142893/1000000$. H-070 is therefore rejected: the seed
 neither helped nor hurt under this test.
 Both candidates remain above eleven, so the round also opened no exact lower-bound
 route.

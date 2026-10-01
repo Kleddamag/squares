@@ -267,11 +267,11 @@ second of the missing middle layers.
 ## The refusal that was standing in the way
 
 `assemble` could not describe the packing it was built for.
-Seven of the `n = 29` layout’s twenty-nine squares are placed inside `scale(-1 1)`
+Seven of the $n = 29$ layout’s twenty-nine squares are placed inside `scale(-1 1)`
 mirror groups, and a pose that is a centre plus a rotation cannot produce a clockwise
 winding — so the previous block made it refuse them by name rather than quietly describe
 their mirror images.
-Read as rotations, the assembled residual sat at `2.0`.
+Read as rotations, the assembled residual sat at $2.0$.
 
 A pose is now a centre, an angle, **and** a chirality:
 
@@ -281,9 +281,9 @@ corner_k = c + R(t) . (sigma * ox_k / 2, oy_k / 2)
 
 `sigma` reflects the local *x* axis before the rotation turns it.
 At `sigma = +1` the formula is the old one character for character, which is why the
-`n = 11` calibration does not move.
+$n = 11$ calibration does not move.
 
-The residual falls from `2.0` to `1.3e-15`.
+The residual falls from $2.0$ to `1.3e-15`.
 
 ## The cost that was not paid
 
@@ -304,46 +304,46 @@ wrong.
 > [D-361](../../../defects.md).** Everything measured in this section is correct and
 > everything concluded from it is not.
 > The shortfall was not a property of the packings: an `edge-edge` contact was assembled
-> as one equation where collinearity is two, and with the second the rank reaches `34`
-> of `34` at `n = 11` and `88` of `88` at `n = 29`, with the projection of `e_s` onto
+> as one equation where collinearity is two, and with the second the rank reaches $34$
+> of $34$ at $n = 11$ and $88$ of $88$ at $n = 29$, with the projection of $e_s$ onto
 > the null space falling to zero at both.
 > There are no missing stationarity conditions at either size, first-order or otherwise.
 > The section is kept as written because the numbers in it are what led to the repair.
 
-The assembled `n = 29` system has 94 equations against 88 unknowns and rank 81 — seven
-conditions short, with the smallest counted singular value at `0.114` against a largest
+The assembled $n = 29$ system has 94 equations against 88 unknowns and rank 81 — seven
+conditions short, with the smallest counted singular value at $0.114$ against a largest
 discarded of `6.7e-161`, so the rank is decided rather than judged.
 
 What that null space contains is the finding.
-The quantity to ask for is the norm of the projection of `e_s` onto it —
-basis-independent, unlike whether some particular basis vector shows an `s` entry:
+The quantity to ask for is the norm of the projection of $e_s$ onto it —
+basis-independent, unlike whether some particular basis vector shows an $s$ entry:
 
-|  | shortfall | ‖proj of `e_s` onto null(A)‖ |
+|  | shortfall | ‖proj of $e_s$ onto null(A)‖ |
 | --- | ---: | ---: |
-| `n = 5` | 1 | `1.00e-16` |
-| `n = 11` | 4 | `1.86e-1` |
-| `n = 29` | 7 | `1.14e-1` |
+| $n = 5$ | 1 | `1.00e-16` |
+| $n = 11$ | 4 | `1.86e-1` |
+| $n = 29$ | 7 | `1.14e-1` |
 
-`n = 5` is the odd size out, not `n = 29`.
+$n = 5$ is the odd size out, not $n = 29$.
 
 The consequence is sharp.
-If `A v = 0` then every active contact survives to first order along both `+v` and `-v`,
-so when `e_s · v ≠ 0` one of the two *decreases the side to first order*. At `n = 11`
-and `n = 29` such directions exist, so neither packing is a strict first-order local
-minimum of its own contact system and **no first-order stationarity condition can close
-either** — what forbids those motions is curvature.
-At `n = 5` no such direction exists, and its single missing condition is of some other
+If $A v = 0$ then every active contact survives to first order along both $+v$ and `-v`,
+so when $e_s \cdot v \ne 0$ one of the two *decreases the side to first order*. At
+$n = 11$ and $n = 29$ such directions exist, so neither packing is a strict first-order
+local minimum of its own contact system and **no first-order stationarity condition can
+close either** — what forbids those motions is curvature.
+At $n = 5$ no such direction exists, and its single missing condition is of some other
 character.
 
-BC-059 inherits a discriminating pair from this: `n = 5` against the other two, where
+BC-059 inherits a discriminating pair from this: $n = 5$ against the other two, where
 the first version of this section had it the other way round.
 
 ## A correction made before the commit
 
-That section first said the side was *absent* from the `n = 29` null space.
+That section first said the side was *absent* from the $n = 29$ null space.
 It was not. The reading came from a printout that showed each vector’s eight largest
-coordinates and collected only names beginning `x`, `y` or `t` — which excludes `s` by
-construction — and `s` sat at `1.2e-2` to `6.1e-2` in all seven vectors the whole time.
+coordinates and collected only names beginning $x$, $y$ or $t$ — which excludes $s$ by
+construction — and $s$ sat at `1.2e-2` to `6.1e-2` in all seven vectors the whole time.
 
 Measuring the projection instead of re-reading the display caught it.
 A filtered display is not a measurement, and the filter was mine.

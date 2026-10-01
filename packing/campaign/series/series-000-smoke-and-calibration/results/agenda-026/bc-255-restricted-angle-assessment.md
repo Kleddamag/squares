@@ -28,7 +28,7 @@ Keep H-036’s existing claim: eleven unit squares, each oriented within 0.25° 
 $$
 q=\frac{1939}{500}=3.878,\qquad
 \delta=\frac{\pi}{720},\qquad
-\Theta=[-\delta,\delta]\;\cup\;
+\Theta=[-\delta,\delta]\thickspace\cup\thickspace
 [\pi/4-\delta,\pi/4+\delta].
 $$
 
@@ -53,7 +53,7 @@ The complete configuration domain consists of:
   Equivalently, each center coordinate lies in $[h_i,L-h_i]$, where
   $h_i=(|\cos\theta_i|+|\sin\theta_i|)/2$.
 - For each of the 55 unordered pairs, all eight owner-axis-order possibilities: choose
-  $a\in\{u_i,v_i,u_j,v_j\}$ and $\sigma\in\{-1,1\}$, and impose
+  $a\in\lbrace u_i,v_i,u_j,v_j\rbrace$ and $\sigma\in\lbrace-1,1\rbrace$, and impose
   $\sigma a\cdot(c_j-c_i)\geq r_i(a)+r_j(a)$ for at least one choice.
 - All zero gaps, wall contacts, coincident support expressions, and angle endpoints.
   If absolute values are split into sign cases, retain both closed cases at zero.
@@ -79,9 +79,9 @@ b(\cos\theta+|\sin\theta|)
 $$
 
 using $\pi<22/7$. Also $b>q/4=1939/2000$. Each such core contains an interior point of
-$\{q/4,q/2,3q/4\}^2$, so ten near-axis squares with disjoint interiors cannot fit in
-$[0,q]^2$. This explicitly checks the existing mechanism for compositions $k=0,1$; it is
-not a fresh accepted campaign result.
+$\lbrace q/4,q/2,3q/4\rbrace^2$, so ten near-axis squares with disjoint interiors cannot
+fit in $[0,q]^2$. This explicitly checks the existing mechanism for compositions
+$k=0,1$; it is not a fresh accepted campaign result.
 The remaining compositions still require their declared coverage.
 
 ## Why Uniform Core Transfer Is Insufficient
@@ -121,17 +121,17 @@ $$
 (1,1),\quad(q/2,1),\quad(3/2-q/4,q/2),\quad(1/2+q/4,q/2).
 $$
 
-The group is $K_4=\{1,(x,y)\mapsto(q-x,y),(x,y)\mapsto(x,q-y),
-(x,y)\mapsto(q-x,q-y)\}$. It is not the full dihedral group: quarter-turning $(q/2,1)$
-gives $(q-1,q/2)$, absent from $P_{10}$.
+The group is $K_4=\lbrace1,(x,y)\mapsto(q-x,y),(x,y)\mapsto(x,q-y),
+(x,y)\mapsto(q-x,q-y)\rbrace$. It is not the full dihedral group: quarter-turning
+$(q/2,1)$ gives $(q-1,q/2)$, absent from $P_{10}$.
 
 Use the paper’s twelve-point coordinates with $s$ replaced by $q$:
 
 $$
 \begin{aligned}
-A_1&=(1,q-3),& A_2&=(q/2,q-3),& A_3&=(3/2,13/10),\\
-B&=(q-1,1),& C&=(q-4/5,q/2),& D&=(q-1,q-1),\\
-E&=(q/2,q-4/5),& F&=(1,q-1),& G&=(4/5,q-2),\\
+A_1&=(1,q-3),& A_2&=(q/2,q-3),& A_3&=(3/2,13/10),\cr
+B&=(q-1,1),& C&=(q-4/5,q/2),& D&=(q-1,q-1),\cr
+E&=(q/2,q-4/5),& F&=(1,q-1),& G&=(4/5,q-2),\cr
 H&=(17/10,11/5),& I&=(11/5,11/5),& J&=(11/5,17/10).
 \end{aligned}
 $$
@@ -141,8 +141,8 @@ to $\Theta$ are proposed mechanisms, not claims already supplied by the paper.
 The complete one-square domain is
 
 $$
-\mathcal D=\{(c,\theta):\theta\in\Theta,
-\quad c\in[h(\theta),q-h(\theta)]^2\}.
+\mathcal D=\lbrace(c,\theta):\theta\in\Theta,
+\quad c\in[h(\theta),q-h(\theta)]^2\rbrace.
 $$
 
 Three obligations would suffice:
@@ -179,8 +179,8 @@ The argument requires the strict sublevel $L<q$, exactly as H-036 does.
 ## One LP Obligation and Its Interval Extension
 
 For fixed $\theta$, let $u=(\cos\theta,\sin\theta)$ and $v=(-\sin\theta,\cos\theta)$.
-For each $p\in P_{12}$, choose one of four signed directions $d_p\in\{u,-u,v,-v\}$ and
-impose
+For each $p\in P_{12}$, choose one of four signed directions
+$d_p\in\lbrace u,-u,v,-v\rbrace$ and impose
 
 $$
 d_p\cdot(p-c)\geq\tfrac12+\eta,
@@ -226,7 +226,7 @@ The required controls have different purposes:
 
 | Control | Required behavior |
 | --- | --- |
-| Eleven axis-aligned unit squares centered on $\{1/2,3/2,5/2,7/2\}\times\{1/2,3/2,5/2\}$, omitting $(7/2,5/2)$, in side 4 | Independent exact packing verification accepts this rational, in-regime feasible instance. Side 4 is a control, not the target threshold. |
+| Eleven axis-aligned unit squares centered on $\lbrace1/2,3/2,5/2,7/2\rbrace\times\lbrace1/2,3/2,5/2\rbrace$, omitting $(7/2,5/2)$, in side 4 | Independent exact packing verification accepts this rational, in-regime feasible instance. Side 4 is a control, not the target threshold. |
 | Side 1, angle 0, center $(1/2,1/2)$, marked point $(1,1)$ | The point-cover checker retains the zero-slack boundary hit and does not report a strict escape. |
 | Side 4, angle 0, center $(1/2,1/2)$, sole marked point $(2,2)$ | The checker accepts a point-avoiding feasible square; its signed avoidance slack is exactly 1 by substitution. |
 | Theorem 3 at exact 0°/45° and side $s_0$ | Replay the source’s conditional argument with its original coordinates before extending the instrument. The grid controls do not substitute for this preregistered requirement. |

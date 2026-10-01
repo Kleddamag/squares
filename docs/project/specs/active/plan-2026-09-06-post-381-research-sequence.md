@@ -22,18 +22,18 @@ This document is not an independent queue or authority to launch work.
 
 ## Evidence That Changes the Allocation
 
-- T-022 records approximately `3.8100257236`; the core exposition should continue to
+- T-022 records approximately $3.8100257236$; the core exposition should continue to
   explain 3.81 and link to the refinement.
   The numerical gain is not grounds for a longer introductory proof or another
   refinement campaign.
 - H-090 and H-091 obstruct ordinary core shrinking with the retained sites, net, and
   relative weights. The independently reviewed H-092 transport, `30c44bb6`, also bounds
-  the remaining refined mechanism’s possible gain above T-022 by less than `0.00000125`.
+  the remaining refined mechanism’s possible gain above T-022 by less than $0.00000125$.
   H-092 still needs integration under `think-xsma`; no fourth target is selected.
   This does not rule out changed relative weights, sites, nets, or witnesses.
 - BC-232’s recovery produced no row-converged covering below eleven.
-  Retain its exact lower endpoint `10.384212408…` and computational upper endpoint
-  `11.055616943…` at their stated scopes.
+  Retain its exact lower endpoint $10.384212408\ldots$ and computational upper endpoint
+  $11.055616943\ldots$ at their stated scopes.
   Do not launch the former final 30-minute leg: known CPU cost leaves at most about 14
   minutes 22 seconds, with additional tails unmeasured.
   The frozen full-budget routing criterion remains unresolved.
@@ -124,7 +124,7 @@ A wall-support signature names which square, feature, and angle class provides e
 outer support; it is more informative than a wall-contact count.
 Preserve missing cases explicitly.
 Use a known-feasible case to test the model and one adversarial search to challenge the
-conjecture. A restricted theorem can justify the block; an unpriced `n=11` atlas cannot.
+conjecture. A restricted theorem can justify the block; an unpriced $n=11$ atlas cannot.
 
 ## Coverage of the Earlier Reviews
 
@@ -155,10 +155,10 @@ The table’s group A is the fractional agenda; group B is the density/structura
 | B4: full-size boundary-null area density | Lane B, BC-242 contract retained. Distinguish direct improvement below Trump from equality at Trump. Both require continuum coverage for a primal claim. |
 | B5: existential witness libraries | Explicit new theory screen after an identified universal-witness restriction; no global disjunctive verifier yet. |
 | Section 6: equality density and inverse dual design | BC-254 support screen, then BC-243 for an earned candidate; BC-244 inverse design requires a separate decision. Value eleven from the uniform control proves no equality theorem or primal existence. |
-| C1–C2: near-tight roles, heavy atoms, matching, Hall forcing | Lane B, before BC-248. Require a valid covering measure with mass `M >= 11`; its threshold is `M - 11`. The current floating 3.82 upper objective is not that measure. |
+| C1–C2: near-tight roles, heavy atoms, matching, Hall forcing | Lane B, before BC-248. Require a valid covering measure with mass `M >= 11`; its threshold is $M - 11$. The current floating 3.82 upper objective is not that measure. |
 | C3: richer angle compositions | Lane B’s restricted-theorem screen. The simple two-threshold negative remains retired; preserve the already-closed Stromquist branch rather than reproving it. |
 | C4: boundary-support signatures and projection chains | Lane B’s restricted LP/Farkas screen; try to extract a checkable wall-to-wall inequality. |
-| C5: boxed conditional measures | Design-only until a named case, broken-symmetry handling, nonconvex domain, and both oracle semantics agree. Preserve the existing `n=13` calibration idea. |
+| C5: boxed conditional measures | Design-only until a named case, broken-symmetry handling, nonconvex domain, and both oracle semantics agree. Preserve the existing $n=13$ calibration idea. |
 | D1–D3: robust conflict graphs, clique/odd-cycle/rank cuts, Hall rows, no-goods and cell hyperedges | Lane B, only on selection variables in a certified finite model. A missing conflict edge means uncertainty, not compatibility. A finite-family cut is not a global bound. Low-level SDP or Sherali–Adams waits for a small reduced model. |
 | E1: typed stationary backbones | BC-245 accepted as a language theorem. Retain ordinary and abnormal Fritz–John branches, ties, zero multipliers and rattlers. |
 | E2–E4: center elimination, lazy SAT/LP/interval branching, final exact algebra | BC-246/247 at control/pricing scale. Produce a closed restricted branch and measured pruning before broader enumeration; exactify only surviving leaves and check root completeness and inactive inequalities. |

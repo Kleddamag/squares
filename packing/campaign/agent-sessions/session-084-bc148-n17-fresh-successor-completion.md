@@ -279,7 +279,7 @@ delegation.
 
 **Two identifier collisions were caught, not avoided.** `session-083` turned out to be
 the coordinator’s own session rather than a free lane id, and `exp-058` was claimed by
-the concurrent `n = 5` lane while this package was being built.
+the concurrent $n = 5$ lane while this package was being built.
 Both were found by checking the working tree and the gate output rather than by trusting
 the highest id seen at the start of the session.
 The round is exp-059 in session-084.

@@ -958,16 +958,16 @@ Each runs within about three agents at once.
 
 ## After 4.640020
 
-Two days later Kleddamag’s v1.1.0 proved `s(17) > 4.640020` and wand125 published
+Two days later Kleddamag’s v1.1.0 proved $s(17) > 4.640020$ and wand125 published
 rectangle certificates past every low-n rung here.
 The planning block BC-392
 ([plan](../../../docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md))
-retired BC-386 and BC-391 as superseded, retargeted BC-387 to `4.65` in clique-weighted
+retired BC-386 and BC-391 as superseded, retargeted BC-387 to $4.65$ in clique-weighted
 form, and reordered the nights around what is launcher-only today.
-Later the same day Kleddamag’s `s(17) > 4.66001` (`57519bb`) superseded `4.640020`; the
+Later the same day Kleddamag’s $s(17) > 4.66001$ (`57519bb`) superseded $4.640020$; the
 [4.66001 review](../../../docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md)
-moved BC-393 to that certificate’s 2,168 rows and BC-387 (H-248) to `4675/1000` and
-`467/100`, its `4.65` and `4.66` targets refuted by the certificate itself.
+moved BC-393 to that certificate’s 2,168 rows and BC-387 (H-248) to $4675/1000$ and
+$467/100$, its $4.65$ and $4.66$ targets refuted by the certificate itself.
 
 | Step | n17 and low-n lanes | n11 lanes |
 | --- | --- | --- |

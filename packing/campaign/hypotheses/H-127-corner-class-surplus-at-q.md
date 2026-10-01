@@ -47,15 +47,15 @@ hypothesis:
 # H-127 — Do the Four Blockers Buy Anything?
 
 [X-021](../explorations/X-021-what-can-be-proved-about-eleven-squares.md) proves that
-every packing at side up to `3.96` has four distinct squares meeting the four open
-corner boxes of side `κ = L − 2.96`, and that no argument valid up to `U` forces those
-blockers any deeper or any straighter.
+every packing at side up to $3.96$ has four distinct squares meeting the four open
+corner boxes of side $\kappa = L - 2.96$, and that no argument valid up to $U$ forces
+those blockers any deeper or any straighter.
 This hypothesis asks the only question that can be asked of that fact without a further
 theorem: whether a certificate that prices the four blockers’ cores above the rest has a
-surplus at `96/25`.
+surplus at $96/25$.
 
 The mechanism is X-014’s class certificate with a region in place of an angle class.
-If the retained measure at `3.82` already over-covers the corner region, the answer is a
+If the retained measure at $3.82$ already over-covers the corner region, the answer is a
 new rung for the price of one LP; if the tight cells lie in the corners, the answer is
 that corner information must go through banking (lane A’s Theorem B) instead.
 [Agenda 030](../agendas/agenda-030-parallel-structural-lanes-at-n11.md) owns the lane as

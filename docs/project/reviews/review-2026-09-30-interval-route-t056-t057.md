@@ -55,29 +55,30 @@ Read line by line, then attacked with inputs chosen to break a wrong implementat
 and ceiling division, which is correct for every sign pattern, including both operands
 straddling zero. `scale_by` swaps the ends when the exact factor is negative.
 `magnitude` and `halve` round outward.
-Evidence: 20,000 random interval pairs at scale `10^6`, all sign patterns, against the
+Evidence: 20,000 random interval pairs at scale $10^{6}$, all sign patterns, against the
 exact rational product range; no enclosure missed its range and none was wider than the
 end-product bound plus four units (`trig.log`, “no failures”).
 
-**`pi_enclosure`.** `_arctan_inverse(x)` sums the alternating series for `arctan(1/x)`
+**`pi_enclosure`.** `_arctan_inverse(x)` sums the alternating series for $\arctan(1/x)$
 with each term rounded outward, stops when a term is at most one unit, and returns the
 partial sum widened by that first omitted term plus one unit of slack.
-The terms `1/((2k+1) x^(2k+1))` decrease strictly for `x >= 1`, so the
+The terms $1/((2k+1) x^{2k+1})$ decrease strictly for `x >= 1`, so the
 alternating-series bound applies.
-Machin’s `16 arctan(1/5) - 4 arctan(1/239)` crosses the ends correctly.
-Evidence: contains `pi` at scales `10^1, 10^5, 10^13, 10^52, 10^92`, with widths 80,
-116, 188, 652 and 1132 units; at the working scale `10^52` that is `6.5e-50`.
+Machin’s $16 \arctan(1/5) - 4 \arctan(1/239)$ crosses the ends correctly.
+Evidence: contains `pi` at scales $10^{1}, 10^{5}, 10^{13}, 10^{52}, 10^{92}$, with
+widths 80, 116, 188, 652 and 1132 units; at the working scale $10^{52}$ that is
+`6.5e-50`.
 
 **`_series`.** After the loop has added the degree-`k - 1` term, it computes the next
-term `|x|^k / k!` as an outward enclosure and returns the two polynomials widened by its
-upper end. Both are the true Taylor polynomials of degree `k - 1` (the missing parity
+term $|x|^k / k!$ as an outward enclosure and returns the two polynomials widened by its
+upper end. Both are the true Taylor polynomials of degree $k - 1$ (the missing parity
 terms have zero coefficient), every derivative of `cos` and `sin` is bounded by one, so
-Lagrange’s bound `|x|^k / k!` applies to both, and the enclosure’s upper end is at least
+Lagrange’s bound $|x|^k / k!$ applies to both, and the enclosure’s upper end is at least
 the true bound. The stop rule, `term.hi * 1000 <= 10^GUARD`, means the remainder is at
-most `10^-3` of one working unit.
-A negative argument is handled by summing on `|x|` and negating the sine before the
+most $10^{-3}$ of one working unit.
+A negative argument is handled by summing on $|x|$ and negating the sine before the
 symmetric remainder is added.
-No argument reduction is done: the result is sound for any `|x|`, but the width grows
+No argument reduction is done: the result is sound for any $|x|$, but the width grows
 with the size of the largest Taylor term (see nit 2).
 
 **Degrees.** `pi` is enclosed at the guard scale, the radian value’s two ends are
@@ -85,17 +86,17 @@ with the size of the largest Taylor term (see nit 2).
 floored and ceiled to units of the guard scale; the series runs at the lower end, and
 both results are widened by the spread, which is correct because `cos` and `sin` are
 1-Lipschitz. `rescale` divides out the guard digits with floor and ceiling and clamps to
-`[-1, 1]`.
+$[-1, 1]$.
 
 **Adversarial evidence** (`trig_adversarial.py`, 30 angles times 5 scales
-`D = 1, 3, 12, 40, 80`, checked against mpmath at 220 digits): `pi/2` printed to 20 and
-53 places, `1.57079633331250923` (the data’s largest angle), `-pi/2`, `pi`, `-pi` at 36
-places, `2 pi`, `+-6.5`, `20`, `-33.3...`, `100` radians, `1e-30`, `-1e-45`,
+$D = 1, 3, 12, 40, 80$, checked against mpmath at 220 digits): `pi/2` printed to 20 and
+53 places, $1.57079633331250923$ (the data’s largest angle), `-pi/2`, `pi`, `-pi` at 36
+places, `2 pi`, `+-6.5`, $20$, `-33.3...`, $100$ radians, `1e-30`, `-1e-45`,
 `-3.75...E-15` (a data value with a capital exponent), and in degrees `0, 30, 45, 90,
 -90, 180, 270, 359.999999999999999999, -135.25, 1e-10, 720.5, -1000`. All 300 enclosures
-contain the true value; at `D = 40` every width is one or two units except `100`
+contain the true value; at $D = 40$ every width is one or two units except $100$
 radians, which is `8.1e25` units (`8e-15`) and still contains the value.
-The data’s angles lie in `[-0.8038, 1.5708]`, all in radians, so nothing in either
+The data’s angles lie in $[-0.8038, 1.5708]$, all in radians, so nothing in either
 packet approaches the loose regime.
 
 ## 4. The Geometry
@@ -104,8 +105,8 @@ packet approaches the loose regime.
 pairs, doubled so that no halving rounds.
 Correct.
 
-**The pair test.** On an axis `a` that is one square’s own edge direction, that square
-projects to half-width exactly `1/2` (for the true unit vector), the other to
+**The pair test.** On an axis $a$ that is one square’s own edge direction, that square
+projects to half-width exactly $1/2$ (for the true unit vector), the other to
 `(|a . e1| + |a . e2|) / 2`, and the centres to `|a . dc|`; `_twice_gap` evaluates
 `2|a . dc| - 1 - (|a . e1| + |a . e2|)` on the enclosures.
 The axis is an enclosure of the true unit vector, the expression holds at the true
@@ -118,7 +119,7 @@ The three-valued verdict is sound at both boundaries:
 - *Separated* when some axis’s lower end is at least zero: the two projections meet in
   at most a point, so the interiors are disjoint.
   Boundary contact is allowed, consistent with the repository’s convention, and the
-  axis-aligned contacts of a `2 x 2` grid decide as the exact interval `[0, 0]`.
+  axis-aligned contacts of a $2 \times 2$ grid decide as the exact interval $[0, 0]$.
 - *Overlapping* when every axis’s upper end is below zero: for two convex polygons with
   disjoint interiors, some edge normal of one of them has a non-negative gap (the
   Minkowski difference has edges parallel to the polygons’ edges and the origin is not
@@ -135,7 +136,7 @@ test of `|dc| >= sqrt 2`; each unit square lies in the closed disc of radius
 meet in at most a point.
 Correct.
 
-**The extent argument.** Translating the true pose by minus its least `x` and `y` puts
+**The extent argument.** Translating the true pose by minus its least $x$ and $y$ puts
 every vertex in `[0, extent]^2`, disjointness is translation-invariant, and
 `U = max(printed, ceiling of the extent's upper end at the printed places)` is at least
 the extent, so `s(n) <= U`. Valid.
@@ -147,21 +148,21 @@ is the global minimum lower end; `2 U scale` is at least the extent’s upper en
 
 | Case | Expected | Got |
 | --- | --- | --- |
-| Axis-aligned pair, centres exactly `(1, 1)` apart (corner contact at `sqrt 2`) | pruned, VERIFIED | pruned, VERIFIED |
-| Axis-aligned pair, centres `(0.99999, 0.99999)` apart | REFUSED, not pruned | REFUSED |
-| 45-degree diamonds corner to corner, centres `1.41421` apart (overlap `3.6e-6`) | REFUSED | REFUSED |
-| Same at `1.4142135623730950` (below `sqrt 2` by `4.9e-17`) | REFUSED | REFUSED |
-| Same at `1.4142135623730951` | pruned, VERIFIED | pruned, VERIFIED |
+| Axis-aligned pair, centres exactly $(1, 1)$ apart (corner contact at `sqrt 2`) | pruned, VERIFIED | pruned, VERIFIED |
+| Axis-aligned pair, centres $(0.99999, 0.99999)$ apart | REFUSED, not pruned | REFUSED |
+| 45-degree diamonds corner to corner, centres $1.41421$ apart (overlap `3.6e-6`) | REFUSED | REFUSED |
+| Same at $1.4142135623730950$ (below `sqrt 2` by `4.9e-17`) | REFUSED | REFUSED |
+| Same at $1.4142135623730951$ | pruned, VERIFIED | pruned, VERIFIED |
 | Corner-to-edge contact at `1 + sqrt 2 / 2`, centre rounded up at 40 places | VERIFIED | VERIFIED at 40 |
 | Same, rounded down | REFUSED | REFUSED at 80 (undecided at 40) |
 | Axis-aligned pair overlapping by `1e-45` (45-place centre) | REFUSED | REFUSED at 45 |
 | Same with a gap of `1e-45` | VERIFIED | VERIFIED at 45 |
-| Square at `1.5707963267948966` rad beside an axis-aligned one, centres 1 apart (overlap `3e-17`) | REFUSED | REFUSED |
-| Same, centres `1.0000000000000001` apart; and with the angle negated | VERIFIED | VERIFIED, VERIFIED |
-| Two squares at 100 rad, `1.001` apart along the rotated edge | VERIFIED | VERIFIED at 40 |
-| Pair at 0.5 rad displaced by `(cos, sin)` rounded up and down at 40 places | VERIFIED / REFUSED, undecided at 40 alone | as expected |
-| Single diamond, printed side `3.1e-12` below `sqrt 2` | printed refuted, bound `1.41421356238` | as expected |
-| Single square at `(-3, -3)` with printed side 1 | frame violated, VERIFIED with bound 1 | as expected |
+| Square at $1.5707963267948966$ rad beside an axis-aligned one, centres 1 apart (overlap `3e-17`) | REFUSED | REFUSED |
+| Same, centres $1.0000000000000001$ apart; and with the angle negated | VERIFIED | VERIFIED, VERIFIED |
+| Two squares at 100 rad, $1.001$ apart along the rotated edge | VERIFIED | VERIFIED at 40 |
+| Pair at 0.5 rad displaced by $(\cos, \sin)$ rounded up and down at 40 places | VERIFIED / REFUSED, undecided at 40 alone | as expected |
+| Single diamond, printed side `3.1e-12` below `sqrt 2` | printed refuted, bound $1.41421356238$ | as expected |
+| Single square at $(-3, -3)$ with printed side 1 | frame violated, VERIFIED with bound 1 | as expected |
 
 ## 5. Independence and the Method Question
 
@@ -220,16 +221,16 @@ Every comparison with a printed decimal is exact.
 
 | n | Printed side | Extent (mine, 25 digits, a point at this width) | Extent minus printed | Units above | Verified value | Least gap, pair | Frame least clearance, square |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 68 | `8.798795237222592` | `8.798795237222591963278212` | `-3.672e-17` | 0 | printed | `1.998157e-13`, (38, 46) | `-2.33e-17`, 13 |
-| 206 | `14.860158663395859` | `14.86015866339586012403306` | `+1.1240e-15` | 2 | `14.860158663395861` | `2.0007357e-13`, (55, 56) | `-1.09e-15`, 167 |
-| 259 | `16.602568490497649` | `16.60256849049765113427251` | `+2.1343e-15` | 3 | `16.602568490497652` | `2.0087237e-13`, (116, 117) | `-1.50e-15`, 179 |
-| 305 | `17.952959459023539` | `17.95295945902354086517768` | `+1.8652e-15` | 2 | `17.952959459023541` | `2.0116723e-13`, (67, 81) | `-1.87e-15`, 202 |
-| 211 | `14.99796070496771500150` | `14.9979607049676940014` exactly | `-2.10001e-14` | 0 | printed | `2.10001e-14` exactly, (80, 82) | `+1.000005e-14` exactly, 66 |
+| 68 | $8.798795237222592$ | $8.798795237222591963278212$ | `-3.672e-17` | 0 | printed | `1.998157e-13`, (38, 46) | `-2.33e-17`, 13 |
+| 206 | $14.860158663395859$ | $14.86015866339586012403306$ | `+1.1240e-15` | 2 | $14.860158663395861$ | `2.0007357e-13`, (55, 56) | `-1.09e-15`, 167 |
+| 259 | $16.602568490497649$ | $16.60256849049765113427251$ | `+2.1343e-15` | 3 | $16.602568490497652$ | `2.0087237e-13`, (116, 117) | `-1.50e-15`, 179 |
+| 305 | $17.952959459023539$ | $17.95295945902354086517768$ | `+1.8652e-15` | 2 | $17.952959459023541$ | `2.0116723e-13`, (67, 81) | `-1.87e-15`, 202 |
+| 211 | $14.99796070496771500150$ | $14.9979607049676940014$ exactly | `-2.10001e-14` | 0 | printed | `2.10001e-14` exactly, (80, 82) | `+1.000005e-14` exactly, 66 |
 
 Every figure agrees with the receipt row, whose six-digit outward ranges contain my
 values, and with the exact route’s verified value.
 The trailing units are confirmed: the ceiling of the extent at fifteen places is 2, 3
-and 2 units above the printed side at `n = 206, 259, 305`, and the decimal one unit
+and 2 units above the printed side at $n = 206, 259, 305$, and the decimal one unit
 below each verified value is exceeded by the extent’s lower end by `1.2e-16`, `1.3e-16`
 and `8.7e-16`. De Winter’s reported clearances, `1.000005e-14` at square 65 and
 `2.10001e-14` at squares 79 and 81 counted from zero, are reproduced exactly (66, and 80
@@ -283,7 +284,7 @@ information content; “not retained” describes the form, not the content.
 | should-fix | **2. The route cannot run alone.** `row` reads the exact route’s receipt unconditionally (`packets.certification(source)[n]`), so `certify` fails on a packet the exact route has not certified. For a route whose point is independence, the comparison should be optional. |
 | should-fix | **3. No register change accompanies the tool.** The commit adds no evidence entry and moves no rung; Section 10 lists what the `C4` entry needs. |
 | nit | **1.** `touching_exactly` counts pairs whose gap’s lower end is exactly zero; a pair with a true gap of about `1e-41` at 40 digits counts as touching (the rounded-up corner-to-edge case). Rename it or define it as “lower end exactly zero”. |
-| nit | **2.** No argument reduction and no bound on the angle: sound for any angle, but the width grows with the largest Taylor term (`8e-15` at 100 rad, `D = 40`) and the series is impractical beyond about `10^3` rad. A guard or a reduction modulo `2 pi` with the `pi` enclosure would close it; nothing in either packet needs it. |
+| nit | **2.** No argument reduction and no bound on the angle: sound for any angle, but the width grows with the largest Taylor term (`8e-15` at 100 rad, $D = 40$) and the series is impractical beyond about $10^{3}$ rad. A guard or a reduction modulo `2 pi` with the `pi` enclosure would close it; nothing in either packet needs it. |
 | nit | **3.** The translated-pose wall check cannot fail by construction, so the receipts’ `walls.certified = 4n` is not evidence beyond the extent; the docstring could say so. The frame check is the informative one. |
 | nit | **4.** `_settled` waits on `frame.undecided` while `verdict` ignores the frame, so a frame clearance within `1e-40` of zero would raise digits for a quantity the verdict does not use. Harmless. |
 | nit | **5.** The README’s “the decimal one unit below each verified value is refuted too” is true (Section 6) but is derivable only from the receipt’s 40-digit `side_enclosure`; it is not a recorded field. |
@@ -294,18 +295,18 @@ information content; “not retained” describes the form, not the content.
 | Claim | Evidence |
 | --- | --- |
 | Interval primitives round outward in every sign case | `trig_adversarial.py`: 20,000 random products, scalings, magnitudes, halvings and enclosures against exact rational ranges, no misses |
-| `pi` is enclosed | contains `pi` at five scales from `10^1` to `10^92`; width 652 units at the working scale `10^52` |
-| `cos` and `sin` are enclosed, including near `pi/2`, negative, tiny and large arguments, and degrees | 300 enclosures at `D = 1, 3, 12, 40, 80` against mpmath at 220 digits, all containing; widths one or two units at `D = 40` except 100 rad |
+| `pi` is enclosed | contains `pi` at five scales from $10^{1}$ to $10^{92}$; width 652 units at the working scale $10^{52}$ |
+| `cos` and `sin` are enclosed, including near `pi/2`, negative, tiny and large arguments, and degrees | 300 enclosures at $D = 1, 3, 12, 40, 80$ against mpmath at 220 digits, all containing; widths one or two units at $D = 40$ except 100 rad |
 | Lagrange remainder applied to the right degree for both series | code reading, Section 3; widths above |
-| Degrees conversion widened correctly | `-135.25`, `359.999...`, `720.5`, `-1000` degrees all contained |
+| Degrees conversion widened correctly | $-135.25$, `359.999...`, $720.5$, $-1000$ degrees all contained |
 | Separating-axis formula and three-valued verdict | code reading, Section 4; 15 pose-level cases in `pose.log`, `pose2.log` |
-| Broad phase exact and correctly bounded | centres `1.4142135623730950` apart refused, `...951` pruned and verified |
-| Touching allowed, overlap refused, escalation works | `2 x 2` grid, `1e-45` gap and overlap, 0.5-rad contact rounded both ways |
+| Broad phase exact and correctly bounded | centres $1.4142135623730950$ apart refused, `...951` pruned and verified |
+| Touching allowed, overlap refused, escalation works | $2 \times 2$ grid, `1e-45` gap and overlap, 0.5-rad contact rounded both ways |
 | Extent and translation prove `s(n) <= U` | Section 4 |
 | Replay and tests pass | `check` in 6.6 s; 73 tests in 6.75 s |
 | No shared geometry code; AST test enforces the import and attribute sets; no dynamic imports | Section 5; `grep` for `importlib`, `__import__`, `exec`, `eval`: none |
 | All 50 verdicts, extents, 29 refuted sides, trailing units 2/3/2, least gaps and pairs, de Winter’s clearances | `independent.log`, `independent_all.log`; Section 6 |
-| README totals 1,205,911 / 24,014, least gap `1.98e-13` at `n = 106` (receipt `1.97856e-13`), frames inside only at 102 and 239, up to `1.87e-15` outside (`-1.86670e-15` at 305), exact side within `3.2e-37` (`3.19e-37`) | receipts and `independent_all.log` |
+| README totals 1,205,911 / 24,014, least gap `1.98e-13` at $n = 106$ (receipt `1.97856e-13`), frames inside only at 102 and 239, up to `1.87e-15` outside (`-1.86670e-15` at 305), exact side within `3.2e-37` (`3.19e-37`) | receipts and `independent_all.log` |
 | Lint and type floor | Ruff, `ruff format --check`, BasedPyright: clean |
 
 ## 10. What the `C4` Entry Needs
@@ -328,7 +329,7 @@ derive `C4` from it:
   `tests/test_upper_bound_intervals.py`;
 - and in `results.yaml`, the claim text and `next_rung` of T-056 and T-057 rewritten,
   since both currently say `C4` awaits an interval route, and T-056’s claim should keep
-  saying that at `n = 206, 259, 305` the printed side is refuted by the pose in either
+  saying that at $n = 206, 259, 305$ the printed side is refuted by the pose in either
   arithmetic.
 
 This review’s own computation (Section 6) is a third decision of all 50 cases by a

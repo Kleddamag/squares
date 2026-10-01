@@ -91,9 +91,9 @@ This is discovery evidence only.
 The round is confirmatory and must rebuild the result from the exact source models.
 
 After the preregistration commit and before any target measurement, read-only review
-found two remaining ambiguities in the same criterion defect recorded as D-254: `C_I`
+found two remaining ambiguities in the same criterion defect recorded as D-254: $C_I$
 was not explicitly defined, and the nonredundancy mutation did not name its input.
-The text now fixes `C_I = (C_A + C_B)/2` coordinatewise and fixes that mutation as
+The text now fixes $C_I = (C_A + C_B)/2$ coordinatewise and fixes that mutation as
 removing `x0 >= 1/2`. No dimension, interval, multiplier, acceptance count, or verdict
 threshold changed.
 
@@ -105,7 +105,7 @@ The criterion now requires the checker to establish both premises explicitly.
 This correction changes no candidate formula, interval, multiplier, acceptance count, or
 verdict threshold.
 
-Write `r = sqrt(2)`, `L = 1 + 5r/4`, and `a = x4`. The proposed polytope fixes
+Write `r = sqrt(2)`, $L = 1 + 5r/4$, and `a = x4`. The proposed polytope fixes
 
 `x2 = y2 = 1/2`, `x3 = y3 = 1 + 3r/4`, and `x4 + y4 = 2 + r/2`,
 
@@ -127,9 +127,9 @@ of the exp-033 common cell at the fixed angles, plus nonemptiness and boundednes
 The six proposed dual-support rows must have rank six in the eleven position-and-side
 variables and contain the side row in their span.
 Rank alone is not a dimension proof: the checker must also retain six affinely
-independent exact feasible points consisting of one base and positive steps along `s`,
+independent exact feasible points consisting of one base and positive steps along $s$,
 `R1`, `R2`, `R3`, and `R6`. The exact LP dual must prove that every feasible point in
-the declared cell has side at least `S = 1 + 5r/4`; its side-`S` intersection is
+the declared cell has side at least $S = 1 + 5r/4$; its side-`S` intersection is
 therefore an LP-optimal face.
 This is optimality in one fixed-orientation labelled separating cell, not global
 fixed-angle or terminal optimality.
@@ -146,14 +146,14 @@ R6: dx0 = -1, dx1 = -1, dx4 = -1/2, dy4 = 1/2
 ```
 
 The checker must bind these to exp-038 explicitly.
-Its stored interior and B vectors named `R1` and `R2` are `r` times the canonical
-vectors, while its stored A vectors are `r(Ri+s)` for `i` in `{1,2}`. Its stored
-interior and B vectors named `R3` and `R6` are canonical, while its stored A vectors are
-`Ri+s`. This source map prevents a scale change or double-added slide from passing as
-the declared continuation.
+Its stored interior and B vectors named `R1` and `R2` are $r$ times the canonical
+vectors, while its stored A vectors are `r(Ri+s)` for $i$ in $\lbrace1,2\rbrace$. Its
+stored interior and B vectors named `R3` and `R6` are canonical, while its stored A
+vectors are `Ri+s`. This source map prevents a scale change or double-added slide from
+passing as the declared continuation.
 
-Let `delta = 3r/2 - 2` and define `C_I = (C_A + C_B)/2` coordinatewise.
-For `i` in `{1,2,3,6}`, the declared paths are
+Let `delta = 3r/2 - 2` and define $C_I = (C_A + C_B)/2$ coordinatewise.
+For $i$ in $\lbrace1,2,3,6\rbrace$, the declared paths are
 
 ```text
 C_A,i(epsilon) = C_A + epsilon (Ri + s)
@@ -168,11 +168,11 @@ lower-x wall as the unique limiting row at the interior and B, and prove that th
 row is violated immediately beyond each endpoint.
 Endpoint and strict-interior fixtures must also pass a separate exact packing check.
 That check is independent of the polytope and path derivation, but it shares the
-repository’s `NumberField` implementation and common `n = 5` geometry primitives; it is
+repository’s `NumberField` implementation and common $n = 5$ geometry primitives; it is
 not a second implementation of the entire exact stack.
 At every retained path point, both active owner branches and every tied feature row must
 be rebuilt from source.
-For contacts `(2,4)` and `(3,4)`, expected zero axes must have a strict fixed signed
+For contacts $(2,4)$ and $(3,4)$, expected zero axes must have a strict fixed signed
 projection and zero gap at both endpoints, which makes their absolute-value gaps affine
 and identically zero.
 Every other owner-axis gap must be strictly negative at both endpoints; convexity of an
@@ -181,20 +181,20 @@ interval. No global zero-axis inventory is claimed.
 
 Along the four declared path classes, the checker must rebuild the positive owner-branch
 stress.
-Square 2’s four lower-wall rows have weight `r/4`, square 3’s two upper-wall rows
-have weight `r/2`, and contact `(2,4)` has weight one.
-On the owner-3 branch for contact `(3,4)`, the weights are
+Square 2’s four lower-wall rows have weight $r/4$, square 3’s two upper-wall rows
+have weight $r/2$, and contact $(2,4)$ has weight one.
+On the owner-3 branch for contact $(3,4)$, the weights are
 
 ```text
 w+ = 5/4 - r(1+q)/2
 w- = -1/4 + r(1+q)/2,
 ```
 
-where `q = epsilon` for a path moving square 4 and `q = 0` for `R2`. On the owner-4
-branch both weights are `1/2`. Acceptance requires exact zero pose-column sums, the
+where `q = epsilon` for a path moving square 4 and $q = 0$ for `R2`. On the owner-4
+branch both weights are $1/2$. Acceptance requires exact zero pose-column sums, the
 identity `sum_j w_j z_j = r dL`, strict positivity on every declared interval, and
-exhaustion of the zero separating axes for contacts `(2,4)` and `(3,4)`. In particular,
-both owner-3 multipliers must have the exact uniform lower bound `r/2 - 1/4 > 0`. This
+exhaustion of the zero separating axes for contacts $(2,4)$ and $(3,4)$. In particular,
+both owner-3 multipliers must have the exact uniform lower bound $r/2 - 1/4 > 0$. This
 proves first-order no descent along the twelve declared path segments only; it does not
 prove stress on the rest of the polytope or second-order local minimality.
 The full-interval identity must derive its degree bound from affine centers, fixed

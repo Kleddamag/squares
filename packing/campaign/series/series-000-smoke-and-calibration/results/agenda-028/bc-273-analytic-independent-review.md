@@ -131,12 +131,12 @@ $$
 X\le L-ac-2s\le66/25<3\le z+1.
 $$
 
-Consider the open set $K=\operatorname{int}(Q_8+C_8)\cap\{L-1<y<L\}$. It is nonempty and
-convex, even when the top vertex touches $y=L$. The occupied top rectangles are
-$[0,2]\times[L-1,L]$ and $[z,z+1]\times[L-1,L]$. Interior nonoverlap confines $K$ to the
-union of the free strips $(2,z)\times(L-1,L)$ and $(z+1,L)\times(L-1,L)$. An open cap
-point cannot remain on a shared vertical obstacle boundary: its neighborhood would enter
-an obstacle interior.
+Consider the open set $K=\operatorname{int}(Q_8+C_8)\cap\lbrace L-1<y<L\rbrace$. It is
+nonempty and convex, even when the top vertex touches $y=L$. The occupied top rectangles
+are $[0,2]\times[L-1,L]$ and $[z,z+1]\times[L-1,L]$. Interior nonoverlap confines $K$ to
+the union of the free strips $(2,z)\times(L-1,L)$ and $(z+1,L)\times(L-1,L)$. An open
+cap point cannot remain on a shared vertical obstacle boundary: its neighborhood would
+enter an obstacle interior.
 Connectedness puts the cap in one strip.
 The bound on $X$ excludes the right strip, including its closure.
 
@@ -262,7 +262,7 @@ The claimed consequences $z-2\ge182/725>1/4$ and, when $s\le13/20$, $z-2>331/100
 follow from the stated monotonicity and $\sqrt{231}/20>759/1000$.
 
 I also checked the author’s seven excluded core-versus-square-2 directions and the
-remaining negative-$f$ inequality.
+remaining negative-`f` inequality.
 Their right-compartment contradiction is valid.
 The below-coordinate expression decreases in angle as claimed and has endpoint value
 $1219/500<49/20$. The last two sine ranges give the positive rational differences

@@ -8,7 +8,7 @@ Removing the relaxation’s allowance for octagon boundary points does not repai
 proposed bound.
 
 This is a surrogate obstruction, **not an eleven-square packing**. One of the seven
-radius-$1/2$ disks strictly overlaps a selected actual square.
+radius-`1/2` disks strictly overlaps a selected actual square.
 The configuration therefore supplies neither a disk-model witness nor a full-square
 witness. The complete question $D_0=\varnothing$ remains unresolved by this adversary,
 subject to the fresh independent audit of both terminal arguments.
@@ -201,12 +201,12 @@ These groups contain $3+3+9+3+3=21$ pairs.
 Together with (8)–(10), they prove
 
 $$
-\kappa_{\rm oct}(G_*)\ge7
+\kappa_{\rm oct}(G_{\ast})\ge7
 \tag{11}
 $$
 
-for the exact four-pose member $G_*$ in (1). No numerical separation tolerance, sampled
-angle, unverified mutual pair or unstated rounding decision is present.
+for the exact four-pose member $G_{\ast}$ in (1). No numerical separation tolerance,
+sampled angle, unverified mutual pair or unstated rounding decision is present.
 
 ## Why This Is Not a Disk or Full-Square Witness
 
@@ -232,7 +232,7 @@ $\beta<39/40<1$.
 In the selected square’s orthonormal coordinates, the nearest point to $P_1$ is
 therefore on the face with $f$ coordinate $1/2$, at distance $\beta-1/2<1/2$. Moving
 that point a sufficiently small distance into the square keeps it inside the open
-radius-$1/2$ disk centered at $P_1$. The two interiors intersect.
+radius-`1/2` disk centered at $P_1$. The two interiors intersect.
 The declared disk model consequently rejects this configuration.
 
 Every full unit square centered at $P_1$, whatever its actual orientation, contains that
@@ -259,8 +259,8 @@ No new upper-band theorem is asserted.
 
 The sound chain $\kappa_\square\le\kappa_{\rm disk}\le\kappa_{\rm oct}$ gives no lower
 bound for either stronger model from (11). This adversary proves neither
-$\kappa_{\rm disk}(G_*)\ge7$ nor $\kappa_\square(G_*)\ge7$, and supplies no uniform
-upper bound in those models.
+$\kappa_{\rm disk}(G_{\ast})\ge7$ nor $\kappa_\square(G_{\ast})\ge7$, and supplies no
+uniform upper bound in those models.
 The whole $D_0$ and reflected $D_2$ determination remains open in this report.
 Every original failure sibling, actual-angle seam, legal touching case and full-square
 condition is retained.
@@ -269,7 +269,7 @@ The smallest remaining mathematical implication is a uniform bound in the admitt
 model, or an argument using the actual orientation-dependent square cavities and their
 21 mutual SAT clauses, throughout the unchanged $\Gamma_0$. Such a proof must use
 information that rejects the present octagon configuration.
-Establishing it only at $G_*$ would still not be uniform.
+Establishing it only at $G_{\ast}$ would still not be uniform.
 The declared octagon argument ends at this obstruction; no replacement target, new
 engine, narrowed guard family or automatic retry is attempted.
 The independent author may have a different whole-domain argument, which this adversary

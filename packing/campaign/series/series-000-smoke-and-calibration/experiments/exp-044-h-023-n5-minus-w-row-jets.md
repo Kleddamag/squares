@@ -138,7 +138,7 @@ The keys and gradients must equal the authoritative source matrix exactly.
 Apply the production positive stress weights to those same row jets.
 Retain every weighted row curvature, prove all fifteen quadratic-correction columns
 cancel, and derive the total curvature.
-Copying exp-036’s `sqrt(2)/8`, `1/4`, or `sqrt(2)/2-1/4`, or canceling source rows
+Copying exp-036’s `sqrt(2)/8`, $1/4$, or `sqrt(2)/2-1/4`, or canceling source rows
 without weighting the derived quadratic terms, invalidates the run.
 
 The exp-034 positive sheet-angle curve must supply its exact full center, angle, and
@@ -200,12 +200,12 @@ failure.
 ## Frozen controls and refusals
 
 Run an instrument-valid target baseline, whatever its valid obstruction disposition, and
-a fixed exp-036 `+W` positive fixture that must reach a met obstruction through the same
+a fixed exp-036 $+W$ positive fixture that must reach a met obstruction through the same
 production builder before running exactly twelve mutations.
 Each mutation enters before certificate construction, re-enters the same builder and
 validator, and passes only by matching its sole frozen failure identifier:
 
-1. retain one `+W` center entry while negating the other fourteen input coordinates ->
+1. retain one $+W$ center entry while negating the other fourteen input coordinates ->
    `source.minus_w`;
 2. remove `interior` in source binding -> `source.strata`;
 3. remove `owner4:a+` from the case inventory -> `source.owner_exhaustion`;
@@ -216,12 +216,12 @@ validator, and passes only by matching its sole frozen failure identifier:
    `jet.correction_unused`;
 7. flip one strict nonzero SAT feature sign supplied to `exact_jets` ->
    `jet.absolute_branch`;
-8. run the zero-correction builder at `W` and `2W`, then replace the required scaled
+8. run the zero-correction builder at $W$ and $2W$, then replace the required scaled
    curvature by a copied fixed value before homogeneity validation ->
    `jet.curvature_homogeneity`;
 9. perturb one production weight before applying it to row jets ->
    `certificate.weighted_curvature`;
-10. change the exact sheet correction from `dx0=dy0=-1/4` to `-1/2`, making the tight
+10. change the exact sheet correction from `dx0=dy0=-1/4` to $-1/2$, making the tight
     x-lower row negative -> `control.sheet_witness`;
 11. remove one actual bounded or unbounded scale handler ->
     `certificate.scale_exhaustion`; and

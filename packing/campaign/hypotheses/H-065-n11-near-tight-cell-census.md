@@ -94,11 +94,11 @@ hypothesis:
 # H-065 — How Big Is the Near-Tight Set?
 
 X-014’s Lemma 1 says that a certificate which has stopped proving infeasibility has not
-stopped constraining packings: any eleven disjoint unit squares at side `L` carry cores
-that are `ε`-tight against `μ` and together miss at most `ε` of `μ`’s mass.
-In integer-programming terms it is reduced-cost fixing — a placement whose mass exceeds
-`1 + ε` cannot appear in any integral solution, so the search may be restricted to the
-`ε`-tight placements.
+stopped constraining packings: any eleven disjoint unit squares at side $L$ carry cores
+that are $\varepsilon$-tight against $\mu$ and together miss at most $\varepsilon$ of
+$\mu$’s mass. In integer-programming terms it is reduced-cost fixing — a placement whose
+mass exceeds $1 + \varepsilon$ cannot appear in any integral solution, so the search may
+be restricted to the $\varepsilon$-tight placements.
 
 Whether that restriction is worth anything is an empirical question with one number in
 it, and Corollary 1b says the number is already sitting in a grid the sweep fills.
@@ -108,7 +108,7 @@ region, the mass gap constrains nothing enumerable and the chunking half of the 
 question is dead where it stands.
 
 This claim measures it on the one artifact where the measurement costs nothing extra —
-the retained `381/100` certificate, whose `1121` atoms already decide in the fast tier —
+the retained $381/100$ certificate, whose $1121$ atoms already decide in the fast tier —
 and declares the accept line before the tool exists.
 The margin is a census margin: on a retained certificate every reachable cell already
 carries mass at least one, and what is being counted is how many carry barely more.

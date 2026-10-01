@@ -2,14 +2,14 @@
 
 Status: **site set refuted**. The side stays open.
 
-Session-139 probe: BC-191 auto `(25, 34, 42)` plus count 60, unioned with T-025’s 584
-atom sites scaled to `96/25`,
-`(n, L, B, net) = (11, 96/25, 9977/10000, 181 directions)`. `96/25 = 3.84` sits between
+Session-139 probe: BC-191 auto $(25, 34, 42)$ plus count 60, unioned with T-025’s 584
+atom sites scaled to $96/25$,
+`(n, L, B, net) = (11, 96/25, 9977/10000, 181 directions)`. $96/25 = 3.84$ sits between
 the 383/100 and 77/20 session-139 probes.
-The row loop sat at `11.000000` at rounds 2–3, crossed eleven at round 4 (`11.064417`),
-and converged at `11.371819`. Same grid counts and seed as the `77/20` and `31/8`
-probes, which converged at `11.456576` and `11.561186`. Restricted opt rose with L.
-T-025 at `191/50` is unchanged.
+The row loop sat at $11.000000$ at rounds 2–3, crossed eleven at round 4 ($11.064417$),
+and converged at $11.371819$. Same grid counts and seed as the $77/20$ and $31/8$
+probes, which converged at $11.456576$ and $11.561186$. Restricted opt rose with L.
+T-025 at $191/50$ is unchanged.
 
 ## Command
 
@@ -33,12 +33,12 @@ Column generation added one orbit after the row loop and stopped; wall 222.9 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `11.371819` |
-| Rationalised total | `45487517/4000000` = `11.371879` |
+| Restricted optimum | $11.371819$ |
+| Rationalised total | $\frac{45487517}{4000000}$ = $11.371879$ |
 | Sites / orbits / rows | 7705 / 1014 / 8793 |
 | Seed sites | 584 |
 | LP rounds | 38 |
-| Crossing | round 4 (`11.064417`); rounds 2–3 sat at `11.000000` |
+| Crossing | round 4 ($11.064417$); rounds 2–3 sat at $11.000000$ |
 | Wall | 222.9 s |
 | `least_covered` | 1 |
 | Converged | yes (`violated == 0`) |

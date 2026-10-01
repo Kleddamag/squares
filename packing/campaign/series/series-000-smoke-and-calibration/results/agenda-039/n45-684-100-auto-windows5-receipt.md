@@ -5,11 +5,11 @@ No freeze.
 
 Session-141 exp-172: seedless auto grids plus `--seed-windows 5`,
 `(n, L, B, net) = (45, 684/100, 9977/10000, 181 directions)`. Auto resolved to
-`(51, 68, 84)`. Seed sites 900 (windows only).
-The 1200 s deadline stopped the row loop after 26 LP rounds at `42.137360` (546 still
+$(51, 68, 84)$. Seed sites 900 (windows only).
+The 1200 s deadline stopped the row loop after 26 LP rounds at $42.137360$ (546 still
 violated). It did not cross 45.
 
-Remaining rows can only raise this value, so `42.137360` is not a covering below 45. Do
+Remaining rows can only raise this value, so $42.137360$ is not a covering below 45. Do
 not more-wall this set.
 Nagamochi `1 + sqrt(34)` stands.
 T-030 was not offered.
@@ -35,16 +35,16 @@ uv run --frozen --all-extras --group dev python -m devtools.run_fractional_colge
 ```
 
 No freeze file: the 1200 s deadline stopped the row loop after 26 rounds.
-Wall 1253.8 s. The walker then started n=44 `675/100` as exp-173.
+Wall 1253.8 s. The walker then started n=44 $675/100$ as exp-173.
 
 ## Covering
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `42.137360` |
+| Restricted optimum | $42.137360$ |
 | Sites / orbits / rows | 15173 / 1967 / 9572 |
 | Seed sites | 900 |
-| Auto grids | `(51, 68, 84)` |
+| Auto grids | $(51, 68, 84)$ |
 | LP rounds | 26 |
 | Crossing | none |
 | Wall | 1253.8 s |

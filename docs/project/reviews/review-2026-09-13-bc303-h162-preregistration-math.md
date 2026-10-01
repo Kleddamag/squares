@@ -44,10 +44,10 @@ this preregistration:
 The measure file’s SHA-256 is
 `c30b600d3d35f3851f0595e2c42962bf353721f9e72b0539bd691aec522e876f`.
 
-With `W=4000000`, `F=W(1+g)=4000015`, and `WM=45048398`, the residual floor-normalized
+With $W=4000000$, $F=W(1+g)=4000015$, and `WM=45048398`, the residual floor-normalized
 budget is `WE=WM-11F=1048233`. For a hypothetical eleven-parent packing and one coherent
 admitted selection of strict cores, put `beta_i=mu(C_i)-(1+g)>=0`. Disjoint closed cores
-give `U+sum(beta_i)=E`. A displayed pair with `k` distinct owners and `u` globally
+give `U+sum(beta_i)=E`. A displayed pair with $k$ distinct owners and $u$ globally
 unowned marks must satisfy `sum_displayed(beta_i)<=E-u*w`. In raw surplus this is
 `S<=epsilon-u*w-(11-k)*g`; subtracting all eleven floors without normalizing the
 displayed owners would double-count their floors.
@@ -55,21 +55,21 @@ Local O-role absence supports the global account only when the packing’s actua
 incidence makes that mark globally unowned.
 [X-031, lines 52–87][account]
 
-Let `A_g` be the minimum of `mu(C)-(1+g)` over the complete forced-0 C domain and
+Let $A_g$ be the minimum of `mu(C)-(1+g)` over the complete forced-0 C domain and
 `mu(C1)+mu(C2)-2(1+g)` over the complete forced-0 actual-S domain.
 Each actual S configuration includes one simultaneous realization of its two physical
 parents. Finite atomic support and nonempty domains imply attainment, even with strict
 geometric inequalities.
-If `A_g>E/2`, full/full pairs exceed `E`; one-missing pairs also pass because their O
+If $A_g>E/2$, full/full pairs exceed $E$; one-missing pairs also pass because their O
 excess is nonnegative and `2Ww=1062510>WE`. Conversely, diagonally reflect an attaining
 corner to exchange forced types and transport it to the opposite corner.
 Whole configurations preserve mass, complete labels, source aliases, and physical-parent
-feasibility. The uniform `x+y` parent gap `708/3175>0` makes the opposite configurations
+feasibility. The uniform $x+y$ parent gap $708/3175>0$ makes the opposite configurations
 coexist. Their excess is `2A_g<=E`, which refutes the combined local helper.
 Adjacent pairs retain their joint compatibility constraints throughout this argument.
 [X-029][x029], [independent review][independent]
 
-`WE/2=524116.5`, so the first passing integer normalized excess is `524117`.
+`WE/2=524116.5`, so the first passing integer normalized excess is $524117$.
 
 | Quantity | First passing integer mass | Last failing integer mass |
 | --- | ---: | ---: |
@@ -77,7 +77,7 @@ Adjacent pairs retain their joint compatibility constraints throughout this argu
 | Complete actual-S pair minimum | 8524147 | 8524146 |
 | Relaxed S first-owner strip minimum, sufficient only | 4524132 | 4524131 |
 
-The last line follows from the second owner’s mass floor: `4524132+F=8524147`. Both C
+The last line follows from the second owner’s mass floor: $4524132+F=8524147$. Both C
 and S endpoints independently give a total for the reflected pair and remaining floors
 of `45048397` on the failing side and `45048399` on the passing side, around
 `WM=45048398`. The H-160 thresholds remain C `4524200` and S first owner `4524185`. The
@@ -88,15 +88,15 @@ improvements. [X-031, lines 121–152][cutoffs]
 register the simple sufficient-filter claim: the complete C minimum and complete S
 first-owner strip minimum are both at least `4524132`. The existing admitted reader
 determines both quantities.
-Acceptance proves `A_g>E/2` through X-031; failure of the relaxed S filter has a weaker
+Acceptance proves $A_g>E/2$ through X-031; failure of the relaxed S filter has a weaker
 mathematical consequence.
 This claim is cleaner to verify than registering the full actual-S condition against an
 instrument that cannot always decide it.
 Keep the complete C/actual-S equivalence in X-031 and register any later joint-S method
 separately.
 
-The filter’s domain is X-029’s closed, symmetric equipment domain with `q=96/25`,
-`h=9977/20000`, the exact frozen 377-atom measure, closed membership, complete
+The filter’s domain is X-029’s closed, symmetric equipment domain with $q=96/25$,
+$h=9977/20000$, the exact frozen 377-atom measure, closed membership, complete
 signed-frame labels, and strict core containment.
 C and the forced-0 S first owner range over all 182 eligible charts, including both axis
 aliases and the reflected near-diagonal endpoint.
@@ -159,10 +159,11 @@ H-161’s boundary-free 19-atom parent receipt proves local mass constancy under
 sufficiently small admissible rigid motions; it supplies no numerical neighborhood
 radius.
 With the retained axis core, sufficiently small inward translations preserve T1’s
-complete labels `{3,4,11,12}`, so this configuration remains outside the forced-0 C/S
-domains. Both necessary parent-union tests remain slack locally, without proving
-extension. H-162 success would establish the normalized adjacent and opposite
-inequalities and exclude forced-type conflicts in a hypothetical equipped packing.
+complete labels $\lbrace3,4,11,12\rbrace$, so this configuration remains outside the
+forced-0 C/S domains.
+Both necessary parent-union tests remain slack locally, without proving extension.
+H-162 success would establish the normalized adjacent and opposite inequalities and
+exclude forced-type conflicts in a hypothetical equipped packing.
 It leaves local availability, coherent selection for every packing, and the global
 packing bound unresolved.
 A replayed low C or actual-S witness refutes the local helper, without constructing an

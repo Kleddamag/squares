@@ -5,10 +5,10 @@ Retained measurement-lane report for
 Opus sub-agent on 2026-09-09 under the breadth survey.
 The report is reproduced as delivered, with its own status labels; X-023 carries the
 coordinator’s reading.
-Retained beside it: the frozen depth-one family at `191/50`
+Retained beside it: the frozen depth-one family at $191/50$
 ([`lane-e-cutting-191-50-family.json`](lane-e-cutting-191-50-family.json)), the loop’s
 summary ([`lane-e-cutting-191-50-summary.json`](lane-e-cutting-191-50-summary.json)),
-and the row-completion receipt at `61/16`
+and the row-completion receipt at $61/16$
 ([`lane-e-completion-61-16-receipt.json`](lane-e-completion-61-16-receipt.json)),
 slimmed to its decision-bearing content (parameters, status, stop reason, row solution,
 round timings, timing; 201,836 bytes) with a `not_retained` block recording the full
@@ -142,7 +142,7 @@ check "reproduced"
 
 The same command also replayed the state file’s `best_family` — the same iteration-4
 family, enumerated again from different bytes, 718.0 s — and reproduced every number:
-952 placements, weight `29359986576/2903321381`, exact max depth `1`, 4,234,712
+952 placements, weight $29359986576/2903321381$, exact max depth $1$, 4,234,712
 vertices, `recorded.scaled_total 29359986576/2903321381`, `check: reproduced`. `--check`
 passed on both paths.
 

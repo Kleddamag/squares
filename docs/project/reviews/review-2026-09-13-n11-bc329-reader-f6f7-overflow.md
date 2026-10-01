@@ -87,7 +87,7 @@ these changes:
 | External allowance and matching invocation-identity allowance/deadline | `8e307` |
 | RSS observation lifetime and rebuilt unobserved trailing duration | `7e307` |
 
-The invocation origin stays `10.0`; adding it to these allowances leaves the displayed
+The invocation origin stays $10.0$; adding it to these allowances leaves the displayed
 floating-point deadline values unchanged.
 The other clocks retain their baseline values.
 The receipt inventory and receipt-size fixed point are rebuilt.
@@ -131,20 +131,20 @@ lifetime.
 For finite arithmetic, the new schedule recurrence gives a sufficient and necessary
 feasibility check for the recorded sequential durations and task spans, apart from its
 stated roundoff tolerance.
-Let a phase have duration `d`, previous earliest completion `e`, and observed task span
-`[a, b]`. Its start must be at least `e`, at least `b - d`, and at most `a`. Therefore
-`s = max(e, b - d)` is its earliest feasible start; refusing when `s > a` detects an
-impossible phase, and carrying `s + d` forward preserves the strongest earliest bound.
+Let a phase have duration $d$, previous earliest completion $e$, and observed task span
+$[a, b]$. Its start must be at least $e$, at least $b - d$, and at most $a$. Therefore
+$s = \max(e, b - d)$ is its earliest feasible start; refusing when $s > a$ detects an
+impossible phase, and carrying $s + d$ forward preserves the strongest earliest bound.
 A phase without task observations needs only the predecessor bound.
 Ending this recurrence within the worker lifetime provides one possible schedule; any
 actual schedule must end at least that late.
 
 This handles more than separate lower and upper route-position bounds.
-The supplemental control shifts raw tasks later by `0.5` seconds and exact tasks later
-by `0.2` seconds.
+The supplemental control shifts raw tasks later by $0.5$ seconds and exact tasks later
+by $0.2$ seconds.
 Raw observations still finish before exact observations, and both spans
 fit their individual durations, but normalization cannot fit between them.
-The reader refuses. Shifting exact by `0.4` seconds instead provides a feasible schedule
+The reader refuses. Shifting exact by $0.4$ seconds instead provides a feasible schedule
 and receives acceptance.
 All six maintained phase-position controls also pass, including the preflight,
 preceding-phase, and final-tail equality boundaries.
@@ -157,8 +157,8 @@ Cleanup comprises the first process-group cleanup after worker exit and a second
 already inside parent final readback.
 Adding launch to worker durations, or adding all cleanup to parent readback, would
 reject allowed observations.
-A supplemental control simultaneously sets launch to `1.05`, cleanup to `0.15`, and
-parent final readback to `0.15`, with worker exit `1.05` and external lifetime `1.2`; it
+A supplemental control simultaneously sets launch to $1.05$, cleanup to $0.15$, and
+parent final readback to $0.15$, with worker exit $1.05$ and external lifetime $1.2$; it
 passes. The one-ULP nested-bound control passes, while the 32-ULP violation refuses.
 
 F6c closes the retained two-process cycle.

@@ -109,14 +109,14 @@ file.
 ## Frozen source and selection boundary
 
 The retained child digests are
-`d7385d6ce1b5a959d06893c94f3c0355f17175bd68608db6f012ca309854ed66` for `n = 68` and
-`b32aa37d37b07248ac92e683bbfd9be7ca6eb6aafa35a35e46a2484467afee41` for `n = 69`. The
+`d7385d6ce1b5a959d06893c94f3c0355f17175bd68608db6f012ca309854ed66` for $n = 68$ and
+`b32aa37d37b07248ac92e683bbfd9be7ca6eb6aafa35a35e46a2484467afee41` for $n = 69$. The
 ephemeral parent digests are
 `558fbdddfeb0b2f8752b88e172d2776544beb4d2a7122189ef77c1e1c5ebdc6d` and
 `0333814c7b43ddc7db549a54771de117f8a6b7b3db0f89c12fe035115546fd08`. Raw parent bytes may
 not enter the repository.
 
-The downstream H-051 receipt is chosen from the `n = 68` parent alone in the frozen
+The downstream H-051 receipt is chosen from the $n = 68$ parent alone in the frozen
 model order and sealed before child or gain access.
 Its separate surgery-grade interval-width threshold is `1.9215450105403275e-5` in
 unit-square-length coordinates; that screen does not decide H-053.

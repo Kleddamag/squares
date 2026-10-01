@@ -2,10 +2,10 @@
 
 Status: **site set refuted**. The side stays open.
 
-Session-139 probe: four-grid `(25, 34, 41, 48)` unioned with T-025’s 584 atom sites,
-scaled from `191/50` to `383/100`, at
+Session-139 probe: four-grid $(25, 34, 41, 48)$ unioned with T-025’s 584 atom sites,
+scaled from $191/50$ to $383/100$, at
 `(n, L, B, net) = (11, 383/100, 9977/10000, 181 directions)`. The extra seed dropped the
-restricted optimum by 0.0025 from the four-grid row `11.142857`. A restricted optimum at
+restricted optimum by 0.0025 from the four-grid row $11.142857$. A restricted optimum at
 or above 11 on a converged row loop refutes this site set only.
 T-025 and T-026 are unchanged.
 
@@ -31,17 +31,17 @@ Column generation added one orbit after the row loop and stopped; wall 107.9 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `11.140351` |
-| Rationalised total | `1114039/100000` = `11.14039` |
+| Restricted optimum | $11.140351$ |
+| Rationalised total | $\frac{1114039}{100000}$ = $11.14039$ |
 | Sites / orbits / rows | 6249 / 835 / 6753 |
 | Seed sites | 584 |
 | LP rounds | 28 |
-| Crossing | round 6 (`11.020202`); rounds 3–5 sat at `11.000000` |
+| Crossing | round 6 ($11.020202$); rounds 3–5 sat at $11.000000$ |
 | Wall | 107.9 s |
 | `least_covered` | 1 |
 | Converged | yes (`violated == 0`) |
 
-Point-atom covering at `383/100` did not fall below eleven on auto grids, the four-grid,
+Point-atom covering at $383/100$ did not fall below eleven on auto grids, the four-grid,
 or this T-025-seeded union.
 `devtools.decide_certificate` was not run.
 

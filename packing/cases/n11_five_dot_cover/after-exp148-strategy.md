@@ -77,7 +77,7 @@ R exchanges the two already recorded witnesses; the additional S images have cen
 
 The four transported witness products reject **61,440 labels**. Their complement is
 
-$$E\times U\times U\times E,\qquad E=\{m_1{:}j0,m_1{:}j7,m_2{:}j0,m_2{:}j7\}.$$
+$$E\times U\times U\times E,\qquad E=\lbrace m_1{:}j0,m_1{:}j7,m_2{:}j0,m_2{:}j7\rbrace.$$
 
 Exactly 4,096 labels remain, including the two baselines: **4,094 additional
 survivors**. Record this as analytic transported negative evidence with its source

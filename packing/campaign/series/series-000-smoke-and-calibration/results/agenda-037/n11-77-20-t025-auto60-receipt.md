@@ -2,13 +2,13 @@
 
 Status: **site set refuted**. The side stays open.
 
-Session-139 probe: BC-191 auto `(25, 34, 42)` plus count 60, unioned with T-025’s 584
-atom sites scaled to `77/20`,
-`(n, L, B, net) = (11, 77/20, 9977/10000, 181 directions)`. `77/20 = 3.85` already has a
-BC-200 vertex-seeded row (unconverged `11.227631` on 22,625 sites).
+Session-139 probe: BC-191 auto $(25, 34, 42)$ plus count 60, unioned with T-025’s 584
+atom sites scaled to $77/20$,
+`(n, L, B, net) = (11, 77/20, 9977/10000, 181 directions)`. $77/20 = 3.85$ already has a
+BC-200 vertex-seeded row (unconverged $11.227631$ on 22,625 sites).
 This is a different site set.
-The row loop crossed eleven at LP round 2 (`11.000000`) and converged at `11.456576`.
-T-025 at `191/50` is unchanged.
+The row loop crossed eleven at LP round 2 ($11.000000$) and converged at $11.456576$.
+T-025 at $191/50$ is unchanged.
 
 ## Command
 
@@ -32,12 +32,12 @@ Column generation added one orbit after the row loop and stopped; wall 196.0 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `11.456576` |
-| Rationalised total | `2864157/250000` = `11.456628` |
+| Restricted optimum | $11.456576$ |
+| Rationalised total | $\frac{2864157}{250000}$ = $11.456628$ |
 | Sites / orbits / rows | 7705 / 1014 / 7194 |
 | Seed sites | 584 |
 | LP rounds | 26 |
-| Crossing | round 2 (`11.000000`) |
+| Crossing | round 2 ($11.000000$) |
 | Wall | 196.0 s |
 | `least_covered` | 1 |
 | Converged | yes (`violated == 0`) |

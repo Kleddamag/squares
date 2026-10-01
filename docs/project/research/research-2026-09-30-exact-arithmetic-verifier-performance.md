@@ -45,7 +45,7 @@ GMP-backed Rust and Python arithmetic, pure-Rust alternatives, and homogeneous
 integer geometry remain unmeasured options for this kernel.
 
 This work concerns the separate rectangle-density verifier.
-The independently confirmed `n = 11` optimality result, T-060, is already complete; its
+The independently confirmed $n = 11$ optimality result, T-060, is already complete; its
 [whole-proof review](../reviews/review-2026-09-29-n11-optimality-census-contract.md#whole-proof-acceptance)
 does not depend on this performance investigation.
 Completing or accelerating the native rectangle pipeline is a different obligation.
@@ -79,7 +79,7 @@ production dependencies.
 For an admitted polygon $P$, the kernel returns the exact rational value
 
 $$
-F(P)=\sum_j \rho_j\,\operatorname{area}(P\cap R_j),
+F(P)=\sum_j \rho_j\thinspace\operatorname{area}(P\cap R_j),
 \qquad \rho_j\geq 0,
 $$
 
@@ -117,8 +117,8 @@ normalized reports, and timings:
 
 | Workload | Exact outcome in both paths | Python wall | Rust wall | Rust child CPU |
 | --- | --- | ---: | ---: | ---: |
-| Analytic `n = 3`, all 201 angles, 1,781 nodes | `VERIFIED`; reports identical | 0.504 s | 3.800 s | 1.044 s |
-| External `n = 11`, angle 1, fixed 1,000 nodes | `INCONCLUSIVE`; reports identical | 13.252 s | 24.085 s | 10.889 s |
+| Analytic $n = 3$, all 201 angles, 1,781 nodes | `VERIFIED`; reports identical | 0.504 s | 3.800 s | 1.044 s |
+| External $n = 11$, angle 1, fixed 1,000 nodes | `INCONCLUSIVE`; reports identical | 13.252 s | 24.085 s | 10.889 s |
 
 Wall time includes admission, child startup, communication, computation, and shutdown.
 The receipt does not record Python process CPU; its zero *child* CPU means that Python
@@ -405,7 +405,7 @@ A complete upstream run versus a capped, inconclusive independent run is not a m
 throughput comparison.
 
 Cutoffs also belong to the mathematical input.
-The nominal `1.0001`, the exact rational $10001/10000$, and the effective binary64 value
+The nominal $1.0001$, the exact rational $10001/10000$, and the effective binary64 value
 $2252024993666617/2251799813685248$ are distinct.
 Any comparison must preserve the actual cutoff, angular range, node budget, subdivision
 order, and box-bound choice.

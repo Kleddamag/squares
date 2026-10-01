@@ -65,15 +65,15 @@ The original measurements are retained; the changed conclusions concern their sc
 
 ## 1. Definitions
 
-**`s(11)`.** The side of the smallest square containing eleven unit squares without
+**$s(11)$.** The side of the smallest square containing eleven unit squares without
 overlap, at arbitrary rotations.
-To prove a lower bound `L`, exclude every container side strictly below `L`. The
+To prove a lower bound $L$, exclude every container side strictly below $L$. The
 conclusion is `s(11) >= L`; it does not by itself decide whether a packing exists at
-side exactly `L`. A direct exclusion at `L` settles that additional question.
+side exactly $L$. A direct exclusion at $L$ settles that additional question.
 
-**Core.** With a shrink factor `B < 1` and an admitted finite direction net satisfying
+**Core.** With a shrink factor $B < 1$ and an admitted finite direction net satisfying
 the proved strict-containment condition, every unit square placed in the container
-contains a closed `B`-square at one of those directions: its *core*. Disjoint unit
+contains a closed $B$-square at one of those directions: its *core*. Disjoint unit
 squares have disjoint cores.
 
 **Point certificate.** A finite family of nonnegative weighted *point atoms*. A point
@@ -83,20 +83,20 @@ Eleven disjoint squares then give eleven disjoint cores, each charging at least 
 the total weight is at least eleven; a certificate of total weight below eleven is
 therefore a proof that eleven squares do not fit.
 
-**Threshold atom.** A triple `(S, k, w)`, with finite `S`, integer `1 <= k <= |S|` and
-`w >= 0`, charging `w` to every core containing at least `k` points of the finite set
-`S`. Pairwise disjoint cores each consume `k` points, so at most `floor(|S| / k)` can be
+**Threshold atom.** A triple $(S, k, w)$, with finite `S`, integer `1 <= k <= |S|` and
+`w >= 0`, charging $w$ to every core containing at least $k$ points of the finite set
+`S`. Pairwise disjoint cores each consume $k$ points, so at most `floor(|S| / k)` can be
 charged and the atom costs `w * floor(|S| / k)`. Strictly stronger than point atoms; it
-is what carried this branch past `191/50`.
+is what carried this branch past $191/50$.
 
 **Fractional packing; ceiling family.** On the dual side, a nonnegative weighting of
 cores whose total weight at any point of the plane is at most one (*depth at most one*).
-By weak duality, a fractional packing of total weight at least `n` shows that no **point
-cover** of its admissible core family has mass below `n`. Such a family is a *ceiling
+By weak duality, a fractional packing of total weight at least $n$ shows that no **point
+cover** of its admissible core family has mass below $n$. Such a family is a *ceiling
 family* for that specified point-cover problem.
 For threshold charges it must also satisfy the threshold inequalities; depth one alone
 is insufficient. The symmetry, shrink, net and residual domain are part of the claim.
-The retained one at `191/50` has 88 cores of weight `1/8`, total exactly eleven, maximum
+The retained one at $191/50$ has 88 cores of weight $1/8$, total exactly eleven, maximum
 depth exactly one, decided in exact arithmetic.
 
 **Conditioning.** Case analysis.
@@ -106,7 +106,7 @@ Excluding every raw class is a sufficient plan, but overlapping classes can give
 packing several valid selections.
 One unclosed label does not defeat every such plan.
 
-**Corner ownership, the conditioning at issue.** At side `96/25`, every packing of
+**Corner ownership, the conditioning at issue.** At side $96/25$, every packing of
 eleven has, at each corner, an *owner*: a square whose core contains one of two
 designated marks near that corner.
 Owners fall into sixteen classes per corner (two marks by eight angular sectors).
@@ -114,22 +114,22 @@ Fixing a class pins the owner’s pose enough to name a *patch* that is guarante
 occupied; the other squares’ cores must avoid it, and those cores constitute the class’s
 *residual domain*.
 
-**The conditional requirement.** Conditioning on `m` corners accounts for `m` owners, so
-the remaining `11 - m` squares hold pairwise disjoint cores in the residual domain.
-A cover of that domain of total weight strictly below `11 - m` is a contradiction.
-The requirement per class is therefore: **strictly below `11 - m`**.
+**The conditional requirement.** Conditioning on $m$ corners accounts for $m$ owners, so
+the remaining $11 - m$ squares hold pairwise disjoint cores in the residual domain.
+A cover of that domain of total weight strictly below $11 - m$ is a contradiction.
+The requirement per class is therefore: **strictly below $11 - m$**.
 
 ## 2. The facts, with the status of each
 
 | # | Fact | Status |
 | --- | --- | --- |
 | F1 | The single-corner ownership theorem stands alone; the four-owner structure is needed only to make the owners distinct from one another | read from the proof documents |
-| F2 | The mass-eleven ceiling family transports to `96/25` and is there a depth-one family of mass eleven | computed with the ownership line’s own transport and screen, imported unmodified |
+| F2 | The mass-eleven ceiling family transports to $\frac{96}{25}$ and is there a depth-one family of mass eleven | computed with the ownership line’s own transport and screen, imported unmodified |
 | F3 | The cores containing a given corner mark carry weight **exactly one** in that family | EXACT for this family; not a consequence for all fractional families of the physical ownership theorem |
 | F4 | For four of the sixteen classes the patch reaches nothing in the family beyond the mark itself | EXACT |
-| F5 | No core meets two corner patches, because cross-corner distance `1.8545` exceeds core diameter `B sqrt 2 = 1.4109` | EXACT |
-| F6 | Deletion per class ranges from exactly `1` to `11/4`, mean `55/32` | EXACT over the sixteen screened endpoint classes; not a physical routing census |
-| F7 | The surviving family at a neutral class has two-of-three maximum `5/4` and heaviest rank-one clique `11/8` with piercing number `5/3`, matching these readings for the full family | EXACT readings; not equality of the whole cut structure or optimization problems |
+| F5 | No core meets two corner patches, because cross-corner distance $1.8545$ exceeds core diameter `B sqrt 2 = 1.4109` | EXACT |
+| F6 | Deletion per class ranges from exactly $1$ to $\frac{11}{4}$, mean $\frac{55}{32}$ | EXACT over the sixteen screened endpoint classes; not a physical routing census |
+| F7 | The surviving family at a neutral class has two-of-three maximum $\frac{5}{4}$ and heaviest rank-one clique $\frac{11}{8}$ with piercing number $\frac{5}{3}$, matching these readings for the full family | EXACT readings; not equality of the whole cut structure or optimization problems |
 
 ## 3. The ladder
 
@@ -141,15 +141,15 @@ So the survivors are a feasible fractional packing of the residual problem.
 domain has total weight at least the survivor weight.
 
 **Step 3 (from F3, F4).** At a neutral class the deletion removes exactly one unit, so
-the survivor weight is exactly `11 - 1 = 10`, while the requirement is strictly below
+the survivor weight is exactly $11 - 1 = 10$, while the requirement is strictly below
 ten. Ten is not below ten.
 
 **Step 4 (scope of the obstruction).** Hence no point cover with budget below ten closes
 those fixed endpoint-patch relaxations.
 This is an obstruction supplied by the retained survivor family, not by the mere fact
 that a raw label is unclosed.
-Let `Gamma(P)` be the valid owner selections of a hypothetical physical packing `P`, and
-`G` the selections whose residual families have been excluded.
+Let `Gamma(P)` be the valid owner selections of a hypothetical physical packing $P$, and
+$G$ the selections whose residual families have been excluded.
 A sufficient global condition is
 
 `for every hypothetical physical packing P, Gamma(P) intersects G`.
@@ -168,38 +168,38 @@ packing admits **no other** valid selection, which has not been shown.
 Steps 4 and 5 therefore establish that *this* case split, as posed, does not close; they
 do not establish that conditioning by point covers is impossible.
 
-**Step 5 (from F5).** Deletions at distinct corners are disjoint, so conditioning on `m`
-corners at neutral classes deletes exactly `m` and leaves `11 - m` against a requirement
-below `11 - m`. Two corners give nine against nine, four give seven against seven.
+**Step 5 (from F5).** Deletions at distinct corners are disjoint, so conditioning on $m$
+corners at neutral classes deletes exactly $m$ and leaves $11 - m$ against a requirement
+below $11 - m$. Two corners give nine against nine, four give seven against seven.
 This is neutrality for the stated family and patch combinations.
 It does not apply automatically to later wall-aware footprints or unit-parent domains.
 
 **Step 6 (proposed, and not established).** The argument runs: at any side where eleven
 pairwise disjoint admissible cores exist, delete the owners’ cores; the remaining
-`11 - m` are disjoint, admissible, and avoid the patches, because the patches lie inside
+$11 - m$ are disjoint, admissible, and avoid the patches, because the patches lie inside
 the owners’ cores; their 0/1 indicator is then feasible for every rank-one inequality on
-the residual domain, so the proved rank-one cap of `3.868983` would transfer to the
-conditional method at every `m`.
+the residual domain, so the proved rank-one cap of $3.868983$ would transfer to the
+conditional method at every $m$.
 
 **It does not go through as stated** (2026-09-10, PR 139 finding R2). The deduction
-starts from an artificial packing of eleven `B`-cores at `3.868983`, and that packing
+starts from an artificial packing of eleven $B$-cores at $3.868983$, and that packing
 has never been shown to carry distinct marked owners, class memberships or occupied
 patches; the ownership theorem the step leans on concerns unit-parent packings at
-`96/25`. “Delete the owners’ cores” presupposes exactly what is unproved there.
+$96/25$. “Delete the owners’ cores” presupposes exactly what is unproved there.
 Any conditional transfer of the cap therefore **requires a separate owner, class, patch
 and routing verification**, and none has been done.
-Spelled out, that verification is: identify `m` distinct owners in the witness, verify
+Spelled out, that verification is: identify $m$ distinct owners in the witness, verify
 their marks and classes at the same side, and prove that their union contains the
 declared occupied patches; the remaining cores must then satisfy every further
 restriction in the residual model.
-Only then do their indicators obstruct a budget below `11 - m` on that fixed domain.
+Only then do their indicators obstruct a budget below $11 - m$ on that fixed domain.
 Even a valid fixed-selection obstruction would still leave Step 4’s routing question.
 The unconditional obstruction is untouched by this and stands at its own stated scope.
 
 ## 4. Where the ladder stops
 
 Step 2 concerns **point covers only**. The survivor family has depth one, but by F7 a
-two-of-three atom charges it `5/4` against a budget of one: it *violates* threshold
+two-of-three atom charges it $5/4$ against a budget of one: it *violates* threshold
 inequalities, and therefore does **not** block a conditional threshold certificate.
 The blocking argument does not reach the richer language.
 
@@ -208,7 +208,7 @@ transported mass-eleven ceiling family, and the screened endpoint patches.
 
 - Conditioning by point covers cannot close the neutral classes, at one, two or four
   corners.
-- Conditioning subtracts exactly `m` from both the obstruction and the requirement on
+- Conditioning subtracts exactly $m$ from both the obstruction and the requirement on
   that family, so it cannot convert a failing method into a succeeding one there.
   This is the substantive result, and “**neutral**” is its correct name.
 
@@ -223,7 +223,7 @@ transported mass-eleven ceiling family, and the screened endpoint patches.
   **class count per corner** (sixteen classes at eight sectors) rather than a measured
   running cost. The estimate says conditioning buys no reach for more work; it is not a
   proof that it cannot work.
-- That the rank-one cap `3.868983` applies to the conditional method.
+- That the rank-one cap $3.868983$ applies to the conditional method.
   Step 6 is the proposed transfer and it does not go through as stated; it requires a
   separate owner, class, patch and routing verification that has not been done.
   This entry moved here from **Established** on 2026-09-10 (PR 139 finding R2).
@@ -245,7 +245,7 @@ and the general claim that survives is neutrality.
    Refining the eight sectors to sixteen does widen the guaranteed wedge from `pi/4` to
    `3pi/8` and grows the patch by about 62 per cent in area.
    Six of the eight refined subclasses retain survivor weight ten; two improve to
-   `19/2`, exceeding the registered improvement to at most `79/8`. Thus the maximum
+   $19/2$, exceeding the registered improvement to at most $79/8$. Thus the maximum
    remains ten, but local improvement is real.
 
    **Distance correction, September 10.** The reported unchanged positive distance holds
@@ -293,9 +293,9 @@ and the general claim that survives is neutrality.
 
 ### 5.1 The Angular and Pose Obstructions, with Their Premises
 
-Both are about the retained transported mass-eleven ceiling family at `q = 96/25` and
-the screened endpoint patches; `w(F)` is the exact survivor weight left when every core
-meeting the guaranteed patch `F` is deleted, and F3 is the fact that the cores holding a
+Both are about the retained transported mass-eleven ceiling family at $q = 96/25$ and
+the screened endpoint patches; $w(F)$ is the exact survivor weight left when every core
+meeting the guaranteed patch $F$ is deleted, and F3 is the fact that the cores holding a
 given corner mark weigh exactly one.
 The residual domain here imposes patch avoidance and the retained core admissibility
 rules. Adding parent, wall or joint-compatibility restrictions requires verifying that
@@ -304,17 +304,17 @@ T1 and T2 below are local proposition labels, not frontier claim identifiers.
 
 **T1, angular.** Let `r0` be a retained signed ray whose singleton class has survivor
 weight exactly 10. Partition the declared finite retained signed-ray universe into
-closed angular bins, and let `B` contain `r0`. Define its patch `F` to be the
-intersection of `Q_r(m)` over the retained rays of `B`, all at the same mark `m`. Then
-`F` is a subset of `Q_r0(m)`, so `F` deletes a subset of what `Q_r0` deletes and
-`w(F) >= 10`. And `m` lies in `F`, so `F` meets every core containing the mark; the mark
-clique weighs exactly 1 (F3), so `w(F) <= 11 - 1 = 10`. Hence `w(F) = 10` exactly,
+closed angular bins, and let $B$ contain `r0`. Define its patch $F$ to be the
+intersection of `Q_r(m)` over the retained rays of $B$, all at the same mark $m$. Then
+$F$ is a subset of `Q_r0(m)`, so $F$ deletes a subset of what $Q_{r0}$ deletes and
+`w(F) >= 10`. And $m$ lies in $F$, so $F$ meets every core containing the mark; the mark
+clique weighs exactly 1 (F3), so `w(F) <= 11 - 1 = 10`. Hence $w(F) = 10$ exactly,
 against a requirement strictly below 10.
 
 The argument needs only one neutral retained ray: every partition of that universe
 places it in a bin. This is a statement about the declared angular construction, not
 about a class remaining possible after additional physical or joint restrictions.
-Lane X4 measured 135 such rays per mark, spanning a contiguous arc `34.40698` degrees
+Lane X4 measured 135 such rays per mark, spanning a contiguous arc $34.40698$ degrees
 wide; that width is robustness, not the load-bearing step.
 
 **T2, pose.** In this patch-only model, a guaranteed patch lies inside the selected
@@ -322,23 +322,23 @@ owner core for every pose in its class.
 This definition does not cover every possible occupied-region argument, such as one
 using more of the unit parent.
 Mark-clique member `#59` is an admissible net-oriented core inside the container
-containing both bottom-left marks, at `(45133461/88696100, 25096071/49318700)`, and
+containing both bottom-left marks, at $(45133461/88696100, 25096071/49318700)$, and
 `#60` is its diagonal mirror.
-For a partition of a pose universe retaining `#59`, let `C` contain it and let `F` be
-any patch contained in every selected owner core of `C`. Then `F` is a subset of
+For a partition of a pose universe retaining `#59`, let `C` contain it and let $F$ be
+any patch contained in every selected owner core of `C`. Then $F$ is a subset of
 `core(#59)`, so `w(F) >= w(core(#59)) = 10`. That inequality already obstructs a point
 cover of budget below ten on the stated residual domain.
 
-Equality additionally requires a common mark `m` to lie in `F`, for example when `F` is
+Equality additionally requires a common mark $m$ to lie in $F$, for example when $F$ is
 the full intersection for a class whose every core contains that same mark.
 Owning the mark does not force every chosen subpatch to contain it.
-As an exact counterexample, scale `core(#59)` by `1/10000` about its bottom-left corner
+As an exact counterexample, scale `core(#59)` by $1/10000$ about its bottom-left corner
 and use that positive-area patch for the singleton class.
-It contains neither mark and leaves survivor weight `43/4`, confirmed by SAT and
+It contains neither mark and leaves survivor weight $43/4$, confirmed by SAT and
 clipping.
 
 Cores `#59` and `#60` each have a contained concentric same-angle unit parent, with
-positive wall margin `785411/88696100`. No completion to eleven disjoint parents or
+positive wall margin $785411/88696100$. No completion to eleven disjoint parents or
 forced owner selection is proved.
 The subset argument does not settle the survivor family’s admissibility after stronger
 residual restrictions, or the value of refining other classes and routing physical
@@ -363,7 +363,7 @@ The PR139 reviews on September 10 separate the supported counts from their
 interpretations.
 **R3**: §5.1 obstructs all-class point closure within its stated domain,
 while a global conditional proof needs an excluded valid selection per packing.
-**R2**: the transfer of the rank-one cap `3.868983` to the conditional method is
+**R2**: the transfer of the rank-one cap $3.868983$ to the conditional method is
 proposed, not established, and needs its own owner, class, patch and routing
 verification; the unconditional obstruction is untouched.
 **The cost reading**: that the conditional problem is the unconditional one shifted down

@@ -543,12 +543,12 @@ rotate to representation E2, compatibility E3, verifier E4 or priced exhaustion 
 | `packing/frontier/n-050.md` | `a5f9ead7cd94ee14bef77d4cdd3f37f64c9a803ff47f406a2dba9f8097f2c746` | Reported side, attribution and current verification boundary |
 | `packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-048-h-054-n50-exact-rational-reconstruction.md` | `6b336d391489a23cd844b64049a00a4f49928be8799db6e579a8dcc32c8d24ae` | Frozen E1 determination and H-054 claim boundary |
 | `packing/campaign/agent-sessions/session-067-bc110-n50-exact-control.md` | `b91a435e1eb67cd3afc451e090f3ef94a9e63e256457b6e66865d027e93a882f` | First-wave contract, refusal taxonomy and controls |
-| `packing/cases/lifted_q2/verify_exact.py` | `8019f856856be7d81a9a0a6b9aa2afd1aa9faabb3aa270677e3123eadfb7f2f3` | Exact `n = 19` control and duplicate-square mutation |
+| `packing/cases/lifted_q2/verify_exact.py` | `8019f856856be7d81a9a0a6b9aa2afd1aa9faabb3aa270677e3123eadfb7f2f3` | Exact $n = 19$ control and duplicate-square mutation |
 | `packing/cases/lifted_q2/packing.py` | `0e1cbf5b7eacb9e9c354aa9dab7f835097885c0b8ddc54ff6ad0eb62febc8a78` | Exact `Q(sqrt(2))` control fixture |
 
 The witness field `rounding: nearest` describes the repository’s 120-digit numerical
 replay. It is not an upstream source declaration.
-The catalogue’s exact `53/7` side and 3-4-5 tilt describe the construction’s side and
+The catalogue’s exact $53/7$ side and 3-4-5 tilt describe the construction’s side and
 orientation family; neither gives the serialization rule for a center or rotation token.
 
 ## Permitted First-Party Question
@@ -584,7 +584,7 @@ Before H-054 readiness, the lane must not:
 - feed a center or rotation token to a constructor, solver, geometry checker or
   compatibility matcher
 - infer a rational, exact, nearest-rounding or truncation rule from recurring decimals
-- use `53/7`, the 3-4-5 angle or numerical clearance as evidence for token serialization
+- use $53/7$, the 3-4-5 angle or numerical clearance as evidence for token serialization
 - reconstruct, render, inspect or verify an n = 50 pose
 
 ## Serialization-Semantics Intake and Refusal Interface
@@ -621,11 +621,11 @@ compatibility, H-054 readiness or a scientific H-054 verdict.
 
 ## Exact Control and Mutations
 
-The mechanism-matched control is exactly `n = 19` from
+The mechanism-matched control is exactly $n = 19$ from
 `packing/cases/lifted_q2/packing.py`. A later target-blind W7 fixture must call
 `build(19)`, verify side `3 + (4/3)sqrt(2)` under `exact_sign`, require a valid report
 with all `19*18/2 = 171` pairs tested, then append a duplicate of square 1 and require
-rejection. It must not run the module’s separate `n = 66` case.
+rejection. It must not run the module’s separate $n = 66$ case.
 
 This control proves that the selected representation and exact verifier handle one
 declared `Q(sqrt(2))` construction and reject coincident squares.
@@ -760,7 +760,7 @@ durable retrieval products.
 - **Result:** E1 reason 4, `units-frame-or-rotation-undefined`, is the first ordered
   refusal. Availability, byte/version binding and catalogue attribution passed.
 - **Guard:** No raw source body or target value was retained; no decimal-pattern,
-  `53/7`, 3-4-5, geometry or feasibility inference was used.
+  $53/7$, 3-4-5, geometry or feasibility inference was used.
   No intake instrument, reconstruction, target command or result file was created.
 - **Next:** Return this exact seam to the coordinator and stop.
   W7 and W6 remain closed until explicit serial authorization.

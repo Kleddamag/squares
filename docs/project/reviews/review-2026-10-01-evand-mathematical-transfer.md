@@ -5,17 +5,18 @@ review reads Evan Daniel’s latest proof sources and identifies experiments for
 [X-048’s reviewed draft](https://github.com/jlevy/squares/blob/d7b77066424ab0d94b57f700659425e18ecb7080/packing/campaign/explorations/X-048-n17-optimality-after-n11.md).
 It does not replay a certificate, build Lean, or promote a bound or assurance rating.
 
-The principal new result is a reported proof of `s(k² − 3) = k` for **every integer
-`k ≥ 6`**, with one exact checker for the 7-by-7 cover and a Lean reduction conditional
-on that cover. I found no blocking error in the reviewed mathematical reduction or new
-checker logic. The useful research additions are exact constraints for limiting poses,
-continuous anchored-clique features, and a wider periodic cover for the `k² − 4` family.
+The principal new result is a reported proof of $s(k^2 - 3) = k$ for **every integer
+$k \ge 6$**, with one exact checker for the 7-by-7 cover and a Lean reduction
+conditional on that cover.
+I found no blocking error in the reviewed mathematical reduction or new checker logic.
+The useful research additions are exact constraints for limiting poses, continuous
+anchored-clique features, and a wider periodic cover for the $k^2 - 4$ family.
 Public exact-dual support now makes the n12 and n20 additive obstructions replayable;
 adding line or area density does not evade those obstructions.
 
 One auxiliary anchored-clique proof contains an incorrect convexity assertion.
 The algebraic repair below proves the required inequality over the original parameter
-range. This affects the exposition of a prospective research tool, not the new `k² − 3`
+range. This affects the exposition of a prospective research tool, not the new $k^2 - 3$
 certificate.
 
 ## Sources and Review Scope
@@ -50,8 +51,8 @@ All upstream run counts, timings and numerical experiments below remain source-r
 The
 [family bundle](https://github.com/evand/square-packing/blob/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/certificates/k2m3/README.md)
 uses fixed corners, period-one wall profiles and a Lebesgue interior.
-At side 7 its cover has no point masses, 800 segments on 60 lines of pitch `1/5`, and
-density one on `[9/5, 26/5]²`. Its corner deficit is
+At side 7 its cover has no point masses, 800 segments on 60 lines of pitch $1/5$, and
+density one on $[9/5, 26/5]^2$. Its corner deficit is
 
 $$
 D=\frac{423621306389}{500000000000}=0.847242612778,
@@ -68,28 +69,28 @@ The Lean endpoint is
 `Valid7` says that the exact 7-by-7 mixed measure assigns at least one unit of mass to
 every closed unit square in the box.
 Lean identifies the finite cover with the family at 7, computes the total mass and
-proves the reduction to all `k ≥ 6`. It does **not** discharge `Valid7` from the checker
-output. The inspected proof uses ordinary Lean proof terms rather than a `sorry` or
-`native_decide` replacement for that hypothesis.
+proves the reduction to all $k \ge 6$. It does **not** discharge `Valid7` from the
+checker output. The inspected proof uses ordinary Lean proof terms rather than a `sorry`
+or `native_decide` replacement for that hypothesis.
 
 The localization argument merits attention because it is stronger than repeating a large
 numerical experiment.
-A unit square has coordinate widths at most `√2 < 2`. For each coordinate interval, the
-reduction preserves a near-wall interval, shifts the opposite wall to 7, or translates
-an interior interval by an integer into `(2,5)`. Integer translations preserve the
-periodic wall pattern.
+A unit square has coordinate widths at most $\sqrt{2} < 2$. For each coordinate
+interval, the reduction preserves a near-wall interval, shifts the opposite wall to 7,
+or translates an interior interval by an integer into $(2,5)$. Integer translations
+preserve the periodic wall pattern.
 A width below two cannot simultaneously encounter the two boundary changes that would
-obstruct this choice, including at `k = 6`. Applying the two coordinate shifts preserves
+obstruct this choice, including at $k = 6$. Applying the two coordinate shifts preserves
 the captured line and area mass.
 A universal cover check at 7 therefore suffices.
-The stated range is `k ≥ 6`, not `k ≥ 7`.
+The stated range is $k \ge 6$, not $k \ge 7$.
 
 The endpoint contradiction handles boundary mass correctly.
-If a packing exists in side `s < k`, dilate it by `k/s` and take concentric closed
+If a packing exists in side $s < k$, dilate it by $k/s$ and take concentric closed
 unit-square cores. Each core lies strictly inside its enlarged parent, so these closed
 cores are pairwise disjoint.
-Their masses sum to at least `k² − 3`, exceeding the total measure.
-At side `k` itself, adjacent squares may share boundary mass; directly summing their
+Their masses sum to at least $k^2 - 3$, exceeding the total measure.
+At side $k$ itself, adjacent squares may share boundary mass; directly summing their
 masses would be invalid.
 The dilation step is what permits a zero-margin endpoint certificate.
 A grid supplies the matching upper bound.
@@ -114,7 +115,7 @@ a second checker.
 
 The current
 [Lean ladder](https://github.com/evand/square-packing/blob/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/lean/LADDER.md)
-also reports a fully discharged theorem for `s(12) ≥ 15680/3951`, in addition to the
+also reports a fully discharged theorem for $s(12) \ge 15680/3951$, in addition to the
 earlier point-cover results.
 Its data generation and build are substantial and were not attempted.
 The n21 top theorem remains conditional on its checker’s covering statement; n45 and n60
@@ -127,11 +128,11 @@ these fully discharged point-cover theorems.
 The
 [n60 bundle](https://github.com/evand/square-packing/blob/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/certificates/s60/README.md)
 reports 23,744 weighted points and 5,216 segments with total
-`748233441/12500000 = 59.85867528 < 60`, and universal closed capture at least one in
-`[0,8]²`. Its mathematical reduction is the same dilation and disjoint-core argument
-above. I found no defect in that implication, or in the derived `s(61) ≥ s(60) = 8` with
-an 8-by-8 grid supplying `s(61) ≤ 8`. Neither implication recomputes the cover’s total
-or universal validity.
+$748233441/12500000 = 59.85867528 < 60$, and universal closed capture at least one in
+$[0,8]^2$. Its mathematical reduction is the same dilation and disjoint-core argument
+above. I found no defect in that implication, or in the derived $s(61) \ge s(60) = 8$
+with an 8-by-8 grid supplying $s(61) \le 8$. Neither implication recomputes the cover’s
+total or universal validity.
 
 The source reports two implementations for this finite cover: the Python
 `Fraction`/integer checker and the independent Rust `zmx2` checker.
@@ -180,8 +181,8 @@ Singular endpoints are handled separately, and a factored power of the half-angl
 parameter is positive only on the positive-tilt domain where it is removed.
 
 The source’s failed intermediate cover is particularly relevant to n17. It passed
-ordinary sampling but captured approximately `0.999935986` at a rational pose with
-half-angle parameter `10⁻¹²`. A positional tolerance can overcount a near-horizontal
+ordinary sampling but captured approximately $0.999935986$ at a rational pose with
+half-angle parameter $10^{-12}$. A positional tolerance can overcount a near-horizontal
 intersection by an amount proportional to the tolerance divided by the tilt.
 The later construction added exact limiting-pose constraints.
 It then projected the weights onto the resulting tight identities before rational
@@ -207,10 +208,10 @@ along with their
 [exact checker](https://github.com/evand/square-packing/blob/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/search/dual_exact.py).
 The source reports:
 
-| Box side | Rational support poses; D4 images | Total dual mass | Maximum closed depth `M` | Normalized mass `L` |
+| Box side | Rational support poses; D4 images | Total dual mass | Maximum closed depth $M$ | Normalized mass $L$ |
 | --- | --- | --- | --- | --- |
-| 4 | 294; 2,352 | `2453760771/200000000` | `1999999999/2000000000` | `24537607710/1999999999 ≈ 12.2688038611` |
-| 5 | 748; 5,984 | `10323890641/500000000` | `499999999/500000000` | `10323890641/499999999 ≈ 20.6477813233` |
+| 4 | 294; 2,352 | $\frac{2453760771}{200000000}$ | $\frac{1999999999}{2000000000}$ | $\frac{24537607710}{1999999999} \approx 12.2688038611$ |
+| 5 | 748; 5,984 | $\frac{10323890641}{500000000}$ | $\frac{499999999}{500000000}$ | $\frac{10323890641}{499999999} \approx 20.6477813233$ |
 
 The checker verifies rational rotations and containment, enumerates corners and edge
 intersections, and measures weighted closed depth at those arrangement vertices.
@@ -224,15 +225,15 @@ implementation; the outputs above have not been recomputed here.
 
 ### The Obstruction Covers Lines and Areas Too
 
-Normalize the dual weights so that `Σ αᵢ 1_Qᵢ(x) ≤ 1` everywhere in the container `K`,
-where each `Qᵢ` is an admissible closed unit square.
-For any finite nonnegative spatial measure `μ` satisfying `μ(Q) ≥ 1` on every admissible
-square,
+Normalize the dual weights so that `Σ αᵢ 1_Qᵢ(x) ≤ 1` everywhere in the container $K$,
+where each $Q_i$ is an admissible closed unit square.
+For any finite nonnegative spatial measure $\mu$ satisfying $\mu(Q) \ge 1$ on every
+admissible square,
 
 $$
 \sum_i\alpha_i
 \leq \sum_i\alpha_i\mu(Q_i)
-=\int_K\sum_i\alpha_i\mathbf 1_{Q_i}(x)\,d\mu(x)
+=\int_K\sum_i\alpha_i\mathbf 1_{Q_i}(x)\thinspace d\mu(x)
 \leq\mu(K).
 $$
 
@@ -283,8 +284,8 @@ producer’s LP path. Before a later replay:
 - Use `--stream` to avoid retaining the incidence lists.
   This preserves the mathematical check, but does not remove vertex generation or the
   incidence work.
-- Check support syntax, nonnegative masses, expected counts and the exact final `M` and
-  `L`. The source’s `--n` only changes the displayed comparison; exit status zero alone
+- Check support syntax, nonnegative masses, expected counts and the exact final $M$ and
+  $L$. The source’s `--n` only changes the displayed comparison; exit status zero alone
   does not assert the desired inequality.
   Retain complete stdout, stderr, environment, wall time and termination status.
 
@@ -306,38 +307,39 @@ check.
 The source’s
 [anchored-clique construction](https://github.com/evand/square-packing/blob/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/notes/clique-family.md)
 offers a concrete feature beyond an additive spatial measure.
-For a point `p` and nonempty anchor set `A`, define
+For a point $p$ and nonempty anchor set $A$, define
 
 $$
-K(p,A)=\{Q:p\in Q,\ Q\cap A\ne\varnothing\}
-\;\cup\;\{Q:A\subseteq Q\}.
+K(p,A)=\lbrace Q:p\in Q,\ Q\cap A\ne\varnothing\rbrace
+\thickspace\cup\thickspace\lbrace Q:A\subseteq Q\rbrace.
 $$
 
-Every two members intersect as closed sets: two from the first family share `p`, two
-from the second share `A`, and a mixed pair shares a point of `Q ∩ A`. It is therefore a
-capacity-one feature for pairwise disjoint closed cores.
+Every two members intersect as closed sets: two from the first family share $p$, two
+from the second share $A$, and a mixed pair shares a point of $Q \cap A$. It is
+therefore a capacity-one feature for pairwise disjoint closed cores.
 This validity statement does not require the more ambitious claim that it contains every
-square through `p`. That dominance claim needs a transversal theorem for the anchor.
+square through $p$. That dominance claim needs a transversal theorem for the anchor.
 Nor does a closed intersection prove positive interior overlap; the chosen packing
 reduction must supply the appropriate closed cores.
 
-For a vertical anchor offset by `ε` from a wall-near point, Lemma 2 states the
-sufficient threshold `ρ ≥ ε p_x / √(1 − p_x²)`, where `0 < ε < 1 − p_x`. Its proof
-introduces
+For a vertical anchor offset by $\varepsilon$ from a wall-near point, Lemma 2 states the
+sufficient threshold $\rho \ge \varepsilon p_x / \sqrt{1 - p_x^2}$, where
+$0 < \varepsilon < 1 - p_x$. Its proof introduces
 
 $$
 f(\theta)=p_x/\cos\theta+\varepsilon\cos\theta-\rho\sin\theta-1
 $$
 
 and asserts convexity.
-This assertion is false in the stated range: `f″(0) = p_x − ε`, which is negative for
-`p_x = 1/4`, `ε = 1/2`. The source’s tabulated wall anchors happen to lie in a range
-where that specific problem does not arise, but the printed general argument needs
-correction.
+This assertion is false in the stated range: $f^{\prime\prime}(0) = p_x - \varepsilon$,
+which is negative for $p_x = 1/4$, $\varepsilon = 1/2$. The source’s tabulated wall
+anchors happen to lie in a range where that specific problem does not arise, but the
+printed general argument needs correction.
 
 Here is a replacement for the affected step.
-Set `a = p_x`, `z = cos θ ∈ [a,1]`, `S = √(1 − a²)` and `T = √(1 − z²)`. It suffices to
-use the least allowed `ρ = εa/S`, since increasing `ρ` lowers `f`. Then
+Set $a = p_x$, $z = \cos \theta \in [a,1]$, $S = \sqrt{1 - a^2}$ and
+$T = \sqrt{1 - z^2}$. It suffices to use the least allowed $\rho = \varepsilon a/S$,
+since increasing $\rho$ lowers $f$. Then
 
 $$
 f=\frac{a-z}{z}+\varepsilon B,
@@ -354,11 +356,11 @@ $$
 \leq\frac{z-a}{z(1-a)}.
 $$
 
-Since `ε < 1 − a`, this gives `f ≤ 0` throughout the required interval.
-The other separating-axis case in the source uses the same inequality with `θ` replaced
-by `π/2 − θ`. This repairs the sufficiency step without weakening the lemma’s range.
-Its necessity direction retains the source’s extra vertical room hypothesis; it should
-not be quoted as an unconditional “if and only if.”
+Since $\varepsilon < 1 - a$, this gives $f \le 0$ throughout the required interval.
+The other separating-axis case in the source uses the same inequality with $\theta$
+replaced by $\pi/2 - \theta$. This repairs the sufficiency step without weakening the
+lemma’s range. Its necessity direction retains the source’s extra vertical room
+hypothesis; it should not be quoted as an unconditional “if and only if.”
 This repair is a derivation made in this review, not an upstream amendment or a
 formalized result.
 Bead `think-2z60` tracks independent review of the repair before reuse
@@ -381,11 +383,11 @@ verdicts. Each needs a hypothesis and executable measurement before W10 selectio
 | Candidate | What the new sources add | First discriminating artifact | Failure that actually rejects the candidate |
 | --- | --- | --- | --- |
 | n17 endpoint strata, R1/R7 | Tight limiting constraints can be enforced before rationalization, including along a flexible family. | Exact contact and perturbation formulas for one chart, with a known feasible packing retained as control. | An exact undercovered pose rejects a proposed measure; an exact dual rejects the chosen dictionary. A same-side slide does not refute endpoint optimality. |
-| n17 continuous clique features, R3/R8 | `K(p,A)` supplies a proved capacity-one family and an explicit wall-anchor threshold. | A frozen finite primal/dual comparison with the current feature set, followed by a universal membership check for a candidate gain. | Invalid pairwise intersection or a wrongly removed pose rejects the proposed validity argument. An exact matching dual can reject a claimed gain on the frozen finite problem. |
+| n17 continuous clique features, R3/R8 | $K(p,A)$ supplies a proved capacity-one family and an explicit wall-anchor threshold. | A frozen finite primal/dual comparison with the current feature set, followed by a universal membership check for a candidate gain. | Invalid pairwise intersection or a wrongly removed pose rejects the proposed validity argument. An exact matching dual can reject a claimed gain on the frozen finite problem. |
 | n12 conditional geometry, R6 | `RANK8.md` reports exact feasible proper subcases of a hard Bentz leaf, while the whole leaf has a numerically observed zero-margin plateau. | Recover and independently check a hardest proper-subcase witness; state one whole-leaf inequality that preserves it. | A checked subcase witness refutes a proposed exclusion of that subcase. Failed searches for the whole leaf do not establish its infeasibility. |
 | n12/n17 terminal wall chains, R1/R5/R6 | `T4_CYCLES.md` finds nested wall-chain Farkas combinations where a simple cycle argument fails. | An exact local inequality with its domain, remainder bound and all contact alternatives stated. | A feasible counterexample to the chain hypothesis, or a nonlinear remainder of the wrong sign, rejects that argument. A linearized contradiction alone is insufficient. |
-| n20 conditional adaptation | The recovered side-5 dual makes unconditional spatial reweighting an implausible next job pending replay. | An occupancy or class-count inequality that supplies a quantified gain beyond the n21 mixed cover. | A certified feasible class-count counterexample, or insufficient gain in the declared relaxation. The existing cover needs more than `0.89474919732` of saving to get below 20. |
-| `k² − 4` plateau family | The successful fixed-corner/periodic-wall/area decomposition has a concrete width-three extension to try. | A width-three candidate after density-layer and tilt-margin constraints, exact tight-identity projection and nonnegativity checks. | Deficit `D ≤ 1` rejects that candidate before a global checker run; a rational undercovered pose rejects its cover. Neither rules out wider profiles. |
+| n20 conditional adaptation | The recovered side-5 dual makes unconditional spatial reweighting an implausible next job pending replay. | An occupancy or class-count inequality that supplies a quantified gain beyond the n21 mixed cover. | A certified feasible class-count counterexample, or insufficient gain in the declared relaxation. The existing cover needs more than $0.89474919732$ of saving to get below 20. |
+| $k^2 - 4$ plateau family | The successful fixed-corner/periodic-wall/area decomposition has a concrete width-three extension to try. | A width-three candidate after density-layer and tilt-margin constraints, exact tight-identity projection and nonnegativity checks. | Deficit $D \le 1$ rejects that candidate before a global checker run; a rational undercovered pose rejects its cover. Neither rules out wider profiles. |
 
 The
 [rank-eight note](https://github.com/evand/square-packing/blob/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/search/RANK8.md)
@@ -412,17 +414,18 @@ universal ceiling. Preserve this direction of inference in W3’s selection reco
 
 The new
 [Friedman-family analysis](https://github.com/evand/square-packing/blob/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/search/FRIEDMAN.md)
-reports a floating width-three corner deficit near `1.154`, before the cost of making
-the cover exact. A deficit strictly above one would give total mass `k² − 4D < k² − 4`.
-Its proposed base box is 9, with localization to `k ≥ 8`. Together with the separately
+reports a floating width-three corner deficit near $1.154$, before the cost of making
+the cover exact.
+A deficit strictly above one would give total mass $k^2 - 4D < k^2 - 4$.
+Its proposed base box is 9, with localization to $k \ge 8$. Together with the separately
 reported finite results at sides 5 through 8, a successful family would imply
-`s(k² − 4) = k` for every `k ≥ 5`. It would not settle n12 at `k = 4`.
+$s(k^2 - 4) = k$ for every $k \ge 5$. It would not settle n12 at $k = 4$.
 
 The source estimates 5–10 CPU-hours for the initial LP work and 50–80 CPU-hours for a
 full exact check, with substantial uncertainty.
 This belongs in a separately selected reserve campaign, not an unpriced addition to the
 n17 overnight block.
-Its first checkpoint is whether `D > 1` survives the exactness constraints.
+Its first checkpoint is whether $D > 1$ survives the exactness constraints.
 Checking a corner window plus one wall period could reduce the cost, but requires a new
 localization proof. Deeper limiting-pose lemmas may matter more than a faster generic
 subdivision loop.
@@ -446,8 +449,8 @@ If accepted, it directs n12/n20 work toward conditional or nonadditive constrain
 Keep the wider periodic family as a costed alternative campaign.
 
 The separate source intake also located an evand replay of wand125’s point-only
-`s(61) = 8` certificate at wand commit `f8846cec`. That is a distinct evidence chain
-from evand’s `s(60)` corollary and from the all-k family.
+$s(61) = 8$ certificate at wand commit `f8846cec`. That is a distinct evidence chain
+from evand’s $s(60)$ corollary and from the all-k family.
 It was not audited here and must not be counted as a second implementation of the new
 7-by-7 checker.
 

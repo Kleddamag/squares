@@ -27,7 +27,7 @@ angular exclusion.
 
 ## Complete Indexed Domain
 
-Let $\mathcal K^*$ be the seven-parameter necessary skeleton with
+Let $\mathcal K^{\ast}$ be the seven-parameter necessary skeleton with
 
 $$
 (L,z,p_x,p_y,a,b,t),\qquad p=(p_x,p_y),
@@ -63,10 +63,10 @@ Their centers are exactly
 
 $$
 \begin{aligned}
-C_0&=(1/2,1/2),&C_1&=(L-1/2,1/2),\\
-C_2&=(z+1/2,L-1/2),&C_3&=(1/2,L-1/2),\\
-C_4&=(3/2,L-1/2),&C_5&=(1/2,L-3/2),\\
-C_6&=p,&C_7&=p+ae-f,\\
+C_0&=(1/2,1/2),&C_1&=(L-1/2,1/2),\cr
+C_2&=(z+1/2,L-1/2),&C_3&=(1/2,L-1/2),\cr
+C_4&=(3/2,L-1/2),&C_5&=(1/2,L-3/2),\cr
+C_6&=p,&C_7&=p+ae-f,\cr
 C_8&=p+e+bf,&C_9&=p+(a+1)e+(b-1)f.
 \end{aligned}
 $$
@@ -105,7 +105,7 @@ $$
 and all **45** unordered pair clauses, separately for every $0\le i<j\le9$:
 
 $$
-\bigvee_{n\in\{e_i,f_i,e_j,f_j\},\ \sigma\in\{-1,1\}}
+\bigvee_{n\in\lbrace e_i,f_i,e_j,f_j\rbrace,\ \sigma\in\lbrace-1,1\rbrace}
 \left[\sigma(C_j-C_i)\cdot n\ge H_i(n)+H_j(n)\right].
 $$
 
@@ -118,7 +118,7 @@ enters this domain.
 Deleting square 10 gives the necessary implication
 
 $$
-\pi(\mathcal R_{11})\subseteq\mathcal K^*,
+\pi(\mathcal R_{11})\subseteq\mathcal K^{\ast},
 $$
 
 where $\mathcal R_{11}$ is the accepted closed eleven-square remainder and $\pi$ drops
@@ -218,7 +218,7 @@ cases have already been solved.
 | Axis/axis | All $0\le i<j\le5$: 15 pairs | All eight original alternatives, even where directions coincide; these depend only on $L,z$ |
 | Retained block sides | $(6,7),(6,8),(7,9),(8,9)$ | Four complete pair clauses and their exact positive contact segments |
 | Block diagonals | $(6,9),(7,8)$ | Both complete clauses; retain the exact sign split and its zero-slide boundaries |
-| Axis/block | Each $i\in\{0,1,2,3,4,5\}$ with each $j\in\{6,7,8,9\}$: 24 pairs | Eight alternatives $\pm x,\pm y,\pm e,\pm f$, each with threshold $D=(1+c+s)/2$ |
+| Axis/block | Each $i\in\lbrace0,1,2,3,4,5\rbrace$ with each $j\in\lbrace6,7,8,9\rbrace$: 24 pairs | Eight alternatives $\pm x,\pm y,\pm e,\pm f$, each with threshold $D=(1+c+s)/2$ |
 | Translation bounds | Four block extrema, using (T) | Ten envelope chambers; empty, singleton and positive-width fibers |
 | Collision interval endpoints | 24 pair slices | Three lower and three upper candidate endpoints, vertical entry/exit, every active-facet tie |
 | Proposed fence | At most six intervals per fiber | Strict coverage of both closed endpoints and every link; distinct axis owners; all parameter and height seams |
@@ -296,8 +296,8 @@ $$
 
 If (F) is proved uniformly, its open intervals cover the entire closed fiber.
 Every permissible $p$ then overlaps at least one axis square, so
-$\mathcal K^*=\varnothing$. This would complete the original source-family exclusion
-together with the inherited complementary intervals.
+$\mathcal K^{\ast}=\varnothing$. This would complete the original source-family
+exclusion together with the inherited complementary intervals.
 
 The distinct-source, six-link requirement is a **specific sufficient strengthening**,
 not an equivalent rewriting of skeleton emptiness.
@@ -373,7 +373,7 @@ No implementation or replay is proposed by this design.
   be excluded.
 
 **Complete exclusion:** an independent audit verifies a contradiction for all
-$\mathcal K^*$, through (F) or another separately admitted complete argument.
+$\mathcal K^{\ast}$, through (F) or another separately admitted complete argument.
 The inherited complementary exclusions then finish this restricted source family, for
 every original square-10 pose.
 This is not a global representative, finite-motion theorem, unrestricted bound, or H120
@@ -382,7 +382,7 @@ adapter result.
 **Exact ten-square witness:** give exact $(L,z,p_x,p_y,a,b,t)$ with unambiguous
 algebraic roots where needed; reconstruct and check all 40 containment rows, 45 actual
 SAT clauses, contact identities and parameter bounds.
-This proves $\mathcal K^*\ne\varnothing$ and shows that these ten-square conditions
+This proves $\mathcal K^{\ast}\ne\varnothing$ and shows that these ten-square conditions
 alone cannot exclude the eleven-square remainder.
 It gives no eleven-square upper bound and does not assert an extension.
 

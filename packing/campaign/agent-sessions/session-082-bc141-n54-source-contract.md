@@ -876,7 +876,7 @@ BUILTIN    := "s" | "Sin[a]" | "Cos[a]" | "Tan[a]" | "Sec[a]"
 Identifiers are case-sensitive, unique and refer only to earlier assignments.
 The AST contains only integer, symbol, negation, addition, subtraction, multiplication
 and division nodes. Decimals, implicit multiplication, powers, general calls, strings,
-indexing, attributes, bare `a`, forward references and trailing tokens refuse.
+indexing, attributes, bare $a$, forward references and trailing tokens refuse.
 `eval`, `exec`, AST evaluation, `compile`, `parse_expr`, `sympify`, XML libraries and
 entity expansion are excluded.
 
@@ -887,11 +887,11 @@ comments, non-ASCII contract text, zero denominators and every exceeded cap refu
 
 ### Field Binding
 
-The field is `K = Q(p)` with polynomial coefficients `[1, 0, -2, 0, -1]`, positive
-embedding `p in (1.5537, 1.5538)` and basis `1, p, p^2, p^3`. The contract binds the
+The field is $K = Q(p)$ with polynomial coefficients $[1, 0, -2, 0, -1]$, positive
+embedding `p in (1.5537, 1.5538)` and basis $1, p, p^{2}, p^{3}$. The contract binds the
 byte-stable audited `--check` receipt SHA-256
 `3555f8910e0daced8022576bea238951654fface93f0d0b51109c0efd3678cf4` and redundantly
-checks its exact basis coefficients and minimal polynomials for `s`, tangent, sine and
+checks its exact basis coefficients and minimal polynomials for $s$, tangent, sine and
 cosine. `Sec[a]` is the exact inverse of `Cos[a]`; the angle itself is not claimed
 algebraic.
 
@@ -900,18 +900,18 @@ algebraic.
 The ordered 27 local labels are `stair/00` through `stair/17`, `axis/00`, `rot/00`
 through `rot/03`, `block/00/0`, `block/00/1`, `block/01/0` and `block/01/1`. Full labels
 are `B/<local>` and `T/<local>`. The half-turn involution is `tau(B/x) = T/x` and
-`tau(T/x) = B/x`; geometrically it is `r^2`. It must be fixed-point-free, injective,
+`tau(T/x) = B/x`; geometrically it is $r^{2}$. It must be fixed-point-free, injective,
 involutive and produce exactly 54 distinct labels.
 
 ### Frame, D4 and Orientation
 
-Coordinates are physical Cartesian coordinates with `+x` right, `+y` up and container
-center `c = (s/2, s/2)`. Every future adapter must declare `y_up` or `y_down`; the
+Coordinates are physical Cartesian coordinates with $+x$ right, $+y$ up and container
+center $c = (s/2, s/2)$. Every future adapter must declare `y_up` or `y_down`; the
 latter converts by reflection about the horizontal centerline, and there is no default.
 
 The active left action maps source to witness.
-Let `R = [[0,-1],[1,0]]`, `F = [[1,0],[0,-1]]`, and `g = (k,b) = r^k f^b` with
-`M_g = R^k F^b`. Composition is `(k,b)(l,d) = (k + (-1)^b l mod 4, b xor d)`, so
+Let $R = [[0,-1],[1,0]]$, $F = [[1,0],[0,-1]]$, and $g = (k,b) = r^k f^b$ with
+$M_g = R^k F^b$. Composition is `(k,b)(l,d) = (k + (-1)^b l mod 4, b xor d)`, so
 `g.(h.q) = (gh).q`. The frozen order is `e, r, r^2, r^3, f, rf, r^2f, r^3f`. All eight
 elements, 64 products, identity, inverses, determinants, associativity and the action
 homomorphism must replay.
@@ -946,7 +946,7 @@ module nor UnitSquare production code.
 Normal and optimized outputs must be byte-identical.
 
 Required mutations include missing `block/01/1`, a B/T label alias, reversed D4
-composition, reflection-sign preservation on `(4/5, 3/5)`, negative-root embedding,
+composition, reflection-sign preservation on $(4/5, 3/5)$, negative-root embedding,
 field-receipt drift, a structural-inventory mutation, and a `w00`/`w01` correspondence
 swap that remains bijective but violates tags.
 The two BC-141 exit mutations are the structural-inventory and correspondence controls;
@@ -974,7 +974,7 @@ instrument-unready.
 
 ## 00:45--01:10 (09:08--09:33Z) — Quartic-Field Binding
 
-- **Artifact:** exact `Q(p)` arithmetic and formula evaluation in `contract.py`, its
+- **Artifact:** exact $Q(p)$ arithmetic and formula evaluation in `contract.py`, its
   author controls, one Max review, one bounded XHigh repair and a post-repair Max
   replay.
 - **Result:** 41 focused tests pass.
@@ -1047,10 +1047,10 @@ The exact top-level keys are `schema`, `scope`, `fixture_sha256`,
 coefficients are four fraction strings in basis order.
 `correspondence` contains the 54 ordered pairs, each with exact keys `source_label`,
 `row_id`, `structural_tag` and `orientation`. Structural tags are `tag-00` through
-`tag-53`; `orientation` has exact keys `x` and `y`, each four fraction strings, after
+`tag-53`; `orientation` has exact keys $x$ and $y$, each four fraction strings, after
 the global `r2` action and least quarter-turn normalization.
 Before that action, every synthetic compatibility edge has exact unit orientation
-`x = ["4/5", "0", "0", "0"]`, `y = ["3/5", "0", "0", "0"]`. For ordinal `i` in the
+`x = ["4/5", "0", "0", "0"]`, `y = ["3/5", "0", "0", "0"]`. For ordinal $i$ in the
 frozen `FULL_LABELS` order, the only compatibility edge under `r2` joins that label to
 `w{i:02d}` with `tag-{i:02d}`; there are no other edges.
 

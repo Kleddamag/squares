@@ -92,7 +92,7 @@ evidence:
       date: '2026-10-01'
       reviewed_by: GPT-6 Astra at max reasoning, W2 mathematical-transfer review
       note: >-
-        The reviewer read the pinned s60 bundle and mixed-cover argument and found
+        The reviewer read the s60 bundle's report and the mixed-cover argument and found
         no defect in the implication from a nonnegative mass-below-60 universal
         cover to s(60) >= 8. The certificate's mass and full pose coverage were
         not recomputed, and neither source checker was freshly run here.
@@ -109,9 +109,9 @@ evidence:
     scope: {n_values: [61]}
     assurance: reported
     reported_method: published-proof
-    performed_by: repository
+    performed_by: source-author
     relationship_to_generator: not-applicable
-    origin: audited-here
+    origin: external
     novelty: previously-published
     source_key: '[evand square-packing 2026-10-01]'
     replay_status: not-attempted
@@ -124,9 +124,9 @@ evidence:
         side-8 grid upper bound. The s(60) premise remains source-reported;
         this read does not establish it.
     limitations: >-
-      The source-reported s(60) >= 8 implies s(61) >= 8 by monotonicity:
-      deleting one square from a hypothetical packing of 61 at side below 8
-      would contradict the s(60) lower bound. The grid gives s(61) <= 8.
+      The source states s(61) = 8 as a corollary of its reported s(60) = 8, by
+      monotonicity: deleting one square from a hypothetical packing of 61 at side
+      below 8 would contradict the s(60) lower bound. The grid gives s(61) <= 8.
       This elementary deduction inherits the un-replayed s(60) premise and is
       not an independent certificate for s(61). A separate wand125 point-only
       s(61) claim awaits primary-source intake.

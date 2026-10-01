@@ -3,17 +3,17 @@ type: is
 id: is-01m3vazndv9n6h2mz59eeprqq2
 title: Run overnight post-optimality W3 to W6 research loop through morning
 kind: task
-status: closed
+status: open
 priority: 1
-version: 7
+version: 8
 spec_path: docs/project/specs/active/plan-2026-10-01-post-optimality-w3-session.md
 labels: []
 dependencies: []
 parent_id: is-01m3v9vq36ykk2jdzce75req44
 created_at: 2026-10-01T08:58:33.785Z
-updated_at: 2026-10-01T14:40:45.165Z
-closed_at: 2026-10-01T14:40:45.164Z
-close_reason: "Session165 completed: sevenacceptedn17rounds, independentlyreviewedconditionalmath andallopenproofgaps retained, source/record/PRsynopses reconciled, nativecostsnapshot retained, guardedstamp-onlyintegration passed. Scientific/export4f312e21e and terminal775b55df2 scheduledCI pass. Futuremaththink-11ma andcontext/registryoptimizationthink-n7xf remain separate; overnightheartbeatpausing."
+updated_at: 2026-10-01T14:42:13.076Z
+closed_at: null
+close_reason: null
 resolution: null
 duplicate_of: null
 ---
@@ -22,3 +22,5 @@ User authorizes autonomous overnight work through 2026-10-01 08:00 PDT with fina
 ## Notes
 
 Research ends with sevenacceptedrounds H253-257,H259,H260. Exactphysicalendpoint andconditionalminimum, no globaloptimality. H259161100756states,H26020155518orbits; no geometricexclusions. H258stoppedafterthreepreparationfailures. Allresearchresults retained0e5bfaa51; finalizationandstamp-onlyexport underway, fixed15UTCdeadline unchanged.
+
+Reopened: Correcting CIattribution: allscheduledchecks passed4f312e21e, notterminal775b55df2. CurrentfinalheadsuiteBfailed; inspectandrepaironlynamedintegrationfailure. Researchcomplete, heartbeatpaused, no newscientifictarget.

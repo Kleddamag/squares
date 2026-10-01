@@ -3,17 +3,17 @@ type: is
 id: is-01m3vky54c2kjr6cm2hsz6gw40
 title: Refresh campaign rollups and their mutation anchors in one measured checkpoint
 kind: task
-status: closed
+status: open
 priority: 2
-version: 4
+version: 5
 spec_path: docs/project/specs/active/plan-2026-10-01-post-optimality-w3-session.md
 labels: []
 dependencies: []
 parent_id: is-01m3v9vq36ykk2jdzce75req44
 created_at: 2026-10-01T11:35:01.514Z
-updated_at: 2026-10-01T14:40:45.175Z
-closed_at: 2026-10-01T14:40:45.175Z
-close_reason: "Session165 completed: sevenacceptedn17rounds, independentlyreviewedconditionalmath andallopenproofgaps retained, source/record/PRsynopses reconciled, nativecostsnapshot retained, guardedstamp-onlyintegration passed. Scientific/export4f312e21e and terminal775b55df2 scheduledCI pass. Futuremaththink-11ma andcontext/registryoptimizationthink-n7xf remain separate; overnightheartbeatpausing."
+updated_at: 2026-10-01T14:42:13.087Z
+closed_at: null
+close_reason: null
 resolution: null
 duplicate_of: null
 ---
@@ -22,3 +22,5 @@ Observed W5 checkpoint overhead: generated synopsis/session/agenda views and lit
 ## Notes
 
 Checkpoint integration: commit hook hid unstaged concurrent doc/case edits, then failed patch restoration on completed n12 doc; hook patch vanished. No accepted raw evidence changed. Reconstructed only known reviewed source edits, re-reviewed current bytes, and require all writers stable/all intended edits staged before next commit. Also generated session-close-report phase count drift caused CI-only validate failure; render it after final phase edit.
+
+Reopened: Correcting CIattribution: allscheduledchecks passed4f312e21e, notterminal775b55df2. CurrentfinalheadsuiteBfailed; inspectandrepaironlynamedintegrationfailure. Researchcomplete, heartbeatpaused, no newscientifictarget.

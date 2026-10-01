@@ -309,7 +309,20 @@ def test_the_credits_are_one_column_no_wider_than_the_page() -> None:
     assert ".n11-paper .credits a {\n  overflow-wrap: anywhere;\n}" in css
     parts = paper.ARTICLE.read_text(encoding="utf-8").split('<div class="credits centred">')
     assert len(parts) == 2
-    assert "<strong>github.com/Queuingtheorydotcom/11SquaresOptimal</strong>" in parts[1]
+    block = parts[1].split("</div>", 1)[0]
+    # The original proof leads, by its author's name in bold and then its address as a
+    # plain link; this review's own credits follow a line's space below, names in bold,
+    # and the draft's version is not bold.
+    address = "github.com/Queuingtheorydotcom/11SquaresOptimal"
+    oversight = '<a href="https://x.com/ojoshe"><strong>Joshua Levy</strong></a>'
+    assert [line.strip() for line in block.strip().splitlines()][:5] == [
+        "<span>From the original proof by <strong>Queuingtheorydotcom</strong></span>",
+        f'<span><a href="https://{address}">{address}</a></span>',
+        f'<span class="credits-review">Human oversight: {oversight}</span>',
+        "<span>Agents: <strong>GPT-6 Astra</strong> and <strong>GPT-6 Sol</strong></span>",
+        "<span>Draft v0.1.0</span>",
+    ]
+    assert ".n11-paper .credits .credits-review {\n  margin-block-start: 1lh;\n}" in css
 
 
 def test_a_table_keeps_to_the_column_and_scrolls_inside_its_wrap() -> None:

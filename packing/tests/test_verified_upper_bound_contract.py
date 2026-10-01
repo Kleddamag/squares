@@ -107,6 +107,12 @@ DECLARED_CONSUMERS = {
         "and as the upper end of the verified interval the record's heading states; it "
         "reads the field as a ceiling on s(n) and never as s(n)"
     ),
+    "packing/devtools/result_overview.py": (
+        "shows the field in a result overview's grid of its case record's four bounds, in "
+        "the Upper cell of the Verified row, linked to its line in the case file, beside "
+        "the gap the frontier page computes; the solved note is the record's own status, "
+        "and it reads the field as a ceiling on s(n) and never as s(n)"
+    ),
     "packing/devtools/render_recent_results.py": (
         "reads only the evidence ids a case's bound fields cite, to derive which register "
         "entries hold a case bound for the standing column; it takes no value from the "

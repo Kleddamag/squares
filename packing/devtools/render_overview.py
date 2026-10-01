@@ -280,7 +280,10 @@ def page_assets() -> tuple[str, str]:
 
 
 def assert_self_contained(name: str, page: str) -> None:
-    """Refuse a page that would fetch anything at view time."""
+    """Refuse a page that would fetch anything to be drawn: a script or stylesheet with
+    a source, a CSS import, or a `url()` or `<link>` that is not a data URI or a
+    fragment. What a reader opens afterwards is fetched then, from the site itself: a
+    page a card's popover frames, and a result's overview (`result_fragments`)."""
     hit = _EXTERNAL_REFERENCE.search(page)
     if hit:
         excerpt = page[max(hit.start() - 60, 0) : hit.end() + 80]

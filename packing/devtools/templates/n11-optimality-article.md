@@ -131,9 +131,9 @@ The [local estimate](#the-local-argument-excludes-every-nonzero-motion) and
 [exact frame change](#closing-the-gap-between-the-rational-cap-and-the-exact-optimum)
 complete the contradiction.
 
-The Squares Project records this result as **T-060, S5/V3/C3**: a result
-resolving the global optimum, supported by exact computational verification and a mapped
-mathematical review, machine-checked here with its review record pending.
+The Squares Project records this result as **T-060, S5/V3/C3**: a result resolving the
+global optimum, supported by exact computational verification and a mapped mathematical
+review, machine-checked here with its review record pending.
 Under the ladder of 2026-09-30, rung 4 on either axis also needs a second adversarial
 review by a distinct reviewer and a retained human oversight record, which this result
 awaits. This is a computer-assisted proof with a stated software trust base; a completed
@@ -759,8 +759,8 @@ It also makes no separate claim of global uniqueness of all optimal packings.
 The public proof source is
 [Queuingtheorydotcom/11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal/tree/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c),
 linked at the revision that was confirmed.
-The Squares Project’s confirmation uses independently written consumers of its
-proposed certificate data and a mathematical review of the implications above.
+The Squares Project’s confirmation uses independently written consumers of its proposed
+certificate data and a mathematical review of the implications above.
 The accepted computation covers the required proof ensemble, including all 2,180
 exclusions and all ten capture nodes.[^review]
 

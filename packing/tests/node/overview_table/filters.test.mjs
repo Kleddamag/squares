@@ -87,16 +87,16 @@ function clock(today) {
 /**
  * A page with a table of results, as the HTML has it: Significance at S4 and up, the
  * rows below it already hidden, Max age at `age`, empty for none, and Hide superseded
- * checked if `hide`. The reader opens it on `today`. One row is superseded; of the four
- * that are current, two are current bests, one is a current best as reported and one is
- * not a bound.
+ * checked if `hide`. The reader opens it on `today`. Three rows are confirmed, one of
+ * them superseded; of the other two, one is recorded and one is incomplete. Whether a
+ * row is superseded is its `current`, and no status.
  * @param {{ search?: string, hash?: string, age?: string, hide?: boolean, today?: string }} [opened]
  */
 function page({ search = "", hash = "", age = "", hide = false, today = "2026-10-01" } = {}) {
-  const ours = { source: "ours", standing: "current-best", current: "true" };
-  const superseded = { source: "others", standing: "superseded", current: "false" };
-  const structure = { source: "others", standing: "not-a-bound", current: "true" };
-  const reported = { source: "others", standing: "current-best-reported", current: "true" };
+  const ours = { source: "ours", status: "confirmed", current: "true" };
+  const superseded = { source: "others", status: "confirmed", current: "false" };
+  const structure = { source: "others", status: "incomplete", current: "true" };
+  const reported = { source: "others", status: "recorded", current: "true" };
   // The projects a row is attributed to, a space apart: none for this project's rows.
   const none = { project: "" };
   const beta = { project: "beta-two" };
@@ -125,7 +125,7 @@ function page({ search = "", hash = "", age = "", hide = false, today = "2026-10
     s: new Select("s", "min", "4"),
     v: new Select("v", "min", ""),
     c: new Select("c", "min", ""),
-    standing: new Select("standing", null, ""),
+    status: new Select("status", null, ""),
     hide: new Checkbox("current", hide),
     source: new Select("source", null, ""),
     n: new Input("n", "covers", ""),
@@ -252,7 +252,7 @@ void test("each facet filters, and the filters compose", () => {
   /** @param {Parameters<typeof results.choose>[0]} values */
   const rows = (values) => {
     results.choose({
-      ...{ s: "", v: "", c: "", standing: "", source: "", n: "", age: "" },
+      ...{ s: "", v: "", c: "", status: "", source: "", n: "", age: "" },
       ...values,
     });
     return results.shown().rows;
@@ -260,9 +260,9 @@ void test("each facet filters, and the filters compose", () => {
   assert.deepEqual(rows({ s: "3" }), ["t-001", "t-002", "t-004", "t-005"]);
   assert.deepEqual(rows({ v: "4" }), ["t-001", "t-004", "t-005"]);
   assert.deepEqual(rows({ c: "4" }), ["t-001", "t-005"]);
-  assert.deepEqual(rows({ standing: "superseded" }), ["t-005"]);
-  assert.deepEqual(rows({ standing: "not-a-bound" }), ["t-003"]);
-  assert.deepEqual(rows({ standing: "current-best-reported" }), ["t-004"]);
+  assert.deepEqual(rows({ status: "confirmed" }), ["t-001", "t-002", "t-005"]);
+  assert.deepEqual(rows({ status: "incomplete" }), ["t-003"]);
+  assert.deepEqual(rows({ status: "recorded" }), ["t-004"]);
   assert.deepEqual(rows({ source: "ours" }), ["t-001", "t-002"]);
   assert.deepEqual(rows({ n: "18" }), ["t-002", "t-003", "t-004"]);
   // On 1 October the rows are 27, 31, some 17,000, 4 and 4 days old.
@@ -279,30 +279,29 @@ void test("each facet filters, and the filters compose", () => {
   assert.equal(results.count.textContent, "0 of 5 results");
 });
 
-void test("Hide superseded hides the superseded rows and no other, and narrows Standing", () => {
+void test("Hide superseded hides the superseded rows and no other, whatever their status", () => {
   // The overview's bar: the box checked in the HTML, and the row it hides with it.
   const recent = page({ hide: true });
   assert.deepEqual(recent.shown(), { rows: ["t-001"] });
   assert.equal(recent.count.textContent, "1 of 5 results");
-  // Every row that is current stays: the current bests, the reported one among them,
-  // and the result that is not a bound.
+  // Every row that is current stays, whatever its status: the confirmed ones that still
+  // hold, the recorded one and the incomplete one.
   recent.choose({ s: "" });
   assert.deepEqual(recent.shown(), { rows: ["t-001", "t-002", "t-003", "t-004"] });
   assert.equal(recent.count.textContent, "4 of 5 results");
-  // It narrows Standing: each standing but the one it hides still shows its rows.
-  recent.choose({ standing: "current-best" });
-  assert.deepEqual(recent.shown().rows, ["t-001", "t-002"]);
-  recent.choose({ standing: "current-best-reported" });
+  // It composes with Status, which asks a different question: each status shows its
+  // rows that are current, and superseded is no status.
+  recent.choose({ status: "recorded" });
   assert.deepEqual(recent.shown().rows, ["t-004"]);
-  recent.choose({ standing: "not-a-bound" });
+  recent.choose({ status: "incomplete" });
   assert.deepEqual(recent.shown().rows, ["t-003"]);
-  recent.choose({ standing: "superseded" });
-  assert.deepEqual(recent.shown(), { rows: [] });
-  assert.equal(recent.count.textContent, "0 of 5 results");
-  // Cleared, it passes every row, as an empty control does.
+  recent.choose({ status: "confirmed" });
+  assert.deepEqual(recent.shown(), { rows: ["t-001", "t-002"] });
+  assert.equal(recent.count.textContent, "2 of 5 results");
+  // Cleared, it passes every row, as an empty control does: the superseded one returns.
   recent.check(false);
-  assert.deepEqual(recent.shown().rows, ["t-005"]);
-  recent.choose({ standing: "" });
+  assert.deepEqual(recent.shown().rows, ["t-001", "t-002", "t-005"]);
+  recent.choose({ status: "" });
   assert.equal(recent.count.textContent, "5 results");
   recent.check(true);
   assert.deepEqual(recent.shown().rows, ["t-001", "t-002", "t-003", "t-004"]);

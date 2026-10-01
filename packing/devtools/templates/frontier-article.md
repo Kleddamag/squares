@@ -20,8 +20,7 @@ The *verified* columns hold only exact formal bounds: a complete proof, an exact
 algebraic replay, or a rigorous certificate.
 Where the verified bound is the reported one, the cell says *✓ same*, meaning verified
 here at the reported value, rather than printing the value twice.
-A finite-precision result is numerically checked and never enters a verified
-column.
+A finite-precision result is numerically checked and never enters a verified column.
 
 **The other columns.** The *gap* is the verified upper bound minus the verified lower
 bound, exact where both are closed forms and zero where the case is solved.

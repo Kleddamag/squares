@@ -34,9 +34,7 @@
       bottom: round(line.bottom),
     }));
   };
-  const rows = [...(table.tBodies[0]?.rows ?? [])].filter(
-    (row) => !row.classList.contains("site-group-row"),
-  );
+  const rows = [...(table.tBodies[0]?.rows ?? [])];
   /** @param {HTMLTableRowElement} row */
   const name = (row) => row.id || (row.dataset.result ?? "");
   const edge = bar.getBoundingClientRect();

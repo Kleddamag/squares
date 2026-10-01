@@ -784,15 +784,21 @@ def test_the_diagram_shows_the_empty_top_rungs_as_empty(page: str) -> None:
     assert cells["V3"]["count"] == overview_sections.count_label(counts["V"][3])
 
 
-def test_every_rung_chip_in_a_table_is_titled_with_the_rubrics_meaning(page: str) -> None:
-    """The chips' wording is `epistemics.md`'s, not a second hand-written copy: every
-    `S`, `V` and `C` chip on the page, in the tables and the diagram alike, carries its
-    rung's full meaning as its title."""
+def test_every_rung_chip_in_the_diagram_is_titled_with_the_rubrics_meaning(page: str) -> None:
+    """The diagram's wording is `epistemics.md`'s, not a second hand-written copy: every
+    `S`, `V` and `C` chip in the ladder diagram carries its rung's full meaning as its
+    title, the 2026-09-30 meanings included, and the tables' chips stay bare."""
     meanings = overview_sections.rung_meanings()
-    chips = re.findall(r'<span class="site-chip site-rung-fill"([^>]*)>([SVC]\d)</span>', page)
-    assert chips
-    for attributes, label in chips:
-        assert f'title="{html.escape(meanings[label], quote=True)}"' in attributes, label
+    titled = {
+        cell["label"]: html.unescape(cell["title"])
+        for cell in _LADDER_CELL.finditer(_ladders(page))
+        if cell["label"]
+    }
+    assert set(titled) == set(meanings)
+    assert titled == meanings
+    assert titled["V3"].startswith("Checkable: a published or audited proof")
+    assert titled["C5"].startswith("Formal confirmation: replayed here, open")
+    assert "title=" not in overview_sections._rung("V3")  # noqa: SLF001
 
 
 def test_the_ladder_diagram_is_its_own_component_on_the_shared_tokens() -> None:

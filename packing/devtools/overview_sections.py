@@ -52,11 +52,9 @@ def _fill(rung: str) -> str:
 
 
 def _rung(label: str) -> str:
-    """A rung chip, titled with the rung's one-line meaning from `epistemics.md`, so a
-    reader hovering `V3` in a table sees what the rubric says `V3` is."""
-    title = rung_meanings().get(label)
-    titled = f' title="{_esc(title)}"' if title else ""
-    return f'<span class="site-chip site-rung-fill"{titled} {_fill(label)}>{_esc(label)}</span>'
+    """A rung chip as a table prints it. The rung's full meaning is the title of the
+    diagram's chip (`_ladder_cell`), where the rubric is explained once."""
+    return f'<span class="site-chip site-rung-fill" {_fill(label)}>{_esc(label)}</span>'
 
 
 #: What the table and its filter call an entry that is no bound on `s(n)`:

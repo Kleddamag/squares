@@ -975,8 +975,12 @@ it.
   The section was Verification at a Glance until 2026-10-01; an empty anchor in its
   heading keeps the old fragment, `#verification-at-a-glance`, landing on it.
   - **Rules.** One rule, in the text’s colour, stands under the column heads.
-    No rule stands between the rows: 1.5rem between one rung’s description and the next
-    rung (`--site-ladders-row-space`, 0.75rem, either side of a row) keeps them apart.
+    No rule stands between the rows: 0.8rem between one rung’s description and the next
+    rung (`--site-ladders-row-space`, 0.4rem, either side of a row) keeps them apart and
+    lets the rungs read as one ladder.
+  - **Heads.** Each column is headed by its name and one short question in the same
+    form: “How significant is the result?”, “How was it originally verified?”, “How has
+    it been confirmed?” (`DIMENSIONS`).
   - **Wording.** The chip’s `title` is the rubric’s full meaning, read from the tables
     in `epistemics.md` (`rung_meanings`). The description is that meaning, or a short
     form where the meaning does not fit two lines of the narrowest cell
@@ -988,10 +992,10 @@ it.
   - **Rows.** Every rung is the same height at any one width, since each is a chip and a
     two-line box. A cell arranges the two by its own width.
     With 16.5rem or more it sets the chip in a 2.25rem rail, the chip’s own width, and
-    the description beside it, 0.75rem on, 75.3px a row: at 1280 and 1024 pixels, down
+    the description beside it, 0.75rem on, 64.1px a row: at 1280 and 1024 pixels, down
     to a 908-pixel window, and on a phone down to 296 pixels.
     Narrower, it sets the chip on a line of its own and the description under it across
-    the cell, 103.1px a row, from 907 pixels down to 716, so at 768. A description is
+    the cell, 91.8px a row, from 907 pixels down to 716, so at 768. A description is
     never set narrower than 13.5rem (`--site-ladders-meaning-min`).
   - **Columns.** The three columns are equal, and each keeps 0.75rem
     (`--site-ladders-inset`) clear after its words, before the next column’s chip.

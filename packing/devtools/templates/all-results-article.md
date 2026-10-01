@@ -12,18 +12,21 @@ strongest verification its evidence supports; and **C**, what this repository ha
 checked itself. A result by others is credited to its authors as their source states it;
 its `V` and `C` are this repository’s own verification of it.
 The credit says whose a result is and, after “after”, whose work it builds on, so it
-also says which results build on this project’s. A result that a verified case bound
-rests on now, the current best, carries no standing.
-Any other carries one, which says how it stands: it is the current best only as
+also says which results build on this project’s. Under its rungs each result shows its
+kind, which says what it is: a *lower bound*, an *upper bound*, an *optimality* result,
+which settles an exact value, or one of the kinds that bound no case, such as a
+*rigidity*, a *case exclusion* or a *simplification*, a second and simpler proof of a
+value another result holds.
+A result that a verified case bound rests on now, the current best, shows no standing.
+Any other that claims a bound shows how it stands: it is the current best only as
 *reported*; it is a *second certificate* for an exact value another result holds; or it
-is *superseded*. A result that bounds no case, such as a rigidity or a case exclusion,
-shows its kind in that place.
+is *superseded*.
 {{STAR_LEGEND}}
 Open a row for the full claim and its novelty label, and follow the records to the case
 file, the evidence, the retained source and the review.
 The newest, and the ones that matter most, are on the [overview](./#recent-results).
 
 The table starts with every result showing, newest first.
-The filters narrow it by rating, standing, source, case and age, and they combine.
+The filters narrow it by rating, kind, standing, source, case and age, and they combine.
 
 {{RESULTS_TABLE}}

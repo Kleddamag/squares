@@ -17,7 +17,8 @@ rungs, with the result's standing, derived from the case records and never store
 whether a case bound rests on it now, and if not, whether it was superseded or is a
 second certificate for a value another result holds. Every row of both tables states the
 result's `kind`, what the result is: a lower bound, an upper bound, optimality, or one
-of the kinds that are no bound on `s(n)`, whose standing column repeats the kind.
+of the kinds that are no bound on `s(n)`. A result whose evidence claims no bound has
+no standing, and its standing cell is a dash.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.render_results --update
@@ -46,6 +47,9 @@ OUTPUT = ROOT / "frontier" / "RESULTS.md"
 #: diff and ambiguous on sight.
 APOSTROPHE = "\u2019"
 
+#: The standing cell of a result whose evidence claims no bound: it has no standing.
+NO_STANDING_CELL = "\u2014"
+
 #: The title of the first group: this project's own results.
 OURS = f"This Project{APOSTROPHE}s Results"
 
@@ -57,7 +61,8 @@ One row per registered result: this project's first, then results by others grou
 by the lineage their sources state, each sorted by significance, then confirmation.
 A result's kind says what it is: a lower bound, an upper bound, optimality (an exact
 value), or one of the kinds [`epistemics.md`](../../epistemics.md#result-kinds) defines
-for a result that is no bound on `s(n)`.
+for a result that is no bound on `s(n)`. A result that claims no bound has no
+standing, and its standing column is a dash.
 The axes are defined in [`epistemics.md`](../../epistemics.md): `V` is the
 verification the result carries as certified by its own source, `C` how far that
 verification has been independently confirmed here or by a third party, `S` a
@@ -160,7 +165,7 @@ def render() -> str:
                 f"| {credit_line(record, sources)} "
                 f"| {record['attribution']['published']} | {record['verification']} "
                 f"| {record['confirmation']} | S{record['significance']['score']} "
-                f"| {standing(record, records)} | {_claim(record)} |"
+                f"| {standing(record, records) or NO_STANDING_CELL} | {_claim(record)} |"
                 for record in group
             )
             lines.append("")

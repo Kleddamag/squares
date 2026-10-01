@@ -25,8 +25,8 @@ The owner asked for every result to be classified by what it is, starting from f
 kinds: lower bound, upper bound, optimality and simplification.
 This plan proposes ten kinds, the owner’s four and six more, and assigns one to each of
 the 61 results. Each result carries its kind in a required `kind` field, the checker
-cross-checks the field against the claim and the evidence where it can, and the views
-that printed “not a bound” print the kind instead.
+cross-checks the field against the claim and the evidence where it can, and every view
+shows the kind, with a standing only where the result is a bound.
 
 ## The Vocabulary
 
@@ -217,15 +217,17 @@ same list by a test.
 
 A result’s standing is derived from the case records: *current best*, *superseded*,
 *second certificate*. It is a statement about bounds.
-Nine results cite no bound evidence, and their standing was “not a bound” on the site
+Nine results cite no bound evidence, and their standing read “not a bound” on the site
 and a dash in `RESULTS.md`: T-012, T-013, T-014, T-023, T-031, T-035, T-036, T-058 and
-T-059. Each now shows its kind where the standing would be: rigidity, case exclusion,
-restricted optimality, method limit or audit.
+T-059. They now have no standing, and every view shows their kind instead: rigidity,
+case exclusion, restricted optimality, method limit or audit.
 
-`RESULTS.md` gains a kind column in both tables.
-The site’s tables are being rewritten on another branch, so this change touches them
-only where the old label was produced; the standing chip and the standing filter show
-the kind for those nine results.
+Every view shows the kind of every result.
+`RESULTS.md` has a kind column in both tables, and a dash in the standing column of a
+result that has no standing.
+On the site every row of both result tables draws its kind as a chip under its rungs,
+above any standing chip, the result popover’s head and each step of its chain show it
+beside the rungs, and the filter bar has a Kind select beside Standing.
 
 ## Decisions for the Owner
 
@@ -239,21 +241,19 @@ the kind for those nine results.
 3. **Audits of published work.** Whether T-004 is an audit, as proposed, or Bentz’s
    lower bound; and whether T-011 should follow it.
 4. **T-035.** Case exclusion read broadly, as proposed, or a kind of its own.
-5. **Standing for a result that is not a bound.** The standing slot shows the kind for
-   now. Once the site shows the kind as its own chip, that slot can be left empty for
-   these results.
-6. **Two standings that read oddly beside a kind.** T-003 (method limit) stands as
-   *superseded* and T-005 (correction) as *current best*, because standing is derived
-   from the evidence an entry cites and both cite evidence a case bound rests on.
+5. **Which results have a standing.** Standing is still derived from the evidence an
+   entry cites, so five results whose kind is no bound keep one: T-003 (method limit)
+   reads *superseded*, T-004 (audit) and T-005 (correction) *current best*, and T-054
+   and T-055 (simplification) *second certificate*. Deriving it from the kind instead
+   would leave those five with their kind alone, as the nine above are, and no result
+   would then be a second certificate while the two second proofs are simplifications.
    The derivation is unchanged here.
-   Deriving standing only for the three bound kinds would make both show their kind.
 
 ## What Is Left for the Site
 
-- The kind as a chip or a column in the results tables and the result popover.
-- A kind filter in the shared filter bar, beside Standing.
-- The standing chip and filter no longer carrying kinds, once the kind has its own
-  place.
+The result tables, the result popover and the filter bar show the kind.
+The case pages list each case’s results with their rungs and no kind chip; that list was
+not changed.
 
 ## References
 

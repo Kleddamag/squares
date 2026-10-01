@@ -263,8 +263,8 @@ state no relation on $s(n)$ in their headline.
 Method limit, correction and audit are told apart by review alone.
 
 A result’s standing, whether a case bound rests on it now, is about bounds.
-A result whose evidence claims no bound has no standing, and the register’s views show
-its kind in that place.
+A result whose evidence claims no bound has no standing: nothing supersedes it, and the
+register’s views show its kind alone.
 
 ## Results by Others
 

@@ -4,11 +4,11 @@
 // the block size over the line height, which is 1 for a chip that does not wrap.
 // `white_space` is the chip's computed value, `nowrap` wherever the one chip rule holds.
 //
-// A chip is a `rung` for a rating (S, V or C), `standing` for a result's standing,
-// `novelty` for a novelty label, and `chip` for any other; its surface is a table, a
-// popover, the rating ladders, a card or the prose. `scope` keeps only the chips inside
-// an element it matches, for what a press opened; without one, the chips inside a
-// popover are left out, since a closed popover shows none.
+// A chip is a `rung` for a rating (S, V or C), `kind` for what a result is, `standing`
+// for a result's standing, `novelty` for a novelty label, and `chip` for any other; its
+// surface is a table, a popover, the rating ladders, a card or the prose. `scope` keeps
+// only the chips inside an element it matches, for what a press opened; without one,
+// the chips inside a popover are left out, since a closed popover shows none.
 (/** @type {{scope?: string | null} | undefined} */ options) => {
   const scope = options?.scope ?? null;
   /** @param {number} value */
@@ -17,6 +17,9 @@
   const kind = (chip) => {
     if (chip.classList.contains("site-rung-fill")) {
       return "rung";
+    }
+    if (chip.hasAttribute("data-kind")) {
+      return "kind";
     }
     if (chip.hasAttribute("data-standing")) {
       return "standing";

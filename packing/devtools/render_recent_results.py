@@ -23,10 +23,12 @@ the interval decision several first-party certificates cite, does not make every
 decided hold the bound. Where only a reported bound rests on an entry, it is the current
 best as reported. An entry that holds no bound is a *second certificate* where it proves
 the exact value of a proved case (it cites that case's verified upper bound beside a
-lower bound of its own) and *superseded* where it is any other bound. Standing is about
-bounds, so an entry whose evidence claims none has no standing of its own: its place
-shows the entry's `kind`, a rigidity or a case exclusion (epistemics.md, Result Kinds),
-which `devtools.check_results` holds to a kind that is no bound.
+lower bound of its own) and *superseded* where it is any other bound.
+
+**Standing is about bounds, so an entry whose evidence claims none has no standing**
+(`NO_STANDING`): nothing supersedes a rigidity or a case exclusion. The views show such
+an entry's `kind` (epistemics.md, Result Kinds) and no standing, and
+`devtools.check_results` holds it to a kind that is no bound.
 
 **Recent is decided where the record already decides it; nothing here defines it.** A
 verified lower bound is recent where the stage and the atlas star it,
@@ -67,13 +69,7 @@ from devtools.build_bound_citations import (
     project_result,
     results_carrying,
 )
-from devtools.check_results import (
-    BOUND_KINDS,
-    KINDS,
-    kind_label,
-    recent_evidence,
-    scope_values,
-)
+from devtools.check_results import recent_evidence, scope_values
 from devtools.result_credit import source_lineage
 from sqpack.assurance import bounds_agree_at_declared_precision
 from sqpack.yamlio import safe_load
@@ -106,17 +102,15 @@ SECOND_CERTIFICATE = "second certificate"
 #: as a replayed one would say it had been checked here.
 SECOND_CERTIFICATE_REPORTED = "second certificate, reported"
 SUPERSEDED = "superseded"
-#: What stands in a standing's place for an entry whose evidence claims no bound: its
-#: kind, as a reader sees it. The register's checker refuses a bound kind there.
-KIND_STANDINGS = tuple(kind_label(kind) for kind in KINDS if kind not in BOUND_KINDS)
 STANDINGS = (
     HOLDS,
     HOLDS_REPORTED,
     SECOND_CERTIFICATE,
     SECOND_CERTIFICATE_REPORTED,
     SUPERSEDED,
-    *KIND_STANDINGS,
 )
+#: What `standing` returns for an entry whose evidence claims no bound: it has none.
+NO_STANDING = ""
 #: The confirmation rungs at which a certificate has been replayed here (epistemics.md).
 REPLAYED_RUNGS = frozenset({"C3", "C4", "C5"})
 #: The evidence claims that make an entry a bound on `s(n)`, as the evidence schema types
@@ -458,8 +452,8 @@ def held(n: int, records: Records) -> Held:
 
 
 def standing(record: Mapping[str, Any], records: Records) -> str:
-    """Whether an entry holds a case bound now, and if not, why not; for an entry whose
-    evidence claims no bound, its kind."""
+    """Whether an entry holds a case bound now, and if not, why not. An entry whose
+    evidence claims no bound has no standing, `NO_STANDING`."""
     entry = str(record["id"])
     cases = [held(n, records) for n in _scope(record) if n in records.cases]
     if any(entry in case.verified for case in cases):
@@ -469,7 +463,7 @@ def standing(record: Mapping[str, Any], records: Records) -> str:
     cited = {str(item) for item in record["evidence"]}
     claims = {records.register.evidence[item].get("claim") for item in cited}
     if not claims & BOUND_CLAIMS:
-        return kind_label(str(record["kind"]))
+        return NO_STANDING
     if "lower-bound" in claims and any(case.proved and cited & case.upper for case in cases):
         if str(record["confirmation"]) in REPLAYED_RUNGS:
             return SECOND_CERTIFICATE

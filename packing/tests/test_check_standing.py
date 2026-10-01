@@ -17,6 +17,7 @@ import pytest
 
 from devtools import check_standing
 from devtools import render_recent_results as view
+from devtools.check_results import BOUND_KINDS
 from devtools.check_standing import BEATEN, EQUAL, EXCEEDS, LOWER, UPPER, Stated
 
 EXACT = Fraction(0)
@@ -49,7 +50,7 @@ def test_the_check_reads_the_bound_of_nearly_every_entry_that_claims_one(
     records: view.Records,
 ) -> None:
     """The comparison is of numbers, so it is only as wide as the headlines it reads.
-    Every entry that is not a bound states none; of the entries that are superseded, at
+    Every entry with no standing states none; of the entries that are superseded, at
     most a fifth state a bound in a form this does not read, and those are held to the
     structural rule instead."""
     unread = []
@@ -57,7 +58,8 @@ def test_the_check_reads_the_bound_of_nearly_every_entry_that_claims_one(
     for record in records.register.results:
         standing = view.standing(record, records)
         stated = check_standing.stated_bounds(record)
-        if standing in view.KIND_STANDINGS:
+        if standing == view.NO_STANDING:
+            assert record["kind"] not in BOUND_KINDS, record["id"]
             assert not stated, record["id"]
         if standing == view.SUPERSEDED:
             superseded.append(record["id"])
@@ -261,16 +263,15 @@ def test_an_entry_may_not_state_more_than_its_case_record_carries(
     assert "T-043 states more than the verified bound its case record carries" in problem
 
 
-def test_an_entry_that_is_not_a_bound_states_none(records: view.Records) -> None:
-    """A rigidity, an exclusion or an erratum claims no bound, so no better bound
-    supersedes it; one that stated a bound would be a bound."""
+def test_an_entry_with_no_standing_states_no_bound(records: view.Records) -> None:
+    """A rigidity, an exclusion or a method limit claims no bound, so no better bound
+    supersedes it and it has no standing; one that stated a bound would be a bound."""
     record = records.results["T-014"]
-    standing = view.standing(record, records)
-    assert standing in view.KIND_STANDINGS
-    assert check_standing.problems(record, standing, records) == []
+    assert view.standing(record, records) == view.NO_STANDING
+    assert check_standing.problems(record, view.NO_STANDING, records) == []
     stating = _entry(records, "T-014", headline="`s(5) ≥ 2`")
-    (problem,) = check_standing.problems(stating, standing, records)
-    assert "T-014 is not a bound, yet states one at n = 5" in problem
+    (problem,) = check_standing.problems(stating, view.NO_STANDING, records)
+    assert "T-014 has no standing, yet states a bound at n = 5" in problem
 
 
 def test_a_superseded_entry_this_cannot_read_needs_another_holder(

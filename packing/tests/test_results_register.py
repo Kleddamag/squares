@@ -859,8 +859,11 @@ def test_results_md_labels_every_result_by_its_kind() -> None:
         cells = row.split(" | ")
         assert cells[2] == check_results.kind_label(record["kind"]), record["id"]
         if record.get("attribution"):
-            # The standing column of a result by others: a derived word or its kind.
-            assert cells[8] in STANDINGS, record["id"]
+            # The standing column of a result by others: a derived word, or a dash for
+            # a result that claims no bound, which has no standing.
+            assert cells[8] in (*STANDINGS, render_results.NO_STANDING_CELL), record["id"]
+            if cells[8] == render_results.NO_STANDING_CELL:
+                assert record["kind"] not in check_results.BOUND_KINDS, record["id"]
 
 
 def test_results_by_others_awaiting_a_replay_lead_their_group() -> None:

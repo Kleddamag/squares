@@ -13,6 +13,21 @@ is at `167d842cd27ba1451cb2833773ea930c80b9e65b`. The selected new source bytes 
 Git-blob manifest are retained in the
 [October packet](../../../packing/resources/web/evand-square-packing-2026-10-01/README.md).
 
+The October 1 pin dates this intake snapshot, not first publication of either claim.
+The
+[first `s60` bundle commit](https://github.com/evand/square-packing/commit/cdd9b2a4fde0dfed7a3dcff455fab7cfa66230c2)
+is timestamped 2026-09-29 01:13:36 UTC, September 28 in Pacific time.
+Its README already states the `s(61) = 8` monotonicity corollary.
+The pinned
+[`k2m3` README](https://github.com/evand/square-packing/blob/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/certificates/k2m3/README.md)
+also dates the `s(60) = 8` result to September 28. The
+[first public family write-up](https://github.com/evand/square-packing/commit/d9f79bc1beb52a38854b675c330fd25a6d37eeee)
+and
+[first full `k2m3` bundle](https://github.com/evand/square-packing/commit/69999aff04bfecef4181ce5c7dbebe9914df0b92)
+both entered the source on 2026-09-30 14:47:52 UTC. These dates supply
+`attribution.published` for T-062 through T-064; the later snapshot supplies
+`source_date` for the October coverage entry.
+
 Evan Daniel’s live
 [Proofs and Results](https://evand.github.io/square-packing/proofs.html) and
 [Sources](https://evand.github.io/square-packing/sources.html) pages announce two

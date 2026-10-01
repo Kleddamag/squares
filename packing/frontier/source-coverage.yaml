@@ -150,6 +150,10 @@ sources:
       Pinned source 08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5 reports s(60) = 8
       by a mixed cover checked there by zm_mixed.py and zmx2, and hence s(61) = 8 by
       monotonicity. It separately reports s(k^2 - 3) = k for every integer k >= 6.
+      The pinned October 1 revision is the intake snapshot: the s60 bundle first
+      appeared at cdd9b2a4 on September 28 by the source's local date, and the
+      k2m3 public write-up and bundle appeared at d9f79bc1 and 69999aff on
+      September 30.
       This map projects that infinite family to the cases through n = 324; the
       universal claim and the conditional Lean reduction are recorded in T-064.
       The exact Valid7 premise has one source Python checker and has not been

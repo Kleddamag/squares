@@ -4517,7 +4517,7 @@ results:
     novelty: previously-published
     attribution:
       source_keys: ['[evand square-packing 2026-10-01]']
-      published: '2026-10-01'
+      published: '2026-09-28'
     evidence: [E-n060-evand-mixed-cover-report]
     artifacts:
       - packing/frontier/n-060.md
@@ -4552,7 +4552,7 @@ results:
     novelty: previously-published
     attribution:
       source_keys: ['[evand square-packing 2026-10-01]']
-      published: '2026-10-01'
+      published: '2026-09-28'
     composition: >-
       This uses T-062's un-replayed lower-bound premise, monotonicity by deletion,
       and the trivial grid upper bound. The reported premise fixes this result's rung.
@@ -4594,7 +4594,7 @@ results:
     novelty: previously-published
     attribution:
       source_keys: ['[evand square-packing 2026-10-01]']
-      published: '2026-10-01'
+      published: '2026-09-30'
     composition: >-
       The universal source theorem rests on a finite Valid7 covering premise
       and its conditional Lean reduction. Only one source implementation reports

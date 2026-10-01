@@ -211,9 +211,12 @@ def test_the_verification_and_confirmation_rungs_are_read_from_their_tables() ->
 
     assert sorted(verification) == [0, 1, 2, 3, 4, 5]
     assert sorted(confirmation) == [0, 1, 2, 3, 4, 5]
-    assert verification[4] == "Machine-verified"
-    assert confirmation[2] == "Replayed"
-    assert confirmation[5] == "Review-ready"
+    assert verification[4] == "Mechanized, adversarially reviewed and human-overseen"
+    assert confirmation[2] == "Replayed without a machine certificate"
+    assert (
+        confirmation[5]
+        == "Formal confirmation: replayed here, open, and reviewed by two experts"
+    )
     assert anchors() == anchors("S")
     assert all("|" not in name and "`" not in name for name in verification.values())
     with pytest.raises(ValueError, match="unknown axis"):

@@ -17,7 +17,9 @@ names one the environment supplies, as the other browser tools read it.
 
 from __future__ import annotations
 
+import html
 import os
+import re
 from collections.abc import Iterator, Sequence
 from pathlib import Path
 from typing import Any
@@ -38,9 +40,17 @@ SERIF_MATH, SANS_MATH = "KPress Math Text", "KPress Math Text Sans"
 CASES = (11, 29)
 ATLAS_CELL = '[data-atlas-n="11"]'
 CASE_LINK = 'a[data-case="11"]'
-#: The explainer's card on the Papers page, the one card left whose popover headline has
-#: words and a formula; the overview's page cards navigate and open no popover.
-EXPLAINER_CARD = '.site-card[popovertarget="pop-paper-explainer"]'
+#: A result row's popover headline on the results page, as `row_detail` writes one that
+#: is not mathematics alone (so unmarked): the popover's id and the headline's HTML.
+#: These are the popovers whose headlines have words and a formula; the page and paper
+#: cards navigate and open none.
+ROW_HEADLINE = re.compile(
+    r'<p class="site-popover-value" id="(pop-result-t-\d+)-title">(.*?)</p>', re.DOTALL
+)
+#: A formula as the page carries it before it is typeset: its TeX, HTML-escaped.
+FORMULA = re.compile(
+    r'<span class="kpress-math-render" aria-hidden="true">\\\((.*?)\\\)</span>'
+)
 
 #: A walk's findings: the formulas set in the wrong face, and every formula counted by
 #: (surface, text face, math face).
@@ -166,11 +176,16 @@ def test_the_results_table_sets_sans_math(results: Walk) -> None:
 
 
 def test_the_case_popovers_headline_is_serif_math(frontier_atlas: Walk) -> None:
-    """The frontier atlas's table is sans math, and its case popover's headline, set by
-    script as `n = 11`, is typeset and serif."""
+    """The frontier atlas's table is sans math, as is its subtitle's range of cases, and
+    its case popover's headline, set by script as `n = 11`, is typeset and serif."""
     wrong, rows = frontier_atlas
     assert wrong == []
     assert rows[("table cell", SANS_TEXT, SANS_MATH)]["count"] > 0
+    numbers = [case["n"] for case in frontier.frontier_cases()]
+    subtitle = rows[("subtitle", SANS_TEXT, SANS_MATH)]
+    assert subtitle["count"] == 1
+    assert subtitle["example"] == rf"n = {min(numbers)}, \ldots, {max(numbers)}"
+    assert [key for key in rows if key[0] == "subtitle"] == [("subtitle", SANS_TEXT, SANS_MATH)]
     headline = rows[("popover headline", SANS_TEXT, SERIF_MATH)]
     assert headline["count"] == headline["alone"] == 1
     assert headline["example"] == "n = 11"
@@ -187,16 +202,23 @@ def test_a_case_records_panels_set_sans_math(case_records: dict[int, Walk], n: i
 
 def test_the_walk_catches_serif_math_in_a_sans_headline(browser: Any, root: Path) -> None:
     """The control: mark a headline that has words in it for serif mathematics, as every
-    popover's headline once was, and the walk names it."""
-    plain = '<p class="site-popover-value">New lower bounds for square packing for '
-    papers = site_renders.html("papers.html")
-    assert papers.count(plain) == 1
+    popover's headline once was, and the walk names it. The headline is a result row's
+    on the results page, the first whose words carry one formula: its popover is opened
+    by its row's own trigger."""
+    results = site_renders.html(render_overview.RESULTS_PAGE)
+    target, tex = next(
+        (target, FORMULA.findall(headline)[0])
+        for target, headline in ROW_HEADLINE.findall(results)
+        if len(FORMULA.findall(headline)) == 1 and re.match(r"\s*\w", headline)
+    )
+    plain = f'<p class="site-popover-value" id="{target}-title">'
+    assert results.count(plain) == 1
     marked = root / "marked.html"
     marked.write_text(
-        papers.replace(plain, plain.replace(">", ' data-math-face="serif">', 1)),
+        results.replace(plain, plain.replace(" id=", ' data-math-face="serif" id=', 1)),
         encoding="utf-8",
     )
-    wrong, _ = walk(browser, marked.as_uri(), presses=(EXPLAINER_CARD,), whole=False)
-    assert wrong == [
-        "serif math in sans text: p.site-popover-value in #pop-paper-explainer: n = 11"
-    ]
+    trigger = f'.site-row-open[popovertarget="{target}"]'
+    wrong, _ = walk(browser, marked.as_uri(), presses=(trigger,), whole=False)
+    where = f"p.site-popover-value in #{target}-title"
+    assert wrong == [f"serif math in sans text: {where}: {html.unescape(tex)[:40]}"]

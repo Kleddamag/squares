@@ -2,10 +2,15 @@
 
 <!-- BEGIN SHARED: project-intro (devtools.site_documents) -->
 
-The Squares Project studies $s(n)$, the side of the smallest square that holds $n$
-non-overlapping unit squares, which may be rotated.
-The problem is elementary to state and open for most $n$: the answer is known only to
-lie between the best packing found and the best lower bound proved.
+The square packing problem is a simple and long-standing problem in geometry.
+It asks: what is the size of the smallest square that can hold $n$ unit squares, where
+the squares are free to rotate but cannot overlap?
+The side length of that smallest square is written $s(n)$.
+
+The question is elementary to understand but is an open problem for most $n$. In many
+cases, the answer is known only to lie between an upper bound (the size of the enclosing
+square for the tightest packing ever discovered) and a lower bound (a size below which
+it is proved that no packing can exist).
 
 <!-- END SHARED: project-intro -->
 <!-- BEGIN SHARED: recent-progress (devtools.site_documents) -->
@@ -37,7 +42,7 @@ method’s shared dependencies and the publisher’s four stale cached-audit dig
 [Square Packing](https://jlevy.github.io/squares/).** It carries the
 [recent results](https://jlevy.github.io/squares/#recent-results) by this project and by
 others with their credit, the
-[verification ratings](https://jlevy.github.io/squares/#verification-at-a-glance),
+[verification ratings](https://jlevy.github.io/squares/#verification-ladders),
 [the atlas](https://jlevy.github.io/squares/#the-atlas) of known-best packings and its
 films, the table of [every result](https://jlevy.github.io/squares/all-results.html),
 and [the survey](https://jlevy.github.io/squares/#the-survey) of every case

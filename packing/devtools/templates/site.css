@@ -974,8 +974,8 @@ body {
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
 }
-/* A date says what it dates, "published" or "established", in the support colour, on
-   its own line above the date so the column stays narrow. */
+/* A date comes first, and then what it dates, "published" or "established", in the
+   support colour, on its own line under the date so the column stays narrow. */
 .site-table .site-date-kind {
   color: var(--site-support-color);
   display: block;

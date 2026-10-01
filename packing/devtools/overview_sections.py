@@ -729,6 +729,14 @@ def result_filters(
     )
 
 
+def date_cell(result: Result) -> str:
+    """What a result's date cell holds, in both tables of results: the date first, then
+    what it dates, `published` or `established`, quiet (`.site-date-kind`). The cell
+    sorts and filters on the date alone, its `data-value` and the row's `data-date`."""
+    kind, dated = result.dated
+    return f'{_esc(dated)} <span class="site-date-kind">{_esc(kind)}</span>'
+
+
 def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULTS) -> str:
     """Every registered result, grouped as `RESULTS.md` groups them, which is by the
     relation `RESULTS.md` prints (`result_credit.source_lineage`), with its
@@ -762,7 +770,6 @@ def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULT
         )
         for result in members:
             record = result.record
-            kind, date = result.dated
             star = new_result_star(result, overview)
             detail = result_row(result, trigger=_esc(result.id), here=True, starred=bool(star))
             popovers.append(detail.popover)
@@ -780,8 +787,8 @@ def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULT
                 f'data-value="{_esc(record["confirmation"] + record["verification"])}">'
                 f"{rung_chips(result)}"
                 f'<span class="site-standing">{standing_chip(result.standing)}</span></td>'
-                f'<td class="site-col-date" data-value="{_esc(date)}">'
-                f'<span class="site-date-kind">{_esc(kind)}</span> {_esc(date)}</td>'
+                f'<td class="site-col-date" data-value="{_esc(result.dated[1])}">'
+                f"{date_cell(result)}</td>"
                 f'<td class="site-records">{_records(result)}</td>'
                 "</tr>"
             )
@@ -1037,11 +1044,12 @@ def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS)
     """Every result as one table, newest first: the date, the result linking to its row
     on the results page with its id quiet beside it, the method, the credit and the
     status chips. A result by others is dated by its publication, as `RESULTS.md` dates
-    it, and this project's by the day it was established; the cell says which. The bar
-    above it is `result_filters`, the results page's, starting at `defaults`: a row
-    outside them is `hidden` in the HTML, so the first paint is already filtered. Each
-    row opens its result's popover (`result_row`), the results page's, ending in the
-    button to that page's row; the quiet id is its trigger."""
+    it, and this project's by the day it was established; the cell says which, after
+    the date (`date_cell`). The bar above it is `result_filters`, the results page's,
+    starting at `defaults`: a row outside them is `hidden` in the HTML, so the first
+    paint is already filtered. Each row opens its result's popover (`result_row`), the
+    results page's, ending in the button to that page's row; the quiet id is its
+    trigger."""
     results = recent_results(overview)
     reference = reference_date(overview)
     head = (
@@ -1057,7 +1065,6 @@ def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS)
     rows = []
     popovers = []
     for result in results:
-        kind, dated = result.dated
         formula, method = split_summary(result.summary)
         star = new_result_star(result, overview)
         detail = result_row(result, trigger=_esc(result.id), here=False, starred=bool(star))
@@ -1066,8 +1073,7 @@ def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS)
             f'<tr data-result="{_esc(result.id.lower())}" {result_facets(result)} '
             f"{detail.attributes}"
             f"{'' if shown_by_default(result, defaults, reference) else ' hidden'}>"
-            f'<td class="site-col-date"><span class="site-date-kind">{_esc(kind)}</span> '
-            f"{_esc(dated)}</td>"
+            f'<td class="site-col-date">{date_cell(result)}</td>'
             f'<td class="site-col-result"><a href="{_esc(result_url(result.id))}">'
             f"{tex_bounds(formula)}</a>{star} "
             f'<span class="site-cell-quiet">{detail.trigger}</span></td>'

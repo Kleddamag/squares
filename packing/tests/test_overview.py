@@ -2159,14 +2159,40 @@ def test_results_by_others_show_their_publication_date(
         if attribution:
             published = str(attribution["published"])
             assert result.dated == ("published", published)
-            assert f'<span class="site-date-kind">published</span> {published}' in row
+            assert f'{published} <span class="site-date-kind">published</span></td>' in row
         else:
             assert result.dated[0] == "established"
     recent = overview_sections.recent_table(overview)
-    dates = re.findall(r'<span class="site-date-kind">(\w+)</span> ([\d-]+)</td>', recent)
+    dates = re.findall(r'([\d-]+) <span class="site-date-kind">(\w+)</span></td>', recent)
     assert dates
-    assert [d for _, d in dates] == sorted((d for _, d in dates), reverse=True)
-    assert max(r.dated[1] for r in overview.results) == dates[0][1]
+    assert [d for d, _ in dates] == sorted((d for d, _ in dates), reverse=True)
+    assert max(r.dated[1] for r in overview.results) == dates[0][0]
+
+
+def test_a_date_cell_leads_with_the_date_and_then_says_what_it_dates(
+    overview: overview_data.Overview,
+) -> None:
+    """In both tables of results the date cell reads `2026-09-29 published`: the date,
+    then the quiet word for what it dates, and nothing before the date. The results
+    table still sorts on the date alone, the cell's `data-value`, and both tables filter
+    on the row's `data-date`."""
+    table = overview_sections.results_table(overview)
+    recent = overview_sections.recent_table(overview)
+    for result in overview.results:
+        kind, dated = result.dated
+        assert kind in {"published", "established"}
+        cell = f'{dated} <span class="site-date-kind">{kind}</span>'
+        assert overview_sections.date_cell(result) == cell
+        row = _row(table, result.id)
+        assert f'<td class="site-col-date" data-value="{dated}">{cell}</td>' in row, result.id
+        row = _recent_row(recent, result.id)
+        assert f'<td class="site-col-date">{cell}</td>' in row, result.id
+        assert f'data-date="{overview_sections.first_day(dated)}"' in row, result.id
+    assert '<th data-sort="text" title="Published, for a result by others;' in table
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    # On a wide table the word sits under the date; on a phone, beside it.
+    assert ".site-table .site-date-kind {\n  color: var(--site-support-color);\n" in css
+    assert ".site-results .site-date-kind {\n    display: inline;" in css
 
 
 #: A new result's star as a row carries it: joined to the result's text by a space that

@@ -834,8 +834,10 @@ it.
   (**Spacing**, above).
   Wide tables bleed on large screens, as **Wide bleed** above describes.
   On a phone, the results table becomes one card per row.
-  In the results table a result’s standing chip sits under its rungs; a date cell says
-  what it dates, `published` or `established`, in the support colour.
+  In the results table a result’s standing chip sits under its rungs.
+  A date cell leads with the date and then says what it dates, `published` or
+  `established`, in the support colour (`date_cell`): under the date on a wide table,
+  which keeps the column narrow, and beside it on a phone.
   In both tables of results the star follows the text of a new result, joined to it by a
   no-break space (`new_result_star`). The rule is the atlas’s, asked of a result instead
   of a case (`overview_data.starred_results`): the verified lower bound of a case rests
@@ -1005,14 +1007,13 @@ its defaults.
   maximum age of 180 days, with the count of rows shown out of the total at the bar’s
   end. Those two defaults are all that make the table recent: no result is left out of it
   by a date the page fixes.
-  Its five columns are the date, which says what it dates (`published` or
-  `established`); the result, its math linking to its row on the results page, with the
-  id beside it quiet, which is the row’s trigger; the method, the phrase the summary
-  gives after the formula (“by a point-only route” reads “point-only route”), empty when
-  there is none; the credit, the finder first and “after …” quiet, the list cut after
-  three names with the whole of it in the cell’s `title`; and the status, every chip in
-  one cell side by side.
-  The status cell holds the S, V and C rung chips and then one chip per part of the
+  Its five columns are the date, then what it dates (`published` or `established`); the
+  result, its math linking to its row on the results page, with the id beside it quiet,
+  which is the row’s trigger; the method, the phrase the summary gives after the formula
+  (“by a point-only route” reads “point-only route”), empty when there is none; the
+  credit, the finder first and “after …” quiet, the list cut after three names with the
+  whole of it in the cell’s `title`; and the status, every chip in one cell side by
+  side. The status cell holds the S, V and C rung chips and then one chip per part of the
   standing (`second certificate, reported` is two chips), left to right a space apart,
   wrapping only where the cell is too narrow, with the chips’ own block margin between
   wrapped rows; it never stacks one chip per line.

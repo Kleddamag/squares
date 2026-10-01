@@ -1,33 +1,5 @@
 /* ---------- shared: certificate picker and queued static math ---------- */
 (() => {
-  /* SVG font sizes use viewBox units. Compensate for the drawing scale so
-     labels have the same on-page size as captions, including during print. */
-  const diagrams = [...document.querySelectorAll(".line-fig svg, .chart svg")].map(
-    (svg) => /** @type {SVGSVGElement} */ (svg),
-  );
-  function sizeDiagramLabels() {
-    for (const svg of diagrams) {
-      if (!svg.getBoundingClientRect().width) {
-        continue;
-      }
-      const matrix = svg.getScreenCTM();
-      const scale = matrix && Math.hypot(matrix.c, matrix.d);
-      if (!scale) {
-        continue;
-      }
-      const size = parseFloat(getComputedStyle(svg.parentElement).fontSize) / scale;
-      svg.style.setProperty("--paper-diagram-font-size", `${size}px`);
-    }
-  }
-  const diagramObserver = new ResizeObserver(sizeDiagramLabels);
-  diagrams.forEach((svg) => {
-    diagramObserver.observe(svg);
-  });
-  window.addEventListener("beforeprint", sizeDiagramLabels);
-  window.addEventListener("afterprint", sizeDiagramLabels);
-  window.matchMedia("print").addEventListener("change", sizeDiagramLabels);
-  void document.fonts.ready.then(sizeDiagramLabels);
-  sizeDiagramLabels();
   const render = squaresMath.render;
   async function typeset() {
     // DOM state chooses the priority without measuring every formula's layout.

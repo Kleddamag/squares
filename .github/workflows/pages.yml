@@ -53,6 +53,7 @@ name: Certificate page
       - packing/atlas/known-best/rendering/**
       - packing/witnesses/known-best/**
       - packing/devtools/templates/explainer-shell.html
+      - packing/devtools/templates/explainer-publication.css
       - packing/devtools/templates/explainer-article.md
       - packing/devtools/templates/fonts/**
       - packing/atlas/known-best/known-best-1-100.svg

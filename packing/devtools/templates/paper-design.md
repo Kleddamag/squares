@@ -5,8 +5,11 @@ captions, notes, and controls.
 The web page and PDF share this hierarchy, with sizes scaled for each medium.
 Keep these conventions reusable across papers.
 
-[explainer-shell.html](explainer-shell.html) contains the local CSS layer above KPress;
-[explainer-article.md](explainer-article.md) contains the article.
+[explainer-publication.css](explainer-publication.css) contains the shared CSS layer
+above KPress. Both [explainer-shell.html](explainer-shell.html) and
+[n11-optimality-shell.html](n11-optimality-shell.html) inline that stylesheet;
+[explainer-article.md](explainer-article.md) and
+[n11-optimality-article.md](n11-optimality-article.md) contain the separate articles.
 KPress supplies the fonts, Markdown typography, math, themes, and general print
 behavior. The local layer sets the paper’s type proportions, reading measure, and figure
 layout.

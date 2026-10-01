@@ -11,8 +11,10 @@ import pytest
 from devtools import render_n11_optimality_explainer as paper
 from devtools.n11_optimality_figures import render_figures
 from devtools.render_explainer import assert_self_contained
+from sqpack.probes import probe
 
 ARTICLE = paper.TEMPLATES / "n11-optimality-article.md"
+PROBES = Path(__file__).with_name("probes")
 REVISION = "a" * 40
 SVG = (
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2">'
@@ -25,7 +27,11 @@ An exact formula is $x^2$.[^proof] See the
 [review](../../../docs/project/reviews/review-2026-09-29-n11-optimality.md)
 and the [record][register].
 
+<figure>
 {{WITNESS_SVG}}
+<figcaption>See the
+<a href="../../cases/trump11/verify_exact.py">exact witness check</a>.</figcaption>
+</figure>
 
 {{COVER_SVG}}
 
@@ -51,8 +57,10 @@ def test_rendered_page_is_offline_and_contains_proof_figures(rendered: tuple[str
     assert '<span class="kpress-math kpress-math-inline"' in html
     assert 'class="kpress-footnotes"' in html
     assert "{{" not in markdown
-    for name in ("HTML", "PDF", "Source"):
+    for name in ("MD", "PDF", "GITHUB"):
         assert f">{name}</a>" in html
+    assert '<div class="doc-links screen-only">' in html
+    assert 'href="https://github.com/jlevy/squares"' in html
 
 
 def test_local_citation_is_pinned(rendered: tuple[str, str]) -> None:
@@ -69,6 +77,14 @@ def test_local_citation_is_pinned(rendered: tuple[str, str]) -> None:
     )
     assert f"[register]: {register_url}" in markdown
     assert f'href="{register_url}"' in html
+    witness_url = (
+        "https://github.com/jlevy/squares/blob/"
+        + REVISION
+        + "/packing/cases/trump11/verify_exact.py"
+    )
+    assert f'<a href="{witness_url}"' in html
+    assert ">exact witness check</a>" in html
+    assert "[exact witness check](" not in html
 
 
 @pytest.mark.parametrize(
@@ -174,5 +190,46 @@ def test_radical_svg_has_print_geometry(tmp_path: Path) -> None:
             assert box is not None
             assert box["width"] > 1
             assert box["height"] > 1
+        finally:
+            browser.close()
+
+
+@pytest.mark.skipif(
+    os.environ.get("SQPACK_N11_PAPER_BROWSER") != "1",
+    reason="the dedicated T-060 Pages job sets SQPACK_N11_PAPER_BROWSER=1",
+)
+def test_diagram_labels_keep_publication_sizes_through_viewbox_scale(tmp_path: Path) -> None:
+    from playwright.sync_api import sync_playwright  # noqa: PLC0415
+
+    html, _ = paper.render(
+        paper.ARTICLE.read_text(encoding="utf-8"),
+        figures=render_figures(),
+        revision=REVISION,
+    )
+    page_path = tmp_path / "diagram-roles.html"
+    page_path.write_text(html, encoding="utf-8")
+    measure = probe(PROBES, "n11_paper/diagram_roles")
+    with sync_playwright() as driver:
+        browser = driver.chromium.launch()
+        try:
+            for width, media in ((1280, "screen"), (390, "screen"), (1280, "print")):
+                page = browser.new_page(viewport={"width": width, "height": 900})
+                page.goto(page_path.as_uri(), wait_until="networkidle")
+                page.emulate_media(media=media)
+                page.wait_for_function(measure, arg={"readyOnly": True})
+                roles = page.evaluate(measure, {"readyOnly": False})
+                assert len(roles) == 4
+                for role in roles:
+                    assert abs(role["label"] - role["support"]) < 0.1, (width, media, role)
+                    if role["note"] is not None:
+                        assert role["caption"] is not None
+                        assert abs(role["note"] - role["caption"]) < 0.1, (
+                            width,
+                            media,
+                            role,
+                        )
+                if width == 390:
+                    assert any(role["scrollWidth"] > role["clientWidth"] for role in roles)
+                page.close()
         finally:
             browser.close()

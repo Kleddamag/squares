@@ -509,6 +509,9 @@ case or experiment separately.
 | [Eleven-Square Optimality: Census and Capture Ancestry Contract](docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality: Expository Simplification Review](docs/project/reviews/review-2026-09-30-n11-expository-simplification.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality Explainer: Mathematical Review](docs/project/reviews/review-2026-09-30-n11-optimality-explainer.md) | dated review record | record | retained | — |
+| [N11 Optimality Explainer Citation and Documentation Review](docs/project/reviews/review-2026-09-30-n11-explainer-citations-and-docs.md) | dated review record | record | retained | — |
+| [Eleven-Square Explainer: Adversarial Proof Reconciliation](docs/project/reviews/review-2026-09-30-n11-explainer-proof-reconciliation.md) | dated review record | record | retained | — |
+| [Plan for Proof-Linked n11 Optimality Illustrations](docs/project/specs/active/plan-2026-09-30-n11-optimality-illustrations.md) | implementation plan | current | transient | — |
 | [D-490 PDF Incident: Run 35784981711](packing/campaign/agent-sessions/session-152-validation/pdf-d490-run-35784981711.md) | failure analysis and lessons | record | retained | — |
 | [Senior Review of PRs 199–201](docs/project/reviews/review-2026-09-19-pr199-201-correctness.md) | dated review record | record | retained | — |
 | [Proof Review: R012 `s(17) >= 461300/99999` and Mira’s `4.613` Certificate](docs/project/reviews/review-2026-09-20-n17-r012-and-mira-4613-proof-review.md) | dated review record | record | retained | — |

@@ -114,7 +114,8 @@ def _svg(
     title_id = f"n11-{identifier}-title"
     desc_id = f"n11-{identifier}-desc"
     return (
-        f'<svg xmlns="{SVG_NS}" width="{width}" height="{height}" '
+        f'<svg xmlns="{SVG_NS}" class="n11-diagram n11-{identifier}" '
+        f'width="{width}" height="{height}" '
         f'viewBox="0 0 {width} {height}" role="img" aria-labelledby="{title_id} {desc_id}">'
         f'<title id="{title_id}">{escape(title)}</title>'
         f'<desc id="{desc_id}">{escape(description)}</desc>'
@@ -149,8 +150,8 @@ def _cell_svg(cells: list[dict[str, Any]], *, mask: bool) -> str:
         x, y = _pixel(row["center"])
         label_color = "#fff" if mask and index in selected else "#172b3a"
         outlines.append(
-            f'<text x="{x:.4f}" y="{y:.4f}" text-anchor="middle" dominant-baseline="central" '
-            f'font-family="sans-serif" font-size="18" font-weight="700" fill="{label_color}">'
+            f'<text class="n11-diagram-label" x="{x:.4f}" y="{y:.4f}" '
+            f'text-anchor="middle" dominant-baseline="central" fill="{label_color}">'
             f"{index}</text>"
         )
     parts.extend(outlines)
@@ -250,14 +251,14 @@ def _capture_svg(graph: dict[str, Any]) -> str:
         parts.append(
             f'<rect x="{x - 56:.1f}" y="{y - 24:.1f}" width="112" height="48" rx="12" '
             f'fill="{fill}" stroke="#52667a" stroke-width="1.5"/>'
-            f'<text x="{x:.1f}" y="{y + 5:.1f}" text-anchor="middle" '
-            f'font-family="sans-serif" font-size="17" font-weight="700" fill="#17324a">'
+            f'<text class="n11-diagram-label" x="{x:.1f}" y="{y + 5:.1f}" '
+            f'text-anchor="middle" fill="#17324a">'
             f"{escape(label)}</text>"
         )
         if leaf:
             parts.append(
-                f'<text x="{x:.1f}" y="{y + 43:.1f}" text-anchor="middle" '
-                f'font-family="sans-serif" font-size="13" fill="#34465a">'
+                f'<text class="n11-diagram-note" x="{x:.1f}" y="{y + 43:.1f}" '
+                f'text-anchor="middle" fill="#34465a">'
                 f"{escape(LEAF_OUTCOMES[label])}</text>"
             )
     return _svg(

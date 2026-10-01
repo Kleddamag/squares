@@ -930,9 +930,12 @@ nothing else.
 The separate **T-060 optimality paper** lives at `/n11-optimality/`. Its source is
 [`n11-optimality-article.md`](packing/devtools/templates/n11-optimality-article.md);
 [`render_n11_optimality_explainer.py`](packing/devtools/render_n11_optimality_explainer.py)
-uses the same KPress typography and inlined fonts with a separate article and print
-layout. It reuses the Trump witness rendering and draws the center cells and capture
-graph from the retained proof packet.
+uses the same KPress fonts and
+[`explainer-publication.css`](packing/devtools/templates/explainer-publication.css) as
+the historical explainer for screen and print typography, metadata, and format links.
+Its separate stylesheet contains diagram layout only.
+It reuses the Trump witness rendering and draws the center cells and capture graph from
+the retained proof packet.
 From `packing/`, with the scratch environment required by `AGENTS.md`:
 
 ```bash

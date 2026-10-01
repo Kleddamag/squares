@@ -36,14 +36,17 @@ FIGURE_SLOT = re.compile(r"\{\{([A-Z_]+_SVG)\}\}")
 LEFTOVER_SLOT = re.compile(r"\{\{[A-Z][A-Z_]*\}\}")
 RELATIVE_LINK = re.compile(r"(?P<start>\]\()(?P<url>\.\.?/[^\s)]+)(?P<end>\))")
 RELATIVE_REFERENCE = re.compile(r"(?m)^(?P<start>\[[^\]\n]+\]:[ \t]*)(?P<url>\.\.?/[^\s]+)")
+RELATIVE_ANCHOR = re.compile(r'(?P<start><a\b[^>]*\bhref=")(?P<url>\.\.?/[^"]+)(?P<end>")')
 RENDER_INPUTS = (
     Path(__file__),
     ARTICLE,
     SHELL,
     STYLE,
+    render_explainer.PUBLICATION_STYLE,
     FIGURES_MODULE,
     PACKING / "devtools" / "check_n11_optimality_d4.py",
     PACKING / "devtools" / "render_explainer.py",
+    PACKING / "devtools" / "explainer" / "diagram-labels.js",
     PACKING / "atlas" / "rendering" / "trump11-overview.svg",
     PACKING / "devtools" / "packing_render_adapters.py",
     PACKING / "src" / "sqpack" / "render",
@@ -87,8 +90,16 @@ def _repository_links(markdown: str, *, source: Path, revision: str) -> str:
         lambda match: match.group("start") + pin(match.group("url")) + match.group("end"),
         markdown,
     )
-    return RELATIVE_REFERENCE.sub(
+    markdown = RELATIVE_REFERENCE.sub(
         lambda match: match.group("start") + pin(match.group("url")), markdown
+    )
+    return RELATIVE_ANCHOR.sub(
+        lambda match: (
+            match.group("start")
+            + escape(pin(match.group("url")), quote=True)
+            + match.group("end")
+        ),
+        markdown,
     )
 
 
@@ -125,19 +136,6 @@ def _katex_js(static: Path) -> str:
     return joined
 
 
-def _kpress_css(static: Path) -> str:
-    """Inline the complete KPress stylesheet and fonts, including its print faces."""
-    from kpress.format.assets import DEFAULT_CSS_ASSETS, mono_css_assets  # noqa: PLC0415
-
-    names = ("css/page-reset.css", *DEFAULT_CSS_ASSETS, *mono_css_assets())
-    return "\n".join(
-        render_explainer.inline_font_urls(
-            (static / name).read_text(encoding="utf-8"), (static / name).parent
-        )
-        for name in names
-    )
-
-
 def render(
     source: str,
     *,
@@ -157,16 +155,20 @@ def render(
     values = {
         "PAGE_TITLE": escape(TITLE),
         "PAGE_DESCRIPTION": escape(DESCRIPTION),
-        "KPRESS_CSS": _kpress_css(static),
+        "KPRESS_CSS": render_explainer.kpress_css(static),
         "KATEX_CSS": render_explainer.katex_css(static) if document.has_math else "",
         "RELATION_CSS": render_explainer.relation_face_css(static),
+        "PUBLICATION_CSS": render_explainer.PUBLICATION_STYLE.read_text(encoding="utf-8"),
         "PAPER_CSS": STYLE.read_text(encoding="utf-8"),
         "THEME_BOOTSTRAP": render_explainer.theme_bootstrap(static),
         "BODY_HTML": document.html,
         "KATEX_JS": _katex_js(static) if document.has_math else "",
-        "HTML_NAME": STEM + ".html",
+        "DIAGRAM_LABEL_SCRIPT": render_explainer.INLINE_SCRIPT_ASSETS[
+            "DIAGRAM_LABEL_SCRIPT"
+        ].read_text(encoding="utf-8"),
         "PDF_NAME": STEM + ".pdf",
         "MARKDOWN_NAME": STEM + ".md",
+        "REPO_URL": render_explainer.REPO_URL,
     }
     page = _fill(SHELL.read_text(encoding="utf-8"), values, source=SHELL)
     render_explainer.assert_self_contained(page)
@@ -215,7 +217,10 @@ def _print_pdf(html_path: Path, pdf_path: Path) -> None:
             if page.locator(".katex-error, math merror").count():
                 raise ValueError("the paper contains a math rendering error")
             _await_print_fonts(page)  # pyright: ignore[reportArgumentType]
-            write_bytes_atomic(pdf_path, page.pdf(format="Letter", print_background=True))
+            write_bytes_atomic(
+                pdf_path,
+                page.pdf(format="Letter", prefer_css_page_size=True, print_background=True),
+            )
         finally:
             if page is not None:
                 page.close()

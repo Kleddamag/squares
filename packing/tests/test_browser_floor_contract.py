@@ -262,11 +262,47 @@ RECOMMENDED_INFO_RULES = {
 }
 
 #: Per-file suppressions are exceptions to the floor even when no config override exists.
-#: The two source exceptions implement reduced-motion accessibility; the generated page
-#: repeats them byte for byte. Exact text is deliberate: a missing reason or broadened rule
-#: changes the census and fails.
+#: The motion exceptions protect reduced-motion accessibility. The publication CSS was
+#: previously inline in HTML; its measured vendor overrides and established selector
+#: order keep the existing page's cascade after extraction. Exact text is deliberate:
+#: a missing reason or broadened rule changes the census and fails.
 DECLARED_SUPPRESSIONS = Counter(
     {
+        (
+            "packing/devtools/templates/explainer-publication.css",
+            (
+                "/* biome-ignore lint/style/noDescendingSpecificity: historical selector "
+                "order preserves the established KPress publication cascade. */"
+            ),
+        ): 29,
+        (
+            "packing/devtools/templates/explainer-publication.css",
+            (
+                "/* biome-ignore lint/complexity/noImportantStyles: this measured KPress "
+                "or print override needs to beat a vendor or inline declaration. */"
+            ),
+        ): 6,
+        (
+            "packing/devtools/templates/explainer-publication.css",
+            (
+                "/* biome-ignore lint/complexity/noImportantStyles: prepared math reserves "
+                "a measured inline box and KPress sets this dimension inline. */"
+            ),
+        ): 1,
+        (
+            "packing/devtools/templates/explainer-publication.css",
+            (
+                "/* biome-ignore lint/complexity/noImportantStyles: the paired baseline "
+                "correction must override the prepared inline value. */"
+            ),
+        ): 1,
+        (
+            "packing/devtools/templates/explainer-publication.css",
+            (
+                "/* biome-ignore lint/style/noDescendingSpecificity: credit emphasis "
+                "inherits the shared bold role after the broader support-text rules. */"
+            ),
+        ): 1,
         (
             "packing/src/sqpack/motion_lab/assets/motion-lab.css",
             (

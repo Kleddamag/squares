@@ -4,19 +4,54 @@
 
 <div class="subtitle">
 
-An exact, computer-assisted proof of global optimality
+An explanation of the
+[eleven-square optimality proof](https://github.com/Queuingtheorydotcom/11SquaresOptimal/blob/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/PROOF.md)
 
 </div>
 
-September 30, 2026 · T-060 · First explainer edition
-
-An exposition by the Squares Project, with human oversight by Joshua Levy and agent
-assistance from GPT-6 Astra and GPT-6 Sol.
-The global argument is credited to Queuingtheorydotcom’s Astra-assisted work, building
-on the Squares Project and Kleddamag; the attaining construction is Walter
-Trump’s.[^credit]
+<div class="credits centred">
+  <span>Human oversight: <a href="https://x.com/ojoshe"><strong>Joshua Levy</strong></a></span>
+  <span>Agents: <strong>GPT-6 Astra</strong> and <strong>GPT-6 Sol</strong></span>
+  <span><a href="https://github.com/jlevy/squares"><strong>github.com/jlevy/squares</strong></a></span>
+  <span class="publication-date">First published September 30, 2026 · Last revised September 30, 2026</span>
+  <span class="edition">T-060 · Draft revision</span>
+</div>
 
 </div>
+
+This paper explains the computer-assisted optimality proof published by
+[Queuingtheorydotcom in **11SquaresOptimal**](https://github.com/Queuingtheorydotcom/11SquaresOptimal).
+The original
+[mathematical argument](https://github.com/Queuingtheorydotcom/11SquaresOptimal/blob/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/PROOF.md),
+[verification driver](https://github.com/Queuingtheorydotcom/11SquaresOptimal/blob/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/VERIFY.py),
+[certificate data](https://github.com/Queuingtheorydotcom/11SquaresOptimal/tree/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/data),
+and
+[reproduction instructions](https://github.com/Queuingtheorydotcom/11SquaresOptimal/blob/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/docs/REPRODUCING.md)
+are pinned to the source revision reviewed here.
+[Square Packing Fan’s announcement](https://x.com/MathCompSciFTW/status/2104772485816168618)
+credits Astra’s work building on the Squares Project and Kleddamag.
+
+The components have distinct provenance:
+
+- **Attaining construction:** Walter Trump’s packing, with
+  [David Ellsworth’s reconstruction and exact formulas](https://kingbird.myphotos.cc/packing/square-11.svg),
+  retained in the
+  [construction source record](../../resources/papers/kingbird-square-11-provenance.svg).
+- **Mathematical antecedents:** the Squares Project’s
+  [threshold-certificate method](../../cases/n11_threshold_certificate/t-026-verifiable-claim-dilation-limit.md)
+  and [local-isolation theorem](../../cases/trump11/isolation-theorem.md), together with
+  [Kleddamag’s earlier lower-bound proof](https://github.com/Kleddamag/11-squares-certified-bound)
+  that $s(11)>31/8$
+  ([retained source](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md)).
+  The original proof’s
+  [third-party notices](https://github.com/Queuingtheorydotcom/11SquaresOptimal/blob/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/THIRD_PARTY_NOTICES.md)
+  identify its incorporated Squares Project revision.
+- **Verification and exposition here:** the Squares Project’s
+  [T-060 result record](../../frontier/RESULTS.md),
+  [retained proof and verification packet](../../resources/web/n11-optimality-2026-09-29/README.md),
+  and
+  [mathematical acceptance review](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#whole-proof-acceptance)
+  document the confirmation explained in this paper.[^credit]
 
 ## The Result
 
@@ -52,7 +87,8 @@ side $S<T$.[^proof]
 {{WITNESS_SVG}}
 <figcaption><strong>Figure 1.</strong> The attaining construction: six squares are
 axis-aligned and five share a tilted orientation. The drawing is rounded for display;
-the proof checks exact algebraic coordinates. Touching edges and corners are legal.
+the <a href="../../cases/trump11/verify_exact.py">exact witness check</a> uses algebraic coordinates.
+Touching edges and corners are legal.
 The construction reaches both opposite walls in each coordinate direction.</figcaption>
 </figure>
 
@@ -180,7 +216,9 @@ still prevents two centers from receiving one label.[^cover]
 {{MASK_SVG}}
 </div>
 <figcaption><strong>Figure 2.</strong> Left: the sixteen closed Voronoi cells, drawn
-from their retained rational vertices. Right: the eleven occupied cell labels of
+from rational vertices bound by the
+<a href="../../resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json">retained cover receipt</a>.
+Right: the eleven occupied cell labels of
 case 438. A highlighted cell specifies where a center may be; it is not a small
 square or an owned inner hull. Shared cell boundaries remain in the proof.</figcaption>
 </figure>
@@ -312,13 +350,12 @@ One useful charge is defined by five sites.
 For each projection direction, consider the median of the five projected sites.
 A core receives charge one when its projection interval contains that median in every
 direction. The certificate reduces this condition to finitely many direction
-inequalities.
-Square-axis directions and normals to site-pair lines divide the directions
-into sectors. Within each sector the median site and the signs in the core’s support
-function stay fixed, so the inequalities are linear in the direction normal; the
-bounding directions suffice.
-This definition concerns median projections; it does not say that the core contains
-three of the five sites.
+inequalities. For the square cores used by these field certificates, directions parallel
+to the core’s axes and normals to site-pair lines divide the directions into sectors.
+Within each sector the median site and the signs in the core’s support function stay
+fixed, so the inequalities are linear in the direction normal; the bounding directions
+suffice. This definition concerns median projections; it does not say that the core
+contains three of the five sites.
 
 Two disjoint strict cores cannot both receive that charge.
 A strictly separating direction gives them disjoint projection intervals, which cannot
@@ -344,9 +381,10 @@ Some exclusions have extra assumptions that must be discharged.
 In particular, the symmetry cuts used in cases 2175 and 2176 depend on the original
 1,931-case baseline.
 They cannot use the final four-survivor reduction to prove its own premise.
-Case 1383 requires both sides of a closed center split at $y_{13}=4/3$. Those branches
-and their common parent remain part of the accepted proof, even though the common
-geometric invariant lets us describe them briefly.
+Case 1383 requires both sides of a closed center split at $y_{13}=4/3$. Here
+$y_{13}=p_y-U/2$ is the centered physical height of the square assigned to cell 13.
+Those branches and their common parent remain part of the accepted proof, even though
+the common geometric invariant lets us describe them briefly.
 
 ## Symmetry Reduces the Four Survivors to One
 
@@ -418,7 +456,9 @@ The overlap is harmless and prevents a missing boundary branch.
 Intermediate nodes propagate a checked state; three far leaves end in contradiction
 and the near leaf encloses every surviving pose. Edges denote proof dependencies,
 not trajectories of moving squares. The branch table gives the closed split conditions.
-The fourteen root rounds precede the descendants shown here.</figcaption>
+The fourteen root rounds precede the descendants shown here; the descendants’ parent
+edges are bound by the
+<a href="../../resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json">accepted source graph</a>.</figcaption>
 </figure>
 
 The final near state contains 136 live closed angular rows and 1,542 center vertices.
@@ -711,8 +751,9 @@ coordinates are not inputs to certificate acceptance.
     This paper explains the imported proof and the repository’s confirmation, rather
     than claiming a new global argument.
 
-[^proof]: [Pinned upstream mathematical exposition](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md),
-    especially its exact endpoint and final deduction;
+[^proof]: [Original proof, §1: exact statement](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#1-statement-and-exact-endpoint)
+    and
+    [§10: final deduction](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#10-deduction-of-the-optimum);
     [complete independent acceptance](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#whole-proof-acceptance).
 
 [^review]: [T-060](../../frontier/results.yaml);
@@ -731,40 +772,50 @@ coordinates are not inputs to certificate acceptance.
 
 [^construction]: [Exact construction source](../../cases/trump11/packing.py);
     [exact feasibility checker](../../cases/trump11/verify_exact.py);
-    [source placement formulas](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md).
+    [original proof, §2: construction and upper bound](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#2-exact-construction-and-upper-bound).
 
-[^cover]: [Exact cover and symmetry consumer](../check_n11_optimality_d4.py);
-    [independent symmetry execution](../../resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json);
+[^cover]: [Original proof, §4: closed center cover and masks](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#4-closed-center-cover-and-the-2184-cases);
+    [exact cover consumer](../check_n11_optimality_d4.py);
+    [independent cover receipt](../../resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json);
     [case census](../../resources/web/n11-optimality-2026-09-29/receipts/case-census/result.json).
 
-[^geometry]: [Ownership, closed-cover and collision review](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md);
-    [pinned continuum-scope exposition](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md).
-    The complete component commands and source bindings are in the
-    [reproduction guide](../../resources/web/n11-optimality-2026-09-29/README.md#reproducing-the-independent-checks).
+[^geometry]: [Original proof, §5: case-exclusion implications](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#5-what-an-exact-case-exclusion-certificate-proves);
+    [independent row geometry checker](../check_n11_capture_transition_pilot.py) and
+    [first-row receipt](../../resources/web/n11-optimality-2026-09-29/receipts/capture-transition-row0/result.json);
+    [complete ownership update](../../resources/web/n11-optimality-2026-09-29/receipts/capture-step0/result.json).
+    The
+    [mathematical transition review](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#first-complete-capture-owner-update)
+    separates a checked row from a promoted complete step.
 
-[^field]: [Exact field consumer](../check_n11_optimality_field_mask0.py) and
-    [review of the five-site charge and mask-transfer rule](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md).
+[^field]: [Original proof, §5: field charges and transfer](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#5-what-an-exact-case-exclusion-certificate-proves);
+    [exact field consumer](../check_n11_optimality_field_mask0.py);
+    [accepted mask-0 field receipt](../../resources/web/n11-optimality-2026-09-29/receipts/shared-field-mask0/summary.json);
+    [mathematical review of the five-site charge](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#first-independent-field-exclusion-mask-0).
 
 [^exclusions]: [Complete exclusion inventory](../../resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json);
-    [complete exclusion census and conditional-premise review](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md).
+    [original proof, §9: accepted global obligations](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#9-accepted-global-verification-obligations);
+    [independent exclusion and conditional-premise review](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#complete-exclusion-execution-census).
 
 [^symmetry]: [Closed-overlay checker](../check_n11_optimality_d4.py),
     [accepted symmetry receipt](../../resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json)
-    and the geometric D4 implication in
-    [the proof](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md).
+    and
+    [original proof, §6: the D4 implication](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#6-the-exact-d4-reduction-to-case438).
 
 [^capture]: [Capture ancestry](../../resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json);
     [fourteen-round root chain](../../resources/web/n11-optimality-2026-09-29/receipts/capture-root-chain/result.json);
-    [accepted near-state and complete capture review](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#whole-proof-acceptance);
-    [pose-inclusion receipt](../../resources/web/n11-optimality-2026-09-29/receipts/pose-inclusion/result.json).
+    [accepted near node](../../resources/web/n11-optimality-2026-09-29/receipts/capture-child-near/result.json)
+    and
+    [pose-inclusion receipt](../../resources/web/n11-optimality-2026-09-29/receipts/pose-inclusion/result.json);
+    [original proof, §8: capture and frame bridge](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#8-complete-case438-capture-and-the-exact-u-to-t-bridge).
 
 [^local]: [Exact local-isolation checker](../check_n11_optimality_local_isolation.py)
     and
     [accepted local-isolation receipt](../../resources/web/n11-optimality-2026-09-29/receipts/local-isolation/result.json);
-    [pinned analytic derivation](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md).
+    [original proof, §7: contact branches and finite rectangle](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#7-local-contact-analysis-and-the-focused-isolation-rectangle).
     The focused rectangle is distinct from the earlier uniform-radius local theorem.
 
-[^endpoint]: [Endpoint and final-composition review](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md);
+[^endpoint]: [Original proof, §10: deduction of the optimum](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#10-deduction-of-the-optimum);
+    [endpoint and final-composition review](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#whole-proof-acceptance);
     [accepted final composition](../../resources/web/n11-optimality-2026-09-29/receipts/final-composition.json).
 
 [^reproduce]: [Reproduction guide and disclosed limits](../../resources/web/n11-optimality-2026-09-29/README.md#reproducing-the-independent-checks);
@@ -773,30 +824,8 @@ coordinates are not inputs to certificate acceptance.
     rather than replacing them.
 
 [earlier]: https://jlevy.github.io/squares/
-[register]: ../../frontier/results.yaml
-[case]: ../../frontier/n-011.md
-[packet]: ../../resources/web/n11-optimality-2026-09-29/README.md
 [reproduction]: ../../resources/web/n11-optimality-2026-09-29/README.md#reproducing-the-independent-checks
-[proof]: ../../resources/web/n11-optimality-2026-09-29/source/PROOF.md
-[construction]: ../../cases/trump11/packing.py
-[witness-check]: ../../cases/trump11/verify_exact.py
-[review]: ../../../docs/project/reviews/review-2026-09-29-n11-optimality.md
-[contract]: ../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
-[acceptance]: ../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#whole-proof-acceptance
 [simplification]: ../../../docs/project/reviews/review-2026-09-30-n11-expository-simplification.md
-[tools]: ../../../docs/project/verification-tooling.md
-[levels]: ../../../epistemics.md
-[d4-check]: ../check_n11_optimality_d4.py
-[field-check]: ../check_n11_optimality_field_mask0.py
-[local-check]: ../check_n11_optimality_local_isolation.py
-[d4-result]: ../../resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json
-[census]: ../../resources/web/n11-optimality-2026-09-29/receipts/case-census/result.json
-[exclusions]: ../../resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json
-[source-graph]: ../../resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json
-[root-chain]: ../../resources/web/n11-optimality-2026-09-29/receipts/capture-root-chain/result.json
-[pose-inclusion]: ../../resources/web/n11-optimality-2026-09-29/receipts/pose-inclusion/result.json
-[local-result]: ../../resources/web/n11-optimality-2026-09-29/receipts/local-isolation/result.json
-[composition]: ../../resources/web/n11-optimality-2026-09-29/receipts/final-composition.json
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

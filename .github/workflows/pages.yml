@@ -100,7 +100,6 @@ name: Certificate page
       - SYNOPSIS.md
       - conventions.md
       - development.md
-      - defects.md
       - packing/devtools/templates/fonts/**
       - packing/atlas/known-best/known-best-1-100.svg
       - packing/atlas/known-best/known-best-1-100.png

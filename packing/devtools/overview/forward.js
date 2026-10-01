@@ -1,14 +1,16 @@
 // Old links into pages that moved keep working.
 //
-// A page that moved whole is still served at its old address, as a forwarder
-// (`render_overview.forwarder_pages`): its root element names where the page is now, in
-// `data-moved-to`, and every visit is sent there with its query string and its fragment.
-// The papers moved that way, to `papers/<slug>.html`: the explainer from `explainer.html`
-// and the optimality paper from `n11-optimality/t-060-explainer.html`. Both keep their
-// state in the fragment -- section ids, footnotes (`#fn-3`) and the explainer's
-// certificate picker (`#19-5`, `#381-100`) -- and `?review=fonts` must survive. A
-// forwarder also carries a link and, for a reader without scripts, a refresh, neither of
-// which can keep a fragment.
+// A page that moved whole, or was withdrawn, is still served at its old address, as a
+// forwarder (`render_overview.forwarder_pages`): its root element names where a visit is
+// sent now, in `data-moved-to`, and every visit is sent there with its query string and
+// its fragment. Three repository documents left the site that way: `results.html` goes
+// to the results table, `status.html` to the frontier atlas, and `defects.html` to the
+// defect log on GitHub. The papers moved that way, to `papers/<slug>.html`: the explainer
+// from `explainer.html` and the optimality paper from
+// `n11-optimality/t-060-explainer.html`. Both keep their state in the fragment --
+// section ids, footnotes (`#fn-3`) and the explainer's certificate picker (`#19-5`,
+// `#381-100`) -- and `?review=fonts` must survive. A forwarder also carries a link and,
+// for a reader without scripts, a refresh, neither of which can keep a fragment.
 //
 // The overview is not a forwarder, and forwards by fragment. The results table moved from
 // it to `all-results.html`: its section, `#every-result`, and each result's row (`#t-018`)

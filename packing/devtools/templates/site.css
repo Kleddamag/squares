@@ -79,6 +79,10 @@ body {
      the awaiting-replay disclosure, and a document's own table (paper-design.md,
      Tables). */
   --site-table-space: 2rem;
+  /* The measure a long list of cases wraps in, in the n column of a table of results: a
+     result about five values or more sets them in the line, this many digits to a line
+     (paper-design.md, Tables). */
+  --site-cases-measure: 24ch;
   /* The least space between a wide block and the edge of the page's content area, inside
      the page's margin: a table and its filter bar, a row of cards, the atlas grid. It is
      KPress's own document gutter, so a wide block with no room to spare is as wide as
@@ -190,6 +194,7 @@ body {
   color: var(--kpress-doc-text);
   font-family: var(--kpress-font-sans);
   font-size: calc(var(--site-font-size-sans-base) * var(--site-subtitle-scale));
+  font-weight: var(--site-font-weight-sans-light);
   line-height: var(--paper-heading-leading);
   margin-block: var(--site-subtitle-space);
 }
@@ -203,10 +208,13 @@ body {
 .kpress .site-hero:has(.subtitle) h1 {
   margin-block-end: 0;
 }
+/* The closing credit: two quiet centred lines (`render_overview.colophon_lines`), whose
+   line and part rules are in site-nav.css, which the papers carry too. */
 .site-colophon {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: calc(var(--site-font-size-sans-base) * var(--paper-colophon-scale));
+  font-weight: var(--site-font-weight-sans-light);
   margin-block-start: 3rem;
   text-align: center;
 }
@@ -500,6 +508,7 @@ body {
   box-shadow: 0 0.5rem 2rem oklch(0% 0 0 / 0.15);
   color: var(--kpress-doc-text);
   font-family: var(--kpress-font-sans);
+  font-weight: var(--site-font-weight-sans-light);
   max-block-size: var(--site-popover-max-block);
   max-width: min(36rem, 100vw - 2rem);
   overflow: auto;
@@ -556,6 +565,7 @@ body {
   display: grid;
   font-family: var(--kpress-font-sans);
   font-size: 1.75rem;
+  font-weight: var(--site-font-weight-sans-light);
   inline-size: var(--site-popover-close);
   inset-block-start: var(--site-popover-close-inset);
   inset-inline-end: var(--site-popover-close-inset);
@@ -660,6 +670,7 @@ body {
   cursor: pointer;
   font-family: var(--kpress-font-sans);
   font-size: inherit;
+  font-weight: var(--site-font-weight-sans-medium);
   line-height: inherit;
 }
 .kpress :is(.site-popover a, button).site-popover-action:hover,
@@ -709,6 +720,7 @@ body {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   line-height: 1.4;
 }
 
@@ -721,6 +733,7 @@ body {
   display: flex;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   gap: 0.4rem;
   margin-block-start: 0.35rem;
   overflow-wrap: break-word;
@@ -748,6 +761,7 @@ body {
   gap: 0.5rem 1rem;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-support);
+  font-weight: var(--site-font-weight-sans-light);
   margin-block: var(--site-table-space) 0.5rem;
 }
 @media screen {
@@ -859,8 +873,9 @@ body {
 }
 /* The short columns keep as narrow as their content, leaving the spare width to the long
    text column. The id and the date stay on one line; an n can be a long list of counts,
-   so it wraps. An id is five characters, narrower than the 6rem KPress keeps a cell to,
-   so its column gives that floor up. A phone's card-per-row layout sizes its own cells. */
+   so it wraps, and a table of results gives a long list a measure of its own (below).
+   An id is five characters, narrower than the 6rem KPress keeps a cell to, so its column
+   gives that floor up. A phone's card-per-row layout sizes its own cells. */
 @media (width >= 40rem) {
   .site-table :is(.site-col-id, .site-col-n, .site-col-date) {
     width: 0;
@@ -900,6 +915,7 @@ body {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   line-height: 1.45;
   margin-block: 0.4rem 0.2rem;
 }
@@ -913,6 +929,7 @@ body {
 .site-records {
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
 }
 .site-records a {
   white-space: nowrap;
@@ -1011,17 +1028,19 @@ body {
     display: none;
   }
 }
-/* The atlas's closing note, under its poster and film cards, in the support gray. */
+/* The note under the poster and film cards (PDFs and Videos), in the support gray. */
 .site-atlas-note {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   text-align: center;
 }
 /* The pointer under the recent table to the full results table, in the sans face. */
 .site-more {
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
 }
 /* A date comes first, and then what it dates, "published" or "established", in the
    support colour, on its own line under the date so the column stays narrow. */
@@ -1084,12 +1103,13 @@ body {
    line ("Queuingtheorydotcom", 167px of the 184), so a credit wraps between names, two
    or three to a line, and never inside one. KPress's own floor, 6rem, set a credit one
    word to a line while the result column kept the spare width. The rungs column is as
-   wide as its widest chip, since no chip wraps: the three rungs at 114px, and "second
-   certificate" at 159 where a row with one shows. The result column cannot give that
-   room: four results' formulas, which do not break, hold it to 411px. So a result's
-   records are no column of their own, which would be left 98px of a 1280px window's
-   1104 and set a link to a line; they sit under the summary, in the result's cell, on
-   a line or two. */
+   wide as its widest chip, since no chip wraps: the three rungs at 114px, and the
+   widest kind, "restricted optimality", at 180 where a row with one shows. The result
+   column's floor is its 18rem (above): the widest piece of a formula a line cannot end
+   inside is narrower than that, now that a long quotient may end a line after its
+   solidus (`overview_data.breakable_quotients`). A result's records are no column of
+   their own, which would set a link to a line; they sit under the summary, in the
+   result's cell, on a line or two. */
 @media (width >= 40rem) {
   .site-results .site-col-credit {
     min-width: 11.5rem;
@@ -1099,6 +1119,46 @@ body {
   .site-results .site-rungs {
     width: 0;
   }
+}
+/* A result's cases, its n: each count or range is a box a line cannot end inside
+   (`overview_sections.case_list`), so a range is never cut after its dash. A list reads
+   from the start of its cell, as text does, and the column's header with it.
+
+   A cell of up to four values stays on one line and is as narrow as that line. A cell of
+   five or more wraps, and asks for `--site-cases-measure`: T-056's 23 values take 6
+   lines there, where a column as narrow as one value set them one or two to a line, 15
+   lines and a row 386px tall. The measure is what the cell would like, not a floor: a
+   table gives a column the width it asks for before the result and the credit, which
+   ask for none, take any spare width, and where the window is short of room the column
+   narrows first, to half its measure, a range and a count to a line, before the table
+   scrolls sideways. KPress's 6rem floor is given up, as the id's is. Where no row
+   showing has a long list, the column is as narrow as the short ones, so a single case
+   has no empty column beside it. */
+.site-n-value {
+  white-space: nowrap;
+}
+@media (width >= 40rem) {
+  .kpress .site-results :is(th, td).site-col-n {
+    min-width: 0;
+    text-align: start;
+  }
+  .site-results td.site-col-n {
+    white-space: nowrap;
+  }
+  .site-results td.site-col-n:has(.site-n-value:nth-child(5)) {
+    min-width: calc(var(--site-cases-measure) / 2 + 1rem);
+    white-space: normal;
+    width: calc(var(--site-cases-measure) + 1rem);
+  }
+}
+/* A formula in a result's summary is set in the line. KPress sets inline math as a box
+   of its own (`.kpress-math-inline`, an inline block), and a box too wide for its line
+   wraps inside itself and sends the words after it to a new line, which then began with
+   the summary's comma. In the line, a formula ends a line where KaTeX lets one end,
+   after a relation or a binary operator at its top level, and the words after it follow
+   on. */
+.site-results .site-col-result .kpress-math-inline {
+  display: inline;
 }
 .site-results .site-col-result .site-records {
   margin-block-start: 0.3rem;
@@ -1114,6 +1174,7 @@ body {
   background: var(--site-wash);
   color: var(--kpress-doc-text);
   font-family: var(--kpress-font-sans);
+  font-weight: var(--site-font-weight-sans-medium);
   padding-block: 0.6rem;
   text-align: start;
 }
@@ -1181,6 +1242,13 @@ body {
     color: var(--kpress-doc-muted);
     content: "n = ";
   }
+  /* A list of five values or more takes a line of its own under the id and the rungs,
+     the card's whole width, and wraps there from the start of the line: between them it
+     had under half of that. */
+  .kpress .site-results td.site-col-n:has(.site-n-value:nth-child(5)) {
+    grid-area: 2 / 1 / auto / -1;
+    text-align: start;
+  }
   .site-results :is(.site-col-result, .site-records) {
     grid-column: 1 / -1;
   }
@@ -1214,6 +1282,7 @@ body {
 .site-cell-quiet {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
+  font-weight: var(--site-font-weight-sans-light);
 }
 .kpress .site-table tr[data-standing="superseded"] td {
   color: var(--site-support-color);
@@ -1329,6 +1398,7 @@ body {
 .kpress details.site-replay {
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
 }
 /* The summary is a sentence, not kpress's caps label: its math stays lower case. */
 .kpress details.site-replay > summary {
@@ -1407,12 +1477,14 @@ body {
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
   font-variant-numeric: tabular-nums;
+  font-weight: var(--site-font-weight-sans-light);
   white-space: nowrap;
 }
 .site-frontier .site-frontier-same {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   white-space: nowrap;
 }
 .site-frontier .site-decimal {
@@ -1449,6 +1521,7 @@ body {
   color: var(--kpress-doc-muted);
   font-family: var(--kpress-font-sans);
   font-size: calc(var(--site-font-size-sans-base) * 0.85);
+  font-weight: var(--site-font-weight-sans-light);
   margin-block-start: 0.5rem;
 }
 
@@ -1484,6 +1557,7 @@ body {
   display: grid;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   grid-template-columns: repeat(3, minmax(0, 1fr));
   line-height: var(--site-ladders-leading);
   position: relative;
@@ -1637,6 +1711,7 @@ body {
   font-family: var(--kpress-font-sans);
   font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
+  font-weight: var(--site-font-weight-sans-light);
   margin-block-start: 0.2rem;
 }
 /* The grid shows n = 1 to 100 until its button, centred under it, places the rest. The
@@ -1659,6 +1734,7 @@ body {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   margin-block: 0.8rem 0;
   text-align: center;
 }
@@ -1829,6 +1905,7 @@ body {
   cursor: pointer;
   font-family: var(--kpress-font-sans);
   font-size: 1.1rem;
+  font-weight: var(--site-font-weight-sans-light);
   inline-size: 2.75rem;
   block-size: 2.4rem;
   transition: background-color var(--site-hover-duration) var(--site-hover-easing);
@@ -1980,6 +2057,7 @@ body {
 }
 .site-case-head {
   font-family: var(--kpress-font-sans);
+  font-weight: var(--site-font-weight-sans-light);
   text-align: center;
 }
 .site-case-steps {
@@ -2031,6 +2109,7 @@ body {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   margin-block-start: 0.5rem;
   text-align: center;
 }
@@ -2047,6 +2126,7 @@ body {
 .site-case-note {
   border: 1px solid var(--kpress-doc-border);
   font-family: var(--kpress-font-sans);
+  font-weight: var(--site-font-weight-sans-light);
   min-inline-size: 0;
   padding: 0.7rem 0.9rem;
 }
@@ -2076,6 +2156,7 @@ body {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   line-height: 1.45;
   margin-block: 0.5rem 0;
 }
@@ -2091,6 +2172,7 @@ body {
 }
 .site-case-more {
   font-family: var(--kpress-font-sans);
+  font-weight: var(--site-font-weight-sans-light);
   margin-block-start: 1.5rem;
 }
 .kpress .site-case-heading {
@@ -2160,6 +2242,7 @@ body {
   display: grid;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   gap: 0.25rem;
   grid-template-columns: repeat(auto-fill, minmax(2.6rem, 1fr));
   margin-block: 1.5rem;
@@ -2247,6 +2330,7 @@ body {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   margin-inline: auto;
   max-inline-size: calc(var(--kpress-measure) + 2 * var(--kpress-column-inset));
   text-align: center;

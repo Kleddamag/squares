@@ -32,7 +32,7 @@ The prefix says what kind of thing it is.
 | Agent session | `session-NNN` | campaign | `session-001` |
 | Agenda | `agenda-NNN` | campaign | `agenda-001` |
 | Agenda cell | `BC-NNN` | campaign; owned by one agenda | `BC-001` |
-| Frontier case | `n-NNN` | `frontier/`, one artifact per $n \le 100$ | `n-011` |
+| Frontier case | `n-NNN` | `frontier/`, one artifact per $n \le 324$ | `n-011` |
 | Search/proof strategy | `search:N`, `proof:N` | the frontier catalogues | `search:12` |
 | Defect | `D-NNN` | the directory, logged in `defects.yaml` | `D-014` |
 | Bead | `think-xxxx` | the repository’s `tbd` queue (prefix set in `.tbd/config.yml`) | `think-1s0h` |

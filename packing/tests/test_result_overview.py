@@ -103,8 +103,11 @@ def test_the_head_states_the_result_as_the_site_does(
     # A result that still stands draws no standing chip, here as in the tables.
     assert status == overview_sections.status_chips(result)
     assert ">current best<" not in status
+    # The date leads and what it dates follows, as a table's date cell sets it.
     kind, dated = result.dated
-    assert f'<span class="site-date-kind">{kind}</span> {dated}' in head
+    meta = head.split('<p class="site-result-meta">', 1)[1].split("</p>", 1)[0]
+    assert meta.startswith(f'{dated} <span class="site-date-kind">{kind}</span> \u00b7 ')
+    assert overview_sections.date_cell(result) in meta
     assert html.escape(result.credit) in head
     assert "Significance" in head
     assert f'data-novelty="{result.novelty}"' in head
@@ -222,6 +225,10 @@ def test_the_chain_is_every_result_on_the_case_oldest_first(
     for other in expected:
         step = body.split(f'data-step="{other.id.lower()}"', 1)[1].split("</li>", 1)[0]
         assert f'<a href="all-results.html#{other.id.lower()}">{other.id}</a>' in step
+        # A step's date leads and what it dates follows, then the id, as in the tables.
+        dated = overview_sections.date_cell(other)
+        assert f'<p class="site-result-step-head">{dated} <a href=' in step
+        assert not re.search(r'class="site-date-kind">\w+</span> [\d-]+', step)
         assert overview_data.tex_bounds(other.summary) in step
         assert overview_sections.kind_and_standing(other) in step
         assert f"packing/frontier/results.yaml?plain=1#L{lines[other.id]}" in step

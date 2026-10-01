@@ -34,16 +34,19 @@ from strif import atomic_output_file
 from devtools import render_n11_lower_bounds_explainer
 from devtools.render_overview import (
     EMBED_SCRIPT,
+    MATH_SCRIPT,
     N11_OPTIMALITY_REVIEW,
     PAPER_TYPE_CSS,
     PAPERS_ROOT,
     SITE_NAV,
     SITE_NAV_CSS,
     THEME_SCRIPT,
+    colophon_lines,
     favicon_html,
     nav_html,
     paper_path,
 )
+from sqpack.probes import probe
 
 PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
@@ -76,6 +79,10 @@ FIGURE_KEYS = (
     "ENDPOINT_SVG",
 )
 MATH_WAIT_MS = 15_000
+#: Asks the page's math driver for every formula at once, before a print.
+_TYPESET_ALL = probe(
+    render_n11_lower_bounds_explainer.PROBES, "render_n11_optimality_review/typeset_all"
+)
 FIGURE_SLOT = re.compile(r"\{\{([A-Z_]+_SVG)\}\}")
 LEFTOVER_SLOT = re.compile(r"\{\{[A-Z][A-Z_]*\}\}")
 RELATIVE_LINK = re.compile(r"(?P<start>\]\()(?P<url>\.\.?/[^\s)]+)(?P<end>\))")
@@ -104,9 +111,20 @@ RENDER_INPUTS = (
     SITE_NAV_CSS,
     THEME_SCRIPT,
     EMBED_SCRIPT,
+    MATH_SCRIPT,
+    render_n11_lower_bounds_explainer.INLINE_SCRIPT_ASSETS["NATIVE_MATH_METRICS"],
+    render_n11_lower_bounds_explainer.PROBES
+    / "render_n11_lower_bounds_explainer"
+    / "host_math_init.js",
+    render_n11_lower_bounds_explainer.PROBES
+    / "render_n11_optimality_review"
+    / "typeset_all.js",
     PACKING / "atlas" / "rendering" / "trump11-overview.svg",
     PACKING / "devtools" / "packing_render_adapters.py",
     PACKING / "src" / "sqpack" / "render",
+    # The closing credit prints the shared version, which is pinned here, so a re-pin
+    # redraws the page, as it does the workbench's (`build_site.RENDER_INPUTS`).
+    PACKING / "src" / "sqpack" / "release.py",
     PACKING / "cases" / "trump11" / "packing.py",
     PACKING / "resources/web/n11-optimality-2026-09-29/receipts/final-composition.json",
     PACKING / "resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json",
@@ -167,7 +185,16 @@ def link_revision() -> str:
     return revision
 
 
-def _fill(template: str, values: Mapping[str, str], *, source: Path) -> str:
+def _fill(
+    template: str, values: Mapping[str, str], *, source: Path, strict: bool = False
+) -> str:
+    """Substitute every `{{NAME}}`; a placeholder left over fails, and with `strict` so
+    does a value the template has no place for, which is how a shell that drops one
+    half of a shared layer is refused rather than rendered without it."""
+    if strict:
+        unused = [key for key in values if "{{" + key + "}}" not in template]
+        if unused:
+            raise ValueError(f"{source.name}: values with no placeholder: {sorted(unused)}")
     rendered = template
     for key, value in values.items():
         rendered = rendered.replace("{{" + key + "}}", value)
@@ -234,14 +261,33 @@ def expanded_markdown(
     return _repository_links(filled, source=article, revision=revision)
 
 
-def _katex_js(static: Path) -> str:
-    from kpress.format.assets import KATEX_JS_ASSETS  # noqa: PLC0415
+def _script(text: str, *, name: str) -> str:
+    """A program's text, refused if it would close its own script element early."""
+    if "</script" in text.lower():
+        raise ValueError(f"{name} closes its inline script")
+    return text
 
-    parts = [(static / name).read_text(encoding="utf-8") for name in KATEX_JS_ASSETS]
-    joined = "\n".join(parts)
-    if "</script" in joined.lower():
-        raise ValueError("KaTeX asset closes its inline script")
-    return joined
+
+def math_scripts(static: Path) -> dict[str, str]:
+    """The paper's mathematics, typeset as every page of the site typesets its own.
+
+    `KATEX_JS` is the explainer's pipeline (`render_n11_lower_bounds_explainer.katex_js`):
+    KaTeX, KPress's metric tables and shared runtime, and the host adapter `squaresMath`.
+    `SITE_MATH` is the site pages' driver (`overview/math.js`), which runs the adapter over
+    KPress's math markup and marks the page `math-ready`. So a formula here gets what it gets on
+    the explainer and on every other page: the one-mu kern after a function's name, the face of
+    the text it sits in read from that text's computed face, and a reveal only once the faces
+    its glyphs need have loaded, so a formula that asks for a face the page does not ship keeps
+    its MathML and fails the PDF rather than being drawn from the reader's machine. KPress's own
+    entry points, `auto-render.min.js` and `katex-init.js`, which the paper used to inline, do
+    none of the three.
+    """
+    return {
+        "KATEX_JS": _script(
+            render_n11_lower_bounds_explainer.katex_js(static), name="the math pipeline"
+        ),
+        "SITE_MATH": _script(MATH_SCRIPT.read_text(encoding="utf-8"), name=MATH_SCRIPT.name),
+    }
 
 
 def render(
@@ -269,18 +315,17 @@ def render(
         else "",
         "RELATION_CSS": render_n11_lower_bounds_explainer.relation_face_css(static),
         "PAPER_TYPE_CSS": PAPER_TYPE_CSS.read_text(encoding="utf-8"),
-        "PUBLICATION_CSS": render_n11_lower_bounds_explainer.PUBLICATION_STYLE.read_text(
-            encoding="utf-8"
-        ),
+        **render_n11_lower_bounds_explainer.publication_layer(),
         "PAPER_CSS": STYLE.read_text(encoding="utf-8"),
         "SITE_FAVICON": favicon_html(),
         "SITE_NAV_CSS": SITE_NAV_CSS.read_text(encoding="utf-8"),
         "SITE_NAV": nav_html("papers", root=SITE_ROOT),
+        "COLOPHON": colophon_lines(),
         "SITE_EMBED": EMBED_SCRIPT.read_text(encoding="utf-8"),
         "SITE_THEME": THEME_SCRIPT.read_text(encoding="utf-8"),
         "THEME_BOOTSTRAP": render_n11_lower_bounds_explainer.theme_bootstrap(static),
         "BODY_HTML": document.html,
-        "KATEX_JS": _katex_js(static) if document.has_math else "",
+        **(math_scripts(static) if document.has_math else {"KATEX_JS": "", "SITE_MATH": ""}),
         "DIAGRAM_LABEL_SCRIPT": render_n11_lower_bounds_explainer.INLINE_SCRIPT_ASSETS[
             "DIAGRAM_LABEL_SCRIPT"
         ].read_text(encoding="utf-8"),
@@ -288,7 +333,7 @@ def render(
         "MARKDOWN_NAME": SLUG + ".md",
         "REPO_URL": render_n11_lower_bounds_explainer.REPO_URL,
     }
-    page = _fill(SHELL.read_text(encoding="utf-8"), values, source=SHELL)
+    page = _fill(SHELL.read_text(encoding="utf-8"), values, source=SHELL, strict=True)
     render_n11_lower_bounds_explainer.assert_self_contained(page)
     return page, markdown
 
@@ -316,6 +361,9 @@ def _print_pdf(html_path: Path, pdf_path: Path) -> None:
             hosts = page.locator(".kpress-math")
             if hosts.count() == 0:
                 raise ValueError("the paper has no typeset math")
+            # The driver leaves the formulas far from the window to idle time; a print
+            # asks for them all, so the wait below is for work already under way.
+            page.evaluate(_TYPESET_ALL)
             try:
                 expect(page.locator(".kpress-math:not(:has(.katex))")).to_have_count(
                     0, timeout=MATH_WAIT_MS

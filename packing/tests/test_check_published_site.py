@@ -793,40 +793,52 @@ def test_fetch_retries_a_transient_answer_before_reporting_it(
     assert pauses == [], "a refusal is an answer, not a deploy still settling"
 
 
-def test_check_requires_a_forwarder_at_each_address_a_paper_had(
+def test_check_requires_a_forwarder_at_every_address_a_page_used_to_have(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """The papers moved under `papers/`, and a link written before the move must still
-    arrive (`render_overview.MOVED_PAGES`). A deploy fails when an old address is gone,
-    when the page there still is the old page, and when a forwarder leads anywhere but
-    where the paper is, in any one of the four places it says where that is."""
+    """A page that moved or was withdrawn is still served at its old address, as a
+    forwarder naming where a visit goes now (`render_overview.MOVED_PAGES`): the three
+    repository documents that left the site, and the papers, which moved under
+    `papers/`. A deploy without one 404s every link written before the change. It fails
+    when an old address is gone, when the page there still is the old page, and when a
+    forwarder leads anywhere but where a visit should go, in any one of the four places
+    it says where that is."""
     moved = dict(render_overview.MOVED_PAGES)
     assert set(moved) == {
+        "results.html",
+        "status.html",
+        "defects.html",
         "explainer.html",
         "n11-optimality/t-060-explainer.html",
         "n11-optimality/index.html",
     }
+    assert not set(moved) & set(render_overview.SITE_PAGES)
     requested: list[str] = []
     assert failures(monkeypatch, fake_site(site_pages(), requested=requested)) == []
     for old in moved:
         assert f"https://example.org/{old}" in requested, old
 
     for old, new in moved.items():
+        # The slash keeps `results.html` from also losing `all-results.html`.
         (failure,) = failures(monkeypatch, fake_site(site_pages(), lost=(f"/{old}",)))
         assert failure.startswith(f"forwarder {old}: HTTP 404, says "), failure
 
+        # The page that was there before, still served in place of its forwarder.
         stale = site_pages(**{old: explainer_page()})
         (failure,) = failures(monkeypatch, fake_site(stale))
         assert failure.startswith(f"forwarder {old}: HTTP 200, says "), failure
         assert "'script': None" in failure, "an old page is not a forwarder"
 
         good = site_pages()[old]
-        target = check_published_site.forwarder_expected(old, new)["script"]
+        expected = check_published_site.forwarder_expected(old, new)
+        target, canonical = expected["script"], expected["canonical"]
         assert target is not None
-        elsewhere = target.replace(".html", "-elsewhere.html").encode()
+        assert canonical is not None
+        elsewhere = (target + "-elsewhere").encode()
         wrong = {
             "canonical": good.replace(
-                render_overview.canonical_url(new).encode(), b"https://example.org/"
+                b'rel="canonical" href="' + canonical.encode(),
+                b'rel="canonical" href="https://example.org/',
             ),
             "script": good.replace(b'data-moved-to="' + target.encode(), b'data-moved="'),
             "refresh": good.replace(b"0; url=" + target.encode(), b"0; url=" + elsewhere),
@@ -837,8 +849,16 @@ def test_check_requires_a_forwarder_at_each_address_a_paper_had(
             (failure,) = failures(monkeypatch, fake_site(site_pages(**{old: body})))
             assert failure.startswith(f"forwarder {old}: HTTP 200, says "), (place, failure)
             says = check_published_site.forwarder_says(body.decode())
-            expected = check_published_site.forwarder_expected(old, new)
             assert {name for name in says if says[name] != expected[name]} == {place}
+
+    # A page of the site is named relative to the old address, climbing out of its
+    # directory; a page that left the site is named whole.
+    says = check_published_site.forwarder_says(
+        site_pages()["n11-optimality/index.html"].decode()
+    )
+    assert says["script"] == "../papers/n11-optimality-review.html"
+    says = check_published_site.forwarder_says(site_pages()["defects.html"].decode())
+    assert says["script"] == says["canonical"] == f"{REPO_URL}/blob/{DEFAULT_BRANCH}/defects.md"
 
 
 def test_check_requires_each_moved_file_at_its_old_address_with_the_same_bytes(

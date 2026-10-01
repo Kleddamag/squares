@@ -972,6 +972,11 @@ uses the same KPress fonts and
 [`paper-publication.css`](packing/devtools/templates/paper-publication.css) as the
 historical explainer for screen and print typography, metadata, and format links.
 Its separate stylesheet contains diagram layout only.
+It takes the publication layer whole, the stylesheet with the head script its math rule
+reads the platform from (`render_n11_lower_bounds_explainer.publication_layer`), and
+typesets its mathematics with the pipeline every page of the site shares
+(`render_n11_optimality_review.math_scripts`); the Math section of
+[`paper-design.md`](packing/devtools/templates/paper-design.md) says why both matter.
 It reuses the Trump witness rendering and draws the center cells and capture graph from
 the retained proof packet.
 From `packing/`, with the scratch environment required by `AGENTS.md`:

@@ -112,6 +112,8 @@ LAZY_WAIT_MS = 5_000
 #: How long what a press opens may take to typeset its math.
 PRESS_WAIT_MS = 5_000
 HREF = re.compile(r'<nav class="site-nav".*?</nav>', re.DOTALL)
+#: Every address a built page links or frames.
+HREF_ATTRIBUTE = re.compile(r'\s(?:href|src)="([^"]*)"')
 #: The motion preference a tool opens a page that starts a film under: a reader's who
 #: asks for reduced motion. The Visualize page starts its film on a visit unless the
 #: reader asks that (`overview/film.js`), and the film is a 216 MB release download a page
@@ -179,7 +181,8 @@ def build(output: Path, skip: set[str]) -> None:
         for page in pages:
             print(f"wrote {output / page.name}")
         print(f"wrote {len(fragments)} result overviews beside them")
-        print(f"wrote {len(forwarders)} forwarders at the papers' old addresses")
+        for forwarder in forwarders:
+            print(f"wrote {output / forwarder.name}, a forwarder")
     if "workbench" not in skip:
         build_workbench(output)
     if render_overview.N11_OPTIMALITY_REVIEW not in skip:
@@ -209,6 +212,31 @@ def missing_links(output: Path) -> list[str]:
             if not target.is_file():
                 missing.append(f"{name}: {href}")
     return missing
+
+
+def moved_links(output: Path) -> list[str]:
+    """Every link in the built site to an address that is now a forwarder
+    (`render_overview.MOVED_PAGES`) or the old address of a file that moved
+    (`MOVED_FILES`), as `page: href`. A forwarder keeps an old link working; a page of
+    the site names where the reader is going. A directory is linked as its index, as
+    `n11-optimality/` was."""
+    forwarders = {old for old, _ in render_overview.MOVED_PAGES}
+    moved = forwarders | {old for old, _ in render_overview.MOVED_FILES}
+    found = []
+    for path in sorted(output.rglob("*.html")):
+        name = path.relative_to(output).as_posix()
+        if name in forwarders:
+            continue
+        for href in sorted(set(HREF_ATTRIBUTE.findall(path.read_text(encoding="utf-8")))):
+            if href.startswith(("https://", "http://", "#", "data:", "mailto:")):
+                continue
+            target = (path.parent / href.partition("#")[0].partition("?")[0]).resolve()
+            if not target.is_relative_to(output):
+                continue
+            address = target.relative_to(output).as_posix()
+            if address in moved or f"{address}/index.html" in moved:
+                found.append(f"{name}: {href}")
+    return found
 
 
 class _Handler(SimpleHTTPRequestHandler):
@@ -642,6 +670,9 @@ def main(argv: list[str] | None = None) -> int:
     status = 0
     for problem in missing_links(output):
         print(f"missing: {problem}", file=sys.stderr)
+    for problem in moved_links(output):
+        print(f"problem: a link to a page that moved: {problem}", file=sys.stderr)
+        status = 1
     if args.shots:
         pages = tuple(args.page or render_overview.SITE_PAGES)
         problems = screenshots(output, args.shots.resolve(), args.port, pages, args.press)

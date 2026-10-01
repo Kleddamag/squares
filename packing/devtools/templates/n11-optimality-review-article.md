@@ -3,10 +3,11 @@
 # A Review of the Optimality Proof of the Trump Packing of 11 Squares
 
 <div class="credits centred">
-  <span>Human oversight: <a href="https://x.com/ojoshe"><strong>Joshua Levy</strong></a></span>
-  <span>Original proof: <a href="https://github.com/Queuingtheorydotcom/11SquaresOptimal"><strong>github.com/Queuingtheorydotcom/11SquaresOptimal</strong></a></span>
+  <span>From the original proof by <strong>Queuingtheorydotcom</strong></span>
+  <span><a href="https://github.com/Queuingtheorydotcom/11SquaresOptimal">github.com/Queuingtheorydotcom/11SquaresOptimal</a></span>
+  <span class="credits-review">Human oversight: <a href="https://x.com/ojoshe"><strong>Joshua Levy</strong></a></span>
   <span>Agents: <strong>GPT-6 Astra</strong> and <strong>GPT-6 Sol</strong></span>
-  <span><strong>Draft v0.1.0</strong></span>
+  <span>Draft v0.1.0</span>
   <span class="publication-date">Original proof September 29, 2026 · This review revised September 30, 2026</span>
 </div>
 
@@ -22,7 +23,7 @@ and
 [reproduction instructions](https://github.com/Queuingtheorydotcom/11SquaresOptimal/blob/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/docs/REPRODUCING.md)
 are pinned to the source revision reviewed here.
 [Queuingtheorydotcom’s announcement](https://x.com/MathCompSciFTW/status/2104772485816168618)
-credits Astra’s work building on the Squares Project and Kleddamag.
+credits Astra’s work building on the Square Packing Project and Kleddamag.
 
 The components have distinct provenance:
 
@@ -30,7 +31,7 @@ The components have distinct provenance:
   [David Ellsworth’s reconstruction and exact formulas](https://kingbird.myphotos.cc/packing/square-11.svg),
   retained in the
   [construction source record](../../resources/papers/kingbird-square-11-provenance.svg).
-- **Mathematical antecedents:** the Squares Project’s
+- **Mathematical antecedents:** the Square Packing Project’s
   [threshold-certificate method](../../cases/n11_threshold_certificate/t-026-verifiable-claim-dilation-limit.md)
   and [local-isolation theorem](../../cases/trump11/isolation-theorem.md), together with
   [Kleddamag’s earlier lower-bound proof](https://github.com/Kleddamag/11-squares-certified-bound)
@@ -38,8 +39,8 @@ The components have distinct provenance:
   ([retained source](../../resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md)).
   The original proof’s
   [third-party notices](https://github.com/Queuingtheorydotcom/11SquaresOptimal/blob/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/THIRD_PARTY_NOTICES.md)
-  identify its incorporated Squares Project revision.
-- **Verification and exposition here:** the Squares Project’s
+  identify its incorporated Square Packing Project revision.
+- **Verification and exposition here:** the Square Packing Project’s
   [T-060 result record](../../frontier/RESULTS.md),
   [retained proof and verification packet](../../resources/web/n11-optimality-2026-09-29/README.md),
   and
@@ -130,9 +131,9 @@ The [local estimate](#the-local-argument-excludes-every-nonzero-motion) and
 [exact frame change](#closing-the-gap-between-the-rational-cap-and-the-exact-optimum)
 complete the contradiction.
 
-The Squares Project records this result as **T-060, S5/V3/C3**: a result resolving the
-global optimum, supported by exact computational verification and a mapped mathematical
-review, machine-checked here with its review record pending.
+The Square Packing Project records this result as **T-060, S5/V3/C3**: a result
+resolving the global optimum, supported by exact computational verification and a mapped
+mathematical review, machine-checked here with its review record pending.
 Under the ladder of 2026-09-30, rung 4 on either axis also needs a second adversarial
 review by a distinct reviewer and a retained human oversight record, which this result
 awaits. This is a computer-assisted proof with a stated software trust base; a completed
@@ -650,7 +651,7 @@ opposite to $h_j$. A certificate supplies nonnegative rational weights $\lambda_
 that
 
 $$
-\left\|\lambda^{\mathsf T}A-\sigma e_j^{\mathsf T}\right\|_1
+\left\|\lambda^{\top}A-\sigma e_j^{\top}\right\|_1
 \le\epsilon_j.
 $$
 
@@ -747,8 +748,8 @@ It also makes no separate claim of global uniqueness of all optimal packings.
 The public proof source is
 [Queuingtheorydotcom/11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal/tree/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c),
 linked at the revision that was confirmed.
-The Squares Project’s confirmation uses independently written consumers of its proposed
-certificate data and a mathematical review of the implications above.
+The Square Packing Project’s confirmation uses independently written consumers of its
+proposed certificate data and a mathematical review of the implications above.
 The accepted computation covers the required proof ensemble, including all 2,180
 exclusions and all ten capture nodes.[^review]
 

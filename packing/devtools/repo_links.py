@@ -52,10 +52,15 @@ TUTORIAL = "TUTORIAL.md"
 SYNOPSIS = "SYNOPSIS.md"
 CONVENTIONS = "conventions.md"
 DEVELOPMENT = "development.md"
-DEFECTS = "defects.md"
 EPISTEMICS = "epistemics.md"
+# Three generated views of the record that are not served as pages. The results register
+# and the status table are each shown by a page built from the same record, the results
+# table and the frontier atlas, which is where a link to either leads
+# (`site_documents.RECORD_PAGES`). The defect log is a record of the toolchain, internal
+# to the repository, and a link to it opens the file on `main`.
 RESULTS = "packing/frontier/RESULTS.md"
 STATUS = "packing/frontier/STATUS.md"
+DEFECTS = "defects.md"
 
 Kind = Literal["blob", "tree", "raw"]
 

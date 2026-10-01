@@ -513,8 +513,9 @@ def result_row_popover_body(result: Result, overview: Overview) -> str:
 
 
 #: Where the result overviews are served, under the site's root: a directory of
-#: fragments, one a result, which are not pages. Not `results/`: `results.html` is
-#: `RESULTS.md`, and a host may serve either at `/results`.
+#: fragments, one a result, which are not pages. Not `results/`: `results.html` is still
+#: served, as the forwarder where `RESULTS.md` was a page, and a host may serve either
+#: at `/results`.
 RESULT_FRAGMENTS = "result"
 
 
@@ -811,6 +812,21 @@ def id_cell(result: Result, detail: RowDetail) -> str:
     return f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
 
 
+def case_list(result: Result) -> str:
+    """A result's cases as its n cell sets them: the register's counts and ranges
+    (`Result.scope`: `68, 102`, then `130` to `132` as a range with an en dash), each
+    with the comma after it in a box of its own (`.site-n-value`), a space between two
+    boxes. The cell reads as it did, to a reader and to a screen reader, and a line ends
+    between two values and never inside one: without the box a browser ends a line after
+    a range's dash. A cell of five values or more wraps in a column of its own measure,
+    and a shorter one stays on one line (`site.css`, `--site-cases-measure`). The column
+    sorts on the cell's `data-value`, the first case, and the Case filter reads the row's
+    `data-n` (`result_cases`)."""
+    *before, last = result.scope.split(", ")
+    values = (*(f"{value}," for value in before), last)
+    return " ".join(f'<span class="site-n-value">{_esc(value)}</span>' for value in values)
+
+
 def result_text(result: Result, *, here: bool) -> str:
     """A result's summary as its Result cell sets it: the register's headline, its math
     typeset. On the results page (`here`) it is plain text, since the row is the
@@ -837,16 +853,18 @@ def credit_cell(credit: str) -> str:
 def date_cell(result: Result) -> str:
     """What a result's date cell holds, in both tables of results: the date first, then
     what it dates, `published` or `established`, quiet (`.site-date-kind`). The cell
-    sorts and filters on the date alone, its `data-value` and the row's `data-date`."""
+    sorts and filters on the date alone, its `data-value` and the row's `data-date`.
+    A result's overview sets its date, and each date of its chain, with this too
+    (`result_overview.head`, `step`), so the order has one definition."""
     kind, dated = result.dated
     return f'{_esc(dated)} <span class="site-date-kind">{_esc(kind)}</span>'
 
 
 def result_cells(result: Result, overview: Overview, detail: RowDetail, *, here: bool) -> str:
     """A result's cells, one for each column of `result_head`, the same on both tables:
-    its id (`id_cell`), its cases, its summary with the star a new result earns
-    (`result_text`, `new_result_star`) and its records on a quiet line under it, its
-    credit (`credit_cell`), its rung chips with its kind on a line under them
+    its id (`id_cell`), its cases (`case_list`), its summary with the star a new result
+    earns (`result_text`, `new_result_star`) and its records on a quiet line under it,
+    its credit (`credit_cell`), its rung chips with its kind on a line under them
     (`kind_chip`) and its standing on a line under that where it has one to show
     (`standing_chips`), and its date (`date_cell`). The records are no column of their
     own: a column narrow enough to fit set them a link to a line, and under the summary
@@ -858,7 +876,7 @@ def result_cells(result: Result, overview: Overview, detail: RowDetail, *, here:
         standing = f'<span class="site-standing">{standing}</span>'
     return (
         f"{id_cell(result, detail)}"
-        f'<td class="num site-col-n" data-value="{result.first_n}">{_esc(result.scope)}</td>'
+        f'<td class="num site-col-n" data-value="{result.first_n}">{case_list(result)}</td>'
         f'<td class="site-col-result">{result_text(result, here=here)}'
         f"{new_result_star(result, overview)}"
         f'<div class="site-records">{_records(result)}</div></td>'
@@ -1255,7 +1273,7 @@ def awaiting_replay(overview: Overview) -> str:
             label="Awaiting replay",
             title=math_html(f"n = {row.n}"),
             body=replay_row_popover_body(row),
-            action=(f"frontier.html#n-{row.n}", f"Open n = {row.n} in the frontier atlas"),
+            action=(f"frontier.html#n-{row.n}", f"Open n = {row.n} in the frontier survey"),
         )
         popovers.append(detail.popover)
         groups.setdefault((reported.holder, reported.results), []).append(
@@ -1283,24 +1301,27 @@ def awaiting_replay(overview: Overview) -> str:
 
 
 #: The repository's reader documents, as the overview's cards show them: the file, a
-#: label, and one line on what a reader finds there. README and the synopsis lead.
+#: label, and one line on what a reader finds there, in the order of
+#: `render_overview.DOCUMENT_PAGES`. README and `epistemics.md` lead, as the two a reader
+#: needs most: what the project is, and how each result is graded. The synopsis, the
+#: full technical record, follows, then the two reference documents, for the record's
+#: formats and for the code. The results register, the status table and the defect log
+#: are not here: the results table and the Frontier page show the first two from the
+#: same record, and the defect log is internal to the repository (think-bk2e).
 DOCUMENTS: tuple[tuple[str, str, str], ...] = (
     (
         repo_links.README,
-        "The Squares Project",
+        "The Square Packing Project",
         "What the project is, how it works, and where to start.",
     ),
+    (repo_links.EPISTEMICS, "Epistemics", "How each result is verified, confirmed and scored."),
     (
         repo_links.SYNOPSIS,
         "The synopsis",
         "The full research record: methods, claims and status.",
     ),
-    (repo_links.RESULTS, "Results", "Every registered result with its rungs."),
-    (repo_links.STATUS, "The frontier", "Every case to 324, with provenance."),
-    (repo_links.EPISTEMICS, "Epistemics", "How each result is verified, confirmed and scored."),
     (repo_links.CONVENTIONS, "Conventions", "Record formats, identifiers and naming."),
     (repo_links.DEVELOPMENT, "Development", "Building, testing and validating the code."),
-    (repo_links.DEFECTS, "Defect log", "Every defect found in the toolchain, one line each."),
 )
 
 
@@ -1455,7 +1476,7 @@ PAGES: tuple[tuple[str, str, str, str], ...] = (
     ),
     (
         "frontier.html",
-        "Frontier atlas",
+        "Frontier survey",
         "Every case from n = 1 to 324",
         "Reported and verified bounds side by side, with their sources.",
     ),
@@ -1493,7 +1514,7 @@ def hero() -> str:
     n = HERO_CASE
     return (
         f'<figure class="site-hero-figure"><a href="frontier.html#n-{n}" '
-        f'aria-label="The best packing known for {n} squares, in the frontier atlas">'
+        f'aria-label="The best packing known for {n} squares, in the frontier survey">'
         f"{packing_svg(n, units=1000)}</a>"
         f"<figcaption>The best packing known for {n} squares</figcaption></figure>"
     )
@@ -1691,8 +1712,10 @@ def other_project_cards() -> str:
 #: The page the atlas's film card opens: the film alone, at full size.
 VISUALIZE_PAGE = "visualize.html"
 
-#: The atlas's three direct cards: where each goes, the picture heading it (a file
-#: served beside the page), its label, value and note.
+#: The atlas's three direct cards, the overview's PDFs and Videos section: where each
+#: goes, the picture heading it (a file served beside the page), its label, value and
+#: note. A label says what the card is and the form it opens in, which are the section
+#: heading's two words: a poster is a PDF, the film a video.
 ATLAS_CARDS: tuple[tuple[str, str, str, str, str], ...] = (
     (
         "known-best-1-100.pdf",
@@ -1717,7 +1740,7 @@ ATLAS_CARDS: tuple[tuple[str, str, str, str, str], ...] = (
     (
         VISUALIZE_PAGE,
         "ascent-n1-324-poster.png",
-        "Visualize",
+        "Film \u00b7 Video",
         "The ascent to n = 324",
         (
             "The atlas built one square at a time, each step naming the bound it reaches and "
@@ -1729,7 +1752,8 @@ ATLAS_CARDS: tuple[tuple[str, str, str, str, str], ...] = (
 
 def atlas_cards() -> str:
     """The atlas's posters and film as three cards side by side, each headed by its
-    picture and itself the link: a poster opens its PDF, the film its own page."""
+    picture and itself the link: a poster opens its PDF, the film its own page. They
+    are the overview's PDFs and Videos section, under The Atlas."""
     return _cards(
         [
             link_card(
@@ -1961,6 +1985,6 @@ def atlas_grid() -> str:
         'data-atlas-toggle aria-expanded="false" '
         f'data-label-more="{more}" data-label-less="{less}">{more}</button></p>'
         '<p class="site-atlas-note">Every case from n = 1 to 324 is also in the '
-        '<a href="frontier.html">frontier atlas</a>, and each has a '
+        '<a href="frontier.html">frontier survey</a>, and each has a '
         f'<a href="{CASES_PAGE}">case record</a>.</p></div>{atlas_popover()}'
     )

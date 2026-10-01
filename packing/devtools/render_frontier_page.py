@@ -26,7 +26,6 @@ from pathlib import Path
 from typing import Any, cast
 
 from devtools import render_research_tables as tables
-from devtools import repo_links
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.build_bound_citations import RECORD as BOUND_CITATIONS
 from devtools.repo_links import repo_url
@@ -38,7 +37,6 @@ TEMPLATES = PACKING / "devtools" / "templates"
 FRONTIER_ARTICLE = TEMPLATES / "frontier-article.md"
 RENDERINGS = PACKING / "atlas" / "known-best" / "rendering"
 TABLE_SCRIPT = PACKING / "devtools" / "overview" / "table.js"
-STATUS = repo_links.REPO / repo_links.STATUS
 
 #: Every file this page reads beyond the site shell's own inputs.
 FRONTIER_INPUTS: tuple[Path, ...] = (
@@ -455,7 +453,7 @@ def case_row(
         f"pop-frontier-n-{n}",
         name=f"n = {n}, {status}",
         trigger="Details",
-        label="Frontier atlas",
+        label="Frontier survey",
         title=f"<var>n</var> = {n}",
         body=frontier_row_popover_body(case, evidence),
         action=(record_url(n), f"Open the case record for n = {n}"),
@@ -564,7 +562,6 @@ def frontier_markdown(fill: Callable[..., str]) -> str:
         "OPEN": str(sum(case["status"] == "open" for case in cases)),
         "RECENT": str(sum(recent.values())),
         "RECENT_SINCE": f"{RECENT_SINCE:%B %Y}",
-        "STATUS_URL": repo_url(STATUS),
         "TABLE": table_html(cases),
     }
     template = FRONTIER_ARTICLE.read_text(encoding="utf-8")

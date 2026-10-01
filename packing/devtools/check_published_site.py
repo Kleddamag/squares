@@ -25,6 +25,13 @@ the exit status is 0 only when every check passes:
   page links on `main` exists in the expected commit's tree, which is `main` when the
   deploy runs, and each link on the explainer, its Markdown edition, the overview and
   the frontier atlas is also asked of GitHub;
+- no link written before a page moved or was withdrawn breaks
+  (`render_overview.MOVED_PAGES`, `MOVED_FILES`): each address a page used to have, the
+  papers' among them, still serves a forwarder that names where a visit is sent now in
+  the four places it says it, and they agree: its canonical URL, the address its script
+  reads, the refresh for a reader without scripts, and its link. In the pinned browser
+  a visit to each with a query string and a fragment arrives there with both. Each
+  address a paper's Markdown or PDF used to have serves the same bytes as the new one;
 - every result overview the results table's rows name (`data-row-pop-src`) is served
   beside the pages and is that result's, and the overviews' repository links pass the
   same two checks against the tree;
@@ -48,12 +55,6 @@ the exit status is 0 only when every check passes:
   its Markdown names the expected commit, the one the deploy built from, which `main`
   keeps, and every path it cites is in that commit's tree. A citation that names `main`,
   or any other commit, fails;
-- no link written before the papers moved breaks (`render_overview.MOVED_PAGES`,
-  `MOVED_FILES`): each address a paper's page used to have serves a forwarder that names
-  the page's address now as its canonical URL, in a link, in a refresh for a reader
-  without scripts, and to the forwarding script, and in the pinned browser a visit to
-  it with a query string and a fragment arrives at the new address with both; each
-  address a paper's Markdown or PDF used to have serves the same bytes as the new one;
 - the workbench names the expected source commit, starts its public API in the pinned
   browser, and links back to this project's root rather than the account site's root.
 
@@ -78,7 +79,7 @@ from pathlib import Path
 from typing import NamedTuple
 from urllib.parse import urljoin
 
-from playwright.sync_api import Browser, sync_playwright
+from playwright.sync_api import Browser, BrowserContext, sync_playwright
 from playwright.sync_api import Error as PlaywrightError
 
 from devtools import overview_data, render_overview, result_overview
@@ -461,10 +462,12 @@ def forwarder_says(text: str) -> dict[str, str | None]:
 
 def forwarder_expected(old: str, new: str) -> dict[str, str | None]:
     """What `forwarder_says` has to answer for the page that moved from `old` to `new`:
-    the new address in full as the canonical URL, and relative to the old one elsewhere."""
-    target = posixpath.relpath(new, posixpath.dirname(old))
+    the new address in full as the canonical URL, and relative to the old one elsewhere.
+    An address off the site, as the defect log's on GitHub is, is whole in all four."""
+    external = new.startswith("https://")
+    target = new if external else posixpath.relpath(new, posixpath.dirname(old))
     return {
-        "canonical": render_overview.canonical_url(new),
+        "canonical": new if external else render_overview.canonical_url(new),
         "script": target,
         "refresh": target,
         "link": target,
@@ -478,18 +481,21 @@ def visited_address(old: str) -> str:
 
 
 def forwarder_arrivals(
-    browser: Browser, site: str, *, timeout: float
+    browser: Browser | BrowserContext, site: str, *, timeout: float
 ) -> list[tuple[bool, str]]:
     """Visit each address a page used to have in `browser`, with a query string and a
-    fragment, and require it to arrive at the page's address now with both."""
+    fragment, and require it to arrive where the page is now with both: a page of the
+    site, or for a page that left it the address off the site it is sent to. The arrival
+    is the address the browser commits to, so a slow page at the far end is not waited
+    for."""
     results: list[tuple[bool, str]] = []
     for old, new in render_overview.MOVED_PAGES:
         start = site + visited_address(old) + FORWARDED_SUFFIX
-        arrival = site + new + FORWARDED_SUFFIX
+        arrival = (new if new.startswith("https://") else site + new) + FORWARDED_SUFFIX
         page = browser.new_page()
         try:
             page.goto(start, wait_until="load", timeout=timeout * 1000)
-            page.wait_for_url(arrival, timeout=timeout * 1000)
+            page.wait_for_url(arrival, wait_until="commit", timeout=timeout * 1000)
         except PlaywrightError:
             pass  # Where the visit is now says what went wrong.
         landed = page.url
@@ -728,8 +734,9 @@ def check(
         if cited_here and status == 200:
             cites_commit(name, body.decode("utf-8", errors="replace"))
 
-    # No link written before the papers moved breaks: a page's old address forwards, and
-    # a file's old address serves the same bytes.
+    # No link written before a page moved or was withdrawn breaks: a page's old address
+    # forwards, and a file's old address serves the same bytes. A deploy that dropped a
+    # forwarder would 404 every link written before the change.
     for old, new in render_overview.MOVED_PAGES:
         status, body = fetch(site + old, timeout=timeout)
         says = forwarder_says(body.decode("utf-8", errors="replace"))

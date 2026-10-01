@@ -59,7 +59,7 @@ def observe_export(
     mode: Literal["error", "timeout"] | None = None,
 ) -> Observation:
     """Inject only the font fault and observe the exporter's unmodified control flow."""
-    assert pdf.PAGE.is_file(), "Pages must provide its prepared site/index.html"
+    assert pdf.PAGE.is_file(), "Pages must provide its prepared page under site/papers/"
     observed = Observation()
     opened: list[Page] = []
     new_page = Browser.new_page
@@ -101,7 +101,7 @@ def test_production_pdf_accepts_typeset_math() -> None:
     draw does not check about its own output -- a PDF, bound by its receipt to the prepared page
     it was drawn from, with no font finding.
     """
-    assert pdf.PAGE.is_file(), "Pages must provide its prepared site/index.html"
+    assert pdf.PAGE.is_file(), "Pages must provide its prepared page under site/papers/"
     assert pdf.OUTPUT.is_file(), "Pages must draw the publication PDF before these controls"
     document = pdf.OUTPUT.read_bytes()
     assert document.startswith(b"%PDF-")
@@ -157,7 +157,7 @@ def test_production_pdf_preserves_readable_native_mathml_fallback(
 
 def test_final_math_guard_distinguishes_hidden_alternatives_and_render_errors() -> None:
     """Exercise the final predicate with real prepared nodes and the page's CSS."""
-    assert pdf.PAGE.is_file(), "Pages must provide its prepared site/index.html"
+    assert pdf.PAGE.is_file(), "Pages must provide its prepared page under site/papers/"
     with sync_playwright() as driver:
         browser = driver.chromium.launch(executable_path=os.environ.get(pdf.BROWSER_OVERRIDE))
         try:

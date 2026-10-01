@@ -19,6 +19,11 @@
 .n11-paper .credits a {
   overflow-wrap: anywhere;
 }
+/* The original proof is credited first, by name and address; a line's space then sets
+   this review's own credits apart from it, as the dates are set apart below. */
+.n11-paper .credits .credits-review {
+  margin-block-start: 1lh;
+}
 .n11-paper figure > svg,
 .n11-paper .figure-pair > svg {
   display: block;
@@ -34,10 +39,13 @@
 .n11-paper :is(.figure-pair, figure:has(> svg)) {
   font-size: var(--paper-font-size-support);
 }
+/* A label with no class of its own is the sans's regular weight, as a note is: weight
+   is inherited where the face is not, and without one a label sat at the serif's 400. */
 .n11-paper :where(figure > svg, .figure-pair > svg) text {
   font-family: var(--kpress-font-sans);
   font-feature-settings: var(--kpress-font-features-sans);
   font-size: var(--paper-diagram-font-size, var(--paper-font-size-support));
+  font-weight: var(--cert-font-weight-sans-light);
 }
 .n11-paper .n11-diagram-label {
   font-weight: var(--cert-font-weight-sans-bold);

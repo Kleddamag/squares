@@ -18,9 +18,12 @@ adds the front door and the pages around it, as the plan in
   `render_n11_optimality_review`), the lower-bounds explainer
   (`papers/n11-lower-bounds-explainer.html`, `render_n11_lower_bounds_explainer`) and the
   tutorial are the section's papers, and the bar's Papers entry is current on all four;
-- a forwarder at each address a paper used to have (`MOVED_PAGES`), so an old link still
-  arrives, query and fragment kept (`forwarder_pages`);
+- a forwarder at each address a page used to have (`MOVED_PAGES`), the papers' old
+  addresses among them, so an old link still arrives, query and fragment kept
+  (`forwarder_pages`);
 - `tutorial.html`, the tutorial rendered as a page;
+- a forwarder at each address a page used to have (`MOVED_PAGES`), so an old link still
+  arrives, query and fragment kept (`forwarder_pages`);
 - `visualize.html`, the Visualize section's first tab: the n = 1 to 324 film at full
   size. Its second tab is the workbench at `workbench/`, which
   `workbench_tools.build_site` builds and gives the same tab bar (`visualize_tabs`).
@@ -94,6 +97,13 @@ OUTPUT = PACKING / "site"
 
 SITE_URL = "https://jlevy.github.io/squares/"
 SITE_NAME = "Square Packing"
+#: The project's formal name (the owner, 2026-10-01). The site's own name, in the bar and
+#: in page titles, stays the shorter `SITE_NAME`.
+PROJECT_NAME = "The Square Packing Project"
+#: The two tools the closing line credits, at the addresses the repository already uses:
+#: README links Flowmark there, and KPress is the `vendor/kpress` submodule's origin.
+FLOWMARK_URL = "https://github.com/jlevy/flowmark"
+KPRESS_URL = "https://github.com/jlevy/kpress"
 #: Where a reader reports a result the site does not have yet: a new issue on the
 #: repository, which the overview's own statement links.
 NEW_ISSUE_URL = f"{repo_links.REPO_URL}/issues/new"
@@ -143,21 +153,20 @@ FRONTIER_DESCRIPTION = (
     "the best known packing, the reported and verified bounds, and the records behind them."
 )
 
-#: The results table's page. `results.html` is `RESULTS.md` rendered, a reader document,
-#: so the table's own page takes this name; its row ids are the results' (`#t-018`).
+#: The results table's page; its row ids are the results' (`#t-018`). `results.html` was
+#: `RESULTS.md` rendered as a reader document until 2026-10-01, and is now a forwarder
+#: to this page (`MOVED_PAGES`).
 RESULTS_PAGE = "all-results.html"
 
 #: The repository documents served as pages outside the navigation, reached from the
-#: overview's cards; `site_documents` renders them.
+#: overview's cards, in the cards' order; `site_documents` renders them. README and
+#: `epistemics.md` lead, then the synopsis and the two reference documents.
 DOCUMENT_PAGES: tuple[str, ...] = (
     "readme.html",
-    "synopsis.html",
-    "results.html",
-    "status.html",
     "epistemics.html",
+    "synopsis.html",
     "conventions.html",
     "development.html",
-    "defects.html",
 )
 #: The directory the site's papers are served from, under its root.
 PAPERS_DIR = "papers"
@@ -195,19 +204,33 @@ SITE_PAGES: tuple[str, ...] = (
     *DOCUMENT_PAGES,
 )
 
-#: Every page that moved, by the path it was served at and the path it is served at
-#: now, both under the site's root. The papers moved to `papers/<slug>.html` on
-#: 2026-10-01 (think-cmz6): the explainer from `explainer.html`, where it had been since
-#: the overview took the root, and the optimality paper from
-#: `n11-optimality/t-060-explainer.html`, with the landing address its directory had.
-#: Each old path is still served, as a forwarder (`forwarder_pages`), so a link written
-#: before the move arrives with its query and its fragment. Nothing on the site links an
-#: old path; a test holds every page to that.
+#: Every page that moved or was withdrawn, by the path it was served at and where a
+#: visit to it is sent now: a path under the site's root, or the address of a file on
+#: `main`. Three generated views of the record were served as reader documents until
+#: 2026-10-01 (think-bk2e). The results register's page gave way to the results table
+#: and the status table's to the frontier atlas, each built from the same record; the
+#: defect log is internal to the repository, so its old address opens the file on
+#: GitHub. The papers moved to `papers/<slug>.html` the same day (think-cmz6): the
+#: explainer from `explainer.html`, where it had been since the overview took the root,
+#: and the optimality paper from `n11-optimality/t-060-explainer.html`, with the landing
+#: address its directory had. Each old path is still served, as a forwarder
+#: (`forwarder_pages`), so a link written before the change arrives with its query and
+#: its fragment. Nothing on the site links an old path; a test holds every page to that.
 MOVED_PAGES: tuple[tuple[str, str], ...] = (
+    ("results.html", RESULTS_PAGE),
+    ("status.html", "frontier.html"),
+    ("defects.html", repo_url(repo_links.DEFECTS, kind="blob")),
     ("explainer.html", paper_path(N11_LOWER_BOUNDS_EXPLAINER)),
     ("n11-optimality/t-060-explainer.html", paper_path(N11_OPTIMALITY_REVIEW)),
     ("n11-optimality/index.html", paper_path(N11_OPTIMALITY_REVIEW)),
 )
+#: What a forwarder calls the place it sends a reader, by that place's address. A paper
+#: is called by its title, which its card has (`overview_sections.PAPERS`).
+FORWARDER_TITLES: dict[str, str] = {
+    RESULTS_PAGE: "Every Result",
+    "frontier.html": "The Frontier Atlas",
+    repo_url(repo_links.DEFECTS, kind="blob"): "defects.md on GitHub",
+}
 #: Every file that moved and is not a page, the same way: the papers' Markdown and PDF,
 #: which a script cannot forward. Each old path is served as a copy of the new one, made
 #: when the site is assembled, since the files come from other builds than this one: by
@@ -248,7 +271,6 @@ RENDER_INPUTS: tuple[Path, ...] = (
     REPO / repo_links.SYNOPSIS,
     REPO / repo_links.CONVENTIONS,
     REPO / repo_links.DEVELOPMENT,
-    REPO / repo_links.DEFECTS,
     PACKING / "devtools" / "repo_links.py",
     REPO / "vendor" / "kpress",
     PACKING / "pyproject.toml",
@@ -462,14 +484,44 @@ def favicon_html() -> str:
     return f'<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,{quote(svg)}">'
 
 
-def colophon_html() -> str:
-    """The closing line every page carries, as the explainer's does."""
-    return (
-        '<p class="site-colophon">'
-        f"{html.escape(SITE_NAME)} · {html.escape(PUBLICATION_EDITION)} · "
-        'Formatted and typeset with <a href="https://github.com/jlevy/flowmark">Flowmark</a> '
-        'and <a href="https://github.com/jlevy/kpress">KPress</a></p>'
+def colophon_lines() -> str:
+    """The closing credit's two lines, the one definition every page's footer is made of:
+    the site's pages (`colophon_html`), the explainer and the optimality paper, whose
+    shells set it in their own closing paragraph.
+
+    The first line is the project's formal name and its repository, shown without its
+    scheme and linked. The second is the version every artifact prints, then the credit
+    to the two tools. The version is `sqpack.release.PUBLICATION_EDITION` taken whole,
+    the stamp the atlas footer and the film carry (`v0.4.2-8ac5de`, with the edition's
+    status ahead of it while it has one), so it follows a re-pin and a new edition with
+    no edit here; a build that prints it names `release.py` among its inputs.
+
+    A line is a block, so there are two at every width, and each part beside a middle
+    dot is an inline block, so a line too long for a phone breaks at its dot before it
+    breaks inside a part (`site-nav.css`, which every page carries).
+    """
+
+    def part(markup: str) -> str:
+        return f'<span class="site-colophon-part">{markup}</span>'
+
+    def line(*parts: str) -> str:
+        return f'<span class="site-colophon-line">{" · ".join(map(part, parts))}</span>'
+
+    repository = repo_links.REPO_URL
+    return line(
+        html.escape(PROJECT_NAME),
+        f'<a href="{repository}">{html.escape(repository.removeprefix("https://"))}</a>',
+    ) + line(
+        html.escape(PUBLICATION_EDITION),
+        f'Formatted and typeset with <a href="{FLOWMARK_URL}">Flowmark</a> '
+        f'and <a href="{KPRESS_URL}">KPress</a>',
     )
+
+
+def colophon_html() -> str:
+    """The closing credit every site page carries, in KPress's footer slot: the two lines
+    every page shares (`colophon_lines`), as the explainer's are."""
+    return f'<p class="site-colophon">{colophon_lines()}</p>'
 
 
 def kpress_page(
@@ -726,7 +778,7 @@ def frontier_page() -> Page:
         frontier_markdown(fill),
         name="frontier.html",
         current="frontier",
-        title=f"The Frontier Atlas · {SITE_NAME}",
+        title=f"The Frontier Survey · {SITE_NAME}",
         description=FRONTIER_DESCRIPTION,
         toc=False,
         page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, CASE_POPOVER_SCRIPT, ROW_POPOVER_SCRIPT),
@@ -819,27 +871,31 @@ def result_fragments() -> list[Page]:
 
 def forwarder_pages() -> list[Page]:
     """A forwarder at each address a page used to have (`MOVED_PAGES`), so no link written
-    before the move breaks.
+    before the change breaks.
 
     A forwarder is a few lines and no page of the site: `overview/forward.js`, the script
-    the overview already forwards its own old fragments with, reads where the page is now
-    from the root element and sends the reader there with the query string and the
+    the overview already forwards its own old fragments with, reads where the reader is
+    sent from the root element and sends them there with the query string and the
     fragment they came with. For a reader without scripts it carries a refresh and a
-    link, and for a crawler the canonical address of the page it stands for. It has no
-    bar, no stamp and no styles, and is not among `PAGES`.
+    link, and for a crawler the canonical address of the place it stands for. It has no
+    bar, no stamp and no styles, and is not among `PAGES`. A target is written as the
+    old path's reader must follow it: relative for a page of the site, climbing out of
+    the old path's directory where it has one, and whole for an address off it.
     """
     import posixpath  # noqa: PLC0415
 
     from devtools.overview_sections import PAPERS  # noqa: PLC0415
 
-    titles = {paper.href: paper.title for paper in PAPERS}
+    titles = FORWARDER_TITLES | {paper.href: paper.title for paper in PAPERS}
     template = FORWARDER.read_text(encoding="utf-8")
     pages = []
     for old, new in MOVED_PAGES:
+        external = new.startswith("https://")
+        target = new if external else posixpath.relpath(new, posixpath.dirname(old))
         values = {
-            "TARGET": html.escape(posixpath.relpath(new, posixpath.dirname(old)), quote=True),
+            "TARGET": html.escape(target, quote=True),
             "TITLE": html.escape(titles[new]),
-            "CANONICAL_URL": html.escape(canonical_url(new), quote=True),
+            "CANONICAL_URL": html.escape(new if external else canonical_url(new), quote=True),
             "FORWARD_SCRIPT": _script_text(FORWARD_SCRIPT),
         }
         page = fill(template, values, where=FORWARDER.name)

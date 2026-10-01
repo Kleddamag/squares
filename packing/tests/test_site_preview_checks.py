@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from devtools import render_overview
 from devtools.measure_site_pages import (
     card_rows,
     chip_rows,
@@ -23,6 +24,7 @@ from devtools.preview_site import (
     baseline_problems,
     clip_problem,
     motion_for,
+    moved_links,
     off_centre,
     shot_stem,
     split_problem,
@@ -33,7 +35,7 @@ from devtools.preview_site import (
 
 def _section(*rows: tuple[int, float, float]) -> dict[str, object]:
     return {
-        "section": "Squares Project Documentation",
+        "section": "Square Packing Project Documentation",
         "block_width": 1104,
         "rows": [
             {"cards": n, "sizes": [""] * n, "widths": [264] * n, "start": a, "end": b}
@@ -49,8 +51,8 @@ def test_a_row_off_the_centre_of_its_line_is_reported() -> None:
     report = [_section((4, 0, 0), (2, 280, 280), (2, 0, 560))]
     assert off_centre(report) == [
         (
-            "a row of 2 cards in Squares Project Documentation is off centre: 0px before it, "
-            "560px after"
+            "a row of 2 cards in Square Packing Project Documentation is off centre: "
+            "0px before it, 560px after"
         )
     ]
 
@@ -438,7 +440,7 @@ def _labels(
     """A `preview_site/baselines` report: two links on each line of the bar, a line given
     as its top and its baseline, the name's baseline, and two tabs on one of theirs. The
     name's line is 25px tall, with the mark centred on it."""
-    words = iter(("Overview", "Frontier", "Results", "Papers"))
+    words = iter(("Overview", "Results", "Papers", "Frontier"))
     return {
         "name": name,
         "name_text": name and {"top": name - 18, "bottom": name + 7},
@@ -472,7 +474,7 @@ def test_the_name_and_the_links_stand_on_one_baseline() -> None:
     uneven["links"][1]["baseline"] = 48.0
     uneven["tabs"][1]["baseline"] = 101.5
     assert baseline_problems(uneven) == [
-        "the link Frontier stands +1.2px off the baseline of Overview, beside it",
+        "the link Results stands +1.2px off the baseline of Overview, beside it",
         "the section tab Workbench stands -1.08px off the baseline of Film, beside it",
     ]
 
@@ -488,12 +490,44 @@ def test_only_a_page_that_starts_a_film_is_opened_under_reduced_motion() -> None
         assert motion_for(name) == "no-preference", name
 
 
+def test_a_link_to_a_page_that_moved_is_reported(tmp_path: Path) -> None:
+    """A forwarder keeps an old link working, and a page of the site names where the
+    reader is going: a built page that links or frames an address in
+    `render_overview.MOVED_PAGES` is named with the link, from the root or from a
+    directory under it. The forwarders themselves and an address off the site are not."""
+    moved = [old for old, _ in render_overview.MOVED_PAGES]
+    assert moved[:3] == ["results.html", "status.html", "defects.html"]
+    (tmp_path / "result").mkdir()
+    for old in moved:
+        (tmp_path / old).parent.mkdir(exist_ok=True)
+        (tmp_path / old).write_text('<a href="all-results.html">moved</a>', encoding="utf-8")
+    (tmp_path / "all-results.html").write_text(
+        '<a href="frontier.html#n-11">a row</a>'
+        '<a href="https://example.org/results.html">elsewhere</a>',
+        encoding="utf-8",
+    )
+    assert moved_links(tmp_path) == []
+    (tmp_path / "index.html").write_text(
+        '<a href="results.html#next-actions">old</a>'
+        '<iframe src="defects.html?view=embed"></iframe>'
+        '<a href="all-results.html#t-060">new</a>',
+        encoding="utf-8",
+    )
+    (tmp_path / "result" / "t-001.html").write_text(
+        '<a href="../status.html">old</a>', encoding="utf-8"
+    )
+    assert moved_links(tmp_path) == [
+        "index.html: defects.html?view=embed",
+        "index.html: results.html#next-actions",
+        "result/t-001.html: ../status.html",
+    ]
+
+
 def test_a_moved_file_is_copied_to_its_old_address(tmp_path: Path) -> None:
     """A paper's Markdown and PDF cannot forward, so the assembled site serves each at the
     address it had before the papers moved too, as a copy (`render_overview.MOVED_FILES`),
     which is what the workflow's `publish` job does. A file a skipped build would have
     written has no copy, and nothing else in the directory is touched."""
-    from devtools import render_overview  # noqa: PLC0415
     from devtools.preview_site import copy_moved_files  # noqa: PLC0415
 
     assert copy_moved_files(tmp_path) == []

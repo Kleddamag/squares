@@ -29,6 +29,7 @@ from pathlib import Path
 
 from strif import atomic_output_file
 
+from devtools.register_prose import paragraphs
 from devtools.render_recent_results import load_records, standing
 from devtools.result_credit import OTHERS, credit_line, source_lineage
 from sqpack.yamlio import safe_load
@@ -71,8 +72,9 @@ def _scope(record: dict) -> str:
     return f"{scope['n_min']}-{scope['n_max']}"
 
 
-def _claim(record: dict) -> str:
-    return " ".join(str(record["claim"]).split()).replace("|", r"\|")
+def claim_cell(record: dict) -> str:
+    """The claim in one table cell, its paragraphs kept apart by line breaks."""
+    return "<br><br>".join(paragraphs(record["claim"])).replace("|", r"\|")
 
 
 def order(record: dict) -> tuple[int, int, str]:
@@ -127,7 +129,7 @@ def render() -> str:
     lines.extend(
         f"| {record['id']} | {_scope(record)} | {record['verification']} "
         f"| {record['confirmation']} | S{record['significance']['score']} "
-        f"| {record['novelty']} | {_claim(record)} |"
+        f"| {record['novelty']} | {claim_cell(record)} |"
         for record in ours
     )
     lines.append("")
@@ -150,7 +152,7 @@ def render() -> str:
                 f"| {record['id']} | {_scope(record)} | {credit_line(record, sources)} "
                 f"| {record['attribution']['published']} | {record['verification']} "
                 f"| {record['confirmation']} | S{record['significance']['score']} "
-                f"| {standing(record, records)} | {_claim(record)} |"
+                f"| {standing(record, records)} | {claim_cell(record)} |"
                 for record in group
             )
             lines.append("")

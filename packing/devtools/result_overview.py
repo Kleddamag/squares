@@ -68,6 +68,7 @@ from devtools.overview_data import (
     Overview,
     Result,
     math_html,
+    prose_html,
     tex_bounds,
 )
 from devtools.repo_links import repo_url
@@ -573,16 +574,14 @@ def head(result: Result, cases: Sequence[int]) -> str:
 
     record = result.record
     kind, dated = result.dated
-    claim = tex_bounds(" ".join(str(record["claim"]).split()))
+    claim = prose_html(record["claim"], between='</p><p class="site-result-claim">')
     more = [
         ("Significance", record["significance"]["rationale"]),
         ("Composition", record.get("composition")),
         ("Next rung", record.get("next_rung")),
     ]
     rows = "".join(
-        f"<dt>{label}</dt><dd>{tex_bounds(' '.join(str(text).split()))}</dd>"
-        for label, text in more
-        if text
+        f"<dt>{label}</dt><dd>{prose_html(text)}</dd>" for label, text in more if text
     )
     meaning = novelty_labels().get(result.novelty, "")
     rows += (

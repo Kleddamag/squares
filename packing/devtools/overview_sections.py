@@ -32,6 +32,7 @@ from devtools.overview_data import (
     Overview,
     Result,
     math_html,
+    prose_html,
     tex_bounds,
 )
 from devtools.render_overview import DOCUMENT_PAGES, RESULTS_PAGE
@@ -437,13 +438,11 @@ def _detail(result: Result) -> str:
     """A result's claim, composition, next rung, why it matters and novelty label: the
     short form of what its row opens to, which the page itself carries (`result_row`)."""
     record = result.record
-    rows = [("Claim", tex_bounds(" ".join(str(record["claim"]).split())))]
+    rows = [("Claim", prose_html(record["claim"]))]
     for key, label in (("composition", "Composition"), ("next_rung", "Next rung")):
         if record.get(key):
-            rows.append((label, tex_bounds(" ".join(str(record[key]).split()))))
-    rows.append(
-        ("Significance", tex_bounds(" ".join(str(record["significance"]["rationale"]).split())))
-    )
+            rows.append((label, prose_html(record[key])))
+    rows.append(("Significance", prose_html(record["significance"]["rationale"])))
     meaning = novelty_labels().get(result.novelty, "")
     rows.append(
         (

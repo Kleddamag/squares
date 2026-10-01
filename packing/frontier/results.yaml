@@ -4906,7 +4906,7 @@ results:
       will orchestrate fresh whole-ensemble replay through reviewed state-equivalence
       bindings. Simplification was to precede the n11 explainer, tracked separately, which is
       now the [eleven-square optimality
-      paper](https://jlevy.github.io/squares/n11-optimality/).
+      paper](https://jlevy.github.io/squares/papers/n11-optimality-review.html).
     notes: >-
       Confirmed 2026-09-30 after all 2180 exclusions, ten capture nodes and final
       composition passed and received Astra-max review. Source credit is unchanged.

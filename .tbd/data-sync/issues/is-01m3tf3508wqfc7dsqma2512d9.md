@@ -3,9 +3,9 @@ type: is
 id: is-01m3tf3508wqfc7dsqma2512d9
 title: Plan proof-linked illustrations for the n11 optimality explainer
 kind: task
-status: in_progress
+status: closed
 priority: 1
-version: 7
+version: 8
 spec_path: docs/project/specs/active/plan-2026-09-30-n11-optimality-illustrations.md
 labels: []
 dependencies: []
@@ -16,6 +16,10 @@ child_order_hints:
   - is-01m3tfkatddsz86ee870exr3e0
   - is-01m3tfkczqspdb8hp17z6252h9
 created_at: 2026-10-01T00:51:07.910Z
-updated_at: 2026-10-01T01:00:00.368Z
+updated_at: 2026-10-01T01:53:02.273Z
+closed_at: 2026-10-01T01:53:02.273Z
+close_reason: "Completed in draft PR261 at 9e97024f5: original-proof attribution and component links; Sol common-doc/citation and exact shared publication styling reviews; Astra-max adversarial reconciliation (no blocker/high/medium, two low qualifications resolved, 11 simplification candidates); source-bound illustration plan with implementation deferred to four separate beads. 231 focused local tests and PDF inspection passed; hosted integration fixes tracked separately by think-dhsh. Parent think-75cp remains open for user feedback; no merge or publication."
+resolution: null
+duplicate_of: null
 ---
 Systematically compare earlier explainer figures/interactions to current paper. Map every major proof concept to reader need, visual, exact source, reusable components, interactions and printable fallback, validation obligation and priority. Draft plan spec; distinguish schematic intuition from verified data; do not implement an unreviewed complete visual suite.

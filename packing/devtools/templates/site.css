@@ -1164,12 +1164,6 @@ body {
   margin-block-start: 0.3rem;
   min-width: 0;
 }
-/* The overview's recent table is the results page's table, and this is its one rule: it
-   carries each result's records and does not show them. Every link is in the row's
-   popover and on the result's row of the results page. */
-.kpress .site-recent-table .site-records {
-  display: none;
-}
 .kpress .site-table .site-group-row th {
   background: var(--site-wash);
   color: var(--kpress-doc-text);

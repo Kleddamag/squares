@@ -570,14 +570,14 @@ def star_legend() -> str:
     )
 
 
-def result_row(result: Result, *, trigger: str, here: bool, starred: bool = False) -> RowDetail:
-    """A result's row popover, the same on every page: its id as the caps label, its
-    summary as the headline, then the result's short detail (`_detail`), which the
-    script replaces with the whole overview, fetched from `result_fragment` when the
-    popover first opens. A row on the results page (`here`) is the result's own row, so
-    its popover has no button; anywhere else it ends in the button to that row. A
-    `starred` row's name ends ", new result", what its star says (`new_result_star`)."""
-    action = None if here else (result_url(result.id), f"Open {result.id} in the results table")
+def result_row(result: Result, *, trigger: str, starred: bool = False) -> RowDetail:
+    """A result's row popover, the same on both tables of results: its id as the caps
+    label, its summary as the headline, then the result's short detail (`_detail`),
+    which the script replaces with the whole overview, fetched from `result_fragment`
+    when the popover first opens. It has no button: the row pressed is the result's
+    row, in either table, and a button from one table to the same row of the other
+    leads nowhere new. A `starred` row's name ends ", new result", what its star says
+    (`new_result_star`)."""
     name = f"{result.id}: {plain_text(result.summary)}"
     return row_detail(
         f"pop-result-{result.id.lower()}",
@@ -586,7 +586,6 @@ def result_row(result: Result, *, trigger: str, here: bool, starred: bool = Fals
         label=result.id,
         title=tex_bounds(result.summary),
         body=_detail(result),
-        action=action,
         source=result_fragment(result.id),
     )
 
@@ -820,17 +819,11 @@ def case_list(result: Result) -> str:
     return " ".join(f'<span class="site-n-value">{_esc(value)}</span>' for value in values)
 
 
-def result_text(result: Result, *, here: bool) -> str:
-    """A result's summary as its Result cell sets it: the register's headline, its math
-    typeset. On the results page (`here`) it is plain text, since the row is the
-    result's own. Anywhere else what the summary leads with, its formula, or the whole
-    of a summary that leads with none, links to that row; the words are the same."""
-    if here:
-        return tex_bounds(result.summary)
-    formula, _ = split_summary(result.summary)
-    link = f'<a href="{_esc(result_url(result.id))}">{tex_bounds(formula)}</a>'
-    rest = result.summary[len(formula) :]
-    return link + (tex_bounds(rest) if rest else "")
+def result_text(result: Result) -> str:
+    """A result's summary as its Result cell sets it, in both tables of results: the
+    register's headline, its math typeset. It links nowhere: the row is the result's
+    own in either table, and opens its popover."""
+    return tex_bounds(result.summary)
 
 
 def credit_cell(credit: str) -> str:
@@ -853,7 +846,7 @@ def date_cell(result: Result) -> str:
     return f'{_esc(dated)} <span class="site-date-kind">{_esc(kind)}</span>'
 
 
-def result_cells(result: Result, overview: Overview, detail: RowDetail, *, here: bool) -> str:
+def result_cells(result: Result, overview: Overview, detail: RowDetail) -> str:
     """A result's cells, one for each column of `result_head`, the same on both tables:
     its id (`id_cell`), its cases (`case_list`), its summary with the star a new result
     earns (`result_text`, `new_result_star`) and its records on a quiet line under it,
@@ -861,8 +854,7 @@ def result_cells(result: Result, overview: Overview, detail: RowDetail, *, here:
     (`kind_chip`) and its standing on a line under that where it has one to show
     (`standing_chips`), and its date (`date_cell`). The records are no column of their
     own: a column narrow enough to fit set them a link to a line, and under the summary
-    they take a line or two. The overview's table carries them and does not show them
-    (`site.css`, `.site-recent-table`)."""
+    they take a line or two, in both tables."""
     record = result.record
     standing = standing_chips(result.standing)
     if standing:
@@ -870,7 +862,7 @@ def result_cells(result: Result, overview: Overview, detail: RowDetail, *, here:
     return (
         f"{id_cell(result, detail)}"
         f'<td class="num site-col-n" data-value="{result.first_n}">{case_list(result)}</td>'
-        f'<td class="site-col-result">{result_text(result, here=here)}'
+        f'<td class="site-col-result">{result_text(result)}'
         f"{new_result_star(result, overview)}"
         f'<div class="site-records">{_records(result)}</div></td>'
         f'<td class="site-col-credit" data-value="{_esc(result.credit)}">'
@@ -888,17 +880,18 @@ def result_table_row(
     result: Result, overview: Overview, *, here: bool, shown: bool
 ) -> tuple[str, str]:
     """One result's row in a table of results, and the popover the row opens: the one
-    row both tables write. On the results page (`here`) the row is the result's own
-    address, `id="t-018"`; anywhere else it names the result as `data-result`, since
-    that address is the results page's. A row that is not `shown`, one outside its
-    table's defaults, is `hidden` in the HTML."""
+    row both tables write, the same cells and the same popover. On the results page
+    (`here`) the row is the result's own address, `id="t-018"`; anywhere else it names
+    the result as `data-result`, since that address is the results page's. A row that is
+    not `shown`, one outside its table's defaults, is `hidden` in the HTML. Those two
+    attributes are all a row differs in between the tables."""
     starred = bool(new_result_label(result, overview))
-    detail = result_row(result, trigger=_esc(result.id), here=here, starred=starred)
+    detail = result_row(result, trigger=_esc(result.id), starred=starred)
     key = "id" if here else "data-result"
     row = (
         f'<tr {key}="{_esc(result.id.lower())}" {result_facets(result)} '
         f"{detail.attributes}{'' if shown else ' hidden'}>"
-        f"{result_cells(result, overview, detail, here=here)}</tr>"
+        f"{result_cells(result, overview, detail)}</tr>"
     )
     return row, detail.popover
 
@@ -908,11 +901,11 @@ def table_of_results(overview: Overview, defaults: FilterDefaults, *, here: bool
     result as one flat table under `result_head`, newest first (`recent_results`),
     sortable and filterable (`overview/table.js`), and the rows' popovers after it.
 
-    Both pages' tables are this one. They differ in `defaults`, where the bar starts,
-    with a row outside them `hidden` in the HTML, so the first paint is already
-    filtered; and in `here`, which is the results page: there each row is the result's
-    own address, and anywhere else the table is named `site-recent-table` and its rows
-    link to that address (`result_table_row`).
+    Both pages' tables are this one, and they are two filters of it. They differ in
+    `defaults`, where the bar starts, with a row outside them `hidden` in the HTML, so
+    the first paint is already filtered; and in `here`, which is the results page, where
+    each row is the result's own address (`result_table_row`). Every row shows its
+    records and opens its popover in both, and no row of one links to the other.
 
     No heading divides the rows. Whose a result is, and what it builds on, is read from
     its credit (`credit_cell`), and the Source filter narrows the table to this
@@ -928,11 +921,11 @@ def table_of_results(overview: Overview, defaults: FilterDefaults, *, here: bool
         )
         body.append(row)
         popovers.append(popover)
-    table = "kpress-table site-table site-results" + ("" if here else " site-recent-table")
     return (
         f'<div class="site-wide">{result_filters(overview, results, defaults)}'
         '<div class="site-table-wrap">'
-        f'<table class="{table}" data-site-table>{result_head()}'
+        '<table class="kpress-table site-table site-results" data-site-table>'
+        f"{result_head()}"
         f"<tbody>{''.join(body)}</tbody></table></div>{''.join(popovers)}</div>"
     )
 
@@ -1112,11 +1105,6 @@ def verification_block() -> str:
     )
 
 
-#: A summary that leads with its formula: the formula, then the method after "by", then
-#: a trailing ", reported" that the standing chips already say.
-_LEADING_FORMULA = re.compile(r"(`[^`]+`)(?:,? by (?:an? )?(?P<method>.+?))?(?:, reported)?")
-
-
 def recent_results(overview: Overview) -> list[Result]:
     """Every result, newest first: by the date the table shows, then by id. It is the
     order of both tables of results. What makes the overview's table recent is its
@@ -1142,17 +1130,6 @@ def rung_chips(result: Result) -> str:
     """A result's rung chips, S, V and C, a space apart: the one place their order is
     set, for a table's row, a popover, a result's overview and a case record."""
     return " ".join(_rung(rung) for rung in result_rungs(result))
-
-
-def split_summary(summary: str) -> tuple[str, str]:
-    """A summary as its result and its method: `` `s(21) = 5` by a point-only route ``
-    is the formula and "point-only route". A summary that does not lead with one
-    formula, such as a batch of counts, is all result and no method. A table of results
-    shows the summary whole and links what it leads with (`result_text`)."""
-    match = _LEADING_FORMULA.fullmatch(summary)
-    if not match:
-        return summary, ""
-    return match.group(1), match.group("method") or ""
 
 
 def standing_chips(standing: str) -> str:
@@ -1182,8 +1159,8 @@ def status_chips(result: Result) -> str:
 
 def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS) -> str:
     """The overview's Recent Results: the results page's table (`table_of_results`), its
-    bar starting at the recent defaults, each row opening the result's popover, which
-    ends in the button to the result's row on the results page."""
+    bar starting at the recent defaults. The line under it, "See all results", is the
+    one link from this table to the other."""
     return table_of_results(overview, defaults, here=False)
 
 

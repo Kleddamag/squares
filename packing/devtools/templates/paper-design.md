@@ -1128,10 +1128,14 @@ it.
   “after …”, what the result builds on, quiet after it, in full; the rungs, with the
   kind on a line under them and the standing on a line under that where there is one to
   draw (**Chips**, above); and the date.
-  The tables differ in three things only: where the filter bar starts, the order of the
-  rows, and that a row on the results page is the result’s own address, where a row on
-  the overview links there from its summary’s leading formula (`result_text`). Both sort
-  on any column whose header carries the sort pair.
+  The tables are two filters of one table, and differ only in where the filter bar
+  starts, which sets the rows that begin `hidden` and the count, and in a row’s key: on
+  the results page a row is the result’s own address (`id="t-018"`), and on the overview
+  it names the result as `data-result`. Every other byte of a row and of its popover is
+  the same, so each shows the result’s records under its summary, each opens its popover
+  from the id, and no row of one links to the other.
+  The line under the overview’s table, “See all results”, is the one link between them.
+  Both sort on any column whose header carries the sort pair.
   The widths follow from each column’s floor and from what the n column asks for.
   The id, the rungs and the date are as narrow as what they hold.
   The rungs column is as wide as its widest chip, since no chip wraps: the three rungs
@@ -1177,8 +1181,7 @@ it.
   At 24ch the longest list sets a row 165 pixels tall, under the 171 the tallest summary
   sets there. The records are no column of their own, which would set a link to a line:
   they sit under the summary, a line or two of links.
-  The overview’s table carries them and does not show them, at any width, by one rule on
-  `.site-recent-table`: each row’s popover holds every link.
+  Both tables show them.
   `devtools.measure_site_pages columns` and `chips` measure all of this on a built site:
   each column’s width, the most lines a cell takes, the words a line break splits and
   the tallest row a column sets; the values of a list of cases cut across lines, the
@@ -1373,8 +1376,8 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
     `overview_sections.result_row_popover_body` for a result, on the overview and the
     results page alike; `overview_sections.replay_row_popover_body` for a case awaiting
     replay; and `render_frontier_page.frontier_row_popover_body` for a frontier row.
-    A result’s popover ends in **Open T-NNN in the results table** on the overview and
-    has no button on the results page, where the row pressed is that row.
+    A result’s popover has no button, on the overview or the results page: the row
+    pressed is the result’s row in either table.
     A replay row’s ends in the button to its case on the Frontier page, and a frontier
     row’s in the button to its case record.
   - **Deferred bodies.** A body too heavy to render once per row when the page loads can
@@ -1415,8 +1418,8 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   the count of rows shown out of the total at the bar’s end.
   Those three defaults are all that make the table recent and current: no result is left
   out of it by a date or a standing the page fixes.
-  A row opens its result’s popover (**Row popovers**, above), the same panel the results
-  page opens for that result.
+  A row shows its records and opens its result’s popover (**Row popovers**, above), as
+  the same row of the results page does, and links nowhere else.
   The section holds no card or bulleted list, and the “See all results” line, with the
   right arrow, follows the table.
 

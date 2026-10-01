@@ -356,14 +356,12 @@ it.
   value and a supporting note.
   A card section is one wrapping row in the wide track, in a `.site-cards-frame` the row
   measures itself against.
-  Each card is as wide as a column of the grid the frame fits, as many 16rem columns as
-  fit with 1rem gaps (two from 33rem, three from 50rem, four from 67rem, five from
-  84rem), so a short section lines up with a long one.
   Any line the cards do not fill centres on it, at every width: four cards on a wide
   screen, a section of three, and the last line of a long section alike.
   A card’s popover is its sibling in the row’s markup but never in the row, since a
   closed popover is not displayed and an open one is in the top layer.
-  Print keeps the plain grid, filled from the left.
+  Print keeps the plain grid of medium columns, filled from the left.
+  Cards come in three sizes (Card sizes, below).
   A card works one of two ways.
   Most cards open a popover that shows where they lead, and the popover ends in one
   button that goes there, centred at its foot.
@@ -407,6 +405,30 @@ it.
   else. Its gray corner icon and the popover’s button both show where the button goes:
   down to a row on this page, external off the site, right to another page of the site
   (Arrows, below).
+
+- **Card sizes.** A card is sized by its text, in three sizes it names in
+  `data-card-size`; a card that names none is medium.
+  Each size is as wide as a column of the grid of its own minimum column the frame fits,
+  with 1rem gaps, so cards of one size line up as a grid at every width:
+  - `small`, 12rem columns, for a headline and one line, under 80 characters: five to a
+    line at 1280 pixels (208px each), four at 1024 (236px) and three at 768 (235px).
+  - `medium`, 16rem columns, for a headline and a sentence, 80 to 159 characters: four
+    to a line at 1280 pixels (264px), three at 1024 (320px) and two at 768 (360px).
+  - `large`, 21rem columns, for a paragraph or a list, 160 characters or more: three to
+    a line at 1280 pixels (357px), two at 1024 (488px) and two at 768 (360px).
+
+  On a phone every card takes the whole line.
+  The count to a line is `--site-cards-small`, `-medium` or `-large`, each stepped by
+  its own container queries: n columns of minimum m and n − 1 gaps need (m + 1)n − 1
+  rem, so medium steps at 33, 50, 67 and 84rem, as the grid did.
+  A section declares one size for all its cards, in `SECTION_CARD_SIZES`
+  (`overview_sections.py`), so its lines are one grid; the size is the one its typical
+  card’s text asks for, and `tests/test_overview.py` holds the two together.
+  The page cards, the atlas cards and the other projects are medium; the documents,
+  whose notes are a line, are small; the dimension cards, which list a whole ladder, are
+  large. A card built without a size (`card()` or `link_card()` with no `size=`) takes
+  the default for its own text: its headline and note, and a direct card’s address,
+  counted as they read, a formula once.
 
 - **Card heroes.** Any card, popover or direct, may be headed by a small picture
   (`hero=` on `card()` and `link_card()`, drawn by `card_hero`). The hero runs edge to

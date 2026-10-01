@@ -171,42 +171,88 @@ body {
 
 /* ---------- Cards ---------- */
 /* A card section is a frame the width of the wide track holding the cards, so the cards
-   can ask how wide their frame is. Every card is as wide as a column of the grid the
-   frame fits, as many 16rem columns as fit with 1rem gaps: one, then two from 33rem,
-   three from 50rem, four from 67rem and five from 84rem (n columns and n - 1 gaps). On
-   screen the cards are one wrapping row that centres every line it does not fill, a
-   short section and the last line of a long one alike. Print keeps the plain grid,
-   filled from the left. A card's popover is its sibling but never in the row: closed it
-   is not displayed, and open it is in the top layer. */
+   can ask how wide their frame is. A card comes in three sizes, which it names in
+   `data-card-size`, and is as wide as a column of the grid of its size's columns the
+   frame fits, with 1rem gaps: small columns are at least 12rem, medium 16rem and large
+   21rem, so a 69rem frame holds five small cards to a line, four medium or three large.
+   `--site-cards-small`, `-medium` and `-large` are those counts, each stepped by its own
+   container queries: n columns of minimum m and n - 1 gaps need (m + 1)n - 1 rem. A card
+   that names no size is medium. On screen the cards are one wrapping row that centres
+   every line it does not fill, a short section and the last line of a long one alike.
+   Print keeps the plain grid of medium columns, filled from the left. A card's popover
+   is its sibling but never in the row: closed it is not displayed, and open it is in the
+   top layer. */
 .site-cards-frame {
   container-type: inline-size;
   margin-block: 1.5rem;
 }
 .site-cards {
   --site-card-gap: 1rem;
-  --site-card-columns: 1;
+  --site-cards-small: 1;
+  --site-cards-medium: 1;
+  --site-cards-large: 1;
   display: grid;
   gap: var(--site-card-gap);
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
 }
+@container (width >= 25rem) {
+  .site-cards {
+    --site-cards-small: 2;
+  }
+}
 @container (width >= 33rem) {
   .site-cards {
-    --site-card-columns: 2;
+    --site-cards-medium: 2;
+  }
+}
+@container (width >= 38rem) {
+  .site-cards {
+    --site-cards-small: 3;
+  }
+}
+@container (width >= 43rem) {
+  .site-cards {
+    --site-cards-large: 2;
   }
 }
 @container (width >= 50rem) {
   .site-cards {
-    --site-card-columns: 3;
+    --site-cards-medium: 3;
+  }
+}
+@container (width >= 51rem) {
+  .site-cards {
+    --site-cards-small: 4;
+  }
+}
+@container (width >= 64rem) {
+  .site-cards {
+    --site-cards-small: 5;
+  }
+}
+@container (width >= 65rem) {
+  .site-cards {
+    --site-cards-large: 3;
   }
 }
 @container (width >= 67rem) {
   .site-cards {
-    --site-card-columns: 4;
+    --site-cards-medium: 4;
+  }
+}
+@container (width >= 77rem) {
+  .site-cards {
+    --site-cards-small: 6;
   }
 }
 @container (width >= 84rem) {
   .site-cards {
-    --site-card-columns: 5;
+    --site-cards-medium: 5;
+  }
+}
+@container (width >= 87rem) {
+  .site-cards {
+    --site-cards-large: 4;
   }
 }
 @media screen {
@@ -216,12 +262,16 @@ body {
     justify-content: center;
   }
   .site-cards > .site-card {
-    flex: 0 0
-      calc(
-        (100% - (var(--site-card-columns) - 1) * var(--site-card-gap)) /
-        var(--site-card-columns)
-      );
+    --site-cards-line: var(--site-cards-medium);
+    --site-cards-gaps: calc((var(--site-cards-line) - 1) * var(--site-card-gap));
+    flex: 0 0 calc((100% - var(--site-cards-gaps)) / var(--site-cards-line));
     min-inline-size: 0;
+  }
+  .site-cards > .site-card[data-card-size="small"] {
+    --site-cards-line: var(--site-cards-small);
+  }
+  .site-cards > .site-card[data-card-size="large"] {
+    --site-cards-line: var(--site-cards-large);
   }
 }
 /* A card is a clean summary with square corners. Most cards are a button that opens a

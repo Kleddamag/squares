@@ -13,7 +13,9 @@ import base64
 import html
 import re
 from datetime import date
+from html.parser import HTMLParser
 from pathlib import Path
+from typing import Literal, get_args
 from urllib.parse import urlsplit
 
 from devtools import repo_links
@@ -111,6 +113,93 @@ def card_hero(src: str) -> str:
     )
 
 
+#: A card's size, narrowest first. A card says which it is in `data-card-size`, and
+#: `site.css` gives each its width: a column of the grid of that size's minimum column
+#: the card section's frame fits (`paper-design.md`, Cards).
+CardSize = Literal["small", "medium", "large"]
+CARD_SIZES: tuple[CardSize, ...] = get_args(CardSize)
+
+#: The default size's two thresholds, in characters of a card's own text, its headline
+#: and its note together: fewer than the first is a small card, the second or more a
+#: large one, and anything between a medium one.
+CARD_SMALL_BELOW = 80
+CARD_LARGE_FROM = 160
+
+#: Each card section's size, declared here so its cards are one width and its lines one
+#: grid. Each is the size its typical card's text asks for by `card_size` (a test holds
+#: the two together): the documents' one-line notes are small; the dimension cards list a
+#: whole rung ladder, so they are large; the rest carry a sentence and are medium.
+SECTION_CARD_SIZES: dict[str, CardSize] = {
+    "pages": "medium",
+    "dimensions": "large",
+    "atlas": "medium",
+    "projects": "medium",
+    "documents": "small",
+}
+
+
+#: Elements with no end tag, which open nothing a parser must later close.
+_VOID_TAGS = frozenset({"br", "hr", "img", "input", "wbr"})
+
+
+class _ReadingText(HTMLParser):
+    """An HTML fragment's text as a reader sees it: a formula is its MathML's text, not
+    also the TeX kpress carries beside it for KaTeX to set."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.parts: list[str] = []
+        self._skipping = 0
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag in _VOID_TAGS:
+            return
+        if self._skipping:
+            self._skipping += 1
+        elif "kpress-math-render" in (dict(attrs).get("class") or "").split():
+            self._skipping = 1
+
+    def handle_endtag(self, tag: str) -> None:
+        if self._skipping and tag not in _VOID_TAGS:
+            self._skipping -= 1
+
+    def handle_data(self, data: str) -> None:
+        if not self._skipping:
+            self.parts.append(data)
+
+
+def reading_text(fragment: str) -> str:
+    """`fragment`'s text as it reads, with runs of white space as one space."""
+    reader = _ReadingText()
+    reader.feed(fragment)
+    reader.close()
+    return " ".join("".join(reader.parts).split())
+
+
+def size_for_length(length: float) -> CardSize:
+    """The size a card whose text runs to `length` characters takes by default: under
+    `CARD_SMALL_BELOW` is small, `CARD_LARGE_FROM` or more is large, and between them
+    medium."""
+    if length < CARD_SMALL_BELOW:
+        return "small"
+    return "large" if length >= CARD_LARGE_FROM else "medium"
+
+
+def card_size(*text: str) -> CardSize:
+    """The size a card takes when its spec declares none, from how much text it carries:
+    its headline and its note (and a direct card's address), as HTML, counted as they
+    read (`reading_text`) and sized by `size_for_length`."""
+    return size_for_length(sum(len(reading_text(part)) for part in text))
+
+
+def _size_attribute(size: CardSize | None, *text: str) -> str:
+    """A card's `data-card-size`: the size its spec declares, or `card_size`'s default."""
+    chosen = size or card_size(*text)
+    if chosen not in CARD_SIZES:
+        raise SystemExit(f"{chosen!r} is not a card size: {', '.join(CARD_SIZES)}")
+    return f'data-card-size="{chosen}"'
+
+
 def card(
     target: str,
     label: str,
@@ -122,6 +211,7 @@ def card(
     preview: str = "",
     also: tuple[str, str] | None = None,
     hero: str = "",
+    size: CardSize | None = None,
 ) -> str:
     """A card and the popover it opens. The card is a caps label, the summary and a line
     under it; pressing it opens a popover that repeats the label and summary, shows
@@ -133,7 +223,8 @@ def card(
     previewed from `preview`, and the button scrolls there; so is a row on another page,
     such as a result's in the results table, and the button goes to that page. `also`
     adds a second, quiet link, such as the document on GitHub. `hero` heads the card
-    with a picture (`card_hero`).
+    with a picture (`card_hero`). `size` is the card's width, small, medium or large;
+    left out, `card_size` chooses it from the length of the value and note.
 
     The popover is native (`popover`), so it opens, closes on Escape or a click outside,
     and follows its button with no script. It is set in sans, and its attribute tells
@@ -155,7 +246,7 @@ def card(
     )
     return (
         f'<button type="button" class="site-card" popovertarget="{_esc(target)}" '
-        f'data-go="{kind}">'
+        f'data-go="{kind}" {_size_attribute(size, value, note)}>'
         f"{card_hero(hero) if hero else ''}"
         f'<span class="site-card-label">{_esc(label)}</span>'
         f'<span class="site-card-value">{value}</span>'
@@ -357,6 +448,7 @@ def verification_block() -> str:
                 href=f"epistemics.html#{section}",
                 action=f"Expand {name} in epistemics.md",
                 also=(branch_file(repo_links.EPISTEMICS, f"#{section}"), "On GitHub"),
+                size=SECTION_CARD_SIZES["dimensions"],
             )
         )
     return (
@@ -636,6 +728,7 @@ def document_cards() -> str:
                 href=page,
                 action=f"Expand {path.rsplit('/', 1)[-1]}",
                 also=(branch_file(path), "On GitHub"),
+                size=SECTION_CARD_SIZES["documents"],
             )
             for (path, label, note), page in zip(DOCUMENTS, DOCUMENT_PAGES, strict=True)
         ]
@@ -688,6 +781,7 @@ def page_cards() -> str:
                 tex_bounds(note),
                 href=href,
                 action=f"Expand the {label.lower()}",
+                size=SECTION_CARD_SIZES["pages"],
             )
             for href, label, title, note in PAGES
         ]
@@ -833,10 +927,20 @@ def _breakable(address: str) -> str:
     return "/<wbr>".join(_esc(part) for part in address.split("/"))
 
 
-def link_card(url: str, label: str, value: str, note: str, *, hero: str = "") -> str:
+def link_card(
+    url: str,
+    label: str,
+    value: str,
+    note: str,
+    *,
+    hero: str = "",
+    size: CardSize | None = None,
+) -> str:
     """A card that is itself the link, with no popover: for a place whose address, or
     whose picture, is the whole of what a preview would say. It carries the label, the
-    value and note, and `hero` heads it with a picture (`card_hero`).
+    value and note, and `hero` heads it with a picture (`card_hero`). `size` is its
+    width, as `card` takes it; left out, `card_size` chooses it from the value, the note
+    and the address shown.
 
     Every card that navigates directly opens its target in a new tab, whether that is a
     page or file of this site or a place off it, so the page the reader chose it from
@@ -854,6 +958,7 @@ def link_card(url: str, label: str, value: str, note: str, *, hero: str = "") ->
         )
     return (
         f'<a class="site-card site-card-link" href="{_esc(url)}"{typed} data-go="{kind}" '
+        f"{_size_attribute(size, value, note, address)} "
         'target="_blank" rel="noopener noreferrer">'
         f"{card_hero(hero) if hero else ''}"
         f'<span class="site-card-label">{_esc(label)}</span>'
@@ -870,7 +975,11 @@ def other_project_cards() -> str:
     cards = []
     for url, author, note in OTHER_PROJECTS:
         name = urlsplit(url).path.rstrip("/").rsplit("/", 1)[-1]
-        cards.append(link_card(url, f"By {author}", _esc(name), _esc(note)))
+        cards.append(
+            link_card(
+                url, f"By {author}", _esc(name), _esc(note), size=SECTION_CARD_SIZES["projects"]
+            )
+        )
     return _cards(cards)
 
 
@@ -918,7 +1027,14 @@ def atlas_cards() -> str:
     picture and itself the link: a poster opens its PDF, the film its own page."""
     return _cards(
         [
-            link_card(href, label, tex_bounds(value), _esc(note), hero=hero)
+            link_card(
+                href,
+                label,
+                tex_bounds(value),
+                _esc(note),
+                hero=hero,
+                size=SECTION_CARD_SIZES["atlas"],
+            )
             for href, hero, label, value, note in ATLAS_CARDS
         ]
     )

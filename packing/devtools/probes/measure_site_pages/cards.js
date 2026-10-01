@@ -1,5 +1,6 @@
 // Every card section as laid out: for each `.site-cards` block on the page, the section
-// heading it follows, its width, and its cards grouped into rows by their top edge, each
+// heading it follows, its width, where it sits on the page (its top and height, to find
+// it in a full-page screenshot), and its cards grouped into rows by their top edge, each
 // row with its cards' widths and sizes and the slack left at its start and at its end.
 // A row is centred when the two slacks agree. Each card also reports its label and its
 // headline's face, weight and size. Popovers are the cards' siblings but never cards.
@@ -30,6 +31,8 @@
       return {
         section: section(block),
         block_width: round(box.width),
+        top: Math.round(box.top + window.scrollY),
+        height: Math.round(box.height),
         rows: [...rows.values()].map((row) => {
           const boxes = row.map((card) => card.getBoundingClientRect());
           return {

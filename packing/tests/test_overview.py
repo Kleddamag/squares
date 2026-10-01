@@ -9,6 +9,7 @@ import re
 from collections import Counter
 from collections.abc import Callable
 from html.parser import HTMLParser
+from typing import cast
 
 import pytest
 
@@ -359,36 +360,172 @@ def test_every_card_grid_sits_in_a_frame_it_can_measure(page: str) -> None:
     assert any("site-cards-dimensions" in grid for _, grid in grids)
 
 
-#: A container query naming how many card columns its frame fits from a given width.
-_CARD_COLUMNS = re.compile(
+#: A container query naming how many cards of one size its frame fits to a line from a
+#: given width.
+_CARDS_TO_A_LINE = re.compile(
     r"@container \(width >= ([\d.]+)rem\) \{\s*\.site-cards \{\s*"
-    r"--site-card-columns: (\d+);\s*\}\s*\}"
+    r"--site-cards-(small|medium|large): (\d+);\s*\}\s*\}"
 )
+#: Each card size's minimum column, in rem, and the most to a line the stylesheet steps
+#: to: `paper-design.md`, Cards.
+CARD_COLUMNS = {"small": (12, 6), "medium": (16, 5), "large": (21, 4)}
+
+
+def _screen_card_rules() -> str:
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    screen = css[css.index("@media screen {\n  .site-cards {") :]
+    return screen[: screen.index("\n}\n")]
 
 
 def test_every_card_line_centres_on_its_line() -> None:
     """On screen the cards are one wrapping row that centres every line it does not fill,
-    four cards on a wide screen and the last line of a long section alike, and each card
-    keeps the width of a column of the grid the frame fits: n 16rem columns and n - 1
-    1rem gaps need 17n - 1 rem. Print keeps that grid, filled from the left."""
+    four cards on a wide screen and the last line of a long section alike, and a medium
+    card keeps the width of a column of the grid the frame fits: n 16rem columns and
+    n - 1 1rem gaps. Print keeps that grid, filled from the left."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     base = css[css.index(".site-cards {") :]
     base = base[: base.index("}")]
     assert "--site-card-gap: 1rem;" in base
     assert "grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));" in base
-    steps = [(float(width), int(columns)) for width, columns in _CARD_COLUMNS.findall(css)]
-    assert [columns for _, columns in steps] == [2, 3, 4, 5]
-    assert all(width == 17 * columns - 1 for width, columns in steps)
-    screen = css[css.index("@media screen {\n  .site-cards {") :]
-    screen = screen[: screen.index("\n}\n")]
+    screen = _screen_card_rules()
     row = screen[: screen.index("}")]
     for declaration in ("display: flex;", "flex-wrap: wrap;", "justify-content: center;"):
         assert declaration in row
     card = screen[screen.index(".site-cards > .site-card {") :]
-    assert "(100% - (var(--site-card-columns) - 1) * var(--site-card-gap))" in card
+    card = card[: card.index("}")]
+    assert "--site-cards-line: var(--site-cards-medium);" in card
+    assert "calc((var(--site-cards-line) - 1) * var(--site-card-gap));" in card
+    assert "flex: 0 0 calc((100% - var(--site-cards-gaps)) / var(--site-cards-line));" in card
     assert "min-inline-size: 0;" in card
     cards = css[css.index("/* ---------- Cards") : css.index(".kpress .site-card {")]
     assert ":has(" not in cards, "a card line centres without counting its cards"
+
+
+def test_each_card_size_is_a_column_of_its_own_grid() -> None:
+    """A card of each size is as wide as a column of the grid of that size's columns the
+    frame fits: n columns of minimum m rem and n - 1 1rem gaps need (m + 1)n - 1 rem, so
+    each size's count steps at exactly those widths, and a card that names no size is
+    medium."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    steps: dict[str, list[tuple[float, int]]] = {size: [] for size in CARD_COLUMNS}
+    for width, size, count in _CARDS_TO_A_LINE.findall(css):
+        steps[size].append((float(width), int(count)))
+    assert tuple(steps) == overview_sections.CARD_SIZES
+    for size, (minimum, most) in CARD_COLUMNS.items():
+        assert [count for _, count in steps[size]] == list(range(2, most + 1)), size
+        assert all(width == (minimum + 1) * count - 1 for width, count in steps[size]), size
+    base = css[css.index(".site-cards {") :]
+    base = base[: base.index("}")]
+    screen = _screen_card_rules()
+    for size in CARD_COLUMNS:
+        assert f"--site-cards-{size}: 1;" in base
+        if size != "medium":
+            rule = screen[
+                screen.index(f'.site-cards > .site-card[data-card-size="{size}"] {{') :
+            ]
+            assert f"--site-cards-line: var(--site-cards-{size});" in rule[: rule.index("}")]
+    assert '[data-card-size="medium"]' not in css
+
+
+#: A card, as its opening tag's size and everything after its caps label: the headline,
+#: the note and a direct card's address.
+_CARD_ELEMENT = re.compile(
+    r'<(button|a)\b[^>]*class="site-card[ "][^>]*data-card-size="([^"]*)"[^>]*>'
+    r'.*?<span class="site-card-value">(.*?)</\1>',
+    re.DOTALL,
+)
+
+
+def _card_sections(page: str) -> dict[str, list[tuple[str, str]]]:
+    """Each card section of the overview, in page order, as its cards' (size, text)."""
+    frames = page.split('<div class="site-cards-frame')[1:]
+    assert len(frames) == len(overview_sections.SECTION_CARD_SIZES)
+    return {
+        name: [(size, text) for _, size, text in _CARD_ELEMENT.findall(frame)]
+        for name, frame in zip(overview_sections.SECTION_CARD_SIZES, frames, strict=True)
+    }
+
+
+def test_every_card_names_one_of_three_sizes(page: str) -> None:
+    """Every card says its size in `data-card-size`, small, medium or large, and a
+    section's cards are all the size the section declares, so its lines are one grid."""
+    assert overview_sections.CARD_SIZES == ("small", "medium", "large")
+    sections = _card_sections(page)
+    assert sum(len(cards) for cards in sections.values()) == len(
+        re.findall(r'<(?:button|a)\b[^>]*class="site-card[ "]', page)
+    ), "a card with no size"
+    assert [len(cards) for cards in sections.values()] == [
+        len(overview_sections.PAGES),
+        len(overview_sections.DIMENSIONS),
+        len(overview_sections.ATLAS_CARDS),
+        len(overview_sections.OTHER_PROJECTS),
+        len(overview_sections.DOCUMENTS),
+    ]
+    for name, cards in sections.items():
+        declared = overview_sections.SECTION_CARD_SIZES[name]
+        assert {size for size, _ in cards} == {declared}, name
+    assert overview_sections.SECTION_CARD_SIZES == {
+        "pages": "medium",
+        "dimensions": "large",
+        "atlas": "medium",
+        "projects": "medium",
+        "documents": "small",
+    }
+
+
+def test_each_sections_size_is_what_its_typical_card_asks_for(page: str) -> None:
+    """A section's declared size is the size its median card's text takes by default, so
+    the sizes follow the text: a section whose cards grow or shrink past a threshold
+    fails here until its size is declared again."""
+    for name, cards in _card_sections(page).items():
+        lengths = sorted(len(overview_sections.reading_text(text)) for _, text in cards)
+        typical = lengths[len(lengths) // 2]
+        assert (
+            overview_sections.size_for_length(typical)
+            == overview_sections.SECTION_CARD_SIZES[name]
+        ), (name, lengths)
+
+
+def test_a_card_without_a_declared_size_takes_its_texts() -> None:
+    """The default size counts a card's headline and note as they read, a formula once,
+    and is small under 80 characters, large from 160 and medium between; a declared size
+    wins, and a size that is not one of the three is refused."""
+    assert (overview_sections.CARD_SMALL_BELOW, overview_sections.CARD_LARGE_FROM) == (80, 160)
+    formula = overview_data.math_html("n = 11")
+    assert overview_sections.reading_text(f"Earlier {formula} lower  bounds") == (
+        "Earlier n=11 lower bounds"
+    )
+    assert [overview_sections.size_for_length(n) for n in (0, 79, 80, 159, 160, 400)] == [
+        "small",
+        "small",
+        "medium",
+        "medium",
+        "large",
+        "large",
+    ]
+    assert overview_sections.card_size("x" * 30, "y" * 49) == "small"
+    assert overview_sections.card_size("x" * 30, "y" * 50) == "medium"
+    assert overview_sections.card_size("x" * 30, "y" * 130) == "large"
+
+    def built(note: str, size: str | None = None) -> str:
+        made = overview_sections.card(
+            "pop-x",
+            "Label",
+            "Headline",
+            note,
+            href="#recent-results",
+            action="Go",
+            size=cast("overview_sections.CardSize | None", size),
+        )
+        return made.split(">", 1)[0]
+
+    assert built("A short note.").endswith('data-card-size="small"')
+    assert built("y" * 200).endswith('data-card-size="large"')
+    assert built("y" * 200, size="small").endswith('data-card-size="small"')
+    link = overview_sections.link_card("frontier.html", "Label", "Headline", "A short note.")
+    assert ' data-card-size="small" ' in link.split(">", 1)[0]
+    with pytest.raises(SystemExit, match="not a card size"):
+        built("A short note.", size="huge")
 
 
 def test_each_dimension_card_carries_every_level_of_the_rubric(page: str) -> None:
@@ -697,7 +834,7 @@ def test_no_site_stylesheet_keys_on_the_system_theme_alone() -> None:
 
 CARD = re.compile(
     r'<button type="button" class="site-card" popovertarget="([^"]+)" '
-    r'data-go="(scroll|external|page)">'
+    r'data-go="(scroll|external|page)" data-card-size="(?:small|medium|large)">'
 )
 ACTION = re.compile(
     r'<a class="site-popover-action" href="([^"]+)" data-go="(scroll|external|page)"'

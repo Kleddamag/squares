@@ -294,8 +294,8 @@ own timezone, and midnight UTC is the evening before in California.
 ## Follow-Ups
 
 - The optimality paper’s revised date is read from its article in two places, by
-  `devtools.artifact_dates` and by `render_n11_optimality_review.page_meta`. Both
-  read the same line, and one reader would be simpler.
+  `devtools.artifact_dates` and by `render_n11_optimality_review.page_meta`. Both read
+  the same line, and one reader would be simpler.
 - The composite PDFs still differ between two runs in their font-subset tags, which
   cairo assigns per process.
   The date no longer differs.

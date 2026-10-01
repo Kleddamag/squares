@@ -113,6 +113,37 @@ def test_a_budget_only_failed_job_remains_a_tier_reading(
     assert reading.budget_only_failure
 
 
+def test_a_job_read_by_id_carries_its_run_and_attempt(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """`--job-id` reaches an attempt the latest-attempt view hides, and names it.
+
+    The two readings that failed PR #277 on the ceiling (131.58 s and 132.67 s, run
+    36928600491 attempts 1 and 4) sat behind three re-runs; the jobs API answers for a
+    job id with its run and attempt, which is what `measured_where` needs to cite it.
+    """
+
+    class Client:
+        def get(self, path: str) -> dict[str, Any]:
+            assert path == "actions/jobs/123"
+            return {
+                "id": 123,
+                "run_id": 456,
+                "run_attempt": 2,
+                "name": "suite-a",
+                "status": "completed",
+                "conclusion": "failure",
+            }
+
+    monkeypatch.setattr(read_tier_walls, "_log", lambda _client, _job: budget_only_failure())
+
+    (reading,) = read_tier_walls._collect_jobs(Client(), [123], ["checks"])  # type: ignore[arg-type]
+
+    assert (reading.run, reading.attempt, reading.job) == (456, 2, "suite-a")
+    assert reading.budget_only_failure
+    assert read_tier_walls._collect_jobs(Client(), [123], ["sweeps"]) == []  # type: ignore[arg-type]
+
+
 def test_an_ordinary_failed_job_is_not_a_tier_reading(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

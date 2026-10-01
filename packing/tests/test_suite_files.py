@@ -34,7 +34,7 @@ def _test_files() -> set[str]:
 def test_the_suite_shards_partition_every_test_file() -> None:
     """Each test file on disk is in exactly one shard, and every shard has files.
 
-    This is the property that lets three runners divide the lane without a test running
+    This is the property that lets the runners divide the lane without a test running
     twice or not at all. It holds by construction -- a file's shard is a function of its
     path -- so what this checks is the construction against the real tree and the real
     record: that the recorded count is the one the CLI and the register use, and that
@@ -130,7 +130,7 @@ def test_the_greedy_packing_balances_within_its_largest_file() -> None:
 def test_capacity_weighted_packing_preserves_the_measured_assignment() -> None:
     """Historical capacities retain the reviewed partition as live ceilings evolve."""
     costs = suite_files.load_costs()
-    assert costs.target_ceiling_seconds == (168.0, 154.0, 154.0)
+    assert costs.target_ceiling_seconds == (131.0, 154.0, 154.0, 131.0)
     totals = suite_files.shard_totals(costs)
     assert costs.target_ceiling_seconds is not None
     normalized = [
@@ -286,18 +286,72 @@ def test_three_shard_record_requires_all_three_reports() -> None:
     assert document["target_ceiling_seconds"] == [168, 154, 154]
     with pytest.raises(SuiteFilesError, match="each shard exactly once"):
         suite_files.record(complete[:2], shards=3)
+    # Two of three is incomplete by the count the reports were cut at, so asking to pack
+    # into two does not turn `1/3` and `2/3` into a complete cohort of two.
+    with pytest.raises(SuiteFilesError, match="each shard exactly once"):
+        suite_files.record(complete[:2], shards=2)
 
 
-def test_record_refuses_reports_cut_for_another_shard_count() -> None:
-    """Shards `1/2` and `2/3` would otherwise pass as one complete cohort of two."""
+def test_record_packs_a_complete_cohort_into_another_shard_count() -> None:
+    """A repartition: the cohort's count is provenance and the requested count is the record's.
+
+    The lane's costs are per file, so a complete two-shard cohort says everything a
+    three-shard record needs. Before this was allowed, the three-shard record was made by
+    editing `shards` by hand on a two-shard cohort's output.
+    """
     complete = [_shard_report(1), _shard_report(2)]
-    with pytest.raises(SuiteFilesError, match=r"shard count\(s\) \[2\], not the requested 3"):
-        suite_files.record(complete, shards=3)
+    same = suite_files.record(complete, shards=2)
+    repacked = suite_files.record(complete, shards=3, target_ceiling_seconds=(168, 154, 154))
+    assert same["shards"] == 2
+    assert repacked["shards"] == 3
+    assert repacked["files"] == same["files"]
+    assert repacked["target_ceiling_seconds"] == [168, 154, 154]
+    # The sources still say what the reports were: shards of two.
+    assert repacked["recorded_from"] == same["recorded_from"]
+    assert [source.split(":")[0] for source in repacked["recorded_from"]] == [
+        "shard 1/2",
+        "shard 2/2",
+    ]
+    # Capacities are per packed shard, so the cohort's count does not excuse a short list.
+    with pytest.raises(SuiteFilesError, match="target ceilings"):
+        suite_files.record(complete, shards=3, target_ceiling_seconds=(168, 154))
+
+
+def test_record_refuses_reports_cut_for_different_shard_counts() -> None:
+    """Shards `1/2` and `2/3` would otherwise pass as one complete cohort of two."""
     mixed = [_shard_report(1), _shard_report(2, count=3)]
-    with pytest.raises(
-        SuiteFilesError, match=r"shard count\(s\) \[2, 3\], not the requested 2"
-    ):
-        suite_files.record(mixed, shards=2)
+    for requested in (2, 3, 4):
+        with pytest.raises(SuiteFilesError, match=r"shard count\(s\) \[2, 3\], not one count"):
+            suite_files.record(mixed, shards=requested)
+
+
+def test_the_record_command_repacks_a_cohort_and_the_result_loads(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """The command a repartition runs: three reports in, a four-shard record out."""
+    paths: list[str] = []
+    for index in (1, 2, 3):
+        path = tmp_path / f"report-{index}.json"
+        path.write_text(json.dumps(_shard_report(index, count=3)), encoding="utf-8")
+        paths.append(str(path))
+    output = tmp_path / "costs.json"
+    arguments = ["record", *paths, "--shards", "4", "--output", str(output)]
+    assert suite_files.main([*arguments, "--target-ceilings", "131,154,154,131"]) == 0
+    costs = suite_files.load_costs(output)
+    assert costs.shards == 4
+    assert costs.target_ceiling_seconds == (131.0, 154.0, 154.0, 131.0)
+    assert costs.seconds == {
+        f"packing/tests/test_{index}.py": float(index) for index in (1, 2, 3)
+    }
+    assert set(suite_files.pack(costs).values()) <= {1, 2, 3, 4}
+    printed = capsys.readouterr().out
+    assert "3 recorded files packed into 4 shards" in printed
+    assert all(f"shard {index}/4:" in printed for index in (1, 2, 3, 4))
+    # Two of the three reports are refused whatever count is asked for.
+    assert (
+        suite_files.main(["record", *paths[:2], "--shards", "2", "--output", str(output)]) == 2
+    )
+    assert "each shard exactly once" in capsys.readouterr().err
 
 
 def test_record_combines_complete_sharded_cohorts() -> None:
@@ -391,6 +445,124 @@ def test_record_refuses_mixed_whole_lane_and_sharded_reports() -> None:
         suite_files.record([whole, _shard_report(1)], shards=2)
 
 
+def test_unrecorded_files_are_counted_in_the_shard_their_hash_gives_them() -> None:
+    """Per shard: what it is assigned, and the part of that the packing never weighed."""
+    costs = RecordedCosts(shards=2, seconds={"a.py": 9.0, "b.py": 5.0, "c.py": 4.0})
+    assert suite_files.pack(costs) == {"a.py": 1, "b.py": 2, "c.py": 2}
+    # `c.py` is recorded and no longer on disk: a stale row is not a file in any shard.
+    files = ["a.py", "b.py", "d.py", "e.py", "f.py", "g.py", "h.py"]
+    assert [suite_files.unrecorded_shard(name, 2) for name in files[2:]] == [1, 2, 2, 1, 1]
+    assert suite_files.unrecorded_by_shard(costs, files) == [(4, 3), (3, 2)]
+    assert suite_files.unrecorded_by_shard(costs, files, suite_files.pack(costs)) == [
+        (4, 3),
+        (3, 2),
+    ]
+    assert suite_files.unrecorded_by_shard(costs, ["a.py", "b.py", "c.py"]) == [(1, 0), (2, 0)]
+    assert suite_files.unrecorded_by_shard(costs, []) == [(0, 0), (0, 0)]
+
+
+def test_the_unrecorded_share_warns_above_its_threshold_and_not_at_it() -> None:
+    record = Path("devtools/suite-file-costs.json")
+    message = suite_files.unrecorded_share_warning(
+        Shard(1, 2), 4, 3, threshold=suite_files.UNRECORDED_SHARE_WARNING, record=record
+    )
+    assert message is not None
+    assert message.startswith(
+        "suite shard 1/2: 3 of the 4 test files it is assigned (75.0%) are not named in "
+        "suite-file-costs.json, over the 10% threshold."
+    )
+    assert "`python -m devtools.suite_files record REPORT.json ...`" in message
+    assert "\n" not in message
+    for assigned, unrecorded in ((10, 1), (10, 0), (0, 0)):
+        assert (
+            suite_files.unrecorded_share_warning(
+                Shard(1, 2), assigned, unrecorded, threshold=0.10, record=record
+            )
+            is None
+        )
+    assert suite_files.unrecorded_share_warning(
+        Shard(2, 2), 10, 2, threshold=0.10, record=record
+    )
+    assert (
+        suite_files.unrecorded_share_warning(Shard(2, 2), 4, 4, threshold=1.0, record=record)
+        is None
+    )
+
+
+def test_check_prices_every_shard_and_fails_only_over_the_threshold(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Twelve files the record has never seen: every one is unrecorded wherever it hashes."""
+    lane = tmp_path / "lane"
+    names = [f"sub/test_arrival_{index}.py" for index in range(11)]
+    for name in names:
+        (lane / name).parent.mkdir(parents=True, exist_ok=True)
+        (lane / name).write_text("", encoding="utf-8")
+    # Neither a helper beside the tests nor a stale cache entry is a test file.
+    (lane / "sub/helper.py").write_text("", encoding="utf-8")
+    (lane / "__pycache__").mkdir()
+    (lane / "__pycache__/test_cached.py").write_text("", encoding="utf-8")
+    # A root that is a file counts as itself.
+    alone = tmp_path / "test_alone.py"
+    alone.write_text("", encoding="utf-8")
+    arguments = ["check", "--root", str(lane), str(alone)]
+    files = [suite_files.repository_path(path) for path in (*(lane / n for n in names), alone)]
+    assert suite_files.lane_files([lane, alone]) == sorted(files)
+
+    costs = suite_files.load_costs()
+    rows = suite_files.unrecorded_by_shard(costs, files)
+    assert sum(assigned for assigned, _unrecorded in rows) == 12
+    assert all(assigned == unrecorded for assigned, unrecorded in rows)
+
+    assert suite_files.main(arguments) == 1
+    printed = capsys.readouterr().out
+    assert (
+        "12 test files, 12 not named in the record; a shard may be 10% unrecorded:" in printed
+    )
+    for index, (assigned, unrecorded) in enumerate(rows, start=1):
+        share = "100.0%" if assigned else " 0.0%"
+        line = (
+            f"  shard {index}/{costs.shards}: {assigned:4d} files, {unrecorded:3d} unrecorded "
+            f"({share})" + (" -- over the threshold" if assigned else "")
+        )
+        assert line in printed.splitlines()
+    assert all(f"      {name}" in printed.splitlines() for name in files)
+    assert "helper.py" not in printed
+    assert "test_cached.py" not in printed
+    assert "`python -m devtools.suite_files record REPORT.json ...`" in printed
+
+    assert suite_files.main([*arguments, "--max-unrecorded-share", "1"]) == 0
+    printed = capsys.readouterr().out
+    assert (
+        "12 test files, 12 not named in the record; a shard may be 100% unrecorded:" in printed
+    )
+    assert all(f"      {name}" in printed.splitlines() for name in files)
+    assert "over the threshold" not in printed
+
+    assert suite_files.main([*arguments, "--max-unrecorded-share", "1.5"]) == 2
+    assert "a fraction from 0 to 1" in capsys.readouterr().err
+
+
+def test_check_passes_on_the_real_tree(capsys: pytest.CaptureFixture[str]) -> None:
+    """The record names the lane: no shard of the real tree is over the threshold.
+
+    The files a quick-lane report can never name -- those whose tests are all `slow` or
+    `exhaustive_exact`, and the one the lane ignores -- stay unrecorded after any rebuild.
+    They were 10 of 499 on 2026-10-01, at most 3.4 per cent of a shard. A failure here says
+    enough new test files have landed since the record was made that some shard's cost is
+    no longer the one it balanced, and the remedy is the one the output names.
+    """
+    assert suite_files.main(["check"]) == 0, capsys.readouterr().out
+    printed = capsys.readouterr().out
+    costs = suite_files.load_costs()
+    assert f"{len(_test_files())} test files, " in printed
+    rows = suite_files.unrecorded_by_shard(costs, _test_files())
+    assert all(assigned for assigned, _unrecorded in rows)
+    for index, (assigned, unrecorded) in enumerate(rows, start=1):
+        assert unrecorded / assigned <= suite_files.UNRECORDED_SHARE_WARNING
+        assert f"  shard {index}/{costs.shards}: {assigned:4d} files," in printed
+
+
 _PROBE_FILES = {
     "test_alpha.py": "def test_one():\n    pass\n\ndef test_two():\n    pass\n",
     "test_beta.py": "def test_one():\n    pass\n",
@@ -406,7 +578,7 @@ def _probe(
     rootdir: Path | None = None,
     test_root: Path | None = None,
 ) -> subprocess.Popen[str]:
-    """Start one pytest run under the plugin; the three runs below overlap to stay cheap."""
+    """Start one pytest run under the plugin; the runs below overlap to stay cheap."""
     rootdir = tmp_path if rootdir is None else rootdir
     test_root = tmp_path / "suite" if test_root is None else test_root
     return subprocess.Popen(
@@ -445,7 +617,10 @@ def test_the_plugin_collects_each_file_in_exactly_one_shard_and_reports_its_cost
     """End to end through pytest: collection filtered per shard, and the report written.
 
     Two of the five files are recorded, so the run exercises both rules at once: the
-    packing for recorded files and the path hash for the rest.
+    packing for recorded files and the path hash for the rest. Three unrecorded files in
+    two shards also put at least one shard over the unrecorded-share threshold, whichever
+    way the hash sends them: that shard has to say so and still pass, and the same shard
+    run with the threshold raised to 1 has to say nothing.
     """
     suite = tmp_path / "suite"
     for name, body in _PROBE_FILES.items():
@@ -475,9 +650,21 @@ def test_the_plugin_collects_each_file_in_exactly_one_shard_and_reports_its_cost
         for index, report in zip((1, 2), reports, strict=True)
     ]
     refused = _probe(tmp_path, "--suite-shard=1/3", f"--suite-file-costs={record}")
+    everything = {suite_files.repository_path(suite / name) for name in _PROBE_FILES}
+    shares = suite_files.unrecorded_by_shard(suite_files.load_costs(record), everything)
+    assert [unrecorded for _assigned, unrecorded in shares] in ([0, 3], [1, 2], [2, 1], [3, 0])
+    loudest = max((1, 2), key=lambda index: shares[index - 1][1])
+    silenced = _probe(
+        tmp_path,
+        f"--suite-shard={loudest}/2",
+        f"--suite-file-costs={record}",
+        "--suite-unrecorded-share=1",
+    )
     collected: list[set[str]] = []
+    warned: list[int] = []
     for index, (run, report) in enumerate(zip(runs, reports, strict=True), start=1):
         status, output = _finish(run)
+        # A warning, never a failure: the lane keeps running when files land.
         assert status == 0, output
         document = json.loads(report.read_text(encoding="utf-8"))
         assert document["schema"] == suite_files.REPORT_SCHEMA
@@ -486,7 +673,20 @@ def test_the_plugin_collects_each_file_in_exactly_one_shard_and_reports_its_cost
         collected.append({row["file"] for row in document["files"]})
         for row in document["files"]:
             assert set(row) == {"file", "tests", "seconds"}
-    everything = {suite_files.repository_path(suite / name) for name in _PROBE_FILES}
+        assigned, unrecorded = shares[index - 1]
+        assert len(collected[-1]) == assigned
+        if unrecorded / assigned > suite_files.UNRECORDED_SHARE_WARNING:
+            warned.append(index)
+            assert "PytestConfigWarning" in output, output
+            assert (
+                f"suite shard {index}/2: {unrecorded} of the {assigned} test files it is "
+                f"assigned ({unrecorded / assigned:.1%}) are not named in costs.json, over "
+                "the 10% threshold"
+            ) in output, output
+            assert "`python -m devtools.suite_files record REPORT.json ...`" in output
+        else:
+            assert "not named in" not in output, output
+    assert loudest in warned
     assert collected[0] | collected[1] == everything
     assert not collected[0] & collected[1]
     # The two recorded files pack into different shards, longest first.
@@ -496,6 +696,11 @@ def test_the_plugin_collects_each_file_in_exactly_one_shard_and_reports_its_cost
     status, output = _finish(refused)
     assert status != 0
     assert "re-record" in output
+
+    status, output = _finish(silenced)
+    assert status == 0, output
+    assert "not named in" not in output, output
+    assert "PytestConfigWarning" not in output, output
 
 
 def test_the_report_uses_the_actual_location_for_a_test_outside_rootdir(tmp_path: Path) -> None:
@@ -523,8 +728,8 @@ def test_the_report_uses_the_actual_location_for_a_test_outside_rootdir(tmp_path
 @pytest.mark.parametrize(
     ("arguments", "message"),
     [
-        (["--suite-a", "--suite-b"], "eight parts"),
-        (["--checks", "--typecheck"], "eight parts"),
+        (["--suite-a", "--suite-b"], "nine parts"),
+        (["--checks", "--typecheck"], "nine parts"),
     ],
 )
 def test_the_cli_refuses_more_than_one_public_fast_part(

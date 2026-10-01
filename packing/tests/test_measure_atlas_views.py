@@ -55,8 +55,8 @@ def _report(view: str, per: int | None, tiles: list[dict[str, Any]]) -> dict[str
 
 def _triangle(last: int, per: int) -> dict[str, Any]:
     """Cases 1 to `last` set as the triangle is at `per` tiles to a line: each row's
-    lines from `row_lines`, the first from the left when the row wraps and from the
-    right when it does not, every later line full."""
+    lines from `row_lines`, in reading order, every line full from the left but the
+    last, which holds what is left over and is set from the right."""
     size = WIDTH / per
     tiles: list[dict[str, Any]] = []
     top, n = 0.0, 1
@@ -64,8 +64,8 @@ def _triangle(last: int, per: int) -> dict[str, Any]:
         lines = atlas.row_lines(k, per)
         top += 6 if k > 1 else 0
         for index, count in enumerate(lines):
-            start = per - count if len(lines) == 1 else 0
-            assert index == 0 or count == per
+            start = per - count if index == len(lines) - 1 else 0
+            assert index == len(lines) - 1 or count == per
             for column in range(count):
                 tiles.append(_tile(n, LEFT + (start + column) * size, top, size))
                 n += 1
@@ -111,23 +111,23 @@ def test_a_case_is_in_the_row_of_the_next_perfect_square() -> None:
         atlas.row_of(0)
 
 
-def test_a_row_is_cut_from_its_end_into_full_lines_with_the_rest_first() -> None:
-    """Nineteen tiles at eight a line are 3, 8 and 8; a row that fits is one line; a row
+def test_a_row_is_cut_in_reading_order_into_full_lines_with_the_rest_last() -> None:
+    """Nineteen tiles at eight a line are 8, 8 and 3; a row that fits is one line; a row
     that is a whole number of lines has no short one. Whatever the width, a row's lines
-    hold its 2k - 1 tiles, every line but the first is full, and the first holds between
+    hold its 2k - 1 tiles, every line but the last is full, and the last holds between
     one tile and a full line."""
-    assert atlas.row_lines(10, 8) == (3, 8, 8)
+    assert atlas.row_lines(10, 8) == (8, 8, 3)
     assert atlas.row_lines(4, 8) == (7,)
     assert atlas.row_lines(4, 7) == (7,)
     assert atlas.row_lines(5, 3) == (3, 3, 3)
-    assert atlas.row_lines(18, 26) == (9, 26)
+    assert atlas.row_lines(18, 26) == (26, 9)
     assert atlas.row_lines(18, 35) == (35,)
     for per in range(1, 41):
         for k in range(1, 19):
             lines = atlas.row_lines(k, per)
             assert sum(lines) == 2 * k - 1
-            assert all(count == per for count in lines[1:])
-            assert 1 <= lines[0] <= per
+            assert all(count == per for count in lines[:-1])
+            assert 1 <= lines[-1] <= per
     with pytest.raises(ValueError, match="no row"):
         atlas.row_lines(3, 0)
 
@@ -167,13 +167,21 @@ def test_each_fault_of_a_layout_is_named() -> None:
     for n in range(93, 101):
         over = _moved(over, n, down=-30)
     assert "runs over the next" in problems(over)
-    # A wrapped row whose leftover line stands at the right, as an unwrapped row does.
+    # A wrapped row's full line set in from the left edge (its end then runs out of the
+    # block too, which is named as well).
     shifted = right
-    for n in (82, 83, 84):
-        shifted = _moved(shifted, n, by=5 * (WIDTH / 8))
-    assert "row 10 wraps and its first line starts" in problems(shifted)
-    # A row cut the other way round: the full lines first and the rest last.
-    assert "row 10 is set" in problems({**_triangle(100, 8), "per_line": 9})
+    for n in range(82, 90):
+        shifted = _moved(shifted, n, by=WIDTH / 16)
+    assert "row 10 wraps and its line of n = 82 starts 25.0px in" in problems(shifted)
+    # A wrapped row's leftover line set from the left, so its square leaves the edge.
+    leftover = right
+    for n in (98, 99, 100):
+        leftover = _moved(leftover, n, by=-5 * (WIDTH / 8))
+    assert "perfect squares off the right edge: [100]" in problems(leftover)
+    # A row cut into lines other than the width gives.
+    assert "row 10 is set (8, 8, 3), not (9, 9, 1)" in problems(
+        {**_triangle(100, 8), "per_line": 9}
+    )
     swapped = [{**tile, "n": {5: 6, 6: 5}.get(tile["n"], tile["n"])} for tile in right["tiles"]]
     assert "out of order" in problems({**right, "tiles": swapped})
     assert atlas.layout_problems({**right, "tiles": []}) == ["no tile shows"]

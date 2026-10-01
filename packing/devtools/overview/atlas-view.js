@@ -6,11 +6,12 @@
 // perfect squares 1, 4, 9, 16, ... run down it. Those are the cases whose packing is the
 // k by k grid itself.
 //
-// A row wider than the page wraps. It still ends at its k^2 on the right edge and the
-// next row still starts a new line; its last line is full, and the tiles left over go on
-// its first line, set from the left. So nineteen tiles at eight to a line are three
-// lines of 3, 8 and 8. Where every row fits, which is every desktop width, no row wraps
-// and the same rule draws the plain triangle.
+// A row wider than the page wraps, in reading order: every line but its last is full,
+// from the left edge, and its last line holds the tiles left over, set from the right,
+// so the row still ends at its k^2 on the right edge and the next row still starts a
+// new line. So nineteen tiles at eight to a line are three lines of 8, 8 and 3, the 3
+// ending at the square. Where every row fits, which is every desktop width, no row
+// wraps and the same rule draws the plain triangle.
 //
 // One set of tiles serves both views. The view is an attribute of the atlas block,
 // `data-atlas-view`, and the layout is the stylesheet's: in the triangle each tile takes
@@ -86,9 +87,10 @@
    * line counted from the top of the triangle, its column counted from the left, and
    * whether its line opens a row after the first, which takes the space between rows.
    *
-   * A row that fits is one line ending at the last column. A row that does not is cut
-   * from its end: every line but its first is full, and its first holds what is left
-   * over, from the first column.
+   * A row that fits is one line ending at the last column. A row that does not is
+   * filled in reading order: every line but its last is full, from the first column,
+   * and its last holds what is left over, ending at the last column, so every row ends
+   * at its square on the right edge.
    * @param {number} n
    * @param {number} per
    * @returns {AtlasTrianglePlace}
@@ -102,18 +104,16 @@
     }
     const tiles = 2 * k - 1;
     const lines = Math.ceil(tiles / columns);
-    const first = tiles - (lines - 1) * columns;
     const at = n - (k - 1) * (k - 1);
-    if (at <= first) {
-      const column = lines === 1 ? columns - tiles + at : at;
-      return { row: k, line: above + 1, column, opens: k > 1 };
-    }
-    const past = at - first - 1;
+    const line = Math.ceil(at / columns);
+    const within = at - (line - 1) * columns;
+    // What the tile's line holds: a full line, or on the last line what is left over.
+    const held = line === lines ? tiles - (lines - 1) * columns : columns;
     return {
       row: k,
-      line: above + 2 + Math.floor(past / columns),
-      column: (past % columns) + 1,
-      opens: false,
+      line: above + line,
+      column: columns - held + within,
+      opens: k > 1 && line === 1,
     };
   }
 

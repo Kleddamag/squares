@@ -1795,8 +1795,9 @@ body {
 /* The triangle: the same tiles, set by the grid bound. Row k holds the 2k - 1 cases a
    square of side k is known to hold and ends at k squared on the right edge, so the
    perfect squares, whose packing is the grid itself, run down it. A row too long for
-   the block wraps: its last line is full and ends at the square, and what is left over
-   stands first, from the left. overview/atlas-view.js says how many tiles a line holds
+   the block wraps in reading order: every line but its last is full, from the left,
+   and the last holds what is left over, set from the right so it still ends at the
+   square. overview/atlas-view.js says how many tiles a line holds
    (`--site-atlas-per-line`) and writes each tile's line and column; every size here
    follows from that one number and the block's width. A tile is its line's share of
    the block, no wider than `--site-atlas-tile-max`, and its inset, its number and the

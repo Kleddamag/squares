@@ -1065,12 +1065,18 @@ it.
   keeps a tile over a pointer target’s 24px with its three-figure number legible under
   it; 2.5rem, 40px, under 40rem or with a coarse pointer, for a finger), and never more
   than the longest row holds.
-  A row wider than a line wraps: its last line is full and right-aligned, ending at
-  $k^2$; what is left over goes on its first line, from the left; any middle lines are
-  full. So 19 tiles at eight to a line are lines of 3, 8 and 8, and a row that fits is
-  one right-aligned line.
+  A row wider than a line wraps in reading order, as text does: its first line is full,
+  from the row’s first case at the left edge; further full lines follow, each from the
+  left edge; and what is left over goes on its last line, right-aligned, so the row
+  still ends at $k^2$ on the right edge, in the same column as the rows that fit.
+  So 19 tiles at eight to a line are lines of 8, 8 and 3, the 3 ending at the square,
+  and a row that fits is one right-aligned line.
   The next row always starts a new line, and where any row wraps the space over a new
   row is 0.4 of a tile rather than 0.12, so a row’s lines read as one group.
+  Where some rows fit and the later ones wrap, as on a phone from row 5, the picture
+  reads as one column of squares down the right edge with the wrapped rows flowing in
+  from the left to meet it; the owner chose this over the earlier cut, which put the
+  remainder first and read back to front.
   Where a case stands, `place(n, per)`, is one pure function of the case and the tiles a
   line holds, tested in Node (`tests/node/overview_atlas_view`); the script writes each
   tile’s line and column as custom properties, the stylesheet lays the tiles out from

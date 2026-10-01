@@ -4,9 +4,9 @@
 The atlas is one set of tiles, a drawing of the best packing known for each case, that
 the reader sets as a grid or as a triangle (`templates/paper-design.md`, Atlas views).
 The triangle's row k holds the 2k - 1 cases a square of side k is known to hold and ends
-at k squared on the right edge; a row too long for the page wraps, its last line full and
-its first holding what is left over. This opens a built overview in Chromium and reports
-what the browser made of that:
+at k squared on the right edge; a row too long for the page wraps in reading order, every
+line but its last full from the left and the last holding what is left over, set from the
+right. This opens a built overview in Chromium and reports what the browser made of that:
 
 - `layout` reports each view at each width, with the first hundred cases and with all of
   them: the block's width, how many tiles a line holds, a tile's and a drawing's width,
@@ -14,7 +14,8 @@ what the browser made of that:
   the rows that wrap. With them it reports what a layout may not do (`layout_problems`):
   run past the window, set a tile outside the block or over another, break the order of
   the cases, leave a perfect square off the right edge, cut a row into lines other than
-  `row_lines` gives, or start a wrapped row's first line anywhere but the left edge.
+  `row_lines` gives, or start a line of a wrapped row, but its last, anywhere but the
+  left edge.
   `--markdown` prints one line a layout.
 - `move` times each change of layout (`CHANGES`: to the triangle and back, with a hundred
   cases and with all, and the expander's change in the triangle), `--runs` times each:
@@ -61,7 +62,7 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import probe
 
 PROBES = Path(__file__).resolve().parent / "probes"
@@ -141,13 +142,13 @@ def is_square(n: int) -> bool:
 
 def row_lines(k: int, per: int) -> tuple[int, ...]:
     """How many tiles each line of row k holds when a line holds `per`: one line of
-    2k - 1 where that fits, else what is left over first and then full lines. Nineteen
-    tiles at eight a line are 3, 8 and 8."""
+    2k - 1 where that fits, else full lines and then what is left over, in reading
+    order. Nineteen tiles at eight a line are 8, 8 and 3."""
     if k < 1 or per < 1:
         raise ValueError(f"no row {k} at {per} a line")
     tiles = 2 * k - 1
     lines = -(-tiles // per)
-    return (tiles - (lines - 1) * per, *([per] * (lines - 1)))
+    return (*([per] * (lines - 1)), tiles - (lines - 1) * per)
 
 
 def _lines(tiles: Sequence[dict[str, Any]]) -> list[list[dict[str, Any]]]:
@@ -164,7 +165,7 @@ def layout_problems(report: dict[str, Any]) -> list[str]:
     window, a tile stands outside the block or over another, or the cases are out of
     order reading left to right and top to bottom. In the triangle also: a perfect
     square off the right edge, a row cut into lines other than `row_lines` gives, and a
-    wrapped row whose first line does not start at the left edge."""
+    wrapped row with a line, other than its last, that does not start at the left edge."""
     problems: list[str] = []
     tiles: list[dict[str, Any]] = report["tiles"]
     if not tiles:
@@ -218,11 +219,13 @@ def layout_problems(report: dict[str, Any]) -> list[str]:
         sizes = tuple(len(line) for line in found)
         if sizes != row_lines(k, per):
             problems.append(f"row {k} is set {sizes}, not {row_lines(k, per)}")
-        first = next(tile for tile in tiles if tile["n"] == found[0][0])
-        if len(found) > 1 and abs(first["left"] - left) > EDGE:
-            problems.append(
-                f"row {k} wraps and its first line starts {first['left'] - left}px in"
-            )
+        for line in found[:-1]:
+            first = next(tile for tile in tiles if tile["n"] == line[0])
+            if abs(first["left"] - left) > EDGE:
+                problems.append(
+                    f"row {k} wraps and its line of n = {line[0]} starts "
+                    f"{first['left'] - left}px in"
+                )
     return problems
 
 

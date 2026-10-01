@@ -124,25 +124,38 @@ void test("where every row fits, row k is line k and ends at the last column", (
   }
 });
 
-void test("nineteen tiles at eight a line are lines of 3, 8 and 8, ending at the square", () => {
-  assert.deepEqual(rowLines(10, 8), [3, 8, 8]);
+void test("nineteen tiles at eight a line are lines of 8, 8 and 3, ending at the square", () => {
+  assert.deepEqual(rowLines(10, 8), [8, 8, 3]);
   const row = lines(100, 8).filter((line) => line[0]?.row === 10);
-  // The three left over stand first, from the left edge.
+  // The row reads from its first case at the left edge, two full lines.
+  assert.deepEqual(row[0]?.[0], { n: 82, column: 1, row: 10, opens: true });
   assert.deepEqual(
-    row[0]?.map(({ n, column }) => [n, column]),
-    [
-      [82, 1],
-      [83, 2],
-      [84, 3],
-    ],
-  );
-  // The full lines sit under each other, and the last ends at 100 in the last column.
-  assert.deepEqual(
-    row[1]?.map(({ column }) => column),
+    row[0]?.map(({ column }) => column),
     [1, 2, 3, 4, 5, 6, 7, 8],
   );
+  assert.deepEqual(
+    row[1]?.map(({ n, column }) => [n, column]),
+    [
+      [90, 1],
+      [91, 2],
+      [92, 3],
+      [93, 4],
+      [94, 5],
+      [95, 6],
+      [96, 7],
+      [97, 8],
+    ],
+  );
+  // The three left over stand last, from the right, so 100 is in the last column.
+  assert.deepEqual(
+    row[2]?.map(({ n, column }) => [n, column]),
+    [
+      [98, 6],
+      [99, 7],
+      [100, 8],
+    ],
+  );
   assert.deepEqual(row[2]?.at(-1), { n: 100, column: 8, row: 10, opens: false });
-  assert.deepEqual(row[2]?.[0], { n: 93, column: 1, row: 10, opens: false });
 });
 
 void test("a row that fits is one line, set from the right", () => {
@@ -206,7 +219,7 @@ void test("the cases read in order, left to right and top to bottom, one to a pl
   }
 });
 
-void test("a wrapped row's last line is full and its first holds what is left over", () => {
+void test("a wrapped row's lines but the last are full from the left, and its last ends at the right", () => {
   for (let per = 1; per <= 40; per += 1) {
     for (let k = 1; k <= 18; k += 1) {
       const sizes = rowLines(k, per);
@@ -217,10 +230,24 @@ void test("a wrapped row's last line is full and its first holds what is left ov
       );
       assert.equal(sizes.length, Math.ceil(tiles / per));
       assert.ok(
-        sizes.slice(1).every((size) => size === per),
+        sizes.slice(0, -1).every((size) => size === per),
         `row ${k} at ${per}`,
       );
-      assert.ok((sizes[0] ?? 0) >= 1 && (sizes[0] ?? 0) <= per);
+      assert.ok((sizes.at(-1) ?? 0) >= 1 && (sizes.at(-1) ?? 0) <= per);
+    }
+    // Every line of a wrapped row but its last starts in the first column, and every
+    // row's last line ends in the last.
+    /** @type {Map<number, ReturnType<typeof lines>>} */
+    const rows = new Map();
+    for (const line of lines(324, per)) {
+      const k = line[0]?.row ?? 0;
+      rows.set(k, [...(rows.get(k) ?? []), line]);
+    }
+    for (const [k, found] of rows) {
+      for (const line of found.slice(0, -1)) {
+        assert.equal(line[0]?.column, 1, `row ${k} at ${per}`);
+      }
+      assert.equal(found.at(-1)?.at(-1)?.column, per, `row ${k} at ${per}`);
     }
   }
 });

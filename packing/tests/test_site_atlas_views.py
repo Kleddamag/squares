@@ -29,7 +29,7 @@ from typing import Any, TypedDict
 import pytest
 
 from devtools import measure_atlas_views as atlas
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import applied, probe
 from tests import site_renders
 
@@ -410,9 +410,9 @@ def test_a_phone_wraps_the_long_rows_and_keeps_every_square_on_the_right_edge(
     seen: Readings,
 ) -> None:
     """At 390 pixels a line holds eight tiles of 40 pixels or more. Rows 1 to 4 fit; row
-    10, nineteen tiles, is lines of 3, 8 and 8. No tile runs past the block or the page,
-    every perfect square ends at the block's right edge, and a wrapped row's first line
-    starts at its left."""
+    10, nineteen tiles, is lines of 8, 8 and 3 in reading order. No tile runs past the
+    block or the page, every perfect square ends at the block's right edge, and every
+    line of a wrapped row but its last starts at the block's left edge."""
     phone = seen["phone"]
     assert phone["per_line"] == 8
     assert phone["overflow"] == 0
@@ -428,9 +428,14 @@ def test_a_phone_wraps_the_long_rows_and_keeps_every_square_on_the_right_edge(
         tops = sorted({tile["top"] for tile in row})
         sizes = tuple(sum(tile["top"] == top for tile in row) for top in tops)
         assert sizes == atlas.row_lines(k, 8), k
-        if len(tops) > 1:
-            assert abs(row[0]["left"] - cells["left"]) <= atlas.EDGE, k
-    assert atlas.row_lines(10, 8) == (3, 8, 8)
+        for top in tops[:-1]:
+            line = [tile for tile in row if tile["top"] == top]
+            assert abs(min(tile["left"] for tile in line) - cells["left"]) <= atlas.EDGE, k
+        # The cases read on in order along each line and down the lines.
+        assert [tile["n"] for tile in sorted(row, key=lambda t: (t["top"], t["left"]))] == [
+            tile["n"] for tile in row
+        ]
+    assert atlas.row_lines(10, 8) == (8, 8, 3)
     assert [k for k in range(1, 11) if len(atlas.row_lines(k, 8)) == 1] == [1, 2, 3, 4]
 
 
@@ -438,10 +443,10 @@ def test_the_space_over_a_row_is_larger_than_between_the_lines_of_one(seen: Read
     """Where rows wrap, a new row starts further below the line above it than a wrapped
     row's own lines stand apart, so the lines of a row read as one group."""
     tiles = {tile["n"]: tile for tile in seen["phone"]["tiles"]}
-    # Row 10 at eight a line: 82 to 84, 85 to 92, 93 to 100. Row 9 ends at 81.
-    within = tiles[85]["top"] - tiles[82]["bottom"]
+    # Row 10 at eight a line: 82 to 89, 90 to 97, 98 to 100. Row 9 ends at 81.
+    within = tiles[90]["top"] - tiles[82]["bottom"]
     between = tiles[82]["top"] - tiles[81]["bottom"]
-    assert within == pytest.approx(tiles[93]["top"] - tiles[85]["bottom"], abs=0.5)
+    assert within == pytest.approx(tiles[98]["top"] - tiles[90]["bottom"], abs=0.5)
     assert between > within + 10, (between, within)
 
 

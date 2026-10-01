@@ -3,10 +3,11 @@
 # A Review of the Optimality Proof of the Trump Packing of 11 Squares
 
 <div class="credits centred">
-  <span>Human oversight: <a href="https://x.com/ojoshe"><strong>Joshua Levy</strong></a></span>
-  <span>Original proof: <a href="https://github.com/Queuingtheorydotcom/11SquaresOptimal"><strong>github.com/Queuingtheorydotcom/11SquaresOptimal</strong></a></span>
+  <span>From the original proof by <strong>Queuingtheorydotcom</strong></span>
+  <span><a href="https://github.com/Queuingtheorydotcom/11SquaresOptimal">github.com/Queuingtheorydotcom/11SquaresOptimal</a></span>
+  <span class="credits-review">Human oversight: <a href="https://x.com/ojoshe"><strong>Joshua Levy</strong></a></span>
   <span>Agents: <strong>GPT-6 Astra</strong> and <strong>GPT-6 Sol</strong></span>
-  <span><strong>Draft v0.1.0</strong></span>
+  <span>Draft v0.1.0</span>
   <span class="publication-date">Original proof September 29, 2026 · This review revised September 30, 2026</span>
 </div>
 

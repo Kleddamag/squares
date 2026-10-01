@@ -3809,6 +3809,13 @@ def test_a_replay_rows_popover_body_comes_from_one_function(
     assert "<dt>Reported</dt>" in body
     assert "<dt>Verified here</dt>" in body
     assert html.escape(row.reported.holder) in body
+    # Each lane's date is what the tables' Date column says it is: a bound by others was
+    # published then, and this project's own was established then.
+    ours = next(r for r in overview.awaiting_replay if r.verified.ours and r.reported.published)
+    detail = overview_sections.replay_row_popover_body(ours)
+    assert f", established {ours.verified.published}" in detail
+    assert f", published {ours.reported.published}" in detail
+    assert f", published {ours.verified.published}" not in detail.split("Verified here")[1]
     block = overview_sections.awaiting_replay(overview)
     assert body in _row_popover(block, f"pop-replay-n-{row.n}")
     assert block.index("</details>") < block.index('<div class="site-popover site-row-pop"')

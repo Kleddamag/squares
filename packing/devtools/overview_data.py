@@ -43,7 +43,7 @@ from devtools.render_recent_results import (
     standing,
 )
 from devtools.render_research_tables import load_cases
-from devtools.repo_links import repo_url
+from devtools.repo_links import path_kind, repo_url
 from devtools.result_credit import credit_line
 from devtools.significance import headline as first_sentence
 from sqpack.yamlio import safe_load
@@ -319,10 +319,11 @@ def _evidence() -> dict[str, dict]:
 
 
 def _repo_path(path: str) -> Path | None:
-    """A record's path, which may be packing-relative or repository-relative."""
+    """A record's path, which may be packing-relative or repository-relative, where the
+    repository has it (`repo_links.path_kind`, which a partial checkout cannot fool)."""
     for base in (REPO, PACKING):
         candidate = base / path
-        if candidate.exists():
+        if path_kind(candidate) is not None:
             return candidate
     return None
 

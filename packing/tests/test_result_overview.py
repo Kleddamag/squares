@@ -264,7 +264,10 @@ def test_the_links_reach_the_site_and_the_record(
     else:
         assert '<a href="cases.html#n-11">' in links
         assert '<a href="frontier.html#n-11">' in links
-        assert '<a href="explainer.html">' in links
+        # Both papers on the case, the one on the result that stands first.
+        paper = f'<a href="{overview_sections.OPTIMALITY_PAPER}">'
+        assert paper in links
+        assert links.index(paper) < links.index('<a href="explainer.html">')
         assert f'{REPO_URL}/blob/main/packing/frontier/n-011.md"' in links
     line = result_overview.result_lines()[result_id]
     assert f"packing/frontier/results.yaml?plain=1#L{line}" in links
@@ -345,8 +348,28 @@ def test_every_site_link_is_a_served_page_and_a_real_fragment(
             elif page in {"cases.html", "frontier.html"}:
                 assert not fragment or fragment in cases, href
             else:
-                assert page == "explainer.html", href
+                assert page in {"explainer.html", overview_sections.OPTIMALITY_PAPER}, href
                 assert not fragment
+
+
+def test_a_partial_checkout_renders_the_same_records_and_overviews(
+    overview: overview_data.Overview,
+    bodies: dict[str, str],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The deployed site is rendered from a checkout without the literature archive's
+    and the campaign's directories (`pages.yml`). Every record link a full checkout
+    writes is written there too: a result's source, review and packet in its row, and
+    its certificate, proof, retained copy and source packet in its overview. Asking the
+    disk alone dropped twenty of them from each results table on the live site."""
+    site_renders.leave_out_the_archive_and_the_campaign(monkeypatch)
+    partial = overview_data.load()
+    for result, there in zip(overview.results, partial.results, strict=True):
+        assert there.records == result.records, result.id
+    for result_id in (SETTLED, EARLIER, BROAD):
+        body = result_overview.result_popover_html(_result(partial, result_id), partial)
+        assert body == bodies[result_id], result_id
+    assert "resources/web/n11-optimality-2026-09-29/README.md" in bodies[SETTLED]
 
 
 def test_a_link_to_nothing_fails_the_render(overview: overview_data.Overview) -> None:

@@ -227,8 +227,8 @@ credited, is policy in
    its own attribution files.
 3. Put the literal public claim in the reported lane and give it typed evidence.
    A result by others that the record acts on gets its `T-NNN` register entry now, at
-   its derived rung, with a `headline`, `attribution` and a `next_rung` naming the
-   replay and review it waits on.
+   its derived rung, with a `kind`, a `headline`, `attribution` and a `next_rung` naming
+   the replay and review it waits on.
    Its date is `attribution.published`; `established` is this project’s own results’
    date and the checker refuses it here.
    Write the `claim` in short paragraphs: the statement, the certificate, how the source
@@ -349,13 +349,17 @@ certificate’s replay command.
    Preserve earlier evidence and decisions.
 
 5. **Write the row** with what [`results.schema.yaml`](results.schema.yaml) requires:
-   `id`, `headline`, `established`, `claim`, `scope`, `verification`, `confirmation`,
-   `significance`, `novelty`, `evidence`, `artifacts`, and `next_rung`, plus `controls`
-   at `C3` or above. `headline` and `established` come right after `id`. `headline` is
-   the claim shortened for a table cell, at most 100 characters of inline Markdown with
-   the mathematics in backticks: the claim’s relation exactly (`≥` is not `>`), its
-   exact form with its decimal or a truncation of it marked `…`, and its $n$ values.
-   The checker refuses a number the claim does not state.
+   `id`, `kind`, `headline`, `established`, `claim`, `scope`, `verification`,
+   `confirmation`, `significance`, `novelty`, `evidence`, `artifacts`, and `next_rung`,
+   plus `controls` at `C3` or above.
+   `kind` is the line after `id`, then `headline` and `established`. `kind` says what
+   the result is, one of the [result kinds](../../epistemics.md#result-kinds): the
+   checker reads a headline that opens with a relation on $s(n)$ as a lower bound (`≥`),
+   an upper bound (`≤`) or optimality (`=`), and holds the cited evidence to the same
+   kind. `headline` is the claim shortened for a table cell, at most 100 characters of
+   inline Markdown with the mathematics in backticks: the claim’s relation exactly (`≥`
+   is not `>`), its exact form with its decimal or a truncation of it marked `…`, and
+   its $n$ values. The checker refuses a number the claim does not state.
    `established` is the day the certificate or proof first passed here, read from the
    commit that landed it, not from the day of registration.
    `claim` is the one statement the rungs attach to, in full and with exact values where

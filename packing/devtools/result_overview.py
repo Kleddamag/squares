@@ -693,13 +693,12 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
     """One result in the chain: when, which, what it established, how it stands, and its
     citations and sources.
 
-    A broad result's chain runs to dozens of results, so a step there keeps its standing
-    and leaves its rungs to its own row."""
+    A broad result's chain runs to dozens of results, so a step there keeps its kind and
+    standing and leaves its rungs to its own row."""
     from devtools.overview_sections import (  # noqa: PLC0415
+        kind_and_standing,
         result_url,
-        standing_chips,
         standing_key,
-        standing_label,
         status_chips,
     )
 
@@ -717,16 +716,12 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
     if other.id == current.id:
         current_mark = ' data-current=""'
         this = ' <span class="site-result-this">this result</span>'
-    chips = standing_chips(other.standing) if is_broad(cases) else status_chips(other)
+    chips = kind_and_standing(other) if is_broad(cases) else status_chips(other)
     here = standing_on(other, shared)
     if here != other.standing:
         on_case = "on this case" if len(cases) == 1 else "on these cases"
-        chips += (
-            f' <span class="site-cell-quiet">{on_case}, {_esc(standing_label(here))}</span>'
-        )
-    # A result that still stands draws no standing chip, so a step may have no chip line.
-    chips = chips.strip()
-    chip_line = f'<p class="site-result-step-chips">{chips}</p>' if chips else ""
+        chips += f' <span class="site-cell-quiet">{on_case}, {_esc(here)}</span>'
+    chip_line = f'<p class="site-result-step-chips">{chips}</p>'
     cites = [_esc(other.credit), *citations(other)]
     return (
         f'<li class="site-result-step" data-step="{_esc(other.id.lower())}" '

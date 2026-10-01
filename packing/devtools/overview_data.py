@@ -217,7 +217,8 @@ class Result:
     records: list[Link] = field(default_factory=list)
     standing: str = ""
     """Whether a case bound rests on the result now, and if not, why not:
-    `render_recent_results.standing`, the word `RESULTS.md`'s tables print."""
+    `render_recent_results.standing`, the word `RESULTS.md`'s tables print. Empty for a
+    result that claims no bound, which has no standing."""
 
     @property
     def id(self) -> str:

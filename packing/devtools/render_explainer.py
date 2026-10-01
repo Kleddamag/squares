@@ -42,7 +42,6 @@ import json
 import re
 import shutil
 import struct
-import subprocess
 import sys
 from collections import Counter
 from collections.abc import Mapping, Sequence
@@ -55,9 +54,18 @@ from typing import Any, Final, NamedTuple, TypedDict
 
 from strif import atomic_output_file
 
+from devtools import repo_links
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.build_composite_figure_data import load_record as load_figure_record
 from devtools.measure_net_coarsening import largest_admissible_side
+from devtools.render_overview import (
+    PAPER_TYPE_CSS,
+    SITE_NAV,
+    SITE_NAV_CSS,
+    favicon_html,
+    nav_html,
+)
+from devtools.repo_links import REPO_URL, repo_url
 from sqpack.fractional.certificate import (
     Certificate,
     closed_form_conditions,
@@ -109,6 +117,8 @@ INLINE_SCRIPT_ASSETS = {
     "EXPLAINER_PAGE_SCRIPT": EXPLAINER_SCRIPTS / "page.js",
     "CERTIFICATE_SCRIPT": EXPLAINER_SCRIPTS / "certificate.js",
     "FINISH_MATH": EXPLAINER_SCRIPTS / "finish-math.js",
+    "SITE_EMBED": PACKING / "devtools" / "overview" / "embed.js",
+    "SITE_THEME": PACKING / "devtools" / "overview" / "theme.js",
 }
 #: The browser code this module hands the page, one file each under `probes/`.
 PROBES = Path(__file__).resolve().parent / "probes"
@@ -283,18 +293,18 @@ PRIOR_MEMO_YEAR = 1984
 
 # Where the page sends a reader for more: the sources the n = 11 record cites
 # (frontier/n-011.md, keys [Friedman DS7], [Kingbird] and [Stromquist 2003]) and
-# the repository files behind the words, linked at the commit the page is built from
-# rather than on `main`, which the page deploys from but which does not stand still.
-# The certificate digests identify the data; the permalinks are what identify the
-# verifier, the generator and the exposition a reported run used (review of
-# 2026-09-05, Finding 8).
+# the repository files behind the words, linked on `main`, the branch the page deploys
+# from (`repo_links`). A permalink at the build commit was the rule until those links
+# began to 404: a squash merge leaves the commit a page was built from on no branch.
+# The certificate digests and the edition stamp identify the data; the committed claim
+# documents still name the verifier at the edition's revision (`edition_file`), which
+# is where a reported run's exact verifier is pinned (review of 2026-09-05, Finding 8).
 PROBLEM_URL = "https://erich-friedman.github.io/papers/squares/squares.html"
 BEST_URL = "https://kingbird.myphotos.cc/packing/squares_in_squares.html"
 PRIOR_URL = "https://www.combinatorics.org/ojs/index.php/eljc/article/view/v10i1r8"
 PRIOR_MEMO_URL = "https://walterstromquist.com/papers/squares3.pdf"
 PRIOR_SIX_MEMO_URL = "https://walterstromquist.com/papers/squares1.pdf"
 PRIOR_TEN_MEMO_URL = "https://walterstromquist.com/papers/squares2.pdf"
-REPO_URL = "https://github.com/jlevy/squares"
 # Where the deploy serves this page: the GitHub Pages site for the repository, at
 # the project subpath, with the trailing slash the directory URL actually resolves
 # to. A link preview is the one part of the page that cannot be relative -- a
@@ -302,6 +312,9 @@ REPO_URL = "https://github.com/jlevy/squares"
 # document -- so the deployment's own address has to be stated somewhere, and this
 # is that one place.
 SITE_URL = "https://jlevy.github.io/squares/"
+#: The page's own address. The site root is the overview; the explainer is served beside
+#: it as `explainer.html`, renamed at publish, and its assets stay beside it at the root.
+PAGE_URL = SITE_URL + "explainer.html"
 SITE_NAME = "Squares"
 #: The atlas the Figure 2 caption sends a reader to browse, linked as a directory.
 ATLAS = PACKING / "atlas" / "known-best"
@@ -331,11 +344,16 @@ POSTER_STEM = PACKING / "atlas" / "known-best" / "known-best-1-324"
 #: with the workbench, whose stage drew it, rather than in the atlas: the atlas directory
 #: is a data path, and a file added there would move the version every artifact prints.
 FILM_POSTER = REPO / "packages" / "workbench" / "assets" / "ascent-n1-100-poster.png"
+#: The overview's film poster, the n = 1..324 film's n = 290 at the same 1280x720, since
+#: 2026-09-30. The overview links the assets served beside the explainer by name rather
+#: than publishing its own, so its poster travels here with the rest.
+OVERVIEW_FILM_POSTER = FILM_POSTER.with_name("ascent-n1-324-poster.png")
 COMPOSITE_ASSETS = (
     *(COMPOSITE_STEM.with_suffix(f".{ext}") for ext in ("svg", "png", "pdf")),
     COMPOSITE_STEM.with_name(f"{COMPOSITE_STEM.name}-card.png"),
     *(POSTER_STEM.with_suffix(f".{ext}") for ext in ("svg", "png", "pdf")),
     FILM_POSTER,
+    OVERVIEW_FILM_POSTER,
 )
 #: The full-canvas raster, which the published Markdown shows to a reader whose context
 #: cannot render the vector. The 1x rather than the committed `@2x`: every consumer
@@ -373,28 +391,6 @@ THIRDPARTY = CASE / "thirdparty" / "README.md"
 THIRDPARTY_CERTIFICATE = THIRDPARTY.with_name("certificate.json")
 
 
-@cache
-def link_revision() -> str:
-    """The commit the page's repository links name: the one the page is built from.
-
-    Read from the checkout at render time, not pinned. A pinned revision is right on the
-    day it is cut and wrong after the next merge that touches a linked file, and every
-    merge would then owe the page a republish before its links told the truth. `HEAD`
-    of the checkout the deploy renders from is the commit whose files the page
-    describes, so the links name it, in full, as GitHub's own permalinks do. The page's
-    credits do not: they print the shared version, `sqpack.release.PUBLICATION_EDITION`,
-    which names the last data commit and is the string the atlas footer carries. Where
-    git cannot answer (a source tarball) the edition's revision stands in.
-    """
-    found = subprocess.run(
-        ("git", "rev-parse", "HEAD"), cwd=REPO, capture_output=True, text=True, check=False
-    )
-    revision = found.stdout.strip()
-    if found.returncode != 0 or not re.fullmatch(r"[0-9a-f]{40}", revision):
-        return PUBLICATION_REVISION
-    return revision
-
-
 def publication_history_markdown() -> str:
     """Every edition, newest first, each with the date it was first published."""
     return "\n".join(
@@ -403,39 +399,16 @@ def publication_history_markdown() -> str:
     )
 
 
-def repo_file(path: Path, revision: str | None = None) -> str:
-    """The file's URL at the commit the page is built from; none outside the repository.
-
-    A permalink, not a branch link: `blob/main/` names whatever is on `main` when the
-    reader clicks. A path that does not exist at the linked commit is a link that 404s
-    from the day it is published, so a test checks each linked path against the
-    revision through git; the renderer itself does not, so that a render never depends
-    on more history than the deploy's shallow checkout has.
-
-    `revision` is for the documents that are checked in: a claim document that named
-    the build commit would change with every commit and fail its own drift check
-    forever, so those name the edition's revision instead, through `edition_file`.
-    """
-    try:
-        relative = path.resolve().relative_to(REPO)
-    except ValueError:
-        raise SystemExit(f"{path} is outside the repository and cannot be linked") from None
-    # GitHub serves a directory under `tree/` and a file under `blob/`, and redirects
-    # the other way round; the canonical one is written so no link is a redirect.
-    kind = "tree" if path.is_dir() else "blob"
-    return f"{REPO_URL}/{kind}/{revision or link_revision()}/{relative.as_posix()}"
-
-
 def edition_file(path: Path) -> str:
     """The file's URL at the edition's pinned revision, for documents that are checked in.
 
     The verifiable-claim documents and the proof card are generated, committed, and
-    compared byte for byte with a fresh render, so their links have to be stable between
-    editions; `sqpack.release.PUBLICATION_REVISION` is bumped when an edition is cut
-    and they are regenerated with it. The page itself is not checked in and names the
-    commit it is built from.
+    compared byte for byte with a fresh render, and they are not site pages: each pins
+    the verifier and the evidence a reported run used, so their links name
+    `sqpack.release.PUBLICATION_REVISION`, a commit on `main` that is bumped when an
+    edition is cut. Every link on the site itself names `main` (`repo_links`).
     """
-    return repo_file(path, PUBLICATION_REVISION)
+    return repo_url(path, ref=PUBLICATION_REVISION)
 
 
 def site_file(path: Path) -> str:
@@ -805,33 +778,39 @@ KPRESS_API = {
 CLIENT_PLACEHOLDER = "__SQUARES_KPRESS_CLIENT_JS__();"
 
 
-def kpress_client_modules() -> str:
+def kpress_client_modules(modules: Sequence[str] = KPRESS_MODULES) -> str:
     """The modules the shell's comment names as the client script's sources, in order."""
-    return ", ".join(f"js/{name}" for name in KPRESS_MODULES)
+    return ", ".join(f"js/{name}" for name in modules)
 
 
-def client_script_frame() -> tuple[str, str]:
+def client_script_frame(frame: Path | None = None) -> tuple[str, str]:
     """The checked script asset around the sentinel where flattened modules land.
 
     The whole asset is read so the closing-tag guard below also checks the frame around
     the generated bundle.
     """
-    source = INLINE_SCRIPT_ASSETS["KPRESS_CLIENT_SCRIPT"].read_text(encoding="utf-8")
+    frame = frame or INLINE_SCRIPT_ASSETS["KPRESS_CLIENT_SCRIPT"]
+    source = frame.read_text(encoding="utf-8")
     if source.count(CLIENT_PLACEHOLDER) != 1:
-        raise SystemExit(
-            f"{INLINE_SCRIPT_ASSETS['KPRESS_CLIENT_SCRIPT'].name} must carry "
-            f"{CLIENT_PLACEHOLDER} exactly once"
-        )
+        raise SystemExit(f"{frame.name} must carry {CLIENT_PLACEHOLDER} exactly once")
     at = source.index(CLIENT_PLACEHOLDER)
     after = at + len(CLIENT_PLACEHOLDER)
     return source[:at], source[after:]
 
 
-def kpress_client_js(static: Path) -> str:
+def kpress_client_js(
+    static: Path,
+    *,
+    modules: Sequence[str] = KPRESS_MODULES,
+    api: Mapping[str, str] = KPRESS_API,
+    frame: Path | None = None,
+) -> str:
     """kpress's client modules inside the checked classic-script frame.
 
-    Concatenates `KPRESS_MODULES` in order, dropping the imports (every name they
-    bind is already in scope by the time it is used) and the `export` keyword. The
+    The explainer's modules and frame by default; the site's report pages pass their
+    own (`render_overview.kpress_client_script`). Concatenates `modules` in order,
+    dropping the imports (every name they bind is already in scope by the time it is
+    used) and the `export` keyword. The
     checked asset writes the rest of the script around one sentinel: the IIFE the modules
     share and the epilogue that exposes the two boots. Refuses to produce a
     bundle it cannot vouch for: an import or export form it does not rewrite, an
@@ -844,7 +823,7 @@ def kpress_client_js(static: Path) -> str:
     declared: dict[str, str] = {}
     parts: list[str] = []
 
-    for name in KPRESS_MODULES:
+    for name in modules:
         path = static / "js" / name
         if not path.is_file():
             raise SystemExit(f"kpress has no js/{name}; the client modules have moved")
@@ -903,16 +882,18 @@ def kpress_client_js(static: Path) -> str:
                 )
         parts.append(f"/* kpress: js/{name} */\n{body.strip()}\n")
 
-    for module, wanted in KPRESS_API.items():
+    for module, wanted in api.items():
         if wanted not in exported.get(module, frozenset()):
             raise SystemExit(
                 f"js/{module} no longer exports `{wanted}`; the page cannot boot it"
             )
 
     bundle = "\n".join(parts)
-    before, after = client_script_frame()
+    before, after = client_script_frame(frame)
     element = (
-        before.replace("{{KPRESS_CLIENT_MODULES}}", kpress_client_modules()) + bundle + after
+        before.replace("{{KPRESS_CLIENT_MODULES}}", kpress_client_modules(modules))
+        + bundle
+        + after
     )
     if re.search(r"</script", element, re.IGNORECASE):
         raise SystemExit(
@@ -2080,14 +2061,16 @@ def coarsening_verdict(rows: list[CoarseningRow] | None) -> str:
 # browser does not act on: it is a statement to a crawler about which URL this
 # document is, read from the markup and never resolved or requested while the page
 # is being viewed, so a page carrying one still opens from a file with the network
-# off. Every other `<link ... href=>` -- a stylesheet, an icon, a preload, a
-# manifest -- is a fetch and is still refused, and the exemption is written as the
-# exact quoted form the shell emits so nothing broader slips through it. The
+# off. A link whose href is a data URI, such as the site icon, carries its bytes and
+# fetches nothing. Every other `<link ... href=>` -- a stylesheet, an icon at an
+# address, a preload, a manifest -- is a fetch and is still refused, and the exemption
+# is written as the exact quoted form the shell emits so nothing broader slips through
+# it. The
 # `og:*` and `twitter:*` URLs need no exemption: they are `<meta content=>`, which
 # this pattern has never matched, and are likewise read rather than fetched.
 EXTERNAL_REFERENCE = re.compile(
     r"<script[^>]*\ssrc="
-    r'|<link(?![^>]*\srel="canonical")[^>]*\shref='
+    r'|<link(?![^>]*\srel="canonical")(?![^>]*\shref="data:)[^>]*\shref='
     r"|@import\b"
     r"|url\((?!\s*[\"']?(?:data:|#))",
     re.IGNORECASE,
@@ -2176,20 +2159,28 @@ def claim_substitutions(headline: Facts, default: Facts) -> dict[str, str]:
     values = {}
     for role, f in (("DEFAULT", default), ("HEADLINE", headline)):
         values[f"{role}_CLAIM_NAME"] = claim_path(f).name
-        values[f"{role}_CLAIM_URL"] = repo_file(claim_path(f))
+        values[f"{role}_CLAIM_URL"] = repo_url(claim_path(f))
         values[f"{role}_N_ATOMS"] = f"{len(f.atoms):,}"
         values[f"{role}_N_DIRECTIONS"] = str(f.steps + 1)
         values[f"{role}_RUNTIME"] = runtime_phrase(f)
     values["HEADLINE_PINNED_RUNTIME"] = runtime_phrase(headline, pinned=True)
     values["PINNED_VERIFIER_LINES"] = source_lines_phrase(PINNED_VERIFIER)
-    values["PINNED_VERIFIER_URL"] = repo_file(PINNED_VERIFIER)
-    values["PROOF_CARD_URL"] = repo_file(CASE / f"{RESULT_ID}-proof-card.md")
+    values["PINNED_VERIFIER_URL"] = repo_url(PINNED_VERIFIER)
+    values["PROOF_CARD_URL"] = repo_url(CASE / f"{RESULT_ID}-proof-card.md")
     return values
 
 
-#: The visible title names the concrete result. The exact theorem follows in the
-#: opening section, where the notation and the status of the claim are defined.
-TITLE = "A New Lower Bound for Packing 11 Squares"
+#: The visible title, the owner's wording in the site's title case (2026-09-30): the page
+#: proves the earlier lower bounds for n = 11, a case T-060 has since settled. The
+#: exact theorem follows in the opening section, where the notation and the status of
+#: the claim are defined. This is the plain-text form `<title>` and the link preview
+#: carry; the hero sets it as `HERO_TITLE`.
+TITLE = "New Lower Bounds for Square Packing for n = 11"
+#: The title as the hero sets it. The hero's heading is in caps, so `n = 11` is a `.tex`
+#: run, as the title's `s(11)` once was: typeset as math, it keeps its lowercase italic
+#: `n` (`.hero h1 .tex`), where plain text would print `N = 11`, a different symbol. The
+#: Markdown edition writes it `$n = 11$`.
+HERO_TITLE = TITLE.replace("n = 11", '<span class="tex">n = 11</span>')
 
 
 def card_substitutions(headline: Facts, current: CurrentBoundFacts) -> dict[str, str]:
@@ -2198,8 +2189,10 @@ def card_substitutions(headline: Facts, current: CurrentBoundFacts) -> dict[str,
     Every one of these is a string the page already states somewhere -- the title in
     `<title>`, the sentence in `<meta name="description">`, the picture in Figure 2 --
     and each is built here once and substituted into both places, so a shared link and
-    the page it opens cannot say different things. The bound in the title and in the
-    sentence is the headline certificate's own, like every other number on the page.
+    the page it opens cannot say different things. The title is the page's own, with no
+    bound after it: one bound beside a title about several, in a case T-060 has since
+    settled, would read as the case's current bound. The bound in the sentence is the headline
+    certificate's own, like every other number on the page.
 
     The card names T-026's historical bound while the interactive figures retain the point
     certificates. It uses the cropped composite rather than the full canvas, and the reason is
@@ -2212,7 +2205,7 @@ def card_substitutions(headline: Facts, current: CurrentBoundFacts) -> dict[str,
     legend at the foot, which is the part a reader can find on the page.
     """
     width, height = png_size(COMPOSITE_CARD)
-    title = f"{TITLE}: s({headline.n}) ≥ {current.bounded_side_decimal}"
+    title = TITLE
     description = (
         "How weighted point and threshold certificates prove T-026's historical bound "
         f"s({headline.n}) ≥ {current.bounded_side_decimal}, with visual point-only proofs."
@@ -2220,7 +2213,8 @@ def card_substitutions(headline: Facts, current: CurrentBoundFacts) -> dict[str,
     return {
         "PAGE_TITLE": title,
         "PAGE_DESCRIPTION": description,
-        "CANONICAL_URL": SITE_URL,
+        "CANONICAL_URL": PAGE_URL,
+        "SITE_FAVICON": favicon_html(),
         "SITE_NAME": SITE_NAME,
         "CARD_IMAGE_URL": site_file(COMPOSITE_CARD),
         "CARD_IMAGE_WIDTH": str(width),
@@ -2259,9 +2253,9 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
             "**Frontier update, September 30, 2026:** The independently checked T-060 "
             f"proof by {verified.credit} establishes $s(11)=T$, where $T$ is Trump's "
             "exact degree-eight packing "
-            f"side specified in the [case record]({repo_file(FRONTIER_N11)}). The decimal "
+            f"side specified in the [case record]({repo_url(FRONTIER_N11)}). The decimal "
             f"${verified_tex}$ is a truncated display, not the definition of $T$. "
-            f"The [mathematical review]({repo_file(OPTIMALITY_REVIEW)}) "
+            f"The [mathematical review]({repo_url(OPTIMALITY_REVIEW)}) "
             "records the independent checks. This article retains the earlier T-018, "
             "T-025, and T-026 lower-bound proofs below."
         )
@@ -2282,9 +2276,9 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         frontier_update = (
             "**Frontier update, September 22, 2026:** We have verified Kleddamag's "
             "stronger lower bound, developed from the T-026 certificate below, so the "
-            f"[current bracket]({repo_file(FRONTIER_N11)}) is "
+            f"[current bracket]({repo_url(FRONTIER_N11)}) is "
             f"${verified.display} < s(11) \\le {truncated(BEST_PACKING, tex=True)}$. "
-            f"The [mathematical review]({repo_file(KLEDDAMAG_REVIEW)}) "
+            f"The [mathematical review]({repo_url(KLEDDAMAG_REVIEW)}) "
             "records the replays and proof. This article retains the T-018, T-025, "
             "and T-026 proofs below."
         )
@@ -2318,23 +2312,23 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         "HEADLINE_N_ATOMS": f"{len(headline.atoms):,}",
         "HEADLINE_N_DIRECTIONS": str(headline.steps + 1),
         "REFINEMENT_URL": (
-            repo_file(CASE / "t-022-dilation-limit-proof.md")
+            repo_url(CASE / "t-022-dilation-limit-proof.md")
             if headline.n == 11 and headline.outer_side == Fraction(381, 100)
             else ""
         ),
         "THIRDPARTY_L_FRAC": f"{package_side.numerator}/{package_side.denominator}",
-        "TITLE": TITLE,
+        "TITLE": HERO_TITLE,
         **card_substitutions(headline, current),
         "DEFAULT_L_FRAC": f"{default.outer_side.numerator}/{default.outer_side.denominator}",
         "DEFAULT_ID": default.identifier,
         # Print shows one certificate deterministically, and this names which.
         "DEFAULT_SLUG": slug(default),
-        "DEFAULT_CERT_URL": repo_file(default.source),
+        "DEFAULT_CERT_URL": repo_url(default.source),
         "N_RESULTS": str(registered_results()),
         "N_NOVEL": str(novel_results()),
-        "RESULTS_URL": repo_file(PACKING / "frontier/RESULTS.md"),
-        "FRONTIER_N11_URL": repo_file(PACKING / "frontier/n-011.md"),
-        "FRONTIER_N11_REVIEW_URL": repo_file(
+        "RESULTS_URL": repo_url(repo_links.RESULTS),
+        "FRONTIER_N11_URL": repo_url(PACKING / "frontier/n-011.md"),
+        "FRONTIER_N11_REVIEW_URL": repo_url(
             REPO / "docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md"
         ),
         "N_STARRED": str(starred_lower_bounds()),
@@ -2363,21 +2357,21 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         "PROBLEM_URL": PROBLEM_URL,
         "BEST_URL": BEST_URL,
         "BEST_SOURCE": BEST_SOURCE,
-        "BEST_RENDER_URL": repo_file(BEST_RENDERING),
-        "ATLAS_URL": repo_file(ATLAS),
-        "ARCHIVE_URL": repo_file(REPO / "packing/resources"),
-        "NAGAMOCHI_URL": repo_file(
+        "BEST_RENDER_URL": repo_url(BEST_RENDERING),
+        "ATLAS_URL": repo_url(ATLAS),
+        "ARCHIVE_URL": repo_url(REPO / "packing/resources"),
+        "NAGAMOCHI_URL": repo_url(
             REPO
             / "packing/resources/papers"
             / "nagamochi-2005-packing-unit-squares-in-a-rectangle.pdf"
         ),
-        "TUTORIAL_URL": repo_file(REPO / "TUTORIAL.md"),
-        "STROMQUIST_N26_REVIEW_URL": repo_file(
+        "TUTORIAL_URL": repo_url(repo_links.TUTORIAL),
+        "STROMQUIST_N26_REVIEW_URL": repo_url(
             REPO / "docs/project/research/research-2026-09-07-stromquist-n26-verification.md"
         ),
-        "WORKFLOWS_URL": repo_file(REPO / "SYNOPSIS.md") + "#workflow-entry-contracts",
-        "PRINCIPLES_URL": repo_file(REPO / "README.md") + "#operating-principles",
-        "EPISTEMICS_URL": repo_file(REPO / "epistemics.md"),
+        "WORKFLOWS_URL": repo_url(repo_links.SYNOPSIS, "#workflow-entry-contracts"),
+        "PRINCIPLES_URL": repo_url(repo_links.README, "#operating-principles"),
+        "EPISTEMICS_URL": repo_url(repo_links.EPISTEMICS),
         "TRUMP_SVG": best_packing_svg(),
         "CURRENT_BOUND_DEC": current.bounded_side_decimal,
         "CURRENT_BOUND_TEX": current.bounded_side_tex,
@@ -2394,9 +2388,9 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         "T025_LEAST_EXCESS": frac_inline_tex(current.least_charge - 1),
         "T025_DIRECTIONS": str(current.coarse_directions),
         "T025_INTERVAL_DIRECTIONS": str(current.coarse_interval_directions),
-        "T025_CERT_URL": repo_file(THRESHOLD_CERTIFICATE),
-        "T025_PROOF_URL": repo_file(THRESHOLD_PROOF),
-        "T025_CLAIM_URL": repo_file(T025_CLAIM),
+        "T025_CERT_URL": repo_url(THRESHOLD_CERTIFICATE),
+        "T025_PROOF_URL": repo_url(THRESHOLD_PROOF),
+        "T025_CLAIM_URL": repo_url(T025_CLAIM),
         "T026_FINE_B": frac_inline_tex(current.fine_square_side),
         "T026_TOTAL_BUDGET": decimal_or_rational(current.fine_total_budget),
         "T026_TOTAL_DEC": truncated(current.fine_total_budget),
@@ -2405,11 +2399,11 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         "T026_HALF_GAP": frac_inline_tex(current.fine_half_gap),
         "T026_NORMALIZATION": frac_inline_tex(current.normalization),
         "T026_FACTOR": current.dilation_factor_tex,
-        "T026_CERT_URL": repo_file(THRESHOLD_FINE_CERTIFICATE),
-        "T026_PROOF_URL": repo_file(THRESHOLD_CASE / "t-026-dilation-limit-proof.md"),
-        "T026_CLAIM_URL": repo_file(T026_CLAIM),
-        "T026_REVIEW_URL": repo_file(T026_REVIEW),
-        "T026_RECORD_URL": repo_file(CURRENT_BOUND_RECORD),
+        "T026_CERT_URL": repo_url(THRESHOLD_FINE_CERTIFICATE),
+        "T026_PROOF_URL": repo_url(THRESHOLD_CASE / "t-026-dilation-limit-proof.md"),
+        "T026_CLAIM_URL": repo_url(T026_CLAIM),
+        "T026_REVIEW_URL": repo_url(T026_REVIEW),
+        "T026_RECORD_URL": repo_url(CURRENT_BOUND_RECORD),
         "NUMBER_LINE_MARKS": number_line_marks(facts, headline, current),
         "VERIFIED_LOWER_DEC": verified.display,
         "VERIFIED_SOURCE": verified.credit,
@@ -2444,6 +2438,7 @@ def shell_substitutions(static: Path, shared: dict[str, str], body: str) -> dict
         "KPRESS_CSS": kpress_css(static) + katex_css(static),
         "PUBLICATION_CSS": PUBLICATION_STYLE.read_text(encoding="utf-8"),
         "RELATION_CSS": relation_face_css(static),
+        "PAPER_TYPE_CSS": PAPER_TYPE_CSS.read_text(encoding="utf-8"),
         "THEME_BOOTSTRAP": theme_bootstrap(static),
         "KATEX_JS": katex_js(static),
         **{
@@ -2452,6 +2447,8 @@ def shell_substitutions(static: Path, shared: dict[str, str], body: str) -> dict
             if key not in {"KPRESS_CLIENT_SCRIPT", "CERTIFICATE_SCRIPT"}
         },
         "KPRESS_CLIENT_SCRIPT": kpress_client_js(static),
+        "SITE_NAV_CSS": SITE_NAV_CSS.read_text(encoding="utf-8"),
+        "SITE_NAV": nav_html("papers"),
         **shared,
         "BODY_HTML": body,
     }
@@ -2543,11 +2540,11 @@ def certificate_substitutions(facts: Facts, *, default: Facts, toggle: str) -> d
         "BEST_SOURCE": BEST_SOURCE,
         "BEST_URL": BEST_URL,
         "DEFAULT_L_FRAC": f"{default.outer_side.numerator}/{default.outer_side.denominator}",
-        "CERT_URL": repo_file(facts.source),
-        "RENDERER_URL": repo_file(Path(__file__).resolve()),
-        "VERIFIER_URL": repo_file(VERIFIER),
-        "GENERATOR_URL": repo_file(GENERATOR),
-        "THIRDPARTY_URL": repo_file(THIRDPARTY),
+        "CERT_URL": repo_url(facts.source),
+        "RENDERER_URL": repo_url(Path(__file__).resolve()),
+        "VERIFIER_URL": repo_url(VERIFIER),
+        "GENERATOR_URL": repo_url(GENERATOR),
+        "THIRDPARTY_URL": repo_url(THIRDPARTY),
         "GAP_NOW": truncated(gap_now, tex=True),
         "GAP_BEFORE": truncated(gap_before, tex=True),
         "HALVING_B_DROP": halving_b,
@@ -2715,6 +2712,10 @@ RENDER_INPUTS = (
     TEMPLATE,
     PUBLICATION_STYLE,
     MARKDOWN,
+    SITE_NAV,
+    SITE_NAV_CSS,
+    PAPER_TYPE_CSS,
+    PACKING / "devtools" / "render_overview.py",
     PACKING / "devtools" / "templates" / "fonts",
     REPO / "vendor" / "kpress",
     PACKING / "pyproject.toml",
@@ -2798,7 +2799,7 @@ _EDITION_NOTE = f"""
 > This is the Markdown edition, written by the same render that writes the page. The
 > argument is complete here, and every figure's caption states what its figure shows.
 > Only Figure 2 carries its image; the rest are drawn by [the page
-> itself]({SITE_URL})."""
+> itself]({PAGE_URL})."""
 
 
 def _with_edition_note(document: str) -> str:
@@ -2886,7 +2887,7 @@ def published_markdown(source: str, *, default_slug: str) -> str:
                 number = re.match(r"\*\*Figure (\d+)", text)
                 which = f"Figure {number.group(1)}" if number else "This figure"
                 parts.append(
-                    f"*{which} is drawn by [the page]({SITE_URL}); its caption follows.*"
+                    f"*{which} is drawn by [the page]({PAGE_URL}); its caption follows.*"
                 )
             parts.append(text)
         out.append("\n\n".join(part for part in parts if part))

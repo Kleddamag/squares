@@ -19,6 +19,7 @@
      height are read from that PNG, so a consumer can reserve the box before it has the
      bytes. -->
 <link rel="canonical" href="{{CANONICAL_URL}}">
+{{SITE_FAVICON}}
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="{{SITE_NAME}}">
 <meta property="og:title" content="{{PAGE_TITLE}}">
@@ -40,10 +41,21 @@
      the three, so without these the reader's own machine draws them: a different face
      for every reader, and outline paths in the PDF. See `relation_face_css`. -->
 <style>{{RELATION_CSS}}</style>
+<!-- The text tokens every page of the site shares: type base, reading measure, heading
+     scale, the paper's roles, and the site's own faces. See templates/paper-type.css. -->
+<style>{{PAPER_TYPE_CSS}}</style>
+<!-- The site's navigation bar, shared with every other page of the site and hidden in
+     print. See templates/site-nav.css. -->
+<style>{{SITE_NAV_CSS}}</style>
 <script>{{THEME_BOOTSTRAP}}</script>
+<script>{{SITE_EMBED}}</script>
 <script>{{NATIVE_MATH_METRICS}}</script>
 <style>{{PUBLICATION_CSS}}</style>
 <style>
+/* Print shows one certificate, always the one the page opens on, so a printed copy
+   does not depend on what the reader last clicked. The rest of the page's styles
+   are templates/explainer-publication.css, above; this rule stays here because it
+   names the page's default certificate. */
 @media print {
   .cert-figure[data-cert="{{DEFAULT_SLUG}}"][hidden] { display: block !important; }
   .cert-figure:not([data-cert="{{DEFAULT_SLUG}}"]) { display: none !important; }
@@ -52,12 +64,14 @@
 </head>
 <body>
 <main class="kpress-page-main kpress-viewport">
+{{SITE_NAV}}
 <div class="kpress kpress-doc kpress-prose cert-page">
 {{BODY_HTML}}
 <p class="col colophon centred">Formatted and typeset with <a href="https://github.com/jlevy/flowmark"><strong>Flowmark</strong></a> and <a href="https://github.com/jlevy/kpress"><strong>KPress</strong></a></p>
 </div>
 
 </main>
+<script>{{SITE_THEME}}</script>
 <script>{{KATEX_JS}}</script>
 <script>{{RESERVE_MATH}}</script>
 <script>{{KPRESS_CLIENT_SCRIPT}}</script>

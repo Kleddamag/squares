@@ -32,6 +32,7 @@ def test_dirty_metadata_is_explicit() -> None:
         '<div style="background: url(../mark.svg)"></div>',
         '<img src="https://example.test/mark.svg">',
         # SVG's own fetch-bearing references (#125 F21).
+        '<link rel="icon" href="https://example.test/favicon.ico">',
         '<svg><image href="https://example.test/mark.png"></image></svg>',
         '<svg><image xlink:href="https://example.test/mark.png"/></svg>',
         '<svg><use href="https://example.test/sprite.svg#mark"></use></svg>',
@@ -47,6 +48,7 @@ def test_external_resource_is_refused(fragment: str) -> None:
     "fragment",
     [
         '<link rel="canonical" href="https://example.test/workbench/">',
+        '<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%3E%3C/svg%3E">',
         '<a href="https://example.test/explainer/">explainer</a>',
         "<style>.font { src: url(data:font/woff2;base64,AAAA); }</style>",
         "<style>.mark { fill: url(#gradient); }</style>",

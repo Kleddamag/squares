@@ -1,0 +1,141 @@
+{
+  "schema": "NativeParentCoreControls/v1",
+  "certificate": "packing/resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29/certificate/improved-global-certificate.json",
+  "controls": {
+    "gamma_plus_one": {
+      "description": "minimum charge Gamma raised by one unit (1e-9); budget unchanged",
+      "expected_refusal": "coverage: every row's minimum is exactly Gamma",
+      "bound": "3875000000/999999999",
+      "rows": {
+        "0": {
+          "refused": true,
+          "by": "coverage",
+          "status": "refuted",
+          "lower": null,
+          "boxes": 127,
+          "stalled": 0,
+          "threshold_units": 1000047560,
+          "refutations": [
+            {
+              "row": 0,
+              "rotated_centre": [
+                0.6700492574224189,
+                3.1499578193942304
+              ],
+              "charge": "1000047559/1000000000",
+              "admissible": true
+            }
+          ],
+          "seconds": 6.458204055999886
+        }
+      },
+      "refused": true,
+      "seconds": 6.9404093769999236
+    },
+    "counting_gap_closed": {
+      "description": "Gamma lowered to floor(M/11), so 11 Gamma <= M",
+      "expected_refusal": "counting: no strict gap",
+      "bound": "3875000000/999999999",
+      "rows": {
+        "0": {
+          "refused": true,
+          "by": "premises",
+          "error": "no strict counting gap"
+        }
+      },
+      "refused": true,
+      "seconds": 1.1273138359997574
+    },
+    "orbit_130_reverted": {
+      "description": "orbit 130 (the largest change, +34344) back to its source weight, budget recomputed",
+      "expected_refusal": "coverage: row 8844 falls below Gamma",
+      "bound": "3875000000/999999999",
+      "rows": {
+        "8844": {
+          "refused": true,
+          "by": "coverage",
+          "status": "refuted",
+          "lower": null,
+          "boxes": 11587,
+          "stalled": 0,
+          "threshold_units": 1000047559,
+          "refutations": [
+            {
+              "row": 8844,
+              "rotated_centre": [
+                2.8317673494290494,
+                0.8822462388658527
+              ],
+              "charge": "999978871/1000000000",
+              "admissible": true
+            }
+          ],
+          "seconds": 7.845046342999922
+        }
+      },
+      "refused": true,
+      "seconds": 8.282993016999626
+    },
+    "scaled_one_step_further": {
+      "description": "A and every B scaled by 1 - 2e-9 from the source instead of 1 - 1e-9",
+      "expected_refusal": "coverage: row 615 opens a cell below Gamma",
+      "bound": "1937500000/499999999",
+      "rows": {
+        "615": {
+          "refused": true,
+          "by": "coverage",
+          "status": "refuted",
+          "lower": null,
+          "boxes": 21227,
+          "stalled": 0,
+          "threshold_units": 1000047559,
+          "refutations": [
+            {
+              "row": 615,
+              "rotated_centre": [
+                0.5025196943425563,
+                1.4761542700041996
+              ],
+              "charge": "49946003/50000000",
+              "admissible": true
+            }
+          ],
+          "seconds": 10.98190308600033
+        }
+      },
+      "refused": true,
+      "seconds": 11.538870125000358
+    },
+    "scaled_past_known_packing": {
+      "description": "A and every B scaled further until L/A exceeds 3.877084, a side Trump's packing fits",
+      "expected_refusal": "coverage: a certificate for that bound would contradict a known packing",
+      "bound": "1937500000000000/499730999500269",
+      "rows": {
+        "0": {
+          "refused": true,
+          "by": "coverage",
+          "status": "refuted",
+          "lower": null,
+          "boxes": 6807,
+          "stalled": 0,
+          "threshold_units": 1000047559,
+          "refutations": [
+            {
+              "row": 0,
+              "rotated_centre": [
+                1.478846393658755,
+                3.1944799337555487
+              ],
+              "charge": "975617953/1000000000",
+              "admissible": true
+            }
+          ],
+          "seconds": 6.992661138999665
+        }
+      },
+      "refused": true,
+      "seconds": 7.4986587530002
+    }
+  },
+  "status": "PASS_ALL_CONTROLS_REFUSED"
+}

@@ -69,6 +69,62 @@ def test_rendered_page_is_offline_and_contains_proof_figures(rendered: tuple[str
     assert 'href="https://github.com/jlevy/squares"' in html
 
 
+def test_the_page_carries_the_sites_bar_with_papers_current(rendered: tuple[str, str]) -> None:
+    """The paper is one of the site's papers, so it carries the site's navigation bar as
+    the explainer does, through the shared helper: Papers is the current entry, the
+    bar's links climb to the site's root from the directory the paper is served in, the
+    gear's program and the embed script ride with it, and print hides the bar."""
+    from devtools import render_overview  # noqa: PLC0415
+
+    html, _ = rendered
+    assert paper.SITE_PATH == "n11-optimality/t-060-explainer.html"
+    assert paper.SITE_PATH in render_overview.SITE_PAGES
+    assert paper.SITE_PATH.count("/") == paper.SITE_ROOT.count("../") == 1
+    assert render_overview.nav_html("papers", root="../") in html
+    assert '<a data-page="papers" aria-current="page" href="../papers.html">Papers</a>' in html
+    # One link is current, the bar's entry: the format chips link the other formats.
+    assert len(re.findall(r'<a\b[^>]*\saria-current="page"', html)) == 1
+    main = html.split('<main class="kpress-page-main kpress-viewport">', 1)[1]
+    assert main.lstrip().startswith('<nav class="site-nav"')
+    nav_css = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
+    assert nav_css in html
+    # The shared text tokens come first, then the bar, then the publication layer both
+    # papers share, which reads both, then this paper's own diagram rules.
+    type_css = render_overview.PAPER_TYPE_CSS.read_text(encoding="utf-8")
+    publication_css = paper.render_explainer.PUBLICATION_STYLE.read_text(encoding="utf-8")
+    paper_css = paper.STYLE.read_text(encoding="utf-8")
+    order = [html.index(sheet) for sheet in (type_css, nav_css, publication_css, paper_css)]
+    assert order == sorted(order)
+    assert (
+        "@media print {\n  .site-nav,\n  .kpress-site-header {\n    display: none;" in nav_css
+    )
+    for script in (render_overview.THEME_SCRIPT, render_overview.EMBED_SCRIPT):
+        assert script.read_text(encoding="utf-8") in html, script.name
+    for needed in (
+        render_overview.PAPER_TYPE_CSS,
+        render_overview.SITE_NAV,
+        render_overview.SITE_NAV_CSS,
+        render_overview.THEME_SCRIPT,
+        render_overview.EMBED_SCRIPT,
+    ):
+        assert needed in paper.RENDER_INPUTS, needed.name
+    # The page's hero starts the site's one space below the bar's rule, by the rule the
+    # first paper's hero uses; this paper declares no top space of its own.
+    assert "    padding-block-start: var(--site-page-top);\n" in publication_css
+    assert "--site-page-top" not in paper_css
+
+
+def test_link_revision_is_the_commit_the_paper_is_built_from(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """The paper's citations name the checkout's `HEAD`, in full, and where git names no
+    commit the renderer says so rather than writing a link no one can follow."""
+    assert re.fullmatch(r"[0-9a-f]{40}", paper.link_revision())
+    monkeypatch.setattr(paper, "REPO", tmp_path)
+    with pytest.raises(SystemExit, match="give --revision"):
+        paper.link_revision()
+
+
 def test_local_citation_is_pinned(rendered: tuple[str, str]) -> None:
     html, markdown = rendered
     url = (

@@ -16,7 +16,13 @@ from pathlib import Path
 
 import pytest
 
-from devtools import pages_scope, render_explainer, render_n11_optimality_explainer
+from devtools import (
+    overview_data,
+    pages_scope,
+    render_explainer,
+    render_n11_optimality_explainer,
+    render_overview,
+)
 from devtools.pages_scope import (
     REPO,
     WORKFLOW,
@@ -50,6 +56,8 @@ def in_scope(changed: list[str], declared: dict[str, tuple[Path, ...]]) -> set[s
     [
         ("explainer", lambda: render_explainer.RENDER_INPUTS),
         ("workbench", lambda: build_site.RENDER_INPUTS),
+        ("overview", lambda: render_overview.RENDER_INPUTS),
+        ("overview", lambda: overview_data.INPUTS),
         ("optimality", lambda: render_n11_optimality_explainer.RENDER_INPUTS),
     ],
 )
@@ -80,6 +88,12 @@ def test_the_scope_reads_each_builder_declaration_live(monkeypatch: pytest.Monke
     assert "explainer" in in_scope([probe(added)], declared_inputs())
     monkeypatch.setattr(build_site, "RENDER_INPUTS", (*build_site.RENDER_INPUTS, added))
     assert in_scope([probe(added)], declared_inputs()) == {"explainer", "workbench"}
+    monkeypatch.setattr(overview_data, "INPUTS", (*overview_data.INPUTS, added))
+    assert in_scope([probe(added)], declared_inputs()) == {
+        "explainer",
+        "workbench",
+        "overview",
+    }
 
 
 def test_every_tool_a_pull_request_runs_for_a_page_is_that_pages_input(
@@ -186,6 +200,38 @@ def test_pull_request_178_would_have_run_no_browser_work(
     }
 
 
+def test_a_change_to_the_record_or_the_reader_documents_builds_only_the_overview(
+    declared: dict[str, tuple[Path, ...]],
+) -> None:
+    """The site's own pages read what neither other build does, and share what they do.
+
+    A register evidence entry, a case record, the bibliography, `epistemics.md` and the
+    tutorial are the overview's alone, so a pull request changing only those
+    runs its job and no explainer Chromium. The register itself is read by the explainer
+    too, and so is n = 11's case record, whose exact T-060 endpoint Figure 3 checks
+    (`render_explainer.n11_solved`); the renderer module by all three, since it also
+    writes the navigation bar the Visualizer's build takes (`nav_shell`); and kpress by
+    all three.
+    """
+    for changed in (
+        "TUTORIAL.md",
+        "epistemics.md",
+        "packing/frontier/evidence.yaml",
+        "packing/frontier/n-012.md",
+        "packing/resources/bibliography.yaml",
+        "packing/devtools/overview/forward.js",
+        "packing/devtools/templates/overview-article.md",
+    ):
+        assert in_scope([changed], declared) == {"overview"}, changed
+    for shared in ("packing/frontier/results.yaml", "packing/frontier/n-011.md"):
+        assert in_scope([shared], declared) == {"explainer", "overview"}, shared
+    assert in_scope(["packing/devtools/render_overview.py"], declared) == set(
+        pages_scope.BUILDER_INPUTS
+    )
+    assert in_scope(["vendor/kpress"], declared) == set(pages_scope.BUILDER_INPUTS)
+    assert in_scope(["AGENTS.md", "packing/resources/n11/source.md"], declared) == set()
+
+
 def test_t060_article_selects_only_its_page(declared: dict[str, tuple[Path, ...]]) -> None:
     assert in_scope(["packing/devtools/templates/n11-optimality-article.md"], declared) == {
         "optimality"
@@ -280,7 +326,7 @@ def test_a_gate_on_an_undeclared_page_is_refused() -> None:
 
 
 def test_every_page_says_why_it_was_skipped(declared: dict[str, tuple[Path, ...]]) -> None:
-    decisions = decide(["README.md", "packing/campaign/ledger.md"], declared)
+    decisions = decide(["AGENTS.md", "packing/campaign/ledger.md"], declared)
     assert [d.half for d in decisions] == list(pages_scope.BUILDER_INPUTS)
     for decision in decisions:
         assert not decision.in_scope
@@ -303,10 +349,13 @@ def test_the_workflow_outputs_and_summary_are_written(
         "explainer_reason=every page is built on a test",
         "workbench=true",
         "workbench_reason=every page is built on a test",
+        "overview=true",
+        "overview_reason=every page is built on a test",
         "optimality=true",
         "optimality_reason=every page is built on a test",
     ]
     assert "| explainer | builds and checks |" in summary.read_text(encoding="utf-8")
+    assert "| overview | builds and checks |" in summary.read_text(encoding="utf-8")
     assert "explainer: in scope" in capsys.readouterr().out
 
 

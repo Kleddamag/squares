@@ -274,6 +274,27 @@ sources:
       through the s(17) work (kleddamag-11/ATTRIBUTION.md, lines 3, 15 and 16). Its
       AUTHORS.md says OpenAI Codex developed the continuation under Kleddamag's
       direction. Dated by the release commit 6a733f33, 2026-09-22.
+  - key: '[Wang Li n11 2026]'
+    authors: [Ke Wang, Can Li]
+    year: 2026
+    venue: Zenodo
+    dated: '2026-09-29'
+    credit: Wang, Li after Kleddamag, Levy
+    short_credit: Wang, Li after Kleddamag et al.
+    lineage: builds-on-project
+    note: >-
+      Zenodo record 23038546 (DOI 10.5281/zenodo.23038546), version 1.0.0, published
+      2026-09-29 by Ke Wang and Can Li of Fudan University under CC-BY-4.0, retained in
+      web/wang-li-n11-2026-09-29/ and reported on jlevy/squares#247. It reweights thirteen
+      threshold-charge orbits of Kleddamag's v1.0.2 certificate and scales the parent and
+      core sides by 999999999/1000000000. Its SOURCE_ATTRIBUTION.md describes the work as a
+      derivative continuation of Kleddamag's release and keeps that release's attribution
+      to this project's T-026 certificate. The record, the archive and the preprint make no
+      statement about AI assistance. On jlevy/squares#247 on 2026-09-30 the authors wrote
+      that "AI assistance was used for most of the computational exploration, code drafting
+      and checking, organization of verification outputs, and preparation of the written
+      materials", that the credit line above is fine with them, and that a revised Zenodo
+      release will state it (retained in web/wang-li-n11-2026-09-29/).
   - key: '[Tokoharu density 2026]'
     authors: [Tokoharu]
     year: 2026
@@ -440,7 +461,10 @@ credited_names:
   Pertti Hämäläinen: Hämäläinen
   Robert Wainwright: Wainwright
   S.A. Mustafin: Mustafin
+  Tej Stead: Stead
   Thomas Schadt: Schadt
   UnitSquare Project: UnitSquare Project
   Walter Trump: Trump
+  Ke Wang: Wang
+  Can Li: Li
   Z.K. Shangitbayev: Shangitbayev

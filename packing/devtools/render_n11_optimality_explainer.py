@@ -3,12 +3,19 @@
 The article and exact-data figures are maintained separately. This renderer only
 substitutes the declared reviewed figure slots, gives repository citations immutable
 links, and uses KPress for Markdown, math, footnotes, typography, and PDF print.
+
+The page is one of the site's papers (`overview_sections.PAPERS`), so it carries the
+site's navigation bar, with Papers current, as the explainer does: the shared partial
+and stylesheet through `render_overview.nav_html`, the gear's program, and the script
+that drops the bar when the page is framed in a card's popover. It is served a level
+below the site's root, so the bar's links climb one. The bar is hidden in print.
 """
 
 from __future__ import annotations
 
 import argparse
 import re
+import subprocess
 from collections.abc import Mapping, Sequence
 from html import escape
 from pathlib import Path
@@ -18,6 +25,15 @@ from kpress.output import write_bytes_atomic
 from strif import atomic_output_file
 
 from devtools import render_explainer
+from devtools.render_overview import (
+    EMBED_SCRIPT,
+    PAPER_TYPE_CSS,
+    SITE_NAV,
+    SITE_NAV_CSS,
+    THEME_SCRIPT,
+    favicon_html,
+    nav_html,
+)
 
 PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
@@ -28,6 +44,9 @@ STYLE = TEMPLATES / "n11-optimality.css"
 FIGURES_MODULE = Path(__file__).with_name("n11_optimality_figures.py")
 OUTPUT_DIR = PACKING / "site" / "n11-optimality"
 STEM = "t-060-explainer"
+#: Where the paper is served, from the site's root, and the way back up to the root.
+SITE_PATH = f"{OUTPUT_DIR.name}/{STEM}.html"
+SITE_ROOT = "../"
 TITLE = "A Review of the Optimality Proof of the Trump Packing of 11 Squares"
 DESCRIPTION = "A review of the optimality proof of the Trump packing of eleven squares."
 FIGURE_KEYS = (
@@ -67,6 +86,12 @@ RENDER_INPUTS = (
     PACKING / "devtools" / "check_n11_optimality_d4.py",
     PACKING / "devtools" / "render_explainer.py",
     PACKING / "devtools" / "explainer" / "diagram-labels.js",
+    PACKING / "devtools" / "render_overview.py",
+    PAPER_TYPE_CSS,
+    SITE_NAV,
+    SITE_NAV_CSS,
+    THEME_SCRIPT,
+    EMBED_SCRIPT,
     PACKING / "atlas" / "rendering" / "trump11-overview.svg",
     PACKING / "devtools" / "packing_render_adapters.py",
     PACKING / "src" / "sqpack" / "render",
@@ -111,6 +136,23 @@ def render_all_figures() -> dict[str, str]:
             raise ValueError("figure renderers supplied duplicate slots")
         figures.update(group)
     return figures
+
+
+def link_revision() -> str:
+    """The commit the paper's repository citations name: the one it is built from.
+
+    The paper pins each citation to a commit, so a cited receipt reads as it did when
+    the paper was typeset; the site's own pages link `main` instead (`repo_links`). The
+    deploy renders from `main`, so `HEAD` there is a commit `main` keeps. Where git
+    cannot answer (a source tarball), `--revision` has to say which commit it is.
+    """
+    found = subprocess.run(
+        ("git", "rev-parse", "HEAD"), cwd=REPO, capture_output=True, text=True, check=False
+    )
+    revision = found.stdout.strip()
+    if found.returncode != 0 or not re.fullmatch(r"[0-9a-f]{40}", revision):
+        raise SystemExit("git names no HEAD here: give --revision, a full commit ID")
+    return revision
 
 
 def _fill(template: str, values: Mapping[str, str], *, source: Path) -> str:
@@ -212,8 +254,14 @@ def render(
         "KPRESS_CSS": render_explainer.kpress_css(static),
         "KATEX_CSS": render_explainer.katex_css(static) if document.has_math else "",
         "RELATION_CSS": render_explainer.relation_face_css(static),
+        "PAPER_TYPE_CSS": PAPER_TYPE_CSS.read_text(encoding="utf-8"),
         "PUBLICATION_CSS": render_explainer.PUBLICATION_STYLE.read_text(encoding="utf-8"),
         "PAPER_CSS": STYLE.read_text(encoding="utf-8"),
+        "SITE_FAVICON": favicon_html(),
+        "SITE_NAV_CSS": SITE_NAV_CSS.read_text(encoding="utf-8"),
+        "SITE_NAV": nav_html("papers", root=SITE_ROOT),
+        "SITE_EMBED": EMBED_SCRIPT.read_text(encoding="utf-8"),
+        "SITE_THEME": THEME_SCRIPT.read_text(encoding="utf-8"),
         "THEME_BOOTSTRAP": render_explainer.theme_bootstrap(static),
         "BODY_HTML": document.html,
         "KATEX_JS": _katex_js(static) if document.has_math else "",
@@ -291,7 +339,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     html, markdown = render(
         ARTICLE.read_text(encoding="utf-8"),
         figures=render_all_figures(),
-        revision=args.revision or render_explainer.link_revision(),
+        revision=args.revision or link_revision(),
     )
     output_dir = args.output_dir.resolve()
     outputs = output_files(output_dir, html, markdown)

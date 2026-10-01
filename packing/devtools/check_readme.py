@@ -7,7 +7,7 @@ counts owned by `defects.yaml` and went stale behind them both times. The counts
 gone now, moved to the generated view that owns them. What is left is the part a
 checker can hold: the layout tree, the report index, the links, and the work model.
 
-Seven checks:
+Six checks:
 
 1. **Every link resolves**, including anchors into other documents. README and SYNOPSIS
    cross-reference each other heavily and a dead link between them is invisible until
@@ -24,18 +24,17 @@ Seven checks:
    workflow entry points, the agent-session schema must be able to record them, the
    synopsis must define the work units those workflows produce, and retired workflow
    identifiers must not survive elsewhere in repository-owned text.
-6. **New results are complete.** Every result classified as `apparently-novel` or
-   `confirmed-novel` appears in the New Results section, and every concrete result ID
-   named there exists in the register. The section's table is generated from the
-   register by `devtools.render_recent_results`, whose `--check` fails on a hand edit
-   inside it; this rule is the second guard, and it also holds the prose around the
-   table to ids the register knows.
-7. **The recent-result counts are derived.** The survey summary spells out how many of
-   the hundred cases carry a recent lower bound, in how many the verified bound itself is
-   recent, and how many of those are this project's and new exact values. Each is the
-   count of rows `devtools.render_recent_results` generates, in the shape
-   `check_nagamochi_bounds._README_COUNT` holds the Nagamochi count; the listing and its
-   counts drifted three times by hand (`think-ti71`).
+6. **The introduction is marked.** The site's overview renders README's introduction
+   as its own prose, read from two blocks: the one between the `project-intro` markers
+   is its first section, and the one between the `recent-progress` markers opens its
+   Recent Results (`site_documents.shared_blocks`). Each block must be there once and
+   hold prose alone, with no heading or comment and no case called the central one,
+   and the second must follow the first directly.
+
+Two more checks held README's New Results section to the register and its survey
+summary's recent-result counts to the records. Both went with those sections when the
+results moved to the site's overview (`think-f7ig`), which renders them from the record;
+`check_results` still holds every result id README mentions to the register.
 
 Every one of those that asks what is in the directory asks git, not the filesystem. A
 README cannot be wrong about a file the repository does not hold, so such a file cannot
@@ -59,10 +58,9 @@ import sys
 from pathlib import Path
 from typing import NamedTuple
 
-from devtools.build_bound_citations import RECENT_SINCE
 from devtools.check_synopsis import check_links
-from devtools.render_recent_results import RecentCounts, recent_counts, recent_rows
 from devtools.repo_scope import tracked_files, vendored_directories
+from devtools.site_documents import shared_blocks
 from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -72,10 +70,7 @@ README = REPO / "README.md"
 SYNOPSIS = REPO / "SYNOPSIS.md"
 RESEARCH = REPO / "docs/project/research"
 DEFECTS = ROOT / "defects.yaml"
-RESULTS = ROOT / "frontier/results.yaml"
 SESSION_SCHEMA = ROOT / "campaign/schemas/agent-session.schema.yaml"
-
-NEW_RESULT_NOVELTY = frozenset({"apparently-novel", "confirmed-novel"})
 
 WORK_UNITS = (
     "Packing exploration",
@@ -216,25 +211,6 @@ def spelled(n: int) -> str:
     return _TENS[tens] if units == 0 else f"{_TENS[tens]}-{_SPELLED[units]}"
 
 
-#: The survey summary's recent-result sentence, whose four counts are the generated
-#: table's. Every space is `\s+` because the formatter owns the line breaks, and the
-#: apostrophe may be curled or not.
-RECENT_COUNT = re.compile(
-    r"(?P<cases>[A-Za-z0-9-]+)\s+of\s+its\s+hundred\s+cases\s+carry\s+a\s+lower\s+bound\s+"
-    r"published\s+since\s+(?P<since>\d{1,2}\s+[A-Z][a-z]+\s+\d{4}),\s+reported\s+or\s+"
-    r"verified;\s+in\s+(?P<verified>[A-Za-z0-9-]+)\s+the\s+verified\s+bound\s+itself\s+is\s+"
-    r"recent,\s+(?P<ours>[A-Za-z0-9-]+)\s+of\s+those\s+are\s+this\s+project[\u2019']s,\s+"
-    r"and\s+(?P<exact>[A-Za-z0-9-]+)\s+are\s+new\s+exact\s+values"
-)
-#: What each of those counts is, for the refusal message.
-RECENT_COUNT_MEANS = {
-    "cases": "cases with a recent lower bound, reported or verified",
-    "verified": "cases whose verified bound is recent",
-    "ours": "of those this project's",
-    "exact": "of those new exact values",
-}
-
-
 #: W1 through W10. Bumping this is the deliberate half of adding a workflow; the other
 #: half is the two orientation tables in README.md and SYNOPSIS.md, which this check
 #: compares against the schema rather than against each other.
@@ -366,7 +342,7 @@ def check_reports(text: str) -> list[str]:
     ]
 
     n = len(actual)
-    word = _SPELLED.get(n, str(n))
+    word = spelled(n)
     if not re.search(rf"\b({n}|{word})\s+research reports\b", text, re.IGNORECASE):
         problems.append(
             f"README.md: does not say there are {word} research reports (there are)"
@@ -400,72 +376,6 @@ def check_defect_summary(text: str) -> list[str]:
             "README.md: repeats a numeric gate-defect aggregate owned by defects.yaml"
         )
     return problems
-
-
-def result_coverage_problems(text: str, results: list[dict[str, object]]) -> list[str]:
-    """Reconcile a New Results section with registered novel results."""
-    section = re.search(
-        r"^## New Results\s*$\n(?P<body>.*?)(?=^##\s|\Z)",
-        text,
-        re.MULTILINE | re.DOTALL,
-    )
-    if section is None:
-        return ["README.md: has no New Results section"]
-
-    registered = {str(result["id"]) for result in results}
-    required = {
-        str(result["id"]) for result in results if result.get("novelty") in NEW_RESULT_NOVELTY
-    }
-    named = set(re.findall(r"\bT-\d{3}\b", section.group("body")))
-
-    problems = [
-        f"README.md: New Results does not name novel result {result_id}"
-        for result_id in sorted(required - named)
-    ]
-    problems.extend(
-        f"README.md: New Results names unregistered result {result_id}"
-        for result_id in sorted(named - registered)
-    )
-    return problems
-
-
-def recent_count_problems(text: str, counts: RecentCounts) -> list[str]:
-    """The survey summary's recent-result counts against the generated table's.
-
-    A sentence deleted rather than corrected is a count nothing checks, so its absence
-    fails too. The date it names is `RECENT_SINCE`, the day the star and the table read.
-    """
-    match = RECENT_COUNT.search(text)
-    if match is None:
-        return [
-            (
-                "README.md: no 'N of its hundred cases carry a lower bound published since "
-                "...' recent-result sentence to check"
-            )
-        ]
-    problems: list[str] = []
-    since = f"{RECENT_SINCE.day} {RECENT_SINCE:%B} {RECENT_SINCE.year}"
-    if " ".join(match.group("since").split()) != since:
-        problems.append(
-            f"README.md: dates recent results from {match.group('since')}; they begin {since}"
-        )
-    for field, means in RECENT_COUNT_MEANS.items():
-        said, expected = match.group(field), getattr(counts, field)
-        if said.lower() not in {spelled(expected), str(expected)}:
-            problems.append(
-                f"README.md says {said} {means}; the records say {spelled(expected)}"
-            )
-    return problems
-
-
-def check_recent_counts(text: str) -> list[str]:
-    return recent_count_problems(text, recent_counts(recent_rows()))
-
-
-def check_result_coverage(text: str) -> list[str]:
-    """Load the results register and check the curated reader-facing section."""
-    register = safe_load(RESULTS.read_text(encoding="utf-8"))
-    return result_coverage_problems(text, register["results"])
 
 
 def workflow_rows(text: str) -> list[tuple[str, str]]:
@@ -604,6 +514,16 @@ def check_work_model(text: str) -> list[str]:
     return problems
 
 
+def check_intro(text: str) -> list[str]:
+    """The two blocks of the introduction the site's overview renders are each marked
+    once, in order, and are prose alone."""
+    try:
+        shared_blocks(text)
+    except ValueError as error:
+        return [f"README.md: {error}"]
+    return []
+
+
 def main() -> int:
     text = README.read_text(encoding="utf-8")
     scan = scan_retired_workflow_identifiers()
@@ -612,9 +532,8 @@ def main() -> int:
         + check_layout(text)
         + check_reports(text)
         + check_defect_summary(text)
-        + check_result_coverage(text)
-        + check_recent_counts(text)
         + check_work_model(text)
+        + check_intro(text)
         + scan.problems
     )
     for skip in scan.skipped:
@@ -625,8 +544,8 @@ def main() -> int:
             print(f"  {problem}", file=sys.stderr)
         return 1
     print(
-        "  README.md agrees with the directory, reports, defect and result sources, "
-        "recent-result counts, work model and its own links"
+        "  README.md agrees with the directory, reports, defect sources, work model and its "
+        "own links"
     )
     return 0
 

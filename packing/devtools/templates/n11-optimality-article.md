@@ -130,9 +130,12 @@ The [local estimate](#the-local-argument-excludes-every-nonzero-motion) and
 [exact frame change](#closing-the-gap-between-the-rational-cap-and-the-exact-optimum)
 complete the contradiction.
 
-The Squares Project records this result as **T-060, S5/V4/C5**: a result resolving the
+The Squares Project records this result as **T-060, S5/V3/C3**: a result resolving the
 global optimum, supported by exact computational verification and a mapped mathematical
-review. This is a computer-assisted proof with a stated software trust base; a completed
+review, machine-checked here with its review record pending.
+Under the ladder of 2026-09-30, rung 4 on either axis also needs a second adversarial
+review by a distinct reviewer and a retained human oversight record, which this result
+awaits. This is a computer-assisted proof with a stated software trust base; a completed
 proof-assistant formalization is not claimed.[^review]
 
 ## From Weighted Points to a Global Proof
@@ -771,9 +774,11 @@ The local construction, derivative calculations and exact arithmetic include sha
 first-party primitives.
 The confirmation follows the same mathematical argument, rather than supplying a
 distinct proof method.
-V4/C5 consequently does not mean C4 distinct-method confirmation or V5 formal
-verification. The trust base includes the reviewed mathematical reductions, checker
-source, arithmetic libraries, runtime and executing system.
+V3/C3 consequently means a machine certificate replayed here with its review record
+pending, not distinct-method confirmation, not the adversarially reviewed and
+human-overseen rung 4, and not V5 formal verification.
+The trust base includes the reviewed mathematical reductions, checker source, arithmetic
+libraries, runtime and executing system.
 
 The final composition receipt reconciles the completed geometric executions and their
 reviewed dependencies.

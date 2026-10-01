@@ -23,6 +23,7 @@ Those are history and cannot drift.
 from __future__ import annotations
 
 import json
+import math
 import os
 from dataclasses import replace
 from pathlib import Path
@@ -35,6 +36,7 @@ from devtools.check_gate_budgets import (
     attribute_files,
     coverage_problems,
     pull_request_tiers,
+    relative_rule_problems,
     unrecorded_problems,
     wall_problems,
 )
@@ -42,10 +44,18 @@ from devtools.check_pr_wall import load_walls
 from sqpack import gate_budgets
 from sqpack.cli import validate
 from sqpack.gate_budgets import BudgetError, Register, TierBudget
+from sqpack.yamlio import safe_load
 
 LIVE = gate_budgets.BUDGETS
 SLOW_STEP = "a step that got slower"
 CHEAP_STEP = "a step that did not"
+#: One day of hosted readings of two tiers, with the verdict each gets under three rules.
+HOSTED_DAY = (
+    Path(__file__).resolve().parent
+    / "fixtures"
+    / "tier-walls"
+    / "hosted-readings-2026-09-30.yaml"
+)
 
 
 def live() -> Register:
@@ -973,3 +983,339 @@ def test_a_band_without_a_record_is_refused(tmp_path: Path) -> None:
     )
     with pytest.raises(BudgetError, match="measured_band without a measured_seconds"):
         gate_budgets.load(spec)
+
+
+# --- the drift and stale rules, advisory on pull requests (think-53a2, 2026-10-01) ------
+
+
+def relaxed(
+    tmp_path: Path,
+    *,
+    enforcement: str | None = "advisory",
+    bead: str | None = "think-aaaa",
+    reason: str | None = "a fabricated owner decision",
+    ceiling: float = 200.0,
+    measured: str = "100.0",
+) -> Path:
+    """The fabricated register with `policy.pull_request_relative_rules` declared.
+
+    Each field is written only when given, so a test can leave one out to see it refused.
+    """
+    spec = fabricated(tmp_path, ceiling=ceiling, measured=measured)
+    lines = ["  pull_request_relative_rules:"]
+    lines.extend(
+        f"    {name}: {value}"
+        for name, value in (
+            ("enforcement", enforcement),
+            ("tracking_bead", bead),
+            ("advisory_reason", reason),
+        )
+        if value is not None
+    )
+    document = spec.read_text(encoding="utf-8")
+    spec.write_text(document.replace("tiers:\n", "\n".join(lines) + "\ntiers:\n", 1))
+    return spec
+
+
+def judge_pull_request(
+    register: Register, wall: float, *, pull_request: bool = True, force: bool = False
+) -> gate_budgets.Verdict:
+    """Judge one wall of the fabricated register's one tier at its reference shape."""
+    tier = register.tiers[0]
+    return gate_budgets.judge(
+        register,
+        tier.id,
+        wall_seconds=wall,
+        steps=((SLOW_STEP, wall),),
+        jobs=tier.reference.jobs,
+        inner_jobs=tier.reference.inner_jobs,
+        cpus=tier.reference.cpus,
+        force=force,
+        pull_request=pull_request,
+    )
+
+
+def test_band_findings_keep_the_ceiling_apart_from_the_relative_rules(tmp_path: Path) -> None:
+    """Rule 1 is absolute and rules 3 and 4 are relative to the record, and a caller that
+    relaxes the latter must be able to tell them apart without parsing a sentence."""
+    register = gate_budgets.load(fabricated(tmp_path, ceiling=200.0, measured="100.0"))
+    policy = register.policy
+    found = gate_budgets.band_findings(
+        subject="the fast tier",
+        wall_seconds=210.0,
+        ceiling_seconds=200.0,
+        measured_seconds=100.0,
+        shape="fabricated",
+        policy=policy,
+        attribution="one step",
+        register_path=None,
+    )
+    assert len(found.ceiling) == 1
+    assert "ceiling" in found.ceiling[0]
+    assert len(found.relative) == 1
+    assert f"{policy.drift_ratio:g}x fails" in found.relative[0]
+    assert found.failures == (*found.ceiling, *found.relative)
+
+
+def test_a_stale_run_on_a_pull_request_is_reported_and_not_failed(tmp_path: Path) -> None:
+    """The 2026-09-30 failure, replayed on a fabricated register.
+
+    PR #262's checks tier ran 62.3 s against a recorded 114.34 s, 0.54x, with every step
+    green, and the job failed. Under the relaxation the same finding is computed, printed
+    as advisory under its bead, and the run passes; off a pull request, or with the
+    operator's `--enforce-budget`, it still fails.
+    """
+    register = gate_budgets.load(relaxed(tmp_path))
+    policy = register.policy
+    wall = 100.0 * policy.stale_ratio * 0.9
+
+    advisory = judge_pull_request(register, wall)
+    assert advisory.status == "advisory", advisory
+    assert not advisory.failed
+    assert advisory.failures == ()
+    assert len(advisory.advisory_failures) == 1
+    assert "stale in the flattering direction" in advisory.advisory_failures[0]
+    assert advisory.advisory is not None
+    assert advisory.advisory.tracking_bead == "think-aaaa"
+    rendered = gate_budgets.render(advisory)
+    assert any(line.startswith("  FAIL (advisory, not enforced): ") for line in rendered)
+    assert any("advisory on pull requests under think-aaaa" in line for line in rendered)
+    assert not any(line.startswith("  FAIL: ") for line in rendered)
+    assert (
+        validate._summary_status(
+            validate.RunSummary(
+                results=[], wall_seconds=wall, selected_count=1, total_count=1, budget=advisory
+            ),
+            strict=False,
+        )
+        == 0
+    )
+
+    locally = judge_pull_request(register, wall, pull_request=False)
+    assert locally.failed, locally
+    assert locally.advisory is None
+    assert locally.advisory_failures == ()
+
+    forced = judge_pull_request(register, wall, force=True)
+    assert forced.failed, forced
+
+
+def test_a_drifted_run_on_a_pull_request_is_advisory_but_the_ceiling_still_fails_it(
+    tmp_path: Path,
+) -> None:
+    """PR #255's shard C: 140.2 s against 88.59 s, 1.58x, inside the 154 s ceiling, is
+    advisory; 172.5 s is over the ceiling and fails whatever the relaxation says."""
+    register = gate_budgets.load(relaxed(tmp_path))
+    policy = register.policy
+    inside = judge_pull_request(register, 100.0 * (policy.drift_ratio + 0.1))
+    assert inside.status == "advisory", inside
+    assert any(f"{policy.drift_ratio:g}x fails" in r for r in inside.advisory_failures)
+
+    over = judge_pull_request(register, 200.0 * 1.05)
+    assert over.failed, over
+    assert len(over.failures) == 1
+    assert "ceiling" in over.failures[0]
+    assert any("fails" in r for r in over.advisory_failures), (
+        "the drift finding is still reported beside the ceiling failure"
+    )
+
+
+def test_a_pull_request_run_off_the_reference_shape_is_reported_not_advisory(
+    tmp_path: Path,
+) -> None:
+    register = gate_budgets.load(relaxed(tmp_path))
+    tier = register.tiers[0]
+    verdict = gate_budgets.judge(
+        register,
+        tier.id,
+        wall_seconds=10.0 * register.policy.stale_ratio,
+        steps=((SLOW_STEP, 10.0),),
+        jobs=tier.reference.jobs,
+        inner_jobs=tier.reference.inner_jobs,
+        cpus=tier.reference.cpus + 1,
+        pull_request=True,
+    )
+    assert verdict.status == "reported"
+    assert verdict.advisory is None
+    assert verdict.advisory_failures == ()
+
+
+def test_an_enforcing_declaration_leaves_every_rule_as_it_was(tmp_path: Path) -> None:
+    """`enforcement: enforcing`, and an absent block, are the same thing: no relaxation."""
+    spec = relaxed(tmp_path, enforcement="enforcing", bead=None, reason=None)
+    register = gate_budgets.load(spec)
+    assert register.policy.pull_request_relative_rules is None
+    wall = 100.0 * register.policy.stale_ratio * 0.9
+    assert judge_pull_request(register, wall).failed
+    assert (
+        gate_budgets.load(
+            fabricated(tmp_path, ceiling=200.0, measured="100.0")
+        ).policy.pull_request_relative_rules
+        is None
+    )
+
+
+@pytest.mark.parametrize(
+    ("enforcement", "bead", "reason", "message"),
+    [
+        (
+            "enforcing",
+            "think-aaaa",
+            "a reason",
+            "enforcing and still names tracking_bead, advisory_reason",
+        ),
+        ("advisory", None, "a reason", "tracking_bead: think-xxxx"),
+        ("advisory", "closed-4cwy", "a reason", "tracking_bead: think-xxxx"),
+        ("advisory", "think-aaaa", None, "advisory_reason"),
+        ("lenient", "think-aaaa", "a reason", "enforcement must be one of"),
+    ],
+)
+def test_a_malformed_relative_rule_declaration_is_refused(
+    tmp_path: Path, enforcement: str, bead: str | None, reason: str | None, message: str
+) -> None:
+    """The records tier fails on the declaration before any pull request reads it."""
+    with pytest.raises(BudgetError, match=message):
+        gate_budgets.load(relaxed(tmp_path, enforcement=enforcement, bead=bead, reason=reason))
+
+
+def test_an_advisory_relative_rule_must_be_tracked_by_an_open_bead(tmp_path: Path) -> None:
+    """The ratchet an advisory wall is held to, applied to the relaxed rules.
+
+    A closed bead means the work that ends the relaxation is claimed done while the rules
+    are still not enforced; an unknown one never tracked anything. Both are refused on a
+    fixture store so this runs anywhere.
+    """
+    read = bead_state.fixture_store({"aaaa": "open", "bbbb": "in_progress", "cccc": "closed"})
+    assert (
+        relative_rule_problems(gate_budgets.load(relaxed(tmp_path, bead="think-aaaa")), read)
+        == []
+    )
+    assert (
+        relative_rule_problems(gate_budgets.load(relaxed(tmp_path, bead="think-bbbb")), read)
+        == []
+    )
+    closed = relative_rule_problems(
+        gate_budgets.load(relaxed(tmp_path, bead="think-cccc")), read
+    )
+    assert len(closed) == 1, closed
+    assert "under think-cccc: closed" in closed[0]
+    unknown = relative_rule_problems(
+        gate_budgets.load(relaxed(tmp_path, bead="think-zzzz")), read
+    )
+    assert len(unknown) == 1, unknown
+    assert "under think-zzzz: no such bead" in unknown[0]
+    enforcing = gate_budgets.load(
+        relaxed(tmp_path, enforcement="enforcing", bead=None, reason=None)
+    )
+    assert relative_rule_problems(enforcing, read) == []
+
+
+def test_an_advisory_relative_rule_with_no_bead_store_fails_under_ci_and_skips_locally(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    register = gate_budgets.load(relaxed(tmp_path))
+    monkeypatch.setattr(bead_state, "store", lambda: None)
+    monkeypatch.setenv("CI", "true")
+    problems = relative_rule_problems(register)
+    assert len(problems) == 1, problems
+    assert "fetch full history" in problems[0]
+
+    monkeypatch.delenv("CI")
+    capsys.readouterr()
+    assert relative_rule_problems(register) == []
+    printed = capsys.readouterr().out
+    assert printed.startswith("SKIP "), printed
+    assert "think-aaaa" in printed
+
+
+def test_the_live_relaxation_names_a_live_bead_and_keeps_the_ceiling() -> None:
+    """The register as checked in: advisory under a bead the store confirms is open."""
+    register = live()
+    declared = register.policy.pull_request_relative_rules
+    assert declared is not None, "the live register no longer declares the relaxation"
+    assert relative_rule_problems(register, _require_bead_store()) == []
+    # The ceiling is outside the relaxation: a pull-request run over it still fails.
+    tier = recorded_tier(register)
+    over = gate_budgets.judge(
+        register,
+        tier.id,
+        wall_seconds=tier.ceiling_seconds * 1.01,
+        steps=((SLOW_STEP, tier.ceiling_seconds * 1.01),),
+        jobs=tier.reference.jobs,
+        inner_jobs=tier.reference.inner_jobs,
+        cpus=tier.reference.cpus,
+        pull_request=True,
+    )
+    assert over.failed, over
+
+
+def test_the_day_of_2026_09_30_is_judged_on_code_not_on_the_runner() -> None:
+    """Every hosted reading of the two tiers that failed that day, replayed three ways.
+
+    The fixture carries the readings with their run ids and the verdict intended under
+    each rule; this computes all three from the register and holds them to it, so the
+    table in the fixture is what the code does and not a story about it. Under the live
+    register every clean reading passes, and the only walls still failed are the two over
+    the 154 s ceiling, which `OR-17` keeps absolute.
+    """
+    document = safe_load(HOSTED_DAY.read_text(encoding="utf-8"))
+    register = live()
+    superseded = document["superseded"]
+    old_register = replace(
+        register,
+        policy=replace(register.policy, pull_request_relative_rules=None),
+        tiers=tuple(
+            replace(
+                tier,
+                measured_seconds=float(superseded[tier.id]["measured_seconds"]),
+                ceiling_seconds=float(superseded[tier.id]["ceiling_seconds"]),
+                measured_band=None,
+                history=(),
+                attribution=None,
+            )
+            if tier.id in superseded
+            else tier
+            for tier in register.tiers
+        ),
+    )
+    relaxed_old = replace(old_register, policy=register.policy)
+    assert register.policy.pull_request_relative_rules is not None
+
+    def verdict(which: Register, tier_id: str, wall: float) -> str:
+        tier = which.tier(tier_id)
+        assert tier is not None
+        judged = gate_budgets.judge(
+            which,
+            tier_id,
+            wall_seconds=wall,
+            steps=((f"fast behavioral tests, {tier_id}", wall),),
+            jobs=tier.reference.jobs,
+            inner_jobs=tier.reference.inner_jobs,
+            cpus=tier.reference.cpus,
+            pull_request=True,
+        )
+        return judged.status
+
+    readings = document["readings"]
+    assert len(readings) >= 60
+    for reading in readings:
+        tier_id, wall = str(reading["tier"]), float(reading["wall"])
+        where = f"{tier_id} {wall} in run {reading['run']}"
+        assert verdict(old_register, tier_id, wall) == reading["old_rule"], where
+        assert verdict(relaxed_old, tier_id, wall) == reading["relaxation_alone"], where
+        assert verdict(register, tier_id, wall) == reading["intended"], where
+
+    counted = [r for r in readings if not r.get("step_failed")]
+    assert all(r["intended"] == "passed" for r in counted)
+    refused = [r for r in readings if r.get("step_failed")]
+    assert refused
+    assert all(r["intended"] == "failed" for r in refused)
+    for tier_id in ("checks", "suite_c"):
+        tier = register.tier(tier_id)
+        assert tier is not None
+        assert tier.measured_band is not None
+        walls = [float(r["wall"]) for r in counted if r["tier"] == tier_id]
+        assert tier.measured_band == (min(walls), max(walls)), tier_id
+        assert tier.measured_seconds is not None
+        geometric = math.exp(sum(math.log(w) for w in walls) / len(walls))
+        assert tier.measured_seconds == pytest.approx(geometric, abs=0.01), tier_id

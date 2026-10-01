@@ -1,0 +1,41 @@
+def SquarePacking.coord : ℝ × ℝ → ℝ → ℝ × ℝ → ℝ × ℝ :=
+fun c θ p => ((p.1 - c.1) * Real.cos θ + (p.2 - c.2) * Real.sin θ, -(p.1 - c.1) * Real.sin θ + (p.2 - c.2) * Real.cos θ)
+def SquarePacking.sq : ℝ × ℝ → ℝ → ℝ → Set (ℝ × ℝ) :=
+fun c θ L => {p | |(SquarePacking.coord c θ p).1| ≤ L / 2 ∧ |(SquarePacking.coord c θ p).2| ≤ L / 2}
+def SquarePacking.sqInt : ℝ × ℝ → ℝ → ℝ → Set (ℝ × ℝ) :=
+fun c θ L => {p | |(SquarePacking.coord c θ p).1| < L / 2 ∧ |(SquarePacking.coord c θ p).2| < L / 2}
+def SquarePacking.box : ℝ → Set (ℝ × ℝ) :=
+fun t => {p | 0 ≤ p.1 ∧ p.1 ≤ t ∧ 0 ≤ p.2 ∧ p.2 ≤ t}
+def SquarePacking.Packs : ℕ → ℝ → Prop :=
+fun n s =>
+  ∃ ctr ang,
+    (∀ (i : Fin n), SquarePacking.sq (ctr i) (ang i) 1 ⊆ SquarePacking.box s) ∧
+      ∀ (i j : Fin n), i ≠ j → Disjoint (SquarePacking.sqInt (ctr i) (ang i) 1) (SquarePacking.sqInt (ctr j) (ang j) 1)
+def SquarePacking.minSide : ℕ → ℝ :=
+fun n => sInf {s | SquarePacking.Packs n s}
+SquarePacking.s32_eq_six_of_checker : SquarePacking.S32CheckerCover → SquarePacking.minSide 32 = 6
+SquarePacking.s21_eq_five_of_checker : SquarePacking.S21CheckerCover → SquarePacking.minSide 21 = 5
+SquarePacking.s12_ge_35_9 : 35 / 9 ≤ SquarePacking.minSide 12
+SquarePacking.s12_ge_3920_997 : 3920 / 997 ≤ SquarePacking.minSide 12
+def SquarePacking.S21CheckerCover : Prop :=
+∀ (c : ℝ × ℝ) (u : ℝ),
+  c.1 ∈ Set.Icc 0 (5 / 2) →
+    c.2 ∈ Set.Icc 0 (5 / 2) →
+      u ∈ Set.Icc 0 (1 / 2) →
+        SquarePacking.sq c (2 * Real.arctan u) 1 ⊆ SquarePacking.box 5 →
+          1 ≤
+            ∑ e ∈ SquarePacking.S21Data.pentries with
+                SquarePacking.S21Data.pt e ∈ SquarePacking.sq c (2 * Real.arctan u) 1, SquarePacking.S21Data.pw e +
+              ∑ e ∈ SquarePacking.S21Data.sentries,
+                SquarePacking.S21Data.sw e *
+                  SquarePacking.segFrac (SquarePacking.S21Data.sa e) (SquarePacking.S21Data.sb e)
+                    (SquarePacking.sq c (2 * Real.arctan u) 1)
+def SquarePacking.S32CheckerCover : Prop :=
+∀ (c : ℝ × ℝ) (u : ℝ),
+  c.1 ∈ Set.Icc 0 3 →
+    c.2 ∈ Set.Icc 0 3 →
+      u ∈ Set.Icc 0 (1 / 2) →
+        SquarePacking.sq c (2 * Real.arctan u) 1 ⊆ SquarePacking.box 6 →
+          1 ≤
+            ∑ e ∈ SquarePacking.S32Data.entries with
+              SquarePacking.S32Data.pt e ∈ SquarePacking.sq c (2 * Real.arctan u) 1, SquarePacking.S32Data.wt e

@@ -58,7 +58,7 @@ uv run --frozen python -m devtools.render_research_tables --check
 ```
 
 Five reader views are generated this way: [`STATUS.md`](STATUS.md), the open frontier
-(265 rows), the solved cases (59), and the search and proof strategy catalogues (28 and
+(261 rows), the solved cases (63), and the search and proof strategy catalogues (28 and
 30). Editing a fact means editing the data here and re-rendering; editing a generated
 table by hand will be caught.
 
@@ -135,7 +135,7 @@ The ones that carry the most weight:
   exactly only when `status` is `proved`.
 - `reported_status` is the source-set view; `status` is `proved` only when the verified
   bounds match exactly.
-  There are currently 62 proved and 262 open formal cases.
+  There are currently 63 proved and 261 open formal cases.
 - `reported_upper_bound.catalogue_rigid` transcribes what the catalogue says about
   rigidity, in the catalogue’s own three-valued vocabulary: `rigid`, `semi-rigid`, or
   `not-stated`. `not-stated` is source silence and never a claim that a packing can
@@ -181,6 +181,21 @@ or beyond the horizon.
 The selected source register has no remaining beyond-horizon claims.
 The check is local and deterministic; refreshing a public source is a dated W1 research
 survey, not a network operation hidden inside ordinary validation.
+
+The catalogue was last captured on 2026-09-30. The capture of 2026-08-22 is kept beside
+it byte for byte, because the UnitSquare and certified-packet intakes read it and their
+paragraphs about the packing each replaced are drafted from it;
+`devtools.diff_kingbird_catalogue --before REV` compares two captures count by count.
+Where a newer capture prints a side below a record’s and taking it is an intake of its
+own — a result by others published on or after 22 August 2026, which the register must
+hold first — the count is listed under `pending_catalogue_intake`, with the side the
+record still reports, the side the current capture prints, and the capture the record
+transcribes (`n = 69, 83, 87` today).
+The check reconciles such a count against that earlier capture, requires its record to
+carry a `source-evidence` blocker naming `pending_catalogue_intake` and the newer side
+(which `STATUS.md` shows as “catalogue ahead, intake pending”), and fails the entry as
+soon as either capture or the record stops bearing it out, so an entry is removed in the
+commit that takes the side.
 
 ```shell
 uv run --frozen python -m devtools.check_source_coverage
@@ -353,21 +368,26 @@ certificate’s replay command.
    derived rung; the checker does not establish those relationships.
    Result-level novelty is also declared and reviewed, not derived from the entries.
 
-   - `C4` is two machine-shaped repository-origin entries with *different* `method`
-     values. `T-026` earns it from the exact event-cell sweep (`exact-algebraic`) and the
-     interval branch and bound (`interval-certified`) of one certificate: one harness
-     runs both, and they share the loader and the closed-form conditions but nothing of
-     how the least-charge condition is decided, so the two fail differently.
-     Review establishes that method distinction; the checker compares the recorded
-     method values. Two implementations of one method—two exact sweeps, however
-     independently written—derive `C3`.
-   - `C5` is `C3` or `C4` plus a `review_artifact` that exists and is mapped in
-     [`document-map.yaml`](../../docs/project/document-map.yaml) as a `review` that is
-     not superseded. That is a document predicate.
-     The reviewer must establish that the review covers the complete stated claim and
-     its premises, including any composition or derivation.
-     A mapped review of another object satisfies the document predicate but cannot
-     justify `C5` for this claim.
+   - `C3` is a machine certificate replayed here, or a third party’s retained replay,
+     with a passing status and a named control: machine-checked, review record pending.
+     Distinct methods are an attribute, not a rung: `T-026`’s exact event-cell sweep
+     (`exact-algebraic`) and interval branch and bound (`interval-certified`) decide one
+     certificate two ways, which the composition note states and the register shows
+     beside the rung; two implementations of one method are one method.
+   - `C4` is `C3` plus the review record of
+     [epistemics.md → Review Records](../../epistemics.md#review-records): two
+     adversarial AI reviews by distinct reviewers, the latest accepting, and a human
+     oversight record naming the person, their relation and what they checked, each a
+     `reviews` entry whose path is mapped in
+     [`document-map.yaml`](../../docs/project/document-map.yaml) as a non-superseded
+     `review`. That is a document predicate: the reviewer must establish that the review
+     covers the complete stated claim and its premises, and a mapped review of another
+     object satisfies the predicate but cannot justify the rung for this claim.
+   - `C5` is a kernel check rebuilt here from the repository at a pinned toolchain with
+     its axiom receipt, an `open_review` pointer so anyone can review and replay it, and
+     two human experts’ formalization reviews.
+     `V` is earned the same way from evidence of any origin, with one expert at `V5`,
+     and `C` never exceeds `V` from `C2` up.
    - A compound or derived claim takes the **minimum** rung over its parts, which can
      sit below what the checker derives from the strongest entry: a derivation step
      decided by one entry of one method holds a `C4` source at `C3`. The `composition`
@@ -380,19 +400,18 @@ certificate’s replay command.
    [New Result Publication](../campaign/documentation-pass.md#new-result-publication)
    gives: `validate_schemas` and `check_results` on the records, then
    `render_results --update`, `render_evidence_inventory --update`,
-   `render_research_tables`, `render_results_headline`, and
-   `render_recent_results --update`, which re-renders the root README’s New Results,
-   Results by Others and recent-results tables from the register; never edit inside
-   their markers. `packing-validate --records` runs those checks and the related record
-   checks; it does not replace certificate replay or the full checkpoint.
+   `render_research_tables` and `render_results_headline`; never edit inside a generated
+   view’s markers. The site’s overview renders the results table, the recent results and
+   the survey from the same records (`render_overview`). `packing-validate --records`
+   runs those checks and the related record checks; it does not replace certificate
+   replay or the full checkpoint.
    Complete the remaining publication steps too: regenerate affected atlas exports,
-   reconcile the synopsis and the README prose around its tables, and run the applicable
+   reconcile the synopsis, and run the applicable
    [validation tiers](../../development.md#validation-tiers), including the full
    checkpoint before final review.
    Retain the checked source/base and state which publication surfaces were updated or
    checked current. Each `apparently-novel` or `confirmed-novel` result gets its row in
-   the root README’s New Results table from the register, which both
-   `render_recent_results --check` and `check_readme` require.
+   `RESULTS.md` and the site’s results table from the register.
    A `T-id` may not appear in the README or the synopsis before its row exists, since
    the checker rejects unknown ids in that tier.
 
@@ -449,7 +468,8 @@ diagonal strips, 3 extensions of smaller records, and 2 whose method the source 
 record (`n = 68, 69`).
 
 Recorded catalogue degrees for `n ≤ 100` rise through 4, 5, 6, 8, 12, 18, 20, 24, 42,
-and 44, while every proved case has degree at most 2.
+and 44, while every proved case but `n = 11`, whose side has degree 8, has degree at
+most 2.
 
 ### Smallest Open Gaps
 
@@ -458,36 +478,38 @@ Ranked by gap—the best-known packing minus the verified lower bound, which is 
 
 | `n` | gap | record | note |
 | --- | --- | --- | --- |
-| 11 | 0.0021 | Trump 1979 | the famous case, carried to `31/8` by Kleddamag |
 | 17 | 0.0151 | Bidwell | carried to `116511/25000` by Guzhou0806 after Kleddamag |
 | 12 | 0.0314 | grid | `4² − 4`, carried to `15680/3951` by Daniel after Burns, Massaccesi |
 | 97 | 0.0557 | grid | `10² − 3` |
 | 78 | 0.0627 | grid | `9² − 3` |
+| 61 | 0.0718 | grid | `8² − 3` |
 
 The `n = 17` bound is Guzhou0806 / N17 project’s R068, continuing Kleddamag’s charge
 (Kleddamag building on Squares Project (Joshua Levy), Mira and Guzhou0806): an exact
 weighted-certificate proof over 4,991 orientation intervals.
-The first three moved in September 2026 on third-party weighted certificates, and the
+The first two moved in September 2026 on third-party weighted certificates, and the
 `k² − 4` family now has three solved members above `k = 3`: `s(21) = 5`, `s(32) = 6` and
 `s(45) = 7`, proved by Evan Daniel on the same method’s zero-margin form, the first and
 third with mass on the grid lines as well as on points.
-`n = 21`, which led this table at `0.0050` from 2026-09-27, left it with that proof.
+`n = 21`, in this table at `0.0050` from 2026-09-27, left it with that proof.
+`n = 11`, which headed it at `0.0021` once Kleddamag carried it to `31/8`, left it on
+2026-09-30, when T-060 proved `s(11)` equal to Trump’s side.
 
-Next comes `n = 61` at `0.0718`; with `n = 97` and `n = 78` it is one of three
-consecutive unproved members of the family `s(m² − 3) = m`, which is **proved exactly
-for `m = 3, 4, 5, 6, 7`** (that is `s(6), s(13), s(22), s(33), s(46)`) and conjectured
-beyond. Their gaps are small because Nagamochi’s bound is nearly tight there, and their
+`n = 97`, `n = 78` and `n = 61` are three consecutive unproved members of the family
+`s(m² − 3) = m`, which is **proved exactly for `m = 3, 4, 5, 6, 7`** (that is
+`s(6), s(13), s(22), s(33), s(46)`) and conjectured beyond.
+Their gaps are small because Nagamochi’s bound is nearly tight there, and their
 conjectured optima are **integers**—the case the existing proof technique is built for.
 
 Their small gaps and integer conjectured optima make them candidates for the existing
 technique; the retained source audit found little case-specific treatment.
 
-Among the cases with a *non-trivial* record, `n = 19` follows `n = 11` and `n = 17` at
-`0.0856`, then `n = 27` at `0.1071`, `n = 26` at `0.1133` and `n = 18` at `0.1439`.
-First-party certificates moved `n = 11`, `17`, `18` and `19` beginning on 2026-09-04;
-the retained `n = 18` ladder reached `4.679` on 2026-09-19. External certificates now
-carry `n = 11`, `17`, `26` and `27`, and wand125’s reported rectangle bounds stand above
-the verified values at `18` and `19` until their replays run.
+Among the cases with a *non-trivial* record, `n = 19` follows `n = 17` at `0.0856`, then
+`n = 27` at `0.1071`, `n = 26` at `0.1133` and `n = 18` at `0.1439`. First-party
+certificates moved `n = 11`, `17`, `18` and `19` beginning on 2026-09-04; the retained
+`n = 18` ladder reached `4.679` on 2026-09-19. External certificates now carry `n = 11`,
+`17`, `26` and `27`, and wand125’s reported rectangle bounds stand above the verified
+values at `18` and `19` until their replays run.
 
 ## Cross-References
 
@@ -505,6 +527,10 @@ status, and attributions were parsed from the retained Kingbird catalogue.
 `uv run --frozen python -m devtools.audit_kingbird_catalogue --rigidity` re-reads the
 rigidity annotations from that archive and checks them against the case records, so a
 dropped or invented transcription fails instead of being migrated forward.
+Beside it, `uv run --frozen python -m devtools.diff_kingbird_catalogue --before REV`
+compares the retained transcription with the one at `REV`, count by count: each count
+whose side, closed form, degree, polynomial, rigidity annotation or credit sentences
+moved, and where the new side stands against the record.
 Newer first-party claims are selected through the source-coverage record rather than
 silently overwriting that baseline.
 Lower bounds were computed from four sources and the strongest taken.
@@ -517,7 +543,10 @@ Adding editorial to a case is just editing its body; nothing regenerates over it
 
 **Known limits.** The Kingbird catalogue is parsed as annotation text, so an entry
 phrased unusually can be miscounted; `improved_by` in particular under-reports where it
-uses “Refound”, “Optimized by”, or prose.
+uses “Refound” or prose.
+Above `n = 100` it also credits an “Optimized by” author the entry names nowhere else
+(Tej Stead at `n = 179`), and the packing paragraph quotes the catalogue’s own
+AI-assistance sentences; the hand-written records below read neither.
 Tilt angles are recorded only for the handful of cases where this research established
 them. The coverage inventory is dated and named; a newly published source still requires
 a new research survey and disposition.

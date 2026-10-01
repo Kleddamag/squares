@@ -1,0 +1,125 @@
+"""The site links the repository on `main`, through one helper, at paths `main` has."""
+
+from __future__ import annotations
+
+import pytest
+
+from devtools import (
+    repo_links,
+    result_overview,
+    site_documents,
+)
+from devtools.repo_links import (
+    DEFAULT_BRANCH,
+    RAW_URL,
+    REPO,
+    REPO_URL,
+    RepositoryTree,
+    branch_paths,
+    hash_pinned_links,
+    repo_url,
+    repository_tree,
+)
+from tests import site_renders
+
+SHA = "0123456789abcdef0123456789abcdef01234567"
+
+
+def test_a_file_a_directory_and_an_image_link_main() -> None:
+    assert repo_url(repo_links.STATUS) == f"{REPO_URL}/blob/main/packing/frontier/STATUS.md"
+    assert repo_url(REPO / "packing" / "frontier") == f"{REPO_URL}/tree/main/packing/frontier"
+    assert repo_url("docs/a b.md", "?plain=1#L3", kind="blob") == (
+        f"{REPO_URL}/blob/main/docs/a%20b.md?plain=1#L3"
+    )
+    assert (
+        repo_url("packing/atlas/n5.svg", kind="raw") == f"{RAW_URL}/main/packing/atlas/n5.svg"
+    )
+    with pytest.raises(SystemExit, match="outside the repository"):
+        repo_url(REPO.parent / "elsewhere.md")
+
+
+def test_the_named_documents_exist_and_are_the_pages_the_site_serves() -> None:
+    """Each document the site links by name is defined once, and each is served."""
+    named = {
+        repo_links.README,
+        repo_links.TUTORIAL,
+        repo_links.SYNOPSIS,
+        repo_links.CONVENTIONS,
+        repo_links.DEVELOPMENT,
+        repo_links.DEFECTS,
+        repo_links.EPISTEMICS,
+        repo_links.RESULTS,
+        repo_links.STATUS,
+    }
+    for path in named:
+        assert (REPO / path).is_file(), path
+    served = {doc.source.relative_to(REPO).as_posix() for doc in site_documents.DOCUMENTS}
+    assert served == named
+
+
+def test_a_commit_hash_is_refused_and_a_release_is_not() -> None:
+    text = (
+        f'<a href="{REPO_URL}/blob/{SHA}/README.md">a</a>'
+        f'<a href="{REPO_URL}/tree/{SHA[:8]}/packing">b</a>'
+        f'<img src="{RAW_URL}/{SHA}/packing/atlas/n5.svg">'
+        f'<a href="{REPO_URL}/blob/main/README.md">c</a>'
+        f'<a href="{REPO_URL}/releases/download/v1.0/{SHA}.zip">d</a>'
+    )
+    assert hash_pinned_links(text) == sorted(
+        {
+            f"{REPO_URL}/blob/{SHA}/README.md",
+            f"{REPO_URL}/tree/{SHA[:8]}/packing",
+            f"{RAW_URL}/{SHA}/packing/atlas/n5.svg",
+        }
+    )
+    assert branch_paths(text) == {("blob", "README.md")}
+
+
+def test_missing_names_each_absent_path() -> None:
+    tree = RepositoryTree(files=frozenset({"README.md"}), directories=frozenset({"", "docs"}))
+    links = {("blob", "README.md"), ("tree", "docs"), ("tree", "README.md"), ("raw", "x.svg")}
+    assert tree.missing(links) == ["raw/x.svg", "tree/README.md"]
+
+
+@pytest.fixture(scope="module")
+def pages() -> dict[str, str]:
+    return site_renders.pages()
+
+
+@pytest.fixture(scope="module")
+def audit() -> result_overview.LinkAudit:
+    """The link audit over the result overviews the test process shares."""
+    return result_overview.link_audit(site_renders.overview(), site_renders.result_bodies())
+
+
+def test_no_page_links_a_commit_hash(pages: dict[str, str]) -> None:
+    """Every page the site renders links the repository on `main`, never at a commit."""
+    pinned = {name: hash_pinned_links(text) for name, text in pages.items()}
+    assert not {name: links for name, links in pinned.items() if links}
+
+
+def test_every_path_a_page_links_on_main_is_in_head(pages: dict[str, str]) -> None:
+    """`HEAD` is the tree `main` holds when the site deploys, so a path it lacks 404s."""
+    tree = repository_tree()
+    total = 0
+    for name, text in pages.items():
+        links = branch_paths(text)
+        total += len(links)
+        assert not tree.missing(links), (name, tree.missing(links))
+    assert total > 100, f"only {total} links on {DEFAULT_BRANCH}"
+
+
+def test_every_result_overview_links_main_at_paths_in_head(
+    audit: result_overview.LinkAudit,
+) -> None:
+    """A result's overview is rendered for its row's popover, apart from any page, so it
+    is audited on its own: every repository link in every overview names `main`, and
+    every path it opens is in `HEAD`."""
+    overview = site_renders.overview()
+    assert audit.results >= 60
+    assert not audit.off_main
+    assert not audit.missing
+    assert audit.github > 1000, f"only {audit.github} links on {DEFAULT_BRANCH}"
+    assert audit.github_paths > 100
+    assert audit.site > 500
+    assert set(audit.sizes) == {result.id for result in overview.results}

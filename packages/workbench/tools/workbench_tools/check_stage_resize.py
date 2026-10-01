@@ -138,22 +138,29 @@ def check(page_path: Path) -> str:
             f"a reload did not keep the stage at {shifted}, it came back at {restored}",
         )
 
-        # A chosen share is re-clamped whenever the window changes, and kept. End stores the
-        # largest share, 944 of 1000 px; in a 600 px window that share would leave the controls
-        # 34 px, so the stage stops at 600 - 56 = 544, and the separator reports the new range.
-        # Back at 1000 px the stored share, not the clamped height, comes back.
+        # A chosen share is re-clamped whenever the window changes, and kept. The share is of
+        # `#viewport`'s height, the window's less the site's navigation bar above it. End stores
+        # the largest share, all but the controls' 56 px; in a 600 px window that share would
+        # leave the controls less than 56 px, so the stage stops at the viewport's height less
+        # 56, and the separator reports the new range. Back at 1000 px the stored share, not the
+        # clamped height, comes back.
         handle.focus()
         page.keyboard.press("End")
         tallest = layout(page)
         page.set_viewport_size({"width": 1440, "height": 600})
         page.wait_for_timeout(200)
         short = layout(page)
+        clamped = short["viewportHeight"] - 56
         require(
-            abs(short["stageHeight"] - 544) <= 2
+            short["viewportHeight"] < 600,
+            f"the navigation bar does not stand above the workbench: {short}",
+        )
+        require(
+            abs(short["stageHeight"] - clamped) <= 2
             and short["controlsFit"]
-            and short["valueMax"] == 544
+            and short["valueMax"] == clamped
             and abs(short["valueNow"] - short["stageHeight"]) <= 1,
-            f"a 600 px window did not re-clamp the stage to 544: {short}",
+            f"a 600 px window did not re-clamp the stage to {clamped}: {short}",
         )
         page.set_viewport_size({"width": 1440, "height": 1000})
         page.wait_for_timeout(200)

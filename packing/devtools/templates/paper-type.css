@@ -1,0 +1,104 @@
+/* ============================================================
+   The text every page of the site shares with the explainer.
+
+   One file, inlined by the explainer's shell (`render_explainer`) and by every kpress page
+   (`render_overview.page_assets`), right after KPress's own stylesheets so these values
+   win over KPress's defaults at the same scopes. The values are the explainer's; the
+   typography entry of paper-design.md beside this file is where they are written down
+   and why. Change them there first, then here, and never per page.
+   ============================================================ */
+
+/* The type base. KPress derives every size from this one token -- prose, headings,
+   tables, code, math -- so a page reads at the explainer's size with nothing
+   restyled. */
+:root {
+  --kpress-host-font-size-base: 18px;
+}
+
+/* The reading measure: forty of the base, which at 18px is the same 720px KPress's
+   default of forty-five gives at 16px, so the larger type keeps the column's width.
+   Declared on the scopes KPress declares its own on, so it wins there. */
+:root,
+.kpress,
+.kpress-page-main {
+  --kpress-measure: calc(var(--kpress-font-size-base) * 40);
+}
+
+/* Section headings at 1.2 of the prose at every width. KPress steps its h2 up to 1.4
+   from a 64rem pane; the paper keeps one size, and h3 and h4 keep KPress's steps. */
+.kpress {
+  --kpress-font-size-h2: calc(var(--kpress-font-size-base) * 1.2);
+}
+
+/* The space around a section heading (`h2`), on every page: 2.7 of the base above it on
+   screen and 1.7rem below it, to the section's first block. Print keeps the paper's 2.8
+   above and 1.3rem below, so the explainer's PDF paginates as before. */
+.kpress {
+  --paper-section-space: calc(var(--kpress-font-size-base) * 2.7);
+  --paper-section-space-below: 1.7rem;
+}
+@media print {
+  .kpress {
+    --paper-section-space: calc(var(--kpress-font-size-base) * 2.8);
+    --paper-section-space-below: 1.3rem;
+  }
+}
+
+/* The leading of every heading, on every page: 1.15 on screen, tighter than KPress's 1.2,
+   so a heading that wraps reads as one block. A card's headline, a popover's and a page's
+   subtitle read the same token (site.css). The explainer's hero title keeps KPress's own
+   1.05. Print keeps KPress's leading, so the explainer's PDF paginates as before. */
+:root {
+  --paper-heading-leading: 1.15;
+}
+@media screen {
+  .kpress-prose :is(h1, h2, h3, h4, h5, h6) {
+    line-height: var(--paper-heading-leading);
+  }
+}
+
+/* The paper's roles: a 19/18 sans base against the prose, three sans weights, and the
+   scales of the title, subtitle, supporting text and notes. The explainer reads them as
+   `--cert-*` and `--paper-*`, the site pages as `--site-*`; both alias these. */
+:root {
+  --paper-font-scale-sans: calc(19 / 18);
+  --paper-font-weight-sans-medium: 550;
+  --paper-font-weight-sans-bold: 680;
+  --paper-title-scale: 1.5;
+  --paper-subtitle-scale: 1.25;
+  --paper-support-scale: 0.95;
+  --paper-note-scale: 0.92;
+  --paper-colophon-scale: 0.85;
+  --paper-note-inset: 1.4rem;
+  --paper-support-leading: 1.4;
+}
+@media print {
+  /* Keep small sans text compact as its letter size increases. */
+  :root {
+    --paper-support-leading: 1.32;
+  }
+}
+
+/* The faces are the site's own, whoever frames the page. KPress leads each family token
+   with a host hook (`--kpress-host-font-sans` and its siblings) so an application that
+   embeds a KPress fragment can supply its own face; a viewer that injects that hook into
+   one of these pages would otherwise swap Source Sans 3 or PT Serif for a face the page
+   does not ship. `initial` makes each hook the guaranteed-invalid value, so KPress's own
+   stack -- the faces inlined in this page -- applies. The reader's own choice of system
+   fonts is untouched: KPress's `data-kpress-font-set="system"` sets the family tokens
+   themselves, not the hooks. Important, because a viewer's injected rule may come later
+   in the cascade at the same specificity; that is the one case this rule exists for. */
+/* biome-ignore-start lint/complexity/noImportantStyles: the pin must outrank an injected hook */
+:root,
+.kpress,
+.kpress-page-main,
+.kpress-tooltip {
+  --kpress-host-font-body: initial !important;
+  --kpress-host-font-prose: initial !important;
+  --kpress-host-font-prose-sans: initial !important;
+  --kpress-host-font-sans: initial !important;
+  --kpress-host-font-mono: initial !important;
+  --kpress-host-font-footnote: initial !important;
+  --kpress-host-font-table: initial !important;
+}
+/* biome-ignore-end lint/complexity/noImportantStyles: the pin must outrank an injected hook */

@@ -18,6 +18,7 @@ unchanged, so a run over an unchanged tree produces an empty diff.
 from __future__ import annotations
 
 import argparse
+import ast
 import math
 import pathlib
 import re
@@ -26,6 +27,7 @@ from decimal import Decimal
 
 from strif import atomic_output_file
 
+from devtools.check_source_coverage import pending_intake_blocker
 from sqpack.assurance import bounds_agree_at_declared_precision
 from sqpack.yamlio import safe_load
 
@@ -57,14 +59,86 @@ def fmt(x: object, nd: int = 6) -> str:
     return f"{Decimal(str(x)):.{nd}f}".rstrip("0").rstrip(".")
 
 
+def nagamochi_radicand(expr: str) -> int | None:
+    """The radicand `r` when `expr` is Nagamochi's `1 + √(n - 2⌊√n⌋ + 1)`, else `None`."""
+    nagamochi = re.fullmatch(r"sqrt\((\d+) - 2\*floor\(sqrt\((\d+)\)\) \+ 1\) \+ 1", expr)
+    if nagamochi is None or nagamochi.group(1) != nagamochi.group(2):
+        return None
+    n = int(nagamochi.group(1))
+    return n - 2 * math.isqrt(n) + 1
+
+
 def pretty(expr: str) -> str:
     """ASCII exact forms are the stored value; this is display only."""
-    nagamochi = re.fullmatch(r"sqrt\((\d+) - 2\*floor\(sqrt\((\d+)\)\) \+ 1\) \+ 1", expr)
-    if nagamochi is not None and nagamochi.group(1) == nagamochi.group(2):
-        n = int(nagamochi.group(1))
-        radicand = n - 2 * math.isqrt(n) + 1
+    radicand = nagamochi_radicand(expr)
+    if radicand is not None:
         return f"1 + √{radicand}"
     return re.sub(r"sqrt\((\d+)\)", r"√\1", expr)
+
+
+#: A `root(P_name, decimal)` exact form: a root of a named minimal polynomial.
+ROOT_FORM = re.compile(r"root\((\w+),\s*([0-9.]+)\)")
+
+
+def _latex_node(node: ast.expr) -> str:
+    """One node of a parsed exact form, as LaTeX."""
+    match node:
+        case ast.Constant(value=int() as value):
+            shown = str(value)
+        case ast.UnaryOp(op=ast.USub(), operand=operand):
+            shown = f"-{_latex_node(operand)}"
+        case ast.Call(func=ast.Name(id="sqrt"), args=[argument]):
+            shown = rf"\sqrt{{{_latex_node(argument)}}}"
+        case ast.Call(func=ast.Name(id="floor"), args=[argument]):
+            shown = rf"\lfloor {_latex_node(argument)} \rfloor"
+        case ast.BinOp(left=left, op=ast.Div(), right=right):
+            shown = rf"\frac{{{_latex_node(left)}}}{{{_latex_node(right)}}}"
+        case ast.BinOp(left=left, op=ast.Mult(), right=right):
+            joined = isinstance(right, ast.Call) or (
+                isinstance(right, ast.BinOp) and isinstance(right.op, ast.Div)
+            )
+            shown = _latex_node(left) + ("" if joined else r" \cdot ") + _latex_node(right)
+        case ast.BinOp(left=left, op=ast.Add(), right=right):
+            shown = f"{_latex_node(left)} + {_latex_node(right)}"
+        case ast.BinOp(left=left, op=ast.Sub(), right=right):
+            subtracted = _latex_node(right)
+            if isinstance(right, ast.BinOp) and isinstance(right.op, ast.Add | ast.Sub):
+                subtracted = rf"\left({subtracted}\right)"
+            shown = f"{_latex_node(left)} - {subtracted}"
+        case _:
+            raise ValueError(f"no LaTeX form for {ast.dump(node)}")
+    return shown
+
+
+def polynomial_latex(polynomial: str) -> str:
+    """A recorded minimal polynomial as LaTeX: its radicals typeset, the rest as written.
+
+    The record writes `s^{12}` and `s^8 - 20s^7 + … = 0` as TeX already reads them; only
+    the `sqrt(2)` in a coefficient and an explicit `*` need translating.
+    """
+    tex = re.sub(r"sqrt\((\d+)\)", r"\\sqrt{\1}", polynomial).replace("*", "")
+    if not re.fullmatch(r"[0-9s^{}+\-=() ]*", tex.replace(r"\sqrt", "")):
+        raise ValueError(f"no LaTeX form for the polynomial {polynomial!r}")
+    return tex
+
+
+def latex(expr: str) -> str:
+    """An ASCII exact form as LaTeX, for pages that render math; display only, like `pretty`.
+
+    `31/8` becomes `\\frac{31}{8}`, `2 + (1/2)sqrt(2)` becomes `2 + \\frac{1}{2}\\sqrt{2}`,
+    and Nagamochi's bound reads `1 + \\sqrt{r}` as `pretty` shows it. A `root(P, x)` form
+    has no closed form to show and is refused: its reader wants the decimal and the
+    minimal polynomial instead. Anything else the record could hold is refused too, so a
+    new shape fails the render rather than printing ASCII.
+    """
+    if ROOT_FORM.fullmatch(expr):
+        raise ValueError(f"{expr!r} is a polynomial root, not a closed form")
+    radicand = nagamochi_radicand(expr)
+    if radicand is not None:
+        return rf"1 + \sqrt{{{radicand}}}"
+    # The record writes implicit products, `(1/2)sqrt(2)` and `2 sqrt(2)`.
+    explicit = re.sub(r"(\)|\d)\s*(?=sqrt\()", r"\1*", expr)
+    return _latex_node(ast.parse(explicit, mode="eval").body)
 
 
 LB_LABEL = {
@@ -173,6 +247,10 @@ def case_disposition(case: dict) -> str:
         notes.append("proof audit pending")
     if case["conflicts"]:
         notes.append(f"{len(case['conflicts'])} conflict")
+    if pending_intake_blocker(case) is not None:
+        # The catalogue prints a smaller side the record waits to take: say so here, so
+        # the table does not present the older side as the best known one.
+        notes.append("catalogue ahead, intake pending")
     return "; ".join(notes) or "—"
 
 

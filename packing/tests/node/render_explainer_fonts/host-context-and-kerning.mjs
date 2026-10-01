@@ -1,6 +1,7 @@
 // `render_explainer/host_math_init.js`: the host contributes its custom wrappers and TeX
 // spacing to the shared math API. The context callback looks through the wrappers without
-// turning ordinary prose or a detached node into sans mathematics, and an unrelated pending
+// turning ordinary prose or a detached node into sans mathematics, keeps a formula under a
+// `data-math-face="serif"` mark serif though its text is sans, and an unrelated pending
 // formula does not hold back a completed one. Prints the calls the runtime received.
 //
 // Usage: node host-context-and-kerning.mjs <MATH_WRAPPERS>
@@ -9,9 +10,28 @@ import { probe } from "../probe.mjs";
 
 /**
  * @typedef {{ nodeType: number, parentElement: Stand | null, matches: () => boolean,
- *   fontFamily?: string, dataset?: Record<string, string>, querySelectorAll?: () => never[] }} Stand
+ *   closest: (selector: string) => Stand | null, mathFace?: string, fontFamily?: string,
+ *   dataset?: Record<string, string>, querySelectorAll?: () => never[] }} Stand
  * @typedef {{ isSansContext(node: Stand): boolean }} Context
  */
+
+/**
+ * `Element.closest` for the one selector the host asks about: the nearest stand, from this
+ * one outward, marked `data-math-face="serif"`.
+ *
+ * @this {Stand}
+ * @param {string} selector
+ * @returns {Stand | null}
+ */
+function closest(selector) {
+  assert.equal(selector, '[data-math-face="serif"]');
+  /** @type {Stand | null} */
+  let el = this;
+  while (el && el.mathFace !== "serif") {
+    el = el.parentElement;
+  }
+  return el;
+}
 
 const [wrappers] = process.argv.slice(2);
 /** @type {object[]} */
@@ -23,6 +43,7 @@ const sans = {
   nodeType: 1,
   parentElement: null,
   matches: () => false,
+  closest,
   fontFamily: '"Source Sans 3 Variable", sans-serif',
 };
 const prose = { ...sans, fontFamily: '"PT Serif", serif' };
@@ -34,9 +55,14 @@ const wrapper = (parent) => ({
   nodeType: 1,
   parentElement: parent,
   matches: () => true,
+  closest,
   dataset: {},
   querySelectorAll: () => [],
 });
+// A popover's headline: sans words marked for serif mathematics, with the mark either on
+// the text a formula sits in or further out.
+const headline = { ...sans, mathFace: "serif" };
+const marked = [wrapper(headline), wrapper({ ...sans, parentElement: headline })];
 const nodes = [wrapper(wrapper(sans)), wrapper(prose), wrapper(null)];
 /** @type {(typeof nodes)[number]} */ (nodes[0]).dataset.kpressMathPrepared = "true";
 /** @type {{ render: Function, hydrate: Function }} */
@@ -84,6 +110,11 @@ Object.assign(globalThis, {
 const squaresMath = Reflect.get(globalThis, "squaresMath");
 
 assert.deepEqual(nodes.map(squaresMath.context.isSansContext), [true, false, false]);
+assert.deepEqual(
+  marked.map(squaresMath.context.isSansContext),
+  [false, false],
+  "a headline's serif mark outranks its sans words",
+);
 await squaresMath.render(/** @type {Stand} */ (nodes[0]), "s(11) + cos(x)", true);
 const delayed = squaresMath.render(/** @type {Stand} */ (nodes[1]), "n(2)", false);
 assert.equal(nodes[0]?.dataset.squaresMathReady, "true");

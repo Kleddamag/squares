@@ -245,11 +245,11 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 385 | 194 complete; 63 stopped; 70 blocked; 24 ready; 21 tentative; 13 in progress |
-| Sessions | 164 | 102 completed; 62 stopped; all terminal |
-| Explorations | 45 | 26 linked to proposed hypotheses; 19 uncodified |
-| Hypotheses | 187 | 32 confirmed; 32 refuted; 60 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
-| Experiments | 163 | 46 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
+| Commitments | 393 | 201 complete; 63 stopped; 71 blocked; 24 ready; 21 tentative; 13 in progress |
+| Sessions | 165 | 103 completed; 62 stopped; all terminal |
+| Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
+| Hypotheses | 195 | 39 confirmed; 32 refuted; 61 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
+| Experiments | 170 | 53 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
 | Frontier results | 61 | 61 registered, 33 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
@@ -510,11 +510,30 @@ case or experiment separately.
 
 | Document or collection | Role | Authority | Lifecycle | Current replacement |
 | --- | --- | --- | --- | --- |
+| [H259 Mixed-Capacity Census: Independent Output Review](packing/campaign/series/series-000-smoke-and-calibration/results/exp-240-n17-mixed-capacity-census/output-review.md) | dated review record | record | retained | — |
+| [October 1 Post-optimality Research Findings](docs/project/reviews/review-2026-10-01-post-optimality-morning.md) | dated review record | record | retained | — |
+| [H260 Closed-Cell Symmetry: Independent Output Review](packing/campaign/series/series-000-smoke-and-calibration/results/exp-241-n17-closed-cell-symmetry/output-review.md) | dated review record | record | retained | — |
+| [n17 Symmetry of Closed-Cell Assignment States](docs/project/reviews/review-2026-10-01-n17-closed-cell-symmetry.md) | dated review record | record | retained | — |
+| [n17 Mixed-Capacity Centre Cover](docs/project/reviews/review-2026-10-01-n17-mixed-capacity-cover.md) | dated review record | record | retained | — |
+| [n12 Weighted Cycles: Exact Inequality and Capture Scope](docs/project/reviews/review-2026-10-01-n12-weighted-cycle-capture.md) | dated review record | record | retained | — |
+| [Deterministic n17 Common-Core Stress Certificate](docs/project/reviews/review-2026-10-01-n17-core-stress.md) | dated review record | record | retained | — |
+| [Independent Review of the n17 Endpoint Feature Inventory](packing/campaign/series/series-000-smoke-and-calibration/results/exp-239-n17-endpoint-features/output-review.md) | dated review record | record | retained | — |
+| [n17 First-Order Branch Inventory and Capture Readiness](docs/project/reviews/review-2026-10-01-n17-first-order-branches.md) | dated review record | record | retained | — |
+| [n17 Conditional Minimum Under Directed Projection Branches](docs/project/reviews/review-2026-10-01-n17-projection-branches.md) | dated review record | record | retained | — |
+| [Independent Review of exp-236](packing/campaign/series/series-000-smoke-and-calibration/results/exp-236-n17-contact-chart/output-review.md) | dated review record | record | retained | — |
+| [Independent Review of the n17 Exact Root Certificate](packing/campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/output-review.md) | dated review record | record | retained | — |
+| [Independent Review of the n17 Endpoint Feasibility Certificate](packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/output-review.md) | dated review record | record | retained | — |
+| [Independent Output Review](packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/output-review.md) | dated review record | record | retained | — |
+| [Plan: Transfer Recent Optimality Methods to n = 17 and Other Low Cases](docs/project/specs/active/plan-2026-10-01-post-optimality-w3-session.md) | implementation plan | current | transient | — |
+| [N11 Optimality Review — Intuition and Visual Structure](docs/project/reviews/review-2026-09-30-n11-explainer-intuition.md) | dated review record | record | retained | — |
 | [Research: Exact Arithmetic and Verifier Performance](docs/project/research/research-2026-09-30-exact-arithmetic-verifier-performance.md) | research synthesis | record | retained | — |
 | [Eleven-Square Global Optimality: Source Intake and Verification Handoff](docs/project/reviews/review-2026-09-29-n11-optimality.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality: Census and Capture Ancestry Contract](docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality: Expository Simplification Review](docs/project/reviews/review-2026-09-30-n11-expository-simplification.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality Explainer: Mathematical Review](docs/project/reviews/review-2026-09-30-n11-optimality-explainer.md) | dated review record | record | retained | — |
+| [N11 Optimality Explainer Citation and Documentation Review](docs/project/reviews/review-2026-09-30-n11-explainer-citations-and-docs.md) | dated review record | record | retained | — |
+| [Eleven-Square Explainer: Adversarial Proof Reconciliation](docs/project/reviews/review-2026-09-30-n11-explainer-proof-reconciliation.md) | dated review record | record | retained | — |
+| [Plan for Proof-Linked n11 Optimality Illustrations](docs/project/specs/active/plan-2026-09-30-n11-optimality-illustrations.md) | implementation plan | current | transient | — |
 | [D-490 PDF Incident: Run 35784981711](packing/campaign/agent-sessions/session-152-validation/pdf-d490-run-35784981711.md) | failure analysis and lessons | record | retained | — |
 | [Senior Review of PRs 199–201](docs/project/reviews/review-2026-09-19-pr199-201-correctness.md) | dated review record | record | retained | — |
 | [Proof Review: R012 `s(17) >= 461300/99999` and Mira’s `4.613` Certificate](docs/project/reviews/review-2026-09-20-n17-r012-and-mira-4613-proof-review.md) | dated review record | record | retained | — |
@@ -995,6 +1014,9 @@ case or experiment separately.
 | [Verification Tooling and Its Boundaries](docs/project/verification-tooling.md) | component scope and use | record | retained | — |
 | [Native Rectangle Verification and wand125 Tools Intake](docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md) | implementation plan | record | maintained | — |
 | [Proof Review: Evan Daniel’s `s(21) = 5` and `s(45) = 7` by Mixed Covers](docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md) | dated review record | record | retained | — |
+| [Post-optimality W3: First Discriminators](docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md) | dated review record | record | retained | — |
+| [Evan Daniel’s October Proof Pages: Source Coverage and Intake](docs/project/reviews/review-2026-10-01-evand-source-coverage.md) | dated review record | record | retained | — |
+| [Evand: Mathematical Review and Transfer to Low-n Research](docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md) | dated review record | record | retained | — |
 | [Density Solvers Compared: Tokoharu’s and wand125’s Rectangle-Density Tools Against This Repository’s Certificate Stack](docs/project/reviews/review-2026-09-28-density-solver-comparison.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R067 and R068, `s(17) > 233009/50000` and `s(17) > 116511/25000`](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) | dated review record | record | retained | — |
 | [Proof Review: wand125’s Point-Only Certificates for `s(45) = 7` and `s(21) = 5`](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) | dated review record | record | retained | — |
@@ -1289,7 +1311,30 @@ controller, not permission to blur contracts.
 
 ### Current Handoff
 
-**T-060 is independently verified at `V4/C5/S5`.** The
+[Session 165](packing/campaign/agent-sessions/session-165-post-optimality-overnight.md)
+completed seven independently reviewed n17 rounds: exp-235 through exp-239, exp-240 and
+exp-241. The known packing now has a certified exact chart endpoint and an attained
+minimum under explicit orientation and directed-projection premises.
+The verified outward upper ceiling is 4.6755300936045509516342148538535054; the lower
+bound 4.66044 is unchanged.
+Unrestricted local and global optimality remain open.
+The mixed-capacity cover has 161,100,756 necessary occupancy states; its
+closed-assignment D4 quotient has 20,155,518 orbits, with no geometric case excluded.
+H258 stopped after three preparation failures without a target stress verdict.
+The [morning report](docs/project/reviews/review-2026-10-01-post-optimality-morning.md)
+records the mathematics, independent-checker boundaries, costs and remaining gaps.
+
+**Selected next entry:** `think-11ma`, preregister a small exact geometric-exclusion
+pilot below the certified endpoint.
+Keep all orientations and closed-cell assignments; measure certified exclusions and
+unresolved cases before attempting a broad census.
+The overnight execution is complete, and no successor is launched by this handoff.
+
+#### Previous n11 Intake and Verification
+
+**T-060 is machine-checked at `V3/C3/S5` under the current epistemics rubric.** Its
+historical `V4/C5` label did not denote human referee confirmation.
+The
 [Queuingtheorydotcom/11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal)
 proof gives $s(11) = T$, Trump’s exact side.
 The [retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) pins
@@ -1341,7 +1386,7 @@ certificate-page workflow passed at `c621b845f` and the documentation follow-up
 `c621b845f`. No complete retained external rectangle certificate has been independently
 verified.
 
-**Selected next entry:** `think-e2ot`, build the bounded fresh-ensemble replay entry
+**Previous n11 follow-up:** `think-e2ot`, build the bounded fresh-ensemble replay entry
 point while preserving the accepted historical evidence.
 The later mathematical entry is `think-bmf3`, W7: design and cost a whole-angle
 traversal using the measured refinement result, before a complete external rectangle
@@ -5222,6 +5267,14 @@ round that names the hypothesis, control roles included.
 | [H-250](packing/campaign/hypotheses/H-250-n50-rectangle-density-certificate-at-7-3.md) | open | A rectangle-density certificate with mass below 50 at 73/10, the row wand125’s ladder left at 1 + √37 (BC-394) | 0 | — |
 | [H-251](packing/campaign/hypotheses/H-251-n82-rectangle-density-certificate-at-9-3.md) | open | A rectangle-density certificate with mass below 82 at 93/10, covering n = 82..85 by mass against Nagamochi’s 1 + √(n − 17) (BC-394) | 0 | — |
 | [H-252](packing/campaign/hypotheses/H-252-n45-zero-margin-closed-cover-at-7.md) | blocked | Evan Daniel’s zero-margin closed cover carried to k = 7: a cover of [0,7]² with mass below 45, so s(45) = 7; blocked on the intake lane’s review of the s(32) certificate (BC-396) | 0 | — |
+| [H-253](packing/campaign/hypotheses/H-253-n17-retained-rational-upper.md) | confirmed | The retained Kleddamag rational reconstruction contains seventeen unit squares at exact side 4675530093604551/1000000000000000 | 1 | 8s wall |
+| [H-254](packing/campaign/hypotheses/H-254-n17-contact-chart-fidelity.md) | confirmed | The proposed three-variable endpoint contact chart reproduces the fixed rational n17 witness within exact residual and contact-feature thresholds; the conclusion is fidelity at this relaxed witness only | 1 | 1s wall |
+| [H-255](packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md) | confirmed | Exact existence and uniqueness of the contact-chart root in its fixed rational box; endpoint packing feasibility and capture remain separate | 1 | 1s wall |
+| [H-256](packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md) | confirmed | Exact endpoint packing at the H255 root with fixed interior sliders; all68 wall and136 pair obligations certified; global capture remains open | 1 | 43s wall |
+| [H-257](packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md) | confirmed | Complete exact-root feature inventory, independently audited:168owner-axis options,60active-wall corners,9tangent offsets | 1 | 42s wall |
+| [H-258](packing/campaign/hypotheses/H-258-n17-common-core-stress.md) | blocked | Fixed common-core stress; instrument stopped after three symbolic preparation failures, before target use | 0 | — |
+| [H-259](packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md) | confirmed | Exact mixed-capacity centre cover and finite occupancy census; no geometric exclusion | 1 | exp-240 accepted: 161,100,756 versus 8,597,496,600 |
+| [H-260](packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md) | confirmed | Closed-assignment D4 occupancy quotient; no geometric exclusion | 1 | exp-241 accepted: 20,155,518 orbits |
 
 ### Confirmed
 
@@ -5520,14 +5573,15 @@ in separate tables: their units differ, and the same work can appear in both.
 | `session-162-codex-task-tree.yaml` | session-162 | 434 | 1.57 h | 0.64 h | 0.64 h | yes |
 | `session-163-codex-task-tree.yaml` | session-163 | 763 | 4.27 h | 2.53 h | 2.63 h | yes |
 | `session-164-codex-task-tree.yaml` | session-164 | 2,423 | 7.51 h | 2.73 h | 2.74 h | yes |
+| `session-165-codex-task-tree.yaml` | session-165 | 2,730 | 13.15 h | 3.96 h | 3.96 h | yes |
 | `codex-task-tree-pr137-publication-tail.yaml` | unattributed | 610 | 4.39 h | 1.77 h | 1.82 h | yes |
 | `codex-task-tree-pr142-publication-tail.yaml` | unattributed | 136 | 0.87 h | 0.41 h | 0.58 h | yes |
 
 | Coverage | sessions |
 | --- | ---: |
-| measured | 110 |
+| measured | 111 |
 | unmeasured | 54 |
-| **total** | **164** |
+| **total** | **165** |
 
 <!-- END GENERATED: session-close-report -->
 
@@ -5543,9 +5597,9 @@ The relevant generator writes the receipt, and the entry fills in on the next
 
 ## Experiments Conducted
 
-There are 163 rounds registered in `series-000`.
+There are 170 rounds registered in `series-000`.
 
-They record 2512.1 agent-minutes and 4019.2 wall-minutes.
+They record 2512.1 agent-minutes and 4020.8 wall-minutes.
 These totals exclude four historical annealing rounds with unrecorded timing; their wall
 and operator costs are unknown, not zero.
 Exp129 closed as blocked without invocation and contributes zero scientific elapsed
@@ -5750,6 +5804,13 @@ archive beside it.
 | [exp-232](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-232-h236-rung-zero-closed.md) | 11 | target | H-236 | The 58 remaining rung-0 subtrees, then the independent reader over the complete tree | Closed: 119,556,859 leaf certificates, three Trump-degenerate leaves, no unresolved leaf; registered as T-035 and T-036 after the Fable max W2 review | accepted |
 | [exp-233](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-233-h241-n12-ceiling-settles-below-12.md) | 12 | target | H-241 | Warm-started cutting loop at side 39609/10000 with six row rounds and support 192 | Row loop converged at covering value 11.980175 < 12; no family reaches 12 | rejected |
 | [exp-234](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-234-h242-rung1-pilot.md) | 11 | target | H-242 | Rung-0 cell tree on eighteen boxes away from Trump’s tilt, 150,000 nodes per subtree | No box closed; about two-thirds closed at about four million nodes each, flat in width and tilt | unresolved |
+| [exp-235](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md) | 17 | target | H-253 | Exact replay of the fixed Kleddamag rational source through two local geometry implementations, with source and control agreement | Seventeen unit squares and all 136 pair separations verified at exact side 4675530093604551/1000000000000000; rational upper witness accepted | accepted |
+| [exp-236](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-236-h254-n17-contact-chart.md) | 17 | target | H-254 | Exact rational fidelity screen of the frozen three-variable contact chart, including all contacts, reconstructed centres, alternative axes and source feasibility | All 458 frozen comparisons passed with independent receipt review; fidelity at the relaxed rational witness only | accepted |
+| [exp-237](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-237-h255-n17-polynomial-root.md) | 17 | target | H-255 | Fixed exact rational contraction certificate for the contact-chart root | Exact contraction, inclusion and domain guards pass both implementations and independent output review; root existence only | accepted |
+| [exp-238](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-238-h256-n17-endpoint-feasibility.md) | 17 | target | H-256 | Exact endpoint geometry with fixed centroid sliders | Complete exact endpoint certificate passes independent output review; conditional class minimum attained | accepted |
+| [exp-239](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-239-h257-n17-endpoint-features.md) | 17 | target | H-257 | Exact owner-axis and active-wall feature inventory | Allfrozen counts, identities andstrictsigns pass;175interval records independently matched | accepted |
+| [exp-240](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-240-h259-n17-mixed-capacity-census.md) | 17 | target | H-259 | Mixed-capacity complete centre cover and exact census | 161,100,756 mixed patterns versus 8,597,496,600 baseline; independent audit | accepted |
+| [exp-241](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-241-h260-n17-closed-cell-symmetry.md) | 17 | target | H-260 | Closed-assignment D4 census | 20,155,518 orbits; all eight fixed counts independently agree | accepted |
 
 ### Cost and provenance
 
@@ -5918,10 +5979,17 @@ archive beside it.
 | exp-232 | One night on 9 workers, then the reader | 16764 s | — | criterion | `7b4847aa` |
 | exp-233 | 345 minutes on one process | 7941 s | — | criterion | `7b4847aa` |
 | exp-234 | 150,000 nodes per subtree, eighteen boxes | 11264 s | — | criterion | `42d52c38` |
+| exp-235 | 90 seconds per command; 600 seconds total | 7.91 s | — | criterion | `bacacdd15` |
+| exp-236 | 90 seconds; one worker | 1.13 s | — | criterion | `74480b0a` |
+| exp-237 | producer90s and checker90s; one worker | 0.76 s | — | criterion | `b3e5e1526`; producer 0.67s, checker 0.09s |
+| exp-238 | 180 seconds; one worker | 43.45 s | — | criterion | `f77b3e0a7`; symbolic25.80s, interval and formatting16.42s |
+| exp-239 | 180 seconds; one worker | 41.80 s | — | criterion | `b34801483`; symbolic24.51s, interval andformatting16.09s |
+| exp-240 | 30 seconds; one worker | 0.35s | — | criterion | Full independent census agreement; geometry exclusions remain open |
+| exp-241 | 30 seconds; one worker | 0.14s | — | criterion | IndependentcompleteD4census; no geometricexclusion |
 
-### What the 163 rounds jointly establish
+### What the 170 rounds jointly establish
 
-The 163 rounds use 2512.1 agent-minutes and 4019.2 wall-minutes under the campaign’s
+The 170 rounds use 2512.1 agent-minutes and 4020.8 wall-minutes under the campaign’s
 retained effort accounting.
 The never-invoked exp129 adds no scientific result or execution time.
 Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is recorded
@@ -6129,15 +6197,15 @@ table above.
 
 Kept with the same discipline as the experiment record, because the aggregate says
 things no individual bug report can.
-The log contains 509 defects, [one line each](defects.md), generated from `defects.yaml`
+The log contains 511 defects, [one line each](defects.md), generated from `defects.yaml`
 and checked in the gate.
 
 | Class | Count | The system … |
 | --- | ---: | --- |
-| soundness | 103 | asserted something false about the mathematics |
+| soundness | 104 | asserted something false about the mathematics |
 | validity | 127 | was correct, but the measurement did not bear on the question |
 | bookkeeping | 191 | recorded something its own evidence contradicts |
-| robustness | 69 | did not finish, or finished only by luck |
+| robustness | 70 | did not finish, or finished only by luck |
 | performance | 19 | worked, but cost far more than it should |
 
 One entry is filed under a class it only half fits, and the table reads accordingly.
@@ -6158,11 +6226,11 @@ That allocation remains unimplemented and needs measurement.
 
 Two observations the log exists to make.
 
-**79 of the 103 soundness defects pointed in the *flattering* direction**, where the
+**80 of the 104 soundness defects pointed in the *flattering* direction**, where the
 error looks like a success.
 That is the dangerous class, and it is the majority of it.
 
-**The automated gate has caught eighty-one defects in 509, and no soundness defect
+**The automated gate has caught eighty-one defects in 511, and no soundness defect
 ever.** Every soundness failure was found by a control cell whose answer was known in
 advance, a rule written down before the measurement, a generated view contradicting its
 source, or someone reading carefully.

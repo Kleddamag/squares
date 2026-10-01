@@ -105,6 +105,7 @@ T026_REVIEW = REPO / "docs/project/reviews/review-2026-09-10-t025-t026-verifiabl
 RESULT_ID = "t-018"
 TEMPLATES = Path(__file__).with_name("templates")
 TEMPLATE = TEMPLATES / "explainer-shell.html"
+PUBLICATION_STYLE = TEMPLATES / "explainer-publication.css"
 MARKDOWN = TEMPLATES / "explainer-article.md"
 #: First-party classic scripts inlined by the shell. The HTML carries placeholders only;
 #: these files are the sources Biome, ESLint and tsc check.
@@ -113,6 +114,7 @@ INLINE_SCRIPT_ASSETS = {
     "NATIVE_MATH_METRICS": EXPLAINER_SCRIPTS / "native-math-metrics.js",
     "RESERVE_MATH": EXPLAINER_SCRIPTS / "reserve-math.js",
     "KPRESS_CLIENT_SCRIPT": EXPLAINER_SCRIPTS / "kpress-client.js",
+    "DIAGRAM_LABEL_SCRIPT": EXPLAINER_SCRIPTS / "diagram-labels.js",
     "EXPLAINER_PAGE_SCRIPT": EXPLAINER_SCRIPTS / "page.js",
     "CERTIFICATE_SCRIPT": EXPLAINER_SCRIPTS / "certificate.js",
     "FINISH_MATH": EXPLAINER_SCRIPTS / "finish-math.js",
@@ -2440,6 +2442,7 @@ def shell_substitutions(static: Path, shared: dict[str, str], body: str) -> dict
     return {
         "MONO_FONT": MONO_FONT,
         "KPRESS_CSS": kpress_css(static) + katex_css(static),
+        "PUBLICATION_CSS": PUBLICATION_STYLE.read_text(encoding="utf-8"),
         "RELATION_CSS": relation_face_css(static),
         "PAPER_TYPE_CSS": PAPER_TYPE_CSS.read_text(encoding="utf-8"),
         "THEME_BOOTSTRAP": theme_bootstrap(static),
@@ -2713,6 +2716,7 @@ RENDER_INPUTS = (
     PACKING / "atlas" / "known-best" / "rendering" / "n-011.svg",
     *COMPOSITE_ASSETS,
     TEMPLATE,
+    PUBLICATION_STYLE,
     MARKDOWN,
     SITE_NAV,
     SITE_NAV_CSS,

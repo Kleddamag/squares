@@ -1,0 +1,14 @@
+export TMPDIR=/Volumes/spud-ext1/agent-scratch/w3-post-optimality/tmp
+export CARGO_TARGET_DIR=/Volumes/spud-ext1/agent-scratch/w3-post-optimality/cargo
+export UV_CACHE_DIR=/Volumes/spud-ext1/agent-scratch/w3-post-optimality/uv-cache
+export PYTHONDONTWRITEBYTECODE=1
+ulimit -f 1024
+run_dir=campaign/series/series-000-smoke-and-calibration/results/exp-240-n17-mixed-capacity-census/run-001
+/usr/bin/time -l .venv/bin/python3 -m devtools.count_cell_occupancies --capacities '[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2]' --target 17 > "$run_dir/mixed.json" 2> "$run_dir/mixed.time"
+printf 'mixed\t0\n' >> "$run_dir/exits.tsv"
+/usr/bin/time -l .venv/bin/python3 -m devtools.audit_cell_occupancies "$run_dir/mixed.json" > "$run_dir/mixed-audit.json" 2> "$run_dir/mixed-audit.time"
+printf 'mixed-audit\t0\n' >> "$run_dir/exits.tsv"
+/usr/bin/time -l .venv/bin/python3 -m devtools.count_cell_occupancies --capacities '[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]' --target 17 > "$run_dir/baseline.json" 2> "$run_dir/baseline.time"
+printf 'baseline\t0\n' >> "$run_dir/exits.tsv"
+/usr/bin/time -l .venv/bin/python3 -m devtools.audit_cell_occupancies "$run_dir/baseline.json" > "$run_dir/baseline-audit.json" 2> "$run_dir/baseline-audit.time"
+printf 'baseline-audit\t0\n' >> "$run_dir/exits.tsv"

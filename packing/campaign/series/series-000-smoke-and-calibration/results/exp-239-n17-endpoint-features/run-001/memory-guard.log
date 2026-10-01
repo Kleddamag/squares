@@ -1,0 +1,2 @@
+/bin/bash: line 34: ulimit: data seg size: cannot modify limit: Invalid argument
+Optional data-segment limit unsupported; mandatory180s and10MiB file ceilings remain.

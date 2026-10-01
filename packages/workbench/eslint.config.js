@@ -42,6 +42,7 @@ const NOT_OURS = [
   "**/node_modules/**",
   "**/.venv/**",
   "packages/workbench/dist/**",
+  "packing/*/target/**",
   "attic/**",
   "packing/resources/**",
   ".claude/**",

@@ -816,14 +816,9 @@ def _assembled(
     (site / "papers" / "n11-lower-bounds-explainer.pdf").write_text("explainer pdf")
     (site / "known-best-1-100.svg").write_text("atlas")
     pages = root / "overview-pages"
-    for page in (
-        "index.html",
-        "papers.html",
-        "explainer.html",
-        "n11-optimality/index.html",
-        "n11-optimality/t-060-explainer.html",
-        *overview,
-    ):
+    forwarders = [old for old, _ in render_overview.MOVED_PAGES]
+    assert {"explainer.html", "n11-optimality/index.html"} < set(forwarders)
+    for page in ("index.html", "papers.html", *forwarders, *overview):
         (pages / page).parent.mkdir(parents=True, exist_ok=True)
         (pages / page).write_text(f"overview build's {page}")
     staged = root / "n11-optimality-review-page"
@@ -904,7 +899,7 @@ def test_publication_puts_both_papers_under_papers_and_keeps_every_old_address(
     served = sorted(
         path.relative_to(site).as_posix() for path in site.rglob("*") if path.is_file()
     )
-    assert served == [
+    papers = [
         "explainer.html",
         "index.html",
         "known-best-1-100.svg",
@@ -922,11 +917,15 @@ def test_publication_puts_both_papers_under_papers_and_keeps_every_old_address(
         "t-018-explainer.md",
         "t-018-explainer.pdf",
     ]
+    # And the forwarders of the pages that moved for other reasons, with the site's pages.
+    others = [old for old, new in render_overview.MOVED_PAGES if not new.startswith("papers/")]
+    assert served == sorted({*papers, *others})
     for old, new in render_overview.MOVED_FILES:
         assert (site / old).read_bytes() == (site / new).read_bytes(), old
     for old, new in render_overview.MOVED_PAGES:
         assert (site / old).read_text() == f"overview build's {old}", old
-        assert (site / new).is_file(), new
+        if new.startswith("papers/"):
+            assert (site / new).is_file(), new
     assert (site / "index.html").read_text() == "overview build's index.html"
 
 

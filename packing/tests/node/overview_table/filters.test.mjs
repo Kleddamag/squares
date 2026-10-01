@@ -1,7 +1,7 @@
 // The table script wired to a stand-in results table and its tools bar: two groups of
 // rows carrying the facets `overview_sections.result_facets` writes, under the controls
 // `overview_sections.result_filters` writes, Significance starting at S4 and up and
-// Max age and Current best only wherever the page under test starts them. The stand-ins
+// Max age and Hide superseded wherever the page under test starts them. The stand-ins
 // are only what the script reads, the day among them; the test reads what it then shows.
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -79,30 +79,32 @@ function clock(today) {
 /**
  * A page with a table of results, as the HTML has it: Significance at S4 and up, the
  * rows below it and the heading of the group they leave empty already hidden, Max age
- * at `age`, empty for none, and Current best only checked if `best`. The reader opens
- * it on `today`. Three rows are current bests, one of them as reported.
- * @param {{ search?: string, hash?: string, age?: string, best?: boolean, today?: string }} [opened]
+ * at `age`, empty for none, and Hide superseded checked if `hide`. The reader opens it
+ * on `today`. One row is superseded; of the four that are current, two are current
+ * bests, one is a current best as reported and one is not a bound.
+ * @param {{ search?: string, hash?: string, age?: string, hide?: boolean, today?: string }} [opened]
  */
-function page({ search = "", hash = "", age = "", best = false, today = "2026-10-01" } = {}) {
-  const ours = { source: "ours", standing: "current-best", best: "true" };
-  const others = { source: "others", standing: "superseded", best: "false" };
-  const reported = { source: "others", standing: "current-best-reported", best: "true" };
+function page({ search = "", hash = "", age = "", hide = false, today = "2026-10-01" } = {}) {
+  const ours = { source: "ours", standing: "current-best", current: "true" };
+  const superseded = { source: "others", standing: "superseded", current: "false" };
+  const structure = { source: "others", standing: "not-a-bound", current: "true" };
+  const reported = { source: "others", standing: "current-best-reported", current: "true" };
   const rows = [
     row("", null),
     row("t-001", { ...ours, v: "4", c: "5", s: "5", n: "11", date: "2026-09-04" }),
     row("t-002", { ...ours, v: "3", c: "2", s: "3", n: "17 18", date: "2026-08-31" }, true),
     row("", null, true),
-    row("t-003", { ...others, v: "0", c: "0", s: "2", n: "18-21 26", date: "1979-01-01" }, true),
+    row("t-003", { ...structure, v: "0", c: "0", s: "2", n: "18-21 26", date: "1979-01-01" }, true),
     row("t-004", { ...reported, v: "4", c: "3", s: "3", n: "1-100", date: "2026-09-27" }, true),
     row("", null),
-    row("t-005", { ...others, v: "4", c: "4", s: "4", n: "45", date: "2026-09-27" }),
+    row("t-005", { ...superseded, v: "4", c: "4", s: "4", n: "45", date: "2026-09-27" }),
   ];
   const controls = {
     s: new Select("s", "min", "4"),
     v: new Select("v", "min", ""),
     c: new Select("c", "min", ""),
     standing: new Select("standing", null, ""),
-    best: new Checkbox("best", best),
+    hide: new Checkbox("current", hide),
     source: new Select("source", null, ""),
     n: new Input("n", "covers", ""),
     age: new Input("date", "age", age),
@@ -185,20 +187,20 @@ function page({ search = "", hash = "", age = "", best = false, today = "2026-10
     }),
     /**
      * Change the controls, then tell the bar, as a reader's choice does.
-     * @param {Partial<Record<Exclude<keyof typeof controls, "best">, string>>} values
+     * @param {Partial<Record<Exclude<keyof typeof controls, "hide">, string>>} values
      */
     choose(values) {
       for (const [name, value] of Object.entries(values)) {
-        controls[/** @type {Exclude<keyof typeof controls, "best">} */ (name)].value = value;
+        controls[/** @type {Exclude<keyof typeof controls, "hide">} */ (name)].value = value;
       }
       fire("change");
     },
     /**
-     * Check or clear Current best only, then tell the bar.
+     * Check or clear Hide superseded, then tell the bar.
      * @param {boolean} checked
      */
     check(checked) {
-      controls.best.checked = checked;
+      controls.hide.checked = checked;
       fire("change");
     },
     fire,
@@ -234,7 +236,8 @@ void test("each facet filters, and the filters compose", () => {
   assert.deepEqual(rows({ s: "3" }), ["t-001", "t-002", "t-004", "t-005"]);
   assert.deepEqual(rows({ v: "4" }), ["t-001", "t-004", "t-005"]);
   assert.deepEqual(rows({ c: "4" }), ["t-001", "t-005"]);
-  assert.deepEqual(rows({ standing: "superseded" }), ["t-003", "t-005"]);
+  assert.deepEqual(rows({ standing: "superseded" }), ["t-005"]);
+  assert.deepEqual(rows({ standing: "not-a-bound" }), ["t-003"]);
   assert.deepEqual(rows({ standing: "current-best-reported" }), ["t-004"]);
   assert.deepEqual(rows({ source: "ours" }), ["t-001", "t-002"]);
   assert.deepEqual(rows({ n: "18" }), ["t-002", "t-003", "t-004"]);
@@ -253,38 +256,42 @@ void test("each facet filters, and the filters compose", () => {
   assert.equal(results.count.textContent, "0 of 5 results");
 });
 
-void test("Current best only keeps the current bests, and Standing chooses among them", () => {
-  // The overview's bar: the box checked in the HTML, and the rows it hides with it.
-  const recent = page({ best: true });
+void test("Hide superseded hides the superseded rows and no other, and narrows Standing", () => {
+  // The overview's bar: the box checked in the HTML, and the row it hides with it.
+  const recent = page({ hide: true });
   assert.deepEqual(recent.shown(), { rows: ["t-001"], headings: 1 });
   assert.equal(recent.count.textContent, "1 of 5 results");
+  // Every row that is current stays: the current bests, the reported one among them,
+  // and the result that is not a bound.
   recent.choose({ s: "" });
-  assert.deepEqual(recent.shown(), { rows: ["t-001", "t-002", "t-004"], headings: 2 });
-  assert.equal(recent.count.textContent, "3 of 5 results");
-  // It narrows Standing: either current best, and no row of any other standing.
+  assert.deepEqual(recent.shown(), { rows: ["t-001", "t-002", "t-003", "t-004"], headings: 2 });
+  assert.equal(recent.count.textContent, "4 of 5 results");
+  // It narrows Standing: each standing but the one it hides still shows its rows.
   recent.choose({ standing: "current-best" });
   assert.deepEqual(recent.shown().rows, ["t-001", "t-002"]);
   recent.choose({ standing: "current-best-reported" });
   assert.deepEqual(recent.shown().rows, ["t-004"]);
+  recent.choose({ standing: "not-a-bound" });
+  assert.deepEqual(recent.shown().rows, ["t-003"]);
   recent.choose({ standing: "superseded" });
   assert.deepEqual(recent.shown(), { rows: [], headings: 0 });
   assert.equal(recent.count.textContent, "0 of 5 results");
   // Cleared, it passes every row, as an empty control does.
   recent.check(false);
-  assert.deepEqual(recent.shown().rows, ["t-003", "t-005"]);
+  assert.deepEqual(recent.shown().rows, ["t-005"]);
   recent.choose({ standing: "" });
   assert.equal(recent.count.textContent, "5 results");
   recent.check(true);
-  assert.deepEqual(recent.shown().rows, ["t-001", "t-002", "t-004"]);
+  assert.deepEqual(recent.shown().rows, ["t-001", "t-002", "t-003", "t-004"]);
   // The results page's bar starts with it clear, and it composes with the rest there.
   const every = page();
   every.choose({ s: "" });
   assert.equal(every.count.textContent, "5 results");
   every.check(true);
   every.choose({ source: "others" });
-  assert.deepEqual(every.shown().rows, ["t-004"]);
-  // The row the address names shows though it is no current best.
-  assert.deepEqual(page({ best: true, hash: "#t-005" }).shown().rows, ["t-001", "t-005"]);
+  assert.deepEqual(every.shown().rows, ["t-003", "t-004"]);
+  // The row the address names shows though it is superseded.
+  assert.deepEqual(page({ hide: true, hash: "#t-005" }).shown().rows, ["t-001", "t-005"]);
 });
 
 void test("the row the address names shows whatever the filters hide", () => {
@@ -332,15 +339,15 @@ void test("a link can open the table filtered, by each control's parameter", () 
   assert.deepEqual(page({ age: "3", search: "?s-min=" }).shown().rows, []);
   assert.deepEqual(page({ age: "3", search: "?s-min=&age=" }).shown().rows.length, 5);
   // A checkbox is preset by `true`, and cleared by anything else, the empty value too.
-  const best = page({ search: "?s-min=&best=true" });
-  assert.equal(best.controls.best.checked, true);
-  assert.deepEqual(best.shown().rows, ["t-001", "t-002", "t-004"]);
-  for (const search of ["?s-min=&best=false", "?s-min=&best="]) {
-    const cleared = page({ best: true, search });
-    assert.equal(cleared.controls.best.checked, false);
+  const hidden = page({ search: "?s-min=&current=true" });
+  assert.equal(hidden.controls.hide.checked, true);
+  assert.deepEqual(hidden.shown().rows, ["t-001", "t-002", "t-003", "t-004"]);
+  for (const search of ["?s-min=&current=false", "?s-min=&current="]) {
+    const cleared = page({ hide: true, search });
+    assert.equal(cleared.controls.hide.checked, false);
     assert.equal(cleared.shown().rows.length, 5);
   }
-  assert.equal(page({ best: true, search: "?s-min=" }).controls.best.checked, true);
+  assert.equal(page({ hide: true, search: "?s-min=" }).controls.hide.checked, true);
 });
 
 void test("a sort keeps the filters and hides the group headings", () => {

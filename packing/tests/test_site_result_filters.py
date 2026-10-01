@@ -1,7 +1,7 @@
-"""Current best only, the result filters' checkbox, in a browser.
+"""Hide superseded, the result filters' checkbox, in a browser.
 
 Both tables of results sit under one filter bar (`overview_sections.result_filters`,
-`templates/paper-design.md`, Result filters). Its one checkbox, Current best only, starts
+`templates/paper-design.md`, Result filters). Its one checkbox, Hide superseded, starts
 checked on the overview and clear on the results page. This opens both rendered pages in
 Chromium and uses the checkbox as a reader does, with the pointer on its label and with
 the keyboard, and reads the table after each change through one probe: the rows showing
@@ -31,7 +31,7 @@ from typing import Any
 
 import pytest
 
-from devtools import overview_data, overview_sections
+from devtools import overview_data, overview_sections, render_recent_results
 from devtools.render_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import probe
 from tests import site_renders
@@ -46,7 +46,7 @@ PAGES = {
 }
 #: The widths the design is shot at: a desktop, a tablet and a phone.
 WIDTHS = (1280, 768, 390)
-LABEL = "Current best only"
+LABEL = "Hide superseded"
 STANDING = '.site-result-filters select[data-filter="standing"]'
 
 
@@ -117,7 +117,9 @@ def test_the_checkbox_starts_at_its_pages_default_and_the_table_with_it(
 ) -> None:
     """On load the checkbox is checked on the overview and clear on the results page,
     as its HTML has it; the rows showing are the ones that page's defaults keep, and
-    the count is theirs. The rows that carry the flag are the current bests on both."""
+    the count is theirs. The rows that carry the flag are, on both pages, every result
+    that is not superseded: the current bests, the second certificates and the results
+    that are not bounds."""
     defaults = PAGES[name]
     page = opened(browser, pages[name], overview)
     try:
@@ -126,39 +128,46 @@ def test_the_checkbox_starts_at_its_pages_default_and_the_table_with_it(
         page.close()
     assert found["type"] == "checkbox"
     assert found["label"] == LABEL
-    assert found["checked"] is found["starts_checked"] is defaults.current_best
-    assert defaults.current_best is (name == "index.html")
+    assert found["checked"] is found["starts_checked"] is defaults.hide_superseded
+    assert defaults.hide_superseded is (name == "index.html")
     expected = rows(overview, defaults)
     assert sorted(found["shown"]) == expected
     assert found["total"] == len(overview.results)
     assert found["count"] == count(len(expected), overview)
-    assert sorted(found["best"]) == sorted(
+    current = sorted(
         result.id.lower()
         for result in overview.results
-        if overview_sections.is_current_best(result.standing)
+        if result.standing != render_recent_results.SUPERSEDED
     )
-    if defaults.current_best:
-        assert set(found["shown"]) < set(found["best"])
+    assert sorted(found["current"]) == current
+    assert {result.standing for result in overview.results if result.id.lower() in current} >= {
+        render_recent_results.HOLDS,
+        render_recent_results.HOLDS_REPORTED,
+        render_recent_results.SECOND_CERTIFICATE,
+        render_recent_results.NOT_A_BOUND,
+    }
+    if defaults.hide_superseded:
+        assert set(found["shown"]) < set(found["current"])
     else:
-        assert set(found["best"]) < set(found["shown"])
+        assert set(found["current"]) < set(found["shown"])
 
 
 @pytest.mark.parametrize("name", PAGES)
-def test_toggling_it_hides_and_shows_the_rows_that_are_not_current_bests(
+def test_toggling_it_hides_and_shows_the_superseded_rows(
     browser: Any, pages: dict[str, Path], overview: overview_data.Overview, name: str
 ) -> None:
     """A click on the label toggles the checkbox, and so does the space bar with the
     checkbox focused, reached by Tab from Standing. Checked, the table shows the rows
-    the page's other defaults keep that are current bests; clear, all the rows those
+    the page's other defaults keep that are not superseded; clear, all the rows those
     defaults keep. The count follows each time, and the rows hidden stay in the page."""
     defaults = PAGES[name]
-    checked = rows(overview, defaults._replace(current_best=True))
-    clear = rows(overview, defaults._replace(current_best=False))
+    checked = rows(overview, defaults._replace(hide_superseded=True))
+    clear = rows(overview, defaults._replace(hide_superseded=False))
     assert set(checked) < set(clear)
     page = opened(browser, pages[name], overview)
     try:
         expected = {True: checked, False: clear}
-        now = defaults.current_best
+        now = defaults.hide_superseded
         # The label is the control: a click on its words toggles the checkbox.
         for _ in range(2):
             page.get_by_text(LABEL, exact=True).click()
@@ -180,8 +189,8 @@ def test_toggling_it_hides_and_shows_the_rows_that_are_not_current_bests(
             assert found["checked"] is now
             assert sorted(found["shown"]) == expected[now]
             assert found["count"] == count(len(expected[now]), overview)
-        assert now is defaults.current_best
-        assert found["starts_checked"] is defaults.current_best
+        assert now is defaults.hide_superseded
+        assert found["starts_checked"] is defaults.hide_superseded
     finally:
         page.close()
 
@@ -196,16 +205,16 @@ def test_a_fresh_load_returns_to_the_pages_own_default(
     defaults = PAGES[name]
     page = opened(browser, pages[name], overview)
     try:
-        page.get_by_label(LABEL).set_checked(not defaults.current_best)
+        page.get_by_label(LABEL).set_checked(not defaults.hide_superseded)
         changed = state(page)
-        assert changed["checked"] is not defaults.current_best
-        assert changed["starts_checked"] is defaults.current_best
+        assert changed["checked"] is not defaults.hide_superseded
+        assert changed["starts_checked"] is defaults.hide_superseded
         assert sorted(changed["shown"]) != rows(overview, defaults)
         page.goto(pages[name].as_uri(), wait_until="load")
         found = state(page)
     finally:
         page.close()
-    assert found["checked"] is defaults.current_best
+    assert found["checked"] is defaults.hide_superseded
     assert sorted(found["shown"]) == rows(overview, defaults)
     assert found["count"] == count(len(rows(overview, defaults)), overview)
 
@@ -213,21 +222,32 @@ def test_a_fresh_load_returns_to_the_pages_own_default(
 def test_it_narrows_standing_and_never_sets_it(
     browser: Any, pages: dict[str, Path], overview: overview_data.Overview
 ) -> None:
-    """Checked, with Standing at All, the results page shows both current bests, the
-    verified and the reported; Standing then chooses between them. Any other standing
-    leaves no row while the box is checked, and the count says so; clearing the box
-    brings that standing's rows back. Neither control changes the other."""
+    """Checked, with Standing at All, the results page shows every result but the
+    superseded ones, and Standing then chooses among the standings left: each still
+    shows all its rows. The one standing the box hides, superseded, leaves no row while
+    it is checked, and the count says so; clearing the box brings those rows back.
+    Neither control changes the other."""
     by_standing: dict[str, list[str]] = {}
     for result in overview.results:
         key = overview_sections.standing_key(result.standing)
         by_standing.setdefault(key, []).append(result.id.lower())
-    best = sorted(by_standing["current-best"] + by_standing["current-best-reported"])
+    kept = sorted(by_standing.keys() - {"superseded"})
+    assert {
+        "current-best",
+        "current-best-reported",
+        "second-certificate",
+        "not-a-bound",
+    } <= set(kept)
     page = opened(browser, pages["all-results.html"], overview)
     try:
         box = page.get_by_label(LABEL)
         box.check()
-        assert sorted(state(page)["shown"]) == best
-        for key in ("current-best", "current-best-reported"):
+        found = state(page)
+        assert sorted(found["shown"]) == sorted(
+            entry for key in kept for entry in by_standing[key]
+        )
+        assert len(found["shown"]) == len(overview.results) - len(by_standing["superseded"])
+        for key in kept:
             page.locator(STANDING).select_option(key)
             found = state(page)
             assert sorted(found["shown"]) == sorted(by_standing[key]), key
@@ -249,11 +269,11 @@ def test_it_narrows_standing_and_never_sets_it(
 def test_a_link_can_set_it_or_clear_it(
     browser: Any, pages: dict[str, Path], overview: overview_data.Overview
 ) -> None:
-    """`best=true` opens the results page with the box checked, and `best=false` opens
+    """`current=true` opens the results page with the box checked, and `current=false` opens
     the overview with it clear, each with the rows that leaves."""
     opens = {
-        "all-results.html": ("?best=true", True),
-        "index.html": ("?best=false", False),
+        "all-results.html": ("?current=true", True),
+        "index.html": ("?current=false", False),
     }
     for name, (query, checked) in opens.items():
         page = browser.new_page(viewport={"width": 1280, "height": 900})
@@ -265,8 +285,8 @@ def test_a_link_can_set_it_or_clear_it(
         finally:
             page.close()
         assert found["checked"] is checked, name
-        assert found["starts_checked"] is PAGES[name].current_best, name
-        expected = rows(overview, PAGES[name]._replace(current_best=checked))
+        assert found["starts_checked"] is PAGES[name].hide_superseded, name
+        expected = rows(overview, PAGES[name]._replace(hide_superseded=checked))
         assert sorted(found["shown"]) == expected, name
         assert found["count"] == count(len(expected), overview), name
 
@@ -302,11 +322,11 @@ def test_the_checkbox_and_its_label_sit_in_the_bar_at_every_width(
         assert len(other["lines"]) >= 1, other
         first = other["lines"][0]
         if (
-            other["filter"] != "best"
+            other["filter"] != "current"
             and first["top"] < line["bottom"]
             and line["top"] < first["bottom"]
         ):
             assert first["bottom"] == pytest.approx(line["bottom"], abs=1), other
             beside += 1
-    assert [other["filter"] for other in found["labels"]].count("best") == 1
+    assert [other["filter"] for other in found["labels"]].count("current") == 1
     assert beside >= 1, "no label shares the checkbox's line"

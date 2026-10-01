@@ -1453,17 +1453,17 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     assert exact <= shown
 
 
-def test_the_recent_table_lists_every_result_filtered_to_current_best_s4_and_180_days(
+def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_days(
     page: str, overview: overview_data.Overview
 ) -> None:
     """Every result is a row, and no date or standing the page fixes leaves one out:
     what makes the table recent is where its bar starts, Significance at S4 and up, Max
-    age at 180 days and Current best only checked. The rows outside those are hidden in
+    age at 180 days and Hide superseded checked. The rows outside those are hidden in
     the HTML, their age measured from the register's own reference date, and the count
     is already written, so the first paint is the filtered table."""
     defaults = overview_sections.RECENT_DEFAULTS
     assert defaults == overview_sections.FilterDefaults(
-        significance=4, max_age=180, current_best=True
+        significance=4, max_age=180, hide_superseded=True
     )
     assert not hasattr(overview_sections, "RECENT_FROM")
     recent = _recent_table(page)
@@ -1484,7 +1484,7 @@ def test_the_recent_table_lists_every_result_filtered_to_current_best_s4_and_180
         '<label>Max age <input type="number" data-filter="date" data-bound="age" '
         'min="0" placeholder="any" value="180"> days</label>'
     ) in tools
-    assert CURRENT_BEST_ONLY.format(checked=" checked") in tools
+    assert HIDE_SUPERSEDED.format(checked=" checked") in tools
     reference = overview_sections.reference_date(overview)
     cutoff = (reference - timedelta(days=180)).isoformat()
     shown = 0
@@ -1494,9 +1494,9 @@ def test_the_recent_table_lists_every_result_filtered_to_current_best_s4_and_180
         dated = overview_sections.first_day(result.dated[1])
         assert f'data-s="{score}"' in row, result.id
         assert f'data-date="{dated}"' in row, result.id
-        best = result.standing in {"current best", "current best, reported"}
-        assert f'data-best="{"true" if best else "false"}"' in row, result.id
-        keeps = score >= 4 and dated >= cutoff and best
+        current = result.standing != "superseded"
+        assert f'data-current="{"true" if current else "false"}"' in row, result.id
+        keeps = score >= 4 and dated >= cutoff and current
         assert (" hidden>" in row.split(">", 1)[0] + ">") == (not keeps), result.id
         shown += keeps
     assert 0 < shown < len(overview.results)
@@ -1509,9 +1509,9 @@ def test_the_recent_table_lists_every_result_filtered_to_current_best_s4_and_180
     assert "1 August" not in text
     assert "every result since" not in text
     starts = (
-        "The table starts filtered to the current best results, to significance S4 and up "
-        "and to a maximum age of 180 days; clear Current best only, choose All and clear "
-        "Max age to see every row."
+        "The table starts with superseded results hidden, at significance S4 and up and a "
+        "maximum age of 180 days; clear Hide superseded, choose All and clear Max age to "
+        "see every row."
     )
     assert text.count(starts) == 1
     assert "It starts filtered" not in text
@@ -1562,13 +1562,13 @@ def test_the_html_measures_an_age_from_the_register_and_never_from_the_clock(
         assert shows(result(dated, score), every, day), dated
     assert shows(result("1979", 4), overview_sections.FilterDefaults(significance=4), day)
     assert not shows(result("1979", 2), overview_sections.FilterDefaults(max_age=30), day)
-    # Current best only keeps the two standings a case bound rests on, and no other.
-    best = overview_sections.FilterDefaults(current_best=True)
+    # Hide superseded hides the one standing, and keeps every other.
+    hiding = overview_sections.FilterDefaults(hide_superseded=True)
     for standing in render_recent_results.STANDINGS:
-        holds = standing in {"current best", "current best, reported"}
-        assert overview_sections.is_current_best(standing) == holds, standing
-        assert shows(result("1979", 2, standing), best, day) == holds, standing
-        assert shows(result("2026-09-29", 5, standing), recent, day) == holds, standing
+        current = standing != "superseded"
+        assert overview_sections.is_superseded(standing) == (not current), standing
+        assert shows(result("1979", 2, standing), hiding, day) == current, standing
+        assert shows(result("2026-09-29", 5, standing), recent, day) == current, standing
         assert shows(result("1979", 2, standing), every, day), standing
 
 
@@ -1766,9 +1766,9 @@ def test_recent_results_opens_with_readmes_progress_paragraphs(page: str) -> Non
         "squares, found here or by others."
     )
     assert own.endswith(
-        "The table starts filtered to the current best results, to significance S4 and up "
-        "and to a maximum age of 180 days; clear Current best only, choose All and clear "
-        "Max age to see every row."
+        "The table starts with superseded results hidden, at significance S4 and up and a "
+        "maximum age of 180 days; clear Hide superseded, choose All and clear Max age to "
+        "see every row."
     )
     assert own.count("The table lists every result") == 1
     assert " since " not in own
@@ -2149,6 +2149,14 @@ def test_the_standing_filter_offers_each_standing_on_the_page(
     present = {overview_sections.standing_key(r.standing) for r in overview.results}
     assert offered[0] == ""
     assert set(offered[1:]) == present
+    # The unmarked state keeps its name as a choice, first after All, whether or not a
+    # row draws a chip for it; `superseded` is the one choice Hide superseded leaves no
+    # row for (think-nr0y).
+    assert offered[1:3] == ["current-best", "current-best-reported"]
+    assert "superseded" in offered[3:]
+    words = dict(re.findall(r'<option value="([^"]+)"[^>]*>([^<]+)</option>', tools.group(1)))
+    assert words["current-best"] == "current best"
+    assert words["superseded"] == "superseded"
 
 
 def test_the_survey_counts_are_readmes(page: str, overview: overview_data.Overview) -> None:
@@ -3408,15 +3416,15 @@ RESULT_FILTERS = [
     ("v", "min"),
     ("c", "min"),
     ("standing", ""),
-    ("best", ""),
+    ("current", ""),
     ("source", ""),
     ("n", "covers"),
     ("date", "age"),
 ]
 
 #: The bar's one checkbox, as `result_filters` writes it: its own label, after Standing.
-CURRENT_BEST_ONLY = (
-    '<label><input type="checkbox" data-filter="best"{checked}> Current best only</label>'
+HIDE_SUPERSEDED = (
+    '<label><input type="checkbox" data-filter="current"{checked}> Hide superseded</label>'
 )
 
 _COUNT = re.compile(r'(<span class="site-count"[^>]*>)[^<]*</span>')
@@ -3457,7 +3465,7 @@ def test_both_tables_of_results_carry_the_identical_filter_set(page: str, result
     """The overview's recent table and the results page's table sit under one bar: the
     same controls with the same choices in the same order. They differ only in where
     three of them start, and in the count. Recent Results starts at Significance S4 and
-    up, a maximum age of 180 days and Current best only checked; the results page starts
+    up, a maximum age of 180 days and Hide superseded checked; the results page starts
     with all three off, and every other control starts at All on both. No control is a
     date, and none is a range."""
     here = _filter_bar(page.split('id="recent-results"', 1)[1])
@@ -3476,12 +3484,12 @@ def test_both_tables_of_results_carry_the_identical_filter_set(page: str, result
         # The checkbox is the control straight after Standing, in a label of its own.
         assert re.search(
             r'<select data-filter="standing">.*?</select></label>'
-            r'<label><input type="checkbox" data-filter="best"(?: checked)?> '
-            r"Current best only</label><label>Source ",
+            r'<label><input type="checkbox" data-filter="current"(?: checked)?> '
+            r"Hide superseded</label><label>Source ",
             bar,
         )
-    assert CURRENT_BEST_ONLY.format(checked=" checked") in here
-    assert CURRENT_BEST_ONLY.format(checked="") in there
+    assert HIDE_SUPERSEDED.format(checked=" checked") in here
+    assert HIDE_SUPERSEDED.format(checked="") in there
     assert here.count(" checked") == 1
     assert " checked" not in there
     assert dict(_SELECTED.findall(here)) == everything | {"s": "4"}
@@ -3570,7 +3578,7 @@ def test_every_facet_a_result_row_carries_has_a_filter_and_every_filter_a_facet(
             "c": record["confirmation"][1:],
             "s": str(record["significance"]["score"]),
             "standing": overview_sections.standing_key(result.standing),
-            "best": "true" if result.standing.startswith("current best") else "false",
+            "current": "false" if result.standing == "superseded" else "true",
             "n": overview_sections.result_cases(result),
             "date": overview_sections.first_day(result.dated[1]),
         }
@@ -3607,13 +3615,13 @@ def test_the_results_page_starts_with_every_result_showing(
     results: str, overview: overview_data.Overview
 ) -> None:
     """The results page's bar starts with Significance at All, no maximum age and
-    Current best only clear, so no row and no group heading is `hidden` in its HTML and
+    Hide superseded clear, so no row and no group heading is `hidden` in its HTML and
     its count is the whole register's."""
     for result in overview.results:
         tag = _row(results, result.id).split(">", 1)[0] + ">"
         assert not tag.endswith(" hidden>"), result.id
     assert f">{len(overview.results)} results</span>" in _filter_bar(results)
-    assert CURRENT_BEST_ONLY.format(checked="") in _filter_bar(results)
+    assert HIDE_SUPERSEDED.format(checked="") in _filter_bar(results)
     headings = re.findall(r'<tr class="site-group-row" data-group="[^"]+"( hidden)?>', results)
     assert len(headings) == len(overview.groups)
     assert not any(headings)
@@ -3623,58 +3631,63 @@ def test_the_results_page_starts_with_every_result_showing(
     assert "starts filtered" not in text
 
 
-def test_current_best_only_starts_checked_on_the_overview_and_clear_on_the_results_page(
+def test_hide_superseded_starts_checked_on_the_overview_and_clear_on_the_results_page(
     page: str, results: str, overview: overview_data.Overview
 ) -> None:
-    """Current best only is one checkbox of the shared bar, checked in the overview's
-    HTML and clear in the results page's, from each table's `FilterDefaults`. What it
-    keeps is the register's own standing read as yes or no: a row's `data-best` is
-    `true` exactly where its standing chip says `current best`, verified or reported.
-    So on the overview every row shown is a current best and the count is theirs, and
-    on the results page the same rows carry the flag but none is hidden. Every result a
-    star marks is a current best, so the default never hides a new result for its
-    standing."""
-    assert overview_sections.RECENT_DEFAULTS.current_best is True
-    assert overview_sections.RESULTS_DEFAULTS.current_best is False
+    """Hide superseded is one checkbox of the shared bar, checked in the overview's HTML
+    and clear in the results page's, from each table's `FilterDefaults`. What it hides is
+    the register's own standing: a row's `data-current` is `false` exactly where its
+    standing is `superseded`, and `true` for every other, a current best, a second
+    certificate and a result that is not a bound alike. So on the overview no row shown
+    is superseded and the count is of the rest, and on the results page the same rows
+    carry the flag but none is hidden. No result a star marks is superseded, so the
+    default never hides a new result."""
+    assert overview_sections.RECENT_DEFAULTS.hide_superseded is True
+    assert overview_sections.RESULTS_DEFAULTS.hide_superseded is False
     here = _filter_bar(page.split('id="recent-results"', 1)[1])
     there = _filter_bar(results)
-    assert CURRENT_BEST_ONLY.format(checked=" checked") in here
-    assert CURRENT_BEST_ONLY.format(checked="") in there
-    holds = {
-        render_recent_results.HOLDS: "current-best",
-        render_recent_results.HOLDS_REPORTED: "current-best-reported",
-    }
+    assert HIDE_SUPERSEDED.format(checked=" checked") in here
+    assert HIDE_SUPERSEDED.format(checked="") in there
     recent = _recent_table(page)
     reference = overview_sections.reference_date(overview)
-    unchecked = overview_sections.RECENT_DEFAULTS._replace(current_best=False)
+    unchecked = overview_sections.RECENT_DEFAULTS._replace(hide_superseded=False)
     shown = 0
     without = 0
+    kept = set()
     for result in overview.results:
-        best = overview_sections.is_current_best(result.standing)
-        assert best == (result.standing in holds), result.id
-        assert best == (overview_sections.standing_key(result.standing) in holds.values())
-        flag = f'data-best="{"true" if best else "false"}"'
+        superseded = overview_sections.is_superseded(result.standing)
+        assert superseded == (result.standing == render_recent_results.SUPERSEDED), result.id
+        assert superseded == (overview_sections.standing_key(result.standing) == "superseded")
+        flag = f'data-current="{"false" if superseded else "true"}"'
         ours = _recent_row(recent, result.id).split(">", 1)[0] + ">"
         theirs = _row(results, result.id).split(">", 1)[0] + ">"
         assert flag in ours, result.id
         assert flag in theirs, result.id
         assert not theirs.endswith(" hidden>"), result.id
         if not ours.endswith(" hidden>"):
-            assert best, result.id
+            assert not superseded, result.id
             shown += 1
+        if not superseded:
+            kept.add(result.standing)
         without += overview_sections.shown_by_default(result, unchecked, reference)
         if result.id in overview.starred:
-            assert best, result.id
-    best_rows = sum(overview_sections.is_current_best(r.standing) for r in overview.results)
+            assert not superseded, result.id
+    # Every standing but the one stays: nothing but a superseded result is hidden for it.
+    assert kept == set(render_recent_results.STANDINGS) - {render_recent_results.SUPERSEDED}
+    current = sum(not overview_sections.is_superseded(r.standing) for r in overview.results)
     assert 0 < shown < without < len(overview.results)
-    assert shown < best_rows < len(overview.results)
+    assert shown < current < len(overview.results)
     assert f">{shown} of {len(overview.results)} results</span>" in here
     assert f">{len(overview.results)} results</span>" in there
     # The checkbox is all that separates the count from the one the other two defaults
     # leave: the same bar, the box clear, counts the superseded rows too.
     bar = overview_sections.result_filters(overview, overview.results, unchecked)
     assert f">{without} of {len(overview.results)} results</span>" in bar
-    assert CURRENT_BEST_ONLY.format(checked="") in bar
+    assert HIDE_SUPERSEDED.format(checked="") in bar
+    # With every other control at All, the box hides the superseded rows and no other.
+    only = overview_sections.FilterDefaults(hide_superseded=True)
+    bar = overview_sections.result_filters(overview, overview.results, only)
+    assert f">{current} of {len(overview.results)} results</span>" in bar
 
 
 def test_rows_outside_a_tables_defaults_are_hidden_in_the_html_and_stay_in_it(

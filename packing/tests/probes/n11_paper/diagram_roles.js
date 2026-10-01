@@ -1,7 +1,11 @@
 /** @param {{ readyOnly?: boolean } | null} [options] */
 (options = null) => {
   const results = [];
-  const diagrams = document.querySelectorAll(".n11-paper figure > svg, .n11-diagram");
+  // Every diagram that carries a label. A drawing with no lettering, the construction
+  // and the capacity cell, has no label whose size could be off.
+  const diagrams = [...document.querySelectorAll(".n11-paper figure > svg, .n11-diagram")].filter(
+    (diagram) => diagram.querySelector("text:not(.n11-diagram-note)"),
+  );
   for (const diagram of diagrams) {
     const svg = /** @type {SVGSVGElement} */ (diagram);
     const parent = svg.parentElement;
@@ -15,7 +19,7 @@
     }
     const label = svg.querySelector("text:not(.n11-diagram-note)");
     if (!label) {
-      continue;
+      throw new Error("diagram has no label");
     }
     const caption = svg.closest("figure")?.querySelector("figcaption");
     const note = svg.querySelector(".n11-diagram-note");
@@ -44,6 +48,7 @@
   }
   if (options?.readyOnly !== false) {
     return (
+      results.length > 0 &&
       results.length === diagrams.length &&
       results.every(
         (role) =>

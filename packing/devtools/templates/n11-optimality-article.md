@@ -85,7 +85,7 @@ pairwise disjoint interiors fit in a square of side $T$, and do not fit in any s
 side $S<T$.[^proof]
 
 <figure>
-{{WITNESS_SVG}}
+<div class="stage trump"><a href="../../atlas/rendering/trump11-overview.svg" aria-label="The rendering in the repository">{{WITNESS_SVG}}</a></div>
 <figcaption><strong>Figure 1.</strong> The attaining construction: six squares are
 axis-aligned and five share a tilted orientation. The drawing is rounded for display;
 the <a href="../../cases/trump11/verify_exact.py">exact witness check</a> uses algebraic coordinates.
@@ -131,9 +131,9 @@ The [local estimate](#the-local-argument-excludes-every-nonzero-motion) and
 [exact frame change](#closing-the-gap-between-the-rational-cap-and-the-exact-optimum)
 complete the contradiction.
 
-The Squares Project records this result as **T-060, S5/V3/C3**: a result resolving the
-global optimum, supported by exact computational verification and a mapped mathematical
-review, machine-checked here with its review record pending.
+The Squares Project records this result as **T-060, S5/V3/C3**: a result
+resolving the global optimum, supported by exact computational verification and a mapped
+mathematical review, machine-checked here with its review record pending.
 Under the ladder of 2026-09-30, rung 4 on either axis also needs a second adversarial
 review by a distinct reviewer and a retained human oversight record, which this result
 awaits. This is a computer-assisted proof with a stated software trust base; a completed
@@ -255,7 +255,8 @@ square or an owned inner hull. Shared cell boundaries remain in the proof.</figc
 <figcaption><strong>Figure 4.</strong> Why a center cell has capacity one. Two
 hypothetical centers in the same cell would be less than one unit apart, so their open
 radius-1/2 disks would overlap. Each disk lies inside its unit square, independent of
-the square’s angle. The selected cell comes from the exact cover; the centers illustrate
+the square’s angle, so the squares’ interiors would overlap too. The selected cell,
+cell {{CAPACITY_CELL}}, comes from the exact cover; the centers illustrate
 the lemma and are not a candidate packing. The
 <a href="../../devtools/check_n11_optimality_d4.py">cell checker</a>
 proves the strict diameter bound for all sixteen closed cells.</figcaption>
@@ -318,7 +319,10 @@ All other positions remain available until a further argument excludes them.
 {{POSE_SVG}}
 <figcaption><strong>Figure 5.</strong> A schematic of one safe exclusion. A possible-center
 region records uncertainty; a guaranteed inner region records what a valid packing must
-contain. A translated strict core meeting the other square’s owned hull forces overlap.
+contain. A translated strict core meeting the other square’s owned hull forces overlap:
+if $x \in K - Q$, a core point meets the owned hull $K$. $Q$ stays strictly inside the
+square throughout the angle row, $K$ is owned in every valid packing under the accepted
+prior, and a shared interior forbids even a boundary center $x$.
 The forbidden centers can be discarded, while the retained region remains an
 overestimate. The drawing illustrates the
 <a href="../../devtools/check_n11_generic_fresh.py">geometric checker’s</a>
@@ -349,14 +353,16 @@ could incorrectly remove a legal touching configuration.
 <figure>
 {{ROW_SVG}}
 <figcaption><strong>Figure 6.</strong> One accepted row: case 2095, step 1, owner 10,
-row 17, over the complete interval 17/32 ≤ t ≤ 9/16. The panels use retained exact
+row 17, over the complete interval $17/32 \le t \le 9/16$. The panels use retained exact
 geometry, rounded only for display, and distinguish field center coordinates from
-square-relative core offsets. This row contributes one triangular residual to the update. A complete
+square-relative core offsets. This row is one of {{ROW_UPDATE_ROWS}} in its update and
+contributes one triangular residual to it. A complete
 ownership update must also check every other row, closed angular coverage, common-core
 inclusion and compression. The
 <a href="../../resources/web/n11-optimality-2026-09-29/receipts/generic-mask2095-intake/full-result.json">accepted case result</a>
 and <a href="../../devtools/check_n11_generic_fresh.py">independent checker</a>
-supply the evidence. This is an excluded noncandidate case, not the case-438 capture.</figcaption>
+supply the evidence: {{ROW_CASE_UPDATES}} complete updates exclude case 2095.
+This is an excluded noncandidate case, not the case-438 capture.</figcaption>
 </figure>
 
 A stronger collision check compares a proposed pose against another square’s entire
@@ -432,7 +438,8 @@ median condition in every direction; a single projection illustrates the capacit
 argument, not that full test. Required owners and a strict excess over the budget are
 necessary for the
 <a href="../../resources/web/n11-optimality-2026-09-29/receipts/shared-field-mask0/summary.json">accepted field certificate</a>
-to transfer to another mask.</figcaption>
+to transfer to another mask. The exact checker certifies every required direction; the
+drawing does not show three sites inside a core.</figcaption>
 </figure>
 
 Suppose the charge function has total capacity $b$ across disjoint cores.
@@ -495,10 +502,12 @@ view.
 <figcaption><strong>Figure 8.</strong> Four views of a center against the fixed cell
 cover. The point changes position under square symmetries; the irregular cell polygons
 are not permuted by those transformations. An overlay region records the allowed
-cell labels in every view. This illustration explains the construction used by the
+cell labels in every view. One strict distance ban, for illustration: the maximum
+squared physical center distance of overlay regions {{D4_BAN_REGIONS}} is below 1.
+This illustration explains the construction used by the
 <a href="../../resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json">accepted symmetry check</a>;
 its exhaustive assignment search, including boundary ties and strict distance bans,
-is a separate obligation.</figcaption>
+is a separate obligation, over {{D4_REGIONS}} closed regions and {{D4_BANS}} bans.</figcaption>
 </figure>
 
 For two overlay regions, exact vertex calculations sometimes prove that every pair of
@@ -551,8 +560,8 @@ The overlap is harmless and prevents a missing boundary branch.
 <figcaption><strong>Figure 9.</strong> The accepted ten-node capture ancestry.
 Intermediate nodes propagate a checked state; three far leaves end in contradiction
 and the near leaf encloses every surviving pose. Edges denote proof dependencies,
-not trajectories of moving squares. Here y₁₅ = pᵧ − U/2 is a physical centered height
-and tᵢ = tan(θᵢ/2) is an owner’s half-angle parameter.
+not trajectories of moving squares. Here $y_{15} = p_y - U/2$ is a physical centered height
+and $t_i = \tan(\theta_i/2)$ is an owner’s half-angle parameter.
 Edge labels give each new closed split condition;
 the branch table collects the inherited conditions. Both sides retain equality.
 The near leaf is an enclosure; the fixed-T local theorem is still needed.
@@ -600,12 +609,14 @@ throughout that interval, $c_j\tau^2<\tau$.
 <figure>
 {{LOCAL_SVG}}
 <figcaption><strong>Figure 10.</strong> The local contradiction. The upper line is
-τ and the lower curve is cτ², with a coefficient below one. A feasible
-nonzero displacement would require the line to lie at or below the curve. This is an
+$\tau$ and the lower curve is $c\tau^2$, with a coefficient $c$ below one, on
+$0 < \tau \le 1$. A feasible nonzero displacement would require the line to lie at or
+below the curve, so there is none. This is an
 algebraic illustration of the
 <a href="../../resources/web/n11-optimality-2026-09-29/receipts/local-isolation/result.json">accepted exact inequalities</a>,
+{{LOCAL_MARGINS}} exact margins over {{LOCAL_BRANCHES}} branches,
 not a projection of the 33-dimensional feasible set. The theorem applies in the checked
-rectangle inside the fixed side-T container.</figcaption>
+rectangle inside the fixed side-T container, which capture and inclusion reach first.</figcaption>
 </figure>
 
 ### Covering all possible local contact patterns
@@ -651,7 +662,7 @@ opposite to $h_j$. A certificate supplies nonnegative rational weights $\lambda_
 that
 
 $$
-\left\|\lambda^{\mathsf T}A-\sigma e_j^{\mathsf T}\right\|_1
+\left\|\lambda^{\top}A-\sigma e_j^{\top}\right\|_1
 \le\epsilon_j.
 $$
 
@@ -730,7 +741,7 @@ Together with the exact witness, it proves $s(11)=T$.[^endpoint]
 <figure>
 {{ENDPOINT_SVG}}
 <figcaption><strong>Figure 11.</strong> Why the rational cap settles the exact endpoint.
-The same hypothetical side-S container, with S &lt; T, fits concentrically inside the cap
+The same hypothetical side-S container, with $S < T$, fits concentrically inside the cap
 and then inside the fixed side-T container after the checked rigid alignment. Its
 unit squares keep their size. Capture and
 <a href="../../resources/web/n11-optimality-2026-09-29/receipts/pose-inclusion/result.json">pose inclusion</a>
@@ -748,8 +759,8 @@ It also makes no separate claim of global uniqueness of all optimal packings.
 The public proof source is
 [Queuingtheorydotcom/11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal/tree/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c),
 linked at the revision that was confirmed.
-The Squares Project’s confirmation uses independently written consumers of its proposed
-certificate data and a mathematical review of the implications above.
+The Squares Project’s confirmation uses independently written consumers of its
+proposed certificate data and a mathematical review of the implications above.
 The accepted computation covers the required proof ensemble, including all 2,180
 exclusions and all ten capture nodes.[^review]
 

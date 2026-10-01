@@ -1,6 +1,6 @@
 <div class="site-hero">
 
-# The Frontier Atlas
+# The Frontier Survey
 
 <p class="subtitle">A survey of everything known for cases {{CASE_RANGE}}</p>
 
@@ -18,8 +18,8 @@ For how the results fit together, start at the [overview](./).
 what the published sources say, credited to whoever found or proved them.
 The *verified* columns hold only exact formal bounds: a complete proof, an exact
 algebraic replay, or a rigorous certificate.
-Where the verified bound is the reported one, the cell says so rather than printing the
-value twice.
+Where the verified bound is the reported one, the cell says *✓ same*, meaning verified
+here at the reported value, rather than printing the value twice.
 A finite-precision result is numerically checked and never enters a verified
 column.
 
@@ -33,8 +33,6 @@ Values that are roots of a polynomial are shown as decimals, cut rather than rou
 decimal, the sources, how its bounds were verified and the evidence entries behind them.
 A case’s *n* opens its full record.
 
-The same table, as Markdown with full provenance, is
-[`frontier/STATUS.md`]({{STATUS_URL}}). Click a column heading to sort; the filters
-narrow the rows.
+Click a column heading to sort; the filters narrow the rows.
 
 {{TABLE}}

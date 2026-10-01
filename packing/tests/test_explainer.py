@@ -19,13 +19,11 @@ from urllib.parse import urljoin
 import pytest
 import tinycss2
 
-from devtools import render_explainer, render_overview
+from devtools import check_published_site, render_explainer, render_overview
 from devtools.render_explainer import (
     ATLAS,
     BEST_RENDERING,
-    CARD_ALT,
     CASE,
-    COMPOSITE_ALT,
     COMPOSITE_ASSETS,
     COMPOSITE_CARD,
     COMPOSITE_PNG,
@@ -100,9 +98,23 @@ def test_no_placeholder_survives_substitution(page: str) -> None:
     assert re.findall(r"\{\{[A-Z_]+\}\}", page) == []
 
 
+def test_the_explainer_ends_with_the_sites_closing_credit(page: str) -> None:
+    """The explainer's closing paragraph holds the two lines every page's footer is made
+    of (`render_overview.colophon_lines`): the project and its repository, then the
+    version and the credit to Flowmark and KPress. The paragraph keeps the paper's own
+    class, and so its type and its print rules."""
+    footer = f'<p class="col colophon centred">{render_overview.colophon_lines()}</p>'
+    assert page.count(footer) == 1
+    assert page.count('class="site-colophon-line"') == 2
+    assert f'<span class="site-colophon-part">{PUBLICATION_EDITION}</span>' in footer
+    assert '<a href="https://github.com/jlevy/squares">github.com/jlevy/squares</a>' in footer
+
+
 def test_the_bar_marks_papers_current_on_the_explainer(page: str) -> None:
     """The explainer is one of the site's papers: the bar has no entry of its own for it,
-    Papers is the one marked current, and the page keeps its address."""
+    Papers is the one marked current, and the page keeps its address. The bar is the
+    site's one partial, so its entries stand in the order every other page has them."""
+    assert page.count(render_overview.nav_html("papers")) == 1
     assert re.findall(r'<a data-page="(\w+)" aria-current="page"', page) == ["papers"]
     assert '<a data-page="papers" aria-current="page" href="papers.html">Papers</a>' in page
     assert 'data-page="explainer"' not in page
@@ -416,40 +428,8 @@ def test_the_published_document_sets_mathematics_without_typesetting_kerns(
     assert "$s(11)$" in document or "s(11)" in document
 
 
-#: Every `og:` and `twitter:` tag in the head, by name. Both vocabularies spell a tag
-#: the same way and differ only in the attribute that carries the name -- Open Graph is
-#: `property`, the Twitter tags are `name` -- so one pattern reads them together.
-CARD_TAG = re.compile(r'<meta (?:property|name)="((?:og|twitter):[^"]+)" content="([^"]*)"')
-
-#: What a card is: the tags without which a consumer shows something worse than the
-#: page asked for. `og:image:type` is deliberately not here -- it is a hint, and a
-#: consumer that ignores it still renders the card.
-REQUIRED_CARD_TAGS = frozenset(
-    {
-        "og:type",
-        "og:site_name",
-        "og:title",
-        "og:description",
-        "og:url",
-        "og:image",
-        "og:image:width",
-        "og:image:height",
-        "og:image:alt",
-        "twitter:card",
-        "twitter:title",
-        "twitter:description",
-        "twitter:image",
-        "twitter:image:alt",
-    }
-)
-
-
-def card_tags(page: str) -> dict[str, str]:
-    return dict(CARD_TAG.findall(page))
-
-
-def test_the_link_preview_is_complete_and_its_urls_are_absolute(page: str) -> None:
-    """A shared link previews with the atlas, or it previews with nothing.
+def test_the_link_preview_is_the_sites_and_its_urls_are_absolute(page: str) -> None:
+    """A shared link previews as every page of the site does, or it previews with nothing.
 
     The page shipped with four `<meta>` tags, a title and a description and no card at
     all, so every unfurl of it -- X, Slack, Discord, Facebook, iMessage -- was a line of
@@ -457,39 +437,44 @@ def test_the_link_preview_is_complete_and_its_urls_are_absolute(page: str) -> No
     tag: a consumer that finds `og:image` and no `twitter:card` falls back to a
     thumbnail, and one that finds a relative `og:image` drops the image outright,
     because a crawler resolves it on its own machine and has no base to resolve
-    against. Both are pinned here, since neither failure shows up in the page itself:
-    a card is only ever seen somewhere else.
+    against. The set was this page's own until 2026-10-01 and is now the site's, written
+    by `render_overview.head_tags` from this page's record, so it is held here to the
+    same check the deployed site gets: one of each tag, each address in full, and the
+    canonical link and `og:url` both the page's own address.
     """
-    tags = card_tags(page)
-    assert tags.keys() >= REQUIRED_CARD_TAGS, sorted(REQUIRED_CARD_TAGS - tags.keys())
-    for key in ("og:url", "og:image", "twitter:image"):
-        assert tags[key].startswith("https://"), (key, tags[key])
-    assert f'<link rel="canonical" href="{PAGE_URL}">' in page
-    assert tags["og:url"] == PAGE_URL
+    assert check_published_site.head_problems(page, PAGE_URL) == []
+    head = check_published_site.read_head(page)
+    assert head.link("canonical") == head.meta("og:url") == [PAGE_URL]
+    assert render_overview.canonical_url(PAGE_URL.removeprefix(SITE_URL)) == PAGE_URL
+    assert head.meta("og:type") == ["article"]
 
 
-def test_the_card_image_is_one_the_render_serves_beside_the_page(page: str) -> None:
-    """The card names a file the deploy actually publishes, at the size it actually is.
+def test_the_card_image_is_the_sites_one_card_at_the_size_it_is_drawn(page: str) -> None:
+    """The card names the image every page names, at the size it is drawn at.
 
     Two ways a card breaks without the page changing at all. The image URL can name
-    something the render does not copy into the site directory, which is a 404 a
-    consumer answers by showing no image; and the declared width and height can drift
-    from the file, which reflows the preview or loses it. So the URL is checked against
-    the assets the render copies, and the dimensions against the PNG's own header --
-    the same bytes that get served -- rather than against numbers typed here.
+    something the deploy does not serve, which is a 404 a consumer answers by showing no
+    image; and the declared width and height can drift from the file, which reflows the
+    preview or loses it. The image is the site's one card, drawn when the site is built
+    (`devtools.social_card`) and not beside this page, so what is held here is that the
+    head names it by the renderer's constants; `tests/test_site_head.py` holds the
+    drawing to those constants, and the deployed bytes are read by
+    `check_published_site`.
     """
-    tags = card_tags(page)
-    served = {asset.name for asset in COMPOSITE_ASSETS}
-    assert tags["og:image"] == SITE_URL + COMPOSITE_CARD.name
-    assert tags["og:image"].rsplit("/", 1)[-1] in served
-    assert tags["twitter:image"] == tags["og:image"]
-    width, height = png_size(COMPOSITE_CARD)
-    assert (tags["og:image:width"], tags["og:image:height"]) == (str(width), str(height))
-    assert max(width, height) <= 4096
+    head = check_published_site.read_head(page)
+    card = SITE_URL + render_overview.SOCIAL_CARD
+    assert head.meta("og:image") == head.meta("twitter:image") == [card]
+    assert head.meta("og:image:width") == [str(render_overview.SOCIAL_CARD_WIDTH)]
+    assert head.meta("og:image:height") == [str(render_overview.SOCIAL_CARD_HEIGHT)]
+    assert head.meta("og:image:alt") == head.meta("twitter:image:alt")
+    assert head.meta("og:image:alt") == [render_overview.social_card_alt()]
 
 
-def test_the_card_image_is_the_landscape_crop_and_not_the_portrait_canvas() -> None:
-    """A portrait card is cropped by the platform, and it crops away the title.
+def test_the_composite_card_is_the_landscape_crop_and_not_the_portrait_canvas() -> None:
+    """The composite's card, which the overview's atlas card shows and which was this
+    page's link preview until the site took one card for every page, stays a card.
+
+    A portrait card is cropped by the platform, and it crops away the title.
 
     X and Facebook show a landscape card and take a band from the middle of whatever
     they are handed, so the full 150:181 canvas arrives as four rows out of the middle
@@ -510,44 +495,34 @@ def test_the_card_image_is_the_landscape_crop_and_not_the_portrait_canvas() -> N
     assert height < full_height
 
 
-def test_the_card_alt_describes_the_crop_and_not_the_whole_atlas() -> None:
-    """The alt text is read by the readers least able to check it against the picture.
-
-    Figure 2 shows all hundred packings and the card shows the first forty, so one
-    sentence cannot be true of both. They were the same string until the card became a
-    crop, which is exactly the kind of change that leaves an alt text quietly wrong.
-    """
-    assert CARD_ALT != COMPOSITE_ALT
-    assert "one hundred" in COMPOSITE_ALT
-    assert "one hundred" not in CARD_ALT
-    assert "forty" in CARD_ALT
-
-
 def test_the_card_and_the_page_say_the_same_thing(page: str) -> None:
     """A preview that disagrees with the page it opens is worse than no preview.
 
-    The title and the sentence are built once in the renderer and substituted into
-    `<title>`, `<meta name="description">` and both card vocabularies, so there is one
-    string and not four. This is what would catch a later edit that retyped one of them
-    in the template instead.
+    The title and the sentence are in the page's record once (`page_meta`) and written
+    from it into `<title>`, `<meta name="description">` and both card vocabularies, so
+    there is one string and not four. This is what would catch a later edit that retyped
+    one of them in the template instead.
     """
-    tags = card_tags(page)
-    title = re.search(r"<title>(.*?)</title>", page)
-    assert title is not None
-    described = re.search(r'<meta name="description" content="([^"]*)"', page)
-    assert described is not None
-    assert tags["og:title"] == tags["twitter:title"] == title.group(1)
-    assert tags["og:description"] == tags["twitter:description"] == described.group(1)
-    assert tags["og:image:alt"] == tags["twitter:image:alt"]
+    head = check_published_site.read_head(page)
     current = current_bound_facts()
-    # The title is the page's, bound-free: T-060 has settled the case, and one bound
-    # after a title about several would read as its current one. The sentence names it.
-    assert title.group(1) == render_explainer.TITLE
-    assert title.group(1) == "New Lower Bounds for Square Packing for n = 11"
-    assert "s(11)" not in title.group(1)
-    assert "s(11)" in described.group(1)
-    assert current.bounded_side_decimal in described.group(1)
-    assert "T-026's historical bound" in described.group(1)
+    (title,) = head.titles
+    # The preview's title is the page's own, bound-free: T-060 has settled the case, and
+    # one bound after a title about several would read as its current one. The tab's
+    # title names the project after it, as every page's does.
+    assert head.meta("og:title") == head.meta("twitter:title") == [render_explainer.TITLE]
+    assert render_explainer.TITLE == "New Lower Bounds for Square Packing for n = 11"
+    assert title == f"{render_explainer.TITLE} · {render_overview.PROJECT_NAME}"
+    (description,) = head.meta("description")
+    assert head.meta("og:description") == head.meta("twitter:description") == [description]
+    assert current.bounded_side_decimal in description
+    assert len(description) <= render_overview.DESCRIPTION_LIMIT
+    # The two dates the hero prints, as a crawler reads a date.
+    assert head.meta("article:published_time") == [render_explainer.iso_date(FIRST_PUBLISHED)]
+    assert head.meta("article:modified_time") == [render_explainer.iso_date(PUBLICATION_DATE)]
+    assert render_explainer.iso_date("September 5, 2026") == "2026-09-05"
+    assert "s(11)" not in title
+    assert "s(11)" in description
+    assert "T-026's historical bound" in description
 
 
 def test_advanced_section_derives_the_current_lower_bound(document: str) -> None:

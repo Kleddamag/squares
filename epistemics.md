@@ -342,9 +342,9 @@ to credit it as carefully as this project’s own.
   The credit carries the lineage in both directions, so a table of results needs no
   grouping to say whose work rests on whose.
 - **People and projects, never tools.** Credit names people, or the handles they publish
-  under. A bound this project holds is cited on the atlas as `Squares Project (Levy)`;
-  its results and its place in another source’s credit line are `Levy`. An AI agent is
-  never a credited author.
+  under. A bound this project holds is cited on the atlas as
+  `Squares Project (Levy)`; its results and its place in another source’s credit
+  line are `Levy`. An AI agent is never a credited author.
   Where a source states that AI assisted its work, its case record or register entry
   says so in the source’s own terms, and so does any README prose about the result;
   `devtools.state_ai_assistance` names a case record that cites such a source without
@@ -394,13 +394,13 @@ in the frontier README. Its three end points are fixed here.
 Each fact about the frontier has one home, and reader-facing lists of results are
 generated from these files (`OR-1`): `RESULTS.md`, `STATUS.md`, `INVENTORY.md`, and the
 project site’s [overview](https://jlevy.github.io/squares/), whose recent results,
-results table and survey are rendered from them by `devtools.render_overview`. A `T-NNN`
-named in the README or the synopsis must be a registered result; the register gate
-checks it.
+results table and frontier survey are rendered from them by `devtools.render_overview`.
+A `T-NNN` named in the README or the synopsis must be a registered result; the register
+gate checks it.
 
 | Record | Holds | Reader view |
 | --- | --- | --- |
-| [`n-NNN.md`](packing/frontier/README.md) case records | Both lanes’ bounds for each case, with their evidence | [`STATUS.md`](packing/frontier/STATUS.md); the site’s [recent results](https://jlevy.github.io/squares/#recent-results) and [survey](https://jlevy.github.io/squares/#the-survey); the standing column of `RESULTS.md` and the site’s [results table](https://jlevy.github.io/squares/all-results.html) |
+| [`n-NNN.md`](packing/frontier/README.md) case records | Both lanes’ bounds for each case, with their evidence | [`STATUS.md`](packing/frontier/STATUS.md); the site’s [recent results](https://jlevy.github.io/squares/#recent-results) and [frontier survey](https://jlevy.github.io/squares/#the-frontier-survey); the standing column of `RESULTS.md` and the site’s [results table](https://jlevy.github.io/squares/all-results.html) |
 | [`evidence.yaml`](packing/frontier/evidence.yaml) | Who performed each check, by which method, within which limits | [`INVENTORY.md`](packing/frontier/INVENTORY.md) |
 | [`results.yaml`](packing/frontier/results.yaml) | Each result’s kind, headline, claim, date, `V`/`C`/`S`, novelty and attribution | [`RESULTS.md`](packing/frontier/RESULTS.md), grouped by lineage; the site’s [results table](https://jlevy.github.io/squares/all-results.html) |
 | [`bibliography.yaml`](packing/resources/bibliography.yaml) | Each source’s date, credit and lineage | The atlas citation line; the holders, credit and relation in `RESULTS.md` and on the site’s [overview](https://jlevy.github.io/squares/#recent-results) |

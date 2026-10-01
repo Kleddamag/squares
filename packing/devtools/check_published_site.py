@@ -21,6 +21,9 @@ the last deploy built from once `git fetch` has run. One line per check, `ok` or
   page links on `main` exists in the expected commit's tree, which is `main` when the
   deploy runs, and each link on the explainer, its Markdown edition, the overview and
   the frontier atlas is also asked of GitHub;
+- every address a page used to have (`render_overview.MOVED_PAGES`) is still served, as
+  a forwarder that names where a visit is sent now, so a link written before a page
+  moved or was withdrawn does not 404;
 - every result overview the results table's rows name (`data-row-pop-src`) is served
   beside the pages and is that result's, and the overviews' repository links pass the
   same two checks against the tree;
@@ -44,7 +47,18 @@ the last deploy built from once `git fetch` has run. One line per check, `ok` or
   keeps, and every path it cites is in that commit's tree. A citation that names `main`,
   or any other commit, fails;
 - the workbench names the expected source commit, starts its public API in the pinned
-  browser, and links back to this project's root rather than the account site's root.
+  browser, and links back to this project's root rather than the account site's root;
+- every page's head carries the site's identity and link-preview tags, exactly one of
+  each (`render_overview.head_tags`): a title that ends in the project's formal name, a
+  description of its own that fits a preview, a canonical link and an `og:url` that are
+  the one address the page is served at, the site's name, and the card image with its
+  size and its alt text. No two pages share a description. The card every page names is
+  served at the site's root and is a PNG of the size the pages declare. A forwarder
+  carries a canonical link to where it sends a reader, in full, and no card.
+
+`--local DIR` asks only that last group, of a site built into a directory
+(`devtools.preview_site`, which also runs it on every build), and fetches nothing.
+`--local DIR --inventory` prints what every file's head carries and checks nothing.
 
 This checks a live deployment, so it is not a step of the source gate;
 `tests/test_check_published_site.py` covers its parsing and failure controls on fixtures.
@@ -61,6 +75,7 @@ import time
 import urllib.error
 import urllib.request
 from collections.abc import Callable, Mapping, Sequence
+from html.parser import HTMLParser
 from pathlib import Path
 from typing import NamedTuple
 from urllib.parse import urljoin
@@ -68,7 +83,7 @@ from urllib.parse import urljoin
 from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
-from devtools import overview_data, render_overview, result_overview
+from devtools import overview_data, render_overview, result_overview, social_card
 from devtools.overview_sections import OPTIMALITY_PAPER, result_fragment
 from devtools.render_explainer import (
     COMPOSITE_ASSETS,
@@ -100,6 +115,8 @@ CANONICAL = re.compile(r'<link\s+rel="canonical"\s+href="([^"]*)"')
 #: result's overview opens: the one block it is, naming its result.
 ROW_SOURCE = re.compile(r'data-row-pop-src="([^"]+)"')
 RESULT_OVERVIEW = re.compile(r'\A<div class="site-result" data-result-overview="(t-\d{3})">')
+#: Where a forwarder sends a visit, as its root element names it.
+MOVED_TO = re.compile(r'<html\b[^>]*\sdata-moved-to="([^"]*)"')
 
 #: Where the explainer is served. It is built as `index.html` and renamed when the site
 #: is assembled, because the root is the overview's.
@@ -124,6 +141,8 @@ OPTIMALITY_PAPER_FILES = (
     f"{OPTIMALITY_PAPER.removesuffix('.html')}.md",
     f"{OPTIMALITY_PAPER.removesuffix('.html')}.pdf",
 )
+#: The paper's landing address as a file: the forwarder its directory serves.
+OPTIMALITY_PAPER_LANDING = f"{OPTIMALITY_PAPER_FILES[0]}index.html"
 #: The paper's Markdown, whose citations are held to the same commit as the page's.
 OPTIMALITY_PAPER_MARKDOWN = f"{OPTIMALITY_PAPER.removesuffix('.html')}.md"
 #: The bar's current entry on that page, a level below the root.
@@ -138,6 +157,9 @@ SERVED = (
 
 USER_AGENT = "squares-check-published-site (+https://github.com/jlevy/squares)"
 WORKBENCH_PATH = "workbench/"
+#: The workbench as a file under the root, which is how its head names its own address
+#: (`render_overview.canonical_url`).
+WORKBENCH_PAGE = f"{WORKBENCH_PATH}index.html"
 WORKBENCH_REVISION = re.compile(
     r'<meta\s+name="squares-workbench-revision"\s+content="([0-9a-f]{40})">'
 )
@@ -160,6 +182,355 @@ RECORD_LINK_PAGES = ("index.html", render_overview.RESULTS_PAGE)
 #: record links in its result cell.
 _RESULT_ROW = re.compile(r'(?:id|data-result)="(t-\d{3})"')
 _ROW_RECORDS = re.compile(r'<div class="site-records">(.*?)</div>', re.DOTALL)
+
+
+#: Every `<meta>` a page's head carries exactly once, by its `name` or `property`: the
+#: set `render_overview.head_tags` writes. The title and the canonical link are the
+#: other two, read as their own elements.
+REQUIRED_META = (
+    "description",
+    "og:type",
+    "og:site_name",
+    "og:locale",
+    "og:title",
+    "og:description",
+    "og:url",
+    "og:image",
+    "og:image:type",
+    "og:image:width",
+    "og:image:height",
+    "og:image:alt",
+    "twitter:card",
+    "twitter:title",
+    "twitter:description",
+    "twitter:image",
+    "twitter:image:alt",
+)
+#: A paper's dates, which a head may carry once each and only as an article.
+ARTICLE_META = ("article:published_time", "article:modified_time")
+_ISO_DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
+#: How much of a page is handed to the parser at a time. A head ends within the first
+#: megabytes of a page of nine, and the reader stops there.
+_HEAD_CHUNK = 1 << 16
+
+
+class PageHead(NamedTuple):
+    """What a page's `<head>` says of it, as a browser or a crawler reads it."""
+
+    lang: str | None
+    """The root element's `lang`."""
+    titles: tuple[str, ...]
+    metas: tuple[tuple[str, str], ...]
+    """Each `<meta>` with a `name`, a `property` or an `http-equiv`, as that key and its
+    `content`, in the head's order."""
+    links: tuple[tuple[str, str], ...]
+    """Each `<link>`, as its `rel` and its `href`."""
+
+    def meta(self, key: str) -> list[str]:
+        """Every value the head gives `key`: one, for a tag written once."""
+        return [content for name, content in self.metas if name == key]
+
+    def link(self, rel: str) -> list[str]:
+        return [href for name, href in self.links if name == rel]
+
+
+class _HeadReader(HTMLParser):
+    """Reads the head and stops at its end. A real parser, since a head's inline scripts
+    and styles are megabytes that may spell a tag in a comment or a string."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.lang: str | None = None
+        self.titles: list[str] = []
+        self.metas: list[tuple[str, str]] = []
+        self.links: list[tuple[str, str]] = []
+        self.done = False
+        self._title: list[str] | None = None
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if self.done:
+            return
+        values = dict(attrs)
+        if tag == "html":
+            self.lang = values.get("lang")
+        elif tag == "title":
+            self._title = []
+        elif tag == "meta":
+            key = values.get("property") or values.get("name") or values.get("http-equiv")
+            if key:
+                self.metas.append((key, values.get("content") or ""))
+        elif tag == "link":
+            self.links.append((values.get("rel") or "", values.get("href") or ""))
+        elif tag == "body":
+            self.done = True
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "title" and self._title is not None:
+            self.titles.append("".join(self._title))
+            self._title = None
+        elif tag == "head":
+            self.done = True
+
+    def handle_data(self, data: str) -> None:
+        if self._title is not None:
+            self._title.append(data)
+
+
+def read_head(text: str) -> PageHead:
+    """A page's head: its language, titles, `<meta>` tags and `<link>`s. A file with no
+    head, as a result's overview is, has none of them."""
+    reader = _HeadReader()
+    for start in range(0, len(text), _HEAD_CHUNK):
+        reader.feed(text[start : start + _HEAD_CHUNK])
+        if reader.done:
+            break
+    return PageHead(reader.lang, tuple(reader.titles), tuple(reader.metas), tuple(reader.links))
+
+
+def head_problems(text: str, canonical: str) -> list[str]:
+    """What is wrong with a page's head as the site writes one, for the page served at
+    `canonical`; empty when it is clean.
+
+    Each tag of `render_overview.head_tags` is there exactly once, and they agree with
+    each other and with the site: the canonical link and `og:url` are `canonical`, in
+    full under the published root; the title is the page's own name and then the
+    project's formal name, and the preview's title is that name alone; the site's name
+    is the formal name; the description is one sentence or two of at most
+    `DESCRIPTION_LIMIT` characters, the same in all three places; and the image is the
+    site's one card, at the size it is drawn at. What cannot be read off one page, that
+    no other page says the same thing, is `shared_descriptions`.
+    """
+    head = read_head(text)
+    problems: list[str] = []
+
+    def single(found: Sequence[str], what: str) -> str | None:
+        if len(found) != 1:
+            problems.append(f"{len(found)} {what}, not one")
+            return None
+        return found[0]
+
+    def require(what: str, found: str | None, expected: str) -> None:
+        if found is not None and found != expected:
+            problems.append(f"{what} is {found!r}, not {expected!r}")
+
+    if head.lang != "en":
+        problems.append(f"lang is {head.lang!r}, not 'en'")
+    title = single(head.titles, "<title>")
+    declared = single(head.link("canonical"), "canonical links")
+    tags = {key: single(head.meta(key), f"{key} tags") for key in REQUIRED_META}
+
+    if not canonical.startswith(render_overview.SITE_URL):
+        problems.append(f"{canonical!r} is not under {render_overview.SITE_URL}")
+    require("the canonical link", declared, canonical)
+    require("og:url", tags["og:url"], canonical)
+
+    project = render_overview.PROJECT_NAME
+    suffix = render_overview.TITLE_SEPARATOR + project
+    if title is not None:
+        if title != project and not (title.endswith(suffix) and title != suffix):
+            problems.append(f"the title {title!r} does not end in {suffix!r}")
+        else:
+            require("og:title", tags["og:title"], title.removesuffix(suffix))
+    require("twitter:title", tags["twitter:title"], tags["og:title"] or "")
+    require("og:site_name", tags["og:site_name"], project)
+    require("og:locale", tags["og:locale"], render_overview.SITE_LOCALE)
+
+    description = tags["description"]
+    if description is not None:
+        limit = render_overview.DESCRIPTION_LIMIT
+        if not description.strip():
+            problems.append("the description is empty")
+        elif len(description) > limit:
+            problems.append(f"the description is {len(description)} characters, over {limit}")
+        require("og:description", tags["og:description"], description)
+        require("twitter:description", tags["twitter:description"], description)
+
+    kind = tags["og:type"]
+    if kind is not None and kind not in ("website", "article"):
+        problems.append(f"og:type is {kind!r}")
+    for key in ARTICLE_META:
+        moments = head.meta(key)
+        if len(moments) > 1 or (moments and kind != "article"):
+            problems.append(f"{len(moments)} {key} tags on a page whose og:type is {kind!r}")
+        problems += [
+            f"{key} is {moment!r}, not an ISO date"
+            for moment in moments
+            if not _ISO_DATE.fullmatch(moment)
+        ]
+
+    image = render_overview.social_card_url()
+    require("og:image", tags["og:image"], image)
+    require("twitter:image", tags["twitter:image"], image)
+    require("og:image:type", tags["og:image:type"], "image/png")
+    require("og:image:width", tags["og:image:width"], str(render_overview.SOCIAL_CARD_WIDTH))
+    require("og:image:height", tags["og:image:height"], str(render_overview.SOCIAL_CARD_HEIGHT))
+    alt = tags["og:image:alt"]
+    if alt is not None and not alt.strip():
+        problems.append("og:image:alt is empty")
+    require("twitter:image:alt", tags["twitter:image:alt"], alt or "")
+    require("twitter:card", tags["twitter:card"], "summary_large_image")
+    return problems
+
+
+def forwarder_problems(text: str, canonical: str) -> list[str]:
+    """What is wrong with the head of a page that only sends a reader on: it names
+    `canonical`, the address of where it sends them, in full and once, and carries no
+    link preview, since it is no page to share."""
+    head = read_head(text)
+    found = head.link("canonical")
+    problems = []
+    if found != [canonical]:
+        problems.append(f"its canonical links are {found}, not [{canonical!r}]")
+    if not canonical.startswith("https://"):
+        problems.append(f"{canonical!r} is not an address in full")
+    cards = sorted({key for key, _ in head.metas if key.startswith(("og:", "twitter:"))})
+    if cards:
+        problems.append(f"it carries card tags: {cards}")
+    return problems
+
+
+def shared_descriptions(pages: Mapping[str, str]) -> list[str]:
+    """Every description two or more of `pages` (text by name) carry, with the pages that
+    do: a preview that says the same of two pages says nothing of either."""
+    by_description: dict[str, list[str]] = {}
+    for name, text in pages.items():
+        for description in read_head(text).meta("description"):
+            by_description.setdefault(description, []).append(name)
+    return [
+        f"{', '.join(names)}: {description!r}"
+        for description, names in by_description.items()
+        if len(names) > 1
+    ]
+
+
+def head_checks(
+    pages: Mapping[str, str],
+    forwarders: Mapping[str, tuple[str, str]],
+    card: bytes | None,
+) -> list[tuple[bool, str]]:
+    """The identity and link-preview checks as (passed, line), on text already in hand.
+
+    `pages` is each page that can be shared, by the path it is served at under the root
+    (`index.html`, `workbench/index.html`); `forwarders` is each page that only sends a
+    reader on, as its text and the canonical address it should name; `card` is the
+    bytes served as the site's card, or `None` when nothing was. The deployed site and a
+    directory a preview built are both read through this.
+    """
+    results: list[tuple[bool, str]] = []
+    for name, text in pages.items():
+        problems = head_problems(text, render_overview.canonical_url(name))
+        line = (
+            f"{name}: head: {'; '.join(problems)}"
+            if problems
+            else f"{name}: one of each identity and card tag, agreeing with its address"
+        )
+        results.append((not problems, line))
+    shared = shared_descriptions(pages)
+    results.append(
+        (
+            not shared,
+            f"descriptions shared between pages: {'; '.join(shared)}"
+            if shared
+            else f"each of {len(pages)} pages has a description of its own",
+        )
+    )
+    for name, (text, canonical) in forwarders.items():
+        problems = forwarder_problems(text, canonical)
+        line = (
+            f"forwarder {name}: head: {'; '.join(problems)}"
+            if problems
+            else f"forwarder {name}: names {canonical} as canonical, and carries no card"
+        )
+        results.append((not problems, line))
+    address = render_overview.SOCIAL_CARD
+    if card is None:
+        results.append((False, f"card {address}: not served"))
+    else:
+        problems = social_card.card_problems(card)
+        size = social_card.png_dimensions(card) or (0, 0)
+        line = (
+            f"card {address}: {'; '.join(problems)}"
+            if problems
+            else f"card {address}: a PNG of {size[0]}x{size[1]}, {len(card)} bytes"
+        )
+        results.append((not problems, line))
+    return results
+
+
+def forwarder_canonicals() -> dict[str, str]:
+    """Each forwarder the site serves, by its path, and the canonical address it names:
+    the renderer's (`render_overview.forwarder_pages`), each naming where its page went,
+    and the optimality paper's landing address, naming the paper."""
+    named: dict[str, str] = {}
+    for forwarder in render_overview.forwarder_pages():
+        found = read_head(forwarder.html).link("canonical")
+        named[forwarder.name] = found[0] if found else ""
+    named[OPTIMALITY_PAPER_LANDING] = render_overview.canonical_url(OPTIMALITY_PAPER)
+    return named
+
+
+def shared_pages() -> tuple[str, ...]:
+    """Every page of the site that can be shared, by the path it is served at: the
+    renderer's own pages, the explainer, the optimality paper and the workbench."""
+    return (*SITE_PAGES, EXPLAINER, OPTIMALITY_PAPER, WORKBENCH_PAGE)
+
+
+def local_head_checks(directory: Path) -> list[tuple[bool, str]]:
+    """`head_checks` on a site built into `directory`, as `devtools.preview_site` leaves
+    one. A page a build left out is reported and not failed, as a preview that skipped
+    a slow build would otherwise always fail; the card is required wherever a page that
+    names it is there."""
+
+    def text(name: str) -> str | None:
+        path = directory / name
+        return path.read_text(encoding="utf-8") if path.is_file() else None
+
+    pages = {name: text(name) for name in shared_pages()}
+    forwarders = {
+        name: (text(name), canonical) for name, canonical in forwarder_canonicals().items()
+    }
+    card = directory / render_overview.SOCIAL_CARD
+    built = {name: found for name, found in pages.items() if found is not None}
+    results = head_checks(
+        built,
+        {name: (found, to) for name, (found, to) in forwarders.items() if found is not None},
+        card.read_bytes() if card.is_file() else None,
+    )
+    if not built and not card.is_file():
+        # The card is written with the site's own pages; a build without them names none.
+        results[-1] = (True, f"card {render_overview.SOCIAL_CARD}: not in this build")
+    absent = [name for name, found in pages.items() if found is None]
+    absent += [name for name, (found, _) in forwarders.items() if found is None]
+    results += [(True, f"{name}: not in this build, so not checked") for name in absent]
+    return results
+
+
+def head_inventory(directory: Path) -> list[str]:
+    """What every HTML file of a built site carries in its head, one file to a block:
+    its language, title, canonical link and every `<meta>` a tab, a search engine or a
+    link preview reads, in the head's order. The table a change to the heads is read
+    against, before and after; the result overviews, sixty-one files with no head, are
+    one line."""
+    lines: list[str] = []
+    fragments = 0
+    for path in sorted(directory.rglob("*.html")):
+        head = read_head(path.read_text(encoding="utf-8"))
+        if head == PageHead(None, (), (), ()):
+            fragments += 1
+            continue
+        lines.append(f"{path.relative_to(directory).as_posix()}  lang={head.lang!r}")
+        lines += [f"  title: {title}" for title in head.titles]
+        lines += [
+            f"  link {rel}: {href if len(href) <= 100 else href[:60] + '…'}"
+            for rel, href in head.links
+        ]
+        lines += [
+            f"  {key}: {content}"
+            for key, content in head.metas
+            if key not in {"viewport", "color-scheme", "generator", "Content-Security-Policy"}
+        ]
+    lines.append(f"{fragments} files with no head (fragments fetched into a popover)")
+    return lines
 
 
 class RecordLinks(NamedTuple):
@@ -482,9 +853,15 @@ def check(
     checked_links: set[tuple[str, str, str]] = set()
     overviews: list[str] = []
     tables: dict[str, str] = {}
+    # Every page that can be shared and every forwarder, as served, for the head checks
+    # at the end: they are read from the text fetched here and cost no request.
+    heads: dict[str, str] = {}
+    forwarded: dict[str, tuple[str, str]] = {}
+    canonicals = forwarder_canonicals()
     for name in SITE_PAGES:
         url = site if name == "index.html" else site + name
         _, text = served_page(name, url, render_overview.canonical_url(name))
+        heads[name] = text
         links_main(name, text)
         if name in LINK_CHECKED_PAGES:
             checked_links |= repository_links(text)
@@ -492,6 +869,24 @@ def check(
             tables[name] = text
         if name == render_overview.RESULTS_PAGE:
             overviews = sorted(set(ROW_SOURCE.findall(text)))
+
+    # A page that moved or was withdrawn is still served at its old address, as a
+    # forwarder: a deploy that dropped one would 404 every link written before the change.
+    for forwarder in render_overview.forwarder_pages():
+        status, body = fetch(site + forwarder.name, timeout=timeout)
+        expected = MOVED_TO.search(forwarder.html)
+        forwarded[forwarder.name] = (
+            body.decode("utf-8", errors="replace"),
+            canonicals[forwarder.name],
+        )
+        served = MOVED_TO.search(body.decode("utf-8", errors="replace"))
+        target = None if served is None else served.group(1)
+        results.append(
+            (
+                status == 200 and expected is not None and target == expected.group(1),
+                f"forwarder {forwarder.name}: HTTP {status}, sends a visit to {target!r}",
+            )
+        )
 
     # The result overviews are files beside the pages, fetched when a row is opened: a
     # deploy that lost one would show only as a popover that keeps its short detail.
@@ -543,6 +938,7 @@ def check(
 
     # The explainer's bytes are what the PDF's source receipt names, so they are kept whole.
     page, text = served_page(EXPLAINER, site + EXPLAINER, PAGE_URL)
+    heads[EXPLAINER] = text
 
     status, markdown = fetch(site + MARKDOWN_OUTPUT.name, timeout=timeout)
     results.append(
@@ -620,12 +1016,20 @@ def check(
     results.append((status == 200 and current, line))
     if status == 200:
         cites_commit(OPTIMALITY_PAPER, paper_text)
+    heads[OPTIMALITY_PAPER] = paper_text
     for name in OPTIMALITY_PAPER_FILES:
         cited_here = name == OPTIMALITY_PAPER_MARKDOWN
-        status, body = fetch(site + name, head=not cited_here, timeout=timeout)
+        # The landing address is a forwarder, read for its canonical link.
+        landing = name == OPTIMALITY_PAPER_FILES[0]
+        status, body = fetch(site + name, head=not (cited_here or landing), timeout=timeout)
         results.append((status == 200, f"served {name}: HTTP {status}"))
         if cited_here and status == 200:
             cites_commit(name, body.decode("utf-8", errors="replace"))
+        if landing:
+            forwarded[OPTIMALITY_PAPER_LANDING] = (
+                body.decode("utf-8", errors="replace"),
+                canonicals[OPTIMALITY_PAPER_LANDING],
+            )
 
     workbench_url = site + WORKBENCH_PATH
     status, workbench = fetch(workbench_url, timeout=timeout)
@@ -655,6 +1059,12 @@ def check(
     )
     if browser:
         results.append(workbench_startup(workbench_url, site, timeout=timeout))
+
+    # What every page says of itself to a tab, a search engine and a link preview, and
+    # the one image they all name, which is served at the root of the site under test.
+    heads[WORKBENCH_PAGE] = workbench_text
+    status, card = fetch(site + render_overview.SOCIAL_CARD, timeout=timeout)
+    results.extend(head_checks(heads, forwarded, card if status == 200 else None))
     return results
 
 
@@ -670,9 +1080,28 @@ def main(argv: Sequence[str] | None = None) -> int:
         action="store_true",
         help="skip the browser API startup check (HTTP identity checks still run)",
     )
+    parser.add_argument(
+        "--local",
+        type=Path,
+        metavar="DIR",
+        help="check only the heads and the card of a site built into DIR; fetches nothing",
+    )
+    parser.add_argument(
+        "--inventory",
+        action="store_true",
+        help="with --local: print what every file's head carries, and check nothing",
+    )
     args = parser.parse_args(argv)
-    commit = args.commit or expected_commit()
-    results = check(args.site, commit, timeout=args.timeout, browser=not args.no_browser)
+    if args.inventory:
+        if args.local is None:
+            parser.error("--inventory reads a built site: give --local DIR")
+        print("\n".join(head_inventory(args.local.resolve())))
+        return 0
+    if args.local is not None:
+        results = local_head_checks(args.local.resolve())
+    else:
+        commit = args.commit or expected_commit()
+        results = check(args.site, commit, timeout=args.timeout, browser=not args.no_browser)
     failed = 0
     for passed, line in results:
         print(f"{'ok  ' if passed else 'FAIL'} {line}", flush=True)

@@ -804,6 +804,21 @@ def id_cell(result: Result, detail: RowDetail) -> str:
     return f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
 
 
+def case_list(result: Result) -> str:
+    """A result's cases as its n cell sets them: the register's counts and ranges
+    (`Result.scope`: `68, 102`, then `130` to `132` as a range with an en dash), each
+    with the comma after it in a box of its own (`.site-n-value`), a space between two
+    boxes. The cell reads as it did, to a reader and to a screen reader, and a line ends
+    between two values and never inside one: without the box a browser ends a line after
+    a range's dash. A cell of five values or more wraps in a column of its own measure,
+    and a shorter one stays on one line (`site.css`, `--site-cases-measure`). The column
+    sorts on the cell's `data-value`, the first case, and the Case filter reads the row's
+    `data-n` (`result_cases`)."""
+    *before, last = result.scope.split(", ")
+    values = (*(f"{value}," for value in before), last)
+    return " ".join(f'<span class="site-n-value">{_esc(value)}</span>' for value in values)
+
+
 def result_text(result: Result, *, here: bool) -> str:
     """A result's summary as its Result cell sets it: the register's headline, its math
     typeset. On the results page (`here`) it is plain text, since the row is the
@@ -830,16 +845,18 @@ def credit_cell(credit: str) -> str:
 def date_cell(result: Result) -> str:
     """What a result's date cell holds, in both tables of results: the date first, then
     what it dates, `published` or `established`, quiet (`.site-date-kind`). The cell
-    sorts and filters on the date alone, its `data-value` and the row's `data-date`."""
+    sorts and filters on the date alone, its `data-value` and the row's `data-date`.
+    A result's overview sets its date, and each date of its chain, with this too
+    (`result_overview.head`, `step`), so the order has one definition."""
     kind, dated = result.dated
     return f'{_esc(dated)} <span class="site-date-kind">{_esc(kind)}</span>'
 
 
 def result_cells(result: Result, overview: Overview, detail: RowDetail, *, here: bool) -> str:
     """A result's cells, one for each column of `result_head`, the same on both tables:
-    its id (`id_cell`), its cases, its summary with the star a new result earns
-    (`result_text`, `new_result_star`) and its records on a quiet line under it, its
-    credit (`credit_cell`), its rung chips with its kind on a line under them
+    its id (`id_cell`), its cases (`case_list`), its summary with the star a new result
+    earns (`result_text`, `new_result_star`) and its records on a quiet line under it,
+    its credit (`credit_cell`), its rung chips with its kind on a line under them
     (`kind_chip`) and its standing on a line under that where it has one to show
     (`standing_chips`), and its date (`date_cell`). The records are no column of their
     own: a column narrow enough to fit set them a link to a line, and under the summary
@@ -851,7 +868,7 @@ def result_cells(result: Result, overview: Overview, detail: RowDetail, *, here:
         standing = f'<span class="site-standing">{standing}</span>'
     return (
         f"{id_cell(result, detail)}"
-        f'<td class="num site-col-n" data-value="{result.first_n}">{_esc(result.scope)}</td>'
+        f'<td class="num site-col-n" data-value="{result.first_n}">{case_list(result)}</td>'
         f'<td class="site-col-result">{result_text(result, here=here)}'
         f"{new_result_star(result, overview)}"
         f'<div class="site-records">{_records(result)}</div></td>'

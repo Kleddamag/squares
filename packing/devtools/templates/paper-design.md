@@ -1041,8 +1041,8 @@ it.
   sit at the bottom of their cell, aligned as their column is: text columns to the
   start, number columns (`.num`, tabular figures) to the end.
   The short columns (the id, n and date, `.site-col-id`, `.site-col-n` and
-  `.site-col-date`) stay on one line and as narrow as their content, which leaves the
-  spare width to the long text column.
+  `.site-col-date`) are as narrow as their content, the id and the date on one line,
+  which leaves the spare width to the long text column.
   The two tables of results, the overview’s recent table and the results page’s, are one
   table: one header (`result_head`) and one row (`result_table_row`), so the same six
   columns in the same order.
@@ -1056,25 +1056,59 @@ it.
   rows, and that a row on the results page is the result’s own address, where a row on
   the overview links there from its summary’s leading formula (`result_text`). Both sort
   on any column whose header carries the sort pair.
-  The widths follow from what cannot give.
-  Four results’ formulas do not break and hold the result column to 411 pixels.
-  The credit column is at least 11.5rem wide, which holds the longest name on one line
-  (“Queuingtheorydotcom”, 167 pixels of the 184), so a credit wraps between names and
-  never inside one; KPress’s own floor, 6rem, set it a word to a line.
+  The widths follow from each column’s floor and from what the n column asks for.
+  The id, the rungs and the date are as narrow as what they hold.
   The rungs column is as wide as its widest chip, since no chip wraps: the three rungs
   at 114 pixels, and the widest kind, “restricted optimality”, at 180 where a row with
   one shows. The kind and the standing each take a line under the rungs, so a superseded
   bound has three lines of chips, 114 pixels of row.
-  Those, the id, n and the date come to 1027 of the 1104 pixels a table has at a
-  1280-pixel window, so the result and the credit share 77 to spare, and below that
-  width the table scrolls sideways in its wrap, as it did.
-  The records are therefore no column of their own, which would be left 77 pixels and
-  set a link to a line: they sit under the summary, a line or two of links.
+  The credit column is at least 11.5rem wide, which holds the longest name on one line
+  (“Queuingtheorydotcom”, 167 pixels of the 184), so a credit wraps between names and
+  never inside one; KPress’s own floor, 6rem, set it a word to a line.
+  The result column is at least 18rem, 288 pixels, and no formula holds it wider.
+  KaTeX sets a formula as pieces a line cannot end inside, one up to each relation or
+  binary operator at its top level, and the widest piece in either table is 249 pixels,
+  the numerator of T-033’s quotient.
+  A quotient of more than 24 digits sets its solidus as a binary operator
+  (`overview_data.breakable_quotients`), so a line may end after it: four results state
+  one of 33 to 40 digits, which as one piece is up to 395 pixels wide.
+  A formula in a summary is set in the line and not in KPress’s inline box, so the words
+  after it follow on the same line and no line begins with the comma after a formula.
+  The n column holds a result’s cases, each count or range in a box a line cannot end
+  inside (`overview_sections.case_list`), so a range is never cut at its dash, and it
+  reads from the start of the cell, as text does.
+  A cell of up to four values stays on one line.
+  A cell of five or more wraps and asks for `--site-cases-measure`, 24ch, which is 209
+  pixels and a column of 225. The three such results take 2, 2 and 6 lines there:
+  T-044’s 8 values, T-046’s 9 and T-056’s 23, which a column as narrow as one value sets
+  on 15 lines, a row 386 pixels tall.
+  The table gives the n column its measure before the result and the credit share the
+  spare width, and where the window is short of room the n column narrows first, to half
+  its measure at the least, a range and a count to a line.
+  Where no row showing holds a long list, as on the overview when it opens, the column
+  is as narrow as its lists, 85 pixels, so a single case has no empty column beside it.
+  With every row showing, the id, n, result, credit, rungs and date columns measure 56,
+  225, 342, 200, 180 and 100 pixels at a 1280-pixel window, where T-056’s list takes 6
+  lines, and 56, 135, 288, 184, 180 and 100 at 1024, where it takes 11; the table fits
+  its frame at both, with 14 pixels to spare at 1024 before the n column reaches its
+  floor. At 768 they measure 56, 120, 288, 184, 180 and 100, the list takes 11 lines, and
+  the table runs 242 pixels past its 688-pixel frame.
+  The floors come to 930 pixels, so a table fits its frame down to a window of about
+  1010 pixels and scrolls sideways in its wrap below that.
+  The measure is a trade against the result column: each 2ch of it takes about 13 pixels
+  from the result at a 1280-pixel window and adds about 75 to the height of the results
+  page’s table, whose summaries carry their records.
+  At 24ch the longest list sets a row 165 pixels tall, under the 171 the tallest summary
+  sets there. The records are no column of their own, which would set a link to a line:
+  they sit under the summary, a line or two of links.
   The overview’s table carries them and does not show them, at any width, by one rule on
   `.site-recent-table`: each row’s popover holds every link.
   `devtools.measure_site_pages columns` and `chips` measure all of this on a built site:
   each column’s width, the most lines a cell takes, the words a line break splits and
-  the tallest row a column sets; and every chip’s font size, box and lines.
+  the tallest row a column sets; the values of a list of cases cut across lines, the
+  widest piece of typeset math, the formulas a line ends inside anywhere but after a
+  relation or a binary operator, and the punctuation that begins a line; and every
+  chip’s font size, box and lines.
   `tests/test_site_result_columns.py` holds both tables to it in a browser.
   Secondary content in a cell, such as a credit or an “after …” list, takes
   `.site-cell-quiet`, which sets it in the support colour and the sans face.
@@ -1082,7 +1116,9 @@ it.
   Every table stands `--site-table-space` clear of the text above and below it
   (**Spacing**, above).
   Wide tables bleed on large screens, as **Wide bleed** above describes.
-  On a phone, a table of results becomes one card per row.
+  On a phone, a table of results becomes one card per row: the id, the cases and the
+  rungs on its first line, and a list of five values or more on a line of its own under
+  them, the card’s width.
   A date cell leads with the date and then says what it dates, `published` or
   `established`, in the support colour (`date_cell`): under the date on a wide table,
   which keeps the column narrow, and beside it on a phone.
@@ -1406,9 +1442,10 @@ names.
 - **Head.** The popover’s own caps label, the result’s id, and its headline, the
   result’s summary, stand above the body and are in the page, so they do not change when
   the overview lands. The body opens with the S, V and C rung chips, the kind chip and
-  the standing chips, as the tables show them; then the date with what it dates, the
-  credit and the cases, in the support colour; the claim at the note size; and a closed
-  disclosure with the significance, composition, next rung and novelty.
+  the standing chips, as the tables show them; then the date and what it dates, in the
+  tables’ order (`date_cell`), the credit and the cases, in the support colour; the
+  claim at the note size; and a closed disclosure with the significance, composition,
+  next rung and novelty.
 - **The case.** A result about one case, or up to four, shows the atlas popover’s panel
   for each: the gap bar, the bound as one statement with the lower bound in scarlet and
   the best known side in green, the badges, the citation and what is open, beside the
@@ -1423,8 +1460,8 @@ names.
   that scrolls, one row each: the n linking to the case record, the two bounds in the
   film’s colours, the gap, the status chip, the frontier row and the case file.
 - **The chain.** Every register result on the same case, oldest first, down one rule:
-  the date, the id linking to its row, what it established, its chips, and its credit,
-  bibliography entry, source packet and register entry.
+  the date and what it dates, the id linking to its row, what it established, its chips,
+  and its credit, bibliography entry, source packet and register entry.
   The rule beside the result the overview is about is the accent, and a superseded step
   reads quieter, as a superseded row does.
   Where a result stands differently on this case than across its whole scope, the step

@@ -19,6 +19,11 @@
 .n11-paper .credits a {
   overflow-wrap: anywhere;
 }
+/* The original proof is credited first, by name and address; a line's space then sets
+   this review's own credits apart from it, as the dates are set apart below. */
+.n11-paper .credits .credits-review {
+  margin-block-start: 1lh;
+}
 .n11-paper figure > svg,
 .n11-paper .figure-pair > svg {
   display: block;

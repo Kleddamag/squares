@@ -27,6 +27,10 @@ the last deploy built from once `git fetch` has run. One line per check, `ok` or
 - the Markdown edition, the PDF and the composite assets are served beside the page,
   and the PDF is a PDF with the expected page count and a source receipt matching
   the exact HTML bytes the site serves;
+- the optimality paper, which the Papers page's first card opens, is served where that
+  card points, with its landing address, Markdown and PDF, and its bar marks Papers as
+  the current section. Its own Pages job builds and checks its content, and its
+  citations name the commit it was built from by design, so they are not held to `main`;
 - the workbench names the expected source commit, starts its public API in the pinned
   browser, and links back to this project's root rather than the account site's root.
 
@@ -52,7 +56,7 @@ from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
 from devtools import render_overview
-from devtools.overview_sections import result_fragment
+from devtools.overview_sections import OPTIMALITY_PAPER, result_fragment
 from devtools.render_explainer import (
     COMPOSITE_ASSETS,
     MARKDOWN_OUTPUT,
@@ -98,6 +102,17 @@ SITE_PAGES = tuple(render_overview.PAGES)
 #: on every deploy. The results page is one, since its records are the register's links
 #: and were asked of GitHub when the table was on the overview.
 LINK_CHECKED_PAGES = frozenset({"index.html", "frontier.html", render_overview.RESULTS_PAGE})
+
+#: The optimality paper's page, by path under the site's root, and what is served with
+#: it: its directory's landing address, its Markdown and its PDF. The path is the one the
+#: Papers card links (`overview_sections.OPTIMALITY_PAPER`).
+OPTIMALITY_PAPER_FILES = (
+    f"{OPTIMALITY_PAPER.rsplit('/', 1)[0]}/",
+    f"{OPTIMALITY_PAPER.removesuffix('.html')}.md",
+    f"{OPTIMALITY_PAPER.removesuffix('.html')}.pdf",
+)
+#: The bar's current entry on that page, a level below the root.
+PAPERS_CURRENT = '<a data-page="papers" aria-current="page" href="../papers.html">'
 
 #: Every file the deploy serves beside the explainer, by name.
 SERVED = (
@@ -357,6 +372,15 @@ def check(
                 else "missing, malformed, or mismatched"
             )
         results.append((ok, line))
+
+    status, paper = fetch(site + OPTIMALITY_PAPER, timeout=timeout)
+    current = PAPERS_CURRENT in paper.decode("utf-8", errors="replace")
+    marked = f"Papers is {'' if current else 'not '}the bar's current entry"
+    line = f"optimality paper {OPTIMALITY_PAPER}: HTTP {status}, {len(paper)} bytes, {marked}"
+    results.append((status == 200 and current, line))
+    for name in OPTIMALITY_PAPER_FILES:
+        status, _ = fetch(site + name, head=True, timeout=timeout)
+        results.append((status == 200, f"served {name}: HTTP {status}"))
 
     workbench_url = site + WORKBENCH_PATH
     status, workbench = fetch(workbench_url, timeout=timeout)

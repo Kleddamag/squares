@@ -13,6 +13,9 @@ from devtools import render_explainer_pdf as pdf
 from devtools.check_published_site import (
     EXPLAINER,
     LINK_CHECKED_PAGES,
+    OPTIMALITY_PAPER,
+    OPTIMALITY_PAPER_FILES,
+    PAPERS_CURRENT,
     SERVED,
     SITE_PAGES,
     WORKBENCH_HOME,
@@ -102,6 +105,7 @@ def site_naming(named: Sequence[str], /, **overrides: bytes) -> dict[str, bytes]
     pages[EXPLAINER] = page(PAGE_URL)
     for address in OVERVIEWS:
         pages[address] = result_overview(address.rsplit("/", 1)[1].removesuffix(".html"))
+    pages[OPTIMALITY_PAPER] = PAPERS_CURRENT.encode() + b"Papers</a>"
     pages.update(overrides)
     pages[render_overview.RESULTS_PAGE] += "".join(
         f'<div class="site-row-pop-body" data-row-pop-src="{address}"></div>'
@@ -117,13 +121,17 @@ def fake_site(
     pdf_page_count: int = EXPECTED_PAGE_COUNT,
     receipt: bytes | None = None,
     requested: list[str] | None = None,
+    lost: Sequence[str] = (),
 ) -> Fetch:
-    """A deployed site at any root: its pages, the workbench, the PDF, and every link."""
+    """A deployed site at any root: its pages, the workbench, the PDF, and every link.
+    An address ending in one of `lost` is a 404."""
 
     def fetch(url: str, *, head: bool = False, timeout: float = 30.0) -> tuple[int, bytes]:
         assert timeout == 1
         if requested is not None:
             requested.append(url)
+        if any(url.endswith(name) for name in lost):
+            return 404, b"Not found"
         if url.startswith(REPO_URL):
             return 200, b""
         if url.endswith("/workbench/"):
@@ -337,6 +345,40 @@ def test_check_requires_every_result_overview_the_results_table_names(
     gone = site_pages(**{"result/t-001.html": result_overview("t-001", link="packing/gone.md")})
     missing = f"linked on main but not in {COMMIT[:12]}: ['blob/packing/gone.md']"
     assert failures(monkeypatch, fake_site(gone)) == [f"the result overviews: {missing}"]
+
+
+def test_check_requires_the_optimality_paper_where_the_papers_card_points(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The Papers page's first card opens the optimality paper, which another build
+    writes into a directory of its own: a deploy without it, or with a page there whose
+    bar does not mark Papers, fails, and so does one without its landing address, its
+    Markdown or its PDF."""
+    assert OPTIMALITY_PAPER == "n11-optimality/t-060-explainer.html"
+    assert OPTIMALITY_PAPER in render_overview.SITE_PAGES
+    assert OPTIMALITY_PAPER_FILES == (
+        "n11-optimality/",
+        "n11-optimality/t-060-explainer.md",
+        "n11-optimality/t-060-explainer.pdf",
+    )
+    requested: list[str] = []
+    assert failures(monkeypatch, fake_site(site_pages(), requested=requested)) == []
+    for name in (OPTIMALITY_PAPER, *OPTIMALITY_PAPER_FILES):
+        assert f"https://example.org/{name}" in requested, name
+
+    (failure,) = failures(monkeypatch, fake_site(site_pages(), lost=(OPTIMALITY_PAPER,)))
+    assert failure.startswith(f"optimality paper {OPTIMALITY_PAPER}: HTTP 404, ")
+    assert failure.endswith("Papers is not the bar's current entry")
+
+    bare = site_pages(**{OPTIMALITY_PAPER: b"<p>a page with no bar</p>"})
+    (failure,) = failures(monkeypatch, fake_site(bare))
+    assert failure.startswith(f"optimality paper {OPTIMALITY_PAPER}: HTTP 200, ")
+    assert failure.endswith("Papers is not the bar's current entry")
+
+    for name in OPTIMALITY_PAPER_FILES[1:]:
+        assert failures(monkeypatch, fake_site(site_pages(), lost=(name,))) == [
+            f"served {name}: HTTP 404"
+        ]
 
 
 def test_check_fails_when_the_commit_tree_cannot_be_read(

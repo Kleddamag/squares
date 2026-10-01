@@ -14,9 +14,10 @@ adds the front door and the pages around it, as the plan in
 - `cases.html`, the case records: every case's full record at `cases.html#n-N`, which
   the atlas grid and the frontier atlas both open (`render_case_pages`);
 - `papers.html`, the Papers section's page: one large card per paper, from the one list
-  `overview_sections.PAPERS`. The explainer (`explainer.html`, `render_explainer`) and
-  the tutorial are the section's papers, and the bar's Papers entry is current on all
-  three;
+  `overview_sections.PAPERS`. The optimality paper (`n11-optimality/`,
+  `render_n11_optimality_explainer`), the explainer (`explainer.html`,
+  `render_explainer`) and the tutorial are the section's papers, and the bar's Papers
+  entry is current on all four;
 - `tutorial.html`, the tutorial rendered as a page;
 - `visualize.html`, the Visualize section's first tab: the n = 1 to 324 film at full
   size. Its second tab is the workbench at `workbench/`, which
@@ -161,6 +162,7 @@ SITE_PAGES: tuple[str, ...] = (
     RESULTS_PAGE,
     "cases.html",
     "papers.html",
+    "n11-optimality/t-060-explainer.html",
     "explainer.html",
     "tutorial.html",
     "visualize.html",

@@ -1074,19 +1074,42 @@ class Paper(NamedTuple):
     links: tuple[tuple[str, str], ...] = ()
 
 
+#: Where the optimality paper is served, which `render_n11_optimality_explainer` builds
+#: (its `SITE_PATH`; a test holds the two together). Named here rather than read from
+#: that module, which loads the explainer's renderer and so this one's.
+OPTIMALITY_PAPER = "n11-optimality/t-060-explainer.html"
+
 #: Where the explainer's card sends a reader for the newer optimality proofs it names:
-#: T-060's row in the results table, for now. When the optimality paper is a page of
-#: the site, its link replaces this one or joins it, here, and both of the explainer's
-#: cards carry the change. A card is a button and holds no link, so its popover does.
+#: the paper that explains the proof, and T-060's row in the results table. Both of the
+#: explainer's cards carry them. A card is a button and holds no link, so its popover
+#: does.
 OPTIMALITY_LINKS: tuple[tuple[str, str], ...] = (
+    (OPTIMALITY_PAPER, "The optimality paper"),
     (result_url("T-060"), "The optimality proof, T-060"),
 )
 
 #: The site's papers, in the order the Papers page shows them, one large card each
-#: (`paper_cards`). A new paper is one entry here. The explainer's title is the owner's
-#: (2026-09-30), as `render_explainer.TITLE` has it in title case; the tutorial's
-#: description is `TUTORIAL.md`'s own opening, its audience and what it owns.
+#: (`paper_cards`). A new paper is one entry here. The optimality paper is first: it
+#: explains the result that stands, T-060, where the explainer proves the lower bounds
+#: T-060 superseded and the tutorial is the background to both. Its title is its
+#: renderer's (`render_n11_optimality_explainer.TITLE`) in sentence case, and its
+#: description says what T-060's rungs allow: a proof, machine-verified and reviewed
+#: here. The explainer's title is the owner's (2026-09-30), as `render_explainer.TITLE`
+#: has it in title case; the tutorial's description is `TUTORIAL.md`'s own opening, its
+#: audience and what it owns.
 PAPERS: tuple[Paper, ...] = (
+    Paper(
+        href=OPTIMALITY_PAPER,
+        label="Optimality paper",
+        title="Why eleven squares need this much room",
+        description=(
+            "Explains the accepted proof that Trump\u2019s 1979 packing of eleven squares "
+            "is optimal, s(11) = 3.8770835\u2026 (T-060): the exact construction, the "
+            "exhaustive case exclusions, the geometric capture and the local-isolation "
+            "argument, with figures drawn from the retained proof data."
+        ),
+        links=((result_url("T-060"), "The optimality proof, T-060"),),
+    ),
     Paper(
         href="explainer.html",
         label="Explainer",
@@ -1111,7 +1134,7 @@ PAPERS: tuple[Paper, ...] = (
     ),
 )
 #: The explainer, whose card is the same on the overview as on the Papers page.
-EXPLAINER = PAPERS[0]
+EXPLAINER = next(paper for paper in PAPERS if paper.href == "explainer.html")
 
 
 def paper_cards() -> str:

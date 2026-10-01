@@ -52,3 +52,4 @@ def test_a_shot_is_named_for_its_page_and_fragment() -> None:
     assert shot_stem("index.html") == "index"
     assert shot_stem("workbench/index.html") == "workbench"
     assert shot_stem("cases.html#n-11") == "cases-n-11"
+    assert shot_stem("n11-optimality/t-060-explainer.html") == "n11-optimality-t-060-explainer"

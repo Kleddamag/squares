@@ -3,6 +3,12 @@
 The article and exact-data figures are maintained separately. This renderer only
 substitutes the four reviewed figure slots, gives repository citations immutable
 links, and uses KPress for Markdown, math, footnotes, typography, and PDF print.
+
+The page is one of the site's papers (`overview_sections.PAPERS`), so it carries the
+site's navigation bar, with Papers current, as the explainer does: the shared partial
+and stylesheet through `render_overview.nav_html`, the gear's program, and the script
+that drops the bar when the page is framed in a card's popover. It is served a level
+below the site's root, so the bar's links climb one. The bar is hidden in print.
 """
 
 from __future__ import annotations
@@ -19,6 +25,14 @@ from kpress.output import write_bytes_atomic
 from strif import atomic_output_file
 
 from devtools import render_explainer
+from devtools.render_overview import (
+    EMBED_SCRIPT,
+    SITE_NAV,
+    SITE_NAV_CSS,
+    THEME_SCRIPT,
+    favicon_html,
+    nav_html,
+)
 
 PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
@@ -29,6 +43,9 @@ STYLE = TEMPLATES / "n11-optimality.css"
 FIGURES_MODULE = Path(__file__).with_name("n11_optimality_figures.py")
 OUTPUT_DIR = PACKING / "site" / "n11-optimality"
 STEM = "t-060-explainer"
+#: Where the paper is served, from the site's root, and the way back up to the root.
+SITE_PATH = f"{OUTPUT_DIR.name}/{STEM}.html"
+SITE_ROOT = "../"
 TITLE = "Why Eleven Squares Need This Much Room"
 DESCRIPTION = "An exact, computer-assisted proof of global optimality for eleven squares."
 FIGURE_KEYS = ("WITNESS_SVG", "COVER_SVG", "CAPTURE_SVG", "MASK_SVG")
@@ -45,6 +62,11 @@ RENDER_INPUTS = (
     FIGURES_MODULE,
     PACKING / "devtools" / "check_n11_optimality_d4.py",
     PACKING / "devtools" / "render_explainer.py",
+    PACKING / "devtools" / "render_overview.py",
+    SITE_NAV,
+    SITE_NAV_CSS,
+    THEME_SCRIPT,
+    EMBED_SCRIPT,
     PACKING / "atlas" / "rendering" / "trump11-overview.svg",
     PACKING / "devtools" / "packing_render_adapters.py",
     PACKING / "src" / "sqpack" / "render",
@@ -179,6 +201,11 @@ def render(
         "KATEX_CSS": render_explainer.katex_css(static) if document.has_math else "",
         "RELATION_CSS": render_explainer.relation_face_css(static),
         "PAPER_CSS": STYLE.read_text(encoding="utf-8"),
+        "SITE_FAVICON": favicon_html(),
+        "SITE_NAV_CSS": SITE_NAV_CSS.read_text(encoding="utf-8"),
+        "SITE_NAV": nav_html("papers", root=SITE_ROOT),
+        "SITE_EMBED": EMBED_SCRIPT.read_text(encoding="utf-8"),
+        "SITE_THEME": THEME_SCRIPT.read_text(encoding="utf-8"),
         "THEME_BOOTSTRAP": render_explainer.theme_bootstrap(static),
         "BODY_HTML": document.html,
         "KATEX_JS": _katex_js(static) if document.has_math else "",

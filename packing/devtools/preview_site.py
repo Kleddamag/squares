@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
 """Build the whole published site into one directory, serve it, and screenshot it.
 
-The Pages workflow assembles the site from three builds on three runners: the explainer
+The Pages workflow assembles the site from four builds on four runners: the explainer
 (renamed to `explainer.html` when it is published), the site pages from
-`devtools.render_overview`, and the workbench. This puts the same three side by side on
-one machine, so the site can be looked at, and its navigation followed, before anything
-is deployed. It never deploys and never writes into `packing/site/`.
+`devtools.render_overview`, the workbench, and the optimality paper under
+`n11-optimality/`. This puts the same four side by side on one machine, so the site can
+be looked at, and its navigation followed, before anything is deployed. It never deploys
+and never writes into `packing/site/`.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.preview_site
     uv run --frozen --all-extras --group dev python -m devtools.preview_site --serve
     uv run --frozen --all-extras --group dev python -m devtools.preview_site --shots DIR
 
-`--skip explainer` or `--skip workbench` leaves a slow build out; its nav link then
-points at a missing page, which the link check reports rather than fails on, and a build
-already in `--output` stays. `--page` shoots only the pages it names, each with any
-fragment (`cases.html#n-11` is one case's record), and `--press` names an element to
-press on each page that has one (a card, an atlas cell), so what it opens is checked and
-shot too. Set
-`SQPACK_CHROMIUM` to use a browser the environment supplies, as the explainer's own
-tools do.
+`--skip explainer`, `--skip workbench` or `--skip optimality` leaves a slow build out;
+a link to it then points at a missing page, which the link check reports rather than
+fails on, and a build already in `--output` stays. `--page` shoots only the pages it
+names, each with any fragment (`cases.html#n-11` is one case's record), and `--press`
+names an element to press on each page that has one (a card, an atlas cell), so what it
+opens is checked and shot too. Set `SQPACK_CHROMIUM` to use a browser the environment
+supplies, as the explainer's own tools do.
 """
 
 from __future__ import annotations
@@ -50,7 +50,7 @@ from sqpack.probes import probe
 PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
 DEFAULT_OUTPUT = Path(tempfile.gettempdir()) / "squares-site-preview"
-BUILDS = ("explainer", "pages", "workbench")
+BUILDS = ("explainer", "pages", "workbench", "optimality")
 WIDTHS = (1280, 390)
 PROBES = PACKING / "devtools" / "probes"
 _OVERFLOW = probe(PROBES, "preview_site/overflow")
@@ -91,6 +91,19 @@ def build_workbench(output: Path) -> None:
     _run("workbench_tools.build_site", "--out", str(output / "workbench"))
 
 
+def build_optimality(output: Path) -> None:
+    """The optimality paper as its Pages job leaves it: the page, its Markdown and its
+    PDF, in the directory it is served from."""
+    from devtools.render_n11_optimality_explainer import OUTPUT_DIR  # noqa: PLC0415
+
+    _run(
+        "devtools.render_n11_optimality_explainer",
+        "--output-dir",
+        str(output / OUTPUT_DIR.name),
+        "--pdf",
+    )
+
+
 def build(output: Path, skip: set[str]) -> None:
     output.mkdir(parents=True, exist_ok=True)
     if "explainer" not in skip:
@@ -104,6 +117,8 @@ def build(output: Path, skip: set[str]) -> None:
         print(f"wrote {len(fragments)} result overviews beside them")
     if "workbench" not in skip:
         build_workbench(output)
+    if "optimality" not in skip:
+        build_optimality(output)
 
 
 def missing_links(output: Path) -> list[str]:
@@ -153,8 +168,10 @@ def serve(output: Path, port: int) -> ThreadingHTTPServer:
 
 def shot_stem(name: str) -> str:
     """A page's screenshot name, less its width: `workbench/index.html` is `workbench`,
-    and `cases.html#n-11` is `cases-n-11`."""
-    return name.replace("/index.html", "").replace(".html", "").replace("#", "-")
+    `cases.html#n-11` is `cases-n-11`, and a page in a directory keeps the directory's
+    name, so every shot lands in the one folder."""
+    stem = name.replace("/index.html", "").replace(".html", "")
+    return stem.replace("#", "-").replace("/", "-")
 
 
 def off_centre(sections: list[dict[str, Any]]) -> list[str]:

@@ -14,6 +14,13 @@ body {
   margin-inline: auto;
   padding: clamp(1rem, 3vw, 2.5rem);
 }
+/* On screen the site's bar heads the page (site-nav.css), which drops KPress's padding
+   above a document so every page starts one shared space below the bar's rule. */
+@media screen {
+  .kpress-page-main > .n11-paper {
+    padding-block-start: var(--site-page-top);
+  }
+}
 .n11-paper > :not(figure, .paper-figure, .paper-formats, .paper-footer) {
   max-width: var(--kpress-measure);
   margin-inline: auto;

@@ -819,8 +819,8 @@ table, and `tests/test_overview.py` holds both pages to the identical bar and de
   `tests/node/overview_forward/` runs the forwarder, and `tests/test_overview.py` holds
   every row id to the form it recognises.
 
-- **Papers page.** The site’s papers, the explainer and the tutorial, share one entry in
-  the navigation bar, “Papers”, after Results.
+- **Papers page.** The site’s papers, the optimality paper, the explainer and the
+  tutorial, share one entry in the navigation bar, “Papers”, after Results.
   It leads to `papers.html`: a hero title, “Papers”, a subtitle, a short introduction
   and one large card for each paper (`data-card-size="large"`), saying what the paper
   is. The cards come from one ordered list, `overview_sections.PAPERS`, each entry a
@@ -829,11 +829,18 @@ table, and `tests/test_overview.py` holds both pages to the identical bar and de
   paper and expands to it.
   A card is a button and holds no link of its own, so what its description names is
   linked from its popover, beside the button.
-  The explainer’s card, the same on the overview, names the newer optimality proofs and
-  links T-060 there; a link to the optimality paper replaces that link or joins it in
-  the one list that holds them (`OPTIMALITY_LINKS`). The papers keep their addresses,
-  `explainer.html` and `tutorial.html`, and Papers is the current entry on the papers
-  page and on each of them.
+  The optimality paper is first: it explains the result that stands, T-060, where the
+  explainer proves the lower bounds T-060 superseded and the tutorial is the background
+  to both. The explainer’s card, the same on the overview, names the newer optimality
+  proofs and links the optimality paper and T-060 there, from the one list that holds
+  them (`OPTIMALITY_LINKS`). The papers keep their addresses, `explainer.html`,
+  `tutorial.html` and `n11-optimality/t-060-explainer.html`, and Papers is the current
+  entry on the papers page and on each of them.
+  The optimality paper has its own renderer, shell and Pages job
+  (`render_n11_optimality_explainer`); it carries the bar as the explainer does, through
+  `render_overview.nav_html`, with the links climbing one level to the site’s root, and
+  without `paper-type.css`, so its typography and its sixteen-page PDF are its own.
+  Its citations name the commit it was built from, where every other page links `main`.
 
 - **Awaiting replay.** Under the recent table, a closed disclosure in the sans face at
   the note size: its summary names how many cases and the range, and it opens a compact

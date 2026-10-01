@@ -14,7 +14,6 @@ import base64
 import html
 import re
 import textwrap
-from collections import Counter
 from collections.abc import Iterable, Sequence
 from datetime import date, timedelta
 from functools import cache
@@ -25,21 +24,27 @@ from urllib.parse import urlsplit
 
 from devtools import repo_links
 from devtools.build_bound_citations import RECENT_SINCE
-from devtools.check_results import RESULTS as REGISTER
 from devtools.overview_data import (
     APOSTROPHE,
     EN_DASH,
     REPO,
     Overview,
     Result,
+    compress,
     math_html,
     prose_html,
     tex_bounds,
 )
-from devtools.render_overview import DOCUMENT_PAGES, RESULTS_PAGE
-from devtools.render_recent_results import HOLDS, NOT_A_BOUND, STANDINGS, Lane, Row
+from devtools.render_overview import DOCUMENT_PAGES, RESULTS_PAGE, SITE_PAGES
+from devtools.render_recent_results import (
+    HOLDS,
+    NOT_A_BOUND,
+    STANDINGS,
+    SUPERSEDED,
+    Lane,
+    Row,
+)
 from devtools.repo_links import branch_file
-from sqpack.yamlio import safe_load
 
 
 def _esc(text: object) -> str:
@@ -74,12 +79,22 @@ def standing_key(standing: str) -> str:
     return re.sub(r"[^a-z]+", "-", standing_label(standing)).strip("-")
 
 
+def is_superseded(standing: str) -> bool:
+    """Whether a result of this standing is no longer the best: it claims a bound, and no
+    case bound rests on it now. It is `render_recent_results.standing`'s own word and no
+    other test of it, which `devtools.check_standing` holds to the numbers. A result that
+    still holds a bound, a second certificate and a result that is not a bound are all
+    current. A row says so as `data-current`, which the bar's "Hide superseded" reads
+    (`result_filters`)."""
+    return standing == SUPERSEDED
+
+
 def standing_chip(standing: str) -> str:
-    """A result's standing as a chip: the accent where a case bound rests on it now,
-    the plain gray otherwise, so a reader sees at a glance which results still hold."""
-    tone = ' data-tone="accent"' if standing == HOLDS else ""
+    """One part of a result's standing as a chip, the plain gray one: every standing chip
+    is the one component, so `superseded`, `reported` and `second certificate` are one
+    size and differ only in their words (`standing_chips` chooses which are drawn)."""
     return (
-        f'<span class="site-chip" data-standing="{_esc(standing_key(standing))}"{tone}>'
+        f'<span class="site-chip" data-standing="{_esc(standing_key(standing))}">'
         f"{_esc(standing_label(standing))}</span>"
     )
 
@@ -97,6 +112,18 @@ def card_kind(href: str) -> str:
     if href.startswith("https://"):
         return "external"
     return "page"
+
+
+def is_site_page(href: str) -> bool:
+    """Whether `href` is a full page this site serves, the one rule for which cards
+    navigate in the same tab (`link_card`, `new_tab=False`): an entry of
+    `render_overview.SITE_PAGES`, the optimality paper's
+    `n11-optimality/t-060-explainer.html` among them, or a directory the site serves by
+    its `index.html`, as `workbench/` is. A query or fragment on it does not matter. A
+    file beside the page, such as a poster's PDF, an address off the site and a place
+    on this page are not pages."""
+    page = href.partition("#")[0].partition("?")[0]
+    return page in SITE_PAGES or (page.endswith("/") and f"{page}index.html" in SITE_PAGES)
 
 
 def embed_url(href: str) -> str:
@@ -267,7 +294,6 @@ def card(
     also: tuple[str, str] | None = None,
     hero: str = "",
     size: CardSize | None = None,
-    links: Sequence[tuple[str, str]] = (),
 ) -> str:
     """A card and the popover it opens. The card is a caps label, the summary and a line
     under it; pressing it opens a popover that repeats the label and summary, shows
@@ -280,9 +306,7 @@ def card(
     such as a result's in the results table, and the button goes to that page. `also`
     adds a second, quiet link, such as the document on GitHub. `hero` heads the card
     with a picture (`card_hero`). `size` is the card's width, small, medium or large;
-    left out, `card_size` chooses it from the length of the value and note. `links` are
-    further quiet links beside the button, each its address and its words, for what a
-    card's note names but cannot link: a card is a button.
+    left out, `card_size` chooses it from the length of the value and note.
 
     The popover is native (`popover`), so it opens, closes on Escape or a click outside,
     and follows its button with no script. It is set in sans, so its math is sans too,
@@ -299,9 +323,10 @@ def card(
         )
     else:
         body = f'<div class="site-popover-preview">{preview}</div>'
-    second = "".join(
-        f' <a class="site-popover-also" href="{_esc(url)}">{_esc(words)}</a>'
-        for url, words in (*((also,) if also else ()), *links)
+    second = (
+        f' <a class="site-popover-also" href="{_esc(also[0])}">{_esc(also[1])}</a>'
+        if also
+        else ""
     )
     return (
         f'<button type="button" class="site-card" popovertarget="{_esc(target)}" '
@@ -493,16 +518,70 @@ def result_fragment(result_id: str) -> str:
     return f"{RESULT_FRAGMENTS}/{result_id.lower()}.html"
 
 
-def result_row(result: Result, *, trigger: str, here: bool) -> RowDetail:
+#: The site's one star, the mark of a recent lower bound (paper-design.md), as an escape.
+STAR = "\u2605"
+
+#: What a starred result is called, as the film and the atlas popover call a starred case.
+NEW_RESULT = "new result"
+
+
+def new_result_label(result: Result, overview: Overview) -> str:
+    """What a result's star says, or nothing where the result has no star: that it is a
+    new result, and the cases whose verified lower bound it holds now.
+
+    The rule is the atlas's (`overview_data.starred_results`): the result is the one a
+    case's verified lower bound rests on, and that bound is recent, proved or published
+    since `RECENT_SINCE`. It is the star and the "new result" of the film and of the
+    atlas popover, asked of the result instead of the case.
+    """
+    cases = overview.starred.get(result.id)
+    if not cases:
+        return ""
+    return (
+        f"{NEW_RESULT.capitalize()}: holds the verified lower bound for n = "
+        f"{compress(list(cases))}"
+    )
+
+
+def new_result_star(result: Result, overview: Overview) -> str:
+    """The red star straight after a new result's text in a table of results, or nothing
+    (`new_result_label`). The glyph is an image whose name and tooltip are the label, so
+    it is read and not only seen, and the row's own name says "new result" too
+    (`result_row`). No space joins it to the text: a browser may break a line between a
+    formula and a space that does not break, which left the star on a line of its own.
+    `site.css` hangs it after the last character instead, with a gap, in room the cell
+    keeps for it."""
+    label = new_result_label(result, overview)
+    if not label:
+        return ""
+    return (
+        f'<span class="site-star" role="img" aria-label="{_esc(label)}" '
+        f'title="{_esc(label)}">{STAR}</span>'
+    )
+
+
+def star_legend() -> str:
+    """The sentence that says what the star in a table of results marks, with the star
+    itself, for the prose above each table (`{{STAR_LEGEND}}` in the two articles)."""
+    return (
+        f'A star (<span class="site-star" aria-hidden="true">{STAR}</span>) marks a '
+        f"{NEW_RESULT}, as the atlas does: the verified lower bound of a case rests on it "
+        f"now, and it was proved or published on or after {_since()}."
+    )
+
+
+def result_row(result: Result, *, trigger: str, here: bool, starred: bool = False) -> RowDetail:
     """A result's row popover, the same on every page: its id as the caps label, its
     summary as the headline, then the result's short detail (`_detail`), which the
     script replaces with the whole overview, fetched from `result_fragment` when the
     popover first opens. A row on the results page (`here`) is the result's own row, so
-    its popover has no button; anywhere else it ends in the button to that row."""
+    its popover has no button; anywhere else it ends in the button to that row. A
+    `starred` row's name ends ", new result", what its star says (`new_result_star`)."""
     action = None if here else (result_url(result.id), f"Open {result.id} in the results table")
+    name = f"{result.id}: {plain_text(result.summary)}"
     return row_detail(
         f"pop-result-{result.id.lower()}",
-        name=f"{result.id}: {plain_text(result.summary)}",
+        name=f"{name}, {NEW_RESULT}" if starred else name,
         trigger=trigger,
         label=result.id,
         title=tex_bounds(result.summary),
@@ -518,16 +597,19 @@ def result_row(result: Result, *, trigger: str, here: bool) -> RowDetail:
 class FilterDefaults(NamedTuple):
     """Where a table's bar starts, which is all that differs between the two tables of
     results: the lowest significance shown and the greatest age in days, each `None`
-    for no limit. Every other control starts at all on both."""
+    for no limit, and whether "Hide superseded" starts checked. Every other control
+    starts at all on both."""
 
     significance: int | None = None
     max_age: int | None = None
+    hide_superseded: bool = False
 
 
-#: The overview's Recent Results: what matters most, from the last half year.
-RECENT_DEFAULTS = FilterDefaults(significance=4, max_age=180)
+#: The overview's Recent Results: what matters most, from the last half year, and of
+#: that only what nothing has superseded.
+RECENT_DEFAULTS = FilterDefaults(significance=4, max_age=180, hide_superseded=True)
 
-#: The results page: every result, of any significance and any age.
+#: The results page: every result, of any significance, any age and any standing.
 RESULTS_DEFAULTS = FilterDefaults()
 
 #: The rung filters, in the bar's order: the scale, which names the row's attribute
@@ -551,7 +633,8 @@ def result_cases(result: Result) -> str:
 def result_facets(result: Result) -> str:
     """A result row's facets as attributes, the same on every table of results, each one
     a filter of `result_filters`: whose result it is, its V, C and S rungs as numbers,
-    its standing, its cases and the date the table shows."""
+    its standing, whether it is current, which is to say not superseded
+    (`is_superseded`), its cases and the date the table shows."""
     record = result.record
     return (
         f'data-source="{"ours" if result.ours else "others"}" '
@@ -559,6 +642,7 @@ def result_facets(result: Result) -> str:
         f'data-c="{_esc(record["confirmation"][1:])}" '
         f'data-s="{significance(result)}" '
         f'data-standing="{_esc(standing_key(result.standing))}" '
+        f'data-current="{"false" if is_superseded(result.standing) else "true"}" '
         f'data-n="{_esc(result_cases(result))}" '
         f'data-date="{_esc(first_day(result.dated[1]))}"'
     )
@@ -582,6 +666,8 @@ def shown_by_default(result: Result, defaults: FilterDefaults, reference: date) 
     """Whether a result's row shows before the reader touches the filters, a table's
     `defaults`, with its age measured from `reference`."""
     if defaults.significance is not None and significance(result) < defaults.significance:
+        return False
+    if defaults.hide_superseded and is_superseded(result.standing):
         return False
     return defaults.max_age is None or first_day(result.dated[1]) >= age_cutoff(
         reference, defaults.max_age
@@ -630,13 +716,22 @@ def result_filters(
 
     One control per facet a row carries (`result_facets`), and they compose: Significance,
     Verification and Confirmation as floors (`data-bound="min"`), Standing and Source as
-    equalities, Case as a number the row's cases must hold (`covers`), and Max age as the
-    most days the row's date may lie behind the reader's day (`age`), empty for no limit.
+    equalities, "Hide superseded" as a flag the row must carry (`data-current`), Case as
+    a number the row's cases must hold (`covers`), and Max age as the most days the row's
+    date may lie behind the reader's day (`age`), empty for no limit.
 
-    A table's `defaults` are where Significance and Max age start; every other control
-    starts at all. The tables write the rows outside those defaults `hidden` and the bar
-    writes the count of the rows left, so the first paint is the filtered table. An age
-    is measured there from `reference_date`, and by the script from the reader's day.
+    "Hide superseded" stands straight after Standing, which it narrows: checked, it
+    hides exactly the superseded rows (`is_superseded`) and keeps every other standing,
+    so Standing still chooses among those. It composes as every control does, so with it
+    checked the one standing it hides, superseded, leaves no row, as the frontier atlas's
+    "open only" does beside its Status. Standing keeps `current best` as a choice whether
+    or not a row draws a chip for it: it is the name of the unmarked state.
+
+    A table's `defaults` are where Significance, Max age and "Hide superseded" start;
+    every other control starts at all. The tables write the rows outside those defaults
+    `hidden` and the bar writes the count of the rows left, so the first paint is the
+    filtered table. An age is measured there from `reference_date`, and by the script
+    from the reader's day.
     Without scripts nothing stays filtered: `site.css` shows every row and drops the bar.
 
     The choices come from the whole register, never from `listed`, the rows of the table
@@ -647,6 +742,7 @@ def result_filters(
     last = f' max="{max(overview.cases)}"' if overview.cases else ""
     floor = "" if defaults.significance is None else str(defaults.significance)
     age = "" if defaults.max_age is None else f' value="{defaults.max_age}"'
+    hide = " checked" if defaults.hide_superseded else ""
     reference = reference_date(overview)
     rungs = "".join(
         f'<label>{label} <select data-filter="{scale.lower()}" data-bound="min">'
@@ -668,6 +764,7 @@ def result_filters(
         '<div class="site-table-tools site-result-filters">'
         f"{rungs}"
         f'<label>Standing <select data-filter="standing">{_options(standings)}</select></label>'
+        f'<label><input type="checkbox" data-filter="current"{hide}> Hide superseded</label>'
         f'<label>Source <select data-filter="source">{_options(sources)}</select></label>'
         '<label>Case <var>n</var> <input type="number" data-filter="n" data-bound="covers" '
         f'min="1"{last} placeholder="any"></label>'
@@ -678,16 +775,12 @@ def result_filters(
     )
 
 
-def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULTS) -> str:
-    """Every registered result, grouped as `RESULTS.md` groups them, which is by the
-    relation `RESULTS.md` prints (`result_credit.source_lineage`), with its
-    standing and, for a result by others, the date it was published. Each row opens its
-    result's popover (`result_row`), placed after the table; its id is the trigger.
-    The bar above it is `result_filters`, starting at `defaults`, which on the results
-    page hide nothing; a row outside them is `hidden` in the HTML, and so is a group
-    heading with no row left under it."""
-    reference = reference_date(overview)
-    head = (
+def result_head() -> str:
+    """The header row of a table of results: the one set of columns both tables carry,
+    in one order. The id, which is the row's trigger; the cases; the result, with its
+    records under it; the credit; the rungs, with the standing under them; and the
+    date. A column sorts where an order means something, on either page."""
+    return (
         "<thead><tr>"
         '<th data-sort="text" class="site-col-id">ID</th>'
         '<th data-sort="num" class="num site-col-n">n</th>'
@@ -697,48 +790,134 @@ def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULT
         'whether a case bound rests on the result now">Rungs</th>'
         '<th data-sort="text" title="Published, for a result by others; established, for '
         f'this project{APOSTROPHE}s">Date</th>'
-        "<th>Records</th>"
         "</tr></thead>"
     )
+
+
+def id_cell(result: Result, detail: RowDetail) -> str:
+    """A result's id cell, the first of its row in both tables of results: the id in a
+    column of its own (`.site-col-id`), as the row's native trigger, which opens the
+    row's popover without scripts (`row_detail`)."""
+    return f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
+
+
+def result_text(result: Result, *, here: bool) -> str:
+    """A result's summary as its Result cell sets it: the register's headline, its math
+    typeset. On the results page (`here`) it is plain text, since the row is the
+    result's own. Anywhere else what the summary leads with, its formula, or the whole
+    of a summary that leads with none, links to that row; the words are the same."""
+    if here:
+        return tex_bounds(result.summary)
+    formula, _ = split_summary(result.summary)
+    link = f'<a href="{_esc(result_url(result.id))}">{tex_bounds(formula)}</a>'
+    rest = result.summary[len(formula) :]
+    return link + (tex_bounds(rest) if rest else "")
+
+
+def credit_cell(credit: str) -> str:
+    """A credit as its cell sets it, whatever the register's credit line says: the
+    finder first, and "after …", the work it builds on, quiet after it, in full. So a
+    row says whose the result is and what it rests on without a heading over it."""
+    finder, _, after = credit.partition(" after ")
+    if not after:
+        return _esc(finder)
+    return f'{_esc(finder)} <span class="site-cell-quiet">after {_esc(after)}</span>'
+
+
+def date_cell(result: Result) -> str:
+    """What a result's date cell holds, in both tables of results: the date first, then
+    what it dates, `published` or `established`, quiet (`.site-date-kind`). The cell
+    sorts and filters on the date alone, its `data-value` and the row's `data-date`."""
+    kind, dated = result.dated
+    return f'{_esc(dated)} <span class="site-date-kind">{_esc(kind)}</span>'
+
+
+def result_cells(result: Result, overview: Overview, detail: RowDetail, *, here: bool) -> str:
+    """A result's cells, one for each column of `result_head`, the same on both tables:
+    its id (`id_cell`), its cases, its summary with the star a new result earns
+    (`result_text`, `new_result_star`) and its records on a quiet line under it, its
+    credit (`credit_cell`), its rung chips with its standing under them where it has
+    one to show (`standing_chips`), and its date (`date_cell`). The records are no
+    column of their own: a column narrow enough to fit set them a link to a line, and
+    under the summary they take a line or two. The overview's table carries them and
+    does not show them (`site.css`, `.site-recent-table`)."""
+    record = result.record
+    standing = standing_chips(result.standing)
+    if standing:
+        standing = f'<span class="site-standing">{standing}</span>'
+    return (
+        f"{id_cell(result, detail)}"
+        f'<td class="num site-col-n" data-value="{result.first_n}">{_esc(result.scope)}</td>'
+        f'<td class="site-col-result">{result_text(result, here=here)}'
+        f"{new_result_star(result, overview)}"
+        f'<div class="site-records">{_records(result)}</div></td>'
+        f'<td class="site-col-credit" data-value="{_esc(result.credit)}">'
+        f"{credit_cell(result.credit)}</td>"
+        f'<td class="site-rungs" '
+        f'data-value="{_esc(record["confirmation"] + record["verification"])}">'
+        f"{rung_chips(result)}{standing}</td>"
+        f'<td class="site-col-date" data-value="{_esc(result.dated[1])}">'
+        f"{date_cell(result)}</td>"
+    )
+
+
+def result_table_row(
+    result: Result, overview: Overview, *, here: bool, shown: bool
+) -> tuple[str, str]:
+    """One result's row in a table of results, and the popover the row opens: the one
+    row both tables write. On the results page (`here`) the row is the result's own
+    address, `id="t-018"`; anywhere else it names the result as `data-result`, since
+    that address is the results page's. A row that is not `shown`, one outside its
+    table's defaults, is `hidden` in the HTML."""
+    starred = bool(new_result_label(result, overview))
+    detail = result_row(result, trigger=_esc(result.id), here=here, starred=starred)
+    key = "id" if here else "data-result"
+    row = (
+        f'<tr {key}="{_esc(result.id.lower())}" {result_facets(result)} '
+        f"{detail.attributes}{'' if shown else ' hidden'}>"
+        f"{result_cells(result, overview, detail, here=here)}</tr>"
+    )
+    return row, detail.popover
+
+
+def table_of_results(overview: Overview, defaults: FilterDefaults, *, here: bool) -> str:
+    """A table of results as a page carries it: the tools bar (`result_filters`), every
+    result as one flat table under `result_head`, newest first (`recent_results`),
+    sortable and filterable (`overview/table.js`), and the rows' popovers after it.
+
+    Both pages' tables are this one. They differ in `defaults`, where the bar starts,
+    with a row outside them `hidden` in the HTML, so the first paint is already
+    filtered; and in `here`, which is the results page: there each row is the result's
+    own address, and anywhere else the table is named `site-recent-table` and its rows
+    link to that address (`result_table_row`).
+
+    No heading divides the rows. Whose a result is, and what it builds on, is read from
+    its credit (`credit_cell`), and the Source filter narrows the table to this
+    project's results or to others'.
+    """
+    results = recent_results(overview)
+    reference = reference_date(overview)
     body = []
     popovers = []
-    for title, members in overview.groups:
-        shown = {result.id: shown_by_default(result, defaults, reference) for result in members}
-        hidden = "" if any(shown.values()) else " hidden"
-        body.append(
-            f'<tr class="site-group-row" data-group="{_esc(title)}"{hidden}>'
-            f'<th colspan="7" scope="colgroup">{_esc(title)}</th></tr>'
+    for result in results:
+        row, popover = result_table_row(
+            result, overview, here=here, shown=shown_by_default(result, defaults, reference)
         )
-        for result in members:
-            record = result.record
-            kind, date = result.dated
-            detail = result_row(result, trigger=_esc(result.id), here=True)
-            popovers.append(detail.popover)
-            body.append(
-                f'<tr id="{_esc(result.id.lower())}" {result_facets(result)} '
-                f"{detail.attributes}{'' if shown[result.id] else ' hidden'}>"
-                f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
-                f'<td class="num site-col-n" data-value="{result.first_n}">'
-                f"{_esc(result.scope)}</td>"
-                f'<td class="site-col-result">{tex_bounds(result.summary)}</td>'
-                '<td class="site-col-credit site-cell-quiet" '
-                f'data-value="{_esc(result.credit)}">'
-                f"{_esc(result.credit)}</td>"
-                f'<td class="site-rungs" '
-                f'data-value="{_esc(record["confirmation"] + record["verification"])}">'
-                f"{rung_chips(result)}"
-                f'<span class="site-standing">{standing_chip(result.standing)}</span></td>'
-                f'<td class="site-col-date" data-value="{_esc(date)}">'
-                f'<span class="site-date-kind">{_esc(kind)}</span> {_esc(date)}</td>'
-                f'<td class="site-records">{_records(result)}</td>'
-                "</tr>"
-            )
+        body.append(row)
+        popovers.append(popover)
+    table = "kpress-table site-table site-results" + ("" if here else " site-recent-table")
     return (
-        f'<div class="site-wide">{result_filters(overview, overview.results, defaults)}'
+        f'<div class="site-wide">{result_filters(overview, results, defaults)}'
         '<div class="site-table-wrap">'
-        f'<table class="kpress-table site-table site-results" data-site-table>{head}'
+        f'<table class="{table}" data-site-table>{result_head()}'
         f"<tbody>{''.join(body)}</tbody></table></div>{''.join(popovers)}</div>"
     )
+
+
+def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULTS) -> str:
+    """The results page's table: every registered result (`table_of_results`), each row
+    the result's own address, under a bar that starts by hiding nothing."""
+    return table_of_results(overview, defaults, here=True)
 
 
 #: The rubric's three scored dimensions, in the site's order, significance first: the
@@ -849,28 +1028,9 @@ def rung_short_meanings() -> dict[str, str]:
     return short
 
 
-def rung_counts() -> dict[str, Counter[int]]:
-    """How many registered results stand at each level of each dimension, read from the
-    register, so the diagram shows an empty rung as empty rather than omitting it."""
-    results = safe_load(REGISTER.read_text(encoding="utf-8"))["results"]
-    counts: dict[str, Counter[int]] = {scale: Counter() for scale, *_ in DIMENSIONS}
-    for record in results:
-        counts["V"][int(record["verification"][1])] += 1
-        counts["C"][int(record["confirmation"][1])] += 1
-        counts["S"][int(record["significance"]["score"])] += 1
-    return counts
-
-
-def count_label(count: int) -> str:
-    """How the diagram says how many results stand at a level; an empty rung says so."""
-    if count == 0:
-        return "no result yet"
-    return f"{count} result" + ("" if count == 1 else "s")
-
-
-def _ladder_cell(scale: str, level: int, count: int) -> str:
+def _ladder_cell(scale: str, level: int) -> str:
     """One rung of the ladder diagram: the chip the tables use, titled with the rubric's
-    full meaning, the two-line description, and how many results stand there."""
+    full meaning, and the two-line description."""
     label = f"{scale}{level}"
     return (
         f'<div class="site-ladders-cell" role="cell" data-ladder="{scale}">'
@@ -878,7 +1038,6 @@ def _ladder_cell(scale: str, level: int, count: int) -> str:
         f'<span class="site-chip site-rung-fill" title="{_esc(rung_meanings()[label])}" '
         f"{_fill(label)}>{label}</span>"
         f'<span class="site-ladders-meaning">{_esc(rung_short_meanings()[label])}</span>'
-        f'<span class="site-ladders-count">{_esc(count_label(count))}</span>'
         "</div></div>"
     )
 
@@ -887,16 +1046,14 @@ def verification_block() -> str:
     """The rating ladders as one diagram: a column per dimension of the rubric,
     Significance, Verification, Confirmation, headed by its name and the question it
     answers, and a row per level, the highest at the top, so the rungs of the three
-    ladders line up. A cell is the rung's chip, its description on two lines and the
-    count of results at that level; a ladder with no rung at a level leaves its cell
-    empty, as Significance does at level 0.
+    ladders line up. A cell is the rung's chip and its description on two lines; a ladder
+    with no rung at a level leaves its cell empty, as Significance does at level 0.
 
     It is a grid marked with table roles, not a `<table>`: kpress wraps every table on a
     page in its own scroller and restyles it as `.kpress-table`, which this diagram is
     not. Each name links to that section of `epistemics.md`.
     """
     levels = {scale: {level for level, _ in rungs} for scale, rungs in rubric_levels().items()}
-    counts = rung_counts()
     heads = "".join(
         f'<div class="site-ladders-head" role="columnheader" data-ladder="{scale}">'
         f'<a class="site-ladders-name" href="epistemics.html#{section}">{_esc(name)}</a> '
@@ -912,7 +1069,7 @@ def verification_block() -> str:
     every = sorted({level for scale, *_ in DIMENSIONS for level in levels[scale]}, reverse=True)
     for level in every:
         cells = "".join(
-            _ladder_cell(scale, level, counts[scale][level])
+            _ladder_cell(scale, level)
             if level in levels[scale]
             else f'<div class="site-ladders-cell site-ladders-empty" role="cell" '
             f'data-ladder="{scale}"></div>'
@@ -924,9 +1081,10 @@ def verification_block() -> str:
             f"{cells}</div>"
         )
     names = ", ".join(name.lower() for _, name, _, _ in DIMENSIONS)
+    label = f"Verification ladders by level: {names}"
     return (
         '<div class="site-ladders-frame site-wide">'
-        f'<div class="site-ladders" role="table" aria-label="Rating ladders by level: {names}">'
+        f'<div class="site-ladders" role="table" aria-label="{label}">'
         f"{''.join(rows)}</div></div>"
     )
 
@@ -935,14 +1093,12 @@ def verification_block() -> str:
 #: a trailing ", reported" that the standing chips already say.
 _LEADING_FORMULA = re.compile(r"(`[^`]+`)(?:,? by (?:an? )?(?P<method>.+?))?(?:, reported)?")
 
-#: How many names of a credit's "after …" list show before the rest is cut to its title.
-CREDIT_AFTER_SHOWN = 3
-
 
 def recent_results(overview: Overview) -> list[Result]:
-    """Every result, newest first: by the date the table shows, then by id. What makes
-    the table recent is its bar's defaults (`RECENT_DEFAULTS`), which a reader can
-    change, and never a cut the page makes for them."""
+    """Every result, newest first: by the date the table shows, then by id. It is the
+    order of both tables of results. What makes the overview's table recent is its
+    bar's defaults (`RECENT_DEFAULTS`), which a reader can change, and never a cut the
+    page makes for them."""
     return sorted(overview.results, key=lambda r: (first_day(r.dated[1]), r.id), reverse=True)
 
 
@@ -968,87 +1124,36 @@ def rung_chips(result: Result) -> str:
 def split_summary(summary: str) -> tuple[str, str]:
     """A summary as its result and its method: `` `s(21) = 5` by a point-only route ``
     is the formula and "point-only route". A summary that does not lead with one
-    formula, such as a batch of counts, is all result and no method."""
+    formula, such as a batch of counts, is all result and no method. A table of results
+    shows the summary whole and links what it leads with (`result_text`)."""
     match = _LEADING_FORMULA.fullmatch(summary)
     if not match:
         return summary, ""
     return match.group(1), match.group("method") or ""
 
 
-def credit_cell(credit: str) -> str:
-    """A credit with its finder first and "after …" quiet, the list cut after
-    `CREDIT_AFTER_SHOWN` names; the cell's title keeps the whole credit."""
-    finder, _, after = credit.partition(" after ")
-    if not after:
-        return _esc(finder)
-    names = after.split(", ")
-    shown = ", ".join(names[:CREDIT_AFTER_SHOWN])
-    if len(names) > CREDIT_AFTER_SHOWN:
-        shown += ", …"
-    return f'{_esc(finder)} <span class="site-cell-quiet">after {_esc(shown)}</span>'
-
-
 def standing_chips(standing: str) -> str:
-    """A standing as one chip per part: `second certificate, reported` is two chips."""
+    """A standing as its chips, one per part: `second certificate, reported` is two
+    chips. A result that still stands, `current best`, is the default and takes none:
+    what a reader is told is that a result no longer holds (`superseded`), or how it
+    holds otherwise. So `current best` draws nothing and `current best, reported` draws
+    `reported`. The standing itself stays on the row, as `data-standing`, for the
+    filters."""
     if standing == NOT_A_BOUND:
         return standing_chip(standing)
-    return " ".join(standing_chip(part) for part in standing.split(", "))
+    return " ".join(standing_chip(part) for part in standing.split(", ") if part != HOLDS)
 
 
 def status_chips(result: Result) -> str:
     """A result's rung chips, S, V and C, then its standing chips, side by side."""
-    return rung_chips(result) + " " + standing_chips(result.standing)
+    return " ".join(filter(None, (rung_chips(result), standing_chips(result.standing))))
 
 
 def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS) -> str:
-    """Every result as one table, newest first: the date, the result linking to its row
-    on the results page with its id quiet beside it, the method, the credit and the
-    status chips. A result by others is dated by its publication, as `RESULTS.md` dates
-    it, and this project's by the day it was established; the cell says which. The bar
-    above it is `result_filters`, the results page's, starting at `defaults`: a row
-    outside them is `hidden` in the HTML, so the first paint is already filtered. Each
-    row opens its result's popover (`result_row`), the results page's, ending in the
-    button to that page's row; the quiet id is its trigger."""
-    results = recent_results(overview)
-    reference = reference_date(overview)
-    head = (
-        "<thead><tr>"
-        '<th class="site-col-date">Date</th>'
-        '<th class="site-col-result">Result</th>'
-        '<th class="site-col-method">Method</th>'
-        '<th class="site-col-credit">Credit</th>'
-        '<th class="site-col-status" title="Significance, verification and confirmation, '
-        'then whether a case bound rests on the result now">Status</th>'
-        "</tr></thead>"
-    )
-    rows = []
-    popovers = []
-    for result in results:
-        kind, dated = result.dated
-        formula, method = split_summary(result.summary)
-        detail = result_row(result, trigger=_esc(result.id), here=False)
-        popovers.append(detail.popover)
-        rows.append(
-            f'<tr data-result="{_esc(result.id.lower())}" {result_facets(result)} '
-            f"{detail.attributes}"
-            f"{'' if shown_by_default(result, defaults, reference) else ' hidden'}>"
-            f'<td class="site-col-date"><span class="site-date-kind">{_esc(kind)}</span> '
-            f"{_esc(dated)}</td>"
-            f'<td class="site-col-result"><a href="{_esc(result_url(result.id))}">'
-            f"{tex_bounds(formula)}</a> "
-            f'<span class="site-cell-quiet">{detail.trigger}</span></td>'
-            f'<td class="site-col-method">{tex_bounds(method)}</td>'
-            f'<td class="site-col-credit" title="{_esc(result.credit)}">'
-            f"{credit_cell(result.credit)}</td>"
-            f'<td class="site-col-status">{status_chips(result)}</td>'
-            "</tr>"
-        )
-    return (
-        f'<div class="site-wide">{result_filters(overview, results, defaults)}'
-        '<div class="site-table-wrap">'
-        '<table class="kpress-table site-table site-results site-recent-table">'
-        f"{head}<tbody>{''.join(rows)}</tbody></table></div>{''.join(popovers)}</div>"
-    )
+    """The overview's Recent Results: the results page's table (`table_of_results`), its
+    bar starting at the recent defaults, each row opening the result's popover, which
+    ends in the button to the result's row on the results page."""
+    return table_of_results(overview, defaults, here=False)
 
 
 def _since() -> str:
@@ -1205,33 +1310,23 @@ EXPLAINER_AS_OF = "early September"
 
 class Paper(NamedTuple):
     """One of the site's papers, as its card says what it is: where it is served, a caps
-    label naming its kind, its title, one or two sentences on what it is, the size of
-    its card on the Papers page, and the quiet links its card's popover carries for
-    what the description names. The title and description are register prose, so
-    `n = 11` in either is set as math."""
+    label naming its kind, its title, one or two sentences on what it is, and the size
+    of its card on the Papers page. The title and description are register prose, so
+    `n = 11` in either is set as math. The card is the link to the paper and holds no
+    other, so what a description names (T-060, the optimality paper) is linked from
+    the Papers page's introduction (`templates/papers-article.md`)."""
 
     href: str
     label: str
     title: str
     description: str
     size: CardSize = "large"
-    links: tuple[tuple[str, str], ...] = ()
 
 
 #: Where the optimality paper is served, which `render_n11_optimality_explainer` builds
 #: (its `SITE_PATH`; a test holds the two together). Named here rather than read from
 #: that module, which loads the explainer's renderer and so this one's.
 OPTIMALITY_PAPER = "n11-optimality/t-060-explainer.html"
-
-#: Where the explainer's card sends a reader for the newer optimality proofs it names:
-#: the paper that explains the proof, and T-060's row in the results table. The
-#: explainer's card on the Papers page carries them: that card is a button and holds no
-#: link, so its popover does. Its card on the overview is the link to the explainer
-#: itself and has no popover, so it carries none.
-OPTIMALITY_LINKS: tuple[tuple[str, str], ...] = (
-    (OPTIMALITY_PAPER, "The optimality paper"),
-    (result_url("T-060"), "The optimality proof, T-060"),
-)
 
 #: The site's papers, in the order the Papers page shows them, one large card each
 #: (`paper_cards`). A new paper is one entry here. The optimality paper is first: it
@@ -1246,14 +1341,13 @@ PAPERS: tuple[Paper, ...] = (
     Paper(
         href=OPTIMALITY_PAPER,
         label="Optimality paper",
-        title="Why eleven squares need this much room",
+        title="A review of the optimality proof of the Trump packing of 11 squares",
         description=(
             "Explains the accepted proof that Trump\u2019s 1979 packing of eleven squares "
             "is optimal, s(11) = 3.8770835\u2026 (T-060): the exact construction, the "
             "exhaustive case exclusions, the geometric capture and the local-isolation "
-            "argument, with figures drawn from the retained proof data."
+            "argument, with figures drawn from or checked against the retained proof data."
         ),
-        links=((result_url("T-060"), "The optimality proof, T-060"),),
     ),
     Paper(
         href="explainer.html",
@@ -1264,7 +1358,6 @@ PAPERS: tuple[Paper, ...] = (
             f"earlier, simpler proofs as of {EXPLAINER_AS_OF}; newer optimality proofs now "
             "exist (T-060)."
         ),
-        links=OPTIMALITY_LINKS,
     ),
     Paper(
         href="tutorial.html",
@@ -1280,22 +1373,24 @@ PAPERS: tuple[Paper, ...] = (
 )
 #: The explainer, whose card reads the same on the overview as on the Papers page.
 EXPLAINER = next(paper for paper in PAPERS if paper.href == "explainer.html")
+#: The optimality paper, whose card on the overview carries its label and its title.
+OPTIMALITY = next(paper for paper in PAPERS if paper.href == OPTIMALITY_PAPER)
 
 
 def paper_cards() -> str:
-    """One card per paper: the whole card is a button that opens a popover framing the
-    paper, which expands to it and links what the paper's description names."""
+    """One card per paper. Each card is the link itself and goes to its paper in the same
+    tab, as the overview's page cards do (`page_cards`): a paper is a full page the site
+    serves, so no popover previews it (`link_card`, `new_tab=False`). A link holds no
+    other link, so the Papers page's introduction links what a description names."""
     return _cards(
         [
-            card(
-                "pop-paper-" + re.sub(r"[^a-z0-9]+", "-", paper.href.removesuffix(".html")),
+            link_card(
+                paper.href,
                 paper.label,
                 tex_bounds(paper.title),
                 tex_bounds(paper.description),
-                href=paper.href,
-                action=f"Expand the {paper.label.lower()}",
                 size=paper.size,
-                links=paper.links,
+                new_tab=False,
             )
             for paper in PAPERS
         ]
@@ -1305,9 +1400,20 @@ def paper_cards() -> str:
 #: The site's other pages, as the overview's cards show them: the page, a label, its
 #: title, and one line on what a reader finds there. Both are register prose, so a
 #: bound in either is written in ASCII (`s(11) >= 3.8264…`) and set as math. The
-#: explainer's card takes its paper's words; the tutorial's keeps a shorter line here.
-#: Every address is a full page the site serves, so its card links straight to it.
+#: explainer's card takes its paper's words; the optimality paper's and the tutorial's
+#: keep a shorter line here. The optimality paper is first, as on the Papers page: it
+#: explains the result that stands. Every address is a full page the site serves, the
+#: paper's a directory below the root, so its card links straight to it.
 PAGES: tuple[tuple[str, str, str, str], ...] = (
+    (
+        OPTIMALITY.href,
+        OPTIMALITY.label,
+        OPTIMALITY.title,
+        (
+            "Explains the accepted proof that Trump\u2019s packing of eleven squares is "
+            "optimal, s(11) = 3.8770835\u2026 (T-060)."
+        ),
+    ),
     (EXPLAINER.href, EXPLAINER.label, EXPLAINER.title, EXPLAINER.description),
     (
         "tutorial.html",
@@ -1507,14 +1613,14 @@ def link_card(
     A direct card opens its target in a new tab unless `new_tab` is false, so the page
     the reader chose it from stays where they left it: a poster's PDF, the film, a place
     off the site. A card for one of the site's own pages passes `new_tab=False` and
-    navigates in the same tab, as the navigation bar does, and only a target on the site
-    may. Its corner icon is `data-go`'s (`card_kind`): the right arrow for a page or file
-    of this site, the external arrow for a place off it. An address off the site is
-    shown under the note beside the host's mark; a PDF is typed as one, so the browser
-    opens it in place.
+    navigates in the same tab, as the navigation bar does, and only a page the site
+    serves may (`is_site_page`). Its corner icon is `data-go`'s (`card_kind`): the right
+    arrow for a page or file of this site, the external arrow for a place off it. An
+    address off the site is shown under the note beside the host's mark; a PDF is typed
+    as one, so the browser opens it in place.
     """
     kind = card_kind(url)
-    if not new_tab and kind != "page":
+    if not new_tab and not is_site_page(url):
         raise SystemExit(f"{url}: only a page of this site opens in the same tab")
     tab = ' target="_blank" rel="noopener noreferrer"' if new_tab else ""
     typed = ' type="application/pdf"' if url.endswith(".pdf") else ""

@@ -9,11 +9,30 @@ scope: >
   excluded because its role and lifecycle come from resources/README.md rather than
   current project documentation rules.
 documents:
+  - {path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-240-n17-mixed-capacity-census/output-review.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-01-post-optimality-morning.md, role: review, authority: record, lifecycle: retained}
+  - {path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-241-n17-closed-cell-symmetry/output-review.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-01-n17-closed-cell-symmetry.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-01-n17-mixed-capacity-cover.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-01-n12-weighted-cycle-capture.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-01-n17-core-stress.md, role: review, authority: record, lifecycle: retained}
+  - {path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-239-n17-endpoint-features/output-review.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-01-n17-first-order-branches.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-01-n17-projection-branches.md, role: review, authority: record, lifecycle: retained}
+  - {path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-236-n17-contact-chart/output-review.md, role: review, authority: record, lifecycle: retained}
+  - {path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/output-review.md, role: review, authority: record, lifecycle: retained}
+  - {path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/output-review.md, role: review, authority: record, lifecycle: retained}
+  - {path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/output-review.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/specs/active/plan-2026-10-01-post-optimality-w3-session.md, role: plan, authority: current, lifecycle: transient}
+  - {path: docs/project/reviews/review-2026-09-30-n11-explainer-intuition.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/research/research-2026-09-30-exact-arithmetic-verifier-performance.md, role: research-report, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-09-29-n11-optimality.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-09-30-n11-expository-simplification.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-09-30-n11-optimality-explainer.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-09-30-n11-explainer-citations-and-docs.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-09-30-n11-explainer-proof-reconciliation.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/specs/active/plan-2026-09-30-n11-optimality-illustrations.md, role: plan, authority: current, lifecycle: transient}
   - {path: packing/campaign/agent-sessions/session-152-validation/pdf-d490-run-35784981711.md, role: postmortem, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-09-19-pr199-201-correctness.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-09-20-n17-r012-and-mira-4613-proof-review.md, role: review, authority: record, lifecycle: retained}
@@ -731,6 +750,15 @@ documents:
     authority: record
     lifecycle: maintained
   - path: docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md
+    role: review
+    authority: record
+    lifecycle: retained
+  - {path: docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md, role: review, authority: record, lifecycle: retained}
+  - path: docs/project/reviews/review-2026-10-01-evand-source-coverage.md
+    role: review
+    authority: record
+    lifecycle: retained
+  - path: docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
     role: review
     authority: record
     lifecycle: retained

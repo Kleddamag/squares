@@ -4,16 +4,29 @@
 // belongs to, its column and its cell's height, then its description: the words, the
 // box's width and height, the line height, how many lines the words take, how far they
 // run past the box (0 when they fit), and whether the box sits beside the chip or under
-// it. A rung's count and its chip's title are reported as they read. `gutter_left` and
-// `gutter_right` are the room between the diagram and the nearest ancestor that clips or
-// scrolls sideways, or the page's own layout width where none does: negative where the
-// diagram runs under the clip, 0 where it is flush. `frame` names what was measured
-// against. `heights` is every distinct rung height, so one value means
-// every row of the diagram is the same height; `empty` counts the cells that hold no
-// rung and whether each takes room.
+// it. A chip's title is reported as it reads, and `parts` counts what the rung holds: two,
+// its chip and its description. `head_rules` and `row_rules` are the distinct widths of
+// the rule under a column's head and of the rules a cell draws above and below itself,
+// so `[1]` and `[0]` say one rule under the heads and none between the rows.
+// `gutter_left` and `gutter_right` are the room between the diagram and the nearest
+// ancestor that clips or scrolls sideways, or the page's own layout width where none
+// does: negative where the diagram runs under the clip, 0 where it is flush. `frame`
+// names what was measured against. `heights` is every distinct rung height, so one value
+// means every row of the diagram is the same height; `empty` counts the cells that hold
+// no rung and whether each takes room.
 () => {
   /** @param {number} value */
   const round = (value) => Math.round(value * 10) / 10;
+  /** The distinct widths of the block-side borders `sides` names, over `elements`.
+   * @param {Element[]} elements
+   * @param {("borderBlockStartWidth" | "borderBlockEndWidth")[]} sides */
+  const rules = (elements, sides) => [
+    ...new Set(
+      elements.flatMap((element) =>
+        sides.map((side) => round(Number.parseFloat(getComputedStyle(element)[side]))),
+      ),
+    ),
+  ];
   /** @param {Element} element */
   const lines = (element) => {
     const range = document.createRange();
@@ -61,8 +74,8 @@
           lines: meaning ? lines(meaning) : 0,
           overflow: meaning ? Math.max(0, meaning.scrollHeight - meaning.clientHeight) : 0,
           beside: (words?.left ?? 0) >= (chip?.getBoundingClientRect().right ?? 0),
-          count: (cell.querySelector(".site-ladders-count")?.textContent ?? "").trim(),
           title: chip?.getAttribute("title") ?? "",
+          parts: cell.querySelector(".site-ladders-rung")?.children.length ?? 0,
         };
       });
       return {
@@ -76,6 +89,11 @@
         heads: [...diagram.querySelectorAll(".site-ladders-head")].map((head) =>
           (head.querySelector(".site-ladders-name")?.textContent ?? "").trim(),
         ),
+        head_rules: rules(
+          [...diagram.querySelectorAll(".site-ladders-head")],
+          ["borderBlockEndWidth"],
+        ),
+        row_rules: rules(rungs, ["borderBlockStartWidth", "borderBlockEndWidth"]),
         heights: [...new Set(measured.map((rung) => rung.height))],
         empty: cells
           .filter((cell) => !cell.querySelector(".site-chip"))

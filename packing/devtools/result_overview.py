@@ -724,6 +724,9 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
         chips += (
             f' <span class="site-cell-quiet">{on_case}, {_esc(standing_label(here))}</span>'
         )
+    # A result that still stands draws no standing chip, so a step may have no chip line.
+    chips = chips.strip()
+    chip_line = f'<p class="site-result-step-chips">{chips}</p>' if chips else ""
     cites = [_esc(other.credit), *citations(other)]
     return (
         f'<li class="site-result-step" data-step="{_esc(other.id.lower())}" '
@@ -732,7 +735,7 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
         f'{_esc(dated)} <a href="{_esc(result_url(other.id))}">{_esc(other.id)}</a>{this}'
         f"{on}</p>"
         f'<p class="site-result-step-summary">{tex_bounds(other.summary)}</p>'
-        f'<p class="site-result-step-chips">{chips}</p>'
+        f"{chip_line}"
         f'<p class="site-result-step-cite">{DOT.join(cites)}</p></li>'
     )
 

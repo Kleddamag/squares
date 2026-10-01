@@ -1,0 +1,30 @@
+{
+  "schema": "n17-endpoint-feature-audit/v1",
+  "audit_passed": true,
+  "counts": {
+    "pairs": 21,
+    "pair_options": 168,
+    "pair_zero": 33,
+    "pair_strict_negative": 135,
+    "active_wall_incidences": 15,
+    "wall_corners": 60,
+    "wall_corner_zero": 29,
+    "wall_corner_strict": 31,
+    "parallel_pairs": 9,
+    "strict_interval_comparisons": 175,
+    "distinct_negative_intervals_computed": 106
+  },
+  "root_git_ref": "7866e2623:packing/campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/run-001/certificate.json",
+  "endpoint_git_ref": "ad7a36ed0:packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/run-001/certificate.json",
+  "audited_receipt_sha256": "f6ba220a66dfe13c4b6fbf1d1aaebc14fc21652b87610d13be3feb09ca09203b",
+  "accepted_root_sha256": "883f51b994c19476908353781cb4c1b8f8da68deaa484a2e8f192cc56d809057",
+  "accepted_endpoint_sha256": "f052f6ae476c4d4a79a082aecbab981e6d4885934efd36f2bf5acf4a63c73992",
+  "producer_imported_or_rerun": false,
+  "trust_premises": [
+    "accepted H255 root and H256 strict packing certificates",
+    "reviewed symbolic zero, normalization and tangent-offset identities"
+  ],
+  "scope": "all 175 strict interval records independently matched; symbolic identities audited as manifests, not reproved",
+  "receipt_bytes": 6198237,
+  "elapsed_seconds": 11.274893291003536
+}

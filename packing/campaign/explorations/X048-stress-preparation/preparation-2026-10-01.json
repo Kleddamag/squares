@@ -1,0 +1,72 @@
+{
+  "schema": "n17-core-stress-preparation/v1",
+  "date_utc": "2026-10-01",
+  "status": "instrument_unready",
+  "target_evaluations": 0,
+  "working_directory": "packing/",
+  "scratch_environment": {
+    "TMPDIR": "/Volumes/spud-ext1/agent-scratch/h257-features-w3/tmp",
+    "CARGO_TARGET_DIR": "/Volumes/spud-ext1/agent-scratch/h257-features-w3/cargo",
+    "UV_CACHE_DIR": "/Volumes/spud-ext1/agent-scratch/h257-features-w3/uv",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "source_files": [
+    "packing/devtools/check_n17_core_stress.py",
+    "packing/tests/test_n17_core_stress.py"
+  ],
+  "current_draft_git_blob_ids": {
+    "packing/devtools/check_n17_core_stress.py": "eba7c769d86d06bee559573f35ddf2e42dd9518d",
+    "packing/tests/test_n17_core_stress.py": "e8adde6f83a03442d020fd9dcf392ee62d399c38"
+  },
+  "attempt_source_snapshots": "not preserved; current draft blob IDs do not identify the three attempted versions",
+  "evidence": {
+    "unrelated_rational_control": {
+      "parameters": ["1/3", "1/5"],
+      "rows": 58,
+      "columns": 52,
+      "zero_residuals": 50,
+      "other_residuals": ["omega12=gamma*rho*F2/K", "omega16=-gamma*rho*F2/K"],
+      "target_relevance": "algebraic control only; not a feasible-packing or root evaluation"
+    },
+    "interval_growth_control": {
+      "parameters": ["1/3", "1/5"],
+      "radii": ["1/1000000000000", "1/1000000000000"],
+      "weight_bound_characters": 128454,
+      "weight_assembly_wall_seconds": 0.049062542006140575,
+      "result": "guard rho failed at this unrelated point; no sign conclusion"
+    },
+    "fast_tests": "3 passed in 0.79s after the explicit pre-read unready CLI guard",
+    "ruff": "all checks passed",
+    "basedpyright": "0 errors, 0 warnings"
+  },
+  "symbolic_attempts": [
+    {
+      "method": "full substituted SymPy cancel over 52 normalized columns",
+      "command": ".venv/bin/python3 -c 'from devtools.check_n17_core_stress import symbolic_residual_proofs; print(symbolic_residual_proofs())'",
+      "exit_code": 130,
+      "outcome": "operator interrupted after approximately two minutes of symbolic expansion"
+    },
+    {
+      "method": "formal mu,nu,rho and unnormalized 52-column SymPy cancel",
+      "command": "timeout 90 .venv/bin/python3 -c 'from devtools.check_n17_core_stress import symbolic_residual_proofs; print(symbolic_residual_proofs())'",
+      "ceiling_seconds": 90,
+      "exit_code": 124,
+      "outcome": "timed out without an identity verdict"
+    },
+    {
+      "method": "generic two-row block cancellation plus formal load residuals",
+      "command": "timeout 90 .venv/bin/python3 -c 'from devtools.check_n17_core_stress import symbolic_residual_proofs; print(symbolic_residual_proofs())'",
+      "ceiling_seconds": 90,
+      "exit_code": 124,
+      "outcome": "timed out without an identity verdict; subsequent row-shape linkage was added but not run"
+    }
+  ],
+  "remaining": [
+    "complete bounded exact 52-column symbolic proof",
+    "fixed 256-bit outward dyadic interval arithmetic preregistration and implementation",
+    "full target-free derivative, mutation and interval-disposition controls",
+    "independent code and output review before any target"
+  ],
+  "cli_state": "INSTRUMENT_READY=false; main returns structured instrument_unready before source or certificate reads",
+  "interpretation": "No target stress was calculated. The fixed common-core candidate has neither been confirmed nor rejected."
+}

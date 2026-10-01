@@ -1,0 +1,10 @@
+{
+  "source": "run-001/witness.yaml",
+  "portable": "portable-witness.yaml",
+  "change": "Only softschema.schema metadata changed; witness payload equals original exactly.",
+  "schema_validation": [],
+  "witness_payload_equal": true,
+  "geometry_replayed": false,
+  "accepted_geometry_evidence": "run-001/target-main.stdout and run-001/target-independent.stdout",
+  "defect": "D-511"
+}

@@ -1,0 +1,23 @@
+{
+  "coordinate_provenance": "not-established",
+  "failures": [
+    [
+      "overlap",
+      "squares 0 and 1 overlap"
+    ]
+  ],
+  "field_certificate": {
+    "field": "Q",
+    "preconditions": "degree-one rational field"
+  },
+  "id": "W-overlap-negative-control",
+  "limitations": "Verifies witness feasibility and its upper bound, not global optimality.",
+  "method": "exact-algebraic",
+  "minimum_best_pair_gap": "-1/2",
+  "minimum_containment_clearance": "0",
+  "n": 2,
+  "operation": "verify",
+  "pairs_tested": 1,
+  "side": "2",
+  "verification_passed": false
+}

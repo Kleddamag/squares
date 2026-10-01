@@ -25,10 +25,9 @@
 // filter the page cannot settle when it is built: there its rows are hidden as of a day
 // the build takes from the register, and here, on load, as of the reader's.
 //
-// Two rows are placed by more than the filters. The row the page's fragment names
+// One row is placed by more than the filters: the row the page's fragment names
 // (`all-results.html#t-018`) always shows, so a link to a row never lands on nothing.
-// A group row, which heads the rows under it, shows while one of them does, and only
-// while the rows are in the order the page wrote them: a sort hides the group headings.
+// A filtered table is one flat list, with no heading row among its rows.
 //
 // The bar's `.site-count` shows how many rows remain. A link can open the table
 // filtered: each query parameter presets the control it names, `status=proved`,
@@ -136,28 +135,6 @@
           return true;
       }
     });
-  }
-
-  /**
-   * Which rows show, in the table's current order. A row that is not a group heading
-   * shows when it passes; a group heading shows when the rows are still in their groups
-   * and one of the rows under it, up to the next heading, shows.
-   * @param {readonly boolean[]} headings whether each row is a group heading
-   * @param {readonly boolean[]} passes whether each other row passes
-   * @param {boolean} grouped whether the rows are in the order the page wrote them
-   * @returns {boolean[]}
-   */
-  function rowsShown(headings, passes, grouped) {
-    const shown = passes.map((pass, index) => pass && headings[index] !== true);
-    let heading = -1;
-    shown.forEach((show, index) => {
-      if (headings[index] === true) {
-        heading = index;
-      } else if (show && grouped && heading >= 0) {
-        shown[heading] = true;
-      }
-    });
-    return shown;
   }
 
   /**
@@ -304,13 +281,8 @@
     if (!body) {
       return;
     }
-    // A group row heads the rows under it and is not one of the rows counted.
-    const counted = new Set(
-      Array.from(body.rows).filter((row) => !row.classList.contains("site-group-row")),
-    );
     const count = tools?.querySelector(".site-count") ?? null;
     const noun = count?.getAttribute("data-noun") ?? "rows";
-    let grouped = true;
 
     const applyFilters = () => {
       if (!tools) {
@@ -320,20 +292,13 @@
       const target = fragmentTarget();
       const rows = Array.from(body.rows);
       const passes = rows.map(
-        (row) =>
-          counted.has(row) &&
-          (rowMatches(rowData(row), filters) || (row.id !== "" && row.id === target)),
-      );
-      const shown = rowsShown(
-        rows.map((row) => !counted.has(row)),
-        passes,
-        grouped,
+        (row) => rowMatches(rowData(row), filters) || (row.id !== "" && row.id === target),
       );
       rows.forEach((row, index) => {
-        row.hidden = shown[index] !== true;
+        row.hidden = passes[index] !== true;
       });
       if (count) {
-        count.textContent = countText(passes.filter(Boolean).length, counted.size, noun);
+        count.textContent = countText(passes.filter(Boolean).length, rows.length, noun);
       }
     };
 
@@ -358,7 +323,6 @@
         const keys = current.map((row) => cellKey(row.cells[column]));
         const order = sortOrder(keys, type, direction);
         body.append(...order.flatMap((index) => current[index] ?? []));
-        grouped = false;
         applyFilters();
       };
       heading.addEventListener("click", sort);
@@ -398,7 +362,6 @@
     sortOrder,
     covers,
     rowMatches,
-    rowsShown,
     countText,
     localDay,
     ageCutoff,

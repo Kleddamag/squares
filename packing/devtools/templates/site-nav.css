@@ -44,7 +44,7 @@
 /* The space from the bar's rule to the top of a page's first block (its title, its hero,
    or the explainer's hero), one token for every page: kpress's document padding above
    the column is dropped on screen, and the column (site.css) or the explainer's hero
-   (explainer-shell.html) starts `--site-page-top` below the rule instead. Print keeps
+   (explainer-publication.css) starts `--site-page-top` below the rule instead. Print keeps
    kpress's own spacing, so the explainer's PDF does not move. */
 @media screen {
   .kpress-page-main > .kpress-doc {
@@ -73,12 +73,31 @@
   max-width: none;
   padding: 0;
 }
+/* The bar's type, on the paper's scale (paper-type.css, which the site's pages, the
+   explainer and the workbench inline). The body is 18px prose. The bar's links, and a section's tabs, are one
+   step below the body and no more: the note size, 0.92 of the sans base, 17.48px, which
+   is the first size on the scale under 18px (the support size between them, 0.95, is
+   18.05px). The site's name is the sans base, 19px, the size sans text takes beside the
+   prose, and heavier, so it reads as the name. Both are taken from the host base, which
+   is the same on every page, not from KPress's derived base, which a page may rescale,
+   so the bar does not change size between pages. The optimality paper carries the bar
+   without paper-type.css, so each token names the paper's own value as its fallback
+   there; a test holds the three fallbacks to paper-type.css. */
+:root {
+  --site-nav-name-size: calc(
+    var(--kpress-host-font-size-base, 18px) *
+    var(--paper-font-scale-sans, calc(19 / 18))
+  );
+  --site-nav-font-size: calc(var(--site-nav-name-size) * var(--paper-note-scale, 0.92));
+  /* The line every item of the bar is set on: the links' own, 1.43 of their size, which
+     is the face's leading there (25px). A length and not a ratio, so the name, a size
+     larger, takes the links' line and not a taller one of its own. */
+  --site-nav-line: calc(var(--site-nav-font-size) * 1.43);
+}
 .site-nav {
   font-family: var(--kpress-font-sans);
   font-feature-settings: var(--kpress-font-features-sans);
-  /* In rem, not from kpress's base size: the explainer sets a larger base than the site
-     pages, and the bar should not change size between them. */
-  font-size: 1rem;
+  font-size: var(--site-nav-font-size);
 }
 .site-nav-inner {
   align-items: baseline;
@@ -94,6 +113,7 @@
 .site-nav a {
   color: var(--kpress-doc-muted);
   font-weight: 550;
+  line-height: var(--site-nav-line);
   padding: 0.25rem 0.55rem;
   text-decoration: none;
   transition:
@@ -109,17 +129,30 @@
 /* The site name is set in capitals by style, so its text stays "Square Packing". */
 .site-nav .site-name {
   color: var(--kpress-doc-text);
+  font-size: var(--site-nav-name-size);
   font-weight: 680;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   margin-inline: -0.55rem auto;
 }
-/* The mark, case 11 as the tab's icon draws it, sits before the name at the name's
-   cap height, in the bar's ink, and takes the name's hover with it. */
+/* The mark, case 11 as the tab's icon draws it, sits before the name, centred on the
+   name's line, in the bar's ink, and takes the name's hover with it. */
 .site-nav .site-name {
   align-items: center;
   display: inline-flex;
   gap: 0.45rem;
+}
+/* The name's text stands on the links' baseline. The bar aligns its items by their
+   baselines, and the name is a row of its own, a mark and the text, whose baseline would
+   be its first item's, the mark's lower edge: the links' text then stood level with the
+   foot of the mark, and the name's text, centred on the mark, some pixels above it. The
+   text is the one item of that row aligned by its baseline, so the row's baseline is the
+   text's, at any size of either, and the mark stays centred on the text's line. That
+   line is the links' own (`--site-nav-line`), so the name is no taller than a link and
+   the links stand where they do without it, the current one's underline the same
+   distance over the rule at every width. */
+.site-nav .site-name-text {
+  align-self: baseline;
 }
 /* 18px, whole pixels, the size `render_overview.SITE_LOGO_PX` draws its one-pixel frame
    for, so the container's outline is one crisp pixel (two on a 2x screen). */
@@ -295,7 +328,8 @@
    its header slot. Its shell (`render_overview.nav_shell`) takes both itself, from the same
    tokens, so the bar has the same box on every page at every width. The shell is the
    page's width and paints the page's background, so the application below starts at its
-   lower edge. */
+   lower edge. A shell that carries section tabs has its rule under the bar, above them
+   (Section tabs, below). */
 .site-app-shell {
   background: var(--kpress-doc-bg);
   box-sizing: border-box;
@@ -326,14 +360,32 @@
    carries only this stylesheet, and the tabs must look the same on both pages. The tint
    is mixed in sRGB, since an oklch mix with the near-neutral page takes that page's
    hue and drew the light tab lavender rather than teal. */
+/* The tabs sit below the rule under the bar, not above it. That rule is the header
+   slot's lower border and the tabs are in the slot, so a header that holds tabs hands
+   its rule to the bar: from the top, the bar, the rule, then the tabs. The bar spans
+   the header, so the rule is where it is on every other page, and as long. */
+.kpress-site-header:has(> .site-tabs) {
+  border-block-end: 0;
+}
+.kpress-site-header > .site-nav:has(+ .site-tabs) {
+  border-block-end: 1px solid var(--kpress-doc-border);
+}
+/* The tabs stand `--site-tabs-space` under the rule. On a kpress page nothing follows
+   them in the header, so the page's first block starts `--site-page-top` under the
+   tabs; an application starts at its shell's lower edge, so there the tabs keep the
+   same space below as above. */
 .site-tabs {
+  --site-tabs-space: 0.7rem;
   border: 1px solid var(--kpress-doc-border);
   display: flex;
   font-family: var(--kpress-font-sans);
   font-feature-settings: var(--kpress-font-features-sans);
-  font-size: 0.9rem;
+  font-size: var(--site-nav-font-size);
   inline-size: fit-content;
-  margin: 0.15rem auto 0.7rem;
+  margin: var(--site-tabs-space) auto 0;
+}
+.site-app-shell .site-tabs {
+  margin-block-end: var(--site-tabs-space);
 }
 nav.site-tabs a {
   color: var(--kpress-doc-muted);

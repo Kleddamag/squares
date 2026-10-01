@@ -1,7 +1,7 @@
 """Publish the T-060 paper as an offline HTML page and readable Markdown.
 
 The article and exact-data figures are maintained separately. This renderer only
-substitutes the four reviewed figure slots, gives repository citations immutable
+substitutes the declared reviewed figure slots, gives repository citations immutable
 links, and uses KPress for Markdown, math, footnotes, typography, and PDF print.
 
 The page is one of the site's papers (`overview_sections.PAPERS`), so it carries the
@@ -27,6 +27,7 @@ from strif import atomic_output_file
 from devtools import render_explainer
 from devtools.render_overview import (
     EMBED_SCRIPT,
+    PAPER_TYPE_CSS,
     SITE_NAV,
     SITE_NAV_CSS,
     THEME_SCRIPT,
@@ -46,23 +47,47 @@ STEM = "t-060-explainer"
 #: Where the paper is served, from the site's root, and the way back up to the root.
 SITE_PATH = f"{OUTPUT_DIR.name}/{STEM}.html"
 SITE_ROOT = "../"
-TITLE = "Why Eleven Squares Need This Much Room"
-DESCRIPTION = "An exact, computer-assisted proof of global optimality for eleven squares."
-FIGURE_KEYS = ("WITNESS_SVG", "COVER_SVG", "CAPTURE_SVG", "MASK_SVG")
+TITLE = "A Review of the Optimality Proof of the Trump Packing of 11 Squares"
+DESCRIPTION = "A review of the optimality proof of the Trump packing of eleven squares."
+FIGURE_KEYS = (
+    "WITNESS_SVG",
+    "ROADMAP_SVG",
+    "COVER_SVG",
+    "MASK_SVG",
+    "CAPACITY_SVG",
+    "POSE_SVG",
+    "ROW_SVG",
+    "CHARGE_SVG",
+    "SYMMETRY_SVG",
+    "CAPTURE_SVG",
+    "LOCAL_SVG",
+    "ENDPOINT_SVG",
+)
 MATH_WAIT_MS = 15_000
 FIGURE_SLOT = re.compile(r"\{\{([A-Z_]+_SVG)\}\}")
 LEFTOVER_SLOT = re.compile(r"\{\{[A-Z][A-Z_]*\}\}")
 RELATIVE_LINK = re.compile(r"(?P<start>\]\()(?P<url>\.\.?/[^\s)]+)(?P<end>\))")
 RELATIVE_REFERENCE = re.compile(r"(?m)^(?P<start>\[[^\]\n]+\]:[ \t]*)(?P<url>\.\.?/[^\s]+)")
+RELATIVE_ANCHOR = re.compile(r'(?P<start><a\b[^>]*\bhref=")(?P<url>\.\.?/[^"]+)(?P<end>")')
+ARCHIVED_CITATION_SOURCES = (
+    PACKING / "resources/papers/kingbird-square-11-provenance.svg",
+    PACKING / "resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md",
+)
 RENDER_INPUTS = (
     Path(__file__),
     ARTICLE,
     SHELL,
     STYLE,
+    *ARCHIVED_CITATION_SOURCES,
+    render_explainer.PUBLICATION_STYLE,
     FIGURES_MODULE,
+    PACKING / "devtools/n11_optimality_overview_figures.py",
+    PACKING / "devtools/n11_optimality_mechanism_figures.py",
     PACKING / "devtools" / "check_n11_optimality_d4.py",
     PACKING / "devtools" / "render_explainer.py",
+    PACKING / "devtools" / "explainer" / "diagram-labels.js",
     PACKING / "devtools" / "render_overview.py",
+    PAPER_TYPE_CSS,
     SITE_NAV,
     SITE_NAV_CSS,
     THEME_SCRIPT,
@@ -75,8 +100,42 @@ RENDER_INPUTS = (
     PACKING / "resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json",
     PACKING / "resources/web/n11-optimality-2026-09-29/receipts/d4-independent/objects",
     PACKING / "resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json",
+    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json",
+    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/local-isolation/result.json",
+    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/pose-inclusion/result.json",
+    PACKING / "devtools/check_n11_generic_fresh.py",
+    PACKING / "devtools/check_n11_optimality_field_mask0.py",
+    PACKING
+    / "resources/web/n11-optimality-2026-09-29/receipts/generic-mask2095-intake"
+    / "provenance.json",
+    PACKING
+    / "resources/web/n11-optimality-2026-09-29/receipts/generic-mask2095-intake"
+    / "full-result.json",
+    PACKING
+    / "resources/web/n11-optimality-2026-09-29/receipts/generic-mask2095-intake/objects",
+    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/field-mask0/result.json",
+    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/field-mask0/objects",
     REPO / "vendor" / "kpress",
 )
+
+
+def render_all_figures() -> dict[str, str]:
+    """Load the figure renderers only in a full publication checkout."""
+    from devtools.n11_optimality_figures import render_figures  # noqa: PLC0415
+    from devtools.n11_optimality_mechanism_figures import (  # noqa: PLC0415
+        render_mechanism_figures,
+    )
+    from devtools.n11_optimality_overview_figures import (  # noqa: PLC0415
+        render_overview_figures,
+    )
+
+    groups = (render_figures(), render_overview_figures(), render_mechanism_figures())
+    figures: dict[str, str] = {}
+    for group in groups:
+        if figures.keys() & group.keys():
+            raise ValueError("figure renderers supplied duplicate slots")
+        figures.update(group)
+    return figures
 
 
 def link_revision() -> str:
@@ -127,8 +186,16 @@ def _repository_links(markdown: str, *, source: Path, revision: str) -> str:
         lambda match: match.group("start") + pin(match.group("url")) + match.group("end"),
         markdown,
     )
-    return RELATIVE_REFERENCE.sub(
+    markdown = RELATIVE_REFERENCE.sub(
         lambda match: match.group("start") + pin(match.group("url")), markdown
+    )
+    return RELATIVE_ANCHOR.sub(
+        lambda match: (
+            match.group("start")
+            + escape(pin(match.group("url")), quote=True)
+            + match.group("end")
+        ),
+        markdown,
     )
 
 
@@ -137,7 +204,7 @@ def expanded_markdown(
 ) -> str:
     """Fill only declared figure slots and pin local source citations to a Git commit."""
     if set(figures) != set(FIGURE_KEYS):
-        raise ValueError("figures must provide exactly the four declared SVG slots")
+        raise ValueError("figures must provide exactly the declared SVG slots")
     if set(FIGURE_SLOT.findall(source)) != set(FIGURE_KEYS):
         raise ValueError("article must use every declared figure slot exactly by name")
     if any(source.count("{{" + key + "}}") != 1 for key in FIGURE_KEYS):
@@ -165,19 +232,6 @@ def _katex_js(static: Path) -> str:
     return joined
 
 
-def _kpress_css(static: Path) -> str:
-    """Inline the complete KPress stylesheet and fonts, including its print faces."""
-    from kpress.format.assets import DEFAULT_CSS_ASSETS, mono_css_assets  # noqa: PLC0415
-
-    names = ("css/page-reset.css", *DEFAULT_CSS_ASSETS, *mono_css_assets())
-    return "\n".join(
-        render_explainer.inline_font_urls(
-            (static / name).read_text(encoding="utf-8"), (static / name).parent
-        )
-        for name in names
-    )
-
-
 def render(
     source: str,
     *,
@@ -197,9 +251,11 @@ def render(
     values = {
         "PAGE_TITLE": escape(TITLE),
         "PAGE_DESCRIPTION": escape(DESCRIPTION),
-        "KPRESS_CSS": _kpress_css(static),
+        "KPRESS_CSS": render_explainer.kpress_css(static),
         "KATEX_CSS": render_explainer.katex_css(static) if document.has_math else "",
         "RELATION_CSS": render_explainer.relation_face_css(static),
+        "PAPER_TYPE_CSS": PAPER_TYPE_CSS.read_text(encoding="utf-8"),
+        "PUBLICATION_CSS": render_explainer.PUBLICATION_STYLE.read_text(encoding="utf-8"),
         "PAPER_CSS": STYLE.read_text(encoding="utf-8"),
         "SITE_FAVICON": favicon_html(),
         "SITE_NAV_CSS": SITE_NAV_CSS.read_text(encoding="utf-8"),
@@ -209,9 +265,12 @@ def render(
         "THEME_BOOTSTRAP": render_explainer.theme_bootstrap(static),
         "BODY_HTML": document.html,
         "KATEX_JS": _katex_js(static) if document.has_math else "",
-        "HTML_NAME": STEM + ".html",
+        "DIAGRAM_LABEL_SCRIPT": render_explainer.INLINE_SCRIPT_ASSETS[
+            "DIAGRAM_LABEL_SCRIPT"
+        ].read_text(encoding="utf-8"),
         "PDF_NAME": STEM + ".pdf",
         "MARKDOWN_NAME": STEM + ".md",
+        "REPO_URL": render_explainer.REPO_URL,
     }
     page = _fill(SHELL.read_text(encoding="utf-8"), values, source=SHELL)
     render_explainer.assert_self_contained(page)
@@ -260,7 +319,10 @@ def _print_pdf(html_path: Path, pdf_path: Path) -> None:
             if page.locator(".katex-error, math merror").count():
                 raise ValueError("the paper contains a math rendering error")
             _await_print_fonts(page)  # pyright: ignore[reportArgumentType]
-            write_bytes_atomic(pdf_path, page.pdf(format="Letter", print_background=True))
+            write_bytes_atomic(
+                pdf_path,
+                page.pdf(format="Letter", prefer_css_page_size=True, print_background=True),
+            )
         finally:
             if page is not None:
                 page.close()
@@ -274,11 +336,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--pdf", action="store_true", help="also print the HTML with KPress")
     parser.add_argument("--check", action="store_true", help="compare current HTML/Markdown")
     args = parser.parse_args(argv)
-    from devtools.n11_optimality_figures import render_figures  # noqa: PLC0415
-
     html, markdown = render(
         ARTICLE.read_text(encoding="utf-8"),
-        figures=render_figures(),
+        figures=render_all_figures(),
         revision=args.revision or link_revision(),
     )
     output_dir = args.output_dir.resolve()

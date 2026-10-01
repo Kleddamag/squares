@@ -214,6 +214,9 @@ def evidence_lines() -> dict[str, int]:
 
 
 def evidence_links(refs: Iterable[str]) -> str:
+    """Each evidence id once, as code linking to its entry in `evidence.yaml`, with commas
+    between. A name and the comma after it are one `.site-name` box, so a line breaks
+    between names and never on a hyphen inside one (`site.css`, Words stay whole)."""
     base = repo_url(tables.FRONTIER / "evidence.yaml")
     lines = evidence_lines()
     links = []
@@ -221,7 +224,10 @@ def evidence_links(refs: Iterable[str]) -> str:
         if ref not in lines:
             raise SystemExit(f"evidence id {ref} is not in evidence.yaml")
         links.append(f'<a href="{base}#L{lines[ref]}"><code>{html.escape(ref)}</code></a>')
-    return ", ".join(links)
+    return " ".join(
+        f'<span class="site-name">{link}{"," if index < len(links) else ""}</span>'
+        for index, link in enumerate(links, start=1)
+    )
 
 
 def thumbnail_svg(n: int) -> str:
@@ -412,6 +418,7 @@ def frontier_row_popover_body(case: dict[str, Any], evidence: dict[str, dict[str
     origins = html.escape(tables.verification_origins(case, evidence))
     notes = html.escape(tables.case_disposition(case))
     return (
+        '<div class="site-pairs">'
         '<p class="site-popover-heading">Best known packing</p>'
         f'<dl class="site-detail">{_upper_details(case, case_url)}</dl>'
         '<p class="site-popover-heading">Reported lower bound</p>'
@@ -420,6 +427,7 @@ def frontier_row_popover_body(case: dict[str, Any], evidence: dict[str, dict[str
         f'<dl class="site-detail"><dt>Verification</dt><dd>{origins}</dd>'
         f"<dt>Notes</dt><dd>{notes}</dd>"
         f"<dt>Evidence</dt><dd>{evidence_links(_evidence_refs(case))}</dd></dl>"
+        "</div>"
     )
 
 
@@ -546,9 +554,12 @@ def frontier_markdown(fill: Callable[..., str]) -> str:
     """The article with every count and link filled from the record."""
     cases = frontier_cases()
     recent = recent_lower_bounds()
+    first, last = min(case["n"] for case in cases), max(case["n"] for case in cases)
     values = {
         "COUNT": str(len(cases)),
-        "LAST_N": str(max(case["n"] for case in cases)),
+        # The subtitle's range, as math: the subtitle is an HTML block, where kpress
+        # leaves `$…$` literal, and it is sans text, so the formula is set sans.
+        "CASE_RANGE": math_html(rf"n = {first}, \ldots, {last}"),
         "PROVED": str(sum(case["status"] == "proved" for case in cases)),
         "OPEN": str(sum(case["status"] == "open" for case in cases)),
         "RECENT": str(sum(recent.values())),

@@ -78,6 +78,8 @@ ATLAS_GRID_SCRIPT = BROWSER / "atlas-grid.js"
 EMBED_SCRIPT = BROWSER / "embed.js"
 CASE_POPOVER_SCRIPT = BROWSER / "case-popover.js"
 CASE_VIEW_SCRIPT = BROWSER / "case-view.js"
+#: What starts the Visualize page's film when the page is visited.
+FILM_SCRIPT = BROWSER / "film.js"
 THEME_SCRIPT = BROWSER / "theme.js"
 #: The frame the site's flattened kpress client modules are placed in.
 KPRESS_CLIENT_FRAME = BROWSER / "kpress-client.js"
@@ -367,7 +369,9 @@ def visualize_tabs(current: str, *, root: str = "") -> str:
 
     Each tab is a real link to its own page, so the bar needs no script and a tab can be
     opened, bookmarked and shared. Its look is `.site-tabs` in `site-nav.css`, the one
-    stylesheet both the film's page and the workbench carry.
+    stylesheet both the film's page and the workbench carry, which also draws the rule
+    under the navigation bar over the tabs: they follow the bar in the header slot, and
+    the bar, not the slot, carries the rule on a page that has them.
     """
     if current not in {key for key, _, _ in VISUALIZE_TABS}:
         raise SystemExit(f"the Visualize section has no tab {current!r}")
@@ -553,9 +557,10 @@ def fill(template: str, values: dict[str, str], *, where: str) -> str:
 def overview_page() -> Page:
     """The front door: prose from its template, every fact from the record.
 
-    Its first section opens with README's first paragraph and its Recent Results with
-    README's next two, read from README's `project-intro` and `recent-progress` blocks
-    and their links rewritten for the site (`site_documents`).
+    Its first section, The Square Packing Problem, opens with README's two opening
+    paragraphs and its Recent Results with README's next two, read from README's
+    `project-intro` and `recent-progress` blocks and their links rewritten for the site
+    (`site_documents`).
     """
     from devtools import overview_data, overview_sections, site_documents  # noqa: PLC0415
 
@@ -572,6 +577,7 @@ def overview_page() -> Page:
         "PAGE_CARDS": overview_sections.page_cards(),
         "VERIFICATION": overview_sections.verification_block(),
         "RECENT": overview_sections.recent_table(overview),
+        "STAR_LEGEND": overview_sections.star_legend(),
         "AWAITING_REPLAY": overview_sections.awaiting_replay(overview),
         "SURVEY_COUNTS": overview_sections.survey_counts(overview),
         "ARROW_RIGHT": overview_sections.arrow_icon("right"),
@@ -610,9 +616,9 @@ def results_page() -> Page:
 
     overview = overview_data.load()
     values = {
-        "COUNT": str(len(overview.results)),
         "EPISTEMICS_URL": repo_url(repo_links.EPISTEMICS),
         "RESULTS_TABLE": overview_sections.results_table(overview),
+        "STAR_LEGEND": overview_sections.star_legend(),
     }
     markdown = fill(
         RESULTS_ARTICLE.read_text(encoding="utf-8"), values, where=RESULTS_ARTICLE.name
@@ -630,7 +636,8 @@ def results_page() -> Page:
 
 def papers_page() -> Page:
     """The Papers section's page: a short introduction and one large card per paper,
-    each opening a popover that frames the paper and expands to it."""
+    each the link to its paper, which is a full page of the site. It has no popover,
+    so it carries no popover script."""
     from devtools import overview_sections  # noqa: PLC0415
 
     values = {"PAPER_CARDS": overview_sections.paper_cards()}
@@ -644,7 +651,6 @@ def papers_page() -> Page:
         title=f"Papers · {SITE_NAME}",
         description=PAPERS_DESCRIPTION,
         toc=False,
-        page_scripts=(POPOVER_SCRIPT,),
     )
 
 
@@ -678,7 +684,12 @@ def cases_page() -> Page:
 
 
 def visualize_page() -> Page:
-    """The Visualize section's first tab: the film of the ascent at full size."""
+    """The Visualize section's first tab: the film of the ascent at full size.
+
+    The film starts when the page is visited: its markup mutes it and marks it
+    `data-autoplay`, and `overview/film.js` starts it unless the reader asks for reduced
+    motion or the page is framed in a popover. No other page carries that script, so no
+    other film on the site starts unasked."""
     values = {
         "FILM_URL": FILM_URL,
         "SHORT_FILM_URL": SHORT_FILM_URL,
@@ -696,6 +707,7 @@ def visualize_page() -> Page:
         title=f"Visualize · {SITE_NAME}",
         description=VISUALIZE_DESCRIPTION,
         toc=False,
+        page_scripts=(FILM_SCRIPT,),
         tabs=visualize_tabs("film"),
     )
 

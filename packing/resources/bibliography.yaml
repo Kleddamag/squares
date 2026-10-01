@@ -41,7 +41,7 @@ sources:
     lineage: builds-on-project
     note: >-
       11SquaresOptimal at f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c, announced by
-      Square Packing Fan (@MathCompSciFTW) as an Astra-assisted global optimality proof.
+      Queuingtheorydotcom (@MathCompSciFTW) as an Astra-assisted global optimality proof.
       README and THIRD_PARTY_NOTICES credit jlevy/squares at c55726e1e885227f63110131c0a914665175ff89,
       Walter Trump's construction and David Ellsworth's reconstruction diagram; the
       announcement credits Kleddamag. No blanket license covers the collection.
@@ -255,6 +255,22 @@ sources:
       LICENSE names Evan Daniel. Its CREDITS.md credits the weighted exact-rational
       covering method to Sam Burns and Gustavo Massaccesi, and says the work was produced
       with an AI agent under human direction (web/evand-square-packing-2026-09-28/README.md).
+  - key: '[evand square-packing 2026-10-01]'
+    authors: [Daniel]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-01'
+    credit: Daniel after Burns, Massaccesi
+    lineage: independent
+    note: >-
+      evand/square-packing at 08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5:
+      reported mixed-cover s(60) = 8 and periodic segment-and-area covers for
+      s(k^2 - 3) = k for every k >= 6, with a Lean reduction conditional on
+      the finite covering premise. Its CREDITS.md states that Claude (Anthropic)
+      produced the work under human direction. A selective source packet retains proof notes,
+      checker sources and research obstructions; it is not a complete replay bundle.
+      No fresh certificate replay is implied by the source audit
+      (web/evand-square-packing-2026-10-01/README.md).
   - key: '[Kleddamag n11 2026]'
     authors: [Kleddamag]
     year: 2026

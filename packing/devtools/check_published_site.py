@@ -29,8 +29,12 @@ the last deploy built from once `git fetch` has run. One line per check, `ok` or
   the exact HTML bytes the site serves;
 - the optimality paper, which the Papers page's first card opens, is served where that
   card points, with its landing address, Markdown and PDF, and its bar marks Papers as
-  the current section. Its own Pages job builds and checks its content, and its
-  citations name the commit it was built from by design, so they are not held to `main`;
+  the current section. Its own Pages job builds and checks its content. It is the one
+  page whose repository links are held to a commit and not to `main`: a paper cites the
+  evidence as it stood when the paper was typeset, so each citation on the page and in
+  its Markdown names the expected commit, the one the deploy built from, which `main`
+  keeps, and every path it cites is in that commit's tree. A citation that names `main`,
+  or any other commit, fails;
 - the workbench names the expected source commit, starts its public API in the pinned
   browser, and links back to this project's root rather than the account site's root.
 
@@ -111,6 +115,8 @@ OPTIMALITY_PAPER_FILES = (
     f"{OPTIMALITY_PAPER.removesuffix('.html')}.md",
     f"{OPTIMALITY_PAPER.removesuffix('.html')}.pdf",
 )
+#: The paper's Markdown, whose citations are held to the same commit as the page's.
+OPTIMALITY_PAPER_MARKDOWN = f"{OPTIMALITY_PAPER.removesuffix('.html')}.md"
 #: The bar's current entry on that page, a level below the root.
 PAPERS_CURRENT = '<a data-page="papers" aria-current="page" href="../papers.html">'
 
@@ -135,6 +141,22 @@ def repository_links(text: str) -> set[tuple[str, str, str]]:
     return {
         (kind, ref, path.rstrip("/")) for kind, ref, path in REPOSITORY_LINK.findall(markup)
     }
+
+
+def paper_citations(text: str, commit: str) -> tuple[set[tuple[str, str]], list[str]]:
+    """The optimality paper's repository links: each (kind, path) it cites at `commit`,
+    without any query or anchor, and every link that names another ref, `main` among
+    them, as `kind/ref/path`. The paper pins its citations to the commit it was built
+    from (`render_n11_optimality_explainer.link_revision`), and the deploy builds it
+    from the commit it deploys."""
+    cited: set[tuple[str, str]] = set()
+    strays: list[str] = []
+    for kind, ref, path in sorted(repository_links(text)):
+        if ref == commit:
+            cited.add((kind, re.split(r"[?#]", path, maxsplit=1)[0].rstrip("/")))
+        else:
+            strays.append(f"{kind}/{ref}/{path}")
+    return cited, strays
 
 
 def pdf_pages(data: bytes) -> int:
@@ -373,14 +395,45 @@ def check(
             )
         results.append((ok, line))
 
+    def cites_commit(name: str, text: str) -> None:
+        """The paper's rule, where every other page's is `links_main`: each repository
+        link names the expected commit, and every path cited there is in its tree."""
+        cited, strays = paper_citations(text, commit)
+        results.append(
+            (
+                bool(cited) and not strays,
+                f"{name}: {len(strays)} repository links not pinned to {commit[:12]}: "
+                f"{strays[:5]}"
+                if strays
+                else f"{name}: {len(cited)} citations, each pinned to {commit[:12]}",
+            )
+        )
+        if tree is None:
+            return
+        missing = tree.missing(cited)
+        results.append(
+            (
+                not missing,
+                f"{name}: cited at {commit[:12]} but not in its tree: {missing[:5]}"
+                if missing
+                else f"{name}: every cited path is in {commit[:12]}",
+            )
+        )
+
     status, paper = fetch(site + OPTIMALITY_PAPER, timeout=timeout)
-    current = PAPERS_CURRENT in paper.decode("utf-8", errors="replace")
+    paper_text = paper.decode("utf-8", errors="replace")
+    current = PAPERS_CURRENT in paper_text
     marked = f"Papers is {'' if current else 'not '}the bar's current entry"
     line = f"optimality paper {OPTIMALITY_PAPER}: HTTP {status}, {len(paper)} bytes, {marked}"
     results.append((status == 200 and current, line))
+    if status == 200:
+        cites_commit(OPTIMALITY_PAPER, paper_text)
     for name in OPTIMALITY_PAPER_FILES:
-        status, _ = fetch(site + name, head=True, timeout=timeout)
+        cited_here = name == OPTIMALITY_PAPER_MARKDOWN
+        status, body = fetch(site + name, head=not cited_here, timeout=timeout)
         results.append((status == 200, f"served {name}: HTTP {status}"))
+        if cited_here and status == 200:
+            cites_commit(name, body.decode("utf-8", errors="replace"))
 
     workbench_url = site + WORKBENCH_PATH
     status, workbench = fetch(workbench_url, timeout=timeout)

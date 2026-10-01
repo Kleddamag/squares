@@ -2,7 +2,7 @@
 
 # The Frontier Atlas
 
-<p class="subtitle">Every tracked case, <var>n</var> = 1 to {{LAST_N}}</p>
+<p class="subtitle">A survey of everything known for cases {{CASE_RANGE}}</p>
 
 </div>
 

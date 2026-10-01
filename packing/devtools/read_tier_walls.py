@@ -25,7 +25,14 @@ group is shown as 0 there, which bounds it rather than measuring it. The printed
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.read_tier_walls \
         --run-id 34924677097 --run-id 35013703659 [--tier checks] \
-        [--baseline-run-id 34023002068 ...]
+        [--baseline-run-id 34023002068 ...] [--job-id 110591982989 ...]
+
+`--run-id` reads the jobs of a run's latest attempt, which is the view the jobs API
+serves. A re-run hides every earlier attempt behind it, and the reading that failed a
+pull request on the ceiling is usually in one of those: `--job-id` reads a job by its
+own id, whatever attempt it belongs to, and the jobs API names the run and the attempt
+for the record's `measured_where`. The job ids of an attempt come from
+`gh api repos/OWNER/REPO/actions/runs/RUN/attempts/N/jobs`.
 
 It reads logs over the network, so it is not a gate step; `tests/test_read_tier_walls.py`
 covers the parsing on a recorded log excerpt. `think-mvyk` is the wider re-record tool
@@ -48,6 +55,7 @@ import urllib.error
 import urllib.request
 from collections.abc import Sequence
 from dataclasses import dataclass, field
+from typing import Any
 
 from devtools.check_pr_wall import API, USER_AGENT, Client, WallError, github_token
 from sqpack.cli.validate import UsageError, _tier_id
@@ -76,6 +84,8 @@ class Reading:
     budget_only_failure: bool = False
     run: int = 0
     job: str = ""
+    #: The run attempt the job belongs to; 0 when the jobs payload did not say.
+    attempt: int = 0
 
 
 def _tier_of(command: str) -> str | None:
@@ -178,25 +188,54 @@ def _log(client: Client, job_id: int) -> str:
     raise WallError(f"the log of job {job_id} is unreadable")  # pragma: no cover
 
 
+def _readings_of(
+    client: Client, job: dict[str, Any], run_id: int, tiers: Sequence[str]
+) -> list[Reading]:
+    """One job's whole-tier readings: a completed job, green or failed on the budget alone."""
+    conclusion = job.get("conclusion")
+    if job.get("status") != "completed" or conclusion not in {"success", "failure"}:
+        return []
+    readings: list[Reading] = []
+    for parsed in parse_log(_log(client, int(job["id"]))):
+        if conclusion == "failure" and not parsed.budget_only_failure:
+            continue
+        if tiers and parsed.tier not in tiers:
+            continue
+        reading = Reading(
+            **{
+                **parsed.__dict__,
+                "run": run_id,
+                "job": str(job["name"]),
+                "attempt": int(job.get("run_attempt") or 0),
+            }
+        )
+        readings.append(reading)
+        shape = "" if reading.enforced else "  (off the reference shape; not averaged)"
+        attempt = f" attempt {reading.attempt}" if reading.attempt else ""
+        print(
+            f"run {run_id}{attempt} job {reading.job} ({job['id']}): {reading.tier} "
+            f"{reading.wall_seconds:.2f}s, {reading.steps} steps{shape}"
+        )
+    return readings
+
+
 def _collect(client: Client, run_ids: Sequence[int], tiers: Sequence[str]) -> list[Reading]:
+    """Every reading in the latest attempt of each run, which is the view the API serves."""
     readings: list[Reading] = []
     for run_id in run_ids:
         for job in client.jobs(run_id):
-            conclusion = job.get("conclusion")
-            if job.get("status") != "completed" or conclusion not in {"success", "failure"}:
-                continue
-            for parsed in parse_log(_log(client, int(job["id"]))):
-                if conclusion == "failure" and not parsed.budget_only_failure:
-                    continue
-                if tiers and parsed.tier not in tiers:
-                    continue
-                reading = Reading(**{**parsed.__dict__, "run": run_id, "job": str(job["name"])})
-                readings.append(reading)
-                shape = "" if reading.enforced else "  (off the reference shape; not averaged)"
-                print(
-                    f"run {run_id} job {reading.job}: {reading.tier} "
-                    f"{reading.wall_seconds:.2f}s, {reading.steps} steps{shape}"
-                )
+            readings.extend(_readings_of(client, job, run_id, tiers))
+    return readings
+
+
+def _collect_jobs(
+    client: Client, job_ids: Sequence[int], tiers: Sequence[str]
+) -> list[Reading]:
+    """Readings of jobs named by id, which is how an earlier attempt's job is reached."""
+    readings: list[Reading] = []
+    for job_id in job_ids:
+        job = client.get(f"actions/jobs/{job_id}")
+        readings.extend(_readings_of(client, job, int(job["run_id"]), tiers))
     return readings
 
 
@@ -217,14 +256,25 @@ def same_shape(readings: Sequence[Reading], *, tier: str, steps: str) -> list[Re
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Read tier walls out of hosted job logs.")
-    parser.add_argument("--run-id", type=int, action="append", required=True)
+    parser.add_argument("--run-id", type=int, action="append", default=[])
+    parser.add_argument(
+        "--job-id",
+        type=int,
+        action="append",
+        default=[],
+        help="a job to read by id, which reaches the attempts a re-run hides",
+    )
     parser.add_argument("--baseline-run-id", type=int, action="append", default=[])
     parser.add_argument("--tier", action="append", default=[], help="only these tiers")
     parser.add_argument("--repo", default="jlevy/squares")
     arguments = parser.parse_args(argv)
+    if not arguments.run_id and not arguments.job_id:
+        parser.error("name at least one --run-id or --job-id")
     client = Client(arguments.repo, github_token())
     try:
-        readings = _collect(client, arguments.run_id, arguments.tier)
+        readings = _collect(client, arguments.run_id, arguments.tier) + _collect_jobs(
+            client, arguments.job_id, arguments.tier
+        )
         baseline = _collect(client, arguments.baseline_run_id, arguments.tier)
     except WallError as error:
         print(f"read_tier_walls: {error}", file=sys.stderr)
@@ -232,7 +282,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     for (tier, steps), counted in sorted(_groups(readings).items()):
         walls = [item.wall_seconds for item in counted]
         listed = ", ".join(f"{wall:.2f}" for wall in walls)
-        runs = ", ".join(str(item.run) for item in counted)
+        runs = ", ".join(
+            f"{item.run} attempt {item.attempt}" if item.attempt > 1 else str(item.run)
+            for item in counted
+        )
         print(
             f"\n{tier} ({steps} steps): measured_seconds {geometric_mean(walls):.2f}, the "
             f"geometric mean of {len(walls)} readings at the reference shape -- {listed} -- "

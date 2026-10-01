@@ -25,7 +25,6 @@ interface SiteTableApi {
     row: Readonly<Record<string, string | undefined>>,
     filters: readonly SiteTableFilter[],
   ): boolean;
-  rowsShown(headings: readonly boolean[], passes: readonly boolean[], grouped: boolean): boolean[];
   countText(shown: number, total: number, noun: string): string;
   localDay(now: Date): string;
   ageCutoff(today: string, days: string): string;

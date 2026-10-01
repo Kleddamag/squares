@@ -1,16 +1,18 @@
 """The rating ladders hold their rows at every width, in a browser.
 
-Verification at a Glance is one diagram of three ladders (`templates/paper-design.md`,
-Rating ladders): every rung is the same height, and its description is a box of exactly
-two lines that its words never run past. Whether a text takes two lines is the browser's
-to say, from the face and the cell's width, so this opens the rendered overview in
-Chromium and measures the diagram with the probe `devtools.measure_site_pages ladders`
-reports from, at the widths the design is shot at and at the ones where a description is
-narrowest: 716 pixels, the least window that sets three columns, and 715, where the
-ladders stack; 768, where the page's margin widens and the wide track is 4 pixels more
-than at 716; 1100, the least that sets a rung's description beside its rail in three
-columns; and 360 and 320, a phone's. At each the diagram also stands inside whatever
-clips the page sideways, with the wide track's gutter either side.
+Verification Ladders is one diagram of three ladders (`templates/paper-design.md`,
+Rating ladders): every rung is the same height, a chip and a description that is a box of
+exactly two lines its words never run past, with no tally of results and no rule between
+the rows. Whether a text takes two lines is the browser's to say, from the face and the
+cell's width, so this opens the rendered overview in Chromium and measures the diagram
+with the probe `devtools.measure_site_pages ladders` reports from, at the widths the
+design is shot at and at the ones where a description is narrowest: 716 pixels, the least
+window that sets three columns, and 715, where the ladders stack; 768, where the page's
+margin widens and the wide track is 4 pixels more than at 716; 908, the least that sets
+a rung's description beside its chip in three columns, and 907, the widest that sets it
+under; and on a phone 360, 320 and 296, the least that sets it beside, with 295 under. At
+each the diagram also stands inside whatever clips the page sideways, with the wide
+track's gutter either side.
 
 The page is rendered and loaded once, in a module fixture, and resized for each width.
 Skipped where no Chromium can be launched; `SQPACK_CHROMIUM` names one the environment
@@ -32,10 +34,29 @@ from devtools.render_explainer_pdf import BROWSER_OVERRIDE
 from tests import site_renders
 
 #: Each width measured, and how many columns the rungs stand in there.
-WIDTHS = {1280: 3, 1100: 3, 1024: 3, 768: 3, 716: 3, 715: 1, 390: 1, 360: 1, 320: 1}
-#: The widths at which a cell has 20.5rem, so a rung's description stands beside its
-#: chip and count; at the others it lies under them, across the cell.
-BESIDE = frozenset({1280, 1100, 715, 390, 360})
+WIDTHS = {
+    1280: 3,
+    1024: 3,
+    908: 3,
+    907: 3,
+    768: 3,
+    716: 3,
+    715: 1,
+    390: 1,
+    360: 1,
+    320: 1,
+    296: 1,
+    295: 1,
+}
+#: The widths at which a cell has 16.5rem, so a rung's description stands beside its
+#: chip; at the others it lies under the chip, across the cell.
+BESIDE = frozenset({1280, 1024, 908, 715, 390, 360, 320, 296})
+#: A rung's height in pixels where its description stands beside its chip, and where it
+#: lies under it: the two lines, or the chip's line and the two, and 0.75rem
+#: (`--site-ladders-row-space`) above and below, which is all that parts the rows.
+RUNG_HEIGHT = {True: 75.3, False: 103.1}
+#: The diagram's one rule, under each column's head, in pixels.
+HEAD_RULE = 1
 #: `--site-ladders-meaning-min`, 13.5rem, in pixels: the narrowest a description is set.
 MEANING_MIN = 216
 #: `--site-wide-gutter`, 0.5rem, in pixels: the least room either side of a wide block.
@@ -78,14 +99,28 @@ def test_every_rung_is_one_height_and_its_description_two_lines(
     assert diagram["columns"] == WIDTHS[width]
     assert len(diagram["heights"]) == 1, diagram["heights"]
     assert {rung["beside"] for rung in rungs} == {width in BESIDE}
+    assert diagram["heights"][0] == pytest.approx(RUNG_HEIGHT[width in BESIDE], abs=0.2)
     assert len({rung["meaning_width"] for rung in rungs}) == 1
     for rung in rungs:
+        assert rung["parts"] == 2, rung
         assert rung["meaning"] == overview_sections.rung_short_meanings()[rung["rung"]]
         assert rung["title"] == overview_sections.rung_meanings()[rung["rung"]]
         assert rung["meaning_height"] == pytest.approx(2 * rung["line_height"], abs=0.2), rung
         assert rung["meaning_width"] >= MEANING_MIN - 0.5, rung
         assert 1 <= rung["lines"] <= 2, rung
         assert rung["overflow"] == 0, rung
+
+
+@pytest.mark.parametrize("width", WIDTHS)
+def test_one_rule_stands_under_the_heads_and_none_between_the_rows(
+    diagrams: dict[int, dict[str, Any]], width: int
+) -> None:
+    """At every width the diagram's only rule is the one under each column's head: no
+    cell draws a rule above or below itself, in three columns or stacked, so the rows are
+    parted by their space alone."""
+    diagram = diagrams[width]
+    assert diagram["head_rules"] == [HEAD_RULE]
+    assert diagram["row_rules"] == [0]
 
 
 @pytest.mark.parametrize("width", WIDTHS)

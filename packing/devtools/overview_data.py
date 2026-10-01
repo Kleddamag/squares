@@ -8,8 +8,8 @@ something the repository already records and already gates:
   ordered by `devtools.render_results` so the page and `RESULTS.md` cannot disagree;
 - case bounds and status: the `SquarePackingCase/v2` records in `frontier/n-NNN.md`,
   loaded by `devtools.render_research_tables.load_cases`;
-- which lower bounds are recent: `atlas/known-best/bound-citations.json`, which the
-  atlas star reads too;
+- which lower bounds are recent, and which results they rest on:
+  `atlas/known-best/bound-citations.json`, which the atlas star reads too;
 - evidence, retained source copies and reviews: `frontier/evidence.yaml`;
 - each result's standing, the survey's counts and the reported bounds awaiting a replay:
   `devtools.render_recent_results`, the functions `RESULTS.md`'s standing column uses
@@ -26,8 +26,10 @@ import html
 import json
 import re
 from collections import Counter
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
 
 from devtools import render_results
 from devtools.migrate_math import classify
@@ -266,9 +268,14 @@ class Overview:
     cases: dict[int, dict]
     recent_lower: frozenset[int]
     groups: list[tuple[str, list[Result]]]
+    """The results as `RESULTS.md` groups them, by lineage. No page shows the groups:
+    a table of results is one flat list, and a result's credit says its lineage."""
     recent: list[Row] = field(default_factory=list)
     """Every case `n <= 100` with a recent lower bound in either lane, as the survey
     section lists them: `render_recent_results.recent_rows`."""
+    starred: dict[str, tuple[int, ...]] = field(default_factory=dict[str, tuple[int, ...]])
+    """The results the atlas's stars rest on, each with the cases it is starred for
+    (`starred_results`): what a table of results stars as a new result."""
 
     @property
     def counts(self) -> RecentCounts:
@@ -341,6 +348,29 @@ def _records(record: dict, evidence: dict[str, dict]) -> list[Link]:
     return links
 
 
+def starred_results(citations: Sequence[Mapping[str, Any]]) -> dict[str, tuple[int, ...]]:
+    """The results that are new and the current best for a case, each with those cases
+    in order: the atlas's star, asked of a result instead of a case.
+
+    The atlas stars a case whose verified lower bound is a recent result, the `recent`
+    flag of the case's lower citation in `bound-citations.json`
+    (`build_bound_citations.LowerOrigin.recent`: this project's own new bound, or
+    another's from a source dated on or after `RECENT_SINCE`). The film and the atlas
+    popover read the same decision as `recent_result` in the atlas figure's record and
+    write "new result" beside the star. The citation also names the register entries
+    that bound rests on now, its `results`, and those are the results starred here. So
+    a superseded result is never starred, whatever its date, and no upper bound is: the
+    atlas stars none.
+    """
+    cases: dict[str, list[int]] = {}
+    for entry in citations:
+        lower = entry["lower"]
+        if lower and lower["recent"]:
+            for result in lower["results"]:
+                cases.setdefault(str(result), []).append(int(entry["n"]))
+    return {result: tuple(sorted(found)) for result, found in cases.items()}
+
+
 def load() -> Overview:
     """Everything the overview shows, grouped as `RESULTS.md` groups it."""
     register = safe_load(RESULTS.read_text(encoding="utf-8"))
@@ -379,6 +409,7 @@ def load() -> Overview:
         recent_lower=recent,
         groups=groups,
         recent=recent_rows(records),
+        starred=starred_results(citations),
     )
 
 

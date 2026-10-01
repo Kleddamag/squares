@@ -55,6 +55,8 @@ physical sizes.
 | Figure labels and controls | 18.05px | About 12.0333pt | Sans, 0.95 of the sans base |
 | Captions and end footnotes | 17.48px | About 11.6533pt | Shared sans size: 0.92 of the sans base; 1.4rem side inset |
 | Colophon | 16.15px | About 10.7667pt | Sans, 0.85 of the sans base |
+| Navigation links and section tabs | 17.48px | Not printed | Sans medium at the caption size, 0.92 of the sans base: one step under the prose |
+| Site name in the bar | 19px | Not printed | Sans bold caps at the sans base |
 | Sans weights | 410 regular, 550 medium, 680 bold | Same | Preserve serif weight settings |
 | Supporting text color | KPress gray text role | Solid black | Preserve semantic diagram and status colors |
 
@@ -185,6 +187,29 @@ The explainer’s title is its own role (sans caps, 28.5px); a report’s h1 is 
 title and keeps KPress’s ratio of the same base.
 The homepage sets its summary lists and tables a step smaller, in `site.css`.
 
+**Line breaks.** No text on the site breaks inside a word.
+KPress sets `overflow-wrap: break-word` on every page, which cuts a run of characters
+only when it is longer than a whole line.
+The site adds `overflow-wrap: anywhere` in two places, both runs with no space in them
+by nature: a case record’s exact decimal (`.site-case-decimal`, as many as 67 digits)
+and a repository path in a result overview’s links (`.site-result-links code`).
+`anywhere` also lets a grid column or a table cell shrink to one character, which sets a
+label a letter to a line, so it never goes on prose, on a label or on a column holding
+either. No sheet uses `word-break` to break words, and none hyphenates.
+A name set as code, such as the evidence identifier `E-nagamochi-lower`, is one word
+too, though a browser may end a line on any of its hyphens.
+`render_frontier_page.evidence_links` puts each name, with the comma after it, in one
+inline box (`.site-name`): a line breaks before the box and never inside it, and only a
+name longer than the whole line wraps, inside its box.
+A result overview’s links are boxes of the same kind, each link that holds a code name.
+A label column has no width of its own; it is as wide as its labels (**Atlas popover**
+and **Case records**, below).
+A case file’s own prose is a KPress document like every report, and KPress may still end
+a line on the hyphen of a code span there.
+`tests/test_overview.py` holds the sheets to this, and `devtools.preview_site --press`
+fails on any word broken across lines in what a press opens (**Print and Verification**,
+below).
+
 **Faces.** Every page inlines byte-identical `@font-face` blocks (PT Serif and its
 punctuation face, Source Sans 3, Planetaire Mono Text, the KaTeX faces and KPress’s math
 composites), because every page takes them from the same functions,
@@ -223,8 +248,8 @@ Popovers carry no `data-kpress-prose-font` mark, so every other formula in them 
 its own text. The rule holds on every surface, walked formula by formula on the built
 site: a card’s headline and note, a popover and the atlas popover, a table’s cells,
 heads, summaries and disclosures, a caption, a footnote, a case record’s head, panels
-and detail, and a sans heading are sans text with sans math; prose and its lists are
-serif with serif math.
+and detail, a page’s subtitle, and a sans heading are sans text with sans math; prose
+and its lists are serif with serif math.
 A card’s headline and note are prose whose mathematical runs are set as math, so a case
 a note names, such as $n = 21$, is sans math too, never upright words.
 Documents write math as LaTeX (`$…$`) rather than in code spans;
@@ -312,7 +337,8 @@ one of them changes.
 
 | Space | Token | Screen value | Declared in |
 | --- | --- | --- | --- |
-| From the bar’s rule to a page’s first block | `--site-page-top` | 4rem, 64px | `site-nav.css` |
+| From the bar’s rule to a page’s first block, or from the section tabs where a page has them | `--site-page-top` | 4rem, 64px | `site-nav.css` |
+| From the bar’s rule to the section tabs, and from them to an application | `--site-tabs-space` | 0.7rem, 11.2px | `site-nav.css` |
 | How much nearer the bar an opening picture starts | `--site-hero-lift` | 0.5rem, 8px | `site.css` |
 | Above a section heading (`h2`) | `--paper-section-space` | 2.7 of the prose base, 48.6px | `paper-type.css` |
 | Below a section heading (`h2`) | `--paper-section-space-below` | 1.7rem, 27.2px | `paper-type.css` |
@@ -322,9 +348,11 @@ one of them changes.
 
 A page’s title, or the picture that opens the homepage, starts `--site-page-top` under
 the bar’s rule on every page, the explainer and the optimality paper included.
-Every section heading on the site pages and the explainer takes the two section tokens;
-print reads its own values of both (2.8 of the base and 1.3rem), which are the paper’s.
-On the explainer the credits start 2.25rem under the title on screen and 2rem in print.
+The film’s page has section tabs under that rule, and its film starts the same space
+under the tabs. Every section heading on the site pages and the explainer takes the two
+section tokens; print reads its own values of both (2.8 of the base and 1.3rem), which
+are the paper’s. On the explainer the credits start 2.25rem under the title on screen
+and 2rem in print.
 
 `--site-table-space` is the space above and below every table, and above and below the
 rating ladders. A site table (`.site-table`) takes it above its filter bar, which keeps
@@ -373,8 +401,36 @@ it.
   same on every page, the explainer and the workbench included, led by the site name,
   “Square Packing”, set in capitals by CSS (`text-transform`, lightly tracked) so its
   text is unchanged, and a step heavier.
+  The bar’s type is tied to the body’s on the scale above (Typography Roles), never set
+  in pixels or rem. A link, and a section tab, is one step under the 18px prose and no
+  more: the caption size, 0.92 of the sans base, 17.48px, which is the first size of the
+  scale under 18px (`--site-nav-font-size`; the step between, 0.95, is 18.05px, not
+  under the prose). The site’s name is the sans base, 19px (`--site-nav-name-size`), the
+  size sans text takes beside the prose, so with its weight and capitals it reads as the
+  name. Both tokens are in `site-nav.css` and are computed from the host base
+  (`--kpress-host-font-size-base`), which is the same on every page, so the bar is one
+  size on every page and at every width.
+  `devtools.measure_site_pages header` reports the four sizes, `preview_site` fails a
+  page whose bar is not one step under its body (`type_problems`), and
+  `tests/test_site_wide_blocks.py` holds the relation in a browser at 1280, 768 and 390
+  pixels, where the links keep one line, one line and two lines.
   Case 11, the site’s icon, sits before the name as its mark, 18px square, inside the
   same link, so it takes the same hover.
+  The name’s text stands on the links’ baseline.
+  The bar aligns its items by their baselines (`align-items: baseline`), and the name is
+  a row of its own, the mark and the text, whose baseline would be its first item’s, the
+  foot of the mark; so the text is the one item of that row aligned by its baseline
+  (`align-self: baseline`), which makes the row’s baseline the text’s, at any size of
+  either, with no offset in pixels.
+  The mark stays centred on the name’s line.
+  Every item of the bar is set on one line, `--site-nav-line`, a length (1.43 of the
+  link size, the face’s own leading there), so the larger name is no taller than a link:
+  the links stand where they do without the name, and the current link’s underline is
+  the same distance over the rule at every width.
+  `devtools.measure_site_pages baselines` reports each label’s baseline, measured with a
+  zero-size inline box on the text’s line and not read from a box’s edge; `preview_site`
+  fails a page whose name or links are off by more than half a pixel
+  (`baseline_problems`); and `tests/test_site_wide_blocks.py` holds it in a browser.
   Narrower than 56rem, where the bar with the name would wrap, the name gives way and
   the mark alone leads home, labelled “Square Packing home” for a screen reader.
   Every item takes the cards’ gentle wash on hover and nothing underlines on hover; the
@@ -411,13 +467,30 @@ it.
   tab is a real link to its own page, so the bar needs no script, and a tab can be
   opened, bookmarked and shared; every existing `workbench/` address lands on the
   Workbench tab. The bar is a centred strip with square corners and the cards’ thin
-  border, a hairline between tabs, in the bar’s sans at 0.9rem and medium weight: a tab
-  is gray, takes the nav items’ wash and accent on hover, and the current tab is filled
-  with a 16% accent tint over the page background in the page’s own text colour.
+  border, a hairline between tabs, in the bar’s sans at the links’ own size
+  (`--site-nav-font-size`) and medium weight: a tab is gray, takes the nav items’ wash
+  and accent on hover, and the current tab is filled with a 16% accent tint over the
+  page background in the page’s own text colour.
   It is `.site-tabs`, rendered by `render_overview.visualize_tabs`, and defined in
   `site-nav.css` rather than `site.css` because the workbench carries only the bar’s
   stylesheet. On the film’s page it opens the document; on the workbench it sits in the
   application shell under the bar, above the application.
+  From the top, both pages read bar, rule, tabs, content: the tabs stand under the rule
+  that runs under the bar, never over it.
+  They are in the header slot, whose lower border is that rule, so a header that holds
+  tabs gives up its border and the bar draws the rule at its own foot (`:has()`, in
+  `site-nav.css`), where it is on every other page and as long.
+  The tabs start `--site-tabs-space` (0.7rem, 11.2px) under the rule.
+  On the film’s page the first block starts `--site-page-top` under the tabs; on the
+  workbench, where the application starts at the shell’s lower edge, the tabs keep the
+  same 0.7rem below them.
+  Measured at 1280px, on both pages: the bar from 16 to 67.6px with the rule its last
+  pixel, the tabs from 78.8 to 115.4px, then the film at 179.4px and the application at
+  126.6px; at 390px, where the bar wraps to two lines, the rule ends at 84.8px, the tabs
+  run from 96.0 to 132.6px, the film starts at 196.6px and the application at 143.8px.
+  `devtools.measure_site_pages header` reports these, `preview_site` fails a built page
+  whose tabs start over the rule (`tabs_problems`), and `tests/test_site_wide_blocks.py`
+  holds both pages to it in a browser.
   It is hidden in print and in the embed view.
 
 - **Theme control.** A small gray gear, an inline SVG, ends the navigation bar on every
@@ -449,24 +522,38 @@ it.
   icons.
 
 - **Page headings.** The homepage has no title heading: its hero picture leads, and its
-  sections are `h2`s. A page that has a title (the frontier atlas, the case records)
-  sets it in the hero, centred, with a subtitle under it such as “Every tracked case, n
-  = 1 to 324”. The subtitle is the sans face at 1.1 times the sans base
-  (`--site-subtitle-scale`, about 21px), in the page’s own text colour, never gray, with
-  the same space above it and below it (`--site-subtitle-space`, 1.5rem). A title with
-  no subtitle, a document’s own `h1` among them, stands that space above its first
-  paragraph. The page title style (every hero `h1`, and `.site-title`) is the sans face
-  in upright caps (not KPress’s italic `h2`) at 1.5 times the sans base, centred.
+  sections are `h2`s. The Visualize page shows none either: the bar, the section tabs
+  and the film are the page, and its `h1`, “Visualize”, is for a screen reader alone
+  (`.site-visually-hidden`, in `site.css`: out of the flow, one pixel, clipped, the
+  class for any block a reader does not see and a screen reader should).
+  The film after the hidden title is the page’s first block, so on screen it brings no
+  margin above and starts `--site-page-top` under the header.
+  A page that has a title (the frontier atlas, the case records) sets it in the hero,
+  centred, with a subtitle under it.
+  The frontier atlas’s is “A survey of everything known for cases $n = 1, \ldots, 324$”,
+  the results page’s “A survey of all reviewed results” and the Papers page’s “Papers
+  and interactive explanations for specific results”.
+  The subtitle is the sans face at 1.1 times the sans base (`--site-subtitle-scale`,
+  about 21px), in the page’s own text colour, never gray, with the same space above it
+  and below it (`--site-subtitle-space`, 1.5rem). A formula in a subtitle is math, not
+  `<var>` and digits: the subtitle is an HTML block, where KPress leaves `$…$` literal,
+  so the renderer fills it with KPress’s own math markup
+  (`render_frontier_page.math_html`), and it is set sans as the subtitle’s text is.
+  The atlas’s range is read from the case records, first and last, never typed.
+  A title with no subtitle, a document’s own `h1` among them, stands that space above
+  its first paragraph.
+  The page title style (every hero `h1`, and `.site-title`) is the sans face in upright
+  caps (not KPress’s italic `h2`) at 1.5 times the sans base, centred.
   The homepage’s first section, The Square Packing Problem, takes it through
   `.site-title`, so it reads as the frontier atlas’s title does.
-  That section opens with README’s first paragraph: the block between README’s
+  That section opens with README’s two opening paragraphs: the block between README’s
   `project-intro` markers, read at render time and its links rewritten for the site
   (`site_documents.overview_intro`), so it is edited in `README.md` and nowhere else.
   The site’s own statement follows it and is the only prose the template holds there.
   README’s next two paragraphs, what the project covers and its newest major result, are
   a second shared block, `recent-progress`, which opens Recent Results
-  (`site_documents.overview_progress`); README keeps all three paragraphs together and
-  in order, parted only by the markers.
+  (`site_documents.overview_progress`); README keeps all four paragraphs together and in
+  order, parted only by the markers.
   `devtools.check_readme` holds both blocks: each marked once, the second directly after
   the first, prose alone with no heading or comment, and no case called the central one.
 
@@ -533,17 +620,24 @@ it.
   A popover card (`card`) is a button that opens a popover showing where it leads, and
   the popover ends in one button that goes there, centred at its foot.
   A direct card is instead itself the link (`link_card`), an `<a>` with no popover.
-  **A page card navigates.** The overview’s five page cards, the optimality paper, the
-  explainer, the tutorial, the workbench and the frontier atlas, lead to full pages the
-  site serves, so each is a direct card that goes to its page in the same tab
+  **A card whose target is a full page of the site navigates.** The overview’s five page
+  cards, the optimality paper, the explainer, the tutorial, the workbench and the
+  frontier atlas, and the Papers page’s three paper cards lead to full pages the site
+  serves, so each is a direct card that goes to its page in the same tab
   (`new_tab=False`), with the right arrow for its icon (`data-go="page"`) and nothing
-  framed (`think-bc5d`). Popovers are for targets that are not site pages of their own:
-  a result’s row, a repository document rendered for its card’s popover, a case.
+  framed (`think-bc5d`, `think-w82r`).
+  Popovers are for records, targets that are not site pages of their own: a result, a
+  case, a repository document rendered for its card’s popover.
+  A direct card is a link and holds no other link, so what its note names is linked from
+  the prose beside it.
   **Every other direct card opens its target in a new tab** (`target="_blank"`,
   `rel="noopener noreferrer"`), so the page the reader chose it from stays where they
   left it: a poster’s PDF, the Visualize page, another project.
-  `link_card` refuses `new_tab=False` for an address off the site.
-  - When a popover card leads to a document or paper the site renders, the popover
+  `link_card` refuses `new_tab=False` for anything but a page the site serves, which one
+  rule decides (`overview_sections.is_site_page`): an entry of
+  `render_overview.SITE_PAGES`, the optimality paper among them, or a directory served
+  by its `index.html`, as `workbench/` is.
+  - When a popover card leads to a repository document the site renders, the popover
     renders that page itself, narrow, in a frame: the page at the same address with
     `?view=embed` added before any fragment, so a filtered view such as
     `frontier.html?recent=true` or a case such as `frontier.html#n-11` arrives as it
@@ -576,9 +670,24 @@ it.
   1.1rem on a phone). Its `×` is a 2.75rem square tap target (`--site-popover-close`) set
   0.6rem in from the corner (0.25rem on a phone), washed on hover.
   Only the first block after it keeps clear of it, so the margins stay even everywhere
-  else. Its gray corner icon and the popover’s button both show where the button goes:
-  down to a row on this page, external off the site, right to another page of the site
-  (Arrows, below).
+  else. A popover’s height has one limit, the window’s: `--site-popover-max-block`, the
+  window’s height less `--site-popover-window-margin` above and below, which is 4% of
+  that height and never under 1rem nor over 3rem. A card’s or a row’s popover, the atlas
+  popover and a result overview may be that tall and scroll inside past it; a framed
+  page, the case popover among them, is that tall, and its frame scrolls.
+  A popover is centred, so the two margins are equal.
+  No popover stops at a fixed height, so a taller window shows more: the case popover is
+  828, 1104 and 1344 pixels tall in windows 900, 1200 and 1440 pixels tall, where it was
+  792, 896 and 896, and shows 21%, 30% and 38% of the record for $n = 79$, where it
+  showed 20%, 23% and 23% (`devtools.measure_site_pages popover`). The limit is declared
+  as `max-block-size` alone, since `max-height` is the same property and the later of
+  the two in a rule is the one that holds.
+  A phone, up to 40rem wide, keeps the heights it had: a card’s or a row’s popover up to
+  80% of the window and 40rem, a framed page 88% and up to 56rem, and the atlas popover
+  and a result overview the window less half a rem above and below.
+  Its gray corner icon and the popover’s button both show where the button goes: down to
+  a row on this page, external off the site, right to another page of the site (Arrows,
+  below).
 
 - **Card sizes.** A card is sized by its text, in three sizes it names in
   `data-card-size`; a card that names none is medium.
@@ -618,19 +727,26 @@ it.
   note size, a solid light fill and no border, lettered in the page’s own text colour.
   A plain chip is a light gray tint; `data-tone="accent"` is an accent tint, for a
   settled state such as a proved case.
-  Chips sit inline and wrap like words, a space apart, with a small block margin
-  (0.15rem) so a wrapped row never touches the row above, on any page or at any width.
-  A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`, and its fill
-  strengthens and saturates with the level (Color, The Rung Scale).
+  No chip wraps: one rule on the component, `white-space: nowrap`, keeps a chip’s words
+  on one line wherever it sits, and no other rule lets one break.
+  What holds a chip is made wide enough for it.
+  A row of chips wraps like words, between chips, a space apart, with a small block
+  margin (0.15rem) so a wrapped row never touches the row above, on any page or at any
+  width. A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`, and its
+  fill strengthens and saturates with the level (Color, The Rung Scale).
   Significance is listed first: wherever a result’s rungs are shown together, in a table
   row, a popover, a result’s overview or a case record, they run S, V, C, from the one
   function that sets the order, `overview_sections.rung_chips`. The generated register
   documents keep their own order, verification first.
-  A standing chip carries `data-standing` and adds no style of its own: `current best`
-  takes the accent, as a settled state, and every other standing
-  (`current best, reported`, `second certificate`, `superseded`, `not a bound`) the
-  plain gray, so a reader sees which results still hold without the others shouting.
-  A novelty chip (`data-novelty`) is always plain gray.
+  A standing is drawn as one chip a part (`standing_chips`): `second certificate,
+  reported` is two. A standing chip carries `data-standing` and adds no style of its
+  own, so every one is the same plain gray chip, one font size, line height and height,
+  and they differ only in their words.
+  A result that still stands draws no chip: `current best` is the default, so it is left
+  unsaid, and `current best, reported` draws only `reported`. What a reader is told is
+  that a result no longer holds, `superseded`, or how else it stands.
+  The row, or the step of a chain, keeps the whole standing as `data-standing` for the
+  filters. A novelty chip (`data-novelty`) is always plain gray.
 
 - **Arrows.** Every arrow on the site is one drawing, never a typed character: the
   site’s text face has glyphs for `↑` and `↓` only, so `←`, `→` and `↗` came from a
@@ -672,16 +788,20 @@ it.
   Under `prefers-reduced-motion: reduce` the duration is 0ms, so colours change at once
   and no arrow moves.
 
-- **Rating ladders.** Verification at a Glance is one diagram, `.site-ladders`, which is
+- **Rating ladders.** Verification Ladders is one diagram, `.site-ladders`, which is
   neither a set of cards nor the shared data table: a column for each scored dimension
   of the rubric, in the order Significance, Verification, Confirmation, and a row for
   each level, the highest at the top, so the rungs of the three ladders line up across a
   row. A column is headed by the dimension’s name, which links to its section of
   `epistemics.md`, and the question it answers, with no caps label.
-  A cell holds the rung’s chip, a description of exactly two lines, and the count of
-  register entries at that level, “7 results” or “no result yet” (`rung_counts`,
-  `count_label`). A ladder with no rung at a level leaves its cell empty, as
-  Significance does at level 0.
+  A cell holds the rung’s chip and a description of exactly two lines, and nothing else:
+  the diagram says what each rung means, and carries no tally of the results at it.
+  A ladder with no rung at a level leaves its cell empty: Significance has no level 0.
+  The section was Verification at a Glance until 2026-10-01; an empty anchor in its
+  heading keeps the old fragment, `#verification-at-a-glance`, landing on it.
+  - **Rules.** One rule, in the text’s colour, stands under the column heads.
+    No rule stands between the rows: 1.5rem between one rung’s description and the next
+    rung (`--site-ladders-row-space`, 0.75rem, either side of a row) keeps them apart.
   - **Wording.** The chip’s `title` is the rubric’s full meaning, read from the tables
     in `epistemics.md` (`rung_meanings`). The description is that meaning, or a short
     form where the meaning does not fit two lines of the narrowest cell
@@ -690,14 +810,14 @@ it.
     A description is never clipped and never cut with an ellipsis: one that does not
     wrap to two lines of 25 characters (`SHORT_MEANING_LINE`) stops the build until it
     is given a shorter form.
-  - **Rows.** Every rung is the same height at any one width, since each is a chip, a
-    count and a two-line box.
-    A cell arranges the three by its own width.
-    With 20.5rem or more it sets the chip over its count in a 6.5rem rail and the
-    description beside them, 74.8px a row, at 1280 pixels and on a phone.
-    Narrower, it sets the chip and its count on one line and the description under them
-    across the cell, 99.3px a row, at 1024 and 768 pixels.
-    A description is never set narrower than 13.5rem (`--site-ladders-meaning-min`).
+  - **Rows.** Every rung is the same height at any one width, since each is a chip and a
+    two-line box. A cell arranges the two by its own width.
+    With 16.5rem or more it sets the chip in a 2.25rem rail, the chip’s own width, and
+    the description beside it, 0.75rem on, 75.3px a row: at 1280 and 1024 pixels, down
+    to a 908-pixel window, and on a phone down to 296 pixels.
+    Narrower, it sets the chip on a line of its own and the description under it across
+    the cell, 103.1px a row, from 907 pixels down to 716, so at 768. A description is
+    never set narrower than 13.5rem (`--site-ladders-meaning-min`).
   - **Columns.** The three columns are equal, and each keeps 0.75rem
     (`--site-ladders-inset`) clear after its words, before the next column’s chip.
     Three columns therefore need 42.75rem: three times the least description and its
@@ -730,7 +850,12 @@ it.
   The grid bleeds past the wide track as the window grows, to 140rem less the page
   gutters, and its cells keep a readable size (at least 6.4rem, 4.6rem on a phone), so a
   wider screen shows more cases per row: 4 at 390 pixels, 11 at 1280, 17 at 1920 and 20
-  at 2560. A cell washes on hover and is a link to its case record.
+  at 2560. A cell washes on hover and on keyboard focus, and is a link to its case
+  record. The wash is the cell’s background, behind the drawing, and it is the only thing
+  that changes: every line of the drawing keeps the page’s ink at rest, hovered, focused
+  and pressed, in both themes.
+  The drawing sets that colour on itself rather than reading the link’s, which KPress
+  lightens on hover (`tests/test_site_drawing_hover.py` reads both in Chromium).
   The cells ship in a `<template>` and are placed only as the grid nears the viewport
   (`overview/atlas-grid.js`), so they add nothing to the first paint; each drawing is
   400 units across, fine enough to show large.
@@ -765,17 +890,19 @@ it.
 
 - **Atlas popover.** Pressing a cell opens the page’s one atlas popover on that case, a
   card popover in every other way (square corners, the scrim, the caps label, the close
-  cross, Escape and a click outside), and a little larger: up to 62rem wide and 58rem
-  tall. It shows what the ascent film’s panel shows for the case, beside the drawing
-  large: the gap bar (a number line from one below $\lceil\sqrt{n}\,\rceil$ to two above
-  it, the integers and the values of $\sqrt{n}$ and $\sqrt{n} + 1$ marked, the two
-  bounds as bold rules with their values above and the open span between them shaded);
-  under PROVEN the bound as one statement, the proved lower bound in scarlet and the
-  best known side in green, with the star for a recent lower bound; the badges; the
-  citation, one line per bound with this project’s note; and what is OPEN. The facts are
-  the film’s own, read from the atlas figure and `bound-citations.json` into one JSON
-  element (`atlas_film_facts`), and the script fills the popover from them with kpress’s
-  math nodes, never HTML strings.
+  cross, Escape and a click outside), and wider, up to 62rem. It shows what the ascent
+  film’s panel shows for the case, beside the drawing large: the gap bar (a number line
+  from one below $\lceil\sqrt{n}\,\rceil$ to two above it, the integers and the values
+  of $\sqrt{n}$ and $\sqrt{n} + 1$ marked, the two bounds as bold rules with their
+  values above and the open span between them shaded); under PROVEN the bound as one
+  statement, the proved lower bound in scarlet and the best known side in green, with
+  the star for a recent lower bound; the badges; the citation, one line per bound with
+  this project’s note; and what is OPEN. A citation line is a table row of two cells,
+  the label (“lower” or “upper”) and the source, so the label column is as wide as the
+  wider label however it is drawn, and the source wraps between words beside it.
+  The facts are the film’s own, read from the atlas figure and `bound-citations.json`
+  into one JSON element (`atlas_film_facts`), and the script fills the popover from them
+  with kpress’s math nodes, never HTML strings.
   It ends in **See All Cases**, which goes to `cases.html#n-N` at full size, and arrows,
   and the arrow keys, step to the neighbouring case.
   The two arrows are the site’s arrow, right and left (Arrows, above).
@@ -792,10 +919,16 @@ it.
   below): how the best known packing was built, the minimal polynomial behind a decimal,
   the sources, the verification, the notes and the evidence entries, with “Details” in
   the Records cell as the trigger.
+  That popover sets label and value side by side (`.site-pairs`): one grid whose first
+  column is `max-content`, as wide as the longest label, and whose second takes the
+  rest; its three lists share the two columns through `subgrid`, and its headings run
+  across both. It is up to 46rem wide, the case popover’s width.
+  On a phone the block is a plain list, each label above its value, as it was.
   A record leads with a caps label, the n, its status chip and recent star, and the
   verified interval as display-size math; then the known-best packing drawn large beside
   a grid of bordered sans panels, one per bound (best known, verified upper, reported
-  lower, verified lower) and the gap.
+  lower, verified lower) and the gap, as many abreast as fit and none narrower than
+  17rem, which holds the usual evidence names whole.
   Each panel shows its value as math when it has a closed form (a lone fraction at full
   size) and as figures when it is a decimal, the recorded decimal in full beneath, then
   its credit, source, minimal polynomial as math and evidence.
@@ -815,47 +948,104 @@ it.
   film.
 
 - **The film.** The Visualize section’s Film tab, `visualize.html`, is the n = 1 to 324
-  film at full size under the section tabs and a page title, “Visualize”, with the
-  subtitle “The ascent, n = 1 to 324”. It is as wide as the window allows less the page
-  gutters, up to 120rem, but never so tall that it will not fit the window whole
-  (`.site-film-frame`), and embedded as the explainer embeds its film: inline, with its
-  controls, fetching nothing until a reader presses play (`preload="none"`), and showing
-  its poster until then, `ascent-n1-324-poster.png`, published beside the explainer’s
-  assets, at the video’s own 16:9, so starting playback moves nothing.
-  A caption and a note in the support colour follow at the reading measure: what the
-  film shows, its length, the shorter 1 to 100 film, the release both are on, and the
-  Workbench.
+  film at full size directly under the section tabs, with no page title and no subtitle
+  (**Page headings**, above).
+  It is as wide as the window allows less the page gutters, up to 120rem, but never so
+  tall that it will not fit the window whole (`.site-film-frame`), and embedded inline,
+  with its controls. Its poster, `ascent-n1-324-poster.png`, published beside the
+  explainer’s assets, shows until playback starts, at the video’s own 16:9, so starting
+  moves nothing. The film starts when the page is visited.
+  Its markup mutes it (`muted`, which a browser requires of a film it starts unasked)
+  and marks it `data-autoplay`, and `overview/film.js`, which only this page carries,
+  sets `autoplay` and plays it.
+  It does not loop. **Visiting the page therefore starts the film’s download**, a 216 MB
+  file on the release, which the browser fetches as it plays.
+  A reader who asks for reduced motion (`prefers-reduced-motion: reduce`) keeps the
+  poster and the play control, and so does a reader without scripts, the page framed in
+  a card’s popover, and a browser that refuses to start the film.
+  For them nothing is fetched until they press play: the markup keeps `preload="none"`
+  and has no `autoplay` of its own, since markup cannot make that depend on the motion
+  preference. No other film on the site starts unasked: the explainer’s stays as it was,
+  fetching nothing until a reader presses play, and the overview embeds no video.
+  The tools that open the film’s page in a browser (`preview_site`,
+  `measure_site_pages header` and `baselines`, the browser tests) open it under reduced
+  motion (`preview_site.motion_for`), so none of them starts the download; every other
+  page they open as any reader’s. `tests/node/overview_film/` runs the script against a
+  stand-in film. A caption and a note in the support colour follow at the reading
+  measure: what the film shows, its length, the shorter 1 to 100 film, the release both
+  are on, and the Workbench.
 
 - **Tables.** Every data table is one component, `.site-table` on a KPress table, in a
   `.site-table-wrap` that scrolls sideways if the table cannot fit.
-  It is set in the sans face at the note size, with sortable headers, filters above and
-  group rows. A row with detail opens its popover, and no cell expands on its own (**Row
-  popovers**, below). Rows are separated by a light rule, not zebra stripes, and a row
-  takes the wash on hover.
-  Cells are padded 0.55rem by 0.5rem, top-aligned, at line height 1.4. Headers sit at
-  the bottom of their cell, aligned as their column is: text columns to the start,
-  number columns (`.num`, tabular figures) to the end.
+  It is set in the sans face at the note size, with sortable headers and filters above.
+  A table may divide its rows under group rows, as the awaiting-replay table does by
+  holder; a table of results does not.
+  A row with detail opens its popover, and no cell expands on its own (**Row popovers**,
+  below). Rows are separated by a light rule, not zebra stripes, and a row takes the wash
+  on hover. Cells are padded 0.55rem by 0.5rem, top-aligned, at line height 1.4. Headers
+  sit at the bottom of their cell, aligned as their column is: text columns to the
+  start, number columns (`.num`, tabular figures) to the end.
   The short columns (the id, n and date, `.site-col-id`, `.site-col-n` and
   `.site-col-date`) stay on one line and as narrow as their content, which leaves the
   spare width to the long text column.
-  Secondary content in a cell, such as a result’s id, a credit or an “after …” list,
-  takes `.site-cell-quiet`, which sets it in the support colour and the sans face.
+  The two tables of results, the overview’s recent table and the results page’s, are one
+  table: one header (`result_head`) and one row (`result_table_row`), so the same six
+  columns in the same order.
+  They are the id, the first column and the row’s trigger, as narrow as an id, under the
+  6rem KPress keeps a cell to; the cases, n; the result, its summary whole, method and
+  all, with its records on a quiet line under it; the credit, the finder first and
+  “after …”, what the result builds on, quiet after it, in full; the rungs, with the
+  standing under them where there is one to draw (**Chips**, above); and the date.
+  The tables differ in three things only: where the filter bar starts, the order of the
+  rows, and that a row on the results page is the result’s own address, where a row on
+  the overview links there from its summary’s leading formula (`result_text`). Both sort
+  on any column whose header carries the sort pair.
+  The widths follow from what cannot give.
+  Four results’ formulas do not break and hold the result column to 411 pixels.
+  The credit column is at least 11.5rem wide, which holds the longest name on one line
+  (“Queuingtheorydotcom”, 167 pixels of the 184), so a credit wraps between names and
+  never inside one; KPress’s own floor, 6rem, set it a word to a line.
+  The rungs column is as wide as its widest chip, since no chip wraps: the three rungs
+  at 114 pixels, and “second certificate” at 159 where a row with one shows.
+  Those, the id, n and the date come to 1006 of the 1104 pixels a table has at a
+  1280-pixel window, so the result and the credit share 98 to spare, and below that
+  width the table scrolls sideways in its wrap, as it did.
+  The records are therefore no column of their own, which would be left 98 pixels and
+  set a link to a line: they sit under the summary, a line or two of links.
+  The overview’s table carries them and does not show them, at any width, by one rule on
+  `.site-recent-table`: each row’s popover holds every link.
+  `devtools.measure_site_pages columns` and `chips` measure all of this on a built site:
+  each column’s width, the most lines a cell takes, the words a line break splits and
+  the tallest row a column sets; and every chip’s font size, box and lines.
+  `tests/test_site_result_columns.py` holds both tables to it in a browser.
+  Secondary content in a cell, such as a credit or an “after …” list, takes
+  `.site-cell-quiet`, which sets it in the support colour and the sans face.
   It keeps the table’s size, so the quiet text does not become harder to read.
   Every table stands `--site-table-space` clear of the text above and below it
   (**Spacing**, above).
   Wide tables bleed on large screens, as **Wide bleed** above describes.
-  On a phone, the results table becomes one card per row.
-  In the results table a result’s standing chip sits under its rungs; a date cell says
-  what it dates, `published` or `established`, in the support colour.
-  A superseded result’s row reads quieter, its text in the support colour, in every site
-  table, by one rule on `tr[data-standing="superseded"]`; its chips keep their fills.
+  On a phone, a table of results becomes one card per row.
+  A date cell leads with the date and then says what it dates, `published` or
+  `established`, in the support colour (`date_cell`): under the date on a wide table,
+  which keeps the column narrow, and beside it on a phone.
+  In both tables of results the star follows the text of a new result
+  (`new_result_star`). It hangs after the last character: it takes no width, so it never
+  wraps to a line by itself, and its cell keeps 1.1em for it at the end of every line.
+  The rule is the atlas’s, asked of a result instead of a case
+  (`overview_data.starred_results`): the verified lower bound of a case rests on the
+  result now, and that bound is recent, so a superseded result and an upper bound carry
+  no star. The star is never the only signal: it is an image whose name and tooltip say
+  “New result” and the cases, the row’s own name ends “new result”, and the prose above
+  each table says what it marks (`star_legend`). A superseded result’s row reads
+  quieter, its text in the support colour, in every site table, by one rule on
+  `tr[data-standing="superseded"]`; its chips keep their fills.
   A row reached by its address (`frontier.html#n-11`, `all-results.html#t-018`) takes
   the wash, in every site table.
 
 - **Result filters.** Every table of results sits under one tools bar, the same on the
   overview’s recent table and on the results page: the same controls, the same choices
-  and the same order. Only where Significance and Max age start, and the count at its
-  end, are the table’s own.
+  and the same order. Only where Significance, Max age and Hide superseded start, and the
+  count at its end, are the table’s own.
   `overview_sections.result_filters` writes it and `overview/table.js` drives it.
   - **Facets.** A result’s row carries each facet as an attribute
     (`overview_sections.result_facets`), and the bar has one control for each:
@@ -866,6 +1056,7 @@ it.
 | Verification | `data-v`, the V level | a floor: V4 and up |
 | Confirmation | `data-c`, the C level | a floor: C3 and up |
 | Standing | `data-standing` | equal to the standing chosen |
+| Hide superseded | `data-current`, `true` or `false` | checked: the result is not superseded |
 | Source | `data-source`, `ours` or `others` | this project’s, or others’ |
 | Case n | `data-n`, counts and ranges (`18-21 26`) | the result covers that n |
 | Max age | `data-date`, a whole ISO date | dated at most that many days ago |
@@ -878,14 +1069,48 @@ Max age is a number of days, and empty is no limit. There is no date range.
 ```
 
 - **Composition.** The filters compose: a row shows when it passes every one, and an
-  empty control passes every row.
+  empty control, or an unchecked one, passes every row.
+
+- **Standing.** The select offers every standing the register holds, in the register’s
+  own words, `current best` and `current best, reported` among them.
+  `current best` is the name of the state a result is in while a case bound rests on it.
+  A row need not mark that state, since it is the one a reader assumes, and the filter
+  still names it, so a reader can ask for it.
+
+- **Hide superseded.** One checkbox, straight after Standing, hides exactly the
+  superseded results: those that claim a bound no case bound rests on now, because a
+  later or a stronger result holds the case (`overview_sections.is_superseded`). Every
+  other result stays: one that still holds a bound, verified or reported, a second
+  certificate of a proved value, and a result that is not a bound, such as a rigidity or
+  an erratum, which no better bound supersedes.
+  A result that holds one case of several is not superseded.
+  The word is the register’s own derived standing (`render_recent_results.standing`), so
+  the checkbox and the standing chips cannot disagree, and `devtools.check_standing`
+  holds that standing to the bounds each entry states.
+  A row carries the answer as `data-current`, `false` where it is superseded.
+  The checkbox narrows Standing and does not set it.
+  The two compose as every pair of controls does, so with the box checked the one
+  standing it hides, `superseded`, matches no row and the count reads 0: to see those
+  rows a reader clears the box, which sits beside the select.
+  Every other standing still shows its rows.
+  The frontier atlas’s bar pairs its Status with “open only” in the same way.
+  Coupling the two, by disabling a choice or by having one control change the other,
+  would give the bar a second rule beside “a row shows when it passes every control”,
+  for a case the count already reports.
+  The label is the checkbox’s own `<label>`, on one line, and the box takes the site’s
+  accent when checked.
+  A checkbox is shorter than a select, so every tools bar sets its controls on one
+  baseline (`align-items: baseline`): the checkbox’s words, the other labels’ and the
+  count read level, on the frontier atlas’s bar too.
 
 - **Defaults.** The caller passes them (`FilterDefaults`), and they are the one thing
   that differs between the two bars.
-  Recent Results on the overview starts at significance S4 and up and a maximum age of
-  180 days (`RECENT_DEFAULTS`); the results page starts at All and no maximum age
-  (`RESULTS_DEFAULTS`), so every result shows.
+  Recent Results on the overview starts at significance S4 and up, a maximum age of 180
+  days and Hide superseded checked (`RECENT_DEFAULTS`); the results page starts at All,
+  no maximum age and the box clear (`RESULTS_DEFAULTS`), so every result shows.
   Every other control starts at All on both.
+  The bar has no reset control: a control’s default is its state in the HTML, which a
+  fresh load of the page returns to.
   A row outside its table’s defaults is `hidden` in the HTML, never left out of it, and
   the count is written there too, so the first paint is already the filtered table and
   never flashes every row.
@@ -900,9 +1125,12 @@ Max age is a number of days, and empty is no limit. There is no date range.
   which decides only which rows start `hidden` and the count written beside them; the
   script settles both again on load.
 
-- **Group headings.** A group heading shows while a row under it does: one with no row
-  left is hidden with them, in the HTML for the default.
-  A sort hides the group headings, since the rows are then no longer in their groups.
+- **One flat list.** A table of results has no heading row among its rows, on either
+  page: every row is a result, in one order, newest first by the date the table shows,
+  until a reader sorts it.
+  Whose a result is, and what it builds on, is read from its credit, and the Source
+  filter narrows the table to this project’s results or to others’.
+  `RESULTS.md`, the generated register document, keeps its groups.
 
 - **A row named by the address** (`all-results.html#t-048`) shows whatever the filters
   hide, so a link to a result never lands on nothing.
@@ -910,19 +1138,20 @@ Max age is a number of days, and empty is no limit. There is no date range.
   shows it.
 
 - **Links.** A link can open either table filtered: each query parameter presets the
-  control it names, `s-min=3`, `source=ours`, `n=17`, `age=30`; an empty value,
-  `s-min=&age=`, clears a default.
+  control it names, `s-min=3`, `source=ours`, `n=17`, `age=30`, `current=true`; an empty
+  value, `s-min=&age=&current=`, clears a default, and so does `current=false`.
 
 - **A row’s popover** follows it through filtering and sorting, since the row finds it
   by id (**Row popovers**, below).
 
 The bar wraps onto further lines as the page narrows; on a phone each control takes
 about a line. Without scripts a filter cannot be changed, so nothing stays filtered:
-under `@media (scripting: none)` every row shows, each group under its heading, and the
-bar, which would do nothing, does not.
-`tests/node/overview_table/` runs the script’s filters, alone and wired to a stand-in
-table, and `tests/test_overview.py` holds both pages to the identical bar and each to
-its defaults.
+under `@media (scripting: none)` every row shows, and the bar, which would do nothing,
+does not. `tests/node/overview_table/` runs the script’s filters, alone and wired to a
+stand-in table, and `tests/test_overview.py` holds both pages to the identical bar and
+each to its defaults. `tests/test_site_result_filters.py` uses Hide superseded in a
+browser on both pages, by pointer and by keyboard, and measures its label at 1280, 768
+and 390 pixels.
 
 - **Row popovers.** The row is the unit: a table row with detail opens one popover for
   the whole row. This is the site’s one way to show detail on a table row, and no cell
@@ -1003,25 +1232,14 @@ its defaults.
 - **Recent results.** The overview’s Recent Results section opens with README’s
   `recent-progress` block (**Page headings**, above), then its own short prose on what
   the table lists, and then one table, not cards or a list: every result, by the date
-  the table shows, newest first, one row each, the same `.site-table` in the sans face
-  as the results page, without sorting (`recent_table`). The results page’s tools bar
-  sits above it (**Result filters**, above), starting at significance S4 and up and a
-  maximum age of 180 days, with the count of rows shown out of the total at the bar’s
-  end. Those two defaults are all that make the table recent: no result is left out of it
-  by a date the page fixes.
-  Its five columns are the date, which says what it dates (`published` or
-  `established`); the result, its math linking to its row on the results page, with the
-  id beside it quiet, which is the row’s trigger; the method, the phrase the summary
-  gives after the formula (“by a point-only route” reads “point-only route”), empty when
-  there is none; the credit, the finder first and “after …” quiet, the list cut after
-  three names with the whole of it in the cell’s `title`; and the status, every chip in
-  one cell side by side.
-  The status cell holds the S, V and C rung chips and then one chip per part of the
-  standing (`second certificate, reported` is two chips), left to right a space apart,
-  wrapping only where the cell is too narrow, with the chips’ own block margin between
-  wrapped rows; it never stacks one chip per line.
-  On a phone it takes the results table’s card-per-row form: the result and the date on
-  the first line, then the method, the credit and the chips each across the card.
+  the table shows, newest first, one row each (`recent_table`). It is the results page’s
+  table, with its columns, its rows, its sorting and its card-per-row form on a phone
+  (**Tables**, above).
+  The results page’s tools bar sits above it (**Result filters**, above), starting at
+  significance S4 and up, a maximum age of 180 days and Hide superseded checked, with
+  the count of rows shown out of the total at the bar’s end.
+  Those three defaults are all that make the table recent and current: no result is left
+  out of it by a date or a standing the page fixes.
   A row opens its result’s popover (**Row popovers**, above), the same panel the results
   page opens for that result.
   The section holds no card or bulleted list, and the “See all results” line, with the
@@ -1032,9 +1250,10 @@ its defaults.
   (`results.html` is `RESULTS.md` rendered as a reader document, so the table’s page
   takes the other name.)
   The page has the frontier atlas’s shape: a hero title, “Every Result”, whose id is
-  `every-result`, a subtitle with the count, the prose that defines the ratings and
-  standings, and the table under its filters (**Result filters**, above), which start
-  with significance at All and no maximum age, so every result shows.
+  `every-result`, a subtitle, the prose that defines the ratings and standings, and the
+  table under its filters (**Result filters**, above), which start with significance at
+  All, no maximum age and Hide superseded clear, so every result shows, newest first, in
+  one flat list.
   Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
   recent table and replay table, and each case record’s results link.
   A row opens its result’s popover, the full claim and its novelty label, with the id in
@@ -1054,16 +1273,16 @@ its defaults.
   and one large card for each paper (`data-card-size="large"`), saying what the paper
   is. The cards come from one ordered list, `overview_sections.PAPERS`, each entry a
   paper’s address, label, title, description and card size, so a new paper is one entry.
-  Each is a popover card: pressing it opens a popover that frames the paper and expands
-  to it. (The overview’s page cards are direct links instead; see Cards.)
-  A popover card is a button and holds no link of its own, so what its description names
-  is linked from its popover, beside the button.
-  The optimality paper is first: it explains the result that stands, T-060, where the
-  explainer proves the lower bounds T-060 superseded and the tutorial is the background
-  to both. The explainer’s card names the newer optimality proofs and links the
-  optimality paper and T-060 from its popover, from the one list that holds them
-  (`OPTIMALITY_LINKS`). Its card on the overview reads the same but is the link to the
-  explainer itself, so it carries no other link.
+  Each is a direct card: a paper is a full page the site serves, so its card is the link
+  itself and goes to the paper in the same tab, as the overview’s page cards do, with no
+  popover and no framed preview (`link_card`, `new_tab=False`; see Cards).
+  A link holds no other link, so what a description names is linked from the page’s
+  introduction (`templates/papers-article.md`), which links T-060’s row and the
+  optimality paper. The optimality paper is first: it explains the result that stands,
+  T-060, where the explainer proves the lower bounds T-060 superseded and the tutorial
+  is the background to both.
+  The explainer’s card names the newer optimality proofs, and reads the same on the
+  overview. The page has no popover, so it carries no popover script.
   The papers keep their addresses, `explainer.html`, `tutorial.html` and
   `n11-optimality/t-060-explainer.html`, and Papers is the current entry on the papers
   page and on each of them.
@@ -1106,8 +1325,8 @@ full overview of that result.
 after it on every page.
 The body is one `.site-result` block with no ids, no script and no `<table>`, so it does
 not depend on the popover around it.
-Its popover takes the atlas popover’s size, up to 62rem wide and 58rem tall, and scrolls
-as one panel.
+Its popover takes the atlas popover’s size, up to 62rem wide and as tall as the window
+allows (**Cards**, above), and scrolls as one panel.
 
 No page carries an overview.
 Between them they run to about 2.8 MB (`result_overview --audit`) and two pages list the
@@ -1248,9 +1467,12 @@ included), and a row of cards off the centre of its line (more than a pixel betw
 two slacks). `--page cases.html#n-11` walks one page at a fragment, and
 `--press SELECTOR` presses a card or an atlas cell on each page that has one, then walks
 and shoots what it opened, since a popover a script fills has no math until it opens.
-`devtools.measure_site_pages cards` reports the rows the preview reads: each card
-section’s lines, their cards’ widths and the slack at either end.
-`devtools.measure_site_pages ladders` reports the rating ladders as laid out: every
+What a press opens is also checked for a word broken across lines, in the popover and in
+a page it frames: a break between two letters or digits, or on a hyphen of a name the
+site sets as code, unless the run is 24 characters or longer and wider than its line
+(`preview_site.split_problem`). `devtools.measure_site_pages cards` reports the rows the
+preview reads: each card section’s lines, their cards’ widths and the slack at either
+end. `devtools.measure_site_pages ladders` reports the rating ladders as laid out: every
 rung’s height, each description’s box and the lines its words take, the room between the
 diagram and whatever clips it sideways, and with `--shots DIR` a picture of the diagram
 at each width, light and dark.
@@ -1259,6 +1481,9 @@ the narrowest of each layout among them.
 `devtools.measure_site_pages math` reports every formula’s face beside its text’s,
 counted by surface. `devtools.measure_site_pages space` reports the space around every
 table and heading (**Spacing**, above).
+`devtools.measure_site_pages popover` reports what each `--press` opens at each
+`--width` and `--height`: the popover’s box, the window’s margin around it, the share of
+its content it shows without scrolling, and its broken words.
 `tests/test_site_math_faces.py` runs the same walk wherever a browser is installed, over
 the overview and its atlas popover, the results table, the frontier atlas and its case
 popover, and two case records, with a control that marks a worded headline for serif

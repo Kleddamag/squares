@@ -171,21 +171,8 @@ void test("filters compose: a row shows only when it passes every one", () => {
   });
 });
 
-void test("a group heading shows while a row under it does, until the table is sorted", () => {
-  // Two groups: the first has one row showing, the second none.
-  const headings = [true, false, false, true, false];
-  const passes = [false, false, true, false, false];
-  assert.deepEqual([...table.rowsShown(headings, passes, true)], [true, false, true, false, false]);
-  assert.deepEqual(
-    [...table.rowsShown(headings, passes, false)],
-    [false, false, true, false, false],
-  );
-  // A heading never shows on its own account, and a row before any heading needs none.
-  assert.deepEqual([...table.rowsShown([true, false], [true, false], true)], [false, false]);
-  assert.deepEqual(
-    [...table.rowsShown([false, true, false], [true, false, true], true)],
-    [true, true, true],
-  );
+void test("the script has no notion of a heading row: a filtered table is one flat list", () => {
+  assert.equal("rowsShown" in table, false);
 });
 
 void test("a covers control takes the plain key as its query parameter, and an age `age`", () => {

@@ -2,14 +2,31 @@
 
 `devtools.preview_site` fails a built page on what its probes find, and
 `devtools.measure_site_pages cards` prints the same card report as a table, as `space`
-does the space around tables and headings. All read a probe's output in Python, so the
-decisions are tested here without a browser.
+does the space around tables and headings and `columns` the columns of the data tables.
+All read a probe's output in Python, so the decisions are tested here without a browser.
 """
 
 from __future__ import annotations
 
-from devtools.measure_site_pages import card_rows, markdown_table, space_rows
-from devtools.preview_site import SCROLLBAR_PX, clip_problem, off_centre, shot_stem
+from devtools.measure_site_pages import (
+    card_rows,
+    chip_rows,
+    column_rows,
+    markdown_table,
+    space_rows,
+)
+from devtools.preview_site import (
+    LONG_TOKEN,
+    SCROLLBAR_PX,
+    baseline_problems,
+    clip_problem,
+    motion_for,
+    off_centre,
+    shot_stem,
+    split_problem,
+    tabs_problems,
+    type_problems,
+)
 
 
 def _section(*rows: tuple[int, float, float]) -> dict[str, object]:
@@ -115,6 +132,103 @@ def test_the_space_table_has_one_line_a_table_and_one_a_heading_role() -> None:
     assert markdown_table(report).splitlines()[0].startswith("| page | width | state | what |")
 
 
+def test_the_columns_table_has_one_line_a_column() -> None:
+    """Each column of each table is a line: its width and share of the table, the most
+    lines a cell takes, how many words a line break splits, and the tallest row it
+    sets, a dash where it sets none. A column that is not shown has no width."""
+    report: list[dict[str, object]] = [
+        {
+            "page": "all-results.html",
+            "width": 1280,
+            "table": "site-table.site-results",
+            "section": "Every Result",
+            "layout": "table",
+            "table_width": 1104,
+            "frame_width": 1104,
+            "scrolls": 0,
+            "shown_rows": 61,
+            "top": 400,
+            "height": 8423,
+            "tallest_row": {"row": "t-056", "height": 385.6},
+            "columns": [
+                {"column": "Result", "width": 412.8, "lines": 3, "broken": [], "tallest": None},
+                {
+                    "column": "Credit",
+                    "width": 102.6,
+                    "lines": 9,
+                    "broken": ["Queuingtheorydotcom", "Guzhou0806"],
+                    "tallest": {"row": "t-048", "height": 238.8, "lines": 9},
+                },
+                {
+                    "column": "site-records",
+                    "width": None,
+                    "lines": 3,
+                    "broken": [],
+                    "tallest": None,
+                },
+            ],
+        }
+    ]
+    result, credit, cards = column_rows(report)
+    assert (result["col_width"], result["share"], result["tallest_row"]) == (
+        "412.8",
+        "37%",
+        "-",
+    )
+    assert (credit["col_width"], credit["share"], credit["max_lines"]) == ("102.6", "9%", 9)
+    assert (credit["broken_words"], credit["tallest_row"]) == (2, "t-048")
+    assert (credit["row_height"], credit["its_lines"]) == ("238.8", 9)
+    assert (credit["table"], credit["past_frame"], credit["shown"]) == ("1104", "0", 61)
+    assert (cards["col_width"], cards["share"]) == ("-", "-")
+    head = markdown_table(report).splitlines()[0]
+    assert head.startswith("| page | width | section | layout | shown | table | past_frame |")
+
+
+def test_the_chips_table_has_one_line_a_kind_of_chip_on_a_surface() -> None:
+    """Chips of one kind on one surface share a line that gives how many there are, the
+    distinct sizes found, the most lines one takes, and the words of each that wraps."""
+
+    def chip(kind: str, text: str, block: float, lines: int) -> dict[str, object]:
+        return {
+            "page": "all-results.html",
+            "width": 1280,
+            "state": "page",
+            "chip": kind,
+            "text": text,
+            "surface": "table",
+            "font_size": 17.5,
+            "line_height": 25.3,
+            "inline_size": 98,
+            "block_size": block,
+            "lines": lines,
+            "white_space": "normal",
+        }
+
+    report = [
+        chip("rung", "S5", 25.3, 1),
+        chip("standing", "superseded", 25.3, 1),
+        chip("standing", "current best", 50.7, 2),
+        chip("standing", "current best", 50.7, 2),
+    ]
+    rungs, standing = chip_rows(report)
+    # A chip's own width is its `inline_size`, so `width` stays the window's.
+    assert (rungs["width"], standing["width"]) == (1280, 1280)
+    assert (rungs["chip"], rungs["count"], rungs["block_size"], rungs["wrapped"]) == (
+        "rung",
+        1,
+        "25.3",
+        "-",
+    )
+    assert (standing["count"], standing["font_size"], standing["block_size"]) == (
+        3,
+        "17.5",
+        "25.3 50.7",
+    )
+    assert (standing["max_lines"], standing["wrapped"]) == (2, "current best")
+    head = markdown_table(report).splitlines()[0]
+    assert head.startswith("| page | width | state | surface | chip | count | font_size |")
+
+
 def test_a_heading_with_no_resolved_line_height_still_has_a_line() -> None:
     row = _heading("h1", 64, 20, line_height="normal", leading=None, lines=None)
     (only,) = space_rows([row])
@@ -140,3 +254,233 @@ def test_a_shot_is_named_for_its_page_and_fragment() -> None:
     assert shot_stem("workbench/index.html") == "workbench"
     assert shot_stem("cases.html#n-11") == "cases-n-11"
     assert shot_stem("n11-optimality/t-060-explainer.html") == "n11-optimality-t-060-explainer"
+
+
+def _header(*, rule: tuple[float, float] | None, tabs: tuple[float, float] | None) -> dict:
+    """A `preview_site/header` report: the bar from 16 to 68.59, the rule and the tabs as
+    given, each a top and a bottom, and the film 64px under whichever ends lower."""
+    foot = max([68.59, *(part[1] for part in (rule, tabs) if part)])
+    return {
+        "nav": {"top": 16, "bottom": 68.59},
+        "rule": rule and {"top": rule[0], "bottom": rule[1], "on": "nav.site-nav"},
+        "tabs": tabs and {"top": tabs[0], "bottom": tabs[1], "current": "Film"},
+        "first": {"top": foot + 64, "bottom": 900, "block": "figure.site-film-frame"},
+    }
+
+
+def test_section_tabs_under_the_bars_rule_pass_and_tabs_over_it_are_reported() -> None:
+    """From the top a page of a section reads bar, rule, tabs, content. Tabs standing
+    above the rule, as they did while the rule was the foot of the header that holds
+    them, are named with how far; a page with no tabs has nothing to check."""
+    assert tabs_problems(_header(rule=(67.59, 68.59), tabs=(79.78, 112.38))) == []
+    assert tabs_problems(_header(rule=(67.59, 68.59), tabs=None)) == []
+    over = _header(rule=(113.77, 114.77), tabs=(69.98, 102.58))
+    over["rule"]["on"] = "header"
+    assert tabs_problems(over) == [
+        (
+            "the section tabs start 44.79px above the foot of the rule under the "
+            "navigation bar, which is on header"
+        )
+    ]
+    assert tabs_problems(_header(rule=None, tabs=(79.78, 112.38))) == [
+        "the section tabs have no rule over them, under the navigation bar"
+    ]
+    under = _header(rule=(67.59, 68.59), tabs=(79.78, 112.38))
+    under["first"]["top"] = 100.38
+    assert tabs_problems(under) == [
+        "figure.site-film-frame starts 12px above the foot of the section tabs"
+    ]
+
+
+#: The paper's scale as a page resolves it: the prose base, the sans base beside it, and
+#: the three steps under the sans base.
+SCALE = {"prose": 18, "sans": 19, "support": 18.05, "note": 17.48, "colophon": 16.15}
+
+
+def _type(link: float | None, tab: float | None, name: float | None = 19) -> dict:
+    """A `preview_site/header` report's type: a link's size, a tab's and the name's."""
+    return {"type": {"body": 18, "name": name, "link": link, "tab": tab, "scale": SCALE}}
+
+
+def test_the_bars_type_is_one_step_under_the_bodys_and_no_more() -> None:
+    """A link in the bar and a section tab are under the prose base and no smaller than
+    the first step of the scale under it, whatever those are in pixels; the two are one
+    size; and the site's name is at least the body's. The sizes the bar had, 16px links
+    and 14.4px tabs under a 16px name, are each named."""
+    assert type_problems(_type(17.48, 17.48)) == []
+    assert type_problems(_type(17.48, None)) == []
+    assert type_problems(_type(None, None, None)) == []
+    unscaled = _type(17.48, None)
+    unscaled["type"]["scale"] = None
+    assert type_problems(unscaled) == []
+    wide = "it should be under the body's 18px and no smaller than the step below it, 17.48px"
+    assert type_problems(_type(16, 14.4, 16)) == [
+        f"a link in the header is 16px: {wide}",
+        f"a tab in the header is 14.4px: {wide}",
+        "a section tab is 14.4px and a link in the bar 16px",
+        "the site's name is 16px, under the body's 18px",
+    ]
+    # The support size is a step of the scale, but not one under the body.
+    assert type_problems(_type(18.05, 18.05)) == [
+        f"a link in the header is 18.05px: {wide}",
+        f"a tab in the header is 18.05px: {wide}",
+    ]
+    # A body of another size moves the step with it.
+    larger = _type(18.05, 18.05, 20)
+    larger["type"]["scale"] = {**SCALE, "prose": 19}
+    assert type_problems(larger) == []
+
+
+def _split(*pieces: str, **over: object) -> dict[str, object]:
+    return {
+        "word": "".join(pieces),
+        "pieces": list(pieces),
+        "host": "dd",
+        "block": "dd",
+        "code": False,
+        "prose": False,
+        "width": 40.0,
+        "line": 320.0,
+        "frame": "",
+        **over,
+    }
+
+
+def test_a_word_cut_between_two_letters_is_reported() -> None:
+    """What `overflow-wrap: anywhere` does to a label in a column squeezed narrower than
+    the word: the break falls between two letters, and the report names the pieces, the
+    element, and the word's width against the line it was set on."""
+    squeezed = _split("low", "er", host="span.site-atlas-pop-which", block="p", line=24.0)
+    assert split_problem(squeezed) == (
+        '"low | er" is one word on 2 lines in span.site-atlas-pop-which in p: '
+        "40px wide on a 24px line"
+    )
+    letters = _split("l", "o", "w", "e", "r", line=8.0)
+    assert split_problem(letters) == (
+        '"l | o | w | e | r" is one word on 5 lines in dd: 40px wide on a 8px line'
+    )
+    digits = _split("3.8770", "8359", width=70.0, line=48.0)
+    assert split_problem(digits) is not None
+
+
+def test_a_name_cut_at_its_hyphen_is_reported_where_the_site_sets_it() -> None:
+    """An evidence identifier is one word: a line that ends on one of its hyphens, in a
+    popover or a block the site builds, is reported, a framed page's named with its
+    frame. The same break in a document's own prose is KPress's and passes."""
+    name = _split("E-nagamochi-", "lower", host="code", code=True, width=144.8, line=518.0)
+    assert split_problem(name) == (
+        '"E-nagamochi- | lower" is one word on 2 lines in code in dd: '
+        "144.8px wide on a 518px line"
+    )
+    framed = split_problem({**name, "block": "p", "frame": "iframe.site-popover-frame"})
+    assert framed is not None
+    assert "in code in p, framed in iframe.site-popover-frame: 144.8px wide" in framed
+    assert split_problem({**name, "prose": True}) is None
+
+
+def test_an_ordinary_break_is_not_a_split_word() -> None:
+    """Running text ends a line on the hyphen of a compound, a path on its slash, and a
+    formula written in characters at a bracket; none of them cuts a word."""
+    assert split_problem(_split("computer-", "assisted")) is None
+    assert split_problem(_split("docs/project/", "reviews", host="code", code=True)) is None
+    assert split_problem(_split("T=", "(6u+4)/(1+2u-u^2),")) is None
+    assert split_problem(_split("280af3d4\u2026", "e6e5", host="code", code=True)) is None
+
+
+def test_a_long_token_wider_than_its_line_may_break() -> None:
+    """An exact decimal or an identifier of `LONG_TOKEN` characters or more that cannot
+    fit on one line has to break somewhere; one that would have fitted does not, and
+    neither does anything shorter, however narrow its column."""
+    decimal = "3.8770835900228141773078970601009"
+    assert len(decimal) >= LONG_TOKEN
+    cut = _split(decimal[:-1], decimal[-1], width=283.0, line=270.0)
+    assert split_problem(cut) is None
+    assert split_problem({**cut, "line": 300.0}) is not None
+    name = _split("E-n011-global-optimality-", "independent", host="code", code=True)
+    assert split_problem({**name, "width": 317.0, "line": 300.0}) is None
+    assert split_problem({**name, "width": 317.0, "line": 518.0}) is not None
+    short = _split("E-nagamochi-", "lower", host="code", code=True, width=155.0, line=120.0)
+    assert len("E-nagamochi-lower") < LONG_TOKEN
+    assert split_problem(short) is not None
+
+
+def test_the_popover_table_has_one_line_a_popover_with_its_count_of_split_words() -> None:
+    """`measure_site_pages popover` prints a popover's box, margins and visible share on
+    one line; the broken words themselves are a list, which the JSON report keeps."""
+    row = {
+        "page": "frontier.html",
+        "width": 1280,
+        "press": 'a[data-case="79"]',
+        "popover": "#pop-case",
+        "window_height": 1200,
+        "inline": 736,
+        "block": 896,
+        "above": 152,
+        "below": 152,
+        "beside": 272,
+        "scrolls": "its frame",
+        "shown": 710,
+        "content": 3070,
+        "share": 0.23,
+        "split_words": 1,
+        "split": ['"E-nagamochi- | lower" is one word on 2 lines in code in dd'],
+    }
+    head, _, line = markdown_table([row]).splitlines()
+    assert head.endswith("| shown | content | share | split_words |")
+    assert line.endswith("| its frame | 710 | 3070 | 0.23 | 1 |")
+
+
+def _labels(
+    *lines: tuple[int, float], name: float | None = 46.8, tabs: float | None = None
+) -> dict:
+    """A `preview_site/baselines` report: two links on each line of the bar, a line given
+    as its top and its baseline, the name's baseline, and two tabs on one of theirs. The
+    name's line is 25px tall, with the mark centred on it."""
+    words = iter(("Overview", "Frontier", "Results", "Papers"))
+    return {
+        "name": name,
+        "name_text": name and {"top": name - 18, "bottom": name + 7},
+        "logo": {"top": 32.3, "bottom": 50.3},
+        "links": [
+            {"label": next(words), "baseline": baseline, "top": top, "current": False}
+            for top, baseline in lines
+            for _ in range(2)
+        ],
+        "tabs": [
+            {"label": label, "baseline": tabs, "top": 80, "current": label == "Film"}
+            for label in (("Film", "Workbench") if tabs else ())
+        ],
+    }
+
+
+def test_the_name_and_the_links_stand_on_one_baseline() -> None:
+    """The site's name stands on the baseline of the bar's first line of links, within
+    half a pixel, and so does each link beside another; a bar that wraps has a baseline
+    a line. A name set above the links, as it was while the bar's baseline was the foot
+    of its mark, is named with how far; where the name's text is not shown there is
+    nothing to hold it to."""
+    assert baseline_problems(_labels((25, 46.8))) == []
+    assert baseline_problems(_labels((25, 46.8), name=47.2, tabs=102.58)) == []
+    assert baseline_problems(_labels((22, 40.78), (50, 68.28), name=None, tabs=119.77)) == []
+    assert baseline_problems(_labels((29, 51.3), name=47.8)) == [
+        "the site's name stands -3.5px off the baseline of the bar's links",
+        "the site's mark is centred -1px off the middle of its name's line",
+    ]
+    uneven = _labels((25, 46.8), tabs=102.58)
+    uneven["links"][1]["baseline"] = 48.0
+    uneven["tabs"][1]["baseline"] = 101.5
+    assert baseline_problems(uneven) == [
+        "the link Frontier stands +1.2px off the baseline of Overview, beside it",
+        "the section tab Workbench stands -1.08px off the baseline of Film, beside it",
+    ]
+
+
+def test_only_a_page_that_starts_a_film_is_opened_under_reduced_motion() -> None:
+    """The film's page is opened as for a reader who asks for reduced motion, with any
+    fragment, so no tool starts its download; every other page is opened as any reader's,
+    the overview among them, whose idle-time formulas did not finish under reduced
+    motion."""
+    assert motion_for("visualize.html") == "reduce"
+    assert motion_for("visualize.html#film") == "reduce"
+    for name in ("index.html", "frontier.html", "workbench/index.html", "cases.html#n-11"):
+        assert motion_for(name) == "no-preference", name

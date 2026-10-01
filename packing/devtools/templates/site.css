@@ -1365,7 +1365,10 @@ body {
   --site-ladders-gap: 0.5rem;
   /* The narrowest a description is ever set: `SHORT_MEANING_LINE` characters a line. */
   --site-ladders-meaning-min: 13.5rem;
-  --site-ladders-inset: 1rem;
+  /* What a column keeps clear after its words, before the next column's chip: more than
+     the gap inside a rung, and no more than lets three columns stand in the wide track
+     of a 768-pixel window, 43rem (below). */
+  --site-ladders-inset: 0.75rem;
   display: grid;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
@@ -1449,11 +1452,14 @@ body {
     margin-block-start: 0.15rem;
   }
 }
-/* Below 44rem three columns would set a description narrower than its minimum, so each
-   ladder is a block of its own, significance first: its head, then its rungs from the
-   top. The order is the grid's; the markup stays a table read level by level. A ladder's
-   missing rung takes no room. */
-@container site-ladders (inline-size < 44rem) {
+/* Below 42.75rem (three columns of the least description and its inset) three columns
+   would set a description narrower than its minimum, so each ladder is a block of its
+   own, significance first: its head, then its rungs from the top. The order is the
+   grid's; the markup stays a table read level by level. A ladder's missing rung takes no
+   room. The diagram is as wide as the wide track, which is sized from the page: 43rem at
+   a 768-pixel window, where the page's margin widens, and 42.75rem at a 716-pixel one,
+   so three columns hold from 716 pixels up with no width between that stacks. */
+@container site-ladders (inline-size < 42.75rem) {
   .site-ladders {
     --site-ladders-inset: 0;
     grid-template-columns: minmax(0, 1fr);

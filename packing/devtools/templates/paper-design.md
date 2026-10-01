@@ -687,10 +687,22 @@ it.
     Narrower, it sets the chip and its count on one line and the description under them
     across the cell, 99.3px a row, at 1024 and 768 pixels.
     A description is never set narrower than 13.5rem (`--site-ladders-meaning-min`).
-  - **Phone.** Below 44rem of its own width the diagram stacks: one block a ladder, in
-    the same order, each under its own head with its rungs from the top.
+  - **Columns.** The three columns are equal, and each keeps 0.75rem
+    (`--site-ladders-inset`) clear after its words, before the next column’s chip.
+    Three columns therefore need 42.75rem: three times the least description and its
+    inset.
+  - **Phone.** Below 42.75rem of its own width the diagram stacks: one block a ladder,
+    in the same order, each under its own head with its rungs from the top.
     Three columns there would set a description narrower than its least.
     The missing rung takes no room.
+    The diagram’s width is the wide track’s, which is sized from the page and not the
+    window (**Wide bleed**): 1104px at a 1280-pixel window, 944px at 1024, 688px (43rem)
+    at 768, where the page’s margin widens, 684px at 716 and 358px at 390. So three
+    columns hold from a 716-pixel window up, with a description 217.3px wide at 768 and
+    216px at 716, and the ladders stack at 715 and below.
+    The inset is what fits them at 768: at 1rem three columns need 43.5rem, more than
+    that window’s wide track, and the ladders would stack from 768 to 775 pixels between
+    two bands of three columns.
   - **Markup.** A grid with table roles (`role="table"`, a row a level, column headers,
     a visually hidden row header naming the level, cells), not a `<table>`: KPress wraps
     every table in its own scroller and restyles it as `.kpress-table`. Stacking changes
@@ -698,6 +710,9 @@ it.
     every width.
   - **Space.** It sits in the wide track and stands `--site-table-space` clear of the
     text above and below it, as a table does.
+    Either side it keeps the wide track’s gutter and is never under the page’s clip:
+    40px from the window at 1024 and 768 pixels and 16px at 390, which is 8px
+    (`--site-wide-gutter`) inside the page’s content area wherever the page clips.
 
 - **Atlas grid.** The atlas grid holds every tracked case, n = 1 to 324, as a square
   drawing in the page’s ink with its n beneath.
@@ -1210,10 +1225,11 @@ and shoots what it opened, since a popover a script fills has no math until it o
 `devtools.measure_site_pages cards` reports the rows the preview reads: each card
 section’s lines, their cards’ widths and the slack at either end.
 `devtools.measure_site_pages ladders` reports the rating ladders as laid out: every
-rung’s height, each description’s box and the lines its words take, and with
-`--shots DIR` a picture of the diagram at each width, light and dark.
-`tests/test_site_ladders.py` holds those rows in a browser at eight widths, the
-narrowest of each layout among them.
+rung’s height, each description’s box and the lines its words take, the room between the
+diagram and whatever clips it sideways, and with `--shots DIR` a picture of the diagram
+at each width, light and dark.
+`tests/test_site_ladders.py` holds those rows and that room in a browser at nine widths,
+the narrowest of each layout among them.
 `devtools.measure_site_pages math` reports every formula’s face beside its text’s,
 counted by surface. `devtools.measure_site_pages space` reports the space around every
 table and heading (**Spacing**, above).

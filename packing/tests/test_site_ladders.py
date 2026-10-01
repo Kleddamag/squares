@@ -6,8 +6,11 @@ two lines that its words never run past. Whether a text takes two lines is the b
 to say, from the face and the cell's width, so this opens the rendered overview in
 Chromium and measures the diagram with the probe `devtools.measure_site_pages ladders`
 reports from, at the widths the design is shot at and at the ones where a description is
-narrowest: 736 pixels, the least window that sets three columns; 1096, the least that
-sets a rung's description beside its rail there; and 360 and 320, a phone's.
+narrowest: 716 pixels, the least window that sets three columns, and 715, where the
+ladders stack; 768, where the page's margin widens and the wide track is 4 pixels more
+than at 716; 1100, the least that sets a rung's description beside its rail in three
+columns; and 360 and 320, a phone's. At each the diagram also stands inside whatever
+clips the page sideways, with the wide track's gutter either side.
 
 The page is rendered and loaded once, in a module fixture, and resized for each width.
 Skipped where no Chromium can be launched; `SQPACK_CHROMIUM` names one the environment
@@ -29,9 +32,14 @@ from devtools.render_explainer_pdf import BROWSER_OVERRIDE
 from tests import site_renders
 
 #: Each width measured, and how many columns the rungs stand in there.
-WIDTHS = {1280: 3, 1096: 3, 1024: 3, 768: 3, 736: 3, 390: 1, 360: 1, 320: 1}
+WIDTHS = {1280: 3, 1100: 3, 1024: 3, 768: 3, 716: 3, 715: 1, 390: 1, 360: 1, 320: 1}
+#: The widths at which a cell has 20.5rem, so a rung's description stands beside its
+#: chip and count; at the others it lies under them, across the cell.
+BESIDE = frozenset({1280, 1100, 715, 390, 360})
 #: `--site-ladders-meaning-min`, 13.5rem, in pixels: the narrowest a description is set.
 MEANING_MIN = 216
+#: `--site-wide-gutter`, 0.5rem, in pixels: the least room either side of a wide block.
+GUTTER = 8
 
 
 @pytest.fixture(scope="module")
@@ -69,6 +77,8 @@ def test_every_rung_is_one_height_and_its_description_two_lines(
     assert len(rungs) == len(overview_sections.rung_meanings())
     assert diagram["columns"] == WIDTHS[width]
     assert len(diagram["heights"]) == 1, diagram["heights"]
+    assert {rung["beside"] for rung in rungs} == {width in BESIDE}
+    assert len({rung["meaning_width"] for rung in rungs}) == 1
     for rung in rungs:
         assert rung["meaning"] == overview_sections.rung_short_meanings()[rung["rung"]]
         assert rung["title"] == overview_sections.rung_meanings()[rung["rung"]]
@@ -108,3 +118,16 @@ def test_the_rungs_line_up_across_three_columns_and_stack_by_ladder_on_a_phone(
             if f"{scale}{level}" in overview_sections.rung_meanings()
         ]
         assert all(height <= 1 for height in diagram["empty"])
+
+
+@pytest.mark.parametrize("width", WIDTHS)
+def test_the_diagram_stands_inside_what_clips_the_page_with_a_gutter_either_side(
+    diagrams: dict[int, dict[str, Any]], width: int
+) -> None:
+    """At every width the diagram is centred, and it stops at least the wide track's
+    gutter short of the nearest ancestor that clips sideways, or of the page's edge where
+    none does, so no rule and no letter of it is cut or set flush to the edge."""
+    diagram = diagrams[width]
+    assert diagram["gutter_left"] >= GUTTER - 0.5, diagram["frame"]
+    assert diagram["gutter_right"] >= GUTTER - 0.5, diagram["frame"]
+    assert diagram["gutter_left"] == pytest.approx(diagram["gutter_right"], abs=0.5)

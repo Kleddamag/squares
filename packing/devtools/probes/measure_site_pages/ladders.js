@@ -2,9 +2,13 @@
 // where it sits on the page (its top and height, to find it in a full-page screenshot),
 // how many columns its rungs stand in, and every rung with its label, the ladder it
 // belongs to, its column and its cell's height, then its description: the words, the
-// box's width and height, the line height, how many lines the words take, and how far
-// they run past the box (0 when they fit). A rung's count and its chip's title are
-// reported as they read. `heights` is every distinct rung height, so one value means
+// box's width and height, the line height, how many lines the words take, how far they
+// run past the box (0 when they fit), and whether the box sits beside the chip or under
+// it. A rung's count and its chip's title are reported as they read. `gutter_left` and
+// `gutter_right` are the room between the diagram and the nearest ancestor that clips or
+// scrolls sideways, or the page's own layout width where none does: negative where the
+// diagram runs under the clip, 0 where it is flush. `frame` names what was measured
+// against. `heights` is every distinct rung height, so one value means
 // every row of the diagram is the same height; `empty` counts the cells that hold no
 // rung and whether each takes room.
 () => {
@@ -16,10 +20,23 @@
     range.selectNodeContents(element);
     return new Set([...range.getClientRects()].map((rect) => Math.round(rect.top))).size;
   };
+  /** The inner left and right edges of what clips `element` sideways, and its name.
+   * @param {Element} element */
+  const clip = (element) => {
+    for (let frame = element.parentElement; frame; frame = frame.parentElement) {
+      if (getComputedStyle(frame).overflowX !== "visible") {
+        const left = frame.getBoundingClientRect().left + frame.clientLeft;
+        const name = [frame.tagName.toLowerCase(), ...frame.classList].join(".");
+        return { left, right: left + frame.clientWidth, name };
+      }
+    }
+    return { left: 0, right: document.documentElement.clientWidth, name: "page" };
+  };
   return [...document.querySelectorAll(".site-ladders")]
     .filter((diagram) => diagram.getClientRects().length > 0)
     .map((diagram) => {
       const box = diagram.getBoundingClientRect();
+      const frame = clip(diagram);
       const cells = [...diagram.querySelectorAll(".site-ladders-cell")];
       const rungs = cells.filter((cell) => cell.querySelector(".site-chip"));
       const lefts = [
@@ -43,12 +60,16 @@
           line_height: meaning ? round(Number.parseFloat(getComputedStyle(meaning).lineHeight)) : 0,
           lines: meaning ? lines(meaning) : 0,
           overflow: meaning ? Math.max(0, meaning.scrollHeight - meaning.clientHeight) : 0,
+          beside: (words?.left ?? 0) >= (chip?.getBoundingClientRect().right ?? 0),
           count: (cell.querySelector(".site-ladders-count")?.textContent ?? "").trim(),
           title: chip?.getAttribute("title") ?? "",
         };
       });
       return {
         block_width: round(box.width),
+        gutter_left: round(box.left - frame.left),
+        gutter_right: round(frame.right - box.right),
+        frame: frame.name,
         top: Math.round(box.top + window.scrollY),
         height: Math.round(box.height),
         columns: lefts.length,

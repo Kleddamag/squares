@@ -5,14 +5,14 @@ title: "Coordinate the #247 s(11) intake with PR #246's n = 11 optimality work"
 kind: task
 status: open
 priority: 1
-version: 9
+version: 10
 labels:
   - packing
   - low-n
   - coordination
 dependencies: []
 created_at: 2026-09-30T05:42:45.356Z
-updated_at: 2026-09-30T20:31:42.008Z
+updated_at: 2026-10-01T00:02:23.747Z
 ---
 Two lines of n = 11 work are open at once. This bead keeps them from colliding.
 
@@ -47,3 +47,5 @@ Both PRs are merged with distinct contiguous IDs and complete source credit, `n-
 PR #246 merged first at d44ec04086cffd5498fd69e54ee58415365910c7 on 2026-09-30 at 17:41:19 UTC, after all required checks passed on 424b6be3a. PR #249 advanced to c6f51ce6b with passing pre-integration checks; it remains draft while its owner finishes the s(21)/s(45) re-sweeps. When ready, merge the new main into that branch and rename Wang–Li T-058 to T-061. Preserve T-060 equality, every provider credit and V/C assignment, the native parent-core checker, and the three-shard CI topology. Reconcile shared records, regenerate atlas/readers, repin DATA_REVISION, and run the affected integration checks and checkpoint. The earlier 36 shared paths, 39 text hunks and six binary conflicts are a planning baseline; reassess the current head. PR body and comment5916559023 now record the actual merge and why earlier green checks do not certify the combined source.
 
 2026-09-30 integration (session_01VfxwoTFTTtYPSdNYENYKZ1, branch claude/beads-upstream-merge-vmytrm): main at 5ddb1cdae (#246, #250 to #253) merged into #249's head c6f51ce6b as 818d6cf3f, then DATA_REVISION re-pinned to it at 3d29a00f1. Wang and Li is T-061 in results.yaml, n-011.md, T-037's supersession note, the review disposition, resources/README.md and the packet README, with mapping notes in the register and review; archived receipts carried no ID. T-060's exact equality leads n-011.md; Wang-Li is kept as a historical strict bound with its credit, V4/C4 evidence and S2. No other ID namespace collided (evidence, bibliography, source-coverage, defects, sessions, experiments). Explainer takes main's T-060 solved display; run_negative_controls keeps main's in_pruned_roots; development.md keeps main's three-shard table with #249's re-based frontend/typecheck/geometry records. All generated views and the atlas regenerated from the merged records. Head pushed as d188e13cb, which adds a crate .gitignore and a snapshot PRUNE entry for main's packing/sqverify_exact/target (it left 331 MB of unignored cargo output that broke two negative-control tests under --fast). Local: --records 36/36; --edit passes after npm ci; --fast 467 s, every failure environmental: two process-group reaping tests (PID 1 here does not reap orphans; neither branch touched that code) and the Chromium step (the pinned Playwright build is not installed). Release, explainer and atlas tests: 125 passed. Remaining for done: move #249 onto this head (or open a PR from it), hosted checks on the combined tree, merge, and the #247/#246 cross-links. The s(21)/s(45) re-sweeps (think-l6la) ran in the old session's scratchpad and are not in this merge.
+
+2026-10-01: stacked as jlevy/squares#258 (head claude/beads-upstream-merge-vmytrm, base claude/determined-goldberg-ura2ed). Owner's landing order: results first (#258 into #249's branch, then #249 to main), then #254 (math), then #255 (site). #254 is currently based on #255's branch, so it needs restacking onto main once the results land. Results not in this stack: wand125 rectangle replay batches b02/b04/b07/b08/b09 (need think-0rrj's --merge mode; b01/b03/b05/b06/b10 never pushed), the n21-point frontier-stage receipts, and think-l6la's re-sweeps.

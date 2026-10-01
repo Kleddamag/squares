@@ -2,16 +2,9 @@
 
 # A Review of the Optimality Proof of the Trump Packing of 11 Squares
 
-<div class="subtitle">
-
-An explanation of the new
-[eleven-square optimality proof](https://github.com/Queuingtheorydotcom/11SquaresOptimal/blob/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/PROOF.md)
-by Queuingtheorydotcom
-
-</div>
-
 <div class="credits centred">
   <span>Human oversight: <a href="https://x.com/ojoshe"><strong>Joshua Levy</strong></a></span>
+  <span>Original proof: <a href="https://github.com/Queuingtheorydotcom/11SquaresOptimal"><strong>github.com/Queuingtheorydotcom/11SquaresOptimal</strong></a></span>
   <span>Agents: <strong>GPT-6 Astra</strong> and <strong>GPT-6 Sol</strong></span>
   <span><strong>Draft v0.1.0</strong></span>
   <span class="publication-date">Original proof September 29, 2026 · This review revised September 30, 2026</span>

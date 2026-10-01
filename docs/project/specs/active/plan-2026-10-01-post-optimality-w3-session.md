@@ -25,9 +25,12 @@ Branch `codex/w3-post-optimality-transfer` starts at `751ef78a4` on
 [PR #261](https://github.com/jlevy/squares/pull/261). The research baseline also
 includes merged main at `f9a3409f0f03298fbeeb0a03788cd016087626b9`, read without
 importing unrelated website changes into this stack.
-Before execution, re-read current main and reconcile the result records and epistemic
-ratings again. Integrate main after the parent merges, preserving the clean stacked diff
-until then.
+The October 1 checkpoint incorporates the updated parent at `c56d5264c`, which already
+contains that main baseline.
+The parent merge resolved the inherited publication conflicts without manual edits to
+publication code.
+Before execution, re-read current main and reconcile any further result
+changes. Keep the PR based on its parent until that parent merges.
 
 ## Research Basis
 
@@ -289,8 +292,9 @@ a proof uses it.
 At each wake, verify the branch and active processes before writing.
 If the checkout has moved or contains another agent’s changes, preserve them and
 re-establish a safe research checkout before continuing.
-The parent/main publication conflict tracked by `think-y7za` does not block read-only
-math or isolated proof experiments; it still blocks claiming the stack merge-ready.
+The inherited parent/main publication conflict was resolved by incorporating the updated
+parent. `think-y7za` still owns retargeting after the parent merges and checking the
+final diff; passing CI does not itself merge either PR.
 
 ### Morning Handoff
 

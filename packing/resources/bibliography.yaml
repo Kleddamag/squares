@@ -266,7 +266,8 @@ sources:
       evand/square-packing at 08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5:
       reported mixed-cover s(60) = 8 and periodic segment-and-area covers for
       s(k^2 - 3) = k for every k >= 6, with a Lean reduction conditional on
-      the finite covering premise. A selective source packet retains proof notes,
+      the finite covering premise. Its CREDITS.md states that Claude (Anthropic)
+      produced the work under human direction. A selective source packet retains proof notes,
       checker sources and research obstructions; it is not a complete replay bundle.
       No fresh certificate replay is implied by the source audit
       (web/evand-square-packing-2026-10-01/README.md).

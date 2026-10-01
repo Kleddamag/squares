@@ -470,10 +470,12 @@ fast-tier certification.
 The prototype and controls do not establish complete coverage of an external rectangle
 certificate.
 
-For the next supervised exact-research goal, the current handoff is `think-e2ot`: build
-a bounded fresh-ensemble replay entry point while preserving the accepted historical
-evidence. See [Current Handoff](../../../../SYNOPSIS.md#current-handoff) for the current
-evidence and allocation boundaries.
+For the next supervised exact-research goal, the current handoff is `think-11ma`:
+preregister a small exact geometric-exclusion pilot for the closed n17 occupancy domains
+below the certified endpoint.
+The overnight session is complete; no new run is launched by this handoff.
+See [Current Handoff](../../../../SYNOPSIS.md#current-handoff) for the accepted
+evidence, exact scope and allocation boundaries.
 
 ## The numeric runner launch gate
 

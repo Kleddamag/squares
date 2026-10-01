@@ -1311,7 +1311,30 @@ controller, not permission to blur contracts.
 
 ### Current Handoff
 
-**T-060 is independently verified at `V4/C5/S5`.** The
+[Session 165](packing/campaign/agent-sessions/session-165-post-optimality-overnight.md)
+completed seven independently reviewed n17 rounds: exp-235 through exp-239, exp-240 and
+exp-241. The known packing now has a certified exact chart endpoint and an attained
+minimum under explicit orientation and directed-projection premises.
+The verified outward upper ceiling is4.6755300936045509516342148538535054; the lower
+bound4.66044 is unchanged.
+Unrestricted local and global optimality remain open.
+The mixed-capacity cover has161,100,756 necessary occupancy states; its
+closed-assignment D4 quotient has20,155,518 orbits, with no geometric case excluded.
+H258 stopped after three preparation failures without a target stress verdict.
+The [morning report](docs/project/reviews/review-2026-10-01-post-optimality-morning.md)
+records the mathematics, independent-checker boundaries, costs and remaining gaps.
+
+**Selected next entry:** `think-11ma`, preregister a small exact geometric-exclusion
+pilot below the certified endpoint.
+Keep all orientations and closed-cell assignments; measure certified exclusions and
+unresolved cases before attempting a broad census.
+The overnight execution is complete, and no successor is launched by this handoff.
+
+#### Previous n11 Intake and Verification
+
+**T-060 is machine-checked at `V3/C3/S5` under the current epistemics rubric.** Its
+historical `V4/C5` label did not denote human referee confirmation.
+The
 [Queuingtheorydotcom/11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal)
 proof gives $s(11) = T$, Trump’s exact side.
 The [retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) pins
@@ -1363,7 +1386,7 @@ certificate-page workflow passed at `c621b845f` and the documentation follow-up
 `c621b845f`. No complete retained external rectangle certificate has been independently
 verified.
 
-**Selected next entry:** `think-e2ot`, build the bounded fresh-ensemble replay entry
+**Previous n11 follow-up:** `think-e2ot`, build the bounded fresh-ensemble replay entry
 point while preserving the accepted historical evidence.
 The later mathematical entry is `think-bmf3`, W7: design and cost a whole-angle
 traversal using the measured refinement result, before a complete external rectangle

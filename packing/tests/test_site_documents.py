@@ -9,16 +9,20 @@ import pytest
 from devtools import render_overview, site_documents
 from devtools.repo_links import RAW_URL, REPO_URL, RepositoryTree
 from devtools.site_documents import (
+    INTRO,
     INTRO_BEGIN,
     INTRO_END,
     OVERVIEW_INTRO_CLOSE,
     OVERVIEW_INTRO_OPEN,
+    PROGRESS,
     LinkContext,
     LinkReport,
     intro_block,
+    progress_block,
     rewrite_article,
     rewrite_link,
-    rewrite_overview_intro,
+    rewrite_overview_blocks,
+    shared_blocks,
     unresolved,
 )
 from tests import site_renders
@@ -212,13 +216,74 @@ def test_a_hand_written_contents_list_is_dropped_from_the_page(
     assert 'href="#contents"' not in page
 
 
-def _readme(body: str) -> str:
-    return f"# Title\n\n{INTRO_BEGIN}\n\n{body}\n\n{INTRO_END}\n\nThe rest.\n"
+def _readme(body: str, progress: str = "What the project covers.") -> str:
+    return (
+        f"# Title\n\n{INTRO_BEGIN}\n\n{body}\n\n{INTRO_END}\n"
+        f"{PROGRESS.begin}\n\n{progress}\n\n{PROGRESS.end}\n\nThe rest.\n"
+    )
 
 
 def test_the_introduction_is_the_block_between_readmes_markers() -> None:
     body = "One paragraph about $s(n)$.\n\nA second, with [a link](packing/atlas/)."
     assert intro_block(_readme(body)) == body
+
+
+def test_readmes_two_shared_blocks_are_read_by_name_and_in_order() -> None:
+    """The introduction is two blocks, each between its own markers: what the project
+    studies, and what it covers with its newest result. They follow one another."""
+    progress = "It covers every $n$.\n\nA recent result, [T-060](packing/frontier/RESULTS.md)."
+    readme = _readme("What the project studies.", progress)
+    assert progress_block(readme) == progress
+    assert shared_blocks(readme) == {
+        "project-intro": "What the project studies.",
+        "recent-progress": progress,
+    }
+    assert (INTRO.name, PROGRESS.name) == ("project-intro", "recent-progress")
+    assert (
+        INTRO.begin
+        == INTRO_BEGIN
+        == ("<!-- BEGIN SHARED: project-intro (devtools.site_documents) -->")
+    )
+    assert PROGRESS.end == "<!-- END SHARED: recent-progress -->"
+    assert (PROGRESS.opened, PROGRESS.closed) == (
+        "<!-- README recent-progress -->",
+        "<!-- /README recent-progress -->",
+    )
+
+
+@pytest.mark.parametrize(
+    ("readme", "refusal"),
+    [
+        (
+            _readme("Prose.").replace(f"{INTRO_END}\n", f"{INTRO_END}\n\nA stray line.\n\n"),
+            "the recent-progress block must follow the project-intro block directly",
+        ),
+        (
+            (
+                f"{PROGRESS.begin}\n\nCovers.\n\n{PROGRESS.end}\n"
+                f"{INTRO_BEGIN}\n\nStudies.\n\n{INTRO_END}\n"
+            ),
+            "the recent-progress block must follow the project-intro block directly",
+        ),
+        (
+            f"{INTRO_BEGIN}\n\nStudies.\n\n{INTRO_END}\n",
+            "the recent-progress markers must each appear exactly once",
+        ),
+        (_readme("Prose.", ""), "the recent-progress block is empty"),
+        (_readme("Prose.", "Covers.\n\n### Newest\n\nMore."), "a heading or a comment"),
+        (
+            _readme("Prose.", "Eleven squares is the central case."),
+            "the recent-progress block calls a case the central one",
+        ),
+        (
+            _readme("Eleven squares is its central open case."),
+            "the project-intro block calls a case the central one",
+        ),
+    ],
+)
+def test_a_malformed_pair_of_shared_blocks_is_refused(readme: str, refusal: str) -> None:
+    with pytest.raises(ValueError, match=refusal):
+        shared_blocks(readme)
 
 
 @pytest.mark.parametrize(
@@ -230,6 +295,11 @@ def test_the_introduction_is_the_block_between_readmes_markers() -> None:
         (_readme(""), "is empty"),
         (_readme("Prose.\n\n## A Heading\n\nMore."), "a heading or a comment"),
         (_readme("Prose.\n\n<!-- a note -->"), "a heading or a comment"),
+        # A block that runs on into the next one holds that block's marker, a comment.
+        (
+            _readme("Prose.").replace(f"{INTRO_END}\n", "") + f"\n{INTRO_END}\n",
+            "a heading or a comment",
+        ),
         (_readme(f"See [the site]({render_overview.SITE_URL})."), "links the site"),
     ],
 )
@@ -254,9 +324,12 @@ INTRO_TREE = RepositoryTree(
 )
 
 
-def _overview(intro: str) -> str:
+def _overview(intro: str, progress: str = "<p>What the project covers.</p>") -> str:
     outside = '<p><a href="packing/frontier/RESULTS.md">outside the block</a></p>'
-    return f"{outside}{OVERVIEW_INTRO_OPEN}{intro}{OVERVIEW_INTRO_CLOSE}{outside}"
+    return (
+        f"{outside}{OVERVIEW_INTRO_OPEN}{intro}{OVERVIEW_INTRO_CLOSE}{outside}"
+        f"{PROGRESS.opened}{progress}{PROGRESS.closed}{outside}"
+    )
 
 
 def test_the_introductions_links_reach_the_sites_own_pages(
@@ -266,7 +339,7 @@ def test_the_introductions_links_reach_the_sites_own_pages(
     frontier atlas, a case file to its record, a served document to its page, and any
     other path to `main`; nothing outside the block is touched."""
     monkeypatch.setattr(site_documents, "repository_tree", lambda: INTRO_TREE)
-    out = rewrite_overview_intro(
+    out = rewrite_overview_blocks(
         _overview(
             '<p><a href="packing/frontier/RESULTS.md">T-060</a> '
             '<a href="packing/frontier/RESULTS.md">results register</a> '
@@ -287,7 +360,30 @@ def test_the_introductions_links_reach_the_sites_own_pages(
         (f"{REPO_URL}/blob/{BRANCH}/docs/review.md", "review"),
         ("https://example.org/proof", "the proof"),
     ]
-    assert out.count('<a href="packing/frontier/RESULTS.md">outside the block</a>') == 2
+    assert out.count('<a href="packing/frontier/RESULTS.md">outside the block</a>') == 3
+
+
+def test_both_shared_blocks_have_their_links_rewritten(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The block that opens Recent Results is rewritten as the first section's is, and
+    what lies between the two blocks is left as it was."""
+    monkeypatch.setattr(site_documents, "repository_tree", lambda: INTRO_TREE)
+    out = rewrite_overview_blocks(
+        _overview(
+            '<p><a href="packing/frontier/STATUS.md">frontier</a></p>',
+            '<p><a href="packing/frontier/RESULTS.md">T-060</a> '
+            '<a href="packing/frontier/n-011.md">case record</a></p>',
+        )
+    )
+    progress = out.split(PROGRESS.opened, 1)[1].split(PROGRESS.closed, 1)[0]
+    assert re.findall(r'<a href="([^"]+)">([^<]+)</a>', progress) == [
+        ("all-results.html#t-060", "T-060"),
+        ("cases.html#n-11", "case record"),
+    ]
+    intro = out.split(OVERVIEW_INTRO_OPEN, 1)[1].split(OVERVIEW_INTRO_CLOSE, 1)[0]
+    assert intro == '<p><a href="frontier.html">frontier</a></p>'
+    assert out.count('<a href="packing/frontier/RESULTS.md">outside the block</a>') == 3
 
 
 def test_the_overview_fails_on_an_unresolved_introduction_link(
@@ -295,6 +391,13 @@ def test_the_overview_fails_on_an_unresolved_introduction_link(
 ) -> None:
     monkeypatch.setattr(site_documents, "repository_tree", lambda: INTRO_TREE)
     with pytest.raises(SystemExit, match="1 unresolved links in README's introduction"):
-        rewrite_overview_intro(_overview('<p><a href="docs/gone.md">gone</a></p>'))
-    with pytest.raises(SystemExit, match="is not marked in the page"):
-        rewrite_overview_intro('<p><a href="docs/review.md">no markers</a></p>')
+        rewrite_overview_blocks(_overview('<p><a href="docs/gone.md">gone</a></p>'))
+    with pytest.raises(SystemExit, match="1 unresolved links in README's introduction"):
+        rewrite_overview_blocks(
+            _overview("<p>Fine.</p>", '<p><a href="docs/gone.md">gone</a></p>')
+        )
+    with pytest.raises(SystemExit, match="project-intro block is not marked in the page"):
+        rewrite_overview_blocks('<p><a href="docs/review.md">no markers</a></p>')
+    unmarked = f"{OVERVIEW_INTRO_OPEN}<p>Fine.</p>{OVERVIEW_INTRO_CLOSE}"
+    with pytest.raises(SystemExit, match="recent-progress block is not marked in the page"):
+        rewrite_overview_blocks(unmarked)

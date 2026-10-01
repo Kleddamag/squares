@@ -151,7 +151,7 @@ def test_a_rounded_report_of_the_verified_result_is_not_awaiting_replay(
     assert case["reported_lower_bound"]["value"] == "3.87708359002281"
     eleven = next(row for row in rows if row.n == 11)
     assert eleven.reported.value < eleven.verified.value
-    assert eleven.reported.results == eleven.verified.results == "T-060 `V4/C5`"
+    assert eleven.reported.results == eleven.verified.results == "T-060 `V3/C3`"
     assert not eleven.shows_reported
     assert eleven.described == [eleven.verified]
     # Each clause decides n = 11 by itself: the same entry, and the same value printed.

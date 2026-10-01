@@ -577,6 +577,18 @@ Missing median evidence is reported explicitly rather than represented as a pass
 relative check. [The validation guide](development.md#validation-tiers) defines the
 measurement and the register contracts.
 
+The per-tier drift and stale rules met the same variance and took the same shape.
+On 2026-09-30 the `checks` tier read 59.4 to 137.1 s and shard C 62.96 to 143.87 s
+across one day’s hosted runs of unchanged work, 2.3x on identical code, and the two
+record-relative rules failed four runs with every test green while a re-run of the
+identical commit passed; a single hosted reading cannot tell a slow draw from a slow
+change. Since 2026-10-01 both rules are advisory on a hosted pull-request run under
+`think-be1s`, declared and bead-tracked in the register the way the walls are, with
+every finding still computed, printed and annotated, while the per-tier ceiling is
+enforced unchanged and held both slow-fleet shard-C walls that day.
+The day’s readings are retained with their verdicts as a replayed fixture
+(`think-53a2`).
+
 The target applies to ordinary PR feedback.
 A full final checkpoint may take longer, but its measured duration is still open to
 improvement. Twenty-seven minutes observed on one checkpoint is not a necessary minimum.
@@ -749,6 +761,9 @@ Four obligations follow, and they are what a control has to hold:
 - **The CI jobs are clocked the way local tiers are**, so `gate-budgets.yaml`’s drift
   and stale rules reach them.
   A price nothing reads is not a budget.
+  Clocked is not the same as failed on: since 2026-10-01 those two rules are advisory on
+  a pull request (`OR-14`), because one hosted reading cannot separate the runner from
+  the change, while the ceiling this rule requires is the one that still fails a run.
 - **A gate never re-decides a tree it has already decided.** The second deep-gate run
   that day spent forty-five minutes on a byte-identical tree the first had passed, and
   that duplicate was the whole wall of the merge.

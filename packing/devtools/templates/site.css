@@ -35,17 +35,24 @@ body {
 :where([data-kpress-resolved-theme="dark"]) :is(.kpress, .kpress-page-main, .kpress-tooltip),
 :is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme="dark"] {
   /* The accent's dark value is in site-nav.css, which every page carries, the workbench
-     included. Chips turn over with the page: dark fills that lighten with the level,
-     the lowest close to the page's own dark background. */
+     included. Chips turn over with the page: dark fills that lighten and saturate with
+     the level, the lowest close to the page's own dark background. */
   --site-rung-base: 25%;
-  --site-rung-step: 4%;
+  --site-rung-step: 4.6%;
+  --site-rung-chroma-base: 0.012;
+  --site-rung-chroma-step: 0.019;
   --site-hero-filter: brightness(0.88);
 }
-/* Chips are light fills carrying the page's own text colour, darkening with the level
-   from close to the page background; dark mode turns the scale over (above). */
+/* The rung scale: a fill's lightness and chroma at level 0, and what one level adds to
+   each. Chips are light fills carrying the page's own text colour: level 0 sits close to
+   the page background, nearly neutral, and each level is darker and more saturated;
+   dark mode turns the lightness over (above). `devtools.rung_scale` measures every fill
+   these make and its text contrast (paper-design.md, Color). */
 :root {
-  --site-rung-base: 96%;
-  --site-rung-step: -3.5%;
+  --site-rung-base: 95%;
+  --site-rung-step: -5.5%;
+  --site-rung-chroma-base: 0.015;
+  --site-rung-chroma-step: 0.024;
 }
 
 /* The paper typography profile, read from paper-type.css, which the explainer carries
@@ -68,7 +75,18 @@ body {
   /* A table stops at 100rem, short of the atlas's cap: past it, its columns only spread
      apart and a row gets harder to follow. */
   --site-table-max: 100rem;
-  --site-subtitle-space: 1.25rem;
+  /* The space above and below every table, on screen: a site table with its filter bar,
+     the awaiting-replay disclosure, and a document's own table (paper-design.md,
+     Tables). */
+  --site-table-space: 2rem;
+  /* The least space between a wide block and the edge of the page's content area, inside
+     the page's margin: a table and its filter bar, a row of cards, the atlas grid. It is
+     KPress's own document gutter, so a wide block with no room to spare is as wide as
+     the text, and it is measured from the page, never from the window (below). */
+  --site-wide-gutter: 0.5rem;
+  /* The space under a page's title: to its subtitle and from the subtitle to the first
+     paragraph, or straight to the first paragraph of a page that has no subtitle. */
+  --site-subtitle-space: 1.5rem;
   --site-subtitle-scale: 1.1;
   /* How much nearer the bar a page's opening picture sits than a title would: a drawing
      has no line spacing above its edge, so the same space reads larger. */
@@ -84,7 +102,7 @@ body {
 }
 .site-page h2 {
   text-align: center;
-  margin-block: var(--paper-section-space) 1.3rem;
+  margin-block: var(--paper-section-space) var(--paper-section-space-below);
 }
 
 /* ---------- Page body ---------- */
@@ -99,10 +117,16 @@ body {
   padding-block-end: calc(var(--kpress-font-size-base) * 5);
   padding-inline: 0;
 }
-/* Wide blocks (tables, the atlas figure, card grids) take a wider track than prose. */
+/* Wide blocks (tables, the atlas figure, card grids) take a wider track than prose, and
+   stop `--site-wide-gutter` short of the page's content area on either side. That area
+   is KPress's page container less its margin, `100cqw`: the width the page is laid out
+   in. `100vw` is not, since it counts a scrollbar the layout does not, and a narrow page
+   clips at the document's edge, so a block sized from the window ran under the clip and
+   lost its first and last few pixels. */
 .site-page .site-wide {
-  margin-inline: calc((min(var(--site-wide), 100vw - 2rem) - 100%) / -2);
-  max-width: min(var(--site-wide), 100vw - 2rem);
+  --site-wide-room: calc(100cqw - 2 * var(--site-wide-gutter));
+  margin-inline: calc((min(var(--site-wide), var(--site-wide-room)) - 100%) / -2);
+  max-width: min(var(--site-wide), var(--site-wide-room));
 }
 /* A data table's wide track bleeds as the atlas grid does, but only above
    `--site-table-bleed-from`: there it is exactly the wide track above, and past it the
@@ -113,7 +137,7 @@ body {
   --site-table-grow: max(0px, 100vw - var(--site-table-bleed-from));
   --site-table-wide: min(
     var(--site-table-max),
-    calc(100vw - 2rem),
+    var(--site-wide-room),
     calc(var(--site-wide) + var(--site-table-grow))
   );
   margin-inline: calc((var(--site-table-wide) - 100%) / -2);
@@ -155,8 +179,15 @@ body {
   color: var(--kpress-doc-text);
   font-family: var(--kpress-font-sans);
   font-size: calc(var(--site-font-size-sans-base) * var(--site-subtitle-scale));
-  line-height: 1.3;
+  line-height: var(--paper-heading-leading);
   margin-block: var(--site-subtitle-space);
+}
+/* A title with no subtitle, a document's own `h1` among them, stands the same space
+   above its first paragraph, on screen. */
+@media screen {
+  .site-page h1 {
+    margin-block-end: var(--site-subtitle-space);
+  }
 }
 .kpress .site-hero:has(.subtitle) h1 {
   margin-block-end: 0;
@@ -512,7 +543,7 @@ body {
 }
 .site-popover .site-popover-value {
   font-size: 1.15em;
-  margin-block: 0.3rem 0.8rem;
+  margin-block: 0.5rem 1rem;
 }
 .site-popover .site-popover-links {
   font-size: var(--site-font-size-note);
@@ -616,15 +647,30 @@ body {
 }
 /* A card's headline, and its popover's, which repeats it: the sans face at the medium
    weight, the face and weight of the page title and of the sans section headings
-   (`h3`). A long closed form, such as a nested radical, scrolls inside its card rather
-   than widening the page. */
+   (`h3`), at the headings' own leading (`--paper-heading-leading`, paper-type.css), so
+   a headline of two or three lines reads as one block. A long closed form, such as a
+   nested radical, scrolls inside its card rather than widening the page. */
 .kpress .site-card .site-card-value,
 .site-popover .site-popover-value {
   font-family: var(--kpress-font-sans);
   font-weight: var(--site-font-weight-sans-medium);
+  line-height: var(--paper-heading-leading);
 }
+/* A formula in a headline or a heading keeps the line's leading. KPress sets an inline
+   formula's box at a line of 1.4 and KaTeX its own at 1.2, either of which makes the line
+   holding a formula taller than the lines around it; with no line of its own, a formula
+   is as tall as KaTeX's struts, which give it the height and depth it needs. */
+.site-page :is(h1, h2, h3, h4) :is(.kpress-math, .katex),
+:is(.site-card-value, .site-popover-value, .site-case-title, .site-hero .subtitle)
+  :is(.kpress-math, .katex) {
+  line-height: 0;
+}
+/* The tighter leading takes the room a looser line kept around the headline, so the
+   headline carries it as margin: a little above, under the label, and more below, over
+   the note. */
 .kpress .site-card .site-card-value {
   font-size: 1.15em;
+  margin-block: 0.2rem 0.3rem;
   max-inline-size: 100%;
   overflow-x: auto;
   overflow-y: hidden;
@@ -657,13 +703,41 @@ body {
 }
 
 /* ---------- Tables: additions to .kpress-table ---------- */
+/* Every table stands `--site-table-space` clear of the text above and below it, on
+   screen: the space is above a table's filter bar when it has one, which keeps its own
+   small gap to the table, and below the table's wrap. A document's table, which KPress
+   wraps itself, takes the same token, and so does the awaiting-replay disclosure, whose
+   table sits flush under its summary. Print keeps KPress's own spacing. */
 .site-table-tools {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem 1rem;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-support);
-  margin-block: 1rem 0.5rem;
+  margin-block: var(--site-table-space) 0.5rem;
+}
+@media screen {
+  .kpress details.site-replay,
+  .kpress-table-wrap,
+  .site-table-wrap {
+    margin-block: var(--site-table-space);
+  }
+  .site-table-tools + .site-table-wrap,
+  .site-replay .site-table-wrap {
+    margin-block-start: 0;
+  }
+  .site-replay .site-table-wrap {
+    margin-block-end: 0;
+  }
+}
+/* On a narrow pane KPress lets a document's table run past the column, across the
+   document's gutter and under its clip. Here it keeps to the column and scrolls inside
+   its wrap, so the scroller itself keeps the gutter. The band is KPress's own, a query
+   on its page container, so the two rules always apply together. */
+@container kpress-doc (max-width: 47.99rem) {
+  .kpress .site-page .kpress-table-wrap {
+    max-inline-size: 100%;
+  }
 }
 .site-table-tools label {
   color: var(--kpress-doc-muted);
@@ -678,6 +752,11 @@ body {
   color: var(--kpress-doc-text);
   font: inherit;
   padding: 0.1rem 0.35rem;
+}
+/* An age in days is a few digits. A number input with no `max` to size it by would
+   otherwise take a text field's width. */
+.site-table-tools input[data-bound="age"] {
+  inline-size: 4.5rem;
 }
 .site-table-tools .site-count {
   color: var(--site-support-color);
@@ -818,16 +897,19 @@ body {
   color: var(--kpress-doc-text);
 }
 
-/* A rung's fill moves with its level on its own scale, darker in light mode and lighter
-   in dark, always behind the page's text colour: verification in blue and confirmation in green, each a desaturated shade of
-   the packing palette's blue and green squares, and significance in gray. */
+/* A rung's fill moves with its level on its own scale, always behind the page's text
+   colour: level 0 is nearly the page background, and each level above it is stronger
+   (darker in light mode, lighter in dark) and more saturated. Verification is the blue
+   and confirmation the green of the packing palette's squares. Significance is gray at
+   every level, so it takes the lightness steps and no chroma step. */
 .site-rung-fill {
   --rung-hue: 250;
-  --rung-chroma: 0.06;
+  --rung-chroma-base: var(--site-rung-chroma-base);
+  --rung-chroma-step: var(--site-rung-chroma-step);
   --rung-level: 0;
   background: oklch(
-    calc(var(--site-rung-base) + var(--rung-level) * var(--site-rung-step)) var(--rung-chroma)
-      var(--rung-hue)
+    calc(var(--site-rung-base) + var(--rung-level) * var(--site-rung-step))
+      calc(var(--rung-chroma-base) + var(--rung-level) * var(--rung-chroma-step)) var(--rung-hue)
   );
   color: var(--kpress-doc-text);
 }
@@ -835,7 +917,8 @@ body {
   --rung-hue: 158;
 }
 .site-rung-fill[data-rung="S"] {
-  --rung-chroma: 0.008;
+  --rung-chroma-base: 0.008;
+  --rung-chroma-step: 0;
 }
 .site-rung-fill[data-level="1"] {
   --rung-level: 1;
@@ -973,7 +1056,7 @@ body {
     column-gap: 0.6rem;
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
-    padding: 0.7rem 0.25rem;
+    padding: 0.7rem 0.5rem;
     row-gap: 0.3rem;
   }
   .site-results tr[hidden] {
@@ -1260,24 +1343,145 @@ body {
   margin-block-start: 0.5rem;
 }
 
-/* A dimension card lists its levels, highest first: the chip, then the rubric's
-   meaning, one level to a line under the question the dimension answers. */
-.kpress .site-cards-dimensions .site-card-note {
-  display: grid;
-  gap: 0.3rem;
+/* ---------- The rating ladders ----------
+   Verification at a Glance is one diagram (paper-design.md, Rating ladders): a column
+   for each scored dimension, a row for each level, the highest at the top, so the rungs
+   of the three ladders line up. It is a grid with table roles, in the wide track, and
+   it stands the tables' own space clear of the text. Every rung is the same height: its
+   description is a box of exactly two lines, and its chip and count are a line each. */
+.site-ladders-frame {
+  container: site-ladders / inline-size;
 }
-.site-level-question {
+@media screen {
+  .site-ladders-frame {
+    margin-block: var(--site-table-space);
+  }
+}
+.site-ladders {
+  --site-ladders-leading: 1.4;
+  --site-ladders-line: calc(var(--site-font-size-note) * var(--site-ladders-leading));
+  /* The rail holds a chip over its count, "no result yet" at the widest. */
+  --site-ladders-rail: 6.5rem;
+  --site-ladders-gap: 0.5rem;
+  /* The narrowest a description is ever set: `SHORT_MEANING_LINE` characters a line. */
+  --site-ladders-meaning-min: 13.5rem;
+  /* What a column keeps clear after its words, before the next column's chip: more than
+     the gap inside a rung, and no more than lets three columns stand in the wide track
+     of a 768-pixel window, 43rem (below). */
+  --site-ladders-inset: 0.75rem;
+  display: grid;
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  line-height: var(--site-ladders-leading);
+  position: relative;
+}
+.site-ladders > [role="row"] {
+  display: contents;
+}
+/* The level a row stands for is said by its chips; its header is for a screen reader. */
+.site-ladders-level {
+  block-size: 1px;
+  clip-path: inset(50%);
+  inline-size: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+}
+.site-ladders-head {
+  border-block-end: 1px solid var(--kpress-doc-text);
+  padding: 0 var(--site-ladders-inset) 0.6rem 0;
+}
+.kpress .site-ladders .site-ladders-name {
   color: var(--kpress-doc-text);
-  margin-block-end: 0.2rem;
+  display: block;
+  font-size: 1.15em;
+  font-weight: var(--site-font-weight-sans-medium);
+  line-height: var(--paper-heading-leading);
+  margin-block-end: 0.3rem;
 }
-.site-level {
-  align-items: baseline;
+.kpress .site-ladders .site-ladders-name:is(:hover, :focus-visible) {
+  color: var(--kpress-doc-accent);
+}
+.site-ladders-question {
+  color: var(--site-support-color);
+  display: block;
+}
+.site-ladders-cell {
+  border-block-end: 1px solid var(--kpress-doc-border);
+  container-type: inline-size;
+  padding: 0.6rem var(--site-ladders-inset) 0.6rem 0;
+}
+/* A rung in a narrow cell: its chip, then its count, on one line, and the description
+   under them across the whole cell. */
+.site-ladders-rung {
+  align-items: center;
+  column-gap: var(--site-ladders-gap);
   display: grid;
-  gap: 0.5rem;
-  grid-template-columns: 2.2rem 1fr;
+  grid-template:
+    "chip count" auto
+    "meaning meaning" auto / auto minmax(0, 1fr);
 }
-.site-level .site-chip {
+.site-ladders-rung .site-chip {
+  grid-area: chip;
+  justify-self: start;
+  min-inline-size: 2.2rem;
   text-align: center;
+}
+.site-ladders-count {
+  color: var(--site-support-color);
+  font-variant-numeric: tabular-nums;
+  grid-area: count;
+  white-space: nowrap;
+}
+.site-ladders-meaning {
+  block-size: calc(2 * var(--site-ladders-line));
+  grid-area: meaning;
+}
+/* A rung with room, 20.5rem (the rail, the gap and the least description): the chip over
+   its count in a rail and the description beside them, its first line level with the
+   chip's letters, which the chip's own margin sets down. */
+@container (inline-size >= 20.5rem) {
+  .site-ladders-rung {
+    align-items: start;
+    grid-template:
+      "chip meaning" auto
+      "count meaning" minmax(0, 1fr) / var(--site-ladders-rail) minmax(0, 1fr);
+  }
+  .site-ladders-meaning {
+    margin-block-start: 0.15rem;
+  }
+}
+/* Below 42.75rem (three columns of the least description and its inset) three columns
+   would set a description narrower than its minimum, so each ladder is a block of its
+   own, significance first: its head, then its rungs from the top. The order is the
+   grid's; the markup stays a table read level by level. A ladder's missing rung takes no
+   room. The diagram is as wide as the wide track, which is sized from the page: 43rem at
+   a 768-pixel window, where the page's margin widens, and 42.75rem at a 716-pixel one,
+   so three columns hold from 716 pixels up with no width between that stacks. */
+@container site-ladders (inline-size < 42.75rem) {
+  .site-ladders {
+    --site-ladders-inset: 0;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .site-ladders [data-ladder="V"] {
+    order: 1;
+  }
+  .site-ladders [data-ladder="C"] {
+    order: 2;
+  }
+  .site-ladders-head ~ .site-ladders-head {
+    margin-block-start: 1.6rem;
+  }
+  .site-ladders-empty {
+    block-size: 1px;
+    border: 0;
+    clip-path: inset(50%);
+    inline-size: 1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+  }
 }
 
 /* The atlas grid: every case's known-best packing in a square cell, numbered beneath.
@@ -1674,7 +1878,8 @@ body {
 }
 .kpress .site-case-title {
   font-size: calc(var(--site-font-size-sans-base) * 1.6);
-  margin-block: 0.2rem 0.3rem;
+  line-height: var(--paper-heading-leading);
+  margin-block: 0.5rem 0.6rem;
 }
 .site-case-title b {
   font-weight: var(--site-font-weight-sans-medium);
@@ -1901,7 +2106,7 @@ body {
    gutters, but never so tall that it will not fit the window whole, at the video's own
    16:9, which the poster shares, so starting playback moves nothing. */
 .site-page .site-film-frame {
-  --site-film-width: min(100vw - 2rem, (100svh - 5rem) * 16 / 9, 120rem);
+  --site-film-width: min(100cqw - 2 * var(--site-wide-gutter), (100svh - 5rem) * 16 / 9, 120rem);
   inline-size: var(--site-film-width);
   margin-block: 1.5rem;
   margin-inline: calc((var(--site-film-width) - 100%) / -2);

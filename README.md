@@ -7,6 +7,9 @@ non-overlapping unit squares, which may be rotated.
 The problem is elementary to state and open for most $n$: the answer is known only to
 lie between the best packing found and the best lower bound proved.
 
+<!-- END SHARED: project-intro -->
+<!-- BEGIN SHARED: recent-progress (devtools.site_documents) -->
+
 The project covers the problem at every $n$. Its [frontier](packing/frontier/STATUS.md)
 keeps one record for each case $n = 1\ldots324$, with reported and verified bounds kept
 separate, and its [results register](packing/frontier/RESULTS.md) grades each registered
@@ -21,14 +24,14 @@ Astra-assisted
 [11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal) proof by
 Queuingtheorydotcom, building on this project and Kleddamag.
 This repository independently replayed the pinned exact proof inputs and audited their
-mathematical composition (`V4/C5/S5`); [T-011](packing/frontier/RESULTS.md) verifies
-Trump’s matching witness.
+mathematical composition (`V3/C3/S5`: machine-checked, review record pending);
+[T-011](packing/frontier/RESULTS.md) verifies Trump’s matching witness.
 The [case record](packing/frontier/n-011.md),
 [review](docs/project/reviews/review-2026-09-29-n11-optimality.md), and
 [retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) state the
 method’s shared dependencies and the publisher’s four stale cached-audit digests.
 
-<!-- END SHARED: project-intro -->
+<!-- END SHARED: recent-progress -->
 
 **The results live on the project site,
 [Square Packing](https://jlevy.github.io/squares/).** It carries the

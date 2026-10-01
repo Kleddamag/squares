@@ -6,10 +6,10 @@ interface SiteTableFilter {
   key: string;
   /**
    * How the control's value is held against the row's: equal to it, a flag that must be
-   * set, a numeric bound, a bound on text that orders as it reads (an ISO date), or a
-   * number the row's list of numbers and ranges must hold.
+   * set, a numeric bound, a first day the row's ISO date may be (which orders as it
+   * reads), or a number the row's list of numbers and ranges must hold.
    */
-  kind: "equals" | "flag" | "min" | "max" | "from" | "to" | "covers";
+  kind: "equals" | "flag" | "min" | "max" | "since" | "covers";
   value: string;
 }
 
@@ -27,6 +27,8 @@ interface SiteTableApi {
   ): boolean;
   rowsShown(headings: readonly boolean[], passes: readonly boolean[], grouped: boolean): boolean[];
   countText(shown: number, total: number, noun: string): string;
+  localDay(now: Date): string;
+  ageCutoff(today: string, days: string): string;
   controlParam(key: string, bound: string | null): string;
   init(): void;
 }

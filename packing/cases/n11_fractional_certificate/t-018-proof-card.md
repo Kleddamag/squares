@@ -84,7 +84,7 @@ it.
   tolerance and no sampled angle anywhere.
 - **The record, not this card, carries the result’s standing.**
   [`results.yaml`](../../frontier/results.yaml) holds `T-018` at confirmation rung
-  `C5` on the scale [`epistemics.md`](../../../epistemics.md) defines,
+  `C3` on the scale [`epistemics.md`](../../../epistemics.md) defines,
   with [the review it rests on](../../../docs/project/reviews/review-2026-09-04-pr78-s11-adversarial.md) mapped beside it, and its novelty
   as `apparently-novel`, a statement about what a search of the literature found, not a claim
   of priority.

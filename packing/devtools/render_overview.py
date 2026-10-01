@@ -99,7 +99,8 @@ OVERVIEW_DESCRIPTION = (
 )
 RESULTS_DESCRIPTION = (
     "Every registered result on packing unit squares in the smallest square, this "
-    "project's and others', with its verification, confirmation, standing and records."
+    "project's and others', with its significance, verification, confirmation, standing "
+    "and records."
 )
 PAPERS_DESCRIPTION = (
     "The project's papers on packing unit squares in the smallest square: its "
@@ -552,8 +553,9 @@ def fill(template: str, values: dict[str, str], *, where: str) -> str:
 def overview_page() -> Page:
     """The front door: prose from its template, every fact from the record.
 
-    Its first section's prose is README's introduction, read from README's
-    `project-intro` block and its links rewritten for the site (`site_documents`).
+    Its first section opens with README's first paragraph and its Recent Results with
+    README's next two, read from README's `project-intro` and `recent-progress` blocks
+    and their links rewritten for the site (`site_documents`).
     """
     from devtools import overview_data, overview_sections, site_documents  # noqa: PLC0415
 
@@ -561,6 +563,7 @@ def overview_page() -> Page:
     values = {
         "HERO": overview_sections.hero(),
         "README_INTRO": site_documents.overview_intro(),
+        "README_PROGRESS": site_documents.overview_progress(),
         "NEW_ISSUE_URL": NEW_ISSUE_URL,
         "DOCUMENT_CARDS": overview_sections.document_cards(),
         "OTHER_PROJECTS": overview_sections.other_project_cards(),
@@ -568,9 +571,7 @@ def overview_page() -> Page:
         "ATLAS_CARDS": overview_sections.atlas_cards(),
         "PAGE_CARDS": overview_sections.page_cards(),
         "VERIFICATION": overview_sections.verification_block(),
-        "RECENT_LEAD": overview_sections.recent_lead(overview),
         "RECENT": overview_sections.recent_table(overview),
-        "RECENT_FROM": overview_sections.recent_from(),
         "AWAITING_REPLAY": overview_sections.awaiting_replay(overview),
         "SURVEY_COUNTS": overview_sections.survey_counts(overview),
         "ARROW_RIGHT": overview_sections.arrow_icon("right"),
@@ -592,7 +593,7 @@ def overview_page() -> Page:
         title=SITE_NAME,
         description=OVERVIEW_DESCRIPTION,
         toc=False,
-        rewrite_body=site_documents.rewrite_overview_intro,
+        rewrite_body=site_documents.rewrite_overview_blocks,
         page_scripts=(
             FORWARD_SCRIPT,
             TABLE_SCRIPT,

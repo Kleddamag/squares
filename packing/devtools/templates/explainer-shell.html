@@ -306,7 +306,10 @@ body {
 /* A section starts with room above its heading, so it reads as a new step. */
 .section-head { margin-block: calc(var(--kpress-font-size-base) * 2.6) 0.9rem; text-align: center; }
 /* A section starts with room above its heading and a breath below it. */
-.cert-page h2 { margin-block: var(--paper-section-space) 1.3rem; text-align: center; }
+.cert-page h2 {
+  margin-block: var(--paper-section-space) var(--paper-section-space-below);
+  text-align: center;
+}
 /* A box holds discrete statements rather than continuous argument, so its
    paragraphs stand a little further apart than running prose, which kpress sets at
    0.75rem. One rule serves both boxes on the page, the five conditions and the
@@ -329,6 +332,8 @@ body {
   .cert-page .doc-links { margin-block-start: 0.5rem; }
   .hero { clear: both; padding-block-start: var(--site-page-top); }
   .cert-page .hero h1 { margin-block-start: 0; }
+  /* The credits start a little further under the title on screen than in print. */
+  .cert-page .hero .credits { margin-block-start: 2.25rem; }
 }
 /* The heading is set in caps by kpress; its math run, `n = 11`, is mathematics and keeps
    both mathematical italic and lowercase rather than inheriting the heading transform.

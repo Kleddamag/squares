@@ -621,8 +621,8 @@ def results_block(n: int) -> str:
     from devtools.overview_sections import (  # noqa: PLC0415
         _detail,  # pyright: ignore[reportPrivateUsage]
         _records,  # pyright: ignore[reportPrivateUsage]
-        _rung,  # pyright: ignore[reportPrivateUsage]
         result_url,
+        rung_chips,
     )
 
     results = sorted(_results_by_case().get(n, []), key=lambda r: r.id)
@@ -634,14 +634,7 @@ def results_block(n: int) -> str:
     items = []
     for result in results:
         record = result.record
-        rungs = " ".join(
-            _rung(rung)
-            for rung in (
-                record["verification"],
-                record["confirmation"],
-                "S" + str(record["significance"]["score"]),
-            )
-        )
+        rungs = rung_chips(result)
         scope = record["scope"]
         count = (
             len(scope["n_values"])

@@ -232,6 +232,37 @@ def advisory_problems(walls: WallRegister, read: bead_state.Reader | None = None
     ]
 
 
+def relative_rule_problems(
+    register: Register, read: bead_state.Reader | None = None
+) -> list[str]:
+    """An advisory drift-and-stale declaration whose tracking bead no longer tracks it.
+
+    `gate_budgets.load` already refuses the declaration without a bead alias or a reason;
+    this is the same liveness question `advisory_problems` asks of a wall, with the same
+    answer when no store is reachable: fail under `CI`, skip loudly on a laptop.
+    """
+    declared = register.policy.pull_request_relative_rules
+    if declared is None:
+        return []
+    label = "the drift and stale rules are advisory on pull requests under {}"
+    store = read if read is not None else bead_state.store()
+    if store is None:
+        problem = (
+            f"{label.format(declared.tracking_bead)}, and no bead store is reachable (no "
+            "tbd sync worktree, no tbd-sync branch) to confirm that bead is still open"
+        )
+        if os.environ.get("CI"):
+            return [f"{problem}; fetch full history"]
+        print(f"SKIP {problem}; the tracker is unchecked here, and CI fails on it")
+        return []
+    return [
+        f"{label.format(fault)}, so nothing tracks switching them back on; set "
+        "policy.pull_request_relative_rules.enforcement to enforcing and drop its tracker, "
+        "or name the open bead that will re-enforce them"
+        for fault in bead_state.dead_trackers([declared.tracking_bead], store)
+    ]
+
+
 def wall_problems(
     register_path: Path = REGISTER, read: bead_state.Reader | None = None
 ) -> list[str]:
@@ -354,6 +385,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         + documentation_problems(register)
         + unrecorded_problems(register, tiers)
         + ratchets
+        + relative_rule_problems(register, store)
         + wall_problems(read=store)
     )
     if problems:
@@ -364,6 +396,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"note: {note}")
     # Reached with no store only off CI, where the trackers were skipped rather than read.
     tracked = "live bead" if store is not None else "unchecked bead"
+    relaxed = register.policy.pull_request_relative_rules
+    if relaxed is not None:
+        print(
+            f"note: the drift and stale rules are advisory on pull requests under {tracked} "
+            f"{relaxed.tracking_bead}: {relaxed.reason}"
+        )
     for workflow in load_walls(REGISTER).workflows:
         if workflow.advisory is not None:
             print(

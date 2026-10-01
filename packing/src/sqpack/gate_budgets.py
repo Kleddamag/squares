@@ -36,6 +36,17 @@ so the stale rule reads the band's low edge and the drift rule its high edge. Th
 eleven hosted runs and 58.75 to 70.50 s on the next three, on unchanged steps, and no
 single record can hold both regimes inside 0.6x and 1.5x.
 
+The two record-relative rules, drift and stale, may be declared advisory on hosted
+pull-request runs under `policy.pull_request_relative_rules`, the way `pull_request_walls`
+declares an advisory wall: the findings are computed, printed word for word and marked
+advisory, the run is not failed for them, and the declaration must name the bead that
+tracks switching them back on. The ceiling is never relaxed. The measurement behind it is
+2026-09-30: on unchanged code, the `checks` tier read 59.4 to 133.0 s and shard C 84.5 to
+172.5 s across one day's hosted runs, 2.0 to 2.2x on identical work, which no pair of
+edges around a point or a band can hold without also letting a real 2x regression
+through. A single hosted reading cannot tell a slow draw from a slow change; the ceiling
+can still refuse a slow run, and that is the rule a pull request is held to.
+
 Nothing here prints or exits; `sqpack.cli.validate` renders the verdict and
 `devtools.check_gate_budgets` is the static check's command surface.
 """
@@ -161,6 +172,27 @@ class TierBudget:
         return self.ceiling_seconds / self.measured_seconds
 
 
+#: What the two record-relative rules do on a hosted pull-request run. Absent means
+#: `enforcing`, the way an absent `enforcement` on a pull-request wall does.
+RELATIVE_ENFORCEMENT = ("enforcing", "advisory")
+#: A bead alias, the only thing a relaxed rule may name as its tracker: the shape
+#: `check_pr_wall` requires of an advisory wall, for the same reason a reporting-only CI
+#: gate requires it below. A relaxation with no bead behind it is a permanent one.
+TRACKING_BEAD = r"think-[a-z0-9]{4}"
+
+
+@dataclass(frozen=True)
+class Advisory:
+    """A relaxation that names the work that ends it.
+
+    Carried on the verdict as well as the policy so every rendering of an advisory finding
+    can say which bead it is advisory under and why.
+    """
+
+    tracking_bead: str
+    reason: str
+
+
 @dataclass(frozen=True)
 class Policy:
     """The bands every tier is held to, so no tier can quietly declare its own."""
@@ -174,6 +206,9 @@ class Policy:
     max_unattributed_rise: float | None = None
     #: Records dated before this are history the rule did not exist for: shown, not failed.
     attribution_required_from: str | None = None
+    #: Set when the register declares the drift and stale rules advisory on hosted
+    #: pull-request runs; None is enforcing. The ceiling is outside this and always applies.
+    pull_request_relative_rules: Advisory | None = None
 
 
 @dataclass(frozen=True)
@@ -204,18 +239,22 @@ class Verdict:
 
     `status` is the only field callers need to branch on. `failures` carries the reasons,
     each already naming the step that spent the time; `notes` carries what was measured
-    but deliberately not enforced.
+    but deliberately not enforced. `advisory_failures` are findings of a rule the register
+    has declared advisory for this run: real, printed word for word, and not what the run
+    is failed for. `advisory` says under which bead, and why.
     """
 
     tier: str | None
     wall_seconds: float
-    status: Literal["passed", "failed", "reported", "unknown"]
+    status: Literal["passed", "failed", "advisory", "reported", "unknown"]
     enforced: bool = False
     ceiling_seconds: float | None = None
     measured_seconds: float | None = None
     failures: tuple[str, ...] = ()
     notes: tuple[str, ...] = ()
     top_steps: tuple[tuple[str, float], ...] = field(default=())
+    advisory_failures: tuple[str, ...] = ()
+    advisory: Advisory | None = None
 
     @property
     def failed(self) -> bool:
@@ -381,6 +420,49 @@ def _band_from(raw: object, where: str) -> tuple[float, float] | None:
     return low, high
 
 
+def _relative_rules_from(raw: object) -> Advisory | None:
+    """The drift and stale rules' enforcement on pull requests: None when enforcing.
+
+    The same contract `check_pr_wall` holds an advisory wall to. An advisory declaration
+    must name its tracking bead and its reason; an enforcing one may name neither, so a
+    relaxation cannot linger half-removed, with the rule back on and a bead still cited.
+    """
+    where = "policy.pull_request_relative_rules"
+    if raw is None:
+        return None
+    entry = _require_mapping(raw, where)
+    enforcement = entry.get("enforcement", "enforcing")
+    if enforcement not in RELATIVE_ENFORCEMENT:
+        raise BudgetError(
+            f"{where}.enforcement must be one of {', '.join(RELATIVE_ENFORCEMENT)}, found "
+            f"{enforcement!r}"
+        )
+    bead, reason = entry.get("tracking_bead"), entry.get("advisory_reason")
+    if enforcement == "enforcing":
+        stray = [
+            name
+            for name, value in (("tracking_bead", bead), ("advisory_reason", reason))
+            if value is not None
+        ]
+        if stray:
+            raise BudgetError(
+                f"{where} is enforcing and still names {', '.join(stray)}; an enforcing "
+                "rule names no tracker, so remove them when enforcement returns"
+            )
+        return None
+    if not isinstance(bead, str) or re.fullmatch(TRACKING_BEAD, bead.strip()) is None:
+        raise BudgetError(
+            f"{where} is advisory and must name the bead tracking its return to "
+            f"enforcement as `tracking_bead: think-xxxx`, found {bead!r}"
+        )
+    if not isinstance(reason, str) or not reason.strip():
+        raise BudgetError(
+            f"{where} is advisory and must say why in a non-empty advisory_reason, "
+            f"found {reason!r}"
+        )
+    return Advisory(tracking_bead=bead.strip(), reason=" ".join(reason.split()))
+
+
 def load(path: Path | None = None) -> Register:
     """Read the tier register, refusing anything a rule could not be applied to."""
     source = BUDGETS if path is None else path
@@ -405,6 +487,9 @@ def load(path: Path | None = None) -> Register:
         ),
         attribution_required_from=_optional_text(
             policy_entry.get("attribution_required_from"), "policy.attribution_required_from"
+        ),
+        pull_request_relative_rules=_relative_rules_from(
+            policy_entry.get("pull_request_relative_rules")
         ),
     )
     raw_tiers = document.get("tiers")
@@ -586,10 +671,8 @@ def ratchet_problems(register: Register) -> tuple[list[str], list[str]]:
 
 #: What a CI gate's size verdict does to the run. Absent means `enforcing`.
 CI_ENFORCEMENT = ("enforcing", "reporting")
-#: A bead alias, the only thing a reporting-only gate may name as its tracker. The same
-#: shape `check_pr_wall` requires of an advisory pull-request wall, for the same reason:
-#: a relaxation with no bead behind it is a permanent one.
-CI_TRACKING_BEAD = r"think-[a-z0-9]{4}"
+#: A bead alias, the only thing a reporting-only gate may name as its tracker.
+CI_TRACKING_BEAD = TRACKING_BEAD
 
 
 @dataclass(frozen=True)
@@ -882,7 +965,7 @@ def judge_ci_job(
             top_steps=top,
         )
     enforced = force or gate.reference.matches(runner=runner)
-    failures, notes = band_findings(
+    found = band_findings(
         subject=f"the {gate.id} gate's {job.id!r} job",
         wall_seconds=wall_seconds,
         ceiling_seconds=job.ceiling_seconds,
@@ -893,6 +976,7 @@ def judge_ci_job(
         register_path=register.path,
         drift_ratio=gate.drift_ratio,
     )
+    failures, notes = list(found.failures), list(found.notes)
     if failures and not enforced:
         notes.extend(failures)
         notes.append(
@@ -945,6 +1029,24 @@ def _attribution(steps: tuple[tuple[str, float], ...], wall: float) -> str:
     return "; ".join(parts)
 
 
+@dataclass(frozen=True)
+class Findings:
+    """Rules 1, 3 and 4 over one wall, kept apart by what they are relative to.
+
+    `ceiling` is rule 1, absolute and never relaxed. `relative` is rules 3 and 4, measured
+    against the record, which a register may declare advisory on a pull request. A caller
+    with no such distinction to draw reads `failures`, the two together in rule order.
+    """
+
+    ceiling: tuple[str, ...] = ()
+    relative: tuple[str, ...] = ()
+    notes: tuple[str, ...] = ()
+
+    @property
+    def failures(self) -> tuple[str, ...]:
+        return (*self.ceiling, *self.relative)
+
+
 def band_findings(
     *,
     subject: str,
@@ -957,8 +1059,8 @@ def band_findings(
     register_path: Path | None,
     drift_ratio: float | None = None,
     band: tuple[float, float] | None = None,
-) -> tuple[list[str], list[str]]:
-    """Rules 1, 3 and 4 over one wall, as `(failures, notes)`.
+) -> Findings:
+    """Rules 1, 3 and 4 over one wall.
 
     The one place the four rules are written, so a surface that clocks something other
     than a local tier -- `judge_ci_job` clocks a hosted job -- is held to the same bands
@@ -969,11 +1071,12 @@ def band_findings(
     `band`, a recorded `(low, high)` of readings, changes what the ratios are applied to,
     never the ratios: the stale rule reads its low edge and the drift rule its high edge.
     """
+    ceiling: list[str] = []
     failures: list[str] = []
     notes: list[str] = []
     drift = policy.drift_ratio if drift_ratio is None else drift_ratio
     if wall_seconds > ceiling_seconds:
-        failures.append(
+        ceiling.append(
             f"{subject} ran {wall_seconds:.1f}s against a "
             f"{ceiling_seconds:g}s ceiling: {attribution}"
         )
@@ -1015,7 +1118,7 @@ def band_findings(
                 f"stale in the flattering direction, which is how a ceiling stops "
                 f"detecting anything. {advice}"
             )
-    return failures, notes
+    return Findings(ceiling=tuple(ceiling), relative=tuple(failures), notes=tuple(notes))
 
 
 def judge(
@@ -1028,12 +1131,19 @@ def judge(
     inner_jobs: int,
     cpus: int,
     force: bool = False,
+    pull_request: bool = False,
 ) -> Verdict:
     """Compare one finished run against the register.
 
     `tier_id` is `None` for a scoped run -- `--only`, or `--since` narrowing a tier --
     because a subset of a tier has no declared cost and pretending otherwise is how a
     ceiling gets waived by accident.
+
+    `pull_request` says the run is a hosted pull-request job. When the register declares
+    `policy.pull_request_relative_rules` advisory, the drift and stale findings of such a
+    run are reported under that bead and do not fail it; the ceiling still does. `force`
+    is an operator asking the question deliberately and overrides the relaxation, as it
+    overrides the reference-shape match.
     """
     top = _named_steps(steps, wall_seconds)
     if tier_id is None:
@@ -1063,7 +1173,7 @@ def judge(
     policy = register.policy
     attribution = _attribution(steps, wall_seconds)
     measured = tier.measured_seconds
-    failures, notes = band_findings(
+    found = band_findings(
         subject=f"the {tier.id} tier",
         wall_seconds=wall_seconds,
         ceiling_seconds=tier.ceiling_seconds,
@@ -1074,6 +1184,13 @@ def judge(
         register_path=register.path,
         band=tier.measured_band,
     )
+    failures = list(found.failures)
+    notes = list(found.notes)
+    advisory_failures: tuple[str, ...] = ()
+    advisory = policy.pull_request_relative_rules if pull_request and not force else None
+    if advisory is not None and found.relative:
+        failures = list(found.ceiling)
+        advisory_failures = found.relative
 
     if failures and not enforced:
         notes.extend(failures)
@@ -1099,16 +1216,35 @@ def judge(
             f"{inner_jobs} inner) is not the {tier.id} tier's reference "
             f"({tier.reference.describe()}), so the band was reported and not enforced"
         )
+    if failures:
+        status: Literal["passed", "failed", "advisory", "reported"] = "failed"
+    elif not enforced:
+        status = "reported"
+    elif advisory_failures:
+        status = "advisory"
+    else:
+        status = "passed"
     return Verdict(
         tier=tier.id,
         wall_seconds=wall_seconds,
-        status="failed" if failures else ("passed" if enforced else "reported"),
+        status=status,
         enforced=enforced,
         ceiling_seconds=tier.ceiling_seconds,
         measured_seconds=measured,
         failures=tuple(failures),
         notes=tuple(notes),
         top_steps=top,
+        advisory_failures=advisory_failures if enforced else (),
+        advisory=advisory if enforced and advisory_failures else None,
+    )
+
+
+def advisory_note(advisory: Advisory) -> str:
+    """The sentence every rendering of an advisory finding carries."""
+    reason = advisory.reason if advisory.reason.endswith(".") else f"{advisory.reason}."
+    return (
+        f"the drift and stale rules are advisory on pull requests under "
+        f"{advisory.tracking_bead}: {reason} Only the ceiling fails a pull-request run."
     )
 
 
@@ -1130,5 +1266,10 @@ def render(verdict: Verdict) -> list[str]:
         )
     lines.append(headline)
     lines.extend(f"  FAIL: {reason}" for reason in verdict.failures)
+    lines.extend(
+        f"  FAIL (advisory, not enforced): {reason}" for reason in verdict.advisory_failures
+    )
+    if verdict.advisory is not None:
+        lines.append(f"  enforcement: {advisory_note(verdict.advisory)}")
     lines.extend(f"  note: {note}" for note in verdict.notes)
     return lines

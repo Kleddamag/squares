@@ -18,6 +18,48 @@ properties:
     minItems: 1
     items: {$ref: '#/$defs/result'}
 $defs:
+  review:
+    type: object
+    additionalProperties: false
+    required: [path, kind, reviewer, reviewer_kind, date, scope, verdict]
+    # Who reviewed, what they examined and what they concluded, as the document itself
+    # says (epistemics.md, Review Records). A human reviewer states a relation to the
+    # project; a formalization review states that the reviewer is not the author.
+    if: {properties: {reviewer_kind: {const: human}}}
+    then: {required: [relation]}
+    properties:
+      path: {type: string, minLength: 1}
+      kind: {enum: [adversarial, confirming, oversight, formalization]}
+      reviewer: {type: string, minLength: 1}
+      reviewer_kind: {enum: [ai, human]}
+      relation: {enum: [owner, project, external, source]}
+      date: {type: string, pattern: '^\d{4}-\d{2}-\d{2}$'}
+      scope: {type: string, minLength: 1}
+      verdict: {enum: [accepted, defects-resolved, defect-open, refuted]}
+      checked:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items:
+          enum: [trust-boundary, certificate-meaning, ai-findings, statement-fidelity, definitions, axioms, build]
+      independent_of_author: {type: boolean}
+      covers:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items: {type: string, pattern: '^T-[0-9]{3}$'}
+  open_review:
+    type: object
+    additionalProperties: false
+    required: [sources, terms, replay, retained]
+    # C5's openness: the proof, its formalization and everything needed to replay it are
+    # publicly available, so any other expert can review and replay it. No review venue
+    # is required (epistemics.md, Review Records).
+    properties:
+      sources: {type: string, minLength: 1, description: The public location of the sources at a pinned revision.}
+      terms: {type: string, minLength: 1, description: The licence or terms under which the sources may be inspected and run.}
+      replay: {type: string, minLength: 1, description: Where the public replay instructions are.}
+      retained: {type: string, minLength: 1, description: The repository-relative path of the copy retained here.}
   scope:
     oneOf:
       - type: object
@@ -105,11 +147,16 @@ $defs:
       verification:
         type: string
         enum: [V0, V1, V2, V3, V4, V5]
-        description: Strongest verification existing anywhere; derived as the max any cited entry supports.
+        description: >-
+          The verification the result carries as certified by its own source; derived
+          from the cited entries of any origin and the retained reviews (epistemics.md).
       confirmation:
         type: string
         enum: [C0, C1, C2, C3, C4, C5]
-        description: What this repository established end-to-end; derived from the cited atoms per epistemics.md.
+        description: >-
+          How far that verification has been independently confirmed, here or by a third
+          party; derived from the confirming-origin entries and the confirming-side
+          reviews per epistemics.md, and never above the verification rung.
       significance: {$ref: '#/$defs/significance'}
       novelty:
         type: string
@@ -141,10 +188,18 @@ $defs:
           Repository-relative paths of the adversarial-control tests behind a
           C3-or-better rung; the checker requires this field at those rungs and
           verifies the paths exist.
-      review_artifact:
-        type: string
-        minLength: 1
-        description: The C5 review document, when one exists; repository-relative.
+      reviews:
+        type: array
+        minItems: 1
+        items: {$ref: '#/$defs/review'}
+        description: >-
+          The retained review documents the rungs rest on (epistemics.md, Review
+          Records): adversarial AI reviews and a human oversight record at rung 4, human
+          formalization reviews at rung 5. Each path is mapped in the document map as a
+          non-superseded review; the checker counts, distinguishes and dates them.
+      open_review:
+        $ref: '#/$defs/open_review'
+        description: Required at C5; the public sources, terms, replay instructions and the retained copy.
       next_rung:
         type: string
         minLength: 1

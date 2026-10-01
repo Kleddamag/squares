@@ -30,7 +30,7 @@ import sys
 import time
 import traceback
 import uuid
-from collections.abc import Callable, Iterator, Sequence
+from collections.abc import Callable, Iterator, Mapping, Sequence
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from contextlib import contextmanager, nullcontext, suppress
 from dataclasses import asdict, dataclass, field, replace
@@ -5362,6 +5362,20 @@ def _tier_id(namespace: argparse.Namespace) -> str | None:
     return next((flag for flag in TIER_FLAGS if getattr(namespace, flag)), "full")
 
 
+def _hosted_pull_request(environment: Mapping[str, str] | None = None) -> bool:
+    """Whether this process is a GitHub Actions job on a `pull_request` event.
+
+    Both variables are the runner's own: `GITHUB_ACTIONS` is `true` inside any Actions
+    job and `GITHUB_EVENT_NAME` names the event that started it. The register's
+    `policy.pull_request_relative_rules` relaxation applies to exactly this run, and to
+    nothing a contributor runs by hand.
+    """
+    source = os.environ if environment is None else environment
+    return source.get("GITHUB_ACTIONS") == "true" and source.get("GITHUB_EVENT_NAME") == (
+        "pull_request"
+    )
+
+
 def _judge_budget(
     summary: RunSummary,
     *,
@@ -5369,6 +5383,7 @@ def _judge_budget(
     jobs: int,
     inner_jobs: int,
     force: bool,
+    pull_request: bool = False,
 ) -> gate_budgets.Verdict:
     """Compare this run's own wall against the ceiling declared for its tier."""
     steps = tuple((result.name, result.seconds) for result in summary.results)
@@ -5390,6 +5405,7 @@ def _judge_budget(
         inner_jobs=inner_jobs,
         cpus=os.process_cpu_count() or DEFAULT_CPU_COUNT,
         force=force,
+        pull_request=pull_request,
     )
 
 
@@ -5402,6 +5418,10 @@ def _render_budgets(register: gate_budgets.Register) -> None:
         f"over {policy.drift_ratio:g}x of it fails; a run under {policy.stale_ratio:g}x "
         "of it means the record is stale"
     )
+    if policy.pull_request_relative_rules is not None:
+        print(
+            f"  enforcement: {gate_budgets.advisory_note(policy.pull_request_relative_rules)}"
+        )
     for tier in register.tiers:
         recorded = (
             f"{tier.measured_seconds:g}s recorded {tier.measured_on}"
@@ -5477,6 +5497,17 @@ def _render_text(summary: RunSummary, *, strict: bool) -> int:
             "(the budget verdict alone failed)"
         )
         return _summary_status(summary, strict=strict)
+    if budget is not None and budget.advisory is not None and not failed:
+        # The relative rules fired and the register has declared them advisory on this
+        # run. The findings are printed in full, and annotated on the hosted run so the
+        # pull request shows them, the way `check_pr_wall` annotates an advisory wall; the
+        # verdict below is the ordinary one, since only the ceiling fails a pull request.
+        bead = budget.advisory.tracking_bead
+        print(f"THE TIER IS OUTSIDE ITS RECORDED BAND (advisory, not enforced under {bead}):")
+        for reason in budget.advisory_failures:
+            print(f"  - {reason}")
+            if os.environ.get("GITHUB_ACTIONS") == "true":
+                print(f"::warning title=Tier cost band (advisory under {bead})::{reason}")
     if (
         budget is not None
         and budget.status == "unknown"
@@ -5895,6 +5926,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             inner_jobs=inner_jobs,
             force=namespace.enforce_budget
             or _environment_flag("PACKING_VALIDATE_ENFORCE_BUDGET"),
+            pull_request=_hosted_pull_request(),
         )
     except ParserExitError as error:
         if error.message:

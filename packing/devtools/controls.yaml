@@ -568,10 +568,10 @@ controls:
 - name: results - a confirmation rung claimed past its atoms
   file: frontier/results.yaml
   replace:
-    - "      as his CREDITS.md says.\n    scope: {n_values: [13]}\n    verification: V5\n    confirmation: C3"
-    - "      as his CREDITS.md says.\n    scope: {n_values: [13]}\n    verification: V5\n    confirmation: C5"
+    - "      as his CREDITS.md says.\n    scope: {n_values: [13]}\n    verification: V3\n    confirmation: C3"
+    - "      as his CREDITS.md says.\n    scope: {n_values: [13]}\n    verification: V3\n    confirmation: C5"
   run: python3 -m devtools.check_results
-  expect: "T-006: declares C5 but the cited atoms support only C4"
+  expect: "T-006: declares C5 but the cited atoms support only C3"
 
 
 - name: frontier - generated table drifting from its source

@@ -13,15 +13,17 @@
 //   <input type="checkbox" data-filter="open">     row's data-open is "true"
 //   <input type="number" data-filter="n" data-bound="min|max">  row's data-n in range
 //   <select data-filter="s" data-bound="min">     row's data-s at least the value
-//   <input type="date" data-filter="date" data-bound="from|to">
-//                                                 row's data-date, an ISO date, on or
-//                                                 after, or on or before, the value
+//   <input type="number" data-filter="date" data-bound="age">
+//                                                 row's data-date, an ISO date, at most
+//                                                 that many days before the reader's day
 //   <input type="number" data-filter="n" data-bound="covers">
 //                                                 row's data-n, a list of numbers and
 //                                                 ranges ("27 28 31-32"), holds the value
 // An empty value passes every row, and filters compose: a row shows when it passes every
 // one. A control's state in the HTML is its default, so a bar can start filtered, with
-// the rows it hides already `hidden` and its count already written.
+// the rows it hides already `hidden` and its count already written. An age is the one
+// filter the page cannot settle when it is built: there its rows are hidden as of a day
+// the build takes from the register, and here, on load, as of the reader's.
 //
 // Two rows are placed by more than the filters. The row the page's fragment names
 // (`all-results.html#t-018`) always shows, so a link to a row never lands on nothing.
@@ -30,8 +32,8 @@
 //
 // The bar's `.site-count` shows how many rows remain. A link can open the table
 // filtered: each query parameter presets the control it names, `status=proved`,
-// `recent=true`, `n-max=100` for a bound, or `n=11` for a `covers` control, so a card
-// can point at a filtered view.
+// `recent=true`, `n-max=100` for a bound, `n=11` for a `covers` control, or `age=180`
+// for an age, so a card can point at a filtered view.
 // The pure functions are published
 // on `globalThis.SiteTable` for the Node tests; nothing else leaves this file.
 
@@ -121,16 +123,10 @@
           const value = Number.parseFloat(actual ?? "");
           return filter.kind === "min" ? value >= bound : value <= bound;
         }
-        case "from":
-        case "to": {
+        case "since": {
           // ISO dates order as text, so no date is parsed.
-          if (filter.value === "") {
-            return true;
-          }
           const value = actual ?? "";
-          return (
-            value !== "" && (filter.kind === "from" ? value >= filter.value : value <= filter.value)
-          );
+          return filter.value === "" || (value !== "" && value >= filter.value);
         }
         case "covers": {
           const wanted = Number.parseFloat(filter.value);
@@ -176,13 +172,45 @@
   }
 
   /**
+   * A day as an ISO date, by the clock of whoever is reading.
+   * @param {Date} now
+   * @returns {string}
+   */
+  function localDay(now) {
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    return `${String(now.getFullYear()).padStart(4, "0")}-${month}-${day}`;
+  }
+
+  /**
+   * The first day a row may be dated to be no older than `days` on `today`, both ISO
+   * dates: 180 days on 2026-09-30 is 2026-04-03. Empty, which is no limit, when `days`
+   * is not a number or reaches past the calendar.
+   * @param {string} today
+   * @param {string} days
+   * @returns {string}
+   */
+  function ageCutoff(today, days) {
+    const age = Number.parseFloat(days);
+    const [year = Number.NaN, month = Number.NaN, day = Number.NaN] = today.split("-").map(Number);
+    const time = Date.UTC(year, month - 1, day - Math.max(age, 0));
+    if (Number.isNaN(time) || new Date(time).getUTCFullYear() < 1) {
+      return "";
+    }
+    return new Date(time).toISOString().slice(0, 10);
+  }
+
+  /**
    * The query parameter that presets a filter control: its key, with its bound if it
-   * is one end of a range.
+   * is one end of a range, and `age` for an age, whatever it is the age of.
    * @param {string} key
    * @param {string | null} bound
    * @returns {string}
    */
   function controlParam(key, bound) {
+    if (bound === "age") {
+      return bound;
+    }
     return bound && bound !== "covers" ? `${key}-${bound}` : key;
   }
 
@@ -213,7 +241,7 @@
    * What each `data-bound` makes of its control.
    * @type {Readonly<Record<string, SiteTableFilter["kind"]>>}
    */
-  const BOUNDS = { min: "min", max: "max", from: "from", to: "to", covers: "covers" };
+  const BOUNDS = { min: "min", max: "max", covers: "covers" };
 
   /**
    * The id the page's fragment names: "" for none, or for one that does not decode.
@@ -228,11 +256,13 @@
   }
 
   /**
-   * The filters a tools bar's controls currently express.
+   * The filters a tools bar's controls currently express. An age becomes the day it
+   * reaches back to from `today`, so a row is held to a date and never to a clock.
    * @param {Element} tools
+   * @param {string} today an ISO date
    * @returns {SiteTableFilter[]}
    */
-  function readFilters(tools) {
+  function readFilters(tools, today) {
     /** @type {SiteTableFilter[]} */
     const filters = [];
     for (const control of tools.querySelectorAll("[data-filter]")) {
@@ -242,6 +272,8 @@
         filters.push({ key, kind: "equals", value: control.value });
       } else if (control instanceof HTMLInputElement && control.type === "checkbox") {
         filters.push({ key, kind: "flag", value: control.checked ? "true" : "false" });
+      } else if (control instanceof HTMLInputElement && bound === "age") {
+        filters.push({ key, kind: "since", value: ageCutoff(today, control.value) });
       } else if (control instanceof HTMLInputElement || control instanceof HTMLSelectElement) {
         filters.push({ key, kind: BOUNDS[bound ?? ""] ?? "min", value: control.value });
       }
@@ -284,7 +316,7 @@
       if (!tools) {
         return;
       }
-      const filters = readFilters(tools);
+      const filters = readFilters(tools, localDay(new Date()));
       const target = fragmentTarget();
       const rows = Array.from(body.rows);
       const passes = rows.map(
@@ -368,6 +400,8 @@
     rowMatches,
     rowsShown,
     countText,
+    localDay,
+    ageCutoff,
     controlParam,
     init,
   };

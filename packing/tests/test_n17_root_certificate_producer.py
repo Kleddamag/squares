@@ -41,7 +41,7 @@ def test_fixed_polynomials_match_source_formulas_and_independent_coefficients() 
         - (1 - t) * (1 - b * b) * n_alpha,
     )
     polynomials = fixed_polynomials()
-    assert tuple(poly.evaluate(t, b) for poly in polynomials) == expected
+    assert tuple(poly.evaluate_exact(t, b) for poly in polynomials) == expected
     assert all(value.denominator == 1 for poly in polynomials for value in poly.terms.values())
     assert [poly.as_json() for poly in polynomials] == [
         [[i, j, str(coefficient)] for (i, j), coefficient in sorted(poly.items())]

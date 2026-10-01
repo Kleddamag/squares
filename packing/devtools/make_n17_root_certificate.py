@@ -157,7 +157,7 @@ class Polynomial:
                 terms[(reduced[0], reduced[1])] = coefficient * powers[axis]
         return Polynomial(terms)
 
-    def evaluate(self, x: Q | Interval, y: Q | Interval) -> Q | Interval:
+    def evaluate_exact(self, x: Q | Interval, y: Q | Interval) -> Q | Interval:
         if isinstance(x, Interval) != isinstance(y, Interval):
             raise TypeError("polynomial inputs must both be points or intervals")
         if isinstance(x, Interval) and isinstance(y, Interval):
@@ -218,12 +218,13 @@ def certify(
             "expected two exact polynomials, two rational midpoint values and rho>0"
         )
     box = tuple(Interval(value - radius, value + radius) for value in midpoint)
-    fm = tuple(_point_value(poly.evaluate(*midpoint)) for poly in polynomials)
+    fm = tuple(_point_value(poly.evaluate_exact(*midpoint)) for poly in polynomials)
     derivatives = tuple(
         tuple(poly.derivative(axis) for axis in range(2)) for poly in polynomials
     )
     jm = tuple(
-        tuple(_point_value(poly.evaluate(*midpoint)) for poly in row) for row in derivatives
+        tuple(_point_value(poly.evaluate_exact(*midpoint)) for poly in row)
+        for row in derivatives
     )
     determinant = jm[0][0] * jm[1][1] - jm[0][1] * jm[1][0]
     if determinant == 0:
@@ -244,7 +245,7 @@ def certify(
     if cj != identity or jc != identity:
         raise ValueError("rational inverse identity failed")
     jbox = tuple(
-        tuple(_interval_value(poly.evaluate(*box)) for poly in row) for row in derivatives
+        tuple(_interval_value(poly.evaluate_exact(*box)) for poly in row) for row in derivatives
     )
     matrix = tuple(
         tuple(

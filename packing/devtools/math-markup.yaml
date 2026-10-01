@@ -740,6 +740,7 @@ migrated:
 - packing/campaign/hypotheses/H-253-n17-retained-rational-upper.md
 - packing/campaign/hypotheses/H-254-n17-contact-chart-fidelity.md
 - packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md
+- packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md
 - packing/campaign/ideas.md
 - packing/campaign/remediation-pass.md
 - packing/campaign/research-loop-logbook/README.md
@@ -915,6 +916,7 @@ migrated:
 - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md
 - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-236-h254-n17-contact-chart.md
 - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-237-h255-n17-polynomial-root.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-238-h256-n17-endpoint-feasibility.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/checkpoint-hour-02-decision.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/commissioning-gate-minute-015.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/commissioning-gate-minute-030.md

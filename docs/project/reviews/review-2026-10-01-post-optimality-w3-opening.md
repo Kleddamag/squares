@@ -488,6 +488,96 @@ containment, all pair separations and the joint slider domain.
 The independent methods share the contraction theorem; no proof-assistant or
 method-distinct confirmation is claimed.
 
+## Endpoint Slider Geometry
+
+Two Astra max reviews independently derived the joint slider domain before H-256 target
+arithmetic. Put $a=\lambda_6$, $z=\lambda_{13}$, $R=S-3/2$, $H=V_{11}-1=c^2+2c-5/2$ and
+$L_0=c+s/2+1/2$. The three selected branch clearances are
+
+$$
+g_R=R-a,\qquad g_H=H-z,\qquad g_D=z+sa-L_0.
+$$
+
+Their joint domain is the triangle $g_R,g_H,g_D\ge0$. Its slack is
+
+$$
+T=H+sR-L_0=c(c+4-S)>0,
+$$
+
+using $F_1=0$ and the unit-circle identity.
+The vertices are $(R,H)$, $(R,H-T)$ and $(R-T/s,H)$. The fixed centroid $a=R-T/(3s)$,
+$z=H-T/3$ has $g_R=T/(3s)$ and $g_H=g_D=T/3$, all positive.
+This gives a deterministic interior placement without searching the source slider
+values. The horizontal lower endpoint $a_{\min}=(L_0-H)/s$ exceeds $5/2$, since
+$s(a_{\min}-5/2)=(1-s)^2+1-c>0$.
+
+For a complete slider-pair audit, write $U=U_{13}$,
+$\delta=V_{10}-V_{11}-1=c(S-3)-s-c^2$ and $E_{11}=y_{11}-h-1=1-c+cs(1-s)$. The H254
+domain gives $\delta\ge0.02666814$ and $T\ge0.06308121$ by the reviewed outward bounds.
+The following are exact directed projection gaps on the root equations; each nonzero
+entry is positive at the centroid.
+The two tables cover 31 unique pairs, with the 6/13 interaction appearing in both.
+They contain two zero identities and 29 strict centroid separations; the two slider
+squares have one wall anchor and seven strict wall clearances.
+The fixed remainder contains 19 pair identities, 86 strict pair separations, 14 wall
+anchors and 46 strict wall clearances.
+
+| Directed Pair | Axis | Gap |
+| --- | --- | --- |
+| $1\to6$, $3\to6$ | $e_x$ | $a-3/2$ |
+| $2\to6$ | $e_x$ | $a-5/2$ |
+| $6\to5$, $6\to7$ | $e_x$ | $g_R$ |
+| $6\to4$, $6\to8$, $6\to15$ | $e_y$ | $S-2$ |
+| $6\to9$ | $e_y$ | $1$ |
+| $6\to11$ | $e_y$ | $E_{11}$ |
+| $6\to12$ | $e_y$ | $E_{11}+s+c\delta$ |
+| $6\to10$ | $e_y$ | $E_{11}+s+c\delta+c(1-s+s^2)$ |
+| $6\to13$ | $v$ | $g_D$ |
+| $6\to14$ | $e_y$ | $c^2+s-cs(S-3)$ |
+| $6\to16$ | $e_y$ | $y_{16}-k-1$ |
+| $6\to17$ | $e_y$ | $(2-c(S-3))/s$ |
+
+| Directed Pair | Axis | Gap |
+| --- | --- | --- |
+| $1\to13$ | $u$ | $c$ |
+| $2\to13$ | $u$ | $0$ |
+| $3\to13$ | $u$ | $c-s$ |
+| $13\to4$ | $e_y$ | $S-1-h-y_{13}$ |
+| $5\to13$ | $v$ | $g_D+s(1+g_R)$ |
+| $6\to13$ | $v$ | $g_D$ |
+| $13\to7$ | $u$ | $c(S-3)-1$ |
+| $13\to8$ | $u$ | $2$ |
+| $13\to9$ | $v$ | $1+g_H$ |
+| $13\to10$ | $v$ | $1+\delta+g_H$ |
+| $13\to11$ | $v$ | $g_H$ |
+| $13\to12$ | $v$ | $\delta+g_H$ |
+| $13\to14$ | $u$ | $0$ |
+| $13\to15$ | $u$ | $1+cs+s-2c$ |
+| $13\to16$ | $u$ | $1-c+s$ |
+| $13\to17$ | $u$ | $1$ |
+
+Square 6 is contained because $a_{\min}>5/2$ and $a\le S-3/2$; its bottom wall is a
+declared anchor. For square 13, the enlarged coarse box $c\in[0.75,0.78]$,
+$s\in[0.63,0.66]$, $S\in[4.67,4.68]$ gives $z\in[-0.5233,-0.3316]$, $U\in[2.63,2.72]$
+and hence conservative bounds $x_{13}\in[2.18,2.47]$, $y_{13}\in[1.24,1.55]$, with
+$h\le0.72$. All four wall gaps are positive.
+These analytic bounds motivate the fixed choice; H-256 still independently checks every
+geometric obligation rather than trusting this roster as a substitute for containment
+and nonoverlap.
+
+The fixed-square audit identifies one exact corner contact beyond the 20 H254 contacts:
+2/3. It is separated with zero gap along $2\to3$ in direction $e_y$. The full count is
+15 exact wall identities and 53 strict wall inequalities, plus 21 exact pair identities
+and 115 strict pair inequalities.
+In particular, 14/16 has a strict separator along $q$; omitting that direction would
+leave the certificate incomplete.
+
+[H-256](../../../packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md)
+freezes the accepted root enclosure, this centroid and the complete coverage before any
+endpoint evaluation.
+At this checkpoint it is an instrument in preparation, not an accepted endpoint
+certificate. Global and split-orientation capture remain separate.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

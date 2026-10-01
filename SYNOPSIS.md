@@ -245,11 +245,11 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 388 | 197 complete; 63 stopped; 70 blocked; 24 ready; 21 tentative; 13 in progress |
+| Commitments | 389 | 197 complete; 63 stopped; 70 blocked; 24 ready; 21 tentative; 14 in progress |
 | Sessions | 165 | 102 completed; 62 stopped; 1 nonterminal |
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
-| Hypotheses | 190 | 35 confirmed; 32 refuted; 60 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
-| Experiments | 166 | 49 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
+| Hypotheses | 191 | 35 confirmed; 32 refuted; 60 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 1 running; 1 exhausted |
+| Experiments | 167 | 49 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 1 in progress; 1 exhausted |
 | Frontier results | 61 | 61 registered, 33 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
@@ -5236,6 +5236,7 @@ round that names the hypothesis, control roles included.
 | [H-253](packing/campaign/hypotheses/H-253-n17-retained-rational-upper.md) | confirmed | The retained Kleddamag rational reconstruction contains seventeen unit squares at exact side 4675530093604551/1000000000000000 | 1 | 8s wall |
 | [H-254](packing/campaign/hypotheses/H-254-n17-contact-chart-fidelity.md) | confirmed | The proposed three-variable endpoint contact chart reproduces the fixed rational n17 witness within exact residual and contact-feature thresholds; the conclusion is fidelity at this relaxed witness only | 1 | 1s wall |
 | [H-255](packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md) | confirmed | Exact existence and uniqueness of the contact-chart root in its fixed rational box; endpoint packing feasibility and capture remain separate | 1 | 1s wall |
+| [H-256](packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md) | running | Exact endpoint packing at the H255 root using fixed interior sliders; all 68 wall and 136 pair obligations require symbolic or exact interval certificates | 1 | — |
 
 ### Confirmed
 
@@ -5557,7 +5558,7 @@ The relevant generator writes the receipt, and the entry fills in on the next
 
 ## Experiments Conducted
 
-There are 166 rounds registered in `series-000`.
+There are 167 rounds registered in `series-000`.
 
 They record 2512.1 agent-minutes and 4019.3 wall-minutes.
 These totals exclude four historical annealing rounds with unrecorded timing; their wall
@@ -5767,6 +5768,7 @@ archive beside it.
 | [exp-235](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md) | 17 | target | H-253 | Exact replay of the fixed Kleddamag rational source through two local geometry implementations, with source and control agreement | Seventeen unit squares and all 136 pair separations verified at exact side 4675530093604551/1000000000000000; rational upper witness accepted | accepted |
 | [exp-236](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-236-h254-n17-contact-chart.md) | 17 | target | H-254 | Exact rational fidelity screen of the frozen three-variable contact chart, including all contacts, reconstructed centres, alternative axes and source feasibility | All 458 frozen comparisons passed with independent receipt review; fidelity at the relaxed rational witness only | accepted |
 | [exp-237](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-237-h255-n17-polynomial-root.md) | 17 | target | H-255 | Fixed exact rational contraction certificate for the contact-chart root | Exact contraction, inclusion and domain guards pass both implementations and independent output review; root existence only | accepted |
+| [exp-238](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-238-h256-n17-endpoint-feasibility.md) | 17 | target | H-256 | Exact endpoint geometry with fixed centroid sliders | Preregistered; controlled instrument and independent review precede target execution | in-progress |
 
 ### Cost and provenance
 
@@ -5937,11 +5939,12 @@ archive beside it.
 | exp-234 | 150,000 nodes per subtree, eighteen boxes | 11264 s | — | criterion | `42d52c38` |
 | exp-235 | 90 seconds per command; 600 seconds total | 7.91 s | — | criterion | `bacacdd15` |
 | exp-236 | 90 seconds; one worker | 1.13 s | — | criterion | `74480b0a` |
-| exp-237 | producer90s and checker90s; one worker | 0.76 s | — | criterion | `b3e5e1526`; producer0.67s, checker0.09s |
+| exp-237 | producer90s and checker90s; one worker | 0.76 s | — | criterion | `b3e5e1526`; producer 0.67s, checker 0.09s |
+| exp-238 | 180 seconds; one worker | — | — | in progress | fixed root enclosure, centroid sliders and complete coverage |
 
-### What the 166 rounds jointly establish
+### What the 167 rounds jointly establish
 
-The 166 rounds use 2512.1 agent-minutes and 4019.3 wall-minutes under the campaign’s
+The 167 rounds use 2512.1 agent-minutes and 4019.3 wall-minutes under the campaign’s
 retained effort accounting.
 The never-invoked exp129 adds no scientific result or execution time.
 Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is recorded

@@ -107,7 +107,7 @@ session:
       campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001
     kill_condition: Unexpected control status, timeout, source mismatch or target checker rejection.
     fallback: Retain refusal and no accepted scientific verdict.
-    outcome: All8 command statuses match, both local exact checkers accept 17 squares and136 pairs at
+    outcome: All8 command statuses match, both local exact checkers accept 17 squares and 136 pairs at
       the exact side, and source checker agrees. Measured command wall sum7.91s, target-independent0.36s;
       source output still requires W2 review.
     evidence:
@@ -389,7 +389,7 @@ session:
     validation_command: cd packing && .venv/bin/pytest tests/test_n17_root_certificate.py -q -p no:cacheprovider
     kill_condition: Independent root checker or fixed domain cannot be specified soundly.
     fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
-    outcome: Two separate exact-rational implementations and13 synthetic controls pass independent Astra
+    outcome: Two separate exact-rational implementations and 13 synthetic controls pass independent Astra
       max review, Ruff and types. Frozen commit b3e5e1526 precedes all target computation.
     evidence:
     - packing/devtools/make_n17_root_certificate.py
@@ -414,7 +414,7 @@ session:
     validation_command: cd packing && .venv/bin/python3 -m devtools.make_n17_root_certificate
     kill_condition: Independent root checker or fixed domain cannot be specified soundly.
     fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
-    outcome: Producer and checker exit0 at11:55:03UTC; wall0.67s and0.09s. All fixed guards pass; output
+    outcome: Producer and checker exit0 at 11:55:03 UTC; wall 0.67s and0.09s. All fixed guards pass; output
       review still pending.
     evidence:
     - packing/campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/run-001/certificate.json
@@ -439,9 +439,9 @@ session:
       against H255.
     kill_condition: Independent root checker or fixed domain cannot be specified soundly.
     fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
-    outcome: Astra independently audited all10 raw files, source/map/midpoint, both inverse identities,
-      all contraction/inclusion values, all8 domain intervals and provenance; no defect. H255 accepted
-      as root existence only. Retained-output arithmetic audit0.027525583s.
+    outcome: Astra independently audited all 10 raw files, source/map/midpoint, both inverse identities,
+      all contraction/inclusion values, all 8 domain intervals and provenance; no defect. H255 accepted
+      as root existence only. Retained-output arithmetic audit 0.027525583s.
     evidence:
     - packing/campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/output-review.md
     stop_reason: Independent exact output audit supports acceptance at the frozen scope.
@@ -453,7 +453,7 @@ session:
     bead: think-bj81
     objective: Classify endpoint feasibility obligations and joint slider domain before selecting the
       next fixed certificate.
-    status: in_progress
+    status: completed
     entered_by: planned_checkpoint
     switch_reason: H254 is accepted and the conditional minimum reduces the next missing premise to a
       two-polynomial root.
@@ -466,10 +466,37 @@ session:
       algebraically.
     kill_condition: Independent root checker or fixed domain cannot be specified soundly.
     fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
+    outcome: "Two Astra reviews derive positive slider triangle and fixed centroid, classify15 wall / 21 pair\
+      \ zero identities (including2/3 corner), and approve all 68wall/136pair coverage. H256 fixes accepted\
+      \ m\xB1eta enclosure and all strict remaining clauses before target arithmetic. Sol builds the named\
+      \ instrument in parallel."
+    evidence:
+    - packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md
+    stop_reason: Mathematical criterion and full coverage independently reviewed; no target sampled.
+    next_action: Finish controlled endpoint instrument, then freeze code and run once.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-ndyz
+    objective: Complete and independently review the fixed H256 endpoint-feasibility instrument and synthetic
+      controls.
+    status: in_progress
+    entered_by: planned_checkpoint
+    switch_reason: H254 is accepted and the conditional minimum reduces the next missing premise to a
+      two-polynomial root.
+    budget_minutes: 15
+    started_at: '2026-10-01T12:07:15Z'
+    deadline_at: '2026-10-01T12:22:15Z'
+    expected_output: Exact symbolic identities, interval geometry and complete coverage with adversarial
+      code/control review; no target evaluation before freeze.
+    validation_command: cd packing && .venv/bin/pytest tests/test_n17_endpoint_feasibility.py -q -p no:cacheprovider
+    kill_condition: Independent root checker or fixed domain cannot be specified soundly.
+    fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Freeze H256 criterion only after forced-zero contacts and joint sliders are fully classified.
+    next_action: Freeze reviewed H256 instrument and exp238 before one 180-second target run.
   budget:
     wall_minutes: 268.3
     orientation_minutes: 10
@@ -606,7 +633,7 @@ session:
   - CI head8e5b15b94 failed only the stale synopsis mutation anchor in validate and shardB; corrected165-round
     anchor now passes bothanchorresolution andactualmutation. HostedCIatfinalcheckpoint remains separate.
   stop_reason: null
-  next_action: Freeze H256 criterion only after forced-zero contacts and joint sliders are fully classified.
+  next_action: Freeze reviewed H256 instrument and exp238 before one 180-second target run.
 ---
 # Session 165: Post-optimality Research
 
@@ -659,7 +686,7 @@ certificate, not a new radius trial.
 Two Astra agents are deriving and challenging those obligations while Sol maps the
 smallest instrument.
 Separate algebraic zero contacts from strict interval clearances; the 2/3 corner contact
-is an additional identity beyond the selected20 chart contacts.
+is an additional identity beyond the selected 20 chart contacts.
 No endpoint target computation is authorized until its criterion and controls are
 frozen.
 

@@ -946,7 +946,7 @@ agenda:
     priority: 0
     question: Does the proposed n17 endpoint contact chart match the retained rational witness within its frozen exact residual and feature thresholds?
     hypotheses: [H-254]
-    budget: One 20-minute instrument slice; one target evaluation capped at90seconds, one worker and10MiB output; independent output review.
+    budget: One 20-minute instrument slice; one target evaluation capped at90seconds, one worker and10 MiB output; independent output review.
     entry: H253 accepts the source feasibility; fresh Astra max derives the equality chart and identifies the missing capture implication.
     exit: Every frozen fidelity clause passes or its exact counterexample is retained; no root or optimality claim.
     bead: think-j516
@@ -967,7 +967,7 @@ agenda:
     priority: 0
     question: Does the fixed rational box contain an exact root of the two n17 contact-chart polynomials?
     hypotheses: [H-255]
-    budget: One controlled instrument slice, one90second producer run and one90second independent checker run; one worker and10MiB per output.
+    budget: One controlled instrument slice, one90second producer run and one90second independent checker run; one worker and10 MiB per output.
     entry: H254 chart fidelity and independently reviewed polynomial reduction and conditional box-minimum theorem.
     exit: Exact contraction and inclusion pass independent checking, or a complete unresolved refusal is retained without changing the box.
     bead: think-bj81
@@ -979,6 +979,26 @@ agenda:
     - packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md
     - docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
     note: Root existence only; endpoint feasibility, joint slider domains and capture remain separate obligations.
+
+  - id: BC-400
+    purpose: research
+    owner_focus: insight
+    instances: [17]
+    state: in_progress
+    priority: 0
+    question: Does the exact H255 root with fixed centroid sliders give a feasible17square endpoint packing?
+    hypotheses: [H-256]
+    budget: One 20-minute controlled instrument slice; one 180-second run, one worker,10 MiB per output and independent output review.
+    entry: H255 root existence accepted; full contact identity roster and centroid slider domain independently derived.
+    exit: All68 wall and 136 pair obligations certified by identities or strict exact intervals, or retained unresolved refusal with no retuning.
+    bead: think-bj81
+    depends_on: [BC-399]
+    next_evidence: packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md
+    workflows: [pipeline-improvement, research-loop, factual-review]
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md
+    note: Endpoint feasibility only; common-orientation and branch capture remain open.
 
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles

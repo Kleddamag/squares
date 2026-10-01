@@ -1488,7 +1488,8 @@ body {
    It bleeds past the wide track as the window grows, up to 140rem, and its cells keep a
    size that reads, so the row holds more cases the wider the screen: four on a phone,
    eleven at 1280 pixels, seventeen at 1920 and twenty at 2560. A cell washes on hover
-   like a card and opens the atlas popover (below). */
+   like a card and opens the atlas popover (below). The wash is the cell's background,
+   behind the drawing, and it is all that changes: every line keeps the page's ink. */
 .site-page .site-atlas-grid {
   --site-wide: var(--site-bleed-max);
   --site-atlas-toggle-space: 1.2rem;
@@ -1517,8 +1518,13 @@ body {
   background: var(--site-wash);
   text-decoration: none;
 }
+/* The drawing is stroked in `currentColor`, and it names that colour itself. Read from
+   the link, it went to the lighter accent KPress gives a hovered link's text (`.kpress
+   a:hover`, which outranks the cell's own colour), and the outlines all but vanished
+   against the squares. */
 .site-atlas-cell svg {
   aspect-ratio: 1;
+  color: var(--kpress-doc-text);
   display: block;
   height: auto;
   width: 100%;

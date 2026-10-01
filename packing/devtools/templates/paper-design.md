@@ -719,7 +719,12 @@ it.
   The grid bleeds past the wide track as the window grows, to 140rem less the page
   gutters, and its cells keep a readable size (at least 6.4rem, 4.6rem on a phone), so a
   wider screen shows more cases per row: 4 at 390 pixels, 11 at 1280, 17 at 1920 and 20
-  at 2560. A cell washes on hover and is a link to its case record.
+  at 2560. A cell washes on hover and on keyboard focus, and is a link to its case
+  record. The wash is the cell’s background, behind the drawing, and it is the only thing
+  that changes: every line of the drawing keeps the page’s ink at rest, hovered, focused
+  and pressed, in both themes.
+  The drawing sets that colour on itself rather than reading the link’s, which KPress
+  lightens on hover (`tests/test_site_drawing_hover.py` reads both in Chromium).
   The cells ship in a `<template>` and are placed only as the grid nears the viewport
   (`overview/atlas-grid.js`), so they add nothing to the first paint; each drawing is
   400 units across, fine enough to show large.

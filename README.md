@@ -60,7 +60,7 @@ explains T-060 from the exact construction through the exhaustive case exclusion
 geometric capture and local-isolation argument that prove $s(11) = 3.8770835900\ldots$.
 It has a [PDF](https://jlevy.github.io/squares/n11-optimality/t-060-explainer.pdf) and
 [maintained source](packing/devtools/templates/n11-optimality-article.md), with figures
-drawn from the retained proof data.
+drawn from or checked against the retained proof data.
 The [explainer](https://jlevy.github.io/squares/explainer.html) proves the earlier,
 simpler lower bounds on $s(11)$.
 

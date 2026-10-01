@@ -246,7 +246,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
 | Commitments | 393 | 201 complete; 63 stopped; 71 blocked; 24 ready; 21 tentative; 13 in progress |
-| Sessions | 165 | 102 completed; 62 stopped; 1 nonterminal |
+| Sessions | 165 | 103 completed; 62 stopped; all terminal |
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 195 | 39 confirmed; 32 refuted; 61 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 170 | 53 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
@@ -5550,13 +5550,14 @@ in separate tables: their units differ, and the same work can appear in both.
 | `session-162-codex-task-tree.yaml` | session-162 | 434 | 1.57 h | 0.64 h | 0.64 h | yes |
 | `session-163-codex-task-tree.yaml` | session-163 | 763 | 4.27 h | 2.53 h | 2.63 h | yes |
 | `session-164-codex-task-tree.yaml` | session-164 | 2,423 | 7.51 h | 2.73 h | 2.74 h | yes |
+| `session-165-codex-task-tree.yaml` | session-165 | 2,730 | 13.15 h | 3.96 h | 3.96 h | yes |
 | `codex-task-tree-pr137-publication-tail.yaml` | unattributed | 610 | 4.39 h | 1.77 h | 1.82 h | yes |
 | `codex-task-tree-pr142-publication-tail.yaml` | unattributed | 136 | 0.87 h | 0.41 h | 0.58 h | yes |
 
 | Coverage | sessions |
 | --- | ---: |
-| measured | 110 |
-| unmeasured | 55 |
+| measured | 111 |
+| unmeasured | 54 |
 | **total** | **165** |
 
 <!-- END GENERATED: session-close-report -->

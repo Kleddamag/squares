@@ -1,7 +1,7 @@
 ---
 title: October 1 Post-optimality Research Findings
 date: 2026-10-01
-status: finalization
+status: completed
 ---
 # October 1 Post-optimality Research Findings
 
@@ -109,10 +109,32 @@ without rebuilding any packing geometry.
 [Its command and timing receipts](../../../packing/campaign/agent-sessions/session-165-validation/restamp-command.txt)
 are retained under `think-zypq`, separately from scientific target cost.
 Six focused controls and independent code review cover the source and byte-preservation
-guards; the combined release/restamp check passed 19 tests in 2.18 seconds.
+guards. The fast path conservatively permits only the reviewed n17 frontier metadata
+change and refuses other case changes; broader support needs its own guarded review.
+The combined release/restamp check passed 19 tests in 2.18 seconds.
 This observed run is not a controlled speedup comparison against earlier host-contended
-atlas builds. A complete agent-token or agent-minute rollup is unavailable; elapsed
-session time must not be presented as aggregate model or CPU time.
+atlas builds. The
+[native task-tree receipt](../../../packing/campaign/resource-usage/session-165-codex-task-tree.yaml)
+measures the interval 10:31:42–14:29:33 UTC. It records 47,342.718 aggregate
+agent-active seconds across 14,270.128 active-union seconds: about 13.15 agent-hours
+across 3.96 hours with activity, or 3.32 concurrently active agents on average during
+that union.
+The 33,072.590 seconds of parallel overlap are the difference, not additional
+wall time.
+
+Within that interval, the retained lower-bound model stream is 16,454.464 seconds,
+command-tool activity 4,490.837 seconds, and 18 compactions total 2,420.620 seconds.
+These categories are recursive client measurements, can overlap, and are neither
+provider inference latency nor process CPU. They must not be summed into an elapsed-time
+claim. The snapshot has two live sessions and excludes final closeout, so it remains a
+lower bound on the task tree’s eventual total.
+Source logs contain no Git branch field; Session 165 explicitly attributes this interval
+to the research branch.
+
+The observed bottleneck is therefore broader than proof arithmetic: mathematical
+analysis, review, context retention and repeated record integration consume substantial
+time. A future W5 pass should reduce duplicated context and consolidate registry/view
+updates while preserving independent review and immutable target criteria.
 
 ## Review Level and Next Work
 
@@ -131,6 +153,11 @@ leaf-exclusion method.
 `think-wrgx` retains the stopped stress instrument; `think-am9e` retains the arithmetic
 benchmark. These are separate obligations with unchanged scientific acceptance
 requirements.
+
+The scientific and export checkpoint `4f312e21e` passed all scheduled hosted checks,
+including `packing-required`, `pages-required` and `merges-into-main`. Deferred jobs
+skipped by scope are not claimed as executed.
+The final record-only checkpoint is checked separately in PR265.
 
 The fixed overnight deadline is 15:00 UTC on October 1, with finalization from 14:30
 UTC. No new research starts during finalization.

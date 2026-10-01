@@ -179,7 +179,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-162](agent-sessions/session-162-wand125-tools-intake.md) | stopped | retrospective | `factual-review` (correctness) | `documentation-pass` (process) | 4 | think-8cps | Under think-bmf3, retain the unresolved n11 boxes and compare tighter exact bounds on identical inputs under the planned 30-second ceiling before selecting a full replay. |
 | [session-163](agent-sessions/session-163-native-bounds-and-census.md) | stopped | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 5 | think-8cps | Under think-niqx, merge current main and certify the resulting PR head through required local and hosted checks. The mathematical obligations identified above remain separate after this integration debt is discharged. |
 | [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | completed | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 39 | think-3i74 | After the reviewed helper cleanup lands, implement the bounded fresh-ensemble replay entry point under think-e2ot; preserve the accepted historical evidence. PR 249 reconciliation, optional Rust performance and later exposition remain separate tracks. |
-| [session-165](agent-sessions/session-165-post-optimality-overnight.md) | in_progress | contemporaneous | `insight-iteration` (insight) | `pipeline-improvement` (correctness) | 35 | think-kaqh | Finalization only; checkPR265,retainmorningreport,syncbeads,pauseheartbeatby15UTC. No newresearch. |
+| [session-165](agent-sessions/session-165-post-optimality-overnight.md) | completed | contemporaneous | `insight-iteration` (insight) | `pipeline-improvement` (correctness) | 36 | think-kaqh | Pause post-optimality-overnight-research by15:00UTC. Next separately scheduled research: think-11ma exact geometric exclusion pilot belowendpoint; supporting W5think-n7xf context/record overhead and think-am9e arithmetic benchmark. No overnight H258retry. |
 
 ### Workflow summary
 
@@ -193,7 +193,7 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 40 | 1 |
 | `research-loop` | 31 | 4 | 115 | 8 |
-| `pipeline-improvement` | 38 | 2 | 207 | 6 |
+| `pipeline-improvement` | 38 | 2 | 208 | 6 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
 | `review-planning-oversight` | 6 | 0 | 40 | 2 |

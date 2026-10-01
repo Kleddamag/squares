@@ -491,6 +491,8 @@ def test_a_built_site_is_held_to_its_heads_and_its_card(
     for name in ("index.html", "papers.html"):
         (tmp_path / name).write_text(pages[name], encoding="utf-8")
     for forwarder in render_overview.forwarder_pages():
+        # A forwarder stands where its page was, which for a paper was a directory down.
+        (tmp_path / forwarder.name).parent.mkdir(parents=True, exist_ok=True)
         (tmp_path / forwarder.name).write_text(forwarder.html, encoding="utf-8")
     results = local_head_checks(tmp_path)
     assert [line for passed, line in results if not passed] == [

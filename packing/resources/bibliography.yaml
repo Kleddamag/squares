@@ -41,7 +41,7 @@ sources:
     lineage: builds-on-project
     note: >-
       11SquaresOptimal at f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c, announced by
-      Square Packing Fan (@MathCompSciFTW) as an Astra-assisted global optimality proof.
+      Queuingtheorydotcom (@MathCompSciFTW) as an Astra-assisted global optimality proof.
       README and THIRD_PARTY_NOTICES credit jlevy/squares at c55726e1e885227f63110131c0a914665175ff89,
       Walter Trump's construction and David Ellsworth's reconstruction diagram; the
       announcement credits Kleddamag. No blanket license covers the collection.

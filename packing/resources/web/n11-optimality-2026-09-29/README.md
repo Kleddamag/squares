@@ -12,6 +12,10 @@ The initial intake was V0/C0, followed by a scoped C1 review; the checkpoints be
 retain that history without substituting metadata checks for geometry.
 Shared arithmetic dependencies and reproduction limits are stated below.
 
+For a human or agent reviewing T-060, start with the
+[validation guide](VALIDATION.md): proof obligations, certificate and checker links,
+available commands, and the remaining requirements for a standalone release.
+
 This packet pins source commit `f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c` and tree
 `3fed944c5a0c1dda5e61cb9f45f0dd3d4dc6360c`. The selected files in [`source/`](source/)
 are verbatim; [`provenance.json`](provenance.json) records their hashes.

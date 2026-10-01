@@ -28,7 +28,7 @@ The original
 and
 [reproduction instructions](https://github.com/Queuingtheorydotcom/11SquaresOptimal/blob/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/docs/REPRODUCING.md)
 are pinned to the source revision reviewed here.
-[Square Packing Fan’s announcement](https://x.com/MathCompSciFTW/status/2104772485816168618)
+[Queuingtheorydotcom’s announcement](https://x.com/MathCompSciFTW/status/2104772485816168618)
 credits Astra’s work building on the Squares Project and Kleddamag.
 
 The components have distinct provenance:
@@ -52,6 +52,14 @@ The components have distinct provenance:
   and
   [mathematical acceptance review](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#whole-proof-acceptance)
   document the confirmation explained in this paper.[^credit]
+
+For a technical review, start with the
+[T-060 validation guide](../../resources/web/n11-optimality-2026-09-29/VALIDATION.md).
+It links the published proof, certificate inputs, independent checks, and accepted
+evidence for each obligation.
+This paper supplies the illustrated exposition.
+The guide distinguishes checking retained evidence from a fresh geometric replay and
+states the remaining work needed for a standalone executable package.
 
 ## The Result
 
@@ -654,10 +662,10 @@ to rebind newly generated parent receipts, whose timing fields change their byte
 That automation issue is tracked separately from the completed mathematical
 obligations.[^reproduce]
 
-The [source packet’s reproduction guide][reproduction] separates fast checks of retained
-evidence from fresh geometric replay, and links each checker, source binding and
-recorded execution. It is the place to reproduce a component; merely rerunning the final
-composer is not an independent end-to-end proof run.
+The [T-060 validation guide][reproduction] separates fast checks of retained evidence
+from fresh geometric replay, and links each checker, source binding and recorded
+execution. It is the place to reproduce a component; merely rerunning the final composer
+is not an independent end-to-end proof run.
 
 ## Appendix A: Exact Placement Formulas
 
@@ -824,7 +832,7 @@ coordinates are not inputs to certificate acceptance.
     rather than replacing them.
 
 [earlier]: https://jlevy.github.io/squares/
-[reproduction]: ../../resources/web/n11-optimality-2026-09-29/README.md#reproducing-the-independent-checks
+[reproduction]: ../../resources/web/n11-optimality-2026-09-29/VALIDATION.md
 [simplification]: ../../../docs/project/reviews/review-2026-09-30-n11-expository-simplification.md
 
 <!-- This document follows common-doc-guidelines.md.

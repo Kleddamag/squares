@@ -102,7 +102,9 @@ def test_no_placeholder_survives_substitution(page: str) -> None:
 
 def test_the_bar_marks_papers_current_on_the_explainer(page: str) -> None:
     """The explainer is one of the site's papers: the bar has no entry of its own for it,
-    Papers is the one marked current, and the page keeps its address."""
+    Papers is the one marked current, and the page keeps its address. The bar is the
+    site's one partial, so its entries stand in the order every other page has them."""
+    assert page.count(render_overview.nav_html("papers")) == 1
     assert re.findall(r'<a data-page="(\w+)" aria-current="page"', page) == ["papers"]
     assert '<a data-page="papers" aria-current="page" href="papers.html">Papers</a>' in page
     assert 'data-page="explainer"' not in page

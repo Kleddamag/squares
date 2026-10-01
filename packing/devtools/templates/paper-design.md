@@ -449,7 +449,11 @@ it.
   (0.5rem) nearer the bar, since a drawing has no line spacing above its edge.
   On the explainer the source chips sit in that space and the title starts the token
   below them. Print keeps KPress’s spacing, so the explainer’s PDF does not move.
-  Its entries are Overview, Frontier, Results, Papers, Visualize and GitHub.
+  Its entries are Overview, Results, Papers, Frontier, Visualize and GitHub, in that
+  order on every page: the order is the partial’s, `site-nav.html`, which is the one
+  place it is written, and it is the keyboard’s order too.
+  On a phone, where the links take two lines, the first holds Overview, Results, Papers
+  and Frontier and the second Visualize, GitHub and the gear.
   Papers leads to the papers page (`papers.html`) and is current on it and on both
   papers, the explainer and the tutorial, which keep their own addresses.
   Visualize leads to the film (`visualize.html`) and is current on both pages of the

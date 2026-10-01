@@ -1013,9 +1013,9 @@ def test_the_nav_links_only_to_served_pages() -> None:
 #: The bar's entries, in order: each one's key, where it leads and its label.
 NAV_ENTRIES = [
     ("overview", "./", "Overview"),
-    ("frontier", "frontier.html", "Frontier"),
     ("results", "all-results.html", "Results"),
     ("papers", "papers.html", "Papers"),
+    ("frontier", "frontier.html", "Frontier"),
     ("visualize", "visualize.html", "Visualize"),
     ("github", "https://github.com/jlevy/squares", "GitHub"),
 ]

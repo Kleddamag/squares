@@ -1476,8 +1476,8 @@ def test_every_page_lists_significance_first(name: str, rendered: Callable[[str]
 def test_each_results_row_shows_its_rungs_significance_first(
     page: str, results: str, overview: overview_data.Overview
 ) -> None:
-    """The Rungs cell of the results table and the Status cell of Recent Results both
-    open with the result's S, V and C chips, in that order."""
+    """The Rungs cell of the results table and of Recent Results opens with the result's
+    S, V and C chips, in that order."""
     recent = {result.id for result in overview_sections.recent_results(overview)}
     assert recent
     table = _recent_table(page)
@@ -1492,8 +1492,9 @@ def test_each_results_row_shows_its_rungs_significance_first(
         chips = overview_sections.rung_chips(result)
         assert cell(_row(results, result.id), "site-rungs").startswith(chips), result.id
         if result.id in recent:
-            status = cell(_recent_row(table, result.id), "site-col-status")
-            assert status.startswith(chips + " "), result.id
+            assert cell(_recent_row(table, result.id), "site-rungs").startswith(chips), (
+                result.id
+            )
     for title in re.findall(
         r'<th[^>]* title="([^"]*whether a case bound[^"]*)"', page + results
     ):
@@ -1577,7 +1578,7 @@ def test_every_result_shows_the_standing_readme_derives(
     for result in overview_sections.recent_results(overview):
         row = _recent_row(recent, result.id)
         assert f'data-standing="{overview_sections.standing_key(result.standing)}"' in row
-        assert overview_sections.standing_chips(result.standing) in row, result.id
+        assert overview_sections.standing_chip(result.standing) in row, result.id
 
 
 def _recent_row(table: str, result_id: str) -> str:
@@ -1590,7 +1591,8 @@ def _recent_table(page: str) -> str:
     """The recent table as the page carries it, after kpress has wrapped it and labelled
     its cells, from its opening tag to its close."""
     match = re.search(
-        r'<table class="kpress-table site-table site-results site-recent-table">.*?</table>',
+        r'<table class="kpress-table site-table site-results site-recent-table"[^>]*>'
+        r".*?</table>",
         page,
         re.DOTALL,
     )
@@ -1602,8 +1604,8 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     page: str, overview: overview_data.Overview
 ) -> None:
     """The section is one `.site-table` of the recent results, one row each, with the
-    id, the date, the result linking its row, the method, the credit and the status chips; no
-    card or list is left in it, and its only popovers are its rows' own. What a row's
+    columns every table of results has, the result linking its row on the results page;
+    no card or list is left in it, and its only popovers are its rows' own. What a row's
     popover holds is the popover's own business, so the section is read without them."""
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
     recent = _recent_table(page)
@@ -1619,18 +1621,18 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     assert "<li>" not in before_replay
     assert section.count("<table") == 2  # the recent table, then the replay table
     assert 'class="kpress-table site-table site-results site-recent-table"' in recent
-    assert "data-site-table" not in recent
+    # The script that sorts and filters the results page's table wires this one too.
+    assert "data-site-table" in recent
     heads = re.findall(r"<th[^>]*>([^<]+)</th>", recent.split("</thead>", 1)[0])
-    assert heads == ["ID", "Date", "Result", "Method", "Credit", "Status"]
+    assert heads == ["ID", "n", "Result", "Credit", "Rungs", "Date", "Records"]
     newest = overview_sections.recent_results(overview)
     assert re.findall(r'<tr data-result="(t-\d+)"', recent) == [r.id.lower() for r in newest]
     for result in newest:
         row = _recent_row(recent, result.id)
-        cells = re.findall(r'<td class="(site-col-[a-z]+)"', row)
-        assert cells == [
-            f"site-col-{c}" for c in ("id", "date", "result", "method", "credit", "status")
-        ]
-        assert f'<a href="all-results.html#{result.id.lower()}">' in row
+        # The summary's leading formula, or the whole of one that leads with none, links
+        # the result's row on the results page.
+        link = f'<a href="all-results.html#{result.id.lower()}">'
+        assert re.search(rf'<td class="site-col-result"[^>]*>{re.escape(link)}', row), result.id
         # The id, in its own cell, is the row's native trigger, which opens its popover
         # unscripted; the result's cell holds the result and no id.
         assert (
@@ -1639,17 +1641,7 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
         ) in row
         assert row.count(f">{result.id}<") == 1
         assert "site-row-open" not in row.split('<td class="site-col-result"', 1)[1]
-        status = row.split('<td class="site-col-status"', 1)[1]
-        # Every chip in the one status cell, side by side: S, V and C, then the standing.
-        chips = re.findall(r'<span class="site-chip[^"]*"[^>]*>([^<]+)</span>', status)
-        record = result.record
-        assert chips[:3] == [
-            f"S{record['significance']['score']}",
-            record["verification"],
-            record["confirmation"],
-        ]
-        assert "<br" not in status
-        assert "site-standing" not in status
+        assert "<br" not in row
     # Evan Daniel's three exact values, the closures the exact-value cards used to show.
     exact = {n for n in overview.recent_lower if overview.cases[n]["status"] == "proved"}
     shown = {r.first_n for r in newest}
@@ -1761,7 +1753,7 @@ def test_the_html_measures_an_age_from_the_register_and_never_from_the_clock(
     assert not shows(result("1979", 2), overview_sections.FilterDefaults(max_age=30), day)
 
 
-def test_the_recent_table_splits_method_credit_and_standing() -> None:
+def test_a_summary_splits_at_its_formula_and_a_credit_at_what_it_builds_on() -> None:
     split = overview_sections.split_summary
     assert split("`s(21) = 5` by a point-only route, reported") == (
         "`s(21) = 5`",
@@ -1774,11 +1766,14 @@ def test_the_recent_table_splits_method_credit_and_standing() -> None:
     assert split("`s(50) ≥ 37/5 = 7.4`, reported") == ("`s(50) ≥ 37/5 = 7.4`", "")
     batch = "`s(27), s(28) ≥ 28/5`, `s(31) ≥ 148/25` and `s(32) ≥ 119/20`"
     assert split(batch) == (batch, "")
+    # A credit is set whole, whatever the register's credit line says: the finder, then
+    # what the result builds on, quiet.
     credit = overview_sections.credit_cell("wand125 after Daniel, Tokoharu, Levy, Stromquist")
-    assert (
-        credit == 'wand125 <span class="site-cell-quiet">after Daniel, Tokoharu, Levy, …</span>'
+    assert credit == (
+        'wand125 <span class="site-cell-quiet">after Daniel, Tokoharu, Levy, Stromquist</span>'
     )
     assert overview_sections.credit_cell("This project") == "This project"
+    assert overview_sections.credit_cell("A & B") == "A &amp; B"
     chips = overview_sections.standing_chips("second certificate, reported")
     assert chips.count('class="site-chip"') == 2
     assert (
@@ -2394,6 +2389,73 @@ def test_results_by_others_show_their_publication_date(
     assert max(r.dated[1] for r in overview.results) == dates[0][0]
 
 
+def test_both_tables_of_results_have_the_same_columns(
+    page: str, results: str, overview: overview_data.Overview
+) -> None:
+    """Recent Results and the results page's table are one table: the same header cells
+    in the same order, from one definition (`result_head`), and for each result the same
+    cells from one function (`result_cells`), which differ only in that the overview's
+    summary links the result's row on the results page. Both sort and both filter."""
+    table = overview_sections.results_table(overview)
+    recent = overview_sections.recent_table(overview)
+    head = overview_sections.result_head()
+    assert table.count(head) == recent.count(head) == 1
+    assert table.count("<thead>") == recent.count("<thead>") == 1
+    heads = re.findall(r"<th([^>]*)>([^<]+)</th>", head)
+    assert [words for _, words in heads] == [
+        "ID",
+        "n",
+        "Result",
+        "Credit",
+        "Rungs",
+        "Date",
+        "Records",
+    ]
+    assert len(heads) == overview_sections.RESULT_COLUMNS
+    assert ["data-sort=" in attributes for attributes, _ in heads] == [
+        True,
+        True,
+        False,
+        True,
+        True,
+        True,
+        False,
+    ]
+    # As each page serves it, after KPress has labelled the cells.
+    served = re.compile(r"<th[^>]*>([^<]+)</th>")
+    on_overview = served.findall(_recent_table(page).split("</thead>", 1)[0])
+    on_results = served.findall(results.split("<thead>", 1)[1].split("</thead>", 1)[0])
+    assert on_overview == on_results == [words for _, words in heads]
+    classes = re.compile(r'<td class="([^"]+)"')
+    unlinked = re.compile(r'<a href="all-results\.html#t-\d+">(.*?)</a>', re.DOTALL)
+    for result in overview.results:
+        here = _row(table, result.id)
+        there = _recent_row(recent, result.id)
+        assert classes.findall(here) == classes.findall(there), result.id
+        assert classes.findall(here) == [
+            "site-col-id",
+            "num site-col-n",
+            "site-col-result",
+            "site-col-credit",
+            "site-rungs",
+            "site-col-date",
+            "site-records",
+        ]
+        # The cells are the same but for the link on the overview's summary.
+        cells = here.split(">", 1)[1]
+        assert unlinked.sub(r"\1", there.split(">", 1)[1], count=1) == cells, result.id
+        assert there.count('<a href="all-results.html#') == 1, result.id
+        assert f'<a href="all-results.html#{result.id.lower()}">' in there, result.id
+        assert f'<tr id="{result.id.lower()}" ' in here
+        assert f'<tr data-result="{result.id.lower()}" ' in there
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    # One table, so one set of rules: the recent table has none of its own, on a wide
+    # window or as a phone's cards.
+    assert ".site-recent-table" not in css
+    for gone in ("site-col-method", "site-col-status"):
+        assert gone not in css + table + recent, gone
+
+
 def test_both_tables_of_results_lead_with_the_same_id_column(
     overview: overview_data.Overview,
 ) -> None:
@@ -2403,12 +2465,11 @@ def test_both_tables_of_results_lead_with_the_same_id_column(
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
     first = re.compile(r"<thead><tr><th([^>]*)>([^<]+)</th>")
-    for html_table, sortable in ((table, True), (recent, False)):
+    for html_table in (table, recent):
         head = first.search(html_table)
         assert head
         assert head.group(2) == "ID"
         assert 'class="site-col-id"' in head.group(1)
-        assert ("data-sort=" in head.group(1)) is sortable
     for result in overview.results:
         trigger = (
             '<button type="button" class="site-row-open" '
@@ -2423,19 +2484,16 @@ def test_both_tables_of_results_lead_with_the_same_id_column(
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     # As narrow as an id, below the floor KPress keeps a cell to.
     assert "  .site-table .site-col-id {\n    min-width: 0;\n  }" in css
-    # On a phone the id opens the card and the date ends its first line, in both tables.
+    # On a phone the id opens the card, in both tables.
     assert "  .site-results .site-col-id {\n    font-weight: 650;\n    grid-area: 1 / 1;" in css
-    assert "  .site-recent-table .site-col-date {\n    grid-area: 1 / 3;\n  }" in css
-    assert ".site-recent-table .site-col-result {\n    grid-area" not in css
 
 
 def test_a_date_cell_leads_with_the_date_and_then_says_what_it_dates(
     overview: overview_data.Overview,
 ) -> None:
     """In both tables of results the date cell reads `2026-09-29 published`: the date,
-    then the quiet word for what it dates, and nothing before the date. The results
-    table still sorts on the date alone, the cell's `data-value`, and both tables filter
-    on the row's `data-date`."""
+    then the quiet word for what it dates, and nothing before the date. Both tables sort
+    on the date alone, the cell's `data-value`, and filter on the row's `data-date`."""
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
     for result in overview.results:
@@ -2446,7 +2504,7 @@ def test_a_date_cell_leads_with_the_date_and_then_says_what_it_dates(
         row = _row(table, result.id)
         assert f'<td class="site-col-date" data-value="{dated}">{cell}</td>' in row, result.id
         row = _recent_row(recent, result.id)
-        assert f'<td class="site-col-date">{cell}</td>' in row, result.id
+        assert f'<td class="site-col-date" data-value="{dated}">{cell}</td>' in row, result.id
         assert f'data-date="{overview_sections.first_day(dated)}"' in row, result.id
     assert '<th data-sort="text" title="Published, for a result by others;' in table
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
@@ -2489,13 +2547,15 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
     for result in overview.results:
-        formula = overview_sections.split_summary(result.summary)[0]
         # Each row, and where its star stands: after the result's own text.
         rows = (
-            (_row(table, result.id), overview_data.tex_bounds(result.summary) + "{star}</td>"),
+            (
+                _row(table, result.id),
+                overview_sections.result_text(result, here=True) + "{star}</td>",
+            ),
             (
                 _recent_row(recent, result.id),
-                overview_data.tex_bounds(formula) + "</a>{star}</td>",
+                overview_sections.result_text(result, here=False) + "{star}</td>",
             ),
         )
         for row, placed in rows:
@@ -3820,8 +3880,8 @@ def test_without_scripts_no_row_stays_filtered() -> None:
 
 
 def test_secondary_cell_content_is_quiet(results: str) -> None:
-    """A credit in the results table and a finder under a frontier bound take the one
-    quiet style: the support colour in the sans face."""
+    """What a credit builds on, in a table of results, and a finder under a frontier
+    bound take the one quiet style: the support colour in the sans face."""
     from devtools.render_frontier_page import frontier_cases, table_html  # noqa: PLC0415
 
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
@@ -3829,5 +3889,6 @@ def test_secondary_cell_content_is_quiet(results: str) -> None:
     rule = rule[: rule.index("}")]
     assert "color: var(--site-support-color);" in rule
     assert "font-family: var(--kpress-font-sans);" in rule
-    assert 'class="site-col-credit site-cell-quiet"' in results
+    assert '<span class="site-cell-quiet">after ' in results
+    assert "site-col-credit site-cell-quiet" not in results
     assert 'class="site-frontier-note site-cell-quiet"' in table_html(frontier_cases())

@@ -3,15 +3,19 @@ type: is
 id: is-01m3p537bpectft70347vpw20k
 title: "Math group 4: Markdown under packing/ outside resources/"
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 4
+version: 5
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-09-29T08:39:26.837Z
-updated_at: 2026-09-30T22:58:52.009Z
+updated_at: 2026-10-01T16:04:20.788Z
+closed_at: 2026-10-01T16:04:20.785Z
+close_reason: "Merged with jlevy/squares#254 (main 5ec014a25): groups 4a and 4b migrated; check_math_markup backlog 0."
+resolution: null
+duplicate_of: null
 ---
 
 ## Notes

@@ -3,9 +3,9 @@ type: is
 id: is-01m3p535rd6ws0grbp80hx51vf
 title: "Math group 1: README, TUTORIAL, SYNOPSIS, conventions, epistemics"
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 6
+version: 7
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies:
@@ -13,9 +13,9 @@ dependencies:
     target: is-01m3p537xbc65bk9nkax0mwf07
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-09-29T08:39:25.197Z
-updated_at: 2026-09-30T22:58:52.362Z
-closed_at: null
-close_reason: null
+updated_at: 2026-10-01T16:04:18.457Z
+closed_at: 2026-10-01T16:04:18.456Z
+close_reason: "Merged with jlevy/squares#254 (main 5ec014a25): group 1 migrated; check_math_markup backlog 0."
 resolution: null
 duplicate_of: null
 ---

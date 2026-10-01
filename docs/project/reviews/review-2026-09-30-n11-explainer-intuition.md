@@ -179,19 +179,41 @@ Do not hide mathematical premises, such as whole-angle coverage or strict interi
 implementation detail.
 Preserve the provenance links at the start.
 
-## Next Steps
+## Implementation and Review Disposition
 
+The user approved implementation of the restructuring.
 The
-[updated illustration plan](../specs/active/plan-2026-09-30-n11-optimality-illustrations.md)
-owns layouts, exact data sources, acceptance checks and the implementation sequence.
-Start with `think-c27c` for the whole-proof map and `think-0k78` for the local/endpoint
-payoff. The worked row, field and symmetry diagrams remain separate slices.
-Common and copy-edit changes above can accompany those slices; the substantive structure
-should be reviewed in a rendered draft before rewriting the rest of the paper.
+[illustration plan’s implementation record](../specs/active/plan-2026-09-30-n11-optimality-illustrations.md#implementation-record)
+maps every finding above to an article change, figure and bead.
+The paper now has twelve SVGs in eleven numbered figures.
+Static panels carry the complete explanations into HTML, Markdown and PDF; optional
+selectors remain deferred.
 
-Success means a reader can trace both halves of the theorem, explain one actual
-exclusion, and distinguish capture from fixed-$T$ isolation using the figures and their
-captions. More panels or interactions are useful only if they improve those tasks.
+Astra reviewed the restructured article and all three figure modules against retained
+accepted inputs. The illustrations preserve the actual-packing ownership invariant,
+whole-angle strict cores, closed forbidden regions and residual coverage, complete-step
+ownership promotion, median-projection capacity and mask-transfer conditions, pointwise
+D4 views, closed capture splits, the fixed-T local hypothesis, and the unchanged-size
+endpoint contradiction.
+Receipt and decoded-object bindings were checked.
+The cell inset uses current-U diameter arithmetic rather than historical-cap metadata.
+Corrections to field-coordinate labels, charged-subset/mask notation and receipt
+bindings resolved the mathematical findings; no blocker remains in this exposition
+audit. No geometric certificate replay was performed.
+
+Sol’s common-doc and rendered review confirmed the proof sequence, citation proximity,
+shared typography and static figure layout.
+The initial worked-row and capture labels overlapped in print; the revised labels fit.
+Raw math delimiters in HTML captions were replaced with readable notation, and the
+publication tests now check caption rendering and label bounds at desktop, mobile and
+print sizes. The provenance-first opening is retained as requested.
+The redundant sentence describing this as an illustrated exposition was removed.
+
+Integration is tracked by `think-rlg8`; the earlier review bead `think-8j43` is
+complete. The PR carries final validation results.
+Success remains the reader test: trace both halves of the theorem, explain one safe
+exclusion, and distinguish capture from fixed-T isolation using the figures and
+captions.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -19,7 +19,20 @@
     }
     const caption = svg.closest("figure")?.querySelector("figcaption");
     const note = svg.querySelector(".n11-diagram-note");
+    const bounds = svg.getBoundingClientRect();
+    const overflowingLabels = Array.from(svg.querySelectorAll("text"))
+      .filter((text) => {
+        const box = text.getBoundingClientRect();
+        return (
+          box.left < bounds.left - 1 ||
+          box.right > bounds.right + 1 ||
+          box.top < bounds.top - 1 ||
+          box.bottom > bounds.bottom + 1
+        );
+      })
+      .map((text) => text.textContent);
     results.push({
+      overflowingLabels,
       name: svg.getAttribute("class") || "witness",
       label: Number.parseFloat(getComputedStyle(label).fontSize) * scale,
       support: Number.parseFloat(getComputedStyle(parent).fontSize),
@@ -31,7 +44,7 @@
   }
   if (options?.readyOnly !== false) {
     return (
-      results.length === 4 &&
+      results.length === diagrams.length &&
       results.every(
         (role) =>
           Math.abs(role.label - role.support) < 0.1 &&

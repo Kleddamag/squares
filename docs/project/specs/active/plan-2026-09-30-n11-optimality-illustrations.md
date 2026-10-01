@@ -1,13 +1,44 @@
 ---
 title: Plan for Proof-Linked n11 Optimality Illustrations
 date: 2026-09-30
-status: draft
+status: implemented
 ---
 # Plan for Proof-Linked n11 Optimality Illustrations
 
 **Beads:** initial plan `think-yc42`; holistic review `think-8j43`; implementation under
 `think-75cp`\
 **Scope:** The published T-060 explainer and its HTML, Markdown, and PDF editions.
+
+## Implementation Record
+
+The static publication set is implemented: twelve SVGs in eleven numbered figures,
+including the retained construction and cover/mask pair.
+Integration is tracked by `think-rlg8`; the five figure beads below retain the separate
+changes. No browser interaction is needed to read a figure or follow an implication.
+
+| Holistic review finding | Implemented change | Bead |
+| --- | --- | --- |
+| 1: Pose and owner vocabulary | Definitions precede the invariant; ownership is asserted for valid packings, allowing the outer cover to retain impossible extra poses. | `think-rlg8` |
+| 2: Denominator reference | The positive quantity is named before the local ratio is introduced. | `think-rlg8` |
+| 3: Capture conditions | All six new closed cuts label the ten-node tree; inherited prefixes are checked and the near leaf still requires the fixed-T theorem. | `think-y0um` |
+| 4: Whole implication | Figure 2 gives both routes to optimality, with section links; the witness footer reserves U for the rational cap. | `think-c27c` |
+| 5: Safe elimination | A schematic precedes the Minkowski formula; a separate four-panel accepted row distinguishes center positions, core offsets, forbidden regions and a magnified residual. | `think-cpv2` |
+| 6: Charge capacity | Median projection and the accepted mask-0 example precede the general transfer formula. | `think-jjq5` |
+| 7: Symmetry | Four transformed point views use the fixed cells; a source-bound strict distance ban illustrates the overlay test. | `think-jjq5` |
+| 8: Capture versus isolation | The algebraic contradiction and graph precede the local contact census. | `think-0k78` |
+| 9: Exact endpoint | Two container frames follow the same smaller packing to the fixed-T contradiction. | `think-0k78` |
+| Center-cell capacity | Exact cell 9 and two hypothetical open disks illustrate the all-cell strict diameter lemma. | `think-y0um` |
+
+Astra-max review checked the mathematical implications and source bindings.
+Sol reviewed the prose and rendered figures.
+Integration checks cover source mutations, closed cuts, complete figure slots, immutable
+citations, caption rendering, shared screen/print type, and publication input selection.
+The PR records final command results and hosted checks.
+This publication change does not rerun the geometric proof ensemble.
+
+The remaining design sections retain the rationale and acceptance limits.
+Optional selectors are deferred: static panels answer the current reader questions and
+keep the same argument available in print.
 
 ## Overview
 
@@ -17,7 +48,7 @@ reduction and its cost.
 Its screen controls teach a specific mechanism; captions and static figures carry the
 argument into print.
 The [T-060 paper](../../../../packing/devtools/templates/n11-optimality-article.md)
-currently has four source-bound SVGs: the exact-construction witness, sixteen Voronoi
+began with four source-bound SVGs: the exact-construction witness, sixteen Voronoi
 cells, case-438 mask, and capture ancestry.
 Those drawings establish the objects and the proof’s structure, but do not yet show
 *why* a center cell has capacity one, how a pose row is eliminated or retained, how

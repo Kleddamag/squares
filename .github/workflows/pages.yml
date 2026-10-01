@@ -74,8 +74,12 @@ name: Certificate page
       - packing/devtools/pages_scope.py
       - packing/devtools/render_n11_optimality_explainer.py
       - packing/devtools/n11_optimality_figures.py
+      - packing/devtools/n11_optimality_overview_figures.py
+      - packing/devtools/n11_optimality_mechanism_figures.py
       - packing/devtools/packing_render_adapters.py
       - packing/devtools/check_n11_optimality_d4.py
+      - packing/devtools/check_n11_generic_fresh.py
+      - packing/devtools/check_n11_optimality_field_mask0.py
       - packing/devtools/templates/n11-optimality-article.md
       - packing/devtools/templates/n11-optimality-shell.html
       - packing/devtools/templates/n11-optimality.css
@@ -286,7 +290,7 @@ jobs:
         env:
           SQPACK_N11_PAPER_BROWSER: "1"
         run: |
-          uv run --frozen --all-extras --group dev pytest -q tests/test_n11_optimality_figures.py
+          uv run --frozen --all-extras --group dev pytest -q tests/test_n11_optimality_figures.py tests/test_n11_optimality_overview_figures.py tests/test_n11_optimality_mechanism_figures.py
           uv run --frozen --all-extras --group dev pytest -q tests/test_render_n11_optimality_explainer.py
 
       - name: Render and check the T-060 article in HTML, Markdown, and PDF

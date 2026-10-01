@@ -49,8 +49,11 @@
     grid-template-columns: minmax(640px, 1fr);
     overflow-x: auto;
   }
-  .n11-paper figure:has(> .n11-capture) {
+  .n11-paper figure:has(> .n11-diagram) {
     overflow-x: auto;
+  }
+  .n11-paper .n11-diagram {
+    min-width: 680px;
   }
   .n11-paper .n11-capture {
     min-width: 850px;

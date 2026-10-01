@@ -50,7 +50,6 @@ For a technical review, start with the
 [T-060 validation guide](../../resources/web/n11-optimality-2026-09-29/VALIDATION.md).
 It links the published proof, certificate inputs, independent checks, and accepted
 evidence for each obligation.
-This paper supplies the illustrated exposition.
 The guide distinguishes checking retained evidence from a fresh geometric replay and
 states the remaining work needed for a standalone executable package.
 
@@ -99,14 +98,37 @@ unfamiliar contact patterns and eleven independently chosen angles.
 Numerical search can suggest a good packing, but failing to find a better one does not
 exhaust those possibilities.
 
-The proof makes the exhaustive part finite.
-It assigns each center to one of sixteen small regions, reduces the possibilities to
-2,184 patterns, and excludes 2,180 of them by exact geometric certificates.
-Symmetry reduces the four remaining patterns to one.
-Further geometric checks force that pattern into a small neighborhood of the
-construction.
-An analytic argument then proves that the construction is the only feasible
-packing in that labeled neighborhood at side $T$.
+Suppose a packing fits in a smaller square, of side $S<T$. The proof must handle that
+packing without knowing any of its positions or angles.
+It first classifies the centers and uses exact certificates to eliminate impossible
+classes. Every survivor, after a symmetry of the container, enters a capture argument
+that encloses its positions and angles near the known construction.
+
+The last step connects this global restriction to a local theorem.
+The same smaller packing can be placed inside the exact side-$T$ container, within a
+checked neighborhood where only the construction is feasible.
+But the construction spans $T$, so it cannot fit inside the smaller container.
+Figure 2 shows both halves of the proof.
+
+<figure>
+{{ROADMAP_SVG}}
+<figcaption><strong>Figure 2.</strong> Two routes to the exact optimum. The construction
+supplies an upper bound. The lower-bound route follows an arbitrary hypothetical
+smaller packing through restrictions that preserve every feasible possibility, ending
+in a contradiction. The case counts classify continuous families of positions and
+angles; they do not count individual packings. The
+<a href="../../resources/web/n11-optimality-2026-09-29/receipts/final-composition.json">accepted composition</a>
+checks the joins between these obligations.</figcaption>
+</figure>
+
+The geometric steps are
+[center classification](#sixteen-regions-cover-all-possible-centers),
+[safe exclusions](#one-geometric-invariant-supports-the-certificates),
+[symmetry](#symmetry-reduces-the-four-survivors-to-one), and
+[capture](#capture-forces-case-438-near-the-construction).
+The [local estimate](#the-local-argument-excludes-every-nonzero-motion) and
+[exact frame change](#closing-the-gap-between-the-rational-cap-and-the-exact-optimum)
+complete the contradiction.
 
 The Squares Project records this result as **T-060, S5/V4/C5**: a result resolving the
 global optimum, supported by exact computational verification and a mapped mathematical
@@ -198,7 +220,7 @@ $$
 Choose sixteen rational sites.
 Assign each point of $[0,1]^2$ to any nearest site, keeping ties.
 The resulting **closed Voronoi cells** cover the whole square.
-They are the polygons in Figure 2, rather than the squares of a uniform grid.
+They are the polygons in Figure 3, rather than the squares of a uniform grid.
 The exact checker reconstructs them from nearest-site halfplanes and proves
 
 $$
@@ -216,12 +238,23 @@ still prevents two centers from receiving one label.[^cover]
 {{COVER_SVG}}
 {{MASK_SVG}}
 </div>
-<figcaption><strong>Figure 2.</strong> Left: the sixteen closed Voronoi cells, drawn
+<figcaption><strong>Figure 3.</strong> Left: the sixteen closed Voronoi cells, drawn
 from rational vertices bound by the
 <a href="../../resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json">retained cover receipt</a>.
 Right: the eleven occupied cell labels of
 case 438. A highlighted cell specifies where a center may be; it is not a small
 square or an owned inner hull. Shared cell boundaries remain in the proof.</figcaption>
+</figure>
+
+<figure>
+{{CAPACITY_SVG}}
+<figcaption><strong>Figure 4.</strong> Why a center cell has capacity one. Two
+hypothetical centers in the same cell would be less than one unit apart, so their open
+radius-1/2 disks would overlap. Each disk lies inside its unit square, independent of
+the square’s angle. The selected cell comes from the exact cover; the centers illustrate
+the lemma and are not a candidate packing. The
+<a href="../../devtools/check_n11_optimality_d4.py">cell checker</a>
+proves the strict diameter bound for all sixteen closed cells.</figcaption>
 </figure>
 
 An eleven-square packing therefore chooses eleven different labels among sixteen.
@@ -252,19 +285,41 @@ Each certificate row covers a whole closed interval of $t$, not a sampled angle.
 ## One Geometric Invariant Supports the Certificates
 
 Fix an occupied-cell pattern.
-An actual packing in that pattern is unknown, but we can maintain two kinds of rigorous
-information about each square:
+A **pose** is a square’s center and angle.
+An **owner** is the square assigned to an occupied cell.
+Although the packing is unknown, we can maintain two kinds of rigorous information about
+each owner:
 
 - An **outer pose cover** contains every center and angle still possible for that
   square. It consists of closed angle intervals with associated center polygons.
-- An **owned hull** lies strictly inside that square in every remaining pose.
+- An **owned hull** lies strictly inside that square in every valid packing under the
+  current assumptions.
   It records points that the square must contain, even while its position is uncertain.
 
 The first is an overestimate of possibilities; the second is a guaranteed interior.
-Both must hold for every packing satisfying the current assumptions.
+In every valid packing under the current assumptions, each square’s pose belongs to its
+outer cover and its interior contains its owned hull.
+The outer cover may also retain artificial poses that no valid packing realizes.
 The same invariant supports case exclusion and, later, capture near the construction.
 
 ### Removing poses that force overlap
+
+Suppose another square must contain a small inner region.
+A proposed position of our square is impossible if it forces their interiors to overlap.
+We can reject a whole region of centers at once, provided the collision is guaranteed
+for every angle in the row.
+All other positions remain available until a further argument excludes them.
+
+<figure>
+{{POSE_SVG}}
+<figcaption><strong>Figure 5.</strong> A schematic of one safe exclusion. A possible-center
+region records uncertainty; a guaranteed inner region records what a valid packing must
+contain. A translated strict core meeting the other square’s owned hull forces overlap.
+The forbidden centers can be discarded, while the retained region remains an
+overestimate. The drawing illustrates the
+<a href="../../devtools/check_n11_generic_fresh.py">geometric checker’s</a>
+invariant; it is not a certificate for the displayed schematic.</figcaption>
+</figure>
 
 For an angle interval, choose a convex core $Q$ around the origin that lies strictly
 inside the centered unit square at every angle in the interval.
@@ -286,6 +341,19 @@ The strict interior guarantees justify rejecting even the boundary of this close
 forbidden region.
 If the cores merely touched the squares’ boundaries, the same rejection
 could incorrectly remove a legal touching configuration.
+
+<figure>
+{{ROW_SVG}}
+<figcaption><strong>Figure 6.</strong> One accepted row: case 2095, step 1, owner 10,
+row 17, over the complete interval 17/32 ≤ t ≤ 9/16. The panels use retained exact
+geometry, rounded only for display, and distinguish field center coordinates from
+square-relative core offsets. This row contributes one triangular residual to the update. A complete
+ownership update must also check every other row, closed angular coverage, common-core
+inclusion and compression. The
+<a href="../../resources/web/n11-optimality-2026-09-29/receipts/generic-mask2095-intake/full-result.json">accepted case result</a>
+and <a href="../../devtools/check_n11_generic_fresh.py">independent checker</a>
+supply the evidence. This is an excluded noncandidate case, not the case-438 capture.</figcaption>
+</figure>
 
 A stronger collision check compares a proposed pose against another square’s entire
 possible pose cover.
@@ -332,21 +400,6 @@ it would collide with an already proved owned hull.
 In a legal packing the collision alternative is unavailable, so the charge lower bound
 must hold.
 
-Suppose the charge function has total capacity $b$ across disjoint cores.
-A certificate may require certain owner cells $O$ to be present and assign lower bounds
-to cells in a set $P$. It excludes a mask $J$ only when
-
-$$
-O\subseteq J,
-\qquad
-\sum_{i\in P\cap J}q_i>b.
-$$
-
-This explains why one checked certificate can exclude many masks.
-The masks must contain its required owners, and each must satisfy the strict budget
-inequality. Neither an equal budget nor an unsupported transfer to a larger mask
-suffices.
-
 One useful charge is defined by five sites.
 For each projection direction, consider the median of the five projected sites.
 A core receives charge one when its projection interval contains that median in every
@@ -365,6 +418,33 @@ The charge therefore has capacity one.
 A checked example forces the squares in two occupied cells each to receive charge one,
 giving $2>1$. Owned-point collision regions help prove that each cell must be charged,
 but those collision regions add nothing to the charge budget.[^field]
+
+<figure>
+{{CHARGE_SVG}}
+<figcaption><strong>Figure 7.</strong> Median-projection charge as a capacity argument.
+In a separating direction, two disjoint strict cores have disjoint projection
+intervals, so both cannot contain the same median. Receiving charge one requires the
+median condition in every direction; a single projection illustrates the capacity
+argument, not that full test. Required owners and a strict excess over the budget are
+necessary for the
+<a href="../../resources/web/n11-optimality-2026-09-29/receipts/shared-field-mask0/summary.json">accepted field certificate</a>
+to transfer to another mask.</figcaption>
+</figure>
+
+Suppose the charge function has total capacity $b$ across disjoint cores.
+A certificate may require certain owner cells $O$ to be present and assign lower bounds
+to cells in a set $P$. It excludes a mask $J$ only when
+
+$$
+O\subseteq J,
+\qquad
+\sum_{i\in P\cap J}q_i>b.
+$$
+
+This explains why one checked certificate can exclude many masks.
+The masks must contain its required owners, and each must satisfy the strict budget
+inequality. Neither an equal budget nor an unsupported transfer to a larger mask
+suffices.
 
 The accepted exclusion inventory combines **1,904 cases excluded by field certificates
 and 276 other cases**. Its conclusion is the exact set equality
@@ -405,6 +485,17 @@ called $D_4$. Intersect the inverse images of the cells in the four views.
 The result is a finite overlay of 220 nonempty closed regions: 212 polygons and eight
 singleton points. A center in one overlay region has a specified allowable label in each
 view.
+
+<figure>
+{{SYMMETRY_SVG}}
+<figcaption><strong>Figure 8.</strong> Four views of a center against the fixed cell
+cover. The point changes position under square symmetries; the irregular cell polygons
+are not permuted by those transformations. An overlay region records the allowed
+cell labels in every view. This illustration explains the construction used by the
+<a href="../../resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json">accepted symmetry check</a>;
+its exhaustive assignment search, including boundary ties and strict distance bans,
+is a separate obligation.</figcaption>
+</figure>
 
 For two overlay regions, exact vertex calculations sometimes prove that every pair of
 points, one in each region, is less than one unit apart in physical coordinates.
@@ -453,10 +544,14 @@ The overlap is harmless and prevents a missing boundary branch.
 
 <figure>
 {{CAPTURE_SVG}}
-<figcaption><strong>Figure 3.</strong> The accepted ten-node capture ancestry.
+<figcaption><strong>Figure 9.</strong> The accepted ten-node capture ancestry.
 Intermediate nodes propagate a checked state; three far leaves end in contradiction
 and the near leaf encloses every surviving pose. Edges denote proof dependencies,
-not trajectories of moving squares. The branch table gives the closed split conditions.
+not trajectories of moving squares. Here y₁₅ = pᵧ − U/2 is a physical centered height
+and tᵢ = tan(θᵢ/2) is an owner’s half-angle parameter.
+Edge labels give each new closed split condition;
+the branch table collects the inherited conditions. Both sides retain equality.
+The near leaf is an enclosure; the fixed-T local theorem is still needed.
 The fourteen root rounds precede the descendants shown here; the descendants’ parent
 edges are bound by the
 <a href="../../resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json">accepted source graph</a>.</figcaption>
@@ -486,6 +581,30 @@ The checked local neighborhood is a rectangle $|h_j|\le r_j$, with positive coor
 radii $r_j$. Different coordinates have different radii, allowing the rectangle to fit
 the captured domains.
 All radii lie within the analytic working box of radius $1/64$.
+
+The local theorem excludes any nonzero displacement in this rectangle that remains
+feasible in the fixed-$T$ container.
+Its mechanism is quantitative: the linear gap constraints obstruct motion, and an exact
+bound on their curvature proves that the nonlinear terms cannot overcome that
+obstruction anywhere in the rectangle.
+
+Write $\tau$ for the largest displacement as a fraction of its allowed coordinate
+radius. A nonzero displacement has $0<\tau\le1$. The certificate for a coordinate
+attaining that maximum forces $\tau\le c_j\tau^2$, with $c_j<1$. This is impossible:
+throughout that interval, $c_j\tau^2<\tau$.
+
+<figure>
+{{LOCAL_SVG}}
+<figcaption><strong>Figure 10.</strong> The local contradiction. The upper line is
+τ and the lower curve is cτ², with a coefficient below one. A feasible
+nonzero displacement would require the line to lie at or below the curve. This is an
+algebraic illustration of the
+<a href="../../resources/web/n11-optimality-2026-09-29/receipts/local-isolation/result.json">accepted exact inequalities</a>,
+not a projection of the 33-dimensional feasible set. The theorem applies in the checked
+rectangle inside the fixed side-T container.</figcaption>
+</figure>
+
+### Covering all possible local contact patterns
 
 Nearby squares can change which edges separate them, so the proof must consider more
 than one contact pattern.
@@ -548,7 +667,7 @@ $$
 M_j<2(r_j-\epsilon_jR).
 $$
 
-The right-hand denominator is positive.
+The quantity $2(r_j-\epsilon_jR)$ is positive.
 Rearranging gives
 
 $$
@@ -603,6 +722,18 @@ The local-isolation lemma forces them to be the exact construction.
 But that construction spans $T$, so it cannot lie in a square of side $S<T$. This
 contradiction excludes every smaller side directly.
 Together with the exact witness, it proves $s(11)=T$.[^endpoint]
+
+<figure>
+{{ENDPOINT_SVG}}
+<figcaption><strong>Figure 11.</strong> Why the rational cap settles the exact endpoint.
+The same hypothetical side-S container, with S &lt; T, fits concentrically inside the cap
+and then inside the fixed side-T container after the checked rigid alignment. Its
+unit squares keep their size. Capture and
+<a href="../../resources/web/n11-optimality-2026-09-29/receipts/pose-inclusion/result.json">pose inclusion</a>
+put the packing in the local rectangle; isolation forces the construction, whose span
+T contradicts its containment in side S. Gaps are exaggerated for visibility;
+the drawing does not depict a feasible smaller packing.</figcaption>
+</figure>
 
 This deduction does not rule out perturbations in the larger cap $U$. It needs only the
 impossibility of a smaller packing.

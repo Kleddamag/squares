@@ -9,8 +9,9 @@ from typing import Literal
 
 import pytest
 
+from devtools import n11_optimality_mechanism_figures as mechanism
+from devtools import n11_optimality_overview_figures as overview
 from devtools import render_n11_optimality_explainer as paper
-from devtools.n11_optimality_figures import render_figures
 from devtools.render_explainer import assert_self_contained
 from sqpack.probes import probe
 
@@ -45,6 +46,10 @@ and the [record][register].
 [register]: ../../frontier/results.yaml
 """
 
+SOURCE += "\n" + "\n".join(
+    "{{" + key + "}}" for key in paper.FIGURE_KEYS if "{{" + key + "}}" not in SOURCE
+)
+
 
 @pytest.fixture(scope="module")
 def rendered() -> tuple[str, str]:
@@ -54,7 +59,7 @@ def rendered() -> tuple[str, str]:
 def test_rendered_page_is_offline_and_contains_proof_figures(rendered: tuple[str, str]) -> None:
     html, markdown = rendered
     assert_self_contained(html)
-    assert html.count("<title>Exact diagram</title>") == 4
+    assert html.count("<title>Exact diagram</title>") == len(paper.FIGURE_KEYS)
     assert '<span class="kpress-math kpress-math-inline"' in html
     assert 'class="kpress-footnotes"' in html
     assert "{{" not in markdown
@@ -132,13 +137,19 @@ def test_output_names_and_landing_redirect(tmp_path: Path, rendered: tuple[str, 
 def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> None:
     html, markdown = paper.render(
         paper.ARTICLE.read_text(encoding="utf-8"),
-        figures=render_figures(),
+        figures=paper.render_all_figures(),
         revision=REVISION,
     )
     assert "A Review of the Optimality Proof of the Trump Packing of 11 Squares" in html
-    assert len(re.findall(r"<figure\b", html)) == 3
-    assert len(re.findall(r"<figcaption\b", html)) == 3
-    assert html.count("<svg") >= 5  # four paper figures plus KPress's icon sprite
+    assert len(re.findall(r"<figure\b", html)) == 11
+    assert len(re.findall(r"<figcaption\b", html)) == 11
+    assert (
+        html.count("<svg") >= len(paper.FIGURE_KEYS) + 1
+    )  # article figures and KPress icon sprite
+    assert all(
+        "$" not in caption
+        for caption in re.findall(r"<figcaption>(.*?)</figcaption>", html, re.DOTALL)
+    )
     assert "<pre><code><svg" not in html
     assert "kpress-math-render" in html
     assert "{{" not in markdown
@@ -204,7 +215,7 @@ def test_diagram_labels_keep_publication_sizes_through_viewbox_scale(tmp_path: P
 
     html, _ = paper.render(
         paper.ARTICLE.read_text(encoding="utf-8"),
-        figures=render_figures(),
+        figures=paper.render_all_figures(),
         revision=REVISION,
     )
     page_path = tmp_path / "diagram-roles.html"
@@ -224,8 +235,9 @@ def test_diagram_labels_keep_publication_sizes_through_viewbox_scale(tmp_path: P
                 page.emulate_media(media=media)
                 page.wait_for_function(measure, arg={"readyOnly": True})
                 roles = page.evaluate(measure, {"readyOnly": False})
-                assert len(roles) == 4
+                assert len(roles) == len(paper.FIGURE_KEYS)
                 for role in roles:
+                    assert not role["overflowingLabels"], (width, media, role)
                     assert abs(role["label"] - role["support"]) < 0.1, (width, media, role)
                     if role["note"] is not None:
                         assert role["caption"] is not None
@@ -239,3 +251,11 @@ def test_diagram_labels_keep_publication_sizes_through_viewbox_scale(tmp_path: P
                 page.close()
         finally:
             browser.close()
+
+
+def test_new_figure_dependencies_are_declared_to_publication_scope() -> None:
+    for source in (*mechanism.RENDER_INPUTS, *overview.RENDER_INPUTS):
+        assert any(
+            source == declared or (declared.is_dir() and source.is_relative_to(declared))
+            for declared in paper.RENDER_INPUTS
+        ), source

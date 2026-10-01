@@ -1,7 +1,7 @@
 """Publish the T-060 paper as an offline HTML page and readable Markdown.
 
 The article and exact-data figures are maintained separately. This renderer only
-substitutes the four reviewed figure slots, gives repository citations immutable
+substitutes the declared reviewed figure slots, gives repository citations immutable
 links, and uses KPress for Markdown, math, footnotes, typography, and PDF print.
 """
 
@@ -30,7 +30,20 @@ OUTPUT_DIR = PACKING / "site" / "n11-optimality"
 STEM = "t-060-explainer"
 TITLE = "A Review of the Optimality Proof of the Trump Packing of 11 Squares"
 DESCRIPTION = "A review of the optimality proof of the Trump packing of eleven squares."
-FIGURE_KEYS = ("WITNESS_SVG", "COVER_SVG", "CAPTURE_SVG", "MASK_SVG")
+FIGURE_KEYS = (
+    "WITNESS_SVG",
+    "ROADMAP_SVG",
+    "COVER_SVG",
+    "MASK_SVG",
+    "CAPACITY_SVG",
+    "POSE_SVG",
+    "ROW_SVG",
+    "CHARGE_SVG",
+    "SYMMETRY_SVG",
+    "CAPTURE_SVG",
+    "LOCAL_SVG",
+    "ENDPOINT_SVG",
+)
 MATH_WAIT_MS = 15_000
 FIGURE_SLOT = re.compile(r"\{\{([A-Z_]+_SVG)\}\}")
 LEFTOVER_SLOT = re.compile(r"\{\{[A-Z][A-Z_]*\}\}")
@@ -49,6 +62,8 @@ RENDER_INPUTS = (
     *ARCHIVED_CITATION_SOURCES,
     render_explainer.PUBLICATION_STYLE,
     FIGURES_MODULE,
+    PACKING / "devtools/n11_optimality_overview_figures.py",
+    PACKING / "devtools/n11_optimality_mechanism_figures.py",
     PACKING / "devtools" / "check_n11_optimality_d4.py",
     PACKING / "devtools" / "render_explainer.py",
     PACKING / "devtools" / "explainer" / "diagram-labels.js",
@@ -60,8 +75,42 @@ RENDER_INPUTS = (
     PACKING / "resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json",
     PACKING / "resources/web/n11-optimality-2026-09-29/receipts/d4-independent/objects",
     PACKING / "resources/web/n11-optimality-2026-09-29/receipts/source-graph/result.json",
+    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json",
+    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/local-isolation/result.json",
+    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/pose-inclusion/result.json",
+    PACKING / "devtools/check_n11_generic_fresh.py",
+    PACKING / "devtools/check_n11_optimality_field_mask0.py",
+    PACKING
+    / "resources/web/n11-optimality-2026-09-29/receipts/generic-mask2095-intake"
+    / "provenance.json",
+    PACKING
+    / "resources/web/n11-optimality-2026-09-29/receipts/generic-mask2095-intake"
+    / "full-result.json",
+    PACKING
+    / "resources/web/n11-optimality-2026-09-29/receipts/generic-mask2095-intake/objects",
+    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/field-mask0/result.json",
+    PACKING / "resources/web/n11-optimality-2026-09-29/receipts/field-mask0/objects",
     REPO / "vendor" / "kpress",
 )
+
+
+def render_all_figures() -> dict[str, str]:
+    """Load the figure renderers only in a full publication checkout."""
+    from devtools.n11_optimality_figures import render_figures  # noqa: PLC0415
+    from devtools.n11_optimality_mechanism_figures import (  # noqa: PLC0415
+        render_mechanism_figures,
+    )
+    from devtools.n11_optimality_overview_figures import (  # noqa: PLC0415
+        render_overview_figures,
+    )
+
+    groups = (render_figures(), render_overview_figures(), render_mechanism_figures())
+    figures: dict[str, str] = {}
+    for group in groups:
+        if figures.keys() & group.keys():
+            raise ValueError("figure renderers supplied duplicate slots")
+        figures.update(group)
+    return figures
 
 
 def _fill(template: str, values: Mapping[str, str], *, source: Path) -> str:
@@ -113,7 +162,7 @@ def expanded_markdown(
 ) -> str:
     """Fill only declared figure slots and pin local source citations to a Git commit."""
     if set(figures) != set(FIGURE_KEYS):
-        raise ValueError("figures must provide exactly the four declared SVG slots")
+        raise ValueError("figures must provide exactly the declared SVG slots")
     if set(FIGURE_SLOT.findall(source)) != set(FIGURE_KEYS):
         raise ValueError("article must use every declared figure slot exactly by name")
     if any(source.count("{{" + key + "}}") != 1 for key in FIGURE_KEYS):
@@ -239,11 +288,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--pdf", action="store_true", help="also print the HTML with KPress")
     parser.add_argument("--check", action="store_true", help="compare current HTML/Markdown")
     args = parser.parse_args(argv)
-    from devtools.n11_optimality_figures import render_figures  # noqa: PLC0415
-
     html, markdown = render(
         ARTICLE.read_text(encoding="utf-8"),
-        figures=render_figures(),
+        figures=render_all_figures(),
         revision=args.revision or render_explainer.link_revision(),
     )
     output_dir = args.output_dir.resolve()

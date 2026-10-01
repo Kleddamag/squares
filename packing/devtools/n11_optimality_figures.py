@@ -189,6 +189,100 @@ def _cell_svg(cells: list[dict[str, Any]], *, mask: bool) -> str:
     )
 
 
+def _capacity_svg(cells: list[dict[str, Any]], cap: Fraction) -> str:
+    """Illustrate the disk argument using one admitted cell and hypothetical centers."""
+    vertices = [tuple(Fraction(v) * (cap - 1) for v in point) for point in cells[9]["vertices"]]
+    diameter_squared = max(
+        sum((x - y) ** 2 for x, y in zip(a, b, strict=True)) for a in vertices for b in vertices
+    )
+    if diameter_squared >= 1:
+        raise ValueError("selected cell does not have strict physical diameter below one")
+    centroid = tuple(
+        sum((v[i] for v in vertices), Fraction()) / len(vertices) for i in range(2)
+    )
+    centers = [
+        tuple((3 * c + v) / 4 for c, v in zip(centroid, vertex, strict=True))
+        for vertex in (vertices[0], vertices[len(vertices) // 2])
+    ]
+
+    def pixel(point: tuple[Fraction, ...]) -> tuple[float, float]:
+        return 170 + 200 * float(point[0] - centroid[0]), 185 - 200 * float(
+            point[1] - centroid[1]
+        )
+
+    points = " ".join(f"{x:.3f},{y:.3f}" for x, y in map(pixel, vertices))
+    parts = [
+        (
+            f'<polygon data-capacity-cell="9" data-diameter-squared="{diameter_squared}" '
+            f'points="{points}" fill="#e2e8f0" stroke="#52667a" stroke-width="2"/>'
+        )
+    ]
+    for index, center in enumerate(centers):
+        x, y = pixel(center)
+        parts.append(
+            f'<circle data-hypothetical-center="{index}" cx="{x:.3f}" cy="{y:.3f}" '
+            'r="100" fill="#1d7874" fill-opacity="0.12" stroke="#1d7874" '
+            'stroke-width="2" stroke-dasharray="6 4"/>'
+            f'<circle cx="{x:.3f}" cy="{y:.3f}" r="4" fill="#172b3a"/>'
+        )
+    for y, label in (
+        (65, "One cell; two centers?"),
+        (110, "Cell diameter < 1"),
+        (155, "Each disk has radius 1/2"),
+        (200, "The open disks overlap"),
+        (245, "So the square interiors"),
+        (274, "would overlap too"),
+    ):
+        parts.append(
+            f'<text class="n11-diagram-label" x="345" y="{y}" fill="#172b3a">'
+            f"{escape(label)}</text>"
+        )
+    parts.append(
+        '<text class="n11-diagram-note" x="30" y="350" fill="#34465a">'
+        "Exact cell 9; hypothetical centers. Disk boundaries are open.</text>"
+    )
+    return _svg(
+        "capacity",
+        "One center per cell",
+        "Two hypothetical centers in exact cell 9 "
+        "would have overlapping open radius-one-half disks. This illustrates the "
+        "capacity lemma, not an actual packing.",
+        width=640,
+        height=385,
+        content="".join(parts),
+    )
+
+
+def _split_label(graph: dict[str, Any], parent: str, child: str) -> str | None:
+    """Read a new closed cut only after checking its inherited header prefix."""
+    before = graph["source_headers"][parent]["constraints"]
+    after = graph["source_headers"][child]["constraints"]
+    if after[: len(before)] != before or len(after) not in (len(before), len(before) + 1):
+        raise ValueError("capture split does not preserve its inherited conditions")
+    if len(after) == len(before):
+        return None
+    cut = after[-1]
+    symbol = {"le": "≤", "ge": "≥"}[cut["keep"]]
+    if cut.get("kind") == "half_angle":
+        owner, bound = cut["owner"], Fraction(cut["bound_half_angle"])
+        if (owner, bound) not in ((13, Fraction(147, 512)), (2, Fraction(183, 512))):
+            raise ValueError("unrecognized capture angle split")
+        subscript = str(owner).translate(str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉"))
+        return f"t{subscript} {symbol} {bound}"
+    header = graph["source_headers"][child]
+    sign = 1 if cut["keep"] == "le" else -1
+    threshold = Fraction(header["B"]) * (Fraction(header["U"]) / 2 + Fraction(5, 4))
+    if (
+        cut["owner"] != 15
+        or cut["axis"] != 1
+        or cut["normal"] != [0, sign]
+        or Fraction(cut["bound_centered_unit"]) != Fraction(5, 4)
+        or Fraction(cut["upper_field"]) != sign * threshold
+    ):
+        raise ValueError("unrecognized capture center split")
+    return f"y₁₅ {symbol} 5/4"
+
+
 def _capture_svg(graph: dict[str, Any]) -> str:
     parent_edges: dict[str, str] = graph["source_parent_edges"]
     if set(parent_edges) != set(NODE_NAMES) - {"research/candidate-capture/root-self-240.json"}:
@@ -243,6 +337,21 @@ def _capture_svg(graph: dict[str, Any]) -> str:
             f'x2="{x2:.1f}" y2="{TREE_TOP + d2 * TREE_LEVEL_GAP}" '
             'stroke="#94a3b8" stroke-width="2.5"/>'
         )
+    for child, parent_hash in parent_edges.items():
+        parent = hash_to_path[parent_hash]
+        label = _split_label(graph, parent, child)
+        if label is not None:
+            x1, d1 = positions[parent]
+            x2, d2 = positions[child]
+            x = x1 - 10 if x2 < x1 else x1 + 10
+            anchor = "end" if x2 < x1 else "start"
+            y = TREE_TOP + (d1 + d2) * TREE_LEVEL_GAP / 2
+            parts.append(
+                f'<text class="n11-diagram-note" data-closed-cut="{escape(label)}" '
+                f'x="{x:.1f}" y="{y:.1f}" text-anchor="{anchor}" fill="#172b3a" '
+                'stroke="white" stroke-width="7" stroke-linejoin="round" paint-order="stroke">'
+                f"{escape(label)}</text>"
+            )
     for path, (x, depth) in positions.items():
         label = NODE_NAMES[path]
         leaf = label in LEAF_OUTCOMES
@@ -261,6 +370,12 @@ def _capture_svg(graph: dict[str, Any]) -> str:
                 f'text-anchor="middle" fill="#34465a">'
                 f"{escape(LEAF_OUTCOMES[label])}</text>"
             )
+    x, depth = positions[next(path for path, name in NODE_NAMES.items() if name == "near")]
+    parts.append(
+        f'<text class="n11-diagram-note" x="{x:.1f}" '
+        f'y="{TREE_TOP + depth * TREE_LEVEL_GAP + 68:.1f}" text-anchor="middle" '
+        'fill="#34465a">fixed-T theorem follows</text>'
+    )
     return _svg(
         "capture",
         "The closed case-438 capture tree",
@@ -282,6 +397,9 @@ def _witness_svg() -> str:
     container = root.findall(f'.//{{{SVG_NS}}}rect[@data-feature="container-outline"]')
     if len(outlines) != 11 or len(container) != 1:
         raise ValueError("retained exact witness SVG lacks its eleven squares or container")
+    text = text.replace(
+        "U Trump n=11: side ~ 3.87708359 (certified upper bound)", "Trump construction at T"
+    )
     text = re.sub(r"<\?xml[^>]*\?>\s*", "", text, count=1)
     text = re.sub(r"<metadata>.*?</metadata>\s*", "", text, count=1, flags=re.DOTALL)
     text = re.sub(
@@ -301,11 +419,14 @@ def _witness_svg() -> str:
 
 
 def render_figures() -> dict[str, str]:
-    """Return four self-contained SVG illustrations from reviewed retained inputs."""
+    """Return geometric illustrations from reviewed retained inputs."""
     cells, graph = _admitted_sources()
     return {
         "WITNESS_SVG": _witness_svg(),
         "COVER_SVG": _cell_svg(cells, mask=False),
         "CAPTURE_SVG": _capture_svg(graph),
         "MASK_SVG": _cell_svg(cells, mask=True),
+        "CAPACITY_SVG": _capacity_svg(
+            cells, Fraction(graph["source_headers"][graph["root_key"]]["U"])
+        ),
     }

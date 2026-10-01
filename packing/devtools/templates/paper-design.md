@@ -261,6 +261,7 @@ one of them changes.
 | Below a section heading (`h2`) | `--paper-section-space-below` | 1.7rem, 27.2px | `paper-type.css` |
 | Below a page’s title, and below its subtitle | `--site-subtitle-space` | 1.5rem, 24px | `site.css` |
 | Above and below a table | `--site-table-space` | 2rem, 32px | `site.css` |
+| Between a wide block and the window’s edge | `--site-wide-gutter` | 2rem, 32px; 1rem, 16px, below 48rem | `site.css` |
 
 A page’s title, or the picture that opens the homepage, starts `--site-page-top` under
 the bar’s rule on every page, the explainer and the optimality paper included.
@@ -277,10 +278,24 @@ value moves every table on the site.
 Where a larger margin meets it, as a section heading’s does below the disclosure, the
 larger one stands.
 
+`--site-wide-gutter` is the least space between a wide block and the window’s edge: a
+table with its filter bar, a row of cards, the atlas grid.
+It is the page’s own margin, so a wide block ends under the ends of the bar’s rule, and
+below 48rem it is the 1rem the text keeps on a phone.
+The wide track and a table’s bleed both stop that far short of the window
+(`--site-wide-room`), so between a phone and the width where a table has room to spare
+(about 1170 pixels for the results tables, 1440 for the frontier atlas) a table sits 32
+pixels from either edge, where it sat 16. Nothing that scrolls sideways gives the gutter
+up: a document’s own table keeps to its column on a narrow pane and scrolls inside its
+wrap, where KPress would run it to the window’s edge, and a result overview’s bounds
+scroll inside their own box rather than past the popover’s margin.
+On a phone a results table’s row cards are padded 0.5rem at the sides.
+
 `devtools.measure_site_pages space` measures these on a built site: the white space
 above and below every table and heading, in pixels between boxes, at each width asked
-for, with each heading’s size and line height.
-`tests/test_overview.py` pins each token’s value and the rule that reads it.
+for, with each heading’s size and line height, and each table’s distance from the
+window’s edges or its popover’s. `tests/test_overview.py` pins each token’s value and
+the rule that reads it.
 
 ## Site Components
 
@@ -599,7 +614,8 @@ it.
   Without scripting the button’s row stays `hidden`, since it would do nothing.
 
 - **Wide bleed.** A wide block (`.site-wide`) takes the wide track, `--site-wide`, less
-  the page gutters. Two kinds bleed past it.
+  the page gutters (`--site-wide-gutter` on either side; **Spacing**, above).
+  Two kinds bleed past it.
   The atlas grid bleeds at every width, up to `--site-bleed-max` (140rem). A data table
   bleeds only above `--site-table-bleed-from` (80rem, 1280 pixels): from there it grows
   one pixel for each pixel of window, `--site-table-wide`, until it reaches the page
@@ -607,9 +623,10 @@ it.
   spread apart and a row would be harder to follow.
   So nothing changes at 1280 pixels or narrower, and on a large screen a table’s text
   columns wrap less. The Every Result table is 1104 pixels wide up to 1280, 1424 at 1600
-  and 1600 from about 1780 up; the frontier table, whose own track is 86rem, goes from
-  1376 to 1600. The rule takes any `.site-wide` that is or holds a `.site-table-wrap`,
-  so a new table bleeds with no rule of its own.
+  and 1600 from about 1780 up; the frontier table, whose own track is 86rem, is the
+  window less its gutters up to 1440 pixels and goes from 1376 to 1600 above that.
+  The rule takes any `.site-wide` that is or holds a `.site-table-wrap`, so a new table
+  bleeds with no rule of its own.
   The replay table is the exception because it keeps to its content.
 
 - **Atlas popover.** Pressing a cell opens the page’s one atlas popover on that case, a

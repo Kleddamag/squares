@@ -2183,6 +2183,35 @@ def test_data_tables_bleed_like_the_atlas_only_above_1280_pixels() -> None:
     assert "max-width: var(--site-table-wide);" in rule
 
 
+def test_a_wide_block_keeps_one_gutter_from_the_windows_edge() -> None:
+    """A table and its filter bar, a row of cards and the atlas grid stop one token short
+    of the window on either side: the page's margin, and the text's on a phone. A wide
+    track and a table's bleed both read it; a document's own table keeps to its column on
+    a narrow pane, a phone's row cards are padded, and a result overview's bounds scroll
+    inside their own box, so nothing runs to the edge of the window or of a popover."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    assert css.count("--site-wide-gutter: 2rem;") == 1
+    assert "@media (width < 48rem) {\n  :root {\n    --site-wide-gutter: 1rem;\n  }\n}" in css
+    wide = css[css.index(".site-page .site-wide {") :]
+    wide = wide[: wide.index("}")]
+    assert "--site-wide-room: calc(100vw - 2 * var(--site-wide-gutter));" in wide
+    assert "max-width: min(var(--site-wide), var(--site-wide-room));" in wide
+    rule = css[css.index(TABLE_BLEED) :]
+    assert "    var(--site-wide-room),\n" in rule[: rule.index("\n}")]
+    assert "100vw - 2rem" not in css[: css.index("/* ---------- Cards ---------- */")]
+    assert (
+        "@media screen and (width < 48rem) {\n  .kpress .site-page .kpress-table-wrap {\n"
+        "    max-inline-size: 100%;\n  }\n}"
+    ) in css
+    row = css[css.index("  .site-results tr {") :]
+    assert "padding: 0.7rem 0.5rem;" in row[: row.index("}")]
+    result = render_overview.SITE_RESULT_CSS.read_text(encoding="utf-8")
+    bounds = result[result.index(".site-result-bounds {") :]
+    bounds = bounds[: bounds.index("}")]
+    assert "max-inline-size: 100%;" in bounds
+    assert "overflow-x: auto;" in bounds
+
+
 class _TableAncestry(HTMLParser):
     """Each `<table>`'s own classes and the classes of the elements around it."""
 

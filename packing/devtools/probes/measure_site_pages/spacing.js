@@ -9,7 +9,10 @@
 //
 // A table is measured as the component a reader sees: its filter bar, when it has one,
 // and its wrap; a table inside a disclosure is measured as the disclosure, open or
-// closed, with the space inside it reported apart. A heading is every `h1` to `h4` and
+// closed, with the space inside it reported apart. Beside the space above and below it,
+// a table has its side gutters: how far its wrap, and its bar's, sit from the edges of
+// the window, or of the popover that holds it. A grid marked up with a table's roles, as
+// a result overview's are, is measured as a table. A heading is every `h1` to `h4` and
 // every headline set in a heading's face: a card's, a popover's, a case record's.
 // The page's first block is whatever opens its column, a title, a picture or a row of
 // chips, with the space from the bar's rule down to it.
@@ -89,14 +92,34 @@
   /** @type {Set<Element>} */
   const seen = new Set();
   const tables = [];
-  for (const table of document.querySelectorAll("table")) {
-    const wrap = table.closest(".site-table-wrap") ?? table.closest(".kpress-table-wrap") ?? table;
-    const disclosure = wrap.closest("details");
+  /**
+   * How far a box sits inside its frame's side edges: the window's, or the border box of
+   * the popover that holds it.
+   * @param {Element} el
+   */
+  const sides = (el) => {
+    const box = el.getBoundingClientRect();
+    const frame = el.closest("[popover]")?.getBoundingClientRect() ?? null;
+    return {
+      left: round(box.left - (frame?.left ?? 0)),
+      right: round((frame?.right ?? document.documentElement.clientWidth) - box.right),
+    };
+  };
+  /** @param {Element} el */
+  const scrollsSideways = (el) => getComputedStyle(el).overflowX !== "visible";
+  for (const table of document.querySelectorAll('table, [role="table"]')) {
+    const wrap =
+      table.closest(".site-table-wrap") ??
+      table.closest(".kpress-table-wrap") ??
+      table.closest(".site-result-case-list") ??
+      table;
+    const held = wrap.closest("[popover]") !== null;
+    const disclosure = held ? null : wrap.closest("details");
     const component = disclosure ?? wrap;
     if (seen.has(component) || !shown(component) || !kept(component)) {
       continue;
     }
-    if (component.closest("[popover]") || table.closest("nav, .kpress-toc")) {
+    if (table.closest("nav, .kpress-toc")) {
       continue;
     }
     seen.add(component);
@@ -127,6 +150,17 @@
           : null,
       below: below.gap,
       below_to: below.to,
+      ...sides(disclosure && !open ? disclosure : wrap),
+      sides_to: held ? "popover" : "window",
+      bar_left: bar ? sides(bar).left : null,
+      bar_right: bar ? sides(bar).right : null,
+      // Content wider than the wrap either scrolls inside it or, where the wrap does not
+      // clip, spills out of it by this many pixels.
+      scrolls: wrap.scrollWidth > wrap.clientWidth + 1 && scrollsSideways(wrap),
+      spills:
+        wrap.scrollWidth > wrap.clientWidth + 1 && !scrollsSideways(wrap)
+          ? wrap.scrollWidth - wrap.clientWidth
+          : 0,
       top: Math.round(top.getBoundingClientRect().top + window.scrollY),
     });
   }

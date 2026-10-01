@@ -72,6 +72,10 @@ body {
      the awaiting-replay disclosure, and a document's own table (paper-design.md,
      Tables). */
   --site-table-space: 2rem;
+  /* The least space between a wide block and the window's edge: a table and its filter
+     bar, a row of cards, the atlas grid. It is the page's own margin, so a wide block
+     ends under the ends of the bar's rule, and on a phone, set below, the text's. */
+  --site-wide-gutter: 2rem;
   /* The space under a page's title: to its subtitle and from the subtitle to the first
      paragraph, or straight to the first paragraph of a page that has no subtitle. */
   --site-subtitle-space: 1.5rem;
@@ -79,6 +83,11 @@ body {
   /* How much nearer the bar a page's opening picture sits than a title would: a drawing
      has no line spacing above its edge, so the same space reads larger. */
   --site-hero-lift: 0.5rem;
+}
+@media (width < 48rem) {
+  :root {
+    --site-wide-gutter: 1rem;
+  }
 }
 .site-page a,
 .kpress-tooltip a {
@@ -105,10 +114,12 @@ body {
   padding-block-end: calc(var(--kpress-font-size-base) * 5);
   padding-inline: 0;
 }
-/* Wide blocks (tables, the atlas figure, card grids) take a wider track than prose. */
+/* Wide blocks (tables, the atlas figure, card grids) take a wider track than prose, and
+   stop `--site-wide-gutter` short of the window's edge on either side. */
 .site-page .site-wide {
-  margin-inline: calc((min(var(--site-wide), 100vw - 2rem) - 100%) / -2);
-  max-width: min(var(--site-wide), 100vw - 2rem);
+  --site-wide-room: calc(100vw - 2 * var(--site-wide-gutter));
+  margin-inline: calc((min(var(--site-wide), var(--site-wide-room)) - 100%) / -2);
+  max-width: min(var(--site-wide), var(--site-wide-room));
 }
 /* A data table's wide track bleeds as the atlas grid does, but only above
    `--site-table-bleed-from`: there it is exactly the wide track above, and past it the
@@ -119,7 +130,7 @@ body {
   --site-table-grow: max(0px, 100vw - var(--site-table-bleed-from));
   --site-table-wide: min(
     var(--site-table-max),
-    calc(100vw - 2rem),
+    var(--site-wide-room),
     calc(var(--site-wide) + var(--site-table-grow))
   );
   margin-inline: calc((var(--site-table-wide) - 100%) / -2);
@@ -712,6 +723,14 @@ body {
     margin-block-end: 0;
   }
 }
+/* On a narrow pane KPress lets a document's table run past the column into the page's
+   margin, to the window's edge. Here it keeps to the column and scrolls inside its wrap,
+   so the scroller itself keeps the gutter. */
+@media screen and (width < 48rem) {
+  .kpress .site-page .kpress-table-wrap {
+    max-inline-size: 100%;
+  }
+}
 .site-table-tools label {
   color: var(--kpress-doc-muted);
   display: inline-flex;
@@ -1020,7 +1039,7 @@ body {
     column-gap: 0.6rem;
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
-    padding: 0.7rem 0.25rem;
+    padding: 0.7rem 0.5rem;
     row-gap: 0.3rem;
   }
   .site-results tr[hidden] {

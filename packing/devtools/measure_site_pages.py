@@ -30,9 +30,12 @@ Six measurements, each over pages of a directory `preview_site` has built:
 - `space` reports the white space above and below every table and every heading as laid
   out, in CSS pixels between border boxes, and each heading's size, line height and
   leading (line height over size). A table is the component a reader sees, its filter
-  bar included; a heading is every `h1` to `h4` and every headline set in a heading's
-  face (a card's, a popover's, a case record's), with how many lines it takes and how
-  much of its content its box cannot show. `--press SELECTOR` presses an element once
+  bar included, and has its side gutters too: how far it and its bar sit from the
+  window's edges, or from the popover's that holds it. The page's first block is
+  reported with the space from the bar's rule down to it. A heading is every `h1` to
+  `h4` and every headline set in a heading's face (a card's, a popover's, a case
+  record's), with how many lines it takes and how much of its content its box cannot
+  show. `--press SELECTOR` presses an element once
   the page is measured and reports what it opened, a popover or a disclosure, as rows
   whose `state` is the selector. `--markdown` prints one line a table and one line a
   heading role, with the least and most space found. This is the tool the design
@@ -222,7 +225,10 @@ def measure_space(
                 settle_math(page)
                 collect(name, width, "page", page.evaluate(SPACING))
                 for selector in presses:
-                    if not page.locator(selector).count():
+                    # A match that is not shown, a row inside a closed disclosure, cannot
+                    # be pressed; an earlier press may be what opens it.
+                    target = page.locator(selector)
+                    if not target.count() or not target.first.is_visible():
                         continue
                     press(page, selector)
                     collect(name, width, selector, page.evaluate(SPACING, {"scope": OPENED}))
@@ -274,6 +280,7 @@ def space_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
             "above_to": row["above_to"],
             "below": _span([row.get("below")]),
             "below_to": row.get("below_to", ""),
+            "sides": _sides(row),
         }
         for row in report
         if row["kind"] in ("first", "table")
@@ -303,9 +310,24 @@ def space_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "above_to": members[0]["above_to"],
                 "below": _span([member["below"] for member in members]),
                 "below_to": members[0]["below_to"],
+                "sides": "",
             }
         )
     return rows
+
+
+def _sides(row: dict[str, Any]) -> str:
+    """A table's side gutters as `left | right`, in pixels from the window's edges or
+    its popover's, with its bar's where it has one and a note when the table scrolls
+    sideways inside its wrap or spills out of it."""
+    if "left" not in row:
+        return ""
+    text = f"{row['left']:g} / {row['right']:g} from the {row['sides_to']}"
+    if row.get("bar_left") is not None:
+        text += f"; bar {row['bar_left']:g} / {row['bar_right']:g}"
+    if row.get("spills"):
+        text += f"; spills {row['spills']:g}"
+    return text + ("; scrolls" if row.get("scrolls") else "")
 
 
 def _evaluate(

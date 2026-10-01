@@ -406,8 +406,9 @@ box. Two roots with different sides contradict this result; equal sides force eq
 $\theta$ by $g$ and then equal $\beta$ by strict monotonicity of $F_2$.
 
 This is a conditional analytic result reviewed by two mathematical agents.
-It has no machine-checked derivative certificate yet, and proves neither root existence
-nor a packing at that root.
+It has no machine-checked derivative certificate yet.
+The separate H-255 result below discharges root existence; a packing at that root still
+needs certification.
 Applying it to all nearby or all global packings additionally requires coverage of
 orientations, directed branches and parameters outside the box.
 The next useful slice is rigorous root isolation and endpoint/slider feasibility, with
@@ -462,8 +463,30 @@ $$
 187t^2-214t+53\ge0,\qquad 1169t^2-1338t+331\le0.
 $$
 
-`think-bj81` owns the next preregistered root-isolation and endpoint-feasibility slice.
-No root calculation has run at this checkpoint.
+## Exact Root Certificate
+
+[H-255](../../../packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md) and
+[exp-237](../../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-237-h255-n17-polynomial-root.md)
+now establish a unique exact root in the fixed rational box of radius $10^{-12}$ around
+the source half-angles.
+A Sol producer and independently implemented Astra checker use exact rational interval
+arithmetic. A separate Astra reviewer approved both; independent output review confirms
+every bound and guard.
+The source, radius and criterion were frozen before the single target run.
+
+The contraction norm is about $6.53\times10^{-11}$; inclusion bounds are below
+$6.53\times10^{-23}$. Producer and checker took 0.67 and 0.09 seconds wall.
+This establishes the root-existence premise of the conditional theorem above and hence a
+minimum of the declared necessary parameter system.
+It does not establish endpoint packing feasibility or capture of arbitrary orientations
+or contact branches.
+The certificate also places the root within the tighter coordinatewise inclusion bounds
+around its midpoint without a new solve.
+
+`think-bj81` now owns endpoint feasibility, including exact contact identities,
+containment, all pair separations and the joint slider domain.
+The independent methods share the contraction theorem; no proof-assistant or
+method-distinct confirmation is claimed.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

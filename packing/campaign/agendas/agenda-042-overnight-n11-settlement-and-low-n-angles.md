@@ -963,7 +963,7 @@ agenda:
     purpose: research
     owner_focus: insight
     instances: [17]
-    state: in_progress
+    state: complete
     priority: 0
     question: Does the fixed rational box contain an exact root of the two n17 contact-chart polynomials?
     hypotheses: [H-255]

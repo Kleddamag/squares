@@ -377,7 +377,7 @@ session:
     clock_role: work
     bead: think-bj81
     objective: Build and independently review the bounded exact polynomial certificate producer and checker.
-    status: in_progress
+    status: completed
     entered_by: planned_checkpoint
     switch_reason: H254 is accepted and the conditional minimum reduces the next missing premise to a
       two-polynomial root.
@@ -389,10 +389,87 @@ session:
     validation_command: cd packing && .venv/bin/pytest tests/test_n17_root_certificate.py -q -p no:cacheprovider
     kill_condition: Independent root checker or fixed domain cannot be specified soundly.
     fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
+    outcome: Two separate exact-rational implementations and13 synthetic controls pass independent Astra
+      max review, Ruff and types. Frozen commit b3e5e1526 precedes all target computation.
+    evidence:
+    - packing/devtools/make_n17_root_certificate.py
+    - packing/devtools/check_n17_root_certificate.py
+    - packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md
+    stop_reason: Controlled instrument frozen before target execution.
+    next_action: Run the fixed H255 producer and independent checker once with bounded raw receipts.
+  - workflow: research-loop
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-bj81
+    objective: Execute the frozen H255 root certificate and separate checker once.
+    status: completed
+    entered_by: planned_checkpoint
+    switch_reason: H254 is accepted and the conditional minimum reduces the next missing premise to a
+      two-polynomial root.
+    budget_minutes: 5
+    started_at: '2026-10-01T11:55:01Z'
+    deadline_at: '2026-10-01T12:00:01Z'
+    expected_output: Immutable exact certificate, independent checker receipt and separate timing/provenance.
+    validation_command: cd packing && .venv/bin/python3 -m devtools.make_n17_root_certificate
+    kill_condition: Independent root checker or fixed domain cannot be specified soundly.
+    fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
+    outcome: Producer and checker exit0 at11:55:03UTC; wall0.67s and0.09s. All fixed guards pass; output
+      review still pending.
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/run-001/certificate.json
+    stop_reason: One producer/checker run completed without adjustment.
+    next_action: Independently audit output before accepting root existence.
+  - workflow: factual-review
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-bj81
+    objective: Independently audit the retained exact root certificate and its conditional minimum consequence.
+    status: completed
+    entered_by: planned_checkpoint
+    switch_reason: H254 is accepted and the conditional minimum reduces the next missing premise to a
+      two-polynomial root.
+    budget_minutes: 10
+    started_at: '2026-10-01T11:55:30Z'
+    deadline_at: '2026-10-01T12:05:30Z'
+    expected_output: Reviewed acceptance or a named certificate defect, with endpoint feasibility still
+      separate.
+    validation_command: Review fixed source/midpoint/domain, all certificate quantities and raw provenance
+      against H255.
+    kill_condition: Independent root checker or fixed domain cannot be specified soundly.
+    fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
+    outcome: Astra independently audited all10 raw files, source/map/midpoint, both inverse identities,
+      all contraction/inclusion values, all8 domain intervals and provenance; no defect. H255 accepted
+      as root existence only. Retained-output arithmetic audit0.027525583s.
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/output-review.md
+    stop_reason: Independent exact output audit supports acceptance at the frozen scope.
+    next_action: Publish the accepted root and define endpoint feasibility obligations in parallel.
+  - workflow: insight-iteration
+    focus: insight
+    recording: contemporaneous
+    clock_role: work
+    bead: think-bj81
+    objective: Classify endpoint feasibility obligations and joint slider domain before selecting the
+      next fixed certificate.
+    status: in_progress
+    entered_by: planned_checkpoint
+    switch_reason: H254 is accepted and the conditional minimum reduces the next missing premise to a
+      two-polynomial root.
+    budget_minutes: 23
+    started_at: '2026-10-01T11:59:15Z'
+    deadline_at: '2026-10-01T12:22:15Z'
+    expected_output: Two Astra mathematical reviews plus Sol instrument readiness; explicit identity versus
+      interval coverage and no target sampling.
+    validation_command: Compare H254 reconstruction and H255 accepted box with all wall and pair obligations
+      algebraically.
+    kill_condition: Independent root checker or fixed domain cannot be specified soundly.
+    fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Freeze reviewed code and exp237 provenance before executing the fixed H255 target.
+    next_action: Freeze H256 criterion only after forced-zero contacts and joint sliders are fully classified.
   budget:
     wall_minutes: 268.3
     orientation_minutes: 10
@@ -410,8 +487,8 @@ session:
     metric: Independently checked useful discriminators and resolved proof obligations.
     before: X-048 and evand intake reviewed; no W3 target execution; n17 candidate has only a numerical
       receipt.
-    after: H253 rational feasibility and H254 chart fidelity independently confirmed; a conditional slack-contact
-      box minimum derived and independently reviewed. Root existence/endpoint feasibility/capture remain
+    after: H253 rational feasibility, H254 chart fidelity and H255 exact root existence accepted. Reviewed
+      conditional minimum applies to the declared necessary system; endpoint packing and capture remain
       open.
   delegations:
   - task: think-s6ty endpoint and flexible-family mathematical review
@@ -529,8 +606,7 @@ session:
   - CI head8e5b15b94 failed only the stale synopsis mutation anchor in validate and shardB; corrected165-round
     anchor now passes bothanchorresolution andactualmutation. HostedCIatfinalcheckpoint remains separate.
   stop_reason: null
-  next_action: Complete H255 producer/checker controls and independent review; freeze code before the
-    one bounded target run.
+  next_action: Freeze H256 criterion only after forced-zero contacts and joint sliders are fully classified.
 ---
 # Session 165: Post-optimality Research
 
@@ -573,21 +649,25 @@ identity. The launcher unsets `PYTHONOPTIMIZE` and confirms assertions are activ
 
 ## Next Mathematical Slice
 
-The next bead is `think-bj81`: rigorous existence of the root of the two polynomial
-equations in the W3 report, then endpoint containment, all pairs and joint slider
-domains. The reviewed conditional minimum is already available; root existence and
-capture are separate obligations.
-[H-255](../hypotheses/H-255-n17-exact-polynomial-root.md) fixes the root box and exact
-contraction criterion.
-Sol owns the producer, Astra max owns the independently implemented checker, and a
-second Astra max reviews both.
-Synthetic controls and a frozen commit precede target admission.
-No root target has run yet.
+[H-255](../hypotheses/H-255-n17-exact-polynomial-root.md) is accepted: exact root
+existence and uniqueness pass separate implementations and independent output review.
+The raw exp-237 receipt is immutable.
+Its tighter coordinatewise inclusion enclosure is a logical consequence of the accepted
+certificate, not a new radius trial.
 
-Resume with the H-255 synthetic controls, then the independent code review.
-Do not repeat H253/H254 or source intake.
-`think-vdmf` retains rational frontier admission; `think-je3v` retains the observed
-checkpoint-efficiency issue.
+`think-bj81` now owns endpoint containment, all pairs and joint slider feasibility.
+Two Astra agents are deriving and challenging those obligations while Sol maps the
+smallest instrument.
+Separate algebraic zero contacts from strict interval clearances; the 2/3 corner contact
+is an additional identity beyond the selected20 chart contacts.
+No endpoint target computation is authorized until its criterion and controls are
+frozen.
+
+Resume with the endpoint reviewers’ complete obligation roster and the H254
+reconstruction, then register the next fixed criterion.
+Do not repeat H253/H254/H255 or source intake.
+`think-vdmf` retains rational frontier admission; `think-je3v` retains
+checkpoint-efficiency work.
 The overnight deadline and finalization start are unchanged.
 
 <!-- This document follows common-doc-guidelines.md.

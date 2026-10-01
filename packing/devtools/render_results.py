@@ -7,9 +7,11 @@ significance descending, then confirmation descending, then id.
 `devtools/check_results.py` grants the rungs; this file only displays them,
 and the gate fails when the committed view drifts from the register.
 
-This project's results come first. Results by others follow in the lineage their
-sources state, read from the bibliography rather than restated: building on this
-project, crediting it second-hand, independent of it, and published before it began.
+This project's results come first, credited to Levy by name and to the authors each
+rests on directly (`result_credit.credit_line`, from the entry's `builds_on`). Results
+by others follow in the lineage their sources state, read from the bibliography rather
+than restated: building on this project, crediting it second-hand, independent of it,
+and published before it began.
 Within each group the entries still waiting on a replay here (`C` below `C3`) come
 first, since they are the queue. Their credit and published date are shown beside the
 rungs, with the result's standing, derived from the case records and never stored by
@@ -33,6 +35,7 @@ from pathlib import Path
 from strif import atomic_output_file
 
 from devtools.check_results import kind_label
+from devtools.register_prose import paragraphs
 from devtools.render_recent_results import load_records, standing
 from devtools.result_credit import OTHERS, credit_line, source_lineage
 from sqpack.yamlio import safe_load
@@ -63,6 +66,8 @@ A result's kind says what it is: a lower bound, an upper bound, optimality (an e
 value), or one of the kinds [`epistemics.md`](../../epistemics.md#result-kinds) defines
 for a result that is no bound on `s(n)`. A result that claims no bound has no
 standing, and its standing column is a dash.
+Every credit names people: `X`, or `X after Y` where X's result rests directly on Y's
+proof, method or tool.
 The axes are defined in [`epistemics.md`](../../epistemics.md): `V` is the
 verification the result carries as certified by its own source, `C` how far that
 verification has been independently confirmed here or by a third party, `S` a
@@ -82,8 +87,22 @@ def _scope(record: dict) -> str:
     return f"{scope['n_min']}-{scope['n_max']}"
 
 
-def _claim(record: dict) -> str:
-    return " ".join(str(record["claim"]).split()).replace("|", r"\|")
+def claim_cell(record: dict) -> str:
+    """The claim in one table cell, its paragraphs kept apart by line breaks."""
+    return "<br><br>".join(paragraphs(record["claim"])).replace("|", r"\|")
+
+
+def next_action(record: dict) -> list[str]:
+    """One result's `next_rung` as a list item: its first paragraph on the bullet's line,
+    and each later paragraph as a paragraph of the same item, indented under it."""
+    first, *rest = paragraphs(record["next_rung"])
+    lines = [f"- **{record['id']}** — {first}"]
+    for paragraph in rest:
+        lines += ["", f"  {paragraph}"]
+    if rest:
+        # A blank line closes a multi-paragraph item, so the next bullet starts clean.
+        lines.append("")
+    return lines
 
 
 def order(record: dict) -> tuple[int, int, str]:
@@ -133,13 +152,14 @@ def render() -> str:
     lines = [HEADER]
     lines.append(f"## {OURS}")
     lines.append("")
-    lines.append("| id | n | kind | V | C | S | novelty | claim |")
-    lines.append("| --- | --- | --- | --- | --- | --- | --- | --- |")
+    lines.append("| id | n | kind | credit | V | C | S | novelty | claim |")
+    lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- |")
     lines.extend(
         f"| {record['id']} | {_scope(record)} | {kind_label(record['kind'])} "
+        f"| {credit_line(record, sources)} "
         f"| {record['verification']} "
         f"| {record['confirmation']} | S{record['significance']['score']} "
-        f"| {record['novelty']} | {_claim(record)} |"
+        f"| {record['novelty']} | {claim_cell(record)} |"
         for record in ours
     )
     lines.append("")
@@ -165,7 +185,7 @@ def render() -> str:
                 f"| {credit_line(record, sources)} "
                 f"| {record['attribution']['published']} | {record['verification']} "
                 f"| {record['confirmation']} | S{record['significance']['score']} "
-                f"| {standing(record, records) or NO_STANDING_CELL} | {_claim(record)} |"
+                f"| {standing(record, records) or NO_STANDING_CELL} | {claim_cell(record)} |"
                 for record in group
             )
             lines.append("")
@@ -174,8 +194,7 @@ def render() -> str:
     lines.append("The next evidence-improving action or terminal rationale for each result:")
     lines.append("")
     for record in results:
-        next_rung = " ".join(str(record["next_rung"]).split())
-        lines.append(f"- **{record['id']}** — {next_rung}")
+        lines.extend(next_action(record))
     lines.append("")
     lines.append(f"Register reviewed {register['last_reviewed']}.")
     lines.append("")

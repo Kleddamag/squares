@@ -11,6 +11,7 @@ import pytest
 from devtools import (
     overview_data,
     overview_sections,
+    register_prose,
     render_overview,
     repo_links,
     result_overview,
@@ -76,8 +77,14 @@ def test_the_head_states_the_result_as_the_site_does(
     )
     assert "site-card-label" not in head
     assert "site-popover-value" not in head
-    claim = overview_data.tex_bounds(" ".join(str(record["claim"]).split()))
-    assert f'<p class="site-result-claim">{claim}</p>' in head
+    # One paragraph element for each paragraph of the claim, in order.
+    paragraphs = register_prose.paragraphs(record["claim"])
+    claim = "".join(
+        f'<p class="site-result-claim">{overview_data.tex_bounds(paragraph)}</p>'
+        for paragraph in paragraphs
+    )
+    assert claim in head
+    assert head.count('<p class="site-result-claim">') == len(paragraphs)
     assert "kpress-math" in claim
     assert overview_sections.status_chips(result) in head
     # Significance first, then verification and confirmation (think-ucon).

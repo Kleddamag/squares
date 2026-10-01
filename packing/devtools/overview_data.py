@@ -33,6 +33,7 @@ from typing import Any
 
 from devtools import render_results
 from devtools.migrate_math import classify
+from devtools.register_prose import LINK, paragraphs
 from devtools.render_recent_results import (
     RecentCounts,
     Row,
@@ -128,7 +129,21 @@ _CODE_SPAN = re.compile(r"`([^`\n]+)`")
 
 
 def _prose_html(text: str) -> str:
-    """Escape plain register prose, setting each ASCII mathematical run as inline math."""
+    """Escape plain register prose, setting each ASCII mathematical run as inline math
+    and each Markdown link to a web address (`register_prose.LINK`) as a link."""
+    parts: list[str] = []
+    last = 0
+    for link in LINK.finditer(text):
+        parts.append(_math_html(text[last : link.start()]))
+        href = html.escape(link.group(2), quote=True)
+        parts.append(f'<a href="{href}">{_math_html(link.group(1))}</a>')
+        last = link.end()
+    parts.append(_math_html(text[last:]))
+    return "".join(parts)
+
+
+def _math_html(text: str) -> str:
+    """Escape a run of register prose, setting each ASCII mathematical run as math."""
     parts: list[str] = []
     last = 0
     for match in MATH.finditer(text):
@@ -162,6 +177,12 @@ def tex_bounds(text: str) -> str:
         last = match.end()
     parts.append(_prose_html(text[last:]))
     return "".join(parts)
+
+
+def prose_html(text: object, *, between: str = "<br><br>") -> str:
+    """A register prose field as HTML: each paragraph set by `tex_bounds`, the
+    paragraphs kept apart by `between`. A field of one paragraph reads as it always did."""
+    return between.join(tex_bounds(paragraph) for paragraph in paragraphs(text))
 
 
 def _line_of(path: Path, needle: str) -> int:
@@ -385,11 +406,7 @@ def load() -> Overview:
             Result(
                 r,
                 group=title,
-                credit=(
-                    credit_line(r, sources).replace(r"\|", "|")
-                    if r.get("attribution")
-                    else "This project"
-                ),
+                credit=credit_line(r, sources).replace(r"\|", "|"),
                 ours=not r.get("attribution"),
                 records=_records(r, evidence),
                 standing=standing(r, records),

@@ -22,6 +22,7 @@ from devtools.check_results import (
     verification_relation,
 )
 from devtools.render_recent_results import STANDINGS
+from devtools.result_credit import credit_line
 from sqpack.yamlio import safe_load
 
 MACHINE_ENTRY = {
@@ -248,7 +249,8 @@ def test_results_renderer_escapes_a_pipe_in_a_claim(
         line for line in render_results.render().splitlines() if line.startswith("| T-001 ")
     )
     assert r"Sixteen points \| make" in row
-    assert len(re.findall(r"(?<!\\)\|", row)) == 9
+    # Nine cells: id, n, kind, credit, V, C, S, novelty, claim.
+    assert len(re.findall(r"(?<!\\)\|", row)) == 10
 
 
 def _poisoned_register(tmp_path: Path, old: str, new: str) -> Path:
@@ -508,6 +510,95 @@ def test_a_recent_result_by_others_needs_its_sources_lineage() -> None:
     ]
     record["attribution"]["published"] = "2026-08-21"
     assert check_results.attribution_problems(record, sources) == []
+
+
+#: The source this project's weighted certificates build on, its dash written as an
+#: escape for the reason `tests/test_generated_table_typography.py` gives.
+WEIGHTED = "[Burns\u2013Massaccesi n17]"
+SOURCES = {
+    WEIGHTED: {"authors": ["Massaccesi", "Burns"]},
+    "[Stromquist 2003]": {"authors": ["Stromquist"]},
+    "[K]": {"authors": ["Kleddamag"], "credit": "Kleddamag after Levy, Guzhou0806, Mira"},
+}
+
+
+def test_every_credit_names_people_and_this_projects_is_levy() -> None:
+    """One form for every result: `X`, or `X after Y`. This project's results are Levy's
+    by name, and the `after` is the entry's own `builds_on`, in the order it lists."""
+    own: dict[str, object] = {"id": "T-999", "novelty": "apparently-novel"}
+    assert credit_line(own, SOURCES) == "Levy"
+    own["builds_on"] = {"credit": ["Burns", "Massaccesi"], "source_keys": [WEIGHTED]}
+    assert credit_line(own, SOURCES) == "Levy after Burns, Massaccesi"
+    theirs = {"id": "T-998", "attribution": {"source_keys": ["[K]"], "published": "2026-09-22"}}
+    assert credit_line(theirs, SOURCES) == "Kleddamag after Levy, Guzhou0806, Mira"
+    bare = {"id": "T-997", "attribution": {"source_keys": ["[Stromquist 2003]"]}}
+    assert credit_line(bare, SOURCES) == "Stromquist"
+
+
+def test_no_registered_result_is_credited_to_this_project_by_that_phrase() -> None:
+    register = safe_load(check_results.RESULTS.read_text(encoding="utf-8"))
+    sources = render_results.load_sources()
+    lines = {record["id"]: credit_line(record, sources) for record in register["results"]}
+    assert all(credit and "project" not in credit.lower() for credit in lines.values())
+    ours = [record for record in register["results"] if not record.get("attribution")]
+    assert ours
+    assert all(lines[record["id"]].split(" after ")[0] == "Levy" for record in ours)
+    # The view prints the same line in its own table's credit column.
+    rendered = render_results.render()
+    for record in ours:
+        row = next(
+            line for line in rendered.splitlines() if line.startswith(f"| {record['id']} ")
+        )
+        assert row.split(" | ")[3] == lines[record["id"]], record["id"]
+
+
+def test_builds_on_says_only_what_the_cited_evidence_names() -> None:
+    """The `after` of this project's credit comes from the record: each source is one a
+    cited evidence entry names, and each credited name is one of that source's authors."""
+    cited = [{"id": "E-a", "source_key": WEIGHTED}, {"id": "E-b"}]
+    record = {
+        "id": "T-999",
+        "novelty": "apparently-novel",
+        "builds_on": {
+            "credit": ["Burns", "Massaccesi"],
+            "source_keys": [WEIGHTED],
+        },
+    }
+    assert check_results.builds_on_problems(record, SOURCES, cited) == []
+    assert check_results.builds_on_problems({"id": "T-999"}, SOURCES, cited) == []
+
+    record["builds_on"]["credit"] = ["Burns", "Stromquist"]
+    assert check_results.builds_on_problems(record, SOURCES, cited) == [
+        f"T-999: builds_on credits Stromquist, who is not an author of {WEIGHTED}"
+    ]
+    record["builds_on"] = {"credit": ["Stromquist"], "source_keys": ["[Stromquist 2003]"]}
+    assert check_results.builds_on_problems(record, SOURCES, cited) == [
+        (
+            "T-999: builds_on names [Stromquist 2003], which no evidence entry the result "
+            "cites carries as its source_key"
+        )
+    ]
+    record["builds_on"] = {"credit": ["Nobody"], "source_keys": ["[nobody 2026]"]}
+    assert check_results.builds_on_problems(record, SOURCES, cited) == [
+        "T-999: builds_on names [nobody 2026], which bibliography.yaml lacks",
+        "T-999: builds_on credits Nobody, who is not an author of [nobody 2026]",
+    ]
+
+
+def test_a_result_by_others_carries_no_builds_on(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Its whole credit line is its source's, in the bibliography."""
+    doubled = _changed_result(
+        tmp_path,
+        "T-032",
+        builds_on={"credit": ["Burns"], "source_keys": [WEIGHTED]},
+    )
+    monkeypatch.setattr(check_results, "RESULTS", doubled)
+    assert check_results.main() == 1
+    assert "T-032: a result by others takes its credit from the bibliography" in (
+        capsys.readouterr().out
+    )
 
 
 def test_a_recent_case_lower_bound_is_covered_for_its_own_n() -> None:

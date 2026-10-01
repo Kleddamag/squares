@@ -77,7 +77,8 @@ def test_the_page_carries_the_sites_bar_with_papers_current(rendered: tuple[str,
     from devtools import render_overview  # noqa: PLC0415
 
     html, _ = rendered
-    assert paper.SITE_PATH == "n11-optimality/t-060-explainer.html"
+    assert paper.SLUG == "n11-optimality-review"
+    assert paper.SITE_PATH == "papers/n11-optimality-review.html"
     assert paper.SITE_PATH in render_overview.SITE_PAGES
     assert paper.SITE_PATH.count("/") == paper.SITE_ROOT.count("../") == 1
     assert render_overview.nav_html("papers", root="../") in html
@@ -182,14 +183,28 @@ def test_missing_reference_target_refuses() -> None:
         paper.expanded_markdown(missing, figures=FIGURES, article=ARTICLE, revision=REVISION)
 
 
-def test_output_names_and_landing_redirect(tmp_path: Path, rendered: tuple[str, str]) -> None:
-    outputs = paper.output_files(tmp_path, *rendered)
-    assert {path.name for path in outputs} == {
-        "index.html",
-        "t-060-explainer.html",
-        "t-060-explainer.md",
+def test_the_paper_is_written_under_papers_by_its_slug(
+    tmp_path: Path, rendered: tuple[str, str]
+) -> None:
+    """Given the site's root, a render writes the page and its Markdown under `papers/`,
+    beside each other under the paper's slug, and the format chips name the Markdown and
+    the PDF by that slug, so each is a file beside the page. It writes no landing page:
+    the directory the paper used to be served from is the overview build's to forward
+    (`render_overview.MOVED_PAGES`)."""
+    from devtools import render_overview  # noqa: PLC0415
+
+    html, markdown = rendered
+    outputs = paper.output_files(tmp_path, html, markdown)
+    assert {path.relative_to(tmp_path).as_posix(): text for path, text in outputs.items()} == {
+        "papers/n11-optimality-review.html": html,
+        "papers/n11-optimality-review.md": markdown,
     }
-    assert "url=t-060-explainer.html" in outputs[tmp_path / "index.html"]
+    assert 'href="n11-optimality-review.md"' in html
+    assert 'href="n11-optimality-review.pdf"' in html
+    assert "t-060-explainer" not in html
+    moved = dict(render_overview.MOVED_PAGES)
+    assert moved["n11-optimality/t-060-explainer.html"] == paper.SITE_PATH
+    assert moved["n11-optimality/index.html"] == paper.SITE_PATH
 
 
 def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> None:

@@ -256,7 +256,7 @@ def test_the_links_reach_the_site_and_the_record(
     else:
         assert '<a href="cases.html#n-11">' in links
         assert '<a href="frontier.html#n-11">' in links
-        assert '<a href="explainer.html">' in links
+        assert '<a href="papers/n11-lower-bounds-explainer.html">' in links
         assert f'{REPO_URL}/blob/main/packing/frontier/n-011.md"' in links
     line = result_overview.result_lines()[result_id]
     assert f"packing/frontier/results.yaml?plain=1#L{line}" in links
@@ -337,7 +337,7 @@ def test_every_site_link_is_a_served_page_and_a_real_fragment(
             elif page in {"cases.html", "frontier.html"}:
                 assert not fragment or fragment in cases, href
             else:
-                assert page == "explainer.html", href
+                assert page == "papers/n11-lower-bounds-explainer.html", href
                 assert not fragment
 
 

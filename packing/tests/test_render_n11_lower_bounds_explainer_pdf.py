@@ -1076,6 +1076,27 @@ def test_traced_settlement_uses_the_existing_frames_and_font_waits() -> None:
     _run_node("settled.mjs")
 
 
+def test_the_pdf_is_drawn_from_the_page_where_it_is_served_and_beside_it() -> None:
+    """The exporter reads the page where the renderer writes it, under `papers/` by the
+    paper's slug, and writes the PDF beside it under the same slug. The two modules name
+    the site and the page's address the same way."""
+    from devtools import render_n11_lower_bounds_explainer as renderer  # noqa: PLC0415
+
+    assert renderer.OUTPUT == pdf.PAGE
+    assert pdf.PAGE.relative_to(pdf.ROOT).as_posix() == (
+        "site/papers/n11-lower-bounds-explainer.html"
+    )
+    assert pdf.PAGE.with_suffix(".pdf") == pdf.OUTPUT
+    assert renderer.SITE_URL == pdf.SITE_URL
+    assert renderer.PAGE_URL == pdf.PAGE_URL
+
+
+def test_a_relative_link_in_the_pdf_resolves_against_the_pages_own_address() -> None:
+    """The page is a level below the site's root, so a link that climbs to the root has
+    to land there in the PDF, and a link beside the page has to stay beside it."""
+    _run_node("absolute-links.mjs")
+
+
 @pytest.mark.parametrize("overflow", [False, True])
 def test_math_snapshot_tracks_visible_text_without_hiding_omissions(*, overflow: bool) -> None:
     _run_node("math-snapshot.mjs", *(["overflow"] if overflow else []))

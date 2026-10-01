@@ -9,6 +9,7 @@ nothing in the page is a reference outside it.
 
 from __future__ import annotations
 
+import posixpath
 import re
 from dataclasses import replace
 from fnmatch import fnmatchcase
@@ -37,7 +38,11 @@ from devtools.render_n11_lower_bounds_explainer import (
     REPO,
     REPO_URL,
     RESULT_ID,
+    SITE,
+    SITE_PATH,
+    SITE_ROOT,
     SITE_URL,
+    SLUG,
     THIRDPARTY,
     VERIFIER,
     WALKTHROUGH,
@@ -48,7 +53,7 @@ from devtools.render_n11_lower_bounds_explainer import (
 )
 from devtools.render_n11_lower_bounds_explainer import load_certificate as load
 from devtools.render_n11_lower_bounds_explainer_pdf import OUTPUT as PDF_OUTPUT
-from devtools.render_overview import SITE_PAGES
+from devtools.render_overview import PAPERS_DIR, SITE_PAGES
 from sqpack.release import (
     FIRST_PUBLISHED,
     PUBLICATION_DATE,
@@ -104,12 +109,17 @@ def test_no_placeholder_survives_substitution(page: str) -> None:
 
 def test_the_bar_marks_papers_current_on_the_explainer(page: str) -> None:
     """The explainer is one of the site's papers: the bar has no entry of its own for it,
-    Papers is the one marked current, and the page keeps its address."""
+    Papers is the one marked current, and the page is served under `papers/` by its slug,
+    so the bar's links climb one level to the site's root."""
     assert re.findall(r'<a data-page="(\w+)" aria-current="page"', page) == ["papers"]
-    assert '<a data-page="papers" aria-current="page" href="papers.html">Papers</a>' in page
+    assert '<a data-page="papers" aria-current="page" href="../papers.html">Papers</a>' in page
     assert 'data-page="explainer"' not in page
-    assert f"{SITE_URL}explainer.html" == PAGE_URL
-    assert {"papers.html", "explainer.html"} <= set(SITE_PAGES)
+    assert SLUG == "n11-lower-bounds-explainer"
+    assert f"papers/{SLUG}.html" == SITE_PATH
+    assert f"{SITE_URL}{SITE_PATH}" == PAGE_URL
+    assert OUTPUT == SITE / SITE_PATH
+    assert {"papers.html", SITE_PATH} <= set(SITE_PAGES)
+    assert "explainer.html" not in SITE_PAGES
 
 
 def test_title_block_names_the_result_without_a_subtitle(page: str, document: str) -> None:
@@ -598,18 +608,17 @@ def test_advanced_section_derives_the_current_lower_bound(document: str) -> None
     assert "weak limit" not in prose.lower()
 
 
-def test_the_published_document_is_named_for_the_result(document: str) -> None:
-    """`conventions.md` names a document for the result and for what it is.
+def test_the_published_document_is_named_by_the_papers_slug(document: str) -> None:
+    """A paper's Markdown is served beside its page under the same slug.
 
-    It was `explainer.md`, which says what the file is and not which result it explains;
-    the convention is `t-NNN-explainer.md`, the same name a case-local document would
-    take, because what a file is called should not depend on the directory it is served
-    from. The id is written once in the renderer and every name is derived from it, so
-    what is pinned here is the shape and the sharing: the published document and the
-    claim documents beside the certificates carry one id between them, not two.
+    It was `explainer.md`, then `t-018-explainer.md`, named for the result the way a
+    case-local document is. A paper is named by its slug, which says the case, the
+    subject and the kind of paper, and its page, Markdown and PDF share it
+    (`conventions.md`); the case-local documents keep the result's id, which is written
+    once in the renderer and every such name is derived from it.
     """
-    assert re.fullmatch(r"t-\d{3}-explainer\.md", MARKDOWN_OUTPUT.name)
-    assert MARKDOWN_OUTPUT.name == f"{RESULT_ID}-explainer.md"
+    assert OUTPUT.with_suffix(".md") == MARKDOWN_OUTPUT
+    assert MARKDOWN_OUTPUT.name == "n11-lower-bounds-explainer.md"
     claims = sorted(CASE.glob("*-verifiable-claim-*.md"))
     assert claims, "the case carries no claim document to share an id with"
     for claim in claims:
@@ -855,6 +864,21 @@ def test_the_published_document_says_what_it_is_and_where_the_figures_are(
     assert SITE_URL in document
 
 
+def test_the_published_document_names_the_sites_files_where_the_site_serves_them(
+    document: str,
+) -> None:
+    """The page reaches the atlas's files a level up, which resolves only from where the
+    page is served. The document is read wherever it is taken, and is also served at the
+    address it had before the papers moved (`render_overview.MOVED_FILES`), so it names
+    each of those files by its address on the site, and links nothing relatively."""
+    assert f"]({SITE_ROOT}" not in document
+    assert f"]({SITE_URL}known-best-1-100.svg)" in document
+    assert f"]({SITE_URL}known-best-1-100.pdf)" in document
+    assert f"]({SITE_URL}known-best-1-324.pdf)" in document
+    relative = re.findall(r"\]\((?!https?://|#|mailto:)([^)\s]+)\)", document)
+    assert relative == []
+
+
 def _style_blocks(page: str) -> list[str]:
     return re.findall(r"<style>(.*?)</style>", page, re.DOTALL)
 
@@ -996,13 +1020,14 @@ def test_every_relative_link_in_the_page_names_a_file_the_deploy_serves(page: st
     Two links already shipped as `file:///home/.../known-best-1-100.pdf`, absolute paths
     to the machine that built them, and the atlas figure was one of them.
     """
+    # By path under the site's root: the paper's own files under `papers/`, and at the
+    # root the atlas's files and the site's other pages, which the navigation bar links
+    # to. A directory index is linked as its directory.
     served = {
-        OUTPUT.name,
-        MARKDOWN_OUTPUT.name,
-        PDF_OUTPUT.name,
+        SITE_PATH,
+        f"{PAPERS_DIR}/{MARKDOWN_OUTPUT.name}",
+        f"{PAPERS_DIR}/{PDF_OUTPUT.name}",
         *(asset.name for asset in COMPOSITE_ASSETS),
-        # The site's other pages, which the navigation bar links to. A directory index is
-        # linked as its directory.
         *SITE_PAGES,
         *(page.removesuffix("index.html") or "./" for page in SITE_PAGES),
     }
@@ -1015,8 +1040,21 @@ def test_every_relative_link_in_the_page_names_a_file_the_deploy_serves(page: st
         for match in re.finditer(r'\b(href|src)="([^"]+)"', markup)
         if not re.match(r"[a-z][a-z0-9+.-]*:|#|//", match.group(2), re.IGNORECASE)
     }
-    missing = sorted(link for link in links if link.split("#")[0].split("?")[0] not in served)
+    # Each link is resolved from where the page is served, a level below the root.
+    resolved = {
+        link: posixpath.normpath(posixpath.join(PAPERS_DIR, link.split("#")[0].split("?")[0]))
+        for link in links
+    }
+    assert all(not path.startswith("..") for path in resolved.values()), resolved
+    missing = sorted(
+        link for link, path in resolved.items() if (path if path != "." else "./") not in served
+    )
     assert not missing, f"relative links to files the deploy does not serve: {missing}"
+    # The atlas's files are at the root, where the overview links them and a link
+    # preview names the card: the page reaches each a level up.
+    assert f'src="{SITE_ROOT}known-best-1-100.svg"' in page
+    assert f'poster="{SITE_ROOT}ascent-n1-100-poster.png"' in page
+    assert SITE_ROOT == "../"
 
 
 def test_the_pdf_chip_offers_the_pdf_the_exporter_writes(page: str) -> None:

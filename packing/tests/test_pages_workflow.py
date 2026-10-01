@@ -13,8 +13,14 @@ from pathlib import Path
 from typing import Any
 
 from devtools import render_n11_optimality_review as optimality_paper
+from devtools import render_overview
 from devtools.pages_scope import BUILDER_INPUTS, declared_inputs, pull_request_jobs
+from devtools.render_n11_lower_bounds_explainer import SITE_PATH as EXPLAINER_PATH
 from sqpack.yamlio import safe_load
+
+#: The lower-bounds explainer as the jobs read it: where `prepare` renders it under
+#: `site/`, which is where it is served, `papers/n11-lower-bounds-explainer.html`.
+EXPLAINER_PAGE = f"site/{EXPLAINER_PATH}"
 
 REPO = Path(__file__).resolve().parents[2]
 REGISTER = REPO / "packing/devtools/gate-budgets.yaml"
@@ -76,7 +82,7 @@ def browser_check_jobs(jobs: Mapping[str, Mapping[str, Any]]) -> list[str]:
     return [
         name
         for name, job in jobs.items()
-        if name not in {"prepare", "optimality", *DEPLOY_PATH}
+        if name not in {"prepare", "n11-optimality-review", *DEPLOY_PATH}
         and any("playwright install" in step.get("run", "") for step in job.get("steps", []))
     ]
 
@@ -152,7 +158,7 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
     workflow = load()
     jobs = workflow["jobs"]
     scope = jobs["scope"]
-    halves = ("explainer", "workbench", "overview", "optimality")
+    halves = ("n11_lower_bounds_explainer", "workbench", "overview", "n11_optimality_review")
     assert set(scope["outputs"]) == {
         name for half in halves for name in (half, f"{half}_reason")
     }
@@ -175,10 +181,18 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
         for half in halves
     }
     assert gated == {
-        "explainer": {"prepare", *OVERLAPPED_PREPARED_PAGE_JOBS},
+        "n11_lower_bounds_explainer": {"prepare", *OVERLAPPED_PREPARED_PAGE_JOBS},
         "workbench": {"workbench"},
         "overview": {"overview"},
-        "optimality": {"optimality"},
+        "n11_optimality_review": {"n11-optimality-review"},
+    }
+    # What each half's notice calls its page. A half that is a paper is named by the
+    # paper's slug, and its jobs spell the slug with its hyphens.
+    called = {
+        "n11_lower_bounds_explainer": "lower-bounds explainer",
+        "workbench": "workbench",
+        "overview": "overview",
+        "n11_optimality_review": "optimality review",
     }
     for half, roots in gated.items():
         assert all(needs_of(jobs[root]) == ["scope"] for root in roots)
@@ -187,17 +201,18 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
             for name, job in jobs.items()
             if job.get("if") == f"needs.scope.outputs.{half} != 'true'"
         ]
-        assert notices == [f"{half}-unchanged"], half
+        assert notices == [f"{half.replace('_', '-')}-unchanged"], half
         notice = jobs[notices[0]]
         assert needs_of(notice) == ["scope"]
         (step,) = notice["steps"]
         assert step["env"]["REASON"] == f"${{{{ needs.scope.outputs.{half}_reason }}}}"
         assert step["run"].splitlines()[0] == 'test -n "$REASON"'
-        assert ("T-060" if half == "optimality" else half) in step["run"]
+        assert called[half] in step["run"]
         assert "not built" in step["run"]
 
     builders = (
-        r"python -m (devtools\.render_(?:explainer|overview|n11_optimality_explainer)"
+        r"python -m (devtools\.render_(?:n11_lower_bounds_explainer|overview"
+        r"|n11_optimality_review)"
         r"|workbench_tools\.build_site)\b"
     )
     for name, job in jobs.items():
@@ -205,13 +220,14 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
         works = "playwright install" in commands or re.search(builders, commands)
         if works and name not in DEPLOY_PATH:
             directly_scoped = job.get("if") in {
-                "needs.scope.outputs.explainer == 'true'",
+                "needs.scope.outputs.n11_lower_bounds_explainer == 'true'",
                 "needs.scope.outputs.workbench == 'true'",
                 "needs.scope.outputs.overview == 'true'",
-                "needs.scope.outputs.optimality == 'true'",
+                "needs.scope.outputs.n11_optimality_review == 'true'",
             }
             assert (
-                upstream(jobs, name) & {"prepare", "workbench", "overview", "optimality"}
+                upstream(jobs, name)
+                & {"prepare", "workbench", "overview", "n11-optimality-review"}
                 or directly_scoped
             ), f"{name} does page work on a pull request without waiting for the scope"
 
@@ -236,11 +252,14 @@ def test_the_required_aggregate_passes_a_justified_skip_and_nothing_else() -> No
     program = step["run"]
     assert '.scope.result == "success"' in program
     decisions = (
-        "[.scope.outputs.explainer, .scope.outputs.workbench, .scope.outputs.overview, "
-        ".scope.outputs.optimality]"
+        "[.scope.outputs.n11_lower_bounds_explainer, .scope.outputs.workbench, "
+        ".scope.outputs.overview, .scope.outputs.n11_optimality_review]"
     )
     assert f'{decisions} | all(. == "true" or . == "false")' in program
-    assert '(.scope.outputs.optimality != "true" or .optimality.result == "success")' in program
+    assert (
+        '(.scope.outputs.n11_optimality_review != "true" '
+        'or .["n11-optimality-review"].result == "success")'
+    ) in program
     assert '[.[].result] | all(. == "success" or . == "skipped")' in program
     assert "jq -e" in program
     assert set(needs_of(jobs["deploy"])) == {"publish", "pages-required"}
@@ -508,7 +527,7 @@ def test_page_check_setup_overlaps_prepare_then_joins_its_exact_artifact() -> No
     for name in OVERLAPPED_PREPARED_PAGE_JOBS:
         job = jobs[name]
         assert needs_of(job) == ["scope"]
-        assert job["if"] == "needs.scope.outputs.explainer == 'true'"
+        assert job["if"] == "needs.scope.outputs.n11_lower_bounds_explainer == 'true'"
         assert job["permissions"] == {"contents": "read", "actions": "read"}
         steps = job["steps"]
         install_index = max(
@@ -640,14 +659,20 @@ def test_live_verification_waits_for_the_exact_deployed_revision() -> None:
 def test_publication_assembles_the_checked_products_and_only_main_uploads_it() -> None:
     """What `build` uploaded from one directory is now five artifacts put back together.
 
-    The prepared page renamed to `explainer.html`, the checked PDF beside it, the site's
-    own pages at the root, the workbench under `/workbench/`, and T-060 under
-    `/n11-optimality/` share one published tree; the only upload to Pages is a push to
-    `main`.
+    The two papers under `/papers/`, each by its slug with its Markdown and PDF beside
+    it, the atlas's files and the site's own pages at the root, and the workbench under
+    `/workbench/` share one published tree; the only upload to Pages is a push to `main`.
+    Each paper is rendered where it is served, so nothing is renamed here.
     """
     jobs = load()["jobs"]
     publish = jobs["publish"]
-    assert set(needs_of(publish)) == {"prepare", "pdf", "overview", "workbench", "optimality"}
+    assert set(needs_of(publish)) == {
+        "prepare",
+        "pdf",
+        "overview",
+        "workbench",
+        "n11-optimality-review",
+    }
     steps = publish["steps"]
     assert steps[0]["name"] == ARTIFACT_ID_GUARD
     assert steps[0]["env"] == {
@@ -664,11 +689,15 @@ def test_publication_assembles_the_checked_products_and_only_main_uploads_it() -
             "path": "packing/site",
             "merge-multiple": True,
         },
-        {"name": "explainer-pdf", "path": "packing/site"},
+        {"name": "n11-lower-bounds-explainer-pdf", "path": "packing/site/papers"},
         {"name": "overview-pages", "path": "${{ runner.temp }}/overview-pages"},
         {"name": "workbench-page", "path": "packing/site/workbench"},
-        {"name": "n11-optimality-page", "path": "packing/site/n11-optimality"},
+        {
+            "name": "n11-optimality-review-page",
+            "path": "${{ runner.temp }}/n11-optimality-review-page",
+        },
     ]
+    assert not [step["name"] for step in steps if "mv " in step.get("run", "")]
     prepare = jobs["prepare"]
     assert prepare["outputs"] == {
         "prepared_artifact_id": "${{ steps.prepared-page-upload.outputs.artifact-id }}"
@@ -684,10 +713,16 @@ def test_publication_assembles_the_checked_products_and_only_main_uploads_it() -
         if step.get("uses", "").startswith("actions/upload-artifact@")
     }
     assert produced["prepared-page"] == ("prepare", "packing/site")
-    assert produced["explainer-pdf"] == ("pdf", "packing/site/t-018-explainer.pdf")
+    assert produced["n11-lower-bounds-explainer-pdf"] == (
+        "pdf",
+        "packing/site/papers/n11-lower-bounds-explainer.pdf",
+    )
     assert produced["workbench-page"] == ("workbench", "packing/site/workbench")
     assert produced["overview-pages"] == ("overview", "packing/site")
-    assert produced["n11-optimality-page"] == ("optimality", "packing/site/n11-optimality")
+    assert produced["n11-optimality-review-page"] == (
+        "n11-optimality-review",
+        "packing/site/papers",
+    )
     (upload,) = [
         step
         for step in steps
@@ -762,73 +797,162 @@ def _publish_step(steps: list[dict[str, Any]], name: str) -> int:
     return next(index for index, step in enumerate(steps) if step.get("name") == name)
 
 
-def test_publication_moves_the_explainer_before_the_overview_lands(tmp_path: Path) -> None:
-    """The explainer is built as `index.html` and served as `explainer.html`.
-
-    Every check reads it under its build name, so the rename is the publication's, and it
-    has to happen before the overview's `index.html` exists: in the other order one page
-    overwrites the other with every check green. The merge is run here on a tree shaped
-    like the real one, in the right order and without the rename, which it must refuse.
-    """
+def _assembled(
+    tmp_path: Path, name: str, *, overview: tuple[str, ...] = (), review: tuple[str, ...] = ()
+) -> tuple[Path, list[subprocess.CompletedProcess[str]]]:
+    """Run the `publish` job's three shell steps, in order, on a tree shaped like the one
+    its downloads leave: the lower-bounds explainer and its PDF under `papers/` with an
+    atlas file at the root, and the site's pages and the optimality review staged apart.
+    `overview` and `review` add files to the two staged trees. Returns the site and each
+    step's result; a step that fails stops the rest, as it does on a runner."""
     steps = load()["jobs"]["publish"]["steps"]
-    prepared = _publish_step(steps, "Use the prepared page")
-    pdf = _publish_step(steps, "Use the checked PDF")
-    rename = _publish_step(steps, "Move the explainer to its own URL")
-    staged = _publish_step(steps, "Use the site's pages")
-    merge = _publish_step(
-        steps, "Put the site's pages at the root, refusing any name already there"
-    )
-    workbench = _publish_step(steps, "Use the workbench")
-    listing = _publish_step(steps, "List what the publication holds")
-    assert prepared < pdf < rename < staged < merge < workbench < listing
-    assert steps[rename]["working-directory"] == "packing/site"
-    assert "mv index.html explainer.html" in steps[rename]["run"]
-    assert steps[merge]["env"] == {"STAGED": "${{ runner.temp }}/overview-pages"}
-    for index in (rename, merge):
-        assert "if" not in steps[index]
-        assert "continue-on-error" not in steps[index]
-
     bash = shutil.which("bash")
     assert bash
-
-    def assemble(*, renamed: bool) -> subprocess.CompletedProcess[str]:
-        root = tmp_path / ("renamed" if renamed else "unrenamed")
-        site = root / "packing" / "site"
-        site.mkdir(parents=True)
-        (site / "index.html").write_text("explainer", encoding="utf-8")
-        (site / "t-018-explainer.pdf").write_text("pdf", encoding="utf-8")
-        pages = root / "overview-pages"
-        pages.mkdir()
-        for page in ("index.html", "frontier.html", "tutorial.html"):
-            (pages / page).write_text(f"overview {page}", encoding="utf-8")
-        if renamed:
-            subprocess.run((bash, "-e", "-c", steps[rename]["run"]), cwd=site, check=True)
-        return subprocess.run(
-            (bash, "-e", "-c", steps[merge]["run"]),
-            cwd=root,
-            env={"STAGED": str(pages), "PATH": "/usr/bin:/bin"},
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-
-    result = assemble(renamed=True)
-    assert result.returncode == 0, result
-    site = tmp_path / "renamed" / "packing" / "site"
-    assert (site / "explainer.html").read_text(encoding="utf-8") == "explainer"
-    assert (site / "index.html").read_text(encoding="utf-8") == "overview index.html"
-    assert sorted(path.name for path in site.iterdir()) == [
-        "explainer.html",
-        "frontier.html",
+    root = tmp_path / name
+    site = root / "packing" / "site"
+    (site / "papers").mkdir(parents=True)
+    (site / "papers" / "n11-lower-bounds-explainer.html").write_text("explainer page")
+    (site / "papers" / "n11-lower-bounds-explainer.md").write_text("explainer markdown")
+    (site / "papers" / "n11-lower-bounds-explainer.pdf").write_text("explainer pdf")
+    (site / "known-best-1-100.svg").write_text("atlas")
+    pages = root / "overview-pages"
+    for page in (
         "index.html",
-        "t-018-explainer.pdf",
-        "tutorial.html",
+        "papers.html",
+        "explainer.html",
+        "n11-optimality/index.html",
+        "n11-optimality/t-060-explainer.html",
+        *overview,
+    ):
+        (pages / page).parent.mkdir(parents=True, exist_ok=True)
+        (pages / page).write_text(f"overview build's {page}")
+    staged = root / "n11-optimality-review-page"
+    staged.mkdir()
+    for suffix in ("html", "md", "pdf"):
+        (staged / f"n11-optimality-review.{suffix}").write_text(f"review {suffix}")
+    for extra in review:
+        (staged / extra).write_text("review's")
+    results = []
+    for step_name, cwd, environment in (
+        ("Put the site's pages at the root, refusing any name already there", root, pages),
+        (
+            "Put the optimality review beside the other paper, refusing any name already there",
+            root,
+            staged,
+        ),
+        ("Serve each moved file at its old address too", site, None),
+    ):
+        step = steps[_publish_step(steps, step_name)]
+        assert "if" not in step, step_name
+        assert "continue-on-error" not in step, step_name
+        env = {"PATH": "/usr/bin:/bin"}
+        if environment is not None:
+            assert step["env"] == {"STAGED": "${{ runner.temp }}/" + environment.name}
+            env["STAGED"] = str(environment)
+        results.append(
+            subprocess.run(
+                (bash, "-e", "-c", step["run"]),
+                cwd=cwd,
+                env=env,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+        )
+        if results[-1].returncode != 0:
+            break
+    return site, results
+
+
+def test_publication_puts_both_papers_under_papers_and_keeps_every_old_address(
+    tmp_path: Path,
+) -> None:
+    """The assembled tree serves each paper under `papers/` by its slug, with its
+    Markdown and PDF beside it, and still serves every address a paper used to have.
+
+    Each paper is rendered and checked where it is served, so the assembly renames
+    nothing: it puts the site's pages at the root, where the forwarders at the papers'
+    old addresses come with them, puts the second paper beside the first, and copies
+    each Markdown file and PDF to the address it had before the move. The steps are run
+    here on a tree shaped like the real one. The copies are exactly
+    `render_overview.MOVED_FILES`, and the forwarders exactly `MOVED_PAGES`.
+    """
+    steps = load()["jobs"]["publish"]["steps"]
+    order = [
+        _publish_step(steps, name)
+        for name in (
+            "Use the prepared page",
+            "Use the checked PDF",
+            "Use the site's pages",
+            "Put the site's pages at the root, refusing any name already there",
+            "Use the workbench",
+            "Use the checked optimality review",
+            "Put the optimality review beside the other paper, refusing any name already there",
+            "Serve each moved file at its old address too",
+            "List what the publication holds",
+        )
     ]
-    refused = assemble(renamed=False)
-    assert refused.returncode != 0
-    assert "both publish index.html" in refused.stdout
-    unrenamed = tmp_path / "unrenamed" / "packing" / "site"
-    assert (unrenamed / "index.html").read_text(encoding="utf-8") == "explainer"
+    assert order == sorted(order)
+    copies = steps[_publish_step(steps, "Serve each moved file at its old address too")]
+    assert copies["working-directory"] == "packing/site"
+    assert re.findall(r"^\s*moved (\S+) (\S+)$", copies["run"], re.MULTILINE) == list(
+        render_overview.MOVED_FILES
+    )
+
+    site, results = _assembled(tmp_path, "whole")
+    assert [result.returncode for result in results] == [0, 0, 0], results
+    served = sorted(
+        path.relative_to(site).as_posix() for path in site.rglob("*") if path.is_file()
+    )
+    assert served == [
+        "explainer.html",
+        "index.html",
+        "known-best-1-100.svg",
+        "n11-optimality/index.html",
+        "n11-optimality/t-060-explainer.html",
+        "n11-optimality/t-060-explainer.md",
+        "n11-optimality/t-060-explainer.pdf",
+        "papers.html",
+        "papers/n11-lower-bounds-explainer.html",
+        "papers/n11-lower-bounds-explainer.md",
+        "papers/n11-lower-bounds-explainer.pdf",
+        "papers/n11-optimality-review.html",
+        "papers/n11-optimality-review.md",
+        "papers/n11-optimality-review.pdf",
+        "t-018-explainer.md",
+        "t-018-explainer.pdf",
+    ]
+    for old, new in render_overview.MOVED_FILES:
+        assert (site / old).read_bytes() == (site / new).read_bytes(), old
+    for old, new in render_overview.MOVED_PAGES:
+        assert (site / old).read_text() == f"overview build's {old}", old
+        assert (site / new).is_file(), new
+    assert (site / "index.html").read_text() == "overview build's index.html"
+
+
+def test_publication_refuses_a_name_two_builds_publish(tmp_path: Path) -> None:
+    """A name two builds wrote is refused, never resolved by the order they arrive in:
+    the site's pages against what the explainer's build put at the root, the second
+    paper against the first, and a moved file's old address against a file already
+    published there."""
+    site, results = _assembled(tmp_path, "root", overview=("known-best-1-100.svg",))
+    assert [result.returncode for result in results] == [1]
+    assert "both publish known-best-1-100.svg" in results[0].stdout
+    assert (site / "known-best-1-100.svg").read_text() == "atlas"
+    assert not (site / "index.html").exists()
+
+    site, results = _assembled(tmp_path, "papers", review=("n11-lower-bounds-explainer.md",))
+    assert [result.returncode for result in results] == [0, 1]
+    assert "both papers publish papers/n11-lower-bounds-explainer.md" in results[1].stdout
+    assert (site / "papers" / "n11-lower-bounds-explainer.md").read_text() == (
+        "explainer markdown"
+    )
+    assert not (site / "papers" / "n11-optimality-review.html").exists()
+
+    site, results = _assembled(tmp_path, "moved", overview=("t-018-explainer.md",))
+    assert [result.returncode for result in results] == [0, 0, 1]
+    assert "t-018-explainer.md is already published" in results[2].stdout
+    assert (site / "t-018-explainer.md").read_text() == "overview build's t-018-explainer.md"
 
 
 #: The `if:` forms the pull-request graph uses, and how each reads for a scope decision.
@@ -882,12 +1006,17 @@ def test_every_scope_decision_passes_the_aggregate_and_builds_its_pages() -> Non
     and nothing else.
     """
     halves = tuple(BUILDER_INPUTS)
-    assert halves == ("explainer", "workbench", "overview", "optimality")
+    assert halves == (
+        "n11_lower_bounds_explainer",
+        "workbench",
+        "overview",
+        "n11_optimality_review",
+    )
     builds = {
-        "explainer": "prepare",
+        "n11_lower_bounds_explainer": "prepare",
         "workbench": "workbench",
         "overview": "overview",
-        "optimality": "optimality",
+        "n11_optimality_review": "n11-optimality-review",
     }
     jq = shutil.which("jq")
     program = next(
@@ -901,7 +1030,8 @@ def test_every_scope_decision_passes_the_aggregate_and_builds_its_pages() -> Non
         outcome = pull_request_outcomes(decision)
         for half, build in builds.items():
             assert (outcome[build] == "success") == decision[half], (decision, build)
-            assert (outcome[f"{half}-unchanged"] == "success") != decision[half], decision
+            notice = f"{half.replace('_', '-')}-unchanged"
+            assert (outcome[notice] == "success") != decision[half], decision
         assert (outcome["publish"] == "success") == all(decision.values()), decision
         assert outcome["pages-required"] == "success"
         if jq:
@@ -921,16 +1051,21 @@ def test_every_scope_decision_passes_the_aggregate_and_builds_its_pages() -> Non
             )
             assert passed.returncode == 0, (decision, passed)
     only_overview = pull_request_outcomes(
-        {"explainer": False, "workbench": False, "overview": True, "optimality": False}
+        {
+            "n11_lower_bounds_explainer": False,
+            "workbench": False,
+            "overview": True,
+            "n11_optimality_review": False,
+        }
     )
     ran = {name for name, result in only_overview.items() if result == "success"}
     assert "startup-timing" in only_overview, "dispatch-only jobs are modelled as skips"
     assert ran == {
         "scope",
         "overview",
-        "explainer-unchanged",
+        "n11-lower-bounds-explainer-unchanged",
         "workbench-unchanged",
-        "optimality-unchanged",
+        "n11-optimality-review-unchanged",
         "pages-required",
     }
 
@@ -1086,7 +1221,7 @@ def test_pages_checks_the_pdf_it_uploads_and_retains_mismatch_evidence() -> None
     assert check[check.index(module) + 1 :] == [
         "--check-artifact",
         "--diagnostics-dir",
-        "/tmp/explainer-pdf-check",
+        "/tmp/n11-lower-bounds-explainer-pdf-check",
     ]
     assert not steps[check_index].get("if"), "the artifact check must run on every build"
     assert not steps[check_index].get("continue-on-error")
@@ -1094,16 +1229,19 @@ def test_pages_checks_the_pdf_it_uploads_and_retains_mismatch_evidence() -> None
         index
         for index, step in enumerate(steps)
         if step.get("uses", "").startswith("actions/upload-artifact@")
-        and step["with"]["name"] == "explainer-pdf"
+        and step["with"]["name"] == "n11-lower-bounds-explainer-pdf"
     ]
     assert len(uploads) == 1
     assert draw_index < check_index < uploads[0]
-    assert steps[uploads[0]]["with"]["path"] == "packing/site/t-018-explainer.pdf"
+    assert (
+        steps[uploads[0]]["with"]["path"]
+        == "packing/site/papers/n11-lower-bounds-explainer.pdf"
+    )
     assert not steps[uploads[0]].get("if"), "the published PDF is the one this job checked"
     diagnostics = [
         (index, step)
         for index, step in enumerate(steps)
-        if step.get("with", {}).get("path") == "/tmp/explainer-pdf-check"
+        if step.get("with", {}).get("path") == "/tmp/n11-lower-bounds-explainer-pdf-check"
     ]
     assert len(diagnostics) == 1
     index, diagnostic_step = diagnostics[0]
@@ -1111,8 +1249,8 @@ def test_pages_checks_the_pdf_it_uploads_and_retains_mismatch_evidence() -> None
     assert diagnostic_step["if"] == "failure()"
     assert re.fullmatch(r"actions/upload-artifact@[0-9a-f]{40}", diagnostic_step["uses"])
     assert diagnostic_step["with"] == {
-        "name": "explainer-pdf-check",
-        "path": "/tmp/explainer-pdf-check",
+        "name": "n11-lower-bounds-explainer-pdf-check",
+        "path": "/tmp/n11-lower-bounds-explainer-pdf-check",
         "if-no-files-found": "ignore",
         "retention-days": 7,
     }
@@ -1143,21 +1281,25 @@ def test_pdf_tracing_is_manual_and_preserves_the_uninstrumented_artifact_gate() 
         "20",
         "--trace-math",
         "--diagnostics-dir",
-        "/tmp/explainer-pdf-trace",
+        "/tmp/n11-lower-bounds-explainer-pdf-trace",
     ]
     capture = next(
-        step for step in steps if step.get("with", {}).get("name") == "explainer-pdf-trace"
+        step
+        for step in steps
+        if step.get("with", {}).get("name") == "n11-lower-bounds-explainer-pdf-trace"
     )
     assert capture["if"] == (
         "${{ always() && github.event_name == 'workflow_dispatch' && inputs.trace_pdf }}"
     )
-    assert capture["with"]["path"] == "/tmp/explainer-pdf-trace"
+    assert capture["with"]["path"] == "/tmp/n11-lower-bounds-explainer-pdf-trace"
     assert capture["with"]["if-no-files-found"] == "error"
     assert capture["with"]["retention-days"] == 7
     assert re.fullmatch(r"actions/upload-artifact@[0-9a-f]{40}", capture["uses"])
     gate = next(step for step in steps if "--check-artifact" in step.get("run", ""))
     publish = next(
-        step for step in steps if step.get("with", {}).get("name") == "explainer-pdf"
+        step
+        for step in steps
+        if step.get("with", {}).get("name") == "n11-lower-bounds-explainer-pdf"
     )
     assert steps.index(gate) < steps.index(trace) < steps.index(capture) < steps.index(publish)
 
@@ -1184,16 +1326,18 @@ def test_pdf_reconstruction_is_a_separate_optional_diagnostic_arm() -> None:
         "--trace-math",
         "--rebuild-prepared-text",
         "--diagnostics-dir",
-        "/tmp/explainer-pdf-rebuild",
+        "/tmp/n11-lower-bounds-explainer-pdf-rebuild",
     ]
     capture = next(
-        step for step in steps if step.get("with", {}).get("name") == "explainer-pdf-rebuild"
+        step
+        for step in steps
+        if step.get("with", {}).get("name") == "n11-lower-bounds-explainer-pdf-rebuild"
     )
     assert capture["if"] == (
         "${{ always() && github.event_name == 'workflow_dispatch' "
         "&& inputs.trace_pdf && inputs.rebuild_pdf_math_text }}"
     )
-    assert capture["with"]["path"] == "/tmp/explainer-pdf-rebuild"
+    assert capture["with"]["path"] == "/tmp/n11-lower-bounds-explainer-pdf-rebuild"
     assert capture["with"]["if-no-files-found"] == "error"
     assert capture["with"]["retention-days"] == 7
     assert re.fullmatch(r"actions/upload-artifact@[0-9a-f]{40}", capture["uses"])
@@ -1237,8 +1381,9 @@ def test_every_browser_checks_the_same_prepared_publication() -> None:
     ]
     assert len(lines) == 2, "two independent renders"
     twin, published = lines
-    assert twin.endswith('--output "$twin/index.html" &'), "the twin renders outside site/"
-    assert "--output" not in published, "the shared render writes site/"
+    assert twin.endswith('--site "$twin" &'), "the twin renders outside site/"
+    assert "--site" not in published, "the shared render writes site/"
+    assert f"test -s {EXPLAINER_PAGE}" in render, "the page is rendered where it is served"
     assert render.index('wait "$twin_pid"') > render.index(published)
     assert 'diff --recursive site "$twin"' in render
     assert render.index('diff --recursive site "$twin"') > render.index('wait "$twin_pid"')
@@ -1327,7 +1472,8 @@ def test_the_partial_checkouts_keep_the_directories_the_render_links() -> None:
                     assert settings["sparse-checkout-cone-mode"] is False, name
                     assert settings["filter"] == "blob:none", name
                     continue
-                expected_patterns = optimality_patterns if name == "optimality" else patterns
+                review = name == "n11-optimality-review"
+                expected_patterns = optimality_patterns if review else patterns
                 assert settings["sparse-checkout"] == expected_patterns, name
                 assert settings["sparse-checkout-cone-mode"] is False, name
                 assert settings["filter"] == "blob:none", name
@@ -1337,7 +1483,7 @@ def test_the_partial_checkouts_keep_the_directories_the_render_links() -> None:
         "prepare",
         "workbench",
         "overview",
-        "optimality",
+        "n11-optimality-review",
         *browser_check_jobs(jobs),
     } <= set(sparse)
     omitted_roots = (REPO / "packing/resources", REPO / "packing/campaign")
@@ -1346,7 +1492,7 @@ def test_the_partial_checkouts_keep_the_directories_the_render_links() -> None:
         for declared in builder():
             for root in omitted_roots:
                 if declared.is_relative_to(root):
-                    if half == "optimality" and (
+                    if half == "n11_optimality_review" and (
                         declared.is_relative_to(packet)
                         or declared in optimality_paper.ARCHIVED_CITATION_SOURCES
                     ):
@@ -1431,7 +1577,7 @@ def test_optimality_sparse_checkout_keeps_only_its_archive_inputs(tmp_path: Path
     git("clone", "-q", "--no-checkout", str(source), str(checkout))
     patterns = next(
         step["with"]["sparse-checkout"]
-        for step in load()["jobs"]["optimality"]["steps"]
+        for step in load()["jobs"]["n11-optimality-review"]["steps"]
         if "actions/checkout@" in step.get("uses", "")
     )
     git("sparse-checkout", "set", "--no-cone", "--stdin", cwd=checkout, input_text=patterns)
@@ -1488,9 +1634,7 @@ def test_prepared_geometry_checks_cover_each_browser_and_their_controls() -> Non
     artifact_names: set[str] = set()
     for expected_browser, names in browsers.items():
         commands = [command for name in names for command in measuring[name]]
-        assert all(
-            command[command.index(module) + 1] == "site/index.html" for command in commands
-        )
+        assert all(command[command.index(module) + 1] == EXPLAINER_PAGE for command in commands)
         assert all(
             option(command, "--browser", "chromium") == expected_browser for command in commands
         )
@@ -1576,7 +1720,7 @@ def test_reload_guard_covers_both_viewports_on_the_published_artifact() -> None:
             if "python -m devtools.check_scroll_restoration " in line
         ]
         assert len(commands) == 2
-        assert all(" site/index.html " in command for command in commands)
+        assert all(f" {EXPLAINER_PAGE} " in command for command in commands)
         assert any("--self-test" in command for command in commands)
         assert any("--width 390" in command for command in commands)
         if name == "browser-geometry":
@@ -1646,7 +1790,7 @@ def test_dispatch_timing_uses_frozen_pairs_and_retains_failed_measurements() -> 
         assert command[:6] == ["uv", "run", "--frozen", "--group", "dev", "python"]
         assert option(command, "--runs") == "12"
         assert option(command, "--browser") == "chromium"
-        assert option(command, "--candidate") == "site/index.html"
+        assert option(command, "--candidate") == EXPLAINER_PAGE
         assert option(command, "--control") == "/tmp/math-startup-timing/control-33cd4760.html"
         assert option(command, "--output") == (
             f"/tmp/math-startup-timing/startup-{option(command, '--width')}.json"
@@ -1661,7 +1805,7 @@ def test_dispatch_timing_uses_frozen_pairs_and_retains_failed_measurements() -> 
         "gzip --decompress --stdout benchmarks/math-startup/fixtures/control-33cd4760.html.gz"
         " > /tmp/math-startup-timing/control-33cd4760.html"
     ) in shell
-    assert "cp site/index.html /tmp/math-startup-timing/candidate.html" in shell
+    assert f"cp {EXPLAINER_PAGE} /tmp/math-startup-timing/candidate.html" in shell
     uploads = [
         step for step in steps if step.get("uses", "").startswith("actions/upload-artifact@")
     ]

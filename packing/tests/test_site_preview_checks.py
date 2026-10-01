@@ -8,6 +8,8 @@ All read a probe's output in Python, so the decisions are tested here without a 
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from devtools.measure_site_pages import (
     card_rows,
     chip_rows,
@@ -253,7 +255,7 @@ def test_a_shot_is_named_for_its_page_and_fragment() -> None:
     assert shot_stem("index.html") == "index"
     assert shot_stem("workbench/index.html") == "workbench"
     assert shot_stem("cases.html#n-11") == "cases-n-11"
-    assert shot_stem("n11-optimality/t-060-explainer.html") == "n11-optimality-t-060-explainer"
+    assert shot_stem("papers/n11-optimality-review.html") == "papers-n11-optimality-review"
 
 
 def _header(*, rule: tuple[float, float] | None, tabs: tuple[float, float] | None) -> dict:
@@ -484,3 +486,45 @@ def test_only_a_page_that_starts_a_film_is_opened_under_reduced_motion() -> None
     assert motion_for("visualize.html#film") == "reduce"
     for name in ("index.html", "frontier.html", "workbench/index.html", "cases.html#n-11"):
         assert motion_for(name) == "no-preference", name
+
+
+def test_a_moved_file_is_copied_to_its_old_address(tmp_path: Path) -> None:
+    """A paper's Markdown and PDF cannot forward, so the assembled site serves each at the
+    address it had before the papers moved too, as a copy (`render_overview.MOVED_FILES`),
+    which is what the workflow's `publish` job does. A file a skipped build would have
+    written has no copy, and nothing else in the directory is touched."""
+    from devtools import render_overview  # noqa: PLC0415
+    from devtools.preview_site import copy_moved_files  # noqa: PLC0415
+
+    assert copy_moved_files(tmp_path) == []
+    papers = tmp_path / "papers"
+    papers.mkdir()
+    (papers / "n11-lower-bounds-explainer.md").write_text("explainer", encoding="utf-8")
+    (papers / "n11-optimality-review.md").write_text("review", encoding="utf-8")
+    (papers / "n11-optimality-review.pdf").write_bytes(b"%PDF review")
+    assert copy_moved_files(tmp_path) == [
+        "t-018-explainer.md",
+        "n11-optimality/t-060-explainer.md",
+        "n11-optimality/t-060-explainer.pdf",
+    ]
+    for old, new in render_overview.MOVED_FILES:
+        if (tmp_path / new).is_file():
+            assert (tmp_path / old).read_bytes() == (tmp_path / new).read_bytes(), old
+    assert not (tmp_path / "t-018-explainer.pdf").exists()
+    assert sorted(path.name for path in papers.iterdir()) == [
+        "n11-lower-bounds-explainer.md",
+        "n11-optimality-review.md",
+        "n11-optimality-review.pdf",
+    ]
+
+
+def test_the_builds_are_named_for_what_they_build() -> None:
+    """`--skip` takes a paper by its slug, as everything else names it."""
+    from devtools.preview_site import BUILDS  # noqa: PLC0415
+
+    assert BUILDS == (
+        "n11-lower-bounds-explainer",
+        "pages",
+        "workbench",
+        "n11-optimality-review",
+    )

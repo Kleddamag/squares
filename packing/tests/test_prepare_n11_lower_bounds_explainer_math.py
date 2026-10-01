@@ -98,11 +98,13 @@ def test_prepared_source_attributes_are_escaped_without_rewriting_the_container(
 def test_cli_prepares_before_comparing_or_writing_the_publication_artifact(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
-    page = tmp_path / "index.html"
+    # The site's root is what the renderer is given; the page and its Markdown go
+    # under `papers/` in it, by the paper's slug.
+    page = tmp_path / render_n11_lower_bounds_explainer.SITE_PATH
+    assert page.relative_to(tmp_path).as_posix() == "papers/n11-lower-bounds-explainer.html"
+    page.parent.mkdir()
     page.write_text("<p>prepared</p>")
-    (tmp_path / render_n11_lower_bounds_explainer.MARKDOWN_OUTPUT.name).write_text(
-        "the Markdown edition"
-    )
+    page.with_suffix(".md").write_text("the Markdown edition")
     monkeypatch.setattr(
         render_n11_lower_bounds_explainer,
         "render",
@@ -118,22 +120,18 @@ def test_cli_prepares_before_comparing_or_writing_the_publication_artifact(
     monkeypatch.setattr(
         "devtools.prepare_n11_lower_bounds_explainer_math.prepare_math_html", prepare
     )
-    assert (
-        render_n11_lower_bounds_explainer.main(
-            ["--output", str(page), "--prepare-math", "--check"]
-        )
-        == 0
-    )
-    assert render_n11_lower_bounds_explainer.main(["--output", str(page), "--check"]) == 1
+    site = str(tmp_path)
+    main = render_n11_lower_bounds_explainer.main
+    assert main(["--site", site, "--prepare-math", "--check"]) == 0
+    assert main(["--site", site, "--check"]) == 1
     monkeypatch.setattr(render_n11_lower_bounds_explainer, "COMPOSITE_ASSETS", ())
     page.write_text("stale")
-    assert (
-        render_n11_lower_bounds_explainer.main(["--output", str(page), "--prepare-math"]) == 0
-    )
+    assert main(["--site", site, "--prepare-math"]) == 0
     assert page.read_text() == "<p>prepared</p>"
+    assert page.with_suffix(".md").read_text() == "the Markdown edition"
     assert (
-        page.parent / render_n11_lower_bounds_explainer.MARKDOWN_OUTPUT.name
-    ).read_text() == ("the Markdown edition")
+        render_n11_lower_bounds_explainer.MARKDOWN_OUTPUT.name == page.with_suffix(".md").name
+    )
 
 
 def test_the_exposure_rule_reads_the_observation_its_exemptions_came_from() -> None:

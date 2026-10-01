@@ -1102,6 +1102,42 @@ def test_the_film_page_embeds_the_film_at_its_own_proportions(
     assert page.index('class="site-tabs"') < page.index("<h1") < page.index("<video")
 
 
+def test_the_film_page_shows_no_title_and_keeps_one_for_a_screen_reader(
+    rendered: Callable[[str], str],
+) -> None:
+    """The Visualize page shows the bar, the section tabs and the film: no page title and
+    no subtitle. It keeps its document title and one `h1`, for a screen reader alone, and
+    the film, the first block a reader sees, brings no margin of its own."""
+    page = rendered("visualize.html")
+    assert "<title>Visualize · Square Packing</title>" in page
+    assert re.findall(r"<h1\b[^>]*>.*?</h1>", page, re.DOTALL) == [
+        '<h1 class="site-visually-hidden" id="visualize">Visualize</h1>'
+    ]
+    article = page.split('class="kpress-prose kpress-long-text site-page">', 1)[1]
+    assert article.lstrip().startswith('<h1 class="site-visually-hidden"')
+    assert re.search(r'</h1>\s*<figure class="site-film-frame', article)
+    for gone in ('class="site-hero"', 'class="subtitle"', "The ascent"):
+        assert gone not in article, gone
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    hidden = css[css.index("\n.site-visually-hidden {") :]
+    hidden = hidden[: hidden.index("}")]
+    for declaration in (
+        "block-size: 1px;",
+        "clip-path: inset(50%);",
+        "inline-size: 1px;",
+        "overflow: hidden;",
+        "position: absolute;",
+    ):
+        assert declaration in hidden, declaration
+    assert "display: none" not in hidden
+    assert "visibility" not in hidden
+    assert (
+        "@media screen {\n"
+        "  .site-page .site-visually-hidden:first-child + .site-film-frame {\n"
+        "    margin-block-start: 0;\n  }\n}"
+    ) in css
+
+
 def test_no_site_stylesheet_keys_on_the_system_theme_alone() -> None:
     """An explicit Light or Dark choice must win over the system theme, so the site's
     styles key on kpress's resolved theme, never on `prefers-color-scheme`."""

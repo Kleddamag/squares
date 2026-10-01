@@ -146,6 +146,16 @@ body {
 .site-hero {
   text-align: center;
 }
+/* A block for a screen reader alone, such as the title of a page that shows none (the
+   Visualize page, which its section tabs name): out of the flow, one pixel, clipped. */
+.site-visually-hidden {
+  block-size: 1px;
+  clip-path: inset(50%);
+  inline-size: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+}
 /* A page's first block starts `--site-page-top` below the bar's rule (site-nav.css): the
    column's own top padding is that token, and its first block, a hero or a document's
    title, brings no margin of its own. */
@@ -2111,6 +2121,13 @@ body {
   inline-size: var(--site-film-width);
   margin-block: 1.5rem;
   margin-inline: calc((var(--site-film-width) - 100%) / -2);
+}
+/* The film opens its page, whose title is for a screen reader alone, so on screen it is
+   the page's first block and brings no margin above, as a title brings none. */
+@media screen {
+  .site-page .site-visually-hidden:first-child + .site-film-frame {
+    margin-block-start: 0;
+  }
 }
 .site-page .site-film-frame .site-film {
   aspect-ratio: 16 / 9;

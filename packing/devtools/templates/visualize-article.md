@@ -1,10 +1,4 @@
-<div class="site-hero">
-
-# Visualize
-
-<p class="subtitle">The ascent, <var>n</var> = 1 to 324</p>
-
-</div>
+<h1 class="site-visually-hidden" id="visualize">Visualize</h1>
 
 <figure class="site-film-frame">
 <video class="site-film" controls preload="none" playsinline width="1920" height="1080" poster="ascent-n1-324-poster.png" aria-label="The atlas built one unit square at a time, from n = 1 to n = 324, at 1080p60.">

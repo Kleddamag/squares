@@ -439,8 +439,14 @@ it.
   icons.
 
 - **Page headings.** The homepage has no title heading: its hero picture leads, and its
-  sections are `h2`s. A page that has a title (the frontier atlas, the case records)
-  sets it in the hero, centred, with a subtitle under it.
+  sections are `h2`s. The Visualize page shows none either: the bar, the section tabs
+  and the film are the page, and its `h1`, “Visualize”, is for a screen reader alone
+  (`.site-visually-hidden`, in `site.css`: out of the flow, one pixel, clipped, the
+  class for any block a reader does not see and a screen reader should).
+  The film after the hidden title is the page’s first block, so on screen it brings no
+  margin above and starts `--site-page-top` under the header.
+  A page that has a title (the frontier atlas, the case records) sets it in the hero,
+  centred, with a subtitle under it.
   The frontier atlas’s is “A survey of everything known for cases $n = 1, \ldots, 324$”,
   the results page’s “A survey of all reviewed results” and the Papers page’s “Papers
   and interactive explanations for specific results”.
@@ -812,13 +818,14 @@ it.
   film.
 
 - **The film.** The Visualize section’s Film tab, `visualize.html`, is the n = 1 to 324
-  film at full size under the section tabs and a page title, “Visualize”, with the
-  subtitle “The ascent, n = 1 to 324”. It is as wide as the window allows less the page
-  gutters, up to 120rem, but never so tall that it will not fit the window whole
-  (`.site-film-frame`), and embedded as the explainer embeds its film: inline, with its
-  controls, fetching nothing until a reader presses play (`preload="none"`), and showing
-  its poster until then, `ascent-n1-324-poster.png`, published beside the explainer’s
-  assets, at the video’s own 16:9, so starting playback moves nothing.
+  film at full size directly under the section tabs, with no page title and no subtitle
+  (**Page headings**, above).
+  It is as wide as the window allows less the page gutters, up to 120rem, but never so
+  tall that it will not fit the window whole (`.site-film-frame`), and embedded as the
+  explainer embeds its film: inline, with its controls, fetching nothing until a reader
+  presses play (`preload="none"`), and showing its poster until then,
+  `ascent-n1-324-poster.png`, published beside the explainer’s assets, at the video’s
+  own 16:9, so starting playback moves nothing.
   A caption and a note in the support colour follow at the reading measure: what the
   film shows, its length, the shorter 1 to 100 film, the release both are on, and the
   Workbench.

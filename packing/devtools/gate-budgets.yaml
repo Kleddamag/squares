@@ -654,40 +654,21 @@ tiers:
 
 - id: suite_b
   command: packing-validate --suite-b
-  # 154s, and the first ceiling this entry has set for itself. The three before it were
-  # all 180: OR-14's pull-request wall, borrowed as an absolute bound because a shard
-  # job's wall is a share of that wall. That is the loosest a per-tier ceiling can be --
-  # it says only that this one job of seven may spend the whole surface's budget -- and
-  # `OR-17` is the rule that a routine gate carries a ceiling of its own rather than the
-  # surface's. 26s of the pull-request wall go back to the surface with it.
-  #
-  # 154s is 1.50x of the record below, which is where the drift rule already sits
-  # (154.37s). The two bounds coincide on purpose, the way the `fast` entry argues: an
-  # absolute ceiling looser than the record-relative rule never gets to speak, and one
-  # tighter than it fails a run the drift rule was willing to explain. Rule 2 would
-  # permit 205s; the tier has no use for it.
-  #
-  # It is a band and not a target, and the band is the runner pool's rather than the
-  # tier's. This tier has no known cost -- it has a distribution, and 2026-09-21 measured
-  # it directly. Three runs of one byte-identical shard that day, 3,140 passed and 6
-  # skipped each time, read 73.90s, 74.98s and 133.81s, on 240.2, 240.2 and 449.9
-  # test-seconds of accumulated test time. 1.81x, on work that did not change at all.
-  # So the record is placed at the centre of what five readings span and both edges are
-  # what is left: 1.15x of margin above the slowest wall this tier has read and 1.20x
-  # below the fastest. Those margins are thin, and they are the honest width of the
-  # pool -- `think-be1s` is the recorded band that would replace a recorded point, and
-  # `D-472` is why neither edge of this one may be bought by moving the record toward
-  # the other. What the absolute number still adds is the failure the ratios cannot see:
-  # 154s is well under the 240-450 test-seconds this shard accumulates, so the job still
-  # fails here if `-n 4 --dist=loadfile` stops dividing, which is the regression an
-  # absolute ceiling on a pre-collection shard is actually for.
-  ceiling_seconds: 154.0
-  measured_seconds: 104.65
-  measured_on: '2026-09-30'
+  # The unchanged three-way whole-file partition has two complete hosted reference-shape
+  # readings: 104.65s for 2,380 passing tests, then 59.83s for 2,381. The latter failed
+  # only the stale-cost rule (0.57x); one added test cannot explain a 1.75x faster job.
+  # Record their geometric mean rather than moving the band to the fast edge. The 120s
+  # absolute ceiling is tighter than the former 154s, covers both observed walls, and is
+  # 1.52x of the mean; the unchanged 1.5x drift rule already refuses above 118.7s.
+  # `think-c13q` records this refresh; `think-be1s` still tracks a runner-aware band.
+  ceiling_seconds: 120.0
+  measured_seconds: 79.13
+  measured_on: '2026-10-01'
   measured_where: >-
-    First hosted three-shard cohort, run 36739024277 job 109968163416 at the
-    declared four-CPU reference shape: 104.65s, 2,380 tests passed. This is
-    one observed B-shard wall, not a distribution.
+    Geometric mean of two complete reference-shape hosted B-shard walls: 104.65s
+    (run 36739024277, job 109968163416, head 84dc39d7e, 2,380 passed) and
+    59.83s (run 36827494079, job 110256353794, head e37362ff9, 2,381 passed;
+    pytest itself 59.27s). The latter failed solely on the stale baseline verdict.
   history:
   - measured_seconds: 119.54
     measured_on: '2026-09-15'
@@ -776,6 +757,12 @@ tiers:
       either edge of the pool starves one rule to feed the other. `D-472` is that lesson from the fast side, and the
       typecheck entry below is the same repair from this one: its 38.15s stale-rule failure
       went into the mean with the two readings before it rather than over them.
+  - measured_seconds: 104.65
+    measured_on: '2026-09-30'
+    measured_where: >-
+      First hosted three-shard cohort, run 36739024277 job 109968163416 at
+      head 84dc39d7e: 104.65s, 2,380 passing tests. One reading, superseded by
+      the two-reading geometric mean after run 36827494079.
   reference: {jobs: 1, inner_jobs: 1, cpus: 4}
   argument: >-
     Pre-collection shard B under the same complete and disjoint assignment as shard A.

@@ -4,6 +4,77 @@ softschema:
   status: enforced
 last_reviewed: '2026-10-01'
 evidence:
+  - id: E-n017-kleddamag-rational-upper
+    claim: upper-bound
+    scope: &id001
+      n_values:
+      - 17
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    source_key: '[Kleddamag n17 certified bound]'
+    replay_status: passed
+    source_reviewed: '2026-10-01'
+    origin: replayed-here
+    novelty: previously-published
+    certificate: packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/portable-witness.yaml
+    replay: From packing, .venv/bin/python3 -m devtools.check_rational_witness_independent campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/portable-witness.yaml.
+      Full source, stock and control commands and accepted outputs are retained in packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md
+      and its run-001 directory.
+    external_review:
+      state: informally-verified
+      date: '2026-10-01'
+      reviewed_by: GPT-6 Astra max mathematical and implementation reviewers, with coordinator integration
+      note: Lossless source conversion and complete outputs reviewed. Two local exact implementations and
+        the source checker accept17 unit squares,68 contained vertices and136 pairs at4675530093604551/10^15.
+        Positive and negative controls passed. Independent implementations use the same separating-axis
+        method. See packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/output-review.md.
+    limitations: Exact rational feasibility only, not a new packing discovery, an algebraic endpoint identity
+      or global optimality. Conservative current-rubric assessment V3/C3; no human review or method diversity
+      is inferred.
+  - id: E-n017-certified-endpoint
+    claim: upper-bound
+    scope: *id001
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    source_key: '[Kleddamag n17 certified bound]'
+    replay_status: passed
+    source_reviewed: '2026-10-01'
+    origin: audited-here
+    certificate: packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/run-001/certificate.json
+    replay: Accepted H255 root and H256 endpoint executions are retained with frozen commands in their experiment
+      records. From packing, .venv/bin/python3 -m devtools.audit_n17_endpoint_receipt campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/run-001
+      independently audits the receipt. This audit alone does not reprove the root or symbolic identities.
+    proof:
+      source: docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
+      theorem: Existence of the n17 contact-chart endpoint packing
+      scope: A unit-square packing exists at the unique H255 polynomial root, with side at most4.6755300936045509516342148538535054.
+        This exact decimal is a rational ceiling, not an exact identity for the endpoint or s(17).
+      pinpoints: H255 contraction proves existence and uniqueness in its frozen rational box. H256 certifies
+        all68 walls and136 pairs:15wall and21pair root identities,53strictwall and115strictpair interval
+        bounds. Independent tuple arithmetic reproduces both endpoints of all187 interval records.
+      assumptions:
+      - Accepted H255 exact root proof and unchanged coordinatewise inclusion enclosure.
+      - Reviewed rational-function contact identities at that root, unit-basis normalizations and complete
+        square, wall and pair coverage.
+      audit_record: packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/output-review.md
+    external_review:
+      state: informally-verified
+      date: '2026-10-01'
+      reviewed_by: GPT-6 Astra max mathematical and implementation reviewers, with coordinator integration
+      note: Complete geometry and provenance reviewed; all187 interval records independently reconstructed.
+        Auditor imports neither endpoint producer nor root checker; accepted root and separately reviewed
+        symbolic identities remain explicit premises. Conservative assessment V3/C3; no human review or
+        method diversity.
+    limitations: Kleddamag supplies the rational seed; the certified chart root and centroid endpoint were
+      derived here. Certificate novelty is not assessed. Endpoint feasibility only. Catalogue degree18 polynomial
+      identity remains unestablished. Conditional minimality depends on specified projection branches; first-order
+      stationarity, unrestricted local minimality and global optimality remain unproved. No new packing
+      discovery is claimed.
+
   - id: E-n060-evand-mixed-cover-report
     claim: lower-bound
     scope: {n_values: [60]}

@@ -63,3 +63,12 @@ void test("a fragment the overview has, or none, stays", () => {
   assert.equal(forwarded("#recent-results", { ids: ["recent-results"] }), null);
   assert.equal(forwarded(""), null);
 });
+
+void test("a renamed section's old fragment stays while an anchor keeps its id", () => {
+  // Verification Ladders was `#verification-at-a-glance`; its heading keeps an empty
+  // anchor of that id, without which the old link would be sent to the explainer.
+  const old = "#verification-at-a-glance";
+  const kept = ["verification-ladders", "verification-at-a-glance"];
+  assert.equal(forwarded(old, { ids: kept }), null);
+  assert.equal(forwarded(old, { ids: ["verification-ladders"] }), `explainer.html${old}`);
+});

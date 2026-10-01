@@ -8,9 +8,9 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **158** evidence records. **109** are formal; **103** of those were established here.
-- **39** rest on an argument made elsewhere, of which **8** have been read by nobody here.
-- **36** claim to be first established here. **11** make no novelty statement at all - not assessed, which is not the same as not novel.
+- **157** evidence records. **111** are formal; **105** of those were established here.
+- **37** rest on an argument made elsewhere, of which **8** have been read by nobody here.
+- **36** claim to be first established here. **12** make no novelty statement at all - not assessed, which is not the same as not novel.
 
 A formal claim on an unread external proof is still formal: the proof proves its
 claim whether or not we read it. The count above is not a doubt about those
@@ -20,19 +20,18 @@ results, it is a statement about what this repository has itself examined.
 
 | evidence | cases | claim | assurance | method decides | whose work | read here | novelty |
 | --- | ---: | --- | --- | --- | --- | --- | --- |
-| `E-n060-evand-mixed-cover-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
-| `E-n061-evand-derived-report` | 1 | lower-bound | reported | - | here | informally-verified | previously-published |
-| `E-k2m3-evand-family-report` | 10 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-n017-kleddamag-rational-upper` | 0 | upper-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
+| `E-n017-certified-endpoint` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* |
 | `E-n011-global-optimality-report` | 1 | lower-bound | reported | - | elsewhere | defect-found | previously-published |
 | `E-n011-global-optimality-independent` | 1 | exact-value | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
 | `E-wand125-tools-ceiling-report` | 0 | derived-structure | reported | - | elsewhere | defect-found | previously-published |
 | `E-wand125-tools-n11-row-report` | 0 | derived-structure | reported | - | elsewhere | defect-found | previously-published |
 | `E-wand125-point-source-replay` | 10 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
 | `E-wand125-n052-derived-lower` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* |
-| `E-wand125-rectangle-report` | 8 | lower-bound | reported | - | elsewhere | - | previously-published |
+| `E-wand125-rectangle-report` | 10 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-wand125-rectangle-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published |
 | `E-wand125-rectangle-source-replay` | 3 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
-| `E-wand125-rectangle-2026-09-28-report` | 35 | lower-bound | reported | - | elsewhere | - | previously-published |
+| `E-wand125-rectangle-2026-09-28-report` | 36 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-wand125-rectangle-2026-09-28-monotone-report` | 2 | lower-bound | reported | - | here | - | previously-published |
 | `E-n045-wand125-point-cover-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-n045-wand125-point-cover-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
@@ -57,7 +56,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-kingbird-upper-register` | 177 | upper-bound | reported | - | - | - | previously-published |
 | `E-kingbird-grid-completeness` | 96 | upper-bound | reported | - | - | - | previously-published |
 | `E-unitsquare-release1-report` | 1 | upper-bound | reported | - | - | - | previously-published |
-| `E-basic-grid-upper` | 255 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge |
+| `E-basic-grid-upper` | 254 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge |
 | `E-basic-area-lower` | 18 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge |
 | `E-nagamochi-lower` | 287 | lower-bound | verified | whatever its theorem states | elsewhere | informally-verified | previously-published |
 | `E-migrated-lower-report` | 6 | lower-bound | reported | - | - | - | *not assessed* |
@@ -181,9 +180,9 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 45, verified 109
-- **method**: exact-algebraic 77, interval-certified 22, numerical-multiprecision 4, proof-assistant-checked 1, proof-audited 3, published-proof 6, reported 45
-- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 11, previously-published 107
+- **assurance**: numerically-checked 4, reported 42, verified 111
+- **method**: exact-algebraic 79, interval-certified 22, numerical-multiprecision 4, proof-assistant-checked 1, proof-audited 3, published-proof 6, reported 42
+- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 12, previously-published 105
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 
@@ -235,7 +234,7 @@ The `n` column is what each covers and `cases` is how many frontier records cite
 | evidence | cases | whose work | read here |
 | --- | ---: | --- | --- |
 | `E-nagamochi-lower` | 287 | elsewhere | informally-verified |
-| `E-basic-grid-upper` | 255 | here | - |
+| `E-basic-grid-upper` | 254 | here | - |
 | `E-franciscouzo-2026-09-27-exact-replay` | 49 | here | - |
 | `E-franciscouzo-2026-09-27-interval-replay` | 49 | here | - |
 | `E-basic-area-lower` | 18 | here | - |

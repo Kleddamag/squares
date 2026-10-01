@@ -1,0 +1,10 @@
+export TMPDIR=/Volumes/spud-ext1/agent-scratch/w3-post-optimality/tmp
+export CARGO_TARGET_DIR=/Volumes/spud-ext1/agent-scratch/w3-post-optimality/cargo
+export UV_CACHE_DIR=/Volumes/spud-ext1/agent-scratch/w3-post-optimality/uv-cache
+export PYTHONDONTWRITEBYTECODE=1
+ulimit -f 1024
+cd /Users/levy/wrk/github/squares/packing
+/usr/bin/time -l .venv/bin/python3 -m devtools.count_grid_symmetry --input '{"grid_size":5,"capacities":[1,1,1,1,1,1,2,2,2,1,1,2,2,2,1,1,2,2,2,1,1,1,1,1,1],"target":17}' > /Users/levy/wrk/github/squares/packing/campaign/series/series-000-smoke-and-calibration/results/exp-241-n17-closed-cell-symmetry/run-001/count.json 2> /Users/levy/wrk/github/squares/packing/campaign/series/series-000-smoke-and-calibration/results/exp-241-n17-closed-cell-symmetry/run-001/count.time
+printf "producer\t0\n" >> /Users/levy/wrk/github/squares/packing/campaign/series/series-000-smoke-and-calibration/results/exp-241-n17-closed-cell-symmetry/run-001/exits.tsv
+/usr/bin/time -l .venv/bin/python3 -m devtools.audit_grid_symmetry /Users/levy/wrk/github/squares/packing/campaign/series/series-000-smoke-and-calibration/results/exp-241-n17-closed-cell-symmetry/run-001/count.json /Users/levy/wrk/github/squares/packing/campaign/series/series-000-smoke-and-calibration/results/exp-240-n17-mixed-capacity-census/run-001/mixed.json > /Users/levy/wrk/github/squares/packing/campaign/series/series-000-smoke-and-calibration/results/exp-241-n17-closed-cell-symmetry/run-001/audit.json 2> /Users/levy/wrk/github/squares/packing/campaign/series/series-000-smoke-and-calibration/results/exp-241-n17-closed-cell-symmetry/run-001/audit.time
+printf "audit\t0\n" >> /Users/levy/wrk/github/squares/packing/campaign/series/series-000-smoke-and-calibration/results/exp-241-n17-closed-cell-symmetry/run-001/exits.tsv

@@ -14,6 +14,7 @@ from fractions import Fraction
 
 import pytest
 
+from devtools import check_results
 from devtools import render_recent_results as view
 from devtools.build_bound_citations import PROJECT_NAME, load_case, recent_lower_bounds
 from devtools.check_results import recent_evidence
@@ -87,7 +88,29 @@ def test_decimals_are_exact_or_cut_never_rounded_up(value: Fraction, shown: str)
 
 def test_standing_is_one_of_the_derived_words(records: view.Records) -> None:
     for record in records.register.results:
-        assert view.standing(record, records) in view.STANDINGS, record["id"]
+        standing = view.standing(record, records)
+        assert standing in (*view.STANDINGS, view.NO_STANDING), record["id"]
+
+
+def test_an_entry_that_claims_no_bound_has_no_standing(records: view.Records) -> None:
+    """Standing is about bounds. An entry whose evidence claims none has no standing, and
+    its kind is never one of the three bounds; no standing says only what an entry is
+    not."""
+    without = {}
+    for record in records.register.results:
+        if view.standing(record, records) == view.NO_STANDING:
+            assert record["kind"] not in check_results.BOUND_KINDS, record["id"]
+            without[record["id"]] = record["kind"]
+    assert view.NO_STANDING not in view.STANDINGS
+    assert not any("bound" in standing for standing in view.STANDINGS)
+    assert set(without.values()) == {
+        "rigidity",
+        "case-exclusion",
+        "restricted-optimality",
+        "method-limit",
+        "audit",
+    }
+    assert len(without) == 9
 
 
 def test_standing_agrees_with_the_recent_rows(
@@ -111,8 +134,10 @@ def test_standing_agrees_with_the_recent_rows(
         # A rung of the n = 18 ladder shares its interval decision with the rung that
         # holds the bound; a shared checker does not make it hold.
         ("T-027", view.SUPERSEDED),
-        # A rigidity theorem claims no bound on s(n).
-        ("T-014", view.NOT_A_BOUND),
+        # A rigidity theorem claims no bound on s(n), so it has no standing.
+        ("T-014", view.NO_STANDING),
+        ("T-036", view.NO_STANDING),
+        ("T-059", view.NO_STANDING),
         # A second proof of s(45) = 7, whose bound Evan Daniel's cover holds.
         ("T-054", view.SECOND_CERTIFICATE),
         # A second route to s(21) = 5 that is reported and not yet replayed here.

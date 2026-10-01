@@ -1,0 +1,1 @@
+/usr/bin/time -l gtimeout --signal=TERM --kill-after=5s 90s .venv/bin/python3 -m devtools.check_n17_contact_chart

@@ -3152,6 +3152,15 @@ def _rung_figures(context: Context) -> str:
     return _module(context, "devtools.check_rung_figures")
 
 
+def _standing(context: Context) -> str:
+    # About a second: the register, the bibliography and the case records its results
+    # name. Records tier because it checks the record against itself -- standing is
+    # derived from which evidence a case bound cites and never from a number, so an entry
+    # labelled superseded while the bound it states still stands, or standing while every
+    # bound it states is beaten, would pass every other step here (think-nr0y).
+    return _module(context, "devtools.check_standing")
+
+
 def _case_prose(context: Context) -> str:
     # Sub-second: it regex-scans a hundred case bodies against their own front matter and
     # reuses check_rung_figures's exact-arithmetic rule. Records tier because it checks the
@@ -3159,6 +3168,16 @@ def _case_prose(context: Context) -> str:
     # verified lower bound in prose that the front matter above it had already moved past,
     # and stayed that way for six hours; check_rung_figures never reads a case body.
     return _module(context, "devtools.check_case_prose")
+
+
+def _prose_ceremony(context: Context) -> str:
+    # Sub-second: it regex-scans the register's prose fields and the reader documents,
+    # the case records among them. Records tier because it checks how the record reads,
+    # not what it claims -- twenty-four register claims ended in one disclaimer sentence and
+    # forty-four case records dated a commit to the minute and the timezone, each a fact with
+    # a structured home already, before the owner asked on 2026-10-01 for credit and a
+    # link in their place. It also holds a long register field to paragraphs.
+    return _module(context, "devtools.check_prose_ceremony")
 
 
 def _session_rollups(context: Context) -> str:
@@ -4550,6 +4569,24 @@ STEPS: tuple[Step, ...] = (
         ),
     ),
     Step(
+        "standings agree with the bounds their entries state",
+        _standing,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "packing/devtools/check_standing.py",
+            "packing/devtools/render_recent_results.py",
+            "packing/devtools/build_bound_citations.py",
+            "packing/devtools/check_results.py",
+            "packing/devtools/result_credit.py",
+            "packing/frontier/results.yaml",
+            "packing/frontier/evidence.yaml",
+            "packing/frontier/n-*.md",
+            "packing/resources/bibliography.yaml",
+        ),
+    ),
+    Step(
         "case prose agrees with its own front matter",
         _case_prose,
         fast=True,
@@ -4559,6 +4596,28 @@ STEPS: tuple[Step, ...] = (
             "packing/devtools/check_case_prose.py",
             "packing/devtools/check_rung_figures.py",
             "packing/frontier/n-*.md",
+        ),
+    ),
+    Step(
+        "reader prose credits and links, without audit mechanics",
+        _prose_ceremony,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "packing/devtools/check_prose_ceremony.py",
+            "packing/devtools/prose-ceremony.yaml",
+            "packing/devtools/register_prose.py",
+            "packing/devtools/templates/*-article.md",
+            "packing/frontier/results.yaml",
+            "packing/frontier/n-*.md",
+            "packing/frontier/README.md",
+            "packing/frontier/STATUS.md",
+            "README.md",
+            "TUTORIAL.md",
+            "SYNOPSIS.md",
+            "conventions.md",
+            "epistemics.md",
         ),
     ),
     Step(
@@ -4954,7 +5013,13 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "the synopsis headline carries every result",
         "exact certificates are named by their records",
         "rung figures agree with their certificates",
+        # The register, the bibliography and the case records, read and compared: no
+        # clock, no network and no history.
+        "standings agree with the bounds their entries state",
         "case prose agrees with its own front matter",
+        # Reads the register, the reader documents and its own allowlist; the `git grep`
+        # in the module belongs to `--retained`, which this step does not run.
+        "reader prose credits and links, without audit mechanics",
         "terminal sessions name what they cost",
         "terminal sessions name the gate that certified them",
         "Goebel's family reaches the sizes it reaches",

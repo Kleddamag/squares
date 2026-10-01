@@ -146,6 +146,16 @@ body {
 .site-hero {
   text-align: center;
 }
+/* A block for a screen reader alone, such as the title of a page that shows none (the
+   Visualize page, which its section tabs name): out of the flow, one pixel, clipped. */
+.site-visually-hidden {
+  block-size: 1px;
+  clip-path: inset(50%);
+  inline-size: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+}
 /* A page's first block starts `--site-page-top` below the bar's rule (site-nav.css): the
    column's own top padding is that token, and its first block, a hero or a document's
    title, brings no margin of its own. */
@@ -172,9 +182,10 @@ body {
   text-align: center;
   text-transform: var(--kpress-caps-transform);
 }
-/* A page's subtitle, such as "Every tracked case, n = 1 to 324": the sans face a small
+/* A page's subtitle, such as "A survey of all reviewed results": the sans face a small
    step above the base (`--site-subtitle-scale`), in the page's own text colour, with
-   the same space above it (from the title) as below it (to the first paragraph). */
+   the same space above it (from the title) as below it (to the first paragraph). A
+   formula in one is sans math, as its text is. */
 .kpress .site-hero .subtitle {
   color: var(--kpress-doc-text);
   font-family: var(--kpress-font-sans);
@@ -489,23 +500,38 @@ body {
   box-shadow: 0 0.5rem 2rem oklch(0% 0 0 / 0.15);
   color: var(--kpress-doc-text);
   font-family: var(--kpress-font-sans);
-  max-height: min(80vh, 40rem);
+  max-block-size: var(--site-popover-max-block);
   max-width: min(36rem, 100vw - 2rem);
   overflow: auto;
   padding: var(--site-popover-pad);
 }
 /* Every popover's margins are one token, the same on all four sides, and its close
    button one square tap target set in from the corner. Only the first block after the
-   button keeps clear of it, so the margins stay even everywhere else. */
+   button keeps clear of it, so the margins stay even everywhere else.
+
+   A popover's height has one limit, the window's: it may be as tall as the window less
+   one margin above and one below (`--site-popover-window-margin`, 4% of the window's
+   height, never under 1rem nor over 3rem), so a taller window shows more of a long
+   panel and none stops at a fixed height. It is centred, so the two margins are equal,
+   and it scrolls inside. The limit is `max-block-size` alone: `max-height` is the same
+   property, and whichever a rule declares later is the one that holds. */
 :root {
   --site-popover-pad: 1.75rem;
   --site-popover-close: 2.75rem;
   --site-popover-close-inset: 0.6rem;
+  --site-popover-window-margin: clamp(1rem, 4dvh, 3rem);
+  --site-popover-max-block: calc(100dvh - 2 * var(--site-popover-window-margin));
 }
+/* A phone keeps the heights it had: a card's or a row's popover up to 80% of the window
+   and 40rem, here; a framed page, the atlas popover and a result overview in their own
+   rules below. */
 @media (max-width: 40rem) {
   :root {
     --site-popover-pad: 1.1rem;
     --site-popover-close-inset: 0.25rem;
+  }
+  .site-popover {
+    max-block-size: min(80vh, 40rem);
   }
 }
 .site-popover > .site-popover-close + * {
@@ -549,19 +575,23 @@ body {
   font-size: var(--site-font-size-note);
   margin-block: 0.6rem 0;
 }
-/* A framed page takes most of the viewport, and the frame the height its heading and
-   buttons leave, so Expand never scrolls out of reach. */
+/* A framed page takes the whole height a popover may have, and the frame the height its
+   heading and buttons leave, so Expand never scrolls out of reach. */
 .site-popover[data-go="page"] {
   inline-size: min(46rem, 100vw - 2rem);
   max-inline-size: none;
 }
 .site-popover[data-go="page"]:popover-open {
-  block-size: min(88vh, 56rem);
+  block-size: var(--site-popover-max-block);
   display: flex;
   flex-direction: column;
   max-block-size: none;
-  max-height: none;
   overflow: hidden;
+}
+@media (max-width: 40rem) {
+  .site-popover[data-go="page"]:popover-open {
+    block-size: min(88vh, 56rem);
+  }
 }
 .site-popover[data-go="page"] > * {
   flex: none;
@@ -711,6 +741,10 @@ body {
 .site-table-tools {
   display: flex;
   flex-wrap: wrap;
+  /* Every control's words share the line's baseline, so a checkbox's label, which is
+     shorter than a select, reads level with the labels beside it, and so does the
+     count. */
+  align-items: baseline;
   gap: 0.5rem 1rem;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-support);
@@ -752,6 +786,17 @@ body {
   color: var(--kpress-doc-text);
   font: inherit;
   padding: 0.1rem 0.35rem;
+}
+/* A checkbox is the bar's own control too: the site's accent when checked, never the
+   browser's blue, no box of its own around it, and its words on one line beside it. */
+.site-table-tools label:has(input[type="checkbox"]) {
+  white-space: nowrap;
+}
+.site-table-tools input[type="checkbox"] {
+  accent-color: var(--kpress-doc-accent);
+  border: 0;
+  margin: 0;
+  padding: 0;
 }
 /* An age in days is a few digits. A number input with no `max` to size it by would
    otherwise take a text field's width. */
@@ -814,13 +859,17 @@ body {
 }
 /* The short columns keep as narrow as their content, leaving the spare width to the long
    text column. The id and the date stay on one line; an n can be a long list of counts,
-   so it wraps. A phone's card-per-row layout sizes its own cells. */
+   so it wraps. An id is five characters, narrower than the 6rem KPress keeps a cell to,
+   so its column gives that floor up. A phone's card-per-row layout sizes its own cells. */
 @media (width >= 40rem) {
   .site-table :is(.site-col-id, .site-col-n, .site-col-date) {
     width: 0;
   }
   .site-table :is(.site-col-id, .site-col-date) {
     white-space: nowrap;
+  }
+  .site-table .site-col-id {
+    min-width: 0;
   }
 }
 .site-table tr[hidden] {
@@ -833,7 +882,7 @@ body {
   display: table-row;
 }
 /* Without scripts the filters cannot be changed, so nothing stays filtered: every row
-   shows, each group under its heading, and the bar, which would do nothing, does not. */
+   shows, and the bar, which would do nothing, does not. */
 @media (scripting: none) {
   .site-result-filters {
     display: none;
@@ -845,9 +894,6 @@ body {
 @media (scripting: none) and (width < 40rem) {
   .site-results tbody tr[hidden] {
     display: grid;
-  }
-  .site-results tbody tr.site-group-row[hidden] {
-    display: block;
   }
 }
 :is(.site-table, .site-popover) .site-detail {
@@ -886,10 +932,13 @@ body {
   font-size: var(--site-font-size-note);
   font-weight: var(--site-font-weight-sans-medium);
   line-height: 1.45;
-  /* Chips wrap like words; this margin keeps a wrapped row of them from touching the
-     row above, wherever they sit. */
+  /* A row of chips wraps like words, between chips; this margin keeps a wrapped row of
+     them from touching the row above, wherever they sit. */
   margin-block: 0.15rem;
   padding: 0 0.35rem;
+  /* No chip wraps: its words stay on one line, in a table, a popover, the ladders or a
+     card, and no rule anywhere on the site lets one break. What holds a chip is made
+     wide enough for it. */
   white-space: nowrap;
 }
 .site-chip[data-tone="accent"] {
@@ -974,8 +1023,8 @@ body {
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
 }
-/* A date says what it dates, "published" or "established", in the support colour, on
-   its own line above the date so the column stays narrow. */
+/* A date comes first, and then what it dates, "published" or "established", in the
+   support colour, on its own line under the date so the column stays narrow. */
 .site-table .site-date-kind {
   color: var(--site-support-color);
   display: block;
@@ -983,19 +1032,19 @@ body {
 .site-table .site-col-date {
   white-space: nowrap;
 }
-/* A result's standing sits under its rungs, on a line of its own. */
+/* What a result is sits under its rungs, on a line of its own: its kind, one chip. */
+.site-table .site-kind {
+  display: block;
+  margin-block-start: 0.3rem;
+}
+/* A result's standing sits under its kind, on a line of its own, one chip to each part
+   of it (`second certificate, reported` is two). The chips wrap between themselves, a
+   second one under the first where the cell is too narrow for both, and never inside
+   one: the column is as wide as its widest chip. */
 .site-table .site-standing {
   display: block;
   margin-block-start: 0.3rem;
   white-space: normal;
-}
-/* A long standing ("second certificate, reported") wraps between its words, inside the
-   chip, rather than widening the rungs column. */
-.site-table .site-standing .site-chip {
-  max-width: 6.5rem;
-  overflow-wrap: normal;
-  white-space: normal;
-  word-break: normal;
 }
 
 .kpress .site-table {
@@ -1008,6 +1057,18 @@ body {
 .site-table .site-col-result {
   min-width: 18rem;
 }
+/* A new result's star hangs after the last character of the result's text. It takes no
+   width of its own, so it can never wrap to a line by itself, and its cell keeps room
+   for it at the end of every line, so it never runs into the next column. */
+.site-results .site-col-result .site-star {
+  display: inline-block;
+  inset-inline-start: 0.2em;
+  position: relative;
+  width: 0;
+}
+.kpress .site-results td.site-col-result:has(.site-star) {
+  padding-inline-end: calc(0.5rem + 1.1em);
+}
 /* On a wide table the result takes the spare width: past KPress's 40rem cell cap, and
    ahead of a long credit, which wraps at 20rem. */
 .kpress .site-table td.site-col-result {
@@ -1018,6 +1079,36 @@ body {
 }
 .site-table .site-records {
   min-width: 10rem;
+}
+/* A table of results keeps its credit column wide enough for the longest name on one
+   line ("Queuingtheorydotcom", 167px of the 184), so a credit wraps between names, two
+   or three to a line, and never inside one. KPress's own floor, 6rem, set a credit one
+   word to a line while the result column kept the spare width. The rungs column is as
+   wide as its widest chip, since no chip wraps: the three rungs at 114px, and "second
+   certificate" at 159 where a row with one shows. The result column cannot give that
+   room: four results' formulas, which do not break, hold it to 411px. So a result's
+   records are no column of their own, which would be left 98px of a 1280px window's
+   1104 and set a link to a line; they sit under the summary, in the result's cell, on
+   a line or two. */
+@media (width >= 40rem) {
+  .site-results .site-col-credit {
+    min-width: 11.5rem;
+  }
+  /* As narrow as its widest chip, like the other short columns: the spare width is the
+     result's and the credit's. */
+  .site-results .site-rungs {
+    width: 0;
+  }
+}
+.site-results .site-col-result .site-records {
+  margin-block-start: 0.3rem;
+  min-width: 0;
+}
+/* The overview's recent table is the results page's table, and this is its one rule: it
+   carries each result's records and does not show them. Every link is in the row's
+   popover and on the result's row of the results page. */
+.kpress .site-recent-table .site-records {
+  display: none;
 }
 .kpress .site-table .site-group-row th {
   background: var(--site-wash);
@@ -1034,11 +1125,12 @@ body {
   white-space: nowrap;
 }
 
-/* ---------- The results table on a phone ----------
-   Seven columns do not fit 390px, and scrolling a table sideways to read one claim is
-   the wrong trade: each row becomes a small card, id, cases and rungs on its first line,
-   then the claim, the credit and date, and the records; the standing sits under the
-   rungs. */
+/* ---------- A table of results on a phone ----------
+   Six columns do not fit 390px, and scrolling a table sideways to read one claim is the
+   wrong trade: each row becomes a small card, id, cases and rungs on its first line,
+   then the claim with its records under it, and the credit and date; the standing sits
+   under the rungs. The results page's table and the overview's recent table are the one
+   table (`.site-results`), so both take it. */
 @media (width < 40rem) {
   .site-results thead {
     display: none;
@@ -1064,9 +1156,6 @@ body {
   }
   .site-results tr[hidden]:target {
     display: grid;
-  }
-  .site-results tr.site-group-row:not([hidden]) {
-    display: block;
   }
   .kpress .site-results td {
     border: 0;
@@ -1112,50 +1201,22 @@ body {
   .site-results .site-col-result {
     min-width: 0;
   }
+  /* A card's cells have no padding, so the star's room is all there is at the end. */
+  .kpress .site-results td.site-col-result:has(.site-star) {
+    padding-inline-end: 1.1em;
+  }
 }
 
 /* ---------- Quiet cell text and quiet rows ----------
-   Secondary text inside a cell, a result's id beside its math, a credit or a finder, in
-   the support colour and the sans face, at the table's own size so it stays readable. A superseded result's row reads quieter in every
-   site table; its chips keep their fills. */
+   Secondary text inside a cell, a credit, an "after" list or a finder, in the support
+   colour and the sans face, at the table's own size so it stays readable. A superseded
+   result's row reads quieter in every site table; its chips keep their fills. */
 .site-cell-quiet {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
 }
 .kpress .site-table tr[data-standing="superseded"] td {
   color: var(--site-support-color);
-}
-
-/* ---------- The recent results table ----------
-   The overview's newest results: date, result, method, credit, status. The status cell
-   holds every chip side by side, wrapping only when the cell is too narrow. On a phone
-   it keeps the results table's card per row: the result and the date on the first
-   line, then the method, the credit and the chips each across the card. */
-.site-recent-table .site-col-result {
-  min-width: 12rem;
-}
-/* Wide enough for three rungs and two standing chips on one line. */
-.site-recent-table .site-col-status {
-  min-width: 22rem;
-}
-/* A result's id never breaks at its hyphen. */
-.site-recent-table .site-col-result .site-cell-quiet {
-  white-space: nowrap;
-}
-@media (width < 40rem) {
-  .site-recent-table .site-col-result {
-    grid-area: 1 / 1 / 2 / 3;
-  }
-  .site-recent-table .site-col-date {
-    grid-area: 1 / 3;
-  }
-  .site-recent-table :is(.site-col-method, .site-col-credit, .site-col-status) {
-    grid-column: 1 / -1;
-    min-width: 0;
-  }
-  .site-recent-table .site-col-method:empty {
-    display: none;
-  }
 }
 
 /* Rows part on a light rule rather than KPress's zebra stripe, and wash on hover. After
@@ -1199,9 +1260,57 @@ body {
   padding: 0;
   text-align: inherit;
 }
-/* A row's detail can carry long unbroken names, such as evidence identifiers. */
-.site-row-pop .site-detail dd {
-  overflow-wrap: anywhere;
+
+/* ---------- Words stay whole ----------
+   No text on the site breaks inside a word. KPress gives every page
+   `overflow-wrap: break-word`, which cuts a run of characters only when it is longer
+   than a whole line, and the site adds `overflow-wrap: anywhere` nowhere but on the two
+   things that are such runs by nature: an exact decimal (`.site-case-decimal`) and a
+   repository path (`.site-result-links code`). `anywhere` also lets a column shrink to
+   one character, which is how a label comes out a letter a line, so it never goes on
+   prose, a label or a column of either.
+
+   A name set as code, an evidence identifier or a result's id, is one word too, and a
+   browser would end a line on any of its hyphens. Each name with the comma after it is
+   an inline box of its own (`.site-name`): the line breaks before the box, never inside
+   it, and only a name longer than the whole line wraps, inside its box. */
+.site-name {
+  display: inline-block;
+  max-inline-size: 100%;
+}
+
+/* Label and value side by side (`.site-pairs`): the labels in one column as wide as the
+   longest of them, whatever it says and in whatever face, and the values in the rest,
+   wrapping between words. Every list in the block shares the two columns, and a heading
+   runs across both. A phone has no room for two columns, so there the block is laid out
+   as any detail list is, each label above its value. */
+@media (width > 40rem) {
+  .site-pairs {
+    column-gap: 1.1rem;
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+  }
+  .site-popover .site-pairs > .site-detail {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    row-gap: 0.3rem;
+  }
+  .site-popover .site-pairs > .site-detail dd {
+    margin: 0;
+  }
+  .site-popover .site-pairs > .site-popover-heading {
+    grid-column: 1 / -1;
+    margin-block-start: 0.7rem;
+  }
+  .site-popover .site-pairs > .site-popover-heading:first-child {
+    margin-block-start: 0;
+  }
+}
+/* A popover of pairs is as wide as its longest value asks, up to a line of prose and
+   the label column beside it. */
+.site-popover:has(.site-pairs) {
+  max-inline-size: min(46rem, 100vw - 2rem);
 }
 
 /* kpress wraps a wide table in its own full-bleed wrap, sized from the viewport. The
@@ -1344,11 +1453,12 @@ body {
 }
 
 /* ---------- The rating ladders ----------
-   Verification at a Glance is one diagram (paper-design.md, Rating ladders): a column
-   for each scored dimension, a row for each level, the highest at the top, so the rungs
-   of the three ladders line up. It is a grid with table roles, in the wide track, and
-   it stands the tables' own space clear of the text. Every rung is the same height: its
-   description is a box of exactly two lines, and its chip and count are a line each. */
+   Verification Ladders is one diagram (paper-design.md, Rating ladders): a column for
+   each scored dimension, a row for each level, the highest at the top, so the rungs of
+   the three ladders line up. It is a grid with table roles, in the wide track, and it
+   stands the tables' own space clear of the text. Every rung is the same height: its
+   chip is one line and its description a box of exactly two. One rule stands under the
+   column heads and none between the rows, which the space between them keeps apart. */
 .site-ladders-frame {
   container: site-ladders / inline-size;
 }
@@ -1360,15 +1470,17 @@ body {
 .site-ladders {
   --site-ladders-leading: 1.4;
   --site-ladders-line: calc(var(--site-font-size-note) * var(--site-ladders-leading));
-  /* The rail holds a chip over its count, "no result yet" at the widest. */
-  --site-ladders-rail: 6.5rem;
-  --site-ladders-gap: 0.5rem;
+  /* The rail holds a chip and nothing else, so it is the chip's own width. */
+  --site-ladders-rail: 2.25rem;
+  --site-ladders-gap: 0.75rem;
   /* The narrowest a description is ever set: `SHORT_MEANING_LINE` characters a line. */
   --site-ladders-meaning-min: 13.5rem;
-  /* What a column keeps clear after its words, before the next column's chip: more than
-     the gap inside a rung, and no more than lets three columns stand in the wide track
-     of a 768-pixel window, 43rem (below). */
+  /* What a column keeps clear after its words, before the next column's chip, and no
+     more than lets three columns stand in the wide track of a 768-pixel window, 43rem
+     (below). */
   --site-ladders-inset: 0.75rem;
+  /* Half the space between two rows, which no rule divides. */
+  --site-ladders-row-space: 0.75rem;
   display: grid;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
@@ -1408,45 +1520,36 @@ body {
   display: block;
 }
 .site-ladders-cell {
-  border-block-end: 1px solid var(--kpress-doc-border);
   container-type: inline-size;
-  padding: 0.6rem var(--site-ladders-inset) 0.6rem 0;
+  padding-block: var(--site-ladders-row-space);
+  padding-inline-end: var(--site-ladders-inset);
 }
-/* A rung in a narrow cell: its chip, then its count, on one line, and the description
-   under them across the whole cell. */
+/* A rung in a narrow cell: its chip, and the description under it across the whole
+   cell. */
 .site-ladders-rung {
-  align-items: center;
   column-gap: var(--site-ladders-gap);
   display: grid;
   grid-template:
-    "chip count" auto
-    "meaning meaning" auto / auto minmax(0, 1fr);
+    "chip" auto
+    "meaning" auto / minmax(0, 1fr);
 }
 .site-ladders-rung .site-chip {
   grid-area: chip;
   justify-self: start;
-  min-inline-size: 2.2rem;
+  min-inline-size: var(--site-ladders-rail);
   text-align: center;
-}
-.site-ladders-count {
-  color: var(--site-support-color);
-  font-variant-numeric: tabular-nums;
-  grid-area: count;
-  white-space: nowrap;
 }
 .site-ladders-meaning {
   block-size: calc(2 * var(--site-ladders-line));
   grid-area: meaning;
 }
-/* A rung with room, 20.5rem (the rail, the gap and the least description): the chip over
-   its count in a rail and the description beside them, its first line level with the
-   chip's letters, which the chip's own margin sets down. */
-@container (inline-size >= 20.5rem) {
+/* A rung with room, 16.5rem (the rail, the gap and the least description): the chip in
+   its rail and the description beside it, its first line level with the chip's letters,
+   which the chip's own margin sets down. */
+@container (inline-size >= 16.5rem) {
   .site-ladders-rung {
     align-items: start;
-    grid-template:
-      "chip meaning" auto
-      "count meaning" minmax(0, 1fr) / var(--site-ladders-rail) minmax(0, 1fr);
+    grid-template: "chip meaning" auto / var(--site-ladders-rail) minmax(0, 1fr);
   }
   .site-ladders-meaning {
     margin-block-start: 0.15rem;
@@ -1475,7 +1578,6 @@ body {
   }
   .site-ladders-empty {
     block-size: 1px;
-    border: 0;
     clip-path: inset(50%);
     inline-size: 1px;
     overflow: hidden;
@@ -1488,7 +1590,8 @@ body {
    It bleeds past the wide track as the window grows, up to 140rem, and its cells keep a
    size that reads, so the row holds more cases the wider the screen: four on a phone,
    eleven at 1280 pixels, seventeen at 1920 and twenty at 2560. A cell washes on hover
-   like a card and opens the atlas popover (below). */
+   like a card and opens the atlas popover (below). The wash is the cell's background,
+   behind the drawing, and it is all that changes: every line keeps the page's ink. */
 .site-page .site-atlas-grid {
   --site-wide: var(--site-bleed-max);
   --site-atlas-toggle-space: 1.2rem;
@@ -1517,8 +1620,13 @@ body {
   background: var(--site-wash);
   text-decoration: none;
 }
+/* The drawing is stroked in `currentColor`, and it names that colour itself. Read from
+   the link, it went to the lighter accent KPress gives a hovered link's text (`.kpress
+   a:hover`, which outranks the cell's own colour), and the outlines all but vanished
+   against the squares. */
 .site-atlas-cell svg {
   aspect-ratio: 1;
+  color: var(--kpress-doc-text);
   display: block;
   height: auto;
   width: 100%;
@@ -1571,8 +1679,7 @@ body {
 }
 .site-popover.site-atlas-pop {
   inline-size: min(62rem, 100vw - 2rem);
-  max-block-size: min(92dvh, 58rem);
-  max-height: none;
+  max-block-size: var(--site-popover-max-block);
   max-inline-size: none;
 }
 .site-atlas-pop .site-atlas-pop-title {
@@ -1678,18 +1785,24 @@ body {
   color: var(--kpress-doc-muted);
   font-weight: var(--kpress-font-weight-sans-regular);
 }
+/* A citation is a row of two cells: which bound, then its source, wrapping between
+   words beside the label. The rows are table rows, so the browser sets the two in one
+   table and the label column is as wide as the wider label, "lower" or "upper", in
+   whatever face and size it is drawn; nothing gives it a width. */
 .site-atlas-pop .site-atlas-pop-cite {
   color: var(--site-support-color);
+  display: table-row;
   line-height: 1.4;
-  margin-block: 0.15rem 0;
-  padding-inline-start: 3.4rem;
-  text-indent: -3.4rem;
+}
+.site-atlas-pop .site-atlas-pop-cite[hidden] {
+  display: none;
 }
 .site-atlas-pop-which {
-  display: inline-block;
+  display: table-cell;
   font-weight: var(--site-font-weight-sans-medium);
-  inline-size: 3.4rem;
-  text-indent: 0;
+  padding-block-start: 0.15rem;
+  padding-inline-end: 0.75rem;
+  white-space: nowrap;
 }
 .site-atlas-pop-note {
   color: var(--kpress-doc-muted);
@@ -1891,7 +2004,6 @@ body {
 .kpress .site-case-interval {
   font-size: calc(var(--site-font-size-sans-base) * 1.25);
   margin-block: 0 1.5rem;
-  overflow-wrap: anywhere;
 }
 /* The drawing beside the bounds on a wide screen; stacked, drawing first, when narrow. */
 .site-case-top {
@@ -1922,10 +2034,14 @@ body {
   margin-block-start: 0.5rem;
   text-align: center;
 }
+/* One panel a bound, as many abreast as fit. A panel is never narrower than its text
+   needs: 17rem holds a line of the note face and the longest of the usual evidence
+   names whole (25 characters of the mono face in its chip), so nothing in a panel is
+   squeezed into breaking. */
 .site-case-bounds {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
 }
 .site-case-bound,
 .site-case-note {
@@ -1940,7 +2056,6 @@ body {
 .kpress .site-case-value {
   font-size: 1.2em;
   margin-block: 0.2rem 0;
-  overflow-wrap: anywhere;
 }
 .site-case-decimal,
 .site-case-same {
@@ -1948,6 +2063,10 @@ body {
   display: block;
   font-size: var(--site-font-size-note);
   font-variant-numeric: tabular-nums;
+}
+/* The recorded decimal in full, as many as 67 digits with no space among them: the one
+   run on a record that has to break wherever its panel's line ends. */
+.site-case-decimal {
   overflow-wrap: anywhere;
 }
 .kpress .site-case-same {
@@ -1966,11 +2085,9 @@ body {
 }
 .site-case .site-detail dd {
   margin: 0 0 0.35rem;
-  overflow-wrap: anywhere;
 }
 .site-case-polynomial {
   font-size: var(--site-font-size-note);
-  overflow-wrap: anywhere;
 }
 .site-case-more {
   font-family: var(--kpress-font-sans);
@@ -2110,6 +2227,13 @@ body {
   inline-size: var(--site-film-width);
   margin-block: 1.5rem;
   margin-inline: calc((var(--site-film-width) - 100%) / -2);
+}
+/* The film opens its page, whose title is for a screen reader alone, so on screen it is
+   the page's first block and brings no margin above, as a title brings none. */
+@media screen {
+  .site-page .site-visually-hidden:first-child + .site-film-frame {
+    margin-block-start: 0;
+  }
 }
 .site-page .site-film-frame .site-film {
   aspect-ratio: 16 / 9;

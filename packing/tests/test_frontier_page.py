@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import shutil
 from html.parser import HTMLParser
 from pathlib import Path
@@ -132,6 +133,26 @@ def test_the_page_carries_the_table_script_and_its_controls(page: str) -> None:
     assert 'aria-current="page" href="frontier.html"' in page
 
 
+def test_an_evidence_name_and_its_comma_are_one_box() -> None:
+    """Each evidence identifier links to its entry and sits, with the comma after it, in
+    one `.site-name` box, so a line breaks between names and never on a hyphen inside
+    one; the text reads as it always did."""
+    known = list(frontier.evidence_lines())[:3]
+    links = frontier.evidence_links([*known, known[0]])
+    boxes = re.findall(r'<span class="site-name">(.*?)</span>', links)
+    assert [re.sub(r"<[^>]+>", "", box) for box in boxes] == [
+        f"{known[0]},",
+        f"{known[1]},",
+        known[2],
+    ]
+    assert re.sub(r"<[^>]+>", "", links) == ", ".join(known)
+    assert all(box.startswith('<a href="') and "<code>" in box for box in boxes)
+    (one,) = re.findall(
+        r'<span class="site-name">(.*?)</span>', frontier.evidence_links(known[:1])
+    )
+    assert one.endswith("</code></a>")
+
+
 def test_a_rows_detail_is_its_popover_and_comes_from_one_function(
     cases: dict[int, dict[str, Any]], monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -147,8 +168,11 @@ def test_a_rows_detail_is_its_popover_and_comes_from_one_function(
     for term in ("Construction", "Minimal polynomial", "Kind", "Verification", "Notes"):
         assert f"<dt>{term}</dt>" in body
     assert body.count("<dt>Source</dt>") == 2
-    assert "<dt>Evidence</dt><dd><a href=" in body
+    assert '<dt>Evidence</dt><dd><span class="site-name"><a href=' in body
     assert "evidence.yaml#L" in body
+    # Label and value side by side: the one block whose lists share a label column.
+    assert body.startswith('<div class="site-pairs"><p class="site-popover-heading">')
+    assert body.endswith("</dl></div>")
     row, popover = frontier.case_row(cases[11], evidence, recent=True)
     assert f'<div class="site-row-pop-body">{body}</div>' in popover
     assert "<details" not in row

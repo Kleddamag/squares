@@ -1,0 +1,13 @@
+2026-10-01T12:23:08Z
+f77b3e0a7fdfec83ec7a4f6068404e23d91508b7
+?? packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/
+10
+ 5:23  up 1 day, 12:11, 1 user, load averages: 77.88 68.16 58.19
+Processes: 772 total, 58 running, 714 sleeping, 5427 threads 
+2026/10/01 05:23:10
+Load Avg: 77.88, 68.16, 58.19 
+CPU usage: 59.41% user, 40.58% sys, 0.0% idle 
+SharedLibs: 554M resident, 139M data, 148M linkedit.
+MemRegions: 1003985 total, 12G resident, 351M private, 3763M shared.
+PhysMem: 31G used (4961M wired, 2479M compressor), 505M unused.
+VM: 394T vsize, 6144M framework vsize, 645753(0) swapins, 1288724(0) swapouts.

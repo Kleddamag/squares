@@ -8,8 +8,8 @@ something the repository already records and already gates:
   ordered by `devtools.render_results` so the page and `RESULTS.md` cannot disagree;
 - case bounds and status: the `SquarePackingCase/v2` records in `frontier/n-NNN.md`,
   loaded by `devtools.render_research_tables.load_cases`;
-- which lower bounds are recent: `atlas/known-best/bound-citations.json`, which the
-  atlas star reads too;
+- which lower bounds are recent, and which results they rest on:
+  `atlas/known-best/bound-citations.json`, which the atlas star reads too;
 - evidence, retained source copies and reviews: `frontier/evidence.yaml`;
 - each result's standing, the survey's counts and the reported bounds awaiting a replay:
   `devtools.render_recent_results`, the functions `RESULTS.md`'s standing column uses
@@ -26,11 +26,14 @@ import html
 import json
 import re
 from collections import Counter
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
 
 from devtools import render_results
 from devtools.migrate_math import classify
+from devtools.register_prose import LINK, paragraphs
 from devtools.render_recent_results import (
     RecentCounts,
     Row,
@@ -40,7 +43,7 @@ from devtools.render_recent_results import (
     standing,
 )
 from devtools.render_research_tables import load_cases
-from devtools.repo_links import repo_url
+from devtools.repo_links import path_kind, repo_url
 from devtools.result_credit import credit_line
 from devtools.significance import headline as first_sentence
 from sqpack.yamlio import safe_load
@@ -126,7 +129,21 @@ _CODE_SPAN = re.compile(r"`([^`\n]+)`")
 
 
 def _prose_html(text: str) -> str:
-    """Escape plain register prose, setting each ASCII mathematical run as inline math."""
+    """Escape plain register prose, setting each ASCII mathematical run as inline math
+    and each Markdown link to a web address (`register_prose.LINK`) as a link."""
+    parts: list[str] = []
+    last = 0
+    for link in LINK.finditer(text):
+        parts.append(_math_html(text[last : link.start()]))
+        href = html.escape(link.group(2), quote=True)
+        parts.append(f'<a href="{href}">{_math_html(link.group(1))}</a>')
+        last = link.end()
+    parts.append(_math_html(text[last:]))
+    return "".join(parts)
+
+
+def _math_html(text: str) -> str:
+    """Escape a run of register prose, setting each ASCII mathematical run as math."""
     parts: list[str] = []
     last = 0
     for match in MATH.finditer(text):
@@ -162,6 +179,12 @@ def tex_bounds(text: str) -> str:
     return "".join(parts)
 
 
+def prose_html(text: object, *, between: str = "<br><br>") -> str:
+    """A register prose field as HTML: each paragraph set by `tex_bounds`, the
+    paragraphs kept apart by `between`. A field of one paragraph reads as it always did."""
+    return between.join(tex_bounds(paragraph) for paragraph in paragraphs(text))
+
+
 def _line_of(path: Path, needle: str) -> int:
     """The 1-based line of the first line containing `needle`, for a line anchor."""
     for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
@@ -194,7 +217,8 @@ class Result:
     records: list[Link] = field(default_factory=list)
     standing: str = ""
     """Whether a case bound rests on the result now, and if not, why not:
-    `render_recent_results.standing`, the word `RESULTS.md`'s tables print."""
+    `render_recent_results.standing`, the word `RESULTS.md`'s tables print. Empty for a
+    result that claims no bound, which has no standing."""
 
     @property
     def id(self) -> str:
@@ -266,9 +290,14 @@ class Overview:
     cases: dict[int, dict]
     recent_lower: frozenset[int]
     groups: list[tuple[str, list[Result]]]
+    """The results as `RESULTS.md` groups them, by lineage. No page shows the groups:
+    a table of results is one flat list, and a result's credit says its lineage."""
     recent: list[Row] = field(default_factory=list)
     """Every case `n <= 100` with a recent lower bound in either lane, as the survey
     section lists them: `render_recent_results.recent_rows`."""
+    starred: dict[str, tuple[int, ...]] = field(default_factory=dict[str, tuple[int, ...]])
+    """The results the atlas's stars rest on, each with the cases it is starred for
+    (`starred_results`): what a table of results stars as a new result."""
 
     @property
     def counts(self) -> RecentCounts:
@@ -290,10 +319,11 @@ def _evidence() -> dict[str, dict]:
 
 
 def _repo_path(path: str) -> Path | None:
-    """A record's path, which may be packing-relative or repository-relative."""
+    """A record's path, which may be packing-relative or repository-relative, where the
+    repository has it (`repo_links.path_kind`, which a partial checkout cannot fool)."""
     for base in (REPO, PACKING):
         candidate = base / path
-        if candidate.exists():
+        if path_kind(candidate) is not None:
             return candidate
     return None
 
@@ -341,6 +371,29 @@ def _records(record: dict, evidence: dict[str, dict]) -> list[Link]:
     return links
 
 
+def starred_results(citations: Sequence[Mapping[str, Any]]) -> dict[str, tuple[int, ...]]:
+    """The results that are new and the current best for a case, each with those cases
+    in order: the atlas's star, asked of a result instead of a case.
+
+    The atlas stars a case whose verified lower bound is a recent result, the `recent`
+    flag of the case's lower citation in `bound-citations.json`
+    (`build_bound_citations.LowerOrigin.recent`: this project's own new bound, or
+    another's from a source dated on or after `RECENT_SINCE`). The film and the atlas
+    popover read the same decision as `recent_result` in the atlas figure's record and
+    write "new result" beside the star. The citation also names the register entries
+    that bound rests on now, its `results`, and those are the results starred here. So
+    a superseded result is never starred, whatever its date, and no upper bound is: the
+    atlas stars none.
+    """
+    cases: dict[str, list[int]] = {}
+    for entry in citations:
+        lower = entry["lower"]
+        if lower and lower["recent"]:
+            for result in lower["results"]:
+                cases.setdefault(str(result), []).append(int(entry["n"]))
+    return {result: tuple(sorted(found)) for result, found in cases.items()}
+
+
 def load() -> Overview:
     """Everything the overview shows, grouped as `RESULTS.md` groups it."""
     register = safe_load(RESULTS.read_text(encoding="utf-8"))
@@ -354,11 +407,7 @@ def load() -> Overview:
             Result(
                 r,
                 group=title,
-                credit=(
-                    credit_line(r, sources).replace(r"\|", "|")
-                    if r.get("attribution")
-                    else "This project"
-                ),
+                credit=credit_line(r, sources).replace(r"\|", "|"),
                 ours=not r.get("attribution"),
                 records=_records(r, evidence),
                 standing=standing(r, records),
@@ -379,6 +428,7 @@ def load() -> Overview:
         recent_lower=recent,
         groups=groups,
         recent=recent_rows(records),
+        starred=starred_results(citations),
     )
 
 

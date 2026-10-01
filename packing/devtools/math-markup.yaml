@@ -200,11 +200,22 @@ migrated:
 - docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md
 - docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md
 - docs/project/reviews/review-2026-09-30-lean-s13.md
+- docs/project/reviews/review-2026-09-30-n11-explainer-citations-and-docs.md
+- docs/project/reviews/review-2026-09-30-n11-explainer-intuition.md
+- docs/project/reviews/review-2026-09-30-n11-explainer-proof-reconciliation.md
 - docs/project/reviews/review-2026-09-30-n11-expository-simplification.md
 - docs/project/reviews/review-2026-09-30-n11-optimality-explainer.md
 - docs/project/reviews/review-2026-09-30-rectangle-derivative-bound.md
 - docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
 - docs/project/reviews/review-2026-10-01-evand-source-coverage.md
+- docs/project/reviews/review-2026-10-01-n12-weighted-cycle-capture.md
+- docs/project/reviews/review-2026-10-01-n17-closed-cell-symmetry.md
+- docs/project/reviews/review-2026-10-01-n17-core-stress.md
+- docs/project/reviews/review-2026-10-01-n17-first-order-branches.md
+- docs/project/reviews/review-2026-10-01-n17-mixed-capacity-cover.md
+- docs/project/reviews/review-2026-10-01-n17-projection-branches.md
+- docs/project/reviews/review-2026-10-01-post-optimality-morning.md
+- docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
 - docs/project/specs/active/plan-2026-08-22-minimal-packing-toolkit.md
 - docs/project/specs/active/plan-2026-08-23-overnight-cartography-run.md
 - docs/project/specs/active/plan-2026-08-24-deterministic-svg-rendering-toolkit.md
@@ -240,6 +251,9 @@ migrated:
 - docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
 - docs/project/specs/active/plan-2026-09-29-third-party-results-register.md
 - docs/project/specs/active/plan-2026-09-30-epistemics-ladder-review.md
+- docs/project/specs/active/plan-2026-09-30-n11-optimality-illustrations.md
+- docs/project/specs/active/plan-2026-10-01-post-optimality-w3-session.md
+- docs/project/specs/active/plan-2026-10-01-result-kinds.md
 - docs/project/specs/active/spike-2026-08-25-n5-motion-lab.md
 - docs/project/stromquist-helper-arguments-math-review.md
 - docs/project/three-lane-research-method.md
@@ -496,6 +510,7 @@ migrated:
 - packing/campaign/agent-sessions/session-162-wand125-tools-intake.md
 - packing/campaign/agent-sessions/session-163-native-bounds-and-census.md
 - packing/campaign/agent-sessions/session-164-upstream-merge-and-certification.md
+- packing/campaign/agent-sessions/session-165-post-optimality-overnight.md
 - packing/campaign/documentation-pass.md
 - packing/campaign/explorations/X-001-standing-review-and-search-philosophy.md
 - packing/campaign/explorations/X-002-creative-frontier-and-basin-maps.md
@@ -542,6 +557,7 @@ migrated:
 - packing/campaign/explorations/X-045-n11-global-capture-and-exact-optimality.md
 - packing/campaign/explorations/X-046-n11-settlement-program.md
 - packing/campaign/explorations/X-047-low-n-angles-after-the-parent-core-advance.md
+- packing/campaign/explorations/X-048-n17-optimality-after-n11.md
 - packing/campaign/hypotheses/H-001-angle-class-reduction.md
 - packing/campaign/hypotheses/H-002-lp-in-cell-polish.md
 - packing/campaign/hypotheses/H-003-basin-frequency-and-contacts.md
@@ -729,6 +745,14 @@ migrated:
 - packing/campaign/hypotheses/H-250-n50-rectangle-density-certificate-at-7-3.md
 - packing/campaign/hypotheses/H-251-n82-rectangle-density-certificate-at-9-3.md
 - packing/campaign/hypotheses/H-252-n45-zero-margin-closed-cover-at-7.md
+- packing/campaign/hypotheses/H-253-n17-retained-rational-upper.md
+- packing/campaign/hypotheses/H-254-n17-contact-chart-fidelity.md
+- packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md
+- packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md
+- packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md
+- packing/campaign/hypotheses/H-258-n17-common-core-stress.md
+- packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md
+- packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md
 - packing/campaign/ideas.md
 - packing/campaign/remediation-pass.md
 - packing/campaign/research-loop-logbook/README.md
@@ -901,6 +925,13 @@ migrated:
 - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-232-h236-rung-zero-closed.md
 - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-233-h241-n12-ceiling-settles-below-12.md
 - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-234-h242-rung1-pilot.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-236-h254-n17-contact-chart.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-237-h255-n17-polynomial-root.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-238-h256-n17-endpoint-feasibility.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-239-h257-n17-endpoint-features.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-240-h259-n17-mixed-capacity-census.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-241-h260-n17-closed-cell-symmetry.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/checkpoint-hour-02-decision.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/commissioning-gate-minute-015.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/commissioning-gate-minute-030.md
@@ -1145,6 +1176,13 @@ migrated:
 - packing/campaign/series/series-000-smoke-and-calibration/results/exp-114-h-104-fixed-side-auxiliaries/independent-review.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/exp-114-h-104-fixed-side-auxiliaries/target-output-independent-review.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/exp-115-h-105-fixed-candidate-pair-obstruction/independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/output-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/exp-236-n17-contact-chart/output-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/output-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/output-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/exp-239-n17-endpoint-features/output-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/exp-240-n17-mixed-capacity-census/output-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/exp-241-n17-closed-cell-symmetry/output-review.md
 - packing/cases/n11_five_dot_cover/after-direct-family-decision.md
 - packing/cases/n11_five_dot_cover/after-exp148-strategy.md
 - packing/cases/n11_five_dot_cover/after-exp149-strategy.md
@@ -1503,389 +1541,424 @@ migrated:
 - packing/frontier/n-323.md
 - packing/frontier/n-324.md
 - packing/strategies/preview/README.md
-
 keep:
 - path: SYNOPSIS.md
-  span: "+W"
-  reason: "names a coefficient direction, paired with the `-W` bridge, which stays code"
+  span: +W
+  reason: names a coefficient direction, paired with the `-W` bridge, which stays
+    code
 - path: SYNOPSIS.md
-  span: "2966942899906512939318226046481160904289990651293931822604648091421/500000000000000000000000000000000000000000000000000000000000000000"
-  reason: "a 67-digit exact side: typeset math cannot break it, so it ran 1142px wide on the site and pushed the page sideways; a code span wraps"
+  span: 2966942899906512939318226046481160904289990651293931822604648091421/500000000000000000000000000000000000000000000000000000000000000000
+  reason: 'a 67-digit exact side: typeset math cannot break it, so it ran 1142px wide
+    on the site and pushed the page sideways; a code span wraps'
 - path: development.md
-  span: "3.14"
-  reason: "the Python version this project runs, not a number"
+  span: '3.14'
+  reason: the Python version this project runs, not a number
 - path: docs/project/reviews/review-2026-09-01-agenda013-overnight-synthesis.md
-  span: "17--19"
-  reason: "a range written with a TeX-style double hyphen; as math it reads as two minus signs"
+  span: 17--19
+  reason: a range written with a TeX-style double hyphen; as math it reads as two
+    minus signs
 - path: docs/project/reviews/review-2026-09-01-agenda013-overnight-synthesis.md
-  span: "17--19, 37, 39, 41, 50, 51, 53--55, 68, 69"
-  reason: "a list of cases with TeX-style double-hyphen ranges; as math they read as minus signs"
+  span: 17--19, 37, 39, 41, 50, 51, 53--55, 68, 69
+  reason: a list of cases with TeX-style double-hyphen ranges; as math they read as
+    minus signs
 - path: docs/project/reviews/review-2026-09-01-agenda013-overnight-synthesis.md
-  span: "3-4-5"
-  reason: "the name of the 3-4-5 right triangle, not a subtraction"
+  span: 3-4-5
+  reason: the name of the 3-4-5 right triangle, not a subtraction
 - path: docs/project/reviews/review-2026-09-03-bc149-h052-agreement-independent-review.md
-  span: "[:170]"
-  reason: "a Python slice"
+  span: '[:170]'
+  reason: a Python slice
 - path: docs/project/reviews/review-2026-09-03-bc149-h052-agreement-independent-review.md
-  span: "[:33]"
-  reason: "a Python slice"
+  span: '[:33]'
+  reason: a Python slice
 - path: docs/project/reviews/review-2026-09-03-bc150-4-5058-adoption-packet.md
-  span: "0x5058"
-  reason: "a hexadecimal seed literal"
+  span: '0x5058'
+  reason: a hexadecimal seed literal
 - path: docs/project/reviews/review-2026-09-03-bc154-w9-disposition-d044-d046.md
-  span: "30m"
-  reason: "a timebox of thirty minutes, not 30 times m"
+  span: 30m
+  reason: a timebox of thirty minutes, not 30 times m
 - path: docs/project/reviews/review-2026-09-04-pr78-s11-adversarial.md
-  span: "13,000/167 s"
-  reason: "a duration in seconds; as math the unit reads as the side s"
+  span: 13,000/167 s
+  reason: a duration in seconds; as math the unit reads as the side s
 - path: docs/project/reviews/review-2026-09-04-pr78-s11-adversarial.md
-  span: "4,866/110 s"
-  reason: "a duration in seconds; as math the unit reads as the side s"
+  span: 4,866/110 s
+  reason: a duration in seconds; as math the unit reads as the side s
 - path: docs/project/reviews/review-2026-09-07-n17-comprehensive-review.md
-  span: "g++"
-  reason: "the compiler's name"
+  span: g++
+  reason: the compiler's name
 - path: docs/project/reviews/review-2026-09-12-workbench-stack-architecture.md
-  span: "n: 5"
-  reason: "a YAML key and value from a recipe"
+  span: 'n: 5'
+  reason: a YAML key and value from a recipe
 - path: docs/project/reviews/review-2026-09-13-n11-bc329-integrated-run-sheet.md
-  span: "4 / 5400 / 7200 / 2"
-  reason: "the frozen worker and time-allowance tuple of a command, not a quotient"
+  span: 4 / 5400 / 7200 / 2
+  reason: the frozen worker and time-allowance tuple of a command, not a quotient
 - path: docs/project/reviews/review-2026-09-13-n11-bc329-run-sheet-identity-refusal.md
-  span: "4 / 5400 / 7200 / 2"
-  reason: "the frozen worker and time-allowance tuple of a command, not a quotient"
+  span: 4 / 5400 / 7200 / 2
+  reason: the frozen worker and time-allowance tuple of a command, not a quotient
 - path: docs/project/reviews/review-2026-09-13-n11-bc329-run-sheet-parent-final.md
-  span: "4 / 5400 / 7200 / 2"
-  reason: "the frozen worker and time-allowance tuple of a command, not a quotient"
+  span: 4 / 5400 / 7200 / 2
+  reason: the frozen worker and time-allowance tuple of a command, not a quotient
 - path: docs/project/reviews/review-2026-09-13-n11-bc329-three-profile-run-sheet.md
-  span: "4 / 5400 / 7200 / 2"
-  reason: "the frozen worker and time-allowance tuple of a command, not a quotient"
+  span: 4 / 5400 / 7200 / 2
+  reason: the frozen worker and time-allowance tuple of a command, not a quotient
 - path: docs/project/reviews/review-2026-09-22-tokoharu-density-mathematics.md
-  span: "g++"
-  reason: "the compiler's name"
+  span: g++
+  reason: the compiler's name
 - path: docs/project/reviews/review-2026-09-24-rung0-closed-tree.md
-  span: "9c92406…"
-  reason: "an abbreviated blob digest"
+  span: "9c92406\u2026"
+  reason: an abbreviated blob digest
 - path: docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md
-  span: "0x1p-45"
-  reason: "a hexadecimal floating-point literal from the verifier's source"
+  span: 0x1p-45
+  reason: a hexadecimal floating-point literal from the verifier's source
 - path: docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md
-  span: "g++"
-  reason: "the compiler's name"
+  span: g++
+  reason: the compiler's name
 - path: docs/project/reviews/review-2026-09-28-density-solver-comparison.md
-  span: "g++"
-  reason: "the compiler's name"
+  span: g++
+  reason: the compiler's name
 - path: docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
-  span: "0x1p+0 0x1p+0"
-  reason: "hexadecimal floating-point literals from the verifier's input"
+  span: 0x1p+0 0x1p+0
+  reason: hexadecimal floating-point literals from the verifier's input
 - path: docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
-  span: "c++"
-  reason: "the compiler's name"
+  span: c++
+  reason: the compiler's name
 - path: docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
-  span: "g++"
-  reason: "the compiler's name"
+  span: g++
+  reason: the compiler's name
 - path: docs/project/specs/active/plan-2026-08-24-deterministic-svg-rendering-toolkit.md
-  span: "--"
-  reason: "the literal character pair XML comments forbid"
+  span: --
+  reason: the literal character pair XML comments forbid
 - path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
-  span: "158 × 3.3 + 165 × 0.9 + 1.2 = 671 s"
-  reason: "a duration in seconds; as math the unit reads as the side s"
+  span: "158 \xD7 3.3 + 165 \xD7 0.9 + 1.2 = 671 s"
+  reason: a duration in seconds; as math the unit reads as the side s
 - path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
-  span: "323 × 0.5 s"
-  reason: "a duration in seconds; as math the unit reads as the side s"
+  span: "323 \xD7 0.5 s"
+  reason: a duration in seconds; as math the unit reads as the side s
 - path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
-  span: "324 × 1.5 s"
-  reason: "a duration in seconds; as math the unit reads as the side s"
+  span: "324 \xD7 1.5 s"
+  reason: a duration in seconds; as math the unit reads as the side s
 - path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
-  span: "324 × 2.6 s = 842.4 s"
-  reason: "a duration in seconds; as math the unit reads as the side s"
+  span: "324 \xD7 2.6 s = 842.4 s"
+  reason: a duration in seconds; as math the unit reads as the side s
 - path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
-  span: "O"
-  reason: "a badge glyph the poster draws, listed beside the glyphs `=` and `≈`"
+  span: O
+  reason: "a badge glyph the poster draws, listed beside the glyphs `=` and `\u2248\
+    `"
 - path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
-  span: "R"
-  reason: "a badge glyph the poster draws, listed beside the glyphs `=` and `≈`"
+  span: R
+  reason: "a badge glyph the poster draws, listed beside the glyphs `=` and `\u2248\
+    `"
 - path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
-  span: "U+2208, U+221A, U+2248, U+2264-2265, U+2308-230B"
-  reason: "Unicode code points in a CSS unicode-range"
+  span: U+2208, U+221A, U+2248, U+2264-2265, U+2308-230B
+  reason: Unicode code points in a CSS unicode-range
 - path: docs/project/specs/active/plan-2026-09-07-math-text-face.md
-  span: "100 900"
-  reason: "a CSS font-weight range"
+  span: 100 900
+  reason: a CSS font-weight range
 - path: docs/project/specs/active/plan-2026-09-07-math-text-face.md
-  span: "200 900"
-  reason: "a CSS font-weight range"
+  span: 200 900
+  reason: a CSS font-weight range
 - path: docs/project/specs/active/plan-2026-09-13-n11-bc329-three-profile-run-sheet.md
-  span: "4 / 5400 / 7200 / 2"
-  reason: "the frozen worker and time-allowance tuple of a command, not a quotient"
+  span: 4 / 5400 / 7200 / 2
+  reason: the frozen worker and time-allowance tuple of a command, not a quotient
 - path: docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md
-  span: "00"
-  reason: "a hexadecimal byte of the avc1 codec string (the constraint flags), not a number"
+  span: '00'
+  reason: a hexadecimal byte of the avc1 codec string (the constraint flags), not
+    a number
 - path: docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md
-  span: "28"
-  reason: "a hexadecimal byte of the avc1 codec string (the level), not a number"
+  span: '28'
+  reason: a hexadecimal byte of the avc1 codec string (the level), not a number
 - path: docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md
-  span: "64"
-  reason: "a hexadecimal byte of the avc1 codec string (the profile), not a number"
+  span: '64'
+  reason: a hexadecimal byte of the avc1 codec string (the profile), not a number
 - path: packages/workbench/README.md
-  span: "2m 20s"
-  reason: "a duration of two minutes twenty seconds"
+  span: 2m 20s
+  reason: a duration of two minutes twenty seconds
 - path: docs/project/reviews/review-2026-09-29-n11-optimality.md
-  span: "49880161…"
-  reason: "an abbreviated inventory digest, beside the composition's `eaad8f14…`"
+  span: "49880161\u2026"
+  reason: "an abbreviated inventory digest, beside the composition's `eaad8f14\u2026\
+    `"
 - path: docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md
-  span: "0-12027"
-  reason: "a range of census rows; as math it reads as a difference"
+  span: 0-12027
+  reason: a range of census rows; as math it reads as a difference
 - path: packing/campaign/agendas/agenda-024-post-381-24h-portfolio.md
-  span: "04"
-  reason: "the two-digit `NN` slot of a file name: a string, not a value"
+  span: '04'
+  reason: 'the two-digit `NN` slot of a file name: a string, not a value'
 - path: packing/campaign/agendas/agenda-024-post-381-24h-portfolio.md
-  span: "08"
-  reason: "the two-digit `NN` slot of a file name: a string, not a value"
+  span: 08
+  reason: 'the two-digit `NN` slot of a file name: a string, not a value'
 - path: packing/campaign/agendas/agenda-024-post-381-24h-portfolio.md
-  span: "12"
-  reason: "the two-digit `NN` slot of a file name: a string, not a value"
+  span: '12'
+  reason: 'the two-digit `NN` slot of a file name: a string, not a value'
 - path: packing/campaign/agendas/agenda-024-post-381-24h-portfolio.md
-  span: "16"
-  reason: "the two-digit `NN` slot of a file name: a string, not a value"
+  span: '16'
+  reason: 'the two-digit `NN` slot of a file name: a string, not a value'
 - path: packing/campaign/agendas/agenda-024-post-381-24h-portfolio.md
-  span: "20"
-  reason: "the two-digit `NN` slot of a file name: a string, not a value"
+  span: '20'
+  reason: 'the two-digit `NN` slot of a file name: a string, not a value'
 - path: packing/campaign/agendas/agenda-024-post-381-24h-portfolio.md
-  span: "24"
-  reason: "the two-digit `NN` slot of a file name: a string, not a value"
+  span: '24'
+  reason: 'the two-digit `NN` slot of a file name: a string, not a value'
 - path: packing/campaign/agent-sessions/session-082-bc141-n54-source-contract.md
-  span: "w{i:02d}"
-  reason: "a Python format string"
+  span: w{i:02d}
+  reason: a Python format string
 - path: packing/campaign/agent-sessions/session-082-bc141-n54-source-contract.md
-  span: "y_up"
-  reason: "a declared orientation value, beside `y_down`"
+  span: y_up
+  reason: a declared orientation value, beside `y_down`
 - path: packing/campaign/explorations/X-015-the-map-and-the-three-programs.md
-  span: "021"
-  reason: "agenda numbers, identifiers"
+  span: '021'
+  reason: agenda numbers, identifiers
 - path: packing/campaign/explorations/X-015-the-map-and-the-three-programs.md
-  span: "022"
-  reason: "agenda numbers, identifiers"
+  span: '022'
+  reason: agenda numbers, identifiers
 - path: packing/campaign/explorations/X-047-low-n-angles-after-the-parent-core-advance.md
-  span: "B*(cos + sin) = 0.99885"
-  reason: "`*` reads as multiplication; the tool sets it as a star, `B^{\\ast}`"
+  span: B*(cos + sin) = 0.99885
+  reason: '`*` reads as multiplication; the tool sets it as a star, `B^{\ast}`'
 - path: packing/campaign/research-loop-logbook/run-002-2026-08-29-overnight-promotion-blocks.md
-  span: "16/16"
-  reason: "a rank tally, 16 of 16, which a table cell would set as a stacked fraction"
+  span: 16/16
+  reason: a rank tally, 16 of 16, which a table cell would set as a stacked fraction
 - path: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-057-h-058-n68-one-parent-localization.md
-  span: "2^14 * 5^14"
-  reason: "`*` is multiplication; the tool reads it as a star, `^{\\ast}`, which the proof refuses, so `--apply` leaves it code while the ratchet still reads it as math"
+  span: 2^14 * 5^14
+  reason: '`*` is multiplication; the tool reads it as a star, `^{\ast}`, which the
+    proof refuses, so `--apply` leaves it code while the ratchet still reads it as
+    math'
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/commissioning-gate-minute-090.md
-  span: "R"
-  reason: "the process-state code quoted from the process table"
+  span: R
+  reason: the process-state code quoted from the process table
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-230-control-matrix.md
-  span: "0/7"
-  reason: "a noncanonical spelling of a rational string, which is what the control mutates; as math it reads as a value"
+  span: 0/7
+  reason: a noncanonical spelling of a rational string, which is what the control
+    mutates; as math it reads as a value
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-230-control-matrix.md
-  span: "01"
-  reason: "a noncanonical spelling of a rational string, which is what the control mutates; as math it reads as a value"
+  span: '01'
+  reason: a noncanonical spelling of a rational string, which is what the control
+    mutates; as math it reads as a value
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-230-control-matrix.md
-  span: "2/4"
-  reason: "a noncanonical spelling of a rational string, which is what the control mutates; as math it reads as a value"
+  span: 2/4
+  reason: a noncanonical spelling of a rational string, which is what the control
+    mutates; as math it reads as a value
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-disposition.md
-  span: "R"
-  reason: "the process-state code quoted from the process table"
+  span: R
+  reason: the process-state code quoted from the process table
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-leg-02-microreceipt-001.md
-  span: "27576"
-  reason: "an execution-session id"
+  span: '27576'
+  reason: an execution-session id
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-leg-02-microreceipt-001.md
-  span: "64895"
-  reason: "process ids"
+  span: '64895'
+  reason: process ids
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-leg-02-microreceipt-001.md
-  span: "64896"
-  reason: "process ids"
+  span: '64896'
+  reason: process ids
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-leg-02-microreceipt-001.md
-  span: "R"
-  reason: "the process-state code quoted from the process table"
+  span: R
+  reason: the process-state code quoted from the process table
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/checkpoint-hour-02.md
-  span: "R"
-  reason: "the process-state code quoted from the process table"
+  span: R
+  reason: the process-state code quoted from the process table
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/gate-hour-04.md
-  span: "36339"
-  reason: "an execution-session id and a process id"
+  span: '36339'
+  reason: an execution-session id and a process id
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/gate-hour-04.md
-  span: "72209"
-  reason: "an execution-session id and a process id"
+  span: '72209'
+  reason: an execution-session id and a process id
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/gate-hour-04.md
-  span: "72291"
-  reason: "a process id"
+  span: '72291'
+  reason: a process id
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-254-post-screen-next-discriminator.md
-  span: "0"
-  reason: "the verifier's return value, set against `None`"
+  span: '0'
+  reason: the verifier's return value, set against `None`
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-254-post-screen-next-discriminator.md
-  span: "R*(R+1)/2"
-  reason: "`*` is multiplication here; the tool reads it as a star, `R^{\\ast}`"
+  span: R*(R+1)/2
+  reason: '`*` is multiplication here; the tool reads it as a star, `R^{\ast}`'
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/lane-c-n10-transfer.md
-  span: "A_ub"
-  reason: "SciPy linprog's parameter name"
+  span: A_ub
+  reason: SciPy linprog's parameter name
 - path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
-  span: "31/8"
-  reason: "the LaTeX source a writer types, set beside `\\frac{31}{8}` as source"
+  span: 31/8
+  reason: the LaTeX source a writer types, set beside `\frac{31}{8}` as source
 - path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
-  span: "E-…"
-  reason: "an evidence-id prefix, given as an example of what stays code"
+  span: "E-\u2026"
+  reason: an evidence-id prefix, given as an example of what stays code
 - path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
-  span: "]("
-  reason: "the characters of a Markdown link, which the sentence names as text"
+  span: ']('
+  reason: the characters of a Markdown link, which the sentence names as text
 - path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
-  span: "k^2 - 4"
-  reason: "the LaTeX source a writer types, listed with `\\sqrt{2}` and `\\ldots` as source"
+  span: k^2 - 4
+  reason: the LaTeX source a writer types, listed with `\sqrt{2}` and `\ldots` as
+    source
 - path: packing/atlas/enumerated/README.md
-  span: "0"
-  reason: "a base-four digit of a stable identity string, literal text"
+  span: '0'
+  reason: a base-four digit of a stable identity string, literal text
 - path: packing/atlas/enumerated/README.md
-  span: "1"
-  reason: "a base-four digit of a stable identity string, literal text"
+  span: '1'
+  reason: a base-four digit of a stable identity string, literal text
 - path: packing/atlas/enumerated/README.md
-  span: "2"
-  reason: "a base-four digit of a stable identity string, literal text"
+  span: '2'
+  reason: a base-four digit of a stable identity string, literal text
 - path: packing/atlas/enumerated/README.md
-  span: "3"
-  reason: "a base-four digit of a stable identity string, literal text"
+  span: '3'
+  reason: a base-four digit of a stable identity string, literal text
 - path: packing/atlas/known-best/FIGURE-PLAYBOOK.md
-  span: "R"
-  reason: "the rigidity badge's glyph as the figure draws it"
+  span: R
+  reason: the rigidity badge's glyph as the figure draws it
 - path: packing/atlas/known-best/FIGURE-PLAYBOOK.md
-  span: "g"
-  reason: "the SVG `g` element"
+  span: g
+  reason: the SVG `g` element
 - path: packing/atlas/known-best/README.md
-  span: "F"
-  reason: "the label of free-count minimality, paired with the chunk label `C`, not a variable"
+  span: F
+  reason: the label of free-count minimality, paired with the chunk label `C`, not
+    a variable
 - path: packing/atlas/known-best/video/spikes/v1-slideshow/NOTES.md
-  span: "(p/q)"
-  reason: "a token of the exact-form grammar, listed with `INT` and `sqrt(...)`"
+  span: (p/q)
+  reason: a token of the exact-form grammar, listed with `INT` and `sqrt(...)`
 - path: packing/atlas/known-best/video/spikes/v1-slideshow/NOTES.md
-  span: "0,198 198,198 198,0 0,0"
-  reason: "an SVG polygon's points attribute, literal text"
+  span: 0,198 198,198 198,0 0,0
+  reason: an SVG polygon's points attribute, literal text
 - path: packing/atlas/known-best/video/spikes/v1-slideshow/NOTES.md
-  span: "O"
-  reason: "a badge glyph as the page draws it"
+  span: O
+  reason: a badge glyph as the page draws it
 - path: packing/atlas/known-best/video/spikes/v1-slideshow/NOTES.md
-  span: "R"
-  reason: "a badge glyph as the page draws it"
+  span: R
+  reason: a badge glyph as the page draws it
 - path: packing/atlas/known-best/video/spikes/v1-slideshow/NOTES.md
-  span: "U+2208, U+221A, U+2248, U+2264-2265, U+2308-230B"
-  reason: "a CSS unicode-range value"
+  span: U+2208, U+221A, U+2248, U+2264-2265, U+2308-230B
+  reason: a CSS unicode-range value
 - path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
-  span: "028"
-  reason: "a pair's zero-padded file label"
+  span: 028
+  reason: a pair's zero-padded file label
 - path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
-  span: "110 100 307"
-  reason: "a command's arguments"
+  span: 110 100 307
+  reason: a command's arguments
 - path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
-  span: "= R"
-  reason: "a badge-glyph combination as the panel draws it"
+  span: = R
+  reason: a badge-glyph combination as the panel draws it
 - path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
-  span: "O"
-  reason: "a badge glyph as the panel draws it"
+  span: O
+  reason: a badge glyph as the panel draws it
 - path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
-  span: "O ="
-  reason: "a badge-glyph combination as the panel draws it"
+  span: O =
+  reason: a badge-glyph combination as the panel draws it
 - path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
-  span: "O = R"
-  reason: "a badge-glyph combination as the panel draws it"
+  span: O = R
+  reason: a badge-glyph combination as the panel draws it
 - path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
-  span: "R"
-  reason: "a badge glyph as the panel draws it"
+  span: R
+  reason: a badge glyph as the panel draws it
 - path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
-  span: "a"
-  reason: "a keyboard key"
+  span: a
+  reason: a keyboard key
 - path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
-  span: "b"
-  reason: "a keyboard key"
+  span: b
+  reason: a keyboard key
 - path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
-  span: "c"
-  reason: "a keyboard key"
+  span: c
+  reason: a keyboard key
 - path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
-  span: "d"
-  reason: "a keyboard key"
+  span: d
+  reason: a keyboard key
 - path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
-  span: "k"
-  reason: "a keyboard key"
+  span: k
+  reason: a keyboard key
 - path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
-  span: "l"
-  reason: "a keyboard key"
+  span: l
+  reason: a keyboard key
 - path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
-  span: "m"
-  reason: "a keyboard key"
+  span: m
+  reason: a keyboard key
 - path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
-  span: "p"
-  reason: "a keyboard key"
+  span: p
+  reason: a keyboard key
 - path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
-  span: "s"
-  reason: "a keyboard key"
+  span: s
+  reason: a keyboard key
 - path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
-  span: "t"
-  reason: "a keyboard key"
+  span: t
+  reason: a keyboard key
 - path: packing/atlas/rendering/README.md
-  span: "E"
-  reason: "a keyboard key"
+  span: E
+  reason: a keyboard key
 - path: packing/atlas/rendering/README.md
-  span: "Q"
-  reason: "a keyboard key"
+  span: Q
+  reason: a keyboard key
 - path: packing/cases/n11_five_dot_cover/after-wall-gain-strategy.md
-  span: "(0,45,90,135,180)"
-  reason: "a literal index tuple; as math its tail reads as one grouped number"
+  span: (0,45,90,135,180)
+  reason: a literal index tuple; as math its tail reads as one grouped number
 - path: packing/cases/n11_five_dot_cover/fixed-pattern-source-admission.md
-  span: "[1,1,1,1]"
-  reason: "a mask array exactly as the coordinator reported it"
+  span: '[1,1,1,1]'
+  reason: a mask array exactly as the coordinator reported it
 - path: packing/cases/n11_five_dot_cover/fixed-pattern-source-admission.md
-  span: "[32768,32768,32768,32768]"
-  reason: "a mask array exactly as the coordinator reported it"
+  span: '[32768,32768,32768,32768]'
+  reason: a mask array exactly as the coordinator reported it
 - path: packing/cases/n11_fractional_certificate/threshold-atom-orbit-admission.md
-  span: "0"
-  reason: "a process exit status, literal text"
+  span: '0'
+  reason: a process exit status, literal text
 - path: packing/cases/n11_fractional_certificate/threshold-atom-orbit-admission.md
-  span: "1"
-  reason: "a process exit status, literal text"
+  span: '1'
+  reason: a process exit status, literal text
 - path: packing/cases/n11_fractional_certificate/threshold-atom-orbit-admission.md
-  span: "2"
-  reason: "a process exit status, literal text"
+  span: '2'
+  reason: a process exit status, literal text
 - path: docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md
-  span: "+-6.5"
-  reason: "a test input, written with an ASCII plus-minus; as math it reads as a plus and a minus"
-
+  span: +-6.5
+  reason: a test input, written with an ASCII plus-minus; as math it reads as a plus
+    and a minus
 exempt:
 - path: docs/project/research/research-2026-08-22-packing-11-unit-squares.md
-  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+  reason: quotes an external source verbatim, and the tool would retype the quoted
+    spans; archived wording is never edited to look tidy
 - path: docs/project/research/research-2026-08-23-search-philosophy-and-landscape-cartography.md
-  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+  reason: quotes an external source verbatim, and the tool would retype the quoted
+    spans; archived wording is never edited to look tidy
 - path: docs/project/research/research-2026-09-09-simulation-mechanisms-for-packing.md
-  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+  reason: quotes an external source verbatim, and the tool would retype the quoted
+    spans; archived wording is never edited to look tidy
 - path: docs/project/research/research-2026-09-10-x027-structural-helpers.md
-  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+  reason: exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the
+    BC-303 T1 witness against these sources at their recorded git blob hashes
 - path: docs/project/research/research-2026-09-12-n11-selection-routing-first-principles.md
-  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+  reason: exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the
+    BC-303 T1 witness against these sources at their recorded git blob hashes
 - path: docs/project/reviews/review-2026-08-23-toolkit-docs-and-first-experiments.md
-  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+  reason: quotes an external source verbatim, and the tool would retype the quoted
+    spans; archived wording is never edited to look tidy
 - path: docs/project/reviews/review-2026-09-03-bc152-curve-selection-source-verification.md
-  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+  reason: quotes an external source verbatim, and the tool would retype the quoted
+    spans; archived wording is never edited to look tidy
 - path: docs/project/reviews/review-2026-09-03-bc153-h060-proof-independent-review.md
-  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+  reason: quotes an external source verbatim, and the tool would retype the quoted
+    spans; archived wording is never edited to look tidy
 - path: docs/project/reviews/review-2026-09-04-t018-thirdparty-package.md
-  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+  reason: quotes an external source verbatim, and the tool would retype the quoted
+    spans; archived wording is never edited to look tidy
 - path: docs/project/reviews/review-2026-09-12-n11-selection-routing-first-principles.md
-  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+  reason: exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the
+    BC-303 T1 witness against these sources at their recorded git blob hashes
 - path: docs/project/reviews/review-2026-09-21-n17-kleddamag-461300-99853.md
-  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+  reason: quotes an external source verbatim, and the tool would retype the quoted
+    spans; archived wording is never edited to look tidy
 - path: docs/project/reviews/review-2026-09-27-evand-s32-s12.md
-  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+  reason: quotes an external source verbatim, and the tool would retype the quoted
+    spans; archived wording is never edited to look tidy
 - path: docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md
-  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+  reason: quotes an external source verbatim, and the tool would retype the quoted
+    spans; archived wording is never edited to look tidy
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/bc-303-first-wave-selection.md
-  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+  reason: exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the
+    BC-303 T1 witness against these sources at their recorded git blob hashes
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/corner-owner-sector-footprints.md
-  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+  reason: exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the
+    BC-303 T1 witness against these sources at their recorded git blob hashes
 - path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/fixed-cover-transfer-review.md
-  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+  reason: exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the
+    BC-303 T1 witness against these sources at their recorded git blob hashes
 - path: packing/cases/n11_five_dot_cover/unit-parent-centre-contract.md
-  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+  reason: exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the
+    BC-303 T1 witness against these sources at their recorded git blob hashes
 - path: packing/cases/n11_five_dot_cover/wall-containment-contract.md
-  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+  reason: exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the
+    BC-303 T1 witness against these sources at their recorded git blob hashes
 - path: packing/cases/trump11/isolation-theorem.md
-  reason: "exact bytes pinned by devtools.review_trump_local_theorem, which binds the theorem document to its review revision f9ba790a and refuses any content drift"
+  reason: exact bytes pinned by devtools.review_trump_local_theorem, which binds the
+    theorem document to its review revision f9ba790a and refuses any content drift
 - path: packing/resources/README.md
-  reason: "catalogues the archive transcriptions annotations: its code spans quote what the raw extraction and the PDFs print, character for character, and math would retype them"
+  reason: 'catalogues the archive transcriptions annotations: its code spans quote
+    what the raw extraction and the PDFs print, character for character, and math
+    would retype them'

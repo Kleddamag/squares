@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Measure a built site's pages against the explainer: load and math timing, text, faces,
-the card sections' layout, the rating ladders' rows, the face of every formula, and the
-space around tables and headings.
+the card sections' layout, the rating ladders' rows, the face of every formula, the
+space around tables and headings, the columns of the data tables, the chips, where each
+page's header stands, the baselines its labels stand on, and the size of what a press
+opens.
 
-Seven measurements, each over pages of a directory `preview_site` has built:
+Twelve measurements, each over pages of a directory `preview_site` has built:
 
 - `load` serves the directory on a local port and opens each page in a fresh Chromium
   context, cold cache, at a desktop or phone width. An init script (a probe) records
@@ -24,11 +26,12 @@ Seven measurements, each over pages of a directory `preview_site` has built:
   and each card's headline face, weight and size. `--markdown` prints one line a row, and
   `--media print` lays the page out as it prints.
 - `ladders` reports the rating-ladder diagram (`.site-ladders`) as laid out: how many
-  columns its rungs stand in, every rung's height, and each description's box, the lines
-  its words take and how far they run past the box. `--markdown` prints one line a
-  width, with the distinct rung heights (one value when every row is the same height),
-  the narrowest description box and the most lines any description takes. `--shots DIR`
-  also shoots each diagram there at each width, light and dark, under its heading.
+  columns its rungs stand in, every rung's height, the rules under its heads and between
+  its rows, and each description's box, the lines its words take and how far they run
+  past the box. `--markdown` prints one line a width, with the distinct rung heights (one
+  value when every row is the same height), the narrowest description box and the most
+  lines any description takes. `--shots DIR` also shoots each diagram there at each
+  width, light and dark, under its heading.
 - `math` reports the face of every typeset formula beside the face of the text it sits
   in, counted by surface (a card's headline, a chip, a table, a popover, a caption, the
   prose), once the page has typeset all its math. `--press SELECTOR` presses an element
@@ -46,6 +49,42 @@ Seven measurements, each over pages of a directory `preview_site` has built:
   whose `state` is the selector. `--markdown` prints one line a table and one line a
   heading role, with the least and most space found. This is the tool the design
   system's spacing tokens are measured with (`templates/paper-design.md`, Spacing).
+- `columns` reports every shared data table (`.site-table`) as laid out, once its math
+  is typeset: the table's width, how far it runs past what scrolls it sideways, how many
+  rows show, and each column's width, the most lines a cell of it takes, the words a
+  line break splits, and the tallest row whose height that column's cell sets. So a
+  column too narrow for what it holds shows as the one making rows tall. On a phone,
+  where a row is a card, it reports the tallest card and each cell's lines. A page's
+  address may carry the query that presets its filters: `index.html?s-min=&age=` is the
+  overview's recent table with every row showing. `--markdown` prints one line a
+  column. `--shots DIR` also shoots each table there at each width, its filter bar and
+  its first rows.
+- `chips` reports every chip a page shows (`.site-chip`), once its math is typeset: its
+  kind (a rung, a result's kind, a standing, a novelty label or another), its words, the
+  surface it sits on, its font size, line height and box, and the lines its words take,
+  which is 1 for a chip that does not wrap. `--press SELECTOR` presses an element once
+  the page is measured and reports the chips of what it opened. `--markdown` prints one
+  line for each kind on each surface, with the distinct sizes found and the chips that
+  wrap.
+- `header` reports where each page's header stands at each width, as tops and bottoms in
+  CSS pixels from the top of the document: the navigation bar, the rule under it and the
+  element that draws it, the section tabs with the current tab's name (on a page of the
+  Visualize section), and the first block of the page's content. With them it reports
+  the header's type: the computed font size of the body's prose, the site's name (and
+  whether its text is shown), a link in the bar and a section tab, and how many lines the
+  bar's links take. `--markdown` prints one line a page and width.
+- `baselines` reports the text baselines of the header's labels, measured and not read
+  from a box's edge: the site's name (where its text is shown), the links of each line
+  of the bar, the section tabs, how far the name stands off the links, and how far the
+  current link's and the current tab's baseline stand over the rule and the foot of the
+  tab strip. `--markdown` prints one line a page and width.
+- `popover` presses each `--press SELECTOR` in a window of each `--width` and `--height`
+  and reports the popover it opened: its box, the margin the window keeps above, below
+  and beside it, the height of what it holds, the share of that it shows without
+  scrolling (its frame's share, where it frames a page), and every word in it broken
+  across lines inside the word (`preview_site.split_problem`). `--shots DIR` also shoots
+  the window with each popover open. This is the tool the popovers' height limits are
+  measured with (`templates/paper-design.md`, Site Components, Cards).
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages load SITE
@@ -59,6 +98,17 @@ Usage, from `packing/`:
         --page index.html --press '[data-atlas-n="11"]' --markdown
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages space SITE \
         --page index.html --page all-results.html --width 1280 --width 390 --markdown
+    uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages \
+        columns SITE --page index.html --page all-results.html \
+        --width 1280 --width 1024 --width 768 --markdown
+    uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages header SITE \
+        --page visualize.html --page workbench/index.html --width 1280 --width 390 --markdown
+    uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages baselines \
+        SITE --page frontier.html --page visualize.html --width 1280 --width 768 --width 390 \
+        --markdown
+    uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages \
+        popover SITE --page frontier.html --press 'a[data-case="79"]' \
+        --width 1280 --height 900 --height 1200 --height 1440 --markdown
 
 `SITE` is a directory holding `explainer.html` and the kpress pages. Set
 `SQPACK_CHROMIUM` to use a browser the environment supplies, as the other tools do.
@@ -73,11 +123,20 @@ import os
 import re
 import statistics
 import sys
-from collections.abc import Sequence
+from collections.abc import Iterable, Sequence
 from pathlib import Path
 from typing import Any
 
-from devtools.preview_site import press, serve, settle_math
+from devtools.preview_site import (
+    BASELINES,
+    HEADER,
+    motion_for,
+    press,
+    serve,
+    settle_math,
+    shot_stem,
+    split_words,
+)
 from devtools.render_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import applied, probe
 
@@ -90,6 +149,9 @@ CARDS = probe(PROBES, "measure_site_pages/cards")
 LADDERS = probe(PROBES, "measure_site_pages/ladders")
 MATH_FACES = probe(PROBES, "measure_site_pages/math_faces")
 SPACING = probe(PROBES, "measure_site_pages/spacing")
+COLUMNS = probe(PROBES, "measure_site_pages/columns")
+CHIPS = probe(PROBES, "measure_site_pages/chips")
+POPOVER = probe(PROBES, "measure_site_pages/popover")
 #: What a press opens, which `space` then reports alone: an open popover or disclosure.
 OPENED = ":popover-open, details[open]"
 
@@ -322,6 +384,284 @@ def measure_space(
     return results
 
 
+def measure_header(
+    base: str, pages: Sequence[str], *, widths: Sequence[int]
+) -> list[dict[str, Any]]:
+    """Where each page's header stands at each width (`preview_site/header`), one flat
+    row a page and width: the top and bottom of the bar, of the rule under it, of the
+    section tabs and of the first block, with the element the rule is drawn on, the
+    current tab and the first block's name; then the header's type, the font size of the
+    body's prose, the site's name, a link in the bar and a section tab, and the lines the
+    bar's links take. A part a page lacks is left empty."""
+    rows: list[dict[str, Any]] = []
+    for name, width, found in _evaluate(base, pages, widths=widths, script=HEADER):
+        row: dict[str, Any] = {"page": name, "width": width}
+        for part in ("nav", "rule", "tabs", "first"):
+            box = found[part] or {}
+            row[f"{part}_top"] = box.get("top", "")
+            row[f"{part}_bottom"] = box.get("bottom", "")
+        row["rule_on"] = (found["rule"] or {}).get("on", "")
+        row["current_tab"] = (found["tabs"] or {}).get("current") or ""
+        row["first"] = (found["first"] or {}).get("block", "")
+        sizes = found["type"]
+        row["body"] = sizes["body"] or (sizes["scale"] or {}).get("prose", "")
+        row["name"] = sizes["name"] or ""
+        row["name_shown"] = "yes" if sizes["name_shown"] else "no"
+        row["link"] = sizes["link"] or ""
+        row["tab"] = sizes["tab"] or ""
+        row["links_rows"] = sizes["links_rows"]
+        row["overflow"] = sizes["overflow"]
+        rows.append(row)
+    return rows
+
+
+def measure_baselines(
+    base: str, pages: Sequence[str], *, widths: Sequence[int]
+) -> list[dict[str, Any]]:
+    """The baselines of each page's header labels at each width (`preview_site/baselines`),
+    one flat row a page and width: the name's, the links' line by line, the tabs', how far
+    the name stands off the links of the first line, and how far the current link and the
+    current tab stand over the rule and the foot of the tab strip."""
+    rows: list[dict[str, Any]] = []
+    for name, width, found in _evaluate(base, pages, widths=widths, script=BASELINES):
+        lines: dict[int, set[float]] = {}
+        for link in found["links"]:
+            lines.setdefault(link["top"], set()).add(link["baseline"])
+        ordered = [sorted(lines[top]) for top in sorted(lines)]
+        first = ordered[0][0] if ordered else None
+        shown = found["name"] is not None and first is not None
+        rows.append(
+            {
+                "page": name,
+                "width": width,
+                "name": "" if found["name"] is None else found["name"],
+                "links": " / ".join(
+                    " ".join(f"{value:g}" for value in line) for line in ordered
+                ),
+                "name_off_links": round(found["name"] - first, 2) if shown else "",
+                "tabs": " ".join(
+                    f"{value:g}" for value in sorted({t["baseline"] for t in found["tabs"]})
+                ),
+                "rule": "" if found["rule"] is None else found["rule"],
+                "current_above_rule": found["current_above_rule"] or "",
+                "current_tab_above_foot": found["current_tab_above_foot"] or "",
+            }
+        )
+    return rows
+
+
+def measure_popovers(
+    base: str,
+    pages: Sequence[str],
+    *,
+    widths: Sequence[int],
+    heights: Sequence[int],
+    presses: Sequence[str],
+    shots: Path | None = None,
+) -> list[dict[str, Any]]:
+    """What each selector in `presses` opens on each page, in a window of each width and
+    height: one row a popover, with its box, its margins, the share of its content it
+    shows without scrolling and the words in it broken across lines. A page is scrolled
+    through first only when a selector matches nothing as loaded, which is how the atlas
+    grid's later cells are placed. With `shots`, the window is shot there with each
+    popover open: `popover-<page>-<width>x<height>-press<n>.png`."""
+    from playwright.sync_api import sync_playwright  # noqa: PLC0415
+
+    results: list[dict[str, Any]] = []
+    if shots is not None:
+        shots.mkdir(parents=True, exist_ok=True)
+    with sync_playwright() as driver:
+        browser = _launch(driver)
+        for width in widths:
+            for height in heights:
+                for name in pages:
+                    print(f"measuring {name} at {width}x{height}", file=sys.stderr, flush=True)
+                    page = browser.new_page(viewport={"width": width, "height": height})
+                    page.goto(f"{base}/{name}", wait_until="load")
+                    page.wait_for_timeout(300)
+                    if not all(page.locator(selector).count() for selector in presses):
+                        settle_math(page)
+                    for index, selector in enumerate(presses, start=1):
+                        target = page.locator(selector)
+                        if not target.count() or not target.first.is_visible():
+                            continue
+                        press(page, selector)
+                        split = split_words(page)
+                        results.extend(
+                            {
+                                "page": name,
+                                "width": width,
+                                "press": selector,
+                                **row,
+                                "split_words": len(split),
+                                "split": split,
+                            }
+                            for row in page.evaluate(POPOVER)
+                        )
+                        if shots is not None:
+                            stem = f"popover-{shot_stem(name)}-{width}x{height}-press{index}"
+                            page.screenshot(path=str(shots / f"{stem}.png"))
+                        page.keyboard.press("Escape")
+                    page.close()
+        browser.close()
+    return results
+
+
+#: How much of a table a `columns` shot shows, in CSS pixels from the top of its filter
+#: bar: the header and enough rows to see how the columns share the width.
+COLUMN_SHOT_HEIGHT = 1100
+
+
+def measure_columns(
+    base: str, pages: Sequence[str], *, widths: Sequence[int], shots: Path | None = None
+) -> list[dict[str, Any]]:
+    """Every shared data table's columns on each page at each width, once its math is
+    typeset, one entry a table: its width, how far it runs past what scrolls it sideways,
+    and each column with its width, the most lines a cell of it takes, the words a line
+    break splits and the tallest row it sets. With `shots`, each table is also shot
+    there at each width, from the top of its filter bar down `COLUMN_SHOT_HEIGHT`
+    pixels: `columns-<page>-<n>-<width>.png`, `<n>` counting the page's tables from 0."""
+    from playwright.sync_api import sync_playwright  # noqa: PLC0415
+
+    results: list[dict[str, Any]] = []
+    if shots is not None:
+        shots.mkdir(parents=True, exist_ok=True)
+    with sync_playwright() as driver:
+        browser = _launch(driver)
+        for width in widths:
+            for name in pages:
+                print(f"measuring {name} at {width}", file=sys.stderr, flush=True)
+                page = browser.new_page(viewport={"width": width, "height": 900})
+                page.goto(f"{base}/{name}", wait_until="load")
+                settle_math(page)
+                found: list[dict[str, Any]] = page.evaluate(COLUMNS)
+                results.extend({"page": name, "width": width, **table} for table in found)
+                stem = re.sub(r"[^A-Za-z0-9]+", "-", name.removesuffix(".html")).strip("-")
+                for index, table in enumerate(found):
+                    if shots is None:
+                        break
+                    page.screenshot(
+                        path=str(shots / f"columns-{stem}-{index}-{width}.png"),
+                        full_page=True,
+                        clip={
+                            "x": 0,
+                            "y": max(0, table["top"] - 16),
+                            "width": width,
+                            "height": min(table["height"] + 32, COLUMN_SHOT_HEIGHT),
+                        },
+                    )
+                page.close()
+        browser.close()
+    return results
+
+
+def measure_chips(
+    base: str, pages: Sequence[str], *, widths: Sequence[int], presses: Sequence[str] = ()
+) -> list[dict[str, Any]]:
+    """Every chip each page shows at each width, once its math is typeset, one entry a
+    chip, with the page as loaded as its `state`. Each selector in `presses` that
+    matches is then pressed, and the chips of what it opened are reported with the
+    selector as their `state`."""
+    from playwright.sync_api import sync_playwright  # noqa: PLC0415
+
+    results: list[dict[str, Any]] = []
+    with sync_playwright() as driver:
+        browser = _launch(driver)
+        for width in widths:
+            for name in pages:
+                print(f"measuring {name} at {width}", file=sys.stderr, flush=True)
+                page = browser.new_page(viewport={"width": width, "height": 900})
+                page.goto(f"{base}/{name}", wait_until="load")
+                settle_math(page)
+                results.extend(
+                    {"page": name, "width": width, "state": "page", **chip}
+                    for chip in page.evaluate(CHIPS)
+                )
+                for selector in presses:
+                    target = page.locator(selector)
+                    if not target.count() or not target.first.is_visible():
+                        continue
+                    press(page, selector)
+                    results.extend(
+                        {"page": name, "width": width, "state": selector, **chip}
+                        for chip in page.evaluate(CHIPS, {"scope": OPENED})
+                    )
+                    page.keyboard.press("Escape")
+                page.close()
+        browser.close()
+    return results
+
+
+def _distinct(values: Iterable[float]) -> str:
+    """The distinct values among some measurements, least first, a space apart."""
+    return " ".join(f"{value:g}" for value in sorted(set(values)))
+
+
+def chip_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """A `chips` report as a table: one row for each kind of chip on each surface of each
+    page at each width and state, with how many there are, the distinct font sizes and
+    block sizes found (one value each when every chip is one size), the most lines one
+    takes, and the words of each chip that wraps."""
+    groups: dict[tuple[Any, ...], list[dict[str, Any]]] = {}
+    for chip in report:
+        key = (chip["page"], chip["width"], chip["state"], chip["surface"], chip["chip"])
+        groups.setdefault(key, []).append(chip)
+    rows: list[dict[str, Any]] = []
+    for (page, width, state, surface, kind), chips in groups.items():
+        wrapped = sorted({chip["text"] for chip in chips if chip["lines"] != 1})
+        rows.append(
+            {
+                "page": page,
+                "width": width,
+                "state": state,
+                "surface": surface,
+                "chip": kind,
+                "count": len(chips),
+                "font_size": _distinct(chip["font_size"] for chip in chips),
+                "block_size": _distinct(chip["block_size"] for chip in chips),
+                "max_lines": max(chip["lines"] for chip in chips),
+                "wrapped": ", ".join(wrapped) or "-",
+            }
+        )
+    return rows
+
+
+def column_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """A `columns` report as a table, one row a column: the table it belongs to and that
+    table's width, the column's width and the share of the table it takes, the most lines
+    a cell of it takes, how many of its words a line break splits, and the tallest row
+    whose height its cell sets, with that row's height and the lines the cell takes
+    there; a dash where it sets no row's height.
+    `past_frame` is how far the table runs past what scrolls it sideways, 0 when it
+    fits."""
+    rows: list[dict[str, Any]] = []
+    for entry in report:
+        table = entry["table_width"]
+        for column in entry["columns"]:
+            tallest = column["tallest"]
+            width = column["width"]
+            rows.append(
+                {
+                    "page": entry["page"],
+                    "width": entry["width"],
+                    "section": entry["section"],
+                    "layout": entry["layout"],
+                    "shown": entry["shown_rows"],
+                    "table": f"{table:g}",
+                    "past_frame": f"{entry['scrolls']:g}",
+                    "column": column["column"],
+                    "col_width": "-" if width is None else f"{width:g}",
+                    "share": "-" if width is None else f"{100 * width / table:.0f}%",
+                    "max_lines": column["lines"],
+                    "broken_words": len(column["broken"]),
+                    "tallest_row": "-" if tallest is None else tallest["row"],
+                    "row_height": "-" if tallest is None else f"{tallest['height']:g}",
+                    "its_lines": "-" if tallest is None else tallest["lines"],
+                }
+            )
+    return rows
+
+
 def _span(values: Sequence[Any]) -> str:
     """The least and the most of some measurements, or the one value they share; nothing
     for none, and a value that is not a number, such as a line height of `normal`, is
@@ -431,7 +771,10 @@ def _evaluate(
         browser = _launch(driver)
         for width in widths:
             for name in pages:
-                page = browser.new_page(viewport={"width": width, "height": 900})
+                # Reduced motion on the film's page, so its film stays at its poster.
+                page = browser.new_page(
+                    viewport={"width": width, "height": 900}, reduced_motion=motion_for(name)
+                )
                 page.emulate_media(media="print" if media == "print" else "screen")
                 page.goto(f"{base}/{name}", wait_until="load")
                 page.wait_for_timeout(300)
@@ -541,6 +884,10 @@ def markdown_table(report: list[dict[str, Any]]) -> str:
         report = ladder_rows(report)
     if report and "kind" in report[0]:
         report = space_rows(report)
+    if report and "columns" in report[0] and "layout" in report[0]:
+        report = column_rows(report)
+    if report and "block_size" in report[0] and "surface" in report[0]:
+        report = chip_rows(report)
     columns = [key for key, value in report[0].items() if not isinstance(value, (dict, list))]
     lines = ["| " + " | ".join(columns) + " |", "|" + " --- |" * len(columns)]
     lines.extend("| " + " | ".join(str(row[key]) for key in columns) + " |" for row in report)
@@ -548,7 +895,20 @@ def markdown_table(report: list[dict[str, Any]]) -> str:
 
 
 #: The measurements, as `mode` names them.
-MODES = ("load", "type", "faces", "cards", "ladders", "math", "space")
+MODES = (
+    "load",
+    "type",
+    "faces",
+    "cards",
+    "ladders",
+    "math",
+    "space",
+    "columns",
+    "chips",
+    "header",
+    "baselines",
+    "popover",
+)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -561,6 +921,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         "--page", action="append", help="a page, with any #fragment; repeatable"
     )
     parser.add_argument("--width", type=int, action="append", help="viewport width; repeatable")
+    parser.add_argument(
+        "--height",
+        type=int,
+        action="append",
+        help="with `popover`: viewport height, 900 by default; repeatable",
+    )
     parser.add_argument("--runs", type=int, default=3)
     parser.add_argument("--port", type=int, default=18961)
     parser.add_argument("--json", type=Path, help="read a saved report rather than measuring")
@@ -577,14 +943,17 @@ def main(argv: Sequence[str] | None = None) -> int:
         default=[],
         metavar="SELECTOR",
         help="with `math`: press the first element this CSS selector matches, where a page "
-        "has one, before counting; with `space`: press it once the page is measured and "
-        "report what it opened; repeatable",
+        "has one, before counting; with `space` and `chips`: press it once the page is "
+        "measured and report what it opened; with `popover`: press it and measure the "
+        "popover it opens; repeatable",
     )
     parser.add_argument(
         "--shots",
         type=Path,
         metavar="DIR",
-        help="with `ladders`: also shoot each diagram here at each width, light and dark",
+        help="with `ladders`: also shoot each diagram here at each width, light and dark; "
+        "with `columns`: also shoot each table here at each width; "
+        "with `popover`: also shoot the window here with each popover open",
     )
     parser.add_argument(
         "--tokens",
@@ -613,6 +982,23 @@ def main(argv: Sequence[str] | None = None) -> int:
                 report = measure_math(base, pages, widths=widths, presses=args.press)
             elif args.mode == "space":
                 report = measure_space(base, pages, widths=widths, presses=args.press)
+            elif args.mode == "columns":
+                report = measure_columns(base, pages, widths=widths, shots=args.shots)
+            elif args.mode == "chips":
+                report = measure_chips(base, pages, widths=widths, presses=args.press)
+            elif args.mode == "header":
+                report = measure_header(base, pages, widths=widths)
+            elif args.mode == "baselines":
+                report = measure_baselines(base, pages, widths=widths)
+            elif args.mode == "popover":
+                report = measure_popovers(
+                    base,
+                    pages,
+                    widths=widths,
+                    heights=tuple(args.height or (900,)),
+                    presses=args.press,
+                    shots=args.shots,
+                )
             else:
                 report = measure_load(base, pages, widths=widths, runs=args.runs)
         finally:

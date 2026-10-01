@@ -80,6 +80,15 @@ def test_the_page_is_the_workbench_tab_of_the_visualize_section(page: str) -> No
     body = page.split("<body>", 1)[1]
     bar_end = body.index("</nav>", body.index('class="site-nav"'))
     assert bar_end < body.index(tabs) < body.index("</header>") < body.index('id="viewport"')
+    # The bar's stylesheet, which the page carries, draws the rule under the bar and over
+    # the tabs, and keeps the tabs' own space between them and the application.
+    head = page.split("</head>", 1)[0]
+    for rule in (
+        ".kpress-site-header:has(> .site-tabs) {\n  border-block-end: 0;\n}",
+        ".kpress-site-header > .site-nav:has(+ .site-tabs) {\n  border-block-end: 1px solid",
+        ".site-app-shell .site-tabs {\n  margin-block-end: var(--site-tabs-space);\n}",
+    ):
+        assert rule in head, rule
 
 
 def test_every_site_link_reaches_the_site_root(page: str) -> None:

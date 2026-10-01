@@ -11,7 +11,7 @@ softschema:
   schema: defects.schema.yaml
   envelope: null
   status: enforced
-count: 509
+count: 512
 defects:
 - id: D-001
   title: Fixed-side search never left the grid basin
@@ -17022,3 +17022,107 @@ defects:
     the differing load's decoded line in the log; three different loads refuse, leave the
     previous file in place, and give the census against load 1.
   recorded_in: packing/devtools/render_explainer_pdf.py
+- id: D-510
+  title: Independent rational checker ignored the declared coordinate frame
+  date: '2026-10-01'
+  layer: verifier
+  class: soundness
+  direction: flattering
+  detected_by: review
+  latent_for: Found in Session165 premeasurement review before the n17 target replay
+  severity: high
+  status: fixed
+  what: >-
+    The independent rational-corner parser checked coordinates in a lower-left box while
+    ignoring the witness's declared origin and square size. A container-centred witness
+    with local corners (1,0),(2,0),(2,1),(1,1) at side2 passed, although the main checker
+    interprets its declared frame and rejects its x=3 translated vertices.
+  consequence: >-
+    An unsupported coordinate frame could receive a false acceptance. Canonical
+    lower-left unit witnesses are not invalidated by this counterexample; existing
+    retained inputs require a scoped metadata audit rather than a blanket verdict.
+  fix: >-
+    Require the Witness/v2 contract, canonical lower-left/right-up rational-corner
+    coordinates, declared unit size and a positive integer count matching the roster.
+    Reject nonstring coordinates before Fraction parsing. Tracked by think-qc6k.
+  regression: >-
+    tests/test_rational_witness_independent_contract.py compares the centred-origin
+    counterexample with the main checker and checks unsupported units, axes, count,
+    scalar and contract metadata. Existing grid and overlap controls remain in use.
+  recorded_in: docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
+- id: D-511
+  title: Half-angle witness export declared a schema absent beside its output
+  date: '2026-10-01'
+  layer: tooling
+  class: robustness
+  detected_by: review
+  latent_for: First exported target witness in Session165
+  severity: medium
+  status: fixed
+  what: >-
+    The new adapter used witness_document's default schema path even when writing deep
+    campaign evidence. The main witness CLI's explicit fallback schema allowed exact
+    verification, but no-fallback loading and declared-schema validation failed.
+  consequence: >-
+    The exported witness was not self-contained within the repository's declared-schema
+    contract. Exact geometry acceptance was unaffected; the raw output remains retained.
+  fix: >-
+    Compute the schema path relative to each export location and test standalone loading
+    and declared-schema validation. Publish a separately identified portable copy of the
+    accepted raw witness, with identical witness payload. Tracked by think-j4wc.
+  regression: >-
+    test_import_half_angle_witness loads the synthetic rotated export with no fallback
+    and calls validate_schemas.check on that export.
+  recorded_in: docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
+- id: D-512
+  title: The deployed site dropped every record link into the archive and the campaign
+  date: '2026-10-01'
+  layer: tooling
+  class: bookkeeping
+  direction: conservative
+  detected_by: drift_check
+  latent_for: >-
+    Four deploys on 2026-10-01, from the site's first at f9a3409f0 to fe6399451; found
+    the same day, on the last of them
+  severity: medium
+  status: fixed
+  what: >-
+    The Pages jobs check the repository out without the directories under
+    packing/resources and packing/campaign. The site's renderers decided whether to link
+    a path a record cites, a source, review, packet, certificate or proof, by asking the
+    disk whether it exists. So the deploy wrote no link into either tree and reported
+    nothing, while a full checkout wrote them all. At fe6399451 the live overview and
+    results page each lacked 20 distinct targets across 23 result rows, the case records
+    lacked 19, and result overviews lacked their certificate, proof, retained copy and
+    source packet: T-060's had neither final-composition.json nor PROOF.md.
+    check_published_site passed 783 of 783. It asks whether each link that was written
+    resolves, and never whether a link is missing. The workflow test that says a partial
+    checkout must not change the page held the files the render reads, not the paths it
+    tests for existence. The three earlier deploys ran the same job and renderers and
+    were not compared.
+  consequence: >-
+    From a result's row on the live site a reader could not reach the retained source
+    packet, certificate or proof of 23 of the 61 results, the evidence the site exists to
+    show. Nothing on the site was false. Neither the gate nor the post-deploy check would
+    have reported it on any later deploy.
+  fix: >-
+    repo_links.path_kind says what a path is: a file, a directory or nothing. It asks
+    the commit being rendered, through git ls-tree, where the working tree lacks the
+    path; a blobless partial clone holds every tree of its commit. overview_data's
+    _repo_path, result_overview's _resolve, packets, _local_copy and check_links, and
+    repo_url's choice of blob or tree, all use it (bb82ba141). A full checkout renders
+    the same bytes as before. check_published_site now asks the renderer what record
+    links it writes at the deployed commit, and holds to them every result row of the
+    overview and the results page and the overviews of T-060, T-043 and T-023. Not yet
+    confirmed on a deploy: after the next one the live result/t-060.html must link
+    final-composition.json. Tracked by think-18za.
+  regression: >-
+    tests/test_repo_links.py and tests/test_result_overview.py render with the two trees
+    hidden from the disk, as pages.yml's patterns hide them, and require the same kinds,
+    the same row records for every result and the same overview bytes for three; both
+    fail without the commit's answer. tests/test_check_published_site.py fails a table of
+    results whose row lacks one record link, a sampled overview that lacks one, and a
+    renderer that cannot say what it writes; the sample must cite files under
+    directories of both omitted trees, and renders the same in a partial checkout. The
+    Pages workflow's verify-deployment job runs the check after every deploy.
+  recorded_in: packing/devtools/repo_links.py

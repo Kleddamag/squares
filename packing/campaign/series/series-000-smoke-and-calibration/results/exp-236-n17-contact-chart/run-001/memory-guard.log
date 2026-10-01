@@ -1,0 +1,2 @@
+/bin/bash: line 11: ulimit: data seg size: cannot modify limit: Invalid argument
+unavailable-platform-data-limit

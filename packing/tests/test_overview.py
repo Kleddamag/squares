@@ -1193,75 +1193,19 @@ def test_only_t060_of_the_s5_results_still_holds(overview: overview_data.Overvie
     assert holding == {"T-060"}
 
 
-def _lead_candidate(
-    result_id: str, score: int, published: str, standing: str
-) -> overview_data.Result:
-    record = {
-        "id": result_id,
-        "headline": f"Result {result_id}",
-        "verification": "V4",
-        "confirmation": "C3",
-        "significance": {"score": score},
-        "attribution": {"published": published},
-    }
-    return overview_data.Result(
-        record, group="", credit="A. Source", ours=False, standing=standing
-    )
-
-
-def test_the_recent_lead_is_chosen_by_the_register_not_typed() -> None:
-    """The lead is the highest significance among recent results that are the current
-    best, the newest of equals: a newer superseded S5 result, a newer S4 one that holds,
-    and an S5 one from before the recent window all lose to the newest S5 that holds."""
-    holds, superseded = render_recent_results.HOLDS, render_recent_results.SUPERSEDED
-    candidates = [
-        _lead_candidate("T-901", 5, "2026-09-01", holds),
-        _lead_candidate("T-902", 5, "2026-09-10", holds),
-        _lead_candidate("T-903", 5, "2026-09-20", superseded),
-        _lead_candidate("T-904", 4, "2026-09-25", holds),
-        _lead_candidate("T-905", 5, "2026-07-01", holds),
-    ]
-    overview = overview_data.Overview(
-        results=candidates, cases={}, recent_lower=frozenset(), groups=[]
-    )
-    lead = overview_sections.lead_result(overview)
-    assert lead is not None
-    assert lead.id == "T-902"
-    line = overview_sections.recent_lead(overview)
-    assert '<a href="all-results.html#t-902">Result T-902</a>' in line
-    nobody = overview_data.Overview(
-        results=candidates[2:3], cases={}, recent_lower=frozenset(), groups=[]
-    )
-    assert overview_sections.lead_result(nobody) is None
-    assert overview_sections.recent_lead(nobody) == ""
-
-
-def test_the_recent_lead_names_t060_above_the_table(
-    page: str, overview: overview_data.Overview
-) -> None:
-    """On today's register the lead is T-060, with its headline linking its row, its id,
-    its credit and its chips, set between the section's prose and the recent table."""
-    holding = [
-        r
-        for r in overview_sections.recent_results(overview)
-        if r.standing == render_recent_results.HOLDS
-    ]
-    expected = max(holding, key=lambda r: (overview_sections.significance(r), r.dated[1], r.id))
-    lead = overview_sections.lead_result(overview)
-    assert lead is not None
-    assert lead is expected
-    # The audit's reading of the record; update it when the record moves on.
-    assert lead.id == "T-060"
+def test_recent_results_has_no_lead_line(page: str) -> None:
+    """Nothing stands between the section's prose and its filter bar: the generated
+    "Lead result" line the owner dropped on 2026-10-01 is gone, from the page, the
+    template and the module that wrote it."""
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
-    match = re.search(r'<p class="site-recent-lead">.*?</p>', section, re.DOTALL)
-    assert match
-    line = match.group(0)
-    assert section.index(line) < section.index(_recent_table(page))
-    assert '<a href="all-results.html#t-060">' in line
-    assert '<span class="site-cell-quiet">T-060</span>' in line
-    assert "Queuingtheorydotcom" in line
-    chips = re.findall(r'<span class="site-chip[^"]*"[^>]*>([^<]+)</span>', line)
-    assert chips == ["V4", "C5", "S5", render_recent_results.HOLDS]
+    assert "site-recent-lead" not in section
+    assert "Lead result" not in section
+    before = section.split('<div class="site-table-tools', 1)[0]
+    assert re.search(r'</p>\s*<div class="site-wide">$', before)
+    template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
+    assert "RECENT_LEAD" not in template
+    assert not hasattr(overview_sections, "recent_lead")
+    assert not hasattr(overview_sections, "lead_result")
 
 
 def _intro(page: str) -> str:

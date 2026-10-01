@@ -876,32 +876,6 @@ def recent_table(overview: Overview) -> str:
     )
 
 
-def lead_result(overview: Overview) -> Result | None:
-    """The result Recent Results leads with: of the recent results that are the current
-    best for a case bound, the one with the highest significance, and of those the
-    newest, in the order the table lists them. None when no recent result holds a bound.
-    """
-    holding = [r for r in recent_results(overview) if r.standing == HOLDS]
-    # `max` keeps the first of equals, and `recent_results` lists the newest first.
-    return max(holding, key=significance, default=None)
-
-
-def recent_lead(overview: Overview) -> str:
-    """One line above the recent table naming `lead_result`, so the section's most
-    significant standing result stays in view however many newer rows the table gains:
-    its headline linking to its row on the results page, its id, its credit and its
-    status chips, each as the table writes them."""
-    result = lead_result(overview)
-    if result is None:
-        return ""
-    return (
-        '<p class="site-recent-lead"><strong>Lead result.</strong> '
-        f'<a href="{_esc(result_url(result.id))}">{tex_bounds(result.summary)}</a> '
-        f'<span class="site-cell-quiet">{_esc(result.id)}</span>, '
-        f"{credit_cell(result.credit)}: {status_chips(result)}</p>"
-    )
-
-
 def recent_from() -> str:
     """`RECENT_FROM` as prose: 1 August 2026."""
     return f"{RECENT_FROM.day} {RECENT_FROM:%B %Y}"

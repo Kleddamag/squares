@@ -44,8 +44,6 @@ project’s, with its rungs and its standing: *current best* where a verified ca
 rests on it now, and otherwise why not.
 It starts filtered to significance S4 and up; choose All to see every row.
 
-{{RECENT_LEAD}}
-
 {{RECENT}}
 
 <p class="site-more"><a href="all-results.html">See all results{{ARROW_RIGHT}}</a></p>

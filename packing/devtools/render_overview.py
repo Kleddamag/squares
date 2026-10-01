@@ -568,7 +568,6 @@ def overview_page() -> Page:
         "ATLAS_CARDS": overview_sections.atlas_cards(),
         "PAGE_CARDS": overview_sections.page_cards(),
         "VERIFICATION": overview_sections.verification_block(),
-        "RECENT_LEAD": overview_sections.recent_lead(overview),
         "RECENT": overview_sections.recent_table(overview),
         "RECENT_FROM": overview_sections.recent_from(),
         "AWAITING_REPLAY": overview_sections.awaiting_replay(overview),

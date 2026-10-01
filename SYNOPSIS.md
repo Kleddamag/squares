@@ -586,6 +586,7 @@ case or experiment separately.
 | [Plan: Revising the Verification and Confirmation Ladders](docs/project/specs/active/plan-2026-09-30-epistemics-ladder-review.md) | implementation plan | current | transient | — |
 | [Plan: A Kind for Every Registered Result](docs/project/specs/active/plan-2026-10-01-result-kinds.md) | implementation plan | current | transient | — |
 | [Plan: A Workflow Status for Every Result, and No Separate Block for Reported Ones](docs/project/specs/active/plan-2026-10-01-result-status.md) | implementation plan | current | transient | — |
+| [Plan: The First Application of the Result Import Process](docs/project/specs/active/plan-2026-10-01-result-import-first-application.md) | implementation plan | current | transient | — |
 | [Feature: A Top-Level Overview Page for the Published Site](docs/project/specs/active/plan-2026-09-29-github-pages-overview.md) | implementation plan | current | transient | — |
 | [BC329 Calibration Reader: Source-Distinct Review](docs/project/reviews/review-2026-09-13-n11-bc329-source-distinct-reader.md) | dated review record | record | retained | — |
 | [BC329 Reader Repair: Exact-Commit Rereview](docs/project/reviews/review-2026-09-13-n11-bc329-reader-rereview.md) | dated review record | record | retained | — |
@@ -860,6 +861,7 @@ case or experiment separately.
 | [Packing Development Guide](development.md) | engineering and validation rules | definitive | maintained | — |
 | [The `s(n)` Research Campaign: W6 Runbook](packing/campaign/README.md) | W6 experiment mechanics | definitive | maintained | — |
 | [The W8 Documentation Pass: Runbook](packing/campaign/documentation-pass.md) | W8 documentation reconciliation | definitive | maintained | — |
+| [The Result Import Process: Runbook](packing/campaign/result-import.md) | importing, validating and rating a result by others | definitive | maintained | — |
 | [W9 Remediation Pass](packing/campaign/remediation-pass.md) | systematic defect and issue-backlog remediation | definitive | maintained | — |
 | [W10 Review, Planning, and Oversight](packing/campaign/review-planning-oversight.md) | post-agenda disposition, document review, and replanning | definitive | maintained | — |
 | [Agent Sessions](packing/campaign/agent-sessions/README.md) | escalated session and recovery contract | definitive | maintained | — |
@@ -1031,6 +1033,7 @@ case or experiment separately.
 | [Post-optimality W3: First Discriminators](docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md) | dated review record | record | retained | — |
 | [Evan Daniel’s October Proof Pages: Source Coverage and Intake](docs/project/reviews/review-2026-10-01-evand-source-coverage.md) | dated review record | record | retained | — |
 | [Evand: Mathematical Review and Transfer to Low-n Research](docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md) | dated review record | record | retained | — |
+| [The Result Import Process: Process Review](docs/project/reviews/review-2026-10-01-result-import-process.md) | dated review record | record | retained | — |
 | [Density Solvers Compared: Tokoharu’s and wand125’s Rectangle-Density Tools Against This Repository’s Certificate Stack](docs/project/reviews/review-2026-09-28-density-solver-comparison.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R067 and R068, `s(17) > 233009/50000` and `s(17) > 116511/25000`](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) | dated review record | record | retained | — |
 | [Proof Review: wand125’s Point-Only Certificates for `s(45) = 7` and `s(21) = 5`](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) | dated review record | record | retained | — |
@@ -1162,18 +1165,26 @@ routine task.
 
 | ID | Workflow | Enter with | Work boundary | Durable exit | Default handoff |
 | --- | --- | --- | --- | --- | --- |
-| W1 | `research-survey` | A bounded question, source corpus, and identified coverage gap | Survey and source the state of knowledge; do not run a new experiment or turn untested connections into campaign verdicts | A pinned source packet, stable claim IDs, proof obligations, source notes, explicit conflicts, and unresolved gaps | W2 audits the claims; W3 may mine supported gaps |
-| W2 | `factual-review` | A fixed artifact set, its sources, and the claims to audit | Correctness only; read-only by default, but an authorized review may apply an obvious bounded correction whose evidence and scope are unchanged; do not invent successor theory or redesign the process inside the review | Claim-by-claim dispositions, focused confirmation receipts, unresolved coverage, measured cost, authorized corrections, or defects with exact evidence | W5 for measured confirmation bottlenecks; required before promoted, novel, disputed, or high-risk claims; otherwise W3 for new hypotheses or W4 for a process failure |
+| W1 | `research-survey` | A bounded question, source corpus, and identified coverage gap; or a result reported by others | Survey and source the state of knowledge, and record a reported result as reported; do not run a new experiment or turn untested connections into campaign verdicts | A pinned source packet, stable claim IDs, proof obligations, source notes, explicit conflicts, and unresolved gaps; for a reported result, its register entry at the rungs its evidence derives | W2 audits the claims; W3 may mine supported gaps |
+| W2 | `factual-review` | A fixed artifact set, its sources, and the claims to audit | Correctness only; it never edits the claim under review, and writes only the confirmation it produces (replay evidence, the review, and the rungs they derive) and an authorized, obvious bounded correction whose evidence and scope are unchanged; do not invent successor theory or redesign the process inside the review | Claim-by-claim dispositions, focused confirmation receipts, unresolved coverage, measured cost, authorized corrections, or defects with exact evidence; for an imported result, its derived rungs and the verified lane | W5 for measured confirmation bottlenecks; required before promoted, novel, disputed, or high-risk claims; otherwise W3 for new hypotheses or W4 for a process failure |
 | W3 | `insight-iteration` | Current synopsis, idea board, ledger, negative results, and a sharp frontier | Generate explanations and hypotheses freely; do not certify them or spend an undeclared experiment budget | `X-NNN` reports and candidate `H-NNN` items with mechanism, falsifier, expected information, and limits | Codification, then W6 |
 | W4 | `process-review` | Artifacts, beads, logs, checks, and a reconstructability or discipline question | Inspect ownership, handoffs, refusals, and controls; do not substitute process polish for a scientific result | Review findings, beads, and narrowly scoped contract or checker changes | W5 for a measured bottleneck or the next workflow that owns the result |
 | W5 | `efficiency-loop` | A measured baseline, profile, target metric, and equivalence or validity guard | Improve time, cost, or throughput under the same regime; never relax correctness or provenance to win | Benchmark record, change or rejection, measured delta, and preserved guards | Return to the originating workflow (W2, W6 or W7) with the measured improvement or rejection; W4 if the process contract is wrong |
 | W6 | `research-loop` | A registered hypothesis, fixed criterion, regime, budget, stop rule, and instrument contract | Build or repair the bounded instrument, freeze it before measurement, then use creative effort inside the registered scope to execute the smallest fair test; never change the criterion, suppress a failure, or improvise a replacement hypothesis mid-round | Frozen instrument, `exp-NNN`, raw data or proof record, verdict, regenerated views, and the next bounded question | W2 before promoted or high-risk claims; otherwise W3 or another W6 slice |
 | W7 | `pipeline-improvement` | Named packing-research consumers, the smallest reusable capability or cleanup they need, controls or an independent oracle, a budget, and expected comparability impact | Add, strengthen, simplify, or repair only the bounded packing pipeline surface; do not collect a target verdict while it is mutable, optimize an unchanged implementation without a W5 baseline, or generalize beyond named consumers | Code, entry point or refactor; replayable positive and negative controls; exact validation command; cost and complexity receipt; evidence limits; and a readiness or retained-blocker decision | W2 before a new or materially changed trust boundary reaches W6; W5 if measured throughput remains the blocker; otherwise W6 |
-| W8 | `documentation-pass` | A period of research that closed several commitments, the artifacts it left, and the reader-facing documents that have not caught up | Reconcile the root tier — README, tutorial, synopsis, and the conventions they cite — against the artifacts and against each other; correct, cut, reorder and clarify, but never introduce a claim the record does not already carry, and never soften a claim boundary to make a document read better | A checklist run over each root document, every drift either fixed or filed as a defect, generated views regenerated, and an explicit statement of what was checked and what was left | W2 for any claim the pass could not verify against an artifact; otherwise the next owning workflow |
+| W8 | `documentation-pass` | A period of research that closed several commitments, the artifacts it left, and the reader-facing documents that have not caught up; or a confirmed result that warrants a review paper | Reconcile the root tier — README, tutorial, synopsis, and the conventions they cite — against the artifacts and against each other, or explain a registered result in a paper; correct, cut, reorder and clarify, but never introduce a claim the record does not already carry, and never soften a claim boundary to make a document read better | A checklist run over each root document, every drift either fixed or filed as a defect, generated views regenerated, and an explicit statement of what was checked and what was left; or a review paper with its exposition review | W2 for any claim the pass could not verify against an artifact; otherwise the next owning workflow |
 | W9 | `remediation` | A confirmed defect or issue inventory, risk ordering, owning beads, and a bounded repair wave | Triage and repair defects systematically without changing scientific criteria or hiding unresolved evidence; group only compatible work and preserve each item’s independent disposition | Fixed items with regressions, contained items with evidence, rerouted evidence work, explicit blockers, regenerated defect views, and validation receipts | W10 reviews the wave and selects what follows |
 | W10 | `review-planning-oversight` | A launch or checkpoint scope, source ideas and H-items, stable evidence, agenda and beads; all writers terminal for full closeout | Assess mathematical directions, codify questions, and select bounded parallel work; at terminal closeout also reconcile every outcome and document impact. Do not execute the selected successors here. | H-linked agenda commitments, priorities, prerequisites, owners and one coordinating next entry; a linked tbd plan may retain rationale. Terminal work additionally records outcomes, dispositions and documentation decisions. | The selected coordinating entry dispatches the owning workflows, including independent BCs in parallel |
 
-### W1/W2 Intake and Efficient Confirmation
+### Result Import and Efficient Confirmation
+
+A result published by others enters the record through the
+[result import process](packing/campaign/result-import.md).
+It is a standard sequence of phases, not a workflow of its own: a W1 phase imports the
+result as reported, a W2 phase validates it, the publication sequence brings the reader
+documents up to date, and the author is answered.
+That runbook owns the stages, their exits and the reply; this section says what W1 and
+W2 each contribute.
 
 W1 turns an incoming result into a reviewable source packet: maintained repository and
 license, immutable source identity, precise claim and assumptions, certificate format,
@@ -1186,7 +1197,7 @@ verification (`V`), confirmation (`C`), significance (`S`) and novelty assignmen
 [Epistemics](epistemics.md).
 Record the significance rationale, assessment date and scorer, and explain the evidence
 and limitations supporting the verification and confirmation levels.
-These assignments are required at intake, including when the result remains `V0/C0`;
+These assignments are required at import, including when the result remains `V0/C0`;
 useful tooling or a promising claim does not earn a higher verification level.
 Keep each assignment attached to its precise claim, not to an entire repository or
 provider. Its W2 handoff names the proof obligations, existing evidence, missing checks,
@@ -1265,6 +1276,13 @@ becomes the tidy one.
 Schedule it after a run that closed several commitments rather than continuously; the
 documents are meant to trail the record slightly, and a pass with nothing to reconcile
 is a pass that should not have been opened.
+Registering a result does not open one: the phase that changes the record renders the
+generated tables and re-pins the data in the same change, through
+[New Result Publication](packing/campaign/documentation-pass.md#new-result-publication).
+W8 also owns a review paper, which explains a confirmed result and this project’s review
+of it to a reader outside the project.
+The paper is held to the same first boundary, since it states nothing the register does
+not hold, and its exposition is reviewed in a W2 phase of its own.
 
 W9 owns bounded repair waves over confirmed defects and issues.
 It does not turn a large backlog into one undifferentiated implementation phase: risk is
@@ -1317,6 +1335,8 @@ W4 process-review ──> W7 pipeline-improvement ──> W2 ──> W6 research
 launch/checkpoint ────> W10 review/planning/oversight ──> coordinated parallel work
 W1–W9 terminal work ──> W10 terminal closeout ──────────> selected coordinator
 confirmed defect wave ──> W9 remediation ────────────────┘
+
+result by others ──> W1 import ──> W2 validate ──> publish ──> answer the author
 ```
 
 At any checkpoint, the human operator may choose the next phase, narrow the question, or

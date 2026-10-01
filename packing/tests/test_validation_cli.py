@@ -1750,6 +1750,66 @@ def test_a_budget_only_failure_prints_a_machine_readable_pass_count() -> None:
     assert "49 of 80 STEPS PASSED (the budget verdict alone failed)" in stdout.getvalue()
 
 
+@pytest.mark.parametrize("hosted", [True, False])
+def test_an_advisory_budget_verdict_prints_its_findings_and_passes(
+    monkeypatch: pytest.MonkeyPatch, *, hosted: bool
+) -> None:
+    """A finding the register has declared advisory is printed in full, annotated on a
+    hosted run so the pull request shows it, and does not fail the command."""
+    if hosted:
+        monkeypatch.setenv("GITHUB_ACTIONS", "true")
+    else:
+        monkeypatch.delenv("GITHUB_ACTIONS", raising=False)
+    finding = "the checks tier ran 62.3s against a recorded 114.34s, which is 0.54x"
+    summary = validate.RunSummary(
+        results=[],
+        wall_seconds=62.3,
+        selected_count=54,
+        total_count=85,
+        budget=gate_budgets.Verdict(
+            tier="checks",
+            wall_seconds=62.3,
+            status="advisory",
+            enforced=True,
+            ceiling_seconds=140.0,
+            measured_seconds=114.34,
+            advisory_failures=(finding,),
+            advisory=gate_budgets.Advisory("think-aaaa", "a fabricated owner decision"),
+        ),
+    )
+    stdout = io.StringIO()
+
+    with redirect_stdout(stdout):
+        status = validate._render_text(summary, strict=False)
+
+    printed = stdout.getvalue()
+    assert status == 0
+    assert "FAIL (advisory, not enforced): " + finding in printed
+    assert (
+        "THE TIER IS OUTSIDE ITS RECORDED BAND (advisory, not enforced under think-aaaa):"
+        in printed
+    )
+    assert f"  - {finding}" in printed
+    assert "54 of 85 STEPS PASSED (a named tier; this is not the full gate)" in printed
+    annotation = f"::warning title=Tier cost band (advisory under think-aaaa)::{finding}"
+    assert (annotation in printed) is hosted
+    # `read_tier_walls` must still count this log as a reading at the reference shape.
+    assert "reported and not enforced" not in printed
+    assert "THE TIER IS OUTSIDE ITS DECLARED COST BAND:" not in printed
+
+
+def test_a_hosted_pull_request_is_read_from_the_runner_s_own_variables() -> None:
+    """Only a GitHub Actions job on a `pull_request` event is one; nothing run by hand."""
+    assert validate._hosted_pull_request(
+        {"GITHUB_ACTIONS": "true", "GITHUB_EVENT_NAME": "pull_request"}
+    )
+    assert not validate._hosted_pull_request(
+        {"GITHUB_ACTIONS": "true", "GITHUB_EVENT_NAME": "push"}
+    )
+    assert not validate._hosted_pull_request({"GITHUB_EVENT_NAME": "pull_request"})
+    assert not validate._hosted_pull_request({})
+
+
 def test_lint_floor_reaches_the_handwritten_skill_assets(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:

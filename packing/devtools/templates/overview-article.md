@@ -10,9 +10,12 @@
 
 <!-- The section's first two paragraphs are README's, read from its project-intro block
      (site_documents.overview_intro), so the problem is introduced in one text. Edit them
-     in README.md. Only the site's own statement below is written here. -->
+     in README.md. Only the site's own statement is written here, under its own
+     heading, The Square Packing Project. -->
 
 {{README_INTRO}}
+
+## The Square Packing Project
 
 This Square Packing Project site collects all known historic research and current new
 results on the square packing problem.
@@ -23,8 +26,8 @@ We and several others have proved new results as part of this project for low va
 $n$, including $n = 11$, $n = 12$, $n = 17$ and many others.
 As part of a collaborative open effort, several people have built on results from this
 project or developed other new proofs, and this site
-[independently checks and documents](#verification-ladders) the proofs and
-certificates behind them.
+[independently checks and documents](#verification-ladders) the proofs and certificates
+behind them.
 
 If you have new results or know of newer results, please
 [file an issue]({{NEW_ISSUE_URL}}) to report them, and we will gladly incorporate them

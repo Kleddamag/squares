@@ -2151,6 +2151,36 @@ def test_the_sites_own_statement_follows_readmes_introduction(page: str) -> None
     assert "formal" not in " ".join(SITE_STATEMENT).lower()
 
 
+def test_the_sites_statement_stands_under_its_own_section_heading(page: str) -> None:
+    """README's two paragraphs stay under the page's first heading, and the site's own
+    statement has a section heading of its own, The Square Packing Project: an ordinary
+    `h2` with its own id and its entry in the page's contents, directly after README's
+    block and directly above the paragraph that says what the site collects. It is no
+    page title, so it takes the two section spaces every `h2` takes
+    (`test_section_headings_share_one_space_above_and_one_below`)."""
+    from devtools import site_documents  # noqa: PLC0415
+
+    heading = '<h2 id="the-square-packing-project">The Square Packing Project</h2>'
+    assert page.count(heading) == 1
+    problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
+    after_intro = problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[1]
+    assert after_intro.lstrip().startswith(heading)
+    following = after_intro.split(heading, 1)[1].lstrip()
+    assert following.startswith("<p>This Square Packing Project site collects")
+    assert heading not in problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[0]
+    contents = (
+        '{"href": "#the-square-packing-project", "level": 1, '
+        '"title": "The Square Packing Project"}'
+    )
+    assert contents in page
+    assert page.index(contents) < page.index('{"href": "#recent-results"')
+    template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
+    assert (
+        "{{README_INTRO}}\n\n## The Square Packing Project\n\nThis Square Packing Project "
+        "site collects" in template
+    )
+
+
 def _the_central_case() -> re.Pattern[str]:
     """The framing the owner refused on 2026-09-30, as `site_documents` holds README's
     shared blocks to it: eleven squares is a central case, never the central one."""

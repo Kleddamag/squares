@@ -34,12 +34,27 @@ growth in the lane is priced by file on the run that introduced it. Under xdist 
 controller receives every worker's reports, and only the controller writes.
 
 Record the partition's costs from those reports, never by hand. Each hosted cohort must
-include all shards; passing several complete cohorts makes the record use each file's
-geometric mean across them rather than chase one runner's assignment:
+include all of its shards, and every cohort passed must have been cut at one shard count.
+That count need not be the one the record packs: the costs are per file, so a cohort
+recorded at N shards may be packed into M with `--shards M`, which is how the lane is
+repartitioned without editing the record. Passing several complete cohorts makes the
+record use each file's geometric mean across them rather than chase one runner's
+assignment:
 
     uv run --frozen --all-extras --group dev python -m devtools.suite_files record \\
-        REPORT.json [REPORT.json ...]
+        [--shards M] [--target-ceilings SECONDS,...] REPORT.json [REPORT.json ...]
     uv run --frozen --all-extras --group dev python -m devtools.suite_files show
+    uv run --frozen --all-extras --group dev python -m devtools.suite_files check
+
+A file the record does not name carries no weight in the packing, so when many land the
+partition is unbalanced and nothing says so. A sharded run therefore warns when more than
+`UNRECORDED_SHARE_WARNING` of the test files its shard is assigned are unrecorded. It
+warns rather than fails, because the lane has to keep running when files land. `check`
+prints the same count for every shard beside the unrecorded file names, and exits 1 when
+any shard is over the threshold. The count is of files under the roots the run was given
+and takes no account of `-m` or `--ignore`, so a record that is sparse by design is over
+it always: the exhaustive lane's names only the files that carry an `exhaustive_exact`
+test. `--suite-unrecorded-share=1` turns the warning off for such a run.
 """
 
 from __future__ import annotations
@@ -67,8 +82,19 @@ ROOT = Path(__file__).resolve().parent.parent
 REPO = ROOT.parent
 #: The recorded per-file costs the partition packs, keyed by repository-relative path.
 COSTS = Path(__file__).with_name("suite-file-costs.json")
+#: The two behavioural test roots the quick lane collects, which `check` walks by default.
+DEFAULT_ROOTS: Final = (ROOT / "tests", REPO / "packages/workbench/tests")
 COSTS_SCHEMA: Final = "packing.squares:SuiteFileCosts/1"
 REPORT_SCHEMA: Final = "packing.squares:TestFileCosts/2"
+#: The share of a shard's assigned test files the record may leave unnamed before a
+#: sharded run warns and `check` exits 1. An unrecorded file takes its path hash and no
+#: weight in the packing, so above this share the shard's cost is no longer the one the
+#: record balanced. A tenth leaves room for the files a quick-lane report can never name
+#: -- those whose tests are all `slow` or `exhaustive_exact`, and the one the lane
+#: ignores -- and for the new files that land between two recordings.
+UNRECORDED_SHARE_WARNING: Final = 0.10
+#: What a test file is called where no pytest configuration says otherwise.
+_PYTHON_FILES: Final = ("test_*.py",)
 #: The GitHub environment a report carries, so a record can name the runs it came from.
 _PROVENANCE_ENVIRONMENT: Final = (
     "PACKING_VALIDATED_SHA",
@@ -206,6 +232,62 @@ def repository_path(path: Path) -> str:
         return resolved.as_posix()
 
 
+def lane_files(roots: Iterable[Path], patterns: Sequence[str] = _PYTHON_FILES) -> list[str]:
+    """The test files under `roots`, repository-relative: one walk, `__pycache__` pruned.
+
+    A root that is itself a file counts as that file whatever it is called, since a run
+    pointed at one module collects that module.
+    """
+    found: set[str] = set()
+    for root in roots:
+        if root.is_file():
+            found.add(repository_path(root))
+            continue
+        for directory, names, files in os.walk(root):
+            names[:] = [name for name in names if name != "__pycache__"]
+            found.update(
+                repository_path(Path(directory, name))
+                for name in files
+                if any(fnmatch(name, pattern) for pattern in patterns)
+            )
+    return sorted(found)
+
+
+def unrecorded_by_shard(
+    costs: RecordedCosts, files: Iterable[str], packed: Mapping[str, int] | None = None
+) -> list[tuple[int, int]]:
+    """Per shard, in order: the files assigned, and how many the record does not name.
+
+    `files` are repository-relative paths. The second number is the part of the shard the
+    packing never weighed: those files arrived by path hash, so their cost is whatever
+    the hash happened to put together.
+    """
+    assignments = pack(costs) if packed is None else packed
+    assigned = [0] * costs.shards
+    unrecorded = [0] * costs.shards
+    for path in files:
+        recorded = assignments.get(path)
+        shard = unrecorded_shard(path, costs.shards) if recorded is None else recorded
+        assigned[shard - 1] += 1
+        unrecorded[shard - 1] += recorded is None
+    return list(zip(assigned, unrecorded, strict=True))
+
+
+def _share(assigned: int, unrecorded: int) -> float:
+    return unrecorded / assigned if assigned else 0.0
+
+
+def _percent(fraction: float) -> str:
+    return f"{fraction * 100:g}%"
+
+
+def _share_threshold(value: object) -> float:
+    """A fraction of a shard, or a refusal: 1 never warns, 0 warns on any unrecorded file."""
+    if isinstance(value, bool) or not isinstance(value, int | float) or not 0 <= value <= 1:
+        raise SuiteFilesError(f"an unrecorded share is a fraction from 0 to 1, not {value!r}")
+    return float(value)
+
+
 @cache
 def _packed(path: Path) -> tuple[RecordedCosts, dict[str, int]]:
     costs = load_costs(path)
@@ -232,6 +314,17 @@ def pytest_addoption(parser: pytest.Parser) -> None:
         help="the recorded per-file costs the shard partition packs",
     )
     _ = group.addoption(
+        "--suite-unrecorded-share",
+        action="store",
+        type=float,
+        default=UNRECORDED_SHARE_WARNING,
+        metavar="FRACTION",
+        help=(
+            "warn when more than this fraction of the shard's test files is not named in "
+            "the record; 1 never warns, for a record that is sparse by design"
+        ),
+    )
+    _ = group.addoption(
         "--test-file-costs",
         action="store",
         default=None,
@@ -247,6 +340,41 @@ def _costs_option(config: pytest.Config) -> Path:
     return Path(str(config.getoption("--suite-file-costs"))).resolve()
 
 
+def unrecorded_share_warning(
+    shard: Shard, assigned: int, unrecorded: int, *, threshold: float, record: Path
+) -> str | None:
+    """What a sharded run says when too much of its shard was never weighed, or `None`."""
+    share = _share(assigned, unrecorded)
+    if share <= threshold:
+        return None
+    return (
+        f"suite shard {shard}: {unrecorded} of the {assigned} test files it is assigned "
+        f"({share:.1%}) are not named in {record.name}, over the {_percent(threshold)} "
+        "threshold. An unrecorded file takes its path hash and no weight in the packing, "
+        "so this shard's cost is not the one the record balanced. Rebuild the record from "
+        "the reports of a complete hosted cohort: `python -m devtools.suite_files record "
+        "REPORT.json ...`"
+    )
+
+
+def _warn_of_unrecorded_share(config: pytest.Config, shard: Shard) -> None:
+    """One walk of the roots this run was pointed at, priced against the record."""
+    threshold = _share_threshold(config.getoption("--suite-unrecorded-share"))
+    record = _costs_option(config)
+    costs, packed = _packed(record)
+    base = config.invocation_params.dir
+    roots = [base / str(argument).partition("::")[0] for argument in config.args]
+    patterns = [str(pattern) for pattern in config.getini("python_files")]
+    assigned, unrecorded = unrecorded_by_shard(costs, lane_files(roots, patterns), packed)[
+        shard.index - 1
+    ]
+    message = unrecorded_share_warning(
+        shard, assigned, unrecorded, threshold=threshold, record=record
+    )
+    if message is not None:
+        config.issue_config_time_warning(pytest.PytestConfigWarning(message), stacklevel=2)
+
+
 def pytest_configure(config: pytest.Config) -> None:
     option = config.getoption("--suite-shard", default=None)
     try:
@@ -258,12 +386,19 @@ def pytest_configure(config: pytest.Config) -> None:
         raise pytest.UsageError(
             f"--suite-shard {shard} asks for {shard.count} shards, but the recorded "
             f"partition packs {costs.shards}; re-record it with `python -m "
-            "devtools.suite_files record` rather than dividing a record made for another "
-            "count"
+            f"devtools.suite_files record --shards {shard.count}` rather than dividing a "
+            "record made for another count"
         )
     config.stash[_SHARD] = shard
+    controller = not hasattr(config, "workerinput")
+    if shard is not None and controller:
+        # The controller alone, so an xdist run says it once rather than once per worker.
+        try:
+            _warn_of_unrecorded_share(config, shard)
+        except SuiteFilesError as error:
+            raise pytest.UsageError(str(error)) from error
     target = config.getoption("--test-file-costs", default=None)
-    if target is not None and not hasattr(config, "workerinput"):
+    if target is not None and controller:
         config.pluginmanager.register(FileCostReport(Path(str(target)), shard), "file-costs")
 
 
@@ -457,6 +592,12 @@ def record(
     the audit measured a 1.8x spread applied evenly across files -- so the record is the
     centre of that spread rather than whichever runner drew last. A file that reported no
     time at all is recorded at zero and packs last.
+
+    `shards` is the count the record packs into, and it is written to the record as asked.
+    The count the reports were cut at is a separate fact, read from the reports: every
+    sharded report must name the same one, and a cohort is complete when it holds each
+    shard of that count exactly once. So a complete cohort of N packs into M, while `1/2`
+    and `2/3` together are still refused as no cohort at all.
     """
     reports = list(reports)
     if not reports:
@@ -476,11 +617,14 @@ def record(
     if all(part is not None for part in raw_shards):
         parsed = [Shard.parse(str(part)) for part in raw_shards]
         counts = {part.count for part in parsed}
-        if counts != {shards}:
+        if len(counts) != 1:
             raise SuiteFilesError(
-                f"reports describe shard count(s) {sorted(counts)}, not the requested {shards}"
+                f"reports describe shard count(s) {sorted(counts)}, not one count; a record "
+                "is made from complete cohorts cut at a single shard count, whatever "
+                f"--shards ({shards}) packs them into"
             )
-        expected = set(range(1, shards + 1))
+        (cohort_shards,) = counts
+        expected = set(range(1, cohort_shards + 1))
         cohort_keys = ("GITHUB_RUN_ID", "GITHUB_RUN_ATTEMPT", "GITHUB_SHA")
         cohorts: defaultdict[tuple[str, ...], list[tuple[int, set[str]]]] = defaultdict(list)
         for report, part, files in zip(reports, parsed, validated, strict=True):
@@ -497,7 +641,7 @@ def record(
         incomplete: list[tuple[tuple[str, ...], list[int]]] = []
         for cohort, parts in cohorts.items():
             indexes = [index for index, _files in parts]
-            if set(indexes) != expected or len(indexes) != shards:
+            if set(indexes) != expected or len(indexes) != cohort_shards:
                 incomplete.append((cohort, indexes))
         if incomplete:
             cohort, indexes = incomplete[0]
@@ -563,6 +707,41 @@ def record(
     return document
 
 
+def _check(costs: RecordedCosts, roots: Iterable[Path], threshold: float) -> int:
+    """Print every shard's unrecorded share and files; 1 when any is over `threshold`."""
+    files = lane_files(roots)
+    packed = pack(costs)
+    names: defaultdict[int, list[str]] = defaultdict(list)
+    for name in files:
+        if name not in packed:
+            names[unrecorded_shard(name, costs.shards)].append(name)
+    rows = unrecorded_by_shard(costs, files, packed)
+    print(
+        f"{len(files)} test files, {sum(unrecorded for _assigned, unrecorded in rows)} not "
+        f"named in the record; a shard may be {_percent(threshold)} unrecorded:"
+    )
+    over: list[str] = []
+    for index, (assigned, unrecorded) in enumerate(rows, start=1):
+        share = _share(assigned, unrecorded)
+        excess = share > threshold
+        if excess:
+            over.append(f"{index}/{costs.shards}")
+        print(
+            f"  shard {index}/{costs.shards}: {assigned:4d} files, {unrecorded:3d} unrecorded "
+            f"({share:5.1%})" + (" -- over the threshold" if excess else "")
+        )
+        for name in names[index]:
+            print(f"      {name}")
+    if not over:
+        return 0
+    print(
+        f"shard(s) {', '.join(over)} over the threshold: those files took their path hash "
+        "and no weight in the packing. Rebuild the record from the reports of a complete "
+        "hosted cohort: `python -m devtools.suite_files record REPORT.json ...`"
+    )
+    return 1
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python -m devtools.suite_files",
@@ -572,16 +751,52 @@ def main(argv: Sequence[str] | None = None) -> int:
     commands = parser.add_subparsers(dest="command", required=True)
     recording = commands.add_parser("record", help="write the record from cost reports")
     _ = recording.add_argument("reports", nargs="+", type=Path)
-    _ = recording.add_argument("--shards", type=int, default=None)
+    _ = recording.add_argument(
+        "--shards",
+        type=int,
+        default=None,
+        help=(
+            "the count to pack into, whatever count the reports were cut at; omit to keep "
+            "the current record's"
+        ),
+    )
     _ = recording.add_argument("--output", type=Path, default=COSTS)
     _ = recording.add_argument(
         "--target-ceilings",
         metavar="SECONDS,...",
-        help="positive per-shard wall ceilings, e.g. 168,154; omit for equal capacities",
+        help=(
+            "positive wall ceilings, one per packed shard, e.g. 131,154,154,131; omit for "
+            "equal capacities"
+        ),
     )
     _ = commands.add_parser("show", help="print the recorded partition's shard totals")
+    checking = commands.add_parser(
+        "check", help="print each shard's unrecorded files; exit 1 over the threshold"
+    )
+    _ = checking.add_argument(
+        "--root",
+        action="extend",
+        nargs="+",
+        type=Path,
+        default=None,
+        metavar="DIR",
+        help="a directory of test files; default: both behavioural test roots",
+    )
+    _ = checking.add_argument(
+        "--max-unrecorded-share",
+        type=float,
+        default=UNRECORDED_SHARE_WARNING,
+        metavar="FRACTION",
+        help=f"the share of a shard that may be unrecorded; default {UNRECORDED_SHARE_WARNING}",
+    )
     arguments = parser.parse_args(argv)
     try:
+        if arguments.command == "check":
+            return _check(
+                load_costs(),
+                arguments.root or DEFAULT_ROOTS,
+                _share_threshold(arguments.max_unrecorded_share),
+            )
         if arguments.command == "record":
             shards = int(arguments.shards or load_costs().shards)
             try:

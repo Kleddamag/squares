@@ -1484,7 +1484,7 @@ html[data-kpress-math-pending]
     }
   }
 
-  /* No folio on the title page either: it already carries the edition and the
+  /* No folio on the title page either: it already carries the publication dates and the
      repository, and a page number under a title block reads as a body page. */
   @page :first {
     @bottom-right {

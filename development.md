@@ -165,21 +165,22 @@ alone is not full pre-merge evidence.
 
 | Tier | Who runs it, and when | Steps | Ceiling | Cost when last measured |
 | --- | --- | ---: | ---: | --- |
-| `--records` | contributor, before touching a registry; also every pull request | 37 of 86 | 300 s | 11.0 s |
-| `--edit` | contributor, in the edit loop | 52 of 86 | 240 s | 59.4 s |
+| `--records` | contributor, before touching a registry; also every pull request | 38 of 88 | 300 s | 11.0 s |
+| `--edit` | contributor, in the edit loop | 53 of 88 | 240 s | 59.4 s |
 | `--push` | contributor, once before a push — the edit tier plus tests reachable from the diff (`--since`) | varies with the diff | 1800 s | about a minute for a narrow code change; an implicitly configured broad diff selects the whole suite and assigns one outer job so pytest can use the host, see below |
-| `--fast` | contributor, at a block boundary; the union of the eight tiers below | 75 of 86 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
-| `--checks` | **CI, on every pull request**, in the `validate` job | 55 of 86 | 140 s | 103.70 s, the geometric mean of thirty-three hosted readings on 2026-09-30 and 10-01, with the band 59.4–137.1 s (2.31x) the runner pool spanned on unchanged steps; the 114.34 s two-attempt record stays in the register as history |
-| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 3 of 86 | 150 s | 104.74 s, the geometric mean of 32 hosted readings from 27 to 30 September (70.97–134.86 s, 1.90x); 85.25 s from two readings stays in the register as history |
-| `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 86 | 111 s | 76.5 s, the centre of eighteen hosted readings, with the band 56.67–92.27 s that its two runner regimes span |
-| `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 86 | 180 s | 98.07 s, the geometric mean of fourteen hosted readings, with the band 58.75–116.19 s that its two runner regimes span |
-| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 86 | 131 s | 85.03 s geometric mean of the three-shard observations 65.67/110.09 s in runs 36739024277 and 36740609969 |
-| `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 86 | 154 s | 104.65 s on the three-shard partition, run 36739024277, job 109968163416 |
-| `--suite-c` | **CI, on every pull request**, in the `suite-c` job, concurrently | 1 of 86 | 154 s | 102.94 s, the geometric mean of thirty-one hosted readings on 2026-09-30 and 10-01, with the band 62.96–143.87 s (2.29x) the runner pool spanned on unchanged tests; the single 88.59 s reading from run 36739024277 stays in the register as history |
-| `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 4 of 86 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
-| *(no flag)* | Full checkpoint before final review and at block close; main, dispatch, and daily CI | 86 of 86 | 3600 s | integration plus nine deferred workers; new whole-wall measurement pending |
+| `--fast` | contributor, at a block boundary; the union of the nine tiers below | 77 of 88 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
+| `--checks` | **CI, on every pull request**, in the `validate` job | 56 of 88 | 140 s | 103.70 s, the geometric mean of thirty-three hosted readings on 2026-09-30 and 10-01, with the band 59.4–137.1 s (2.31x) the runner pool spanned on unchanged steps; the 114.34 s two-attempt record stays in the register as history |
+| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 3 of 88 | 150 s | 104.74 s, the geometric mean of 32 hosted readings from 27 to 30 September (70.97–134.86 s, 1.90x); 85.25 s from two readings stays in the register as history |
+| `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 88 | 111 s | 76.5 s, the centre of eighteen hosted readings, with the band 56.67–92.27 s that its two runner regimes span |
+| `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 88 | 180 s | 98.07 s, the geometric mean of fourteen hosted readings, with the band 58.75–116.19 s that its two runner regimes span |
+| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 88 | 131 s | 114.58 s, the geometric mean of twelve hosted readings on 2026-10-01 of the three-shard partition after the day’s growth, band 83.91–128.65 s (1.53x); two more walls that day, 131.58 and 132.67 s, were over the ceiling with every test green and are named, not averaged; the 85.03 s two-reading record stays in the register as history |
+| `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 88 | 154 s | 114.38 s, the geometric mean of eleven hosted readings on 2026-10-01 of the same partition, band 79.30–139.35 s (1.76x); the 104.65 s single reading stays as history |
+| `--suite-c` | **CI, on every pull request**, in the `suite-c` job, concurrently | 1 of 88 | 154 s | 132.05 s, the geometric mean of eleven hosted readings on 2026-10-01 after the day’s files landed in it, band 90.34–147.16 s (1.63x); the 102.94 s thirty-one-reading record and the 88.59 s first reading stay as history |
+| `--suite-d` | **CI, on every pull request**, in the `suite-d` job, concurrently | 1 of 88 | 131 s | pending its first hosted cohort under `think-t7k5`; the record’s cohort predicts about 84 s for its 278.9 test-second share |
+| `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 4 of 88 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
+| *(no flag)* | Full checkpoint before final review and at block close; main, dispatch, and daily CI | 88 of 88 | 3600 s | integration plus nine deferred workers; new whole-wall measurement pending |
 
-Step counts describe the current 86-step registry.
+Step counts describe the current 88-step registry.
 Dated costs retain their measured source and resource shape; they are not fresh
 measurements of the new scheduling.
 
@@ -206,16 +207,18 @@ Changing only xdist’s scheduler did not recover the target: the local default 
 302.70 seconds, `loadscope` measured 318.54 seconds, and `worksteal` measured 323.69
 seconds. The latter two were rejected as 5.2 and 6.9 percent slower than the default.
 
-The current surface therefore runs two pre-collection shards.
-`devtools.suite_files` packs recorded per-file costs longest-first across the two; a
-file absent from the record uses a stable `crc32(path) mod 2` fallback.
+The current surface therefore runs pre-collection shards, four since 2026-10-01.
+`devtools.suite_files` packs recorded per-file costs longest-first across them; a file
+absent from the record uses a stable `crc32(path) mod 4` fallback.
 Each file belongs to exactly one shard and each runner imports only its own files.
-Both jobs retain full Git history for history-reading tests, but neither installs Node.
-Browser-floor liveness runs under `--frontend`, on the runner that owns the pinned Node
-toolchain. Each shard writes a per-file cost report beside its JUnit and timing
+The shard jobs retain full Git history for history-reading tests, but none installs
+Node. Browser-floor liveness runs under `--frontend`, on the runner that owns the pinned
+Node toolchain. Each shard writes a per-file cost report beside its JUnit and timing
 artifacts; the recorder accepts complete coherent cohorts and rejects failed, partial,
-duplicated, coverage-mismatched, and mixed-provenance evidence.
-The current declared ceilings are 168 seconds for suite A and 154 seconds for suite B.
+duplicated, coverage-mismatched, and mixed-provenance evidence, and a cohort recorded at
+one shard count may be packed into another, which is how the lane is repartitioned.
+The current declared ceilings are 131 seconds for shards A and D and 154 seconds for B
+and C.
 
 The frontend browser runner builds one page and runs eight isolated browser contracts.
 The gate permits two contracts concurrently when the CPU count and outer job count leave
@@ -277,20 +280,41 @@ After `main` merged into the stack, #160 read 200.68 s and 199.74 s at `72629c03
   representation.
 
 **The pull-request surface is `--checks`, `--frontend`, `--typecheck`, `--geometry`,
-`--suite-a`, `--suite-b`, `--suite-c`, and `--sweeps` together, run as eight concurrent
-CI jobs**, so a pull request waits for the longest part rather than for their sum.
-All eight feed the stable `packing-required` aggregate context.
+`--suite-a`, `--suite-b`, `--suite-c`, `--suite-d`, and `--sweeps` together, run as nine
+concurrent CI jobs**, so a pull request waits for the longest part rather than for their
+sum. All nine feed the stable `packing-required` aggregate context.
 Repository protection settings determine whether GitHub requires that context before a
 merge. `test_the_pull_request_jobs_partition_the_surface` reads the workflow and checks
 that they are pairwise disjoint and that they cover every step of `--fast` — so the
 split cannot lose a check the way a set of independent filters could.
 
-The three behavioral shards use a source-bound file-cost record and deterministic
-partitioning weighted by the historical planning capacities 168/154/154. Those frozen
-weights define the measured assignment; the live enforcement ceilings are separately
-calibrated at 131/154/154 seconds.
+The four behavioral shards use a source-bound file-cost record and deterministic
+partitioning weighted by the planning capacities 131/154/154/131, which were the live
+ceilings when the record was taken; the frozen weights define the measured assignment,
+and the ceilings are enforced separately.
 Each test file belongs to exactly one shard.
-The third shard supplies capacity after
+
+The fourth shard was added on 2026-10-01, when about 450 tests landed in a day on a
+record that no longer named the lane.
+The record then packed 433 of 499 test files from a two-shard cohort of 2026-09-30
+([run 36728602528](https://github.com/jlevy/squares/actions/runs/36728602528)); the 66
+unrecorded files took the path hash, and `crc32(path) mod 3` sent 25 of them, with 106.8
+of their 200.0 test-seconds and the lane’s largest new file (`test_overview.py`, 57.5
+s), into shard C. The three-shard cohort of
+[run 36924379492](https://github.com/jlevy/squares/actions/runs/36924379492) measured
+the shards at 410.7, 339.7 and 463.1 test-seconds, 2,701, 2,721 and 3,967 tests, and
+121.14, 101.75 and 145.18 s of wall, about 0.30 s of wall per test-second; over the day
+shard A read 83.91 to 132.67 s against its 131 s ceiling and failed PR 277 twice with
+every test green. Three balanced shards would carry 404.5 test-seconds each: about 121 s
+of wall, and 150 to 157 s at the top of the runner band, which is B and C’s ceiling and,
+with about 44 s of checkout and setup, about 200 s of job wall against OR-14’s 180 s
+outer edge. The record was rebuilt from that cohort into four shards, 278.9 test-seconds
+for A and D and 327.9 for B and C, predicting about 84 and 98 s.
+`python -m devtools.suite_files check` reports each shard’s unrecorded share against the
+tree, and the plugin warns in a shard’s own log when more than a tenth of its files have
+no recorded cost; a file added after the record falls to the hash until the next rebuild
+from a green cohort’s reports.
+The third shard supplied capacity after
 [run 36735084578](https://github.com/jlevy/squares/actions/runs/36735084578) measured
 156.19 and 165.06 seconds for the two-shard partition: their combined 321.25 seconds
 left less than one second against the combined ceilings.
@@ -389,16 +413,16 @@ test satisfies exactly one, so no test can be in two lanes and none can be in ze
 
 | Lane | Marker | Tests at last count | Runs in | Bound |
 | --- | --- | ---: | --- | --- |
-| quick | neither | 7,962 file-shard tests (7,955 passed; 7 skipped) | PR fast surface: file shards in `suite-a`, `suite-b` and `suite-c`, browser-floor liveness in `frontend` | fails a test whose `call` phase reaches 12 s |
+| quick | neither | 9,389 file-shard tests (9,193 passed; 196 skipped) | PR fast surface: file shards in `suite-a`, `suite-b`, `suite-c` and `suite-d`, browser-floor liveness in `frontend` | fails a test whose `call` phase reaches 12 s |
 | slow | `slow` | 97 | full checkpoint, under xdist in CI | fails a test whose `call` phase is under 1 s |
 | exhaustive | `exhaustive_exact` | 55 | its own CI job | its own 3600 s budget |
 
-The quick file-shard count is from PR 246 run 36735084578 on 2026-09-30, before the
-third shard was added; the separate browser-floor controls are not included in that
-count. The slow and exhaustive counts are `--collect-only` readings from 2026-09-08
-against the n = 1..324 corpus.
-These are measurements rather than fixed membership; marker expressions determine the
-three lanes, and counts move with the corpus.
+The quick file-shard count is from the three shards’ per-file reports in run 36924379492
+on 2026-10-01, before the fourth shard was added; the separate browser-floor controls
+are not included in that count.
+The slow and exhaustive counts are `--collect-only` readings from 2026-09-08 against the
+n = 1..324 corpus. These are measurements rather than fixed membership; marker
+expressions determine the three lanes, and counts move with the corpus.
 A stale quick count in this table is how [D-488](defects.md)’s cause stayed invisible,
 since the tests grew and the budget bounding them did not.
 [Main run 34025346801](https://github.com/jlevy/squares/actions/runs/34025346801)
@@ -560,12 +584,12 @@ uv run --frozen --all-extras --group dev packing-validate --edit
 uv run --frozen --all-extras --group dev packing-validate --push
 
 # The pull-request surface: the edit tier plus every behavioral test under the
-# per-test ceiling. CI runs it as the eight parts below, one per runner; run it whole
+# per-test ceiling. CI runs it as the nine parts below, one per runner; run it whole
 # here, where there is only one machine and nothing to overlap with.
 uv run --frozen --all-extras --group dev packing-validate --fast
 
-# The eight parts CI runs concurrently on a pull request. They partition --fast, so
-# running all eight is running the surface and running one is running a part of it.
+# The nine parts CI runs concurrently on a pull request. They partition --fast, so
+# running all nine is running the surface and running one is running a part of it.
 uv run --frozen --all-extras --group dev packing-validate --checks
 uv run --frozen --all-extras --group dev packing-validate --frontend
 uv run --frozen --all-extras --group dev packing-validate --typecheck
@@ -573,6 +597,7 @@ uv run --frozen --all-extras --group dev packing-validate --geometry
 uv run --frozen --all-extras --group dev packing-validate --suite-a
 uv run --frozen --all-extras --group dev packing-validate --suite-b
 uv run --frozen --all-extras --group dev packing-validate --suite-c
+uv run --frozen --all-extras --group dev packing-validate --suite-d
 uv run --frozen --all-extras --group dev packing-validate --sweeps
 
 # One named component. --only is repeatable and matches displayed step names.

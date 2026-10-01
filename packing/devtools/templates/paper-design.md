@@ -11,7 +11,7 @@ Three layers carry it, from the bottom up, with the paper’s text tokens shared
 | --- | --- | --- |
 | KPress | `vendor/kpress` | Fonts, Markdown typography, math, themes, print |
 | Text | [paper-type.css](paper-type.css) | The type base, reading measure, heading scale, role scales and pinned faces every page shares |
-| Paper | [explainer-shell.html](explainer-shell.html) | The explainer’s figures, panels and print rules |
+| Paper | [explainer-publication.css](explainer-publication.css) | The publication layer both papers share: figures, panels, components and print rules |
 | Site | [site.css](site.css), [site-nav.css](site-nav.css) | Site pages and the navigation bar every page carries, the explainer and the workbench included |
 
 The paper and site layers read the same values from `paper-type.css`, under their own
@@ -23,7 +23,17 @@ print rules.
 The explainer uses serif prose for sustained reading and sans serif text for figures,
 captions, notes, and controls.
 The web page and PDF share this hierarchy, with sizes scaled for each medium.
-[explainer-article.md](explainer-article.md) contains the explainer’s article.
+Keep these conventions reusable across papers.
+
+[explainer-publication.css](explainer-publication.css) contains the publication layer
+both papers share, above KPress and `paper-type.css`. Both
+[explainer-shell.html](explainer-shell.html) and
+[n11-optimality-shell.html](n11-optimality-shell.html) inline that stylesheet;
+[explainer-article.md](explainer-article.md) and
+[n11-optimality-article.md](n11-optimality-article.md) contain the separate articles.
+KPress supplies the fonts, Markdown typography, math, themes, and general print
+behavior. `paper-type.css` sets the type proportions and reading measure, and the
+publication layer sets the figure layout and the paper’s components.
 
 ## Typography Roles
 
@@ -523,12 +533,12 @@ it.
   A popover card (`card`) is a button that opens a popover showing where it leads, and
   the popover ends in one button that goes there, centred at its foot.
   A direct card is instead itself the link (`link_card`), an `<a>` with no popover.
-  **A page card navigates.** The overview’s four page cards, the explainer, the
-  tutorial, the workbench and the frontier atlas, lead to full pages the site serves, so
-  each is a direct card that goes to its page in the same tab (`new_tab=False`), with
-  the right arrow for its icon (`data-go="page"`) and nothing framed (`think-bc5d`).
-  Popovers are for targets that are not site pages of their own: a result’s row, a
-  repository document rendered for its card’s popover, a case.
+  **A page card navigates.** The overview’s five page cards, the optimality paper, the
+  explainer, the tutorial, the workbench and the frontier atlas, lead to full pages the
+  site serves, so each is a direct card that goes to its page in the same tab
+  (`new_tab=False`), with the right arrow for its icon (`data-go="page"`) and nothing
+  framed (`think-bc5d`). Popovers are for targets that are not site pages of their own:
+  a result’s row, a repository document rendered for its card’s popover, a case.
   **Every other direct card opens its target in a new tab** (`target="_blank"`,
   `rel="noopener noreferrer"`), so the page the reader chose it from stays where they
   left it: a poster’s PDF, the Visualize page, another project.
@@ -541,7 +551,8 @@ it.
     frame to the full window.
     The button is **Expand**, which opens the page at full size; a repository document
     also offers its source “On GitHub”, which opens it on `main`. Every repository link
-    on the site names `main`, never a commit, and is made by `devtools/repo_links.py`.
+    on the site names `main`, never a commit, and is made by `devtools/repo_links.py`;
+    the optimality paper’s citations are the one exception (**Papers page**, below).
   - When the card leads to another project off the site, it is a direct card.
     It shows the address under the note beside the host’s mark (GitHub’s for a GitHub
     URL, otherwise the site’s favicon, saved under `devtools/overview/favicons/` by host
@@ -659,7 +670,7 @@ it.
   A rule transitions only the properties its hover changes (`background-color`, `color`,
   `border-color`, `opacity`, `translate`), never `all`, and never with a literal
   duration: `tests/test_overview.py` fails a `transition` in `site.css`, `site-nav.css`
-  or `explainer-shell.html` that names a time instead of the token.
+  or `explainer-publication.css` that names a time instead of the token.
   Under `prefers-reduced-motion: reduce` the duration is 0ms, so colours change at once
   and no arrow moves.
 
@@ -1060,9 +1071,24 @@ its defaults.
   page and on each of them.
   The optimality paper has its own renderer, shell and Pages job
   (`render_n11_optimality_explainer`); it carries the bar as the explainer does, through
-  `render_overview.nav_html`, with the links climbing one level to the site’s root, and
-  without `paper-type.css`, so its typography and its sixteen-page PDF are its own.
-  Its citations name the commit it was built from, where every other page links `main`.
+  `render_overview.nav_html`, with the links climbing one level to the site’s root.
+  Its page shares the explainer’s publication layer and `paper-type.css`, and keeps only
+  its diagrams’ rules in [n11-optimality.css](n11-optimality.css).
+  There a table keeps to the column and scrolls inside its own wrap, the credits are one
+  column no wider than the page, and a diagram drawn in fixed ink keeps a light ground
+  on the dark theme, as the construction in its first figure does.
+
+  **The paper’s citations name a commit, the one exception to links on `main`.** A paper
+  cites the evidence as it stood when it was typeset: its links carry anchors into
+  reviews and receipts that keep changing on `main`, and a reader checking a claim
+  should land on the text the paper read.
+  The hazard that links on `main` avoid, a commit that a squash merge leaves on no
+  branch, does not reach the deployed paper: the deploy builds it from the commit it
+  deploys, which `main` keeps (`render_n11_optimality_explainer.link_revision`).
+  `check_published_site` holds each citation on the page and in its Markdown to that
+  commit and to its tree, and fails one that names `main` or any other commit.
+  A pull request’s build names a commit that may not outlive the merge; it is checked
+  and never published.
 
 - **Awaiting replay.** Under the recent table, a closed disclosure in the sans face at
   the note size: its summary names how many cases and the range, and it opens a compact

@@ -1,0 +1,4 @@
+VERIFICATION FAILED: 2 squares, 1 pairs
+  exact side: 2
+  minimum pair gap: -1/2
+  FAILURE: 1 overlapping pairs; worst exact gap -1/2

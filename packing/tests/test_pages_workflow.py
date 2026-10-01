@@ -12,6 +12,7 @@ from fnmatch import fnmatchcase
 from pathlib import Path
 from typing import Any
 
+from devtools import render_n11_optimality_explainer as optimality_paper
 from devtools.pages_scope import BUILDER_INPUTS, declared_inputs, pull_request_jobs
 from sqpack.yamlio import safe_load
 
@@ -1297,7 +1298,13 @@ def test_the_partial_checkouts_keep_the_directories_the_render_links() -> None:
     jobs = load()["jobs"]
     patterns = "/*\n!/packing/resources/*/\n!/packing/campaign/*/\n"
     packet = REPO / "packing/resources/web/n11-optimality-2026-09-29"
-    optimality_patterns = patterns + "/packing/resources/web/n11-optimality-2026-09-29/\n"
+    optimality_patterns = (
+        patterns
+        + "/packing/resources/web/n11-optimality-2026-09-29/\n"
+        + "/packing/resources/papers/kingbird-square-11-provenance.svg\n"
+        + "/packing/resources/web/external-square-certificates-2026-09-22/"
+        "kleddamag-11/README.md\n"
+    )
     sparse = []
     for name, job in jobs.items():
         for step in job.get("steps", []):
@@ -1332,7 +1339,10 @@ def test_the_partial_checkouts_keep_the_directories_the_render_links() -> None:
         for declared in builder():
             for root in omitted_roots:
                 if declared.is_relative_to(root):
-                    if half == "optimality" and declared.is_relative_to(packet):
+                    if half == "optimality" and (
+                        declared.is_relative_to(packet)
+                        or declared in optimality_paper.ARCHIVED_CITATION_SOURCES
+                    ):
                         continue
                     relative = declared.relative_to(root)
                     if relative.parts and (root / relative.parts[0]).is_dir():
@@ -1340,6 +1350,87 @@ def test_the_partial_checkouts_keep_the_directories_the_render_links() -> None:
         assert omitted == [], f"{half}: render inputs omitted by sparse checkout: {omitted}"
     assert (REPO / "packing/resources/README.md").is_file()
     assert (REPO / "packing/campaign/README.md").is_file()
+
+
+def test_optimality_archive_links_are_all_in_its_sparse_checkout() -> None:
+    """Every relative citation outside the retained proof packet must be named exactly."""
+    packet = REPO / "packing/resources/web/n11-optimality-2026-09-29"
+    resources = REPO / "packing/resources"
+    expected_archived = {
+        REPO / "packing/resources/papers/kingbird-square-11-provenance.svg",
+        REPO
+        / "packing/resources/web/external-square-certificates-2026-09-22"
+        / "kleddamag-11/README.md",
+    }
+    source = optimality_paper.ARTICLE.read_text(encoding="utf-8")
+    archive_links = {
+        (optimality_paper.ARTICLE.parent / match.group("url").partition("#")[0]).resolve()
+        for pattern in (
+            optimality_paper.RELATIVE_LINK,
+            optimality_paper.RELATIVE_REFERENCE,
+            optimality_paper.RELATIVE_ANCHOR,
+        )
+        for match in pattern.finditer(source)
+    }
+    archive_links = {path for path in archive_links if path.is_relative_to(resources)}
+    assert {
+        path for path in archive_links if not path.is_relative_to(packet)
+    } == expected_archived
+    assert set(optimality_paper.ARCHIVED_CITATION_SOURCES) == expected_archived
+    assert expected_archived <= set(optimality_paper.RENDER_INPUTS)
+
+
+def test_optimality_sparse_checkout_keeps_only_its_archive_inputs(tmp_path: Path) -> None:
+    """Git must actually materialize the citations despite the archive exclusion."""
+    source = tmp_path / "source"
+    checkout = tmp_path / "checkout"
+    included = (
+        "packing/resources/README.md",
+        "packing/resources/web/n11-optimality-2026-09-29/README.md",
+        "packing/resources/papers/kingbird-square-11-provenance.svg",
+        "packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md",
+    )
+    excluded = (
+        "packing/resources/web/unrelated/README.md",
+        "packing/campaign/old/README.md",
+    )
+    for path in (*included, *excluded):
+        target = source / path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(path, encoding="utf-8")
+
+    def git(*args: str, cwd: Path | None = None, input_text: str | None = None) -> None:
+        subprocess.run(
+            ("git", *args),
+            cwd=cwd,
+            input=input_text,
+            text=True,
+            check=True,
+            capture_output=True,
+        )
+
+    git("init", "-q", str(source))
+    git("add", ".", cwd=source)
+    git(
+        "-c",
+        "user.name=Test",
+        "-c",
+        "user.email=test@example.com",
+        "commit",
+        "-qm",
+        "fixture",
+        cwd=source,
+    )
+    git("clone", "-q", "--no-checkout", str(source), str(checkout))
+    patterns = next(
+        step["with"]["sparse-checkout"]
+        for step in load()["jobs"]["optimality"]["steps"]
+        if "actions/checkout@" in step.get("uses", "")
+    )
+    git("sparse-checkout", "set", "--no-cone", "--stdin", cwd=checkout, input_text=patterns)
+    git("checkout", "-q", "HEAD", cwd=checkout)
+    assert all((checkout / path).is_file() for path in included)
+    assert all(not (checkout / path).exists() for path in excluded)
 
 
 def test_prepared_geometry_checks_cover_each_browser_and_their_controls() -> None:

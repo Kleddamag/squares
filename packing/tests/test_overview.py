@@ -19,6 +19,7 @@ import pytest
 from devtools import overview_data, overview_sections, render_overview, render_recent_results
 from devtools.render_explainer import COMPOSITE_ASSETS, OVERVIEW_FILM_POSTER
 from devtools.render_explainer import MARKDOWN as EXPLAINER_ARTICLE
+from devtools.render_explainer import PUBLICATION_STYLE as EXPLAINER_STYLE
 from devtools.render_explainer import TEMPLATE as EXPLAINER_SHELL
 from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, hash_pinned_links, repo_url
 from devtools.result_credit import OTHERS, source_lineage
@@ -220,19 +221,29 @@ def _page_card_parts(page: str, href: str) -> tuple[str, str]:
 
 
 def test_each_page_card_is_a_plain_link_to_its_page(page: str) -> None:
-    """The overview's four page cards lead to full pages the site serves, so each card
+    """The overview's five page cards lead to full pages the site serves, so each card
     is the link itself and goes there in the same tab: an `<a href>` with the page icon
     (`data-go="page"`), no popover, no framed preview and no new tab. Each keeps its
-    label, headline, note and size."""
+    label, headline, note and size. The optimality paper is first, as on the Papers
+    page: its card carries the Papers card's label and title, a shorter note within what
+    T-060's rungs allow, and an address a directory below the site's root."""
     cards = _page_cards(page)
     pages = overview_sections.PAGES
     assert [href for href, _, _ in cards] == [href for href, *_ in pages]
     assert [href for href, *_ in pages] == [
+        "n11-optimality/t-060-explainer.html",
         "explainer.html",
         "tutorial.html",
         "workbench/",
         "frontier.html",
     ]
+    paper = overview_sections.PAPERS[0]
+    assert pages[0][:3] == (overview_sections.OPTIMALITY_PAPER, paper.label, paper.title)
+    assert overview_sections.OPTIMALITY is paper
+    note = pages[0][3]
+    assert note.startswith("Explains the accepted proof that Trump\u2019s packing")
+    assert "(T-060)" in note
+    assert "formal" not in note.lower()
     served = {*render_overview.SITE_PAGES, "workbench/"}
     size = overview_sections.SECTION_CARD_SIZES["pages"]
     for (href, tag, body), (_, label, title, note) in zip(cards, pages, strict=True):
@@ -244,7 +255,8 @@ def test_each_page_card_is_a_plain_link_to_its_page(page: str) -> None:
         assert f'<span class="site-card-label">{label}</span>' in body, href
         value, shown = _page_card_parts(page, href)
         assert card_text(value) == title, href
-        assert card_text(shown) == note, href
+        # A bound's ellipsis is set inside its formula, which reads back as TeX.
+        assert card_text(shown) == note.replace("\u2026", r"\ldots"), href
         assert f'src="{overview_sections.embed_url(href)}"' not in page, href
     assert "pop-page-" not in page
     frame = page.split('<div class="site-cards-frame', 1)[1].split("</div></div>", 1)[0]
@@ -1035,11 +1047,28 @@ def test_the_text_tokens_are_declared_in_one_place() -> None:
     tokens = render_overview.PAPER_TYPE_CSS.read_text(encoding="utf-8")
     for name in owned:
         assert name in tokens, name
-    for layer in (EXPLAINER_SHELL, render_overview.SITE_CSS, render_overview.SITE_NAV_CSS):
+    for layer in (
+        EXPLAINER_SHELL,
+        EXPLAINER_STYLE,
+        render_overview.SITE_CSS,
+        render_overview.SITE_NAV_CSS,
+    ):
         text = layer.read_text(encoding="utf-8")
         for name in owned:
             assert name not in text, f"{layer.name} re-declares {name}"
     assert "{{PAPER_TYPE_CSS}}" in EXPLAINER_SHELL.read_text(encoding="utf-8")
+
+
+def test_the_shared_stylesheet_states_the_provers_two_palette_colours() -> None:
+    """The first paper's stylesheet was a block of its shell, where the renderer filled
+    in the two colours the prover's canvases also draw with. As a file of its own it
+    states them, so they are held to the renderer's here and cannot drift apart."""
+    from devtools import render_explainer  # noqa: PLC0415
+
+    css = EXPLAINER_STYLE.read_text(encoding="utf-8")
+    assert f"  --cert-below: {render_explainer.BELOW_ONE};\n" in css
+    assert f"  --cert-near: {render_explainer.NEAR_LIMIT};\n" in css
+    assert "{{" not in css
 
 
 def test_the_nav_ends_in_an_accessible_theme_control() -> None:
@@ -1163,7 +1192,12 @@ def test_the_film_page_embeds_the_film_at_its_own_proportions(
 def test_no_site_stylesheet_keys_on_the_system_theme_alone() -> None:
     """An explicit Light or Dark choice must win over the system theme, so the site's
     styles key on kpress's resolved theme, never on `prefers-color-scheme`."""
-    for sheet in (render_overview.SITE_CSS, render_overview.SITE_NAV_CSS, EXPLAINER_SHELL):
+    for sheet in (
+        render_overview.SITE_CSS,
+        render_overview.SITE_NAV_CSS,
+        EXPLAINER_SHELL,
+        EXPLAINER_STYLE,
+    ):
         assert "prefers-color-scheme" not in sheet.read_text(encoding="utf-8"), sheet.name
 
 
@@ -2044,7 +2078,7 @@ def test_the_optimality_papers_card_says_what_t060s_rungs_allow(
 ) -> None:
     """The optimality paper is the first card: served where its renderer writes it,
     titled as its renderer titles it, in sentence case, and described as explaining the
-    accepted proof, T-060, in the words T-060's rungs allow, V4 and C5: a proof, never a
+    accepted proof, T-060, in the words T-060's rungs allow, V3 and C3: a proof, never a
     formal one. Its popover frames the paper and links T-060's row."""
     from devtools import render_n11_optimality_explainer as renderer  # noqa: PLC0415
 
@@ -2052,7 +2086,7 @@ def test_the_optimality_papers_card_says_what_t060s_rungs_allow(
     assert paper.href == overview_sections.OPTIMALITY_PAPER == renderer.SITE_PATH
     assert paper.href in render_overview.SITE_PAGES
     assert paper.title.lower() == renderer.TITLE.lower()
-    assert paper.title == "Why eleven squares need this much room"
+    assert paper.title == "A review of the optimality proof of the Trump packing of 11 squares"
     value, note, panel = card_parts(
         rendered("papers.html"), "pop-paper-n11-optimality-t-060-explainer"
     )
@@ -2278,9 +2312,10 @@ def test_every_heading_and_headline_shares_one_leading() -> None:
     assert "  :is(.kpress-math, .katex) {\n" in math
     assert "line-height: 0;" in math
     # The explainer's hero title keeps KPress's own leading, which its math is fitted to.
-    shell = (render_overview.TEMPLATES / "explainer-shell.html").read_text(encoding="utf-8")
-    assert "paper-heading-leading" not in shell
-    assert "height: 1.05em !important;" in shell
+    paper = EXPLAINER_STYLE.read_text(encoding="utf-8")
+    assert "paper-heading-leading" not in paper
+    assert "paper-heading-leading" not in EXPLAINER_SHELL.read_text(encoding="utf-8")
+    assert "height: 1.05em !important;" in paper
 
 
 def test_the_bar_sits_close_to_the_top_of_every_page() -> None:
@@ -2306,8 +2341,9 @@ def test_every_page_starts_one_shared_space_below_the_bar() -> None:
     assert "padding-block-start: var(--site-page-top);" in render_overview.SITE_CSS.read_text(
         encoding="utf-8"
     )
-    shell = (render_overview.TEMPLATES / "explainer-shell.html").read_text(encoding="utf-8")
-    assert "padding-block-start: var(--site-page-top);" in shell
+    assert "padding-block-start: var(--site-page-top);" in EXPLAINER_STYLE.read_text(
+        encoding="utf-8"
+    )
 
 
 def test_an_opening_picture_sits_one_token_nearer_the_bar() -> None:
@@ -2328,8 +2364,8 @@ def test_section_headings_share_one_space_above_and_one_below() -> None:
     assert "  --paper-section-space-below: 1.7rem;\n" in screen
     assert printed.startswith(": calc(var(--kpress-font-size-base) * 2.8);\n")
     assert "    --paper-section-space-below: 1.3rem;\n  }\n}" in printed[:120]
-    shell = (render_overview.TEMPLATES / "explainer-shell.html").read_text(encoding="utf-8")
-    for css in (render_overview.SITE_CSS.read_text(encoding="utf-8"), shell):
+    paper = EXPLAINER_STYLE.read_text(encoding="utf-8")
+    for css in (render_overview.SITE_CSS.read_text(encoding="utf-8"), paper):
         assert (
             "margin-block: var(--paper-section-space) var(--paper-section-space-below);" in css
         )
@@ -2348,9 +2384,9 @@ def test_a_page_title_stands_one_space_above_what_follows_it() -> None:
         "    margin-block-end: var(--site-subtitle-space);\n  }\n}\n"
         ".kpress .site-hero:has(.subtitle) h1 {\n  margin-block-end: 0;\n}"
     ) in css
-    shell = (render_overview.TEMPLATES / "explainer-shell.html").read_text(encoding="utf-8")
-    assert "  .cert-page .hero .credits { margin-block-start: 2.25rem; }\n}" in shell
-    assert "  margin-block: 2rem 2.2rem;\n" in shell
+    paper = EXPLAINER_STYLE.read_text(encoding="utf-8")
+    assert "  .cert-page .hero .credits {\n    margin-block-start: 2.25rem;\n  }\n}" in paper
+    assert "  margin-block: 2rem 2.2rem;\n" in paper
 
 
 def test_every_table_stands_one_shared_space_from_the_text_around_it() -> None:
@@ -2533,6 +2569,7 @@ _HOVER_SHEETS = (
     render_overview.SITE_CSS,
     render_overview.SITE_NAV_CSS,
     EXPLAINER_SHELL,
+    EXPLAINER_STYLE,
 )
 
 

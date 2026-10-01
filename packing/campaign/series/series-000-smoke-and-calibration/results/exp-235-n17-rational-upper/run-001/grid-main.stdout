@@ -1,0 +1,18 @@
+{
+  "coordinate_provenance": "verified",
+  "failures": [],
+  "field_certificate": {
+    "field": "Q",
+    "preconditions": "degree-one rational field"
+  },
+  "id": "W-grid-n004",
+  "limitations": "Verifies witness feasibility and its upper bound, not global optimality.",
+  "method": "exact-algebraic",
+  "minimum_best_pair_gap": "0",
+  "minimum_containment_clearance": "0",
+  "n": 4,
+  "operation": "verify",
+  "pairs_tested": 6,
+  "side": "2",
+  "verification_passed": true
+}

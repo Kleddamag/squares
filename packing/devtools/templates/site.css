@@ -1111,8 +1111,8 @@ body {
 /* ---------- A table of results on a phone ----------
    Six columns do not fit 390px, and scrolling a table sideways to read one claim is the
    wrong trade: each row becomes a small card, id, cases and rungs on its first line,
-   then the claim with its records under it, and the credit and date; the standing sits
-   under the rungs. The results page's table and the overview's recent table are the one
+   then the claim with its records under it, and the credit and date; the status line
+   sits under the rungs. The results page's table and the overview's recent table are the one
    table (`.site-results`), so both take it. */
 @media (width < 40rem) {
   .site-results thead {
@@ -1154,8 +1154,15 @@ body {
   .site-results .site-col-n {
     grid-area: 1 / 2;
   }
+  /* The rungs' track is as wide as its content, and a status line of three chips
+     (`recorded`, `in analysis`, `second certificate`) would take the whole card and
+     leave the cases and the credit no room. So the cell stops at two chips' width, and
+     a third chip wraps under them. */
   .site-results .site-rungs {
     grid-area: 1 / 3;
+  }
+  .kpress .site-results td.site-rungs {
+    max-width: 14.5rem;
   }
   .site-results td.site-col-n {
     text-align: start;

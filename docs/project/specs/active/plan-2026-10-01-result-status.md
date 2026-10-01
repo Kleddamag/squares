@@ -68,7 +68,7 @@ has none.
 
 | Entry | Cases in the block | Claim | Source and date | Rungs | Standing | Replayed since? |
 | --- | --- | --- | --- | --- | --- | --- |
-| T-046 | 47: $n = 18$–$20$, $26$, $28$–$31$, $37$–$44$, $51$–$61$, $66$–$78$, $86$, $88$–$91$, $94$, $95$ | One rectangle-density lower bound a case, from $s(18) \ge 939/200$ to $s(95) \ge 49209/5000$ | wand125, 27 and 28 September 2026 | `V0/C0`, `S3` | current best, reported | In part, and not in the record. See below. |
+| T-046 | 47: $n = 18, 19, 20$; $26$; $28$ to $31$; $37$ to $44$; $51$ to $61$; $66$ to $78$; $86$; $88$ to $91$; $94$ and $95$ | One rectangle-density lower bound a case, from $s(18) \ge 939/200$ to $s(95) \ge 49209/5000$ | wand125, 27 and 28 September 2026 | `V0/C0`, `S3` | current best, reported | In part, and not in the record. See below. |
 | T-048 | 1: $n = 50$ | $s(50) \ge 37/5$ | wand125, 28 September 2026 | `V0/C0`, `S3` | current best, reported | Yes, in full, and not in the record. |
 
 T-046’s 47 cases rest on 45 certificates; $n = 77$ and $n = 90$ take the certificates of

@@ -39,6 +39,7 @@ physical sizes.
 | Subtitle | 23.75px | About 15.8333pt | Sans caps, 1.25 of the sans base |
 | Title credits and date | 19px | 12⅔pt | Sans base size |
 | Section headings | 21.6px | 14.4pt | Serif italic, 1.2 of the prose base |
+| Heading leading | 1.15 | KPress’s 1.2 | `--paper-heading-leading`: every heading, a card’s and a popover’s headline, and a page’s subtitle; the explainer’s hero title keeps KPress’s 1.05 |
 | Space above a section heading | 48.6px | 37.8pt | `--paper-section-space`: 2.7 of the prose base on screen, 2.8 in print |
 | Space below a section heading | 27.2px | 15.6pt | `--paper-section-space-below`: 1.7rem on screen, 1.3rem in print |
 | Figure labels and controls | 18.05px | About 12.0333pt | Sans, 0.95 of the sans base |
@@ -381,6 +382,22 @@ it.
   (`site_documents.overview_intro`), so it is edited in `README.md` and nowhere else.
   The site’s own statement follows it and is the only prose the template holds there.
 
+- **Heading leading.** Every heading is set at one line height, 1.15
+  (`--paper-heading-leading`, in `paper-type.css`), on screen: a page’s title (an `h1`,
+  or the homepage’s `.site-title`), its subtitle, every section heading (`h2` to `h6`)
+  on the site pages, the explainer and the optimality paper, a card’s headline
+  (`.site-card-value`), a popover’s (`.site-popover-value`, which a row’s popover, the
+  atlas popover and a result overview’s case all use) and a case record’s title.
+  Body text, table cells, notes and the small caps labels (a card’s label, a result
+  overview’s section label) keep their own line heights.
+  The explainer’s hero title keeps KPress’s 1.05, which its prepared math is fitted to,
+  and print keeps KPress’s leading, so the explainer’s PDF does not move.
+  A formula in a heading or headline takes no line of its own: KPress’s inline math box
+  (line height 1.4) and KaTeX’s (1.2) are both set to zero there, so a formula is as
+  tall as KaTeX’s struts make it and the line that holds one is no taller than its
+  neighbours. A headline’s box carries the room the looser line used to give it as margin
+  (0.2rem above and 0.3rem below a card’s, 0.5rem and 1rem a popover’s).
+
 - **Report layout.** Every report page (the tutorial, the synopsis and the other
   documents) has one layout.
   A long report gets a contents rail and a short one does not, by kpress’s own rule
@@ -420,9 +437,10 @@ it.
   Cards come in three sizes (Card sizes, below).
   The value is the card’s headline: the sans face at the medium weight
   (`--site-font-weight-sans-medium`, 550), the face and weight of the page title and of
-  the sans section headings (`h3`), at 1.15 of the text size (20.7px). The popover
-  repeats the headline in the same face and weight.
-  A card works one of two ways.
+  the sans section headings (`h3`), at 1.15 of the text size (20.7px) and at the
+  headings’ leading (**Heading leading**, below), so a headline of two or three lines
+  reads as one block. The popover repeats the headline in the same face, weight and
+  leading. A card works one of two ways.
   Most cards open a popover that shows where they lead, and the popover ends in one
   button that goes there, centred at its foot.
   A direct card is instead itself the link (`link_card`), for a target whose address or
@@ -963,9 +981,10 @@ Change that token and regenerate the fonts, metrics, and prepared page together.
 The loading and generation contract is documented in the
 [KPress font and math architecture](../../../vendor/kpress/docs/project/architecture/arch-2026-09-08-font-and-math-loading.md).
 
-`paper-type.css` owns the type base, the reading measure, the h2 scale, the sans/prose
-size ratio, the paper’s medium and bold weights and the role scales; the explainer’s
-shell and `site.css` alias them and never restate them.
+`paper-type.css` owns the type base, the reading measure, the h2 scale, the heading
+leading, the space around a section heading, the sans/prose size ratio, the paper’s
+medium and bold weights and the role scales; the explainer’s shell and `site.css` alias
+them and never restate them.
 `--paper-font-size-support` sizes figure labels; `--paper-font-size-note` and
 `--paper-note-inset` size and inset captions and endnotes.
 They share `--paper-support-color` and `--paper-support-leading`. Resolve the sans base

@@ -1794,6 +1794,39 @@ def test_card_headlines_take_the_page_titles_sans_face_and_weight() -> None:
     assert "--paper-font-weight-sans-medium: 550;" in text
 
 
+def test_every_heading_and_headline_shares_one_leading() -> None:
+    """One line height, 1.15, for every heading on screen: the text layer every page
+    carries sets it on `h1` to `h6`, and the site's stylesheet reads the same token for a
+    card's headline, a popover's, a case record's title and a page's subtitle. Print is
+    left to KPress, and a formula in any of them takes no line of its own."""
+    text = render_overview.PAPER_TYPE_CSS.read_text(encoding="utf-8")
+    assert text.count("--paper-heading-leading: 1.15;") == 1
+    assert (
+        "@media screen {\n  .kpress-prose :is(h1, h2, h3, h4, h5, h6) {\n"
+        "    line-height: var(--paper-heading-leading);\n  }\n}"
+    ) in text
+    assert text.count("var(--paper-heading-leading)") == 1
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    for selector in (
+        ".kpress .site-card .site-card-value,\n.site-popover .site-popover-value {",
+        ".kpress .site-case-title {",
+        ".kpress .site-hero .subtitle {",
+    ):
+        rule = css[css.index(selector) :]
+        assert "line-height: var(--paper-heading-leading);" in rule[: rule.index("}")], selector
+    assert css.count("var(--paper-heading-leading)") == 3
+    assert "--paper-heading-leading:" not in css
+    math = css[css.index(":is(.site-card-value, .site-popover-value, .site-case-title,") :]
+    math = math[: math.index("}")]
+    assert ":is(.kpress-math, .katex),\n" in math
+    assert ".site-page :is(h1, h2, h3, h4) :is(.kpress-math, .katex) {" in math
+    assert "line-height: 0;" in math
+    # The explainer's hero title keeps KPress's own leading, which its math is fitted to.
+    shell = (render_overview.TEMPLATES / "explainer-shell.html").read_text(encoding="utf-8")
+    assert "paper-heading-leading" not in shell
+    assert "height: 1.05em !important;" in shell
+
+
 def test_the_bar_sits_close_to_the_top_of_every_page() -> None:
     """The space above the bar is kpress's page top margin, narrowed once in the stylesheet
     every page carries, so the explainer, the KPress pages and the workbench all agree."""

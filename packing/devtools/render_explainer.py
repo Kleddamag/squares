@@ -2443,7 +2443,7 @@ def shell_substitutions(static: Path, shared: dict[str, str], body: str) -> dict
     return {
         "MONO_FONT": MONO_FONT,
         "KPRESS_CSS": kpress_css(static) + katex_css(static),
-        "PUBLICATION_CSS": PUBLICATION_STYLE.read_text(encoding="utf-8"),
+        **publication_layer(),
         "RELATION_CSS": relation_face_css(static),
         "PAPER_TYPE_CSS": PAPER_TYPE_CSS.read_text(encoding="utf-8"),
         "THEME_BOOTSTRAP": theme_bootstrap(static),
@@ -2459,6 +2459,31 @@ def shell_substitutions(static: Path, shared: dict[str, str], body: str) -> dict
         "COLOPHON": colophon_lines(),
         **shared,
         "BODY_HTML": body,
+    }
+
+
+def publication_layer() -> dict[str, str]:
+    """The publication layer both papers inline, as the values their shells take.
+
+    The stylesheet and the head script are one layer and travel together. The stylesheet
+    sets a formula's `text-rendering` to `geometricPrecision`, for the linear advances
+    the explainer's prepared widths are measured in, and takes it back to `auto` on
+    macOS, where CoreText's advances are already linear and Chromium draws a
+    `geometricPrecision` run lighter than the `auto` text beside it. It knows macOS by an
+    attribute the script stamps on the root before the body paints. A shell that inlines
+    the stylesheet without the script leaves its formulas at `geometricPrecision` on
+    macOS: the same formula then holds 15 to 17% less ink than on the explainer in the
+    light theme and 23 to 26% less in the dark one (`measure_site_pages glyphs`), which
+    is how the optimality paper's formulas came to look thinner than the explainer's
+    (think-jc3w). Both renderers take the pair from here, the paper's refuses a value its
+    shell has no place for, and `tests/test_site_glyphs.py` holds every shell that names
+    one to naming the other.
+    """
+    return {
+        "PUBLICATION_CSS": PUBLICATION_STYLE.read_text(encoding="utf-8"),
+        "NATIVE_MATH_METRICS": INLINE_SCRIPT_ASSETS["NATIVE_MATH_METRICS"].read_text(
+            encoding="utf-8"
+        ),
     }
 
 

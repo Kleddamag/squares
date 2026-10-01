@@ -2,10 +2,10 @@
 """Measure a built site's pages against the explainer: load and math timing, text, faces,
 the card sections' layout, the rating ladders' rows, the face of every formula, the
 space around tables and headings, the columns of the data tables, the chips, where each
-page's header stands, the baselines its labels stand on, and the size of what a press
-opens.
+page's header stands, the baselines its labels stand on, the size of what a press
+opens, and how every run of text and every formula is drawn.
 
-Twelve measurements, each over pages of a directory `preview_site` has built:
+Thirteen measurements, each over pages of a directory `preview_site` has built:
 
 - `load` serves the directory on a local port and opens each page in a fresh Chromium
   context, cold cache, at a desktop or phone width. An init script (a probe) records
@@ -89,6 +89,33 @@ Twelve measurements, each over pages of a directory `preview_site` has built:
   across lines inside the word (`preview_site.split_problem`). `--shots DIR` also shoots
   the window with each popover open. This is the tool the popovers' height limits are
   measured with (`templates/paper-design.md`, Site Components, Cards).
+- `glyphs` reports how each page's glyphs are drawn, once its math is typeset, at each
+  `--width` and in each `--scheme`: for every role of text (prose, a heading, a caption,
+  a table cell, a footnote, a chip, a link of the bar, and as `other` every run no role
+  names) and for the formulas of every surface, inline and display apart, each distinct
+  setting with how many elements it stands for. A setting is everything that decides
+  what a reader sees: the face asked for and the platform face the browser drew
+  (`CSS.getPlatformFontsForNode`, with a variable face's drawn weight), weight, size,
+  line height, colour, opacity, and the properties that change how a face is
+  rasterised, `text-rendering` among them; for a formula also how it is typeset, its
+  size over its text's, whether it takes its text's colour, and `ink`, the area its
+  glyphs paint in square em of its own size, measured on a shot at twice its size. Ink
+  is the one number that says a formula is drawn thinner when no computed size, weight
+  or face differs. With it come the faces the page declares and whether each is
+  inlined and loaded, the KaTeX the page runs, what it stamps on its root, and what the
+  shared text tokens come to. `--tex SOURCE` reports that formula as a row of its own,
+  so one formula can be compared between pages; `--style CSS` adds a stylesheet before
+  measuring, to see what one declaration changes; `--platform NAME` tells the page it
+  is on that platform. `--view` prints one table: `formulas`, a row a formula sampled;
+  `differences`, every property a page sets differently from the first page;
+  `summary`, each role's distinct settings with the pages that set it so, where a role
+  with one row is set one way everywhere; `problems`, where a page departs from what
+  the shared layers set (`glyph_problems`), which fails the run when there is any.
+  `--shots DIR` saves each formula's shot. This is the tool the optimality paper's
+  thinner mathematics was found and measured with (`templates/paper-design.md`, Math).
+
+Every mode but `faces` also takes, in place of the directory, the address a site is
+served at, and measures the published pages as they are.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages load SITE
@@ -113,6 +140,11 @@ Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages \
         popover SITE --page frontier.html --press 'a[data-case="79"]' \
         --width 1280 --height 900 --height 1200 --height 1440 --markdown
+    uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages glyphs \
+        SITE --page explainer.html --page n11-optimality/t-060-explainer.html \
+        --width 1280 --width 390 --scheme light --scheme dark --view differences --markdown
+    uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages glyphs \
+        https://jlevy.github.io/squares --page explainer.html --view problems --markdown
 
 `SITE` is a directory holding `explainer.html` and the kpress pages. Set
 `SQPACK_CHROMIUM` to use a browser the environment supplies, as the other tools do.
@@ -122,6 +154,8 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
+import itertools
 import json
 import os
 import re
@@ -141,6 +175,7 @@ from devtools.preview_site import (
     shot_stem,
     split_words,
 )
+from devtools.render_explainer import MATH_WRAPPERS
 from devtools.render_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import applied, probe
 
@@ -156,6 +191,8 @@ SPACING = probe(PROBES, "measure_site_pages/spacing")
 COLUMNS = probe(PROBES, "measure_site_pages/columns")
 CHIPS = probe(PROBES, "measure_site_pages/chips")
 POPOVER = probe(PROBES, "measure_site_pages/popover")
+GLYPHS = probe(PROBES, "measure_site_pages/glyphs")
+PLATFORM = probe(PROBES, "measure_site_pages/platform")
 #: What a press opens, which `space` then reports alone: an open popover or disclosure.
 OPENED = ":popover-open, details[open]"
 
@@ -596,6 +633,507 @@ def measure_chips(
     return results
 
 
+#: The attribute `glyphs` marks its samples with, so the browser can be asked which
+#: platform face drew each and each can be shot.
+GLYPH_MARK = "data-glyph-sample"
+#: The device pixels to a CSS pixel `glyphs` lays a page out and shoots it at.
+GLYPH_SCALE = 2
+#: How long `glyphs` waits for one formula to be shot before reporting it without ink.
+SHOT_WAIT_MS = 3_000
+#: What decides how a role's text is drawn, in the order `glyphs` reports it.
+TEXT_PROPERTIES = (
+    "family",
+    "host_faces",
+    "weight",
+    "size",
+    "line_height",
+    "style",
+    "color",
+    "opacity",
+    "text_rendering",
+    "smoothing",
+    "synthesis",
+    "optical_sizing",
+    "variation",
+    "features",
+    "letter_spacing",
+    "transform",
+)
+#: The same for a formula. `scale` is its font size over its text's; `text_color` is
+#: `same` where the formula takes the colour of the words around it.
+MATH_PROPERTIES = (
+    "typeset",
+    "math",
+    "host_faces",
+    "weight",
+    "scale",
+    "text",
+    "text_color",
+    "opacity",
+    "text_rendering",
+    "smoothing",
+    "synthesis",
+    "face_mark",
+)
+_RGB = re.compile(r"rgb\((\d+) (\d+) (\d+)")
+#: How a face that came off the reader's machine is marked in a `glyphs` report.
+HOST = " (host)"
+#: The weight of a variable face's instance, as Blink writes it into the instance's
+#: PostScript name: sixteen-bit fixed point, in hexadecimal.
+_VARIABLE_WEIGHT = re.compile(r"_wght([0-9A-F]+)0000$")
+
+
+def ink(png: bytes, *, color: str, size: float, scale: float = GLYPH_SCALE) -> float:
+    """How much ink a shot of one formula holds, in square em of its own font size.
+
+    Each pixel counts for its coverage, how far it stands from the ground toward the
+    text's colour, so the sum is the area the glyphs paint: the same formula at the same
+    size, drawn thinner, holds less. The ground is the median of the shot's border, and
+    the colour is the formula's own computed one, so a dark page reads as a light one
+    does. A measure of weight as drawn, which no computed style reports.
+    """
+    import numpy as np  # noqa: PLC0415
+    from PIL import Image  # noqa: PLC0415
+
+    found = _RGB.match(color)
+    if found is None:
+        raise ValueError(f"not a colour the glyphs probe writes: {color}")
+    with Image.open(io.BytesIO(png)) as image:
+        pixels = np.asarray(image.convert("RGB"), dtype=np.float64)
+    border = np.concatenate([pixels[0], pixels[-1], pixels[:, 0], pixels[:, -1]])
+    ground = np.median(border, axis=0)
+    span = np.array([float(part) for part in found.groups()]) - ground
+    if not span.any():
+        return 0.0
+    coverage = np.clip((pixels - ground) @ span / float(span @ span), 0.0, 1.0)
+    return round(float(coverage.sum()) / (size * scale) ** 2, 4)
+
+
+def _platform_faces(session: Any, root: int, mark: str) -> list[str]:
+    """The platform faces Blink drew the marked element's own text with, by name; a face
+    the page did not ship is named as the reader's own (`host`)."""
+    node = session.send(
+        "DOM.querySelector", {"nodeId": root, "selector": f'[{GLYPH_MARK}="{mark}"]'}
+    )
+    fonts = session.send("CSS.getPlatformFontsForNode", {"nodeId": node["nodeId"]})["fonts"]
+    return sorted({_platform_face(font) for font in fonts})
+
+
+def _platform_face(font: dict[str, Any]) -> str:
+    """One platform face by the name that says most: a face the page ships by its
+    PostScript name, with a variable face's weight read out of the instance Blink names
+    (`SourceSans3-Roman_wght19A0000` is the 410 the sans is set at), so the weight a run
+    is drawn at is reported and not only the weight it asks for; a face off the reader's
+    machine by its family, marked `HOST`."""
+    if not font["isCustomFont"]:
+        return str(font["familyName"]) + HOST
+    name = str(font.get("postScriptName") or font["familyName"])
+    instance = _VARIABLE_WEIGHT.search(name)
+    if instance is None:
+        return name
+    return f"{name[: instance.start()]}@{int(instance.group(1), 16)}"
+
+
+def _host_faces(faces: Iterable[str]) -> str:
+    """The faces among `faces` that came off the reader's machine, which no page of the
+    site may draw from: every run is set in a face the page ships."""
+    return ", ".join(sorted({face for face in faces if face.endswith(HOST)}))
+
+
+def measure_glyphs(
+    base: str,
+    pages: Sequence[str],
+    *,
+    widths: Sequence[int],
+    schemes: Sequence[str] = ("light",),
+    tex: Sequence[str] = (),
+    style: str | None = None,
+    platform: str | None = None,
+    shots: Path | None = None,
+    every_ink: bool = True,
+) -> list[dict[str, Any]]:
+    """How each page's glyphs are drawn at each width in each colour scheme, one entry a
+    page: its text roles, its formulas by surface, the faces it declares and what it
+    stamps on its root (`probes/measure_site_pages/glyphs.js`). Each sample also carries
+    `drawn`, the platform face the browser drew it from, and each formula `ink`, the
+    area its glyphs paint (`ink`). `style` is a stylesheet added to each page before it
+    is measured, which is how one property is toggled to see what it changes.
+    `platform` is what the page is told `navigator.platform` is, before its own scripts
+    run, which is how the choice a page makes by platform is seen on another machine;
+    the glyphs are still this machine's. With `shots`, every formula sampled is shot
+    there at twice its size:
+    `glyphs-<page>-<width>-<scheme>-<surface>-<layout>-<n>.png`. Without `every_ink`,
+    only the formulas `tex` names are shot and given their ink, which is most of what a
+    long page costs to measure."""
+    from playwright.sync_api import Error as PlaywrightError  # noqa: PLC0415
+    from playwright.sync_api import sync_playwright  # noqa: PLC0415
+
+    results: list[dict[str, Any]] = []
+    if shots is not None:
+        shots.mkdir(parents=True, exist_ok=True)
+    with sync_playwright() as driver:
+        browser = _launch(driver)
+        for width, scheme, name in itertools.product(widths, schemes, pages):
+            print(f"measuring {name} at {width}, {scheme}", file=sys.stderr, flush=True)
+            page = browser.new_page(
+                viewport={"width": width, "height": 900},
+                device_scale_factor=GLYPH_SCALE,
+                color_scheme="dark" if scheme == "dark" else "light",
+                reduced_motion=motion_for(name),
+            )
+            if platform is not None:
+                page.add_init_script(applied(PLATFORM, platform))
+            fetched: list[str] = []
+            failed: list[str] = []
+            page.on(
+                "request",
+                lambda request, fetched=fetched: (
+                    fetched.append(request.url) if request.resource_type == "font" else None
+                ),
+            )
+            page.on(
+                "requestfailed",
+                lambda request, failed=failed: (
+                    failed.append(request.url) if request.resource_type == "font" else None
+                ),
+            )
+            page.goto(f"{base}/{name}", wait_until="load")
+            untypeset = settle_math(page)
+            if style:
+                page.add_style_tag(content=style)
+                page.wait_for_timeout(200)
+            found: dict[str, Any] = page.evaluate(
+                GLYPHS, {"wrappers": MATH_WRAPPERS, "mark": GLYPH_MARK, "tex": list(tex)}
+            )
+            session = page.context.new_cdp_session(page)
+            session.send("DOM.enable")
+            session.send("CSS.enable")
+            root = session.send("DOM.getDocument", {"depth": 0})["root"]["nodeId"]
+            for row in found["text"]:
+                faces = _platform_faces(session, root, row["mark"])
+                row["drawn"], row["host_faces"] = ", ".join(faces), _host_faces(faces)
+            stem = f"glyphs-{shot_stem(name)}-{width}-{scheme}"
+            for index, row in enumerate(found["math"]):
+                parts = {
+                    part: _platform_faces(session, root, mark)
+                    for part, mark in row.pop("parts").items()
+                }
+                row["drawn"] = "; ".join(
+                    f"{part}: {', '.join(faces)}" for part, faces in parts.items()
+                )
+                row["host_faces"] = _host_faces(itertools.chain(*parts.values()))
+                row["ink"] = ""
+                if not (every_ink or row["compared"]):
+                    continue
+                # A formula a scroller clips, a table's far column on a phone, cannot be
+                # shot; it is reported without its ink.
+                target = page.locator(f'[{GLYPH_MARK}="{row["mark"]}"]')
+                try:
+                    png = target.screenshot(timeout=SHOT_WAIT_MS)
+                except PlaywrightError:
+                    continue
+                row["ink"] = ink(png, color=row["color"], size=row["size"])
+                if shots is not None:
+                    where = re.sub(r"[^a-z]+", "-", f"{row['surface']}-{row['layout']}")
+                    row["shot"] = f"{stem}-{where}-{index}.png"
+                    (shots / row["shot"]).write_bytes(png)
+            session.detach()
+            results.append(
+                {
+                    "page": name,
+                    "width": width,
+                    "scheme": scheme,
+                    "untypeset": untypeset,
+                    "font_requests": [url for url in fetched if not url.startswith("data:")],
+                    "failed_requests": failed,
+                    **found,
+                }
+            )
+            page.close()
+        browser.close()
+    return results
+
+
+def _glyph_settings(
+    entry: dict[str, Any],
+) -> dict[tuple[str, str], dict[str, set[str]]]:
+    """One `glyphs` entry as the distinct values of each property, by part and role: a
+    text role by its name, a formula by its surface and layout."""
+    settings: dict[tuple[str, str], dict[str, set[str]]] = {}
+    for part, names, rows in (
+        ("text", TEXT_PROPERTIES, entry["text"]),
+        ("math", MATH_PROPERTIES, entry["math"]),
+    ):
+        for row in rows:
+            role = row["role"] if part == "text" else f"{row['surface']}, {row['layout']}"
+            values = settings.setdefault((part, role), {})
+            for name in names:
+                values.setdefault(name, set()).add(str(row[name]))
+    page = settings.setdefault(("page", "document"), {})
+    page["KaTeX"] = {entry["katex"]}
+    page["untypeset formulas"] = {str(entry["untypeset"])}
+    page["font requests"] = {str(len(entry["font_requests"]))}
+    page["failed requests"] = {str(len(entry["failed_requests"]))}
+    for name, value in (entry["root"] | entry["tokens"]).items():
+        page[name] = {value}
+    for face in entry["faces"]:
+        named = f"face {face['family']} {face['weight']} {face['style']}"
+        # A face no glyph asked for stays unloaded, which says nothing of how a page is
+        # drawn; one that failed to load does.
+        source = "inlined" if face["inlined"] else "fetched"
+        failed = ", failed" if face["status"] == "error" else ""
+        page.setdefault(named, set()).add(f"{face['display']}, {source}{failed}")
+    return settings
+
+
+def _values(values: set[str] | None) -> str:
+    return " / ".join(sorted(values)) if values else "-"
+
+
+def glyph_differences(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Every property a page sets differently from the first page of a `glyphs` report,
+    which is the explainer by default, at each width and scheme: one row a role and
+    property, for each role both pages have, with the distinct values each page sets.
+    A face one page declares and the other does not is a row too; a face that neither
+    loaded is not a difference."""
+    rows: list[dict[str, Any]] = []
+    for width, scheme in dict.fromkeys((entry["width"], entry["scheme"]) for entry in report):
+        at = [entry for entry in report if (entry["width"], entry["scheme"]) == (width, scheme)]
+        reference = _glyph_settings(at[0])
+        for entry in at[1:]:
+            here = _glyph_settings(entry)
+            for (part, role), values in here.items():
+                against = reference.get((part, role))
+                if against is None:
+                    continue
+                names = dict.fromkeys((*against, *values)) if part == "page" else values
+                rows.extend(
+                    {
+                        "width": width,
+                        "scheme": scheme,
+                        "part": part,
+                        "role": role,
+                        "property": name,
+                        at[0]["page"]: _values(against.get(name)),
+                        entry["page"]: _values(values.get(name)),
+                    }
+                    for name in names
+                    if against.get(name) != values.get(name)
+                )
+    return rows
+
+
+def glyph_summary(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """A `glyphs` report as the distinct settings of each role across its pages, one row
+    a setting with the pages that set the role that way: a text role's face, weight,
+    size over line height and style, and a formula's face, weight, scale against its
+    text and `text-rendering`, by surface. A role with one row is set one way on every
+    page that has it."""
+    seen: dict[tuple[Any, ...], list[str]] = {}
+    for entry in report:
+        where = f"{entry['page']} ({entry['width']})"
+        for row in entry["text"]:
+            setting = (
+                f"{row['family']} {row['weight']}"
+                f"{'' if row['style'] == 'normal' else ' ' + row['style']}, "
+                f"{row['size']:g}/{row['line_height']}"
+            )
+            pages = seen.setdefault((entry["scheme"], "text", row["role"], setting), [])
+            pages.extend([] if where in pages else [where])
+        for row in entry["math"]:
+            setting = (
+                f"{row['math']} {row['weight']} at {row['scale']:g} of "
+                f"{row['text']} {row['text_weight']}, {row['text_rendering']}"
+            )
+            role = f"{row['surface']}, {row['layout']}"
+            pages = seen.setdefault((entry["scheme"], "math", role, setting), [])
+            pages.extend([] if where in pages else [where])
+    return [
+        {
+            "scheme": scheme,
+            "part": part,
+            "role": role,
+            "setting": setting,
+            "pages": ", ".join(pages),
+        }
+        for (scheme, part, role, setting), pages in sorted(seen.items())
+    ]
+
+
+#: How a formula is typeset on every page: KaTeX's HTML over the MathML a reader without
+#: scripts, or a screen reader, is given.
+TYPESET = "KaTeX HTML + MathML"
+#: The root attribute the publication layer's head script stamps on macOS, which its
+#: stylesheet's math rule reads (`render_explainer.publication_layer`).
+NATIVE_METRICS = "data-squares-native-math-metrics"
+#: The serif and sans math composites, as `glyphs` names a formula's face.
+SERIF_MATH, SANS_MATH = "KPress Math Text", "KPress Math Text Sans"
+#: The sans weights KPress sets by its own rules, outside the three the shared layer
+#: names: a table's head and bold sans mathematics at 650, and an `h4` at 540
+#: (`templates/paper-design.md`, Text).
+KPRESS_SANS_WEIGHTS = (540, 650)
+#: How far a size may stand from the token it is derived from, in CSS pixels.
+SIZE_TOLERANCE = 0.02
+
+
+def _role_rules(entry: dict[str, Any]) -> dict[str, tuple[float | None, float | None]]:
+    """The size and weight the shared text layer sets each role at on this page, from
+    the tokens the page itself resolves (`templates/paper-type.css`): a role's size as
+    its scale of the prose or of the sans base, and its weight as one of the sans
+    weights, with `None` where the layer leaves it to the role's place (a link is as
+    heavy as its text). Only the roles one rule sets on every page are here."""
+    tokens = entry["tokens"]
+    base = tokens["--kpress-font-size-base"]
+    sans = base * tokens["--paper-font-scale-sans"]
+    regular = tokens["--kpress-font-weight-sans-regular"]
+    medium = tokens["--paper-font-weight-sans-medium"]
+    bold = tokens["--paper-font-weight-sans-bold"]
+    note = sans * tokens["--paper-note-scale"]
+    return {
+        "prose": (base, 400),
+        "list item": (base, 400),
+        "h2": (tokens["--kpress-font-size-h2"], 400),
+        "page title": (sans * tokens["--paper-title-scale"], medium),
+        "caption": (note, regular),
+        "caption lead": (note, bold),
+        "footnote": (note, regular),
+        "colophon": (sans * tokens["--paper-colophon-scale"], regular),
+        "nav name": (sans, bold),
+        "nav link": (note, medium),
+        "section tab": (note, medium),
+    }
+
+
+def glyph_problems(entry: dict[str, Any], *, katex: str | None = None) -> list[str]:
+    """Where one `glyphs` entry departs from what the shared layers set, as sentences;
+    none on a page set as `templates/paper-design.md` describes.
+
+    A page: every formula typeset, by the KaTeX `katex` names when one is given; every
+    face inlined and loaded, and nothing fetched. A page of the publication layer: its
+    platform flag set on macOS and nowhere else. A formula: KaTeX's HTML over MathML; at
+    its text's own size and in its text's own colour; at the regular weight of the
+    composite it is set in; every glyph from a face the page ships; and rasterised as
+    the text around it is, except under the publication layer off macOS, where the
+    layer's `geometricPrecision` stands. Text, on a page with a reading column: each
+    role the shared layer sets on every page at the size and weight its tokens come to
+    (`_role_rules`), where the role is in the face the layer sets it in; and every sans
+    run at one of the layer's three sans weights or one of KPress's own two. A face off
+    the reader's machine under any sampled run is reported too.
+    """
+    problems: list[str] = []
+    if entry["untypeset"]:
+        problems.append(f"{entry['untypeset']} formulas are left untypeset")
+    if katex is not None and entry["math"] and entry["katex"] != katex:
+        problems.append(f"the page runs KaTeX {entry['katex'] or 'not at all'}, not {katex}")
+    problems.extend(f"a face is fetched: {url}" for url in entry["font_requests"])
+    problems.extend(f"a face failed to arrive: {url}" for url in entry["failed_requests"])
+    for face in entry["faces"]:
+        named = f"{face['family']} {face['weight']} {face['style']}"
+        if not face["inlined"]:
+            problems.append(f"the face {named} is not inlined")
+        if face["status"] == "error":
+            problems.append(f"the face {named} failed to load")
+    mac = entry["platform"].startswith("Mac")
+    flagged = entry["root"].get(NATIVE_METRICS) == "true"
+    if entry["publication"] and flagged != mac:
+        problems.append(
+            f"the publication layer's platform flag is {'set' if flagged else 'not set'} "
+            f"on {entry['platform']}"
+        )
+    regular = entry["tokens"].get("--kpress-font-weight-sans-regular")
+    for row in entry["math"]:
+        where = f"{row['surface']}, {row['layout']} formula `{row['example']}`"
+        rendering = (
+            "geometricprecision"
+            if entry["publication"] and not mac
+            else row["text_text_rendering"]
+        )
+        weight = {SERIF_MATH: "400", SANS_MATH: f"{regular:g}" if regular else None}
+        expected = {
+            "typeset": TYPESET,
+            "scale": 1,
+            "text_color": "same",
+            "host_faces": "",
+            "text_rendering": rendering,
+            "weight": weight.get(row["math"]) or row["weight"],
+        }
+        problems.extend(
+            f"{where}: {name} is {row[name] or 'empty'}, not {wanted or 'empty'}"
+            for name, wanted in expected.items()
+            if row[name] != wanted
+        )
+    if not entry["reading"]:
+        return problems
+    rules = _role_rules(entry)
+    faces = {"prose": entry["prose"], "list item": entry["prose"], "h2": entry["prose"]}
+    tokens = entry["tokens"]
+    weights = {
+        regular,
+        tokens["--paper-font-weight-sans-medium"],
+        tokens["--paper-font-weight-sans-bold"],
+        *KPRESS_SANS_WEIGHTS,
+    }
+    for row in entry["text"]:
+        where = f"{row['role']} `{row['example']}`"
+        if row["host_faces"]:
+            problems.append(f"{where}: drawn from {row['host_faces']}")
+        if row["family"] == entry["sans"] and float(row["weight"]) not in weights:
+            problems.append(f"{where}: sans text at {row['weight']}, which no token names")
+        size, weight = rules.get(row["role"], (None, None))
+        if row["family"] != faces.get(row["role"], entry["sans"]):
+            continue
+        if size is not None and abs(row["size"] - size) > SIZE_TOLERANCE:
+            problems.append(f"{where}: {row['size']:g}px, not the role's {size:g}px")
+        if weight is not None and float(row["weight"]) != weight:
+            problems.append(f"{where}: weight {row['weight']}, not the role's {weight:g}")
+    return problems
+
+
+def problem_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """A `glyphs` report as its problems, one row each (`glyph_problems`), against the
+    KaTeX this checkout's KPress ships."""
+    return [
+        {
+            "page": entry["page"],
+            "width": entry["width"],
+            "scheme": entry["scheme"],
+            "problem": problem,
+        }
+        for entry in report
+        for problem in glyph_problems(entry, katex=shipped_katex())
+    ]
+
+
+def shipped_katex() -> str:
+    """The version of KaTeX the vendored KPress ships, which every page inlines."""
+    from devtools.render_explainer import kpress_static  # noqa: PLC0415
+
+    return (kpress_static() / "katex" / "VERSION").read_text(encoding="utf-8").split()[-1]
+
+
+def glyph_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """A `glyphs` report flattened to one row a formula sampled: what it is set in, the
+    face that drew it and the ink it holds."""
+    return [
+        {
+            "page": entry["page"],
+            "width": entry["width"],
+            "scheme": entry["scheme"],
+            "surface": row["surface"],
+            "layout": row["layout"],
+            "formulas": row["count"],
+            "example": "`" + row["example"].replace("|", "\\|") + "`",
+            **{name: row[name] for name in MATH_PROPERTIES},
+            "glyphs": row["glyphs"],
+            "drawn": row["drawn"],
+            "size": row["size"],
+            "ink": row["ink"],
+        }
+        for entry in report
+        for row in entry["math"]
+    ]
+
+
 def _distinct(values: Iterable[float]) -> str:
     """The distinct values among some measurements, least first, a space apart."""
     return " ".join(f"{value:g}" for value in sorted(set(values)))
@@ -891,6 +1429,10 @@ def card_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 def markdown_table(report: list[dict[str, Any]]) -> str:
     """A report's flat columns as a Markdown table, for a design note or a pull request."""
+    if not report:
+        return "(no rows)"
+    if "faces" in report[0] and "math" in report[0]:
+        report = glyph_rows(report)
     if report and "roles" in report[0]:
         report = type_rows(report)
     if report and "rows" in report[0]:
@@ -923,6 +1465,7 @@ MODES = (
     "header",
     "baselines",
     "popover",
+    "glyphs",
 )
 
 
@@ -931,7 +1474,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     parser.add_argument("mode", choices=MODES)
-    parser.add_argument("site", type=Path)
+    parser.add_argument(
+        "site",
+        help="the built site's directory; or, for every mode but `faces`, the address a "
+        "site is served at, to measure the published pages as they are",
+    )
     parser.add_argument(
         "--page", action="append", help="a page, with any #fragment; repeatable"
     )
@@ -968,6 +1515,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         metavar="DIR",
         help="with `ladders`: also shoot each diagram here at each width, light and dark; "
         "with `columns`: also shoot each table here at each width; "
+        "with `glyphs`: also shoot each formula sampled here, at twice its size; "
         "with `popover`: also shoot the window here with each popover open",
     )
     parser.add_argument(
@@ -975,17 +1523,61 @@ def main(argv: Sequence[str] | None = None) -> int:
         choices=("root_tokens", "column_tokens"),
         help="with `type`: list only the `--kpress-*` tokens that differ between pages",
     )
+    parser.add_argument(
+        "--scheme",
+        action="append",
+        choices=("light", "dark"),
+        help="with `glyphs`: the colour scheme to lay the page out in, light by default; "
+        "repeatable",
+    )
+    parser.add_argument(
+        "--tex",
+        action="append",
+        default=[],
+        metavar="SOURCE",
+        help="with `glyphs`: report every formula whose TeX is exactly this as a row of its "
+        "own, so one formula can be compared between pages; repeatable",
+    )
+    parser.add_argument(
+        "--style",
+        metavar="CSS",
+        help="with `glyphs`: a stylesheet added to each page before it is measured, to see "
+        "what one declaration changes",
+    )
+    parser.add_argument(
+        "--tex-ink-only",
+        action="store_true",
+        help="with `glyphs`: shoot only the formulas `--tex` names for their ink, which "
+        "is most of what a long page costs to measure",
+    )
+    parser.add_argument(
+        "--platform",
+        metavar="NAME",
+        help="with `glyphs`: what each page is told `navigator.platform` is (`MacIntel`, "
+        "`Linux x86_64`), to see the choice it makes by platform on this machine",
+    )
+    parser.add_argument(
+        "--view",
+        choices=("formulas", "differences", "summary", "problems"),
+        help="with `glyphs`: print the formulas sampled, one a row; every property a page "
+        "sets differently from the first page; each role's distinct settings across the "
+        "pages; or where a page departs from what the shared layers set, which fails "
+        "the run when there is any",
+    )
     args = parser.parse_args(argv)
-    site = args.site.resolve()
+    served = args.site.startswith(("http://", "https://"))
+    site = Path(args.site).resolve()
     pages = tuple(args.page or DEFAULT_PAGES)
     widths = tuple(args.width or (1280,))
     if args.json is not None:
         report: list[dict[str, Any]] = json.loads(args.json.read_text(encoding="utf-8"))
     elif args.mode == "faces":
+        if served:
+            parser.error("`faces` reads the built files: give the site's directory")
         report = compare_faces(site, pages)
     else:
-        server = serve(site, args.port)
-        base = f"http://127.0.0.1:{args.port}"
+        server = None if served else serve(site, args.port)
+        base = args.site.rstrip("/") if served else f"http://127.0.0.1:{args.port}"
         try:
             if args.mode == "type":
                 report = measure_type(base, pages, widths=widths)
@@ -1005,6 +1597,18 @@ def main(argv: Sequence[str] | None = None) -> int:
                 report = measure_header(base, pages, widths=widths)
             elif args.mode == "baselines":
                 report = measure_baselines(base, pages, widths=widths)
+            elif args.mode == "glyphs":
+                report = measure_glyphs(
+                    base,
+                    pages,
+                    widths=widths,
+                    schemes=tuple(args.scheme or ("light",)),
+                    tex=args.tex,
+                    style=args.style,
+                    platform=args.platform,
+                    shots=args.shots,
+                    every_ink=not args.tex_ink_only,
+                )
             elif args.mode == "popover":
                 report = measure_popovers(
                     base,
@@ -1017,16 +1621,25 @@ def main(argv: Sequence[str] | None = None) -> int:
             else:
                 report = measure_load(base, pages, widths=widths, runs=args.runs)
         finally:
-            server.shutdown()
-            server.server_close()
+            if server is not None:
+                server.shutdown()
+                server.server_close()
     if args.tokens:
         report = token_rows(report, scope=args.tokens)
+    if args.view:
+        views = {
+            "formulas": glyph_rows,
+            "differences": glyph_differences,
+            "summary": glyph_summary,
+            "problems": problem_rows,
+        }
+        report = views[args.view](report)
     if args.markdown:
         print(markdown_table(report))
     else:
         json.dump(report, sys.stdout, indent=2)
         print()
-    return 0
+    return 1 if args.view == "problems" and report else 0
 
 
 if __name__ == "__main__":

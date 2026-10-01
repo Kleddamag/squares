@@ -210,6 +210,36 @@ a line on the hyphen of a code span there.
 fails on any word broken across lines in what a press opens (**Print and Verification**,
 below).
 
+**Sans weights.** Sans text is set at one of three weights on every page, the regular
+410, the medium 550 and the bold 680 (`--site-font-weight-sans-light`, `-medium` and
+`-bold`, which alias the paper’s). A face is not inherited with a weight: a rule that
+sets the sans face and no weight leaves its text at the serif’s 400, a step lighter than
+the sans’s regular and lighter than the mathematics in it, which the sans composite
+always draws at 410. Thirty-one rules of `site.css` and `site-result.css` did, a card’s
+note, every popover, the table tools, the rating ladders and the case records among
+them. So every rule in those two sheets that sets the sans face sets its weight, which
+`tests/test_site_glyphs.py` holds, and `devtools.measure_site_pages glyphs` reports any
+sans run a page draws at another weight.
+Two weights are KPress’s own and stand: a table’s head at 650 and an `h4` at 540. A
+formula in a medium or bold run keeps the regular weight of its composite, since
+KPress’s sans math tables are built at the regular and the bold alone.
+
+**One value a role.** `devtools.measure_site_pages glyphs --view summary` lists every
+role’s distinct settings across the pages; measured over the two papers and the fifteen
+KPress pages at 1280 and 390 pixels, a role is set one way on every page it occurs on,
+with these exceptions:
+
+| Role | Settings | Why |
+| --- | --- | --- |
+| h3, h4, table cell (documents) | 21.6px and 17.1px at 1280, 20.7px, 20.16px and 16.2px at 390 | KPress’s own step at a 64rem pane |
+| h3 (a case record’s sections) | 19px | The record’s own heading, at the sans base (`.site-case-heading`) |
+| Table cell (site tables) | 17.48px, and 15.73px as a row card on a phone | The results and atlas tables are set at the note size |
+| Page title | Leading 1.05 on the two papers, 1.15 on the site pages | The explainer’s title keeps KPress’s leading, which its prepared math is fitted to; the optimality paper shares its layer |
+| Caption | Leading 1.4 on the papers, 1.35 on the site pages; 16.15px under the homepage’s hero, 17.48px elsewhere | The papers’ `--paper-support-leading`; the hero’s caption is a size of its own in `site.css` |
+| Colophon | Line height 1.5 on the papers, the face’s own on the site pages | One line either way |
+| Chip | The papers’ format chips at 16.15px, the site’s at 17.48px | Two components |
+| Table head | 650, and 550 for a group row | KPress’s head; the site’s group rows are medium |
+
 **Faces.** Every page inlines byte-identical `@font-face` blocks (PT Serif and its
 punctuation face, Source Sans 3, Planetaire Mono Text, the KaTeX faces and KPress’s math
 composites), because every page takes them from the same functions,
@@ -256,9 +286,48 @@ Documents write math as LaTeX (`$…$`) rather than in code spans;
 `devtools.check_math_markup` holds the documents already migrated to it.
 Code uses Planetaire Mono Text at KPress’s calibrated monospace size.
 
+**A formula is drawn as its text is.** Beside the face, a formula takes the size of the
+text it sits in (KaTeX’s outer em is 1 of its text’s on every surface), its colour, and
+the regular weight of the composite it is set in: 400 in the serif, and in the sans the
+410 of `--kpress-font-weight-sans-regular`, the weight KPress built the sans math tables
+at. It is also rasterised as its text is, `text-rendering: auto`, with one exception.
+The publication layer sets `text-rendering: geometricPrecision` on its formulas, because
+the explainer’s prepared widths are measured in linear advances, and takes it back to
+`auto` on macOS, where CoreText’s advances are already linear and Chromium draws a
+`geometricPrecision` run lighter than the `auto` text beside it.
+The stylesheet knows macOS by `data-squares-native-math-metrics`, which a head script
+stamps on the root before the body paints (`explainer/native-math-metrics.js`). So off
+macOS a formula of the two papers is `geometricPrecision` beside `auto` text, by that
+rule, and on every other page of the site it is `auto` everywhere.
+
+The stylesheet and the script are one layer.
+The optimality paper once inlined the stylesheet without the script, so on macOS its
+formulas stayed at `geometricPrecision`, and the same formula held 15 to 17% less ink
+than on the explainer in the light theme and 23 to 26% less in the dark one.
+No computed size, weight, face or colour differed between the two pages.
+Both renderers now take the pair from `render_explainer.publication_layer`, the paper’s
+renderer refuses a value its shell has no place for, and the same formula’s ink on the
+two pages agrees within 0.2%.
+
+`devtools.measure_site_pages glyphs` is the measurement.
+For every role of text and for the formulas of every surface it reports the face asked
+for and the platform face the browser drew, weight, size, colour and how the glyphs are
+rasterised, and for a formula its ink: the area its glyphs paint, in square em, on a
+shot at twice its size.
+`--view differences` lists every property a page sets differently from the explainer,
+`--view problems` what a page sets off the rules of this section and of **Text**, and
+`--style` adds one declaration to see what it changes, which is how the cause was
+confirmed: with `text-rendering: geometricPrecision` alone added, three of the
+explainer’s formulas held exactly the ink the paper’s did (0.5268, 0.1171 and 0.1215
+square em), and with `auto` alone added the paper’s came within 0.2% of the explainer’s.
+`tests/test_site_glyphs.py` holds the paper to the explainer property by property and by
+ink, tells each paper it is on macOS and that it is not (the difference never shows on a
+Linux runner otherwise), and names a paper whose head script is taken out.
+
 ## Math Loading
 
-Every page loads its mathematics through the explainer’s pipeline, from the same code:
+Every page, the optimality paper included, loads its mathematics through the explainer’s
+pipeline, from the same code:
 
 - **Faces and styles.** KaTeX’s faces pruned to those a page can reach, inlined as data
   URIs and switched from `font-display: swap` to `block`, so no formula is drawn in a
@@ -284,7 +353,14 @@ rest as the reader scrolls toward them or opens what hides them, and, once the p
 loaded, one at a time in the browser’s idle time.
 A formula whose faces missed the runtime’s wait is retried twice after the page and its
 fonts load, which a long page needed when every face decoded at once.
-Both mark the end of their load-time work with `math-ready`.
+Both mark the end of their load-time work with `math-ready`. The optimality paper is
+typeset as the KPress pages are, by the same two scripts
+(`render_n11_optimality_explainer.math_scripts`). It used to inline KPress’s own entry
+points, which neither kern a function’s name ($s(11)$ was set without the one-mu space
+it has on every other page) nor wait for a formula’s faces, so a formula that asked for
+a face the page does not ship (`\mathsf`) was drawn from the reader’s machine.
+Under the shared pipeline such a formula keeps its MathML, and the paper’s PDF refuses
+to print with a formula untypeset.
 
 Each client layout costs a style pass over the whole document, 6ms a formula on the
 synopsis against 0.9ms with KPress’s `:has(.kpress-toc)` layout rules removed: those
@@ -1407,10 +1483,12 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   `n11-optimality/t-060-explainer.html`, and Papers is the current entry on the papers
   page and on each of them.
   The optimality paper has its own renderer, shell and Pages job
-  (`render_n11_optimality_explainer`); it carries the bar as the explainer does, through
-  `render_overview.nav_html`, with the links climbing one level to the site’s root.
-  Its page shares the explainer’s publication layer and `paper-type.css`, and keeps only
-  its diagrams’ rules in [n11-optimality.css](n11-optimality.css).
+  (`render_n11_optimality_explainer`), and takes the publication layer and the site’s
+  math pipeline from the shared functions (**Math**, above); it carries the bar as the
+  explainer does, through `render_overview.nav_html`, with the links climbing one level
+  to the site’s root. Its page shares the explainer’s publication layer and
+  `paper-type.css`, and keeps only its diagrams’ rules in
+  [n11-optimality.css](n11-optimality.css).
   There a table keeps to the column and scrolls inside its own wrap, the credits are one
   column no wider than the page, and a diagram drawn in fixed ink keeps a light ground
   on the dark theme, as the construction in its first figure does.
@@ -1601,8 +1679,18 @@ at each width, light and dark.
 `tests/test_site_ladders.py` holds those rows and that room in a browser at nine widths,
 the narrowest of each layout among them.
 `devtools.measure_site_pages math` reports every formula’s face beside its text’s,
-counted by surface. `devtools.measure_site_pages space` reports the space around every
-table and heading (**Spacing**, above).
+counted by surface. `devtools.measure_site_pages glyphs` reports how every run of text
+and every formula is drawn, and `--view problems` fails on a page set off the rules of
+**Text** and **Math**, above: on a built site,
+
+```shell
+uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages glyphs SITE --page explainer.html --page n11-optimality/t-060-explainer.html --view differences --markdown
+```
+
+lists every property the optimality paper sets differently from the explainer, and names
+an address in place of `SITE` to measure the published pages.
+`devtools.measure_site_pages space` reports the space around every table and heading
+(**Spacing**, above).
 `devtools.measure_site_pages popover` reports what each `--press` opens at each
 `--width` and `--height`: the popover’s box, the window’s margin around it, the share of
 its content it shows without scrolling, and its broken words.

@@ -392,10 +392,16 @@ it.
   in upright caps (not KPress’s italic `h2`) at 1.5 times the sans base, centred.
   The homepage’s first section, The Square Packing Problem, takes it through
   `.site-title`, so it reads as the frontier atlas’s title does.
-  That section’s prose is README’s introduction: the block between README’s
+  That section opens with README’s first paragraph: the block between README’s
   `project-intro` markers, read at render time and its links rewritten for the site
   (`site_documents.overview_intro`), so it is edited in `README.md` and nowhere else.
   The site’s own statement follows it and is the only prose the template holds there.
+  README’s next two paragraphs, what the project covers and its newest major result, are
+  a second shared block, `recent-progress`, which opens Recent Results
+  (`site_documents.overview_progress`); README keeps all three paragraphs together and
+  in order, parted only by the markers.
+  `devtools.check_readme` holds both blocks: each marked once, the second directly after
+  the first, prose alone with no heading or comment, and no case called the central one.
 
 - **Heading leading.** Every heading is set at one line height, 1.15
   (`--paper-heading-leading`, in `paper-type.css`), on screen: a page’s title (an `h1`,
@@ -849,12 +855,14 @@ table, and `tests/test_overview.py` holds both pages to the identical bar and de
   `tests/test_overview.py` holds every row of the three pages to this markup and every
   cell free of `<details>`.
 
-- **Recent results.** The overview’s Recent Results section is one table, not cards or a
-  list: every result dated on or after 1 August 2026 (`RECENT_FROM`), by the date the
-  table shows, newest first, one row each, the same `.site-table` in the sans face as
-  the results page, without sorting (`recent_table`). The results page’s tools bar sits
-  above it (**Result filters**, above), starting at significance S4 and up, with the
-  count of rows shown out of the total at the bar’s end.
+- **Recent results.** The overview’s Recent Results section opens with README’s
+  `recent-progress` block (**Page headings**, above), then its own short prose on what
+  the table lists, and then one table, not cards or a list: every result dated on or
+  after 1 August 2026 (`RECENT_FROM`), by the date the table shows, newest first, one
+  row each, the same `.site-table` in the sans face as the results page, without sorting
+  (`recent_table`). The results page’s tools bar sits above it (**Result filters**,
+  above), starting at significance S4 and up, with the count of rows shown out of the
+  total at the bar’s end.
   Its five columns are the date, which says what it dates (`published` or
   `established`); the result, its math linking to its row on the results page, with the
   id beside it quiet, which is the row’s trigger; the method, the phrase the summary

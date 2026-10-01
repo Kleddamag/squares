@@ -791,9 +791,11 @@ decisions that changed the plan above:
 - **Papers is one tab.** The optimality paper, the explainer and the tutorial share the
   bar’s Papers entry and a page of three large cards, the optimality paper first
   (`think-afxf`, `think-ux5l`).
-- **The homepage’s problem section is README’s introduction**, read from one shared
-  block, followed by the site’s own statement and where to report a result.
-  Eleven squares is a central case, never the central one.
+- **The homepage’s prose is README’s introduction**, read from two shared blocks: the
+  problem section opens with README’s first paragraph, followed by the site’s own
+  statement and where to report a result, and Recent Results opens with README’s next
+  two, what the project covers and its newest major result (`think-u7pb`). Eleven
+  squares is a central case, never the central one.
 - **Repository links name `main`**, never a commit: permalinks at the build commit 404ed
   once a squash merge left that commit on no branch (`think-eefp`, `think-xv28`).
 - **The site lands with current `main` and presents T-060**, the n = 11 optimality

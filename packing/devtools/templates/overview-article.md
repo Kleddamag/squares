@@ -8,7 +8,7 @@
      still reach the explainer (forward.js), so this heading keeps the overview's own id. -->
 <h2 id="the-problem" class="site-title">The Square Packing Problem</h2>
 
-<!-- The section's prose is README's introduction, read from its project-intro block
+<!-- The section's first paragraph is README's, read from its project-intro block
      (site_documents.overview_intro), so the project is introduced in one text. Edit it
      in README.md. Only the site's own statement below is written here. -->
 
@@ -30,18 +30,21 @@ and cite your work.
 
 ## Recent Results
 
-These are the recent results this project tracks: new bounds for particular numbers of
-squares, found here or by others, each with who found it and how far it has been
-checked.
+<!-- The section opens with README's next two paragraphs, what the project covers and
+     its newest major result, read from its recent-progress block
+     (site_documents.overview_progress). Edit them in README.md. -->
 
+{{README_PROGRESS}}
+
+The table lists every result since {{RECENT_FROM}}, newest first: new bounds for
+particular numbers of squares, found here or by others.
+Each is dated by its publication if it is by others and by the day it was established if
+it is this project’s, and carries its rungs and its standing: *current best* where a
+verified case bound rests on it now, and otherwise why not.
 A result by others is registered as *reported* when its source is taken in, and as
 *verified* only after its certificate is replayed here in full and its mathematics
 reviewed, with the credit its authors give;
 [`epistemics.md`](epistemics.html#results-by-others) states the policy.
-The table lists every result since {{RECENT_FROM}}, newest first, each dated by its
-publication if it is by others and by the day it was established if it is this
-project’s, with its rungs and its standing: *current best* where a verified case bound
-rests on it now, and otherwise why not.
 It starts filtered to significance S4 and up; choose All to see every row.
 
 {{RECENT}}

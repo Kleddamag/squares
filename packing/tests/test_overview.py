@@ -1208,13 +1208,24 @@ def test_recent_results_has_no_lead_line(page: str) -> None:
     assert not hasattr(overview_sections, "lead_result")
 
 
-def _intro(page: str) -> str:
-    """README's introduction as the overview renders it: the run between its markers."""
+def _shared(page: str, name: str) -> str:
+    """One shared block of README as the overview renders it: the run between its
+    markers."""
     from devtools import site_documents  # noqa: PLC0415
 
-    opened, closed = site_documents.OVERVIEW_INTRO_OPEN, site_documents.OVERVIEW_INTRO_CLOSE
-    assert page.count(opened) == page.count(closed) == 1
-    return page.split(opened, 1)[1].split(closed, 1)[0]
+    (block,) = (b for b in site_documents.SHARED_BLOCKS if b.name == name)
+    assert page.count(block.opened) == page.count(block.closed) == 1
+    return page.split(block.opened, 1)[1].split(block.closed, 1)[0]
+
+
+def _intro(page: str) -> str:
+    """README's first paragraph as the overview's first section renders it."""
+    return _shared(page, "project-intro")
+
+
+def _progress(page: str) -> str:
+    """README's coverage and newest-result paragraphs as Recent Results renders them."""
+    return _shared(page, "recent-progress")
 
 
 #: One formula as kpress writes it: the TeX for KaTeX, then its MathML.
@@ -1237,36 +1248,85 @@ def _markdown_text(markdown: str) -> str:
     return " ".join(text.replace("`", "").split())
 
 
-def test_the_overviews_introduction_is_readmes(page: str) -> None:
-    """The overview's first section says what README's introduction says, word for word
-    and formula for formula, because it is that block: the template holds a placeholder
-    where the prose would be, and nothing about eleven squares of its own."""
+def _template_paragraphs(section: str) -> list[str]:
+    """A section of the overview's template after its heading, as its paragraphs."""
+    prose = re.sub(r"<!--.*?-->", "", section, flags=re.DOTALL)
+    return [" ".join(part.split()) for part in prose.split("\n\n") if part.strip()]
+
+
+def test_the_overviews_two_sections_are_readmes_two_blocks(page: str) -> None:
+    """The overview says what README's introduction says, word for word and formula for
+    formula, in two places: the first section opens with README's `project-intro` block,
+    and Recent Results with its `recent-progress` block. Together they are README's three
+    paragraphs, in README's order. The template holds a placeholder where each would be,
+    and nothing about eleven squares of its own in the first section."""
     from devtools import site_documents  # noqa: PLC0415
 
-    block = site_documents.intro_block(site_documents.README.read_text(encoding="utf-8"))
-    assert _rendered_text(_intro(page)) == _markdown_text(block)
+    readme = site_documents.README.read_text(encoding="utf-8")
+    blocks = site_documents.shared_blocks(readme)
+    assert list(blocks) == ["project-intro", "recent-progress"]
+    assert blocks["project-intro"] == site_documents.intro_block(readme)
+    assert blocks["recent-progress"] == site_documents.progress_block(readme)
+    assert _rendered_text(_intro(page)) == _markdown_text(blocks["project-intro"])
+    assert _rendered_text(_progress(page)) == _markdown_text(blocks["recent-progress"])
+    assert len(re.findall(r"<p>", _intro(page))) == 1
+    assert len(re.findall(r"<p>", _progress(page))) == 2
+    assert _markdown_text(blocks["project-intro"]).startswith("The Squares Project studies")
+    assert _markdown_text(blocks["recent-progress"]).startswith(
+        "The project covers the problem at every $n$."
+    )
+    for block in blocks.values():
+        assert not re.search(r"^#", block, re.MULTILINE)
+        assert "<!--" not in block
+    # README keeps the three paragraphs together and in order: only the markers part them.
+    intro, progress = site_documents.INTRO, site_documents.PROGRESS
+    between = readme.split(intro.end, 1)[1].split(progress.begin, 1)[0]
+    assert between.strip() == ""
+    assert readme.index(intro.begin) < readme.index(intro.end) < readme.index(progress.end)
 
     template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
     section = template.split('id="the-problem"', 1)[1].split("{{PAGE_CARDS}}", 1)[0]
-    prose = re.sub(r"<!--.*?-->", "", section.split("</h2>", 1)[1], flags=re.DOTALL)
-    paragraphs = [" ".join(part.split()) for part in prose.split("\n\n") if part.strip()]
+    paragraphs = _template_paragraphs(section.split("</h2>", 1)[1])
     assert paragraphs[0] == "{{README_INTRO}}"
     own = " ".join(paragraphs[1:])
     assert not re.search(r"\bT-\d{3}\b", own)
     assert "eleven" not in own.lower()
+    recent = template.split("## Recent Results", 1)[1].split("\n## ", 1)[0]
+    assert _template_paragraphs(recent)[0] == "{{README_PROGRESS}}"
 
 
-def test_the_problem_section_says_eleven_squares_is_settled(
+def test_recent_results_opens_with_readmes_progress_paragraphs(page: str) -> None:
+    """Recent Results opens with README's two paragraphs, right under its heading and
+    above the section's own prose, the filter bar and the table; the first section no
+    longer holds them. The section has one opening: its own prose starts at the table."""
+    problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
+    section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
+    progress = _progress(page)
+    assert progress in section
+    assert progress not in problem
+    assert "The project covers the problem at every" not in _rendered_text(problem)
+    assert "settles eleven squares" not in _rendered_text(problem)
+    # Only the template's own note stands between the heading and README's block.
+    opening = section.split("</h2>", 1)[1].split("<!-- README recent-progress -->", 1)[0]
+    assert re.sub(r"<!--.*?-->", "", opening, flags=re.DOTALL).strip() == ""
+    tools = section.index('<div class="site-table-tools')
+    assert section.index(progress) < tools < section.index(_recent_table(page))
+    own = section.split("<!-- /README recent-progress -->", 1)[1][:400]
+    assert _rendered_text(own).startswith("The table lists every result since 1 August 2026")
+    assert "These are the recent results this project tracks" not in _rendered_text(section)
+
+
+def test_recent_results_says_eleven_squares_is_settled(
     page: str, results: str, rendered: Callable[[str], str]
 ) -> None:
-    """The problem section names T-060 and case 11 through README's introduction, each
-    link at the site's own page for it, and README is in the reader tier, so the gate
-    refuses a result the section names that the register does not hold."""
+    """Recent Results names T-060 and case 11 through README's `recent-progress` block,
+    each link at the site's own page for it, and README is in the reader tier, so the
+    gate refuses a result the section names that the register does not hold."""
     from devtools import check_results, site_documents  # noqa: PLC0415
 
-    problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
-    intro = _intro(page)
-    assert intro in problem
+    section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
+    intro = _progress(page)
+    assert intro in section
     text = _rendered_text(intro)
     assert "settles eleven squares" in text
     assert "Trump\u2019s 1979 packing" in text
@@ -1288,6 +1348,10 @@ def test_the_problem_section_says_eleven_squares_is_settled(
         ), href
     assert site_documents.README in check_results.READER_TIER
     assert render_overview.OVERVIEW_ARTICLE in check_results.READER_TIER
+    # The reader tier holds both ids through README's own text, block markers and all.
+    readme = site_documents.README.read_text(encoding="utf-8")
+    for result in ("T-060", "T-011"):
+        assert result in site_documents.progress_block(readme), result
 
 
 #: The site's own statement, the owner's words of 2026-09-30 with only hyphenation and
@@ -1328,11 +1392,12 @@ def test_the_sites_own_statement_follows_readmes_introduction(page: str) -> None
     assert "formal" not in " ".join(SITE_STATEMENT).lower()
 
 
-#: The framing the owner refused on 2026-09-30: eleven squares is a central case of the
-#: problem, and never the one the project is about.
-_THE_CENTRAL_CASE = re.compile(
-    "\\b(?:the|its|project[\u2019']s)\\s+central\\s+(?:open\\s+)?case\\b", re.IGNORECASE
-)
+def _the_central_case() -> re.Pattern[str]:
+    """The framing the owner refused on 2026-09-30, as `site_documents` holds README's
+    shared blocks to it: eleven squares is a central case, never the central one."""
+    from devtools import site_documents  # noqa: PLC0415
+
+    return site_documents.THE_CENTRAL_CASE
 
 
 @pytest.mark.parametrize(
@@ -1349,11 +1414,12 @@ def test_no_case_is_called_the_central_one(path: Path) -> None:
     """The project covers square packing at every n. "A central case" may be said of
     eleven squares; "the central case", "its central case" and "the central open case"
     may not, in README, the overview's template, the design notes or this renderer."""
-    found = _THE_CENTRAL_CASE.findall(path.read_text(encoding="utf-8"))
+    pattern = _the_central_case()
+    found = pattern.findall(path.read_text(encoding="utf-8"))
     assert not found, f"{path.name}: {found}"
-    assert not _THE_CENTRAL_CASE.search("a central case, and a central open case")
+    assert not pattern.search("a central case, and a central open case")
     for phrase in ("the central case", "Its central\ncase", "the central open case"):
-        assert _THE_CENTRAL_CASE.search(phrase), phrase
+        assert pattern.search(phrase), phrase
 
 
 def card_text(fragment: str) -> str:

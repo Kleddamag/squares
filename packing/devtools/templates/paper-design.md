@@ -756,8 +756,19 @@ table, and `tests/test_overview.py` holds both pages to the identical bar and de
     A deferred body costs the same bytes; what it saves is the work of rendering every
     row’s body at load. Without scripts a template stays inert, so `fallback` is written
     beside it in a `<noscript>`, and is what that reader’s popover shows.
-    `overview_sections.RESULT_BODIES_DEFERRED` turns this on for every result row, with
-    the result’s records as the fallback.
+    No table uses it at present.
+  - **Fetched bodies.** A body too heavy to carry in the page at all is written once, as
+    a file beside the pages, and fetched: `row_detail(source="…")` writes the file’s
+    address as `data-row-pop-src` on `.site-row-pop-body`, whose content in the page is
+    then a short form of the body.
+    The script fetches the file when the row is first pressed or its popover first
+    opens, puts it in place of the short form, and has its math typeset.
+    The page gains only the address.
+    Where the file cannot be had, without scripts, on a page read from a file or off the
+    network, the short form stays, and the next opening asks again.
+    A result’s row does this: its short form is the result’s claim, significance and
+    novelty, and its file is the result’s whole overview (**Result Overview**, below).
+    This is the one fetch a page makes besides a page a card’s popover frames.
 
   `tests/node/overview_rows/` runs the script against a stand-in document, and
   `tests/test_overview.py` holds every row of the three pages to this markup and every
@@ -841,15 +852,28 @@ full overview of that result.
 [site-result.css](site-result.css) holds its styles, apart from `site.css` and inlined
 after it on every page.
 The body is one `.site-result` block with no ids, no script and no `<table>`, so it does
-not depend on the popover around it and a page may carry many.
+not depend on the popover around it.
 Its popover takes the atlas popover’s size, up to 62rem wide and 58rem tall, and scrolls
 as one panel.
 
-- **Head.** The caps label “Result T-NNN”, then the headline with its math serif, as
-  every popover headline sets it; the V, C and S rung chips and the standing chips, as
-  the tables show them; the date with what it dates, the credit and the cases, in the
-  support colour; the claim at the note size; and a closed disclosure with the
-  significance, composition, next rung and novelty.
+No page carries an overview.
+Between them they run to about 2.8 MB (`result_overview --audit`) and two pages list the
+results, so each is written once, as `result/t-nnn.html` beside the pages
+(`render_overview.result_fragments`), and a row’s popover fetches its own when it first
+opens (**Row popovers**, Fetched bodies).
+A fragment is the one block and nothing else: it has no shell, and its links are written
+from the site’s root, so only a page there may place it.
+The directory is `result/`, not `results/`, since `results.html` is `RESULTS.md`.
+`tests/test_overview.py` holds the two pages under a size ceiling each, and
+`check_published_site` asks the deployed site for every overview the results table
+names.
+
+- **Head.** The popover’s own caps label, the result’s id, and its headline, the
+  result’s summary, stand above the body and are in the page, so they do not change when
+  the overview lands. The body opens with the V, C and S rung chips and the standing
+  chips, as the tables show them; then the date with what it dates, the credit and the
+  cases, in the support colour; the claim at the note size; and a closed disclosure with
+  the significance, composition, next rung and novelty.
 - **The case.** A result about one case, or up to four, shows the atlas popover’s panel
   for each: the gap bar, the bound as one statement with the lower bound in scarlet and
   the best known side in green, the badges, the citation and what is open, beside the

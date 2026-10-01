@@ -2248,29 +2248,116 @@ def test_a_page_with_row_detail_carries_the_row_and_popover_scripts(
 def test_a_result_rows_popover_body_comes_from_one_function(
     overview: overview_data.Overview, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """`result_row_popover_body` is the one source of a result row's detail, on the
-    overview's recent table and on the results page alike: whatever it returns is the
-    body of that row's popover, once, and no cell of the row repeats it."""
+    """`result_row_popover_body` is the one source of what a result's row opens to, on
+    the overview's recent table and on the results page alike: the result's whole
+    overview. It is written once, as the result's fragment beside the pages; a row's
+    popover names that fragment and holds the short detail, and no cell repeats either."""
+    from devtools import result_overview  # noqa: PLC0415
+
     result = overview_sections.recent_results(overview)[0]
     body = overview_sections.result_row_popover_body(result, overview)
-    assert body.startswith('<dl class="site-detail"><dt>Claim</dt>')
-    for term in ("<dt>Significance</dt>", "<dt>Novelty</dt>"):
-        assert term in body
+    assert body == result_overview.result_popover_html(result, overview)
+    assert body.startswith(
+        f'<div class="site-result" data-result-overview="{result.id.lower()}">'
+    )
 
     def marked(result: overview_data.Result, _: overview_data.Overview) -> str:
         return f"<p>BODY OF {result.id}</p>"
 
     monkeypatch.setattr(overview_sections, "result_row_popover_body", marked)
+    fragments = render_overview.result_fragments()
+    assert [(file.name, file.html) for file in fragments] == [
+        (f"result/{row.id.lower()}.html", f"<p>BODY OF {row.id}</p>\n")
+        for row in overview.results
+    ]
     for table, listed in (
         (overview_sections.results_table(overview), overview.results),
         (overview_sections.recent_table(overview), overview_sections.recent_results(overview)),
     ):
-        assert "<dt>Claim</dt>" not in table
+        assert "BODY OF" not in table
         for row in listed:
-            target = f"pop-result-{row.id.lower()}"
-            marker = f'<div class="site-row-pop-body"><p>BODY OF {row.id}</p></div>'
-            assert table.count(marker) == 1, row.id
-            assert marker in _row_popover(table, target), row.id
+            panel = _row_popover(table, f"pop-result-{row.id.lower()}")
+            opening = (
+                '<div class="site-row-pop-body" '
+                f'data-row-pop-src="result/{row.id.lower()}.html">'
+                '<dl class="site-detail"><dt>Claim</dt>'
+            )
+            assert table.count(opening) == 1, row.id
+            assert opening in panel, row.id
+            for term in ("<dt>Significance</dt>", "<dt>Novelty</dt>"):
+                assert term in panel, row.id
+
+
+#: What the two pages that list results may weigh. The result overviews are 2.8 MB
+#: between them; a page that carried them, as both once would have, crosses its ceiling.
+#: The shell every page carries, its faces and math, is about 1.8 MB of each.
+PAGE_CEILINGS = {"index.html": 4_300_000, render_overview.RESULTS_PAGE: 2_800_000}
+
+
+def test_no_page_carries_a_result_overview(
+    page: str, results: str, overview: overview_data.Overview
+) -> None:
+    """A result's overview is fetched when its row is opened, never written into a page:
+    the two pages that list results hold only each row's short detail and the address
+    of its overview, and stay under their ceilings. The overviews are served from one
+    directory that no page's address shadows."""
+    for name, html_text in (("index.html", page), (render_overview.RESULTS_PAGE, results)):
+        assert "data-result-overview=" not in html_text, name
+        assert 'class="site-result"' not in html_text, name
+        size = len(html_text.encode("utf-8"))
+        assert size < PAGE_CEILINGS[name], f"{name} is {size:,} bytes"
+    sources = re.findall(r'data-row-pop-src="([^"]+)"', results)
+    assert sources == [
+        overview_sections.result_fragment(result.id)
+        for _, members in overview.groups
+        for result in members
+    ]
+    assert set(re.findall(r'data-row-pop-src="([^"]+)"', page)) == {
+        overview_sections.result_fragment(result.id)
+        for result in overview_sections.recent_results(overview)
+    }
+    directory = overview_sections.RESULT_FRAGMENTS
+    assert directory == "result"
+    served = {
+        name.split("/", 1)[0].removesuffix(".html") for name in render_overview.SITE_PAGES
+    }
+    assert directory not in served
+    assert render_overview.ROW_POPOVER_SCRIPT.read_text(encoding="utf-8").count(
+        "data-row-pop-src"
+    )
+
+
+def test_the_site_writes_each_result_overview_once_and_drops_a_withdrawn_one(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """`write_site` writes the pages at the root and the fragments in their directory,
+    and removes a fragment a directory built earlier still holds for a result the
+    register no longer has; nothing else in the directory is touched."""
+    files = [
+        render_overview.Page("index.html", "<p>page</p>"),
+        render_overview.Page("result/t-001.html", "<p>one</p>\n"),
+    ]
+    (tmp_path / "result").mkdir()
+    (tmp_path / "result" / "t-999.html").write_text("withdrawn", encoding="utf-8")
+    (tmp_path / "explainer.html").write_text("another build's", encoding="utf-8")
+    render_overview.write_site(tmp_path, files)
+    assert sorted(
+        path.relative_to(tmp_path).as_posix() for path in tmp_path.rglob("*.html")
+    ) == [
+        "explainer.html",
+        "index.html",
+        "result/t-001.html",
+    ]
+    assert (tmp_path / "result" / "t-001.html").read_text(encoding="utf-8") == "<p>one</p>\n"
+    monkeypatch.setattr(render_overview, "render_all", lambda: files[:1])
+    monkeypatch.setattr(render_overview, "result_fragments", lambda: files[1:])
+    assert [file.name for file in render_overview.render_site()] == [
+        "index.html",
+        "result/t-001.html",
+    ]
+    assert render_overview.main(["--output", str(tmp_path), "--check"]) == 0
+    (tmp_path / "result" / "t-001.html").write_text("changed", encoding="utf-8")
+    assert render_overview.main(["--output", str(tmp_path), "--check"]) == 1
 
 
 def test_a_result_row_popover_leads_to_its_row_only_from_another_page(
@@ -2359,17 +2446,19 @@ def test_a_row_detail_escapes_its_words_and_keeps_its_html() -> None:
     )
     assert "site-popover-actions" not in plain.popover
     assert "<template" not in plain.popover
+    assert "data-row-pop-src" not in plain.popover
     assert overview_sections.plain_text("`s(11) >= 3`,  reported") == "s(11) >= 3, reported"
 
 
 def test_a_deferred_row_body_waits_in_a_template_with_a_fallback_for_no_scripts(
-    overview: overview_data.Overview, monkeypatch: pytest.MonkeyPatch
+    overview: overview_data.Overview,
 ) -> None:
     """A body too heavy to render once per row at load is held in a `<template>`, which
     `row-popover.js` places when the popover first opens (`tests/node/overview_rows`),
-    with a `<noscript>` beside it for a reader whose template would stay inert.
-    `RESULT_BODIES_DEFERRED` turns it on for every result row, on both tables, where
-    the fallback is the result's records; it is off while the body is the short detail."""
+    with a `<noscript>` beside it for a reader whose template would stay inert. A body
+    too heavy to carry at all is named instead (`source`), with the short form in its
+    place for the script to replace; a body is one or the other. The result rows take
+    the second way, on both tables, so neither holds a template."""
     held = overview_sections.row_detail(
         "pop-z",
         name="n",
@@ -2388,21 +2477,36 @@ def test_a_deferred_row_body_waits_in_a_template_with_a_fallback_for_no_scripts(
         "pop-z", name="n", trigger="k", label="l", title="t", body="<p>long</p>", deferred=True
     )
     assert "<noscript>" not in bare.popover
-    assert overview_sections.RESULT_BODIES_DEFERRED is False
-    assert "<template data-row-pop-body>" not in overview_sections.results_table(overview)
-    monkeypatch.setattr(overview_sections, "RESULT_BODIES_DEFERRED", True)
-    result = overview_sections.recent_results(overview)[0]
-    body = overview_sections.result_row_popover_body(result, overview)
+    named = overview_sections.row_detail(
+        "pop-z",
+        name="n",
+        trigger="k",
+        label="l",
+        title="t",
+        body="<p>short</p>",
+        source="beside/z.html?a=1&b=2",
+    )
+    assert (
+        '<div class="site-row-pop-body" data-row-pop-src="beside/z.html?a=1&amp;b=2">'
+        "<p>short</p></div>"
+    ) in named.popover
+    with pytest.raises(SystemExit, match="in a template or is fetched, not both"):
+        overview_sections.row_detail(
+            "pop-z",
+            name="n",
+            trigger="k",
+            label="l",
+            title="t",
+            body="b",
+            deferred=True,
+            source="z",
+        )
     for table in (
         overview_sections.results_table(overview),
         overview_sections.recent_table(overview),
     ):
-        panel = _row_popover(table, f"pop-result-{result.id.lower()}")
-        assert f"<template data-row-pop-body>{body}</template><noscript>" in panel
-        assert panel.count("<template") == 1
-        fallback = panel.split("<noscript>", 1)[1].split("</noscript>", 1)[0]
-        assert fallback.startswith('<p class="site-records"><a href="')
-        assert table.count("<template data-row-pop-body>") == table.count(
+        assert "<template" not in table
+        assert table.count("data-row-pop-src=") == table.count(
             '<div class="site-popover site-row-pop"'
         )
 

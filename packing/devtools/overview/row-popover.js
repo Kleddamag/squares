@@ -18,6 +18,14 @@
 // parses but neither lays out nor typesets: it is placed just before the popover first
 // opens, however it is opened, and `popover.js` then typesets its math. A page whose
 // every row carries a long body pays for a body only when a reader asks for it.
+//
+// A body too heavy to carry in the page at all names a fuller one beside the page, in
+// `data-row-pop-src` on its `.site-row-pop-body` (an address such as
+// `result/t-060.html`), and holds a short form of it. The fuller body is fetched once,
+// when the row is first pressed or its popover first opens, and takes the short one's
+// place; its math is typeset when it lands, if the popover is open, and by `popover.js`
+// otherwise. Where it cannot be had, on a page read from a file or off the network, the
+// short body stays, and the next opening asks again.
 (() => {
   /** What a click on a row leaves alone: the row's own links and controls. */
   const CONTROLS = "a[href], button, input, select, textarea, label, summary";
@@ -33,6 +41,39 @@
     return popover instanceof HTMLElement && typeof popover.showPopover === "function"
       ? popover
       : null;
+  }
+
+  /**
+   * Fetch each fuller body `popover` names and put it in place of the short one.
+   * @param {HTMLElement} popover
+   */
+  function fetchBodies(popover) {
+    if (location.protocol === "file:") {
+      return;
+    }
+    for (const body of popover.querySelectorAll("[data-row-pop-src]")) {
+      const source = body.getAttribute("data-row-pop-src");
+      if (!(body instanceof HTMLElement) || !source || body.hasAttribute("data-row-pop-loading")) {
+        continue;
+      }
+      body.setAttribute("data-row-pop-loading", "");
+      void fetch(source)
+        .then((response) => (response.ok ? response.text() : Promise.reject(response.status)))
+        .then((text) => {
+          const held = document.createElement("template");
+          held.innerHTML = text;
+          body.replaceChildren(held.content);
+          body.removeAttribute("data-row-pop-src");
+          if (popover.matches(":popover-open")) {
+            void globalThis.siteMath?.typeset(popover, true);
+          }
+        })
+        // The short body is already there; a later opening tries again.
+        .catch(() => undefined)
+        .finally(() => {
+          body.removeAttribute("data-row-pop-loading");
+        });
+    }
   }
 
   /**
@@ -82,6 +123,11 @@
       }
     };
 
+    // A press starts the fetch a moment before the click that opens the popover.
+    row.addEventListener("pointerdown", () => {
+      fetchBodies(popover);
+    });
+
     row.addEventListener("click", (event) => {
       if (
         event.defaultPrevented ||
@@ -130,6 +176,7 @@
           held.replaceWith(held.content);
         }
       }
+      fetchBodies(popover);
     });
 
     popover.addEventListener("toggle", (event) => {

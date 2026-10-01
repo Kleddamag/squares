@@ -96,9 +96,12 @@ def build(output: Path, skip: set[str]) -> None:
     if "explainer" not in skip:
         build_explainer(output)
     if "pages" not in skip:
-        for page in render_overview.render_all():
-            (output / page.name).write_text(page.html, encoding="utf-8")
+        pages = render_overview.render_all()
+        fragments = render_overview.result_fragments()
+        render_overview.write_site(output, [*pages, *fragments])
+        for page in pages:
             print(f"wrote {output / page.name}")
+        print(f"wrote {len(fragments)} result overviews beside them")
     if "workbench" not in skip:
         build_workbench(output)
 

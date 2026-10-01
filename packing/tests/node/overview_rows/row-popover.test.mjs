@@ -2,7 +2,9 @@
 // naming its popover, with a link and the native trigger in its cells. The stand-ins do
 // what the platform does for a popover (`showPopover`, `hidePopover`, the `toggle`
 // event, `:popover-open`) and for focus, so the test reads the script's own part:
-// which presses open a row's popover, where focus goes, and what the row is told.
+// which presses open a row's popover, where focus goes, and what the row is told. A
+// fourth row's body names a fuller one beside the page, which a stand-in `fetch` serves
+// or refuses.
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
@@ -27,8 +29,12 @@ const COMPOUND = /^([a-z]+)?((?:\[[a-z-]+\]|\.[a-z-]+|:popover-open)*)$/;
  * @property {string} [newState]
  */
 
-/** One page's stand-in classes and document, in a context of its own. */
-function page() {
+/**
+ * One page's stand-in classes and document, in a context of its own.
+ * @param {string} [protocol] how the page was reached; `offline:` is `https:` with no
+ *   network, so every fetch is refused
+ */
+function page(protocol = "https:") {
   class StandInElement {
     /**
      * @param {string} tag
@@ -83,6 +89,31 @@ function page() {
     /** @param {string} name */
     hasAttribute(name) {
       return this.attributes.has(name);
+    }
+
+    /** @param {string} name */
+    removeAttribute(name) {
+      this.attributes.delete(name);
+    }
+
+    /**
+     * What a `<template>` is given to parse: one element holding the text.
+     * @param {string} text
+     */
+    set innerHTML(text) {
+      this.content = new StandInElement("fragment", {}, [
+        new StandInElement("div", { class: "fetched", "data-text": text }),
+      ]);
+    }
+
+    /** @param {StandInElement | null} fragment whose children become this element's */
+    replaceChildren(fragment) {
+      assert.ok(fragment !== null);
+      for (const child of this.children) {
+        child.parentElement = null;
+      }
+      this.children = [];
+      this.append(...fragment.children);
     }
 
     /** @param {string} selector */
@@ -189,6 +220,8 @@ function page() {
      */
     selection: { isCollapsed: true, anchorNode: null },
     getSelection: () => document.selection,
+    /** @param {string} tag */
+    createElement: (tag) => new StandInElement(tag),
     /** @param {string} id */
     getElementById: (id) =>
       [body, ...body.querySelectorAll("[id]")].find((element) => element.id === id) ?? null,
@@ -243,8 +276,9 @@ function page() {
    * @param {string} key
    * @param {Record<string, string>} [more] further attributes of the row, such as `hidden`
    * @param {boolean} [deferred] whether the popover's body waits in a template
+   * @param {string} [source] the fuller body the popover's body names, if it names one
    */
-  function row(key, more = {}, deferred = false) {
+  function row(key, more = {}, deferred = false, source = "") {
     const target = `pop-${key}`;
     const trigger = new StandInElement("button", { class: "site-row-open", popovertarget: target });
     const link = new StandInElement("a", { href: `records/${key}` });
@@ -259,9 +293,11 @@ function page() {
     const detail = new StandInElement("a", { href: `detail/${key}` });
     const held = new StandInElement("template", { "data-row-pop-body": "" });
     held.content = new StandInElement("fragment", {}, [detail]);
-    const body = new StandInElement("div", { class: "site-row-pop-body" }, [
-      deferred ? held : detail,
-    ]);
+    const body = new StandInElement(
+      "div",
+      { class: "site-row-pop-body", ...(source ? { "data-row-pop-src": source } : {}) },
+      [deferred ? held : detail],
+    );
     const popover = new StandInElement("div", { id: target, class: "site-popover" }, [close, body]);
     return { element, trigger, link, text, popover, close, body, held, detail };
   }
@@ -272,20 +308,82 @@ function page() {
   const second = row("t-002", { hidden: "" }, true);
   // A row naming a popover the page does not carry: its popover is never appended.
   const orphan = row("t-003");
-  const tbody = new StandInElement("tbody", {}, [first.element, second.element, orphan.element]);
-  body.append(new StandInElement("table", {}, [tbody]), first.popover, second.popover);
+  // A row whose popover holds a short body and names the fuller one beside the page.
+  const fetched = row("t-004", {}, false, "result/t-004.html");
+  const tbody = new StandInElement("tbody", {}, [
+    first.element,
+    second.element,
+    orphan.element,
+    fetched.element,
+  ]);
+  body.append(
+    new StandInElement("table", {}, [tbody]),
+    first.popover,
+    second.popover,
+    fetched.popover,
+  );
+
+  /** What the site serves, by address; an address it lacks is a 404. */
+  const served = new Map([["result/t-004.html", "the whole overview of t-004"]]);
+  /** @type {string[]} every address asked for, in order */
+  const requests = [];
+  /** @type {StandInElement[]} every root the math driver was asked to typeset */
+  const typeset = [];
+  /** @type {Promise<unknown>[]} */
+  const pending = [];
+  /** @param {string} address */
+  const fetch = (address) => {
+    requests.push(address);
+    const text = served.get(address);
+    const response =
+      protocol === "offline:"
+        ? Promise.reject(new TypeError("Failed to fetch"))
+        : Promise.resolve({
+            ok: text !== undefined,
+            status: text === undefined ? 404 : 200,
+            text: () => Promise.resolve(text ?? "Not found"),
+          });
+    pending.push(response.catch(() => undefined));
+    return response;
+  };
+  /** Wait until every fetch so far, and what the script chained on it, has run. */
+  const settled = async () => {
+    await Promise.all(pending);
+    await new Promise((resolve) => setImmediate(resolve));
+  };
 
   vm.runInContext(
     SOURCE,
     vm.createContext({
       document,
+      fetch,
+      location: { protocol: protocol === "offline:" ? "https:" : protocol },
+      siteMath: {
+        /** @param {StandInElement} root */
+        typeset: (root) => {
+          typeset.push(root);
+          return Promise.resolve();
+        },
+      },
       Element: StandInElement,
       HTMLElement: StandInElement,
       HTMLTemplateElement: StandInElement,
       ToggleEvent: StandInToggleEvent,
     }),
   );
-  return { document, fire, first, second, orphan, tbody };
+  return {
+    document,
+    fire,
+    first,
+    second,
+    orphan,
+    fetched,
+    tbody,
+    served,
+    requests,
+    typeset,
+    settled,
+  };
 }
 
 void test("a row with detail becomes one tab stop, collapsed, naming its popover", () => {
@@ -371,7 +469,7 @@ void test("a row moved by a sort still opens its own popover", () => {
   tbody.append(first.element);
   assert.deepEqual(
     tbody.children.map((element) => element.id),
-    ["t-002", "t-003", "t-001"],
+    ["t-002", "t-003", "t-004", "t-001"],
   );
   fire(second.text, "click");
   assert.ok(second.popover.open);
@@ -430,4 +528,81 @@ void test("the platform's own opening places a deferred body too", () => {
   // What the native trigger does when the script has not taken the click.
   second.popover.showPopover();
   assert.deepEqual(second.body.children, [second.detail]);
+});
+
+void test("a body that names a fuller one is replaced by it when the popover first opens", async () => {
+  const { fire, fetched, requests, typeset, settled } = page();
+  assert.deepEqual(fetched.body.children, [fetched.detail]);
+  fire(fetched.text, "click");
+  // The short body is what the popover shows until the fuller one lands.
+  assert.ok(fetched.popover.open);
+  assert.deepEqual(fetched.body.children, [fetched.detail]);
+  assert.ok(fetched.body.hasAttribute("data-row-pop-loading"));
+  await settled();
+  assert.deepEqual(requests, ["result/t-004.html"]);
+  assert.deepEqual(
+    fetched.body.children.map((child) => child.getAttribute("data-text")),
+    ["the whole overview of t-004"],
+  );
+  assert.ok(!fetched.body.hasAttribute("data-row-pop-src"));
+  assert.ok(!fetched.body.hasAttribute("data-row-pop-loading"));
+  // It landed in an open popover, so its math is typeset here.
+  assert.deepEqual(typeset, [fetched.popover]);
+  fetched.popover.hidePopover();
+  fire(fetched.text, "click");
+  await settled();
+  assert.deepEqual(requests, ["result/t-004.html"], "fetched once");
+});
+
+void test("a press starts the fetch, and a body that lands before the popover opens waits for popover.js", async () => {
+  const { fire, fetched, requests, typeset, settled } = page();
+  fire(fetched.text, "pointerdown");
+  assert.deepEqual(requests, ["result/t-004.html"]);
+  // The click that follows the press finds the fetch under way and starts no other.
+  await settled();
+  assert.ok(!fetched.popover.open);
+  assert.deepEqual(typeset, [], "a closed popover's math is left to its opening");
+  fire(fetched.text, "click");
+  await settled();
+  assert.deepEqual(requests, ["result/t-004.html"]);
+  assert.equal(fetched.body.children.length, 1);
+  assert.equal(fetched.body.children[0]?.getAttribute("class"), "fetched");
+});
+
+void test("a body that cannot be fetched keeps its short form, and the next opening asks again", async () => {
+  for (const reach of ["missing", "offline:"]) {
+    const { fire, fetched, served, requests, typeset, settled } = page(
+      reach === "offline:" ? reach : "https:",
+    );
+    served.clear();
+    fire(fetched.text, "click");
+    await settled();
+    assert.deepEqual(fetched.body.children, [fetched.detail], reach);
+    assert.equal(fetched.body.getAttribute("data-row-pop-src"), "result/t-004.html");
+    assert.ok(!fetched.body.hasAttribute("data-row-pop-loading"));
+    assert.deepEqual(typeset, []);
+    fetched.popover.hidePopover();
+    fire(fetched.text, "click");
+    await settled();
+    assert.equal(requests.length, 2, reach);
+  }
+});
+
+void test("a page read from a file fetches nothing and keeps the short body", async () => {
+  const { fire, fetched, requests, settled } = page("file:");
+  fire(fetched.text, "pointerdown");
+  fire(fetched.text, "click");
+  await settled();
+  assert.deepEqual(requests, []);
+  assert.deepEqual(fetched.body.children, [fetched.detail]);
+  assert.ok(fetched.popover.open);
+});
+
+void test("a row whose body names nothing fetches nothing", async () => {
+  const { fire, first, second, requests, settled } = page();
+  fire(first.text, "pointerdown");
+  fire(first.text, "click");
+  fire(second.text, "click");
+  await settled();
+  assert.deepEqual(requests, []);
 });

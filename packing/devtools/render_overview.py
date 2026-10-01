@@ -721,33 +721,82 @@ def render_all() -> list[Page]:
     return [build() for build in PAGES.values()]
 
 
+def result_fragments() -> list[Page]:
+    """Each registered result's overview, in the register's order, as the file its row's
+    popover fetches (`overview_sections.result_fragment`).
+
+    A fragment is not a page: it is one `.site-result` block and nothing else, with no
+    shell, styles or scripts of its own, placed by `overview/row-popover.js` into the
+    popover of a page that has them. The overviews are 2.8 MB between them and two pages
+    list every result, so they are written once, here, rather than into either page.
+    """
+    from devtools import overview_data, overview_sections  # noqa: PLC0415
+
+    overview = overview_data.load()
+    return [
+        Page(
+            overview_sections.result_fragment(result.id),
+            overview_sections.result_row_popover_body(result, overview) + "\n",
+        )
+        for result in overview.results
+    ]
+
+
+def render_site() -> list[Page]:
+    """Every file this module writes: the pages, then the result fragments."""
+    return [*render_all(), *result_fragments()]
+
+
+def write_site(output: Path, files: Sequence[Page]) -> None:
+    """Write `files` under `output`, and drop any result fragment already there that is
+    not among them, so a directory built before a result was withdrawn does not keep
+    serving it."""
+    from devtools.overview_sections import RESULT_FRAGMENTS  # noqa: PLC0415
+
+    output.mkdir(parents=True, exist_ok=True)
+    kept = {output / file.name for file in files}
+    for stale in sorted((output / RESULT_FRAGMENTS).glob("*.html")):
+        if stale not in kept:
+            stale.unlink()
+    for file in files:
+        target = output / file.name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(file.html, encoding="utf-8")
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=OUTPUT)
     parser.add_argument(
         "--check",
         action="store_true",
-        help="exit non-zero if a page on disk differs from a fresh render",
+        help="exit non-zero if a file on disk differs from a fresh render",
     )
     args = parser.parse_args(argv)
     output = args.output.resolve()
     pages = render_all()
+    fragments = result_fragments()
     if args.check:
         stale = [
             p.name
-            for p in pages
+            for p in (*pages, *fragments)
             if not (output / p.name).is_file()
             or (output / p.name).read_text(encoding="utf-8") != p.html
         ]
         if stale:
             print(f"stale or missing: {', '.join(stale)}", file=sys.stderr)
             return 1
-        print(f"{len(pages)} pages match a fresh render")
+        print(f"{len(pages)} pages and {len(fragments)} result overviews match a fresh render")
         return 0
-    output.mkdir(parents=True, exist_ok=True)
+    write_site(output, [*pages, *fragments])
     for page in pages:
-        (output / page.name).write_text(page.html, encoding="utf-8")
         print(f"wrote {output / page.name} ({len(page.html) // 1024} KB)")
+    total = sum(len(fragment.html.encode("utf-8")) for fragment in fragments)
+    places = sorted({(output / fragment.name).parent for fragment in fragments})
+    print(
+        f"wrote {len(fragments)} result overviews under "
+        f"{', '.join(f'{place}/' for place in places)} ({total // 1024} KB in all)"
+    )
     return 0
 
 

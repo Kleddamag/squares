@@ -4,12 +4,16 @@
 A result's row, in Recent Results on the homepage and in the table on
 `all-results.html`, opens a popover with everything the site knows about the result.
 This module writes that popover's body, `result_popover_html(result, overview)`; the
-popover around it, and the row that opens it, belong to the pages that list results.
-Nothing here depends on that mechanism: the body is one `.site-result` block with no
-ids, so it can be placed anywhere, as often as a page needs it. It has five parts.
+popover around it, with the result's id as its caps label and its summary as its
+headline, and the row that opens it, belong to the pages that list results
+(`overview_sections.result_row`). Nothing here depends on that mechanism: the body is
+one `.site-result` block with no ids, so it can be placed anywhere, as often as a page
+needs it. It is written once a result, as a file beside the pages
+(`render_overview.result_fragments`), and a row's popover fetches its own. It has four
+parts.
 
-1. **The head**: the id, the headline, the rung chips and standing as the tables show
-   them (`overview_sections.status_chips`), the date and credit as the register states
+1. **The head**: the rung chips and standing as the tables show them
+   (`overview_sections.status_chips`), the date and credit as the register states
    them (`result_credit`, through `overview_data.Result`), and the claim, its
    mathematics set as the site sets it (`overview_data.tex_bounds`).
 2. **The case**: for a result about one case, or a few (`render_case_pages.BROAD_RESULT`
@@ -34,14 +38,10 @@ ids, so it can be placed anywhere, as often as a page needs it. It has five part
 The design is `templates/paper-design.md`, Result Overview, and its styles are
 `templates/site-result.css`.
 
-Until the rows open these popovers, the overviews of three sample results can be seen on
-a preview page that is never published (`PREVIEW_PAGE`, outside `SITE_PAGES`). From
-`packing/`:
+`--audit` renders every result's overview, counts its links against the tree at `HEAD`
+and reports the overviews' sizes. From `packing/`:
 
-    uv run --frozen --all-extras --group dev python -m devtools.result_overview --output DIR
     uv run --frozen --all-extras --group dev python -m devtools.result_overview --audit
-    uv run --frozen --all-extras --group dev python -m devtools.preview_site \
-        --skip explainer --skip workbench --result-preview --shots DIR
 """
 
 from __future__ import annotations
@@ -55,7 +55,7 @@ from collections.abc import Iterable, Sequence
 from decimal import Decimal
 from functools import cache
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, NamedTuple, cast
+from typing import Any, NamedTuple, cast
 
 from devtools import repo_links
 from devtools.overview_data import (
@@ -71,16 +71,6 @@ from devtools.overview_data import (
     tex_bounds,
 )
 from devtools.repo_links import repo_url
-
-if TYPE_CHECKING:
-    from devtools.render_overview import Page
-
-#: The page that shows the sample overviews while no row opens them. It is not one of
-#: `render_overview.SITE_PAGES` and no Pages build writes it.
-PREVIEW_PAGE = "result-overview-preview.html"
-#: The samples it shows: a result about one case that settles it, the earlier result on
-#: the same case it superseded, and a result about 49 cases.
-PREVIEW_RESULTS = ("T-060", "T-037", "T-056")
 
 #: The film's gap bar, as `overview/atlas-grid.js` draws it (`INSET` and `at`): the
 #: inset at each end, in percent of the bar, and the span the bar covers, from one below
@@ -577,7 +567,8 @@ def where(cases: Sequence[int]) -> str:
 
 
 def head(result: Result, cases: Sequence[int]) -> str:
-    """The id, the headline, the chips, the date and credit, and the claim."""
+    """The chips, the date and credit, and the claim. The id and the headline are the
+    popover's own, above the body (`overview_sections.result_row`)."""
     from devtools.overview_sections import novelty_labels, status_chips  # noqa: PLC0415
 
     record = result.record
@@ -600,9 +591,6 @@ def head(result: Result, cases: Sequence[int]) -> str:
     )
     return (
         '<header class="site-result-head">'
-        f'<span class="site-card-label">Result {_esc(result.id)}</span>'
-        f'<p class="site-popover-value site-result-headline" data-math-face="serif">'
-        f"{tex_bounds(result.summary)}</p>"
         f'<p class="site-result-status">{status_chips(result)}</p>'
         f'<p class="site-result-meta"><span class="site-date-kind">{_esc(kind)}</span> '
         f"{_esc(dated)} \u00b7 {_esc(result.credit)} \u00b7 {where(cases)}</p>"
@@ -1019,67 +1007,16 @@ def link_audit(overview: Overview) -> LinkAudit:
     )
 
 
-# ---------- The preview page ----------
-
-
-def preview_page() -> Page:
-    """The sample overviews, each as it reads open and in a popover of its own, on a page
-    the site never publishes."""
-    from devtools import overview_data, render_overview  # noqa: PLC0415
-    from devtools.overview_sections import result_url  # noqa: PLC0415
-
-    overview = overview_data.load()
-    by_id = {result.id: result for result in overview.results}
-    blocks = []
-    for result_id in PREVIEW_RESULTS:
-        body = result_popover_html(by_id[result_id], overview)
-        target = f"pop-result-{result_id.lower()}"
-        blocks.append(
-            f'<section class="site-result-preview" data-preview="{result_id.lower()}">'
-            f'<p class="site-result-preview-open"><button type="button" '
-            f'class="site-popover-action" popovertarget="{target}">Open {result_id} in a '
-            "popover</button></p>"
-            f'<div class="site-popover site-result-preview-frame">{body}</div>'
-            f'<div class="site-popover" id="{target}" popover data-go="page">'
-            f'<button type="button" class="site-popover-close" popovertarget="{target}" '
-            'popovertargetaction="hide" aria-label="Close">\u00d7</button>'
-            f"{body}"
-            '<p class="site-popover-actions"><a class="site-popover-action" data-go="page" '
-            f'href="{_esc(result_url(result_id))}">Open {result_id} in the results table</a>'
-            "</p></div></section>"
-        )
-    markdown = (
-        "# Result Overviews\n\n"
-        "A preview of the overview each result's row will open, for "
-        + ", ".join(PREVIEW_RESULTS)
-        + ". Each is shown open, as it reads in its popover, and the button above it "
-        "opens it in a popover of its own. This page is not published.\n\n"
-        f'<div class="site-wide site-result-previews">{"".join(blocks)}</div>\n'
-    )
-    return render_overview.kpress_page(
-        markdown,
-        name=PREVIEW_PAGE,
-        current="results",
-        title=f"Result Overviews \u00b7 {render_overview.SITE_NAME}",
-        description="A preview of the result overview popovers, not published.",
-        toc=False,
-        page_scripts=(render_overview.POPOVER_SCRIPT,),
-    )
-
-
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--output", type=Path, help="write the preview page into this directory"
-    )
     parser.add_argument(
         "--audit",
         action="store_true",
         help="render every result's overview and count its links against the tree at HEAD",
     )
     args = parser.parse_args(argv)
-    if not args.audit and args.output is None:
-        parser.error("nothing to do: give --output DIR, --audit, or both")
+    if not args.audit:
+        parser.error("nothing to do: give --audit")
     status = 0
     if args.audit:
         from devtools import overview_data  # noqa: PLC0415
@@ -1108,14 +1045,6 @@ def main(argv: Sequence[str] | None = None) -> int:
             status = 1
         else:
             print("every link resolves")
-    if args.output is not None:
-        output = args.output.resolve()
-        if output == (PACKING / "site").resolve():
-            parser.error("the preview never writes into packing/site/")
-        output.mkdir(parents=True, exist_ok=True)
-        page = preview_page()
-        (output / page.name).write_text(page.html, encoding="utf-8")
-        print(f"wrote {output / page.name} ({len(page.html) // 1024} KB)")
     return status
 
 

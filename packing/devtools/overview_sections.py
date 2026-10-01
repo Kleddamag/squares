@@ -357,6 +357,7 @@ def row_detail(
     action: tuple[str, str] | None = None,
     deferred: bool = False,
     fallback: str = "",
+    source: str = "",
 ) -> RowDetail:
     """A table row's popover and the markup that ties its row to it.
 
@@ -373,11 +374,20 @@ def row_detail(
     popover opens: for a body too heavy to render once per row at load. It costs the
     same bytes. Without scripts a template stays inert, so `fallback`, HTML in a
     `<noscript>` beside it, is what such a reader's popover shows.
+
+    `source` is for a body too heavy to carry in the page at all: the address, beside
+    the page, of a fuller body that the script fetches when the popover is first opened
+    and puts in place of `body`, which is then the short form the page itself holds and
+    what a reader without scripts, or off the network, keeps. The page gains only the
+    address.
     """
+    if deferred and source:
+        raise SystemExit(f"{target}: a row body waits in a template or is fetched, not both")
     if deferred:
         body = f"<template data-row-pop-body>{body}</template>" + (
             f"<noscript>{fallback}</noscript>" if fallback else ""
         )
+    fetched = f' data-row-pop-src="{_esc(source)}"' if source else ""
     target = _esc(target)
     attributes = f'data-row-popover="{target}" aria-label="{_esc(name)}"'
     button = (
@@ -400,7 +410,7 @@ def row_detail(
         f'<span class="site-card-label">{_esc(label)}</span>'
         f'<p class="site-popover-value"{headline_math_face(title)} id="{target}-title">'
         f"{title}</p>"
-        f'<div class="site-row-pop-body">{body}</div>{foot}</div>'
+        f'<div class="site-row-pop-body"{fetched}>{body}</div>{foot}</div>'
     )
     return RowDetail(attributes, button, popover)
 
@@ -416,8 +426,8 @@ def _dl(rows: list[tuple[str, str]]) -> str:
 
 
 def _detail(result: Result) -> str:
-    """A result's claim, composition, next rung, why it matters and novelty label: what
-    its row in the results table opens to (`result_row_popover_body`)."""
+    """A result's claim, composition, next rung, why it matters and novelty label: the
+    short form of what its row opens to, which the page itself carries (`result_row`)."""
     record = result.record
     rows = [("Claim", tex_bounds(" ".join(str(record["claim"]).split())))]
     for key, label in (("composition", "Composition"), ("next_rung", "Next rung")):
@@ -449,28 +459,41 @@ def _records(result: Result) -> str:
     )
 
 
-def result_row_popover_body(result: Result, overview: Overview) -> str:  # noqa: ARG001
+def result_row_popover_body(result: Result, overview: Overview) -> str:
     """The body of a result row's popover, the one source of it for every table that
-    lists results: the recent table on the overview and the results page's table.
+    lists results: the recent table on the overview and the results page's table. It is
+    the result's whole overview (`result_overview.result_popover_html`): its case drawn,
+    the chain of results on that case, and every link.
 
-    For now it is the detail the row used to open to in place (`_detail`). `overview` is
-    the seam the full result overview needs, which reads the rest of the register.
+    The overviews run to 2.8 MB between them, and two pages list the results, so no page
+    carries one. Each is written once, beside the pages (`result_fragment`,
+    `render_overview.result_fragments`), and a row's popover fetches its own when it
+    first opens (`result_row`).
     """
-    return _detail(result)
+    # `result_overview` reads this module for the chips and the film's facts.
+    from devtools import result_overview  # noqa: PLC0415
+
+    return result_overview.result_popover_html(result, overview)
 
 
-#: Whether a result row's popover body waits in a `<template>` until its popover first
-#: opens (`row_detail`'s `deferred`). Off while the body is the short detail; a body that
-#: is a whole overview of the result, on every row of two tables, wants it on.
-RESULT_BODIES_DEFERRED = False
+#: Where the result overviews are served, under the site's root: a directory of
+#: fragments, one a result, which are not pages. Not `results/`: `results.html` is
+#: `RESULTS.md`, and a host may serve either at `/results`.
+RESULT_FRAGMENTS = "result"
 
 
-def result_row(result: Result, overview: Overview, *, trigger: str, here: bool) -> RowDetail:
+def result_fragment(result_id: str) -> str:
+    """The address of a result's overview, from a page at the site's root. Its links
+    are written from the root too, so only a page there may place it."""
+    return f"{RESULT_FRAGMENTS}/{result_id.lower()}.html"
+
+
+def result_row(result: Result, *, trigger: str, here: bool) -> RowDetail:
     """A result's row popover, the same on every page: its id as the caps label, its
-    summary as the headline, then `result_row_popover_body`. A row on the results page
-    (`here`) is the result's own row, so its popover has no button; anywhere else it
-    ends in the button to that row. Where the body is deferred, a reader without scripts
-    is shown the result's records instead."""
+    summary as the headline, then the result's short detail (`_detail`), which the
+    script replaces with the whole overview, fetched from `result_fragment` when the
+    popover first opens. A row on the results page (`here`) is the result's own row, so
+    its popover has no button; anywhere else it ends in the button to that row."""
     action = None if here else (result_url(result.id), f"Open {result.id} in the results table")
     return row_detail(
         f"pop-result-{result.id.lower()}",
@@ -478,10 +501,9 @@ def result_row(result: Result, overview: Overview, *, trigger: str, here: bool) 
         trigger=trigger,
         label=result.id,
         title=tex_bounds(result.summary),
-        body=result_row_popover_body(result, overview),
+        body=_detail(result),
         action=action,
-        deferred=RESULT_BODIES_DEFERRED,
-        fallback=f'<p class="site-records">{_records(result)}</p>',
+        source=result_fragment(result.id),
     )
 
 
@@ -643,7 +665,7 @@ def results_table(overview: Overview) -> str:
         for result in members:
             record = result.record
             kind, date = result.dated
-            detail = result_row(result, overview, trigger=_esc(result.id), here=True)
+            detail = result_row(result, trigger=_esc(result.id), here=True)
             popovers.append(detail.popover)
             body.append(
                 f'<tr id="{_esc(result.id.lower())}" {result_facets(result)} '
@@ -830,7 +852,7 @@ def recent_table(overview: Overview) -> str:
     for result in results:
         kind, dated = result.dated
         formula, method = split_summary(result.summary)
-        detail = result_row(result, overview, trigger=_esc(result.id), here=False)
+        detail = result_row(result, trigger=_esc(result.id), here=False)
         popovers.append(detail.popover)
         rows.append(
             f'<tr data-result="{_esc(result.id.lower())}" {result_facets(result)} '

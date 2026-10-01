@@ -66,16 +66,18 @@ def test_every_register_result_has_an_overview(bodies: dict[str, str]) -> None:
 def test_the_head_states_the_result_as_the_site_does(
     result_id: str, overview: overview_data.Overview, bodies: dict[str, str]
 ) -> None:
-    """The id, the headline and claim with their math set, the rung and standing chips of
-    the tables, the date and what it dates, and the register's credit."""
+    """The claim with its math set, the rung and standing chips of the tables, the date
+    and what it dates, and the register's credit. The id and the headline are not
+    repeated: the popover that holds the body carries them, above it."""
     result = _result(overview, result_id)
     record = result.record
     head = bodies[result_id].split("</header>", 1)[0]
-    assert f'<span class="site-card-label">Result {result_id}</span>' in head
-    assert (
-        '<p class="site-popover-value site-result-headline" data-math-face="serif">'
-        f"{overview_data.tex_bounds(result.summary)}</p>"
-    ) in head
+    assert head.startswith(
+        f'<div class="site-result" data-result-overview="{result_id.lower()}">'
+        '<header class="site-result-head"><p class="site-result-status">'
+    )
+    assert "site-card-label" not in head
+    assert "site-popover-value" not in head
     claim = overview_data.tex_bounds(" ".join(str(record["claim"]).split()))
     assert f'<p class="site-result-claim">{claim}</p>' in head
     assert "kpress-math" in claim
@@ -345,7 +347,7 @@ def test_a_link_to_nothing_fails_the_render(overview: overview_data.Overview) ->
 def test_the_overview_depends_on_no_popover(bodies: dict[str, str]) -> None:
     """The body is content alone: no id, no popover of its own, no script, and no table
     for a results table's script to count, so any page may place it, more than once. The
-    module names nothing of the row mechanism that will show it."""
+    module calls nothing of the row mechanism that shows it."""
     for result_id, body in bodies.items():
         assert not re.search(r'\sid="', body), result_id
         assert "popover" not in re.sub(r'class="[^"]*"', "", body), result_id
@@ -419,7 +421,16 @@ def test_the_stylesheet_is_its_own_file_on_the_sites_tokens() -> None:
     rules = re.sub(r"/\*.*?\*/", "", css, flags=re.DOTALL)
     assert not re.search(r"#[0-9a-fA-F]{3,8}\b|oklch\(|rgb\(|hsl\(", rules)
     assert not re.search(r"^\s*--[a-z-]+:", rules, flags=re.MULTILINE)
-    assert ".site-popover:has(.site-result)" in rules
+    assert ".site-popover:has(.site-result, [data-row-pop-src])" in rules
+    # The panel's height has one limit. `max-height` is the same property as
+    # `max-block-size` here, and the later of the two in a rule is the one that holds.
+    opened = rules.split(
+        ".site-popover:has(.site-result, [data-row-pop-src]):popover-open {", 1
+    )[1]
+    opened = opened.split("}", 1)[0]
+    assert "max-block-size: min(92dvh, 58rem);" in opened
+    assert "max-height" not in opened
+    assert "preview" not in css
 
 
 def test_the_design_document_describes_the_overview() -> None:
@@ -428,20 +439,3 @@ def test_the_design_document_describes_the_overview() -> None:
     section = design.split("\n## Result Overview\n", 1)[1].split("\n## ", 1)[0]
     for name in ("site-result.css", "result_overview.py", "atlas_film_facts"):
         assert name in section, name
-
-
-def test_the_preview_page_is_never_published() -> None:
-    """The preview is outside the site: no navigation entry, no Pages build, and the three
-    samples each shown open and in a popover."""
-    name = result_overview.PREVIEW_PAGE
-    assert name not in render_overview.SITE_PAGES
-    assert name not in render_overview.PAGES
-    assert name not in render_overview.SITE_NAV.read_text(encoding="utf-8")
-    page = result_overview.preview_page()
-    assert page.name == name
-    for result_id in result_overview.PREVIEW_RESULTS:
-        marker = f'data-result-overview="{result_id.lower()}"'
-        assert page.html.count(marker) == 2, result_id
-        assert f'id="pop-result-{result_id.lower()}" popover' in page.html
-    assert set(result_overview.PREVIEW_RESULTS) == {SETTLED, EARLIER, BROAD}
-    assert render_overview.SITE_RESULT_CSS.read_text(encoding="utf-8") in page.html

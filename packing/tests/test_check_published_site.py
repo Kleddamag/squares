@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import hashlib
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from pathlib import Path
 
 import pytest
@@ -72,14 +72,41 @@ def page(
     ).encode()
 
 
+#: The result overviews the fixture's results table names, by address beside the pages.
+OVERVIEWS = ("result/t-001.html", "result/t-002.html")
+
+
+def result_overview(
+    result_id: str, *, ref: str = DEFAULT_BRANCH, link: str = "README.md"
+) -> bytes:
+    """A result's overview as it is served: the one block, with a repository link."""
+    return (
+        f'<div class="site-result" data-result-overview="{result_id}">'
+        f'<a href="{REPO_URL}/blob/{ref}/{link}">Register</a></div>\n'
+    ).encode()
+
+
 def site_pages(**overrides: bytes) -> dict[str, bytes]:
-    """Every page a good deploy serves, by served name, each named as its renderer names it."""
+    """Every page a good deploy serves, by served name, each named as its renderer names it,
+    and the result overviews its results table names, by their address."""
+    return site_naming(OVERVIEWS, **overrides)
+
+
+def site_naming(named: Sequence[str], /, **overrides: bytes) -> dict[str, bytes]:
+    """`site_pages`, with the results table, whichever page stands for it, naming the
+    overviews in `named`."""
     pages = {
         name: page(render_overview.canonical_url(name), link=f"packing/{name}.md")
         for name in SITE_PAGES
     }
     pages[EXPLAINER] = page(PAGE_URL)
+    for address in OVERVIEWS:
+        pages[address] = result_overview(address.rsplit("/", 1)[1].removesuffix(".html"))
     pages.update(overrides)
+    pages[render_overview.RESULTS_PAGE] += "".join(
+        f'<div class="site-row-pop-body" data-row-pop-src="{address}"></div>'
+        for address in named
+    ).encode()
     return pages
 
 
@@ -106,7 +133,10 @@ def fake_site(
             tail = receipt if receipt is not None else source_receipt(pages[EXPLAINER])
             return 200, b"%PDF-1.7\n" + pages_ + b"%%EOF" + tail
         name = "index.html" if url.endswith("/") else url.rsplit("/", 1)[1]
-        body = pages.get(name, b"served")
+        nested = "/".join(url.rsplit("/", 2)[1:])
+        if nested.startswith("result/") and nested not in pages:
+            return 404, b"Not found"
+        body = pages.get(nested, pages.get(name, b"served"))
         return 200, b"" if head else body
 
     return fetch
@@ -270,6 +300,43 @@ def test_check_requires_every_path_linked_on_main_to_be_in_the_commit(
         assert found == [
             f"{name}: linked on main but not in {COMMIT[:12]}: ['blob/packing/gone.md']"
         ], name
+
+
+def test_check_requires_every_result_overview_the_results_table_names(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A row's popover fetches its result's overview from beside the page, so a deploy
+    without one, or with another result's under its name, shows only as a popover that
+    keeps its short detail. Each named overview is asked for, and its repository links
+    are held to `main` and to the commit's tree as a page's are."""
+    requested: list[str] = []
+    assert failures(monkeypatch, fake_site(site_pages(), requested=requested)) == []
+    for address in OVERVIEWS:
+        assert f"https://example.org/{address}" in requested
+
+    lost = site_naming((*OVERVIEWS, "result/t-003.html"))
+    assert failures(monkeypatch, fake_site(lost)) == [
+        "result overview result/t-003.html: HTTP 404, 9 bytes, but it is None"
+    ]
+
+    swapped = site_pages(**{"result/t-002.html": result_overview("t-001")})
+    (failure,) = failures(monkeypatch, fake_site(swapped))
+    assert failure.startswith("result overview result/t-002.html: HTTP 200, ")
+    assert failure.endswith("but it is 'result/t-001.html'")
+
+    assert failures(monkeypatch, fake_site(site_naming(()))) == [
+        "all-results.html names 0 result overviews"
+    ]
+
+    pinned = site_pages(**{"result/t-001.html": result_overview("t-001", ref=COMMIT[:8])})
+    url = f"{REPO_URL}/blob/{COMMIT[:8]}/README.md"
+    assert failures(monkeypatch, fake_site(pinned)) == [
+        f"the result overviews: 1 repository links pinned to a commit: [{url!r}]"
+    ]
+
+    gone = site_pages(**{"result/t-001.html": result_overview("t-001", link="packing/gone.md")})
+    missing = f"linked on main but not in {COMMIT[:12]}: ['blob/packing/gone.md']"
+    assert failures(monkeypatch, fake_site(gone)) == [f"the result overviews: {missing}"]
 
 
 def test_check_fails_when_the_commit_tree_cannot_be_read(

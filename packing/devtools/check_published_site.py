@@ -21,6 +21,9 @@ the last deploy built from once `git fetch` has run. One line per check, `ok` or
   page links on `main` exists in the expected commit's tree, which is `main` when the
   deploy runs, and each link on the explainer, its Markdown edition, the overview and
   the frontier atlas is also asked of GitHub;
+- every result overview the results table's rows name (`data-row-pop-src`) is served
+  beside the pages and is that result's, and the overviews' repository links pass the
+  same two checks against the tree;
 - the Markdown edition, the PDF and the composite assets are served beside the page,
   and the PDF is a PDF with the expected page count and a source receipt matching
   the exact HTML bytes the site serves;
@@ -49,6 +52,7 @@ from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
 from devtools import render_overview
+from devtools.overview_sections import result_fragment
 from devtools.render_explainer import (
     COMPOSITE_ASSETS,
     MARKDOWN_OUTPUT,
@@ -75,6 +79,10 @@ PROBES = Path(__file__).resolve().parent / "probes"
 #: `blob/` for a file and `tree/` for a directory.
 REPOSITORY_LINK = re.compile(re.escape(REPO_URL) + r"/(blob|tree)/([^/\s\"<>)]+)/([^\s\"<>)]*)")
 CANONICAL = re.compile(r'<link\s+rel="canonical"\s+href="([^"]*)"')
+#: The fuller body a row's popover fetches, as its address beside the page, and how a
+#: result's overview opens: the one block it is, naming its result.
+ROW_SOURCE = re.compile(r'data-row-pop-src="([^"]+)"')
+RESULT_OVERVIEW = re.compile(r'\A<div class="site-result" data-result-overview="(t-\d{3})">')
 
 #: Where the explainer is served. It is built as `index.html` and renamed when the site
 #: is assembled, because the root is the overview's.
@@ -276,12 +284,40 @@ def check(
         )
 
     checked_links: set[tuple[str, str, str]] = set()
+    overviews: list[str] = []
     for name in SITE_PAGES:
         url = site if name == "index.html" else site + name
         _, text = served_page(name, url, render_overview.canonical_url(name))
         links_main(name, text)
         if name in LINK_CHECKED_PAGES:
             checked_links |= repository_links(text)
+        if name == render_overview.RESULTS_PAGE:
+            overviews = sorted(set(ROW_SOURCE.findall(text)))
+
+    # The result overviews are files beside the pages, fetched when a row is opened: a
+    # deploy that lost one would show only as a popover that keeps its short detail.
+    results.append(
+        (
+            bool(overviews),
+            f"{render_overview.RESULTS_PAGE} names {len(overviews)} result overviews",
+        )
+    )
+    bodies = []
+    for address in overviews:
+        status, body = fetch(site + address, timeout=timeout)
+        fragment = body.decode("utf-8", errors="replace")
+        found = RESULT_OVERVIEW.match(fragment)
+        holds = None if found is None else result_fragment(found.group(1))
+        results.append(
+            (
+                status == 200 and holds == address,
+                f"result overview {address}: HTTP {status}, {len(body)} bytes"
+                + ("" if holds == address else f", but it is {holds!r}"),
+            )
+        )
+        bodies.append(fragment)
+    if bodies:
+        links_main("the result overviews", "\n".join(bodies))
 
     # The explainer's bytes are what the PDF's source receipt names, so they are kept whole.
     page, text = served_page(EXPLAINER, site + EXPLAINER, PAGE_URL)

@@ -278,6 +278,8 @@ jobs:
         run: uv run --frozen --group dev python -m playwright install --only-shell chromium
 
       - name: Check T-060 figures and article renderer
+        env:
+          SQPACK_N11_PAPER_BROWSER: "1"
         run: |
           uv run --frozen --all-extras --group dev pytest -q tests/test_n11_optimality_figures.py
           uv run --frozen --all-extras --group dev pytest -q tests/test_render_n11_optimality_explainer.py

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import re
 from pathlib import Path
 
@@ -130,10 +131,13 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
     assert markdown.count(f"/blob/{REVISION}/") >= 39
 
 
+@pytest.mark.skipif(
+    os.environ.get("SQPACK_N11_PAPER_BROWSER") != "1",
+    reason="the dedicated T-060 Pages job sets SQPACK_N11_PAPER_BROWSER=1",
+)
 def test_pdf_refuses_a_math_host_without_rendered_katex(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    pytest.importorskip("playwright.sync_api")
     html = tmp_path / "unrendered.html"
     html.write_text('<html><body><span class="kpress-math">raw TeX</span></body></html>')
     pdf = tmp_path / "unrendered.pdf"
@@ -143,9 +147,14 @@ def test_pdf_refuses_a_math_host_without_rendered_katex(
     assert not pdf.exists()
 
 
+@pytest.mark.skipif(
+    os.environ.get("SQPACK_N11_PAPER_BROWSER") != "1",
+    reason="the dedicated T-060 Pages job sets SQPACK_N11_PAPER_BROWSER=1",
+)
 def test_radical_svg_has_print_geometry(tmp_path: Path) -> None:
-    playwright = pytest.importorskip("playwright.sync_api")
-    with playwright.sync_playwright() as driver:
+    from playwright.sync_api import sync_playwright  # noqa: PLC0415
+
+    with sync_playwright() as driver:
         html, _ = paper.render(
             SOURCE.replace("$x^2$", r"$\sqrt2$"),
             figures=FIGURES,

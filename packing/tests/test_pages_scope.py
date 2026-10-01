@@ -200,6 +200,12 @@ def test_t060_page_has_an_independent_required_build() -> None:
     jobs = load_workflow()["jobs"]
     assert "needs.scope.outputs.optimality == 'true'" in jobs["optimality"]["if"]
     assert jobs["optimality"]["timeout-minutes"] == 10
+    browser_control = next(
+        step
+        for step in jobs["optimality"]["steps"]
+        if step.get("name") == "Check T-060 figures and article renderer"
+    )
+    assert browser_control["env"]["SQPACK_N11_PAPER_BROWSER"] == "1"
     commands = "\n".join(str(step.get("run", "")) for step in jobs["optimality"]["steps"])
     assert "render_n11_optimality_explainer --output-dir site/n11-optimality --pdf" in commands
     assert (

@@ -13,7 +13,7 @@ by Queuingtheorydotcom
 <div class="credits centred">
   <span>Human oversight: <a href="https://x.com/ojoshe"><strong>Joshua Levy</strong></a></span>
   <span>Agents: <strong>GPT-6 Astra</strong> and <strong>GPT-6 Sol</strong></span>
-  <span><a href="https://github.com/jlevy/squares"><strong>github.com/jlevy/squares</strong></a></span>
+  <span><strong>Draft v0.1.0</strong></span>
   <span class="publication-date">Original proof September 29, 2026 · This review revised September 30, 2026</span>
 </div>
 

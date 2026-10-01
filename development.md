@@ -1048,6 +1048,11 @@ expected commit, and requires the PDF source receipt to match the exact served H
 bytes and its page count to match the publication.
 It also requires the workbench’s exact source revision, starts its public API in pinned
 Chromium, and follows its project-relative link to the explainer.
+Whether a link resolves is not whether it is there, so the check also asks the renderer
+what record links it writes at that commit: every result row of the overview and the
+results page carries its own, and the overviews of three sampled results carry every
+repository link the renderer writes for them ([D-512](defects.md)). Run it from a
+checkout at the deployed commit, since the register it reads is the checkout’s.
 
 **One version, shared by every artifact** (the owner, 2026-09-22): the explainer’s
 credits, the atlas footer, the workbench stage and the videos all print

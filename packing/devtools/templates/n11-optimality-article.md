@@ -680,7 +680,7 @@ c_j=\frac{M_j}{2(r_j-\epsilon_jR)}<1.
 $$
 
 This is impossible for $0<\tau\le1$: dividing by $\tau$ would give $1\le c_j\tau<1$. The
-largest certified ratio is approximately $0.6765052083$; the proof uses exact strict
+largest certified ratio is approximately $0.676505208$; the proof uses exact strict
 comparisons, not this rounded display value.
 
 **Local-isolation lemma.** The zero perturbation is the only feasible packing in the
@@ -891,7 +891,7 @@ coordinates are not inputs to certificate acceptance.
 [^proof]: [Original proof, §1: exact statement](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#1-statement-and-exact-endpoint)
     and
     [§10: final deduction](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#10-deduction-of-the-optimum);
-    [complete independent acceptance](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#whole-proof-acceptance).
+    [whole-proof acceptance review](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#whole-proof-acceptance).
 
 [^review]: [T-060](../../frontier/results.yaml);
     [current review disposition](../../../docs/project/reviews/review-2026-09-29-n11-optimality.md);
@@ -930,6 +930,7 @@ coordinates are not inputs to certificate acceptance.
     [mathematical review of the five-site charge](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#first-independent-field-exclusion-mask-0).
 
 [^exclusions]: [Complete exclusion inventory](../../resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json);
+    [case census, which counts the field certificates](../../resources/web/n11-optimality-2026-09-29/receipts/case-census/result.json);
     [original proof, §9: accepted global obligations](../../resources/web/n11-optimality-2026-09-29/source/PROOF.md#9-accepted-global-verification-obligations);
     [independent exclusion and conditional-premise review](../../../docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md#complete-exclusion-execution-census).
 

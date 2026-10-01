@@ -5,8 +5,10 @@ in no smaller square.** Here $T=(6u+4)/(1+2u-u^2)$, where $u$ is the specified r
 the polynomial in the [published proof](source/PROOF.md#1-statement-and-exact-endpoint).
 The [exact construction](source/PROOF.md#2-exact-construction-and-upper-bound) gives the
 upper bound. The independent geometric execution and its reviewed composition supply the
-lower bound at S5/V4/C5; see the [final result](receipts/final-composition.json) and
-[packet overview](README.md).
+lower bound; see the [final result](receipts/final-composition.json) and
+[packet overview](README.md). The register records T-060 at S5/V3/C3: machine-checked
+here, with the review record that rung 4 requires still pending
+([epistemics](../../../../epistemics.md)).
 
 This is a reviewer guide **inside the Squares checkout**, not a standalone executable
 release. It separates inspection of retained executions from a fresh geometric replay.

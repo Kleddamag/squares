@@ -64,6 +64,7 @@ FORWARD_SCRIPT = BROWSER / "forward.js"
 TABLE_SCRIPT = BROWSER / "table.js"
 MATH_SCRIPT = BROWSER / "math.js"
 POPOVER_SCRIPT = BROWSER / "popover.js"
+ROW_POPOVER_SCRIPT = BROWSER / "row-popover.js"
 ATLAS_GRID_SCRIPT = BROWSER / "atlas-grid.js"
 EMBED_SCRIPT = BROWSER / "embed.js"
 CASE_POPOVER_SCRIPT = BROWSER / "case-popover.js"
@@ -564,6 +565,7 @@ def overview_page() -> Page:
             FORWARD_SCRIPT,
             TABLE_SCRIPT,
             POPOVER_SCRIPT,
+            ROW_POPOVER_SCRIPT,
             ATLAS_GRID_SCRIPT,
         ),
     )
@@ -589,7 +591,7 @@ def results_page() -> Page:
         title=f"Every Result · {SITE_NAME}",
         description=RESULTS_DESCRIPTION,
         toc=False,
-        page_scripts=(TABLE_SCRIPT,),
+        page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, ROW_POPOVER_SCRIPT),
     )
 
 
@@ -611,7 +613,7 @@ def frontier_page() -> Page:
         title=f"The Frontier Atlas · {SITE_NAME}",
         description=FRONTIER_DESCRIPTION,
         toc=False,
-        page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, CASE_POPOVER_SCRIPT),
+        page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, CASE_POPOVER_SCRIPT, ROW_POPOVER_SCRIPT),
     )
 
 

@@ -689,7 +689,13 @@ def test_every_card_shows_where_it_goes_and_gets_there(page: str) -> None:
     served = {*render_overview.SITE_PAGES, "workbench/"}
     for target, kind in cards:
         start = page.index(f'<div class="site-popover" id="{target}" popover')
-        panel = page[start:].split('<button type="button" class="site-card"', 1)[0]
+        # A card's panel ends where the next card begins, or the next popover: a table
+        # row's popover, with a button of its own, can follow the section's last card.
+        panel = re.split(
+            r'<button type="button" class="site-card"|<div class="site-popover[ "]',
+            page[start + 1 :],
+            maxsplit=1,
+        )[0]
         (action,) = ACTION.findall(panel)
         href, action_kind = action
         assert action_kind == kind == overview_sections.card_kind(href), target
@@ -769,6 +775,20 @@ def _row(page: str, result_id: str) -> str:
     return match.group(0)
 
 
+_DIV = re.compile(r"<(/?)div\b")
+
+
+def _row_popover(page: str, target: str) -> str:
+    """A row's popover, from its opening tag to the `</div>` that closes it."""
+    start = page.index(f'<div class="site-popover site-row-pop" id="{target}" popover')
+    depth = 0
+    for match in _DIV.finditer(page, start):
+        depth += -1 if match.group(1) else 1
+        if depth == 0:
+            return page[start : match.end() + 1]
+    raise AssertionError(f"{target}: its popover never closes")
+
+
 def test_every_result_shows_the_standing_readme_derives(
     page: str,
     results: str,
@@ -817,13 +837,15 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
 ) -> None:
     """The section is one `.site-table` of the recent results, one row each, with the
     date, the result linking its row, the method, the credit and the status chips; no
-    card, popover or list is left in it."""
+    card or list is left in it, and its only popovers are its rows' own."""
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
     recent = _recent_table(page)
     assert recent in section
     before_replay = section.split("site-replay", 1)[0]
-    assert "site-card" not in before_replay
-    assert "popover" not in before_replay
+    assert not re.search(r'class="site-card[ "]', before_replay)
+    assert set(re.findall(r'<div class="(site-popover[^"]*)"', before_replay)) == {
+        "site-popover site-row-pop"
+    }
     assert "<li>" not in before_replay
     assert section.count("<table") == 2  # the recent table, then the replay table
     assert 'class="kpress-table site-table site-results site-recent-table"' in recent
@@ -839,7 +861,11 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
             f"site-col-{c}" for c in ("date", "result", "method", "credit", "status")
         ]
         assert f'<a href="all-results.html#{result.id.lower()}">' in row
-        assert f'<span class="site-cell-quiet">{result.id}</span>' in row
+        # The quiet id is the row's native trigger, which opens its popover unscripted.
+        assert (
+            '<span class="site-cell-quiet"><button type="button" class="site-row-open" '
+            f'popovertarget="pop-result-{result.id.lower()}">{result.id}</button></span>'
+        ) in row
         status = row.split('<td class="site-col-status"', 1)[1]
         # Every chip in the one status cell, side by side: V, C and S, then the standing.
         chips = re.findall(r'<span class="site-chip[^"]*"[^>]*>([^<]+)</span>', status)
@@ -1145,6 +1171,7 @@ def test_grouping_agrees_with_readmes_relation(
 def test_each_row_detail_names_its_novelty_label(
     results: str, overview: overview_data.Overview
 ) -> None:
+    """The novelty label is in the detail a row opens, its popover, not in a cell."""
     labels = overview_sections.novelty_labels()
     assert labels["apparently-novel"].startswith("Not found in the recorded search")
     assert labels["confirmed-novel"].startswith("Priority confirmed")
@@ -1153,7 +1180,8 @@ def test_each_row_detail_names_its_novelty_label(
             f'<dt>Novelty</dt><dd><span class="site-chip" data-novelty="{result.novelty}">'
             f"{result.novelty}</span> {html.escape(labels[result.novelty])}</dd>"
         )
-        assert chip in _row(results, result.id), result.id
+        assert chip in _row_popover(results, f"pop-result-{result.id.lower()}"), result.id
+        assert "<dt>" not in _row(results, result.id), result.id
 
 
 def test_the_page_title_style_is_upright() -> None:
@@ -1481,6 +1509,286 @@ def test_every_data_table_is_the_shared_component(page: str, results: str) -> No
             else:
                 assert "site-wide" in wrap or "site-wide" in parent, classes
     assert seen >= 3
+
+
+# ---------- Row popovers: the row is the unit (think-br9e) ----------
+
+#: The pages whose tables have rows with detail.
+ROW_PAGES = ("index.html", "all-results.html", "frontier.html")
+
+
+class _RowWiring(HTMLParser):
+    """What ties a page's table rows to their popovers: every body row of a `.site-table`
+    that is not a group heading, with the triggers in its cells; every row popover, with
+    whether it sits inside a table; how many cells the page has and how many `<details>`
+    sit inside one; and how often each id occurs.
+    """
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.rows: list[tuple[dict[str, str | None], list[str | None]]] = []
+        self.popovers: dict[str, dict[str, str | None]] = {}
+        self.inside_tables: list[str] = []
+        self.cells = 0
+        self.cell_details = 0
+        self.ids: Counter[str] = Counter()
+        self.closers: Counter[str] = Counter()
+        self._depth = {"table": 0, "tbody": 0, "td": 0, "th": 0}
+        self._site_table = False
+        self._row: list[str | None] | None = None
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        found = dict(attrs)
+        classes = (found.get("class") or "").split()
+        if found.get("id"):
+            self.ids[str(found["id"])] += 1
+        if tag in self._depth:
+            self._depth[tag] += 1
+        if tag == "table":
+            self._site_table = "site-table" in classes
+        elif tag in {"td", "th"}:
+            self.cells += 1
+        elif tag == "tr":
+            self._row = None
+            if self._site_table and self._depth["tbody"] and "site-group-row" not in classes:
+                self._row = []
+                self.rows.append((found, self._row))
+        elif tag == "button" and "site-row-open" in classes and self._row is not None:
+            self._row.append(found.get("popovertarget"))
+        elif tag == "button" and "site-popover-close" in classes:
+            hides = found.get("popovertargetaction") == "hide"
+            self.closers[str(found.get("popovertarget"))] += int(hides)
+        elif tag == "details" and (self._depth["td"] or self._depth["th"]):
+            self.cell_details += 1
+        elif tag == "div" and "site-row-pop" in classes:
+            self.popovers[str(found.get("id"))] = found
+            if self._depth["table"]:
+                self.inside_tables.append(str(found.get("id")))
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag in self._depth:
+            self._depth[tag] -= 1
+        if tag == "tr":
+            self._row = None
+        elif tag == "table":
+            self._site_table = False
+
+
+@functools.cache
+def _row_wiring(name: str) -> _RowWiring:
+    parser = _RowWiring()
+    parser.feed(_rendered(name))
+    return parser
+
+
+@pytest.mark.parametrize("name", ROW_PAGES)
+def test_no_table_cell_expands_on_its_own(name: str) -> None:
+    """No `<td>` or `<th>` on a page with a site table holds a `<details>`: a row's
+    detail is its popover. The replay table's own disclosure wraps the whole table."""
+    wiring = _row_wiring(name)
+    assert wiring.rows, name
+    assert wiring.cells > len(wiring.rows), name
+    assert wiring.cell_details == 0, name
+
+
+@pytest.mark.parametrize("name", ROW_PAGES)
+def test_every_row_with_detail_is_wired_to_one_popover(name: str) -> None:
+    """Every body row of every site table names one popover, has an accessible name, and
+    carries exactly one native trigger for that popover, so it opens without scripts.
+    The popover is on the page once, outside every table, a dialog labelled by its own
+    headline, with a close cross of its own; no popover is left without a row.
+    A row carries no `tabindex`: `row-popover.js` makes it focusable when it takes the
+    trigger out of the tab order, so without scripts the trigger is the one stop."""
+    wiring = _row_wiring(name)
+    targets = []
+    for attributes, triggers in wiring.rows:
+        target = attributes.get("data-row-popover")
+        assert target, attributes
+        assert attributes.get("aria-label"), target
+        assert "tabindex" not in attributes, target
+        assert triggers == [target], target
+        targets.append(target)
+    assert len(targets) == len(set(targets)), name
+    assert set(targets) == set(wiring.popovers), name
+    assert not wiring.inside_tables, name
+    for target, popover in wiring.popovers.items():
+        assert wiring.ids[target] == 1, target
+        assert "popover" in popover, target
+        assert (popover.get("class") or "").split()[0] == "site-popover", target
+        assert popover.get("role") == "dialog", target
+        assert popover.get("aria-labelledby") == f"{target}-title", target
+        assert wiring.ids[f"{target}-title"] == 1, target
+        assert wiring.closers[target] == 1, target
+
+
+def test_the_tables_with_row_detail_are_the_ones_named(
+    overview: overview_data.Overview,
+) -> None:
+    """The recent table and the replay table on the overview, the results table on its
+    page and the frontier atlas: each row's popover is its own, by its key."""
+    from devtools.render_frontier_page import frontier_cases  # noqa: PLC0415
+
+    recent = {f"pop-result-{r.id.lower()}" for r in overview_sections.recent_results(overview)}
+    replay = {f"pop-replay-n-{row.n}" for row in overview.awaiting_replay}
+    assert recent
+    assert replay
+    assert set(_row_wiring("index.html").popovers) == recent | replay
+    assert set(_row_wiring("all-results.html").popovers) == {
+        f"pop-result-{r.id.lower()}" for r in overview.results
+    }
+    assert set(_row_wiring("frontier.html").popovers) == {
+        f"pop-frontier-n-{case['n']}" for case in frontier_cases()
+    }
+
+
+@pytest.mark.parametrize("name", ROW_PAGES)
+def test_a_page_with_row_detail_carries_the_row_and_popover_scripts(
+    name: str, rendered: Callable[[str], str]
+) -> None:
+    """The row script makes the row the control, and the popover script typesets a
+    popover's math when it opens and closes it when a link inside is followed."""
+    page = rendered(name)
+    assert render_overview.ROW_POPOVER_SCRIPT.read_text(encoding="utf-8") in page
+    assert render_overview.POPOVER_SCRIPT.read_text(encoding="utf-8") in page
+    assert render_overview.TABLE_SCRIPT.read_text(encoding="utf-8") in page
+
+
+def test_a_result_rows_popover_body_comes_from_one_function(
+    overview: overview_data.Overview, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """`result_row_popover_body` is the one source of a result row's detail, on the
+    overview's recent table and on the results page alike: whatever it returns is the
+    body of that row's popover, once, and no cell of the row repeats it."""
+    result = overview_sections.recent_results(overview)[0]
+    body = overview_sections.result_row_popover_body(result, overview)
+    assert body.startswith('<dl class="site-detail"><dt>Claim</dt>')
+    for term in ("<dt>Significance</dt>", "<dt>Novelty</dt>"):
+        assert term in body
+
+    def marked(result: overview_data.Result, _: overview_data.Overview) -> str:
+        return f"<p>BODY OF {result.id}</p>"
+
+    monkeypatch.setattr(overview_sections, "result_row_popover_body", marked)
+    for table, listed in (
+        (overview_sections.results_table(overview), overview.results),
+        (overview_sections.recent_table(overview), overview_sections.recent_results(overview)),
+    ):
+        assert "<dt>Claim</dt>" not in table
+        for row in listed:
+            target = f"pop-result-{row.id.lower()}"
+            marker = f'<div class="site-row-pop-body"><p>BODY OF {row.id}</p></div>'
+            assert table.count(marker) == 1, row.id
+            assert marker in _row_popover(table, target), row.id
+
+
+def test_a_result_row_popover_leads_to_its_row_only_from_another_page(
+    overview: overview_data.Overview,
+) -> None:
+    """A result's popover is the same panel on both pages, a card's: the id as its caps
+    label and the summary as its headline. On the overview it ends in the button to the
+    result's row on the results page; on that page, where the row is the one pressed,
+    it has no button."""
+    result = overview_sections.recent_results(overview)[0]
+    target = f"pop-result-{result.id.lower()}"
+    away = _row_popover(overview_sections.recent_table(overview), target)
+    here = _row_popover(overview_sections.results_table(overview), target)
+    for panel in (away, here):
+        assert f'<span class="site-card-label">{result.id}</span>' in panel
+        assert (
+            f'<p class="site-popover-value" data-math-face="serif" id="{target}-title">'
+            in panel
+        )
+        assert 'popovertargetaction="hide" aria-label="Close">' in panel
+    (action,) = ACTION.findall(away)
+    assert action == (f"all-results.html#{result.id.lower()}", "page")
+    assert f"Open {result.id} in the results table</a>" in away
+    assert not ACTION.findall(here)
+    assert (
+        away.replace(away[away.index('<p class="site-popover-actions">') :], "</div>") == here
+    )
+
+
+def test_a_replay_rows_popover_body_comes_from_one_function(
+    overview: overview_data.Overview, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """`replay_row_popover_body` is the one source of an awaiting-replay row's detail:
+    the reported and the verified bound, each with its holder and its entries. The
+    popovers follow the disclosure rather than sit in it, and each ends in the button
+    to its case in the frontier atlas."""
+    row = overview.awaiting_replay[0]
+    body = overview_sections.replay_row_popover_body(row)
+    assert "<dt>Reported</dt>" in body
+    assert "<dt>Verified here</dt>" in body
+    assert html.escape(row.reported.holder) in body
+    block = overview_sections.awaiting_replay(overview)
+    assert body in _row_popover(block, f"pop-replay-n-{row.n}")
+    assert block.index("</details>") < block.index('<div class="site-popover site-row-pop"')
+    (action,) = ACTION.findall(_row_popover(block, f"pop-replay-n-{row.n}"))
+    assert action == (f"frontier.html#n-{row.n}", "page")
+
+    def marked(row: render_recent_results.Row) -> str:
+        return f"<p>BODY OF {row.n}</p>"
+
+    monkeypatch.setattr(overview_sections, "replay_row_popover_body", marked)
+    block = overview_sections.awaiting_replay(overview)
+    for waiting in overview.awaiting_replay:
+        assert block.count(f"<p>BODY OF {waiting.n}</p>") == 1, waiting.n
+
+
+def test_a_row_detail_escapes_its_words_and_keeps_its_html() -> None:
+    """`row_detail` is the component: the row's attributes, its native trigger and its
+    popover. The name, the label and the action's words are escaped; the trigger, the
+    headline and the body are HTML and pass through."""
+    detail = overview_sections.row_detail(
+        "pop-x",
+        name='a < b & "c"',
+        trigger="<b>key</b>",
+        label="A & B",
+        title="<i>title</i>",
+        body="<p>body</p>",
+        action=("other.html#x", "Go <there>"),
+    )
+    assert detail.attributes == (
+        'data-row-popover="pop-x" aria-label="a &lt; b &amp; &quot;c&quot;"'
+    )
+    assert detail.trigger == (
+        '<button type="button" class="site-row-open" popovertarget="pop-x"><b>key</b></button>'
+    )
+    assert detail.popover.startswith(
+        '<div class="site-popover site-row-pop" id="pop-x" popover role="dialog" '
+        'aria-labelledby="pop-x-title">'
+    )
+    assert '<span class="site-card-label">A &amp; B</span>' in detail.popover
+    assert 'id="pop-x-title"><i>title</i></p>' in detail.popover
+    assert '<div class="site-row-pop-body"><p>body</p></div>' in detail.popover
+    assert (
+        '<a class="site-popover-action" href="other.html#x" data-go="page">Go &lt;there&gt;</a>'
+    ) in detail.popover
+    plain = overview_sections.row_detail(
+        "pop-y", name="n", trigger="k", label="l", title="t", body="b"
+    )
+    assert "site-popover-actions" not in plain.popover
+    assert overview_sections.plain_text("`s(11) >= 3`,  reported") == "s(11) >= 3, reported"
+
+
+def test_a_row_with_detail_takes_the_shared_wash_and_no_disclosure_style() -> None:
+    """The row's hover wash is the shared table rule's; a row with detail keeps it on
+    keyboard focus, with a ring, and while its popover is open, and shows the pointer
+    once the script has made it the control. No rule styles a `<details>` in a table."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    hover = css[css.index(".kpress .site-table tbody tr:not(.site-group-row):hover {") :]
+    assert "background: var(--site-wash);" in hover[: hover.index("}")]
+    row = ".kpress .site-table tbody tr[data-row-popover]"
+    held = css[css.index(f'{row}:is(:focus-visible, [aria-expanded="true"]) {{') :]
+    assert "background: var(--site-wash);" in held[: held.index("}")]
+    ring = css[css.index(".kpress .site-table tbody tr[data-row-popover]:focus-visible {") :]
+    assert "outline: 2px solid var(--kpress-doc-accent);" in ring[: ring.index("}")]
+    ready = css[css.index(".kpress .site-table tbody tr[data-row-ready] {") :]
+    assert "cursor: pointer;" in ready[: ready.index("}")]
+    trigger = css[css.index(".kpress .site-table .site-row-open {") :]
+    for declaration in ("background: none;", "border: 0;", "color: inherit;", "font: inherit;"):
+        assert declaration in trigger[: trigger.index("}")], declaration
+    assert not re.search(r"\.site-(?:table|frontier)[^{}]*\b(?:details|summary)\b[^{}]*\{", css)
 
 
 def test_secondary_cell_content_is_quiet(results: str) -> None:

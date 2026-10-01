@@ -3,8 +3,9 @@
 The page's prose lives in `templates/overview-article.md`; every block that states a
 fact is built here and substituted into it, so a bound or a count never appears in the
 template as a literal. Values are set as `$…$` inline math for KaTeX, and every table
-works without scripts: rows are all present, details open with `<details>`, and
-`overview/table.js` adds sorting and filters on top.
+works without scripts: rows are all present, a row's detail opens in its popover from
+the native trigger in the row (`row_detail`), and `overview/table.js` adds sorting and
+filters on top while `overview/row-popover.js` makes the whole row the control.
 """
 
 from __future__ import annotations
@@ -14,6 +15,7 @@ import html
 import re
 from datetime import date
 from pathlib import Path
+from typing import NamedTuple
 from urllib.parse import urlsplit
 
 from devtools import repo_links
@@ -28,7 +30,7 @@ from devtools.overview_data import (
     tex_bounds,
 )
 from devtools.render_overview import DOCUMENT_PAGES, RESULTS_PAGE
-from devtools.render_recent_results import HOLDS, NOT_A_BOUND, STANDINGS, Lane
+from devtools.render_recent_results import HOLDS, NOT_A_BOUND, STANDINGS, Lane, Row
 from devtools.repo_links import branch_file
 
 #: Confirmation rungs from strongest to weakest.
@@ -177,6 +179,82 @@ def _cards(cards: list[str]) -> str:
     return frame + "".join(cards) + "</div></div>"
 
 
+# ---------- Row popovers: the one way a table row shows its detail ----------
+
+
+class RowDetail(NamedTuple):
+    """The three pieces that make a table row the unit (paper-design.md, Row popovers).
+
+    The caller writes `attributes` into the row's `<tr>`, `trigger` into one of its
+    cells, and `popover` after the table, outside every cell, so no cell expands and the
+    panel takes no style from the table. The row finds its popover by id, so sorting and
+    filtering, which move and hide rows, never part a row from its popover.
+    """
+
+    attributes: str
+    """For the `<tr>`: `data-row-popover`, the id of the row's popover, and `aria-label`,
+    the row's accessible name. It carries no `tabindex`: `overview/row-popover.js` makes
+    the row focusable, so a row is never a stop that does nothing."""
+    trigger: str
+    """The row's one native trigger, a `<button popovertarget>` around the row's own key:
+    without scripts it is what opens the popover; with them the whole row does, and the
+    button leaves the tab order so each row is one stop."""
+    popover: str
+    """The panel: a card's popover in every way (`.site-popover`: the close cross, the caps
+    label, the headline, Escape and a click outside), with the row's body and an optional
+    action at its foot."""
+
+
+def row_detail(
+    target: str,
+    *,
+    name: str,
+    trigger: str,
+    label: str,
+    title: str,
+    body: str,
+    action: tuple[str, str] | None = None,
+) -> RowDetail:
+    """A table row's popover and the markup that ties its row to it.
+
+    `target` is the popover's id, unique on the page; `name` the row's accessible name,
+    plain text; `trigger` the HTML the native trigger wraps, the row's own key such as its
+    id. The popover repeats `label` as its caps label and `title` as its headline, whose
+    math is serif as every popover headline's is, then `body`, the row's detail, and, when
+    `action` is `(href, words)`, the one button that goes there. `name`, `label` and the
+    action's words are escaped here; `trigger`, `title` and `body` are HTML.
+    """
+    target = _esc(target)
+    attributes = f'data-row-popover="{target}" aria-label="{_esc(name)}"'
+    button = (
+        f'<button type="button" class="site-row-open" popovertarget="{target}">'
+        f"{trigger}</button>"
+    )
+    foot = ""
+    if action:
+        href, words = action
+        kind = card_kind(href)
+        foot = (
+            f'<p class="site-popover-actions"><a class="site-popover-action" '
+            f'href="{_esc(href)}" data-go="{kind}">{_esc(words)}</a></p>'
+        )
+    popover = (
+        f'<div class="site-popover site-row-pop" id="{target}" popover role="dialog" '
+        f'aria-labelledby="{target}-title">'
+        f'<button type="button" class="site-popover-close" popovertarget="{target}" '
+        'popovertargetaction="hide" aria-label="Close">\u00d7</button>'
+        f'<span class="site-card-label">{_esc(label)}</span>'
+        f'<p class="site-popover-value" data-math-face="serif" id="{target}-title">{title}</p>'
+        f'<div class="site-row-pop-body">{body}</div>{foot}</div>'
+    )
+    return RowDetail(attributes, button, popover)
+
+
+def plain_text(register: str) -> str:
+    """Register prose as an accessible name: its code marks dropped, its spaces one."""
+    return " ".join(register.replace("`", "").split())
+
+
 def _dl(rows: list[tuple[str, str]]) -> str:
     body = "".join(f"<dt>{label}</dt><dd>{value}</dd>" for label, value in rows)
     return f'<dl class="site-detail">{body}</dl>'
@@ -184,7 +262,7 @@ def _dl(rows: list[tuple[str, str]]) -> str:
 
 def _detail(result: Result) -> str:
     """A result's claim, composition, next rung, why it matters and novelty label: what
-    its row in the results table opens to."""
+    its row in the results table opens to (`result_row_popover_body`)."""
     record = result.record
     rows = [("Claim", tex_bounds(" ".join(str(record["claim"]).split())))]
     for key, label in (("composition", "Composition"), ("next_rung", "Next rung")):
@@ -216,10 +294,38 @@ def _records(result: Result) -> str:
     )
 
 
+def result_row_popover_body(result: Result, overview: Overview) -> str:  # noqa: ARG001
+    """The body of a result row's popover, the one source of it for every table that
+    lists results: the recent table on the overview and the results page's table.
+
+    For now it is the detail the row used to open to in place (`_detail`). `overview` is
+    the seam the full result overview needs, which reads the rest of the register.
+    """
+    return _detail(result)
+
+
+def result_row(result: Result, overview: Overview, *, trigger: str, here: bool) -> RowDetail:
+    """A result's row popover, the same on every page: its id as the caps label, its
+    summary as the headline, then `result_row_popover_body`. A row on the results page
+    (`here`) is the result's own row, so its popover has no button; anywhere else it
+    ends in the button to that row."""
+    action = None if here else (result_url(result.id), f"Open {result.id} in the results table")
+    return row_detail(
+        f"pop-result-{result.id.lower()}",
+        name=f"{result.id}: {plain_text(result.summary)}",
+        trigger=trigger,
+        label=result.id,
+        title=tex_bounds(result.summary),
+        body=result_row_popover_body(result, overview),
+        action=action,
+    )
+
+
 def results_table(overview: Overview) -> str:
     """Every registered result, grouped as `RESULTS.md` groups them, which is by the
     relation `RESULTS.md` prints (`result_credit.source_lineage`), with its
-    standing and, for a result by others, the date it was published."""
+    standing and, for a result by others, the date it was published. Each row opens its
+    result's popover (`result_row`), placed after the table; its id is the trigger."""
     present = {result.standing for result in overview.results}
     head = (
         "<thead><tr>"
@@ -235,6 +341,7 @@ def results_table(overview: Overview) -> str:
         "</tr></thead>"
     )
     body = []
+    popovers = []
     for title, members in overview.groups:
         body.append(
             f'<tr class="site-group-row" data-group="{_esc(title)}">'
@@ -243,17 +350,18 @@ def results_table(overview: Overview) -> str:
         for result in members:
             record = result.record
             kind, date = result.dated
+            detail = result_row(result, overview, trigger=_esc(result.id), here=True)
+            popovers.append(detail.popover)
             body.append(
                 f'<tr id="{_esc(result.id.lower())}" '
                 f'data-source="{"ours" if result.ours else "others"}" '
                 f'data-c="{_esc(record["confirmation"])}" '
-                f'data-standing="{_esc(standing_key(result.standing))}">'
-                f'<td class="site-col-id" data-value="{_esc(result.id)}">{_esc(result.id)}</td>'
+                f'data-standing="{_esc(standing_key(result.standing))}" '
+                f"{detail.attributes}>"
+                f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
                 f'<td class="num site-col-n" data-value="{result.first_n}">'
                 f"{_esc(result.scope)}</td>"
-                f'<td class="site-col-result"><details><summary>'
-                f"{tex_bounds(result.summary)}</summary>"
-                f"{_detail(result)}</details></td>"
+                f'<td class="site-col-result">{tex_bounds(result.summary)}</td>'
                 '<td class="site-col-credit site-cell-quiet" '
                 f'data-value="{_esc(result.credit)}">'
                 f"{_esc(result.credit)}</td>"
@@ -291,7 +399,7 @@ def results_table(overview: Overview) -> str:
     return (
         f'<div class="site-wide">{tools}<div class="site-table-wrap">'
         f'<table class="kpress-table site-table site-results" data-site-table>{head}'
-        f"<tbody>{''.join(body)}</tbody></table></div></div>"
+        f"<tbody>{''.join(body)}</tbody></table></div>{''.join(popovers)}</div>"
     )
 
 
@@ -459,7 +567,9 @@ def recent_table(overview: Overview) -> str:
     credit and the status chips. A result by others is dated by its publication, as
     `RESULTS.md` dates it, and this project's by the day it was established; the cell
     says which. The Significance filter above it starts at its default, and a row below
-    that is `hidden` in the HTML, so the first paint is already filtered."""
+    that is `hidden` in the HTML, so the first paint is already filtered. Each row opens
+    its result's popover (`result_row`), the results page's, ending in the button to
+    that page's row; the quiet id is its trigger."""
     floor = int(RECENT_SIGNIFICANCE[0][0])
     results = recent_results(overview)
     head = (
@@ -473,19 +583,22 @@ def recent_table(overview: Overview) -> str:
         "</tr></thead>"
     )
     rows = []
+    popovers = []
     for result in results:
         kind, dated = result.dated
         formula, method = split_summary(result.summary)
         score = significance(result)
+        detail = result_row(result, overview, trigger=_esc(result.id), here=False)
+        popovers.append(detail.popover)
         rows.append(
             f'<tr data-result="{_esc(result.id.lower())}" '
             f'data-standing="{_esc(standing_key(result.standing))}" '
-            f'data-s="{score}"{" hidden" if score < floor else ""}>'
+            f'data-s="{score}" {detail.attributes}{" hidden" if score < floor else ""}>'
             f'<td class="site-col-date"><span class="site-date-kind">{_esc(kind)}</span> '
             f"{_esc(dated)}</td>"
             f'<td class="site-col-result"><a href="{_esc(result_url(result.id))}">'
             f"{tex_bounds(formula)}</a> "
-            f'<span class="site-cell-quiet">{_esc(result.id)}</span></td>'
+            f'<span class="site-cell-quiet">{detail.trigger}</span></td>'
             f'<td class="site-col-method">{tex_bounds(method)}</td>'
             f'<td class="site-col-credit" title="{_esc(result.credit)}">'
             f"{credit_cell(result.credit)}</td>"
@@ -497,7 +610,7 @@ def recent_table(overview: Overview) -> str:
         f'<div class="site-wide">{recent_filter(shown, len(results))}'
         '<div class="site-table-wrap">'
         '<table class="kpress-table site-table site-results site-recent-table">'
-        f"{head}<tbody>{''.join(rows)}</tbody></table></div></div>"
+        f"{head}<tbody>{''.join(rows)}</tbody></table></div>{''.join(popovers)}</div>"
     )
 
 
@@ -567,20 +680,54 @@ def _lane_results(results: str) -> str:
     )
 
 
+def _lane_detail(lane: Lane) -> str:
+    """One lane in a replay row's popover: its value, who holds it and when it was
+    published, and the register entries that carry it with their rungs."""
+    held = _esc(lane.holder) + (f", published {_esc(lane.published)}" if lane.published else "")
+    entries = _lane_results(lane.results)
+    return f'{_lane_math(lane)} <span class="site-cell-quiet">{held}</span>' + (
+        f"<br>{entries}" if entries else ""
+    )
+
+
+def replay_row_popover_body(row: Row) -> str:
+    """The body of an awaiting-replay row's popover: the bound a source reports and the
+    one verified here, each with its holder, date and the entries that carry it."""
+    return (
+        '<dl class="site-detail">'
+        f"<dt>Reported</dt><dd>{_lane_detail(row.reported)}</dd>"
+        f"<dt>Verified here</dt><dd>{_lane_detail(row.verified)}</dd></dl>"
+    )
+
+
 def awaiting_replay(overview: Overview) -> str:
     """The recent cases whose reported lower bound differs from the verified one: a
     source's bound waiting on a replay here. One row per case, grouped by holder and the
-    entries that carry the claim, each case linked to its row in the frontier atlas."""
+    entries that carry the claim, each case linked to its row in the frontier atlas.
+    Each row opens its popover (`replay_row_popover_body`), its reported value the
+    trigger, ending in the button to the frontier row; the popovers follow the
+    disclosure, so none takes its compact table's style."""
     rows = overview.awaiting_replay
     if not rows:
         return ""
     groups: dict[tuple[str, str], list[str]] = {}
+    popovers = []
     for row in rows:
         reported = row.reported
+        detail = row_detail(
+            f"pop-replay-n-{row.n}",
+            name=f"n = {row.n}, reported {plain_text(reported.shown)}",
+            trigger=_lane_math(reported),
+            label="Awaiting replay",
+            title=math_html(f"n = {row.n}"),
+            body=replay_row_popover_body(row),
+            action=(f"frontier.html#n-{row.n}", f"Open n = {row.n} in the frontier atlas"),
+        )
+        popovers.append(detail.popover)
         groups.setdefault((reported.holder, reported.results), []).append(
-            f'<tr id="replay-n-{row.n}" data-n="{row.n}">'
+            f'<tr id="replay-n-{row.n}" data-n="{row.n}" {detail.attributes}>'
             f'<td class="num"><a href="frontier.html#n-{row.n}">{row.n}</a></td>'
-            f"<td>{_lane_math(reported)}</td>"
+            f"<td>{detail.trigger}</td>"
             f"<td>{_lane_math(row.verified)}</td>"
             f'<td class="site-col-date">{_esc(reported.published or "")}</td></tr>'
         )
@@ -597,7 +744,7 @@ def awaiting_replay(overview: Overview) -> str:
         '<div class="site-table-wrap">'
         '<table class="kpress-table site-table site-replay-table">'
         "<thead><tr><th>n</th><th>Reported</th><th>Verified here</th><th>Published</th>"
-        f"</tr></thead><tbody>{body}</tbody></table></div></details>"
+        f"</tr></thead><tbody>{body}</tbody></table></div></details>{''.join(popovers)}"
     )
 
 

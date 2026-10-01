@@ -532,6 +532,10 @@ it.
   page-kind popover framing the record in its embed view, with **Expand** to the full
   record (`overview/case-popover.js`); an atlas-grid cell reaches it through the atlas
   popover’s button. Without scripting either link goes to the record itself.
+  The rest of a frontier-atlas row opens the row’s own popover (**Row popovers**,
+  below): how the best known packing was built, the minimal polynomial behind a decimal,
+  the sources, the verification, the notes and the evidence entries, with “Details” in
+  the Records cell as the trigger.
   A record leads with a caps label, the n, its status chip and recent star, and the
   verified interval as display-size math; then the known-best packing drawn large beside
   a grid of bordered sans panels, one per bound (best known, verified upper, reported
@@ -568,11 +572,12 @@ it.
 
 - **Tables.** Every data table is one component, `.site-table` on a KPress table, in a
   `.site-table-wrap` that scrolls sideways if the table cannot fit.
-  It is set in the sans face at the note size, with sortable headers, filters above,
-  group rows, and an expandable row whose summary stays sans so its math does.
-  Rows are separated by a light rule, not zebra stripes, and a row takes the wash on
-  hover. Cells are padded 0.55rem by 0.5rem, top-aligned, at line height 1.4. Headers sit
-  at the bottom of their cell, aligned as their column is: text columns to the start,
+  It is set in the sans face at the note size, with sortable headers, filters above and
+  group rows. A row with detail opens its popover, and no cell expands on its own (**Row
+  popovers**, below). Rows are separated by a light rule, not zebra stripes, and a row
+  takes the wash on hover.
+  Cells are padded 0.55rem by 0.5rem, top-aligned, at line height 1.4. Headers sit at
+  the bottom of their cell, aligned as their column is: text columns to the start,
   number columns (`.num`, tabular figures) to the end.
   The short columns (the id, n and date, `.site-col-id`, `.site-col-n` and
   `.site-col-date`) stay on one line and as narrow as their content, which leaves the
@@ -588,6 +593,59 @@ it.
   colour, in every site table, by one rule on `tr[data-standing="superseded"]`; its
   chips keep their fills.
 
+- **Row popovers.** The row is the unit: a table row with detail opens one popover for
+  the whole row. This is the site’s one way to show detail on a table row, and no cell
+  holds a `<details>` or expands on its own.
+  Four tables use it: the recent table and the awaiting-replay table on the overview,
+  the results table, and the frontier atlas.
+  - **Pressing.** A click anywhere on the row opens its popover, and so does Enter or
+    Space while the row has keyboard focus.
+    A link, button or form control inside the row keeps its own behaviour, so the
+    frontier’s n still opens the case record and a record link still leaves the page.
+    A click that ends a text selection selects rather than opens.
+  - **Look.** The whole row takes the wash on hover, from the shared table rule.
+    A row with detail keeps the wash on keyboard focus, with a 2px accent ring inside
+    its edge, and while its popover is open (`aria-expanded="true"`), and shows the
+    pointer anywhere on it.
+  - **The popover** is a card’s popover (`.site-popover`, with `.site-row-pop`): the
+    caps label, the headline with serif math, the close cross, Escape and a click
+    outside, and one button at its foot when the row leads somewhere else.
+    Opening moves focus to the close cross.
+    Closing returns focus to the row, unless the reader has already moved it, as a press
+    on another row does.
+  - **Markup** is written only by `overview_sections.row_detail`, in three pieces.
+    The row is `<tr data-row-popover="ID" aria-label="…">`, the label its accessible
+    name. One cell holds the row’s native trigger,
+    `<button class="site-row-open" popovertarget="ID">`, around the row’s own key, such
+    as a result’s id, and styled as that text.
+    The popover follows the table, outside every cell, so it takes no style from the
+    table: `<div class="site-popover site-row-pop" id="ID" popover role="dialog"
+    aria-labelledby="ID-title">`, holding the close cross, the `.site-card-label`, the
+    headline `.site-popover-value` with the id `ID-title`, the body in
+    `.site-row-pop-body`, and the optional `.site-popover-actions`. The ids are
+    `pop-result-t-nnn`, `pop-replay-n-N` and `pop-frontier-n-N`.
+  - **Without scripting** the trigger opens the popover, as a card’s button does, and is
+    the row’s one tab stop.
+    `overview/row-popover.js` makes the row the control: it gives the row
+    `tabindex="0"`, `aria-expanded` and `aria-controls`, and takes the trigger out of
+    the tab order, so each row stays one stop.
+    The row carries no `tabindex` in the HTML, since a focusable row that did nothing
+    would be a dead stop for a reader without scripts.
+  - **Sorting and filtering** (`overview/table.js`) move and hide rows.
+    A row finds its popover by id, so the popover follows its row.
+  - **Content.** Each kind of row has one function that writes its popover’s body:
+    `overview_sections.result_row_popover_body` for a result, on the overview and the
+    results page alike; `overview_sections.replay_row_popover_body` for a case awaiting
+    replay; and `render_frontier_page.frontier_row_popover_body` for a frontier row.
+    A result’s popover ends in **Open T-NNN in the results table** on the overview and
+    has no button on the results page, where the row pressed is that row.
+    A replay row’s ends in the button to its case in the frontier atlas, and a frontier
+    row’s in the button to its case record.
+
+  `tests/node/overview_rows/` runs the script against a stand-in document, and
+  `tests/test_overview.py` holds every row of the three pages to this markup and every
+  cell free of `<details>`.
+
 - **Recent results.** The overview’s Recent Results section is one table, not cards or a
   list: every result dated on or after 1 August 2026 (`RECENT_FROM`), by the date the
   table shows, newest first, one row each, the same `.site-table` in the sans face as
@@ -600,18 +658,21 @@ it.
   the first paint is already the filtered table and never flashes every row.
   Its five columns are the date, which says what it dates (`published` or
   `established`); the result, its math linking to its row on the results page, with the
-  id beside it quiet; the method, the phrase the summary gives after the formula (“by a
-  point-only route” reads “point-only route”), empty when there is none; the credit, the
-  finder first and “after …” quiet, the list cut after three names with the whole of it
-  in the cell’s `title`; and the status, every chip in one cell side by side.
+  id beside it quiet, which is the row’s trigger; the method, the phrase the summary
+  gives after the formula (“by a point-only route” reads “point-only route”), empty when
+  there is none; the credit, the finder first and “after …” quiet, the list cut after
+  three names with the whole of it in the cell’s `title`; and the status, every chip in
+  one cell side by side.
   The status cell holds the V, C and S rung chips and then one chip per part of the
   standing (`second certificate, reported` is two chips), left to right a space apart,
   wrapping only where the cell is too narrow, with the chips’ own block margin between
   wrapped rows; it never stacks one chip per line.
   On a phone it takes the results table’s card-per-row form: the result and the date on
   the first line, then the method, the credit and the chips each across the card.
-  No card, popover or bulleted list remains in the section, and the “See all results”
-  line, with the right arrow, follows the table.
+  A row opens its result’s popover (**Row popovers**, above), the same panel the results
+  page opens for that result.
+  The section holds no card or bulleted list, and the “See all results” line, with the
+  right arrow, follows the table.
 
 - **Results page.** Every registered result is one row of the results table on its own
   page, `all-results.html`, “Results” in the navigation bar after Frontier.
@@ -622,6 +683,8 @@ it.
   standings, and the table with its filters.
   Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
   recent table and replay table, and each case record’s results link.
+  A row opens its result’s popover, the full claim and its novelty label, with the id in
+  its first cell as the trigger (**Row popovers**, above).
   The overview keeps the newest results and ends that table with a “See all results”
   line and the right arrow, in the sans face at the note size.
   The table used to be the overview’s Every Result section, and its old addresses still
@@ -635,6 +698,10 @@ it.
   the note size: its summary names how many cases and the range, and it opens a compact
   table grouped by holder and the entries carrying the claim, each case linking to its
   row in the frontier atlas.
+  A row opens its popover (**Row popovers**, above): the reported and the verified
+  bound, each with its holder, date and entries.
+  The reported value is the trigger, and the popovers follow the disclosure rather than
+  sit in it, so none takes the compact table’s size.
 
 ## Token Ownership
 

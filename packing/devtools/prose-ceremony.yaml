@@ -1,0 +1,11 @@
+# Sentences in reader-facing prose that keep a word `devtools.check_prose_ceremony`
+# flags, each for a stated reason. `path` is repository-relative; `words` is a phrase
+# found within sixty characters of the flagged word, so one entry excuses one sentence.
+# An entry that matches nothing fails the check.
+allowed:
+  - path: epistemics.md
+    words: with its receipt retained and hash-bound
+    reason: >-
+      The policy's own definition of what counts as a replay at C3 and C4. That the
+      receipt is bound by a hash is the predicate being defined, not provenance attached
+      to a result.

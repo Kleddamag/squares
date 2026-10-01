@@ -12,12 +12,15 @@ from __future__ import annotations
 import base64
 import html
 import re
+from collections import Counter
 from datetime import date
+from functools import cache
 from pathlib import Path
 from urllib.parse import urlsplit
 
 from devtools import repo_links
 from devtools.build_bound_citations import RECENT_SINCE
+from devtools.check_results import RESULTS as REGISTER
 from devtools.overview_data import (
     APOSTROPHE,
     EN_DASH,
@@ -30,6 +33,7 @@ from devtools.overview_data import (
 from devtools.render_overview import DOCUMENT_PAGES, RESULTS_PAGE
 from devtools.render_recent_results import HOLDS, NOT_A_BOUND, STANDINGS, Lane
 from devtools.repo_links import branch_file
+from sqpack.yamlio import safe_load
 
 #: Confirmation rungs from strongest to weakest.
 C_RUNGS = ("C5", "C4", "C3", "C2", "C1", "C0")
@@ -46,7 +50,11 @@ def _fill(rung: str) -> str:
 
 
 def _rung(label: str) -> str:
-    return f'<span class="site-chip site-rung-fill" {_fill(label)}>{_esc(label)}</span>'
+    """A rung chip, titled with the rung's one-line meaning from `epistemics.md`, so a
+    reader hovering `V3` sees what the rubric says `V3` is."""
+    title = rung_meanings().get(label)
+    titled = f' title="{_esc(title)}"' if title else ""
+    return f'<span class="site-chip site-rung-fill"{titled} {_fill(label)}>{_esc(label)}</span>'
 
 
 #: What the table and its filter call an entry that is no bound on `s(n)`:
@@ -296,10 +304,12 @@ def results_table(overview: Overview) -> str:
 
 
 #: The rubric's three scored dimensions, in the homepage's order: the scale, its name,
-#: the `epistemics.md` section that defines it, and the question it answers.
+#: the `epistemics.md` section that defines it, and the question it answers, in the
+#: axis table's terms: `V` is what the result's own source certifies, `C` how far that
+#: has been independently confirmed.
 DIMENSIONS: tuple[tuple[str, str, str, str], ...] = (
-    ("V", "Verification", "verification", "How strongly is the claim checked, by anyone?"),
-    ("C", "Confirmation", "confirmation", "What has this repository checked itself?"),
+    ("V", "Verification", "verification", "What does the result's own source certify?"),
+    ("C", "Confirmation", "confirmation", "How far is it confirmed, here or by a third party?"),
     ("S", "Significance", "significance-and-novelty", "How much does the result matter?"),
 )
 
@@ -317,6 +327,36 @@ def rubric_levels() -> dict[str, list[tuple[int, str]]]:
         if not levels.get(scale):
             raise SystemExit(f"epistemics.md defines no {scale} levels")
     return levels
+
+
+@cache
+def rung_meanings() -> dict[str, str]:
+    """Every rung chip's label (`V3`, `C5`, `S2`) and its one-line meaning, from the
+    same tables, so every chip on the site says what `epistemics.md` says."""
+    return {
+        f"{scale}{level}": meaning
+        for scale, levels in rubric_levels().items()
+        for level, meaning in levels
+    }
+
+
+def rung_counts() -> dict[str, Counter[int]]:
+    """How many registered results stand at each level of each dimension, read from the
+    register, so a card shows an empty rung as empty rather than omitting it."""
+    results = safe_load(REGISTER.read_text(encoding="utf-8"))["results"]
+    counts: dict[str, Counter[int]] = {scale: Counter() for scale, *_ in DIMENSIONS}
+    for record in results:
+        counts["V"][int(record["verification"][1])] += 1
+        counts["C"][int(record["confirmation"][1])] += 1
+        counts["S"][int(record["significance"]["score"])] += 1
+    return counts
+
+
+def count_label(count: int) -> str:
+    """How a card says how many results stand at a level; an empty rung says so."""
+    if count == 0:
+        return "no result yet"
+    return f"{count} result" + ("" if count == 1 else "s")
 
 
 _NOVELTY_ROW = re.compile(r"^\| `([a-z]+(?:-[a-z]+)+)` \| ([^|]+?) \|$", re.MULTILINE)
@@ -340,12 +380,14 @@ def verification_block() -> str:
     `epistemics.md`."""
 
     levels = rubric_levels()
+    counts = rung_counts()
     cards = []
     for scale, name, section, question in DIMENSIONS:
         ladder = "".join(
-            f'<span class="site-level"><span class="site-chip site-rung-fill" '
-            f'data-rung="{scale}" data-level="{level}">{scale}{level}</span> '
-            f"{_esc(meaning)}</span>"
+            f'<span class="site-level">{_rung(f"{scale}{level}")} '
+            f"{_esc(meaning)} "
+            f'<span class="site-level-count">({count_label(counts[scale][level])})</span>'
+            "</span>"
             for level, meaning in sorted(levels[scale], reverse=True)
         )
         cards.append(

@@ -353,21 +353,26 @@ certificate’s replay command.
    derived rung; the checker does not establish those relationships.
    Result-level novelty is also declared and reviewed, not derived from the entries.
 
-   - `C4` is two machine-shaped repository-origin entries with *different* `method`
-     values. `T-026` earns it from the exact event-cell sweep (`exact-algebraic`) and the
-     interval branch and bound (`interval-certified`) of one certificate: one harness
-     runs both, and they share the loader and the closed-form conditions but nothing of
-     how the least-charge condition is decided, so the two fail differently.
-     Review establishes that method distinction; the checker compares the recorded
-     method values. Two implementations of one method—two exact sweeps, however
-     independently written—derive `C3`.
-   - `C5` is `C3` or `C4` plus a `review_artifact` that exists and is mapped in
-     [`document-map.yaml`](../../docs/project/document-map.yaml) as a `review` that is
-     not superseded. That is a document predicate.
-     The reviewer must establish that the review covers the complete stated claim and
-     its premises, including any composition or derivation.
-     A mapped review of another object satisfies the document predicate but cannot
-     justify `C5` for this claim.
+   - `C3` is a machine certificate replayed here, or a third party’s retained replay,
+     with a passing status and a named control: machine-checked, review record pending.
+     Distinct methods are an attribute, not a rung: `T-026`’s exact event-cell sweep
+     (`exact-algebraic`) and interval branch and bound (`interval-certified`) decide one
+     certificate two ways, which the composition note states and the register shows
+     beside the rung; two implementations of one method are one method.
+   - `C4` is `C3` plus the review record of
+     [epistemics.md → Review Records](../../epistemics.md#review-records): two
+     adversarial AI reviews by distinct reviewers, the latest accepting, and a human
+     oversight record naming the person, their relation and what they checked, each a
+     `reviews` entry whose path is mapped in
+     [`document-map.yaml`](../../docs/project/document-map.yaml) as a non-superseded
+     `review`. That is a document predicate: the reviewer must establish that the review
+     covers the complete stated claim and its premises, and a mapped review of another
+     object satisfies the predicate but cannot justify the rung for this claim.
+   - `C5` is a kernel check rebuilt here from the repository at a pinned toolchain with
+     its axiom receipt, an `open_review` pointer so anyone can review and replay it, and
+     two human experts’ formalization reviews.
+     `V` is earned the same way from evidence of any origin, with one expert at `V5`,
+     and `C` never exceeds `V` from `C2` up.
    - A compound or derived claim takes the **minimum** rung over its parts, which can
      sit below what the checker derives from the strongest entry: a derivation step
      decided by one entry of one method holds a `C4` source at `C3`. The `composition`

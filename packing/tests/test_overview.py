@@ -371,6 +371,33 @@ def test_each_dimension_card_carries_every_level_of_the_rubric(page: str) -> Non
         assert f'href="epistemics.html#{section}"' in page
 
 
+def test_each_dimension_card_counts_the_results_at_every_level(page: str) -> None:
+    """A rung nobody holds is shown as empty, not omitted: the top rungs are reserved for
+    formal, expert-reviewed work and stand empty until a result earns them."""
+    counts = overview_sections.rung_counts()
+    for scale, _, _, _ in overview_sections.DIMENSIONS:
+        panel = page.split(f'popovertarget="pop-dimension-{scale.lower()}"', 1)[1]
+        panel = panel.split("</button>", 1)[0]
+        for level, _ in overview_sections.rubric_levels()[scale]:
+            label = overview_sections.count_label(counts[scale][level])
+            assert f'<span class="site-level-count">({label})</span>' in panel
+    assert counts["V"][5] == 0
+    assert counts["C"][5] == 0
+    assert "(no result yet)" in page
+
+
+def test_every_rung_chip_is_titled_with_the_rubrics_meaning(page: str) -> None:
+    """The chips' wording is `epistemics.md`'s, not a second hand-written copy: every
+    `V`, `C` and `S` chip on the page carries its rung's one-line meaning as its title."""
+    meanings = overview_sections.rung_meanings()
+    chips = re.findall(r'<span class="site-chip site-rung-fill"([^>]*)>([VCS]\d)</span>', page)
+    assert chips
+    for attributes, label in chips:
+        if 'data-level=""' in attributes:
+            continue
+        assert f'title="{html.escape(meanings[label], quote=True)}"' in attributes, label
+
+
 def test_no_placeholder_or_raw_math_is_left(page: str) -> None:
     article = re.sub(r"<script.*?</script>", "", page, flags=re.DOTALL).split("<article", 1)[1]
     assert not re.search(r"\{\{[A-Z0-9_]+\}\}", page)
@@ -997,7 +1024,7 @@ def test_the_recent_lead_names_t060_above_the_table(
     assert '<span class="site-cell-quiet">T-060</span>' in line
     assert "Queuingtheorydotcom" in line
     chips = re.findall(r'<span class="site-chip[^"]*"[^>]*>([^<]+)</span>', line)
-    assert chips == ["V4", "C5", "S5", render_recent_results.HOLDS]
+    assert chips == ["V3", "C3", "S5", render_recent_results.HOLDS]
 
 
 def test_the_problem_section_says_eleven_squares_is_settled(page: str) -> None:

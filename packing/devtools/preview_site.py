@@ -19,11 +19,12 @@ a link to it then points at a missing page, which the link check reports rather 
 fails on, and a build already in `--output` stays. `--page` shoots only the pages it
 names, each with any fragment (`cases.html#n-11` is one case's record), and `--press`
 names an element to press on each page that has one (a card, an atlas cell), so what it
-opens is checked and shot too. Every page is also laid out at `CLIP_WIDTHS`, with and
-without a scrollbar's width taken from the layout, and fails where a table, a filter
-bar, a count or any other wide block runs past an ancestor that clips or scrolls
-sideways. Set `SQPACK_CHROMIUM` to use a browser the environment supplies, as the
-explainer's own tools do.
+opens is checked and shot too: its math, its wide blocks, and its words, none of which
+may be broken across lines inside the word (`split_problem`). Every page is also laid
+out at `CLIP_WIDTHS`, with and without a scrollbar's width taken from the layout, and
+fails where a table, a filter bar, a count or any other wide block runs past an ancestor
+that clips or scrolls sideways. Set `SQPACK_CHROMIUM` to use a browser the environment
+supplies, as the explainer's own tools do.
 """
 
 from __future__ import annotations
@@ -31,6 +32,7 @@ from __future__ import annotations
 import argparse
 import contextlib
 import functools
+import itertools
 import os
 import re
 import shutil
@@ -42,7 +44,7 @@ import time
 from collections.abc import Sequence
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Literal
 
 from devtools import render_overview
 
@@ -64,6 +66,16 @@ _SCROLL_TOP = probe(PROBES, "preview_site/scroll_top")
 _AT_FOOT = probe(PROBES, "preview_site/at_foot")
 _CARDS = probe(PROBES, "measure_site_pages/cards")
 CLIPPED = probe(PROBES, "preview_site/clipped")
+HEADER = probe(PROBES, "preview_site/header")
+BASELINES = probe(PROBES, "preview_site/baselines")
+SPLIT_WORDS = probe(PROBES, "preview_site/split_words")
+#: A run of this many characters with no space in it is a token, not a word: an evidence
+#: identifier, an address, an exact decimal. One that is wider than the line it is set on
+#: has to break somewhere; anything shorter fits every column the site sets text in, so a
+#: column that breaks it is too narrow.
+LONG_TOKEN = 24
+#: What a line may end on inside a name without cutting a word: a hyphen or a dash.
+HYPHENS = "-\u2010\u2011\u2013\u2014"
 #: The widths every page is laid out at to look for a clipped wide block, beside the
 #: two it is shot at: a tablet upright and on its side, where a narrow page clips at the
 #: document's edge and a wide block has no room to spare.
@@ -75,6 +87,8 @@ CLIP_WIDTHS = (1024, 768)
 SCROLLBAR_PX = 15
 #: How far, in CSS pixels, a row of cards may sit off the centre of its line.
 CENTRE_TOLERANCE = 1.0
+#: How far apart, in CSS pixels, two labels of the header that share a line may stand.
+BASELINE_TOLERANCE = 0.5
 #: How long a page may take to typeset all its math before it is shot as it stands. The
 #: site typesets the formulas near the viewport first and the rest in idle time
 #: (`overview/math.js`); the synopsis's 1,357 took 40 to 50 seconds of scrolling in all.
@@ -84,6 +98,22 @@ LAZY_WAIT_MS = 5_000
 #: How long what a press opens may take to typeset its math.
 PRESS_WAIT_MS = 5_000
 HREF = re.compile(r'<nav class="site-nav".*?</nav>', re.DOTALL)
+#: The motion preference a tool opens a page that starts a film under: a reader's who
+#: asks for reduced motion. The Visualize page starts its film on a visit unless the
+#: reader asks that (`overview/film.js`), and the film is a 216 MB release download a page
+#: would wait on and a shot would catch mid-frame; under this it stands at its poster and
+#: nothing is fetched.
+REDUCED_MOTION: Literal["reduce"] = "reduce"
+#: The pages that start a film on a visit. Only they are opened under reduced motion:
+#: every other page is opened as any reader's, since under reduced motion the overview's
+#: formulas in closed popovers, which are typeset in idle time, were still untypeset when
+#: `settle_math`'s wait ran out (229 of them at 1280 pixels, against none in ten seconds).
+FILM_PAGES = ("visualize.html",)
+
+
+def motion_for(name: str) -> Literal["reduce", "no-preference"]:
+    """The motion preference a tool opens the page `name` under (`FILM_PAGES`)."""
+    return REDUCED_MOTION if name.partition("#")[0] in FILM_PAGES else "no-preference"
 
 
 def _run(*args: str) -> None:
@@ -200,6 +230,101 @@ def off_centre(sections: list[dict[str, Any]]) -> list[str]:
     ]
 
 
+def tabs_problems(found: dict[str, Any]) -> list[str]:
+    """What is wrong with where a page's section tabs stand, in a `preview_site/header`
+    report. From the top a page of a section reads bar, rule, tabs, content: the tabs
+    start at or below the foot of the rule under the navigation bar, and the content
+    starts at or below the foot of the tabs. A page with no tabs has nothing to say."""
+    tabs, rule, first = found["tabs"], found["rule"], found["first"]
+    if tabs is None:
+        return []
+    if rule is None:
+        return ["the section tabs have no rule over them, under the navigation bar"]
+    problems: list[str] = []
+    if tabs["top"] < rule["bottom"]:
+        problems.append(
+            f"the section tabs start {rule['bottom'] - tabs['top']:g}px above the foot of "
+            f"the rule under the navigation bar, which is on {rule['on']}"
+        )
+    if first is not None and first["top"] < tabs["bottom"]:
+        problems.append(
+            f"{first['block']} starts {tabs['bottom'] - first['top']:g}px above the foot of "
+            "the section tabs"
+        )
+    return problems
+
+
+def baseline_problems(found: dict[str, Any]) -> list[str]:
+    """What is wrong with the header's text baselines, in a `preview_site/baselines`
+    report: the site's name, where its text is shown, stands on the baseline of the links
+    of the bar's first line; the links of each line of the bar stand on one baseline; and
+    the section tabs stand on one. Each is held to `BASELINE_TOLERANCE`, and the mark is
+    held to the middle of the name's line by the same measure."""
+    problems: list[str] = []
+    lines: dict[int, list[dict[str, Any]]] = {}
+    for link in found["links"]:
+        lines.setdefault(link["top"], []).append(link)
+    for group, what in ((list(lines.values()), "link"), ([found["tabs"]], "section tab")):
+        for labels in group:
+            if not labels:
+                continue
+            first = labels[0]
+            for label in labels[1:]:
+                offset = label["baseline"] - first["baseline"]
+                if abs(offset) > BASELINE_TOLERANCE:
+                    problems.append(
+                        f"the {what} {label['label']} stands {offset:+g}px off the "
+                        f"baseline of {first['label']}, beside it"
+                    )
+    if found["name"] is not None and lines:
+        first = lines[min(lines)][0]
+        offset = found["name"] - first["baseline"]
+        if abs(offset) > BASELINE_TOLERANCE:
+            problems.append(
+                f"the site's name stands {offset:+g}px off the baseline of the bar's links"
+            )
+        text, logo = found["name_text"], found["logo"]
+        if text is not None and logo is not None:
+            lift = (logo["top"] + logo["bottom"] - text["top"] - text["bottom"]) / 2
+            if abs(lift) > BASELINE_TOLERANCE:
+                problems.append(
+                    f"the site's mark is centred {lift:+g}px off the middle of its name's line"
+                )
+    return problems
+
+
+def type_problems(found: dict[str, Any]) -> list[str]:
+    """What is wrong with the size of the bar's type, in a `preview_site/header` report,
+    held against the body's and never against a pixel value. A link in the bar, and a
+    section tab, is one step below the body on the paper's scale and no more: smaller
+    than the prose base, and no smaller than the largest step of the scale under it. The
+    two are one size. The site's name is at least the body's size. A page with no bar has
+    nothing to say, and nor does one that does not carry the paper's scale, the
+    optimality paper, whose body is its own."""
+    sizes = found["type"]
+    if sizes["link"] is None or sizes["scale"] is None:
+        return []
+    body = sizes["scale"]["prose"]
+    below = max(step for step in sizes["scale"].values() if step < body)
+    problems: list[str] = []
+    for part in ("link", "tab"):
+        size = sizes[part]
+        if size is None:
+            continue
+        if not below <= size < body:
+            problems.append(
+                f"a {part} in the header is {size:g}px: it should be under the body's "
+                f"{body:g}px and no smaller than the step below it, {below:g}px"
+            )
+    if sizes["tab"] is not None and sizes["tab"] != sizes["link"]:
+        problems.append(
+            f"a section tab is {sizes['tab']:g}px and a link in the bar {sizes['link']:g}px"
+        )
+    if sizes["name"] is not None and sizes["name"] < body:
+        problems.append(f"the site's name is {sizes['name']:g}px, under the body's {body:g}px")
+    return problems
+
+
 def clipped(page: Page) -> list[str]:
     """Every wide block on the page as it stands that runs past an ancestor which clips
     or scrolls sideways, as laid out now and again with a scrollbar's width taken from
@@ -238,7 +363,10 @@ def clip_check(
                 if not (output / name.partition("#")[0]).is_file():
                     continue
                 for width in widths:
-                    page = browser.new_page(viewport={"width": width, "height": 900})
+                    page = browser.new_page(
+                        viewport={"width": width, "height": 900},
+                        reduced_motion=motion_for(name),
+                    )
                     page.goto(f"http://127.0.0.1:{port}/{name}", wait_until="load")
                     page.wait_for_timeout(200)
                     errors.extend(f"{name} @{width}: {problem}" for problem in clipped(page))
@@ -248,6 +376,47 @@ def clip_check(
         server.shutdown()
         server.server_close()
     return errors
+
+
+def split_problem(found: dict[str, Any]) -> str | None:
+    """One word set across lines, as the probe reports it, in words; nothing when every
+    break in it is one a reader expects.
+
+    A break is inside the word when it falls between two letters or digits: `low` over
+    `er`, which only `overflow-wrap: anywhere` or `word-break` does, in a column squeezed
+    narrower than the word. It is inside a name when the name is set as code or as a chip
+    in a popover or a block the site builds and the line ends on one of its hyphens:
+    `E-nagamochi-` over `lower` reads as two things. Any other break is ordinary: after
+    the slash of a path, at a bracket or an ellipsis, after the hyphen of a compound in
+    running text, and after a name's hyphen in a document's own prose, which KPress sets
+    as it sets every report.
+
+    One exception: a token of `LONG_TOKEN` characters or more that is wider than its line
+    has to break somewhere.
+    """
+    word, pieces = found["word"], found["pieces"]
+    name = found["code"] and not found["prose"]
+    inside = any(
+        (before[-1].isalnum() and after[0].isalnum()) or (name and before[-1] in HYPHENS)
+        for before, after in itertools.pairwise(pieces)
+    )
+    if not inside or (len(word) >= LONG_TOKEN and found["width"] > found["line"]):
+        return None
+    where = found["host"]
+    if found["block"] != where:
+        where += f" in {found['block']}"
+    framed = f", framed in {found['frame']}" if found["frame"] else ""
+    return (
+        f'"{" | ".join(pieces)}" is one word on {len(pieces)} lines in {where}{framed}: '
+        f"{found['width']:g}px wide on a {found['line']:g}px line"
+    )
+
+
+def split_words(page: Page, root: str | None = None) -> list[str]:
+    """Every word broken across lines, in what the page has open or in `root`, that
+    `split_problem` calls a fault; each named once."""
+    found = page.evaluate(SPLIT_WORDS, {"root": root} if root else None)
+    return list(dict.fromkeys(filter(None, map(split_problem, found))))
 
 
 def settle_math(page: Page) -> int:
@@ -275,13 +444,31 @@ def settle_math(page: Page) -> int:
     return pending
 
 
+def _pending(page: Page) -> int:
+    """The math not yet typeset on the page and in every page it frames in view; a frame
+    still loading counts as one."""
+    from playwright.sync_api import Error as PlaywrightError  # noqa: PLC0415
+
+    pending = 0
+    for frame in page.frames:
+        try:
+            if frame is not page.main_frame and not frame.frame_element().is_visible():
+                continue
+            pending += frame.evaluate(_MATH_PENDING) if frame.url != "about:blank" else 1
+        except PlaywrightError:
+            pending += 1
+    return pending
+
+
 def press(page: Page, selector: str) -> list[str]:
     """Press the first element `selector` matches and wait for what it opens to typeset
-    its math; returns the formulas then set in the wrong face. A popover's math is only
-    typeset once it opens, so the page's own check cannot see it."""
+    its math, a page it frames included (the case popover frames `cases.html`); returns
+    the formulas then set in the wrong face. A popover's math is only typeset once it
+    opens, so the page's own check cannot see it."""
     page.locator(selector).first.click()
+    page.wait_for_timeout(100)
     deadline = time.monotonic() + PRESS_WAIT_MS / 1000
-    while page.evaluate(_MATH_PENDING) and time.monotonic() < deadline:
+    while _pending(page) and time.monotonic() < deadline:
         page.wait_for_timeout(100)
     page.wait_for_timeout(300)
     return page.evaluate(MATH_FACE)
@@ -296,10 +483,16 @@ def screenshots(
 ) -> list[str]:
     """A full-page screenshot of every built page at each width, with what went wrong:
     console errors, math left untypeset or set in the other face from its text, a row of
-    cards off the centre of its line, any page wider than its viewport, and any wide
-    block that runs past an ancestor which clips it (`clipped`). Each selector in
+    cards off the centre of its line, any page wider than its viewport, section tabs
+    that do not stand under the bar's rule (`tabs_problems`), a bar whose type is not
+    one step under the body's (`type_problems`), a site name or a link off the bar's
+    baseline (`baseline_problems`), and any wide block that
+    runs past an ancestor which clips it (`clipped`). Each selector in
     `presses` is then pressed on every page that has a match, its math and its blocks
-    checked the same way, and the window shot as `<page>-<width>-press<n>.png`."""
+    checked the same way and its words for one broken across lines (`split_words`), and
+    the window shot as `<page>-<width>-press<n>.png`. A page that starts a film is opened
+    as for a reader who asks for reduced motion (`motion_for`), so the Visualize page's
+    film is shot at its poster and its download never starts."""
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
     shots.mkdir(parents=True, exist_ok=True)
@@ -312,7 +505,10 @@ def screenshots(
                 if not (output / name.partition("#")[0]).is_file():
                     continue
                 for width in WIDTHS:
-                    page = browser.new_page(viewport={"width": width, "height": 900})
+                    page = browser.new_page(
+                        viewport={"width": width, "height": 900},
+                        reduced_motion=motion_for(name),
+                    )
                     page.on(
                         "console",
                         lambda message, name=name, width=width: (
@@ -334,6 +530,15 @@ def screenshots(
                     overflow = page.evaluate(_OVERFLOW)
                     if overflow > 0:
                         errors.append(f"{name} @{width}: {overflow}px wider than the viewport")
+                    header = page.evaluate(HEADER)
+                    errors.extend(
+                        f"{name} @{width}: {problem}"
+                        for problem in (
+                            *tabs_problems(header),
+                            *type_problems(header),
+                            *baseline_problems(page.evaluate(BASELINES)),
+                        )
+                    )
                     cut = clipped(page)
                     errors.extend(f"{name} @{width}: {problem}" for problem in cut)
                     stem = shot_stem(name)
@@ -352,6 +557,10 @@ def screenshots(
                             f"{name} @{width}, {selector} pressed: {problem}"
                             for problem in clipped(page)
                             if problem not in cut
+                        )
+                        errors.extend(
+                            f"{name} @{width}, {selector} pressed: {problem}"
+                            for problem in split_words(page)
                         )
                         target = shots / f"{stem}-{width}-press{index}.png"
                         page.screenshot(path=str(target))

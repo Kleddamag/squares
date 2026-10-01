@@ -98,8 +98,11 @@ def test_the_head_states_the_result_as_the_site_does(
         for rung in rungs
     ]
     assert places == sorted(places)
-    status = head.split('<p class="site-result-status">', 1)[1]
-    assert status.startswith(overview_sections.rung_chips(result) + " ")
+    status = head.split('<p class="site-result-status">', 1)[1].split("</p>", 1)[0]
+    assert status.startswith(overview_sections.rung_chips(result))
+    # A result that still stands draws no standing chip, here as in the tables.
+    assert status == overview_sections.status_chips(result)
+    assert ">current best<" not in status
     kind, dated = result.dated
     assert f'<span class="site-date-kind">{kind}</span> {dated}' in head
     assert html.escape(result.credit) in head
@@ -238,7 +241,10 @@ def test_the_chain_on_eleven_squares_says_how_each_result_stands_there(
     assert wide.standing == HOLDS
     assert result_overview.standing_on(wide, [11]) == SUPERSEDED
     step = bodies[SETTLED].split('data-step="t-047"', 1)[1].split("</li>", 1)[0]
-    assert overview_sections.standing_chips(HOLDS) in step
+    # A result that still stands draws no chip, so the step has none for its standing
+    # elsewhere and says in words how it stands on this case.
+    assert overview_sections.standing_chips(HOLDS) == ""
+    assert ">current best<" not in step
     assert "on this case, superseded" in step
     assert steps["t-047"] == overview_sections.standing_key(SUPERSEDED)
 
@@ -444,8 +450,11 @@ def test_the_stylesheet_is_its_own_file_on_the_sites_tokens() -> None:
         ".site-popover:has(.site-result, [data-row-pop-src]):popover-open {", 1
     )[1]
     opened = opened.split("}", 1)[0]
-    assert "max-block-size: min(92dvh, 58rem);" in opened
+    assert "max-block-size: var(--site-popover-max-block);" in opened
     assert "max-height" not in opened
+    # A phone keeps the height it had.
+    phone = rules.split("@media (max-width: 40rem) {", 1)[1]
+    assert "max-block-size: calc(100dvh - 1rem);" in phone.split("@media", 1)[0]
     assert "preview" not in css
 
 

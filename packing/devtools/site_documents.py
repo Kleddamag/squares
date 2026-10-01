@@ -80,7 +80,8 @@ class SharedBlock:
         return f"<!-- /README {self.name} -->"
 
 
-#: README's first paragraph, what the project studies: the overview's first section.
+#: README's two opening paragraphs, the problem and its bounds: the overview's first
+#: section.
 INTRO = SharedBlock("project-intro")
 #: README's next two paragraphs, what the project covers and its newest major result:
 #: the head of the overview's Recent Results.
@@ -389,7 +390,7 @@ def shared_blocks(readme: str) -> dict[str, str]:
 
 
 def intro_block(readme: str) -> str:
-    """README's first paragraph, the Markdown between its `project-intro` markers."""
+    """README's two opening paragraphs, the Markdown between its `project-intro` markers."""
     return shared_block(readme, INTRO)
 
 
@@ -410,7 +411,7 @@ def _overview_block(block: SharedBlock) -> str:
 
 
 def overview_intro() -> str:
-    """README's first paragraph as the Markdown of the overview's first section."""
+    """README's two opening paragraphs as the Markdown of the overview's first section."""
     return _overview_block(INTRO)
 
 

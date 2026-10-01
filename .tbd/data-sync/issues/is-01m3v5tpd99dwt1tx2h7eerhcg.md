@@ -1,0 +1,16 @@
+---
+type: is
+id: is-01m3v5tpd99dwt1tx2h7eerhcg
+title: "Land the stack in order: #255 (website), then #262 (ladder), then #254 (math)"
+kind: task
+status: open
+priority: 1
+version: 1
+spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
+labels: []
+dependencies: []
+parent_id: is-01m3p52z585a2zb9jmy19b0r96
+created_at: 2026-10-01T07:28:28.071Z
+updated_at: 2026-10-01T07:28:28.071Z
+---
+Owner, 2026-10-01: land this as soon as possible, in an organized order, without time spent on conflicts. (1) jlevy/squares#255 is ready at 158820d9d: hosted CI 27 pass, mergeable, current with main 306ae9fab. The session permission check refused the merge (merge without review); the owner merges it (PR page, or gh api -X PUT repos/jlevy/squares/pulls/255/merge -f merge_method=merge; it is the base of a stack, so the ordinary merge call is refused). (2) After it merges: watch the Pages deploy, run check_published_site against the live site, record the overview and overview-unchanged job budgets from that run. (3) Point #262 at main once it carries the final website base and its gates pass; the owner merges. (4) #254 then takes one merge of main, one tool re-run and one gate run. (5) Follow-up PRs after that: claude/site-polish-2 (results table, intro), claude/prose-without-ceremony, the result-kind classification.

@@ -81,7 +81,7 @@
           if (last === null || box.top > last.top + last.height / 2) {
             pieces.push("");
           }
-          pieces[pieces.length - 1] += word[index];
+          pieces[pieces.length - 1] = `${pieces[pieces.length - 1] ?? ""}${word.charAt(index)}`;
           last = box;
         }
         if (pieces.length < 2) {

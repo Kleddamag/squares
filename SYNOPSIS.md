@@ -245,11 +245,11 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 389 | 198 complete; 63 stopped; 70 blocked; 24 ready; 21 tentative; 13 in progress |
+| Commitments | 390 | 198 complete; 63 stopped; 70 blocked; 24 ready; 21 tentative; 14 in progress |
 | Sessions | 165 | 102 completed; 62 stopped; 1 nonterminal |
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
-| Hypotheses | 191 | 36 confirmed; 32 refuted; 60 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
-| Experiments | 167 | 50 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
+| Hypotheses | 192 | 36 confirmed; 32 refuted; 60 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 1 running; 1 exhausted |
+| Experiments | 168 | 50 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 1 in progress; 1 exhausted |
 | Frontier results | 61 | 61 registered, 33 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
@@ -510,6 +510,7 @@ case or experiment separately.
 
 | Document or collection | Role | Authority | Lifecycle | Current replacement |
 | --- | --- | --- | --- | --- |
+| [n17 First-Order Branch Inventory and Capture Readiness](docs/project/reviews/review-2026-10-01-n17-first-order-branches.md) | dated review record | record | retained | — |
 | [n17 Conditional Minimum Under Directed Projection Branches](docs/project/reviews/review-2026-10-01-n17-projection-branches.md) | dated review record | record | retained | — |
 | [Independent Review of exp-236](packing/campaign/series/series-000-smoke-and-calibration/results/exp-236-n17-contact-chart/output-review.md) | dated review record | record | retained | — |
 | [Independent Review of the n17 Exact Root Certificate](packing/campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/output-review.md) | dated review record | record | retained | — |
@@ -5239,6 +5240,7 @@ round that names the hypothesis, control roles included.
 | [H-254](packing/campaign/hypotheses/H-254-n17-contact-chart-fidelity.md) | confirmed | The proposed three-variable endpoint contact chart reproduces the fixed rational n17 witness within exact residual and contact-feature thresholds; the conclusion is fidelity at this relaxed witness only | 1 | 1s wall |
 | [H-255](packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md) | confirmed | Exact existence and uniqueness of the contact-chart root in its fixed rational box; endpoint packing feasibility and capture remain separate | 1 | 1s wall |
 | [H-256](packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md) | confirmed | Exact endpoint packing at the H255 root with fixed interior sliders; all68 wall and136 pair obligations certified; global capture remains open | 1 | 43s wall |
+| [H-257](packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md) | running | Complete owner-axis and active-wall feature inventory at the accepted exact endpoint; controlled instrument and independent review precede target use | 1 | — |
 
 ### Confirmed
 
@@ -5560,7 +5562,7 @@ The relevant generator writes the receipt, and the entry fills in on the next
 
 ## Experiments Conducted
 
-There are 167 rounds registered in `series-000`.
+There are 168 rounds registered in `series-000`.
 
 They record 2512.1 agent-minutes and 4020.0 wall-minutes.
 These totals exclude four historical annealing rounds with unrecorded timing; their wall
@@ -5771,6 +5773,7 @@ archive beside it.
 | [exp-236](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-236-h254-n17-contact-chart.md) | 17 | target | H-254 | Exact rational fidelity screen of the frozen three-variable contact chart, including all contacts, reconstructed centres, alternative axes and source feasibility | All 458 frozen comparisons passed with independent receipt review; fidelity at the relaxed rational witness only | accepted |
 | [exp-237](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-237-h255-n17-polynomial-root.md) | 17 | target | H-255 | Fixed exact rational contraction certificate for the contact-chart root | Exact contraction, inclusion and domain guards pass both implementations and independent output review; root existence only | accepted |
 | [exp-238](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-238-h256-n17-endpoint-feasibility.md) | 17 | target | H-256 | Exact endpoint geometry with fixed centroid sliders | Complete exact endpoint certificate passes independent output review; conditional class minimum attained | accepted |
+| [exp-239](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-239-h257-n17-endpoint-features.md) | 17 | target | H-257 | Exact owner-axis and active-wall feature inventory | Preregistered; controls and independent review precede target | in-progress |
 
 ### Cost and provenance
 
@@ -5943,10 +5946,11 @@ archive beside it.
 | exp-236 | 90 seconds; one worker | 1.13 s | — | criterion | `74480b0a` |
 | exp-237 | producer90s and checker90s; one worker | 0.76 s | — | criterion | `b3e5e1526`; producer 0.67s, checker 0.09s |
 | exp-238 | 180 seconds; one worker | 43.45 s | — | criterion | `f77b3e0a7`; symbolic25.80s, interval and formatting16.42s |
+| exp-239 | 180 seconds; one worker | — | — | not yet run | pending frozen instrument |
 
-### What the 167 rounds jointly establish
+### What the 168 rounds jointly establish
 
-The 167 rounds use 2512.1 agent-minutes and 4020.0 wall-minutes under the campaign’s
+The 168 rounds use 2512.1 agent-minutes and 4020.0 wall-minutes under the campaign’s
 retained effort accounting.
 The never-invoked exp129 adds no scientific result or execution time.
 Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is recorded

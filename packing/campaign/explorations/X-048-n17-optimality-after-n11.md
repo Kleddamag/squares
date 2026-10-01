@@ -42,7 +42,7 @@ exploration:
     - docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md
     - docs/project/reviews/review-2026-10-01-evand-source-coverage.md
     - docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
-  proposes: [H-253, H-254, H-255, H-256]
+  proposes: [H-253, H-254, H-255, H-256, H-257]
 ---
 # X-048: Optimality Routes After n = 11
 
@@ -419,8 +419,48 @@ and the exact next artifact for every selected route.
 The
 [session plan](../../../docs/project/specs/active/plan-2026-10-01-post-optimality-w3-session.md)
 sets execution dependencies, review boundaries and efficiency triggers.
-H-253 codifies the retained rational upper-witness check; the endpoint-family theorem
-remains a separate obligation.
+H-253 through H-256 now discharge rational feasibility, chart fidelity, root existence
+and endpoint feasibility.
+The following execution checkpoint supersedes the initial readiness assessment while
+preserving its selection rationale.
+
+## October 1 Execution Checkpoint
+
+[Session 165](../agent-sessions/session-165-post-optimality-overnight.md) has four
+accepted rounds, with immutable inputs and independent review:
+
+| Obligation | Result | Exact Scope |
+| --- | --- | --- |
+| [H-253](../hypotheses/H-253-n17-retained-rational-upper.md) | Accepted | Replay of the existing rational upper witness through two local exact implementations and the source checker |
+| [H-254](../hypotheses/H-254-n17-contact-chart-fidelity.md) | Accepted | All 458 chart-fidelity comparisons at the relaxed rational witness |
+| [H-255](../hypotheses/H-255-n17-exact-polynomial-root.md) | Accepted | Exact existence and uniqueness in the fixed root box, with an independently implemented checker |
+| [H-256](../hypotheses/H-256-n17-exact-endpoint-feasibility.md) | Accepted | Exact physical endpoint at fixed centroid sliders; all 68 walls and 136 pairs certified, all 187 interval bounds independently recalculated |
+
+The
+[mathematical review](../../../docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md)
+and
+[projection-branch theorem](../../../docs/project/reviews/review-2026-10-01-n17-projection-branches.md)
+therefore establish an attained minimum within a declared parameter and
+separating-branch family.
+The latter removes several orientation assumptions and proves angle rigidity at
+equality, while keeping the branch premises explicit.
+A rotational freedom at square 6 shows why an isolated-coordinate theorem is
+inappropriate.
+
+The next selected discriminator is
+[H-257](../hypotheses/H-257-n17-endpoint-contact-features.md), a complete inventory of
+owner-axis alternatives and active-wall corners at the exact endpoint.
+It must be independently accepted before the proposed first-order cone analysis.
+Even a complete stationarity certificate would require further higher-order and global
+arguments. H-027’s class-angle derivative threshold is not silently replaced by this
+weaker question.
+
+The two main scientific gaps remain local capture of unrestricted orientations and
+separating branches, and global exclusion outside a captured neighbourhood.
+Frontier admission of the already checked upper witness remains `think-vdmf`; this
+checkpoint does not silently alter that registry.
+Low-n and global-cover routes retain their recorded readiness limits rather than
+launching a broad search during endpoint work.
 
 ## Planning Review
 

@@ -96,6 +96,18 @@ dyadic outward-rounding contract could control denominator and receipt growth.
 Neither optimization was applied to this run, and neither has a measured speedup.
 The original evidence remains unchanged.
 
+## Hosted Test Placement
+
+At publication checkpoint `ad7a36ed0`, all scientific assertions passed, but the hosted
+fast-shard backstop refused the complete symbolic test at 31.66 seconds of call time.
+[The failed job](https://github.com/jlevy/squares/actions/runs/36864534354/job/110376645051)
+records the measurement.
+The repository’s measured-test policy places that full symbolic replay in the slow lane
+and leaves the eight bounded controls on every pull request.
+The original target certificate and arithmetic are unchanged; no target was rerun to
+repair test placement.
+`think-je3v` tracks this integration cost.
+
 ## Mathematical Consequence
 
 The root is now an attained minimum of the declared necessary orientation,

@@ -952,6 +952,16 @@ def test_the_slow_marker_is_declared_only_by_measured_nodes() -> None:
       signal to move the read, not a signal to move the test.
     """
     expected: dict[str, set[str]] = {
+        # Hosted run36864534354/job110376645051,2026-10-01:31.66s call time.
+        # Exact symbolic reconstruction/normalizations; eight fast controls stay in PR CI.
+        "test_n17_endpoint_feasibility.py": {
+            "test_symbolic_identities_and_displacements",  # 31.66s
+        },
+        # Focused target-free pytest on 2026-10-01: 28.33s uncached call.
+        # This exercises the full symbolic feature proof.
+        "test_n17_endpoint_features.py": {
+            "test_symbolic_zero_options_and_displacement_refusal",  # 28.33s
+        },
         # 18s of call time across 3.
         "test_audit_n54_source_formula.py": {
             "test_n54_source_formula_cli_agrees_under_optimization",  # 7.8s

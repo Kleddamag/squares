@@ -613,7 +613,7 @@ session:
     bead: think-6dg0
     objective: Select a complete exact-root contact-feature audit before any first-order stationarity
       calculation.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Endpoint feasibility is complete; local owner-axis alternatives and nonsmooth wall
       supports remain to be inventoried.
@@ -626,12 +626,68 @@ session:
       -q -p no:cacheprovider
     kill_condition: The owner-axis disjunction or strict inactive-feature coverage is incomplete.
     fallback: Retain the analytic capture gap and do not run a cone solver.
+    outcome: Selected H257/BC401 with independently derived168pair/60corner/9offset coverage and fixed180second
+      cap. Controlled implementation and two Astra reviews are proceeding; no target calculation yet.
+    evidence:
+    - packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md
+    - docs/project/reviews/review-2026-10-01-n17-first-order-branches.md
+    stop_reason: Criterion/domain and independent roster derivation retained; instrument review is the
+      next gate.
+    next_action: Finish and commit controlled feature instrument before target use.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-6dg0
+    objective: Complete the H257 exact feature producer and independent contract review; develop the independent
+      receipt auditor in parallel.
+    status: completed
+    entered_by: evidence_checkpoint
+    switch_reason: The selected complete feature inventory lacks a reusable certified-root instrument.
+    budget_minutes: 21
+    started_at: '2026-10-01T12:59:21Z'
+    deadline_at: '2026-10-01T13:20:21Z'
+    expected_output: Reviewed producer, independent interval auditor, focused controls and frozen commit
+      ready for one target run.
+    validation_command: cd packing && .venv/bin/python3 -m pytest tests/test_n17_endpoint_features.py
+      -q -p no:cacheprovider
+    kill_condition: Three repeated instrument failures or unresolved symbolic/owner-axis completeness
+      defect.
+    fallback: Retain H257 unresolved without changing its criterion and continue separate analytic review.
+    outcome: Solproducer and7synthetic controls pass; two Astra static/math reviews approve33/29zero and135/31strict
+      feature roster plus9offset identities. Fullsymboliccontrol28.33s declaredslow bymeasurement; sixfast
+      controlsremain. Independent receipt auditor continues beforeacceptance.
+    evidence:
+    - packing/devtools/check_n17_endpoint_features.py
+    - packing/tests/test_n17_endpoint_features.py
+    - docs/project/reviews/review-2026-10-01-n17-first-order-branches.md
+    stop_reason: Producer ready for frozen bounded execution; output acceptance remains independently
+      gated.
+    next_action: Commit controlled producer and frozen criterion, then one180second targetrun.
+  - workflow: research-loop
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-6dg0
+    objective: Execute one frozen exact-root feature inventory and preserve its complete raw receipt.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: Independent mathematical/code review and synthetic controls pass; H257fixed criterion
+      is ready.
+    budget_minutes: 16
+    started_at: '2026-10-01T13:04:21Z'
+    deadline_at: '2026-10-01T13:20:21Z'
+    expected_output: One complete168pair/60corner/9offset receipt withtimings andprovenance; independent
+      audit beforeanyacceptance.
+    validation_command: cd packing && .venv/bin/python3 -m devtools.check_n17_endpoint_features campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/run-001/certificate.json
+      campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/run-001/certificate.json
+    kill_condition: 180second process deadline,10MiBfile ceiling oranyfrozenidentity/sign/coverage refusal.
+    fallback: Retain unresolved featureinventory anddonotlaunch a dependentcone solve.
     outcome: null
     evidence:
-    - docs/project/reviews/review-2026-10-01-n17-projection-branches.md
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-239-h257-n17-endpoint-features.md
     stop_reason: null
-    next_action: Review Sol feature instrument and Astra owner-axis reduction, freeze criterion before
-      target.
+    next_action: Freezeproducercommit; remeasurehost and runonce,thenindependentaudit.
   budget:
     wall_minutes: 268.3
     orientation_minutes: 10

@@ -52,7 +52,12 @@ def test_synthetic_support_matches_direct_absolute_projections() -> None:
             assert endpoint._support_interval(label, axis, boxed) == endpoint.Box.point(direct)
 
 
+# Hosted run36864534354 measured31.66s call time on2026-10-01.
+# Full symbolic replay remains in the slow lane; the eight bounded controls stay fast.
+@pytest.mark.slow
 def test_symbolic_identities_and_displacements() -> None:
+    # Exercise the proof even when another slow test warmed its cache.
+    endpoint.symbolic_identities.cache_clear()
     assert endpoint.symbolic_identities() == {
         "wall_identities": 15,
         "pair_identities": 21,

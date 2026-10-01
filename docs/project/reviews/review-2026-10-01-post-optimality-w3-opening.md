@@ -11,6 +11,11 @@ a rotational freedom at square 6. Its conditional family still assumes particula
 directed separating inequalities; coverage of arbitrary feasible perturbations remains
 open.
 
+The [first-order readiness report](review-2026-10-01-n17-first-order-branches.md)
+retains the proposed complete owner-axis model, its two corner branches, and the exact
+dual identity needed to certify stationarity.
+H257 must verify its geometric feature premises before any target cone calculation.
+
 ## Current Result
 
 Four preregistered n17 rounds are accepted: the retained rational witness (H253), its

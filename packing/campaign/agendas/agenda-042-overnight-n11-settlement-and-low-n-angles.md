@@ -1000,6 +1000,26 @@ agenda:
     - packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md
     note: Endpoint feasibility only; common-orientation and branch capture remain open.
 
+  - id: BC-401
+    purpose: research
+    owner_focus: correctness
+    instances: [17]
+    state: in_progress
+    priority: 0
+    question: Does the exact n17 endpoint have the complete predicted owner-axis and wall-corner feature inventory?
+    hypotheses: [H-257]
+    budget: One25minute controlled instrument slice; one180second target, one worker,10MiB per output and independent review.
+    entry: H255 root and H256 endpoint accepted; owner-axis inventory counts independently derived.
+    exit: All168pair options,60active-wall corners and9tangent offsets certified, or retained unresolved refusal without retuning.
+    bead: think-6dg0
+    depends_on: [BC-400]
+    next_evidence: packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md
+    workflows: [pipeline-improvement, research-loop, factual-review]
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md
+    note: Blocked until synthetic controls and independent instrument review pass; no stationarity or optimality claim.
+
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

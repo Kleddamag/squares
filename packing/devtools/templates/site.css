@@ -413,11 +413,15 @@ body {
    font (paper-design.md, Arrows). A shaft and an open head in a 16-unit box, stroke 1.6
    with round caps and joins, painted as a mask over the text colour. Each direction is
    the drawing turned: right as drawn, left mirrored, down and up a quarter turn,
-   external an eighth turn back. The sort pair is the one other shape. Inline markup is
-   `overview_sections.arrow_icon`; the rest are the pseudo-elements named here. */
+   external an eighth turn back. The two other shapes are the sort pair and the double
+   chevron: the arrow's open head twice, one over the other, in the same box and stroke,
+   pointing down as drawn (double-down) and up turned half round (double-up), which the
+   atlas's expander carries. Inline markup is `overview_sections.arrow_icon`; the rest
+   are the pseudo-elements named here. */
 :root {
   --site-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 8h11M9 3.5 13.5 8 9 12.5'/%3E%3C/svg%3E");
   --site-arrow-sort: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13.5v-11M2 5.5l3-3 3 3M11 2.5v11M8 10.5l3 3 3-3'/%3E%3C/svg%3E");
+  --site-arrow-double: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 3 8 7.5 12.5 3M3.5 8 8 12.5 12.5 8'/%3E%3C/svg%3E");
 }
 /* Kept at low specificity, so each place an arrow sits can place and time it. */
 .site-icon-arrow,
@@ -470,6 +474,15 @@ body {
 .kpress :is(.site-card, .site-popover-action)[data-go="external"]::after {
   --site-arrow-turn: -45deg;
   --site-arrow-nudge: 1.5px -1.5px;
+}
+.site-icon-arrow[data-arrow="double-down"],
+.site-icon-arrow[data-arrow="double-up"] {
+  --site-arrow-nudge: 0 2px;
+  mask-image: var(--site-arrow-double);
+}
+.site-icon-arrow[data-arrow="double-up"] {
+  --site-arrow-turn: 180deg;
+  --site-arrow-nudge: 0 -2px;
 }
 /* The one hover: an arrow in a link or button moves a little the way it points and keeps
    the element's colour. A disabled button's arrow stays still; a card's corner icon fades
@@ -693,10 +706,17 @@ body {
 .site-popover .site-popover-more {
   list-style: none;
 }
-/* The site's one action button: a popover's link to where it leads, and the few page
-   buttons that act in place, such as the atlas grid's "Show all 324". A <button> takes
-   it too, with the browser's own border, face and size put back to the link's. */
-.kpress :is(.site-popover a, button).site-popover-action {
+/* The site's one action button, in two places: a popover's link to where it leads
+   (`.site-popover-action`), and the one action under a table or grid (`.site-action`,
+   in a centred `.site-action-row`): "See all results" under the recent table, a link
+   with the arrow right, and the atlas's expander, a button with the double chevron down
+   or up (paper-design.md, Action under a table or grid). One look for all of them: the
+   accent fill, the page's background for the text, the medium sans, and the icon after
+   the label at the label's own size. A <button> takes it with the browser's own border,
+   face and size put back to the link's. */
+.kpress :is(.site-popover a, button).site-popover-action,
+.kpress :is(a, button).site-action {
+  align-items: center;
   background: var(--kpress-doc-accent);
   color: var(--kpress-doc-bg);
   display: inline-flex;
@@ -706,11 +726,12 @@ body {
   text-decoration: none;
   transition: background-color var(--site-hover-duration) var(--site-hover-easing);
 }
-.kpress .site-popover a.site-popover-action::after {
+.kpress .site-popover a.site-popover-action::after,
+.kpress .site-action .site-icon-arrow {
   align-self: center;
   margin: 0;
 }
-.kpress button.site-popover-action {
+.kpress button:is(.site-popover-action, .site-action) {
   border: 0;
   border-radius: 0;
   cursor: pointer;
@@ -719,9 +740,21 @@ body {
   font-weight: var(--site-font-weight-sans-medium);
   line-height: inherit;
 }
-.kpress :is(.site-popover a, button).site-popover-action:hover,
-.kpress :is(.site-popover a, button).site-popover-action:focus-visible {
+.kpress :is(.site-popover a, button).site-popover-action:is(:hover, :focus-visible),
+.kpress :is(a, button).site-action:is(:hover, :focus-visible) {
   background: color-mix(in oklch, var(--kpress-doc-accent) 85%, var(--kpress-doc-text));
+  color: var(--kpress-doc-bg);
+}
+/* The row that holds the one action under a table or grid: centred, in the sans at the
+   note size, `--site-action-space` under what it follows and nothing of its own below,
+   where the next heading's space begins. */
+.site-action-row {
+  --site-action-space: 1.2rem;
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-medium);
+  margin-block: var(--site-action-space) 0;
+  text-align: center;
 }
 
 .kpress :is(.site-card, .site-popover, .site-case) .site-card-label {
@@ -1070,12 +1103,6 @@ body {
   font-size: var(--site-font-size-note);
   font-weight: var(--site-font-weight-sans-light);
   text-align: center;
-}
-/* The pointer under the recent table to the full results table, in the sans face. */
-.site-more {
-  font-family: var(--kpress-font-sans);
-  font-size: var(--site-font-size-note);
-  font-weight: var(--site-font-weight-sans-light);
 }
 /* A date comes first, and then what it dates, "published" or "established", in the
    support colour, on its own line under the date so the column stays narrow. */
@@ -1858,9 +1885,9 @@ body {
 .site-atlas-rest[hidden] {
   display: none;
 }
+/* The expander's row is the action row, set the grid's own space under the tiles. */
 .site-atlas-grid .site-atlas-toggle-row {
-  margin-block: var(--site-atlas-toggle-space) 0;
-  text-align: center;
+  --site-action-space: var(--site-atlas-toggle-space);
 }
 .site-atlas-grid .site-atlas-toggle-row[hidden] {
   display: none;

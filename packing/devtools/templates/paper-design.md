@@ -937,12 +937,17 @@ it.
   themes. Each direction is that one drawing turned: **right** as drawn, **left** its
   mirror, **down** a quarter turn clockwise, **up** a quarter turn back, and
   **external** an eighth turn back, pointing up and to the right.
-  The one other shape is the sort pair, `--site-arrow-sort`, two small arrows up and
-  down in the same stroke.
+  The two other shapes are the sort pair, `--site-arrow-sort`, two small arrows up and
+  down in the same stroke, and the double chevron, `--site-arrow-double`, the arrow’s
+  open head twice, one over the other, in the same box and stroke: **double-down** as
+  drawn, for a control that shows more below, and **double-up** turned half round, for
+  one that shows less; the atlas’s expander carries them (**Action under a table or
+  grid**, below).
   - Inline markup carries `<span class="site-icon-arrow" data-arrow="right">`, written
     only by `overview_sections.arrow_icon(direction)`: the atlas popover’s stepper (left
     and right), a case record’s steps to its neighbours (left before the previous case,
-    right after the next) and the overview’s “See all results” line (right).
+    right after the next), the overview’s “See all results” button (right) and the
+    atlas’s expander (double-down, then double-up).
   - The icons CSS draws are pseudo-elements painted from the same token: a card’s corner
     icon and its popover’s button, chosen by `data-go` (down to a row on this page,
     external off the site, right to another page of the site, such as **See All
@@ -1113,17 +1118,35 @@ it.
   420ms; the hundred miss no frame, and all 324 miss ten of 39 at 120Hz, the longest
   18ms.
 
+- **Action under a table or grid.** Where one control follows a table or a grid, it is
+  the site’s one action button, `.site-action`, in a centred `.site-action-row`: the
+  look of a popover’s action (**Popovers**, the accent fill with the page’s background
+  for the text, the medium sans at the note size, `0.45rem 0.9rem` of padding and square
+  corners, darkened a step on hover and keyboard focus), with its icon from the one set
+  after the label at the label’s size, the arrow right where the control is a link that
+  navigates and the double chevron where it is a button that shows more or less in
+  place. Both forms share one rule in `site.css`, and the row sets `--site-action-space`
+  (1.2rem) above itself and nothing below, where the next heading’s own space begins.
+  The site has two: **See all results** under the homepage’s recent table, a link to the
+  results page with the arrow right, and the atlas’s expander, below.
+  The Frontier, Results and Papers pages end their tables with no action, so none
+  carries one. `tests/test_site_atlas_views.py` reads both in Chromium at 1280 and 390
+  pixels and holds their colours, type, height, padding and centring to each other.
+
 - **Atlas expander.** The grid shows n = 1 to 100 at first (`ATLAS_FIRST`). One button,
-  centred under it, reads **Show all 324** and expands the grid in place; it then reads
-  **Show 1 to 100** and collapses it, and carries `aria-expanded`. It is the site’s
-  action button, `.site-popover-action`, the same accent fill a popover’s button has,
-  set `--site-atlas-toggle-space` below the grid.
-  Cases 101 to 324 ship in a second `<template>` and are placed only the first time the
-  grid expands, into one box the grid lays out as its own cells (`display: contents`),
-  so collapsing is that box’s `hidden`. Collapsing keeps the button in view.
-  The atlas popover’s arrows still step through all 324 cases: stepping past the last
-  case shown expands the grid first, so the cell focus returns to is there.
-  Without scripting the button’s row stays `hidden`, since it would do nothing.
+  centred under it, reads **Show More** with the double chevron down and expands the
+  grid in place; it then reads **Show Less** with the chevron up and collapses it.
+  It carries `aria-expanded` and `aria-controls` (the box of tiles, `ATLAS_PANEL`), and
+  its name for assistive technology says what it does and how many cases that is, “Show
+  more: all 324 cases” and “Show less: the first 100”, while the visible label stays
+  short; the total is also in the sentence under the grid.
+  It is the action under a table or grid (above), set `--site-atlas-toggle-space` below
+  the grid. Cases 101 to 324 ship in a second `<template>` and are placed only the first
+  time the grid expands, into one box the grid lays out as its own cells
+  (`display: contents`), so collapsing is that box’s `hidden`. Collapsing keeps the
+  button in view. The atlas popover’s arrows still step through all 324 cases: stepping
+  past the last case shown expands the grid first, so the cell focus returns to is
+  there. Without scripting the button’s row stays `hidden`, since it would do nothing.
   In the triangle, expanding changes how many tiles a line holds, since the longest row
   grows from 19 to 35, so the hundred move into their smaller places as the rest fade
   in, by the same move a change of view makes (**Atlas views**, above).

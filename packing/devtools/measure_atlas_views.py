@@ -32,8 +32,10 @@ right. This opens a built overview in Chromium and reports what the browser made
   work the compositor otherwise does alone; `--unwatched` asks for no frame, and the
   counters then show what a reader's browser does.
 - `shots` writes pictures to `--out`: the atlas block in each view at each width, in the
-  light theme and the dark, with a hundred cases and with all, and the window at five
-  points of the move from the grid to the triangle (0, 25, 50, 75 and 100 percent).
+  light theme and the dark, with a hundred cases and with all; the two actions under a
+  table and under the grid, "See all results" and the expander collapsed and expanded,
+  at each width in both themes; and the window at five points of the move from the grid
+  to the triangle (0, 25, 50, 75 and 100 percent).
 
 `PAGE` is a built `index.html`, or a directory `preview_site` built. `--render` renders
 the overview alone into `PAGE` first, which takes seconds where a whole site takes a
@@ -424,9 +426,16 @@ def medians(rows: Sequence[dict[str, Any]], *, best: bool = False) -> list[dict[
     return lines
 
 
+#: The two actions under a table and under the grid, as `shots` pictures them: the row
+#: of "See all results", and the expander's row, collapsed and expanded.
+ACTIONS = (("see-all", ".site-more"), ("expander", ".site-atlas-toggle-row"))
+
+
 def shots(address: str, out: Path, widths: Sequence[int]) -> list[Path]:
     """The atlas block in each view at each width, light and dark, with a hundred cases
-    and with all; then the window at each of `FRACTIONS` of the move to the triangle."""
+    and with all; the two actions (`ACTIONS`) at each width in both themes, the expander
+    collapsed and expanded; then the window at each of `FRACTIONS` of the move to the
+    triangle."""
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
     out.mkdir(parents=True, exist_ok=True)
@@ -443,6 +452,19 @@ def shots(address: str, out: Path, widths: Sequence[int]) -> list[Path]:
                         target = out / f"atlas-{view}-{shown}-{width}-{scheme}.png"
                         page.locator(BLOCK).screenshot(path=str(target))
                         written.append(target)
+                        if view != "grid":
+                            continue
+                        for name, selector in ACTIONS:
+                            if name == "see-all" and shown == 324:
+                                continue
+                            state = (
+                                ""
+                                if name == "see-all"
+                                else ("-less" if shown == 324 else "-more")
+                            )
+                            target = out / f"action-{name}{state}-{width}-{scheme}.png"
+                            page.locator(selector).screenshot(path=str(target))
+                            written.append(target)
                     page.close()
         for width, height in FRAME_WINDOWS:
             for shown in (100, 324):

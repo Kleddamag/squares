@@ -64,7 +64,7 @@ age of 180 days; clear Hide superseded, choose All and clear Max age to see ever
 
 {{RECENT}}
 
-<p class="site-more"><a href="all-results.html">See all results{{ARROW_RIGHT}}</a></p>
+<p class="site-action-row site-more"><a class="site-action" href="all-results.html">See all results{{ARROW_RIGHT}}</a></p>
 
 <!-- This section's fragment was #verification-at-a-glance until 2026-10-01. The empty
      anchor in its heading keeps an old link landing here, with no script, and keeps

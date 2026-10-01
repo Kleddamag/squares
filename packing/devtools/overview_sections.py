@@ -2065,7 +2065,9 @@ def atlas_popover() -> str:
 
 #: The directions of the site's one arrow (paper-design.md, Arrows): each is the one
 #: drawing, `--site-arrow` in site.css, turned or mirrored by `data-arrow`.
-ARROW_DIRECTIONS = ("right", "left", "down", "up", "external")
+#: The arrow's five directions, and the double chevron's two: `double-down` for a control
+#: that shows more below, `double-up` for one that shows less.
+ARROW_DIRECTIONS = ("right", "left", "down", "up", "external", "double-down", "double-up")
 
 
 def arrow_icon(direction: str = "right") -> str:
@@ -2138,11 +2140,14 @@ def atlas_grid() -> str:
     The cells, about a megabyte of SVG, sit in two `<template>`s, which the browser
     parses but does not render. The script places the first `ATLAS_FIRST` when the grid
     nears the viewport, so the page opens as fast as it did without them, and the rest
-    only when the reader presses the button under the grid, "Show all 324", or steps the
-    popover past the last case shown. The button then reads "Show 1 to 100" and collapses
-    the grid again. Its row ships `hidden`, since without the script it would do
-    nothing. The facts are one JSON element, a tenth the size the same facts would take
-    as markup in every cell.
+    only when the reader presses the button under the grid, "Show More" with the double
+    chevron down, or steps the popover past the last case shown. The button then reads
+    "Show Less" with the chevron up and collapses the grid again; its name for assistive
+    technology says what each does and how many cases that is (`data-name-more`,
+    `data-name-less`), it controls the box of tiles (`ATLAS_PANEL`), and it is the site's
+    one action under a table or grid (`.site-action`, with "See all results"). Its row
+    ships `hidden`, since without the script it would do nothing. The facts are one JSON
+    element, a tenth the size the same facts would take as markup in every cell.
     """
     import json  # noqa: PLC0415
 
@@ -2162,7 +2167,9 @@ def atlas_grid() -> str:
             f'<span class="site-atlas-n">{n}</span></a>'
         )
     facts = json.dumps(atlas_film_facts(), ensure_ascii=False, separators=(",", ":"))
-    more, less = f"Show all {len(cases)}", f"Show 1 to {ATLAS_FIRST}"
+    more, less = "Show More", "Show Less"
+    name_more = f"Show more: all {len(cases)} cases"
+    name_less = f"Show less: the first {ATLAS_FIRST}"
     return (
         f'<div class="site-wide site-atlas-grid" data-atlas-view="{ATLAS_VIEWS[0][0]}" '
         f"data-atlas-grid>{atlas_view_tabs()}"
@@ -2172,10 +2179,12 @@ def atlas_grid() -> str:
         + facts.replace("</", "<\\/")
         + "</script>"
         f'<p class="site-atlas-key">{_esc(ATLAS_TRIANGLE_KEY)}</p>'
-        '<p class="site-atlas-toggle-row" hidden>'
-        '<button type="button" class="site-popover-action site-atlas-toggle" '
-        'data-atlas-toggle aria-expanded="false" '
-        f'data-label-more="{more}" data-label-less="{less}">{more}</button></p>'
+        '<p class="site-action-row site-atlas-toggle-row" hidden>'
+        '<button type="button" class="site-action site-atlas-toggle" '
+        f'data-atlas-toggle aria-expanded="false" aria-controls="{ATLAS_PANEL}" '
+        f'aria-label="{name_more}" data-label-more="{more}" data-label-less="{less}" '
+        f'data-name-more="{name_more}" data-name-less="{name_less}">'
+        f"<span data-atlas-label>{more}</span>{arrow_icon('double-down')}</button></p>"
         '<p class="site-atlas-note">Every case from n = 1 to 324 is also in the '
         '<a href="frontier.html">frontier survey</a>, and each has a '
         f'<a href="{CASES_PAGE}">case record</a>.</p></div>{atlas_popover()}'

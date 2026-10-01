@@ -52,6 +52,26 @@
     views.arrange();
   };
 
+  // The button reads Show More with the double chevron down, and once the rest show,
+  // Show Less with the chevron up; its name for assistive technology says what each
+  // does and how many cases that is, from the names the page ships.
+  const toggleLabel = toggle.querySelector("[data-atlas-label]");
+  const toggleChevron = toggle.querySelector(".site-icon-arrow");
+  /** @param {boolean} open */
+  const relabel = (open) => {
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute(
+      "aria-label",
+      (open ? toggle.dataset.nameLess : toggle.dataset.nameMore) ?? "",
+    );
+    if (toggleLabel !== null) {
+      toggleLabel.textContent = (open ? toggle.dataset.labelLess : toggle.dataset.labelMore) ?? "";
+    }
+    if (toggleChevron instanceof HTMLElement) {
+      toggleChevron.dataset.arrow = open ? "double-up" : "double-down";
+    }
+  };
+
   // Showing or hiding the rest changes where the triangle's tiles stand, since its
   // longest row sets how many a line holds, so it is a change of layout like a change
   // of view: the tiles that stay move, and the ones that arrive fade in. Collapsing
@@ -68,8 +88,7 @@
     }
     views.change(() => {
       rest.hidden = !open;
-      toggle.setAttribute("aria-expanded", String(open));
-      toggle.textContent = (open ? toggle.dataset.labelLess : toggle.dataset.labelMore) ?? "";
+      relabel(open);
       settle?.();
     });
   };

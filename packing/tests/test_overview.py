@@ -110,7 +110,11 @@ def test_the_results_table_has_its_own_page_and_the_overview_points_to_it(
     assert not ROW.findall(page)
     assert 'id="every-result"' not in page
     recent = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
-    assert '<a href="all-results.html">See all results' in recent
+    # The one action under the table: the site's action button, a link with the arrow.
+    assert (
+        '<p class="site-action-row site-more"><a class="site-action" href="all-results.html">'
+        f"See all results{overview_sections.arrow_icon('right')}</a></p>"
+    ) in recent
 
 
 def test_every_link_to_a_result_goes_to_its_row(
@@ -425,35 +429,55 @@ def test_the_atlas_grid_draws_every_case_and_places_it_lazily(page: str) -> None
 
 
 def test_the_atlas_grid_expands_from_100_to_324_with_one_button() -> None:
-    """Under the grid one centred button, the site's action button, reads "Show all 324"
-    and says it is collapsed; its row ships hidden, since only the script makes it act.
-    The script places the rest on the first expand, flips the label and `aria-expanded`,
-    and expands the grid when the popover steps past the last case shown."""
+    """Under the grid one centred button, the site's action under a table or grid, reads
+    "Show More" with the double chevron down, names what it does and how many cases that
+    is, controls the box of tiles, and says it is collapsed; its row ships hidden, since
+    only the script makes it act. The script places the rest on the first expand, flips
+    the label to "Show Less", the chevron to up, the name and `aria-expanded`, and
+    expands the grid when the popover steps past the last case shown."""
     grid = overview_sections.atlas_grid()
-    (row,) = re.findall(r'<p class="site-atlas-toggle-row" hidden>(.*?)</p>', grid)
+    (row,) = re.findall(
+        r'<p class="site-action-row site-atlas-toggle-row" hidden>(.*?)</p>', grid
+    )
     assert row == (
-        '<button type="button" class="site-popover-action site-atlas-toggle" '
-        'data-atlas-toggle aria-expanded="false" data-label-more="Show all 324" '
-        'data-label-less="Show 1 to 100">Show all 324</button>'
+        '<button type="button" class="site-action site-atlas-toggle" '
+        'data-atlas-toggle aria-expanded="false" aria-controls="atlas-cells" '
+        'aria-label="Show more: all 324 cases" data-label-more="Show More" '
+        'data-label-less="Show Less" data-name-more="Show more: all 324 cases" '
+        'data-name-less="Show less: the first 100">'
+        "<span data-atlas-label>Show More</span>"
+        f"{overview_sections.arrow_icon('double-down')}</button>"
     )
     assert grid.index("data-atlas-toggle") < grid.index('class="site-atlas-note"')
     script = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
     assert 'toggle.setAttribute("aria-expanded", String(open))' in script
+    assert "toggle.dataset.nameLess : toggle.dataset.nameMore" in script
+    assert "toggle.dataset.labelLess : toggle.dataset.labelMore" in script
+    assert 'chevron.dataset.arrow = open ? "double-up" : "double-down"' in script
+    assert "toggle.textContent" not in script
     assert "rest.append(restTemplate.content.cloneNode(true))" in script
     step = script[script.index("A case the grid does not show yet") :]
     assert "expandGrid(true)" in step[: step.index("show(next)")]
 
 
 def test_the_atlas_expander_reuses_the_action_button_and_tokens() -> None:
-    """The expander takes the popover action button's own rule, widened to a <button>,
-    not a style of its own; its spacing is a token, and the placed rest is one box the
+    """The expander takes the site's one action button's rule, shared with the popover's
+    action and widened to a <button>, not a style of its own; its row is the action row,
+    whose space under the tiles is the grid's token, and the placed rest is one box the
     grid lays out as its cells, hidden when collapsed."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
-    assert ".kpress :is(.site-popover a, button).site-popover-action {" in css
+    assert (
+        ".kpress :is(.site-popover a, button).site-popover-action,\n"
+        ".kpress :is(a, button).site-action {"
+    ) in css
+    assert ".kpress button:is(.site-popover-action, .site-action) {" in css
     assert ".site-atlas-toggle {" not in css
     row = css[css.index(".site-atlas-grid .site-atlas-toggle-row {") :]
     row = row[: row.index("}")]
-    assert "margin-block: var(--site-atlas-toggle-space) 0;" in row
+    assert "--site-action-space: var(--site-atlas-toggle-space);" in row
+    action_row = _rule(css, ".site-action-row")
+    assert "margin-block: var(--site-action-space) 0;" in action_row
+    assert "text-align: center;" in action_row
     grid = css[css.index(".site-page .site-atlas-grid {") :]
     assert "--site-atlas-toggle-space:" in grid[: grid.index("}")]
     rest = css[css.index(".site-atlas-rest {") :]
@@ -3668,11 +3692,18 @@ def test_the_icon_set_is_one_drawing_in_the_stylesheet() -> None:
     nav = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
     assert css.count("--site-arrow: url(") == 1
     assert css.count("--site-arrow-sort: url(") == 1
+    assert css.count("--site-arrow-double: url(") == 1
     assert "--site-arrow" not in nav
     for content in re.findall(r"content:\s*([^;]+);", css):
         assert not ARROW_CHARACTERS.search(content), content
     for mask in re.findall(r"mask(?:-image)?:\s*([^;]+);", css):
-        assert re.match(r"var\(--site-arrow(?:-sort)?\)", mask), mask
+        assert re.match(r"var\(--site-arrow(?:-sort|-double)?\)", mask), mask
+    # The double chevron is the arrow's head twice, in the arrow's own box and stroke.
+    head = "stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'"
+    double = re.search(r"--site-arrow-double: url\(\"([^\"]+)\"\);", css)
+    assert double is not None
+    assert head in double.group(1)
+    assert "d='M3.5 3 8 7.5 12.5 3M3.5 8 8 12.5 12.5 8'" in double.group(1)
     scripts = (render_overview.PACKING / "devtools" / "overview").glob("*.js")
     for script in scripts:
         assert not ARROW_CHARACTERS.search(script.read_text(encoding="utf-8")), script.name

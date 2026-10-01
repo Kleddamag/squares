@@ -39,6 +39,7 @@ INTERRUPTED = probe(PROBES, "site_atlas_views/interrupted")
 POPOVER = probe(PROBES, "site_atlas_views/popover")
 WATCH = probe(PROBES, "site_atlas_views/watch")
 SEEN = probe(PROBES, "site_atlas_views/seen")
+ACTIONS = probe(PROBES, "site_atlas_views/actions")
 DRAWING = probe(PROBES, "site_drawing_hover/drawing")
 
 GRID, TRIANGLE = atlas.tab("grid"), atlas.tab("triangle")
@@ -115,6 +116,7 @@ def _desktop(browser: Any, address: str) -> Readings:
     page = atlas.open_atlas(browser, address, **DESKTOP)
     atlas.top(page)
     seen["grid"] = atlas.layout(page)
+    seen["actions"] = page.evaluate(ACTIONS)
     seen["press triangle"] = page.evaluate(PRESSED, {"press": TRIANGLE})
     atlas.settle(page)
     seen["triangle"] = atlas.layout(page)
@@ -156,6 +158,7 @@ def _desktop(browser: Any, address: str) -> Readings:
     seen["press expander"] = page.evaluate(PRESSED, {"press": atlas.EXPANDER})
     atlas.settle(page)
     seen["triangle, every case"] = atlas.layout(page)
+    seen["actions, expanded"] = page.evaluate(ACTIONS)
     atlas.expand(page)
     seen["triangle, collapsed"] = atlas.layout(page)
 
@@ -176,6 +179,7 @@ def _phone(browser: Any, address: str) -> Readings:
     )
     seen["phone, first placed"] = page.evaluate(SEEN)
     seen["phone"] = atlas.layout(page)
+    seen["phone actions"] = page.evaluate(ACTIONS)
     atlas.expand(page)
     seen["phone, every case"] = atlas.layout(page)
     page.locator(GRID).click()
@@ -496,6 +500,53 @@ def test_a_triangle_tile_keeps_its_ink_under_the_pointer(seen: Readings) -> None
     assert hovered["background"] != rest["background"]
     assert hovered["frame_stroke"] == rest["frame_stroke"] == rest["color"]
     assert hovered["outline_stroke"] == rest["outline_stroke"]
+
+
+@pytest.mark.parametrize("name", ["actions", "phone actions"])
+def test_see_all_results_and_the_expander_are_one_button(seen: Readings, name: str) -> None:
+    """The link under the recent table and the button under the atlas are the site's one
+    action under a table or grid: the same colours, type, padding, corners and height,
+    each centred in its row, with its icon from the one set after its label at the same
+    size, the arrow right on the link and the double chevron on the button; at a desktop
+    width and on a phone."""
+    see_all, expander = seen[name]["see_all"], seen[name]["expander"]
+    assert see_all is not None
+    assert expander is not None
+    for key in ("color", "background", "font_px", "weight", "family", "padding", "radius"):
+        assert see_all[key] == expander[key], (name, key)
+    assert see_all["box"]["height"] == pytest.approx(expander["box"]["height"], abs=0.5)
+    assert abs(see_all["centred"]) <= 1, (name, see_all["centred"])
+    assert abs(expander["centred"]) <= 1, (name, expander["centred"])
+    assert "site-action" in see_all["classes"]
+    assert "site-action" in expander["classes"]
+    assert see_all["icon"]["arrow"] == "right"
+    assert expander["icon"]["arrow"] == "double-down"
+    assert see_all["icon"]["width"] == pytest.approx(expander["icon"]["width"], abs=0.5)
+    assert see_all["icon"]["after_text"]
+    assert expander["icon"]["after_text"]
+    assert see_all["label"] == "See all results"
+
+
+def test_the_expander_reads_show_more_then_show_less_with_the_chevron_turned(
+    seen: Readings,
+) -> None:
+    """Collapsed, the button reads Show More with the chevron down and is named for all
+    the cases it shows; expanded, Show Less with the chevron up, named for the hundred it
+    keeps; it says which it is and what it controls either way."""
+    closed, opened = seen["actions"]["expander"], seen["actions, expanded"]["expander"]
+    assert (closed["label"], closed["expanded"], closed["icon"]["arrow"]) == (
+        "Show More",
+        "false",
+        "double-down",
+    )
+    assert closed["name"] == "Show more: all 324 cases"
+    assert (opened["label"], opened["expanded"], opened["icon"]["arrow"]) == (
+        "Show Less",
+        "true",
+        "double-up",
+    )
+    assert opened["name"] == "Show less: the first 100"
+    assert closed["controls"] == opened["controls"] == "atlas-cells"
 
 
 def test_a_triangle_tile_opens_the_atlas_popover_and_takes_the_focus_back(

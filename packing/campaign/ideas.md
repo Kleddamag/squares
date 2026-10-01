@@ -49,7 +49,29 @@ Budgets are in **pair-tests**, tiers S/M/L = `1e9`/`1e11`/`1e13`.
 
 ## Orientation
 
-The [current certified bracket](../frontier/n-011.md) is
+The next owner-requested W3 entry is
+[X-048: Optimality Routes After n = 11](explorations/X-048-n17-optimality-after-n11.md),
+with its
+[session plan](../../docs/project/specs/active/plan-2026-10-01-post-optimality-w3-session.md).
+At the plan’s merged-main baseline, n11 and n21 are settled in the machine-checked
+record; n17 is the primary new target and n12 is secondary.
+The older n11 bracket and route premises below describe the historical program and must
+be reconciled before selecting its unfinished tasks.
+
+| Idea | Status | Crux |
+| --- | --- | --- |
+| [X-048 R1: n17 endpoint family](explorations/X-048-n17-optimality-after-n11.md#r1-verify-the-candidate-and-describe-its-endpoint-family) | shaped | Certify a flexible candidate and a uniform side inequality |
+| [X-048 R2: occupancy decomposition](explorations/X-048-n17-optimality-after-n11.md#r2-build-a-small-occupancy-problem-before-a-large-search) | shaped | Compress a complete centre cover before geometric enumeration |
+| [X-048 R3: charge compatibility](explorations/X-048-n17-optimality-after-n11.md#r3-turn-r068-saturation-into-constraints-on-joint-placements) | shaped | Prove low-charge pose classes cannot all coexist |
+| [X-048 R4: capacity-one ceiling](explorations/X-048-n17-optimality-after-n11.md#r4-establish-the-limit-of-the-present-certificate-architecture) | registered | Existing H-248 owns the weighted-clique architecture discriminator |
+| [X-048 R5: necessary backbone](explorations/X-048-n17-optimality-after-n11.md#r5-prove-a-backbone-without-assuming-the-catalogue-picture) | shaped | Test a global structural lemma with its quantifier explicit |
+| [X-048 R6: local certificate hierarchy](explorations/X-048-n17-optimality-after-n11.md#r6-a-hierarchy-of-local-certificates-with-global-coverage) | shaped | Strengthen relaxations only on unresolved cases |
+| [X-048 R7: endpoint measure](explorations/X-048-n17-optimality-after-n11.md#r7-try-a-direct-endpoint-measure) | shaped | Closed-square charge and dilation may close an algebraic endpoint |
+| [X-048 R8: richer resources](explorations/X-048-n17-optimality-after-n11.md#r8-change-the-certificate-features-then-measure-their-value) | shaped | Test new features against a frozen finite primal/dual control |
+| [X-048 R9: subconfiguration cuts](explorations/X-048-n17-optimality-after-n11.md#r9-use-settled-small-cases-as-subconfiguration-cuts) | shaped | Transfer settled cases through proved whole-square containment |
+| [X-048 low-n alternatives](explorations/X-048-n17-optimality-after-n11.md#other-low-cases) | shaped | n12 conditional occupancy first; audit reported additive obstructions before transferring n21’s method |
+
+The historical starting bracket for the program below was
 `3.875 < s(11) <= 3.877083590022814177...`. The strict lower end is Kleddamag’s verified
 `31/8` certificate. The upper end is Walter Trump’s 1979 packing — six axis-aligned
 squares plus a tightly constrained block of five tilted at `≈40.1819°` — and the case

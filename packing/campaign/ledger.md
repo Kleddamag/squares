@@ -1333,6 +1333,7 @@ These totals exclude 4 historical rounds with unrecorded timing; their cost is u
 - X-043 — New Lower-Bound Proof Directions After the External Advances
 - X-044 — Transfer Opportunities at the Lowest Open Square-Packing Cases
 - X-045 — N11 Global Capture and Exact Optimality
+- X-048 — Optimality Routes After n = 11
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

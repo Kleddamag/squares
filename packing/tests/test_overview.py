@@ -1529,7 +1529,8 @@ def test_the_recent_table_lists_every_result_filtered_to_s4_and_180_days(
         "The table lists every result, newest first: new bounds for particular numbers of "
         "squares, found here or by others."
     ) in text
-    assert "1 August" not in text
+    # The retired lead, not the date: a row's claim may cite a source of 21 August.
+    assert "since 1 August" not in text
     assert "every result since" not in text
     starts = (
         "The table starts filtered to significance S4 and up and to a maximum age of 180 "

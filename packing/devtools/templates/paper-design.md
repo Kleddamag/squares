@@ -362,6 +362,10 @@ it.
   closed popover is not displayed and an open one is in the top layer.
   Print keeps the plain grid of medium columns, filled from the left.
   Cards come in three sizes (Card sizes, below).
+  The value is the card’s headline: the sans face at the medium weight
+  (`--site-font-weight-sans-medium`, 550), the face and weight of the page title and of
+  the sans section headings (`h3`), at 1.15 of the text size (20.7px). The popover
+  repeats the headline in the same face and weight.
   A card works one of two ways.
   Most cards open a popover that shows where they lead, and the popover ends in one
   button that goes there, centred at its foot.

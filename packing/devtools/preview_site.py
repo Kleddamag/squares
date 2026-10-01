@@ -14,7 +14,9 @@ Usage, from `packing/`:
 
 `--skip explainer` or `--skip workbench` leaves a slow build out; its nav link then
 points at a missing page, which the link check reports rather than fails on, and a build
-already in `--output` stays. `--page` shoots only the pages it names. Set
+already in `--output` stays. `--page` shoots only the pages it names, and `--press`
+names an element to press on each page that has one (a card, an atlas cell), so what it
+opens is checked and shot too. Set
 `SQPACK_CHROMIUM` to use a browser the environment supplies, as the explainer's own
 tools do.
 """
@@ -52,6 +54,7 @@ _OVERFLOW = probe(PROBES, "preview_site/overflow")
 _MATH_PENDING = probe(PROBES, "preview_site/math_pending")
 _MATH_FACE = probe(PROBES, "preview_site/math_face")
 _SCROLL_TOP = probe(PROBES, "preview_site/scroll_top")
+_AT_FOOT = probe(PROBES, "preview_site/at_foot")
 _CARDS = probe(PROBES, "measure_site_pages/cards")
 #: How far, in CSS pixels, a row of cards may sit off the centre of its line.
 CENTRE_TOLERANCE = 1.0
@@ -59,6 +62,8 @@ CENTRE_TOLERANCE = 1.0
 #: site typesets the formulas near the viewport first and the rest in idle time
 #: (`overview/math.js`); the synopsis's 1,357 took 40 to 50 seconds of scrolling in all.
 MATH_WAIT_MS = 60_000
+#: How long what a press opens may take to typeset its math.
+PRESS_WAIT_MS = 5_000
 HREF = re.compile(r'<nav class="site-nav".*?</nav>', re.DOTALL)
 
 
@@ -151,26 +156,52 @@ def off_centre(sections: list[dict[str, Any]]) -> list[str]:
 
 
 def _settle_math(page: Page) -> int:
-    """Scroll the page through once, a screen at a time, so every formula is typeset, then
-    return to the top; returns how many were still untypeset when the wait ran out. The
-    return is instant and waited for: the wheel's own scroll animates, and a screenshot
-    taken during it was drawn offset."""
+    """Scroll the page through once, a screen at a time, to its foot, and on until every
+    formula is typeset, then return to the top; returns how many were still untypeset
+    when the wait ran out. Reaching the foot is what places whatever a page lays out or
+    loads only as it nears the window, the atlas grid and a card's picture among them,
+    even on a page whose math was done at once. The return is instant and waited for:
+    the wheel's own scroll animates, and a screenshot taken during it was drawn offset."""
     waited = 0
-    while (pending := page.evaluate(_MATH_PENDING)) and waited < MATH_WAIT_MS:
+    while waited < MATH_WAIT_MS:
+        pending = page.evaluate(_MATH_PENDING)
+        if not pending and page.evaluate(_AT_FOOT):
+            break
         page.mouse.wheel(0, 800)
         page.wait_for_timeout(100)
         waited += 100
+    pending = page.evaluate(_MATH_PENDING)
+    page.wait_for_load_state("networkidle")
     page.wait_for_timeout(200)
     page.wait_for_function(_SCROLL_TOP)
     return pending
 
 
+def _press(page: Page, selector: str) -> list[str]:
+    """Press the first element `selector` matches and wait for what it opens to typeset
+    its math; returns the formulas then set in the wrong face. A popover's math is only
+    typeset once it opens, so the page's own check cannot see it."""
+    page.locator(selector).first.click()
+    waited = 0
+    while page.evaluate(_MATH_PENDING) and waited < PRESS_WAIT_MS:
+        page.wait_for_timeout(100)
+        waited += 100
+    page.wait_for_timeout(300)
+    return page.evaluate(_MATH_FACE)
+
+
 def screenshots(
-    output: Path, shots: Path, port: int, pages: Sequence[str] = render_overview.SITE_PAGES
+    output: Path,
+    shots: Path,
+    port: int,
+    pages: Sequence[str] = render_overview.SITE_PAGES,
+    press: Sequence[str] = (),
 ) -> list[str]:
     """A full-page screenshot of every built page at each width, with what went wrong:
     console errors, math left untypeset or set in the other face from its text, a row of
-    cards off the centre of its line, and any page wider than its viewport."""
+    cards off the centre of its line, and any page wider than its viewport. Each
+    selector in `press` is then pressed on every page that has a match, its math checked
+    the same way, and the window shot as `<page>-<width>-press<n>.png`."""
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
     shots.mkdir(parents=True, exist_ok=True)
@@ -196,9 +227,8 @@ def screenshots(
                     pending = _settle_math(page)
                     if pending:
                         errors.append(f"{name} @{width}: {pending} math spans never typeset")
-                    errors.extend(
-                        f"{name} @{width}: {mismatch}" for mismatch in page.evaluate(_MATH_FACE)
-                    )
+                    faces: list[str] = page.evaluate(_MATH_FACE)
+                    errors.extend(f"{name} @{width}: {mismatch}" for mismatch in faces)
                     errors.extend(
                         f"{name} @{width}: {problem}"
                         for problem in off_centre(page.evaluate(_CARDS))
@@ -210,6 +240,18 @@ def screenshots(
                     target = shots / f"{stem}-{width}.png"
                     page.screenshot(path=str(target), full_page=True)
                     print(f"shot {target}")
+                    for index, selector in enumerate(press, start=1):
+                        if not page.locator(selector).count():
+                            continue
+                        errors.extend(
+                            f"{name} @{width}, {selector} pressed: {mismatch}"
+                            for mismatch in _press(page, selector)
+                            if mismatch not in faces
+                        )
+                        target = shots / f"{stem}-{width}-press{index}.png"
+                        page.screenshot(path=str(target))
+                        print(f"shot {target}")
+                        page.keyboard.press("Escape")
                     page.close()
             browser.close()
     finally:
@@ -228,6 +270,14 @@ def main(argv: list[str] | None = None) -> int:
         choices=render_overview.SITE_PAGES,
         help="with --shots: shoot only this page; repeatable",
     )
+    parser.add_argument(
+        "--press",
+        action="append",
+        default=[],
+        metavar="SELECTOR",
+        help="with --shots: press the first element this CSS selector matches on each page "
+        "that has one, then check and shoot what it opens; repeatable",
+    )
     parser.add_argument("--serve", action="store_true", help="serve the site until stopped")
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args(argv)
@@ -241,7 +291,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"missing: {problem}", file=sys.stderr)
     if args.shots:
         pages = tuple(args.page or render_overview.SITE_PAGES)
-        for error in screenshots(output, args.shots.resolve(), args.port, pages):
+        for error in screenshots(output, args.shots.resolve(), args.port, pages, args.press):
             print(f"problem: {error}", file=sys.stderr)
             status = 1
     if args.serve:

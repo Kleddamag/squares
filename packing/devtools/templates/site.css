@@ -614,8 +614,15 @@ body {
   letter-spacing: var(--kpress-caps-spacing);
   text-transform: var(--kpress-caps-transform);
 }
-/* A long closed form, such as a nested radical, scrolls inside its card rather than
-   widening the page. */
+/* A card's headline, and its popover's, which repeats it: the sans face at the medium
+   weight, the face and weight of the page title and of the sans section headings
+   (`h3`). A long closed form, such as a nested radical, scrolls inside its card rather
+   than widening the page. */
+.kpress .site-card .site-card-value,
+.site-popover .site-popover-value {
+  font-family: var(--kpress-font-sans);
+  font-weight: var(--site-font-weight-sans-medium);
+}
 .kpress .site-card .site-card-value {
   font-size: 1.15em;
   max-inline-size: 100%;

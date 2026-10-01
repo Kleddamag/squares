@@ -1333,6 +1333,23 @@ def test_the_page_title_style_is_upright() -> None:
     assert "font-style: normal;" in rule[: rule.index("}")]
 
 
+def test_card_headlines_take_the_page_titles_sans_face_and_weight() -> None:
+    """A card's headline, and its popover's repeat of it, is set in the sans face at the
+    medium weight by the same two tokens the page title uses, which KPress's sans `h3`
+    resolves to as well; no value of its own."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    title = css[css.index(".site-hero h1,\n.kpress .site-title {") :]
+    headline = css[
+        css.index(".kpress .site-card .site-card-value,\n.site-popover .site-popover-value {") :
+    ]
+    for rule in (title[: title.index("}")], headline[: headline.index("}")]):
+        assert "font-family: var(--kpress-font-sans);" in rule
+        assert "font-weight: var(--site-font-weight-sans-medium);" in rule
+    assert "--site-font-weight-sans-medium: var(--paper-font-weight-sans-medium);" in css
+    text = render_overview.PAPER_TYPE_CSS.read_text(encoding="utf-8")
+    assert "--paper-font-weight-sans-medium: 550;" in text
+
+
 def test_the_bar_sits_close_to_the_top_of_every_page() -> None:
     """The space above the bar is kpress's page top margin, narrowed once in the stylesheet
     every page carries, so the explainer, the KPress pages and the workbench all agree."""

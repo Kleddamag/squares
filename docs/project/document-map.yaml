@@ -9,6 +9,7 @@ scope: >
   excluded because its role and lifecycle come from resources/README.md rather than
   current project documentation rules.
 documents:
+  - {path: docs/project/reviews/review-2026-10-01-n17-mixed-capacity-cover.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-01-n12-weighted-cycle-capture.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-01-n17-core-stress.md, role: review, authority: record, lifecycle: retained}
   - {path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-239-n17-endpoint-features/output-review.md, role: review, authority: record, lifecycle: retained}

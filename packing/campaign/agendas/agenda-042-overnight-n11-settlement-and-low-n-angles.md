@@ -1041,6 +1041,26 @@ agenda:
     - packing/campaign/hypotheses/H-258-n17-common-core-stress.md
     note: Three target-free symbolic preparation guard failures stop this instrument. No target run or stationarity verdict; exact residual proof and controls remain missing. Local/globaloptimality remains separate.
 
+
+  - id: BC-403
+    purpose: research
+    owner_focus: correctness
+    instances: [17]
+    state: in_progress
+    priority: 0
+    question: Does the exact mixed-capacity5by5 cover reduce the complete raw n17 occupancy census?
+    hypotheses: [H-259]
+    budget: One15minute instrument/review slice;30second combined count/audit,oneworker,1MiB per output.
+    entry: Exact wall-support lemma and closed-cover proposal registered before coefficient calculation.
+    exit: Independent geometry review and exact DP/binomial agreement, or retained missing premise.
+    bead: think-70sf
+    depends_on: []
+    next_evidence: packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md
+    workflows: [insight-iteration, pipeline-improvement, research-loop, factual-review]
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md
+    note: Raw occupancy reduction only; no symmetry, pose exclusion or optimality claim.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

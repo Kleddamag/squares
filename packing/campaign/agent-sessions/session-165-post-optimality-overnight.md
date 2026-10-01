@@ -785,7 +785,7 @@ session:
     bead: think-kaqh
     objective: Publish accepted n17 bound admission, conditional n12 inequality and stopped H258 instrument
       with complete evidence limits.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Independent mathematical and admission reviews are complete; retained evidence needs
       a recoverable checkpoint.
@@ -798,13 +798,67 @@ session:
       CI runs separately.
     kill_condition: Unrelated atlas rebuild or general slow testing displaces selected research.
     fallback: Retain explicit integration blocker and preserve accepted scientific receipts.
-    outcome: null
+    outcome: Published ca6473c79 with accepted n17 ceiling, H253 fallback, reviewed n12 inequality and
+      fail-closed H258 drafts. Schema/citation/case-prose/result checks and18focusedtests pass. Restored
+      hook-hidden edits were independently re-reviewed; no accepted receipts changed. HostedCI runs separately.
     evidence:
     - packing/frontier/n-017.md
     - docs/project/reviews/review-2026-10-01-n12-weighted-cycle-capture.md
+    stop_reason: Recoverable checkpoint pushed and PR synopsis updated.
+    next_action: Execute separately selected H259 mixed-capacity census after controlled instrument freeze.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-70sf
+    objective: Complete the named exact occupancy-count instrument and independent binomial auditor for
+      the registered H259 mixed-capacity cover.
+    status: completed
+    entered_by: evidence_checkpoint
+    switch_reason: Exact support lemma provides a sound wall-aware cover; only a small reusable count/check
+      tool is missing.
+    budget_minutes: 15
+    started_at: '2026-10-01T13:49:00Z'
+    deadline_at: '2026-10-01T14:04:00Z'
+    expected_output: Controlled standard-library counting and independent audit tools, reviewed closed
+      cover and immutable H259 criterion beforetarget.
+    validation_command: Synthetic occupancy DP and independent binomial tests, with no H259 target vectors.
+    kill_condition: Invalid support/capacity premise, failed control, three repeated instrument failures
+      orslice deadline.
+    fallback: Retain mathematical cover proposal without a computed target census or global claim.
+    outcome: ExactDP producer and independent binomial auditor pass52target-free controls in0.11s combined; an additional deepJSON refusal control and all21producer tests pass in0.12s after the parser repair;53controls total.
+      Ruff/format/types pass. TwoAstra and coordinator approve support lemma, closedseams, capacities
+      and rational capacity-one falsifier. No targetcoefficient evaluated.
+    evidence:
+    - packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md
+    - docs/project/reviews/review-2026-10-01-n17-mixed-capacity-cover.md
+    stop_reason: Controlled instrument and exact geometric prerequisites ready for frozenexecution.
+    next_action: Commit complete criterion/instruments, then one30second supervised count/audit group.
+  - workflow: research-loop
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-70sf
+    objective: Execute the frozen H259 exact mixed-capacity and binary-baseline census, independently
+      audit every prefix coefficient and retain scoped results.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: All mathematical/control readiness gates pass; exact finite census is the admitted
+      useful test.
+    budget_minutes: 15
+    started_at: '2026-10-01T13:56:00Z'
+    deadline_at: '2026-10-01T14:11:00Z'
+    expected_output: Two exact census receipts,two independent audits,command/timing/provenance and a
+      scoped verdict.
+    validation_command: Frozen count_cell_occupancies commands and independent audit_cell_occupancies
+      receipts under a30second group deadline.
+    kill_condition: Count mismatch,invalidcapacitypremise,30second group ceiling or1MiB outputlimit.
+    fallback: Retain unresolved census withoutchanginggrid/cap/criterion or inferringglobalgeometry.
+    outcome: null
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-240-h259-n17-mixed-capacity-census.md
     stop_reason: null
-    next_action: Commit reviewed stable files, push and inspect hosted CI beside the next bounded source-review
-      proposal.
+    next_action: Freeze trackedclean code then execute once and independently review outputs.
   budget:
     wall_minutes: 268.3
     orientation_minutes: 10
@@ -947,8 +1001,8 @@ session:
   - CI head8e5b15b94 failed only the stale synopsis mutation anchor in validate and shardB; corrected165-round
     anchor now passes bothanchorresolution andactualmutation. HostedCIatfinalcheckpoint remains separate.
   stop_reason: null
-  next_action: Publish n17 verified ceiling and n12 conditional graph inequality. H258 remains stopped
-    before target use. Finalization14:30UTC/deadline15UTC unchanged.
+  next_action: Freeze and execute H259 census once, then independently review and retain result. H258
+    stopped. Finalization14:30UTC/deadline15UTC unchanged.
 ---
 # Session 165: Post-optimality Research
 

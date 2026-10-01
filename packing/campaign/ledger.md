@@ -179,7 +179,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-162](agent-sessions/session-162-wand125-tools-intake.md) | stopped | retrospective | `factual-review` (correctness) | `documentation-pass` (process) | 4 | think-8cps | Under think-bmf3, retain the unresolved n11 boxes and compare tighter exact bounds on identical inputs under the planned 30-second ceiling before selecting a full replay. |
 | [session-163](agent-sessions/session-163-native-bounds-and-census.md) | stopped | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 5 | think-8cps | Under think-niqx, merge current main and certify the resulting PR head through required local and hosted checks. The mathematical obligations identified above remain separate after this integration debt is discharged. |
 | [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | completed | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 39 | think-3i74 | After the reviewed helper cleanup lands, implement the bounded fresh-ensemble replay entry point under think-e2ot; preserve the accepted historical evidence. PR 249 reconciliation, optional Rust performance and later exposition remain separate tracks. |
-| [session-165](agent-sessions/session-165-post-optimality-overnight.md) | in_progress | contemporaneous | `insight-iteration` (insight) | `documentation-pass` (correctness) | 30 | think-kaqh | Publish n17 verified ceiling and n12 conditional graph inequality. H258 remains stopped before target use. Finalization14:30UTC/deadline15UTC unchanged. |
+| [session-165](agent-sessions/session-165-post-optimality-overnight.md) | in_progress | contemporaneous | `insight-iteration` (insight) | `research-loop` (correctness) | 32 | think-kaqh | Freeze and execute H259 census once, then independently review and retain result. H258 stopped. Finalization14:30UTC/deadline15UTC unchanged. |
 
 ### Workflow summary
 
@@ -192,8 +192,8 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `insight-iteration` | 28 | 1 | 88 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 40 | 1 |
-| `research-loop` | 31 | 4 | 113 | 8 |
-| `pipeline-improvement` | 38 | 2 | 204 | 6 |
+| `research-loop` | 31 | 4 | 114 | 8 |
+| `pipeline-improvement` | 38 | 2 | 205 | 6 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
 | `review-planning-oversight` | 6 | 0 | 40 | 2 |
@@ -864,12 +864,13 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-400 | research | 17 | complete | 0 | think-bj81 | packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md |
 | BC-401 | research | 17 | complete | 0 | think-6dg0 | packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md |
 | BC-402 | research | 17 | blocked | 0 | think-wrgx | packing/campaign/hypotheses/H-258-n17-common-core-stress.md |
+| BC-403 | research | 17 | in_progress | 0 | think-70sf | packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md |
 
 ## Series
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 168 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 169 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1068,12 +1069,14 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-256 | confirmed | proof | The H254 reconstruction at the unique H255 root, using the fixed centr |  | 1 |  | 43s wall |
 | H-257 | confirmed | proof | At the accepted H255 root and H256 centroid packing, all owner-axis al |  | 1 |  | 42s wall |
 | H-258 | blocked | proof | The fixed analytic common-core stress at the accepted n17 endpoint has |  | 0 |  |  |
+| H-259 | needs review | proof | At side cap1169/250, a closed5by5 centre grid has16 boundary cells of  |  | 1 |  |  |
 
 ## Needs review — held for a human, not decided
 
 | id | hypotheses | decision | why it was not decided |
 | --- | --- | --- | --- |
 | exp-050 | H-054 | unresolved | The authorized source-semantics measurement stops at ordered E1 reason 3, attribution-unbound, with zero cells. This leaves H-054 unresolved and instrument_ready false; the terminal decision awaits BC-120/BC-121 review. |
+| exp-240 | H-259 | in-progress | Registered before target evaluation; controlled instruments and reviewed geometry are ready. |
 
 ## Rounds
 
@@ -1280,6 +1283,12 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-032 | series-000 | 3 | openai-codex | H-021 | The exact connected and isolated controls pass, every declared conflation fails, and all unsupported floating-point observations remain unresolved. |
 | exp-201 | series-000 | 18 | claude-opus-5 | H-201 | Calibration, not a scored round: it freezes p_perturb = 1.0, perturb_scale = 2 and a flat mu = 5 for exp-202 and exp-203, and it turned up a schedule-length effect that is now registered as H-204 rather than folded into an arm. |
 
+### in-progress (1)
+
+| id | series | instance | operator | hypotheses | reason |
+| --- | --- | --- | --- | --- | --- |
+| exp-240 | series-000 | 17 | Codex Session165 coordinator | H-259 | Registered before target evaluation; controlled instruments and reviewed geometry are ready. |
+
 ## Resumable — stopped on the clock, not on an answer
 
 | id | hypotheses | spent | stopped by | resume from | reopen when |
@@ -1326,7 +1335,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-168 rounds, 2512.1 agent-minutes, 4020.7 wall-minutes.
+169 rounds, 2512.1 agent-minutes, 4020.7 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

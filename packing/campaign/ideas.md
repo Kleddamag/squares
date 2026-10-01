@@ -67,6 +67,7 @@ be reconciled before selecting its unfinished tasks.
 | [n17 exact endpoint feasibility](hypotheses/H-256-n17-exact-endpoint-feasibility.md) | registered | H-256 uses the accepted exact root and a fixed interior slider choice; complete wall and pair coverage precedes any endpoint claim |
 | [n17 endpoint contact features](hypotheses/H-257-n17-endpoint-contact-features.md) | registered | H-257 audits every owner-axis alternative and active-wall corner before a complete first-order branch argument |
 | [n17 common-core stress](hypotheses/H-258-n17-common-core-stress.md) | registered | H-258 fixes a deterministic exact dual for the complete two-branch first-order model; no optimizer or fitted stress |
+| [n17 mixed-capacity cover](hypotheses/H-259-n17-mixed-capacity-cover.md) | registered | H-259 proves a wall-aware5by5capacity cover and quantifies its exact occupancy census without geometric exclusions |
 | [X-048 R2: occupancy decomposition](explorations/X-048-n17-optimality-after-n11.md#r2-build-a-small-occupancy-problem-before-a-large-search) | shaped | Compress a complete centre cover before geometric enumeration |
 | [X-048 R3: charge compatibility](explorations/X-048-n17-optimality-after-n11.md#r3-turn-r068-saturation-into-constraints-on-joint-placements) | shaped | Prove low-charge pose classes cannot all coexist |
 | [X-048 R4: capacity-one ceiling](explorations/X-048-n17-optimality-after-n11.md#r4-establish-the-limit-of-the-present-certificate-architecture) | registered | Existing H-248 owns the weighted-clique architecture discriminator |

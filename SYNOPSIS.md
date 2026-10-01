@@ -245,11 +245,11 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 391 | 199 complete; 63 stopped; 71 blocked; 24 ready; 21 tentative; 13 in progress |
+| Commitments | 392 | 199 complete; 63 stopped; 71 blocked; 24 ready; 21 tentative; 14 in progress |
 | Sessions | 165 | 102 completed; 62 stopped; 1 nonterminal |
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
-| Hypotheses | 193 | 37 confirmed; 32 refuted; 61 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
-| Experiments | 168 | 51 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
+| Hypotheses | 194 | 37 confirmed; 32 refuted; 61 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted; 1 needs review |
+| Experiments | 169 | 51 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 1 in progress; 1 exhausted |
 | Frontier results | 61 | 61 registered, 33 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
@@ -510,6 +510,7 @@ case or experiment separately.
 
 | Document or collection | Role | Authority | Lifecycle | Current replacement |
 | --- | --- | --- | --- | --- |
+| [n17 Mixed-Capacity Centre Cover](docs/project/reviews/review-2026-10-01-n17-mixed-capacity-cover.md) | dated review record | record | retained | — |
 | [n12 Weighted Cycles: Exact Inequality and Capture Scope](docs/project/reviews/review-2026-10-01-n12-weighted-cycle-capture.md) | dated review record | record | retained | — |
 | [Deterministic n17 Common-Core Stress Certificate](docs/project/reviews/review-2026-10-01-n17-core-stress.md) | dated review record | record | retained | — |
 | [Independent Review of the n17 Endpoint Feature Inventory](packing/campaign/series/series-000-smoke-and-calibration/results/exp-239-n17-endpoint-features/output-review.md) | dated review record | record | retained | — |
@@ -5245,6 +5246,7 @@ round that names the hypothesis, control roles included.
 | [H-256](packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md) | confirmed | Exact endpoint packing at the H255 root with fixed interior sliders; all68 wall and136 pair obligations certified; global capture remains open | 1 | 43s wall |
 | [H-257](packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md) | confirmed | Complete exact-root feature inventory, independently audited:168owner-axis options,60active-wall corners,9tangent offsets | 1 | 42s wall |
 | [H-258](packing/campaign/hypotheses/H-258-n17-common-core-stress.md) | blocked | Fixed common-core stress; instrument stopped after three symbolic preparation failures, before target use | 0 | — |
+| [H-259](packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md) | needs review | Exact mixed-capacity centre cover and finite occupancy census; no geometric exclusion | 1 | — |
 
 ### Confirmed
 
@@ -5566,7 +5568,7 @@ The relevant generator writes the receipt, and the entry fills in on the next
 
 ## Experiments Conducted
 
-There are 168 rounds registered in `series-000`.
+There are 169 rounds registered in `series-000`.
 
 They record 2512.1 agent-minutes and 4020.7 wall-minutes.
 These totals exclude four historical annealing rounds with unrecorded timing; their wall
@@ -5778,6 +5780,7 @@ archive beside it.
 | [exp-237](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-237-h255-n17-polynomial-root.md) | 17 | target | H-255 | Fixed exact rational contraction certificate for the contact-chart root | Exact contraction, inclusion and domain guards pass both implementations and independent output review; root existence only | accepted |
 | [exp-238](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-238-h256-n17-endpoint-feasibility.md) | 17 | target | H-256 | Exact endpoint geometry with fixed centroid sliders | Complete exact endpoint certificate passes independent output review; conditional class minimum attained | accepted |
 | [exp-239](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-239-h257-n17-endpoint-features.md) | 17 | target | H-257 | Exact owner-axis and active-wall feature inventory | Allfrozen counts, identities andstrictsigns pass;175interval records independently matched | accepted |
+| [exp-240](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-240-h259-n17-mixed-capacity-census.md) | 17 | target | H-259 | Mixed-capacity complete centre cover and exact census | Frozen proof, controls and capacity lists; target not yet run | in-progress |
 
 ### Cost and provenance
 
@@ -5951,10 +5954,11 @@ archive beside it.
 | exp-237 | producer90s and checker90s; one worker | 0.76 s | — | criterion | `b3e5e1526`; producer 0.67s, checker 0.09s |
 | exp-238 | 180 seconds; one worker | 43.45 s | — | criterion | `f77b3e0a7`; symbolic25.80s, interval and formatting16.42s |
 | exp-239 | 180 seconds; one worker | 41.80 s | — | criterion | `b34801483`; symbolic24.51s, interval andformatting16.09s |
+| exp-240 | 30 seconds; one worker | — | — | pending | Fixed census and independent binomial audit; no target result yet |
 
-### What the 168 rounds jointly establish
+### What the 169 rounds jointly establish
 
-The 168 rounds use 2512.1 agent-minutes and 4020.7 wall-minutes under the campaign’s
+The 169 rounds use 2512.1 agent-minutes and 4020.7 wall-minutes under the campaign’s
 retained effort accounting.
 The never-invoked exp129 adds no scientific result or execution time.
 Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is recorded

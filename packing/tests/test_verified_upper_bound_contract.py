@@ -26,6 +26,7 @@ import os
 import re
 import stat
 from decimal import Decimal, localcontext
+from fractions import Fraction
 from pathlib import Path
 
 import pytest
@@ -412,10 +413,11 @@ def test_n17_endpoint_ceiling_keeps_report_and_optimality_distinct() -> None:
     reported = case["reported_upper_bound"]
     assert upper == {
         "value": "4.6755300936045509516342148538535054",
-        "exact_form": "4.6755300936045509516342148538535054",
+        "exact_form": "23377650468022754758171074269267527/5000000000000000000000000000000000",
         "evidence": ["E-n017-certified-endpoint"],
     }
     assert Decimal(upper["value"]) < Decimal("4.675530093604551")
+    assert Fraction(upper["exact_form"]) == Fraction(upper["value"])
     assert bounds_agree_at_declared_precision(reported, upper)
     assert reported["algebraic_degree"] == 18
     assert case["status"] == "open"

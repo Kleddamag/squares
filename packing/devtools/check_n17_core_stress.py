@@ -675,7 +675,9 @@ def interval_sign_audit(midpoint: tuple[Q, Q], radii: tuple[Q, Q]) -> dict[str, 
     disposition = (
         "confirmed_fixed_stress"
         if not failures
-        else "rejected_fixed_candidate" if negatives else "unresolved_interval_sign"
+        else "rejected_fixed_candidate"
+        if negatives
+        else "unresolved_interval_sign"
     )
     return {
         "row_order": [list(key) for key in rows],

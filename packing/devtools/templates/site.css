@@ -711,6 +711,10 @@ body {
 .site-table-tools {
   display: flex;
   flex-wrap: wrap;
+  /* Every control's words share the line's baseline, so a checkbox's label, which is
+     shorter than a select, reads level with the labels beside it, and so does the
+     count. */
+  align-items: baseline;
   gap: 0.5rem 1rem;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-support);
@@ -752,6 +756,17 @@ body {
   color: var(--kpress-doc-text);
   font: inherit;
   padding: 0.1rem 0.35rem;
+}
+/* A checkbox is the bar's own control too: the site's accent when checked, never the
+   browser's blue, no box of its own around it, and its words on one line beside it. */
+.site-table-tools label:has(input[type="checkbox"]) {
+  white-space: nowrap;
+}
+.site-table-tools input[type="checkbox"] {
+  accent-color: var(--kpress-doc-accent);
+  border: 0;
+  margin: 0;
+  padding: 0;
 }
 /* An age in days is a few digits. A number input with no `max` to size it by would
    otherwise take a text field's width. */

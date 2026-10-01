@@ -1453,16 +1453,18 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     assert exact <= shown
 
 
-def test_the_recent_table_lists_every_result_filtered_to_s4_and_180_days(
+def test_the_recent_table_lists_every_result_filtered_to_current_best_s4_and_180_days(
     page: str, overview: overview_data.Overview
 ) -> None:
-    """Every result is a row, and no date the page fixes leaves one out: what makes the
-    table recent is where its bar starts, Significance at S4 and up and Max age at 180
-    days. The rows outside those are hidden in the HTML, their age measured from the
-    register's own reference date, and the count is already written, so the first paint
-    is the filtered table."""
+    """Every result is a row, and no date or standing the page fixes leaves one out:
+    what makes the table recent is where its bar starts, Significance at S4 and up, Max
+    age at 180 days and Current best only checked. The rows outside those are hidden in
+    the HTML, their age measured from the register's own reference date, and the count
+    is already written, so the first paint is the filtered table."""
     defaults = overview_sections.RECENT_DEFAULTS
-    assert defaults == overview_sections.FilterDefaults(significance=4, max_age=180)
+    assert defaults == overview_sections.FilterDefaults(
+        significance=4, max_age=180, current_best=True
+    )
     assert not hasattr(overview_sections, "RECENT_FROM")
     recent = _recent_table(page)
     listed = re.findall(r'<tr data-result="(t-\d+)"', recent)
@@ -1482,6 +1484,7 @@ def test_the_recent_table_lists_every_result_filtered_to_s4_and_180_days(
         '<label>Max age <input type="number" data-filter="date" data-bound="age" '
         'min="0" placeholder="any" value="180"> days</label>'
     ) in tools
+    assert CURRENT_BEST_ONLY.format(checked=" checked") in tools
     reference = overview_sections.reference_date(overview)
     cutoff = (reference - timedelta(days=180)).isoformat()
     shown = 0
@@ -1491,7 +1494,9 @@ def test_the_recent_table_lists_every_result_filtered_to_s4_and_180_days(
         dated = overview_sections.first_day(result.dated[1])
         assert f'data-s="{score}"' in row, result.id
         assert f'data-date="{dated}"' in row, result.id
-        keeps = score >= 4 and dated >= cutoff
+        best = result.standing in {"current best", "current best, reported"}
+        assert f'data-best="{"true" if best else "false"}"' in row, result.id
+        keeps = score >= 4 and dated >= cutoff and best
         assert (" hidden>" in row.split(">", 1)[0] + ">") == (not keeps), result.id
         shown += keeps
     assert 0 < shown < len(overview.results)
@@ -1504,8 +1509,9 @@ def test_the_recent_table_lists_every_result_filtered_to_s4_and_180_days(
     assert "1 August" not in text
     assert "every result since" not in text
     starts = (
-        "The table starts filtered to significance S4 and up and to a maximum age of 180 "
-        "days; choose All and clear Max age to see every row."
+        "The table starts filtered to the current best results, to significance S4 and up "
+        "and to a maximum age of 180 days; clear Current best only, choose All and clear "
+        "Max age to see every row."
     )
     assert text.count(starts) == 1
     assert "It starts filtered" not in text
@@ -1529,7 +1535,7 @@ def test_the_html_measures_an_age_from_the_register_and_never_from_the_clock(
     assert overview_sections.age_cutoff(date(2026, 10, 1), 0) == "2026-10-01"
     assert overview_sections.age_cutoff(date(2024, 3, 1), 1) == "2024-02-29"
 
-    def result(dated: str, score: int) -> overview_data.Result:
+    def result(dated: str, score: int, standing: str = "current best") -> overview_data.Result:
         record = {
             "id": "T-900",
             "scope": {"n_values": [11]},
@@ -1537,7 +1543,7 @@ def test_the_html_measures_an_age_from_the_register_and_never_from_the_clock(
             "registered": "2026-09-30",
             "significance": {"score": score},
         }
-        return overview_data.Result(record, group="", credit="", ours=True)
+        return overview_data.Result(record, group="", credit="", ours=True, standing=standing)
 
     shows = overview_sections.shown_by_default
     recent = overview_sections.RECENT_DEFAULTS
@@ -1556,6 +1562,14 @@ def test_the_html_measures_an_age_from_the_register_and_never_from_the_clock(
         assert shows(result(dated, score), every, day), dated
     assert shows(result("1979", 4), overview_sections.FilterDefaults(significance=4), day)
     assert not shows(result("1979", 2), overview_sections.FilterDefaults(max_age=30), day)
+    # Current best only keeps the two standings a case bound rests on, and no other.
+    best = overview_sections.FilterDefaults(current_best=True)
+    for standing in render_recent_results.STANDINGS:
+        holds = standing in {"current best", "current best, reported"}
+        assert overview_sections.is_current_best(standing) == holds, standing
+        assert shows(result("1979", 2, standing), best, day) == holds, standing
+        assert shows(result("2026-09-29", 5, standing), recent, day) == holds, standing
+        assert shows(result("1979", 2, standing), every, day), standing
 
 
 def test_a_summary_splits_at_its_formula_and_a_credit_at_what_it_builds_on() -> None:
@@ -1752,8 +1766,9 @@ def test_recent_results_opens_with_readmes_progress_paragraphs(page: str) -> Non
         "squares, found here or by others."
     )
     assert own.endswith(
-        "The table starts filtered to significance S4 and up and to a maximum age of 180 "
-        "days; choose All and clear Max age to see every row."
+        "The table starts filtered to the current best results, to significance S4 and up "
+        "and to a maximum age of 180 days; clear Current best only, choose All and clear "
+        "Max age to see every row."
     )
     assert own.count("The table lists every result") == 1
     assert " since " not in own
@@ -3393,10 +3408,16 @@ RESULT_FILTERS = [
     ("v", "min"),
     ("c", "min"),
     ("standing", ""),
+    ("best", ""),
     ("source", ""),
     ("n", "covers"),
     ("date", "age"),
 ]
+
+#: The bar's one checkbox, as `result_filters` writes it: its own label, after Standing.
+CURRENT_BEST_ONLY = (
+    '<label><input type="checkbox" data-filter="best"{checked}> Current best only</label>'
+)
 
 _COUNT = re.compile(r'(<span class="site-count"[^>]*>)[^<]*</span>')
 _SELECTED = re.compile(
@@ -3426,18 +3447,19 @@ def _controls(bar: str) -> list[tuple[str, str]]:
 
 
 def _without_defaults(bar: str) -> str:
-    """A bar less what is a table's own: its count, which option each select starts at
-    and the value an input starts with."""
-    bar = _COUNT.sub(r"\1</span>", bar).replace(" selected>", ">")
+    """A bar less what is a table's own: its count, which option each select starts at,
+    the value an input starts with and whether its checkbox starts checked."""
+    bar = _COUNT.sub(r"\1</span>", bar).replace(" selected>", ">").replace(" checked>", ">")
     return re.sub(r'(<input\b[^>]*?) value="[^"]*"', r"\1", bar)
 
 
 def test_both_tables_of_results_carry_the_identical_filter_set(page: str, results: str) -> None:
     """The overview's recent table and the results page's table sit under one bar: the
     same controls with the same choices in the same order. They differ only in where
-    two of them start, and in the count. Recent Results starts at Significance S4 and up
-    and a maximum age of 180 days; the results page starts with both off, and every
-    other control starts at All on both. No control is a date, and none is a range."""
+    three of them start, and in the count. Recent Results starts at Significance S4 and
+    up, a maximum age of 180 days and Current best only checked; the results page starts
+    with all three off, and every other control starts at All on both. No control is a
+    date, and none is a range."""
     here = _filter_bar(page.split('id="recent-results"', 1)[1])
     there = _filter_bar(results)
     assert _without_defaults(here) == _without_defaults(there)
@@ -3446,11 +3468,22 @@ def test_both_tables_of_results_carry_the_identical_filter_set(page: str, result
     everything = {"s": "", "v": "", "c": "", "standing": "", "source": ""}
     for bar in (here, there):
         assert bar.count(" selected>") == bar.count("<select ") == 5
-        assert bar.count("<input ") == 2
+        assert bar.count("<input ") == 3
         assert 'type="date"' not in bar
-        assert " checked" not in bar
+        assert bar.count('type="checkbox"') == 1
         assert "<label>Max age <input " in bar
         assert "> days</label>" in bar
+        # The checkbox is the control straight after Standing, in a label of its own.
+        assert re.search(
+            r'<select data-filter="standing">.*?</select></label>'
+            r'<label><input type="checkbox" data-filter="best"(?: checked)?> '
+            r"Current best only</label><label>Source ",
+            bar,
+        )
+    assert CURRENT_BEST_ONLY.format(checked=" checked") in here
+    assert CURRENT_BEST_ONLY.format(checked="") in there
+    assert here.count(" checked") == 1
+    assert " checked" not in there
     assert dict(_SELECTED.findall(here)) == everything | {"s": "4"}
     assert dict(_SELECTED.findall(there)) == everything
     started = r'<input\b[^>]*data-bound="([a-z]+)"[^>]* value="([^"]*)"'
@@ -3524,8 +3557,8 @@ def test_every_facet_a_result_row_carries_has_a_filter_and_every_filter_a_facet(
     page: str, results: str, overview: overview_data.Overview
 ) -> None:
     """A row of either table carries the same facets, each from the register: whose
-    result it is, its V, C and S levels, its standing, its cases and its date. The bar
-    has a control for each and no control without one."""
+    result it is, its V, C and S levels, its standing, whether that is a current best,
+    its cases and its date. The bar has a control for each and no control without one."""
     filtered = {key for key, _ in RESULT_FILTERS}
     recent = _recent_table(page)
     listed = {r.id for r in overview_sections.recent_results(overview)}
@@ -3537,6 +3570,7 @@ def test_every_facet_a_result_row_carries_has_a_filter_and_every_filter_a_facet(
             "c": record["confirmation"][1:],
             "s": str(record["significance"]["score"]),
             "standing": overview_sections.standing_key(result.standing),
+            "best": "true" if result.standing.startswith("current best") else "false",
             "n": overview_sections.result_cases(result),
             "date": overview_sections.first_day(result.dated[1]),
         }
@@ -3572,13 +3606,14 @@ def test_a_results_cases_and_date_are_written_for_the_filters() -> None:
 def test_the_results_page_starts_with_every_result_showing(
     results: str, overview: overview_data.Overview
 ) -> None:
-    """The results page's bar starts with Significance at All and no maximum age, so no
-    row and no group heading is `hidden` in its HTML and its count is the whole
-    register's."""
+    """The results page's bar starts with Significance at All, no maximum age and
+    Current best only clear, so no row and no group heading is `hidden` in its HTML and
+    its count is the whole register's."""
     for result in overview.results:
         tag = _row(results, result.id).split(">", 1)[0] + ">"
         assert not tag.endswith(" hidden>"), result.id
     assert f">{len(overview.results)} results</span>" in _filter_bar(results)
+    assert CURRENT_BEST_ONLY.format(checked="") in _filter_bar(results)
     headings = re.findall(r'<tr class="site-group-row" data-group="[^"]+"( hidden)?>', results)
     assert len(headings) == len(overview.groups)
     assert not any(headings)
@@ -3586,6 +3621,60 @@ def test_the_results_page_starts_with_every_result_showing(
     assert "The table starts with every result showing." in text
     assert "case and age, and they combine." in text
     assert "starts filtered" not in text
+
+
+def test_current_best_only_starts_checked_on_the_overview_and_clear_on_the_results_page(
+    page: str, results: str, overview: overview_data.Overview
+) -> None:
+    """Current best only is one checkbox of the shared bar, checked in the overview's
+    HTML and clear in the results page's, from each table's `FilterDefaults`. What it
+    keeps is the register's own standing read as yes or no: a row's `data-best` is
+    `true` exactly where its standing chip says `current best`, verified or reported.
+    So on the overview every row shown is a current best and the count is theirs, and
+    on the results page the same rows carry the flag but none is hidden. Every result a
+    star marks is a current best, so the default never hides a new result for its
+    standing."""
+    assert overview_sections.RECENT_DEFAULTS.current_best is True
+    assert overview_sections.RESULTS_DEFAULTS.current_best is False
+    here = _filter_bar(page.split('id="recent-results"', 1)[1])
+    there = _filter_bar(results)
+    assert CURRENT_BEST_ONLY.format(checked=" checked") in here
+    assert CURRENT_BEST_ONLY.format(checked="") in there
+    holds = {
+        render_recent_results.HOLDS: "current-best",
+        render_recent_results.HOLDS_REPORTED: "current-best-reported",
+    }
+    recent = _recent_table(page)
+    reference = overview_sections.reference_date(overview)
+    unchecked = overview_sections.RECENT_DEFAULTS._replace(current_best=False)
+    shown = 0
+    without = 0
+    for result in overview.results:
+        best = overview_sections.is_current_best(result.standing)
+        assert best == (result.standing in holds), result.id
+        assert best == (overview_sections.standing_key(result.standing) in holds.values())
+        flag = f'data-best="{"true" if best else "false"}"'
+        ours = _recent_row(recent, result.id).split(">", 1)[0] + ">"
+        theirs = _row(results, result.id).split(">", 1)[0] + ">"
+        assert flag in ours, result.id
+        assert flag in theirs, result.id
+        assert not theirs.endswith(" hidden>"), result.id
+        if not ours.endswith(" hidden>"):
+            assert best, result.id
+            shown += 1
+        without += overview_sections.shown_by_default(result, unchecked, reference)
+        if result.id in overview.starred:
+            assert best, result.id
+    best_rows = sum(overview_sections.is_current_best(r.standing) for r in overview.results)
+    assert 0 < shown < without < len(overview.results)
+    assert shown < best_rows < len(overview.results)
+    assert f">{shown} of {len(overview.results)} results</span>" in here
+    assert f">{len(overview.results)} results</span>" in there
+    # The checkbox is all that separates the count from the one the other two defaults
+    # leave: the same bar, the box clear, counts the superseded rows too.
+    bar = overview_sections.result_filters(overview, overview.results, unchecked)
+    assert f">{without} of {len(overview.results)} results</span>" in bar
+    assert CURRENT_BEST_ONLY.format(checked="") in bar
 
 
 def test_rows_outside_a_tables_defaults_are_hidden_in_the_html_and_stay_in_it(

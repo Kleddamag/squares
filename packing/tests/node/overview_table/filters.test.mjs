@@ -1,8 +1,8 @@
 // The table script wired to a stand-in results table and its tools bar: two groups of
 // rows carrying the facets `overview_sections.result_facets` writes, under the controls
 // `overview_sections.result_filters` writes, Significance starting at S4 and up and
-// Max age wherever the page under test starts it. The stand-ins are only what the script
-// reads, the day among them; the test reads what it then shows.
+// Max age and Current best only wherever the page under test starts them. The stand-ins
+// are only what the script reads, the day among them; the test reads what it then shows.
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
@@ -30,6 +30,15 @@ class Control {
 }
 class Select extends Control {}
 class Input extends Control {}
+/** A checkbox: what it says is whether it is checked, never its value. */
+class Checkbox extends Input {
+  /** @param {string} key @param {boolean} checked */
+  constructor(key, checked) {
+    super(key, null, "on");
+    this.type = "checkbox";
+    this.checked = checked;
+  }
+}
 class Table {}
 
 /**
@@ -69,20 +78,22 @@ function clock(today) {
 
 /**
  * A page with a table of results, as the HTML has it: Significance at S4 and up, the
- * rows below it and the heading of the group they leave empty already hidden, and Max
- * age at `age`, empty for none. The reader opens it on `today`.
- * @param {{ search?: string, hash?: string, age?: string, today?: string }} [opened]
+ * rows below it and the heading of the group they leave empty already hidden, Max age
+ * at `age`, empty for none, and Current best only checked if `best`. The reader opens
+ * it on `today`. Three rows are current bests, one of them as reported.
+ * @param {{ search?: string, hash?: string, age?: string, best?: boolean, today?: string }} [opened]
  */
-function page({ search = "", hash = "", age = "", today = "2026-10-01" } = {}) {
-  const ours = { source: "ours", standing: "current-best" };
-  const others = { source: "others", standing: "superseded" };
+function page({ search = "", hash = "", age = "", best = false, today = "2026-10-01" } = {}) {
+  const ours = { source: "ours", standing: "current-best", best: "true" };
+  const others = { source: "others", standing: "superseded", best: "false" };
+  const reported = { source: "others", standing: "current-best-reported", best: "true" };
   const rows = [
     row("", null),
     row("t-001", { ...ours, v: "4", c: "5", s: "5", n: "11", date: "2026-09-04" }),
     row("t-002", { ...ours, v: "3", c: "2", s: "3", n: "17 18", date: "2026-08-31" }, true),
     row("", null, true),
     row("t-003", { ...others, v: "0", c: "0", s: "2", n: "18-21 26", date: "1979-01-01" }, true),
-    row("t-004", { ...others, v: "4", c: "3", s: "3", n: "1-100", date: "2026-09-27" }, true),
+    row("t-004", { ...reported, v: "4", c: "3", s: "3", n: "1-100", date: "2026-09-27" }, true),
     row("", null),
     row("t-005", { ...others, v: "4", c: "4", s: "4", n: "45", date: "2026-09-27" }),
   ];
@@ -91,6 +102,7 @@ function page({ search = "", hash = "", age = "", today = "2026-10-01" } = {}) {
     v: new Select("v", "min", ""),
     c: new Select("c", "min", ""),
     standing: new Select("standing", null, ""),
+    best: new Checkbox("best", best),
     source: new Select("source", null, ""),
     n: new Input("n", "covers", ""),
     age: new Input("date", "age", age),
@@ -173,12 +185,20 @@ function page({ search = "", hash = "", age = "", today = "2026-10-01" } = {}) {
     }),
     /**
      * Change the controls, then tell the bar, as a reader's choice does.
-     * @param {Partial<Record<keyof typeof controls, string>>} values
+     * @param {Partial<Record<Exclude<keyof typeof controls, "best">, string>>} values
      */
     choose(values) {
       for (const [name, value] of Object.entries(values)) {
-        controls[/** @type {keyof typeof controls} */ (name)].value = value;
+        controls[/** @type {Exclude<keyof typeof controls, "best">} */ (name)].value = value;
       }
+      fire("change");
+    },
+    /**
+     * Check or clear Current best only, then tell the bar.
+     * @param {boolean} checked
+     */
+    check(checked) {
+      controls.best.checked = checked;
       fire("change");
     },
     fire,
@@ -214,7 +234,8 @@ void test("each facet filters, and the filters compose", () => {
   assert.deepEqual(rows({ s: "3" }), ["t-001", "t-002", "t-004", "t-005"]);
   assert.deepEqual(rows({ v: "4" }), ["t-001", "t-004", "t-005"]);
   assert.deepEqual(rows({ c: "4" }), ["t-001", "t-005"]);
-  assert.deepEqual(rows({ standing: "superseded" }), ["t-003", "t-004", "t-005"]);
+  assert.deepEqual(rows({ standing: "superseded" }), ["t-003", "t-005"]);
+  assert.deepEqual(rows({ standing: "current-best-reported" }), ["t-004"]);
   assert.deepEqual(rows({ source: "ours" }), ["t-001", "t-002"]);
   assert.deepEqual(rows({ n: "18" }), ["t-002", "t-003", "t-004"]);
   // On 1 October the rows are 27, 31, some 17,000, 4 and 4 days old.
@@ -230,6 +251,40 @@ void test("each facet filters, and the filters compose", () => {
   assert.deepEqual(rows({ s: "5", source: "others" }), []);
   assert.equal(results.shown().headings, 0);
   assert.equal(results.count.textContent, "0 of 5 results");
+});
+
+void test("Current best only keeps the current bests, and Standing chooses among them", () => {
+  // The overview's bar: the box checked in the HTML, and the rows it hides with it.
+  const recent = page({ best: true });
+  assert.deepEqual(recent.shown(), { rows: ["t-001"], headings: 1 });
+  assert.equal(recent.count.textContent, "1 of 5 results");
+  recent.choose({ s: "" });
+  assert.deepEqual(recent.shown(), { rows: ["t-001", "t-002", "t-004"], headings: 2 });
+  assert.equal(recent.count.textContent, "3 of 5 results");
+  // It narrows Standing: either current best, and no row of any other standing.
+  recent.choose({ standing: "current-best" });
+  assert.deepEqual(recent.shown().rows, ["t-001", "t-002"]);
+  recent.choose({ standing: "current-best-reported" });
+  assert.deepEqual(recent.shown().rows, ["t-004"]);
+  recent.choose({ standing: "superseded" });
+  assert.deepEqual(recent.shown(), { rows: [], headings: 0 });
+  assert.equal(recent.count.textContent, "0 of 5 results");
+  // Cleared, it passes every row, as an empty control does.
+  recent.check(false);
+  assert.deepEqual(recent.shown().rows, ["t-003", "t-005"]);
+  recent.choose({ standing: "" });
+  assert.equal(recent.count.textContent, "5 results");
+  recent.check(true);
+  assert.deepEqual(recent.shown().rows, ["t-001", "t-002", "t-004"]);
+  // The results page's bar starts with it clear, and it composes with the rest there.
+  const every = page();
+  every.choose({ s: "" });
+  assert.equal(every.count.textContent, "5 results");
+  every.check(true);
+  every.choose({ source: "others" });
+  assert.deepEqual(every.shown().rows, ["t-004"]);
+  // The row the address names shows though it is no current best.
+  assert.deepEqual(page({ best: true, hash: "#t-005" }).shown().rows, ["t-001", "t-005"]);
 });
 
 void test("the row the address names shows whatever the filters hide", () => {
@@ -276,6 +331,16 @@ void test("a link can open the table filtered, by each control's parameter", () 
   // An empty parameter clears a default the HTML sets.
   assert.deepEqual(page({ age: "3", search: "?s-min=" }).shown().rows, []);
   assert.deepEqual(page({ age: "3", search: "?s-min=&age=" }).shown().rows.length, 5);
+  // A checkbox is preset by `true`, and cleared by anything else, the empty value too.
+  const best = page({ search: "?s-min=&best=true" });
+  assert.equal(best.controls.best.checked, true);
+  assert.deepEqual(best.shown().rows, ["t-001", "t-002", "t-004"]);
+  for (const search of ["?s-min=&best=false", "?s-min=&best="]) {
+    const cleared = page({ best: true, search });
+    assert.equal(cleared.controls.best.checked, false);
+    assert.equal(cleared.shown().rows.length, 5);
+  }
+  assert.equal(page({ best: true, search: "?s-min=" }).controls.best.checked, true);
 });
 
 void test("a sort keeps the filters and hides the group headings", () => {

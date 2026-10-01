@@ -874,8 +874,8 @@ it.
 
 - **Result filters.** Every table of results sits under one tools bar, the same on the
   overview’s recent table and on the results page: the same controls, the same choices
-  and the same order. Only where Significance and Max age start, and the count at its
-  end, are the table’s own.
+  and the same order. Only where Significance, Max age and Current best only start, and
+  the count at its end, are the table’s own.
   `overview_sections.result_filters` writes it and `overview/table.js` drives it.
   - **Facets.** A result’s row carries each facet as an attribute
     (`overview_sections.result_facets`), and the bar has one control for each:
@@ -886,6 +886,7 @@ it.
 | Verification | `data-v`, the V level | a floor: V4 and up |
 | Confirmation | `data-c`, the C level | a floor: C3 and up |
 | Standing | `data-standing` | equal to the standing chosen |
+| Current best only | `data-best`, `true` or `false` | checked: a case bound rests on it now |
 | Source | `data-source`, `ours` or `others` | this project’s, or others’ |
 | Case n | `data-n`, counts and ranges (`18-21 26`) | the result covers that n |
 | Max age | `data-date`, a whole ISO date | dated at most that many days ago |
@@ -898,14 +899,37 @@ Max age is a number of days, and empty is no limit. There is no date range.
 ```
 
 - **Composition.** The filters compose: a row shows when it passes every one, and an
-  empty control passes every row.
+  empty control, or an unchecked one, passes every row.
+
+- **Current best only.** One checkbox, straight after Standing, keeps the results a case
+  bound rests on now: the standings `current best` and `current best, reported`, and no
+  other (`overview_sections.is_current_best`). It is the register’s own standing
+  (`render_recent_results.standing`) read as yes or no, so the checkbox and the standing
+  chips cannot disagree, and a row carries the answer as `data-best`. It narrows
+  Standing and does not set it.
+  Checked, with Standing at All, it shows both current bests; Standing then chooses
+  between the verified and the reported one.
+  The two compose as every pair of controls does, so with the box checked any other
+  standing, `superseded` say, matches no row and the count reads 0: to see those rows a
+  reader clears the box, which sits beside the select.
+  The frontier atlas’s bar pairs its Status with “open only” in the same way.
+  Coupling the two, by disabling choices or by having one control change the other,
+  would give the bar a second rule beside “a row shows when it passes every control”,
+  for a case the count already reports.
+  The label is the checkbox’s own `<label>`, on one line, and the box takes the site’s
+  accent when checked.
+  A checkbox is shorter than a select, so every tools bar sets its controls on one
+  baseline (`align-items: baseline`): the checkbox’s words, the other labels’ and the
+  count read level, on the frontier atlas’s bar too.
 
 - **Defaults.** The caller passes them (`FilterDefaults`), and they are the one thing
   that differs between the two bars.
-  Recent Results on the overview starts at significance S4 and up and a maximum age of
-  180 days (`RECENT_DEFAULTS`); the results page starts at All and no maximum age
-  (`RESULTS_DEFAULTS`), so every result shows.
+  Recent Results on the overview starts at significance S4 and up, a maximum age of 180
+  days and Current best only checked (`RECENT_DEFAULTS`); the results page starts at
+  All, no maximum age and the box clear (`RESULTS_DEFAULTS`), so every result shows.
   Every other control starts at All on both.
+  The bar has no reset control: a control’s default is its state in the HTML, which a
+  fresh load of the page returns to.
   A row outside its table’s defaults is `hidden` in the HTML, never left out of it, and
   the count is written there too, so the first paint is already the filtered table and
   never flashes every row.
@@ -930,8 +954,8 @@ Max age is a number of days, and empty is no limit. There is no date range.
   shows it.
 
 - **Links.** A link can open either table filtered: each query parameter presets the
-  control it names, `s-min=3`, `source=ours`, `n=17`, `age=30`; an empty value,
-  `s-min=&age=`, clears a default.
+  control it names, `s-min=3`, `source=ours`, `n=17`, `age=30`, `best=true`; an empty
+  value, `s-min=&age=&best=`, clears a default, and so does `best=false`.
 
 - **A row’s popover** follows it through filtering and sorting, since the row finds it
   by id (**Row popovers**, below).
@@ -942,7 +966,9 @@ under `@media (scripting: none)` every row shows, each group under its heading, 
 bar, which would do nothing, does not.
 `tests/node/overview_table/` runs the script’s filters, alone and wired to a stand-in
 table, and `tests/test_overview.py` holds both pages to the identical bar and each to
-its defaults.
+its defaults. `tests/test_site_result_filters.py` uses Current best only in a browser on
+both pages, by pointer and by keyboard, and measures its label at 1280, 768 and 390
+pixels.
 
 - **Row popovers.** The row is the unit: a table row with detail opens one popover for
   the whole row. This is the site’s one way to show detail on a table row, and no cell
@@ -1027,10 +1053,10 @@ its defaults.
   table, with its columns, its rows, its sorting and its card-per-row form on a phone
   (**Tables**, above).
   The results page’s tools bar sits above it (**Result filters**, above), starting at
-  significance S4 and up and a maximum age of 180 days, with the count of rows shown out
-  of the total at the bar’s end.
-  Those two defaults are all that make the table recent: no result is left out of it by
-  a date the page fixes.
+  significance S4 and up, a maximum age of 180 days and Current best only checked, with
+  the count of rows shown out of the total at the bar’s end.
+  Those three defaults are all that make the table recent and current: no result is left
+  out of it by a date or a standing the page fixes.
   A row opens its result’s popover (**Row popovers**, above), the same panel the results
   page opens for that result.
   The section holds no card or bulleted list, and the “See all results” line, with the
@@ -1043,9 +1069,9 @@ its defaults.
   The page has the frontier atlas’s shape: a hero title, “Every Result”, whose id is
   `every-result`, a subtitle with the count, the prose that defines the ratings and
   standings, and the table under its filters (**Result filters**, above), which start
-  with significance at All and no maximum age, so every result shows.
-  Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
-  recent table and replay table, and each case record’s results link.
+  with significance at All, no maximum age and Current best only clear, so every result
+  shows. Each row keeps its id, the result’s own (`#t-018`), which is where the
+  overview’s recent table and replay table, and each case record’s results link.
   A row opens its result’s popover, the full claim and its novelty label, with the id in
   its first cell as the trigger (**Row popovers**, above).
   The overview keeps the newest results and ends that table with a “See all results”

@@ -1639,6 +1639,44 @@ A section heading in the overview is a caps label, so it holds no formula: capit
 would change the formula’s letters.
 `tests/test_result_overview.py` holds every part and every link.
 
+## Page Metadata and Social Cards
+
+One function, `render_overview.head_tags`, writes every page’s title, description,
+canonical link and link preview from a small record of the page (`PageMeta`): its own
+name, one description, the path it is served at, and whether it is a paper.
+The site’s own pages, both papers and the workbench call it, and no shell writes one of
+these tags itself, so the set cannot differ between page kinds.
+
+| Tag | Rule |
+| --- | --- |
+| `<title>` | The page’s own name, a middle dot, then “The Square Packing Project”; the overview’s is the project’s name alone |
+| `meta name="description"` | One or two plain sentences about this page and no other, at most 160 characters |
+| `link rel="canonical"` | The address the page is served at, in full, built from `render_overview.SITE_URL`; a directory’s `index.html` is the directory |
+| `og:title`, `twitter:title` | The page’s own name, without the project’s |
+| `og:description`, `twitter:description` | The description, unchanged |
+| `og:url` | The canonical address |
+| `og:type` | `article` for the two papers and the tutorial, with `article:published_time` and `article:modified_time` where the paper states its dates; `website` for every other page |
+| `og:site_name`, `og:locale` | “The Square Packing Project” and `en_US` |
+| `og:image`, `twitter:image` | The site’s one card, `social-card.png` at the site’s root, in full |
+| `og:image:type`, `og:image:width`, `og:image:height` | `image/png`, 1200 and 630 |
+| `og:image:alt`, `twitter:image:alt` | What the card shows |
+| `twitter:card` | `summary_large_image` |
+
+The card is the overview’s hero, the best packing known of 53 squares, at 1200 by 630:
+the hero’s own drawing in the light theme’s ink on its background, with the project’s
+name under it as the bar sets the site’s name, drawn as outlines so no machine’s fonts
+decide it. `devtools.social_card` draws it when the site is built, and it is not checked
+in. Every page uses the one image.
+
+A forwarder carries a canonical link to the address it sends a reader to, in full, and
+no card. A result’s overview is a fragment fetched into a popover and has no head.
+
+`check_published_site` holds the deployed pages to these rules after each deploy: one of
+each tag, the canonical link and `og:url` equal to the page’s address, no description
+shared by two pages, and a card that is a PNG of the declared size.
+`check_published_site --local DIR` asks the same of a built directory;
+`devtools.preview_site` and the Pages workflow’s `overview` job both run it.
+
 ## Token Ownership
 
 KPress owns the regular sans weight in `--kpress-font-weight-sans-regular`. Its font

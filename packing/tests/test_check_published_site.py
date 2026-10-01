@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import struct
 from collections.abc import Callable, Sequence
 from pathlib import Path
 
@@ -10,6 +11,7 @@ import pytest
 
 from devtools import check_published_site, render_overview
 from devtools import render_explainer_pdf as pdf
+from devtools import render_n11_optimality_explainer as optimality
 from devtools.check_published_site import (
     EXPLAINER,
     LINK_CHECKED_PAGES,
@@ -63,11 +65,31 @@ Fetch = Callable[..., tuple[int, bytes]]
 
 #: The check's own reading of the checkout's commit, to tell it from a test's stand-in.
 CHECKOUT_COMMIT = check_published_site.checkout_commit
+#: The check's own head checks, which `failures` leaves out unless a test asks for them.
+HEAD_CHECKS = check_published_site.head_checks
+
+
+def head(path: str, *, description: str | None = None) -> str:
+    """A page's head as the site writes one (`render_overview.head_tags`), for the page
+    served at `path` under the root, saying something of its own."""
+    meta = render_overview.PageMeta(
+        name=f"Page {path}",
+        description=description or f"What a reader finds at {path}.",
+        path=path,
+    )
+    return f'<!doctype html><html lang="en"><head>{render_overview.head_tags(meta)}</head>'
+
+
+def card(width: int = render_overview.SOCIAL_CARD_WIDTH, height: int = 630) -> bytes:
+    """The start of a PNG of this size, which is all the check reads of the card."""
+    header = b"\x89PNG\r\n\x1a\n" + struct.pack(">I", 13) + b"IHDR"
+    return header + struct.pack(">II", width, height) + b"\x08\x06\x00\x00\x00"
 
 
 def workbench_page(commit: str, *, home: str = "../") -> bytes:
     return (
-        f'<meta name="squares-workbench-revision" content="{commit}">'
+        head(check_published_site.WORKBENCH_PAGE)
+        + f'<meta name="squares-workbench-revision" content="{commit}">'
         f'<div id="site-note"><a href="{home}">the overview</a></div>'
     ).encode()
 
@@ -83,10 +105,11 @@ def page(
     stamp: str = PUBLICATION_EDITION,
     link: str = "README.md",
 ) -> bytes:
-    """A served page as the check reads one: a canonical link, the stamp, a repository link."""
+    """A served page as the check reads one: the head of the page served at `canonical`,
+    with its canonical link, then the stamp and a repository link."""
+    path = canonical.removeprefix(render_overview.SITE_URL) or "index.html"
     return (
-        f'<link rel="canonical" href="{canonical}">'
-        f'<p>({stamp})</p><a href="{REPO_URL}/blob/{ref}/{link}">Repository</a>'
+        f'{head(path)}<p>({stamp})</p><a href="{REPO_URL}/blob/{ref}/{link}">Repository</a>'
     ).encode()
 
 
@@ -135,8 +158,15 @@ def optimality_paper(*, ref: str = COMMIT, link: str = "README.md") -> bytes:
     """The optimality paper's page as the check reads one: the bar with Papers current,
     and one citation, which the paper pins to the commit it was built from."""
     return (
-        PAPERS_CURRENT + f'Papers</a><a href="{REPO_URL}/blob/{ref}/{link}#anchor">Receipt</a>'
+        head(OPTIMALITY_PAPER)
+        + PAPERS_CURRENT
+        + f'Papers</a><a href="{REPO_URL}/blob/{ref}/{link}#anchor">Receipt</a>'
     ).encode()
+
+
+def optimality_landing() -> str:
+    """The paper's landing address as its renderer writes it: a forwarder to the paper."""
+    return optimality.output_files(Path("site"), "", "")[Path("site") / "index.html"]
 
 
 def optimality_markdown(*, ref: str = COMMIT, link: str = "README.md") -> bytes:
@@ -162,6 +192,9 @@ def site_naming(named: Sequence[str], /, **overrides: bytes) -> dict[str, bytes]
         pages[address] = result_overview(address.rsplit("/", 1)[1].removesuffix(".html"))
     pages[OPTIMALITY_PAPER] = optimality_paper()
     pages[OPTIMALITY_PAPER_MARKDOWN] = optimality_markdown()
+    # The paper's landing address, a forwarder as its renderer writes it, and the card.
+    pages[OPTIMALITY_PAPER_FILES[0]] = optimality_landing().encode()
+    pages[render_overview.SOCIAL_CARD] = card()
     for forwarder in render_overview.forwarder_pages():
         pages[forwarder.name] = forwarder.html.encode()
     pages.update(overrides)
@@ -228,8 +261,15 @@ def failures(
     *,
     site: str = "https://example.org",
     browser: bool = False,
+    heads: bool = False,
 ) -> list[str]:
+    """What the check fails on this site. The head checks read every page again for what
+    it says of itself, so a page a test breaks in one way fails them in others; they are
+    left out unless `heads` asks for them, and the tests of the heads ask."""
     monkeypatch.setattr(check_published_site, "fetch", fetch)
+    monkeypatch.setattr(
+        check_published_site, "head_checks", HEAD_CHECKS if heads else lambda *_: []
+    )
     monkeypatch.setattr(
         check_published_site,
         "repository_tree",
@@ -796,3 +836,116 @@ def test_fetch_retries_a_transient_answer_before_reporting_it(
     )
     assert status == (403, b"")
     assert pauses == [], "a refusal is an answer, not a deploy still settling"
+
+
+def test_check_holds_every_page_to_its_head_and_the_site_to_its_card(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Every page that can be shared is read for what it says of itself: the site's
+    pages, the explainer, the optimality paper and the workbench, each at the address it
+    is served at. The forwarders, the paper's landing address among them, are read for
+    their canonical link, and the card is fetched from the site under test. A good
+    deploy passes, and the head checks cost one request, the card's: the pages are read
+    from the text already fetched."""
+    requested: list[str] = []
+    fetch = fake_site(site_pages(), requested=requested)
+    assert failures(monkeypatch, fetch, heads=True) == []
+    assert requested.count(f"https://example.org/{render_overview.SOCIAL_CARD}") == 1
+    for name in (*SITE_PAGES[1:], EXPLAINER, OPTIMALITY_PAPER, OPTIMALITY_PAPER_FILES[0]):
+        assert requested.count(f"https://example.org/{name}") == 1, name
+
+    monkeypatch.setattr(check_published_site, "fetch", fetch)
+    monkeypatch.setattr(check_published_site, "head_checks", HEAD_CHECKS)
+    lines = [
+        line
+        for _, line in check_published_site.check(
+            "https://example.org", COMMIT, timeout=1, browser=False
+        )
+    ]
+    clean = "one of each identity and card tag, agreeing with its address"
+    shared = check_published_site.shared_pages()
+    assert shared == (*SITE_PAGES, EXPLAINER, OPTIMALITY_PAPER, "workbench/index.html")
+    for name in shared:
+        assert f"{name}: {clean}" in lines, name
+    assert f"each of {len(shared)} pages has a description of its own" in lines
+    landing = check_published_site.OPTIMALITY_PAPER_LANDING
+    assert landing == "n11-optimality/index.html"
+    paper_url = render_overview.canonical_url(OPTIMALITY_PAPER)
+    assert f"forwarder {landing}: names {paper_url} as canonical, and carries no card" in lines
+    for forwarder in render_overview.forwarder_pages():
+        assert any(line.startswith(f"forwarder {forwarder.name}: names ") for line in lines)
+    assert f"card {render_overview.SOCIAL_CARD}: a PNG of 1200x630, 29 bytes" in lines
+
+
+def test_check_fails_a_page_whose_head_is_not_the_sites(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The heads as they were before the site wrote them from one definition: the
+    optimality paper and the workbench with a title and no card, a page with the site's
+    name after its preview's title and no image, two pages saying one thing."""
+
+    def found(**overrides: bytes) -> list[str]:
+        return failures(monkeypatch, fake_site(site_pages(**overrides)), heads=True)
+
+    # A head with a title and a description and nothing else of the set, as the paper's
+    # was: every other tag is named as missing.
+    bare = '<html lang="en"><head><title>A Review</title><meta name="description" content="A.">'
+    body = (
+        f'</head>{PAPERS_CURRENT}Papers</a><a href="{REPO_URL}/blob/{COMMIT}/README.md">R</a>'
+    )
+    (failure,) = found(**{OPTIMALITY_PAPER: (bare + body).encode()})
+    assert failure.startswith(
+        f"{OPTIMALITY_PAPER}: head: 0 canonical links, not one; 0 og:type"
+    )
+    assert "the title 'A Review' does not end in ' · The Square Packing Project'" in failure
+    assert "0 canonical links, not one" in failure
+    assert "0 og:image tags, not one" in failure
+    assert "0 twitter:card tags, not one" in failure
+
+    old = page(render_overview.canonical_url("papers.html")).replace(
+        b'og:title" content="Page papers.html',
+        b'og:title" content="Papers \xc2\xb7 Square Packing',
+    )
+    (failure,) = found(**{"papers.html": old})
+    assert failure.startswith("papers.html: head: og:title is 'Papers · Square Packing', not")
+
+    said = "The site-wide sentence, on every page."
+    same = {
+        name: (head(name, description=said) + f"<p>({PUBLICATION_EDITION})</p>").encode()
+        for name in ("papers.html", "visualize.html")
+    }
+    (failure,) = found(**same)
+    assert (
+        failure == f"descriptions shared between pages: papers.html, visualize.html: {said!r}"
+    )
+
+
+def test_check_fails_a_card_that_is_missing_or_not_the_declared_size(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Every page names one image, so one missing file is a blank preview on every page,
+    and one of another size is a preview that reflows or is dropped."""
+    name = render_overview.SOCIAL_CARD
+    (failure,) = failures(monkeypatch, fake_site(site_pages(), lost=(name,)), heads=True)
+    assert failure == f"card {name}: not served"
+    wrong = site_pages(**{name: card(2400, 1256)})
+    (failure,) = failures(monkeypatch, fake_site(wrong), heads=True)
+    assert failure == f"card {name}: it is 2400x1256, and every page declares 1200x630"
+    (failure,) = failures(monkeypatch, fake_site(site_pages(**{name: b"<html>"})), heads=True)
+    assert failure == f"card {name}: it is not a PNG"
+
+
+def test_check_fails_a_forwarder_whose_canonical_link_is_not_its_targets_address(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The paper's landing address named the paper by its file name alone, which a
+    crawler has no base to resolve; a forwarder names its target's address in full."""
+    landing = optimality_landing()
+    target = render_overview.canonical_url(OPTIMALITY_PAPER)
+    assert f'<link rel="canonical" href="{target}">' in landing
+    relative = landing.replace(target, OPTIMALITY_PAPER.rsplit("/", 1)[1]).encode()
+    (failure,) = failures(
+        monkeypatch, fake_site(site_pages(**{OPTIMALITY_PAPER_FILES[0]: relative})), heads=True
+    )
+    name = check_published_site.OPTIMALITY_PAPER_LANDING
+    assert failure.startswith(f"forwarder {name}: head: its canonical links are ['t-060-")

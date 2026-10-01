@@ -9,6 +9,7 @@ from typing import Literal
 
 import pytest
 
+from devtools import check_published_site, render_explainer, render_overview
 from devtools import measure_site_pages as measure
 from devtools import n11_optimality_mechanism_figures as mechanism
 from devtools import n11_optimality_overview_figures as overview
@@ -69,6 +70,37 @@ def test_rendered_page_is_offline_and_contains_proof_figures(rendered: tuple[str
         assert f">{name}</a>" in html
     assert '<div class="doc-links screen-only">' in html
     assert 'href="https://github.com/jlevy/squares"' in html
+
+
+def test_the_papers_head_is_the_sites_set_at_the_papers_own_address(
+    rendered: tuple[str, str],
+) -> None:
+    """The paper's head carried a title and a description and nothing else, so a shared
+    link to it previewed as a line of text. It is the site's one set now
+    (`render_overview.head_tags`), written from the paper's record: an article, at the
+    address its own path constant gives, with the day the article says it was revised."""
+    html, _ = rendered
+    url = render_overview.canonical_url(paper.SITE_PATH)
+    assert url == render_overview.SITE_URL + paper.SITE_PATH
+    assert check_published_site.head_problems(html, url) == []
+    head = check_published_site.read_head(html)
+    assert head.titles == (f"{paper.TITLE} · {render_overview.PROJECT_NAME}",)
+    assert head.meta("og:title") == [paper.TITLE]
+    assert head.meta("og:type") == ["article"]
+    assert head.meta("description") == [paper.DESCRIPTION]
+    assert not paper.DESCRIPTION.startswith(paper.TITLE)
+    # The stand-in article states no date, so its head states none.
+    assert head.meta("article:modified_time") == []
+    # The article's own: the head says what its credits say, or nothing.
+    article = ARTICLE.read_text(encoding="utf-8")
+    stated = re.search(r"This review revised ([A-Z][a-z]+ \d{1,2}, \d{4})</span>", article)
+    meta = paper.page_meta(article)
+    assert meta.modified == (render_explainer.iso_date(stated.group(1)) if stated else "")
+    assert meta.published == ""
+    assert (meta.kind, meta.path) == ("article", paper.SITE_PATH)
+    if stated:
+        tags = render_overview.head_tags(meta)
+        assert f'<meta property="article:modified_time" content="{meta.modified}">' in tags
 
 
 def test_the_paper_ends_with_the_sites_closing_credit(rendered: tuple[str, str]) -> None:

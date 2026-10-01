@@ -91,6 +91,8 @@ name: Certificate page
       - packing/devtools/significance.py
       - packing/devtools/check_results.py
       - packing/devtools/build_bound_citations.py
+      - packing/devtools/social_card.py
+      - packing/devtools/rung_scale.py
       - packing/frontier/**
       - packing/resources/bibliography.yaml
       - epistemics.md
@@ -586,6 +588,24 @@ jobs:
           diff --recursive site "$twin"
           test -s site/index.html
           echo "two renders agree; $(find site -type f | wc -l) files, $(du -sh site | cut -f1)"
+
+      # The picture every page's link preview names, the homepage's hero at 1200 by 630, is
+      # drawn here and not checked in (`devtools.social_card`): a raster's bytes are the
+      # rasteriser's, so the two drawings, into the twin and into `site/`, have to agree as
+      # the pages do. Then every page's head is held to the site's identity and card tags,
+      # and the card to its size, on the files about to be shared: the checks the deployed
+      # site gets from `check_published_site`, before anything is deployed. The explainer,
+      # the paper and the workbench are other jobs' pages, so they are reported as not in
+      # this build; `verify-deployment` reads all of them.
+      - name: Draw the link preview's card twice, and check every page's head
+        run: |
+          twin="$RUNNER_TEMP/render-twin"
+          uv run --frozen --group dev python -m devtools.social_card --output-dir "$twin" &
+          twin_pid=$!
+          uv run --frozen --group dev python -m devtools.social_card --output-dir site
+          wait "$twin_pid"
+          diff --recursive site "$twin"
+          uv run --frozen --group dev python -m devtools.check_published_site --local site
 
       - name: Share the site's pages with the publication
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

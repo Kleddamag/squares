@@ -16,8 +16,9 @@ from pathlib import Path
 
 import pytest
 
-from devtools import render_overview
+from devtools import check_published_site, render_overview
 from workbench_tools import build_site
+from workbench_tools.self_contained import assert_self_contained_html
 
 TEMPLATE = build_site.WORKBENCH_PACKAGE / "assets" / "template.html"
 
@@ -50,6 +51,30 @@ def test_the_page_carries_the_shared_nav_with_visualize_current(page: str) -> No
     assert current == ["visualize"]
     visualize = '<a data-page="visualize" aria-current="page" href="../visualize.html">'
     assert f"{visualize}Visualize</a>" in page
+
+
+def test_the_page_carries_the_sites_head_at_the_address_it_is_served_at(page: str) -> None:
+    """The published workbench had a title and nothing else, so a shared link to it
+    previewed as a bare line. Its head is the site's one set (`render_overview.head_tags`)
+    in place of the template's title: the workbench's own name and sentence, the address
+    it is served at, and the site's card. None of it is a load, so the page stays
+    self-contained, and the policy still opens the head."""
+    url = render_overview.canonical_url(build_site.PAGE.path)
+    assert url == render_overview.SITE_URL + "workbench/"
+    assert check_published_site.head_problems(page, url) == []
+    head = check_published_site.read_head(page)
+    assert head.titles == ("Workbench · The Square Packing Project",)
+    assert head.meta("og:title") == ["Workbench"]
+    assert head.meta("og:type") == ["website"]
+    assert head.meta("description") == [build_site.PAGE.description]
+    template = TEMPLATE.read_text(encoding="utf-8")
+    assert template.count("<title>Square packing workbench</title>") == 1
+    assert "<title>Square packing workbench</title>" not in page
+    assert page.count("<title>") == 1
+    assert_self_contained_html(page)
+    assert page.index(build_site.POLICY_META) < page.index("<title>")
+    with pytest.raises(ValueError, match="the page has no title"):
+        build_site.with_head("<html><head></head><body></body></html>")
 
 
 def test_the_bar_has_one_papers_entry_reaching_the_site_root(page: str) -> None:

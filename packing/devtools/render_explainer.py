@@ -46,6 +46,7 @@ import sys
 from collections import Counter
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
+from datetime import datetime
 from fractions import Fraction
 from functools import cache
 from math import isqrt
@@ -63,8 +64,11 @@ from devtools.render_overview import (
     PAPER_TYPE_CSS,
     SITE_NAV,
     SITE_NAV_CSS,
+    SITE_URL,
+    PageMeta,
     colophon_lines,
     favicon_html,
+    head_tags,
     nav_html,
 )
 from devtools.repo_links import REPO_URL, repo_url
@@ -311,13 +315,11 @@ PRIOR_TEN_MEMO_URL = "https://walterstromquist.com/papers/squares2.pdf"
 # the project subpath, with the trailing slash the directory URL actually resolves
 # to. A link preview is the one part of the page that cannot be relative -- a
 # crawler resolves `og:image` and `og:url` on its own machine, not against the
-# document -- so the deployment's own address has to be stated somewhere, and this
-# is that one place.
-SITE_URL = "https://jlevy.github.io/squares/"
+# document -- so the deployment's own address has to be stated somewhere, and that
+# one place is `render_overview.SITE_URL`, imported above and read here under its name.
 #: The page's own address. The site root is the overview; the explainer is served beside
 #: it as `explainer.html`, renamed at publish, and its assets stay beside it at the root.
 PAGE_URL = SITE_URL + "explainer.html"
-SITE_NAME = "Squares"
 #: The atlas the Figure 2 caption sends a reader to browse, linked as a directory.
 ATLAS = PACKING / "atlas" / "known-best"
 BEST_RENDERING = ATLAS / "rendering" / "n-011.svg"
@@ -362,30 +364,17 @@ COMPOSITE_ASSETS = (
 #: downscales to 600px or less anyway, and the 2x would put another 1.2 MiB in the
 #: deploy for resolution nothing displays.
 COMPOSITE_PNG = COMPOSITE_STEM.with_suffix(".png")
-#: What a link preview shows. No unfurler renders SVG and none follows a PDF, so a card
-#: has to name a raster, and the full canvas is the wrong one: it is portrait, and every
-#: unfurler that crops keeps a landscape band from the middle of a portrait -- the four
-#: rows of the grid that say least about what the picture is, with the title gone. This
-#: is the same drawing cropped to its top by the atlas builder, at 2400x1256, which is
-#: 1.91:1 to the nearest whole pixel. The crop is chosen here rather than inherited from
-#: whatever each platform does, which is the only part of it this repository controls.
+#: The landscape crop of the composite the atlas builder writes: the top of the same
+#: drawing at 2400x1256, 1.91:1 to the nearest whole pixel. It was this page's link
+#: preview until 2026-10-01, when every page of the site took the one card
+#: (`render_overview.SOCIAL_CARD`); the overview's atlas card still shows it, so it is
+#: still published beside the page.
 COMPOSITE_CARD = COMPOSITE_STEM.with_name(f"{COMPOSITE_STEM.name}-card.png")
 #: What Figure 2 is a picture of.
 COMPOSITE_ALT = (
     "The best known packings of one through one hundred unit squares, in a ten-by-ten "
     "grid, each labelled with its best known upper bound and, where the value is still "
     "open, the strongest lower bound independently verified here"
-)
-#: What the card is a picture of, which stopped being the same sentence when the card
-#: became a crop. It shows the title block and the first four rows, so it says the first
-#: forty and not all hundred: an alt text that promises a reader a picture of one hundred
-#: packings and hands them forty is a small lie told to exactly the readers who cannot
-#: check it.
-CARD_ALT = (
-    "The title of the atlas of best known square packings, above the first four rows of "
-    "its ten-by-ten grid: the best known packings of one through forty unit squares, "
-    "each labelled with its best known upper bound and, where the value is still open, "
-    "the strongest lower bound independently verified here"
 )
 VERIFIER = PACKING / "src" / "sqpack" / "fractional" / "certificate.py"
 GENERATOR = PACKING / "src" / "sqpack" / "fractional" / "generate.py"
@@ -413,30 +402,18 @@ def edition_file(path: Path) -> str:
     return repo_url(path, ref=PUBLICATION_REVISION)
 
 
-def site_file(path: Path) -> str:
-    """The asset's absolute URL on the deployed site, for a consumer off the page.
-
-    Everything the page itself points at is relative, because the page has to open
-    the same way from a file, from Pages and from an artifact host. A link preview
-    cannot: the crawler that reads `og:image` has no base to resolve against and
-    drops a relative one, so the card states the deployed address in full.
-    """
-    return SITE_URL + path.name
-
-
 def png_size(path: Path) -> tuple[int, int]:
-    """The pixel dimensions in a PNG's IHDR, read from the file the render publishes.
+    """The pixel dimensions in a PNG's IHDR, read from the file itself.
 
     `og:image:width` and `og:image:height` let a consumer reserve the card's box
     before it has fetched the image, and a pair that disagrees with the file is worse
-    than none: the preview reflows, or is dropped. Reading them from the bytes that
-    are copied beside the page means a re-exported atlas moves the tags with it and
-    no dimension is typed twice.
+    than none: the preview reflows, or is dropped. So the card's bytes are read for
+    their size wherever the two are compared (`check_published_site`, the tests).
     """
     with path.open("rb") as handle:
         header = handle.read(24)
     if header[:8] != b"\x89PNG\r\n\x1a\n" or header[12:16] != b"IHDR":
-        raise SystemExit(f"{path} is not a PNG; the link preview cannot state its size")
+        raise SystemExit(f"{path} is not a PNG, so it has no size to read")
     width, height = struct.unpack(">II", header[16:24])
     return width, height
 
@@ -2199,43 +2176,48 @@ TITLE = "New Lower Bounds for Square Packing for n = 11"
 HERO_TITLE = TITLE.replace("n = 11", '<span class="tex">n = 11</span>')
 
 
-def card_substitutions(headline: Facts, current: CurrentBoundFacts) -> dict[str, str]:
-    """What a link preview shows: the title, the sentence, the canonical URL, the image.
+def iso_date(written: str) -> str:
+    """A date as `sqpack.release` writes one (`September 5, 2026`), as an ISO date."""
+    return datetime.strptime(written, "%B %d, %Y").date().isoformat()  # noqa: DTZ007
 
-    Every one of these is a string the page already states somewhere -- the title in
-    `<title>`, the sentence in `<meta name="description">`, the picture in Figure 2 --
-    and each is built here once and substituted into both places, so a shared link and
-    the page it opens cannot say different things. The title is the page's own, with no
-    bound after it: one bound beside a title about several, in a case T-060 has since
-    settled, would read as the case's current bound. The bound in the sentence is the headline
-    certificate's own, like every other number on the page.
 
-    The card names T-026's historical bound while the interactive figures retain the point
-    certificates. It uses the cropped composite rather than the full canvas, and the reason is
-    what the croppers do with a portrait. X and Facebook show a landscape card and take
-    a band from the middle of whatever they are given: from the 150:181 canvas that is
-    four rows out of the middle of the grid, with the title, the date and the repository
-    line all gone -- everything that says what the picture is. The crop the atlas builder
-    writes is the top of the same drawing at 1.91:1, so those platforms crop nothing and
-    the ones that scale instead show the same band whole. What is lost either way is the
-    legend at the foot, which is the part a reader can find on the page.
+def page_meta(headline: Facts, current: CurrentBoundFacts) -> PageMeta:
+    """What the page says of itself in its head: its title, its sentence, its address and
+    the two dates its hero prints.
+
+    The title is the page's own, with no bound after it: one bound beside a title about
+    several, in a case T-060 has since settled, would read as the case's current bound.
+    The bound in the sentence is the headline certificate's own, like every other number
+    on the page. The dates are the publication's, first published and last revised
+    (`sqpack.release`), the same two the hero states.
     """
-    width, height = png_size(COMPOSITE_CARD)
-    title = TITLE
-    description = (
-        "How weighted point and threshold certificates prove T-026's historical bound "
-        f"s({headline.n}) ≥ {current.bounded_side_decimal}, with visual point-only proofs."
+    return PageMeta(
+        name=TITLE,
+        description=(
+            "How weighted point and threshold certificates prove T-026's historical bound "
+            f"s({headline.n}) ≥ {current.bounded_side_decimal}, with visual point-only "
+            "proofs."
+        ),
+        path=PAGE_URL.removeprefix(SITE_URL),
+        kind="article",
+        published=iso_date(FIRST_PUBLISHED),
+        modified=iso_date(PUBLICATION_DATE),
     )
+
+
+def card_substitutions(headline: Facts, current: CurrentBoundFacts) -> dict[str, str]:
+    """The page's head, its tab icon and Figure 2's alt text.
+
+    The head is the site's one set (`render_overview.head_tags`), written from this
+    page's record (`page_meta`): the title, the description, the canonical link and the
+    link preview, so a shared link and the page it opens cannot say different things,
+    and this page's card cannot drift from any other page's. The image is the site's
+    one card, the homepage's packing; until 2026-10-01 it was the composite's landscape
+    crop, which a paper of its own might take again (think-3w07).
+    """
     return {
-        "PAGE_TITLE": title,
-        "PAGE_DESCRIPTION": description,
-        "CANONICAL_URL": PAGE_URL,
+        "PAGE_HEAD": head_tags(page_meta(headline, current)),
         "SITE_FAVICON": favicon_html(),
-        "SITE_NAME": SITE_NAME,
-        "CARD_IMAGE_URL": site_file(COMPOSITE_CARD),
-        "CARD_IMAGE_WIDTH": str(width),
-        "CARD_IMAGE_HEIGHT": str(height),
-        "CARD_ALT": CARD_ALT,
         "COMPOSITE_ALT": COMPOSITE_ALT,
     }
 

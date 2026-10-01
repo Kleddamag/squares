@@ -32,8 +32,11 @@ from devtools.render_overview import (
     SITE_NAV,
     SITE_NAV_CSS,
     THEME_SCRIPT,
+    PageMeta,
+    canonical_url,
     colophon_lines,
     favicon_html,
+    head_tags,
     nav_html,
 )
 from sqpack.probes import probe
@@ -51,7 +54,13 @@ STEM = "t-060-explainer"
 SITE_PATH = f"{OUTPUT_DIR.name}/{STEM}.html"
 SITE_ROOT = "../"
 TITLE = "A Review of the Optimality Proof of the Trump Packing of 11 Squares"
-DESCRIPTION = "A review of the optimality proof of the Trump packing of eleven squares."
+DESCRIPTION = (
+    "A review of Queuingtheorydotcom's computer-assisted proof that Trump's 1979 packing "
+    "of eleven unit squares is optimal, explained step by step."
+)
+#: The day the article says it was last revised, in its credits. The head states the
+#: same day to a link preview (`page_meta`).
+REVISED = re.compile(r"This review revised ([A-Z][a-z]+ \d{1,2}, \d{4})")
 FIGURE_KEYS = (
     "WITNESS_SVG",
     "ROADMAP_SVG",
@@ -327,6 +336,20 @@ def math_scripts(static: Path) -> dict[str, str]:
     }
 
 
+def page_meta(source: str) -> PageMeta:
+    """What the page says of itself in its head (`render_overview.head_tags`): its title,
+    its sentence, the address it is served at, and the day `source`, the article, says
+    it was last revised, when it says one."""
+    revised = REVISED.search(source)
+    return PageMeta(
+        name=TITLE,
+        description=DESCRIPTION,
+        path=SITE_PATH,
+        kind="article",
+        modified=render_explainer.iso_date(revised.group(1)) if revised else "",
+    )
+
+
 def render(
     source: str,
     *,
@@ -349,8 +372,7 @@ def render(
         raise ValueError(f"{article.name}: KPress refused the article: {'; '.join(errors)}")
     static = render_explainer.kpress_static()
     values = {
-        "PAGE_TITLE": escape(TITLE),
-        "PAGE_DESCRIPTION": escape(DESCRIPTION),
+        "PAGE_HEAD": head_tags(page_meta(source)),
         "KPRESS_CSS": render_explainer.kpress_css(static),
         "KATEX_CSS": render_explainer.katex_css(static) if document.has_math else "",
         "RELATION_CSS": render_explainer.relation_face_css(static),
@@ -379,11 +401,14 @@ def render(
 
 
 def _index() -> str:
+    """The directory's landing address, a forwarder to the paper. Its canonical link is
+    the paper's own address in full, as the paper's head states it: a crawler has no
+    base to resolve a relative one against."""
     destination = STEM + ".html"
     return (
         '<!doctype html><html lang="en"><head><meta charset="utf-8">'
         f'<meta http-equiv="refresh" content="0; url={destination}">'
-        f'<link rel="canonical" href="{destination}">'
+        f'<link rel="canonical" href="{escape(canonical_url(SITE_PATH))}">'
         f"<title>{escape(TITLE)}</title></head><body>"
         f'<p><a href="{destination}">Read the T-060 paper</a>.</p></body></html>\n'
     )

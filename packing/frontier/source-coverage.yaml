@@ -3,7 +3,7 @@ softschema:
   schema: source-coverage.schema.yaml
   status: enforced
 
-last_reviewed: '2026-09-30'
+last_reviewed: '2026-10-01'
 coverage_scope: >
   Current public upper-bound catalogues and first-party result releases known to this
   project, the Schadt n=29 witness-contract regression source, and the September 2026
@@ -118,6 +118,50 @@ sources:
       no bound. Its zmx2, run here on the 2026-09-26 release's s(32) cover, is
       the evidence E-n032-evand-closed-cover-zmx2-replay, which raised s(32) = 6
       to V4/C4 on 2026-09-29.
+  - id: evand-square-packing-2026-10-01
+    title: square-packing, s(60) mixed cover and square-minus-three family
+    role: source-repository
+    url: https://github.com/evand/square-packing/tree/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5
+    local: resources/web/evand-square-packing-2026-10-01/source/s12/
+    source_key: '[evand square-packing 2026-10-01]'
+    scope: {n_values: [33, 46, 60, 61, 78, 97, 118, 141, 166, 193, 222, 253, 286, 321]}
+    reviewed: '2026-10-01'
+    source_date: '2026-10-01'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by:
+      - frontier/n-060.md
+      - frontier/n-061.md
+      - frontier/n-078.md
+      - frontier/n-097.md
+      - frontier/n-118.md
+      - frontier/n-141.md
+      - frontier/n-166.md
+      - frontier/n-193.md
+      - frontier/n-222.md
+      - frontier/n-253.md
+      - frontier/n-286.md
+      - frontier/n-321.md
+    evidence:
+      - E-n060-evand-mixed-cover-report
+      - E-n061-evand-derived-report
+      - E-k2m3-evand-family-report
+    notes: >-
+      Pinned source 08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5 reports s(60) = 8
+      by a mixed cover checked there by zm_mixed.py and zmx2, and hence s(61) = 8 by
+      monotonicity. It separately reports s(k^2 - 3) = k for every integer k >= 6.
+      The pinned October 1 revision is the intake snapshot: the s60 bundle first
+      appeared at cdd9b2a4 on September 28 by the source's local date, and the
+      k2m3 public write-up and bundle appeared at d9f79bc1 and 69999aff on
+      September 30.
+      This map projects that infinite family to the cases through n = 324; the
+      universal claim and the conditional Lean reduction are recorded in T-064.
+      The exact Valid7 premise has one source Python checker and has not been
+      freshly replayed here. No verified case bound changes on this intake.
+      The source's CREDITS.md says it was produced by Claude (Anthropic)
+      in a single session under human direction.
+      An independent point-only s(61) = 8 source by wand125 at f8846cec is noted
+      in the coverage review; its primary packet awaits separate intake.
   - id: kleddamag-n17-466001-2026
     title: Seventeen unit squares — a certified lower bound, 4.66001 package
     role: source-repository

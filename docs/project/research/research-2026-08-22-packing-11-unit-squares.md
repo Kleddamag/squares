@@ -919,8 +919,6 @@ Use the structured form to query or plot; use these tables to read.
 | 57 | 8 | grid | — | 7.835 | counting | 0.165 |
 | 58 | 8 | grid | — | 7.89 | counting | 0.11 |
 | 59 | 8 | grid | — | 7.92 | counting | 0.08 |
-| 60 | 8 | grid | — | 7.94 | counting | 0.06 |
-| 61 | 8 | grid | — | 7.96 | counting | 0.04 |
 | 65 | `5 + (5/2)√2` = 8.53553391 | hand | — | 8.289966 | unavoidable points | 0.2456 |
 | 66 | `3 + 4 √2` = 8.65685425 | hand | — | 8.375 | counting | 0.2819 |
 | 67 | `8 + (1/2)√2` = 8.70710678 | strip | — | 8.455 | counting | 0.2521 |
@@ -934,7 +932,6 @@ Use the structured form to query or plot; use these tables to read.
 | 75 | 9 | grid | — | 8.89 | counting | 0.11 |
 | 76 | 9 | grid | — | 8.92 | counting | 0.08 |
 | 77 | 9 | grid | — | 8.92 | monotone | 0.08 |
-| 78 | 9 | grid | — | 8.955 | counting | 0.045 |
 | 82 | `6 + (5/2)√2` = 9.53553391 | hand | — | 9.266734 | unavoidable points | 0.2688 |
 | 83 | 9.63482562 | extension | 24 | 9.266734 | monotone | 0.3681 |
 | 84 | `9 + (1/2)√2` = 9.70710678 | strip | — | 9.266734 | monotone | 0.4404 |
@@ -950,7 +947,6 @@ Use the structured form to query or plot; use these tables to read.
 | 94 | 10 | grid | — | 9.795 | counting | 0.205 |
 | 95 | 10 | grid | — | 9.8418 | counting | 0.1582 |
 | 96 | 10 | grid | — | 9.888194 | Nagamochi | 0.1118 |
-| 97 | 10 | grid | — | 9.944272 | Nagamochi | 0.0557 |
 | 101 | `7 + (5/2)√2` = 10.53553391 | extension | — | 10.246736 | unavoidable points | 0.2888 |
 | 102 | 10.60717468 | — | — | 10.246736 | monotone | 0.3604 |
 | 103 | 10.70351676 | — | — | 10.246736 | monotone | 0.4568 |
@@ -968,7 +964,6 @@ Use the structured form to query or plot; use these tables to read.
 | 115 | 11 | grid | — | 10.797959 | Nagamochi | 0.202 |
 | 116 | 11 | grid | — | 10.848858 | Nagamochi | 0.1511 |
 | 117 | 11 | grid | — | 10.899495 | Nagamochi | 0.1005 |
-| 118 | 11 | grid | — | 10.949874 | Nagamochi | 0.0501 |
 | 122 | `8 + (5/2)√2` = 11.53553391 | extension | — | 11.229281 | unavoidable points | 0.3063 |
 | 123 | 11.60138466 | — | — | 11.229281 | monotone | 0.3721 |
 | 124 | `6 + 4 √2` = 11.65685425 | hand | — | 11.229281 | monotone | 0.4276 |
@@ -988,7 +983,6 @@ Use the structured form to query or plot; use these tables to read.
 | 138 | 12 | grid | — | 11.816654 | Nagamochi | 0.1833 |
 | 139 | 12 | grid | — | 11.86278 | Nagamochi | 0.1372 |
 | 140 | 12 | grid | — | 11.908712 | Nagamochi | 0.0913 |
-| 141 | 12 | grid | — | 11.954451 | Nagamochi | 0.0455 |
 | 145 | `9 + (5/2)√2` = 12.53553391 | extension | — | 12.213867 | unavoidable points | 0.3217 |
 | 146 | 12.60090778 | — | 16 | 12.213867 | monotone | 0.387 |
 | 147 | `7 + 4 √2` = 12.65685425 | hand | — | 12.213867 | monotone | 0.443 |
@@ -1010,7 +1004,6 @@ Use the structured form to query or plot; use these tables to read.
 | 163 | 13 | grid | — | 12.83216 | Nagamochi | 0.1678 |
 | 164 | 13 | grid | — | 12.874342 | Nagamochi | 0.1257 |
 | 165 | 13 | grid | — | 12.916375 | Nagamochi | 0.0836 |
-| 166 | 13 | grid | — | 12.958261 | Nagamochi | 0.0417 |
 | 170 | `10 + (5/2)√2` = 13.53553391 | extension | — | 13.200123 | unavoidable points | 0.3354 |
 | 171 | `13 + (4/7)` = 13.57142857 | composition | — | 13.200123 | monotone | 0.3713 |
 | 172 | 13.61898896 | — | — | 13.200123 | monotone | 0.4189 |
@@ -1034,7 +1027,6 @@ Use the structured form to query or plot; use these tables to read.
 | 190 | 14 | grid | — | 13.845233 | Nagamochi | 0.1548 |
 | 191 | 14 | grid | — | 13.884099 | Nagamochi | 0.1159 |
 | 192 | 14 | grid | — | 13.922848 | Nagamochi | 0.0772 |
-| 193 | 14 | grid | — | 13.961481 | Nagamochi | 0.0385 |
 | 197 | `11 + (5/2)√2` = 14.53553391 | extension | — | 14.187765 | unavoidable points | 0.3478 |
 | 198 | `14 + (4/7)` = 14.57142857 | extension | — | 14.187765 | monotone | 0.3837 |
 | 199 | 14.61898896 | — | — | 14.187765 | monotone | 0.4312 |
@@ -1060,7 +1052,6 @@ Use the structured form to query or plot; use these tables to read.
 | 219 | 15 | grid | — | 14.856406 | Nagamochi | 0.1436 |
 | 220 | 15 | grid | — | 14.892444 | Nagamochi | 0.1076 |
 | 221 | 15 | grid | — | 14.928388 | Nagamochi | 0.0716 |
-| 222 | 15 | grid | — | 14.96424 | Nagamochi | 0.0358 |
 | 226 | `12 + (5/2)√2` = 15.53553391 | extension | — | 15.176574 | unavoidable points | 0.359 |
 | 227 | `(17/2) + 5 √2` = 15.57106781 | — | — | 15.176574 | monotone | 0.3945 |
 | 228 | 15.60463801 | — | — | 15.176574 | monotone | 0.4281 |
@@ -1088,7 +1079,6 @@ Use the structured form to query or plot; use these tables to read.
 | 250 | 16 | grid | — | 15.866069 | Nagamochi | 0.1339 |
 | 251 | 16 | grid | — | 15.899664 | Nagamochi | 0.1003 |
 | 252 | 16 | grid | — | 15.933185 | Nagamochi | 0.0668 |
-| 253 | 16 | grid | — | 15.96663 | Nagamochi | 0.0334 |
 | 257 | `13 + (5/2)√2` = 16.53553391 | extension | — | 16.166376 | unavoidable points | 0.3692 |
 | 258 | `(19/2) + 5 √2` = 16.57106781 | extension | — | 16.166376 | monotone | 0.4047 |
 | 259 | 16.60256849 | — | — | 16.166376 | monotone | 0.4362 |
@@ -1118,7 +1108,6 @@ Use the structured form to query or plot; use these tables to read.
 | 283 | 17 | grid | — | 16.874508 | Nagamochi | 0.1255 |
 | 284 | 17 | grid | — | 16.905974 | Nagamochi | 0.094 |
 | 285 | 17 | grid | — | 16.937377 | Nagamochi | 0.0626 |
-| 286 | 17 | grid | — | 16.968719 | Nagamochi | 0.0313 |
 | 290 | `14 + (5/2)√2` = 17.53553391 | composition | — | 17.157031 | unavoidable points | 0.3785 |
 | 291 | `14 + (5/2)√2` = 17.53553391 | composition | — | 17.157031 | monotone | 0.3785 |
 | 292 | 17.59724939 | — | — | 17.157031 | monotone | 0.4402 |
@@ -1150,7 +1139,6 @@ Use the structured form to query or plot; use these tables to read.
 | 318 | 18 | grid | — | 17.881943 | Nagamochi | 0.1181 |
 | 319 | 18 | grid | — | 17.911535 | Nagamochi | 0.0885 |
 | 320 | 18 | grid | — | 17.941074 | Nagamochi | 0.0589 |
-| 321 | 18 | grid | — | 17.970563 | Nagamochi | 0.0294 |
 
 <!-- END GENERATED: frontier-open -->
 
@@ -1190,36 +1178,48 @@ Use the structured form to query or plot; use these tables to read.
 | 47 | `7` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 48 | `7` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 49 | `7` | perfect square | classical | proved |
+| 60 | `8` | counting | Evan Daniel (2026) | proof audit pending |
+| 61 | `8` | monotone | Evan Daniel (2026) | proof audit pending |
 | 62 | `8` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 63 | `8` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 64 | `8` | perfect square | classical | proved |
+| 78 | `9` | counting | Evan Daniel (2026) | proof audit pending |
 | 79 | `9` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 80 | `9` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 81 | `9` | perfect square | classical | proved |
+| 97 | `10` | counting | Evan Daniel (2026) | proof audit pending |
 | 98 | `10` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 99 | `10` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 100 | `10` | perfect square | classical | proved |
+| 118 | `11` | counting | Evan Daniel (2026) | proof audit pending |
 | 119 | `11` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 120 | `11` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 121 | `11` | perfect square | classical | proved |
+| 141 | `12` | counting | Evan Daniel (2026) | proof audit pending |
 | 142 | `12` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 143 | `12` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 144 | `12` | perfect square | classical | proved |
+| 166 | `13` | counting | Evan Daniel (2026) | proof audit pending |
 | 167 | `13` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 168 | `13` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 169 | `13` | perfect square | classical | proved |
+| 193 | `14` | counting | Evan Daniel (2026) | proof audit pending |
 | 194 | `14` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 195 | `14` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 196 | `14` | perfect square | classical | proved |
+| 222 | `15` | counting | Evan Daniel (2026) | proof audit pending |
 | 223 | `15` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 224 | `15` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 225 | `15` | perfect square | classical | proved |
+| 253 | `16` | counting | Evan Daniel (2026) | proof audit pending |
 | 254 | `16` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 255 | `16` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 256 | `16` | perfect square | classical | proved |
+| 286 | `17` | counting | Evan Daniel (2026) | proof audit pending |
 | 287 | `17` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 288 | `17` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 289 | `17` | perfect square | classical | proved |
+| 321 | `18` | counting | Evan Daniel (2026) | proof audit pending |
 | 322 | `18` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 323 | `18` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 324 | `18` | perfect square | classical | proved |

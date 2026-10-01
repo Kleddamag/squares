@@ -1116,7 +1116,7 @@ identity. The launcher unsets `PYTHONOPTIMIZE` and confirms assertions are activ
 
 ## Next Mathematical Slice
 
-H253 through H257 are accepted.
+H253 through H257, H259 and H260 are accepted.
 The exact chart root has a certified physical packing, with a two-parameter
 slider-family corollary from the reviewed analytic triangle proof.
 Raw exp235–238 evidence is immutable; none is rerun for integration fixes.

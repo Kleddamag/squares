@@ -102,9 +102,16 @@ benchmark with an unchanged acceptance contract.
 
 Hosted CI runs beside research.
 General slow local suites and atlas geometry rebuilds were kept off the proof critical
-path. The final integration work addresses the publication revision stamp through
-`think-zypq`; its outcome and measurements are recorded separately from scientific
-target cost. A complete agent-token or agent-minute rollup is unavailable; elapsed
+path. The guarded `--restamp-only` publication command completed in 17.41 seconds with
+strict preflight and postflight checks.
+It changed only the two SVG footer stamps and refreshed their PNG/PDF export families,
+without rebuilding any packing geometry.
+[Its command and timing receipts](../../../packing/campaign/agent-sessions/session-165-validation/restamp-command.txt)
+are retained under `think-zypq`, separately from scientific target cost.
+Six focused controls and independent code review cover the source and byte-preservation
+guards; the combined release/restamp check passed 19 tests in 2.18 seconds.
+This observed run is not a controlled speedup comparison against earlier host-contended
+atlas builds. A complete agent-token or agent-minute rollup is unavailable; elapsed
 session time must not be presented as aggregate model or CPU time.
 
 ## Review Level and Next Work

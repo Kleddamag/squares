@@ -24,6 +24,9 @@ results:
       scored: '2026-08-31'
       by: session-061 review (repository)
     novelty: apparently-novel
+    builds_on:
+      credit: [Bentz]
+      source_keys: ['[Bentz 2010]']
     evidence:
       - E-green17-sixteen-point-lower
       - E-green17-interval-audit
@@ -63,6 +66,9 @@ results:
       scored: '2026-08-31'
       by: session-061 review (repository)
     novelty: apparently-novel
+    builds_on:
+      credit: [Bentz]
+      source_keys: ['[Bentz 2010]']
     composition: >-
       Derived: the minimum over T-001 and the monotonicity step, which is one
       recorded line (any 18-packing contains a 17-packing) carried in the
@@ -109,6 +115,9 @@ results:
       scored: '2026-08-31'
       by: session-061 review (repository)
     novelty: apparently-novel
+    builds_on:
+      credit: [Bentz]
+      source_keys: ['[Bentz 2010]']
     composition: >-
       Compound: the lower side of the bracket carries T-001's two methods, but
       the refutation side rests on the interval audit alone, so the bracket
@@ -191,6 +200,9 @@ results:
       scored: '2026-08-31'
       by: session-061 review (repository)
     novelty: apparently-novel
+    builds_on:
+      credit: [Bentz]
+      source_keys: ['[Bentz 2010]']
     evidence:
       - E-bentz13-figure2-audit
       - E-bentz-2010-proof
@@ -414,6 +426,9 @@ results:
       scored: '2026-08-31'
       by: session-061 review (repository)
     novelty: apparently-novel
+    builds_on:
+      credit: [Stromquist]
+      source_keys: ['[Stromquist 2003]']
     evidence:
       - E-n011-repaired-lower
     artifacts:
@@ -829,6 +844,9 @@ results:
       scored: '2026-09-04'
       by: BC-161 (repository; independent evaluator confirmed C4, no external review)
     novelty: apparently-novel
+    builds_on:
+      credit: [Burns, Massaccesi]
+      source_keys: ['[Burns–Massaccesi n17]']
     composition: >-
       Primary: one certificate, one verifier, one accepted verdict. The bound is
       the certificate's container side directly, with no monotonicity or
@@ -961,6 +979,9 @@ results:
       scored: '2026-09-04'
       by: BC-161 continuation (repository; independent evaluator confirmed C4, no external review)
     novelty: apparently-novel
+    builds_on:
+      credit: [Burns, Massaccesi]
+      source_keys: ['[Burns–Massaccesi n17]']
     composition: >-
       Primary: one certificate, one verifier, one accepted verdict. The bound is the
       certificate's container side directly, with no monotonicity or composition step.
@@ -1130,6 +1151,9 @@ results:
       scored: '2026-09-04'
       by: BC-161 continuation (repository; independent evaluator confirmed C4, no external review)
     novelty: apparently-novel
+    builds_on:
+      credit: [Burns, Massaccesi]
+      source_keys: ['[Burns–Massaccesi n17]']
     composition: >-
       Primary at all three sizes: one certificate, one accepted verdict, the bound
       being the container side directly. Its mass 423327/25000 is below seventeen,
@@ -1300,6 +1324,9 @@ results:
       scored: '2026-09-04'
       by: BC-161 continuation (repository; no independent evaluator, see composition)
     novelty: apparently-novel
+    builds_on:
+      credit: [Burns, Massaccesi]
+      source_keys: ['[Burns–Massaccesi n17]']
     composition: >-
       Primary at all three sizes: one certificate, one accepted verdict, the bound being
       the container side directly. There is no monotonicity or composition step anywhere
@@ -1412,6 +1439,9 @@ results:
       scored: '2026-09-05'
       by: BC-197 (repository; no independent evaluator, see composition)
     novelty: apparently-novel
+    builds_on:
+      credit: [Burns, Massaccesi]
+      source_keys: ['[Burns–Massaccesi n17]']
     composition: >-
       Primary at both sizes: one certificate, one accepted verdict, the bound being the
       container side directly, with no monotonicity or composition step between the
@@ -1498,6 +1528,9 @@ results:
       scored: '2026-09-06'
       by: independent max-level proof review and repository replay
     novelty: apparently-novel
+    builds_on:
+      credit: [Burns, Massaccesi]
+      source_keys: ['[Burns–Massaccesi n17]']
     composition: >-
       Derived from a full replay of T-018's accepted five-condition source, scaling
       equivariance for Condition 1, invariance of Conditions 2 and 3, inverse-dilation
@@ -1665,6 +1698,9 @@ results:
       scored: '2026-09-09'
       by: repository replay of the two-route retention gate and the corollary tool, without external review
     novelty: apparently-novel
+    builds_on:
+      credit: [Burns, Massaccesi]
+      source_keys: ['[Burns–Massaccesi n17]']
     composition: >-
       Derived from a full replay of the 1440-step source certificate's five conditions,
       scaling equivariance for Condition 1, invariance of Conditions 2 and 3,
@@ -2011,6 +2047,9 @@ results:
       scored: '2026-09-18'
       by: session-139 (repository; no independent evaluator, see composition)
     novelty: apparently-novel
+    builds_on:
+      credit: [Burns, Massaccesi]
+      source_keys: ['[Burns–Massaccesi n17]']
     composition: >-
       Primary at n = 18: one certificate, one accepted verdict, the bound being the
       container side directly, with no monotonicity or composition step between the
@@ -2084,6 +2123,9 @@ results:
       scored: '2026-09-19'
       by: session-140 (repository; no independent evaluator, see composition)
     novelty: apparently-novel
+    builds_on:
+      credit: [Burns, Massaccesi]
+      source_keys: ['[Burns–Massaccesi n17]']
     composition: >-
       Primary at n = 18: one certificate, one accepted verdict, the bound being the
       container side directly, with no monotonicity or composition step between the
@@ -2158,6 +2200,9 @@ results:
       scored: '2026-09-19'
       by: session-141 (repository; no independent evaluator, see composition)
     novelty: apparently-novel
+    builds_on:
+      credit: [Burns, Massaccesi]
+      source_keys: ['[Burns–Massaccesi n17]']
     composition: >-
       Primary at n = 18: one certificate, one accepted verdict, the bound being the
       container side directly, with no monotonicity or composition step between the
@@ -2232,6 +2277,9 @@ results:
       scored: '2026-09-19'
       by: session-141 (repository; no independent evaluator, see composition)
     novelty: apparently-novel
+    builds_on:
+      credit: [Burns, Massaccesi]
+      source_keys: ['[Burns–Massaccesi n17]']
     composition: >-
       Primary at n = 18: one certificate, one accepted verdict, the bound being the
       container side directly, with no monotonicity or composition step between the
@@ -2703,6 +2751,9 @@ results:
       scored: '2026-09-23'
       by: registration, adopting the 2026-09-23 certificate review's recommendation (repository)
     novelty: apparently-novel
+    builds_on:
+      credit: [Burns, Massaccesi]
+      source_keys: ['[Burns–Massaccesi n17]']
     composition: >-
       Primary at n = 21: one certificate, one accepted verdict, the bound being the
       container side directly, with no monotonicity or composition step between the

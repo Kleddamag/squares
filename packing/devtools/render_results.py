@@ -7,9 +7,11 @@ significance descending, then confirmation descending, then id.
 `devtools/check_results.py` grants the rungs; this file only displays them,
 and the gate fails when the committed view drifts from the register.
 
-This project's results come first. Results by others follow in the lineage their
-sources state, read from the bibliography rather than restated: building on this
-project, crediting it second-hand, independent of it, and published before it began.
+This project's results come first, credited to Levy by name and to the authors each
+rests on directly (`result_credit.credit_line`, from the entry's `builds_on`). Results
+by others follow in the lineage their sources state, read from the bibliography rather
+than restated: building on this project, crediting it second-hand, independent of it,
+and published before it began.
 Within each group the entries still waiting on a replay here (`C` below `C3`) come
 first, since they are the queue. Their credit and published date are shown beside the
 rungs, with the result's standing, derived from the case records and never stored by
@@ -53,6 +55,8 @@ HEADER = """# Results
 
 One row per registered result: this project's first, then results by others grouped
 by the lineage their sources state, each sorted by significance, then confirmation.
+Every credit names people: `X`, or `X after Y` where X's result rests directly on Y's
+proof, method or tool.
 The axes are defined in [`epistemics.md`](../../epistemics.md): `V` is the
 verification the result carries as certified by its own source, `C` how far that
 verification has been independently confirmed here or by a third party, `S` a
@@ -124,10 +128,11 @@ def render() -> str:
     lines = [HEADER]
     lines.append(f"## {OURS}")
     lines.append("")
-    lines.append("| id | n | V | C | S | novelty | claim |")
-    lines.append("| --- | --- | --- | --- | --- | --- | --- |")
+    lines.append("| id | n | credit | V | C | S | novelty | claim |")
+    lines.append("| --- | --- | --- | --- | --- | --- | --- | --- |")
     lines.extend(
-        f"| {record['id']} | {_scope(record)} | {record['verification']} "
+        f"| {record['id']} | {_scope(record)} | {credit_line(record, sources)} "
+        f"| {record['verification']} "
         f"| {record['confirmation']} | S{record['significance']['score']} "
         f"| {record['novelty']} | {claim_cell(record)} |"
         for record in ours

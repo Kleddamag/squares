@@ -1604,7 +1604,10 @@ def test_the_recent_table_splits_method_credit_and_standing() -> None:
     assert (
         credit == 'wand125 <span class="site-cell-quiet">after Daniel, Tokoharu, Levy, …</span>'
     )
-    assert overview_sections.credit_cell("This project") == "This project"
+    assert overview_sections.credit_cell("Levy") == "Levy"
+    assert overview_sections.credit_cell("Levy after Burns, Massaccesi") == (
+        'Levy <span class="site-cell-quiet">after Burns, Massaccesi</span>'
+    )
     chips = overview_sections.standing_chips("second certificate, reported")
     assert chips.count('class="site-chip"') == 2
     assert (

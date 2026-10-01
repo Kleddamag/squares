@@ -15,9 +15,10 @@ an open-review pointer at rung 5), and rejects unknown result ids in the reader
 tier. It holds every `headline` to one table cell that states no
 number its claim does not, dates every result of this project by `established`
 and every result by others by `attribution.published`, never both, and requires
-each entry's `registered` date. Human review owns evidence relevance, claim
-coverage, composition, significance, novelty, and whether a headline says what
-its claim says.
+each entry's `registered` date. It holds a `builds_on`, which puts `after …` in the
+credit of a result of this project, to the sources the result's own evidence cites.
+Human review owns evidence relevance, claim coverage, composition, significance,
+novelty, and whether a headline says what its claim says.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.check_results
@@ -26,7 +27,7 @@ Usage, from `packing/`:
 from __future__ import annotations
 
 import re
-from collections.abc import Iterable, Mapping
+from collections.abc import Iterable, Mapping, Sequence
 from datetime import date
 from pathlib import Path, PurePosixPath
 from typing import Any
@@ -398,6 +399,48 @@ def attribution_problems(record: dict, sources: dict[str, dict]) -> list[str]:
     return problems
 
 
+def builds_on_problems(
+    record: dict, sources: Mapping[str, Mapping[str, Any]], cited: Sequence[Mapping[str, Any]]
+) -> list[str]:
+    """What is wrong with a result's `builds_on`: whose work this project's result rests on.
+
+    The field is what puts `after …` in a result's credit, so it may say only what the
+    record already holds. It belongs to a result of this project, since a result by
+    others takes its whole credit line from the bibliography. Each source it names is
+    one an evidence entry the result cites already names as its `source_key`, and each
+    credited name is an author of one of those sources.
+    """
+    builds_on = record.get("builds_on")
+    if not builds_on:
+        return []
+    rid = record["id"]
+    if record.get("attribution"):
+        return [
+            f"{rid}: a result by others takes its credit from the bibliography, not builds_on"
+        ]
+    problems: list[str] = []
+    evidenced = {entry.get("source_key") for entry in cited}
+    authors: set[str] = set()
+    for key in builds_on["source_keys"]:
+        source = sources.get(key)
+        if source is None:
+            problems.append(f"{rid}: builds_on names {key}, which bibliography.yaml lacks")
+            continue
+        authors.update(source["authors"])
+        if key not in evidenced:
+            problems.append(
+                f"{rid}: builds_on names {key}, which no evidence entry the result cites "
+                "carries as its source_key"
+            )
+    problems.extend(
+        f"{rid}: builds_on credits {name}, who is not an author of "
+        f"{', '.join(builds_on['source_keys'])}"
+        for name in builds_on["credit"]
+        if name not in authors
+    )
+    return problems
+
+
 def recent_evidence(entry: Mapping[str, Any], sources: Mapping[str, Mapping[str, Any]]) -> bool:
     """Whether an evidence entry carries a result the register must hold: this project's
     own new result, or another's from a source dated on or after `RECENT_SINCE`."""
@@ -612,6 +655,7 @@ def main() -> int:
             )
 
         problems.extend(attribution_problems(record, sources))
+        problems.extend(builds_on_problems(record, sources, cited))
         problems.extend(registered_problems(record, str(register["last_reviewed"])))
         problems.extend(headline_problems(record))
         problems.extend(established_problems(record, register["last_reviewed"]))

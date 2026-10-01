@@ -375,11 +375,7 @@ def load() -> Overview:
             Result(
                 r,
                 group=title,
-                credit=(
-                    credit_line(r, sources).replace(r"\|", "|")
-                    if r.get("attribution")
-                    else "This project"
-                ),
+                credit=credit_line(r, sources).replace(r"\|", "|"),
                 ours=not r.get("attribution"),
                 records=_records(r, evidence),
                 standing=standing(r, records),

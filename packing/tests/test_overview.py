@@ -1059,6 +1059,18 @@ def test_the_text_tokens_are_declared_in_one_place() -> None:
     assert "{{PAPER_TYPE_CSS}}" in EXPLAINER_SHELL.read_text(encoding="utf-8")
 
 
+def test_the_shared_stylesheet_states_the_provers_two_palette_colours() -> None:
+    """The first paper's stylesheet was a block of its shell, where the renderer filled
+    in the two colours the prover's canvases also draw with. As a file of its own it
+    states them, so they are held to the renderer's here and cannot drift apart."""
+    from devtools import render_explainer  # noqa: PLC0415
+
+    css = EXPLAINER_STYLE.read_text(encoding="utf-8")
+    assert f"  --cert-below: {render_explainer.BELOW_ONE};\n" in css
+    assert f"  --cert-near: {render_explainer.NEAR_LIMIT};\n" in css
+    assert "{{" not in css
+
+
 def test_the_nav_ends_in_an_accessible_theme_control() -> None:
     """The gear is a named button that opens a menu of three radio items, System, Light
     and Dark, and it is the bar's last item."""

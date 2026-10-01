@@ -5,7 +5,7 @@ title: "W3: transfer recent optimality methods to n17 and low-n targets"
 kind: epic
 status: in_progress
 priority: 1
-version: 22
+version: 23
 spec_path: docs/project/specs/active/plan-2026-10-01-post-optimality-w3-session.md
 labels: []
 dependencies: []
@@ -29,8 +29,9 @@ child_order_hints:
   - is-01m3vbz2nzpytfca83bf2src51
   - is-01m3vgmc6hkrq861aymmpgdm9q
   - is-01m3vhasceg2r5tvd7vfwt3bb0
+  - is-01m3vhc8zz50245mzydjd1eqac
 created_at: 2026-10-01T08:38:55.840Z
-updated_at: 2026-10-01T10:49:29.709Z
+updated_at: 2026-10-01T10:50:18.489Z
 ---
 Plan and execute a fresh W3 session using T-060 n11 global capture and exact endpoint methods, T-052 n21 mixed measures, recent n17 certificates, and current upper-bound assurance. Prioritize n17; preserve separate exploration, preregistration, execution and W2 acceptance. Planning is on codex/w3-post-optimality-transfer stacked over PR261. No new proof claimed by planning.
 

@@ -1,6 +1,6 @@
 # Synopsis: The `s(n)` Program
 
-**Date:** 2026-09-30
+**Date:** 2026-10-01
 
 **Status:** Living document, revised whenever a result lands.
 
@@ -8,7 +8,8 @@
 what it is doing next.
 
 **Evidence cutoff:** Includes the independently audited T-060 global proof replay of
-2026-09-30. Earlier record-state and validation revisions are retained in
+2026-09-30 and Session 165’s certified $n = 17$ upper endpoint of 2026-10-01. Earlier
+record-state and validation revisions are retained in
 [Session 128](packing/campaign/agent-sessions/session-128-research-state-rollup.md).
 
 > Every number here also appears in a schema-validated artifact in this repository, or
@@ -69,9 +70,9 @@ The core exposition begins with T-018’s visual proof of $s(11) \ge 3.81$, then
 the threshold charges and dilation argument that strengthen it.
 T-026 established the earlier first-party bound
 $s(11) \ge 955000 \cdot \sqrt{518400042893309449}/179696714646249 = 3.8264474\ldots$ at
-`V4/C5`. T-033 tightens the same retained family to
+`V3/C3`. T-033 tightens the same retained family to
 $s(11) \ge 955000 \cdot \sqrt{2073600042893309449}/359341754646249 = 3.8269975\ldots$ at
-`V4/C3`. The exact value is now $s(11) = T = 3.877083590022814\ldots$: T-060’s
+`V3/C3`. The exact value is now $s(11) = T = 3.877083590022814\ldots$: T-060’s
 independently replayed global lower bound matches T-011’s exact Trump witness.
 Kleddamag’s $s(11) > 31/8 = 3.875$ remains the earlier verified T-037 bound, and Wang
 and Li’s scaling of its certificate, $s(11) > 3875000000/999999999$ (T-061), a later
@@ -89,12 +90,12 @@ These now supply the verified Frontier bounds; the records retain literal source
 and state the verification methods separately.
 The
 [complete native n11 decision](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md)
-adds a distinct interval coverage method and supports `V4/C4` for Kleddamag’s strict
-$3.875$ bound, with no new bound or C5 claim.
+adds a distinct interval coverage method for Kleddamag’s strict $3.875$ bound (T-037,
+`V3/C3`), with no new bound.
 The
 [R052 review of 25 September](docs/project/reviews/review-2026-09-25-n17-guzhou-r052.md)
 verifies Guzhou0806’s strict $s(17) > 231001/50000 = 4.62002$, built with AI assistance
-on Kleddamag’s `v1.0.0` mixed point/threshold architecture, at `V4/C3`. All four of the
+on Kleddamag’s `v1.0.0` mixed point/threshold architecture, at `V3/C3`. All four of the
 source’s replay modes pass here, but both full sweeps are one event-cell method and the
 native interval route refuses the certificate at its engine ceilings, so there is no
 method-distinct decision.
@@ -104,21 +105,21 @@ proved $s(17) > 232001/50000 = 4.64002$, exactly $0.02$ above R052, on the same 
 architecture extended with weighted thresholds and pairwise-intersecting winning-subset
 rules. Both of its complete checkers pass here and agree on all 2,048 intervals, with a
 counting surplus of 5,629 units of $10^{-9}$; they share one event-cell method, and the
-native parent-core route cannot yet represent the new features, so it is `V4/C3`, and
+native parent-core route cannot yet represent the new features, so it is `V3/C3`, and
 its [proof review](docs/project/reviews/review-2026-09-27-n17-kleddamag-4640020.md) is a
 separate record. It supplied the verified Frontier bound for $n = 17$ on 27 September.
 The same day $s(17) > 466001/100000 = 4.66001$ followed, $0.01999$ above it: Kleddamag,
 building on Squares Project (Joshua Levy), Mira and Guzhou0806, an exact
 weighted-certificate proof over 2,168 orientation intervals on the same two checkers.
 Both pass here and agree on every interval, with a counting surplus of 54,340 units of
-$10^{-9}$, again at `V4/C3`. It supplied the verified Frontier bound for $n = 17$ from
+$10^{-9}$, again at `V3/C3`. It supplied the verified Frontier bound for $n = 17$ from
 27 to 29 September; its
 [proof review](docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md) is a
 separate record.
 Guzhou0806’s R068 of 28 September, continuing that charge with one added
 four-site point orbit over 4,991 intervals, proves $s(17) > 116511/25000 = 4.66044$,
 exactly $0.00043$ higher; its two checkers’ complete replays pass here and agree with
-the published ledgers, at `V4/C3`, and it supplies the verified bound, $0.0151$ below
+the published ledgers, at `V3/C3`, and it supplies the verified bound, $0.0151$ below
 Bidwell’s packing
 ([review](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md)). R067,
 $233009/50000$, was replayed beside it.
@@ -129,12 +130,12 @@ credit beside this repository’s `V` and `C`.
 The same intake took in three more sources.
 Evan Daniel’s `evand/square-packing`, building on Sam Burns’s and Gustavo Massaccesi’s
 weighted exact-rational covering method, proves $s(32) = 6$ by a zero-margin weighted
-closed cover of $[0,6]^2$, at `V4/C4` on complete replays here of its exact checker and
+closed cover of $[0,6]^2$, at `V3/C3` on complete replays here of its exact checker and
 its binary64-enclosure `zmx2`, which share their author, point test and symmetry fold
-and differ in how they close germs, and $s(12) \ge 15680/3951$ at `V4/C4`; its
+and differ in how they close germs, and $s(12) \ge 15680/3951$ at `V3/C3`; its
 $s(21) \ge 5000/1001$ was superseded by the same author’s mixed covers of 27 September,
 weighted points plus mass on interior grid-line segments, which prove $s(21) = 5$ and
-$s(45) = 7$, both `V4/C3`. Its case-free proof of Bentz’s $s(13) = 4$ is recorded as a
+$s(45) = 7$, both `V3/C3`. Its case-free proof of Bentz’s $s(13) = 4$ is recorded as a
 report. wand125’s rectangle-density certificates, 44 at `ad43d29` and 50 standing at
 `39d8ecc` for $n = 18$ to $95$, built with Tokoharu’s solver and decided by Tokoharu’s
 reviewed interval verifier, are verified at $n = 27$, $28$ by monotonicity, and $31$,
@@ -145,7 +146,10 @@ Guzhou0806’s continuation of R052, $s(17) > 4.62003$, superseded by `v1.1.0`, 
 retained as a publication record.
 The [results register](packing/frontier/RESULTS.md) and the site’s
 [results table](https://jlevy.github.io/squares/all-results.html) give the credit for
-each.
+each. The rungs above are the register’s, under the ladder in force since 2026-09-30.
+Dated sections further down keep the rungs they were written with;
+[`epistemics.md`](epistemics.md#what-changed-on-2026-09-30) says how the two ladders
+correspond.
 
 Every result this project has registered, in the reading order its significance scores
 set. The full claims, the rationale behind each score, and the next evidence-improving
@@ -3972,7 +3976,7 @@ The earlier lower-bound program passed Stromquist’s bound on 2026-09-04:
 |  | value | source |
 | --- | --- | --- |
 | Best known packing (upper bound) | $3.877083590022814\ldots$ (exactly $T$) | Walter Trump, 1979; exact witness [T-011](packing/frontier/RESULTS.md) |
-| Best certified lower bound | `root(P_trump11, 3.87708359002281417730789706010096) = 3.877083590022814…` (exactly $T$) | Queuingtheorydotcom’s proof, independently replayed and audited here as [T-060](packing/frontier/RESULTS.md), `V4/C5` |
+| Best certified lower bound | `root(P_trump11, 3.87708359002281417730789706010096) = 3.877083590022814…` (exactly $T$) | Queuingtheorydotcom’s proof, independently replayed and audited here as [T-060](packing/frontier/RESULTS.md), `V3/C3` |
 | Bound gap | $0$ | Matching exact lower and upper bounds |
 
 ![Walter Trump’s exact eleven-square packing.](packing/atlas/rendering/trump11-overview.svg)
@@ -4477,7 +4481,7 @@ packing. [T-011](packing/frontier/RESULTS.md) verifies the algebraic witness and
 [T-060](packing/frontier/RESULTS.md) supplies the matching global lower bound for
 arbitrarily rotated unit squares with disjoint interiors and boundary contact allowed.
 The latter is Queuingtheorydotcom’s Astra-assisted proof, building on this project and
-Kleddamag, independently replayed and mathematically audited here at `V4/C5/S5`.
+Kleddamag, independently replayed and mathematically audited here at `V3/C3/S5`.
 
 The [proof review](docs/project/reviews/review-2026-09-29-n11-optimality.md) maps the
 2,184 canonical patterns, 2,180 exclusions, four symmetric survivors, exact D4 bridge,

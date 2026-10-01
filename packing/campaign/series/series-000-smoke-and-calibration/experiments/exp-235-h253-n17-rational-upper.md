@@ -17,7 +17,7 @@ experiment:
     engine: import_half_angle_witness and existing stock and independent rational checkers
     assurance: verified
     method: exact-algebraic
-    host_system: macOS ARM64, project Python3.14, one worker; load141 on10cores and zero idle at launch preflight
+    host_system: macOS ARM64, project Python3.14, one worker; load141 on10cores and zero idle at 10:33 preflight; actual launch load retained in provenance.log
   instance: {axis: n, point: 17, role: target}
   method:
     control: Exact four-square grid accepted and overlapping two-square fixture rejected by both local checkers; synthetic rational rotation and metadata regressions passed before target conversion.
@@ -27,7 +27,7 @@ experiment:
     operator: Codex Session165 coordinator
     entry_point: packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/replay.sh
     command: cd packing && gtimeout --signal=TERM --kill-after=5s 600s bash campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/replay.sh campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001
-    budget: 90 seconds per command, 600 seconds for the supervised whole run, one worker, 1GiB heap limit and 10MiB file limit.
+    budget: 90 seconds per command, 600 seconds for the supervised whole run, one worker, requested 1GiB heap limit where supported and 10MiB file limit.
     record: packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001
   lease:
     expires: '2026-10-01T11:00:00Z'
@@ -52,6 +52,18 @@ portable total-RSS ceiling; `/usr/bin/time -l` measures actual peak resident mem
 The run uses no worker pool.
 A timeout, crash or guard refusal retains its outputs and stops the sequence without a
 scientific acceptance.
+
+## Premeasurement Launch Refusal
+
+The first launcher at `245fd2782` stopped before any control or target operation because
+macOS refused the data-segment limit with `Invalid argument`. The
+[raw launch refusal](../results/exp-235-n17-rational-upper/premeasurement-launch-001.log)
+is retained. The revised launcher records this unsupported guard explicitly, consistent
+with H-253’s preregistered memory cap where supported.
+It keeps the frozen scientific criterion and mandatory wall, worker and file-size
+ceilings. No target data motivated this portability correction.
+Actual RSS will be measured; this platform does not provide the requested hard memory
+guard through this shell API.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -11,8 +11,15 @@ fi
 test -w "$TMPDIR"
 export PYTHONDONTWRITEBYTECODE=1
 unset PYTHONOPTIMIZE
-ulimit -d 1048576
-ulimit -f 20480
+memory_guard=enforced-data-limit-kib-1048576
+if ! (ulimit -d 1048576) 2>/dev/null; then
+  memory_guard=unavailable-platform-data-limit
+else
+  ulimit -d 1048576
+fi
+ulimit -f 10240
+git diff --quiet
+git diff --cached --quiet
 output=$1
 mkdir -p "$output"
 source_dir=resources/web/n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound
@@ -25,7 +32,8 @@ printf '%s  %s\n' 24e296f5995abc9424e2d8d39ea0a8e44953b919430a04f006fa84c56fef45
   git status --short
   .venv/bin/python3 -c 'import sys; print(sys.version); assert __debug__ and not sys.flags.optimize'
   uptime
-  printf 'workers=1\ncommand_timeout_seconds=90\nheap_limit_kib=1048576\nfile_limit_blocks=20480\n'
+  printf 'workers=1\ncommand_timeout_seconds=90\nfile_limit_kib=10240\n'
+  printf 'memory_guard=%s\n' "$memory_guard"
 } > "$output/provenance.log"
 printf 'step\texit\texpected\n' > "$output/exits.tsv"
 run() {

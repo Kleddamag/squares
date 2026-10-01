@@ -355,6 +355,53 @@ body {
 .kpress :is(a, button).site-card:focus-visible {
   background: var(--site-wash);
 }
+/* A card with a foot (`link_card(foot=)`): a box holding the card's link and then a
+   closing line with links of its own, a project's tally of results, since a link cannot
+   hold a link. The box is the card: it takes the border and the size, and washes and
+   shows its corner icon while its link is hovered or focused, as a card that is itself
+   the link does. The link carries the card's padding; the foot stands at the card's
+   lower edge, so the tallies of a row line up whatever the notes above them run to. */
+.kpress div.site-card.site-card-footed {
+  --site-card-pad-end: 2.2rem;
+  gap: 0;
+  padding: 0;
+  position: relative;
+  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
+}
+.kpress .site-card-footed > .site-card-main {
+  color: inherit;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: var(--site-card-pad-block) var(--site-card-pad-end) 0.5rem var(--site-card-pad-start);
+  text-decoration: none;
+}
+.kpress .site-card-footed:has(> .site-card-main:is(:hover, :focus-visible)) {
+  background: var(--site-wash);
+}
+.kpress div.site-card.site-card-footed::after {
+  color: var(--kpress-doc-muted);
+  inset-block-start: 0.8rem;
+  inset-inline-end: 0.8rem;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity var(--site-hover-duration) var(--site-hover-easing);
+}
+.kpress .site-card-footed:has(> .site-card-main:is(:hover, :focus-visible))::after {
+  opacity: 1;
+}
+.kpress .site-card-footed > .site-card-foot {
+  color: var(--site-support-color);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  line-height: 1.4;
+  margin: 0;
+  padding: 0 1rem var(--site-card-pad-block) var(--site-card-pad-start);
+}
+
 /* ---------- Arrows ----------
    Every arrow on the site is this one drawing, never a typed character: the text face
    has no glyphs for most arrows, and each browser drew them from a different fallback
@@ -780,6 +827,11 @@ body {
   display: inline-flex;
   gap: 0.35rem;
   align-items: baseline;
+}
+/* A preset-only control (`data-preset`) is out of the bar until a link sets it: the
+   label's own display would otherwise show it. */
+.site-table-tools label[hidden] {
+  display: none;
 }
 .site-table-tools :is(select, input) {
   background: var(--kpress-doc-bg, transparent);

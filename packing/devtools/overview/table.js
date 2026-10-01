@@ -19,6 +19,9 @@
 //   <input type="number" data-filter="n" data-bound="covers">
 //                                                 row's data-n, a list of numbers and
 //                                                 ranges ("27 28 31-32"), holds the value
+//   <select data-filter="project" data-bound="has">
+//                                                 row's data-project, a list of names a
+//                                                 space apart, has the value among them
 // An empty value passes every row, and filters compose: a row shows when it passes every
 // one. A control's state in the HTML is its default, so a bar can start filtered, with
 // the rows it hides already `hidden` and its count already written. An age is the one
@@ -31,8 +34,11 @@
 //
 // The bar's `.site-count` shows how many rows remain. A link can open the table
 // filtered: each query parameter presets the control it names, `status=proved`,
-// `recent=true`, `n-max=100` for a bound, `n=11` for a `covers` control, or `age=180`
-// for an age, so a card can point at a filtered view.
+// `recent=true`, `n-max=100` for a bound, `n=11` for a `covers` control, `age=180`
+// for an age, or `project=evand-square-packing` for a `has` control, so a card can point
+// at a filtered view. A control marked `data-preset` is for such links alone: its label
+// is `hidden` in the HTML and shows only while the control filters, so a reader sees
+// what narrows the table and can set it back.
 // The pure functions are published
 // on `globalThis.SiteTable` for the Node tests; nothing else leaves this file.
 
@@ -131,6 +137,8 @@
           const wanted = Number.parseFloat(filter.value);
           return Number.isNaN(wanted) || covers(actual ?? "", wanted);
         }
+        case "has":
+          return filter.value === "" || (actual ?? "").split(/\s+/).includes(filter.value);
         default:
           return true;
       }
@@ -188,7 +196,7 @@
     if (bound === "age") {
       return bound;
     }
-    return bound && bound !== "covers" ? `${key}-${bound}` : key;
+    return bound && bound !== "covers" && bound !== "has" ? `${key}-${bound}` : key;
   }
 
   /**
@@ -218,7 +226,20 @@
    * What each `data-bound` makes of its control.
    * @type {Readonly<Record<string, SiteTableFilter["kind"]>>}
    */
-  const BOUNDS = { min: "min", max: "max", covers: "covers" };
+  const BOUNDS = { min: "min", max: "max", covers: "covers", has: "has" };
+
+  /**
+   * Show each preset-only control's label while the control filters, and only then.
+   * @param {Element} tools
+   */
+  function showPresets(tools) {
+    for (const control of tools.querySelectorAll("[data-preset]")) {
+      const label = control.closest("label");
+      if (label instanceof HTMLElement && control instanceof HTMLSelectElement) {
+        label.hidden = control.value === "";
+      }
+    }
+  }
 
   /**
    * The id the page's fragment names: "" for none, or for one that does not decode.
@@ -288,6 +309,7 @@
       if (!tools) {
         return;
       }
+      showPresets(tools);
       const filters = readFilters(tools, localDay(new Date()));
       const target = fragmentTarget();
       const rows = Array.from(body.rows);

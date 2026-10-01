@@ -47,6 +47,12 @@ void test("filters: equals, flag and an n range", () => {
   assert.ok(table.rowMatches(row, [{ key: "status", kind: "equals", value: "" }]));
   assert.ok(table.rowMatches(row, [{ key: "status", kind: "equals", value: "open" }]));
   assert.ok(!table.rowMatches(row, [{ key: "status", kind: "equals", value: "proved" }]));
+  const listed = { project: "alpha-one beta-two" };
+  assert.ok(table.rowMatches(listed, [{ key: "project", kind: "has", value: "" }]));
+  assert.ok(table.rowMatches(listed, [{ key: "project", kind: "has", value: "beta-two" }]));
+  assert.ok(!table.rowMatches(listed, [{ key: "project", kind: "has", value: "beta" }]));
+  assert.ok(!table.rowMatches(row, [{ key: "project", kind: "has", value: "beta-two" }]));
+  assert.equal(table.controlParam("project", "has"), "project");
   assert.ok(table.rowMatches(row, [{ key: "open", kind: "flag", value: "true" }]));
   assert.ok(!table.rowMatches(row, [{ key: "recent", kind: "flag", value: "true" }]));
   assert.ok(table.rowMatches(row, [{ key: "recent", kind: "flag", value: "false" }]));
@@ -140,6 +146,7 @@ const FAILING = {
   max: { value: "0" },
   since: { value: "2026-10-01" },
   covers: { value: "44" },
+  has: { value: "another-project" },
 };
 
 void test("filters compose: a row shows only when it passes every one", () => {
@@ -151,6 +158,7 @@ void test("filters compose: a row shows only when it passes every one", () => {
     standing: "current-best",
     n: "45",
     date: "2026-09-27",
+    project: "alpha-one beta-two",
   };
   /** @type {SiteTableFilter[]} */
   const all = [
@@ -161,6 +169,7 @@ void test("filters compose: a row shows only when it passes every one", () => {
     { key: "source", kind: "equals", value: "others" },
     { key: "n", kind: "covers", value: "45" },
     { key: "date", kind: "since", value: "2026-09-01" },
+    { key: "project", kind: "has", value: "beta-two" },
   ];
   assert.ok(table.rowMatches(row, all));
   all.forEach((filter, index) => {

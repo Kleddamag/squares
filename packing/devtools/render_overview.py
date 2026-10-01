@@ -608,7 +608,7 @@ def overview_page() -> Page:
         "README_PROGRESS": site_documents.overview_progress(),
         "NEW_ISSUE_URL": NEW_ISSUE_URL,
         "DOCUMENT_CARDS": overview_sections.document_cards(),
-        "OTHER_PROJECTS": overview_sections.other_project_cards(),
+        "OTHER_PROJECTS": overview_sections.other_project_cards(overview),
         "ATLAS_GRID": overview_sections.atlas_grid(),
         "ATLAS_CARDS": overview_sections.atlas_cards(),
         "PAGE_CARDS": overview_sections.page_cards(),

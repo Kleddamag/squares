@@ -598,8 +598,8 @@ def test_each_card_size_is_a_column_of_its_own_grid() -> None:
 #: A card, as its opening tag's size and everything after its caps label: the headline,
 #: the note and a direct card's address.
 _CARD_ELEMENT = re.compile(
-    r'<(button|a)\b[^>]*class="site-card[ "][^>]*data-card-size="([^"]*)"[^>]*>'
-    r'.*?<span class="site-card-value">(.*?)</\1>',
+    r'<(button|a|div)\b[^>]*class="site-card[ "][^>]*data-card-size="([^"]*)"[^>]*>'
+    r'.*?<span class="site-card-value">(.*?)</(?:button|a)>',
     re.DOTALL,
 )
 
@@ -620,7 +620,7 @@ def test_every_card_names_one_of_three_sizes(page: str) -> None:
     assert overview_sections.CARD_SIZES == ("small", "medium", "large")
     sections = _card_sections(page)
     assert sum(len(cards) for cards in sections.values()) == len(
-        re.findall(r'<(?:button|a)\b[^>]*class="site-card[ "]', page)
+        re.findall(r'<(?:button|a|div)\b[^>]*class="site-card[ "]', page)
     ), "a card with no size"
     assert [len(cards) for cards in sections.values()] == [
         len(overview_sections.PAGES),
@@ -1039,12 +1039,22 @@ def test_other_projects_include_every_source_repository_the_record_reviews() -> 
     assert not any("jlevy/squares" in url for url in listed)
 
 
-def test_other_project_cards_are_links_showing_their_address(page: str) -> None:
-    """Each other project's card is the link itself, with no popover, and shows its
-    address beside GitHub's mark (or the host's saved favicon)."""
+def test_other_project_cards_are_links_showing_their_address(
+    page: str, overview: overview_data.Overview
+) -> None:
+    """Each other project's card links the project, with no popover, and shows its
+    address beside GitHub's mark (or the host's saved favicon). A card with a tally of
+    results is a box around that link and the tally; one with none is the link itself
+    (`tests/test_site_project_tallies.py` holds the order, the tallies and their links)."""
     section = page.split('id="other-square-packing-projects"', 1)[1].split("<h2", 1)[0]
-    cards = re.findall(r'<a class="site-card site-card-link" href="([^"]+)"(.*?)</a>', section)
-    assert [url for url, _ in cards] == [url for url, _, _ in overview_sections.OTHER_PROJECTS]
+    cards = re.findall(
+        r'<a class="site-card(?: site-card-link|-link site-card-main)" href="([^"]+)"(.*?)</a>',
+        section,
+    )
+    assert [url for url, _ in cards] == [
+        url for url, _ in overview_sections.ranked_projects(overview)
+    ]
+    assert sorted(url for url, _ in cards) == sorted(overview_sections.project_urls())
     for url, body in cards:
         assert url.removeprefix("https://") in body.replace("<wbr>", ""), url
         assert 'class="site-link-icon"' in body, url
@@ -4157,6 +4167,10 @@ RESULT_FILTERS = [
     ("source", ""),
     ("n", "covers"),
     ("date", "age"),
+    # The two preset-only controls, out of the bar until a link sets them: the listed
+    # project a row is attributed to, and its significance exactly.
+    ("project", "has"),
+    ("s", ""),
 ]
 
 #: The bar's one checkbox, as `result_filters` writes it: its own label, after Standing.
@@ -4166,7 +4180,7 @@ HIDE_SUPERSEDED = (
 
 _COUNT = re.compile(r'(<span class="site-count"[^>]*>)[^<]*</span>')
 _SELECTED = re.compile(
-    r'<select data-filter="([a-z]+)"[^>]*>'
+    r'<select data-filter="([a-z]+)"(?![^>]*data-preset)[^>]*>'
     r'(?:<option value="[^"]*">[^<]*</option>)*<option value="([^"]*)" selected>'
 )
 
@@ -4212,7 +4226,10 @@ def test_both_tables_of_results_carry_the_identical_filter_set(page: str, result
     assert _controls(here) == _controls(there) == RESULT_FILTERS
     everything = {"s": "", "v": "", "c": "", "kind": "", "standing": "", "source": ""}
     for bar in (here, there):
-        assert bar.count(" selected>") == bar.count("<select ") == 6
+        # Six selects of the bar's own, each with its starting choice marked, and the two
+        # preset-only selects (`tests/test_site_project_tallies.py`), which start at All.
+        assert bar.count(" selected>") == bar.count("<select ") == 8
+        assert bar.count(" data-preset>") == 2
         assert bar.count("<input ") == 3
         assert 'type="date"' not in bar
         assert bar.count('type="checkbox"') == 1
@@ -4314,8 +4331,9 @@ def test_every_facet_a_result_row_carries_has_a_filter_and_every_filter_a_facet(
     page: str, results: str, overview: overview_data.Overview
 ) -> None:
     """A row of either table carries the same facets, each from the register: whose
-    result it is, its V, C and S levels, its standing, whether that is a current best,
-    its cases and its date. The bar has a control for each and no control without one."""
+    result it is, its V, C and S levels, its kind, the listed projects it is attributed
+    to, its standing, whether that is a current best, its cases and its date. The bar
+    has a control for each and no control without one."""
     filtered = {key for key, _ in RESULT_FILTERS}
     recent = _recent_table(page)
     listed = {r.id for r in overview_sections.recent_results(overview)}
@@ -4327,6 +4345,7 @@ def test_every_facet_a_result_row_carries_has_a_filter_and_every_filter_a_facet(
             "c": record["confirmation"][1:],
             "s": str(record["significance"]["score"]),
             "kind": record["kind"],
+            "project": " ".join(overview_sections.result_projects(result)),
             "standing": overview_sections.standing_key(result.standing),
             "current": "false" if result.standing == "superseded" else "true",
             "n": overview_sections.result_cases(result),

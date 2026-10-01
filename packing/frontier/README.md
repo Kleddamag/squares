@@ -307,6 +307,13 @@ certificate’s replay command.
    1440-step certificate, the dilation-limit record that turns its shrink into the
    registered bound, and the 720-step pair retained as its control.
 
+   **Say whose work the result rests on.** The result is credited `Levy`. Where it rests
+   directly on another’s proof, method or tool, give the row a `builds_on` with the
+   names to print after `Levy after` and the bibliography keys they come from, and name
+   those keys as the `source_key` of the evidence entries that use them; the checker
+   refuses a name the cited evidence does not support.
+   A packing or theorem the result is about is its subject and is not listed.
+
 3. **Keep first-party certificate packages under `cases/`.** `T-026`’s certificates,
    limit records, proof note, and verifier are all in
    [`../cases/n11_threshold_certificate/`](../cases/n11_threshold_certificate/), one

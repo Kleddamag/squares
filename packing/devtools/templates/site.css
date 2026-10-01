@@ -1342,24 +1342,139 @@ body {
   margin-block-start: 0.5rem;
 }
 
-/* A dimension card lists its levels, highest first: the chip, then the rubric's
-   meaning, one level to a line under the question the dimension answers. */
-.kpress .site-cards-dimensions .site-card-note {
-  display: grid;
-  gap: 0.3rem;
+/* ---------- The rating ladders ----------
+   Verification at a Glance is one diagram (paper-design.md, Rating ladders): a column
+   for each scored dimension, a row for each level, the highest at the top, so the rungs
+   of the three ladders line up. It is a grid with table roles, in the wide track, and
+   it stands the tables' own space clear of the text. Every rung is the same height: its
+   description is a box of exactly two lines, and its chip and count are a line each. */
+.site-ladders-frame {
+  container: site-ladders / inline-size;
 }
-.site-level-question {
+@media screen {
+  .site-ladders-frame {
+    margin-block: var(--site-table-space);
+  }
+}
+.site-ladders {
+  --site-ladders-leading: 1.4;
+  --site-ladders-line: calc(var(--site-font-size-note) * var(--site-ladders-leading));
+  /* The rail holds a chip over its count, "no result yet" at the widest. */
+  --site-ladders-rail: 6.5rem;
+  --site-ladders-gap: 0.5rem;
+  /* The narrowest a description is ever set: `SHORT_MEANING_LINE` characters a line. */
+  --site-ladders-meaning-min: 13.5rem;
+  --site-ladders-inset: 1rem;
+  display: grid;
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  line-height: var(--site-ladders-leading);
+  position: relative;
+}
+.site-ladders > [role="row"] {
+  display: contents;
+}
+/* The level a row stands for is said by its chips; its header is for a screen reader. */
+.site-ladders-level {
+  block-size: 1px;
+  clip-path: inset(50%);
+  inline-size: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+}
+.site-ladders-head {
+  border-block-end: 1px solid var(--kpress-doc-text);
+  padding: 0 var(--site-ladders-inset) 0.6rem 0;
+}
+.kpress .site-ladders .site-ladders-name {
   color: var(--kpress-doc-text);
-  margin-block-end: 0.2rem;
+  display: block;
+  font-size: 1.15em;
+  font-weight: var(--site-font-weight-sans-medium);
+  line-height: var(--paper-heading-leading);
+  margin-block-end: 0.3rem;
 }
-.site-level {
-  align-items: baseline;
+.kpress .site-ladders .site-ladders-name:is(:hover, :focus-visible) {
+  color: var(--kpress-doc-accent);
+}
+.site-ladders-question {
+  color: var(--site-support-color);
+  display: block;
+}
+.site-ladders-cell {
+  border-block-end: 1px solid var(--kpress-doc-border);
+  container-type: inline-size;
+  padding: 0.6rem var(--site-ladders-inset) 0.6rem 0;
+}
+/* A rung in a narrow cell: its chip, then its count, on one line, and the description
+   under them across the whole cell. */
+.site-ladders-rung {
+  align-items: center;
+  column-gap: var(--site-ladders-gap);
   display: grid;
-  gap: 0.5rem;
-  grid-template-columns: 2.2rem 1fr;
+  grid-template:
+    "chip count" auto
+    "meaning meaning" auto / auto minmax(0, 1fr);
 }
-.site-level .site-chip {
+.site-ladders-rung .site-chip {
+  grid-area: chip;
+  justify-self: start;
+  min-inline-size: 2.2rem;
   text-align: center;
+}
+.site-ladders-count {
+  color: var(--site-support-color);
+  font-variant-numeric: tabular-nums;
+  grid-area: count;
+  white-space: nowrap;
+}
+.site-ladders-meaning {
+  block-size: calc(2 * var(--site-ladders-line));
+  grid-area: meaning;
+}
+/* A rung with room, 20.5rem (the rail, the gap and the least description): the chip over
+   its count in a rail and the description beside them, its first line level with the
+   chip's letters, which the chip's own margin sets down. */
+@container (inline-size >= 20.5rem) {
+  .site-ladders-rung {
+    align-items: start;
+    grid-template:
+      "chip meaning" auto
+      "count meaning" minmax(0, 1fr) / var(--site-ladders-rail) minmax(0, 1fr);
+  }
+  .site-ladders-meaning {
+    margin-block-start: 0.15rem;
+  }
+}
+/* Below 44rem three columns would set a description narrower than its minimum, so each
+   ladder is a block of its own, significance first: its head, then its rungs from the
+   top. The order is the grid's; the markup stays a table read level by level. A ladder's
+   missing rung takes no room. */
+@container site-ladders (inline-size < 44rem) {
+  .site-ladders {
+    --site-ladders-inset: 0;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .site-ladders [data-ladder="V"] {
+    order: 1;
+  }
+  .site-ladders [data-ladder="C"] {
+    order: 2;
+  }
+  .site-ladders-head ~ .site-ladders-head {
+    margin-block-start: 1.6rem;
+  }
+  .site-ladders-empty {
+    block-size: 1px;
+    border: 0;
+    clip-path: inset(50%);
+    inline-size: 1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+  }
 }
 
 /* The atlas grid: every case's known-best packing in a square cell, numbered beneath.

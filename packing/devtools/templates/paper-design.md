@@ -316,12 +316,12 @@ Every section heading on the site pages and the explainer takes the two section 
 print reads its own values of both (2.8 of the base and 1.3rem), which are the paper’s.
 On the explainer the credits start 2.25rem under the title on screen and 2rem in print.
 
-`--site-table-space` is the space above and below every table.
-A site table (`.site-table`) takes it above its filter bar, which keeps its own 0.5rem
-to the table, and below its wrap; the awaiting-replay disclosure takes it above and
-below itself, its table flush under the summary when open; and a document’s own table,
-which KPress wraps and already sets 2rem from the text, reads the same token, so one
-value moves every table on the site.
+`--site-table-space` is the space above and below every table, and above and below the
+rating ladders. A site table (`.site-table`) takes it above its filter bar, which keeps
+its own 0.5rem to the table, and below its wrap; the awaiting-replay disclosure takes it
+above and below itself, its table flush under the summary when open; and a document’s
+own table, which KPress wraps and already sets 2rem from the text, reads the same token,
+so one value moves every table on the site.
 Where a larger margin meets it, as a section heading’s does below the disclosure, the
 larger one stands.
 
@@ -449,7 +449,8 @@ it.
   or the homepage’s `.site-title`), its subtitle, every section heading (`h2` to `h6`)
   on the site pages, the explainer and the optimality paper, a card’s headline
   (`.site-card-value`), a popover’s (`.site-popover-value`, which a row’s popover, the
-  atlas popover and a result overview’s case all use) and a case record’s title.
+  atlas popover and a result overview’s case all use), a case record’s title and a
+  column’s name in the rating ladders.
   Body text, table cells, notes and the small caps labels (a card’s label, a result
   overview’s section label) keep their own line heights.
   The explainer’s hero title keeps KPress’s 1.05, which its prepared math is fitted to,
@@ -565,10 +566,10 @@ it.
   (`overview_sections.py`), so its lines are one grid; the size is the one its typical
   card’s text asks for, and `tests/test_overview.py` holds the two together.
   The page cards, the atlas cards and the other projects are medium; the documents,
-  whose notes are a line, are small; the dimension cards, which list a whole ladder, are
-  large. A card built without a size (`card()` or `link_card()` with no `size=`) takes
-  the default for its own text: its headline and note, and a direct card’s address,
-  counted as they read, a formula once.
+  whose notes are a line, are small.
+  A card built without a size (`card()` or `link_card()` with no `size=`) takes the
+  default for its own text: its headline and note, and a direct card’s address, counted
+  as they read, a formula once.
 
 - **Card heroes.** Any card, popover or direct, may be headed by a small picture
   (`hero=` on `card()` and `link_card()`, drawn by `card_hero`). The hero runs edge to
@@ -638,10 +639,43 @@ it.
   Under `prefers-reduced-motion: reduce` the duration is 0ms, so colours change at once
   and no arrow moves.
 
-- **Dimension cards.** Verification at a Glance is one card per scored dimension of the
-  rubric, Verification, Confirmation and Significance: the question it answers, then
-  every level as its chip and the rubric’s meaning, read from the tables in
-  `epistemics.md`. Each opens that section of `epistemics.md`.
+- **Rating ladders.** Verification at a Glance is one diagram, `.site-ladders`, which is
+  neither a set of cards nor the shared data table: a column for each scored dimension
+  of the rubric, in the order Significance, Verification, Confirmation, and a row for
+  each level, the highest at the top, so the rungs of the three ladders line up across a
+  row. A column is headed by the dimension’s name, which links to its section of
+  `epistemics.md`, and the question it answers, with no caps label.
+  A cell holds the rung’s chip, a description of exactly two lines, and the count of
+  register entries at that level, “7 results” or “no result yet” (`rung_counts`,
+  `count_label`). A ladder with no rung at a level leaves its cell empty, as
+  Significance does at level 0.
+  - **Wording.** The chip’s `title` is the rubric’s full meaning, read from the tables
+    in `epistemics.md` (`rung_meanings`). The description is that meaning, or a short
+    form where the meaning does not fit two lines of the narrowest cell
+    (`rung_short_meanings`); `RUNG_SHORT_MEANINGS` in `overview_sections.py` is the one
+    place a short form is written.
+    A description is never clipped and never cut with an ellipsis: one that does not
+    wrap to two lines of 25 characters (`SHORT_MEANING_LINE`) stops the build until it
+    is given a shorter form.
+  - **Rows.** Every rung is the same height at any one width, since each is a chip, a
+    count and a two-line box.
+    A cell arranges the three by its own width.
+    With 20.5rem or more it sets the chip over its count in a 6.5rem rail and the
+    description beside them, 74.8px a row, at 1280 pixels and on a phone.
+    Narrower, it sets the chip and its count on one line and the description under them
+    across the cell, 99.3px a row, at 1024 and 768 pixels.
+    A description is never set narrower than 13.5rem (`--site-ladders-meaning-min`).
+  - **Phone.** Below 44rem of its own width the diagram stacks: one block a ladder, in
+    the same order, each under its own head with its rungs from the top.
+    Three columns there would set a description narrower than its least.
+    The missing rung takes no room.
+  - **Markup.** A grid with table roles (`role="table"`, a row a level, column headers,
+    a visually hidden row header naming the level, cells), not a `<table>`: KPress wraps
+    every table in its own scroller and restyles it as `.kpress-table`. Stacking changes
+    only the grid’s order, so a screen reader reads the same table, level by level, at
+    every width.
+  - **Space.** It sits in the wide track and stands `--site-table-space` clear of the
+    text above and below it, as a table does.
 
 - **Atlas grid.** The atlas grid holds every tracked case, n = 1 to 324, as a square
   drawing in the page’s ink with its n beneath.
@@ -1150,6 +1184,11 @@ two slacks). `--page cases.html#n-11` walks one page at a fragment, and
 and shoots what it opened, since a popover a script fills has no math until it opens.
 `devtools.measure_site_pages cards` reports the rows the preview reads: each card
 section’s lines, their cards’ widths and the slack at either end.
+`devtools.measure_site_pages ladders` reports the rating ladders as laid out: every
+rung’s height, each description’s box and the lines its words take, and with
+`--shots DIR` a picture of the diagram at each width, light and dark.
+`tests/test_site_ladders.py` holds those rows in a browser at eight widths, the
+narrowest of each layout among them.
 `devtools.measure_site_pages math` reports every formula’s face beside its text’s,
 counted by surface. `devtools.measure_site_pages space` reports the space around every
 table and heading (**Spacing**, above).

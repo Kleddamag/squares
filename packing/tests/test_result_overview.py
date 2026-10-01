@@ -344,6 +344,26 @@ def test_every_site_link_is_a_served_page_and_a_real_fragment(
                 assert not fragment
 
 
+def test_a_partial_checkout_renders_the_same_records_and_overviews(
+    overview: overview_data.Overview,
+    bodies: dict[str, str],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The deployed site is rendered from a checkout without the literature archive's
+    and the campaign's directories (`pages.yml`). Every record link a full checkout
+    writes is written there too: a result's source, review and packet in its row, and
+    its certificate, proof, retained copy and source packet in its overview. Asking the
+    disk alone dropped twenty of them from each results table on the live site."""
+    site_renders.leave_out_the_archive_and_the_campaign(monkeypatch)
+    partial = overview_data.load()
+    for result, there in zip(overview.results, partial.results, strict=True):
+        assert there.records == result.records, result.id
+    for result_id in (SETTLED, EARLIER, BROAD):
+        body = result_overview.result_popover_html(_result(partial, result_id), partial)
+        assert body == bodies[result_id], result_id
+    assert "resources/web/n11-optimality-2026-09-29/README.md" in bodies[SETTLED]
+
+
 def test_a_link_to_nothing_fails_the_render(overview: overview_data.Overview) -> None:
     """The check a render runs: a path the tree lacks, a commit, a page the site does not
     serve and a fragment no row carries are each refused."""

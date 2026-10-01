@@ -101,10 +101,15 @@ def test_no_placeholder_survives_substitution(page: str) -> None:
 
 
 def test_title_block_names_the_result_without_a_subtitle(page: str, document: str) -> None:
-    """The title stands alone; the exact theorem is typeset in the opening section."""
+    """The title stands alone; the exact theorem is typeset in the opening section. Its
+    `n = 11` is a math run, so the hero's caps leave the variable lowercase, and the run
+    never breaks after its relation, as it did at phone width."""
     heading = re.search(r"<h1\b.*?</h1>", page, re.DOTALL)
     assert heading is not None
-    assert "A New Lower Bound for Packing 11 Squares" in heading.group(0)
+    assert re.sub(r"<[^>]+>", "", heading.group(0)) == render_explainer.TITLE
+    assert '<span class="tex">n = 11</span></h1>' in heading.group(0)
+    rule = ".hero h1 .tex { letter-spacing: 0; text-transform: none; white-space: nowrap; }"
+    assert rule in page
     assert '<p class="subtitle centred">' not in page
     assert "Weighted Certificates for Square Packing" not in page
     current = current_bound_facts()
@@ -228,7 +233,7 @@ def test_the_published_document_is_markdown_and_not_the_template(document: str) 
     assert "3.81" in document
     assert "1,121" in document
     assert "181" in document
-    assert document.startswith("# A New Lower Bound for Packing 11 Squares")
+    assert document.startswith("# New Lower Bounds for Square Packing for $n = 11$\n")
 
 
 def test_the_three_stage_guide_wraps_each_print_grid_item_in_a_paragraph(page: str) -> None:
@@ -522,10 +527,14 @@ def test_the_card_and_the_page_say_the_same_thing(page: str) -> None:
     assert tags["og:description"] == tags["twitter:description"] == described.group(1)
     assert tags["og:image:alt"] == tags["twitter:image:alt"]
     current = current_bound_facts()
-    for text in (title.group(1), described.group(1)):
-        assert "s(11)" in text
-        assert current.bounded_side_decimal in text or "current lower bound" in text
-    assert title.group(1).startswith("A New Lower Bound for Packing 11 Squares")
+    # The title is the page's, bound-free: T-060 has settled the case, and one bound
+    # after a title about several would read as its current one. The sentence names it.
+    assert title.group(1) == render_explainer.TITLE
+    assert title.group(1) == "New Lower Bounds for Square Packing for n = 11"
+    assert "s(11)" not in title.group(1)
+    assert "s(11)" in described.group(1)
+    assert current.bounded_side_decimal in described.group(1)
+    assert "T-026's historical bound" in described.group(1)
 
 
 def test_advanced_section_derives_the_current_lower_bound(document: str) -> None:
@@ -572,7 +581,7 @@ def test_the_published_document_is_named_for_the_result(document: str) -> None:
     for claim in claims:
         assert claim.name.startswith(f"{RESULT_ID}-"), claim.name
     # The document is what it is named after: the article, not the template.
-    assert document.startswith("# A New Lower Bound for Packing 11 Squares")
+    assert document.startswith("# New Lower Bounds for Square Packing for $n = 11$\n")
 
 
 def test_the_md_chip_offers_the_document_by_its_published_name(page: str) -> None:

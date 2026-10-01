@@ -2168,9 +2168,17 @@ def claim_substitutions(headline: Facts, default: Facts) -> dict[str, str]:
     return values
 
 
-#: The visible title names the concrete result. The exact theorem follows in the
-#: opening section, where the notation and the status of the claim are defined.
-TITLE = "A New Lower Bound for Packing 11 Squares"
+#: The visible title, the owner's wording in the site's title case (2026-09-30): the page
+#: proves the earlier lower bounds for n = 11, a case T-060 has since settled. The
+#: exact theorem follows in the opening section, where the notation and the status of
+#: the claim are defined. This is the plain-text form `<title>` and the link preview
+#: carry; the hero sets it as `HERO_TITLE`.
+TITLE = "New Lower Bounds for Square Packing for n = 11"
+#: The title as the hero sets it. The hero's heading is in caps, so `n = 11` is a `.tex`
+#: run, as the title's `s(11)` once was: typeset as math, it keeps its lowercase italic
+#: `n` (`.hero h1 .tex`), where plain text would print `N = 11`, a different symbol. The
+#: Markdown edition writes it `$n = 11$`.
+HERO_TITLE = TITLE.replace("n = 11", '<span class="tex">n = 11</span>')
 
 
 def card_substitutions(headline: Facts, current: CurrentBoundFacts) -> dict[str, str]:
@@ -2179,8 +2187,10 @@ def card_substitutions(headline: Facts, current: CurrentBoundFacts) -> dict[str,
     Every one of these is a string the page already states somewhere -- the title in
     `<title>`, the sentence in `<meta name="description">`, the picture in Figure 2 --
     and each is built here once and substituted into both places, so a shared link and
-    the page it opens cannot say different things. The bound in the title and in the
-    sentence is the headline certificate's own, like every other number on the page.
+    the page it opens cannot say different things. The title is the page's own, with no
+    bound after it: one bound beside a title about several, in a case T-060 has since
+    settled, would read as the case's current bound. The bound in the sentence is the headline
+    certificate's own, like every other number on the page.
 
     The card names T-026's historical bound while the interactive figures retain the point
     certificates. It uses the cropped composite rather than the full canvas, and the reason is
@@ -2193,7 +2203,7 @@ def card_substitutions(headline: Facts, current: CurrentBoundFacts) -> dict[str,
     legend at the foot, which is the part a reader can find on the page.
     """
     width, height = png_size(COMPOSITE_CARD)
-    title = f"{TITLE}: s({headline.n}) ≥ {current.bounded_side_decimal}"
+    title = TITLE
     description = (
         "How weighted point and threshold certificates prove T-026's historical bound "
         f"s({headline.n}) ≥ {current.bounded_side_decimal}, with visual point-only proofs."
@@ -2305,7 +2315,7 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
             else ""
         ),
         "THIRDPARTY_L_FRAC": f"{package_side.numerator}/{package_side.denominator}",
-        "TITLE": TITLE,
+        "TITLE": HERO_TITLE,
         **card_substitutions(headline, current),
         "DEFAULT_L_FRAC": f"{default.outer_side.numerator}/{default.outer_side.denominator}",
         "DEFAULT_ID": default.identifier,

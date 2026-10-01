@@ -642,19 +642,33 @@ def document_cards() -> str:
     )
 
 
+#: When the explainer's proofs are from, as its cards say it: T-018 was established on
+#: 4 September 2026 and T-025 and T-026 on 9 September (`results.yaml`), first published
+#: on 5 and 13 September (`sqpack.release.PUBLICATION_HISTORY`). A test holds this phrase
+#: to those dates.
+EXPLAINER_AS_OF = "early September"
+
+#: The explainer's card, the same on the overview and on the papers page: its page, a
+#: label, its title (the owner's, 2026-09-30, as `render_explainer.TITLE` is in title
+#: case), and what it is. T-060 is linked from the card's popover (`EXPLAINER_ALSO`),
+#: since a card is a button and holds no link of its own.
+EXPLAINER_CARD: tuple[str, str, str, str] = (
+    "explainer.html",
+    "Explainer",
+    "New lower bounds for square packing for n = 11",
+    (
+        "An explainer and proof of certain lower bounds for n = 11. It explains the "
+        f"earlier, simpler proofs as of {EXPLAINER_AS_OF}; newer optimality proofs now "
+        "exist (T-060)."
+    ),
+)
+EXPLAINER_ALSO = (result_url("T-060"), "The optimality proof, T-060")
+
 #: The site's other pages, as the overview's cards show them: the page, a label, its
 #: title, and one line on what a reader finds there. Both are register prose, so a
 #: bound in either is written in ASCII (`s(11) >= 3.8264…`) and set as math.
 PAGES: tuple[tuple[str, str, str, str], ...] = (
-    (
-        "explainer.html",
-        "Explainer",
-        "Earlier n = 11 lower bounds",
-        (
-            "How weighted certificates proved s(11) >= 3.8264… before T-060 settled the case, "
-            "with the certificate drawn and checkable in the page."
-        ),
-    ),
+    EXPLAINER_CARD,
     (
         "tutorial.html",
         "Tutorial",
@@ -688,6 +702,7 @@ def page_cards() -> str:
                 tex_bounds(note),
                 href=href,
                 action=f"Expand the {label.lower()}",
+                also=EXPLAINER_ALSO if href == EXPLAINER_CARD[0] else None,
             )
             for href, label, title, note in PAGES
         ]

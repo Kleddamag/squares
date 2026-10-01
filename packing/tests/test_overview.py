@@ -1014,20 +1014,71 @@ def test_the_problem_section_says_eleven_squares_is_settled(page: str) -> None:
     assert render_overview.OVERVIEW_ARTICLE in check_results.READER_TIER
 
 
-def test_the_explainer_card_names_the_earlier_bound_it_proves(page: str) -> None:
-    """The explainer proves T-026's historical bound, so its card says so, with the bound
-    the explainer itself states cut to the card's four places and set as math."""
-    from devtools.render_explainer import current_bound_facts  # noqa: PLC0415
+def card_text(fragment: str) -> str:
+    """A card's text as a reader reads it, each formula as its TeX."""
+    fragment = re.sub(r'<span class="kpress-math-semantic">.*?</math></span>', "", fragment)
+    fragment = re.sub(r"\\\((.*?)\\\)", r"\1", fragment)
+    return html.unescape(re.sub(r"<[^>]+>", "", fragment))
 
-    card = page.split('popovertarget="pop-page-explainer"', 1)[1].split("</button>", 1)[0]
-    assert "Earlier " in card
-    assert "lower bounds" in card
-    assert "before T-060 settled the case" in card
-    assert current_bound_facts().bounded_side_decimal.startswith("3.8264")
-    note = card.split('class="site-card-note">', 1)[1]
+
+#: The explainer's card as the owner worded it (2026-09-30), with the date the record gives.
+EXPLAINER_TITLE = "New lower bounds for square packing for n = 11"
+EXPLAINER_NOTE = (
+    "An explainer and proof of certain lower bounds for n = 11. It explains the earlier, "
+    "simpler proofs as of early September; newer optimality proofs now exist (T-060)."
+)
+
+
+def explainer_card(page: str, target: str) -> tuple[str, str, str]:
+    """The explainer card's value and note, and the popover it opens, on `page`."""
+    card = page.split(f'popovertarget="{target}"', 1)[1].split("</button>", 1)[0]
+    value, note = card.split('class="site-card-value">', 1)[1].split(
+        '<span class="site-card-note">'
+    )
+    start = page.index(f'<div class="site-popover" id="{target}" popover')
+    panel = page[start:].split('<button type="button" class="site-card"', 1)[0]
+    return value, note, panel
+
+
+def test_the_explainer_card_says_what_the_explainer_now_is(page: str, results: str) -> None:
+    """The explainer proves the earlier, simpler lower bounds, so its card is titled and
+    described as the owner put it, `n = 11` set as math, and its popover links T-060,
+    the optimality proof since registered: the card itself is a button and holds no link.
+    The wording stays within T-060's rungs: proved, never formally."""
+    value, note, panel = explainer_card(page, "pop-page-explainer")
+    assert card_text(value) == EXPLAINER_TITLE
+    assert card_text(note) == EXPLAINER_NOTE
+    assert "kpress-math" in value
     assert "kpress-math" in note
-    assert "3.8264" in note
-    assert "&gt;=" not in note
+    assert "formal" not in card_text(value + note).lower()
+    assert '<a class="site-popover-also" href="all-results.html#t-060">' in panel
+    assert 'id="t-060"' in results
+
+
+def test_the_explainer_cards_date_is_the_records(register: list[dict]) -> None:
+    """'Early September' is what the record says of the explainer's proofs: T-018, T-025
+    and T-026 were established in September's first ten days, and the two editions that
+    first published them went live in its first half. The owner's draft said early August,
+    which the record does not support."""
+    from datetime import date, datetime  # noqa: PLC0415
+
+    from sqpack.release import PUBLICATION_HISTORY  # noqa: PLC0415
+
+    assert overview_sections.EXPLAINER_AS_OF == "early September"
+    established = [
+        date.fromisoformat(str(r["established"]))
+        for r in register
+        if r["id"] in {"T-018", "T-025", "T-026"}
+    ]
+    assert len(established) == 3
+    assert all((d.year, d.month) == (2026, 9) and d.day <= 10 for d in established)
+    published = [
+        datetime.strptime(e.first_published, "%B %d, %Y").date()  # noqa: DTZ007
+        for e in PUBLICATION_HISTORY
+        if e.version in {"v0.3.0", "v0.4.0"}
+    ]
+    assert len(published) == 2
+    assert all((d.year, d.month) == (2026, 9) and d.day <= 15 for d in published)
 
 
 def test_the_film_note_says_the_films_predate_t060(

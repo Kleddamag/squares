@@ -255,6 +255,76 @@ $10^{-12}$ tolerance.
 Even a pass would establish fidelity at this relaxed witness, not existence of an exact
 root, admissible slider intervals, or local/global optimality.
 
+## Necessary Inequalities with Slack Contacts
+
+The endpoint Astra max lane derived the following conditional lemma, and the fresh Astra
+max reviewer independently checked every inequality direction.
+It uses containment rather than exact wall anchors, and permits positive gaps in every
+named contact. It has not been formalized in a proof assistant.
+
+**Premises.** Every square is contained in $[0,S]^2$. Squares 1, 2, 3, 4, 5, 7, 8, 15
+and 17 are axis-aligned; squares 9 through 14 share the basis $u,v$; square 16 has basis
+$p,q$. The bases are unit and $c,s,d,e,\alpha,\gamma>0$, where $\alpha=cd-se$ and
+$\gamma=ce+sd$. Require nonnegative directed separation gaps for the 19 pairs in the
+[H-254 contact table](../../../packing/campaign/hypotheses/H-254-n17-contact-chart-fidelity.md#frozen-reconstruction-and-contact-table)
+other than $9\to11$ along $w$. That omitted contact determines a coordinate in the
+equality reconstruction but is unneeded here.
+Square 6 is also unused.
+
+**Conclusion.** With the chart’s $X_0=X$, $Y_0=Y$, $A_0=A$, and $B_0=B$,
+
+$$
+F_1\ge0,\qquad F_2\ge0,\qquad G_3:=F_3+\alpha F_2\ge0.
+$$
+
+The equality chart’s $F_3\ge0$ alone is not the justified third inequality.
+
+**Proof.** Containment and the first three axis-aligned branches give
+$x_2,y_3,y_7\ge3/2$. Summing the chain $4\to10\to12\to14\to7$ along $w=(s,-c)$ requires
+projected distance at least $3+c+s$. Containment bounds that distance by
+$s(S-1)+c(S-2)$, giving $F_1\ge0$.
+
+Containment gives $x_9\ge h$; the branch $3\to9$ gives $y_9\ge2+h$. Sum $9\to10\to15$
+along $u$ and use $y_{15}\le S-1/2$ to obtain $x_{15}\ge X_0$. Sum $2\to13\to14\to17$
+along $u$ and use $x_{17}\le S-1/2$ to obtain $y_{17}\ge Y_0$. The chain $3\to11\to12$
+similarly gives $U_{12}:=u\cdot r_{12}\ge c+2s+3/2$.
+
+Write the actual projections of square 16 as $A_*=p\cdot r_{16}$ and
+$B_*=q\cdot r_{16}$. The last bridge branches and containment give
+
+$$
+A_*\ge A_0=d(X_0+1/2)-e(S-1)+1/2,
+$$
+
+$$
+A_*\le A_{\max}=d(S-1)-e(Y_0+1/2)-1/2,
+\qquad B_*\le B_0=(d+e)(S-1)-1/2.
+$$
+
+Consequently $A_{\max}-A_0=F_2\ge0$. The remaining branch $12\to16$ gives
+
+$$
+\alpha(A_*-1/2)+\gamma(B_*-1/2)
+\ge U_{12}+1/2\ge c+2s+2.
+$$
+
+Because $\alpha,\gamma>0$, replacing $A_*,B_*$ by their upper bounds preserves this
+necessary inequality.
+Its residual is exactly
+
+$$
+\alpha(A_{\max}-1/2)+\gamma(B_0-1/2)-(c+2s+2)
+=F_3+\alpha F_2=G_3.
+$$
+
+This proves the conclusion under the stated premises, without assigning either slider or
+saturating any wall or pair contact.
+It does not prove that the inequality system has a feasible packing for every solution.
+An exclusion below the candidate side would establish a lower bound only for these
+common orientations and directed branches.
+Split orientations and branch changes remain the capture problem.
+No numerical exclusion or target evaluation was used in this symbolic derivation.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

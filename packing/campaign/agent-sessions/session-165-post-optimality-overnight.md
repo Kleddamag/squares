@@ -218,7 +218,7 @@ session:
     bead: think-j516
     objective: Freeze H254 domain, residual criterion and contact reconstruction before target execution;
       repair bounded integration failures concurrently.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: Independent equations are consistent; a cheap source-fidelity test can locate any feature
       mismatch before root isolation.
@@ -230,11 +230,64 @@ session:
     validation_command: cd packing && .venv/bin/python3 -m sqpack.campaign.ledger check
     kill_condition: No complete reconstruction or controlled instrument can be specified within the slice.
     fallback: Retain H254 blocked and continue independent symbolic obligations.
+    outcome: H254 and BC398 freeze the complete15anchor,20contact,34coordinate fidelity criterion. Independent
+      Astra max verified transcription. CI integration repairs and preregistration pushed at8e5b15b94;
+      no target chart arithmetic.
+    evidence:
+    - packing/campaign/hypotheses/H-254-n17-contact-chart-fidelity.md
+    stop_reason: Complete criterion and contact table retained before implementation.
+    next_action: Build exact residual checker with synthetic controls and independent review.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-j516
+    objective: Implement the frozen H254 residual checker and controls; independently review it before
+      source evaluation.
+    status: completed
+    entered_by: planned_checkpoint
+    switch_reason: H254 is selected and preregistered but lacks its named instrument.
+    budget_minutes: 20
+    started_at: '2026-10-01T11:15:00Z'
+    deadline_at: '2026-10-01T11:35:00Z'
+    expected_output: Small exact rational checker, synthetic refusal controls and independent code-review
+      disposition.
+    validation_command: cd packing && .venv/bin/pytest tests/test_n17_contact_chart.py -q -p no:cacheprovider
+    kill_condition: Repeated controls fail, a domain or contact cannot be specified, or the slice deadline
+      arrives without review.
+    fallback: Retain H254 blocked and its reviewed mathematical derivation; do not evaluate target.
+    outcome: Sol implemented the exact residual checker; coordinator and independent Astra review both
+      caught the mixed-support sum in the final bridge contact before target access. Corrected instrument
+      passes7synthetic tests, including all20support identities; Astra independently replayed7tests in0.70s
+      and approves target freeze.
+    evidence:
+    - packing/devtools/check_n17_contact_chart.py
+    - packing/tests/test_n17_contact_chart.py
+    stop_reason: Controlled instrument and independent review complete before any target arithmetic.
+    next_action: Commit the instrument and exp236 claim, then execute once under frozen H254 limits.
+  - workflow: research-loop
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-j516
+    objective: Execute exp236 once after committing the controlled H254 instrument; preserve exact residuals
+      and independent output review.
+    status: in_progress
+    entered_by: planned_checkpoint
+    switch_reason: H254 instrument and synthetic controls independently approved.
+    budget_minutes: 12
+    started_at: '2026-10-01T11:23:00Z'
+    deadline_at: '2026-10-01T11:35:00Z'
+    expected_output: Immutable target output, resource/provenance receipt and independent acceptance or
+      exact failed clauses.
+    validation_command: cd packing && /usr/bin/time -l gtimeout --signal=TERM --kill-after=5s 90s .venv/bin/python3
+      -m devtools.check_n17_contact_chart
+    kill_condition: Source/controls mismatch, timeout, unsupported mandatory guard or repeated crash.
+    fallback: Retain unresolved result with exact cause; never change frozen thresholds.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Complete contact table, then delegate bounded instrument implementation; no target arithmetic
-      before committed readiness.
+    next_action: Commit then run once; independent output check before deciding verdict.
   budget:
     wall_minutes: 268.3
     orientation_minutes: 10
@@ -347,6 +400,7 @@ session:
   - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md
   - packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001/summary.json
   - packing/campaign/hypotheses/H-254-n17-contact-chart-fidelity.md
+  - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-236-h254-n17-contact-chart.md
   checks:
   - Both PR265 and PR267 scheduled checks pass at the launch heads fb0fc2332 and a02703f13; conditional
     jobs skipped by scope are not claimed as executed.
@@ -361,6 +415,8 @@ session:
     without repeating pair verification.
   - Hosted CI at1c90d7af4 found synopsis/agenda/session-cost view drift, an unformatted audit code block
     and a prohibited shell entrypoint. Corrections are isolated from accepted run-001 evidence.
+  - '11:17:54UTC capacity check: load66.14 on10cores, CPUidle0percent; one local bounded worker remains
+    the cap. External scratch mounted and writable. Unrelated processes were observed and left untouched.'
   stop_reason: null
   next_action: Await fresh Astra max chart derivation under think-j516; then preregister a bounded test.
     PR265 CI runs asynchronously; no target replay needs repeating.

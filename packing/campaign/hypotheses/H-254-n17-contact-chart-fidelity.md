@@ -17,7 +17,7 @@ hypothesis:
     direction: Confirm only when every frozen check passes, the synthetic controls pass and an independent reviewer checks the outputs. Any validly evaluated failed clause rejects this fidelity claim. Timeout or invalid controls is unresolved. Rejection does not refute feasibility, the existence of a different chart, or optimality.
     threshold: 'Residual cap 1/1000000000000; alternative-axis gap at most -1/1000000.'
   instrument: devtools.check_n17_contact_chart, to be implemented and independently reviewed against the contact derivation before any target evaluation.
-  instrument_ready: false
+  instrument_ready: true
   regime: Exact Fraction arithmetic on the unchanged H253 source; no fitting, decimal optimization, search or root solving. Single worker on the measured macOS host.
   instance: {axis: n, point: 17}
   priority: 1

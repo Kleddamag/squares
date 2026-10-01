@@ -942,7 +942,7 @@ agenda:
     purpose: research
     owner_focus: insight
     instances: [17]
-    state: blocked
+    state: in_progress
     priority: 0
     question: Does the proposed n17 endpoint contact chart match the retained rational witness within its frozen exact residual and feature thresholds?
     hypotheses: [H-254]
@@ -951,8 +951,7 @@ agenda:
     exit: Every frozen fidelity clause passes or its exact counterexample is retained; no root or optimality claim.
     bead: think-j516
     depends_on: [BC-397]
-    blocked_on: Complete frozen contact table and independently reviewed exact residual instrument with synthetic controls.
-    next_evidence: Reviewed complete contact table and controlled devtools.check_n17_contact_chart instrument.
+    next_evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-236-h254-n17-contact-chart.md
     workflows: [pipeline-improvement, research-loop, factual-review]
     program: post-optimality-low-n
     artifacts:

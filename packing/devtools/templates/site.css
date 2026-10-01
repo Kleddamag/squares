@@ -1044,7 +1044,12 @@ body {
 .site-table .site-col-date {
   white-space: nowrap;
 }
-/* A result's standing sits under its rungs, on a line of its own, one chip to each part
+/* What a result is sits under its rungs, on a line of its own: its kind, one chip. */
+.site-table .site-kind {
+  display: block;
+  margin-block-start: 0.3rem;
+}
+/* A result's standing sits under its kind, on a line of its own, one chip to each part
    of it (`second certificate, reported` is two). The chips wrap between themselves, a
    second one under the first where the cell is too narrow for both, and never inside
    one: the column is as wide as its widest chip. */
@@ -1091,7 +1096,7 @@ body {
    line ("Queuingtheorydotcom", 167px of the 184), so a credit wraps between names, two
    or three to a line, and never inside one. KPress's own floor, 6rem, set a credit one
    word to a line while the result column kept the spare width. The rungs column is as
-   wide as its widest chip, since no chip wraps: "current best" at 118px, and "second
+   wide as its widest chip, since no chip wraps: the three rungs at 114px, and "second
    certificate" at 159 where a row with one shows. The result column cannot give that
    room: four results' formulas, which do not break, hold it to 411px. So a result's
    records are no column of their own, which would be left 98px of a 1280px window's

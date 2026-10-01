@@ -60,11 +60,12 @@ Thirteen measurements, each over pages of a directory `preview_site` has built:
   column. `--shots DIR` also shoots each table there at each width, its filter bar and
   its first rows.
 - `chips` reports every chip a page shows (`.site-chip`), once its math is typeset: its
-  kind (a rung, a standing, a novelty label or another), its words, the surface it sits
-  on, its font size, line height and box, and the lines its words take, which is 1 for
-  a chip that does not wrap. `--press SELECTOR` presses an element once the page is
-  measured and reports the chips of what it opened. `--markdown` prints one line for
-  each kind on each surface, with the distinct sizes found and the chips that wrap.
+  kind (a rung, a result's kind, a standing, a novelty label or another), its words, the
+  surface it sits on, its font size, line height and box, and the lines its words take,
+  which is 1 for a chip that does not wrap. `--press SELECTOR` presses an element once
+  the page is measured and reports the chips of what it opened. `--markdown` prints one
+  line for each kind on each surface, with the distinct sizes found and the chips that
+  wrap.
 - `header` reports where each page's header stands at each width, as tops and bottoms in
   CSS pixels from the top of the document: the navigation bar, the rule under it and the
   element that draws it, the section tabs with the current tab's name (on a page of the

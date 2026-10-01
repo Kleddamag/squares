@@ -1,7 +1,8 @@
 # Epistemics
 
 This document defines the four classifications attached to whole results in this
-repository, and the policy for results by others: their scope, credit and intake.
+repository, the kind each result carries, and the policy for results by others: their
+scope, credit and intake.
 [`conventions.md`](conventions.md) owns field formats and identifiers;
 [`packing/frontier/evidence.yaml`](packing/frontier/evidence.yaml) holds the evidence
 entries; and the results register holds each classified claim in
@@ -220,6 +221,51 @@ An `apparently-novel` evidence entry records the corpus, search, narrow novel ob
 and known gaps in `novelty_basis`. The result-level label is declared and reviewed; the
 results checker validates its enum value but does not derive it from the cited entries.
 
+## Result Kinds
+
+Every result carries one `kind`, which says what the result is.
+The four classifications above say how well a claim is supported and how much it
+matters; the kind says what sort of claim it is.
+
+| Kind | A result of this kind |
+| --- | --- |
+| lower bound | Proves $s(n) \ge v$ or $s(n) > v$: no packing of $n$ unit squares fits in a smaller square |
+| upper bound | Proves $s(n) \le v$ by a packing of $n$ unit squares in a square of side $v$ |
+| optimality | Settles an exact value $s(n) = v$: a lower bound that meets an upper bound |
+| simplification | Proves again a result the record already holds, by a shorter, cleaner or more elementary route, and moves no bound |
+| rigidity | Says whether one named packing can move at fixed side: its flexes, its rigidity at first or second order, the isolation of its pose |
+| case exclusion | Shows that one named class of configurations, such as a branch, a corner class or a region of pose space, holds no packing at a stated side, and moves no bound by itself |
+| restricted optimality | Finds the best packing within a declared family, such as fixed orientation classes near one pose, and says nothing about $s(n)$ outside it |
+| method limit | Says how far one proof method or construction can reach: a ceiling on what a point set or a certificate format can certify |
+| correction | Shows that a published statement is false as printed, and gives the corrected statement that holds |
+| audit | Checks an existing proof or certificate independently and finds it correct as published |
+
+The register stores a kind in lowercase with hyphens, `lower-bound` or `case-exclusion`.
+A result has exactly one, chosen by three rules.
+
+- The kind is what the claim concludes.
+  Where a claim ends in a bound or a value of $s(n)$, the kind is that bound, however it
+  was reached: by a repaired proof, an exact check of a published packing, or
+  monotonicity from another result.
+- A lower bound that meets a known upper bound is optimality, because the claim states
+  the value.
+- A second proof of a result the record already holds is a simplification, and its claim
+  names the result it proves again.
+
+The kind is declared, and the checker holds it to what the record already says.
+A headline that opens with a relation on $s(n)$ states its kind: `≥` or `>` is a lower
+bound, `≤` or `<` an upper bound and `=` optimality, and only a simplification may
+restate one.
+A bound cites evidence that claims that bound, and optimality cites an exact
+value or both halves.
+Rigidity, case exclusion and restricted optimality cite `derived-structure` evidence and
+state no relation on $s(n)$ in their headline.
+Method limit, correction and audit are told apart by review alone.
+
+A result’s standing, whether a case bound rests on it now, is about bounds.
+A result whose evidence claims no bound has no standing: nothing supersedes it, and the
+register’s views show its kind alone.
+
 ## Results by Others
 
 The register holds others’ results beside this project’s, under the same `T-NNN`
@@ -278,14 +324,35 @@ to credit it as carefully as this project’s own.
   method, solver or checker credits them in the same line
   (`wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi`). This
   project is credited as `after Levy` only where the source itself says so.
+- **This project’s results are credited the same way.** A result of this project is
+  `Levy` in the register and on the site, by name as every other author is, and
+  `Levy after …` where it rests directly on another’s proof, method or tool
+  (`Levy after Burns, Massaccesi` for a weighted certificate, `Levy after Stromquist`
+  for the repair of his point set).
+  The `after` is the entry’s `builds_on` in
+  [`results.yaml`](packing/frontier/results.yaml): each source it names is one the
+  result’s own evidence cites, and each name is an author of that source.
+  A repair or correction of a proof is `after` that proof’s author, since the result
+  reuses the argument it mends.
+  A property proved of a packing, such as its rigidity, is not `after` the packing’s
+  finder: the packing is the result’s subject, and its argument owes it nothing.
+  The credit carries the lineage in both directions, so a table of results needs no
+  grouping to say whose work rests on whose.
 - **People and projects, never tools.** Credit names people, or the handles they publish
-  under. This project is `Squares Project (Levy)` where it holds a bound and `Levy`
-  inside another source’s credit line.
-  An AI agent is never a credited author.
+  under. A bound this project holds is cited on the atlas as `Squares Project (Levy)`;
+  its results and its place in another source’s credit line are `Levy`. An AI agent is
+  never a credited author.
   Where a source states that AI assisted its work, its case record or register entry
   says so in the source’s own terms, and so does any README prose about the result;
   `devtools.state_ai_assistance` names a case record that cites such a source without
   saying so.
+- **A citation, not a disclaimer.** A register claim names the result’s authors, its
+  date and its source, with a link.
+  That a result is another’s is what its credit line and `attribution` state, and where
+  it was published is the citation’s venue; the claim adds no sentence disclaiming it.
+  The revision and digests of the retained copy are the evidence entry’s and the
+  packet’s, and stay out of sentences
+  ([conventions.md → Provenance](conventions.md#6-provenance)).
 - **Our rung is not their credit.** `V` and `C` describe verification.
   A result replayed here remains its authors’ result, and a rung never changes a credit
   line. A defect found here goes back to the authors with the review that found it.
@@ -332,7 +399,7 @@ checks it.
 | --- | --- | --- |
 | [`n-NNN.md`](packing/frontier/README.md) case records | Both lanes’ bounds for each case, with their evidence | [`STATUS.md`](packing/frontier/STATUS.md); the site’s [recent results](https://jlevy.github.io/squares/#recent-results) and [survey](https://jlevy.github.io/squares/#the-survey); the standing column of `RESULTS.md` and the site’s [results table](https://jlevy.github.io/squares/all-results.html) |
 | [`evidence.yaml`](packing/frontier/evidence.yaml) | Who performed each check, by which method, within which limits | [`INVENTORY.md`](packing/frontier/INVENTORY.md) |
-| [`results.yaml`](packing/frontier/results.yaml) | Each result’s headline, claim, date, `V`/`C`/`S`, novelty and attribution | [`RESULTS.md`](packing/frontier/RESULTS.md), grouped by lineage; the site’s [results table](https://jlevy.github.io/squares/all-results.html) |
+| [`results.yaml`](packing/frontier/results.yaml) | Each result’s kind, headline, claim, date, `V`/`C`/`S`, novelty and attribution | [`RESULTS.md`](packing/frontier/RESULTS.md), grouped by lineage; the site’s [results table](https://jlevy.github.io/squares/all-results.html) |
 | [`bibliography.yaml`](packing/resources/bibliography.yaml) | Each source’s date, credit and lineage | The atlas citation line; the holders, credit and relation in `RESULTS.md` and on the site’s [overview](https://jlevy.github.io/squares/#recent-results) |
 | [`source-coverage.yaml`](packing/frontier/source-coverage.yaml) | Which sources were read, and when | None |
 
@@ -358,6 +425,12 @@ The checker:
 - requires `attribution` on every `previously-published` result and refuses it on a
   novel one, resolves its source keys in the bibliography, and requires a `lineage` on
   the sources of a result by others published since 22 August 2026;
+- requires a `kind` on every result, one of the [Result Kinds](#result-kinds), and
+  cross-checks it against the relations the headline and the claim state, the claims of
+  the cited evidence, and, for a simplification, the result its claim names;
+- refuses `builds_on` on a result by others, and on a result of this project holds it to
+  the record: each source key resolves in the bibliography and is the `source_key` of an
+  evidence entry the result cites, and each credited name is an author of one of them;
 - requires a `headline` of at most 100 characters on every result, stating no number its
   claim does not, and an `established` date on every result without `attribution`, the
   day its certificate or proof first passed here, which it refuses beside `attribution`
@@ -367,7 +440,7 @@ The checker:
 - rejects unknown `T-NNN` references in the README and synopsis.
 
 [`packing/frontier/results.yaml`](packing/frontier/results.yaml) states each result’s
-headline, claim, scope, classifications, evidence, artifacts, and `next_rung`. The
+kind, headline, claim, scope, classifications, evidence, artifacts, and `next_rung`. The
 headline is the claim shortened for a table cell; the claim stays the statement the
 rungs attach to. That final field records the next evidence-improving action or explains
 why no independent rung change applies.

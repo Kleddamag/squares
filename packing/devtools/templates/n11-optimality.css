@@ -1,0 +1,116 @@
+/* The new paper shares KPress typography; only its publication layout lives here. */
+html,
+body {
+  height: auto;
+  overflow: visible;
+}
+.kpress-page-main.kpress-viewport {
+  block-size: auto;
+  overflow: visible;
+}
+.n11-paper {
+  --kpress-measure: calc(var(--kpress-font-size-base) * 42);
+  max-width: 72rem;
+  margin-inline: auto;
+  padding: clamp(1rem, 3vw, 2.5rem);
+}
+.n11-paper > :not(figure, .paper-figure, .paper-formats, .paper-footer) {
+  max-width: var(--kpress-measure);
+  margin-inline: auto;
+}
+.paper-formats {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  font-family: var(--kpress-font-sans);
+  font-size: var(--kpress-font-size-small);
+}
+.paper-formats a[aria-current="page"] {
+  font-weight: 700;
+}
+.n11-paper figure,
+.n11-paper .paper-figure {
+  max-width: 66rem;
+  margin: 2.5rem auto;
+  break-inside: avoid;
+}
+.n11-paper figure > svg,
+.n11-paper .figure-pair > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.n11-paper .hero {
+  max-width: var(--kpress-measure);
+  margin: 2rem auto 3rem;
+  text-align: center;
+}
+.n11-paper .hero h1 {
+  max-width: none;
+}
+.n11-paper .hero p {
+  text-align: center;
+}
+.n11-paper .subtitle {
+  font-family: var(--kpress-font-sans);
+  font-size: var(--kpress-font-size-large);
+  color: var(--kpress-doc-muted);
+}
+.n11-paper .figure-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: center;
+}
+.n11-paper figure:first-of-type > svg {
+  max-height: 27rem;
+  width: auto;
+  max-width: 100%;
+  margin-inline: auto;
+}
+.n11-paper figcaption {
+  max-width: var(--kpress-measure);
+  margin: 0.7rem auto 0;
+  color: var(--kpress-doc-muted);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--kpress-font-size-small);
+}
+.paper-footer {
+  max-width: var(--kpress-measure);
+  margin: 3rem auto 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--kpress-doc-border);
+  color: var(--kpress-doc-muted);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--kpress-font-size-small);
+}
+@media print {
+  .paper-formats {
+    display: none;
+  }
+  .n11-paper {
+    max-width: none;
+    padding: 0;
+  }
+  .n11-paper > :not(figure, .paper-figure, .paper-formats, .paper-footer) {
+    max-width: none;
+  }
+  .n11-paper figure,
+  .n11-paper .paper-figure {
+    max-width: none;
+  }
+  .paper-footer {
+    max-width: none;
+  }
+  .n11-paper .figure-pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .n11-paper figure:first-of-type > svg {
+    max-height: 4.2in;
+  }
+}
+@media screen and (max-width: 42rem) {
+  .n11-paper .figure-pair {
+    grid-template-columns: 1fr;
+  }
+}

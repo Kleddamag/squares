@@ -98,6 +98,14 @@ interactive point-certificate proof, then shows how threshold atoms and a dilati
 reach T-026’s `s(11) ≥ 3.8264474…` bound, the certificate Kleddamag’s `31/8` was
 developed from. Its figures are drawn from the point certificates they explain.
 
+The separate
+[**eleven-square optimality paper**](https://jlevy.github.io/squares/n11-optimality/)
+explains T-060 from the exact construction through the exhaustive case exclusions,
+geometric capture and local-isolation argument that prove `s(11) = 3.8770835900…`. It
+has a [PDF](https://jlevy.github.io/squares/n11-optimality/t-060-explainer.pdf) and
+[maintained source](packing/devtools/templates/n11-optimality-article.md), with figures
+drawn from the retained proof data.
+
 [![One hundred known-best square packings arranged from n equals one through one hundred, each labeled with its best-known upper bound and, where the value is still open, the strongest verified lower bound.](packing/atlas/known-best/known-best-1-100.png)](https://jlevy.github.io/squares/known-best-1-100.pdf)
 
 *The retained `n = 1…100` atlas, with each packing normalized to its own container and

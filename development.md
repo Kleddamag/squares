@@ -927,6 +927,27 @@ a job named for the reason.
 `pages-required` is the aggregate a branch rule would require; it passes such a skip and
 nothing else.
 
+The separate **T-060 optimality paper** lives at `/n11-optimality/`. Its source is
+[`n11-optimality-article.md`](packing/devtools/templates/n11-optimality-article.md);
+[`render_n11_optimality_explainer.py`](packing/devtools/render_n11_optimality_explainer.py)
+uses the same KPress typography and inlined fonts with a separate article and print
+layout. It reuses the Trump witness rendering and draws the center cells and capture
+graph from the retained proof packet.
+From `packing/`, with the scratch environment required by `AGENTS.md`:
+
+```bash
+uv run --frozen --all-extras --group dev python -m devtools.render_n11_optimality_explainer --pdf
+```
+
+The outputs are `site/n11-optimality/t-060-explainer.html`, `.md`, and `.pdf`, with an
+`index.html` entry point.
+`--output-dir` selects another destination; `--check` compares the HTML and Markdown
+without writing. Repository citations name the source commit selected by `--revision`
+(the publication revision by default).
+A dedicated Pages job builds this paper and its PDF independently of the historical
+explainer. The paper is an explanation of accepted evidence, and rendering it does not
+rerun the geometric proof.
+
 Publication uses `python -m devtools.render_explainer --prepare-math` after installing
 the locked Playwright Chromium.
 This pass measures the final math bases under the page’s CSS and ships their geometry

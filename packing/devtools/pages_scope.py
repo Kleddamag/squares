@@ -1,17 +1,20 @@
 #!/usr/bin/env python3
-"""Decide which of the two published pages a pull request has to build and check.
+"""Decide which published pages a pull request has to build and check.
 
-The Pages workflow publishes two pages from one artifact: the explainer at `/` and the
-workbench at `/workbench/`. Until 2026-09-15 every pull request that touched either
-page's paths paid for both. #178 changed ten workbench probe files and ran about 330 s
-of explainer Chromium checks on a page whose bytes it could not change; an explainer-only
+The Pages workflow publishes the explainer at `/`, the workbench at `/workbench/`,
+and the T-060 article at `/n11-optimality/`. Until 2026-09-15 a pull request that
+touched either of the older pages paid for both. #178 changed ten workbench probe
+files and ran about 330 s of explainer Chromium checks on a page whose bytes it
+could not change; an explainer-only
 change paid for the workbench build the same way.
 
 This tool is what lets each half run only on its own inputs. For each half it takes:
 
 * the builder's own declaration of what a render reads -- `RENDER_INPUTS` in
-  `devtools/render_explainer.py` for the explainer and in `workbench_tools/build_site.py`
-  for the workbench. Read live from those modules rather than copied here, because a copy
+  `devtools/render_explainer.py` for the explainer,
+  `workbench_tools/build_site.py` for the workbench, and
+  `devtools/render_n11_optimality_explainer.py` for the T-060 article. Read live from
+  those modules rather than copied here, because a copy
   is a second list that drifts, and the builders' lists already have tests that keep
   them honest (`test_the_pages_filter_covers_every_render_input`, `test_build_site_inputs`);
 * every developer tool and test the workflow's jobs for that half run, read out of
@@ -89,11 +92,18 @@ def _workbench_inputs() -> tuple[Path, ...]:
     return tuple(build_site.RENDER_INPUTS)
 
 
+def _optimality_inputs() -> tuple[Path, ...]:
+    from devtools import render_n11_optimality_explainer  # noqa: PLC0415
+
+    return tuple(render_n11_optimality_explainer.RENDER_INPUTS)
+
+
 #: Each half, and the builder declaration it starts from, in the order the workflow's
 #: outputs and summary use.
 BUILDER_INPUTS: Mapping[str, Callable[[], tuple[Path, ...]]] = {
     "explainer": _explainer_inputs,
     "workbench": _workbench_inputs,
+    "optimality": _optimality_inputs,
 }
 
 

@@ -68,7 +68,7 @@ def browser_check_jobs(jobs: Mapping[str, Mapping[str, Any]]) -> list[str]:
     return [
         name
         for name, job in jobs.items()
-        if name not in {"prepare", *DEPLOY_PATH}
+        if name not in {"prepare", "optimality", *DEPLOY_PATH}
         and any("playwright install" in step.get("run", "") for step in job.get("steps", []))
     ]
 
@@ -144,7 +144,7 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
     workflow = load()
     jobs = workflow["jobs"]
     scope = jobs["scope"]
-    halves = ("explainer", "workbench")
+    halves = ("explainer", "workbench", "optimality")
     assert set(scope["outputs"]) == {
         name for half in halves for name in (half, f"{half}_reason")
     }
@@ -169,6 +169,7 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
     assert gated == {
         "explainer": {"prepare", *OVERLAPPED_PREPARED_PAGE_JOBS},
         "workbench": {"workbench"},
+        "optimality": {"optimality"},
     }
     for half, roots in gated.items():
         assert all(needs_of(jobs[root]) == ["scope"] for root in roots)
@@ -183,22 +184,28 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
         (step,) = notice["steps"]
         assert step["env"]["REASON"] == f"${{{{ needs.scope.outputs.{half}_reason }}}}"
         assert step["run"].splitlines()[0] == 'test -n "$REASON"'
-        assert half in step["run"]
+        assert ("T-060" if half == "optimality" else half) in step["run"]
         assert "not built" in step["run"]
 
     for name, job in jobs.items():
         commands = "\n".join(step.get("run", "") for step in job.get("steps", []))
-        works = "playwright install" in commands or re.search(
-            r"python -m (devtools\.render_explainer|workbench_tools\.build_site)\b", commands
+        renderers = (
+            "devtools.render_explainer",
+            "devtools.render_n11_optimality_explainer",
+            "workbench_tools.build_site",
+        )
+        works = "playwright install" in commands or any(
+            re.search(rf"\bpython -m {re.escape(module)}\b", commands) for module in renderers
         )
         if works and name not in DEPLOY_PATH:
             directly_scoped = job.get("if") in {
                 "needs.scope.outputs.explainer == 'true'",
                 "needs.scope.outputs.workbench == 'true'",
+                "needs.scope.outputs.optimality == 'true'",
             }
-            assert upstream(jobs, name) & {"prepare", "workbench"} or directly_scoped, (
-                f"{name} does page work on a pull request without waiting for the scope"
-            )
+            assert (
+                upstream(jobs, name) & {"prepare", "workbench", "optimality"} or directly_scoped
+            ), f"{name} does page work on a pull request without waiting for the scope"
 
 
 def test_the_required_aggregate_passes_a_justified_skip_and_nothing_else() -> None:
@@ -220,8 +227,11 @@ def test_the_required_aggregate_passes_a_justified_skip_and_nothing_else() -> No
     assert step["env"]["NEEDS"] == "${{ toJSON(needs) }}"
     program = step["run"]
     assert '.scope.result == "success"' in program
-    decisions = "[.scope.outputs.explainer, .scope.outputs.workbench]"
+    decisions = (
+        "[.scope.outputs.explainer, .scope.outputs.workbench, .scope.outputs.optimality]"
+    )
     assert f'{decisions} | all(. == "true" or . == "false")' in program
+    assert '(.scope.outputs.optimality != "true" or .optimality.result == "success")' in program
     assert '[.[].result] | all(. == "success" or . == "skipped")' in program
     assert "jq -e" in program
     assert set(needs_of(jobs["deploy"])) == {"publish", "pages-required"}
@@ -616,15 +626,16 @@ def test_live_verification_waits_for_the_exact_deployed_revision() -> None:
     assert "--no-browser" not in commands
 
 
-def test_publication_assembles_the_three_checked_products_and_only_main_uploads_it() -> None:
-    """What `build` uploaded from one directory is now three artifacts put back together.
+def test_publication_assembles_the_four_checked_products_and_only_main_uploads_it() -> None:
+    """The four independently checked artifacts are assembled for main publication.
 
     The prepared page at the root, the checked PDF beside it, the workbench under
-    `/workbench/`: the same tree, and the only upload to Pages is a push to `main`.
+    `/workbench/`, and T-060 under `/n11-optimality/` share one published tree.
+    The only upload to Pages is a push to `main`.
     """
     jobs = load()["jobs"]
     publish = jobs["publish"]
-    assert set(needs_of(publish)) == {"prepare", "pdf", "workbench"}
+    assert set(needs_of(publish)) == {"prepare", "pdf", "workbench", "optimality"}
     steps = publish["steps"]
     assert steps[0]["name"] == ARTIFACT_ID_GUARD
     assert steps[0]["env"] == {
@@ -643,6 +654,7 @@ def test_publication_assembles_the_three_checked_products_and_only_main_uploads_
         },
         {"name": "explainer-pdf", "path": "packing/site"},
         {"name": "workbench-page", "path": "packing/site/workbench"},
+        {"name": "n11-optimality-page", "path": "packing/site/n11-optimality"},
     ]
     prepare = jobs["prepare"]
     assert prepare["outputs"] == {
@@ -661,6 +673,7 @@ def test_publication_assembles_the_three_checked_products_and_only_main_uploads_
     assert produced["prepared-page"] == ("prepare", "packing/site")
     assert produced["explainer-pdf"] == ("pdf", "packing/site/t-018-explainer.pdf")
     assert produced["workbench-page"] == ("workbench", "packing/site/workbench")
+    assert produced["n11-optimality-page"] == ("optimality", "packing/site/n11-optimality")
     (upload,) = [
         step
         for step in steps
@@ -1043,6 +1056,8 @@ def test_the_partial_checkouts_keep_the_directories_the_render_links() -> None:
     """
     jobs = load()["jobs"]
     patterns = "/*\n!/packing/resources/*/\n!/packing/campaign/*/\n"
+    packet = REPO / "packing/resources/web/n11-optimality-2026-09-29"
+    optimality_patterns = patterns + "/packing/resources/web/n11-optimality-2026-09-29/\n"
     sparse = []
     for name, job in jobs.items():
         for step in job.get("steps", []):
@@ -1058,17 +1073,22 @@ def test_the_partial_checkouts_keep_the_directories_the_render_links() -> None:
                     assert settings["sparse-checkout-cone-mode"] is False, name
                     assert settings["filter"] == "blob:none", name
                     continue
-                assert settings["sparse-checkout"] == patterns, name
+                expected_patterns = optimality_patterns if name == "optimality" else patterns
+                assert settings["sparse-checkout"] == expected_patterns, name
                 assert settings["sparse-checkout-cone-mode"] is False, name
                 assert settings["filter"] == "blob:none", name
                 sparse.append(name)
-    assert {"scope", "prepare", "workbench", *browser_check_jobs(jobs)} <= set(sparse)
+    assert {"scope", "prepare", "workbench", "optimality", *browser_check_jobs(jobs)} <= set(
+        sparse
+    )
     omitted_roots = (REPO / "packing/resources", REPO / "packing/campaign")
     for half, builder in BUILDER_INPUTS.items():
         omitted = []
         for declared in builder():
             for root in omitted_roots:
                 if declared.is_relative_to(root):
+                    if half == "optimality" and declared.is_relative_to(packet):
+                        continue
                     relative = declared.relative_to(root)
                     if relative.parts and (root / relative.parts[0]).is_dir():
                         omitted.append(declared.relative_to(REPO).as_posix())

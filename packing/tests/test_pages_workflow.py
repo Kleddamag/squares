@@ -102,11 +102,15 @@ def page_probe_inputs() -> dict[str, list[str]]:
     return dict(sorted(sources.items()))
 
 
-def missing_page_probe_inputs(patterns: list[str]) -> dict[str, list[str]]:
-    """Declared probe inputs whose files no Pages push pattern covers."""
+def missing_page_probe_inputs(
+    patterns: list[str], trees: dict[str, list[str]] | None = None
+) -> dict[str, list[str]]:
+    """Declared probe inputs whose files no Pages push pattern covers. `trees` is
+    `page_probe_inputs()` where a caller already holds it: reading the declared inputs
+    costs about a second, and a test that asks once a probe group paid it once a group."""
     return {
         root: missing
-        for root, files in page_probe_inputs().items()
+        for root, files in (page_probe_inputs() if trees is None else trees).items()
         if (
             missing := [
                 path
@@ -487,7 +491,7 @@ def test_pages_filter_contract_rejects_each_omitted_declared_probe_input() -> No
         }
         assert covering, f"test setup: {root} has no covering push pattern"
         without_tree = [pattern for pattern in patterns if pattern not in covering]
-        missing = missing_page_probe_inputs(without_tree)
+        missing = missing_page_probe_inputs(without_tree, trees)
         assert root in missing, f"test setup: removing {covering} did not expose {root}"
 
 

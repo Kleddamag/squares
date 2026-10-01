@@ -122,8 +122,7 @@ bound for every $n \le 324$, with its provenance, keeping the bound a source rep
 apart from the bound verified here.
 An external certificate counts once it is replayed in full and its mathematical
 assumptions are discharged, and each record says who ran the checks and how independent
-they were. The [Frontier](frontier.html) page shows every case, and the
-[status table](status.html) is the generated summary.
+they were. The [Frontier](frontier.html) page shows every case.
 {{SURVEY_COUNTS}}
 The [literature archive](repo:packing/resources/README.md) keeps each primary source, a
 cleaned transcription and the unedited extraction it was checked against, and the
@@ -132,16 +131,16 @@ and who did the work.
 
 The frontier survey audits rather than transcribes.
 The earliest published proof of $s(7) = 3$ carries four recorded defects in its printed
-route, so the [$n = 7$ record](repo:packing/frontier/n-007.md) rests the case on
-independent later proofs.
+route, so the [$n = 7$ record](cases.html#n-7) rests the case on independent later
+proofs.
 
 Before this project’s work began on 22 August 2026, seven authors published lower bounds
 for seventeen squares, some also for eighteen, all independently: Brandwijk’s $89/20$
 (18 July), Burns’s $4.4811$ (6 August), MacIver’s $4.4502\ldots$ (8 August), Mira’s and
 Fort’s sixteen-point sets (10 and 11 August), anabologyco-maker’s $4.57$ and $9141/2000$
 (13 and 16 August), and Massaccesi’s $4.5058$ (21 August), replayed here as T-015 and
-T-016. The [seventeen-square record](repo:packing/frontier/n-017.md) lists them all;
-each has since been superseded.
+T-016. The [seventeen-square record](cases.html#n-17) lists them all; each has since
+been superseded.
 
 ## Other Square Packing Projects
 

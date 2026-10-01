@@ -33,8 +33,6 @@ Values that are roots of a polynomial are shown as decimals, cut rather than rou
 decimal, the sources, how its bounds were verified and the evidence entries behind them.
 A case’s *n* opens its full record.
 
-The same table, as Markdown with full provenance, is
-[`frontier/STATUS.md`]({{STATUS_URL}}). Click a column heading to sort; the filters
-narrow the rows.
+Click a column heading to sort; the filters narrow the rows.
 
 {{TABLE}}

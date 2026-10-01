@@ -8,6 +8,9 @@ All read a probe's output in Python, so the decisions are tested here without a 
 
 from __future__ import annotations
 
+from pathlib import Path
+
+from devtools import render_overview
 from devtools.measure_site_pages import (
     card_rows,
     chip_rows,
@@ -21,6 +24,7 @@ from devtools.preview_site import (
     baseline_problems,
     clip_problem,
     motion_for,
+    moved_links,
     off_centre,
     shot_stem,
     split_problem,
@@ -484,3 +488,35 @@ def test_only_a_page_that_starts_a_film_is_opened_under_reduced_motion() -> None
     assert motion_for("visualize.html#film") == "reduce"
     for name in ("index.html", "frontier.html", "workbench/index.html", "cases.html#n-11"):
         assert motion_for(name) == "no-preference", name
+
+
+def test_a_link_to_a_page_that_moved_is_reported(tmp_path: Path) -> None:
+    """A forwarder keeps an old link working, and a page of the site names where the
+    reader is going: a built page that links or frames an address in
+    `render_overview.MOVED_PAGES` is named with the link, from the root or from a
+    directory under it. The forwarders themselves and an address off the site are not."""
+    moved = [old for old, _ in render_overview.MOVED_PAGES]
+    assert moved[:3] == ["results.html", "status.html", "defects.html"]
+    (tmp_path / "result").mkdir()
+    for old in moved:
+        (tmp_path / old).write_text('<a href="all-results.html">moved</a>', encoding="utf-8")
+    (tmp_path / "all-results.html").write_text(
+        '<a href="frontier.html#n-11">a row</a>'
+        '<a href="https://example.org/results.html">elsewhere</a>',
+        encoding="utf-8",
+    )
+    assert moved_links(tmp_path) == []
+    (tmp_path / "index.html").write_text(
+        '<a href="results.html#next-actions">old</a>'
+        '<iframe src="defects.html?view=embed"></iframe>'
+        '<a href="all-results.html#t-060">new</a>',
+        encoding="utf-8",
+    )
+    (tmp_path / "result" / "t-001.html").write_text(
+        '<a href="../status.html">old</a>', encoding="utf-8"
+    )
+    assert moved_links(tmp_path) == [
+        "index.html: defects.html?view=embed",
+        "index.html: results.html#next-actions",
+        "result/t-001.html: ../status.html",
+    ]

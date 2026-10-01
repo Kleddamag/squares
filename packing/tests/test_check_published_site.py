@@ -162,6 +162,8 @@ def site_naming(named: Sequence[str], /, **overrides: bytes) -> dict[str, bytes]
         pages[address] = result_overview(address.rsplit("/", 1)[1].removesuffix(".html"))
     pages[OPTIMALITY_PAPER] = optimality_paper()
     pages[OPTIMALITY_PAPER_MARKDOWN] = optimality_markdown()
+    for forwarder in render_overview.forwarder_pages():
+        pages[forwarder.name] = forwarder.html.encode()
     pages.update(overrides)
     pages[render_overview.RESULTS_PAGE] += "".join(
         f'<div class="site-row-pop-body" data-row-pop-src="{address}"></div>'
@@ -419,6 +421,35 @@ def test_check_requires_every_result_overview_the_results_table_names(
     gone = site_pages(**{"result/t-002.html": result_overview("t-002", link="packing/gone.md")})
     missing = f"linked on main but not in {COMMIT[:12]}: ['blob/packing/gone.md']"
     assert failures(monkeypatch, fake_site(gone)) == [f"the result overviews: {missing}"]
+
+
+def test_check_requires_a_forwarder_at_every_address_a_page_used_to_have(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A page that moved or was withdrawn is still served at its old address, as a
+    forwarder naming where a visit goes now: a deploy without one 404s every link written
+    before the change, and one that names another place sends its readers there."""
+    moved = dict(render_overview.MOVED_PAGES)
+    assert {"results.html", "status.html", "defects.html"} <= set(moved)
+    assert not set(moved) & set(render_overview.SITE_PAGES)
+    requested: list[str] = []
+    assert failures(monkeypatch, fake_site(site_pages(), requested=requested)) == []
+    for old in moved:
+        assert f"https://example.org/{old}" in requested, old
+
+    for old in moved:
+        # The slash keeps `results.html` from also losing `all-results.html`.
+        (failure,) = failures(monkeypatch, fake_site(site_pages(), lost=(f"/{old}",)))
+        assert failure == f"forwarder {old}: HTTP 404, sends a visit to None", old
+
+    elsewhere = b'<html lang="en" data-moved-to="index.html"><body></body></html>'
+    (failure,) = failures(monkeypatch, fake_site(site_pages(**{"results.html": elsewhere})))
+    assert failure == "forwarder results.html: HTTP 200, sends a visit to 'index.html'"
+
+    # The page that was there before, still served in place of its forwarder.
+    kept = page(render_overview.canonical_url("status.html"))
+    (failure,) = failures(monkeypatch, fake_site(site_pages(**{"status.html": kept})))
+    assert failure == "forwarder status.html: HTTP 200, sends a visit to None"
 
 
 def test_absent_links_names_what_a_deploy_dropped_and_rows_are_read_one_by_one() -> None:

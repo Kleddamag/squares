@@ -100,7 +100,9 @@ def test_the_results_table_has_its_own_page_and_the_overview_points_to_it(
     and filters; the overview keeps no row of it, only a pointer under the recent table."""
     assert render_overview.RESULTS_PAGE == "all-results.html"
     assert "all-results.html" in render_overview.SITE_PAGES
-    assert "results.html" in render_overview.DOCUMENT_PAGES
+    # `results.html` was `RESULTS.md` as a page, and now forwards to the table.
+    assert "results.html" not in render_overview.SITE_PAGES
+    assert dict(render_overview.MOVED_PAGES)["results.html"] == "all-results.html"
     assert 'aria-current="page" href="all-results.html">Results</a>' in results
     assert "data-site-table" in results
     assert render_overview.TABLE_SCRIPT.read_text(encoding="utf-8") in results
@@ -1020,6 +1022,34 @@ def test_on_github_links_open_the_latest_version(page: str) -> None:
     also = re.findall(r'<a class="site-popover-also" href="([^"]+)"[^>]*>On GitHub</a>', page)
     assert len(also) == len(overview_sections.DOCUMENTS)
     assert all(url.startswith(branch) for url in also)
+
+
+def test_the_document_cards_lead_with_readme_and_epistemics(page: str) -> None:
+    """The documentation section's cards are the reader documents the site renders, in
+    the order of `DOCUMENT_PAGES`: README and `epistemics.md` first. The results
+    register, the status table and the defect log have no card and no page; the prose
+    of the overview links none of them (think-bk2e)."""
+    assert re.findall(r'<div class="site-popover" id="pop-doc-([a-z]+)" popover', page) == [
+        "readme",
+        "epistemics",
+        "synopsis",
+        "conventions",
+        "development",
+    ]
+    assert re.findall(r">Expand ([A-Za-z.]+)<", page) == [
+        "README.md",
+        "epistemics.md",
+        "SYNOPSIS.md",
+        "conventions.md",
+        "development.md",
+    ]
+    for name in ("results.html", "status.html", "defects.html"):
+        assert f'"{name}' not in page, name
+    for gone in ("RESULTS.md", "STATUS.md", "defects.md"):
+        assert f">Expand {gone}<" not in page, gone
+    # The survey's two case records are the site's own, not the files on GitHub.
+    assert '<a href="cases.html#n-17">seventeen-square record</a>' in page
+    assert 'packing/frontier/n-007.md"' not in page
 
 
 def test_other_projects_include_every_source_repository_the_record_reviews() -> None:
@@ -3957,10 +3987,16 @@ def test_the_site_writes_each_result_overview_once_and_drops_a_withdrawn_one(
     assert (tmp_path / "result" / "t-001.html").read_text(encoding="utf-8") == "<p>one</p>\n"
     monkeypatch.setattr(render_overview, "render_all", lambda: files[:1])
     monkeypatch.setattr(render_overview, "result_fragments", lambda: files[1:])
+    forwarder = render_overview.Page("old.html", "<p>moved</p>")
+    monkeypatch.setattr(render_overview, "forwarder_pages", lambda: [forwarder])
     assert [file.name for file in render_overview.render_site()] == [
         "index.html",
         "result/t-001.html",
+        "old.html",
     ]
+    # A forwarder is one of the files a render writes, so a build without it is stale.
+    assert render_overview.main(["--output", str(tmp_path), "--check"]) == 1
+    render_overview.write_site(tmp_path, [*files, forwarder])
     assert render_overview.main(["--output", str(tmp_path), "--check"]) == 0
     (tmp_path / "result" / "t-001.html").write_text("changed", encoding="utf-8")
     assert render_overview.main(["--output", str(tmp_path), "--check"]) == 1

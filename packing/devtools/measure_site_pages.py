@@ -159,13 +159,13 @@ POPOVER = probe(PROBES, "measure_site_pages/popover")
 #: What a press opens, which `space` then reports alone: an open popover or disclosure.
 OPENED = ":popover-open, details[open]"
 
-#: The pages compared by default: the explainer, the long reports, a short one, the
+#: The pages compared by default: the explainer, the long reports, two short ones, the
 #: homepage and one case record.
 DEFAULT_PAGES = (
     "explainer.html",
     "tutorial.html",
     "synopsis.html",
-    "results.html",
+    "epistemics.html",
     "readme.html",
     "index.html",
     "cases.html#n-11",

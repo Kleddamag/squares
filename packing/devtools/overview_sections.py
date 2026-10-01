@@ -506,8 +506,9 @@ def result_row_popover_body(result: Result, overview: Overview) -> str:
 
 
 #: Where the result overviews are served, under the site's root: a directory of
-#: fragments, one a result, which are not pages. Not `results/`: `results.html` is
-#: `RESULTS.md`, and a host may serve either at `/results`.
+#: fragments, one a result, which are not pages. Not `results/`: `results.html` is still
+#: served, as the forwarder where `RESULTS.md` was a page, and a host may serve either
+#: at `/results`.
 RESULT_FRAGMENTS = "result"
 
 
@@ -1293,24 +1294,27 @@ def awaiting_replay(overview: Overview) -> str:
 
 
 #: The repository's reader documents, as the overview's cards show them: the file, a
-#: label, and one line on what a reader finds there. README and the synopsis lead.
+#: label, and one line on what a reader finds there, in the order of
+#: `render_overview.DOCUMENT_PAGES`. README and `epistemics.md` lead, as the two a reader
+#: needs most: what the project is, and how each result is graded. The synopsis, the
+#: full technical record, follows, then the two reference documents, for the record's
+#: formats and for the code. The results register, the status table and the defect log
+#: are not here: the results table and the Frontier page show the first two from the
+#: same record, and the defect log is internal to the repository (think-bk2e).
 DOCUMENTS: tuple[tuple[str, str, str], ...] = (
     (
         repo_links.README,
         "The Square Packing Project",
         "What the project is, how it works, and where to start.",
     ),
+    (repo_links.EPISTEMICS, "Epistemics", "How each result is verified, confirmed and scored."),
     (
         repo_links.SYNOPSIS,
         "The synopsis",
         "The full research record: methods, claims and status.",
     ),
-    (repo_links.RESULTS, "Results", "Every registered result with its rungs."),
-    (repo_links.STATUS, "The status table", "Every case to 324, with provenance."),
-    (repo_links.EPISTEMICS, "Epistemics", "How each result is verified, confirmed and scored."),
     (repo_links.CONVENTIONS, "Conventions", "Record formats, identifiers and naming."),
     (repo_links.DEVELOPMENT, "Development", "Building, testing and validating the code."),
-    (repo_links.DEFECTS, "Defect log", "Every defect found in the toolchain, one line each."),
 )
 
 

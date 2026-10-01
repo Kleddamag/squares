@@ -161,7 +161,7 @@ def _site_pages(scratch: Path) -> None:
 def _preview_explainer(scratch: Path) -> None:
     from devtools import preview_site  # noqa: PLC0415
 
-    preview_site.build_explainer(scratch)
+    preview_site.build_lower_bounds_explainer(scratch)
 
 
 #: The builds that are a function here rather than a module's command.
@@ -233,21 +233,21 @@ PHASES: tuple[Phase, ...] = (
     Phase(
         "explainer page",
         "papers",
-        "render_explainer --prepare-math, into packing/site/",
-        ("devtools.render_explainer", "--prepare-math"),
+        "render_n11_lower_bounds_explainer --prepare-math, into packing/site/",
+        ("devtools.render_n11_lower_bounds_explainer", "--prepare-math"),
     ),
     Phase(
         "explainer PDF",
         "papers",
-        "render_explainer_pdf --update, from the page above",
-        ("devtools.render_explainer_pdf", "--update"),
+        "render_n11_lower_bounds_explainer_pdf --update, from the page above",
+        ("devtools.render_n11_lower_bounds_explainer_pdf", "--update"),
     ),
     Phase(
         "optimality paper page",
         "papers",
-        "render_n11_optimality_explainer, HTML and Markdown only",
+        "render_n11_optimality_review, HTML and Markdown only",
         (
-            "devtools.render_n11_optimality_explainer",
+            "devtools.render_n11_optimality_review",
             "--output-dir",
             "{scratch}/n11-optimality-page",
         ),
@@ -255,9 +255,9 @@ PHASES: tuple[Phase, ...] = (
     Phase(
         "optimality paper page and PDF",
         "papers",
-        "render_n11_optimality_explainer --pdf",
+        "render_n11_optimality_review --pdf",
         (
-            "devtools.render_n11_optimality_explainer",
+            "devtools.render_n11_optimality_review",
             "--output-dir",
             "{scratch}/n11-optimality",
             "--pdf",
@@ -287,7 +287,7 @@ PHASES: tuple[Phase, ...] = (
         "preview",
         "preview_site's fourth build: the optimality paper with its PDF",
         (
-            "devtools.render_n11_optimality_explainer",
+            "devtools.render_n11_optimality_review",
             "--output-dir",
             "{scratch}/n11-optimality",
             "--pdf",

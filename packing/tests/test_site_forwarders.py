@@ -1,11 +1,21 @@
 """A page that moved or was withdrawn still arrives, in a browser.
 
 `render_overview.forwarder_pages` writes a forwarder at each address a page used to
-have. `tests/node/overview_forward` runs the script against a stand-in document; this
+have (`MOVED_PAGES`): three repository documents that left the site, and the two papers,
+which moved to `papers/<slug>.html` on 2026-10-01 (think-cmz6). Links to the papers' old
+addresses are in dated records, in other people's pages and in readers' bookmarks, most
+of them with a fragment: a section, a footnote, the explainer's certificate picker.
+
+`tests/node/overview_forward` runs the script against a stand-in document. Whether a
+forwarder forwards is the browser's to say: a script that replaces the location, a
+refresh inside `<noscript>`, and a relative address resolved from a directory. So this
 opens the forwarders themselves, as they are written, and reads where the browser ends
 up: with scripts, at the target with the query string and the fragment the reader came
-with; without scripts, at the target by the refresh. A target off the site, the defect
-log on GitHub, is answered by a stand-in, so no test reaches the network.
+with; without scripts, at the target by the refresh. It does that from files, for every
+forwarder, and from a local address for the papers, where the real overview is served
+beside stand-in papers and `check_published_site` is asked the same of the same site,
+which is the check a deploy is held to. A target off the site, the defect log on GitHub,
+is answered by a stand-in, so no test reaches the network.
 
 Skipped where no Chromium can be launched; `SQPACK_CHROMIUM` names one the environment
 supplies, as the other browser tools read it.
@@ -15,19 +25,27 @@ from __future__ import annotations
 
 import contextlib
 import os
+import socket
 from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
 import pytest
 
-from devtools import render_overview
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from devtools import check_published_site, render_overview
+from devtools.overview_sections import LOWER_BOUNDS_PAPER, OPTIMALITY_PAPER
+from devtools.preview_site import serve
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from devtools.repo_links import REPO_URL
+from tests import site_renders
 
 #: What stands at each target: a page with nothing to run and nothing to fetch.
 STAND_IN = "<!doctype html><title>target</title><p>target</p>"
 DEFECTS = f"{REPO_URL}/blob/main/defects.md"
+#: Real fragments and a real query string an old link to a paper carries: a section of
+#: each paper, a footnote, the explainer's certificate picker and its review switch.
+EXPLAINER_LINKS = ("#proof-of-the-new-lower-bound", "#fn-3", "?review=fonts#381-100")
+REVIEW_LINKS = ("#the-result", "#fn-1", "?view=embed#fn-3")
 
 
 @pytest.fixture(scope="module")
@@ -42,15 +60,44 @@ def browser() -> Iterator[Any]:
         launched.close()
 
 
+def _stand_ins(root: Path) -> None:
+    """A stand-in page at each address of the site a forwarder sends a reader to."""
+    for _, new in render_overview.MOVED_PAGES:
+        if not new.startswith("https://"):
+            (root / new).parent.mkdir(parents=True, exist_ok=True)
+            (root / new).write_text(STAND_IN, encoding="utf-8")
+
+
 @pytest.fixture(scope="module")
 def site(tmp_path_factory: pytest.TempPathFactory) -> Path:
     """The forwarders as the site writes them, beside a stand-in for each target page."""
     root = tmp_path_factory.mktemp("forwarders")
     render_overview.write_site(root, render_overview.forwarder_pages())
-    for _, new in render_overview.MOVED_PAGES:
-        if not new.startswith("https://"):
-            (root / new).write_text(STAND_IN, encoding="utf-8")
+    _stand_ins(root)
     return root
+
+
+def _free_port() -> int:
+    with socket.socket() as probe:
+        probe.bind(("127.0.0.1", 0))
+        return int(probe.getsockname()[1])
+
+
+@pytest.fixture(scope="module")
+def served(tmp_path_factory: pytest.TempPathFactory) -> Iterator[str]:
+    """The forwarders and the overview as they are rendered, beside the stand-ins, served
+    on a local address as a deployed site is on its own; the address, with its closing
+    slash. A directory's address and the overview's fragment forwarding need a server."""
+    root = Path(tmp_path_factory.mktemp("served"))
+    _stand_ins(root)
+    files = [*render_overview.forwarder_pages(), site_renders.page("index.html")]
+    render_overview.write_site(root, files)
+    server = serve(root, _free_port())
+    try:
+        yield f"http://127.0.0.1:{server.server_port}/"
+    finally:
+        server.shutdown()
+        server.server_close()
 
 
 def _arrives(browser: Any, address: str, expected: str, *, scripts: bool) -> str:
@@ -73,17 +120,27 @@ def _arrives(browser: Any, address: str, expected: str, *, scripts: bool) -> str
         context.close()
 
 
+def _arrivals(root: str) -> dict[str, str]:
+    """Where each old address should arrive, for a site whose root is `root`."""
+    return {
+        "results.html": f"{root}/all-results.html",
+        "status.html": f"{root}/frontier.html",
+        "defects.html": DEFECTS,
+        "explainer.html": f"{root}/{LOWER_BOUNDS_PAPER}",
+        "n11-optimality/t-060-explainer.html": f"{root}/{OPTIMALITY_PAPER}",
+        "n11-optimality/index.html": f"{root}/{OPTIMALITY_PAPER}",
+    }
+
+
 def test_each_old_address_arrives_with_its_query_and_fragment(browser: Any, site: Path) -> None:
     moved = dict(render_overview.MOVED_PAGES)
     assert moved["results.html"] == "all-results.html"
     assert moved["status.html"] == "frontier.html"
     assert moved["defects.html"] == DEFECTS
+    assert moved["explainer.html"] == LOWER_BOUNDS_PAPER
     root = site.as_uri()
-    arrivals = {
-        "results.html": f"{root}/all-results.html",
-        "status.html": f"{root}/frontier.html",
-        "defects.html": DEFECTS,
-    }
+    arrivals = _arrivals(root)
+    assert set(arrivals) == set(moved)
     for old, target in arrivals.items():
         assert _arrives(browser, f"{root}/{old}", target, scripts=True) == target, old
         kept = f"{target}?view=embed#n-17"
@@ -94,10 +151,89 @@ def test_each_old_address_arrives_with_its_query_and_fragment(browser: Any, site
 def test_without_scripts_the_refresh_still_arrives(browser: Any, site: Path) -> None:
     """A reader without scripts is sent on by the refresh, which cannot keep a fragment."""
     root = site.as_uri()
-    arrivals = {
-        "results.html": f"{root}/all-results.html",
-        "status.html": f"{root}/frontier.html",
-        "defects.html": DEFECTS,
-    }
-    for old, target in arrivals.items():
+    for old, target in _arrivals(root).items():
         assert _arrives(browser, f"{root}/{old}", target, scripts=False) == target, old
+        assert _arrives(browser, f"{root}/{old}#fn-3", target, scripts=False) == target, old
+
+
+@pytest.mark.parametrize("suffix", EXPLAINER_LINKS)
+def test_the_explainers_old_address_arrives_at_the_paper(
+    served: str, browser: Any, suffix: str
+) -> None:
+    """`explainer.html`, with the fragment and the query string an old link carried."""
+    arrival = served + LOWER_BOUNDS_PAPER + suffix
+    assert (
+        _arrives(browser, f"{served}explainer.html{suffix}", arrival, scripts=True) == arrival
+    )
+
+
+@pytest.mark.parametrize("old", ["n11-optimality/t-060-explainer.html", "n11-optimality/"])
+@pytest.mark.parametrize("suffix", REVIEW_LINKS)
+def test_the_optimality_papers_old_addresses_arrive_at_the_paper(
+    served: str, browser: Any, old: str, suffix: str
+) -> None:
+    """Its page and the directory it was linked by, which the forwarder a level down
+    has to climb out of."""
+    arrival = served + OPTIMALITY_PAPER + suffix
+    assert _arrives(browser, f"{served}{old}{suffix}", arrival, scripts=True) == arrival
+
+
+def test_the_optimality_papers_directory_arrives_without_scripts(
+    served: str, browser: Any
+) -> None:
+    """The refresh of a directory's index is resolved from the directory."""
+    arrival = served + OPTIMALITY_PAPER
+    assert _arrives(browser, f"{served}n11-optimality/#fn-1", arrival, scripts=False) == arrival
+
+
+def test_the_overview_sends_an_old_explainer_fragment_to_the_paper(
+    served: str, browser: Any
+) -> None:
+    """The explainer was once the site's root, so a fragment the overview lacks goes to
+    the paper where it is served now, in one step and not through `explainer.html`; a
+    result's row goes to the results table; and a fragment the overview has stays."""
+    arrival = f"{served}{LOWER_BOUNDS_PAPER}?review=fonts#fn-3"
+    assert _arrives(browser, f"{served}?review=fonts#fn-3", arrival, scripts=True) == arrival
+    arrival = f"{served}{render_overview.RESULTS_PAGE}#t-018"
+    assert _arrives(browser, f"{served}index.html#t-018", arrival, scripts=True) == arrival
+    stays = f"{served}#verification-ladders"
+    assert _arrives(browser, stays, stays, scripts=True) == stays
+
+
+def test_the_deployed_site_check_follows_the_same_forwarders(
+    served: str, browser: Any, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """`check_published_site` visits each old address the way a deploy is checked, and
+    accepts a site this machine serves; it fails when a forwarder leads nowhere."""
+    context = browser.new_context()
+    context.route(
+        f"{REPO_URL}/**",
+        lambda route: route.fulfill(status=200, content_type="text/html", body=STAND_IN),
+    )
+    try:
+        followed = check_published_site.forwarder_arrivals(context, served, timeout=10)
+        assert [passed for passed, _ in followed] == [True] * len(render_overview.MOVED_PAGES)
+        lines = dict(
+            zip((old for old, _ in render_overview.MOVED_PAGES), followed, strict=True)
+        )
+        suffix = check_published_site.FORWARDED_SUFFIX
+        paper = f"{served}{LOWER_BOUNDS_PAPER}{suffix}"
+        line = lines["explainer.html"][1]
+        assert f"visiting {served}explainer.html{suffix} arrives at {paper!r}" in line
+        assert (
+            f"visiting {served}n11-optimality/{suffix} "
+            in lines["n11-optimality/index.html"][1]
+        )
+        assert f"arrives at {DEFECTS + suffix!r}" in lines["defects.html"][1]
+        assert check_published_site.fetch_once(f"{served}explainer.html")[0] == 200
+
+        monkeypatch.setattr(
+            render_overview,
+            "MOVED_PAGES",
+            (("explainer.html", "papers/not-a-paper.html"),),
+        )
+        ((passed, line),) = check_published_site.forwarder_arrivals(context, served, timeout=2)
+        assert not passed
+        assert "papers/not-a-paper.html" in line
+    finally:
+        context.close()

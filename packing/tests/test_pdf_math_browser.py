@@ -18,9 +18,9 @@ from typing import Any, Literal
 import pytest
 from playwright.sync_api import Browser, Error, Page, sync_playwright
 
-from devtools import render_explainer_pdf as pdf
+from devtools import render_n11_lower_bounds_explainer_pdf as pdf
 from devtools.check_math_loading import MATH_LIBRARY
-from devtools.render_explainer_pdf import (
+from devtools.render_n11_lower_bounds_explainer_pdf import (
     _MATH_RENDERED,  # pyright: ignore[reportPrivateUsage]
     _PRINT_DRAWS,  # pyright: ignore[reportPrivateUsage]
     SETTLED,
@@ -59,7 +59,7 @@ def observe_export(
     mode: Literal["error", "timeout"] | None = None,
 ) -> Observation:
     """Inject only the font fault and observe the exporter's unmodified control flow."""
-    assert pdf.PAGE.is_file(), "Pages must provide its prepared site/index.html"
+    assert pdf.PAGE.is_file(), "Pages must provide its prepared page under site/papers/"
     observed = Observation()
     opened: list[Page] = []
     new_page = Browser.new_page
@@ -93,15 +93,15 @@ def observe_export(
 def test_production_pdf_accepts_typeset_math() -> None:
     """The normal-math control, asserted on the PDF Pages publishes rather than a new draw.
 
-    Pages draws the publication PDF with `render_explainer_pdf --update` before these
-    controls run, and that draw is this control's subject: the production exporter on the
-    unfaulted page, which waits for `html.math-ready` and refuses unrendered math before
-    it draws. Drawing the same PDF again here to watch it succeed cost 4.5 s of every run
-    and asserted nothing the publication draw had not already done. What is asserted is
-    what the draw does not check about its own output -- a PDF, bound by its receipt to
-    the prepared page it was drawn from, with no font finding.
+    Pages draws the publication PDF with `render_n11_lower_bounds_explainer_pdf --update` before
+    these controls run, and that draw is this control's subject: the production exporter on the
+    unfaulted page, which waits for `html.math-ready` and refuses unrendered math before it
+    draws. Drawing the same PDF again here to watch it succeed cost 4.5 s of every run and
+    asserted nothing the publication draw had not already done. What is asserted is what the
+    draw does not check about its own output -- a PDF, bound by its receipt to the prepared page
+    it was drawn from, with no font finding.
     """
-    assert pdf.PAGE.is_file(), "Pages must provide its prepared site/index.html"
+    assert pdf.PAGE.is_file(), "Pages must provide its prepared page under site/papers/"
     assert pdf.OUTPUT.is_file(), "Pages must draw the publication PDF before these controls"
     document = pdf.OUTPUT.read_bytes()
     assert document.startswith(b"%PDF-")
@@ -157,7 +157,7 @@ def test_production_pdf_preserves_readable_native_mathml_fallback(
 
 def test_final_math_guard_distinguishes_hidden_alternatives_and_render_errors() -> None:
     """Exercise the final predicate with real prepared nodes and the page's CSS."""
-    assert pdf.PAGE.is_file(), "Pages must provide its prepared site/index.html"
+    assert pdf.PAGE.is_file(), "Pages must provide its prepared page under site/papers/"
     with sync_playwright() as driver:
         browser = driver.chromium.launch(executable_path=os.environ.get(pdf.BROWSER_OVERRIDE))
         try:

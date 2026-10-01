@@ -177,7 +177,7 @@ COMPOSITES_MAY_TRAIL = True
 #: The last data commit, pinned in full: what `data_revision` returned when it was last
 #: re-pinned. Full rather than six characters so the drift check compares a commit, not
 #: a prefix.
-DATA_REVISION = "1061d2bcede8c4a0885ecd15d17784dd9232c2e2"
+DATA_REVISION = "971e5fa800d8bb610688c8b76a8384f0520cc1b0"
 
 #: The version, written the one way it is ever written: `v0.4.1-f5e113`. Semver core,
 #: then the data revision, in the shape a build identifier takes everywhere else.
@@ -219,14 +219,14 @@ FIRST_PUBLISHED = PUBLICATION_HISTORY[-1].first_published
 #: `PUBLICATION_DATE`, the day the edition was first published, which stood still while
 #: the article changed under it: merging is the whole publish, so the text a reader sees
 #: moves between editions. Change it in the commit that changes the article.
-EXPLAINER_REVISED = "September 30, 2026"
+EXPLAINER_REVISED = "October 1, 2026"
 
-#: The commit the committed claim documents link to (`render_explainer.edition_file`), at
-#: this repository's short length. It is pinned for the reason `DATA_REVISION` is: those
-#: documents are compared byte for byte with a fresh render, so a link naming the build
-#: commit would fail their drift check forever. It is in no version string. It moves
-#: when the claim documents are regenerated for an edition. It must be a commit on
-#: `main`; the site's own links name `main` itself (`devtools.repo_links`).
+#: The commit the committed claim documents link to
+#: (`render_n11_lower_bounds_explainer.edition_file`), at this repository's short length. It is
+#: pinned for the reason `DATA_REVISION` is: those documents are compared byte for byte with a
+#: fresh render, so a link naming the build commit would fail their drift check forever. It is
+#: in no version string. It moves when the claim documents are regenerated for an edition. It
+#: must be a commit on `main`; the site's own links name `main` itself (`devtools.repo_links`).
 PUBLICATION_REVISION = "0d7bb0fa"
 
 

@@ -16,9 +16,17 @@ from pathlib import Path
 
 import pytest
 
-from devtools import artifact_dates, render_explainer, render_n11_optimality_explainer
+from devtools import (
+    artifact_dates,
+    render_n11_lower_bounds_explainer,
+    render_n11_optimality_review,
+)
 from devtools.render_composite_pdf import pdf_dates
-from devtools.render_explainer_pdf import date_problem, dated, publication_date_text
+from devtools.render_n11_lower_bounds_explainer_pdf import (
+    date_problem,
+    dated,
+    publication_date_text,
+)
 from sqpack import release
 
 #: A PDF's information dictionary as Chromium writes it, between two markers whose
@@ -53,8 +61,8 @@ def test_a_papers_revised_date_is_the_day_its_article_last_changed() -> None:
     This is the check that fails when an article changes and its date does not: the
     explainer's is `release.EXPLAINER_REVISED`, the optimality paper's is in its own
     credits, and each is changed in the commit that changes the article. The articles
-    are `explainer-article.md` and `n11-optimality-article.md`, named here so that the
-    pre-push tier selects this file when either changes.
+    are `n11-lower-bounds-explainer-article.md` and `n11-optimality-review-article.md`,
+    named here so that the pre-push tier selects this file when either changes.
     """
     for article, stated in (
         (artifact_dates.EXPLAINER_ARTICLE, release.EXPLAINER_REVISED),
@@ -83,8 +91,8 @@ def test_the_optimality_papers_original_proof_is_the_day_the_register_gives() ->
 
 
 def test_the_articles_named_here_are_the_ones_the_renderers_read() -> None:
-    assert artifact_dates.EXPLAINER_ARTICLE == render_explainer.MARKDOWN
-    assert artifact_dates.OPTIMALITY_ARTICLE == render_n11_optimality_explainer.ARTICLE
+    assert artifact_dates.EXPLAINER_ARTICLE == render_n11_lower_bounds_explainer.MARKDOWN
+    assert artifact_dates.OPTIMALITY_ARTICLE == render_n11_optimality_review.ARTICLE
 
 
 def test_a_stale_revised_date_is_reported_and_fails_the_check(

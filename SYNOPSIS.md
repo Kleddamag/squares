@@ -1362,15 +1362,16 @@ T-037’s verified $s(11) > 31/8$ and T-059’s reported row-minimum equality re
 separate scopes. PR 246 merged with the verified result; the next handoff is a bounded
 fresh-ensemble replay entry point.
 
-The [dedicated optimality paper](packing/devtools/templates/n11-optimality-article.md)
+The
+[dedicated optimality paper](packing/devtools/templates/n11-optimality-review-article.md)
 explains that complete argument from first principles, separately from the historical
 lower-bound explainer.
 Its
 [simplification review](docs/project/reviews/review-2026-09-30-n11-expository-simplification.md)
 consolidates the proof dependencies and geometric invariant without removing required
 cases, branches or checks.
-The [rendered paper](https://jlevy.github.io/squares/n11-optimality/) and
-[PDF](https://jlevy.github.io/squares/n11-optimality/t-060-explainer.pdf) include the
+The [rendered paper](https://jlevy.github.io/squares/papers/n11-optimality-review.html)
+and [PDF](https://jlevy.github.io/squares/papers/n11-optimality-review.pdf) include the
 exact center cover, occupied mask and capture ancestry, with the implementation-sharing
 and fresh-replay limits stated beside the verification record.
 

@@ -29,7 +29,7 @@ import pytest
 
 from devtools import overview_data, overview_sections, render_overview
 from devtools.overview_sections import Cited, ProjectTally, project_order, project_tallies
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import probe
 from sqpack.yamlio import safe_load
 from tests import site_renders

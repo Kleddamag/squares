@@ -137,7 +137,7 @@ def test_the_declared_render_inputs_cover_what_the_builder_names() -> None:
         "packages/workbench/tools/render-katex.ts",
         "packages/workbench/tools/bundle-browser.ts",
         "packages/workbench/src/data/corpus.ts",
-        "packing/devtools/render_explainer.py",
+        "packing/devtools/render_n11_lower_bounds_explainer.py",
         "packages/workbench/assets/template.html",
         "packing/witnesses/known-best",
     } <= named

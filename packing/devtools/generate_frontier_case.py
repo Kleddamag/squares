@@ -1950,7 +1950,7 @@ def render_body(
     # runs, so a generated record arrives already wrapped the way the register is and the
     # hook has nothing to restage. Smart quotes also apply to source notes inserted
     # into prose; their frontmatter transcription remains unchanged.
-    # `render_explainer.py` loads it the same way and for
+    # `render_n11_lower_bounds_explainer.py` loads it the same way and for
     # the same reason: a network fetch inside a generator would make it depend on an
     # index being reachable. The mathematics is written as math first, by the same rules
     # `devtools.migrate_math` applied to the register's bodies, since the formatter wraps

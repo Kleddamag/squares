@@ -1076,11 +1076,11 @@ Reproduce it with the retained tools rather than depending on disposable files.
 - [Research: Harmonizing the Reading Face with KaTeX Mathematics](../../../../vendor/kpress/docs/project/research/research-2026-09-07-math-text-face.md)
   and [Math Text Face](../../../../vendor/kpress/docs/math-text-face.plan.md), in
   kpress.
-- [`render_explainer.py`](../../../../packing/devtools/render_explainer.py),
-  [`render_explainer_pdf.py`](../../../../packing/devtools/render_explainer_pdf.py),
+- [`render_explainer.py`](../../../../packing/devtools/render_n11_lower_bounds_explainer.py),
+  [`render_explainer_pdf.py`](../../../../packing/devtools/render_n11_lower_bounds_explainer_pdf.py),
   [`sans_instances.py`](../../../../packing/devtools/sans_instances.py),
   [`check_print_layout.py`](../../../../packing/devtools/check_print_layout.py),
-  [`inspect_explainer_typography.py`](../../../../packing/devtools/inspect_explainer_typography.py),
+  [`inspect_explainer_typography.py`](../../../../packing/devtools/inspect_n11_lower_bounds_explainer_typography.py),
   [`check_math_faces.py`](../../../../packing/devtools/check_math_faces.py).
 
 <!-- This document follows common-doc-guidelines.md.

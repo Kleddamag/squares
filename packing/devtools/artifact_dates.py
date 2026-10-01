@@ -30,7 +30,7 @@ Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.artifact_dates
     uv run --frozen --all-extras --group dev python -m devtools.artifact_dates --check
     uv run --frozen --all-extras --group dev python -m devtools.artifact_dates \
-        --pdf site/n11-optimality/t-060-explainer.pdf --revised optimality
+        --pdf site/papers/n11-optimality-review.pdf --revised optimality
 
 With no option it prints the table. `--check` exits 1 when a derived date is not what
 its rule gives; where git cannot answer, a row says so and fails nothing. `--pdf` holds
@@ -55,8 +55,8 @@ PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
 TEMPLATES = PACKING / "devtools/templates"
 #: The two papers' articles: the text whose last change is a paper's "revised" date.
-EXPLAINER_ARTICLE = TEMPLATES / "explainer-article.md"
-OPTIMALITY_ARTICLE = TEMPLATES / "n11-optimality-article.md"
+EXPLAINER_ARTICLE = TEMPLATES / "n11-lower-bounds-explainer-article.md"
+OPTIMALITY_ARTICLE = TEMPLATES / "n11-optimality-review-article.md"
 RESULTS = PACKING / "frontier/results.yaml"
 SYNOPSIS = REPO / "SYNOPSIS.md"
 #: The result the optimality paper reviews, whose publication is its "Original proof".
@@ -179,7 +179,9 @@ def _poster_rows() -> list[Row]:
 
 
 def _paper_rows() -> list[Row]:
-    from devtools.render_explainer_pdf import publication_date_text  # noqa: PLC0415
+    from devtools.render_n11_lower_bounds_explainer_pdf import (  # noqa: PLC0415
+        publication_date_text,
+    )
 
     explainer_changed = last_change(EXPLAINER_ARTICLE)
     proof, review = optimality_dates()
@@ -204,9 +206,12 @@ def _paper_rows() -> list[Row]:
         Row(
             "explainer PDF CreationDate, ModDate",
             publication_date_text(written_date(release.EXPLAINER_REVISED)),
-            "set by render_explainer_pdf --update",
+            "set by render_n11_lower_bounds_explainer_pdf --update",
             "Last revised, at noon UTC",
-            held_by="built at deploy; render_explainer_pdf --check-artifact refuses another",
+            held_by=(
+                "built at deploy; render_n11_lower_bounds_explainer_pdf --check-artifact "
+                "refuses another"
+            ),
         ),
         Row(
             "optimality paper, Original proof",
@@ -226,7 +231,7 @@ def _paper_rows() -> list[Row]:
         Row(
             "optimality paper PDF CreationDate, ModDate",
             publication_date_text(written_date(review)),
-            "set by render_n11_optimality_explainer --pdf",
+            "set by render_n11_optimality_review --pdf",
             "This review revised, at noon UTC",
             held_by="built at deploy; artifact_dates --pdf holds a built file",
         ),
@@ -288,7 +293,7 @@ def report(found: Sequence[Row]) -> None:
 
 def check_pdf(pdf: Path, paper: str) -> int:
     """Hold one built PDF's dates to the revised date of the paper it is."""
-    from devtools.render_explainer_pdf import date_problem  # noqa: PLC0415
+    from devtools.render_n11_lower_bounds_explainer_pdf import date_problem  # noqa: PLC0415
 
     day = (
         written_date(release.EXPLAINER_REVISED)

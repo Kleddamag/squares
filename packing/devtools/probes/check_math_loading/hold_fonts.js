@@ -2,7 +2,7 @@
 // Gate successful loads only when CSS actually matches a declared face. Empty
 // unicode-range/system-family results remain immediate. CSS and the independent
 // oracle can decode fonts normally; this tests the explicit readiness contract.
-// `prepare_explainer_math.check_geometry` separately holds real font requests.
+// `prepare_n11_lower_bounds_explainer_math.check_geometry` separately holds real font requests.
 () => {
   /** @type {(value?: unknown) => void} */
   let release = () => undefined;

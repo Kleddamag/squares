@@ -1,6 +1,6 @@
 // The box tree KaTeX's internal `__renderToDomTree` returns before it is drawn, which
 // `compare_math_fonts`'s advance probe sums. The `katex` global itself is in
-// `probes/explainer.d.ts`.
+// `probes/n11-lower-bounds-explainer.d.ts`.
 
 /** One node of KaTeX's box tree: a symbol carries its text and metric widths. */
 interface CompareMathFontsKatexNode {

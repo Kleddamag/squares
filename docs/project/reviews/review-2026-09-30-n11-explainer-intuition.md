@@ -7,11 +7,11 @@ status: draft
 
 ## Scope and Context
 
-The [article](../../../packing/devtools/templates/n11-optimality-article.md) explains
-Queuingtheorydotcom’s computer-assisted proof for a mathematically curious reader who
-has not studied its certificates.
+The [article](../../../packing/devtools/templates/n11-optimality-review-article.md)
+explains Queuingtheorydotcom’s computer-assisted proof for a mathematically curious
+reader who has not studied its certificates.
 This review compares that reading experience with the
-[earlier explainer](../../../packing/devtools/templates/explainer-article.md).
+[earlier explainer](../../../packing/devtools/templates/n11-lower-bounds-explainer-article.md).
 Astra at max reasoning reviewed the mathematical limits of proposed intuitions; separate
 Sol passes reviewed narrative and visual design.
 The article is unchanged by this pass, and no quality scores are assigned.

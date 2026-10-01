@@ -155,15 +155,19 @@ Usage, from `packing/`:
         popover SITE --page frontier.html --press 'a[data-case="79"]' \
         --width 1280 --height 900 --height 1200 --height 1440 --markdown
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages glyphs \
-        SITE --page explainer.html --page n11-optimality/t-060-explainer.html \
+        SITE --page papers/n11-lower-bounds-explainer.html \
+        --page papers/n11-optimality-review.html \
         --width 1280 --width 390 --scheme light --scheme dark --view differences --markdown
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages glyphs \
-        https://jlevy.github.io/squares --page explainer.html --view problems --markdown
+        https://jlevy.github.io/squares --page papers/n11-lower-bounds-explainer.html \
+        --view problems --markdown
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages figures \
-        SITE --page explainer.html --page n11-optimality/t-060-explainer.html \
+        SITE --page papers/n11-lower-bounds-explainer.html \
+        --page papers/n11-optimality-review.html \
         --width 1280 --width 390 --shots DIR --markdown
 
-`SITE` is a directory holding `explainer.html` and the kpress pages. Set
+`SITE` is a directory holding the whole site, as `devtools.preview_site` builds it: the
+kpress pages and the papers under `papers/`. Set
 `SQPACK_CHROMIUM` to use a browser the environment supplies, as the other tools do.
 """
 
@@ -182,6 +186,7 @@ from collections.abc import Iterable, Sequence
 from pathlib import Path
 from typing import Any
 
+from devtools import render_overview
 from devtools.preview_site import (
     BASELINES,
     HEADER,
@@ -192,8 +197,8 @@ from devtools.preview_site import (
     shot_stem,
     split_words,
 )
-from devtools.render_explainer import MATH_WRAPPERS
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from devtools.render_n11_lower_bounds_explainer import MATH_WRAPPERS
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import applied, probe
 
 PROBES = Path(__file__).resolve().parent / "probes"
@@ -217,7 +222,7 @@ OPENED = ":popover-open, details[open]"
 #: The pages compared by default: the explainer, the long reports, two short ones, the
 #: homepage and one case record.
 DEFAULT_PAGES = (
-    "explainer.html",
+    render_overview.paper_path(render_overview.N11_LOWER_BOUNDS_EXPLAINER),
     "tutorial.html",
     "synopsis.html",
     "epistemics.html",
@@ -982,7 +987,7 @@ def glyph_summary(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
 #: scripts, or a screen reader, is given.
 TYPESET = "KaTeX HTML + MathML"
 #: The root attribute the publication layer's head script stamps on macOS, which its
-#: stylesheet's math rule reads (`render_explainer.publication_layer`).
+#: stylesheet's math rule reads (`render_n11_lower_bounds_explainer.publication_layer`).
 NATIVE_METRICS = "data-squares-native-math-metrics"
 #: The serif and sans math composites, as `glyphs` names a formula's face.
 SERIF_MATH, SANS_MATH = "KPress Math Text", "KPress Math Text Sans"
@@ -1124,7 +1129,7 @@ def problem_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 def shipped_katex() -> str:
     """The version of KaTeX the vendored KPress ships, which every page inlines."""
-    from devtools.render_explainer import kpress_static  # noqa: PLC0415
+    from devtools.render_n11_lower_bounds_explainer import kpress_static  # noqa: PLC0415
 
     return (kpress_static() / "katex" / "VERSION").read_text(encoding="utf-8").split()[-1]
 
@@ -1453,7 +1458,8 @@ def font_faces(path: Path) -> dict[str, str]:
 
 def compare_faces(site: Path, pages: Sequence[str]) -> list[dict[str, Any]]:
     """Per page and family: blocks shared with the explainer, and blocks it lacks or adds."""
-    reference = font_faces(site / "explainer.html")
+    explainer = render_overview.paper_path(render_overview.N11_LOWER_BOUNDS_EXPLAINER)
+    reference = font_faces(site / explainer)
     rows: list[dict[str, Any]] = []
     for name in pages:
         path = site / name.split("#")[0]

@@ -5,7 +5,7 @@ preview from a small record, for every page kind: the site's own pages, the two 
 and the workbench. These hold the function, the pages it is rendered into here, the
 checks the deployed site gets from `check_published_site`, and the card
 `devtools.social_card` draws. The papers' and the workbench's own heads are held in
-their modules' tests (`test_explainer`, `test_render_n11_optimality_explainer`,
+their modules' tests (`test_n11_lower_bounds_explainer`, `test_render_n11_optimality_review`,
 `packages/workbench/tests/test_site_nav.py`).
 """
 
@@ -125,8 +125,10 @@ def test_a_page_is_canonical_at_the_address_it_is_served_at() -> None:
     assert canonical_url("index.html") == SITE_URL == "https://jlevy.github.io/squares/"
     assert canonical_url("workbench/index.html") == SITE_URL + "workbench/"
     assert canonical_url("papers.html") == SITE_URL + "papers.html"
-    nested = "n11-optimality/t-060-explainer.html"
+    nested = "papers/n11-optimality-review.html"
     assert canonical_url(nested) == SITE_URL + nested
+    # A directory that only forwards is canonical nowhere: its forwarder names the paper.
+    assert canonical_url("n11-optimality/index.html") == SITE_URL + "n11-optimality/"
 
 
 def test_what_a_record_says_is_escaped_and_read_back_whole() -> None:
@@ -189,7 +191,7 @@ def test_every_page_of_the_site_carries_the_set_once_at_its_own_address(
 def test_every_page_has_a_description_of_its_own(pages: dict[str, str]) -> None:
     """No two pages say the same thing of themselves, the workbench and the two papers
     among them, and none is the site-wide sentence under another page's name."""
-    from devtools import render_n11_optimality_explainer as paper  # noqa: PLC0415
+    from devtools import render_n11_optimality_review as paper  # noqa: PLC0415
     from workbench_tools import build_site  # noqa: PLC0415
 
     assert shared_descriptions(pages) == []
@@ -331,21 +333,29 @@ def test_two_pages_with_one_description_are_named() -> None:
 
 def test_a_forwarder_names_where_it_sends_a_reader_in_full_and_carries_no_card() -> None:
     """A forwarder is no page to share: a canonical link to its target, in full, and no
-    card. The renderer's forwarders and the optimality paper's landing address both are."""
-    from devtools import render_n11_optimality_explainer as paper  # noqa: PLC0415
+    card. Every forwarder is the renderer's, the papers' old addresses among them: the
+    optimality paper's page, the directory it was served from, and the explainer's."""
+    from devtools import render_n11_lower_bounds_explainer as explainer  # noqa: PLC0415
+    from devtools import render_n11_optimality_review as paper  # noqa: PLC0415
 
     named = check_published_site.forwarder_canonicals()
     forwarders = {page.name: page.html for page in render_overview.forwarder_pages()}
-    assert set(named) == {*forwarders, check_published_site.OPTIMALITY_PAPER_LANDING}
+    assert set(named) == set(forwarders)
     for name, page in forwarders.items():
         assert forwarder_problems(page, named[name]) == [], name
         assert named[name].startswith("https://"), name
-    landing = paper.output_files(Path("site"), "", "")[Path("site") / "index.html"]
+    landing = forwarders["n11-optimality/index.html"]
     target = canonical_url(paper.SITE_PATH)
-    assert named[check_published_site.OPTIMALITY_PAPER_LANDING] == target
+    assert target == SITE_URL + "papers/n11-optimality-review.html"
+    assert named["n11-optimality/index.html"] == target
+    assert named["n11-optimality/t-060-explainer.html"] == target
+    assert named["explainer.html"] == canonical_url(explainer.SITE_PATH) == explainer.PAGE_URL
+    assert explainer.PAGE_URL == SITE_URL + "papers/n11-lower-bounds-explainer.html"
     assert forwarder_problems(landing, target) == []
     # The landing address named the paper by its file name alone until 2026-10-01.
-    relative = landing.replace(target, paper.STEM + ".html")
+    relative = landing.replace(
+        f'href="{target}"', 'href="../papers/n11-optimality-review.html"'
+    )
     assert forwarder_problems(relative, target)
     assert any("not an address in full" in p for p in forwarder_problems(relative, "a.html"))
     carded = landing.replace("<title>", f"{OG_TITLE}<title>", 1)
@@ -481,6 +491,8 @@ def test_a_built_site_is_held_to_its_heads_and_its_card(
     for name in ("index.html", "papers.html"):
         (tmp_path / name).write_text(pages[name], encoding="utf-8")
     for forwarder in render_overview.forwarder_pages():
+        # A forwarder stands where its page was, which for a paper was a directory down.
+        (tmp_path / forwarder.name).parent.mkdir(parents=True, exist_ok=True)
         (tmp_path / forwarder.name).write_text(forwarder.html, encoding="utf-8")
     results = local_head_checks(tmp_path)
     assert [line for passed, line in results if not passed] == [
@@ -493,7 +505,8 @@ def test_a_built_site_is_held_to_its_heads_and_its_card(
     assert "index.html: one of each identity and card tag, agreeing with its address" in lines
     assert "each of 2 pages has a description of its own" in lines
     assert f"card {SOCIAL_CARD}: a PNG of 1200x630, {len(card)} bytes" in lines
-    assert "explainer.html: not in this build, so not checked" in lines
+    assert "papers/n11-lower-bounds-explainer.html: not in this build, so not checked" in lines
+    assert "papers/n11-optimality-review.html: not in this build, so not checked" in lines
     assert "workbench/index.html: not in this build, so not checked" in lines
     assert check_published_site.main(["--local", str(tmp_path)]) == 0
     # A page under another's head, and a card that is not the card.

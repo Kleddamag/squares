@@ -25,10 +25,10 @@ from devtools import (
     result_status,
 )
 from devtools.check_results import scope_values
-from devtools.render_explainer import COMPOSITE_ASSETS, OVERVIEW_FILM_POSTER
-from devtools.render_explainer import MARKDOWN as EXPLAINER_ARTICLE
-from devtools.render_explainer import PUBLICATION_STYLE as EXPLAINER_STYLE
-from devtools.render_explainer import TEMPLATE as EXPLAINER_SHELL
+from devtools.render_n11_lower_bounds_explainer import COMPOSITE_ASSETS, OVERVIEW_FILM_POSTER
+from devtools.render_n11_lower_bounds_explainer import MARKDOWN as EXPLAINER_ARTICLE
+from devtools.render_n11_lower_bounds_explainer import PUBLICATION_STYLE as EXPLAINER_STYLE
+from devtools.render_n11_lower_bounds_explainer import TEMPLATE as EXPLAINER_SHELL
 from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, hash_pinned_links, repo_url
 from devtools.result_credit import OTHERS, source_lineage
 from sqpack.yamlio import safe_load
@@ -134,7 +134,11 @@ def test_every_moved_fragment_is_one_the_forwarder_sends_on(page: str, results: 
     recognises, the section's lands on the page's title, and no id the overview keeps is."""
     forward = render_overview.FORWARD_SCRIPT.read_text(encoding="utf-8")
     assert 'id === "every-result" || /^t-\\d+$/.test(id)' in forward
-    assert "all-results.html" in forward
+    assert f'"{render_overview.RESULTS_PAGE}"' in forward
+    # Every other fragment goes to the explainer where it is served now, not through the
+    # forwarder at its old address.
+    assert f'"{overview_sections.LOWER_BOUNDS_PAPER}"' in forward
+    assert '"explainer.html"' not in forward
     moved = re.compile(r"every-result|t-\d+")
     assert all(moved.fullmatch(row_id) for row_id, _, _ in ROW.findall(results))
     assert 'id="every-result"' in results
@@ -282,8 +286,8 @@ def test_each_page_card_is_a_plain_link_to_its_page(page: str) -> None:
     pages = overview_sections.PAGES
     assert [href for href, _, _ in cards] == [href for href, *_ in pages]
     assert [href for href, *_ in pages] == [
-        "n11-optimality/t-060-explainer.html",
-        "explainer.html",
+        "papers/n11-optimality-review.html",
+        "papers/n11-lower-bounds-explainer.html",
         "tutorial.html",
         "workbench/",
         "frontier.html",
@@ -339,10 +343,10 @@ def test_a_same_tab_link_card_leads_only_to_a_page_of_the_site() -> None:
 
 def test_a_site_page_is_a_page_the_site_serves() -> None:
     """`is_site_page` is the one rule for which cards navigate in the same tab: every
-    page the site serves (`render_overview.SITE_PAGES`), the optimality paper in its
-    own directory among them, and a directory served by its `index.html`, as
-    `workbench/` is, with or without a query or fragment. Every page card's address and
-    every paper's is one; nothing else is."""
+    page the site serves (`render_overview.SITE_PAGES`), the papers under `papers/`
+    among them, and a directory served by its `index.html`, as `workbench/` is, with or
+    without a query or fragment. Every page card's address and every paper's is one;
+    nothing else is, and not an address a paper used to have, which serves a forwarder."""
     is_site_page = overview_sections.is_site_page
     for name in render_overview.SITE_PAGES:
         assert is_site_page(name), name
@@ -363,8 +367,10 @@ def test_a_site_page_is_a_page_the_site_serves() -> None:
         "https://github.com/jlevy/squares",
         "known-best-1-100.pdf",
         "nowhere.html",
-        "n11-optimality/",
+        "papers/",
         "workbench",
+        *(old for old, _ in render_overview.MOVED_PAGES),
+        *(old.removesuffix("index.html") for old, _ in render_overview.MOVED_PAGES),
     ):
         assert not is_site_page(address), address
 
@@ -1136,7 +1142,8 @@ NAV_ENTRIES = [
     ("github", "https://github.com/jlevy/squares", "GitHub"),
 ]
 #: The pages the bar's Papers entry is current on, of those this renderer owns; the
-#: explainer, the third, is rendered by its own module and held there (`test_explainer`).
+#: explainer, the third, is rendered by its own module and held there
+#: (`test_n11_lower_bounds_explainer`).
 PAPERS_SECTION = {"papers.html", "tutorial.html"}
 
 
@@ -1193,7 +1200,10 @@ def test_every_site_page_loads_math_through_the_explainers_pipeline(
     """One math pipeline: the explainer's KaTeX bundle and host adapter, driven by the
     site's queue, and neither of kpress's whole-page entry points (auto-render and its
     native initializer), which typeset every formula in one task at DOMContentLoaded."""
-    from devtools.render_explainer import katex_js, kpress_static  # noqa: PLC0415
+    from devtools.render_n11_lower_bounds_explainer import (  # noqa: PLC0415
+        katex_js,
+        kpress_static,
+    )
 
     page = rendered(name)
     static = kpress_static()
@@ -1243,11 +1253,11 @@ def test_the_shared_stylesheet_states_the_provers_two_palette_colours() -> None:
     """The first paper's stylesheet was a block of its shell, where the renderer filled
     in the two colours the prover's canvases also draw with. As a file of its own it
     states them, so they are held to the renderer's here and cannot drift apart."""
-    from devtools import render_explainer  # noqa: PLC0415
+    from devtools import render_n11_lower_bounds_explainer  # noqa: PLC0415
 
     css = EXPLAINER_STYLE.read_text(encoding="utf-8")
-    assert f"  --cert-below: {render_explainer.BELOW_ONE};\n" in css
-    assert f"  --cert-near: {render_explainer.NEAR_LIMIT};\n" in css
+    assert f"  --cert-below: {render_n11_lower_bounds_explainer.BELOW_ONE};\n" in css
+    assert f"  --cert-near: {render_n11_lower_bounds_explainer.NEAR_LIMIT};\n" in css
     assert "{{" not in css
 
 
@@ -1659,7 +1669,7 @@ def test_every_card_shows_where_it_goes_and_gets_there(page: str, results: str) 
 
 def test_an_embedded_page_keeps_its_query_and_fragment() -> None:
     embed = overview_sections.embed_url
-    assert embed("explainer.html") == "explainer.html?view=embed"
+    assert embed("papers.html") == "papers.html?view=embed"
     assert embed("frontier.html?recent=true") == "frontier.html?recent=true&view=embed"
     assert embed("frontier.html#n-21") == "frontier.html?view=embed#n-21"
     assert embed("workbench/") == "workbench/?view=embed"
@@ -1766,7 +1776,7 @@ def test_each_results_row_shows_its_rungs_significance_first(
 
 def test_the_prose_links_repository_files_on_main(page: str) -> None:
     """Every `repo:` link in the template becomes a link on `main` to a file that exists."""
-    from devtools.render_explainer import REPO  # noqa: PLC0415
+    from devtools.render_n11_lower_bounds_explainer import REPO  # noqa: PLC0415
 
     article = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
     paths = re.findall(r'(?:\]\(|href=")repo:([^)"\s#]+)', article)
@@ -2558,7 +2568,7 @@ def test_the_explainer_card_says_what_the_explainer_now_is(
     Papers page the card is the link to the explainer, so it holds no other; T-060, the
     optimality proof since registered, is linked from the Papers page's introduction.
     The wording stays within T-060's rungs: proved, never formally."""
-    value, note = _page_card_parts(page, "explainer.html")
+    value, note = _page_card_parts(page, overview_sections.LOWER_BOUNDS_PAPER)
     article = papers_article(rendered("papers.html"))
     assert card_text(value) == EXPLAINER_TITLE
     assert card_text(note) == EXPLAINER_NOTE
@@ -2621,8 +2631,8 @@ def test_the_papers_page_holds_one_large_card_for_each_paper(
     page = rendered("papers.html")
     papers = overview_sections.PAPERS
     assert [paper.href for paper in papers] == [
-        "n11-optimality/t-060-explainer.html",
-        "explainer.html",
+        "papers/n11-optimality-review.html",
+        "papers/n11-lower-bounds-explainer.html",
         "tutorial.html",
     ]
     assert {paper.size for paper in papers} == {"large"}
@@ -2659,7 +2669,7 @@ def test_a_papers_card_holds_no_link_so_the_introduction_links_what_it_names(
     )
     explainer = overview_sections.EXPLAINER
     assert explainer is overview_sections.PAPERS[1]
-    assert explainer.href == "explainer.html"
+    assert explainer.href == overview_sections.LOWER_BOUNDS_PAPER
     article = papers_article(rendered("papers.html"))
     introduction, cards = article.split('<div class="site-cards-frame', 1)
     assert re.findall(r'<a href="([^"]+)">([^<]+)</a>', introduction) == [
@@ -2677,10 +2687,11 @@ def test_the_papers_page_says_what_each_paper_is(
     `TUTORIAL.md`'s own opening, whom it is for and what it covers. The overview keeps a
     card for the explainer and the tutorial."""
     papers = rendered("papers.html")
-    value, note = _page_card_parts(papers, "explainer.html")
+    explainer = overview_sections.LOWER_BOUNDS_PAPER
+    value, note = _page_card_parts(papers, explainer)
     assert card_text(value) == EXPLAINER_TITLE
     assert card_text(note) == EXPLAINER_NOTE
-    assert (value, note) == _page_card_parts(page, "explainer.html")
+    assert (value, note) == _page_card_parts(page, explainer)
 
     value, note = _page_card_parts(papers, "tutorial.html")
     assert card_text(value) == "Square packing from first principles"
@@ -2697,7 +2708,7 @@ def test_the_papers_page_says_what_each_paper_is(
     ):
         assert phrase in card_text(note), phrase
         assert phrase in opening, phrase
-    assert {"explainer.html", "tutorial.html"} <= {href for href, _, _ in _page_cards(page)}
+    assert {explainer, "tutorial.html"} <= {href for href, _, _ in _page_cards(page)}
 
 
 def test_the_optimality_papers_card_says_what_t060s_rungs_allow(
@@ -2707,7 +2718,7 @@ def test_the_optimality_papers_card_says_what_t060s_rungs_allow(
     titled as its renderer titles it, in sentence case, and described as explaining the
     accepted proof, T-060, in the words T-060's rungs allow, V3 and C3: a proof, never a
     formal one. The card is the link to the paper, in the same tab."""
-    from devtools import render_n11_optimality_explainer as renderer  # noqa: PLC0415
+    from devtools import render_n11_optimality_review as renderer  # noqa: PLC0415
 
     paper = overview_sections.PAPERS[0]
     assert paper.href == overview_sections.OPTIMALITY_PAPER == renderer.SITE_PATH
@@ -3717,7 +3728,7 @@ def test_a_headline_that_is_all_math_sets_it_serif(page: str) -> None:
         render_overview.PACKING
         / "devtools"
         / "probes"
-        / "render_explainer"
+        / "render_n11_lower_bounds_explainer"
         / "host_math_init.js"
     ).read_text(encoding="utf-8")
     assert "closest('[data-math-face=\"serif\"]')" in shell
@@ -4073,13 +4084,15 @@ def test_the_site_writes_each_result_overview_once_and_drops_a_withdrawn_one(
     ]
     (tmp_path / "result").mkdir()
     (tmp_path / "result" / "t-999.html").write_text("withdrawn", encoding="utf-8")
-    (tmp_path / "explainer.html").write_text("another build's", encoding="utf-8")
+    paper = tmp_path / overview_sections.LOWER_BOUNDS_PAPER
+    paper.parent.mkdir()
+    paper.write_text("another build's", encoding="utf-8")
     render_overview.write_site(tmp_path, files)
     assert sorted(
         path.relative_to(tmp_path).as_posix() for path in tmp_path.rglob("*.html")
     ) == [
-        "explainer.html",
         "index.html",
+        "papers/n11-lower-bounds-explainer.html",
         "result/t-001.html",
     ]
     assert (tmp_path / "result" / "t-001.html").read_text(encoding="utf-8") == "<p>one</p>\n"
@@ -4617,3 +4630,167 @@ def test_secondary_cell_content_is_quiet(results: str) -> None:
     assert '<span class="site-cell-quiet">after ' in results
     assert "site-col-credit site-cell-quiet" not in results
     assert 'class="site-frontier-note site-cell-quiet"' in table_html(frontier_cases())
+
+
+def _old_addresses() -> set[str]:
+    """Every address a paper used to have, in every form a link may take: its path under
+    the site's root, its directory where it was a directory's index, and either as an
+    address on the deployed site."""
+    old = {
+        *(old for old, _ in render_overview.MOVED_PAGES),
+        *(old.removesuffix("index.html") for old, _ in render_overview.MOVED_PAGES),
+        *(old for old, _ in render_overview.MOVED_FILES),
+    }
+    return old | {render_overview.SITE_URL + address for address in old}
+
+
+def test_a_paper_is_named_by_its_slug_in_the_source_and_on_the_site() -> None:
+    """`conventions.md`: a paper has one name, its slug, which says the case, the subject
+    and the kind of paper. The site serves it at `papers/<slug>.html`, and the renderer,
+    its templates, its test and its half of the Pages workflow carry the slug, so a
+    reader of the repository finds a paper by the name the site gives it."""
+    import importlib  # noqa: PLC0415
+
+    from devtools.pages_scope import BUILDER_INPUTS, load_workflow  # noqa: PLC0415
+
+    slugs = (render_overview.N11_OPTIMALITY_REVIEW, render_overview.N11_LOWER_BOUNDS_EXPLAINER)
+    assert slugs == ("n11-optimality-review", "n11-lower-bounds-explainer")
+    packing = overview_data.REPO / "packing"
+    jobs = load_workflow()["jobs"]
+    for slug in slugs:
+        name = slug.replace("-", "_")
+        renderer = importlib.import_module(f"devtools.render_{name}")
+        assert slug == renderer.SLUG
+        assert renderer.SITE_PATH == render_overview.paper_path(slug) == f"papers/{slug}.html"
+        assert renderer.SITE_PATH in render_overview.SITE_PAGES
+        assert renderer.SITE_ROOT == render_overview.PAPERS_ROOT == "../"
+        assert renderer.SITE_PATH in {paper.href for paper in overview_sections.PAPERS}
+        for template in (f"{slug}-article.md", f"{slug}-shell.html"):
+            assert (render_overview.TEMPLATES / template).is_file(), template
+        tests = packing / "tests"
+        assert (tests / f"test_render_{name}.py").is_file() or (
+            tests / f"test_{name}.py"
+        ).is_file(), slug
+        assert name in BUILDER_INPUTS, slug
+        assert f"{slug}-unchanged" in jobs, slug
+    assert render_overview.paper_path("a-b", ".pdf") == "papers/a-b.pdf"
+
+
+def test_each_address_a_paper_had_serves_a_forwarder_to_where_it_is() -> None:
+    """A page that moved leaves a forwarder at its old address (`MOVED_PAGES`), so no
+    link written before the move breaks. The forwarder names where the page is now four
+    times, and they agree: as its canonical URL, in full; to the forwarding script, on
+    the root element; in a refresh for a reader without scripts, inside `<noscript>` so
+    it cannot outrun the script and drop the fragment; and in a link. It carries the
+    overview's own forwarding script whole, and nothing of a site page: no bar, no
+    stamp, no stylesheet. `check_published_site` reads a deployed one the same way."""
+    from devtools import check_published_site  # noqa: PLC0415
+
+    forwarders = {
+        forwarder.name: forwarder.html for forwarder in render_overview.forwarder_pages()
+    }
+    assert list(forwarders) == [old for old, _ in render_overview.MOVED_PAGES]
+    papers = {
+        old: new
+        for old, new in render_overview.MOVED_PAGES
+        if new.startswith(f"{render_overview.PAPERS_DIR}/")
+    }
+    assert papers == {
+        "explainer.html": "papers/n11-lower-bounds-explainer.html",
+        "n11-optimality/t-060-explainer.html": "papers/n11-optimality-review.html",
+        "n11-optimality/index.html": "papers/n11-optimality-review.html",
+    }
+    script = render_overview.FORWARD_SCRIPT.read_text(encoding="utf-8")
+    titles = {paper.href: paper.title for paper in overview_sections.PAPERS}
+    for old, new in papers.items():
+        page = forwarders[old]
+        assert new in render_overview.SITE_PAGES, new
+        assert old not in render_overview.SITE_PAGES, old
+        assert old not in render_overview.PAGES, old
+        says = check_published_site.forwarder_says(page)
+        assert says == check_published_site.forwarder_expected(old, new), old
+        assert says["canonical"] == render_overview.SITE_URL + new
+        climbs = "../" * old.count("/")
+        assert says["script"] == f"{climbs}{new}"
+        assert page.count(f"<script>{script}</script>") == 1
+        assert page.count("<script") == 1
+        refresh = (
+            f'<noscript><meta http-equiv="refresh" content="0; url={climbs}{new}"></noscript>'
+        )
+        assert refresh in page
+        assert f"<title>{html.escape(titles[new])}</title>" in page
+        assert "site-nav" not in page
+        assert "<style" not in page
+        assert len(page) < 8_000, "a forwarder is a few lines, not a page"
+        render_overview.assert_self_contained(old, page)
+    # The script reads the root element's `data-moved-to`.
+    assert "movedTo" in script
+
+
+def test_each_file_that_moved_is_a_papers_markdown_or_pdf_under_its_slug() -> None:
+    """A file that moved and cannot forward is served at its old address as a copy
+    (`MOVED_FILES`): each paper's Markdown and PDF, which now sit beside the page under
+    its slug. The copies are made when the site is assembled, by the workflow's
+    `publish` job and by `preview_site.copy_moved_files`."""
+    assert dict(render_overview.MOVED_FILES) == {
+        "t-018-explainer.md": "papers/n11-lower-bounds-explainer.md",
+        "t-018-explainer.pdf": "papers/n11-lower-bounds-explainer.pdf",
+        "n11-optimality/t-060-explainer.md": "papers/n11-optimality-review.md",
+        "n11-optimality/t-060-explainer.pdf": "papers/n11-optimality-review.pdf",
+    }
+    pages = {new for _, new in render_overview.MOVED_PAGES}
+    for old, new in render_overview.MOVED_FILES:
+        assert Path(old).suffix == Path(new).suffix in {".md", ".pdf"}
+        assert str(Path(new).with_suffix(".html")) in pages, new
+
+
+def test_no_page_links_an_address_a_paper_used_to_have(
+    rendered: Callable[[str], str],
+) -> None:
+    """Every link on the site goes to a paper where it is served, never through a
+    forwarder: the bar, the cards, the Papers introduction, a result's overview, and
+    the reader documents, whose links to the site are written in full. A link to the
+    directory the optimality paper was in, to an old Markdown or PDF, and to the
+    deployed site's own old address are all found, which a pattern over the pages' paths
+    alone (`test_site_documents`) does not read."""
+    old = _old_addresses()
+    assert "explainer.html" in old
+    assert "n11-optimality/" in old
+    assert "https://jlevy.github.io/squares/n11-optimality/t-060-explainer.pdf" in old
+    bodies = {name: rendered(name) for name in render_overview.PAGES}
+    bodies |= {
+        f"the overview of {result}": body
+        for result, body in site_renders.result_bodies().items()
+    }
+    for name, body in bodies.items():
+        links = {
+            html.unescape(link).partition("#")[0].partition("?")[0]
+            for link in re.findall(r'\b(?:href|src|data-pop-src|poster)="([^"]+)"', body)
+        }
+        assert not links & old, (name, sorted(links & old))
+    # The papers are linked, where they are served, from the pages that card them.
+    for name in ("index.html", "papers.html"):
+        for paper in (overview_sections.OPTIMALITY_PAPER, overview_sections.LOWER_BOUNDS_PAPER):
+            assert f'href="{paper}"' in bodies[name], (name, paper)
+
+
+def test_the_site_writes_its_forwarders_and_checks_them(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """`render_overview` writes the forwarders with the pages, each in the directory its
+    old address was in, and `--check` holds them to a fresh render as it holds a page."""
+    page = render_overview.Page("index.html", "<p>page</p>")
+    monkeypatch.setattr(render_overview, "render_all", lambda: [page])
+    monkeypatch.setattr(render_overview, "result_fragments", list)
+    moved = [old for old, _ in render_overview.MOVED_PAGES]
+    assert [file.name for file in render_overview.render_site()] == ["index.html", *moved]
+    assert {"explainer.html", "n11-optimality/index.html"} < set(moved)
+    assert render_overview.main(["--output", str(tmp_path)]) == 0
+    assert sorted(
+        path.relative_to(tmp_path).as_posix() for path in tmp_path.rglob("*") if path.is_file()
+    ) == sorted(["index.html", *moved])
+    assert render_overview.main(["--output", str(tmp_path), "--check"]) == 0
+    (tmp_path / "explainer.html").write_text("an old page", encoding="utf-8")
+    assert render_overview.main(["--output", str(tmp_path), "--check"]) == 1
+    (tmp_path / "explainer.html").unlink()
+    assert render_overview.main(["--output", str(tmp_path), "--check"]) == 1

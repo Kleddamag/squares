@@ -49,7 +49,7 @@ SCOPE_WIDTH = 76
 #: claim documents that link its revision, and the posters redrawn for it.
 TESTS = (
     "tests/test_release.py",
-    "tests/test_explainer.py",
+    "tests/test_n11_lower_bounds_explainer.py",
     "tests/test_verify_claim.py",
     "tests/test_known_best_composites.py",
     "tests/test_artifact_dates.py",

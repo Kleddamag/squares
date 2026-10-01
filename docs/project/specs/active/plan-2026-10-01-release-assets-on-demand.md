@@ -62,8 +62,8 @@ time its process was charged.
 | Atlas: four PNG exports | 10.8 s | 9.8 s |
 | Atlas: two PDF exports | 7.2 s | 6.7 s |
 | Atlas: `--check --sample`, the pull request’s stand-in | 76.6 s | 138.5 s |
-| Explainer page (`render_explainer --prepare-math`) | 18.2 s | 17.8 s |
-| Explainer PDF (`render_explainer_pdf --update`) | 9.7 s | 10.6 s |
+| Explainer page (`render_n11_lower_bounds_explainer --prepare-math`) | 18.2 s | 17.8 s |
+| Explainer PDF (`render_n11_lower_bounds_explainer_pdf --update`) | 9.7 s | 10.6 s |
 | Optimality paper, page and Markdown | 5.3 s | 4.1 s |
 | Optimality paper, page and PDF | 9.2 s | 6.5 s |
 | `preview_site`: explainer | 19.7 s | 16.5 s |
@@ -115,7 +115,7 @@ commits and 4.9 MB for others, where a PNG did not delta.
 | Workbench stage, and so every film frame | `PUBLICATION_EDITION` when the frame is captured | Yes, and it is frozen at capture: a film is a release asset |
 | Explainer PDF | The page’s credits, and a receipt of the HTML it was printed from | No. It is built at deploy from the page |
 | Atlas posters | The stamp in the footer, and through the SVG’s digest every PNG and PDF | Only so that a poster that travels alone names its data |
-| `test_release`, `test_explainer`, `test_known_best_atlas`, the workbench’s `test_citations` | The pin against git; the stamp against the pin | No |
+| `test_release`, `test_n11_lower_bounds_explainer`, `test_known_best_atlas`, the workbench’s `test_citations` | The pin against git; the stamp against the pin | No |
 
 Only the films and the posters carry the stamp where a rebuild is expensive.
 The films already work the way this plan makes the posters work: stamped when cut,
@@ -294,7 +294,7 @@ own timezone, and midnight UTC is the evening before in California.
 ## Follow-Ups
 
 - The optimality paper’s revised date is read from its article in two places, by
-  `devtools.artifact_dates` and by `render_n11_optimality_explainer.page_meta`. Both
+  `devtools.artifact_dates` and by `render_n11_optimality_review.page_meta`. Both
   read the same line, and one reader would be simpler.
 - The composite PDFs still differ between two runs in their font-subset tags, which
   cairo assigns per process.

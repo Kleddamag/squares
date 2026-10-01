@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
 """Build the whole published site into one directory, serve it, and screenshot it.
 
-The Pages workflow assembles the site from four builds on four runners: the explainer
-(renamed to `explainer.html` when it is published), the site pages from
-`devtools.render_overview`, the workbench, and the optimality paper under
-`n11-optimality/`. This puts the same four side by side on one machine, so the site can
+The Pages workflow assembles the site from four builds on four runners: the two papers
+under `papers/`, each by its slug (`n11-lower-bounds-explainer`, with the atlas's files
+it shares with the overview at the root, and `n11-optimality-review`), the site pages
+from `devtools.render_overview`, with a forwarder at each address a paper used to have,
+and the workbench. This puts the same four side by side on one machine, so the site can
 be looked at, and its navigation followed, before anything is deployed. It never deploys
 and never writes into `packing/site/`.
+
+A file that moved and cannot forward, a paper's Markdown or PDF, is served at its old
+address as a copy, as the workflow's `publish` job leaves it (`copy_moved_files`). The
+lower-bounds explainer's PDF is drawn by its own Pages job from `packing/site/`, which a
+preview never writes, so a preview has that PDF only if one is put there.
 
 With the pages it draws the card every page's link preview names
 (`devtools.social_card`), at the site's root as the deploy serves it, and after every
@@ -19,9 +25,10 @@ Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.preview_site --shots DIR
     uv run --frozen --all-extras --group dev python -m devtools.preview_site --clips
 
-`--skip explainer`, `--skip workbench` or `--skip optimality` leaves a slow build out;
-a link to it then points at a missing page, which the link check reports rather than
-fails on, and a build already in `--output` stays. `--page` shoots only the pages it
+`--skip` leaves a slow build out, by its name: `n11-lower-bounds-explainer`,
+`n11-optimality-review` or `workbench`. A link to it then points at a missing page, which
+the link check reports rather than fails on, and a build already in `--output` stays.
+`--page` shoots only the pages it
 names, each with any fragment (`cases.html#n-11` is one case's record), and `--press`
 names an element to press on each page that has one (a card, an atlas cell), so what it
 opens is checked and shot too: its math, its wide blocks, and its words, none of which
@@ -55,13 +62,20 @@ from devtools import check_published_site, render_overview, social_card
 
 if TYPE_CHECKING:
     from playwright.sync_api import Page
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import probe
 
 PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
 DEFAULT_OUTPUT = Path(tempfile.gettempdir()) / "squares-site-preview"
-BUILDS = ("explainer", "pages", "workbench", "optimality")
+#: The builds, in the order they run: the two papers by their slugs, the site's own
+#: pages, and the workbench.
+BUILDS = (
+    render_overview.N11_LOWER_BOUNDS_EXPLAINER,
+    "pages",
+    "workbench",
+    render_overview.N11_OPTIMALITY_REVIEW,
+)
 WIDTHS = (1280, 390)
 PROBES = PACKING / "devtools" / "probes"
 _OVERFLOW = probe(PROBES, "preview_site/overflow")
@@ -128,37 +142,42 @@ def _run(*args: str) -> None:
     subprocess.run([sys.executable, "-m", *args], cwd=PACKING, check=True)
 
 
-def build_explainer(output: Path) -> None:
-    """The explainer as `publish` leaves it: `index.html` renamed, assets beside it."""
-    with tempfile.TemporaryDirectory() as scratch:
-        page = Path(scratch) / "index.html"
-        _run("devtools.render_explainer", "--prepare-math", "--output", str(page))
-        for built in Path(scratch).iterdir():
-            target = output / ("explainer.html" if built == page else built.name)
-            shutil.copyfile(built, target)
+def build_lower_bounds_explainer(output: Path) -> None:
+    """The lower-bounds explainer as its `prepare` job leaves it: the page and its
+    Markdown under `papers/`, and the atlas's files it shows at the site's root."""
+    _run("devtools.render_n11_lower_bounds_explainer", "--prepare-math", "--site", str(output))
 
 
 def build_workbench(output: Path) -> None:
     _run("workbench_tools.build_site", "--out", str(output / "workbench"))
 
 
-def build_optimality(output: Path) -> None:
-    """The optimality paper as its Pages job leaves it: the page, its Markdown and its
-    PDF, in the directory it is served from."""
-    from devtools.render_n11_optimality_explainer import OUTPUT_DIR  # noqa: PLC0415
+def build_optimality_review(output: Path) -> None:
+    """The optimality review as its Pages job leaves it: the page, its Markdown and its
+    PDF under `papers/`."""
+    _run("devtools.render_n11_optimality_review", "--site", str(output), "--pdf")
 
-    _run(
-        "devtools.render_n11_optimality_explainer",
-        "--output-dir",
-        str(output / OUTPUT_DIR.name),
-        "--pdf",
-    )
+
+def copy_moved_files(output: Path) -> list[str]:
+    """Serve each file that moved and cannot forward at its old address too, as a copy of
+    the file at its new one (`render_overview.MOVED_FILES`), which is what the
+    workflow's `publish` job does. Returns the old addresses written; a file the build
+    lacks, such as a PDF a skipped build would have drawn, has no copy."""
+    copied = []
+    for old, new in render_overview.MOVED_FILES:
+        source = output / new
+        if source.is_file():
+            target = output / old
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source, target)
+            copied.append(old)
+    return copied
 
 
 def build(output: Path, skip: set[str]) -> None:
     output.mkdir(parents=True, exist_ok=True)
-    if "explainer" not in skip:
-        build_explainer(output)
+    if render_overview.N11_LOWER_BOUNDS_EXPLAINER not in skip:
+        build_lower_bounds_explainer(output)
     if "pages" not in skip:
         pages = render_overview.render_all()
         fragments = render_overview.result_fragments()
@@ -172,8 +191,10 @@ def build(output: Path, skip: set[str]) -> None:
         print(f"wrote {social_card.write(output)}, the link preview's card")
     if "workbench" not in skip:
         build_workbench(output)
-    if "optimality" not in skip:
-        build_optimality(output)
+    if render_overview.N11_OPTIMALITY_REVIEW not in skip:
+        build_optimality_review(output)
+    for old in copy_moved_files(output):
+        print(f"copied {output / old}, the address a file had before it moved")
 
 
 def missing_links(output: Path) -> list[str]:
@@ -201,19 +222,25 @@ def missing_links(output: Path) -> list[str]:
 
 def moved_links(output: Path) -> list[str]:
     """Every link in the built site to an address that is now a forwarder
-    (`render_overview.MOVED_PAGES`), as `page: href`. A forwarder keeps an old link
-    working; a page of the site names where the reader is going."""
-    moved = {old for old, _ in render_overview.MOVED_PAGES}
+    (`render_overview.MOVED_PAGES`) or the old address of a file that moved
+    (`MOVED_FILES`), as `page: href`. A forwarder keeps an old link working; a page of
+    the site names where the reader is going. A directory is linked as its index, as
+    `n11-optimality/` was."""
+    forwarders = {old for old, _ in render_overview.MOVED_PAGES}
+    moved = forwarders | {old for old, _ in render_overview.MOVED_FILES}
     found = []
     for path in sorted(output.rglob("*.html")):
         name = path.relative_to(output).as_posix()
-        if name in moved:
+        if name in forwarders:
             continue
         for href in sorted(set(HREF_ATTRIBUTE.findall(path.read_text(encoding="utf-8")))):
             if href.startswith(("https://", "http://", "#", "data:", "mailto:")):
                 continue
             target = (path.parent / href.partition("#")[0].partition("?")[0]).resolve()
-            if target.is_relative_to(output) and target.relative_to(output).as_posix() in moved:
+            if not target.is_relative_to(output):
+                continue
+            address = target.relative_to(output).as_posix()
+            if address in moved or f"{address}/index.html" in moved:
                 found.append(f"{name}: {href}")
     return found
 

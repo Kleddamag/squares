@@ -30,7 +30,7 @@ import pytest
 
 from devtools import overview_sections
 from devtools.measure_site_pages import LADDERS
-from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from tests import site_renders
 
 #: Each width measured, and how many columns the rungs stand in there.

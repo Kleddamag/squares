@@ -132,9 +132,9 @@ registered from this round’s table, so the round cannot also be its test.
 
 ## What Was Measured
 
-3,000 seeds at each of six shake levels for `n = 5`, 10 and 11. Every run was repaired
+3,000 seeds at each of six shake levels for $n = 5$, 10 and 11. Every run was repaired
 to a packing and checked before scoring.
-`n = 11` at level 8 then continued to 16,319 seeds.
+$n = 11$ at level 8 then continued to 16,319 seeds.
 
 Each entry is the best of the first 1,000 runs, then the median run, in `closed`:
 
@@ -147,21 +147,21 @@ Each entry is the best of the first 1,000 runs, then the median run, in `closed`
 | 8 | 0.958 / −0.076 | 0.977 / −0.098 | 0.564 / −0.115 |
 | 10 | 0.864 / −0.095 | 0.879 / −0.098 | 0.325 / −0.249 |
 
-At level 8, `n = 11` reached 0.616 over 16,319 seeds, 1.22% above `s(11)`.
+At level 8, $n = 11$ reached 0.616 over 16,319 seeds, 1.22% above $s(11)$.
 
 ## What It Shows
 
 - **Without shake every seed gives the same run**, because the shake is the only
   randomness.
-- **At levels 0, 2 and 4 no run beat the grid** in 3,000 seeds at any of the three `n`.
+- **At levels 0, 2 and 4 no run beat the grid** in 3,000 seeds at any of the three $n$.
 - **At levels 6, 8 and 10 the best run beat it in eight cells of nine.** The ninth,
-  `n = 11` at level 6, marks the budget rather than the level: the same seed stream beat
+  $n = 11$ at level 6, marks the budget rather than the level: the same seed stream beat
   the grid before seed 5,000 (`resolved-5k-a6.jsonl`).
-- **The median barely moves**, except `n = 11` at level 10, so the dial changes the best
+- **The median barely moves**, except $n = 11$ at level 10, so the dial changes the best
   run rather than the typical one.
-- **The best of 1,000 peaks at level 6 for `n = 5` and at level 8 for `n = 10` and 11.**
+- **The best of 1,000 peaks at level 6 for $n = 5$ and at level 8 for $n = 10$ and 11.**
   H-211’s maximum near levels 6 to 8 was drawn from this pattern, which is why it needs
-  a test on other seeds or `n`.
+  a test on other seeds or $n$.
 
 ## What Is Not Established
 
@@ -169,9 +169,9 @@ At level 8, `n = 11` reached 0.616 over 16,319 seeds, 1.22% above `s(11)`.
 - **The page’s level 3 was not measured on repaired runs**, so H-211’s threshold, which
   compares against level 3, cannot be applied.
   Levels 1 and 3 have only void cells, and levels 5, 7 and 9 none.
-- **Larger `n` at level 8 is missing.** The run requested `n = 17`, 26 and 29 and
-  retained only `n = 11`.
-- **Whether the best level moves with `n`** is untested beyond these three.
+- **Larger $n$ at level 8 is missing.** The run requested $n = 17$, 26 and 29 and
+  retained only $n = 11$.
+- **Whether the best level moves with $n$** is untested beyond these three.
 
 ## Evidence
 

@@ -129,10 +129,10 @@ experiment:
 # exp-062 — The Last Rung, and What “Converged” Had to Mean
 
 `BC-213` had one side to decide.
-`exp-061` left the `m = 5` wall inside `[97/20, 39/8]` at width `0.025`, one rung short
-of the `0.02` `H-062` registered, and the schedule’s own rule named the next side
-without anyone choosing it: the midpoint, rounded to the nearest `1/200` with ties away
-from `24/5`, which is `973/200 = 4.865`.
+`exp-061` left the $m = 5$ wall inside $[97/20, 39/8]$ at width $0.025$, one rung short
+of the $0.02$ `H-062` registered, and the schedule’s own rule named the next side
+without anyone choosing it: the midpoint, rounded to the nearest $1/200$ with ties away
+from $24/5$, which is $973/200 = 4.865$.
 
 Both constructions walled.
 The uniform grids crossed twenty at LP round 16 and the seeded set at round 34, each
@@ -140,7 +140,7 @@ with placements still violated, so both fell to the early-refutation clause.
 Nothing was frozen, because the cell freezes only on convergence, and
 `cases/n20_fractional_certificate/` is untouched by this round.
 
-**The bracket is `[97/20, 973/200]`, width `0.015`.** Its lower end is `T-021`’s
+**The bracket is $[97/20, 973/200]$, width $0.015$.** Its lower end is `T-021`’s
 retained certificate and its upper end is this wall.
 `H-062` is accepted.
 
@@ -154,8 +154,8 @@ own limits section had already read it that way about `exp-061`’s crossings.
 
 The reading that holds is the one `H-062`’s `instrument` field states in the same
 breath: *adding rows can only raise a restricted optimum.* A site set whose optimum
-stands at `20.000223` with `213` placements still violated has a converged optimum of at
-least `20.000223`, because every row still to be added can only push it up.
+stands at $20.000223$ with $213$ placements still violated has a converged optimum of at
+least $20.000223$, because every row still to be added can only push it up.
 So the converged optimum at or above twenty exists and is bounded below by twenty on
 both site sets; what was not computed is its *value*, and the criterion does not ask for
 the value. This is exactly the asymmetry the schedule was built to exploit — refutation
@@ -181,12 +181,12 @@ not either.
 
 ## The closest call in the register
 
-The seeded set cleared twenty by `2.23` parts in a hundred thousand.
-The uniform grid at `97/20` — the rung immediately below, where the seeded set went on
+The seeded set cleared twenty by $2.23$ parts in a hundred thousand.
+The uniform grid at $97/20$ — the rung immediately below, where the seeded set went on
 to certify — cleared it by four parts in ten thousand, about eighteen times as much.
-The approach was a walk rather than a jump: `19.996458`, `19.997545`, `19.998396`,
-`19.999167`, `19.999837`, `20.000223` over six rounds, with the violated count
-collapsing into it at `480, 363, 381, 279, 213`.
+The approach was a walk rather than a jump: $19.996458$, $19.997545$, $19.998396$,
+$19.999167$, $19.999837$, $20.000223$ over six rounds, with the violated count
+collapsing into it at $480, 363, 381, 279, 213$.
 
 The pre-registered rule does not read margins and was applied as written.
 But a wall cleared by `2e-5` on a loop that was running out of violated placements is a
@@ -194,19 +194,19 @@ different object from one cleared by `4e-4`, and the register should say so rath
 flatten both into “refuted”.
 If any rung in this bracket is worth a second look under a denser site set, it is this
 one — and the shape of the doubt is precise: more *sites* would lower the optimum, and
-`973/200` is where that has the least room to be irrelevant.
+$973/200$ is where that has the least room to be irrelevant.
 
 ## Two things about the tooling, not the mathematics
 
 `kill` on a `uv run` wrapper does not kill the Python child it spawned.
 The lane stopped the grid construction after its crossing and the row loop kept running
-for six more minutes, reaching round 24 at `20.095294` with `525` violated.
+for six more minutes, reaching round 24 at $20.095294$ with $525$ violated.
 Those rounds are in the register rather than trimmed out: they only strengthen the
 refutation, and a run record that quietly drops the rounds that happened is worse than
 one that explains them.
 
 The lane also did not have the core its budget assumed.
-`BC-206`’s `n = 12` column generation and a full `pytest` run shared the box throughout,
+`BC-206`’s $n = 12$ column generation and a full `pytest` run shared the box throughout,
 so the wall seconds here are inflated against `exp-061`’s and should not be compared to
 them. LP values are arithmetic and are unaffected; both constructions stopped on a
 crossing rather than a deadline, so contention changed neither outcome.

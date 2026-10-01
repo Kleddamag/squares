@@ -349,29 +349,29 @@ methods that fail differently and agreed on the least covered mass to the digit.
 
 | Case | Side | Result | `S` |
 | --- | --- | --- | --- |
-| `n = 11` | `381/100` | `T-018` | `S5` |
-| `n = 12` | `99/25` | `T-017` | `S4` |
-| `n = 17`, `18` | `459/100` | `T-019` | `S4` |
-| `n = 19`, `20`, `21` | `24/5` | `T-020` | `S4` |
+| $n = 11$ | $\frac{381}{100}$ | `T-018` | `S5` |
+| $n = 12$ | $\frac{99}{25}$ | `T-017` | `S4` |
+| $n = 17$, $18$ | $\frac{459}{100}$ | `T-019` | `S4` |
+| $n = 19$, $20$, $21$ | $\frac{24}{5}$ | `T-020` | `S4` |
 
 **Open, with the evidence already gathered.** Two sides were attacked and neither
 settled, both stopped on cost rather than on an answer, and both are cheap to resume
 because the checkpoints and the readings are in the record.
 
-- `n = 18` at `117/25 = 4.68`. Three site sets, 538, 578 and 618 orbits, all returned a
-  restricted optimum of exactly `18.000000`, the third after 157 row rounds and 7056 s.
+- $n = 18$ at $117/25 = 4.68$. Three site sets, 538, 578 and 618 orbits, all returned a
+  restricted optimum of exactly $18.000000$, the third after 157 row rounds and 7056 s.
   Adding sites can only lower a restricted optimum and it did not move.
   Either the covering value is at or above eighteen, or the optimum sits on a degenerate
   vertex. `T-019`’s `next_rung` carries both readings and the evidence for each.
-- `n = 11` at `19/5 + 1/100 = 3.82`. Two independent site sets stop at exactly eleven,
+- $n = 11$ at $19/5 + 1/100 = 3.82$. Two independent site sets stop at exactly eleven,
   and the rejection route is far from closing: the exact maximum pointwise depth is
-  `1925/1152`, which caps the feasible total at `1152/175` against the eleven a ceiling
+  $1925/1152$, which caps the feasible total at $1152/175$ against the eleven a ceiling
   needs. `T-018`’s `next_rung` has the full account.
 
 **Where the method stops, which is now proved rather than guessed.** No certificate for
-`n` exists above `ceil(sqrt(n)) * B`. `n = 12` is foreclosed against its conjectured
-`4`. `n = 20` and `n = 21` can be brought to within `0.0115` of their upper bound and no
-nearer. `n = 11`, `17`, `18` and `19` are limited by their best known packings rather
+$n$ exists above `ceil(sqrt(n)) * B`. $n = 12$ is foreclosed against its conjectured
+$4$. $n = 20$ and $n = 21$ can be brought to within $0.0115$ of their upper bound and no
+nearer. $n = 11$, $17$, $18$ and $19$ are limited by their best known packings rather
 than by the ceiling.
 
 **What the next block must not skip.** `BC-191` first, and `BC-190` on its measured
@@ -380,11 +380,11 @@ When this agenda was drafted the retention gate was the dominant cost: one exact
 was `5378 s` at 2260 atoms and scaled as `atoms^2.00`. That was addressed the same
 evening, before the agenda opened, as a W5 slice against that baseline: the sweep now
 decides in `int64` on the weights’ common scale (every retained certificate’s weights
-are multiples of `1/200000`, so the arithmetic is integer and exact), the reachable
+are multiples of $1/200000$, so the arithmetic is integer and exact), the reachable
 cells are held as one span per column instead of sixteen million tuples, and the 181
 directions run in parallel.
 Measured on the same box, with the `Fraction` reference still running beside it:
-`n = 17` in `21.8 s` against `1473 s`, `n = 20` in `38.7 s` against `5378 s` — `68×` and
+$n = 17$ in `21.8 s` against `1473 s`, $n = 20$ in `38.7 s` against `5378 s` — `68×` and
 `139×` — returning the declared least covered mass in both, with the `Fraction` route
 retained unchanged as the reference and held to the integer route cell for cell on 181
 directions of the 373-atom rung with no mismatch.
@@ -410,10 +410,10 @@ recollection:
 | Fitted exponent, exact sweep | `atoms^2.00` over the full 1184-to-2260 range — quadratic |
 | Fitted exponent, interval route | `atoms^0.92` on the one uncontended pair — linear |
 | Row generation, share of a round | `79%` to `94%` at every side measured |
-| `n = 20` round 0, grids `(23, 31, 39)` | over `3300 s`, did not finish |
-| `n = 20` round 0, grids `(29, 39, 49)` | `376 s` |
-| Rationalisation loss at `n = 12`, side `99/25` | `0.005314`, against a surviving margin of `0.001040` |
-| Load average, four lanes on four cores | `10.6` |
+| $n = 20$ round 0, grids $(23, 31, 39)$ | over `3300 s`, did not finish |
+| $n = 20$ round 0, grids $(29, 39, 49)$ | `376 s` |
+| Rationalisation loss at $n = 12$, side $\frac{99}{25}$ | $0.005314$, against a surviving margin of $0.001040$ |
+| Load average, four lanes on four cores | $10.6$ |
 
 Three of those are not close calls.
 
@@ -430,29 +430,29 @@ The exact side is the trustworthy half, and it holds: three points from 1184 to 
 atoms fit `atoms^2.00`, so the retention gate’s cost is quadratic in the certificate and
 the certificates are getting larger every rung.
 The one figure to compare across runs is the box count, which is deterministic:
-`3,683,951` at 1184 atoms, `4,448,751` at 2097, `5,638,343` at 2260. The exact sweep
-belongs at the retention gate, where correctness is the only thing that matters and an
-hour is affordable.
-Whether it belongs in the generator’s inner loop is a question nobody
-has asked, and `BC-190` asks it.
+$3{,}683{,}951$ at 1184 atoms, $4{,}448{,}751$ at 2097, $5{,}638{,}343$ at 2260. The
+exact sweep belongs at the retention gate, where correctness is the only thing that
+matters and an hour is affordable.
+Whether it belongs in the generator’s inner loop is a question nobody has asked, and
+`BC-190` asks it.
 
 The site grids do not scale with the container.
-`build_site_grid` places a fixed *count* of points across the side, so at `4.80` the
-coarsest grid spaces sites `0.126` apart against `0.104` at `3.96` — 21% sparser
-relative to the `B`-square that has to cover them.
+`build_site_grid` places a fixed *count* of points across the side, so at $4.80$ the
+coarsest grid spaces sites $0.126$ apart against $0.104$ at $3.96$ — 21% sparser
+relative to the $B$-square that has to cover them.
 One parameter change bought at least `8.8×` on a single round, and it was found by
 accident while diagnosing a run that appeared wedged.
 
 The rationalisation scale nearly cost a rung.
-At `n = 12`, side `99/25`, the rounding loss was five times the margin the certificate
+At $n = 12$, side $99/25$, the rounding loss was five times the margin the certificate
 ended with.
 Raising the scale twentyfold costs nothing measurable and does not change the
 atom count.
 
 ## Why the retarget needs a strategy session and not a sort
 
-`CERTIFICATE-REACH.md` ranks all 100 cases and puts eleven above `+0.49` against
-`+0.0671` at `n = 11`. It would be easy to read that as a work queue.
+`CERTIFICATE-REACH.md` ranks all 100 cases and puts eleven above $+0.49$ against
+$+0.0671$ at $n = 11$. It would be easy to read that as a work queue.
 It is not one, for two reasons the table itself states.
 
 The prize column is what the **ceiling** allows.
@@ -462,9 +462,9 @@ They fit a quadratic; a fit is not a measurement, and no rung on this branch was
 claimed from one.
 
 And cost grows with the container.
-The high-prize cases sit at sides `5.1` to `7.2` against the `3.8` to `4.8` band every
+The high-prize cases sit at sides $5.1$ to $7.2$ against the $3.8$ to $4.8$ band every
 retained rung occupies.
-A round at `4.8` cost up to `1158 s`; nobody has measured a round at `5.5`.
+A round at $4.8$ cost up to `1158 s`; nobody has measured a round at $5.5$.
 
 `BC-192` is the session that turns a ranking into a plan, and it runs *after* the two
 efficiency commitments precisely so that it can price its candidates.
@@ -490,7 +490,7 @@ objective.
 
 And rule seven still holds: read the evidence, not a reconstruction of it.
 Every figure in this agenda is from a log or an artifact, and the one estimate — a round
-at `5.5` — is labelled as an estimate and written down before the run so the run can
+at $5.5$ — is labelled as an estimate and written down before the run so the run can
 contradict it.
 
 <!-- This document follows common-doc-guidelines.md.

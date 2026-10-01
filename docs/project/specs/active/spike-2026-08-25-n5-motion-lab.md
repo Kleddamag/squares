@@ -10,11 +10,11 @@
 
 ## Outcome
 
-The repository now has a deterministic, self-contained HTML+SVG lab for nine `n = 5`
+The repository now has a deterministic, self-contained HTML+SVG lab for nine $n = 5$
 motion scenes:
 
 - the six certified paths in `(R4, R5) × (A, interior, B)` from experiment 042; and
-- the displayed `+W` first-order direction at the same three strata, paired with the
+- the displayed $+W$ first-order direction at the same three strata, paired with the
   branch-exhaustive second-order obstruction from experiment 036.
 
 The lab supports play, pause, restart, manual scrubbing, stratum selection, owner-branch
@@ -58,7 +58,7 @@ safe publication SVG. The broader interactive basin-atlas application remains tr
 | Existing component | Use in the lab |
 | --- | --- |
 | `cases.n5.rotating_release_paths` | Exact affine center paths, rational half-angle rotation, case inventory, and sample verification for R4/R5 |
-| `cases.n5.tangent_cones` | Exact starting centers, coordinate indices, and the displayed `+W` direction retained by exp-035 |
+| `cases.n5.tangent_cones` | Exact starting centers, coordinate indices, and the displayed $+W$ direction retained by exp-035 |
 | `cases.n5.second_order_obstruction` | Exact owner-3 and owner-4 contradiction coefficients and source scope |
 | `sqpack.render.style` | The established square palette, paper theme, ink, container, and contact colors |
 | `sqpack.verify` | Exact feasibility checks at the base, midpoint, and endpoint of every R4/R5 scene during manifest generation |
@@ -86,10 +86,10 @@ network requests and loads no external asset.
 | `angle_derivative_at_zero` | Exact first-order angular velocity used by the tangent predictor |
 | `contacts` | Separate base, open-interval, and endpoint physical-pair inventories |
 | `evidence` | Status, source experiment, source record, and claim boundary |
-| `branches` | Owner-specific exp-036 quadratic contradiction for `+W` |
+| `branches` | Owner-specific exp-036 quadratic contradiction for $+W$ |
 
 An exact scalar stores `coefficients_low_degree_first` and a display decimal.
-For this field, `[a, b]` means `a + b sqrt(2)`. Browser arithmetic uses the decimal
+For this field, $[a, b]$ means `a + b sqrt(2)`. Browser arithmetic uses the decimal
 projection for drawing only; the retained research records and Python exact functions
 own the claim.
 
@@ -109,26 +109,26 @@ with `sigma = -1` for R4 and `sigma = +1` for R5.
 
 | Mark | Meaning |
 | --- | --- |
-| Solid filled square | Source-backed pose on a certified R4/R5 path, or the fixed base pose in the `+W` view |
+| Solid filled square | Source-backed pose on a certified R4/R5 path, or the fixed base pose in the $+W$ view |
 | Dashed cyan square | First-order tangent predictor; not an independently certified path |
 | Dotted gray line | Center trail over the displayed parameter interval |
 | Tempered-yellow center link | Source-declared contact-graph relation, not a physical gap segment |
-| Red hatched badge | The displayed `+W` direction is obstructed at second order |
+| Red hatched badge | The displayed $+W$ direction is obstructed at second order |
 
 R4/R5 scenes carry `exact-universal-feasible-path`. This is a certificate for those six
 explicit fixed-side paths, not a classification of all paths, stationarity, local
 minimality, or global optimality.
 
-The `+W` scenes carry `branch-exhaustive-second-order-obstruction`. Their dashed squares
+The $+W$ scenes carry `branch-exhaustive-second-order-obstruction`. Their dashed squares
 show the linear prediction only.
 The lab does not manufacture an acceleration or draw a quadratic pose.
 It shows the base contact graph without asserting that any contact opens, persists, or
-closes along a feasible `+W` motion.
+closes along a feasible $+W$ motion.
 The owner selector changes the displayed contradiction for the same geometry:
 
 - owner 4 requires extra side `(sqrt(2)/8)t^2 + o(t^2)`; and
-- owner 3 has a necessary upper-bound minus lower-bound residual `-(1/4)t^2 + o(t^2)` in
-  the displayed common-angle specialization.
+- owner 3 has a necessary upper-bound minus lower-bound residual
+  $-(1/4)t^{2} + o(t^{2})$ in the displayed common-angle specialization.
   The full branch also subtracts a positive margin times `|theta_3 - theta_4|`.
 
 ## Run and Check
@@ -191,7 +191,7 @@ the figure.
   server and blocked direct local-file navigation.
   Source, semantic, determinism, and interaction-structure checks passed, but this
   session did not complete browser-based visual inspection or click-through QA.
-- The lab covers one exact `n = 5` family and one obstruction.
+- The lab covers one exact $n = 5$ family and one obstruction.
   It is evidence that the manifest boundary is useful, not yet evidence for promotion
   into `sqpack.render`.
 - Contact links show graph incidence rather than physical contact points or segments.

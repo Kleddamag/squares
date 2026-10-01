@@ -161,7 +161,7 @@ small-support pilot.
 Take the existing bottom-left m1/j0 footprint A. Define the other three footprints by
 the same maps used in `screen_corner_dual_salvage.py`:
 
-`(x,y)`, `(q−x,y)`, `(x,q−y)`, `(q−x,q−y)`.
+$(x,y)$, $(q-x,y)$, $(x,q-y)$, $(q-x,q-y)$.
 
 Normalize vertex orientation after reflections.
 These are local corner classes; do not apply the same global sector angle to all four
@@ -175,7 +175,7 @@ For this particular branch, the four-owner part is analytically compatible: take
 axis-aligned UNIT parents centred at the reflected m1 marks.
 With a=3152/3175 and b=2336/3175, the nearest-wall distances exceed1/2, while
 
-`q−2a = 5888/3175 > 1`, `q−2b = 7520/3175 > 1`.
+$q-2a = 5888/3175 > 1$, $q-2b = 7520/3175 > 1$.
 
 The parents are contained and pairwise separated.
 Their selected B-cores are mark-centred; choosing the allowed positive signed axes at

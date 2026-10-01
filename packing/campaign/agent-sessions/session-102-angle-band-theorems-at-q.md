@@ -142,14 +142,16 @@ Three things were decided.
 The planning lane’s eight angle counts (H-131) and its Theorem 1.11 replay exactly on
 the stated site set, every mass to the fraction.
 The robust end band widened past H-130’s criterion in three steps: Theorem A,
-`[0°, 1.7139°] ∪ [43.5293°, 45°]` with `α + β = 3.1846°`, and Theorem B,
-`[0°, 10.3875°] ∪ [43.5293°, 45°]` with `α + β = 11.8582°`, both exact-decided by
-`decide_class_program` on grid 79, and Theorem C, `[0°, 10.3875°] ∪ [43.0737°, 45°]`
-with `α + β = 12.3138°` on grid 119; all three are frozen claims that need an experiment
-id. And the site-set duals that reach eleven on grid 79 are not obstructions:
-`ceiling.py` finds continuum depth two on the end bands and `1291/568` on the band
-toward `40.19°`, grid 119 refutes the `(8, 8)` band grid 79 could not, and so the
-fractional obstruction at `96/25` is, on this evidence, an artefact of the site set
+$[0^\circ, 1.7139^\circ] \cup [43.5293^\circ, 45^\circ]$ with
+$\alpha + \beta = 3.1846^\circ$, and Theorem B,
+$[0^\circ, 10.3875^\circ] \cup [43.5293^\circ, 45^\circ]$ with
+$\alpha + \beta = 11.8582^\circ$, both exact-decided by `decide_class_program` on grid
+79, and Theorem C, $[0^\circ, 10.3875^\circ] \cup [43.0737^\circ, 45^\circ]$ with
+$\alpha + \beta = 12.3138^\circ$ on grid 119; all three are frozen claims that need an
+experiment id. And the site-set duals that reach eleven on grid 79 are not obstructions:
+`ceiling.py` finds continuum depth two on the end bands and $1291/568$ on the band
+toward $40.19^\circ$, grid 119 refutes the $(8, 8)$ band grid 79 could not, and so the
+fractional obstruction at $96/25$ is, on this evidence, an artefact of the site set
 rather than a property of the relaxation.
 
 Three process notes.

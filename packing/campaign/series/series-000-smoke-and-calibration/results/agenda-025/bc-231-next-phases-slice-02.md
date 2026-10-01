@@ -18,7 +18,7 @@ and the frozen byte, atom, angle-cell, and rational-text limits.
 Structural and bounded-format checks finish before angle geometry.
 Declared totals and claims must match the parsed instance.
 Existing in-memory guards enforce containment, nonnegative distinct atoms, listed-domain
-D4 completeness, total mass below `n`, and the axis-core method ceiling.
+D4 completeness, total mass below $n$, and the axis-core method ceiling.
 The committed geometry adapters and scalar loader are unchanged.
 
 `load_bytes` returns an `AdaptiveInput`, not an acceptance result.
@@ -27,19 +27,19 @@ Condition 5 and the later declared-minimum comparison have not run.
 `load(path)` reads at most the byte limit plus one and does not provide retention
 rereads or artifact binding.
 
-Atom coordinates are container `(x,y)` coordinates.
+Atom coordinates are container $(x,y)$ coordinates.
 Angle-cell boundaries are tangents on the folded orientation arc, not center-space
 event-cell boundaries.
-Existing sweep witness centers remain rotated `(u,v)` coordinates; they must be
+Existing sweep witness centers remain rotated $(u,v)$ coordinates; they must be
 converted before a later receipt compares them with container-coordinate witnesses.
 This slice creates no decision receipt.
 
 ## Controls and Checks
 
 The serialized P4 fixture is the unchanged five-atom control from
-[slice 01](bc-231-next-phases-slice-01.md): `L = 6/5`, total mass `7/5`, and core sides
-`7/10`, `3/4`, `4/5`. Both project routes still give per-angle-cell minima `6/5`,
-`13/10`, `7/5`. The small equal-side scalar fixture also passes after a test-only JSON
+[slice 01](bc-231-next-phases-slice-01.md): $L = 6/5$, total mass $7/5$, and core sides
+$7/10$, $3/4$, $4/5$. Both project routes still give per-angle-cell minima $6/5$,
+$13/10$, $7/5$. The small equal-side scalar fixture also passes after a test-only JSON
 serialization. Retained n=11, n=12, and n=17 objects supply geometry and atom-data round
 trips only; no full coverage or source replay ran, and their bytes are unchanged.
 
@@ -47,12 +47,12 @@ The [102 new tests](../../../../../tests/test_fractional_adaptive_io.py) include
 required key, the frozen input limits and inclusive byte/rational boundaries, malformed
 structures, geometry and measure mutations, and these branch-reachability controls:
 
-- F4 calls the pure validator on `[0,1/3]`, `[1/3,2/3]`, `[2/3,1]`, then reaches named
-  gap and overlap refusals by changing the second lower endpoint to `2/5` and `1/4`.
+- F4 calls the pure validator on $[0,1/3]$, $[1/3,2/3]$, $[2/3,1]$, then reaches named
+  gap and overlap refusals by changing the second lower endpoint to $2/5$ and $1/4$.
   Patched parser and declaration checks would fail the tests if invoked.
 - F5 directly reaches the axis and fold endpoint refusals.
   Its serialized n=12 mutation recomputes every dependent field and reaches the named
-  final-seam refusal at `q_K = 164144306/142927847 > 1`. A separate stale mismatch
+  final-seam refusal at $q_K = 164144306/142927847 > 1$. A separate stale mismatch
   mutation takes the earlier declaration-equality branch.
   This ordering requires a loader-side algebraic comparison before complete-cover
   validation; it is not another independent route.

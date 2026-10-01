@@ -373,10 +373,10 @@ Final validation records distinguish wall timeouts from mathematical failures.
 
 The retained packet contains the complete pinned source trees needed for the reviewed
 claims, with eight acquisition manifests and explicit omission reasons.
-The proof work supports strict `s(11) > 31/8`, `s(26) >= 1377/250`, `s(29) >= 571/100`,
+The proof work supports strict $s(11) > 31/8$, `s(26) >= 1377/250`, `s(29) >= 571/100`,
 ten point-certificate bounds and their justified monotone or mass-budget transfers.
 Those sources improve 19 verified case fields.
-The twentieth change corrects `n = 17` to the stronger Kleddamag result replayed and
+The twentieth change corrects $n = 17$ to the stronger Kleddamag result replayed and
 reviewed in Session 150.
 
 The assurance labels follow the computations actually performed.

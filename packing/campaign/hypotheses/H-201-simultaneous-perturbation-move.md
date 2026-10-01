@@ -61,22 +61,22 @@ attaining the binding span.
 Every *other* single-square translation leaves the side term exactly unchanged, so its
 energy change comes only from the overlap term, and once `lambda` has ramped, any move
 that creates overlap is rejected outright.
-At `n = 17` roughly four proposals in seventeen can improve the objective at all; at
-`n = 52`, four in fifty-two.
+At $n = 17$ roughly four proposals in seventeen can improve the objective at all; at
+$n = 52$, four in fifty-two.
 The remainder are a random walk on a plateau bounded by rejection.
 
 That is an analytic property of the objective, not a measurement, and it predicts
 exactly the failure
 [exp-011](../series/series-000-smoke-and-calibration/experiments/exp-011-h-020-n17.md)
-recorded: the annealer returned the trivial `5.0` at `n = 17` on five seeds of five.
+recorded: the annealer returned the trivial $5.0$ at $n = 17$ on five seeds of five.
 It is also the failure the record-holders describe in their own words.
-The provenance comment on the `n = 55` record says that without special modifications a
+The provenance comment on the $n = 55$ record says that without special modifications a
 GPU annealer “almost always gets stuck just above the trivial size”.
 
 ## Why this move rather than another
 
 Gensane and Ryckelynck’s algorithm — the first that worked on squares in a square, and
-the holder of the `n = 29` record from 2004 until December 2025 — is not an annealer at
+the holder of the $n = 29$ record from 2004 until December 2025 — is not an annealer at
 all.
 Its acceptance rule is strictly greedy and its escape mechanism is layer 3: displace
 *every* object simultaneously, then re-converge.
@@ -87,8 +87,8 @@ Simultaneous perturbation is what walks along a connected path of solid configur
 to a genuine local optimum.
 
 Gensane measured the payoff on spheres in a cube, where a particle has three degrees of
-freedom, as a freely rotating square in the plane does: at `n = 12`, ten thousand plain
-billiard runs gave six digits and adding perturbation gave six more; at `n = 21`, two
+freedom, as a freely rotating square in the plane does: at $n = 12$, ten thousand plain
+billiard runs gave six digits and adding perturbation gave six more; at $n = 21$, two
 digits became twelve.
 
 `search.rs` already contains `perturb`, written for the basin-entry mode and not on the
@@ -96,7 +96,7 @@ ordinary move menu. Putting it there is the cheapest structural change available
 
 ## What would refute it
 
-Fewer than six of the eleven cells improving by `0.01` with disjoint seed ranges.
+Fewer than six of the eleven cells improving by $0.01$ with disjoint seed ranges.
 That result would say either that the plateau diagnosis is wrong, or that the plateau is
 not the binding constraint at this budget — and it would move the next attempt to the
 inflation rewrite rather than to more moves.

@@ -288,12 +288,12 @@ Under this definition:
   composer be rerun rather than reconciled.
 - **Is `C` bounded above by `V`?** Every confirmation is also verification evidence, so
   when `V` counts evidence of every origin, as it does today (`:334–346`) and as this
-  proposal keeps, `C ≤ V` holds for atomic claims by construction.
+  proposal keeps, $C \le V$ holds for atomic claims by construction.
   If this project formalizes a result whose source published only a paper proof, the
   formalization raises `V` to 4 or 5 and `C` with it.
   The one way `C` can exceed `V` is the minimum rule on a compound claim: T-014 declares
   `V3/C5` because its prose steps cap `V` while its machine parts and review earn `C5`.
-  The recommended rule: `C ≤ V` after composition, enforced by the checker; a compound
+  The recommended rule: $C \le V$ after composition, enforced by the checker; a compound
   claim’s `C` is also the minimum over its parts.
   T-014 is reconciled in §4.
 - **What changes in how the axes are derived.** Today both axes read the same cited
@@ -343,7 +343,7 @@ repository; it is reproducible at the component level (each receipt’s command 
 retained) and not at the ensemble level (`think-e2ot`). This proposal requires ensemble
 reproducibility only at rung 5.
 
-**Extensive adversarial AI review by the best models.** At least `N = 2` retained review
+**Extensive adversarial AI review by the best models.** At least $N = 2$ retained review
 documents of kind `adversarial`, by at least two distinct reviewer identities (a
 different model family, or a separately prompted independent lane of the same family
 with no shared context), each mapped in the document map as a non-superseded `review`,
@@ -353,7 +353,7 @@ adversarial review with verdict `accepted`) dated after every defect’s disposi
 *The checker counts documents and checks fields; “best models” is a dated judgment
 recorded in `epistemics.md` as the reasoning tier required (a frontier model at its
 maximum reasoning setting, named), and the human overseer attests that the reviews met
-it.* `N = 2` is decision 11.
+it.* $N = 2$ is decision 11.
 
 **Human oversight of the mechanization and of the AI checking (rung 4).** One retained
 review of kind `oversight` with `reviewer_kind: human`, naming the person, their
@@ -612,56 +612,56 @@ under the ladder of 2026-08-31 to 2026-09-30.
 
 | Result | Headline | Today | Design A now | What restores 4 |
 | --- | --- | --- | --- | --- |
-| T-001 | `s(17) ≥ 4426213/1000000 = 4.426213`, from a… | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 1 adversarial on file (session-060); +1 by a named, distinct reviewer |
-| T-002 | `s(18) ≥ 4426213/1000000`, by monotonicity from… | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 1 adversarial on file (session-060); +1 by a named, distinct reviewer |
+| T-001 | $s(17) \ge \frac{4426213}{1000000} = 4.426213$, from a… | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 1 adversarial on file (session-060); +1 by a named, distinct reviewer |
+| T-002 | $s(18) \ge \frac{4426213}{1000000}$, by monotonicity from… | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 1 adversarial on file (session-060); +1 by a named, distinct reviewer |
 | T-003 | The sixteen-point set’s unavoidability ceiling… | `V4/C3/S2` | `V3/C3/S2` (2 methods) | oversight record; 1 adversarial on file (session-060); +1 by a named, distinct reviewer |
-| T-004 | Bentz 2010, Theorem 8 (`s(46) ≥ 7`) is correct as… | `V4/C3/S3` | `V3/C3/S3` | oversight record; 1 adversarial on file (session-060); +1 by a named, distinct reviewer |
+| T-004 | Bentz 2010, Theorem 8 ($s(46) \ge 7$) is correct as… | `V4/C3/S3` | `V3/C3/S3` | oversight record; 1 adversarial on file (session-060); +1 by a named, distinct reviewer |
 | T-005 | Bentz 2010, Lemma 10 is false as printed and true… | `V4/C3/S2` | `V3/C3/S2` | oversight record; 1 adversarial on file (session-060); +1 by a named, distinct reviewer |
-| T-008 | `s(46) = 7` | `V4/C3/S3` | `V3/C3/S3` | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
-| T-009 | `s(29) ≤ 5.933833…`, by a Krawczyk interval… | `V4/C3/S3` | `V3/C3/S3` | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
-| T-010 | `s(11) ≥ 2 + 4/√5`, by a repair of Stromquist… | `V4/C3/S4` | `V3/C3/S4` | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
-| T-011 | Trump’s 1979 packing is exactly valid, so `s(11) ≤…` | `V4/C3/S2` | `V3/C3/S2` | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
-| T-012 | Goebel’s `n = 5` packing is second-order rigid at… | `V4/C3/S3` | `V3/C3/S3` | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
-| T-013 | Goebel’s `n = 40` packing: seven verified… | `V4/C3/S3` | `V3/C3/S3` | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
-| T-014 | Goebel’s `n = 5` optimum is rigid at fixed side:… | `V3/C5/S3` | `V3/C3/S3` | oversight record; 3 adversarial on file (BC-152 lane, unnamed; BC-153 reviewer; independent Max reviewer) |
-| T-015 | `s(17) ≥ 22529/5000 = 4.5058` | `V4/C3/S3` | `V3/C3/S3` | oversight record; 3 adversarial on file (BC-149 reviewer; BC-150 lane; BC-151 lane) |
-| T-016 | `s(n) ≥ 22529/5000` for `n = 18, 19`, by… | `V4/C3/S3` | `V3/C3/S3` | oversight record; 3 adversarial on file (BC-149 reviewer; BC-150 lane; BC-151 lane) |
-| T-017 | `s(12) ≥ 99/25 = 3.96` | `V4/C4/S4` | `V3/C3/S4` (2 methods) | oversight record; 1 adversarial on file (an unnamed reviewer); +1 by a named, distinct reviewer |
-| T-018 | `s(11) ≥ 381/100 = 3.81` | `V4/C5/S5` | `V3/C3/S5` (2 methods) | oversight record; 5 adversarial on file (Claude Code; GPT-6 Pro by filename; a project agent; an unnamed session reviewer; three agent lanes) |
-| T-019 | `s(n) ≥ 459/100 = 4.59` for `n = 17, 18, 19` | `V4/C4/S4` | `V3/C3/S4` (2 methods) | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
-| T-020 | `s(n) ≥ 24/5 = 4.80` for `n = 19, 20, 21` | `V4/C4/S4` | `V3/C3/S4` (2 methods) | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
-| T-021 | `s(n) ≥ 97/20 = 4.85` for `n = 20, 21` | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
-| T-022 | `s(11) ≥ 38100√(8100042893309449)/899996306539 =…` | `V4/C5/S5` | `V3/C3/S5` (2 methods) | oversight record; 2 adversarial on file (an unnamed session reviewer; unstated) |
-| T-024 | `s(11) ≥ 3175000√(518400042893309449)/…` | `V4/C3/S5` | `V3/C3/S5` (2 methods) | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
-| T-025 | `s(11) ≥ 191/50 = 3.82`, by a threshold certificate | `V4/C5/S5` | `V3/C3/S5` (2 methods) | oversight record; 2 adversarial on file (a separate agent; unstated) |
-| T-026 | `s(11) ≥ 955000√(518400042893309449)/…` | `V4/C5/S5` | `V3/C3/S5` (2 methods) | oversight record; 1 adversarial on file (a separate agent); +1 by a named, distinct reviewer |
-| T-027 | `s(18) ≥ 467/100 = 4.67` | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 1 adversarial on file (three agent lanes); +1 by a named, distinct reviewer |
-| T-028 | `s(18) ≥ 187/40 = 4.675` | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 1 adversarial on file (three agent lanes); +1 by a named, distinct reviewer |
-| T-029 | `s(18) ≥ 1871/400 = 4.6775` | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 1 adversarial on file (three agent lanes); +1 by a named, distinct reviewer |
-| T-030 | `s(18) ≥ 4679/1000 = 4.679` | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 1 adversarial on file (three agent lanes); +1 by a named, distinct reviewer |
-| T-031 | The octagon corner class (threshold `1/2`) holds… | `V4/C3/S2` | `V3/C3/S2` (2 methods) | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
-| T-032 | `s(17) ≥ 461300/99999 = 4.61304613…`, and beneath… | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 1 adversarial on file (an unnamed reviewer); +1 by a named, distinct reviewer |
-| T-033 | `s(11) ≥ 955000√(2073600042893309449)/…` | `V4/C3/S3` | `V3/C3/S3` (2 methods) | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
-| T-034 | `s(21) ≥ 122/25 = 4.88` | `V4/C5/S3` | `V3/C3/S3` (2 methods) | oversight record; 1 adversarial on file (Fable, max thinking); +1 by a named, distinct reviewer |
+| T-008 | $s(46) = 7$ | `V4/C3/S3` | `V3/C3/S3` | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
+| T-009 | $s(29) \le 5.933833\ldots$, by a Krawczyk interval… | `V4/C3/S3` | `V3/C3/S3` | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
+| T-010 | $s(11) \ge 2 + 4/\sqrt{5}$, by a repair of Stromquist… | `V4/C3/S4` | `V3/C3/S4` | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
+| T-011 | Trump’s 1979 packing is exactly valid, so $s(11) \le\ldots$ | `V4/C3/S2` | `V3/C3/S2` | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
+| T-012 | Goebel’s $n = 5$ packing is second-order rigid at… | `V4/C3/S3` | `V3/C3/S3` | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
+| T-013 | Goebel’s $n = 40$ packing: seven verified… | `V4/C3/S3` | `V3/C3/S3` | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
+| T-014 | Goebel’s $n = 5$ optimum is rigid at fixed side:… | `V3/C5/S3` | `V3/C3/S3` | oversight record; 3 adversarial on file (BC-152 lane, unnamed; BC-153 reviewer; independent Max reviewer) |
+| T-015 | $s(17) \ge \frac{22529}{5000} = 4.5058$ | `V4/C3/S3` | `V3/C3/S3` | oversight record; 3 adversarial on file (BC-149 reviewer; BC-150 lane; BC-151 lane) |
+| T-016 | $s(n) \ge \frac{22529}{5000}$ for $n = 18, 19$, by… | `V4/C3/S3` | `V3/C3/S3` | oversight record; 3 adversarial on file (BC-149 reviewer; BC-150 lane; BC-151 lane) |
+| T-017 | $s(12) \ge \frac{99}{25} = 3.96$ | `V4/C4/S4` | `V3/C3/S4` (2 methods) | oversight record; 1 adversarial on file (an unnamed reviewer); +1 by a named, distinct reviewer |
+| T-018 | $s(11) \ge \frac{381}{100} = 3.81$ | `V4/C5/S5` | `V3/C3/S5` (2 methods) | oversight record; 5 adversarial on file (Claude Code; GPT-6 Pro by filename; a project agent; an unnamed session reviewer; three agent lanes) |
+| T-019 | $s(n) \ge \frac{459}{100} = 4.59$ for $n = 17, 18, 19$ | `V4/C4/S4` | `V3/C3/S4` (2 methods) | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
+| T-020 | $s(n) \ge \frac{24}{5} = 4.80$ for $n = 19, 20, 21$ | `V4/C4/S4` | `V3/C3/S4` (2 methods) | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
+| T-021 | $s(n) \ge \frac{97}{20} = 4.85$ for $n = 20, 21$ | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
+| T-022 | $s(11) \ge 38100\sqrt{8100042893309449}/899996306539 =\ldots$ | `V4/C5/S5` | `V3/C3/S5` (2 methods) | oversight record; 2 adversarial on file (an unnamed session reviewer; unstated) |
+| T-024 | $s(11) \ge 3175000\sqrt{518400042893309449}/\ldots$ | `V4/C3/S5` | `V3/C3/S5` (2 methods) | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
+| T-025 | $s(11) \ge \frac{191}{50} = 3.82$, by a threshold certificate | `V4/C5/S5` | `V3/C3/S5` (2 methods) | oversight record; 2 adversarial on file (a separate agent; unstated) |
+| T-026 | $s(11) \ge 955000\sqrt{518400042893309449}/\ldots$ | `V4/C5/S5` | `V3/C3/S5` (2 methods) | oversight record; 1 adversarial on file (a separate agent); +1 by a named, distinct reviewer |
+| T-027 | $s(18) \ge \frac{467}{100} = 4.67$ | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 1 adversarial on file (three agent lanes); +1 by a named, distinct reviewer |
+| T-028 | $s(18) \ge \frac{187}{40} = 4.675$ | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 1 adversarial on file (three agent lanes); +1 by a named, distinct reviewer |
+| T-029 | $s(18) \ge \frac{1871}{400} = 4.6775$ | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 1 adversarial on file (three agent lanes); +1 by a named, distinct reviewer |
+| T-030 | $s(18) \ge \frac{4679}{1000} = 4.679$ | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 1 adversarial on file (three agent lanes); +1 by a named, distinct reviewer |
+| T-031 | The octagon corner class (threshold $\frac{1}{2}$) holds… | `V4/C3/S2` | `V3/C3/S2` (2 methods) | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
+| T-032 | $s(17) \ge \frac{461300}{99999} = 4.61304613\ldots$, and beneath… | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 1 adversarial on file (an unnamed reviewer); +1 by a named, distinct reviewer |
+| T-033 | $s(11) \ge 955000\sqrt{2073600042893309449}/\ldots$ | `V4/C3/S3` | `V3/C3/S3` (2 methods) | oversight record; 0 adversarial on file; +2 by named, distinct reviewers |
+| T-034 | $s(21) \ge \frac{122}{25} = 4.88$ | `V4/C5/S3` | `V3/C3/S3` (2 methods) | oversight record; 1 adversarial on file (Fable, max thinking); +1 by a named, distinct reviewer |
 | T-035 | Six-plus-five packings near Trump’s tilt with side… | `V4/C5/S3` | `V3/C3/S3` | oversight record; 2 adversarial on file (Fable, extra-high thinking; Fable, max thinking) |
-| T-037 | `s(11) > 31/8 = 3.875` | `V4/C4/S5` | `V3/C3/S5` (2 methods) | oversight record; 3 adversarial on file (Astra Max subagent; Astra, Session 152; the native implementation lane) |
-| T-038 | `s(17) > 461300/99853 = 4.6197910929…` | `V4/C3/S3` | `V3/C3/S3` | oversight record; 2 adversarial on file (Astra, Session 152; an unnamed reviewer) |
-| T-039 | `s(17) > 231001/50000 = 4.62002` | `V4/C3/S3` | `V3/C3/S3` | oversight record; 1 adversarial on file (Fable max for the mathematics, Opus 5.5 for the replays); +1 by a named, distinct reviewer |
-| T-040 | `s(17) > 232001/50000 = 4.64002` | `V4/C3/S3` | `V3/C3/S3` | oversight record; 1 adversarial on file (Fable max sub-agent); +1 by a named, distinct reviewer |
-| T-041 | `s(17) > 466001/100000 = 4.66001` | `V4/C3/S3` | `V3/C3/S3` | oversight record; 2 adversarial on file (two Fable max sub-agents) |
-| T-042 | `s(17) > 233009/50000 = 4.66018` | `V4/C3/S2` | `V3/C3/S2` | oversight record; 1 adversarial on file (Fable max sub-agent); +1 by a named, distinct reviewer |
-| T-043 | `s(17) > 116511/25000 = 4.66044` | `V4/C3/S3` | `V3/C3/S3` | oversight record; 2 adversarial on file (two Fable max sub-agents) |
-| T-044 | Weighted point lower bounds for ten counts in `n =…` | `V4/C3/S3` | `V3/C3/S3` | oversight record; 2 adversarial on file (Astra, Session 152; a Session 152 lane) |
-| T-045 | `s(27), s(28) ≥ 28/5`, `s(31) ≥ 148/25` and `s(32)…` | `V4/C3/S3` | `V3/C3/S3` | oversight record; 2 adversarial on file (Fable max sub-agent; a Session 152 lane) |
-| T-047 | `s(11) ≥ 381/100`; `s(n) ≥ 1377/250` for `n =…` | `V4/C3/S4` | `V3/C3/S4` | oversight record; 2 adversarial on file (Astra, Session 152; a Session 152 lane) |
-| T-049 | `s(12) ≥ 15680/3951 = 3.9686155…` | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 2 adversarial on file (Fable max sub-agent; the native implementation lane) |
-| T-050 | `s(21) ≥ 5000/1001 = 4.995004995…` | `V4/C3/S3` | `V3/C3/S3` | oversight record; 1 adversarial on file (Fable max sub-agent); +1 by a named, distinct reviewer |
-| T-051 | `s(32) = 6` | `V4/C4/S4` | `V3/C3/S4` (2 methods) | oversight record; 3 adversarial on file (three Fable max sub-agents) |
-| T-052 | `s(21) = 5`, by a mixed cover of points and… | `V4/C3/S4` | `V3/C3/S4` (2 methods) | oversight record; 1 adversarial on file (Fable max sub-agent); +1 by a named, distinct reviewer |
-| T-053 | `s(45) = 7`, by a mixed cover of points and… | `V4/C3/S4` | `V3/C3/S4` (2 methods) | oversight record; 1 adversarial on file (Fable max sub-agent); +1 by a named, distinct reviewer |
-| T-054 | `s(45) = 7` by a second, point-only route | `V4/C3/S2` | `V3/C3/S2` (2 methods) | oversight record; 1 adversarial on file (Fable max sub-agent); +1 by a named, distinct reviewer |
-| T-056 | Smaller packings for 49 counts from `n = 68` to… | `V4/C3/S3` | `V3/C3/S3` | oversight record; 1 adversarial on file (Fable max sub-agent); +1 by a named, distinct reviewer |
-| T-057 | `s(211) ≤ 14.99796070496771500150 < 15`, the first… | `V4/C3/S3` | `V3/C3/S3` | oversight record; 1 adversarial on file (Fable max sub-agent); +1 by a named, distinct reviewer |
+| T-037 | $s(11) > \frac{31}{8} = 3.875$ | `V4/C4/S5` | `V3/C3/S5` (2 methods) | oversight record; 3 adversarial on file (Astra Max subagent; Astra, Session 152; the native implementation lane) |
+| T-038 | $s(17) > \frac{461300}{99853} = 4.6197910929\ldots$ | `V4/C3/S3` | `V3/C3/S3` | oversight record; 2 adversarial on file (Astra, Session 152; an unnamed reviewer) |
+| T-039 | $s(17) > \frac{231001}{50000} = 4.62002$ | `V4/C3/S3` | `V3/C3/S3` | oversight record; 1 adversarial on file (Fable max for the mathematics, Opus 5.5 for the replays); +1 by a named, distinct reviewer |
+| T-040 | $s(17) > \frac{232001}{50000} = 4.64002$ | `V4/C3/S3` | `V3/C3/S3` | oversight record; 1 adversarial on file (Fable max sub-agent); +1 by a named, distinct reviewer |
+| T-041 | $s(17) > \frac{466001}{100000} = 4.66001$ | `V4/C3/S3` | `V3/C3/S3` | oversight record; 2 adversarial on file (two Fable max sub-agents) |
+| T-042 | $s(17) > \frac{233009}{50000} = 4.66018$ | `V4/C3/S2` | `V3/C3/S2` | oversight record; 1 adversarial on file (Fable max sub-agent); +1 by a named, distinct reviewer |
+| T-043 | $s(17) > \frac{116511}{25000} = 4.66044$ | `V4/C3/S3` | `V3/C3/S3` | oversight record; 2 adversarial on file (two Fable max sub-agents) |
+| T-044 | Weighted point lower bounds for ten counts in $n =\ldots$ | `V4/C3/S3` | `V3/C3/S3` | oversight record; 2 adversarial on file (Astra, Session 152; a Session 152 lane) |
+| T-045 | $s(27), s(28) \ge \frac{28}{5}$, $s(31) \ge \frac{148}{25}$ and $s(32)\ldots$ | `V4/C3/S3` | `V3/C3/S3` | oversight record; 2 adversarial on file (Fable max sub-agent; a Session 152 lane) |
+| T-047 | $s(11) \ge \frac{381}{100}$; $s(n) \ge \frac{1377}{250}$ for $n =\ldots$ | `V4/C3/S4` | `V3/C3/S4` | oversight record; 2 adversarial on file (Astra, Session 152; a Session 152 lane) |
+| T-049 | $s(12) \ge \frac{15680}{3951} = 3.9686155\ldots$ | `V4/C4/S3` | `V3/C3/S3` (2 methods) | oversight record; 2 adversarial on file (Fable max sub-agent; the native implementation lane) |
+| T-050 | $s(21) \ge \frac{5000}{1001} = 4.995004995\ldots$ | `V4/C3/S3` | `V3/C3/S3` | oversight record; 1 adversarial on file (Fable max sub-agent); +1 by a named, distinct reviewer |
+| T-051 | $s(32) = 6$ | `V4/C4/S4` | `V3/C3/S4` (2 methods) | oversight record; 3 adversarial on file (three Fable max sub-agents) |
+| T-052 | $s(21) = 5$, by a mixed cover of points and… | `V4/C3/S4` | `V3/C3/S4` (2 methods) | oversight record; 1 adversarial on file (Fable max sub-agent); +1 by a named, distinct reviewer |
+| T-053 | $s(45) = 7$, by a mixed cover of points and… | `V4/C3/S4` | `V3/C3/S4` (2 methods) | oversight record; 1 adversarial on file (Fable max sub-agent); +1 by a named, distinct reviewer |
+| T-054 | $s(45) = 7$ by a second, point-only route | `V4/C3/S2` | `V3/C3/S2` (2 methods) | oversight record; 1 adversarial on file (Fable max sub-agent); +1 by a named, distinct reviewer |
+| T-056 | Smaller packings for 49 counts from $n = 68$ to… | `V4/C3/S3` | `V3/C3/S3` | oversight record; 1 adversarial on file (Fable max sub-agent); +1 by a named, distinct reviewer |
+| T-057 | $s(211) \le 14.99796070496771500150 < 15$, the first… | `V4/C3/S3` | `V3/C3/S3` | oversight record; 1 adversarial on file (Fable max sub-agent); +1 by a named, distinct reviewer |
 | T-060 | Trump’s eleven-square packing is globally optimal | `V4/C5/S5` | `V3/C3/S5` | oversight record; 2 adversarial on file (Astra at max reasoning, in two documents of one review stream) |
 
 Counting the 51 rows: 17 results have two or more adversarial reviews on file and need
@@ -670,16 +670,16 @@ more; 12 have none and need two.
 
 The named cases:
 
-- **T-060** (`s(11) = T`): `V4/C5/S5` → `V3/C3/S5`. Mechanized at the source; every
+- **T-060** ($s(11) = T$): `V4/C5/S5` → `V3/C3/S5`. Mechanized at the source; every
   component executed here and retained; two Astra documents (the census and capture
   contract with its whole-proof acceptance, and the source-intake handoff that
   summarizes it), no human record.
   Restores `V4/C4` with: one `oversight` record by the owner naming the result, stating
   that the composer’s trust boundary, the composition’s meaning as the equality, and the
   Astra reviews’ dispositions were inspected; and one further adversarial review by a
-  distinct reviewer if the owner sets `N = 2` with distinct families (decision 11). Path
+  distinct reviewer if the owner sets $N = 2$ with distinct families (decision 11). Path
   to 5: a formalization of the whole argument, which no one has begun.
-- **T-006** (`s(13) = 4`): on main `V3/C1/S3` → unchanged.
+- **T-006** ($s(13) = 4$): on main `V3/C1/S3` → unchanged.
   On #249 `V5/C3` → `V3/C3`: the kernel check is formal, but the review of statement
   fidelity (`review-2026-09-30-lean-s13.md`) was written “by the independent adversarial
   reviewer of this session”, an AI lane.
@@ -687,26 +687,26 @@ The named cases:
   45 min, pinned Lean 4.33.1 and Mathlib, axiom receipt retained), so `C5` needs only
   one human expert’s `formalization` review by someone other than Evan Daniel, with
   `statement-fidelity`, `definitions`, `axioms` and `build` checked, and `V5` the same.
-- **T-037** (`s(11) > 31/8`): `V4/C4/S5` → `V3/C3/S5`, attribute `2 methods`. Two mapped
+- **T-037** ($s(11) > 31/8$): `V4/C4/S5` → `V3/C3/S5`, attribute `2 methods`. Two mapped
   same-project reviews of 2026-09-22 exist (Kleddamag mathematics; native parent-core).
   With the owner’s oversight record it restores `V4/C4`, and `think-yf6t` is answered: a
   same-project review counts at rung 4, and the question of `C5` no longer arises for a
   non-formal result.
-- **T-051** (`s(32) = 6`): `V4/C4/S4` → `V3/C3/S4`, attribute `2 methods`. Reviews:
+- **T-051** ($s(32) = 6$): `V4/C4/S4` → `V3/C3/S4`, attribute `2 methods`. Reviews:
   `review-2026-09-27-evand-s32-s12.md` (Fable max) and the point-only review of
   2026-09-28. Restores 4 with the oversight record.
   Path to 5: build the source’s hypothesis-free `s32_eq_6` here (14–28 CPU-hours; the
   conditional theorem was built on 2026-09-30) and obtain the human expert review.
-- **T-052, T-053** (`s(21) = 5`, `s(45) = 7`): `V4/C3/S4` → `V3/C3/S4`. The reduction
+- **T-052, T-053** ($s(21) = 5$, $s(45) = 7$): `V4/C3/S4` → `V3/C3/S4`. The reduction
   `s21_eq_five_of_checker` was kernel-checked here; the checker statement is not yet
-  proved in Lean and `s(45)` was not run.
+  proved in Lean and $s(45)$ was not run.
   Same path as T-051.
-- **T-014** (`n = 5` rigidity): `V3/C5/S3` → `V3/C3/S3`, and with the `C ≤ V` rule its
+- **T-014** ($n = 5$ rigidity): `V3/C5/S3` → `V3/C3/S3`, and with the $C \le V$ rule its
   `C` is the minimum over parts, which the composition note must restate; the prose
   steps that cap `V` at 3 also cap `C` at 3.
 - **T-018, T-022, T-025, T-026, T-034, T-035** (`C5` today): → `C3`. Each has one
   adversarial Fable review and distinct methods; each restores `V4/C4` with the owner’s
-  oversight record and, under `N = 2` with distinct families, one more adversarial
+  oversight record and, under $N = 2$ with distinct families, one more adversarial
   review.
 
 ### 4.3 Design B
@@ -739,10 +739,10 @@ option:
 1. **`epistemics.md`**: the principle (§2.3) at the head of the two ladders; the axis
    table rewritten in the owner’s terms (§2.2); the two rung tables with the one-line
    meanings of §3.1 and their earners; a section on review records (§2.4, §2.5); the
-   attributes; the `C ≤ V` rule; and a dated note: “Ratings published between 2026-08-31
-   and 2026-09-30 used a ladder on which `V4` meant machine-verified, `C4` confirmed by
-   distinct methods and `C5` review-ready; each result’s `notes` says what it held
-   then.” The regex `overview_sections._LEVEL_ROW` reads rows of the form
+   attributes; the $C \le V$ rule; and a dated note: “Ratings published between
+   2026-08-31 and 2026-09-30 used a ladder on which `V4` meant machine-verified, `C4`
+   confirmed by distinct methods and `C5` review-ready; each result’s `notes` says what
+   it held then.” The regex `overview_sections._LEVEL_ROW` reads rows of the form
    ``| `V4` | meaning |``, so the tables keep that shape.
 2. **`results.schema.yaml`**: `reviews` (§2.5) replaces `review_artifact`; `attributes`
    optional; the rung enums unchanged.
@@ -752,13 +752,13 @@ option:
    confirming-origin evidence plus confirming-side reviews; rung 4 needs the adversarial
    count, the distinct reviewers, the confirming pass and the human oversight record;
    rung 5 needs the formal entry, the axiom receipt and the human formalization review;
-   `C ≤ V`; every review path mapped and non-superseded; the tests pin each predicate on
-   synthetic atoms and the live register.
+   $C \le V$; every review path mapped and non-superseded; the tests pin each predicate
+   on synthetic atoms and the live register.
 4. **`results.yaml`**: every result re-derived; the 51 lowered results get a dated
    `notes` line; the eight `review_artifact` fields become `reviews` entries with the
    reviewer as the document states it; `last_reviewed` advanced.
    T-060’s `next_rung` names the oversight record as the next action.
-   **Owner choice marked:** `N = 2`, distinct reviewers, owner admissible as overseer.
+   **Owner choice marked:** $N = 2$, distinct reviewers, owner admissible as overseer.
 5. **Renders**: `RESULTS.md`, `STATUS.md`, `INVENTORY.md`, the synopsis headline block,
    the README tables (`render_results`, `render_research_tables`,
    `render_evidence_inventory`, `render_results_headline`, `render_recent_results`), and
@@ -847,11 +847,11 @@ Decisions only the owner can make:
    with `third-party` as an attribute.
    Alternative: `C4` requires a third party, which lowers every first-party result to
    `C3` until another project replays it.
-10. **`C ≤ V` after composition?** Recommended: yes, enforced; T-014 becomes `V3/C3`.
-11. **`N` and “distinct”.** Recommended: `N = 2` adversarial AI reviews by distinct
+10. **$C \le V$ after composition?** Recommended: yes, enforced; T-014 becomes `V3/C3`.
+11. **`N` and “distinct”.** Recommended: $N = 2$ adversarial AI reviews by distinct
     reviewer identities, where a separately prompted independent lane of the same model
     family counts as distinct; preferred, not required, that the families differ.
-    Alternative: `N = 2` with distinct families required, which leaves every current
+    Alternative: $N = 2$ with distinct families required, which leaves every current
     result one review short of 4 except T-060 if the source-intake review counts.
 12. **Does a recorded, hash-bound execution performed here satisfy “replayed here”?**
     (`think-7khl`.) Recommended: yes at rungs 3 and 4; a fresh end-to-end replay from
@@ -882,7 +882,7 @@ Decisions only the owner can make:
 - The adversarial-review inventory classified documents by what they say of themselves.
   It did not re-read the reviews’ mathematics or judge whether a review was in fact
   adversarial.
-- No `n = 11` geometry, Lean build or certificate was re-run for this proposal; the
+- No $n = 11$ geometry, Lean build or certificate was re-run for this proposal; the
   derivations use the register as it stands.
 - The site branch (#255) was read, not rendered; the card and chip code was read at
   `e500e7807`.
@@ -895,8 +895,8 @@ Decisions only the owner can make:
 - [`results.schema.yaml`](../../../../packing/frontier/results.schema.yaml)
 - [`frontier-evidence.schema.yaml`](../../../../packing/frontier/frontier-evidence.schema.yaml)
 - [`results.yaml`](../../../../packing/frontier/results.yaml)
-- [The $n = 11$ census and capture contract review](../../reviews/review-2026-09-29-n11-optimality-census-contract.md)
-- [The $n = 11$ source intake review](../../reviews/review-2026-09-29-n11-optimality.md)
+- [The `n = 11` census and capture contract review](../../reviews/review-2026-09-29-n11-optimality-census-contract.md)
+- [The `n = 11` source intake review](../../reviews/review-2026-09-29-n11-optimality.md)
 - [Plan: others’ results in the register](plan-2026-09-29-third-party-results-register.md)
 
 <!-- This document follows common-doc-guidelines.md.

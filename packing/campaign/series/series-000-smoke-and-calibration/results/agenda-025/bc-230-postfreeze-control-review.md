@@ -33,16 +33,16 @@ It no longer uses the weaker minimum-based comparison.
 ### F4 and F5 — reachable refusal branches
 
 **Pass.** F4 calls the pure cover validator while bypassing serialized and derived-field
-validation. Its `2/5` and `1/4` mutations preserve valid endpoints and reach the gap and
+validation. Its $2/5$ and $1/4$ mutations preserve valid endpoints and reach the gap and
 overlap refusals separately.
 
 F5 calls the pure endpoint validator and recomputes every dependent declaration after
 mutating the final seam.
 Exact recomputation gives
 
-- `t_179 = 37072153/90000000`, whose bracket polynomial is negative;
-- `t_180 = 1/2`, whose bracket polynomial is `1/4`; and
-- `q_K = 164144306/142927847 > 1`.
+- $t_{179} = 37072153/90000000$, whose bracket polynomial is negative;
+- $t_{180} = 1/2$, whose bracket polynomial is $1/4$; and
+- $q_K = 164144306/142927847 > 1$.
 
 Parsing, half-tangent ordering, bracket checks, and derived-field equality can therefore
 pass before the intended final-seam refusal fires.
@@ -50,16 +50,16 @@ pass before the intended final-seam refusal fires.
 ### T10 — premise-preserving lightening mutation
 
 **Pass.** T10 changes all eight distinct images of one generic D4 orbit.
-The arithmetic is `7/32 - 1/10000 = 4373/20000`, with updated total `119367/10000`. A
-standard-library direct-membership check at center `(119/220, 119/220)` gives exact mass
-`4999/5000`. Direction `0` and every earlier scalar premise remain valid; only Condition
+The arithmetic is $7/32 - 1/10000 = 4373/20000$, with updated total $119367/10000$. A
+standard-library direct-membership check at center $(119/220, 119/220)$ gives exact mass
+$4999/5000$. Direction $0$ and every earlier scalar premise remain valid; only Condition
 5 fails.
 
 ### P2 — frozen scalar direction
 
 **Pass.** P2 requires the scalar result to become a literal test-data oracle before the
 adaptive comparison.
-The actual retained value to freeze is direction `0`, attaining `12501/12500`; the
+The actual retained value to freeze is direction $0$, attaining $12501/12500$; the
 matrix does not invent a replacement literal.
 
 ## Coordinator disposition

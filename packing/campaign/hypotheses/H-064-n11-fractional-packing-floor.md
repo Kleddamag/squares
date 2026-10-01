@@ -100,28 +100,28 @@ hypothesis:
 ---
 # H-064 — Measuring the `n = 11` Covering Value From Below
 
-The `n = 11` ladder stopped at `381/100` and the next side up was attacked from both
+The $n = 11$ ladder stopped at $381/100$ and the next side up was attacked from both
 ends. Neither closed.
-Two independent site sets stop at exactly `11.000000` at `3.82` — one converged over
+Two independent site sets stop at exactly $11.000000$ at $3.82$ — one converged over
 twelve rounds, one standing through twenty-four while its least covered mass climbed
-from `0.8490` to `0.9997` — and the rejection route reached only `1152/175 = 6.5829` of
+from $0.8490$ to $0.9997$ — and the rejection route reached only $1152/175 = 6.5829$ of
 the eleven a ceiling needs.
 
-`T-018` records what that leaves: if `τ*(3.82)` is exactly eleven then this is the one
-configuration where neither pre-registered route can close, since a certificate needs
-mass below `n` and a ceiling needs the scaled dual to reach `n`, and both fail by an
-infinitesimal at exactly `n`.
+`T-018` records what that leaves: if $\tau^{\ast}(3.82)$ is exactly eleven then this is
+the one configuration where neither pre-registered route can close, since a certificate
+needs mass below $n$ and a ceiling needs the scaled dual to reach $n$, and both fail by
+an infinitesimal at exactly $n$.
 
 This claim is the measurement that would settle which side of that the truth sits on,
 and the reason it is worth making is that the rejection route was never run properly.
-The `3.82` family’s weights came from a dual that enforced depth at the sites, not at
+The $3.82$ family’s weights came from a dual that enforced depth at the sites, not at
 the vertices of the arrangement, and the two numbers differ by 53 per cent.
 Adding the violating vertices as constraints and re-solving is the cutting-plane loop
 the column generator already runs in the other direction; the instrument for the depth
 check exists and has decided `1650944` vertices once already.
 
 A value at or above eleven proves the ladder cannot pass that side, and the distance
-from there to Trump’s `3.877084` is the part of the side gap that no certificate of this
+from there to Trump’s $3.877084$ is the part of the side gap that no certificate of this
 shape will ever close.
 That number is the input every part of X-014’s proposed proof shape needs and none of
 them can be priced without.

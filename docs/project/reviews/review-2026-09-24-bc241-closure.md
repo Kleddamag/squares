@@ -56,17 +56,17 @@ All commands from `packing/` in worktree `w3-review` at `99582155c`, project Pyt
 
 | Command | Wall | Result |
 | --- | ---: | --- |
-| `uv run --frozen --all-extras --group dev python -m cases.trump11.isolation_radius --record ../attic/bc241/isolation-radius-replay.json` (defaults: box `1/64`, threshold `1/8`, 128 branches, weighted and identity passes, refine limit 6, the BC-199 configuration) | 474.5 s (BC-199: 350.4 s) | exit 0; `attic/bc241/compare_replay.py` reports 0 unexpected differences over 4,954 leaf values; one expected difference, `inputs[tangent_cones.py]` `31f1c09f` to `17302de5` |
-| `uv run --frozen --all-extras --group dev python -m cases.trump11.capture_radius --record ../attic/bc241/capture-radius-replay.json` (exp-227’s command) | 510.3 s (exp-227: 446.1 s) | exit 0; 2,978 leaf values identical to the retained exp-227 record; `modulus_control.weighted_modulus_min_lower_decimal` = `0.00404257348533135396598905037166` over 8,448 faces; per-branch weighted modulus, argmin face and exact flag match BC-199 on all 128 branches |
+| `uv run --frozen --all-extras --group dev python -m cases.trump11.isolation_radius --record ../attic/bc241/isolation-radius-replay.json` (defaults: box $\frac{1}{64}$, threshold $\frac{1}{8}$, 128 branches, weighted and identity passes, refine limit 6, the BC-199 configuration) | 474.5 s (BC-199: 350.4 s) | exit 0; `attic/bc241/compare_replay.py` reports 0 unexpected differences over 4,954 leaf values; one expected difference, `inputs[tangent_cones.py]` `31f1c09f` to `17302de5` |
+| `uv run --frozen --all-extras --group dev python -m cases.trump11.capture_radius --record ../attic/bc241/capture-radius-replay.json` (exp-227’s command) | 510.3 s (exp-227: 446.1 s) | exit 0; 2,978 leaf values identical to the retained exp-227 record; `modulus_control.weighted_modulus_min_lower_decimal` = $0.00404257348533135396598905037166$ over 8,448 faces; per-branch weighted modulus, argmin face and exact flag match BC-199 on all 128 branches |
 | `uv run --frozen --all-extras --group dev python -m devtools.review_trump_local_theorem` | 37.1 s | disposition `accept_retained_record_dependent_local_scope`; mutations `active_row_coefficient`, `separating_axis_sign_retaining_stress`, `per_row_factor_2_over_K_to_1_over_K` all rejected; four selected faces with exact zero primal-dual gap |
 | `pytest tests/test_trump_isolation_radius.py tests/test_review_trump_local_theorem.py` | 60.5 s | 12 passed |
 
 Headline constants, exact rational match in both directions: `rho_uniform =
 288616983/125000000000`, `rho_row = 808514697/200000000000`, `C_uniform =
-2808470331/125000000`, `C_row = 2574612531/200000000`, `K = 4972105219/500000000`, gap
-cap `5875508797/1000000000000` (short form), symmetry radius `1/16`. The two modulus
-classes are unchanged: 64 branches at `0.011480272061` and 64 at `0.016423844897`
-(uniform), `0.004042573485` and `0.005760353017` (weighted), decided by contact (9,
+2808470331/125000000`, `C_row = 2574612531/200000000`, $K = 4972105219/500000000$, gap
+cap $5875508797/1000000000000$ (short form), symmetry radius $1/16$. The two modulus
+classes are unchanged: 64 branches at $0.011480272061$ and 64 at $0.016423844897$
+(uniform), $0.004042573485$ and $0.005760353017$ (weighted), decided by contact (9,
 10)’s option, argmin face `theta_10 = -1` in every binding branch.
 
 Source drift, checked directly:
@@ -82,10 +82,10 @@ the expanded Archimedes comment and two `exact_pivot_rows` calls dropping the re
   apart. It rules out nondeterminism, host dependence and record tampering; it cannot
   catch a logic error shared with BC-199.
 - `capture_radius` shares the witness loading, row identification and per-row curvature
-  `K_j` with the generator and has its own face LP, far-normalised dual and exact vertex
+  $K_j$ with the generator and has its own face LP, far-normalised dual and exact vertex
   code. Its modulus control is therefore a second implementation of the face layer only.
 - The BC-241 checker is source-distinct throughout: it rebuilds all 56 distinct row
-  gradients from the exact witness, recomputes `K_j` on the declared box for each,
+  gradients from the exact witness, recomputes $K_j$ on the declared box for each,
   checks every branch’s stress residual and constants, and re-solves four faces exactly.
 
 Together, the row and curvature layer is source-distinct-verified, the face layer has
@@ -114,7 +114,7 @@ second method exists for the theorem as a whole.
    so the radius can carry a replay command if it is ever registered.
 
 None of these bears on the rung leaves: the reader in `fixed_angle_tree_check.py` uses
-only the first clause (a packing of side at most `U` whose image lies within `rho_row`
+only the first clause (a packing of side at most $U$ whose image lies within `rho_row`
 of the labelled pose is the pose), never the quadratic constant.
 
 ## Recommended Disposition and Wording

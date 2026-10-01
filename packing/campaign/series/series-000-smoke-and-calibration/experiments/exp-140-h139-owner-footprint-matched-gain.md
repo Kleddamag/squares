@@ -96,9 +96,9 @@ experiment:
 # Exp-140: Generic Owner-Footprint Pilot
 
 The published process exited0 after15.98seconds, but its raw scientific status is
-`partial`. The unrestricted arm converged at `11.884615384615401`. The point arm reached
-the declared60-round limit with least surveyed mass `0.955338364468638`; its last
-objective `11.570153761669404` is an incomplete LP point.
+`partial`. The unrestricted arm converged at $11.884615384615401$. The point arm reached
+the declared60-round limit with least surveyed mass $0.955338364468638$; its last
+objective $11.570153761669404$ is an incomplete LP point.
 The fail-fast runner therefore did not start triangle or endpoint, and `comparison` is
 null.
 
@@ -120,7 +120,7 @@ Those values cannot replace the primary criterion.
 The source must be committed and pushed before launch.
 Retain the launch HEAD, UTC instant, exit status, process log, and incremental JSON
 receipt. A guard, timeout, unresolved separator, or incomplete arm leaves the comparison
-unresolved. A completed primary gain at most `0.001` rejects H-139 only in this finite
+unresolved. A completed primary gain at most $0.001$ rejects H-139 only in this finite
 regime. No numerical outcome changes the global packing bracket or establishes exact
 coverage.
 

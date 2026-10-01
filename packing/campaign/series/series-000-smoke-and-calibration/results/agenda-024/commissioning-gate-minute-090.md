@@ -30,7 +30,7 @@ Iterations 0 through 11 were complete and iteration 12 was in flight.
 
 Iteration 10 remained the exact lower incumbent,
 
-`21342289572/2055263195 ≈ 10.384212408377215`.
+$21342289572/2055263195 \approx 10.384212408377215$.
 
 Iteration 0 remained the only row-converged computational upper endpoint, with
 `rows_objective = 11.055616942909783`. Iteration 11 had stopped at the two-round row
@@ -81,7 +81,7 @@ ba0af81ea4d3a91517df5ca60cded71ba3fdc20b1aa716f152b5ec42fe745a7c  bc-233-control
 7dd38f91cffd51744e1591e5a06e5b709b0a59c346bcab0b848a2af328d5ff8c  bc-233-control.rows
 ```
 
-The matched candidate hashes are identical and both masses are `11142893/1000000`; no
+The matched candidate hashes are identical and both masses are $11142893/1000000$; no
 BC-233 continuation opens.
 
 ## Closure boundary
@@ -112,8 +112,8 @@ Its frozen hashes were:
 ```
 
 The packet establishes only labelled, anchored local isolation and side stability in the
-33-variable fixed-side chart, with preferred radius lower bound `808514697/200000000000`
-and quadratic constant upper bound `2574612531/200000000`. It still requires
+33-variable fixed-side chart, with preferred radius lower bound $808514697/200000000000$
+and quadratic constant upper bound $2574612531/200000000$. It still requires
 source-distinct BC-241 review and refuses a full radius replay, global capture, global
 optimality, and global uniqueness.
 

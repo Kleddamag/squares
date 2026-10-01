@@ -2,16 +2,16 @@
 
 Status: **site set refuted, unconverged**. The side stays open.
 
-Session-139 probe: BC-191 auto `(32, 42, 52)` unioned with T-019’s 1184 atom sites
-scaled from `459/100` to `23/5`, plus `--seed-windows 7`,
+Session-139 probe: BC-191 auto $(32, 42, 52)$ unioned with T-019’s 1184 atom sites
+scaled from $459/100$ to $23/5$, plus `--seed-windows 7`,
 `(n, L, B, net) = (17, 23/5, 9977/10000, 181 directions)`. Seed sites 1968 = 1184 T-019
 plus 784 ceiling-window lattice sites.
-The same grids with `--seed-windows 5` stopped at `17.042346`; windows 6 stopped at
-`17.048472`. Windows 7 finished between them: `17.046923` at the 900 s deadline (42 LP
+The same grids with `--seed-windows 5` stopped at $17.042346$; windows 6 stopped at
+$17.048472$. Windows 7 finished between them: $17.046923$ at the 900 s deadline (42 LP
 rounds, 186 still violated).
-Crossed seventeen at round 19 (`17.001965`). Remaining rows can only raise this value.
-Adding sites can still lower it, so `23/5` is not barred.
-T-019 at `459/100` is unchanged.
+Crossed seventeen at round 19 ($17.001965$). Remaining rows can only raise this value.
+Adding sites can still lower it, so $23/5$ is not barred.
+T-019 at $459/100$ is unchanged.
 
 ## Command
 
@@ -38,11 +38,11 @@ Wall 904.2 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `17.046923` |
+| Restricted optimum | $17.046923$ |
 | Sites / orbits / rows | 7452 / 978 / 12379 |
 | Seed sites | 1968 |
 | LP rounds | 42 |
-| Crossing | round 19 (`17.001965`) |
+| Crossing | round 19 ($17.001965$) |
 | Wall | 904.2 s |
 | `least_covered` | 0.995294 |
 | Converged | no (`violated == 186` at stop) |

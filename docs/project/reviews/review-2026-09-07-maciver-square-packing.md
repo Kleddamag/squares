@@ -90,7 +90,7 @@ For $g\ge0,\kappa>0$, evaluating the three vertices of a triangular region gives
 
 $$
 \max_{0\le y\le g,\ |z|\le y/\kappa}(ay+bz)
-=g\max\{0,a+|b|/\kappa\}.
+=g\max\lbrace0,a+|b|/\kappa\rbrace.
 $$
 
 This exact elimination avoids replacing the triangle by a larger coordinate box.
@@ -204,7 +204,7 @@ Retain the three dated source identities, original paper bytes and faithful extr
 the exact n17/n18 comparison, and the limits of the available verification.
 Link the n17 proposal as source-reported historical evidence.
 Keep the independently verified lower-bound fields at 4.59. The broader source audit
-records the already indexed external report `9141/2000 = 4.5705` in the reported fields;
+records the already indexed external report $9141/2000 = 4.5705$ in the reported fields;
 MacIver’s proposed bound is below both values.
 
 The next useful adoption step, tracked as `think-sske`, is a bounded replay of the

@@ -1,7 +1,7 @@
 # BC-278: Boundary-Band Author Result
 
 **Partial result; the full-square target remains unresolved.** The unchanged admitted
-four-pose domain contains an exact configuration admitting seven radius-$1/2$ disks with
+four-pose domain contains an exact configuration admitting seven radius-`1/2` disks with
 disjoint interiors. Consequently neither $\kappa_{\rm disk}\le6$ nor
 $\kappa_{\rm oct}\le6$ holds uniformly on that domain.
 These are negative controls for the two relaxations.
@@ -89,7 +89,7 @@ Their centers are
 | $2$ | $399/170$ | $7/10$ |
 | $3$ | $157/50$ | $1113/850$ |
 
-Call this four-pose configuration $G_*$. Equal choices at this one point are legal
+Call this four-pose configuration $G_{\ast}$. Equal choices at this one point are legal
 values of four independent angle variables.
 This is a new exact member of the unchanged domain, not a replacement for the original
 four-diamond membership fixture.
@@ -122,7 +122,7 @@ For example, the first numerator is $4(337)+3(259)=2125$, and the middle adjacen
 numerator is $3(363)+4(259)=2125$, both over denominator $2125$. The three adjacent
 touches must not be discarded by replacing weak SAT with strict separation.
 
-At $G_*$ the guard quantities are
+At $G_{\ast}$ the guard quantities are
 
 $$
 m=5/8,\quad \varepsilon=0,\quad \ell=7/10,\quad
@@ -140,13 +140,13 @@ $$
 $$
 
 Every value is strictly positive.
-Thus $G_*\in\Gamma_0$. Its bottom barrier is $\ell+A=69/40$ and its high-row octagon top
-is $u+A=7937/3400$. Membership in $\Gamma_0$ asserts four guarded poses, not a point of
-the as-yet unresolved eleven-square child $D_0$.
+Thus $G_{\ast}\in\Gamma_0$. Its bottom barrier is $\ell+A=69/40$ and its high-row
+octagon top is $u+A=7937/3400$. Membership in $\Gamma_0$ asserts four guarded poses, not
+a point of the as-yet unresolved eleven-square child $D_0$.
 
 ## Seven Exact Disk Centers
 
-Place closed radius-$1/2$ disks at the following centers:
+Place closed radius-`1/2` disks at the following centers:
 
 | Disk | $X$ | $Y$ |
 | --- | --- | --- |
@@ -182,7 +182,7 @@ Their inventory is
 
 $$
 \begin{gathered}
-01,\ 02,\ 04,\ 05,\ 06,\ 12,\ 14,\ 15,\ 16,\\
+01,\ 02,\ 04,\ 05,\ 06,\ 12,\ 14,\ 15,\ 16,\cr
 23,\ 25,\ 26,\ 34,\ 36,\ 45,\ 46,\ 56.
 \end{gathered}
 $$
@@ -200,7 +200,7 @@ $$
 (|a|-1/2)_+^2+(|c|-1/2)_+^2.
 $$
 
-Distance at least $1/2$ proves that a radius-$1/2$ disk avoids the square interior.
+Distance at least $1/2$ proves that a radius-`1/2` disk avoids the square interior.
 In particular, a positive normal coordinate at least one is a sufficient separating
 projection for this square and disk.
 It is not the corresponding support threshold for an arbitrary full residual square.
@@ -237,9 +237,9 @@ This completes all 28 cross checks.
 Together with disk containment and the 21 mutual checks, it proves
 
 $$
-\kappa_{\rm disk}(G_*)\ge7,
+\kappa_{\rm disk}(G_{\ast})\ge7,
 \qquad
-\kappa_{\rm oct}(G_*)\ge7.
+\kappa_{\rm oct}(G_{\ast})\ge7.
 $$
 
 The second statement follows from the accepted relaxation inclusion; the first is
@@ -255,9 +255,9 @@ centers to
 
 $$
 \begin{aligned}
-C_0(\eta)&=(7/10+\eta,7/10+\eta),\\
-C_1(\eta)&=(1269/850,1113/850+3\eta),\\
-C_2(\eta)&=(399/170,7/10+\eta),\\
+C_0(\eta)&=(7/10+\eta,7/10+\eta),\cr
+C_1(\eta)&=(1269/850,1113/850+3\eta),\cr
+C_2(\eta)&=(399/170,7/10+\eta),\cr
 C_3(\eta)&=(157/50-\eta,1113/850+3\eta).
 \end{aligned}
 $$
@@ -305,12 +305,12 @@ of this center-wise lifting attempt, not impossibility of other seven-square pos
 the same cavity or elsewhere in $\Gamma_0$.
 
 The disk counterexample also blocks a tempting repair of the weaker-model route.
-Replacing $E$ by a tighter polygon inside the radius-$1/2$ disk, adding more such
+Replacing $E$ by a tighter polygon inside the radius-`1/2` disk, adding more such
 orientation-independent forbidden-center resources, or using the exact selected
 square-plus-disk obstacle still cannot establish a uniform disk capacity of six: the
 seven disks pass the strongest of those individual-obstacle checks already.
 Indeed the intersection of all centered unit-square orientations is exactly the
-radius-$1/2$ disk. The disk is contained in every orientation; conversely, for any point
+radius-`1/2` disk. The disk is contained in every orientation; conversely, for any point
 of norm greater than $1/2$, choose a square edge normal parallel to that point, which
 excludes it. Thus a larger fixed inner core valid for every residual angle is
 unavailable. This argument concerns common-core center models; it does not rule out
@@ -350,8 +350,8 @@ No full-square success child is pruned by this partial result.
 
 The original four-diamond lower fixture and its upper reflection remain membership
 controls only. Their capacities were not determined here.
-The new $G_*$ checks the same eight-guard domain at a different legal actual angle, and
-the seven-center construction falsifies only the disk and octagon bounds of six.
+The new $G_{\ast}$ checks the same eight-guard domain at a different legal actual angle,
+and the seven-center construction falsifies only the disk and octagon bounds of six.
 The exact wall-forced overlap is a negative control against relabeling that construction
 as an eleven-square witness.
 The preserved selected-square touches, disk touch and wall contacts also check the

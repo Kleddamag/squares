@@ -56,8 +56,8 @@ hypothesis:
 
 Lane 2 asked whether the integer-endpoint cases admit a structure-free fractional proof
 one hundredth below the integer.
-Only `m = 4` can be tested in the shrunk language, because `3.99` lies below the grid
-ceiling `3.9908` while `4.99` and `5.99` do not.
+Only $m = 4$ can be tested in the shrunk language, because $3.99$ lies below the grid
+ceiling $3.9908$ while $4.99$ and $5.99$ do not.
 
 A retained certificate here is a calibration rung under a proved value.
 A depth-one family of total at least 13 is the informative negative.

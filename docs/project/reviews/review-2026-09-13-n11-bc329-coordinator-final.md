@@ -80,7 +80,7 @@ The controls did not use the BC329 target.
 | Coherent raw-then-exact child chronology | Accepted | Accepted |
 | All raw and exact task and child times exchanged, with both sidecar digests updated | `CalibrationError: raw tasks finish after normalized exact tasks start` | `ProfileCoordinatorError` with the same reason |
 | Coherent terminal phase baseline | Accepted | Accepted |
-| `raw_seconds=100.0`, `worker_elapsed_seconds=0.2` producer or `1.0` coordinator | Domain-error refusal for phase durations | Domain-error refusal for phase durations |
+| `raw_seconds=100.0`, `worker_elapsed_seconds=0.2` producer or $1.0$ coordinator | Domain-error refusal for phase durations | Domain-error refusal for phase durations |
 | Sum exceeds worker elapsed by `5e-10` | Accepted as roundoff | Accepted as roundoff |
 | Sum exceeds worker elapsed by `5e-7` | Domain-error refusal | Domain-error refusal |
 

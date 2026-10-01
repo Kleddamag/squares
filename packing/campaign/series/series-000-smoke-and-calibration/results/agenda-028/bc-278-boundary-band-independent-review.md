@@ -195,7 +195,7 @@ Both are lower bounds, not exact capacity evaluations.
 
 ## Author: Perturbation and Fixed-Center Lifting Refusal
 
-The positive-$\eta$ argument is accepted as stated.
+The positive-`η` argument is accepted as stated.
 The three formerly tight selected projections change by $2\eta/5,8\eta/5,2\eta/5$.
 Moving the extreme selected abscissae inward and raising the low centers makes all
 formerly tight selected wall conditions strict.
@@ -244,7 +244,7 @@ It does not exclude other residual center choices at $G_A$ or anywhere else in
 $\Gamma_0$.
 
 The author’s common-core observation is correct with its stated limitation.
-The intersection of all centered unit-square orientations is the closed radius-$1/2$
+The intersection of all centered unit-square orientations is the closed radius-`1/2`
 disk: that disk lies in each orientation, and any point of larger norm is excluded by an
 orientation having an edge normal in its radial direction.
 Thus enlarging a fixed inner core beyond the incircle cannot be valid for every residual

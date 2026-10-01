@@ -42,9 +42,9 @@ The ten parameters and their target bounds are
 
 $$
 \begin{gathered}
-(L,z,p_x,p_y,a,b,t,w_x,w_y,v),\qquad p=(p_x,p_y),\quad w=(w_x,w_y),\\
+(L,z,p_x,p_y,a,b,t,w_x,w_y,v),\qquad p=(p_x,p_y),\quad w=(w_x,w_y),\cr
 381/100\le L\le96/25,\quad 0\le t,v\le1,\quad
--1/4\le a,b\le1/4,\\
+-1/4\le a,b\le1/4,\cr
 2\le z\le L-1,\qquad p,w\in[1/2,7/2]^2.
 \end{gathered}
 $$
@@ -54,11 +54,11 @@ Squares 0–5 use the basis $E=(1,0),F=(0,1)$. Squares 6–9 share $e=e(t),f=f(t
 
 $$
 \begin{aligned}
-C_0&=(1/2,1/2),&C_1&=(L-1/2,1/2),\\
-C_2&=(z+1/2,L-1/2),&C_3&=(1/2,L-1/2),\\
-C_4&=(3/2,L-1/2),&C_5&=(1/2,L-3/2),\\
-C_6&=p,&C_7&=p+ae-f,\\
-C_8&=p+e+bf,&C_9&=p+(a+1)e+(b-1)f,\\
+C_0&=(1/2,1/2),&C_1&=(L-1/2,1/2),\cr
+C_2&=(z+1/2,L-1/2),&C_3&=(1/2,L-1/2),\cr
+C_4&=(3/2,L-1/2),&C_5&=(1/2,L-3/2),\cr
+C_6&=p,&C_7&=p+ae-f,\cr
+C_8&=p+e+bf,&C_9&=p+(a+1)e+(b-1)f,\cr
 C_{10}&=w.
 \end{aligned}
 $$
@@ -66,8 +66,8 @@ $$
 Call the domain with these bounds and **all** the geometric conditions below
 $\mathcal S_{\rm full}$. Its parent control domain $\mathcal P_{\rm full}$ changes only
 the upper side bound to $L\le4$; thus
-$\mathcal S_{\rm full}=\mathcal P_{\rm full}\cap\{L\le96/25\}$. These symbols are local
-mathematical definitions, not new experiment or hypothesis identifiers.
+$\mathcal S_{\rm full}=\mathcal P_{\rm full}\cap\lbrace L\le96/25\rbrace$. These symbols
+are local mathematical definitions, not new experiment or hypothesis identifiers.
 
 ## Corner Labels, Walls, and Retained Segments
 
@@ -75,7 +75,7 @@ For every square, its declared basis $(e_i,f_i)$ fixes the counterclockwise corn
 
 $$
 \begin{aligned}
-V_{i,0}&=C_i-(e_i+f_i)/2,&V_{i,1}&=C_i+(e_i-f_i)/2,\\
+V_{i,0}&=C_i-(e_i+f_i)/2,&V_{i,1}&=C_i+(e_i-f_i)/2,\cr
 V_{i,2}&=C_i+(e_i+f_i)/2,&V_{i,3}&=C_i+(-e_i+f_i)/2.
 \end{aligned}
 $$
@@ -109,8 +109,9 @@ $e,f$ are linearly independent.
 The forced 4–5 point contact at $(1,L-1)$ also remains.
 Pair 9–10 has no prescribed contact or positive separation margin.
 
-The retained angular-equality graph has the wall component $\{0,\ldots,5,*\}$ and
-components $\{6,7,8,9\}$ and $\{10\}$, hence retained rank nine.
+The retained angular-equality graph has the wall component
+$\lbrace0,\ldots,5,\ast\rbrace$ and components $\lbrace6,7,8,9\rbrace$ and
+$\lbrace10\rbrace$, hence retained rank nine.
 Coincident orientations do not themselves add graph edges; new segment contacts may add
 edges.
 Neither this graph rank nor the ten-parameter description proves a feasible motion
@@ -136,7 +137,7 @@ For every one of the 55 unordered pairs $i<j$, independently impose all eight di
 SAT alternatives as one disjunction:
 
 $$
-\bigvee_{n\in\{e_i,f_i,e_j,f_j\},\ \sigma\in\{-1,1\}}
+\bigvee_{n\in\lbrace e_i,f_i,e_j,f_j\rbrace,\ \sigma\in\lbrace-1,1\rbrace}
 \left[\sigma(C_j-C_i)\cdot n\ge H_i(n)+H_j(n)\right].
 $$
 
@@ -189,7 +190,7 @@ $a,b\le0$, within $\mathcal S_{\rm full}$. Then
 $$
 \mathcal S_{\rm full}=\mathcal S^+_{\rm full}\cup\mathcal S^-_{\rm full},\qquad
 \mathcal S^+_{\rm full}\cap\mathcal S^-_{\rm full}
-=\mathcal S_{\rm full}\cap\{a=b=0\}.
+=\mathcal S_{\rm full}\cap\lbrace a=b=0\rbrace.
 $$
 
 If exactly one slide is zero, the sign of the other determines its child.
@@ -323,7 +324,7 @@ Using the source’s exact quantities, the binding is
 $$
 \begin{gathered}
 t=v=u,\quad L=U=\frac{6u+4}{1+2u-u^2},\quad
-a=u_1,\quad b=v_1,\quad z=x_0,\\
+a=u_1,\quad b=v_1,\quad z=x_0,\cr
 p=(1,1)+\tfrac12e+(\tfrac12-r_1)f,\qquad
 w=p+(a+2)e-v_2f.
 \end{gathered}
@@ -333,7 +334,7 @@ The source defines
 
 $$
 \begin{gathered}
-r_1=1-(U-3)c,\qquad u_1=((1+r_1)c-1)/s,\qquad v_1=c-s,\\
+r_1=1-(U-3)c,\qquad u_1=((1+r_1)c-1)/s,\qquad v_1=c-s,\cr
 v_2=(U-1)/s-r_1-(3+u_1)c/s,\qquad
 x_0=1+2/c-(U-2)s/c,
 \end{gathered}

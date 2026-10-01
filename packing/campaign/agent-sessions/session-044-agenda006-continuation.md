@@ -991,31 +991,31 @@ session:
 
 ## Why this session leads with `BC-066`
 
-[`BC-065`](../agendas/agenda-006-overnight-research-blocks.md) left the `n = 29`
+[`BC-065`](../agendas/agenda-006-overnight-research-blocks.md) left the $n = 29$
 question in a specific state: the integer-relation route refused through degree twenty
-below `10^22`, and the Bézout bound of `1,039,500` says that refusal surveyed a corner
-rather than the space.
+below $10^{22}$, and the Bézout bound of $1{,}039{,}500$ says that refusal surveyed a
+corner rather than the space.
 Elimination is the route that does not have to guess a degree.
 
 It is worth being exact about what a success would and would not buy, because the
 instinct that elimination is the “real” answer is right about rigour and easy to
 over-read about consequence.
-A complete elimination upgrades the `n = 29` upper bound from *certified at a relaxation
+A complete elimination upgrades the $n = 29$ upper bound from *certified at a relaxation
 of `1e-20`* to *exactly this algebraic number*. It says nothing about optimality: the
-`0.46` bound gap is untouched either way.
+$0.46$ bound gap is untouched either way.
 
 ## The block plan
 
 | Block | Commitment | Budget | Lane |
 | --- | --- | ---: | --- |
 | 1 | record repairs | 30 min | Process |
-| 2 | `BC-066` — eliminate the five-unknown system | 90 min | Exact route, `n = 29` |
-| 3 | `BC-067` — the `n = 11` round trip | 60 min | Exact route, known answer |
-| 4 | `BC-069` — the one `n = 5` stationarity condition | 60 min | Exact route, last shortfall |
+| 2 | `BC-066` — eliminate the five-unknown system | 90 min | Exact route, $n = 29$ |
+| 3 | `BC-067` — the $n = 11$ round trip | 60 min | Exact route, known answer |
+| 4 | `BC-069` — the one $n = 5$ stationarity condition | 60 min | Exact route, last shortfall |
 | 5 | `BC-061` — exact LP over certified coefficients | 60 min | Middle layer |
 | 6 | `BC-068` — pin the atlas SVG emission precision | 60 min | D-359 |
 | 7 | `BC-062` — reachability-scoped verification | 45 min | Efficiency, cuttable |
-| 8 | `BC-063` — `n = 5` rigidity evidence | 45 min | Research, cuttable |
+| 8 | `BC-063` — $n = 5$ rigidity evidence | 45 min | Research, cuttable |
 | 9 | `BC-064` — endpoint check | 40 min | Reserved |
 
 Blocks 7 and 8 are the absorbers, and they are named as cuttable here rather than

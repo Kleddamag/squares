@@ -49,7 +49,7 @@ merge as a stack instead, the **Must update** list is what would have to change 
 | Question | Answer |
 | --- | --- |
 | Does anything in #80 change a retained bound or verdict? | No. All four retained certificates decide identically; #80 says so and the lanes confirmed it. |
-| Is the nonnegativity finding (F1) real? | Yes, and it is the most valuable thing on the stack. The parent’s `verify()` never required `weight ≥ 0`; the counting step needs it. No retained certificate is affected — every weight is an LP output with `w ≥ 0` — but the verifier as a tool accepted a false theorem. |
+| Is the nonnegativity finding (F1) real? | Yes, and it is the most valuable thing on the stack. The parent’s `verify()` never required `weight ≥ 0`; the counting step needs it. No retained certificate is affected — every weight is an LP output with $w \ge 0$ — but the verifier as a tool accepted a false theorem. |
 | Are the six “Blocker” labels earned? | Four are (F1, F6, F7, F24) — F1 and F6 were reproduced live on the parent’s current head by the records lane. F9 is the parent’s own D-435, found and fixed there before #80 merged it. F17 concerns a path no evidence ever cited and is hardening, not soundness. |
 | Is the T-018 promotion from C4 to C5 legitimate? | Yes. `epistemics.md` defines C5 as *review-ready* — C3 or C4 plus an existing `review_artifact` mapped as a non-superseded review — not as external review. The parent’s own prose (“C5 needs a review by someone outside the project”) misstates the rubric and is the parent’s to fix. |
 | Is the stack current with #78? | At `28990b00`, no: it predates T-020, the integer sweep, D-442–D-444, the case-body rewrites, the attainment ratio, agenda-020, session-085 and the closeout. `04127189` has merged `a159eb28` and applies the witness fix on both sweep routes; the budgets, the rung-figure literals, the Lean project and the defect numbering stand. See **Must update**. |
@@ -64,14 +64,15 @@ merges.
    inequality needs every weight nonnegative, and neither `Atom` nor `verify()` checked
    it. The five-atom counterexample (n = 1, L = 11/10, B = 3/5, weight +2 at the centre
    and −1 at each corner, total −2 < 1) satisfies every stated condition and “proves”
-   `s(1) ≥ 11/10`. This is a real gap in the reusable implementation.
+   $s(1) \ge 11/10$. This is a real gap in the reusable implementation.
    The fix — make nonnegativity a checked condition in the project verifier, the
    interval route, the standalone package and the Lean kernel, and retain the
    counterexample as a must-refuse fixture — is exactly right.
    Adopt.
 2. **F7 — the interval route’s int64 masses could wrap** before Condition 2 rejected an
-   oversized total. Scaling and summing in Python integers first, and refusing at `2^62`,
-   is the same discipline the parent’s later integer sweep applies at `2^60`. Adopt.
+   oversized total. Scaling and summing in Python integers first, and refusing at
+   $2^{62}$, is the same discipline the parent’s later integer sweep applies at
+   $2^{60}$. Adopt.
 3. **F6 — a restricted direction sample could report acceptance.** Reproduced on the
    parent’s current head: `verify_by_intervals(certificate, directions=("0",))` returns
    `accepted=True` after searching 1 of 361 directions, while the function’s own
@@ -86,11 +87,11 @@ merges.
    in the verdict closes it cheaply.
    Adopt, and have `retain.py` verify the printed hash before it copies.
 5. **F14 — the ceiling was overstated into a method-wide impossibility.** The parent
-   proved that no certificate for n exists above `⌈√n⌉·B` and then wrote that the method
-   “will ever settle” n = 12. That is too strong: a family of certificates with sides
-   tending to 4 would establish `s(12) ≥ 4` without any member reaching it.
-   The ceiling rules out one finite certificate at the grid bound; whether a limiting
-   family exists is a question about the covering value.
+   proved that no certificate for n exists above $\lceil\sqrt{n}\rceil\cdot B$ and then
+   wrote that the method “will ever settle” n = 12. That is too strong: a family of
+   certificates with sides tending to 4 would establish $s(12) \ge 4$ without any member
+   reaching it. The ceiling rules out one finite certificate at the grid bound; whether a
+   limiting family exists is a question about the covering value.
    The parent’s wording in `SYNOPSIS.md`, `results.yaml` (T-017) and `README.md` needs
    the correction. Adopt.
 6. **F26 — the reach table called run reports “measured optima”.** Of the restricted
@@ -111,15 +112,15 @@ merges.
    the declared least cell mass, while the standalone verifier printed a mismatch as a
    note and still ended in VERIFIED. Both are small and correct.
    Adopt.
-9. **The `n = 11` case body and T-017’s evidence list.** The records lane found that the
-   parent’s own `n-011.md` still describes the `19/5` rung — “pinned to
-   `[3.8, 3.877084]`”, 425 atoms, total `43391/4000` — under front matter that says
-   `381/100`, and that `check_case_prose` passes it because the body never writes the
-   `s(11) ≥ …` shape the detector matches.
+9. **The $n = 11$ case body and T-017’s evidence list.** The records lane found that the
+   parent’s own `n-011.md` still describes the $19/5$ rung — “pinned to
+   $[3.8, 3.877084]$”, 425 atoms, total $43391/4000$ — under front matter that says
+   $381/100$, and that `check_case_prose` passes it because the body never writes the
+   $s(11) \ge \ldots$ shape the detector matches.
    That is a live instance of D-442 on the parent and a detector gap, both the parent’s
    to fix; #80’s rewrite of the body is correct and was arithmetically verified.
-   Separately, T-017 cited `E-n012-independent-verifier` as support for the `99/25`
-   bytes although that verifier decided only the `77/20` file; #80 repoints the entry
+   Separately, T-017 cited `E-n012-independent-verifier` as support for the $99/25$
+   bytes although that verifier decided only the $77/20$ file; #80 repoints the entry
    and drops it from T-017, which keeps C4 on the exact and interval pair.
    Adopt both, and the `[Burns n17]` → `[Burns–Massaccesi n17]` source-key fix with
    them.
@@ -158,8 +159,8 @@ Each of these adds weight the result does not need, or adds it in the wrong plac
   directory; do not ship it in the case package.
 - **A second standalone verifier, partly.** `minimal_verify.py` (346 lines) sits beside
   `thirdparty/verify.py`. The code lane found them less redundant than they look: the
-  package verifier is general-purpose, runs on CPython 3.8, and ships against the `19/5`
-  rung; the new one is pinned by SHA-256 to the retained `381/100` bytes, checks every
+  package verifier is general-purpose, runs on CPython 3.8, and ships against the $19/5$
+  rung; the new one is pinned by SHA-256 to the retained $381/100$ bytes, checks every
   declared field, and cross-checks the prefix-sum minimum against a direct summation at
   each direction’s witness.
   That is a legitimate second decision.
@@ -262,7 +263,7 @@ Each of these adds weight the result does not need, or adds it in the wrong plac
   against `conventions.md` §5; “event cell” is a third sense of “cell” where the
   conventions fix two; and the tutorial’s own sentences “two rows below are local” and
   “three words carry controlled multiple senses” are now false.
-  The `μ` → `f` rename of the minimal polynomial is self-consistent but unannounced.
+  The $\mu$ → $f$ rename of the minimal polynomial is self-consistent but unannounced.
   Put the terms in the synopsis, or mark them local, and amend the cell rule.
 - **A status change reworded away.** `pyproject.toml`’s comment excluding the
   third-party package and the independent verifier from the type floor said they were
@@ -278,7 +279,7 @@ Each of these adds weight the result does not need, or adds it in the wrong plac
   generator function is a behaviour change and one test guards it.
 - **One stale figure the stack introduces.** The Lean research note says “the
   90.5-million-cell coverage decision remains the expensive layer” and “do not begin by
-  replaying 90.5 million raw cells” — the `19/5` rung’s cell count — while the same file
+  replaying 90.5 million raw cells” — the $19/5$ rung’s cell count — while the same file
   correctly gives the current certificate’s 567,130,649. The class the parent recorded
   four times today, once more.
 
@@ -290,7 +291,7 @@ these that merge settled and which stand.
 
 | Parent change since `719c2a17` | What it means for #80 |
 | --- | --- |
-| **T-020**: `s(19), s(20), s(21) ≥ 24/5`, a fourth certificate package, `n = 19`–`21` case files rewritten, Nagamochi’s closed form now holds 58 of 65 open cases, not 60 | Every count, case body and evidence entry the stack touches for n = 17–19 has moved again; `n-019.md` in particular now carries T-020, not T-019. The frontier-corpus tripwire is 58. |
+| **T-020**: $s(19), s(20), s(21) \ge \frac{24}{5}$, a fourth certificate package, $n = 19$–`21` case files rewritten, Nagamochi’s closed form now holds 58 of 65 open cases, not 60 | Every count, case body and evidence entry the stack touches for n = 17–19 has moved again; `n-019.md` in particular now carries T-020, not T-019. The frontier-corpus tripwire is 58. |
 | **Defects D-441–D-449** recorded on the parent | At `04127189` the stack numbers its own entries 441 through 489 of its log and moves the parent’s D-442, D-443 and D-444 to entries 475, 481 and 482 of its log. Nine ids collide with different content. The parent’s ids stand; the stack’s entries renumber from entry 450 and the parent’s return to their ids. |
 | **D-442** (five case bodies stale against their front matter) and `devtools.check_case_prose` | The stack’s F28 / entry 467 of #80’s log is the same finding and its entry 466 of #80’s log the same possessive-mass instance; the parent’s rewrites of `n-017`–`n-019` are the ones to keep (the stack’s drop the green17 / T-001 passage and the Massaccesi provenance the parent preserves). Record concurrent discovery once and keep the parent’s detector, which reads every case body against its own front matter. |
 | **`frontier/README.md` says 58 of 65** open cases rest on Nagamochi | The stack still says 60; its corpus tripwire and case bodies move with it. |
@@ -308,7 +309,7 @@ The condition rename, so that the two branches align:
 | symmetry condition | Condition 1 | the atom multiset is closed under the container’s D4 symmetry |
 | mass condition | Condition 2 | total mass strictly below n |
 | direction-net condition | Condition 3 | the direction net reaches π/4 |
-| containment condition | Condition 4 | containment, `B(1 + D) < 1` |
+| containment condition | Condition 4 | containment, $B(1 + D) < 1$ |
 | coverage condition | Condition 5 | every closed B-square at every net direction covers mass ≥ 1 |
 
 `C0`–`C5` then mean only the confirmation rungs of `epistemics.md`. F1’s new
@@ -357,14 +358,14 @@ reproduction). Per file:
 - `colgen.py`: the `decide=` default flip, above.
 - `decide_certificate.py` and its tests: port, as above.
 - `thirdparty/verify.py`: preconditions including nonnegativity, typed load errors,
-  singleton and empty domains handled — and one policy change: a `B`-square that does
-  not fit the container (`2h ≥ L`) no longer raises, so an all-vacuous Condition 5
-  *accepts*. That is sound (a unit square containing such a `B`-square does not fit
+  singleton and empty domains handled — and one policy change: a $B$-square that does
+  not fit the container ($2h \ge L$) no longer raises, so an all-vacuous Condition 5
+  *accepts*. That is sound (a unit square containing such a $B$-square does not fit
   either) but it is acceptance on vacuity in a checker whose value was refusing what it
   cannot handle; port with the soundness note written down.
   At `28990b00`, `decide()` folded declaration mismatches into `failures` under a
   comment saying it keeps them separate; `04127189` keeps them in their own list.
-  `falsify.py`’s oracles are hard-coded to the `19/5` file while its usage line
+  `falsify.py`’s oracles are hard-coded to the $19/5$ file while its usage line
   advertises any certificate; a non-shipped path should be refused explicitly.
 - `cli/validate.py`: the 1,800 → 2,700 s fast-tier budget rests on a 1,791 s measurement
   that d8733ad0 invalidated (the lane measured the n = 12 and n = 20 exact decisions at
@@ -394,9 +395,9 @@ Reviewed under its own brief against a `git archive` of the stack’s head; no f
 modified. The lane ran the repository’s checkers on the stack’s tree — `check_results`,
 `check_synopsis`, `check_rung_figures`, `check_nagamochi_bounds`, `check_documentation`,
 `render_defects --check` — and all pass there; it then re-derived every quantitative
-claim in the changed records (the condition slacks, the movement `+0.021146`, the
-`5(381/100 − 2)² = 32761/2000 > 16` step, the margin and atom ratios, the two-point
-exponents, `4/(1 + D) − 99/25 = 0.0308`) and found each correct.
+claim in the changed records (the condition slacks, the movement $+0.021146$, the
+$5(381/100 - 2)^2 = 32761/2000 > 16$ step, the margin and atom ratios, the two-point
+exponents, $4/(1 + D) - 99/25 = 0.0308$) and found each correct.
 
 Its conclusions, all folded into the sections above: F1 and F6 reproduce live on the
 parent’s head; F9 is stale against the declared parent; F2 is measured at an earlier
@@ -418,7 +419,7 @@ then port the valid improvements one at a time onto a branch off `main`, each as
 commit. The ports are tracked as beads under the epic `think-pev1`, whose prerequisite
 `think-xcuv` is the branch and a re-measurement of the suite budgets on `main`; the
 first slice — the nonnegativity precondition, the sample verdict, the ceiling and factor
-corrections, the `n = 11` body and its detector, the C5 wording — landed on #78 itself
+corrections, the $n = 11$ body and its detector, the C5 wording — landed on #78 itself
 as `580efe58` because two of them close soundness gaps in the verifier as a tool.
 
 - **Landed on #78 as `580efe58`**: F1 with its counterexample fixture, F6, F14’s
@@ -449,9 +450,9 @@ as `580efe58` because two of them close soundness gaps in the verifier as a tool
 - **Renumber and dedupe** the defects: the stack’s entries 441–489 of its log from entry
   450, against the parent’s D-441–D-449 and its later fixes.
 
-The concrete claim — that the retained certificate proves `s(11) ≥ 381/100` — was never
-in question on either branch, and #80’s independent decisions of the same bytes are
-welcome confirmation of it.
+The concrete claim — that the retained certificate proves $s(11) \ge 381/100$ — was
+never in question on either branch, and #80’s independent decisions of the same bytes
+are welcome confirmation of it.
 What the stack adds to the *record* is worth about a tenth of its size.
 
 <!-- This document follows common-doc-guidelines.md.

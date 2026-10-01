@@ -49,7 +49,7 @@ retains the commands and limits.
 [Exp-116](../series/series-000-smoke-and-calibration/experiments/exp-116-h-093-scalar-61-16.md)
 ran once in Session 090 and leaves this claim unresolved.
 All 19 row solves remained unconverged; the driver stopped adding sites at iteration 18.
-Independent exact replay confirmed the best dual family’s mass `20843712108/2067791663`
+Independent exact replay confirmed the best dual family’s mass $20843712108/2067791663$
 (about 10.080180) and maximum depth one.
 This is below the mass-eleven obstruction threshold, and no covering bridge was
 authorized. No unchanged retry is selected.

@@ -23,17 +23,17 @@ The dated body remains otherwise unchanged as evidence of what the review assess
 ## Verdict
 
 **The concrete mathematical claim is accepted: the retained positive-weight certificate
-proves `s(11) ≥ 381/100`. The reviewed parent should not merge without the soundness and
-assurance repairs carried by this stacked branch.**
+proves $s(11) \ge 381/100$. The reviewed parent should not merge without the soundness
+and assurance repairs carried by this stacked branch.**
 
 Those are different decisions:
 
 | Question | Verdict | Reason |
 | --- | --- | --- |
-| Does this particular certificate prove `s(11) ≥ 381/100`? | **Accept** | Its 1,121 weights are strictly positive; every proof obligation holds; and source-distinct exact continuum checks obtain the declared minimum `4001/4000 > 1`. |
-| Is the corrected reusable theorem and project verifier sound? | **Accept on this stack** | The parent omitted nonnegative weights and accepted an exact certificate for the false bound `s(1) ≥ 11/10`. This branch makes nonnegativity a shared precondition and retains that object as a must-refuse regression. |
-| Does a method-distinct computation confirm **Condition 5**? | **Accept on this stack** | The interval branch-and-bound certifies all 361 directions with no stalled or budget-exhausted box and encloses the minimum exactly at `4001/4000`. Samples, unsafe integer magnitudes, and below-one enclosures cannot produce acceptance. |
-| Is the historical claim established? | **Apparently novel, high confidence** | The search found no public lower bound after Stromquist 2003 that reaches `381/100`, but it cannot establish absolute priority over unindexed or unpublished work. |
+| Does this particular certificate prove $s(11) \ge \frac{381}{100}$? | **Accept** | Its 1,121 weights are strictly positive; every proof obligation holds; and source-distinct exact continuum checks obtain the declared minimum $\frac{4001}{4000} > 1$. |
+| Is the corrected reusable theorem and project verifier sound? | **Accept on this stack** | The parent omitted nonnegative weights and accepted an exact certificate for the false bound $s(1) \ge \frac{11}{10}$. This branch makes nonnegativity a shared precondition and retains that object as a must-refuse regression. |
+| Does a method-distinct computation confirm **Condition 5**? | **Accept on this stack** | The interval branch-and-bound certifies all 361 directions with no stalled or budget-exhausted box and encloses the minimum exactly at $\frac{4001}{4000}$. Samples, unsafe integer magnitudes, and below-one enclosures cannot produce acceptance. |
+| Is the historical claim established? | **Apparently novel, high confidence** | The search found no public lower bound after Stromquist 2003 that reaches $\frac{381}{100}$, but it cannot establish absolute priority over unindexed or unpublished work. |
 | Are the upstream commit’s frozen-byte claims reliable? | **No; repaired here** | The retained file hashes to `b121…e6a`, not the `503c…7cd6` named in the introducing commit. Both full decisions were rerun against `b121…e6a`; the old attestation is discarded. |
 | Is the reviewed parent ready to merge unchanged? | **Request changes** | Its generic and interval verifier boundaries, retained declarations, retention gate, falsification gate, provenance language, and validation classification all needed repairs. This stacked branch supplies them and records the result at epistemic `C5` after validation. |
 
@@ -44,30 +44,30 @@ weights were already strictly positive.
 
 ## Scope and adversarial method
 
-This review concentrates on T-018, not PR 78’s separate `n = 12` result.
-It checked the mathematical implication, the exact bytes retained for `n = 11`, the
+This review concentrates on T-018, not PR 78’s separate $n = 12$ result.
+It checked the mathematical implication, the exact bytes retained for $n = 11$, the
 continuum-to-finite reduction, replay and validation boundaries, method provenance, and
 the novelty claim. The PR advanced repeatedly during the audit, from `9b85236b` through
 `bdf63b21`, `6fc71ce9`, `31775018`, `b77e78d2`, `9134ee41`, `430e7e09`, `6196480d`,
 `44e9c4b4`, `10cf6479`, `fbe01c49`, `d1e873a0`, `4a0c213a`, `9d90aabe`, `d3d9c7cb`, and
-`719c2a17`, ending at `719c2a17`. Commit `6fc71ce9` replaced the `19/5` target artifact
-with a larger `381/100` certificate, so the concrete validation restarted on the new
-bytes. The later commits strengthened the separate `n = 12` and `n = 17` results,
-supplied the missing full-net `n = 17` interval control, added a finite-certificate
+`719c2a17`, ending at `719c2a17`. Commit `6fc71ce9` replaced the $19/5$ target artifact
+with a larger $381/100$ certificate, so the concrete validation restarted on the new
+bytes. The later commits strengthened the separate $n = 12$ and $n = 17$ results,
+supplied the missing full-net $n = 17$ interval control, added a finite-certificate
 reach theorem and generated reach table, amended the project process document, and added
-a general certificate-retention command; they did not change the reviewed `n = 11` bytes
+a general certificate-retention command; they did not change the reviewed $n = 11$ bytes
 or its core argument.
 The reach theorem was in scope because its first prose interpretation overstated a
 finite-certificate ceiling as a method-wide impossibility; F14 records the correction.
 The self-contained verification package, interval-certified branch-and-bound checkpoint,
-retained `n = 17` certificates, and late retention command were included before the
-verdict was frozen. The final reconciliation also audited the moving parent’s new `4.59`
-and `99/25` certificates and `4.68` run narrative for branch consistency; those claims
+retained $n = 17$ certificates, and late retention command were included before the
+verdict was frozen. The final reconciliation also audited the moving parent’s new $4.59$
+and $99/25$ certificates and $4.68$ run narrative for branch consistency; those claims
 did not alter the T-018 proof, but F25-F33 record defects that would otherwise have
 shipped beside it. F34 and F35 record the literature-source drift found while folding
 this review back into the canonical resource and frontier tiers.
-The other `n = 17`--`19` frontier movement was outside this review’s mathematical scope
-except where the earlier published-value `n = 17` certificate served as a control.
+The other $n = 17$--`19` frontier movement was outside this review’s mathematical scope
+except where the earlier published-value $n = 17$ certificate served as a control.
 The final reconciliation through `353998ac` additionally audited T-020, the integer and
 parallel exact-sweep optimization, its timing claims, and its generated planning
 records. Those changes do not alter the T-018 certificate or theorem.
@@ -89,7 +89,7 @@ Two proof-validation lanes were kept separate from the coordinator’s main revi
 The coordinator separately searched the literature, replayed the project verifier,
 reconciled the retained artifacts, and constructed negative controls.
 Later blind-priority and parent-integration lanes independently challenged the
-literature scope and the final `n = 12` reconciliation without using the review’s
+literature scope and the final $n = 12$ reconciliation without using the review’s
 conclusions. Runtime agreement alone was not an acceptance rule: the proof implication
 and every implicit premise had to survive as well.
 
@@ -110,20 +110,20 @@ The following five-atom certificate satisfies the stated **Conditions 1–5**:
 
 | Datum | Value |
 | --- | --- |
-| `n`, `L`, `B` | `1`, `11/10`, `3/5` |
-| half-angle tangents | `(0, 1/2)` |
-| atoms | weight `+2` at `(11/20, 11/20)`; weight `-1` at each corner of `[0, 11/10]²` |
-| total mass | `-2 < 1` |
-| **Condition 3** slack | `1/4` |
-| **Condition 4** product | `(3/5)(1 + 1/2) = 9/10 < 1` |
+| $n$, $L$, $B$ | $1$, $\frac{11}{10}$, $\frac{3}{5}$ |
+| half-angle tangents | $(0, \frac{1}{2})$ |
+| atoms | weight $+2$ at $(\frac{11}{20}, \frac{11}{20})$; weight $-1$ at each corner of $[0, \frac{11}{10}]^2$ |
+| total mass | $-2 < 1$ |
+| **Condition 3** slack | $\frac{1}{4}$ |
+| **Condition 4** product | $\frac{3}{5}(1 + \frac{1}{2}) = \frac{9}{10} < 1$ |
 
 **Condition 1** holds by symmetry.
-At angle zero, every admissible `3/5`-square contains the centre atom and at most one
+At angle zero, every admissible $3/5$-square contains the centre atom and at most one
 corner, so its mass is at least one.
-At the other net angle, `cos θ = 3/5` and `sin θ = 4/5`; every admissible square
-contains the centre atom and no corner, so its mass is two.
+At the other net angle, $\cos \theta = 3/5$ and $\sin \theta = 4/5$; every admissible
+square contains the centre atom and no corner, so its mass is two.
 Thus mathematical **Condition 5** holds as well.
-But `s(1) = 1 < 11/10`, contradicting the claimed conclusion.
+But $s(1) = 1 < 11/10$, contradicting the claimed conclusion.
 
 The parent project verifier accepted this object:
 
@@ -142,7 +142,7 @@ It is not safe for signed weights, where adding a boundary atom can lower the ma
 
 The parent’s new
 [`thirdparty/README.md`](../../../packing/cases/n11_fractional_certificate/thirdparty/README.md)
-correctly adds `w_i ≥ 0`, and its verifier rejects negative weights at
+correctly adds $w_i \ge 0$, and its verifier rejects negative weights at
 [`verify.py`](../../../packing/cases/n11_fractional_certificate/thirdparty/verify.py).
 That local premise did not protect callers of `sqpack.fractional.Certificate`, including
 the primary replay path.
@@ -157,8 +157,8 @@ D-441 records the defect.
 
 At `34d19470`, `.venv/bin/basedpyright` reports **26 errors**:
 
-- 13 in the retained `n = 12` independent verifier;
-- 12 in the newly added `n = 11` standalone verifier and falsifier; and
+- 13 in the retained $n = 12$ independent verifier;
+- 12 in the newly added $n = 11$ standalone verifier and falsifier; and
 - one optional-value error in `tests/test_fractional_certificate.py:159`.
 
 The latest configuration change excludes the standalone package from Ruff only.
@@ -190,10 +190,10 @@ Running a self-contained copy under an empty environment demonstrates portabilit
 absence of hidden repository imports; it does not create author or reviewer
 independence.
 
-The `n = 17` control is also a project reconstruction in a new JSON schema from
+The $n = 17$ control is also a project reconstruction in a new JSON schema from
 Massaccesi’s publicly posted constants, not an artifact shipped by Massaccesi.
 It is a useful known-answer and scaling-semantics test, but not external validation of
-the `n = 11` certificate.
+the $n = 11$ certificate.
 
 The method attribution should preserve the historical layers.
 Göbel’s 1979 unavoidable points are the integral precursor.
@@ -202,8 +202,8 @@ points, segments, and area and compares the amount every unit square consumes wi
 total available; Bentz’s 2016 account supplies the “resource starvation” label.
 Burns’s August 2026 post and proof note supply the recent pure-atomic, rational
 direction-net implementation; Massaccesi’s August 2026 work supplies the LP-generated
-`n = 17` instance and parameters.
-The apparently novel contribution here is the `n = 11` atomic instance, not the general
+$n = 17$ instance and parameters.
+The apparently novel contribution here is the $n = 11$ atomic instance, not the general
 weighted-cover principle.
 
 **Resolution:** the package is now described as self-contained and intended for
@@ -214,33 +214,33 @@ lineage before the Burns/ChatGPT and Massaccesi implementation line.
 
 ### F4: Medium in the parent, fixed here: retained declarations did not govern acceptance
 
-The primary `n = 11` replay checks the declared `total_mass`, but not the declared
+The primary $n = 11$ replay checks the declared `total_mass`, but not the declared
 `least_cell_mass`, at
 [`__main__.py:34-37`](../../../packing/cases/n11_fractional_certificate/__main__.py).
-The `n = 11` test checks only that the computed minimum is at least one and that the
+The $n = 11$ test checks only that the computed minimum is at least one and that the
 claim string matches; it does not require the exact declared minimum.
-The neighbouring `n = 12` test does make that exact comparison
+The neighbouring $n = 12$ test does make that exact comparison
 ([`test_fractional_certificate.py:161-164`](../../../packing/tests/test_fractional_certificate.py)).
 
 The standalone verifier improves visibility by recomputing both fields, but a mismatch
 is printed as `NOTE` and the process can still end in `VERIFIED`
 ([`verify.py:465-481`](../../../packing/cases/n11_fractional_certificate/thirdparty/verify.py)).
-The full independent `n = 11` replay is also manual rather than a retained automated
+The full independent $n = 11$ replay is also manual rather than a retained automated
 gate. The values happen to agree in every review run; the problem is that future drift
 would not necessarily be refused by the paths that claim to bind the record.
 
 **Resolution:** the primary replay now refuses claim, total, or least-mass drift; the
 standalone verifier treats every present declaration as verdict-bearing; exact mutation
-tests cover both paths; and the complete source-distinct `n = 11` decision is a named
+tests cover both paths; and the complete source-distinct $n = 11$ decision is a named
 `exhaustive_exact` test.
 D-444 records the defect.
 
 ### F5: Low in the parent, fixed here: one scope disclaimer was false by monotonicity
 
-The standalone README said the result was “not a bound for any other `n`.” Since `s(n)`
-is nondecreasing, `s(11) ≥ 381/100` also implies `s(n) ≥ 381/100` for every `n ≥ 11`.
-The intended and defensible statement is that it improves no currently recorded
-higher-`n` bound.
+The standalone README said the result was “not a bound for any other $n$.” Since $s(n)$
+is nondecreasing, $s(11) \ge 381/100$ also implies $s(n) \ge 381/100$ for every
+$n \ge 11$. The intended and defensible statement is that it improves no currently
+recorded higher-`n` bound.
 
 The standalone README and T-018’s composition record now say exactly that.
 
@@ -273,10 +273,10 @@ A large weight, total, or subset sum could therefore wrap before the rejection a
 corrupt both conditions.
 
 **Resolution:** weights are now scaled and summed first as Python integers.
-Negative values are refused defensively, and totals at or above `2^62` are refused
+Negative values are refused defensively, and totals at or above $2^{62}$ are refused
 before any NumPy array is constructed.
 Every later matrix product is a nonnegative subset sum below that exact total.
-A positive-weight `2^63 + 1` regression exercises the public path.
+A positive-weight $2^{63} + 1$ regression exercises the public path.
 D-446 records the defect.
 
 ### F8: High and medium package gaps, fixed here: falsification and hostile inputs
@@ -305,16 +305,16 @@ continues until lower and sampled upper bounds meet so it can report the exact m
 The checkpoint classified any completed enclosure search with no stalled box as
 certified. It never checked that the enclosure’s lower endpoint reached one.
 A small rational grid certificate therefore returned `accepted=True` beside the exact
-enclosure `[0,0]`.
+enclosure $[0,0]$.
 
-This did not flatter the retained `n = 11` object—its enclosure is strictly above
+This did not flatter the retained $n = 11$ object—its enclosure is strictly above
 one—but it made the stronger-looking public mode logically weaker than the ordinary one.
 
 **Resolution:** every direction is certified only when all boxes close and its lower
 bound reaches the exact unit mass scale.
 A sampled upper bound below one refutes **Condition 5** in either mode, and
 whole-certificate acceptance rechecks every direction.
-The former `[0,0]` acceptance is a must-refuse regression.
+The former $[0,0]$ acceptance is a must-refuse regression.
 D-435 records the defect.
 
 ### F10: High in the interval checkpoint, fixed here: an exact seam made refusal infeasible
@@ -323,8 +323,8 @@ Outward-rounded boxes cannot close a coverage seam where one atom region’s lea
 exactly another’s enter-edge.
 The search correctly intended to return `undecided` at its resolution floor, but it
 tiled the whole seam down to that floor.
-Measurements grew from 4,631 boxes at `10⁻²`, to 274,303 at `10⁻⁴`, to 33,583,223 at
-`10⁻⁶`; the production `10⁻¹²` test was not operationally finite.
+Measurements grew from 4,631 boxes at $10^{-2}$, to 274,303 at $10^{-4}$, to 33,583,223
+at $10^{-6}$; the production $10^{-12}$ test was not operationally finite.
 
 **Resolution:** each direction has a conservative 100,000-box work budget.
 Exhaustion returns lower bound zero and an explicit non-acceptance unless an admissible
@@ -337,9 +337,9 @@ D-447 records the defect.
 The exact sweep correctly includes an open event cell when it intersects the rotated
 feasible-centre polygon, but it returned the midpoint of the whole cell.
 At a polygon corner that midpoint need not be feasible.
-An exact one-atom fixture at direction `(3/5,4/5)`, `L = 2`, and `B = 1` returned
-rotated centre `(1,−1/5)`, which maps to `(19/25,17/25)`; its y-coordinate is below the
-exact feasible margin `7/10`.
+An exact one-atom fixture at direction $(3/5,4/5)$, $L = 2$, and $B = 1$ returned
+rotated centre $(1,-1/5)$, which maps to $(19/25,17/25)$; its y-coordinate is below the
+exact feasible margin $7/10$.
 
 The minimum value and all retained bounds were unaffected: mass is constant on the open
 cell, and the inclusion test already proved that some feasible point exists there.
@@ -347,7 +347,7 @@ The bug made the displayed witness untrustworthy.
 
 **Resolution:** the sweep now clips the exact feasible polygon to the minimizing cell,
 returns the average of that convex polygon’s vertices, and checks strict membership in
-the open cell. The fixture now maps to the feasible centre `(13/18,43/60)`. D-448 and a
+the open cell. The fixture now maps to the feasible centre $(13/18,43/60)$. D-448 and a
 focused regression record the repair.
 
 ### F12: High provenance defect, fixed here: the new commit names the wrong certificate hash
@@ -382,22 +382,22 @@ The shared 900-second hang guard remains in force for short checks, and a tighte
 timeout typed by an operator still takes precedence.
 D-451 records the mismatch and the budget registry test fixes the complete three-step
 exception set.
-The late full-net `n = 17` control and the retention gate’s full two-route
+The late full-net $n = 17$ control and the retention gate’s full two-route
 replay raise the current inventory to 38; the same explicit budget covers them.
 
 ### F14: Medium in the late parent, fixed here: a finite-certificate ceiling became a method-impossibility claim
 
 The late parent correctly proves that a certificate with `m = ceil(sqrt(n))` must
-satisfy `L ≤ mB < m`: if `L > mB`, the container holds `m²` pairwise disjoint closed
-axis-parallel `B`-squares, and **Condition 2** contradicts the mass that **Condition 5**
-assigns them. It then says the method can never settle a case such as `n = 12` whose
-value is the grid bound `m = 4`.
+satisfy `L ≤ mB < m`: if `L > mB`, the container holds $m^2$ pairwise disjoint closed
+axis-parallel $B$-squares, and **Condition 2** contradicts the mass that **Condition 5**
+assigns them. It then says the method can never settle a case such as $n = 12$ whose
+value is the grid bound $m = 4$.
 
 That last inference is too strong.
-For the uniform half-tangent net with endpoint `T` and `K` gaps, `D = T/K` and the
-ceiling is `m/(1+T/K)`, which tends to `m`. A proved family of valid certificates with
-sides tending to `m` would establish the lower bound `s(n) ≥ m` even though no finite
-member attained `m`. The ceiling rules out one finite certificate at the grid bound; by
+For the uniform half-tangent net with endpoint $T$ and $K$ gaps, $D = T/K$ and the
+ceiling is $m/(1+T/K)$, which tends to $m$. A proved family of valid certificates with
+sides tending to $m$ would establish the lower bound $s(n) \ge m$ even though no finite
+member attained $m$. The ceiling rules out one finite certificate at the grid bound; by
 itself it does not rule out a certified family plus a limit argument.
 
 **Resolution:** the affected prose now states the finite scope and names the separate
@@ -408,13 +408,13 @@ D-452 records the distinction.
 
 ### F15: Low in the late parent, fixed here: the net endpoint was described as rounded down
 
-The new certificate-reach renderer says `207107/500000` rounds `tan(π/8)` down.
-Its exact **Condition 3** slack is `T² + 2T − 1 = 309449/250000000000 > 0`, so `T` is
+The new certificate-reach renderer says $207107/500000$ rounds $\tan(\pi/8)$ down.
+Its exact **Condition 3** slack is $T^2 + 2T - 1 = 309449/250000000000 > 0$, so $T$ is
 strictly above the positive root `sqrt(2) − 1 = tan(π/8)`. Rounding it down would make
-the direction net stop short of `π/4` and fail the theorem’s endpoint premise.
+the direction net stop short of $\pi/4$ and fail the theorem’s endpoint premise.
 
-**Resolution:** the comment now says that `T` is the rational endpoint just above
-`tan(π/8)`. The existing exact **Condition 3** regression pins the direction of the
+**Resolution:** the comment now says that $T$ is the rational endpoint just above
+$\tan(\pi/8)$. The existing exact **Condition 3** regression pins the direction of the
 inequality; D-453 records the prose error.
 No certificate value or computation changed.
 
@@ -433,9 +433,9 @@ D-455 records the collision itself.
 
 The new `decide_certificate` command recomputed the certificate geometry, but it never
 inspected `claim`, allowed `total_mass` and `least_cell_mass` to be absent, and parsed
-`n` and `direction_steps` with `int(...)`. A file whose only change was
+$n$ and `direction_steps` with `int(...)`. A file whose only change was
 `"claim": "s(11) >= 4"`, one with deleted summaries, or one containing values such as
-`11.9` and `180.9` could reach `RETAINABLE`. Malformed input escaped by traceback and
+$11.9$ and $180.9$ could reach `RETAINABLE`. Malformed input escaped by traceback and
 stopped the remaining paths in the batch.
 
 This is verdict-bearing declaration drift: the two expensive computations can decide one
@@ -564,12 +564,12 @@ directories; D-464 records the repair.
 ### F26: Medium evidence defect, fixed here: the reach table called unretained reports measured optima
 
 The generated reach table and synopsis called four, then five, restricted program values
-measured optima. The latest parent added a sixth report at side `4.68`, including exact
+measured optima. The latest parent added a sixth report at side $4.68$, including exact
 run counts and elapsed time, but retained no raw log, checkpoint, or candidate.
-The same evidence gap applies to the displayed objectives at `3.82`, `3.96`, `4.58`, and
-`4.59`. Only the displayed `3.95` value is recomputable from a tracked artifact, and
+The same evidence gap applies to the displayed objectives at $3.82$, $3.96$, $4.58$, and
+$4.59$. Only the displayed $3.95$ value is recomputable from a tracked artifact, and
 that artifact establishes a feasible mass, not optimality.
-Frozen certificates at `4.58` and `4.59` have nearby but different masses.
+Frozen certificates at $4.58$ and $4.59$ have nearby but different masses.
 
 **Resolution:** the renderer now places the evidence status beside every value.
 The synopsis, agenda, and T-019 narrative distinguish operator reports, retained
@@ -579,8 +579,8 @@ D-465 records the correction.
 
 ### F27: High detector gap, fixed here: the live rung-drift check missed the next live rung
 
-When T-019 moved from `4.58` to `4.59`, its source still said “this certificate’s
-16.965735” rather than the new mass `16.933080`. The dedicated rung-figure detector
+When T-019 moved from $4.58$ to $4.59$, its source still said “this certificate’s
+16.965735” rather than the new mass $16.933080$. The dedicated rung-figure detector
 passed because it recognized phrases such as “total mass” but not this possessive bare
 mass. Thus the first subsequent live update reproduced the class the detector claimed to
 close.
@@ -592,12 +592,12 @@ D-466 records the recurrence of D-439.
 
 ### F28: High record drift, fixed here: T-019’s case pages and evidence stayed on its predecessor
 
-The latest parent changed the structured lower bounds for `n = 17`, `18`, and `19` to
-`459/100` while leaving all three case bodies at Massaccesi’s `4.5058`, with obsolete
+The latest parent changed the structured lower bounds for $n = 17$, $18$, and $19$ to
+$459/100$ while leaving all three case bodies at Massaccesi’s $4.5058$, with obsolete
 gaps and monotonicity composition.
-The `n = 18` and `n = 19` bound fields also cited historical evidence that proves only
-`4.5058`. Related successor notes, test prose, and evidence said `451/100` or said the
-current certificate did not reach `n = 20`, although its mass below 17 makes it directly
+The $n = 18$ and $n = 19$ bound fields also cited historical evidence that proves only
+$4.5058$. Related successor notes, test prose, and evidence said $451/100$ or said the
+current certificate did not reach $n = 20$, although its mass below 17 makes it directly
 valid there—it simply does not improve Nagamochi’s stronger bound.
 
 **Resolution:** the case bodies now state the current first-party certificate, direct
@@ -612,7 +612,7 @@ the repair.
 D-462 gave interval input failures a typed refusal and contained overflow while
 constructing each direction search.
 The public verifier then called the search itself outside that containment boundary.
-A finite certificate with side `10^308`, no atoms, and one restricted near-diagonal
+A finite certificate with side $10^{308}$, no atoms, and one restricted near-diagonal
 direction emitted sixteen NumPy overflow warnings while tightening its first box.
 It did not produce a false acceptance, but it contradicted the documented quiet-refusal
 boundary and allowed an infinite intermediate to be intersected away before the existing
@@ -648,24 +648,24 @@ D-469 records the recurrence of D-438.
 
 ### F31: High parent-integration drift, fixed here: the new `n = 12` rung inherited old evidence
 
-Commit `9d90aabe` advanced the moving `n = 12` certificate to `99/25` and 2,097 atoms;
+Commit `9d90aabe` advanced the moving $n = 12$ certificate to $99/25$ and 2,097 atoms;
 the parent then advanced through `719c2a17` with agenda and README edits.
 Its result and case still cited the source-distinct independent verifier even though
-that program and its review decide only the historical `19/5` and `77/20` files.
-The primary evidence entry still described an intermediate `197/50`, 681-atom
-certificate, while the case body described `77/20` and 113 atoms.
+that program and its review decide only the historical $19/5$ and $77/20$ files.
+The primary evidence entry still described an intermediate $197/50$, 681-atom
+certificate, while the case body described $77/20$ and 113 atoms.
 The README and replay prose likewise stopped before the eighth rung.
 Replay also bound its VERIFIED result only to total mass, so stale claim and
 least-cell-mass declarations could survive, and moving the live pointer silently removed
-the former `79/20` rung’s complete interval control.
+the former $79/20$ rung’s complete interval control.
 
 **Resolution:** all reader, frontier, evidence, and replay surfaces now bind to the
-current `99/25` certificate and its exact and interval decisions.
+current $99/25$ certificate and its exact and interval decisions.
 The independent exact verifier is pinned to `certificate-77-20.json`, retained as
 historical evidence, and explicitly excluded from support for the current bytes.
 A cross-record regression pins the current certificate figures, evidence pair, case,
 README, and replay orientation together.
-Declaration-mutation tests bind all three replay fields, the archived `79/20` full
+Declaration-mutation tests bind all three replay fields, the archived $79/20$ full
 interval decision is restored, and the ladder-wide coarse test is labeled as sampled
 coverage rather than verification.
 D-470 records the recurrence of D-467.
@@ -673,7 +673,7 @@ D-470 records the recurrence of D-467.
 ### F32: High gate-performance recurrence, fixed here: the new exact decision outgrew the exhaustive budget
 
 The pre-parent exhaustive suite took 4,826.82 seconds for 37 tests.
-The introducing commit reports 4,866 seconds for the new current `n = 12` exact
+The introducing commit reports 4,866 seconds for the new current $n = 12$ exact
 decision, replacing a predecessor whose recorded ceiling was 1,500 seconds.
 Even conservative replacement arithmetic puts the current suite above 8,192 seconds, so
 its 7,200-second declared ceiling could no longer contain the assigned work.
@@ -686,8 +686,8 @@ D-471 records the recurrence of D-451.
 
 ### F33: High quantitative record defects, fixed here: two measurements became complexity laws
 
-The same parent called a `0.001040` margin twenty-eight times tighter than every
-retained rung, although the previous-smallest margin is `0.007175`, a factor of about
+The same parent called a $0.001040$ margin twenty-eight times tighter than every
+retained rung, although the previous-smallest margin is $0.007175$, a factor of about
 6.9. It called 2,097 atoms three times every other retained certificate, although the
 next largest has 1,184 atoms, a factor of about 1.77. It also projected rationalisation
 loss across a twentyfold scale without labeling ceiling effects, and promoted effective
@@ -711,16 +711,16 @@ personal site was not retained.
 That conflated the available 2023 paper with the still-unretained original 1979
 communication.
 
-**Resolution:** those surfaces now distinguish the two, and the complete `s(11)`
+**Resolution:** those surfaces now distinguish the two, and the complete $s(11)$
 priority and method search is retained as a resource receipt, indexed from the resource
-page and linked from the `n = 11` case, T-018 artifacts, evidence entry, and historical
+page and linked from the $n = 11$ case, T-018 artifacts, evidence entry, and historical
 survey addendum. D-472 records the recurrence of D-332.
 
 ### F35: Medium literature-provenance drift, fixed here: priority and archive claims outran the sources
 
 The archive retained Göbel’s 1979 PDF but omitted it from the paper index and said every
 paper had a cleaned and raw transcription, although that source is PDF-only.
-The `n = 11` case and historical survey called Gensane and Ryckelynck’s 2005 elimination
+The $n = 11$ case and historical survey called Gensane and Ryckelynck’s 2005 elimination
 the first exact algebraic characterization even though Trump’s retained 2023 note
 reproduces an implicit equation he says he sent to Gardner in 1979; the original
 communication is unavailable, so the repository cannot settle that computational
@@ -768,7 +768,7 @@ a non-integral scaled weight could reach NumPy through an unsupported call path.
 **Resolution:** the public integer entry point now independently requires nonnegative
 weights, a positive integer scale, integral scaled weights, and an exact scaled total
 below the conservative limit before allocating its grid.
-A direct-call regression with two coincident `2^62` weights must refuse.
+A direct-call regression with two coincident $2^{62}$ weights must refuse.
 D-484 records the trust-boundary gap.
 
 ### F38: High resource-safety defect, fixed here: parallel replay scaled memory with the host’s CPU count
@@ -828,7 +828,7 @@ A result could therefore lose its live artifact and still have unqualified prose
 against whichever old rung happened to be listed first.
 The same change redefined every unqualified `margin` as distance to `floor(mass) + 1`,
 even when the certificate’s declared target was larger; for T-020 that silently changed
-“margin” from the recorded `n = 20` target to `n = 19`.
+“margin” from the recorded $n = 20$ target to $n = 19$.
 
 **Resolution:** a certificate-bearing result must resolve exactly one live
 `certificate.json`; no historical fallback exists.
@@ -855,10 +855,10 @@ D-489 records the collision.
 
 | ID | Pre-registered hypothesis | Outcome |
 | --- | --- | --- |
-| H1 | **Conditions 1–5**, exactly as first stated, imply that eleven unit squares cannot fit at the certificate’s side (originally `19/5`, repeated at `381/100`). | **Refuted as stated.** Signed weights are a counterexample. **Pass after repair:** require `w_i ≥ 0`; the implication then applies unchanged to the new rung. |
+| H1 | **Conditions 1–5**, exactly as first stated, imply that eleven unit squares cannot fit at the certificate’s side (originally $\frac{19}{5}$, repeated at $\frac{381}{100}$). | **Refuted as stated.** Signed weights are a counterexample. **Pass after repair:** require $w_i \ge 0$; the implication then applies unchanged to the new rung. |
 | H2 | The retained bytes satisfy every explicit and implicit proof premise. | **Pass.** All 1,121 current weights are strictly positive, in addition to **Conditions 1–5**. |
-| H3 | A source-distinct exact checker obtains mass at least one over all centres and all 181 net directions. | **Pass.** It obtains `4001/4000` exactly on the current bytes. |
-| H4 | The declared literature search finds no lower bound after Stromquist 2003 that reaches the proposed value. | **Pass at apparent-novelty scope.** Searches for both `19/5` and `381/100` located no stronger public result; absolute priority remains unproved. |
+| H3 | A source-distinct exact checker obtains mass at least one over all centres and all 181 net directions. | **Pass.** It obtains $\frac{4001}{4000}$ exactly on the current bytes. |
+| H4 | The declared literature search finds no lower bound after Stromquist 2003 that reaches the proposed value. | **Pass at apparent-novelty scope.** Searches for both $\frac{19}{5}$ and $\frac{381}{100}$ located no stronger public result; absolute priority remains unproved. |
 | H5 | Replay and validation gates bind the retained claims and refuse targeted corruptions. | **Fail on the parent; pass after remediation.** The stack refuses signed weights and partial-net or below-one interval verdicts, bounds interval work and integer arithmetic, binds all retained and retention-command declarations to unchanged bytes and a printed digest, gives falsifications executable oracles, strictly parses portable records, and separates exhaustive decisions from the fast tier. |
 
 The mathematical claim met the acceptance rule only after the missing nonnegative
@@ -870,30 +870,31 @@ original replay output, is the review’s final trust boundary.
 
 ### The corrected implication
 
-Let `K = [0,L]²` and let `μ` be a finite **nonnegative** atomic measure on `K`. Suppose
-its weighted atoms are invariant under reflection in the diagonal, their total mass is
-less than `n`, the direction net reaches `π/4`, the angular shrink condition is strict,
-and every admissible shrunken square at a net direction has mass at least one.
+Let $K = [0,L]^2$ and let $\mu$ be a finite **nonnegative** atomic measure on $K$.
+Suppose its weighted atoms are invariant under reflection in the diagonal, their total
+mass is less than $n$, the direction net reaches $\pi/4$, the angular shrink condition
+is strict, and every admissible shrunken square at a net direction has mass at least
+one.
 
-Assume that `n` closed unit squares with pairwise disjoint interiors fit in `K`.
+Assume that $n$ closed unit squares with pairwise disjoint interiors fit in $K$.
 
-1. A square’s orientation may be reduced to `[0,π/4]`; reflect an individual square in
-   the diagonal when its reduced orientation lies above `π/4`.
-2. For the reduced orientation `φ`, choose the nearest net angle `θ`. If `d = |φ-θ|`,
-   the half-angle parametrisation gives `tan d ≤ D`, where
+1. A square’s orientation may be reduced to $[0,\pi/4]$; reflect an individual square in
+   the diagonal when its reduced orientation lies above $\pi/4$.
+2. For the reduced orientation $\varphi$, choose the nearest net angle $\theta$. If
+   $d = |\varphi-\theta|$, the half-angle parametrisation gives $\tan d \le D$, where
    `D = max (t_{k+1}-t_k)/(1+t_k t_{k+1})`.
-3. A concentric square of side `B` at angle `θ` has support radius `(B/2)(cos d+sin d)`
-   in every normal direction of the unit square.
-   Since `cos d+sin d ≤ 1+tan d ≤ 1+D` and `B(1+D)<1`, the closed `B`-square lies
+3. A concentric square of side $B$ at angle $\theta$ has support radius
+   $(B/2)(\cos d+\sin d)$ in every normal direction of the unit square.
+   Since $\cos d+\sin d \le 1+\tan d \le 1+D$ and $B(1+D)<1$, the closed $B$-square lies
    strictly inside the unit square’s interior.
 4. **Condition 5** assigns that inner square mass at least one.
    Pull it back through any reflection; atom-measure invariance preserves its mass.
 5. The pulled-back inner squares are pairwise disjoint.
-   Nonnegativity now gives `n ≤ Σ_j μ(P_j) ≤ μ(K) < n`, a contradiction.
+   Nonnegativity now gives $n \le \Sigma_j \mu(P_j) \le \mu(K) < n$, a contradiction.
 
-No packing exists at side `L`, and any packing at a smaller side would embed in
-`[0,L]²`; hence `s(n) ≥ L`. Compactness is needed only for the optional stronger
-statement `s(n) > L`, not for the claimed non-strict inequality.
+No packing exists at side $L$, and any packing at a smaller side would embed in
+$[0,L]^2$; hence $s(n) \ge L$. Compactness is needed only for the optional stronger
+statement $s(n) > L$, not for the claimed non-strict inequality.
 
 ### Obligation-by-obligation disposition
 
@@ -902,13 +903,13 @@ statement `s(n) > L`, not for the claimed non-strict inequality.
 | Finite nonnegative atomic measure | **Parent fail; stack pass** | 1,121 finite, strictly positive weights; this stack adds the missing shared guard as well as the standalone theorem premise. |
 | Atoms and exact arithmetic | **Pass** | 1,121 distinct rational sites; all deciding quantities are rational. The fast regression and minimal checker bind the actual digest; every complete run named that same retained path. |
 | Symmetry used for orientation reduction | **Pass** | Exact D4 closure; the proof needs only diagonal reflection. |
-| **Condition 2** total mass below 11 | **Pass** | `434547/40000 = 10.863675`; slack `5453/40000`. |
-| Net starts at zero, increases, and reaches `π/4` | **Pass** | Uniform `t_k = (207107/500000)k/180`; **Condition 3** slack `309449/250000000000`. |
-| Nearest-net containment | **Pass** | `D = 207107/90000000`; `B(1+D) = 899996306539/900000000000 < 1`. |
-| Every net-direction placement has mass at least one | **Pass** | Source-distinct exact minima agree at `4001/4000`; no sampling or floating-point decision. |
+| **Condition 2** total mass below 11 | **Pass** | $\frac{434547}{40000} = 10.863675$; slack $\frac{5453}{40000}$. |
+| Net starts at zero, increases, and reaches $\pi/4$ | **Pass** | Uniform $t_k = \frac{207107}{500000}k/180$; **Condition 3** slack $\frac{309449}{250000000000}$. |
+| Nearest-net containment | **Pass** | $D = \frac{207107}{90000000}$; $B(1+D) = \frac{899996306539}{900000000000} < 1$. |
+| Every net-direction placement has mass at least one | **Pass** | Source-distinct exact minima agree at $\frac{4001}{4000}$; no sampling or floating-point decision. |
 | Closed-boundary convention | **Pass for this certificate** | With nonnegative weights, event-cell boundaries can only add mass; strict **Condition 4** puts every closed inner square inside one packed square’s open interior. |
 | Pullback and disjoint-mass sum | **Pass after explicit nonnegativity** | D4 invariance preserves mass; inner squares lie in disjoint interiors; monotonicity is then valid. |
-| Conclusion `s(11) ≥ 381/100` | **Pass** | No-fit at `L` also rules out every smaller container by embedding. |
+| Conclusion $s(11) \ge \frac{381}{100}$ | **Pass** | No-fit at $L$ also rules out every smaller container by embedding. |
 
 ## Minimal distillation
 
@@ -938,7 +939,7 @@ Its proof-critical **Condition 5** geometry, scoring, and driver occupy about 15
 the whole executable is 346 lines including strict input, declaration, checksum,
 symmetry, arithmetic, output, and mutation checks.
 It recomputes 567,130,649 cells and the exact minimum, then demonstrates a **Condition
-5** failure after multiplying every weight by `3999/4001`. This is materially smaller
+5** failure after multiplying every weight by $3999/4001$. This is materially smaller
 than the general 650-line portable verifier without hiding the continuum step in an
 assertion.
 
@@ -946,8 +947,8 @@ The companion
 [`t-018-proof-visual.svg`](../../../packing/cases/n11_fractional_certificate/t-018-proof-visual.svg)
 is derived from the same frozen bytes.
 It plots every atom, makes colored disk area proportional to weight, and outlines the
-exact direction-zero witness: 84 atoms centered at `(27/50,27/50)` with mass
-`4001/4000`. Its second panel magnifies the angle and clearance so they are visible
+exact direction-zero witness: 84 atoms centered at $(27/50,27/50)$ with mass
+$4001/4000$. Its second panel magnifies the angle and clearance so they are visible
 while printing the exact containment values underneath.
 It is an explanation, not another proof route; the deterministic renderer recomputes the
 displayed witness and refuses declaration drift.
@@ -960,7 +961,7 @@ The bounded spike used Elan 4.2.1, Lean 4.32.1, and Mathlib 4.32.1 at commit
 - finite nonnegative weighted counting through a unique atom owner;
 - the set-based wrapper that derives uniqueness from disjoint membership;
 - mass preservation under an involutive reflection represented by an atom permutation;
-- the exact `n = 11` **Conditions 2–4** rational inequalities; and
+- the exact $n = 11$ **Conditions 2–4** rational inequalities; and
 - the abstract support-radius inequality used for strict containment.
 
 The source has no `sorry`, custom axiom, or `native_decide`. `#print axioms` reports
@@ -969,8 +970,8 @@ checks and builds take about four seconds.
 The vendor-free `lean-spike` pins both direct and transitive dependencies and states its
 non-goals beside the source.
 
-This is a successful feasibility result, not a formal proof of `s(11) ≥ 381/100`. It
-does not yet define oriented squares or `s(n)`, prove the nearest-angle geometry, load
+This is a successful feasibility result, not a formal proof of $s(11) \ge 381/100$. It
+does not yet define oriented squares or $s(n)$, prove the nearest-angle geometry, load
 the 1,121 atoms, or prove **Condition 5**. The remaining ordinary geometry is plausibly
 several focused days.
 Formalizing arrangement correctness and the full **Condition 5** computation is the
@@ -995,15 +996,15 @@ it as validation of the headline claim.
 
 | Quantity | Exact value | Margin or note |
 | --- | --- | --- |
-| `n` | `11` | — |
-| `L` | `381/100` | `3.81` |
-| `B` | `9977/10000` | `0.9977` |
-| atoms | `1,121` | 1,121 distinct coordinates; every weight `> 0`; minimum `3/40000` |
-| total mass | `434547/40000` | **Condition 2** slack `5453/40000` |
-| terminal half-tangent | `207107/500000` | **Condition 3** slack `309449/250000000000` |
-| largest half-gap tangent | `207107/90000000` | 180 uniform gaps |
-| containment product | `899996306539/900000000000` | **Condition 4** slack `3693461/900000000000` |
-| global covered-mass minimum | `4001/4000` | **Condition 5** slack `1/4000`; first attained at direction zero and centre `(27/50,27/50)` |
+| $n$ | $11$ | — |
+| $L$ | $\frac{381}{100}$ | $3.81$ |
+| $B$ | $\frac{9977}{10000}$ | $0.9977$ |
+| atoms | $1{,}121$ | 1,121 distinct coordinates; every weight $> 0$; minimum $\frac{3}{40000}$ |
+| total mass | $\frac{434547}{40000}$ | **Condition 2** slack $\frac{5453}{40000}$ |
+| terminal half-tangent | $\frac{207107}{500000}$ | **Condition 3** slack $\frac{309449}{250000000000}$ |
+| largest half-gap tangent | $\frac{207107}{90000000}$ | 180 uniform gaps |
+| containment product | $\frac{899996306539}{900000000000}$ | **Condition 4** slack $\frac{3693461}{900000000000}$ |
+| global covered-mass minimum | $\frac{4001}{4000}$ | **Condition 5** slack $\frac{1}{4000}$; first attained at direction zero and centre $(\frac{27}{50},\frac{27}{50})$ |
 
 The small **Condition 4** and **Condition 5** margins do not create a numerical problem
 because every deciding operation is exact.
@@ -1018,10 +1019,10 @@ intervals and does not use the certificate’s symmetry premise for **Condition 
 
 | Lane | Independence boundary | Result |
 | --- | --- | --- |
-| Project replay | Primary `sqpack.fractional` prefix-sum implementation | **Conditions 1–5** pass over all 181 directions and 567,130,649 feasible event cells; minimum `4001/4000`. All three retained `n = 11` rungs replay. |
-| Standalone general verifier | A standard-library implementation with its own strict loader and exact event sweep, pointed explicitly at the current JSON | All 181 directions pass at `4001/4000`; three minimizing cells per direction are re-summed directly; runtime 88.47 s in the independent review lane. |
-| Minimal theorem-specific checker | A 346-line standard-library program with no project imports, bound to the actual certificate SHA-256 | All 567,130,649 feasible event cells pass at minimum `4001/4000`; direct summation confirms the witness at `(27/50,27/50)`; uniform weight scaling produces a genuine below-one refusal. |
-| Interval branch and bound | NumPy implementation using outward-rounded region and domain boxes, direct centre-box coverage bounds, and the reflected half of the net instead of D4 reduction | All 361 directions certify in 1,570,831 boxes; no stalled or budget-exhausted box; global enclosure `[4001/4000,4001/4000]`. The same code obtains one-point enclosures for the retained `n = 12` certificate and the published-value `n = 17` reconstruction. |
+| Project replay | Primary `sqpack.fractional` prefix-sum implementation | **Conditions 1–5** pass over all 181 directions and 567,130,649 feasible event cells; minimum $\frac{4001}{4000}$. All three retained $n = 11$ rungs replay. |
+| Standalone general verifier | A standard-library implementation with its own strict loader and exact event sweep, pointed explicitly at the current JSON | All 181 directions pass at $\frac{4001}{4000}$; three minimizing cells per direction are re-summed directly; runtime 88.47 s in the independent review lane. |
+| Minimal theorem-specific checker | A 346-line standard-library program with no project imports, bound to the actual certificate SHA-256 | All 567,130,649 feasible event cells pass at minimum $\frac{4001}{4000}$; direct summation confirms the witness at $(\frac{27}{50},\frac{27}{50})$; uniform weight scaling produces a genuine below-one refusal. |
+| Interval branch and bound | NumPy implementation using outward-rounded region and domain boxes, direct centre-box coverage bounds, and the reflected half of the net instead of D4 reduction | All 361 directions certify in 1,570,831 boxes; no stalled or budget-exhausted box; global enclosure $[\frac{4001}{4000},\frac{4001}{4000}]$. The same code obtains one-point enclosures for the retained $n = 12$ certificate and the published-value $n = 17$ reconstruction. |
 
 The different cell counts reflect different conservative feasibility and boundary
 enumerations; they do not represent skipped directions.
@@ -1029,7 +1030,7 @@ Every complete path agrees on the exact minimum and a direct witness.
 Every path reads the same repository file; the fast test and minimal checker require its
 actual SHA-256 before interpreting it.
 
-A further run of the NumPy verifier originally written independently for `n = 12` was
+A further run of the NumPy verifier originally written independently for $n = 12$ was
 stopped after 3,848 seconds without reaching a verdict on the larger 1,121-atom
 instance; an earlier attempt was stopped after 501 seconds.
 Its dense direct-summation matrix product is not a practical permanent gate.
@@ -1050,10 +1051,10 @@ The interval lane supplies decision-method diversity for **Condition 5**, but no
 outside authorship or proof-assistant verification.
 Every positive decision still relies on the rational direction-net containment lemma,
 and every checker was produced within the project.
-The frozen `19/5` third-party bundle separately reproduces Massaccesi’s `n = 17` result
+The frozen $19/5$ third-party bundle separately reproduces Massaccesi’s $n = 17$ result
 as a known-answer scaling control.
 It raises confidence in the shared theorem and the older verifier, but it does not
-validate the extra `1/100` in the current certificate.
+validate the extra $1/100$ in the current certificate.
 
 ## Literature and novelty audit
 
@@ -1067,11 +1068,11 @@ states the unrestricted lower bound
 s(11) ≥ 2 + 2√(4/5) = 2 + 4/√5 = 3.7888543819… .
 ```
 
-The new rational value exceeds it exactly because `5(381/100-2)² = 32761/2000 > 16`. The
-improvement is about `0.021145618`, or `0.558%` of the old lower bound.
-Against Trump’s best-known packing at approximately `3.877083590022814`, it closes about
+The new rational value exceeds it exactly because $5(381/100-2)^2 = 32761/2000 > 16$.
+The improvement is about $0.021145618$, or `0.558%` of the old lower bound.
+Against Trump’s best-known packing at approximately $3.877083590022814$, it closes about
 `23.97%` of the previously open interval.
-It does not determine `s(11)`.
+It does not determine $s(11)$.
 
 The current
 [Leaps in Bounds entry](https://leapsinbounds.org/constants/square-packing-in-square-11/)
@@ -1082,24 +1083,25 @@ Trump’s page identifies his 1979 construction as the
 [best-known packing](https://trump.de/square-packing/index.htm).
 Nagamochi’s published general theorem in
 [*Packing Unit Squares in a Rectangle*](https://www.combinatorics.org/ojs/index.php/eljc/article/view/v12i1r37)
-gives only `1 + √6 ≈ 3.449` when specialized to `n = 11`.
+gives only $1 + \sqrt{6} \approx 3.449$ when specialized to $n = 11$.
 
 ### Search performed
 
 The clean literature lane searched through 2026-09-04 for “unit,” “equal,” and
-“congruent” squares packed in a square; `s(11)` and `s_11`; eleven-square lower bounds;
-the exact constants `381/100`, `100/381`, and `110000/145161`, as well as the earlier
-`19/5`, `5/19`, and `275/361`; and weighted, fractional, resource, and unavoidable-set
-formulations. It checked the local source corpus, arXiv title and full-text results,
-Crossref, OpenAlex, Semantic Scholar citation chains, author pages, public packing
-catalogues, and recent fixed-`n` and asymptotic papers.
+“congruent” squares packed in a square; $s(11)$ and $s_{11}$; eleven-square lower
+bounds; the exact constants $381/100$, $100/381$, and $110000/145161$, as well as the
+earlier $19/5$, $5/19$, and $275/361$; and weighted, fractional, resource, and
+unavoidable-set formulations.
+It checked the local source corpus, arXiv title and full-text results, Crossref,
+OpenAlex, Semantic Scholar citation chains, author pages, public packing catalogues, and
+recent fixed-`n` and asymptotic papers.
 No later public lower bound above Stromquist’s value was found.
 
 The search is not a proof of priority.
 It did not exhaust subscription-only MathSciNet or zbMATH full text, every thesis or
 proceedings volume, non-English and unindexed pages, private correspondence, or
 unpublished work. The appropriate label remains **apparently novel**. A precise public
-claim would be: “the first located public improvement to the `s(11)` lower bound since
+claim would be: “the first located public improvement to the $s(11)$ lower bound since
 Stromquist 2003, as of 2026-09-04.”
 
 ### Method lineage
@@ -1118,7 +1120,7 @@ The proof is an instance of fractional hitting-set weak duality:
   and linked proof note give the recent pure-atomic rational orientation-net form.
 - Massaccesi’s
   [August 2026 post](https://gus-massa.blogspot.com/2026/08/another-better-lower-bound-for-n17.html)
-  introduces the LP-generated `n = 17` certificate and parameters used as the control.
+  introduces the LP-generated $n = 17$ certificate and parameters used as the control.
 
 “Burns–Massaccesi certificate” is reasonable shorthand for that recent implementation
 line. It should not imply that weighted resource counting itself began in 2026.
@@ -1127,10 +1129,10 @@ line. It should not imply that weighted resource counting itself began in 2026.
 
 The bounded search is now retained at `s11-lower-bound-literature-audit-2026`, not only
 narrated in this review.
-The resource index lists it; the `n = 11` case names it as context and carries a
+The resource index lists it; the $n = 11$ case names it as context and carries a
 2026-09-04 source-review date; T-018 lists it among its artifacts; and
 `E-n011-fractional-certificate` points to it as the receipt behind the novelty scope.
-The 2026-08-22 `s(11)` survey now has a dated addendum for `381/100`, preserving its
+The 2026-08-22 $s(11)$ survey now has a dated addendum for $381/100$, preserving its
 older historical snapshot instead of silently rewriting it.
 
 No source found in this reconciliation changes another frontier endpoint.
@@ -1138,7 +1140,7 @@ The current public catalogues still carry Stromquist’s lower value and Trump�
 construction; they corroborate the search result but are not evidence for the new
 theorem. The recovered Trump 2023 author note strengthens upper-bound provenance only.
 The method sources change attribution, not the validity or priority of the concrete
-`n = 11` certificate.
+$n = 11$ certificate.
 
 ## Further formalities, in assurance order
 
@@ -1151,7 +1153,7 @@ The method sources change attribution, not the validity or priority of the concr
 3. Full exact and interval decisions are named `exhaustive_exact` tests rather than
    hidden work in the fast tier.
 4. The interval verifier cannot accept a sampled net, a wrapped mass, a below-one
-   enclosure, or an unresolved seam; the complete `n = 11` run still certifies.
+   enclosure, or an unresolved seam; the complete $n = 11$ run still certifies.
 5. Independence, control provenance, method lineage, monotonicity, and apparent-novelty
    language now match the evidence.
 6. A one-minute implication and the exact finite **Condition 5** lemma are isolated in
@@ -1188,7 +1190,7 @@ The method sources change attribution, not the validity or priority of the concr
    An exact SMT/MILP decomposition or a compact partition receipt checked in another
    language would be the next computational escalation.
 6. **Close the priority search.** Search MathSciNet and zbMATH, check citing works and
-   theses, and contact the survey/catalogue maintainers and recent `n = 17` authors
+   theses, and contact the survey/catalogue maintainers and recent $n = 17$ authors
    before using language stronger than “apparently novel.”
 
 ## Validation record
@@ -1197,21 +1199,21 @@ All project commands used the repository’s Python 3.14 environment from `packi
 
 | Command or check | Result |
 | --- | --- |
-| `.venv/bin/python3 -m cases.n11_fractional_certificate` | Accepted all three retained rungs: `189/50`, `19/5`, and the current `381/100`; the current exact minimum is `4001/4000`. |
-| `thirdparty/verify.py` on the current certificate, `--audit 3` | Accepted all 181 directions and 567,130,649 regions at minimum `4001/4000`; three cells per direction were directly re-summed; **Condition 5** took 88.3 s. |
-| `minimal_verify.py` on the current certificate | Hash, **Conditions 1–5**, 567,130,649 cells, minimum `4001/4000`, and the `3999/4001` scaling refusal all passed; the final merged-parent rerun took 88.253 s. |
-| final blind proof-only audit and minimal-checker reruns | **Accepted with no finding** in a lane that did not read this review or the PR discussion; two fresh runs passed in 87.42 s and 90.72 s, and a direct re-sum found 84 atoms of total mass `4001/4000` at `(27/50,27/50)`. |
+| `.venv/bin/python3 -m cases.n11_fractional_certificate` | Accepted all three retained rungs: $\frac{189}{50}$, $\frac{19}{5}$, and the current $\frac{381}{100}$; the current exact minimum is $\frac{4001}{4000}$. |
+| `thirdparty/verify.py` on the current certificate, `--audit 3` | Accepted all 181 directions and 567,130,649 regions at minimum $\frac{4001}{4000}$; three cells per direction were directly re-summed; **Condition 5** took 88.3 s. |
+| `minimal_verify.py` on the current certificate | Hash, **Conditions 1–5**, 567,130,649 cells, minimum $\frac{4001}{4000}$, and the $\frac{3999}{4001}$ scaling refusal all passed; the final merged-parent rerun took 88.253 s. |
+| final blind proof-only audit and minimal-checker reruns | **Accepted with no finding** in a lane that did not read this review or the PR discussion; two fresh runs passed in 87.42 s and 90.72 s, and a direct re-sum found 84 atoms of total mass $\frac{4001}{4000}$ at $(\frac{27}{50},\frac{27}{50})$. |
 | deterministic T-018 proof visual | The certificate-driven renderer’s `--check` passed; the repository SVG checker passed all **86 controls**, including byte determinism and artifact ownership. |
-| `thirdparty/check.py` | All four frozen-package steps passed: reconstruct the published-value `n = 17` control, verify the `19/5` rung, verify the control, and require a labeled negative-weight refusal. |
-| complete current T-018 interval confirmation | **1 passed** in 22.23 s; all 361 directions certified, with enclosure `[4001/4000, 4001/4000]`. |
-| pre-latest-parent exhaustive exact suite at the repaired timeout (`0883f28e`) | **37 passed**, 1,744 ordinary tests deselected, in 4,826.82 s. The later parent adds one exhaustive `n = 17` control, which was run separately below. |
-| current T-019 full-net `n = 17` interval control | **1 passed** in 44.64 s; all 361 directions certified in 3,683,951 boxes, with enclosure `[200009/200000, 200009/200000]`. |
-| final-parent T-017 interval rerun | The current `99/25` bytes passed all 361 directions in 4,448,751 boxes with no stalls and enclosure `[12501/12500, 12501/12500]`. |
-| restored historical T-017 interval control | **1 passed** in 31.37 s; the archived `79/20` bytes passed all 361 directions in 2,666,151 boxes with no stalls and enclosure `[20001/20000, 20001/20000]`. |
+| `thirdparty/check.py` | All four frozen-package steps passed: reconstruct the published-value $n = 17$ control, verify the $\frac{19}{5}$ rung, verify the control, and require a labeled negative-weight refusal. |
+| complete current T-018 interval confirmation | **1 passed** in 22.23 s; all 361 directions certified, with enclosure $[\frac{4001}{4000}, \frac{4001}{4000}]$. |
+| pre-latest-parent exhaustive exact suite at the repaired timeout (`0883f28e`) | **37 passed**, 1,744 ordinary tests deselected, in 4,826.82 s. The later parent adds one exhaustive $n = 17$ control, which was run separately below. |
+| current T-019 full-net $n = 17$ interval control | **1 passed** in 44.64 s; all 361 directions certified in 3,683,951 boxes, with enclosure $[\frac{200009}{200000}, \frac{200009}{200000}]$. |
+| final-parent T-017 interval rerun | The current $\frac{99}{25}$ bytes passed all 361 directions in 4,448,751 boxes with no stalls and enclosure $[\frac{12501}{12500}, \frac{12501}{12500}]$. |
+| restored historical T-017 interval control | **1 passed** in 31.37 s; the archived $\frac{79}{20}$ bytes passed all 361 directions in 2,666,151 boxes with no stalls and enclosure $[\frac{20001}{20000}, \frac{20001}{20000}]$. |
 | current exhaustive collection | **1,849 tests collected:** 1,810 ordinary and 39 `exhaustive_exact`; collection took 4.65 s. |
 | pre-final focused parent-integration matrix | **155 passed**, 11 exhaustive tests deselected, in 218.90 s across the retention gate, generator, exact and interval certificate, module-boundary, and rung-figure suites. |
 | final moving-pointer regressions | **8 passed** in 70.04 s: declaration mutations, sampled ladder coverage, marker registration, ambiguous-rung handling, and timeout provenance. |
-| current positive full two-route retention gate | **1 passed** in 170.83 s; the gate required both complete decision routes on unchanged `n = 11` bytes. |
+| current positive full two-route retention gate | **1 passed** in 170.83 s; the gate required both complete decision routes on unchanged $n = 11$ bytes. |
 | full integrated `packing-validate --push` | **35 of 60 selected steps passed** in 1,794.95 s; the whole reachable suite reported **1,810 passed, 39 exhaustive tests deselected** in 1,788.95 s. The validator measured the step at 1,791.00 s, prompting the budget-only 2,700-second headroom correction recorded in F30. |
 | post-measurement budget regressions | **3 passed** in 0.11 s; the whole-suite entry points receive 2,700 seconds, subsets stay on the 900-second guard, and an explicit operator limit still overrides either. |
 | final `packing-validate --edit` | **34 of 60 selected steps passed**; Ruff checked and formatted 801 files, BasedPyright reported zero errors and warnings, and all schema, generated-record, provenance, and edit-tier checks passed. |
@@ -1234,7 +1236,7 @@ positive-weight instance.
 That is strong evidence for a computer-assisted result, but not formal verification or
 external peer review.
 The responsible conclusion is therefore specific: **the certificate establishes
-`s(11) ≥ 381/100`; the result appears to improve the public record; and the repaired
+$s(11) \ge 381/100$; the result appears to improve the public record; and the repaired
 stacked branch, not the reviewed parent alone, is the finished local research artifact.
 External mathematical review and an archival release remain the most valuable next
 formalities.**
@@ -1251,7 +1253,7 @@ here. This section is the receiving repository’s note on how to read it.*
 [PR 78](https://github.com/jlevy/squares/pull/78)’s branch at its merge-base `719c2a17`
 and at the stacked head the header names, and reconciled once to the parent’s
 `a159eb28`. It arrives here as a dated record: it is that reviewer’s determination of
-the `s(11) ≥ 381/100` claim, and it is installed as the `review_artifact` that carries
+the $s(11) \ge 381/100$ claim, and it is installed as the `review_artifact` that carries
 T-018 to `C5` under [`epistemics.md`](../../../epistemics.md) — `C3` or `C4` plus an
 existing review artifact mapped as a non-superseded review.
 `C5` is *review-ready*, not external review, and this document is not an external

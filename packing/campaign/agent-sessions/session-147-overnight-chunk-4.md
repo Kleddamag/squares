@@ -105,4 +105,4 @@ than the review’s suggested C3 because the checker derives C4 from two machine
 of different method, exactly as T-026 records its two routes; C5 waits on the review
 being mapped under `docs/project/reviews`. The overnight loop ends here on its clock:
 four chunks ran, one bound-bearing instrument was admitted, one conditional exclusion is
-registered, and no bound on `s(n)` moved.
+registered, and no bound on $s(n)$ moved.

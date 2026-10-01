@@ -803,7 +803,7 @@ on macOS the PDF wrote them as outline paths.
 The earlier treatment named the weight in a `.rel` class and left the family to the
 host, which fixed a weight bug and left the provenance one.
 
-Of the routes a shipped face allows, setting the title as mathematics would put `s(11)`
+Of the routes a shipped face allows, setting the title as mathematics would put $s(11)$
 and its digits in Computer Modern and break the line’s agreement with the subtitle and
 credits under it. So the glyphs come from KaTeX_Main, subset to those three code points
 and declared as a `unicode-range` face on `Source Sans 3 Variable` itself, which reaches

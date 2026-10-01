@@ -1,7 +1,7 @@
 # The Retained Point Obstruction in the Individual-Parent Domain
 
 **September 10, 2026. Verdict: exact analytic consequence of admitted inputs.** The
-retained 88-core point family at side `191/50` can be translated so that every core is
+retained 88-core point family at side $191/50$ can be translated so that every core is
 the exact nearest-selected concentric core of an individually contained unit square at
 every side
 
@@ -13,7 +13,7 @@ Its total weight and depth do not change.
 It therefore remains a mass-eleven obstruction to point-only covering certificates on
 the fixed core side and retained direction net.
 Replacing the old core-centre box by either the conservative necessary parent box or the
-exact individual-parent domain at `q = 3.827` cannot improve T-026.
+exact individual-parent domain at $q = 3.827$ cannot improve T-026.
 
 This is a proof review, not a target measurement.
 It supplies no physical packing, no new lower bound, and no obstruction to changed
@@ -31,14 +31,14 @@ supplies the weighted family and its exact depth decision.
 
 ## Objects and Quantifiers
 
-Let `r = (r_x,r_y)` be a unit core direction and set
+Let $r = (r_x,r_y)$ be a unit core direction and set
 
 ```text
 S = |r_x| + |r_y|,
 T = ||r_x| - |r_y||.
 ```
 
-For core side `B` and the admitted maximum angular mismatch `D`, every nearest-selected
+For core side $B$ and the admitted maximum angular mismatch $D$, every nearest-selected
 core from a physical unit square has its centre in
 
 ```text
@@ -60,9 +60,9 @@ Those are source facts for the argument below; this review does not recompute th
 
 ## Translation Proof
 
-The three terms in `e` are all at most `S/2`:
+The three terms in $e$ are all at most $S/2$:
 
-- `B*S/2 <= S/2` because `B < 1`;
+- `B*S/2 <= S/2` because $B < 1$;
 - `1/2 <= S/2` because a unit vector has `S >= 1`;
 - `(S-T*D)/(2+D^2) <= S/2` because `T,D >= 0`.
 
@@ -118,22 +118,22 @@ After the central translation, give it the concentric unit parent
 U = c + (Delta/2,Delta/2) + [-1/2,1/2]r + [-1/2,1/2]Jr.
 ```
 
-Each coordinate wall margin of `U` is at least
+Each coordinate wall margin of $U$ is at least
 
 ```text
 (Delta - (1-B)*S)/2.
 ```
 
 At `Delta = 69/20000`, this is strictly positive because `S <= sqrt(2) < 3/2`. The
-translated core is also strictly inside `U`, with parent-axis margin `(1-B)/2`. This is
+translated core is also strictly inside $U$, with parent-axis margin $(1-B)/2$. This is
 an explicit parent construction, rather than an inference from the conservative centre
 box.
 
-The retained 88-core family uses only folded net indices `0,1,3,5,99,113` and their
+The retained 88-core family uses only folded net indices $0,1,3,5,99{,}113$ and their
 mirrors. Give each parent exactly its core’s physical orientation.
 Folding that orientation lands on the retained node at distance zero, so ordinary
 nearest-angle selection returns the same geometric square.
-The two endpoint tokens `t=0` and `t=1` represent the same square orientation modulo a
+The two endpoint tokens $t=0$ and $t=1$ represent the same square orientation modulo a
 quarter turn. Half-open Voronoi seam conventions do not remove a net node from its own
 source cell.
 
@@ -161,7 +161,7 @@ Translating it does not make it a feasible obstruction to the mixed threshold pr
 The result says nothing about a changed threshold family or a floor atom.
 
 The A6 family supplies a different fixed-family obstruction.
-Its 64 admitted placements use folded indices `0,1,2,3,5,27,116` and their mirrors, so
+Its 64 admitted placements use folded indices $0,1,2,3,5,27{,}116$ and their mirrors, so
 the same exact-parent and nearest-selection construction applies at every
 
 ```text
@@ -170,7 +170,7 @@ q >= 153/40 + 69/20000 = 76569/20000 = 3.82845.
 
 That calculation preserves A6’s existing threshold incidences when all atom sites move
 with the placements about the new centre.
-It obstructs the unchanged A6 atom family at `3.83`; it does not cover regenerated atoms
+It obstructs the unchanged A6 atom family at $3.83$; it does not cover regenerated atoms
 about a new centre or another charge rule.
 
 The construction survives a refinement that retains the used net nodes, a smaller
@@ -184,7 +184,7 @@ cannot simply be relabeled as a parent-domain proof.
 
 ## Planning Consequence
 
-Do not allocate a point-only LP at `3.827` merely to replace the conservative box by
+Do not allocate a point-only LP at $3.827$ merely to replace the conservative box by
 exact isolated-parent realizability on the retained B and net.
 Its answer is already determined by this admitted fractional family.
 Productive tests must change at least one premise: the atom family, core side or net,

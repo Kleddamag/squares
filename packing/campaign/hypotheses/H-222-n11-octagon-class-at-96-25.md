@@ -81,7 +81,7 @@ hypothesis:
 X-040’s lane 1 measured the retained ceiling family against lane-a Theorem B’s
 corner-penetration cases; its reviewer transported the family to the target side and
 found every deep branch neutral.
-The all-free class, in which no core meets a corner triangle of penetration `1/2`, is
+The all-free class, in which no core meets a corner triangle of penetration $1/2$, is
 the one branch where the family loses mass at no count cost.
 
 This claim is that branch’s restricted covering value is below 11. It needs the convex

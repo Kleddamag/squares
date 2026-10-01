@@ -165,8 +165,8 @@ continuous on coordinate lines.
 Almost everywhere,
 
 $$
-\partial_xH_R=\operatorname{length}(Q\cap\{x=a\}\cap R)
--\operatorname{length}(Q\cap\{x=d\}\cap R),
+\partial_xH_R=\operatorname{length}(Q\cap\lbrace x=a\rbrace\cap R)
+-\operatorname{length}(Q\cap\lbrace x=d\rbrace\cap R),
 $$
 
 with the analogous bottom-minus-top expression for $\partial_yH_R$. These signs match
@@ -224,8 +224,8 @@ assistant. It is not a hardened parser for arbitrary hostile interval files.
 
 ### Optional smoothing
 
-The source also constructs a continuous function $f=g*k_\varepsilon$, with a normalized
-uniform kernel on $[-\varepsilon,\varepsilon]^2$ and $\varepsilon=1/20000$.
+The source also constructs a continuous function $f=g\ast k_\varepsilon$, with a
+normalized uniform kernel on $[-\varepsilon,\varepsilon]^2$ and $\varepsilon=1/20000$.
 Positive-weight rectangles stay strictly more than $\varepsilon$ inside the container,
 so smoothing preserves the total mass inside $K$. The kernel’s projection width is at
 most $2\sqrt2\varepsilon<3\varepsilon$. The checked margin
@@ -331,7 +331,7 @@ The target check can return before any new certificate is built.
 Using the genuine n29 certificate with `--n 1 --target 5.71` produces `TARGET_REACHED`,
 reports `n=1, best_L=5.71`, and exits zero.
 One unit square fits in side 1. In a second control, changing only the copied metadata’s
-`L` to `100` makes the driver report `n=29, best_L=100` and exit zero; 29 unit squares
+$L$ to $100$ makes the driver report `n=29, best_L=100` and exit zero; 29 unit squares
 fit in a $6\times6$ grid.
 The
 [control receipt and logs](../../../packing/resources/web/external-square-certificates-2026-09-22/receipts/density-adversarial-final/driver-controls/driver-controls.json)

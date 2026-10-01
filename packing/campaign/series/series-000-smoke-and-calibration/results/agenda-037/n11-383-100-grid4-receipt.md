@@ -4,9 +4,9 @@ Status: **site set refuted**. The side stays open.
 
 Session-139 probe on `--grid-counts 25,34,41,48` at
 `(n, L, B, net) = (11, 383/100, 9977/10000, 181 directions)`. This is the denser named
-site set after auto grids `(25, 34, 41)` returned `11.192598`. A restricted optimum at
+site set after auto grids $(25, 34, 41)$ returned $11.192598$. A restricted optimum at
 or above 11 on a converged row loop refutes this site set only.
-Adding sites can still lower the covering value, so `383/100` is not barred.
+Adding sites can still lower the covering value, so $383/100$ is not barred.
 T-025 and T-026 are unchanged.
 
 ## Command
@@ -30,11 +30,11 @@ Column generation added one orbit after the row loop and stopped; wall 81.7 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `11.142857` |
-| Rationalised total | `2228577/200000` = `11.142885` |
+| Restricted optimum | $11.142857$ |
+| Rationalised total | $\frac{2228577}{200000}$ = $11.142885$ |
 | Sites / orbits / rows | 5665 / 756 / 6317 |
 | LP rounds | 23 |
-| Crossing | round 6 (`11.020986`); rounds 3–5 sat at `11.000000` |
+| Crossing | round 6 ($11.020986$); rounds 3–5 sat at $11.000000$ |
 | Wall | 81.7 s |
 | `least_covered` | 1 |
 | Converged | yes (`violated == 0`) |

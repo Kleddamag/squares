@@ -231,15 +231,15 @@ round the way an auditor does — against the artifacts, not the narratives.
 Three findings came out, and the interesting one was not bookkeeping.
 The accepted production helpers — the row-jet, stress, scale, and owner-4 layers the
 first admission condition names — had never run on the direction the experiment is
-about. They had run only on the `+W` control, per their admitted scope, while the
+about. They had run only on the $+W$ control, per their admitted scope, while the
 certificate came from a driver descended from the exp-043 draft.
 Two implementations of the same mathematics, never compared.
 
 The bridge compared them.
 On the actual `-W` direction, at all three strata, the helpers rebuild all fifteen
 owner-3 scale records and all three owner-4 records with strict exact contradictions and
-every coefficient equal to its `+W` twin — the sign-symmetry determination derived
-rather than read. The deciding constant, `-1/4`, ties to the certificate’s retained
+every coefficient equal to its $+W$ twin — the sign-symmetry determination derived
+rather than read. The deciding constant, $-1/4$, ties to the certificate’s retained
 `obstruction_coefficient` by exact equality.
 Agreement between independently written implementations is the strongest corroboration
 this round could get short of a formal proof, and it is now a checker a future session

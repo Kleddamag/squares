@@ -1145,7 +1145,7 @@ queue, which it does not replace: `BC-191` is Lane C’s own first half and runs
 this block, and `BC-190`, `BC-192`, `BC-193`, `BC-194` and `BC-195` stay where they are.
 
 Begin at `BC-211`, `BC-199` and `BC-191` together, on three separate cores.
-`BC-211`, the `n = 13` calibration, is numbered after both agendas were drafted and runs
+`BC-211`, the $n = 13$ calibration, is numbered after both agendas were drafted and runs
 first on Lane A: it is the cheapest cell in the block and the one whose answer reorders
 block two, so that answer is in hand before anything else on the lane is spent.
 They are the only work that starts takeable — `BC-211` and `BC-199` are `ready` here,
@@ -1159,10 +1159,10 @@ and in [agenda-022](agenda-022-the-conditional-route.md) carries a `program` slu
 is what lets the agenda map show one line of work whole rather than split across two
 files; the slugs are the three programs
 [X-015](../explorations/X-015-the-map-and-the-three-programs.md) ranks.
-`grid-frontier-exact-values` is the `m = 5` ladder, the `n = 13` calibration, and in
-block two the `n = 12` ladder and whichever of the conditional or `B = 1` routes opens.
+`grid-frontier-exact-values` is the $m = 5$ ladder, the $n = 13$ calibration, and in
+block two the $n = 12$ ladder and whichever of the conditional or $B = 1$ routes opens.
 `n11-closure` is the radius, the covering value from below, the census, and the class
-certificates at `n = 11`. `reach-table-ladder` is the `n = 26` rung and the reach-table
+certificates at $n = 11$. `reach-table-ladder` is the $n = 26$ rung and the reach-table
 rungs `BC-191` prices.
 The closeouts carry no program.
 
@@ -1178,60 +1178,61 @@ Every figure below is read from the retained `certificate.json` files and from
 
 | Case | Side | Atoms | Total mass | Least cell mass | Result |
 | --- | --- | ---: | --- | --- | --- |
-| `n = 11` | `381/100` | 1121 | `434547/40000 = 10.863675` | `4001/4000` | `T-018` |
-| `n = 12` | `99/25` | 2097 | `149987/12500 = 11.998960` | `12501/12500` | `T-017` |
-| `n = 17`, `18` | `459/100` | 1184 | `423327/25000 = 16.933080` | `200009/200000` | `T-019` |
-| `n = 19`, `20`, `21` | `24/5` | 2260 | `946131/50000 = 18.922620` | `50007/50000` | `T-020` |
+| $n = 11$ | $\frac{381}{100}$ | 1121 | $\frac{434547}{40000} = 10.863675$ | $\frac{4001}{4000}$ | `T-018` |
+| $n = 12$ | $\frac{99}{25}$ | 2097 | $\frac{149987}{12500} = 11.998960$ | $\frac{12501}{12500}$ | `T-017` |
+| $n = 17$, $18$ | $\frac{459}{100}$ | 1184 | $\frac{423327}{25000} = 16.933080$ | $\frac{200009}{200000}$ | `T-019` |
+| $n = 19$, $20$, $21$ | $\frac{24}{5}$ | 2260 | $\frac{946131}{50000} = 18.922620$ | $\frac{50007}{50000}$ | `T-020` |
 
 All four use the same net and the same shrink: `angle_limit = 207107/500000`,
-`direction_steps = 180` — so 181 directions over an arc of `0` to `45.000043°`, spacing
-`0.263696°` at the axis-parallel end — with `B = 9977/10000`, `D = 207107/90000000` and
-`B(1 + D) = 0.999996`.
+`direction_steps = 180` — so 181 directions over an arc of $0$ to $45.000043^\circ$,
+spacing $0.263696^\circ$ at the axis-parallel end — with $B = 9977/10000$,
+$D = 207107/90000000$ and $B(1 + D) = 0.999996$.
 
-**Where the method stops, which is proved.** No certificate for `n` exists above
-`⌈√n⌉ · B`, and `CERTIFICATE-REACH.md` now carries a second bound beside it: the same
-argument with the case’s best known packing in place of the refuting grid, which is
-X-014’s own step at `n = 11` generalised across the register and rendered as the table’s
-`cap` column.
+**Where the method stops, which is proved.** No certificate for $n$ exists above
+$\lceil\sqrt{n}\rceil \cdot B$, and `CERTIFICATE-REACH.md` now carries a second bound
+beside it: the same argument with the case’s best known packing in place of the refuting
+grid, which is X-014’s own step at $n = 11$ generalised across the register and rendered
+as the table’s `cap` column.
 
 | Case | Best packing | `ceiling` | `cap` | `limit` | Limited by | Prize |
 | --- | ---: | ---: | ---: | ---: | --- | ---: |
-| `n = 11` | `3.8771` | `3.9908` | `3.8690` | `3.8690` | cap | `+0.0590` |
-| `n = 12` | `4.0000` | `3.9908` | `3.9908` | `3.9908` | ceiling | `+0.0308` |
-| `n = 19` | `4.8856` | `4.9885` | — | `4.9885` | packing | `+0.0856` |
-| `n = 20`, `21` | `5.0000` | `4.9885` | `4.9885` | `4.9885` | ceiling | `+0.1885` |
-| `n = 26` | `5.6213` | `5.9862` | — | `5.9862` | packing | `+0.4982` |
+| $n = 11$ | $3.8771$ | $3.9908$ | $3.8690$ | $3.8690$ | cap | $+0.0590$ |
+| $n = 12$ | $4.0000$ | $3.9908$ | $3.9908$ | $3.9908$ | ceiling | $+0.0308$ |
+| $n = 19$ | $4.8856$ | $4.9885$ | — | $4.9885$ | packing | $+0.0856$ |
+| $n = 20$, $21$ | $5.0000$ | $4.9885$ | $4.9885$ | $4.9885$ | ceiling | $+0.1885$ |
+| $n = 26$ | $5.6213$ | $5.9862$ | — | $5.9862$ | packing | $+0.4982$ |
 
-At `n = 11` the cap is what binds, and it is the arithmetic X-014 did by hand: the
-shrink alone caps the instrument at `U · B = 3.868166`, and the net’s `0.012100°` offset
-from the record’s `40.181937°` tilt lifts it to `3.868983`, which the table rounds to
-`3.8690`. The last `0.0081` below Trump’s value is out of reach at any site set.
+At $n = 11$ the cap is what binds, and it is the arithmetic X-014 did by hand: the
+shrink alone caps the instrument at $U \cdot B = 3.868166$, and the net’s
+$0.012100^\circ$ offset from the record’s $40.181937^\circ$ tilt lifts it to $3.868983$,
+which the table rounds to $3.8690$. The last $0.0081$ below Trump’s value is out of
+reach at any site set.
 
-**At `m = 5` the cap and the ceiling coincide, and that is why the wall is measurable
-there.** The best known packing at `n = 20` and `n = 21` is the axis-parallel grid, so
-every tilt offset is zero, the cap collapses onto the ceiling at `4.9885`, and the two
+**At $m = 5$ the cap and the ceiling coincide, and that is why the wall is measurable
+there.** The best known packing at $n = 20$ and $n = 21$ is the axis-parallel grid, so
+every tilt offset is zero, the cap collapses onto the ceiling at $4.9885$, and the two
 structural limits are one number.
-Only the covering value can bind below it, which makes `m = 5` the one place in the
+Only the covering value can bind below it, which makes $m = 5$ the one place in the
 register where a bisection separates a covering wall from a structural one without a
 packing record standing in the way.
 
-**What is open with the evidence already gathered.** `n = 11` at `3.82`: two independent
-site sets stop at exactly `11.000000`, one converged over twelve rounds and one standing
-through twenty-four while its least covered mass climbed from `0.8490` to `0.9997`. The
+**What is open with the evidence already gathered.** $n = 11$ at $3.82$: two independent
+site sets stop at exactly $11.000000$, one converged over twelve rounds and one standing
+through twenty-four while its least covered mass climbed from $0.8490$ to $0.9997$. The
 rejection route is far from closing — the converged dual’s exact maximum pointwise depth
-is `1925/1152 = 1.671007` across `1650944` arrangement vertices, so the depth-scaled
-total is `1152/175 = 6.5829` against the eleven a ceiling needs.
-`n = 18` at `117/25`: three site sets, 538, 578 and 618 orbits, all returning exactly
-`18.000000`, the third after 157 rounds and `7056 s`, with the run stopped for its cost
+is $1925/1152 = 1.671007$ across `1650944` arrangement vertices, so the depth-scaled
+total is $1152/175 = 6.5829$ against the eleven a ceiling needs.
+$n = 18$ at $117/25$: three site sets, 538, 578 and 618 orbits, all returning exactly
+$18.000000$, the third after 157 rounds and `7056 s`, with the run stopped for its cost
 rather than its answer.
 
 **What the last block changed.** The retention gate is no longer the dominant cost.
 The exact event-cell sweep now decides in `int64` on the weights’ common scale, holds
-reachable cells as spans and runs the 181 directions in parallel: `n = 17` in `21.8 s`
-against `1473 s`, `n = 20` in `38.7 s` against `5378 s`, the identical least covered
+reachable cells as spans and runs the 181 directions in parallel: $n = 17$ in `21.8 s`
+against `1473 s`, $n = 20$ in `38.7 s` against `5378 s`, the identical least covered
 mass every time, with the `Fraction` route kept unchanged as the reference.
 `BC-191` — row generation at 79–94% of every round, site density never expressed as a
-function of the container side, an untuned grid costing `8.8×` at `n = 20`’s own side —
+function of the container side, an untuned grid costing `8.8×` at $n = 20$’s own side —
 is untouched and is what binds a run.
 
 ## Why three numbers and a wall
@@ -1246,34 +1247,34 @@ The no: none of that is a shortcut past the case analysis, and the size of the t
 unknown.
 
 Its verdict names the three numbers that set that size — where the covering value
-crosses eleven, how large the tight-core set is there, and how large `ρ₀` is at Trump’s
-pose — and says two of the three are an afternoon’s computation each.
+crosses eleven, how large the tight-core set is there, and how large $\rho_0$ is at
+Trump’s pose — and says two of the three are an afternoon’s computation each.
 `BC-200`, `BC-201` and `BC-199` are those three.
 None of them needs a new soundness surface: the first is the ceiling instrument run to
 convergence, the second is exact linear algebra on retained matrices, the third is a
 readout the sweep already computes.
 That is why they are this block and not the next one.
 
-The fourth number is the wall the ladder itself is standing next to, and `m = 5` is the
+The fourth number is the wall the ladder itself is standing next to, and $m = 5$ is the
 only place in the register where it can be measured cleanly.
-At `n = 20` and `n = 21` there is no packing record to interfere — the upper bound is
+At $n = 20$ and $n = 21$ there is no packing record to interfere — the upper bound is
 the trivial grid, so the reach table’s packing cap collapses onto the ceiling and the
-two structural limits are the single number `4.9885`. The covering value is then the
+two structural limits are the single number $4.9885$. The covering value is then the
 only other thing that could bind, and a bisection separates it from the ceiling.
 Nobody has ever measured a covering wall.
-The closest the record comes is two site sets stopping at exactly eleven at `3.82`, and
-`T-018` says plainly that reading that as `τ*` would be reading an artefact: adding
-sites can only lower a restricted optimum, so one site set’s converged value is a
+The closest the record comes is two site sets stopping at exactly eleven at $3.82$, and
+`T-018` says plainly that reading that as $\tau^{\ast}$ would be reading an artefact:
+adding sites can only lower a restricted optimum, so one site set’s converged value is a
 statement about that site set.
 
 `BC-211` is the stepping stone the block adds late and runs first.
 [X-015](../explorations/X-015-the-map-and-the-three-programs.md) read Bentz’s two proofs
-in X-014’s terms — `s(46) = 7` is one unconditional certificate at the grid side with no
-case split, and `s(13) = 4` is Lemma 1 used integrally, then a six-leaf tree — and
-priced the covering value at the `m = 4` ceiling near `12.06`–`12.24`, below the
+in X-014’s terms — $s(46) = 7$ is one unconditional certificate at the grid side with no
+case split, and $s(13) = 4$ is Lemma 1 used integrally, then a six-leaf tree — and
+priced the covering value at the $m = 4$ ceiling near $12.06$–`12.24`, below the
 thirteen a certificate needs.
-If a zero-build run at `399/100` confirms that, the grid frontier’s endgame is one
-`B = 1` certificate’s shrink tax rather than a tree, and block two’s Lane A changes
+If a zero-build run at $399/100$ confirms that, the grid frontier’s endgame is one
+$B = 1$ certificate’s shrink tax rather than a tree, and block two’s Lane A changes
 shape; the rule that says so is written into `BC-203` now.
 
 `BC-198` is the cheap half of the conditioning question and is deliberately placed
@@ -1287,36 +1288,36 @@ route; finding out after building the domain generalisation would cost a block.
 
 ## The pre-registered rungs
 
-The four `m = 5` sides are fixed by a rule, before the block opens, and not chosen after
-a reading. Bisect `[24/5, 9977/2000]`, round each midpoint to the nearest `1/200`, break
-ties away from `24/5`. The first three levels are therefore:
+The four $m = 5$ sides are fixed by a rule, before the block opens, and not chosen after
+a reading. Bisect $[24/5, 9977/2000]$, round each midpoint to the nearest $1/200$, break
+ties away from $24/5$. The first three levels are therefore:
 
 | Level | Bracket | Midpoint | Side run |
 | ---: | --- | ---: | --- |
-| 1 | `[4.800, 4.9885]` | `4.89425` | `979/200 = 4.895` |
-| 2, rung 1 passed | `[4.895, 4.9885]` | `4.94175` | `247/50 = 4.940` |
-| 2, rung 1 walled | `[4.800, 4.895]` | `4.84750` | `97/20 = 4.850` |
-| 3, from `4.940` up | `[4.940, 4.9885]` | `4.96425` | `993/200 = 4.965` |
-| 3, from `4.940` down | `[4.895, 4.940]` | `4.91750` | `123/25 = 4.920` |
-| 3, from `4.850` up | `[4.850, 4.895]` | `4.87250` | `39/8 = 4.875` |
-| 3, from `4.850` down | `[4.800, 4.850]` | `4.82500` | `193/40 = 4.825` |
+| 1 | $[4.800, 4.9885]$ | $4.89425$ | $\frac{979}{200} = 4.895$ |
+| 2, rung 1 passed | $[4.895, 4.9885]$ | $4.94175$ | $\frac{247}{50} = 4.940$ |
+| 2, rung 1 walled | $[4.800, 4.895]$ | $4.84750$ | $\frac{97}{20} = 4.850$ |
+| 3, from $4.940$ up | $[4.940, 4.9885]$ | $4.96425$ | $\frac{993}{200} = 4.965$ |
+| 3, from $4.940$ down | $[4.895, 4.940]$ | $4.91750$ | $\frac{123}{25} = 4.920$ |
+| 3, from $4.850$ up | $[4.850, 4.895]$ | $4.87250$ | $\frac{39}{8} = 4.875$ |
+| 3, from $4.850$ down | $[4.800, 4.850]$ | $4.82500$ | $\frac{193}{40} = 4.825$ |
 
 The fourth rung is the live bracket’s midpoint by the same rule.
-Every one of the sixteen leaves leaves a bracket of at most `0.015`, and most leave
-`0.010`; `H-062` registers `0.02` and the schedule beats it with room.
-Two of the sixteen paths put a rung within a thousandth of Wainwright’s `n = 19` packing
-at `4.885618`, which is where the soundness alarm in `BC-197` bites: above that side a
+Every one of the sixteen leaves leaves a bracket of at most $0.015$, and most leave
+$0.010$; `H-062` registers $0.02$ and the schedule beats it with room.
+Two of the sixteen paths put a rung within a thousandth of Wainwright’s $n = 19$ packing
+at $4.885618$, which is where the soundness alarm in `BC-197` bites: above that side a
 converged optimum below nineteen contradicts a retained packing.
 
 ## The wall accounting
 
-`450` elapsed minutes, three research lanes on three cores, the closeout at `390`.
+$450$ elapsed minutes, three research lanes on three cores, the closeout at $390$.
 
 | Clock | Lane A (core 1) | Lane B (core 2) | Lane C (core 3) | Coordinator |
 | --- | --- | --- | --- | --- |
 | `00:00–00:10` | — | — | — | wall start, continuity trigger armed, dispatch |
-| `00:10–01:20` | `BC-211` `n = 13` | `BC-199` radius | `BC-191` (agenda-019) | — |
-| `01:20–03:00` | `BC-197` `4.985` rung, then the ladder | `BC-199` ends `02:10`; `BC-200` from `02:10` | `BC-202` `n = 26` from `02:10` | integration checkpoint at `03:00` |
+| `00:10–01:20` | `BC-211` $n = 13$ | `BC-199` radius | `BC-191` (agenda-019) | — |
+| `01:20–03:00` | `BC-197` $4.985$ rung, then the ladder | `BC-199` ends `02:10`; `BC-200` from `02:10` | `BC-202` $n = 26$ from `02:10` | integration checkpoint at `03:00` |
 | `03:00–04:40` | `BC-197` | `BC-200` ends `04:00`; `BC-201` from `04:00` | `BC-202` | — |
 | `04:40–06:30` | `BC-198` | `BC-201` ends `05:00`, then slack | `BC-202` ends `05:00`, then slack | — |
 | `06:30–07:30` | freeze | freeze | freeze | `BC-203` closeout |
@@ -1332,7 +1333,7 @@ to spend.
 A pass that runs this block overnight has about two and a half hours left after `BC-203`
 closes, and it does not wait for an operator to spend them.
 Two cells of [agenda-022](agenda-022-the-conditional-route.md) depend on no
-doubling-down rule: `BC-206`, the `n = 12` ladder toward the ceiling, and `BC-208`, the
+doubling-down rule: `BC-206`, the $n = 12$ ladder toward the ceiling, and `BC-208`, the
 two class theorems, which needs only `BC-198`’s controls passing.
 The pass continues into both as soon as the closeout is written, `BC-206` on the lane
 core `BC-202` released and `BC-208` on `BC-198`’s, and stops on their own kill
@@ -1340,7 +1341,7 @@ conditions or on the operator.
 Everything else in agenda-022 waits for the rules the closeout evaluated.
 
 **The core budget is part of the plan, not an afterthought.** Agenda 017 ran four lanes
-on four cores at load average `10.6` and everything ran about two and a half times
+on four cores at load average $10.6$ and everything ran about two and a half times
 slower than it needed to.
 Three research lanes is the cap here, one core each.
 The fourth core is reserved, and it is reserved for a specific thing:
@@ -1359,18 +1360,18 @@ It replans forward from measured time and does not reopen a closed slice.
 Each cell carries its own kill condition and they are in the cells.
 Three rules sit above them and apply to the block.
 
-**A self-declared budget is not a stop condition.** `OR-8`. The `450` minutes above is
+**A self-declared budget is not a stop condition.** `OR-8`. The $450$ minutes above is
 an estimate this plan wrote for itself.
 Under an open-ended mandate only three things end the run: the operator says so, an
 external blocker makes progress impossible, or the work is genuinely exhausted.
-Reaching minute `450` is none of them; it is the moment to plan the next slice, and
+Reaching minute $450$ is none of them; it is the moment to plan the next slice, and
 [agenda-022](agenda-022-the-conditional-route.md) is that slice already drafted.
 
 **The continuity trigger is recurring and is not deleted.** A one-shot chain is only as
 long as the first turn that decides the work is finished, and `D-395` is a run that had
 eleven and three-quarter hours of unbroken pings, wrote itself a note saying the budget
 was spent, and then deleted the note.
-So the trigger armed at minute `10` fires on its own schedule regardless of what any
+So the trigger armed at minute $10$ fires on its own schedule regardless of what any
 turn concluded, and deleting it requires the operator to ask.
 It is the only irreversible action in the loop.
 
@@ -1393,22 +1394,22 @@ and the loop’s final least covered mass is still reported beside the objective
 side of a rung does not need convergence and the confirmation side does.
 
 **Ceilings are judged on the exact check.** `BC-200`’s whole warning is one number: at
-`3.82` the sampled depth was `12/11` and the exact maximum was `1925/1152`, 53 per cent
+$3.82$ the sampled depth was $12/11$ and the exact maximum was $1925/1152$, 53 per cent
 higher, because depth peaks at arrangement vertices no grid samples.
 
 **Read the evidence, not a reconstruction of it.** Every figure in this agenda is from a
 retained artifact or a run log.
 Five are estimates and each is labelled and written down before its run so the run can
-contradict it: the `m = 5` wall at `4.92` to `4.94`, the covering value at the `m = 5`
-ceiling near `20.4`–`20.7` and at the `m = 4` ceiling near `12.06`–`12.24`, a round at
-`5.52` at `660` to `1530 s`, and `H-065`’s declared accept fraction, which is a
+contradict it: the $m = 5$ wall at $4.92$ to $4.94$, the covering value at the $m = 5$
+ceiling near $20.4$–`20.7` and at the $m = 4$ ceiling near $12.06$–`12.24`, a round at
+$5.52$ at $660$ to `1530 s`, and `H-065`’s declared accept fraction, which is a
 pre-registration and not a prediction.
 
 ## Correction on 2026-09-05
 
 The BC-200 closeout originally rounded its two exact lower bounds upward to six decimal
 places and then reused those decimals in inequalities.
-The structured outcome now uses the downward-safe endpoints `9.907905` and `9.049860`;
+The structured outcome now uses the downward-safe endpoints $9.907905$ and $9.049860$;
 the exact rational values and the original scientific disposition remain unchanged in
 exp-060 and its summary records.
 

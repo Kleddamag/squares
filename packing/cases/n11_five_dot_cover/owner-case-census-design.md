@@ -42,10 +42,11 @@ reflects and translates them.
 Every coarse endpoint patch has the same positive area $p$. This argument preserves the
 rational endpoints on their actual sides of the nominal 45-degree boundary.
 
-Each patch is contained in an anchored $h$-square and hence in a radius-$h\sqrt2$ disk
-about its mark. The retained corner-pair premise gives every cross-corner mark distance
-greater than $B\sqrt2=2h\sqrt2$. Patches at different corners are therefore separated
-for every coarse class choice.
+Each patch is contained in an anchored $h$-square and hence in a disk of radius
+$h\sqrt2$ about its mark.
+The retained corner-pair premise gives every cross-corner mark distance greater than
+$B\sqrt2=2h\sqrt2$. Patches at different corners are therefore separated for every
+coarse class choice.
 Every four-patch union has area $4p$.
 
 If two such unions satisfy $A\subseteq A'$, they must be equal.
@@ -123,7 +124,7 @@ and
 
 ## Shared Arrangement and Tuple Masks
 
-At one retained angle let $S_\theta$ be the centred closed side-$B$ core and $K_\theta$
+At one retained angle let $S_\theta$ be the centred closed side-`B` core and $K_\theta$
 its closed legal centre rectangle.
 In world coordinates, dot-hit and owner-collision polygons are
 
@@ -133,7 +134,7 @@ Overlay the boundaries of $K_\theta$, five $H_d$, and all 64 $F_{c,j}$. For each
 two-dimensional open cell inside $K_\theta$ and avoiding all five $H_d$, choose a
 rational interior point $x$. Its four avoidance masks are
 
-$$M_c(x)=\{j:x\notin F_{c,j}\}.$$
+$$M_c(x)=\lbrace j:x\notin F_{c,j}\rbrace.$$
 
 Membership is constant on the open cell.
 The Cartesian product of its masks is exactly a set of tuples for which this core misses
@@ -239,8 +240,8 @@ records the exact symmetry distinction.
 With $H,V$ the horizontal and vertical reflections, $D,D'$ the diagonal reflections, and
 $R$ the half-turn,
 
-$$\operatorname{Stab}(A)=\{1,H,V,R\},\qquad
-\operatorname{Stab}(P)=\{1,D,D',R\}.$$
+$$\operatorname{Stab}(A)=\lbrace1,H,V,R\rbrace,\qquad
+\operatorname{Stab}(P)=\lbrace1,D,D',R\rbrace.$$
 
 The square’s eight-element symmetry group therefore produces two distinct patch unions
 and four patch-and-dot pairs.

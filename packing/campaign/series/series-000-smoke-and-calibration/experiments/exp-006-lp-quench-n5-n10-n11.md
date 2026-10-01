@@ -135,17 +135,17 @@ experiment:
 
 Three things, on one instrument:
 
-1. **The claim.** `sqsearch`’s own best configuration at `n = 5, 10, 11`, five seeds
+1. **The claim.** `sqsearch`’s own best configuration at $n = 5, 10, 11$, five seeds
    each, quenched — LP solve, cell re-read to a fixed point, then finite-difference
    descent on the eleven angles — and scored against the analytic optimum.
 2. **The single-cell half**, already established by the standing review and re-derived
    here independently.
-3. **A class-constrained variant** at `n = 11`: all five tilted squares share one angle,
+3. **A class-constrained variant** at $n = 11$: all five tilted squares share one angle,
    found by golden section rather than descent.
 
 ## Result
 
-| `n` | annealer gap (median) | quenched gap (median) | improvement | LP solves | converged |
+| $n$ | annealer gap (median) | quenched gap (median) | improvement | LP solves | converged |
 | ---: | ---: | ---: | ---: | ---: | ---: |
 | 5 | `3.427e-08` | `3.187e-08` | 1.1× | 71 | 5/5 |
 | 10 | `5.318e-03` | `4.507e-03` | 1.2× | 319 | 4/5 |
@@ -156,25 +156,26 @@ means **no detectable effect**, not a small win.
 
 **H-002 is refuted as stated.** Its claim was that alternating LP solves with local
 angle moves refines *any* annealer output to a cell optimum matching the analytic value
-to `1e-12`. The best quenched gap anywhere is `2.3e-08` (at `n = 5`, where the annealer
-was already there), `8.4e-04` at `n = 10`, and `4.6e-02` at `n = 11`.
+to `1e-12`. The best quenched gap anywhere is `2.3e-08` (at $n = 5$, where the annealer
+was already there), `8.4e-04` at $n = 10$, and `4.6e-02` at $n = 11$.
 
 Two mechanism results explain the refutation and are worth more than it.
 
 **The fixed-cell formulation is exact; this solve is numerical and independently
-reproduced.** Solving the cell at Trump’s own angles gives `s = 3.877083590022814` —
+reproduced.** Solving the cell at Trump’s own angles gives $s = 3.877083590022814$ —
 `+4.4e-16` from the published value.
 The review’s result was rederived here from scratch, and the LP formulation is not what
 fails.
 
 **A class-constrained angle search reaches the analytic value.** Constrain the eleven
 angles to two classes — six axis-aligned, five sharing one tilt — and golden-section the
-shared tilt, and the answer arrives at `θ` error `3.3e-10` to `4.1e-10` and side gap
-between `−7.4e-12` and `−2.2e-11`, in **70 LP solves** against the free descent’s 1,024.
-The negative sign is the solver’s noise floor, not a record: at a primal feasibility
-tolerance of `1e-10` a side is not resolvable below roughly `1e-11`, which is exactly
-where these land. Nothing here may claim anything about the record; its assurance is
-`numerically-checked` under `numerical-f64`.
+shared tilt, and the answer arrives at $\theta$ error `3.3e-10` to `4.1e-10` and side
+gap between `−7.4e-12` and `−2.2e-11`, in **70 LP solves** against the free descent’s
+1,024. The negative sign is the solver’s noise floor, not a record: at a primal
+feasibility tolerance of `1e-10` a side is not resolvable below roughly `1e-11`, which
+is exactly where these land.
+Nothing here may claim anything about the record; its assurance is `numerically-checked`
+under `numerical-f64`.
 
 ## What the prediction got wrong
 
@@ -183,10 +184,10 @@ Two things, one about the quench and one about the landscape.
 **The quench is a polisher, not a rescue.** The hypothesis said “refines *any* annealer
 output” — but an LP-in-cell solve is a *local* operation: it finds the best packing in
 the cell it is handed.
-At `n = 11`, the tested starts remain far from Trump’s construction after this local
+At $n = 11$, the tested starts remain far from Trump’s construction after this local
 procedure. Calling them the “wrong basin” would require a terminal-component relation
 that this round did not measure.
-At `n = 11` that is a 1.3× improvement on a gap of `8.8e-02`. The spine does not lift
+At $n = 11$ that is a 1.3× improvement on a gap of `8.8e-02`. The spine does not lift
 the burden of finding the right basin off the proposer; it makes the landing point
 numerically refined and reproducibly nameable, which is a different and still valuable
 thing.
@@ -198,15 +199,15 @@ starts to the target construction; component identity remains unresolved.
 **The angle objective has a kink at the optimum, and that is why descent stalls.**
 Walking the shared tilt off its optimal value:
 
-| `δ` | `s(θ* + δ) − s*` |
+| $\delta$ | $s(\theta^{\ast} + \delta) - s^{\ast}$ |
 | ---: | ---: |
 | `−1e-3` | `1.748e-04` |
 | `−1e-5` | `1.747e-06` |
-| `0` | `1.742e-10` |
+| $0$ | `1.742e-10` |
 | `+1e-5` | `3.840e-06` |
 | `+1e-3` | `3.846e-04` |
 
-Linear on both sides, slopes `0.175` and `0.384`. The tested shared-tilt slice has a
+Linear on both sides, slopes $0.175$ and $0.384$. The tested shared-tilt slice has a
 **corner**, where the active contact set changes.
 That makes a smooth local model misspecified on this slice; it does not prove rigidity
 of the full packing or failure of every optimization family.
@@ -223,10 +224,10 @@ The two rounds are measuring the same geometric fact from opposite sides.
 
 ## The defect this round found, which is the repository’s own thesis one layer up
 
-The first working version reported `s = 3.877083568103152` at `n = 11` — **below Trump’s
-`3.877083590022814`**. The runbook’s rule held: a run that beats the record has found a
+The first working version reported $s = 3.877083568103152$ at $n = 11$ — **below Trump’s
+$3.877083590022814$**. The runbook’s rule held: a run that beats the record has found a
 bug. It had.
-The configuration overlapped on pair `(4, 8)` by `9.876e-08`, and the LP had
+The configuration overlapped on pair $(4, 8)$ by `9.876e-08`, and the LP had
 returned a solution violating *its own imposed constraint* by that amount, because HiGHS
 defaults to a primal feasibility tolerance of `1e-7` — larger than the quantity being
 measured.
@@ -242,7 +243,7 @@ recorded sweep is negative beyond the `2.2e-11` solver floor.
 
 ## Annotation, 2026-08-23: this round is a sweep recorded as one cell
 
-`exp-006` declares `instance: {point: 11}` but measures `n = 5`, `10` and `11`, which is
+`exp-006` declares `instance: {point: 11}` but measures $n = 5$, $10$ and $11$, which is
 the defect the standing review raised as F-6 against `exp-001` — recorded here rather
 than erased, because the same runner made the same mistake one round later.
 Its numbers stand; what is wrong is that the ledger reads its sweep coverage from one
@@ -267,7 +268,7 @@ the bracketing variant reaches machine precision on both proved cells.
   evidence that an unguided search would find that structure.
   That is [H-001](../../../hypotheses/H-001-angle-class-reduction.md)’s claim, and it
   remains untested.
-- The kink was probed at `n = 11` only, along one direction in angle space.
+- The kink was probed at $n = 11$ only, along one direction in angle space.
 
 ## What to run next
 

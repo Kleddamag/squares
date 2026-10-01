@@ -66,7 +66,7 @@ experiment:
 ---
 # exp-025 — the `n = 5` event-validation cell is complete
 
-BC-003 moves one size beyond the exact `n=3,4` event controls without changing the
+BC-003 moves one size beyond the exact $n=3,4$ event controls without changing the
 instrument, seeds, per-seed budget, or acceptance screen.
 The question is whether the event stack retains a complete, independently valid and
 replayable account for every start at the first non-grid proved case.
@@ -77,8 +77,8 @@ fixed-point evaluation is a retained blocker and opens a defect before the campa
 scales further. All four seeds converged and independently validate.
 Their receipts account for 14,219 fixed-point evaluations, all settled and none
 unsettled, in 14.47 seconds of recorded quench wall time.
-Seeds 0 and 1 end at side `2.974873734153` with one shared descriptor; seeds 2 and 3 end
-at side `2.828427124746` with distinct descriptors.
+Seeds 0 and 1 end at side $2.974873734153$ with one shared descriptor; seeds 2 and 3 end
+at side $2.828427124746$ with distinct descriptors.
 
 Those are three observed event descriptors at two side values, not three terminal
 components. Repeated or distinct sides, keys, and contact descriptors do not establish

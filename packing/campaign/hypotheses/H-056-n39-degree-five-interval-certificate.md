@@ -97,7 +97,7 @@ rigorous pose boxes whose full geometric validity can be replayed independently.
 
 ## Selection Boundary
 
-This record becomes measurable only when BC-111 selects `n = 39`. Selection of `n = 54`
+This record becomes measurable only when BC-111 selects $n = 39$. Selection of $n = 54$
 leaves it registered and unmeasured for this run.
 
 The accepted certificate must match the retained witness under the frozen compatibility

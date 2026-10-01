@@ -54,9 +54,9 @@ Exp151 retained one exact direction-6 residual after the first six directions be
 covered. H-158 asks whether necessary unit-parent geometry excludes that fixed pose
 directly or removes one owner class that the B-core model alone permits.
 
-The frozen rule uses, for each retained unit direction `r`, `S=|r.x|+|r.y|`,
+The frozen rule uses, for each retained unit direction $r$, `S=|r.x|+|r.y|`,
 `T=||r.x|-|r.y||`, and `e=max(B*S/2,1/2,(S-T*D)/(2+D^2))`. It intersects each original
-anchored owner domain with `[e,q-e]^2`. The residual receives its own necessary
+anchored owner domain with $[e,q-e]^{2}$. The residual receives its own necessary
 parent-box check and no owner mark constraint.
 
 The [analytic contract](../../cases/n11_five_dot_cover/unit-parent-centre-contract.md)

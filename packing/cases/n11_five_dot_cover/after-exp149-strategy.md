@@ -15,7 +15,7 @@ No new target geometry, owner pose, mask, or compatibility relation was evaluate
 ## Evidence and the Immediate Question
 
 Exp149, at source `5600c0fb4eccf9e9dcdf82b02506d3d4340651cb`, refutes D as a cover of
-the selected four-patch residual relaxation labelled by tuple `(0,0,0,7)`. It does not
+the selected four-patch residual relaxation labelled by tuple $(0,0,0,7)$. It does not
 refute that physical tuple.
 Its first direction, axis `owner-000`, has a positive exact deficit and a replayed
 strict escape centred at
@@ -55,7 +55,7 @@ frame and its verified nonempty closed centre polygon Z from exp146, including p
 segment cases. Apply the physical corner map to the axes and centre polygon together.
 For owner frame o, residual frame theta, and the eight signed SAT axes
 
-$$n\in\{\pm u_o,\pm v_o,\pm u_\theta,\pm v_\theta\},$$
+$$n\in\lbrace\pm u_o,\pm v_o,\pm u_\theta,\pm v_\theta\rbrace,$$
 
 put $\rho_o(n)=h(|n\cdot u_o|+|n\cdot v_o|)$ and define $\rho_\theta$ identically.
 Compute the exact separation slack

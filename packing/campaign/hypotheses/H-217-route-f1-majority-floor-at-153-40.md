@@ -71,23 +71,23 @@ hypothesis:
 ---
 # H-217: Route F1 at 153/40
 
-T-025 already prices a relation: a 2-of-3 atom is `(S, k, w)` with `|S| = 3` and
-`k = 2`. X-037’s adversarial review kept that route as F1 and widened the admitted
+T-025 already prices a relation: a 2-of-3 atom is $(S, k, w)$ with $|S| = 3$ and
+$k = 2$. X-037’s adversarial review kept that route as F1 and widened the admitted
 classes to weighted-majority, k-of-S, and floor atoms.
 The scientific claim is not that those classes are sound.
-It is that, at `153/40` with the retained shrink and net, the rows-complete covering in
+It is that, at $153/40$ with the retained shrink and net, the rows-complete covering in
 that language falls below 11 and freezes to a certificate whose total budget is strictly
 below 11 and whose least charge is at least 1.
 
 The kill is the dual of that claim.
 A depth-one family of total at least 11 that is feasible for every admitted majority,
 k-of-S, and floor atom on its own vertices shows the language is capped at 11 at this
-scope, the way the point-atom ceiling caps the one-body method at `191/50`. Killing only
+scope, the way the point-atom ceiling caps the one-body method at $191/50$. Killing only
 majority and floor leaves k-of-S open.
 
 `devtools.decide_certificate` decides point certificates.
 The confirm gate here is `devtools.decide_threshold_certificate`, or the `think-g3j7`
-successor that admits these classes: budget `< 11` and least charge `>= 1`, both routes
+successor that admits these classes: budget $< 11$ and least charge `>= 1`, both routes
 agreeing. A dual with “no cell below 1” is not that gate.
 
 Nothing in the attic chase is this measurement.

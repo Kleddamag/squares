@@ -174,12 +174,13 @@ $$
 | 35 | $11/200$ | $187/7500$ |
 | 45 | $139/200$ | $0$ |
 
-For the author’s three upper adjacent pairs, $c_*=(5+\sqrt7)/8$ and $s_*=(5-\sqrt7)/8$
-are positive, $c_*^2+s_*^2=1$, and $c_*+s_*=5/4$. The displacement has horizontal
-magnitude $259/300$ and vertical magnitude $3/5$. Hence its stated normal gives
+For the author’s three upper adjacent pairs, $c_{\ast}=(5+\sqrt7)/8$ and
+$s_{\ast}=(5-\sqrt7)/8$ are positive, $c_{\ast}^2+s_{\ast}^2=1$, and
+$c_{\ast}+s_{\ast}=5/4$. The displacement has horizontal magnitude $259/300$ and
+vertical magnitude $3/5$. Hence its stated normal gives
 
 $$
-c_*\frac{259}{300}+s_*\frac35
+c_{\ast}\frac{259}{300}+s_{\ast}\frac35
 =\frac{2195+79\sqrt7}{2400}=1+\mu.
 $$
 

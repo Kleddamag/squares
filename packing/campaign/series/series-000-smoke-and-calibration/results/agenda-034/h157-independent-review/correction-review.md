@@ -60,12 +60,12 @@ disposition.
 | Obligation | Disposition |
 | --- | --- |
 | Preserve the registered hypothesis | H157’s claim and criterion remain unchanged from ee98. The before-target clarification is distinguished from the later outcome and review. |
-| Use the correct aggregate | exp154 now records the maximum. Six subclasses retain ten, two have `19/2`, and the full 32-class maximum remains ten. |
-| Interpret the two successful subclasses | `19/2` satisfies the registered upper bound `79/8` more strongly; the documents no longer treat that bound as an equality prediction. |
+| Use the correct aggregate | exp154 now records the maximum. Six subclasses retain ten, two have $\frac{19}{2}$, and the full 32-class maximum remains ten. |
+| Interpret the two successful subclasses | $\frac{19}{2}$ satisfies the registered upper bound $\frac{79}{8}$ more strongly; the documents no longer treat that bound as an equality prediction. |
 | Correct the geometric record | The two intersecting fixed-target cases have distance zero; the six neutral target distances remain supported. Fixed-target distance and distance to a remaining survivor are distinguished. |
 | Preserve the experiment’s primary result | The faulty explanatory mechanism is marked invalid, while the independent maximum-based survivor rejection remains rejected. No new criterion replaces the original target. |
 | State T1’s contract | The finite retained ray universe, common mark and intersection-patch construction are explicit. The subset and mark-clique bounds prove equality on the declared residual model. |
-| State T2’s contract | A pose universe retaining core 59 and a patch inside that core give `w(F) >= 10`. Equality additionally requires the common mark in the patch. The positive-area `43/4` counterexample is correctly scoped. |
+| State T2’s contract | A pose universe retaining core 59 and a patch inside that core give `w(F) >= 10`. Equality additionally requires the common mark in the patch. The positive-area $\frac{43}{4}$ counterexample is correctly scoped. |
 | Distinguish isolated poses from packing completion | The contained concentric unit parents of cores 59/60 are acknowledged; no eleven-parent completion or unavoidable selection is inferred. |
 | Avoid method-wide closure | Stronger residual domains require new survivor-admissibility checks. Gains in other classes, routing, joint constraints and richer charges remain unresolved. |
 | Preserve source history | The delivered lane-X4 body and producer remain historical; the dated addendum identifies their corrected interpretation. |

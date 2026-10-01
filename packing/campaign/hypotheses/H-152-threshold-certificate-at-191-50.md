@@ -74,15 +74,15 @@ hypothesis:
 ---
 # H-152 — A Certificate the Ceiling Does Not Cap
 
-The exact depth-one family at `191/50` closes the point-atom route there: no
-D4-symmetric measure of mass below eleven covers every closed `9977/10000`-square at a
+The exact depth-one family at $191/50$ closes the point-atom route there: no
+D4-symmetric measure of mass below eleven covers every closed $9977/10000$-square at a
 net angle, on that net or any net containing its six directions.
 Every site set that stopped at exactly eleven was reading that ceiling.
 
 The threshold atoms of [X-023](../explorations/X-023-three-losses-and-a-new-atom.md) are
 the rank-one Chvátal–Gomory cuts of the point-depth system, stated on the measure side
 and decided by the same exact event-cell sweep, and the ceiling family violates them:
-`5/4` of charge against a budget of one, once the atom points are placed at interior
+$5/4$ of charge against a budget of one, once the atom points are placed at interior
 vertices of the pairwise intersections rather than at pair centroids.
 So the object that caps the point method is itself cut by the language this claim is
 about, and the question is whether the cuts hold once the coverage rows are complete.

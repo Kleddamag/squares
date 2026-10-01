@@ -21,13 +21,13 @@ The exact route
 recovers a minimal polynomial and discharges it by exact substitution.
 That is strictly stronger, and it may not terminate: a sweep recorded in
 [X-004](../../../../packing/campaign/explorations/X-004-n29-exact-promotion.md) found no
-integer relation through degree twenty with coefficients below `10^22`, so `s(29)`'s
+integer relation through degree twenty with coefficients below $10^{22}$, so $s(29)$'s
 minimal polynomial is large, and Gröbner elimination in six unknowns may not finish.
 Interval certification does not need the polynomial at all.
 
-`n = 29` is the target.
+$n = 29$ is the target.
 Certifying its reported value moves this repository’s `verified_upper_bound` from the
-Schadt rational `5.93388579981302587863645209` to Kingbird’s `5.93383346267692`, closing
+Schadt rational $5.93388579981302587863645209$ to Kingbird’s $5.93383346267692$, closing
 a `5.23e-5` gap that no amount of better sourcing can close because no public
 certificate exists.
 
@@ -41,12 +41,12 @@ certificate exists.
   existing witness pipeline accepts as `verified` rather than refusing with
   `checker-not-built`.
 - Calibrate at sizes where the answer is already known, so the checker can be caught
-  being wrong before it is trusted at `n = 29`.
+  being wrong before it is trusted at $n = 29$.
 
 ## Non-Goals
 
-- **Any optimality claim.** Certifying an upper bound leaves the `n = 29` bound gap of
-  about `0.46` untouched.
+- **Any optimality claim.** Certifying an upper bound leaves the $n = 29$ bound gap of
+  about $0.46$ untouched.
   A matching lower bound is separate mathematics.
 - **Any record improvement.** This certifies an existing construction.
 - **Replacing the exact route.** Where an exact algebraic form is recoverable it remains
@@ -107,22 +107,22 @@ those. Adding a fourth kind is a contract change, and it must be made as one.
 
 Everything upstream is already published and already transcribed.
 The provenance SVG carries nine slide scalars in closed form, six equations `f1 … f6` in
-`{s, a, b, c, d, i}`, **and the layout map**: its `<use>` transforms are written
-symbolically in those same names, for example
+$\lbrace s, a, b, c, d, i\rbrace$, **and the layout map**: its `<use>` transforms are
+written symbolically in those same names, for example
 `translate(2 1) rotate(&a;) translate(0 -&r1;)`.
 [`cases.kingbird29.verify_svg`](../../../../packing/cases/kingbird29/verify_svg.py)
 transcribes the system and parses the transforms.
 
 So the two inputs this feature declares as prerequisites — a contact system and a layout
-map — exist at `n = 29` today, with no assembler required.
+map — exist at $n = 29$ today, with no assembler required.
 That is why this can start immediately rather than queueing behind BC-042 and BC-043.
 
 ## Design
 
 ### The mathematical core
 
-Given `F: R^m -> R^m` (the closed contact system) and an approximate root `x*`, the
-**Krawczyk operator** on a box `X` containing `x*` is
+Given `F: R^m -> R^m` (the closed contact system) and an approximate root $x^{\ast}$,
+the **Krawczyk operator** on a box $X$ containing $x^{\ast}$ is
 
 ```
 K(X) = x* - C F(x*) + (I - C F'(X)) (X - x*)
@@ -133,8 +133,8 @@ directed rounding.
 
 Two standard facts do the work, and the implementation must depend on nothing else:
 
-- If `K(X)` is a subset of `X`, then `F` has **at least one** root in `X`.
-- If additionally `K(X)` is in the *interior* of `X`, the root is **unique** in `X`.
+- If $K(X)$ is a subset of $X$, then $F$ has **at least one** root in $X$.
+- If additionally $K(X)$ is in the *interior* of $X$, the root is **unique** in $X$.
 
 The second condition is the one that matters, and the implementation must check interior
 containment rather than containment, because the weaker check does not give uniqueness.
@@ -212,10 +212,10 @@ No change to `verify_packing`’s signature — it already accepts an injected `
 
 ### Phase 1: Interval arithmetic and the operator
 
-- [ ] `promote/interval.py` over `mpmath.iv`, with a `sign` that returns `0` only when
+- [ ] `promote/interval.py` over `mpmath.iv`, with a `sign` that returns $0$ only when
   it can prove the enclosure contains zero and otherwise **refuses** rather than
   guessing.
-- [ ] `promote/krawczyk.py` implementing `K(X)`, returning `CertifiedRoot` with `exists`
+- [ ] `promote/krawczyk.py` implementing $K(X)$, returning `CertifiedRoot` with `exists`
   and `unique` reported separately.
 - [ ] Calibrate on a univariate case with a known answer, cross-checked against
   `sqpack.field`’s existing isolating-interval machinery, which is independent of this
@@ -236,10 +236,10 @@ No change to `verify_packing`’s signature — it already accepts an injected `
 
 ### Phase 3: Calibration where the answer is known
 
-- [ ] Certify `n = 5` and `n = 10`, whose Göbel constructions are exact and already
+- [ ] Certify $n = 5$ and $n = 10$, whose Göbel constructions are exact and already
   reach `verified` by the exact route.
   The interval verdict must agree with the exact one.
-- [ ] Certify `n = 11` against Trump’s published polynomial: the certified box must
+- [ ] Certify $n = 11$ against Trump’s published polynomial: the certified box must
   contain the known algebraic root.
 - [ ] Demonstrate the checker **refuses** on a pose that is numerically plausible but
   not actually feasible, since agreeing with the exact route on valid inputs proves
@@ -256,7 +256,7 @@ No change to `verify_packing`’s signature — it already accepts an injected `
 ## Testing Strategy
 
 The calibration is the test, and it is stronger here than for the exact route because
-`n = 5`, `n = 10` and `n = 11` all have answers this implementation cannot influence.
+$n = 5$, $n = 10$ and $n = 11$ all have answers this implementation cannot influence.
 
 Two failure modes need different checks:
 
@@ -269,7 +269,7 @@ Two failure modes need different checks:
 Every stage that can refuse must have a control proving it refuses.
 
 An unattended runner may not accept a scientific verdict from this chain.
-A round that certifies `n = 29` is recorded `unresolved` with `needs_review: true`, and
+A round that certifies $n = 29$ is recorded `unresolved` with `needs_review: true`, and
 a human makes the accept decision, exactly as for exp-045.
 
 ## Rollout Plan
@@ -277,7 +277,7 @@ a human makes the accept decision, exactly as for exp-045.
 Each stage lands with its controls, behind the existing gate.
 Nothing enters `frontier/` without passing the witness and evidence contracts.
 
-The bound move at `n = 29` is the last step and a deliberate one.
+The bound move at $n = 29$ is the last step and a deliberate one.
 Until it happens, `verified_upper_bound` stays where it is, and no document may describe
 the reported value as certified.
 
@@ -290,7 +290,7 @@ the reported value as certified.
 - How wide can the pose box be before interval separating-axis tests go undecidable?
   This is the practical limit and is unknown until measured; it decides how much
   precision BC-047 must supply.
-- Does the `n = 29` contact system have a well-conditioned Jacobian at the root?
+- Does the $n = 29$ contact system have a well-conditioned Jacobian at the root?
   Ill-conditioning would make the Krawczyk contraction fail even though the packing is
   fine, which is a checker limitation and must be reported as one rather than as a
   negative result about the packing.

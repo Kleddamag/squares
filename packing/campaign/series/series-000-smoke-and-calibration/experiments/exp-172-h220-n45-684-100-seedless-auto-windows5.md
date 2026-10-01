@@ -95,10 +95,10 @@ This is the seventh scientific round of
 [exp-171](exp-171-h220-n29-548-100-seedless-auto-windows5.md) converged below 29 and
 `decide_certificate` refused the freeze on the interval route.
 
-Auto resolved to `(51, 68, 84)`. The 1200 s run stopped at `42.137360` unconverged below
+Auto resolved to $(51, 68, 84)$. The 1200 s run stopped at $42.137360$ unconverged below
 45 after 26 LP rounds.
 No freeze. T-030 was not offered.
-The follow-up is exp-173 at n=44 `675/100`.
+The follow-up is exp-173 at n=44 $675/100$.
 
 Confirm only on `RETAINABLE`. There is no n=45 case package.
 

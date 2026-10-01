@@ -95,10 +95,10 @@ the forbidden axis edge.
 Define
 
 $$
-A_g=\min\left\{
+A_g=\min\left\lbrace
 \mu(C)-(1+g):C\in D_C;\quad
 \mu(C_1)+\mu(C_2)-2(1+g):(C_1,C_2)\in D_S
-\right\}.
+\right\rbrace.
 $$
 
 The minimum exists because the domains are nonempty and finitely many atom-membership
@@ -131,7 +131,7 @@ The integer endpoints can be checked against the total mass:
 
 $$
 \begin{aligned}
-2(4524131)+9F&=45048397<WM,&2(4524132)+9F&=45048399>WM,\\
+2(4524131)+9F&=45048397<WM,&2(4524132)+9F&=45048399>WM,\cr
 2(8524146)+7F&=45048397<WM,&2(8524147)+7F&=45048399>WM.
 \end{aligned}
 $$
@@ -163,7 +163,7 @@ The independent review proves existence, not a numerical radius or a certified f
 pose cell.
 
 Sufficiently small inward axis translations keep the selected T1 core’s mark ownership,
-complete labels $\{3,4,11,12\}$, and 19-atom mass.
+complete labels $\lbrace3,4,11,12\rbrace$, and 19-atom mass.
 Four independently perturbed corner copies retain a positive inter-parent gap and union
 mass $4F$. The one-parent and four-parent necessary budgets therefore still have
 $1048233$ integer units of slack in a sufficiently small admissible neighborhood.

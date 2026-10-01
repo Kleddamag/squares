@@ -1,7 +1,7 @@
 # Known-Best Packing Atlas, `n = 1..324`
 
-This atlas retains one complete geometry record for every frontier case from `n = 1`
-through `n = 324` and renders every record with the repository’s deterministic house
+This atlas retains one complete geometry record for every frontier case from $n = 1$
+through $n = 324$ and renders every record with the repository’s deterministic house
 renderer. The machine-readable discovery layer is [`manifest.json`](manifest.json).
 The range widened from 100 on 2026-09-07 under
 [the expansion plan](../../../docs/project/specs/active/plan-2026-09-07-atlas-expansion-to-324.md).
@@ -147,9 +147,9 @@ Its [`house-rendered overview`](evidence/non-grid-chunk-evidence-profile.svg) sh
 contact coverage, component count, free squares, largest component, internal slide
 degrees, the narrow partition disposition, and the broad-budget flag for every case.
 Ten cases are fully covered, 27 cover at least 90 percent, 33 cover at least 75 percent,
-and 35 cover at least half; `n = 5` is the lone zero-contact outlier.
-Orange row outlines identify the only registered-to-regularized changes (`n = 68`, `69`,
-and `71`) instead of hiding tolerance sensitivity in an aggregate.
+and 35 cover at least half; $n = 5$ is the lone zero-contact outlier.
+Orange row outlines identify the only registered-to-regularized changes ($n = 68$, $69$,
+and $71$) instead of hiding tolerance sensitivity in an aggregate.
 
 [`contact-assembly-grammar.yaml`](contact-assembly-grammar.yaml) records the proposed
 revision as a versioned, schema-checked draft.
@@ -180,7 +180,7 @@ It contains no centres, side, geometry, container-fit result, packing feasibilit
 or optimality claim.
 
 [`contact-overlays.json`](contact-overlays.json) indexes five deterministic visual
-strata from the registered descriptive census: `n = 11`, `28`, `40`, `69`, and `89`.
+strata from the registered descriptive census: $n = 11$, $28$, $40$, $69$, and $89$.
 Every SVG under [`contact-overlays/`](contact-overlays/) uses the same house renderer as
 the base atlas. Dashed orange lines join square centres or a centre to a seated wall;
 they show tolerance-qualified graph incidence, not exact physical contact loci or
@@ -195,14 +195,14 @@ facts retained in Witness/v2; the upstream SVGs are not retained in this source
 inventory because the review located no express redistribution terms.
 This is a conservative retention policy, not a legal conclusion.
 The newer public UnitSquare renderings superseded the older Kingbird geometry at
-`n = 68, 69, 103, 105, 110` and `131`; their six-decimal polygon coordinates are
+$n = 68, 69, 103, 105, 110$ and $131$; their six-decimal polygon coordinates are
 explicitly recorded as rendering-derived numerical evidence, not as the unavailable
 interval boxes named in their metadata.
-Only `n = 69` still draws one, since Couzo’s packings supersede the other five.
+Only $n = 69$ still draws one, since Couzo’s packings supersede the other five.
 
 At 50 counts the drawing is a parallel project’s packing, read from its source packet’s
-derived facts: Francisco Couzo’s at 49 counts from `n = 68` to `307` (T-056) and Joost
-de Winter’s at `n = 211` (T-057), the first drawing of 211 squares that is not the grid.
+derived facts: Francisco Couzo’s at 49 counts from $n = 68$ to $307$ (T-056) and Joost
+de Winter’s at $n = 211$ (T-057), the first drawing of 211 squares that is not the grid.
 Neither source publishes a licence, so the packets keep the centres and angles and the
 upstream digests, never the files, as for Kingbird.
 Each of these packings is also certified exactly here, which the case record carries in

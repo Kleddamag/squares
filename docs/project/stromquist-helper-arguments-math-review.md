@@ -33,7 +33,7 @@ the complete checker in
 [repaired_cover.py](../../packing/cases/stromquist/repaired_cover.py).
 It verifies the first cover’s exceptional regions, the forced triple, the repaired
 second cover, and the capacity contradiction.
-Moving the printed mark `G=(.8,1.85)` to `(.79,1.85)` is a source-distinct repair, not a
+Moving the printed mark $G=(.8,1.85)$ to $(.79,1.85)$ is a source-distinct repair, not a
 recovered coordinate from the memoranda.
 
 ## The Counting Lemma
@@ -58,8 +58,8 @@ every other block pays $c$. The statement is conditional on coverage and forcing
 of which require geometric proofs.
 
 For unit-weight dots and one distinguished block containing $k$ of $m$ marks, this is
-`n <= 1 + m - k`. Memo I uses `(m,k)=(8,4)`; the unrestricted eleven-square proof uses
-`(12,3)`. The [occupancy_bound function](../../packing/src/sqpack/incidence.py) checks
+`n <= 1 + m - k`. Memo I uses $(m,k)=(8,4)$; the unrestricted eleven-square proof uses
+$(12,3)$. The [occupancy_bound function](../../packing/src/sqpack/incidence.py) checks
 this arithmetic with exact rational weights and rejects overlapping forced groups.
 Its return value does not certify the geometric premises.
 
@@ -72,7 +72,7 @@ measure in the current certificate family.
 
 ## Six Squares: A Checked Finite Control
 
-Write the nine marks in the square `[0,3]^2` as
+Write the nine marks in the square $[0,3]^{2}$ as
 
 ```text
 G=(1,2)       H=(3/2,2)       I=(2,2)
@@ -85,10 +85,10 @@ The finite control admits every nonempty mask satisfying the following necessary
 conditions, with no upper bound imposed on its size:
 
 1. It contains a perimeter mark.
-   This is Memo I’s Lemma 6; the center `E` alone is insufficient.
+   This is Memo I’s Lemma 6; the center $E$ alone is insufficient.
 2. It contains every marked point in the closed convex hull of its own marks.
    This follows from convexity, including marks on hull edges.
-3. If it has exactly two marks, their distance is `1/2`, as stated on p. 18.
+3. If it has exactly two marks, their distance is $1/2$, as stated on p. 18.
 4. Two adjacent perimeter marks cannot both be singleton masks in different blocks.
    This is Lemma 8 and its global square symmetries.
    The control does not extend that lemma to pairs involving the center.
@@ -121,18 +121,18 @@ Any remaining triple also contains the center in its convex hull, so a pair and 
 would share it. If its four midpoints are singletons, the remaining sites cannot supply
 two allowed nonsingleton masks.
 Thus exactly three singleton masks remain, and the other three masks are adjacent pairs.
-The center’s partner can be placed at `H` by symmetry, after which the perimeter
+The center’s partner can be placed at $H$ by symmetry, after which the perimeter
 matching has the displayed form.
 
-Memo I’s next geometric step forces the `EH` block to contain `J=(1,17/10)` and
-`K=(2,17/10)`. Lemma 7 supplies the unavoidable eight-mark set
+Memo I’s next geometric step forces the `EH` block to contain $J=(1,17/10)$ and
+$K=(2,17/10)$. Lemma 7 supplies the unavoidable eight-mark set
 
 ```text
 {E,G,H,I,J,K,L,M},    L=(1,9/10), M=(2,9/10).
 ```
 
-Four marks lie in the center block, giving `1 + (8 - 4) = 5` blocks at most.
-The tool checks this count, while retaining the forced `J,K` statement and the
+Four marks lie in the center block, giving $1 + (8 - 4) = 5$ blocks at most.
+The tool checks this count, while retaining the forced $J,K$ statement and the
 eight-mark coverage as explicit unverified geometric premises of this replay.
 
 Each premise has a control that exposes its contribution:
@@ -163,10 +163,10 @@ uv run --frozen --all-extras --group dev pytest -q \
 
 The existing conditional-dots target is
 [H-036](../../packing/campaign/hypotheses/H-036-robust-restricted-orientation.md):
-eleven squares whose orientations are all within `0.25°` of either `0°` or `45°` require
-containing side at least `3.878`. This is an orientation-restricted statement.
-Its threshold is above Trump’s unrestricted packing side and cannot be promoted to an
-unrestricted lower bound.
+eleven squares whose orientations are all within $0.25^\circ$ of either $0^\circ$ or
+$45^\circ$ require containing side at least $3.878$. This is an orientation-restricted
+statement. Its threshold is above Trump’s unrestricted packing side and cannot be
+promoted to an unrestricted lower bound.
 
 Three preliminary clauses are accepted:
 
@@ -220,7 +220,7 @@ The selected next slice in
 [Session 095](../../packing/campaign/agent-sessions/session-095-collision-cover-and-support-ceiling.md)
 is BC-264’s feature and verification-cost assessment for
 [H-114](../../packing/campaign/hypotheses/H-114-two-pose-kernel-exclusion.md).
-That target concerns the unrestricted pose domain at side `96/25 = 3.84` and represents
+That target concerns the unrestricted pose domain at side $96/25 = 3.84$ and represents
 pair compatibility directly.
 It seeks a kernel $K$ such that $K-1$ is positive semidefinite, $K(Q,Q)\le b<11$, and
 $K(Q,R)\le0$ for every distinct compatible pair.

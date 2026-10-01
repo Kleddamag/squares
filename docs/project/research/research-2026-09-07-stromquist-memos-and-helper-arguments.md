@@ -55,13 +55,13 @@ aside, Memo II contains the argument itself.
 | Item | Source and finding | Disposition |
 | --- | --- | --- |
 | Independent eleven-square construction | Memo III, pp. 2–4, credits Mats Gustafsson and Magnus Thulin and cites Gardner’s November 1980 column | Add this credit to the explainer’s construction note. Retain Trump’s 1979 attribution, supported separately by his archived 2023 author note. |
-| Six-square proof | Memo I, pp. 13–19, excludes adjacent isolated marks using a segment-length budget of `1/2`, then forces four of eight final marks into one box | Expand the reading aid and commission the finite allocation checker described below. |
+| Six-square proof | Memo I, pp. 13–19, excludes adjacent isolated marks using a segment-length budget of $\frac{1}{2}$, then forces four of eight final marks into one box | Expand the reading aid and commission the finite allocation checker described below. |
 | Variable points and alternative covers | Memo II, pp. 10–15, replaces marks and forces intersections with short segments before its last cover | Include this mechanism in the research synthesis; it supports branch-dependent covers and witnesses that vary along a segment. |
-| Restricted eleven-square proof | Memo III, pp. 6–10, uses localization, a forced triple and a twelve-point cover at `2 + (4/3)sqrt(2)` | Preserve its `0°`/`45°` restriction; it is not the unrestricted `s(11)` bound. |
-| Small-case history | Memo III, p. 6, describes `n=14,15,24` as elementary and credits Bajmóczy for `n=7`; pp. 2–5 present then-new `n=18,26` constructions | Preserve these as historical claims and constructions. They do not replace the current frontier or certify an omitted proof. |
+| Restricted eleven-square proof | Memo III, pp. 6–10, uses localization, a forced triple and a twelve-point cover at `2 + (4/3)sqrt(2)` | Preserve its $0^\circ$/`45°` restriction; it is not the unrestricted $s(11)$ bound. |
+| Small-case history | Memo III, p. 6, describes $n=14,15,24$ as elementary and credits Bajmóczy for $n=7$; pp. 2–5 present then-new $n=18,26$ constructions | Preserve these as historical claims and constructions. They do not replace the current frontier or certify an omitted proof. |
 | Source formula slips | Memo I, p. 8, reverses a monotonicity word; Memo II, p. 8, typesets a sum where its preceding equation and figure use a product | Add page-local reading notes. Preserve original PDFs and raw OCR. |
 | The 2003 proof defects | None of the three memos supplies the repaired unrestricted Figure 14 coordinates. Memo II’s numerical table uses a different parameter from the later erroneous row | Keep the project’s one-coordinate repair source-distinct; do not substitute a different table row as its correction. |
-| Our case-proof descriptions | Several case summaries substituted generic pure dots counting for the cited geometric arguments | Correct the descriptions for `n=6,7,8,14,15`, preserve each established bound and its verification status, and reconnect three cases to the already archived El Moumni source. D-479 records the shared error. |
+| Our case-proof descriptions | Several case summaries substituted generic pure dots counting for the cited geometric arguments | Correct the descriptions for $n=6,7,8,14,15$, preserve each established bound and its verification status, and reconnect three cases to the already archived El Moumni source. D-479 records the shared error. |
 
 All 47 scanned pages were visually inspected.
 The [archive index](../../../packing/resources/README.md) links the expanded reading
@@ -93,8 +93,8 @@ arrangement. The
 this as independent rediscovery: Gardner’s later account and Ellsworth’s catalogue
 metadata acknowledge Stromquist’s 1984 construction while preserving Hämäläinen’s
 earlier priority.
-The memo’s twenty-six-square construction, approximately `5.650629`, is
-larger than Friedman’s 1997 `(7 + 3sqrt(2))/2`, approximately `5.621320344`. Ellsworth’s
+The memo’s twenty-six-square construction, approximately $5.650629$, is
+larger than Friedman’s 1997 `(7 + 3sqrt(2))/2`, approximately $5.621320344$. Ellsworth’s
 [historical catalogue](https://kingbird.myphotos.cc/packing/squares_in_squares__compared.html)
 already credits the cubic-root construction to Stromquist in 1984 and lists the later
 Friedman improvement alongside it.
@@ -125,8 +125,8 @@ the memo’s geometric lemmas.
 A further
 [independent segment-helper derivation](../reviews/review-2026-09-07-stromquist-segment-helper.md)
 now proves the local adjacent-singleton exclusion, Memo I’s Lemma 8. One square must
-occupy more than `1/2` of two critical segments; the neighboring square leaves less than
-`1/2` in the complementary components connected to the first square’s dot.
+occupy more than $1/2$ of two critical segments; the neighboring square leaves less than
+$1/2$ in the complementary components connected to the first square’s dot.
 Convexity and disjointness give the contradiction.
 The proof covers independent orientations, axis endpoints and strict boundary
 inequalities, and avoids relying on the source figures’ contact-normalization arguments.
@@ -162,8 +162,8 @@ argument and its priority have not been recovered.
 The threshold is sufficient, not claimed optimal, and the statement does not exclude
 fractional weighted certificates.
 
-A rational version supplies a constructive control: every five-point set in `[0,3]^2`
-misses a **closed** square of side at least `101/100`. The
+A rational version supplies a constructive control: every five-point set in $[0,3]^{2}$
+misses a **closed** square of side at least $101/100$. The
 [exact witness constructor](../../../packing/cases/stromquist/five_point_obstruction.py)
 enumerates the finite translation-event partition for axis-aligned squares and then
 tries four fixed diamonds.
@@ -177,9 +177,9 @@ The sharper endpoint above uses open diamonds and is a separate analytic result.
 ![A verified closed square that misses five dots in a side-three container.](../../../packing/cases/stromquist/five-point-obstruction.svg)
 
 Bašić and Slivková’s published piercing bound supplies an upper bound of seven near side
-three. Combined with the derivation above, this gives `6 <= π(U_L) <= 7` on `[L_0,3)`,
-where `U_L` is the family of open unit squares contained in the side-`L` container.
-Their exact-side value `π(U_3)=9` does not apply below three.
+three. Combined with the derivation above, this gives `6 <= π(U_L) <= 7` on $[L_0,3)$,
+where $U_L$ is the family of open unit squares contained in the side-`L` container.
+Their exact-side value $\pi(U_3)=9$ does not apply below three.
 The quantitative review derives the interval from their Theorem 7 and records the
 checked literature. No new packing lower bound follows from this piercing obstruction.
 
@@ -206,7 +206,7 @@ The criterion fixed before implementation required the control to enumerate Memo
 finite allocations under explicitly named geometric premises and recover exactly one
 orbit under square symmetries.
 It then had to check that an unavoidable set of eight distinct sites, four consumed by
-one forced box, allows at most `1 + (8 - 4) = 5` pairwise disjoint boxes.
+one forced box, allows at most $1 + (8 - 4) = 5$ pairwise disjoint boxes.
 
 An independently written enumeration had to agree, and premise-removal controls had to
 expose the additional allocations excluded by the helper premises.

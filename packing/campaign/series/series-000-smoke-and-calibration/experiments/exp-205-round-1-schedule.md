@@ -140,7 +140,7 @@ two whole colours at equal time on graph colouring.
 
 This round exists because an ablation designed to confirm that produced the opposite.
 [exp-201](exp-201-arm-calibration.md) pass 3 raised the annealing temperature from
-`0.25` to `0.5`, `1.0`, `2.0` and `4.0` and turned reseeding off, to rule out the
+$0.25$ to $0.5$, $1.0$, $2.0$ and $4.0$ and turned reseeding off, to rule out the
 possibility that the collective move was just a hotter search.
 Every one of those twelve runs returned exactly the trivial grid, so the guard passed.
 The seventh arm in that pass changed the anneal *length* instead — `--steps 4000000`,
@@ -155,13 +155,13 @@ accept rule as [exp-202](exp-202-round-1-perturbation.md).
 
 | cell | record | control median / best | long-schedule median / best | improvement | disjoint |
 | ---: | --- | --- | --- | ---: | :---: |
-| 5 | `2.707107` | `2.707107` / `2.707107` | `2.707107` / `2.707107` | `0.000` | – |
-| 10 | `3.707107` | `3.707815` / `3.707526` | `3.707107` / `3.707107` | `0.0007` | yes |
-| 11 | `3.877084` | `3.935790` / `3.922761` | `3.895758` / `3.890427` | **`0.040`** | **yes** |
-| 17 | `4.675530` | `5.000000` / `4.997152` | `4.707138` / `4.700170` | **`0.293`** | **yes** |
-| 19 | `4.885618` | `5.000000` / `5.000000` | `5.000000` / `4.979668` | `0.000` | no |
-| 26 | `5.621320` | `6.000000` / `6.000000` | `5.887456` / `5.795655` | **`0.113`** | **yes** |
-| 27, 29, 37, 50, 52 | — | grid on every seed | grid on every seed | `0.000` | – |
+| 5 | $2.707107$ | $2.707107$ / $2.707107$ | $2.707107$ / $2.707107$ | $0.000$ | – |
+| 10 | $3.707107$ | $3.707815$ / $3.707526$ | $3.707107$ / $3.707107$ | $0.0007$ | yes |
+| 11 | $3.877084$ | $3.935790$ / $3.922761$ | $3.895758$ / $3.890427$ | **$0.040$** | **yes** |
+| 17 | $4.675530$ | $5.000000$ / $4.997152$ | $4.707138$ / $4.700170$ | **$0.293$** | **yes** |
+| 19 | $4.885618$ | $5.000000$ / $5.000000$ | $5.000000$ / $4.979668$ | $0.000$ | no |
+| 26 | $5.621320$ | $6.000000$ / $6.000000$ | $5.887456$ / $5.795655$ | **$0.113$** | **yes** |
+| 27, 29, 37, 50, 52 | — | grid on every seed | grid on every seed | $0.000$ | – |
 
 **H-204 is refuted on its declared criterion** — three cells of eleven, against six —
 and the refutation is the least interesting thing in the table.
@@ -174,7 +174,7 @@ interaction, on any problem.** Round 1 ran that crossing, because the two candid
 factors were cheap to combine: anneal length at `4e5` or `4e6` steps, and proposals
 single-square or collective.
 
-Cells of eleven where the arm improves the control’s median by at least `0.01`:
+Cells of eleven where the arm improves the control’s median by at least $0.01$:
 
 |  | single-square moves | collective moves |
 | --- | ---: | ---: |
@@ -185,18 +185,18 @@ And the cells reached, which the counts hide:
 
 | arm | cells left the grid on the median | best result anywhere |
 | --- | --- | --- |
-| control | `5, 10, 11` | `n = 17` at `4.997152` |
-| long schedule only | `5, 10, 11, 17, 26` | `n = 26` at `5.795655` |
-| collective move only | `5, 10, 11, 17, 19, 26` | `n = 17` at `4.682227` |
-| both | `5, 10, 11, 17, 26, 27, 37` | `n = 17` at **`4.677676`**, `+2.15e-03` from Bidwell |
+| control | $5, 10, 11$ | $n = 17$ at $4.997152$ |
+| long schedule only | $5, 10, 11, 17, 26$ | $n = 26$ at $5.795655$ |
+| collective move only | $5, 10, 11, 17, 19, 26$ | $n = 17$ at $4.682227$ |
+| both | $5, 10, 11, 17, 26, 27, 37$ | $n = 17$ at **$4.677676$**, `+2.15e-03` from Bidwell |
 
 Three readings, in order of how much they should change what gets built next.
 
-**The two factors are not substitutes and they combine.** The both-cell reaches `n = 27`
-and `n = 37`, which neither factor reaches alone, and it is the only arm whose `n = 50`
-ever leaves the grid (one seed at `7.929171`). Its `n = 26` median is `5.710314`,
-against `5.887456` for length alone and `5.823450` for the move alone.
-At `n = 17` its best seed is `4.677676`, `+2.15e-03` from a 1998 hand construction,
+**The two factors are not substitutes and they combine.** The both-cell reaches $n = 27$
+and $n = 37$, which neither factor reaches alone, and it is the only arm whose $n = 50$
+ever leaves the grid (one seed at $7.929171$). Its $n = 26$ median is $5.710314$,
+against $5.887456$ for length alone and $5.823450$ for the move alone.
+At $n = 17$ its best seed is $4.677676$, `+2.15e-03` from a 1998 hand construction,
 found cold.
 
 **The schedule axis recovers three quarters of what the new move family recovers, and it
@@ -215,28 +215,28 @@ overreaches.
 ## What the prediction got wrong
 
 The registered kill condition guessed the likely shape of a refutation as “the effect is
-real at `n = 18` and absent everywhere else, which would make it a fact about one case
+real at $n = 18$ and absent everywhere else, which would make it a fact about one case
 rather than about schedules”.
-That is not what happened: the effect appears at `n = 11`, `17` and `26`, three cells
-with three different provenances and margins from `0.12` to `0.38`, and it is absent at
+That is not what happened: the effect appears at $n = 11$, $17$ and $26$, three cells
+with three different provenances and margins from $0.12$ to $0.38$, and it is absent at
 exactly the cells where the collective move is also absent.
 So the two factors fail together, at the same place, which is itself evidence that they
 are limited by the same thing — the collective escape probability the sparsity
-measurement puts at `0.0000` for `n >= 26`.
+measurement puts at $0.0000$ for `n >= 26`.
 
 ## Limits, and one that bites
 
 - **The long-schedule arms overshot the budget, and by how much is recorded.** The
   pair-test cap is tested at restart granularity, so an arm with ten-times-longer
   anneals overshoots by up to one anneal.
-  Delivered budget as a multiple of declared, per cell: control `1.001` to `1.015`; long
-  schedule `1.024` to `1.31`, and specifically `1.024` at `n = 11`, `1.024` at `n = 17`
-  and `1.12` at `n = 26` — the three cells that decide this round.
+  Delivered budget as a multiple of declared, per cell: control $1.001$ to $1.015$; long
+  schedule $1.024$ to $1.31$, and specifically $1.024$ at $n = 11$, $1.024$ at $n = 17$
+  and $1.12$ at $n = 26$ — the three cells that decide this round.
   Those are close enough that the verdict stands.
-  The both-factors arm is not so clean: `1.31` at `n = 17`, `1.30` at `n = 29`, `2.13`
-  at `n = 37`, `3.92` at `n = 50` and `4.24` at `n = 52`, though its `n = 29` and
-  `n = 52` cells stayed on the grid on every seed.
-  Its `n = 37` and `n = 50` results are **not** at equal budget and are reported as
+  The both-factors arm is not so clean: $1.31$ at $n = 17$, $1.30$ at $n = 29$, $2.13$
+  at $n = 37$, $3.92$ at $n = 50$ and $4.24$ at $n = 52$, though its $n = 29$ and
+  $n = 52$ cells stayed on the grid on every seed.
+  Its $n = 37$ and $n = 50$ results are **not** at equal budget and are reported as
   observations rather than as comparisons.
   The fix is to test the budget inside the anneal loop rather than between restarts, and
   it belongs in round 2 before any of this is re-run.

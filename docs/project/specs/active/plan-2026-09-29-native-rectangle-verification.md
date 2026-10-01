@@ -257,10 +257,10 @@ A complete run with no closed parent is a negative depth-plus-two result.
 The diagnostic cannot accept a packing proof or trigger an automatic larger replay.
 
 Before target measurement, implement a reusable command with an exact local control:
-container side 4, core side 1/2, density 16 on the D4-invariant rectangle `[1,3]^2`,
-weight 64 and count 65. At rotation `(4/5,3/5)` on center box `[15/8,17/8]^2`, actual
-coverage is exactly 4. The common-core parent bound is `9/25`; each of the four children
-after two bisections has bound `169/100`. These are analytically derived expectations
+container side 4, core side 1/2, density 16 on the D4-invariant rectangle $[1,3]^{2}$,
+weight 64 and count 65. At rotation $(4/5,3/5)$ on center box $[15/8,17/8]^{2}$, actual
+coverage is exactly 4. The common-core parent bound is $9/25$; each of the four children
+after two bisections has bound $169/100$. These are analytically derived expectations
 for the local control, not full-net acceptance.
 Exercise incomplete-child, timeout, stale-source and malformed-census refusals before
 the target run.

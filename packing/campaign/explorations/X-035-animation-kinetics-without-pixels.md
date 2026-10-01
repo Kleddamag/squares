@@ -47,10 +47,10 @@ the instrument in this report existed:
 
 | transition and law | largest stored displacement | direction reversals | deepest penetration |
 | --- | ---: | ---: | ---: |
-| `16 → 17`, rigid, one step | 0.3699 | 945 | 0.6484 |
-| `16 → 17`, rigid, two substeps | 0.1617 | 0 | 0.0558 |
-| `89 → 90`, rigid, one step | — | 7,832 | 0.7787 |
-| `89 → 90`, rigid, two substeps | — | 3 | 0.0786 |
+| $16 \to 17$, rigid, one step | 0.3699 | 945 | 0.6484 |
+| $16 \to 17$, rigid, two substeps | 0.1617 | 0 | 0.0558 |
+| $89 \to 90$, rigid, one step | — | 7,832 | 0.7787 |
+| $89 \to 90$, rigid, two substeps | — | 3 | 0.0786 |
 
 The 0.3699 displacement equals the configured speed limit times the step duration.
 The corresponding second difference is 0.7399, which is the same capped motion reversing
@@ -119,9 +119,9 @@ The default physical path must keep mean movement within 20% of the current 0.01
 sides per displayed frame.
 Its largest deterministic 60 Hz displacement must be at most 0.1 and its presentation
 reversal ratio at most 0.03. The rigid preset may use 0.15 and 0.05. The same rule is
-tested on `16 → 17` and the crowded `89 → 90` transition over at least three seeds per
-condition. A setting is rejected if a validity guard fails, regardless of how smooth it
-looks.
+tested on $16 \to 17$ and the crowded $89 \to 90$ transition over at least three seeds
+per condition. A setting is rejected if a validity guard fails, regardless of how smooth
+it looks.
 
 ## Measured Disposition
 
@@ -130,14 +130,14 @@ The frozen-commit parameter defaults and preset claims are not accepted.
 
 - [Exp-211](../series/series-000-smoke-and-calibration/experiments/exp-211-h213-adaptive-animate-integration.md)
   rejects the current end-to-end adaptive path.
-  Raw balanced Physics at `n = 90` stays under `0.1` maximum displacement and `0.03`
-  reversal ratio, but its 60 Hz presentation reaches median `0.20534` and `0.04181`. No
+  Raw balanced Physics at $n = 90$ stays under $0.1$ maximum displacement and $0.03$
+  reversal ratio, but its 60 Hz presentation reaches median $0.20534$ and $0.04181$. No
   balanced or rigid solver-transition group meets every presentation budget over all
   three seeds.
 - [Exp-212](../series/series-000-smoke-and-calibration/experiments/exp-212-h214-preset-signatures.md)
   rejects the claimed preset ordering.
   Rigid has less penetration than soft only in two of four solver-transition cells;
-  sticky has more mean contacts than balanced at `n = 17` and fewer at `n = 90`.
+  sticky has more mean contacts than balanced at $n = 17$ and fewer at $n = 90$.
 
 The next tuning control should address rotational or Bodies-member response, or
 normalize perturbation torque and frequency.

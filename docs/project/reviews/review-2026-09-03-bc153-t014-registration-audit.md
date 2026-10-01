@@ -22,7 +22,7 @@ the repository, which does not survive the session -- and modified no repository
 It is installed here so that the check outlives that directory, and so that the outcome
 row citing it names something a reader can open.
 
-The source was `266` lines with SHA-256
+The source was $266$ lines with SHA-256
 `07cccf33a942048e7383bf18d9647a5e09768dd4a5252e9df089014cd1b4b303`, and that hash names
 the scratchpad source rather than this file.
 The installation added this preface and the closing guidelines footer; it altered no

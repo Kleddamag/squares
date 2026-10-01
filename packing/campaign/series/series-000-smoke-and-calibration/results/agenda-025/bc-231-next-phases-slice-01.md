@@ -11,18 +11,18 @@ standalone route, retention decision, or target search in this slice.
 
 ## Exact Control
 
-The control specification was reported before execution: `n = 11`, `L = 6/5`, a center
-atom at `(3/5, 3/5)` of weight `1`, and the four axis sites `(3/10, 3/5)`,
-`(9/10, 3/5)`, `(3/5, 3/10)`, `(3/5, 9/10)` of weight `1/10` each.
-These five distinct sites have total mass `7/5` and form complete D4 orbits.
+The control specification was reported before execution: $n = 11$, $L = 6/5$, a center
+atom at $(3/5, 3/5)$ of weight $1$, and the four axis sites $(3/10, 3/5)$,
+$(9/10, 3/5)$, $(3/5, 3/10)$, $(3/5, 9/10)$ of weight $1/10$ each.
+These five distinct sites have total mass $7/5$ and form complete D4 orbits.
 
 | Cell | Half-tangent | Core side | Closed boundary tangents | Maximum mismatch | Minimum mass |
 | --- | --- | --- | --- | --- | --- |
-| 0 | `0` | `7/10` | `[0, 1/4]` | `1/4` | `6/5` |
-| 1 | `1/4` | `3/4` | `[1/4, 56/71]` | `1/4` | `13/10` |
-| 2 | `9/20` | `4/5` | `[56/71, 1]` | `16/89` | `7/5` |
+| 0 | $0$ | $\frac{7}{10}$ | $[0, \frac{1}{4}]$ | $\frac{1}{4}$ | $\frac{6}{5}$ |
+| 1 | $\frac{1}{4}$ | $\frac{3}{4}$ | $[\frac{1}{4}, \frac{56}{71}]$ | $\frac{1}{4}$ | $\frac{13}{10}$ |
+| 2 | $\frac{9}{20}$ | $\frac{4}{5}$ | $[\frac{56}{71}, 1]$ | $\frac{16}{89}$ | $\frac{7}{5}$ |
 
-The strict containment products are `7/8`, `15/16`, and `84/89`. The three predicted
+The strict containment products are $7/8$, $15/16$, and $84/89$. The three predicted
 minimum masses agree with direct atom summation over every reachable open event cell,
 the production sweep, and zero-width interval enclosures.
 The reflected interval directions retain their source cells’ sides and have the same
@@ -38,7 +38,7 @@ Those checks prepare P5; they do not replace later route-specific boundary recei
 ## Source and Checks
 
 The new [exact adapter](../../../../../src/sqpack/fractional/adaptive.py) derives cell
-geometry and calls the existing per-direction sweep with each `B_k`. The new
+geometry and calls the existing per-direction sweep with each $B_k$. The new
 [interval adapter](../../../../../src/sqpack/fractional/adaptive_interval.py) derives
 seams and mismatches separately, then calls the existing directed-rounding center-box
 search. Neither API exposes an acceptance or retention verdict.

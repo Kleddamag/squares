@@ -5,11 +5,11 @@ No freeze.
 
 Session-141 exp-168: seedless auto grids plus `--seed-windows 5`,
 `(n, L, B, net) = (30, 559/100, 9977/10000, 181 directions)`. Auto resolved to
-`(40, 54, 67)`. Seed sites 625 (windows only).
-The 1200 s deadline stopped the row loop after 50 LP rounds at `27.178193` (93 still
+$(40, 54, 67)$. Seed sites 625 (windows only).
+The 1200 s deadline stopped the row loop after 50 LP rounds at $27.178193$ (93 still
 violated). It did not cross 30.
 
-Remaining rows can only raise this value, so `27.178193` is not a covering below 30. Do
+Remaining rows can only raise this value, so $27.178193$ is not a covering below 30. Do
 not more-wall this set.
 Nagamochi `1 + sqrt(21)` stands.
 T-030 was not offered.
@@ -41,10 +41,10 @@ Wall 1213.0 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `27.178193` |
+| Restricted optimum | $27.178193$ |
 | Sites / orbits / rows | 9609 / 1269 / 15704 |
 | Seed sites | 625 |
-| Auto grids | `(40, 54, 67)` |
+| Auto grids | $(40, 54, 67)$ |
 | LP rounds | 50 |
 | Crossing | none |
 | Wall | 1213.0 s |

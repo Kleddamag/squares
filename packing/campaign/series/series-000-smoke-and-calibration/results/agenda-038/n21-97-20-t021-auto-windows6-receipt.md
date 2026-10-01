@@ -3,12 +3,12 @@
 Status: **site set still open, unconverged**. The side stays open.
 No freeze.
 
-Session-140 rank-6 probe: BC-191 auto `(34, 45, 56)` unioned with T-021’s atom sites at
-`97/20`, plus `--seed-windows 6`,
+Session-140 rank-6 probe: BC-191 auto $(34, 45, 56)$ unioned with T-021’s atom sites at
+$97/20$, plus `--seed-windows 6`,
 `(n, L, B, net) = (21, 97/20, 9977/10000, 181 directions)`. Seed from the live n=20
 `certificate.json` (T-021). Seed sites 2256. The 1200 s deadline stopped the row loop
-after 45 LP rounds at `19.814820` (162 still violated).
-The objective sat on `19.814820` from round 39. It did not cross 21.
+after 45 LP rounds at $19.814820$ (162 still violated).
+The objective sat on $19.814820$ from round 39. It did not cross 21.
 
 This is a covering measurement at the already-verified T-021 side, not a floor raise.
 Remaining rows can only raise the restricted optimum.
@@ -40,7 +40,7 @@ Wall 1227.8 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `19.814820` |
+| Restricted optimum | $19.814820$ |
 | Sites / orbits / rows | 7197 / 950 / 11277 |
 | Seed sites | 2256 |
 | LP rounds | 45 |

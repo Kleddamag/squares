@@ -2,8 +2,8 @@
 
 This directory retains nine Lean theorem proofs for the finite counting argument,
 atomic-mass symmetry, and scalar inequalities used in the fractional certificate.
-It contains no formal proof of the geometric coverage reduction or of `s(11) ≥ 381/100`.
-The complete current argument and exact certificate check are the
+It contains no formal proof of the geometric coverage reduction or of
+$s(11) \ge 381/100$. The complete current argument and exact certificate check are the
 [proof card](../t-018-proof-card.md),
 [embedded theorem and verifier](../t-018-verifiable-claim-381-100.md), and
 [minimal exact checker](../minimal_verify.py).
@@ -14,7 +14,7 @@ The source was reviewed and ported on 2026-09-06 from commit
 `04127189a7f08cab35b3c3b6e098d7cc9a729ee0`, originally on the
 `codex/pr78-s11-adversarial-review` branch.
 The six source and build files retain their reviewed bytes; this README corrects their
-scope and replay status against the retained `381/100` certificate.
+scope and replay status against the retained $381/100$ certificate.
 The source branch is provenance, not evidence that its claims are correct.
 
 | Check | Evidence retained here |
@@ -23,7 +23,7 @@ The source branch is provenance, not evidence that its claims are correct.
 | Historical build | The source README reports Lean 4.32.1 and Mathlib 4.32.1 builds and an axiom audit; this port did not reproduce those runs |
 | Current Lean syntax, elaboration, and kernel checks | Not run: this continuation host has neither the pinned toolchain nor its dependency cache |
 | Build dependencies | A committed toolchain, Lake configuration, and manifest pin the Lean version and all nine dependency revisions |
-| Full packing theorem | Not formalized; the Lean source does not define oriented squares, packings, or `s(n)` |
+| Full packing theorem | Not formalized; the Lean source does not define oriented squares, packings, or $s(n)$ |
 
 A syntax check alone would establish only that the parser accepts the source.
 A successful Lean build elaborates the theorem statements and checks their proof terms,
@@ -54,16 +54,16 @@ Its statements cover:
   assuming each atom belongs to at most one set
 - `mass_image_eq_of_permutation`: mass is preserved by an involution when a
   weight-preserving permutation maps the atom sites accordingly
-- `n11_total_mass`: the scalar inequality `434547/40000 < 11`
+- `n11_total_mass`: the scalar inequality $434547/40000 < 11$
 - `n11_net_reaches_pi_over_four`: the scalar inequality
-  `(207107/500000)² + 2(207107/500000) − 1 ≥ 0`
-- `n11_shrink_margin`: the scalar inequality `(9977/10000)(1 + 207107/90000000) < 1`
-- `support_radius_lt_one`: if `B ≥ 0`, `c ≤ 1`, `s ≤ D`, and `B(1 + D) < 1`, then
-  `B(c + s) < 1`
+  $(207107/500000)^2 + 2(207107/500000) - 1 \ge 0$
+- `n11_shrink_margin`: the scalar inequality $(9977/10000)(1 + 207107/90000000) < 1$
+- `support_radius_lt_one`: if $B \ge 0$, $c \le 1$, $s \le D$, and $B(1 + D) < 1$, then
+  $B(c + s) < 1$
 
 These statements isolate parts of the human argument
-`11 ≤ Σⱼ μ(Qⱼ) ≤ μ(K) = 434547/40000 < 11`. The set theorem assumes unique membership;
-it does not derive it from square geometry.
+$11 \le \Sigma_j \mu(Q_j) \le \mu(K) = 434547/40000 < 11$. The set theorem assumes
+unique membership; it does not derive it from square geometry.
 The symmetry theorem assumes the site permutation; it does not check the certificate’s
 1,121 atoms. The three scalar lemmas check numbers used in Conditions 2–4, rather than
 deciding those conditions on certificate data.
@@ -99,18 +99,18 @@ strict-containment and nearest-angle lemmas, the half-angle tangent identities, 
 diagonal-reflection reduction, and the continuum-to-finite coverage reduction.
 It also needs a checked connection to the certificate data.
 The current Python checker decides Condition 5 over **567,130,649 reachable event
-cells** at 181 directions for the `381/100` certificate.
-The 90,546,593-cell count belongs to the separate `19/5` certificate in
+cells** at 181 directions for the $381/100$ certificate.
+The 90,546,593-cell count belongs to the separate $19/5$ certificate in
 [`thirdparty/`](../thirdparty/README.md).
 Neither computation runs in this Lean spike.
 
 A possible next formalization target is a proof-producing Condition 5 receipt that
 records feasible vertical intervals and range minima for each event strip.
-With 1,121 atoms, at most `2 × 1121 + 1 = 2243` strips per direction follow from at most
-two horizontal-coordinate events per atom and two domain endpoints.
-Thus `181 × 2243` is a bound on candidate strip records, not on the proof’s eventual
-size or cost: each range-minimum claim and the coverage theorem would still need proof.
-No such receipt or checker is implemented here.
+With 1,121 atoms, at most $2 \times 1121 + 1 = 2243$ strips per direction follow from at
+most two horizontal-coordinate events per atom and two domain endpoints.
+Thus $181 \times 2243$ is a bound on candidate strip records, not on the proof’s
+eventual size or cost: each range-minimum claim and the coverage theorem would still
+need proof. No such receipt or checker is implemented here.
 
 `native_decide` can discharge a computation through a compiler-trusting axiom.
 The resulting proof term may pass the kernel, but its conclusion then depends on that

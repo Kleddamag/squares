@@ -72,7 +72,7 @@ For an eligible non-axis ray \(r=(c,s)\), \(0<s<c\), use \(z=m_1+xr+yJr\),
 domain is
 
 $$
-D=\{0\le x\le X,\ 0\le y\le h,\ a+cx-sy\ge e\},\qquad
+D=\lbrace0\le x\le X,\ 0\le y\le h,\ a+cx-sy\ge e\rbrace,\qquad
 e=\frac{1+L}{2\sqrt{1+L^2}}.
 $$
 
@@ -245,7 +245,7 @@ Every actual forced-0 S configuration has a unique owner of \(m_1\). X-029 puts 
 owner in one of the eligible source strips
 
 $$
-E_r=\{X<x\le h,\ 0\le y\le h\}.
+E_r=\lbrace X<x\le h,\ 0\le y\le h\rbrace.
 $$
 
 All its parent wall conditions are inactive.
@@ -297,7 +297,7 @@ separating-axis inequality
 $$
 |(z_2-z_1)\cdot n|
 >h\bigl(1+|r_1\cdot r_2|+|\det(r_1,r_2)|\bigr),
-\qquad n\in\{r_1,Jr_1,r_2,Jr_2\}.
+\qquad n\in\lbrace r_1,Jr_1,r_2,Jr_2\rbrace.
 $$
 
 These rational linear branches give a complete necessary relaxation after retaining the

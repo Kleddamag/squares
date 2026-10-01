@@ -59,7 +59,7 @@ hypothesis:
 [X-039](../explorations/X-039-n100-re-rank-after-session-140.md) re-ranks the n<100
 floors after Session-140. This claim is the unused leftover side above T-028.
 
-Confirm only on `RETAINABLE` at n=18. `117/25` already plateaus at 18 on every named
+Confirm only on `RETAINABLE` at n=18. $117/25$ already plateaus at 18 on every named
 seed and is not a target.
 
 <!-- This document follows common-doc-guidelines.md.

@@ -1,9 +1,9 @@
 # Native Adaptive Parent-Core Verification
 
 `think-d010` supplies a complete native coverage decision for Kleddamag’s retained
-`n=11` certificate. All 12,028 rows pass the preregistered rule below.
+$n=11$ certificate. All 12,028 rows pass the preregistered rule below.
 Together with the source’s complete exact event sweeps and the reviewed transfer
-theorem, this supports `V4/C4` for the strict bound `s(11) > 31/8 = 3.875`. Kleddamag
+theorem, this supports `V4/C4` for the strict bound $s(11) > 31/8 = 3.875$. Kleddamag
 remains the source of the bound; no new result identifier or C5 claim follows.
 
 The workflow entry is W7, pipeline improvement, followed by W2, factual verification.
@@ -41,17 +41,17 @@ integration boundaries, not stop conditions.
 
 ## Proof Contract
 
-The source’s four row values `(a,b,t,B)` and final parent side `A` remain separate.
-For a parent half-tangent `u`, legal centres form `[h(u),L-h(u)]²`, where
+The source’s four row values $(a,b,t,B)$ and final parent side $A$ remain separate.
+For a parent half-tangent $u$, legal centres form $[h(u),L-h(u)]^2$, where
 
 $$
 h(u)=\frac A2\frac{1+2u-u^2}{1+u^2}.
 $$
 
-On `0 <= u < 1`, the derivative has the sign of `1-2u-u²`, so its only interior
+On `0 <= u < 1`, the derivative has the sign of $1-2u-u^2$, so its only interior
 stationary point is a maximum.
-The centre domains are nested, and their union over a row is exactly `[r,L-r]²` with
-`r=min(h(a),h(b))`. This also covers the source’s last rational endpoint, which lies
+The centre domains are nested, and their union over a row is exactly $[r,L-r]^2$ with
+$r=\min(h(a),h(b))$. This also covers the source’s last rational endpoint, which lies
 slightly beyond `tan(pi/8)`.
 
 The native premise checker projects each core vertex onto a parent axis and minimizes
@@ -70,10 +70,10 @@ expansion. The initial box encloses the complete parent-centre domain, domain ti
 only removes proved exterior points, and both children cover each split box.
 
 For each threshold atom, pairwise disjoint closed cores consume disjoint site tokens.
-An `m`-token, `k`-threshold feature therefore contributes at most `floor(m/k)` times its
+An $m$-token, $k$-threshold feature therefore contributes at most `floor(m/k)` times its
 weight. If every parent has a core of charge at least `Gamma` and the total budget is
 less than `11 Gamma`, eleven parents cannot fit.
-Uniform scaling gives the same exclusion for eleven unit squares at `L/A=31/8`;
+Uniform scaling gives the same exclusion for eleven unit squares at $L/A=31/8$;
 compactness and attainment make the lower bound strict.
 Complete native coverage and the premise proof together are the claim reviewed for C4.
 The pilot alone did not change the confirmation level.
@@ -103,7 +103,7 @@ Use `--all` only for a deliberately scheduled complete run.
 The first, weakest and last rows all certify, with 20,255, 14,387 and 11,763 boxes
 respectively, zero stalled boxes and no exhausted work budgets.
 Their certified lower bounds are `1000047518`, `999962528` and `1000030057` in units of
-`1/1000000000`. Pruning at `Gamma` proves the required inequality; these lower bounds
+$1/1000000000$. Pruning at `Gamma` proves the required inequality; these lower bounds
 need not equal the source event sweep’s exact minima.
 
 | Batch size | Row 0 seconds | Row 11962 seconds | Row 12027 seconds | Receipt |
@@ -149,10 +149,10 @@ required `Gamma`; `complete=true` and `accepted=true`.
 The exact native premise check imports 679 source point orbits into 5,284 sites and
 2,716 weighted features, including 2,220 threshold features.
 It checks every parent interval and obtains a minimum containment-quadratic numerator of
-`1/1000000000000`, strictly positive.
-The final half-tangent `207107/500000` covers the folded endpoint.
-The distinct scales remain `L=191/50`, `A=764/775` and the row-dependent `B`, giving
-`L/A=31/8`. The exact budget gap is
+$1/1000000000000$, strictly positive.
+The final half-tangent $207107/500000$ covers the folded endpoint.
+The distinct scales remain $L=191/50$, $A=764/775$ and the row-dependent $B$, giving
+$L/A=31/8$. The exact budget gap is
 
 $$
 11\Gamma-\mathrm{budget}

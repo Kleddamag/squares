@@ -11,18 +11,18 @@ H-093 and exp-116 remain unresolved.
 
 The [terminal summary](bc-234-scalar-61-16-leg-01-summary.json) records 24,653 sites in
 3,180 D4 orbits and 11,885 rows.
-At iteration 18 the numerical LP objective is `10.717562359067587`, while the extracted
-rational family weighs `9.902499441` and has maximum depth `7994824851/8000000000`,
-about `0.999353106375`. The LP-to-family mass gap is about `0.81506`. All 19 row solves
+At iteration 18 the numerical LP objective is $10.717562359067587$, while the extracted
+rational family weighs $9.902499441$ and has maximum depth $7994824851/8000000000$,
+about $0.999353106375$. The LP-to-family mass gap is about $0.81506$. All 19 row solves
 hit the two-round limit.
 The best independently replayed family came from iteration 14 and has mass about
-`10.08018` at depth one, as recorded in
+$10.08018$ at depth one, as recorded in
 [exp-116](../../experiments/exp-116-h-093-scalar-61-16.md).
 
 The [cutting loop](../../../../../src/sqpack/fractional/cutting.py) caps the number of
 **dual placement rows**, not the number of primal atom sites.
 `support_entries` keeps the 96 heaviest positive row weights and rounds them to
-denominator `10^9`; each retained row then contributes eight D4 placements.
+denominator $10^{9}$; each retained row then contributes eight D4 placements.
 Its depth separation therefore prices a truncated family.
 The final empty selection stops the loop even when `solution.converged` is false.
 This extracted family has no violating vertex; neither the full dual nor the site set is
@@ -35,17 +35,17 @@ to three rows per direction per round.
 With sites fixed, adding valid rows can only increase the exact covering optimum.
 Adding sites can only decrease it.
 Alternating both while truncating the dual obscures which limitation matters.
-The value near `10.71756` is neither a certified cover nor the upper endpoint of a
+The value near $10.71756$ is neither a certified cover nor the upper endpoint of a
 bracket on the unrestricted covering problem.
 
 ## Proposed Hypothesis and Decision
 
 Register a new, narrower H-094 descendant before execution: **the terminal exp-116 site
-set admits a rational covering measure of mass below eleven at side `61/16` under
+set admits a rational covering measure of mass below eleven at side $61/16$ under
 fixed-site row completion.** H-094 is an open question and cannot supply its acceptance
 criterion; the changed recipe is not an unchanged H-093 retry.
 
-Freeze the terminal state, side, core `9977/10000`, all 181 directions, site orbits,
+Freeze the terminal state, side, core $9977/10000$, all 181 directions, site orbits,
 initial exact rows, three rows per direction, snapping rule, and rationalization scale.
 Use one row-only invocation with at most eight additional separation rounds and a
 1,800-second cooperative row deadline.
@@ -85,9 +85,9 @@ stores direction indices without their net.
 Independently replay any proposed finite-site dual and mutate one inequality to ensure
 its checker refuses it.
 
-The last two-round phase cost `454.01` seconds; its subsequent snapped LP solve cost
-`122.11` seconds, while depth separation cost `9.00` seconds.
-Phases 13–18 ranged from `214.28` to `454.01` seconds.
+The last two-round phase cost $454.01$ seconds; its subsequent snapped LP solve cost
+$122.11$ seconds, while depth separation cost $9.00$ seconds.
+Phases 13–18 ranged from $214.28$ to $454.01$ seconds.
 These retained timings support a **planning allowance**, not a runtime prediction, of
 30–40 minutes for a capped completion and tail, plus 15–20 minutes for receipt/control
 work and review. The finite-site exact dual route is not commissioned, and its

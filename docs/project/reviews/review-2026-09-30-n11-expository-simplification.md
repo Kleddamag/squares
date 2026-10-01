@@ -48,12 +48,12 @@ execution record.
 | --- | --- | --- |
 | Exact endpoint and witness | Isolate $u$, verify eleven unit squares at $T$, prove $T<U$, and verify opposite-wall contacts giving span $T$ in both coordinates. | [Endpoint review][endpoint] and [local execution][local] |
 | Exhaustive center patterns | Sixteen closed rational Voronoi cells cover the normalized center square. Each physical cell has diameter strictly below one, so it contains at most one center. The 4,368 raw masks reduce by half-turn to 2,184. | [Cover and D4 checker][d4-code] and [case census][census] |
-| All noncandidate exclusions | Sound ownership, charge, collision and residual-cover arguments exclude exactly $\{0,\ldots,2183\}\setminus\{438,999,1462,1659\}$ at the same cap $U$: 1,904 field cases and 276 others. | [Complete exclusion inventory][exclusions] and [exclusion acceptance][exclusion-review] |
+| All noncandidate exclusions | Sound ownership, charge, collision and residual-cover arguments exclude exactly $\lbrace0,\ldots,2183\rbrace\setminus\lbrace438,999,1462,1659\rbrace$ at the same cap $U$: 1,904 field cases and 276 others. | [Complete exclusion inventory][exclusions] and [exclusion acceptance][exclusion-review] |
 | Final D4 reduction | Given those exclusions, the closed four-view overlay and strict distance bans force some square symmetry to admit case 438. Reflections and quarter-turns need not permute the original cells. | [D4 execution][d4] and [geometric implication][d4-proof] |
 | Case-438 capture | The accepted seed, fourteen root rounds, root bridge and ten capture nodes preserve every feasible pose. Three far leaves contradict feasibility; the near leaf supplies a complete outer enclosure. | [Root chain][root] and [complete capture review][capture] |
-| Fixed-$T$ local isolation | At the exact witness, complete feature coverage, Taylor bounds and 8,448 signed-coordinate dual margins exclude every nonzero feasible displacement in the declared 33-coordinate rectangle. | [Local checker][local-code] and [local execution][local] |
+| Fixed-`T` local isolation | At the exact witness, complete feature coverage, Taylor bounds and 8,448 signed-coordinate dual margins exclude every nonzero feasible displacement in the declared 33-coordinate rectangle. | [Local checker][local-code] and [local execution][local] |
 | Near-to-local inclusion | The accepted near final state, role bijection, inverse frame and whole-angle bounds place all 136 live rows and 1,542 vertices inside that same local rectangle. | [Pose inclusion][inclusion] and [accepted final-state join][capture] |
-| Global equality | A putative side-$S$ packing with $S<T$ embeds in $U$, reduces to case 438 and recenters into the fixed-$T$ local problem. Isolation forces the witness of span $T$, a contradiction. The witness attains $T$. | [Endpoint review][endpoint] and [whole-proof acceptance][whole] |
+| Global equality | A putative side-`S` packing with $S<T$ embeds in $U$, reduces to case 438 and recenters into the fixed-`T` local problem. Isolation forces the witness of span $T$, a contradiction. The witness attains $T$. | [Endpoint review][endpoint] and [whole-proof acceptance][whole] |
 
 Two dependencies must remain visible inside the exclusion row.
 The necessary D4 cuts for cases 2175 and 2176 start from the complete **1,931-case
@@ -112,10 +112,10 @@ root, rational cap, exact witness and coordinate conversion in one argument.
 With $B=(191/50)/U$ and $Q$ the checked quarter-turn, the map is
 
 $$
-p_T=Q^{-1}\!\left(p_f/B-(U/2,U/2)\right)+(T/2,T/2).
+p_T=Q^{-1}\negthinspace\left(p_f/B-(U/2,U/2)\right)+(T/2,T/2).
 $$
 
-A side-$S$ container centered inside $U$ maps to $[(T-S)/2,(T+S)/2]^2$. For $S<T$, its
+A side-`S` container centered inside $U$ maps to $[(T-S)/2,(T+S)/2]^2$. For $S<T$, its
 unchanged unit squares are therefore feasible inside $[0,T]^2$. Capture and inclusion
 put them in the local rectangle, where the accepted local theorem forces the exact
 witness. Its span $T$ contradicts containment in side $S$. This uses neither a

@@ -535,6 +535,19 @@ The dependency rules and E0–E3 expectations are defined in
 [checked: hook] Exclusions are evidence-based, not precautionary, and each one states
 its measured reason in [`.flowmarkignore`](.flowmarkignore).
 
+**Mathematics is written as math, not as code.** [checked: migrated files] A formula is
+`$…$` inline and `$$…$$` on its own, which GitHub renders, kpress sets with KaTeX on the
+site, and flowmark keeps whole.
+A code span is for what is literally typed or named: ids, paths, commands, field names,
+and the register’s ASCII literals (`s(11) >= 381/100`), which stay ASCII. Where GitHub
+draws no math — after a hyphen, slash, dash or quote, or inside italics or a link’s text
+— a formula stays code.
+A file moves in one commit through `devtools.migrate_math --apply`, which proves each
+rewrite against kpress, KaTeX and flowmark and lists the file in
+[`math-markup.yaml`](packing/devtools/math-markup.yaml), where `check_math_markup` keeps
+it migrated; `devtools.check_github_math` then asks GitHub how it rendered the pushed
+file. Generated Markdown moves at its renderer.
+
 **Custom formatting in a kpress-rendered document is plain HTML.** [convention] A block
 is a `<div class="…">` with a blank line after the opening tag and before the closing
 one, so the Markdown inside it still renders; an inline run is a `<span class="…">`; a

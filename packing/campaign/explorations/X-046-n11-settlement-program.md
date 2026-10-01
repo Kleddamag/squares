@@ -81,9 +81,9 @@ measurement, and `OR-1` says which of them deserve a tool.
 
 | Probe | Question | Result |
 | --- | --- | --- |
-| A, growth cone | One-sided rates $(f(\theta^*+hd)-U)/h$ per radian at $h=10^{-4}$; coordinate directions and the common tilt minimized over the 2,048 raw separating-axis cells containing Trump’s pose, the composite directions in the read cell only | Coordinate rates: sq0 0.139/0.164, sq1 0.458/0.542, sq2 0.411/0.194, sq3 0.458/0.458, sq4 0.458/0.542, sq5 0.230/0.273, sq6 0.238/0.299, sq7 0.312/0.301, sq8 0.674/0.210, sq9 0.402/0.301, sq10 0.134/**0.066**; common tilt 0.384/0.175 (H-019’s 0.3841/0.1747 reproduced); all six axis squares together 1.06/1.08 |
+| A, growth cone | One-sided rates $(f(\theta^{\ast}+hd)-U)/h$ per radian at $h=10^{-4}$; coordinate directions and the common tilt minimized over the 2,048 raw separating-axis cells containing Trump’s pose, the composite directions in the read cell only | Coordinate rates: sq0 0.139/0.164, sq1 0.458/0.542, sq2 0.411/0.194, sq3 0.458/0.458, sq4 0.458/0.542, sq5 0.230/0.273, sq6 0.238/0.299, sq7 0.312/0.301, sq8 0.674/0.210, sq9 0.402/0.301, sq10 0.134/**0.066**; common tilt 0.384/0.175 (H-019’s 0.3841/0.1747 reproduced); all six axis squares together 1.06/1.08 |
 | B, certificate at $U$ | Kleddamag’s rows, sites, weights and cores unchanged; container enlarged from $191/50$ to $(764/775)\cdot3877084/10^6$, ratio $3.877084>U$; per-row minimum charge on 18 rows by the retained box search in enclose mode | Drop from the $999{,}962{,}528$ threshold: 68.2% at $u=0$; 22–39% for $u\le0.023$ (tilt $\le2.6°$); 5–12% for $u\in[0.06,0.15]$; 0.8–2.5% for $u\ge0.19$; 1.69% on the row adjacent to Trump’s half-tangent $0.365769$ |
-| C, census | 59 `quench_bracket` runs from Trump: 15 single-square angle releases, 3 double releases, 40 random jolts of every centre and angle at scales 0.02–0.3 | 24 return to $U$ (13 of 16 jolts at scale $\le0.05$, then 2/8, 1/8, 1/8); Stromquist’s $3.885618083$ reached seven times; six endpoints at $U+0.0017$ to $U+0.0049$ with six axis squares, four at a common tilt $40.4°$–$40.9°$, and one square alone (square 10 five times, square 7 once) |
+| C, census | 59 `quench_bracket` runs from Trump: 15 single-square angle releases, 3 double releases, 40 random jolts of every centre and angle at scales 0.02–0.3 | 24 return to $U$ (13 of 16 jolts at scale $\le0.05$, then 2/8, 1/8, 1/8); Stromquist’s $3.885618083$ reached seven times; six endpoints at $U+0.0017$ to $U+0.0049$ with six axis squares, four at a common tilt $40.4°$ to $40.9°$, and one square alone (square 10 five times, square 7 once) |
 | D, descent check | From each of those six endpoints, walk the straight line in angle space to Trump’s angles in 24 steps, re-optimizing centres by the LP-in-cell fixed point | All six decrease monotonically to $U$ with zero rise; they are class-coordinate stalls of the quench, not local minima |
 
 Probe A’s rates are upper bounds on the growth of the all-cell optimum, since only
@@ -126,12 +126,13 @@ Derived in this block from those facts, not reviewed:
 
 - **Angular growth floor inside the ball.** For a feasible pose in the uniform-pass ball
   with displacement $v$ and side $U+\sigma$, the modulus supplies a row with
-  $a_jv\le-\kappa\|v\|_\infty$ and the remainder bound gives
-  $\sigma e_j\ge\kappa\|v\|_\infty-(K/2)\|v\|_\infty^2$; a row with $e_j=0$ is then
-  infeasible outright, so
-  $\sigma\ge(\kappa/2)\|v\|_\infty\ge0.0057\,\|\Delta\theta\|_\infty$ whenever
-  $\|v\|_\infty\le\rho_u/2=0.00115$. In particular there is no first-order flat angle
-  direction at Trump; probe A’s rates sit ten to a hundred times above this floor.
+  $a_jv\le-\kappa\Vert v\Vert_\infty$ and the remainder bound gives
+  $\sigma e_j\ge\kappa\Vert v\Vert_\infty-(K/2)\Vert v\Vert_\infty^2$; a row with
+  $e_j=0$ is then infeasible outright, so
+  $\sigma\ge(\kappa/2)\Vert v\Vert_\infty\ge0.0057\thinspace\Vert\Delta\theta\Vert_\infty$
+  whenever $\Vert v\Vert_\infty\le\rho_u/2=0.00115$. In particular there is no
+  first-order flat angle direction at Trump; probe A’s rates sit ten to a hundred times
+  above this floor.
 - **Free boundary strips for one-parameter families.** With every square within $\delta$
   of the axis, transfer from the axis floor 4 gives $f\ge4/(\cos\delta+\sin\delta)\ge U$
   for $\delta\le0.032228$ rad ($1.8465°$). With every square within $\delta$ of the
@@ -150,9 +151,9 @@ kills it, and the smallest test.
 | Rattler elimination | Some minimizer has no translational or rotational rattler | S1 plus rotational quenching | None | Proof | True, no reduction |
 | Forced wall and corner structure below $U$ | At most three squares per wall, four distinct corner blockers, at least two squares more than $1.7°$ from the axes | Already proved in the record | — | — | Too weak: it fixes no angle class and no five-square block |
 | Symmetry breaking | Quotient by $Z/2\times S_{11}$ on angles (rotations act trivially on angles modulo a quarter turn) and by $Z/4\times S_6\times S_5$ on the 6+5 family | Standard | — | — | Constant factors only: $2\cdot11!$ and $345{,}600$ |
-| Counting-forced localization (X-045 mode A) | A certificate at side $U$ with excess $\varepsilon=M-11\Gamma$ forces every square into $\{q\le\Gamma+\varepsilon\}$ | The 31/8 certificate has relative excess $10^{-5}$ | A fractional packing of mass 11 supported off the Trump roles | Probe B and the localization LP below | Probe B says the retained certificate is wall-brittle and cannot be read at $U$; a $U$-targeted certificate needs an optimizer the repository does not have (the external search is not retained; in-repo column generation tops out near 3.827) |
+| Counting-forced localization (X-045 mode A) | A certificate at side $U$ with excess $\varepsilon=M-11\Gamma$ forces every square into $\lbrace q\le\Gamma+\varepsilon\rbrace$ | The 31/8 certificate has relative excess $10^{-5}$ | A fractional packing of mass 11 supported off the Trump roles | Probe B and the localization LP below | Probe B says the retained certificate is wall-brittle and cannot be read at $U$; a $U$-targeted certificate needs an optimizer the repository does not have (the external search is not retained; in-repo column generation tops out near 3.827) |
 | Rigid sub-assembly within 0.0021 of $U$ | Every packing with side $\le U$ contains six near-axis squares and a five-square block at a common tilt | Probes C and D found nothing else within $U+0.0085$ | A verified $\ge3$-class local minimum below $U+0.0085$ | Census with a descent filter (lane 2) | Plausible as a fact, unreachable as a theorem by one-body counting; it is the bridge statement, discussed below |
-| Angle-profile certificates (candidate H-a) | For an angle set $B$, every packing with a square oriented in $B$ has side $>U$ | Stromquist’s Theorem 3 is exactly such a theorem for the profile “all squares in $\{0°,45°\}$”, and it beats $U$ | The profile LP’s dual: a fractional packing using $B$-oriented poses at side $U$ | Formulate the LP on the retained T-025 atoms at $191/50$ and read its dual | Open; the only known success is a profile with two exact angles |
+| Angle-profile certificates (candidate H-a) | For an angle set $B$, every packing with a square oriented in $B$ has side $>U$ | Stromquist’s Theorem 3 is exactly such a theorem for the profile “all squares in $\lbrace0°,45°\rbrace$”, and it beats $U$ | The profile LP’s dual: a fractional packing using $B$-oriented poses at side $U$ | Formulate the LP on the retained T-025 atoms at $191/50$ and read its dual | Open; the only known success is a profile with two exact angles |
 
 Two conclusions follow.
 First, nothing here removes an angle dimension by proof, so the exact-family ladder is
@@ -165,11 +166,11 @@ search whose relaxation is coarse enough, and neither has been priced.
 A verified search over the angle box $[0,\pi/2)^{11}$ covers it with boxes and closes
 each by a rigorous bound $f\ge U$ over the box.
 Write $c$ for the side lost per radian of box width by the relaxation, and
-$V(\varepsilon)$ for the volume of the sublevel set $\{f\le U+\varepsilon\}$ modulo
-$Z/2\times S_{11}$. A box at a point where $f-U=\varepsilon$ needs width about
+$V(\varepsilon)$ for the volume of the sublevel set $\lbrace f\le U+\varepsilon\rbrace$
+modulo $Z/2\times S_{11}$. A box at a point where $f-U=\varepsilon$ needs width about
 $\varepsilon/c$, so the box count is roughly
-$\int V'(\varepsilon)\,(c/\varepsilon)^{11}\,d\varepsilon$: exponential in $c$, and
-dominated by wherever $f$ is close to $U$.
+$\int V'(\varepsilon)\thinspace(c/\varepsilon)^{11}\thinspace d\varepsilon$: exponential
+in $c$, and dominated by wherever $f$ is close to $U$.
 
 - **Near Trump** the local theorem is the terminal leaf, and probe A gives the rates.
   With first-order relaxations the shells outside the ball cost about
@@ -205,13 +206,13 @@ below is chosen to be worth running under either answer.
 **Statement.** Let $\mathcal F_{6,5}(\theta)$ be the packings of eleven unit squares in
 which six have actual orientation $0$ and five share the actual orientation $\theta$,
 modulo quarter turns, with centres and contacts free.
-Then $\min\{S:P\in\mathcal F_{6,5}(\theta),\ \theta\in[0,\pi/4]\}=U$, attained only on
-the $Z/4\times S_6\times S_5$ orbit of Trump’s pose at $\theta=\theta^*$. One reflection
-of the container folds $\theta$ into $[0,\pi/4]$; the family at $\theta=0$ is the axis
-family and at $\theta=\pi/4$ lies inside Stromquist’s class.
-Comparisons with $U$ are decided exactly: every leaf bound is rational and $U$ is
-irrational, so “bound $\ge U$” is the strict comparison through $U$'s isolating
-interval.
+Then $\min\lbrace S:P\in\mathcal F_{6,5}(\theta),\ \theta\in[0,\pi/4]\rbrace=U$,
+attained only on the $Z/4\times S_6\times S_5$ orbit of Trump’s pose at
+$\theta=\theta^{\ast}$. One reflection of the container folds $\theta$ into $[0,\pi/4]$;
+the family at $\theta=0$ is the axis family and at $\theta=\pi/4$ lies inside
+Stromquist’s class. Comparisons with $U$ are decided exactly: every leaf bound is
+rational and $U$ is irrational, so “bound $\ge U$” is the strict comparison through
+$U$'s isolating interval.
 
 **Domain.** Use the half-tangent chart $t=\tan(\theta/2)\in[0,\tan(\pi/8)]$, in which
 corner coordinates are rational, matching the certificate machinery.
@@ -231,16 +232,16 @@ Symmetry-breaking rows order the axis squares by centre and fix the tilted block
 centroid quadrant.
 
 **The Trump box.** Cells containing a Trump image stay feasible at side $\le U$, so they
-close only by the local theorem: refine the box containing $t^*$ until its angle width
-and the LP’s centre enclosure at side $\le3877084/10^6$ both lie within $\rho$ of the
-matched labelled Trump image.
-Because the fixed-side feasible set at $t^*$ is the single point $z_*$ in each such
-cell, the enclosure shrinks with the box; the growth floor above bounds the true
+close only by the local theorem: refine the box containing $t^{\ast}$ until its angle
+width and the LP’s centre enclosure at side $\le3877084/10^6$ both lie within $\rho$ of
+the matched labelled Trump image.
+Because the fixed-side feasible set at $t^{\ast}$ is the single point $z_{\ast}$ in each
+such cell, the enclosure shrinks with the box; the growth floor above bounds the true
 feasible set at side $U+4.1\times10^{-7}$ to sup-diameter $7\times10^{-5}$ inside the
 half ball, and the relaxed enclosure exceeds that only by the box’s relaxation loss.
 Boxes adjacent to the Trump box carry margins $0.175h$ and $0.384h$ at distance $h$ on
-the two sides of $t^*$ (probe A, the family’s one parameter), so refinement toward $t^*$
-is geometric and about 20 boxes deep on each side.
+the two sides of $t^{\ast}$ (probe A, the family’s one parameter), so refinement toward
+$t^{\ast}$ is geometric and about 20 boxes deep on each side.
 
 **What is automatic and what it costs.** Everything except the cell-tree driver exists:
 exact LP with certificates, uniform cell descriptors and their reader, rational cores,
@@ -255,7 +256,7 @@ replay: CPU hours to days, and one to three weeks of engineering.
 **First two-hour slice (Rung 0).** Build the cell-tree driver with float HiGHS proposals
 and exact leaf certificates, control it on $n=5$ in the family “four axis squares and
 one at $\theta$” at a box around $45°$ against the proved $s(5)=2+1/\sqrt2$, then run it
-on the single box $t\in[t^*-10^{-6},t^*+10^{-6}]$ for $\mathcal F_{6,5}$. The
+on the single box $t\in[t^{\ast}-10^{-6},t^{\ast}+10^{-6}]$ for $\mathcal F_{6,5}$. The
 machine-checkable exit is a certificate file listing every leaf with its cell and its
 exact Farkas or dual vector, accepted by the independent reader, together with the
 Trump-degenerate leaves closed by the local theorem.
@@ -267,10 +268,10 @@ Either way the slice prices the tree, which is the only unknown in the milestone
 
 | Rung | Family | Angle parameters | What it proves | Cost order |
 | --- | --- | --- | --- | --- |
-| 0 | $\mathcal F_{6,5}$ on one box around $t^*$ | 0 | Trump is globally optimal at its own angle: the first optimality statement with an equality case for a family containing Trump’s packing | One cell tree |
-| 1 | $\mathcal F_{6,5}$, all $\theta$ (H-112) | 1 | Any improvement on Trump has a different multiplicity or more classes | $10^2$–$10^3$ boxes |
+| 0 | $\mathcal F_{6,5}$ on one box around $t^{\ast}$ | 0 | Trump is globally optimal at its own angle: the first optimality statement with an equality case for a family containing Trump’s packing | One cell tree |
+| 1 | $\mathcal F_{6,5}$, all $\theta$ (H-112) | 1 | Any improvement on Trump has a different multiplicity or more classes | $10^2$ to $10^3$ boxes |
 | 2 | Axis plus one angle, $m=1..11$ tilted squares | 1 each | Any improvement uses two distinct non-axis orientations | 11 rungs like 1 |
-| 3 | Two arbitrary orientations (H-113) | 2 | Any improvement has at least three orientations: Stromquist’s Theorem 3 with $\{0°,45°\}$ replaced by every pair | $10^4$–$10^5$ boxes per multiplicity |
+| 3 | Two arbitrary orientations (H-113) | 2 | Any improvement has at least three orientations: Stromquist’s Theorem 3 with $\lbrace0°,45°\rbrace$ replaced by every pair | $10^4$ to $10^5$ boxes per multiplicity |
 | 4 | Three orientations | 3 | The first rung that meets the far region | Priced by $c$ and $V$ |
 
 Each rung also yields **tubes**: wherever a box is closed with margin $\mu>0$, transfer
@@ -293,7 +294,7 @@ family, with the ball covering the margin-zero end.
   consumer must filter.
 - **Stromquist’s class at $3.8856$.** It is a second local minimum of $\mathcal F_{6,5}$
   at $\theta=45°$, attained, with rotational rattlers (probe C reached the same side
-  with an axis square at $1.5°$–$3.5°$, thirteen contacts, not converged).
+  with an axis square at $1.5°$ to $3.5°$, thirteen contacts, not converged).
   For rung 1 it is harmless: the margin $0.0085$ prunes boxes of width about $0.0085/c$
   there, and the transfer strip covers the endpoint.
   For a profile theorem it fixes the required sharpness: any one-body statement about
@@ -302,7 +303,7 @@ family, with the ball covering the margin-zero end.
   ladder is repriced or abandoned; nothing else in the program is at risk from this.
 - **Centre enclosure conditioning.** The ball needs centre enclosures within
   $\rho=0.004$; if the LP’s enclosure over a box grows like $100w$, rung 1 needs boxes
-  of width $4\times10^{-5}$ near $t^*$, still only logarithmically many in one
+  of width $4\times10^{-5}$ near $t^{\ast}$, still only logarithmically many in one
   dimension, but squared for rung 3.
 - **Flat directions.** Excluded at first order by the zero cones; the floor derived
   above is quantitative but small ($0.0057$ per radian), and probe A’s measured rates
@@ -320,10 +321,10 @@ Local labels, not identifiers.
 
 | Candidate | Claim | Smallest discriminator | Falsifier | Information |
 | --- | --- | --- | --- | --- |
-| H-a, angle-profile certificate | For an explicit angle set $B$ away from $\{0,\theta^*\}$, every packing with a square oriented in $B$ has side $>U$, by a counting certificate whose $B$-rows carry excess above the budget gap | Write the profile LP over the retained T-025 atoms at $191/50$ and read its optimal dual | A dual fractional packing using $B$ poses; or excess below the budget gap on every feasible certificate | Whether one-body counting can shape the far region at all |
-| H-b, fixed-angle global optimality | Rung 0 holds on a box of half-width $10^{-6}$ in $t$ around $t^*$ | The cell-tree driver | A leaf with rational bound below $U$ that is not Trump-degenerate: a counterexample candidate | Prices every later rung |
-| H-c, H-112 by one-parameter cell trees | Rung 1 closes with rotational cores and the ball | Run after H-b | An unresolved box away from $t^*$ after refinement to $10^{-4}$ | The first restricted-family theorem at $n=11$ |
-| H-d, angular capture radius | The exact first-order growth cone $g(d)=\min_b\max_{\lambda\in Y_b^*}(-\lambda^\top\rho_b(d))$ over the 128 branches, with $\rho_b(d)$ the first-order change of branch $b$’s active rows along $d$ and $Y_b^*$ its stress cone normalized on the far-wall rows, together with the exact second-order remainder, certifies $f>U$ on an angular ball larger than $\rho$ | 2,816 small exact LPs from exp-013’s stresses and `research/exact_jets` | Radius no larger than $\rho$ | Whether the terminal leaf can be enlarged tenfold, which multiplies through every rung |
+| H-a, angle-profile certificate | For an explicit angle set $B$ away from $\lbrace0,\theta^{\ast}\rbrace$, every packing with a square oriented in $B$ has side $>U$, by a counting certificate whose $B$-rows carry excess above the budget gap | Write the profile LP over the retained T-025 atoms at $191/50$ and read its optimal dual | A dual fractional packing using $B$ poses; or excess below the budget gap on every feasible certificate | Whether one-body counting can shape the far region at all |
+| H-b, fixed-angle global optimality | Rung 0 holds on a box of half-width $10^{-6}$ in $t$ around $t^{\ast}$ | The cell-tree driver | A leaf with rational bound below $U$ that is not Trump-degenerate: a counterexample candidate | Prices every later rung |
+| H-c, H-112 by one-parameter cell trees | Rung 1 closes with rotational cores and the ball | Run after H-b | An unresolved box away from $t^{\ast}$ after refinement to $10^{-4}$ | The first restricted-family theorem at $n=11$ |
+| H-d, angular capture radius | The exact first-order growth cone $g(d)=\min_b\max_{\lambda\in Y_b^{\ast}}(-\lambda^\top\rho_b(d))$ over the 128 branches, with $\rho_b(d)$ the first-order change of branch $b$’s active rows along $d$ and $Y_b^{\ast}$ its stress cone normalized on the far-wall rows, together with the exact second-order remainder, certifies $f>U$ on an angular ball larger than $\rho$ | 2,816 small exact LPs from exp-013’s stresses and `research/exact_jets` | Radius no larger than $\rho$ | Whether the terminal leaf can be enlarged tenfold, which multiplies through every rung |
 | H-e, no third class below $U+0.0085$ | Every descent-stable local minimum with side below Stromquist’s value is in Trump’s orbit | Census with a descent filter from jolted Trump and jolted Stromquist starts | A descent-stable $\ge3$-class minimum below $3.8856$ | The required sharpness of any profile theorem |
 | H-f, core relaxation constant | Rotational-core LPs lose at most $1.5$ in side per radian of box width at generic angle vectors, and the fixed-angle optimum exceeds $U+0.2$ on most of angle space | Core LP at 20 random angle vectors and three widths; quench at frozen random angles | $c>3$ or median $f-U<0.1$ | Whether a full verified search is a one-week program or none |
 
@@ -331,7 +332,7 @@ Local labels, not identifiers.
 
 | Lane | Model | Question | Entry | First discriminator | Exit | Falsifier | Budget | Files |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1, rung 0 instrument | Opus extra-high, Fable extra-high review of the certificate contract | Does a fixed-angle cell tree with exact leaf certificates close the box around $t^*$? | `exact_lp`, `uniform_cell_check`, `cases/trump11`, the $n=5$ control | The $n=5$ control closes | Certificate file plus reader verdict, or the unresolved-leaf list with node count | A non-degenerate leaf below $U$ | 4–6 h | new `packing/cases/trump11/fixed_angle_tree.py` and its reader; results in `attic/` until admitted |
+| 1, rung 0 instrument | Opus extra-high, Fable extra-high review of the certificate contract | Does a fixed-angle cell tree with exact leaf certificates close the box around $t^{\ast}$? | `exact_lp`, `uniform_cell_check`, `cases/trump11`, the $n=5$ control | The $n=5$ control closes | Certificate file plus reader verdict, or the unresolved-leaf list with node count | A non-degenerate leaf below $U$ | 4–6 h | new `packing/cases/trump11/fixed_angle_tree.py` and its reader; results in `attic/` until admitted |
 | 2, census repair and landscape | Opus extra-high | Which descent-stable local minima exist below $U+0.02$, and how many orientation classes do they have? | `run_basin_hopping`, probes C and D | The descent filter rejects the six probe-C stalls and accepts Trump and Stromquist | A table of distinct minima with sides, class counts and multiplicities from 1,000 jolted starts | A descent-stable $\ge3$-class minimum below $3.8856$ | 3–4 h | `packing/devtools/run_basin_hopping.py` census mode, a descent-filter module beside `research/quench.py` |
 | 3, capture radius and profile LP (high risk, high reward) | Fable extra-high | Can the exact stresses certify $f>U$ on an angular ball larger than $\rho$, and does the profile LP’s dual on retained atoms leave any $B$ excludable? | exp-013 record, `research/exact_jets`, `fractional/threshold` | $g(d)>0$ reproduced on all 22 coordinate faces from the stresses | A theorem-shaped statement with constants for H-d; a go or no-go on H-a from the dual’s support | Radius $\le\rho$; low-charge set covering most of pose space | 4–6 h | new module under `packing/cases/trump11/`, notes in `attic/` |
 
@@ -375,8 +376,8 @@ Session 156 ran three of the lanes above the same night, and three estimates her
 wrong in ways that change the plan:
 
 - **The cell tree is about a thousand times larger than estimated.** Rung 0’s box needed
-  more than $7.8\times10^7$ nodes before its last 79 of 256 subtrees, against the
-  $10^3$–$10^5$ LPs per box estimated in “The H-112 Milestone”.
+  more than $7.8\times10^7$ nodes before its last 79 of 256 subtrees, against the $10^3$
+  to $10^5$ LPs per box estimated in “The H-112 Milestone”.
   Each added square multiplies the tree by roughly six or seven (the $n=5$ control
   closes in 229 nodes).
   Rung 1 is out of reach with this relaxation, and the lever is a stronger bound per
@@ -392,7 +393,7 @@ wrong in ways that change the plan:
   36 of 42 rows keep decreasing at second order, so a second-order-exact isolation
   theorem is the route to a larger ball.
   The floor quoted above as $0.0057$ per radian used a far-row constant; the corrected
-  uniform-ball floor is $\sigma\ge0.0111\,t$.
+  uniform-ball floor is $\sigma\ge0.0111\thinspace t$.
 - **The census found no third class below Stromquist’s value, but did find two new
   minima within $U+0.02$.**
   [exp-228](../series/series-000-smoke-and-calibration/experiments/exp-228-h238-descent-filtered-census.md)

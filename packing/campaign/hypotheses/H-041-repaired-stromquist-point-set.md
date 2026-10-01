@@ -46,9 +46,9 @@ hypothesis:
 ---
 # H-041 — test the smallest visible repair
 
-The printed point `G = (0.8, 1.85)` leaves a narrow escape through the adjacent Lemma 4
+The printed point $G = (0.8, 1.85)$ leaves a narrow escape through the adjacent Lemma 4
 quadrilateral.
-Moving only its x-coordinate left by `0.01` is the smallest simple decimal
+Moving only its x-coordinate left by $0.01$ is the smallest simple decimal
 repair currently proposed.
 
 This claim was registered after finding the printed-set witness and before checking the

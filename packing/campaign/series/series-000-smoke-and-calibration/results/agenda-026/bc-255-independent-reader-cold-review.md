@@ -44,7 +44,7 @@ Every returned escape must also match independently recomputed ten-set and twelv
 masks.
 
 Receipt validation requires exactly seven Boolean-or-null outcomes, matching checked and
-unchecked inventories, and a completed-angle prefix of `0,45`. Positive completion
+unchecked inventories, and a completed-angle prefix of $0,45$. Positive completion
 requires both angles and a supplied producer exit code of zero.
 Every false clause requires exactly one directly verified escape.
 Thus one verified false clause can reject the conjunction while other clauses remain

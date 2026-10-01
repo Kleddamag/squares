@@ -44,7 +44,7 @@ Let R be the family of all closed B-cores on the complete retained net whose cen
 in the strict residual container and whose cores avoid D and the four selected closed
 owner patches. Define
 
-$$I_* = \bigcap_{Q\in R} Q.$$
+$$I_{\ast} = \bigcap_{Q\in R} Q.$$
 
 A point p makes D plus p a cover of this relaxed domain **if and only if** p lies in I*.
 This is a convex feasibility problem in two coordinates, even though the family R has

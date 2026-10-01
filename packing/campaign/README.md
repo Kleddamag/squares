@@ -21,7 +21,7 @@ run; neither category implies the separate novelty assessment owned by
 
 ## The Current Search Objective
 
-**What is the structure of the `s(n)` landscape—how many basins exist, how rare is the
+**What is the structure of the $s(n)$ landscape—how many basins exist, how rare is the
 record basin, and which proposers reach which basin—with records as corollaries rather
 than the objective?**
 
@@ -53,25 +53,25 @@ and arithmetic regime.
 Never extrapolate from a numerical result to a formal claim, or from one numerical
 regime to another.
 
-The **instance axis is `n`**, and the standing cells have different jobs:
+The **instance axis is $n$**, and the standing cells have different jobs:
 
-| `n` | role | standing best | why this cell |
+| $n$ | role | standing best | why this cell |
 | --- | --- | --- | --- |
-| 10 | **positive control** (machinery only) | `3 + 1/√2 = 3.70710678…`, proved | Known answer, and *not* the grid. But its mechanism is a 45° tilt, so passing it proves the machinery and says nothing about finding an oblique record—see the caveat below. |
+| 10 | **positive control** (machinery only) | $3 + 1/\sqrt{2} = 3.70710678\ldots$, proved | Known answer, and *not* the grid. But its mechanism is a 45° tilt, so passing it proves the machinery and says nothing about finding an oblique record—see the caveat below. |
 | 11 | **target** | `3.87708359002281…`, Trump 1979 | The smallest open case and a degree-8 side construction; exp-013 proves qualitative local isolation, and BC-199 supplies a positive radius in the retained fixed-side chart. Global optimality remains open. |
-| 12 | **open-case calibration** | `4`, the trivial grid | The 4×4 grid is the standing best, not a proved optimum. A numerically lower side would be a candidate and must enter formal promotion before it changes the verified frontier. |
-| 16 | **proved not-below control** | `4`, proved | A reported side below `4` is known to be invalid. |
-| 17 | **mechanism-matched calibration** | `4.67553009360455`, Bidwell 1998, still open | The nearest case whose record uses genuinely *oblique* structure—the primary SVG records `0°`, `+39.80496°`, and `−36.62379°`, so two unequal non-trivial orientations against a grid frame. The only cell here that speaks to record-*finding* rather than machinery. |
+| 12 | **open-case calibration** | $4$, the trivial grid | The 4×4 grid is the standing best, not a proved optimum. A numerically lower side would be a candidate and must enter formal promotion before it changes the verified frontier. |
+| 16 | **proved not-below control** | $4$, proved | A reported side below $4$ is known to be invalid. |
+| 17 | **mechanism-matched calibration** | $4.67553009360455$, Bidwell 1998, still open | The nearest case whose record uses genuinely *oblique* structure—the primary SVG records $0^\circ$, $+39.80496^\circ$, and $-36.62379^\circ$, so two unequal non-trivial orientations against a grid frame. The only cell here that speaks to record-*finding* rather than machinery. |
 
 **The proved ladder cells calibrate machinery, not strategy.** Both proved cases are
-45°-tilt mechanisms, symmetric and reachable by blind search; `n = 11` needs an oblique
-core at `≈ 40.182°`, a mechanism **no proved case exercises**. An engine can ace `n = 5`
-and `n = 10` and remain structurally blind to what the target demands.
+45°-tilt mechanisms, symmetric and reachable by blind search; $n = 11$ needs an oblique
+core at $\approx 40.182^\circ$, a mechanism **no proved case exercises**. An engine can
+ace $n = 5$ and $n = 10$ and remain structurally blind to what the target demands.
 
-That is why `n = 17` joins the standing sweep rather than waiting: it is cheap to carry,
+That is why $n = 17$ joins the standing sweep rather than waiting: it is cheap to carry,
 and rediscovering an oblique record is the only calibration that speaks to
-record-finding. The other two mechanism-matched targets—`n = 11` at inflated `δ`, and
-basin-entry tests—are registered separately.
+record-finding. The other two mechanism-matched targets—`n = 11` at inflated $\delta$,
+and basin-entry tests—are registered separately.
 
 Standing bests are read from [`../frontier/`](../frontier/README.md)—`n-010.md`,
 `n-011.md`, `n-012.md`, `n-016.md`, and `n-017.md`—never retyped into a round.
@@ -338,7 +338,7 @@ A result records the precision actually used; neither a multiprecision library n
 small tolerance makes a calculation verified.
 
 **Polish is an operation, not an assurance class.** For fixed angles and a fixed
-separating-axis assignment, minimizing `s` is a linear program, so the quench can
+separating-axis assignment, minimizing $s$ is a linear program, so the quench can
 produce an endpoint candidate at the floating-point solver’s recorded precision.
 Exact value and terminal-component identity require separate evidence.
 That is what turns “where the annealer stopped” into “which cell this is”—the difference
@@ -363,7 +363,7 @@ methods.
 
 | Field | Role | Required content |
 | --- | --- | --- |
-| subject and instance | identity | instrument, method, arithmetic or proof regime, precision when applicable, and the scoped `n` or theorem object |
+| subject and instance | identity | instrument, method, arithmetic or proof regime, precision when applicable, and the scoped $n$ or theorem object |
 | preregistered criterion | decision | exact accept and kill rules frozen before measurement or proof work |
 | `outcome` | outcome | `determination`, assurance, claim boundary, and links to the evidence that supports it |
 | guards and mutations | guard | every required control, including failures and refusals rather than only passing receipts |
@@ -382,7 +382,7 @@ criteria and method-specific controls.
 | `moves`, `seconds` | cost | engine summary; reported alongside as a courtesy |
 | `overlap` | **guard** | numerical penetration depth under the declared screen arithmetic; a non-zero value invalidates the run but zero does not make it formal |
 | `selftest_passed` | **guard** | `sqsearch --selftest` before any run is recorded |
-| control cells | **guard** | `n=10` must land within `1e-2`; proved `n=16` must not go below `4` |
+| control cells | **guard** | $n=10$ must land within `1e-2`; proved $n=16$ must not go below $4$ |
 | `restarts`, `accepted`, `moves_per_sec` | mechanism | engine summary |
 | spread of `best_side` across seeds | mechanism | five seeds per cell, always |
 
@@ -424,7 +424,7 @@ band invalidates the comparison, and an invalid held-out comparison makes its st
 invalid. Clause 1 decides on held-out cells with seed blocks in place of seeds, against
 every deciding comparator; paired block differences are reported only.
 Clauses 3 and 4 become the shared validity contract with its Python re-check and fixture
-tests, a declared positive control, the proved `n = 16` not-below control, and rejected
+tests, a declared positive control, the proved $n = 16$ not-below control, and rejected
 invalid fixtures. No guided-versus-unguided comparison is admissible until that currency
 is declared.
 
@@ -442,11 +442,11 @@ running. A candidate strategy is **accepted** when all of:
 3. **Numerical guard.** Every reported configuration has `overlap == 0` under the
    declared screen arithmetic, and the engine selftest passed in the same invocation.
    This decides whether the numerical round is usable; it does not verify feasibility.
-4. **Guards.** The `n=10` positive control lands within `1e-2`; the proved `n=16`
-   not-below control never reports a side under `4`; every stored pose passes an
+4. **Guards.** The $n=10$ positive control lands within `1e-2`; the proved $n=16$
+   not-below control never reports a side under $4$; every stored pose passes an
    independent geometry check; and deliberately invalid fixtures are rejected in the
    same instrument build.
-   `n=12` is an open research case, not a negative control: a valid side below `4` would
+   $n=12$ is an open research case, not a negative control: a valid side below $4$ would
    require exact promotion, not automatic rejection.
 5. **Carrying cost.** The complexity is worth carrying, with the judgement recorded as
    one sentence in `verdict.reason`.
@@ -592,11 +592,11 @@ Two refusals worth knowing, because they are structural rather than advisory:
 The harness holds no experiment-specific code, and an experiment holds no harness code.
 An experiment is one durable `exp-NNN` record for one round.
 Its executable recipe is a **command** declared in the hypothesis.
-The harness invokes that command once per `{n}` and `{seed}`; each invocation is a run
-inside the experiment.
-It must print JSON Lines carrying `best_side`, the `n` and `seed` it was invoked for,
+The harness invokes that command once per $\lbrace n\rbrace$ and `{seed}`; each
+invocation is a run inside the experiment.
+It must print JSON Lines carrying `best_side`, the $n$ and `seed` it was invoked for,
 and an `overlap` of exactly zero on every result line; it must carry the full pose on
-those lines as equal-length `x`, `y` and `t` arrays of length `n`; and it must exit 0.
+those lines as equal-length $x$, $y$ and $t$ arrays of length $n$; and it must exit 0.
 The seed’s result is the *minimum* `best_side` over its lines, so nothing has to agree
 about which line is the summary.
 The pose is what keeps the round checkable rather than asserted: before writing a round,
@@ -621,7 +621,7 @@ uv run --frozen packing-campaign preflight
 `--budget-moves` is the engine invocation limit, and the engine is deterministic in its
 seed, so `best_side` reproduces across machines; wall clock does not.
 Measured 2026-08-23: ~40M moves/s on the M1 Pro of the recorded regime, ~14.9M on a
-4-core cloud container at `n = 11`, and ~9.9M at `n = 17`. Size a timebox against the
+4-core cloud container at $n = 11$, and ~9.9M at $n = 17$. Size a timebox against the
 machine you are actually on.
 Equal moves support comparisons only within the same proposer and regime; cross-proposer
 comparison requires equal `pair_tests` and is not yet admissible.
@@ -682,9 +682,9 @@ A series is earned by a tooling or regime change that affects comparability, rec
 | Series | Purpose | State |
 | --- | --- | --- |
 | `series-000` (S0) | smoke and calibration; every baseline metric’s first point | **open** |
-| `series-001` (S1) | `n = 11` baseline campaign with canonical basins in place | not opened |
-| `series-002` (S2) | `n = 12`, seeding and the LP-dual probe | not opened |
-| `series-003` (S3) | opportunistic `m² − 3` slot | not opened |
+| `series-001` (S1) | $n = 11$ baseline campaign with canonical basins in place | not opened |
+| `series-002` (S2) | $n = 12$, seeding and the LP-dual probe | not opened |
+| `series-003` (S3) | opportunistic $m^2 - 3$ slot | not opened |
 | `series-004` (S4) | proof lane, after PoseBox | not opened |
 | `series-005` (S5) | structured search: angle-class engine | not opened |
 | `series-006` (S6) | landscape cartography—the atlas, the premise, the ladders | not opened |

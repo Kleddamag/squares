@@ -124,21 +124,21 @@ placements still violated, freeze it on convergence, and take the next side by
 bisection.
 
 Five sides were decided on two independently constructed site sets each.
-`997/200` was read on the `n = 21` criterion first and refuted on three constructions,
+$997/200$ was read on the $n = 21$ criterion first and refuted on three constructions,
 for a reason this round explains rather than records: just below the ceiling the
-twenty-five axis-parallel `B`-squares overlap only in strips of width `5B − L = 0.0035`,
+twenty-five axis-parallel $B$-squares overlap only in strips of width $5B - L = 0.0035$,
 and a site set with no site in those strips makes twenty-five unit weights
-dual-feasible, so the restricted optimum is exactly `25.000000` whatever the covering
-value is. The exactly round value this register has learned to distrust has, at `m = 5`,
+dual-feasible, so the restricted optimum is exactly $25.000000$ whatever the covering
+value is. The exactly round value this register has learned to distrust has, at $m = 5$,
 a mechanism.
 
-Below it the bisection walled at `979/200` and `39/8`, and certified at `193/40` and at
-`97/20`, the latter on the seeded construction after the uniform grid crossed twenty by
+Below it the bisection walled at $979/200$ and $39/8$, and certified at $193/40$ and at
+$97/20$, the latter on the seeded construction after the uniform grid crossed twenty by
 four parts in ten thousand.
 Both certificates were frozen by the lane and decided by the coordinator through the
-retention gate; the `97/20` rung is registered as
-[T-021](../../../../frontier/RESULTS.md) and the `193/40` rung is retained beside it.
-The wall is bracketed to `[4.85, 4.875]`, width `0.025` against the `0.02` the
+retention gate; the $97/20$ rung is registered as
+[T-021](../../../../frontier/RESULTS.md) and the $193/40$ rung is retained beside it.
+The wall is bracketed to $[4.85, 4.875]$, width $0.025$ against the $0.02$ the
 hypothesis registered, so H-062 is unresolved and one rung short.
 
 <!-- This document follows common-doc-guidelines.md.

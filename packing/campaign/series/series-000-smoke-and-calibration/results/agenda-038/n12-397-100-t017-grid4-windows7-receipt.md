@@ -2,13 +2,13 @@
 
 Status: **site set refuted, converged**. The side stays open.
 
-Session-140 rank-2 probe: four-grid `(28, 38, 46, 54)` unioned with T-017’s atom sites
-scaled from `99/25` to `397/100`, plus `--seed-windows 7`,
+Session-140 rank-2 probe: four-grid $(28, 38, 46, 54)$ unioned with T-017’s atom sites
+scaled from $99/25$ to $397/100$, plus `--seed-windows 7`,
 `(n, L, B, net) = (12, 397/100, 9977/10000, 181 directions)`. Seed sites 2533. The row
-loop converged after 36 LP rounds at `12.133391` (0 violated).
-Freeze mass `48534459/4000000 = 12.13361475`, above twelve.
+loop converged after 36 LP rounds at $12.133391$ (0 violated).
+Freeze mass $48534459/4000000 = 12.13361475$, above twelve.
 `decide_certificate` was not run.
-Adding sites can still lower the covering value, so `397/100` is not barred.
+Adding sites can still lower the covering value, so $397/100$ is not barred.
 T-017 is unchanged. T-028 was not offered.
 
 ## Command
@@ -35,13 +35,13 @@ Freeze written; mass above 12. Wall 1078.8 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `12.133391` |
-| Freeze mass | `48534459/4000000` |
+| Restricted optimum | $12.133391$ |
+| Freeze mass | $\frac{48534459}{4000000}$ |
 | Sites / orbits / rows | 9685 / 1307 / 9678 |
 | Seed sites | 2533 |
 | Atoms | 1637 |
 | LP rounds | 36 |
-| Crossing | round 9 (`12.023202`) |
+| Crossing | round 9 ($12.023202$) |
 | Wall | 1078.8 s |
 | `least_covered` | 1 |
 | Converged | yes |

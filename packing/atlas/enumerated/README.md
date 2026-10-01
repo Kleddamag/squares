@@ -2,11 +2,11 @@
 
 This collection stores the complete abstract size-five slice of the draft
 contact-assembly grammar within one fixed scope: one semantic angle class, no wall
-colors, and a signed `u`- or `v`-normal color on every present edge.
+colors, and a signed $u$- or $v$-normal color on every present edge.
 It contains 11,013 orbits over all 21 connected unlabeled five-vertex graph topologies.
 
 The collection is deliberately geometry-free.
-An entry says which abstract vertices have a signed `u`- or `v`-normal contact relation.
+An entry says which abstract vertices have a signed $u$- or $v$-normal contact relation.
 It says nothing about square positions, tangential offsets, wall seating, non-edge
 separation, container fit, local realizability, or packing feasibility.
 
@@ -24,10 +24,10 @@ A stable identity has the form `T5-NN/<digits>`:
 
 | Digit | Contact color |
 | --- | --- |
-| `0` | `u` normal, negative sign |
-| `1` | `u` normal, positive sign |
-| `2` | `v` normal, negative sign |
-| `3` | `v` normal, positive sign |
+| `0` | $u$ normal, negative sign |
+| `1` | $u$ normal, positive sign |
+| `2` | $v$ normal, negative sign |
+| `3` | $v$ normal, positive sign |
 
 Digits follow the topology’s lexicographically ordered edge list.
 The code is the minimal representative under the topology automorphism group and the

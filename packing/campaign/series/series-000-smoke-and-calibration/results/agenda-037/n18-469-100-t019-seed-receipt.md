@@ -2,14 +2,14 @@
 
 Status: **site set refuted, unconverged**. Locked at 18. The side stays open.
 
-Session-139 probe: BC-191 auto `(32, 43, 53)` unioned with T-019’s 1184 atom sites
-scaled from `459/100` to `469/100`,
+Session-139 probe: BC-191 auto $(32, 43, 53)$ unioned with T-019’s 1184 atom sites
+scaled from $459/100$ to $469/100$,
 `(n, L, B, net) = (18, 469/100, 9977/10000, 181 directions)`. The same seed certified
-`467/100` as T-027. Here the row loop sat at `18.000000` from round 8 through the 900 s
+$467/100$ as T-027. Here the row loop sat at $18.000000$ from round 8 through the 900 s
 deadline (59 LP rounds, 288 still violated) on 6853 sites / 920 orbits.
 Remaining rows can only raise this value.
-Adding sites can still lower it, so `469/100` is not barred.
-T-027 at `467/100` is unchanged.
+Adding sites can still lower it, so $469/100$ is not barred.
+T-027 at $467/100$ is unchanged.
 
 ## Command
 
@@ -34,11 +34,11 @@ Wall 921.5 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `18.000000` |
+| Restricted optimum | $18.000000$ |
 | Sites / orbits / rows | 6853 / 920 / 17282 |
 | Seed sites | 1184 |
 | LP rounds | 59 |
-| Crossing | round 8 (`18.000000`) |
+| Crossing | round 8 ($18.000000$) |
 | Wall | 921.5 s |
 | `least_covered` | 0.981532 |
 | Converged | no (`violated == 288` at stop) |

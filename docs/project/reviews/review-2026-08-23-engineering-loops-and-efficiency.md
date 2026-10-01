@@ -190,9 +190,9 @@ the same task.
 count.**
 
 The `choose_cell` fix above is an identity — the pair half-extent really is the same on
-all four candidate axes, `1/2 + 1/2(|cos D| + |sin D|)`, and `sqsearch::geom` already
+all four candidate axes, $1/2 + 1/2(|\cos D| + |\sin D|)$, and `sqsearch::geom` already
 relies on it and already tests it against the naive four-axis form.
-Verified over 17k rows at n ∈ {5, 10, 11, 17}: identical axis and sign choices, `h`
+Verified over 17k rows at n ∈ {5, 10, 11, 17}: identical axis and sign choices, $h$
 agreeing to 1 ulp.
 
 It changed `golden/basin-maps.yaml`:
@@ -219,7 +219,7 @@ Two things follow, and they point in opposite directions:
    per-axis computation had the four axes disagree on a mathematically identical
    quantity in **9.7% of pairs**, by up to 4.4e-16 — noise that entered the `argmax`
    over `gap = |d| − h` and could pick a different separating axis than the geometry
-   does. With one shared `h` the term cancels exactly.
+   does. With one shared $h$ the term cancels exactly.
 
 2. **`distinct_basins` is not stable to ulp-scale perturbation, and it counts solver
    stalls as basins.** It is the primary observable of `H-003`, `H-008`, `H-012`,

@@ -383,9 +383,9 @@ families that fall short of mass eleven — that is D-489.
 **The scope of that, corrected later the same day.** The first summaries of the
 measurement said conditioning was *refuted*, and that is wider than what was measured.
 Refutation covers the conditional method by **point covers** on the residual domain, and
-nothing else; the survivor family violates the two-of-three inequalities, charging `5/4`
+nothing else; the survivor family violates the two-of-three inequalities, charging $5/4$
 against a budget of one, so it does not block a conditional threshold certificate.
-The general result is **neutrality**: conditioning subtracts exactly `m` from both the
+The general result is **neutrality**: conditioning subtracts exactly $m$ from both the
 obstruction and the requirement, so it cannot turn a failing method into a succeeding
 one. That argument is stated in full, term by term, in
 [X-026](../explorations/X-026-what-conditioning-does-and-does-not-buy.md), which also

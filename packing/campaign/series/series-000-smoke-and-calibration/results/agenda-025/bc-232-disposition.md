@@ -43,7 +43,7 @@ endpoint is the smallest floating `rows_objective` among iterations whose
 These labels are not interchangeable.
 
 A `verify_ceiling` family of exact total at least eleven closes this one-body method at
-side `191/50`; it is not a lower-bound certificate.
+side $191/50$; it is not a lower-bound certificate.
 A row-converged objective below eleven stops the lane and opens the declared covering
 bridge on the preserved state; the float crossing itself proves no bound.
 Neither event authorizes a rerun into the same stem.
@@ -73,28 +73,29 @@ uv run --frozen --all-extras --group dev python -m devtools.run_fractional_cutti
 ## T+2 Result
 
 The original execution session exited zero after 14 iterations and stopped as
-`deadline reached before iteration 14`. Its timed loop recorded `6560.285289000021`
+`deadline reached before iteration 14`. Its timed loop recorded $6560.285289000021$
 seconds. From the second-resolution launch time `2026-09-06T03:33:15Z` to the terminal
 file timestamp `2026-09-06T05:24:41Z`, observed command wall was approximately 6,686
 seconds (111 minutes 26 seconds), including warm loading and terminal verification.
 
 The final exact lower endpoint is iteration 10’s
-`21342289572/2055263195 ≈ 10.384212408377215`. The frozen family contains 768 placements
-and has exact maximum depth `1`. `verify_ceiling` reports `proved: false` solely because
-`K3 total weight at least n` fails: the exact family total is below eleven.
-It therefore improves the retained lower endpoint but does not close the formulation.
+$21342289572/2055263195 \approx 10.384212408377215$. The frozen family contains 768
+placements and has exact maximum depth $1$. `verify_ceiling` reports `proved: false`
+solely because `K3 total weight at least n` fails: the exact family total is below
+eleven. It therefore improves the retained lower endpoint but does not close the
+formulation.
 
 Iteration 0 remains the only row-converged solve, so the computational upper endpoint is
-`11.055616942909783`. No converged row fell below eleven, and the covering bridge did
-not open. The provisional bracket width is approximately `0.671404534532568`, 58.4994
-percent of the retained width `1.147711347927249` and a 41.5006-percent reduction.
-Although that width is below the declared `0.86078351094543675` threshold, the routing
+$11.055616942909783$. No converged row fell below eleven, and the covering bridge did
+not open. The provisional bracket width is approximately $0.671404534532568$, 58.4994
+percent of the retained width $1.147711347927249$ and a 41.5006-percent reduction.
+Although that width is below the declared $0.86078351094543675$ threshold, the routing
 rule cannot fire until the full four-CPU-hour evidence budget has been spent.
 H-064 and exp-070 therefore receive a promising intermediate checkpoint, not a verdict.
 
 Iteration 13 is retained as deadline-tail evidence.
 Its row loop stopped as `deadline reached after 0 rounds`, was not converged, and
-produced row objective `11.003477019645144`; it is not an upper endpoint.
+produced row objective $11.003477019645144$; it is not an upper endpoint.
 The terminal summary records its 150 selected orbits, while the state was written before
 that selection was installed and records `added: 0`, an empty note, 27,277 sites, and an
 empty top-level stop string.

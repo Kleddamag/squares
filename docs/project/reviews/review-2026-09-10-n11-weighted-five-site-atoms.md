@@ -25,10 +25,10 @@ below. Artifact filenames in this section resolve under
 
 | Reader File | Site Multiplicities, in Stored Order | Reported Family | Reported Charge |
 | --- | --- | --- | --- |
-| [lane-a6-reader-saturated-symmetric.json](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a6-reader-saturated-symmetric.json) | `(1,2,2,1,1)` | 64 placements, total weight 11; 10 charged placements | `3/2` |
-| [lane-a6-loop-reader-2.json](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a6-loop-reader-2.json) | `(2,2,1,1,1)` | 56 placements, total weight 11; 8 charged placements | `3/2` |
+| [lane-a6-reader-saturated-symmetric.json](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a6-reader-saturated-symmetric.json) | $(1,2,2,1,1)$ | 64 placements, total weight 11; 10 charged placements | $\frac{3}{2}$ |
+| [lane-a6-loop-reader-2.json](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a6-loop-reader-2.json) | $(2,2,1,1,1)$ | 56 placements, total weight 11; 8 charged placements | $\frac{3}{2}$ |
 
-Both store threshold `4`, size `7`, budget `1`, and equal threshold and floor charges.
+Both store threshold $4$, size $7$, budget $1$, and equal threshold and floor charges.
 The corresponding retained families are
 [the symmetric family](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a6-saturated-symmetric-153-40.json)
 and
@@ -65,10 +65,10 @@ Port its representation ideas; do not inherit its results as exact production ad
 A **site** is a point in the container.
 A **core** is a closed square of the declared smaller side, placed at a direction from
 the finite angle net.
-A weighted site carries positive integer multiplicity `a_s`, interpreted as that many
+A weighted site carries positive integer multiplicity $a_s$, interpreted as that many
 labelled tokens occupying the same point.
 A **binary threshold atom** charges a core once its contained token count reaches
-threshold `t`. Put
+threshold $t$. Put
 
 ```text
 A = sum_s a_s
@@ -76,18 +76,18 @@ h(P) = sum_{s in P} a_s
 f(P) = 1 if h(P) >= t, otherwise 0.
 ```
 
-For pairwise disjoint closed cores `P_i`, each token belongs to at most one core.
-If `m` cores are charged, then
+For pairwise disjoint closed cores $P_i$, each token belongs to at most one core.
+If $m$ cores are charged, then
 
 ```text
 t m <= sum_i h(P_i) <= A,
 ```
 
-so `m <= floor(A/t)`. With nonnegative atom weight `w`, the certified upper bound on
+so `m <= floor(A/t)`. With nonnegative atom weight $w$, the certified upper bound on
 total charge is `w floor(A/t)`. This is a safe resource budget; it need not be the
 sharpest budget attainable for a particular geometry.
 
-For both candidates, `A=7` and `t=4`, so the budget is `w`. Also `0 <= h(P) <= 7`, and
+For both candidates, $A=7$ and $t=4$, so the budget is $w$. Also `0 <= h(P) <= 7`, and
 therefore `floor(h(P)/4) = [h(P)>=4]` for every core.
 That equality licenses using the archived floor-column formula for these candidates
 after exact admission.
@@ -105,7 +105,7 @@ individual inequalities remains valid.
 
 ## An Exact, Abstract Expressiveness Test
 
-Both multiplicity patterns become `(2,2,1,1,1)` after relabelling.
+Both multiplicity patterns become $(2,2,1,1,1)$ after relabelling.
 Call the two heavy sites `H1,H2` and the three light sites `L1,L2,L3`. A **trace** is
 the subset of sites contained in a core.
 The minimal traces charged by the weighted atom are:
@@ -115,40 +115,40 @@ The minimal traces charged by the weighted atom are:
 
 On the abstract universe of all subsets of these five sites, the minimum budget of a
 nonnegative combination of ordinary distinct-site threshold atoms that charges every
-weighted-positive trace by at least one is exactly `4/3`. The weighted atom itself uses
-budget `1`.
+weighted-positive trace by at least one is exactly $4/3$. The weighted atom itself uses
+budget $1$.
 
 For the upper bound, take the three ordinary two-of-three atoms on `{H1,H2,Lj}`, each
-with weight `1/3`, and a three-of-five atom with weight `1/3`. The heavy pair receives
+with weight $1/3$, and a three-of-five atom with weight $1/3$. The heavy pair receives
 charge one from the first three atoms.
-Every minimal triple receives `2/3` from those atoms and `1/3` from the last.
+Every minimal triple receives $2/3$ from those atoms and $1/3$ from the last.
 Monotonicity covers all larger positive traces.
-All four atoms have unit unweighted budget, so the combined budget is `4/3`.
+All four atoms have unit unweighted budget, so the combined budget is $4/3$.
 
-For the lower bound, assign abstract fractional mass `1/3` to the heavy-pair trace and
-`1/6` to each of the six minimal triples.
-The total is `4/3`. This mass satisfies every ordinary threshold resource inequality on
+For the lower bound, assign abstract fractional mass $1/3$ to the heavy-pair trace and
+$1/6$ to each of the six minimal triples.
+The total is $4/3$. This mass satisfies every ordinary threshold resource inequality on
 subsets of the five sites:
 
 | Ordinary Atom’s Budget | Threshold | Largest Charge Against These Seven Weighted Traces |
 | --- | --- | --- |
-| 1 | 1 | `5/6` |
-| 1 | 2 | `1` |
-| 1 | 3 | `1` |
-| 1 | 4 or 5 | `0` |
-| At least 2 | Any | At most total mass `4/3`, hence at most its budget |
+| 1 | 1 | $\frac{5}{6}$ |
+| 1 | 2 | $1$ |
+| 1 | 3 | $1$ |
+| 1 | 4 or 5 | $0$ |
+| At least 2 | Any | At most total mass $\frac{4}{3}$, hence at most its budget |
 
-For an explicit check of the table, let an ordinary support contain `h` heavy sites and
-`l` light sites.
+For an explicit check of the table, let an ordinary support contain $h$ heavy sites and
+$l$ light sites.
 Let `Q_l(r)` count pairs of light sites meeting that support in at least
-`r` sites:
+$r$ sites:
 
 ```text
 Q_l(r) = sum over j=0,1,2 of [j >= r] C(l,j) C(3-l,2-j).
 ```
 
 A binomial coefficient outside its usual range is zero.
-The ordinary atom’s charge at threshold `k` is then
+The ordinary atom’s charge at threshold $k$ is then
 
 ```text
 [h >= k]/3 + (h Q_l(k-1) + (2-h) Q_l(k))/6.
@@ -157,7 +157,7 @@ The ordinary atom’s charge at threshold `k` is then
 Taking `0 <= h <= 2`, `0 <= l <= 3` and `k <= h+l < 2k` gives the first four rows.
 These are all budget-one ordinary atoms; larger budgets are covered by the final row.
 Any nonnegative combination that charges all seven traces at least one must therefore
-have budget at least their total fractional mass `4/3`.
+have budget at least their total fractional mass $4/3$.
 
 This is an analytic statement about Boolean incidence and atoms supported on the same
 five sites. It is not a statement that the seven traces are simultaneously realized by
@@ -243,7 +243,7 @@ integer multiplicity and then threshold the count.
 It must not reuse the sweep’s token expansion.
 
 For `packing/src/sqpack/fractional/threshold_interval.py`, the smallest change repeats
-the distinct site’s index `a_s` times in the atom’s member row.
+the distinct site’s index $a_s$ times in the atom’s member row.
 The existing boolean gather then counts tokens, while geometric interval enclosures are
 still computed once per distinct coordinate.
 Build this row directly from explicit multiplicities, rather than sharing the sweep’s
@@ -279,7 +279,7 @@ A tolerance flag or successful HiGHS status cannot replace that check.
 
 ## A Valid Common Finite Comparison
 
-The proposed finite comparison uses container side `383/100`, core side `9977/10000`,
+The proposed finite comparison uses container side $383/100$, core side $9977/10000$,
 and the retained 181-direction net.
 
 The historical 15,021-row program is unavailable.
@@ -311,13 +311,13 @@ Preserve their exact geometry or prove their folding into the declared D4 row re
 Do not interpret a source direction index without its net or round an angle to a nearby
 direction.
 
-The proposed translation from `153/40` to `383/100` is exactly `(1/400,1/400)` for both
+The proposed translation from $153/40$ to $383/100$ is exactly $(1/400,1/400)$ for both
 coordinates. With core side unchanged, translating every site and row by that vector
 preserves every incidence and commutes with D4 about the respective container centres.
 Consequently a finite program built entirely by this translation has exactly the same
 matrix and optimum as its smaller-container counterpart.
 This is useful for a controlled atom comparison, but it provides no evidence about newly
-available boundary placements at `3.83`. Those placements enter through separately
+available boundary placements at $3.83$. Those placements enter through separately
 declared row generation or the full coverage gate.
 
 The control has the declared common point columns and 2,572 ordinary orbit columns
@@ -328,7 +328,7 @@ the frozen shared cap.
 If a control cannot cover a declared row, report the finite program’s infeasibility; do
 not add columns or drop rows after seeing the result.
 
-Let `M w >= 1` be the covering constraints, `c` the exact resource costs, and
+Let `M w >= 1` be the covering constraints, $c$ the exact resource costs, and
 `M^T y <= c` the dual constraints.
 Verify `w,y >= 0` and all inequalities independently in rationals.
 Then `c.w` is a finite primal upper bound and `sum(y)` a finite dual lower bound.
@@ -341,7 +341,7 @@ Zero treatment weights or equal printed decimals alone do not prove a tie.
 | Stage | Deliverable | Accept Rule | Outcome if Incomplete |
 | --- | --- | --- | --- |
 | Representation and theorem | Maintained weighted binary atom, exact record round-trip, weighted D4 key, resource proof | All 32 site masks for each motif agree with explicit token counting; identity, symmetry, invalid-integer, duplicate-coordinate and understated-budget mutations behave as declared | Weighted target remains unrun |
-| Independent source replay | Exact receipts for both retained candidate-family pairs | Exact total tokens `7`, threshold `4`, budget `1`; source charge `3/2` and exact charged-placement list reproduced; candidate and family identities bound | Identify the exact discrepancy; do not replace coordinates or candidates within this protocol |
+| Independent source replay | Exact receipts for both retained candidate-family pairs | Exact total tokens $7$, threshold $4$, budget $1$; source charge $\frac{3}{2}$ and exact charged-placement list reproduced; candidate and family identities bound | Identify the exact discrepancy; do not replace coordinates or candidates within this protocol |
 | Coverage mechanics | Small positive, negative and boundary controls for direct, sweep and interval paths | Closed-boundary token membership agrees; dense and slab results agree; interval enclosures contain direct rational values; positive controls finish and agree exactly; a known undercharged core is rejected | Representation may be sound, but certificate coverage admission remains blocked |
 | Paired instrument | Reproducible exact common manifests and maintained runner | Same matrix on common columns, treatment-only additions, exact orbit costs; all-one multiplicities reproduce legacy rows; cap/deadline/partial-result and forged-witness refusals pass | No finite scientific comparison |
 | New finite comparison | One newly registered hypothesis and experiment record | `U_treatment < L_control` using independently checked rational witnesses | Exact tie rejects this frozen improvement claim; overlap or unfinished solve is unresolved |

@@ -7,7 +7,7 @@ The unchanged `T-018` source certificate and a new exact Euclidean containment l
 prove the lower bound
 
 $$
-s(11)\ge S_*:=
+s(11)\ge S_{\ast}:=
 \frac{38100\sqrt{8100042893309449}}{899996306539}
 =3.810025723614703407\ldots.
 $$
@@ -81,10 +81,10 @@ $$
 1+D=\frac{90207107}{90000000}.
 $$
 
-The uniform fixed-$B$, single-core factor ceiling and side are
+The uniform fixed-`B`, single-core factor ceiling and side are
 
 $$
-c_*=
+c_{\ast}=
 \frac{\sqrt{1+D^2}}{B(1+D)}
 =\frac{10000\sqrt R}{899996306539},
 $$
@@ -92,14 +92,14 @@ $$
 and
 
 $$
-S_*=Lc_*
+S_{\ast}=Lc_{\ast}
 =\frac{38100\sqrt R}{899996306539}.
 $$
 
 Squaring gives the entirely rational identity
 
 $$
-S_*^2=
+S_{\ast}^2=
 \frac{11758103264356929262890000}
      {809993351783841654158521}.
 $$
@@ -112,7 +112,7 @@ R=61\cdot421\cdot4133\cdot76315013
 $$
 
 has four distinct prime factors, so $R$ is squarefree.
-Thus $S_*$ is irrational, and its primitive minimal polynomial over the integers is
+Thus $S_{\ast}$ is irrational, and its primitive minimal polynomial over the integers is
 
 $$
 809993351783841654158521X^2
@@ -165,10 +165,10 @@ $$
 \bigl(qB(1+D)\bigr)^2<1+D^2.
 $$
 
-The inequality holds exactly when $0<q<c_*$. This proves strict interior containment
-without invoking the scaled coarse Condition 4.
+The inequality holds exactly when $0<q<c_{\ast}$. This proves strict interior
+containment without invoking the scaled coarse Condition 4.
 
-Writing $h=D$ for the net’s constant half-tangent increment, the $k$th gap has tangent
+Writing $h=D$ for the net’s constant half-tangent increment, the `k`th gap has tangent
 
 $$
 \frac{h}{1+k(k+1)h^2}.
@@ -177,16 +177,16 @@ $$
 It is uniquely largest at $k=0$, where it equals $D$; the midpoint of that angular gap
 realizes the corresponding error.
 Thus $f(D)$ is the actual maximum support factor for this net.
-Consequently, $c_*$ is the strict-containment supremum for this particular method: one
-uniform $B$, one concentric inner square per packed square, and the fixed net.
+Consequently, $c_{\ast}$ is the strict-containment supremum for this particular method:
+one uniform $B$, one concentric inner square per packed square, and the fixed net.
 It is not proved to be the strongest consequence of the atoms or their coverage
 geometry. Direction-dependent core sizes, multiple cores, and other uses of the coverage
 margin remain outside `T-022`.
 
 ## Dilation-Limit Theorem
 
-Fix a rational $q$ with $0<q<c_*$. Multiply every atom coordinate, the container side
-$L$, and the covered-square side $B$ by $q$. Leave the weights and direction net
+Fix a rational $q$ with $0<q<c_{\ast}$. Multiply every atom coordinate, the container
+side $L$, and the covered-square side $B$ by $q$. Leave the weights and direction net
 unchanged.
 
 | Replayed property | Effect of scaling by $q$ |
@@ -205,23 +205,23 @@ Hence
 
 $$
 s(11)\ge qL
-\quad\text{for every rational }q\text{ with }0<q<c_*.
+\quad\text{for every rational }q\text{ with }0<q<c_{\ast}.
 $$
 
-Now let $x$ be any real number with $0<x<S_*=c_*L$. Rational density supplies a rational
-$q$ with
+Now let $x$ be any real number with $0<x<S_{\ast}=c_{\ast}L$. Rational density supplies
+a rational $q$ with
 
 $$
-\frac{x}{L}<q<c_*.
+\frac{x}{L}<q<c_{\ast}.
 $$
 
 A packing in side $x$ embeds in the larger container of side $qL$, contradicting the
 result at that rational scale.
-Thus no positive side below $S_*$ is packable.
-Every element of the set whose infimum defines $s(11)$ is at least $S_*$, so
+Thus no positive side below $S_{\ast}$ is packable.
+Every element of the set whose infimum defines $s(11)$ is at least $S_{\ast}$, so
 
 $$
-s(11)\ge S_*.
+s(11)\ge S_{\ast}.
 $$
 
 This is a direct density and embedding argument.
@@ -229,8 +229,8 @@ It does not take a limit of packings, certificates, or verifier outputs.
 
 ## Rejection of the Superseded Scaling Proof
 
-The review transport `4b7bce5f` is superseded and must not be used to justify $S_*$. It
-scaled $B$ and applied frozen Condition 4, which allows only
+The review transport `4b7bce5f` is superseded and must not be used to justify
+$S_{\ast}$. It scaled $B$ and applied frozen Condition 4, which allows only
 
 $$
 qB(1+D)<1
@@ -254,10 +254,11 @@ qBf(D)=\frac1{\sqrt{1+D^2}}<1.
 $$
 
 It is not the sharpened result.
-For $c_0<q<c_*$, frozen coarse Condition 4 fails while the exact squared test passes.
-Any implementation or document saying that scaled Conditions 1–5 hold throughout this
-interval is wrong. `T-022` is a sharpened-containment corollary of the fully replayed
-source, not a family accepted by the frozen coarse checker.
+For $c_0<q<c_{\ast}$, frozen coarse Condition 4 fails while the exact squared test
+passes. Any implementation or document saying that scaled Conditions 1–5 hold throughout
+this interval is wrong.
+`T-022` is a sharpened-containment corollary of the fully replayed source, not a family
+accepted by the frozen coarse checker.
 
 The rational control
 
@@ -306,36 +307,36 @@ $$
 s(11)\ge aL=\frac{95250381}{25000000}=3.81001524.
 $$
 
-It too is strictly weaker than $S_*$. Its role is a regression check, not the promoted
-headline.
+It too is strictly weaker than $S_{\ast}$. Its role is a regression check, not the
+promoted headline.
 
 ## Attempted Falsifications
 
 ### Equality at the Sharpened Endpoint
 
-At $q=c_*$,
+At $q=c_{\ast}$,
 
 $$
 \bigl(qB(1+D)\bigr)^2=1+D^2,
 $$
 
 so the sharp containment test reaches equality.
-The proof requires strict interior containment and supplies no certificate at $q=c_*$.
-This does not affect the lower bound: the density step uses a distinct rational $q<c_*$
-above each hypothetical $x<S_*$. The record states `s(11)>=S_*` and leaves fit at
-equality undecided.
+The proof requires strict interior containment and supplies no certificate at
+$q=c_{\ast}$. This does not affect the lower bound: the density step uses a distinct
+rational $q<c_{\ast}$ above each hypothetical $x<S_{\ast}$. The record states
+`s(11)>=S_*` and leaves fit at equality undecided.
 
 ### Strict `>`
 
-The argument excludes every side below $S_*$ and is compatible with $s(11)=S_*$. It
-cannot prove $s(11)>S_*$. Even proving no fit exactly at $S_*$ would not by itself rule
-out packings at arbitrarily close larger sides.
+The argument excludes every side below $S_{\ast}$ and is compatible with
+$s(11)=S_{\ast}$. It cannot prove $s(11)>S_{\ast}$. Even proving no fit exactly at
+$S_{\ast}$ would not by itself rule out packings at arbitrarily close larger sides.
 The promoted relation is `>=`.
 
 ### Compactness or Attainment
 
 No step assumes that the infimum defining $s(11)$ is attained.
-A hypothetical packing below $S_*$ is contradicted at one larger rationally scaled
+A hypothetical packing below $S_{\ast}$ is contradicted at one larger rationally scaled
 container. Compactness and a limiting configuration are unnecessary.
 
 ### Arbitrary Unverified Source
@@ -349,7 +350,7 @@ lemma. The public limit derivation does not accept a supplied verdict.
 
 I attempted two concrete substitution attacks on the retained path.
 First, comparing only condition names, total mass, and a reported minimum lets a verdict
-from one certificate be attached to another; changing `n` is one simple negative control
+from one certificate be attached to another; changing $n$ is one simple negative control
 when the closed-form reports are not recomputed.
 Recomputing Conditions 1–4 narrows that attack but does not authenticate Condition 5 for
 changed atom geometry.
@@ -373,7 +374,7 @@ durable evidence.
 The sharp ceiling is
 
 $$
-c_*=\frac{\sqrt{1+D^2}}{B(1+D)},
+c_{\ast}=\frac{\sqrt{1+D^2}}{B(1+D)},
 $$
 
 not $1/B$. Since $D>0$,
@@ -382,8 +383,8 @@ $$
 \sqrt{1+D^2}<1+D,
 $$
 
-and therefore $c_*<1/B$. At the erroneous factor $1/B$, the squared test would require
-$(1+D)^2<1+D^2$, or $2D<0$, which is false.
+and therefore $c_{\ast}<1/B$. At the erroneous factor $1/B$, the squared test would
+require $(1+D)^2<1+D^2$, or $2D<0$, which is false.
 
 ## Implementation Checks and Promotion Recommendation
 
@@ -411,7 +412,7 @@ remains reviewed through `2026-09-05`, while the new `T-022` evidence records
 
 On the exact integrated tree, all 20 focused dilation-corollary tests pass.
 An independent rational-arithmetic check reproduces the source digest, $D$, $R$,
-$S_*^2$, and the record’s `>=` relation and endpoint flag.
+$S_{\ast}^2$, and the record’s `>=` relation and endpoint flag.
 The review’s eight local links resolve, and the one-file review diff has no whitespace
 errors.
 
@@ -453,12 +454,12 @@ acceptance does not depend on that label.
   does not replay Condition 5 and must not replace `--check-limit-record` in an evidence
   or promotion workflow.
 - An algebraic endpoint is easier to mistranscribe than a rational one.
-  The reduced value of $S_*^2$, the squarefree radicand, and the primitive quadratic
-  above provide independent exact cross-checks.
-- This result is the uniform fixed-$B$, single-core strict-containment supremum.
+  The reduced value of $S_{\ast}^2$, the squarefree radicand, and the primitive
+  quadratic above provide independent exact cross-checks.
+- This result is the uniform fixed-`B`, single-core strict-containment supremum.
   It does not close direction-specific or multi-core improvements, including possible
   equality arguments outside the present theorem.
-- Fit at $S_*$, any strict improvement beyond it, and absolute literature priority
+- Fit at $S_{\ast}$, any strict improvement beyond it, and absolute literature priority
   remain unresolved.
 
 <!-- This document follows common-doc-guidelines.md.

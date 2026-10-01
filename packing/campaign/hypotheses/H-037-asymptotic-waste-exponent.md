@@ -45,7 +45,7 @@ trapezoids of height $m$, bases $w$ and $w+\Theta(\sqrt m)$, and $w\in\Theta(m^\
 be packed with waste $O(m^\beta(\log m)^\epsilon)$. The stated square-packing reduction
 has total waste
 
-$$ O\!\left(m^\beta(\log m)^\epsilon+\frac{x}{\sqrt m}\right).
+$$ O\negthinspace\left(m^\beta(\log m)^\epsilon+\frac{x}{\sqrt m}\right).
 $$
 
 Balancing the two displayed terms gives
@@ -54,7 +54,7 @@ $$ m=\left(x(\log x)^{-\epsilon}\right)^{2/(2\beta+1)} $$
 
 and hence
 
-$$ W(x)=O\!\left( x^{2\beta/(2\beta+1)}(\log x)^{\epsilon/(2\beta+1)} \right).
+$$ W(x)=O\negthinspace\left( x^{2\beta/(2\beta+1)}(\log x)^{\epsilon/(2\beta+1)} \right).
 $$
 
 For the Section 4 primitive, $\beta=\nu=3/4$ and $\epsilon=0$. Thus $m=x^{4/5}$, and
@@ -128,7 +128,7 @@ finite-transfer obligations.
 
 ## Exact count in Bui’s replacement grid
 
-Bui Section 3.1 starts with `m` columns of sloped squares and defines
+Bui Section 3.1 starts with $m$ columns of sloped squares and defines
 
 $$ i_j=\left\lceil (j-1)c\right\rceil+1, \qquad c=\frac{1-\Delta_1}{\Delta_2}>0. $$
 

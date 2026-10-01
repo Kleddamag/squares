@@ -52,7 +52,7 @@ Therefore the maximal common core is exactly
 
 $$
 K(r)=\operatorname{conv}(B_{1/2}\cup S_a),\qquad
-h_{K(r)}(n)=\max\left(\|n\|/2,\ a(|n_x|+|n_y|)\right).
+h_{K(r)}(n)=\max\left(\Vert n\Vert/2,\ a(|n_x|+|n_y|)\right).
 \tag{1}
 $$
 
@@ -96,8 +96,9 @@ $$
 again on one shared normal.
 Each pair may have a different normal from every other pair.
 Within one pair, different normals for the different thresholds would change
-$\exists n\,\bigwedge$ into $\bigwedge\exists n$ and would not establish separation of
-the convex hulls. That altered certificate must be refused as this exact model.
+$\exists n\thinspace\bigwedge$ into $\bigwedge\exists n$ and would not establish
+separation of the convex hulls.
+That altered certificate must be refused as this exact model.
 
 The inventory is complete: seven residual centers give 21 residual pairs and four
 selected squares give 28 cross pairs.

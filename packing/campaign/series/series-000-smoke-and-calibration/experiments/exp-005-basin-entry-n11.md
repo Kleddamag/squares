@@ -126,12 +126,12 @@ on every coordinate and angle, then annealed — 40 independent trials at each o
 
 The `hot` arm is the campaign’s own default schedule.
 The two quench arms tie the starting temperature to the perturbation, which is what
-makes them a *local* quench: a chain started `1e-3` away and then heated to `0.25` has
+makes them a *local* quench: a chain started `1e-3` away and then heated to $0.25$ has
 left the neighbourhood before its first accepted move.
 
 Return is scored by `max_dev` — the largest per-coordinate deviation from the seed,
 after normalising both configurations to their bounding box, with angles compared modulo
-`π/2`. Normalisation matters: `required_side` is translation-invariant, so an
+$\pi/2$. Normalisation matters: `required_side` is translation-invariant, so an
 un-normalised comparison would measure drift rather than the basin.
 
 ## Result
@@ -185,10 +185,10 @@ finding is not “no basin”.
 
 **The `hot` arm is the sharper result, and it was not the point of the round.** Started
 `1e-5` from a configuration that has stood since 1979, the campaign’s default schedule
-wanders off and lands with a median side gap of `0.27` — *worse* than the `3.73e-02`
+wanders off and lands with a median side gap of $0.27$ — *worse* than the `3.73e-02`
 that `exp-003` reached from cold starts.
-A temperature of `0.25` is a move size roughly `10⁴` times the structure being held.
-That reframes `exp-003`: its `n = 11` failure is not purely a failure of exploration,
+A temperature of $0.25$ is a move size roughly $10^4$ times the structure being held.
+That reframes `exp-003`: its $n = 11$ failure is not purely a failure of exploration,
 because the same engine cannot hold the answer when handed it.
 The polish tier is not a refinement of this campaign’s search, it is a precondition for
 it.
@@ -198,9 +198,9 @@ it.
 [H-002](../../../hypotheses/H-002-lp-in-cell-polish.md), the LP-in-cell quench, is
 already the registry’s top priority; this round makes its test sharper.
 For fixed angles and a fixed axis assignment the cell optimum is a *linear program* —
-one solve, not `4 × 10⁶` annealing moves — so the prediction is that re-running this
-sweep against the LP quench returns to Trump’s cell at `eps` where annealing needs 10×
-effort to get close, and does it in a single step.
+one solve, not $4 \times 10^6$ annealing moves — so the prediction is that re-running
+this sweep against the LP quench returns to Trump’s cell at `eps` where annealing needs
+10× effort to get close, and does it in a single step.
 That is a direct, cheap, falsifiable successor, and it inherits this round’s seed
 export, arms, and scoring unchanged.
 

@@ -65,13 +65,13 @@ application or solver.
 ## Overview
 
 The atlas holds a house rendering and a typed record for every known-best packing from
-`n = 1` to `324`, and the poster shows all of them at once.
+$n = 1$ to $324$, and the poster shows all of them at once.
 What it does not have is a way to watch them in sequence.
 
 This plan builds that in two versions from one player.
 **Version 1** is a slideshow: each packing at full size with its card facts set as
 readable text, fading to the next.
-**Version 2** animates the step from `n` to `n + 1`: the squares that stay slide and
+**Version 2** animates the step from $n$ to $n + 1$: the squares that stay slide and
 turn to their new poses, the one that arrives fades in, and fills cross-fade as
 orientations change.
 Both are HTML documents whose every frame is a pure function of a virtual clock, so a
@@ -112,13 +112,13 @@ neither, and the player and the video say so.
   The tween is illustrative and labelled as such; no feasibility check runs on it and
   none is implied.
 - No new colour contract for the atlas.
-  Whatever the video does between frames, the frame at each integer `n` carries the
+  Whatever the video does between frames, the frame at each integer $n$ carries the
   fills the retained rendering carries.
 - No committed video bytes.
   The repository already refuses to serve a 1.2 MiB raster for resolution nothing
   displays; a multi-megabyte MP4 in Git is the same mistake with a larger number.
 - No audio, no interactive editing, no scrubbing of packings that are not in the record,
-  and nothing above `n = 324`.
+  and nothing above $n = 324$.
 - No third top-level tree.
   Code under `packing/src` and `packing/devtools`, records and the player under
   `packing/atlas/known-best/video/`, prose at the root.
@@ -129,14 +129,14 @@ neither, and the player and the video say so.
 
 | Layer | What is there | Where |
 | --- | --- | --- |
-| Per-`n` renderings | 324 SVGs, `960 × 680`, the packing in a `536 × 536` box at `(36, 36)`; two `<polygon>` per square with explicit corners, `fill`, `data-square`, `data-hue-index`, `data-shade-index`, `data-orientation-radians`, `data-angle-class`, `data-contact-sides`; one caption in `system-ui`; 51 MB in total, 330 KB for `n = 324` | `packing/atlas/known-best/rendering/n-NNN.svg` |
-| Card facts | one entry per `n`: `side`, `lower`, `badges`, `exactness`, `optimality`, `rigidity`, each with provenance; the poster draws only from this record | `packing/atlas/known-best/composite-figure.json` |
-| Geometry | `Witness/v2`: 141 `center-angle` records (centre and angle in degrees as decimal strings, up to 100 digits) and 183 `corners` records (177 exact grids, 6 UnitSquare) with no angle field; ids `1..n` positional; witness `k` is `square-{k:03d}` in the rendering | `packing/witnesses/known-best/` |
+| Per-`n` renderings | 324 SVGs, $960 \times 680$, the packing in a $536 \times 536$ box at $(36, 36)$; two `<polygon>` per square with explicit corners, `fill`, `data-square`, `data-hue-index`, `data-shade-index`, `data-orientation-radians`, `data-angle-class`, `data-contact-sides`; one caption in `system-ui`; 51 MB in total, 330 KB for $n = 324$ | `packing/atlas/known-best/rendering/n-NNN.svg` |
+| Card facts | one entry per $n$: `side`, `lower`, `badges`, `exactness`, `optimality`, `rigidity`, each with provenance; the poster draws only from this record | `packing/atlas/known-best/composite-figure.json` |
+| Geometry | `Witness/v2`: 141 `center-angle` records (centre and angle in degrees as decimal strings, up to 100 digits) and 183 `corners` records (177 exact grids, 6 UnitSquare) with no angle field; ids `1..n` positional; witness $k$ is `square-{k:03d}` in the rendering | `packing/witnesses/known-best/` |
 | Poster | `known-best-1-324.svg`, 6,198,351 bytes at 117.7 bytes per square after three measured levers; Helvetica; PNG and PDF with source-digest receipts | `packing/atlas/known-best/` |
-| Motion precedent | the `n = 5` motion lab: a generator in `devtools/`, shared assets under `src/sqpack/motion_lab/assets/`, a retained self-contained HTML under `atlas/rendering/` with a strict CSP, `requestAnimationFrame` driving a range input, byte-checked by `--check` and a Node-executed model test | `packing/devtools/render_packing_motion_lab.py` |
+| Motion precedent | the $n = 5$ motion lab: a generator in `devtools/`, shared assets under `src/sqpack/motion_lab/assets/`, a retained self-contained HTML under `atlas/rendering/` with a strict CSP, `requestAnimationFrame` driving a range input, byte-checked by `--check` and a Node-executed model test | `packing/devtools/render_packing_motion_lab.py` |
 | Browser | `playwright==1.62.0`, whose wheel pins Chromium revision 1234 (`151.0.7922.34`) and the headless shell the PDF exporter launches; `chromium_headless_shell-1234` is in the host cache and the pages workflow installs it with `--only-shell` | `packing/pyproject.toml`, `.github/workflows/pages.yml` |
 | Encoders | host `ffmpeg` 7.1.1 at `/opt/homebrew/bin/ffmpeg` with `libx264`, `libvpx-vp9`, `libaom-av1`; Playwright’s bundled `ffmpeg-1011` (`n7.0.1`) carries `libvpx` VP8 only | host; `~/Library/Caches/ms-playwright/ffmpeg-1011` |
-| Fonts | PT Serif in four faces and Source Sans 3 in two variable faces, 183 KB of woff2 together, inlined as data URIs by `render_explainer.kpress_css`; the math text face with the italic `s` and the function-name kern from the [math text face plan](plan-2026-09-07-math-text-face.md) | `vendor/kpress/src/kpress/format/static/fonts/` |
+| Fonts | PT Serif in four faces and Source Sans 3 in two variable faces, 183 KB of woff2 together, inlined as data URIs by `render_explainer.kpress_css`; the math text face with the italic $s$ and the function-name kern from the [math text face plan](plan-2026-09-07-math-text-face.md) | `vendor/kpress/src/kpress/format/static/fonts/` |
 | Site | `packing/site/` is gitignored, built by `render_explainer`, deployed by `pages.yml`; the poster’s SVG, PNG and PDF are served beside the page; the `@2x` raster is deliberately not | `packing/devtools/render_explainer.py`, `COMPOSITE_ASSETS` |
 | Receipts | every PNG and PDF carries the sha256 of the one SVG it was drawn from; the PDF uses a receipt rather than a byte comparison because cairo’s font-subset tags differ per process | playbook, “Staleness cannot pass quietly” |
 
@@ -150,37 +150,37 @@ The player therefore reads a compact per-square pose record built for it, and th
 declares the precision it was rounded to, as the poster’s profile block does.
 
 The per-`n` caption reads `n=147 known best: side ~ 12.65685425 (numerically checked)`
-in `system-ui`. The poster’s card reads `147`, a badge row, `s(147) ≤ 12.656854`,
-`deg 2`, and `s(147) ≥ 12.135528`, in Helvetica at 14 to 29 units.
+in `system-ui`. The poster’s card reads $147$, a badge row, $s(147) \le 12.656854$,
+$\deg 2$, and $s(147) \ge 12.135528$, in Helvetica at 14 to 29 units.
 The owner asked for the same information in a more readable fashion, which means the
 poster’s facts set at a size a viewer can read from a video, with the badges spelled
 out.
 
 ### The correspondence problem
 
-Square ids are positional and mean nothing across `n`. Over the 323 consecutive pairs,
+Square ids are positional and mean nothing across $n$. Over the 323 consecutive pairs,
 measured from the witness pose tuples:
 
-| Relation between `n` and `n + 1` | Pairs |
+| Relation between $n$ and $n + 1$ | Pairs |
 | --- | ---: |
-| `n`’s poses are an exact prefix of `n + 1`’s (every grid-to-grid pair) | 160 |
-| `n`’s poses are `n + 1`’s with one square removed (the five shared-picture pairs: 147→148, 232→233, 264→265, 290→291, 295→296) | 5 |
+| $n$’s poses are an exact prefix of $n + 1$’s (every grid-to-grid pair) | 160 |
+| $n$’s poses are $n + 1$’s with one square removed (the five shared-picture pairs: 147→148, 232→233, 264→265, 290→291, 295→296) | 5 |
 | no pose in common; a correspondence has to be chosen | 158 |
 
-Grid cases are numbered row-major from the lower left, so appending square `n + 1`
+Grid cases are numbered row-major from the lower left, so appending square $n + 1$
 extends the prefix. A shared-picture case is the catalogue’s own rule that a smaller
 count is the pictured packing with any square removed;
 `derive_kingbird_facts.subpacking_poses` drops the square whose centre sorts last, and
-the retained `n = 147` is exactly `n = 148` with index 21 removed.
+the retained $n = 147$ is exactly $n = 148$ with index 21 removed.
 The remaining 158 pairs are the interesting ones: the packings are different
 constructions, and any correspondence between them is a choice the record has to state.
 
 ### Colour is not a function of angle
 
 Hue comes from the angle class, and classes take hues by descending size from slot 2
-upward, wrapping modulo 18 once a frame has more than twenty classes (`n = 273` has
+upward, wrapping modulo 18 once a frame has more than twenty classes ($n = 273$ has
 106). Right angles are pinned to teal and 45-degree tilts to citron; everything else can
-change hue between `n` and `n + 1` without moving, because the size ordering changed.
+change hue between $n$ and $n + 1$ without moving, because the size ordering changed.
 Shade comes from the count of full-side contacts.
 So “the square changes colour as it rotates” is not what the house rule says; the house
 rule says the square’s class changed.
@@ -230,17 +230,17 @@ work best below 100. The record answers both.
   by `eps` to certify an upper bound.
 - Two registered hypotheses describe the idea and are unbuilt: `H-013`, a fixed-side
   projection family from an inflated container toward the target side, which notes the
-  side-minimising quench is not that operator; and `H-004`, seeding `n ± 1` from a
+  side-minimising quench is not that operator; and `H-004`, seeding $n \pm 1$ from a
   neighbour’s packing.
-  `H-018` measured that perturbing Trump’s `n = 11` by `1e-3` returned to it in zero of
+  `H-018` measured that perturbing Trump’s $n = 11$ by `1e-3` returned to it in zero of
   forty trials, so a tween that relied on a refiner finding the endpoint would not work;
   the tween has both endpoints and needs no refiner.
 - Below 100 the records are 52 trivial grids, 25 hand constructions, 10 simulated
   annealing, 6 diagonal strips, 3 extensions and 4 unrecorded; above 100, 113 grids, 30
   annealing, 27 extensions, 10 strips, 8 hand, 3 compositions and 33 unrecorded.
-  The algorithms research records that the dominant mode at large `n` is construct, then
-  locally optimise, that annealing credits are all for `n` between 28 and 307, and that
-  general-purpose global optimisation at `n = 27` returns a much worse arrangement.
+  The algorithms research records that the dominant mode at large $n$ is construct, then
+  locally optimise, that annealing credits are all for $n$ between 28 and 307, and that
+  general-purpose global optimisation at $n = 27$ returns a much worse arrangement.
   For the video this means the physics-like model is a path between two given packings,
   never a search, and it must not be presented as one.
 
@@ -261,7 +261,7 @@ byte-identical) reads `composite-figure.json`, `manifest.json`, the 324 frontier
 and the 324 renderings and writes one self-contained page under a
 `default-src 'none'; font-src data:` policy.
 Its smoke test builds twice into temporary directories and asserts byte identity with
-the shipped page, checks 324 slides each with `n` four-corner polygons and `n` fill
+the shipped page, checks 324 slides each with $n$ four-corner polygons and $n$ fill
 digits, finds no `http` outside the record’s 324 source URLs and none of `fetch(`,
 `XMLHttpRequest`, `import(`, `innerHTML`, `eval(`, `Date.now`, `Math.random` or
 `setInterval`, and runs the page’s own script through a Node stub-DOM harness of 20
@@ -270,13 +270,13 @@ timeline checks. The spike opened no browser.
 **Bytes.** 3,594,925 bytes for 52,650 squares, about 68 bytes per square: 2,688,572 of
 geometry, 441,318 of facts templates (324 `<template>` blocks), 281,977 of base64 font
 CSS (209,660 raw), 9,642 of script, and about 173 KB of markup and JSON framing.
-Each square is its fill polygon’s four corners re-based from the `960 × 680` canvas to
-the 536-unit box at two decimals with trailing zeros stripped, and its fill as one
+Each square is its fill polygon’s four corners re-based from the $960 \times 680$ canvas
+to the 536-unit box at two decimals with trailing zeros stripped, and its fill as one
 base-36 digit into a sorted 34-fill palette; the outlines are one `stroke` on the group
 and the container one `<rect>`, as the poster does, and all 324 container rects were
-asserted at `(36, 36)`, `536 × 536`. Three decimals cost 3,938,704 bytes, one decimal
-3,245,791. Two decimals of 536 units are 0.016 px on the spike’s 880 px picture and
-0.033 px at 4K.
+asserted at $(36, 36)$, $536 \times 536$. Three decimals cost 3,938,704 bytes, one
+decimal 3,245,791. Two decimals of 536 units are 0.016 px on the spike’s 880 px picture
+and 0.033 px at 4K.
 
 **Fonts.** The PT Serif and Source Sans 3 latin subsets carry none of ≤, ≥, √ or ≈ (216
 and 231 glyphs by fontTools; minus and × are present).
@@ -287,12 +287,12 @@ value kpress measured for that slot of its math text face; the composition is th
 `katex-text-face.css` already uses.
 Radicals are drawn, not typed: KaTeX’s `sqrtMain` path in an SVG behind the radicand,
 with paddings computed from PT Serif’s metrics and a tall variant for the four nested
-`√(1 + √2)` forms; `--radical text` prints `7 + 4√2` instead.
-The italic `s` carries a 0.055 em kern in CSS, the poster’s `SUMMARY_ITALIC_KERN`. None
+$\sqrt{1 + \sqrt{2}}$ forms; `--radical text` prints $7 + 4\sqrt{2}$ instead.
+The italic $s$ carries a 0.055 em kern in CSS, the poster’s `SUMMARY_ITALIC_KERN`. None
 of the typography was judged by eye.
 
-**Panel.** Fixed slots so the layout does not jump between `n`: kicker, the numeral
-`n = 147`, three line slots (side, exact form, lower bound) kept even when empty, a
+**Panel.** Fixed slots so the layout does not jump between $n$: kicker, the numeral
+$n = 147$, three line slots (side, exact form, lower bound) kept even when empty, a
 four-row status block, then a record block last.
 From `composite-figure.json`, entry by entry: `side.display` and `side.relation`;
 `exactness.exact_form` parsed by a small grammar and evaluated against `side.value` to
@@ -304,11 +304,11 @@ lower bound” note. Beyond the card the spike read a record block straight from
 frontier records and the manifest: construction method, found by and year (114 cases),
 improved by (20), the lower bound’s prover, year and kind for open cases, and the source
 key and URL. That is the second reader of the register that `D3` and `D4` rule out, and
-it showed why the route through the composite builder matters: `n = 11`’s `proved_by` is
+it showed why the route through the composite builder matters: $n = 11$’s `proved_by` is
 the string “repository exact H-041 certificate”, which the row prints literally.
 
-**Timeline and API.** Slot = dwell + fade; slide `k` owns `[k · slot, (k + 1) · slot)`;
-the first slide appears at `t = 0` and the last fades to paper, with no cards.
+**Timeline and API.** Slot = dwell + fade; slide $k$ owns `[k · slot, (k + 1) · slot)`;
+the first slide appears at $t = 0$ and the last fades to paper, with no cards.
 At the spike’s default 2.0 s dwell and 0.6 s fade the run is `324 × 2.6 s = 842.4 s`.
 The dissolve is smoothstep in opacity with the outgoing layer opaque underneath, so the
 paper never shows through; a 2 % scale settle with a cubic ease-out is applied to the
@@ -316,14 +316,14 @@ incoming picture, on by default with a toggle, and the spike recorded its own
 reservation that a 2 % breath on the one element stable across 323 transitions may read
 as a pulse. `window.atlasVideo` exposes `seek`, `frameAt(index, fps)`, `duration`,
 `setTiming`, `stateAt(t)` returning `{n, next, progress, phase}`, and `ready`; nothing
-reads `Date.now` or `Math.random`, and the harness seeks `100 → 5 → 500 → 100` and
+reads `Date.now` or `Math.random`, and the harness seeks $100 \to 5 \to 500 \to 100$ and
 checks the two layers’ contents match.
 The current facts are mirrored into an `aria-live` region past each fade’s midpoint.
 
 **The coordinator’s measurements** on the candidate: page load 0.18 s;
-`atlasVideo.duration()` 842.4 s. A `seek` plus PNG screenshot at `1920 × 1080` and
+`atlasVideo.duration()` 842.4 s. A `seek` plus PNG screenshot at $1920 \times 1080$ and
 device scale factor 1 costs about 42 ms for a dwell frame and 53 ms mid-fade, 139,871
-bytes per frame; at device scale factor 2 (`3840 × 2160`) about 145 ms and 167 ms,
+bytes per frame; at device scale factor 2 ($3840 \times 2160$) about 145 ms and 167 ms,
 297,175 bytes. Six captures of the same instant were byte-identical at both sizes, and
 two instants inside one dwell produced identical bytes, which is what the `stateKey`
 deduplication in `D8` relies on.
@@ -371,15 +371,15 @@ loads in 0.13 s in the headless shell and keeps one pair’s DOM at a time (at m
 Each square is a unit `<rect>` under `translate(x y) rotate(deg)` in a world group
 flipped by `scale(1 -1)`, so the witnesses’ y-up coordinates are used as they are; the
 container rect and the viewBox interpolate with the squares’ own ease-in-out, the
-viewBox always `s × 1.09` centred on the container, so the container holds a constant
-screen size as in the atlas.
-The panel sets `s(n)` in PT Serif with the italic `s`.
+viewBox always $s \times 1.09$ centred on the container, so the container holds a
+constant screen size as in the atlas.
+The panel sets $s(n)$ in PT Serif with the italic $s$.
 
 **Correspondence.** As `D10` specifies: exact prefix for the 160 grid-to-grid pairs (the
-first `n` poses of `n + 1` are byte-identical to `n`’s), the manifest’s recorded removal
-for the 5 shared-picture pairs (checked to be `n + 1` with exactly one square removed,
+first $n$ poses of $n + 1$ are byte-identical to $n$’s), the manifest’s recorded removal
+for the 5 shared-picture pairs (checked to be $n + 1$ with exactly one square removed,
 order preserved), and `scipy.optimize.linear_sum_assignment` (scipy 1.17.1) on an
-`n × (n + 1)` matrix for the 158, with the leftover column as the new square.
+$n \times (n + 1)$ matrix for the 158, with the leftover column as the new square.
 The cost is the squared centre distance in coordinates normalised by the larger of the
 pair’s two sides, plus `ANGLE_WEIGHT × (Δθ / 45°)² / side²` for the shortest turn modulo
 90°. The spike’s first cut used weight 0.25, which is what this document’s earlier read
@@ -395,8 +395,8 @@ container grows has displacement 0:
 | shared-picture | 5 | 0 | 0 | 0 | 0 |
 | assignment | 158 | 0.998 | 1.657 | 156 | 5 |
 
-Over all 323 pairs the maximum displacement is exactly 0 in 165, in `(0, 0.5)` in 3, in
-`[0.5, 1)` in 81 and in `[1, 2)` in 74; none reaches 2. Over the 158 assigned pairs the
+Over all 323 pairs the maximum displacement is exactly 0 in 165, in $(0, 0.5)$ in 3, in
+$[0.5, 1)$ in 81 and in $[1, 2)$ in 74; none reaches 2. Over the 158 assigned pairs the
 median mean displacement is 0.35 units, the median maximum 0.98, and the median fraction
 of squares that turn (by more than 0.05°) is 37 %. The largest single displacement is
 65→66 at 1.66 units; the largest rotation count is 260→261, where 159 of 260 squares
@@ -421,7 +421,7 @@ The angle-weight sweep over the 158 assigned pairs:
 Rotation is forced by the change in tilt census between frames, not chosen by the
 weight: at weight 8 the total turn falls by 13 %. The weight decides marginal cases, and
 the first is the one that matters: below 1 the matching sends a corner square of the
-`2 × 2` to the centre of `n = 5` and lets the new square appear in a corner.
+$2 \times 2$ to the centre of $n = 5$ and lets the new square appear in a corner.
 Weight 1 keeps the corners as corners at the cost of the five close passes; above 1 the
 slides lengthen and the close passes multiply.
 
@@ -440,19 +440,20 @@ Collapse into the grid, the 16 derived-to-grid pairs that land on an integer sid
 11→12, 19→20, 29→30, 41→42, 55→56, 71→72, 89→90, 110→111, 132→133, 156→157, 182→183,
 210→211, 241→242, 273→274, 307→308): from 110→111 on, mean displacement about 0.6, 9 to
 23 squares moving more than a unit and 46 to 105 turning at once.
-The pair that reads worst is 110→111, a derived packing collapsing into the `11 × 11`
-grid with 46 rotations and 12 squares moving more than a unit, where the assignment
-turns the tilted rows into a conveyor of one-unit hops rather than a block turning back;
-307→308 moves 23. The spike’s proposed fixes, in its order: cluster-level matching
-(cluster each frame by angle class and full-side-contact adjacency, both of which the
-atlas already computes; match clusters by centroid and size, then squares within matched
-clusters, so a block rotates rigidly about its centroid); two-stage moves, rotate-first
-or slide-first, which its page already offers beside simultaneous; a 2-opt swap of the
-two assignments of any crossing pair when the swap barely raises the cost; staggered
-start times; and a narrative rule for which square is new, since the leftover column is
-decided by cost residue.
+The pair that reads worst is 110→111, a derived packing collapsing into the
+$11 \times 11$ grid with 46 rotations and 12 squares moving more than a unit, where the
+assignment turns the tilted rows into a conveyor of one-unit hops rather than a block
+turning back; 307→308 moves 23. The spike’s proposed fixes, in its order: cluster-level
+matching (cluster each frame by angle class and full-side-contact adjacency, both of
+which the atlas already computes; match clusters by centroid and size, then squares
+within matched clusters, so a block rotates rigidly about its centroid); two-stage
+moves, rotate-first or slide-first, which its page already offers beside simultaneous; a
+2-opt swap of the two assignments of any crossing pair when the swap barely raises the
+cost; staggered start times; and a narrative rule for which square is new, since the
+leftover column is decided by cost residue.
 An exact 45° tie is resolved counter-clockwise, and a block whose members are matched to
-`+44.9°` and `−45°` spins in both directions, which cluster matching would also cure.
+$+44.9^\circ$ and $-45^\circ$ spins in both directions, which cluster matching would
+also cure.
 
 **Colour.** Both rules are built and the spike shipped the continuous-angle rule as its
 default. Under the house fills (cross-faded in OkLab during the move, where `D11` says
@@ -477,22 +478,23 @@ dwell is 1,067.1 s, 17.8 minutes, at uniform timing.
 1→2, the container; giving those 0.5 s dwell and 0.4 s settle with no move brings the
 run to `158 × 3.3 + 165 × 0.9 + 1.2 = 671 s`, 11.2 minutes.
 The new square scales up from 0.35 and fades in over the first 0.45 s of the settle, at
-the instant the panel rolls to `n + 1`, where `D11` had it fading in during the last
+the instant the panel rolls to $n + 1$, where `D11` had it fading in during the last
 third of the move; Phase 3 judges the two by eye.
 The spike’s questions on the panel’s status line and on showing the source kind are
 answered by `D4`, and its question on labelling the tween by `D12`.
 
 **Capture.** The prototype ran first time on what the host already holds: the pinned
 Playwright’s `chromium_headless_shell-1234` and `/opt/homebrew/bin/ffmpeg` 7.1.1. It
-loads the all-pairs page by `file://` at `1920 × 1080` and device scale factor 1, waits
-on `document.fonts.ready`, hides the review chrome, and for each pair seeks `k / fps`
-and screenshots. 100 frames of 100→101 took 7.4 s, 74 ms per frame on a page with more
-DOM per square than Version 1’s polygons; `libx264 -crf 18 -pix_fmt yuv420p` encoded
-them in 3.5 s to a 522 KB MP4 of 3.33 s; the same frame from two independent browser
-launches was byte-identical.
-Nothing yet compares a host frame with a runner frame, so the pixel standing in `D14` is
-unchanged. The full run at 30 fps is 32,013 indexed frames; deduplication collapses only
-the dwells, to about 20,700 screenshots, so a transition capture in one process is about
+loads the all-pairs page by `file://` at $1920 \times 1080$ and device scale factor 1,
+waits on `document.fonts.ready`, hides the review chrome, and for each pair seeks
+`k / fps` and screenshots.
+100 frames of 100→101 took 7.4 s, 74 ms per frame on a page with more DOM per square
+than Version 1’s polygons; `libx264 -crf 18 -pix_fmt yuv420p` encoded them in 3.5 s to a
+522 KB MP4 of 3.33 s; the same frame from two independent browser launches was
+byte-identical. Nothing yet compares a host frame with a runner frame, so the pixel
+standing in `D14` is unchanged.
+The full run at 30 fps is 32,013 indexed frames; deduplication collapses only the
+dwells, to about 20,700 screenshots, so a transition capture in one process is about
 1,530 s at the measured rate plus about 35 ms per frame to encode, and 60 fps doubles
 both. The spike captured pair by pair, which maps onto the segments `schedule` lists in
 `D7`; frame index to time is a pure function, so ranges split across processes and the
@@ -537,7 +539,7 @@ up to unit squares; open-ended optimisation with squares draggable mid-run; an a
 dial; and three named modes.
 
 Those modes are the shape of the split.
-**Pack** is one `n` with a person in the loop.
+**Pack** is one $n$ with a person in the loop.
 **Animate** is a range rendered at speed with nobody intervening, and that is this
 video. **Calibrate**, unbuilt, sweeps the strategy over cases whose records are known.
 The middle mode was called Sweep until 2026-09-08 and is renamed Animate, because
@@ -559,13 +561,13 @@ the prototype does.
 is recorded in `X-025`; what bears on this plan is folded into `D11` and `D16` below.
 Aimed straight at a known answer with the final snap disabled, the settle still rests
 one to 1.7 units away per square and 0.1 to 1.1 per cent wide, and run blind it loses
-every genuinely packed case, by up to 6.8 per cent at `307 → 308`. So no physics-driven
-tween replaces the interpolated one, and the plan’s rule that the frame at every integer
-`n` is the retained rendering’s geometry is what keeps Version 2 honest rather than a
-convenience.
+every genuinely packed case, by up to 6.8 per cent at $307 \to 308$. So no
+physics-driven tween replaces the interpolated one, and the plan’s rule that the frame
+at every integer $n$ is the retained rendering’s geometry is what keeps Version 2 honest
+rather than a convenience.
 
 **And one is positive: the page is not slow.** Measured headless on the prototype, 120
-frames per second at both `n = 17` and `n = 272`, worst frame 10 ms, 358 DOM nodes, 10.7
+frames per second at both $n = 17$ and $n = 272$, worst frame 10 ms, 358 DOM nodes, 10.7
 MB heap, and every API call under 2 ms.
 Apparent sluggishness during the session coincided with a five-minute load average of
 116 caused by another session, not with the page.
@@ -602,13 +604,13 @@ entry; and a `video/` directory at the repository root, which AGENTS.md forbids.
 **D3: three records, joined positionally, nothing re-derived.** Facts come from
 `composite-figure.json`, embedded entry by entry as the poster’s `_figure_entries()`
 reads them, so the video and the poster cannot disagree.
-Poses come from the witnesses in world units (unit squares, container side `s`): centre
+Poses come from the witnesses in world units (unit squares, container side $s$): centre
 and angle from a `center-angle` record, centre and folded angle from a `corners` record,
 rounded to a declared `pose_decimals` (default 6) that the record states, against
 `D-359`. Fills, hue index, shade index, angle class and contact count come from the
 rendering’s `square-fill` polygons.
 The builder joins on the positional id (`witness k` is `square-{k:03d}`), and refuses
-any `n` where the counts differ or where the witness angle and the rendering’s
+any $n$ where the counts differ or where the witness angle and the rendering’s
 `data-orientation-radians` disagree by more than `1e-9`, so a stale rendering fails the
 build rather than colouring the wrong square.
 *Rejected:* re-projecting corners and re-running `assign_square_colors` in the builder,
@@ -617,24 +619,24 @@ and un-projecting the rendering’s canvas coordinates, which needs the side fro
 place.
 
 **D4: the panel says what the poster’s card says, with the poster’s own icons.** The
-headline is `n =` as a small line above the numeral, and the numeral is set at regular
+headline is $n =$ as a small line above the numeral, and the numeral is set at regular
 weight and about 96 px on the 1080 stage, well under the Version 1 candidate’s first
 bold 144 px cut; the type scale is compressed for video, with nothing on the stage under
-28 px and at most four sizes; the side line `s(n) ≤ 12.656854` or `s(n) = 10` as
+28 px and at most four sizes; the side line $s(n) \le 12.656854$ or $s(n) = 10$ as
 `side.display` gives it; the lower-bound line when `lower.shown`; the degree when known.
 Every small note such as the degree sits on its own line directly below the value it
-annotates, never beside it, so the layout is the same for every `n`. The status row
+annotates, never beside it, so the layout is the same for every $n$. The status row
 draws the poster’s badge glyphs as the poster draws them (the rounded rect with `O`,
 `=`, `≈`, `R`, muted `R`, and the star polygon, solid or muted), each followed by a
 short label: optimal, exact, numerical, rigid, rigid (catalogue), new lower bound.
 Below it a quieter grey group headed “open” lists, each with a `?` badge in the same
-style, what the record leaves open for this `n`: optimality, the exact value, rigidity;
+style, what the record leaves open for this $n$: optimality, the exact value, rigidity;
 it keeps a fixed height when empty.
 The scarlet accent `#a3123f` means new and nothing else: the first-proved-here star and
 its label here, the arriving square in Version 2; it is never used for proved or
 optimal. These are the owner’s decisions from the review of the Version 1 candidate on
-2026-09-07. A progress bar along the bottom of the stage runs from `1` to `324`, its
-fill a function of the clock, with the current `n` riding its leading edge.
+2026-09-07. A progress bar along the bottom of the stage runs from $1$ to $324$, its
+fill a function of the clock, with the current $n$ riding its leading edge.
 Opening and closing cards carry the poster’s title, release, repository and credit lines
 and its two legend rows, so the video is attributed as the poster is.
 Record-only frontier facts (`construction_method`, `found_by`, `found_year`,
@@ -646,7 +648,7 @@ Witness-layer facts (`coordinate_provenance`, `retrieved_date`, `raw_asset_retai
 the caption’s “numerically checked”) are about the repository’s records and stay off the
 panel, as they are off the card.
 The panel keeps fixed slots, as the Version 1 spike built it, so an empty line does not
-shift the lines below it between `n`; and it never shows two values of one fact at once.
+shift the lines below it between $n$; and it never shows two values of one fact at once.
 Across a cut or a cross-fade the panel text changes at the fade midpoint, or fades out
 and then in, while the picture dissolves; the Version 1 candidate cross-dissolved the
 panel with the picture, and mid-fade the numerals 147 and 148 overlapped and ghosted
@@ -654,8 +656,8 @@ while the lower-bound digits smeared.
 *Rejected:* reading the frontier records directly from the player’s builder, which would
 put a second reader of the register beside the one the poster already has.
 
-**D5: the kpress faces, inlined.** The numeral and the two `s(n)` lines are set in PT
-Serif with the italic `s` and the function-name kern the math text face plan records;
+**D5: the kpress faces, inlined.** The numeral and the two $s(n)$ lines are set in PT
+Serif with the italic $s$ and the function-name kern the math text face plan records;
 badges, the progress line and the legend in Source Sans 3 at the site’s weights.
 The six woff2 files are inlined as data URIs through the explainer’s `kpress_static`,
 `kpress_css` and `inline_font_urls`, moved into a shared `devtools/kpress_assets.py`
@@ -674,29 +676,29 @@ the captions.
 
 **D6: the container fills a fixed square stage.** The stage is the per-`n` rendering’s
 convention: the container always fills the same box, so the poster’s card and the video
-agree on what a packing looks like, and the change of scale between `n` and `n + 1` is
-`s(n) / s(n + 1)`, never more than a few per cent past the first few `n`. The player
+agree on what a packing looks like, and the change of scale between $n$ and $n + 1$ is
+$s(n) / s(n + 1)$, never more than a few per cent past the first few $n$. The player
 holds poses in world units and applies `stage / s(t)` at draw time; in transition mode
-`s(t)` is interpolated with the poses, so the container edge and the squares move
+$s(t)$ is interpolated with the poses, so the container edge and the squares move
 together. The frame is landscape: the square stage on the left, the panel on the right,
 the way the rendering leaves its right third empty.
 Both spikes built this stage.
-Version 1 puts the packing in an 880 px box at `(90, 80)` of a `1920 × 1080` stage and
-the panel in a 750 px column from `x = 1080`, which is the starting layout; Version 2
-keeps the container at a constant screen size by interpolating the viewBox, `s × 1.09`
-centred on the container, with the squares’ own easing.
+Version 1 puts the packing in an 880 px box at $(90, 80)$ of a $1920 \times 1080$ stage
+and the panel in a 750 px column from $x = 1080$, which is the starting layout; Version
+2 keeps the container at a constant screen size by interpolating the viewBox,
+$s \times 1.09$ centred on the container, with the squares’ own easing.
 The coordinator’s mid-fade frame of Version 1 shows the picture’s dissolve reading well
 on this stage; two decimals of the 536-unit box are 0.016 px on that picture and 0.033
 px at 4K, so the record’s six decimals in world units are past any raster.
 *Rejected:* a fixed world scale with the container growing from 1 to 18, which draws
-`n = 1` at an eighteenth of the stage’s width; and a square frame, which leaves no room
+$n = 1$ at an eighteenth of the stage’s width; and a square frame, which leaves no room
 for a readable panel beside a square stage.
 
 **D7: a virtual clock with a seek API, and nothing else moves.** The player exposes
 `window.atlasVideo = {version, mode, setMode, duration, schedule, seek, stateKey}`.
-`seek(t)` sets the DOM to the state at `t` seconds and returns; `stateKey(t)` is a
+`seek(t)` sets the DOM to the state at $t$ seconds and returns; `stateKey(t)` is a
 string that changes exactly when the drawn state changes; `schedule` lists the segment
-boundaries so a capture can name the frame at which `n` begins.
+boundaries so a capture can name the frame at which $n$ begins.
 No CSS transition or animation, no SMIL, no `Date.now`, no `Math.random`, no network:
 the state is the function.
 In a browser, Play runs a `requestAnimationFrame` loop that calls `seek` with elapsed
@@ -713,12 +715,12 @@ marker, then for each frame index calls `seek`, compares `stateKey` with the pre
 frame’s, and screenshots only when it changed, recording a duration for the repeated
 frame in an ffmpeg concat list.
 In slideshow mode that turns most of the dwell into one frame.
-Defaults: `1920 × 1080` at 30 frames per second.
+Defaults: $1920 \times 1080$ at 30 frames per second.
 The per-frame cost is measured, by the coordinator on the Version 1 candidate in the
 pinned headless shell: about 42 ms per dwell frame and 53 ms mid-fade at 1080p, 139,871
-bytes per PNG; about 145 ms and 167 ms at `3840 × 2160` through device scale factor 2,
-297,175 bytes; and 74 ms per frame in the Version 2 spike’s own capture at 1080p, whose
-DOM is heavier per square.
+bytes per PNG; about 145 ms and 167 ms at $3840 \times 2160$ through device scale factor
+2, 297,175 bytes; and 74 ms per frame in the Version 2 spike’s own capture at 1080p,
+whose DOM is heavier per square.
 Six captures of one instant were byte-identical at both sizes, the Version 2 spike found
 the same across two browser launches, and two instants inside one dwell gave identical
 bytes, so the deduplication rests on measurement: the slideshow’s 25,272 indexed frames
@@ -756,8 +758,8 @@ sidecar without the browser revision, which is the input most likely to move.
 watching the fourth revision of the Version 2 candidate the owner ruled out a fresh
 cheapest matching per pair, which reads as random motion: each step is to be seen as one
 square added and the others moving coherently, because the squares have an identity.
-So the record carries an identity chain: identity `k` is born as the new square of step
-`n = k` and persists through every later pair by composing the maps, and the player keys
+So the record carries an identity chain: identity $k$ is born as the new square of step
+$n = k$ and persists through every later pair by composing the maps, and the player keys
 each square’s element by that identity, created once and never re-keyed.
 The correspondence for the 158 assigned pairs is found at the block level first
 (clusters by angle class and full-side-contact adjacency, matched by centroid, size and
@@ -769,13 +771,13 @@ never the assignment’s leftover.
 The fifth spike revision builds this and measures it; its numbers replace the per-square
 statistics below where they differ.
 For each consecutive pair the transition record states `method`, the assignment `pairs`
-from `n`’s ids to `n + 1`’s, the `new_square` id and the rule that chose it, the
+from $n$’s ids to $n + 1$’s, the `new_square` id and the rule that chose it, the
 identity map, the block statistics, and the displacement and turn statistics.
-`prefix`: the builder checks that `n`’s poses equal the first `n` of `n + 1`’s at the
-record’s precision; the map is the identity and the new square is `n + 1`.
+`prefix`: the builder checks that $n$’s poses equal the first $n$ of $n + 1$’s at the
+record’s precision; the map is the identity and the new square is $n + 1$.
 `shared-picture`: the builder finds the one index whose removal makes the tuples equal,
 and refuses if there is not exactly one.
-`assignment`: `scipy.optimize.linear_sum_assignment` on the `n × (n + 1)` cost of
+`assignment`: `scipy.optimize.linear_sum_assignment` on the $n \times (n + 1)$ cost of
 squared centre displacement in world units plus a weighted squared shortest-arc turn
 modulo a quarter turn; the unassigned column is the new square.
 Ties are broken by id so the record is reproducible.
@@ -786,18 +788,19 @@ the turn term divided by the same side squared; one normaliser per pair scales t
 cost matrix, so its assignment is the world-unit assignment at that weight up to ties,
 and there is nothing for Phase 3 to compare.
 The weight is the whole choice, and the spike’s sweep over the 158 pairs decides it:
-below 1 the matching sends a corner of the `2 × 2` to the centre of `n = 5` and lets the
-new square appear in a corner; at 1 the corners stay corners at the cost of five pairs
-with one close pass each; above 1 the slides lengthen and the close passes multiply (21
-pairs at 2, 72 at 8) while the total turn barely moves, since the tilt census forces it.
-What the assignment gets wrong is measured at 110→111, a derived packing collapsing into
-the `11 × 11` grid with 46 rotations and 12 squares moving more than a unit, where the
-tilted rows become a conveyor of one-unit hops instead of a block turning back (307→308
-moves 23). Phase 3 first captures that pair under the three motion phases of `D11`; if
-it still reads as a shiver, a fourth method, `cluster-assignment`, clusters each frame
-by angle class and full-side-contact adjacency, matches clusters by centroid and size
-and then squares within matched clusters, so a block turns rigidly about its centroid
-and its members turn one way; the record names the method per pair either way.
+below 1 the matching sends a corner of the $2 \times 2$ to the centre of $n = 5$ and
+lets the new square appear in a corner; at 1 the corners stay corners at the cost of
+five pairs with one close pass each; above 1 the slides lengthen and the close passes
+multiply (21 pairs at 2, 72 at 8) while the total turn barely moves, since the tilt
+census forces it. What the assignment gets wrong is measured at 110→111, a derived
+packing collapsing into the $11 \times 11$ grid with 46 rotations and 12 squares moving
+more than a unit, where the tilted rows become a conveyor of one-unit hops instead of a
+block turning back (307→308 moves 23). Phase 3 first captures that pair under the three
+motion phases of `D11`; if it still reads as a shiver, a fourth method,
+`cluster-assignment`, clusters each frame by angle class and full-side-contact
+adjacency, matches clusters by centroid and size and then squares within matched
+clusters, so a block turns rigidly about its centroid and its members turn one way; the
+record names the method per pair either way.
 The new square stays the unassigned column; a narrative rule for it is the spike’s
 suggestion and nothing yet measures it.
 *Rejected:* a hand-written Hungarian, since scipy is already a runtime dependency; and
@@ -809,7 +812,7 @@ new square, then reshuffle without scaling, then scale down”, with the scaling
 own animation whenever the container gets bigger.
 So a step has three beats, each its own timeline segment: the arriving square appears at
 its final pose with the scarlet mark; the existing squares then move as blocks while the
-world-to-stage scale is held at `n`’s, so the container visibly grows on the stage and
+world-to-stage scale is held at $n$’s, so the container visibly grows on the stage and
 no square changes size while it moves; and the whole picture then scales down to fit the
 new side back into the stage box (`scale_seconds`, skipped when the side is unchanged).
 The stage reserves a margin around the box for that growth; the early pairs whose growth
@@ -818,13 +821,14 @@ The reverse of the first two beats, make room and then arrive, is kept as a sele
 mode so the owner can compare the two on the pairs where the arriving square would
 overlap squares that have not yet moved, which the spike counts.
 *Under investigation, the owner’s idea:* a relaxed intermediate.
-Loosen `n` by inflating the container to `(1 + δ) s_n` and scaling every centre about
-the container’s centre, which opens each contact by about `δ` times the pair’s
-separation; add the new square; move the blocks in that relaxed space with a per-frame
-overlap-resolution step, a push-apart along the separating axis the way the motion lab’s
-`pair_gap` measures it; then tighten by the inverse contraction to `s_{n+1}`. The corpus
-offers no slack of its own: the escape screen’s `min_container_slack` is zero or below
-in every one of its 318 screened records, so the relaxed state has to be constructed.
+Loosen $n$ by inflating the container to $(1 + \delta) s_n$ and scaling every centre
+about the container’s centre, which opens each contact by about $\delta$ times the
+pair’s separation; add the new square; move the blocks in that relaxed space with a
+per-frame overlap-resolution step, a push-apart along the separating axis the way the
+motion lab’s `pair_gap` measures it; then tighten by the inverse contraction to
+`s_{n+1}`. The corpus offers no slack of its own: the escape screen’s
+`min_container_slack` is zero or below in every one of its 318 screened records, so the
+relaxed state has to be constructed.
 In that state a float check is meaningful, which it is not at a tight packing, so every
 relaxed frame is run through
 `verify_packing(corners_from_poses(x, y, theta), side, float_sign(1e-9))` and the tween
@@ -837,15 +841,15 @@ instance of exactly this loop: the container opens to 1.12 times the record’s 
 holds while the arriving square inflates, then contracts toward the record’s side,
 pausing whenever two full-size squares overlap by more than 0.08. It loses.
 Run blind it ends worse than the record on every genuinely packed case, by up to 6.8 per
-cent at `307 → 308`; aimed at the known answer with the snap off, the settle still rests
-one to 1.7 units per square away.
+cent at $307 \to 308$; aimed at the known answer with the snap off, the settle still
+rests one to 1.7 units per square away.
 That is a result about constants chosen to look right in a video and never swept, not
 about the mechanism, and the prototype’s notes say so themselves.
 It is enough for this plan: Phase 3 does not ship a relaxed intermediate as a
 `tween_model` option, and the block tween of `D10` is what Version 2 draws.
 The mechanism keeps its research standing under `X-025`, as candidate `C6` against
 `H-013`, where the instrument and the kill condition live.
-Between `n` and `n + 1` each matched square’s centre moves linearly, its angle turns
+Between $n$ and $n + 1$ each matched square’s centre moves linearly, its angle turns
 along the shorter arc modulo 90 degrees (at most 45 degrees, an exact tie resolved
 counter-clockwise as the spike did), the container side interpolates linearly, and the
 new square fades in at its final pose during the last third of the transition (the spike
@@ -853,11 +857,11 @@ scaled it up from 0.35 over the first 0.45 s of its settle instead; Phase 3 judg
 two by eye). The motion phase is a timeline parameter: `simultaneous`, the default, or
 `rotate-first` or `slide-first`, the two-stage moves the spike’s page already offers,
 judged on 110→111 with `D10`’s cluster matching behind them.
-Fills cross-fade from the retained fill at `n` to the retained fill at `n + 1`, mixed in
+Fills cross-fade from the retained fill at $n$ to the retained fill at $n + 1$, mixed in
 OkLCh, so a square that turns from a right angle to a diagonal passes from teal to
 citron and a square whose class was renumbered changes hue without moving, both of which
 are what the record says.
-The frame at every integer `n` is the retained rendering’s geometry and colours.
+The frame at every integer $n$ is the retained rendering’s geometry and colours.
 The Version 2 spike built both rules and shipped the continuous ramp as its default, on
 this evidence: under the house fills a sub-degree turn at 260→261 re-ranks the unpinned
 classes and the central block cross-fades from citron to salmon while it barely moves,
@@ -898,7 +902,7 @@ the network.
 **D14: every fast check on the pull-request surface; the capture off it.** On the
 surface: both `--check` regenerations as steps on the `checks` tier with budget entries;
 the record and transition schemas; a test that every one of the 323 correspondences is a
-bijection from `n`’s ids onto all but one of `n + 1`’s and that the prefix and
+bijection from $n$’s ids onto all but one of $n + 1$’s and that the prefix and
 shared-picture methods hold where the data says they should; the JS model run in Node
 against the Python record at segment boundaries and at a mid-transition; the player’s
 byte budget; and a `--stand-in` capture of three frames (the first, a mid-transition,
@@ -923,7 +927,7 @@ told apart. The prototype can end a move by blending the physics onto the retain
 over the last fraction of the transition and finishing on them exactly.
 For this plan that is not a flourish, it is the requirement: a run across all 324
 records has to land each frame on what is actually known, which is the rule `D3` and
-`D11` already state as “the frame at every integer `n` is the retained rendering’s
+`D11` already state as “the frame at every integer $n$ is the retained rendering’s
 geometry and colours”.
 So the retained player snaps, always, and the snap is not a switch a capture can leave
 off.
@@ -952,7 +956,7 @@ capture drift off the record; and reading a snapped run as a check on the tween 
 | `atlas/known-best/known-best-atlas.schema.yaml`, `manifest.json` | a `video` block naming the record and the player |
 | `.github/workflows/video.yml` (new) | stand-in capture on pull requests touching `CAPTURE_INPUTS`; full capture and release upload on dispatch; the browser cache keyed on `uv.lock` as `pages.yml` does |
 | `sqpack/cli/validate.py`, `devtools/gate-budgets.yaml` | the two regeneration steps on the `checks` tier, measured |
-| `tests/test_known_best_video.py` (new) | record shape, refusals, bijection over 323 pairs, method census `(160, 5, 158)`, Node-executed model, byte budget, CSP and self-containment, the workflow filter against `CAPTURE_INPUTS` |
+| `tests/test_known_best_video.py` (new) | record shape, refusals, bijection over 323 pairs, method census $(160, 5, 158)$, Node-executed model, byte budget, CSP and self-containment, the workflow filter against `CAPTURE_INPUTS` |
 | `.gitignore` | `packing/atlas/known-best/video/captures/` |
 | README, `packing/atlas/README.md`, `packing/atlas/known-best/README.md`, the playbook, `SYNOPSIS.md` | a video section; “The two composites” gains a line on the third artefact; the handoff |
 
@@ -1002,11 +1006,11 @@ The player’s `schedule` is computed from the parameters embedded in the record
 `timeline` block: `dwell_seconds`, `fade_seconds` (slideshow), `move_seconds`,
 `settle_seconds` and `motion_phase` (transitions), the two card durations, and a dwell
 schedule: an override per pair kind (`prefix`, `shared-picture`, `assignment`) and an
-override per named `n`, so that the owner’s answer to the dwell question is a record
+override per named $n$, so that the owner’s answer to the dwell question is a record
 edit and not a code change.
-Slideshow: card, then for each `n` a dwell followed by a cross-fade to `n + 1`, then
+Slideshow: card, then for each $n$ a dwell followed by a cross-fade to $n + 1$, then
 card.
-Transitions: card, then for each `n` a dwell followed by the tween to `n + 1`, then
+Transitions: card, then for each $n$ a dwell followed by the tween to $n + 1$, then
 card. The slideshow defaults are 1.5 s dwell and 0.5 s fade, the pace the owner chose on
 review after the Version 1 spike’s 2.0 s and 0.6 s (842.4 s) read as too slow; that is
 `324 × 1.5 s` of dwell and `323 × 0.5 s` of fades, 648 s before the cards.
@@ -1019,15 +1023,15 @@ the record and a rebuild.
 
 ### Version 2 in one pass
 
-For a pair `(n, n + 1)` with assignment `pairs` and progress `u ∈ [0, 1]`, eased:
+For a pair $(n, n + 1)$ with assignment `pairs` and progress $u \in [0, 1]$, eased:
 
 - `s(u) = (1 − u) s_n + u s_{n+1}`; the stage scale is `stage / s(u)`.
-- Matched square `(i, j)`: centre `(1 − u) c_i + u c_j`; angle `θ_i + u Δ`, where `Δ` is
-  the shortest arc from `θ_i` to `θ_j` modulo 90 degrees; fill `mix(fill_i, fill_j, u)`
-  in OkLCh.
-- New square `j*`: drawn at its final pose with opacity rising from 0 at `u = 2/3` to 1
-  at `u = 1`.
-- The label of `D12` is visible for `0 < u < 1`.
+- Matched square $(i, j)$: centre $(1 - u) c_i + u c_j$; angle $\theta_i + u \Delta$,
+  where $\Delta$ is the shortest arc from $\theta_i$ to $\theta_j$ modulo 90 degrees;
+  fill `mix(fill_i, fill_j, u)` in OkLCh.
+- New square $j^{\ast}$: drawn at its final pose with opacity rising from 0 at $u = 2/3$
+  to 1 at $u = 1$.
+- The label of `D12` is visible for $0 < u < 1$.
 
 The 160 prefix pairs reduce to a single square fading in, and the 5 shared-picture pairs
 to the same with the container fixed; the 158 assigned pairs are where the motion is,
@@ -1129,8 +1133,8 @@ Closes on: `packing-validate --checks` green with the new steps measured, and
 - [ ] `capture_known_best_video.py`: browser launch as the PDF exporter’s, `seek` loop,
   `stateKey` deduplication, concat list, H.264 and VP9 encodes, receipt, timings,
   `--stand-in`, `--check`.
-- [ ] Measure per-frame cost at `1920 × 1080` and `3840 × 2160` on the host with the
-  stand-in; record both in the timings file and here.
+- [ ] Measure per-frame cost at $1920 \times 1080$ and $3840 \times 2160$ on the host
+  with the stand-in; record both in the timings file and here.
 - [ ] `video.yml`: stand-in on pull requests under `CAPTURE_INPUTS`, with the test that
   compares the filter to the declaration; full capture and release upload on dispatch.
 - [ ] The first full slideshow capture on the host; its receipt and timings kept in the
@@ -1143,7 +1147,7 @@ Closes on: `capture_known_best_video --stand-in --check` self-agreeing locally a
 
 - [ ] `known_best_video/transitions.py`: the three methods, the statistics, tie-breaking
   by id; the builder writes `transitions` and the `intermediate_frames` statement.
-- [ ] The bijection test over all 323 pairs and the method census `(160, 5, 158)`.
+- [ ] The bijection test over all 323 pairs and the method census $(160, 5, 158)$.
 - [ ] `tween.js` and transition mode: interpolation per the design, OkLCh mixing, the
   new square’s fade, the `D12` label; the Node model test at a mid-transition.
 - [ ] `motion_phase` as a timeline parameter (`simultaneous`, `rotate-first`,
@@ -1156,8 +1160,8 @@ Closes on: `capture_known_best_video --stand-in --check` self-agreeing locally a
   bijection test covers it.
 - [ ] The identity chain: each square’s global identity born at its step and composed
   through every later map; the player keys elements by it; a test composes all 323 maps
-  and asserts every identity born at step `k` appears exactly once in every frame from
-  `k` to 324.
+  and asserts every identity born at step $k$ appears exactly once in every frame from
+  $k$ to 324.
 - [ ] The new-square rule of `D10` recorded per pair, with a census of how often it
   differs from the assignment’s leftover.
 - [ ] The add-then-make-room staging of `D11` as the default `motion_phase`, with the
@@ -1165,11 +1169,11 @@ Closes on: `capture_known_best_video --stand-in --check` self-agreeing locally a
   as its own segment with `scale_seconds`, the stage margin it needs, and the census of
   early pairs whose growth exceeds the margin.
 - [x] Spike: the relaxed intermediate of `D11`. Dropped 2026-09-08, not deferred.
-  Phase 0’s prototype ran the loop at `δ = 0.12` with a contraction that pauses on
+  Phase 0’s prototype ran the loop at $\delta = 0.12$ with a contraction that pauses on
   overlap and lost every genuinely packed case, by up to 6.8 per cent; `D11` records the
   measurement and the reasoning.
   Phase 4 ships no `tween_model` option, the block tween of `D10` is what Version 2
-  draws, and the sweep over `δ` with the per-frame `verify_packing` census moves to
+  draws, and the sweep over $\delta$ with the per-frame `verify_packing` census moves to
   `X-025` as candidate `C6`, where `H-013` owns the kill condition.
 - [ ] The continuous-angle rule behind a record flag with its own label, so the owner
   judges 260→261 under both rules from the same player.
@@ -1221,10 +1225,10 @@ Nothing about the poster or the per-`n` renderings changes at any phase.
 
 ## Open Questions
 
-- Aspect ratio and resolution: landscape `16:9` at `1920 × 1080` as `D6` and `D8`
-  default, or `3840 × 2160` now that the per-frame cost is measured at about 3.4 times
-  1080p’s (145 to 167 ms against 42 to 53 ms per frame, 297 KB against 140 KB per PNG),
-  or a square frame with the panel below the stage?
+- Aspect ratio and resolution: landscape `16:9` at $1920 \times 1080$ as `D6` and `D8`
+  default, or $3840 \times 2160$ now that the per-frame cost is measured at about 3.4
+  times 1080p’s (145 to 167 ms against 42 to 53 ms per frame, 297 KB against 140 KB per
+  PNG), or a square frame with the panel below the stage?
 - Dwell and length: 3 s per packing with 0.5 s fades puts the slideshow near nineteen
   minutes and the Version 1 spike’s 2.0 s and 0.6 s at 842.4 s; uniform transition
   timing puts Version 2 at 1,067.1 s (17.8 minutes), and a 0.9 s beat with no move for
@@ -1251,10 +1255,10 @@ Nothing about the poster or the per-`n` renderings changes at any phase.
   mirror tilts then share a colour, which is the trade the sweep makes.
   A third answer arrived with the prototype’s revision 12 and is now on the table:
   colour by the persistent identity `D10` already requires, so a square keeps its colour
-  for the whole run and a viewer can follow one square from `n = 5` to `n = 324`. It has
+  for the whole run and a viewer can follow one square from $n = 5$ to $n = 324$. It has
   a measured ceiling this plan would hit and the workbench does not: the prototype’s
   green band holds 42 distinguishable entries, which repeats 7.7 times over 324 squares,
-  so identity colouring stops being an identity at large `n` unless a second channel
+  so identity colouring stops being an identity at large $n$ unless a second channel
   carries it. The bead for that ceiling is under `X-025`.
 - Publication: release assets linked from the site (`D14`), or the captures copied into
   the site deploy?
@@ -1274,7 +1278,7 @@ Nothing about the poster or the per-`n` renderings changes at any phase.
   `illustrative tween` label
 - [The `n = 5` motion lab spike](spike-2026-08-25-n5-motion-lab.md), the HTML profile
   and its disposition
-- [Math text face integration](plan-2026-09-07-math-text-face.md), the italic `s` and
+- [Math text face integration](plan-2026-09-07-math-text-face.md), the italic $s$ and
   the function-name kern
 - [`packing/atlas/rendering/README.md`](../../../../packing/atlas/rendering/README.md),
   the motion lab’s home and the raster-golden standing

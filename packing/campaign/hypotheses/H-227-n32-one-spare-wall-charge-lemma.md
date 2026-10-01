@@ -44,8 +44,8 @@ hypothesis:
 ---
 # H-227: The One-Spare Wall-Charge Lemma at n=32
 
-The `m = 6` sibling of H-226. Its structure count is smaller and the `m = 6` machinery
-is live in Bentz 2016; it runs beside the `n = 21` lane once the enumeration tool
+The $m = 6$ sibling of H-226. Its structure count is smaller and the $m = 6$ machinery
+is live in Bentz 2016; it runs beside the $n = 21$ lane once the enumeration tool
 exists.
 
 <!-- This document follows common-doc-guidelines.md.

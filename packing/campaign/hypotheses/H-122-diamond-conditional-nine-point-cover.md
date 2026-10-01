@@ -67,34 +67,34 @@ It does not establish this covering hypothesis.
 
 ## Fixed Domain and Data
 
-Let `q=1939/500`, `W=q/2-1=939/1000`, `b=q-3=439/500` and `kappa=49/50`. The closed
+Let $q=1939/500$, $W=q/2-1=939/1000$, $b=q-3=439/500$ and `kappa=49/50`. The closed
 diamond is
 
 $$
-D=\{(1+X,b+Y):0\le X\le W,\quad
-|Y|\le\kappa\min(X,W-X)\}.
+D=\lbrace(1+X,b+Y):0\le X\le W,\quad
+|Y|\le\kappa\min(X,W-X)\rbrace.
 $$
 
-Its vertices are `(1,b)`, `(1+W/2,b+kappa W/2)`, `(1+W,b)` and `(1+W/2,b-kappa W/2)`.
+Its vertices are $(1,b)$, `(1+W/2,b+kappa W/2)`, $(1+W,b)$ and `(1+W/2,b-kappa W/2)`.
 Boundary contact is intersection, not disjointness.
 The nine marked points retain their source coordinates:
 
 $$
 \begin{aligned}
-B&=(q-1,1),& C_0&=(q-4/5,q/2),& D_0&=(q-1,q-1),\\
-E&=(q/2,q-4/5),&F&=(1,q-1),&G&=(4/5,q-2),\\
+B&=(q-1,1),& C_0&=(q-4/5,q/2),& D_0&=(q-1,q-1),\cr
+E&=(q/2,q-4/5),&F&=(1,q-1),&G&=(4/5,q-2),\cr
 H&=(17/10,11/5),&I&=(11/5,11/5),&J&=(11/5,17/10).
 \end{aligned}
 $$
 
 The point called D in the source inventory is written D0 here to distinguish it from the
-diamond; the machine inventory retains the original label `D`. No point is scaled or
+diamond; the machine inventory retains the original label $D$. No point is scaled or
 symmetrized independently of its source formula.
 
 The angle domain is the union of the closed bands `[-pi/720,pi/720]` and
 `[pi/4-pi/720,pi/4+pi/720]`, modulo square quarter turns.
-The entire closed square must lie in `[0,q]^2`. An independent counterexample check must
-establish these actual conditions, not just membership in a numerical enclosure.
+The entire closed square must lie in $[0,q]^{2}$. An independent counterexample check
+must establish these actual conditions, not just membership in a numerical enclosure.
 
 ## Why the Conditional Statement Is Useful
 
@@ -115,7 +115,7 @@ global packing bound unresolved.
 ## First Instrument, Not a Complete Proof
 
 The source-free author slice prepares a fixed-frame event-cell screen and independent
-witness reader. The proposed first screen examines half-angle offsets `+/-1/500` about
+witness reader. The proposed first screen examines half-angle offsets $+/-1/500$ about
 each of 0 and `pi/4`; these are four samples, not a replacement for the full claim.
 Their exact order and process caps belong in a committed prospective experiment before
 any scientific invocation.

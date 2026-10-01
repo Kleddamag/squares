@@ -124,7 +124,7 @@ The source must be committed and pushed before launch.
 Retain the launch HEAD, UTC instant, exit status, process log, and incremental JSON
 receipt. A guard, timeout, unresolved separator, point-extension breach, or incomplete
 arm leaves the comparison unresolved.
-A completed primary gain at most `0.001` rejects H-141 only in this finite regime.
+A completed primary gain at most $0.001$ rejects H-141 only in this finite regime.
 No numerical outcome changes the global packing bracket, covers other owner branches, or
 establishes exact coverage.
 

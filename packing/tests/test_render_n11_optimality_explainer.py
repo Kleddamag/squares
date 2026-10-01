@@ -22,7 +22,7 @@ SVG = (
     '<title>Exact diagram</title><rect width="2" height="2"/></svg>'
 )
 FIGURES: dict[str, str] = dict.fromkeys(paper.FIGURE_KEYS, SVG)
-SOURCE = """# Why Eleven Squares Need This Much Room
+SOURCE = """# A Review of the Optimality Proof of the Trump Packing of 11 Squares
 
 An exact formula is $x^2$.[^proof] See the
 [review](../../../docs/project/reviews/review-2026-09-29-n11-optimality.md)
@@ -135,7 +135,7 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
         figures=render_figures(),
         revision=REVISION,
     )
-    assert "Why Eleven Squares Need This Much Room" in html
+    assert "A Review of the Optimality Proof of the Trump Packing of 11 Squares" in html
     assert len(re.findall(r"<figure\b", html)) == 3
     assert len(re.findall(r"<figcaption\b", html)) == 3
     assert html.count("<svg") >= 5  # four paper figures plus KPress's icon sprite

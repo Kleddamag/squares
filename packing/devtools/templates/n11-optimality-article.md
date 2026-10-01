@@ -1,11 +1,12 @@
 <div class="hero">
 
-# Why Eleven Squares Need This Much Room
+# A Review of the Optimality Proof of the Trump Packing of 11 Squares
 
 <div class="subtitle">
 
-An explanation of the
+An explanation of the new
 [eleven-square optimality proof](https://github.com/Queuingtheorydotcom/11SquaresOptimal/blob/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c/PROOF.md)
+by Queuingtheorydotcom
 
 </div>
 
@@ -13,8 +14,7 @@ An explanation of the
   <span>Human oversight: <a href="https://x.com/ojoshe"><strong>Joshua Levy</strong></a></span>
   <span>Agents: <strong>GPT-6 Astra</strong> and <strong>GPT-6 Sol</strong></span>
   <span><a href="https://github.com/jlevy/squares"><strong>github.com/jlevy/squares</strong></a></span>
-  <span class="publication-date">First published September 30, 2026 · Last revised September 30, 2026</span>
-  <span class="edition">T-060 · Draft revision</span>
+  <span class="publication-date">Original proof September 29, 2026 · This review revised September 30, 2026</span>
 </div>
 
 </div>

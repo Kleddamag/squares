@@ -54,14 +54,17 @@ cumulative. `V3` does not imply publication, and `V5` means that a proof assista
 checked a formalization *and* a human expert attested that the formal statement says
 what the claim says.
 
-| Rung | Meaning | Structural support |
-| --- | --- | --- |
-| `V0` | Claimed or recorded only | No higher predicate; the result explains the classification in `notes` |
-| `V1` | Numerically checked | A numerical method with recorded precision |
-| `V2` | Proof asserted but not publicly recoverable | Declared with `notes` explaining the unavailable proof |
-| `V3` | Checkable: a published or audited proof, or a machine certificate that replays; review record not yet retained | `method: published-proof` or `proof-audited` with a `proof` block; or exact-algebraic, interval-certified or proof-assistant-checked evidence of any origin with a certificate, replay command and passing replay status |
-| `V4` | Mechanized, adversarially reviewed and human-overseen | `V3` machine evidence, plus two retained adversarial AI reviews by distinct reviewers whose latest verdict accepts the claim, plus a retained human oversight record |
-| `V5` | Formal, expert-reviewed | Proof-assistant-checked evidence with a certificate, passing replay and an axiom receipt, plus a retained formalization review by a human expert who is not the formalization’s author |
+| Rung | Meaning | Short | Structural support |
+| --- | --- | --- | --- |
+| `V0` | Claimed or recorded only | Claimed or recorded only | No higher predicate; the result explains the classification in `notes` |
+| `V1` | Numerically checked | Numerically checked | A numerical method with recorded precision |
+| `V2` | Proof asserted but not publicly recoverable | Proof asserted, not recoverable | Declared with `notes` explaining the unavailable proof |
+| `V3` | Checkable: a published or audited proof, or a machine certificate that replays; review record not yet retained | Checkable; review record pending | `method: published-proof` or `proof-audited` with a `proof` block; or exact-algebraic, interval-certified or proof-assistant-checked evidence of any origin with a certificate, replay command and passing replay status |
+| `V4` | Mechanized, adversarially reviewed and human-overseen | Mechanized, AI-reviewed, human-overseen | `V3` machine evidence, plus two retained adversarial AI reviews by distinct reviewers whose latest verdict accepts the claim, plus a retained human oversight record |
+| `V5` | Formal, expert-reviewed | Formal, expert-reviewed | Proof-assistant-checked evidence with a certificate, passing replay and an axiom receipt, plus a retained formalization review by a human expert who is not the formalization’s author |
+
+The `Short` column is the form the site’s rubric cards print where a row has two lines;
+the `Meaning` is the chip’s title and the rubric’s own words.
 
 The checker derives `V1` and `V3`–`V5` from the evidence cited by the result, of any
 `origin`, and from the result’s retained `reviews`. `V0` and `V2` are declared because
@@ -77,14 +80,14 @@ Confirmation counts only work performed beyond the producing run: evidence recor
 retained here), and reviews performed on the confirming side; `C1` describes a
 qualifying read of external evidence.
 
-| Rung | Meaning | Structural support |
-| --- | --- | --- |
-| `C0` | Recorded | No qualifying read or confirming replay |
-| `C1` | Read | An `external_review` with a qualifying state, date, reviewer, and note |
-| `C2` | Replayed without a machine certificate | Confirming-origin evidence with a replay command and `replay_status: passed` on a method that yields no certificate |
-| `C3` | Machine-replayed here or by a third party; review record not yet retained | Confirming-origin exact-algebraic, interval-certified or proof-assistant-checked evidence with a certificate, replay command and passing replay |
-| `C4` | Mechanized confirmation, adversarially reviewed and human-overseen | `C3`, plus two retained adversarial AI reviews by distinct reviewers whose latest verdict accepts the claim, plus a retained human oversight record, all on the confirming side |
-| `C5` | Formal confirmation: replayed here, open, and reviewed by two experts | Proof-assistant-checked evidence with `origin: replayed-here`, a replay command from the repository at a pinned toolchain, passing status and an axiom receipt; an `open_review` pointer to the public sources and replay instructions, so that anyone can review and replay it; and two formalization reviews by distinct named human experts |
+| Rung | Meaning | Short | Structural support |
+| --- | --- | --- | --- |
+| `C0` | Recorded | Recorded | No qualifying read or confirming replay |
+| `C1` | Read | Read | An `external_review` with a qualifying state, date, reviewer, and note |
+| `C2` | Replayed without a machine certificate | Replayed, no machine certificate | Confirming-origin evidence with a replay command and `replay_status: passed` on a method that yields no certificate |
+| `C3` | Machine-replayed here or by a third party; review record not yet retained | Machine-replayed; review record pending | Confirming-origin exact-algebraic, interval-certified or proof-assistant-checked evidence with a certificate, replay command and passing replay |
+| `C4` | Mechanized confirmation, adversarially reviewed and human-overseen | Mechanized confirmation, AI-reviewed, overseen | `C3`, plus two retained adversarial AI reviews by distinct reviewers whose latest verdict accepts the claim, plus a retained human oversight record, all on the confirming side |
+| `C5` | Formal confirmation: replayed here, open, and reviewed by two experts | Formal, replayed here, open, two experts | Proof-assistant-checked evidence with `origin: replayed-here`, a replay command from the repository at a pinned toolchain, passing status and an axiom receipt; an `open_review` pointer to the public sources and replay instructions, so that anyone can review and replay it; and two formalization reviews by distinct named human experts |
 
 For `C1`, a qualifying review state is `informally-verified` or `defect-found`; the
 review note records what was examined and what remains unchecked.

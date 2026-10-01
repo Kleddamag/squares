@@ -568,6 +568,24 @@ def test_each_dimension_card_counts_the_results_at_every_level(page: str) -> Non
     assert "(no result yet)" in page
 
 
+def test_every_rung_has_a_short_form_for_a_two_line_card_row() -> None:
+    """Every V and C rung carries a `Short` form in `epistemics.md`, at most
+    `SHORT_MEANING_LIMIT` characters, beside the full meaning the chip's title keeps;
+    the S anchors are short already and stand as their own short form."""
+    short = overview_sections.rung_short_meanings()
+    meanings = overview_sections.rung_meanings()
+    assert set(short) == set(meanings)
+    for label, form in short.items():
+        assert form, label
+        if label[0] in "VC":
+            assert len(form) <= overview_sections.SHORT_MEANING_LIMIT, (label, form)
+        assert "|" not in form
+        assert "`" not in form
+    assert short["V3"] == "Checkable; review record pending"
+    assert short["C5"] == "Formal, replayed here, open, two experts"
+    assert all(short[label] == meanings[label] for label in short if label[0] == "S")
+
+
 def test_every_rung_chip_is_titled_with_the_rubrics_meaning(page: str) -> None:
     """The chips' wording is `epistemics.md`'s, not a second hand-written copy: every
     `V`, `C` and `S` chip on the page carries its rung's one-line meaning as its title."""

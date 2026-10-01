@@ -729,6 +729,28 @@ def rubric_levels() -> dict[str, list[tuple[int, str]]]:
     return levels
 
 
+#: A `V` or `C` row of the rubric with its `Short` column: the label, the meaning, then
+#: the short form a two-line card row prints.
+_SHORT_ROW = re.compile(r"^\| `([VC])(\d)` \| [^|]+? \| ([^|]+?) \|", re.MULTILINE)
+
+#: The longest short form a card row holds on two lines.
+SHORT_MEANING_LIMIT = 60
+
+
+@cache
+def rung_short_meanings() -> dict[str, str]:
+    """Every rung's short form for a card row: the `Short` column of the `V` and `C`
+    tables in `epistemics.md`, and for `S`, whose anchors are already short, the
+    anchor itself. Every `V` and `C` rung has one, or the page does not build."""
+    text = (REPO / repo_links.EPISTEMICS).read_text(encoding="utf-8")
+    short = {f"{scale}{level}": form.strip() for scale, level, form in _SHORT_ROW.findall(text)}
+    for label, meaning in rung_meanings().items():
+        if label[0] in "VC" and label not in short:
+            raise SystemExit(f"epistemics.md gives {label} no Short form")
+        short.setdefault(label, meaning)
+    return short
+
+
 @cache
 def rung_meanings() -> dict[str, str]:
     """Every rung chip's label (`V3`, `C5`, `S2`) and its one-line meaning, from the

@@ -23,7 +23,6 @@ from devtools import (
     render_overview,
     render_recent_results,
 )
-from devtools.build_known_best_atlas import SUMMARY_RELEASE_STAMP
 from devtools.check_results import scope_values
 from devtools.render_explainer import COMPOSITE_ASSETS, OVERVIEW_FILM_POSTER
 from devtools.render_explainer import MARKDOWN as EXPLAINER_ARTICLE
@@ -1300,8 +1299,10 @@ def test_the_closing_credit_is_two_lines_the_project_and_the_version() -> None:
     name and its repository, linked, on the first line, and on the second the version
     every artifact prints and the credit to the two tools, each linked where README
     links it. The parts of a line stand either side of a middle dot with a space each
-    side. The version is the release's own edition stamp, the string the atlas footer
-    prints, so a re-pin or a new edition changes it here with no edit."""
+    side. The version is the release's own edition stamp at the pinned data revision, so
+    a re-pin or a new edition changes it here with no edit. An atlas poster's footer is
+    the same spelling at the data commit the poster was drawn from (`release.edition_at`),
+    which a re-pin does not move."""
     from sqpack import release  # noqa: PLC0415
 
     lines = COLOPHON_LINE.findall(render_overview.colophon_lines())
@@ -1325,7 +1326,7 @@ def test_the_closing_credit_is_two_lines_the_project_and_the_version() -> None:
     assert re.fullmatch(r"v\d+\.\d+\.\d+-[0-9a-f]{6}", release.PUBLICATION_STAMP)
     revision = release.DATA_REVISION[: release.DATA_REVISION_LENGTH]
     assert f"{release.PUBLICATION_VERSION}-{revision}" == release.PUBLICATION_STAMP
-    assert second[0] == SUMMARY_RELEASE_STAMP
+    assert second[0] == release.PUBLICATION_EDITION == release.edition_at(release.DATA_REVISION)
     # The tools' addresses are the repository's own: README links Flowmark there, and
     # KPress is the submodule this site is rendered with.
     readme = (render_overview.REPO / "README.md").read_text(encoding="utf-8")

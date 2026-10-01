@@ -67,8 +67,8 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`57`](n-057.md) | `8` | `8` | `1567/200` | `1 + √44` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
 | [`58`](n-058.md) | `8` | `8` | `789/100` | `1 + √45` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
 | [`59`](n-059.md) | `8` | `8` | `198/25` | `1 + √46` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
-| [`60`](n-060.md) | `8` | `8` | `397/50` | `1 + √47` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
-| [`61`](n-061.md) | `8` | `8` | `199/25` | `1 + √48` | open | replayed here, external proof | formal lower differs from report | 2026-09-27 |
+| [`60`](n-060.md) | `8` | `8` | `8` | `1 + √47` | open | replayed here, external proof | formal lower differs from report; proof audit pending | 2026-10-01 |
+| [`61`](n-061.md) | `8` | `8` | `8` | `1 + √48` | open | replayed here, external proof | formal lower differs from report; proof audit pending | 2026-10-01 |
 | [`62`](n-062.md) | `8` | `8` | `8` | `8` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`63`](n-063.md) | `8` | `8` | `8` | `8` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`64`](n-064.md) | `8` | `8` | `8.0` | `8` | proved | replayed here, external proof | — | 2026-08-24 |
@@ -85,7 +85,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`75`](n-075.md) | `9` | `9` | `889/100` | `1 + √60` | open | replayed here, external proof | formal lower differs from report | 2026-09-27 |
 | [`76`](n-076.md) | `9` | `9` | `223/25` | `1 + √61` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
 | [`77`](n-077.md) | `9` | `9` | `223/25` | `1 + √62` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
-| [`78`](n-078.md) | `9` | `9` | `1791/200` | `1 + √63` | open | replayed here, external proof | formal lower differs from report | 2026-09-27 |
+| [`78`](n-078.md) | `9` | `9` | `9` | `1 + √63` | open | replayed here, external proof | formal lower differs from report; proof audit pending | 2026-10-01 |
 | [`79`](n-079.md) | `9` | `9` | `9` | `9` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`80`](n-080.md) | `9` | `9` | `9` | `9` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`81`](n-081.md) | `9` | `9` | `9.0` | `9` | proved | replayed here, external proof | — | 2026-08-24 |
@@ -104,7 +104,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`94`](n-094.md) | `10` | `10` | `1959/200` | `1 + √77` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
 | [`95`](n-095.md) | `10` | `10` | `49209/5000` | `1 + √78` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
 | [`96`](n-096.md) | `10` | `10` | `9.888194417316` | `1 + √79` | open | replayed here, external proof | — | 2026-08-24 |
-| [`97`](n-097.md) | `10` | `10` | `9.944271909999` | `1 + √80` | open | replayed here, external proof | — | 2026-08-24 |
+| [`97`](n-097.md) | `10` | `10` | `10` | `1 + √80` | open | replayed here, external proof | formal lower differs from report; proof audit pending | 2026-10-01 |
 | [`98`](n-098.md) | `10` | `10` | `10` | `10` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`99`](n-099.md) | `10` | `10` | `10` | `10` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`100`](n-100.md) | `10` | `10` | `10.0` | `10` | proved | replayed here, external proof | — | 2026-08-24 |
@@ -125,7 +125,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`115`](n-115.md) | `11` | `11` | `10.79795897113` | `1 + √96` | open | replayed here, external proof | — | 2026-09-07 |
 | [`116`](n-116.md) | `11` | `11` | `10.8488578018` | `1 + √97` | open | replayed here, external proof | — | 2026-09-07 |
 | [`117`](n-117.md) | `11` | `11` | `10.89949493661` | `1 + √98` | open | replayed here, external proof | — | 2026-09-07 |
-| [`118`](n-118.md) | `11` | `11` | `10.94987437107` | `1 + √99` | open | replayed here, external proof | — | 2026-09-07 |
+| [`118`](n-118.md) | `11` | `11` | `11` | `1 + √99` | open | replayed here, external proof | formal lower differs from report; proof audit pending | 2026-10-01 |
 | [`119`](n-119.md) | `11` | `11` | `11` | `11` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`120`](n-120.md) | `11` | `11` | `11` | `11` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`121`](n-121.md) | `11` | `11` | `11.0` | `11` | proved | replayed here, external proof | — | 2026-09-07 |
@@ -148,7 +148,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`138`](n-138.md) | `12` | `12` | `11.81665382639` | `1 + √117` | open | replayed here, external proof | — | 2026-09-07 |
 | [`139`](n-139.md) | `12` | `12` | `11.8627804912` | `1 + √118` | open | replayed here, external proof | — | 2026-09-07 |
 | [`140`](n-140.md) | `12` | `12` | `11.90871211464` | `1 + √119` | open | replayed here, external proof | — | 2026-09-07 |
-| [`141`](n-141.md) | `12` | `12` | `11.9544511501` | `1 + √120` | open | replayed here, external proof | — | 2026-09-07 |
+| [`141`](n-141.md) | `12` | `12` | `12` | `1 + √120` | open | replayed here, external proof | formal lower differs from report; proof audit pending | 2026-10-01 |
 | [`142`](n-142.md) | `12` | `12` | `12` | `12` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`143`](n-143.md) | `12` | `12` | `12` | `12` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`144`](n-144.md) | `12` | `12` | `12.0` | `12` | proved | replayed here, external proof | — | 2026-09-07 |
@@ -173,7 +173,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`163`](n-163.md) | `13` | `13` | `12.8321595662` | `1 + √140` | open | replayed here, external proof | — | 2026-09-07 |
 | [`164`](n-164.md) | `13` | `13` | `12.87434208704` | `1 + √141` | open | replayed here, external proof | — | 2026-09-07 |
 | [`165`](n-165.md) | `13` | `13` | `12.91637528781` | `1 + √142` | open | replayed here, external proof | — | 2026-09-07 |
-| [`166`](n-166.md) | `13` | `13` | `12.9582607431` | `1 + √143` | open | replayed here, external proof | — | 2026-09-07 |
+| [`166`](n-166.md) | `13` | `13` | `13` | `1 + √143` | open | replayed here, external proof | formal lower differs from report; proof audit pending | 2026-10-01 |
 | [`167`](n-167.md) | `13` | `13` | `13` | `13` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`168`](n-168.md) | `13` | `13` | `13` | `13` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`169`](n-169.md) | `13` | `13` | `13.0` | `13` | proved | replayed here, external proof | — | 2026-09-07 |
@@ -200,7 +200,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`190`](n-190.md) | `14` | `14` | `13.84523257867` | `1 + √165` | open | replayed here, external proof | — | 2026-09-07 |
 | [`191`](n-191.md) | `14` | `14` | `13.88409872673` | `1 + √166` | open | replayed here, external proof | — | 2026-09-07 |
 | [`192`](n-192.md) | `14` | `14` | `13.92284798332` | `1 + √167` | open | replayed here, external proof | — | 2026-09-07 |
-| [`193`](n-193.md) | `14` | `14` | `13.96148139682` | `1 + √168` | open | replayed here, external proof | — | 2026-09-07 |
+| [`193`](n-193.md) | `14` | `14` | `14` | `1 + √168` | open | replayed here, external proof | formal lower differs from report; proof audit pending | 2026-10-01 |
 | [`194`](n-194.md) | `14` | `14` | `14` | `14` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`195`](n-195.md) | `14` | `14` | `14` | `14` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`196`](n-196.md) | `14` | `14` | `14.0` | `14` | proved | replayed here, external proof | — | 2026-09-07 |
@@ -229,7 +229,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`219`](n-219.md) | `15` | `15` | `14.85640646055` | `1 + √192` | open | replayed here, external proof | — | 2026-09-07 |
 | [`220`](n-220.md) | `15` | `15` | `14.89244398945` | `1 + √193` | open | replayed here, external proof | — | 2026-09-07 |
 | [`221`](n-221.md) | `15` | `15` | `14.92838827718` | `1 + √194` | open | replayed here, external proof | — | 2026-09-07 |
-| [`222`](n-222.md) | `15` | `15` | `14.96424004377` | `1 + √195` | open | replayed here, external proof | — | 2026-09-07 |
+| [`222`](n-222.md) | `15` | `15` | `15` | `1 + √195` | open | replayed here, external proof | formal lower differs from report; proof audit pending | 2026-10-01 |
 | [`223`](n-223.md) | `15` | `15` | `15` | `15` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`224`](n-224.md) | `15` | `15` | `15` | `15` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`225`](n-225.md) | `15` | `15` | `15.0` | `15` | proved | replayed here, external proof | — | 2026-09-07 |
@@ -260,7 +260,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`250`](n-250.md) | `16` | `16` | `15.86606874732` | `1 + √221` | open | replayed here, external proof | — | 2026-09-07 |
 | [`251`](n-251.md) | `16` | `16` | `15.89966442575` | `1 + √222` | open | replayed here, external proof | — | 2026-09-07 |
 | [`252`](n-252.md) | `16` | `16` | `15.93318452307` | `1 + √223` | open | replayed here, external proof | — | 2026-09-07 |
-| [`253`](n-253.md) | `16` | `16` | `15.9666295471` | `1 + √224` | open | replayed here, external proof | — | 2026-09-07 |
+| [`253`](n-253.md) | `16` | `16` | `16` | `1 + √224` | open | replayed here, external proof | formal lower differs from report; proof audit pending | 2026-10-01 |
 | [`254`](n-254.md) | `16` | `16` | `16` | `16` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`255`](n-255.md) | `16` | `16` | `16` | `16` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`256`](n-256.md) | `16` | `16` | `16.0` | `16` | proved | replayed here, external proof | — | 2026-09-07 |
@@ -293,7 +293,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`283`](n-283.md) | `17` | `17` | `16.87450786639` | `1 + √252` | open | replayed here, external proof | — | 2026-09-07 |
 | [`284`](n-284.md) | `17` | `17` | `16.90597372059` | `1 + √253` | open | replayed here, external proof | — | 2026-09-07 |
 | [`285`](n-285.md) | `17` | `17` | `16.93737745051` | `1 + √254` | open | replayed here, external proof | — | 2026-09-07 |
-| [`286`](n-286.md) | `17` | `17` | `16.96871942267` | `1 + √255` | open | replayed here, external proof | — | 2026-09-07 |
+| [`286`](n-286.md) | `17` | `17` | `17` | `1 + √255` | open | replayed here, external proof | formal lower differs from report; proof audit pending | 2026-10-01 |
 | [`287`](n-287.md) | `17` | `17` | `17` | `17` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`288`](n-288.md) | `17` | `17` | `17` | `17` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`289`](n-289.md) | `17` | `17` | `17.0` | `17` | proved | replayed here, external proof | — | 2026-09-07 |
@@ -328,7 +328,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`318`](n-318.md) | `18` | `18` | `17.88194301613` | `1 + √285` | open | replayed here, external proof | — | 2026-09-07 |
 | [`319`](n-319.md) | `18` | `18` | `17.91153452529` | `1 + √286` | open | replayed here, external proof | — | 2026-09-07 |
 | [`320`](n-320.md) | `18` | `18` | `17.9410743461` | `1 + √287` | open | replayed here, external proof | — | 2026-09-07 |
-| [`321`](n-321.md) | `18` | `18` | `17.97056274848` | `1 + √288` | open | replayed here, external proof | — | 2026-09-07 |
+| [`321`](n-321.md) | `18` | `18` | `18` | `1 + √288` | open | replayed here, external proof | formal lower differs from report; proof audit pending | 2026-10-01 |
 | [`322`](n-322.md) | `18` | `18` | `18` | `18` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`323`](n-323.md) | `18` | `18` | `18` | `18` | proved | replayed here, external proof | — | 2026-09-07 |
 | [`324`](n-324.md) | `18` | `18` | `18.0` | `18` | proved | replayed here, external proof | — | 2026-09-07 |

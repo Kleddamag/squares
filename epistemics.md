@@ -278,14 +278,35 @@ to credit it as carefully as this project’s own.
   method, solver or checker credits them in the same line
   (`wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi`). This
   project is credited as `after Levy` only where the source itself says so.
+- **This project’s results are credited the same way.** A result of this project is
+  `Levy` in the register and on the site, by name as every other author is, and
+  `Levy after …` where it rests directly on another’s proof, method or tool
+  (`Levy after Burns, Massaccesi` for a weighted certificate, `Levy after Stromquist`
+  for the repair of his point set).
+  The `after` is the entry’s `builds_on` in
+  [`results.yaml`](packing/frontier/results.yaml): each source it names is one the
+  result’s own evidence cites, and each name is an author of that source.
+  A repair or correction of a proof is `after` that proof’s author, since the result
+  reuses the argument it mends.
+  A property proved of a packing, such as its rigidity, is not `after` the packing’s
+  finder: the packing is the result’s subject, and its argument owes it nothing.
+  The credit carries the lineage in both directions, so a table of results needs no
+  grouping to say whose work rests on whose.
 - **People and projects, never tools.** Credit names people, or the handles they publish
-  under. This project is `Squares Project (Levy)` where it holds a bound and `Levy`
-  inside another source’s credit line.
-  An AI agent is never a credited author.
+  under. A bound this project holds is cited on the atlas as `Squares Project (Levy)`;
+  its results and its place in another source’s credit line are `Levy`. An AI agent is
+  never a credited author.
   Where a source states that AI assisted its work, its case record or register entry
   says so in the source’s own terms, and so does any README prose about the result;
   `devtools.state_ai_assistance` names a case record that cites such a source without
   saying so.
+- **A citation, not a disclaimer.** A register claim names the result’s authors, its
+  date and its source, with a link.
+  That a result is another’s is what its credit line and `attribution` state, and where
+  it was published is the citation’s venue; the claim adds no sentence disclaiming it.
+  The revision and digests of the retained copy are the evidence entry’s and the
+  packet’s, and stay out of sentences
+  ([conventions.md → Provenance](conventions.md#6-provenance)).
 - **Our rung is not their credit.** `V` and `C` describe verification.
   A result replayed here remains its authors’ result, and a rung never changes a credit
   line. A defect found here goes back to the authors with the review that found it.
@@ -358,6 +379,9 @@ The checker:
 - requires `attribution` on every `previously-published` result and refuses it on a
   novel one, resolves its source keys in the bibliography, and requires a `lineage` on
   the sources of a result by others published since 22 August 2026;
+- refuses `builds_on` on a result by others, and on a result of this project holds it to
+  the record: each source key resolves in the bibliography and is the `source_key` of an
+  evidence entry the result cites, and each credited name is an author of one of them;
 - requires a `headline` of at most 100 characters on every result, stating no number its
   claim does not, and an `established` date on every result without `attribution`, the
   day its certificate or proof first passed here, which it refuses beside `attribution`

@@ -6,6 +6,7 @@ import functools
 import html
 import html.parser
 import re
+import textwrap
 from collections import Counter
 from collections.abc import Callable
 from html.parser import HTMLParser
@@ -355,7 +356,7 @@ def test_every_card_grid_sits_in_a_frame_it_can_measure(page: str) -> None:
     every = re.findall(r'<div class="site-cards[" ]', page)
     assert len(grids) == len(every), "a card grid outside a frame"
     assert all(frame == "site-cards-frame site-wide" for frame, _ in grids)
-    assert any("site-cards-dimensions" in grid for _, grid in grids)
+    assert "site-cards-dimensions" not in page, "the rating ladders are no card grid"
 
 
 #: A container query naming how many cards of one size its frame fits to a line from a
@@ -454,7 +455,6 @@ def test_every_card_names_one_of_three_sizes(page: str) -> None:
     ), "a card with no size"
     assert [len(cards) for cards in sections.values()] == [
         len(overview_sections.PAGES),
-        len(overview_sections.DIMENSIONS),
         len(overview_sections.ATLAS_CARDS),
         len(overview_sections.OTHER_PROJECTS),
         len(overview_sections.DOCUMENTS),
@@ -464,7 +464,6 @@ def test_every_card_names_one_of_three_sizes(page: str) -> None:
         assert {size for size, _ in cards} == {declared}, name
     assert overview_sections.SECTION_CARD_SIZES == {
         "pages": "medium",
-        "dimensions": "large",
         "atlas": "medium",
         "projects": "medium",
         "documents": "small",
@@ -541,16 +540,164 @@ def test_a_card_without_a_declared_size_takes_its_texts() -> None:
         built("A short note.", size="huge")
 
 
-def test_each_dimension_card_carries_every_level_of_the_rubric(page: str) -> None:
+#: A cell of the rating-ladder diagram: the ladder it belongs to, then, where it holds a
+#: rung, the chip's title, scale, level and label, the description and the count.
+_LADDER_CELL = re.compile(
+    r'<div class="site-ladders-cell(?P<empty> site-ladders-empty)?" role="cell" '
+    r'data-ladder="(?P<ladder>[SVC])">'
+    r'(?:<div class="site-ladders-rung">'
+    r'<span class="site-chip site-rung-fill" title="(?P<title>[^"]*)" '
+    r'data-rung="(?P<scale>[SVC])" data-level="(?P<level>\d)">(?P<label>[SVC]\d)</span>'
+    r'<span class="site-ladders-meaning">(?P<meaning>[^<]*)</span>'
+    r'<span class="site-ladders-count">(?P<count>[^<]*)</span></div>)?</div>'
+)
+
+
+def _ladders(page: str) -> str:
+    """The Verification at a Glance section's diagram, the one block between its heading
+    and the prose under it."""
+    section = page.split('id="verification-at-a-glance"', 1)[1].split("<h2", 1)[0]
+    assert section.count('class="site-ladders"') == 1
+    return section.split('<div class="site-ladders-frame site-wide">', 1)[1].split("<p", 1)[0]
+
+
+def test_verification_at_a_glance_is_one_ladder_diagram_significance_first(page: str) -> None:
+    """The section is one diagram, not three cards: a column a dimension in the order
+    Significance, Verification, Confirmation, each headed by its name and question with
+    no caps label, and a row a level, the highest first, so the rungs line up. It is a
+    grid with table roles, never a `<table>`, which kpress would wrap and restyle and
+    `overview/table.js` would look for."""
+    assert [scale for scale, *_ in overview_sections.DIMENSIONS] == ["S", "V", "C"]
+    diagram = _ladders(page)
+    for foreign in ("<table", "site-table", "site-card", "popovertarget"):
+        assert foreign not in diagram, foreign
+    assert "pop-dimension-" not in page
+    assert diagram.startswith('<div class="site-ladders" role="table" aria-label="')
+    heads = re.findall(
+        r'<div class="site-ladders-head" role="columnheader" data-ladder="([SVC])">'
+        r'<a class="site-ladders-name" href="([^"]+)">([^<]+)</a> '
+        r'<span class="site-ladders-question">([^<]+)</span></div>',
+        diagram,
+    )
+    assert heads == [
+        (scale, f"epistemics.html#{section}", name, html.escape(question, quote=True))
+        for scale, name, section, question in overview_sections.DIMENSIONS
+    ]
+    rows = diagram.split('<div class="site-ladders-row" role="row"')[1:]
+    assert len(rows) == diagram.count('role="row"')
+    assert rows[0].count('role="columnheader"') == 1 + len(heads)
+    levels = [re.match(r' data-level="(\d)">', row) for row in rows[1:]]
+    assert [int(level.group(1)) for level in levels if level] == [5, 4, 3, 2, 1, 0]
+    for level, row in zip(range(5, -1, -1), rows[1:], strict=True):
+        assert f'<span class="site-ladders-level" role="rowheader">Level {level}</span>' in row
+        cells = list(_LADDER_CELL.finditer(row))
+        assert row.count('role="cell"') == len(cells) == len(heads), level
+        assert [cell["ladder"] for cell in cells] == ["S", "V", "C"], level
+        held = [cell["label"] for cell in cells if cell["label"]]
+        # Significance has no level 0, so its cell there is empty and holds its place.
+        assert held == ([f"{scale}{level}" for scale in "SVC"] if level else ["V0", "C0"])
+        assert [bool(cell["empty"]) for cell in cells] == [not cell["label"] for cell in cells]
+
+
+def test_the_ladder_diagram_says_what_the_rubric_says(page: str, register: list[dict]) -> None:
+    """Every rung of `epistemics.md` is a cell: its chip, titled with the rubric's own
+    meaning, its description, which is that meaning unless the rung has a short form, and
+    the count of register entries at that level."""
     levels = overview_sections.rubric_levels()
     assert [len(levels[scale]) for scale in "VCS"] == [6, 6, 5]
-    for scale, _, section, _ in overview_sections.DIMENSIONS:
-        panel = page.split(f'popovertarget="pop-dimension-{scale.lower()}"', 1)[1]
-        panel = panel.split("</button>", 1)[0]
-        for level, meaning in levels[scale]:
-            assert f'data-rung="{scale}" data-level="{level}">{scale}{level}</span>' in panel
-            assert html.escape(meaning, quote=True) in panel
-        assert f'href="epistemics.html#{section}"' in page
+    meanings = {
+        f"{scale}{level}": meaning
+        for scale, rungs in levels.items()
+        for level, meaning in rungs
+    }
+    assert overview_sections.rung_meanings() == meanings
+    short = overview_sections.rung_short_meanings()
+    assert set(short) == set(meanings)
+    assert {label for label in short if short[label] != meanings[label]} == set(
+        overview_sections.RUNG_SHORT_MEANINGS
+    )
+    declared = {
+        "V": Counter(int(r["verification"][1]) for r in register),
+        "C": Counter(int(r["confirmation"][1]) for r in register),
+        "S": Counter(int(r["significance"]["score"]) for r in register),
+    }
+    assert overview_sections.rung_counts() == declared
+    cells = {
+        cell["label"]: cell for cell in _LADDER_CELL.finditer(_ladders(page)) if cell["label"]
+    }
+    assert set(cells) == set(meanings)
+    for label, cell in cells.items():
+        assert (cell["ladder"], cell["scale"], cell["level"]) == (label[0], label[0], label[1])
+        assert html.unescape(cell["title"]) == meanings[label], label
+        assert html.unescape(cell["meaning"]) == short[label], label
+        count = declared[label[0]][int(label[1])]
+        assert cell["count"] == overview_sections.count_label(count), label
+    assert [overview_sections.count_label(n) for n in (0, 1, 2)] == [
+        "no result yet",
+        "1 result",
+        "2 results",
+    ]
+
+
+def test_every_rung_has_a_description_that_fits_two_lines(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A cell's description is a box of exactly two lines, so every rung's text wraps to
+    at most two lines of the narrowest cell, `SHORT_MEANING_LINE` characters each, and
+    none is cut with an ellipsis. One that does not fit stops the build and asks for a
+    short form, as does a short form for a rung the rubric does not have.
+    `test_site_ladders` measures the same lines in a browser."""
+    short = overview_sections.rung_short_meanings()
+    for label, text in short.items():
+        lines = textwrap.wrap(text, overview_sections.SHORT_MEANING_LINE)
+        assert 1 <= len(lines) <= 2, (label, lines)
+        assert not re.search(r"…|\.\.\.", text), label
+    long_form = "A reusable technique, bound family, or resolved disputed value"
+    assert overview_sections.rung_meanings()["S4"] == long_form
+    try:
+        monkeypatch.setattr(overview_sections, "RUNG_SHORT_MEANINGS", {})
+        overview_sections.rung_short_meanings.cache_clear()
+        with pytest.raises(SystemExit, match=r"S4's description.*does not fit two lines"):
+            overview_sections.rung_short_meanings()
+        monkeypatch.setattr(overview_sections, "RUNG_SHORT_MEANINGS", {"S0": "No such rung"})
+        overview_sections.rung_short_meanings.cache_clear()
+        with pytest.raises(SystemExit, match=r"names no rung of epistemics\.md: S0"):
+            overview_sections.rung_short_meanings()
+    finally:
+        monkeypatch.undo()
+        overview_sections.rung_short_meanings.cache_clear()
+    assert overview_sections.rung_short_meanings() == short
+
+
+def test_the_ladder_diagram_is_its_own_component_on_the_shared_tokens() -> None:
+    """The diagram's rules are its own (`.site-ladders`), and its measures agree with one
+    another: the description's box is two lines and is never clipped; a rung sets its
+    description beside the rail only where the cell holds the rail, the gap and the least
+    description; and three columns stand only where each still holds that least. It
+    stands the tables' space clear of the text."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    for retired in (".site-level", "site-cards-dimensions"):
+        assert retired not in css, retired
+    rules = css.split("/* ---------- The rating ladders ----------", 1)[1]
+    rules = rules.split("/* The atlas grid:", 1)[0]
+    assert "margin-block: var(--site-table-space);" in rules
+    boxes = re.findall(r"\.site-ladders-meaning \{([^}]*)\}", rules)
+    assert "block-size: calc(2 * var(--site-ladders-line));" in boxes[0]
+    assert not any("overflow" in box or "clamp" in box for box in boxes)
+    assert not re.search(r"text-overflow|line-clamp", rules)
+
+    def rem(token: str) -> float:
+        found = re.search(rf"--site-ladders-{token}: ([\d.]+)rem;", rules)
+        assert found, token
+        return float(found.group(1))
+
+    rail, gap, least, inset = rem("rail"), rem("gap"), rem("meaning-min"), rem("inset")
+    beside = re.search(r"@container \(inline-size >= ([\d.]+)rem\)", rules)
+    columns = re.search(r"@container site-ladders \(inline-size < ([\d.]+)rem\)", rules)
+    assert beside, "no query sets a description beside its rail"
+    assert columns, "no query stacks the ladders"
+    assert float(beside.group(1)) == rail + gap + least
+    assert float(columns.group(1)) / len(overview_sections.DIMENSIONS) - inset >= least
 
 
 def test_no_placeholder_or_raw_math_is_left(page: str) -> None:
@@ -581,10 +728,10 @@ def test_every_repository_link_on_the_page_names_main(page: str) -> None:
 
 
 def test_on_github_links_open_the_latest_version(page: str) -> None:
-    """Each document card and rubric card has an "On GitHub" link on `main`."""
+    """Each document card has an "On GitHub" link on `main`."""
     branch = f"{REPO_URL}/blob/{DEFAULT_BRANCH}/"
     also = re.findall(r'<a class="site-popover-also" href="([^"]+)"[^>]*>On GitHub</a>', page)
-    assert len(also) == len(overview_sections.DOCUMENTS) + len(overview_sections.DIMENSIONS)
+    assert len(also) == len(overview_sections.DOCUMENTS)
     assert all(url.startswith(branch) for url in also)
 
 
@@ -1741,8 +1888,9 @@ def test_card_headlines_take_the_page_titles_sans_face_and_weight() -> None:
 def test_every_heading_and_headline_shares_one_leading() -> None:
     """One line height, 1.15, for every heading on screen: the text layer every page
     carries sets it on `h1` to `h6`, and the site's stylesheet reads the same token for a
-    card's headline, a popover's, a case record's title and a page's subtitle. Print is
-    left to KPress, and a formula in any of them takes no line of its own."""
+    card's headline, a popover's, a case record's title, a page's subtitle and a column's
+    name in the rating ladders. Print is left to KPress, and a formula in any of them
+    takes no line of its own."""
     text = render_overview.PAPER_TYPE_CSS.read_text(encoding="utf-8")
     assert text.count("--paper-heading-leading: 1.15;") == 1
     assert (
@@ -1755,10 +1903,11 @@ def test_every_heading_and_headline_shares_one_leading() -> None:
         ".kpress .site-card .site-card-value,\n.site-popover .site-popover-value {",
         ".kpress .site-case-title {",
         ".kpress .site-hero .subtitle {",
+        ".kpress .site-ladders .site-ladders-name {",
     ):
         rule = css[css.index(selector) :]
         assert "line-height: var(--paper-heading-leading);" in rule[: rule.index("}")], selector
-    assert css.count("var(--paper-heading-leading)") == 3
+    assert css.count("var(--paper-heading-leading)") == 4
     assert "--paper-heading-leading:" not in css
     math = css[css.index(":is(.site-card-value, .site-popover-value, .site-case-title,") :]
     math = math[: math.index("}")]
@@ -1862,7 +2011,10 @@ def test_every_table_stands_one_shared_space_from_the_text_around_it() -> None:
         "    margin-block-start: 0;\n  }"
     ) in screen
     assert "  .site-replay .site-table-wrap {\n    margin-block-end: 0;\n  }" in screen
-    assert css.count("var(--site-table-space)") == 2
+    # The rating ladders, which are no table, stand the same space clear of the text.
+    ladders = css[css.index("@media screen {\n  .site-ladders-frame {") :]
+    assert "margin-block: var(--site-table-space);" in ladders[: ladders.index("}")]
+    assert css.count("var(--site-table-space)") == 3
     assert "@media print {\n  .site-nav,\n  .site-table-tools {\n    display: none;" in css
     design = (render_overview.TEMPLATES / "paper-design.md").read_text(encoding="utf-8")
     assert "| Above and below a table | `--site-table-space` | 2rem, 32px |" in design

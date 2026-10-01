@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Measure a built site's pages against the explainer: load and math timing, text, faces,
-the card sections' layout, the face of every formula, and the space around tables and
-headings.
+the card sections' layout, the rating ladders' rows, the face of every formula, and the
+space around tables and headings.
 
-Six measurements, each over pages of a directory `preview_site` has built:
+Seven measurements, each over pages of a directory `preview_site` has built:
 
 - `load` serves the directory on a local port and opens each page in a fresh Chromium
   context, cold cache, at a desktop or phone width. An init script (a probe) records
@@ -23,6 +23,12 @@ Six measurements, each over pages of a directory `preview_site` has built:
   widths and sizes and the slack at its start and end (equal when the row is centred),
   and each card's headline face, weight and size. `--markdown` prints one line a row, and
   `--media print` lays the page out as it prints.
+- `ladders` reports the rating-ladder diagram (`.site-ladders`) as laid out: how many
+  columns its rungs stand in, every rung's height, and each description's box, the lines
+  its words take and how far they run past the box. `--markdown` prints one line a
+  width, with the distinct rung heights (one value when every row is the same height),
+  the narrowest description box and the most lines any description takes. `--shots DIR`
+  also shoots each diagram there at each width, light and dark, under its heading.
 - `math` reports the face of every typeset formula beside the face of the text it sits
   in, counted by surface (a card's headline, a chip, a table, a popover, a caption, the
   prose), once the page has typeset all its math. `--press SELECTOR` presses an element
@@ -47,6 +53,8 @@ Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages faces SITE
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages cards SITE \
         --page index.html --width 1280 --width 390 --markdown
+    uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages \
+        ladders SITE --page index.html --width 1280 --width 768 --width 390 --markdown
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages math SITE \
         --page index.html --press '[data-atlas-n="11"]' --markdown
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages space SITE \
@@ -79,6 +87,7 @@ _DONE = probe(PROBES, "measure_site_pages/done")
 _REPORT = probe(PROBES, "measure_site_pages/report")
 TYPOGRAPHY = probe(PROBES, "measure_site_pages/typography")
 CARDS = probe(PROBES, "measure_site_pages/cards")
+LADDERS = probe(PROBES, "measure_site_pages/ladders")
 MATH_FACES = probe(PROBES, "measure_site_pages/math_faces")
 SPACING = probe(PROBES, "measure_site_pages/spacing")
 #: What a press opens, which `space` then reports alone: an open popover or disclosure.
@@ -162,6 +171,81 @@ def measure_cards(
             base, pages, widths=widths, script=CARDS, media=media
         )
         for section in found
+    ]
+
+
+#: How much of the page a ladder shot shows above and below the diagram, in CSS pixels:
+#: the section heading over it and the first lines under it, so its spacing is in view.
+LADDER_SHOT_MARGIN = (130, 90)
+
+
+def measure_ladders(
+    base: str, pages: Sequence[str], *, widths: Sequence[int], shots: Path | None = None
+) -> list[dict[str, Any]]:
+    """Each page's rating-ladder diagrams as laid out at each width, one entry a diagram.
+    With `shots`, each diagram is also shot there at each width, light and dark, with the
+    heading above it: `ladders-<page>-<width>-<scheme>.png`."""
+    from playwright.sync_api import sync_playwright  # noqa: PLC0415
+
+    results: list[dict[str, Any]] = []
+    above, below = LADDER_SHOT_MARGIN
+    schemes = ("light", "dark") if shots is not None else ("light",)
+    if shots is not None:
+        shots.mkdir(parents=True, exist_ok=True)
+    with sync_playwright() as driver:
+        browser = _launch(driver)
+        for width in widths:
+            for name in pages:
+                for scheme in schemes:
+                    page = browser.new_page(
+                        viewport={"width": width, "height": 900}, color_scheme=scheme
+                    )
+                    page.goto(f"{base}/{name}", wait_until="load")
+                    page.wait_for_timeout(300)
+                    found: list[dict[str, Any]] = page.evaluate(LADDERS)
+                    if scheme == "light":
+                        results.extend(
+                            {"page": name, "width": width, **diagram} for diagram in found
+                        )
+                    stem = Path(name.split("#", 1)[0]).stem
+                    for index, diagram in enumerate(found):
+                        if shots is None:
+                            break
+                        which = f"{stem}-{index}" if index else stem
+                        top = max(0, diagram["top"] - above)
+                        page.screenshot(
+                            path=str(shots / f"ladders-{which}-{width}-{scheme}.png"),
+                            full_page=True,
+                            clip={
+                                "x": 0,
+                                "y": top,
+                                "width": width,
+                                "height": diagram["top"] + diagram["height"] + below - top,
+                            },
+                        )
+                    page.close()
+        browser.close()
+    return results
+
+
+def ladder_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """A `ladders` report flattened to one row per page and width: the diagram's columns,
+    its distinct rung heights, the narrowest description box, the most lines a
+    description takes, and the rungs whose words run past their two lines."""
+    return [
+        {
+            "page": entry["page"],
+            "width": entry["width"],
+            "block": entry["block_width"],
+            "columns": entry["columns"],
+            "rungs": len(entry["rungs"]),
+            "rung_heights": " ".join(f"{height:g}" for height in entry["heights"]),
+            "meaning_min": min(rung["meaning_width"] for rung in entry["rungs"]),
+            "meaning_height": _span([rung["meaning_height"] for rung in entry["rungs"]]),
+            "max_lines": max(rung["lines"] for rung in entry["rungs"]),
+            "overflowing": " ".join(r["rung"] for r in entry["rungs"] if r["overflow"]) or "-",
+        }
+        for entry in report
     ]
 
 
@@ -453,6 +537,8 @@ def markdown_table(report: list[dict[str, Any]]) -> str:
         report = type_rows(report)
     if report and "rows" in report[0]:
         report = card_rows(report)
+    if report and "rungs" in report[0]:
+        report = ladder_rows(report)
     if report and "kind" in report[0]:
         report = space_rows(report)
     columns = [key for key, value in report[0].items() if not isinstance(value, (dict, list))]
@@ -461,11 +547,15 @@ def markdown_table(report: list[dict[str, Any]]) -> str:
     return "\n".join(lines)
 
 
+#: The measurements, as `mode` names them.
+MODES = ("load", "type", "faces", "cards", "ladders", "math", "space")
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    parser.add_argument("mode", choices=("load", "type", "faces", "cards", "math", "space"))
+    parser.add_argument("mode", choices=MODES)
     parser.add_argument("site", type=Path)
     parser.add_argument(
         "--page", action="append", help="a page, with any #fragment; repeatable"
@@ -491,6 +581,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         "report what it opened; repeatable",
     )
     parser.add_argument(
+        "--shots",
+        type=Path,
+        metavar="DIR",
+        help="with `ladders`: also shoot each diagram here at each width, light and dark",
+    )
+    parser.add_argument(
         "--tokens",
         choices=("root_tokens", "column_tokens"),
         help="with `type`: list only the `--kpress-*` tokens that differ between pages",
@@ -511,6 +607,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                 report = measure_type(base, pages, widths=widths)
             elif args.mode == "cards":
                 report = measure_cards(base, pages, widths=widths, media=args.media)
+            elif args.mode == "ladders":
+                report = measure_ladders(base, pages, widths=widths, shots=args.shots)
             elif args.mode == "math":
                 report = measure_math(base, pages, widths=widths, presses=args.press)
             elif args.mode == "space":

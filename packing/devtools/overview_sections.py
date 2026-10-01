@@ -13,8 +13,11 @@ from __future__ import annotations
 import base64
 import html
 import re
+import textwrap
+from collections import Counter
 from collections.abc import Iterable, Sequence
 from datetime import date
+from functools import cache
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Literal, NamedTuple, get_args
@@ -22,6 +25,7 @@ from urllib.parse import urlsplit
 
 from devtools import repo_links
 from devtools.build_bound_citations import RECENT_SINCE
+from devtools.check_results import RESULTS as REGISTER
 from devtools.overview_data import (
     APOSTROPHE,
     EN_DASH,
@@ -34,6 +38,7 @@ from devtools.overview_data import (
 from devtools.render_overview import DOCUMENT_PAGES, RESULTS_PAGE
 from devtools.render_recent_results import HOLDS, NOT_A_BOUND, STANDINGS, Lane, Row
 from devtools.repo_links import branch_file
+from sqpack.yamlio import safe_load
 
 
 def _esc(text: object) -> str:
@@ -126,11 +131,10 @@ CARD_LARGE_FROM = 160
 
 #: Each card section's size, declared here so its cards are one width and its lines one
 #: grid. Each is the size its typical card's text asks for by `card_size` (a test holds
-#: the two together): the documents' one-line notes are small; the dimension cards list a
-#: whole rung ladder, so they are large; the rest carry a sentence and are medium.
+#: the two together): the documents' one-line notes are small; the rest carry a sentence
+#: and are medium.
 SECTION_CARD_SIZES: dict[str, CardSize] = {
     "pages": "medium",
-    "dimensions": "large",
     "atlas": "medium",
     "projects": "medium",
     "documents": "small",
@@ -695,12 +699,13 @@ def results_table(overview: Overview) -> str:
     )
 
 
-#: The rubric's three scored dimensions, in the homepage's order: the scale, its name,
-#: the `epistemics.md` section that defines it, and the question it answers.
+#: The rubric's three scored dimensions, in the site's order, significance first: the
+#: scale, its name, the `epistemics.md` section that defines it, and the question it
+#: answers.
 DIMENSIONS: tuple[tuple[str, str, str, str], ...] = (
+    ("S", "Significance", "significance-and-novelty", "How much does the result matter?"),
     ("V", "Verification", "verification", "How strongly is the claim checked, by anyone?"),
     ("C", "Confirmation", "confirmation", "What has this repository checked itself?"),
-    ("S", "Significance", "significance-and-novelty", "How much does the result matter?"),
 )
 
 _LEVEL_ROW = re.compile(r"^\| `([VCS])(\d)` \| ([^|]+?) \|", re.MULTILINE)
@@ -708,7 +713,7 @@ _LEVEL_ROW = re.compile(r"^\| `([VCS])(\d)` \| ([^|]+?) \|", re.MULTILINE)
 
 def rubric_levels() -> dict[str, list[tuple[int, str]]]:
     """Each dimension's levels and their one-line meanings, read from the tables in
-    `epistemics.md`, so a card cannot drift from the rubric it summarizes."""
+    `epistemics.md`, so the ladder diagram cannot drift from the rubric it summarizes."""
     text = (REPO / repo_links.EPISTEMICS).read_text(encoding="utf-8")
     levels: dict[str, list[tuple[int, str]]] = {}
     for scale, level, meaning in _LEVEL_ROW.findall(text):
@@ -734,35 +739,134 @@ def novelty_labels() -> dict[str, str]:
     return labels
 
 
-def verification_block() -> str:
-    """One card per dimension of the rubric: its question and every level, as the chip
-    the tables use and the rubric's meaning. Each card's popover renders that section of
-    `epistemics.md`."""
+#: The short form the ladder diagram prints for a rung whose meaning in `epistemics.md`
+#: does not fit a cell's two lines. This is the one place a short form is written; a rung
+#: not named here prints its meaning whole. The chip's `title` carries the full meaning
+#: either way.
+RUNG_SHORT_MEANINGS: dict[str, str] = {
+    "S4": "Reusable technique, bound family, or settled value",
+    "S5": "Moves a central open case, or broad adoption",
+}
 
-    levels = rubric_levels()
-    cards = []
-    for scale, name, section, question in DIMENSIONS:
-        ladder = "".join(
-            f'<span class="site-level"><span class="site-chip site-rung-fill" '
-            f'data-rung="{scale}" data-level="{level}">{scale}{level}</span> '
-            f"{_esc(meaning)}</span>"
-            for level, meaning in sorted(levels[scale], reverse=True)
-        )
-        cards.append(
-            card(
-                f"pop-dimension-{scale.lower()}",
-                f"{scale}{levels[scale][0][0]}{EN_DASH}{scale}{levels[scale][-1][0]}",
-                _esc(name),
-                f'<span class="site-level-question">{_esc(question)}</span>{ladder}',
-                href=f"epistemics.html#{section}",
-                action=f"Expand {name} in epistemics.md",
-                also=(branch_file(repo_links.EPISTEMICS, f"#{section}"), "On GitHub"),
-                size=SECTION_CARD_SIZES["dimensions"],
+#: How many characters one line of a ladder cell's description holds where the cell is
+#: narrowest, 13.5rem or 216px (`--site-ladders-meaning-min` in `site.css`): the note
+#: size sets a line of prose at 7.3 to 8.4px a character, so 25 characters are at most
+#: 210px. A description fits its two lines when it wraps to two lines of this many
+#: characters; `tests/test_site_ladders.py` measures the same in a browser, in pixels.
+SHORT_MEANING_LINE = 25
+
+
+@cache
+def rung_meanings() -> dict[str, str]:
+    """Every rung chip's label (`V3`, `C5`, `S2`) and its one-line meaning, from the
+    tables in `epistemics.md`, so a chip's `title` says what the rubric says."""
+    return {
+        f"{scale}{level}": meaning
+        for scale, levels in rubric_levels().items()
+        for level, meaning in levels
+    }
+
+
+@cache
+def rung_short_meanings() -> dict[str, str]:
+    """Every rung's description in a ladder cell: its short form in `RUNG_SHORT_MEANINGS`,
+    or the rubric's own meaning where that fits. One that does not fit two lines of the
+    narrowest cell fails the build, since the fix is a shorter text, never a clipped one."""
+    meanings = rung_meanings()
+    unknown = sorted(set(RUNG_SHORT_MEANINGS) - set(meanings))
+    if unknown:
+        raise SystemExit(f"a short form names no rung of epistemics.md: {', '.join(unknown)}")
+    short = {
+        label: RUNG_SHORT_MEANINGS.get(label, meaning) for label, meaning in meanings.items()
+    }
+    for label, text in short.items():
+        if len(textwrap.wrap(text, SHORT_MEANING_LINE)) > 2:
+            raise SystemExit(
+                f"{label}'s description, {text!r}, does not fit two lines of "
+                f"{SHORT_MEANING_LINE} characters: give it a short form in RUNG_SHORT_MEANINGS"
             )
-        )
+    return short
+
+
+def rung_counts() -> dict[str, Counter[int]]:
+    """How many registered results stand at each level of each dimension, read from the
+    register, so the diagram shows an empty rung as empty rather than omitting it."""
+    results = safe_load(REGISTER.read_text(encoding="utf-8"))["results"]
+    counts: dict[str, Counter[int]] = {scale: Counter() for scale, *_ in DIMENSIONS}
+    for record in results:
+        counts["V"][int(record["verification"][1])] += 1
+        counts["C"][int(record["confirmation"][1])] += 1
+        counts["S"][int(record["significance"]["score"])] += 1
+    return counts
+
+
+def count_label(count: int) -> str:
+    """How the diagram says how many results stand at a level; an empty rung says so."""
+    if count == 0:
+        return "no result yet"
+    return f"{count} result" + ("" if count == 1 else "s")
+
+
+def _ladder_cell(scale: str, level: int, count: int) -> str:
+    """One rung of the ladder diagram: the chip the tables use, titled with the rubric's
+    full meaning, the two-line description, and how many results stand there."""
+    label = f"{scale}{level}"
     return (
-        '<div class="site-cards-frame site-wide"><div class="site-cards site-cards-dimensions">'
-        f"{''.join(cards)}</div></div>"
+        f'<div class="site-ladders-cell" role="cell" data-ladder="{scale}">'
+        '<div class="site-ladders-rung">'
+        f'<span class="site-chip site-rung-fill" title="{_esc(rung_meanings()[label])}" '
+        f"{_fill(label)}>{label}</span>"
+        f'<span class="site-ladders-meaning">{_esc(rung_short_meanings()[label])}</span>'
+        f'<span class="site-ladders-count">{_esc(count_label(count))}</span>'
+        "</div></div>"
+    )
+
+
+def verification_block() -> str:
+    """The rating ladders as one diagram: a column per dimension of the rubric,
+    Significance, Verification, Confirmation, headed by its name and the question it
+    answers, and a row per level, the highest at the top, so the rungs of the three
+    ladders line up. A cell is the rung's chip, its description on two lines and the
+    count of results at that level; a ladder with no rung at a level leaves its cell
+    empty, as Significance does at level 0.
+
+    It is a grid marked with table roles, not a `<table>`: kpress wraps every table on a
+    page in its own scroller and restyles it as `.kpress-table`, which this diagram is
+    not. Each name links to that section of `epistemics.md`.
+    """
+    levels = {scale: {level for level, _ in rungs} for scale, rungs in rubric_levels().items()}
+    counts = rung_counts()
+    heads = "".join(
+        f'<div class="site-ladders-head" role="columnheader" data-ladder="{scale}">'
+        f'<a class="site-ladders-name" href="epistemics.html#{section}">{_esc(name)}</a> '
+        f'<span class="site-ladders-question">{_esc(question)}</span></div>'
+        for scale, name, section, question in DIMENSIONS
+    )
+    rows = [
+        (
+            '<div class="site-ladders-row" role="row">'
+            f'<span class="site-ladders-level" role="columnheader">Level</span>{heads}</div>'
+        )
+    ]
+    every = sorted({level for scale, *_ in DIMENSIONS for level in levels[scale]}, reverse=True)
+    for level in every:
+        cells = "".join(
+            _ladder_cell(scale, level, counts[scale][level])
+            if level in levels[scale]
+            else f'<div class="site-ladders-cell site-ladders-empty" role="cell" '
+            f'data-ladder="{scale}"></div>'
+            for scale, *_ in DIMENSIONS
+        )
+        rows.append(
+            f'<div class="site-ladders-row" role="row" data-level="{level}">'
+            f'<span class="site-ladders-level" role="rowheader">Level {level}</span>'
+            f"{cells}</div>"
+        )
+    names = ", ".join(name.lower() for _, name, _, _ in DIMENSIONS)
+    return (
+        '<div class="site-ladders-frame site-wide">'
+        f'<div class="site-ladders" role="table" aria-label="Rating ladders by level: {names}">'
+        f"{''.join(rows)}</div></div>"
     )
 
 

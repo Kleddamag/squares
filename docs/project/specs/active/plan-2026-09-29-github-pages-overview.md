@@ -278,8 +278,10 @@ As built (amended 2026-09-30), after the owner’s preview review, the page runs
    with a link to the full table on `all-results.html`. It replaces the headline cards,
    the exact-value cards and the recent-changes list, and is followed by the cases
    awaiting a replay.
-4. **Verification at a Glance.** One card per rung dimension (Verification,
-   Confirmation, Significance) in place of the counts and stacked bar.
+4. **Verification at a Glance.** One ladder diagram in place of the three dimension
+   cards, which had replaced the counts and stacked bar: a column per rung dimension
+   (Significance, Verification, Confirmation), a row per level, and in each cell the
+   rung’s chip, a two-line description and the count of results there (`think-mvr0`).
 5. **The Atlas.** A grid of every known-best packing, `n = 1…100` expanding to 324, each
    opening a popover with the film’s panel for that `n` and a link to its case record;
    then three cards: the two posters, each opening its PDF, and Visualize.

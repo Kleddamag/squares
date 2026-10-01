@@ -1573,8 +1573,10 @@ body {
      more than lets three columns stand in the wide track of a 768-pixel window, 43rem
      (below). */
   --site-ladders-inset: 0.75rem;
-  /* Half the space between two rows, which no rule divides. */
-  --site-ladders-row-space: 0.75rem;
+  /* Half the space between two rows, which no rule divides: enough to tell one rung's
+     second line from the next rung's first, and little enough that the rungs read as
+     one ladder. */
+  --site-ladders-row-space: 0.4rem;
   display: grid;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);

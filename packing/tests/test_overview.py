@@ -991,7 +991,9 @@ def test_the_ladder_diagram_is_its_own_component_on_the_shared_tokens() -> None:
     assert [selector.strip() for selector in bordered] == [".site-ladders-head"]
     assert "border-block-end: 1px solid var(--kpress-doc-text);" in body(".site-ladders-head")
     assert "padding-block: var(--site-ladders-row-space);" in body(".site-ladders-cell")
-    assert rem("row-space") >= 0.75
+    # Enough to part two rungs that no rule divides, and little enough that they read
+    # as one ladder (the owner, 2026-10-01: the rows were too far apart at 0.75rem).
+    assert 0.3 <= rem("row-space") <= 0.5
 
 
 def test_no_placeholder_or_raw_math_is_left(page: str) -> None:

@@ -1199,9 +1199,57 @@ body {
   padding: 0;
   text-align: inherit;
 }
-/* A row's detail can carry long unbroken names, such as evidence identifiers. */
-.site-row-pop .site-detail dd {
-  overflow-wrap: anywhere;
+
+/* ---------- Words stay whole ----------
+   No text on the site breaks inside a word. KPress gives every page
+   `overflow-wrap: break-word`, which cuts a run of characters only when it is longer
+   than a whole line, and the site adds `overflow-wrap: anywhere` nowhere but on the two
+   things that are such runs by nature: an exact decimal (`.site-case-decimal`) and a
+   repository path (`.site-result-links code`). `anywhere` also lets a column shrink to
+   one character, which is how a label comes out a letter a line, so it never goes on
+   prose, a label or a column of either.
+
+   A name set as code, an evidence identifier or a result's id, is one word too, and a
+   browser would end a line on any of its hyphens. Each name with the comma after it is
+   an inline box of its own (`.site-name`): the line breaks before the box, never inside
+   it, and only a name longer than the whole line wraps, inside its box. */
+.site-name {
+  display: inline-block;
+  max-inline-size: 100%;
+}
+
+/* Label and value side by side (`.site-pairs`): the labels in one column as wide as the
+   longest of them, whatever it says and in whatever face, and the values in the rest,
+   wrapping between words. Every list in the block shares the two columns, and a heading
+   runs across both. A phone has no room for two columns, so there the block is laid out
+   as any detail list is, each label above its value. */
+@media (width > 40rem) {
+  .site-pairs {
+    column-gap: 1.1rem;
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+  }
+  .site-popover .site-pairs > .site-detail {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    row-gap: 0.3rem;
+  }
+  .site-popover .site-pairs > .site-detail dd {
+    margin: 0;
+  }
+  .site-popover .site-pairs > .site-popover-heading {
+    grid-column: 1 / -1;
+    margin-block-start: 0.7rem;
+  }
+  .site-popover .site-pairs > .site-popover-heading:first-child {
+    margin-block-start: 0;
+  }
+}
+/* A popover of pairs is as wide as its longest value asks, up to a line of prose and
+   the label column beside it. */
+.site-popover:has(.site-pairs) {
+  max-inline-size: min(46rem, 100vw - 2rem);
 }
 
 /* kpress wraps a wide table in its own full-bleed wrap, sized from the viewport. The
@@ -1677,18 +1725,24 @@ body {
   color: var(--kpress-doc-muted);
   font-weight: var(--kpress-font-weight-sans-regular);
 }
+/* A citation is a row of two cells: which bound, then its source, wrapping between
+   words beside the label. The rows are table rows, so the browser sets the two in one
+   table and the label column is as wide as the wider label, "lower" or "upper", in
+   whatever face and size it is drawn; nothing gives it a width. */
 .site-atlas-pop .site-atlas-pop-cite {
   color: var(--site-support-color);
+  display: table-row;
   line-height: 1.4;
-  margin-block: 0.15rem 0;
-  padding-inline-start: 3.4rem;
-  text-indent: -3.4rem;
+}
+.site-atlas-pop .site-atlas-pop-cite[hidden] {
+  display: none;
 }
 .site-atlas-pop-which {
-  display: inline-block;
+  display: table-cell;
   font-weight: var(--site-font-weight-sans-medium);
-  inline-size: 3.4rem;
-  text-indent: 0;
+  padding-block-start: 0.15rem;
+  padding-inline-end: 0.75rem;
+  white-space: nowrap;
 }
 .site-atlas-pop-note {
   color: var(--kpress-doc-muted);
@@ -1890,7 +1944,6 @@ body {
 .kpress .site-case-interval {
   font-size: calc(var(--site-font-size-sans-base) * 1.25);
   margin-block: 0 1.5rem;
-  overflow-wrap: anywhere;
 }
 /* The drawing beside the bounds on a wide screen; stacked, drawing first, when narrow. */
 .site-case-top {
@@ -1921,10 +1974,14 @@ body {
   margin-block-start: 0.5rem;
   text-align: center;
 }
+/* One panel a bound, as many abreast as fit. A panel is never narrower than its text
+   needs: 17rem holds a line of the note face and the longest of the usual evidence
+   names whole (25 characters of the mono face in its chip), so nothing in a panel is
+   squeezed into breaking. */
 .site-case-bounds {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
 }
 .site-case-bound,
 .site-case-note {
@@ -1939,7 +1996,6 @@ body {
 .kpress .site-case-value {
   font-size: 1.2em;
   margin-block: 0.2rem 0;
-  overflow-wrap: anywhere;
 }
 .site-case-decimal,
 .site-case-same {
@@ -1947,6 +2003,10 @@ body {
   display: block;
   font-size: var(--site-font-size-note);
   font-variant-numeric: tabular-nums;
+}
+/* The recorded decimal in full, as many as 67 digits with no space among them: the one
+   run on a record that has to break wherever its panel's line ends. */
+.site-case-decimal {
   overflow-wrap: anywhere;
 }
 .kpress .site-case-same {
@@ -1965,11 +2025,9 @@ body {
 }
 .site-case .site-detail dd {
   margin: 0 0 0.35rem;
-  overflow-wrap: anywhere;
 }
 .site-case-polynomial {
   font-size: var(--site-font-size-note);
-  overflow-wrap: anywhere;
 }
 .site-case-more {
   font-family: var(--kpress-font-sans);

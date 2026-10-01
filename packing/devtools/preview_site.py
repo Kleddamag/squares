@@ -19,11 +19,12 @@ a link to it then points at a missing page, which the link check reports rather 
 fails on, and a build already in `--output` stays. `--page` shoots only the pages it
 names, each with any fragment (`cases.html#n-11` is one case's record), and `--press`
 names an element to press on each page that has one (a card, an atlas cell), so what it
-opens is checked and shot too. Every page is also laid out at `CLIP_WIDTHS`, with and
-without a scrollbar's width taken from the layout, and fails where a table, a filter
-bar, a count or any other wide block runs past an ancestor that clips or scrolls
-sideways. Set `SQPACK_CHROMIUM` to use a browser the environment supplies, as the
-explainer's own tools do.
+opens is checked and shot too: its math, its wide blocks, and its words, none of which
+may be broken across lines inside the word (`split_problem`). Every page is also laid
+out at `CLIP_WIDTHS`, with and without a scrollbar's width taken from the layout, and
+fails where a table, a filter bar, a count or any other wide block runs past an ancestor
+that clips or scrolls sideways. Set `SQPACK_CHROMIUM` to use a browser the environment
+supplies, as the explainer's own tools do.
 """
 
 from __future__ import annotations
@@ -31,6 +32,7 @@ from __future__ import annotations
 import argparse
 import contextlib
 import functools
+import itertools
 import os
 import re
 import shutil
@@ -65,6 +67,14 @@ _AT_FOOT = probe(PROBES, "preview_site/at_foot")
 _CARDS = probe(PROBES, "measure_site_pages/cards")
 CLIPPED = probe(PROBES, "preview_site/clipped")
 HEADER = probe(PROBES, "preview_site/header")
+SPLIT_WORDS = probe(PROBES, "preview_site/split_words")
+#: A run of this many characters with no space in it is a token, not a word: an evidence
+#: identifier, an address, an exact decimal. One that is wider than the line it is set on
+#: has to break somewhere; anything shorter fits every column the site sets text in, so a
+#: column that breaks it is too narrow.
+LONG_TOKEN = 24
+#: What a line may end on inside a name without cutting a word: a hyphen or a dash.
+HYPHENS = "-\u2010\u2011\u2013\u2014"
 #: The widths every page is laid out at to look for a clipped wide block, beside the
 #: two it is shot at: a tablet upright and on its side, where a narrow page clips at the
 #: document's edge and a wide block has no room to spare.
@@ -316,6 +326,47 @@ def clip_check(
     return errors
 
 
+def split_problem(found: dict[str, Any]) -> str | None:
+    """One word set across lines, as the probe reports it, in words; nothing when every
+    break in it is one a reader expects.
+
+    A break is inside the word when it falls between two letters or digits: `low` over
+    `er`, which only `overflow-wrap: anywhere` or `word-break` does, in a column squeezed
+    narrower than the word. It is inside a name when the name is set as code or as a chip
+    in a popover or a block the site builds and the line ends on one of its hyphens:
+    `E-nagamochi-` over `lower` reads as two things. Any other break is ordinary: after
+    the slash of a path, at a bracket or an ellipsis, after the hyphen of a compound in
+    running text, and after a name's hyphen in a document's own prose, which KPress sets
+    as it sets every report.
+
+    One exception: a token of `LONG_TOKEN` characters or more that is wider than its line
+    has to break somewhere.
+    """
+    word, pieces = found["word"], found["pieces"]
+    name = found["code"] and not found["prose"]
+    inside = any(
+        (before[-1].isalnum() and after[0].isalnum()) or (name and before[-1] in HYPHENS)
+        for before, after in itertools.pairwise(pieces)
+    )
+    if not inside or (len(word) >= LONG_TOKEN and found["width"] > found["line"]):
+        return None
+    where = found["host"]
+    if found["block"] != where:
+        where += f" in {found['block']}"
+    framed = f", framed in {found['frame']}" if found["frame"] else ""
+    return (
+        f'"{" | ".join(pieces)}" is one word on {len(pieces)} lines in {where}{framed}: '
+        f"{found['width']:g}px wide on a {found['line']:g}px line"
+    )
+
+
+def split_words(page: Page, root: str | None = None) -> list[str]:
+    """Every word broken across lines, in what the page has open or in `root`, that
+    `split_problem` calls a fault; each named once."""
+    found = page.evaluate(SPLIT_WORDS, {"root": root} if root else None)
+    return list(dict.fromkeys(filter(None, map(split_problem, found))))
+
+
 def settle_math(page: Page) -> int:
     """Scroll the page through once, a screen at a time, to its foot, and on until every
     formula is typeset, then return to the top; returns how many were still untypeset
@@ -341,13 +392,31 @@ def settle_math(page: Page) -> int:
     return pending
 
 
+def _pending(page: Page) -> int:
+    """The math not yet typeset on the page and in every page it frames in view; a frame
+    still loading counts as one."""
+    from playwright.sync_api import Error as PlaywrightError  # noqa: PLC0415
+
+    pending = 0
+    for frame in page.frames:
+        try:
+            if frame is not page.main_frame and not frame.frame_element().is_visible():
+                continue
+            pending += frame.evaluate(_MATH_PENDING) if frame.url != "about:blank" else 1
+        except PlaywrightError:
+            pending += 1
+    return pending
+
+
 def press(page: Page, selector: str) -> list[str]:
     """Press the first element `selector` matches and wait for what it opens to typeset
-    its math; returns the formulas then set in the wrong face. A popover's math is only
-    typeset once it opens, so the page's own check cannot see it."""
+    its math, a page it frames included (the case popover frames `cases.html`); returns
+    the formulas then set in the wrong face. A popover's math is only typeset once it
+    opens, so the page's own check cannot see it."""
     page.locator(selector).first.click()
+    page.wait_for_timeout(100)
     deadline = time.monotonic() + PRESS_WAIT_MS / 1000
-    while page.evaluate(_MATH_PENDING) and time.monotonic() < deadline:
+    while _pending(page) and time.monotonic() < deadline:
         page.wait_for_timeout(100)
     page.wait_for_timeout(300)
     return page.evaluate(MATH_FACE)
@@ -367,9 +436,10 @@ def screenshots(
     one step under the body's (`type_problems`), and any wide block that
     runs past an ancestor which clips it (`clipped`). Each selector in
     `presses` is then pressed on every page that has a match, its math and its blocks
-    checked the same way, and the window shot as `<page>-<width>-press<n>.png`. Every
-    page is opened as for a reader who asks for reduced motion (`REDUCED_MOTION`), so
-    the Visualize page's film is shot at its poster and its download never starts."""
+    checked the same way and its words for one broken across lines (`split_words`), and
+    the window shot as `<page>-<width>-press<n>.png`. Every page is opened as for a reader
+    who asks for reduced motion (`REDUCED_MOTION`), so the Visualize page's film is shot
+    at its poster and its download never starts."""
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
     shots.mkdir(parents=True, exist_ok=True)
@@ -430,6 +500,10 @@ def screenshots(
                             f"{name} @{width}, {selector} pressed: {problem}"
                             for problem in clipped(page)
                             if problem not in cut
+                        )
+                        errors.extend(
+                            f"{name} @{width}, {selector} pressed: {problem}"
+                            for problem in split_words(page)
                         )
                         target = shots / f"{stem}-{width}-press{index}.png"
                         page.screenshot(path=str(target))

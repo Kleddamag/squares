@@ -1591,7 +1591,7 @@ def _shared(page: str, name: str) -> str:
 
 
 def _intro(page: str) -> str:
-    """README's first paragraph as the overview's first section renders it."""
+    """README's two opening paragraphs as the overview's first section renders them."""
     return _shared(page, "project-intro")
 
 
@@ -1626,12 +1626,33 @@ def _template_paragraphs(section: str) -> list[str]:
     return [" ".join(part.split()) for part in prose.split("\n\n") if part.strip()]
 
 
+#: README's `project-intro` block, the owner's words of 2026-10-01 copy-edited: the
+#: question after a colon, the lower bound glossed as a size below which no packing can
+#: exist, and one added sentence that names $s(n)$, which the next block uses.
+PROBLEM_STATEMENT = (
+    (
+        "The square packing problem is a simple and long-standing problem in geometry. It "
+        "asks: what is the size of the smallest square that can hold $n$ unit squares, "
+        "where the squares are free to rotate but cannot overlap? The side length of that "
+        "smallest square is written $s(n)$."
+    ),
+    (
+        "The question is elementary to understand but is an open problem for most $n$. In "
+        "many cases, the answer is known only to lie between an upper bound (the size of "
+        "the enclosing square for the tightest packing ever discovered) and a lower bound "
+        "(a size below which it is proved that no packing can exist)."
+    ),
+)
+
+
 def test_the_overviews_two_sections_are_readmes_two_blocks(page: str) -> None:
     """The overview says what README's introduction says, word for word and formula for
     formula, in two places: the first section opens with README's `project-intro` block,
-    and Recent Results with its `recent-progress` block. Together they are README's three
-    paragraphs, in README's order. The template holds a placeholder where each would be,
-    and nothing about eleven squares of its own in the first section."""
+    and Recent Results with its `recent-progress` block. Together they are README's four
+    paragraphs, in README's order: the problem and its bounds, then what the project
+    covers and its newest major result. The first block writes $s(n)$ once, since the
+    second uses it. The template holds a placeholder where each would be, and names no
+    registered result of its own in the first section."""
     from devtools import site_documents  # noqa: PLC0415
 
     readme = site_documents.README.read_text(encoding="utf-8")
@@ -1641,16 +1662,21 @@ def test_the_overviews_two_sections_are_readmes_two_blocks(page: str) -> None:
     assert blocks["recent-progress"] == site_documents.progress_block(readme)
     assert _rendered_text(_intro(page)) == _markdown_text(blocks["project-intro"])
     assert _rendered_text(_progress(page)) == _markdown_text(blocks["recent-progress"])
-    assert len(re.findall(r"<p>", _intro(page))) == 1
+    assert len(re.findall(r"<p>", _intro(page))) == 2
     assert len(re.findall(r"<p>", _progress(page))) == 2
-    assert _markdown_text(blocks["project-intro"]).startswith("The Squares Project studies")
+    problem, bounds = (
+        _markdown_text(paragraph) for paragraph in blocks["project-intro"].split("\n\n")
+    )
+    assert problem == PROBLEM_STATEMENT[0]
+    assert bounds == PROBLEM_STATEMENT[1]
+    assert blocks["project-intro"].count("$s(n)$") == 1
     assert _markdown_text(blocks["recent-progress"]).startswith(
         "The project covers the problem at every $n$."
     )
     for block in blocks.values():
         assert not re.search(r"^#", block, re.MULTILINE)
         assert "<!--" not in block
-    # README keeps the three paragraphs together and in order: only the markers part them.
+    # README keeps the four paragraphs together and in order: only the markers part them.
     intro, progress = site_documents.INTRO, site_documents.PROGRESS
     between = readme.split(intro.end, 1)[1].split(progress.begin, 1)[0]
     assert between.strip() == ""
@@ -1739,16 +1765,22 @@ def test_recent_results_says_eleven_squares_is_settled(
         assert result in site_documents.progress_block(readme), result
 
 
-#: The site's own statement, the owner's words of 2026-09-30 with only hyphenation and
-#: punctuation edited, and one sentence on what the project checks.
+#: The site's own statement, the owner's words of 2026-10-01 copy-edited. One phrase is
+#: narrowed to what the register holds: the owner's "all proofs and certificates" reads
+#: "the proofs and certificates behind them", since some registered results are reported
+#: and not yet replayed here.
 SITE_STATEMENT = (
     (
-        "The Square Packing Project site collects all known historic research and "
+        "This Square Packing Project site collects all known historic research and "
         "current new results on the square packing problem. Work on this problem has "
-        "exploded in the summer of 2026 thanks to AI-powered research efforts. This "
-        "project tracks all results here and by all others known. The project also "
-        "independently checks the proofs and certificates behind them, replaying each "
-        "where it can, and records how far every result has been verified and confirmed."
+        "exploded in the summer of 2026 thanks to AI-powered research efforts."
+    ),
+    (
+        "We and several others have proved new results as part of this project for low "
+        "values of $n$, including $n = 11$, $n = 12$, $n = 17$ and many others. As part "
+        "of a collaborative open effort, several people have built on results from this "
+        "project or developed other new proofs, and this site independently checks and "
+        "documents the proofs and certificates behind them."
     ),
     (
         "If you have new results or know of newer results, please file an issue to "
@@ -1758,21 +1790,27 @@ SITE_STATEMENT = (
 
 
 def test_the_sites_own_statement_follows_readmes_introduction(page: str) -> None:
-    """After README's introduction the section has two paragraphs of its own: what the
-    site collects and checks, and where to report a result it lacks. The first links the
-    rungs it names to their section; the second opens a new issue on the repository."""
+    """After README's introduction the section has three paragraphs of its own: what the
+    site collects, who proved the new results and what the site does with them, and where
+    to report a result it lacks. The second links its checking to the section that shows
+    how far each result is checked, and does not claim every proof is; the third opens a
+    new issue on the repository."""
     from devtools import site_documents  # noqa: PLC0415
 
     problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
     own = problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[1].split("<div", 1)[0]
     paragraphs = re.findall(r"<p>(.*?)</p>", own, re.DOTALL)
     assert [_rendered_text(paragraph) for paragraph in paragraphs] == list(SITE_STATEMENT)
-    assert '<a href="#verification-at-a-glance">verified and confirmed</a>' in paragraphs[0]
+    assert (
+        '<a href="#verification-at-a-glance">independently checks and documents</a>'
+        in paragraphs[1]
+    )
+    assert "all proofs" not in " ".join(SITE_STATEMENT)
     assert 'id="verification-at-a-glance"' in page
     assert render_overview.NEW_ISSUE_URL == "https://github.com/jlevy/squares/issues/new"
     assert re.search(
         rf'<a href="{re.escape(render_overview.NEW_ISSUE_URL)}"[^>]*>file an issue</a>',
-        paragraphs[1],
+        paragraphs[2],
     )
     assert "formal" not in " ".join(SITE_STATEMENT).lower()
 

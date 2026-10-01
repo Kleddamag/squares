@@ -8,19 +8,23 @@
      still reach the explainer (forward.js), so this heading keeps the overview's own id. -->
 <h2 id="the-problem" class="site-title">The Square Packing Problem</h2>
 
-<!-- The section's first paragraph is README's, read from its project-intro block
-     (site_documents.overview_intro), so the project is introduced in one text. Edit it
+<!-- The section's first two paragraphs are README's, read from its project-intro block
+     (site_documents.overview_intro), so the problem is introduced in one text. Edit them
      in README.md. Only the site's own statement below is written here. -->
 
 {{README_INTRO}}
 
-The Square Packing Project site collects all known historic research and current new
+This Square Packing Project site collects all known historic research and current new
 results on the square packing problem.
 Work on this problem has exploded in the summer of 2026 thanks to AI-powered research
-efforts. This project tracks all results here and by all others known.
-The project also independently checks the proofs and certificates behind them, replaying
-each where it can, and records how far every result has been
-[verified and confirmed](#verification-at-a-glance).
+efforts.
+
+We and several others have proved new results as part of this project for low values of
+$n$, including $n = 11$, $n = 12$, $n = 17$ and many others.
+As part of a collaborative open effort, several people have built on results from this
+project or developed other new proofs, and this site
+[independently checks and documents](#verification-at-a-glance) the proofs and
+certificates behind them.
 
 If you have new results or know of newer results, please
 [file an issue]({{NEW_ISSUE_URL}}) to report them, and we will gladly incorporate them

@@ -1059,6 +1059,12 @@ results page carries its own, and the overviews of three sampled results carry e
 repository link the renderer writes for them ([D-512](defects.md)). Run it from a
 checkout at the deployed commit, since the register it reads is the checkout’s.
 
+The check also reads every page’s head for the site’s identity and link-preview tags and
+fetches the card they name:
+[paper-design.md → Page Metadata and Social Cards](packing/devtools/templates/paper-design.md#page-metadata-and-social-cards)
+has the rule. `--local DIR` asks only that, of a site built into a directory, and
+`devtools.preview_site` runs it on every build.
+
 **One version, shared by every artifact** (the owner, 2026-09-22): the explainer’s
 credits, the atlas footer, the workbench stage and the videos all print
 `PUBLICATION_EDITION` from `src/sqpack/release.py`, written like `v0.4.1-3b50e2`. The

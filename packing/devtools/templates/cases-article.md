@@ -14,9 +14,8 @@ reported and verified, with its exact form or minimal polynomial and its credit;
 result in the register that concerns the case, with its rungs; and the case file’s own
 account.
 All {{COUNT}} are read from their records, `packing/frontier/n-NNN.md`, when the
-page is built.
-A case in the [frontier atlas](frontier.html) or the overview’s atlas grid
-opens its record here.
+page is built. A case in the [frontier survey](frontier.html) or the overview’s atlas
+grid opens its record here.
 In the index below, a solved case is set in the accent.
 
 {{INDEX}}

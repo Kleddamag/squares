@@ -31,7 +31,7 @@ from devtools.preview_site import (
 
 def _section(*rows: tuple[int, float, float]) -> dict[str, object]:
     return {
-        "section": "Squares Project Documentation",
+        "section": "Square Packing Project Documentation",
         "block_width": 1104,
         "rows": [
             {"cards": n, "sizes": [""] * n, "widths": [264] * n, "start": a, "end": b}
@@ -47,8 +47,8 @@ def test_a_row_off_the_centre_of_its_line_is_reported() -> None:
     report = [_section((4, 0, 0), (2, 280, 280), (2, 0, 560))]
     assert off_centre(report) == [
         (
-            "a row of 2 cards in Squares Project Documentation is off centre: 0px before it, "
-            "560px after"
+            "a row of 2 cards in Square Packing Project Documentation is off centre: "
+            "0px before it, 560px after"
         )
     ]
 
@@ -436,7 +436,7 @@ def _labels(
     """A `preview_site/baselines` report: two links on each line of the bar, a line given
     as its top and its baseline, the name's baseline, and two tabs on one of theirs. The
     name's line is 25px tall, with the mark centred on it."""
-    words = iter(("Overview", "Frontier", "Results", "Papers"))
+    words = iter(("Overview", "Results", "Papers", "Frontier"))
     return {
         "name": name,
         "name_text": name and {"top": name - 18, "bottom": name + 7},
@@ -470,7 +470,7 @@ def test_the_name_and_the_links_stand_on_one_baseline() -> None:
     uneven["links"][1]["baseline"] = 48.0
     uneven["tabs"][1]["baseline"] = 101.5
     assert baseline_problems(uneven) == [
-        "the link Frontier stands +1.2px off the baseline of Overview, beside it",
+        "the link Results stands +1.2px off the baseline of Overview, beside it",
         "the section tab Workbench stands -1.08px off the baseline of Film, beside it",
     ]
 

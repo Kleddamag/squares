@@ -127,7 +127,7 @@ DOCUMENTS: tuple[SiteDocument, ...] = (
     _document(
         repo_links.README,
         "readme.html",
-        "The Squares Project",
+        "The Square Packing Project",
         "What the project is, how it works, and where to start.",
     ),
     _document(
@@ -145,7 +145,7 @@ DOCUMENTS: tuple[SiteDocument, ...] = (
     _document(
         repo_links.STATUS,
         "status.html",
-        "The Frontier",
+        "The Status Table",
         "Every case to 324, with provenance.",
     ),
     _document(

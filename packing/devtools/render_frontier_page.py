@@ -455,7 +455,7 @@ def case_row(
         f"pop-frontier-n-{n}",
         name=f"n = {n}, {status}",
         trigger="Details",
-        label="Frontier atlas",
+        label="Frontier survey",
         title=f"<var>n</var> = {n}",
         body=frontier_row_popover_body(case, evidence),
         action=(record_url(n), f"Open the case record for n = {n}"),

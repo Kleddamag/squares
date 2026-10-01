@@ -1248,7 +1248,7 @@ def awaiting_replay(overview: Overview) -> str:
             label="Awaiting replay",
             title=math_html(f"n = {row.n}"),
             body=replay_row_popover_body(row),
-            action=(f"frontier.html#n-{row.n}", f"Open n = {row.n} in the frontier atlas"),
+            action=(f"frontier.html#n-{row.n}", f"Open n = {row.n} in the frontier survey"),
         )
         popovers.append(detail.popover)
         groups.setdefault((reported.holder, reported.results), []).append(
@@ -1280,7 +1280,7 @@ def awaiting_replay(overview: Overview) -> str:
 DOCUMENTS: tuple[tuple[str, str, str], ...] = (
     (
         repo_links.README,
-        "The Squares Project",
+        "The Square Packing Project",
         "What the project is, how it works, and where to start.",
     ),
     (
@@ -1289,7 +1289,7 @@ DOCUMENTS: tuple[tuple[str, str, str], ...] = (
         "The full research record: methods, claims and status.",
     ),
     (repo_links.RESULTS, "Results", "Every registered result with its rungs."),
-    (repo_links.STATUS, "The frontier", "Every case to 324, with provenance."),
+    (repo_links.STATUS, "The status table", "Every case to 324, with provenance."),
     (repo_links.EPISTEMICS, "Epistemics", "How each result is verified, confirmed and scored."),
     (repo_links.CONVENTIONS, "Conventions", "Record formats, identifiers and naming."),
     (repo_links.DEVELOPMENT, "Development", "Building, testing and validating the code."),
@@ -1445,7 +1445,7 @@ PAGES: tuple[tuple[str, str, str, str], ...] = (
     ),
     (
         "frontier.html",
-        "Frontier atlas",
+        "Frontier survey",
         "Every case from n = 1 to 324",
         "Reported and verified bounds side by side, with their sources.",
     ),
@@ -1483,7 +1483,7 @@ def hero() -> str:
     n = HERO_CASE
     return (
         f'<figure class="site-hero-figure"><a href="frontier.html#n-{n}" '
-        f'aria-label="The best packing known for {n} squares, in the frontier atlas">'
+        f'aria-label="The best packing known for {n} squares, in the frontier survey">'
         f"{packing_svg(n, units=1000)}</a>"
         f"<figcaption>The best packing known for {n} squares</figcaption></figure>"
     )
@@ -1681,8 +1681,10 @@ def other_project_cards() -> str:
 #: The page the atlas's film card opens: the film alone, at full size.
 VISUALIZE_PAGE = "visualize.html"
 
-#: The atlas's three direct cards: where each goes, the picture heading it (a file
-#: served beside the page), its label, value and note.
+#: The atlas's three direct cards, the overview's PDFs and Videos section: where each
+#: goes, the picture heading it (a file served beside the page), its label, value and
+#: note. A label says what the card is and the form it opens in, which are the section
+#: heading's two words: a poster is a PDF, the film a video.
 ATLAS_CARDS: tuple[tuple[str, str, str, str, str], ...] = (
     (
         "known-best-1-100.pdf",
@@ -1707,7 +1709,7 @@ ATLAS_CARDS: tuple[tuple[str, str, str, str, str], ...] = (
     (
         VISUALIZE_PAGE,
         "ascent-n1-324-poster.png",
-        "Visualize",
+        "Film \u00b7 Video",
         "The ascent to n = 324",
         (
             "The atlas built one square at a time, each step naming the bound it reaches and "
@@ -1719,7 +1721,8 @@ ATLAS_CARDS: tuple[tuple[str, str, str, str, str], ...] = (
 
 def atlas_cards() -> str:
     """The atlas's posters and film as three cards side by side, each headed by its
-    picture and itself the link: a poster opens its PDF, the film its own page."""
+    picture and itself the link: a poster opens its PDF, the film its own page. They
+    are the overview's PDFs and Videos section, under The Atlas."""
     return _cards(
         [
             link_card(
@@ -1951,6 +1954,6 @@ def atlas_grid() -> str:
         'data-atlas-toggle aria-expanded="false" '
         f'data-label-more="{more}" data-label-less="{less}">{more}</button></p>'
         '<p class="site-atlas-note">Every case from n = 1 to 324 is also in the '
-        '<a href="frontier.html">frontier atlas</a>, and each has a '
+        '<a href="frontier.html">frontier survey</a>, and each has a '
         f'<a href="{CASES_PAGE}">case record</a>.</p></div>{atlas_popover()}'
     )

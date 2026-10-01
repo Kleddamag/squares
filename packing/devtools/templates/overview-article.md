@@ -10,9 +10,12 @@
 
 <!-- The section's first two paragraphs are README's, read from its project-intro block
      (site_documents.overview_intro), so the problem is introduced in one text. Edit them
-     in README.md. Only the site's own statement below is written here. -->
+     in README.md. Only the site's own statement is written here, under its own
+     heading, The Square Packing Project. -->
 
 {{README_INTRO}}
+
+## The Square Packing Project
 
 This Square Packing Project site collects all known historic research and current new
 results on the square packing problem.
@@ -60,7 +63,7 @@ age of 180 days; clear Hide superseded, choose All and clear Max age to see ever
 
 A reported bound counts here only once its certificate is replayed.
 These are the cases up to $n = 100$ where a source reports a recent lower bound above
-the one verified so far, each linked to its case in the frontier atlas:
+the one verified so far, each linked to its case in the frontier survey:
 
 {{AWAITING_REPLAY}}
 
@@ -100,18 +103,26 @@ packing drawn large, with a link to its case record.
 
 {{ATLAS_GRID}}
 
+<!-- The atlas as files and as a film: the two posters, each opening its PDF, and the
+     film. The cards and their note stood under the grid, in The Atlas, until 2026-10-01. -->
+
+## PDFs and Videos
+
 {{ATLAS_CARDS}}
 
 <p class="site-wide site-atlas-note">The best packings known. A star marks a verified lower bound proved since 22 August 2026. There is also a shorter film of the <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4">ascent from 1 to 100</a> (2 m 20 s). Both films are on the <a href="https://github.com/jlevy/squares/releases/tag/v0.4.2">v0.4.2 release</a> with the receipt recording each file and the page it was drawn from. Each poster is also an SVG (<a href="repo:packing/atlas/known-best/known-best-1-100.svg">1 to 100</a>, <a href="repo:packing/atlas/known-best/known-best-1-324.svg">1 to 324</a>). The <a href="repo:packing/atlas/known-best/README.md">atlas README</a> describes both.</p>
 
-## The Survey
+<!-- This section's fragment was #the-survey until 2026-10-01. The empty anchor in its
+     heading keeps an old link landing here, as Verification Ladders keeps its own. -->
 
-The survey records the best-known packing and the strongest verified lower bound for
-every $n \le 324$, with its provenance, keeping the bound a source reports apart from
-the bound verified here.
+## The Frontier Survey<a id="the-survey"></a>
+
+The frontier survey records the best-known packing and the strongest verified lower
+bound for every $n \le 324$, with its provenance, keeping the bound a source reports
+apart from the bound verified here.
 An external certificate counts once it is replayed in full and its mathematical
 assumptions are discharged, and each record says who ran the checks and how independent
-they were. The [frontier atlas](frontier.html) shows every case, and the
+they were. The [Frontier](frontier.html) page shows every case, and the
 [status table](status.html) is the generated summary.
 {{SURVEY_COUNTS}}
 The [literature archive](repo:packing/resources/README.md) keeps each primary source, a
@@ -119,7 +130,7 @@ cleaned transcription and the unedited extraction it was checked against, and th
 [evidence inventory](repo:packing/frontier/INVENTORY.md) shows what each claim rests on
 and who did the work.
 
-The survey audits rather than transcribes.
+The frontier survey audits rather than transcribes.
 The earliest published proof of $s(7) = 3$ carries four recorded defects in its printed
 route, so the [$n = 7$ record](repo:packing/frontier/n-007.md) rests the case on
 independent later proofs.
@@ -140,9 +151,14 @@ author.
 
 {{OTHER_PROJECTS}}
 
-## Squares Project Documentation
+<!-- This section was Squares Project Documentation until 2026-10-01, when the project's
+     formal name became The Square Packing Project; the empty anchor keeps its old
+     fragment landing here. -->
+
+## Square Packing Project Documentation<a id="squares-project-documentation"></a>
 
 The code, the certificates, the literature archive and the documents that record all of
-this live in the Squares Project’s [repository](https://github.com/jlevy/squares).
+this live in the Square Packing Project’s
+[repository](https://github.com/jlevy/squares).
 
 {{DOCUMENT_CARDS}}

@@ -100,9 +100,23 @@ def test_no_placeholder_survives_substitution(page: str) -> None:
     assert re.findall(r"\{\{[A-Z_]+\}\}", page) == []
 
 
+def test_the_explainer_ends_with_the_sites_closing_credit(page: str) -> None:
+    """The explainer's closing paragraph holds the two lines every page's footer is made
+    of (`render_overview.colophon_lines`): the project and its repository, then the
+    version and the credit to Flowmark and KPress. The paragraph keeps the paper's own
+    class, and so its type and its print rules."""
+    footer = f'<p class="col colophon centred">{render_overview.colophon_lines()}</p>'
+    assert page.count(footer) == 1
+    assert page.count('class="site-colophon-line"') == 2
+    assert f'<span class="site-colophon-part">{PUBLICATION_EDITION}</span>' in footer
+    assert '<a href="https://github.com/jlevy/squares">github.com/jlevy/squares</a>' in footer
+
+
 def test_the_bar_marks_papers_current_on_the_explainer(page: str) -> None:
     """The explainer is one of the site's papers: the bar has no entry of its own for it,
-    Papers is the one marked current, and the page keeps its address."""
+    Papers is the one marked current, and the page keeps its address. The bar is the
+    site's one partial, so its entries stand in the order every other page has them."""
+    assert page.count(render_overview.nav_html("papers")) == 1
     assert re.findall(r'<a data-page="(\w+)" aria-current="page"', page) == ["papers"]
     assert '<a data-page="papers" aria-current="page" href="papers.html">Papers</a>' in page
     assert 'data-page="explainer"' not in page

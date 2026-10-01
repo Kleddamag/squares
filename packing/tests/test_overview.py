@@ -23,6 +23,7 @@ from devtools import (
     render_overview,
     render_recent_results,
 )
+from devtools.build_known_best_atlas import SUMMARY_RELEASE_STAMP
 from devtools.check_results import scope_values
 from devtools.render_explainer import COMPOSITE_ASSETS, OVERVIEW_FILM_POSTER
 from devtools.render_explainer import MARKDOWN as EXPLAINER_ARTICLE
@@ -167,12 +168,47 @@ def test_the_hero_draws_its_case_and_links_to_its_row(page: str) -> None:
 
 
 def _atlas_cards(page: str) -> list[tuple[str, str]]:
-    """The atlas's direct cards, between its grid and its note: each href and body."""
-    section = page.split('id="the-atlas"', 1)[1].split("<h2", 1)[0]
-    after_grid = section.split('class="site-cards-frame', 1)[1]
+    """The atlas's direct cards, the PDFs and Videos section's: each href and body."""
+    section = page.split('id="pdfs-and-videos"', 1)[1].split("<h2", 1)[0]
+    frame = section.split('class="site-cards-frame', 1)[1]
     return re.findall(
-        r'<a class="site-card site-card-link" href="([^"]+)"(.*?)</a>', after_grid, re.DOTALL
+        r'<a class="site-card site-card-link" href="([^"]+)"(.*?)</a>', frame, re.DOTALL
     )
+
+
+def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
+    page: str,
+) -> None:
+    """The Atlas keeps the grid, its expander and the grid's own note, and holds no card.
+    The two posters and the film follow under an ordinary section heading, PDFs and
+    Videos, with its own id and its entry in the page's contents, and their note, the
+    star, the shorter film, the release and the SVGs, goes with them."""
+    heading = '<h2 id="pdfs-and-videos">PDFs and Videos</h2>'
+    assert page.count(heading) == 1
+    atlas = page.split('id="the-atlas"', 1)[1].split("<h2", 1)[0]
+    assert "data-atlas-grid" in atlas
+    assert 'class="site-cards-frame' not in atlas
+    assert 'class="site-card ' not in atlas
+    assert atlas.count('class="site-atlas-note"') == 1
+    assert 'class="site-wide site-atlas-note"' not in atlas
+    assert (
+        page.index('id="the-atlas"')
+        < page.index(heading)
+        < page.index('id="the-frontier-survey"')
+    )
+    section = page.split(heading, 1)[1].split("<h2", 1)[0]
+    assert section.lstrip().startswith('<div class="site-cards-frame')
+    assert section.count('<a class="site-card site-card-link"') == len(
+        overview_sections.ATLAS_CARDS
+    )
+    note = section.split('<p class="site-wide site-atlas-note">', 1)[1].split("</p>", 1)[0]
+    assert note.startswith("The best packings known. A star marks")
+    assert section.index('class="site-cards-frame') < section.index("site-atlas-note")
+    for linked in ("ascent-n1-100-1080p60-citations.mp4", "known-best-1-324.svg"):
+        assert linked in note, linked
+    contents = '{"href": "#pdfs-and-videos", "level": 1, "title": "PDFs and Videos"}'
+    assert contents in page
+    assert page.index('{"href": "#the-atlas"') < page.index(contents)
 
 
 def test_the_atlas_posters_are_hero_cards_each_opening_its_pdf(page: str) -> None:
@@ -201,7 +237,11 @@ def test_the_atlas_film_is_a_hero_card_opening_the_visualize_page(page: str) -> 
     ]
     body = dict(cards)[overview_sections.VISUALIZE_PAGE]
     assert f'<img src="{OVERVIEW_FILM_POSTER.name}" alt=""' in body
-    assert '<span class="site-card-label">Visualize</span>' in body
+    # Under a heading that says PDFs and Videos, each label says which its card is.
+    assert '<span class="site-card-label">Film \u00b7 Video</span>' in body
+    assert [
+        re.search(r'<span class="site-card-label">([^<]*)</span>', body)[1] for _, body in cards
+    ] == ["Poster \u00b7 PDF", "Poster \u00b7 PDF", "Film \u00b7 Video"]
     assert OVERVIEW_FILM_POSTER in COMPOSITE_ASSETS
     assert OVERVIEW_FILM_POSTER.is_file()
     assert "<video" not in page
@@ -710,6 +750,37 @@ def test_the_section_is_verification_ladders_and_its_old_fragment_lands_on_it(
     assert contents in page
 
 
+def test_the_survey_is_the_frontier_survey_and_its_old_fragment_lands_on_it(
+    page: str, rendered: Callable[[str], str]
+) -> None:
+    """The homepage's section on the record of every case is headed The Frontier Survey,
+    and it was The Survey until 2026-10-01: an empty anchor in the heading keeps
+    `#the-survey` landing on it, the device Verification Ladders uses. One vocabulary
+    holds in what a reader sees: the page and its bar entry are Frontier, what the page
+    holds is the frontier survey, and "atlas" is the grid of packings, never the table of
+    cases, so no page calls the Frontier page an atlas."""
+    heading = '<h2 id="the-frontier-survey">The Frontier Survey<a id="the-survey"></a></h2>'
+    assert page.count(heading) == 1
+    assert 'href="#the-survey"' not in page
+    contents = '{"href": "#the-frontier-survey", "level": 1, "title": "The Frontier Survey"}'
+    assert contents in page
+    section = page.split(heading, 1)[1].split("<h2", 1)[0]
+    assert _rendered_text(section).startswith("The frontier survey records the best-known")
+    assert '<a href="frontier.html">Frontier</a> page shows every case' in section
+    assert '<a data-page="frontier" href="frontier.html">Frontier</a>' in page
+    frontier = rendered("frontier.html")
+    assert "<title>The Frontier Survey · Square Packing</title>" in frontier
+    assert re.search(r"<h1[^>]*>The Frontier Survey</h1>", frontier)
+    card = next(body for href, _, body in _page_cards(page) if href == "frontier.html")
+    assert '<span class="site-card-label">Frontier survey</span>' in card
+    for name in ("index.html", "frontier.html", "cases.html", render_overview.RESULTS_PAGE):
+        # What a reader sees or hears: the page without its inlined styles and programs.
+        text = re.sub(r"<(script|style)\b.*?</\1>", "", rendered(name), flags=re.DOTALL)
+        assert "frontier atlas" not in text.lower(), name
+    # The generated status table's page is no second page called The Frontier.
+    assert "<title>The Status Table · Square Packing</title>" in rendered("status.html")
+
+
 def test_verification_ladders_is_one_ladder_diagram_significance_first(page: str) -> None:
     """The section is one diagram, not three cards: a column a dimension in the order
     Significance, Verification, Confirmation, each headed by its name and question with
@@ -1019,9 +1090,9 @@ def test_the_nav_links_only_to_served_pages() -> None:
 #: The bar's entries, in order: each one's key, where it leads and its label.
 NAV_ENTRIES = [
     ("overview", "./", "Overview"),
-    ("frontier", "frontier.html", "Frontier"),
     ("results", "all-results.html", "Results"),
     ("papers", "papers.html", "Papers"),
+    ("frontier", "frontier.html", "Frontier"),
     ("visualize", "visualize.html", "Visualize"),
     ("github", "https://github.com/jlevy/squares", "GitHub"),
 ]
@@ -1176,6 +1247,67 @@ def test_every_site_page_carries_the_theme_control(
     # control stores into the key that bootstrap reads.
     assert 'stored("kpress.theme")' in page
     assert 'storageKey = "kpress.theme"' in script
+
+
+#: The closing credit as a page carries it: a line a block, a part beside each middle dot.
+COLOPHON_LINE = re.compile(
+    r'<span class="site-colophon-line">(.*?)</span>(?=<span class="site-colophon-line">|$)'
+)
+COLOPHON_PART = re.compile(r'<span class="site-colophon-part">(.*?)</span>(?= · |$)')
+
+
+def test_the_closing_credit_is_two_lines_the_project_and_the_version() -> None:
+    """Every footer is made of one definition, `colophon_lines`: the project's formal
+    name and its repository, linked, on the first line, and on the second the version
+    every artifact prints and the credit to the two tools, each linked where README
+    links it. The parts of a line stand either side of a middle dot with a space each
+    side. The version is the release's own edition stamp, the string the atlas footer
+    prints, so a re-pin or a new edition changes it here with no edit."""
+    from sqpack import release  # noqa: PLC0415
+
+    lines = COLOPHON_LINE.findall(render_overview.colophon_lines())
+    assert len(lines) == 2
+    first, second = (COLOPHON_PART.findall(line) for line in lines)
+    assert first == [
+        "The Square Packing Project",
+        '<a href="https://github.com/jlevy/squares">github.com/jlevy/squares</a>',
+    ]
+    assert second == [
+        release.PUBLICATION_EDITION,
+        (
+            "Formatted and typeset with "
+            '<a href="https://github.com/jlevy/flowmark">Flowmark</a> '
+            'and <a href="https://github.com/jlevy/kpress">KPress</a>'
+        ),
+    ]
+    for line, parts in zip(lines, (first, second), strict=True):
+        assert line == " · ".join(f'<span class="site-colophon-part">{p}</span>' for p in parts)
+    assert release.PUBLICATION_EDITION.endswith(release.PUBLICATION_STAMP)
+    assert re.fullmatch(r"v\d+\.\d+\.\d+-[0-9a-f]{6}", release.PUBLICATION_STAMP)
+    revision = release.DATA_REVISION[: release.DATA_REVISION_LENGTH]
+    assert f"{release.PUBLICATION_VERSION}-{revision}" == release.PUBLICATION_STAMP
+    assert second[0] == SUMMARY_RELEASE_STAMP
+    # The tools' addresses are the repository's own: README links Flowmark there, and
+    # KPress is the submodule this site is rendered with.
+    readme = (render_overview.REPO / "README.md").read_text(encoding="utf-8")
+    assert f"({render_overview.FLOWMARK_URL})" in readme
+    modules = (render_overview.REPO / ".gitmodules").read_text(encoding="utf-8")
+    assert f"url = {render_overview.KPRESS_URL}" in modules
+    nav_css = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
+    assert ".site-colophon-line {\n  display: block;\n}" in nav_css
+    part = ".site-colophon-part {\n  display: inline-block;\n  text-wrap: balance;\n}"
+    assert part in nav_css
+
+
+@pytest.mark.parametrize("name", sorted(render_overview.PAGES))
+def test_every_site_page_ends_with_the_closing_credit(
+    name: str, rendered: Callable[[str], str]
+) -> None:
+    """Each KPress page carries the two lines once, in its footer slot."""
+    footer = f'<p class="site-colophon">{render_overview.colophon_lines()}</p>'
+    page = rendered(name)
+    assert page.count(footer) == 1
+    assert page.count('class="site-colophon-line"') == 2
 
 
 SITE_NAV_BLOCK = re.compile(r'<nav class="site-nav" aria-label="Site">.*?</nav>', re.DOTALL)
@@ -2196,6 +2328,68 @@ def test_the_sites_own_statement_follows_readmes_introduction(page: str) -> None
         paragraphs[2],
     )
     assert "formal" not in " ".join(SITE_STATEMENT).lower()
+
+
+def test_the_sites_statement_stands_under_its_own_section_heading(page: str) -> None:
+    """README's two paragraphs stay under the page's first heading, and the site's own
+    statement has a section heading of its own, The Square Packing Project: an ordinary
+    `h2` with its own id and its entry in the page's contents, directly after README's
+    block and directly above the paragraph that says what the site collects. It is no
+    page title, so it takes the two section spaces every `h2` takes
+    (`test_section_headings_share_one_space_above_and_one_below`)."""
+    from devtools import site_documents  # noqa: PLC0415
+
+    heading = '<h2 id="the-square-packing-project">The Square Packing Project</h2>'
+    assert page.count(heading) == 1
+    problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
+    after_intro = problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[1]
+    assert after_intro.lstrip().startswith(heading)
+    following = after_intro.split(heading, 1)[1].lstrip()
+    assert following.startswith("<p>This Square Packing Project site collects")
+    assert heading not in problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[0]
+    contents = (
+        '{"href": "#the-square-packing-project", "level": 1, '
+        '"title": "The Square Packing Project"}'
+    )
+    assert contents in page
+    assert page.index(contents) < page.index('{"href": "#recent-results"')
+    template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
+    assert (
+        "{{README_INTRO}}\n\n## The Square Packing Project\n\nThis Square Packing Project "
+        "site collects" in template
+    )
+
+
+def test_the_project_is_named_the_square_packing_project_wherever_it_is_named(
+    page: str, rendered: Callable[[str], str]
+) -> None:
+    """The project's formal name is The Square Packing Project (the owner, 2026-10-01),
+    and no page of the site calls it the Squares Project in its own words: the README's
+    title and its card, the closing section's heading, whose old fragment an empty
+    anchor keeps, and the sentence under it. The one place the old name remains is a
+    register claim's account of how another source credits this project, which is
+    record text and not the site's own naming."""
+    from devtools import site_documents  # noqa: PLC0415
+
+    heading = (
+        '<h2 id="square-packing-project-documentation">Square Packing Project Documentation'
+        '<a id="squares-project-documentation"></a></h2>'
+    )
+    assert page.count(heading) == 1
+    section = page.split(heading, 1)[1]
+    assert "live in the Square Packing Project\u2019s" in _rendered_text(section)
+    readme = site_documents.README.read_text(encoding="utf-8")
+    assert readme.startswith("# The Square Packing Project\n")
+    assert "<title>The Square Packing Project · Square Packing</title>" in rendered(
+        "readme.html"
+    )
+    labels = [label for _, label, _ in overview_sections.DOCUMENTS]
+    assert labels[0] == "The Square Packing Project"
+    for name in ("index.html", "papers.html", "frontier.html", "readme.html", "visualize.html"):
+        text = re.sub(r"<(script|style)\b.*?</\1>", "", rendered(name), flags=re.DOTALL)
+        text = re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
+        own = re.sub(r"building on Squares Project(?: \(Joshua Levy\))?", "", text)
+        assert "squares project" not in own.lower(), name
 
 
 def _the_central_case() -> re.Pattern[str]:

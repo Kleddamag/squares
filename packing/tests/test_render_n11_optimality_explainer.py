@@ -69,6 +69,22 @@ def test_rendered_page_is_offline_and_contains_proof_figures(rendered: tuple[str
     assert 'href="https://github.com/jlevy/squares"' in html
 
 
+def test_the_paper_ends_with_the_sites_closing_credit(rendered: tuple[str, str]) -> None:
+    """The paper's closing paragraph holds the two lines every page's footer is made of,
+    the project and its repository, then the version and the credit to the two tools.
+    The version is pinned in `release.py`, which is therefore one of the paper's declared
+    inputs, so a re-pin puts the paper in the Pages workflow's scope."""
+    from devtools import render_overview  # noqa: PLC0415
+    from sqpack.release import PUBLICATION_EDITION  # noqa: PLC0415
+
+    html, _ = rendered
+    footer = f'<p class="col colophon centred">{render_overview.colophon_lines()}</p>'
+    assert html.count(footer) == 1
+    assert html.count('class="site-colophon-line"') == 2
+    assert f'<span class="site-colophon-part">{PUBLICATION_EDITION}</span>' in footer
+    assert paper.PACKING / "src" / "sqpack" / "release.py" in paper.RENDER_INPUTS
+
+
 def test_the_page_carries_the_sites_bar_with_papers_current(rendered: tuple[str, str]) -> None:
     """The paper is one of the site's papers, so it carries the site's navigation bar as
     the explainer does, through the shared helper: Papers is the current entry, the

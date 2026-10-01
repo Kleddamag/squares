@@ -71,4 +71,8 @@ void test("a renamed section's old fragment stays while an anchor keeps its id",
   const kept = ["verification-ladders", "verification-at-a-glance"];
   assert.equal(forwarded(old, { ids: kept }), null);
   assert.equal(forwarded(old, { ids: ["verification-ladders"] }), `explainer.html${old}`);
+  // The Frontier Survey was `#the-survey`, kept the same way.
+  const survey = "#the-survey";
+  assert.equal(forwarded(survey, { ids: ["the-frontier-survey", "the-survey"] }), null);
+  assert.equal(forwarded(survey, { ids: ["the-frontier-survey"] }), `explainer.html${survey}`);
 });

@@ -1,6 +1,6 @@
 <div class="site-hero">
 
-# The Frontier Atlas
+# The Frontier Survey
 
 <p class="subtitle">A survey of everything known for cases {{CASE_RANGE}}</p>
 

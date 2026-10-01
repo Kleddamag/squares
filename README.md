@@ -1,4 +1,4 @@
-# The Squares Project
+# The Square Packing Project
 
 <!-- BEGIN SHARED: project-intro (devtools.site_documents) -->
 
@@ -45,8 +45,8 @@ others with their credit, the
 [verification ratings](https://jlevy.github.io/squares/#verification-ladders),
 [the atlas](https://jlevy.github.io/squares/#the-atlas) of known-best packings and its
 films, the table of [every result](https://jlevy.github.io/squares/all-results.html),
-and [the survey](https://jlevy.github.io/squares/#the-survey) of every case
-$n = 1\ldots324$, all generated from the record in this repository.
+and [the frontier survey](https://jlevy.github.io/squares/#the-frontier-survey) of every
+case $n = 1\ldots324$, all generated from the record in this repository.
 The in-repository record is the [results register](packing/frontier/RESULTS.md), the
 per-case [status table](packing/frontier/STATUS.md), and
 [`epistemics.md`](epistemics.md), which defines how each claim is graded; the atlas
@@ -66,9 +66,10 @@ simpler lower bounds on $s(11)$.
 
 This repository also contains
 **[a set of tools and AI workflows for automated mathematical research](#autonomous-research-process)**:
-the results and the survey are produced and checked by AI agents running a recorded
-process, with hypotheses registered before measurement, every claim graded, and every
-defect logged. The rest of this README is about that work.
+the results and the frontier survey are produced and checked by AI agents running a
+recorded process, with hypotheses registered before measurement, every claim graded, and
+every defect logged.
+The rest of this README is about that work.
 
 [Results (site)](https://jlevy.github.io/squares/) ·
 [Research Status](SYNOPSIS.md#research-program-status-and-roadmap) ·

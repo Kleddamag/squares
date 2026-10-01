@@ -170,33 +170,58 @@ body {
 }
 
 /* ---------- Cards ---------- */
-/* A card section is a frame the width of the wide track holding the grid, so the grid
-   can ask how many columns its frame fits. Four or more cards fill the columns as they
-   come. Three or fewer centre as a group, each card the width it would have had in a
-   full row: four columns from 67rem (four 16rem tracks and three gaps), five from 84rem.
-   Below that the row holds three or fewer anyway. */
+/* A card section is a frame the width of the wide track holding the cards, so the cards
+   can ask how wide their frame is. Every card is as wide as a column of the grid the
+   frame fits, as many 16rem columns as fit with 1rem gaps: one, then two from 33rem,
+   three from 50rem, four from 67rem and five from 84rem (n columns and n - 1 gaps). On
+   screen the cards are one wrapping row that centres every line it does not fill, a
+   short section and the last line of a long one alike. Print keeps the plain grid,
+   filled from the left. A card's popover is its sibling but never in the row: closed it
+   is not displayed, and open it is in the top layer. */
 .site-cards-frame {
   container-type: inline-size;
   margin-block: 1.5rem;
 }
 .site-cards {
+  --site-card-gap: 1rem;
+  --site-card-columns: 1;
   display: grid;
-  gap: 1rem;
+  gap: var(--site-card-gap);
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
 }
+@container (width >= 33rem) {
+  .site-cards {
+    --site-card-columns: 2;
+  }
+}
+@container (width >= 50rem) {
+  .site-cards {
+    --site-card-columns: 3;
+  }
+}
 @container (width >= 67rem) {
-  .site-cards:not(
-    :has(> :not(.site-popover) ~ :not(.site-popover) ~ :not(.site-popover) ~ :not(.site-popover))
-  ) {
-    grid-template-columns: repeat(auto-fit, calc((100% - 3rem) / 4));
-    justify-content: center;
+  .site-cards {
+    --site-card-columns: 4;
   }
 }
 @container (width >= 84rem) {
-  .site-cards:not(
-    :has(> :not(.site-popover) ~ :not(.site-popover) ~ :not(.site-popover) ~ :not(.site-popover))
-  ) {
-    grid-template-columns: repeat(auto-fit, calc((100% - 4rem) / 5));
+  .site-cards {
+    --site-card-columns: 5;
+  }
+}
+@media screen {
+  .site-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .site-cards > .site-card {
+    flex: 0 0
+      calc(
+        (100% - (var(--site-card-columns) - 1) * var(--site-card-gap)) /
+        var(--site-card-columns)
+      );
+    min-inline-size: 0;
   }
 }
 /* A card is a clean summary with square corners. Most cards are a button that opens a

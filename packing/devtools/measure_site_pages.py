@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Measure a built site's pages against the explainer: load and math timing, text, faces.
+"""Measure a built site's pages against the explainer: load and math timing, text, faces,
+and the card sections' layout.
 
-Three measurements, each over pages of a directory `preview_site` has built:
+Four measurements, each over pages of a directory `preview_site` has built:
 
 - `load` serves the directory on a local port and opens each page in a fresh Chromium
   context, cold cache, at a desktop or phone width. An init script (a probe) records
@@ -17,11 +18,17 @@ Three measurements, each over pages of a directory `preview_site` has built:
   `--site-*`, `--paper-*` and `--cert-*` token the root and the column resolve.
 - `faces` needs no browser: it lists every `@font-face` block each page inlines, by
   family, and whether the block is byte-identical to the explainer's.
+- `cards` reports every card section as laid out: its cards in rows, each row's card
+  widths and sizes and the slack at its start and end (equal when the row is centred),
+  and each card's headline face, weight and size. `--markdown` prints one line a row, and
+  `--media print` lays the page out as it prints.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages load SITE
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages type SITE
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages faces SITE
+    uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages cards SITE \
+        --page index.html --width 1280 --width 390 --markdown
 
 `SITE` is a directory holding `explainer.html` and the kpress pages. Set
 `SQPACK_CHROMIUM` to use a browser the environment supplies, as the other tools do.
@@ -49,6 +56,7 @@ _INSTRUMENT = applied(probe(PROBES, "measure_site_pages/instrument"))
 _DONE = probe(PROBES, "measure_site_pages/done")
 _REPORT = probe(PROBES, "measure_site_pages/report")
 TYPOGRAPHY = probe(PROBES, "measure_site_pages/typography")
+CARDS = probe(PROBES, "measure_site_pages/cards")
 
 #: The pages compared by default: the explainer, the long reports, a short one, the
 #: homepage and one case record.
@@ -112,17 +120,47 @@ def measure_type(
     base: str, pages: Sequence[str], *, widths: Sequence[int]
 ) -> list[dict[str, Any]]:
     """Each page's reading typography and resolved tokens at each width."""
+    return [
+        {"page": name, "width": width, **found}
+        for name, width, found in _evaluate(base, pages, widths=widths, script=TYPOGRAPHY)
+    ]
+
+
+def measure_cards(
+    base: str, pages: Sequence[str], *, widths: Sequence[int], media: str = "screen"
+) -> list[dict[str, Any]]:
+    """Each page's card sections as laid out at each width, one entry a section."""
+    return [
+        {"page": name, "width": width, **section}
+        for name, width, found in _evaluate(
+            base, pages, widths=widths, script=CARDS, media=media
+        )
+        for section in found
+    ]
+
+
+def _evaluate(
+    base: str,
+    pages: Sequence[str],
+    *,
+    widths: Sequence[int],
+    script: str,
+    media: str = "screen",
+) -> list[tuple[str, int, Any]]:
+    """`script` evaluated on each page at each width, once the page has loaded, in the
+    given CSS media."""
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
-    results: list[dict[str, Any]] = []
+    results: list[tuple[str, int, Any]] = []
     with sync_playwright() as driver:
         browser = _launch(driver)
         for width in widths:
             for name in pages:
                 page = browser.new_page(viewport={"width": width, "height": 900})
+                page.emulate_media(media="print" if media == "print" else "screen")
                 page.goto(f"{base}/{name}", wait_until="load")
                 page.wait_for_timeout(300)
-                results.append({"page": name, "width": width, **page.evaluate(TYPOGRAPHY)})
+                results.append((name, width, page.evaluate(script)))
                 page.close()
         browser.close()
     return results
@@ -198,10 +236,32 @@ def token_rows(
     return rows
 
 
+def card_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """A `cards` report flattened to one row per page, width, section and row of cards."""
+    return [
+        {
+            "page": entry["page"],
+            "width": entry["width"],
+            "section": entry["section"],
+            "block": entry["block_width"],
+            "row": index + 1,
+            "cards": row["cards"],
+            "sizes": " ".join(size or "-" for size in row["sizes"]),
+            "widths": " ".join(f"{width:g}" for width in row["widths"]),
+            "start": row["start"],
+            "end": row["end"],
+        }
+        for entry in report
+        for index, row in enumerate(entry["rows"])
+    ]
+
+
 def markdown_table(report: list[dict[str, Any]]) -> str:
     """A report's flat columns as a Markdown table, for a design note or a pull request."""
     if report and "roles" in report[0]:
         report = type_rows(report)
+    if report and "rows" in report[0]:
+        report = card_rows(report)
     columns = [key for key, value in report[0].items() if not isinstance(value, (dict, list))]
     lines = ["| " + " | ".join(columns) + " |", "|" + " --- |" * len(columns)]
     lines.extend("| " + " | ".join(str(row[key]) for key in columns) + " |" for row in report)
@@ -212,7 +272,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    parser.add_argument("mode", choices=("load", "type", "faces"))
+    parser.add_argument("mode", choices=("load", "type", "faces", "cards"))
     parser.add_argument("site", type=Path)
     parser.add_argument(
         "--page", action="append", help="a page, with any #fragment; repeatable"
@@ -222,6 +282,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--port", type=int, default=18961)
     parser.add_argument("--json", type=Path, help="read a saved report rather than measuring")
     parser.add_argument("--markdown", action="store_true", help="print a table, not JSON")
+    parser.add_argument(
+        "--media",
+        choices=("screen", "print"),
+        default="screen",
+        help="with `cards`: the CSS media to lay the page out in",
+    )
     parser.add_argument(
         "--tokens",
         choices=("root_tokens", "column_tokens"),
@@ -241,6 +307,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         try:
             if args.mode == "type":
                 report = measure_type(base, pages, widths=widths)
+            elif args.mode == "cards":
+                report = measure_cards(base, pages, widths=widths, media=args.media)
             else:
                 report = measure_load(base, pages, widths=widths, runs=args.runs)
         finally:

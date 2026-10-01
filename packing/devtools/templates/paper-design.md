@@ -354,11 +354,16 @@ it.
 
 - **Cards.** A card is a summary with square corners, a thin border, a caps label, a
   value and a supporting note.
-  A card section is one grid in the wide track, in a `.site-cards-frame` the grid
+  A card section is one wrapping row in the wide track, in a `.site-cards-frame` the row
   measures itself against.
-  Four or more cards fill its columns from the left, as many 16rem columns as fit.
-  Three or fewer centre as a group, each card as wide as it would be in a full row, so a
-  short section lines up with a long one; below four columns the row holds them anyway.
+  Each card is as wide as a column of the grid the frame fits, as many 16rem columns as
+  fit with 1rem gaps (two from 33rem, three from 50rem, four from 67rem, five from
+  84rem), so a short section lines up with a long one.
+  Any line the cards do not fill centres on it, at every width: four cards on a wide
+  screen, a section of three, and the last line of a long section alike.
+  A card’s popover is its sibling in the row’s markup but never in the row, since a
+  closed popover is not displayed and an open one is in the top layer.
+  Print keeps the plain grid, filled from the left.
   A card works one of two ways.
   Most cards open a popover that shows where they lead, and the popover ends in one
   button that goes there, centred at its foot.
@@ -716,8 +721,11 @@ page at a desktop and a phone width:
 uv run --frozen --all-extras --group dev python -m devtools.preview_site --shots /tmp/shots
 ```
 
-It fails on console errors, a page wider than its viewport, math left untypeset, and any
-formula whose face disagrees with the text around it.
+It fails on console errors, a page wider than its viewport, math left untypeset, any
+formula whose face disagrees with the text around it, and a row of cards off the centre
+of its line (more than a pixel between its two slacks).
+`devtools.measure_site_pages cards` reports the rows it reads: each card section’s
+lines, their cards’ widths and the slack at either end.
 `tests/test_overview.py` holds the cards and chips to the rules above.
 
 The linear-program display is reflowed within the print column.

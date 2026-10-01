@@ -350,13 +350,45 @@ def test_the_document_is_kpress_viewport_with_its_contents_behaviours(page: str)
 
 
 def test_every_card_grid_sits_in_a_frame_it_can_measure(page: str) -> None:
-    """A section of three cards or fewer centres them only when its grid can ask how many
-    columns its frame fits, so every grid is the only child of a `.site-cards-frame`."""
+    """A card is as wide as a column of the grid its frame fits, which it can know only by
+    asking the frame, so every card section is the only child of a `.site-cards-frame`."""
     grids = re.findall(r'<div class="([^"]*)"><div class="(site-cards[^"]*)">', page)
     every = re.findall(r'<div class="site-cards[" ]', page)
     assert len(grids) == len(every), "a card grid outside a frame"
     assert all(frame == "site-cards-frame site-wide" for frame, _ in grids)
     assert any("site-cards-dimensions" in grid for _, grid in grids)
+
+
+#: A container query naming how many card columns its frame fits from a given width.
+_CARD_COLUMNS = re.compile(
+    r"@container \(width >= ([\d.]+)rem\) \{\s*\.site-cards \{\s*"
+    r"--site-card-columns: (\d+);\s*\}\s*\}"
+)
+
+
+def test_every_card_line_centres_on_its_line() -> None:
+    """On screen the cards are one wrapping row that centres every line it does not fill,
+    four cards on a wide screen and the last line of a long section alike, and each card
+    keeps the width of a column of the grid the frame fits: n 16rem columns and n - 1
+    1rem gaps need 17n - 1 rem. Print keeps that grid, filled from the left."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    base = css[css.index(".site-cards {") :]
+    base = base[: base.index("}")]
+    assert "--site-card-gap: 1rem;" in base
+    assert "grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));" in base
+    steps = [(float(width), int(columns)) for width, columns in _CARD_COLUMNS.findall(css)]
+    assert [columns for _, columns in steps] == [2, 3, 4, 5]
+    assert all(width == 17 * columns - 1 for width, columns in steps)
+    screen = css[css.index("@media screen {\n  .site-cards {") :]
+    screen = screen[: screen.index("\n}\n")]
+    row = screen[: screen.index("}")]
+    for declaration in ("display: flex;", "flex-wrap: wrap;", "justify-content: center;"):
+        assert declaration in row
+    card = screen[screen.index(".site-cards > .site-card {") :]
+    assert "(100% - (var(--site-card-columns) - 1) * var(--site-card-gap))" in card
+    assert "min-inline-size: 0;" in card
+    cards = css[css.index("/* ---------- Cards") : css.index(".kpress .site-card {")]
+    assert ":has(" not in cards, "a card line centres without counting its cards"
 
 
 def test_each_dimension_card_carries_every_level_of_the_rubric(page: str) -> None:

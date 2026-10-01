@@ -13,7 +13,8 @@ Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.preview_site --shots DIR
 
 `--skip explainer` or `--skip workbench` leaves a slow build out; its nav link then
-points at a missing page, which the link check reports rather than fails on. Set
+points at a missing page, which the link check reports rather than fails on, and a build
+already in `--output` stays. `--page` shoots only the pages it names. Set
 `SQPACK_CHROMIUM` to use a browser the environment supplies, as the explainer's own
 tools do.
 """
@@ -29,9 +30,10 @@ import subprocess
 import sys
 import tempfile
 import threading
+from collections.abc import Sequence
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from devtools import render_overview
 
@@ -49,6 +51,10 @@ PROBES = PACKING / "devtools" / "probes"
 _OVERFLOW = probe(PROBES, "preview_site/overflow")
 _MATH_PENDING = probe(PROBES, "preview_site/math_pending")
 _MATH_FACE = probe(PROBES, "preview_site/math_face")
+_SCROLL_TOP = probe(PROBES, "preview_site/scroll_top")
+_CARDS = probe(PROBES, "measure_site_pages/cards")
+#: How far, in CSS pixels, a row of cards may sit off the centre of its line.
+CENTRE_TOLERANCE = 1.0
 #: How long a page may take to typeset all its math before it is shot as it stands. The
 #: site typesets the formulas near the viewport first and the rest in idle time
 #: (`overview/math.js`); the synopsis's 1,357 took 40 to 50 seconds of scrolling in all.
@@ -132,23 +138,39 @@ def serve(output: Path, port: int) -> ThreadingHTTPServer:
     return server
 
 
+def off_centre(sections: list[dict[str, Any]]) -> list[str]:
+    """Every row of cards, in a `measure_site_pages cards` report of one page, that does
+    not sit centred on its line: its slack at the start and at the end differ."""
+    return [
+        f"a row of {row['cards']} cards in {section['section'] or 'the page'} is off centre: "
+        f"{row['start']}px before it, {row['end']}px after"
+        for section in sections
+        for row in section["rows"]
+        if abs(row["start"] - row["end"]) > CENTRE_TOLERANCE
+    ]
+
+
 def _settle_math(page: Page) -> int:
     """Scroll the page through once, a screen at a time, so every formula is typeset, then
-    return to the top; returns how many were still untypeset when the wait ran out."""
+    return to the top; returns how many were still untypeset when the wait ran out. The
+    return is instant and waited for: the wheel's own scroll animates, and a screenshot
+    taken during it was drawn offset."""
     waited = 0
     while (pending := page.evaluate(_MATH_PENDING)) and waited < MATH_WAIT_MS:
         page.mouse.wheel(0, 800)
         page.wait_for_timeout(100)
         waited += 100
-    page.mouse.wheel(0, -10_000_000)
     page.wait_for_timeout(200)
+    page.wait_for_function(_SCROLL_TOP)
     return pending
 
 
-def screenshots(output: Path, shots: Path, port: int) -> list[str]:
+def screenshots(
+    output: Path, shots: Path, port: int, pages: Sequence[str] = render_overview.SITE_PAGES
+) -> list[str]:
     """A full-page screenshot of every built page at each width, with what went wrong:
-    console errors, math left untypeset or set in the other face from its text, and any
-    page wider than its viewport."""
+    console errors, math left untypeset or set in the other face from its text, a row of
+    cards off the centre of its line, and any page wider than its viewport."""
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
     shots.mkdir(parents=True, exist_ok=True)
@@ -157,7 +179,7 @@ def screenshots(output: Path, shots: Path, port: int) -> list[str]:
     try:
         with sync_playwright() as driver:
             browser = driver.chromium.launch(executable_path=os.environ.get(BROWSER_OVERRIDE))
-            for name in render_overview.SITE_PAGES:
+            for name in pages:
                 if not (output / name).is_file():
                     continue
                 for width in WIDTHS:
@@ -176,6 +198,10 @@ def screenshots(output: Path, shots: Path, port: int) -> list[str]:
                         errors.append(f"{name} @{width}: {pending} math spans never typeset")
                     errors.extend(
                         f"{name} @{width}: {mismatch}" for mismatch in page.evaluate(_MATH_FACE)
+                    )
+                    errors.extend(
+                        f"{name} @{width}: {problem}"
+                        for problem in off_centre(page.evaluate(_CARDS))
                     )
                     overflow = page.evaluate(_OVERFLOW)
                     if overflow > 0:
@@ -196,6 +222,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--skip", action="append", choices=BUILDS, default=[])
     parser.add_argument("--shots", type=Path, help="write screenshots of every page here")
+    parser.add_argument(
+        "--page",
+        action="append",
+        choices=render_overview.SITE_PAGES,
+        help="with --shots: shoot only this page; repeatable",
+    )
     parser.add_argument("--serve", action="store_true", help="serve the site until stopped")
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args(argv)
@@ -208,7 +240,8 @@ def main(argv: list[str] | None = None) -> int:
     for problem in missing_links(output):
         print(f"missing: {problem}", file=sys.stderr)
     if args.shots:
-        for error in screenshots(output, args.shots.resolve(), args.port):
+        pages = tuple(args.page or render_overview.SITE_PAGES)
+        for error in screenshots(output, args.shots.resolve(), args.port, pages):
             print(f"problem: {error}", file=sys.stderr)
             status = 1
     if args.serve:

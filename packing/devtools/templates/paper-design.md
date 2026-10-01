@@ -1376,9 +1376,10 @@ names.
 - **Head.** The popover’s own caps label, the result’s id, and its headline, the
   result’s summary, stand above the body and are in the page, so they do not change when
   the overview lands. The body opens with the S, V and C rung chips and the standing
-  chips, as the tables show them; then the date with what it dates, the credit and the
-  cases, in the support colour; the claim at the note size; and a closed disclosure with
-  the significance, composition, next rung and novelty.
+  chips, as the tables show them; then the date and what it dates, in the tables’ order
+  (`date_cell`), the credit and the cases, in the support colour; the claim at the note
+  size; and a closed disclosure with the significance, composition, next rung and
+  novelty.
 - **The case.** A result about one case, or up to four, shows the atlas popover’s panel
   for each: the gap bar, the bound as one statement with the lower bound in scarlet and
   the best known side in green, the badges, the citation and what is open, beside the
@@ -1393,8 +1394,8 @@ names.
   that scrolls, one row each: the n linking to the case record, the two bounds in the
   film’s colours, the gap, the status chip, the frontier row and the case file.
 - **The chain.** Every register result on the same case, oldest first, down one rule:
-  the date, the id linking to its row, what it established, its chips, and its credit,
-  bibliography entry, source packet and register entry.
+  the date and what it dates, the id linking to its row, what it established, its chips,
+  and its credit, bibliography entry, source packet and register entry.
   The rule beside the result the overview is about is the accent, and a superseded step
   reads quieter, as a superseded row does.
   Where a result stands differently on this case than across its whole scope, the step

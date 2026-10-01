@@ -843,7 +843,9 @@ def credit_cell(credit: str) -> str:
 def date_cell(result: Result) -> str:
     """What a result's date cell holds, in both tables of results: the date first, then
     what it dates, `published` or `established`, quiet (`.site-date-kind`). The cell
-    sorts and filters on the date alone, its `data-value` and the row's `data-date`."""
+    sorts and filters on the date alone, its `data-value` and the row's `data-date`.
+    A result's overview sets its date, and each date of its chain, with this too
+    (`result_overview.head`, `step`), so the order has one definition."""
     kind, dated = result.dated
     return f'{_esc(dated)} <span class="site-date-kind">{_esc(kind)}</span>'
 

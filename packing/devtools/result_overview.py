@@ -567,12 +567,16 @@ def where(cases: Sequence[int]) -> str:
 
 
 def head(result: Result, cases: Sequence[int]) -> str:
-    """The chips, the date and credit, and the claim. The id and the headline are the
-    popover's own, above the body (`overview_sections.result_row`)."""
-    from devtools.overview_sections import novelty_labels, status_chips  # noqa: PLC0415
+    """The chips, the date and credit, and the claim. The date leads and what it dates
+    follows, as a table's date cell sets it (`overview_sections.date_cell`). The id and
+    the headline are the popover's own, above the body (`overview_sections.result_row`)."""
+    from devtools.overview_sections import (  # noqa: PLC0415
+        date_cell,
+        novelty_labels,
+        status_chips,
+    )
 
     record = result.record
-    kind, dated = result.dated
     claim = tex_bounds(" ".join(str(record["claim"]).split()))
     more = [
         ("Significance", record["significance"]["rationale"]),
@@ -592,8 +596,8 @@ def head(result: Result, cases: Sequence[int]) -> str:
     return (
         '<header class="site-result-head">'
         f'<p class="site-result-status">{status_chips(result)}</p>'
-        f'<p class="site-result-meta"><span class="site-date-kind">{_esc(kind)}</span> '
-        f"{_esc(dated)} \u00b7 {_esc(result.credit)} \u00b7 {where(cases)}</p>"
+        f'<p class="site-result-meta">{date_cell(result)} \u00b7 {_esc(result.credit)} '
+        f"\u00b7 {where(cases)}</p>"
         f'<p class="site-result-claim">{claim}</p>'
         '<details class="site-result-more"><summary>Significance, composition and next '
         f'rung</summary><dl class="site-detail">{rows}</dl></details>'
@@ -692,11 +696,13 @@ def citations(other: Result) -> list[str]:
 
 def step(other: Result, current: Result, cases: Sequence[int]) -> str:
     """One result in the chain: when, which, what it established, how it stands, and its
-    citations and sources.
+    citations and sources. Its date leads and what it dates follows, as in the tables
+    (`overview_sections.date_cell`).
 
     A broad result's chain runs to dozens of results, so a step there keeps its standing
     and leaves its rungs to its own row."""
     from devtools.overview_sections import (  # noqa: PLC0415
+        date_cell,
         result_url,
         standing_chips,
         standing_key,
@@ -704,7 +710,6 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
         status_chips,
     )
 
-    kind, dated = other.dated
     wanted = set(cases)
     shared = [n for n in scope(other) if n in wanted]
     on = ""
@@ -732,8 +737,8 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
     return (
         f'<li class="site-result-step" data-step="{_esc(other.id.lower())}" '
         f'data-standing="{_esc(standing_key(here))}"{current_mark}>'
-        f'<p class="site-result-step-head"><span class="site-date-kind">{_esc(kind)}</span> '
-        f'{_esc(dated)} <a href="{_esc(result_url(other.id))}">{_esc(other.id)}</a>{this}'
+        f'<p class="site-result-step-head">{date_cell(other)} '
+        f'<a href="{_esc(result_url(other.id))}">{_esc(other.id)}</a>{this}'
         f"{on}</p>"
         f'<p class="site-result-step-summary">{tex_bounds(other.summary)}</p>'
         f"{chip_line}"

@@ -46,7 +46,7 @@ Run the source checker with the ordinary interpreter, with PYTHONOPTIMIZE unset 
 The source verifier’s Cartesian-product vertex order is not perimeter order.
 
 Controls are the existing `grid-n004.yaml` positive and `overlap-negative-control.yaml`
-negative, a synthetic rational rotation with half-angle `1/2`, and adapter refusals for
+negative, a synthetic rational rotation with half-angle $1/2$, and adapter refusals for
 wrong count, wrong side and malformed scalars.
 The negative packing must fail both local checkers.
 A converted target must pass all unit-edge, orthogonality, parallelogram, containment

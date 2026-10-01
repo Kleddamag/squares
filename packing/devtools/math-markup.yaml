@@ -502,6 +502,7 @@ migrated:
 - packing/campaign/agent-sessions/session-162-wand125-tools-intake.md
 - packing/campaign/agent-sessions/session-163-native-bounds-and-census.md
 - packing/campaign/agent-sessions/session-164-upstream-merge-and-certification.md
+- packing/campaign/agent-sessions/session-165-post-optimality-overnight.md
 - packing/campaign/documentation-pass.md
 - packing/campaign/explorations/X-001-standing-review-and-search-philosophy.md
 - packing/campaign/explorations/X-002-creative-frontier-and-basin-maps.md
@@ -736,6 +737,7 @@ migrated:
 - packing/campaign/hypotheses/H-250-n50-rectangle-density-certificate-at-7-3.md
 - packing/campaign/hypotheses/H-251-n82-rectangle-density-certificate-at-9-3.md
 - packing/campaign/hypotheses/H-252-n45-zero-margin-closed-cover-at-7.md
+- packing/campaign/hypotheses/H-253-n17-retained-rational-upper.md
 - packing/campaign/ideas.md
 - packing/campaign/remediation-pass.md
 - packing/campaign/research-loop-logbook/README.md
@@ -908,6 +910,7 @@ migrated:
 - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-232-h236-rung-zero-closed.md
 - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-233-h241-n12-ceiling-settles-below-12.md
 - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-234-h242-rung1-pilot.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/checkpoint-hour-02-decision.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/commissioning-gate-minute-015.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/commissioning-gate-minute-030.md
@@ -1152,6 +1155,7 @@ migrated:
 - packing/campaign/series/series-000-smoke-and-calibration/results/exp-114-h-104-fixed-side-auxiliaries/independent-review.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/exp-114-h-104-fixed-side-auxiliaries/target-output-independent-review.md
 - packing/campaign/series/series-000-smoke-and-calibration/results/exp-115-h-105-fixed-candidate-pair-obstruction/independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/output-review.md
 - packing/cases/n11_five_dot_cover/after-direct-family-decision.md
 - packing/cases/n11_five_dot_cover/after-exp148-strategy.md
 - packing/cases/n11_five_dot_cover/after-exp149-strategy.md

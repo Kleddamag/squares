@@ -921,7 +921,7 @@ agenda:
     purpose: measurement_validation
     owner_focus: correctness
     instances: [17]
-    state: ready
+    state: complete
     priority: 0
     question: Does the retained rational n17 upper certificate pass two local exact geometry implementations at its fixed side?
     hypotheses: [H-253]
@@ -930,7 +930,7 @@ agenda:
     exit: Exact 17-square, 68-vertex, 136-pair agreement with the source checker and local checkers, or retained refusal/timeout; no endpoint or optimality claim.
     bead: think-08sm
     depends_on: []
-    next_evidence: packing/campaign/hypotheses/H-253-n17-retained-rational-upper.md
+    next_evidence: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md
     workflows: [pipeline-improvement, research-loop, factual-review]
     program: post-optimality-low-n
     artifacts:

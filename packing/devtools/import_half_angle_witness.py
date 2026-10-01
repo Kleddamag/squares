@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import itertools
 import json
+import os
 import re
 import shlex
 import sys
@@ -30,6 +31,7 @@ MAX_LITERAL_CHARS = 256
 """Maximum decimal digits and punctuation in one exact rational source literal."""
 RATIONAL = re.compile(r"-?(?:0|[1-9][0-9]*)(?:/[1-9][0-9]*)?\Z")
 REPO = Path(__file__).resolve().parents[2]
+WITNESS_SCHEMA = REPO / "packing/witnesses/witness.schema.yaml"
 
 
 class HalfAngleImportError(ValueError):
@@ -181,8 +183,9 @@ def main(argv: list[str] | None = None) -> int:
             ".venv/bin/python3 -m devtools.check_rational_witness_independent "
             + shlex.quote(str(args.output))
         )
+        schema = Path(os.path.relpath(WITNESS_SCHEMA, args.output.parent.resolve())).as_posix()
         with atomic_output_file(args.output) as temporary:
-            temporary.write_text(witness_document(witness), encoding="utf-8")
+            temporary.write_text(witness_document(witness, schema=schema), encoding="utf-8")
     except (HalfAngleImportError, OSError) as error:
         print(f"REFUSED: {error}", file=sys.stderr)
         return 2

@@ -70,7 +70,7 @@ session:
     clock_role: work
     objective: Implement the lossless rational half-angle adapter and refuse unsupported independent-checker
       coordinate semantics before H-253 runs.
-    status: in_progress
+    status: completed
     entered_by: planned_checkpoint
     switch_reason: Existing local checkers need cyclic corners; premeasurement review found an ignored
       coordinate-origin contract.
@@ -82,10 +82,105 @@ session:
     validation_command: cd packing && .venv/bin/pytest tests/test_import_half_angle_witness.py -q -p no:cacheprovider
     kill_condition: Controls fail repeatedly or a required semantics remains ambiguous.
     fallback: Stop before target samples and retain the named blocker.
+    outcome: Adapter and D510 coordinate-contract repair passed focused tests, lint/types and Astra max
+      review; frozen in 245fd2782. A premeasurement shell-limit refusal was retained and fixed in bacacdd15
+      after a control-only rehearsal.
+    evidence:
+    - packing/devtools/import_half_angle_witness.py
+    - packing/devtools/check_rational_witness_independent.py
+    - packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/premeasurement-launch-001.log
+    stop_reason: Reviewed instrument committed before target execution.
+    next_action: Execute frozen H253 commands with retained raw receipts.
+  - workflow: research-loop
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    objective: Execute H253 once on the unchanged rational source at its fixed side.
+    status: completed
+    entered_by: planned_checkpoint
+    switch_reason: The committed instrument and controls are ready.
+    budget_minutes: 10
+    started_at: '2026-10-01T10:48:50Z'
+    deadline_at: '2026-10-01T10:58:50Z'
+    expected_output: exp235 raw receipt, converted witness and control outcomes.
+    validation_command: cd packing && gtimeout --signal=TERM --kill-after=5s 600s bash campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/replay.sh
+      campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001
+    kill_condition: Unexpected control status, timeout, source mismatch or target checker rejection.
+    fallback: Retain refusal and no accepted scientific verdict.
+    outcome: All8 command statuses match, both local exact checkers accept 17 squares and136 pairs at the
+      exact side, and source checker agrees. Measured command wall sum7.91s, target-independent0.36s;
+      source output still requires W2 review.
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001/summary.json
+    stop_reason: One bounded target run completed at 10:48:58UTC.
+    next_action: Independent output/fidelity review before scientific acceptance.
+  - workflow: factual-review
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    objective: Review H253 source-to-output fidelity and exact checker receipts; scope D510 across retained
+      witness metadata.
+    status: completed
+    entered_by: evidence_checkpoint
+    switch_reason: The target run returned complete accepting receipts.
+    budget_minutes: 8
+    started_at: '2026-10-01T10:49:00Z'
+    deadline_at: '2026-10-01T10:57:00Z'
+    expected_output: Astra exact-output decision and Sol affected-input metadata audit.
+    validation_command: cd packing && .venv/bin/python3 -m sqpack.campaign.ledger check
+    kill_condition: A mapping, source, output or checker-contract mismatch.
+    fallback: Keep exp235 unresolved and preserve the counterexample.
+    outcome: Astra max independently verified all 17 source/output centres, ordered bases, recovered half-angles
+      and exact side, reviewed complete receipts/controls and accepted H253. Sol metadata audit found230/230
+      retained rational-corner witnesses canonical; no affected retained path.
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md
+    - docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
+    stop_reason: Exact rational feasibility accepted at its stated scope; no blocking finding.
+    next_action: Publish checkpoint, then validate the proposed endpoint chart.
+  - workflow: efficiency-loop
+    focus: efficiency
+    recording: contemporaneous
+    clock_role: work
+    objective: Compare measured command costs with preparation and review before selecting another implementation
+      task.
+    status: completed
+    entered_by: evidence_checkpoint
+    switch_reason: First W3/W10/W7/W6 cycle has complete per-command receipts.
+    budget_minutes: 5
+    started_at: '2026-10-01T10:51:00Z'
+    deadline_at: '2026-10-01T10:56:00Z'
+    expected_output: A cost-based next-task decision with no unsupported arithmetic bottleneck claim.
+    validation_command: Read run-001/summary.json against retained per-command timing receipts.
+    kill_condition: A proposed optimization is not supported by the measured workload.
+    fallback: Continue mathematical work and batch unrelated integration.
+    outcome: Eight commands total 7.91s; independent target 0.36s. Preparation/review dominates elapsed
+      session time, so select direct endpoint-chart validation and batch frontier publication; no native-arithmetic
+      optimization selected.
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001/summary.json
+    stop_reason: This workload has no measured arithmetic bottleneck.
+    next_action: Publish evidence while retaining think-j516 as next mathematical work.
+  - workflow: documentation-pass
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    objective: Publish the accepted exact-upper replay, checker repair and next mathematical queue without
+      closing the overnight session.
+    status: in_progress
+    entered_by: planned_checkpoint
+    switch_reason: The first bounded experiment and independent review are complete.
+    budget_minutes: 15
+    started_at: '2026-10-01T10:53:00Z'
+    deadline_at: '2026-10-01T11:08:00Z'
+    expected_output: Recoverable pushed checkpoint, PR265 review comment and synced beads.
+    validation_command: cd packing && .venv/bin/python3 -m sqpack.campaign.ledger check
+    kill_condition: A focused consistency check rejects the evidence record.
+    fallback: Repair the named record mismatch without new target measurements.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Collect Sol changes and Astra review, run focused checks, then freeze implementation.
+    next_action: Commit receipts, run focused push checks and publish; then start think-j516.
   budget:
     wall_minutes: 268.3
     orientation_minutes: 10
@@ -195,6 +290,8 @@ session:
   outputs:
   - docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
   - packing/campaign/hypotheses/H-253-n17-retained-rational-upper.md
+  - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md
+  - packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/run-001/summary.json
   checks:
   - Both PR265 and PR267 scheduled checks pass at the launch heads fb0fc2332 and a02703f13; conditional
     jobs skipped by scope are not claimed as executed.
@@ -205,9 +302,11 @@ session:
   - 'Sol parser contract and existing controls: 14 tests passed, Ruff and BasedPyright zero findings.'
   - Astra max read-only review approved H253 mathematics and adapter/checker changes, conditional on frozen
     implementation and controlled execution.
+  - Astra independent mapping audit passed in 0.208s command wall; source and exact-output fidelity confirmed
+    without repeating pair verification.
   stop_reason: null
-  next_action: Complete adapter/coordinate guard controls and commit the instrument before any n17 target
-    run.
+  next_action: Complete output review, publish exp235, then select think-j516 endpoint-chart work; think-vdmf
+    owns separate frontier admission.
 ---
 # Session 165: Post-optimality Research
 

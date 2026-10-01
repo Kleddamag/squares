@@ -11,7 +11,7 @@ softschema:
   schema: defects.schema.yaml
   envelope: null
   status: enforced
-count: 510
+count: 511
 defects:
 - id: D-001
   title: Fixed-side search never left the grid basin
@@ -17049,4 +17049,28 @@ defects:
     tests/test_rational_witness_independent_contract.py compares the centred-origin
     counterexample with the main checker and checks unsupported units, axes, count,
     scalar and contract metadata. Existing grid and overlap controls remain in use.
+  recorded_in: docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
+- id: D-511
+  title: Half-angle witness export declared a schema absent beside its output
+  date: '2026-10-01'
+  layer: tooling
+  class: robustness
+  detected_by: review
+  latent_for: First exported target witness in Session165
+  severity: medium
+  status: fixed
+  what: >-
+    The new adapter used witness_document's default schema path even when writing deep
+    campaign evidence. The main witness CLI's explicit fallback schema allowed exact
+    verification, but no-fallback loading and declared-schema validation failed.
+  consequence: >-
+    The exported witness was not self-contained within the repository's declared-schema
+    contract. Exact geometry acceptance was unaffected; the raw output remains retained.
+  fix: >-
+    Compute the schema path relative to each export location and test standalone loading
+    and declared-schema validation. Publish a separately identified portable copy of the
+    accepted raw witness, with identical witness payload. Tracked by think-j4wc.
+  regression: >-
+    test_import_half_angle_witness loads the synthetic rotated export with no fallback
+    and calls validate_schemas.check on that export.
   recorded_in: docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md

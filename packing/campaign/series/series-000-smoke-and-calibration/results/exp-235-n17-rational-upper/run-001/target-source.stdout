@@ -1,0 +1,4 @@
+PASS: 17 exact unit squares; 68 vertices contained; all 136 pairs separated.
+Exact container side: 4675530093604551/1000000000000000
+Smallest wall clearance (decimal display only): 5.172235849329084e-18
+Smallest pair separation (decimal display only): 1.0344471698658168e-17

@@ -179,7 +179,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-162](agent-sessions/session-162-wand125-tools-intake.md) | stopped | retrospective | `factual-review` (correctness) | `documentation-pass` (process) | 4 | think-8cps | Under think-bmf3, retain the unresolved n11 boxes and compare tighter exact bounds on identical inputs under the planned 30-second ceiling before selecting a full replay. |
 | [session-163](agent-sessions/session-163-native-bounds-and-census.md) | stopped | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 5 | think-8cps | Under think-niqx, merge current main and certify the resulting PR head through required local and hosted checks. The mathematical obligations identified above remain separate after this integration debt is discharged. |
 | [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | completed | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 39 | think-3i74 | After the reviewed helper cleanup lands, implement the bounded fresh-ensemble replay entry point under think-e2ot; preserve the accepted historical evidence. PR 249 reconciliation, optional Rust performance and later exposition remain separate tracks. |
-| [session-165](agent-sessions/session-165-post-optimality-overnight.md) | in_progress | contemporaneous | `insight-iteration` (insight) | `pipeline-improvement` (correctness) | 3 | think-kaqh | Complete adapter/coordinate guard controls and commit the instrument before any n17 target run. |
+| [session-165](agent-sessions/session-165-post-optimality-overnight.md) | in_progress | contemporaneous | `insight-iteration` (insight) | `documentation-pass` (correctness) | 7 | think-kaqh | Complete output review, publish exp235, then select think-j516 endpoint-chart work; think-vdmf owns separate frontier admission. |
 
 ### Workflow summary
 
@@ -188,13 +188,13 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | workflow | declared entries | retrospective entries | declared phases | retrospective phases |
 | --- | ---: | ---: | ---: | ---: |
 | `research-survey` | 4 | 2 | 16 | 2 |
-| `factual-review` | 11 | 1 | 63 | 3 |
+| `factual-review` | 11 | 1 | 64 | 3 |
 | `insight-iteration` | 28 | 1 | 85 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
-| `efficiency-loop` | 11 | 1 | 37 | 1 |
-| `research-loop` | 31 | 4 | 108 | 8 |
+| `efficiency-loop` | 11 | 1 | 38 | 1 |
+| `research-loop` | 31 | 4 | 109 | 8 |
 | `pipeline-improvement` | 38 | 2 | 199 | 6 |
-| `documentation-pass` | 1 | 0 | 25 | 3 |
+| `documentation-pass` | 1 | 0 | 26 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
 | `review-planning-oversight` | 6 | 0 | 36 | 2 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
@@ -858,7 +858,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-394 | research | 82, 50 | ready | 1 | think-pr2b | The ladder logs and certificate directories, then the replay receipts. |
 | BC-395 | research | 12 | ready | 2 | think-ujwy | The ladder log and the highest certificate directory. |
 | BC-396 | research | 45 | blocked | 1 | think-0g4t | The k = 7 cover, both censuses and the review. |
-| BC-397 | measurement_validation | 17 | ready | 0 | think-08sm | packing/campaign/hypotheses/H-253-n17-retained-rational-upper.md |
+| BC-397 | measurement_validation | 17 | complete | 0 | think-08sm | packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md |
 
 ## Series
 
@@ -1057,7 +1057,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-250 | open | proof | A D4-symmetrized rectangle-density certificate in tokoharu's format, w |  | 0 |  |  |
 | H-251 | open | proof | A D4-symmetrized rectangle-density certificate in tokoharu's format, w |  | 0 |  |  |
 | H-252 | blocked | proof | A D4-invariant weighted point set in [0,7]^2 with rational weights and |  | 0 |  |  |
-| H-253 | running | proof | The retained Kleddamag rational reconstruction contains seventeen unit |  | 1 |  |  |
+| H-253 | confirmed | proof | The retained Kleddamag rational reconstruction contains seventeen unit |  | 1 |  | 8s wall |
 
 ## Needs review — held for a human, not decided
 
@@ -1197,7 +1197,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-158 | series-000 | 11 | Codex BC303 T2 charge-sweep agent | H-160 | The September 14 strategy reset paused this route before the target charge ran; no target receipt or scientific verdict exists. |
 | exp-160 | series-000 | 11 | Codex BC303 H-162 retained-receipt analyst | H-162 | The September 14 strategy reset paused this route with no exp-158 target receipt; no H-162 comparison or scientific verdict exists. |
 
-### accepted (46)
+### accepted (47)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1247,6 +1247,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-228 | series-000 | 11 | Claude Session 156, Opus extra-high lane | H-238 | The census found none, and every apparent candidate was refuted by an exact descending packing; this confirms H-238 at its declared census scope only, since descent-stability is empirical and starts are jolts of at most 0.3 about two known packings. |
 | exp-229 | series-000 | 21 | Claude Session 156, Opus high lane | H-240 | Both routes accept set C's certificate at least cell mass 250001/250000 with total mass 20.145724 < 21, so the gate certifies the covering at side 122/25. The Fable max W2 review H-240 requires accepted it on three routes, and it is registered as T-034. |
 | exp-232 | series-000 | 11 | Claude Session 157 coordinator | H-236 | The independent reader closes all 256 subtrees with no unresolved leaf and three Trump-degenerate leaves, so every packing of six axis-aligned squares and five at a common tilt within 10^-6 of Trump's half-tangent has side at least U, with equality only on Trump's orbit; the local theorem it relies on is BC-240, accepted at retained-record-dependent scope pending BC-241, and the certificate tree itself (5.5 GB) is retained outside the record. The Fable max W2 review of 2026-09-24 accepted it, and it is registered as T-035 (the reduction) and T-036 (the composed theorem). |
+| exp-235 | series-000 | 17 | Codex Session165 coordinator | H-253 | The frozen exact source, two local geometry implementations, independent mapping audit and all positive/negative controls agree. Acceptance is only of the rational upper witness. |
 
 ### baseline (12)
 
@@ -1264,12 +1265,6 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-031 | series-000 | 10 | openai-codex | H-002 | All four source perturbations satisfy every declared condition and return to the proved side within floating-point precision. This confirms the narrow known-answer control without reopening H-002's refuted universal claim. |
 | exp-032 | series-000 | 3 | openai-codex | H-021 | The exact connected and isolated controls pass, every declared conflation fails, and all unsupported floating-point observations remain unresolved. |
 | exp-201 | series-000 | 18 | claude-opus-5 | H-201 | Calibration, not a scored round: it freezes p_perturb = 1.0, perturb_scale = 2 and a flat mu = 5 for exp-202 and exp-203, and it turned up a schedule-length effect that is now registered as H-204 rather than folded into an arm. |
-
-### in-progress (1)
-
-| id | series | instance | operator | hypotheses | reason |
-| --- | --- | --- | --- | --- | --- |
-| exp-235 | series-000 | 17 | Codex Session165 coordinator | H-253 | Preregistered round; target conversion and replay have not started. |
 
 ## Resumable — stopped on the clock, not on an answer
 
@@ -1317,7 +1312,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-164 rounds, 2512.1 agent-minutes, 4019.2 wall-minutes.
+164 rounds, 2512.1 agent-minutes, 4019.3 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

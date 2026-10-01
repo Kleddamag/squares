@@ -86,14 +86,21 @@ At n20, the existing n21 cover has mass 20.89474919732; a conditional adaptation
 more than 0.89474919732 in valid savings to get below 20. No such inequality has been
 identified, so n20 is deferred.
 
+The D-510 metadata audit inspected all 382 retained witness YAML files, including gzip
+files. All 230 rational-corner witnesses (180 plain, 50 gzip) use the canonical unit,
+coordinate-frame and structural metadata now required.
+Zero retained rational-corner paths were affected; 152 other representations were
+outside this parser’s contract.
+This was a metadata audit, not a geometric replay.
+
 ## Candidate Endpoint Chart for the Next W3 Slice
 
 Astra proposes the following three-variable contact chart, without an executed residual
 check or certified reconstruction.
 Let $c=\cos\theta$, $s=\sin\theta$ for squares 9–14, and $d=\cos\beta$, $e=\sin\beta$
-for square16 oriented at $-\beta$. The intended angles are near 39.80495898 and
+for square 16 oriented at $-\beta$. The intended angles are near 39.80495898 and
 36.62378638 degrees.
-The proposed chain through squares4,10,12,14,7 gives
+The proposed chain through squares 4,10,12,14,7 gives
 
 $$
 F_1=c(S-3)+s(S-2)-3=0.
@@ -124,7 +131,7 @@ $$
 Half-angle substitution makes a rational system in three variables.
 The next discriminator is whether the chart faithfully reconstructs the source packing,
 including contact-feature inequalities, denominator signs, root selection, slider
-domains and all136 pair separations.
+domains and all 136 pair separations.
 Matching a degree-18 polynomial alone is insufficient.
 These equations are a research proposal and must not enter a proof until those checks
 and an independent derivation succeed.
@@ -151,6 +158,43 @@ The host measured zero idle CPU and load 141 on 10 cores at 10:33:35 UTC, so loc
 execution is capped at one bounded worker.
 Orchestration, conversion, checker and source-replay times will be recorded separately.
 No large external certificate sweep, atlas refresh or generic campaign run is selected.
+
+## Portable Witness Publication
+
+The original target output declared `witness.schema.yaml` beside its output file, where
+that schema did not exist.
+Both geometry decisions remain valid: the stock CLI loaded the repository schema through
+its explicit fallback, while the independent checker read the rational geometry
+directly. D-511 tracks this export-metadata defect.
+The adapter now computes a valid relative schema path, tested without fallback.
+
+The
+[portable witness](../../../packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/portable-witness.yaml)
+changes only that schema pointer; its witness payload is exactly equal to the original.
+The raw run is unchanged and a separate receipt records the normalization and successful
+schema validation. Use the portable copy for subsequent registry integration.
+
+## W2 Output Review and First W5 Checkpoint
+
+The
+[exp-235 receipts](../../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-235-h253-n17-rational-upper.md)
+now establish the fixed rational upper witness.
+Astra max reviewed every checker output, all control exits, source identity and exact
+mapping of all 17 source poses to cyclic corners.
+Both local checkers and the source agree; positive exact clearances are retained.
+No blocking finding remained after the coordinate-contract repair.
+
+The 8 commands took7.91 seconds in total.
+Independent target checking took0.36seconds; conversion and the main CLI each
+took1.74seconds. This small round is dominated by review and orchestration rather than
+arithmetic. No Rust optimization or broad sweep is justified by this measurement.
+The useful efficiency action is to continue directly from the retained endpoint chart,
+skip repeated intake, and batch frontier/atlas publication separately.
+Timing comparisons would require repeated matched runs; none is claimed here.
+
+`think-vdmf` owns frontier admission.
+`think-j516` owns validation of the proposed endpoint chart, with an immutable fidelity
+criterion required before new target measurements.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

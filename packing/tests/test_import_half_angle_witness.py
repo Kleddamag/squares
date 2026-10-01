@@ -11,6 +11,7 @@ import pytest
 
 from devtools import import_half_angle_witness as importer
 from devtools.check_rational_witness_independent import check as independent_check
+from devtools.validate_schemas import check as schema_check
 from sqpack.witness import load_witness
 
 
@@ -36,9 +37,8 @@ def test_rotated_half_angle_yields_exact_cyclic_witness(tmp_path: Path) -> None:
     output = tmp_path / "witness.yaml"
 
     assert importer.main(_args(source, output)) == 0
-    witness = load_witness(
-        output, fallback_schema=Path(__file__).parents[1] / "witnesses/witness.schema.yaml"
-    )
+    witness = load_witness(output)
+    assert schema_check(output) == []
     assert witness["squares"][0]["corners"] == [
         ["11/10", "3/10"],
         ["17/10", "11/10"],

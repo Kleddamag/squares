@@ -1000,6 +1000,7 @@ case or experiment separately.
 | [Verification Tooling and Its Boundaries](docs/project/verification-tooling.md) | component scope and use | record | retained | — |
 | [Native Rectangle Verification and wand125 Tools Intake](docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md) | implementation plan | record | maintained | — |
 | [Proof Review: Evan Daniel’s `s(21) = 5` and `s(45) = 7` by Mixed Covers](docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md) | dated review record | record | retained | — |
+| [Post-optimality W3: First Discriminators](docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md) | dated review record | record | retained | — |
 | [Evan Daniel’s October Proof Pages: Source Coverage and Intake](docs/project/reviews/review-2026-10-01-evand-source-coverage.md) | dated review record | record | retained | — |
 | [Evand: Mathematical Review and Transfer to Low-n Research](docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md) | dated review record | record | retained | — |
 | [Density Solvers Compared: Tokoharu’s and wand125’s Rectangle-Density Tools Against This Repository’s Certificate Stack](docs/project/reviews/review-2026-09-28-density-solver-comparison.md) | dated review record | record | retained | — |

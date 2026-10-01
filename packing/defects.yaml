@@ -11,7 +11,7 @@ softschema:
   schema: defects.schema.yaml
   envelope: null
   status: enforced
-count: 509
+count: 510
 defects:
 - id: D-001
   title: Fixed-side search never left the grid basin
@@ -17022,3 +17022,31 @@ defects:
     the differing load's decoded line in the log; three different loads refuse, leave the
     previous file in place, and give the census against load 1.
   recorded_in: packing/devtools/render_explainer_pdf.py
+- id: D-510
+  title: Independent rational checker ignored the declared coordinate frame
+  date: '2026-10-01'
+  layer: verifier
+  class: soundness
+  direction: flattering
+  detected_by: review
+  latent_for: Found in Session165 premeasurement review before the n17 target replay
+  severity: high
+  status: fixed
+  what: >-
+    The independent rational-corner parser checked coordinates in a lower-left box while
+    ignoring the witness's declared origin and square size. A container-centred witness
+    with local corners (1,0),(2,0),(2,1),(1,1) at side2 passed, although the main checker
+    interprets its declared frame and rejects its x=3 translated vertices.
+  consequence: >-
+    An unsupported coordinate frame could receive a false acceptance. Canonical
+    lower-left unit witnesses are not invalidated by this counterexample; existing
+    retained inputs require a scoped metadata audit rather than a blanket verdict.
+  fix: >-
+    Require the Witness/v2 contract, canonical lower-left/right-up rational-corner
+    coordinates, declared unit size and a positive integer count matching the roster.
+    Reject nonstring coordinates before Fraction parsing. Tracked by think-qc6k.
+  regression: >-
+    tests/test_rational_witness_independent_contract.py compares the centred-origin
+    counterexample with the main checker and checks unsupported units, axes, count,
+    scalar and contract metadata. Existing grid and overlap controls remain in use.
+  recorded_in: docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md

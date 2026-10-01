@@ -8,7 +8,7 @@ softschema:
 agenda:
   id: agenda-042
   title: Overnight n11 Settlement Ladder and Low-n Angles After PR 230
-  updated: '2026-09-27'
+  updated: '2026-10-01'
   status: active
   objective: >-
     Turn PR 230's W3 review and the two explorations it led to, X-046 and X-047, into
@@ -917,6 +917,27 @@ agenda:
       Blocked on the intake lane's review of Daniel's s(32) certificate. The construction
       fell short at k = 5 (4.995) and k = 4 (3.968616), so the transfer is upward in k:
       n = 45, then 60, 77 and 96. Nothing here replays or registers Daniel's own results.
+  - id: BC-397
+    purpose: measurement_validation
+    owner_focus: correctness
+    instances: [17]
+    state: ready
+    priority: 0
+    question: Does the retained rational n17 upper certificate pass two local exact geometry implementations at its fixed side?
+    hypotheses: [H-253]
+    budget: One 30-minute instrument and review slice; then one 10-minute measurement slice, 90 seconds per command, one worker.
+    entry: Three Session165 W3 lanes identify a retained exact candidate; the corner adapter and parser contract require controls before target execution.
+    exit: Exact 17-square, 68-vertex, 136-pair agreement with the source checker and local checkers, or retained refusal/timeout; no endpoint or optimality claim.
+    bead: think-08sm
+    depends_on: []
+    next_evidence: packing/campaign/hypotheses/H-253-n17-retained-rational-upper.md
+    workflows: [pipeline-improvement, research-loop, factual-review]
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/agent-sessions/session-165-post-optimality-overnight.md
+    - packing/campaign/hypotheses/H-253-n17-retained-rational-upper.md
+    note: Selected at the October1 W10 checkpoint. H248/BC387 remains the architecture question; this is feasibility admission of an existing source upper construction.
+
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 
@@ -975,6 +996,31 @@ $467/100$, its $4.65$ and $4.66$ targets refuted by the certificate itself.
 | Day | BC-393’s loader, atom and cap lift as a reviewed commit; BC-387’s search and checker driver | BC-388’s census build |
 | Second night | BC-393 on 2 workers; BC-387’s searches in the gaps | BC-388 on 7 workers |
 | Next | The ladders’ top rungs through the wand125-format intake | BC-389’s build; the Fable max reading that selects BC-384’s design |
+
+## October 1 W10 Selection
+
+Session 165 selects BC-397 before new n17 endpoint or global searches.
+It reuses a retained rational upper certificate, with independent admission still
+pending. The following disposition controls this overnight queue; historical experiments
+and other sessions’ open beads are preserved.
+
+| Existing commitment | Overnight disposition |
+| --- | --- |
+| BC-384, BC-388, BC-389, BC-390: n11 settlement instruments | Not selected: T-060 now supplies the accepted global result. These may support proof simplification, but no longer compete as open-optimality searches. |
+| BC-391: n21 decimal ladder | Retired as a scientific target: accepted s(21) = 5 supersedes another sub-endpoint rung. |
+| BC-396: n45 endpoint transfer | Retired as an open target: T-053 supplies accepted s(45) = 7. Preserve the old blocked instrument record. |
+| BC-380: parent-centre clip | Deferred until a selected geometric discriminator needs it. |
+| BC-386, BC-393: native certificate replay | Supporting verification work; do not displace n17 geometry or duplicate existing source replays. |
+| BC-387 / H-248: capacity-one ceiling | Retained, without a duplicate hypothesis. The full clique condition and a bounded ready producer are prerequisites. |
+| BC-394: n50/n82 ladders | Outside this night’s n17/low-n target axes. |
+| BC-395: n12 ladder | Deferred: first decide the available exact additive obstruction and conditional route. |
+
+The secondary n12 side-4 dual replay is not admitted yet: its portable worker setup,
+nonnegative-weight guards and exact target assertions need review under `think-q5tt`.
+n20 lacks a concrete conditional saving above 0.89474919732, so it remains deferred.
+The
+[W3 review](../../../docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md)
+records the source and mathematical reasons.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

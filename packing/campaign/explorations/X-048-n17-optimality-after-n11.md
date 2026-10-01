@@ -42,7 +42,7 @@ exploration:
     - docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md
     - docs/project/reviews/review-2026-10-01-evand-source-coverage.md
     - docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
-  proposes: []
+  proposes: [H-253]
 ---
 # X-048: Optimality Routes After n = 11
 
@@ -419,7 +419,8 @@ and the exact next artifact for every selected route.
 The
 [session plan](../../../docs/project/specs/active/plan-2026-10-01-post-optimality-w3-session.md)
 sets execution dependencies, review boundaries and efficiency triggers.
-`proposes: []` remains intentional until candidates are codified into new hypotheses.
+H-253 codifies the retained rational upper-witness check; the endpoint-family theorem
+remains a separate obligation.
 
 ## Planning Review
 

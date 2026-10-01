@@ -179,6 +179,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-162](agent-sessions/session-162-wand125-tools-intake.md) | stopped | retrospective | `factual-review` (correctness) | `documentation-pass` (process) | 4 | think-8cps | Under think-bmf3, retain the unresolved n11 boxes and compare tighter exact bounds on identical inputs under the planned 30-second ceiling before selecting a full replay. |
 | [session-163](agent-sessions/session-163-native-bounds-and-census.md) | stopped | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 5 | think-8cps | Under think-niqx, merge current main and certify the resulting PR head through required local and hosted checks. The mathematical obligations identified above remain separate after this integration debt is discharged. |
 | [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | completed | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 39 | think-3i74 | After the reviewed helper cleanup lands, implement the bounded fresh-ensemble replay entry point under think-e2ot; preserve the accepted historical evidence. PR 249 reconciliation, optional Rust performance and later exposition remain separate tracks. |
+| [session-165](agent-sessions/session-165-post-optimality-overnight.md) | in_progress | contemporaneous | `insight-iteration` (insight) | `pipeline-improvement` (correctness) | 3 | think-kaqh | Complete adapter/coordinate guard controls and commit the instrument before any n17 target run. |
 
 ### Workflow summary
 
@@ -188,14 +189,14 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | --- | ---: | ---: | ---: | ---: |
 | `research-survey` | 4 | 2 | 16 | 2 |
 | `factual-review` | 11 | 1 | 63 | 3 |
-| `insight-iteration` | 27 | 1 | 84 | 4 |
+| `insight-iteration` | 28 | 1 | 85 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 37 | 1 |
 | `research-loop` | 31 | 4 | 108 | 8 |
-| `pipeline-improvement` | 38 | 2 | 198 | 6 |
+| `pipeline-improvement` | 38 | 2 | 199 | 6 |
 | `documentation-pass` | 1 | 0 | 25 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
-| `review-planning-oversight` | 6 | 0 | 35 | 2 |
+| `review-planning-oversight` | 6 | 0 | 36 | 2 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas
@@ -857,12 +858,13 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-394 | research | 82, 50 | ready | 1 | think-pr2b | The ladder logs and certificate directories, then the replay receipts. |
 | BC-395 | research | 12 | ready | 2 | think-ujwy | The ladder log and the highest certificate directory. |
 | BC-396 | research | 45 | blocked | 1 | think-0g4t | The k = 7 cover, both censuses and the review. |
+| BC-397 | measurement_validation | 17 | ready | 0 | think-08sm | packing/campaign/hypotheses/H-253-n17-retained-rational-upper.md |
 
 ## Series
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 163 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 164 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1055,6 +1057,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-250 | open | proof | A D4-symmetrized rectangle-density certificate in tokoharu's format, w |  | 0 |  |  |
 | H-251 | open | proof | A D4-symmetrized rectangle-density certificate in tokoharu's format, w |  | 0 |  |  |
 | H-252 | blocked | proof | A D4-invariant weighted point set in [0,7]^2 with rational weights and |  | 0 |  |  |
+| H-253 | running | proof | The retained Kleddamag rational reconstruction contains seventeen unit |  | 1 |  |  |
 
 ## Needs review — held for a human, not decided
 
@@ -1262,6 +1265,12 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-032 | series-000 | 3 | openai-codex | H-021 | The exact connected and isolated controls pass, every declared conflation fails, and all unsupported floating-point observations remain unresolved. |
 | exp-201 | series-000 | 18 | claude-opus-5 | H-201 | Calibration, not a scored round: it freezes p_perturb = 1.0, perturb_scale = 2 and a flat mu = 5 for exp-202 and exp-203, and it turned up a schedule-length effect that is now registered as H-204 rather than folded into an arm. |
 
+### in-progress (1)
+
+| id | series | instance | operator | hypotheses | reason |
+| --- | --- | --- | --- | --- | --- |
+| exp-235 | series-000 | 17 | Codex Session165 coordinator | H-253 | Preregistered round; target conversion and replay have not started. |
+
 ## Resumable — stopped on the clock, not on an answer
 
 | id | hypotheses | spent | stopped by | resume from | reopen when |
@@ -1308,7 +1317,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-163 rounds, 2512.1 agent-minutes, 4019.2 wall-minutes.
+164 rounds, 2512.1 agent-minutes, 4019.2 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 
@@ -1333,7 +1342,6 @@ These totals exclude 4 historical rounds with unrecorded timing; their cost is u
 - X-043 — New Lower-Bound Proof Directions After the External Advances
 - X-044 — Transfer Opportunities at the Lowest Open Square-Packing Cases
 - X-045 — N11 Global Capture and Exact Optimality
-- X-048 — Optimality Routes After n = 11
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

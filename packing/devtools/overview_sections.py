@@ -1247,12 +1247,12 @@ PAPERS: tuple[Paper, ...] = (
     Paper(
         href=OPTIMALITY_PAPER,
         label="Optimality paper",
-        title="Why eleven squares need this much room",
+        title="A review of the optimality proof of the Trump packing of 11 squares",
         description=(
             "Explains the accepted proof that Trump\u2019s 1979 packing of eleven squares "
             "is optimal, s(11) = 3.8770835\u2026 (T-060): the exact construction, the "
             "exhaustive case exclusions, the geometric capture and the local-isolation "
-            "argument, with figures drawn from the retained proof data."
+            "argument, with figures drawn from or checked against the retained proof data."
         ),
         links=((result_url("T-060"), "The optimality proof, T-060"),),
     ),

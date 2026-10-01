@@ -2058,7 +2058,7 @@ def test_the_optimality_papers_card_says_what_t060s_rungs_allow(
 ) -> None:
     """The optimality paper is the first card: served where its renderer writes it,
     titled as its renderer titles it, in sentence case, and described as explaining the
-    accepted proof, T-060, in the words T-060's rungs allow, V4 and C5: a proof, never a
+    accepted proof, T-060, in the words T-060's rungs allow, V3 and C3: a proof, never a
     formal one. Its popover frames the paper and links T-060's row."""
     from devtools import render_n11_optimality_explainer as renderer  # noqa: PLC0415
 
@@ -2066,7 +2066,7 @@ def test_the_optimality_papers_card_says_what_t060s_rungs_allow(
     assert paper.href == overview_sections.OPTIMALITY_PAPER == renderer.SITE_PATH
     assert paper.href in render_overview.SITE_PAGES
     assert paper.title.lower() == renderer.TITLE.lower()
-    assert paper.title == "Why eleven squares need this much room"
+    assert paper.title == "A review of the optimality proof of the Trump packing of 11 squares"
     value, note, panel = card_parts(
         rendered("papers.html"), "pop-paper-n11-optimality-t-060-explainer"
     )

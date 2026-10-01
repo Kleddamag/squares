@@ -98,7 +98,7 @@ from typing import Any
 from devtools.preview_site import (
     BASELINES,
     HEADER,
-    REDUCED_MOTION,
+    motion_for,
     press,
     serve,
     settle_math,
@@ -522,9 +522,9 @@ def _evaluate(
         browser = _launch(driver)
         for width in widths:
             for name in pages:
-                # Reduced motion, so the Visualize page's film stays at its poster.
+                # Reduced motion on the film's page, so its film stays at its poster.
                 page = browser.new_page(
-                    viewport={"width": width, "height": 900}, reduced_motion=REDUCED_MOTION
+                    viewport={"width": width, "height": 900}, reduced_motion=motion_for(name)
                 )
                 page.emulate_media(media="print" if media == "print" else "screen")
                 page.goto(f"{base}/{name}", wait_until="load")

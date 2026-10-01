@@ -88,12 +88,22 @@ LAZY_WAIT_MS = 5_000
 #: How long what a press opens may take to typeset its math.
 PRESS_WAIT_MS = 5_000
 HREF = re.compile(r'<nav class="site-nav".*?</nav>', re.DOTALL)
-#: The motion preference a tool opens the site's pages under: a reader's who asks for
-#: reduced motion. The Visualize page starts its film on a visit unless the reader asks
-#: that (`overview/film.js`), and the film is a 216 MB release download a page would wait
-#: on and a shot would catch mid-frame; under this it stands at its poster and nothing
-#: is fetched. The only other difference is that a hover's colour changes at once.
+#: The motion preference a tool opens a page that starts a film under: a reader's who
+#: asks for reduced motion. The Visualize page starts its film on a visit unless the
+#: reader asks that (`overview/film.js`), and the film is a 216 MB release download a page
+#: would wait on and a shot would catch mid-frame; under this it stands at its poster and
+#: nothing is fetched.
 REDUCED_MOTION: Literal["reduce"] = "reduce"
+#: The pages that start a film on a visit. Only they are opened under reduced motion:
+#: every other page is opened as any reader's, since under reduced motion the overview's
+#: formulas in closed popovers, which are typeset in idle time, were still untypeset when
+#: `settle_math`'s wait ran out (229 of them at 1280 pixels, against none in ten seconds).
+FILM_PAGES = ("visualize.html",)
+
+
+def motion_for(name: str) -> Literal["reduce", "no-preference"]:
+    """The motion preference a tool opens the page `name` under (`FILM_PAGES`)."""
+    return REDUCED_MOTION if name.partition("#")[0] in FILM_PAGES else "no-preference"
 
 
 def _run(*args: str) -> None:
@@ -345,7 +355,7 @@ def clip_check(
                 for width in widths:
                     page = browser.new_page(
                         viewport={"width": width, "height": 900},
-                        reduced_motion=REDUCED_MOTION,
+                        reduced_motion=motion_for(name),
                     )
                     page.goto(f"http://127.0.0.1:{port}/{name}", wait_until="load")
                     page.wait_for_timeout(200)
@@ -410,9 +420,10 @@ def screenshots(
     baseline (`baseline_problems`), and any wide block that
     runs past an ancestor which clips it (`clipped`). Each selector in
     `presses` is then pressed on every page that has a match, its math and its blocks
-    checked the same way, and the window shot as `<page>-<width>-press<n>.png`. Every
-    page is opened as for a reader who asks for reduced motion (`REDUCED_MOTION`), so
-    the Visualize page's film is shot at its poster and its download never starts."""
+    checked the same way, and the window shot as `<page>-<width>-press<n>.png`. A page
+    that starts a film is opened as for a reader who asks for reduced motion
+    (`motion_for`), so the Visualize page's film is shot at its poster and its download
+    never starts."""
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
     shots.mkdir(parents=True, exist_ok=True)
@@ -427,7 +438,7 @@ def screenshots(
                 for width in WIDTHS:
                     page = browser.new_page(
                         viewport={"width": width, "height": 900},
-                        reduced_motion=REDUCED_MOTION,
+                        reduced_motion=motion_for(name),
                     )
                     page.on(
                         "console",

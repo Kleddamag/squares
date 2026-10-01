@@ -887,13 +887,13 @@ it.
   and has no `autoplay` of its own, since markup cannot make that depend on the motion
   preference. No other film on the site starts unasked: the explainer’s stays as it was,
   fetching nothing until a reader presses play, and the overview embeds no video.
-  The tools that open the site’s pages in a browser (`preview_site`,
-  `measure_site_pages header`, the browser tests) open them under reduced motion
-  (`preview_site.REDUCED_MOTION`), so none of them starts the download.
-  `tests/node/overview_film/` runs the script against a stand-in film.
-  A caption and a note in the support colour follow at the reading measure: what the
-  film shows, its length, the shorter 1 to 100 film, the release both are on, and the
-  Workbench.
+  The tools that open the film’s page in a browser (`preview_site`,
+  `measure_site_pages header` and `baselines`, the browser tests) open it under reduced
+  motion (`preview_site.motion_for`), so none of them starts the download; every other
+  page they open as any reader’s. `tests/node/overview_film/` runs the script against a
+  stand-in film. A caption and a note in the support colour follow at the reading
+  measure: what the film shows, its length, the shorter 1 to 100 film, the release both
+  are on, and the Workbench.
 
 - **Tables.** Every data table is one component, `.site-table` on a KPress table, in a
   `.site-table-wrap` that scrolls sideways if the table cannot fit.

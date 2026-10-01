@@ -189,22 +189,23 @@ def _atlas_cards(page: str) -> list[tuple[str, str]]:
 def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
     page: str,
 ) -> None:
-    """The Atlas keeps the grid, its expander and the grid's own note, and holds no card.
-    The two posters and the film follow under an ordinary section heading, PDFs and
-    Videos, with its own id and its entry in the page's contents, and their note, the
-    star, the shorter film, the release and the SVGs, goes with them."""
+    """The Atlas of Square Packings keeps the grid, its expander and the grid's own note,
+    and holds no card. The two posters and the film follow under an ordinary section
+    heading, PDFs and Videos, after The Frontier Survey, with its own id and its entry in
+    the page's contents, and their note, the star, the shorter film, the release and the
+    SVGs, goes with them."""
     heading = '<h2 id="pdfs-and-videos">PDFs and Videos</h2>'
     assert page.count(heading) == 1
-    atlas = page.split('id="the-atlas"', 1)[1].split("<h2", 1)[0]
+    atlas = page.split('id="the-atlas-of-square-packings"', 1)[1].split("<h2", 1)[0]
     assert "data-atlas-grid" in atlas
     assert 'class="site-cards-frame' not in atlas
     assert 'class="site-card ' not in atlas
     assert atlas.count('class="site-atlas-note"') == 1
     assert 'class="site-wide site-atlas-note"' not in atlas
     assert (
-        page.index('id="the-atlas"')
-        < page.index(heading)
+        page.index('id="the-atlas-of-square-packings"')
         < page.index('id="the-frontier-survey"')
+        < page.index(heading)
     )
     section = page.split(heading, 1)[1].split("<h2", 1)[0]
     assert section.lstrip().startswith('<div class="site-cards-frame')
@@ -218,7 +219,39 @@ def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
         assert linked in note, linked
     contents = '{"href": "#pdfs-and-videos", "level": 1, "title": "PDFs and Videos"}'
     assert contents in page
-    assert page.index('{"href": "#the-atlas"') < page.index(contents)
+    assert page.index('{"href": "#the-atlas-of-square-packings"') < page.index(contents)
+
+
+def test_the_atlas_section_is_named_for_its_packings_and_the_survey_follows_it(
+    page: str,
+) -> None:
+    """The homepage's atlas section is The Atlas of Square Packings, and it was The Atlas
+    until 2026-10-01: an empty anchor in the heading keeps `#the-atlas` landing on it, the
+    device Verification Ladders and The Frontier Survey use. The sections run in the
+    owner's order: the project, the recent results, the ladders, the atlas, the survey
+    directly after it, then the posters and film, the other projects and the documents."""
+    heading = (
+        '<h2 id="the-atlas-of-square-packings">The Atlas of Square Packings'
+        '<a id="the-atlas"></a></h2>'
+    )
+    assert page.count(heading) == 1
+    assert 'href="#the-atlas"' not in page
+    contents = (
+        '{"href": "#the-atlas-of-square-packings", "level": 1, '
+        '"title": "The Atlas of Square Packings"}'
+    )
+    assert contents in page
+    assert re.findall(r'<h2 id="([^"]+)"', page) == [
+        "the-problem",
+        "the-squares-project",
+        "recent-results",
+        "verification-ladders",
+        "the-atlas-of-square-packings",
+        "the-frontier-survey",
+        "pdfs-and-videos",
+        "other-square-packing-projects",
+        "squares-project-documentation",
+    ]
 
 
 def test_the_atlas_posters_are_hero_cards_each_opening_its_pdf(page: str) -> None:
@@ -453,7 +486,7 @@ def test_the_atlas_grid_expands_from_100_to_324_with_one_button() -> None:
     assert 'toggle.setAttribute("aria-expanded", String(open))' in script
     assert "toggle.dataset.nameLess : toggle.dataset.nameMore" in script
     assert "toggle.dataset.labelLess : toggle.dataset.labelMore" in script
-    assert 'chevron.dataset.arrow = open ? "double-up" : "double-down"' in script
+    assert 'toggleChevron.dataset.arrow = open ? "double-up" : "double-down"' in script
     assert "toggle.textContent" not in script
     assert "rest.append(restTemplate.content.cloneNode(true))" in script
     step = script[script.index("A case the grid does not show yet") :]
@@ -506,7 +539,7 @@ def test_the_atlas_is_rendered_as_the_grid_under_tabs_that_ship_hidden(page: str
     )
     assert page.count(tabs) == 1
     assert page.count('class="site-tabs site-atlas-views"') == 1
-    atlas = page.split('id="the-atlas"', 1)[1].split("<h2", 1)[0]
+    atlas = page.split('id="the-atlas-of-square-packings"', 1)[1].split("<h2", 1)[0]
     order = [
         atlas.index(mark)
         for mark in (

@@ -1217,9 +1217,15 @@ it.
   only the record its fragment names (`overview/case-view.js`) and typesets that
   record’s math when it is shown; without scripting it lists every record.
 
-- **Atlas cards.** The atlas’s posters and film have a section of their own under The
-  Atlas, **PDFs and Videos**, an ordinary `h2`; The Atlas keeps the grid, its expander
-  and the grid’s own note, and holds no card.
+- **Atlas cards.** The atlas’s posters and film have a section of their own, **PDFs and
+  Videos**, an ordinary `h2`; **The Atlas of Square Packings** keeps the grid, its
+  expander and the grid’s own note, and holds no card.
+  The homepage’s sections run The Squares Project, Recent Results, Verification Ladders,
+  The Atlas of Square Packings, The Frontier Survey directly after it, PDFs and Videos,
+  Other Square Packing Projects and Squares Project Documentation, the owner’s order of
+  1 October; the atlas section was The Atlas until that day, and its heading keeps an
+  empty anchor so `#the-atlas` still lands on it, as Verification Ladders and The
+  Frontier Survey keep theirs (`tests/test_overview.py` holds the order and the anchor).
   They are three direct hero cards side by side, one card section (`atlas_cards`): the n
   = 1 to 100 poster, headed by its landscape card image, opens its PDF; the n = 1 to 324
   poster, headed by the top of the poster itself, opens its PDF; and the film, headed by

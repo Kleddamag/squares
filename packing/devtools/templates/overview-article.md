@@ -94,7 +94,10 @@ repository adds an exact machine check: T-004 and T-008 check Bentz’s 2010 The
 both halves of $s(46) = 7$ included, and T-011 checks Trump’s 1979 packing for eleven
 squares.
 
-## The Atlas
+<!-- This section's fragment was #the-atlas until 2026-10-01. The empty anchor in its
+     heading keeps an old link landing here, as Verification Ladders keeps its own. -->
+
+## The Atlas of Square Packings<a id="the-atlas"></a>
 
 The best packings known for every tracked case, n = 1 to 324. Press one to see what the
 film shows for it: its bounds, where each comes from, and what is still open, beside the
@@ -102,17 +105,10 @@ packing drawn large, with a link to its case record.
 
 {{ATLAS_GRID}}
 
-<!-- The atlas as files and as a film: the two posters, each opening its PDF, and the
-     film. The cards and their note stood under the grid, in The Atlas, until 2026-10-01. -->
-
-## PDFs and Videos
-
-{{ATLAS_CARDS}}
-
-<p class="site-wide site-atlas-note">The best packings known. A star marks a verified lower bound proved since 22 August 2026. There is also a shorter film of the <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4">ascent from 1 to 100</a> (2 m 20 s). Both films are on the <a href="https://github.com/jlevy/squares/releases/tag/v0.4.2">v0.4.2 release</a> with the receipt recording each file and the page it was drawn from. Each poster is also an SVG (<a href="repo:packing/atlas/known-best/known-best-1-100.svg">1 to 100</a>, <a href="repo:packing/atlas/known-best/known-best-1-324.svg">1 to 324</a>). The <a href="repo:packing/atlas/known-best/README.md">atlas README</a> describes both.</p>
-
 <!-- This section's fragment was #the-survey until 2026-10-01. The empty anchor in its
-     heading keeps an old link landing here, as Verification Ladders keeps its own. -->
+     heading keeps an old link landing here, as Verification Ladders keeps its own. It
+     followed PDFs and Videos until the same day, when the owner set it directly after
+     the atlas. -->
 
 ## The Frontier Survey<a id="the-survey"></a>
 
@@ -140,6 +136,17 @@ Fort’s sixteen-point sets (10 and 11 August), anabologyco-maker’s $4.57$ and
 (13 and 16 August), and Massaccesi’s $4.5058$ (21 August), replayed here as T-015 and
 T-016. The [seventeen-square record](cases.html#n-17) lists them all; each has since
 been superseded.
+
+<!-- The atlas as files and as a film: the two posters, each opening its PDF, and the
+     film. The cards and their note stood under the grid, in The Atlas, until 2026-10-01,
+     and this section followed the atlas directly until the survey moved between them
+     the same day. -->
+
+## PDFs and Videos
+
+{{ATLAS_CARDS}}
+
+<p class="site-wide site-atlas-note">The best packings known. A star marks a verified lower bound proved since 22 August 2026. There is also a shorter film of the <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4">ascent from 1 to 100</a> (2 m 20 s). Both films are on the <a href="https://github.com/jlevy/squares/releases/tag/v0.4.2">v0.4.2 release</a> with the receipt recording each file and the page it was drawn from. Each poster is also an SVG (<a href="repo:packing/atlas/known-best/known-best-1-100.svg">1 to 100</a>, <a href="repo:packing/atlas/known-best/known-best-1-324.svg">1 to 324</a>). The <a href="repo:packing/atlas/known-best/README.md">atlas README</a> describes both.</p>
 
 ## Other Square Packing Projects
 

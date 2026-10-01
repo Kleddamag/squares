@@ -86,11 +86,13 @@ SCREEN_EXCLUDED: dict[str, tuple[str, ...]] = {
 #: (records with a separating square, those squares, records with any translating
 #: square, those squares). Re-measured on 2026-09-29 for the 50 records T-056 and T-057
 #: moved onto Couzo's and de Winter's packings, whose optimized poses leave fewer squares
-#: free to separate than the catalogue packings they replaced.
+#: free to separate than the catalogue packings they replaced. Re-measured again on
+#: 2026-09-30 for the live corpus after the catalogue refresh moved n = 126 and 179 onto
+#: de Winter's and Stead's packings; the two smaller corpora are not re-measured.
 SCREEN_FINDINGS: dict[str, tuple[int, int, int, int]] = {
     "n=1..100": (26, 87, 85, 518),
     "n=1..200": (65, 606, 181, 1883),
-    "n=1..324": (120, 1906, 301, 4512),
+    "n=1..324": (119, 1850, 301, 4475),
 }
 UNDETERMINED_BY_MISS = (28,)
 #: The cases the two sampled sweeps re-derive on every pull request, computed here from

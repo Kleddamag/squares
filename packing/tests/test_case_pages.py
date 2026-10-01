@@ -9,8 +9,9 @@ import pytest
 
 from devtools import overview_sections, render_case_pages, render_overview
 from devtools import render_research_tables as tables
-from devtools.render_overview import PAGES, assert_self_contained
+from devtools.render_overview import assert_self_contained
 from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, hash_pinned_links
+from tests import site_renders
 
 #: Measured at 9.1 MB on 2026-09-30 (324 records): 1.6 MB of site shell, 1.3 MB of large
 #: drawings, 2.1 MB of formulas (TeX and its MathML fallback) and the rest the records'
@@ -23,7 +24,17 @@ SECTION = re.compile(r'<section class="site-case" id="n-(\d+)" data-n="(\d+)"')
 
 @pytest.fixture(scope="module")
 def page() -> str:
-    return PAGES["cases.html"]().html
+    return site_renders.html("cases.html")
+
+
+@pytest.fixture(scope="module")
+def frontier() -> str:
+    return site_renders.html("frontier.html")
+
+
+@pytest.fixture(scope="module")
+def overview() -> str:
+    return site_renders.html("index.html")
 
 
 @pytest.fixture(scope="module")
@@ -46,13 +57,12 @@ def test_every_case_has_one_record_at_its_own_address(page: str, numbers: list[i
 
 
 def test_the_atlas_grid_and_the_frontier_atlas_link_the_same_record(
-    numbers: list[int],
+    numbers: list[int], frontier: str
 ) -> None:
     """Both entry points link each case to `cases.html#n-N`. The frontier atlas marks
     its links with `data-case`, which the shared case popover opens; the atlas grid's
     cells open the atlas popover instead, whose button leads to the same record."""
     grid = overview_sections.atlas_grid()
-    frontier = PAGES["frontier.html"]().html
     links = re.findall(r'href="cases\.html#n-(\d+)" data-case="(\d+)"', frontier)
     assert [int(n) for n, _ in links] == numbers
     assert all(n == case for n, case in links)
@@ -63,11 +73,10 @@ def test_the_atlas_grid_and_the_frontier_atlas_link_the_same_record(
     assert "data-case=" not in grid
 
 
-def test_both_entry_pages_carry_their_popover_scripts() -> None:
+def test_both_entry_pages_carry_their_popover_scripts(overview: str, frontier: str) -> None:
     popover = render_overview.POPOVER_SCRIPT.read_text(encoding="utf-8")
     case_popover = render_case_pages.CASE_POPOVER_SCRIPT.read_text(encoding="utf-8")
     atlas_grid = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
-    overview, frontier = PAGES["index.html"]().html, PAGES["frontier.html"]().html
     assert popover in overview
     assert atlas_grid in overview
     assert popover in frontier
@@ -81,6 +90,28 @@ def test_the_popover_frames_the_record_and_expands_to_it() -> None:
     assert "<iframe" in markup
     assert "data-case-frame" in markup
     assert 'data-case-expand href="cases.html"' in markup
+
+
+def test_the_popover_headline_is_the_case_as_serif_math() -> None:
+    """The case popover's headline is `n = 11` as mathematics, not plain text: the script
+    fills kpress's own math node from the template the popover carries and has the
+    site's math driver typeset it, and the headline, math standing alone, is marked for
+    the serif face."""
+    markup = render_case_pages.case_popover()
+    assert '<p class="site-popover-value" data-math-face="serif" data-case-title>' in markup
+    template = markup.split("<template data-case-math>", 1)[1].split("</template>", 1)[0]
+    assert template.startswith('<span class="kpress-math kpress-math-inline"')
+    assert 'class="kpress-math-render"' in template
+    assert 'class="kpress-math-semantic"' in template
+    script = render_case_pages.CASE_POPOVER_SCRIPT.read_text(encoding="utf-8")
+    for token in (
+        "template[data-case-math]",
+        ".kpress-math-render",
+        "siteMath",
+        "replaceChildren",
+    ):
+        assert token in script, token
+    assert "heading.textContent = `n = " not in script
 
 
 def test_the_page_shows_one_record_by_its_fragment(page: str) -> None:

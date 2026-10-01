@@ -8,19 +8,23 @@
      still reach the explainer (forward.js), so this heading keeps the overview's own id. -->
 <h2 id="the-problem" class="site-title">The Square Packing Problem</h2>
 
-How small can a square be and still hold $n$ unit squares that do not overlap?
-Call the answer $s(n)$. The squares may be rotated, and they may touch.
-The question is easy to state and hard to settle: for most $n$ the answer is known only
-to lie between the best packing found and a proved lower bound.
+<!-- The section's prose is README's introduction, read from its project-intro block
+     (site_documents.overview_intro), so the project is introduced in one text. Edit it
+     in README.md. Only the site's own statement below is written here. -->
 
-Eleven squares, until now the smallest case still open, is settled: Walter Trump’s 1979
-packing is optimal, and $s(11) = 3.8770835\ldots$. The proof is Queuingtheorydotcom’s,
-Astra-assisted and building on this project and Kleddamag; it is machine-verified here
-and its mathematics reviewed ([T-060](all-results.html#t-060),
-[case 11](cases.html#n-11)).
+{{README_INTRO}}
 
-This site collects what the project has proved, what others have proved alongside it,
-and how each claim was checked.
+The Square Packing Project site collects all known historic research and current new
+results on the square packing problem.
+Work on this problem has exploded in the summer of 2026 thanks to AI-powered research
+efforts. This project tracks all results here and by all others known.
+The project also independently checks the proofs and certificates behind them, replaying
+each where it can, and records how far every result has been
+[verified and confirmed](#verification-at-a-glance).
+
+If you have new results or know of newer results, please
+[file an issue]({{NEW_ISSUE_URL}}) to report them, and we will gladly incorporate them
+and cite your work.
 
 {{PAGE_CARDS}}
 
@@ -38,7 +42,7 @@ The table lists every result since {{RECENT_FROM}}, newest first, each dated by 
 publication if it is by others and by the day it was established if it is this
 project’s, with its rungs and its standing: *current best* where a verified case bound
 rests on it now, and otherwise why not.
-It starts filtered to significance S3 and up; choose All to see every row.
+It starts filtered to significance S4 and up; choose All to see every row.
 
 {{RECENT_LEAD}}
 

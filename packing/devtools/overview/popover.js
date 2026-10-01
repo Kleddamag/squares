@@ -3,7 +3,8 @@
 //   - a formula inside a popover is typeset when the popover opens, since the math driver
 //     leaves hidden math until it is shown;
 //   - following a link in a popover closes it, so a reader sent to a row on this page
-//     lands on the row rather than behind the panel.
+//     lands on the row rather than behind the panel. The popover listens for the click
+//     itself, so a link placed in it later, as a row's deferred body is, closes it too.
 (() => {
   for (const popover of document.querySelectorAll(".site-popover[popover]")) {
     if (!(popover instanceof HTMLElement)) {
@@ -14,10 +15,10 @@
         void globalThis.siteMath?.typeset(popover, true);
       }
     });
-    for (const link of popover.querySelectorAll("a[href]")) {
-      link.addEventListener("click", () => {
+    popover.addEventListener("click", (event) => {
+      if (event.target instanceof Element && event.target.closest("a[href]") !== null) {
         popover.hidePopover();
-      });
-    }
+      }
+    });
   }
 })();

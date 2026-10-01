@@ -7,7 +7,7 @@ counts owned by `defects.yaml` and went stale behind them both times. The counts
 gone now, moved to the generated view that owns them. What is left is the part a
 checker can hold: the layout tree, the report index, the links, and the work model.
 
-Five checks:
+Six checks:
 
 1. **Every link resolves**, including anchors into other documents. README and SYNOPSIS
    cross-reference each other heavily and a dead link between them is invisible until
@@ -24,6 +24,9 @@ Five checks:
    workflow entry points, the agent-session schema must be able to record them, the
    synopsis must define the work units those workflows produce, and retired workflow
    identifiers must not survive elsewhere in repository-owned text.
+6. **The introduction is marked.** The site's overview renders README's introduction
+   as its own first section, read from the block between the `project-intro` markers
+   (`site_documents.intro_block`). The block must be there once and hold prose alone.
 
 Two more checks held README's New Results section to the register and its survey
 summary's recent-result counts to the records. Both went with those sections when the
@@ -54,6 +57,7 @@ from typing import NamedTuple
 
 from devtools.check_synopsis import check_links
 from devtools.repo_scope import tracked_files, vendored_directories
+from devtools.site_documents import intro_block
 from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -507,6 +511,15 @@ def check_work_model(text: str) -> list[str]:
     return problems
 
 
+def check_intro(text: str) -> list[str]:
+    """The introduction the site's overview renders is marked once and is prose alone."""
+    try:
+        intro_block(text)
+    except ValueError as error:
+        return [f"README.md: {error}"]
+    return []
+
+
 def main() -> int:
     text = README.read_text(encoding="utf-8")
     scan = scan_retired_workflow_identifiers()
@@ -516,6 +529,7 @@ def main() -> int:
         + check_reports(text)
         + check_defect_summary(text)
         + check_work_model(text)
+        + check_intro(text)
         + scan.problems
     )
     for skip in scan.skipped:

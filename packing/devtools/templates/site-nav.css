@@ -38,7 +38,7 @@
 .kpress,
 .kpress-page-main {
   --kpress-page-margin-block-start: 1rem;
-  --site-page-top: 2rem;
+  --site-page-top: 3rem;
   --site-gear-drop: 0.11em;
 }
 /* The space from the bar's rule to the top of a page's first block (its title, its hero,

@@ -13,6 +13,11 @@ adds the front door and the pages around it, as the plan in
   `SquarePackingCase/v2` record;
 - `cases.html`, the case records: every case's full record at `cases.html#n-N`, which
   the atlas grid and the frontier atlas both open (`render_case_pages`);
+- `papers.html`, the Papers section's page: one large card per paper, from the one list
+  `overview_sections.PAPERS`. The optimality paper (`n11-optimality/`,
+  `render_n11_optimality_explainer`), the explainer (`explainer.html`,
+  `render_explainer`) and the tutorial are the section's papers, and the bar's Papers
+  entry is current on all four;
 - `tutorial.html`, the tutorial rendered as a page;
 - `visualize.html`, the Visualize section's first tab: the n = 1 to 324 film at full
   size. Its second tab is the workbench at `workbench/`, which
@@ -51,6 +56,9 @@ PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
 TEMPLATES = PACKING / "devtools" / "templates"
 SITE_CSS = TEMPLATES / "site.css"
+#: The result overview's styles, the popover body a result's row opens
+#: (`devtools.result_overview`), kept apart from `site.css` and inlined after it.
+SITE_RESULT_CSS = TEMPLATES / "site-result.css"
 SITE_NAV = TEMPLATES / "site-nav.html"
 SITE_NAV_CSS = TEMPLATES / "site-nav.css"
 #: The text tokens every page shares with the explainer: its type base, reading measure,
@@ -59,11 +67,13 @@ PAPER_TYPE_CSS = TEMPLATES / "paper-type.css"
 OVERVIEW_ARTICLE = TEMPLATES / "overview-article.md"
 RESULTS_ARTICLE = TEMPLATES / "all-results-article.md"
 VISUALIZE_ARTICLE = TEMPLATES / "visualize-article.md"
+PAPERS_ARTICLE = TEMPLATES / "papers-article.md"
 BROWSER = PACKING / "devtools" / "overview"
 FORWARD_SCRIPT = BROWSER / "forward.js"
 TABLE_SCRIPT = BROWSER / "table.js"
 MATH_SCRIPT = BROWSER / "math.js"
 POPOVER_SCRIPT = BROWSER / "popover.js"
+ROW_POPOVER_SCRIPT = BROWSER / "row-popover.js"
 ATLAS_GRID_SCRIPT = BROWSER / "atlas-grid.js"
 EMBED_SCRIPT = BROWSER / "embed.js"
 CASE_POPOVER_SCRIPT = BROWSER / "case-popover.js"
@@ -80,6 +90,9 @@ OUTPUT = PACKING / "site"
 
 SITE_URL = "https://jlevy.github.io/squares/"
 SITE_NAME = "Square Packing"
+#: Where a reader reports a result the site does not have yet: a new issue on the
+#: repository, which the overview's own statement links.
+NEW_ISSUE_URL = f"{repo_links.REPO_URL}/issues/new"
 OVERVIEW_DESCRIPTION = (
     "Packing unit squares in the smallest square: the problem, every current result, "
     "and how each one is verified."
@@ -87,6 +100,10 @@ OVERVIEW_DESCRIPTION = (
 RESULTS_DESCRIPTION = (
     "Every registered result on packing unit squares in the smallest square, this "
     "project's and others', with its verification, confirmation, standing and records."
+)
+PAPERS_DESCRIPTION = (
+    "The project's papers on packing unit squares in the smallest square: its "
+    "explanations and proofs, written out in full."
 )
 VISUALIZE_DESCRIPTION = (
     "The best packings known of n unit squares, n = 1 to 324, built one square at a "
@@ -144,6 +161,8 @@ SITE_PAGES: tuple[str, ...] = (
     "frontier.html",
     RESULTS_PAGE,
     "cases.html",
+    "papers.html",
+    "n11-optimality/t-060-explainer.html",
     "explainer.html",
     "tutorial.html",
     "visualize.html",
@@ -159,15 +178,18 @@ SITE_PAGES: tuple[str, ...] = (
 RENDER_INPUTS: tuple[Path, ...] = (
     Path(__file__).resolve(),
     SITE_CSS,
+    SITE_RESULT_CSS,
     SITE_NAV,
     SITE_NAV_CSS,
     PAPER_TYPE_CSS,
     OVERVIEW_ARTICLE,
     RESULTS_ARTICLE,
     VISUALIZE_ARTICLE,
+    PAPERS_ARTICLE,
     BROWSER,
     PACKING / "src" / "sqpack",
     PACKING / "devtools" / "site_documents.py",
+    PACKING / "devtools" / "result_overview.py",
     REPO / repo_links.TUTORIAL,
     REPO / repo_links.README,
     REPO / repo_links.SYNOPSIS,
@@ -251,13 +273,17 @@ def page_assets() -> tuple[str, str]:
         f"<style>{relation_face_css(static)}</style>\n"
         f"<style>{PAPER_TYPE_CSS.read_text(encoding='utf-8')}</style>\n"
         f"<style>{SITE_NAV_CSS.read_text(encoding='utf-8')}</style>\n"
-        f"<style>{SITE_CSS.read_text(encoding='utf-8')}</style>"
+        f"<style>{SITE_CSS.read_text(encoding='utf-8')}</style>\n"
+        f"<style>{SITE_RESULT_CSS.read_text(encoding='utf-8')}</style>"
     )
     return head, f"<script>{katex_js(static)}</script>"
 
 
 def assert_self_contained(name: str, page: str) -> None:
-    """Refuse a page that would fetch anything at view time."""
+    """Refuse a page that would fetch anything to be drawn: a script or stylesheet with
+    a source, a CSS import, or a `url()` or `<link>` that is not a data URI or a
+    fragment. What a reader opens afterwards is fetched then, from the site itself: a
+    page a card's popover frames, and a result's overview (`result_fragments`)."""
     hit = _EXTERNAL_REFERENCE.search(page)
     if hit:
         excerpt = page[max(hit.start() - 60, 0) : hit.end() + 80]
@@ -371,9 +397,9 @@ def site_logo() -> str:
 
 @cache
 def favicon_html() -> str:
-    """The site's icon: case 11, the project's central case, settled by T-060, drawn
-    small as a data URI, so it costs no fetch. It names its ink and paper, since a tab
-    has no page colour to inherit."""
+    """The site's icon: case 11, Trump's packing of eleven squares, drawn small as a
+    data URI, so it costs no fetch. It names its ink and paper, since a tab has no page
+    colour to inherit."""
     from devtools.render_frontier_page import packing_svg  # noqa: PLC0415
 
     svg = packing_svg(11, units=200, ink="#17202a", paper="#ffffff", frame_px=FAVICON_PX)
@@ -524,12 +550,18 @@ def fill(template: str, values: dict[str, str], *, where: str) -> str:
 
 
 def overview_page() -> Page:
-    """The front door: prose from its template, every fact from the record."""
-    from devtools import overview_data, overview_sections  # noqa: PLC0415
+    """The front door: prose from its template, every fact from the record.
+
+    Its first section's prose is README's introduction, read from README's
+    `project-intro` block and its links rewritten for the site (`site_documents`).
+    """
+    from devtools import overview_data, overview_sections, site_documents  # noqa: PLC0415
 
     overview = overview_data.load()
     values = {
         "HERO": overview_sections.hero(),
+        "README_INTRO": site_documents.overview_intro(),
+        "NEW_ISSUE_URL": NEW_ISSUE_URL,
         "DOCUMENT_CARDS": overview_sections.document_cards(),
         "OTHER_PROJECTS": overview_sections.other_project_cards(),
         "ATLAS_GRID": overview_sections.atlas_grid(),
@@ -560,10 +592,12 @@ def overview_page() -> Page:
         title=SITE_NAME,
         description=OVERVIEW_DESCRIPTION,
         toc=False,
+        rewrite_body=site_documents.rewrite_overview_intro,
         page_scripts=(
             FORWARD_SCRIPT,
             TABLE_SCRIPT,
             POPOVER_SCRIPT,
+            ROW_POPOVER_SCRIPT,
             ATLAS_GRID_SCRIPT,
         ),
     )
@@ -589,7 +623,27 @@ def results_page() -> Page:
         title=f"Every Result · {SITE_NAME}",
         description=RESULTS_DESCRIPTION,
         toc=False,
-        page_scripts=(TABLE_SCRIPT,),
+        page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, ROW_POPOVER_SCRIPT),
+    )
+
+
+def papers_page() -> Page:
+    """The Papers section's page: a short introduction and one large card per paper,
+    each opening a popover that frames the paper and expands to it."""
+    from devtools import overview_sections  # noqa: PLC0415
+
+    values = {"PAPER_CARDS": overview_sections.paper_cards()}
+    markdown = fill(
+        PAPERS_ARTICLE.read_text(encoding="utf-8"), values, where=PAPERS_ARTICLE.name
+    )
+    return kpress_page(
+        markdown,
+        name="papers.html",
+        current="papers",
+        title=f"Papers · {SITE_NAME}",
+        description=PAPERS_DESCRIPTION,
+        toc=False,
+        page_scripts=(POPOVER_SCRIPT,),
     )
 
 
@@ -611,7 +665,7 @@ def frontier_page() -> Page:
         title=f"The Frontier Atlas · {SITE_NAME}",
         description=FRONTIER_DESCRIPTION,
         toc=False,
-        page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, CASE_POPOVER_SCRIPT),
+        page_scripts=(TABLE_SCRIPT, POPOVER_SCRIPT, CASE_POPOVER_SCRIPT, ROW_POPOVER_SCRIPT),
     )
 
 
@@ -660,6 +714,7 @@ PAGES: dict[str, Callable[[], Page]] = {
     "frontier.html": frontier_page,
     RESULTS_PAGE: results_page,
     "cases.html": cases_page,
+    "papers.html": papers_page,
     "tutorial.html": tutorial_page,
     "visualize.html": visualize_page,
     **{name: _document_page(name) for name in DOCUMENT_PAGES},
@@ -671,33 +726,82 @@ def render_all() -> list[Page]:
     return [build() for build in PAGES.values()]
 
 
+def result_fragments() -> list[Page]:
+    """Each registered result's overview, in the register's order, as the file its row's
+    popover fetches (`overview_sections.result_fragment`).
+
+    A fragment is not a page: it is one `.site-result` block and nothing else, with no
+    shell, styles or scripts of its own, placed by `overview/row-popover.js` into the
+    popover of a page that has them. The overviews are 2.8 MB between them and two pages
+    list every result, so they are written once, here, rather than into either page.
+    """
+    from devtools import overview_data, overview_sections  # noqa: PLC0415
+
+    overview = overview_data.load()
+    return [
+        Page(
+            overview_sections.result_fragment(result.id),
+            overview_sections.result_row_popover_body(result, overview) + "\n",
+        )
+        for result in overview.results
+    ]
+
+
+def render_site() -> list[Page]:
+    """Every file this module writes: the pages, then the result fragments."""
+    return [*render_all(), *result_fragments()]
+
+
+def write_site(output: Path, files: Sequence[Page]) -> None:
+    """Write `files` under `output`, and drop any result fragment already there that is
+    not among them, so a directory built before a result was withdrawn does not keep
+    serving it."""
+    from devtools.overview_sections import RESULT_FRAGMENTS  # noqa: PLC0415
+
+    output.mkdir(parents=True, exist_ok=True)
+    kept = {output / file.name for file in files}
+    for stale in sorted((output / RESULT_FRAGMENTS).glob("*.html")):
+        if stale not in kept:
+            stale.unlink()
+    for file in files:
+        target = output / file.name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(file.html, encoding="utf-8")
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=OUTPUT)
     parser.add_argument(
         "--check",
         action="store_true",
-        help="exit non-zero if a page on disk differs from a fresh render",
+        help="exit non-zero if a file on disk differs from a fresh render",
     )
     args = parser.parse_args(argv)
     output = args.output.resolve()
     pages = render_all()
+    fragments = result_fragments()
     if args.check:
         stale = [
             p.name
-            for p in pages
+            for p in (*pages, *fragments)
             if not (output / p.name).is_file()
             or (output / p.name).read_text(encoding="utf-8") != p.html
         ]
         if stale:
             print(f"stale or missing: {', '.join(stale)}", file=sys.stderr)
             return 1
-        print(f"{len(pages)} pages match a fresh render")
+        print(f"{len(pages)} pages and {len(fragments)} result overviews match a fresh render")
         return 0
-    output.mkdir(parents=True, exist_ok=True)
+    write_site(output, [*pages, *fragments])
     for page in pages:
-        (output / page.name).write_text(page.html, encoding="utf-8")
         print(f"wrote {output / page.name} ({len(page.html) // 1024} KB)")
+    total = sum(len(fragment.html.encode("utf-8")) for fragment in fragments)
+    places = sorted({(output / fragment.name).parent for fragment in fragments})
+    print(
+        f"wrote {len(fragments)} result overviews under "
+        f"{', '.join(f'{place}/' for place in places)} ({total // 1024} KB in all)"
+    )
     return 0
 
 

@@ -72,6 +72,31 @@ which regenerates the certificate from the facts, requires its bytes to equal th
 committed one, and decides it again with the independent checker.
 It took under ten seconds here.
 
+## Interval Route
+
+`python -m devtools.upper_bound_intervals certify --source de-winter-square-packing-211` decides the source's 21-digit pose again, as printed, with each angle's true cosine and sine enclosed. It works in decimal fixed-point intervals of 40 digits rounded outward. It shares no geometry code with the exact route, and the Couzo packet's [Interval Route](../franciscouzo-square-packing-2026-09-27/README.md#interval-route) describes the method.
+
+The pose lies inside `[0, 14.99796070496771500150]²` as placed. The extreme squares are axis-aligned, with exact centres, so the enclosures are points:
+
+- **Least wall clearance:** exactly `1.000005e-14`, at square 66, counting squares from one.
+- **Least pair gap:** exactly `2.10001e-14`, between squares 80 and 82.
+- **Extent:** exactly `14.9979607049676940014`, the exact certificate's side.
+
+Those are the values and squares (65, and 79 and 81, counted from zero) that the source's own summary reports, now replayed here. His 80-digit run is not replayed: its boxes and checker are not published.
+
+Three controls are refused:
+
+- a side `1e-15` below the extent;
+- square 80 moved right by `1e-6`, which produces an overlap with square 82;
+- the angles read as degrees, which produces 116 overlaps.
+
+The receipts are [`receipts/interval-certification.json`](receipts/interval-certification.json) and [`receipts/interval-negative-controls.json`](receipts/interval-negative-controls.json). The replay runs from `packing/`:
+
+```bash
+uv run --frozen --all-extras --group dev python -m devtools.upper_bound_intervals \
+  check --source de-winter-square-packing-211
+```
+
 ## What It Shows
 
 With the catalogue’s packings at `n = 241, 273` and `307`, found by M.Z. Arslanov, S.A.

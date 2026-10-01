@@ -10,7 +10,9 @@ import pytest
 
 from devtools.check_readme import (
     NO_INDEX,
+    README,
     TextScan,
+    check_intro,
     content_names,
     meaningful_top_level_entries,
     scan_retired_workflow_identifiers,
@@ -131,3 +133,15 @@ def test_without_an_index_the_directory_checks_say_so_rather_than_walking(
     assert scan_retired_workflow_identifiers(tmp_path) == TextScan(
         [f"README.md: {NO_INDEX}"], []
     )
+
+
+def test_readmes_introduction_block_is_held_by_the_readme_check() -> None:
+    """The site's overview renders README's `project-intro` block as its first section,
+    so the README check refuses a README that has lost the block or put more than prose
+    in it, with the reason, where the render would otherwise be the first to say so."""
+    text = README.read_text(encoding="utf-8")
+    assert check_intro(text) == []
+    unmarked = text.replace("<!-- END SHARED: project-intro -->", "")
+    assert check_intro(unmarked) == [
+        "README.md: the project-intro markers must each appear exactly once"
+    ]

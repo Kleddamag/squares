@@ -9,6 +9,8 @@ named list that only shrinks.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 from devtools import state_ai_assistance as assistance
 
 WAND125 = assistance.STATEMENTS[0]
@@ -90,3 +92,54 @@ def test_a_marker_already_in_the_paragraph_is_the_statement_made() -> None:
 def test_every_committed_record_makes_the_statements_it_owes() -> None:
     missing, _ = assistance.report(assistance.records(None))
     assert {label.split(":", 1)[0] for label in missing} <= PENDING
+
+
+CATALOGUE_RECORD = """title: s(7)
+packing:
+  n: 7
+  reported_upper_bound:
+    value: '2.5'
+    source_key: '[Kingbird]'"""
+
+
+@dataclass(frozen=True)
+class _Entry:
+    credit_line: str | None
+
+
+AI_CREDIT = _Entry(
+    "Found by A. Name in August 2026, working with unspecified AI.\n"
+    "Optimized by B. Name in September 2026."
+)
+AI_QUOTE = (
+    "In the catalogue’s words: “Found by A. Name in August 2026, working with unspecified AI.”"
+)
+
+
+def test_a_catalogue_record_owes_the_entry_s_ai_statement_quoted_whole() -> None:
+    """The catalogue states AI assistance per entry, so the record quotes that sentence."""
+    catalogue = {7: AI_CREDIT}
+    bare = _record(CATALOGUE_RECORD, "## The packing\n\nFound.\n")
+    assert assistance.catalogue_owed(bare, catalogue) == (AI_QUOTE,)
+
+    # Reflowed across lines, as the formatter leaves it, the quotation still counts.
+    wrapped = AI_QUOTE.replace(" working with ", "\nworking with ")
+    body = f"## The packing\n\nFound by A. Name in 2026.\n{wrapped}\n"
+    assert assistance.catalogue_owed(_record(CATALOGUE_RECORD, body), catalogue) == ()
+
+
+def test_a_record_reporting_another_source_owes_the_catalogue_nothing() -> None:
+    elsewhere = CATALOGUE_RECORD.replace("'[Kingbird]'", "'[Elsewhere 2026]'")
+    assert assistance.catalogue_owed(_record(elsewhere, "Found.\n"), {7: AI_CREDIT}) == ()
+
+
+def test_the_catalogue_records_quote_their_statements_and_the_check_sees_a_drop() -> None:
+    """n = 126 and 179 carry the catalogue's statements; without them the check fails."""
+    entries = assistance.record_catalogue_entries()
+    for n in (126, 179):
+        text = (assistance.FRONTIER / f"n-{n:03d}.md").read_text(encoding="utf-8")
+        assert assistance.catalogue_owed(text, entries) == ()
+        start = text.index("In the catalogue’s words:")
+        end = text.index("”", start) + 1
+        (owed,) = assistance.catalogue_owed(text[:start] + text[end:], entries)
+        assert owed.startswith("In the catalogue’s words: “")

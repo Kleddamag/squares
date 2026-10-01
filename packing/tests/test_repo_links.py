@@ -4,7 +4,11 @@ from __future__ import annotations
 
 import pytest
 
-from devtools import render_overview, repo_links, site_documents
+from devtools import (
+    repo_links,
+    result_overview,
+    site_documents,
+)
 from devtools.repo_links import (
     DEFAULT_BRANCH,
     RAW_URL,
@@ -16,6 +20,7 @@ from devtools.repo_links import (
     repo_url,
     repository_tree,
 )
+from tests import site_renders
 
 SHA = "0123456789abcdef0123456789abcdef01234567"
 
@@ -78,7 +83,13 @@ def test_missing_names_each_absent_path() -> None:
 
 @pytest.fixture(scope="module")
 def pages() -> dict[str, str]:
-    return {name: build().html for name, build in render_overview.PAGES.items()}
+    return site_renders.pages()
+
+
+@pytest.fixture(scope="module")
+def audit() -> result_overview.LinkAudit:
+    """The link audit over the result overviews the test process shares."""
+    return result_overview.link_audit(site_renders.overview(), site_renders.result_bodies())
 
 
 def test_no_page_links_a_commit_hash(pages: dict[str, str]) -> None:
@@ -96,3 +107,19 @@ def test_every_path_a_page_links_on_main_is_in_head(pages: dict[str, str]) -> No
         total += len(links)
         assert not tree.missing(links), (name, tree.missing(links))
     assert total > 100, f"only {total} links on {DEFAULT_BRANCH}"
+
+
+def test_every_result_overview_links_main_at_paths_in_head(
+    audit: result_overview.LinkAudit,
+) -> None:
+    """A result's overview is rendered for its row's popover, apart from any page, so it
+    is audited on its own: every repository link in every overview names `main`, and
+    every path it opens is in `HEAD`."""
+    overview = site_renders.overview()
+    assert audit.results >= 60
+    assert not audit.off_main
+    assert not audit.missing
+    assert audit.github > 1000, f"only {audit.github} links on {DEFAULT_BRANCH}"
+    assert audit.github_paths > 100
+    assert audit.site > 500
+    assert set(audit.sizes) == {result.id for result in overview.results}

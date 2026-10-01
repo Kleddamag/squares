@@ -1361,9 +1361,8 @@ being separated into different surfaces.
 
 Items 1 and 2 decide whether the cartography strategy is sound.
 Items 3, 5, and 6 have concrete experimental or engineering paths.
-Item 4 is what remains of the central problem now that T-060 has determined $s(11)$: a
-shorter proof is mathematical work, not an engineering task whose tractability is
-established.
+Item 4 is what remains at $n = 11$ now that T-060 has determined $s(11)$: a shorter
+proof is mathematical work, not an engineering task whose tractability is established.
 
 ## 9. A Vocabulary Card
 

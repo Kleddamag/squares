@@ -1,0 +1,28 @@
+{
+  "status": "PASS_STATIC_INTEGRITY",
+  "source_sha256": "57e9927da5c13f42dd8bcbf8f08c84363635fece626657ee63a810c61cd44458",
+  "improved_sha256": "31e10ceb8368cc858e61f45ce7cfee783e8d0c7910893559164810f45439cc34",
+  "rows": 12028,
+  "changed_orbits": [
+    3,
+    27,
+    43,
+    51,
+    52,
+    130,
+    131,
+    174,
+    206,
+    207,
+    218,
+    232,
+    259
+  ],
+  "minimum_units": 1000047559,
+  "budget_units": 11000095024,
+  "counting_surplus_units": 428125,
+  "bound": "3875000000/999999999",
+  "improvement_over_31_8": "31/7999999992"
+}
+wall 0.267 s, user 0.200 s, system 0.020 s
+exit 0

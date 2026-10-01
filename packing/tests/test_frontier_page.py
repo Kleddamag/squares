@@ -12,8 +12,9 @@ import pytest
 from devtools import render_frontier_page as frontier
 from devtools import render_overview
 from devtools import render_research_tables as tables
-from devtools.render_overview import PAGES, assert_self_contained
+from devtools.render_overview import assert_self_contained
 from sqpack.yamlio import safe_load
+from tests import site_renders
 
 #: Measured at 3.6 MB on 2026-09-29 (324 cases): 1.6 MB is the site shell every page
 #: carries (the explainer's inlined faces and KaTeX), about 0.95 MB the 324 thumbnails
@@ -53,7 +54,7 @@ class Rows(HTMLParser):
 
 @pytest.fixture(scope="module")
 def page() -> str:
-    return PAGES["frontier.html"]().html
+    return site_renders.html("frontier.html")
 
 
 @pytest.fixture(scope="module")
@@ -129,6 +130,49 @@ def test_the_page_carries_the_table_script_and_its_controls(page: str) -> None:
     assert frontier.TABLE_SCRIPT.read_text(encoding="utf-8") in page
     assert 'class="site-table-tools" data-table="frontier" hidden' in page
     assert 'aria-current="page" href="frontier.html"' in page
+
+
+def test_a_rows_detail_is_its_popover_and_comes_from_one_function(
+    cases: dict[int, dict[str, Any]], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A frontier row's cells hold no disclosure: what they used to open one at a time,
+    the construction, the minimal polynomial, the sources, the verification, the notes
+    and the evidence, is the body of the row's one popover, which
+    `frontier_row_popover_body` alone writes. The row names that popover, carries its
+    native trigger in the Records cell, and keeps its `n` a link to the case record."""
+    evidence = tables.load_evidence()
+    body = frontier.frontier_row_popover_body(cases[11], evidence)
+    for heading in ("Best known packing", "Reported lower bound", "Verification and evidence"):
+        assert f'<p class="site-popover-heading">{heading}</p>' in body
+    for term in ("Construction", "Minimal polynomial", "Kind", "Verification", "Notes"):
+        assert f"<dt>{term}</dt>" in body
+    assert body.count("<dt>Source</dt>") == 2
+    assert "<dt>Evidence</dt><dd><a href=" in body
+    assert "evidence.yaml#L" in body
+    row, popover = frontier.case_row(cases[11], evidence, recent=True)
+    assert f'<div class="site-row-pop-body">{body}</div>' in popover
+    assert "<details" not in row
+    assert "<dl" not in row
+    assert row.startswith('<tr id="n-11" data-n="11" ')
+    assert 'data-row-popover="pop-frontier-n-11" aria-label="n = 11, proved"' in row
+    assert (
+        '<button type="button" class="site-row-open" popovertarget="pop-frontier-n-11">'
+        "Details</button>"
+    ) in row
+    assert 'href="cases.html#n-11" data-case="11"' in row
+    assert (
+        'href="cases.html#n-11" data-go="page">Open the case record for n = 11</a>' in popover
+    )
+
+    def marked(case: dict[str, Any], _: dict[str, dict[str, Any]]) -> str:
+        return f"<p>BODY OF {case['n']}</p>"
+
+    monkeypatch.setattr(frontier, "frontier_row_popover_body", marked)
+    table = frontier.table_html([cases[11], cases[12]])
+    for n in (11, 12):
+        assert table.count(f'<div class="site-row-pop-body"><p>BODY OF {n}</p></div>') == 1
+    assert table.index("</table>") < table.index('<div class="site-popover site-row-pop"')
+    assert "<details" not in table
 
 
 def test_no_math_is_left_as_source_text_in_the_table(page: str) -> None:

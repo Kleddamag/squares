@@ -4,7 +4,12 @@ type SiteTableSortType = "num" | "text";
 
 interface SiteTableFilter {
   key: string;
-  kind: "equals" | "flag" | "min" | "max";
+  /**
+   * How the control's value is held against the row's: equal to it, a flag that must be
+   * set, a numeric bound, a bound on text that orders as it reads (an ISO date), or a
+   * number the row's list of numbers and ranges must hold.
+   */
+  kind: "equals" | "flag" | "min" | "max" | "from" | "to" | "covers";
   value: string;
 }
 
@@ -15,10 +20,12 @@ interface SiteTableApi {
     type: SiteTableSortType,
     direction: "ascending" | "descending",
   ): number[];
+  covers(list: string, value: number): boolean;
   rowMatches(
     row: Readonly<Record<string, string | undefined>>,
     filters: readonly SiteTableFilter[],
   ): boolean;
+  rowsShown(headings: readonly boolean[], passes: readonly boolean[], grouped: boolean): boolean[];
   countText(shown: number, total: number, noun: string): string;
   controlParam(key: string, bound: string | null): string;
   init(): void;

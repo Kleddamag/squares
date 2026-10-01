@@ -59,13 +59,17 @@ from devtools.generate_frontier_case import (
 from devtools.migrate_math import markdown_math
 from devtools.state_ai_assistance import state
 from sqpack.assurance import bounds_agree_at_declared_precision
+from sqpack.kingbird_catalogue import INTAKE_CATALOGUE_HTML
 from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
 FRONTIER = ROOT / "frontier"
 COVERAGE = FRONTIER / "source-coverage.yaml"
 EVIDENCE = FRONTIER / "evidence.yaml"
-CATALOGUE = ROOT / "resources/web/kingbird-squares-in-squares.html"
+#: The capture this intake read, not whichever one is current: the sides it records as
+#: replaced are the ones the records held on 2026-09-29, and a later capture of the page
+#: must not rewrite them.
+CATALOGUE = ROOT / INTAKE_CATALOGUE_HTML
 INTAKE = "2026-09-29"
 ISSUE = "https://github.com/jlevy/squares/issues/227"
 #: The counts issue #227 names, in its author's words "the 102 and 103 problems".
@@ -86,6 +90,8 @@ class Registration:
     #: How the body names the author and the repository.
     author: str
     repository: str
+    #: The method-distinct second route, the source's printed pose decided by intervals.
+    interval_replay: str
 
 
 REGISTRATIONS = (
@@ -97,6 +103,7 @@ REGISTRATIONS = (
         result="T-056",
         author="Francisco Couzo",
         repository="square-packing",
+        interval_replay="E-franciscouzo-2026-09-27-interval-replay",
     ),
     Registration(
         source=DE_WINTER,
@@ -106,6 +113,7 @@ REGISTRATIONS = (
         result="T-057",
         author="Joost de Winter",
         repository="square-packing-211",
+        interval_replay="E-n211-de-winter-interval-replay",
     ),
 )
 CASSON_COVERAGE_ID = "casson-square-packing-2026"
@@ -262,10 +270,11 @@ def conflict(plan: Plan) -> dict[str, Any]:
             f"{plan.verified} (the certificate's side is {certified}...), "
             f"{plan.receipt['units_above_printed']} units of the fifteenth decimal above the "
             f"printed side {plan.side}, so the printed side is not certified here. The "
-            "source prints each coordinate as a binary64 value, and rounded to rationals "
-            "those poses close only at the larger side."
+            "interval replay of the printed pose, with each angle's true cosine and sine, "
+            "finds the pose's own extent above the printed side as well, so the gap is the "
+            "source's pose and not the rounding."
         ),
-        "evidence": [registration.replay, registration.report],
+        "evidence": [registration.replay, registration.interval_replay, registration.report],
     }
 
 
@@ -339,7 +348,12 @@ def resource(source: packets.Source) -> dict[str, Any]:
 def front_matter(plan: Plan, front: str) -> str:
     payload = safe_load(front)["packing"]
     registration = plan.registration
-    ours = {registration.report, registration.replay, CASSON_REPORT}
+    ours = {
+        registration.report,
+        registration.replay,
+        registration.interval_replay,
+        CASSON_REPORT,
+    }
     front = re.sub(
         r"^  source_reviewed: .*$",
         f"  source_reviewed: '{INTAKE}'",
@@ -356,7 +370,7 @@ def front_matter(plan: Plan, front: str) -> str:
         {
             "value": plan.verified,
             "exact_form": str(plan.receipt["exact_form"]),
-            "evidence": [registration.replay],
+            "evidence": [registration.replay, registration.interval_replay],
         },
     )
     front = set_block(front, "conjectured_optimum", None)
@@ -366,7 +380,7 @@ def front_matter(plan: Plan, front: str) -> str:
         if not {"Griffin Casson", "Francisco Couzo"} & set(note.get("claimed_by") or [])
     ]
     front = set_block(front, "priority_notes", notes + priority_notes(plan))
-    wanted = [registration.report, registration.replay]
+    wanted = [registration.report, registration.replay, registration.interval_replay]
     if plan.casson is not None:
         wanted.append(CASSON_REPORT)
     evidence = [item for item in payload["evidence"] if item not in wanted]
@@ -472,6 +486,7 @@ def _certificate_paragraph(plan: Plan) -> str:
         else f"`{receipt['side_increase']}` above the printed side"
     )
     receipts = f"../resources/web/{registration.source.directory}/README.md#certified-here"
+    interval = f"../resources/web/{registration.source.directory}/README.md#interval-route"
     return (
         "This repository certifies it exactly. The retained decimal pose rounds to an "
         "exact rational packing at centre dilation 1, of side "
@@ -479,7 +494,10 @@ def _certificate_paragraph(plan: Plan) -> str:
         "pair and every wall is decided over `ℚ` twice, by the promotion’s exact "
         "separating-axis test and by an independent checker that shares no code with it "
         f"([receipt]({receipts})). That proves `s({plan.n}) ≤ {plan.verified}`, the "
-        "verified upper bound; it says nothing about optimality."
+        "verified upper bound; it says nothing about optimality. Interval arithmetic on "
+        "the printed pose itself, with each angle’s true cosine and sine and no rational "
+        "rounding, decides every pair and wall again and gives the same verified upper "
+        f"bound ([interval route]({interval}))."
     )
 
 
@@ -753,7 +771,11 @@ def evidence_problems(selected: Sequence[Plan]) -> list[str]:
     problems = []
     for registration in REGISTRATIONS:
         wanted = sorted(plan.n for plan in selected if plan.registration is registration)
-        for identifier in (registration.report, registration.replay):
+        for identifier in (
+            registration.report,
+            registration.replay,
+            registration.interval_replay,
+        ):
             scope = entries.get(identifier, {}).get("scope", {}).get("n_values")
             if scope != wanted:
                 problems.append(f"{identifier}: scope is not {wanted}")

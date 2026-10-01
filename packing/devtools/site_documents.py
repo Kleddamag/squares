@@ -1,6 +1,7 @@
 """The reader documents as site pages, with every link made to work off GitHub.
 
-The tutorial is a page in the navigation; the README, the synopsis, the result and
+The tutorial is one of the papers the navigation's Papers entry leads to (`papers.html`)
+and marks current; the README, the synopsis, the result and
 frontier registers and the reference documents are pages the navigation does not list,
 reached from the overview's cards, whose popovers frame them. Each is written to be
 read on GitHub, where a relative link to `conventions.md` or to a directory under
@@ -19,6 +20,12 @@ is the tree `main` holds when the site deploys, read once from git, and every an
 into a page against the ids the target page actually has. A target that does not
 resolve fails the render with the whole list, so a broken link is found when the page is
 built rather than by a reader.
+
+One document is also read in part. README's introduction, the block between its
+`project-intro` markers, is the overview's first section: the overview's template holds a
+placeholder where the prose would be, `overview_intro` fills it with the block, and
+`rewrite_overview_intro` makes the block's links work on the site, as a document's are
+made to. The project is introduced in one text, on GitHub and on the site.
 """
 
 from __future__ import annotations
@@ -36,6 +43,17 @@ from devtools.render_overview import REPO, Page
 from devtools.repo_links import RepositoryTree, repo_url, repository_tree
 
 TUTORIAL = REPO / repo_links.TUTORIAL
+README = REPO / repo_links.README
+
+#: The block of README that is also the overview's first section. It is hand-written in
+#: README, between these two lines, and read from there; nothing writes it.
+INTRO_BEGIN = "<!-- BEGIN SHARED: project-intro (devtools.site_documents) -->"
+INTRO_END = "<!-- END SHARED: project-intro -->"
+#: The same block in the overview, as Markdown and then as rendered HTML: kpress passes a
+#: comment through, so these two mark the run whose links `rewrite_overview_intro`
+#: rewrites, and nothing else on the overview is touched.
+OVERVIEW_INTRO_OPEN = "<!-- README project-intro -->"
+OVERVIEW_INTRO_CLOSE = "<!-- /README project-intro -->"
 
 
 @dataclass(frozen=True)
@@ -56,10 +74,11 @@ def _document(path: str, name: str, title: str, description: str) -> SiteDocumen
 
 
 DOCUMENTS: tuple[SiteDocument, ...] = (
+    # A paper, so the bar's Papers entry is current on it, as on the explainer.
     SiteDocument(
         TUTORIAL,
         "tutorial.html",
-        "tutorial",
+        "papers",
         "Tutorial · Square Packing",
         "A guided walk through square packing: the problem, the bounds and how each "
         "result here is checked.",
@@ -218,11 +237,8 @@ def rewrite_link(url: str, *, tag: str, context: LinkContext, report: LinkReport
     return link
 
 
-def rewrite_article(page: str, *, context: LinkContext, report: LinkReport) -> str:
-    """Rewrite the links inside the page's article, leaving the nav and scripts alone."""
-    article = _ARTICLE.search(page)
-    if article is None:
-        raise SystemExit(f"{context.page}: the rendered page has no <article>")
+def rewrite_links(markup: str, *, context: LinkContext, report: LinkReport) -> str:
+    """Rewrite every `href` and `src` in a run of rendered HTML."""
 
     def attribute(match: re.Match[str], tag: str) -> str:
         url = html.unescape(match.group(2))
@@ -235,7 +251,15 @@ def rewrite_article(page: str, *, context: LinkContext, report: LinkReport) -> s
         tag = match.group(1).lower()
         return _LINK_ATTR.sub(lambda m: attribute(m, tag), match.group(0))
 
-    body = _TAG.sub(element, article.group(0))
+    return _TAG.sub(element, markup)
+
+
+def rewrite_article(page: str, *, context: LinkContext, report: LinkReport) -> str:
+    """Rewrite the links inside the page's article, leaving the nav and scripts alone."""
+    article = _ARTICLE.search(page)
+    if article is None:
+        raise SystemExit(f"{context.page}: the rendered page has no <article>")
+    body = rewrite_links(article.group(0), context=context, report=report)
     return page[: article.start()] + body + page[article.end() :]
 
 
@@ -278,6 +302,98 @@ def unresolved(pages: dict[str, Page], report: LinkReport) -> list[str]:
         if anchor not in ids[name]
     ]
     return sorted(set(problems))
+
+
+def intro_block(readme: str) -> str:
+    """README's introduction: the Markdown between its `project-intro` markers.
+
+    Raises `ValueError` unless each marker appears once, in order, around prose alone. A
+    heading or a comment inside the block would land in the middle of the overview's
+    first section, and a link to the site would point the overview at itself.
+    """
+    if readme.count(INTRO_BEGIN) != 1 or readme.count(INTRO_END) != 1:
+        raise ValueError("the project-intro markers must each appear exactly once")
+    begin, end = readme.index(INTRO_BEGIN), readme.index(INTRO_END)
+    if end < begin:
+        raise ValueError("the project-intro block ends before it begins")
+    block = readme[begin + len(INTRO_BEGIN) : end].strip()
+    if not block:
+        raise ValueError("the project-intro block is empty")
+    if "<!--" in block or re.search(r"^#", block, re.MULTILINE):
+        raise ValueError("the project-intro block holds a heading or a comment")
+    if render_overview.SITE_URL in block:
+        raise ValueError("the project-intro block links the site it is rendered on")
+    return block
+
+
+def overview_intro() -> str:
+    """README's introduction as the overview's Markdown, between the two comments
+    `rewrite_overview_intro` finds it by once the page is rendered."""
+    try:
+        block = intro_block(README.read_text(encoding="utf-8"))
+    except ValueError as error:
+        raise SystemExit(f"{repo_links.README}: {error}") from None
+    return f"{OVERVIEW_INTRO_OPEN}\n\n{block}\n\n{OVERVIEW_INTRO_CLOSE}"
+
+
+_CASE_FILE = re.compile(r"packing/frontier/n-(\d{3})\.md")
+_RESULT_LINK = re.compile(r'<a href="([^"]*)">(T-\d{3})</a>')
+
+
+def _result_rows(markup: str) -> str:
+    """A link to the results register whose text is a result's id, as README writes
+    `[T-060](packing/frontier/RESULTS.md)`, goes to that result's row in the table."""
+
+    def row(match: re.Match[str]) -> str:
+        if html.unescape(match.group(1)) != repo_links.RESULTS:
+            return match.group(0)
+        result = match.group(2)
+        return f'<a href="{render_overview.RESULTS_PAGE}#{result.lower()}">{result}</a>'
+
+    return _RESULT_LINK.sub(row, markup)
+
+
+def rewrite_overview_intro(page: str) -> str:
+    """The rendered overview with the links of README's introduction made to work there.
+
+    The block is written for GitHub, so its links are repository paths. Each becomes the
+    site's own page for what it names where the site has one: a result's row in the
+    results table, the results table for the register, the frontier atlas for the status
+    table, a case's record for its case file, and a reader document's page. Any other
+    path becomes its link on `main`, checked against the tree, as on a document's page.
+    Nothing outside the block is rewritten.
+    """
+    if page.count(OVERVIEW_INTRO_OPEN) != 1 or page.count(OVERVIEW_INTRO_CLOSE) != 1:
+        raise SystemExit("index.html: README's introduction is not marked in the page")
+    head, _, rest = page.partition(OVERVIEW_INTRO_OPEN)
+    body, _, tail = rest.partition(OVERVIEW_INTRO_CLOSE)
+    tree = repository_tree()
+    cases = {
+        path: f"cases.html#n-{int(match.group(1))}"
+        for path in tree.files
+        if (match := _CASE_FILE.fullmatch(path))
+    }
+    context = LinkContext(
+        "index.html",
+        tree,
+        served=frozenset(render_overview.SITE_PAGES),
+        aliases={
+            repo_links.RESULTS: render_overview.RESULTS_PAGE,
+            repo_links.STATUS: "frontier.html",
+            **cases,
+        },
+    )
+    report = LinkReport()
+    body = rewrite_links(_result_rows(body), context=context, report=report)
+    # An anchor into a reader document is checked against that document's page, which
+    # is rendered only when the block has such a link.
+    problems = unresolved(site_documents() if report.anchors else {}, report)
+    if problems:
+        listing = "\n  ".join(problems)
+        raise SystemExit(
+            f"{len(problems)} unresolved links in README's introduction:\n  {listing}"
+        )
+    return head + OVERVIEW_INTRO_OPEN + body + OVERVIEW_INTRO_CLOSE + tail
 
 
 @cache

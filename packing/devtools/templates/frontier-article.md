@@ -26,9 +26,12 @@ column.
 **The other columns.** The *gap* is the verified upper bound minus the verified lower
 bound, exact where both are closed forms and zero where the case is solved.
 A star marks a recent result: one of the {{RECENT}} verified lower bounds proved since
-{{RECENT_SINCE}}. *Records* links each case file and, under it, the evidence entries
-behind its bounds. Values that are roots of a polynomial are shown as decimals, cut
-rather than rounded, with the polynomial under *more*.
+{{RECENT_SINCE}}. *Records* links each case file.
+Values that are roots of a polynomial are shown as decimals, cut rather than rounded.
+
+**A row’s details.** Open a row for how its packing was built, the polynomial behind a
+decimal, the sources, how its bounds were verified and the evidence entries behind them.
+A case’s *n* opens its full record.
 
 The same table, as Markdown with full provenance, is
 [`frontier/STATUS.md`]({{STATUS_URL}}). Click a column heading to sort; the filters

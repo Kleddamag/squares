@@ -1,7 +1,7 @@
 # Design System
 
 This is the one description of how every page of the site looks: the explainer, the
-overview, the frontier atlas, the tutorial and the Visualize section.
+overview, the frontier atlas, the papers page, the tutorial and the Visualize section.
 Each stylesheet implements what is written here and points back to it; when a page needs
 something new, it is added here first and then to the stylesheet that owns it.
 
@@ -151,12 +151,24 @@ a caption, a footnote), so a site style must not set text inside one of those co
 in the serif face, or the other way round; set the text in the face KPress will pick for
 its math. The outer math em follows the surrounding text in inline and display formulas;
 KaTeX still controls the internal sizes of scripts and nested expressions.
-One exception: a popover’s headline (`.site-popover-value`, such as $n = 11$ or a card’s
-title) sets its math in the serif face, though the headline itself is sans.
-It is marked `data-math-face="serif"`, which the host adapter’s sans test
-(`host_math_init.js`) honours before it reads the surrounding face.
+One exception: a headline that is mathematics standing alone, such as $n = 11$, is set
+in the serif face, on a card, in a popover and in any heading, though the headline’s own
+face is sans. A headline with words in it, such as “Earlier $n = 11$ lower bounds”, is
+not one: its math follows the words into the sans.
+The exception’s element is marked `data-math-face="serif"`, which the host adapter’s
+sans test (`host_math_init.js`) honours before it reads the surrounding face.
+`overview_sections.headline_math_face` marks a card’s headline and its popover’s when
+the value is all math, and the two headlines a script fills with $n = N$, the atlas
+popover’s and the case popover’s, carry the mark in their markup.
 Popovers carry no `data-kpress-prose-font` mark, so every other formula in them follows
-its own text. Documents write math as LaTeX (`$…$`) rather than in code spans;
+its own text. The rule holds on every surface, walked formula by formula on the built
+site: a card’s headline and note, a popover and the atlas popover, a table’s cells,
+heads, summaries and disclosures, a caption, a footnote, a case record’s head, panels
+and detail, and a sans heading are sans text with sans math; prose and its lists are
+serif with serif math.
+A card’s headline and note are prose whose mathematical runs are set as math, so a case
+a note names, such as $n = 21$, is sans math too, never upright words.
+Documents write math as LaTeX (`$…$`) rather than in code spans;
 `devtools.check_math_markup` holds the documents already migrated to it.
 Code uses Planetaire Mono Text at KPress’s calibrated monospace size.
 
@@ -253,7 +265,7 @@ it.
   It sits 1rem below the top of the window on every page, the explainer and the
   workbench included: `site-nav.css` narrows KPress’s page top margin
   (`--kpress-page-margin-block-start`) from 2.5rem. Below the bar, every page’s first
-  block starts one shared space under its rule, `--site-page-top` (2rem, in
+  block starts one shared space under its rule, `--site-page-top` (3rem, in
   `site-nav.css`): KPress’s document padding above the column is dropped on screen, the
   column’s own top padding is the token, and the first block (a hero or a document’s
   title) adds no margin of its own.
@@ -261,9 +273,11 @@ it.
   (0.5rem) nearer the bar, since a drawing has no line spacing above its edge.
   On the explainer the source chips sit in that space and the title starts the token
   below them. Print keeps KPress’s spacing, so the explainer’s PDF does not move.
-  Its entries are Overview, Frontier, Results, Explainer, Tutorial, Visualize and
-  GitHub. Visualize leads to the film (`visualize.html`) and is current on both pages of
-  the Visualize section, the film and the workbench.
+  Its entries are Overview, Frontier, Results, Papers, Visualize and GitHub.
+  Papers leads to the papers page (`papers.html`) and is current on it and on both
+  papers, the explainer and the tutorial, which keep their own addresses.
+  Visualize leads to the film (`visualize.html`) and is current on both pages of the
+  Visualize section, the film and the workbench.
   The workbench is an application rather than a KPress page, so its build
   (`workbench_tools.build_site`) takes the bar, its stylesheet, the theme bootstrap and
   the gear’s script from `render_overview.nav_shell`, in a shell that gives it the page
@@ -324,6 +338,10 @@ it.
   KPress’s italic `h2`) at 1.5 times the sans base, centred.
   The homepage’s first section, The Square Packing Problem, takes it through
   `.site-title`, so it reads as the frontier atlas’s title does.
+  That section’s prose is README’s introduction: the block between README’s
+  `project-intro` markers, read at render time and its links rewritten for the site
+  (`site_documents.overview_intro`), so it is edited in `README.md` and nowhere else.
+  The site’s own statement follows it and is the only prose the template holds there.
 
 - **Report layout.** Every report page (the tutorial, the synopsis and the other
   documents) has one layout.
@@ -340,13 +358,13 @@ it.
   entries that change colour on hover or when current, with no fill or side bar.
 
 - **Site icon and hero.** Both are atlas drawings, reduced to each square’s outline and
-  fill. The icon is case 11, the project’s central case, settled by T-060, in the atlas
-  ink on white, inlined as a data URI on every page, the workbench included; the same
-  drawing is the mark in the navigation bar, drawn there in the bar’s ink, so it is
-  light in dark mode. In both, the container’s frame is exactly one pixel of the drawing
-  at its size (16px in a tab, 18px in the bar; `packing_svg(frame_px=)`), its outer edge
-  on the drawing’s edge and snapped to the pixel grid, so the container reads as a
-  square: one crisp pixel on a 1x screen, two on a 2x screen.
+  fill. The icon is case 11, Trump’s packing of eleven squares, in the atlas ink on
+  white, inlined as a data URI on every page, the workbench included; the same drawing
+  is the mark in the navigation bar, drawn there in the bar’s ink, so it is light in
+  dark mode. In both, the container’s frame is exactly one pixel of the drawing at its
+  size (16px in a tab, 18px in the bar; `packing_svg(frame_px=)`), its outer edge on the
+  drawing’s edge and snapped to the pixel grid, so the container reads as a square: one
+  crisp pixel on a 1x screen, two on a 2x screen.
   Its squares’ outlines are half that pixel, one device pixel on a 2x screen, so each
   square stays distinct at icon size; the page’s drawings keep their hairline.
   The homepage’s hero is case 53, centered under the title in the page’s ink and linked
@@ -354,11 +372,18 @@ it.
 
 - **Cards.** A card is a summary with square corners, a thin border, a caps label, a
   value and a supporting note.
-  A card section is one grid in the wide track, in a `.site-cards-frame` the grid
+  A card section is one wrapping row in the wide track, in a `.site-cards-frame` the row
   measures itself against.
-  Four or more cards fill its columns from the left, as many 16rem columns as fit.
-  Three or fewer centre as a group, each card as wide as it would be in a full row, so a
-  short section lines up with a long one; below four columns the row holds them anyway.
+  Any line the cards do not fill centres on it, at every width: four cards on a wide
+  screen, a section of three, and the last line of a long section alike.
+  A card’s popover is its sibling in the row’s markup but never in the row, since a
+  closed popover is not displayed and an open one is in the top layer.
+  Print keeps the plain grid of medium columns, filled from the left.
+  Cards come in three sizes (Card sizes, below).
+  The value is the card’s headline: the sans face at the medium weight
+  (`--site-font-weight-sans-medium`, 550), the face and weight of the page title and of
+  the sans section headings (`h3`), at 1.15 of the text size (20.7px). The popover
+  repeats the headline in the same face and weight.
   A card works one of two ways.
   Most cards open a popover that shows where they lead, and the popover ends in one
   button that goes there, centred at its foot.
@@ -402,6 +427,30 @@ it.
   else. Its gray corner icon and the popover’s button both show where the button goes:
   down to a row on this page, external off the site, right to another page of the site
   (Arrows, below).
+
+- **Card sizes.** A card is sized by its text, in three sizes it names in
+  `data-card-size`; a card that names none is medium.
+  Each size is as wide as a column of the grid of its own minimum column the frame fits,
+  with 1rem gaps, so cards of one size line up as a grid at every width:
+  - `small`, 12rem columns, for a headline and one line, under 80 characters: five to a
+    line at 1280 pixels (208px each), four at 1024 (236px) and three at 768 (235px).
+  - `medium`, 16rem columns, for a headline and a sentence, 80 to 159 characters: four
+    to a line at 1280 pixels (264px), three at 1024 (320px) and two at 768 (360px).
+  - `large`, 21rem columns, for a paragraph or a list, 160 characters or more: three to
+    a line at 1280 pixels (357px), two at 1024 (488px) and two at 768 (360px).
+
+  On a phone every card takes the whole line.
+  The count to a line is `--site-cards-small`, `-medium` or `-large`, each stepped by
+  its own container queries: n columns of minimum m and n − 1 gaps need (m + 1)n − 1
+  rem, so medium steps at 33, 50, 67 and 84rem, as the grid did.
+  A section declares one size for all its cards, in `SECTION_CARD_SIZES`
+  (`overview_sections.py`), so its lines are one grid; the size is the one its typical
+  card’s text asks for, and `tests/test_overview.py` holds the two together.
+  The page cards, the atlas cards and the other projects are medium; the documents,
+  whose notes are a line, are small; the dimension cards, which list a whole ladder, are
+  large. A card built without a size (`card()` or `link_card()` with no `size=`) takes
+  the default for its own text: its headline and note, and a direct card’s address,
+  counted as they read, a formula once.
 
 - **Card heroes.** Any card, popover or direct, may be headed by a small picture
   (`hero=` on `card()` and `link_card()`, drawn by `card_hero`). The hero runs edge to
@@ -532,6 +581,10 @@ it.
   page-kind popover framing the record in its embed view, with **Expand** to the full
   record (`overview/case-popover.js`); an atlas-grid cell reaches it through the atlas
   popover’s button. Without scripting either link goes to the record itself.
+  The rest of a frontier-atlas row opens the row’s own popover (**Row popovers**,
+  below): how the best known packing was built, the minimal polynomial behind a decimal,
+  the sources, the verification, the notes and the evidence entries, with “Details” in
+  the Records cell as the trigger.
   A record leads with a caps label, the n, its status chip and recent star, and the
   verified interval as display-size math; then the known-best packing drawn large beside
   a grid of bordered sans panels, one per bound (best known, verified upper, reported
@@ -568,11 +621,12 @@ it.
 
 - **Tables.** Every data table is one component, `.site-table` on a KPress table, in a
   `.site-table-wrap` that scrolls sideways if the table cannot fit.
-  It is set in the sans face at the note size, with sortable headers, filters above,
-  group rows, and an expandable row whose summary stays sans so its math does.
-  Rows are separated by a light rule, not zebra stripes, and a row takes the wash on
-  hover. Cells are padded 0.55rem by 0.5rem, top-aligned, at line height 1.4. Headers sit
-  at the bottom of their cell, aligned as their column is: text columns to the start,
+  It is set in the sans face at the note size, with sortable headers, filters above and
+  group rows. A row with detail opens its popover, and no cell expands on its own (**Row
+  popovers**, below). Rows are separated by a light rule, not zebra stripes, and a row
+  takes the wash on hover.
+  Cells are padded 0.55rem by 0.5rem, top-aligned, at line height 1.4. Headers sit at
+  the bottom of their cell, aligned as their column is: text columns to the start,
   number columns (`.num`, tabular figures) to the end.
   The short columns (the id, n and date, `.site-col-id`, `.site-col-n` and
   `.site-col-date`) stay on one line and as narrow as their content, which leaves the
@@ -582,36 +636,167 @@ it.
   It keeps the table’s size, so the quiet text does not become harder to read.
   Wide tables bleed on large screens, as **Wide bleed** above describes.
   On a phone, the results table becomes one card per row.
-  In the results table a result’s standing chip sits under its rungs, and a Standing
-  filter selects by it; a date cell says what it dates, `published` or `established`, in
-  the support colour. A superseded result’s row reads quieter, its text in the support
-  colour, in every site table, by one rule on `tr[data-standing="superseded"]`; its
-  chips keep their fills.
+  In the results table a result’s standing chip sits under its rungs; a date cell says
+  what it dates, `published` or `established`, in the support colour.
+  A superseded result’s row reads quieter, its text in the support colour, in every site
+  table, by one rule on `tr[data-standing="superseded"]`; its chips keep their fills.
+  A row reached by its address (`frontier.html#n-11`, `all-results.html#t-018`) takes
+  the wash, in every site table.
+
+- **Result filters.** Every table of results sits under one tools bar, the same on the
+  overview’s recent table and on the results page: the same controls, the same choices,
+  the same order and the same default.
+  Only the count at its end is the table’s own.
+  `overview_sections.result_filters` writes it and `overview/table.js` drives it.
+  - **Facets.** A result’s row carries each facet as an attribute
+    (`overview_sections.result_facets`), and the bar has one control for each:
+
+| Control | Row attribute | Reads as |
+| --- | --- | --- |
+| Significance | `data-s`, the S level | a floor: S4 and up |
+| Verification | `data-v`, the V level | a floor: V4 and up |
+| Confirmation | `data-c`, the C level | a floor: C3 and up |
+| Standing | `data-standing` | equal to the standing chosen |
+| Source | `data-source`, `ours` or `others` | this project’s, or others’ |
+| Case n | `data-n`, counts and ranges (`18-21 26`) | the result covers that n |
+| From, to | `data-date`, a whole ISO date | the date is in the range |
+
+```
+A rung select offers All, then each level of the rubric above its lowest as a floor,
+the top level bare (S5). Standing offers the standings the register holds.
+A date the register gives only to the year is the first day of it (`1979-01-01`).
+```
+
+- **Composition.** The filters compose: a row shows when it passes every one, and an
+  empty control passes every row.
+
+- **Default.** Significance starts at S4 and up (`SIGNIFICANCE_DEFAULT`) and every other
+  control at All. A row below the default is `hidden` in the HTML, never left out of it,
+  and the count is written there too, so the first paint is already the filtered table
+  and never flashes every row.
+  A control’s state in the HTML is its default, which is all the script knows of it.
+
+- **Group headings.** A group heading shows while a row under it does: one with no row
+  left is hidden with them, in the HTML for the default.
+  A sort hides the group headings, since the rows are then no longer in their groups.
+
+- **A row named by the address** (`all-results.html#t-048`) shows whatever the filters
+  hide, so a link to a result never lands on nothing.
+  The script keeps it, and without scripts one rule, `.site-table tr[hidden]:target`,
+  shows it.
+
+- **Links.** A link can open either table filtered: each query parameter presets the
+  control it names, `s-min=3`, `source=ours`, `n=17`, `date-from=2026-09-01`.
+
+- **A row’s popover** follows it through filtering and sorting, since the row finds it
+  by id (**Row popovers**, below).
+
+The bar wraps onto further lines as the page narrows; on a phone each control takes
+about a line. Without scripts a filter cannot be changed, so nothing stays filtered:
+under `@media (scripting: none)` every row shows, each group under its heading, and the
+bar, which would do nothing, does not.
+`tests/node/overview_table/` runs the script’s filters, alone and wired to a stand-in
+table, and `tests/test_overview.py` holds both pages to the identical bar and default.
+
+- **Row popovers.** The row is the unit: a table row with detail opens one popover for
+  the whole row. This is the site’s one way to show detail on a table row, and no cell
+  holds a `<details>` or expands on its own.
+  Four tables use it: the recent table and the awaiting-replay table on the overview,
+  the results table, and the frontier atlas.
+  - **Pressing.** A click anywhere on the row opens its popover, and so does Enter or
+    Space while the row has keyboard focus.
+    A link, button or form control inside the row keeps its own behaviour, so the
+    frontier’s n still opens the case record and a record link still leaves the page.
+    A click that ends a text selection selects rather than opens.
+  - **Look.** The whole row takes the wash on hover, from the shared table rule.
+    A row with detail keeps the wash on keyboard focus, with a 2px accent ring inside
+    its edge, and while its popover is open (`aria-expanded="true"`), and shows the
+    pointer anywhere on it.
+  - **The popover** is a card’s popover (`.site-popover`, with `.site-row-pop`): the
+    caps label, the headline (its math serif only where the headline is mathematics
+    standing alone, as on a card), the close cross, Escape and a click outside, and one
+    button at its foot when the row leads somewhere else.
+    Opening moves focus to the close cross.
+    Closing returns focus to the row, unless the reader has already moved it, as a press
+    on another row does.
+  - **Markup** is written only by `overview_sections.row_detail`, in three pieces.
+    The row is `<tr data-row-popover="ID" aria-label="…">`, the label its accessible
+    name. One cell holds the row’s native trigger,
+    `<button class="site-row-open" popovertarget="ID">`, around the row’s own key, such
+    as a result’s id, and styled as that text.
+    The popover follows the table, outside every cell, so it takes no style from the
+    table: `<div class="site-popover site-row-pop" id="ID" popover role="dialog"
+    aria-labelledby="ID-title">`, holding the close cross, the `.site-card-label`, the
+    headline `.site-popover-value` with the id `ID-title`, the body in
+    `.site-row-pop-body`, and the optional `.site-popover-actions`. The ids are
+    `pop-result-t-nnn`, `pop-replay-n-N` and `pop-frontier-n-N`.
+  - **Without scripting** the trigger opens the popover, as a card’s button does, and is
+    the row’s one tab stop.
+    `overview/row-popover.js` makes the row the control: it gives the row
+    `tabindex="0"`, `aria-expanded` and `aria-controls`, and takes the trigger out of
+    the tab order, so each row stays one stop.
+    The row carries no `tabindex` in the HTML, since a focusable row that did nothing
+    would be a dead stop for a reader without scripts.
+  - **Sorting and filtering** (`overview/table.js`) move and hide rows.
+    A row finds its popover by id, so the popover follows its row.
+  - **Content.** Each kind of row has one function that writes its popover’s body:
+    `overview_sections.result_row_popover_body` for a result, on the overview and the
+    results page alike; `overview_sections.replay_row_popover_body` for a case awaiting
+    replay; and `render_frontier_page.frontier_row_popover_body` for a frontier row.
+    A result’s popover ends in **Open T-NNN in the results table** on the overview and
+    has no button on the results page, where the row pressed is that row.
+    A replay row’s ends in the button to its case in the frontier atlas, and a frontier
+    row’s in the button to its case record.
+  - **Deferred bodies.** A body too heavy to render once per row when the page loads can
+    wait in a template: `row_detail(deferred=True)` writes it as
+    `<template data-row-pop-body>` inside `.site-row-pop-body`, which the browser parses
+    but neither lays out nor typesets, and the script places it just before the popover
+    first opens, however it is opened.
+    Its math is typeset then, as any popover’s is.
+    A deferred body costs the same bytes; what it saves is the work of rendering every
+    row’s body at load. Without scripts a template stays inert, so `fallback` is written
+    beside it in a `<noscript>`, and is what that reader’s popover shows.
+    No table uses it at present.
+  - **Fetched bodies.** A body too heavy to carry in the page at all is written once, as
+    a file beside the pages, and fetched: `row_detail(source="…")` writes the file’s
+    address as `data-row-pop-src` on `.site-row-pop-body`, whose content in the page is
+    then a short form of the body.
+    The script fetches the file when the row is first pressed or its popover first
+    opens, puts it in place of the short form, and has its math typeset.
+    The page gains only the address.
+    Where the file cannot be had, without scripts, on a page read from a file or off the
+    network, the short form stays, and the next opening asks again.
+    A result’s row does this: its short form is the result’s claim, significance and
+    novelty, and its file is the result’s whole overview (**Result Overview**, below).
+    This is the one fetch a page makes besides a page a card’s popover frames.
+
+  `tests/node/overview_rows/` runs the script against a stand-in document, and
+  `tests/test_overview.py` holds every row of the three pages to this markup and every
+  cell free of `<details>`.
 
 - **Recent results.** The overview’s Recent Results section is one table, not cards or a
   list: every result dated on or after 1 August 2026 (`RECENT_FROM`), by the date the
   table shows, newest first, one row each, the same `.site-table` in the sans face as
-  the results page, without sorting (`recent_table`). One filter sits above it in the
-  results page’s tools bar (`.site-table-tools`, driven by `overview/table.js`): a
-  labelled Significance select over the row’s S rung (`data-s`), read as a lower bound,
-  offering S3 and up (the default), S4 and up, S5 and All, with the count of rows shown
-  out of the total at the bar’s end.
-  A row below the default is `hidden` in the HTML and the count is written there too, so
-  the first paint is already the filtered table and never flashes every row.
+  the results page, without sorting (`recent_table`). The results page’s tools bar sits
+  above it (**Result filters**, above), starting at significance S4 and up, with the
+  count of rows shown out of the total at the bar’s end.
   Its five columns are the date, which says what it dates (`published` or
   `established`); the result, its math linking to its row on the results page, with the
-  id beside it quiet; the method, the phrase the summary gives after the formula (“by a
-  point-only route” reads “point-only route”), empty when there is none; the credit, the
-  finder first and “after …” quiet, the list cut after three names with the whole of it
-  in the cell’s `title`; and the status, every chip in one cell side by side.
+  id beside it quiet, which is the row’s trigger; the method, the phrase the summary
+  gives after the formula (“by a point-only route” reads “point-only route”), empty when
+  there is none; the credit, the finder first and “after …” quiet, the list cut after
+  three names with the whole of it in the cell’s `title`; and the status, every chip in
+  one cell side by side.
   The status cell holds the V, C and S rung chips and then one chip per part of the
   standing (`second certificate, reported` is two chips), left to right a space apart,
   wrapping only where the cell is too narrow, with the chips’ own block margin between
   wrapped rows; it never stacks one chip per line.
   On a phone it takes the results table’s card-per-row form: the result and the date on
   the first line, then the method, the credit and the chips each across the card.
-  No card, popover or bulleted list remains in the section, and the “See all results”
-  line, with the right arrow, follows the table.
+  A row opens its result’s popover (**Row popovers**, above), the same panel the results
+  page opens for that result.
+  The section holds no card or bulleted list, and the “See all results” line, with the
+  right arrow, follows the table.
 
 - **Results page.** Every registered result is one row of the results table on its own
   page, `all-results.html`, “Results” in the navigation bar after Frontier.
@@ -619,9 +804,12 @@ it.
   takes the other name.)
   The page has the frontier atlas’s shape: a hero title, “Every Result”, whose id is
   `every-result`, a subtitle with the count, the prose that defines the ratings and
-  standings, and the table with its filters.
+  standings, and the table under its filters (**Result filters**, above), which start at
+  significance S4 and up as they do on the overview.
   Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
   recent table and replay table, and each case record’s results link.
+  A row opens its result’s popover, the full claim and its novelty label, with the id in
+  its first cell as the trigger (**Row popovers**, above).
   The overview keeps the newest results and ends that table with a “See all results”
   line and the right arrow, in the sans face at the note size.
   The table used to be the overview’s Every Result section, and its old addresses still
@@ -631,10 +819,100 @@ it.
   `tests/node/overview_forward/` runs the forwarder, and `tests/test_overview.py` holds
   every row id to the form it recognises.
 
+- **Papers page.** The site’s papers, the optimality paper, the explainer and the
+  tutorial, share one entry in the navigation bar, “Papers”, after Results.
+  It leads to `papers.html`: a hero title, “Papers”, a subtitle, a short introduction
+  and one large card for each paper (`data-card-size="large"`), saying what the paper
+  is. The cards come from one ordered list, `overview_sections.PAPERS`, each entry a
+  paper’s address, label, title, description and card size, so a new paper is one entry.
+  Each is a page card, as on the overview: pressing it opens a popover that frames the
+  paper and expands to it.
+  A card is a button and holds no link of its own, so what its description names is
+  linked from its popover, beside the button.
+  The optimality paper is first: it explains the result that stands, T-060, where the
+  explainer proves the lower bounds T-060 superseded and the tutorial is the background
+  to both. The explainer’s card, the same on the overview, names the newer optimality
+  proofs and links the optimality paper and T-060 there, from the one list that holds
+  them (`OPTIMALITY_LINKS`). The papers keep their addresses, `explainer.html`,
+  `tutorial.html` and `n11-optimality/t-060-explainer.html`, and Papers is the current
+  entry on the papers page and on each of them.
+  The optimality paper has its own renderer, shell and Pages job
+  (`render_n11_optimality_explainer`); it carries the bar as the explainer does, through
+  `render_overview.nav_html`, with the links climbing one level to the site’s root, and
+  without `paper-type.css`, so its typography and its sixteen-page PDF are its own.
+  Its citations name the commit it was built from, where every other page links `main`.
+
 - **Awaiting replay.** Under the recent table, a closed disclosure in the sans face at
   the note size: its summary names how many cases and the range, and it opens a compact
   table grouped by holder and the entries carrying the claim, each case linking to its
   row in the frontier atlas.
+  A row opens its popover (**Row popovers**, above): the reported and the verified
+  bound, each with its holder, date and entries.
+  The reported value is the trigger, and the popovers follow the disclosure rather than
+  sit in it, so none takes the compact table’s size.
+
+## Result Overview
+
+A result’s row, in Recent Results and in the results table, opens a popover with the
+full overview of that result.
+`devtools/result_overview.py` writes the popover’s body, `result_popover_html`, and
+[site-result.css](site-result.css) holds its styles, apart from `site.css` and inlined
+after it on every page.
+The body is one `.site-result` block with no ids, no script and no `<table>`, so it does
+not depend on the popover around it.
+Its popover takes the atlas popover’s size, up to 62rem wide and 58rem tall, and scrolls
+as one panel.
+
+No page carries an overview.
+Between them they run to about 2.8 MB (`result_overview --audit`) and two pages list the
+results, so each is written once, as `result/t-nnn.html` beside the pages
+(`render_overview.result_fragments`), and a row’s popover fetches its own when it first
+opens (**Row popovers**, Fetched bodies).
+A fragment is the one block and nothing else: it has no shell, and its links are written
+from the site’s root, so only a page there may place it.
+The directory is `result/`, not `results/`, since `results.html` is `RESULTS.md`.
+`tests/test_overview.py` holds the two pages under a size ceiling each, and
+`check_published_site` asks the deployed site for every overview the results table
+names.
+
+- **Head.** The popover’s own caps label, the result’s id, and its headline, the
+  result’s summary, stand above the body and are in the page, so they do not change when
+  the overview lands. The body opens with the V, C and S rung chips and the standing
+  chips, as the tables show them; then the date with what it dates, the credit and the
+  cases, in the support colour; the claim at the note size; and a closed disclosure with
+  the significance, composition, next rung and novelty.
+- **The case.** A result about one case, or up to four, shows the atlas popover’s panel
+  for each: the gap bar, the bound as one statement with the lower bound in scarlet and
+  the best known side in green, the badges, the citation and what is open, beside the
+  packing drawn from the atlas.
+  The block carries `site-atlas-pop`, so the panel takes the rules `site.css` already
+  gives it, and its facts are the film’s own (`atlas_film_facts`). It is filled when the
+  page is rendered, on the scale `overview/atlas-grid.js` uses; two values too close to
+  sit side by side go either side of their marks.
+  Under the panel, the case record’s verified and reported bounds and the gap form a
+  small grid, each value linking to its field in the case file.
+- **Many cases.** A result about more than four cases says so and lists them in a box
+  that scrolls, one row each: the n linking to the case record, the two bounds in the
+  film’s colours, the gap, the status chip, the frontier row and the case file.
+- **The chain.** Every register result on the same case, oldest first, down one rule:
+  the date, the id linking to its row, what it established, its chips, and its credit,
+  bibliography entry, source packet and register entry.
+  The rule beside the result the overview is about is the accent, and a superseded step
+  reads quieter, as a superseded row does.
+  Where a result stands differently on this case than across its whole scope, the step
+  says both. A broad result’s chain opens on request.
+- **Links.** One list for this site (the case record, the frontier row, the result’s
+  row, the explainer for $n = 11$) and one for GitHub, every link on `main` through
+  `devtools/repo_links.py`: the register entry, each evidence entry and each cited
+  source’s bibliography entry at its line, the source packet, the artifacts, the review,
+  and the case file with its four frontmatter bounds.
+  A repository path is set as code.
+  Rendering fails on a link whose target is not in the tree, on a page the site does not
+  serve and on a fragment no row or record carries.
+
+A section heading in the overview is a caps label, so it holds no formula: capitals
+would change the formula’s letters.
+`tests/test_result_overview.py` holds every part and every link.
 
 ## Token Ownership
 
@@ -716,8 +994,21 @@ page at a desktop and a phone width:
 uv run --frozen --all-extras --group dev python -m devtools.preview_site --shots /tmp/shots
 ```
 
-It fails on console errors, a page wider than its viewport, math left untypeset, and any
-formula whose face disagrees with the text around it.
+It scrolls each page to its foot first, so what a page places or loads lazily is in the
+shot, and fails on console errors, a page wider than its viewport, math left untypeset,
+any formula set in the wrong face (the Math rule above, its headline exception
+included), and a row of cards off the centre of its line (more than a pixel between its
+two slacks). `--page cases.html#n-11` walks one page at a fragment, and
+`--press SELECTOR` presses a card or an atlas cell on each page that has one, then walks
+and shoots what it opened, since a popover a script fills has no math until it opens.
+`devtools.measure_site_pages cards` reports the rows the preview reads: each card
+section’s lines, their cards’ widths and the slack at either end.
+`devtools.measure_site_pages math` reports every formula’s face beside its text’s,
+counted by surface.
+`tests/test_site_math_faces.py` runs the same walk wherever a browser
+is installed, over the overview and its atlas popover, the results table, the frontier
+atlas and its case popover, and two case records, with a control that marks a worded
+headline for serif math and requires the walk to name it.
 `tests/test_overview.py` holds the cards and chips to the rules above.
 
 The linear-program display is reflowed within the print column.

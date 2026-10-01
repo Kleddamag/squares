@@ -1,0 +1,25 @@
+{
+  "bad_count": 0,
+  "bad_rows": [],
+  "bound_exact": "3875000000/999999999",
+  "budget_units": 11000095024,
+  "counting_surplus_units": 428125,
+  "crosscheck_fixed_parameter_receipt_minimum": 1000047559,
+  "elapsed_seconds": 5145.86758852005,
+  "histogram": {
+    "1000047559": 12028
+  },
+  "implementation": "portable Fraction/integer geometry + integer cross-product legal-cell tests + Numba block sweep; independent of the Kleddamag primary Python sweep",
+  "improved_certificate_sha256": "31e10ceb8368cc858e61f45ce7cfee783e8d0c7910893559164810f45439cc34",
+  "lambda": "999999999/1000000000",
+  "maximum_units": 1000047559,
+  "minimum_units": 1000047559,
+  "row_count": 12028,
+  "row_range": [
+    0,
+    12027
+  ],
+  "source_sha256": "57e9927da5c13f42dd8bcbf8f08c84363635fece626657ee63a810c61cd44458",
+  "status": "PASS_INDEPENDENT_FULL_REPLAY",
+  "target_units": 1000047559
+}

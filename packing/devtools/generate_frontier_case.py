@@ -116,9 +116,10 @@ early 1979", and adds the augmentation as an afterthought -- and this rule reads
 the opening sentence, so it does not reach `n = 82` and `n-082.md` is left as written.
 
 `analytically_optimized` is `false` where the line says "Not yet analytically optimized"
-(32 entries, every one of them above `n = 100`), `null` where it ends "Further
-improvement pending" (9 entries, `102, 130, 172, 199, 228, 259, 269, 292, 302`, and
-again all above `n = 100`), and `true` otherwise, which is what all sixty
+(37 entries in the capture of 2026-09-30, and `n = 68`, whose record takes its bound from
+a certified packet, the only one at `n <= 100`), `null` where it ends "Further
+improvement pending" (8 entries, `130, 172, 199, 228, 259, 269, 292, 302`, all above
+`n = 100`), and `true` otherwise, which is what all sixty
 hand-transcribed catalogue-sourced pictured entries say. The null is `D-354`'s rule:
 "further improvement pending" says the entry is still moving and says nothing about
 whether its current side has been analytically optimized, and `true` there would be a
@@ -127,8 +128,10 @@ different sentence, is not read as this one, and `n-088.md` keeps its `true`. A 
 has no credit line and keeps `null`.
 
 **A printed form that disagrees with its printed decimal is not transcribed.** The
-catalogue's `n = 179` entry prints a January-2025 closed form beside a January-2026
+capture of 2026-08-22 printed `n = 179`'s January-2025 closed form beside a January-2026
 decimal it does not equal: the record was improved and the stale form was left standing.
+The capture of 2026-09-30 prints a consistent root there and no entry contradicts
+itself, but the rule stands for the next one that does.
 So every form is evaluated against the decimal beside it, and where the two disagree
 `exact_form`, `algebraic_degree` and `minimal_polynomial` are all `null` and the case
 carries a `stale-source` conflict naming both printed values. The decimal is what the
@@ -136,7 +139,7 @@ page's own credit line dates; the form is what it forgot to update.
 
 **`improved_by` is the page's dated "Improved by" sentences, and nothing else.** A
 sentence-initial "Improved by <names> in <month> <year>" is recorded, names split on
-"and" and on commas and each improver kept once in page order; it reaches 33 records in
+"and" and on commas and each improver kept once in page order; it reaches 32 records in
 range. Measured over the 46 catalogue-sourced pictured records at `n <= 100`, the rule
 reproduces 45 of them. The one miss is `n = 29`, where the hand pass read an "Optimized
 by" sentence as an improvement and `n = 39, 41, 50, 51, 71` did not read the same
@@ -145,6 +148,22 @@ both ..." at `n = 88` is not this form either, and was not recorded by hand. The
 schema closes `additionalProperties` on `reported_upper_bound`, so the improvement's
 date has nowhere to live in the front matter and reaches the reader through the body
 sentence instead. `found_year` stays the year the packing was *found*.
+
+**An optimizer the line credits nowhere else is credited too, and every "Optimized by"
+and AI statement is transcribed.** A draft's `improved_by` adds the names of a
+sentence-initial "Optimized by <names> in <date>" that no finder or "Improved by"
+sentence names: the optimization produced the printed side, and the schema has no other
+field for its author. In the capture of 2026-09-30 that reaches one record, `n = 179`,
+whose side is Tej Stead's June 2026 optimization; at `n = 129` the optimizer is the
+finder. `CatalogueFacts.improved_by` itself stays the "Improved by" rule above, since that
+is what the hand transcription is measured against, and the hand-written records below
+`n = 100` still read an "Optimized by" at `n = 29` only. The packing paragraph also
+writes each "Optimized by" sentence with its date, and quotes whole every sentence that
+says AI assisted a step (`AI_STATEMENT`), because epistemics.md asks for that statement
+in the source's own terms; `devtools.state_ai_assistance` checks that the quotation is
+there. In the capture of 2026-09-30 the quotations reach `n = 126` and `179`, and the
+dated sentence `n = 129`; the counts an intake adopted draft from the capture of
+2026-08-22, which carries neither kind of sentence at them.
 
 **Two lineages in one entry.** Five entries in range describe two packings, and the
 printed decimal is the side of only one of them. At `170`, `257` and `260` the pictured
@@ -245,6 +264,10 @@ ROOT = Path(__file__).resolve().parent.parent
 FRONTIER = ROOT / "frontier"
 AVAILABILITY = ROOT / "atlas" / "prospective" / "source-availability-101-324.json"
 UNITSQUARE_RELEASE = ROOT / "resources" / "web" / "unitsquare-release1-2026" / "results.json"
+#: The catalogue capture the UnitSquare intake and the certified-packet intake read,
+#: `sqpack.kingbird_catalogue.INTAKE_CATALOGUE_MARKDOWN`, spelled out here because that
+#: module is imported late on purpose. See `drafting_capture`.
+INTAKE_CATALOGUE = ROOT / "resources" / "web" / "kingbird-squares-in-squares-2026-08-22.md"
 
 #: `n <= 100` is hand-authored. The generator refuses to write into the register there,
 #: and the golden test is the one caller that generates those cases at all -- into a
@@ -453,9 +476,10 @@ _CREDIT_CHAIN = re.compile(
 #: A credit line's sentences, and the parenthesised spans inside one. Both are three
 #: lines duplicated from `sqpack.kingbird_catalogue` rather than imported, for the reason
 #: `CatalogueEntryLike` gives: this module stays importable, and testable, without the
-#: catalogue parser. A period ends a sentence only where it does not follow a single
-#: capital letter, which keeps "David W. Cantrell" and "M.Z. Arslanov" whole.
-_SENTENCE_BREAK = re.compile(r"(?<![A-Z])\.\s+")
+#: catalogue parser. A period ends a sentence only where it does not follow a lone
+#: capital -- an initial -- which keeps "David W. Cantrell" and "M.Z. Arslanov" whole and
+#: still ends one after "unspecified AI.".
+_SENTENCE_BREAK = re.compile(r"(?<!\b[A-Z])\.\s+")
 #: A parenthesis the page opened, which is never a Markdown link's target: `credit_line`
 #: keeps link syntax because "[Explore group](squares_in_squares__Göbel_strips.html)" is
 #: the only thing separating the Göbel strips from the Göbel squares, and blanking what
@@ -472,6 +496,25 @@ _PARENTHESISED = re.compile(r"(?<!\])\([^()]*\)")
 _IMPROVED_BY = re.compile(
     r"^Improved by\s+(?P<names>.+?)\s+in\s+(?P<when>(?:[A-Za-z-]+\s+)*)(?P<year>\d{4})\b"
 )
+
+#: A sentence-initial "Optimized by <names> in <date>": the page's word for an analytic
+#: optimization, which moves the printed side. `improved_by` still reads only
+#: `_IMPROVED_BY`, which is the rule the hand transcription at `n <= 100` is measured
+#: against; a draft transcribes these sentences into the packing paragraph, and credits
+#: in `improved_by` an optimizer the line names nowhere else. In the capture of
+#: 2026-09-30 that is `n = 179`, whose side is Tej Stead's June 2026 optimization; at
+#: `n = 129` the optimizer is the finder, already credited.
+_OPTIMIZED_BY = re.compile(
+    r"^Optimized by\s+(?P<names>.+?)\s+in\s+(?P<when>(?:[A-Za-z-]+\s+)*)(?P<year>\d{4})\b"
+)
+
+#: The words in which the catalogue says AI assisted a step: "working with unspecified
+#: AI", "working with <model>", "using <model>", "with <model>", "(probably with AI)".
+#: Measured over both retained captures: in the capture of 2026-09-30 it matches ten
+#: sentences, every one an AI statement, and in the capture of 2026-08-22 none.
+#: epistemics.md, Results by Others, asks for such a statement in the source's own
+#: terms, so a draft quotes each matching sentence whole.
+AI_STATEMENT = re.compile(r"working with|\bAI\b|GPT|Claude|Codex|Gemini|\bLLM\b")
 
 #: The two lineage shapes the page prints where one entry carries two packings, and the
 #: `found by` clause read out of either. Both are structural, both reach exactly the
@@ -670,6 +713,23 @@ class CatalogueFacts:
     stale_exact_form: str | None = None
     improvements: tuple[CreditImprovement, ...] = ()
     priority_notes: tuple[PriorityNote, ...] = ()
+    optimizations: tuple[CreditImprovement, ...] = ()
+    """Every dated, sentence-initial "Optimized by ... in ...", in page order."""
+    ai_statements: tuple[str, ...] = ()
+    """The credit line's sentences that say AI assisted a step, verbatim, in page order."""
+
+    @property
+    def uncredited_optimizers(self) -> tuple[str, ...]:
+        """Optimizers the line names in no finder or improver credit, each once."""
+        credited = {*self.found_by, *self.improved_by}
+        names: list[str] = []
+        for optimization in self.optimizations:
+            names.extend(
+                name
+                for name in optimization.names
+                if name not in credited and name not in names
+            )
+        return tuple(names)
 
 
 class CatalogueEntryLike(Protocol):
@@ -786,6 +846,29 @@ def improvements_from_credit(credit_line: str | None) -> tuple[CreditImprovement
     return tuple(found)
 
 
+def optimizations_from_credit(credit_line: str | None) -> tuple[CreditImprovement, ...]:
+    """Every dated, sentence-initial "Optimized by <names> in <date>", in page order."""
+    found: list[CreditImprovement] = []
+    for index, sentence in enumerate(credit_sentences(credit_line)):
+        match = _OPTIMIZED_BY.search(sentence)
+        if match is None:
+            continue
+        when = f"{match.group('when').strip()} {match.group('year')}".strip()
+        found.append(
+            CreditImprovement(
+                names=_split_names(match.group("names")), when=when, sentence=index
+            )
+        )
+    return tuple(found)
+
+
+def ai_statements_from_credit(credit_line: str | None) -> tuple[str, ...]:
+    """The credit line's sentences that say AI assisted a step, verbatim, in page order."""
+    return tuple(
+        sentence for sentence in credit_sentences(credit_line) if AI_STATEMENT.search(sentence)
+    )
+
+
 def improved_by_from_credit(credit_line: str | None) -> tuple[str, ...]:
     """Every improver the credit line names, in page order, each kept once."""
     names: list[str] = []
@@ -830,6 +913,15 @@ def _quoted_phrase(sentence: str) -> str:
     say nothing, so they come out and the name stays.
     """
     return _MATH_DELIMITER.sub("", sentence).strip().rstrip(".")
+
+
+def quoted_catalogue_sentence(sentence: str) -> str:
+    """One catalogue sentence as a record quotes it whole, in the packing paragraph.
+
+    `devtools.state_ai_assistance` looks for exactly this text, whitespace aside, in a
+    record that owes the catalogue's AI statement.
+    """
+    return f"In the catalogue’s words: “{_quoted_phrase(sentence)}.”"
 
 
 def _lineage(
@@ -975,6 +1067,8 @@ def facts_from_catalogue_entry(
         stale_exact_form=stale_exact_form,
         improvements=improvements,
         priority_notes=priority_notes,
+        optimizations=optimizations_from_credit(entry.credit_line),
+        ai_statements=ai_statements_from_credit(entry.credit_line),
     )
 
 
@@ -1043,6 +1137,43 @@ def load_catalogue(path: Path | None = None) -> dict[int, CatalogueFacts]:
     """
     parsed: Mapping[int, CatalogueEntryLike] = _catalogue_module().parse_catalogue(path)
     return {n: facts_from_catalogue_entry(entry, n=n) for n, entry in parsed.items()}
+
+
+def drafting_capture(n: int, source: SourceAvailability | None) -> Path | None:
+    """The catalogue capture a draft of `n` reads, or `None` for the current one.
+
+    The current capture, except where the draft's packing paragraph describes a packing
+    that an intake has since replaced. At a count a certified packet adopted, the intake
+    keeps the draft's paragraph as the record's "previous best known packing"; at a count
+    the UnitSquare release reports, the paragraph names the parent the release improved
+    on. Both intakes read the capture of 2026-08-22, so both drafts read it too, and
+    capturing the page again does not rewrite what a record says the replaced packing was.
+    """
+    if n in packet_adopted_counts() or (source is not None and source.is_unitsquare):
+        return INTAKE_CATALOGUE
+    return None
+
+
+def load_drafting_catalogue(
+    cases: Iterable[int],
+    availability: Mapping[int, SourceAvailability],
+    path: Path | None = None,
+) -> dict[int, CatalogueFacts]:
+    """Catalogue facts for drafting `cases`, each count's from the capture it drafts from.
+
+    `path` overrides the current capture only; a count `drafting_capture` assigns to the
+    intake capture reads that capture whatever `path` says.
+    """
+    catalogue = load_catalogue(path)
+    earlier = [n for n in cases if drafting_capture(n, availability.get(n)) is not None]
+    if earlier:
+        intake = load_catalogue(INTAKE_CATALOGUE)
+        for n in earlier:
+            if n in intake:
+                catalogue[n] = intake[n]
+            else:
+                catalogue.pop(n, None)
+    return catalogue
 
 
 # --------------------------------------------------------------------------------------
@@ -1474,7 +1605,9 @@ def _catalogue_reported_upper(
         "tilt_angles_deg": None,
         "found_by": list(facts.found_by),
         "found_year": facts.found_year,
-        "improved_by": list(facts.improved_by),
+        # An optimizer the line credits nowhere else produced the printed side too, and
+        # the schema has no other field for one (`_OPTIMIZED_BY`).
+        "improved_by": [*facts.improved_by, *facts.uncredited_optimizers],
         "catalogue_pictured": facts.catalogue_pictured,
         "source_key": KINGBIRD_SOURCE_KEY,
         "source_date": None,
@@ -1653,6 +1786,16 @@ def _packing_section(
         # are on record and their dates are not, which is the sentence the corpus wrote
         # before the dates were read.
         lines.append(f"Later improved by {_join_names(reported['improved_by'])}.")
+    if facts is not None:
+        # The page's own "Optimized by" sentences, and every sentence that says AI helped,
+        # quoted whole: epistemics.md asks for an AI statement in the source's own terms.
+        sentences = credit_sentences(facts.credit_line)
+        for optimization in facts.optimizations:
+            if sentences[optimization.sentence] in facts.ai_statements:
+                continue
+            optimized = _join_names(optimization.names)
+            lines.append(f"Optimized by {optimized} in {optimization.when}.")
+        lines.extend(quoted_catalogue_sentence(sentence) for sentence in facts.ai_statements)
     if owner is None:
         subject = CONSTRUCTION_SUBJECTS[reported["construction_method"]]
         lines.append(f"The recorded construction method is {subject}.")
@@ -2160,10 +2303,19 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--force", action="store_true", help="overwrite records that already exist"
     )
-    parser.add_argument(
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
         "--check",
         action="store_true",
         help="regenerate into a temporary directory and report any drift; writes nothing",
+    )
+    mode.add_argument(
+        "--refresh",
+        action="store_true",
+        help=(
+            "redraft existing generated records from the current inputs on the given "
+            "dates, keeping each one's lower-bound promotion, intake and rigidity block"
+        ),
     )
     parser.add_argument(
         "--review-date",
@@ -2193,6 +2345,117 @@ def selected(args: argparse.Namespace) -> list[int]:
     return list(range(first, last + 1))
 
 
+def redraft(
+    n: int,
+    existing: str,
+    *,
+    availability: Mapping[int, SourceAvailability],
+    catalogue: Mapping[int, CatalogueFacts] | None,
+    review_date: str,
+    retrieved_date: str,
+) -> str:
+    """Draft `n` again as the register holds it: its lower-bound promotion and its intake.
+
+    The two things a later step adds to a record and a fresh draft does not know about,
+    the reviewed lower-bound promotion and a certified packet's intake, are carried from
+    the existing record, so the result differs from it only where the inputs moved.
+    """
+    generated = generate_record(
+        n,
+        availability=availability,
+        catalogue=catalogue,
+        review_date=review_date,
+        retrieved_date=retrieved_date,
+    )
+    reviewed_payload = safe_load(existing.split("---\n", 2)[1])["packing"]
+    generated_payload = safe_load(generated.split("---\n", 2)[1])["packing"]
+    promotion = lower_bound_promotion_from_records(reviewed_payload, generated_payload)
+    if promotion is not None:
+        generated = generate_record(
+            n,
+            availability=availability,
+            catalogue=catalogue,
+            review_date=review_date,
+            retrieved_date=retrieved_date,
+            lower_bound_promotion=promotion,
+        )
+    return adopt_upper_bound_packet(n, generated)
+
+
+def _rigidity_block(text: str) -> str | None:
+    """The `packing.rigidity` block of one record's text, verbatim, or `None` if null."""
+    lines = text.splitlines(keepends=True)
+    for index, line in enumerate(lines):
+        if not line.startswith("  rigidity:"):
+            continue
+        if line.strip() == "rigidity: null":
+            return None
+        end = index + 1
+        while end < len(lines) and lines[end].startswith("    "):
+            end += 1
+        return "".join(lines[index:end])
+    return None
+
+
+def with_rigidity_of(existing: str, generated: str) -> str:
+    """The generated record carrying the existing record's `packing.rigidity` block.
+
+    A draft writes `rigidity: null`, which means "not assessed", and the promotion path
+    fills it in afterwards. A refresh redrafts a record that path has already assessed,
+    so it keeps the assessment until the path runs again rather than dropping the record
+    out of the assessed set; the block names its own certificate and replay, which say
+    which retained witness it was made from.
+    """
+    block = _rigidity_block(existing)
+    if block is None:
+        return generated
+    if generated.count("  rigidity: null\n") != 1:
+        raise GenerationError("the draft does not carry exactly one `rigidity: null` line")
+    return generated.replace("  rigidity: null\n", block, 1)
+
+
+def refresh_records(
+    cases: Iterable[int],
+    args: argparse.Namespace,
+    availability: Mapping[int, SourceAvailability],
+    catalogue: Mapping[int, CatalogueFacts] | None,
+) -> int:
+    """Redraft existing records from the current inputs, on the given dates.
+
+    For a record whose source moved -- the catalogue captured again, printing a new side
+    -- this is the draft the record would have had, with the promotion, the intake and
+    the rigidity assessment carried over. A record that does not exist, or is
+    hand-authored, is refused: a refresh changes what a record says, and only a record
+    this tool wrote is one it may rewrite.
+    """
+    retrieved = args.retrieved_date or args.review_date
+    written = 0
+    for n in cases:
+        reason = refuse_reason(n, args.out, force=True)
+        path = record_path(args.out, n)
+        if reason is None and not path.exists():
+            reason = f"{path} does not exist; --refresh rewrites a record and drafts none"
+        if reason is not None:
+            print(f"refused: {reason}")
+            return 1
+        existing = path.read_text(encoding="utf-8")
+        generated = redraft(
+            n,
+            existing,
+            availability=availability,
+            catalogue=catalogue,
+            review_date=args.review_date,
+            retrieved_date=retrieved,
+        )
+        refreshed = with_rigidity_of(existing, generated)
+        if refreshed != existing:
+            write_record(refreshed, path)
+            written += 1
+            print(f"n={n}: refreshed {path.name}")
+    print(f"refreshed {written} record(s)")
+    return 0
+
+
 def check_records(
     cases: Iterable[int],
     args: argparse.Namespace,
@@ -2214,28 +2477,15 @@ def check_records(
             review, retrieved = _existing_dates(
                 existing_path, args.review_date, args.retrieved_date or args.review_date
             )
-            generated = generate_record(
+            generated = redraft(
                 n,
+                existing,
                 availability=availability,
                 catalogue=catalogue,
                 review_date=review,
                 retrieved_date=retrieved,
             )
-            reviewed_payload = safe_load(existing.split("---\n", 2)[1])["packing"]
-            generated_payload = safe_load(generated.split("---\n", 2)[1])["packing"]
-            promotion = lower_bound_promotion_from_records(reviewed_payload, generated_payload)
-            if promotion is not None:
-                generated = generate_record(
-                    n,
-                    availability=availability,
-                    catalogue=catalogue,
-                    review_date=review,
-                    retrieved_date=retrieved,
-                    lower_bound_promotion=promotion,
-                )
             adopted = n in packet_adopted_counts()
-            if adopted:
-                generated = adopt_upper_bound_packet(n, generated)
             write_record(generated, record_path(scratch_dir, n))
             checked += 1
             comparable = without_rigidity(existing)
@@ -2258,10 +2508,16 @@ def main(argv: Sequence[str] | None = None) -> int:
         cases = selected(args)
         availability = load_availability(args.availability)
         needs_catalogue = any(n in availability and not availability[n].is_grid for n in cases)
-        catalogue = load_catalogue(args.catalogue) if needs_catalogue else None
+        catalogue = (
+            load_drafting_catalogue(cases, availability, args.catalogue)
+            if needs_catalogue
+            else None
+        )
 
         if args.check:
             return check_records(cases, args, availability, catalogue)
+        if args.refresh:
+            return refresh_records(cases, args, availability, catalogue)
 
         for line in method_summary(cases, availability, catalogue):
             print(line)

@@ -1,0 +1,9 @@
+{
+  "status": "PASS_FRESH_TWO_IMPLEMENTATION_FULL_REPLAY",
+  "certificate_sha256": "31e10ceb8368cc858e61f45ce7cfee783e8d0c7910893559164810f45439cc34",
+  "rows": 12028,
+  "histogram": {
+    "1000047559": 12028
+  },
+  "surplus_units": 428125
+}

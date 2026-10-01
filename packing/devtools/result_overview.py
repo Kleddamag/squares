@@ -787,7 +787,7 @@ def _path_link(path: Path, label: str = "") -> str:
 
 def links_section(result: Result, overview: Overview, cases: Sequence[int]) -> str:
     """Where to read more: this site's pages, and the record on GitHub at `main`."""
-    from devtools.overview_sections import result_url  # noqa: PLC0415
+    from devtools.overview_sections import LOWER_BOUNDS_PAPER, result_url  # noqa: PLC0415
     from devtools.render_case_pages import case_url  # noqa: PLC0415
 
     record = result.record
@@ -801,7 +801,7 @@ def links_section(result: Result, overview: Overview, cases: Sequence[int]) -> s
             site.append(_link(f"frontier.html#n-{n}", f"Frontier row, {math_html(f'n = {n}')}"))
     site.append(_link(result_url(result.id), f"{_esc(result.id)} in the results table"))
     if 11 in cases:
-        site.append(_link("explainer.html", f"The {math_html('n = 11')} explainer"))
+        site.append(_link(LOWER_BOUNDS_PAPER, f"The {math_html('n = 11')} explainer"))
 
     evidence_rows: list[str] = []
     files: list[str] = []

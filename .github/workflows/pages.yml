@@ -71,6 +71,7 @@ name: Certificate page
       - packing/devtools/templates/all-results-article.md
       - packing/devtools/templates/visualize-article.md
       - packing/devtools/templates/papers-article.md
+      - packing/devtools/templates/site-forwarder.html
       - packing/devtools/render_overview.py
       - packing/devtools/overview_data.py
       - packing/devtools/overview_sections.py
@@ -156,11 +157,11 @@ concurrency:
 
 # The job graph, and why it has this shape.
 #
-#   scope ─┬─ explainer-unchanged                  (only when the explainer is skipped)
+#   scope ─┬─ n11-lower-bounds-explainer-unchanged (only when that paper is skipped)
 #          ├─ workbench-unchanged                  (only when the workbench is skipped)
 #          ├─ overview-unchanged                   (only when the overview is skipped)
-#          ├─ optimality-unchanged                 (only when T-060 is skipped)
-#          ├─ optimality ───────────────────────────────┤
+#          ├─ n11-optimality-review-unchanged      (only when that paper is skipped)
+#          ├─ n11-optimality-review ───────────────────┤
 #          ├─ workbench ───────────────────────────────┐
 #          ├─ overview ────────────────────────────────┤
 #          ├─ prepare ─┬─ pdf ─────────────────────────┼─ publish ─┐
@@ -184,10 +185,16 @@ concurrency:
 # before the page is read. The long pole therefore overlaps independent setup rather
 # than serializing it. Every check that ran before still runs, on the same prepared
 # artifact; nothing moved off the pull request (`OR-13`).
+#
+# The two papers are served under `papers/`, each by its slug, and a job, an output or an
+# artifact that is one paper's carries that slug: `n11-lower-bounds-explainer` (built by
+# `prepare`, checked by the jobs after it) and `n11-optimality-review`. Each is rendered
+# into `site/papers/` on its own runner, where it is served, so every check reads the
+# page at its published path and `publish` renames nothing.
 jobs:
-  # Which of the four builds this change can affect: the explainer, the workbench, the
-  # site's own pages (the overview at `/` and the pages beside it), and the T-060
-  # article. A pull request that touches none of their inputs does no browser work at
+  # Which of the four builds this change can affect: the lower-bounds explainer, the
+  # workbench, the site's own pages (the overview at `/` and the pages beside it), and the
+  # optimality review. A pull request that touches none of their inputs does no browser work at
   # all, and a workbench-only change no longer pays for the explainer's checks (#178
   # did: ten workbench probe files, about 330 s of explainer Chromium).
   # `devtools.pages_scope` derives each half's inputs from the builder's own declaration
@@ -201,14 +208,14 @@ jobs:
   scope:
     runs-on: ubuntu-latest
     outputs:
-      explainer: ${{ steps.scope.outputs.explainer }}
-      explainer_reason: ${{ steps.scope.outputs.explainer_reason }}
+      n11_lower_bounds_explainer: ${{ steps.scope.outputs.n11_lower_bounds_explainer }}
+      n11_lower_bounds_explainer_reason: ${{ steps.scope.outputs.n11_lower_bounds_explainer_reason }}
       workbench: ${{ steps.scope.outputs.workbench }}
       workbench_reason: ${{ steps.scope.outputs.workbench_reason }}
       overview: ${{ steps.scope.outputs.overview }}
       overview_reason: ${{ steps.scope.outputs.overview_reason }}
-      optimality: ${{ steps.scope.outputs.optimality }}
-      optimality_reason: ${{ steps.scope.outputs.optimality_reason }}
+      n11_optimality_review: ${{ steps.scope.outputs.n11_optimality_review }}
+      n11_optimality_review_reason: ${{ steps.scope.outputs.n11_optimality_review_reason }}
     defaults:
       run:
         working-directory: packing
@@ -251,18 +258,18 @@ jobs:
   # A skipped page is skipped by a job with a name, not by a row of grey checks a reader
   # has to interpret. These run only when their page is out of scope, and they fail if
   # the scope job gave no reason, so an empty output cannot pass for a decision.
-  explainer-unchanged:
+  n11-lower-bounds-explainer-unchanged:
     needs: scope
-    if: needs.scope.outputs.explainer != 'true'
+    if: needs.scope.outputs.n11_lower_bounds_explainer != 'true'
     runs-on: ubuntu-latest
     steps:
-      - name: Say why the explainer is not built
+      - name: Say why the lower-bounds explainer is not built
         env:
-          REASON: ${{ needs.scope.outputs.explainer_reason }}
+          REASON: ${{ needs.scope.outputs.n11_lower_bounds_explainer_reason }}
         run: |
           test -n "$REASON"
-          echo "The explainer is not built or checked on this run: $REASON."
-          echo "The explainer is not built or checked on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
+          echo "The lower-bounds explainer is not built or checked on this run: $REASON."
+          echo "The lower-bounds explainer is not built or checked on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
 
   workbench-unchanged:
     needs: scope
@@ -290,29 +297,29 @@ jobs:
           echo "The overview and the site's own pages are not built on this run: $REASON."
           echo "The overview and the site's own pages are not built on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
 
-  optimality-unchanged:
+  n11-optimality-review-unchanged:
     needs: scope
-    if: needs.scope.outputs.optimality != 'true'
+    if: needs.scope.outputs.n11_optimality_review != 'true'
     runs-on: ubuntu-latest
     steps:
-      - name: Say why the T-060 article is not built
+      - name: Say why the optimality review is not built
         env:
-          REASON: ${{ needs.scope.outputs.optimality_reason }}
+          REASON: ${{ needs.scope.outputs.n11_optimality_review_reason }}
         run: |
           test -n "$REASON"
-          echo "The T-060 article is not built or checked on this run: $REASON."
-          echo "The T-060 article is not built or checked on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
+          echo "The optimality review is not built or checked on this run: $REASON."
+          echo "The optimality review is not built or checked on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
 
-  optimality:
+  n11-optimality-review:
     needs: scope
-    if: needs.scope.outputs.optimality == 'true'
+    if: needs.scope.outputs.n11_optimality_review == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     defaults:
       run:
         working-directory: packing
     steps:
-      - name: Check out the repository and retained T-060 inputs
+      - name: Check out the repository and the retained T-060 inputs
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           submodules: true
@@ -350,30 +357,33 @@ jobs:
       - name: Install the pinned Chromium headless shell
         run: uv run --frozen --group dev python -m playwright install --only-shell chromium
 
-      - name: Check T-060 figures and article renderer
+      - name: Check the paper's figures and renderer
         env:
           SQPACK_N11_OPTIMALITY_REVIEW_BROWSER: "1"
         run: |
           uv run --frozen --all-extras --group dev pytest -q tests/test_n11_optimality_figures.py tests/test_n11_optimality_overview_figures.py tests/test_n11_optimality_mechanism_figures.py
           uv run --frozen --all-extras --group dev pytest -q tests/test_render_n11_optimality_review.py
 
-      - name: Render and check the T-060 article in HTML, Markdown, and PDF
+      # Rendered where it is served: `site/papers/n11-optimality-review.html`, with its
+      # Markdown and its PDF beside it. Nothing else writes `site/papers` on this runner,
+      # so the artifact is this paper's three files.
+      - name: Render and check the paper in HTML, Markdown, and PDF
         run: |
-          uv run --frozen --group dev python -m devtools.render_n11_optimality_review --output-dir site/n11-optimality --pdf
-          uv run --frozen --group dev python -m devtools.render_n11_optimality_review --output-dir site/n11-optimality --check
-          test -s site/n11-optimality/t-060-explainer.pdf
+          uv run --frozen --group dev python -m devtools.render_n11_optimality_review --site site --pdf
+          uv run --frozen --group dev python -m devtools.render_n11_optimality_review --site site --check
+          test -s site/papers/n11-optimality-review.pdf
 
-      - name: Share the checked T-060 article
+      - name: Share the checked paper
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: n11-optimality-page
-          path: packing/site/n11-optimality
+          name: n11-optimality-review-page
+          path: packing/site/papers
           if-no-files-found: error
           retention-days: 7
 
   prepare:
     needs: scope
-    if: needs.scope.outputs.explainer == 'true'
+    if: needs.scope.outputs.n11_lower_bounds_explainer == 'true'
     runs-on: ubuntu-latest
     outputs:
       prepared_artifact_id: ${{ steps.prepared-page-upload.outputs.artifact-id }}
@@ -447,13 +457,13 @@ jobs:
       - name: Render the page twice and require the renders to agree
         run: |
           twin="$RUNNER_TEMP/render-twin"
-          uv run --frozen --group dev python -m devtools.render_n11_lower_bounds_explainer --prepare-math --output "$twin/index.html" &
+          uv run --frozen --group dev python -m devtools.render_n11_lower_bounds_explainer --prepare-math --site "$twin" &
           twin_pid=$!
           uv run --frozen --group dev python -m devtools.render_n11_lower_bounds_explainer --prepare-math
           wait "$twin_pid"
           diff --recursive site "$twin"
-          test -s site/index.html
-          echo "two renders agree; one file, $(du -h site/index.html | cut -f1)"
+          test -s site/papers/n11-lower-bounds-explainer.html
+          echo "two renders agree; one page, $(du -h site/papers/n11-lower-bounds-explainer.html | cut -f1)"
 
       - name: Share the prepared page with all browser checks
         id: prepared-page-upload
@@ -513,9 +523,8 @@ jobs:
         run: npm ci --ignore-scripts
 
       # Pages takes `packing/site` whole, so a subdirectory is a URL: this puts the
-      # workbench at `/workbench/` and leaves the explainer where it is, at `/`, which
-      # readers may already have linked. `--check` builds it twice, at once, and requires
-      # the two builds to agree byte for byte.
+      # workbench at `/workbench/`, as the papers are under `/papers/`. `--check` builds
+      # it twice, at once, and requires the two builds to agree byte for byte.
       - name: Build the workbench at its own URL
         run: uv run --frozen --all-extras --group dev python -m workbench_tools.build_site --check --revision "${{ github.sha }}"
 
@@ -532,9 +541,10 @@ jobs:
   # register, the case records and the reader documents, never the explainer's build, so
   # they render beside `prepare` rather than after it; the pull-request wall had four
   # seconds to spare against its 180 s budget when this job was added, and a job queued
-  # behind `prepare` would have spent them. The overview's fragment forwarder sends old
-  # explainer deep links on to `explainer.html` from a script of its own, so nothing here
-  # waits for the explainer to exist.
+  # behind `prepare` would have spent them. This build also writes the forwarders at the
+  # papers' old addresses (`explainer.html`, `n11-optimality/`), and the overview sends an
+  # old deep link into the explainer on to `papers/n11-lower-bounds-explainer.html`; both
+  # are one script of this build's own, so nothing here waits for a paper to exist.
   overview:
     needs: scope
     if: needs.scope.outputs.overview == 'true'
@@ -623,7 +633,7 @@ jobs:
   # handed to `publish` unchanged.
   pdf:
     needs: scope
-    if: needs.scope.outputs.explainer == 'true'
+    if: needs.scope.outputs.n11_lower_bounds_explainer == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -688,9 +698,9 @@ jobs:
           path: packing/site
           merge-multiple: true
 
-      # After the page, not beside it: the exporter loads `site/index.html` from disk,
-      # and Figure 2 references the composite that the render copies into `site/` on its
-      # way out.
+      # After the page, not beside it: the exporter loads the page from disk
+      # (`site/papers/n11-lower-bounds-explainer.html`), and Figure 2 references the composite that
+      # the render copies into `site/` on its way out.
       - name: Check the print faces cover every sans weight the page requests
         run: uv run --frozen --group dev python -m devtools.sans_instances --check
 
@@ -711,20 +721,20 @@ jobs:
       # this runner's browser and fonts. Keep both raw PDFs outside the published site
       # if they disagree; the checker never rewrites the artifact it checks.
       - name: Check the PDF artifact that will be published
-        run: uv run --frozen --group dev python -m devtools.render_n11_lower_bounds_explainer_pdf --check-artifact --diagnostics-dir /tmp/explainer-pdf-check
+        run: uv run --frozen --group dev python -m devtools.render_n11_lower_bounds_explainer_pdf --check-artifact --diagnostics-dir /tmp/n11-lower-bounds-explainer-pdf-check
 
       # This opt-in observation can perturb timing. It supplements the ordinary,
       # uninstrumented artifact check above and never replaces its verdict.
       - name: Trace repeated PDF math layout
         if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.trace_pdf }}
-        run: uv run --frozen --group dev python -m devtools.render_n11_lower_bounds_explainer_pdf --check --renders 20 --trace-math --diagnostics-dir /tmp/explainer-pdf-trace
+        run: uv run --frozen --group dev python -m devtools.render_n11_lower_bounds_explainer_pdf --check --renders 20 --trace-math --diagnostics-dir /tmp/n11-lower-bounds-explainer-pdf-trace
 
       - name: Retain PDF math trace
         if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.trace_pdf }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: explainer-pdf-trace
-          path: /tmp/explainer-pdf-trace
+          name: n11-lower-bounds-explainer-pdf-trace
+          path: /tmp/n11-lower-bounds-explainer-pdf-trace
           if-no-files-found: error
           retention-days: 7
 
@@ -732,14 +742,14 @@ jobs:
       # diagnostic only; the earlier control failure remains a workflow failure.
       - name: Test prepared math text reconstruction
         if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.trace_pdf && inputs.rebuild_pdf_math_text }}
-        run: uv run --frozen --group dev python -m devtools.render_n11_lower_bounds_explainer_pdf --check --renders 20 --trace-math --rebuild-prepared-text --diagnostics-dir /tmp/explainer-pdf-rebuild
+        run: uv run --frozen --group dev python -m devtools.render_n11_lower_bounds_explainer_pdf --check --renders 20 --trace-math --rebuild-prepared-text --diagnostics-dir /tmp/n11-lower-bounds-explainer-pdf-rebuild
 
       - name: Retain PDF text reconstruction trace
         if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.trace_pdf && inputs.rebuild_pdf_math_text }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: explainer-pdf-rebuild
-          path: /tmp/explainer-pdf-rebuild
+          name: n11-lower-bounds-explainer-pdf-rebuild
+          path: /tmp/n11-lower-bounds-explainer-pdf-rebuild
           if-no-files-found: error
           retention-days: 7
 
@@ -747,8 +757,8 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: explainer-pdf-check
-          path: /tmp/explainer-pdf-check
+          name: n11-lower-bounds-explainer-pdf-check
+          path: /tmp/n11-lower-bounds-explainer-pdf-check
           if-no-files-found: ignore
           retention-days: 7
 
@@ -763,10 +773,10 @@ jobs:
           trap 'exit 130' INT TERM
           mkdir -p /tmp/math-geometry
           geometry_status=0
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --print --output /tmp/math-geometry/chromium-1280-custom-serif-print.json || geometry_status=1
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --prose-font sans --print --output /tmp/math-geometry/chromium-1280-custom-sans-print.json || geometry_status=1
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --font-set system --print --output /tmp/math-geometry/chromium-1280-system-serif-print.json || geometry_status=1
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --font-set system --prose-font sans --print --output /tmp/math-geometry/chromium-1280-system-sans-print.json || geometry_status=1
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --print --output /tmp/math-geometry/chromium-1280-custom-serif-print.json || geometry_status=1
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --prose-font sans --print --output /tmp/math-geometry/chromium-1280-custom-sans-print.json || geometry_status=1
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --font-set system --print --output /tmp/math-geometry/chromium-1280-system-serif-print.json || geometry_status=1
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --font-set system --prose-font sans --print --output /tmp/math-geometry/chromium-1280-system-sans-print.json || geometry_status=1
           exit "$geometry_status"
 
       - name: Retain Chromium print geometry observations
@@ -782,14 +792,14 @@ jobs:
       - name: Share the checked PDF with the publication
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: explainer-pdf
-          path: packing/site/t-018-explainer.pdf
+          name: n11-lower-bounds-explainer-pdf
+          path: packing/site/papers/n11-lower-bounds-explainer.pdf
           if-no-files-found: error
           retention-days: 7
 
   print-layout:
     needs: scope
-    if: needs.scope.outputs.explainer == 'true'
+    if: needs.scope.outputs.n11_lower_bounds_explainer == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -877,7 +887,7 @@ jobs:
 
   typography:
     needs: scope
-    if: needs.scope.outputs.explainer == 'true'
+    if: needs.scope.outputs.n11_lower_bounds_explainer == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -968,10 +978,10 @@ jobs:
           trap 'exit 130' INT TERM
           mkdir -p /tmp/math-geometry
           geometry_status=0
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --width 390 --output /tmp/math-geometry/chromium-390-custom-serif-screen.json || geometry_status=1
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --prose-font sans --width 390 --output /tmp/math-geometry/chromium-390-custom-sans-screen.json || geometry_status=1
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --font-set system --width 390 --output /tmp/math-geometry/chromium-390-system-serif-screen.json || geometry_status=1
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --font-set system --prose-font sans --width 390 --output /tmp/math-geometry/chromium-390-system-sans-screen.json || geometry_status=1
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --width 390 --output /tmp/math-geometry/chromium-390-custom-serif-screen.json || geometry_status=1
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --prose-font sans --width 390 --output /tmp/math-geometry/chromium-390-custom-sans-screen.json || geometry_status=1
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --font-set system --width 390 --output /tmp/math-geometry/chromium-390-system-serif-screen.json || geometry_status=1
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --font-set system --prose-font sans --width 390 --output /tmp/math-geometry/chromium-390-system-sans-screen.json || geometry_status=1
           exit "$geometry_status"
 
       - name: Retain Chromium mobile geometry observations
@@ -986,7 +996,7 @@ jobs:
   # Math faces, font loading and the reading position, all on the prepared page.
   screen:
     needs: scope
-    if: needs.scope.outputs.explainer == 'true'
+    if: needs.scope.outputs.n11_lower_bounds_explainer == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -1068,8 +1078,8 @@ jobs:
 
       - name: Check reload preserves the reading position
         run: |
-          uv run --frozen --group dev python -m devtools.check_scroll_restoration site/index.html --self-test --output /tmp/scroll-restoration/chromium-1280.json
-          uv run --frozen --group dev python -m devtools.check_scroll_restoration site/index.html --width 390 --output /tmp/scroll-restoration/chromium-390.json
+          uv run --frozen --group dev python -m devtools.check_scroll_restoration site/papers/n11-lower-bounds-explainer.html --self-test --output /tmp/scroll-restoration/chromium-1280.json
+          uv run --frozen --group dev python -m devtools.check_scroll_restoration site/papers/n11-lower-bounds-explainer.html --width 390 --output /tmp/scroll-restoration/chromium-390.json
 
       - name: Retain Chromium reload observations
         if: always()
@@ -1086,7 +1096,7 @@ jobs:
   # mobile settings run in `typography` and the print settings in `pdf`.
   geometry:
     needs: scope
-    if: needs.scope.outputs.explainer == 'true'
+    if: needs.scope.outputs.n11_lower_bounds_explainer == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -1157,11 +1167,11 @@ jobs:
           trap 'exit 130' INT TERM
           mkdir -p /tmp/math-geometry
           geometry_status=0
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --host-check --self-test --output /tmp/math-geometry/chromium-1280-custom-serif-screen-controls.json || geometry_status=1
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --prose-font sans --output /tmp/math-geometry/chromium-1280-custom-sans-screen.json || geometry_status=1
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --font-set system --output /tmp/math-geometry/chromium-1280-system-serif-screen.json || geometry_status=1
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --font-set system --prose-font sans --output /tmp/math-geometry/chromium-1280-system-sans-screen.json || geometry_status=1
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --alternate-certificate --output /tmp/math-geometry/chromium-1280-custom-serif-screen-alternate-certificate.json || geometry_status=1
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --host-check --self-test --output /tmp/math-geometry/chromium-1280-custom-serif-screen-controls.json || geometry_status=1
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --prose-font sans --output /tmp/math-geometry/chromium-1280-custom-sans-screen.json || geometry_status=1
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --font-set system --output /tmp/math-geometry/chromium-1280-system-serif-screen.json || geometry_status=1
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --font-set system --prose-font sans --output /tmp/math-geometry/chromium-1280-system-sans-screen.json || geometry_status=1
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --alternate-certificate --output /tmp/math-geometry/chromium-1280-custom-serif-screen-alternate-certificate.json || geometry_status=1
           exit "$geometry_status"
 
       - name: Retain Chromium geometry observations
@@ -1181,7 +1191,7 @@ jobs:
   # headroom on the four-CPU runner while removing roughly half that serial tail.
   font-loading:
     needs: scope
-    if: needs.scope.outputs.explainer == 'true'
+    if: needs.scope.outputs.n11_lower_bounds_explainer == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -1291,15 +1301,15 @@ jobs:
           trap 'exit 130' INT TERM
           mkdir -p /tmp/math-geometry
           geometry_status=0
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --browser ${{ matrix.browser }} --width 1280 --host-check --output /tmp/math-geometry/${{ matrix.browser }}-1280-custom-serif-screen.json &
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --browser ${{ matrix.browser }} --width 1280 --host-check --output /tmp/math-geometry/${{ matrix.browser }}-1280-custom-serif-screen.json &
           custom_serif_pid=$!
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --browser ${{ matrix.browser }} --prose-font sans --width 1280 --output /tmp/math-geometry/${{ matrix.browser }}-1280-custom-sans-screen.json &
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --browser ${{ matrix.browser }} --prose-font sans --width 1280 --output /tmp/math-geometry/${{ matrix.browser }}-1280-custom-sans-screen.json &
           custom_sans_pid=$!
           wait "$custom_serif_pid" || geometry_status=1
           wait "$custom_sans_pid" || geometry_status=1
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --browser ${{ matrix.browser }} --font-set system --width 1280 --output /tmp/math-geometry/${{ matrix.browser }}-1280-system-serif-screen.json &
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --browser ${{ matrix.browser }} --font-set system --width 1280 --output /tmp/math-geometry/${{ matrix.browser }}-1280-system-serif-screen.json &
           system_serif_pid=$!
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --browser ${{ matrix.browser }} --font-set system --prose-font sans --width 1280 --output /tmp/math-geometry/${{ matrix.browser }}-1280-system-sans-screen.json &
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --browser ${{ matrix.browser }} --font-set system --prose-font sans --width 1280 --output /tmp/math-geometry/${{ matrix.browser }}-1280-system-sans-screen.json &
           system_sans_pid=$!
           wait "$system_serif_pid" || geometry_status=1
           wait "$system_sans_pid" || geometry_status=1
@@ -1316,7 +1326,7 @@ jobs:
 
   browser-geometry:
     needs: scope
-    if: needs.scope.outputs.explainer == 'true'
+    if: needs.scope.outputs.n11_lower_bounds_explainer == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -1416,8 +1426,8 @@ jobs:
 
       - name: Check reload preserves the reading position in both viewports
         run: |
-          uv run --frozen --group dev python -m devtools.check_scroll_restoration site/index.html --browser ${{ matrix.browser }} --self-test --output /tmp/scroll-restoration/${{ matrix.browser }}-1280.json
-          uv run --frozen --group dev python -m devtools.check_scroll_restoration site/index.html --browser ${{ matrix.browser }} --width 390 --output /tmp/scroll-restoration/${{ matrix.browser }}-390.json
+          uv run --frozen --group dev python -m devtools.check_scroll_restoration site/papers/n11-lower-bounds-explainer.html --browser ${{ matrix.browser }} --self-test --output /tmp/scroll-restoration/${{ matrix.browser }}-1280.json
+          uv run --frozen --group dev python -m devtools.check_scroll_restoration site/papers/n11-lower-bounds-explainer.html --browser ${{ matrix.browser }} --width 390 --output /tmp/scroll-restoration/${{ matrix.browser }}-390.json
 
       - name: Retain browser reload observations
         if: always()
@@ -1434,10 +1444,10 @@ jobs:
           trap 'exit 130' INT TERM
           mkdir -p /tmp/math-geometry
           geometry_status=0
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --browser ${{ matrix.browser }} --width 390 --output /tmp/math-geometry/${{ matrix.browser }}-390-custom-serif-screen.json || geometry_status=1
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --browser ${{ matrix.browser }} --prose-font sans --width 390 --output /tmp/math-geometry/${{ matrix.browser }}-390-custom-sans-screen.json || geometry_status=1
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --browser ${{ matrix.browser }} --font-set system --width 390 --output /tmp/math-geometry/${{ matrix.browser }}-390-system-serif-screen.json || geometry_status=1
-          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/index.html --browser ${{ matrix.browser }} --font-set system --prose-font sans --width 390 --output /tmp/math-geometry/${{ matrix.browser }}-390-system-sans-screen.json || geometry_status=1
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --browser ${{ matrix.browser }} --width 390 --output /tmp/math-geometry/${{ matrix.browser }}-390-custom-serif-screen.json || geometry_status=1
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --browser ${{ matrix.browser }} --prose-font sans --width 390 --output /tmp/math-geometry/${{ matrix.browser }}-390-custom-sans-screen.json || geometry_status=1
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --browser ${{ matrix.browser }} --font-set system --width 390 --output /tmp/math-geometry/${{ matrix.browser }}-390-system-serif-screen.json || geometry_status=1
+          uv run --frozen --group dev python -m devtools.prepare_n11_lower_bounds_explainer_math site/papers/n11-lower-bounds-explainer.html --browser ${{ matrix.browser }} --font-set system --prose-font sans --width 390 --output /tmp/math-geometry/${{ matrix.browser }}-390-system-sans-screen.json || geometry_status=1
           exit "$geometry_status"
 
       - name: Retain browser geometry observations
@@ -1509,7 +1519,7 @@ jobs:
       - name: Prepare retained timing inputs
         run: |
           mkdir -p /tmp/math-startup-timing
-          cp site/index.html /tmp/math-startup-timing/candidate.html
+          cp site/papers/n11-lower-bounds-explainer.html /tmp/math-startup-timing/candidate.html
           gzip --decompress --stdout benchmarks/math-startup/fixtures/control-33cd4760.html.gz > /tmp/math-startup-timing/control-33cd4760.html
 
       - name: Check the parameter-only measurement controls
@@ -1520,13 +1530,13 @@ jobs:
       # measurements fail the job; numerical speed acceptance is evaluated from
       # these retained observations under the registered experiment criterion.
       - name: Measure twelve desktop startup pairs
-        run: uv run --frozen --group dev python -m devtools.check_math_startup --mode parameters --control /tmp/math-startup-timing/control-33cd4760.html --candidate site/index.html --runs 12 --width 1280 --browser chromium --output /tmp/math-startup-timing/startup-1280.json
+        run: uv run --frozen --group dev python -m devtools.check_math_startup --mode parameters --control /tmp/math-startup-timing/control-33cd4760.html --candidate site/papers/n11-lower-bounds-explainer.html --runs 12 --width 1280 --browser chromium --output /tmp/math-startup-timing/startup-1280.json
 
       - name: Measure twelve mobile startup pairs
         # Retain both widths even if the desktop observations are invalid, provided
         # the instrument's controls passed. A failure still leaves the job red.
         if: ${{ !cancelled() && steps.timing-controls.outcome == 'success' }}
-        run: uv run --frozen --group dev python -m devtools.check_math_startup --mode parameters --control /tmp/math-startup-timing/control-33cd4760.html --candidate site/index.html --runs 12 --width 390 --browser chromium --output /tmp/math-startup-timing/startup-390.json
+        run: uv run --frozen --group dev python -m devtools.check_math_startup --mode parameters --control /tmp/math-startup-timing/control-33cd4760.html --candidate site/papers/n11-lower-bounds-explainer.html --runs 12 --width 390 --browser chromium --output /tmp/math-startup-timing/startup-390.json
 
       - name: Retain raw timings and both input pages
         if: always()
@@ -1537,10 +1547,12 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  # What the deployment publishes, assembled from the four jobs that produce it: the
-  # prepared page and its Markdown edition and composite assets (`prepare`), the checked
-  # PDF (`pdf`), the site's own pages at the root (`overview`), and the workbench at
-  # `/workbench/` (`workbench`). It runs on pull requests too -- a missing artifact fails
+  # What the deployment publishes, assembled from the five jobs that produce it: the
+  # lower-bounds explainer and its Markdown under `/papers/`, with the atlas's files at
+  # the root (`prepare`), its checked PDF beside it (`pdf`), the site's own pages at the
+  # root with the forwarders at the papers' old addresses (`overview`), the workbench at
+  # `/workbench/` (`workbench`), and the optimality review with its Markdown and PDF under
+  # `/papers/` (`n11-optimality-review`). It runs on pull requests too -- a missing artifact fails
   # review rather than the next deploy -- and lists every file with its size and digest
   # so the tree can be compared across runs; only a push to `main` uploads it for Pages.
   # It needs the producers and not the checks, so on a pull request it finishes beside
@@ -1553,7 +1565,7 @@ jobs:
   # touches an input all four builds share (the workflow, the scope tool, kpress, the
   # lockfile). A partial tree is never a publication, so there is nothing to assemble.
   publish:
-    needs: [prepare, pdf, overview, workbench, optimality]
+    needs: [prepare, pdf, overview, workbench, n11-optimality-review]
     runs-on: ubuntu-latest
     steps:
       # With `merge-multiple`, an empty `artifact-ids` downloads every artifact in the
@@ -1565,6 +1577,11 @@ jobs:
           [[ "$ARTIFACT_ID" =~ ^[1-9][0-9]*$ ]]
           || { echo "::error::the prepared page has no artifact id to download"; exit 1; }
 
+      # The lower-bounds explainer arrives as it was rendered and checked: the page and
+      # its Markdown under `papers/`, by the paper's slug, and at the root the atlas's
+      # files the page shows, which the overview links by name. Nothing is renamed: the
+      # PDF's source receipt is the digest of the page's bytes, and every check read them
+      # at this path.
       - name: Use the prepared page
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
@@ -1575,25 +1592,15 @@ jobs:
       - name: Use the checked PDF
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          name: explainer-pdf
-          path: packing/site
-
-      # The explainer is built as `index.html` -- every check above reads it under that
-      # name, and the PDF's source receipt is the digest of those bytes -- and published
-      # as `explainer.html`, its canonical URL, because `/` is the overview's. The rename
-      # happens here, after every check and before the overview's `index.html` exists, so
-      # neither page can land on the other.
-      - name: Move the explainer to its own URL
-        working-directory: packing/site
-        run: |
-          test -s index.html
-          test ! -e explainer.html
-          mv index.html explainer.html
+          name: n11-lower-bounds-explainer-pdf
+          path: packing/site/papers
 
       # Staged apart and merged by hand, because a download into `packing/site` would
       # overwrite whatever it collided with and say nothing. The site's pages are served
-      # beside the explainer's composite assets, which the overview links by name, so a
-      # name both builds wrote is refused rather than resolved by download order.
+      # beside the atlas's files the explainer's build wrote, which the overview links by
+      # name, so a name both builds wrote is refused rather than resolved by download
+      # order. The forwarders at the papers' old addresses come with the site's pages:
+      # `explainer.html`, and `n11-optimality/` with its `t-060-explainer.html`.
       - name: Use the site's pages
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
@@ -1620,11 +1627,50 @@ jobs:
           name: workbench-page
           path: packing/site/workbench
 
-      - name: Use the checked T-060 article
+      # The second paper goes beside the first, and is staged for the same reason the
+      # site's pages are: both papers are served from `papers/`, and a name both wrote is
+      # refused rather than overwritten.
+      - name: Use the checked optimality review
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          name: n11-optimality-page
-          path: packing/site/n11-optimality
+          name: n11-optimality-review-page
+          path: ${{ runner.temp }}/n11-optimality-review-page
+
+      - name: Put the optimality review beside the other paper, refusing any name already there
+        env:
+          STAGED: ${{ runner.temp }}/n11-optimality-review-page
+        run: |
+          test -s "$STAGED/n11-optimality-review.html"
+          test -s packing/site/papers/n11-lower-bounds-explainer.html
+          for staged in "$STAGED"/*; do
+            name=$(basename "$staged")
+            if [ -e "packing/site/papers/$name" ]; then
+              echo "::error::both papers publish papers/$name"
+              exit 1
+            fi
+          done
+          cp -R "$STAGED"/. packing/site/papers/
+
+      # The papers moved to `papers/<slug>` on 2026-10-01. A page that moved is forwarded
+      # by a page of the overview's build; a Markdown file or a PDF cannot forward, so
+      # each is served at its old address too, as a copy of the checked file. The list is
+      # `render_overview.MOVED_FILES`, and a test holds this step to it.
+      - name: Serve each moved file at its old address too
+        working-directory: packing/site
+        run: |
+          moved() {
+            test -s "$2"
+            if [ -e "$1" ]; then
+              echo "::error::$1 is already published, so $2 cannot be copied there"
+              exit 1
+            fi
+            mkdir -p "$(dirname "$1")"
+            cp "$2" "$1"
+          }
+          moved t-018-explainer.md papers/n11-lower-bounds-explainer.md
+          moved t-018-explainer.pdf papers/n11-lower-bounds-explainer.pdf
+          moved n11-optimality/t-060-explainer.md papers/n11-optimality-review.md
+          moved n11-optimality/t-060-explainer.pdf papers/n11-optimality-review.pdf
 
       - name: List what the publication holds
         working-directory: packing/site
@@ -1646,14 +1692,14 @@ jobs:
     if: always()
     needs:
       - scope
-      - explainer-unchanged
+      - n11-lower-bounds-explainer-unchanged
       - workbench-unchanged
       - overview-unchanged
-      - optimality-unchanged
+      - n11-optimality-review-unchanged
       - prepare
       - workbench
       - overview
-      - optimality
+      - n11-optimality-review
       - pdf
       - print-layout
       - typography
@@ -1675,8 +1721,8 @@ jobs:
           jq -r 'to_entries[] | "\(.value.result)\t\(.key)"' <<< "$NEEDS"
           jq -e '
             .scope.result == "success"
-            and ([.scope.outputs.explainer, .scope.outputs.workbench, .scope.outputs.overview, .scope.outputs.optimality] | all(. == "true" or . == "false"))
-            and (.scope.outputs.optimality != "true" or .optimality.result == "success")
+            and ([.scope.outputs.n11_lower_bounds_explainer, .scope.outputs.workbench, .scope.outputs.overview, .scope.outputs.n11_optimality_review] | all(. == "true" or . == "false"))
+            and (.scope.outputs.n11_optimality_review != "true" or .["n11-optimality-review"].result == "success")
             and ([.[].result] | all(. == "success" or . == "skipped"))
           ' <<< "$NEEDS" > /dev/null
 

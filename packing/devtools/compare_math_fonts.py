@@ -1081,7 +1081,9 @@ def reconcile(variant: Variant, faces: PageFaces, font_dir: Path = PROSE_FONTS) 
 
 # Building the pages.
 
-#: Figures the page loads from beside itself; without them a variant renders broken art.
+#: Figures the page loads from the site's root, a level above it; without them a variant
+#: renders broken art. They are copied beside the variants, which are written into one
+#: directory, and each variant's references to them are made to match.
 SIBLING_ASSETS = ("known-best-1-100*.png", "known-best-1-100*.svg")
 
 #: kpress's opt-out for its own math text face, and the tag it is stamped on. One
@@ -1131,6 +1133,10 @@ def build_variants(
 ) -> list[Path]:
     """Write one page per variant beside a copy of the figures they reference.
 
+    The page itself reaches those figures a level up, at the site's root, so that is
+    where they are copied from, and a variant's reference to one is rewritten to the copy
+    beside it.
+
     Every variant is built against the stock KaTeX baseline: the page's own math text
     face is switched off first, by `stock_katex_baseline`, before any variant CSS is
     injected. The faces each composite is assembled from are still the page's own bytes;
@@ -1139,6 +1145,13 @@ def build_variants(
     if not page.is_file():
         raise SystemExit(f"no rendered page at {page}; render the explainer first")
     html = stock_katex_baseline(page.read_text(encoding="utf-8"))
+    figures = {
+        asset.name: asset
+        for pattern in SIBLING_ASSETS
+        for asset in sorted(page.resolve().parent.parent.glob(pattern))
+    }
+    for name in figures:
+        html = html.replace(f'"../{name}"', f'"{name}"')
     variants = {variant.name: variant for variant in built_in_variants(page_faces(html))}
     if spec is not None:
         variants |= {variant.name: variant for variant in _spec_variants(spec)}
@@ -1161,9 +1174,8 @@ def build_variants(
         written.append(target)
         print(f"wrote {target.name}{note}")
 
-    for pattern in SIBLING_ASSETS:
-        for asset in sorted(page.parent.glob(pattern)):
-            shutil.copy2(asset, out / asset.name)
+    for name, asset in figures.items():
+        shutil.copy2(asset, out / name)
 
     resolved = page.resolve()
     source = resolved.relative_to(REPO) if resolved.is_relative_to(REPO) else resolved

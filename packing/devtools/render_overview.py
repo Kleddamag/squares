@@ -14,10 +14,12 @@ adds the front door and the pages around it, as the plan in
 - `cases.html`, the case records: every case's full record at `cases.html#n-N`, which
   the atlas grid and the frontier atlas both open (`render_case_pages`);
 - `papers.html`, the Papers section's page: one large card per paper, from the one list
-  `overview_sections.PAPERS`. The optimality paper (`n11-optimality/`,
-  `render_n11_optimality_review`), the explainer (`explainer.html`,
-  `render_n11_lower_bounds_explainer`) and the tutorial are the section's papers, and the bar's
-  Papers entry is current on all four;
+  `overview_sections.PAPERS`. The optimality review (`papers/n11-optimality-review.html`,
+  `render_n11_optimality_review`), the lower-bounds explainer
+  (`papers/n11-lower-bounds-explainer.html`, `render_n11_lower_bounds_explainer`) and the
+  tutorial are the section's papers, and the bar's Papers entry is current on all four;
+- a forwarder at each address a paper used to have (`MOVED_PAGES`), so an old link still
+  arrives, query and fragment kept (`forwarder_pages`);
 - `tutorial.html`, the tutorial rendered as a page;
 - `visualize.html`, the Visualize section's first tab: the n = 1 to 324 film at full
   size. Its second tab is the workbench at `workbench/`, which
@@ -157,6 +159,26 @@ DOCUMENT_PAGES: tuple[str, ...] = (
     "development.html",
     "defects.html",
 )
+#: The directory the site's papers are served from, under its root.
+PAPERS_DIR = "papers"
+#: The papers' slugs, each naming its case, its subject and its kind of paper. A paper is
+#: `papers/<slug>.html`, with its Markdown and its PDF beside it under the same slug
+#: (`paper_path`), and its renderer, templates and tests carry the slug in their names:
+#: `render_n11_optimality_review`, `render_n11_lower_bounds_explainer`. Both renderers
+#: import this module, so the slugs are written once, here.
+N11_OPTIMALITY_REVIEW = "n11-optimality-review"
+N11_LOWER_BOUNDS_EXPLAINER = "n11-lower-bounds-explainer"
+#: From a paper's page back up to the site's root, which is where the bar's links, the
+#: other pages and the atlas's files are.
+PAPERS_ROOT = "../"
+
+
+def paper_path(slug: str, suffix: str = ".html") -> str:
+    """Where a paper is served, by path under the site's root: its page, or with
+    `suffix` its Markdown (`.md`) or its PDF (`.pdf`)."""
+    return f"{PAPERS_DIR}/{slug}{suffix}"
+
+
 #: Every page the published site serves, by path under the site root, whichever build
 #: writes it. The navigation bar links only to these, and tests hold it to that.
 SITE_PAGES: tuple[str, ...] = (
@@ -165,13 +187,40 @@ SITE_PAGES: tuple[str, ...] = (
     RESULTS_PAGE,
     "cases.html",
     "papers.html",
-    "n11-optimality/t-060-explainer.html",
-    "explainer.html",
+    paper_path(N11_OPTIMALITY_REVIEW),
+    paper_path(N11_LOWER_BOUNDS_EXPLAINER),
     "tutorial.html",
     "visualize.html",
     "workbench/index.html",
     *DOCUMENT_PAGES,
 )
+
+#: Every page that moved, by the path it was served at and the path it is served at
+#: now, both under the site's root. The papers moved to `papers/<slug>.html` on
+#: 2026-10-01 (think-cmz6): the explainer from `explainer.html`, where it had been since
+#: the overview took the root, and the optimality paper from
+#: `n11-optimality/t-060-explainer.html`, with the landing address its directory had.
+#: Each old path is still served, as a forwarder (`forwarder_pages`), so a link written
+#: before the move arrives with its query and its fragment. Nothing on the site links an
+#: old path; a test holds every page to that.
+MOVED_PAGES: tuple[tuple[str, str], ...] = (
+    ("explainer.html", paper_path(N11_LOWER_BOUNDS_EXPLAINER)),
+    ("n11-optimality/t-060-explainer.html", paper_path(N11_OPTIMALITY_REVIEW)),
+    ("n11-optimality/index.html", paper_path(N11_OPTIMALITY_REVIEW)),
+)
+#: Every file that moved and is not a page, the same way: the papers' Markdown and PDF,
+#: which a script cannot forward. Each old path is served as a copy of the new one, made
+#: when the site is assembled, since the files come from other builds than this one: by
+#: the Pages workflow's `publish` job, and by `preview_site.copy_moved_files` on one
+#: machine. The first paper's had been linked since September, a dated review among the
+#: links; the optimality paper's PDF was linked from the README.
+MOVED_FILES: tuple[tuple[str, str], ...] = (
+    ("t-018-explainer.md", paper_path(N11_LOWER_BOUNDS_EXPLAINER, ".md")),
+    ("t-018-explainer.pdf", paper_path(N11_LOWER_BOUNDS_EXPLAINER, ".pdf")),
+    ("n11-optimality/t-060-explainer.md", paper_path(N11_OPTIMALITY_REVIEW, ".md")),
+    ("n11-optimality/t-060-explainer.pdf", paper_path(N11_OPTIMALITY_REVIEW, ".pdf")),
+)
+FORWARDER = TEMPLATES / "site-forwarder.html"
 
 #: Every file a render reads beside the record `overview_data.INPUTS` names; `inputs()`
 #: is the two together. The Pages workflow's deploy filter and the scope tool are checked
@@ -189,6 +238,7 @@ RENDER_INPUTS: tuple[Path, ...] = (
     RESULTS_ARTICLE,
     VISUALIZE_ARTICLE,
     PAPERS_ARTICLE,
+    FORWARDER,
     BROWSER,
     PACKING / "src" / "sqpack",
     PACKING / "devtools" / "site_documents.py",
@@ -640,10 +690,14 @@ def results_page() -> Page:
 def papers_page() -> Page:
     """The Papers section's page: a short introduction and one large card per paper,
     each the link to its paper, which is a full page of the site. It has no popover,
-    so it carries no popover script."""
+    so it carries no popover script. The introduction's link to the optimality paper is
+    the card's own address, filled from the one constant."""
     from devtools import overview_sections  # noqa: PLC0415
 
-    values = {"PAPER_CARDS": overview_sections.paper_cards()}
+    values = {
+        "PAPER_CARDS": overview_sections.paper_cards(),
+        "OPTIMALITY_PAPER": overview_sections.OPTIMALITY_PAPER,
+    }
     markdown = fill(
         PAPERS_ARTICLE.read_text(encoding="utf-8"), values, where=PAPERS_ARTICLE.name
     )
@@ -763,9 +817,41 @@ def result_fragments() -> list[Page]:
     ]
 
 
+def forwarder_pages() -> list[Page]:
+    """A forwarder at each address a page used to have (`MOVED_PAGES`), so no link written
+    before the move breaks.
+
+    A forwarder is a few lines and no page of the site: `overview/forward.js`, the script
+    the overview already forwards its own old fragments with, reads where the page is now
+    from the root element and sends the reader there with the query string and the
+    fragment they came with. For a reader without scripts it carries a refresh and a
+    link, and for a crawler the canonical address of the page it stands for. It has no
+    bar, no stamp and no styles, and is not among `PAGES`.
+    """
+    import posixpath  # noqa: PLC0415
+
+    from devtools.overview_sections import PAPERS  # noqa: PLC0415
+
+    titles = {paper.href: paper.title for paper in PAPERS}
+    template = FORWARDER.read_text(encoding="utf-8")
+    pages = []
+    for old, new in MOVED_PAGES:
+        values = {
+            "TARGET": html.escape(posixpath.relpath(new, posixpath.dirname(old)), quote=True),
+            "TITLE": html.escape(titles[new]),
+            "CANONICAL_URL": html.escape(canonical_url(new), quote=True),
+            "FORWARD_SCRIPT": _script_text(FORWARD_SCRIPT),
+        }
+        page = fill(template, values, where=FORWARDER.name)
+        assert_self_contained(old, page)
+        pages.append(Page(old, page))
+    return pages
+
+
 def render_site() -> list[Page]:
-    """Every file this module writes: the pages, then the result fragments."""
-    return [*render_all(), *result_fragments()]
+    """Every file this module writes: the pages, the result fragments, and a forwarder
+    at each address a page used to have."""
+    return [*render_all(), *result_fragments(), *forwarder_pages()]
 
 
 def write_site(output: Path, files: Sequence[Page]) -> None:
@@ -797,21 +883,27 @@ def main(argv: Sequence[str] | None = None) -> int:
     output = args.output.resolve()
     pages = render_all()
     fragments = result_fragments()
+    forwarders = forwarder_pages()
     if args.check:
         stale = [
             p.name
-            for p in (*pages, *fragments)
+            for p in (*pages, *fragments, *forwarders)
             if not (output / p.name).is_file()
             or (output / p.name).read_text(encoding="utf-8") != p.html
         ]
         if stale:
             print(f"stale or missing: {', '.join(stale)}", file=sys.stderr)
             return 1
-        print(f"{len(pages)} pages and {len(fragments)} result overviews match a fresh render")
+        print(
+            f"{len(pages)} pages, {len(fragments)} result overviews and "
+            f"{len(forwarders)} forwarders match a fresh render"
+        )
         return 0
-    write_site(output, [*pages, *fragments])
+    write_site(output, [*pages, *fragments, *forwarders])
     for page in pages:
         print(f"wrote {output / page.name} ({len(page.html) // 1024} KB)")
+    for forwarder in forwarders:
+        print(f"wrote {output / forwarder.name}, a forwarder")
     total = sum(len(fragment.html.encode("utf-8")) for fragment in fragments)
     places = sorted({(output / fragment.name).parent for fragment in fragments})
     print(

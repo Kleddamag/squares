@@ -16,7 +16,7 @@ per certificate; the prose is filled once, with the headline certificate's value
 
 <div class="doc-links screen-only">
   <a class="chip" href="{{SOURCE_URL}}" title="The Markdown this page is rendered from">MD</a>
-  <a class="chip" href="t-018-explainer.pdf" title="The typeset PDF of this page">PDF</a>
+  <a class="chip" href="{{PDF_URL}}" title="The typeset PDF of this page">PDF</a>
   <a class="chip" href="{{REPO_URL}}" title="The project on GitHub"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>GITHUB</a>
 </div>
 
@@ -179,12 +179,12 @@ computer-assisted certificates.
 The proof presented here is of this kind.
 
 <figure>
-  <div class="stage"><a href="known-best-1-100.pdf"><img src="known-best-1-100.svg" alt="{{COMPOSITE_ALT}}" width="2400" height="2896"></a></div>
+  <div class="stage"><a href="{{SITE_ROOT}}known-best-1-100.pdf"><img src="{{SITE_ROOT}}known-best-1-100.svg" alt="{{COMPOSITE_ALT}}" width="2400" height="2896"></a></div>
 
   <div class="stage screen-only">
 
 <video class="film" controls preload="none" playsinline width="1920" height="1080"
-    poster="ascent-n1-100-poster.png"
+    poster="{{SITE_ROOT}}ascent-n1-100-poster.png"
     aria-label="The atlas built one unit square at a time, from n = 1 to n = 100, at 1080p60.">
 <source src="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4" type="video/mp4; codecs=&quot;avc1.640028&quot;">
 <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4">Download
@@ -195,8 +195,8 @@ the film</a>. </video>
   <figcaption><strong>Figure 2.</strong> The best known packings of 1 through 100 unit squares, with upper bounds
   and, for unsettled cases, the current lower bounds verified here. A crimson star marks a recent result, a verified lower bound
   proved since {{RECENT_SINCE_DATE}}: {{N_STARRED}} of the hundred, {{N_PROVED_HERE}} of them here. The <a href="{{ATLAS_URL}}">repository</a> records every witness and its
-  provenance. PDFs are available for <a href="known-best-1-100.pdf">this figure</a> and the
-  <a href="known-best-1-324.pdf">full 324-case poster</a>. The film below the atlas draws the same hundred
+  provenance. PDFs are available for <a href="{{SITE_ROOT}}known-best-1-100.pdf">this figure</a> and the
+  <a href="{{SITE_ROOT}}known-best-1-324.pdf">full 324-case poster</a>. The film below the atlas draws the same hundred
   packings one square at a time, each step naming the bound it reaches and where that bound comes from; the
   <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-324-1080p60-citations.mp4">full
   <span class="tex">n = 1 \ldots 324</span> ascent</a> runs 8m 14s.</figcaption>

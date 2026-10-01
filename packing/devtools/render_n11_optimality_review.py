@@ -7,8 +7,15 @@ links, and uses KPress for Markdown, math, footnotes, typography, and PDF print.
 The page is one of the site's papers (`overview_sections.PAPERS`), so it carries the
 site's navigation bar, with Papers current, as the explainer does: the shared partial
 and stylesheet through `render_overview.nav_html`, the gear's program, and the script
-that drops the bar when the page is framed in a card's popover. It is served a level
-below the site's root, so the bar's links climb one. The bar is hidden in print.
+that drops the bar when the page is framed in a card's popover. The bar is hidden in
+print.
+
+Its slug is `n11-optimality-review`, and that is its name everywhere: this module, its
+templates and tests, and what it writes. Given the site's root (`--site`), it writes
+`papers/n11-optimality-review.html` and `.md`, and with `--pdf` the `.pdf` beside them.
+A paper is served a level below the site's root, so the bar's links climb one. Until
+2026-10-01 it was served at `n11-optimality/t-060-explainer.html`, which
+`render_overview` now serves as a forwarder.
 """
 
 from __future__ import annotations
@@ -27,12 +34,15 @@ from strif import atomic_output_file
 from devtools import render_n11_lower_bounds_explainer
 from devtools.render_overview import (
     EMBED_SCRIPT,
+    N11_OPTIMALITY_REVIEW,
     PAPER_TYPE_CSS,
+    PAPERS_ROOT,
     SITE_NAV,
     SITE_NAV_CSS,
     THEME_SCRIPT,
     favicon_html,
     nav_html,
+    paper_path,
 )
 
 PACKING = Path(__file__).resolve().parents[1]
@@ -42,11 +52,13 @@ ARTICLE = TEMPLATES / "n11-optimality-review-article.md"
 SHELL = TEMPLATES / "n11-optimality-review-shell.html"
 STYLE = TEMPLATES / "n11-optimality-review.css"
 FIGURES_MODULE = Path(__file__).with_name("n11_optimality_figures.py")
-OUTPUT_DIR = PACKING / "site" / "n11-optimality"
-STEM = "t-060-explainer"
+#: The site's root as this build writes it; the paper goes under `papers/` in it.
+SITE = PACKING / "site"
+#: The paper's slug, which names its page, its Markdown and its PDF.
+SLUG = N11_OPTIMALITY_REVIEW
 #: Where the paper is served, from the site's root, and the way back up to the root.
-SITE_PATH = f"{OUTPUT_DIR.name}/{STEM}.html"
-SITE_ROOT = "../"
+SITE_PATH = paper_path(SLUG)
+SITE_ROOT = PAPERS_ROOT
 TITLE = "A Review of the Optimality Proof of the Trump Packing of 11 Squares"
 DESCRIPTION = "A review of the optimality proof of the Trump packing of eleven squares."
 FIGURE_KEYS = (
@@ -272,8 +284,8 @@ def render(
         "DIAGRAM_LABEL_SCRIPT": render_n11_lower_bounds_explainer.INLINE_SCRIPT_ASSETS[
             "DIAGRAM_LABEL_SCRIPT"
         ].read_text(encoding="utf-8"),
-        "PDF_NAME": STEM + ".pdf",
-        "MARKDOWN_NAME": STEM + ".md",
+        "PDF_NAME": SLUG + ".pdf",
+        "MARKDOWN_NAME": SLUG + ".md",
         "REPO_URL": render_n11_lower_bounds_explainer.REPO_URL,
     }
     page = _fill(SHELL.read_text(encoding="utf-8"), values, source=SHELL)
@@ -281,22 +293,12 @@ def render(
     return page, markdown
 
 
-def _index() -> str:
-    destination = STEM + ".html"
-    return (
-        '<!doctype html><html lang="en"><head><meta charset="utf-8">'
-        f'<meta http-equiv="refresh" content="0; url={destination}">'
-        f'<link rel="canonical" href="{destination}">'
-        f"<title>{escape(TITLE)}</title></head><body>"
-        f'<p><a href="{destination}">Read the T-060 paper</a>.</p></body></html>\n'
-    )
-
-
-def output_files(output_dir: Path, html: str, markdown: str) -> dict[Path, str]:
+def output_files(site: Path, html: str, markdown: str) -> dict[Path, str]:
+    """What a render writes under the site's root `site`: the page and its Markdown,
+    beside each other under the paper's slug."""
     return {
-        output_dir / (STEM + ".html"): html,
-        output_dir / (STEM + ".md"): markdown,
-        output_dir / "index.html": _index(),
+        site / SITE_PATH: html,
+        site / paper_path(SLUG, ".md"): markdown,
     }
 
 
@@ -335,7 +337,12 @@ def _print_pdf(html_path: Path, pdf_path: Path) -> None:
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output-dir", type=Path, default=OUTPUT_DIR)
+    parser.add_argument(
+        "--site",
+        type=Path,
+        default=SITE,
+        help="the site's root; the paper is written under papers/ in it",
+    )
     parser.add_argument("--revision", default=None, help="full Git commit for source links")
     parser.add_argument("--pdf", action="store_true", help="also print the HTML with KPress")
     parser.add_argument("--check", action="store_true", help="compare current HTML/Markdown")
@@ -345,8 +352,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         figures=render_all_figures(),
         revision=args.revision or link_revision(),
     )
-    output_dir = args.output_dir.resolve()
-    outputs = output_files(output_dir, html, markdown)
+    site = args.site.resolve()
+    outputs = output_files(site, html, markdown)
     if args.check:
         if args.pdf:
             parser.error("--check compares HTML and Markdown; use --pdf for a fresh PDF")
@@ -356,16 +363,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             if not path.is_file() or path.read_text(encoding="utf-8") != content
         ]
         if stale:
-            raise SystemExit(
-                "stale n11 explainer output: " + ", ".join(str(path) for path in stale)
-            )
+            raise SystemExit(f"stale {SLUG} output: " + ", ".join(str(path) for path in stale))
         return 0
-    output_dir.mkdir(parents=True, exist_ok=True)
     for path, content in outputs.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
         with atomic_output_file(path) as temporary:
             temporary.write_text(content, encoding="utf-8")
     if args.pdf:
-        _print_pdf(output_dir / (STEM + ".html"), output_dir / (STEM + ".pdf"))
+        _print_pdf(site / SITE_PATH, site / paper_path(SLUG, ".pdf"))
     return 0
 
 

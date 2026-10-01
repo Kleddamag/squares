@@ -34,7 +34,14 @@ from devtools.overview_data import (
     math_html,
     tex_bounds,
 )
-from devtools.render_overview import DOCUMENT_PAGES, RESULTS_PAGE, SITE_PAGES
+from devtools.render_overview import (
+    DOCUMENT_PAGES,
+    N11_LOWER_BOUNDS_EXPLAINER,
+    N11_OPTIMALITY_REVIEW,
+    RESULTS_PAGE,
+    SITE_PAGES,
+    paper_path,
+)
 from devtools.render_recent_results import (
     HOLDS,
     NOT_A_BOUND,
@@ -116,8 +123,8 @@ def card_kind(href: str) -> str:
 def is_site_page(href: str) -> bool:
     """Whether `href` is a full page this site serves, the one rule for which cards
     navigate in the same tab (`link_card`, `new_tab=False`): an entry of
-    `render_overview.SITE_PAGES`, the optimality paper's
-    `n11-optimality/t-060-explainer.html` among them, or a directory the site serves by
+    `render_overview.SITE_PAGES`, the papers under `papers/` among them
+    (`papers/n11-optimality-review.html`), or a directory the site serves by
     its `index.html`, as `workbench/` is. A query or fragment on it does not matter. A
     file beside the page, such as a poster's PDF, an address off the site and a place
     on this page are not pages."""
@@ -1324,10 +1331,13 @@ class Paper(NamedTuple):
     size: CardSize = "large"
 
 
-#: Where the optimality paper is served, which `render_n11_optimality_review` builds
-#: (its `SITE_PATH`; a test holds the two together). Named here rather than read from
-#: that module, which loads the explainer's renderer and so this one's.
-OPTIMALITY_PAPER = "n11-optimality/t-060-explainer.html"
+#: Where the two papers are served, under `papers/` by their slugs
+#: (`render_overview.paper_path`): the optimality review, which
+#: `render_n11_optimality_review` builds, and the lower-bounds explainer, which
+#: `render_n11_lower_bounds_explainer` builds. Each renderer's `SITE_PATH` is the same
+#: path from the same slug.
+OPTIMALITY_PAPER = paper_path(N11_OPTIMALITY_REVIEW)
+LOWER_BOUNDS_PAPER = paper_path(N11_LOWER_BOUNDS_EXPLAINER)
 
 #: The site's papers, in the order the Papers page shows them, one large card each
 #: (`paper_cards`). A new paper is one entry here. The optimality paper is first: it
@@ -1351,7 +1361,7 @@ PAPERS: tuple[Paper, ...] = (
         ),
     ),
     Paper(
-        href="explainer.html",
+        href=LOWER_BOUNDS_PAPER,
         label="Explainer",
         title="New lower bounds for square packing for n = 11",
         description=(
@@ -1373,7 +1383,7 @@ PAPERS: tuple[Paper, ...] = (
     ),
 )
 #: The explainer, whose card reads the same on the overview as on the Papers page.
-EXPLAINER = next(paper for paper in PAPERS if paper.href == "explainer.html")
+EXPLAINER = next(paper for paper in PAPERS if paper.href == LOWER_BOUNDS_PAPER)
 #: The optimality paper, whose card on the overview carries its label and its title.
 OPTIMALITY = next(paper for paper in PAPERS if paper.href == OPTIMALITY_PAPER)
 

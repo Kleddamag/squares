@@ -24,7 +24,7 @@ A static instance embeds like any other font. This tool writes one per face the 
 pass asks for, into `templates/fonts/`, and hands them to
 `render_n11_lower_bounds_explainer_pdf` as `@font-face` rules with the bytes inline
 (`print_face_css`). They are injected into the loaded page immediately before it is printed, so
-the screen keeps the variable font and the served `site/index.html` does not gain a byte. The
+the screen keeps the variable font and the served page does not gain a byte. The
 instancer itself is kpress's (`vendor/kpress/devtools/instance_sans.py`), loaded from the
 submodule by path: kpress ships instances at its own weight tokens, and this page overrides
 them, which is the case that file is written to serve.

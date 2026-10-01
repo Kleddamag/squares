@@ -20,6 +20,16 @@ the client behaviors, all inlined. Nothing is fetched at view time, which
 is what lets the same artifact serve from GitHub Pages, from a file:// URL, and
 from an artifact host with a strict content-security policy.
 
+The paper's slug is `n11-lower-bounds-explainer`, and that is its name everywhere: this
+module, its templates, scripts and tests, and what it writes. Given the site's root
+(`--site`), a render writes `papers/n11-lower-bounds-explainer.html` and `.md`, and
+`render_n11_lower_bounds_explainer_pdf` draws the `.pdf` beside them. The atlas's files
+that the page shows and links are the site's, shared with the overview and named in every
+link preview, so they are written at the site's root and the page reaches them a level up.
+Until 2026-10-01 the page was served at `explainer.html`, and before the overview took the
+root, at the root itself; `render_overview` serves the first as a forwarder and forwards
+the second's fragments.
+
 Usage, from `packing/`:
 
     uv run --frozen --all-extras --group dev \\
@@ -60,11 +70,14 @@ from devtools.build_composite_figure_data import load_record as load_figure_reco
 from devtools.measure_net_coarsening import largest_admissible_side
 from devtools.migrate_math import plain
 from devtools.render_overview import (
+    N11_LOWER_BOUNDS_EXPLAINER,
     PAPER_TYPE_CSS,
+    PAPERS_ROOT,
     SITE_NAV,
     SITE_NAV_CSS,
     favicon_html,
     nav_html,
+    paper_path,
 )
 from devtools.repo_links import REPO_URL, repo_url
 from sqpack.fractional.certificate import (
@@ -98,10 +111,10 @@ T025_CLAIM = THRESHOLD_CASE / "t-025-verifiable-claim-191-50.md"
 T026_CLAIM = THRESHOLD_CASE / "t-026-verifiable-claim-dilation-limit.md"
 T026_REVIEW = REPO / "docs/project/reviews/review-2026-09-10-t025-t026-verifiable-claims.md"
 # The registered result these certificates belong to, lowercased as a filename
-# stem. `conventions.md` builds every document name for a result from this id --
-# `t-018-proof-card.md`, `t-018-verifiable-claim-<bound>.md`, `t-018-explainer.md` --
-# and says the published form takes the same name as the case-local one, so the
-# id is written once here and the names are derived rather than typed.
+# stem. `conventions.md` builds every case-local document name for a result from this
+# id -- `t-018-proof-card.md`, `t-018-verifiable-claim-<bound>.md` -- so the id is
+# written once here and the names are derived rather than typed. The published paper
+# is not one of them: it is named by its slug (`SLUG`), as every paper on the site is.
 RESULT_ID = "t-018"
 TEMPLATES = Path(__file__).with_name("templates")
 TEMPLATE = TEMPLATES / "n11-lower-bounds-explainer-shell.html"
@@ -128,7 +141,15 @@ VERIFIER_CLAIM = CASE / "verify_claim.py"
 #: how long it is, so a reader knows the whole check is a short read before deciding
 #: whether to make it.
 PINNED_VERIFIER = CASE / "minimal_verify.py"
-OUTPUT = PACKING / "site" / "index.html"
+#: The site's root as this build writes it; the paper goes under `papers/` in it.
+SITE = PACKING / "site"
+#: The paper's slug, which names its page, its Markdown and its PDF.
+SLUG = N11_LOWER_BOUNDS_EXPLAINER
+#: Where the paper is served, from the site's root, and the way back up to the root.
+SITE_PATH = paper_path(SLUG)
+SITE_ROOT = PAPERS_ROOT
+#: The page a render writes by default, and where every check reads it.
+OUTPUT = SITE / SITE_PATH
 
 # Four colors have to stay apart in the prover: the mass comfortably above the
 # threshold, the mass near it, the mass below it (a region that never occurs
@@ -313,9 +334,9 @@ PRIOR_TEN_MEMO_URL = "https://walterstromquist.com/papers/squares2.pdf"
 # document -- so the deployment's own address has to be stated somewhere, and this
 # is that one place.
 SITE_URL = "https://jlevy.github.io/squares/"
-#: The page's own address. The site root is the overview; the explainer is served beside
-#: it as `explainer.html`, renamed at publish, and its assets stay beside it at the root.
-PAGE_URL = SITE_URL + "explainer.html"
+#: The page's own address: under `papers/`, by its slug. The atlas's files it shows and
+#: links stay at the site's root (`site_file`), where the overview links them too.
+PAGE_URL = SITE_URL + SITE_PATH
 SITE_NAME = "Squares"
 #: The atlas the Figure 2 caption sends a reader to browse, linked as a directory.
 ATLAS = PACKING / "atlas" / "known-best"
@@ -418,7 +439,9 @@ def site_file(path: Path) -> str:
     Everything the page itself points at is relative, because the page has to open
     the same way from a file, from Pages and from an artifact host. A link preview
     cannot: the crawler that reads `og:image` has no base to resolve against and
-    drops a relative one, so the card states the deployed address in full.
+    drops a relative one, so the card states the deployed address in full. The atlas's
+    files are served at the site's root, where they were before the papers moved under
+    `papers/`, so a card an unfurler already holds still names a file that is there.
     """
     return SITE_URL + path.name
 
@@ -2343,6 +2366,10 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         "N_PROVED_HERE": str(lower_bounds_proved_here()),
         "RECENT_SINCE_DATE": f"{RECENT_SINCE.day} {RECENT_SINCE:%B %Y}",
         "SOURCE_URL": MARKDOWN_OUTPUT.name,
+        # The PDF is drawn beside the page by `render_n11_lower_bounds_explainer_pdf`,
+        # under the same slug; the atlas's files are a level up, at the site's root.
+        "PDF_URL": OUTPUT.with_suffix(".pdf").name,
+        "SITE_ROOT": SITE_ROOT,
         "REPO_URL": REPO_URL,
         # The top of the page names when the result was first published, when it was last
         # revised, and which edition is being read; the full list of editions is linked
@@ -2456,7 +2483,7 @@ def shell_substitutions(static: Path, shared: dict[str, str], body: str) -> dict
         },
         "KPRESS_CLIENT_SCRIPT": kpress_client_js(static),
         "SITE_NAV_CSS": SITE_NAV_CSS.read_text(encoding="utf-8"),
-        "SITE_NAV": nav_html("papers"),
+        "SITE_NAV": nav_html("papers", root=SITE_ROOT),
         **shared,
         "BODY_HTML": body,
     }
@@ -2684,10 +2711,11 @@ def kerned_math_spans(source: str) -> str:
     )
 
 
-#: Where the published Markdown is written, beside the page it is the source of. Named
-#: for the result the way a case-local document is: what a file is called does not
-#: depend on which directory it is served from.
-MARKDOWN_OUTPUT = PACKING / "site" / f"{RESULT_ID}-explainer.md"
+#: Where the published Markdown is written: beside the page it is the source of, under
+#: the same slug. It was `t-018-explainer.md` at the site's root until the papers took
+#: their slugs (2026-10-01); that address is still served, as a copy
+#: (`render_overview.MOVED_FILES`).
+MARKDOWN_OUTPUT = OUTPUT.with_suffix(".md")
 
 
 #: Every repository path a render reads, repository-relative, stated where the outputs
@@ -2922,6 +2950,11 @@ def published_markdown(source: str, *, default_slug: str) -> str:
     source = re.sub(r"</?div\b[^>]*>", "", source)
     source = re.sub(r"</?p\b[^>]*>", "", source)
     source = _inline_markdown_document(source)
+    # The page reaches the site's files a level up, which only resolves from where the
+    # page is served. This edition is read wherever it is taken -- downloaded, handed to
+    # a model, or served at the address it had before the papers moved -- so it names
+    # each of those files where the site serves it.
+    source = source.replace(f"]({SITE_ROOT}", f"]({SITE_URL}")
     source = re.sub(r"\n{3,}", "\n\n", source).strip() + "\n"
     _refuse_screen_only_prose(source)
 
@@ -3132,7 +3165,13 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="a certificate to explain; repeatable, first is shown by default "
         "(default: the retained 19/5 and 381/100 certificates for n = 11)",
     )
-    parser.add_argument("--output", type=Path, default=OUTPUT)
+    parser.add_argument(
+        "--site",
+        type=Path,
+        default=SITE,
+        help="the site's root: the page and its Markdown are written under papers/ in it, "
+        "and the atlas's files the page shows at the root itself",
+    )
     parser.add_argument(
         "--prepare-math",
         action="store_true",
@@ -3163,9 +3202,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         sys.stdout.write(katex_css(kpress_static()))
         return 0
 
-    # Paths are resolved here, once: a relative `--certificate` or `--output`
+    # Paths are resolved here, once: a relative `--certificate` or `--site`
     # used to render the whole page and then fail on `relative_to`.
-    output = args.output.resolve()
+    site = args.site.resolve()
+    output = site / SITE_PATH
     label = output.relative_to(REPO).as_posix() if output.is_relative_to(REPO) else str(output)
     certificates = (
         tuple(path.resolve() for path in args.certificate) if args.certificate else WALKTHROUGH
@@ -3179,7 +3219,7 @@ def main(argv: Sequence[str] | None = None) -> int:
 
         page = prepare_math_html(page)
         assert_self_contained(page)
-    document = output.parent / MARKDOWN_OUTPUT.name
+    document = output.with_name(MARKDOWN_OUTPUT.name)
     written = ((output, page), (document, rendered.markdown))
     if args.check:
         for path, content in written:
@@ -3197,8 +3237,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     for path, content in written:
         with atomic_output_file(path) as temporary:
             temporary.write_text(content, encoding="utf-8")
+    # At the site's root, not beside the page: the overview links these files by name,
+    # and a link preview names the card there (`site_file`).
     for asset in COMPOSITE_ASSETS:
-        shutil.copyfile(asset, output.parent / asset.name)
+        shutil.copyfile(asset, site / asset.name)
     print(f"wrote {label} ({len(page) / 1024:.0f} KB)")
     name = (
         document.relative_to(REPO).as_posix()

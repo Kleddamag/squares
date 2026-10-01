@@ -78,14 +78,18 @@ from typing import TYPE_CHECKING, Never
 
 from strif import atomic_output_file
 
+from devtools.render_overview import N11_LOWER_BOUNDS_EXPLAINER, paper_path
 from sqpack.probes import applied, probe
 
 if TYPE_CHECKING:
     from playwright.sync_api import Page
 
 ROOT = Path(__file__).resolve().parent.parent
-PAGE = ROOT / "site" / "index.html"
-OUTPUT = ROOT / "site" / "t-018-explainer.pdf"
+#: The page the PDF is drawn from, where `render_n11_lower_bounds_explainer` writes it and
+#: where it is served: under `papers/` in the site, by the paper's slug. The PDF is written
+#: beside it under the same slug.
+PAGE = ROOT / "site" / paper_path(N11_LOWER_BOUNDS_EXPLAINER)
+OUTPUT = PAGE.with_suffix(".pdf")
 
 #: The reviewed publication pagination. Unlike PDF bytes, this is portable across the
 #: pinned Linux and macOS Chromium builds. A one-line metric change once moved Figure 1
@@ -154,8 +158,11 @@ BROWSER_OVERRIDE = "SQPACK_CHROMIUM"
 
 #: Where the page lives, so a link in the PDF points there rather than at whoever built
 #: it. Kept in step with `render_n11_lower_bounds_explainer.SITE_URL` by the test beside this
-#: module.
+#: module. A relative link is resolved against the page's own address (`PAGE_URL`), not
+#: the site's root: the page is served a level below it, so its links to the site's
+#: other pages and to the atlas's files climb one.
 SITE_URL = "https://jlevy.github.io/squares/"
+PAGE_URL = SITE_URL + paper_path(N11_LOWER_BOUNDS_EXPLAINER)
 
 #: The page is drawn from a `file://` URL, which is what keeps the render offline and
 #: reproducible, and which turns every relative `href` into a link to the build
@@ -490,7 +497,7 @@ def render_pdf_bytes(
     then reads a step lighter than the serif and the mathematics beside it.
     `devtools.sans_instances` is where the set is declared and checked, and injecting
     the faces here rather than rendering them into the page is what keeps the served
-    `index.html` and the screen on the variable font.
+    page and the screen on the variable font.
 
     The final DOM check distinguishes readable math from a finished failure that
     exposed TeX source. Native MathML fallback is permitted when readable; the later
@@ -545,7 +552,7 @@ def render_pdf_bytes(
             page.goto(PAGE.as_uri(), wait_until="load")
             page.wait_for_selector(READY, timeout=60_000)
             page.evaluate(FONTS_READY)
-            page.evaluate(_ABSOLUTE_LINKS, SITE_URL)
+            page.evaluate(_ABSOLUTE_LINKS, PAGE_URL)
             page.add_style_tag(content=print_face_css())
             page.evaluate(_FACES_APPLIED, [list(_MARGIN_BOX_TOKENS), _MARGIN_BOX_SAMPLE])
             page.evaluate(_IMAGES_DECODED)

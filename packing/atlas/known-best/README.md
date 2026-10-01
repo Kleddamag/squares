@@ -233,10 +233,14 @@ uv run --frozen --all-extras --group dev python -m devtools.build_known_best_atl
 
 The first command acquires only missing UnitSquare assets unless `--refresh` is
 requested; Kingbird live audits are ephemeral and write no geometry.
-The second rebuilds witnesses, individual house renderings, both composites and every
-export of each, the manifest, and frontier witness links from retained inputs.
-`--report` measures what those exports cost — bytes, square polygons, bytes per square,
-and how each composite encodes a square — without rebuilding anything.
+The second rebuilds witnesses, individual house renderings, the manifest, and frontier
+witness links from retained inputs.
+The two composites and their exports are drawn apart, by `--update-composites`, at a
+version bump or on demand; each states the data commit it was drawn from, and
+`--check-composites` holds it to that statement without rebuilding anything
+([the figure playbook](FIGURE-PLAYBOOK.md#rebuild-it)). `--report` measures what those
+exports cost — bytes, square polygons, bytes per square, and how each composite encodes
+a square — without rebuilding anything.
 Rasters are drawn by cairosvg, the same renderer that draws the PDFs, so every export of
 one drawing agrees; check mode reads the embedded source-SVG receipt without invoking a
 renderer at all. Git remains the integrity boundary for co-committed outputs.

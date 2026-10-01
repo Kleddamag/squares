@@ -928,8 +928,10 @@ on exactly that edge.
 
 For every newly retained result, first complete the
 [new result publication sequence](packing/campaign/documentation-pass.md#new-result-publication):
-update the frontier, README and survey, and regenerate affected survey SVG/PDF/PNG
-exports together. That sequence also applies when no explainer edition changes.
+update the frontier, README and atlas data, and re-pin the data revision.
+The survey posters are not redrawn for a result; they are
+[release assets](#release-assets-are-drawn-at-a-version-bump-or-on-demand).
+That sequence also applies when no explainer edition changes.
 
 The explainer at <https://jlevy.github.io/squares/> is not checked in.
 GitHub Pages builds it from `main` in `.github/workflows/pages.yml`, on every push that
@@ -1054,18 +1056,22 @@ results page carries its own, and the overviews of three sampled results carry e
 repository link the renderer writes for them ([D-512](defects.md)). Run it from a
 checkout at the deployed commit, since the register it reads is the checkout’s.
 
-**One version, shared by every artifact** (the owner, 2026-09-22): the explainer’s
-credits, the atlas footer, the workbench stage and the videos all print
-`PUBLICATION_EDITION` from `src/sqpack/release.py`, written like `v0.4.1-3b50e2`. The
-version comes from the first entry in `PUBLICATION_HISTORY`.
+**One version, written one way** (the owner, 2026-09-22): the explainer’s credits, every
+page’s footer and the workbench stage print `PUBLICATION_EDITION` from
+`src/sqpack/release.py`, written like `v0.4.1-3b50e2`. The version comes from the first
+entry in `PUBLICATION_HISTORY`, and the six characters after it name the data.
+The atlas posters and the films carry the same spelling at the data commit each was
+drawn from, as
+[Release assets](#release-assets-are-drawn-at-a-version-bump-or-on-demand) describes.
 
 **The version history keeps every edition, and dates each by first publication.** The
 top of the page reads, on two lines, like “First published September 5, 2026 · Last
-revised September 22, 2026” and “v0.4.1-3b50e2 (version history)”: when the result first
-reached a reader, when it was last revised, which edition is being read, and a link to
-the full list at the foot of the page.
-The first date is the oldest edition’s, so it does not move; the second date and the
-edition are the current one’s, so they do.
+revised September 30, 2026” and “v0.4.1-3b50e2 (version history)”: when the result first
+reached a reader, when the article last changed, which edition is being read, and a link
+to the full list at the foot of the page.
+The first date is the oldest edition’s, so it does not move.
+The second is `EXPLAINER_REVISED`, the date of the last commit that changed the article,
+which is changed in that commit; [Dates](#dates-on-generated-artifacts) has the rule.
 `PUBLICATION_HISTORY` lists every edition ever published, newest first, and an edition
 never comes off it — a new one goes on the front.
 It used to keep “the two retained editions”, and adding v0.4.1 under that rule dropped
@@ -1099,35 +1105,102 @@ To re-cut and publish them, follow
 [Regenerating and publishing the ascent videos](packages/workbench/README.md#regenerating-and-publishing-the-ascent-videos),
 the ordered runbook from prerequisites to the post-merge check.
 
-**After any commit that changes the data, re-pin.** A commit cannot contain its own
-hash, so a data change is followed by a second commit that sets `DATA_REVISION` to the
-data commit and rebuilds the atlas family
-(`uv run --frozen --all-extras --group dev python -m devtools.build_known_best_atlas --update`).
-`tests/test_release.py` fails until it does, and says which hash to pin.
+**After any commit that changes the data, re-pin, which is one line.** A commit cannot
+contain its own hash, so a data change is followed by a second commit that sets
+`DATA_REVISION` to the data commit:
+
+```bash
+uv run --frozen --all-extras --group dev python -m devtools.release_pin --update
+```
+
+`tests/test_release.py` fails until it does, and names the command.
+Nothing is rebuilt for it and no binary changes.
 Only a branch’s head has to agree; a merge keeps the branch’s data commit unless main’s
-data moved too.
+data moved too, and then the merge is the data commit and the branch re-pins after
+merging `main`.
 
-**Cutting an edition** is the one manual step, and it is editorial: it changes the
-version, and with it the revision the committed artifacts are stamped with.
-Use at most one publication patch bump per merge.
-Keep the chosen version fixed throughout a pull request; further edits update the
-content revision, not the patch number.
-To cut one:
+### Release assets are drawn at a version bump, or on demand
 
-1. Add the edition to the front of `PUBLICATION_HISTORY` with the date its label will
-   first appear in Git, and set `PUBLICATION_REVISION`, the commit the claim documents
-   link to, to the short hash of the commit whose content the edition describes.
-   That revision is by construction older than the commit that carries the bump.
-   `DATA_REVISION` follows the data, not the edition, as the paragraph above says.
-2. Rebuild the atlas family:
-   `uv run --frozen --all-extras --group dev python -m devtools.build_known_best_atlas --update`
-   (see the cairo note under Supported Environment), and regenerate the claim documents:
-   `uv run --frozen --all-extras --group dev python -m devtools.render_verifiable_claim`.
-3. Run `packing-validate --only "known-best"` — which since 2026-09-07 also selects the
-   deferred whole-atlas rebuild, and is meant to here — and
-   `pytest tests/test_explainer.py tests/test_verify_claim.py tests/test_release.py`,
-   and commit the release module, the eight atlas files and the three generated
-   documents together.
+The atlas posters (`known-best-1-100` and `known-best-1-324`, each an SVG with its PNG
+and PDF exports) and the films are expensive to draw and large to keep, so they are
+drawn when the version is bumped and when someone asks, never because the data moved
+(the owner, 2026-10-01). Each states what it was drawn from.
+A poster records the data commit and that commit’s date in its SVG metadata, prints them
+as its footer stamp and its dateline, and binds its PNGs and PDF to the SVG by digest
+receipts. A film’s frames carry the stamp they were captured with.
+
+A poster may therefore trail the data between bumps.
+While its data revision is the pin, every label on it must agree with the figure record.
+Once the pin has moved, the cards that differ are listed by every check and fail none.
+A version bump fails every poster until it is redrawn.
+`COMPOSITES_MAY_TRAIL` in `release.py` is the switch; `False` makes a trailing card a
+failure. From `packing/`:
+
+```bash
+# Hold the retained posters to their own records. Rebuilds nothing; about five seconds.
+uv run --frozen --all-extras --group dev python -m devtools.build_known_best_atlas --check-composites
+
+# Redraw both posters and their six exports from the retained witnesses. About a minute.
+uv run --frozen --all-extras --group dev python -m devtools.build_known_best_atlas --update-composites
+```
+
+`--update-composites` refuses a stale pin and uncommitted data, since the stamp it draws
+has to name the data in the tree.
+`--update` rewrites the data layer alone: witnesses, renderings, manifest and frontier
+links. [The plan](docs/project/specs/active/plan-2026-10-01-release-assets-on-demand.md)
+has the measurements behind this and the options that were weighed, and
+`python -m devtools.measure_release_assets` repeats them.
+
+### Dates on generated artifacts
+
+Each date has one rule, and `python -m devtools.artifact_dates` prints every date with
+its source and whether it is what the rule gives:
+
+- A date derived from a commit is the commit’s author date, on the author’s own
+  calendar.
+- A paper’s “revised” date is the date of the last commit that changed its article.
+  The explainer’s is `EXPLAINER_REVISED` in `release.py`; the optimality paper’s is in
+  its article’s credits.
+  Change it in the commit that changes the article; `tests/test_artifact_dates.py` fails
+  when it stands still.
+- A poster’s dateline is the date of the data commit it was drawn from.
+- A PDF’s `CreationDate` and `ModDate` are the date on its face, at noon UTC, and never
+  the build clock.
+- A date a person asserts stays typed: an edition’s first publication, the day a source
+  published its proof, the day the register was reviewed.
+
+### Cutting an edition
+
+Bumping the version is editorial, and it is when the release assets are redrawn.
+Use at most one publication patch bump per merge, and keep the chosen version fixed
+throughout a pull request.
+One command prepares the bump and prints what is left.
+From `packing/`, on a clean tree whose pin is current:
+
+```bash
+uv run --frozen --all-extras --group dev python -m devtools.cut_release v0.5.0 \
+    --scope "One sentence on what the edition adds."
+```
+
+It does these, and `--dry-run` lists them without doing any:
+
+1. Adds the edition to the front of `PUBLICATION_HISTORY`, dated by `--date` (today in
+   UTC by default; correct it if the deployment lands on another day), and sets
+   `PUBLICATION_REVISION`, the commit the claim documents link to, to `HEAD`.
+   `DATA_REVISION` follows the data, not the edition.
+2. Redraws both posters and their exports (`build_known_best_atlas --update-composites`;
+   see the cairo note under Supported Environment).
+3. Regenerates the claim documents (`render_verifiable_claim`).
+4. Runs `--check-composites` and
+   `pytest tests/test_release.py tests/test_explainer.py tests/test_verify_claim.py tests/test_known_best_composites.py`.
+
+It commits nothing, tags nothing and publishes nothing.
+What it prints for the owner to do: commit the release module, the eight atlas files and
+the generated documents together and merge them; wait for the “Certificate page”
+workflow and run `check_published_site`; tag the merge `v0.5.0`; create the GitHub
+release with the poster PDFs and PNGs attached.
+The papers’ PDFs are built by Pages from the merge.
+The films stay on the release that carries them until they are cut again.
 
 ## Focused Quality Commands
 

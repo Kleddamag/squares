@@ -188,14 +188,15 @@ def test_no_chip_wraps(laid: dict[tuple[str, int], Laid], name: str, width: int)
 def test_every_standing_chip_is_one_size(
     laid: dict[tuple[str, int], Laid], name: str, width: int
 ) -> None:
-    """`superseded`, `reported`, `second certificate` and the rest are the one chip: one
-    font size, one line height and one block size, the rung chips' own, and they differ
-    only in their words. A result that still stands draws no chip at all."""
+    """A status line's chips, `confirmed`, `recorded`, `superseded`, `second certificate`
+    and the rest, are the one chip: one font size, one line height and one block size,
+    the rung chips' own, and they differ only in their words. Every row draws its
+    status, and a result that is the current best draws no chip for that."""
     chips = laid[name, width].chips
     standing = [chip for chip in chips if chip["chip"] == "standing"]
     rungs = [chip for chip in chips if chip["chip"] == "rung"]
-    assert {chip["text"] for chip in standing} >= {"superseded"}
-    assert "current best" not in {chip["text"] for chip in standing}
+    assert {chip["text"] for chip in standing} >= {"confirmed", "superseded"}
+    assert not {"current best", "reported", "not a bound"} & {chip["text"] for chip in standing}
     for measure in ("font_size", "line_height", "block_size"):
         sizes = {chip[measure] for chip in standing}
         assert len(sizes) == 1, (measure, sizes)

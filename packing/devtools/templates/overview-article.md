@@ -23,8 +23,8 @@ We and several others have proved new results as part of this project for low va
 $n$, including $n = 11$, $n = 12$, $n = 17$ and many others.
 As part of a collaborative open effort, several people have built on results from this
 project or developed other new proofs, and this site
-[independently checks and documents](#verification-ladders) the proofs and
-certificates behind them.
+[independently checks and documents](#verification-ladders) the proofs and certificates
+behind them.
 
 If you have new results or know of newer results, please
 [file an issue]({{NEW_ISSUE_URL}}) to report them, and we will gladly incorporate them
@@ -43,25 +43,24 @@ and cite your work.
 The table lists every result, newest first: new bounds for particular numbers of
 squares, found here or by others.
 Each is dated by its publication if it is by others and by the day it was established if
-it is this project’s, and carries its rungs and, unless a verified case bound rests on
-it now, its standing, which says why not: most often, that it is *superseded*.
+it is this project’s, and carries its rungs and its status, how far the work on it here
+has gone: *recorded* when it has been registered from its source and nothing here has
+read or replayed it, *reviewed* once its argument has been read here, *confirmed* once a
+replay of its certificate has passed, and *incomplete* while a defect found in it is
+open. A result that no longer holds a case bound is marked *superseded*.
 {{STAR_LEGEND}}
-A result by others is registered as *reported* when its source is taken in, and as
-*verified* only after its certificate is replayed here in full and its mathematics
+
+A result by others is recorded when its source is taken in, and its bound counts as
+verified only after its certificate is replayed here in full and its mathematics
 reviewed, with the credit its authors give;
 [`epistemics.md`](epistemics.html#results-by-others) states the policy.
+{{STATUS_COUNTS}}
 The table starts with superseded results hidden, at significance S4 and up and a maximum
 age of 180 days; clear Hide superseded, choose All and clear Max age to see every row.
 
 {{RECENT}}
 
 <p class="site-more"><a href="all-results.html">See all results{{ARROW_RIGHT}}</a></p>
-
-A reported bound counts here only once its certificate is replayed.
-These are the cases up to $n = 100$ where a source reports a recent lower bound above
-the one verified so far, each linked to its case in the frontier atlas:
-
-{{AWAITING_REPLAY}}
 
 <!-- This section's fragment was #verification-at-a-glance until 2026-10-01. The empty
      anchor in its heading keeps an old link landing here, with no script, and keeps

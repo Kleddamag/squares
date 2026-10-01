@@ -12,10 +12,13 @@ sources state, read from the bibliography rather than restated: building on this
 project, crediting it second-hand, independent of it, and published before it began.
 Within each group the entries still waiting on a replay here (`C` below `C3`) come
 first, since they are the queue. Their credit and published date are shown beside the
-rungs, with the result's standing, derived from the case records and never stored by
-`devtools.render_recent_results.standing`, the same function the site's overview uses:
-whether a case bound rests on it now, and if not, whether it was superseded or is a
-second certificate for a value another result holds.
+rungs. Every row of both tables ends its ratings with the result's status
+(`devtools.result_status`, the function the site's tables use): recorded, reviewed,
+confirmed or incomplete, derived from the rungs and the cited evidence and never
+stored; then who has the next move, where the register records an `activity`; then
+its place on the frontier where it is not the current best, `superseded` or `second
+certificate`, which `devtools.render_recent_results.standing` derives from the case
+records.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.render_results --update
@@ -29,8 +32,9 @@ from pathlib import Path
 
 from strif import atomic_output_file
 
-from devtools.render_recent_results import load_records, standing
+from devtools.render_recent_results import load_records, position_marks, standing
 from devtools.result_credit import OTHERS, credit_line, source_lineage
+from devtools.result_status import status_line
 from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -61,6 +65,11 @@ record; rung 5, formal verification reviewed by human experts; a rung-3 result i
 machine-checked with its review record pending.
 `devtools/check_results.py` validates the structural support and required
 explanations for every declared `V` and `C`.
+A result's status says how far the work on it here has gone, and follows `C`:
+*recorded* (`C0`), *reviewed* (`C1`), *confirmed* (`C2` and up), or *incomplete* while a
+defect found in it is open. After it come who has the next move, where one is recorded,
+and the result's place on the frontier where it is not the current best: *superseded*,
+or a *second certificate* for a value another result holds.
 """
 
 
@@ -122,17 +131,22 @@ def render() -> str:
     lines = [HEADER]
     lines.append(f"## {OURS}")
     lines.append("")
-    lines.append("| id | n | V | C | S | novelty | claim |")
-    lines.append("| --- | --- | --- | --- | --- | --- | --- |")
+    records = load_records()
+    evidence = records.register.evidence
+
+    def status(record: dict) -> str:
+        return status_line(record, evidence, position_marks(standing(record, records)))
+
+    lines.append("| id | n | V | C | S | status | novelty | claim |")
+    lines.append("| --- | --- | --- | --- | --- | --- | --- | --- |")
     lines.extend(
         f"| {record['id']} | {_scope(record)} | {record['verification']} "
         f"| {record['confirmation']} | S{record['significance']['score']} "
-        f"| {record['novelty']} | {_claim(record)} |"
+        f"| {status(record)} | {record['novelty']} | {_claim(record)} |"
         for record in ours
     )
     lines.append("")
     if others:
-        records = load_records()
         lines.append("## Results by Others")
         lines.append("")
         lines.append(
@@ -144,13 +158,13 @@ def render() -> str:
         for title, group in others:
             lines.append(f"### {title}")
             lines.append("")
-            lines.append("| id | n | credit | published | V | C | S | standing | claim |")
+            lines.append("| id | n | credit | published | V | C | S | status | claim |")
             lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- |")
             lines.extend(
                 f"| {record['id']} | {_scope(record)} | {credit_line(record, sources)} "
                 f"| {record['attribution']['published']} | {record['verification']} "
                 f"| {record['confirmation']} | S{record['significance']['score']} "
-                f"| {standing(record, records)} | {_claim(record)} |"
+                f"| {status(record)} | {_claim(record)} |"
                 for record in group
             )
             lines.append("")

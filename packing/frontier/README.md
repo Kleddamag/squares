@@ -231,6 +231,10 @@ credited, is policy in
    replay and review it waits on.
    Its date is `attribution.published`; `established` is this project’s own results’
    date and the checker refuses it here.
+   Its [status](../../epistemics.md#status) is derived and reads *recorded* from this
+   step on. Once a replay or review of it is under way here, or a question about it is
+   with its authors, say so in the entry’s `activity`, dated and linked to the bead or
+   issue that shows it, and remove it when the work lands or the answer arrives.
 4. If geometry is available, adapt it once to
    [`Witness/v2`](../witnesses/witness.schema.yaml), then use `packing-witness inspect`
    or `check` with explicit arithmetic, precision, and tolerance.

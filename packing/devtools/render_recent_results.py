@@ -467,6 +467,19 @@ def standing(record: Mapping[str, Any], records: Records) -> str:
     return SUPERSEDED
 
 
+#: The parts of a standing a table of results draws beside a result's status: its place
+#: on the frontier, where it is not simply the best. That a bound is only reported is the
+#: result's status (`devtools.result_status`: recorded), and what an entry that bounds
+#: nothing is, is its kind.
+POSITION_MARKS = (SUPERSEDED, SECOND_CERTIFICATE)
+
+
+def position_marks(held: str) -> list[str]:
+    """A standing's place on the frontier as the marks a table draws: `superseded`, or
+    `second certificate`; none for a result that is the current best or is no bound."""
+    return [part for part in held.split(", ") if part in POSITION_MARKS]
+
+
 def is_recent_by_others(record: Mapping[str, Any]) -> bool:
     """An entry by others published on or after `RECENT_SINCE`."""
     attribution = record.get("attribution")

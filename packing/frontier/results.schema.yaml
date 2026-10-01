@@ -205,6 +205,30 @@ $defs:
         minLength: 1
         description: The next evidence-improving action, or why no independent rung change applies.
       notes: {type: string, minLength: 1}
+      activity:
+        type: object
+        additionalProperties: false
+        required: [state, what, since, link]
+        description: >-
+          Who has the next move on this result, when the record shows it (epistemics.md,
+          Status): this project, with a replay, review or audit under way
+          (`in-analysis`), or another party, with a request or a missing artifact on
+          file (`waiting`, and `party` says who). It is the one hand-recorded workflow
+          fact, so it is dated, links the bead, issue, branch or file that shows it, and
+          expires: `devtools.check_results` refuses one more than 30 days older than
+          `last_reviewed`. Removed when the work lands or the answer arrives; a result
+          with nothing in hand carries none, and its `next_rung` says what is queued.
+          The status itself (recorded, reviewed, confirmed, incomplete) is derived by
+          `devtools.result_status` and never stored.
+        if: {properties: {state: {const: waiting}}}
+        then: {required: [party]}
+        else: {not: {required: [party]}}
+        properties:
+          state: {enum: [in-analysis, waiting]}
+          party: {enum: [source, owner, third-party]}
+          what: {type: string, minLength: 1}
+          since: {type: string, pattern: '^\d{4}-\d{2}-\d{2}$'}
+          link: {type: string, minLength: 1}
       attribution:
         type: object
         additionalProperties: false

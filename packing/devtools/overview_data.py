@@ -11,9 +11,11 @@ something the repository already records and already gates:
 - which lower bounds are recent, and which results they rest on:
   `atlas/known-best/bound-citations.json`, which the atlas star reads too;
 - evidence, retained source copies and reviews: `frontier/evidence.yaml`;
-- each result's standing, the survey's counts and the reported bounds awaiting a replay:
-  `devtools.render_recent_results`, the functions `RESULTS.md`'s standing column uses
-  too, so the page and the register view cannot disagree about any of them.
+- each result's status, how far this project's workflow has taken it:
+  `devtools.result_status`, which `RESULTS.md`'s status column reads too;
+- whether a result is superseded, and the survey's counts:
+  `devtools.render_recent_results`, so the page and the register view cannot disagree
+  about any of them.
 
 Counts are of *declared* rungs. `check_results` accepts a declared rung below the one
 it derives when a `composition` note explains why, so re-deriving here would disagree
@@ -31,7 +33,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from devtools import render_results
+from devtools import render_results, result_status
 from devtools.migrate_math import classify
 from devtools.render_recent_results import (
     RecentCounts,
@@ -196,7 +198,17 @@ class Result:
     records: list[Link] = field(default_factory=list)
     standing: str = ""
     """Whether a case bound rests on the result now, and if not, why not:
-    `render_recent_results.standing`, the word `RESULTS.md`'s tables print."""
+    `render_recent_results.standing`. A table shows one thing of it, whether the result
+    is superseded; a result's chain shows it case by case."""
+    status: str = ""
+    """How far this project's workflow has taken the result: recorded, reviewed,
+    confirmed or incomplete (`result_status.status`), the word `RESULTS.md` prints."""
+
+    @property
+    def activity(self) -> str:
+        """Who has the next move, where the register records it: `in analysis`, or
+        `waiting on source` (`result_status.activity_label`); else nothing."""
+        return result_status.activity_label(self.record.get("activity"))
 
     @property
     def id(self) -> str:
@@ -281,12 +293,6 @@ class Overview:
     def counts(self) -> RecentCounts:
         """The survey's four counts, as the survey section quotes them."""
         return recent_counts(self.recent)
-
-    @property
-    def awaiting_replay(self) -> list[Row]:
-        """The recent cases whose reported lower bound says something the verified one
-        does not: a source's claim still waiting on a replay here."""
-        return [row for row in self.recent if row.shows_reported]
 
 
 def _evidence() -> dict[str, dict]:
@@ -392,6 +398,7 @@ def load() -> Overview:
                 ours=not r.get("attribution"),
                 records=_records(r, evidence),
                 standing=standing(r, records),
+                status=result_status.status(r, evidence),
             )
             for r in members
         ]

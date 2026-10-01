@@ -102,9 +102,7 @@
       const top = tools.getBoundingClientRect().top;
       const box = table.getBoundingClientRect();
       const frame = frameWidth(table);
-      const rows = [...(table.tBodies[0]?.rows ?? [])].filter(
-        (row) => shown(row) && !row.classList.contains("site-group-row"),
-      );
+      const rows = [...(table.tBodies[0]?.rows ?? [])].filter(shown);
       const heads = [...(table.tHead?.rows[0]?.cells ?? [])];
       const cards = !heads.some(shown);
       const base = {

@@ -35,15 +35,9 @@ from devtools.overview_data import (
     tex_bounds,
 )
 from devtools.render_overview import DOCUMENT_PAGES, RESULTS_PAGE, SITE_PAGES
-from devtools.render_recent_results import (
-    HOLDS,
-    NOT_A_BOUND,
-    STANDINGS,
-    SUPERSEDED,
-    Lane,
-    Row,
-)
+from devtools.render_recent_results import NOT_A_BOUND, SUPERSEDED, position_marks
 from devtools.repo_links import branch_file
+from devtools.result_status import CONFIRMED, STATUSES
 
 
 def _esc(text: object) -> str:
@@ -95,6 +89,29 @@ def standing_chip(standing: str) -> str:
     return (
         f'<span class="site-chip" data-standing="{_esc(standing_key(standing))}">'
         f"{_esc(standing_label(standing))}</span>"
+    )
+
+
+def status_chip(status: str) -> str:
+    """A result's status as its chip: `recorded`, `reviewed`, `confirmed` or
+    `incomplete` (`devtools.result_status`), the one word for how far this project's
+    workflow has taken the result. A plain chip like every other; `site.css` gives
+    `incomplete` the one mark that asks for attention."""
+    return f'<span class="site-chip" data-status="{_esc(status)}">{_esc(status)}</span>'
+
+
+def activity_chip(result: Result) -> str:
+    """Who has the next move on a result, where the register records it: `in analysis`
+    for work under way here, `waiting on source` for a request with another party
+    (`Result.activity`). Its title is what the register says is in hand and since when.
+    Nothing where the register records none."""
+    activity = result.record.get("activity")
+    if not activity:
+        return ""
+    title = f"{' '.join(str(activity['what']).split())} Since {activity['since']}."
+    return (
+        f'<span class="site-chip" data-activity="{_esc(activity["state"])}" '
+        f'title="{_esc(title)}">{_esc(result.activity)}</span>'
     )
 
 
@@ -634,7 +651,7 @@ def result_cases(result: Result) -> str:
 def result_facets(result: Result) -> str:
     """A result row's facets as attributes, the same on every table of results, each one
     a filter of `result_filters`: whose result it is, its V, C and S rungs as numbers,
-    its standing, whether it is current, which is to say not superseded
+    its status, whether it is current, which is to say not superseded
     (`is_superseded`), its cases and the date the table shows."""
     record = result.record
     return (
@@ -642,7 +659,7 @@ def result_facets(result: Result) -> str:
         f'data-v="{_esc(record["verification"][1:])}" '
         f'data-c="{_esc(record["confirmation"][1:])}" '
         f'data-s="{significance(result)}" '
-        f'data-standing="{_esc(standing_key(result.standing))}" '
+        f'data-status="{_esc(result.status)}" '
         f'data-current="{"false" if is_superseded(result.standing) else "true"}" '
         f'data-n="{_esc(result_cases(result))}" '
         f'data-date="{_esc(first_day(result.dated[1]))}"'
@@ -716,17 +733,16 @@ def result_filters(
     the results page's table. `overview/table.js` drives it.
 
     One control per facet a row carries (`result_facets`), and they compose: Significance,
-    Verification and Confirmation as floors (`data-bound="min"`), Standing and Source as
+    Verification and Confirmation as floors (`data-bound="min"`), Status and Source as
     equalities, "Hide superseded" as a flag the row must carry (`data-current`), Case as
     a number the row's cases must hold (`covers`), and Max age as the most days the row's
     date may lie behind the reader's day (`age`), empty for no limit.
 
-    "Hide superseded" stands straight after Standing, which it narrows: checked, it
-    hides exactly the superseded rows (`is_superseded`) and keeps every other standing,
-    so Standing still chooses among those. It composes as every control does, so with it
-    checked the one standing it hides, superseded, leaves no row, as the frontier atlas's
-    "open only" does beside its Status. Standing keeps `current best` as a choice whether
-    or not a row draws a chip for it: it is the name of the unmarked state.
+    Status offers the four workflow statuses a result can have (`result_status`), each
+    one that some result has: recorded, reviewed, confirmed and incomplete. "Hide
+    superseded" stands straight after it and is a different question, the result's place
+    on the frontier: checked, it hides exactly the superseded rows (`is_superseded`),
+    whatever their status.
 
     A table's `defaults` are where Significance, Max age and "Hide superseded" start;
     every other control starts at all. The tables write the rows outside those defaults
@@ -739,7 +755,7 @@ def result_filters(
     the bar sits over, so the bar is the same on both pages but for where it starts and
     its count.
     """
-    present = {result.standing for result in overview.results}
+    present = {result.status for result in overview.results}
     last = f' max="{max(overview.cases)}"' if overview.cases else ""
     floor = "" if defaults.significance is None else str(defaults.significance)
     age = "" if defaults.max_age is None else f' value="{defaults.max_age}"'
@@ -751,20 +767,13 @@ def result_filters(
         "</select></label>"
         for scale, label in RUNG_FILTERS
     )
-    standings = [
-        ("", ALL),
-        *(
-            (standing_key(standing), standing_label(standing))
-            for standing in STANDINGS
-            if standing in present
-        ),
-    ]
+    statuses = [("", ALL), *((status, status) for status in STATUSES if status in present)]
     sources = [("", ALL), ("ours", "This project"), ("others", "Others")]
     shown = sum(shown_by_default(result, defaults, reference) for result in listed)
     return (
         '<div class="site-table-tools site-result-filters">'
         f"{rungs}"
-        f'<label>Standing <select data-filter="standing">{_options(standings)}</select></label>'
+        f'<label>Status <select data-filter="status">{_options(statuses)}</select></label>'
         f'<label><input type="checkbox" data-filter="current"{hide}> Hide superseded</label>'
         f'<label>Source <select data-filter="source">{_options(sources)}</select></label>'
         '<label>Case <var>n</var> <input type="number" data-filter="n" data-bound="covers" '
@@ -779,7 +788,7 @@ def result_filters(
 def result_head() -> str:
     """The header row of a table of results: the one set of columns both tables carry,
     in one order. The id, which is the row's trigger; the cases; the result, with its
-    records under it; the credit; the rungs, with the standing under them; and the
+    records under it; the credit; the rungs, with the status under them; and the
     date. A column sorts where an order means something, on either page."""
     return (
         "<thead><tr>"
@@ -788,7 +797,7 @@ def result_head() -> str:
         '<th class="site-col-result">Result</th>'
         '<th data-sort="text">Credit</th>'
         '<th data-sort="text" title="Significance, verification and confirmation, then '
-        'whether a case bound rests on the result now">Rungs</th>'
+        'the status: how far the workflow here has taken the result">Rungs</th>'
         '<th data-sort="text" title="Published, for a result by others; established, for '
         f'this project{APOSTROPHE}s">Date</th>'
         "</tr></thead>"
@@ -837,15 +846,13 @@ def result_cells(result: Result, overview: Overview, detail: RowDetail, *, here:
     """A result's cells, one for each column of `result_head`, the same on both tables:
     its id (`id_cell`), its cases, its summary with the star a new result earns
     (`result_text`, `new_result_star`) and its records on a quiet line under it, its
-    credit (`credit_cell`), its rung chips with its standing under them where it has
-    one to show (`standing_chips`), and its date (`date_cell`). The records are no
+    credit (`credit_cell`), its rung chips with its status under them
+    (`status_marks`), and its date (`date_cell`). The records are no
     column of their own: a column narrow enough to fit set them a link to a line, and
     under the summary they take a line or two. The overview's table carries them and
     does not show them (`site.css`, `.site-recent-table`)."""
     record = result.record
-    standing = standing_chips(result.standing)
-    if standing:
-        standing = f'<span class="site-standing">{standing}</span>'
+    standing = f'<span class="site-standing">{status_marks(result)}</span>'
     return (
         f"{id_cell(result, detail)}"
         f'<td class="num site-col-n" data-value="{result.first_n}">{_esc(result.scope)}</td>'
@@ -1134,20 +1141,28 @@ def split_summary(summary: str) -> tuple[str, str]:
 
 
 def standing_chips(standing: str) -> str:
-    """A standing as its chips, one per part: `second certificate, reported` is two
-    chips. A result that still stands, `current best`, is the default and takes none:
-    what a reader is told is that a result no longer holds (`superseded`), or how it
-    holds otherwise. So `current best` draws nothing and `current best, reported` draws
-    `reported`. The standing itself stays on the row, as `data-standing`, for the
-    filters."""
-    if standing == NOT_A_BOUND:
-        return standing_chip(standing)
-    return " ".join(standing_chip(part) for part in standing.split(", ") if part != HOLDS)
+    """A result's place on the frontier as chips, where it has one to say: `superseded`,
+    that it no longer holds a bound, or `second certificate`, that it proves a value
+    another result holds. A result that still stands, `current best`, is the default and
+    takes none. How far the result has been checked here is no part of it: that is the
+    status (`status_chip`), so `current best, reported` draws nothing here and
+    `second certificate, reported` draws one chip
+    (`render_recent_results.position_marks`)."""
+    return " ".join(standing_chip(part) for part in position_marks(standing))
+
+
+def status_marks(result: Result) -> str:
+    """What sits under a result's rungs: its status chip, always; who has the next move,
+    where the register records it (`activity_chip`); and its place on the frontier,
+    where it is superseded or a second certificate (`standing_chips`)."""
+    marks = (status_chip(result.status), activity_chip(result), standing_chips(result.standing))
+    return " ".join(filter(None, marks))
 
 
 def status_chips(result: Result) -> str:
-    """A result's rung chips, S, V and C, then its standing chips, side by side."""
-    return " ".join(filter(None, (rung_chips(result), standing_chips(result.standing))))
+    """A result's rung chips, S, V and C, then its status and the marks beside it
+    (`status_marks`), side by side."""
+    return f"{rung_chips(result)} {status_marks(result)}"
 
 
 def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS) -> str:
@@ -1155,6 +1170,33 @@ def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS)
     bar starting at the recent defaults, each row opening the result's popover, which
     ends in the button to the result's row on the results page."""
     return table_of_results(overview, defaults, here=False)
+
+
+def status_counts(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS) -> str:
+    """One Markdown sentence on the results this project has not confirmed, counted from
+    the register: how many are confirmed, how many are recorded, reviewed or incomplete,
+    each count the link to those rows on the results page, and how many of them the
+    overview's table shows where its bar starts (`defaults`). It is what the overview
+    says of results reported and not yet replayed: they are rows of the one table, and
+    their status is a value of its filter."""
+    held = [result.status for result in overview.results]
+    confirmed = held.count(CONFIRMED)
+    reference = reference_date(overview)
+    waiting = [result for result in overview.results if result.status != CONFIRMED]
+    shown = sum(shown_by_default(result, defaults, reference) for result in waiting)
+    links = [
+        f"[{held.count(status)} {status}]({RESULTS_PAGE}?status={status})"
+        for status in STATUSES
+        if status != CONFIRMED and status in held
+    ]
+    if not links:
+        return f"All {len(held)} results are confirmed."
+    listed = links[0] if len(links) == 1 else ", ".join(links[:-1]) + " and " + links[-1]
+    here = {0: "none of them", len(waiting): "all of them"}.get(shown, f"{shown} of them")
+    return (
+        f"Of the {len(held)} results, {confirmed} are confirmed; the rest are {listed}, "
+        f"and this table shows {here} until its filters are changed."
+    )
 
 
 def _since() -> str:
@@ -1172,91 +1214,6 @@ def survey_counts(overview: Overview) -> str:
         f"a recent verified lower bound, the cases the atlas stars; {counts.ours} of the "
         f"{counts.verified} are this project{APOSTROPHE}s, and {counts.exact} are new "
         "exact values."
-    )
-
-
-_LANE_RESULT = re.compile(r"(T-\d{3}) `(V\d)/(C\d)`")
-
-
-def _lane_math(lane: Lane) -> str:
-    """A lane's value, as `render_recent_results.shown` writes it, set as math."""
-    return math_html(lane.shown.replace("`", "").replace("\u2026", r"\ldots"))
-
-
-def _lane_results(results: str) -> str:
-    """A lane's results cell, the register entries carrying its bound as
-    `render_recent_results.rungs` writes them, each linked to its row with its rungs."""
-    return " ".join(
-        f'<a href="{_esc(result_url(entry))}">{_esc(entry)}</a> {_rung(v)} {_rung(c)}'
-        for entry, v, c in _LANE_RESULT.findall(results)
-    )
-
-
-def _lane_detail(lane: Lane) -> str:
-    """One lane in a replay row's popover: its value, who holds it and when it was
-    published, and the register entries that carry it with their rungs."""
-    held = _esc(lane.holder) + (f", published {_esc(lane.published)}" if lane.published else "")
-    entries = _lane_results(lane.results)
-    return f'{_lane_math(lane)} <span class="site-cell-quiet">{held}</span>' + (
-        f"<br>{entries}" if entries else ""
-    )
-
-
-def replay_row_popover_body(row: Row) -> str:
-    """The body of an awaiting-replay row's popover: the bound a source reports and the
-    one verified here, each with its holder, date and the entries that carry it."""
-    return (
-        '<dl class="site-detail">'
-        f"<dt>Reported</dt><dd>{_lane_detail(row.reported)}</dd>"
-        f"<dt>Verified here</dt><dd>{_lane_detail(row.verified)}</dd></dl>"
-    )
-
-
-def awaiting_replay(overview: Overview) -> str:
-    """The recent cases whose reported lower bound differs from the verified one: a
-    source's bound waiting on a replay here. One row per case, grouped by holder and the
-    entries that carry the claim, each case linked to its row in the frontier atlas.
-    Each row opens its popover (`replay_row_popover_body`), its reported value the
-    trigger, ending in the button to the frontier row; the popovers follow the
-    disclosure, so none takes its compact table's style."""
-    rows = overview.awaiting_replay
-    if not rows:
-        return ""
-    groups: dict[tuple[str, str], list[str]] = {}
-    popovers = []
-    for row in rows:
-        reported = row.reported
-        detail = row_detail(
-            f"pop-replay-n-{row.n}",
-            name=f"n = {row.n}, reported {plain_text(reported.shown)}",
-            trigger=_lane_math(reported),
-            label="Awaiting replay",
-            title=math_html(f"n = {row.n}"),
-            body=replay_row_popover_body(row),
-            action=(f"frontier.html#n-{row.n}", f"Open n = {row.n} in the frontier atlas"),
-        )
-        popovers.append(detail.popover)
-        groups.setdefault((reported.holder, reported.results), []).append(
-            f'<tr id="replay-n-{row.n}" data-n="{row.n}" {detail.attributes}>'
-            f'<td class="num"><a href="frontier.html#n-{row.n}">{row.n}</a></td>'
-            f"<td>{detail.trigger}</td>"
-            f"<td>{_lane_math(row.verified)}</td>"
-            f'<td class="site-col-date">{_esc(reported.published or "")}</td></tr>'
-        )
-    body = "".join(
-        f'<tr class="site-group-row"><th colspan="4" scope="colgroup">{_esc(holder)} · '
-        f"{_lane_results(results)}</th></tr>{''.join(members)}"
-        for (holder, results), members in groups.items()
-    )
-    first, last = rows[0].n, rows[-1].n
-    return (
-        '<details class="site-wide site-replay">'
-        f"<summary>Reported, awaiting replay: {len(rows)} cases, "
-        f"{math_html(f'n = {first}')} to {last}</summary>"
-        '<div class="site-table-wrap">'
-        '<table class="kpress-table site-table site-replay-table">'
-        "<thead><tr><th>n</th><th>Reported</th><th>Verified here</th><th>Published</th>"
-        f"</tr></thead><tbody>{body}</tbody></table></div></details>{''.join(popovers)}"
     )
 
 

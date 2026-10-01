@@ -247,7 +247,7 @@ def test_results_renderer_escapes_a_pipe_in_a_claim(
         line for line in render_results.render().splitlines() if line.startswith("| T-001 ")
     )
     assert r"Sixteen points \| make" in row
-    assert len(re.findall(r"(?<!\\)\|", row)) == 8
+    assert len(re.findall(r"(?<!\\)\|", row)) == 9
 
 
 def _poisoned_register(tmp_path: Path, old: str, new: str) -> Path:

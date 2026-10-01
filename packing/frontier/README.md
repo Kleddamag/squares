@@ -190,7 +190,7 @@ Where a newer capture prints a side below a record’s and taking it is an intak
 own — a result by others published on or after 22 August 2026, which the register must
 hold first — the count is listed under `pending_catalogue_intake`, with the side the
 record still reports, the side the current capture prints, and the capture the record
-transcribes (`n = 69, 83, 87` today).
+transcribes ($n = 69, 83, 87$ today).
 The check reconciles such a count against that earlier capture, requires its record to
 carry a `source-evidence` blocker naming `pending_catalogue_intake` and the newer side
 (which `STATUS.md` shows as “catalogue ahead, intake pending”), and fails the entry as
@@ -540,8 +540,8 @@ Adding editorial to a case is just editing its body; nothing regenerates over it
 **Known limits.** The Kingbird catalogue is parsed as annotation text, so an entry
 phrased unusually can be miscounted; `improved_by` in particular under-reports where it
 uses “Refound” or prose.
-Above `n = 100` it also credits an “Optimized by” author the entry names nowhere else
-(Tej Stead at `n = 179`), and the packing paragraph quotes the catalogue’s own
+Above $n = 100$ it also credits an “Optimized by” author the entry names nowhere else
+(Tej Stead at $n = 179$), and the packing paragraph quotes the catalogue’s own
 AI-assistance sentences; the hand-written records below read neither.
 Tilt angles are recorded only for the handful of cases where this research established
 them. The coverage inventory is dated and named; a newly published source still requires

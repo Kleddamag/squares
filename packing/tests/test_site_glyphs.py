@@ -453,6 +453,63 @@ def test_every_site_rule_that_sets_the_sans_face_sets_its_weight() -> None:
     assert "--site-font-weight-sans-light: var(--kpress-font-weight-sans-regular);" in tokens
 
 
+def figure_row(**changes: Any) -> dict[str, Any]:
+    """One figure as the probe reports it: a diagram of labels, centred, with a caption."""
+    row: dict[str, Any] = {
+        "page": PAPER,
+        "width": 1280,
+        "figure": 3,
+        "drawing": "svg",
+        "named": "n11-diagram",
+        "drawings": 1,
+        "drawing_width": 800,
+        "column": 832,
+        "offset": 0,
+        "ink_offset": 0.01,
+        "scrolls": False,
+        "beside": False,
+        "texts": 9,
+        "longest": "Offsets inside each physical square",
+        "share": 0.34,
+        "sentences": "",
+        "caption": "Figure 3. A schematic of one safe exclusion.",
+    }
+    return row | changes
+
+
+def test_a_figure_set_as_the_papers_set_one_has_no_problems() -> None:
+    assert measure.figure_problems(figure_row()) == []
+    # A wide diagram scrolls sideways on a phone, and a figure with controls beside its
+    # drawing centres the row: neither is held to the column's centre.
+    assert measure.figure_problems(figure_row(offset=161, ink_offset=0.24, scrolls=True)) == []
+    assert measure.figure_problems(figure_row(offset=-145.1, beside=True)) == []
+
+
+@pytest.mark.parametrize(
+    ("changes", "problem"),
+    [
+        ({"offset": -72}, "its drawing stands -72px off the centre"),
+        # The first figure as it was: its box centred, the packing at the left of it.
+        ({"ink_offset": -0.18}, "what it draws stands -18% of its width off the centre"),
+        (
+            {"longest": "Two routes to the exact optimum", "share": 0.72},
+            "`Two routes to the exact optimum` is lettered across 72% of the drawing",
+        ),
+        (
+            {"sentences": "Disk boundaries are open."},
+            "a sentence is lettered into the drawing: Disk boundaries are open.",
+        ),
+        ({"caption": ""}, "no caption under it"),
+    ],
+)
+def test_a_figure_off_the_papers_treatment_is_named(
+    changes: dict[str, Any], problem: str
+) -> None:
+    assert measure.figure_problems(figure_row(**changes)) == [
+        f"figure 3 (n11-diagram): {problem}"
+    ]
+
+
 # ---------- In Chromium ----------
 
 
@@ -478,6 +535,7 @@ def site(chromium: None, tmp_path_factory: pytest.TempPathFactory) -> Path:  # n
     html, _ = paper.render(
         paper.ARTICLE.read_text(encoding="utf-8"),
         figures=paper.render_all_figures(),
+        facts=paper.render_all_facts(),
         revision="a" * 40,
     )
     (root / PAPER).write_text(html, encoding="utf-8")
@@ -598,6 +656,54 @@ def test_a_page_is_drawn_as_the_shared_layers_set_it(
     assert [found for found in problems if not any(k.match(found) for k in known)] == []
     # An exception that no longer matches anything has been fixed: take it out.
     assert [k.pattern for k in known if not any(k.match(found) for found in problems)] == []
+
+
+@pytest.fixture(scope="module")
+def figures(site: Path) -> list[dict[str, Any]]:
+    """Every figure of the two papers, at a desktop and a phone width."""
+    return measure.measure_figures(site.as_uri(), (EXPLAINER, PAPER), widths=(1280, 390))
+
+
+def test_both_papers_set_every_figure_one_way(figures: list[dict[str, Any]]) -> None:
+    """A figure is its drawing, centred in the column, with its caption under it as a
+    `figcaption`. Nothing is lettered into a drawing but its labels: no title, no
+    sentence, no run most of the drawing wide. A wide diagram scrolls sideways on a
+    phone and an apparatus sets its controls beside its drawing; every other drawing
+    stands on the column's centre within a pixel, and what it paints with it."""
+    counted = {
+        (name, width): sum(1 for row in figures if (row["page"], row["width"]) == (name, width))
+        for name in (EXPLAINER, PAPER)
+        for width in (1280, 390)
+    }
+    assert counted[(PAPER, 1280)] == counted[(PAPER, 390)] == 11
+    assert counted[(EXPLAINER, 1280)] == counted[(EXPLAINER, 390)] >= 7
+    problems = [
+        f"{row['page']} at {row['width']}: {problem}"
+        for row in figures
+        for problem in measure.figure_problems(row)
+    ]
+    assert problems == []
+    # The check has something to hold: at a desktop width no figure of the paper scrolls,
+    # so each of its eleven drawings is held to the centre.
+    desktop = [row for row in figures if (row["page"], row["width"]) == (PAPER, 1280)]
+    assert not [row["figure"] for row in desktop if row["scrolls"] or row["beside"]]
+    assert all(abs(row["offset"]) <= measure.FIGURE_CENTRE_TOLERANCE for row in desktop)
+    assert max(row["share"] for row in figures) <= measure.LETTERED_SHARE
+
+
+def test_the_first_figure_is_the_drawing_alone_at_the_first_papers_width(
+    figures: list[dict[str, Any]],
+) -> None:
+    """Both papers open on a packing: the drawing alone, with no lettering, at one width
+    rule, centred, on a desktop and on a phone."""
+    first = {(row["page"], row["width"]): row for row in figures if row["figure"] == 1}
+    for width in (1280, 390):
+        ours, reference = first[(PAPER, width)], first[(EXPLAINER, width)]
+        assert ours["texts"] == reference["texts"] == 0, width
+        assert ours["drawing_width"] == reference["drawing_width"], width
+        assert ours["offset"] == reference["offset"] == 0, width
+        assert abs(ours["ink_offset"]) <= 0.01, width
+        assert ours["caption"].startswith("Figure 1."), width
 
 
 def test_the_pages_run_one_math_pipeline(pages: dict[str, dict[str, Any]]) -> None:

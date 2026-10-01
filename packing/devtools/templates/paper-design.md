@@ -1508,6 +1508,42 @@ dense grid, title, and labels.
 Enlarging every internal label to the figure-label size would obscure its cells.
 Its caption uses the shared role; the linked full-size PDF provides the detailed view.
 
+## Figures
+
+A figure is its drawing, centred in the column, with its caption under it.
+The caption is a `figcaption` in the shared caption role, and it is where a figure’s
+title and every sentence about it go.
+A drawing carries its labels and nothing else: the name of a cell, a node or a panel, an
+axis value, a short formula beside what it measures.
+No title is lettered across the top of an SVG and no sentence under it.
+
+Both papers open on a packing, set one way: the atlas rendering cut to its container’s
+outline (`render_explainer.crop_to_container`), with the atlas’s own lettering gone, in
+a centred stage (`.stage.trump`) 24rem wide on screen and 3in in print, linked to the
+rendering in the repository.
+The optimality paper’s first figure used to be the atlas’s whole canvas, 960 units wide
+for a container of 536, with the atlas’s caption under the drawing: the packing stood
+18% of the figure’s width left of the column’s centre, over a line of its own text.
+
+The other diagrams of that paper carried a title or sentences of explanation in the
+drawing as well; those are in the captions now.
+What a caption states that is data, a count of rows, of regions or of margins, it names
+as a placeholder (`{{LOCAL_MARGINS}}`) and the figure module supplies from the receipt
+the figure is drawn from (`caption_facts`), so a caption cannot retype a number.
+A caption writes its mathematics as LaTeX, as the prose does: a figure is an HTML block,
+where KPress leaves `$…$` literal, so `render_n11_optimality_explainer.caption_math`
+puts KPress’s math markup in its place for the page, and the Markdown edition keeps the
+`$…$`. The formula is then set in the caption’s own sans, where it used to be Unicode
+text in characters the sans does not carry.
+
+`devtools.measure_site_pages figures` reports every figure: how far its drawing, and
+what the drawing paints, stand from the centre of the column, the widest run of text in
+it as a share of its width, any text that reads as a sentence, and its caption; each row
+carries its problems.
+A wide diagram that scrolls sideways on a phone and an apparatus with controls beside
+its drawing are not held to the centre.
+`tests/test_site_glyphs.py` holds both papers to none at 1280 and 390 pixels.
+
 ## Print and Verification
 
 Print uses Letter paper with 1.25-inch side margins and 0.75-inch top and bottom

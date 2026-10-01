@@ -3,9 +3,10 @@
 the card sections' layout, the rating ladders' rows, the face of every formula, the
 space around tables and headings, the columns of the data tables, the chips, where each
 page's header stands, the baselines its labels stand on, the size of what a press
-opens, and how every run of text and every formula is drawn.
+opens, how every run of text and every formula is drawn, and where each figure's
+drawing stands and what is lettered into it.
 
-Thirteen measurements, each over pages of a directory `preview_site` has built:
+Fourteen measurements, each over pages of a directory `preview_site` has built:
 
 - `load` serves the directory on a local port and opens each page in a fresh Chromium
   context, cold cache, at a desktop or phone width. An init script (a probe) records
@@ -110,6 +111,19 @@ Thirteen measurements, each over pages of a directory `preview_site` has built:
   `--shots DIR` saves each formula's shot. This is the tool the optimality paper's
   thinner mathematics was found and measured with (`templates/paper-design.md`, Math).
 
+- `figures` reports every figure a page shows, once its math is typeset, at each
+  `--width`: how wide its drawing is and how far the drawing's centre, and the centre of
+  what an SVG paints in it, stand from the centre of the reading column; whether it
+  scrolls sideways there or shares its row with controls; how many text elements its
+  SVGs hold, the widest of them with its share of the drawing, and any that reads as a
+  sentence; and its caption. Each row carries its `problems` (`figure_problems`): a
+  drawing off the column's centre, what it paints off that centre (a packing at the
+  left of a wide canvas), a title or a sentence lettered into the drawing, and a figure
+  with no caption. `--media print` lays the page out as it prints, and `--shots DIR`
+  shoots each figure with its caption. This is the tool the optimality paper's figures
+  were brought to the first paper's treatment with (`templates/paper-design.md`,
+  Figures).
+
 Every mode but `faces` also takes, in place of the directory, the address a site is
 served at, and measures the published pages as they are.
 
@@ -141,6 +155,9 @@ Usage, from `packing/`:
         --width 1280 --width 390 --scheme light --scheme dark --view differences --markdown
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages glyphs \
         https://jlevy.github.io/squares --page explainer.html --view problems --markdown
+    uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages figures \
+        SITE --page explainer.html --page n11-optimality/t-060-explainer.html \
+        --width 1280 --width 390 --shots DIR --markdown
 
 `SITE` is a directory holding `explainer.html` and the kpress pages. Set
 `SQPACK_CHROMIUM` to use a browser the environment supplies, as the other tools do.
@@ -189,6 +206,7 @@ CHIPS = probe(PROBES, "measure_site_pages/chips")
 POPOVER = probe(PROBES, "measure_site_pages/popover")
 GLYPHS = probe(PROBES, "measure_site_pages/glyphs")
 PLATFORM = probe(PROBES, "measure_site_pages/platform")
+FIGURES = probe(PROBES, "measure_site_pages/figures")
 #: What a press opens, which `space` then reports alone: an open popover or disclosure.
 OPENED = ":popover-open, details[open]"
 
@@ -1130,6 +1148,92 @@ def glyph_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
     ]
 
 
+#: How far, in CSS pixels, a figure's drawing may stand off the centre of the column.
+FIGURE_CENTRE_TOLERANCE = 1.0
+#: How far what a drawing paints may stand off that centre, as a share of the drawing's
+#: width. A tree or a flow chart is not symmetric, and the widest such lean on either
+#: paper is 0.035; the optimality paper's first figure, a packing at the left of a canvas
+#: nearly twice its width, stood 0.18 off.
+INK_CENTRE_TOLERANCE = 0.06
+#: The share of a drawing's width past which a run of its text is a caption or a title
+#: lettered into it and not a label. The widest label on either paper is 0.56 of its
+#: drawing; the titles that were lettered into the optimality paper's drawings before
+#: they became captions ran from 0.62 to 0.97 of theirs.
+LETTERED_SHARE = 0.6
+
+
+def measure_figures(
+    base: str,
+    pages: Sequence[str],
+    *,
+    widths: Sequence[int],
+    media: str = "screen",
+    shots: Path | None = None,
+) -> list[dict[str, Any]]:
+    """Every figure of each page at each width, one row a figure, once the page's math
+    is typeset (`probes/measure_site_pages/figures.js`): how wide its drawing is, how
+    far its centre and the centre of what it paints stand from the centre of the reading
+    column, whether it scrolls sideways or shares its row with controls, how many text
+    elements its SVGs hold, the widest of them with its share of the drawing and any
+    that reads as a sentence, and its caption. `media` lays the
+    page out as it prints. With `shots`, each figure is shot there with its caption:
+    `figures-<page>-<width>-<n>.png`."""
+    from playwright.sync_api import sync_playwright  # noqa: PLC0415
+
+    results: list[dict[str, Any]] = []
+    if shots is not None:
+        shots.mkdir(parents=True, exist_ok=True)
+    with sync_playwright() as driver:
+        browser = _launch(driver)
+        for width, name in itertools.product(widths, pages):
+            print(f"measuring {name} at {width}", file=sys.stderr, flush=True)
+            page = browser.new_page(
+                viewport={"width": width, "height": 900},
+                device_scale_factor=GLYPH_SCALE,
+                reduced_motion=motion_for(name),
+            )
+            page.goto(f"{base}/{name}", wait_until="load")
+            settle_math(page)
+            page.emulate_media(media="print" if media == "print" else "screen")
+            page.wait_for_timeout(300)
+            found: list[dict[str, Any]] = page.evaluate(FIGURES, {"mark": GLYPH_MARK})
+            for row in found:
+                if shots is not None:
+                    row["shot"] = f"figures-{shot_stem(name)}-{width}-{row['figure']}.png"
+                    target = page.locator(f'figure:has([{GLYPH_MARK}="{row["mark"]}"])')
+                    target.first.screenshot(path=str(shots / row["shot"]))
+                results.append({"page": name, "width": width, **row})
+            page.close()
+        browser.close()
+    return results
+
+
+def figure_problems(row: dict[str, Any]) -> list[str]:
+    """Where one figure departs from how a paper sets a figure (`templates/
+    paper-design.md`, Figures): its drawing centred in the column, unless it scrolls
+    sideways there or shares its row with controls, and what it paints centred with it;
+    nothing lettered into the drawing but its labels, so no run most of the drawing
+    wide and no sentence; and its caption under it, as a `figcaption`."""
+    where = f"figure {row['figure']} ({row['named'] or row['drawing']})"
+    problems: list[str] = []
+    centred = row["scrolls"] or row["beside"]
+    if not centred and abs(row["offset"]) > FIGURE_CENTRE_TOLERANCE:
+        problems.append(f"{where}: its drawing stands {row['offset']:g}px off the centre")
+    if not centred and abs(row["ink_offset"]) > INK_CENTRE_TOLERANCE:
+        problems.append(
+            f"{where}: what it draws stands {row['ink_offset']:.0%} of its width off the centre"
+        )
+    if row["sentences"]:
+        problems.append(f"{where}: a sentence is lettered into the drawing: {row['sentences']}")
+    if row["share"] > LETTERED_SHARE:
+        problems.append(
+            f"{where}: `{row['longest']}` is lettered across {row['share']:.0%} of the drawing"
+        )
+    if not row["caption"]:
+        problems.append(f"{where}: no caption under it")
+    return problems
+
+
 def _distinct(values: Iterable[float]) -> str:
     """The distinct values among some measurements, least first, a space apart."""
     return " ".join(f"{value:g}" for value in sorted(set(values)))
@@ -1451,6 +1555,7 @@ MODES = (
     "baselines",
     "popover",
     "glyphs",
+    "figures",
 )
 
 
@@ -1482,7 +1587,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         "--media",
         choices=("screen", "print"),
         default="screen",
-        help="with `cards`: the CSS media to lay the page out in",
+        help="with `cards` and `figures`: the CSS media to lay the page out in",
     )
     parser.add_argument(
         "--press",
@@ -1501,6 +1606,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="with `ladders`: also shoot each diagram here at each width, light and dark; "
         "with `columns`: also shoot each table here at each width; "
         "with `glyphs`: also shoot each formula sampled here, at twice its size; "
+        "with `figures`: also shoot each figure here, with its caption; "
         "with `popover`: also shoot the window here with each popover open",
     )
     parser.add_argument(
@@ -1594,6 +1700,12 @@ def main(argv: Sequence[str] | None = None) -> int:
                     shots=args.shots,
                     every_ink=not args.tex_ink_only,
                 )
+            elif args.mode == "figures":
+                report = measure_figures(
+                    base, pages, widths=widths, media=args.media, shots=args.shots
+                )
+                for row in report:
+                    row["problems"] = "; ".join(figure_problems(row))
             elif args.mode == "popover":
                 report = measure_popovers(
                     base,

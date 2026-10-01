@@ -500,23 +500,38 @@ body {
   box-shadow: 0 0.5rem 2rem oklch(0% 0 0 / 0.15);
   color: var(--kpress-doc-text);
   font-family: var(--kpress-font-sans);
-  max-height: min(80vh, 40rem);
+  max-block-size: var(--site-popover-max-block);
   max-width: min(36rem, 100vw - 2rem);
   overflow: auto;
   padding: var(--site-popover-pad);
 }
 /* Every popover's margins are one token, the same on all four sides, and its close
    button one square tap target set in from the corner. Only the first block after the
-   button keeps clear of it, so the margins stay even everywhere else. */
+   button keeps clear of it, so the margins stay even everywhere else.
+
+   A popover's height has one limit, the window's: it may be as tall as the window less
+   one margin above and one below (`--site-popover-window-margin`, 4% of the window's
+   height, never under 1rem nor over 3rem), so a taller window shows more of a long
+   panel and none stops at a fixed height. It is centred, so the two margins are equal,
+   and it scrolls inside. The limit is `max-block-size` alone: `max-height` is the same
+   property, and whichever a rule declares later is the one that holds. */
 :root {
   --site-popover-pad: 1.75rem;
   --site-popover-close: 2.75rem;
   --site-popover-close-inset: 0.6rem;
+  --site-popover-window-margin: clamp(1rem, 4dvh, 3rem);
+  --site-popover-max-block: calc(100dvh - 2 * var(--site-popover-window-margin));
 }
+/* A phone keeps the heights it had: a card's or a row's popover up to 80% of the window
+   and 40rem, here; a framed page, the atlas popover and a result overview in their own
+   rules below. */
 @media (max-width: 40rem) {
   :root {
     --site-popover-pad: 1.1rem;
     --site-popover-close-inset: 0.25rem;
+  }
+  .site-popover {
+    max-block-size: min(80vh, 40rem);
   }
 }
 .site-popover > .site-popover-close + * {
@@ -560,19 +575,23 @@ body {
   font-size: var(--site-font-size-note);
   margin-block: 0.6rem 0;
 }
-/* A framed page takes most of the viewport, and the frame the height its heading and
-   buttons leave, so Expand never scrolls out of reach. */
+/* A framed page takes the whole height a popover may have, and the frame the height its
+   heading and buttons leave, so Expand never scrolls out of reach. */
 .site-popover[data-go="page"] {
   inline-size: min(46rem, 100vw - 2rem);
   max-inline-size: none;
 }
 .site-popover[data-go="page"]:popover-open {
-  block-size: min(88vh, 56rem);
+  block-size: var(--site-popover-max-block);
   display: flex;
   flex-direction: column;
   max-block-size: none;
-  max-height: none;
   overflow: hidden;
+}
+@media (max-width: 40rem) {
+  .site-popover[data-go="page"]:popover-open {
+    block-size: min(88vh, 56rem);
+  }
 }
 .site-popover[data-go="page"] > * {
   flex: none;
@@ -1633,8 +1652,7 @@ body {
 }
 .site-popover.site-atlas-pop {
   inline-size: min(62rem, 100vw - 2rem);
-  max-block-size: min(92dvh, 58rem);
-  max-height: none;
+  max-block-size: var(--site-popover-max-block);
   max-inline-size: none;
 }
 .site-atlas-pop .site-atlas-pop-title {

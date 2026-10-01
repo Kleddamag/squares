@@ -72,18 +72,21 @@
         // begins below the middle of the one before it.
         /** @type {string[]} */
         const pieces = [];
+        let piece = "";
         /** @type {DOMRect | null} */
         let last = null;
         for (let index = 0; index < word.length; index += 1) {
           range.setStart(node, match.index + index);
           range.setEnd(node, match.index + index + 1);
           const box = range.getBoundingClientRect();
-          if (last === null || box.top > last.top + last.height / 2) {
-            pieces.push("");
+          if (last !== null && box.top > last.top + last.height / 2) {
+            pieces.push(piece);
+            piece = "";
           }
-          pieces[pieces.length - 1] = `${pieces[pieces.length - 1] ?? ""}${word.charAt(index)}`;
+          piece += word.charAt(index);
           last = box;
         }
+        pieces.push(piece);
         if (pieces.length < 2) {
           continue;
         }

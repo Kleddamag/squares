@@ -658,9 +658,24 @@ it.
   1.1rem on a phone). Its `×` is a 2.75rem square tap target (`--site-popover-close`) set
   0.6rem in from the corner (0.25rem on a phone), washed on hover.
   Only the first block after it keeps clear of it, so the margins stay even everywhere
-  else. Its gray corner icon and the popover’s button both show where the button goes:
-  down to a row on this page, external off the site, right to another page of the site
-  (Arrows, below).
+  else. A popover’s height has one limit, the window’s: `--site-popover-max-block`, the
+  window’s height less `--site-popover-window-margin` above and below, which is 4% of
+  that height and never under 1rem nor over 3rem. A card’s or a row’s popover, the atlas
+  popover and a result overview may be that tall and scroll inside past it; a framed
+  page, the case popover among them, is that tall, and its frame scrolls.
+  A popover is centred, so the two margins are equal.
+  No popover stops at a fixed height, so a taller window shows more: the case popover is
+  828, 1104 and 1344 pixels tall in windows 900, 1200 and 1440 pixels tall, where it was
+  792, 896 and 896, and shows 21%, 30% and 38% of the record for $n = 79$, where it
+  showed 20%, 23% and 23% (`devtools.measure_site_pages popover`). The limit is declared
+  as `max-block-size` alone, since `max-height` is the same property and the later of
+  the two in a rule is the one that holds.
+  A phone, up to 40rem wide, keeps the heights it had: a card’s or a row’s popover up to
+  80% of the window and 40rem, a framed page 88% and up to 56rem, and the atlas popover
+  and a result overview the window less half a rem above and below.
+  Its gray corner icon and the popover’s button both show where the button goes: down to
+  a row on this page, external off the site, right to another page of the site (Arrows,
+  below).
 
 - **Card sizes.** A card is sized by its text, in three sizes it names in
   `data-card-size`; a card that names none is medium.
@@ -856,17 +871,16 @@ it.
 
 - **Atlas popover.** Pressing a cell opens the page’s one atlas popover on that case, a
   card popover in every other way (square corners, the scrim, the caps label, the close
-  cross, Escape and a click outside), and a little larger: up to 62rem wide and 58rem
-  tall. It shows what the ascent film’s panel shows for the case, beside the drawing
-  large: the gap bar (a number line from one below $\lceil\sqrt{n}\,\rceil$ to two above
-  it, the integers and the values of $\sqrt{n}$ and $\sqrt{n} + 1$ marked, the two
-  bounds as bold rules with their values above and the open span between them shaded);
-  under PROVEN the bound as one statement, the proved lower bound in scarlet and the
-  best known side in green, with the star for a recent lower bound; the badges; the
-  citation, one line per bound with this project’s note; and what is OPEN. A citation
-  line is a table row of two cells, the label (“lower” or “upper”) and the source, so
-  the label column is as wide as the wider label however it is drawn, and the source
-  wraps between words beside it.
+  cross, Escape and a click outside), and wider, up to 62rem. It shows what the ascent
+  film’s panel shows for the case, beside the drawing large: the gap bar (a number line
+  from one below $\lceil\sqrt{n}\,\rceil$ to two above it, the integers and the values
+  of $\sqrt{n}$ and $\sqrt{n} + 1$ marked, the two bounds as bold rules with their
+  values above and the open span between them shaded); under PROVEN the bound as one
+  statement, the proved lower bound in scarlet and the best known side in green, with
+  the star for a recent lower bound; the badges; the citation, one line per bound with
+  this project’s note; and what is OPEN. A citation line is a table row of two cells,
+  the label (“lower” or “upper”) and the source, so the label column is as wide as the
+  wider label however it is drawn, and the source wraps between words beside it.
   The facts are the film’s own, read from the atlas figure and `bound-citations.json`
   into one JSON element (`atlas_film_facts`), and the script fills the popover from them
   with kpress’s math nodes, never HTML strings.
@@ -1247,8 +1261,8 @@ full overview of that result.
 after it on every page.
 The body is one `.site-result` block with no ids, no script and no `<table>`, so it does
 not depend on the popover around it.
-Its popover takes the atlas popover’s size, up to 62rem wide and 58rem tall, and scrolls
-as one panel.
+Its popover takes the atlas popover’s size, up to 62rem wide and as tall as the window
+allows (**Cards**, above), and scrolls as one panel.
 
 No page carries an overview.
 Between them they run to about 2.8 MB (`result_overview --audit`) and two pages list the

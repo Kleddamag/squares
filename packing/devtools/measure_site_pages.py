@@ -66,7 +66,7 @@ Ten measurements, each over pages of a directory `preview_site` has built:
   scrolling (its frame's share, where it frames a page), and every word in it broken
   across lines inside the word (`preview_site.split_problem`). `--shots DIR` also shoots
   the window with each popover open. This is the tool the popovers' height limits are
-  measured with (`templates/paper-design.md`, Cards and Popovers).
+  measured with (`templates/paper-design.md`, Site Components, Cards).
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages load SITE

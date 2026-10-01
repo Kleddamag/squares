@@ -1223,6 +1223,7 @@ def test_the_bars_type_is_set_from_the_papers_scale() -> None:
         "--site-nav-font-size": (
             "calc(var(--site-nav-name-size) * var(--paper-note-scale, 0.92))"
         ),
+        "--site-nav-line": "calc(var(--site-nav-font-size) * 1.43)",
     }
     for selector, token in (
         (".site-nav {", "--site-nav-font-size"),
@@ -3071,6 +3072,54 @@ def test_every_popover_shares_one_margin_and_close_target() -> None:
     close = close[: close.index("}")]
     for token in ("--site-popover-close)", "--site-popover-close-inset)"):
         assert f"var({token}" in close
+
+
+def test_a_popover_is_as_tall_as_the_window_allows() -> None:
+    """A popover's height has one limit, read from one token: the window's height less a
+    margin above and below, so a taller window shows more of a long panel. A card's and
+    a row's popover, the atlas popover and a result overview may be that tall, and a
+    framed page, the case popover among them, is that tall. No rule stops a popover at a
+    fixed height, and none declares `max-height`, which is the same property as
+    `max-block-size` and would override it. A phone keeps the heights it had."""
+    css = re.sub(
+        r"/\*.*?\*/", "", render_overview.SITE_CSS.read_text(encoding="utf-8"), flags=re.DOTALL
+    )
+    assert css.count("--site-popover-window-margin: clamp(1rem, 4dvh, 3rem);") == 1
+    assert (
+        css.count(
+            "--site-popover-max-block: calc(100dvh - 2 * var(--site-popover-window-margin));"
+        )
+        == 1
+    )
+    limit = "max-block-size: var(--site-popover-max-block);"
+    assert limit in _rule(css, ".site-popover")
+    assert limit in _rule(css, ".site-popover.site-atlas-pop")
+    framed = _rule(css, '.site-popover[data-go="page"]:popover-open')
+    assert "block-size: var(--site-popover-max-block);" in framed
+    assert "max-block-size: none;" in framed
+    result = render_overview.SITE_RESULT_CSS.read_text(encoding="utf-8")
+    assert limit in _rule(
+        result, ".site-popover:has(.site-result, [data-row-pop-src]):popover-open"
+    )
+    for sheet in (css, result):
+        popovers = [
+            body
+            for selector, body in re.findall(r"([^{}]+){([^{}]*)}", sheet)
+            if ".site-popover" in selector or ".site-atlas-pop" in selector
+        ]
+        assert popovers
+        assert not any("max-height" in body for body in popovers)
+    # The phone's own heights, each restated under the phone's media query.
+    phone = css.split("@media (max-width: 40rem) {")[1:]
+    assert any(
+        "  .site-popover {\n    max-block-size: min(80vh, 40rem);" in block for block in phone
+    )
+    assert any("    block-size: min(88vh, 56rem);" in block for block in phone)
+    assert any(
+        "  .site-popover.site-atlas-pop {\n    inline-size: calc(100vw - 1rem);\n"
+        "    max-block-size: calc(100dvh - 1rem);" in block
+        for block in phone
+    )
 
 
 def _rule(css: str, selector: str) -> str:

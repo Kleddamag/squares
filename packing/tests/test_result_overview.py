@@ -437,8 +437,11 @@ def test_the_stylesheet_is_its_own_file_on_the_sites_tokens() -> None:
         ".site-popover:has(.site-result, [data-row-pop-src]):popover-open {", 1
     )[1]
     opened = opened.split("}", 1)[0]
-    assert "max-block-size: min(92dvh, 58rem);" in opened
+    assert "max-block-size: var(--site-popover-max-block);" in opened
     assert "max-height" not in opened
+    # A phone keeps the height it had.
+    phone = rules.split("@media (max-width: 40rem) {", 1)[1]
+    assert "max-block-size: calc(100dvh - 1rem);" in phone.split("@media", 1)[0]
     assert "preview" not in css
 
 

@@ -1,0 +1,13 @@
+2026-10-01T11:55:01Z
+b3e5e1526e74421032dc2f5b79c243712fdd7b61
+?? packing/campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/
+10
+ 4:55  up 1 day, 11:43, 1 user, load averages: 23.72 26.00 35.83
+Processes: 694 total, 10 running, 684 sleeping, 5112 threads 
+2026/10/01 04:55:03
+Load Avg: 23.66, 25.95, 35.75 
+CPU usage: 78.33% user, 21.27% sys, 0.39% idle 
+SharedLibs: 527M resident, 137M data, 146M linkedit.
+MemRegions: 957187 total, 12G resident, 286M private, 3259M shared.
+PhysMem: 29G used (4970M wired, 2408M compressor), 2590M unused.
+VM: 358T vsize, 6144M framework vsize, 642212(0) swapins, 1288724(0) swapouts.

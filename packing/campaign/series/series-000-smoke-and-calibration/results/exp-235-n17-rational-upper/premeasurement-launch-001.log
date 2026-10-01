@@ -1,0 +1,5 @@
+2026-10-01T10:47 UTC, instrument commit 245fd2782.
+Replay launch exited 1 before output directory creation, controls, source conversion or target checking.
+macOS refused: ulimit: data seg size: cannot modify limit: Invalid argument.
+No target sample or mathematical verdict exists. Consecutive instrument launch failures: 1.
+The platform does not support the requested data-segment resource limit. H-253 permits a memory cap where supported. Retain the unavailable guard explicitly; time, worker and output limits remain required.

@@ -24,24 +24,56 @@ def parse(path: Path) -> tuple[list[Square], Fraction]:
     document = safe_load(path.read_text(encoding="utf-8"))
     if not isinstance(document, dict) or not isinstance(document.get("witness"), dict):
         raise TypeError("expected a Witness/v2 envelope")
+    metadata = document.get("softschema")
+    if (
+        not isinstance(metadata, dict)
+        or metadata.get("contract") != "packing.squares:Witness/v2"
+    ):
+        raise ValueError("expected the Witness/v2 contract")
     witness: dict[str, Any] = document["witness"]
     if witness.get("representation") != "corners" or witness.get("scalar") != {
         "kind": "rational"
     }:
         raise ValueError("independent checker accepts rational corner witnesses only")
+    if witness.get("square_size") != "1":
+        raise ValueError("independent checker accepts unit squares only")
+    if witness.get("coordinates") != {
+        "origin": "lower-left",
+        "axes": "x-right-y-up",
+        "angle_unit": "not-applicable",
+    }:
+        raise ValueError("independent checker requires lower-left x-right-y-up coordinates")
     raw_squares = witness.get("squares")
-    if not isinstance(raw_squares, list) or len(raw_squares) != witness.get("n"):
+    n = witness.get("n")
+    if (
+        type(n) is not int
+        or n < 1
+        or not isinstance(raw_squares, list)
+        or len(raw_squares) != n
+    ):
         raise ValueError("declared n does not match the complete square list")
+    if any(not isinstance(square, dict) for square in raw_squares):
+        raise ValueError("every square must be an object")
     ids = [square.get("id") for square in raw_squares]
     if len(ids) != len(set(ids)):
         raise ValueError("square ids are not unique")
-    squares = [
-        [(Fraction(point[0]), Fraction(point[1])) for point in square["corners"]]
-        for square in raw_squares
-    ]
-    if any(len(square) != 4 for square in squares):
-        raise ValueError("every square must have four corners")
-    return squares, Fraction(witness["side"])
+    squares: list[Square] = []
+    for square in raw_squares:
+        points = square.get("corners")
+        if not isinstance(points, list) or len(points) != 4:
+            raise ValueError("every square must have four corners")
+        if any(
+            not isinstance(point, list)
+            or len(point) != 2
+            or any(type(coordinate) is not str for coordinate in point)
+            for point in points
+        ):
+            raise ValueError("every corner must contain two rational strings")
+        squares.append([(Fraction(point[0]), Fraction(point[1])) for point in points])
+    raw_side = witness.get("side")
+    if type(raw_side) is not str:
+        raise ValueError("container side must be a rational string")
+    return squares, Fraction(raw_side)
 
 
 def dot(left: Point, right: Point) -> Fraction:

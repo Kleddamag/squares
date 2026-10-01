@@ -1,0 +1,3 @@
+Working directory: packing/
+/usr/bin/time -l gtimeout --signal=TERM --kill-after=5s 180s .venv/bin/python3 -m devtools.check_n17_endpoint_feasibility campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/run-001/certificate.json
+Single worker; ulimit -f 10240; optional ulimit -d 1048576; PYTHONDONTWRITEBYTECODE=1; task-specific external TMPDIR/CARGO_TARGET_DIR/UV_CACHE_DIR.

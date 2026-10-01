@@ -1,0 +1,2 @@
+/bin/bash: line 16: ulimit: data seg size: cannot modify limit: Invalid argument
+Optional data-segment cap unavailable; timeout and output cap enforced.

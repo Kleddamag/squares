@@ -1,0 +1,4 @@
+Working directory: packing/ (repository Python 3.14)
+Scope: independent receipt review; no producer rerun. Trusts accepted H255 root proof and separately reviewed analytic identities.
+
+env TMPDIR=/Volumes/spud-ext1/agent-scratch/n17-root-checker/tmp CARGO_TARGET_DIR=/Volumes/spud-ext1/agent-scratch/n17-root-checker/cargo-target UV_CACHE_DIR=/Volumes/spud-ext1/agent-scratch/n17-root-checker/uv-cache PYTHONDONTWRITEBYTECODE=1 .venv/bin/python3 -m devtools.audit_n17_endpoint_receipt > campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/audit/independent-receipt.json

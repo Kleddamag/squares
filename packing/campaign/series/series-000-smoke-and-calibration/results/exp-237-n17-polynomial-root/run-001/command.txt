@@ -1,0 +1,4 @@
+Working directory: packing/
+Producer: /usr/bin/time -l gtimeout --signal=TERM --kill-after=5s 90s .venv/bin/python3 -m devtools.make_n17_root_certificate
+Checker: /usr/bin/time -l gtimeout --signal=TERM --kill-after=5s 90s .venv/bin/python3 -m devtools.check_n17_root_certificate campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/run-001/certificate.json
+Single worker; ulimit -f 10240; optional ulimit -d 1048576; PYTHONDONTWRITEBYTECODE=1; task-specific external TMPDIR/CARGO_TARGET_DIR/UV_CACHE_DIR.

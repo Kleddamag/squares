@@ -21,9 +21,15 @@ def description(root: ET.Element) -> str:
     return value.text
 
 
-def test_all_four_illustrations_are_self_contained_and_source_bound() -> None:
+def test_geometric_illustrations_are_self_contained_and_source_bound() -> None:
     rendered = figures.render_figures()
-    assert set(rendered) == {"WITNESS_SVG", "COVER_SVG", "CAPTURE_SVG", "MASK_SVG"}
+    assert set(rendered) == {
+        "WITNESS_SVG",
+        "COVER_SVG",
+        "CAPTURE_SVG",
+        "MASK_SVG",
+        "CAPACITY_SVG",
+    }
     roots = {name: ET.fromstring(svg) for name, svg in rendered.items()}
     assert all(root.tag == f"{SVG}svg" for root in roots.values())
     assert all(root.find(f"{SVG}title") is not None for root in roots.values())
@@ -85,3 +91,35 @@ def test_capture_drawing_refuses_an_unknown_parent_hash() -> None:
     graph["source_parent_edges"][child] = "0" * 64
     with pytest.raises(ValueError, match="unknown parent hash"):
         figures._capture_svg(graph)  # noqa: SLF001 - malformed graph boundary  # pyright: ignore[reportPrivateUsage]
+
+
+def test_capture_label_refuses_a_lost_inherited_boundary() -> None:
+    graph = json.loads(figures.SOURCE_GRAPH.read_text(encoding="utf-8"))
+    graph["source_headers"]["research/candidate-capture/tree438-rebuilt/r10.json"][
+        "constraints"
+    ][0]["keep"] = "le"
+    with pytest.raises(ValueError, match="inherited conditions"):
+        figures._capture_svg(graph)  # noqa: SLF001  # pyright: ignore[reportPrivateUsage]
+
+
+def test_closed_cut_labels_and_capacity_use_exact_inputs() -> None:
+    from fractions import Fraction  # noqa: PLC0415
+
+    rendered = figures.render_figures()
+    capture = ET.fromstring(rendered["CAPTURE_SVG"])
+    assert {
+        node.attrib["data-closed-cut"]
+        for node in capture.findall(f".//{SVG}text[@data-closed-cut]")
+    } == {
+        "y₁₅ ≤ 5/4",
+        "y₁₅ ≥ 5/4",
+        "t₁₃ ≤ 147/512",
+        "t₁₃ ≥ 147/512",
+        "t₂ ≤ 183/512",
+        "t₂ ≥ 183/512",
+    }
+    capacity = ET.fromstring(rendered["CAPACITY_SVG"])
+    cell = capacity.find(f".//{SVG}polygon[@data-capacity-cell]")
+    assert cell is not None
+    assert 0 < Fraction(cell.attrib["data-diameter-squared"]) < 1
+    assert "U Trump" not in rendered["WITNESS_SVG"]

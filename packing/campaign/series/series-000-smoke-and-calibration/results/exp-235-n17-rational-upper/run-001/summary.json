@@ -1,0 +1,63 @@
+{
+  "instrument_commit": "bacacdd15f4c7a410dfc9b8fff32c918e5851748",
+  "source": "packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound/upper-packing-certificate.json",
+  "receipt_source": "Per-command /usr/bin/time -l stderr receipts; main verifier JSON; exact exits.tsv",
+  "n": 17,
+  "pairs_tested": 136,
+  "side": "4675530093604551/1000000000000000",
+  "minimum_containment_clearance": "323264740583067756265381186720884493986257/62500000000000000000000000000000000000000000000000000000000",
+  "minimum_best_pair_gap": "11700381402346018397396603692656000048540842316927035182270108078168254684949702006696707847894821096011922335817920554225990272628848248480733842616741012041711209/1131075780686193171911761361652477918759603928501579404920052108407564562864725600888530091327468303685014429999687747641000000000000000000000000000000000000000000000000000000000000",
+  "timings": {
+    "conversion": {
+      "wall_seconds": 1.74,
+      "user_seconds": 0.56,
+      "system_seconds": 0.12,
+      "maximum_resident_bytes": 73367552
+    },
+    "grid-independent": {
+      "wall_seconds": 0.23,
+      "user_seconds": 0.07,
+      "system_seconds": 0.02,
+      "maximum_resident_bytes": 24248320
+    },
+    "grid-main": {
+      "wall_seconds": 2.12,
+      "user_seconds": 0.51,
+      "system_seconds": 0.19,
+      "maximum_resident_bytes": 71843840
+    },
+    "overlap-independent": {
+      "wall_seconds": 0.28,
+      "user_seconds": 0.08,
+      "system_seconds": 0.03,
+      "maximum_resident_bytes": 24330240
+    },
+    "overlap-main": {
+      "wall_seconds": 1.18,
+      "user_seconds": 0.44,
+      "system_seconds": 0.1,
+      "maximum_resident_bytes": 73400320
+    },
+    "target-independent": {
+      "wall_seconds": 0.36,
+      "user_seconds": 0.13,
+      "system_seconds": 0.02,
+      "maximum_resident_bytes": 24657920
+    },
+    "target-main": {
+      "wall_seconds": 1.74,
+      "user_seconds": 0.55,
+      "system_seconds": 0.1,
+      "maximum_resident_bytes": 72990720
+    },
+    "target-source": {
+      "wall_seconds": 0.26,
+      "user_seconds": 0.1,
+      "system_seconds": 0.02,
+      "maximum_resident_bytes": 17514496
+    }
+  },
+  "sum_command_wall_seconds": 7.91,
+  "memory_guard": "Unavailable platform data limit; peak RSS measured, no hard memory guard claimed",
+  "scope": "Fixed rational upper witness only; same SAT method, separate local geometry implementations; no algebraic endpoint or global lower bound."
+}

@@ -472,6 +472,48 @@ def test_the_nav_links_only_to_served_pages() -> None:
     assert nav.count('aria-current="page"') == 1
 
 
+#: The bar's entries, in order: each one's key, where it leads and its label.
+NAV_ENTRIES = [
+    ("overview", "./", "Overview"),
+    ("frontier", "frontier.html", "Frontier"),
+    ("results", "all-results.html", "Results"),
+    ("papers", "papers.html", "Papers"),
+    ("visualize", "visualize.html", "Visualize"),
+    ("github", "https://github.com/jlevy/squares", "GitHub"),
+]
+#: The pages the bar's Papers entry is current on, of those this renderer owns; the
+#: explainer, the third, is rendered by its own module and held there (`test_explainer`).
+PAPERS_SECTION = {"papers.html", "tutorial.html"}
+
+
+def test_the_nav_has_one_papers_entry_for_the_explainer_and_the_tutorial() -> None:
+    """The explainer and the tutorial have no entry of their own: Papers leads to the page
+    that holds them both, and neither old key can be marked current."""
+    nav = render_overview.nav_html("papers")
+    entries = re.findall(
+        r'<a data-page="(\w+)"(?: aria-current="page")? href="([^"]+)">([^<]+)</a>', nav
+    )
+    assert entries == NAV_ENTRIES
+    assert '<a data-page="papers" aria-current="page" href="papers.html">Papers</a>' in nav
+    assert "papers.html" in render_overview.SITE_PAGES
+    assert "papers.html" in render_overview.PAGES
+    for gone in ("explainer", "tutorial"):
+        with pytest.raises(SystemExit):
+            render_overview.nav_html(gone)
+
+
+@pytest.mark.parametrize("name", sorted(render_overview.PAGES))
+def test_papers_is_current_on_the_papers_page_and_the_tutorial_alone(
+    name: str, rendered: Callable[[str], str]
+) -> None:
+    """Papers is the current entry on `papers.html` and on the tutorial, which keeps its
+    own address, and on no other page this renderer owns."""
+    current = re.findall(r'<a data-page="(\w+)" aria-current="page"', rendered(name))
+    assert len(current) == 1
+    assert (current == ["papers"]) is (name in PAPERS_SECTION), current
+    assert set(render_overview.PAGES) >= PAPERS_SECTION
+
+
 @pytest.mark.parametrize(
     ("prose", "tex"),
     [
@@ -1029,8 +1071,8 @@ EXPLAINER_NOTE = (
 )
 
 
-def explainer_card(page: str, target: str) -> tuple[str, str, str]:
-    """The explainer card's value and note, and the popover it opens, on `page`."""
+def card_parts(page: str, target: str) -> tuple[str, str, str]:
+    """A card's value and note, and the popover it opens, on `page`."""
     card = page.split(f'popovertarget="{target}"', 1)[1].split("</button>", 1)[0]
     value, note = card.split('class="site-card-value">', 1)[1].split(
         '<span class="site-card-note">'
@@ -1045,7 +1087,7 @@ def test_the_explainer_card_says_what_the_explainer_now_is(page: str, results: s
     described as the owner put it, `n = 11` set as math, and its popover links T-060,
     the optimality proof since registered: the card itself is a button and holds no link.
     The wording stays within T-060's rungs: proved, never formally."""
-    value, note, panel = explainer_card(page, "pop-page-explainer")
+    value, note, panel = card_parts(page, "pop-page-explainer")
     assert card_text(value) == EXPLAINER_TITLE
     assert card_text(note) == EXPLAINER_NOTE
     assert "kpress-math" in value
@@ -1079,6 +1121,119 @@ def test_the_explainer_cards_date_is_the_records(register: list[dict]) -> None:
     ]
     assert len(published) == 2
     assert all((d.year, d.month) == (2026, 9) and d.day <= 15 for d in published)
+
+
+PAPER_CARD = re.compile(
+    r'<button type="button" class="site-card" popovertarget="([^"]+)" data-go="page" '
+    r'data-card-size="large">'
+)
+#: A popover's quiet links, beside its button: each one's address and its words.
+ALSO = re.compile(r'<a class="site-popover-also" href="([^"]+)">([^<]+)</a>')
+
+
+def test_the_papers_page_holds_one_large_card_for_each_paper(
+    rendered: Callable[[str], str],
+) -> None:
+    """`papers.html` is one large card per paper and nothing else in cards, in the order of
+    the one list that defines them (`overview_sections.PAPERS`), so a new paper is one
+    entry there. Each is a page card, as on the overview: the whole card is the button,
+    its popover frames the paper in its embedded view, and the popover's one button
+    expands to the paper's own page."""
+    page = rendered("papers.html")
+    papers = overview_sections.PAPERS
+    assert [paper.href for paper in papers] == ["explainer.html", "tutorial.html"]
+    assert {paper.size for paper in papers} == {"large"}
+    cards = PAPER_CARD.findall(page)
+    assert cards == ["pop-paper-explainer", "pop-paper-tutorial"]
+    assert page.count('class="site-card"') == len(cards)
+    for target, paper in zip(cards, papers, strict=True):
+        assert paper.href in render_overview.SITE_PAGES
+        _, _, panel = card_parts(page, target)
+        assert ACTION.findall(panel) == [(paper.href, "page")], target
+        frame = f'<iframe class="site-popover-frame" src="{paper.href}?view=embed"'
+        assert frame in panel, target
+        assert ALSO.findall(panel) == list(paper.links), target
+    assert render_overview.POPOVER_SCRIPT.read_text(encoding="utf-8") in page
+    with pytest.raises(SystemExit):
+        overview_sections.card("pop-x", "X", "x", "x", href="x.html", action="X", size="huge")
+
+
+def test_a_popover_carries_every_quiet_link_its_card_is_given() -> None:
+    """A card is a button and holds no link, so what its note names is linked from its
+    popover, beside the button: `also` first, then each of `links`, in order. The
+    explainer's are the optimality links, T-060's row for now, which a link to the
+    optimality paper can replace or join in the one place they are listed."""
+    markup = overview_sections.card(
+        "pop-x",
+        "X",
+        "x",
+        "x",
+        href="x.html",
+        action="Open",
+        also=("a.html", "A"),
+        links=(("b.html", "B"), ("c.html", "C")),
+    )
+    assert ALSO.findall(markup) == [("a.html", "A"), ("b.html", "B"), ("c.html", "C")]
+    assert markup.count("<a ") == 4
+    explainer = overview_sections.EXPLAINER
+    assert explainer is overview_sections.PAPERS[0]
+    assert explainer.links == overview_sections.OPTIMALITY_LINKS
+    assert [url for url, _ in explainer.links] == ["all-results.html#t-060"]
+
+
+def test_the_papers_page_says_what_each_paper_is(
+    page: str, rendered: Callable[[str], str]
+) -> None:
+    """The explainer's card is its card on the overview, word for word, with the same
+    link to T-060 in its popover; the tutorial's is `TUTORIAL.md`'s own opening, whom it
+    is for and what it covers. The overview keeps a card for each paper."""
+    papers = rendered("papers.html")
+    value, note, panel = card_parts(papers, "pop-paper-explainer")
+    assert card_text(value) == EXPLAINER_TITLE
+    assert card_text(note) == EXPLAINER_NOTE
+    assert (value, note) == card_parts(page, "pop-page-explainer")[:2]
+    assert '<a class="site-popover-also" href="all-results.html#t-060">' in panel
+
+    value, note, _ = card_parts(papers, "pop-paper-tutorial")
+    assert card_text(value) == "Square packing from first principles"
+    opening = (overview_data.REPO / "TUTORIAL.md").read_text(encoding="utf-8")
+    opening = " ".join(opening.split("## Contents", 1)[0].split())
+    assert "Square Packing from First Principles" in opening
+    assert "anyone new to the problem" in card_text(note)
+    for phrase in (
+        "what the objects are",
+        "why the approach is shaped the way it is",
+        "what the research has and has not established",
+        "linear programming",
+        "is first needed",
+    ):
+        assert phrase in card_text(note), phrase
+        assert phrase in opening, phrase
+    for target in ("pop-page-explainer", "pop-page-tutorial"):
+        assert f'popovertarget="{target}"' in page, target
+
+
+def test_the_papers_page_introduces_the_papers_within_t060s_rungs(
+    register: list[dict], rendered: Callable[[str], str]
+) -> None:
+    """The introduction names T-060 with a link to its row, in the words its rungs allow,
+    V4 and C5: proved optimal, machine-verified and reviewed, never formally. Its
+    template is in the reader tier, so the gate refuses a result it names that the
+    register does not hold."""
+    from devtools import check_results  # noqa: PLC0415
+
+    page = rendered("papers.html")
+    article = page.split("<article", 1)[1].split("</article>", 1)[0]
+    text = card_text(article)
+    assert re.search(r"<h1\b[^>]*>Papers</h1>", article)
+    assert '<a href="all-results.html#t-060">T-060</a>' in article
+    assert "proved optimal" in text
+    assert "machine-verified and reviewed here" in text
+    assert "formal" not in text.lower()
+    t060 = next(r for r in register if r["id"] == "T-060")
+    assert (t060["verification"], t060["confirmation"]) == ("V4", "C5")
+    assert render_overview.PAPERS_ARTICLE in check_results.READER_TIER
+    assert render_overview.PAPERS_ARTICLE in render_overview.RENDER_INPUTS
 
 
 def test_the_film_note_says_the_films_predate_t060(

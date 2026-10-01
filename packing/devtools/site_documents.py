@@ -1,6 +1,7 @@
 """The reader documents as site pages, with every link made to work off GitHub.
 
-The tutorial is a page in the navigation; the README, the synopsis, the result and
+The tutorial is one of the papers the navigation's Papers entry leads to (`papers.html`)
+and marks current; the README, the synopsis, the result and
 frontier registers and the reference documents are pages the navigation does not list,
 reached from the overview's cards, whose popovers frame them. Each is written to be
 read on GitHub, where a relative link to `conventions.md` or to a directory under
@@ -56,10 +57,11 @@ def _document(path: str, name: str, title: str, description: str) -> SiteDocumen
 
 
 DOCUMENTS: tuple[SiteDocument, ...] = (
+    # A paper, so the bar's Papers entry is current on it, as on the explainer.
     SiteDocument(
         TUTORIAL,
         "tutorial.html",
-        "tutorial",
+        "papers",
         "Tutorial · Square Packing",
         "A guided walk through square packing: the problem, the bounds and how each "
         "result here is checked.",

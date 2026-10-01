@@ -13,6 +13,10 @@ adds the front door and the pages around it, as the plan in
   `SquarePackingCase/v2` record;
 - `cases.html`, the case records: every case's full record at `cases.html#n-N`, which
   the atlas grid and the frontier atlas both open (`render_case_pages`);
+- `papers.html`, the Papers section's page: one large card per paper, from the one list
+  `overview_sections.PAPERS`. The explainer (`explainer.html`, `render_explainer`) and
+  the tutorial are the section's papers, and the bar's Papers entry is current on all
+  three;
 - `tutorial.html`, the tutorial rendered as a page;
 - `visualize.html`, the Visualize section's first tab: the n = 1 to 324 film at full
   size. Its second tab is the workbench at `workbench/`, which
@@ -59,6 +63,7 @@ PAPER_TYPE_CSS = TEMPLATES / "paper-type.css"
 OVERVIEW_ARTICLE = TEMPLATES / "overview-article.md"
 RESULTS_ARTICLE = TEMPLATES / "all-results-article.md"
 VISUALIZE_ARTICLE = TEMPLATES / "visualize-article.md"
+PAPERS_ARTICLE = TEMPLATES / "papers-article.md"
 BROWSER = PACKING / "devtools" / "overview"
 FORWARD_SCRIPT = BROWSER / "forward.js"
 TABLE_SCRIPT = BROWSER / "table.js"
@@ -87,6 +92,10 @@ OVERVIEW_DESCRIPTION = (
 RESULTS_DESCRIPTION = (
     "Every registered result on packing unit squares in the smallest square, this "
     "project's and others', with its verification, confirmation, standing and records."
+)
+PAPERS_DESCRIPTION = (
+    "The project's papers on packing unit squares in the smallest square: its "
+    "explanations and proofs, written out in full."
 )
 VISUALIZE_DESCRIPTION = (
     "The best packings known of n unit squares, n = 1 to 324, built one square at a "
@@ -144,6 +153,7 @@ SITE_PAGES: tuple[str, ...] = (
     "frontier.html",
     RESULTS_PAGE,
     "cases.html",
+    "papers.html",
     "explainer.html",
     "tutorial.html",
     "visualize.html",
@@ -165,6 +175,7 @@ RENDER_INPUTS: tuple[Path, ...] = (
     OVERVIEW_ARTICLE,
     RESULTS_ARTICLE,
     VISUALIZE_ARTICLE,
+    PAPERS_ARTICLE,
     BROWSER,
     PACKING / "src" / "sqpack",
     PACKING / "devtools" / "site_documents.py",
@@ -593,6 +604,26 @@ def results_page() -> Page:
     )
 
 
+def papers_page() -> Page:
+    """The Papers section's page: a short introduction and one large card per paper,
+    each opening a popover that frames the paper and expands to it."""
+    from devtools import overview_sections  # noqa: PLC0415
+
+    values = {"PAPER_CARDS": overview_sections.paper_cards()}
+    markdown = fill(
+        PAPERS_ARTICLE.read_text(encoding="utf-8"), values, where=PAPERS_ARTICLE.name
+    )
+    return kpress_page(
+        markdown,
+        name="papers.html",
+        current="papers",
+        title=f"Papers · {SITE_NAME}",
+        description=PAPERS_DESCRIPTION,
+        toc=False,
+        page_scripts=(POPOVER_SCRIPT,),
+    )
+
+
 def tutorial_page() -> Page:
     """`TUTORIAL.md` as a page; `site_documents` rewrites and checks its links."""
     from devtools.site_documents import tutorial_page as build  # noqa: PLC0415
@@ -660,6 +691,7 @@ PAGES: dict[str, Callable[[], Page]] = {
     "frontier.html": frontier_page,
     RESULTS_PAGE: results_page,
     "cases.html": cases_page,
+    "papers.html": papers_page,
     "tutorial.html": tutorial_page,
     "visualize.html": visualize_page,
     **{name: _document_page(name) for name in DOCUMENT_PAGES},

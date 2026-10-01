@@ -192,8 +192,9 @@ As built (amended 2026-09-30):
 | `/frontier.html` | the frontier atlas, `n = 1…324` (new) | Frontier |
 | `/all-results.html` | every register entry, the results table (new) | Results |
 | `/cases.html#n-N` | one case record per tracked `n` (new) | none; opened from the atlas grid and the frontier atlas |
-| `/explainer.html` | the n = 11 explainer (moved from `/`) | Explainer |
-| `/tutorial.html` | `TUTORIAL.md`, rendered (new) | Tutorial |
+| `/papers.html` | the papers page: one large card each for the explainer and the tutorial (new) | Papers |
+| `/explainer.html` | the n = 11 explainer (moved from `/`) | Papers |
+| `/tutorial.html` | `TUTORIAL.md`, rendered (new) | Papers |
 | `/visualize.html` | the `n = 1…324` film at full width, with Film and Workbench tabs (new) | Visualize |
 | `/workbench/` | the workbench, now carrying the site nav and the Workbench tab | Visualize |
 | `/readme.html`, `/synopsis.html`, `/results.html`, `/status.html`, `/epistemics.html`, `/conventions.html`, `/development.html`, `/defects.html` | the repository documents, rendered for the documentation cards’ popovers | none |

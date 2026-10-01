@@ -12,8 +12,10 @@ from __future__ import annotations
 import base64
 import html
 import re
+from collections.abc import Sequence
 from datetime import date
 from pathlib import Path
+from typing import NamedTuple
 from urllib.parse import urlsplit
 
 from devtools import repo_links
@@ -111,6 +113,10 @@ def card_hero(src: str) -> str:
     )
 
 
+#: The sizes a card may be marked with (`card(size=)`), which `site.css` keys on.
+CARD_SIZES = ("small", "medium", "large")
+
+
 def card(
     target: str,
     label: str,
@@ -122,6 +128,8 @@ def card(
     preview: str = "",
     also: tuple[str, str] | None = None,
     hero: str = "",
+    size: str = "",
+    links: Sequence[tuple[str, str]] = (),
 ) -> str:
     """A card and the popover it opens. The card is a caps label, the summary and a line
     under it; pressing it opens a popover that repeats the label and summary, shows
@@ -133,13 +141,18 @@ def card(
     previewed from `preview`, and the button scrolls there; so is a row on another page,
     such as a result's in the results table, and the button goes to that page. `also`
     adds a second, quiet link, such as the document on GitHub. `hero` heads the card
-    with a picture (`card_hero`).
+    with a picture (`card_hero`). `size`, one of `CARD_SIZES`, marks the card
+    `data-card-size`, which `site.css` sizes it by; a card without one is the default.
+    `links` are further quiet links beside the button, each its address and its words,
+    for what a card's note names but cannot link: a card is a button.
 
     The popover is native (`popover`), so it opens, closes on Escape or a click outside,
     and follows its button with no script. It is set in sans, and its attribute tells
     kpress so, so its math is sans too. The label and action are escaped here; the value,
     note and preview are HTML, so they may carry math.
     """
+    if size and size not in CARD_SIZES:
+        raise SystemExit(f"{target}: a card is {', '.join(CARD_SIZES)}, not {size!r}")
     kind = card_kind(href)
     if kind == "page" and not preview:
         body = (
@@ -148,14 +161,13 @@ def card(
         )
     else:
         body = f'<div class="site-popover-preview">{preview}</div>'
-    second = (
-        f' <a class="site-popover-also" href="{_esc(also[0])}">{_esc(also[1])}</a>'
-        if also
-        else ""
+    second = "".join(
+        f' <a class="site-popover-also" href="{_esc(url)}">{_esc(words)}</a>'
+        for url, words in (*((also,) if also else ()), *links)
     )
     return (
         f'<button type="button" class="site-card" popovertarget="{_esc(target)}" '
-        f'data-go="{kind}">'
+        f'data-go="{kind}"{f' data-card-size="{size}"' if size else ""}>'
         f"{card_hero(hero) if hero else ''}"
         f'<span class="site-card-label">{_esc(label)}</span>'
         f'<span class="site-card-value">{value}</span>'
@@ -648,27 +660,88 @@ def document_cards() -> str:
 #: to those dates.
 EXPLAINER_AS_OF = "early September"
 
-#: The explainer's card, the same on the overview and on the papers page: its page, a
-#: label, its title (the owner's, 2026-09-30, as `render_explainer.TITLE` is in title
-#: case), and what it is. T-060 is linked from the card's popover (`EXPLAINER_ALSO`),
-#: since a card is a button and holds no link of its own.
-EXPLAINER_CARD: tuple[str, str, str, str] = (
-    "explainer.html",
-    "Explainer",
-    "New lower bounds for square packing for n = 11",
-    (
-        "An explainer and proof of certain lower bounds for n = 11. It explains the "
-        f"earlier, simpler proofs as of {EXPLAINER_AS_OF}; newer optimality proofs now "
-        "exist (T-060)."
+
+class Paper(NamedTuple):
+    """One of the site's papers, as its card says what it is: where it is served, a caps
+    label naming its kind, its title, one or two sentences on what it is, the size of
+    its card on the Papers page, and the quiet links its card's popover carries for
+    what the description names. The title and description are register prose, so
+    `n = 11` in either is set as math."""
+
+    href: str
+    label: str
+    title: str
+    description: str
+    size: str = "large"
+    links: tuple[tuple[str, str], ...] = ()
+
+
+#: Where the explainer's card sends a reader for the newer optimality proofs it names:
+#: T-060's row in the results table, for now. When the optimality paper is a page of
+#: the site, its link replaces this one or joins it, here, and both of the explainer's
+#: cards carry the change. A card is a button and holds no link, so its popover does.
+OPTIMALITY_LINKS: tuple[tuple[str, str], ...] = (
+    (result_url("T-060"), "The optimality proof, T-060"),
+)
+
+#: The site's papers, in the order the Papers page shows them, one large card each
+#: (`paper_cards`). A new paper is one entry here. The explainer's title is the owner's
+#: (2026-09-30), as `render_explainer.TITLE` has it in title case; the tutorial's
+#: description is `TUTORIAL.md`'s own opening, its audience and what it owns.
+PAPERS: tuple[Paper, ...] = (
+    Paper(
+        href="explainer.html",
+        label="Explainer",
+        title="New lower bounds for square packing for n = 11",
+        description=(
+            "An explainer and proof of certain lower bounds for n = 11. It explains the "
+            f"earlier, simpler proofs as of {EXPLAINER_AS_OF}; newer optimality proofs now "
+            "exist (T-060)."
+        ),
+        links=OPTIMALITY_LINKS,
+    ),
+    Paper(
+        href="tutorial.html",
+        label="Tutorial",
+        title="Square packing from first principles",
+        description=(
+            "An introduction for anyone new to the problem: what the objects are, why the "
+            "approach is shaped the way it is, and what the research has and has not "
+            "established. Each outside idea it uses, from linear programming to algebraic "
+            "number fields, is introduced where it is first needed."
+        ),
     ),
 )
-EXPLAINER_ALSO = (result_url("T-060"), "The optimality proof, T-060")
+#: The explainer, whose card is the same on the overview as on the Papers page.
+EXPLAINER = PAPERS[0]
+
+
+def paper_cards() -> str:
+    """One card per paper, the overview's page cards in kind: the whole card is a button
+    that opens a popover framing the paper, which expands to it."""
+    return _cards(
+        [
+            card(
+                "pop-paper-" + re.sub(r"[^a-z0-9]+", "-", paper.href.removesuffix(".html")),
+                paper.label,
+                tex_bounds(paper.title),
+                tex_bounds(paper.description),
+                href=paper.href,
+                action=f"Expand the {paper.label.lower()}",
+                size=paper.size,
+                links=paper.links,
+            )
+            for paper in PAPERS
+        ]
+    )
+
 
 #: The site's other pages, as the overview's cards show them: the page, a label, its
 #: title, and one line on what a reader finds there. Both are register prose, so a
-#: bound in either is written in ASCII (`s(11) >= 3.8264…`) and set as math.
+#: bound in either is written in ASCII (`s(11) >= 3.8264…`) and set as math. The
+#: explainer's card is its paper's; the tutorial's keeps a shorter line here.
 PAGES: tuple[tuple[str, str, str, str], ...] = (
-    EXPLAINER_CARD,
+    (EXPLAINER.href, EXPLAINER.label, EXPLAINER.title, EXPLAINER.description),
     (
         "tutorial.html",
         "Tutorial",
@@ -702,7 +775,7 @@ def page_cards() -> str:
                 tex_bounds(note),
                 href=href,
                 action=f"Expand the {label.lower()}",
-                also=EXPLAINER_ALSO if href == EXPLAINER_CARD[0] else None,
+                links=EXPLAINER.links if href == EXPLAINER.href else (),
             )
             for href, label, title, note in PAGES
         ]

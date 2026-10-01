@@ -173,6 +173,9 @@ def test_the_checked_pages_are_every_page_the_site_serves_but_the_workbench() ->
     assert {"index.html", "frontier.html", "all-results.html"} == LINK_CHECKED_PAGES
     assert render_overview.canonical_url("index.html") == check_published_site.SITE_URL
     assert render_overview.canonical_url("tutorial.html").endswith("/squares/tutorial.html")
+    # The papers page was added to the renderer alone, and is checked here for it.
+    assert "papers.html" in SITE_PAGES
+    assert render_overview.canonical_url("papers.html").endswith("/squares/papers.html")
 
 
 def test_live_source_check_accepts_the_receipt_written_by_the_pdf_exporter(

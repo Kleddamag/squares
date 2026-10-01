@@ -180,7 +180,7 @@ def test_long_reports_get_a_contents_rail_and_short_ones_do_not() -> None:
         page = render_overview.kpress_page(
             markdown,
             name="short.html",
-            current="tutorial",
+            current="papers",
             title="T",
             description="D",
             toc="auto",

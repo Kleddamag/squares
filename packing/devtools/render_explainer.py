@@ -2445,7 +2445,7 @@ def shell_substitutions(static: Path, shared: dict[str, str], body: str) -> dict
         },
         "KPRESS_CLIENT_SCRIPT": kpress_client_js(static),
         "SITE_NAV_CSS": SITE_NAV_CSS.read_text(encoding="utf-8"),
-        "SITE_NAV": nav_html("explainer"),
+        "SITE_NAV": nav_html("papers"),
         **shared,
         "BODY_HTML": body,
     }

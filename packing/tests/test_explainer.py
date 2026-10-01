@@ -100,6 +100,16 @@ def test_no_placeholder_survives_substitution(page: str) -> None:
     assert re.findall(r"\{\{[A-Z_]+\}\}", page) == []
 
 
+def test_the_bar_marks_papers_current_on_the_explainer(page: str) -> None:
+    """The explainer is one of the site's papers: the bar has no entry of its own for it,
+    Papers is the one marked current, and the page keeps its address."""
+    assert re.findall(r'<a data-page="(\w+)" aria-current="page"', page) == ["papers"]
+    assert '<a data-page="papers" aria-current="page" href="papers.html">Papers</a>' in page
+    assert 'data-page="explainer"' not in page
+    assert f"{SITE_URL}explainer.html" == PAGE_URL
+    assert {"papers.html", "explainer.html"} <= set(SITE_PAGES)
+
+
 def test_title_block_names_the_result_without_a_subtitle(page: str, document: str) -> None:
     """The title stands alone; the exact theorem is typeset in the opening section. Its
     `n = 11` is a math run, so the hero's caps leave the variable lowercase, and the run

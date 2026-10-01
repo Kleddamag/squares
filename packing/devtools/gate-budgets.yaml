@@ -1176,6 +1176,19 @@ pages:
       blobless sparse checkout omits 504 MB in `packing/resources/` and
       `packing/campaign/`; a contract test proves those omitted trees contain no declared
       workbench or explainer build input.
+  - id: optimality
+    measured_seconds: 49.0
+    measured_on: 2026-10-01
+    measured_where: >-
+      PR 259 exact-head run 36796189326, job 110160194859 at a3fd9510:
+      00:27:00Z to 00:27:49Z, including the new T-060 render, real Chromium
+      controls, PDF print, and artifact upload.
+    ceiling_seconds: 80.0
+    argument: >-
+      The independent T-060 page reads only its own pinned proof packet, exact-backed
+      figures, article, and KPress assets. Its 10-minute operational job timeout bounds
+      setup faults; this 80-second cost ceiling detects work growth on the measured
+      warm-cache reference shape.
   - id: pdf
     measured_seconds: 73.3
     measured_on: 2026-09-16
@@ -1261,6 +1274,18 @@ pages:
     measured_where: run 35039355763, the scope demonstration
     ceiling_seconds: 8.0
     argument: The same notice for the workbench half.
+  - id: optimality-unchanged
+    measured_seconds: 4.0
+    measured_on: 2026-09-16
+    measured_where: >-
+      Proxy from the structurally identical explainer/workbench unchanged notices in
+      run 35039355763; the new T-060 notice has not yet been directly observed as a
+      successful job on a pull request where its inputs did not change.
+    ceiling_seconds: 8.0
+    argument: >-
+      The same scope-reason-only notice as the two existing unchanged jobs. This
+      explicitly borrowed four-second calibration will be replaced by a direct reading
+      when an unrelated pull request first exercises the T-060 skip path (think-x2ln).
   - id: pages-required
     measured_seconds: 3.0
     measured_on: 2026-09-16

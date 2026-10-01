@@ -2,13 +2,19 @@
 
 `devtools.preview_site` fails a built page on what its probes find, and
 `devtools.measure_site_pages cards` prints the same card report as a table, as `space`
-does the space around tables and headings. All read a probe's output in Python, so the
-decisions are tested here without a browser.
+does the space around tables and headings and `columns` the columns of the data tables.
+All read a probe's output in Python, so the decisions are tested here without a browser.
 """
 
 from __future__ import annotations
 
-from devtools.measure_site_pages import card_rows, markdown_table, space_rows
+from devtools.measure_site_pages import (
+    card_rows,
+    chip_rows,
+    column_rows,
+    markdown_table,
+    space_rows,
+)
 from devtools.preview_site import SCROLLBAR_PX, clip_problem, off_centre, shot_stem
 
 
@@ -113,6 +119,103 @@ def test_the_space_table_has_one_line_a_table_and_one_a_heading_role() -> None:
     # Only a box that hides its overflow counts as clipping what it cannot show.
     assert (headline["lines"], headline["overflow"]) == (3, 4)
     assert markdown_table(report).splitlines()[0].startswith("| page | width | state | what |")
+
+
+def test_the_columns_table_has_one_line_a_column() -> None:
+    """Each column of each table is a line: its width and share of the table, the most
+    lines a cell takes, how many words a line break splits, and the tallest row it
+    sets, a dash where it sets none. A column that is not shown has no width."""
+    report: list[dict[str, object]] = [
+        {
+            "page": "all-results.html",
+            "width": 1280,
+            "table": "site-table.site-results",
+            "section": "Every Result",
+            "layout": "table",
+            "table_width": 1104,
+            "frame_width": 1104,
+            "scrolls": 0,
+            "shown_rows": 61,
+            "top": 400,
+            "height": 8423,
+            "tallest_row": {"row": "t-056", "height": 385.6},
+            "columns": [
+                {"column": "Result", "width": 412.8, "lines": 3, "broken": [], "tallest": None},
+                {
+                    "column": "Credit",
+                    "width": 102.6,
+                    "lines": 9,
+                    "broken": ["Queuingtheorydotcom", "Guzhou0806"],
+                    "tallest": {"row": "t-048", "height": 238.8, "lines": 9},
+                },
+                {
+                    "column": "site-records",
+                    "width": None,
+                    "lines": 3,
+                    "broken": [],
+                    "tallest": None,
+                },
+            ],
+        }
+    ]
+    result, credit, cards = column_rows(report)
+    assert (result["col_width"], result["share"], result["tallest_row"]) == (
+        "412.8",
+        "37%",
+        "-",
+    )
+    assert (credit["col_width"], credit["share"], credit["max_lines"]) == ("102.6", "9%", 9)
+    assert (credit["broken_words"], credit["tallest_row"]) == (2, "t-048")
+    assert (credit["row_height"], credit["its_lines"]) == ("238.8", 9)
+    assert (credit["table"], credit["past_frame"], credit["shown"]) == ("1104", "0", 61)
+    assert (cards["col_width"], cards["share"]) == ("-", "-")
+    head = markdown_table(report).splitlines()[0]
+    assert head.startswith("| page | width | section | layout | shown | table | past_frame |")
+
+
+def test_the_chips_table_has_one_line_a_kind_of_chip_on_a_surface() -> None:
+    """Chips of one kind on one surface share a line that gives how many there are, the
+    distinct sizes found, the most lines one takes, and the words of each that wraps."""
+
+    def chip(kind: str, text: str, block: float, lines: int) -> dict[str, object]:
+        return {
+            "page": "all-results.html",
+            "width": 1280,
+            "state": "page",
+            "chip": kind,
+            "text": text,
+            "surface": "table",
+            "font_size": 17.5,
+            "line_height": 25.3,
+            "inline_size": 98,
+            "block_size": block,
+            "lines": lines,
+            "white_space": "normal",
+        }
+
+    report = [
+        chip("rung", "S5", 25.3, 1),
+        chip("standing", "superseded", 25.3, 1),
+        chip("standing", "current best", 50.7, 2),
+        chip("standing", "current best", 50.7, 2),
+    ]
+    rungs, standing = chip_rows(report)
+    # A chip's own width is its `inline_size`, so `width` stays the window's.
+    assert (rungs["width"], standing["width"]) == (1280, 1280)
+    assert (rungs["chip"], rungs["count"], rungs["block_size"], rungs["wrapped"]) == (
+        "rung",
+        1,
+        "25.3",
+        "-",
+    )
+    assert (standing["count"], standing["font_size"], standing["block_size"]) == (
+        3,
+        "17.5",
+        "25.3 50.7",
+    )
+    assert (standing["max_lines"], standing["wrapped"]) == (2, "current best")
+    head = markdown_table(report).splitlines()[0]
+    assert head.startswith("| page | width | state | surface | chip | count | font_size |")
 
 
 def test_a_heading_with_no_resolved_line_height_still_has_a_line() -> None:

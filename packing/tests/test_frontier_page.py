@@ -12,8 +12,9 @@ import pytest
 from devtools import render_frontier_page as frontier
 from devtools import render_overview
 from devtools import render_research_tables as tables
-from devtools.render_overview import PAGES, assert_self_contained
+from devtools.render_overview import assert_self_contained
 from sqpack.yamlio import safe_load
+from tests import site_renders
 
 #: Measured at 3.6 MB on 2026-09-29 (324 cases): 1.6 MB is the site shell every page
 #: carries (the explainer's inlined faces and KaTeX), about 0.95 MB the 324 thumbnails
@@ -53,7 +54,7 @@ class Rows(HTMLParser):
 
 @pytest.fixture(scope="module")
 def page() -> str:
-    return PAGES["frontier.html"]().html
+    return site_renders.html("frontier.html")
 
 
 @pytest.fixture(scope="module")

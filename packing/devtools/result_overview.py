@@ -51,7 +51,7 @@ import html
 import math
 import re
 import sys
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from decimal import Decimal
 from functools import cache
 from pathlib import Path
@@ -966,10 +966,12 @@ class LinkAudit(NamedTuple):
 _HREF = re.compile(r'href="([^"]+)"')
 
 
-def link_audit(overview: Overview) -> LinkAudit:
+def link_audit(overview: Overview, bodies: Mapping[str, str] | None = None) -> LinkAudit:
     """Render every result's overview and count its links against the tree at `HEAD`,
     which is what `main` holds when the site deploys. Rendering has already checked each
-    link against the working tree and the record (`check_links`)."""
+    link against the working tree and the record (`check_links`). `bodies` are the
+    overviews by result id where a caller has rendered them already; one it lacks is
+    rendered here."""
     tree = repo_links.repository_tree()
     on_main = f"{repo_links.REPO_URL}/"
     branch = re.compile(
@@ -983,7 +985,7 @@ def link_audit(overview: Overview) -> LinkAudit:
     off_main: list[str] = []
     sizes: dict[str, int] = {}
     for result in overview.results:
-        body = result_popover_html(result, overview)
+        body = (bodies or {}).get(result.id) or result_popover_html(result, overview)
         sizes[result.id] = len(body.encode("utf-8"))
         for href in _HREF.findall(body):
             if href.startswith(on_main):

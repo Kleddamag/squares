@@ -20,9 +20,9 @@ from typing import Any
 
 import pytest
 
-from devtools import render_overview
 from devtools.measure_site_pages import TYPOGRAPHY
 from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from tests import site_renders
 
 #: The explainer's resolved values at a 1280px desktop, from `measure_site_pages type`.
 EXPLAINER = {
@@ -53,7 +53,7 @@ def pages(tmp_path_factory: pytest.TempPathFactory) -> dict[str, Path]:
     written: dict[str, Path] = {}
     for name in ("tutorial.html", "readme.html"):
         path = root / name
-        path.write_text(render_overview.PAGES[name]().html, encoding="utf-8")
+        path.write_text(site_renders.html(name), encoding="utf-8")
         written[name] = path
     return written
 

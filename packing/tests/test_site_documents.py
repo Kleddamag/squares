@@ -21,6 +21,7 @@ from devtools.site_documents import (
     rewrite_overview_intro,
     unresolved,
 )
+from tests import site_renders
 
 #: Every repository link on the site names the default branch, never a commit.
 BRANCH = "main"
@@ -147,7 +148,7 @@ def test_the_build_fails_on_an_unresolved_link(monkeypatch: pytest.MonkeyPatch) 
 
 @pytest.fixture(scope="module")
 def pages() -> dict[str, render_overview.Page]:
-    return {name: render_overview.PAGES[name]() for name in ("tutorial.html",)}
+    return {name: site_renders.page(name) for name in ("tutorial.html",)}
 
 
 def test_the_pages_render_self_contained_with_a_toc(
@@ -177,7 +178,9 @@ def test_the_tutorial_math_is_kpress_math(pages: dict[str, render_overview.Page]
     assert 'data-kpress-math-error="true">' not in body
 
 
-def test_long_reports_get_a_contents_rail_and_short_ones_do_not() -> None:
+def test_long_reports_get_a_contents_rail_and_short_ones_do_not(
+    pages: dict[str, render_overview.Page],
+) -> None:
     """kpress's own length rule decides, so a short report keeps the one centred
     column and a long one adds the rail beside it."""
     short = "\n\n".join(f"## Part {i}\n\nA line of text." for i in range(3))
@@ -194,15 +197,17 @@ def test_long_reports_get_a_contents_rail_and_short_ones_do_not() -> None:
         return 'class="kpress-toc ' in page.html
 
     assert not rail(short)
-    assert 'class="kpress-toc ' in render_overview.PAGES["tutorial.html"]().html
+    assert 'class="kpress-toc ' in pages["tutorial.html"].html
 
 
-def test_a_hand_written_contents_list_is_dropped_from_the_page() -> None:
+def test_a_hand_written_contents_list_is_dropped_from_the_page(
+    pages: dict[str, render_overview.Page],
+) -> None:
     """The tutorial's own Contents list, written for GitHub, is not on its page, where
     the contents rail lists the headings; the text around it stays."""
     markdown = "Intro.\n\n## Contents\n\n1. [One](#one)\n2. [Two](#two)\n\n## One\n\nBody.\n"
     assert site_documents.without_manual_contents(markdown) == "Intro.\n\n## One\n\nBody.\n"
-    page = site_documents.tutorial_page().html
+    page = pages["tutorial.html"].html
     assert 'id="contents"' not in page
     assert 'href="#contents"' not in page
 

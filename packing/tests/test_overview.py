@@ -21,6 +21,7 @@ from devtools.render_explainer import TEMPLATE as EXPLAINER_SHELL
 from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, hash_pinned_links, repo_url
 from devtools.result_credit import OTHERS, source_lineage
 from sqpack.yamlio import safe_load
+from tests import site_renders
 
 ID = re.compile(r'\sid="([^"]+)"')
 #: A results-table row: its id, whose result it is, and its confirmation rung's level.
@@ -31,12 +32,12 @@ ROW = re.compile(
 
 @pytest.fixture(scope="module")
 def page() -> str:
-    return render_overview.overview_page().html
+    return site_renders.html("index.html")
 
 
 @pytest.fixture(scope="module")
 def results() -> str:
-    return render_overview.results_page().html
+    return site_renders.html(render_overview.RESULTS_PAGE)
 
 
 @pytest.fixture(scope="module")
@@ -44,22 +45,13 @@ def register() -> list[dict]:
     return safe_load(overview_data.RESULTS.read_text(encoding="utf-8"))["results"]
 
 
-@functools.cache
-def _rendered(name: str) -> str:
-    """One render of each site page per test process. Rendering is deterministic
-    (`test_the_render_is_deterministic`), so the checks below that only read a page share
-    it; `cases.html` alone is about 9 MB and several seconds, and was rendered afresh by
-    each of them."""
-    return render_overview.PAGES[name]().html
-
-
 @pytest.fixture(scope="module")
 def rendered() -> Callable[[str], str]:
-    """`_rendered`, with `cases.html` rendered during setup rather than inside whichever
-    test reaches it first, so no single check carries that page's render in its own
-    call time."""
-    _rendered("cases.html")
-    return _rendered
+    """Any site page by name, from the one render of each the test process shares
+    (`tests.site_renders`). Every page is rendered here, during setup, `cases.html` and
+    its 9 MB among them, so no check carries a render in its own call time."""
+    site_renders.pages()
+    return site_renders.html
 
 
 def test_every_register_entry_is_one_row(results: str, register: list[dict]) -> None:
@@ -84,6 +76,8 @@ def test_counts_are_the_declared_rungs(register: list[dict]) -> None:
 
 
 def test_the_render_is_deterministic(page: str, results: str) -> None:
+    """A fresh render of each page is the shared one, byte for byte, which is what lets
+    every other check read the shared render."""
     assert render_overview.overview_page().html == page
     assert render_overview.results_page().html == results
 
@@ -566,8 +560,8 @@ def test_no_placeholder_or_raw_math_is_left(page: str) -> None:
     assert not re.search(r"(?<![\w\\])\$[^$\s][^$<]*\$", article)
 
 
-def test_every_record_link_is_on_main_or_a_site_page() -> None:
-    for result in overview_data.load().results:
+def test_every_record_link_is_on_main_or_a_site_page(overview: overview_data.Overview) -> None:
+    for result in overview.results:
         for link in result.records:
             assert (
                 link.url.startswith(f"{REPO_URL}/blob/{DEFAULT_BRANCH}/")
@@ -586,9 +580,8 @@ def test_every_repository_link_on_the_page_names_main(page: str) -> None:
     assert {ref for _, ref, _ in links} == {DEFAULT_BRANCH}
 
 
-def test_on_github_links_open_the_latest_version() -> None:
+def test_on_github_links_open_the_latest_version(page: str) -> None:
     """Each document card and rubric card has an "On GitHub" link on `main`."""
-    page = render_overview.overview_page().html
     branch = f"{REPO_URL}/blob/{DEFAULT_BRANCH}/"
     also = re.findall(r'<a class="site-popover-also" href="([^"]+)"[^>]*>On GitHub</a>', page)
     assert len(also) == len(overview_sections.DOCUMENTS) + len(overview_sections.DIMENSIONS)
@@ -625,9 +618,9 @@ def test_other_project_cards_are_links_showing_their_address(page: str) -> None:
     assert "pop-project-" not in page
 
 
-def test_record_line_links_point_at_their_entry() -> None:
+def test_record_line_links_point_at_their_entry(overview: overview_data.Overview) -> None:
     lines = overview_data.RESULTS.read_text(encoding="utf-8").splitlines()
-    for result in overview_data.load().results:
+    for result in overview.results:
         (register,) = (link for link in result.records if link.label == "register")
         line = int(register.url.rsplit("#L", 1)[1])
         assert lines[line - 1].strip() == f"- id: {result.id}", result.id
@@ -637,7 +630,7 @@ def _slug(heading: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", heading.lower()).strip("-")
 
 
-def test_overview_ids_never_shadow_an_explainer_anchor(page: str) -> None:
+def test_overview_ids_never_shadow_an_explainer_anchor(page: str, results: str) -> None:
     """`forward.js` sends a fragment the overview lacks to the explainer, so an old
     explainer deep link lands on the overview only if the overview has the same id."""
     explainer = EXPLAINER_ARTICLE.read_text(encoding="utf-8")
@@ -647,7 +640,7 @@ def test_overview_ids_never_shadow_an_explainer_anchor(page: str) -> None:
     }
     ours = {i for i in ID.findall(page) if not i.startswith("kpress-")}
     assert not ours & explainer_ids
-    moved = {i for i in ID.findall(render_overview.results_page().html) if i.startswith("t-")}
+    moved = {i for i in ID.findall(results) if i.startswith("t-")}
     assert moved
     assert not moved & explainer_ids
 
@@ -902,7 +895,7 @@ ACTION = re.compile(
 )
 
 
-def test_every_card_shows_where_it_goes_and_gets_there(page: str) -> None:
+def test_every_card_shows_where_it_goes_and_gets_there(page: str, results: str) -> None:
     """Every card opens a popover that shows its target and ends in one button that goes
     there. Another page is rendered in a frame, in its embedded view, and the button
     expands it; a place on this page, or another site, is previewed, and the button goes
@@ -915,7 +908,7 @@ def test_every_card_shows_where_it_goes_and_gets_there(page: str) -> None:
     assert "page" in {kind for _, kind in cards} <= {"scroll", "page", "external"}
     assert page.count('class="site-card"') == len(cards)
     ids = set(ID.findall(page))
-    rows = set(ID.findall(render_overview.results_page().html))
+    rows = set(ID.findall(results))
     served = {*render_overview.SITE_PAGES, "workbench/"}
     for target, kind in cards:
         start = page.index(f'<div class="site-popover" id="{target}" popover')
@@ -991,7 +984,7 @@ def test_the_prose_links_repository_files_on_main(page: str) -> None:
 
 @pytest.fixture(scope="module")
 def overview() -> overview_data.Overview:
-    return overview_data.load()
+    return site_renders.overview()
 
 
 @pytest.fixture(scope="module")
@@ -2220,7 +2213,7 @@ class _RowWiring(HTMLParser):
 @functools.cache
 def _row_wiring(name: str) -> _RowWiring:
     parser = _RowWiring()
-    parser.feed(_rendered(name))
+    parser.feed(site_renders.html(name))
     return parser
 
 

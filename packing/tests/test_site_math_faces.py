@@ -29,6 +29,7 @@ from devtools import render_frontier_page as frontier
 from devtools.measure_site_pages import MATH_FACES
 from devtools.preview_site import MATH_FACE, press, settle_math
 from devtools.render_explainer_pdf import BROWSER_OVERRIDE
+from tests import site_renders
 
 SANS_TEXT = "Source Sans 3 Variable"
 SERIF_MATH, SANS_MATH = "KPress Math Text", "KPress Math Text Sans"
@@ -83,7 +84,7 @@ def walk(browser: Any, address: str, *, presses: Sequence[str], whole: bool) -> 
 
 @pytest.fixture(scope="module")
 def overview_html() -> str:
-    return render_overview.overview_page().html
+    return site_renders.html("index.html")
 
 
 @pytest.fixture(scope="module")
@@ -96,14 +97,14 @@ def overview(browser: Any, root: Path, overview_html: str) -> Walk:
 @pytest.fixture(scope="module")
 def results(browser: Any, root: Path) -> Walk:
     path = root / render_overview.RESULTS_PAGE
-    path.write_text(render_overview.results_page().html, encoding="utf-8")
+    path.write_text(site_renders.html(render_overview.RESULTS_PAGE), encoding="utf-8")
     return walk(browser, path.as_uri(), presses=(), whole=True)
 
 
 @pytest.fixture(scope="module")
 def frontier_atlas(browser: Any, root: Path) -> Walk:
     path = root / "frontier.html"
-    path.write_text(render_overview.frontier_page().html, encoding="utf-8")
+    path.write_text(site_renders.html("frontier.html"), encoding="utf-8")
     return walk(browser, path.as_uri(), presses=(CASE_LINK,), whole=False)
 
 

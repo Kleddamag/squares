@@ -19,6 +19,7 @@ from devtools.render_case_pages import BROAD_RESULT
 from devtools.render_recent_results import HOLDS, SUPERSEDED
 from devtools.repo_links import DEFAULT_BRANCH, REPO, REPO_URL
 from sqpack.yamlio import safe_load
+from tests import site_renders
 
 #: The three results the tests read part by part: one that settles a case, the result it
 #: superseded on the same case, and one about 49 cases.
@@ -33,16 +34,13 @@ STEP = re.compile(
 
 @pytest.fixture(scope="module")
 def overview() -> overview_data.Overview:
-    return overview_data.load()
+    return site_renders.overview()
 
 
 @pytest.fixture(scope="module")
-def bodies(overview: overview_data.Overview) -> dict[str, str]:
+def bodies() -> dict[str, str]:
     """Every register result's overview, rendered once: that none fails is the first check."""
-    return {
-        result.id: result_overview.result_popover_html(result, overview)
-        for result in overview.results
-    }
+    return site_renders.result_bodies()
 
 
 def _result(overview: overview_data.Overview, result_id: str) -> overview_data.Result:

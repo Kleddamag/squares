@@ -2374,10 +2374,7 @@ def test_the_sites_statement_stands_under_its_own_section_heading(page: str) -> 
     following = after_intro.split(heading, 1)[1].lstrip()
     assert following.startswith("<p>This Squares Project site collects")
     assert heading not in problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[0]
-    contents = (
-        '{"href": "#the-squares-project", "level": 1, '
-        '"title": "The Squares Project"}'
-    )
+    contents = '{"href": "#the-squares-project", "level": 1, "title": "The Squares Project"}'
     assert contents in page
     assert page.index(contents) < page.index('{"href": "#recent-results"')
     template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
@@ -2387,21 +2384,18 @@ def test_the_sites_statement_stands_under_its_own_section_heading(page: str) -> 
     )
 
 
-def test_the_project_is_named_the_square_packing_project_wherever_it_is_named(
+def test_the_project_is_named_the_squares_project_wherever_it_is_named(
     page: str, rendered: Callable[[str], str]
 ) -> None:
-    """The project's formal name is The Squares Project (the owner, 2026-10-01),
-    and no page of the site calls it the Squares Project in its own words: the README's
-    title and its card, the closing section's heading, whose old fragment an empty
-    anchor keeps, and the sentence under it. The one place the old name remains is a
-    register claim's account of how another source credits this project, which is
-    record text and not the site's own naming."""
+    """The project's formal name is The Squares Project (the owner, 2026-10-01, in place
+    of The Square Packing Project of earlier that day), and no page of the site calls it
+    anything else in its own words: the README's title and its card, the closing
+    section's heading, which carries its own fragment, and the sentence under it. Other
+    Square Packing Projects, the plural, names other people's projects, and The Square
+    Packing Problem the subject; neither is this project's name."""
     from devtools import site_documents  # noqa: PLC0415
 
-    heading = (
-        '<h2 id="squares-project-documentation">Squares Project Documentation'
-        '<a id="squares-project-documentation"></a></h2>'
-    )
+    heading = '<h2 id="squares-project-documentation">Squares Project Documentation</h2>'
     assert page.count(heading) == 1
     section = page.split(heading, 1)[1]
     assert "live in the Squares Project\u2019s" in _rendered_text(section)
@@ -2416,8 +2410,7 @@ def test_the_project_is_named_the_square_packing_project_wherever_it_is_named(
     for name in ("index.html", "papers.html", "frontier.html", "readme.html", "visualize.html"):
         text = re.sub(r"<(script|style)\b.*?</\1>", "", rendered(name), flags=re.DOTALL)
         text = re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
-        own = re.sub(r"building on Squares Project(?: \(Joshua Levy\))?", "", text)
-        assert "squares project" not in own.lower(), name
+        assert not re.search(r"square packing project(?!s)", text, flags=re.IGNORECASE), name
 
 
 def _the_central_case() -> re.Pattern[str]:

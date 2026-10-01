@@ -177,7 +177,7 @@ def test_every_page_of_the_site_carries_the_set_once_at_its_own_address(
         (title,) = head.titles
         (shown,) = head.meta("og:title")
         assert title == page_title(shown), name
-        assert "Squares Project" not in title, name
+        assert "Square Packing Project" not in title, name
         # kpress's own four tags are gone, not added to.
         assert len(head.meta("og:type")) == len(head.meta("twitter:card")) == 1, name
     assert read_head(pages["index.html"]).titles == (PROJECT_NAME,)

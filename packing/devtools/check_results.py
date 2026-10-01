@@ -19,10 +19,13 @@ each entry's `registered` date. It requires each entry's `kind`, one of `KINDS`,
 and cross-checks it against the relations the headline and the claim state and
 the claims of the cited evidence (`kind_problems`). It holds a `builds_on`, which
 puts `after …` in the credit of a result of this project, to the sources the
-result's own evidence cites. A result's status (recorded, reviewed, confirmed,
-incomplete) is derived from its rungs by `devtools.result_status` and never
-stored; this holds the one hand-recorded workflow fact, an entry's `activity`,
-to its fields, its link and its age. Human review owns evidence relevance, claim
+result's own evidence cites. It refuses a rung label in a `claim`, `composition`
+or `next_rung`, or in a case record, that asserts a rung no result the clause is
+about holds (`devtools.rung_prose`); a statement of what a rung needs is not such
+an assertion. A result's status (recorded, reviewed, confirmed, incomplete) is
+derived from its rungs by `devtools.result_status` and never stored; this holds
+the one hand-recorded workflow fact, an entry's `activity`, to its fields, its
+link and its age. Human review owns evidence relevance, claim
 coverage, composition, significance, novelty, whether a headline says what its
 claim says, and the choice between kinds the record cannot tell apart.
 
@@ -40,6 +43,7 @@ from typing import Any
 
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.result_status import STATUSES, activity_problems, status
+from devtools.rung_prose import REGISTER_FIELDS, Standing, label_problems
 from sqpack.assurance import EXTERNAL_ORIGINS, PROOF_METHODS
 from sqpack.yamlio import safe_load
 
@@ -756,6 +760,35 @@ def derive_verification(entries: list[dict], reviews: list[dict] | None = None) 
     return "V0"
 
 
+def rung_label_problems(
+    results: Sequence[Mapping[str, Any]],
+    standings: Mapping[str, Standing],
+    cases: Iterable[Path] | None = None,
+) -> list[str]:
+    """Rung labels the register's prose and the case records assert that no result they
+    are about holds: the prose copy of a derived rung, gone stale (`devtools.rung_prose`).
+    """
+    problems = [
+        f"{record['id']}: {field} {problem}"
+        for record in results
+        for field in REGISTER_FIELDS
+        for problem in label_problems(record.get(field) or "", standings, own=record["id"])
+    ]
+    by_n: dict[int, set[str]] = {}
+    for record in results:
+        for n in scope_values(record["scope"]):
+            by_n.setdefault(n, set()).add(record["id"])
+    for path in sorted(FRONTIER.glob("n-*.md")) if cases is None else cases:
+        scoped = by_n.get(int(path.stem.removeprefix("n-")), set())
+        problems.extend(
+            f"{path.name}: {problem}"
+            for problem in label_problems(
+                path.read_text(encoding="utf-8"), standings, fallback=scoped
+            )
+        )
+    return problems
+
+
 def verification_relation(declared: str, derived: str) -> str:
     if declared == "V2" and _rank(derived) <= 1:
         return "supported"
@@ -787,6 +820,7 @@ def main() -> int:
         problems.append(f"register ids are not contiguous T-001..: {actual_ids}")
     scopes = {record["id"]: scope_values(record["scope"]) for record in results}
 
+    standings: dict[str, Standing] = {}
     for record in results:
         rid = record["id"]
         scope = record["scope"]
@@ -870,8 +904,10 @@ def main() -> int:
 
         if _rank(declared_c) >= 3 and not record.get("controls"):
             problems.append(f"{rid}: a {declared_c} rung names at least one control file")
+        standings[rid] = Standing(declared_v, declared_c, derived_v, derived_c)
 
     problems.extend(coverage_problems(results, evidence_index, sources, case_bound_evidence()))
+    problems.extend(rung_label_problems(results, standings))
 
     known = set(actual_ids)
     for path in READER_TIER:

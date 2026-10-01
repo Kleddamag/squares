@@ -410,10 +410,10 @@ certificate’s replay command.
      `V` is earned the same way from evidence of any origin, with one expert at `V5`,
      and `C` never exceeds `V` from `C2` up.
    - A compound or derived claim takes the **minimum** rung over its parts, which can
-     sit below what the checker derives from the strongest entry: a derivation step
-     decided by one entry of one method holds a `C4` source at `C3`. The `composition`
-     note records that reading—the load-bearing parts and which one sets the minimum—and
-     its presence is what lets the checker accept the lower declaration.
+     sit below what the checker derives from the strongest entry: in `T-036` an audited
+     prose step holds a `C3` reduction at `C2`. The `composition` note records that
+     reading—the load-bearing parts and which one sets the minimum—and its presence is
+     what lets the checker accept the lower declaration.
      `T-026`’s names the sweep, the interval decision, the containment lemma, and the
      density step.
 

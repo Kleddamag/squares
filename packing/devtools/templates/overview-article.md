@@ -17,8 +17,8 @@
 
 ## The Squares Project
 
-This Squares Project site collects all known historic research and current new
-results on the square packing problem.
+This Squares Project site collects all known historic research and current new results
+on the square packing problem.
 Work on this problem has exploded in the summer of 2026 thanks to AI-powered research
 efforts.
 
@@ -156,7 +156,6 @@ Each card ends with a count that opens those results.
 ## Squares Project Documentation
 
 The code, the certificates, the literature archive and the documents that record all of
-this live in the Squares Project’s
-[repository](https://github.com/jlevy/squares).
+this live in the Squares Project’s [repository](https://github.com/jlevy/squares).
 
 {{DOCUMENT_CARDS}}

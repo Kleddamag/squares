@@ -217,8 +217,8 @@ of each `python -m` and `squares-workbench-*` command below.
    - `python -m devtools.build_known_best_atlas --check` passes.
    - `python -m devtools.build_bound_citations --check` passes, and `--review` shows
      credit lines that meet the owner’s rules: no AI agent credited as an author, last
-     names or handles in these brief lines, and this project as “Squares Project
-     (Levy)” or “Levy”. The frames carry these lines, so a wrong one costs a re-cut.
+     names or handles in these brief lines, and this project as “Squares Project (Levy)”
+     or “Levy”. The frames carry these lines, so a wrong one costs a re-cut.
 
 4. **Build the page** at the checked-out commit:
 

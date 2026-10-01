@@ -342,9 +342,9 @@ to credit it as carefully as this project’s own.
   The credit carries the lineage in both directions, so a table of results needs no
   grouping to say whose work rests on whose.
 - **People and projects, never tools.** Credit names people, or the handles they publish
-  under. A bound this project holds is cited on the atlas as
-  `Squares Project (Levy)`; its results and its place in another source’s credit
-  line are `Levy`. An AI agent is never a credited author.
+  under. A bound this project holds is cited on the atlas as `Squares Project (Levy)`;
+  its results and its place in another source’s credit line are `Levy`. An AI agent is
+  never a credited author.
   Where a source states that AI assisted its work, its case record or register entry
   says so in the source’s own terms, and so does any README prose about the result;
   `devtools.state_ai_assistance` names a case record that cites such a source without

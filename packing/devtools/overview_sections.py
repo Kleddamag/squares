@@ -742,32 +742,12 @@ def result_filters(
     )
 
 
-def id_cell(result: Result, detail: RowDetail) -> str:
-    """A result's id cell, the first of its row in both tables of results: the id in a
-    column of its own (`.site-col-id`), as the row's native trigger, which opens the
-    row's popover without scripts (`row_detail`)."""
-    return f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
-
-
-def date_cell(result: Result) -> str:
-    """What a result's date cell holds, in both tables of results: the date first, then
-    what it dates, `published` or `established`, quiet (`.site-date-kind`). The cell
-    sorts and filters on the date alone, its `data-value` and the row's `data-date`."""
-    kind, dated = result.dated
-    return f'{_esc(dated)} <span class="site-date-kind">{_esc(kind)}</span>'
-
-
-def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULTS) -> str:
-    """Every registered result, grouped as `RESULTS.md` groups them, which is by the
-    relation `RESULTS.md` prints (`result_credit.source_lineage`), with its
-    standing and, for a result by others, the date it was published. Each row opens its
-    result's popover (`result_row`), placed after the table; its id, in the first
-    column (`id_cell`), is the trigger.
-    The bar above it is `result_filters`, starting at `defaults`, which on the results
-    page hide nothing; a row outside them is `hidden` in the HTML, and so is a group
-    heading with no row left under it."""
-    reference = reference_date(overview)
-    head = (
+def result_head() -> str:
+    """The header row of a table of results: the one set of columns both tables carry,
+    in one order. The id, which is the row's trigger; the cases; the result; the credit;
+    the rungs, with the standing under them; the date; and the records. A column sorts
+    where an order means something, on either page."""
+    return (
         "<thead><tr>"
         '<th data-sort="text" class="site-col-id">ID</th>'
         '<th data-sort="num" class="num site-col-n">n</th>'
@@ -780,6 +760,123 @@ def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULT
         "<th>Records</th>"
         "</tr></thead>"
     )
+
+
+#: How many columns a table of results has, for a row that spans them.
+RESULT_COLUMNS = len(re.findall(r"<th[ >]", result_head()))
+
+
+def id_cell(result: Result, detail: RowDetail) -> str:
+    """A result's id cell, the first of its row in both tables of results: the id in a
+    column of its own (`.site-col-id`), as the row's native trigger, which opens the
+    row's popover without scripts (`row_detail`)."""
+    return f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
+
+
+def result_text(result: Result, *, here: bool) -> str:
+    """A result's summary as its Result cell sets it: the register's headline, its math
+    typeset. On the results page (`here`) it is plain text, since the row is the
+    result's own. Anywhere else what the summary leads with, its formula, or the whole
+    of a summary that leads with none, links to that row; the words are the same."""
+    if here:
+        return tex_bounds(result.summary)
+    formula, _ = split_summary(result.summary)
+    link = f'<a href="{_esc(result_url(result.id))}">{tex_bounds(formula)}</a>'
+    rest = result.summary[len(formula) :]
+    return link + (tex_bounds(rest) if rest else "")
+
+
+def credit_cell(credit: str) -> str:
+    """A credit as its cell sets it, whatever the register's credit line says: the
+    finder first, and "after …", the work it builds on, quiet after it, in full. So a
+    row says whose the result is and what it rests on without a heading over it."""
+    finder, _, after = credit.partition(" after ")
+    if not after:
+        return _esc(finder)
+    return f'{_esc(finder)} <span class="site-cell-quiet">after {_esc(after)}</span>'
+
+
+def date_cell(result: Result) -> str:
+    """What a result's date cell holds, in both tables of results: the date first, then
+    what it dates, `published` or `established`, quiet (`.site-date-kind`). The cell
+    sorts and filters on the date alone, its `data-value` and the row's `data-date`."""
+    kind, dated = result.dated
+    return f'{_esc(dated)} <span class="site-date-kind">{_esc(kind)}</span>'
+
+
+def result_cells(result: Result, overview: Overview, detail: RowDetail, *, here: bool) -> str:
+    """A result's cells, one for each column of `result_head`, the same on both tables:
+    its id (`id_cell`), its cases, its summary with the star a new result earns
+    (`result_text`, `new_result_star`), its credit (`credit_cell`), its rung chips with
+    its standing chip under them, its date (`date_cell`) and its records."""
+    record = result.record
+    return (
+        f"{id_cell(result, detail)}"
+        f'<td class="num site-col-n" data-value="{result.first_n}">{_esc(result.scope)}</td>'
+        f'<td class="site-col-result">{result_text(result, here=here)}'
+        f"{new_result_star(result, overview)}</td>"
+        f'<td class="site-col-credit" data-value="{_esc(result.credit)}">'
+        f"{credit_cell(result.credit)}</td>"
+        f'<td class="site-rungs" '
+        f'data-value="{_esc(record["confirmation"] + record["verification"])}">'
+        f"{rung_chips(result)}"
+        f'<span class="site-standing">{standing_chip(result.standing)}</span></td>'
+        f'<td class="site-col-date" data-value="{_esc(result.dated[1])}">'
+        f"{date_cell(result)}</td>"
+        f'<td class="site-records">{_records(result)}</td>'
+    )
+
+
+def result_table_row(
+    result: Result, overview: Overview, *, here: bool, shown: bool
+) -> tuple[str, str]:
+    """One result's row in a table of results, and the popover the row opens: the one
+    row both tables write. On the results page (`here`) the row is the result's own
+    address, `id="t-018"`; anywhere else it names the result as `data-result`, since
+    that address is the results page's. A row that is not `shown`, one outside its
+    table's defaults, is `hidden` in the HTML."""
+    starred = bool(new_result_label(result, overview))
+    detail = result_row(result, trigger=_esc(result.id), here=here, starred=starred)
+    key = "id" if here else "data-result"
+    row = (
+        f'<tr {key}="{_esc(result.id.lower())}" {result_facets(result)} '
+        f"{detail.attributes}{'' if shown else ' hidden'}>"
+        f"{result_cells(result, overview, detail, here=here)}</tr>"
+    )
+    return row, detail.popover
+
+
+def table_of_results(
+    overview: Overview,
+    listed: Sequence[Result],
+    defaults: FilterDefaults,
+    body: Iterable[str],
+    popovers: Iterable[str],
+    *,
+    classes: str = "",
+) -> str:
+    """A table of results as the page carries it: the tools bar (`result_filters`), the
+    table under `result_head`, sortable and filterable (`overview/table.js`), and the
+    rows' popovers after it. `classes` names the table for its page."""
+    table = f"kpress-table site-table site-results{' ' + classes if classes else ''}"
+    return (
+        f'<div class="site-wide">{result_filters(overview, listed, defaults)}'
+        '<div class="site-table-wrap">'
+        f'<table class="{table}" data-site-table>{result_head()}'
+        f"<tbody>{''.join(body)}</tbody></table></div>{''.join(popovers)}</div>"
+    )
+
+
+def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULTS) -> str:
+    """Every registered result, grouped as `RESULTS.md` groups them, which is by the
+    relation `RESULTS.md` prints (`result_credit.source_lineage`). Its columns and its
+    rows are the ones every table of results has (`result_head`, `result_table_row`);
+    each row is the result's own address and opens its popover (`result_row`), placed
+    after the table.
+    The bar above it is `result_filters`, starting at `defaults`, which on the results
+    page hide nothing; a row outside them is `hidden` in the HTML, and so is a group
+    heading with no row left under it."""
+    reference = reference_date(overview)
     body = []
     popovers = []
     for title, members in overview.groups:
@@ -787,38 +884,13 @@ def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULT
         hidden = "" if any(shown.values()) else " hidden"
         body.append(
             f'<tr class="site-group-row" data-group="{_esc(title)}"{hidden}>'
-            f'<th colspan="7" scope="colgroup">{_esc(title)}</th></tr>'
+            f'<th colspan="{RESULT_COLUMNS}" scope="colgroup">{_esc(title)}</th></tr>'
         )
         for result in members:
-            record = result.record
-            star = new_result_star(result, overview)
-            detail = result_row(result, trigger=_esc(result.id), here=True, starred=bool(star))
-            popovers.append(detail.popover)
-            body.append(
-                f'<tr id="{_esc(result.id.lower())}" {result_facets(result)} '
-                f"{detail.attributes}{'' if shown[result.id] else ' hidden'}>"
-                f"{id_cell(result, detail)}"
-                f'<td class="num site-col-n" data-value="{result.first_n}">'
-                f"{_esc(result.scope)}</td>"
-                f'<td class="site-col-result">{tex_bounds(result.summary)}{star}</td>'
-                '<td class="site-col-credit site-cell-quiet" '
-                f'data-value="{_esc(result.credit)}">'
-                f"{_esc(result.credit)}</td>"
-                f'<td class="site-rungs" '
-                f'data-value="{_esc(record["confirmation"] + record["verification"])}">'
-                f"{rung_chips(result)}"
-                f'<span class="site-standing">{standing_chip(result.standing)}</span></td>'
-                f'<td class="site-col-date" data-value="{_esc(result.dated[1])}">'
-                f"{date_cell(result)}</td>"
-                f'<td class="site-records">{_records(result)}</td>'
-                "</tr>"
-            )
-    return (
-        f'<div class="site-wide">{result_filters(overview, overview.results, defaults)}'
-        '<div class="site-table-wrap">'
-        f'<table class="kpress-table site-table site-results" data-site-table>{head}'
-        f"<tbody>{''.join(body)}</tbody></table></div>{''.join(popovers)}</div>"
-    )
+            row, popover = result_table_row(result, overview, here=True, shown=shown[result.id])
+            body.append(row)
+            popovers.append(popover)
+    return table_of_results(overview, overview.results, defaults, body, popovers)
 
 
 #: The rubric's three scored dimensions, in the site's order, significance first: the
@@ -996,9 +1068,6 @@ def verification_block() -> str:
 #: a trailing ", reported" that the standing chips already say.
 _LEADING_FORMULA = re.compile(r"(`[^`]+`)(?:,? by (?:an? )?(?P<method>.+?))?(?:, reported)?")
 
-#: How many names of a credit's "after …" list show before the rest is cut to its title.
-CREDIT_AFTER_SHOWN = 3
-
 
 def recent_results(overview: Overview) -> list[Result]:
     """Every result, newest first: by the date the table shows, then by id. What makes
@@ -1029,24 +1098,12 @@ def rung_chips(result: Result) -> str:
 def split_summary(summary: str) -> tuple[str, str]:
     """A summary as its result and its method: `` `s(21) = 5` by a point-only route ``
     is the formula and "point-only route". A summary that does not lead with one
-    formula, such as a batch of counts, is all result and no method."""
+    formula, such as a batch of counts, is all result and no method. A table of results
+    shows the summary whole and links what it leads with (`result_text`)."""
     match = _LEADING_FORMULA.fullmatch(summary)
     if not match:
         return summary, ""
     return match.group(1), match.group("method") or ""
-
-
-def credit_cell(credit: str) -> str:
-    """A credit with its finder first and "after …" quiet, the list cut after
-    `CREDIT_AFTER_SHOWN` names; the cell's title keeps the whole credit."""
-    finder, _, after = credit.partition(" after ")
-    if not after:
-        return _esc(finder)
-    names = after.split(", ")
-    shown = ", ".join(names[:CREDIT_AFTER_SHOWN])
-    if len(names) > CREDIT_AFTER_SHOWN:
-        shown += ", …"
-    return f'{_esc(finder)} <span class="site-cell-quiet">after {_esc(shown)}</span>'
 
 
 def standing_chips(standing: str) -> str:
@@ -1062,54 +1119,27 @@ def status_chips(result: Result) -> str:
 
 
 def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS) -> str:
-    """Every result as one table, newest first: the id in the first column, as the
-    results table has it (`id_cell`), the date, the result linking to its row on the
-    results page, the method, the credit and the status chips. A result by others is
-    dated by its publication, as `RESULTS.md` dates it, and this project's by the day it
-    was established; the cell says which, after the date (`date_cell`). The bar above it
-    is `result_filters`, the results page's, starting at `defaults`: a row outside them
-    is `hidden` in the HTML, so the first paint is already filtered. Each row opens its
-    result's popover (`result_row`), the results page's, ending in the button to that
-    page's row; its id is the trigger."""
+    """Every result as one table, newest first (`recent_results`), with the columns and
+    the rows every table of results has (`result_head`, `result_table_row`): it is the
+    results page's table in another order, starting at other defaults. A result by
+    others is dated by its publication, as `RESULTS.md` dates it, and this project's by
+    the day it was established; the cell says which, after the date. The bar above it is
+    `result_filters`, starting at `defaults`: a row outside them is `hidden` in the
+    HTML, so the first paint is already filtered. Each row opens its result's popover
+    (`result_row`), the results page's, ending in the button to that page's row, and
+    its summary's leading formula links there too (`result_text`)."""
     results = recent_results(overview)
     reference = reference_date(overview)
-    head = (
-        "<thead><tr>"
-        '<th class="site-col-id">ID</th>'
-        '<th class="site-col-date">Date</th>'
-        '<th class="site-col-result">Result</th>'
-        '<th class="site-col-method">Method</th>'
-        '<th class="site-col-credit">Credit</th>'
-        '<th class="site-col-status" title="Significance, verification and confirmation, '
-        'then whether a case bound rests on the result now">Status</th>'
-        "</tr></thead>"
-    )
-    rows = []
+    body = []
     popovers = []
     for result in results:
-        formula, method = split_summary(result.summary)
-        star = new_result_star(result, overview)
-        detail = result_row(result, trigger=_esc(result.id), here=False, starred=bool(star))
-        popovers.append(detail.popover)
-        rows.append(
-            f'<tr data-result="{_esc(result.id.lower())}" {result_facets(result)} '
-            f"{detail.attributes}"
-            f"{'' if shown_by_default(result, defaults, reference) else ' hidden'}>"
-            f"{id_cell(result, detail)}"
-            f'<td class="site-col-date">{date_cell(result)}</td>'
-            f'<td class="site-col-result"><a href="{_esc(result_url(result.id))}">'
-            f"{tex_bounds(formula)}</a>{star}</td>"
-            f'<td class="site-col-method">{tex_bounds(method)}</td>'
-            f'<td class="site-col-credit" title="{_esc(result.credit)}">'
-            f"{credit_cell(result.credit)}</td>"
-            f'<td class="site-col-status">{status_chips(result)}</td>'
-            "</tr>"
+        row, popover = result_table_row(
+            result, overview, here=False, shown=shown_by_default(result, defaults, reference)
         )
-    return (
-        f'<div class="site-wide">{result_filters(overview, results, defaults)}'
-        '<div class="site-table-wrap">'
-        '<table class="kpress-table site-table site-results site-recent-table">'
-        f"{head}<tbody>{''.join(rows)}</tbody></table></div>{''.join(popovers)}</div>"
+        body.append(row)
+        popovers.append(popover)
+    return table_of_results(
+        overview, results, defaults, body, popovers, classes="site-recent-table"
     )
 
 

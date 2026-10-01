@@ -2,9 +2,9 @@
 
 `devtools.measure_release_assets` is where the numbers in
 `plan-2026-10-01-release-assets-on-demand.md` come from: what each build costs, and what
-the re-pin commits cost git. The second is a claim about history -- thirty re-pins in a
-row changed nothing in a drawing but its stamp -- so the reading it rests on is held
-here on a scratch repository where the answer is known.
+the re-pin commits cost git. The second is a claim about history -- of thirty re-pins in
+a row, none changed a card -- so the reading it rests on is held here on a scratch
+repository where the answer is known.
 """
 
 from __future__ import annotations
@@ -103,6 +103,7 @@ def test_a_commits_cost_is_its_new_blobs_and_whether_a_drawing_changed(
 
     cost = measure.commit_cost(restamp)
     assert (cost.files, cost.family_files, cost.redrawn) == (3, 2, ())
+    assert (cost.reframed, cost.drawing) == ((), "stamp only")
     assert cost.family_blob_bytes == len(restamped_svg) + len(b"png two!")
     assert cost.blob_bytes == cost.family_blob_bytes + len(b"pin b\n")
     assert 0 < cost.family_packed_bytes <= cost.packed_bytes
@@ -110,6 +111,17 @@ def test_a_commits_cost_is_its_new_blobs_and_whether_a_drawing_changed(
     cost = measure.commit_cost(redraw)
     assert (cost.files, cost.family_files) == (2, 2)
     assert cost.redrawn == ("known-best-1-100.svg",)
+    assert cost.drawing == "cards: known-best-1-100.svg"
+
+    # A footer sentence reworded, and no card: what the project's renaming did four times.
+    reworded = _commit(
+        repo,
+        "release: re-pin DATA_REVISION to dddddddd and re-stamp the atlas",
+        {POSTER: redrawn_svg.replace(b"<svg>", b"<svg>\n  <text>the Squares Project</text>")},
+    )
+    cost = measure.commit_cost(reworded)
+    assert (cost.redrawn, cost.reframed) == ((), ("known-best-1-100.svg",))
+    assert cost.drawing == "frame, no card: known-best-1-100.svg"
 
     assert measure.history("HEAD", measure.DEFAULT_GREP, 30, [], None) == 0
     assert measure.history("HEAD", "", 30, [POSTER], None) == 0

@@ -23,8 +23,9 @@ characters.
 
 Measured on 2026-10-01:
 
-- All 30 of the last 30 re-pin commits on `main` changed nothing in either drawing but
-  the stamp. Each added 13.6 MB of blobs, 5.9 MB compressed, and they came 8 to 15 a day.
+- None of the last 30 re-pin commits on `main` changed a card in either drawing: 26
+  changed nothing but the stamp, and 4 also carried a reworded footer sentence.
+  Each added 13.6 MB of blobs, 5.9 MB compressed, and they came 8 to 18 a day.
 - The rebuild took 415 s on this machine at a load average near 35, and 95% of it was
   re-deriving 324 witnesses that the stamp does not depend on.
 - The two posters conflicted in every merge between open branches.
@@ -90,13 +91,17 @@ It is removed: nothing re-stamps a poster any more.
 
 | Measure | Value |
 | --- | ---: |
-| Re-pin commits on `main` | 43, of which 36 in the three days 29 September to 1 October |
+| Re-pin commits on `main` at `903b63a09` | 48, of which 41 in the three days 29 September to 1 October |
 | Blob bytes added by each of the last 30 | 13.6 to 13.8 MB, all but 13 KB of it the eight composite files |
 | Compressed, as git stores a loose object | 5.9 MB each |
-| The last 30 together | 410.5 MB of blobs; 74.1 MB as stored today |
-| Of those 30, drawings changed anywhere but the stamp | 0 |
-| Commits that redrew a card, 5 to 30 September | 31, about one a day |
-| The repository | 813.7 MiB packed, about 180 MiB loose |
+| The last 30 together | 409.8 MB of blobs; 100.2 MB as stored today |
+| Of those 30: stamp only; a footer sentence and no card; a card | 26; 4; 0 |
+| The 20 since `f9a3409f0`, 1 October 00:58 | 272.8 MB of blobs; 86.2 MB as stored; 16 stamp only, 4 a footer sentence, no card |
+| All 85 commits that changed a composite SVG, 5 September to 1 October | 50 stamp only; 9 the frame and no card; 26 a card, about one a day |
+| The repository | 813.7 MiB packed, about 200 MiB loose |
+
+The four that changed a frame reworded the project’s name in the footer’s citation
+sentence, twice each way.
 
 A pack stores a re-stamped SVG as a small delta, so the cost is uneven: 36 KB for some
 commits and 4.9 MB for others, where a PNG did not delta.
@@ -133,7 +138,7 @@ This plan removes the second reason and leaves the first.
 | **(a)** The stamp leaves the per-commit path; posters are redrawn at a bump or on demand | One line of `release.py`; no binary | A poster can trail the data between bumps |
 | **(b)** Posters leave git, built in CI and attached to releases | The same | `packing/atlas/README.md` and the figure playbook show the posters from the tree; the explainer build, the overview and the atlas tests read the retained SVG; an offline clone has no figure. Each needs a new source |
 | **(c)** Posters stay stamped with the pin, but the test is relaxed between bumps | The same | The stamp on a poster names data it was not drawn from |
-| **Derive the data revision in CI** and drop the pin | Nothing | One Pages job fetches full history and passes the hash to every render job; `PUBLICATION_EDITION` becomes a function of the environment in the eight files that read it, two of them changed by pull requests now open |
+| **Derive the data revision in CI** and drop the pin | Nothing | One Pages job fetches full history and passes the hash to every render job; `PUBLICATION_EDITION` becomes a function of the environment in the eight files that read it |
 
 **Recommended, and implemented: (a), in a form that keeps the hash in the poster.** The
 poster keeps its stamp, `v0.4.2-afd831`, as a statement of what it was drawn from, and
@@ -143,14 +148,14 @@ do.
 
 **(b)** is the right next step only if history size still matters afterwards.
 With (a) the posters change at bumps and on demand: four bumps in September would have
-been about 24 MB compressed, against 74 MB in three days.
+been about 24 MB compressed, against 86 MB on 1 October alone.
 
 **(c)** saves the same time and makes the stamp false.
 
 **Deriving the revision** removes the last chore, the one-line re-pin and the one-line
 merge conflict between branches that both re-pinned.
-It is recommended as a follow-up once `#276` and `#277` have landed, since it changes
-the Pages workflow and every stamp consumer at once.
+It is recommended as a follow-up once `#277` has landed, since it changes the Pages
+workflow and every stamp consumer at once.
 
 ## The Contract
 
@@ -269,7 +274,7 @@ own timezone, and midnight UTC is the evening before in California.
    show a poster whose bound for some case is older than the table beside it.
    The poster says so itself: its dateline and stamp name its data.
    The alternative is `COMPOSITES_MAY_TRAIL = False`: a poster is redrawn whenever a
-   card changes, about once a day in September at 13.6 MB each.
+   card changes, which 26 commits did in September, at 13.6 MB each.
    Recommended: yes.
 2. **What does a poster’s stamp say?** Implemented: the version and the data revision it
    was drawn from. The alternative is the version alone.
@@ -282,16 +287,15 @@ own timezone, and midnight UTC is the evening before in California.
    its article. The alternative is to keep the edition’s date under another label, such
    as “This edition”. Recommended: the last change.
 5. **Derive the data revision in CI and drop the pin?** Not implemented.
-   Recommended after the open branches land.
+   Recommended after `#277` lands.
 6. **Move the posters out of git?** Not implemented.
    Recommended only if history size still matters after the above.
 
 ## Follow-Ups
 
-- `#276` gives every page `article:modified_time` from `PUBLICATION_DATE`, and reads the
-  optimality paper’s revised date with a pattern of its own.
-  Once it lands, both should read `sqpack.release.EXPLAINER_REVISED` and
-  `devtools.artifact_dates`.
+- The optimality paper’s revised date is read from its article in two places, by
+  `devtools.artifact_dates` and by `render_n11_optimality_explainer.page_meta`. Both
+  read the same line, and one reader would be simpler.
 - The composite PDFs still differ between two runs in their font-subset tags, which
   cairo assigns per process.
   The date no longer differs.

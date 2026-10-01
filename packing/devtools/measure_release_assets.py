@@ -12,8 +12,8 @@ Two questions, each a command rather than a paragraph someone wrote once (`OR-1`
   redraw costs is `composites from witnesses` and the two export phases together.
 - `--history` reads what the re-pin commits cost the repository: for each of the last
   `--count` commits on `--ref` whose subject matches `--grep`, the bytes of every blob
-  it added, as git stores a blob before packing and as the pack holds it now, and whether
-  each composite's drawing changed anywhere but its stamp.
+  it added, as git stores a blob before packing and as the pack holds it now, and what
+  each composite's drawing changed: nothing but its stamp, its frame, or a card.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.measure_release_assets --list
@@ -405,8 +405,30 @@ class CommitCost:
     packed_bytes: int
     family_blob_bytes: int
     family_packed_bytes: int
-    #: The composite SVGs whose drawing changed anywhere but the stamp.
+    #: The composite SVGs in which a card changed: a bound, a badge, a square.
     redrawn: tuple[str, ...]
+    #: The composite SVGs whose frame changed -- the title, the dateline, the legend, a
+    #: footer sentence -- in anything but the stamp, and no card.
+    reframed: tuple[str, ...] = ()
+
+    @property
+    def drawing(self) -> str:
+        """What the commit changed in the drawings, in the words the table prints."""
+        if self.redrawn:
+            return "cards: " + ", ".join(self.redrawn)
+        if self.reframed:
+            return "frame, no card: " + ", ".join(self.reframed)
+        return "stamp only"
+
+
+#: Where a composite's cards begin: everything ahead of the first is its frame.
+FIRST_CARD = '<g data-feature="packing-card"'
+
+
+def frame_and_cards(svg_text: str) -> tuple[str, str]:
+    """A composite cut in two: its frame, with the stamp emptied, and its cards."""
+    frame, mark, cards = without_stamp(svg_text).partition(FIRST_CARD)
+    return frame, mark + cards
 
 
 def without_stamp(svg_text: str) -> str:
@@ -455,13 +477,16 @@ def commit_cost(commit: str) -> CommitCost:
     sizes = _blob_sizes([new for _path, _old, new in changed])
     family = [entry for entry in changed if COMPOSITE_FAMILY.search(entry[0])]
     redrawn = []
+    reframed = []
     for path, old, new in family:
         if not path.endswith(".svg") or set(old) == {"0"}:
             continue
-        if without_stamp(_git("cat-file", "blob", old)) != without_stamp(
-            _git("cat-file", "blob", new)
-        ):
+        frame, cards = frame_and_cards(_git("cat-file", "blob", old))
+        new_frame, new_cards = frame_and_cards(_git("cat-file", "blob", new))
+        if cards != new_cards:
             redrawn.append(Path(path).name)
+        elif frame != new_frame:
+            reframed.append(Path(path).name)
     return CommitCost(
         commit=commit[:9],
         date=_git("show", "-s", "--format=%ad", "--date=format:%m-%d %H:%M", commit).strip(),
@@ -472,6 +497,7 @@ def commit_cost(commit: str) -> CommitCost:
         family_blob_bytes=sum(sizes[new][0] for _path, _old, new in family),
         family_packed_bytes=sum(sizes[new][1] for _path, _old, new in family),
         redrawn=tuple(redrawn),
+        reframed=tuple(reframed),
     )
 
 
@@ -492,10 +518,10 @@ def history(ref: str, grep: str, count: int, paths: Sequence[str], receipt: Path
         print(
             f"{cost.commit:<10} {cost.date:<12} {cost.files:>5} {cost.blob_bytes:>12,} "
             f"{cost.packed_bytes:>11,} {cost.family_files:>6} {cost.family_blob_bytes:>13,} "
-            f"{cost.family_packed_bytes:>11,}  "
-            + (", ".join(cost.redrawn) if cost.redrawn else "stamp only")
+            f"{cost.family_packed_bytes:>11,}  {cost.drawing}"
         )
-    stamp_only = sum(1 for cost in costs if not cost.redrawn)
+    stamp_only = sum(1 for cost in costs if not cost.redrawn and not cost.reframed)
+    reframed = sum(1 for cost in costs if cost.reframed and not cost.redrawn)
     print(
         f"total: {sum(c.blob_bytes for c in costs):,} blob bytes "
         f"({sum(c.packed_bytes for c in costs):,} as packed now), of which the composite "
@@ -504,7 +530,8 @@ def history(ref: str, grep: str, count: int, paths: Sequence[str], receipt: Path
     )
     print(
         f"{stamp_only} of {len(costs)} changed nothing in a drawing but its stamp; "
-        f"{len(costs) - stamp_only} redrew a card"
+        f"{reframed} changed a frame (title, dateline, legend or footer) and no card; "
+        f"{len(costs) - stamp_only - reframed} changed a card"
     )
     print("repository, for scale:")
     print("  " + "\n  ".join(_git("count-objects", "-vH").strip().splitlines()))

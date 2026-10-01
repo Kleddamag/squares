@@ -33,7 +33,7 @@ them. The rule that keeps that true without any artifact chasing its own hash:
    footer is held to the poster's own record and not to the pin. Until 2026-10-01 the
    posters printed the pin itself, and every data commit rewrote eight binaries to
    change six characters: thirty re-pins in a row, 13.6 MB of blobs each, and not one
-   changed a drawing (`devtools.measure_release_assets --history`).
+   changed a card (`devtools.measure_release_assets --history`).
 5. **A poster may trail the data until the next version bump** (`COMPOSITES_MAY_TRAIL`;
    the owner, 2026-10-01). While a poster's data revision is the pin, every claim on it
    must agree with the current record. Once the pin has moved, the cards that differ
@@ -171,7 +171,7 @@ DATA_REVISION_LENGTH = 6
 #: site version number bump", and on demand). `True`: a card that differs from the
 #: current record is listed and fails nothing, once the pin has moved past the poster's
 #: own data revision. `False`: it fails, and the poster is redrawn whenever a card
-#: changes -- about once a day in September 2026, at 13.6 MB of blobs each.
+#: changes -- as 26 commits did in September 2026, at 13.6 MB of blobs each.
 COMPOSITES_MAY_TRAIL = True
 
 #: The last data commit, pinned in full: what `data_revision` returned when it was last

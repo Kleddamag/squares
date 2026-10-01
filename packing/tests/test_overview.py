@@ -455,6 +455,168 @@ def test_the_atlas_expander_reuses_the_action_button_and_tokens() -> None:
     assert ".site-atlas-rest[hidden] {\n  display: none;" in css
 
 
+def test_the_atlas_is_rendered_as_the_grid_under_tabs_that_ship_hidden(page: str) -> None:
+    """The page is rendered in the grid view, the default, with the two view tabs over
+    the tiles: a tablist of buttons, Grid selected and the one stop in the tab order,
+    each controlling the box of tiles the script places. The strip ships `hidden`, since
+    without the script it would do nothing, as the expander's row does. Both scripts are
+    inlined, the views' first: the grid's calls it. `test_site_atlas_views` reads the
+    two views in a browser."""
+    block = re.findall(r'<div class="site-wide site-atlas-grid" ([^>]*)>', page)
+    assert block == ['data-atlas-view="grid" data-atlas-grid']
+    tabs = overview_sections.atlas_view_tabs()
+    assert tabs == (
+        '<div class="site-tabs site-atlas-views" role="tablist" aria-label="Atlas layout" '
+        'data-atlas-views data-atlas-panel="atlas-cells" hidden>'
+        '<button type="button" role="tab" id="atlas-view-grid" data-atlas-tab="grid" '
+        'aria-selected="true" aria-controls="atlas-cells">Grid</button>'
+        '<button type="button" role="tab" id="atlas-view-triangle" data-atlas-tab="triangle" '
+        'aria-selected="false" aria-controls="atlas-cells" tabindex="-1">Triangle</button>'
+        "</div>"
+    )
+    assert page.count(tabs) == 1
+    assert page.count('class="site-tabs site-atlas-views"') == 1
+    atlas = page.split('id="the-atlas"', 1)[1].split("<h2", 1)[0]
+    order = [
+        atlas.index(mark)
+        for mark in (
+            "data-atlas-views",
+            "<template data-atlas-first>",
+            'class="site-atlas-key"',
+            "data-atlas-toggle",
+            'class="site-atlas-note"',
+        )
+    ]
+    assert order == sorted(order)
+    assert [key for key, _ in overview_sections.ATLAS_VIEWS] == ["grid", "triangle"]
+    view = render_overview.ATLAS_VIEW_SCRIPT.read_text(encoding="utf-8")
+    grid = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
+    assert page.index(view) < page.index(grid)
+    assert "SiteAtlasView.mount({ block: grid, cells, tabs })" in grid
+    assert "tabs.hidden = false;" in grid
+    # No tile is written twice for the second view: one drawing a case, as before.
+    assert page.count('class="site-atlas-cell"') == 324
+
+
+def test_the_atlas_marks_each_perfect_square_and_nothing_else_on_a_tile(page: str) -> None:
+    """A perfect square ends its row of the triangle, and its tile says so; that mark is
+    all the triangle adds to a tile's markup. Where a tile stands is the script's to
+    write, since it follows from the window's width."""
+    grid = page.split("data-atlas-grid>", 1)[1].split("data-atlas-facts>", 1)[0]
+    squares = re.findall(r'data-atlas-n="(\d+)" data-atlas-square ', grid)
+    assert [int(n) for n in squares] == [k * k for k in range(1, 19)]
+    assert grid.count("data-atlas-square") == 18
+    assert "style=" not in grid.split("<template data-atlas-first>", 1)[1].split("<svg", 1)[0]
+    key = re.findall(r'<p class="site-atlas-key">([^<]+)</p>', page)
+    assert key == [overview_sections.ATLAS_TRIANGLE_KEY]
+
+
+def test_the_view_tabs_are_the_section_tabs_strip() -> None:
+    """A tab that switches a view in place is drawn by the rules that draw a section's
+    link tabs, each selector widened to the button: one look, in the one stylesheet
+    every page carries. site.css only places the strip over the tiles, on the bar's
+    line, and hides it while it is `hidden`."""
+    nav = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
+    for selector in (
+        'nav.site-tabs a,\n.site-tabs [role="tab"] {',
+        'nav.site-tabs a + a,\n.site-tabs [role="tab"] + [role="tab"] {',
+        (
+            "nav.site-tabs a:is(:hover, :focus-visible),\n"
+            '.site-tabs [role="tab"]:is(:hover, :focus-visible) {'
+        ),
+        (
+            'nav.site-tabs a[aria-current="page"],\n'
+            '.site-tabs [role="tab"][aria-selected="true"] {'
+        ),
+    ):
+        assert selector in nav, selector
+    button = _rule(nav, '.site-tabs [role="tab"]')
+    for declaration in (
+        "background: none;",
+        "border: 0;",
+        "font: inherit;",
+        "cursor: pointer;",
+    ):
+        assert declaration in button
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    placed = _rule(css, ".site-atlas-grid .site-atlas-views")
+    assert "line-height: var(--site-nav-line);" in placed
+    assert "margin: 0 auto var(--site-atlas-toggle-space);" in placed
+    assert "display: none;" in _rule(css, ".site-atlas-grid .site-atlas-views[hidden]")
+    assert "font-size" not in placed
+
+
+def test_the_triangle_is_sized_and_timed_by_tokens_the_script_reads() -> None:
+    """The triangle's least and greatest tile and the move's duration and easing are
+    tokens of the atlas block. The script reads the least tile, in rem, to say how many
+    a line holds, and the two timing tokens to move the tiles; reduced motion sets the
+    duration to 0ms, which is no move. A tile's size is the stylesheet's, from the block's
+    width and the tiles a line holds, and nothing in the sheet transitions or animates a
+    tile's place."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    block = _rule(css, ".site-page .site-atlas-grid")
+    for declaration in (
+        "--site-atlas-tile-min: 1.625rem;",
+        "--site-atlas-tile-max: 4.5rem;",
+        "--site-atlas-move-duration: 360ms;",
+        "--site-atlas-move-easing: cubic-bezier(0.2, 0, 0, 1);",
+        "container-type: inline-size;",
+    ):
+        assert declaration in block, declaration
+    plain = re.sub(r"/\*.*?\*/", "", css, flags=re.DOTALL)
+    assert re.search(
+        r"@media \(max-width: 40rem\), \(pointer: coarse\) \{\s*"
+        r"\.site-page \.site-atlas-grid \{\s*--site-atlas-tile-min: 2\.5rem;\s*\}",
+        plain,
+    )
+    assert re.search(
+        r"@media \(prefers-reduced-motion: reduce\) \{\s*"
+        r"\.site-page \.site-atlas-grid \{\s*--site-atlas-move-duration: 0ms;\s*\}",
+        plain,
+    )
+    assert css.count("--site-atlas-move-duration:") == 2
+    # The tile's width is declared in the rule both views share, so a change of view
+    # restyles no drawing; the triangle's rule reads it.
+    shared = _rule(css, ".site-atlas-cells")
+    assert (
+        "--site-atlas-tile: min(var(--site-atlas-tile-max), "
+        "calc(100cqi / var(--site-atlas-per-line, 1)));"
+    ) in shared
+    assert "--site-atlas-row-space: 0.12;" in shared
+    assert "--site-atlas-row-space: 0.4;" in _rule(css, ".site-atlas-cells[data-atlas-wrapped]")
+    assert "transform-origin: 0 0;" in _rule(css, ".kpress .site-atlas-cell")
+    cells = _rule(css, '.site-atlas-grid[data-atlas-view="triangle"] .site-atlas-cells')
+    assert "--site-atlas-tile:" not in cells
+    assert (
+        "grid-template-columns: repeat(var(--site-atlas-per-line, 1), var(--site-atlas-tile));"
+        in cells
+    )
+    tile = _rule(css, '.kpress .site-atlas-grid[data-atlas-view="triangle"] .site-atlas-cell')
+    assert "grid-area: var(--site-atlas-line, auto) / var(--site-atlas-column, auto);" in tile
+    for rule in (cells, tile):
+        assert "transition" not in rule
+        assert "animation" not in rule
+    # Nor does anything in the block transition its place by another sheet's rule: KPress
+    # gives every classed element a 0.01ms transition of every property under reduced
+    # motion, which laid the triangle out for a frame with the grid's gaps.
+    still = _rule(css, ".site-atlas-cells,\n.site-atlas-cell svg,\n.site-atlas-n")
+    assert "transition: none;" in still
+    script = render_overview.ATLAS_VIEW_SCRIPT.read_text(encoding="utf-8")
+    for token in (
+        "--site-atlas-tile-min",
+        "--site-atlas-move-duration",
+        "--site-atlas-move-easing",
+        "--site-atlas-per-line",
+    ):
+        assert f'"{token}"' in script, token
+    for written in ("--site-atlas-line: ", "--site-atlas-column: ", "--site-atlas-opens: "):
+        assert written in script, written
+    # The script moves with transforms and opacity alone, and never sets a size.
+    assert "transform: `translate(" in script
+    for sized in ("style.width", "style.height", "style.left", "style.top"):
+        assert sized not in script
+
+
 def _atlas_facts(page: str) -> dict[int, dict]:
     import json  # noqa: PLC0415
 

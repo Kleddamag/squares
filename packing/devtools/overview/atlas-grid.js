@@ -11,16 +11,22 @@
 // The grid shows the first hundred cases. The button under it places the rest, from a
 // second template, the first time it is pressed, and after that shows or hides them;
 // stepping the popover past the hundredth case expands the grid the same way.
+//
+// The tabs over the tiles choose between two views of the one set, the grid and the
+// triangle, which `atlas-view.js` lays out and moves between (`SiteAtlasView.mount`).
+// They ship `hidden` and show once the tiles are placed.
 (() => {
   const grid = document.querySelector("[data-atlas-grid]");
   const template = grid?.querySelector("template[data-atlas-first]");
   const restTemplate = grid?.querySelector("template[data-atlas-rest]");
   const toggle = grid?.querySelector("[data-atlas-toggle]");
+  const tabs = grid?.querySelector("[data-atlas-views]");
   if (
     !(grid instanceof HTMLElement) ||
     !(template instanceof HTMLTemplateElement) ||
     !(restTemplate instanceof HTMLTemplateElement) ||
-    !(toggle instanceof HTMLButtonElement)
+    !(toggle instanceof HTMLButtonElement) ||
+    !(tabs instanceof HTMLElement)
   ) {
     return;
   }
@@ -32,31 +38,44 @@
   rest.className = "site-atlas-rest";
   rest.hidden = true;
 
+  // The view the address names is set here, before any tile is placed, so the page
+  // never shows one view and then the other.
+  const views = SiteAtlasView.mount({ block: grid, cells, tabs });
+
   const place = () => {
     cells.append(template.content.cloneNode(true), rest);
-    grid.prepend(cells);
+    tabs.after(cells);
+    tabs.hidden = false;
     if (toggle.parentElement) {
       toggle.parentElement.hidden = false;
     }
+    views.arrange();
   };
 
-  /** @param {boolean} open */
-  const expandGrid = (open) => {
+  // Showing or hiding the rest changes where the triangle's tiles stand, since its
+  // longest row sets how many a line holds, so it is a change of layout like a change
+  // of view: the tiles that stay move, and the ones that arrive fade in. Collapsing
+  // takes away everything above the button but the first hundred, so the page would
+  // land far below it: `settle` brings the button back to where the reader is, as part
+  // of the same change.
+  /**
+   * @param {boolean} open
+   * @param {() => void} [settle]
+   */
+  const expandGrid = (open, settle) => {
     if (open && rest.childElementCount === 0) {
       rest.append(restTemplate.content.cloneNode(true));
     }
-    rest.hidden = !open;
-    toggle.setAttribute("aria-expanded", String(open));
-    toggle.textContent = (open ? toggle.dataset.labelLess : toggle.dataset.labelMore) ?? "";
+    views.change(() => {
+      rest.hidden = !open;
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.textContent = (open ? toggle.dataset.labelLess : toggle.dataset.labelMore) ?? "";
+      settle?.();
+    });
   };
   toggle.addEventListener("click", () => {
     const open = rest.hidden !== false;
-    expandGrid(open);
-    // Collapsing takes away everything above the button but the first hundred, so the
-    // page would land far below it: bring the button back to where the reader is.
-    if (!open) {
-      toggle.scrollIntoView({ block: "nearest" });
-    }
+    expandGrid(open, open ? undefined : () => toggle.scrollIntoView({ block: "nearest" }));
   });
   if ("IntersectionObserver" in window) {
     const watch = new IntersectionObserver(

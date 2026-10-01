@@ -76,6 +76,7 @@ TABLE_SCRIPT = BROWSER / "table.js"
 MATH_SCRIPT = BROWSER / "math.js"
 POPOVER_SCRIPT = BROWSER / "popover.js"
 ROW_POPOVER_SCRIPT = BROWSER / "row-popover.js"
+ATLAS_VIEW_SCRIPT = BROWSER / "atlas-view.js"
 ATLAS_GRID_SCRIPT = BROWSER / "atlas-grid.js"
 EMBED_SCRIPT = BROWSER / "embed.js"
 CASE_POPOVER_SCRIPT = BROWSER / "case-popover.js"
@@ -850,6 +851,7 @@ def overview_page() -> Page:
             TABLE_SCRIPT,
             POPOVER_SCRIPT,
             ROW_POPOVER_SCRIPT,
+            ATLAS_VIEW_SCRIPT,
             ATLAS_GRID_SCRIPT,
         ),
     )

@@ -798,7 +798,9 @@ def test_every_rung_chip_in_the_diagram_is_titled_with_the_rubrics_meaning(page:
     assert titled == meanings
     assert titled["V3"].startswith("Checkable: a published or audited proof")
     assert titled["C5"].startswith("Formal confirmation: replayed here, open")
-    assert "title=" not in overview_sections._rung("V3")  # noqa: SLF001
+    assert re.search(
+        r'<span class="site-chip site-rung-fill" data-rung="V" data-level="3">', page
+    )
 
 
 def test_the_ladder_diagram_is_its_own_component_on_the_shared_tokens() -> None:

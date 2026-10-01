@@ -5,7 +5,7 @@ title: Revise n11 explainer opening and apply line-by-line publication feedback
 kind: task
 status: in_progress
 priority: 1
-version: 18
+version: 20
 labels: []
 dependencies: []
 child_order_hints:
@@ -22,8 +22,10 @@ child_order_hints:
   - is-01m3tfkczqspdb8hp17z6252h9
   - is-01m3tyefjdzgdw56ee2yrmvst7
   - is-01m3v0rmt6ej5zb31mwsf5eatm
+  - is-01m3v1c3x1qexzv1bhxts7an07
+  - is-01m3v1fawj8t12bh308abgc7qx
 created_at: 2026-10-01T00:50:19.096Z
-updated_at: 2026-10-01T05:59:58.021Z
+updated_at: 2026-10-01T06:12:21.519Z
 ---
 Continue published T-060 paper on codex/n11-explainer-doc-review from origin/main. User asks first opening prose to explicitly identify this as an explanation of the original proof and directly cite original proof, repository and each antecedent/provenance contribution. Retain mathematical meaning and source scope. Delegate rigorous common-doc-guidelines review read-only while user provides line corrections; apply requested corrections on branch and keep publication separate.
 

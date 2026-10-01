@@ -99,7 +99,8 @@ OVERVIEW_DESCRIPTION = (
 )
 RESULTS_DESCRIPTION = (
     "Every registered result on packing unit squares in the smallest square, this "
-    "project's and others', with its verification, confirmation, standing and records."
+    "project's and others', with its significance, verification, confirmation, standing "
+    "and records."
 )
 PAPERS_DESCRIPTION = (
     "The project's papers on packing unit squares in the smallest square: its "

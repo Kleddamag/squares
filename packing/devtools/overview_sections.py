@@ -647,7 +647,7 @@ def results_table(overview: Overview) -> str:
         '<th data-sort="num" class="num site-col-n">n</th>'
         '<th class="site-col-result">Result</th>'
         '<th data-sort="text">Credit</th>'
-        '<th data-sort="text" title="Verification, confirmation and significance, then '
+        '<th data-sort="text" title="Significance, verification and confirmation, then '
         'whether a case bound rests on the result now">Rungs</th>'
         '<th data-sort="text" title="Published, for a result by others; established, for '
         f'this project{APOSTROPHE}s">Date</th>'
@@ -679,8 +679,7 @@ def results_table(overview: Overview) -> str:
                 f"{_esc(result.credit)}</td>"
                 f'<td class="site-rungs" '
                 f'data-value="{_esc(record["confirmation"] + record["verification"])}">'
-                f"{_rung(record['verification'])} {_rung(record['confirmation'])} "
-                f"{_rung('S' + str(record['significance']['score']))}"
+                f"{rung_chips(result)}"
                 f'<span class="site-standing">{standing_chip(result.standing)}</span></td>'
                 f'<td class="site-col-date" data-value="{_esc(date)}">'
                 f'<span class="site-date-kind">{_esc(kind)}</span> {_esc(date)}</td>'
@@ -790,6 +789,20 @@ def significance(result: Result) -> int:
     return int(result.record["significance"]["score"])
 
 
+def result_rungs(result: Result) -> tuple[str, str, str]:
+    """A result's three rungs in the order the site lists them wherever it shows them:
+    significance first, then verification and confirmation (`S4`, `V4`, `C3`). The
+    register's own documents keep theirs, verification first."""
+    record = result.record
+    return (f"S{significance(result)}", record["verification"], record["confirmation"])
+
+
+def rung_chips(result: Result) -> str:
+    """A result's rung chips, S, V and C, a space apart: the one place their order is
+    set, for a table's row, a popover, a result's overview and a case record."""
+    return " ".join(_rung(rung) for rung in result_rungs(result))
+
+
 def split_summary(summary: str) -> tuple[str, str]:
     """A summary as its result and its method: `` `s(21) = 5` by a point-only route ``
     is the formula and "point-only route". A summary that does not lead with one
@@ -821,10 +834,8 @@ def standing_chips(standing: str) -> str:
 
 
 def status_chips(result: Result) -> str:
-    """A result's rung chips, V, C and S, then its standing chips, side by side."""
-    record = result.record
-    rungs = (record["verification"], record["confirmation"], f"S{significance(result)}")
-    return " ".join(_rung(rung) for rung in rungs) + " " + standing_chips(result.standing)
+    """A result's rung chips, S, V and C, then its standing chips, side by side."""
+    return rung_chips(result) + " " + standing_chips(result.standing)
 
 
 def recent_table(overview: Overview) -> str:
@@ -843,7 +854,7 @@ def recent_table(overview: Overview) -> str:
         '<th class="site-col-result">Result</th>'
         '<th class="site-col-method">Method</th>'
         '<th class="site-col-credit">Credit</th>'
-        '<th class="site-col-status" title="Verification, confirmation and significance, '
+        '<th class="site-col-status" title="Significance, verification and confirmation, '
         'then whether a case bound rests on the result now">Status</th>'
         "</tr></thead>"
     )

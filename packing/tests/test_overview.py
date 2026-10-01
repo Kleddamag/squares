@@ -966,6 +966,87 @@ def test_every_small_label_is_one_chip(name: str, rendered: Callable[[str], str]
     assert "site-status-proved" not in html
 
 
+#: A rung chip, and what may stand between two chips of one run: white space.
+RUNG_CHIP = re.compile(
+    r'<span class="site-chip site-rung-fill" data-rung="([SVC])" data-level="(\d)">'
+    r"([SVC]\d)</span>"
+)
+#: The order the site lists a result's rungs in: significance first (think-ucon).
+RUNG_ORDER = "SVC"
+
+
+def _rung_runs(html: str) -> list[list[str]]:
+    """Every run of rung chips with only white space between them, as their labels."""
+    runs: list[list[str]] = []
+    end = None
+    for match in RUNG_CHIP.finditer(html):
+        if end is not None and not html[end : match.start()].strip():
+            runs[-1].append(match.group(3))
+        else:
+            runs.append([match.group(3)])
+        end = match.end()
+    return runs
+
+
+def test_a_results_rungs_run_significance_first(overview: overview_data.Overview) -> None:
+    """`rung_chips` is the one place the order is set: S, then V, then C. The status
+    cell and a result overview's head open with it (`status_chips`)."""
+    assert overview.results
+    for result in overview.results:
+        record = result.record
+        rungs = overview_sections.result_rungs(result)
+        assert rungs == (
+            f"S{record['significance']['score']}",
+            record["verification"],
+            record["confirmation"],
+        )
+        chips = overview_sections.rung_chips(result)
+        assert [label for _, _, label in RUNG_CHIP.findall(chips)] == list(rungs)
+        assert overview_sections.status_chips(result).startswith(chips + " ")
+
+
+@pytest.mark.parametrize(
+    "name", ["index.html", render_overview.RESULTS_PAGE, "cases.html", "frontier.html"]
+)
+def test_every_page_lists_significance_first(name: str, rendered: Callable[[str], str]) -> None:
+    """Wherever rung chips sit side by side, on any page, they run S, V, C: a result's
+    three in a row, a popover, an overview or a case record, and the V and C of an entry
+    awaiting replay. No run repeats a scale or puts a later one first."""
+    runs = [run for run in _rung_runs(rendered(name)) if len(run) > 1]
+    if name != "frontier.html":
+        assert any(len(run) == len(RUNG_ORDER) for run in runs), name
+    for run in runs:
+        places = [RUNG_ORDER.index(label[0]) for label in run]
+        assert places == sorted(set(places)), (name, run)
+
+
+def test_each_results_row_shows_its_rungs_significance_first(
+    page: str, results: str, overview: overview_data.Overview
+) -> None:
+    """The Rungs cell of the results table and the Status cell of Recent Results both
+    open with the result's S, V and C chips, in that order."""
+    recent = {result.id for result in overview_sections.recent_results(overview)}
+    assert recent
+    table = _recent_table(page)
+
+    def cell(row: str, column: str) -> str:
+        """A row's cell of this class, from the end of its opening tag."""
+        found = re.search(rf'<td class="{column}"[^>]*>', row)
+        assert found, column
+        return row[found.end() :]
+
+    for result in overview.results:
+        chips = overview_sections.rung_chips(result)
+        assert cell(_row(results, result.id), "site-rungs").startswith(chips), result.id
+        if result.id in recent:
+            status = cell(_recent_row(table, result.id), "site-col-status")
+            assert status.startswith(chips + " "), result.id
+    for title in re.findall(
+        r'<th[^>]* title="([^"]*whether a case bound[^"]*)"', page + results
+    ):
+        assert title.startswith("Significance, verification and confirmation, then "), title
+
+
 def test_the_prose_links_repository_files_on_main(page: str) -> None:
     """Every `repo:` link in the template becomes a link on `main` to a file that exists."""
     from devtools.render_explainer import REPO  # noqa: PLC0415
@@ -1103,13 +1184,13 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
             f'popovertarget="pop-result-{result.id.lower()}">{result.id}</button></span>'
         ) in row
         status = row.split('<td class="site-col-status"', 1)[1]
-        # Every chip in the one status cell, side by side: V, C and S, then the standing.
+        # Every chip in the one status cell, side by side: S, V and C, then the standing.
         chips = re.findall(r'<span class="site-chip[^"]*"[^>]*>([^<]+)</span>', status)
         record = result.record
         assert chips[:3] == [
+            f"S{record['significance']['score']}",
             record["verification"],
             record["confirmation"],
-            f"S{record['significance']['score']}",
         ]
         assert "<br" not in status
         assert "site-standing" not in status

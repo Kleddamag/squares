@@ -68,22 +68,69 @@ Supporting text uses KPress’s gray (`--kpress-doc-muted`, carried as
 
 The packing palette is the fixed set of square fills in `SQUARE_HUE_PALETTE`
 (`packing/src/sqpack/render/style.py`), shaded by contact count in the figures.
-Page colors that are not the accent are desaturated shades of it:
+Page colors that are not the accent take their hues from it:
 
 | Use | Hue | Chroma | Source in the palette |
 | --- | --- | --- | --- |
-| Verification rung (`V`) | 250 | 0.06 | The blue square, `#166eac` |
-| Confirmation rung (`C`) | 158 | 0.06 | The green square, `#158655` |
-| Significance rung (`S`) | 250 | 0.008 | Gray |
+| Verification rung (`V`) | 250 | Rises with the level | The blue square, `#166eac` |
+| Confirmation rung (`C`) | 158 | Rises with the level | The green square, `#158655` |
+| Significance rung (`S`) | 250 | 0.008 at every level | Gray |
 
 Every chip carries the page’s own text colour, black in light mode, on a light fill, and
 in dark mode light text on a dark fill.
-A rung’s fill is `oklch(base + step × level, 0.06, hue)` for levels 0 to 5, with base
-96% and step −3.5% in light mode, so level 0 sits close to the page background and it
-darkens to 78.5% as the rung rises, and base 25% and step +4% in dark mode, so it
-lightens from near the dark background at 25% to 45%. The two are `--site-rung-base` and
-`--site-rung-step`. A plain chip is a 16% tint of the muted gray over the page
-background, and an accent chip a 22% tint of the accent.
+A plain chip is a 16% tint of the muted gray over the page background, and an accent
+chip a 22% tint of the accent.
+
+### The Rung Scale
+
+A rung’s fill is one rule,
+`oklch(base + step × level, chroma-base + chroma-step × level, hue)`, so its saturation
+and its strength both rise with the level: level 0 is nearly the page background, and
+the top rung is the most saturated and the furthest from it.
+Four tokens set the scale in each theme, and the two ladders that carry a hue share
+them:
+
+| Token | Light | Dark |
+| --- | --- | --- |
+| `--site-rung-base`, the lightness at level 0 | 95% | 25% |
+| `--site-rung-step`, what a level adds to it | −5.5% | +4.6% |
+| `--site-rung-chroma-base`, the chroma at level 0 | 0.015 | 0.012 |
+| `--site-rung-chroma-step`, what a level adds to it | 0.024 | 0.019 |
+
+Significance is gray by design: it takes the lightness steps and no chroma step, so a
+higher level is darker in light mode and lighter in dark, never coloured.
+No chip has a value of its own; a level’s fill is always these tokens at that level.
+
+The text is the page’s own at every step, with no switch to a second text colour: the
+scale stops where that text still reads.
+Every fill is inside sRGB, so a browser shows the chroma written here, and the text’s
+contrast on it is 6.0:1 or better in light mode and 5.3:1 or better in dark, against the
+4.5:1 that WCAG AA asks of body text.
+The fills and ratios below are what `devtools.rung_scale` computes from the tokens in
+`site.css` and KPress’s page colours; run it after changing a token.
+`tests/test_rung_scale.py` holds this table to its output, the order to monotonic, and
+every ratio to 4.5:1.
+
+| Rung | Light fill | Text contrast | Dark fill | Text contrast |
+| --- | --- | --- | --- | --- |
+| `S1` | `oklch(89.5% 0.008 250)` `#d8dde2` | 13.0:1 | `oklch(29.6% 0.008 250)` `#2a2d31` | 11.7:1 |
+| `S2` | `oklch(84.0% 0.008 250)` `#c7cbd0` | 10.9:1 | `oklch(34.2% 0.008 250)` `#35393d` | 9.9:1 |
+| `S3` | `oklch(78.5% 0.008 250)` `#b5b9be` | 9.0:1 | `oklch(38.8% 0.008 250)` `#414549` | 8.2:1 |
+| `S4` | `oklch(73.0% 0.008 250)` `#a4a8ad` | 7.4:1 | `oklch(43.4% 0.008 250)` `#4e5155` | 6.8:1 |
+| `S5` | `oklch(67.5% 0.008 250)` `#93979c` | 6.0:1 | `oklch(48.0% 0.008 250)` `#5a5e62` | 5.5:1 |
+| `V0` | `oklch(95.0% 0.015 250)` `#e7f0f8` | 15.4:1 | `oklch(25.0% 0.012 250)` `#1d2227` | 13.6:1 |
+| `V1` | `oklch(89.5% 0.039 250)` `#cadff6` | 13.0:1 | `oklch(29.6% 0.031 250)` `#212e3c` | 11.7:1 |
+| `V2` | `oklch(84.0% 0.063 250)` `#accef3` | 10.9:1 | `oklch(34.2% 0.050 250)` `#243a51` | 9.9:1 |
+| `V3` | `oklch(78.5% 0.087 250)` `#8ebeef` | 9.1:1 | `oklch(38.8% 0.069 250)` `#264768` | 8.2:1 |
+| `V4` | `oklch(73.0% 0.111 250)` `#70adeb` | 7.5:1 | `oklch(43.4% 0.088 250)` `#27537f` | 6.7:1 |
+| `V5` | `oklch(67.5% 0.135 250)` `#4f9be6` | 6.1:1 | `oklch(48.0% 0.107 250)` `#266097` | 5.5:1 |
+| `C0` | `oklch(95.0% 0.015 158)` `#e7f2eb` | 15.4:1 | `oklch(25.0% 0.012 158)` `#1d231f` | 13.5:1 |
+| `C1` | `oklch(89.5% 0.039 158)` `#c8e5d3` | 13.2:1 | `oklch(29.6% 0.031 158)` `#1f3227` | 11.6:1 |
+| `C2` | `oklch(84.0% 0.063 158)` `#a9d8bb` | 11.1:1 | `oklch(34.2% 0.050 158)` `#20402e` | 9.7:1 |
+| `C3` | `oklch(78.5% 0.087 158)` `#88caa4` | 9.3:1 | `oklch(38.8% 0.069 158)` `#1f5036` | 7.9:1 |
+| `C4` | `oklch(73.0% 0.111 158)` `#65bd8d` | 7.8:1 | `oklch(43.4% 0.088 158)` `#1a5f3e` | 6.5:1 |
+| `C5` | `oklch(67.5% 0.135 158)` `#3aaf76` | 6.4:1 | `oklch(48.0% 0.107 158)` `#0f6f46` | 5.3:1 |
+
 The recent-bound star is the one warm mark, `oklch(52% 0.19 25)`.
 
 Every hover, a table’s group row and a targeted row take one gentle wash, `--site-wash`,
@@ -539,11 +586,16 @@ it.
   settled state such as a proved case.
   Chips sit inline and wrap like words, a space apart, with a small block margin
   (0.15rem) so a wrapped row never touches the row above, on any page or at any width.
-  A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`. A standing chip
-  carries `data-standing` and adds no style of its own: `current best` takes the accent,
-  as a settled state, and every other standing (`current best, reported`,
-  `second certificate`, `superseded`, `not a bound`) the plain gray, so a reader sees
-  which results still hold without the others shouting.
+  A rung chip adds `.site-rung-fill` with `data-rung` and `data-level`, and its fill
+  strengthens and saturates with the level (Color, The Rung Scale).
+  Significance is listed first: wherever a result’s rungs are shown together, in a table
+  row, a popover, a result’s overview or a case record, they run S, V, C, from the one
+  function that sets the order, `overview_sections.rung_chips`. The generated register
+  documents keep their own order, verification first.
+  A standing chip carries `data-standing` and adds no style of its own: `current best`
+  takes the accent, as a settled state, and every other standing
+  (`current best, reported`, `second certificate`, `superseded`, `not a bound`) the
+  plain gray, so a reader sees which results still hold without the others shouting.
   A novelty chip (`data-novelty`) is always plain gray.
 
 - **Arrows.** Every arrow on the site is one drawing, never a typed character: the
@@ -862,7 +914,7 @@ table, and `tests/test_overview.py` holds both pages to the identical bar and de
   there is none; the credit, the finder first and “after …” quiet, the list cut after
   three names with the whole of it in the cell’s `title`; and the status, every chip in
   one cell side by side.
-  The status cell holds the V, C and S rung chips and then one chip per part of the
+  The status cell holds the S, V and C rung chips and then one chip per part of the
   standing (`second certificate, reported` is two chips), left to right a space apart,
   wrapping only where the cell is too narrow, with the chips’ own block margin between
   wrapped rows; it never stacks one chip per line.
@@ -952,7 +1004,7 @@ names.
 
 - **Head.** The popover’s own caps label, the result’s id, and its headline, the
   result’s summary, stand above the body and are in the page, so they do not change when
-  the overview lands. The body opens with the V, C and S rung chips and the standing
+  the overview lands. The body opens with the S, V and C rung chips and the standing
   chips, as the tables show them; then the date with what it dates, the credit and the
   cases, in the support colour; the claim at the note size; and a closed disclosure with
   the significance, composition, next rung and novelty.

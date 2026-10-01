@@ -5,13 +5,13 @@ title: "Result filters: a 'Current best only' checkbox, on by default on the hom
 kind: task
 status: closed
 priority: 2
-version: 4
+version: 5
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-10-01T08:18:12.953Z
-updated_at: 2026-10-01T09:52:38.169Z
+updated_at: 2026-10-01T10:42:49.087Z
 closed_at: 2026-10-01T09:52:38.146Z
 close_reason: "9036d7c04 on claude/site-polish-2-filter, merged into the follow-up branch claude/site-polish-3 (b25702459): a Current best only checkbox in the shared filter bar, checked on the homepage (6 of 61 shown) and clear on the Results page; composes with Standing; 268 tests pass."
 resolution: null
@@ -21,4 +21,4 @@ Owner, 2026-10-01: add a filter for 'current best only' as a checkbox, checked o
 
 ## Notes
 
-Implemented on claude/site-polish-2-filter at 9036d7c04 (worktree overview-fixes, not pushed). Checkbox 'Current best only' in result_filters after Standing; FilterDefaults.current_best, True in RECENT_DEFAULTS, False in RESULTS_DEFAULTS. Current best = standing in {current best; current best, reported} (overview_sections.is_current_best), row attribute data-best. Composes by AND with Standing (narrows, never sets); table.js unchanged (existing flag filter). Homepage default 15 -> 6 of 61; results page 61 (23 when checked). Query preset best=true|false. No reset control exists in the bar; none added.
+Superseded by think-nr0y's wording: the checkbox reads 'Hide superseded' and hides exactly the superseded rows (ca137cfde); checked by default on the homepage, clear on the Results page.

@@ -1315,11 +1315,11 @@ controller, not permission to blur contracts.
 completed seven independently reviewed n17 rounds: exp-235 through exp-239, exp-240 and
 exp-241. The known packing now has a certified exact chart endpoint and an attained
 minimum under explicit orientation and directed-projection premises.
-The verified outward upper ceiling is4.6755300936045509516342148538535054; the lower
-bound4.66044 is unchanged.
+The verified outward upper ceiling is 4.6755300936045509516342148538535054; the lower
+bound 4.66044 is unchanged.
 Unrestricted local and global optimality remain open.
-The mixed-capacity cover has161,100,756 necessary occupancy states; its
-closed-assignment D4 quotient has20,155,518 orbits, with no geometric case excluded.
+The mixed-capacity cover has 161,100,756 necessary occupancy states; its
+closed-assignment D4 quotient has 20,155,518 orbits, with no geometric case excluded.
 H258 stopped after three preparation failures without a target stress verdict.
 The [morning report](docs/project/reviews/review-2026-10-01-post-optimality-morning.md)
 records the mathematics, independent-checker boundaries, costs and remaining gaps.
@@ -5273,8 +5273,8 @@ round that names the hypothesis, control roles included.
 | [H-256](packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md) | confirmed | Exact endpoint packing at the H255 root with fixed interior sliders; all68 wall and136 pair obligations certified; global capture remains open | 1 | 43s wall |
 | [H-257](packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md) | confirmed | Complete exact-root feature inventory, independently audited:168owner-axis options,60active-wall corners,9tangent offsets | 1 | 42s wall |
 | [H-258](packing/campaign/hypotheses/H-258-n17-common-core-stress.md) | blocked | Fixed common-core stress; instrument stopped after three symbolic preparation failures, before target use | 0 | — |
-| [H-259](packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md) | confirmed | Exact mixed-capacity centre cover and finite occupancy census; no geometric exclusion | 1 | exp-240 accepted:161100756 versus8597496600 |
-| [H-260](packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md) | confirmed | Closed-assignment D4 occupancy quotient; no geometric exclusion | 1 | exp-241accepted:20155518orbits |
+| [H-259](packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md) | confirmed | Exact mixed-capacity centre cover and finite occupancy census; no geometric exclusion | 1 | exp-240 accepted: 161,100,756 versus 8,597,496,600 |
+| [H-260](packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md) | confirmed | Closed-assignment D4 occupancy quotient; no geometric exclusion | 1 | exp-241 accepted: 20,155,518 orbits |
 
 ### Confirmed
 
@@ -5809,8 +5809,8 @@ archive beside it.
 | [exp-237](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-237-h255-n17-polynomial-root.md) | 17 | target | H-255 | Fixed exact rational contraction certificate for the contact-chart root | Exact contraction, inclusion and domain guards pass both implementations and independent output review; root existence only | accepted |
 | [exp-238](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-238-h256-n17-endpoint-feasibility.md) | 17 | target | H-256 | Exact endpoint geometry with fixed centroid sliders | Complete exact endpoint certificate passes independent output review; conditional class minimum attained | accepted |
 | [exp-239](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-239-h257-n17-endpoint-features.md) | 17 | target | H-257 | Exact owner-axis and active-wall feature inventory | Allfrozen counts, identities andstrictsigns pass;175interval records independently matched | accepted |
-| [exp-240](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-240-h259-n17-mixed-capacity-census.md) | 17 | target | H-259 | Mixed-capacity complete centre cover and exact census | 161100756 mixed patterns versus8597496600 baseline; independent audit | accepted |
-| [exp-241](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-241-h260-n17-closed-cell-symmetry.md) | 17 | target | H-260 | Closed-assignment D4 census | 20155518orbits;all8fixedcountsindependentlyagree | accepted |
+| [exp-240](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-240-h259-n17-mixed-capacity-census.md) | 17 | target | H-259 | Mixed-capacity complete centre cover and exact census | 161,100,756 mixed patterns versus 8,597,496,600 baseline; independent audit | accepted |
+| [exp-241](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-241-h260-n17-closed-cell-symmetry.md) | 17 | target | H-260 | Closed-assignment D4 census | 20,155,518 orbits; all eight fixed counts independently agree | accepted |
 
 ### Cost and provenance
 

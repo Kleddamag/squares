@@ -76,7 +76,7 @@ No rating or frontier field is changed here.
 
 The [n17 case](../../frontier/n-017.md) now has a verified rational outward upper
 ceiling4.6755300936045509516342148538535054 from the exact chart endpoint.
-Together with the established lower bound4.66044, this leaves a gap of approximately
+Together with the established lower bound 4.66044, this leaves a gap of approximately
 0.0150901. The certificate admits the known packing; global optimality remains open.
 
 ## What Transfers from the Eleven-Square Proof
@@ -434,9 +434,9 @@ accepted rounds, with immutable inputs and independent review:
 | [H-254](../hypotheses/H-254-n17-contact-chart-fidelity.md) | Accepted | All 458 chart-fidelity comparisons at the relaxed rational witness |
 | [H-255](../hypotheses/H-255-n17-exact-polynomial-root.md) | Accepted | Exact existence and uniqueness in the fixed root box, with an independently implemented checker |
 | [H-256](../hypotheses/H-256-n17-exact-endpoint-feasibility.md) | Accepted | Exact physical endpoint at fixed centroid sliders; all 68 walls and 136 pairs certified, all 187 interval bounds independently recalculated |
-| [H-257](../hypotheses/H-257-n17-endpoint-contact-features.md) | Accepted | Complete168owner-axis/60wall-corner/9offset inventory; all175interval records independently recalculated |
-| [H-259](../hypotheses/H-259-n17-mixed-capacity-cover.md) | Accepted | Complete closed5by5mixedcapacitycover;161100756occupancies; independent exact census |
-| [H-260](../hypotheses/H-260-n17-closed-cell-symmetry.md) | Accepted | Complete D4action onexistentialclosedassignments;20155518orbits; independent eight-term audit |
+| [H-257](../hypotheses/H-257-n17-endpoint-contact-features.md) | Accepted | Complete inventory of 168 owner-axis options, 60 corner-to-active-wall gaps, and nine offsets; all 175 strict interval records independently recalculated |
+| [H-259](../hypotheses/H-259-n17-mixed-capacity-cover.md) | Accepted | Complete closed 5-by-5 mixed-capacity cover; 161,100,756 occupancies; independent exact census |
+| [H-260](../hypotheses/H-260-n17-closed-cell-symmetry.md) | Accepted | Complete D4 action on existential closed assignments; 20,155,518 orbits; independent eight-term audit |
 
 The
 [mathematical review](../../../docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md)
@@ -475,7 +475,7 @@ n12 lower bound.
 The two main scientific gaps remain local capture of unrestricted orientations and
 separating branches, and global exclusion outside a captured neighbourhood.
 The [n17 case](../../frontier/n-017.md) now admits the accepted endpoint’s rational
-outward ceiling under `think-vdmf`, replacing the grid ceiling5 while leaving the case
+outward ceiling under `think-vdmf`, replacing the grid ceiling 5 while leaving the case
 open. The rational H253 witness remains separate fallback evidence.
 Low-n and global-cover routes retain their recorded readiness limits rather than
 launching a broad search during endpoint work.

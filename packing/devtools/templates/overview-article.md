@@ -14,8 +14,17 @@
 
 {{README_INTRO}}
 
-This site collects what the project has proved, what others have proved alongside it,
-and how each claim was checked.
+The Square Packing Project site collects all known historic research and current new
+results on the square packing problem.
+Work on this problem has exploded in the summer of 2026 thanks to AI-powered research
+efforts. This project tracks all results here and by all others known.
+The project also independently checks the proofs and certificates behind them, replaying
+each where it can, and records how far every result has been
+[verified and confirmed](#verification-at-a-glance).
+
+If you have new results or know of newer results, please
+[file an issue]({{NEW_ISSUE_URL}}) to report them, and we will gladly incorporate them
+and cite your work.
 
 {{PAGE_CARDS}}
 

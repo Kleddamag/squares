@@ -80,6 +80,9 @@ OUTPUT = PACKING / "site"
 
 SITE_URL = "https://jlevy.github.io/squares/"
 SITE_NAME = "Square Packing"
+#: Where a reader reports a result the site does not have yet: a new issue on the
+#: repository, which the overview's own statement links.
+NEW_ISSUE_URL = f"{repo_links.REPO_URL}/issues/new"
 OVERVIEW_DESCRIPTION = (
     "Packing unit squares in the smallest square: the problem, every current result, "
     "and how each one is verified."
@@ -535,6 +538,7 @@ def overview_page() -> Page:
     values = {
         "HERO": overview_sections.hero(),
         "README_INTRO": site_documents.overview_intro(),
+        "NEW_ISSUE_URL": NEW_ISSUE_URL,
         "DOCUMENT_CARDS": overview_sections.document_cards(),
         "OTHER_PROJECTS": overview_sections.other_project_cards(),
         "ATLAS_GRID": overview_sections.atlas_grid(),

@@ -1083,6 +1083,44 @@ def test_the_problem_section_says_eleven_squares_is_settled(
     assert render_overview.OVERVIEW_ARTICLE in check_results.READER_TIER
 
 
+#: The site's own statement, the owner's words of 2026-09-30 with only hyphenation and
+#: punctuation edited, and one sentence on what the project checks.
+SITE_STATEMENT = (
+    (
+        "The Square Packing Project site collects all known historic research and "
+        "current new results on the square packing problem. Work on this problem has "
+        "exploded in the summer of 2026 thanks to AI-powered research efforts. This "
+        "project tracks all results here and by all others known. The project also "
+        "independently checks the proofs and certificates behind them, replaying each "
+        "where it can, and records how far every result has been verified and confirmed."
+    ),
+    (
+        "If you have new results or know of newer results, please file an issue to "
+        "report them, and we will gladly incorporate them and cite your work."
+    ),
+)
+
+
+def test_the_sites_own_statement_follows_readmes_introduction(page: str) -> None:
+    """After README's introduction the section has two paragraphs of its own: what the
+    site collects and checks, and where to report a result it lacks. The first links the
+    rungs it names to their section; the second opens a new issue on the repository."""
+    from devtools import site_documents  # noqa: PLC0415
+
+    problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
+    own = problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[1].split("<div", 1)[0]
+    paragraphs = re.findall(r"<p>(.*?)</p>", own, re.DOTALL)
+    assert [_rendered_text(paragraph) for paragraph in paragraphs] == list(SITE_STATEMENT)
+    assert '<a href="#verification-at-a-glance">verified and confirmed</a>' in paragraphs[0]
+    assert 'id="verification-at-a-glance"' in page
+    assert render_overview.NEW_ISSUE_URL == "https://github.com/jlevy/squares/issues/new"
+    assert re.search(
+        rf'<a href="{re.escape(render_overview.NEW_ISSUE_URL)}"[^>]*>file an issue</a>',
+        paragraphs[1],
+    )
+    assert "formal" not in " ".join(SITE_STATEMENT).lower()
+
+
 #: The framing the owner refused on 2026-09-30: eleven squares is a central case of the
 #: problem, and never the one the project is about.
 _THE_CENTRAL_CASE = re.compile(

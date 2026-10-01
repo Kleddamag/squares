@@ -7,19 +7,19 @@ softschema:
   schema: schemas/session-close-report.schema.yaml
   envelope: null
   status: enforced
-count: 165
+count: 166
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
-  sessions_measured: 111
+  sessions_measured: 112
   sessions_unmeasured: 54
   attributed:
-    rollups: 254
-    turns: 63978
-    tool_calls: 35394
-    tool_errors: 773
-    one_off_code: 5088
-    wall_hours: 557.08
+    rollups: 258
+    turns: 64493
+    tool_calls: 35736
+    tool_errors: 781
+    one_off_code: 5112
+    wall_hours: 562.1
   unattributed:
     rollups: 65
     turns: 14196
@@ -28,12 +28,12 @@ totals:
     one_off_code: 1184
     wall_hours: 67.13
   measured:
-    rollups: 319
-    turns: 78174
-    tool_calls: 43543
-    tool_errors: 958
-    one_off_code: 6272
-    wall_hours: 624.21
+    rollups: 323
+    turns: 78689
+    tool_calls: 43885
+    tool_errors: 966
+    one_off_code: 6296
+    wall_hours: 629.23
 codex_receipts:
   attributed: 68
   unattributed: 2
@@ -2857,3 +2857,20 @@ sessions:
     active_union_hours: 3.96
     wall_hours: 3.96
     snapshot_incomplete: true
+- id: session-166
+  title: "n17 Route Review and Replanning After PR 265"
+  status: stopped
+  primary_bead: think-9fc1
+  phases: 2
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/edb82f84-25c7-536c-8add-a1ccc53a1d43.yaml
+  - packing/campaign/resource-usage/agent-a5685e7aa49454a92.yaml
+  - packing/campaign/resource-usage/agent-a5cbb4e16e9eab857.yaml
+  - packing/campaign/resource-usage/agent-aeeb8f584753fe65e.yaml
+  turns: 515
+  tool_calls: 342
+  tool_errors: 8
+  one_off_code: 24
+  wall_hours: 5.02
+  codex_receipts: []

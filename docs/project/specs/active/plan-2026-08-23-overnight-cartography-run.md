@@ -470,10 +470,10 @@ fast-tier certification.
 The prototype and controls do not establish complete coverage of an external rectangle
 certificate.
 
-For the next supervised exact-research goal, the current handoff is `think-11ma`:
-preregister a small exact geometric-exclusion pilot for the closed n17 occupancy domains
-below the certified endpoint.
-The overnight session is complete; no new run is launched by this handoff.
+For the next supervised exact-research goal, the current handoff is `think-c7kv`, the
+BC-406 coordinator from the n17 route review after PR 265: dispatch its local-theorem,
+occupancy-census and polynomial-identity lanes in parallel.
+Session 166 launches no run itself.
 See [Current Handoff](../../../../SYNOPSIS.md#current-handoff) for the accepted
 evidence, exact scope and allocation boundaries.
 

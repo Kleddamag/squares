@@ -1049,7 +1049,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: blocked
+    state: ready
     priority: 0
     question: Does the fixed analytic common-core stress exclude negative-side first-order directions
       in both n17corner branches?
@@ -1063,8 +1063,6 @@ agenda:
     bead: think-wrgx
     depends_on:
     - BC-401
-    blocked_on: Three synthetic symbolic preparation guard failures; the exact52column executable identity
-      proof and adversarial controls are incomplete. No target run is admitted.
     next_evidence: packing/campaign/hypotheses/H-258-n17-common-core-stress.md
     workflows:
     - pipeline-improvement
@@ -1075,7 +1073,11 @@ agenda:
     - packing/campaign/hypotheses/H-258-n17-common-core-stress.md
     note: Three target-free symbolic preparation guard failures stop this instrument. No target run or
       stationarity verdict; exact residual proof and controls remain missing. Local/globaloptimality remains
-      separate.
+      separate. Unblocked 2026-10-01 by the BC-405 route review, lane A1 of BC-406. Two exploratory reconstructions
+      find the candidate correct (exact identity at the exp-237 midpoint and three other rational points;
+      all 58 weights nonnegative, exactly six zero); the stall was sympy.cancel expression swell. Repair
+      the identity proof with polynomial-ring arithmetic or exact evaluation beyond the degree bound,
+      within the frozen criterion.
   - id: BC-403
     purpose: research
     owner_focus: correctness
@@ -1130,6 +1132,205 @@ agenda:
     - packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md
     note: H260accepted:20155518necessaryclosedassignmentorbits; all8countsindependentlyagree,0.14s group.
       Geometricexclusionsremainthink-11ma.
+  - id: BC-405
+    purpose: research
+    owner_focus: insight
+    instances:
+    - 17
+    state: complete
+    priority: 0
+    question: What does PR 265 leave for an n17 optimality proof, which route is most likely to finish
+      one, and what bounded work comes next?
+    hypotheses:
+    - H-261
+    - H-262
+    - H-263
+    - H-264
+    - H-265
+    budget: 'Session 166: two Fable extra-high assessments (proof route; local endpoint theorem), one survey lane,
+      then coordinator reconciliation and codification, about four hours in all.'
+    entry: PR 265 merged into main with its morning report, and think-11ma as the recorded next entry.
+    exit: The route review retained, H-261 to H-265 registered, BC-406 to BC-411 given beads and lanes,
+      BC-402 unblocked, think-11ma re-scoped, and one coordinating entry selected.
+    bead: think-9fc1
+    depends_on:
+    - BC-404
+    next_evidence: docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md
+    workflows:
+    - review-planning-oversight
+    program: post-optimality-low-n
+    artifacts:
+    - docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md
+    - packing/campaign/explorations/X048-route-review/README.md
+    note: No mathematical error found in PR 265. The H-258 stress checks out exploratorily and the endpoint
+      is a first-order minimum modulo its six slider directions, so the local theorem needs no second-order
+      analysis. The global half has no exclusions; the hybrid route ranks first. No bound or verdict changes.
+  - id: BC-406
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: ready
+    priority: 0
+    question: Can the n17 local theorem, the occupancy census and the polynomial identification proceed
+      as three disjoint parallel lanes?
+    budget: One coordinated session; lane budgets are those of BC-402, BC-407, BC-408 and BC-409.
+    entry: BC-405 complete; lanes A1 (BC-402), B (BC-408) and C (BC-409) ready.
+    exit: Each dispatched lane reaches its own exit, then the coordinator integrates the records and
+      runs W10 on the results.
+    bead: think-c7kv
+    depends_on:
+    - BC-405
+    next_evidence: docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md
+    workflows:
+    - pipeline-improvement
+    - research-loop
+    - review-planning-oversight
+    program: post-optimality-low-n
+    artifacts:
+    - docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md
+    note: Allocation per OR-10. Opus 5.5 builds instruments; Fable extra-high reviews instruments; Fable
+      max derives and reviews the endpoint theorem and anything that moves a bound. Reconsider the order
+      if the H-258 identity fails at a rational point or lane B leaves more than 1e5 orbits.
+  - id: BC-407
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: blocked
+    priority: 0
+    question: Is the n17 endpoint a strict local minimum modulo its slider cone, with an explicit radius?
+    hypotheses:
+    - H-261
+    budget: One controlled build and review slice of about two hours; target arithmetic in seconds to
+      minutes, one worker.
+    entry: H-258 accepted through BC-402.
+    exit: Exact kernel, duals, curvature bounds, unavailability checks and slider uniformity certified
+      at a declared radius with independent review, or a retained failed ratio test that selects interval
+      enlargement.
+    bead: think-n95s
+    depends_on:
+    - BC-402
+    blocked_on: H-258 acceptance; the H-261 instrument does not exist yet.
+    next_evidence: packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md
+    workflows:
+    - pipeline-improvement
+    - research-loop
+    - factual-review
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md
+    note: Exploratory first-order estimate of the radius is 3e-4 (worst ratio 0.86); it defines the capture
+      target.
+  - id: BC-408
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: ready
+    priority: 0
+    question: How many H260 occupancy orbits survive the s(6) and s(10) subcontainer cuts and exact conditional
+      charge floors?
+    hypotheses:
+    - H-262
+    budget: One build and review slice; about six R068-sized charge sweeps, hours in all.
+    entry: H259 and H260 accepted; charge construction and floor definitions reviewed before any target
+      count.
+    exit: An exact, independently recounted survivor count with the endpoint pattern surviving, or a
+      retained refusal without retuning.
+    bead: think-j1uw
+    depends_on:
+    - BC-404
+    next_evidence: packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md
+    workflows:
+    - insight-iteration
+    - pipeline-improvement
+    - research-loop
+    - factual-review
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md
+    note: Exploratory cut counts leave about 7.7 million orbits before any charge floor. At most 1e4 survivors
+      makes the hybrid route affordable; more than 1e5 sends the question back to W3.
+  - id: BC-409
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: ready
+    priority: 2
+    question: Is the certified n17 chart endpoint a root of the catalogue's irreducible degree-18 polynomial?
+    hypotheses:
+    - H-265
+    budget: One short build slice; seconds to minutes of exact algebra.
+    entry: H255 accepted.
+    exit: An exact identification with an independent recheck, or a retained different factor.
+    bead: think-e6y1
+    depends_on:
+    - BC-399
+    next_evidence: packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md
+    workflows:
+    - pipeline-improvement
+    - research-loop
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md
+    note: Closes the frontier identification blocker; not on the optimality proof's critical path.
+  - id: BC-410
+    purpose: research
+    owner_focus: insight
+    instances:
+    - 17
+    state: tentative
+    priority: 2
+    question: Which closed cover keeps the n17 endpoint family inside one occupancy state and leaves the
+      fewest survivors?
+    hypotheses:
+    - H-263
+    budget: One W3 design slice, then one BC-408 census per candidate cover.
+    entry: BC-408's census instrument accepted.
+    exit: A selected cover with proved capacities and its survivor count, or the H259 grid retained with
+      the reason.
+    bead: think-x4a6
+    depends_on:
+    - BC-408
+    next_evidence: packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md
+    workflows:
+    - insight-iteration
+    - research-loop
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md
+    note: Square 9's centre is 0.0012 below an H259 seam; the cover was chosen without reference to the
+      endpoint.
+  - id: BC-411
+    purpose: research
+    owner_focus: efficiency
+    instances:
+    - 17
+    state: tentative
+    priority: 1
+    question: What does one exact geometric exclusion of an n17 occupancy leaf cost, on a uniform sample
+      of the residue at a cap at or above the endpoint?
+    hypotheses:
+    - H-264
+    budget: At most 2 CPU-hours per sampled leaf, 10 to 20 leaves.
+    entry: BC-408 reported and BC-410 has selected the cover.
+    exit: Exclusion fraction, producer and checker cost per leaf and an extrapolated total, with unresolved
+      leaves explicit.
+    bead: think-11ma
+    depends_on:
+    - BC-408
+    - BC-410
+    next_evidence: packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md
+    workflows:
+    - insight-iteration
+    - research-loop
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md
+    note: Re-scopes Session 165's handoff. A cap below the endpoint (the candidate 4.67) would leave sides
+      in (4.67, S*) uncovered; exclusions at a cap U >= S* apply to every smaller side.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 
@@ -1213,6 +1414,27 @@ n20 lacks a concrete conditional saving above 0.89474919732, so it remains defer
 The
 [W3 review](../../../docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md)
 records the source and mathematical reasons.
+
+## October 1 Checkpoint After PR 265
+
+Session 166 ran BC-405, a W10 checkpoint on the merged PR 265 record, and selects
+**BC-406** (`think-c7kv`) as the coordinating entry.
+The
+[route review](../../../docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md)
+holds the assessment, the evidence status and the handoff reading order.
+
+| Commitment | Disposition |
+| --- | --- |
+| BC-402 / H-258: common-core stress | Unblocked, lane A1. Exploratory checks find the candidate correct; repair the identity proof within the frozen criterion. |
+| BC-407 / H-261: local minimum modulo sliders | New, lane A2 after BC-402. Defines the capture target. |
+| BC-408 / H-262: cuts and charge floors | New, lane B, parallel with A1. Decides whether the hybrid route is affordable. |
+| BC-409 / H-265: catalogue polynomial | New, lane C, parallel and mechanical. |
+| BC-410 / H-263: endpoint-adapted cover | Tentative until BC-408 reports. |
+| BC-411 / H-264: exclusion cost per leaf (`think-11ma`) | Re-scoped to a cap at or above the endpoint and a uniform residue sample; tentative until BC-408 and BC-410. |
+| BC-387 / H-248: capacity-one ceiling | Unchanged; eligible beside lane B when capacity allows, since it decides whether pure counting is dead. |
+
+The capture prototype and any strengthening of the conditional theorem wait for H-261’s
+radius and the BC-410 cover.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

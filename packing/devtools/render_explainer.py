@@ -1639,36 +1639,45 @@ def atom_array(facts: Facts) -> str:
     return ",".join(rows)
 
 
-def best_packing_svg() -> str:
-    """The atlas rendering of the best packing known, cropped to the container.
+def crop_to_container(svg: str, *, name: str, margin: int = 12) -> str:
+    """An atlas rendering cut to its container's outline plus a margin, for inlining.
 
-    Inlined rather than linked so the page stays self-contained. The prolog and
-    the provenance metadata go, and the viewBox is cut to the container's
-    outline plus a margin; the file's own caption and ground are restyled by
-    the page's CSS rather than edited here.
+    The atlas draws a packing on a wide canvas with room for a caption beside and under
+    it; a paper sets the drawing alone, centred, with its caption as the figure's. The
+    prolog and the provenance metadata go, and the viewBox is cut to the container's
+    outline plus `margin`, which also takes the root's fixed width and height with it,
+    so the drawing is as wide as the page's own rule makes it. Both papers' first
+    figures are cut this way.
     """
-    svg = BEST_RENDERING.read_text(encoding="utf-8")
     svg = re.sub(r"<\?xml[^>]*\?>\s*", "", svg)
     svg = re.sub(r"<metadata>.*?</metadata>\s*", "", svg, flags=re.DOTALL)
     outline = re.search(
         r'data-feature="container-outline" x="([\d.]+)" y="([\d.]+)" width="([\d.]+)"', svg
     )
     if outline is None:
-        raise SystemExit(f"{BEST_RENDERING.name} has no container outline to crop to")
+        raise SystemExit(f"{name} has no container outline to crop to")
     x, y, side = (round(float(v)) for v in outline.groups())
-    margin = 12
     box = f'viewBox="{x - margin} {y - margin} {side + 2 * margin} {side + 2 * margin}"'
     svg, count = re.subn(r'width="\d+" height="\d+" viewBox="[^"]*"', box, svg, count=1)
     if count != 1:
-        raise SystemExit(f"{BEST_RENDERING.name} root has no width/height/viewBox to replace")
+        raise SystemExit(f"{name} root has no width/height/viewBox to replace")
     # The figure that carries this is a raw HTML block in the Markdown, and a
     # Markdown HTML block ends at the first blank line: one inside the drawing
     # would hand the rest of the file to the paragraph parser.
     if any(not line.strip() for line in svg.splitlines()):
-        raise SystemExit(
-            f"{BEST_RENDERING.name} has a blank line; it would end the figure's HTML block"
-        )
+        raise SystemExit(f"{name} has a blank line; it would end the figure's HTML block")
     return svg
+
+
+def best_packing_svg() -> str:
+    """The atlas rendering of the best packing known, cropped to the container.
+
+    Inlined rather than linked so the page stays self-contained. The file's own caption
+    and ground are restyled by the page's CSS rather than edited here.
+    """
+    return crop_to_container(
+        BEST_RENDERING.read_text(encoding="utf-8"), name=BEST_RENDERING.name
+    )
 
 
 def coarsening_path(facts: Facts) -> Path:

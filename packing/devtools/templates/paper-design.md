@@ -625,11 +625,10 @@ it.
   frontier atlas, and the Papers page’s three paper cards lead to full pages the site
   serves, so each is a direct card that goes to its page in the same tab
   (`new_tab=False`), with the right arrow for its icon (`data-go="page"`) and nothing
-  framed (`think-bc5d`, `think-w82r`).
-  Popovers are for records, targets that are not site pages of their own: a result, a
-  case, a repository document rendered for its card’s popover.
-  A direct card is a link and holds no other link, so what its note names is linked from
-  the prose beside it.
+  framed (`think-bc5d`, `think-w82r`). Popovers are for records, targets that are not
+  site pages of their own: a result, a case, a repository document rendered for its
+  card’s popover. A direct card is a link and holds no other link, so what its note names
+  is linked from the prose beside it.
   **Every other direct card opens its target in a new tab** (`target="_blank"`,
   `rel="noopener noreferrer"`), so the page the reader chose it from stays where they
   left it: a poster’s PDF, the Visualize page, another project.
@@ -986,8 +985,8 @@ it.
   sit at the bottom of their cell, aligned as their column is: text columns to the
   start, number columns (`.num`, tabular figures) to the end.
   The short columns (the id, n and date, `.site-col-id`, `.site-col-n` and
-  `.site-col-date`) stay on one line and as narrow as their content, which leaves the
-  spare width to the long text column.
+  `.site-col-date`) are as narrow as their content, the id and the date on one line,
+  which leaves the spare width to the long text column.
   The two tables of results, the overview’s recent table and the results page’s, are one
   table: one header (`result_head`) and one row (`result_table_row`), so the same six
   columns in the same order.
@@ -1000,23 +999,56 @@ it.
   rows, and that a row on the results page is the result’s own address, where a row on
   the overview links there from its summary’s leading formula (`result_text`). Both sort
   on any column whose header carries the sort pair.
-  The widths follow from what cannot give.
-  Four results’ formulas do not break and hold the result column to 411 pixels.
+  The widths follow from each column’s floor and from what the n column asks for.
+  The id, the rungs and the date are as narrow as what they hold.
+  The rungs column is as wide as its widest chip, since no chip wraps: the three rungs
+  at 114 pixels, and “second certificate” at 159 where a row with one shows.
   The credit column is at least 11.5rem wide, which holds the longest name on one line
   (“Queuingtheorydotcom”, 167 pixels of the 184), so a credit wraps between names and
   never inside one; KPress’s own floor, 6rem, set it a word to a line.
-  The rungs column is as wide as its widest chip, since no chip wraps: the three rungs
-  at 114 pixels, and “second certificate” at 159 where a row with one shows.
-  Those, the id, n and the date come to 1006 of the 1104 pixels a table has at a
-  1280-pixel window, so the result and the credit share 98 to spare, and below that
-  width the table scrolls sideways in its wrap, as it did.
-  The records are therefore no column of their own, which would be left 98 pixels and
-  set a link to a line: they sit under the summary, a line or two of links.
+  The result column is at least 18rem, 288 pixels, and no formula holds it wider.
+  KaTeX sets a formula as pieces a line cannot end inside, one up to each relation or
+  binary operator at its top level, and the widest piece in either table is 249 pixels,
+  the numerator of T-033’s quotient.
+  A quotient of more than 24 digits sets its solidus as a binary operator
+  (`overview_data.breakable_quotients`), so a line may end after it: four results state
+  one of 33 to 40 digits, which as one piece is up to 395 pixels wide.
+  A formula in a summary is set in the line and not in KPress’s inline box, so the words
+  after it follow on the same line and no line begins with the comma after a formula.
+  The n column holds a result’s cases, each count or range in a box a line cannot end
+  inside (`overview_sections.case_list`), so a range is never cut at its dash, and it
+  reads from the start of the cell, as text does.
+  A cell of up to four values stays on one line.
+  A cell of five or more wraps and asks for `--site-cases-measure`, 24ch, which is 209
+  pixels and a column of 225. The three such results take 2, 2 and 6 lines there:
+  T-044’s 8 values, T-046’s 9 and T-056’s 23, which a column as narrow as one value sets
+  on 15 lines, a row 386 pixels tall.
+  The table gives the n column its measure before the result and the credit share the
+  spare width, and where the window is short of room the n column narrows first, to half
+  its measure at the least, a range and a count to a line.
+  Where no row showing holds a long list, as on the overview when it opens, the column
+  is as narrow as its lists, 85 pixels, so a single case has no empty column beside it.
+  With every row showing, the id, n, result, credit, rungs and date columns measure 56,
+  225, 358, 205, 159 and 100 pixels at a 1280-pixel window, where T-056’s list takes 6
+  lines, and 56, 156, 288, 184, 159 and 100 at 1024, where it takes 9; the table fits
+  its frame at both. At 768 they measure 56, 120, 288, 184, 159 and 100, the list takes
+  11 lines, and the table runs 221 pixels past its 688-pixel frame.
+  The floors come to 908 pixels, so a table fits its frame down to a window of about 990
+  pixels and scrolls sideways in its wrap below that.
+  The measure is a trade against the result column: each 2ch of it takes about 13 pixels
+  from the result at a 1280-pixel window and adds about 75 to the height of the results
+  page’s table, whose summaries carry their records.
+  At 24ch the longest list sets a row 165 pixels tall, under the 171 the tallest summary
+  sets there. The records are no column of their own, which would set a link to a line:
+  they sit under the summary, a line or two of links.
   The overview’s table carries them and does not show them, at any width, by one rule on
   `.site-recent-table`: each row’s popover holds every link.
   `devtools.measure_site_pages columns` and `chips` measure all of this on a built site:
   each column’s width, the most lines a cell takes, the words a line break splits and
-  the tallest row a column sets; and every chip’s font size, box and lines.
+  the tallest row a column sets; the values of a list of cases cut across lines, the
+  widest piece of typeset math, the formulas a line ends inside anywhere but after a
+  relation or a binary operator, and the punctuation that begins a line; and every
+  chip’s font size, box and lines.
   `tests/test_site_result_columns.py` holds both tables to it in a browser.
   Secondary content in a cell, such as a credit or an “after …” list, takes
   `.site-cell-quiet`, which sets it in the support colour and the sans face.
@@ -1024,7 +1056,9 @@ it.
   Every table stands `--site-table-space` clear of the text above and below it
   (**Spacing**, above).
   Wide tables bleed on large screens, as **Wide bleed** above describes.
-  On a phone, a table of results becomes one card per row.
+  On a phone, a table of results becomes one card per row: the id, the cases and the
+  rungs on its first line, and a list of five values or more on a line of its own under
+  them, the card’s width.
   A date cell leads with the date and then says what it dates, `published` or
   `established`, in the support colour (`date_cell`): under the date on a wide table,
   which keeps the column narrow, and beside it on a phone.
@@ -1149,9 +1183,9 @@ about a line. Without scripts a filter cannot be changed, so nothing stays filte
 under `@media (scripting: none)` every row shows, and the bar, which would do nothing,
 does not. `tests/node/overview_table/` runs the script’s filters, alone and wired to a
 stand-in table, and `tests/test_overview.py` holds both pages to the identical bar and
-each to its defaults. `tests/test_site_result_filters.py` uses Hide superseded in a
-browser on both pages, by pointer and by keyboard, and measures its label at 1280, 768
-and 390 pixels.
+each to its defaults.
+`tests/test_site_result_filters.py` uses Hide superseded in a browser on both pages, by
+pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
 
 - **Row popovers.** The row is the unit: a table row with detail opens one popover for
   the whole row. This is the site’s one way to show detail on a table row, and no cell
@@ -1253,9 +1287,8 @@ and 390 pixels.
   `every-result`, a subtitle, the prose that defines the ratings and standings, and the
   table under its filters (**Result filters**, above), which start with significance at
   All, no maximum age and Hide superseded clear, so every result shows, newest first, in
-  one flat list.
-  Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
-  recent table and replay table, and each case record’s results link.
+  one flat list. Each row keeps its id, the result’s own (`#t-018`), which is where the
+  overview’s recent table and replay table, and each case record’s results link.
   A row opens its result’s popover, the full claim and its novelty label, with the id in
   its first cell as the trigger (**Row popovers**, above).
   The overview keeps the newest results and ends that table with a “See all results”

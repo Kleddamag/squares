@@ -53,7 +53,11 @@ Twelve measurements, each over pages of a directory `preview_site` has built:
   is typeset: the table's width, how far it runs past what scrolls it sideways, how many
   rows show, and each column's width, the most lines a cell of it takes, the words a
   line break splits, and the tallest row whose height that column's cell sets. So a
-  column too narrow for what it holds shows as the one making rows tall. On a phone,
+  column too narrow for what it holds shows as the one making rows tall. With them it
+  reports what a column's lines may not do: the values of a list of cases cut across
+  lines, the widest piece of typeset math, which is the least a cell of formulas can be,
+  the formulas a line ends inside anywhere but after a relation or a binary operator,
+  and the punctuation that begins a line. On a phone,
   where a row is a card, it reports the tallest card and each cell's lines. A page's
   address may carry the query that presets its filters: `index.html?s-min=&age=` is the
   overview's recent table with every row showing. `--markdown` prints one line a
@@ -630,7 +634,12 @@ def column_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
     table's width, the column's width and the share of the table it takes, the most lines
     a cell of it takes, how many of its words a line break splits, and the tallest row
     whose height its cell sets, with that row's height and the lines the cell takes
-    there; a dash where it sets no row's height.
+    there; a dash where it sets no row's height. Then what its lines may not do, as
+    counts: `split`, the values of a list of cases cut across lines; `wrapped`, the
+    formulas set on more than one line, and `cuts`, the pieces of one a line ends after
+    with no relation or binary operator to end it; and `stranded`, the punctuation that
+    begins a line. `math_piece` is the width of the
+    column's widest piece of typeset math, a dash where it holds none.
     `past_frame` is how far the table runs past what scrolls it sideways, 0 when it
     fits."""
     rows: list[dict[str, Any]] = []
@@ -639,6 +648,7 @@ def column_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
         for column in entry["columns"]:
             tallest = column["tallest"]
             width = column["width"]
+            piece = column.get("piece")
             rows.append(
                 {
                     "page": entry["page"],
@@ -656,6 +666,11 @@ def column_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
                     "tallest_row": "-" if tallest is None else tallest["row"],
                     "row_height": "-" if tallest is None else f"{tallest['height']:g}",
                     "its_lines": "-" if tallest is None else tallest["lines"],
+                    "split": len(column.get("split", ())),
+                    "wrapped": column.get("wrapped", 0),
+                    "cuts": len(column.get("cuts", ())),
+                    "stranded": len(column.get("stranded", ())),
+                    "math_piece": "-" if not piece else f"{piece['width']:g}",
                 }
             )
     return rows

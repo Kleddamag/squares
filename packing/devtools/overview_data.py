@@ -108,6 +108,40 @@ def prose_tex(run: str) -> str:
     return run.replace("...", r"\ldots").replace("…", r"\ldots").strip()
 
 
+#: How many digits a quotient has, over and under its solidus together, before a line
+#: may end inside it (`breakable_quotients`). The longest quotient the register holds
+#: under it, `3875000000/999999999`, is 19 digits and one piece 197 pixels wide in a
+#: table of results; the four over it are 33 to 40 digits.
+LONG_QUOTIENT = 24
+
+#: A quotient of whole numbers, with a root over the solidus or without one.
+_QUOTIENT = re.compile(r"(?<![0-9.])([0-9]+(?:\\sqrt\{[0-9]+\})?)/([0-9]+)(?![0-9.])")
+
+
+def breakable_quotients(tex: str) -> str:
+    r"""`tex` with the solidus of each long quotient set as a binary operator.
+
+    KaTeX ends a line of inline math only after a relation or a binary operator at the
+    top level of a formula, and a solidus is neither. So
+    `955000\sqrt{2073600042893309449}/359341754646249 =` was one piece, 395 pixels of a
+    table of results, and four such quotients held the result column to 411 pixels
+    whatever the window. A quotient of more than `LONG_QUOTIENT` digits, at the top
+    level, is written `…\mathbin{/}…`: a line may end after the solidus, as it may after
+    a `+`, and the solidus is spaced as an operator, which a quotient that long reads
+    better with on one line too. A shorter quotient, and one inside a group, is left
+    as it is.
+    """
+
+    def spaced(match: re.Match[str]) -> str:
+        before = tex[: match.start()]
+        digits = sum(character.isdigit() for character in match.group(0))
+        if digits <= LONG_QUOTIENT or before.count("{") != before.count("}"):
+            return match.group(0)
+        return rf"{match.group(1)}\mathbin{{/}}{match.group(2)}"
+
+    return _QUOTIENT.sub(spaced, tex)
+
+
 def math_html(tex: str, *, display: bool = False) -> str:
     """kpress's own math markup for `tex`, for math inside a raw HTML block.
 
@@ -133,7 +167,7 @@ def _prose_html(text: str) -> str:
     last = 0
     for match in MATH.finditer(text):
         parts.append(html.escape(text[last : match.start()], quote=False))
-        parts.append(math_html(prose_tex(match.group(0))))
+        parts.append(math_html(breakable_quotients(prose_tex(match.group(0)))))
         last = match.end()
     parts.append(html.escape(text[last:], quote=False))
     return "".join(parts)
@@ -143,7 +177,7 @@ def _code_span_html(content: str) -> str:
     """A code span as math when `migrate_math` reads it as mathematics, else as code."""
     classified = classify(content)
     if classified.kind == "math" and classified.latex:
-        return math_html(classified.latex)
+        return math_html(breakable_quotients(classified.latex))
     return f"<code>{html.escape(content, quote=False)}</code>"
 
 
@@ -152,7 +186,8 @@ def tex_bounds(text: str) -> str:
 
     A code span is judged by `devtools.migrate_math.classify`, the rule the reader
     documents were migrated by, so a headline's `` `s(11) ≥ 31/8` `` is set as math and
-    an identifier stays code; prose outside code spans is read as before.
+    an identifier stays code; prose outside code spans is read as before. A long
+    quotient in either may end a line after its solidus (`breakable_quotients`).
     """
     parts: list[str] = []
     last = 0

@@ -99,13 +99,16 @@ The separate [T-025]({{T025_CLAIM_URL}}) and [T-026]({{T026_CLAIM_URL}}) claim d
 each embed the shared standard-library threshold verifier and their exact input
 bytes.<!--END:CLAIM-->
 
-The T-026 lower bound is registered as [**V4/C5**]({{EPISTEMICS_URL}}): the certificate
-and dilation calculations used in the proof are machine-verified with exact or
-interval-certified evidence and passing replay commands (`V4`), while the certificate’s
-coverage condition is confirmed by an exact event-cell sweep and a distinct interval
-branch-and-bound (`C4`). The two coverage methods share the certificate data and
-theorem. A [source-distinct review of the complete claim]({{T026_REVIEW_URL}}) supplies
-`C5`.
+The T-026 lower bound is registered as [**V3/C3**]({{EPISTEMICS_URL}}): the certificate
+and dilation calculations used in the proof are machine-checked, with exact or
+interval-certified evidence and passing replay commands, and the certificate’s coverage
+condition is confirmed by an exact event-cell sweep and a distinct interval
+branch-and-bound. The two coverage methods share the certificate data and theorem.
+A [source-distinct review of the complete claim]({{T026_REVIEW_URL}}) is retained.
+Under the ladder of 2026-09-30, rung 4 on either axis also needs a second adversarial
+review by a distinct reviewer and a retained human oversight record, and rung 5 formal
+verification reviewed by human experts; until those records exist the result stands at
+`V3/C3`, machine-checked with its review record pending (it held `V4/C5` before).
 
 ## The Agentic Research Framework
 

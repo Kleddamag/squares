@@ -90,7 +90,7 @@ its search strategy.
 |  | value | status |
 | --- | --- | --- |
 | best-known packing (upper bound) | $3.8770835\ldots$ | Trump 1979, a construction |
-| verified lower bound | $3.8770835\ldots$, Trump’s side exactly | Queuingtheorydotcom 2026, Astra-assisted and building on this project and Kleddamag; machine-verified here and reviewed ([T-060](packing/frontier/RESULTS.md), `V4/C5`) |
+| verified lower bound | $3.8770835\ldots$, Trump’s side exactly | Queuingtheorydotcom 2026, Astra-assisted and building on this project and Kleddamag; machine-checked here and reviewed, review record pending ([T-060](packing/frontier/RESULTS.md), `V3/C3`) |
 | earlier verified lower bound | $31/8 = 3.875$, strict | Kleddamag 2026, [developed from T-026’s certificate](packing/frontier/RESULTS.md) and confirmed here by two complete coverage methods (T-037); superseded by T-060 |
 | strongest first-party lower bound | $3.8269975\ldots$ | T-033, T-026’s atoms on a finer net; the point-only T-018 proof is explained [below](#how-a-weighted-atomic-lower-bound-proof-works) |
 | gap between the verified bounds | $0$ | settled: $s(11)$ is Trump’s side |
@@ -115,18 +115,23 @@ This is a proof of the lower bound, not a weaker kind of assertion.
 The phrase *dilation-limit proof* names how the theorem is derived; it is not an
 assurance grade.
 
-Under [this repository’s epistemic scale](epistemics.md), T-026 is `V4/C5`. `V4` means
-the result has machine-verified exact or interval-certified evidence, a frozen
-certificate, a replay command, and a passing replay.
-`C4` means the finite certificate’s coverage condition was confirmed by two distinct
-methods: an exact event-cell sweep and an interval branch-and-bound.
-They share the certificate data and theorem, so `C4` does not mean two independent
-proofs. `C5` adds a
+Under [this repository’s epistemic scale](epistemics.md), T-026 is `V3/C3`:
+machine-checked, with its review record pending.
+`V3` means the result has exact or interval-certified evidence, a frozen certificate, a
+replay command, and a passing replay; `C3` means that certificate was replayed here.
+The finite certificate’s coverage condition was confirmed by two distinct methods, an
+exact event-cell sweep and an interval branch-and-bound, which the register records as
+an attribute beside the rung rather than as a rung of its own; they share the
+certificate data and theorem, so two methods do not mean two independent proofs.
+A
 [mapped, non-superseded source-distinct review](docs/project/reviews/review-2026-09-10-t025-t026-verifiable-claims.md)
 of the complete T-026 claim, including the threshold count, finite decision, dilation,
-and endpoint inference.
-These labels describe the retained evidence and confirmation; the mathematical claim is
-the proved lower bound above.
+and endpoint inference, is retained; rung 4 on either axis also needs a second
+adversarial review by a distinct reviewer and a retained human oversight record, and
+rung 5 formal verification reviewed by human experts, so until those records exist the
+result stays at `V3/C3` (it held `V4/C5` before the ladder change of 2026-09-30). These
+labels describe the retained evidence and confirmation; the mathematical claim is the
+proved lower bound above.
 
 The detailed lesson below starts with the simpler point-only T-018 certificate;
 [the standalone v0.4.2 explainer](https://jlevy.github.io/squares/explainer.html#proof-of-the-new-lower-bound)
@@ -1147,7 +1152,8 @@ The capability boundary is stable even as individual tools change:
 None of the listed capabilities proves global optimality by itself.
 [T-060](packing/frontier/RESULTS.md) proves it at $n = 11$ by composing exact exclusions
 over a complete pattern cover, a symmetry reduction, a root induction with a capture
-graph, and exact local isolation; it is machine-verified here and reviewed.
+graph, and exact local isolation; it is machine-checked here and reviewed, with its
+review record pending.
 A different route, a complete typed-stationary enumeration, would additionally need
 every support branch, including ties, abnormal Fritz–John cases, zero multipliers,
 inactive inequalities, and rattlers, followed by a global completeness argument.
@@ -1309,8 +1315,8 @@ the same distinctions.
 | Fixing the angles and every pair’s separating axis makes minimising $s$ a linear program | proved | Nothing about *which* cell is best; that choice is the combinatorial hard part |
 | Trump’s 1979 packing is valid, over $\mathbb{Q}(u)$ of degree 8, with 14 pairs at exactly zero separation | verified (`exact-algebraic`); a published construction, confirmed here | Nothing about optimality; it is an upper bound |
 | [`s(11) ≥ 2 + 4/√5`](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-017-h-041-stromquist-repaired-figure14.md) | verified (`exact-algebraic`) | Not attributed to Stromquist, not externally peer-reviewed, and it does not close the gap to Trump |
-| [T-025](packing/cases/n11_threshold_certificate/t-025-verifiable-claim-191-50.md) proves $s(11) \ge 191/50 = 3.82$; [T-026](packing/cases/n11_threshold_certificate/t-026-verifiable-claim-dilation-limit.md) proves $s(11) \ge 3.8264474\ldots$ | Both are `V4/C5`: machine-verified exact and interval-certified evidence with passing replay, distinct exact event-cell and interval coverage decisions, and mapped non-superseded reviews | Neither result determines $s(11)$ or closes the gap to the best-known packing; V5 or external review would be a separate assurance step |
-| [T-060](packing/frontier/RESULTS.md): Trump’s packing is optimal, so $s(11) = 3.8770835\ldots$, his side exactly | `V4/C5`: machine-verified here and reviewed. Queuingtheorydotcom’s proof, Astra-assisted and building on this project and Kleddamag; a published result confirmed here | It does not assert that the optimal packing is unique, and it is not `V5`. The checks here share arithmetic and construction primitives with the source, so they are not a fully independent implementation |
+| [T-025](packing/cases/n11_threshold_certificate/t-025-verifiable-claim-191-50.md) proves $s(11) \ge 191/50 = 3.82$; [T-026](packing/cases/n11_threshold_certificate/t-026-verifiable-claim-dilation-limit.md) proves $s(11) \ge 3.8264474\ldots$ | Both are `V3/C3`: machine-checked exact and interval-certified evidence with passing replay, distinct exact event-cell and interval coverage decisions, and mapped non-superseded reviews; the human oversight record rung 4 needs is pending | Neither result determines $s(11)$ or closes the gap to the best-known packing; `V5` or external review would be a separate assurance step |
+| [T-060](packing/frontier/RESULTS.md): Trump’s packing is optimal, so $s(11) = 3.8770835\ldots$, his side exactly | `V3/C3`: machine-checked here and reviewed, review record pending. Queuingtheorydotcom’s proof, Astra-assisted and building on this project and Kleddamag; a published result confirmed here | It does not assert that the optimal packing is unique, and it is not formal. The checks here share arithmetic and construction primitives with the source, so they are not a fully independent implementation |
 | [Stromquist’s *printed* 2003 argument fails](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-016-h-010-stromquist-printed-figure14.md): an exact **open** box of side $10001/10000$ fits the claimed container and avoids all twelve printed Figure 14 points | verified (`exact-algebraic`) | It refutes the printed derivation, not the inequality, which the repaired cover independently certifies. Both this falsification and the adjacent repair are this project’s findings |
 | [Trump’s pose is locally isolated at fixed side](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-013-h-026-trump-tangent.md): 128 branchwise linearized systems, each of exact rank 33 with a strictly positive exact stress | verified (`exact-algebraic`) | Consequently, it is a strict local minimum of side in the anchored pose–side chart, modulo finite symmetries. This is not global optimality or an explicit isolation radius. Apparently novel here, not externally peer-reviewed |
 | The one-dimensional class-angle optimum is a corner, with signed one-sided derivatives of about $-0.1747$ and $+0.384$ per radian | numerically checked (`numerical-f64`) | It is one slice. It is not a rigidity proof, and not a theorem that every derivative-free method fails. This project’s measurement |
@@ -1341,8 +1347,9 @@ $n = 17$ the annealer returns the trivial $5\times5$ grid on every seed against 
 of $4.6755$. What is unknown is whether the named alternatives, none of which is built,
 would do better.
 
-**4. A simpler proof of $s(11)$.** T-060 settles $s(11)$ at Trump’s side at `V4/C5`;
-what stays open is a shorter argument, and a check at `V5`.
+**4. A simpler proof of $s(11)$.** T-060 settles $s(11)$ at Trump’s side at `V3/C3`,
+machine-checked with its review record pending; what stays open is a shorter argument,
+the oversight record that lifts it to `V4/C4`, and a formal check at `V5`.
 
 **5. What a floating LP result means below $10^{-11}$.** The floor comes from HiGHS’s
 own feasibility tolerance—pinned at $10^{-10}$, the strictest value it accepts—under

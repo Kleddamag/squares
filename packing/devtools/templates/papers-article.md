@@ -8,7 +8,8 @@
 
 These are the project’s papers, each written to be read on its own.
 Trump’s 1979 packing of eleven squares has been proved optimal by Queuingtheorydotcom’s
-proof, [T-060](all-results.html#t-060), which is machine-verified and reviewed here; the
+proof, [T-060](all-results.html#t-060), which is machine-checked and reviewed here with
+its review record pending (`V3/C3`); the
 [optimality paper](n11-optimality/t-060-explainer.html) explains that proof.
 The explainer’s lower-bound proofs are the earlier work on $n = 11$.
 

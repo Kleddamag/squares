@@ -29,8 +29,8 @@ Astra-assisted
 [11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal) proof by
 Queuingtheorydotcom, building on this project and Kleddamag.
 This repository independently replayed the pinned exact proof inputs and audited their
-mathematical composition (`V4/C5/S5`); [T-011](packing/frontier/RESULTS.md) verifies
-Trump’s matching witness.
+mathematical composition (`V3/C3/S5`: machine-checked, review record pending);
+[T-011](packing/frontier/RESULTS.md) verifies Trump’s matching witness.
 The [case record](packing/frontier/n-011.md),
 [review](docs/project/reviews/review-2026-09-29-n11-optimality.md), and
 [retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) state the

@@ -53,6 +53,8 @@ def _fill(rung: str) -> str:
 
 
 def _rung(label: str) -> str:
+    """A rung chip as a table prints it. The rung's full meaning is the title of the
+    diagram's chip (`_ladder_cell`), where the rubric is explained once."""
     return f'<span class="site-chip site-rung-fill" {_fill(label)}>{_esc(label)}</span>'
 
 
@@ -823,11 +825,12 @@ def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULT
 
 #: The rubric's three scored dimensions, in the site's order, significance first: the
 #: scale, its name, the `epistemics.md` section that defines it, and the question it
-#: answers.
+#: answers, in the axis table's terms: `V` is what the result's own source certifies,
+#: `C` how far that has been independently confirmed.
 DIMENSIONS: tuple[tuple[str, str, str, str], ...] = (
     ("S", "Significance", "significance-and-novelty", "How much does the result matter?"),
-    ("V", "Verification", "verification", "How strongly is the claim checked, by anyone?"),
-    ("C", "Confirmation", "confirmation", "What has this repository checked itself?"),
+    ("V", "Verification", "verification", "What does the result's own source certify?"),
+    ("C", "Confirmation", "confirmation", "How far is it confirmed, here or by a third party?"),
 )
 
 _LEVEL_ROW = re.compile(r"^\| `([VCS])(\d)` \| ([^|]+?) \|", re.MULTILINE)
@@ -861,14 +864,33 @@ def novelty_labels() -> dict[str, str]:
     return labels
 
 
-#: The short form the ladder diagram prints for a rung whose meaning in `epistemics.md`
-#: does not fit a cell's two lines. This is the one place a short form is written; a rung
-#: not named here prints its meaning whole. The chip's `title` carries the full meaning
-#: either way.
+#: The short form the ladder diagram prints for an `S` rung whose anchor in
+#: `epistemics.md` does not fit a cell's two lines. The `V` and `C` rungs carry their
+#: short form in the `Short` column of their tables in `epistemics.md`, the one place a
+#: short form is written for them (`_SHORT_ROW`); a rung named in neither prints its
+#: meaning whole. The chip's `title` carries the full meaning either way.
 RUNG_SHORT_MEANINGS: dict[str, str] = {
     "S4": "Reusable technique, bound family, or settled value",
     "S5": "Moves a central open case, or broad adoption",
 }
+
+#: A `V` or `C` row of the rubric with its `Short` column: the label, the meaning, then
+#: the short form the diagram prints.
+_SHORT_ROW = re.compile(r"^\| `([VC])(\d)` \| [^|]+? \| ([^|]+?) \|", re.MULTILINE)
+
+
+def rubric_short_forms() -> dict[str, str]:
+    """The `Short` column of the `V` and `C` tables in `epistemics.md`, by rung label;
+    every `V` and `C` rung has one, or the page does not build."""
+    text = (REPO / repo_links.EPISTEMICS).read_text(encoding="utf-8")
+    short = {f"{scale}{level}": form.strip() for scale, level, form in _SHORT_ROW.findall(text)}
+    missing = sorted(
+        label for label in rung_meanings() if label[0] in "VC" and label not in short
+    )
+    if missing:
+        raise SystemExit(f"epistemics.md gives no Short form to {', '.join(missing)}")
+    return short
+
 
 #: How many characters one line of a ladder cell's description holds where the cell is
 #: narrowest, 13.5rem or 216px (`--site-ladders-meaning-min` in `site.css`): the note
@@ -898,9 +920,8 @@ def rung_short_meanings() -> dict[str, str]:
     unknown = sorted(set(RUNG_SHORT_MEANINGS) - set(meanings))
     if unknown:
         raise SystemExit(f"a short form names no rung of epistemics.md: {', '.join(unknown)}")
-    short = {
-        label: RUNG_SHORT_MEANINGS.get(label, meaning) for label, meaning in meanings.items()
-    }
+    written = {**rubric_short_forms(), **RUNG_SHORT_MEANINGS}
+    short = {label: written.get(label, meaning) for label, meaning in meanings.items()}
     for label, text in short.items():
         if len(textwrap.wrap(text, SHORT_MEANING_LINE)) > 2:
             raise SystemExit(

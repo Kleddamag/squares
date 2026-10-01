@@ -724,9 +724,15 @@ def test_the_ladder_diagram_says_what_the_rubric_says(page: str, register: list[
     assert overview_sections.rung_meanings() == meanings
     short = overview_sections.rung_short_meanings()
     assert set(short) == set(meanings)
-    assert {label for label in short if short[label] != meanings[label]} == set(
-        overview_sections.RUNG_SHORT_MEANINGS
-    )
+    # A description differs from the rubric's meaning only where a short form is written:
+    # the `Short` column of the V and C tables, or `RUNG_SHORT_MEANINGS` for S.
+    written = {
+        **overview_sections.rubric_short_forms(),
+        **overview_sections.RUNG_SHORT_MEANINGS,
+    }
+    assert {label for label in short if short[label] != meanings[label]} == {
+        label for label, form in written.items() if form != meanings[label]
+    }
     declared = {
         "V": Counter(int(r["verification"][1]) for r in register),
         "C": Counter(int(r["confirmation"][1]) for r in register),
@@ -778,6 +784,58 @@ def test_every_rung_has_a_description_that_fits_two_lines(
         monkeypatch.undo()
         overview_sections.rung_short_meanings.cache_clear()
     assert overview_sections.rung_short_meanings() == short
+
+
+def test_every_v_and_c_rung_has_a_short_form_in_the_rubric() -> None:
+    """The V and C rungs' two-line descriptions are the `Short` column of their tables in
+    `epistemics.md`, one place beside the full meaning the chip's title keeps: every rung
+    has one, each at most 60 characters, and the diagram prints exactly those."""
+    forms = overview_sections.rubric_short_forms()
+    meanings = overview_sections.rung_meanings()
+    assert set(forms) == {label for label in meanings if label[0] in "VC"}
+    for label, form in forms.items():
+        assert form, label
+        assert len(form) <= 60, (label, form)
+        assert "|" not in form
+        assert "`" not in form
+    assert forms["V3"] == "Checkable; review record pending"
+    assert forms["C5"] == "Formal, replayed here, open, two experts"
+    short = overview_sections.rung_short_meanings()
+    assert all(short[label] == form for label, form in forms.items())
+
+
+def test_the_diagram_shows_the_empty_top_rungs_as_empty(page: str) -> None:
+    """Under the 2026-09-30 ladder no result stands at V5 or C5, and the diagram says so
+    in those cells rather than omitting the rungs: the top rungs are reserved for formal,
+    expert-reviewed work and stand empty until a result earns them."""
+    counts = overview_sections.rung_counts()
+    assert counts["V"][5] == 0
+    assert counts["C"][5] == 0
+    cells = {
+        cell["label"]: cell for cell in _LADDER_CELL.finditer(_ladders(page)) if cell["label"]
+    }
+    assert cells["V5"]["count"] == "no result yet"
+    assert cells["C5"]["count"] == "no result yet"
+    assert cells["V3"]["count"] == overview_sections.count_label(counts["V"][3])
+
+
+def test_every_rung_chip_in_the_diagram_is_titled_with_the_rubrics_meaning(page: str) -> None:
+    """The diagram's wording is `epistemics.md`'s, not a second hand-written copy: every
+    `S`, `V` and `C` chip in the ladder diagram carries its rung's full meaning as its
+    title, the 2026-09-30 meanings included, and the tables' chips stay bare."""
+    meanings = overview_sections.rung_meanings()
+    titled = {
+        cell["label"]: html.unescape(cell["title"])
+        for cell in _LADDER_CELL.finditer(_ladders(page))
+        if cell["label"]
+    }
+    assert set(titled) == set(meanings)
+    assert titled == meanings
+    assert titled["V3"].startswith("Checkable: a published or audited proof")
+    assert titled["C5"].startswith("Formal confirmation: replayed here, open")
+    assert re.search(
+        r'<span class="site-chip site-rung-fill" data-rung="V" data-level="3">', page
+    )
 
 
 def test_the_ladder_diagram_is_its_own_component_on_the_shared_tokens() -> None:
@@ -2079,17 +2137,17 @@ def test_the_optimality_papers_card_says_what_t060s_rungs_allow(
     assert "kpress-math" in note
     assert "formal" not in text.lower()
     t060 = next(r for r in register if r["id"] == "T-060")
-    assert (t060["verification"], t060["confirmation"]) == ("V4", "C5")
+    assert (t060["verification"], t060["confirmation"]) == ("V3", "C3")
 
 
 def test_the_papers_page_introduces_the_papers_within_t060s_rungs(
     register: list[dict], rendered: Callable[[str], str]
 ) -> None:
     """The introduction names T-060 with a link to its row, in the words its rungs allow,
-    V4 and C5: proved optimal, machine-verified and reviewed, never formally. It links
-    the optimality paper where it says that paper explains the proof. Its
-    template is in the reader tier, so the gate refuses a result it names that the
-    register does not hold."""
+    V3 and C3: proved optimal, machine-checked and reviewed with its review record
+    pending, never formally. It links the optimality paper where it says that paper
+    explains the proof. Its template is in the reader tier, so the gate refuses a result
+    it names that the register does not hold."""
     from devtools import check_results  # noqa: PLC0415
 
     article = papers_article(rendered("papers.html"))
@@ -2098,11 +2156,12 @@ def test_the_papers_page_introduces_the_papers_within_t060s_rungs(
     assert '<a href="all-results.html#t-060">T-060</a>' in article
     assert f'<a href="{overview_sections.OPTIMALITY_PAPER}">optimality paper</a>' in article
     assert "proved optimal" in text
-    assert "machine-verified and reviewed here" in text
+    assert "machine-checked and reviewed here" in text
+    assert "review record pending" in text
     assert "the optimality paper explains that proof" in " ".join(text.split())
     assert "formal" not in text.lower()
     t060 = next(r for r in register if r["id"] == "T-060")
-    assert (t060["verification"], t060["confirmation"]) == ("V4", "C5")
+    assert (t060["verification"], t060["confirmation"]) == ("V3", "C3")
     assert render_overview.PAPERS_ARTICLE in check_results.READER_TIER
     assert render_overview.PAPERS_ARTICLE in render_overview.RENDER_INPUTS
 

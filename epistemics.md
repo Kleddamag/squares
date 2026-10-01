@@ -16,8 +16,8 @@ complete for the stated claim.
 
 | Axis | Question | Treatment |
 | --- | --- | --- |
-| Verification (`V`) | What is the highest verification rung supported by the cited evidence, regardless of who performed it? | Structurally derived, except `V0` and `V2` |
-| Confirmation (`C`) | What has this repository recorded, replayed, or established itself? | Structurally derived |
+| Verification (`V`) | What level of verification does the result carry as certified by its own source: the producing run’s retained certificate, reviews and oversight for a result of this project, or the retained source packet and the literature for a result by others? | Structurally derived, except `V0` and `V2` |
+| Confirmation (`C`) | To what level has that verification been independently confirmed, and by whom: replayed, rebuilt and reviewed here, or by a third party, beyond the run that produced it? | Structurally derived |
 | Significance (`S`) | How important is the result? | Dated judgment; never gating |
 | Novelty (`N`) | What does the retained source search support saying about novelty? | Declared and reviewed; not derived at result level |
 
@@ -25,42 +25,69 @@ Use `V4/C3` when describing a whole result.
 The unqualified term `verified` remains the formal assurance label for an individual
 evidence entry.
 
+The two ladders carry the same rung meanings and differ in who earns each rung.
+`V` is self-certification or historic certification: it asks what kind of verification
+exists and how it was examined, and does not require this project to have replayed
+anything.
+`C` is confirmation: the same rungs, earned by a party other than the producing
+run. For a result of this project that is a later replay from the repository, a second
+implementation, another project’s replay or an external reviewer; for a result by others
+it is this project, or another third party whose replay is retained here.
+Every confirmation beyond a read is also verification evidence, so `C` never exceeds `V`
+from `C2` up.
+
+## No Blind Trust
+
+No rung rests on blind trust in a formal system or in an agent.
+Every rung from 4 up names the human who examined the work and states what they
+examined, in a record retained in this repository and specific enough to audit.
+A kernel check, a passing certificate replay and an AI review are evidence; a human
+reading them is what turns evidence into a rung.
+Rung 4 needs a human’s oversight of the mechanization and of the AI checking; rung 5
+needs human experts’ review of the formalization itself.
+[Review Records](#review-records) says what each record holds.
+
 ## Verification
 
-Verification uses a project-prioritized ordering of evidence types.
-The rungs are not cumulative: `V4` does not imply publication, and `V5` means that a
-proof assistant has checked a formalization, not that the formal statement matches every
-intended prose claim.
+The rungs are ordered by the kind of verification and how it was examined; they are not
+cumulative. `V3` does not imply publication, and `V5` means that a proof assistant
+checked a formalization *and* a human expert attested that the formal statement says
+what the claim says.
 
-| Rung | Meaning | Structural support |
-| --- | --- | --- |
-| `V0` | Claimed or recorded only | No higher predicate; the result explains the classification in `notes` |
-| `V1` | Numerically checked | A numerical method with recorded precision |
-| `V2` | Proof asserted but not publicly recoverable | Declared with `notes` explaining the unavailable proof |
-| `V3` | Published or audited proof | `method: published-proof` or `proof-audited`, with a `proof` block |
-| `V4` | Machine-verified | Exact-algebraic or interval-certified evidence with a certificate, replay command, and passing replay status |
-| `V5` | Proof-assistant checked | `method: proof-assistant-checked` |
+| Rung | Meaning | Short | Structural support |
+| --- | --- | --- | --- |
+| `V0` | Claimed or recorded only | Claimed or recorded only | No higher predicate; the result explains the classification in `notes` |
+| `V1` | Numerically checked | Numerically checked | A numerical method with recorded precision |
+| `V2` | Proof asserted but not publicly recoverable | Proof asserted, not recoverable | Declared with `notes` explaining the unavailable proof |
+| `V3` | Checkable: a published or audited proof, or a machine certificate that replays; review record not yet retained | Checkable; review record pending | `method: published-proof` or `proof-audited` with a `proof` block; or exact-algebraic, interval-certified or proof-assistant-checked evidence of any origin with a certificate, replay command and passing replay status |
+| `V4` | Mechanized, adversarially reviewed and human-overseen | Mechanized, AI-reviewed, human-overseen | `V3` machine evidence, plus two retained adversarial AI reviews by distinct reviewers whose latest verdict accepts the claim, plus a retained human oversight record |
+| `V5` | Formal, expert-reviewed | Formal, expert-reviewed | Proof-assistant-checked evidence with a certificate, passing replay and an axiom receipt, plus a retained formalization review by a human expert who is not the formalization’s author |
 
-The checker derives `V1` and `V3`–`V5` from the evidence cited by the result.
-`V0` and `V2` are declared because the current evidence fields do not distinguish an
-ordinary unsupported claim from an asserted but unavailable proof; both require an
-explanatory `notes` field.
+The `Short` column is the form the site’s rubric cards print where a row has two lines;
+the `Meaning` is the chip’s title and the rubric’s own words.
+
+The checker derives `V1` and `V3`–`V5` from the evidence cited by the result, of any
+`origin`, and from the result’s retained `reviews`. `V0` and `V2` are declared because
+the current evidence fields do not distinguish an ordinary unsupported claim from an
+asserted but unavailable proof; both require an explanatory `notes` field.
 The evidence schema separately enforces its own provenance, limitations, and
 method-specific fields.
 
 ## Confirmation
 
-Confirmation counts only work recorded as `audited-here` or `replayed-here`, except
-`C1`, which describes a qualifying read of external evidence.
+Confirmation counts only work performed beyond the producing run: evidence recorded as
+`audited-here`, `replayed-here` or `independently-external` (a third party’s own replay,
+retained here), and reviews performed on the confirming side; `C1` describes a
+qualifying read of external evidence.
 
-| Rung | Meaning | Structural support |
-| --- | --- | --- |
-| `C0` | Recorded | No qualifying read or repository replay |
-| `C1` | Read | An `external_review` with a qualifying state, date, reviewer, and note |
-| `C2` | Replayed | Repository-origin evidence with a replay command and `replay_status: passed` |
-| `C3` | Machine-confirmed | Repository-origin exact-algebraic or interval-certified evidence with a certificate and passing replay |
-| `C4` | Confirmed by distinct methods | At least two `C3` evidence entries with different `method` values |
-| `C5` | Review-ready | `C3` or `C4`, plus an existing `review_artifact` mapped as a non-superseded review |
+| Rung | Meaning | Short | Structural support |
+| --- | --- | --- | --- |
+| `C0` | Recorded | Recorded | No qualifying read or confirming replay |
+| `C1` | Read | Read | An `external_review` with a qualifying state, date, reviewer, and note |
+| `C2` | Replayed without a machine certificate | Replayed, no machine certificate | Confirming-origin evidence with a replay command and `replay_status: passed` on a method that yields no certificate |
+| `C3` | Machine-replayed here or by a third party; review record not yet retained | Machine-replayed; review record pending | Confirming-origin exact-algebraic, interval-certified or proof-assistant-checked evidence with a certificate, replay command and passing replay |
+| `C4` | Mechanized confirmation, adversarially reviewed and human-overseen | Mechanized confirmation, AI-reviewed, overseen | `C3`, plus two retained adversarial AI reviews by distinct reviewers whose latest verdict accepts the claim, plus a retained human oversight record, all on the confirming side |
+| `C5` | Formal confirmation: replayed here, open, and reviewed by two experts | Formal, replayed here, open, two experts | Proof-assistant-checked evidence with `origin: replayed-here`, a replay command from the repository at a pinned toolchain, passing status and an axiom receipt; an `open_review` pointer to the public sources and replay instructions, so that anyone can review and replay it; and two formalization reviews by distinct named human experts |
 
 For `C1`, a qualifying review state is `informally-verified` or `defect-found`; the
 review note records what was examined and what remains unchecked.
@@ -68,17 +95,67 @@ A `C3` or higher result must also name at least one existing control path.
 The evidence schema requires a limitations statement on every evidence entry.
 
 These predicates are deliberately literal.
-Two independently written implementations using the same method still derive `C3`, not
-`C4`. A control path proves that a control is retained; the checker does not infer from
-its filename that the control is adversarial.
+A recorded execution performed here, with its receipt retained and hash-bound, is a
+replay at `C3` and `C4` even when the final composer reconciles receipts rather than
+rerunning geometry; a fresh end-to-end replay from the repository is what `C5`’s
+“replayed here” requires.
+Two independently written implementations using the same method, or two different
+methods, do not change the rung: the count of distinct machine methods among the
+confirming entries, and a third party’s retained replay, are attributes the register
+shows beside the rung, not rungs.
+A control path proves that a control is retained; the checker does not infer from its
+filename that the control is adversarial.
 The test suite, validation configuration, and review establish those stronger facts.
+
+## Review Records
+
+A result’s `reviews` list the retained review documents the rungs rest on, each mapped
+in [`document-map.yaml`](docs/project/document-map.yaml) as a non-superseded `review`.
+Each entry records the document’s `path`, its `kind`, the `reviewer` as the document
+names itself, whether that reviewer is `ai` or `human`, the reviewer’s `relation` to
+this project (`owner`, `project`, `external`, or `source` for a review the result’s own
+source performed), the `date`, the `scope` in the reviewer’s words, and the `verdict`
+(`accepted`, `defects-resolved`, `defect-open` or `refuted`). A record shared by a
+family of results names every result it `covers`.
+
+- **Adversarial AI review** (`kind: adversarial`, `reviewer_kind: ai`). Rung 4 on either
+  axis needs at least two, by distinct reviewers: a different model family, or a
+  separately prompted independent lane with no shared context.
+  The reviewer names the model and its reasoning setting.
+  The latest-dated review of the result must carry an accepting verdict, so that every
+  defect found has a recorded disposition.
+  A review with `relation: source` counts toward `V` and not toward `C`.
+- **Human oversight** (`kind: oversight`, `reviewer_kind: human`). Rung 4 on either axis
+  needs one. The record names the person and their relation, and its `checked` list
+  includes `trust-boundary` (what the checker trusts and what it decides),
+  `certificate-meaning` (that the accepted statement is the claim) and `ai-findings`
+  (that every adversarial review’s defects were dispositioned).
+  The owner of this project may serve.
+  An approved pull request is not such a record unless the record cites it and says what
+  was inspected.
+- **Formalization review** (`kind: formalization`, `reviewer_kind: human`,
+  `independent_of_author: true`). `V5` needs one and `C5` needs two, each by a named
+  person who states their competence in the proof assistant and the mathematics and is
+  not the formalization’s author; its `checked` list includes `statement-fidelity`,
+  `definitions`, `axioms` and `build`.
+- **Open review** (`open_review` on the result).
+  `C5` needs the proof, its formalization and everything needed to replay it to be
+  openly available, so that any other expert can review and replay it: the record points
+  at the public `sources` at a pinned revision, the `terms` under which they may be
+  inspected and run, the public `replay` instructions, and the copy `retained` here.
+  No particular review venue is required.
+
+The checker verifies the fields, the mapping, the counts, the distinctness and the
+coverage. Whether a review was in fact adversarial, whether the models were the best
+available, and whether the human read what the record says they read, are what the
+record itself lets a reader judge.
 
 ## Scope and Composition
 
 A classification attaches to the exact statement in a result’s `claim` field and its
 declared scope.
 
-- A compound claim takes the minimum rung of its load-bearing parts.
+- A compound claim takes the minimum rung of its load-bearing parts, on both axes.
 - An equality whose upper half is a packing replayed exactly (`E-basic-grid-upper` or a
   witness replay) takes the `C` of its lower half; a construction is confirmed by its
   replay, and no second method is asked of it.
@@ -86,12 +163,33 @@ declared scope.
 - A derived claim takes the minimum rung of its inputs and the derivation itself.
 - A construction’s feasibility, the sharpness of its parameter, and global optimality
   are separate claims.
+- `C` never exceeds `V` from `C2` up: a replay, a rebuild or a review record is also
+  verification evidence, so the checker refuses a confirmation rung above the
+  verification rung. A read (`C1`) of a recorded claim (`V0`) is the one exception,
+  reading being no kind of verification.
 
-The checker derives the strongest rung present among the cited evidence entries.
-When a compound or derived result declares a lower rung, its `composition` note
+The checker derives the strongest rung present among the cited evidence entries and
+reviews. When a compound or derived result declares a lower rung, its `composition` note
 identifies the part that sets the minimum.
 That note, the relevance of each evidence reference, and coverage of every load-bearing
 premise are review obligations rather than machine inferences.
+
+## What Changed on 2026-09-30
+
+Ratings published between 2026-08-31 and 2026-09-30 used a ladder on which `V4` meant
+machine-verified (a certificate with a passing replay), `C4` meant confirmed by two
+distinct machine methods, `C5` meant review-ready (one mapped review document), and `V5`
+meant a proof assistant had checked a formalization.
+On 2026-09-30 the owner reserved rung 5 for formal verification with human experts’
+review of the formalization, and required at rung 4 adversarial AI review and a human
+oversight record, under the no-blind-trust principle above.
+Every result that held `V4` moved to `V3`, and every result that held `C4` or `C5` moved
+to `C3`, because no retained record of human oversight existed; each such result’s
+`notes` says what it held and what restores the rung.
+Dated prose in reviews, handoffs and the synopsis that names a rung describes the ladder
+in force when it was written.
+The proposal behind the change is
+[the ladder review of 2026-09-30](docs/project/specs/active/plan-2026-09-30-epistemics-ladder-review.md).
 
 ## Significance and Novelty
 
@@ -249,10 +347,14 @@ uv run --frozen --all-extras --group dev python -m devtools.check_results
 The checker:
 
 - resolves evidence references and artifact, control, and review-document paths;
-- derives the structural `V` and `C` rungs described above;
-- refuses unsupported promotion and unexplained understatement;
-- requires `C5` review documents to be non-superseded reviews in
-  [`document-map.yaml`](docs/project/document-map.yaml);
+- derives the structural `V` and `C` rungs described above, from the cited evidence and
+  the retained `reviews`;
+- refuses unsupported promotion, unexplained understatement, and a `C` above `V`;
+- requires every review in `reviews` to be a non-superseded review in
+  [`document-map.yaml`](docs/project/document-map.yaml) with the fields of
+  [Review Records](#review-records), counts the adversarial reviews and their distinct
+  reviewers, and requires the human oversight record at rung 4 and the human
+  formalization reviews, the axiom receipt and the open-review pointer at rung 5;
 - requires `attribution` on every `previously-published` result and refuses it on a
   novel one, resolves its source keys in the bibliography, and requires a `lineage` on
   the sources of a result by others published since 22 August 2026;

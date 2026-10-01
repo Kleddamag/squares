@@ -617,27 +617,47 @@ def test_a_card_without_a_declared_size_takes_its_texts() -> None:
 
 
 #: A cell of the rating-ladder diagram: the ladder it belongs to, then, where it holds a
-#: rung, the chip's title, scale, level and label, the description and the count.
+#: rung, the chip's title, scale, level and label, and the description. Nothing follows
+#: the description, so a cell with a tally in it is no match.
 _LADDER_CELL = re.compile(
     r'<div class="site-ladders-cell(?P<empty> site-ladders-empty)?" role="cell" '
     r'data-ladder="(?P<ladder>[SVC])">'
     r'(?:<div class="site-ladders-rung">'
     r'<span class="site-chip site-rung-fill" title="(?P<title>[^"]*)" '
     r'data-rung="(?P<scale>[SVC])" data-level="(?P<level>\d)">(?P<label>[SVC]\d)</span>'
-    r'<span class="site-ladders-meaning">(?P<meaning>[^<]*)</span>'
-    r'<span class="site-ladders-count">(?P<count>[^<]*)</span></div>)?</div>'
+    r'<span class="site-ladders-meaning">(?P<meaning>[^<]*)</span></div>)?</div>'
 )
 
 
 def _ladders(page: str) -> str:
-    """The Verification at a Glance section's diagram, the one block between its heading
-    and the prose under it."""
-    section = page.split('id="verification-at-a-glance"', 1)[1].split("<h2", 1)[0]
+    """The Verification Ladders section's diagram, the one block between its heading and
+    the prose under it."""
+    section = page.split('id="verification-ladders"', 1)[1].split("<h2", 1)[0]
     assert section.count('class="site-ladders"') == 1
     return section.split('<div class="site-ladders-frame site-wide">', 1)[1].split("<p", 1)[0]
 
 
-def test_verification_at_a_glance_is_one_ladder_diagram_significance_first(page: str) -> None:
+def test_the_section_is_verification_ladders_and_its_old_fragment_lands_on_it(
+    page: str,
+) -> None:
+    """The section is headed Verification Ladders, with the id the contents rail and the
+    site's statement link. It was Verification at a Glance until 2026-10-01, and an empty
+    anchor in the heading keeps that fragment landing here: with no script, and without
+    `forward.js` sending it on to the explainer as a fragment the overview lacks, since
+    the forwarder leaves alone any fragment that names an element of the page
+    (`tests/node/overview_forward` runs it both ways)."""
+    heading = (
+        '<h2 id="verification-ladders">Verification Ladders'
+        '<a id="verification-at-a-glance"></a></h2>'
+    )
+    assert page.count(heading) == 1
+    assert "Verification at a Glance" not in page
+    assert 'href="#verification-at-a-glance"' not in page
+    contents = '{"href": "#verification-ladders", "level": 1, "title": "Verification Ladders"}'
+    assert contents in page
+
+
+def test_verification_ladders_is_one_ladder_diagram_significance_first(page: str) -> None:
     """The section is one diagram, not three cards: a column a dimension in the order
     Significance, Verification, Confirmation, each headed by its name and question with
     no caps label, and a row a level, the highest first, so the rungs line up. It is a
@@ -648,7 +668,10 @@ def test_verification_at_a_glance_is_one_ladder_diagram_significance_first(page:
     for foreign in ("<table", "site-table", "site-card", "popovertarget"):
         assert foreign not in diagram, foreign
     assert "pop-dimension-" not in page
-    assert diagram.startswith('<div class="site-ladders" role="table" aria-label="')
+    assert diagram.startswith(
+        '<div class="site-ladders" role="table" aria-label="Verification ladders by level: '
+        'significance, verification, confirmation">'
+    )
     heads = re.findall(
         r'<div class="site-ladders-head" role="columnheader" data-ladder="([SVC])">'
         r'<a class="site-ladders-name" href="([^"]+)">([^<]+)</a> '
@@ -675,10 +698,10 @@ def test_verification_at_a_glance_is_one_ladder_diagram_significance_first(page:
         assert [bool(cell["empty"]) for cell in cells] == [not cell["label"] for cell in cells]
 
 
-def test_the_ladder_diagram_says_what_the_rubric_says(page: str, register: list[dict]) -> None:
+def test_the_ladder_diagram_says_what_the_rubric_says(page: str) -> None:
     """Every rung of `epistemics.md` is a cell: its chip, titled with the rubric's own
-    meaning, its description, which is that meaning unless the rung has a short form, and
-    the count of register entries at that level."""
+    meaning, and its description, which is that meaning unless the rung has a short
+    form."""
     levels = overview_sections.rubric_levels()
     assert [len(levels[scale]) for scale in "VCS"] == [6, 6, 5]
     meanings = {
@@ -698,12 +721,6 @@ def test_the_ladder_diagram_says_what_the_rubric_says(page: str, register: list[
     assert {label for label in short if short[label] != meanings[label]} == {
         label for label, form in written.items() if form != meanings[label]
     }
-    declared = {
-        "V": Counter(int(r["verification"][1]) for r in register),
-        "C": Counter(int(r["confirmation"][1]) for r in register),
-        "S": Counter(int(r["significance"]["score"]) for r in register),
-    }
-    assert overview_sections.rung_counts() == declared
     cells = {
         cell["label"]: cell for cell in _LADDER_CELL.finditer(_ladders(page)) if cell["label"]
     }
@@ -712,13 +729,6 @@ def test_the_ladder_diagram_says_what_the_rubric_says(page: str, register: list[
         assert (cell["ladder"], cell["scale"], cell["level"]) == (label[0], label[0], label[1])
         assert html.unescape(cell["title"]) == meanings[label], label
         assert html.unescape(cell["meaning"]) == short[label], label
-        count = declared[label[0]][int(label[1])]
-        assert cell["count"] == overview_sections.count_label(count), label
-    assert [overview_sections.count_label(n) for n in (0, 1, 2)] == [
-        "no result yet",
-        "1 result",
-        "2 results",
-    ]
 
 
 def test_every_rung_has_a_description_that_fits_two_lines(
@@ -769,19 +779,24 @@ def test_every_v_and_c_rung_has_a_short_form_in_the_rubric() -> None:
     assert all(short[label] == form for label, form in forms.items())
 
 
-def test_the_diagram_shows_the_empty_top_rungs_as_empty(page: str) -> None:
-    """Under the 2026-09-30 ladder no result stands at V5 or C5, and the diagram says so
-    in those cells rather than omitting the rungs: the top rungs are reserved for formal,
-    expert-reviewed work and stand empty until a result earns them."""
-    counts = overview_sections.rung_counts()
-    assert counts["V"][5] == 0
-    assert counts["C"][5] == 0
-    cells = {
-        cell["label"]: cell for cell in _LADDER_CELL.finditer(_ladders(page)) if cell["label"]
-    }
-    assert cells["V5"]["count"] == "no result yet"
-    assert cells["C5"]["count"] == "no result yet"
-    assert cells["V3"]["count"] == overview_sections.count_label(counts["V"][3])
+def test_the_diagram_carries_no_tally_and_keeps_the_rungs_no_result_stands_at(
+    page: str, register: list[dict]
+) -> None:
+    """The diagram says what each rung means and counts nothing: a cell is a chip and a
+    description, with no "7 results" and no "no result yet", and the helpers that counted
+    are gone. A rung is a cell whether or not a result stands at it, so V5 and C5, which
+    the 2026-09-30 ladder reserves for formal, expert-reviewed work and no result has
+    reached, are drawn like the rest."""
+    diagram = _ladders(page)
+    assert "site-ladders-count" not in diagram
+    assert not re.search(r"\d+ results?\b|no result yet", diagram)
+    for retired in ("rung_counts", "count_label"):
+        assert not hasattr(overview_sections, retired), retired
+    assert not any(r["verification"] == "V5" or r["confirmation"] == "C5" for r in register)
+    cells = {cell["label"] for cell in _LADDER_CELL.finditer(diagram) if cell["label"]}
+    assert {"V5", "C5"} <= cells
+    rungs = diagram.count('<div class="site-ladders-rung">')
+    assert rungs == len(cells) == len(overview_sections.rung_meanings())
 
 
 def test_every_rung_chip_in_the_diagram_is_titled_with_the_rubrics_meaning(page: str) -> None:
@@ -808,9 +823,10 @@ def test_the_ladder_diagram_is_its_own_component_on_the_shared_tokens() -> None:
     another: the description's box is two lines and is never clipped; a rung sets its
     description beside the rail only where the cell holds the rail, the gap and the least
     description; and three columns stand only where each still holds that least. It
-    stands the tables' space clear of the text."""
+    stands the tables' space clear of the text. Its one rule is under the column heads:
+    no cell and no row carries a border, and the rows are kept apart by space alone."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
-    for retired in (".site-level", "site-cards-dimensions"):
+    for retired in (".site-level", "site-cards-dimensions", "site-ladders-count"):
         assert retired not in css, retired
     rules = css.split("/* ---------- The rating ladders ----------", 1)[1]
     rules = rules.split("/* The atlas grid:", 1)[0]
@@ -832,6 +848,19 @@ def test_the_ladder_diagram_is_its_own_component_on_the_shared_tokens() -> None:
     assert columns, "no query stacks the ladders"
     assert float(beside.group(1)) == rail + gap + least
     assert float(columns.group(1)) / len(overview_sections.DIMENSIONS) - inset >= least
+
+    def body(selector: str) -> str:
+        found = re.search(rf"^{re.escape(selector)} \{{([^}}]*)\}}", rules, re.MULTILINE)
+        assert found, selector
+        return found.group(1)
+
+    # The rail is the chip's own width, now that no count stands under the chip.
+    assert "min-inline-size: var(--site-ladders-rail);" in body(".site-ladders-rung .site-chip")
+    bordered = re.findall(r"([^{}]+)\{[^{}]*\bborder[\w-]*:[^{}]*\}", rules)
+    assert [selector.strip() for selector in bordered] == [".site-ladders-head"]
+    assert "border-block-end: 1px solid var(--kpress-doc-text);" in body(".site-ladders-head")
+    assert "padding-block: var(--site-ladders-row-space);" in body(".site-ladders-cell")
+    assert rem("row-space") >= 0.75
 
 
 def test_no_placeholder_or_raw_math_is_left(page: str) -> None:
@@ -1825,8 +1854,8 @@ def test_the_sites_own_statement_follows_readmes_introduction(page: str) -> None
     own = problem.split(site_documents.OVERVIEW_INTRO_CLOSE, 1)[1].split("<div", 1)[0]
     paragraphs = re.findall(r"<p>(.*?)</p>", own, re.DOTALL)
     assert [_rendered_text(paragraph) for paragraph in paragraphs] == list(SITE_STATEMENT)
-    assert '<a href="#verification-at-a-glance">verified and confirmed</a>' in paragraphs[0]
-    assert 'id="verification-at-a-glance"' in page
+    assert '<a href="#verification-ladders">verified and confirmed</a>' in paragraphs[0]
+    assert 'id="verification-ladders"' in page
     assert render_overview.NEW_ISSUE_URL == "https://github.com/jlevy/squares/issues/new"
     assert re.search(
         rf'<a href="{re.escape(render_overview.NEW_ISSUE_URL)}"[^>]*>file an issue</a>',

@@ -20,7 +20,7 @@ Work on this problem has exploded in the summer of 2026 thanks to AI-powered res
 efforts. This project tracks all results here and by all others known.
 The project also independently checks the proofs and certificates behind them, replaying
 each where it can, and records how far every result has been
-[verified and confirmed](#verification-at-a-glance).
+[verified and confirmed](#verification-ladders).
 
 If you have new results or know of newer results, please
 [file an issue]({{NEW_ISSUE_URL}}) to report them, and we will gladly incorporate them
@@ -58,7 +58,11 @@ the one verified so far, each linked to its case in the frontier atlas:
 
 {{AWAITING_REPLAY}}
 
-## Verification at a Glance
+<!-- This section's fragment was #verification-at-a-glance until 2026-10-01. The empty
+     anchor in its heading keeps an old link landing here, with no script, and keeps
+     forward.js from sending that fragment on to the explainer as one the overview lacks. -->
+
+## Verification Ladders<a id="verification-at-a-glance"></a>
 
 {{VERIFICATION}}
 

@@ -1838,6 +1838,33 @@ def test_section_headings_share_one_space_above() -> None:
         assert "margin-block: var(--paper-section-space) 1.3rem;" in css
 
 
+def test_every_table_stands_one_shared_space_from_the_text_around_it() -> None:
+    """The space above and below a table is one token: above the filter bar of a table
+    that has one, below every table's wrap, around the awaiting-replay disclosure, and
+    around a document's own table, which KPress wraps. The rules that read it are for
+    the screen alone, so print keeps KPress's spacing; the bar is not printed at all."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    assert css.count("--site-table-space: 2rem;") == 1
+    bar = css[css.index("\n.site-table-tools {") :]
+    assert "margin-block: var(--site-table-space) 0.5rem;" in bar[: bar.index("}")]
+    start = css.index("@media screen {\n  .kpress-table-wrap,")
+    screen = css[start : css.index("\n}\n", start)]
+    assert (
+        "  .kpress-table-wrap,\n  .site-table-wrap,\n  .kpress details.site-replay {\n"
+        "    margin-block: var(--site-table-space);\n  }"
+    ) in screen
+    # The bar keeps its own gap to its table, and the disclosure's table sits flush.
+    assert (
+        "  .site-table-tools + .site-table-wrap,\n  .site-replay .site-table-wrap {\n"
+        "    margin-block-start: 0;\n  }"
+    ) in screen
+    assert "  .site-replay .site-table-wrap {\n    margin-block-end: 0;\n  }" in screen
+    assert css.count("var(--site-table-space)") == 2
+    assert "@media print {\n  .site-nav,\n  .site-table-tools {\n    display: none;" in css
+    design = (render_overview.TEMPLATES / "paper-design.md").read_text(encoding="utf-8")
+    assert "| Above and below a table | `--site-table-space` | 2rem, 32px |" in design
+
+
 def test_the_icon_frame_is_one_pixel_at_icon_size() -> None:
     """The logo and the favicon draw case 11's container as one whole pixel at the size
     each is shown, with its outer edge on the drawing's edge: (200 + w) / px = w."""

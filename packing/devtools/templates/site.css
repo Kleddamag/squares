@@ -68,6 +68,10 @@ body {
   /* A table stops at 100rem, short of the atlas's cap: past it, its columns only spread
      apart and a row gets harder to follow. */
   --site-table-max: 100rem;
+  /* The space above and below every table, on screen: a site table with its filter bar,
+     the awaiting-replay disclosure, and a document's own table (paper-design.md,
+     Tables). */
+  --site-table-space: 2rem;
   --site-subtitle-space: 1.25rem;
   --site-subtitle-scale: 1.1;
   /* How much nearer the bar a page's opening picture sits than a title would: a drawing
@@ -657,13 +661,32 @@ body {
 }
 
 /* ---------- Tables: additions to .kpress-table ---------- */
+/* Every table stands `--site-table-space` clear of the text above and below it, on
+   screen: the space is above a table's filter bar when it has one, which keeps its own
+   small gap to the table, and below the table's wrap. A document's table, which KPress
+   wraps itself, takes the same token, and so does the awaiting-replay disclosure, whose
+   table sits flush under its summary. Print keeps KPress's own spacing. */
 .site-table-tools {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem 1rem;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-support);
-  margin-block: 1rem 0.5rem;
+  margin-block: var(--site-table-space) 0.5rem;
+}
+@media screen {
+  .kpress-table-wrap,
+  .site-table-wrap,
+  .kpress details.site-replay {
+    margin-block: var(--site-table-space);
+  }
+  .site-table-tools + .site-table-wrap,
+  .site-replay .site-table-wrap {
+    margin-block-start: 0;
+  }
+  .site-replay .site-table-wrap {
+    margin-block-end: 0;
+  }
 }
 .site-table-tools label {
   color: var(--kpress-doc-muted);

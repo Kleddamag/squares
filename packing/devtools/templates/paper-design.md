@@ -244,6 +244,35 @@ seconds on its own (think-cy3a). Publication-time preparation for the KPress pag
 which would remove the client layout and the fallback-to-KaTeX reflow as it did for the
 explainer, is not done: it needs a browser in the pages’ build (think-89lw).
 
+## Spacing
+
+The vertical space between a page’s blocks is set on screen by a few tokens, each
+declared once and read wherever that space occurs.
+Print keeps KPress’s spacing and the paper’s, so the explainer’s PDF does not move when
+one of them changes.
+
+| Space | Token | Screen value | Declared in |
+| --- | --- | --- | --- |
+| From the bar’s rule to a page’s first block | `--site-page-top` | 3rem, 48px | `site-nav.css` |
+| How much nearer the bar an opening picture starts | `--site-hero-lift` | 0.5rem, 8px | `site.css` |
+| Above a section heading (`h2`) | `--paper-section-space` | 1.8 of the prose base, 32.4px | `paper-type.css` |
+| Above and below a page’s subtitle | `--site-subtitle-space` | 1.25rem, 20px | `site.css` |
+| Above and below a table | `--site-table-space` | 2rem, 32px | `site.css` |
+
+`--site-table-space` is the space above and below every table.
+A site table (`.site-table`) takes it above its filter bar, which keeps its own 0.5rem
+to the table, and below its wrap; the awaiting-replay disclosure takes it above and
+below itself, its table flush under the summary when open; and a document’s own table,
+which KPress wraps and already sets 2rem from the text, reads the same token, so one
+value moves every table on the site.
+Where a larger margin meets it, as a section heading’s does below the disclosure, the
+larger one stands.
+
+`devtools.measure_site_pages space` measures these on a built site: the white space
+above and below every table and heading, in pixels between boxes, at each width asked
+for, with each heading’s size and line height.
+`tests/test_overview.py` pins each token’s value and the rule that reads it.
+
 ## Site Components
 
 Each component is defined once in [site.css](site.css) and used on every page that needs
@@ -634,6 +663,8 @@ it.
   Secondary content in a cell, such as a result’s id, a credit or an “after …” list,
   takes `.site-cell-quiet`, which sets it in the support colour and the sans face.
   It keeps the table’s size, so the quiet text does not become harder to read.
+  Every table stands `--site-table-space` clear of the text above and below it
+  (**Spacing**, above).
   Wide tables bleed on large screens, as **Wide bleed** above describes.
   On a phone, the results table becomes one card per row.
   In the results table a result’s standing chip sits under its rungs; a date cell says
@@ -1004,11 +1035,12 @@ and shoots what it opened, since a popover a script fills has no math until it o
 `devtools.measure_site_pages cards` reports the rows the preview reads: each card
 section’s lines, their cards’ widths and the slack at either end.
 `devtools.measure_site_pages math` reports every formula’s face beside its text’s,
-counted by surface.
-`tests/test_site_math_faces.py` runs the same walk wherever a browser
-is installed, over the overview and its atlas popover, the results table, the frontier
-atlas and its case popover, and two case records, with a control that marks a worded
-headline for serif math and requires the walk to name it.
+counted by surface. `devtools.measure_site_pages space` reports the space around every
+table and heading (**Spacing**, above).
+`tests/test_site_math_faces.py` runs the same walk wherever a browser is installed, over
+the overview and its atlas popover, the results table, the frontier atlas and its case
+popover, and two case records, with a control that marks a worded headline for serif
+math and requires the walk to name it.
 `tests/test_overview.py` holds the cards and chips to the rules above.
 
 The linear-program display is reflowed within the print column.

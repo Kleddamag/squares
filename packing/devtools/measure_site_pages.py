@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Measure a built site's pages against the explainer: load and math timing, text, faces,
-the card sections' layout, and the face of every formula.
+the card sections' layout, the face of every formula, and the space around tables and
+headings.
 
-Five measurements, each over pages of a directory `preview_site` has built:
+Six measurements, each over pages of a directory `preview_site` has built:
 
 - `load` serves the directory on a local port and opens each page in a fresh Chromium
   context, cold cache, at a desktop or phone width. An init script (a probe) records
@@ -26,6 +27,16 @@ Five measurements, each over pages of a directory `preview_site` has built:
   in, counted by surface (a card's headline, a chip, a table, a popover, a caption, the
   prose), once the page has typeset all its math. `--press SELECTOR` presses an element
   first, a card or an atlas cell, so the math of what it opens is counted too.
+- `space` reports the white space above and below every table and every heading as laid
+  out, in CSS pixels between border boxes, and each heading's size, line height and
+  leading (line height over size). A table is the component a reader sees, its filter
+  bar included; a heading is every `h1` to `h4` and every headline set in a heading's
+  face (a card's, a popover's, a case record's), with how many lines it takes and how
+  much of its content its box cannot show. `--press SELECTOR` presses an element once
+  the page is measured and reports what it opened, a popover or a disclosure, as rows
+  whose `state` is the selector. `--markdown` prints one line a table and one line a
+  heading role, with the least and most space found. This is the tool the design
+  system's spacing tokens are measured with (`templates/paper-design.md`, Spacing).
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages load SITE
@@ -35,6 +46,8 @@ Usage, from `packing/`:
         --page index.html --width 1280 --width 390 --markdown
     uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages math SITE \
         --page index.html --press '[data-atlas-n="11"]' --markdown
+    uv run --frozen --all-extras --group dev python -m devtools.measure_site_pages space SITE \
+        --page index.html --page all-results.html --width 1280 --width 390 --markdown
 
 `SITE` is a directory holding `explainer.html` and the kpress pages. Set
 `SQPACK_CHROMIUM` to use a browser the environment supplies, as the other tools do.
@@ -64,6 +77,9 @@ _REPORT = probe(PROBES, "measure_site_pages/report")
 TYPOGRAPHY = probe(PROBES, "measure_site_pages/typography")
 CARDS = probe(PROBES, "measure_site_pages/cards")
 MATH_FACES = probe(PROBES, "measure_site_pages/math_faces")
+SPACING = probe(PROBES, "measure_site_pages/spacing")
+#: What a press opens, which `space` then reports alone: an open popover or disclosure.
+OPENED = ":popover-open, details[open]"
 
 #: The pages compared by default: the explainer, the long reports, a short one, the
 #: homepage and one case record.
@@ -175,6 +191,115 @@ def measure_math(
                 page.close()
         browser.close()
     return results
+
+
+def measure_space(
+    base: str, pages: Sequence[str], *, widths: Sequence[int], presses: Sequence[str] = ()
+) -> list[dict[str, Any]]:
+    """The space around every table and heading on each page at each width, once its
+    math is typeset, as rows of `kind` `table` or `heading`. Each selector in `presses`
+    that matches is then pressed, and what it opened is reported with the selector as
+    its `state`; the page as loaded is the state `page`."""
+    from playwright.sync_api import sync_playwright  # noqa: PLC0415
+
+    results: list[dict[str, Any]] = []
+
+    def collect(name: str, width: int, state: str, found: dict[str, Any]) -> None:
+        for kind, key in (("table", "tables"), ("heading", "headings")):
+            results.extend(
+                {"page": name, "width": width, "state": state, "kind": kind, **row}
+                for row in found[key]
+            )
+
+    with sync_playwright() as driver:
+        browser = _launch(driver)
+        for width in widths:
+            for name in pages:
+                print(f"measuring {name} at {width}", file=sys.stderr, flush=True)
+                page = browser.new_page(viewport={"width": width, "height": 900})
+                page.goto(f"{base}/{name}", wait_until="load")
+                settle_math(page)
+                collect(name, width, "page", page.evaluate(SPACING))
+                for selector in presses:
+                    if not page.locator(selector).count():
+                        continue
+                    press(page, selector)
+                    collect(name, width, selector, page.evaluate(SPACING, {"scope": OPENED}))
+                    page.keyboard.press("Escape")
+                page.close()
+        browser.close()
+    return results
+
+
+def _span(values: Sequence[Any]) -> str:
+    """The least and the most of some measurements, or the one value they share; nothing
+    for none, and a value that is not a number, such as a line height of `normal`, is
+    passed over."""
+    numbers = [value for value in values if isinstance(value, (int, float))]
+    if not numbers:
+        return ""
+    low, high = min(numbers), max(numbers)
+    return f"{low:g}" if low == high else f"{low:g} to {high:g}"
+
+
+def space_rows(report: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """A `space` report as its two tables, one row a table and one a heading role.
+
+    Tables come first, each with the space above and below it and what that space is
+    measured to. Headings are grouped by page, width, state and role (`h2`,
+    `span.site-card-value`): how many there are, their size, line height and leading,
+    the most lines one takes, the most its box cannot show of its content, and the
+    least and most space above and below.
+    """
+    rows: list[dict[str, Any]] = [
+        {
+            "page": row["page"],
+            "width": row["width"],
+            "state": row["state"],
+            "what": row["component"] + (" with bar" if row["bar"] else ""),
+            "where": row["section"],
+            "count": 1,
+            "size": "",
+            "line_height": "",
+            "leading": "",
+            "lines": "",
+            "overflow": "",
+            "above": f"{row['above']:g}",
+            "above_to": row["above_to"],
+            "below": f"{row['below']:g}",
+            "below_to": row["below_to"],
+        }
+        for row in report
+        if row["kind"] == "table"
+    ]
+    groups: dict[tuple[str, int, str, str], list[dict[str, Any]]] = {}
+    for row in report:
+        if row["kind"] == "heading":
+            key = (row["page"], row["width"], row["state"], row["role"])
+            groups.setdefault(key, []).append(row)
+    for (name, width, state, role), members in groups.items():
+        rows.append(
+            {
+                "page": name,
+                "width": width,
+                "state": state,
+                "what": role,
+                "where": members[0]["text"],
+                "count": len(members),
+                "size": _span([member["size"] for member in members]),
+                "line_height": _span([member["line_height"] for member in members]),
+                "leading": _span([member["leading"] for member in members]),
+                "lines": max((member["lines"] or 0) for member in members),
+                "overflow": max(
+                    member["overflow"] if member["clips"] else 0 for member in members
+                ),
+                "above": _span([member["above"] for member in members]),
+                "above_to": members[0]["above_to"],
+                "below": _span([member["below"] for member in members]),
+                "below_to": members[0]["below_to"],
+            }
+        )
+    return rows
 
 
 def _evaluate(
@@ -300,6 +425,8 @@ def markdown_table(report: list[dict[str, Any]]) -> str:
         report = type_rows(report)
     if report and "rows" in report[0]:
         report = card_rows(report)
+    if report and "kind" in report[0]:
+        report = space_rows(report)
     columns = [key for key, value in report[0].items() if not isinstance(value, (dict, list))]
     lines = ["| " + " | ".join(columns) + " |", "|" + " --- |" * len(columns)]
     lines.extend("| " + " | ".join(str(row[key]) for key in columns) + " |" for row in report)
@@ -310,7 +437,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    parser.add_argument("mode", choices=("load", "type", "faces", "cards", "math"))
+    parser.add_argument("mode", choices=("load", "type", "faces", "cards", "math", "space"))
     parser.add_argument("site", type=Path)
     parser.add_argument(
         "--page", action="append", help="a page, with any #fragment; repeatable"
@@ -332,7 +459,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         default=[],
         metavar="SELECTOR",
         help="with `math`: press the first element this CSS selector matches, where a page "
-        "has one, before counting; repeatable",
+        "has one, before counting; with `space`: press it once the page is measured and "
+        "report what it opened; repeatable",
     )
     parser.add_argument(
         "--tokens",
@@ -357,6 +485,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                 report = measure_cards(base, pages, widths=widths, media=args.media)
             elif args.mode == "math":
                 report = measure_math(base, pages, widths=widths, presses=args.press)
+            elif args.mode == "space":
+                report = measure_space(base, pages, widths=widths, presses=args.press)
             else:
                 report = measure_load(base, pages, widths=widths, runs=args.runs)
         finally:

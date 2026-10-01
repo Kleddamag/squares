@@ -32,10 +32,10 @@ Measured on 2026-10-01:
 The owner’s rule is that large assets are regenerated at an official version bump and on
 demand, and do not pile up in git.
 The contract below follows it: **a poster states the data it was drawn from and is never
-re-stamped.** A data commit is followed by a one-line re-pin that takes about a second
+re-stamped.** A data commit is followed by a one-line re-pin that takes under a second
 and touches no binary.
 A poster is redrawn by `build_known_best_atlas --update-composites`, at a version bump
-or when someone wants it, in 42 s of CPU.
+or when someone wants it, in 44 s of CPU.
 
 The dates get one rule each.
 What the owner saw on 1 October, a PDF that says September 29, is the review paper’s
@@ -77,8 +77,9 @@ The cost is the atlas rebuild, which re-derives every witness’s feasibility re
 order to draw two figures whose inputs had not changed.
 Both composites drawn from the *retained* witnesses are byte-identical to the retained
 SVGs and take 25 s of CPU, which is what `--update-composites` now does.
-With the six exports the whole redraw is 42 s of CPU; it took 2 min 47 s of wall time
-here at a load average of 42.
+With the six exports the whole redraw is 44 s of CPU. It took 2 min 57 s of wall time at
+load averages of 97 to 164, three to five times the load at which the rebuild above was
+timed.
 
 `--restamp-only` existed to skip the rebuild.
 Its guard proved the geometry unchanged by comparing git trees, with one frontier case
@@ -95,7 +96,7 @@ It is removed: nothing re-stamps a poster any more.
 | The last 30 together | 410.5 MB of blobs; 74.1 MB as stored today |
 | Of those 30, drawings changed anywhere but the stamp | 0 |
 | Commits that redrew a card, 5 to 30 September | 31, about one a day |
-| The repository | 813.7 MB packed, 178.0 MB loose |
+| The repository | 813.7 MiB packed, about 180 MiB loose |
 
 A pack stores a re-stamped SVG as a small delta, so the cost is uneven: 36 KB for some
 commits and 4.9 MB for others, where a PNG did not delta.
@@ -117,12 +118,12 @@ published with a release, never re-stamped.
 
 ### Why Nothing Reads Git at Render Time
 
-All 14 checkouts in `.github/workflows/pages.yml` are sparse and blobless at depth 1,
-except `scope` at depth 2. In a shallow clone git reports the cut as the last commit to
-change every path, so a stamp derived there would name the wrong commit;
-`release.data_revision` refuses the cut for that reason.
-The second reason was the posters: a committed file that is compared byte for byte
-cannot contain a hash read at build time.
+All 15 checkouts in `.github/workflows/pages.yml` are at depth 1, except `scope` at
+depth 2, and 14 of them are sparse and blobless.
+In a shallow clone git reports the cut as the last commit to change every path, so a
+stamp derived there would name the wrong commit; `release.data_revision` refuses the cut
+for that reason. The second reason was the posters: a committed file that is compared
+byte for byte cannot contain a hash read at build time.
 This plan removes the second reason and leaves the first.
 
 ## The Options
@@ -191,10 +192,18 @@ What each check holds, and what it costs:
 |  | Before | After |
 | --- | --- | --- |
 | Commands | Edit `DATA_REVISION`; `build_known_best_atlas --update` | `python -m devtools.release_pin --update` |
-| Wall time | 415 s here; 10 to 18 minutes per branch on 1 October | 1.6 s |
+| CPU time | 967 s | 0.15 s |
+| Wall time | 415 s at a load average near 35; 10 to 18 minutes per branch on 1 October | 0.7 s at a load average of 81 |
 | Files in the commit | `release.py` and eight composite files | `release.py` |
-| Bytes in git | 13.6 MB of blobs, 5.9 MB compressed | About 200 bytes |
+| Bytes in git | 13.6 MB of blobs, 5.9 MB compressed | One changed line: an 18 KB blob for `release.py`, 7 KB compressed, which a pack stores as a delta |
 | Merge between two branches that both did it | Nine conflicts, eight binary | One line |
+
+The checks a contributor might then run were measured at the same load: `test_release`
+15.8 s (4.0 s of CPU) and `--check-composites` 11.9 s (2.7 s of CPU).
+
+The one redraw this change needed, to give the posters their records and the right
+dateline, is a single commit of the eight files: 13,623,657 bytes of blobs, 5,887,228
+compressed. It is the last until the version bump.
 
 ## What a Version Bump Consists Of
 

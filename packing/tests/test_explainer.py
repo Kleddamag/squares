@@ -19,7 +19,7 @@ from urllib.parse import urljoin
 import pytest
 import tinycss2
 
-from devtools import render_composite_pdf, render_explainer, render_overview
+from devtools import render_explainer, render_overview
 from devtools.render_explainer import (
     ATLAS,
     BEST_RENDERING,
@@ -1074,8 +1074,9 @@ def test_the_page_stamps_the_shared_version_the_atlas_carries(page: str, documen
         text = composite.read_text()
         footer = re.search(r'<text data-feature="release-stamp"[^>]*>([^<]*)</text>', text)
         assert footer is not None, composite.name
-        drawn_from = render_composite_pdf.svg_metadata(text)["data-revision"]
-        assert footer.group(1) == edition_at(drawn_from), composite.name
+        drawn_from = re.search(r'name="data-revision">([0-9a-f]{40})</sqpack:value>', text)
+        assert drawn_from is not None, composite.name
+        assert footer.group(1) == edition_at(drawn_from.group(1)), composite.name
         assert footer.group(1).rsplit("-", 1)[0] == PUBLICATION_EDITION.rsplit("-", 1)[0]
     # The top names when the result was first published and when it was last revised,
     # then which edition is being read, linking the full list rather than repeating it

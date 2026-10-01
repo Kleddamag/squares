@@ -1056,8 +1056,8 @@ results page carries its own, and the overviews of three sampled results carry e
 repository link the renderer writes for them ([D-512](defects.md)). Run it from a
 checkout at the deployed commit, since the register it reads is the checkout’s.
 
-**One version, written one way** (the owner, 2026-09-22): the explainer’s credits, every
-page’s footer and the workbench stage print `PUBLICATION_EDITION` from
+**One version, shared by every artifact** (the owner, 2026-09-22): the explainer’s
+credits, every page’s footer and the workbench stage print `PUBLICATION_EDITION` from
 `src/sqpack/release.py`, written like `v0.4.1-3b50e2`. The version comes from the first
 entry in `PUBLICATION_HISTORY`, and the six characters after it name the data.
 The atlas posters and the films carry the same spelling at the data commit each was

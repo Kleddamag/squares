@@ -109,7 +109,7 @@ Synthetic controls (quick tests): a single core and four pairwise disjoint cores
 no violated atom from every search (statuses `feasible`, `never`, `bounded`); the
 planted non-Helly triple (two axis squares meeting on $[11/10, 3/2]^{2}$ and a
 $2 \arctan(1/2)$ square meeting both but not the box, weight $1/2$ each, depth exactly
-$1$) is caught by K4 ($3/2$ at memberships $(2, 2, 2)$), by K5 (one clique, `tau* = 3/2`
+$1$) is caught by K4 ($3/2$ at memberships `(2, 2, 2)`), by K5 (one clique, `tau* = 3/2`
 exact, atom charge $3/2$), by K6 at $t = 2$ (objective exactly $1/2$) and by the
 depth-first search, while its three-of-five maximum is $1$ (complete) and its lines are
 slack. A family of depth $2$ is refused with exit code $2$. The integer membership test

@@ -142,3 +142,14 @@ $$
 - [math] a starred formula then a star in prose: x $c_{81}L_*$ y *z* w
 - [math] the same with the star command: x $c_{82}L_{\ast}$ y and z $c_{83}L_{\ast}$ w
 - [math] three formulas with the star command: x $c_{84}a^{\ast}$ y, $c_{85}$ and $c_{86}b^{\ast}$ w
+
+## What the Formula Ends With
+
+Measured on 1 October 2026. The first three were read off migrated files before they
+were cases here: ten formulas of ten in seven files for the first, and the ladder
+proposal's six formulas for the third. The last is not yet recorded.
+
+- [code] ending in a closing parenthesis, before a closing parenthesis: x (y $c_{87}(z)$) w
+- [math] ending in a closing parenthesis, before a comma: x (y $c_{88}(z)$, w) v
+- [math] an inner parenthesis that is not last, before a closing parenthesis: x (y $c_{89}(z) + 1$) w
+- ending in a closing bracket, before a closing bracket: x [y $c_{90}[z]$] w

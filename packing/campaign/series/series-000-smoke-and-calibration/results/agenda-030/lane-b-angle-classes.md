@@ -1799,7 +1799,7 @@ decides. The angular support below is the dual read by the direction of its rows
 | $0\text{–}5 \cup 151\text{–}180$ | $[0^\circ, 1.4503^\circ] \cup [38.2049^\circ, 45^\circ]$ (contains $40.194^\circ$) | 11.2535, converged in 25 rounds | 29 | 7.472 | 1.775 | 0.465 | 1.542 |
 | $0\text{–}7 \cup 173\text{–}180$ | $[0^\circ, 1.9775^\circ] \cup [43.3017^\circ, 45^\circ]$ (first symmetric failure) | 11.0000, converged in 33 rounds | 8 | 6.000 | — | — | 5.000 |
 | $0\text{–}6 \cup 173\text{–}180$ | $[0^\circ, 1.7139^\circ] \cup [43.3017^\circ, 45^\circ]$ | 11.0000, converged in 20 rounds | 5 | 8.000 | — | — | 3.000 |
-| $0\text{–}5 \cup 149\text{–}180$ | $[0^\circ, 1.4503^\circ] \cup [37.7333^\circ, 45^\circ]$ (Trump band $\pm2.44^\circ$ and the diagonal end) | 11.2535, converged in 30 rounds | 30 | 7.465 | 1.141 (and 0.535 in $[35^\circ, 38.2^\circ)$) | 0.451 | 1.662 |
+| $0\text{–}5 \cup 149\text{–}180$ | $[0^\circ, 1.4503^\circ] \cup [37.7333^\circ, 45^\circ]$ (Trump band $\pm2.44^\circ$ and the diagonal end) | 11.2535, converged in 30 rounds | 30 | 7.465 | 1.141 (and 0.535 in `[35°, 38.2°)`) | 0.451 | 1.662 |
 
 By direction, the band toward $40.19^\circ$ carries $6.739$ at direction $0$ (exactly
 axis-parallel), $0.155$ at $0.79^\circ$, $0.578$ at $1.32^\circ$, then $0.761$ at

@@ -128,15 +128,16 @@ fails.
 The theorem in the claim documents was checked step by step: the orientation reduction
 (the reflection $(x, y) \mapsto (y, x)$ sends orientation $\varphi$ to
 $\pi/2 - \varphi$, and $\varphi = \pi/4$ is its own image); the nearest-net-angle step
-($d \le$ half a gap and $\tan d \le D$, since `tan` is increasing and
-$\tan(\arctan t_2 - \arctan t_1) = (t_2 - t_1)/(1 + t_1t_2)$); the support-function
-containment ($(B/2)(\cos d + \sin d)$ is the half-width of the rotated $B$-square along
-each edge normal of the unit square, so $B(\cos d + \sin d) < 1$ puts it in the open
-interior, corners included); $\cos d + \sin d = \cos d (1 + \tan d) \le 1 + \tan d$; the
-pull-back through the reflection, which needs only invariance under that one reflection;
-the counting step, which needs nonnegative weights and the pairwise disjointness of
-closed sets each inside a different open interior; and the passage from “no packing in
-side $L$” to $s(n) \ge L$. All correct.
+($d \le$ half a gap and $\tan d \le D$, since
+$\tan(\arctan t_2 - \arctan t_1) = (t_2 - t_1)/(1 + t_1t_2)$ and `tan` is increasing);
+the support-function containment ($(B/2)(\cos d + \sin d)$ is the half-width of the
+rotated $B$-square along each edge normal of the unit square, so
+$B(\cos d + \sin d) < 1$ puts it in the open interior, corners included);
+$\cos d + \sin d = \cos d (1 + \tan d) \le 1 + \tan d$; the pull-back through the
+reflection, which needs only invariance under that one reflection; the counting step,
+which needs nonnegative weights and the pairwise disjointness of closed sets each inside
+a different open interior; and the passage from “no packing in side $L$” to
+$s(n) \ge L$. All correct.
 
 The sweep-exactness argument is also correct: mass is constant on each open cell of the
 arrangement, a boundary point carries at least its neighbouring cell’s mass because the

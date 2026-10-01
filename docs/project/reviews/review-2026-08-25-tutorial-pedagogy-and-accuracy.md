@@ -439,7 +439,7 @@ for their own task:
 | --- | --- |
 | Separating-axis pair test, Rust `f64` | 57 ns |
 | Same test, Python float backend | 2,726 ns |
-| $\mathbb{Q}(\alpha)$ multiplication, degree 8 ($s(11)$), pure Python | 215.5 µs |
+| $\mathbb{Q}(\alpha)$ multiplication, degree 8 (`s(11)`), pure Python | 215.5 µs |
 | Same, python-flint | 1.2 µs |
 | $\mathbb{Q}(\alpha)$ multiplication, degree 62, pure Python | 13 ms |
 | Full exact verification of Trump’s packing, 55 pairs, pure Python | 0.35 s |

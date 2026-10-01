@@ -2592,7 +2592,7 @@ below): **Figure 2’s sixteen-point base configuration is machine-certified** (
 rational cells: 4 Lemma 1 corner pentagons, 8 Lemma 4 wall rectangles, 18 Lemma 2
 triangles; 16/16 charged), and **Lemma 10 is machine-settled both ways** — the printed
 replacement point $(1, 1.74)$ is refuted by an exact escape certificate, and all three
-corrected replacement sets ($(1.12, 1)$, $(1.74, 1)$, $(1.87, 0.76)$) certify exactly,
+corrected replacement sets ($(1.12, 1)$, $(1.74, 1)$, `(1.87, 0.76)`) certify exactly,
 their Lemma 5 quadrilaterals landing inside the very parameter families the paper’s
 Section 1 lists. The certifier gained subset semantics, margin and near cells, and the
 rational-`a` threshold bound along the way.

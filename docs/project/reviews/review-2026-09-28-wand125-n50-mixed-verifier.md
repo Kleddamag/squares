@@ -333,7 +333,7 @@ none of it reaches the certificate:
 - `candidate.json` (L740) has `"points": []`, 553 `rectangles` each with a rational
   `rectangle` and `mass`, `scaling_factor` `"1"`, and no `proof_net` field, so the net
   defaults to $D=83/40000$, 200; the certificate records `point_mass` `"0"`;
-- the densities are uniform per rectangle by construction ($\rho=m/(8|R|)$), spanning
+- the densities are uniform per rectangle by construction (`ρ=m/(8|R|)`), spanning
   $2.4\times10^{-8}$ to $2.4\times10^{4}$ per unit area with a smallest side of
   $1.0\times10^{-3}$, which is why the oblique node counts (251,507 to 605,563 per
   direction, against a largest of 237,591 among the standard certificates) are what they

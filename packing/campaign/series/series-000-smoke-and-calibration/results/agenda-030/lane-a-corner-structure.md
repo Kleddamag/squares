@@ -142,7 +142,7 @@ $\beta \ge d - g_y \ge g_x + \sin \theta \ge \sin \theta \ge 0$.
   `t ≥ (g_x + sin θ) cos θ − (1 − g_x − sin θ) sin θ = g_x (cos θ + sin θ) + sin θ (cos θ + sin θ − 1) ≥ 0`.
 - $t \le 1$: $t \le \beta \cos \theta \le (1 - g_y) \cos \theta \le 1$. So
   $s, t \in [0,1]$ and $p \in Q$. Exactness: the axis-parallel squares
-  $[g, g+1] \times [d-g, d-g+1]$, $g \in [0,d]$, all meet $T_d$ (at $(g, d-g)$) and
+  $[g, g+1] \times [d-g, d-g+1]$, $g \in [0,d]$, all meet $T_d$ (at `(g, d-g)`) and
   their intersection over $g$ is $[d,1]^2$. ∎
 
 Numerical check: `common_core.py` (grid intersection against 121×181 poses per level)
@@ -206,8 +206,8 @@ $m = \sin \varphi \cos \varphi/(\sin \varphi + \cos \varphi) \le 1/(2\sqrt{2}) <
 (ii) An axis-aligned blocker has $g_x, g_y < \kappa$. (iii) A $45^\circ$ blocker has
 $(g_x + g_y)/2 + 1/(2\sqrt{2}) < \kappa$, i.e. $g_x + g_y < 0.993 / 1.053 / 1.127$ at
 $3.81 / 3.84 / U$. (iv) Every blocker of $K_{\kappa}$ has penetration
-$\delta(Q) \le 2 m(Q) < 2\kappa$ (the minimising point $p^{\ast}$ has
-$x + y \le 2 \max(x,y)$), i.e. $\delta < 1.70 / 1.76 / 1.834$. (v) A blocker with
+$\delta(Q) \le 2 m(Q) < 2\kappa$ (at the minimising point $p^{\ast}$,
+$x + y \le 2 \max(x,y)$ holds), i.e. $\delta < 1.70 / 1.76 / 1.834$. (v) A blocker with
 $\delta \le 1$ has $\varphi \le \arcsin \delta$ (Lemma 2); a blocker with
 $\delta \in (1, 2\kappa)$ is unrestricted in angle.
 
@@ -233,7 +233,7 @@ $s(11) \ge 3.810025$ (`thresholds.py`):
 Trump check (`trump_structure.py`, `trump_more.py`): squares contained in $[w, S-w]^2$
 are $\lbrace6, 8, 9\rbrace$ for every $w \le 0.5$ and $\lbrace8\rbrace$ for
 $0.585 \le w < 1$ (bounds $\le 5$, $\le 4$, $\le 1$: satisfied); the bottom-right corner
-L-strip at $w = 1.17$ (box side $2.7071 = s(5)$) is avoided by exactly $4 = k-1$ squares
+L-strip at $w = 1.17$ (box side `2.7071 = s(5)`) is avoided by exactly $4 = k-1$ squares
 ($\lbrace3,4,5,8\rbrace$), so the corner form is **tight** on Trump.
 
 ### Lemma 7 (wall service) — new
@@ -562,7 +562,7 @@ yields only two additional distinct squares (opposite walls), not four.
 - **Falsifier.** Optimum $\ge 0$ on a converged site set at $3.82$; more sharply, the
   §2.6-style census showing tight cells inside $R_{\kappa}$ (then $w_c = 1$ is forced
   and the gain is zero).
-- **Exit.** A certificate at $3.82$ (a new rung — moves $s(11)$) or a scoped
+- **Exit.** A certificate at $3.82$ (a new rung — moves `s(11)`) or a scoped
   obstruction: “on site sets X, Y the corner class carries no surplus; tight corner
   cells listed”.
 - **Hours.** 2–3. **Headroom mechanism.** Four identified squares must sit in a small

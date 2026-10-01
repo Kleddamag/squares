@@ -17,7 +17,7 @@ efforts — and this is a large, recent, performance-conscious Rust codebase in 
 adjacent domain. What in it is worth taking?
 
 It follows two earlier documents: `research-2026-08-22-packing-11-unit-squares.md` (the
-mathematics of $s(11)$) and
+mathematics of `s(11)`) and
 `research-2026-08-22-square-packing-algorithms-and-tooling.md` (the algorithms and
 tooling for search and exact verification).
 The second of those found no purpose-built exact verifier in the surveyed ecosystem and

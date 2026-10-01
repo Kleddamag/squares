@@ -727,9 +727,9 @@ derive `C4`; T-058 derives `C5`; T-060 derives `C3`.
 | --- | --- | --- |
 | T-060 | formalize the exclusion ensemble, capture induction and local isolation; nothing exists | the same, rebuilt here; ensemble reproducibility (`think-e2ot`) first; openness of the 2.3 GB of inputs now outside Git; two experts |
 | T-006 (#249) | one human expert’s formalization review of `s13_eq_4`; the build exists | the rebuild here already passed; the source is public (`evand/square-packing` at `6aa82ba4`, retained) so the open condition is met once the pointer is recorded; two human experts’ reviews remain |
-| T-052 ($s(21)$) | prove the checker statement `S21CheckerCover` in Lean at the source or here; then one expert review | rebuild here; open pointer; two expert reviews |
-| T-051 ($s(32)$) | build `s32_eq_6` (14–28 CPU-hours); one expert review | the same, here; open pointer; two expert reviews |
-| T-053 ($s(45)$) | no Lean reduction exists for 45; write it, then as for 21 | the same |
+| T-052 (`s(21)`) | prove the checker statement `S21CheckerCover` in Lean at the source or here; then one expert review | rebuild here; open pointer; two expert reviews |
+| T-051 (`s(32)`) | build `s32_eq_6` (14–28 CPU-hours); one expert review | the same, here; open pointer; two expert reviews |
+| T-053 (`s(45)`) | no Lean reduction exists for 45; write it, then as for 21 | the same |
 
 ## 5. Migration for Design A
 

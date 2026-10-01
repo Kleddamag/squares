@@ -307,15 +307,15 @@ The certificate conditions on a branch in two ways, and both are one counting st
 the unconditional argument.
 
 **Lemma 2 (conditional certificate).** Let $b$ be a set of placements of one unit square
-(a box in $(x, y, \theta)$), and let `I_b = ⋂_{Q ∈ b} Q` be the region every placement
-in the box occupies.
-Take a net that spans a full quarter turn and satisfies `Condition 4` — its half-gaps
-are those of the eighth-turn net, so the same $B$ serves — and let $\Lambda_b$ be the
-admissible $B$-square placements at net directions that are disjoint from $I_b$. Suppose
-a finite atom measure $\mu$ of total mass $M < 11$ gives mass at least $1$ to every
-member of $\Lambda_b$ and to every $B$-square at a net direction that lies inside some
-placement in $b$. Then no packing of eleven unit squares in $[0, L]^2$ has a square in
-$b$.
+(a box in `(x, y, θ)`), and let `I_b = ⋂_{Q ∈ b} Q` be the region every placement in the
+box occupies.
+Take a net that spans a full quarter turn and satisfies `Condition 4` — its
+half-gaps are those of the eighth-turn net, so the same $B$ serves — and let $\Lambda_b$
+be the admissible $B$-square placements at net directions that are disjoint from $I_b$.
+Suppose a finite atom measure $\mu$ of total mass $M < 11$ gives mass at least $1$ to
+every member of $\Lambda_b$ and to every $B$-square at a net direction that lies inside
+some placement in $b$. Then no packing of eleven unit squares in $[0, L]^2$ has a square
+in $b$.
 
 *Proof.* If $Q_k \in b$, its core $P_k$ is a $B$-square at a net direction inside a
 placement in $b$, so $\mu(P_k) \ge 1$; each other square $Q_i$ has a core

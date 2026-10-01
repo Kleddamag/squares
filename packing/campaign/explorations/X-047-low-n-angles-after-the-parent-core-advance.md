@@ -237,14 +237,14 @@ $[r_k, L - r_k]^{2}$, with
 r_k = A * min_{u in row}( cos(u) + sin(u) ) / 2
 ```
 
-which is exactly `parent_core.ParentCoreRow.centre_margin(A)` (identity checked:
-$\cos + \sin = (1 + 2u - u^{2})/(1 + u^{2})$). It implements the same interface
-`CornerClip` exposes, so it drops in behind the existing `clip` parameter already
-threaded through `colgen.py` at `square_excluded` (`:286`), `dual_support`
-(`:691`–`:718`), `check_ceiling` (`:975`, `:993`), `solve_rows` (`:498`, `:585`) and
-`generate_adaptive` (`:1227`, `:1309`, `:1334`), and through `sweep.centre_domain`.
-Required methods: `excludes(x, y, cos, sin)`, `excludes_square(axes, centre, half)`, and
-`half_planes`/`clip_polygon` for the sweep.
+which is exactly `parent_core.ParentCoreRow.centre_margin(A)` (the identity
+$\cos + \sin = (1 + 2u - u^{2})/(1 + u^{2})$ is checked).
+It implements the same interface `CornerClip` exposes, so it drops in behind the
+existing `clip` parameter already threaded through `colgen.py` at `square_excluded`
+(`:286`), `dual_support` (`:691`–`:718`), `check_ceiling` (`:975`, `:993`), `solve_rows`
+(`:498`, `:585`) and `generate_adaptive` (`:1227`, `:1309`, `:1334`), and through
+`sweep.centre_domain`. Required methods: `excludes(x, y, cos, sin)`,
+`excludes_square(axes, centre, half)`, and `half_planes`/`clip_polygon` for the sweep.
 Its cuts are four **axis-aligned** half-planes (`x >= r_k`, `x <= L - r_k`, and the two
 in $y$), simpler than `CornerClip`’s rotated corner cuts, and the domain stays a convex
 rational polygon.
@@ -352,7 +352,7 @@ Each needs the coordinator to freeze target, family and instrument before execut
   *Negative:* one validated legal allocation refutes that pattern only.
 - **The n21 kill-orbit resource.** One parent-disjointness no-good or finishing-segment
   threshold charge removes a largest surviving H-226 kill pattern (for example
-  $(2,2),(2,3)$). *Negative:* a validated realizable structure leaves the orbit
+  `(2,2),(2,3)`). *Negative:* a validated realizable structure leaves the orbit
   unclosable.
 
 ## Expected Information and Limits

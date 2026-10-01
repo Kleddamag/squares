@@ -1032,6 +1032,13 @@ GITHUB_OPENS_AFTER = frozenset({"", " ", "\t", "\n", "(", "*"})
 #: the same probe: a link's text, and italics, bold italics included. Bold, strikethrough,
 #: table cells and quotations draw it.
 GITHUB_NO_MATH_INSIDE = {"link_open": "a link's text", "em_open": "italics"}
+#: A formula that ends in `)` is left as dollars when a `)` follows its closing dollar:
+#: `(the case $s(21)$)` shows its dollars, where `(the case $n$)` and `$s(21)$,` are
+#: drawn. Measured on 1 October 2026 by `devtools.check_github_math --ref 50fd223fb` over
+#: seven migrated files, ten formulas of ten, and recorded as the probe's c_87 and c_88.
+GITHUB_NO_CLOSE_BEFORE_PARENTHESIS = (
+    "`)` after a {what} that ends in `)`, where GitHub closes no math"
+)
 
 
 def _adjacent(text: str, span: CodeSpan) -> str | None:
@@ -1045,6 +1052,8 @@ def _adjacent(text: str, span: CodeSpan) -> str | None:
             return f"`{char}` directly {side} the span"
     if before not in GITHUB_OPENS_AFTER:
         return f"`{before}` before the span, after which GitHub opens no math"
+    if after == ")" and span.text.endswith(")"):
+        return GITHUB_NO_CLOSE_BEFORE_PARENTHESIS.format(what="span")
     return None
 
 
@@ -1385,6 +1394,8 @@ def _adjacency_reason(text: str, start: int, end: int) -> str | None:
         return f"`{after}` directly after the formula, where GitHub closes no math"
     if before not in GITHUB_OPENS_AFTER:
         return f"`{before}` before the formula, after which GitHub opens no math"
+    if after == ")" and text[start:end].rstrip("$").rstrip().endswith(")"):
+        return GITHUB_NO_CLOSE_BEFORE_PARENTHESIS.format(what="formula")
     return None
 
 

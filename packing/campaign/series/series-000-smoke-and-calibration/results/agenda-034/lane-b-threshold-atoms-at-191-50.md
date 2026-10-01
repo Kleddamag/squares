@@ -746,7 +746,7 @@ The attributions below are read off the run logs rather than the file names.
   arrangement vertices and the pair centroids.
   Produced the first half of **F6** (`sep-ceiling.log`: 21,200 candidates, 15,136
   containments decided exactly, 3,280 triangles, maximum charge $10/8 = 1.25$, 1,428
-  violated, best at triangle $(0, 40, 45)$). Its 5-cycle stage was stopped at 522,848
+  violated, best at triangle `(0, 40, 45)`). Its 5-cycle stage was stopped at 522,848
   cycles, which §3.5 records.
 - [`lane-b-sep-ceiling-interior.py.txt`](lane-b-sep-ceiling-interior.py.txt) — 3,184 B.
   The same separation with every candidate pulled off the placement boundaries towards

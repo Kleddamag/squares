@@ -613,7 +613,7 @@ it **optimize-then-refine**:
    area, which points lie on which edges.
 3. Convert that structure to a square polynomial system and solve it exactly: SymPy’s
    symbolic solver for $k \le 6$; a lexicographic Gröbner basis for the cubic-extension
-   case; and for the largest case, recognise the number field ($Q(\sqrt{65})$) from the
+   case; and for the largest case, recognise the number field (`Q(√65)`) from the
    numerics and re-express all coordinates in it with `nsimplify`.
 4. **Verify every candidate by exact substitution into the full polynomial system**,
    because “numerical proximity does not guarantee algebraic correctness” — their

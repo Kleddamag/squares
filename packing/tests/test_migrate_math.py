@@ -380,6 +380,22 @@ def test_math_github_would_not_draw_goes_back_to_code_when_this_tool_wrote_it() 
     assert [item.tex for item in github_unsafe_math(demoted)] == ["10^3"]
 
 
+def test_a_formula_ending_in_a_parenthesis_before_a_parenthesis_stays_code() -> None:
+    """GitHub left ten of ten such formulas as dollars (the probe's c_87): `(see $s(21)$)`
+    shows its dollars, where `(for every $n$)` and `$s(21)$,` are drawn."""
+    text = "The bound (see `s(21)`) holds (for every `n`), as `s(21)`, and `(a, b)` too.\n"
+    verdicts = [d.verdict for d in plan(text).decisions]
+    assert [v.kind for v in verdicts] == ["uncertain", "math", "math", "math"]
+    assert verdicts[0].rule == "delimiter adjacency"
+    assert "ends in `)`" in verdicts[0].reason
+    written = "T-052 ($s(21)$) and ($n$), $s(21)$, and the pair ($(x, y)$).\n"
+    demoted, back, left = demote_unsafe(written)
+    assert [item.tex for item in back] == ["s(21)", "(x, y)"]
+    assert left == []
+    assert demoted == "T-052 (`s(21)`) and ($n$), $s(21)$, and the pair (`(x, y)`).\n"
+    assert github_unsafe_math(demoted) == []
+
+
 def test_no_conversion_holds_a_delimiter_or_a_markdown_escape() -> None:
     for source, _rule, _latex in MATH:
         for frac in (False, True):

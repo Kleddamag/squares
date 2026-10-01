@@ -99,7 +99,7 @@ What is specific to this page, found while prototyping the feature on it:
   (`tex()` in the shell and the walkthrough script), so the metrics table has to be
   inlined and applied before those calls, not only inside kpress’s `katex-init.js`.
 - The `\mkern1mu` kern the renderer adds between a function name and its parenthesis
-  ($s(n)$) is what keeps the PT Serif italic, which has no italic correction of its own,
+  (`s(n)`) is what keeps the PT Serif italic, which has no italic correction of its own,
   from setting the parenthesis against the letter.
   It stays.
 - The display blocks carry `padding-block: 0.45rem`, which is what hid the one-pixel

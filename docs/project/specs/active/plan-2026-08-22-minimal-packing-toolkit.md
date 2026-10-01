@@ -162,7 +162,7 @@ bucketing so pair enumeration is $\Theta(n)$. No allocation on the hot path, no 
 | `f64` + tolerance | approximately | search inner loop |
 | `Filtered` (`f64` + error bound, escalating) | strictly when the margin is wide | first stage of the ladder |
 | `Algebraic` over $\mathbb{Q}(\alpha)$, FLINT-backed | everything, including exact zero | contacts, final answers |
-| `PoseBox` (interval over a box of $(x, y, \theta)$) | a *family* of placements at once | **the proof-lane hook** |
+| `PoseBox` (interval over a box of `(x, y, θ)`) | a *family* of placements at once | **the proof-lane hook** |
 
 The fourth is the forward-looking one and costs almost nothing now.
 If the predicate is generic over `Scalar`, then instantiating it at intervals-over-poses

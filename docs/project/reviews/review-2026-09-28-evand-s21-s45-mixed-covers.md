@@ -312,7 +312,7 @@ I state each lemma as the code implements it and where its acceptance is decided
   Every primitive proves “witness weight in $Q$ at every admissible pose $\ge 1$”, and
   replacing “`φ ∈ Q` with weight $L^{\prime}$” by “piece mass $\ge L \ge L^{\prime}$”
   gives $\mu(Q) \ge 1$. `int64` totals: $2.09 \times 10^{12}$ numerators over $10^{11}$
-  ($s(21)$), $4.5 \times 10^9$ over $10^8$ ($s(45)$), far below $2^{63}$.
+  (`s(21)`), $4.5 \times 10^9$ over $10^8$ (`s(45)`), far below $2^{63}$.
 - **Inheritance.** A child receives `max(L, L_parent)` (a sub-box has fewer admissible
   poses) and `_last_inT`, the exact $T$ set of the parent’s last `CHAIN` attempt, with
   the phantom bit cleared (`kid[ph] = False`, line 1404) so a stale phantom weight
@@ -383,7 +383,7 @@ unchecked `i128` wrap on crafted input printed a false side or total next to
 `VERIFIED-D4`) is commit `dd6f63aa7e9ba2d7a19c46cb9776ee610ddb3c48`
 (2026-09-27T13:21:30−06:00), which is the only change to `zmx2.rs` after its creation;
 `zmx2.rs` at `dd6f63a` and at HEAD both hash `6b7f0f79…`. The four shipped `zmx2`
-manifests record git HEAD `dd6f63a` ($s(21)$) and `5ae38b9` ($s(45)$), of which
+manifests record git HEAD `dd6f63a` (`s(21)`) and `5ae38b9` (`s(45)`), of which
 `dd6f63a` is an ancestor (checked with `git merge-base`), zero local changes to
 `zmx2.rs`, source sha256 `6b7f0f79…` and the same binary `0247012e…` for all four runs.
 So the fixed parser is what ran.

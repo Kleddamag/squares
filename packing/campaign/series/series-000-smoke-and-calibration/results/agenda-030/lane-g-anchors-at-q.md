@@ -208,7 +208,7 @@ of one of the six non-corner segments and two of them share one.
 This is where the transfer from $s(10)$ stops.
 Stromquist’s bijection needs $|P| = n$ with points, which no square can share; here the
 count is $11 > 10$, the marks are segments, and a segment of length $1/10$ can be met by
-four interior-disjoint unit squares (the four axis squares around $(1, 1)$), so the
+four interior-disjoint unit squares (the four axis squares around `(1, 1)`), so the
 shared segment is a two-body event with no forced position for either body, and the free
 eleventh mark of H-134 has not been placed.
 The set-ownership form of Lemma C′ (any atom set of weight above $\varepsilon$ meets a

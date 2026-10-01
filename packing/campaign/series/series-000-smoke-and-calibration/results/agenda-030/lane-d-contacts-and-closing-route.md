@@ -212,11 +212,11 @@ either. What *is* true at Trump’s pose (CHECKED): 11 wall incidences (9 flush,
 points), 14 pair contacts (7 positive-length segments
 $(3,4),(3,5),(6,7),(6,8),(7,9),(8,9),(9,10)$ of lengths
 $1, 1, 0.975, 0.881, 0.881, 0.975, 0.666$, and 7 point contacts
-$(0,6),(1,9),(2,8),(2,10),(4,5),(4,8),(5,6)$), segment-equality components
+`(0,6),(1,9),(2,8),(2,10),(4,5),(4,8),(5,6)`), segment-equality components
 $\lbrace0\rbrace,\lbrace1\rbrace,\lbrace2\rbrace,\lbrace3,4,5\rbrace,\lbrace6,\ldots,10\rbrace$
 with wall-anchored squares $0\text{–}5$, one unanchored component, angular rank $10$ —
 agreeing with the PR108 review and exp-013. The smallest strictly positive pair gap is
-$0.0249$ (pairs $(6,9)$ and $(8,10)$), which is the Euclidean counterpart of BC-199’s
+$0.0249$ (pairs $(6,9)$ and `(8,10)`), which is the Euclidean counterpart of BC-199’s
 chart gap cap $0.0059$.
 
 **Flush counts (PROVED, trivial).** Two axis-aligned unit squares flush on the same wall

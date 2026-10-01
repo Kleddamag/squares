@@ -659,8 +659,8 @@ That much is load-bearing rather than decorative, because analyticity is what su
 least $m$ with `a_m != 0`: a merely `C^∞` arc could be flat at $0$, and a merely
 continuous semialgebraic one would carry a Puiseux expansion in fractional powers and
 need a reparametrisation $s = u^N$ before the induction of §5 could start.
-The domain ($(-1,1)$, $[-1,1]$ or $[0, \varepsilon)$) is immaterial here: only a
-convergent power series at $0$ and the inclusion of $(0, \varepsilon)$ are used.
+The domain ($(-1,1)$, $[-1,1]$ or `[0, ε)`) is immaterial here: only a convergent power
+series at $0$ and the inclusion of $(0, \varepsilon)$ are used.
 
 **Alternative route** (for a reviewer who prefers the older statement).
 Milnor, *Singular Points of Complex Hypersurfaces*, Ann.
@@ -756,7 +756,7 @@ the argument does not depend on which formulation a reviewer reaches for:
 `gamma : (-1,1) -> R^15` with `gamma(0) = 0`, `gamma((0,1)) ⊂ F \ {0}`; writing its
 convergent Taylor series at 0 as `gamma(s) = sum_{k>=1} a_k s^k` ($a_k \in R^{15}$,
 radius `rho > 0`), not all $a_k$ vanish (else `gamma ≡ 0` near 0, contradicting
-`gamma(s) != 0` for $s \in (0,1)$). Let `m >= 1` be least with `a_m != 0`. By continuity
+`gamma(s) != 0` for `s ∈ (0,1)`). Let `m >= 1` be least with `a_m != 0`. By continuity
 there is `ε ∈ (0, min(rho, 1))` with `gamma((0, ε)) ⊂ N`, hence by Proposition 5(i)
 
 ```

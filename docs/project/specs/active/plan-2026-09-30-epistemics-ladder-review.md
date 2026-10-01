@@ -367,16 +367,41 @@ section of one, and it names the result ids it covers.
 person’s.* An owner-reviewed pull request is not such a record unless the record cites
 it and says what was inspected (decision 8).
 
-**Human expert review of the formalization (rung 5).** One retained review of kind
+**Human expert review of the formalization (rung 5).** A retained review of kind
 `formalization` with `reviewer_kind: human`, `independent_of_author: true`, naming the
 person and their relation, with `checked` including `statement-fidelity`, `definitions`,
-`axioms` and `build`. Expert means a named person who states their competence in the
-proof assistant and the mathematics in the record; the owner may serve at rung 4 and, if
-not the formalization’s author, at rung 5 (decisions 4 and 6). The difference from rung
-4: at 4 the human oversees the mechanization and the AI checking of it; at 5 the human
-reads the formal statement and its definitions and attests that they say what the claim
-says. At 5 the reviewer must not be the formalization’s author; at 4 the overseer may be
-the owner of the project that produced the result.
+`axioms` and `build`, and verdict `accepted`. Expert means a named person who states
+their competence in the proof assistant and the mathematics in the record; the owner may
+serve at rung 4 and, if not the formalization’s author, at rung 5 (decisions 4 and 6).
+The difference from rung 4: at 4 the human oversees the mechanization and the AI
+checking of it; at 5 the human reads the formal statement and its definitions and
+attests that they say what the claim says.
+`V5` needs one such review (whether two, decision 15); `C5` needs two, by distinct named
+experts (decided, below).
+
+**`C5`, as the owner decided on 2026-09-30** (“replay on our project plus open source
+review and at least two human experts”; “it needs to be replayed here and reviewable and
+replayable by any other experts to reach that level and get expert human review at least
+a couple times”). Three conditions, all structural:
+
+1. **Replayed here.** The `proof-assistant-checked` entry has `origin: replayed-here`, a
+   `replay` command runnable from the repository at a pinned toolchain, `replay_status:
+   passed` and an `axioms_receipt`; the rebuild is the whole theorem, not a reduction.
+2. **Open.** The proof, its formalization and everything needed to replay it are openly
+   available, so that any other expert can review and replay it: an `open_review` record
+   on the result names the public `sources` at a pinned revision, the `terms` under
+   which they may be inspected and run, the public `replay` instructions, and the copy
+   `retained` here. No particular review venue is required; the checker verifies the
+   fields and that the retained copy exists.
+3. **Expert-reviewed, twice.** At least two `formalization` reviews as above, by
+   distinct named human experts, each with its own retained record and an accepting
+   verdict.
+
+Whether both experts must be other than the formalization’s author, and whether at least
+one must be outside this project, are decisions 3 and 9. Recommended: both other than
+the author (a formalization’s author reading their own statement is not a review), and
+at least one outside the project that produced the formalization (the owner’s “any other
+experts”).
 
 **Externally confirmed, and independent.** A confirmation is external when performed by
 a party other than the producing project: for this project’s results, another project’s
@@ -396,7 +421,7 @@ reviews:                       # zero or more; required at rung 4 and 5
     kind: adversarial          # adversarial | confirming | oversight | formalization
     reviewer: GPT-6 Astra at max reasoning
     reviewer_kind: ai          # ai | human
-    relation: project          # owner | project | external; required when human
+    relation: project          # owner | project | external | source; required when human
     date: '2026-09-30'
     scope: >-                  # what was examined, in the reviewer's words
       Every component family, execution bindings, adverse controls, endpoint argument.
@@ -404,10 +429,16 @@ reviews:                       # zero or more; required at rung 4 and 5
     checked: [trust-boundary, certificate-meaning, ai-findings]   # oversight/formalization
     independent_of_author: true                                   # formalization only
     covers: [T-060]            # result ids, for a record shared by a family
+open_review:                   # required at C5: anyone can review and replay it
+  sources: https://github.com/evand/square-packing/tree/6aa82ba4   # public, pinned
+  terms: MIT licence           # under which the sources may be inspected and run
+  replay: lean/LADDER.md at that revision                          # public instructions
+  retained: packing/resources/web/evand-square-packing-2026-09-28/ # the copy here
 ```
 
-Evidence-level, unchanged: `method`, `origin`, `certificate`, `replay`, `replay_status`,
-`proof`, `external_review` (which keeps `C1`’s meaning).
+At `C5` the `reviews` list holds two `formalization` entries by distinct named human
+experts. Evidence-level, unchanged: `method`, `origin`, `certificate`, `replay`,
+`replay_status`, `proof`, `external_review` (which keeps `C1`’s meaning).
 One addition: an optional `axioms_receipt` path on a `proof-assistant-checked` entry,
 required at rung 5.
 
@@ -469,17 +500,19 @@ Rung meanings are shared by both axes; the earner differs.
 | 2 | Checked without a recoverable certificate | a proof asserted but not publicly recoverable (declared, with `notes`) | a replay here of evidence that yields no machine certificate (`replay_status: passed` on a non-machine method) |
 | 3 | Checkable: a complete argument or certificate exists and was checked, without the rung-4 review record | a published or audited proof with a `proof` block, or a machine certificate (exact-algebraic, interval-certified or proof-assistant-checked) with its checker and replay command | a machine certificate replayed here, or a third party’s retained replay, with `replay_status: passed` and a control |
 | 4 | Mechanized, adversarially reviewed, human-overseen | rung-3 machine evidence of any origin, plus `N` adversarial AI reviews by distinct reviewers with a confirming pass, plus a human `oversight` record | the same, where the machine evidence is a confirmation (`replayed-here`, `audited-here`, `independently-external`) and the reviews and the oversight were performed on the confirming side |
-| 5 | Formal, expert-reviewed | `proof-assistant-checked` evidence with an axiom receipt, plus a human `formalization` review by someone other than the author | that evidence rebuilt here from the repository at a pinned toolchain (`origin: replayed-here`, `replay_status: passed`), plus the same review by a human who is not the formalization’s author |
+| 5 | Formal, expert-reviewed | `proof-assistant-checked` evidence with an axiom receipt, plus one human `formalization` review by someone other than the author | that evidence rebuilt and replayed here from the repository at a pinned toolchain (`origin: replayed-here`, `replay_status: passed`); an `open_review` pointer showing the proof, formalization and replay inputs are openly available for anyone to review and replay; and two `formalization` reviews by distinct named human experts |
 
 Attributes recorded and displayed, never rungs: `methods` (the count of distinct machine
 methods among the confirming entries; today’s `C4`), `third-party` (a retained replay by
 another project), and `independent-implementation`.
 
 Where each kind of evidence sits: a human expert review of the formalization is the
-rung-5 condition; AI adversarial review is a rung-4 necessary condition and never
-sufficient; a replay by another project is a `C3` earner and a `third-party` attribute;
-a second method is an attribute at any rung; a formal proof without the expert review is
-rung 3 (`V3` at the source, `C3` when rebuilt here).
+rung-5 condition, one at `V5` and two at `C5` beside the rebuild here and the open
+pointer; AI adversarial review is a rung-4 necessary condition and never sufficient; a
+replay by another project is a `C3` earner and a `third-party` attribute; a second
+method is an attribute at any rung; a formal proof without the expert review is rung 3
+(`V3` at the source, `C3` when rebuilt here); a formal proof whose sources are not open
+cannot pass `C4` however many experts read it.
 
 **Cost:** the full migration in §5, about 17–20 agent-hours in three lanes.
 **Comparability:** 51 of 60 ratings move down on at least one axis (§4.2), with a dated
@@ -692,10 +725,10 @@ derive `C4`; T-058 derives `C5`; T-060 derives `C3`.
 
 | Result | `V` path | `C` path |
 | --- | --- | --- |
-| T-060 | formalize the exclusion ensemble, capture induction and local isolation; nothing exists | the same, rebuilt here; ensemble reproducibility (`think-e2ot`) first |
-| T-006 (#249) | a human expert’s formalization review of `s13_eq_4`; the build exists | the same; the rebuild here already passed |
-| T-052 (`s(21)`) | prove the checker statement `S21CheckerCover` in Lean at the source or here; then the expert review | rebuild here; expert review |
-| T-051 (`s(32)`) | build `s32_eq_6` (14–28 CPU-hours); expert review | the same, here |
+| T-060 | formalize the exclusion ensemble, capture induction and local isolation; nothing exists | the same, rebuilt here; ensemble reproducibility (`think-e2ot`) first; openness of the 2.3 GB of inputs now outside Git; two experts |
+| T-006 (#249) | one human expert’s formalization review of `s13_eq_4`; the build exists | the rebuild here already passed; the source is public (`evand/square-packing` at `6aa82ba4`, retained) so the open condition is met once the pointer is recorded; two human experts’ reviews remain |
+| T-052 (`s(21)`) | prove the checker statement `S21CheckerCover` in Lean at the source or here; then one expert review | rebuild here; open pointer; two expert reviews |
+| T-051 (`s(32)`) | build `s32_eq_6` (14–28 CPU-hours); one expert review | the same, here; open pointer; two expert reviews |
 | T-053 (`s(45)`) | no Lean reduction exists for 45; write it, then as for 21 | the same |
 
 ## 5. Migration for Design A
@@ -771,21 +804,25 @@ ratings it lowers are restored by records the project can write this week.
 
 Decisions only the owner can make:
 
-1. **Top rung at `C5` or `C6`?** Statement 4 says 5. Confirm.
-   (`C6` would leave rung 4 as it is and apply the principle nowhere.)
+1. **Top rung at `C5` or `C6`?** Decided 2026-09-30: `C5`, defined as replayed here,
+   open, and reviewed by at least two human experts (§2.4). (`C6` would have left rung 4
+   as it is and applied the principle nowhere.)
 2. **Does AI review count, and at which rung?** Recommended: it is a necessary condition
    at rung 4 on both axes and never sufficient; at rung 5 only the human formalization
    review counts. Alternative: AI review also admissible at 5 beside the human review,
    which changes nothing about who must sign.
-3. **Can a same-project review reach the top rungs?** Recommended: at `C3` and `C4`,
-   yes, with oversight on the confirming side; at `C5`, the human expert must not be the
-   formalization’s author, and may be of this project when the formalization is another
-   project’s. Alternative: require an external reviewer at `C5` always, which makes `C5`
-   unreachable for this project’s own formalizations until an outside expert reads them.
-4. **What does “expert” mean?** Recommended: a named person who states, in the record,
-   their competence in the proof assistant and in the mathematics; the record is what a
-   reader can judge. Alternative: an allowlist in `epistemics.md`, which the owner
-   maintains.
+3. **Can a same-project review reach the top rungs?** Partly decided: `C5` needs at
+   least two human experts (statement of 2026-09-30). Open: must both be other than the
+   formalization’s author, and must at least one be outside the project that produced
+   the formalization? Recommended: yes to both.
+   At `C3` and `C4`, same-project confirmation counts, with oversight on the confirming
+   side. Alternative: admit the author as one of the two, or two project members, which
+   makes `C5` reachable for this project’s own formalizations without an outside reader
+   and weakens “reviewable by any other experts”.
+4. **What does “expert” mean?** Open.
+   Recommended: a named person who states, in the record, their competence in the proof
+   assistant and in the mathematics; the record is what a reader can judge.
+   Alternative: an allowlist in `epistemics.md`, which the owner maintains.
 5. **What happens to T-060 now?** Recommended: `V3/C3/S5` on the stacked branch, with
    its `notes` stating the rung it held and the record it waits on; the owner writes the
    oversight record and the rung rises to `V4/C4` in the same pull request or the next.
@@ -804,10 +841,10 @@ Decisions only the owner can make:
    a dedicated record that may cite them.
    Alternative: a record that lists the pull requests and what was read in each, which
    is the same thing with less specificity.
-9. **Must `C4`, or `C5`, include at least one third party?** Recommended: `C4` no, with
-   `third-party` as an attribute; `C5` requires a human expert who is not the author,
-   which for this project’s own formalizations means an outside expert unless decision 3
-   is taken the other way.
+9. **Must `C4`, or `C5`, include at least one third party?** Partly decided: `C5` is
+   open to anyone and reviewed by two experts (statement of 2026-09-30); whether one of
+   the two must be outside the project is decision 3. Open for `C4`: recommended no,
+   with `third-party` as an attribute.
    Alternative: `C4` requires a third party, which lowers every first-party result to
    `C3` until another project replays it.
 10. **`C ≤ V` after composition?** Recommended: yes, enforced; T-014 becomes `V3/C3`.
@@ -827,6 +864,13 @@ Decisions only the owner can make:
 14. **Dated note or rewritten history?** Recommended: a dated note in `epistemics.md`
     and on each lowered result; the September reviews and synopsis entries stand as
     written.
+15. **One expert or two at `V5`?** Open.
+    Recommended: one. `V` is the source’s own certification, and one independent expert
+    attesting that the formal statement says what the claim says is what distinguishes a
+    reviewed formalization from a kernel check; the second expert, the rebuild here and
+    the open pointer are what `C5` counts as confirmation.
+    Alternative: two at `V5` as well, which makes the two axes differ at the top only by
+    the rebuild and the pointer.
 
 ## 7. Limits
 

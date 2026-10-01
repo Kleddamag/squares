@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 import shutil
+from fractions import Fraction
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
@@ -14,6 +15,7 @@ from devtools import render_frontier_page as frontier
 from devtools import render_overview
 from devtools import render_research_tables as tables
 from devtools.render_overview import assert_self_contained
+from sqpack.assurance import bounds_agree_at_declared_precision
 from sqpack.yamlio import safe_load
 from tests import site_renders
 
@@ -21,24 +23,53 @@ from tests import site_renders
 #: carries (the explainer's inlined faces and KaTeX), about 0.95 MB the 324 thumbnails
 #: and the rest the cells and their record links. The ceiling leaves room for the corpus
 #: to grow a little; a change that crosses it should shrink something rather than lift it.
+#: Measured at 4,168,556 bytes on 2026-10-01 before the drawing took its own column and
+#: the closed forms their decimals, and at 4,183,093 after: 25,748 bytes of room, then
+#: 11,211. Each cell KPress writes carries `data-col` and `data-col-index`, 128,050
+#: bytes of the page that nothing on the site reads (think-k8xp).
 PAGE_CEILING_BYTES = 4 * 1024 * 1024
 
+#: The columns as a reader meets them: the drawing under no heading, the case, the star,
+#: and then what is known.
+COLUMNS = [
+    "",
+    "n",
+    "Recent",
+    "Status",
+    "Best known packing",
+    "Verified upper",
+    "Reported lower",
+    "Verified lower",
+    "Gap",
+    "Records",
+]
 #: The value columns and the record field each one's `data-value` carries.
 VALUE_COLUMNS = {
-    2: "reported_upper_bound",
-    3: "verified_upper_bound",
-    4: "reported_lower_bound",
-    5: "verified_lower_bound",
+    "Best known packing": "reported_upper_bound",
+    "Verified upper": "verified_upper_bound",
+    "Reported lower": "reported_lower_bound",
+    "Verified lower": "verified_lower_bound",
 }
+#: A decimal under a closed form: whether it is the whole value, and its digits.
+APPROX = re.compile(r'<span class="site-approx">([=≈]) (\d+\.\d+)(…?)</span>')
+
+
+def column(label: str) -> int:
+    """The index of the column headed `label` in a row's cells."""
+    return COLUMNS.index(label)
 
 
 class Rows(HTMLParser):
-    """Each body row's attributes and its cells' attributes, in order."""
+    """The header cells, and each body row's attributes with its cells' attributes, in
+    order. A cell also records the tags it holds and its words, under `tags` and
+    `words`, which no attribute is named."""
 
     def __init__(self) -> None:
         super().__init__()
         self.rows: list[tuple[dict[str, str | None], list[dict[str, str | None]]]] = []
+        self.head: list[dict[str, str | None]] = []
         self._body = False
+        self._cell: dict[str, str | None] | None = None
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         if tag == "tbody":
@@ -46,11 +77,23 @@ class Rows(HTMLParser):
         elif tag == "tr" and self._body:
             self.rows.append((dict(attrs), []))
         elif tag == "td" and self._body and self.rows:
-            self.rows[-1][1].append(dict(attrs))
+            self._cell = {**dict(attrs), "tags": "", "words": ""}
+            self.rows[-1][1].append(self._cell)
+        elif tag == "th" and not self._body and not self.rows:
+            self._cell = {**dict(attrs), "tags": "", "words": ""}
+            self.head.append(self._cell)
+        elif self._cell is not None:
+            self._cell["tags"] = f"{self._cell['tags']} {tag}".strip()
+
+    def handle_data(self, data: str) -> None:
+        if self._cell is not None:
+            self._cell["words"] = f"{self._cell['words']}{data}"
 
     def handle_endtag(self, tag: str) -> None:
         if tag == "tbody":
             self._body = False
+        elif tag in {"td", "th"}:
+            self._cell = None
 
 
 @pytest.fixture(scope="module")
@@ -59,10 +102,15 @@ def page() -> str:
 
 
 @pytest.fixture(scope="module")
-def rows(page: str) -> list[tuple[dict[str, str | None], list[dict[str, str | None]]]]:
+def parsed(page: str) -> Rows:
     parser = Rows()
-    parser.feed(page)
-    return parser.rows
+    parser.feed(page[page.index('id="frontier-table"') :])
+    return parser
+
+
+@pytest.fixture(scope="module")
+def rows(parsed: Rows) -> list[tuple[dict[str, str | None], list[dict[str, str | None]]]]:
+    return parsed.rows
 
 
 @pytest.fixture(scope="module")
@@ -86,16 +134,66 @@ def test_every_row_is_its_cases_anchor(rows) -> None:
 def test_every_value_cell_carries_the_records_value(rows, cases) -> None:
     for attributes, cells in rows:
         case = cases[int(attributes["data-n"] or 0)]
-        assert cells[0]["data-value"] == str(case["n"])
-        assert cells[1]["data-value"] == case["status"]
+        assert cells[column("n")]["data-value"] == str(case["n"])
+        assert cells[column("Status")]["data-value"] == case["status"]
         assert attributes["data-status"] == case["status"]
-        for column, field in VALUE_COLUMNS.items():
-            assert cells[column]["data-value"] == str(case[field]["value"]), (case["n"], field)
+        assert (
+            cells[column("Recent")]["data-value"]
+            == {"true": "1", "false": "0"}[attributes["data-recent"] or ""]
+        )
+        for label, field in VALUE_COLUMNS.items():
+            assert cells[column(label)]["data-value"] == str(case[field]["value"]), (
+                case["n"],
+                field,
+            )
+
+
+def test_the_columns_run_drawing_case_star_and_then_what_is_known(parsed: Rows) -> None:
+    """The drawing has the first column to itself, under a header with no words that a
+    screen reader is told is the packing; `n` is next and holds the number alone, the
+    link to the case record; the star follows, ahead of the status and the bounds, so the
+    table's left edge says which case a row is and whether its bound is new."""
+    assert [heading for heading, _, _ in frontier.HEADERS] == COLUMNS
+    assert [(cell["words"] or "").strip() for cell in parsed.head] == COLUMNS
+    first, *others = parsed.head
+    assert first["aria-label"] == frontier.THUMB_LABEL == "Packing"
+    assert first["class"] == "site-thumb"
+    assert first["tags"] == ""
+    assert "data-sort" not in first
+    assert all("aria-label" not in cell for cell in others)
+    assert [cell.get("data-sort") for cell in others] == [
+        "num",
+        "num",
+        "text",
+        "num",
+        "num",
+        "num",
+        "num",
+        "num",
+        None,
+    ]
+    assert len(parsed.rows) == 324
+    for attributes, cells in parsed.rows:
+        n = attributes["data-n"]
+        assert len(cells) == len(COLUMNS), n
+        thumb, number, star = cells[0], cells[column("n")], cells[column("Recent")]
+        # The drawing, bare: one `svg` of paths and nothing to read.
+        assert thumb["class"] == "site-thumb", n
+        assert (thumb["tags"] or "").split()[0] == "svg", n
+        assert set((thumb["tags"] or "").split()) == {"svg", "rect", "g", "path"}, n
+        assert thumb["words"] == "", n
+        assert "data-value" not in thumb
+        # The number alone, as the one link to the case record.
+        assert number["class"] == "num site-col-n", n
+        assert number["tags"] == "a", n
+        assert number["words"] == n
+        assert star["words"] == ("★" if attributes["data-recent"] == "true" else ""), n
 
 
 def test_the_gap_is_exact_where_both_bounds_are(rows, cases) -> None:
     gaps = {
-        int(attributes["data-n"] or 0): cells[6]["data-value"] for attributes, cells in rows
+        int(attributes["data-n"] or 0): cells[column("Gap")]["data-value"]
+        for attributes, cells in rows
     }
     for n, case in cases.items():
         if case["status"] == "proved":
@@ -105,6 +203,117 @@ def test_the_gap_is_exact_where_both_bounds_are(rows, cases) -> None:
     assert abs(float(gaps[12]) - 124 / 3951) < 1e-15
     html_12, _ = frontier.gap(cases[12])
     assert r"\dfrac{124}{3951}" in html_12
+    assert html_12.endswith('<span class="site-approx">≈ 0.03138445…</span>')
+
+
+def _exact(form: str) -> Any:
+    return frontier.exact_value(form)
+
+
+def _holds(sign: str, digits: str, cut: str, value: Any) -> bool:
+    """Whether a printed decimal is the exact `value`'s own: equal to it where the cell
+    says `=`, and where it says `≈` the value cut, not rounded, after its last digit,
+    which is to say at or under the value and less than one unit of that digit short.
+    The comparison is made on the exact value, a rational as a fraction and a radical by
+    the sign of an exact difference, never on a float."""
+    import sympy  # noqa: PLC0415
+
+    shown = sympy.Rational(Fraction(digits).numerator, Fraction(digits).denominator)
+    if sign == "=":
+        return cut == "" and sympy.simplify(value - shown) == 0
+    places = len(digits.partition(".")[2])
+    short = value - shown
+    return (
+        cut == "…"
+        and places == frontier.DECIMAL_PLACES
+        and bool(short > 0)
+        and bool(short < sympy.Rational(1, 10**places))
+    )
+
+
+def test_a_closed_form_carries_its_decimal_and_the_decimal_is_the_exact_value(
+    cases: dict[int, dict[str, Any]],
+) -> None:
+    """Every bound the table sets as a closed form that is not a whole number has its
+    decimal under it, and the decimal is the closed form's value to the digits printed:
+    the whole of it after `=`, cut and not rounded after `≈`. It is not the record's own
+    decimal, which for a lower bound may be shorter (`15680/3951` is recorded as
+    `3.968615`). A whole number and a bound already set as a decimal carry none."""
+    seen = {"=": 0, "≈": 0, "": 0}
+    for case in cases.values():
+        for field in VALUE_COLUMNS.values():
+            bound = case[field]
+            shown = frontier.value_html(bound)
+            under = frontier.bound_approx_html(bound)
+            closed = "kpress-math" in shown
+            if not closed:
+                assert under == "", (case["n"], field)
+                seen[""] += 1
+                continue
+            value = _exact(bound["exact_form"])
+            if value.is_Integer:
+                assert under == "", (case["n"], field)
+                continue
+            found = APPROX.fullmatch(under)
+            assert found, (case["n"], field, under)
+            sign, digits, cut = found.groups()
+            assert _holds(sign, digits, cut, value), (case["n"], field, under)
+            seen[sign] += 1
+    assert all(seen.values()), seen
+    # The owner's example, and the three kinds of cell beside it.
+    lower_12 = frontier.bound_approx_html(cases[12]["reported_lower_bound"])
+    assert lower_12 == '<span class="site-approx">≈ 3.96861554…</span>'
+    assert cases[12]["reported_lower_bound"]["value"] == "3.968615"
+    assert frontier.bound_approx_html(cases[18]["reported_lower_bound"]) == (
+        '<span class="site-approx">= 4.695</span>'
+    )
+    assert frontier.bound_approx_html(cases[5]["reported_upper_bound"]) == (
+        '<span class="site-approx">≈ 2.70710678…</span>'
+    )
+    assert frontier.bound_approx_html(cases[12]["reported_upper_bound"]) == ""
+    assert frontier.bound_approx_html(cases[11]["verified_lower_bound"]) == ""
+
+
+def test_the_tables_cells_carry_those_decimals(page: str, cases) -> None:
+    """The rendered rows hold them: under each closed form in the four bound columns,
+    and under a gap that is not a whole number."""
+    row_12 = page[page.index('<tr id="n-12"') : page.index('<tr id="n-13"')]
+    assert [found.group(0) for found in APPROX.finditer(row_12)] == [
+        '<span class="site-approx">≈ 3.96861554…</span>',
+        '<span class="site-approx">≈ 0.03138445…</span>',
+    ]
+    assert r"\(\dfrac{15680}{3951}\)</span>" in row_12
+    table = page[page.index("<tbody>") : page.index("</tbody>")]
+    expected = sum(
+        bool(frontier.bound_approx_html(case[field]))
+        for case in cases.values()
+        for field, reported in (
+            ("reported_upper_bound", None),
+            ("reported_lower_bound", None),
+            ("verified_upper_bound", "reported_upper_bound"),
+            ("verified_lower_bound", "reported_lower_bound"),
+        )
+        if reported is None
+        or not bounds_agree_at_declared_precision(case[reported], case[field])
+    ) + sum("site-approx" in frontier.gap(case)[0] for case in cases.values())
+    assert len(APPROX.findall(table)) == table.count("site-approx") == expected
+
+
+def test_an_exact_decimal_is_cut_from_the_exact_value_or_not_printed() -> None:
+    import sympy  # noqa: PLC0415
+
+    assert frontier.exact_decimal(sympy.Rational(939, 200)) == ("4.695", True)
+    assert frontier.exact_decimal(sympy.Rational(24, 5)) == ("4.8", True)
+    assert frontier.exact_decimal(sympy.Rational(15680, 3951)) == ("3.96861554…", False)
+    # Cut, where rounding would print 0.66666667.
+    assert frontier.exact_decimal(sympy.Rational(2, 3)) == ("0.66666666…", False)
+    # Nine places: one more than the cell prints, so it is cut and says so.
+    assert frontier.exact_decimal(sympy.Rational(123456789, 10**9)) == ("0.12345678…", False)
+    assert frontier.exact_decimal(2 + sympy.sqrt(2) / 2) == ("2.70710678…", False)
+    # A value whose digits past the cut are all zeros as far as they were computed could
+    # be either side of the cut; the render stops.
+    with pytest.raises(SystemExit, match="too close"):
+        frontier.exact_decimal(1 + sympy.sqrt(2) / 10**40)
 
 
 def test_an_invalid_record_fails_the_render(tmp_path: Path, monkeypatch) -> None:

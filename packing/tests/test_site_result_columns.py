@@ -5,30 +5,38 @@ Recent Results on the overview and the table of the results page are one table
 say, from the faces, the typeset formulas and the floors `site.css` gives the columns, so
 this opens both rendered pages in Chromium and measures each table with the probes
 `devtools.measure_site_pages columns` and `chips` report from: at 1280 pixels, where the
-table has its 1104-pixel track to itself; at 1024 and 768, where it scrolls sideways in
-its wrap; and at 390, where each row is a card.
+table has its 1104-pixel track to itself; at 1024, where it still fits; at 768, where it
+scrolls sideways in its wrap; and at 390, where each row is a card.
 
-What it holds: the table fits its track at 1280; the id column is as narrow as an id; the
-credit column keeps room for its longest name, so no credit breaks inside a word; the
-rungs column holds its widest chip, a kind's or a standing's; the overview carries each
-result's records without showing them; and every chip on either page is one line high,
-every kind and standing chip one size.
+What it holds: the table fits its track at 1280 and at 1024; the id column is as narrow
+as an id; a long list of cases wraps in its own measure, no value of it cut, and sets no
+row taller than its six lines; the result column gives way to its floor, which its
+widest formula fits, and a formula ends a line only after a relation or a binary
+operator; the credit column keeps room for its longest name, so no credit breaks inside
+a word; the rungs column holds its widest chip, a kind's or a standing's; both tables
+show each result's records; and every chip on either page is one line high, every kind
+and standing chip one size.
 
-Each page is rendered and loaded once, in a module fixture, its math typeset, and then
-resized for each width. Skipped where no Chromium can be launched; `SQPACK_CHROMIUM`
-names one the environment supplies, as the other browser tools read it.
+Each page is rendered and loaded once, in a module fixture, with every row showing, its
+math typeset, and then resized for each width; the overview is then loaded as it opens,
+for the one check that needs its own filters. The checks that need no browser, of the
+list a cell holds and of the formulas' TeX, read the same render. Skipped where no
+Chromium can be launched; `SQPACK_CHROMIUM` names one the environment supplies, as the
+other browser tools read it.
 """
 
 from __future__ import annotations
 
+import html
 import os
+import re
 from collections.abc import Iterator
 from pathlib import Path
 from typing import Any, NamedTuple
 
 import pytest
 
-from devtools import render_overview
+from devtools import overview_data, overview_sections, render_overview
 from devtools.measure_site_pages import CHIPS, COLUMNS
 from devtools.preview_site import settle_math
 from devtools.render_explainer_pdf import BROWSER_OVERRIDE
@@ -40,8 +48,37 @@ PAGES = ("index.html", render_overview.RESULTS_PAGE)
 TABLE_WIDTHS = (1280, 1024, 768)
 PHONE = 390
 WIDTHS = (*TABLE_WIDTHS, PHONE)
+#: Each page's address with every row of its table showing: the overview opens on what
+#: is recent, significant and current, and its filters' query presets clear all three.
+EVERY_ROW = {"index.html": "?s-min=&age=&current=false", render_overview.RESULTS_PAGE: ""}
+#: The overview as it opens, under its own filters.
+AS_OPENED = "index.html as it opens"
+#: A view where no long list of cases shows: the results of one kind that each hold a
+#: case or two. (The overview as it opens held only such rows until T-064, a family of
+#: thirteen cases at S4, joined it.)
+SHORT_LISTS = "index.html, one kind of short lists"
+SHORT_LISTS_QUERY = "?s-min=&age=&current=false&kind=rigidity"
 #: The credit column's floor, 11.5rem, in pixels (`site.css`).
 CREDIT_MIN = 184
+#: The result column's floor, 18rem, in pixels (`site.css`), and what four formulas no
+#: line could end inside held the column to before a long quotient could end one.
+RESULT_MIN = 288
+RESULT_WAS = 411
+#: A long list of cases: the measure it wraps in, `--site-cases-measure`, 24 digits of
+#: the table's face, with the cell's padding, in pixels; the least the column narrows
+#: to, half the measure; and the most lines the longest list, T-056's 23 values, takes
+#: in the measure.
+CASES_MEASURE = 224.8
+CASES_MIN = 120.4
+CASES_LINES = 6
+#: The result with the longest list of cases, and the four whose quotients are long.
+MOST_CASES = "T-056"
+LONG_QUOTIENTS = ("T-022", "T-024", "T-026", "T-033")
+#: How far a table of results ran past its frame at 768 pixels before the result column
+#: could give way, with a rungs column of 159 pixels; and the most it may now, measured
+#: at 242 with a rungs column of 180, as wide as the kind "restricted optimality".
+SCROLL_WAS = 318.7
+SCROLL_MAX = 250
 #: The id column: five characters and the cell's padding, well under KPress's 96.
 ID_MAX = 64
 #: The six columns of a table of results, as `overview_sections.result_head` names them.
@@ -76,27 +113,45 @@ def laid(tmp_path_factory: pytest.TempPathFactory) -> Iterator[dict[tuple[str, i
             path = site / name
             path.write_text(site_renders.html(name), encoding="utf-8")
             page = browser.new_page(viewport={"width": TABLE_WIDTHS[0], "height": 900})
-            # The overview hides superseded rows as loaded; the columns and chips are
-            # measured with them showing, which the filter's query preset asks for.
-            page.goto(f"{path.as_uri()}?current=false", wait_until="load")
+            # The overview opens on its recent, significant, current rows; the columns
+            # and chips are measured with every row showing, which the filters' query
+            # presets ask for.
+            page.goto(f"{path.as_uri()}{EVERY_ROW[name]}", wait_until="load")
             settle_math(page)
             for width in WIDTHS:
                 page.set_viewport_size({"width": width, "height": 900})
                 page.wait_for_timeout(150)
-                (table,) = (
-                    table
-                    for table in page.evaluate(COLUMNS)
-                    if "site-results" in table["table"].split(".")
-                )
-                records = page.locator("table.site-results .site-records:visible").count()
-                found[name, width] = Laid(table, page.evaluate(CHIPS), records)
+                found[name, width] = _laid(page)
+            if name == "index.html":
+                page.set_viewport_size({"width": TABLE_WIDTHS[0], "height": 900})
+                page.goto(path.as_uri(), wait_until="load")
+                settle_math(page)
+                found[AS_OPENED, TABLE_WIDTHS[0]] = _laid(page)
+                page.goto(f"{path.as_uri()}{SHORT_LISTS_QUERY}", wait_until="load")
+                settle_math(page)
+                found[SHORT_LISTS, TABLE_WIDTHS[0]] = _laid(page)
             page.close()
         browser.close()
         yield found
 
 
+def _laid(page: Any) -> Laid:
+    """The page's table of results, its chips and its records, as it is laid out now."""
+    (table,) = (
+        table for table in page.evaluate(COLUMNS) if "site-results" in table["table"].split(".")
+    )
+    records = page.locator("table.site-results .site-records:visible").count()
+    return Laid(table, page.evaluate(CHIPS), records)
+
+
 def _column(table: dict[str, Any], name: str) -> dict[str, Any]:
-    (column,) = (column for column in table["columns"] if column["column"] == name)
+    """A column of a table: by its header's words where it is laid out as a table, and
+    by its cells' class where its rows are cards."""
+    (column,) = (
+        column
+        for column in table["columns"]
+        if name in (column["column"], column["column"].split()[-1])
+    )
     return column
 
 
@@ -105,13 +160,156 @@ def test_a_table_of_results_fits_its_track_at_1280(
     laid: dict[tuple[str, int], Laid], name: str
 ) -> None:
     """At a 1280-pixel window the table is as wide as its track and no wider, so nothing
-    scrolls sideways: the columns' floors, and the formulas that hold the result column
-    to 411 pixels, leave room to spare."""
+    scrolls sideways, with every row showing: the columns' floors leave room to spare,
+    which the long list of cases takes first and the result and the credit share."""
     table = laid[name, 1280].table
     assert table["layout"] == "table"
     assert table["scrolls"] == 0, table["table_width"]
     assert table["table_width"] == table["frame_width"]
-    assert table["shown_rows"] > 0
+    assert table["shown_rows"] == len(site_renders.overview().results)
+
+
+@pytest.mark.parametrize("name", PAGES)
+def test_a_table_of_results_fits_at_1024_and_scrolls_less_at_768(
+    laid: dict[tuple[str, int], Laid], name: str
+) -> None:
+    """At 1024 pixels the table fits its 944-pixel frame, where the result column, held
+    to 411 pixels, ran it 63 past: the result is at its floor and the list of cases has
+    given up what the window lacks, 135 pixels of its 225 left to it and 14 to spare
+    before its own floor. At 768 the floors alone, 930 pixels, are wider than the
+    688-pixel frame, and the table scrolls sideways by 242, where it ran 319 past."""
+    table = laid[name, 1024].table
+    assert (table["layout"], table["scrolls"]) == ("table", 0), table["table_width"]
+    narrow = laid[name, 768].table
+    assert 0 < narrow["scrolls"] <= SCROLL_MAX < SCROLL_WAS, narrow["table_width"]
+
+
+@pytest.mark.parametrize("name", PAGES)
+def test_a_long_list_of_cases_wraps_in_its_measure(
+    laid: dict[tuple[str, int], Laid], name: str
+) -> None:
+    """With every row showing at 1280 pixels the n column is as wide as its measure, and
+    the longest list, T-056's 23 values, takes six lines in it, where a column as narrow
+    as one value set them on fifteen. So the tallest row the list sets is those six
+    lines, and at no width is a value cut across two lines: a range keeps to one."""
+    cases = _column(laid[name, 1280].table, "n")
+    assert cases["width"] == pytest.approx(CASES_MEASURE, abs=1)
+    assert cases["lines"] == CASES_LINES
+    # The tallest row the list sets is T-056's, those six lines, and it is no taller
+    # than the tallest a summary sets, with its records under it: the measure stops
+    # where the list stops being the reason a row is tall.
+    longest = cases["tallest"]
+    summary = _column(laid[name, 1280].table, "Result")["tallest"]
+    assert (longest["row"], longest["lines"]) == (MOST_CASES.lower(), CASES_LINES)
+    assert longest["height"] <= summary["height"]
+    for width in TABLE_WIDTHS:
+        column = _column(laid[name, width].table, "n")
+        assert CASES_MIN - 0.5 <= column["width"] <= CASES_MEASURE + 1, width
+        assert (column["split"], column["broken"]) == ([], []), width
+
+
+def test_the_n_column_is_as_narrow_as_its_lists_where_none_is_long(
+    laid: dict[tuple[str, int], Laid],
+) -> None:
+    """Where every row shown holds a case or two, the n column is as narrow as what it
+    holds, each cell one line, under KPress's 6rem: the measure is a long list's alone,
+    so a single case has no empty column beside it."""
+    table = laid[SHORT_LISTS, 1280].table
+    cases = _column(table, "n")
+    assert 0 < table["shown_rows"] < len(site_renders.overview().results)
+    assert cases["lines"] == 1
+    assert cases["width"] < 96
+    assert table["scrolls"] == 0
+
+
+@pytest.mark.parametrize("name", PAGES)
+def test_on_a_phone_a_long_list_of_cases_takes_a_line_of_its_own(
+    laid: dict[tuple[str, int], Laid], name: str
+) -> None:
+    """On a phone the longest list runs the card's width under the id and the rungs, in
+    four lines where it had eight between them, and no value of it is cut."""
+    cases = _column(laid[name, PHONE].table, "site-col-n")
+    assert 1 < cases["lines"] <= 4
+    assert cases["split"] == []
+
+
+@pytest.mark.parametrize("name", PAGES)
+def test_the_result_column_gives_way_to_its_floor(
+    laid: dict[tuple[str, int], Laid], name: str
+) -> None:
+    """The result column narrows to its 18rem floor where the window is short of room,
+    well under the 411 pixels it was held to, and its widest piece of typeset math, the
+    numerator of T-033's quotient, fits that floor with the cell's padding: so nothing
+    the column holds is wider than it at any width."""
+    for width in (1024, 768):
+        result = _column(laid[name, width].table, "Result")
+        assert result["width"] == pytest.approx(RESULT_MIN, abs=0.5)
+    wide = _column(laid[name, 1280].table, "Result")
+    assert RESULT_MIN < wide["width"] < RESULT_WAS
+    assert wide["piece"]["row"] == "t-033"
+    assert wide["piece"]["width"] + PADDING <= RESULT_MIN
+    phone = _column(laid[name, PHONE].table, "site-col-result")
+    assert phone["piece"]["width"] <= laid[name, PHONE].table["table_width"] - PADDING
+
+
+@pytest.mark.parametrize("width", WIDTHS)
+@pytest.mark.parametrize("name", PAGES)
+def test_a_formula_ends_a_line_only_where_it_may(
+    laid: dict[tuple[str, int], Laid], name: str, width: int
+) -> None:
+    """A formula in a result's summary ends a line only after a relation or a binary
+    operator at its top level, and the words after it follow on: no line of a summary
+    begins with the comma after its formula, and no word of one is cut. Below 1280
+    pixels some formulas do wrap, so this is measured and not vacuous."""
+    result = _column(laid[name, width].table, "Result" if width != PHONE else "site-col-result")
+    assert (result["cuts"], result["stranded"], result["broken"]) == ([], [], [])
+    if width < 1280:
+        assert result["wrapped"] > 0
+
+
+def test_a_cell_of_cases_holds_each_value_in_a_box_and_reads_as_the_register_does() -> None:
+    """A result's n cell holds each count or range in a box of its own, the comma with
+    it, and reads as the register's scope does, ranges and all. The column sorts on the
+    first case and the Case filter reads the row's own list, as before."""
+    overview = site_renders.overview()
+    boxes = re.compile(r'<span class="site-n-value">([^<]*)</span>')
+    for result in overview.results:
+        cell = overview_sections.case_list(result)
+        assert html.unescape(re.sub(r"<[^>]+>", "", cell)) == result.scope
+        values = boxes.findall(cell)
+        assert " ".join(values) == html.escape(result.scope, quote=False)
+        assert all(" " not in value for value in values)
+    most = max(overview.results, key=lambda result: len(result.scope.split(", ")))
+    assert (most.id, len(most.scope.split(", "))) == (MOST_CASES, 23)
+    row, _ = overview_sections.result_table_row(most, overview, here=True, shown=True)
+    assert f'<td class="num site-col-n" data-value="{most.first_n}">' in row
+    assert f'data-n="{overview_sections.result_cases(most)}"' in row
+    assert overview_data.EN_DASH in most.scope
+    assert overview_data.EN_DASH not in overview_sections.result_cases(most)
+
+
+def test_a_long_quotient_may_end_a_line_after_its_solidus() -> None:
+    """A quotient of more than 24 digits sets its solidus as a binary operator, after
+    which a line may end; a shorter one, a decimal and a quotient inside a group are left
+    alone. Four results' summaries hold such a quotient, and each is set so in both
+    tables of results, with no TeX left in the MathML a screen reader is given."""
+    breakable = overview_data.breakable_quotients
+    long = r"s(11) \ge 955000\sqrt{2073600042893309449}/359341754646249 = 3.8269975\ldots"
+    assert breakable(long) == long.replace("/", r"\mathbin{/}")
+    for kept in (
+        r"s(11) > 3875000000/999999999 = 3.875000003875\ldots",
+        r"\sqrt{955000000000000000000/359341754646249}",
+        r"x = 1.955000207360004289330944/9",
+    ):
+        assert breakable(kept) == kept
+    overview = site_renders.overview()
+    for result in overview.results:
+        cell = overview_sections.result_text(result)
+        assert (r"\mathbin{/}" in cell) is (result.id in LONG_QUOTIENTS), result.id
+        spoken = re.findall(r'<span class="kpress-math-semantic">(.*?)</span>', cell)
+        assert not any("\\" in semantic for semantic in spoken), result.id
+        if result.id in LONG_QUOTIENTS:
+            assert "<mo>&#x0002F;</mo>" in spoken[0]
 
 
 @pytest.mark.parametrize("width", TABLE_WIDTHS)
@@ -135,14 +333,22 @@ def test_both_tables_lay_out_the_same_columns(
 
 
 @pytest.mark.parametrize("width", WIDTHS)
-def test_the_overview_carries_the_records_and_shows_none(
+def test_both_tables_show_each_results_records(
     laid: dict[tuple[str, int], Laid], width: int
 ) -> None:
-    """A result's records are a line under its summary on the results page, at every
-    width, and the overview's table, which is the same table, shows none of them."""
-    assert laid["index.html", width].records == 0
+    """A result's records are a line under its summary at every width, on the results
+    page and on the overview alike, which is the same table under other filters: one
+    line of records to each row showing. So with every row showing the two tables are
+    laid out the same, column for column and row for row."""
+    recent = laid["index.html", width]
     results = laid[render_overview.RESULTS_PAGE, width]
+    assert recent.records == recent.table["shown_rows"] > 0
     assert results.records == results.table["shown_rows"] > 0
+    assert recent.table["columns"] == results.table["columns"]
+    assert recent.table["tallest_row"] == results.table["tallest_row"]
+    if width == TABLE_WIDTHS[0]:
+        opened = laid[AS_OPENED, width]
+        assert opened.records == opened.table["shown_rows"] > 0
 
 
 @pytest.mark.parametrize("width", TABLE_WIDTHS)

@@ -41,6 +41,10 @@ def test_overview_figures_are_complete_static_svg_with_distinct_roles() -> None:
     assert "2,180 excluded" in roadmap
     assert "fixed-T rectangle" in roadmap
     assert "No packing has S < T" in roadmap
+    # A diagram's title is its figure's caption, not a line of the drawing.
+    assert "Two routes to the exact optimum" not in roadmap.replace(
+        "Two routes to the exact eleven-square optimum", ""
+    )
 
     local = roots["LOCAL_SVG"]
     curve = local.find(f".//{SVG}polyline[@data-accepted-ratio]")
@@ -49,13 +53,30 @@ def test_overview_figures_are_complete_static_svg_with_distinct_roles() -> None:
     ratio = Fraction(accepted["worst_dual_ratio"])
     assert curve.attrib["data-accepted-ratio"] == str(ratio)
     assert ratio < 1
-    assert "8,448 exact margins" in " ".join(local.itertext())
+    # The local diagram is the two curves and their labels; its census is the caption's,
+    # from the receipt the curve is drawn from.
+    assert {node.text for node in local.iter(f"{SVG}text")} == {"τ", "cτ²", "0", "1"}
+    assert figures.caption_facts() == {
+        "LOCAL_BRANCHES": f"{accepted['required_branches']:,}",
+        "LOCAL_MARGINS": f"{accepted['signed_coordinate_margins_checked']:,}",
+    }
+    assert figures.caption_facts() == {"LOCAL_BRANCHES": "128", "LOCAL_MARGINS": "8,448"}
 
     endpoint = " ".join(roots["ENDPOINT_SVG"].itertext())
     assert "same packing" in endpoint
     assert "No physical shrinking" in endpoint
     assert "Fixed-T local theorem" in endpoint
     assert "T > S: contradiction" in endpoint
+
+
+def test_a_changed_receipt_refuses_the_captions_facts(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """A caption's count comes from the receipt and is refused with the figure."""
+    path = _altered(figures.LOCAL, tmp_path / "local.json", "required_branches", 127)
+    monkeypatch.setattr(figures, "LOCAL", path)
+    with pytest.raises(ValueError, match="retained receipt changed"):
+        figures.caption_facts()
 
 
 def _altered(path: Path, destination: Path, field: str, value: object) -> Path:

@@ -726,7 +726,7 @@ def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) ->
         '<div class="site-case-note"><span class="site-card-label">Evidence and sources</span>'
         f"<details><summary>{len(evidence)} evidence entries</summary>"
         f"<p>{frontier.evidence_links(evidence)}</p></details>{_sources(case)}</div>"
-        f'<p class="site-case-links"><a href="frontier.html#n-{n}">In the frontier atlas</a>'
+        f'<p class="site-case-links"><a href="frontier.html#n-{n}">In the frontier survey</a>'
         f' <a class="site-case-github" href="{branch_file(source)}">On GitHub</a></p></div>'
     )
 
@@ -788,8 +788,7 @@ def cases_markdown(fill: Any) -> str:
 
 CASES_DESCRIPTION = (
     "Every tracked case of packing n unit squares in the smallest square, one record "
-    "each: the best packing known, every bound with its exact form and credit, and every "
-    "result that concerns it."
+    "each: the best packing known, every bound and its credit, and its results."
 )
 
 
@@ -797,9 +796,11 @@ def cases_page() -> Any:
     """The records as one kpress page, with the case files' links made to work here.
 
     The prose's links are rewritten as a reader document's are (`site_documents`): a
-    link to another case file becomes that case's record on this page, a link to a
-    rendered document its page, and anything else its link on `main`; a
-    link the record itself writes to a served page is kept.
+    link to another case file becomes that case's record on this page, a link to the
+    results register the results table, at the result's row when its text is a result's
+    id (`site_documents.RECORD_PAGES`), a link to a rendered document its page, and
+    anything else its link on `main`; a link the record itself writes to a served page
+    is kept.
     """
     from devtools import render_overview, site_documents  # noqa: PLC0415
     from devtools.repo_links import repository_tree  # noqa: PLC0415
@@ -810,14 +811,17 @@ def cases_page() -> Any:
         repository_tree(),
         "packing/frontier",
         served=frozenset({*render_overview.SITE_PAGES, "./"}),
-        aliases={f"packing/frontier/n-{n:03d}.md": f"#n-{n}" for n in numbers},
+        aliases={
+            **site_documents.RECORD_PAGES,
+            **{f"packing/frontier/n-{n:03d}.md": f"#n-{n}" for n in numbers},
+        },
     )
     report = site_documents.LinkReport()
     page = render_overview.kpress_page(
         cases_markdown(render_overview.fill),
         name=CASES_PAGE,
         current="frontier",
-        title=f"Case Records · {render_overview.SITE_NAME}",
+        title="Case Records",
         description=CASES_DESCRIPTION,
         toc=False,
         rewrite_body=lambda text: site_documents.rewrite_article(

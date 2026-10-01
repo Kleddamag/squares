@@ -1610,7 +1610,7 @@ An optional system is used only to rederive one constant.
 | the whole $n = 11$ story before T-060, from what a proof must do to what was left | [`n = 11`, End to End](SYNOPSIS.md#n--11-end-to-end) |
 | how packings are found, refined and verified | [Algorithms and Tooling](docs/project/research/research-2026-08-22-square-packing-algorithms-and-tooling.md) |
 | why pointing should beat scaling | [A Search Philosophy](docs/project/research/research-2026-08-23-search-philosophy-and-landscape-cartography.md) |
-| what is known for every $n \le 100$ | [`frontier/`](packing/frontier/README.md) |
+| what is known for every $n \le 324$ | [`frontier/`](packing/frontier/README.md) |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

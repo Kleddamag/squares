@@ -30,6 +30,13 @@
   width: 100%;
   height: auto;
 }
+/* The capacity drawing is one cell and two disks with no lettering, so it is set at a
+   drawing's width, centred, as the construction in Figure 1 is, and on a phone it
+   takes the column and does not scroll. */
+.n11-paper figure > svg.n11-capacity {
+  margin-inline: auto;
+  max-width: 24rem;
+}
 .n11-paper .figure-pair {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -39,10 +46,13 @@
 .n11-paper :is(.figure-pair, figure:has(> svg)) {
   font-size: var(--paper-font-size-support);
 }
+/* A label with no class of its own is the sans's regular weight, as a note is: weight
+   is inherited where the face is not, and without one a label sat at the serif's 400. */
 .n11-paper :where(figure > svg, .figure-pair > svg) text {
   font-family: var(--kpress-font-sans);
   font-feature-settings: var(--kpress-font-features-sans);
   font-size: var(--paper-diagram-font-size, var(--paper-font-size-support));
+  font-weight: var(--cert-font-weight-sans-light);
 }
 .n11-paper .n11-diagram-label {
   font-weight: var(--cert-font-weight-sans-bold);
@@ -51,18 +61,13 @@
   font-size: var(--paper-diagram-note-size, var(--paper-font-size-note));
   font-weight: var(--cert-font-weight-sans-light);
 }
-.n11-paper figure:first-of-type > svg {
-  max-height: 27rem;
-  width: auto;
-  max-width: 100%;
-  margin-inline: auto;
-}
 /* The cover, mask, capacity, capture and mechanism diagrams are drawn in one fixed
-   light palette, ink included, as the construction in Figure 1 is. On the dark theme
-   they keep a light ground under them, as Figure 1 does, so a label drawn outside a
-   panel stays readable; without it the labels were dark ink on the dark page. The
-   roadmap, local and endpoint diagrams are drawn in the theme's own tokens and take
-   none. A test holds this list to the diagrams that carry fixed ink. */
+   light palette, ink included. On the dark theme they keep a light ground under them,
+   so a label drawn outside a panel stays readable; without it the labels were dark ink
+   on the dark page. The roadmap, local and endpoint diagrams are drawn in the theme's
+   own tokens and take none, and the construction in Figure 1 carries no lettering and
+   takes the theme as the first paper's does (`.trump`, in the publication layer). A
+   test holds this list to the diagrams that carry fixed ink. */
 :root[data-kpress-resolved-theme="dark"]
   .n11-paper
   :is(
@@ -85,9 +90,6 @@
     width: calc(8.5in - 2 * var(--kpress-print-page-margin));
     max-width: none;
   }
-  .n11-paper figure:first-of-type > svg {
-    max-height: none;
-  }
 }
 @media screen and (max-width: 42rem) {
   .n11-paper .figure-pair {
@@ -99,6 +101,9 @@
   }
   .n11-paper .n11-diagram {
     min-width: 680px;
+  }
+  .n11-paper .n11-diagram.n11-capacity {
+    min-width: 0;
   }
   .n11-paper .n11-capture {
     min-width: 850px;

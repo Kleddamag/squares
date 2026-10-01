@@ -10,12 +10,15 @@
 
 <!-- The section's first two paragraphs are README's, read from its project-intro block
      (site_documents.overview_intro), so the problem is introduced in one text. Edit them
-     in README.md. Only the site's own statement below is written here. -->
+     in README.md. Only the site's own statement is written here, under its own
+     heading, The Squares Project. -->
 
 {{README_INTRO}}
 
-This Square Packing Project site collects all known historic research and current new
-results on the square packing problem.
+## The Squares Project
+
+This Squares Project site collects all known historic research and current new results
+on the square packing problem.
 Work on this problem has exploded in the summer of 2026 thanks to AI-powered research
 efforts.
 
@@ -99,43 +102,53 @@ packing drawn large, with a link to its case record.
 
 {{ATLAS_GRID}}
 
+<!-- The atlas as files and as a film: the two posters, each opening its PDF, and the
+     film. The cards and their note stood under the grid, in The Atlas, until 2026-10-01. -->
+
+## PDFs and Videos
+
 {{ATLAS_CARDS}}
 
 <p class="site-wide site-atlas-note">The best packings known. A star marks a verified lower bound proved since 22 August 2026. There is also a shorter film of the <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4">ascent from 1 to 100</a> (2 m 20 s). Both films are on the <a href="https://github.com/jlevy/squares/releases/tag/v0.4.2">v0.4.2 release</a> with the receipt recording each file and the page it was drawn from. Each poster is also an SVG (<a href="repo:packing/atlas/known-best/known-best-1-100.svg">1 to 100</a>, <a href="repo:packing/atlas/known-best/known-best-1-324.svg">1 to 324</a>). The <a href="repo:packing/atlas/known-best/README.md">atlas README</a> describes both.</p>
 
-## The Survey
+<!-- This section's fragment was #the-survey until 2026-10-01. The empty anchor in its
+     heading keeps an old link landing here, as Verification Ladders keeps its own. -->
 
-The survey records the best-known packing and the strongest verified lower bound for
-every $n \le 324$, with its provenance, keeping the bound a source reports apart from
-the bound verified here.
+## The Frontier Survey<a id="the-survey"></a>
+
+The frontier survey records the best-known packing and the strongest verified lower
+bound for every $n \le 324$, with its provenance, keeping the bound a source reports
+apart from the bound verified here.
 An external certificate counts once it is replayed in full and its mathematical
 assumptions are discharged, and each record says who ran the checks and how independent
-they were. The [frontier atlas](frontier.html) shows every case, and the
-[status table](status.html) is the generated summary.
+they were. The [Frontier](frontier.html) page shows every case.
 {{SURVEY_COUNTS}}
 The [literature archive](repo:packing/resources/README.md) keeps each primary source, a
 cleaned transcription and the unedited extraction it was checked against, and the
 [evidence inventory](repo:packing/frontier/INVENTORY.md) shows what each claim rests on
 and who did the work.
 
-The survey audits rather than transcribes.
+The frontier survey audits rather than transcribes.
 The earliest published proof of $s(7) = 3$ carries four recorded defects in its printed
-route, so the [$n = 7$ record](repo:packing/frontier/n-007.md) rests the case on
-independent later proofs.
+route, so the [$n = 7$ record](cases.html#n-7) rests the case on independent later
+proofs.
 
 Before this project’s work began on 22 August 2026, seven authors published lower bounds
 for seventeen squares, some also for eighteen, all independently: Brandwijk’s $89/20$
 (18 July), Burns’s $4.4811$ (6 August), MacIver’s $4.4502\ldots$ (8 August), Mira’s and
 Fort’s sixteen-point sets (10 and 11 August), anabologyco-maker’s $4.57$ and $9141/2000$
 (13 and 16 August), and Massaccesi’s $4.5058$ (21 August), replayed here as T-015 and
-T-016. The [seventeen-square record](repo:packing/frontier/n-017.md) lists them all;
-each has since been superseded.
+T-016. The [seventeen-square record](cases.html#n-17) lists them all; each has since
+been superseded.
 
 ## Other Square Packing Projects
 
 Others are working on the problem in the open.
 These are the projects on GitHub that the research frontier cites, each credited to its
-author.
+author. They are ordered by the significance of their results in the
+[register](all-results.html): by how many stand at S5, then at S4, and so on down, the
+newest first among equals.
+Each card ends with a count that opens those results.
 
 {{OTHER_PROJECTS}}
 

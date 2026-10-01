@@ -89,11 +89,16 @@ def _pin_checker(path: Path, sha: str) -> None:
         raise ValueError(f"figure's accepted checker changed: {path}")
 
 
-def _svg(name: str, title: str, description: str, *, width: int, height: int, body: str) -> str:
+def _svg(
+    name: str, title: str, description: str, *, width: int, height: int, body: str, top: int = 0
+) -> str:
+    """One diagram, its canvas from `top` down `height` of the coordinates its parts are
+    drawn in. A diagram carries its labels and nothing else: its title and whatever a
+    sentence says of it are the figure's caption, in the article."""
     title_id, desc_id = f"n11-mechanism-{name}-title", f"n11-mechanism-{name}-desc"
     return (
         f'<svg xmlns="{SVG_NS}" class="n11-diagram n11-mechanism-{name}" '
-        f'width="{width}" height="{height}" viewBox="0 0 {width} {height}" '
+        f'width="{width}" height="{height}" viewBox="0 {top} {width} {height}" '
         f'role="img" aria-labelledby="{title_id} {desc_id}">'
         f'<title id="{title_id}">{escape(title)}</title>'
         f'<desc id="{desc_id}">{escape(description)}</desc>{body}</svg>'
@@ -161,14 +166,6 @@ def _pose_svg() -> str:
             'fill="#f5bf65" stroke="#a15a00" stroke-width="2"/>'
         ),
         _text(513, 279, "Q: strict core offsets", note=True),
-        _text(28, 332, "If x ∈ K \N{MINUS SIGN} Q, a core point meets owned K.", note=True),
-        _text(
-            28, 356, "Q stays strictly inside the square throughout the angle row.", note=True
-        ),
-        _text(
-            28, 380, "K is owned in every valid packing under the accepted prior.", note=True
-        ),
-        _text(28, 404, "Shared interior forbids even a boundary center x.", note=True),
     ]
     return _svg(
         "pose",
@@ -177,7 +174,7 @@ def _pose_svg() -> str:
         "regions; Q contains offsets relative to a square center. The implication concerns "
         "valid packings under accepted prior ownership and a whole-angle strict Q core.",
         width=740,
-        height=432,
+        height=312,
         body="".join(body),
     )
 
@@ -345,11 +342,6 @@ def _row_svg() -> str:
         _text(35, 295, "D: field center region", note=True),
         _text(35, 585, "3 obstacles; 7 miss D", note=True),
         _text(395, 585, "Triangle magnified", note=True),
-        _text(20, 630, "One row contributes to a 32-row update.", note=True),
-        _text(
-            20, 654, "Ownership waits for all rows, common core, and compression.", note=True
-        ),
-        _text(20, 678, "Five complete updates exclude case 2095.", note=True),
     ]
     return _svg(
         "row",
@@ -362,9 +354,13 @@ def _row_svg() -> str:
         "the complete angular cover, common-core and compression checks; "
         "this one row is an illustration.",
         width=740,
-        height=706,
+        height=614,
         body="".join(body),
     )
+
+
+#: How far the charge figure's lower panel is raised into the room two sentences left.
+CHARGE_LIFT = 52
 
 
 def _charge_svg() -> str:
@@ -399,8 +395,8 @@ def _charge_svg() -> str:
         _text(186, 139, "core A", anchor="middle"),
         _text(455, 139, "core B", anchor="middle"),
         _text(328, 239, "median m", anchor="middle", note=True),
-        _text(28, 275, "Disjoint projection intervals cannot both contain m.", note=True),
-        _text(28, 298, "This shows one-direction capacity only.", note=True),
+        # The lower panel stands where it did under two lines of prose, less their room.
+        f'<g transform="translate(0 {-CHARGE_LIFT})">',
         '<line x1="28" y1="322" x2="705" y2="322" stroke="#cbd5e1"/>',
         _text(28, 358, "Accepted field example · canonical mask 0"),
         _text(28, 393, "Required owners O = {0,1,2,3,6}"),
@@ -412,8 +408,7 @@ def _charge_svg() -> str:
             'fill="#dcebef" stroke="#1d7874" stroke-width="2"/>'
         ),
         _text(570, 440, "q₁ + q₂ = 2 > 1 = b", anchor="middle"),
-        _text(28, 538, "The exact checker certifies every required direction.", note=True),
-        _text(28, 563, "The drawing does not show three sites inside a core.", note=True),
+        "</g>",
     ]
     return _svg(
         "charge",
@@ -424,7 +419,7 @@ def _charge_svg() -> str:
         "exceeding budget one. The exact checker "
         "establishes the required all-direction statements.",
         width=740,
-        height=588,
+        height=518 - CHARGE_LIFT,
         body="".join(body),
     )
 
@@ -433,7 +428,12 @@ def _point_in_cell(point: Point, cell: tuple[Point, ...]) -> bool:
     return d4.intersection((point,), cell) == (point,)
 
 
-def _symmetry_svg() -> str:
+def _d4_example() -> tuple[
+    list[tuple[Point, ...]], dict[str, Any], list[Point], dict[str, str]
+]:
+    """The accepted D4 example the symmetry figure draws, checked against its receipt:
+    the cover's cells, the overlay region whose point is shown, that point in its four
+    views, and what the caption says of the example and of the search it stands for."""
     _pin_checker(Path(d4.__file__), D4_CHECKER_SHA)
     receipt = _read_json(D4 / "result.json", D4_RESULT_SHA)
     inputs = receipt.get("input_sha256", {})
@@ -479,9 +479,17 @@ def _symmetry_svg() -> str:
         for q, label in zip(shown, region["labels"], strict=True)
     ):
         raise ValueError("selected D4 point does not have its retained labels")
-    body: list[str] = [
-        _text(26, 37, "One rational point; four coordinate views over fixed cells")
-    ]
+    facts = {
+        "D4_BAN_REGIONS": " and ".join(str(index) for index in pair["regions"]),
+        "D4_REGIONS": f"{len(overlay['regions']):,}",
+        "D4_BANS": f"{receipt['strict_distance_bans']:,}",
+    }
+    return cells, region, shown, facts
+
+
+def _symmetry_svg() -> str:
+    cells, region, shown, _ = _d4_example()
+    body: list[str] = []
     for index, (q, label) in enumerate(zip(shown, region["labels"], strict=True)):
         left = 28 + index * 174
         body.append(
@@ -507,31 +515,30 @@ def _symmetry_svg() -> str:
             'r="5" fill="#a15a00"/>'
         )
         body.append(_text(left + 78, 247, f"view {index + 1}: cell {label}", anchor="middle"))
-    body += [
-        _text(
-            26,
-            292,
-            "The irregular cells stay fixed; only the point's coordinates change.",
-            note=True,
-        ),
-        '<line x1="26" y1="316" x2="705" y2="316" stroke="#cbd5e1"/>',
-        _text(26, 354, "One illustrative strict distance ban: overlay regions 9 and 12"),
-        _text(26, 389, "Their maximum squared physical center distance is < 1."),
-        _text(26, 427, "The D4 search checked 220 closed regions and 1,572 bans.", note=True),
-        _text(26, 455, "This point and ban illustrate the reduction.", note=True),
-        _text(26, 479, "They do not represent the exhaustive search.", note=True),
-    ]
     return _svg(
         "symmetry",
         "Four point views on a fixed irregular cell cover",
         "The same exact rational point from retained D4 overlay region 9 has fixed-cover "
-        "cell labels 0,7,3,5 under four coordinate views. The lower note cites one "
-        "strict banned overlay pair, regions 9 and 12; the accepted exhaustive computation "
-        "has 220 closed overlay regions and 1572 strict pair bans.",
+        "cell labels 0,7,3,5 under four coordinate views.",
         width=740,
-        height=505,
+        top=50,
+        height=216,
         body="".join(body),
     )
+
+
+def caption_facts() -> dict[str, str]:
+    """What the article's captions say of these diagrams that is data, each from the
+    receipt its diagram is drawn from and only once that receipt checks: how many rows
+    the worked row's update has and how many complete updates exclude its case, and the
+    D4 search's census with the one ban the caption cites. A caption names these and
+    never types them."""
+    source, step, _ = _admitted_row()
+    return {
+        "ROW_UPDATE_ROWS": str(len(step["rows"])),
+        "ROW_CASE_UPDATES": str(len(source["steps"])),
+        **_d4_example()[3],
+    }
 
 
 def render_mechanism_figures() -> dict[str, str]:

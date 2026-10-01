@@ -102,14 +102,19 @@ def _svg(
     description: str,
     *,
     width: int,
-    height: int,
+    top: int,
+    bottom: int,
     body: str,
 ) -> str:
+    """One diagram, its canvas from `top` to `bottom` of the coordinates its parts are
+    drawn in. A diagram carries its labels and nothing else: its title and whatever a
+    sentence says of it are the figure's caption, in the article."""
     title_id = f"n11-{identifier}-title"
     desc_id = f"n11-{identifier}-desc"
+    height = bottom - top
     return (
         f'<svg xmlns="{SVG_NS}" class="n11-diagram n11-{identifier}" '
-        f'width="{width}" height="{height}" viewBox="0 0 {width} {height}" '
+        f'width="{width}" height="{height}" viewBox="0 {top} {width} {height}" '
         f'role="img" aria-labelledby="{title_id} {desc_id}">'
         f'<title id="{title_id}">{escape(title)}</title>'
         f'<desc id="{desc_id}">{escape(description)}</desc>'
@@ -145,10 +150,7 @@ def _down_arrow(y: int) -> str:
 
 def _roadmap() -> str:
     body = (
-        _text(450, 30, "Two routes to the exact optimum", anchor="middle")
-        + _card(
-            48, "Exact construction at T", "Eleven unit squares fit: s(11) ≤ T", accent=True
-        )
+        _card(48, "Exact construction at T", "Eleven unit squares fit: s(11) ≤ T", accent=True)
         + _text(
             450,
             151,
@@ -182,7 +184,8 @@ def _roadmap() -> str:
         "classes, not numbers of packings. The diagram summarizes accepted premises "
         "and does not rerun their geometry.",
         width=900,
-        height=665,
+        top=36,
+        bottom=665,
         body=body,
     )
 
@@ -197,32 +200,15 @@ def _local(ratio: Fraction) -> str:
         for step in range(33)
     )
     body = (
-        _text(380, 37, "Fixed-T local isolation", anchor="middle")
-        + _text(
-            380,
-            68,
-            "Capture and inclusion come first",
-            note=True,
-            anchor="middle",
-        )
-        + f'<path d="M{left} {top}V{bottom}H{right}" fill="none" stroke="{MUTED}" '
+        f'<path d="M{left} {top}V{bottom}H{right}" fill="none" stroke="{MUTED}" '
         'stroke-width="2"/>'
-        + f'<path d="M{left} {bottom}L{right} {top}" fill="none" stroke="{INK}" '
+        f'<path d="M{left} {bottom}L{right} {top}" fill="none" stroke="{INK}" '
         'stroke-width="3"/>' + f'<polyline points="{curve}" fill="none" stroke="{ACCENT}" '
         f'data-accepted-ratio="{ratio}" stroke-width="3" stroke-dasharray="8 5"/>'
         + _text(539, 113, "τ", anchor="middle")
         + _text(556, 246, "cτ²", anchor="middle")
         + _text(left, 385, "0", note=True, anchor="middle")
         + _text(right, 385, "1", note=True, anchor="middle")
-        + _text(380, 414, "0 < τ ≤ 1; exact checks give c < 1", note=True, anchor="middle")
-        + _text(380, 450, "No solution for 0 < τ ≤ 1", anchor="middle")
-        + _text(
-            380,
-            479,
-            "128 branches; 8,448 exact margins",
-            note=True,
-            anchor="middle",
-        )
     )
     return _svg(
         "local",
@@ -234,24 +220,17 @@ def _local(ratio: Fraction) -> str:
         "display; the complete 8,448 exact margins prove the result. This is not "
         "a projection of the 33-dimensional pose space or a global uniqueness claim.",
         width=760,
-        height=500,
+        top=80,
+        bottom=404,
         body=body,
     )
 
 
 def _endpoint() -> str:
     body = (
-        _text(450, 35, "The same smaller packing in two frames", anchor="middle")
-        + _text(
-            450,
-            68,
-            "Schematic; size gap not to scale",
-            note=True,
-            anchor="middle",
-        )
-        + f'<rect x="65" y="118" width="260" height="260" fill="none" '
+        f'<rect x="65" y="118" width="260" height="260" fill="none" '
         f'stroke="{MUTED}" stroke-width="2"/>'
-        + f'<rect x="105" y="158" width="180" height="180" fill="none" '
+        f'<rect x="105" y="158" width="180" height="180" fill="none" '
         f'stroke="{ACCENT}" stroke-width="3" stroke-dasharray="8 5"/>'
         + _text(195, 109, "Rational cap U > T", anchor="middle")
         + _text(195, 256, "packing in S < T", anchor="middle")
@@ -291,9 +270,22 @@ def _endpoint() -> str:
         "The drawn container gaps are schematic and not to scale; no claim of "
         "uniqueness for all optimal packings is made.",
         width=900,
-        height=560,
+        top=78,
+        bottom=560,
         body=body,
     )
+
+
+def caption_facts() -> dict[str, str]:
+    """What the article's captions say of these diagrams that is data: the fixed-T local
+    check's census, from the receipt the diagram itself is drawn from, and only once
+    every accepted premise matches. A caption names these and never types them."""
+    _sources()
+    local = _load(LOCAL)
+    return {
+        "LOCAL_BRANCHES": f"{local['required_branches']:,}",
+        "LOCAL_MARGINS": f"{local['signed_coordinate_margins_checked']:,}",
+    }
 
 
 def render_overview_figures() -> dict[str, str]:

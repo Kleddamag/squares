@@ -18,6 +18,15 @@
 // word does to it ("Queuingthe" over "orydotcom"); a break after a hyphen or a slash is
 // a word's own and is not counted, and typeset math is passed over.
 //
+// What a column's lines may not do is reported with them. `split` lists the values of a
+// list of cases (`.site-n-value`) that sit on more than one line, a range cut at its
+// dash. `piece` is the widest piece of typeset math in the column, with its row, its
+// width and its text: KaTeX sets a formula as pieces a line cannot end inside (`.base`),
+// so the widest is the least a cell of formulas can be. `wrapped` counts the formulas set
+// on more than one line, and `cuts` lists the pieces a line ends after that close with
+// neither a relation nor a binary operator, the only places a formula may end a line. `stranded` lists the punctuation that begins a line, such as
+// the comma after a formula that filled its line.
+//
 // In the `cards` layout no column has a width and none sets a row's height alone; the
 // table reports its tallest card (`tallest_row`, as it does in either layout) and each
 // cell's class with the most lines it takes, so a cell that wraps badly on a phone shows
@@ -61,6 +70,90 @@
         if (tops.size > 1) {
           found.push(word[0]);
         }
+      }
+    }
+    return found;
+  };
+  /** The values of a list of cases in a cell that a line break cuts.
+   * @param {Element} cell */
+  const split = (cell) =>
+    [...cell.querySelectorAll(".site-n-value")]
+      .filter(
+        (value) =>
+          new Set([...value.getClientRects()].map((rect) => Math.round(rect.top))).size > 1,
+      )
+      .map(words);
+  /** Whether a piece of a formula closes with a relation or a binary operator, after
+   * which KaTeX lets a line end: its last atom, the space after it aside.
+   * @param {Element} piece */
+  const closes = (piece) => {
+    const atoms = [...piece.children].filter(
+      (atom) => !atom.classList.contains("mspace") && !atom.classList.contains("strut"),
+    );
+    const last = atoms.at(-1);
+    return Boolean(last?.classList.contains("mrel") || last?.classList.contains("mbin"));
+  };
+  /** The typeset math of a cell: its widest piece, how many of its formulas take more
+   * than one line, and the pieces a line ends after that do not close with a relation
+   * or a binary operator.
+   * @param {Element} cell */
+  const math = (cell) => {
+    const line = Number.parseFloat(getComputedStyle(cell).lineHeight) || 20;
+    /** @type {{ width: number, text: string } | null} */
+    let piece = null;
+    /** @type {string[]} */
+    const cuts = [];
+    let wrapped = 0;
+    for (const formula of cell.querySelectorAll(".katex-html")) {
+      const pieces = [...formula.children].filter((child) => child.classList.contains("base"));
+      let ends = 0;
+      for (const [index, base] of pieces.entries()) {
+        const box = base.getBoundingClientRect();
+        if (!piece || box.width > piece.width) {
+          piece = { width: round(box.width), text: words(base) };
+        }
+        const next = pieces[index + 1];
+        if (next && next.getBoundingClientRect().top - box.top > line / 2) {
+          ends += 1;
+          if (!closes(base)) {
+            cuts.push(words(base));
+          }
+        }
+      }
+      wrapped += ends > 0 ? 1 : 0;
+    }
+    return { piece, cuts, wrapped };
+  };
+  /** The punctuation that begins a line of a cell: a comma, a stop or a closing bracket
+   * at the start edge of what holds it, after something else.
+   * @param {Element} cell */
+  const stranded = (cell) => {
+    /** @type {string[]} */
+    const found = [];
+    const walker = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT);
+    const range = document.createRange();
+    let first = true;
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      const text = node.textContent ?? "";
+      const holder = node.parentElement;
+      if (holder?.closest(".katex, .kpress-math-render, .kpress-math-semantic")) {
+        first = false;
+        continue;
+      }
+      const mark = /^\s*([,.;:)\]])/.exec(text);
+      if (mark && !first && holder) {
+        const at = text.indexOf(mark[1] ?? "");
+        range.setStart(node, at);
+        range.setEnd(node, at + 1);
+        const style = getComputedStyle(holder);
+        const edge = holder.getBoundingClientRect().left + Number.parseFloat(style.paddingLeft);
+        const box = range.getBoundingClientRect();
+        if (box.width > 0 && Math.abs(box.left - edge) < 1 && style.display !== "inline") {
+          found.push(text.trim().slice(0, 24));
+        }
+      }
+      if (text.trim()) {
+        first = false;
       }
     }
     return found;
@@ -121,8 +214,11 @@
         height: round(row.getBoundingClientRect().height),
         cells: [...row.cells].map((cell) => ({
           ...content(cell),
+          ...math(cell),
           name: cell.className,
           broken: broken(cell),
+          split: split(cell),
+          stranded: stranded(cell),
         })),
       }));
       const tallestRow = measured.reduce(
@@ -148,12 +244,22 @@
           (best, item) => (best && best.row.height >= item.row.height ? best : item),
           /** @type {(typeof sets)[number] | null} */ (null),
         );
+        const widest = cellsOf.reduce(
+          (best, item) =>
+            item.cell.piece && (best?.cell.piece?.width ?? 0) < item.cell.piece.width ? item : best,
+          /** @type {(typeof cellsOf)[number] | null} */ (null),
+        );
         const head = heads[index];
         return {
           column: name,
           width: cards || !head ? null : round(head.getBoundingClientRect().width),
           lines: Math.max(0, ...cellsOf.map(({ cell }) => cell.lines)),
           broken: [...new Set(cellsOf.flatMap(({ cell }) => cell.broken))],
+          split: [...new Set(cellsOf.flatMap(({ cell }) => cell.split))],
+          cuts: [...new Set(cellsOf.flatMap(({ cell }) => cell.cuts))],
+          wrapped: cellsOf.reduce((sum, { cell }) => sum + cell.wrapped, 0),
+          stranded: [...new Set(cellsOf.flatMap(({ cell }) => cell.stranded))],
+          piece: widest ? { row: widest.row.key, ...widest.cell.piece } : null,
           tallest: tallest
             ? { row: tallest.row.key, height: tallest.row.height, lines: tallest.cell.lines }
             : null,

@@ -78,6 +78,10 @@ body {
   /* The space above and below every table, on screen: a site table with its filter bar,
      and a document's own table (paper-design.md, Tables). */
   --site-table-space: 2rem;
+  /* The measure a long list of cases wraps in, in the n column of a table of results: a
+     result about five values or more sets them in the line, this many digits to a line
+     (paper-design.md, Tables). */
+  --site-cases-measure: 24ch;
   /* The least space between a wide block and the edge of the page's content area, inside
      the page's margin: a table and its filter bar, a row of cards, the atlas grid. It is
      KPress's own document gutter, so a wide block with no room to spare is as wide as
@@ -188,6 +192,7 @@ body {
   color: var(--kpress-doc-text);
   font-family: var(--kpress-font-sans);
   font-size: calc(var(--site-font-size-sans-base) * var(--site-subtitle-scale));
+  font-weight: var(--site-font-weight-sans-light);
   line-height: var(--paper-heading-leading);
   margin-block: var(--site-subtitle-space);
 }
@@ -201,10 +206,13 @@ body {
 .kpress .site-hero:has(.subtitle) h1 {
   margin-block-end: 0;
 }
+/* The closing credit: two quiet centred lines (`render_overview.colophon_lines`), whose
+   line and part rules are in site-nav.css, which the papers carry too. */
 .site-colophon {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: calc(var(--site-font-size-sans-base) * var(--paper-colophon-scale));
+  font-weight: var(--site-font-weight-sans-light);
   margin-block-start: 3rem;
   text-align: center;
 }
@@ -351,6 +359,54 @@ body {
 .kpress :is(a, button).site-card:focus-visible {
   background: var(--site-wash);
 }
+/* A card with a foot (`link_card(foot=)`): a box holding the card's link and then a
+   closing line with links of its own, a project's tally of results, since a link cannot
+   hold a link. The box is the card: it takes the border and the size, and washes and
+   shows its corner icon while its link is hovered or focused, as a card that is itself
+   the link does. The link carries the card's padding; the foot stands at the card's
+   lower edge, so the tallies of a row line up whatever the notes above them run to. */
+.kpress div.site-card.site-card-footed {
+  --site-card-pad-end: 2.2rem;
+  gap: 0;
+  padding: 0;
+  position: relative;
+  transition: background-color var(--site-hover-duration) var(--site-hover-easing);
+}
+.kpress .site-card-footed > .site-card-main {
+  color: inherit;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: var(--site-card-pad-block) var(--site-card-pad-end) 0.5rem var(--site-card-pad-start);
+  text-decoration: none;
+}
+.kpress .site-card-footed:has(> .site-card-main:is(:hover, :focus-visible)) {
+  background: var(--site-wash);
+}
+.kpress div.site-card.site-card-footed::after {
+  color: var(--kpress-doc-muted);
+  inset-block-start: 0.8rem;
+  inset-inline-end: 0.8rem;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity var(--site-hover-duration) var(--site-hover-easing);
+}
+.kpress .site-card-footed:has(> .site-card-main:is(:hover, :focus-visible))::after {
+  opacity: 1;
+}
+.kpress .site-card-footed > .site-card-foot {
+  color: var(--site-support-color);
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
+  line-height: 1.4;
+  margin: 0;
+  padding: 0 1rem var(--site-card-pad-block) var(--site-card-pad-start);
+}
+
 /* ---------- Arrows ----------
    Every arrow on the site is this one drawing, never a typed character: the text face
    has no glyphs for most arrows, and each browser drew them from a different fallback
@@ -498,6 +554,7 @@ body {
   box-shadow: 0 0.5rem 2rem oklch(0% 0 0 / 0.15);
   color: var(--kpress-doc-text);
   font-family: var(--kpress-font-sans);
+  font-weight: var(--site-font-weight-sans-light);
   max-block-size: var(--site-popover-max-block);
   max-width: min(36rem, 100vw - 2rem);
   overflow: auto;
@@ -554,6 +611,7 @@ body {
   display: grid;
   font-family: var(--kpress-font-sans);
   font-size: 1.75rem;
+  font-weight: var(--site-font-weight-sans-light);
   inline-size: var(--site-popover-close);
   inset-block-start: var(--site-popover-close-inset);
   inset-inline-end: var(--site-popover-close-inset);
@@ -658,6 +716,7 @@ body {
   cursor: pointer;
   font-family: var(--kpress-font-sans);
   font-size: inherit;
+  font-weight: var(--site-font-weight-sans-medium);
   line-height: inherit;
 }
 .kpress :is(.site-popover a, button).site-popover-action:hover,
@@ -707,6 +766,7 @@ body {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   line-height: 1.4;
 }
 
@@ -719,6 +779,7 @@ body {
   display: flex;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   gap: 0.4rem;
   margin-block-start: 0.35rem;
   overflow-wrap: break-word;
@@ -745,6 +806,7 @@ body {
   gap: 0.5rem 1rem;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-support);
+  font-weight: var(--site-font-weight-sans-light);
   margin-block: var(--site-table-space) 0.5rem;
 }
 @media screen {
@@ -770,6 +832,11 @@ body {
   display: inline-flex;
   gap: 0.35rem;
   align-items: baseline;
+}
+/* A preset-only control (`data-preset`) is out of the bar until a link sets it: the
+   label's own display would otherwise show it. */
+.site-table-tools label[hidden] {
+  display: none;
 }
 .site-table-tools :is(select, input) {
   background: var(--kpress-doc-bg, transparent);
@@ -851,8 +918,9 @@ body {
 }
 /* The short columns keep as narrow as their content, leaving the spare width to the long
    text column. The id and the date stay on one line; an n can be a long list of counts,
-   so it wraps. An id is five characters, narrower than the 6rem KPress keeps a cell to,
-   so its column gives that floor up. A phone's card-per-row layout sizes its own cells. */
+   so it wraps, and a table of results gives a long list a measure of its own (below).
+   An id is five characters, narrower than the 6rem KPress keeps a cell to, so its column
+   gives that floor up. A phone's card-per-row layout sizes its own cells. */
 @media (width >= 40rem) {
   .site-table :is(.site-col-id, .site-col-n, .site-col-date) {
     width: 0;
@@ -892,6 +960,7 @@ body {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   line-height: 1.45;
   margin-block: 0.4rem 0.2rem;
 }
@@ -905,6 +974,7 @@ body {
 .site-records {
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
 }
 .site-records a {
   white-space: nowrap;
@@ -979,16 +1049,6 @@ body {
 .site-star {
   color: oklch(52% 0.19 25);
 }
-.site-thumb {
-  display: block;
-  width: 3.2rem;
-  height: 3.2rem;
-}
-.site-thumb svg {
-  width: 100%;
-  height: 100%;
-}
-
 @media print {
   .site-nav,
   .site-table-tools {
@@ -1003,17 +1063,19 @@ body {
     display: none;
   }
 }
-/* The atlas's closing note, under its poster and film cards, in the support gray. */
+/* The note under the poster and film cards (PDFs and Videos), in the support gray. */
 .site-atlas-note {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   text-align: center;
 }
 /* The pointer under the recent table to the full results table, in the sans face. */
 .site-more {
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
 }
 /* A date comes first, and then what it dates, "published" or "established", in the
    support colour, on its own line under the date so the column stays narrow. */
@@ -1076,13 +1138,14 @@ body {
    line ("Queuingtheorydotcom", 167px of the 184), so a credit wraps between names, two
    or three to a line, and never inside one. KPress's own floor, 6rem, set a credit one
    word to a line while the result column kept the spare width. The rungs column is as
-   wide as its widest chip, since no chip wraps: the three rungs at 114px, and the widest
-   kind, "restricted optimality", at 164; no chip of the status line is wider. The
-   result column cannot give that
-   room: four results' formulas, which do not break, hold it to 411px. So a result's
-   records are no column of their own, which would be left 98px of a 1280px window's
-   1104 and set a link to a line; they sit under the summary, in the result's cell, on
-   a line or two. */
+   wide as its widest chip, since no chip wraps: the three rungs at 114px, and the
+   widest kind, "restricted optimality", at 180 where a row with one shows; no chip of
+   the status line is wider. The result
+   column's floor is its 18rem (above): the widest piece of a formula a line cannot end
+   inside is narrower than that, now that a long quotient may end a line after its
+   solidus (`overview_data.breakable_quotients`). A result's records are no column of
+   their own, which would set a link to a line; they sit under the summary, in the
+   result's cell, on a line or two. */
 @media (width >= 40rem) {
   .site-results .site-col-credit {
     min-width: 11.5rem;
@@ -1093,15 +1156,49 @@ body {
     width: 0;
   }
 }
+/* A result's cases, its n: each count or range is a box a line cannot end inside
+   (`overview_sections.case_list`), so a range is never cut after its dash. A list reads
+   from the start of its cell, as text does, and the column's header with it.
+
+   A cell of up to four values stays on one line and is as narrow as that line. A cell of
+   five or more wraps, and asks for `--site-cases-measure`: T-056's 23 values take 6
+   lines there, where a column as narrow as one value set them one or two to a line, 15
+   lines and a row 386px tall. The measure is what the cell would like, not a floor: a
+   table gives a column the width it asks for before the result and the credit, which
+   ask for none, take any spare width, and where the window is short of room the column
+   narrows first, to half its measure, a range and a count to a line, before the table
+   scrolls sideways. KPress's 6rem floor is given up, as the id's is. Where no row
+   showing has a long list, the column is as narrow as the short ones, so a single case
+   has no empty column beside it. */
+.site-n-value {
+  white-space: nowrap;
+}
+@media (width >= 40rem) {
+  .kpress .site-results :is(th, td).site-col-n {
+    min-width: 0;
+    text-align: start;
+  }
+  .site-results td.site-col-n {
+    white-space: nowrap;
+  }
+  .site-results td.site-col-n:has(.site-n-value:nth-child(5)) {
+    min-width: calc(var(--site-cases-measure) / 2 + 1rem);
+    white-space: normal;
+    width: calc(var(--site-cases-measure) + 1rem);
+  }
+}
+/* A formula in a result's summary is set in the line. KPress sets inline math as a box
+   of its own (`.kpress-math-inline`, an inline block), and a box too wide for its line
+   wraps inside itself and sends the words after it to a new line, which then began with
+   the summary's comma. In the line, a formula ends a line where KaTeX lets one end,
+   after a relation or a binary operator at its top level, and the words after it follow
+   on. */
+.site-results .site-col-result .kpress-math-inline {
+  display: inline;
+}
 .site-results .site-col-result .site-records {
   margin-block-start: 0.3rem;
   min-width: 0;
-}
-/* The overview's recent table is the results page's table, and this is its one rule: it
-   carries each result's records and does not show them. Every link is in the row's
-   popover and on the result's row of the results page. */
-.kpress .site-recent-table .site-records {
-  display: none;
 }
 
 .site-table .site-rungs {
@@ -1174,6 +1271,13 @@ body {
     color: var(--kpress-doc-muted);
     content: "n = ";
   }
+  /* A list of five values or more takes a line of its own under the id and the rungs,
+     the card's whole width, and wraps there from the start of the line: between them it
+     had under half of that. */
+  .kpress .site-results td.site-col-n:has(.site-n-value:nth-child(5)) {
+    grid-area: 2 / 1 / auto / -1;
+    text-align: start;
+  }
   .site-results :is(.site-col-result, .site-records) {
     grid-column: 1 / -1;
   }
@@ -1207,6 +1311,7 @@ body {
 .site-cell-quiet {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
+  font-weight: var(--site-font-weight-sans-light);
 }
 .kpress .site-table tr[data-current="false"] td {
   color: var(--site-support-color);
@@ -1317,44 +1422,85 @@ body {
 }
 
 /* ---------- Frontier atlas ---------- */
-/* Nine columns: the atlas takes a wider track than the site's other wide blocks. */
+/* Ten columns: the atlas takes a wider track than the site's other wide blocks. */
 .site-page .site-frontier {
   --site-wide: 86rem;
+  /* The side of a row's drawing: two lines of the table's text, at the cells' line
+     height of 1.4. Every row holds two lines at least (its Records cell is the case
+     file's link over the row's trigger), so the drawing, in the padding every cell has,
+     is exactly as tall as the shortest row's text and never makes a row taller. */
+  --site-frontier-thumb: calc(2.8 * var(--site-font-size-note));
+  --site-frontier-cell-inline: 0.4rem;
 }
-.site-frontier .site-frontier-n {
-  align-items: center;
-  display: inline-flex;
-  flex-direction: column;
-  gap: 0.2rem;
+/* A row reads across its middle: every cell is centred on the row's height, so a value
+   of one line sits level with the drawing and with the middle of a neighbour of two or
+   three lines. The header keeps the foot of its cell, as in every site table. */
+.site-frontier td {
+  vertical-align: middle;
 }
-.site-frontier .site-thumb {
+/* Ten columns in the 1200 pixels a 1280-pixel window gives the table. Every column is as
+   wide as what it holds and no wider: KPress's 6rem floor would set the drawing, n and
+   the star each in 96 pixels. And a cell keeps 0.4rem at either side where the other
+   site tables keep 0.5rem, which is the 29 pixels the table needs to fit that track
+   with a credit's longest name whole (the note below) and the gap clear of the records
+   (the Records cell, below). */
+.kpress .site-frontier :is(th, td) {
+  min-width: 0;
+  padding-inline: var(--site-frontier-cell-inline);
+}
+/* The drawing has the first column to itself, under no heading, tight to its square:
+   the cell is the drawing and the row's start padding, and n follows it at the cells'
+   usual distance. */
+.kpress .site-frontier .site-thumb {
   color: var(--kpress-doc-muted);
-  height: 2.6rem;
-  width: 2.6rem;
+  padding-inline-end: 0;
+  width: 0;
 }
-/* Strokes in screen pixels, so a square's outline reads at 40 pixels across. */
+.kpress .site-frontier .site-col-n {
+  padding-inline-start: 0.5rem;
+}
+.site-thumb svg {
+  block-size: var(--site-frontier-thumb);
+  display: block;
+  inline-size: var(--site-frontier-thumb);
+}
+/* Strokes in screen pixels, so a square's outline reads at 50 pixels across. */
 .site-frontier .site-thumb :is(path, rect) {
   vector-effect: non-scaling-stroke;
 }
+/* The case a row is about is the one bold thing in it. */
+.site-frontier td.site-col-n {
+  font-weight: var(--site-font-weight-sans-bold);
+}
+/* The star's column is as narrow as its heading. */
+.site-frontier .site-col-recent {
+  width: 0;
+}
+/* A credit wraps between its words and never inside a name: KPress lets a table's cell
+   break anywhere, which set "Queuingtheorydotcom" on two lines in a column a few pixels
+   narrower than the name. The column is now at least as wide as the longest name. */
 .site-frontier .site-frontier-note {
   display: block;
   font-size: var(--site-font-size-note);
   line-height: 1.3;
   margin-inline-start: auto;
   max-width: 11rem;
+  word-break: normal;
 }
-.site-frontier .site-frontier-approx {
+.site-frontier .site-approx {
   color: var(--site-support-color);
   display: block;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
   font-variant-numeric: tabular-nums;
+  font-weight: var(--site-font-weight-sans-light);
   white-space: nowrap;
 }
 .site-frontier .site-frontier-same {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   white-space: nowrap;
 }
 .site-frontier .site-decimal {
@@ -1365,6 +1511,11 @@ body {
    narrow as the link. */
 .site-frontier .site-records .site-cell-quiet {
   display: block;
+}
+/* The gap ends at its cell's edge and the records start at theirs: half a rem more
+   between them keeps a decimal from running into the case file's name. */
+.kpress .site-frontier td.site-records {
+  padding-inline-start: calc(var(--site-frontier-cell-inline) + 0.5rem);
 }
 
 /* The homepage's picture: one packing, centered under the title, in the page's ink. */
@@ -1391,6 +1542,7 @@ body {
   color: var(--kpress-doc-muted);
   font-family: var(--kpress-font-sans);
   font-size: calc(var(--site-font-size-sans-base) * 0.85);
+  font-weight: var(--site-font-weight-sans-light);
   margin-block-start: 0.5rem;
 }
 
@@ -1426,6 +1578,7 @@ body {
   display: grid;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   grid-template-columns: repeat(3, minmax(0, 1fr));
   line-height: var(--site-ladders-leading);
   position: relative;
@@ -1579,6 +1732,7 @@ body {
   font-family: var(--kpress-font-sans);
   font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
+  font-weight: var(--site-font-weight-sans-light);
   margin-block-start: 0.2rem;
 }
 /* The grid shows n = 1 to 100 until its button, centred under it, places the rest. The
@@ -1601,6 +1755,7 @@ body {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   margin-block: 0.8rem 0;
   text-align: center;
 }
@@ -1771,6 +1926,7 @@ body {
   cursor: pointer;
   font-family: var(--kpress-font-sans);
   font-size: 1.1rem;
+  font-weight: var(--site-font-weight-sans-light);
   inline-size: 2.75rem;
   block-size: 2.4rem;
   transition: background-color var(--site-hover-duration) var(--site-hover-easing);
@@ -1922,6 +2078,7 @@ body {
 }
 .site-case-head {
   font-family: var(--kpress-font-sans);
+  font-weight: var(--site-font-weight-sans-light);
   text-align: center;
 }
 .site-case-steps {
@@ -1973,6 +2130,7 @@ body {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   margin-block-start: 0.5rem;
   text-align: center;
 }
@@ -1989,6 +2147,7 @@ body {
 .site-case-note {
   border: 1px solid var(--kpress-doc-border);
   font-family: var(--kpress-font-sans);
+  font-weight: var(--site-font-weight-sans-light);
   min-inline-size: 0;
   padding: 0.7rem 0.9rem;
 }
@@ -2018,6 +2177,7 @@ body {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   line-height: 1.45;
   margin-block: 0.5rem 0;
 }
@@ -2033,6 +2193,7 @@ body {
 }
 .site-case-more {
   font-family: var(--kpress-font-sans);
+  font-weight: var(--site-font-weight-sans-light);
   margin-block-start: 1.5rem;
 }
 .kpress .site-case-heading {
@@ -2102,6 +2263,7 @@ body {
   display: grid;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   gap: 0.25rem;
   grid-template-columns: repeat(auto-fill, minmax(2.6rem, 1fr));
   margin-block: 1.5rem;
@@ -2189,6 +2351,7 @@ body {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-light);
   margin-inline: auto;
   max-inline-size: calc(var(--kpress-measure) + 2 * var(--kpress-column-inset));
   text-align: center;

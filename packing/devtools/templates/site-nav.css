@@ -322,6 +322,22 @@
   border-block-end: 1px solid var(--kpress-doc-border);
 }
 
+/* ---------- Closing credit ----------
+   The footer's two lines, here because every page that has a footer carries this file:
+   the site's pages set them in `.site-colophon` (site.css) and the papers in their own
+   `.colophon` (`render_overview.colophon_lines` writes the lines for all of them). A
+   line is a block, so there are two at every width. A part, what stands on one side of
+   a middle dot, is an inline block: a line too long for a phone breaks at the dot, and
+   only a part wider than the page breaks inside itself, into balanced rows rather than
+   one word alone on the last. */
+.site-colophon-line {
+  display: block;
+}
+.site-colophon-part {
+  display: inline-block;
+  text-wrap: balance;
+}
+
 /* ---------- On an application page ----------
    The workbench is an application rather than a kpress page, so nothing around the bar
    gives it the margins kpress's standalone page gives every other page, nor the rule under

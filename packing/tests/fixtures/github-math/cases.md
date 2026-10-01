@@ -147,9 +147,9 @@ $$
 
 Measured on 1 October 2026. The first three were read off migrated files before they
 were cases here: ten formulas of ten in seven files for the first, and the ladder
-proposal's six formulas for the third. The last is not yet recorded.
+proposal's six formulas for the third.
 
 - [code] ending in a closing parenthesis, before a closing parenthesis: x (y $c_{87}(z)$) w
 - [math] ending in a closing parenthesis, before a comma: x (y $c_{88}(z)$, w) v
 - [math] an inner parenthesis that is not last, before a closing parenthesis: x (y $c_{89}(z) + 1$) w
-- ending in a closing bracket, before a closing bracket: x [y $c_{90}[z]$] w
+- [code] ending in a closing bracket, before a closing bracket: x [y $c_{90}[z]$] w

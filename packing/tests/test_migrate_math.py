@@ -394,6 +394,10 @@ def test_a_formula_ending_in_a_parenthesis_before_a_parenthesis_stays_code() -> 
     assert left == []
     assert demoted == "T-052 (`s(21)`) and ($n$), $s(21)$, and the pair (`(x, y)`).\n"
     assert github_unsafe_math(demoted) == []
+    # A bracket before a bracket does the same (c_90).
+    assert [d.verdict.kind for d in plan("See [the interval `[0, 1]`] here.\n").decisions] == [
+        "uncertain"
+    ]
 
 
 def test_no_conversion_holds_a_delimiter_or_a_markdown_escape() -> None:

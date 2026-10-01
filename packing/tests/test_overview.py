@@ -1241,6 +1241,26 @@ def test_the_bars_type_is_set_from_the_papers_scale() -> None:
         assert declaration in paper, declaration
 
 
+def test_the_bars_name_is_aligned_by_its_text() -> None:
+    """The bar aligns its items by their baselines, and the name's row, a mark and the
+    text, takes its baseline from the text, not from the mark that leads it, so the name
+    stands on the links' baseline at any size of either. Every item is set on one line,
+    a length, so the larger name is no taller than a link. `test_site_wide_blocks`
+    measures the baselines in a browser."""
+    css = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
+    inner = css[css.index("\n.site-nav-inner {") :]
+    assert "  align-items: baseline;\n" in inner[: inner.index("}")]
+    assert ".site-nav .site-name-text {\n  align-self: baseline;\n}" in css
+    assert "  --site-nav-line: calc(var(--site-nav-font-size) * 1.43);\n" in css
+    links = css[css.index("\n.site-nav a {") :]
+    assert "  line-height: var(--site-nav-line);\n" in links[: links.index("}")]
+    name = css[css.index("\n.site-nav .site-name {\n  align-items: center;") :]
+    name = name[: name.index("}")]
+    assert "display: inline-flex;" in name
+    for nudge in ("translate", "position: relative", "margin-block", "vertical-align"):
+        assert nudge not in name, nudge
+
+
 def test_the_section_tabs_sit_below_the_bars_rule() -> None:
     """The tabs are in the header slot, whose lower border is the rule under the bar, so
     they would stand over it. A header that holds tabs gives up its border and the bar

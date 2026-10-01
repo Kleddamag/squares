@@ -18,6 +18,10 @@ link in the bar and a section tab are one step under the prose on the paper's sc
 no more, and the site's name is no smaller than the prose (`preview_site.type_problems`,
 `templates/paper-design.md`, Navigation bar).
 
+And it holds the header's labels to their baselines, measured and not read from a
+box: the site's name stands on the baseline of the bar's links, and the tabs on one of
+their own (`preview_site.baseline_problems`).
+
 Every page that may be the film's is opened as for a reader who asks for reduced motion
 (`preview_site.REDUCED_MOTION`), so its film stands at its poster and no test starts the
 film's download.
@@ -36,11 +40,14 @@ from typing import Any
 import pytest
 
 from devtools.preview_site import (
+    BASELINE_TOLERANCE,
+    BASELINES,
     CLIP_WIDTHS,
     CLIPPED,
     HEADER,
     REDUCED_MOTION,
     SCROLLBAR_PX,
+    baseline_problems,
     clipped,
     tabs_problems,
     type_problems,
@@ -66,6 +73,8 @@ OLD_BAR_TYPE = (
     ".site-nav, .site-nav .site-name { font-size: 1rem !important; }"
     " .site-tabs { font-size: 0.9rem !important; }"
 )
+#: The bar's baseline as it was: the name's row aligned by its first item, the mark.
+NAME_ALIGNED_BY_ITS_MARK = ".site-nav .site-name-text { align-self: auto !important; }"
 #: The widths the bar is measured at, and how many lines its links may take at each: one
 #: on a desktop and a tablet, two on a phone.
 BAR_WIDTHS = {1280: 1, 768: 1, 390: 2}
@@ -265,3 +274,70 @@ def test_a_bar_set_smaller_than_one_step_under_the_body_is_caught(
         "a section tab is 14.4px and a link in the bar 16px",
         "the site's name is 16px, under the body's 18px",
     ]
+
+
+def _baselines(browser: Any, path: Path, width: int, *, style: str = "") -> dict[str, Any]:
+    """The `preview_site/baselines` report of the page at `path`, `width` pixels wide,
+    with `style` added to it first."""
+    page = browser.new_page(
+        viewport={"width": width, "height": 900}, reduced_motion=REDUCED_MOTION
+    )
+    try:
+        page.goto(path.as_uri(), wait_until="load")
+        if style:
+            page.add_style_tag(content=style)
+        return page.evaluate(BASELINES)
+    finally:
+        page.close()
+
+
+def test_the_name_stands_on_the_links_baseline(
+    browser: Any,
+    pages: dict[str, Path],
+    section_pages: dict[str, tuple[Path, str, float]],
+) -> None:
+    """At a desktop, a tablet and a phone width, on a page of prose, on the film's page
+    and on the workbench: every link on a line of the bar stands on one baseline, the
+    section tabs on one of theirs, and the site's name, where its text is shown, on the
+    links', each within half a pixel. The name's text is shown only on the desktop; on
+    the tablet and the phone the mark alone leads home and there is no name to align.
+    The mark is centred on the name's line. Aligning the name moves nothing else: the
+    current link's baseline is as far over the rule with the name beside it as without,
+    and the current tab's as far over the foot of its strip at every width."""
+    opened = {
+        "frontier.html": pages["frontier.html"],
+        **{name: path for name, (path, _, _) in section_pages.items()},
+    }
+    over_rule: dict[int, set[float]] = {}
+    over_foot: set[float] = set()
+    for width, rows in BAR_WIDTHS.items():
+        for name, path in opened.items():
+            found = _baselines(browser, path, width)
+            where = f"{name} at {width}"
+            assert baseline_problems(found) == [], where
+            lines = {link["top"] for link in found["links"]}
+            assert len(lines) == rows, where
+            assert len(found["links"]) == 6, where
+            first = min(found["links"], key=lambda link: link["top"])
+            if width == 1280:
+                assert abs(found["name"] - first["baseline"]) <= BASELINE_TOLERANCE, where
+            else:
+                assert found["name"] is None, where
+            assert len(found["tabs"]) == (0 if name == "frontier.html" else 2), where
+            if rows == 1:
+                over_rule.setdefault(width, set()).add(found["current_above_rule"])
+            if found["tabs"]:
+                over_foot.add(round(found["current_tab_above_foot"], 1))
+    # With the name (1280) and without it (768), on every page: one distance.
+    assert len(set().union(*over_rule.values())) == 1, over_rule
+    assert len(over_foot) == 1, over_foot
+
+
+def test_a_name_aligned_by_its_mark_is_caught(browser: Any, pages: dict[str, Path]) -> None:
+    """The control: let the name's row take its baseline from its first item again, the
+    mark, and the check names the name, some pixels above the links."""
+    found = _baselines(browser, pages["frontier.html"], 1280, style=NAME_ALIGNED_BY_ITS_MARK)
+    problems = baseline_problems(found)
+    assert len(problems) == 1, problems
+    assert problems[0].startswith("the site's name stands -"), problems
+    assert problems[0].endswith("px off the baseline of the bar's links"), problems

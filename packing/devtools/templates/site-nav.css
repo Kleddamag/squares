@@ -89,6 +89,10 @@
     var(--paper-font-scale-sans, calc(19 / 18))
   );
   --site-nav-font-size: calc(var(--site-nav-name-size) * var(--paper-note-scale, 0.92));
+  /* The line every item of the bar is set on: the links' own, 1.43 of their size, which
+     is the face's leading there (25px). A length and not a ratio, so the name, a size
+     larger, takes the links' line and not a taller one of its own. */
+  --site-nav-line: calc(var(--site-nav-font-size) * 1.43);
 }
 .site-nav {
   font-family: var(--kpress-font-sans);
@@ -109,6 +113,7 @@
 .site-nav a {
   color: var(--kpress-doc-muted);
   font-weight: 550;
+  line-height: var(--site-nav-line);
   padding: 0.25rem 0.55rem;
   text-decoration: none;
   transition:
@@ -130,12 +135,24 @@
   text-transform: uppercase;
   margin-inline: -0.55rem auto;
 }
-/* The mark, case 11 as the tab's icon draws it, sits before the name at the name's
-   cap height, in the bar's ink, and takes the name's hover with it. */
+/* The mark, case 11 as the tab's icon draws it, sits before the name, centred on the
+   name's line, in the bar's ink, and takes the name's hover with it. */
 .site-nav .site-name {
   align-items: center;
   display: inline-flex;
   gap: 0.45rem;
+}
+/* The name's text stands on the links' baseline. The bar aligns its items by their
+   baselines, and the name is a row of its own, a mark and the text, whose baseline would
+   be its first item's, the mark's lower edge: the links' text then stood level with the
+   foot of the mark, and the name's text, centred on the mark, some pixels above it. The
+   text is the one item of that row aligned by its baseline, so the row's baseline is the
+   text's, at any size of either, and the mark stays centred on the text's line. That
+   line is the links' own (`--site-nav-line`), so the name is no taller than a link and
+   the links stand where they do without it, the current one's underline the same
+   distance over the rule at every width. */
+.site-nav .site-name-text {
+  align-self: baseline;
 }
 /* 18px, whole pixels, the size `render_overview.SITE_LOGO_PX` draws its one-pixel frame
    for, so the container's outline is one crisp pixel (two on a 2x screen). */

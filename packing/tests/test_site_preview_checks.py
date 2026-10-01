@@ -12,6 +12,7 @@ from devtools.measure_site_pages import card_rows, markdown_table, space_rows
 from devtools.preview_site import (
     LONG_TOKEN,
     SCROLLBAR_PX,
+    baseline_problems,
     clip_problem,
     off_centre,
     shot_stem,
@@ -323,3 +324,48 @@ def test_the_popover_table_has_one_line_a_popover_with_its_count_of_split_words(
     head, _, line = markdown_table([row]).splitlines()
     assert head.endswith("| shown | content | share | split_words |")
     assert line.endswith("| its frame | 710 | 3070 | 0.23 | 1 |")
+
+
+def _labels(
+    *lines: tuple[int, float], name: float | None = 46.8, tabs: float | None = None
+) -> dict:
+    """A `preview_site/baselines` report: two links on each line of the bar, a line given
+    as its top and its baseline, the name's baseline, and two tabs on one of theirs. The
+    name's line is 25px tall, with the mark centred on it."""
+    words = iter(("Overview", "Frontier", "Results", "Papers"))
+    return {
+        "name": name,
+        "name_text": name and {"top": name - 18, "bottom": name + 7},
+        "logo": {"top": 32.3, "bottom": 50.3},
+        "links": [
+            {"label": next(words), "baseline": baseline, "top": top, "current": False}
+            for top, baseline in lines
+            for _ in range(2)
+        ],
+        "tabs": [
+            {"label": label, "baseline": tabs, "top": 80, "current": label == "Film"}
+            for label in (("Film", "Workbench") if tabs else ())
+        ],
+    }
+
+
+def test_the_name_and_the_links_stand_on_one_baseline() -> None:
+    """The site's name stands on the baseline of the bar's first line of links, within
+    half a pixel, and so does each link beside another; a bar that wraps has a baseline
+    a line. A name set above the links, as it was while the bar's baseline was the foot
+    of its mark, is named with how far; where the name's text is not shown there is
+    nothing to hold it to."""
+    assert baseline_problems(_labels((25, 46.8))) == []
+    assert baseline_problems(_labels((25, 46.8), name=47.2, tabs=102.58)) == []
+    assert baseline_problems(_labels((22, 40.78), (50, 68.28), name=None, tabs=119.77)) == []
+    assert baseline_problems(_labels((29, 51.3), name=47.8)) == [
+        "the site's name stands -3.5px off the baseline of the bar's links",
+        "the site's mark is centred -1px off the middle of its name's line",
+    ]
+    uneven = _labels((25, 46.8), tabs=102.58)
+    uneven["links"][1]["baseline"] = 48.0
+    uneven["tabs"][1]["baseline"] = 101.5
+    assert baseline_problems(uneven) == [
+        "the link Frontier stands +1.2px off the baseline of Overview, beside it",
+        "the section tab Workbench stands -1.08px off the baseline of Film, beside it",
+    ]

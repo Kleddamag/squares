@@ -406,6 +406,21 @@ it.
   pixels, where the links keep one line, one line and two lines.
   Case 11, the site’s icon, sits before the name as its mark, 18px square, inside the
   same link, so it takes the same hover.
+  The name’s text stands on the links’ baseline.
+  The bar aligns its items by their baselines (`align-items: baseline`), and the name is
+  a row of its own, the mark and the text, whose baseline would be its first item’s, the
+  foot of the mark; so the text is the one item of that row aligned by its baseline
+  (`align-self: baseline`), which makes the row’s baseline the text’s, at any size of
+  either, with no offset in pixels.
+  The mark stays centred on the name’s line.
+  Every item of the bar is set on one line, `--site-nav-line`, a length (1.43 of the
+  link size, the face’s own leading there), so the larger name is no taller than a link:
+  the links stand where they do without the name, and the current link’s underline is
+  the same distance over the rule at every width.
+  `devtools.measure_site_pages baselines` reports each label’s baseline, measured with a
+  zero-size inline box on the text’s line and not read from a box’s edge; `preview_site`
+  fails a page whose name or links are off by more than half a pixel
+  (`baseline_problems`); and `tests/test_site_wide_blocks.py` holds it in a browser.
   Narrower than 56rem, where the bar with the name would wrap, the name gives way and
   the mark alone leads home, labelled “Square Packing home” for a screen reader.
   Every item takes the cards’ gentle wash on hover and nothing underlines on hover; the
@@ -459,9 +474,9 @@ it.
   On the film’s page the first block starts `--site-page-top` under the tabs; on the
   workbench, where the application starts at the shell’s lower edge, the tabs keep the
   same 0.7rem below them.
-  Measured at 1280px, on both pages: the bar from 16 to 72.1px with the rule its last
-  pixel, the tabs from 83.3 to 119.9px, then the film at 183.9px and the application at
-  131.1px; at 390px, where the bar wraps to two lines, the rule ends at 84.8px, the tabs
+  Measured at 1280px, on both pages: the bar from 16 to 67.6px with the rule its last
+  pixel, the tabs from 78.8 to 115.4px, then the film at 179.4px and the application at
+  126.6px; at 390px, where the bar wraps to two lines, the rule ends at 84.8px, the tabs
   run from 96.0 to 132.6px, the film starts at 196.6px and the application at 143.8px.
   `devtools.measure_site_pages header` reports these, `preview_site` fails a built page
   whose tabs start over the rule (`tabs_problems`), and `tests/test_site_wide_blocks.py`

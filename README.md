@@ -46,8 +46,12 @@ This repository contains:
     boundary.
   - **`s(11) > 31/8 = 3.875`**, by Kleddamag, developed from T-026’s certificate:
     [Kleddamag/11-squares-certified-bound `v1.0.2`](https://github.com/Kleddamag/11-squares-certified-bound/releases/tag/v1.0.2).
-    It was the strongest verified lower bound before T-060, about `0.0021` below Trump’s
-    packing. Recorded here: the
+    About `0.0021` below Trump’s packing.
+    Ke Wang and Can Li have since reweighted and scaled its certificate to
+    `s(11) > 3875000000/999999999`, `3.9e-9` higher
+    ([T-061](packing/frontier/RESULTS.md); jlevy/squares#247); T-060’s equality has
+    since made both historical lower bounds.
+    Recorded here: the
     [retained copy](packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/README.md),
     the [review](docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md)
     and the [case record](packing/frontier/n-011.md).
@@ -71,9 +75,10 @@ This repository contains:
   - **Smaller packings at fifty counts**, by Francisco Couzo, 49 counts from `n = 68` to
     `307` ([T-056](packing/frontier/RESULTS.md)), and Joost de Winter,
     `s(211) ≤ 14.9979607… < 15`, the first packing of 211 squares below the grid
-    ([T-057](packing/frontier/RESULTS.md)). Each is certified exactly here by two
-    checkers that share no code, and at `n = 206`, `259` and `305` the certified side
-    trails the printed one by at most three units of its fifteenth decimal.
+    ([T-057](packing/frontier/RESULTS.md)). Each is certified here twice: exactly, by
+    two checkers that share no code, and by interval arithmetic on the source’s own pose
+    as printed. At `n = 206`, `259` and `305` the printed pose’s own side exceeds the
+    printed side by two to three units of its fifteenth decimal.
     Griffin Casson had published packings at 39 of Couzo’s counts earlier; Couzo’s are
     smaller at all of them.
     Couzo’s came to this record through jlevy/squares#227.
@@ -270,6 +275,7 @@ column the retained source packet and this repository’s reviews.
 
 | Published | Result | `n` | Headline | Credit | Relation | V/C | Standing | Records |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-09-29 | [T-061](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | `s(11) > 3875000000/999999999 = 3.875000003875…`, 3.9e-9 above `31/8` | Wang, Li after Kleddamag, Levy | builds on | V4/C4 | superseded | [packet](packing/resources/web/wang-li-n11-2026-09-29/README.md) · [review](docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md) |
 | 2026-09-29 | [T-060](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | Trump’s eleven-square packing is globally optimal | Queuingtheorydotcom after Levy, Kleddamag | builds on | V4/C5 | holds | [packet](packing/resources/web/n11-optimality-2026-09-29/README.md) · [review 1](docs/project/reviews/review-2026-09-29-n11-optimality.md) · [review 2](docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md) |
 | 2026-09-29 | [T-059](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | Reported equality of 12028 n11 row minima awaits a complete bound replay | wand125 after Tokoharu, Daniel | independent | V0/C1 | — | [packet](packing/resources/web/wand125-tools-2026-09-29/README.md) · [review 1](docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md) · [review 2](docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md) · [review 3](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md) |
 | 2026-09-29 | [T-058](packing/frontier/RESULTS.md) | 1–100 | Reported `B·UB(n)` rectangle-certificate ceiling has unresolved premises | wand125 after Tokoharu, Daniel | independent | V0/C1 | — | [packet](packing/resources/web/wand125-tools-2026-09-29/README.md) · [review](docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md) |
@@ -278,7 +284,7 @@ column the retained source packet and this repository’s reviews.
 | 2026-09-28 | [T-048](packing/frontier/RESULTS.md) | [50](packing/frontier/n-050.md) | `s(50) ≥ 37/5 = 7.4`, reported | wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | credits second-hand | V0/C0 | holds, reported | [packet](packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md) |
 | 2026-09-28 | [T-043](packing/frontier/RESULTS.md) | [17](packing/frontier/n-017.md) | `s(17) > 116511/25000 = 4.66044` | Guzhou0806 after Kleddamag, Mira, Levy | builds on | V4/C3 | holds | [packet](packing/resources/web/n17-guzhou-r068-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) |
 | 2026-09-28 | [T-042](packing/frontier/RESULTS.md) | [17](packing/frontier/n-017.md) | `s(17) > 233009/50000 = 4.66018` | Guzhou0806 after Kleddamag, Mira, Levy | builds on | V4/C3 | superseded | [packet](packing/resources/web/n17-guzhou-r068-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) |
-| 2026-09-27 | [T-056](packing/frontier/RESULTS.md) | 49 in 68–307 | Smaller packings for 49 counts from `n = 68` to `307`, each certified exactly | Couzo | independent | V4/C3 | holds | [packet](packing/resources/web/franciscouzo-square-packing-2026-09-27/README.md) · [review](docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md) |
+| 2026-09-27 | [T-056](packing/frontier/RESULTS.md) | 49 in 68–307 | Smaller packings for 49 counts from `n = 68` to `307`, each certified two independent ways | Couzo | independent | V4/C4 | holds | [packet](packing/resources/web/franciscouzo-square-packing-2026-09-27/README.md) · [review 1](docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md) · [review 2](docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md) |
 | 2026-09-27 | [T-053](packing/frontier/RESULTS.md) | [45](packing/frontier/n-045.md) | `s(45) = 7`, by a mixed cover of points and grid-line segments | Daniel after Burns, Massaccesi | independent | V4/C3 | holds | [packet](packing/resources/web/evand-square-packing-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md) |
 | 2026-09-27 | [T-052](packing/frontier/RESULTS.md) | [21](packing/frontier/n-021.md) | `s(21) = 5`, by a mixed cover of points and grid-line segments | Daniel after Burns, Massaccesi | independent | V4/C3 | holds | [packet](packing/resources/web/evand-square-packing-2026-09-28/README.md) · [review](docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md) |
 | 2026-09-27 | [T-046](packing/frontier/RESULTS.md) | 48 in 18–95 | Rectangle-density lower bounds reported for 48 counts in `n = 18…95` | wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi | builds on | V0/C0 | holds, reported | [packet 1](packing/resources/web/wand125-rectangle-certificates-2026-09-27/README.md) · [packet 2](packing/resources/web/wand125-rectangle-certificates-2026-09-28/README.md) |
@@ -293,7 +299,7 @@ column the retained source packet and this repository’s reviews.
 | 2026-09-22 | [T-037](packing/frontier/RESULTS.md) | [11](packing/frontier/n-011.md) | `s(11) > 31/8 = 3.875` | Kleddamag after Levy, Guzhou0806, Mira | builds on | V4/C4 | superseded | [packet](packing/resources/web/external-square-certificates-2026-09-22/README.md) · [review 1](docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md) · [review 2](docs/project/reviews/review-2026-09-22-native-n11-parent-core.md) |
 | 2026-09-21 | [T-038](packing/frontier/RESULTS.md) | [17](packing/frontier/n-017.md) | `s(17) > 461300/99853 = 4.6197910929…` | Kleddamag after Levy, Mira, Guzhou0806 | builds on | V4/C3 | superseded | [packet](packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/README.md) · [review](docs/project/reviews/review-2026-09-21-n17-kleddamag-461300-99853.md) |
 | 2026-09-20 | [T-032](packing/frontier/RESULTS.md) | [17](packing/frontier/n-017.md) | `s(17) ≥ 461300/99999 = 4.61304613…`, and beneath it Mira’s `s(17) ≥ 4613/1000` | Guzhou0806, Mira after Levy, Burns, Massaccesi | builds on | V4/C4 | superseded | [packet](packing/resources/web/n17-weighted-certificates-2026-09-20/README.md) · [review](docs/project/reviews/review-2026-09-20-n17-r012-and-mira-4613-proof-review.md) |
-| 2026-09-16 | [T-057](packing/frontier/RESULTS.md) | [211](packing/frontier/n-211.md) | `s(211) ≤ 14.99796070496771500150 < 15`, the first packing of 211 squares below the grid on record | de Winter | independent | V4/C3 | holds | [packet](packing/resources/web/de-winter-square-packing-211-2026-09-16/README.md) · [review](docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md) |
+| 2026-09-16 | [T-057](packing/frontier/RESULTS.md) | [211](packing/frontier/n-211.md) | `s(211) ≤ 14.99796070496771500150 < 15`, the first packing of 211 squares below the grid on record | de Winter | independent | V4/C4 | holds | [packet](packing/resources/web/de-winter-square-packing-211-2026-09-16/README.md) · [review 1](docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md) · [review 2](docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md) |
 | 2026-08-25 | [T-049](packing/frontier/RESULTS.md) | [12](packing/frontier/n-012.md) | `s(12) ≥ 15680/3951 = 3.9686155…` | Daniel after Burns, Massaccesi | independent | V4/C4 | holds | [packet](packing/resources/web/evand-square-packing-2026-09-26/README.md) · [review](docs/project/reviews/review-2026-09-27-evand-s32-s12.md) |
 
 <!-- END GENERATED: results-by-others -->

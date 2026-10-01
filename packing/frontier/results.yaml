@@ -175,10 +175,17 @@ results:
   - id: T-006
     headline: "`s(13) = 4`"
     claim: >-
-      s(13) = 4 (Bentz 2010, Theorem 9).
+      s(13) = 4 (Bentz 2010, Theorem 9). Proved again, without cases, by Evan Daniel's
+      weighted closed cover of [0,4]^2 in evand/square-packing, and kernel-checked in Lean
+      4 here: SquarePacking.s13_eq_4 : minSide 13 = 4, depending only on propext,
+      Classical.choice and Quot.sound, built on 2026-09-30 from the retained source at
+      6aa82ba4 with Mathlib's official cache. The cover's zero-margin property was also
+      certified here by the source's zmx2 over every root of its D4 region. Evan Daniel,
+      building on Burns's and Massaccesi's method, with an AI agent under human direction
+      as his CREDITS.md says.
     scope: {n_values: [13]}
-    verification: V3
-    confirmation: C1
+    verification: V5
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
@@ -188,24 +195,36 @@ results:
       by: session-061 review (repository)
     novelty: previously-published
     attribution:
-      source_keys: ['[Bentz 2010]']
+      source_keys: ['[Bentz 2010]', '[evand square-packing 2026-09-28]']
       published: '2010-09-13'
     composition: >-
-      Compound with the minimum set by the unaudited part: Figure 2's
-      unavoidability and the corrected Lemma 10 replacements are machine-
-      confirmed (C3 parts, V4 fragments), but the Sections 3.1-3.2 case
-      analysis that completes the theorem is read prose, so the whole claim
-      stays at the published proof's V3 and our read's C1.
+      Two independent proofs of one value. Bentz's is compound, with Sections 3.1-3.2's
+      case analysis read rather than machine-checked. Evan Daniel's case-free proof is
+      complete as it stands: the Lean kernel checked s13_eq_4 from the definitions,
+      including every one of the 209 cover chunks, so the claim is V5 on
+      E-n013-evand-casefree-cover-lean-kernel. The confirmation rung comes from the
+      machine-method replay E-n013-evand-casefree-cover-zmx2-replay (C3); whether a
+      kernel check itself counts toward C is the owner's open question.
     evidence:
       - E-bentz-2010-proof
       - E-bentz13-figure2-audit
+      - E-n013-evand-casefree-cover-zmx2-replay
+      - E-n013-evand-casefree-cover-lean-kernel
     artifacts:
       - packing/cases/bentz13/verify_cover.py
       - packing/resources/papers/bentz-2010-optimal-packings-13-and-46.md
+      - packing/resources/web/evand-square-packing-2026-09-28/receipts/lean/axioms_s13.log
+      - packing/resources/web/evand-square-packing-2026-09-28/receipts/lean/s13_table.txt
+      - packing/resources/web/evand-square-packing-2026-09-28/receipts/s13_zmx2_d4.log
+      - docs/project/reviews/review-2026-09-30-lean-s13.md
+    controls:
+      - packing/tests/test_evand_mixed_covers.py
     next_rung: >-
-      C3 by machine-checking Sections 3.1-3.2's staged sets (typed on
-      think-1o1f), which would also make this the second fully audited theorem
-      of the paper.
+      C4 by a second machine method on the same cover, for example a complete
+      zeromargin.py sweep (1 h 42 min on 8 processes at the source) beside the zmx2
+      replay. Bentz's own route reaches C3 by machine-checking Sections 3.1-3.2's staged
+      sets (typed on think-1o1f), which would also make it the second fully audited
+      theorem of the paper.
   - id: T-007
     headline: "`s(n) ≥ min(⌈√n⌉, √(n - 2⌊√n⌋ + 1) + 1)` for `4 ≤ n ≤ 100`"
     claim: >-
@@ -2514,7 +2533,9 @@ results:
       case record took the bound without a C5 claim, so whether a same-project review of
       another author's certificate qualifies is the owner's decision rather than missing
       work. V5 by a proof-assistant port of the transfer theorem and the counting argument.
-      The exact value remains open; a certificate above 31/8 has 0.0020836 of runway.
+      Superseded on 2026-09-29 by Wang and Li's s(11) > 3875000000/999999999 (T-061), which
+      is this certificate reweighted and scaled, 3.9e-9 higher, and by T-060's exact
+      s(11) = T; stays true as stated.
 
   - id: T-038
     headline: "`s(17) > 461300/99853 = 4.6197910929…`"
@@ -3383,9 +3404,11 @@ results:
       C5 would follow the owner's decision on citing a mapped review as review_artifact for
       others' results. V5 by building the source's hypothesis-free Lean theorem s32_eq_6
       (commit 92cc5bb5), which decides a generated box tree in the kernel with zeromargin.py
-      only as the tree generator's untrusted oracle; the cost is compute, 13.8 CPU-hours and
-      up to 15.2 GB per process at the source, and Mathlib's build cache is unreachable from
-      this session (think-angg).
+      only as the tree generator's untrusted oracle. Mathlib's build cache became reachable
+      on 2026-09-30, and the conditional s32_eq_six_of_checker and s13_eq_4 were built here
+      (the 2026-09-28 packet's receipts/lean/). The cost that remains is compute: a probe
+      puts s32_eq_6 at 14 to 28 CPU-hours emitted in about 320 parts of about 4 GB each,
+      with 8 to 10 GB for the generator (think-angg).
 
   - id: T-052
     headline: "`s(21) = 5`, by a mixed cover of points and grid-line segments"
@@ -3445,8 +3468,10 @@ results:
     next_rung: >-
       C4 by a complete zm_mixed.py re-sweep, about 12.9 CPU-hours at the source, recorded as
       a second, exact-algebraic entry; the shared pose-space architecture stays the residual
-      common-mode risk. V5 would need the checker programs formalised; the Lean build was not
-      run here.
+      common-mode risk. V5 would need the checker statement S21CheckerCover proved in Lean;
+      the reduction s21_eq_five_of_checker, from that statement to s(21) = 5, was
+      kernel-checked here on 2026-09-30 with the standard axioms only (the 2026-09-28
+      packet's receipts/lean/).
 
   - id: T-053
     headline: "`s(45) = 7`, by a mixed cover of points and grid-line segments"
@@ -3633,27 +3658,30 @@ results:
       n = 45 replay entry only. The Lean build was not run here.
 
   - id: T-056
-    headline: "Smaller packings for 49 counts from `n = 68` to `307`, each certified exactly"
+    headline: "Smaller packings for 49 counts from `n = 68` to `307`, each certified two independent ways"
     claim: >-
       For each of 49 counts n from 68 to 307 (68, 102, 103, 105, 106, 110, 123, 130, 131,
       132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206 to 210, 228, 236 to 241,
       259, 263, 268 to 273, 292, 297 and 301 to 307), s(n) is at most the verified upper
       bound its case record carries: the side franciscouzo/square-packing prints at
       f3c5a529 (27 September 2026), from 8.798795237222592 at n = 68 to
-      17.981030548643712 at n = 307, or, where the exact certificate's side rounds up past
+      17.981030548643712 at n = 307, or, where the printed pose's own side rounds up past
       it, that side plus one unit of its fifteenth decimal at 26 counts and 2, 3 and 2
       units at n = 206, 259 and 305. Every printed side is below the best
       known side this project recorded before, by 3.0e-8 at n = 172 up to 0.022 at
       n = 301, and below the live catalogue of 29 September 2026. Each bound is certified
-      here by an exact rational packing, the source's decimal pose rounded to rationals at
-      centre dilation 1, decided pair by pair and wall by wall over Q by two checkers that
-      share no code. Francisco Couzo; the author said on jlevy/squares#227 that he found
+      here twice, by methods that share no geometry code: by an exact rational packing, the
+      source's decimal pose rounded to rationals at centre dilation 1, decided pair by pair
+      and wall by wall over Q by two checkers that share no code; and by outward-rounded
+      interval arithmetic on the source's own pose as printed, with the true cosine and sine
+      of each angle, which decides every pair and wall at 40 digits and encloses the pose's
+      extent to within 1e-39. Francisco Couzo; the author said on jlevy/squares#227 that he found
       the 102 and 103 packings "with the help of Claude", and the repository itself states
       no AI assistance. An externally produced, previously published result, not peer
       reviewed; no new first-party mathematics is claimed.
     scope: {n_values: [68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307]}
     verification: V4
-    confirmation: C3
+    confirmation: C4
     significance:
       score: 3
       rationale: >-
@@ -3671,23 +3699,36 @@ results:
     evidence:
       - E-franciscouzo-2026-09-27-report
       - E-franciscouzo-2026-09-27-exact-replay
+      - E-franciscouzo-2026-09-27-interval-replay
     artifacts:
       - packing/resources/web/franciscouzo-square-packing-2026-09-27/README.md
       - packing/resources/web/franciscouzo-square-packing-2026-09-27/acquisition/sources.json.gz
       - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/certification.json.gz
+      - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/interval-certification.json
       - packing/devtools/upper_bound_packets.py
       - packing/devtools/check_rational_witness_independent.py
+      - packing/devtools/upper_bound_intervals.py
       - packing/devtools/apply_upper_bound_packets.py
       - docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md
+      - docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md
     controls:
       - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/negative-controls.json
+      - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/interval-negative-controls.json
       - packing/tests/test_upper_bound_packets.py
+      - packing/tests/test_upper_bound_intervals.py
+    composition: >-
+      Both machine entries decide all 49 bounds, each at its case's verified value, by
+      different methods (exact-algebraic on a rational rounding of each pose;
+      interval-certified on the printed pose), so every load-bearing part is C4. Their
+      common mode is stated in E-franciscouzo-2026-09-27-interval-replay. The comparisons
+      with earlier sides and the live catalogue are recorded values and set no rung.
     next_rung: >-
-      C4 by an interval route: an interval-certified replay of each packing, for example a
-      Krawczyk enclosure of its contact system as T-009 did at n = 29, recorded as a
-      second, method-distinct entry. At n = 206, 259 and 305 the printed side itself needs
-      a pose refined beyond the source's binary64 digits, or coordinates the source prints
-      at higher precision.
+      C5 by a mapped, non-superseded review of the complete claim cited as review_artifact;
+      the two reviews so far, of 2026-09-29 and 2026-09-30, are same-project reviews of
+      each route. At n = 206, 259 and 305 both routes refute the printed side for the
+      printed pose, so the printed side itself needs a different pose, refined beyond the
+      source's binary64 digits, or coordinates the source prints at higher precision; that
+      would be a new packing, not a replay.
 
   - id: T-057
     headline: "`s(211) ≤ 14.99796070496771500150 < 15`, the first packing of 211 squares below the grid on record"
@@ -3695,10 +3736,14 @@ results:
       s(211) <= 14.99796070496771500150 < 15. JoostdeWinter/square-packing-211 at 702df9bb
       (16 September 2026) reports 211 unit squares in a square of that side, with 21-digit
       poses and the author's report of an outward interval check at 80 digits; it publishes
-      no interval boxes or checker. The bound is certified here by an exact rational
-      packing, the source's pose rounded to rationals at centre dilation 1, of side
-      74989803524838470007/5000000000000000000, 2.1e-14 below the printed side, decided
-      pair by pair and wall by wall over Q by two checkers that share no code. It is the
+      no interval boxes or checker. The bound is certified here twice, by methods that share
+      no geometry code: by an exact rational packing, the source's pose rounded to
+      rationals at centre dilation 1, of side 74989803524838470007/5000000000000000000,
+      2.1e-14 below the printed side, decided pair by pair and wall by wall over Q by two
+      checkers that share no code; and by outward-rounded interval arithmetic on the
+      source's own pose as printed, which lies in the printed square as placed with least
+      wall clearance 1.000005e-14 and least pair gap 2.10001e-14, the values the source
+      reports. It is the
       first packing of 211 squares below the 15 x 15 grid on record, so s(k^2 - k + 1) < k,
       shown in the Kingbird catalogue for k = 16, 17 and 18 (n = 241, 273 and 307), holds
       for k = 15 as well. Joost de Winter; the source says nothing about AI assistance. An
@@ -3706,7 +3751,7 @@ results:
       first-party mathematics is claimed.
     scope: {n_values: [211]}
     verification: V4
-    confirmation: C3
+    confirmation: C4
     significance:
       score: 3
       rationale: >-
@@ -3724,21 +3769,28 @@ results:
     evidence:
       - E-n211-de-winter-report
       - E-n211-de-winter-exact-replay
+      - E-n211-de-winter-interval-replay
     artifacts:
       - packing/resources/web/de-winter-square-packing-211-2026-09-16/README.md
       - packing/resources/web/de-winter-square-packing-211-2026-09-16/acquisition/sources.json
       - packing/resources/web/de-winter-square-packing-211-2026-09-16/receipts/certification.json
+      - packing/resources/web/de-winter-square-packing-211-2026-09-16/receipts/interval-certification.json
       - packing/witnesses/de-winter-2026/n-211-rational.yaml.gz
       - packing/devtools/upper_bound_packets.py
       - packing/devtools/check_rational_witness_independent.py
+      - packing/devtools/upper_bound_intervals.py
       - docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md
+      - docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md
     controls:
       - packing/resources/web/franciscouzo-square-packing-2026-09-27/receipts/negative-controls.json
+      - packing/resources/web/de-winter-square-packing-211-2026-09-16/receipts/interval-negative-controls.json
       - packing/tests/test_upper_bound_packets.py
+      - packing/tests/test_upper_bound_intervals.py
     next_rung: >-
-      C4 by an interval route: an interval-certified replay of the packing, from the
-      source's own 80-digit enclosures if it publishes them or from a Krawczyk enclosure of
-      its contact system here, recorded as a second, method-distinct entry.
+      C5 by a mapped, non-superseded review of the complete claim cited as review_artifact,
+      beside the same-project reviews of each route (2026-09-29 and 2026-09-30). The
+      source's own 80-digit interval run stays unreplayed until it publishes its boxes or
+      checker; this record no longer depends on it.
 
   - id: T-058
     headline: "Reported `B·UB(n)` rectangle-certificate ceiling has unresolved premises"
@@ -3872,4 +3924,89 @@ results:
       defects; confirmation uses independently observed geometric executions.
       Shared local arithmetic and construction primitives are disclosed in the
       evidence. The composer reconciles receipts and does not itself rerun geometry.
-      T-037 is the earlier strict lower bound; T-059's row-minimum equality is separate.
+      T-037 is the earlier strict lower bound, and T-061, Wang and Li's strict bound
+      3.9e-9 above it, is a second historical lower bound; T-059's row-minimum equality
+      is separate.
+
+  - id: T-061
+    headline: "`s(11) > 3875000000/999999999 = 3.875000003875…`, 3.9e-9 above `31/8`"
+    claim: >-
+      s(11) > 3875000000/999999999 = 3.875000003875000003875..., by Ke Wang and Can Li's
+      Zenodo record 23038546 of 29 September 2026, reported on jlevy/squares#247. Wang and
+      Li, building on Kleddamag and this project: the certificate is Kleddamag's v1.0.2
+      global-certificate.json (T-037) with thirteen threshold-charge orbits raised, which
+      puts the minimum core charge at 1000047559 on every one of the 12,028 parent-angle
+      intervals, and with the parent and every core side scaled by 999999999/1000000000,
+      so that the container over the parent is (31/8) times 1000000000/999999999; eleven
+      disjoint cores exceed the budget 11000095024 by 428125 integer units. The step over
+      31/8 is exactly 31/7999999992, about 3.9e-9. One more step of the scale factor,
+      1 - 2*10^-9, already fails at row 615, so these data admit at most about twice the
+      step, and scaling Kleddamag's certificate alone already passes a full sweep, so the
+      reweighting enlarges the surplus but is not needed for the bound. It was replayed
+      here in full by the authors' two verifiers and by Kleddamag's
+      own Python and JavaScript event-cell sweeps, and decided a second time by this
+      repository's native parent-core interval branch and bound, which accepted all
+      12,028 rows with no stalled box. The record makes no statement about AI assistance.
+      An externally produced, previously published result, not peer reviewed; no new
+      first-party mathematics is claimed.
+    scope: {n_values: [11]}
+    verification: V4
+    confirmation: C4
+    significance:
+      score: 2
+      rationale: >-
+        It strictly raises the verified lower bound at the central case, which the S5
+        anchor names, but by 31/7999999992, about 3.9e-9, spending the slack of T-037's
+        certificate after a reweighting; the release itself calls it a proof-of-slack
+        result, and these data admit at most about twice the step. The case's gap to
+        Trump's packing, 0.0020836, does not change at any printed digit, so it is scored
+        as a citable detail rather than movement; T-042 is the precedent for scoring a
+        true, fully replayed step by what it changes.
+      scored: '2026-09-30'
+      by: issue #247 intake (repository; draft)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[Wang Li n11 2026]']
+      published: '2026-09-29'
+    composition: >-
+      Primary at n = 11: one certificate and the bound L/A', with no monotonicity step. C4
+      is earned by two evidence entries whose methods differ and that both passed on the
+      pinned bytes: the event-cell sweeps (exact-algebraic: the authors' primary,
+      Kleddamag's Python and JavaScript, and the authors' re-implementation are one
+      method) and this repository's directed-rounding interval coverage of every row
+      (interval-certified). Both rest on the certificate and on T-037's counting and
+      transfer theorem, whose hypotheses were re-checked at the scaled sides.
+    produced_by:
+      session: session-161
+    evidence:
+      - E-n011-wang-li-report
+      - E-n011-wang-li-source-replay
+      - E-n011-wang-li-native-parent-core
+    artifacts:
+      - packing/resources/web/wang-li-n11-2026-09-29/README.md
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/certificate/diff.json
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/authors/fresh-full-replay/RESULT.json
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/kleddamag/full-replay/RESULT.json
+      - packing/devtools/audit_wang_li_n11.py
+      - packing/devtools/verify_n11_parent_core_native.py
+      - docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md
+    controls:
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/controls/source-checkers.json
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/controls/native.json
+      - packing/resources/web/wang-li-n11-2026-09-29/receipts/controls/cliff.json
+      - packing/tests/test_wang_li_n11.py
+    next_rung: >-
+      C5 would need a mapped, non-superseded review of the complete claim cited as
+      review_artifact; the 2026-09-30 review is a same-project read. V5 by a
+      proof-assistant port of the transfer theorem and the counting argument. The
+      reweighting is not needed for the bound: Kleddamag's own weights at the scaled sides
+      pass Kleddamag's full event-cell sweep with the same minimum 999962528 and surplus
+      107864 (the packet's scale-only receipt), so the scaling alone carries the step and
+      the thirteen raised orbits only enlarge the surplus to 428125.
+    notes: >-
+      T-060 has since confirmed s(11) = T, Trump's exact side, so this strict lower bound
+      is historical: it stays true as stated and keeps its source credit, its V4/C4
+      evidence and its S2 score, and it is not the global optimality claim. This claim was
+      drafted as T-058 on jlevy/squares#249; T-061 is canonical because the merged
+      upstream (jlevy/squares#246) had already allocated T-058 to T-060. Archived intake
+      evidence retains its original provisional label.

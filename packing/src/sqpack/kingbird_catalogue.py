@@ -40,6 +40,15 @@ from sqpack.project import require_project_root
 CATALOGUE_MARKDOWN = "resources/web/kingbird-squares-in-squares.md"
 CATALOGUE_HTML = "resources/web/kingbird-squares-in-squares.html"
 
+#: The capture of 2026-08-22, kept under a dated name when the page was captured again on
+#: 2026-09-30; both files are byte-identical to what the undated names held until then.
+#: The UnitSquare intake of 2026-08-25 and the certified-packet intake of 2026-09-29 read
+#: it, so what they wrote about the packing each one replaced is drafted from it and does
+#: not move when the page is captured again.
+INTAKE_CAPTURE_DATE = "2026-08-22"
+INTAKE_CATALOGUE_MARKDOWN = "resources/web/kingbird-squares-in-squares-2026-08-22.md"
+INTAKE_CATALOGUE_HTML = "resources/web/kingbird-squares-in-squares-2026-08-22.html"
+
 #: The glyph the catalogue prints where a root's degree is known but its form is not.
 LOCK_GLYPH = "\N{LOCK}"
 
@@ -59,6 +68,7 @@ _RIGIDITY = re.compile(r"^\[(Rigid|Semi-rigid)\.?]\(squares_in_squares__rigid\.h
 _PRINTED_DECIMAL = re.compile(r"^\\Nn\{([0-9]+(?:\.[0-9]+)?)\}$")
 _DEGREE_LOCK = re.compile(rf"^\{{}}\^\{{(\d+)}}{LOCK_GLYPH}$")
 _PLAIN_NUMBER = re.compile(r"^[0-9]+(?:\.[0-9]+)?$")
+_BARE_DECIMAL = re.compile(r"^[0-9]+\.[0-9]+$")
 _MARKDOWN_LINK = re.compile(r"\[([^\]]*)]\([^)]*\)")
 #: The sentence openers the catalogue uses to name who found a packing, longest first so
 #: that "Found and improved by" is never read as "Found by". Six, not the three this
@@ -78,10 +88,12 @@ _CREDIT = re.compile(
     r"\s+in\s+(?P<when>(?:[A-Za-z-]+\s+)*)(?P<year>\d{4})\b"
 )
 #: A sentence boundary inside one block's joined annotation lines. A period ends a
-#: sentence only where it does not follow a single capital letter, which is what keeps
-#: "David W. Cantrell" and "M.Z. Arslanov" whole. `devtools/generate_frontier_case.py`
-#: carries the same three lines, for the reason its `CatalogueEntryLike` gives.
-_SENTENCE_BREAK = re.compile(r"(?<![A-Z])\.\s+")
+#: sentence only where it does not follow a lone capital -- an initial, which starts a
+#: word -- which is what keeps "David W. Cantrell" and "M.Z. Arslanov" whole while "...
+#: working with unspecified AI." still ends one (`n = 68`, 2026-09-30).
+#: `devtools/generate_frontier_case.py` carries the same lines, for the reason its
+#: `CatalogueEntryLike` gives.
+_SENTENCE_BREAK = re.compile(r"(?<!\b[A-Z])\.\s+")
 _COMPLETENESS = re.compile(
     r"For the \$n\s*(?:\u2264|<=|\\le(?:q)?\b)\s*(\d+)\$\s*not pictured", re.IGNORECASE
 )
@@ -102,7 +114,8 @@ _MAX_CONVERSION_ROUNDS = 8
 _HTML_COMMENT = re.compile(r"<!--.*?-->", re.DOTALL)
 _HTML_BOX = re.compile(r'<div class="box"><font size="\+3">\s*([0-9 ,]+)<br>')
 _HTML_DECIMAL = re.compile(r"\\Nn\{([0-9]+(?:\.[0-9]+)?)}")
-_HTML_INTEGER = re.compile(r"\$s\s*=\s*([0-9]+)\$")
+#: An integer side, or a truncated decimal printed without the `\Nn` macro (`n = 68`).
+_HTML_INTEGER = re.compile(r"\$s\s*=\s*([0-9]+(?:\.[0-9]+)?)\$")
 
 
 class CatalogueParseError(ValueError):
@@ -206,6 +219,16 @@ def default_catalogue_html_path() -> Path:
     return require_project_root() / CATALOGUE_HTML
 
 
+def intake_catalogue_path() -> Path:
+    """Return the transcription of the capture the 2026 intakes read (`INTAKE_CAPTURE_DATE`)."""
+    return require_project_root() / INTAKE_CATALOGUE_MARKDOWN
+
+
+def intake_catalogue_html_path() -> Path:
+    """Return the original HTML of the capture the 2026 intakes read."""
+    return require_project_root() / INTAKE_CATALOGUE_HTML
+
+
 def _convert_latex(latex: str, line: int | None) -> str:
     """Rewrite the catalogue's LaTeX into the repository's plain spelling.
 
@@ -296,6 +319,13 @@ def _parse_side(side_math: str, line: int) -> tuple[str, str | None, int | None]
         printed = _PRINTED_DECIMAL.match(part)
         if printed is not None:
             decimal_text = printed.group(1)
+            continue
+        if _BARE_DECIMAL.match(part) and decimal_text is None:
+            # The page's truncated decimal without its `\Nn` ellipsis macro: `n = 68`
+            # prints `$s = 8.7987961402601$` in the capture of 2026-09-30. A fraction
+            # digit makes it a truncation, not a closed form -- the page prints every
+            # exact side either as an integer or as a radical.
+            decimal_text = part
             continue
         lock = _DEGREE_LOCK.match(part)
         if lock is not None:

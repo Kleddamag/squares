@@ -1,0 +1,11 @@
+{
+  "tool": "python -m devtools.upper_bound_intervals certify",
+  "method": "interval-certified",
+  "arithmetic": "decimal fixed-point intervals with outward rounding; cos and sin by Taylor polynomials with the Lagrange remainder, 12 guard digits",
+  "digits_schedule": [40, 80, 160, 320, 640],
+  "shared_with_exact_route": ["the packets' retained facts, read through sqpack.yamlio", "upper_bound_packets.Source records and acquisition record (paths and printed sides)", "the exact route's receipt, read only to compare its verified value with this one"],
+  "source": "de-winter-square-packing-211",
+  "cases": [
+    {"n": 211, "printed_side": "14.99796070496771500150", "angle_unit": "radians", "input": {"facts": "resources/web/de-winter-square-packing-211-2026-09-16/facts/n-211.yaml", "upstream_file": "n211__record.json", "upstream_bytes_rebuilt": true}, "digits": 40, "digits_tried": [40], "side_enclosure": ["14.9979607049676940014000000000000000000000", "14.9979607049676940014000000000000000000000"], "side_minus_printed": ["-2.10001e-14", "-2.10001e-14"], "printed_side_fits": "certified", "verified_value": "14.99796070496771500150", "units_above_printed": 0, "exact_route": {"verified_value": "14.99796070496771500150", "agrees": true, "certified_side_minus_enclosure": ["0", "0"]}, "frame": {"fits_printed_side_as_placed": "certified", "least_wall_clearance": ["1.00000e-14", "1.00001e-14"], "least_wall_square": 66}, "pairs": {"total": 22155, "pruned_by_circles": 21686, "decided_by_axes": 469, "separated": 469, "touching_exactly": 0, "overlapping": [], "undecided": [], "least_gap": ["2.10001e-14", "2.10001e-14"], "least_gap_squares": [80, 82]}, "walls": {"total": 844, "certified": 844, "against_side": "14.99796070496771500150"}, "verdict": "VERIFIED", "wall_seconds": 0.05}
+  ]
+}

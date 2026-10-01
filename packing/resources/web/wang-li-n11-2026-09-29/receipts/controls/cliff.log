@@ -1,0 +1,6 @@
+command: SCRATCH/venv-authors/bin/python devtools/audit_wang_li_n11.py cliff --kleddamag-tree SCRATCH/kleddamag-11 --steps 1 2 200 --output /home/user/squares/packing/resources/web/wang-li-n11-2026-09-29/receipts/controls/cliff.json
+SCRATCH: /tmp/claude-0/-home-user-squares/758894fa-d681-5043-a940-b28fb37110ba/scratchpad/lane-247
+started: 2026-09-30T06:10:36Z load: 9.39 10.13 10.16
+{"1": [], "2": [615], "200": [543, 544, 545, 546, 547, 548, 549, 550, 551, 552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 615, 616, 617, 618, 619, 620, 621, 622, 623, 624, 625, 626]}
+wall 56.320 s, user 32.044 s, system 0.174 s
+exit: 0

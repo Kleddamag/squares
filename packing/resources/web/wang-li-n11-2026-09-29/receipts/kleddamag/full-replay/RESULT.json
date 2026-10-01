@@ -1,0 +1,9 @@
+{
+  "status": "PASS_FRESH_PORTABLE_FULL_VERIFICATION",
+  "bound": "3875000000/999999999",
+  "certificate_sha256": "31e10ceb8368cc858e61f45ce7cfee783e8d0c7910893559164810f45439cc34",
+  "intervals": 12028,
+  "minimum_units": 1000047559,
+  "budget_units": 11000095024,
+  "surplus_units": 428125
+}

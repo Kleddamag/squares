@@ -22,10 +22,10 @@ PR #15 contains the standing technical review, the correction program, and the c
 five-commit history from PR #16. PR #16 is no longer a parallel line of work.
 
 The census remains blocked by a mathematical identity problem, not by a missing batch
-runner. The exact `n=3` sliding construction proves that a terminal set need not be an
+runner. The exact $n=3$ sliding construction proves that a terminal set need not be an
 isolated point. For any cell containing a connected terminal component, a point-key
 cluster count can overcount components.
-The corresponding claim at `n=5` remains unresolved: raw contact subtraction is not a
+The corresponding claim at $n=5$ remains unresolved: raw contact subtraction is not a
 rank calculation, a first-order null direction need not continue to a finite motion, and
 equality rank alone does not settle feasibility under unilateral contacts.
 
@@ -40,7 +40,7 @@ The response supplied three durable contributions:
 - It independently confirmed five PR #15 corrections: the non-converged atlas fixture,
   strict-implies-deep wiring, pose/side pairing, oracle-before-write ordering, and
   narrowed closed-form prose.
-- It corrected its own rank-free `n=5` dimension claim and its misuse of
+- It corrected its own rank-free $n=5$ dimension claim and its misuse of
   “contrapositive.”
 - It retracted a seed comparison that used different seeds, then retained a
   like-for-like cross-environment discrepancy.
@@ -70,7 +70,7 @@ That pair motivates the portability experiment; it does not settle it.
 
 ## The `n=5` six-of-six observation
 
-The current golden records six converged `n=5` terminators from six proposals and six
+The current golden records six converged $n=5$ terminators from six proposals and six
 endpoint-key rows. Those rows contain five distinct side values and none reaches the
 proved optimum. The only justified sampling conclusion is:
 
@@ -123,7 +123,7 @@ policy remains under `think-zt29`. `think-97pp` is open.
 
 ## Questions that remain open
 
-- Is the observed `n=5` terminal set positive-dimensional, a collection of isolated
+- Is the observed $n=5$ terminal set positive-dimensional, a collection of isolated
   terminals, or a mixture?
 - What equivalence relation should the census use once terminal nullity is measurable?
 - Which post-quench predicates reproduce across toolchains and hosts when tested and

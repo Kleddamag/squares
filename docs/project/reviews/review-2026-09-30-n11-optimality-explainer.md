@@ -24,13 +24,13 @@ mathematical result was changed for this review.
 | Article argument | Review finding |
 | --- | --- |
 | Exact theorem and upper bound | The root interval, degree-eight polynomial and expression for $T$ match T-060. Appendix A reproduces the six axis-aligned squares and five rigidly rotated squares in the exact construction. The 44 vertex checks, 55 weak separating-axis checks and opposite-wall spans have the stated scope. Display decimals and SVG coordinates do not define the exact endpoint. |
-| Exhaustive center cover | The open radius-$1/2$ disks justify center separation at least one. The sixteen closed Voronoi cells cover the normalized center domain and have physical diameter strictly below one. Distinct labels, arbitrary boundary ties, 4,368 masks and 2,184 half-turn representatives follow. The article does not replace these cells with a uniform grid or assume common orientations. |
+| Exhaustive center cover | The open radius-`1/2` disks justify center separation at least one. The sixteen closed Voronoi cells cover the normalized center domain and have physical diameter strictly below one. Distinct labels, arbitrary boundary ties, 4,368 masks and 2,184 half-turn representatives follow. The article does not replace these cells with a uniform grid or assume common orientations. |
 | Pose preservation | Strict whole-angle cores and owned hulls justify rejecting closed Minkowski collision regions, including their boundaries. Necessary cuts, complete residual coverage, closed angular endpoints and degenerate domains retain every feasible pose. New ownership is used only after its complete supporting check; parent states and parallel common priors remain explicit. |
 | Field counting | The mask-transfer rule requires the owner support and a strict charge excess. The five-site charge is defined by median projections, not by containing three sites. Its capacity-one proof uses strict separation of compact cores inside disjoint physical square interiors. Collision alternatives contribute no physical charge. |
 | Exclusions and symmetry | The exact exclusion set contains 1,904 field cases and 276 others. The separate $1931+76+173$ grouping describes provenance. The early D4 cuts depend on the complete 1,931-case baseline; they do not borrow the final four-survivor conclusion. Both case-1383 branches remain required. The final D4 overlay argument handles closed ties and uses strict distance bans. |
 | Capture and inclusion | The three complementary closed splits, ten nodes, nine parent edges and four leaves match the accepted ancestry. The near state has 136 live angular rows and 1,542 center vertices. Vertex bounds extend by convexity, while full angular intervals require the stated half-angle conversion and quarter-turn chart. Owner-cell labels and local square labels have separate roles. |
 | Local isolation | The fourteen contact pairs, 112 features, 88 negative-feature exclusions, 512 raw selections, 128 derivative branches and 8,448 signed-coordinate certificates match the complete local obligation. The proof retains nonlinear remainder bounds and the positive dual margins. It establishes isolation in the finite closed rectangle, rather than only infinitesimal rigidity. |
-| Endpoint passage | The field scale is undone before the fixed rotation and translation. A side-$S$ container concentric with the cap becomes $[(T-S)/2,(T+S)/2]^2$ in the fixed-$T$ frame. For $S<T$, local isolation forces the spanning witness and gives a contradiction. The article neither claims infeasibility at $U$ nor rescales the small squares during this deduction. |
+| Endpoint passage | The field scale is undone before the fixed rotation and translation. A side-`S` container concentric with the cap becomes $[(T-S)/2,(T+S)/2]^2$ in the fixed-`T` frame. For $S<T$, local isolation forces the spanning witness and gives a contradiction. The article neither claims infeasibility at $U$ nor rescales the small squares during this deduction. |
 
 The local inequality has the correct sign.
 For a nonzero displacement, set $\tau=\max_j|h_j|/r_j$ and choose a saturated coordinate
@@ -89,7 +89,7 @@ Accessible prose states that distinction without treating the renderer as a proo
 assistant.
 
 **Capture leaf labeled by what it establishes.** The near leaf now reads “local
-enclosure.” The separate inclusion and fixed-$T$ local theorem discharge that enclosure;
+enclosure.” The separate inclusion and fixed-`T` local theorem discharge that enclosure;
 the near capture receipt alone does not prove isolation.
 The source-parent graph has the accepted ten nodes and nine edges, and its three far
 leaves remain contradictions.

@@ -353,8 +353,8 @@ The earlier plan sequenced extraction and assembly ahead of refinement, on the p
 that precision had to come from a system this repository assembles.
 [X-004](../explorations/X-004-n29-exact-promotion.md) withdrew that premise on
 measurement. The provenance SVG publishes the closed system — nine slide scalars in
-closed form and six equations `f1 … f6` in `{s, a, b, c, d, i}` — and the symbolic
-layout map with it, and
+closed form and six equations `f1 … f6` in $\lbrace s, a, b, c, d, i\rbrace$ — and the
+symbolic layout map with it, and
 [`cases/kingbird29/verify_svg.py`](../../cases/kingbird29/verify_svg.py) has already
 transcribed both. It evaluates residuals and never solves.
 BC-047 drives that existing transcription, which is why it is `ready` rather than
@@ -372,7 +372,7 @@ measured elapsed time at each boundary.
 | 1 | 00:05–00:15 | Orientation: handoff, agenda, specs, baseline | — | Complete on entry; baseline green |
 | 2 | 00:05–00:15 | `promote/refine.py` over the transcribed system | BC-047 | Closed: 1000 digits, residual `9.82918e-1041` |
 | 3 | — | Residual series and the far-seed control | BC-047 | Folded into slot 2; the lane closed at minute ten |
-| 4 | 00:15–01:02 | `promote/contacts.py`, freeze, calibrate, control | BC-042 | Closed: 89 incidences at `n = 29`, 34 at `n = 11` |
+| 4 | 00:15–01:02 | `promote/contacts.py`, freeze, calibrate, control | BC-042 | Closed: 89 incidences at $n = 29$, 34 at $n = 11$ |
 | 5 | 01:05–01:45 | Finalization: full gate, views, commit, push, beads | — | This phase |
 
 The plan allocated four hours and eight slots.

@@ -309,11 +309,11 @@ convention.
 
 Four cells, no bound moved, and every number exact.
 The two that matter most are negatives with witnesses rather than absences: the 2-of-3
-atoms are load-bearing at `n = 17`, and so is the parent-centre restriction, the latter
+atoms are load-bearing at $n = 17$, and so is the parent-centre restriction, the latter
 with one exact witness at row 6512 that two lanes derived independently and agreed on to
 the last digit.
 
-The `n = 27` and `n = 28` cell is the most interesting refusal.
+The $n = 27$ and $n = 28$ cell is the most interesting refusal.
 Its premise held exactly, its re-bump cleared the Condition 5 stall completely at the
 theorem’s own threshold, and the gate refused anyway — on its requirement that the two
 routes agree on the exact least mass, with all 272 stalls in the axis-parallel direction

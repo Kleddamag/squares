@@ -330,7 +330,7 @@ session:
 
 The entry point was **W9 remediation**, because the input was a confirmed finding
 inventory from the PR 204–209 dispositions and the exit was merged pull requests.
-It moved to **W1 research survey** when a fifth external `n = 17` value appeared above
+It moved to **W1 research survey** when a fifth external $n = 17$ value appeared above
 the one the open intake was about to register, to **W2 factual review** once the replay
 said the computation reproduced and the question became whether the argument behind it
 holds, and to **W10 review/planning/oversight** to land what the session had learned.
@@ -376,9 +376,9 @@ that declares that gate by its real commit and run ids.
 
 ## The `n = 17` ladder
 
-Five values in seventeen days, four of them sharing the numerator `461300` over a
+Five values in seventeen days, four of them sharing the numerator $461300$ over a
 falling denominator.
-This session replayed the newest, `461300/99853 = 4.619791`, through both of the
+This session replayed the newest, $461300/99853 = 4.619791$, through both of the
 source’s own checkers; both completed and reproduced `RESULT.json` byte-identically.
 An adversarial proof review of the written argument found no Blocker and no High.
 
@@ -395,7 +395,7 @@ The renumber is worth recording because it is physical: `devtools/check_results.
 reads contiguity positionally rather than by label, so the 82-line row had to move to
 the end of the register rather than simply change its id.
 A session renumber from 148 to 149 travelled with it, and a stale claim that R012 was
-the strongest public `n = 17` value was corrected in the same change — it was true when
+the strongest public $n = 17$ value was corrected in the same change — it was true when
 it was written and false by the time it landed.
 
 ## Where the plan and the session disagree
@@ -403,10 +403,10 @@ it was written and false by the time it landed.
 The session plan was drafted mid-session and is now partly historical.
 Two of its statements did not survive contact.
 
-It called this session **149**. It is 150: `session-149` on `main` is the `n = 17`
+It called this session **149**. It is 150: `session-149` on `main` is the $n = 17$
 external intake, renumbered from 148 during the PR 211 landing.
 
-It left `461300/99999`’s registration as an open owner question — whether to spend an id
+It left $461300/99999$’s registration as an open owner question — whether to spend an id
 on a value that would be superseded on arrival.
 That was decided in the affirmative: PR 211 merged and `T-032` carries it, consistent
 with the register’s standing practice of retaining a displaced rung, and the newer value

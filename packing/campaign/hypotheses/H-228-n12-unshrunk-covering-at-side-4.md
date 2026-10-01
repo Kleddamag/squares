@@ -46,9 +46,9 @@ hypothesis:
 ---
 # H-228: An Unshrunk Covering Below 12 at n=12, Side 4
 
-The only single-shot route to `s(12) = 4` on X-040’s slate.
+The only single-shot route to $s(12) = 4$ on X-040’s slate.
 It is blocked on an unshrunk verifier, and its kill is a certified dual, which the
-existing ceiling readers can already produce below `3.9908`.
+existing ceiling readers can already produce below $3.9908$.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

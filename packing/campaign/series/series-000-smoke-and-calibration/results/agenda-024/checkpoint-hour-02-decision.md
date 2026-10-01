@@ -44,13 +44,13 @@ satisfy the gate.
 | Cell | T+2 disposition | Evidence and next gate |
 | --- | --- | --- |
 | BC-230 | Complete theorem and control contract | The adaptive-core lemma, rational seams, closed angle-cell cover, D4 semantics, mass theorem, and scalar specialization passed source-distinct review. The four frozen control defects were repaired under a new matrix hash and passed a fresh xhigh implementation review plus max coordinator disposition. BC-231 still has to implement them after BC-220. |
-| BC-232 | Time-limited, resumable | The verified exact lower endpoint at side `191/50` rose to `21342289572/2055263195 ≈ 10.384212408377215`; the only row-converged computational upper endpoint remains `11.055616942909783`. The provisional width is about `0.671404535`, 41.5006 percent below the pre-resume width. The frozen rule still requires the remaining 135 one-core minutes before a 25-percent routing decision. |
-| BC-233 | Rejected | All three inset screens were eligible, but the released seed and unseeded control converged after eight rounds to byte-identical candidates of exact mass `11142893/1000000`. Margin-biased seeding earns no continuation. |
-| BC-240 | Terminal author packet | The retained Trump calculation is packaged as a labelled, anchored, fixed-side local-isolation and side-stability theorem. Preferred radius is at least `808514697/200000000000` and its paired quadratic constant is at most `2574612531/200000000`. BC-241 still must perform the source-distinct review; no global-capture or optimality claim is made. |
+| BC-232 | Time-limited, resumable | The verified exact lower endpoint at side $\frac{191}{50}$ rose to $\frac{21342289572}{2055263195} \approx 10.384212408377215$; the only row-converged computational upper endpoint remains $11.055616942909783$. The provisional width is about $0.671404535$, 41.5006 percent below the pre-resume width. The frozen rule still requires the remaining 135 one-core minutes before a 25-percent routing decision. |
+| BC-233 | Rejected | All three inset screens were eligible, but the released seed and unseeded control converged after eight rounds to byte-identical candidates of exact mass $\frac{11142893}{1000000}$. Margin-biased seeding earns no continuation. |
+| BC-240 | Terminal author packet | The retained Trump calculation is packaged as a labelled, anchored, fixed-side local-isolation and side-stability theorem. Preferred radius is at least $\frac{808514697}{200000000000}$ and its paired quadratic constant is at most $\frac{2574612531}{200000000}$. BC-241 still must perform the source-distinct review; no global-capture or optimality claim is made. |
 | BC-242 | Complete theorem contract | The absolutely continuous full-size primal and a.e. dual have a weak-duality proof and explicit singular/boundary refusals accepted by the source-distinct max senior review. Strong duality, attainment, every numerical density, and continuum primal coverage remain open. |
 | BC-245 | Complete language theorem | The typed stationary language includes normal and abnormal Fritz–John branches, ties, zero multipliers, symmetries, and rattlers and passed the source-distinct max senior review. No producer, solved atlas, leaf closure, or global theorem exists. |
 
-One authorized BC-232 launch used `6560.285289000021` runner seconds and ended before
+One authorized BC-232 launch used $6560.285289000021$ runner seconds and ended before
 iteration 14. Its final CPU total was not captured; the last live sample, `104:50.95`,
 is only a lower bound.
 The exact unused leg-02 command and the state’s pre-add serialization limitation are
@@ -106,7 +106,7 @@ The coordinator dispositions are:
    is terminal, its byte-identical paired candidates remain a negative control, and the
    margin-seed variant stays retired unless a new mechanism is preregistered.
 6. **Finding 6: modify the fractional priority order.** Run the frozen 105-minute BC-232
-   leg 02 before T+4. At the gate, promote the direct scalar `61/16` probe beside
+   leg 02 before T+4. At the gate, promote the direct scalar $61/16$ probe beside
    BC-232’s final 30 process minutes.
    A row-converged value below eleven opens its exact bridge and outranks unpriced
    adaptive or atlas expansion.
@@ -115,7 +115,7 @@ The coordinator dispositions are:
    completes the source-distinct review.
 8. **Finding 8: accept BC-242 and modify the unopened density dependency.** BC-243 owns
    the dual-only exact a.e.-depth kill test.
-   A sound `D > 11` ends the equality-density route before continuum primal work; BC-244
+   A sound $D > 11$ ends the equality-density route before continuum primal work; BC-244
    owns the later primal guard and inverse design only if the dual does not kill the
    route.
 9. **Finding 9: accept the BC-245 language theorem and reject a global n=11 atlas in
@@ -143,7 +143,7 @@ After the checkpoint commit is pushed and hosted CI is green, resume research wi
 unused 105-minute BC-232 leg-02 command and BC-241 source-distinct review in parallel.
 At T+4, `think-jeyp` submits the provisional BC-232 packet without closing BC-232, and
 BC-220 decides the next launches.
-Only then may the final 30 BC-232 process minutes, the direct scalar `61/16` probe,
+Only then may the final 30 BC-232 process minutes, the direct scalar $61/16$ probe,
 BC-231, or BC-243 begin.
 
 Merge only commits that have actually landed on `origin/main`; do not import an open

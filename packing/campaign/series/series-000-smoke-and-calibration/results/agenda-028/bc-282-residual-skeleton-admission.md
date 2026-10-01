@@ -31,8 +31,8 @@ included in this necessary skeleton; equality or universal extendability is not 
 
 Write $q_0=(L,z,a,b,t)$ for the structural tuple and keep the design's
 $U=ae-f$, $V=e+bf$, with offsets $0,U,V,U+V$. In either coordinate, minimization over
-these four offsets is exactly the sum of the two separate minima over $\{0,U_d\}$ and
-$\{0,V_d\}$; maximization works identically. Thus the displayed $m_x,M_x,m_y,M_y$ are
+these four offsets is exactly the sum of the two separate minima over $\lbrace0,U_d\rbrace$ and
+$\lbrace0,V_d\rbrace$; maximization works identically. Thus the displayed $m_x,M_x,m_y,M_y$ are
 exact even when an increment vanishes.
 
 All four block squares have axis support $h=(c+s)/2$. In each coordinate, taking the

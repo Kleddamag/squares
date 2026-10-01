@@ -32,7 +32,7 @@ synthetic coordinator receipt each set `raw_seconds=1e308`, `exact_seconds=1e308
 `run_fixed_core_calibration_profiles.py:208-232`). Direct calls through
 `validate_document` and `inventory_profile` returned those domain errors.
 With the producer test module’s fake worker, readback process, and clock, the real
-`supervise_worker` returned status code `2` and retained `status=invalid`,
+`supervise_worker` returned status code $2$ and retained `status=invalid`,
 `phase=metrics-refused`, `disposition=calibration-refused`, and
 `error='metrics admission refused: worker phase durations exceed worker elapsed'`. It
 did not leave a partial operational-failure receipt or propagate a raw `OverflowError`.
@@ -76,7 +76,7 @@ publisher.
 | Coherent raw-before-exact child chronology | Accepted | Accepted |
 | All raw/exact task and child times exchanged, sidecar digests updated | `CalibrationError: raw tasks finish after normalized exact tasks start` | `ProfileCoordinatorError` with the same reason |
 | Coherent terminal phase baseline | Accepted | Accepted |
-| Single raw phase changed to `100.0` beyond worker elapsed | `CalibrationError` for phase durations | `ProfileCoordinatorError` for phase durations |
+| Single raw phase changed to $100.0$ beyond worker elapsed | `CalibrationError` for phase durations | `ProfileCoordinatorError` for phase durations |
 | Two finite phases summing beyond float range | `CalibrationError` for phase durations | `ProfileCoordinatorError` for phase durations |
 
 For the receipt replacement control, a symlink swapped between `lstat` and open raised

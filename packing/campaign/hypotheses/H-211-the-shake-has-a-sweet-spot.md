@@ -39,7 +39,7 @@ hypothesis:
 **Registered after its data, and untested.** The table below was in hand when this claim
 was registered, so exp-208, which reports it, is the exploratory data behind the claim,
 filed under the open question [H-212](H-212-the-workbench-physics-as-a-search.md).
-The test is a preregistered round on seed blocks or `n` that exp-208 did not use.
+The test is a preregistered round on seed blocks or $n$ that exp-208 did not use.
 
 The best of the first 1,000 runs in `closed`, with 3,000 repaired runs per cell
 ([exp-208](../series/series-000-smoke-and-calibration/experiments/exp-208-h211-the-shake-dial.md)):
@@ -53,8 +53,8 @@ The best of the first 1,000 runs in `closed`, with 3,000 repaired runs per cell
 | 8 | 0.958 | 0.977 | 0.564 |
 | 10 | 0.864 | 0.879 | 0.325 |
 
-At levels 0, 2 and 4 no run beat the grid at any of the three `n`. At levels 6, 8 and 10
-the best run beat it in eight cells of nine; the ninth, `n = 11` at level 6, did before
+At levels 0, 2 and 4 no run beat the grid at any of the three $n$. At levels 6, 8 and 10
+the best run beat it in eight cells of nine; the ninth, $n = 11$ at level 6, did before
 seed 5,000 of the same stream.
 Levels 1, 3, 5, 7 and 9 have no repaired runs.
 
@@ -66,11 +66,11 @@ pair law (rigidity 0.15, repulsion 2500, attraction 0, range 0) and a 0.8 s movi
 #171 also changes both, to 0.35, 950, 80 and 0.15 and a 0.9 s span, so no cell says how
 level 9 searches as shipped.
 Nothing above level 10 has been measured under either law.
-Each cell is one prefix without spread, and only three `n` were swept.
+Each cell is one prefix without spread, and only three $n$ were swept.
 
 **What the cells suggest, and do not establish.** The shake is the only randomness in
-the run, so at level 0 every seed of an `n` gives the same run.
-At levels 2 and 4 the runs do differ, from −0.225 to −0.054 at `n = 5` and level 2, but
+the run, so at level 0 every seed of an $n$ gives the same run.
+At levels 2 and 4 the runs do differ, from −0.225 to −0.054 at $n = 5$ and level 2, but
 none of 3,000 beat the grid; at levels 6, 8 and 10 the best one usually did.
 Why a larger shake reaches those few runs is not measured.
 The dial is a search parameter that the page sets for a presentational reason.

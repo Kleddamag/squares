@@ -1,7 +1,7 @@
 # Prospective Packing Atlas, `n = 101..324`
 
 This directory is a provenance record.
-It answers what geometry a source has published for each `n` in the audited range, and
+It answers what geometry a source has published for each $n$ in the audited range, and
 under what reuse terms.
 Where this repository keeps that geometry is answered by
 [`known-best/`](../known-best/README.md), which covers the whole range.
@@ -21,7 +21,7 @@ recorded as having none.
 That is scoped evidence rather than a claim that the search covered every site,
 publication, or unpublished construction: source selection is recorded as *provisionally
 complete* against the retained catalogue and UnitSquare evidence.
-Extending the range beyond `n = 324`, or surveying other authorities, is new research
+Extending the range beyond $n = 324$, or surveying other authorities, is new research
 work that starts with its own audit.
 
 ## The License-Safe Seed Is Retired
@@ -33,7 +33,7 @@ On **2026-09-07** it was replaced by a retirement record.
 The 101 witnesses under `witnesses/prospective/` and the 101 renderings under
 `rendering/` were removed, and the record points at
 [`known-best/manifest.json`](../known-best/manifest.json), which retains one normalized
-`Witness/v2` construction and one house rendering for every `n` in this range under the
+`Witness/v2` construction and one house rendering for every $n$ in this range under the
 same retention policy the seed was built to respect.
 Nothing the seed indexed was lost.
 The same cases are held once instead of twice, in the collection that also carries their
@@ -60,15 +60,15 @@ record of what the collection then asserted.
 | Status | Cases | Meaning |
 | --- | ---: | --- |
 | Exact grid retained | 97 | The catalogue’s stated no-tilt grid rule is generated locally with exact coordinates. |
-| Licensed SVG retained | 4 | UnitSquare geometry for `n = 103`, `105`, `110`, and `131` is retained under the licence identified in its dataset metadata. |
+| Licensed SVG retained | 4 | UnitSquare geometry for $n = 103$, $105$, $110$, and $131$ is retained under the licence identified in its dataset metadata. |
 | Public SVG located; derived facts pending acquisition | 123 | Kingbird geometry was fetched and parsed during the access audit. The inspected catalogue page states no express reuse terms, so its SVG files are not retained. |
 | No selected geometry located | 0 | No case in this audited range fell into this category. |
 
 The third row is what decision `D2` of
 [the expansion plan](../../../docs/project/specs/active/plan-2026-09-07-atlas-expansion-to-324.md)
-resolved, by applying the `n ≤ 100` retention precedent: each SVG is fetched once and
+resolved, by applying the $n \le 100$ retention precedent: each SVG is fetched once and
 ephemerally, parsed to numerical centre-and-angle facts, and retained as `Witness/v2`
-with its attribution and `raw_asset_retained: false`. No Kingbird SVG above `n = 100` is
+with its attribution and `raw_asset_retained: false`. No Kingbird SVG above $n = 100$ is
 retained in this repository, then or now.
 
 That is a statement about the *bytes*. The facts parsed out of them are not encumbered

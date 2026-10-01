@@ -8,8 +8,8 @@ This screen is a guarded analytic reader, not a geometric search.
 
 ## Input and Domain Contract
 
-Use `q=96/25`, `ℓ=1/10`, `δ=3/500`, `ρ=1/1000`, and the segment midpoint and anchors
-from [the outer capacity proof](outer-middle-capacity-two-proof.md).
+Use $q=96/25$, $\ell=1/10$, $\delta=3/500$, $\rho=1/1000$, and the segment midpoint and
+anchors from [the outer capacity proof](outer-middle-capacity-two-proof.md).
 For the left segment these are
 
 ```text
@@ -17,12 +17,12 @@ m = (27/50,48/25),
 p₁ = m+(9/25,-7/25),   p₂ = m+(9/25,7/25).
 ```
 
-The angle ordering is part of the contract: `t₁` belongs to the lower-anchor owner and
-`t₂` to the upper-anchor owner.
+The angle ordering is part of the contract: $t_1$ belongs to the lower-anchor owner and
+$t_2$ to the upper-anchor owner.
 An unordered pair of input angles must cover both anchor assignments.
 Enumerating normal signs does not exchange those assignments.
 
-For signed folded rational `t_i`, define the orthonormal basis
+For signed folded rational $t_i$, define the orthonormal basis
 
 ```text
 c_i = (1-t_i²)/(1+t_i²),   s_i = 2t_i/(1+t_i²),
@@ -32,11 +32,11 @@ h_i = (|c_i|+|s_i|)/2,
 H_i(v) = (|v·u_i|+|v·w_i|)/2.
 ```
 
-The folded-range check can be exact: `t_i²+2|t_i|≤1`. Every supplied normal is unit, so
-its support tolerance is `r_v=ℓ|v_x|/2+δ`. An unnormalized replacement would need the
-corresponding norm factors on the disk tolerances.
+The folded-range check can be exact: $t_i^2+2|t_i|\le1$. Every supplied normal is unit,
+so its support tolerance is $r_v=\ell|v_x|/2+\delta$. An unnormalized replacement would
+need the corresponding norm factors on the disk tolerances.
 
-For center `z_i`, the proposed initial domain `D_i` consists of the following closed
+For center $z_i$, the proposed initial domain $D_i$ consists of the following closed
 half-planes:
 
 ```text
@@ -50,15 +50,16 @@ The box is exactly container containment for that square orientation.
 The two anchor slabs are exactly containment of the closed radius-`ρ` disk about its
 assigned anchor. Actual owners satisfy them by the capacity proof.
 
-The tube slabs are necessary: if a point of the square is within `δ` of the segment,
-project that witness onto any unit `v` and apply the square and segment support bounds.
-The finite collection of directions gives an outer approximation to the center domain
-for Euclidean tube intersection; it does not enforce all support directions of the round
-tube. Every actual owner center belongs to `D_i`.
+The tube slabs are necessary: if a point of the square is within $\delta$ of the
+segment, project that witness onto any unit $v$ and apply the square and segment support
+bounds. The finite collection of directions gives an outer approximation to the center
+domain for Euclidean tube intersection; it does not enforce all support directions of
+the round tube. Every actual owner center belongs to $D_i$.
 
 ## Separating Branches and Completeness
 
-Enumerate `v∈{±u₁,±w₁,±u₂,±w₂}`. For each signed normal, clip the domains to
+Enumerate $v\in\lbrace\pm u_1,\pm w_1,\pm u_2,\pm w_2\rbrace$. For each signed normal,
+clip the domains to
 
 ```text
 D₁(v): v·m-r_v-H₁(v) ≤ v·z₁ ≤ v·m+r_v-H₁(v),
@@ -71,8 +72,9 @@ For an actual ordered separating pair, put
 α = v·z₁+H₁(v),   β = v·z₂-H₂(v),   α≤β.
 ```
 
-The ownership witnesses give `α≥v·m-r_v` and `β≤v·m+r_v`. Combining those bounds with
-`α≤β` gives the two proposed clips, including their signs and support shifts.
+The ownership witnesses give $\alpha\ge v\cdot m-r_v$ and $\beta\le v\cdot m+r_v$.
+Combining those bounds with $\alpha\le\beta$ gives the two proposed clips, including
+their signs and support shifts.
 
 If both clipped domains are nonempty, define
 
@@ -123,13 +125,13 @@ These controls use the angle ordering stated above.
 
 | Ordered Half-Tangents | Required Outcome | Evidence |
 | --- | --- | --- |
-| `(1/4,1/4)` | Survives | Contained touching pair below |
-| `(-1/4,-1/4)` | Survives | Contained touching pair below |
-| `(-1/4,1/4)` | Survives | Pair touching at `m`, below |
-| `(1/3,1/3)` | All branches rejected | Exact clipped-domain contradiction below |
-| `(-1/3,-1/3)` | All branches rejected | Reflection of the preceding contradiction |
+| $(\frac{1}{4},\frac{1}{4})$ | Survives | Contained touching pair below |
+| $(-\frac{1}{4},-\frac{1}{4})$ | Survives | Contained touching pair below |
+| $(-\frac{1}{4},\frac{1}{4})$ | Survives | Pair touching at $m$, below |
+| $(\frac{1}{3},\frac{1}{3})$ | All branches rejected | Exact clipped-domain contradiction below |
+| $(-\frac{1}{3},-\frac{1}{3})$ | All branches rejected | Reflection of the preceding contradiction |
 
-For either sign `σ∈{-1,1}`, set
+For either sign $\sigma\in\lbrace-1,1\rbrace$, set
 
 ```text
 c = 15/17,   s = σ·8/17,
@@ -138,28 +140,29 @@ Q₁ = m+[0,1]u+[-1,0]w,
 Q₂ = m+[0,1]u+[0,1]w.
 ```
 
-Their signed half-tangents are both `σ/4`. The squares meet along the common side
-`m+[0,1]u` and have disjoint interiors.
-Each contains `m`, so its distance from the outer segment is zero.
-Their x-coordinates are at least `27/50-8/17=59/850>0`; their x-coordinates are at most
-`27/50+23/17<q`, and their y-coordinates lie in `[48/25-23/17,48/25+23/17]⊂(0,q)`.
+Their signed half-tangents are both $\sigma/4$. The squares meet along the common side
+$m+[0,1]u$ and have disjoint interiors.
+Each contains $m$, so its distance from the outer segment is zero.
+Their x-coordinates are at least $27/50-8/17=59/850>0$; their x-coordinates are at most
+$27/50+23/17< q$, and their y-coordinates lie in
+$[48/25-23/17,48/25+23/17]\subset(0,q)$.
 
-The anchors’ coordinates in the displayed `u,w` frame are
+The anchors’ coordinates in the displayed $u,w$ frame are
 
-| Sign | Lower Anchor in `Q₁` | Upper Anchor in `Q₂` |
+| Sign | Lower Anchor in $Q_1$ | Upper Anchor in $Q_2$ |
 | --- | --- | --- |
-| `σ=1` | `(79/425,-177/425)` | `(191/425,33/425)` |
-| `σ=-1` | `(191/425,-33/425)` | `(79/425,177/425)` |
+| $\sigma=1$ | $(\frac{79}{425},-\frac{177}{425})$ | $(\frac{191}{425},\frac{33}{425})$ |
+| $\sigma=-1$ | $(\frac{191}{425},-\frac{33}{425})$ | $(79/425{,}177/425)$ |
 
-Every edge distance is at least `33/425>ρ`. Thus these witnesses satisfy the anchor disk
-constraints directly as well as true segment ownership.
+Every edge distance is at least $33/425>\rho$. Thus these witnesses satisfy the anchor
+disk constraints directly as well as true segment ownership.
 
-For `(-1/4,1/4)`, take the preceding `σ=-1` square `Q₁` and reflect it in `y=48/25` to
-obtain `Q₂`. The lower square lies in `y≤48/25`, the upper in `y≥48/25`, and they meet
-at `m`. The same containment and anchor-clearance bounds apply.
-Their respective folded half-tangents are `-1/4` and `1/4`.
+For $(-1/4,1/4)$, take the preceding $\sigma=-1$ square $Q_1$ and reflect it in
+$y=48/25$ to obtain $Q_2$. The lower square lies in $y\le48/25$, the upper in
+$y\ge48/25$, and they meet at $m$. The same containment and anchor-clearance bounds
+apply. Their respective folded half-tangents are $-1/4$ and $1/4$.
 
-For the negative control `(1/3,1/3)`, use
+For the negative control $(1/3,1/3)$, use
 
 ```text
 c = 4/5,   s = 3/5,
@@ -167,16 +170,16 @@ u = (c,s),   w = (-s,c),
 r_u = 23/500,   r_w = 9/250.
 ```
 
-The only normal surviving the preliminary cuts is `w`. The normal `u` has
-`56u_y-62|u_x|+1=-15<0`; the other two normals have negative y-coordinate.
-For a center of the upper owner in the `w` branch, put
+The only normal surviving the preliminary cuts is $w$. The normal $u$ has
+$56u_y-62|u_x|+1=-15<0$; the other two normals have negative y-coordinate.
+For a center of the upper owner in the $w$ branch, put
 
 ```text
 k = u·z₂-1/2,   l = w·z₂-1/2.
 ```
 
-The `u` tube slab gives `k≤u·m+r_u`, and the branch clip gives `l≥w·m-r_w`. Left-wall
-containment requires
+The $u$ tube slab gives $k\le u\cdot m+r_u$, and the branch clip gives
+$l\ge w\cdot m-r_w$. Left-wall containment requires
 
 ```text
 ck-sl ≥ s,
@@ -192,18 +195,18 @@ s ≤ c(u·m+r_u)-s(w·m-r_w)
   = 374/625.
 ```
 
-But `s=3/5=375/625`. The clipped upper domain is empty, with contradiction gap `1/625`.
-This control lies below the steep-angle threshold `49/125`, so it checks the domain
+But $s=3/5=375/625$. The clipped upper domain is empty, with contradiction gap $1/625$.
+This control lies below the steep-angle threshold $49/125$, so it checks the domain
 clipping in addition to the preliminary angular test.
-Reflection in `y=48/25`, with the anchor order exchanged, proves rejection of
-`(-1/3,-1/3)`.
+Reflection in $y=48/25$, with the anchor order exchanged, proves rejection of
+$(-1/3,-1/3)$.
 
 ## Margins in the Separate Fixed-Outer Proof
 
 The [common-point proof](fixed-outer-pairs-bottom-corner-incompatibility.md) has uniform
 slack in its two upper local-coordinate bounds.
-Its inequalities give `α_P<19/20` and `β_P<74/75`: for the first, compare
-`554/625<361/400`; for the second, use `2sqrt(2)/3>14/15` and `14/15-23/25=1/75` in that
+Its inequalities give $\alpha_P<19/20$ and $\beta_P<74/75$: for the first, compare
+$554/625<361/400$; for the second, use `2sqrt(2)/3>14/15` and $14/15-23/25=1/75$ in that
 proof’s equation (3).
 
 Those margins support attempting a quantitative stability estimate for perturbations of

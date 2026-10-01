@@ -92,9 +92,9 @@ They add:
   The receipt correctly does not call these failed auxiliary statements counterexamples
   to the source’s strict-box theorem.
 
-The unchanged source replay reports event-dimension counts `(280,526,247)` at 0° and
-`(406,841,444)` at 45°. There are no axis P10 avoiders; at 45° six strata avoid P10 and
-one meets the canonical rectangle.
+The unchanged source replay reports event-dimension counts $(280{,}526{,}247)$ at 0° and
+$(406{,}841{,}444)$ at 45°. There are no axis P10 avoiders; at 45° six strata avoid P10
+and one meets the canonical rectangle.
 All seven conclusions are true, the obstruction list is empty, and `theorem_acceptance`
 remains false.
 

@@ -136,7 +136,7 @@ $$
 
 For $0\le\varepsilon<1/\sqrt2$, at most one packed square can meet this triangle.
 Indeed its center lies in $a,b\ge1/2$, $a+b\le1+\varepsilon$, a triangle of diameter
-$\sqrt2\varepsilon<1$. Two such centers would make their open radius-$1/2$ incircles
+$\sqrt2\varepsilon<1$. Two such centers would make their open radius-`1/2` incircles
 overlap. Occupants of different corner triangles are distinct whenever
 $L-2\varepsilon>\sqrt2$, as throughout the relevant range.
 

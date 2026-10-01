@@ -17,9 +17,9 @@ tree, refused by the session’s GitHub access policy, and then a blob-less
 commit.
 
 **In one line:** the Lean constant `SquarePacking.s13_eq_4 : minSide 13 = 4`, checked by
-Lean 4.33.1 with the standard three axioms, states exactly this record’s `s(13) = 4`
+Lean 4.33.1 with the standard three axioms, states exactly this record’s $s(13) = 4$
 (closed unit squares, independent real rotations, pairwise disjoint open interiors,
-inside the closed `[0, s]²`, `s(n)` the least such side, attained at `4` by
+inside the closed $[0, s]^2$, $s(n)$ the least such side, attained at $4$ by
 `packs_grid 4 13`); nothing in the source bypasses the kernel; the regenerated data
 enters only as kernel input, so its correctness is not assumed; and the result should be
 recorded as new evidence on `T-006`, taking it to `V5`, with one thing to retain before
@@ -33,7 +33,7 @@ the replay recipe is honest.
 | Theorem | `SquarePacking.s13_eq_4 : SquarePacking.minSide 13 = 4`, `Sqpack/S13Lower.lean` (blob `2012970e…`), with `s13_ge_4 : (4 : ℝ) ≤ minSide 13` |
 | Definitions | `coord`, `sq`, `sqInt` (`Sqpack/Basic.lean`, blob `cbfe567f…`); `box` (`Sqpack/Chord.lean`, `913bd7df…`); `Packs`, `minSide`, `packs_grid` (`Sqpack/S32.lean`, `065a2c43…`) |
 | Verifier | `Sqpack/ZMTree.lean` (`fb64e304…`), `Sqpack/BoxTree.lean` (`0499d1f0…`): `ZMTree.sound`, `BoxTree.le_minSide` |
-| Certificate | `certificates/rung2/s13_closed_cover_4.txt`, sha256 `ea303acea08cc17a13cecc24d3714c2df409f91eba048cd5546050ed064b53ed`, 3,621 points, total weight `12955972155 / 10⁹ = 12.955972155 < 13` |
+| Certificate | `certificates/rung2/s13_closed_cover_4.txt`, sha256 `ea303acea08cc17a13cecc24d3714c2df409f91eba048cd5546050ed064b53ed`, 3,621 points, total weight $12955972155 / 10^9 = 12.955972155 < 13$ |
 | Generator | `lean/scripts/gen_zmtree.py` (`06f22b4d…`); trees pickled at `scratchpad/lean/work/s13_trees.pkl`; emitted as 4 parts (`work/S13_4parts/`) and as the 16 parts that were built (`Sqpack/S13/`) |
 | Toolchain | `lean-toolchain` = `leanprover/lean4:v4.33.1`; `lean --version` = 4.33.1, commit `819816b2`; `lakefile.toml` requires mathlib `v4.33.1`; `lake-manifest.json` pins mathlib `0df444a360eaa60ab8c11dca51a86af692955474` |
 | Lane logs | `logs/build_s13_*.log` (19 targets), `logs/s13_table.txt`, `logs/axioms_s13.log`, `logs/axioms_default.log`, `logs/statements.log`, `logs/gen_S13.log`, `logs/emit_S13_16.log`; probes `scratchpad/lean/probe/AxiomsS13.lean`, `Statements.lean` |
@@ -66,7 +66,7 @@ gives `C2` for a `proof-assistant-checked` entry on its own (S1); the packet’s
 `zmx2 --d4` replay of the same cover is on disk but unregistered, and registering it is
 what makes `T-006` `C3` (S2); the evidence entry must record the replay as it was
 actually done, sixteen parts and single-threaded, not the source’s four (S3); and the
-credit line must say this is not the first kernel-checked `s(13) = 4` anywhere, only the
+credit line must say this is not the first kernel-checked $s(13) = 4$ anywhere, only the
 first on this record (S4).
 
 **Nits:** `s13_eq_4` is the infimum form and attainment is a separate constant (N1); the
@@ -77,13 +77,13 @@ thread setting (N4).
 **Recommended register change:** new evidence on `T-006`, not a new result;
 `method: proof-assistant-checked`, `origin: replayed-here`, `performed_by: repository`;
 `T-006` to `V5`, and to `C3` once the `zmx2` replay is registered beside it.
-The `s(12)` bounds and the two conditional theorems change no field (§6.4).
+The $s(12)$ bounds and the two conditional theorems change no field (§6.4).
 
 ## 3. Statement Faithfulness
 
 The rung `V5` says a proof assistant checked a formalization, not that the formal
 statement matches the prose claim (`epistemics.md`, Verification), so this is the
-section that decides whether `minSide 13 = 4` is `s(13) = 4`. Everything the statement
+section that decides whether `minSide 13 = 4` is $s(13) = 4$. Everything the statement
 mentions is in three files, and Lean printed the definitions itself
 (`logs/statements.log`, `#print` from the built environment); the printed forms agree
 with the sources.
@@ -91,52 +91,53 @@ with the sources.
 ### 3.1 The definitions, one by one
 
 `coord c θ p = ((p.1 − c.1) cos θ + (p.2 − c.2) sin θ, −(p.1 − c.1) sin θ + (p.2 − c.2) cos θ)`
-is the rotation of `p − c` by `−θ`, so `sq c θ L = {p | |x'| ≤ L/2 ∧ |y'| ≤ L/2}` is the
-closed square of side `L` centred at `c` and rotated by `θ`, and `sqInt` with strict
-inequalities is its open interior.
-With `L = 1` the half-width is `1/2` in real division, so `sq c θ 1` has side exactly
-`1`, not `2` and not `1/2`. `box t = {p | 0 ≤ p.1 ∧ p.1 ≤ t ∧ 0 ≤ p.2 ∧ p.2 ≤ t}` is the
-closed `[0, t]²`.
+is the rotation of $p - c$ by $-\theta$, so `sq c θ L = {p | |x'| ≤ L/2 ∧ |y'| ≤ L/2}`
+is the closed square of side $L$ centred at $c$ and rotated by $\theta$, and `sqInt`
+with strict inequalities is its open interior.
+With $L = 1$ the half-width is $1/2$ in real division, so `sq c θ 1` has side exactly
+$1$, not $2$ and not $1/2$. `box t = {p | 0 ≤ p.1 ∧ p.1 ≤ t ∧ 0 ≤ p.2 ∧ p.2 ≤ t}` is the
+closed $[0, t]^2$.
 
 `Packs n s` is
 `∃ (ctr : Fin n → ℝ × ℝ) (ang : Fin n → ℝ), (∀ i, sq (ctr i) (ang i) 1 ⊆ box s) ∧ ∀ i j, i ≠ j → Disjoint (sqInt (ctr i) (ang i) 1) (sqInt (ctr j) (ang j) 1)`.
-That is `n` closed unit squares, each with its own real angle, each inside the closed
+That is $n$ closed unit squares, each with its own real angle, each inside the closed
 container, with pairwise disjoint open interiors; Mathlib’s `Disjoint` on sets is empty
 intersection. Boundary contact between squares, and between a square and the container’s
 edge, is allowed, which is the record’s convention (`E-n032-…-source-run`,
-`proof.scope`). Nothing restricts the angles: the `θ ∈ [0, π/4]` and
+`proof.scope`). Nothing restricts the angles: the $\theta \in [0, \pi/4]$ and
 centre-in-the-fundamental-region restrictions live inside the proof (`d4_reduction`,
 `exists_u_of_theta'` in `BoxTree.lean`) and do not reach the statement.
 
-`minSide n = sInf {s | Packs n s}` over `ℝ`, with `13 : ℕ` and `4 : ℝ`.
+`minSide n = sInf {s | Packs n s}` over $\mathbb{R}$, with $13 : \mathbb{N}$ and
+$4 : \mathbb{R}$.
 
 ### 3.2 The infimum, junk values, and attainment
 
-`Real.sInf` returns `0` on the empty set and on any set not bounded below
+`Real.sInf` returns $0$ on the empty set and on any set not bounded below
 (`Real.sInf_empty`, `Real.sInf_of_not_bddBelow`). So a junk value cannot produce
 `minSide 13 = 4`: if the packing set were empty or unbounded below the left side would
-be `0`. The proof of `s13_eq_4` is explicit about both: nonemptiness is
-`packs_grid 4 13` (`Packs 13 4`, the `4 × 4` grid), and boundedness below is derived by
-contradiction from `s13_ge_4` using `Real.sInf_of_not_bddBelow`; then
+be $0$. The proof of `s13_eq_4` is explicit about both: nonemptiness is
+`packs_grid 4 13` (`Packs 13 4`, the $4 \times 4$ grid), and boundedness below is
+derived by contradiction from `s13_ge_4` using `Real.sInf_of_not_bddBelow`; then
 `le_antisymm (csInf_le hb hp) h1`.
 
 The lower half is not merely an inequality about an infimum.
 `BoxTree.le_minSide` proves `Mq/D ≤ minSide n` through `le_csInf` over the nonempty set,
-with every member `s` shown to satisfy `m ≤ s` by `not_packs_of_cover`, whose statement
-is `∀ s < m, ¬ Packs n s`. So the kernel-checked content is the strong form: no packing
-of 13 unit squares exists at any side below `4`. With `packs_grid 4 13` the value is
-attained, and `s(13) = 4` in the record’s least-side sense follows; see N1 for why the
-register should cite both constants.
+with every member $s$ shown to satisfy $m \le s$ by `not_packs_of_cover`, whose
+statement is `∀ s < m, ¬ Packs n s`. So the kernel-checked content is the strong form:
+no packing of 13 unit squares exists at any side below $4$. With `packs_grid 4 13` the
+value is attained, and $s(13) = 4$ in the record’s least-side sense follows; see N1 for
+why the register should cite both constants.
 
 ### 3.3 The instance
 
-`s13_ge_4` instantiates `le_minSide` at `D = 1000`, `S = 4096`, `Mq = 4000`, `R = 2³²`,
-`Um = 2³¹`, `W = 10⁹`, `n = 13`, `k = 4`: the container side `Mq/D = 4`, the angle range
-`u ∈ [0, 1/2]` with `29·R ≤ 70·Um` (so `tan(π/8) < 29/70 ≤ 1/2`), `13 ≤ 4·4`, and the
-total `pts.wsum = 12955972155 < 13 · 10⁹`, which is `2591194431/200000000 · 10⁹`, the
-certificate’s stated total.
-The root box of `cov_root` is `[0, 8192000]² × [0, 2³¹]` at scale `Q = D·S`, and
-`Mq·S − Mq·S/2 = 8192000`, as `le_minSide` requires.
+`s13_ge_4` instantiates `le_minSide` at $D = 1000$, $S = 4096$, `Mq = 4000`,
+$R = 2^{32}$, `Um = 2³¹`, $W = 10^9$, $n = 13$, $k = 4$: the container side `Mq/D = 4`,
+the angle range $u \in [0, 1/2]$ with `29·R ≤ 70·Um` (so $\tan(\pi/8) < 29/70 \le 1/2$),
+$13 \le 4\cdot4$, and the total `pts.wsum = 12955972155 < 13 · 10⁹`, which is
+$2591194431/200000000 \cdot 10^9$, the certificate’s stated total.
+The root box of `cov_root` is $[0, 8192000]^2 \times [0, 2^{31}]$ at scale
+$Q = D\cdot S$, and `Mq·S − Mq·S/2 = 8192000`, as `le_minSide` requires.
 
 ## 4. Nothing Smuggled
 
@@ -144,7 +145,7 @@ The root box of `cov_root` is `[0, 8192000]² × [0, 2³¹]` at scale `Q = D·S`
   the prose names:
   `'SquarePacking.s13_eq_4' depends on axioms: [propext, Classical.choice, Quot.sound]`,
   the same for `s13_ge_4`, `ZMTree.sound`, and `BoxTree.le_minSide`; the probe
-  `AxiomsS13.lean` imports `Sqpack.S13Lower` and nothing else, exit `0`. The
+  `AxiomsS13.lean` imports `Sqpack.S13Lower` and nothing else, exit $0$. The
   default-target log has 97 constants on the standard three and 4 on `propext` alone,
   none on anything else.
   `#print axioms` walks the stored proof terms, so this covers the 209 chunk theorems
@@ -166,7 +167,7 @@ The root box of `cov_root` is `[0, 8192000]² × [0, 2³¹]` at scale `Q = D·S`
   plus `Mathlib`: `Basic`, `Chord`, `Cover`, `D4`, `S32`, `S32Data`, `ZeroMargin`,
   `BoxTree`, `ZMTree`, `S13Lower`, and the 18 generated `S13.*`. `S13/Cov.lean` imports
   `Part0` through `Part15`, and `cov_rootL` is one term over `ok0 … ok208` (209 distinct
-  `okI` across the 16 files, `13 × 15 + 14`), so `S13Lower` cannot have been built
+  `okI` across the 16 files, $13 \times 15 + 14$), so `S13Lower` cannot have been built
   without every chunk.
   `S13Lower` is opt-in (not in `Sqpack.lean`), which is why the lane built it by name.
 - **Pins and provenance.** All 43 entries of
@@ -191,8 +192,8 @@ that fails to build, never a false theorem.
 The generator itself trusts nothing either: `zeromargin.py` is its read-only oracle for
 which leaf and which witnesses, and the emitted tree is what the kernel decides.
 
-**Census.** `logs/gen_S13.log` reports 10,024 boxes, max depth 13, `E` 1,738, `Z` 4,079
-(`ADM` 1,416, one chain 1,133, two chains 1,530), `C` 1,590, 2,617 splits, `F` 374,
+**Census.** `logs/gen_S13.log` reports 10,024 boxes, max depth 13, $E$ 1,738, $Z$ 4,079
+(`ADM` 1,416, one chain 1,133, two chains 1,530), `C` 1,590, 2,617 splits, $F$ 374,
 1,325,532 claimed entries, 203,367 chain points, 16,717 pivots, 1,803,938 digits, 209
 chunks; every figure equals the source’s `LADDER.md` rung-2 paragraph.
 The search ran with `--nproc 1` and `--save`; the source says a fresh run reproduces the
@@ -229,7 +230,7 @@ exact statement in `claim`, and this is the same statement.
 The record has already taken this position for the same cover: `n-013.md` says “the
 theorem is Bentz’s; the source claims only the proof”, and the 2026-09-27 review calls
 the case-free proof “a second proof of a `V3` value”.
-The source’s own `CREDITS.md` says the same (“Our case-free `s(13) = 4` was
+The source’s own `CREDITS.md` says the same (“Our case-free $s(13) = 4$ was
 kernel-checked later”). A new result row would also break `T-006`’s history and the case
 file’s citation. So: one new evidence entry, cited by `T-006`; `T-006`’s `verification`
 derived to `V5`; its `composition` and `next_rung` rewritten.
@@ -298,8 +299,8 @@ A sketch, with the fields the schema requires (`frontier-evidence.schema.yaml`,
   say what the entry says is the natural one.
 - **Firsts.** This would be the first `proof-assistant-checked` entry and the first `V5`
   on this record (`grep` finds none today), and the first hypothesis-free kernel-checked
-  exact value of `s(n)` the record holds.
-  It is not the first kernel-checked `s(13) = 4` anywhere: chelokot’s Lean archive holds
+  exact value of $s(n)$ the record holds.
+  It is not the first kernel-checked $s(13) = 4$ anywhere: chelokot’s Lean archive holds
   Bentz’s argument, kernel-checked on 2026-09-05, which the source credits and
   `n-013.md` already reports; that archive is not retained here.
   Credit: Evan Daniel (the `LICENSE` holder), building on Burns and Massaccesi, with an
@@ -307,11 +308,11 @@ A sketch, with the fields the schema requires (`frontier-evidence.schema.yaml`,
 
 ### 6.4 What the other theorems change
 
-- `s12_ge_35_9` (`3.888…`) and `s12_ge_3920_997` (`3.9318…`), kernel-checked on the
-  standard axioms (`axioms_default.log`), are the source’s pilot rungs and are below
-  `T-049`’s `15680/3951 = 3.96862…`. They move no bound and earn no rung; a line in
-  `n-012.md`’s ladder prose that two weaker bounds are now kernel-checked is the most
-  they warrant.
+- `s12_ge_35_9` ($3.888\ldots$) and `s12_ge_3920_997` ($3.9318\ldots$), kernel-checked
+  on the standard axioms (`axioms_default.log`), are the source’s pilot rungs and are
+  below `T-049`’s $15680/3951 = 3.96862\ldots$. They move no bound and earn no rung; a
+  line in `n-012.md`’s ladder prose that two weaker bounds are now kernel-checked is the
+  most they warrant.
 - `s21_eq_five_of_checker : S21CheckerCover → minSide 21 = 5` and
   `s32_eq_six_of_checker : S32CheckerCover → minSide 32 = 6` are implications from
   checker-cover hypotheses; a compound claim takes its weakest load-bearing part, so
@@ -363,8 +364,8 @@ kernel-checked proof of the value (chelokot, 2026-09-05, Bentz’s argument).
 statement.
 `S32.lean` exports `s32_isLeast : IsLeast {s | Packs 32 s} 6`; `S13Lower.lean`
 has no `IsLeast` constant.
-The entry should name both constants, and can note that `Real.sInf`’s junk value `0`
-rules out a vacuous `= 4`.
+The entry should name both constants, and can note that `Real.sInf`’s junk value $0$
+rules out a vacuous $= 4$.
 
 ### N2. Write the trusted base down once
 
@@ -390,16 +391,16 @@ none. `scratchpad/review-lean/chunkcmp2.py` is the check to keep.
 | --- | --- |
 | `s13_eq_4 : minSide 13 = 4`, no premises, standard axioms | `logs/axioms_s13.log`: `#check` and `#print axioms` lines for `s13_ge_4`, `s13_eq_4`, `ZMTree.sound`, `BoxTree.le_minSide`; exit 0 |
 | Definitions as printed equal the sources | `logs/statements.log` against `Basic.lean` (`coord`, `sq`, `sqInt`), `Chord.lean` (`box`), `S32.lean` (`Packs`, `minSide`) |
-| Side 1, closed square, open interior, closed container, independent real angles, `Fin 13`, `4 : ℝ` | §3.1, read from the definitions |
+| Side 1, closed square, open interior, closed container, independent real angles, `Fin 13`, $4 : \mathbb{R}$ | §3.1, read from the definitions |
 | No junk infimum; attainment | `Real.sInf_of_not_bddBelow` used in `s13_eq_4`; `packs_grid 4 13`; `le_csInf` and `not_packs_of_cover` in `le_minSide` |
-| Instance arithmetic | `4000/1000 = 4`; `29·2³² ≤ 70·2³¹`; `13 ≤ 16`; `12955972155 < 13·10⁹`; root box `8192000 = 4000·4096 − 4000·4096/2` |
+| Instance arithmetic | $\frac{4000}{1000} = 4$; $29\cdot2^{32} \le 70\cdot2^{31}$; $13 \le 16$; $12955972155 < 13\cdot10^9$; root box $8192000 = 4000\cdot4096 - 4000\cdot\frac{4096}{2}$ |
 | No kernel bypass in project sources | grep over `Sqpack/**`, `Sqpack.lean`, `Axioms.lean`, `lakefile.toml`, `lake-manifest.json`: no `sorry`, `admit`, `axiom`, `native_decide`, `ofReduceBool`, `implemented_by`, `extern`, `unsafe`, `opaque`, `partial`, `skipKernelTC`; `set_option`s are `maxRecDepth`, `maxHeartbeats`, `linter.style.longLine` only |
 | Toolchain and Mathlib pins | `lean --version` 4.33.1 (`819816b2`); `lean-toolchain`, `lakefile.toml`, `lake-manifest.json` blob-identical to upstream |
 | Overlay provenance | 43 of 43 upstream `s12/lean/**` and certificate entries at tree `c9d23e3a…` blob-identical to the overlay (`upstream_tree.txt`, `git hash-object`); overlay-only files are the generated `S13/`, `S11/`, `S32P/` |
 | Certificate identity | sha256 `ea303ace…` in `Pts.lean` header, overlay file, retained `.gz` gunzipped, and `retained-files.sha256` of the 09-26 packet |
-| Census equals the source’s | `gen_S13.log` vs `LADDER.md`: 10,024 boxes, depth 13, `E` 1,738, `Z` 4,079 (1,416 / 1,133 / 1,530), `C` 1,590, splits 2,617, `F` 374, claimed 1,325,532, chain points 203,367, pivots 16,717, 209 chunks |
+| Census equals the source’s | `gen_S13.log` vs `LADDER.md`: 10,024 boxes, depth 13, $E$ 1,738, $Z$ 4,079 (1,416 / 1,133 / 1,530), `C` 1,590, splits 2,617, $F$ 374, claimed 1,325,532, chain points 203,367, pivots 16,717, 209 chunks |
 | 16-part emission equals the 4-part one | `Pts.lean` `cmp` identical; 209 chunks with identical `cI`, `dI`, `okI` text (`chunkcmp2.py`); `Cov.lean` differs in imports and the census line only; `emit()` shows `--parts` affects only file assignment |
-| Every chunk in the closure | `Cov.lean` imports `Part0`–`Part15`; `cov_rootL` uses `ok0 … ok208`; 209 distinct `okI` (`13 × 15 + 14`); `S13Lower` imports `Cov` |
+| Every chunk in the closure | `Cov.lean` imports `Part0`–`Part15`; `cov_rootL` uses `ok0 … ok208`; 209 distinct `okI` ($13 \times 15 + 14$); `S13Lower` imports `Cov` |
 | All targets built | 19 `build_s13_*.log` with `rc 0` and `Build completed successfully`; `.lake/build/lib/lean/Sqpack/S13Lower.olean` and `S13/` oleans present |
 | Import closure | 28 project modules + `Mathlib`; `S32Data` in, `S21`, `S21Data`, `MixedMeasure`, `SegTree` out |
 | Cost | `s13_table.txt`: 6,255 s wall, 3,978 s CPU, max RSS 9.54 GB, peak anon 4.1 GB; probe 12 s |
@@ -409,7 +410,7 @@ none. `scratchpad/review-lean/chunkcmp2.py` is the check to keep.
 
 ## Disposition
 
-Accept the theorem as a faithful, hypothesis-free, kernel-checked `s(13) = 4`. Record it
+Accept the theorem as a faithful, hypothesis-free, kernel-checked $s(13) = 4$. Record it
 as new evidence on `T-006` with `method: proof-assistant-checked`,
 `origin: replayed-here`, `performed_by: repository`, and the recipe of §6.2; take
 `T-006` to `V5`; retain `S32Data.lean` first (B1); register the `zmx2` replay beside it
@@ -423,7 +424,7 @@ the confirmation rung (S1); leave `T-049`, `T-051`, and `T-052` as they are (§6
   of the same cover as `E-n013-evand-casefree-cover-zmx2-replay`. T-006 is `V5/C3` on
   these entries.
 - **B1 is addressed by regenerating `S32Data.lean`.** The replay recipe regenerates it
-  with the retained `gen_s32_data.py` from the retained `s(32)` cover, before the build.
+  with the retained `gen_s32_data.py` from the retained $s(32)$ cover, before the build.
   The kernel checks every data fact, so the file needs no separate retention.
 - **The should-fix items are applied in the evidence entry.** S1 (the rungs as derived),
   S3 (the replay as performed: 16 parts, single-threaded, on a loaded host) and S4 (what

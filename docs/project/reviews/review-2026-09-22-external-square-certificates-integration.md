@@ -24,9 +24,9 @@ main without depending on an unmerged stack.
 | Tokoharu `s(26) >= 1377/250 = 5.508` | Covering theorem, symmetry, exact mass and interval arithmetic reviewed; no blocker found | Complete 201-direction source replay passed |
 | Tokoharu `s(29) >= 571/100 = 5.71` | Same proof contract; no blocker found | Complete 201-direction source replay passed |
 | Tokoharu `s(11) >= 381/100 = 3.81` | Valid calibration claim, superseded numerically | Complete 201-direction source replay passed |
-| Kleddamag `s(11) > 31/8 = 3.875` | Threshold budget, core containment, centre envelopes, cell coverage and strict endpoint reviewed; no blocker found | Complete Python and JavaScript replays, final controls and receipt reconciliation passed |
+| Kleddamag $s(11) > \frac{31}{8} = 3.875$ | Threshold budget, core containment, centre envelopes, cell coverage and strict endpoint reviewed; no blocker found | Complete Python and JavaScript replays, final controls and receipt reconciliation passed |
 | wand125’s ten point certificates | Adapter and native theorem contract reviewed; conservative count labels identified | All ten complete exact replays passed all five conditions on the full 201-direction net |
-| Kleddamag `s(17) > 461300/99853 ≈ 4.619791` | Prior complete proof audit found no blocker; withholding for lack of C4 contradicted the admission contract | Prior full replay attested in Session 150; adopted here with its provenance limitation stated below |
+| Kleddamag $s(17) > \frac{461300}{99853} \approx 4.619791$ | Prior complete proof audit found no blocker; withholding for lack of C4 contradicted the admission contract | Prior full replay attested in Session 150; adopted here with its provenance limitation stated below |
 
 Both Astra reviewers also cross-reviewed the other lane’s load-bearing derivations.
 That independent mathematical review is distinct from independently recomputing all
@@ -154,8 +154,8 @@ The native follow-ups below therefore concern generalization and stronger confir
 The reported lane retains literal recovered source claims and their explicit monotonic
 consequences. For point certificates, n appears only in the mass-budget inequality.
 Two source labels are conservative: the fully replayed n53 certificate has mass
-`1287080441/25000000 < 52`, and the fully replayed n69 certificate has mass
-`846701027/12500000 < 68`. The same certificate bytes consequently prove
+$1287080441/25000000 < 52$, and the fully replayed n69 certificate has mass
+$846701027/12500000 < 68$. The same certificate bytes consequently prove
 `s(52) >= 369/50 = 7.38` and `s(68) >= 841/100 = 8.41`. These are local deductions from
 the external certificates, without a priority claim; they do not replace the literal
 reported Green values with statements the upstream source did not make.
@@ -167,11 +167,11 @@ The same policy review identified an existing inconsistency at n17. Session 150 
 already recorded a complete approximately 1,001-second Kleddamag v1.0.0 replay, matching
 the published result byte for byte, and the
 [September 21 proof review](review-2026-09-21-n17-kleddamag-461300-99853.md) found no
-blocking defect. The case nevertheless withheld `461300/99853` solely for lack of a
+blocking defect. The case nevertheless withheld $461300/99853$ solely for lack of a
 second method. This intake corrects both its literal reported field and its verified
-lower bound to that strict `s(17) > 461300/99853 = 4.619791…` theorem, retaining T-032
-as history. This is a correction based on the earlier repository execution attestation
-and proof review; no fresh n17 full replay is claimed.
+lower bound to that strict $s(17) > 461300/99853 = 4.619791\ldots$ theorem, retaining
+T-032 as history. This is a correction based on the earlier repository execution
+attestation and proof review; no fresh n17 full replay is claimed.
 That older packet retains manifest-bound source outputs and the dated local attestation,
 not a separately named copy of local raw replay output.
 The new Guzhou archive also makes the former “not retained” description of R038

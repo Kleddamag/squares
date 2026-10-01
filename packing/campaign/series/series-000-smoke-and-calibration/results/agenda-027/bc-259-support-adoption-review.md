@@ -33,12 +33,12 @@ algebraic.
 
 | Archive name | Current name | Formula |
 | --- | --- | --- |
-| `L` | `side` | $(6u+4)/(1+2u-u^2)$ |
-| `r` | `r1` | $1-(L-3)c$ |
-| `a` | `u1` | $((1+r)c-1)/s$ |
-| `v` | `v1` | $c-s$ |
-| `b` | `v2` | $(L-1)/s-r-(3+a)c/s$ |
-| `x` | `x0` | $1+2/c-(L-2)s/c$ |
+| $L$ | `side` | $(6u+4)/(1+2u-u^2)$ |
+| $r$ | `r1` | $1-(L-3)c$ |
+| $a$ | `u1` | $((1+r)c-1)/s$ |
+| $v$ | `v1` | $c-s$ |
+| $b$ | `v2` | $(L-1)/s-r-(3+a)c/s$ |
+| $x$ | `x0` | $1+2/c-(L-2)s/c$ |
 
 The six axis-aligned squares and five tilted squares occur in the same original label
 order.

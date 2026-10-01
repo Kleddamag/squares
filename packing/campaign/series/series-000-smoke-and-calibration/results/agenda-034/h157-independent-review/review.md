@@ -31,13 +31,13 @@ Exact SAT and convex clipping agree that `m1:J9/16` intersects core 55 and `m2:J
 intersects core 50. Both intersections are triangles of strictly positive area.
 Their true distance is therefore zero, while the published script prints
 
-`75308842465387162009/335694834731568400000000 > 0`.
+$75308842465387162009/335694834731568400000000 > 0$.
 
 That number is a vertex-to-edge minimum with its disjointness precondition violated.
 The actual nearest *remaining* survivor in either of these two classes has squared
 distance
 
-`154520421972020636842286626510179978387793755009897266163721/8274126656975111962857032162670705972822328494029059600000000`.
+$154520421972020636842286626510179978387793755009897266163721/8274126656975111962857032162670705972822328494029059600000000$.
 
 The six neutral children retain the reported positive distance to their selected
 targets. The all-children identity is false.
@@ -71,18 +71,18 @@ A chosen subset of a common intersection need not contain the mark.
 
 There is a positive-area counterexample on the stated data.
 Take the singleton pose class consisting of core 59 and let its patch be that core
-scaled by `1/10000` about its bottom-left corner.
+scaled by $1/10000$ about its bottom-left corner.
 The patch lies inside core 59, contains neither bottom-left mark, and has area
-`99540529/10000000000000000`. Its survivor weight is **43/4**, not ten.
+$99540529/10000000000000000$. Its survivor weight is **43/4**, not ten.
 Exact SAT and clipping agree.
-Similar patches at two other corners leave `85/8`. The
+Similar patches at two other corners leave $85/8$. The
 [geometry receipt](geometry-receipt.json) preserves their rational vertices.
 
 **Correction:** T2 can conclude `w(F) >= 10` from `F subset core59` alone.
 This already suffices to obstruct a point cover of budget below ten on the declared
 patch-only relaxation.
 For equality, additionally require a fixed common mark `m in F`, for example by defining
-`F` to be the full common intersection for a class sharing that mark.
+$F$ to be the full common intersection for a class sharing that mark.
 Owning one of two corner marks is not itself a common-mark premise.
 
 ### High: the angular and pose statements need explicit domain contracts before supporting broad refinement language
@@ -118,7 +118,7 @@ theorem statement should carry those premises itself.
 Core admissibility must also be separated from physical completion.
 I independently verified more than the delivered B-core containment check: cores 59 and
 60 each have a concentric, same-angle unit parent inside the container, with minimum
-wall margin `785411/88696100 > 0`. Thus these isolated poses are unit-parent realizable.
+wall margin $785411/88696100 > 0$. Thus these isolated poses are unit-parent realizable.
 No receipt shows completion to eleven disjoint unit parents or a physical packing forced
 to use only neutral selections.
 This review does not claim that the isolated poses are nonrealizable.
@@ -135,13 +135,13 @@ every conditional strategy.
 [exp154:90–92](../../../experiments/exp-154-h157-sixteen-sector-refinement-limit.md)
 says survivor weight is *minimised* over the subclasses.
 H157’s corrected criterion and the actual rejection use the maximum.
-The minimum is `19/2 < 10`, so the machine-readable text describes a criterion that
+The minimum is $19/2 < 10$, so the machine-readable text describes a criterion that
 these data satisfy.
 
 **Correction:** change this active field to *maximised*, retaining the correction
 history. Two subclasses satisfy the registered `at most 79/8` survivor bound more
-strongly, at `19/2`; six fail.
-Do not describe `19/2` as a failure to attain an exact prediction of `79/8`, since H157
+strongly, at $19/2$; six fail.
+Do not describe $19/2$ as a failure to attain an exact prediction of $79/8$, since H157
 registered an upper bound.
 
 ### Medium: the active reading still draws a comparative allocation conclusion from unmatched measurements
@@ -200,10 +200,10 @@ The repository was not modified.
 | Reading | Independent review result |
 | --- | --- |
 | Eight-bin equivalence | Zero disagreements for membership, extreme rays, polygons, IDs, and reflection pairing |
-| Eight refined subclasses | Six weights of ten, two of `19/2`; generated JSON exactly matches the published JSON |
+| Eight refined subclasses | Six weights of ten, two of $\frac{19}{2}$; generated JSON exactly matches the published JSON |
 | Full 32-class sixteen-bin screen | Maximum ten, attained by six classes |
 | Patch construction | Parent containment, strict area increase, and containment in all 87–94 retained quarter-cores per bin reproduce |
-| Singleton scan | 1444 rays per mark; maximum ten at 135 rays per mark; minimum `33/4` |
+| Singleton scan | 1444 rays per mark; maximum ten at 135 rays per mark; minimum $\frac{33}{4}$ |
 | Clipping control | Identical survivor sets for all twelve parent/child cases; confirms all 270 SAT-selected neutral rays |
 | Whole-core pose probes | Cores 59 and 60 leave ten; SAT and clipping agree on their survivor sets |
 | Unit-parent check for the two poses | Concentric same-angle unit parents fit with positive wall margin; no full packing or forced routing claim |

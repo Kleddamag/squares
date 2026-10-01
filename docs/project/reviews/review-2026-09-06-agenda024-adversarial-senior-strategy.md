@@ -32,8 +32,8 @@ primary-source snapshots were inspected read-only.
 | Artifact | Determination | Claim boundary that remains in force |
 | --- | --- | --- |
 | BC-230 | The adaptive-core lemma, exact seam construction, conservative containment rule, mass contradiction, and equal-side specialization are sound. The frozen disposition remains conditional because four control oracles need repair. | No adaptive verifier or candidate exists. BC-231 stays closed until the repaired controls receive an independent check. |
-| exp-070 / BC-232 | The exact lower endpoint `21342289572/2055263195` and the sole row-converged computational upper endpoint `11.055616942909783` are correctly labelled. The 41.5006-percent provisional width reduction is real. | The frozen four-CPU-hour decision has not fired. Later unconverged row objectives are not upper endpoints, and no new lower bound follows. |
-| exp-071 / BC-233 | The matched released and unseeded candidates are byte-identical at exact mass `11142893/1000000`. This rejects H-070 under its registered paired test. | It does not show that inset-restricted support is globally useless or that margins never help another generator. |
+| exp-070 / BC-232 | The exact lower endpoint $\frac{21342289572}{2055263195}$ and the sole row-converged computational upper endpoint $11.055616942909783$ are correctly labelled. The 41.5006-percent provisional width reduction is real. | The frozen four-CPU-hour decision has not fired. Later unconverged row objectives are not upper endpoints, and no new lower bound follows. |
+| exp-071 / BC-233 | The matched released and unseeded candidates are byte-identical at exact mass $\frac{11142893}{1000000}$. This rejects H-070 under its registered paired test. | It does not show that inset-restricted support is globally useless or that margins never help another generator. |
 | BC-240 | The fixed-side isolation, local side-stability, and quadratic side bound are coherent consequences of the retained BC-199 and exp-013 records in the labelled, anchored chart. | BC-241 is open. The radius generator was not independently replayed, so there is no global capture, global optimality, or full-radius-replay claim. |
 | BC-242 | The absolutely continuous primal, Lebesgue-a.e. dual, Tonelli weak-duality proof, singular-boundary refusal, and one-sided finite-object semantics are sound. | Strong duality, attainment, singular primal mass, a continuum primal certificate, and every numerical density claim remain open. |
 | BC-245 | The compactness argument, finite typed branch cover, and normal/abnormal Fritz–John completeness statement are sound as a language theorem. | Finiteness of the language supplies neither a tractable atlas nor closure of a continuous leaf. No n=11 branch price or global theorem exists. |
@@ -145,7 +145,7 @@ landing account.
 stopping class and round count; equality rejects it
 ([H-070:20–41](../../../packing/campaign/hypotheses/H-070-n11-inset-seed-release.md)).
 Both exp-071 arms completed eight rounds and emitted byte-identical candidates with
-exact mass `11142893/1000000`
+exact mass $11142893/1000000$
 ([exp-071:56–84](../../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-071-h-070-n11-inset-seed-release.md)).
 That is the released-support comparison X-016 required before retaining the heuristic
 ([X-016:169–181](../../../packing/campaign/explorations/X-016-after-381-two-managers-one-proof-boundary.md)).
@@ -168,7 +168,7 @@ pending
 The coordinator names only the remaining 135 BC-232 process minutes as the next research
 entry
 ([checkpoint-hour-02-decision.md:84–89](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/checkpoint-hour-02-decision.md)).
-Agenda 025 already identifies `61/16 = 3.8125` as an untested direct rung, estimates its
+Agenda 025 already identifies $61/16 = 3.8125$ as an untested direct rung, estimates its
 crossing near the current method’s reach, and supplies an existing-instrument command
 and exact bridge
 ([agenda-025:781–838](../../../packing/campaign/agendas/agenda-025-adaptive-fractional-frontier.md)).
@@ -214,7 +214,7 @@ replay.
 **Evidence.** BC-242 proves that an exact finite a.e.-depth family gives a lower bound
 without any primal certificate
 ([bc-242-full-size-density-proof-contract.md:276–297](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-242-full-size-density-proof-contract.md)).
-Its own pilot contract allows `[D,infinity)` and says any sound `D > 11` kills the
+Its own pilot contract allows `[D,infinity)` and says any sound $D > 11$ kills the
 mass-eleven equality route
 ([320–355](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-242-full-size-density-proof-contract.md)).
 Agenda 026 nevertheless blocks every numerical BC-243 pilot until both the a.e.-depth
@@ -227,9 +227,9 @@ the cheap half can stop the route.
 
 **Patch recommendation.** After source-distinct review of BC-242, split BC-243 into a
 dual-only exact arrangement verifier and a later primal-continuum phase.
-Preregister the Trump `D = 11` control and the existing containment, overlap, and
+Preregister the Trump $D = 11$ control and the existing containment, overlap, and
 overweight mutations.
-If a sound `D > 11` appears, stop the equality-density route.
+If a sound $D > 11$ appears, stop the equality-density route.
 Build the primal guard only if the dual remains quantitatively close enough to make an
 interval useful.
 
@@ -238,16 +238,16 @@ interval useful.
 **Evidence.** Every one of the 55 square pairs chooses one of eight owner-axis-order
 rows before support-sign refinement
 ([bc-245-typed-backbone-theorem-packet.md:77–105](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-245-typed-backbone-theorem-packet.md)).
-The naive n=11 label product is therefore `8^55` before chart, sign, active-mask, and
+The naive n=11 label product is therefore $8^{55}$ before chart, sign, active-mask, and
 multiplier refinements.
-The packet itself shows that even n=3 and n=4 begin at `8^3` and `8^6` before
+The packet itself shows that even n=3 and n=4 begin at $8^{3}$ and $8^{6}$ before
 solved-case reductions
 ([515–522](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-245-typed-backbone-theorem-packet.md)),
 and it lists every producer, replay, enumeration, leaf closure, and n=11 price as open
 ([531–553](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-245-typed-backbone-theorem-packet.md)).
 
 **Disposition: accept the language theorem; reject a global n=11 atlas in this
-portfolio.** The `8^55` product is a raw label surface, not a claim that all branches
+portfolio.** The $8^{55}$ product is a raw label surface, not a claim that all branches
 are realizable, but it is enough to require measured pruning before implementation
 expands.
 
@@ -319,7 +319,7 @@ below.
 | --- | --- | --- | --- |
 | T+2 to T+4 | Reconcile and independently check the four BC-230 controls. Run only the frozen 105-minute BC-232 leg 2. Prepare BC-231 seams without claiming implementation acceptance. | Complete BC-241’s source-distinct retained-record audit. Freeze a max disposition for BC-242; do not run BC-243. | First verify the repaired BC-230 matrix, then take the BC-242 source review if time remains. Before restart, the coordinator fixes Findings 1–3 and lands the T+2 records. At T+4, BC-232 is a valid provisional packet rather than a terminal dependency. |
 | T+4 to T+8 | Run BC-232’s final 30-minute leg and apply the frozen width rule. In parallel, preregister and run the scalar 61/16 probe. Implement BC-231 only after the repaired matrix passes; exactify any mass-below-eleven candidate immediately. | Finish BC-242 review, then build the dual-only a.e.-depth verifier and its negative controls. Complete the BC-245 source review; implement no n=11 atlas. | Put the floating worker on whichever of scalar exactification, dual-verifier controls, or source review is gating a decision. T+8 compares verified gain per hour. |
-| T+8 to T+12 | If 61/16 crosses below eleven, devote roughly 75 percent of the program to the exact bridge and independent replay. Otherwise run the reviewed adaptive 61/16 route; let the earned BC-232 continuation use background CPU only while it remains competitive. | Run the exact dual-only pilot. `D > 11` retires equality-density work; `D = 11` or a nearby value prices, but does not automatically authorize, the continuum primal guard. Price the lazy typed producer on solved controls. | The coordinator makes every scientific routing decision at max and opens only preregistered records. T+12 applies the portfolio pivot to the best verifier-backed expected gain. |
+| T+8 to T+12 | If 61/16 crosses below eleven, devote roughly 75 percent of the program to the exact bridge and independent replay. Otherwise run the reviewed adaptive 61/16 route; let the earned BC-232 continuation use background CPU only while it remains competitive. | Run the exact dual-only pilot. $D > 11$ retires equality-density work; $D = 11$ or a nearby value prices, but does not automatically authorize, the continuum primal guard. Price the lazy typed producer on solved controls. | The coordinator makes every scientific routing decision at max and opens only preregistered records. T+12 applies the portfolio pivot to the best verifier-backed expected gain. |
 | T+12 to T+16 | Concentrate on the best direct-bound candidate: scalar first, adaptive second, retained 3.82 bracket third. Start the rational angle-cell kernel only after adaptive failure under its frozen criterion. | Continue the dual route only if it remains quantitatively informative. Keep typed work at control/pricing scale unless measured collapse makes an n=11 budget credible. | Use the floating slot for source-distinct candidate replay or the one implementation blocking the leading route. T+16 decides whether a candidate or theorem packet deserves independent exactification. |
 | T+16 to T+20 | Freeze the strongest candidate bytes and run independent project and standalone decisions. Preserve every failed bridge or disagreement as a blocker. | Replicate the strongest closure result. A BC-240 invocation still requires BC-241; a density interval still requires a continuum primal certificate. | At T+20, freeze new instruments. Allocate the remaining block to exactification, mutation controls, and replication. |
 | T+20 to T+24 | Finish exact decisions and one source-distinct replay. Classify unfinished compute as time-limited with exact resume state and cost. | Finish reviewable theorem and control packets; do not begin an atlas or unpriced continuum system. | Apply W10 dispositions, regenerate shared records once, run the documentation and full validation passes, and select one next entry without starting it. |

@@ -17,9 +17,9 @@ All scripts and survivor families are retained beside this report; see
 
 The delivered report below is historical.
 Its survivor-weight result reproduces: six of the eight refined subclasses retain ten,
-two improve to `19/2`, and the 32-class maximum is ten.
+two improve to $19/2$, and the 32-class maximum is ten.
 The registered all-subclasses improvement is rejected.
-The two improved values satisfy the registered upper bound `79/8` more strongly; that
+The two improved values satisfy the registered upper bound $79/8$ more strongly; that
 bound was not a prediction of equality.
 
 Two explanations in the delivered text are false as stated:
@@ -33,9 +33,9 @@ Two explanations in the delivered text are false as stated:
   The original `.py.txt` producer is preserved and must not be reused without its
   precondition repair.
 - A guaranteed patch inside an owner core need not contain the owner’s mark.
-  T2 therefore gives `w(F) >= 10`; equality additionally needs a common mark in `F`. For
-  the singleton class of core59, its positive-area corner subpatch scaled by `1/10000`
-  leaves weight `43/4`, with neither mark in the patch.
+  T2 therefore gives `w(F) >= 10`; equality additionally needs a common mark in $F$. For
+  the singleton class of core59, its positive-area corner subpatch scaled by $1/10000$
+  leaves weight $43/4$, with neither mark in the patch.
   SAT and clipping agree.
   Cores59/60 themselves do have contained isolated unit parents; no full eleven-parent
   completion or forced owner selection follows.
@@ -60,7 +60,7 @@ The active statements and missing premises are in
 and the
 [source-review finding](https://github.com/jlevy/squares/pull/139#issuecomment-5613757157).
 
-The delivered cap-transfer claim near `3.868983` also remains unendorsed: no conditional
+The delivered cap-transfer claim near $3.868983$ also remains unendorsed: no conditional
 transfer is established without the owner, class, patch and routing premises identified
 in R2. The correction snapshot beside this report retains the earlier wording for
 traceability.
@@ -74,13 +74,13 @@ reading; **RECORD** = read from a file in the repository; **OPEN** = not measure
 
 **H-157 is rejected on its registered sixteen-sector prediction.** Six of the eight
 refined subclasses of the four neutral eight-sector classes still carry survivor weight
-**exactly 10**; only two drop, and they drop to `19/2`, not to the predicted `79/8`.
+**exactly 10**; only two drop, and they drop to $19/2$, not to the predicted $79/8$.
 Thus this particular sixteen-sector split does not close every raw class.
 
 The measurement also probes the finest split of the **retained finite signed-ray
 universe**: one class per retained ray.
 It leaves **135 classes per mark at exactly 10**, and those 135 rays form a contiguous
-arc `34.40698` degrees wide.
+arc $34.40698$ degrees wide.
 Any closed bin in a partition of that retained ray universe that contains one of them
 has survivor weight exactly 10 under the same patch-only residual model.
 This obstructs closing every raw class merely by repartitioning those rays and shrinking
@@ -96,8 +96,8 @@ and `endpoint_footprint` reject `sector >= 8`). The bin count was parametrised i
 scratch copy, [`lane-x4-nbins.py.txt`](lane-x4-nbins.py.txt); the tracked file was not
 touched.
 
-Sector `j` of `n` bins is the closed cone `[j*2pi/n, (j+1)*2pi/n]`. Its two boundary
-rays are exact elements of `Q[sqrt 2]` for every `n` dividing 16, so membership is an
+Sector $j$ of $n$ bins is the closed cone `[j*2pi/n, (j+1)*2pi/n]`. Its two boundary
+rays are exact elements of `Q[sqrt 2]` for every $n$ dividing 16, so membership is an
 exact sign decision on `a + b sqrt 2` and no float enters any verdict.
 
 **Control, EXACT.** At `bins = 8` the parametrised module reproduces the tracked
@@ -111,16 +111,16 @@ behaviour with zero disagreements:
 | class ids and reflection pairing | identical |
 
 **Control, EXACT.** The eight-bin screen reproduces lane X1’s recorded numbers: survivor
-weight from `33/4` to exactly `10`, four classes at exactly 10 (`m1:j3`, `m1:j4`,
-`m2:j3`, `m2:j4`), mean deletion `55/32`, nearest survivor to the `j3` patch at
-Euclidean SAT gap `0.014978` (source index 55).
+weight from $33/4$ to exactly $10$, four classes at exactly 10 (`m1:j3`, `m1:j4`,
+`m2:j3`, `m2:j4`), mean deletion $55/32$, nearest survivor to the `j3` patch at
+Euclidean SAT gap $0.014978$ (source index 55).
 
 ## The refinement is real, and it is sound
 
 Refinement was not assumed to be meaningful; it was checked.
 The retained signed rays span each 45-degree bin essentially in full (`delta = 44.99996`
 degrees, CHECKED), so halving the bin genuinely halves the angular spread — at sixteen
-bins the extreme retained rays are `22.36` to `22.39` degrees apart.
+bins the extreme retained rays are $22.36$ to $22.39$ degrees apart.
 
 **EXACT, per refined subclass:**
 
@@ -139,8 +139,8 @@ The mechanism the hypothesis proposed is present: the guaranteed wedge does wide
 ## Survivor weight per refined subclass
 
 Transported mass-eleven ceiling family
-([`ceiling-family-191-50.json`](ceiling-family-191-50.json), 88 placements, weight `1/8`
-each, total exactly 11, RECORD) moved to `96/25` by
+([`ceiling-family-191-50.json`](ceiling-family-191-50.json), 88 placements, weight $1/8$
+each, total exactly 11, RECORD) moved to $96/25$ by
 `devtools.transport_ceiling_family.transport` at scale 1, then screened by
 `devtools.screen_corner_dual_salvage.screen_footprint` imported verbatim — the same
 orientation filter, the same strict positive SAT gap, the same container check that lane
@@ -151,8 +151,8 @@ X1 used. All 88 placements pass the orientation and containment filters, weight 
 | `bottom-left:m1:J6/16` | `m1:j3` | **10** | 1 | neutral |
 | `bottom-left:m1:J7/16` | `m1:j3` | **10** | 1 | neutral |
 | `bottom-left:m1:J8/16` | `m1:j4` | **10** | 1 | neutral |
-| `bottom-left:m1:J9/16` | `m1:j4` | `19/2` | `3/2` | broken |
-| `bottom-left:m2:J6/16` | `m2:j3` | `19/2` | `3/2` | broken |
+| `bottom-left:m1:J9/16` | `m1:j4` | $\frac{19}{2}$ | $\frac{3}{2}$ | broken |
+| `bottom-left:m2:J6/16` | `m2:j3` | $\frac{19}{2}$ | $\frac{3}{2}$ | broken |
 | `bottom-left:m2:J7/16` | `m2:j3` | **10** | 1 | neutral |
 | `bottom-left:m2:J8/16` | `m2:j4` | **10** | 1 | neutral |
 | `bottom-left:m2:J9/16` | `m2:j4` | **10** | 1 | neutral |
@@ -162,8 +162,8 @@ is **exactly 10**, attained at six classes: `m1:J6`, `m1:J7`, `m1:J8`, `m2:J7`, 
 `m2:J9`. A case split needs every class closed, and six survive.
 
 The two that do break delete four extra weight-`1/8` placements each — indices
-`[7, 16, 29, 55]` for `m1:J9` and `[2, 22, 25, 50]` for `m2:J6` — reaching `19/2`, not
-the `79/8` H-157 predicted for a patch that picks up one more placement.
+$[7, 16, 29, 55]$ for `m1:J9` and $[2, 22, 25, 50]$ for `m2:J6` — reaching $19/2$, not
+the $79/8$ H-157 predicted for a patch that picks up one more placement.
 The whole table is symmetric under the diagonal reflection `J -> 15 - J` with
 `m1 <-> m2`, which is an internal consistency check the screen was not told to satisfy.
 
@@ -181,17 +181,17 @@ and that value is **bit-identical** for the eight-sector parent and for both of 
 sixteen-sector children, at both marks (EXACT).
 
 The reason is that **the closest point of the patch to that core is the mark itself**
-(EXACT: the minimising vertex is `m`, and `d(m, core) = d(patch, core)` exactly).
+(EXACT: the minimising vertex is $m$, and `d(m, core) = d(patch, core)` exactly).
 Every patch at every bin count has the mark as a vertex, so the distance to that
 placement is pinned by the mark and cannot be reduced by widening the wedge.
 The patch grows only into directions that lead away from the obstruction.
-H-157’s `0.015` was measured as a gap to the patch; it is really a gap to the mark, and
+H-157’s $0.015$ was measured as a gap to the patch; it is really a gap to the mark, and
 no angular conditioning moves the mark.
 
 ## The retained finite-ray universe still has neutral classes
 
 The finest partition used by this instrument is one class per retained signed ray — the
-class “`e_1` is exactly the ray `r`” — whose guaranteed patch is exactly the anchored
+class “`e_1` is exactly the ray $r$” — whose guaranteed patch is exactly the anchored
 quarter-core `Q_r(m)`. That split is finite (1444 classes per mark) and exhaustive for
 the retained ray universe.
 Every closed-bin partition of that same universe is a coarsening of it.
@@ -202,9 +202,9 @@ Every closed-bin partition of that same universe is a coarsening of it.
 | --- | --- | --- |
 | maximum survivor weight | **exactly 10** | **exactly 10** |
 | classes attaining it | 135 | 135 |
-| minimum survivor weight | `33/4` | `33/4` |
-| angular span of the neutral rays | `[147.17510, 181.58208]` deg | `[178.41792, 212.82490]` deg |
-| width of that arc | `34.40698` deg | `34.40698` deg |
+| minimum survivor weight | $\frac{33}{4}$ | $\frac{33}{4}$ |
+| angular span of the neutral rays | $[147.17510, 181.58208]$ deg | $[178.41792, 212.82490]$ deg |
+| width of that arc | $34.40698$ deg | $34.40698$ deg |
 | contiguous in the ray order | yes, all 135 | yes, all 135 |
 
 That gives an exact statement for every closed-bin partition of this retained ray
@@ -213,11 +213,11 @@ universe:
 > **Every closed angular bin containing at least one of the 135 neutral rays has
 > survivor weight exactly 10.**
 > 
-> Let `F` be the bin’s guaranteed patch and `r0` a neutral ray in the bin.
-> `F` is the intersection of `Q_r` over the bin’s rays, so `F` is a subset of `Q_r0`, so
-> `F` deletes a subset of what `Q_r0` deletes and `w(F) >= w(Q_r0) = 10`. And `m` lies
-> in `F`, so `F` meets every core containing the mark; the mark clique weighs exactly 1
-> (F3), so `w(F) <= 11 - 1 = 10`. Hence `w(F) = 10`.
+> Let $F$ be the bin’s guaranteed patch and `r0` a neutral ray in the bin.
+> $F$ is the intersection of $Q_r$ over the bin’s rays, so $F$ is a subset of $Q_{r0}$,
+> so $F$ deletes a subset of what $Q_{r0}$ deletes and `w(F) >= w(Q_r0) = 10`. And $m$
+> lies in $F$, so $F$ meets every core containing the mark; the mark clique weighs
+> exactly 1 (F3), so `w(F) <= 11 - 1 = 10`. Hence $w(F) = 10$.
 
 Every retained neutral ray belongs to a bin, so every such partition has at least one
 bin with survivor weight exactly 10 in this model.
@@ -243,7 +243,7 @@ neutral bin at every other closed-bin resolution as well.
 
 One conditioning strictly stronger than any angular split was probed: fix the owner’s
 whole core, not just its direction.
-The eight members of the mark clique (indices `8, 14, 59, 60, 66, 71, 81, 85`, total
+The eight members of the mark clique (indices $8, 14, 59, 60, 66, 71, 81, 85$, total
 weight exactly 1, and each contains **both** bottom-left marks) are themselves
 admissible net-oriented cores inside the container, so each is a candidate owner pose.
 Deleting everything that meets one of them leaves, EXACT:
@@ -252,7 +252,7 @@ Deleting everything that meets one of them leaves, EXACT:
 `#81: 37/4`, `#85: 37/4`.
 
 Two of the eight leave exactly 10. They are `#59` and `#60`, two distinct axis-aligned
-corner cores of weight `1/8` each, centred at `(45133461/88696100, 25096071/49318700)`
+corner cores of weight $1/8$ each, centred at $(45133461/88696100, 25096071/49318700)$
 and its diagonal mirror — a mirror pair, not one square counted twice; both sit inside
 the container and both contain both marks (EXACT).
 
@@ -277,7 +277,7 @@ is nonempty.
 | the 4 neutral eight-bin classes and 8 sixteen-bin subclasses: weight and survivor set | identical under both, 12/12 AGREE |
 | singleton-ray neutral classes, both marks | SAT 135, clipping 135, AGREE |
 | pose probe `#59`, `#60` | identical under both |
-| eight-bin mean deletion vs lane X1’s `55/32` | match |
+| eight-bin mean deletion vs lane X1’s $\frac{55}{32}$ | match |
 | sixteen-bin table under the diagonal mirror `J -> 15 - J` | exact, all ten pairs |
 
 One false start is worth recording so it is not repeated: an exact vertex-to-edge
@@ -296,7 +296,7 @@ so the trap stays on the record.
   On the retained mass-eleven family and patch-only domain, the singleton-ray probe also
   leaves 135 neutral classes per mark, and the retained pose `#59` gives the local
   subset obstruction stated above.
-- **Steps 4, 5 and 6 are untouched**, and Step 6’s rank-one cap of `3.868983` never used
+- **Steps 4, 5 and 6 are untouched**, and Step 6’s rank-one cap of $3.868983$ never used
   the patch in the first place.
   Not endorsed: PR 139 finding R2 holds that no conditional transfer of that cap is
   established without a separate owner, class, patch and routing verification.

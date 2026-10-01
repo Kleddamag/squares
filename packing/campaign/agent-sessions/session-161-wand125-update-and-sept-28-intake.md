@@ -156,15 +156,15 @@ session:
 # wand125’s Update and the 28 September Intake
 
 On 28 September wand125 wrote to the owner that the known-best PDF lagged the field:
-evand had proved `s(21) = 5` and `s(45) = 7`, and wand125’s rectangle certificates now
-improved most counts from `n = 18` to `95`. The owner asked for the note to be kept, for
+evand had proved $s(21) = 5$ and $s(45) = 7$, and wand125’s rectangle certificates now
+improved most counts from $n = 18$ to $95$. The owner asked for the note to be kept, for
 follow-up beads, and then for the results to be researched and added.
 
 The sources had moved again by then.
 evand’s repository carries both covers with two independently written checkers each and
-reports kernel-checked Lean proofs of `s(13) = 4` and `s(32) = 6`; wand125’s adds
-point-only certificates for `s(21) = 5` and `s(45) = 7` and `s(50) >= 37/5` on its own
-verifier; Guzhou0806’s publishes `s(17) > 116511/25000` without having run it locally.
+reports kernel-checked Lean proofs of $s(13) = 4$ and $s(32) = 6$; wand125’s adds
+point-only certificates for $s(21) = 5$ and $s(45) = 7$ and `s(50) >= 37/5` on its own
+verifier; Guzhou0806’s publishes $s(17) > 116511/25000$ without having run it locally.
 This session retains each, replays it here, has Fable max review it, and registers what
 the evidence supports.
 
@@ -176,13 +176,13 @@ receipt is committed.
 
 | Work | Where it runs | Where the receipt lands | Bead |
 | --- | --- | --- | --- |
-| Full `zm_mixed.py` re-sweep of Daniel’s `s(21)` cover (second method, for `C4`) | Cloud session `session_011CfRigVmuCke9r31UzDPhM` | Branch `claude/replay-evand-s21-zm-mixed`, `transfer/evand-s21-zm-mixed-full/` | `think-l6la` |
-| The same for `s(45)` | Cloud session `session_01Xt9EM5JEiNoK5aSsWz6E6x` | Branch `claude/replay-evand-s45-zm-mixed`, `transfer/evand-s45-zm-mixed-full/` | `think-l6la` |
+| Full `zm_mixed.py` re-sweep of Daniel’s $s(21)$ cover (second method, for `C4`) | Cloud session `session_011CfRigVmuCke9r31UzDPhM` | Branch `claude/replay-evand-s21-zm-mixed`, `transfer/evand-s21-zm-mixed-full/` | `think-l6la` |
+| The same for $s(45)$ | Cloud session `session_01Xt9EM5JEiNoK5aSsWz6E6x` | Branch `claude/replay-evand-s45-zm-mixed`, `transfer/evand-s45-zm-mixed-full/` | `think-l6la` |
 | Coverage replays of 45 wand125 rectangle certificates, in ten batches of about 13 CPU-h | Cloud sessions listed on `think-20mv` | Branches `claude/replay-wand125-rect-b01` to `b10`, `transfer/wand125-rect-bNN/` | `think-20mv` |
 | Complete replay of wand125’s `s(50) >= 37/5` (L740), about 10.5 CPU-h | This host, three workers | The command and its check are in the point-and-mixed packet README, “Pending: the complete L740 replay” | `think-nnlg` |
-| wand125’s point-only `s(21)` portable replay, frontier stage | This host, two workers | `n21-compare` in the same packet README | `think-ifsv` |
+| wand125’s point-only $s(21)$ portable replay, frontier stage | This host, two workers | `n21-compare` in the same packet README | `think-ifsv` |
 
-A cloud replay of the `s(50)` certificate refused to run the external checker under its
+A cloud replay of the $s(50)$ certificate refused to run the external checker under its
 session’s permission classifier and pushed only that refusal, on
 `claude/replay-wand125-n50-l740`; the replay runs here instead.
 Each batch writes its own `audit.json` beside its `rect_n*/` directories.

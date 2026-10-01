@@ -137,8 +137,8 @@ session:
 
 Contemporaneous record; the frontmatter is the session.
 The duality framing in the goal is the slice’s first result: the informative window for
-a pure eleven-point set is exactly `(2 + 4/√5, s(11))`, and above it the fractional
-value is pinned at eleven or more by the eleven-box packing.
+a pure eleven-point set is exactly $(2 + 4/\sqrt{5}, s(11))$, and above it the
+fractional value is pinned at eleven or more by the eleven-box packing.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -63,7 +63,7 @@ If g is positive, let m_R,m_L be the means of the distinct vertices of the two s
 component closures, and d_i=m_i-z_i. Set
 
 $$M=|d_R.x|+|d_L.x|,\qquad
-\epsilon=\begin{cases}1/2,&M=0,\\
+\epsilon=\begin{cases}1/2,&M=0,\cr
 \min(1/2,g/(2M)),&M>0.\end{cases}$$
 
 Use this one common, exact rational epsilon and the centres `c_i = z_i + epsilon*d_i`.
@@ -154,7 +154,7 @@ methodological limitation.
 ## Separate Proposal: Unit-Parent Centre Restrictions
 
 One additional necessary physical restriction is that a unit square contained in [0,q]^2
-has its centre in `[1/2,q-1/2]^2`, regardless of orientation.
+has its centre in $[1/2,q-1/2]^{2}$, regardless of orientation.
 The retained snapping preserves the centre, so this box supplies an additional necessary
 restriction on each saved owner-centre set.
 The [parent-centre derivation](unit-parent-centre-contract.md) describes the proposed

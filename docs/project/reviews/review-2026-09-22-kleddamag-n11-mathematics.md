@@ -154,7 +154,7 @@ Its minimum on an interval is therefore at an endpoint.
 The union of the nested centre domains is exactly $[r,L-r]^2$, where
 
 $$
-r=\frac A2\min\{c(a)+s(a),c(b)+s(b)\}.
+r=\frac A2\min\lbrace c(a)+s(a),c(b)+s(b)\rbrace.
 $$
 
 The independent audit verifies the associated envelope inequality as a rational
@@ -186,8 +186,8 @@ For a centred physical domain $[-H,H]^2$ and positive $c,s$, its lower and upper
 boundaries in rotated coordinates are
 
 $$
-v_-(u)=\max\{(cu-H)/s,(-H-su)/c\},\qquad
-v_+(u)=\min\{(cu+H)/s,(H-su)/c\}.
+v_-(u)=\max\lbrace(cu-H)/s,(-H-su)/c\rbrace,\qquad
+v_+(u)=\min\lbrace(cu+H)/s,(H-su)/c\rbrace.
 $$
 
 The lower boundary has its minimum at $u=H(c-s)$ and the upper boundary its maximum at
@@ -462,7 +462,7 @@ $$
 and the retained upper approximation $U=3.877083590022814177\ldots$ gives
 
 $$
-100\frac{3.875-C}{U-C}=95.88517529274348\ldots\%,
+100\frac{3.875-C}{U-C}=95.88517529274348\ldots\text{ per cent},
 \qquad U-3.875=0.002083590022814177\ldots.
 $$
 

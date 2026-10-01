@@ -10,7 +10,7 @@ Cell: BC-230 (`think-c678`)
 
 ## The Exact Object
 
-Fix $n\in\mathbb Z_{\ge 1}$ and $L\in\mathbb Q_{>0}$, and let `C_L = [0,L]^2`. The
+Fix $n\in\mathbb Z_{\ge 1}$ and $L\in\mathbb Q_{>0}$, and let $C_L = [0,L]^{2}$. The
 resource is a finite nonnegative atomic measure
 
 \[
@@ -19,7 +19,7 @@ resource is a finite nonnegative atomic measure
 
 on distinct rational sites.
 Its nonzero atomic support and weights are invariant under all eight symmetries of
-`C_L`. A site on a symmetry axis or at the center occurs once in the serialized atom
+$C_L$. A site on a symmetry axis or at the center occurs once in the serialized atom
 list; orbit multiplicity is never added to its mass.
 An absent site implicitly has weight zero, so measure-level invariance alone does not
 require images of a listed zero-weight point.
@@ -49,7 +49,7 @@ q_k=\tan\frac{\alpha_{k-1}+\alpha_k}{2}
     =\frac{t_{k-1}+t_k}{1-t_{k-1}t_k},
 \]
 
-and set `q_0 = 0`, `q_{K+1} = 1`. The contract requires
+and set $q_0 = 0$, `q_{K+1} = 1`. The contract requires
 
 \[
 0=q_0<q_1<\cdots<q_K<q_{K+1}=1.
@@ -58,7 +58,7 @@ and set `q_0 = 0`, `q_{K+1} = 1`. The contract requires
 This is a complete rational check that the last Voronoi seam lies before the fold and
 that the cells below cover exactly `[0,pi/4]`.
 
-Let `beta_k = arctan(q_k)`. The geometric cell closure for direction `k` is
+Let `beta_k = arctan(q_k)`. The geometric cell closure for direction $k$ is
 
 \[
 \overline C_k=[\beta_k,\beta_{k+1}].
@@ -71,13 +71,13 @@ C_0=[\beta_0,\beta_1],\qquad
 C_k=(\beta_k,\beta_{k+1}]\quad(1\le k\le K).
 \]
 
-Consequently, angle zero belongs to cell `0`, `pi/4` belongs to cell `K`, and each
+Consequently, angle zero belongs to cell $0$, `pi/4` belongs to cell $K$, and each
 interior seam belongs to the lower-index cell.
 The closures overlap only to prove endpoint bounds; the ownership cells form a disjoint
 partition. A verifier must derive these cells.
 It may not accept sampled representatives or caller-supplied gaps.
 
-The full-angle tangent of direction `k` is rational:
+The full-angle tangent of direction $k$ is rational:
 
 \[
 a_k=\tan\alpha_k=\frac{2t_k}{1-t_k^2}.
@@ -102,14 +102,14 @@ the two values are the tangents of the adjacent half-gaps.
 The formula also handles the axis and folded endpoints without an irrational
 representation of `pi/4`.
 
-Each cell carries a positive rational witness side `B_k`. BC-230 chooses the
+Each cell carries a positive rational witness side $B_k$. BC-230 chooses the
 `legacy-linear-v1` containment rule:
 
 \[
 B_k(1+D_k)<1\qquad\text{for every }k.
 \]
 
-Its cellwise safe-side supremum is `1/(1+D_k)`. The inequality is strict, so no largest
+Its cellwise safe-side supremum is $1/(1+D_k)$. The inequality is strict, so no largest
 rational side is attained; a generator may choose its largest proposed rational strictly
 below that supremum.
 This is the precise meaning of a cell’s “largest safe” side in this contract.
@@ -142,12 +142,12 @@ Let a unit square have orientation `theta`. Reduce it modulo `pi/2` to the uniqu
 This folded angle is unique even when more than one container symmetry realizes it at an
 axis or diagonal. Any realizing symmetry gives the same theorem verdict by `D4`
 invariance; an implementation uses one fixed `D4` order only to make witness receipts
-deterministic. If `phi` belongs to ownership cell `C_k`, the unit square contains, about
-the same center and strictly inside its interior, a closed square of side `B_k` and
+deterministic. If `phi` belongs to ownership cell $C_k$, the unit square contains, about
+the same center and strictly inside its interior, a closed square of side $B_k$ and
 orientation `alpha_k` in the folded coordinates.
 
 To prove this, put `delta = |phi-alpha_k|`. Since `phi` lies in the closed cell used to
-define `D_k`, `tan(delta) <= D_k`. In coordinates aligned with the unit square, the
+define $D_k$, `tan(delta) <= D_k`. In coordinates aligned with the unit square, the
 half-extent of the proposed core along either axis is
 
 \[
@@ -163,24 +163,24 @@ For `0 <= delta < pi/2`,
 \le 1+D_k.
 \]
 
-The strict contract inequality makes this half-extent strictly less than `1/2`. Hence
+The strict contract inequality makes this half-extent strictly less than $1/2$. Hence
 the closed core lies in the open interior of the unit square.
 The conclusion holds at cell seams because the mismatch bound was taken over each closed
 cell, even though the ownership rule selects only one of the two neighboring directions.
 
 ## Adaptive Fractional-Certificate Theorem
 
-The following conditions imply that `n` unit squares with pairwise disjoint interiors do
-not fit in `C_L`:
+The following conditions imply that $n$ unit squares with pairwise disjoint interiors do
+not fit in $C_L$:
 
-1. The atoms are distinct, rational, nonnegative, inside `C_L`, and the resulting
+1. The atoms are distinct, rational, nonnegative, inside $C_L$, and the resulting
    measure is invariant under `D4`.
-2. Their total mass is strictly below `n`.
+2. Their total mass is strictly below $n$.
 3. The rational net and derived ownership cells satisfy the complete folded-cover
    conditions above.
 4. Every cell satisfies `B_k(1+D_k) < 1` under `legacy-linear-v1`.
-5. For every `k` and every center `c` for which the closed square `Q(c,alpha_k,B_k)`
-   lies in `C_L`, `mu(Q(c,alpha_k,B_k)) >= 1`.
+5. For every $k$ and every center $c$ for which the closed square `Q(c,alpha_k,B_k)`
+   lies in $C_L$, `mu(Q(c,alpha_k,B_k)) >= 1`.
 
 Suppose a packing existed.
 Fold each packed square independently by a symmetry of the container, select the unique
@@ -209,7 +209,7 @@ A finite sample of centers is not a decision route.
 
 ## Exact Scalar Specialization
 
-Take a current scalar certificate and set every `B_k` to its single `B`. The production
+Take a current scalar certificate and set every $B_k$ to its single $B$. The production
 nets have the final seam before `pi/4`, so the largest endpoint mismatch among all
 closed cells is exactly
 
@@ -224,8 +224,8 @@ At the folded endpoint, `beta_K < pi/4 <= alpha_K` by the seam and bracket check
 `alpha_K - pi/4 < alpha_K - beta_K`. Its mismatch is therefore no larger than the final
 adjacent half-gap.
 
-Since `B > 0`, all per-cell inequalities `B(1+D_k)<1` hold if and only if `B(1+D)<1`.
-Condition 5 invokes the same direction list, the same `B`, the same center domains, and
+Since $B > 0$, all per-cell inequalities $B(1+D_k)<1$ hold if and only if $B(1+D)<1$.
+Condition 5 invokes the same direction list, the same $B$, the same center domains, and
 the same atoms as the scalar sweep.
 Conditions 1 and 2 are unchanged, and the exact folded-cover check implies the current
 net-reaches-`pi/4` condition.
@@ -235,7 +235,7 @@ rewriting the retained JSON. On the current n=11 and n=12 retained positives, it
 return the same retention verdict, exact total mass, exact least covered mass, and first
 worst direction as the scalar verifier.
 On the n=17 source control, the underlying scalar and adaptive exact verifiers must both
-recompute total `203/12` and least mass `1`, while the retention command must preserve
+recompute total $203/12$ and least mass $1$, while the retention command must preserve
 its current refusal because the source object does not declare `least_cell_mass`. The
 archived verifier and source-distinct checker must continue to accept those original
 bytes. Every current scalar refusal remains a refusal.
@@ -297,7 +297,7 @@ Condition 5 because it has no atoms; it is not a positive certificate.
 strings shown above.
 `id` is an arbitrary JSON string used only for provenance; it has no theorem meaning and
 is constrained by the whole-file byte limit.
-`claim` must be the literal string `s(N) >= OUTER_SIDE`, with the object’s base-ten `n`
+`claim` must be the literal string `s(N) >= OUTER_SIDE`, with the object’s base-ten $n$
 substituted for `N` and its canonical `outer_side` string substituted for `OUTER_SIDE`.
 The remaining scalar fields and atom coordinates have the quantified meanings already
 given in the theorem.
@@ -307,7 +307,7 @@ metadata belongs in its decision receipt.
 `angle_cells` must contain `K+1 >= 2` entries.
 Indices must be the contiguous sequence `0..K`; half-tangents must be strictly
 increasing from zero.
-The loader recomputes every boundary and `D_k` from the half-tangents and requires
+The loader recomputes every boundary and $D_k$ from the half-tangents and requires
 byte-value equality with the declared rational fields.
 This redundancy makes a cell’s decision boundary visible in the frozen object without
 allowing the generator to define it.
@@ -316,21 +316,21 @@ allowing the generator to define it.
 A retention decision refuses null, recomputes every directional minimum, and requires
 the declared value to equal their exact global minimum.
 `total_mass` must equal the exact sum of atom weights.
-`claim` must equal the conclusion determined by `n` and `outer_side`; neither summary
+`claim` must equal the conclusion determined by $n$ and `outer_side`; neither summary
 field is trusted.
 
 The retention gate also preserves the scalar method ceiling.
-Let `m` be the least integer with `m^2 >= n`. Because cell `0` is axis-aligned and uses
-side `B_0`, it refuses
+Let $m$ be the least integer with `m^2 >= n`. Because cell $0$ is axis-aligned and uses
+side $B_0$, it refuses
 
 \[
 L>mB_0.
 \]
 
-With strict inequality, `n` closed axis-aligned `B_0` squares can be separated inside
-`C_L`; Condition 5 and nonnegativity would force total mass at least `n`. Equality is
+With strict inequality, $n$ closed axis-aligned $B_0$ squares can be separated inside
+$C_L$; Condition 5 and nonnegativity would force total mass at least $n$. Equality is
 not covered by that disjoint-closed-square argument and remains eligible.
-When every side equals `B`, this is exactly the existing scalar ceiling guard.
+When every side equals $B$, this is exactly the existing scalar ceiling guard.
 
 Legacy unconditional objects retain their present schema and decision route, including
 the n=17 control’s provenance-only `source` field and the fields `angle_limit`,
@@ -346,7 +346,7 @@ An adaptive object cannot carry both representations.
 
 BC-231 must implement three agreeing routes before an adaptive object can enter BC-238:
 
-- the project exact event-cell sweep, using each cell’s own `B_k`;
+- the project exact event-cell sweep, using each cell’s own $B_k$;
 - the interval route, extended to the same per-cell center domains; and
 - a standard-library
   `packing/cases/n11_fractional_certificate/adaptive_minimal_verify.py` that parses the
@@ -356,7 +356,7 @@ All routes derive the seams, mismatches, and containment predicates themselves.
 Shared serialized values are inputs to compare against those derivations, not shared
 geometry code. A verdict or exact minimum disagreement is a guard refusal.
 If the interval route retains its current doubled-net implementation, it assigns the
-same `B_k` to `alpha_k` and its reflected direction `pi/2-alpha_k`. It may not
+same $B_k$ to `alpha_k` and its reflected direction `pi/2-alpha_k`. It may not
 interpolate sides or borrow a neighboring cell’s side.
 
 The decision receipt binds the candidate SHA-256 and records each cell’s exact minimum,
@@ -371,16 +371,16 @@ The adaptive gate refuses before an expensive sweep when any of these holds:
 
 - malformed or duplicate-key JSON, an inexact numeric rational, a nonfinite token, an
   oversized field or object, an unknown variant, rule, seam policy, or field;
-- nonpositive `n`, `L`, or any `B_k`; fewer than two cells; noncontiguous indices;
+- nonpositive $n$, $L$, or any $B_k$; fewer than two cells; noncontiguous indices;
   unsorted, repeated, negative, or nonfinite half-tangents; `t_0 != 0`; or `t_k >= 1`;
 - failure to straddle `pi/4`, a final seam at or beyond `pi/4`, nonmonotone seams, a
   missing cell, or a declared boundary or mismatch unequal to the derived rational;
 - containment equality or failure in any cell;
-- malformed atoms, duplicate sites, a negative weight, a site outside `C_L`, a missing
+- malformed atoms, duplicate sites, a negative weight, a site outside $C_L$, a missing
   or unequal-weight `D4` image of positive support, an incomplete explicitly listed
   zero-weight orbit under the schema’s domain-completeness rule, a false declared total,
-  or a claim inconsistent with `(n,L)`;
-- total mass at least `n`, or `L > ceil(sqrt(n)) B_0` under the exact integer-square
+  or a claim inconsistent with $(n,L)$;
+- total mass at least $n$, or `L > ceil(sqrt(n)) B_0` under the exact integer-square
   comparison above.
 
 After those checks, the gate refuses a directional minimum below one, a false declared

@@ -11,7 +11,7 @@ repository, which does not survive the session -- and modified no repository fil
 the frontier patch its own verdict authorised.
 It is installed here so that the evidence the records cite outlives that directory.
 
-The source was `373` lines with SHA-256
+The source was $373$ lines with SHA-256
 `5b54c1f7440af4981591a86c371c1afa9f1a61aa857c0a70d1a63bd39b3500ca`, and that hash names
 the scratchpad source rather than this file.
 The installation added this preface; it altered no classification, verdict, finding,
@@ -39,7 +39,7 @@ Packet under review: `scratchpad/bc150/adoption-packet.md`, SHA-256
 `d88d47b3d0add7822f106c4d0d80af83a7bd99a8ff12f18498589d5fb57b8413` (matches the
 commission). It recommends adoption at source-backed scope:
 `s(17) >= 22529/5000 = 4.5058`, and by monotonicity `s(18), s(19) >= 4.5058`, as
-`V4/C3`, `novelty: previously-published`, with `n = 20` unchanged.
+`V4/C3`, `novelty: previously-published`, with $n = 20$ unchanged.
 
 ## Classification: PASS — patch applied
 
@@ -60,11 +60,11 @@ repository, the source, or BC-150.
 
 | Check | Result |
 | --- | --- |
-| Retained verifier `04531a54…`, normal Python 3.14.7, `retained-verifier-replay.log` | 168 atoms, `9744/576`, 181 directions, `B(1+D) = 899635478111/900000000000 < 1`, minimum `576/576` at every logged orientation, “CERTIFICATE CONDITIONS VERIFIED”, exit 0, 9.2 s wall on this loaded host (the packet’s 5.3 s was an idle host; the arithmetic is identical) |
+| Retained verifier `04531a54…`, normal Python 3.14.7, `retained-verifier-replay.log` | 168 atoms, $\frac{9744}{576}$, 181 directions, $B(1+D) = \frac{899635478111}{900000000000} < 1$, minimum $\frac{576}{576}$ at every logged orientation, “CERTIFICATE CONDITIONS VERIFIED”, exit 0, 9.2 s wall on this loaded host (the packet’s 5.3 s was an idle host; the arithmetic is identical) |
 | BC-150’s `independent_audit.py` (SHA-256 `517941b5…`), copied unchanged and re-run into my directory, `bc150-audit-replay.log`, `independent-audit.json` | Parts A–E reproduce: D global minimum 1 with boundary minimum 576 on every row; the seven logged cell counts (2025, 92781, 94145, 92873, 91589, 90869, 90221) equal the packet’s; E minimum exactly 1 over all 380 off-net angles |
-| exp-059 result `438dfc1f…` and checkpoint `bb45ed2a…` | hashes match the packet; `decision: accepted`, `instrument_valid`, `preconditions_pass`, `all_mutations_rejected`, `exact_manifest_agreement`, both summaries with atom hash `37d35da0…`, direction hash `cc789e1a…`, total `203/12`, global minimum `1/1` |
+| exp-059 result `438dfc1f…` and checkpoint `bb45ed2a…` | hashes match the packet; `decision: accepted`, `instrument_valid`, `preconditions_pass`, `all_mutations_rejected`, `exact_manifest_agreement`, both summaries with atom hash `37d35da0…`, direction hash `cc789e1a…`, total $\frac{203}{12}$, global minimum $\frac{1}{1}$ |
 | Proposed replay command for the second evidence entry (`…successor.run --status …checkpoint.json`) | `all_agree`, `chain_verified`, `complete`, 181 rows, 11 new, last row hash `60e58a70…`, 2.0 s |
-| Frontier case files n-017/018/019/020 | byte-identical to the packet’s frozen HEAD blobs (`afae0ee9…`, `5420bc6a…`, `eecdd7b7…`, `afb00305…`); `validate.py` unmodified against HEAD and still asserting `(65, 65, 61)` |
+| Frontier case files n-017/018/019/020 | byte-identical to the packet’s frozen HEAD blobs (`afae0ee9…`, `5420bc6a…`, `eecdd7b7…`, `afb00305…`); `validate.py` unmodified against HEAD and still asserting $(65, 65, 61)$ |
 | **`bc151_own_check.py` (own)**, `bc151-own-check.log`, `bc151-own-check.json` | see section 2 |
 
 ### 2. The fifth implementation (own)
@@ -73,20 +73,20 @@ Hand-transcribed literal data (constants and the 23 seeds), compared by regex ag
 the hash-pinned retained file before anything runs — a slip aborts.
 Then:
 
-- **Fixture and net.** 168 atoms, integer total 9744, `203/12 < 17`, all strictly inside
+- **Fixture and net.** 168 atoms, integer total 9744, $203/12 < 17$, all strictly inside
   the container, invariant under the four D4 generators I chose (`x -> L - x`,
   `y -> L - y`, swap, quarter turn); record atom hash `37d35da0…` and direction hash
   `cc789e1a…` reproduced from my own serialization; 181 exactly-unit first-quadrant
-  directions, `(T+1)^2 > 2`, final pair brackets the diagonal, all 180 half-gap tangents
-  `<= D`, `B(1+D) = 899635478111/900000000000 < 1`.
-- **Part D, 181 net directions, `B`-square.** Cell selection by a per-cell
+  directions, $(T+1)^{2} > 2$, final pair brackets the diagonal, all 180 half-gap
+  tangents `<= D`, $B(1+D) = 899635478111/900000000000 < 1$.
+- **Part D, 181 net directions, $B$-square.** Cell selection by a per-cell
   *separating-axis test of the open event cell against the closed centre-domain polygon*
-  (axes `U`, `V` and the polygon’s two edge normals, whose projections of the domain are
+  (axes $U$, `V` and the polygon’s two edge normals, whose projections of the domain are
   `[lo, hi]` exactly) — the exact set of cells whose interior meets the domain, not a
   superset. Membership by closed inequalities at the cell midpoint (an interior point);
   mass as an int64 product of 0/1 membership matrices with the weights.
-  Results, every row: minimum over the exact-meets set `576`; minimum over the
-  re-derived slab/v-range set `576`; closed membership at every corner of every selected
+  Results, every row: minimum over the exact-meets set $576$; minimum over the
+  re-derived slab/v-range set $576$; closed membership at every corner of every selected
   cell `>= 576`; midpoint membership equals whole-cell containment for every (cell,
   atom) (lemma L6 checked, not assumed); exact-meets set is a subset of the slab set;
   slab counts equal the record’s `event_cell_count` on all 181 rows, total 16,562,293.
@@ -94,8 +94,8 @@ Then:
   source’s “slight superset” contains no spurious cell here.
   Section 3, L7, proves why.
 - **Part Q, true unit square (side 1) at 65 orientations strictly inside
-  `(pi/4, pi/2)`** (`t = 0.415 + 0.009 m`, `m = 0..64`, all with `s > c`), the range the
-  D4 reduction folds away and which no earlier path evaluated: minimum exactly `576/576`
+  `(pi/4, pi/2)`** ($t = 0.415 + 0.009 m$, `m = 0..64`, all with $s > c$), the range the
+  D4 reduction folds away and which no earlier path evaluated: minimum exactly $576/576$
   on the exact-meets set, on the slab set, and at every selected corner.
 - **Part R, random poses, no cells.** 30,000 poses of the true unit square — rational
   orientation uniform over `[0, pi/2]`, centre uniform over the closed centre domain —
@@ -109,92 +109,94 @@ Where the packet’s phrasing is loose I say so; none of the looseness reaches t
 conclusion.
 
 **L1 (scaling and disjointness).** Suppose 17 unit squares with pairwise disjoint
-interiors lie in `[0, L']^2`, `L' < L`. Scaling by `L/L' > 1` puts squares `P_i` of side
-`L/L' > 1` with disjoint interiors into `C = [0, L]^2`. The concentric unit square `Q_i`
-(same orientation) lies in `int(P_i)`, so the closed `Q_i` are pairwise disjoint and
-each is a closed unit square contained in `C`. Half one gives `mu(Q_i) >= 1`; additivity
-and non-negativity give `17 <= sum mu(Q_i) = mu(union Q_i) <= mu(C) = 203/12 < 17`.
-Contradiction, so no packing exists at any side below `L`, and `s(17) >= L` directly
-from the definition of `s` as an infimum — the packet’s appeal to attainment of the
-minimum is unnecessary but harmless.
+interiors lie in `[0, L']^2`, `L' < L`. Scaling by `L/L' > 1` puts squares $P_i$ of side
+`L/L' > 1` with disjoint interiors into $C = [0, L]^{2}$. The concentric unit square
+$Q_i$ (same orientation) lies in `int(P_i)`, so the closed $Q_i$ are pairwise disjoint
+and each is a closed unit square contained in `C`. Half one gives `mu(Q_i) >= 1`;
+additivity and non-negativity give
+`17 <= sum mu(Q_i) = mu(union Q_i) <= mu(C) = 203/12 < 17`. Contradiction, so no packing
+exists at any side below $L$, and `s(17) >= L` directly from the definition of $s$ as an
+infimum — the packet’s appeal to attainment of the minimum is unnecessary but harmless.
 Convention: interior-disjointness in a closed container is the repository’s; an open
 container only strengthens the claim.
-Strictness sits in `mu(C) < 17` (margin `1/12`, exact).
+Strictness sits in `mu(C) < 17` (margin $1/12$, exact).
 Sound.
 
 **L2 (orientations reduce to `[0, pi/4]`).** A square’s orientation is defined modulo
-`pi/2`. Reflection in the diagonal `x = y` maps `C` to itself, maps an edge direction
-`(cos t, sin t)` to `(sin t, cos t)`, i.e. `t -> pi/2 - t`, and fixes `mu` because the
-weighted atom multiset is D4-invariant about `(L/2, L/2)` — verified exactly on the
+`pi/2`. Reflection in the diagonal $x = y$ maps `C` to itself, maps an edge direction
+$(\cos t, \sin t)$ to $(\sin t, \cos t)$, i.e. `t -> pi/2 - t`, and fixes `mu` because
+the weighted atom multiset is D4-invariant about $(L/2, L/2)$ — verified exactly on the
 reconstructed atoms by BC-150 and again by me, and the grid itself is centred
-(`M/2 + (L - M) = L - M/2`). So half one for `t in [0, pi/4]` implies it for all `t`.
+($M/2 + (L - M) = L - M/2$). So half one for `t in [0, pi/4]` implies it for all $t$.
 Sound; and Part Q tests the folded range directly.
 
 **L3 (net coverage).** `psi_k = 2 arctan(kT/180)`, `psi_0 = 0`,
-`psi_180 = 2 arctan T > pi/4` iff `T > tan(pi/8) = sqrt 2 - 1` iff `(T+1)^2 > 2`, which
-is `500000309449/250000000000 > 2` (a margin of `1.24e-6`, but exact).
-For `t` between adjacent net angles the nearer one is within
+`psi_180 = 2 arctan T > pi/4` iff `T > tan(pi/8) = sqrt 2 - 1` iff $(T+1)^{2} > 2$,
+which is $500000309449/250000000000 > 2$ (a margin of `1.24e-6`, but exact).
+For $t$ between adjacent net angles the nearer one is within
 `arctan t_{k+1} - arctan t_k = arctan(D/(1 + t_k t_{k+1})) <= arctan D < D`. Every
 direction `k = 0..180` is swept, so angles slightly beyond `pi/4` are covered too.
 Sound.
 
-**L4 (concentric containment).** In the unit square’s frame the concentric `B`-square
+**L4 (concentric containment).** In the unit square’s frame the concentric $B$-square
 rotated by `eps in [0, pi/4]` has vertices with largest coordinate
 `(B/2)(cos eps + sin eps)`; convexity makes vertex containment sufficient, so it lies
 inside the unit square iff `B(cos eps + sin eps) <= 1`. With `cos eps <= 1`,
 `sin eps <= eps` and `eps < D`: `B(cos eps + sin eps) < B(1+D) < 1`. Hence every closed
-unit square in `C` contains a closed `B`-square, at a net direction, contained in `C`,
+unit square in `C` contains a closed $B$-square, at a net direction, contained in `C`,
 and non-negative weights carry the mass bound up.
 Sound.
 
-**L5 (centre domain).** For direction `(c, s)`, `c, s >= 0`, the `B`-square’s extent
-from its centre along each axis is `h = B(c+s)/2`, so it lies in `[0, L]^2` iff its
-centre lies in `[h, L-h]^2`. The frame `U = cx + sy`, `V = -sx + cy` is the rotation
+**L5 (centre domain).** For direction $(c, s)$, `c, s >= 0`, the $B$-square’s extent
+from its centre along each axis is $h = B(c+s)/2$, so it lies in $[0, L]^{2}$ iff its
+centre lies in $[h, L-h]^{2}$. The frame `U = cx + sy`, `V = -sx + cy` is the rotation
 `R(-theta)`; applying the same map to atoms and centres preserves the membership test.
-For `k = 180`, `s > c` slightly; the formula is symmetric.
+For $k = 180$, $s > c$ slightly; the formula is symmetric.
 Sound.
 
-**L6 (membership rectangles, constancy on open cells).** Atom `p` is in the closed
-`B`-square centred at `(U, V)` iff `|U - p_U| <= B/2` and `|V - p_V| <= B/2`: a closed
-axis-parallel rectangle `R_p`. Its edges are event lines, so no open cell is crossed by
+**L6 (membership rectangles, constancy on open cells).** Atom $p$ is in the closed
+$B$-square centred at $(U, V)$ iff `|U - p_U| <= B/2` and `|V - p_V| <= B/2`: a closed
+axis-parallel rectangle $R_p$. Its edges are event lines, so no open cell is crossed by
 an edge and the mass is constant on each open cell.
 Whole-cell containment and midpoint membership coincide — checked on every (cell, atom)
 in Part D.
 
-**L7 (completeness of the cell enumeration).** The source keeps slab `i` iff
+**L7 (completeness of the cell enumeration).** The source keeps slab $i$ iff
 `u_{i+1} > u_min` and `u_i < u_max`, clips the domain to the closed slab, takes its
-`V`-range `[v_lo, v_hi]`, and keeps `j` iff `v_j < v_hi` and `v_{j+1} > v_lo`
+`V`-range $[v_{lo}, v_{hi}]$, and keeps $j$ iff $v_j < v_{hi}$ and `v_{j+1} > v_lo`
 (`bisect_right(ve, v_lo) - 1 .. bisect_left(ve, v_hi) - 1` is exactly that set; I
 checked the index arithmetic).
-If an open cell meets the domain, some domain point has `U` in the open slab, the clip
-is a convex set with non-empty interior (the domain has one), so `v_hi > v_lo`, and the
-point’s `V` lies in both `[v_lo, v_hi]` and `(v_j, v_{j+1})`. So the kept set contains
-every cell that meets the domain.
+If an open cell meets the domain, some domain point has $U$ in the open slab, the clip
+is a convex set with non-empty interior (the domain has one), so $v_{hi} > v_{lo}$, and
+the point’s `V` lies in both $[v_{lo}, v_{hi}]$ and `(v_j, v_{j+1})`. So the kept set
+contains every cell that meets the domain.
 **Stronger, and new here:** it contains nothing else.
 The domain’s `u_min, u_max, v_min, v_max` are themselves event coordinates, so a kept
 slab lies inside `[u_min, u_max]` and the domain’s vertical section `[lo(u), hi(u)]` is
 non-empty and continuous across it; a cell `(u_i, u_{i+1}) x (v_j, v_{j+1})` that misses
-the domain at every `u` is covered by the two disjoint closed sets
+the domain at every $u$ is covered by the two disjoint closed sets
 `{u : lo(u) >= v_{j+1}}` and `{u : hi(u) <= v_j}`, so lies in one of them, forcing
 `v_{j+1} <= v_lo` or `v_j >= v_hi` — exactly the excluded cases.
 That is why my separating-axis count equals the slab count at all 181 directions.
 The enumeration is complete and, in this instance, exact.
 
-**L8 (boundary points).** `m(z) = sum_p w_p [z in R_p]` with closed `R_p` is upper
+**L8 (boundary points).** `m(z) = sum_p w_p [z in R_p]` with closed $R_p$ is upper
 semicontinuous, and takes finitely many values, so its minimum over the compact domain
-`P` is attained at some `z*`. If `z*` lies on an event line, a neighbourhood has
-`m <= m(z*)`; it meets `int(P)` (P is the closure of its interior) in an open set, which
-contains a point of some open cell (event lines have measure zero); that cell meets `P`
-and carries value `<= m(z*) = min`, hence `= min`. So the minimum over `P` equals the
-minimum over open cells meeting `P`, and open cells suffice — the packet’s “attained on
-open cells whose closure meets the domain” is looser than needed but its conclusion is
-right. BC-150’s edge-and-corner evaluation and my corner evaluation both found `576`
+$P$ is attained at some $z^{\ast}$. If $z^{\ast}$ lies on an event line, a neighbourhood
+has `m <= m(z*)`; it meets `int(P)` (P is the closure of its interior) in an open set,
+which contains a point of some open cell (event lines have measure zero); that cell
+meets $P$ and carries value `<= m(z*) = min`, hence $= \min$. So the minimum over $P$
+equals the minimum over open cells meeting $P$, and open cells suffice — the packet’s
+“attained on open cells whose closure meets the domain” is looser than needed but its
+conclusion is right.
+BC-150’s edge-and-corner evaluation and my corner evaluation both found $576$
 everywhere, so the lemma is also not load-bearing for this instance.
 
-**L9 (totals and the global minimum).** `9744/576 = 203/12 = 16.91666…`; the registered
-minimum `576/576 = 1` is the row minimum on all 181 rows in five implementations (source
-verifier, two repository paths, BC-149, BC-150, mine); `17 > 203/12`. Tight, as an LP
-certificate rounded up should be (I count 172 to 7,272 tight cells per direction).
+**L9 (totals and the global minimum).** $9744/576 = 203/12 = 16.91666\ldots$; the
+registered minimum $576/576 = 1$ is the row minimum on all 181 rows in five
+implementations (source verifier, two repository paths, BC-149, BC-150, mine);
+$17 > 203/12$. Tight, as an LP certificate rounded up should be (I count 172 to 7,272
+tight cells per direction).
 
 **L10 (exactness).** The source decides every inequality in `fractions.Fraction`; its
 only integer arithmetic is an int64 difference array bounded by `4 * 9744`. The
@@ -202,11 +204,11 @@ repository paths are `Fraction` throughout; my path multiplies int64 0/1 matrice
 weights bounded by 9744. No float decides anything anywhere in the chain.
 
 **L11 (monotonicity).** A packing of `n >= 17` unit squares contains a packing of 17.
-Exact consequences: `n = 17, 18`: `22529/5000 - 4426213/1000000 = 79587/1000000 > 0`;
-`n = 19`: `(L-1)^2 = 307265841/25000000 > 12`, so `L > 1 + sqrt 12`; `n = 20`:
-`(L-1)^2 < 13`, so `L < 1 + sqrt 13` and nothing changes.
-Also `L < 4.6755…` (n = 17 reported upper), `(2L - 7)^2 < 7` (n = 18) and
-`9(L-3)^2 < 32` (n = 19): no conflict field is created.
+Exact consequences: $n = 17, 18$: $22529/5000 - 4426213/1000000 = 79587/1000000 > 0$;
+$n = 19$: $(L-1)^{2} = 307265841/25000000 > 12$, so `L > 1 + sqrt 12`; $n = 20$:
+$(L-1)^{2} < 13$, so `L < 1 + sqrt 13` and nothing changes.
+Also $L < 4.6755\ldots$ (n = 17 reported upper), $(2L - 7)^{2} < 7$ (n = 18) and
+$9(L-3)^{2} < 32$ (n = 19): no conflict field is created.
 All recomputed exactly by me.
 
 ## 4. Judgements the Commission Asked For
@@ -254,7 +256,7 @@ ids. Evidence ids `E-n017-massaccesi-source-replay` and
 Files changed: `packing/frontier/evidence.yaml` (two entries), `results.yaml` (two
 results; `last_reviewed` bumped to 2026-09-03 following the green17 precedent),
 `n-017.md`, `n-018.md`, `n-019.md` (verified lane, case evidence lists, bodies),
-`src/sqpack/cli/validate.py` (`(65, 65, 61)` -> `(65, 65, 60)` with the dated comment);
+`src/sqpack/cli/validate.py` ($(65, 65, 61)$ -> $(65, 65, 60)$ with the dated comment);
 regenerated `STATUS.md`, `RESULTS.md`, `INVENTORY.md`. `n-020.md` untouched (verified
 against HEAD). The exact diff of these nine files is `patch-receipt.diff` (530 lines).
 
@@ -293,15 +295,15 @@ validated.
 
 ## 6. Exact Before/After Bounds
 
-| `n` | verified lower before | verified lower after | change | reported lower (unchanged) |
+| $n$ | verified lower before | verified lower after | change | reported lower (unchanged) |
 | ---: | --- | --- | --- | --- |
-| 17 | `4426213/1000000 = 4.426213` (T-001, green17) | `22529/5000 = 4.5058` (T-015) | `+79587/1000000 = +0.079587` | Nagamochi `4.162277660168` |
-| 18 | `4426213/1000000` (T-002, monotone) | `22529/5000` (T-016, monotone) | `+0.079587` | Nagamochi `4.316624790355` |
-| 19 | `1 + sqrt 12 = 4.46410161514…` (E-nagamochi-lower) | `22529/5000` (T-016, monotone) | `+0.0416983849…` | Nagamochi `4.464101615138` |
-| 20 | `1 + sqrt 13 = 4.60555127546…` | unchanged | none (`(L-1)^2 = 12.2906… < 13`) | Nagamochi |
+| 17 | $\frac{4426213}{1000000} = 4.426213$ (T-001, green17) | $\frac{22529}{5000} = 4.5058$ (T-015) | $+\frac{79587}{1000000} = +0.079587$ | Nagamochi $4.162277660168$ |
+| 18 | $\frac{4426213}{1000000}$ (T-002, monotone) | $\frac{22529}{5000}$ (T-016, monotone) | $+0.079587$ | Nagamochi $4.316624790355$ |
+| 19 | `1 + sqrt 12 = 4.46410161514…` (E-nagamochi-lower) | $\frac{22529}{5000}$ (T-016, monotone) | $+0.0416983849\ldots$ | Nagamochi $4.464101615138$ |
+| 20 | `1 + sqrt 13 = 4.60555127546…` | unchanged | none ($(L-1)^{2} = 12.2906\ldots < 13$) | Nagamochi |
 
-Gaps to the reported record after adoption: n = 17 `0.1697` (was `0.2493`), n = 18
-`0.3171` (was `0.3967`), n = 19 `0.3798` (was `0.4215`). Nagamochi-bounded open cases:
+Gaps to the reported record after adoption: n = 17 $0.1697$ (was $0.2493$), n = 18
+$0.3171$ (was $0.3967$), n = 19 $0.3798$ (was $0.4215$). Nagamochi-bounded open cases:
 61 -> 60. T-001, T-002, T-003 stay registered and unchanged.
 
 ## 7. Caveats That Travel With the Adopted Record

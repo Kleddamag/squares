@@ -9,7 +9,7 @@ correction. Raised as finding R4 of the PR 139 review and re-derived here.
 ## The false claim
 
 The module docstring (lines 4-9) and `capacity` (line 35) use two upper bounds on the
-number of pairwise-disjoint closed `B`-squares that fit inside an `a x b` box:
+number of pairwise-disjoint closed $B$-squares that fit inside an $a \times b$ box:
 
 - the **area** bound `floor(a*b / B^2)`, which is valid;
 - a **stacking** bound, `if min(a, b) < 2B then floor(max(a, b) / B)`, with the stated
@@ -17,7 +17,7 @@ number of pairwise-disjoint closed `B`-squares that fit inside an `a x b` box:
   stack along the long side and each has extent `>= B` there”.
 
 **The stacking bound is false for rotated squares.** Its reason silently assumes each
-core’s extent along the long side is at least `B` *and* that cores cannot interleave
+core’s extent along the long side is at least $B$ *and* that cores cannot interleave
 across the short side.
 A square rotated by 45 degrees has extent `B*sqrt(2)` across both axes, so two of them
 can sit at different heights, overlap in their projections onto the long side, and still
@@ -25,7 +25,7 @@ be disjoint.
 
 ## The counterexample, re-derived exactly
 
-Take `B = 1` and the box `a = 199/100` by `b = 79/20`, so `min(a, b) = 1.99 < 2B = 2`
+Take $B = 1$ and the box $a = 199/100$ by $b = 79/20$, so $\min(a, b) = 1.99 < 2B = 2$
 and the stacking bound fires.
 Place four unit squares at 45 degrees with centres
 
@@ -34,21 +34,21 @@ Place four unit squares at 45 degrees with centres
     where  w = 199/100,  a0 = sqrt(2)/2,  d = 2*sqrt(2) - w + 1/1000
 ```
 
-Two squares at 45 degrees and side `B` are disjoint exactly when the `L1` distance
+Two squares at 45 degrees and side $B$ are disjoint exactly when the `L1` distance
 between their centres is at least `B*sqrt(2)`. Computed at 60 significant digits:
 
 | reading | value |
 | --- | --- |
-| minimum `L1` centre separation over all six pairs | `1.415213562373095048801688724209698078569671875376948073176680` |
-| required `B*sqrt(2)` | `1.414213562373095048801688724209698078569671875376948073176680` |
-| slack | exactly `0.001` |
-| width used | exactly `1.99` |
-| height used | `3.932494936611665341611821069467886549987703127638636512236760` |
+| minimum `L1` centre separation over all six pairs | $1.415213562373095048801688724209698078569671875376948073176680$ |
+| required `B*sqrt(2)` | $1.414213562373095048801688724209698078569671875376948073176680$ |
+| slack | exactly $0.001$ |
+| width used | exactly $1.99$ |
+| height used | $3.932494936611665341611821069467886549987703127638636512236760$ |
 
-All four are strictly disjoint, the width used is exactly `a`, and the height used is
-below `b = 3.95`. So four fit.
+All four are strictly disjoint, the width used is exactly $a$, and the height used is
+below $b = 3.95$. So four fit.
 
-`capacity(199/100, 79/20, 1)` returns `min(7, 3) = 3`.
+`capacity(199/100, 79/20, 1)` returns $\min(7, 3) = 3$.
 
 ## What still stands, and why
 

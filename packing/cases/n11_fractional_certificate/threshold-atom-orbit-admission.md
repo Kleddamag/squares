@@ -9,7 +9,7 @@ For a seed set $S$, threshold $k$, and its distinct D4 orbit, the reader checks
 
 $$
 \sum_{gS}\ \sum_{P:\lvert P\cap gS\rvert\ge k} y_P
-\;\le\;
+\thickspace\le\thickspace
 \lvert D4.S\rvert\left\lfloor\frac{\lvert S\rvert}{k}\right\rfloor.
 $$
 

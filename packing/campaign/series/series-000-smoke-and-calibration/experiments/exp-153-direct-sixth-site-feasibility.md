@@ -102,8 +102,8 @@ blobs are retained there.
 The reviewed source was published before the single target.
 
 For each nonempty direction domain U and core axis u, enforce
-`sup(u·c)−h ≤ u·p ≤ inf(u·c)+h`, and likewise for v. Extrema range over all vertices of
-all positive-area component closures, not component means.
+$\sup(u\cdot c)-h \le u\cdot p \le \inf(u\cdot c)+h$, and likewise for v. Extrema range
+over all vertices of all positive-area component closures, not component means.
 A closure attainer is not labelled as a strict escape.
 Preserve zero- and one-dimensional feasible-site sets.
 

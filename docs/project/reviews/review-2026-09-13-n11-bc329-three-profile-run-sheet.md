@@ -37,13 +37,14 @@ head.
   argv/status/stdout/stderr, measures command-return wall time, performs immediate
   producer and inventory readback, and validates an atomically published summary.
 - The macOS arm64 shape in the sheet matches both current producer and coordinator
-  formulas: four requested workers, effective raw/exact workers `4/4`, and effective
-  reflected-interval/dilation workers `1/1`. The command uses the frozen
+  formulas: four requested workers, effective raw/exact workers $4/4$, and effective
+  reflected-interval/dilation workers $1/1$. The command uses the frozen
   `4 / 5400 / 7200 / 2` tuple.
   The frozen fixture is 935 bytes and its measured SHA-256 is the stated
   `1aface38ab79526397b7b9f24325df844e2eb9717d3e29a094fcdefe8822f539`.
-- Direction accounting is exact: `2881 + 2881 + 5761 + 2881 = 14,404` retained direction
-  rows per profile. Dense/slab share the normalized-exact row.
+- Direction accounting is exact: $2881 + 2881 + 5761 + 2881 = 14{,}404$ retained
+  direction rows per profile.
+  Dense/slab share the normalized-exact row.
   The sheet explicitly refuses missing, wrong, or duplicate labels and wrong known
   answers.
 - The preflight checks the live PR head, local HEAD, clean tree, Python 3.14 virtual

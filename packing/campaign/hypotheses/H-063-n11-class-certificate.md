@@ -115,31 +115,31 @@ X-014’s Lemma 3 is the cheapest of the three lemmas by a wide margin, and it i
 that can be tested against a published answer.
 Partition the net directions into `D4`-closed classes, each a union of half-gap cells;
 give each class its own threshold as a linear-program variable; fix a composition
-`n₀ + n₁ = 11`; and refute the composition when the total mass falls below
-`n₀w₀ + n₁w₁`. The constraints are linear in `(μ, w₀, w₁)` and the objective is
+$n_0 + n_1 = 11$; and refute the composition when the total mass falls below
+$n_0w_0 + n_1w_1$. The constraints are linear in $(\mu, w_0, w_1)$ and the objective is
 homogeneous, so it is one linear program per composition, decided by the sign of its
 optimum under a normalisation.
 
 Stromquist’s Theorem 3 is that shape with one more step.
-His class is `{0°, 45°}`, his strengthened Lemmas 7 and 8 are the covering condition
-restricted to that class, and his twelve points — one more than eleven, so the count
-alone proves nothing — are closed by forcing a box to swallow three of them at once.
-His bound, `2 + (4/3)√2 ≈ 3.885618`, sits above Trump’s value, which is what settles
-Gardner’s conjecture and also what shows the shape is the right one: the class that does
-not contain Trump’s packing is closed above `U` by a certificate conditioned on the
-class.
+His class is $\lbrace0^\circ, 45^\circ\rbrace$, his strengthened Lemmas 7 and 8 are the
+covering condition restricted to that class, and his twelve points — one more than
+eleven, so the count alone proves nothing — are closed by forcing a box to swallow three
+of them at once. His bound, $2 + (4/3)\sqrt{2} \approx 3.885618$, sits above Trump’s
+value, which is what settles Gardner’s conjecture and also what shows the shape is the
+right one: the class that does not contain Trump’s packing is closed above $U$ by a
+certificate conditioned on the class.
 
-So the threshold registered here is Trump’s `3.877084` and not Stromquist’s `3.885618`.
+So the threshold registered here is Trump’s $3.877084$ and not Stromquist’s $3.885618$.
 The program has the covering condition and not the box step, and asking it for the
 higher number would be asking it for someone else’s lemma.
 
 The second clause needs no computer at all and is registered here because it calibrates
 the composition step.
-Nine points on a grid of pitch `s/4` pierce every axis-parallel square of side at least
-`s/4` inside the container, because an interval of that length inside `[0, s]` contains
-a multiple of `s/4` other than `0` and `s`; a `B`-square at tilt `θ` contains an
-axis-parallel square of side `B / (cos θ + sin θ)`; so at most nine squares of any
-packing sit inside the near-axis class, and at least two lie outside it.
+Nine points on a grid of pitch $s/4$ pierce every axis-parallel square of side at least
+$s/4$ inside the container, because an interval of that length inside $[0, s]$ contains
+a multiple of $s/4$ other than $0$ and $s$; a $B$-square at tilt $\theta$ contains an
+axis-parallel square of side $B / (\cos \theta + \sin \theta)$; so at most nine squares
+of any packing sit inside the near-axis class, and at least two lie outside it.
 Trump’s packing has five such squares, so the fact is consistent rather than sharp.
 Its value is as the template: a class certificate is a covering condition restricted to
 a class, and the classical unavoidable-point lemmas are the special case where the

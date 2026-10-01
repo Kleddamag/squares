@@ -21,10 +21,10 @@ The revised eight-hour target is `2026-09-06T20:39:32Z`; the outer boundary is
 | --- | --- | --- |
 | BC-230, BC-233, BC-240, BC-242, BC-245 | Preserve their accepted commissioning dispositions | The T+2 packet and amended handoff supply the frozen contracts and source manifests. No new replay is needed to repeat those decisions. |
 | BC-232 recovery | Accept the provisional, time-limited checkpoint | The [fractional packet](../agenda-025/gate-hour-04.md) retains five unconverged iterations and the unchanged cumulative bracket. No covering bridge opens. The exact family passes its depth test but has mass below eleven, so it does not close the formulation. |
-| BC-232 final leg | Defer to `think-05of`; do not launch | Known CPU usage leaves at most `861.998305` seconds of the four-hour allocation; the earlier 30-minute leg is no longer affordable. Missing terminal CPU prevents an exact remaining allocation. No frozen width verdict is issued. |
+| BC-232 final leg | Defer to `think-05of`; do not launch | Known CPU usage leaves at most $861.998305$ seconds of the four-hour allocation; the earlier 30-minute leg is no longer affordable. Missing terminal CPU prevents an exact remaining allocation. No frozen width verdict is issued. |
 | BC-241 | Accept the retained-record-dependent local theorem review | The [closure packet](../agenda-026/gate-hour-04.md) records the independent replay, exact arithmetic, three rejected mutations, and selected faces. It supplies no global capture or optimality conclusion. |
 | H-090 and H-091 | Retire the ordinary-containment fixed-weight improvement route as a bounded negative | The [independent review](../../../../../../docs/project/reviews/review-2026-09-06-core-shrink-obstruction.md) accepts the whole-window witness. Original experiment ancestry is preserved in `f9ba790a`. |
-| H-092/exp-112 | Integrate the reviewed negative, then park further fixed-weight probes | `think-xsma` owns transport `30c44bb6`, independently reviewed with 14 focused tests. The target fails; residual possible gain for the fixed sites/net/relative weights is below `0.00000125` above T-022. No fourth target. |
+| H-092/exp-112 | Integrate the reviewed negative, then park further fixed-weight probes | `think-xsma` owns transport `30c44bb6`, independently reviewed with 14 focused tests. The target fails; residual possible gain for the fixed sites/net/relative weights is below $0.00000125$ above T-022. No fourth target. |
 
 The BC-232 provisional checkpoint fulfills `think-jeyp` without closing BC-232 or H-064.
 The missing terminal CPU remains explicit; another process cannot recreate it.
@@ -77,7 +77,7 @@ Candidate exactification can reassign the reviewer, but does not retroactively c
 another cell’s cap or acceptance criterion.
 
 BC-243 requires exact full-dimensional a.e.-depth controls and arrangement completeness.
-Its uniform D4 controls give `D = 11`. Before a noncontrol pilot, H-080/exp-090 must
+Its uniform D4 controls give $D = 11$. Before a noncontrol pilot, H-080/exp-090 must
 name the rational weights or deterministic selection rule being tested.
 A controls-only result commissions the instrument; it supplies no evidence of equality
 or reason to launch BC-244. Any new weight search needs its own prospective

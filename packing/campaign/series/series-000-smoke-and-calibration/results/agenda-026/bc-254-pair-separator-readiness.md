@@ -158,7 +158,7 @@ TDD began with a missing-module failure for the core, followed by the first pass
 strict-overlap/contact control.
 The packet test then failed for the missing checker before that interface was
 implemented. The first full source-control run exposed an incorrect test expectation of
-zero eligible uniform-average pairs: the four weight-$3/4$ placements yield six pairs.
+zero eligible uniform-average pairs: the four weight-`3/4` placements yield six pairs.
 The tool correctly returned six nonoverlapping pairs; the expectation was corrected.
 No scientific accept criterion changed.
 

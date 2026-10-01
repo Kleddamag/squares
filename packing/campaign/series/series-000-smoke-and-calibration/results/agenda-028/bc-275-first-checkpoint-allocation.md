@@ -128,11 +128,11 @@ square 10 has basis $(e(v),f(v))$. Their centers are
 
 $$
 \begin{aligned}
-C_0&=(1/2,1/2),&C_1&=(L-1/2,1/2),\\
-C_2&=(z+1/2,L-1/2),&C_3&=(1/2,L-1/2),\\
-C_4&=(3/2,L-1/2),&C_5&=(1/2,L-3/2),\\
-C_6&=p,&C_7&=p+ae-f,\\
-C_8&=p+e+bf,&C_9&=p+(a+1)e+(b-1)f,\\
+C_0&=(1/2,1/2),&C_1&=(L-1/2,1/2),\cr
+C_2&=(z+1/2,L-1/2),&C_3&=(1/2,L-1/2),\cr
+C_4&=(3/2,L-1/2),&C_5&=(1/2,L-3/2),\cr
+C_6&=p,&C_7&=p+ae-f,\cr
+C_8&=p+e+bf,&C_9&=p+(a+1)e+(b-1)f,\cr
 C_{10}&=w.
 \end{aligned}
 $$
@@ -140,7 +140,7 @@ $$
 For each declared basis $(e_i,f_i)$, put
 
 $$
-Q_i=\{\alpha e_i+\beta f_i: |\alpha|,|\beta|\le1/2\},\qquad
+Q_i=\lbrace\alpha e_i+\beta f_i: |\alpha|,|\beta|\le1/2\rbrace,\qquad
 H_i(n)=\tfrac12\bigl(|n\cdot e_i|+|n\cdot f_i|\bigr),
 \quad h_i=H_i((1,0))=H_i((0,1)).
 $$
@@ -154,7 +154,7 @@ $$
 and, separately for each of the 55 pairs $i<j$, the complete disjunction
 
 $$
-\bigvee_{n\in\{e_i,f_i,e_j,f_j\},\ \sigma\in\{-1,1\}}
+\bigvee_{n\in\lbrace e_i,f_i,e_j,f_j\rbrace,\ \sigma\in\lbrace-1,1\rbrace}
 \sigma(C_j-C_i)\cdot n\ge H_i(n)+H_j(n).
 $$
 

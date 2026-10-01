@@ -96,18 +96,18 @@ experiment:
 
 This is the sixth scientific round of
 [H-220](../../../hypotheses/H-220-seedless-colgen-raises-nagamochi-floor.md), after
-[exp-170](exp-170-h220-n27-525-100-seedless-auto-windows5.md) stopped at `25.000000`
+[exp-170](exp-170-h220-n27-525-100-seedless-auto-windows5.md) stopped at $25.000000$
 unconverged below 27.
 
-Auto resolved to `(39, 53, 65)`. The row loop converged at `26.040745` with freeze mass
-`52081879/2000000`. `decide_certificate` refused the interval route.
+Auto resolved to $(39, 53, 65)$. The row loop converged at $26.040745$ with freeze mass
+$52081879/2000000$. `decide_certificate` refused the interval route.
 T-030 was not offered.
-The follow-up is exp-172 at n=45 `684/100`.
+The follow-up is exp-172 at n=45 $684/100$.
 
 Confirm only on `RETAINABLE`. There is no n=29 case package.
 
 Correctness review (2026-09-19): the fresh exact route accepts the frozen candidate with
-least covered mass `4000013/4000000`. The historical interval run still leaves 272 boxes
+least covered mass $4000013/4000000$. The historical interval run still leaves 272 boxes
 unresolved. This is not a site-set refutation and does not satisfy the two-route
 retention rule. The numerical restricted optimum and exact frozen mass have different
 assurance levels; the subject label above describes the former.

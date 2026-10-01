@@ -102,7 +102,7 @@ The admitted source, fixed tuple, five dots, upstream inputs, acceptance criteri
 process limits are unchanged.
 Sessions118 and119 remain historical unrun allocations.
 
-The selected tuple is `(0,0,0,7)` in BL, BR, TL, TR order.
+The selected tuple is $(0,0,0,7)$ in BL, BR, TL, TR order.
 The first required direction had a positive exact deficit and a validated rational
 strict escape, so H147 is refuted.
 This result does not settle H146 or the global n11 bound.

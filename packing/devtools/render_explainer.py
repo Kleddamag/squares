@@ -58,6 +58,7 @@ from devtools import repo_links
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.build_composite_figure_data import load_record as load_figure_record
 from devtools.measure_net_coarsening import largest_admissible_side
+from devtools.migrate_math import plain
 from devtools.render_overview import (
     PAPER_TYPE_CSS,
     SITE_NAV,
@@ -1434,10 +1435,15 @@ def current_bound_facts() -> CurrentBoundFacts:
         atom["threshold"] != 2 or len(atom["points"]) != 3 for atom in coarse["threshold_atoms"]
     ):
         raise SystemExit("the explainer's two-of-three statement no longer describes T-025")
-    least_match = re.search(r"Least cell charge \| `([^`]+)`", threshold_proof)
+    # The proof's table writes the charge as math since `devtools.migrate_math`, as
+    # `$\frac{a}{b} = d$`, which `plain` reads back as the `a/b = d` it was written from.
+    least_match = re.search(
+        r"Least cell charge \| (?:`(?P<code>[^`]+)`|\$(?P<math>[^$]+)\$)", threshold_proof
+    )
     if least_match is None:
         raise SystemExit(f"{THRESHOLD_PROOF.name}: retained least charge is missing")
-    least_charge = Fraction(least_match.group(1).split(" = ", 1)[0])
+    written = least_match["code"] or plain(least_match["math"])
+    least_charge = Fraction(written.split(" = ", 1)[0])
     normalization = Fraction(fine["point_mass"]) / Fraction(coarse["point_mass"])
     if (
         Fraction(fine["threshold_budget"]) / Fraction(coarse["threshold_budget"])

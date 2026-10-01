@@ -54,12 +54,12 @@ hypothesis:
 ---
 # H-043 — test whether Trump rigidity is incidence-redundant in every branch
 
-For one derivative branch `b`, let `G_b` contain the eleven active wall incidences and
+For one derivative branch $b$, let $G_b$ contain the eleven active wall incidences and
 the fourteen active pair contacts with that branch’s selected separating feature.
 Each group is atomic: a tied wall support or selected contact may contribute two
 simultaneous scalar rows, and the experiment may not split them.
 
-For `S ⊆ G_b`, let `A_b(S)` contain the union of those grouped rows after exact
+For $S \subseteq G_b$, let `A_b(S)` contain the union of those grouped rows after exact
 normalization of positive-proportional rows as the same oriented half-space.
 The tested cone is
 
@@ -67,8 +67,8 @@ The tested cone is
 C_b(S) = {v in R^33 : A_b(S) v >= 0}.
 ```
 
-The claim is `∀b ∃S_b`, where `S_b` is a proper subset, `C_b(S_b) = {0}`, and deleting
-any one retained group makes the cone nonzero.
+The claim is $\forall b \exists S_b$, where $S_b$ is a proper subset, `C_b(S_b) = {0}`,
+and deleting any one retained group makes the cone nonzero.
 “Proper” requires the selected groups to omit at least one derivative-row class, so a
 duplicate provenance label cannot accept the hypothesis by itself.
 
@@ -78,7 +78,7 @@ A branch accepts only with both kinds of replayable certificate:
 
 - exact rank 33 and an exact stress strictly positive on every retained row, with
   `A_b(S_b)^T λ = 0`, prove the selected cone is zero;
-- for every retained group `g`, an exact normalized nonzero vector satisfying all rows
+- for every retained group $g$, an exact normalized nonzero vector satisfying all rows
   of `A_b(S_b − {g})` proves group-level inclusion minimality.
 
 A deterministic greedy deletion order may return **an** inclusion-minimal core.

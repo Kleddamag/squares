@@ -33,7 +33,7 @@ of agreement rather than a list of open work.
 | §1.4 `--update` writes before checking | **fixed** — oracles are evaluated first and the write is atomic through a temporary |
 | §1.5 closed-form recognition called an oracle | **fixed** — the overstated framing is gone from the module docstring |
 | §1.8 `closest_pair` identity authority | **prose fixed**, field not yet renamed; tracked as their D-039, outstanding |
-| §1.9 the rank-free `n = 5` claim | **fixed and improved** — their terminology defines a *terminal family* by Jacobian nullity and gives the exact `n = 3` witness in coordinates |
+| §1.9 the rank-free $n = 5$ claim | **fixed and improved** — their terminology defines a *terminal family* by Jacobian nullity and gives the exact $n = 3$ witness in coordinates |
 | **Part 2, the non-portable fixture** | **NOT fixed, and the attempted repair was tested and fails** — see below |
 
 The remaining portability question is where the two reviews still disagree.
@@ -159,7 +159,7 @@ regression.
 `sqpack/atlas.py:23` says two basins closer than the `1e-11` floor are *“not currently
 distinguishable.”* D-021 bounds error in the **scalar side**; it says nothing about
 distance between configurations.
-The review turns my own data against the claim correctly: the `n=5` golden holds two
+The review turns my own data against the claim correctly: the $n=5$ golden holds two
 rows at an *identical* serialized side.
 Concede fully.
 
@@ -176,12 +176,12 @@ proof of it, and first-order flexes need not extend to finite motions.
 What survives: two quenches did land on two configurations with the same side and the
 same contact certificate, which is real evidence that the endpoint is not unique.
 What does not survive: the dimension, and the word “family.”
-**`n=3` is the airtight witness; `n=5` is an unresolved observation.** The review is
+**$n=3$ is the airtight witness; $n=5$ is an unresolved observation.** The review is
 right and the living docs should say so — as PR #15’s already do.
 
 ### 1.10 The twelve-start `n=5` statistics do not support H-012
 
-Point ratio `1/12` against `4/12` is `0.25`, not H-012’s registered `< 0.1`, and the
+Point ratio $1/12$ against $4/12$ is $0.25$, not H-012’s registered $< 0.1$, and the
 binomial intervals are enormous.
 I had already downgraded this claim in the PR body; the review’s version is sharper and
 should be the one that survives.
@@ -205,15 +205,15 @@ n= 5 anneal best 2.707109136505 gap +0.000002355319 -> quench 2.707106781187 = (
 n=10 anneal best 3.728110777674 gap +0.021003996487 -> quench 3.707106781187 = (6 + √2)/2 converged=True
 ```
 
-The committed golden says `n=10` annealer gap `0.021003996488` and
+The committed golden says $n=10$ annealer gap $0.021003996488$ and
 `after_quench (6 + √2)/2`. **It reproduces.** Three consecutive runs gave byte-identical
-`3.728110777674047`.
+$3.728110777674047$.
 
 ### Correction, 2026-08-23 22:40: one of my four data points was invalid
 
 The first version of this section tabulated four values for “one nominally fixed input,”
-including PR #15’s committed golden at `+0.000493446`. **That comparison was wrong.**
-That branch changed `LADDER` to carry `(n, seed)` pairs and moved `n = 10` to **seed
+including PR #15’s committed golden at $+0.000493446$. **That comparison was wrong.**
+That branch changed `LADDER` to carry `(n, seed)` pairs and moved $n = 10$ to **seed
 14**, so its row is a different experiment from my seed-7 row, not a conflicting result
 for the same one. I used it as evidence and should not have.
 
@@ -222,16 +222,16 @@ available and was run.
 
 ### The like-for-like comparison
 
-Both seeds, `n = 10`, this environment, engine built from source:
+Both seeds, $n = 10$, this environment, engine built from source:
 
 | seed | here | PR #15’s environment |
 | ---: | --- | --- |
-| 7 | `+0.021003996487`, and the quench reaches the proved optimum | their `LADDER` comment says seed 7 *“does not do that with the checked-in engine”* — which is why they moved off it |
-| 14 | `+0.032867764695` | committed as `+0.000493446`, reaching the proved optimum |
+| 7 | $+0.021003996487$, and the quench reaches the proved optimum | their `LADDER` comment says seed 7 *“does not do that with the checked-in engine”* — which is why they moved off it |
+| 14 | $+0.032867764695$ | committed as $+0.000493446$, reaching the proved optimum |
 
 The two environments disagree at **both** seeds, in opposite directions: seed 7 works
 here and not there; seed 14 is near-optimal there and poor here.
-About 67 times apart at seed 14, with the same `n` and engine source and both built from
+About 67 times apart at seed 14, with the same $n$ and engine source and both built from
 source.
 
 ### The decisive test: their own repair, run here
@@ -309,7 +309,7 @@ Ordered by damage-if-ignored.
 | 4 | Verify the pose that supplies the reported side | `valid: true` can describe a configuration the row does not report |
 | 5 | Make `--update` refuse to write when oracles fail | A failing update currently leaves an invalid golden |
 | 6 | Land D-035’s marker-file fix before anything unattended | It can commit a sabotage behind green history |
-| 7 | Treat `n=5` as unresolved and `n=3` as proved | The dimension claim was rank-free |
+| 7 | Treat $n=5$ as unresolved and $n=3$ as proved | The dimension claim was rank-free |
 
 **The pattern worth carrying.** Every confirmed defect above is a check or a claim that
 could not fail: an assertion whose inputs exclude the failing case, a comment asserting
@@ -333,7 +333,7 @@ The following dispositions supersede its present-tense conclusions.
 | R16-1 | **Fixed** (`think-v6n1`, D-075). The cross-environment byte mismatch is retained, but it does not identify which predicate failed. The generic `ORACLE FAILURES` heading also includes ordinary rendered-byte drift. Neither the portability of the post-quench mathematical checks nor the proposed cause was established. Dropping only `annealer_gap` would leave other stochastic characterization fields under byte comparison. D-059 and `think-osyp` now require a portable mathematical surface separated from a provenance-bound characterization surface. |
 | R16-2 | **Fixed** (`think-dqhd`, D-076). Six endpoint rows from six converged proposals establish no observed saturation under that proposer/quench/key regime. They do not distinguish an over-fine identity from real terminal diversity, incomplete stationarity, quench sensitivity, or unstable clustering. Those are competing hypotheses for `think-1s0h`. |
 | R16-3 | **Fixed** (`think-sk4a`, D-077). `think-97pp` is open. Its accepted scope is cooperative interruption recovery and per-control timeouts. The snapshot/worktree/general-lease prototype remains outside the PR. Checking `git status` before staging remains a useful temporary precaution. |
-| R16-4 | **Fixed** (`think-djru`, D-078). The retraction of the five-dimensional `n=5` family is correct, but independent contact gradients alone would not establish a connected feasible optimal family. The objective level, unilateral active constraints, feasible tangent cone, higher-order obstruction, and continuation also matter. The exact `n=3` witness, not a converse of the rigidity premise, establishes that non-record terminal families can occur. |
+| R16-4 | **Fixed** (`think-djru`, D-078). The retraction of the five-dimensional $n=5$ family is correct, but independent contact gradients alone would not establish a connected feasible optimal family. The objective level, unilateral active constraints, feasible tangent cone, higher-order obstruction, and continuation also matter. The exact $n=3$ witness, not a converse of the rigidity premise, establishes that non-record terminal families can occur. |
 | R16-5 | **Fixed** (`think-hej7`, D-077). Five cited corrections were already present on PR #15: four executable repairs plus the closed-form prose correction. The response’s “four of five” count was wrong. |
 | R16-6 | **Fixed** (`think-55m2`, D-077). The handoff now presents dated parallel lanes and only real blocker edges. It no longer treats independent ready work as a serial dependency chain or labels obsolete branch and bead snapshots current. |
 

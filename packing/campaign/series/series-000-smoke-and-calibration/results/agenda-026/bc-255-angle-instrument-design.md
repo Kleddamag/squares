@@ -29,7 +29,7 @@ $$
 Every square chooses its angle independently, modulo quarter turns.
 The proof must cover both signs and all endpoints, not one shared perturbation angle.
 At fixed side $q$, its one-square domain is
-$\{(c,\theta):\theta\in\Theta,\ c\in[h(\theta),q-h(\theta)]^2\}$, where
+$\lbrace(c,\theta):\theta\in\Theta,\ c\in[h(\theta),q-h(\theta)]^2\rbrace$, where
 $h=(|\cos\theta|+|\sin\theta|)/2$. Use exactly the candidate ten-set, twelve-set,
 A-triple, and canonical rectangle $R=[1,q/2]\times[0,1]$ defined in the
 [assessment](bc-255-restricted-angle-assessment.md#candidate-conditional-cover), with
@@ -320,7 +320,7 @@ The width must be proved positive throughout each chart.
 Cover $[0,1]^2$ by a finite closed rational triangulation, and assign one frozen ten-set
 point to each triangle on each one-sided angle chart.
 For every triangle vertex $z$, assigned point $p$, and
-$a(t)\in\{u(t),-u(t),v(t),-v(t)\}$, certify
+$a(t)\in\lbrace u(t),-u(t),v(t),-v(t)\rbrace$, certify
 
 $$
 d(t)^2\bigl(1/2-a(t)\mathbin{\cdot}(p-F_t(z))\bigr)\geq0
@@ -472,8 +472,8 @@ The earlier 256-leaf binary attempt remains unresolved in its unchanged record; 
 does not rewrite that result.
 
 The next instrument slice keeps the complete six-by-three center grid and source label
-matrix, evaluates the unchanged point formulas at `q=1939/500`, and checks both closed
-half-angle slabs `[-T,0]` and `[0,T]`, with the outward endpoint defined above.
+matrix, evaluates the unchanged point formulas at $q=1939/500$, and checks both closed
+half-angle slabs $[-T,0]$ and $[0,T]$, with the outward endpoint defined above.
 It uses no point optimization, narrower angle range, or sign subdivision.
 This tests the near-axis ten-point clause only; near-45-degree localization, three
 forcing clauses, and both twelve-point clauses remain separate obligations.

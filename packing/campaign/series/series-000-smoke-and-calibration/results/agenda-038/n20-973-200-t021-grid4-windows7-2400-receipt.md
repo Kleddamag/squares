@@ -3,14 +3,14 @@
 Status: **site set still open, unconverged**. The side stays open.
 No freeze.
 
-Same named site set as the 1200 s rank-1 probe: four-grid `(34, 46, 56, 64)` unioned
-with T-021’s atom sites scaled from `97/20` to `973/200`, plus `--seed-windows 7`,
+Same named site set as the 1200 s rank-1 probe: four-grid $(34, 46, 56, 64)$ unioned
+with T-021’s atom sites scaled from $97/20$ to $973/200$, plus `--seed-windows 7`,
 `(n, L, B, net) = (20, 973/200, 9977/10000, 181 directions)`. Seed sites 2464. The 2400
-s deadline stopped the row loop after 45 LP rounds at `19.939212` (255 still violated).
-It replayed the 1200 s trajectory through round 33 (`19.930198`) and then rose.
+s deadline stopped the row loop after 45 LP rounds at $19.939212$ (255 still violated).
+It replayed the 1200 s trajectory through round 33 ($19.930198$) and then rose.
 It did not cross twenty.
 
-Remaining rows can only raise this value, so `19.939212` is not a covering below 20.
+Remaining rows can only raise this value, so $19.939212$ is not a covering below 20.
 Adding sites can still lower it.
 T-021 is unchanged. H-218 stays unconfirmed.
 T-029 was not offered.
@@ -40,7 +40,7 @@ Wall 2535.1 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `19.939212` |
+| Restricted optimum | $19.939212$ |
 | Sites / orbits / rows | 12676 / 1646 / 15731 |
 | Seed sites | 2464 |
 | LP rounds | 45 |

@@ -83,18 +83,18 @@ non-obvious rounds later.
 
 Three things, in order, and each was already worth its cost.
 
-**The engine must recover a case whose answer is proved.** `n = 10` is the positive
-control: `s(10) = 3 + 1/√2`, and crucially it is *not* the grid — it needs a genuine
-tilted family, so recovering it exercises the part of the search that matters.
+**The engine must recover a case whose answer is proved.** $n = 10$ is the positive
+control: $s(10) = 3 + 1/\sqrt{2}$, and crucially it is *not* the grid — it needs a
+genuine tilted family, so recovering it exercises the part of the search that matters.
 An early version of the search never left the grid basin at all, and would have produced
-a whole night of confident, meaningless numbers at `n = 11`. The control caught it in
+a whole night of confident, meaningless numbers at $n = 11$. The control caught it in
 seconds.
 
 **The engine must reject configurations known to be invalid.** The original campaign
-called `n = 12` a negative control because the 4×4 grid is believed optimal.
-That was not a known-answer test: `s(12) = 4` is open, so a valid result below `4` would
+called $n = 12$ a negative control because the 4×4 grid is believed optimal.
+That was not a known-answer test: $s(12) = 4$ is open, so a valid result below $4$ would
 be a discovery. The valid guard is independent geometry verification plus deliberately
-invalid fixtures; `n = 12` remains an open-case calibration
+invalid fixtures; $n = 12$ remains an open-case calibration
 ([D-042](../../../../defects.md)).
 
 **The declared budget must actually bind.** It did not, at first: a restart cap stopped
@@ -104,19 +104,19 @@ The tell was that results got *worse* when the declared budget was raised.
 
 ## What S0 Could Not Tell Us
 
-The review’s calibration ladder and this series’ controls both use `n = 5` and `n = 10`.
+The review’s calibration ladder and this series’ controls both use $n = 5$ and $n = 10$.
 The
 [search-philosophy report](../../../../docs/project/research/research-2026-08-23-search-philosophy-and-landscape-cartography.md#calibration-must-match-mechanism-not-just-difficulty)
 makes the sharp point that **both proved optima are 45°-tilt mechanisms** — symmetric,
 and sitting in basins blind search reaches without help.
-An engine can pass this ladder and remain structurally blind to what `n = 11` actually
-demands: an oblique core locked at `≈ 40.182°`, a mechanism **no proved case
+An engine can pass this ladder and remain structurally blind to what $n = 11$ actually
+demands: an oblique core locked at $\approx 40.182^\circ$, a mechanism **no proved case
 exercises**.
 
 So the original S0 controls validate *machinery*, not *strategy*, and their passing
 results must not be read as evidence that the search can find records.
 Mechanism-matched calibration was assigned to a later topical stage in the original
-plan. Exp-011 subsequently ran the `n = 17` cell inside this legacy container; its own
+plan. Exp-011 subsequently ran the $n = 17$ cell inside this legacy container; its own
 subject and regime carry that evidence, not the S0 label.
 
 ## What This Series Cannot Claim

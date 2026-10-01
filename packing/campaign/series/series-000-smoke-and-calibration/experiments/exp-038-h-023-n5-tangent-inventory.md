@@ -88,43 +88,43 @@ Before any retained target run, the scope was corrected to “every transverse
 or mixed-direction nonlinear lift.”
 The acceptance counts and mathematical threshold did not change.
 
-Let `A` be one retained active-row matrix and `z = A v` its nonnegative slack vector.
+Let $A$ be one retained active-row matrix and $z = A v$ its nonnegative slack vector.
 Acceptance requires exact positive left-kernel certificates that force these nine rows
 to remain equalities in every stratum and owner branch:
 
 - all four square-2 lower-wall rows;
 - both square-3 upper-wall rows;
-- contact `(2,4)`; and
-- both tied-support rows of the selected `(3,4)` owner branch.
+- contact $(2,4)$; and
+- both tied-support rows of the selected $(3,4)$ owner branch.
 
 The checker must prove that the positive relations, together with
 
-`X- + Y+ = X+ + Y-`,
+$X- + Y+ = X+ + Y-$,
 
 exhaust the left kernel.
-Here `X-`, `X+`, `Y-`, and `Y+` are square 1’s tied upper-x and lower-y wall slacks.
+Here `X-`, $X+$, `Y-`, and $Y+$ are square 1’s tied upper-x and lower-y wall slacks.
 The surviving pointed transverse cone must therefore be
 
 `R_+^2 × {X-, X+, Y-, Y+ >= 0 : X- + Y+ = X+ + Y-}`.
 
-Its six exact rays open, respectively, only contact `(1,4)`, only contact `(0,4)`,
-`Y- + Y+`, `X- + Y-`, `X+ + Y+`, and `X- + X+`. The four square-1 rays have the sole
+Its six exact rays open, respectively, only contact $(1,4)$, only contact $(0,4)$,
+$Y- + Y+$, $X- + Y-$, $X+ + Y+$, and $X- + X+$. The four square-1 rays have the sole
 positive relation `R3 + R6 = R4 + R5`. The checker must derive the five-dimensional face
-vector `(1,6,13,13,6,1)` from the product of two orthant rays and the cone over a
+vector $(1,6,13,13,6,1)$ from the product of two orthant rays and the cone over a
 quadrilateral, not accept it as an unverified constant.
 
 The exp-034 sheet is an independent analytic oracle.
 At the interior its tangent space is spanned by `dx0 = dy0 = 1` and `dtheta0 = 1`. At A
-its one-sided rays are `(dx0,dy0,dtheta0) = (1/2,1/2,+1)` and `(1/2,1/2,-1)`; at B their
-first two coordinates are `(-1/2,-1/2)`. Acceptance requires eight endpoint quotient
+its one-sided rays are `(dx0,dy0,dtheta0) = (1/2,1/2,+1)` and $(1/2,1/2,-1)$; at B their
+first two coordinates are $(-1/2,-1/2)$. Acceptance requires eight endpoint quotient
 rays—two sheet and six transverse—and six interior transverse quotient rays.
 At the interior, the sheet occupies two of the three lineality dimensions.
-At each endpoint, only `W` is lineality and the sheet is the pointed cone on its two
+At each endpoint, only $W$ is lineality and the sheet is the pointed cone on its two
 one-sided rays; the slide direction is their positive sum, not a quotient symmetry.
 
-The checker must derive the pointed transverse quotient face vector `(1,6,13,13,6,1)`
-and the pointed endpoint quotient face vector `(1,8,26,45,45,26,8,1)`. Entry `k` counts
-`k`-dimensional faces of the pointed quotient, including its apex and whole cone and
+The checker must derive the pointed transverse quotient face vector $(1,6,13,13,6,1)$
+and the pointed endpoint quotient face vector $(1,8,26,45,45,26,8,1)$. Entry $k$ counts
+$k$-dimensional faces of the pointed quotient, including its apex and whole cone and
 excluding the empty face.
 
 The ten controls require a known rigid cone to have no pointed ray, a known orthant to
@@ -135,9 +135,9 @@ exp-036 covers `-W`, and a claim that any transverse lift has already been conti
 nonlinearly.
 
 An accepted result would be a complete branchwise linearization-cone generator and face
-inventory only. Exp-036 excludes the displayed `+W` orientation; it does not exclude
+inventory only. Exp-036 excludes the displayed $+W$ orientation; it does not exclude
 `-W`, all of the linearized lineality, or a direction `R_i + lambda W + s` with sheet
-motion `s`. Extreme-ray checks also do not classify face interiors of the true Bouligand
+motion $s$. Extreme-ray checks also do not classify face interiors of the true Bouligand
 cone. This round therefore cannot establish terminal or stationary membership, local
 isolation, component identity, basin mass, census completeness, or unequal-side
 clearance.
@@ -158,7 +158,7 @@ throughout:
 `R_+^2 × {X-, X+, Y-, Y+ >= 0 : X- + Y+ = X+ + Y-}`.
 
 Its only positive ray relation is `R3 + R6 = R4 + R5`. The pointed transverse and
-endpoint quotient face vectors are `(1,6,13,13,6,1)` and `(1,8,26,45,45,26,8,1)` under
+endpoint quotient face vectors are $(1,6,13,13,6,1)$ and $(1,8,26,45,45,26,8,1)$ under
 the declared convention.
 
 This settles the complete branchwise first-order linearization inventory only.

@@ -50,7 +50,7 @@ hypothesis:
 
 The question deliberately asks for the optimal set, not every local optimum.
 Exp-014 and exp-015 solve the first two sweep cells exactly.
-The next step is the full labelled component relation at `n = 5`, not a denser endpoint
+The next step is the full labelled component relation at $n = 5$, not a denser endpoint
 sample.
 
 <!-- This document follows common-doc-guidelines.md.

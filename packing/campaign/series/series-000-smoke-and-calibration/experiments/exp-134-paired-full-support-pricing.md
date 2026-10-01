@@ -100,14 +100,14 @@ unspent and a fresh forward launch allocation required.
 The published instrument is commit `82df41bd7154903d4048fed0feef39b8bec794f8`. Its
 integrated controls and the publication check passed.
 The exact state transport was replayed before this allocation: maximum depth one over
-2,702,488 vertices, with 19,335 exact decisions and mass `21342289572/2055263195`. That
+2,702,488 vertices, with 19,335 exact decisions and mass $21342289572/2055263195$. That
 mass is below eleven; the expected K3 failure means this is a retained fractional
 control, not a packing obstruction.
 The control used 135.91 seconds wall, 125.64 seconds user CPU and 1.91 seconds system
 CPU, separately from the prospective LP/pricing effort.
 
-The transport retains the 181-direction net, rows and sites, uses scale `10000/9977` and
-translation `(1396/249425,1396/249425)`, and is contained at `q = 96/25`. The complete
+The transport retains the 181-direction net, rows and sites, uses scale $10000/9977$ and
+translation $(1396/249425,1396/249425)$, and is contained at $q = 96/25$. The complete
 state and raw control receipts are in `results/agenda-031/`.
 
 No LP solve or pricing target has run.

@@ -209,8 +209,9 @@ precedes it. `n-053.md` and `n-087.md` are hand-written and are left as written.
   writes the upper lane, and the prose around it, of each count a certified packet covers
   (Couzo's 49 and de Winter's `n = 211`, from 2026-09-29), over the catalogue or release
   record this tool drafts. So at those counts a draft is this tool's record with that
-  intake applied (`adopt_upper_bound_packet`), and `--check` compares it with whitespace
-  collapsed, as the intake's own `--check` does, since the formatter rewraps what it writes.
+  intake applied (`adopt_upper_bound_packet`), and `--check` compares it through the
+  intake's own `normalized`, whitespace collapsed and the formatter's line-start escapes
+  dropped, since the formatter rewraps what the intake writes.
 - Other case-specific evidence is editorial. `priority_notes` is written only for the
   second lineage above, and is otherwise empty.
 
@@ -256,6 +257,7 @@ from devtools.audit_ds7_lower_bounds import (
     opaque_payload,
     reported_payload,
 )
+from devtools.migrate_math import markdown_math
 from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -1950,10 +1952,13 @@ def render_body(
     # into prose; their frontmatter transcription remains unchanged.
     # `render_explainer.py` loads it the same way and for
     # the same reason: a network fetch inside a generator would make it depend on an
-    # index being reachable.
+    # index being reachable. The mathematics is written as math first, by the same rules
+    # `devtools.migrate_math` applied to the register's bodies, since the formatter wraps
+    # `$…$` differently from the code span it replaces.
     from flowmark import reformat_text  # noqa: PLC0415
 
-    return reformat_text("\n".join(lines), semantic=True, cleanups=True, smartquotes=True)
+    body = markdown_math("\n".join(lines))
+    return reformat_text(body, semantic=True, cleanups=True, smartquotes=True)
 
 
 def render_record(
@@ -2486,7 +2491,8 @@ def check_records(
             comparable = without_rigidity(existing)
             drafted = without_rigidity(generated)
             if adopted:
-                agrees = " ".join(drafted.split()) == " ".join(comparable.split())
+                normalized = _upper_bound_packets()[0].normalized
+                agrees = normalized(drafted) == normalized(comparable)
             else:
                 agrees = drafted == comparable
             if not agrees:

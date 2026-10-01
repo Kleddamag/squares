@@ -983,7 +983,7 @@ The separately admitted
 producer then returned `unresolved` with an `overweight_clique` stop.
 No independent reader ran and no retry is authorized.
 This graph-only obstruction is not geometric candidate invalidity or a refutation of
-H099; the bracket `[11, 56/5]` is unchanged.
+H099; the bracket $[11, 56/5]$ is unchanged.
 
 The source checkpoint was published by 11:49 UTC. The fast gate on `3bec06e2` passed in
 169.33 seconds, with confirmation observed at 11:50:19 UTC. Its full gate later passed
@@ -1049,9 +1049,9 @@ The BC259 resource inventory was static, not an adoption verdict:
 
 At this handoff, the unresolved binding was the historical geometry, all 88 labelled
 images, the 60-placement quotient and the eight-orbit order.
-Map the archive’s representatives `(0,2,4,7,10,8,6,9)` explicitly to the current
-canonical order. Retained baseline assertions are sizes `(4,8,8,8,8,8,8,8)` and counts
-`(3,1,2,1,1,1,1,1)`. Verify all seven positive-area neighborhoods, mapped rows,
+Map the archive’s representatives $(0,2,4,7,10,8,6,9)$ explicitly to the current
+canonical order. Retained baseline assertions are sizes $(4,8,8,8,8,8,8,8)$ and counts
+$(3,1,2,1,1,1,1,1)$. Verify all seven positive-area neighborhoods, mapped rows,
 nonnegative multipliers and their upper-bound identity.
 The candidate-depth box is a separate claim.
 

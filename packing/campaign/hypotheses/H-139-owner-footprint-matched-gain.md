@@ -55,10 +55,10 @@ hypothesis:
 # H-139 — Matched Owner-Footprint Gain
 
 [H-111](H-111-resource-anchor-case-exclusion.md) asks whether complete owner domains and
-resource accounting can exclude the open `n = 11` case at side `96/25`. This hypothesis
+resource accounting can exclude the open $n = 11$ case at side $96/25$. This hypothesis
 tests one narrower mechanism: whether replacing bare ownership of the bottom-left `m1`
 mark in sector 0 with its full-net endpoint footprint lowers a matched finite covering
-objective by more than `0.001`.
+objective by more than $0.001$.
 
 The unrestricted, owned-point, triangle, and endpoint arms use the same original site
 availability and the same nine residual directions.
@@ -75,7 +75,7 @@ The numerical result does not cover omitted directions or supply exact coverage.
 
 Exp140 left the claim unresolved.
 Unrestricted converged, but point stopped at its 60-round cap with least surveyed mass
-`0.955338364468638`. Triangle and endpoint were not started, so no primary gain exists.
+$0.955338364468638$. Triangle and endpoint were not started, so no primary gain exists.
 The point arm’s last objective is incomplete and does not count as a covering value.
 
 Exp142 completed the unchanged geometric comparison: point11.574514991181658,

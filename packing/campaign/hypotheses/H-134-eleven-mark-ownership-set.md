@@ -52,12 +52,12 @@ hypothesis:
 ---
 # H-134 — Ownership at the Target Side
 
-Stromquist proved `s(10)` by making ten points unavoidable and then owning them: with as
+Stromquist proved $s(10)$ by making ten points unavoidable and then owning them: with as
 many points as boxes, every box holds exactly one, and alternative covers force
 containments. [X-021](../explorations/X-021-what-can-be-proved-about-eleven-squares.md)
-shows the ten-point scheme is rigid at `2 + 4/√5` and that its weighted analogue owns
-only atoms heavier than the mass gap; an integral set of at most eleven marks at `96/25`
-would restore the whole mechanism at the target side.
+shows the ten-point scheme is rigid at $2 + 4/\sqrt{5}$ and that its weighted analogue
+owns only atoms heavier than the mass gap; an integral set of at most eleven marks at
+$96/25$ would restore the whole mechanism at the target side.
 
 The lane is a probe, and its negative form — the catalogue of escapes from every set
 built on the atom skeleton — is itself the obstruction the closing route needs to know.

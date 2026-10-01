@@ -68,6 +68,9 @@ INLINE_CODE = re.compile(r"(?P<ticks>`+)(?!`).*?(?<!`)(?P=ticks)(?!`)", re.DOTAL
 DISPLAY = re.compile(r"\$\$(?P<body>.*?)\$\$", re.DOTALL)
 # Inline math: a single `$` not adjacent to another `$`, up to the next such `$`.
 INLINE = re.compile(r"(?<!\$)\$(?!\$)(?P<body>[^$]+?)(?<!\$)\$(?!\$)", re.DOTALL)
+# YAML frontmatter, which no Markdown renderer reads as prose: a `$` in a recorded shell
+# command there (`$(git rev-parse HEAD)`) would otherwise pair with the body's first `$`.
+FRONTMATTER = re.compile(r"\A---[ \t]*\n.*?\n(?:---|\.\.\.)[ \t]*(?:\n|\Z)", re.DOTALL)
 
 
 def _blank(text: str) -> str:
@@ -115,9 +118,26 @@ def math_spans(text: str) -> list[str]:
     return [body for body, _display in math_spans_with_mode(text)]
 
 
+def located_math_spans(text: str) -> list[tuple[int, int, str]]:
+    """Every math span's start, end and content, in the order the file holds them.
+
+    The same spans `math_spans` reads, with where each sits, for a check that has to name
+    the line of a span another renderer mishandled.
+    """
+    masked = _mask(_mask(mask_fences(text), FRONTMATTER), INLINE_CODE)
+    display = [
+        (match.start(), match.end(), match.group("body")) for match in DISPLAY.finditer(masked)
+    ]
+    inline = [
+        (match.start(), match.end(), match.group("body"))
+        for match in INLINE.finditer(_mask(masked, DISPLAY))
+    ]
+    return sorted(display + inline)
+
+
 def math_spans_with_mode(text: str) -> list[tuple[str, bool]]:
     """The same recognized spans with their display/inline rendering convention."""
-    masked = _mask(mask_fences(text), INLINE_CODE)
+    masked = _mask(_mask(mask_fences(text), FRONTMATTER), INLINE_CODE)
     display = [(match.group("body"), True) for match in DISPLAY.finditer(masked)]
     inline = [(match.group("body"), False) for match in INLINE.finditer(_mask(masked, DISPLAY))]
     return display + inline

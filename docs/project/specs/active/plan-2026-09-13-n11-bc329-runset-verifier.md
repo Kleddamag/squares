@@ -54,8 +54,8 @@ It must be target-free and have no import from the producer or source-distinct r
 Use Python 3.14 from `packing/.venv`; the five subcommands below are the only
 operational entry points.
 Each takes absolute paths, validates their real locations, refuses an existing output it
-would overwrite, and exits `0` only after its complete check.
-Refusals exit `2` with a diagnostic on stderr.
+would overwrite, and exits $0$ only after its complete check.
+Refusals exit $2$ with a diagnostic on stderr.
 
 ```text
 python -m devtools.verify_fixed_core_calibration_runset snapshot
@@ -194,7 +194,7 @@ The separate `.status` text must be decimal and equal to `exit_status`. The wrap
 }
 ```
 
-The actual `runs` array has orders `[1, 2, 3]` only.
+The actual `runs` array has orders $[1, 2, 3]$ only.
 `command_sha256` and `proof_sha256` cover exact retained `.command.json` and
 `.stdout.json` bytes; `receipt_sha256` repeats the corresponding summary/reader receipt
 binding for audit. The join must compare receipt `bytes` as well as digest even though
@@ -283,7 +283,7 @@ commit. The later check uses the actual commit OID as `TREE_OID`.
 
 The new module checks evidence plumbing.
 It does not turn a zero reader exit into acceptance without parsing the proof, does not
-infer scientific evidence from the `n=2` fixture, and does not lift the independent
+infer scientific evidence from the $n=2$ fixture, and does not lift the independent
 exact-head gates in the run sheet.
 The baseline shows byte/type equality at measured boundaries; it cannot prove that no
 writer briefly changed and restored bytes between scans.

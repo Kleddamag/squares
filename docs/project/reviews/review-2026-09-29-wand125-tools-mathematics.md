@@ -3,9 +3,9 @@
 The new repository publishes search machinery around Tokoharu’s rectangle-density
 certificates, plus a separate exact point-and-threshold checker.
 Its source supports reusing the existing rectangle proof contract.
-Two claims need qualification before we adopt the tooling: the general $B\,UB(n)$
-ceiling omits an orientation condition, and `scale_and_verify.py` can announce a packing
-bound without checking the target count’s mass budget.
+Two claims need qualification before we adopt the tooling: the general
+$B\thinspace UB(n)$ ceiling omits an orientation condition, and `scale_and_verify.py`
+can announce a packing bound without checking the target count’s mass budget.
 
 The disputed ceiling is tracked as **T-058**. The separately reported equality of the
 n11 row scans is **T-059**.
@@ -22,7 +22,7 @@ Significance is a separate judgment and does not raise either evidence level.
 
 | Claim | Significance | Verification | Confirmation | What remains |
 | --- | --- | --- | --- | --- |
-| T-058: unrestricted $B\,UB(n)$ ceiling | S2: a tooling limit whose premises affect safe search, with no new packing bound | V0: the unrestricted claim is unestablished | C1: source-level review found a missing premise | Discharge angular alignment and exact upper-witness assumptions, or use the reviewed sufficient correction; think-xgjo. |
+| T-058: unrestricted $B\thinspace UB(n)$ ceiling | S2: a tooling limit whose premises affect safe search, with no new packing bound | V0: the unrestricted claim is unestablished | C1: source-level review found a missing premise | Discharge angular alignment and exact upper-witness assumptions, or use the reviewed sufficient correction; think-xgjo. |
 | T-059: equality of all 12,028 n11 row minima | S2: a citable row-checking result that changes no existing theorem | V0: no retained complete replay supports the equality claim | C1: source-level review found journal-admission defects | Replay all unique rows with exact witness comparisons and retain the full journal; think-11z6 under think-190a. |
 
 Both are attributed to the published wand125 source and classified
@@ -52,7 +52,7 @@ supplies the detailed continuous coverage argument.
 | Transfer to another $n$ or $L$ | Reuse support and re-optimize weights, then prove coverage and the new exact budget | Valid architecture; transferring support alone proves nothing about the new target |
 | Budget recovery | Add or move rectangle columns and repair screened violations before final verification | Search operation; requires a fresh proof at the final geometry and mass |
 | Weight rescaling | Multiply nonnegative weights by an exact positive factor; coverage and mass scale linearly | Valid identity; final budget and coverage must both be checked |
-| $B\,UB(n)$ ceiling | Pack $n$ disjoint checked cores into the container and sum their coverage | Valid for a packing whose orientations belong to the checked net; unrestricted statement has a missing premise |
+| $B\thinspace UB(n)$ ceiling | Pack $n$ disjoint checked cores into the container and sum their coverage | Valid for a packing whose orientations belong to the checked net; unrestricted statement has a missing premise |
 | Working rows, cached bases, batched screens | Produce useful candidates faster | Outside the proof path when final full verification is mandatory |
 | Cached-axis C++ checker and lazy zmx2 | Preserve verifier behavior while changing evaluation work | Separate implementation claims; source provenance and full-domain comparison required |
 | General pose tree | Reproduce 12,028 n11 per-row minima with exact arithmetic | Reported upstream result; global counting argument and local replay remain separate obligations |
@@ -69,11 +69,11 @@ source identity for the checker, not a new replay result.
 [`l_cap.py:17–23`](https://github.com/wand125/square-packing-tools/blob/0d33ab61726c2ab03e3eb8f457dabaf22db8571f/transfer/l_cap.py#L17-L23)
 argues that a packing of unit squares at side $U=UB(n)$, scaled by $B=9977/10000$,
 provides $n$ disjoint cores each charged at least one.
-The checker establishes that coverage for side-$B$ squares at the 201 angles
+The checker establishes that coverage for side-`B` squares at the 201 angles
 $\theta_r=2\arctan(83r/40000)$, modulo container symmetries.
 Its extension to arbitrary orientations applies to *unit* squares, through containment
 of a nearby net core.
-It does not establish the same coverage for arbitrary orientations of side-$B$ squares.
+It does not establish the same coverage for arbitrary orientations of side-`B` squares.
 
 Thus the stated argument proves a ceiling at $BU$ when the witness packing’s
 orientations belong to that net, modulo $D_4$. Axis-aligned grid packings satisfy this
@@ -89,7 +89,7 @@ $$
 $$
 
 For every orientation, a nearest checked angle has discrepancy $|\delta|\le\arctan D$. A
-concentric side-$B$ core at that angle fits inside a square of the original orientation
+concentric side-`B` core at that angle fits inside a square of the original orientation
 and side $\alpha$, since $B(\cos|\delta|+\sin|\delta|)\le B(1+D)=\alpha$. Scale a
 certified packing at side $U$ by $\alpha$, and place this net core inside each scaled
 square. Their interiors remain disjoint, and each core is contained in the container.
@@ -111,8 +111,8 @@ The numerical table is another limitation.
 The
 [UB data](https://github.com/wand125/square-packing-tools/blob/0d33ab61726c2ab03e3eb8f457dabaf22db8571f/transfer/data/ub.json)
 contains rounded display values, and `l_cap.py` uses only those floats.
-For example, the n26 value `5.62132` is below $7/2+(3/2)\sqrt2$, and the n29 value
-`5.933833` is below the rational witness side recorded in the same table.
+For example, the n26 value $5.62132$ is below $7/2+(3/2)\sqrt2$, and the n29 value
+$5.933833$ is below the rational witness side recorded in the same table.
 These values are not certified outward bounds.
 Some `ubExact` entries instead contain coarser integer bounds.
 Treat the current three-decimal output as a search suggestion.
@@ -123,21 +123,21 @@ impossibility above that rounded value.
 ## Rescaling: Coverage Acceptance Does Not Check the Budget
 
 [`scale_and_verify.py:27–39`](https://github.com/wand125/square-packing-tools/blob/0d33ab61726c2ab03e3eb8f457dabaf22db8571f/transfer/scale_and_verify.py#L27-L39)
-defaults to target mass `28.9`, verifies only that the old mass is smaller, and rescales
+defaults to target mass $28.9$, verifies only that the old mass is smaller, and rescales
 the weights exactly.
 It calls `certify.py`, then
 [prints a bound for the candidate’s `n`](https://github.com/wand125/square-packing-tools/blob/0d33ab61726c2ab03e3eb8f457dabaf22db8571f/transfer/scale_and_verify.py#L63-L79).
-It never requires the new mass to be below that `n`.
+It never requires the new mass to be below that $n$.
 
 The called
 [`certify.py`](https://github.com/wand125/square-packing-tools/blob/0d33ab61726c2ab03e3eb8f457dabaf22db8571f/solver/certify.py)
 checks the support, nonnegative weights, angular margin, interval input, and all 201
 coverage cases. It records exact mass but does not compare it with a target count.
 Therefore its successful coverage result cannot supply the missing budget premise.
-For a candidate whose `n` is below the requested target mass, the wrapper can announce a
+For a candidate whose $n$ is below the requested target mass, the wrapper can announce a
 bound unsupported by its own checks.
 An executed negative control confirms the defect.
-We supplied `n=1`, `L=1.5`, `B=0.9977`, and a rectangle on $[0.001,1.499]^2$ with
+We supplied $n=1$, $L=1.5$, $B=0.9977$, and a rectangle on $[0.001,1.499]^2$ with
 initial mass $1/2$. The wrapper scaled its mass to the default $289/10$, the unchanged
 C++ checker verified all 201 directions in 209 nodes, and the wrapper exited
 successfully while announcing `certificate for s(1) >= 1.5`. This bound is false because
@@ -221,7 +221,7 @@ does not prove it. These probes establish agreement on those three rows; **T-059
 12,028-row census remains reported**. The identical certificate already has a
 [complete native parent-core verification](review-2026-09-22-native-n11-parent-core.md),
 including exact enclosures, $D_4$ folding, threshold budget and $11\Gamma>M$. Those
-global premises are established evidence for the existing `V4/C4` bound `s(11) > 31/8`;
+global premises are established evidence for the existing `V4/C4` bound $s(11) > 31/8$;
 they are not missing merely because wand125 supplies a new checker.
 The native threshold decision need not equal each exact row minimum, so the full wand125
 minimum-equality claim still requires its own replay and exact census.
@@ -345,8 +345,8 @@ that merge; published Couzo/de Winter claims retain T-056/T-057.
 The separately retained
 [source update](../../../packing/resources/web/wand125-tools-2026-09-29/update-3eb08e6/source-provenance.json)
 pins `3eb08e6c675d8d5aa953cb93da049a3f3cdc6123`. Its unchanged `verify.cpp` remains the
-coverage authority; the new wrapper refuses target mass outside `(0,n)` and defaults
-below n. The revised ceiling calculation uses `B(1+D)` generally and `B` only for
+coverage authority; the new wrapper refuses target mass outside $(0,n)$ and defaults
+below n. The revised ceiling calculation uses $B(1+D)$ generally and $B$ only for
 matching integer-grid upper-bound records.
 All 64 current matching records satisfy the required `n <= k^2`; the selection function
 should enforce that condition before accepting future records.
@@ -378,7 +378,7 @@ C++ combines center-area enclosures with signed derivative bounds; common-core a
 per-rectangle corner minima do not exploit the same derivative cancellation.
 Equivalent complete coverage and comparable speed therefore remain separate obligations.
 The matched benchmark uses the exact rational value of the C++ effective binary64
-cutoff, records the nominal `10001/10000` target, and distinguishes complete, partial
+cutoff, records the nominal $10001/10000$ target, and distinguishes complete, partial
 and unresolved outcomes.
 Neither an incomplete probe nor a complete analytic control establishes performance
 parity on external certificates.

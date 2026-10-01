@@ -51,8 +51,14 @@ RECORD = "E-nagamochi-lower"
 #: checked against the case records because the figure was typed once and outlived the
 #: 4.5058 adoption by a day (D-430): the README said sixty-three when the corpus said sixty.
 README = FRONTIER / "README.md"
-_README_COUNT = re.compile(r"Of the (\d+) open cases,\s+\*\*(\d+)\*\* have\s+Nagamochi")
-_BODY_COUNT = re.compile(r"(\d+) of the (\d+) open cases at\s+`n ≤ 100` are governed by it")
+_README_COUNT = re.compile(
+    r"Of\s+the\s+(\d+)\s+open\s+cases,\s+\*\*(\d+)\*\*\s+have\s+Nagamochi"
+)
+#: The scope is a code span, or the math `devtools.migrate_math` made of it.
+_BODY_COUNT = re.compile(
+    r"(\d+)\s+of\s+the\s+(\d+)\s+open\s+cases\s+at\s+(?:`n ≤ 100`|\$n \\le 100\$)\s+"
+    r"are\s+governed\s+by\s+it"
+)
 
 #: The register's own prose about this record, and the two counts it quotes. They are
 #: different numbers and were conflated: a case record that names `E-nagamochi-lower`

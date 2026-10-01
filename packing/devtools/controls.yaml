@@ -588,6 +588,17 @@ controls:
   run: python3 -m devtools.check_prose_ceremony
   expect: "T-051 claim: clock: \"author's clock\""
 
+# A rung label in prose is a second copy of a derived fact. The mutation writes back the
+# sentence T-060's composition carried from the ladder in force before 2026-09-30, which
+# the structured fields beside it had already stopped saying (devtools/rung_prose.py).
+- name: results - a rung the result no longer holds written back into its composition
+  file: frontier/results.yaml
+  replace:
+    - "All premises have completed exact executions, which is V3/C3."
+    - "All premises have completed exact executions, supporting V4/C5."
+  run: python3 -m devtools.check_results
+  expect: "T-060: composition asserts V4, which no result it is about holds"
+
 
 - name: frontier - generated table drifting from its source
   file: frontier/n-011.md

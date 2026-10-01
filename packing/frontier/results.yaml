@@ -46,8 +46,10 @@ results:
       V3/C3: machine-checked, review record pending. The oversight record restores the
       rung.
     next_rung: >-
-      C5 by assembling the review artifact (statement, hypotheses, proof
-      narrative, code map, replays); V5 by a proof-assistant port. The stronger
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained; the packet to review is the statement, hypotheses, proof
+      narrative, code map and replays. Rung 5 needs a proof-assistant formalization reviewed
+      by human experts. The stronger
       side at the exact ceiling is T-003's business.
   - id: T-002
     kind: lower-bound
@@ -75,7 +77,7 @@ results:
     composition: >-
       Derived: the minimum over T-001 and the monotonicity step, which is one
       recorded line (any 18-packing contains a 17-packing) carried in the
-      evidence limitations and the n-018 case body; both inputs sit at V4/C4,
+      evidence limitations and the n-018 case body; both inputs sit at V3/C3,
       so the derived claim keeps the rungs.
     evidence:
       - E-green17-sixteen-point-lower
@@ -123,9 +125,10 @@ results:
       credit: [Bentz]
       source_keys: ['[Bentz 2010]']
     composition: >-
-      Compound: the lower side of the bracket carries T-001's two methods, but
-      the refutation side rests on the interval audit alone, so the bracket
-      takes the single-method minimum C3. The equality reading is deliberately
+      Compound: the lower side of the bracket carries T-001's two methods and the refutation
+      side rests on the interval audit alone. Both are machine-replayed here, so the bracket
+      is C3; a second method on one side does not change the rung. The equality reading is
+      deliberately
       not this claim.
     evidence:
       - E-green17-sixteen-point-lower
@@ -182,8 +185,11 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      V5 by a proof-assistant port; C4 by a second independent mechanism such
-      as the pose-space interval audit generalized to Q(sqrt 2, sqrt 3) sides.
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained. A second independent mechanism, such as the pose-space
+      interval audit generalized to Q(sqrt 2, sqrt 3) sides, would be shown beside the rung as
+      a second machine method. Rung 5 needs a proof-assistant formalization reviewed by human
+      experts.
   - id: T-005
     kind: correction
     registered: '2026-08-31'
@@ -263,10 +269,12 @@ results:
       Two independent proofs of one value. Bentz's is compound, with Sections 3.1-3.2's
       case analysis read rather than machine-checked. Evan Daniel's case-free proof is
       complete as it stands: the Lean kernel checked s13_eq_4 from the definitions,
-      including every one of the 209 cover chunks, so the claim is V5 on
-      E-n013-evand-casefree-cover-lean-kernel. The confirmation rung comes from the
-      machine-method replay E-n013-evand-casefree-cover-zmx2-replay (C3); whether a
-      kernel check itself counts toward C is the owner's open question.
+      including every one of the 209 cover chunks (E-n013-evand-casefree-cover-lean-kernel). A
+      kernel check is machine evidence at V3: V5 also needs a human expert's review of the
+      formalization, and the retained review of s13_eq_4 was written by an AI lane. The
+      confirmation rung comes from the machine-method replay
+      E-n013-evand-casefree-cover-zmx2-replay (C3); whether a kernel check itself counts
+      toward C is the owner's open question.
     evidence:
       - E-bentz-2010-proof
       - E-bentz13-figure2-audit
@@ -290,9 +298,13 @@ results:
       this session. One named human expert's formalization review restores V5; C5 needs
       two, with the open-review pointer, beside the rebuild already done here.
     next_rung: >-
-      C4 by a second machine method on the same cover, for example a complete
-      zeromargin.py sweep (1 h 42 min on 8 processes at the source) beside the zmx2
-      replay. Bentz's own route reaches C3 by machine-checking Sections 3.1-3.2's staged
+      One named human expert's review of the formalization restores V5; C5 needs two, with the
+      open-review pointer, beside the rebuild already done here. V4 and C4 need two
+      adversarial AI reviews by distinct reviewers and a human oversight record, and none is
+      retained. A second machine method on the same cover, for example a complete
+      zeromargin.py sweep (1 h 42 min on 8 processes at the source) beside the zmx2 replay,
+      would be shown beside the rung. Bentz's own route would reach C3 by machine-checking
+      Sections 3.1-3.2's staged
       sets (typed on think-1o1f), which would also make it the second fully audited
       theorem of the paper.
   - id: T-007
@@ -326,9 +338,10 @@ results:
       - packing/devtools/check_nagamochi_bounds.py
     next_rung: >-
       The proof itself is C1 with four named unverified items in the read;
-      the 63 operative verified-field values are separately re-derived in the gate (a C2
-      fact about the transcriptions), while the other 32 citations carry historical or
-      reported context and are not current bounds. C3 means machine-checking Theorem 1's
+      the 63 operative verified-field values are separately re-derived in the gate (a replay
+      of the transcriptions, which by itself would read at C2), while the other 32 citations
+      carry historical or
+      reported context and are not current bounds. C3 needs a machine check of Theorem 1's
       unavoidable-set capacity argument.
   - id: T-008
     kind: optimality
@@ -355,8 +368,7 @@ results:
       Compound: lower = T-004 (exact-algebraic audit), upper = the grid bound
       replayed exactly by the basic-bounds checker. Under epistemics.md's rule for
       an equality whose upper half is an exactly replayed packing, the lower half
-      sets the rung: it stands on one exact-algebraic method, so the equality is C3,
-      not C4.
+      sets the rung: it is machine-replayed here, so the equality is C3.
     evidence:
       - E-bentz46-theorem8-audit
       - E-basic-grid-upper
@@ -373,8 +385,9 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 by a method-independent second confirmation of the lower half; rises
-      with T-004.
+      Rises with T-004: V4 and C4 need two adversarial AI reviews by distinct reviewers and a
+      human oversight record, and none is retained. A method-independent second confirmation
+      of the lower half would be shown beside the rung.
   - id: T-009
     kind: upper-bound
     registered: '2026-08-31'
@@ -410,7 +423,9 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 by an exact-algebraic confirmation of the same witness; the standing
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained. An exact-algebraic confirmation of the same witness would
+      be shown beside the rung as a second machine method; the standing
       reported-value promotion question is the owner's evidence-contract
       decision, not a rung.
   - id: T-010
@@ -455,9 +470,11 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 by a second independent mechanism -- the pose-space interval audit
-      built for T-001, run at side 2 + 4/sqrt(5) over the repaired
-      twelve-point set; V5 by a proof-assistant port.
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained. A second independent mechanism, the pose-space interval
+      audit built for T-001 run at side 2 + 4/sqrt(5) over the repaired twelve-point set,
+      would be shown beside the rung. Rung 5 needs a proof-assistant formalization reviewed by
+      human experts.
   - id: T-011
     kind: upper-bound
     registered: '2026-08-31'
@@ -496,9 +513,11 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 by a second independent exact verification of the same degree-8
-      witness (the retained rational control proves a slightly weaker side
-      and does not confirm this claim); V5 by a proof-assistant port.
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained. A second independent exact verification of the same
+      degree-8 witness would be shown beside the rung (the retained rational control proves a
+      slightly weaker side and does not confirm this claim). Rung 5 needs a proof-assistant
+      formalization reviewed by human experts.
   - id: T-012
     kind: rigidity
     registered: '2026-08-31'
@@ -541,7 +560,9 @@ results:
       was written out in full as X-012, checked against a complete exact
       accounting of the 400 local inequalities, independently reviewed by
       BC-153 and registered as T-014, which is where the n = 5 frontier
-      property now rests. What remains here is V5 by a proof-assistant port.
+      property now rests. What remains here is the review record: two adversarial AI reviews
+      and a human oversight record for rung 4, and for rung 5 a proof-assistant formalization
+      reviewed by human experts.
   - id: T-013
     kind: rigidity
     registered: '2026-08-31'
@@ -625,19 +646,18 @@ results:
       local system -- the injective chart, all 400 base margins, the 20 active
       rows, the 128 strict conditions that cut out the neighbourhood, T-012's
       first-order cone and its non-negative self-stress with w . q < 0 -- is
-      machine-confirmed here and independently rebuilt by the reviewer (V4/C3
-      fragments).
+      machine-confirmed here and independently rebuilt by the reviewer (machine-checked
+      fragments, replayed here).
 
       The two steps that close the argument, the cited Nash
       curve-selection lemma and the order-2m coefficient induction, are an
       audited proof rather than a computation, and no instrument decides
       isolation, so the whole claim declares V3.
 
-      Confirmation is C5 because
-      every exact quantity the proof consumes carries a certificate and a
-      passing replay in this repository, no cited part rests on anything
-      weaker, and BC-153's independent review of the proof is installed and
-      mapped as a non-superseded review.
+      Confirmation is C3: every exact quantity the proof consumes carries a certificate and a
+      passing replay in this repository, and no cited part rests on anything weaker. BC-153's
+      independent review of the proof is retained and mapped; it is one adversarial AI review,
+      by a reviewer whose model is unstated, and not a human oversight record.
     produced_by:
       hypothesis: H-060
       agenda_cell: BC-152
@@ -666,10 +686,12 @@ results:
           BC-153 — Independent review of the H-060 proof (Goebel `n = 5`, fixed-side local rigidity); the document the register cited as its review before 2026-09-30.
         verdict: accepted
     next_rung: >-
-      V4 by mechanising the closing steps rather than only the quantities they
-      consume, or V5 by a proof-assistant port. C5 was reached on 2026-09-03 by
-      installing BC-153's review as a mapped review document; the round record
-      carries it as an amendment as well. Reaching the printed BCR page, or citing
+      V4 needs the closing steps mechanised, rather than only the quantities they consume, and
+      with C4 a second adversarial AI review by a distinct reviewer and a human oversight
+      record. BC-153's review, installed as a mapped review document on 2026-09-03, is the one
+      retained; the round record carries it as an amendment as well. Rung 5 needs a
+      proof-assistant formalization reviewed by human experts. Reaching the printed BCR page,
+      or citing
       the Basu-Pollack-Roy plus Puiseux derivation the review writes out, would
       close the one cited hypothesis this rests on.
     notes: >-
@@ -744,15 +766,20 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 by a method-distinct certificate: a pose-space interval branch-and-bound
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained.
+
+      A method-distinct certificate would be shown beside the
+      rung as a second machine method: a pose-space interval branch-and-bound
       over (theta, x, y) with the true unit square and weighted atoms, on the pattern
       of cases/green17/interval_audit.py (note that this certificate is tight, with
       every row minimum exactly 1 on open cells, so a naive box-splitting audit will
       not terminate at event lines and needs the semicontinuity argument built in);
       or, short of that, retain a from-scratch whole-check evaluator (the BC-149,
       BC-150 or BC-151 scratch evaluators) as a repository case with a replay so the
-      reduction is no longer single-sourced on the record. V5 by a proof-assistant
-      port of the eleven-lemma argument in the BC-150 packet.
+      reduction is no longer single-sourced on the record. Rung 5 needs a proof-assistant
+      formalization of the eleven-lemma argument in the BC-150 packet, reviewed by human
+      experts.
 
       Superseded as the verified lower bound on 2026-09-04 by T-019, which
       certifies 459/100 at n = 17 with this project's denser certificate. This result
@@ -788,7 +815,7 @@ results:
     composition: >-
       Derived: the minimum over T-015 and the monotonicity step, which is one
       recorded line carried in the evidence limitations and the n-018 and n-019 case
-      bodies; T-015 sits at V4/C3, so the derived claim keeps the rungs.
+      bodies; T-015 sits at V3/C3, so the derived claim keeps the rungs.
     produced_by:
       agenda_cell: BC-150
       session: session-083
@@ -890,13 +917,13 @@ results:
     controls:
       - packing/tests/test_fractional_certificate.py
     next_rung: >-
-      C4 is reached. The independent re-derivation agrees but is
-      exact-algebraic like the first; what moved the rung is the interval-certified
-      decision, which bounds coverage by branch and bound over boxes of centres with
+      Two machine methods decide it. The independent re-derivation agrees but is
+      exact-algebraic like the first; the second method is the interval-certified decision,
+      which bounds coverage by branch and bound over boxes of centres with
       directed rounding: the two routes share the certificate and the closed-form
-      conditions, and share no part of how Condition 5 is decided. C5 is review-ready
-      under epistemics.md -- a mapped, non-superseded review artifact -- and none has
-      been written for this result.
+      conditions, and share no part of how Condition 5 is decided. The register shows the two
+      methods beside the rung. V4 and C4 need two adversarial AI reviews by distinct reviewers
+      and a human oversight record, and none is retained.
 
       The bound
       itself: the ladder 19/5, 77/20, 97/25, 39/10, 393/100, 197/50, 79/20, 99/25 was
@@ -971,8 +998,8 @@ results:
       in 2003.
 
       No intervening improvement was found by the recorded search,
-      and n = 11 is the smallest open case. The movement is +0.021146, and the case
-      stays open against Trump's 1979 packing at 3.877084: the interval narrows from
+      and n = 11 was then the smallest open case. The movement was +0.021146, and the case
+      stayed open against Trump's 1979 packing at 3.877084: the interval narrowed from
       0.088230 to 0.067084. Two rungs are retained below it -- 19/5, the value that
       first passed Stromquist, and the 189/50 calibration rung below him.
     scope:
@@ -1042,12 +1069,13 @@ results:
       Trust); none is retained for this result, so it stands at V3/C3: machine-checked,
       review record pending. The oversight record restores the rung.
     next_rung: >-
-      C4 is reached by the interval-certified decision, which is independent in method
+      A second machine method decides it, the interval-certified decision, which is
+      independent in method
       and, deciding coverage on the doubled net, never invokes the D4 reflection and so
-      does not need Condition 1 at all. C5 is review-ready under epistemics.md -- a mapped,
-      non-superseded review artifact -- and PR 78's adversarial review, ported here as a
-      dated record on 2026-09-05, is that artifact. It is not an external review, which
-      the rubric does not ask for: an outside mathematical review and an archival release
+      does not need Condition 1 at all. One adversarial AI review is retained, PR 78's, ported
+      here as a dated record on 2026-09-05; V4 and C4 need a second adversarial AI review by a
+      distinct reviewer and a human oversight record. An outside mathematical review and an
+      archival release
       would strengthen the priority record without changing this rung.
 
       The bound itself: 3.81 converged with margin -- objective 10.8603 against eleven,
@@ -1201,9 +1229,9 @@ results:
       V3/C3: machine-checked, review record pending. The oversight record restores the
       rung.
     next_rung: >-
-      C4 is reached by the interval-certified decision, the first here that is not
-      exact-algebraic. C5 is review-ready under epistemics.md -- a mapped, non-superseded
-      review artifact -- and none has been written for this result.
+      A second machine method decides it, the interval-certified decision, the first here that
+      is not exact-algebraic. V4 and C4 need two adversarial AI reviews by distinct reviewers
+      and a human oversight record, and none is retained.
 
       The bound itself: the retained certificate's total is
       423327/25000 = 16.933080, leaving 0.066920 below seventeen, and that margin is
@@ -1353,11 +1381,12 @@ results:
       the container side directly. There is no monotonicity or composition step anywhere
       between the artifact and the claim -- the three sizes come out of Condition 2, which is the
       only condition that mentions n.
-      C4 is earned by two evidence entries whose method values differ, the exact
-      event-cell sweep and the interval branch and bound, both run in this repository.
-      Unlike T-017 and T-019 no independent evaluator reviewed the scoring, and there is
-      no review artifact, so C5 -- review-ready, a mapped review -- is as far away here as
-      there.
+      Two evidence entries whose method values differ decide it, the exact event-cell sweep
+      and the interval branch and bound, both run in this repository; that is C3, with the two
+      methods shown beside the rung.
+      Unlike T-017 and T-019 no independent evaluator reviewed the scoring, and no review
+      record is retained, so rung 4 waits on two adversarial AI reviews and a human oversight
+      record.
     produced_by:
       agenda_cell: BC-161
       session: session-085
@@ -1470,10 +1499,11 @@ results:
       Primary at both sizes: one certificate, one accepted verdict, the bound being the
       container side directly, with no monotonicity or composition step between the
       artifact and the claim.
-      C4 is earned by two evidence entries whose method values differ, the exact
-      event-cell sweep and the interval branch and bound, both run in this repository on
-      the frozen bytes. As with T-020 there is no independent evaluator and no review
-      artifact, so C5 -- review-ready, a mapped review -- is as far away here as there.
+      Two evidence entries whose method values differ decide it, the exact event-cell sweep
+      and the interval branch and bound, both run in this repository on the frozen bytes; that
+      is C3, with the two methods shown beside the rung. As with T-020 there is no independent
+      evaluator and no review record, so rung 4 waits on two adversarial AI reviews and a
+      human oversight record.
     produced_by:
       hypothesis: H-062
       agenda_cell: BC-197
@@ -1563,8 +1593,9 @@ results:
       an exact rational-square comparison. Rational density and upward embedding then
       supply the limit step. The mapped, non-superseded source-distinct review
       independently re-derived the theorem and attacked the endpoint, frozen-Condition-4,
-      compactness, scale, and byte-trust boundaries, so the result reaches C5. It does
-      not reach C4 because the review is not a method-distinct second derivation.
+      compactness, scale, and byte-trust boundaries. It is one adversarial AI review, by an
+      agent of this project, and not a human oversight record, so the result is C3; nor is the
+      review a method-distinct second derivation.
     evidence:
       - E-n011-fractional-certificate
       - E-fractional-interval-decision
@@ -1593,8 +1624,9 @@ results:
       Trust); none is retained for this result, so it stands at V3/C3: machine-checked,
       review record pending. The oversight record restores the rung.
     next_rung: >-
-      C5 was reached by the mapped 2026-09-06 source-distinct review. A second,
-      method-distinct derivation could separately earn C4 but would not improve the
+      V4 and C4 need a second adversarial AI review by a distinct reviewer and a human
+      oversight record beside the mapped 2026-09-06 source-distinct review. A second,
+      method-distinct derivation would be shown beside the rung and would not improve the
       bound. This dilation limit is only the uniform fixed-B, single-core
       strict-containment supremum. Direction-specific cores, two-core endpoint
       averaging, or exact
@@ -1627,12 +1659,14 @@ results:
       by: GPT-6 Astra extra-high mathematical review and coordinator review
     novelty: apparently-novel
     composition: >-
-      Exact full-net coverage and frozen-data identities are V4/C3. Universal owner
+      Exact full-net coverage and frozen-data identities are machine-checked and replayed
+      here. Universal owner
       footprint containment, extension to event boundaries, and strict-core selection
       for physical squares are audited analytic proof steps, so the composed theorem
       is V3. Exp145 adds an independent inclusion-exclusion computation of the same
       finite cover. The analytic owner and physical-angle transfer premises remain
-      shared, so the composed theorem stays C3 pending a mapped confirmation review.
+      shared, and the composed theorem is C3; C4 would need two adversarial AI reviews by
+      distinct reviewers and a human oversight record.
     produced_by:
       hypothesis: H-142
       agenda_cell: BC-313
@@ -1656,9 +1690,10 @@ results:
       - packing/tests/test_replay_owner_footprint_cover.py
       - packing/tests/test_independent_five_dot_union.py
     next_rung: >-
-      Exp145 completes the independent finite-union check. Assemble a mapped review
-      packet for the shared analytic premises before revisiting confirmation. V4 for
-      the whole theorem requires mechanizing the analytic transfer.
+      Exp145 completes the independent finite-union check. Assemble a review packet for the
+      shared analytic premises before revisiting confirmation. V4 for the whole theorem
+      requires mechanizing the analytic transfer, and with C4 two adversarial AI reviews by
+      distinct reviewers and a human oversight record.
 
       Exp146 enlarged
       twelve wall-aware footprints, but exp147 transferred no additional tuple.
@@ -1735,12 +1770,11 @@ results:
       T-022 proved by an exact rational-square comparison; rational density and upward
       embedding supply the limit step.
 
-      The source certificate reaches C4 because the
-      exact event-cell sweep and the interval branch and bound decide its frozen bytes
-      by distinct methods. The derived lower bound does not inherit that rung: its
-      load-bearing dilation-limit step has one exact-algebraic decision, so the whole
-      result takes C3 under the derived-claim minimum rule. No source-distinct review has
-      been mapped for this result.
+      The source certificate is decided by two distinct machine methods, the exact event-cell
+      sweep and the interval branch and bound on its frozen bytes. The load-bearing
+      dilation-limit step has one exact-algebraic decision. Both are machine-replayed here, so
+      the whole result is C3 under the derived-claim minimum rule. No review has been mapped
+      for this result.
 
       The 720-step certificate retained beside it is the
       rung the standalone reader also decides; its own limit,
@@ -1773,9 +1807,10 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 needs a method-distinct decision of the corollary itself, rather than a second
-      decision of only the source certificate. C5 needs a mapped, non-superseded
-      source-distinct review of the corollary and the two frozen certificates; T-022's
+      V4 and C4 need two adversarial AI reviews by distinct reviewers, of the corollary and
+      the two frozen certificates, and a human oversight record. A method-distinct decision of
+      the corollary itself, rather than a second decision of only the source certificate,
+      would be shown beside the rung; T-022's
       review covered the argument at the 181-step net and this result reuses it unchanged
       with new B and D.
 
@@ -1853,10 +1888,10 @@ results:
       the conditions and the net, and no part of how Condition 5' is decided; the gate
       refuses the record unless both accept and agree on the least charge exactly.
 
-      C5 rests
-      on those two machine routes together with the mapped adversarial review of the theorem,
-      which found no soundness defect and whose open items -- the second route, the controls,
-      and a stranger-facing statement in a case directory -- this registration closes.
+      The result is C3 on those two machine routes. One adversarial AI review of the theorem
+      is retained and mapped, by an agent of this project; it found no soundness defect, and
+      its open items -- the second route, the controls, and a stranger-facing statement in a
+      case directory -- this registration closes. It is not a human oversight record.
     evidence:
       - E-n011-threshold-certificate
       - E-n011-threshold-interval-decision
@@ -1902,7 +1937,9 @@ results:
       been measured and registered as T-026, proving
       s(11) >= 3.826447410572939744 by an exact dilation-limit argument. That is a
       separate corollary. T-025 itself proves the ordinary lower bound
-      s(11) >= 191/50 at V4/C5 and its certificate is instantiated at that named side.
+      s(11) >= 191/50 at V3/C3, and its certificate is instantiated at that named side; V4 and
+      C4 need a second adversarial AI review by a distinct reviewer and a human oversight
+      record.
       The self-contained T-025 claim embeds its standard-library verifier and certificate
       bytes. T-025 needs no limit argument, so no dilation record belongs at this rung.
   - id: T-026
@@ -1968,15 +2005,16 @@ results:
       an exact rational-square comparison; rational density and upward embedding supply
       the limit step.
 
-      C4 rests on the two machine decisions of the source certificate,
+      The confirmation rests on the two machine decisions of the source certificate,
       which fail differently: the exact event-cell sweep of sqpack.fractional.threshold,
       whose dense-grid and slab evaluations must agree at every direction, and the
       interval branch and bound of sqpack.fractional.threshold_interval over the doubled
       net, which never invokes the D4 argument.
 
-      C5 adds the mapped source-distinct review
-      of the self-contained claim, covering the threshold count, exact sweep, dilation,
-      and endpoint inference. T-025's earlier review covers the threshold theorem and
+      One adversarial AI review is retained and mapped, of the self-contained claim, by a
+      separate agent from the implementation authors; it covers the threshold count, exact
+      sweep, dilation, and endpoint inference. It is not a human oversight record, so the
+      result is C3. T-025's earlier review covers the threshold theorem and
       T-022's covers the dilation argument; the new review checks their composition with
       the T-026 values and embedded data.
 
@@ -2033,9 +2071,10 @@ results:
       useful separation inputs but not globally feasible obstruction witnesses.
 
       The self-contained T-026 claim embeds the standard-library threshold verifier, the
-      1440-step certificate, and the exact dilation record; its mapped source-distinct
-      review supplies C5. A further assurance step would require proof-assistant
-      formalization, external review, or an independently reproduced full decision.
+      1440-step certificate, and the exact dilation record; its mapped source-distinct review
+      is the one adversarial AI review retained. V4 and C4 need a second adversarial AI review
+      by a distinct reviewer and a human oversight record; rung 5 would require a
+      proof-assistant formalization reviewed by human experts.
 
   - id: T-027
     kind: lower-bound
@@ -2084,10 +2123,11 @@ results:
       Primary at n = 18: one certificate, one accepted verdict, the bound being the
       container side directly, with no monotonicity or composition step between the
       artifact and the claim.
-      C4 is earned by two evidence entries whose method values differ, the exact
-      event-cell sweep and the interval branch and bound, both run in this repository on
-      the frozen bytes. As with T-020 there is no independent evaluator and no review
-      artifact, so C5 -- review-ready, a mapped review -- is as far away here as there.
+      Two evidence entries whose method values differ decide it, the exact event-cell sweep
+      and the interval branch and bound, both run in this repository on the frozen bytes; that
+      is C3, with the two methods shown beside the rung. As with T-020 there is no independent
+      evaluator and no review record, so rung 4 waits on two adversarial AI reviews and a
+      human oversight record.
     produced_by:
       session: session-139
     evidence:
@@ -2109,9 +2149,8 @@ results:
     next_rung: >-
       T-028 took the next rung at 187/40 on 2026-09-19. This result stays true as
       stated and keeps its bytes at certificate-467-100.json. The remaining runway
-      to the packing is now T-028's business. C5 is review-ready under
-      epistemics.md -- a mapped, non-superseded review artifact -- and none has been
-      written for this result.
+      to the packing is now T-028's business. V4 and C4 need two adversarial AI reviews by
+      distinct reviewers and a human oversight record, and none is retained.
 
   - id: T-028
     kind: lower-bound
@@ -2161,10 +2200,11 @@ results:
       Primary at n = 18: one certificate, one accepted verdict, the bound being the
       container side directly, with no monotonicity or composition step between the
       artifact and the claim.
-      C4 is earned by two evidence entries whose method values differ, the exact
-      event-cell sweep and the interval branch and bound, both run in this repository on
-      the frozen bytes. As with T-027 there is no independent evaluator and no review
-      artifact, so C5 -- review-ready, a mapped review -- is as far away here as there.
+      Two evidence entries whose method values differ decide it, the exact event-cell sweep
+      and the interval branch and bound, both run in this repository on the frozen bytes; that
+      is C3, with the two methods shown beside the rung. As with T-027 there is no independent
+      evaluator and no review record, so rung 4 waits on two adversarial AI reviews and a
+      human oversight record.
     produced_by:
       session: session-140
     evidence:
@@ -2186,9 +2226,8 @@ results:
     next_rung: >-
       T-029 took the next rung at 1871/400 on 2026-09-19. This result stays true as
       stated and keeps its bytes at certificate-187-40.json. The remaining runway
-      to the packing is now T-029's business. C5 is review-ready under
-      epistemics.md -- a mapped, non-superseded review artifact -- and none has
-      been written for this result.
+      to the packing is now T-029's business. V4 and C4 need two adversarial AI reviews by
+      distinct reviewers and a human oversight record, and none is retained.
 
   - id: T-029
     kind: lower-bound
@@ -2239,10 +2278,11 @@ results:
       Primary at n = 18: one certificate, one accepted verdict, the bound being the
       container side directly, with no monotonicity or composition step between the
       artifact and the claim.
-      C4 is earned by two evidence entries whose method values differ, the exact
-      event-cell sweep and the interval branch and bound, both run in this repository on
-      the frozen bytes. As with T-028 there is no independent evaluator and no review
-      artifact, so C5 -- review-ready, a mapped review -- is as far away here as there.
+      Two evidence entries whose method values differ decide it, the exact event-cell sweep
+      and the interval branch and bound, both run in this repository on the frozen bytes; that
+      is C3, with the two methods shown beside the rung. As with T-028 there is no independent
+      evaluator and no review record, so rung 4 waits on two adversarial AI reviews and a
+      human oversight record.
     produced_by:
       session: session-141
     evidence:
@@ -2264,9 +2304,8 @@ results:
     next_rung: >-
       T-030 took the next rung at 4679/1000 on 2026-09-19. This result stays true as
       stated and keeps its bytes at certificate-1871-400.json. The remaining runway
-      to the packing is now T-030's business. C5 is review-ready under
-      epistemics.md -- a mapped, non-superseded review artifact -- and none has
-      been written for this result.
+      to the packing is now T-030's business. V4 and C4 need two adversarial AI reviews by
+      distinct reviewers and a human oversight record, and none is retained.
 
   - id: T-030
     kind: lower-bound
@@ -2317,10 +2356,11 @@ results:
       Primary at n = 18: one certificate, one accepted verdict, the bound being the
       container side directly, with no monotonicity or composition step between the
       artifact and the claim.
-      C4 is earned by two evidence entries whose method values differ, the exact
-      event-cell sweep and the interval branch and bound, both run in this repository on
-      the frozen bytes. As with T-029 there is no independent evaluator and no review
-      artifact, so C5 -- review-ready, a mapped review -- is as far away here as there.
+      Two evidence entries whose method values differ decide it, the exact event-cell sweep
+      and the interval branch and bound, both run in this repository on the frozen bytes; that
+      is C3, with the two methods shown beside the rung. As with T-029 there is no independent
+      evaluator and no review record, so rung 4 waits on two adversarial AI reviews and a
+      human oversight record.
     produced_by:
       session: session-141
     evidence:
@@ -2347,9 +2387,9 @@ results:
       own atoms, and on three earlier site sets; adding sites can still lower a
       restricted optimum, so 117/25 is not barred. The remaining interval to that
       plateau is 0.001. The method's ceiling is 5B = 4.9885, and the best known
-      packing is 4.82287566, so the real runway is 0.1439 to the packing. C5 is
-      review-ready under epistemics.md -- a mapped, non-superseded review artifact
-      -- and none has been written for this result.
+      packing is 4.82287566, so the real runway is 0.1439 to the packing. V4 and C4 need two
+      adversarial AI reviews by distinct reviewers and a human oversight record, and none is
+      retained.
   - id: T-031
     kind: case-exclusion
     registered: '2026-09-20'
@@ -2401,19 +2441,18 @@ results:
       ceiling readers in Session 145 with a residual-7 control on the transported
       88-family.
 
-      The declared C3 is deliberately below the C4 the two cited atoms
-      derive, and the minimum over parts is what this note claims. The exact event-cell
+      The declared C3 is what the two cited atoms derive. The exact event-cell
       sweep and the interval branch and bound are the two internal routes of one
       decide_certificate --corner-clip 1/2 invocation, which refuses the file unless
       both accept: they share the Certificate parser and the closed-form conditions,
       carry a byte-identical replay string, and the exact leg records
       relationship_to_generator: same-implementation, so the repository counts the pair
       as one confirmation and not as two method-distinct derivations.
-      The Session 146
-      registration review says exactly that and recommends V4/C3; a genuinely separate
-      derivation of this clipped decision would earn C4, and none exists.
+      The Session 146 registration review says exactly that; a genuinely separate derivation
+      of this clipped decision would be a second machine method, and none exists.
 
-      V4 still rests on the two machine decisions of the frozen bytes, which fail differently:
+      The verification rests on the two machine decisions of the frozen bytes, which fail
+      differently:
       the exact event-cell sweep with the clip as extra half-planes on the per-slab
       centre range, and the interval branch and bound whose boxes are dropped only when
       provably inside the excluded set; the two decide the same set only because the
@@ -2455,8 +2494,12 @@ results:
       clipping. The four mixed D4 classes (fourteen bin vectors) are a bounded
       follow-up under BC-367 and need a box cut on the row domain. The instrument that
       could matter is a 2-of-3 threshold atom on ring-centre overlaps inside the
-      all-deep class, which needs the clip wired into the threshold routes. C5 needs
-      the registration review mapped under docs/project/reviews; the case directory and
+      all-deep class, which needs the clip wired into the threshold routes.
+
+      V4 and C4 need two
+      adversarial AI reviews by distinct reviewers and a human oversight record, and none is
+      retained: the Session 146 registration review is not mapped under docs/project/reviews.
+      The case directory and
       the gate control test in the T-022 pattern are retained.
     notes: >-
       Registered at the close of the overnight loop from exp-220, the exp-219 covering
@@ -2528,10 +2571,10 @@ results:
       published: '2026-09-20'
     composition: >-
       Primary at n = 17 on the R012 certificate: the bound is L/A from one catalogue and
-      one measure, with no monotonicity step. C4 is earned on that certificate by two
-      evidence entries whose methods differ, the source's exact event-cell replay and
-      this repository's interval decision of all 2925 entries, both passing on the
-      archived bytes.
+      one measure, with no monotonicity step. That certificate is decided by two evidence
+      entries whose methods differ, the source's exact event-cell replay and this repository's
+      interval decision of all 2925 entries, both passing on the archived bytes; that is C3,
+      with the two methods shown beside the rung.
 
       The exact route is the source's own checker, whose sweep descends
       from this repository's, so its independence is of method from the interval route
@@ -2584,7 +2627,12 @@ results:
       would make the exact leg this repository's own; the review's scratch pass shows the
       stock
       kernel decides every entry in about six minutes once its centre domain is a
-      parameter. V5 by a proof-assistant port of the reduction. The method's open
+      parameter.
+
+      V4 and C4 need a second adversarial AI review by a distinct reviewer and a
+      human oversight record beside the 2026-09-20 proof review. Rung 5 needs a
+      proof-assistant formalization of the reduction, reviewed by human experts. The method's
+      open
       question is what the selector and the parent-centre restriction gain when the
       measure is optimised against them; Mira reports a failed attempt at 4.615 on the
       unrestricted test.
@@ -2667,8 +2715,8 @@ results:
       an exact rational comparison of squares; rational density and upward embedding
       supply the limit step.
 
-      The source certificate's own acceptance reaches C4:
-      two machine decisions of one frozen file that fail differently, the exact
+      The source certificate's own acceptance rests on two machine decisions of one frozen
+      file that fail differently, the exact
       event-cell sweep of sqpack.fractional.threshold, whose dense-grid and slab
       evaluations must agree at every direction, and the interval branch and bound of
       sqpack.fractional.threshold_interval over the doubled net, which never invokes the
@@ -2677,16 +2725,16 @@ results:
       The derived bound does not inherit that. The dilation step on top of
       them is decided by one exact-algebraic entry and by nothing else, and
       epistemics.md takes a derived claim to the minimum over its inputs and the
-      derivation itself, so the derivation is the part that sets the rung and the rung
-      is C3. T-022 read its own case the same way and declined C4 for want of a
-      method-distinct second derivation. This reconciliation applies the same rule to
-      T-024, whose earlier C4 declaration counted only the source certificate's two
+      derivation itself, and the derivation is machine-replayed here like its inputs, so the
+      rung is C3. T-022 read its own case the same way. This reconciliation applies the same
+      rule to T-024, whose earlier declaration counted only the source certificate's two
       routes.
 
-      What would lift this result to C4 is a method-distinct decision of the
-      corollary itself, an interval enclosure of the strict factor test and of c squared
-      recorded as its own interval-certified entry, not the source's two routes. No
-      source-distinct review has been mapped either, so C5 is not in reach.
+      A method-distinct decision of the corollary itself, an interval enclosure of the strict
+      factor test and of c squared recorded as its own interval-certified entry, not the
+      source's two routes, would give the derivation a second machine method. No review has
+      been mapped, so rung 4, which needs two adversarial AI reviews by distinct reviewers and
+      a human oversight record, is not in reach.
 
       The step is
       T-022's argument reused unchanged, at the same B and a halved D, whose proof note
@@ -2725,10 +2773,11 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 needs a method-distinct decision of the corollary itself. C5 needs a mapped,
-      non-superseded source-distinct review of this corollary and the frozen 2880-step
-      certificate: a document under docs/project/reviews/ entered in
-      docs/project/document-map.yaml with role review. T-026's mapped review is scoped to
+      V4 and C4 need two adversarial AI reviews by distinct reviewers, of this corollary and
+      the frozen 2880-step certificate, each a document under docs/project/reviews/ entered in
+      docs/project/document-map.yaml with role review, and a human oversight record. A
+      method-distinct decision of the corollary itself would be shown beside the rung. T-026's
+      mapped review is scoped to
       the 1440-step claim and reviewing that one is not reviewing this one, so it is not
       cited here.
 
@@ -2797,17 +2846,19 @@ results:
       container side directly, with no monotonicity or composition step between the
       artifact and the claim.
 
-      C4 is earned by two evidence entries whose method values differ, the exact
-      event-cell sweep and the interval branch and bound, both run in this repository on
-      the frozen bytes, as for T-021. The standard-library verifier the review also ran
+      Two evidence entries whose method values differ decide it, the exact event-cell sweep
+      and the interval branch and bound, both run in this repository on the frozen bytes, as
+      for T-021; that is C3, with the two methods shown beside the rung. The standard-library
+      verifier the review also ran
       is a second implementation of the sweep's method, so it adds nothing to that
       count.
 
-      C5 adds the mapped 2026-09-23 review, which covers the complete claim: it
+      One adversarial AI review is retained, the mapped 2026-09-23 review by Fable at max
+      thinking, which covers the complete claim: it
       re-decided the frozen bytes by three routes, checked each of the five conditions
       and the n = 21-only scope, and found nothing that refutes them. A different agent
-      than the lane that produced the certificate wrote it, inside the same session; it
-      is not an external review.
+      than the lane that produced the certificate wrote it, inside the same session; it is not
+      an external review, and it is not a human oversight record.
     produced_by:
       hypothesis: H-240
       agenda_cell: BC-378
@@ -2859,7 +2910,9 @@ results:
       upright square has both closed edges on such a pair. A stall there is not a
       counterexample, and it decides nothing.
 
-      C5 is reached; V5 would need a proof-assistant port of the five-condition theorem.
+      V4 and C4 need a second adversarial AI review by a distinct reviewer and a human
+      oversight record; rung 5 would need a proof-assistant formalization of the
+      five-condition theorem, reviewed by human experts.
 
   - id: T-035
     kind: case-exclusion
@@ -2906,10 +2959,11 @@ results:
       The reader closes a Trump-degenerate leaf by exact arithmetic, bounding every centre
       coordinate of the cell's packings within rho of the labelled image, which is why the
       statement stops at the rho-ball rather than at Trump's pose.
-      C5 is the entry's C3 (repository-origin, exact-algebraic, a certificate, a replay
-      and a passing status) plus the mapped 2026-09-24 closed-tree review. That review is
-      a Fable max W2 review by a different agent than the lanes that produced the tree,
-      inside the same project; it is not an external review.
+      The entry is C3 (repository-origin, exact-algebraic, a certificate, a replay and a
+      passing status). One adversarial AI review is retained, the mapped 2026-09-24
+      closed-tree review: a Fable max W2 review by a different agent than the lanes that
+      produced the tree, inside the same project. It is not an external review and not a human
+      oversight record.
     produced_by:
       hypothesis: H-236
       agenda_cell: BC-375
@@ -2943,8 +2997,10 @@ results:
       Trust); none is retained for this result, so it stands at V3/C3: machine-checked,
       review record pending. The oversight record restores the rung.
     next_rung: >-
-      C5 is reached; V5 would need a proof-assistant port of the cell-tree contract and
-      its reader. Three steps would strengthen the record without moving a rung. The
+      V4 and C4 need a second adversarial AI review by a distinct reviewer and a human
+      oversight record; rung 5 would need a proof-assistant formalization of the cell-tree
+      contract and its reader, reviewed by human experts. Three steps would strengthen the
+      record without moving a rung. The
       certificate could be retained where a gate can reach it; until then the manifest
       is the record's only hold on it. The reader could compare the declared box with
       t* +- 10^-6 itself, a comparison only the review has made. A reader that accepts a
@@ -2992,12 +3048,12 @@ results:
     novelty: apparently-novel
     composition: >-
       Compound, and the minimum is set by BC-240's first clause. The reduction, T-035 on
-      E-n011-h236-rung0-reduction, is V4/C5. The first clause, on
+      E-n011-h236-rung0-reduction, is V3/C3. The first clause, on
       E-n011-trump-local-theorem-first-clause, is an audited proof whose steps are prose
       and whose radius computation alone is machine-checked, so method proof-audited with
       a proof block supports V3 and nothing higher, which fixes the composed theorem at
-      V3. The checker derives V4 and C5 from the reduction's entry; this note is why the
-      declared rungs are lower.
+      V3. The checker derives C3 from the reduction's entry; this note is why the declared
+      confirmation is C2.
 
       The composing step is the one the closed-tree review derived again: undoing the
       quarter turn carries a Trump-degenerate leaf's packing at side s' <= U to a
@@ -3045,14 +3101,15 @@ results:
       - packing/tests/test_trump_isolation_radius.py
       - packing/tests/test_review_trump_local_theorem.py
     next_rung: >-
-      The closed-tree review reads C3, and C5 since both reviews are mapped, as following
-      once cases.trump11.isolation_radius gains a replay mode (the closure review's
+      The closed-tree review reads C3 as following once cases.trump11.isolation_radius gains a
+      replay mode (the closure review's
       residual 3), so that the radius can carry an exact-algebraic entry of its own. By
       the C table a proof-audited entry does not derive above C2, so that reading also
       needs a composition note judging that the audited prose steps do not set the
       confirmation minimum.
-      V4 would need BC-240's closing steps mechanised rather than only the quantities
-      they consume. Retaining the per-face dual witnesses and recomputing the gap cap
+      V4 would need BC-240's closing steps mechanised rather than only the quantities they
+      consume, and with C4 a second adversarial AI review by a distinct reviewer and a human
+      oversight record. Retaining the per-face dual witnesses and recomputing the gap cap
       from distinct source are the closure review's two bounded residual tasks.
 
   - id: T-037
@@ -3100,9 +3157,10 @@ results:
       source_keys: ['[Kleddamag n11 2026]']
       published: '2026-09-22'
     composition: >-
-      Primary at n = 11: one certificate and the bound L/A, with no monotonicity step. C4 is
-      earned by two evidence entries whose methods differ and that both passed on the retained
-      certificate: the source's exact event-cell sweeps (exact-algebraic, replayed here; the
+      Primary at n = 11: one certificate and the bound L/A, with no monotonicity step. Two
+      evidence entries whose methods differ both passed on the retained certificate, which is
+      C3 with the two methods shown beside the rung: the source's exact event-cell sweeps
+      (exact-algebraic, replayed here; the
       Python
       and JavaScript scanners are one method) and this repository's directed-rounding
       interval coverage of every row (interval-certified). Both rest on the source's
@@ -3136,11 +3194,12 @@ results:
       V3/C3: machine-checked, review record pending. The oversight record restores the
       rung.
     next_rung: >-
-      C5 would need a mapped, non-superseded review of the complete claim cited as
-      review_artifact. The two 2026-09-22 reviews are mapped and each reads one route; the
-      case record took the bound without a C5 claim, so whether a same-project review of
-      another author's certificate qualifies is the owner's decision rather than missing
-      work. V5 by a proof-assistant port of the transfer theorem and the counting argument.
+      V4 and C4 need two adversarial AI reviews by distinct reviewers of the complete claim
+      and a human oversight record. The two 2026-09-22 reviews are mapped and each reads one
+      route; neither is recorded in this entry's reviews, and whether a same-project review of
+      another author's certificate qualifies is the owner's decision rather than missing work.
+      Rung 5 needs a proof-assistant formalization of the transfer theorem and the counting
+      argument, reviewed by human experts.
       Superseded on 2026-09-29 by Wang and Li's s(11) > 3875000000/999999999 (T-061), which
       is this certificate reweighted and scaled, 3.9e-9 higher, and by T-060's exact
       s(11) = T; stays true as stated.
@@ -3206,12 +3265,15 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 needs a method-distinct decision. Unlike the later releases, this certificate
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained. Unlike the later releases, this certificate
       carries only point and two-of-three atoms, which this repository's native parent-core
-      route models, so a complete native run of it is the reachable second method. No test
+      route models, so a complete native run of it is the reachable second machine method,
+      which would be shown beside the rung. No test
       under packing/tests exercises this packet; the control named is the release's own
       independent_controls.py, which the 2026-09-21 review used to close the containment and
-      centre-domain premises. V5 by a proof-assistant port.
+      centre-domain premises. Rung 5 needs a proof-assistant formalization reviewed by human
+      experts.
       Superseded as the verified lower bound on 2026-09-25 by Guzhou0806's R052 (T-039);
       stays true as stated.
 
@@ -3277,10 +3339,12 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 needs the native parent-core engine's static ceilings raised past this
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained. A second machine method needs the native parent-core
+      engine's static ceilings raised past this
       certificate's 8,937 atoms, 9,261 sites and 44,685 member slots, so that its complete
-      coverage decision can run; its four-row sizing run is not a decision. V5 by a
-      proof-assistant port.
+      coverage decision can run; its four-row sizing run is not a decision. Rung 5 needs a
+      proof-assistant formalization reviewed by human experts.
       Superseded as the verified lower bound on 2026-09-27 by Kleddamag's v1.1.0 (T-040);
       stays true as stated.
 
@@ -3345,12 +3409,14 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 needs a method-distinct decision, and this repository's native parent-core route
-      models only k-of-m threshold atoms, so it cannot yet read the weighted and
-      winning-subset features; extending it to them is the reachable second method. The
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained. This repository's native parent-core route models only
+      k-of-m threshold atoms, so it cannot yet read the weighted and winning-subset features;
+      extending it to them is the reachable second machine method. The
       only packing/tests control is the retention check of the packet's compressed files;
       the adversarial control is the source's controls.py, replayed here (eight corrupted
-      certificates rejected by both checkers). V5 by a proof-assistant port.
+      certificates rejected by both checkers). Rung 5 needs a proof-assistant formalization
+      reviewed by human experts.
       Superseded as the verified lower bound on 2026-09-27 by Kleddamag's 466001/100000
       (T-041); stays true as stated.
 
@@ -3415,11 +3481,14 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 needs a method-distinct decision; the native parent-core route cannot read the
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained. A second machine method is not at hand: the native
+      parent-core route cannot read the
       weighted and winning-subset features, and the review's independent exact sweep, which
       shares no code with the source and reproduced all 2,168 row minima, was review scratch
       and is the same method. Retaining that sweep as a repository instrument would make the
-      exact leg this repository's own without reaching C4. V5 by a proof-assistant port.
+      exact leg this repository's own. Rung 5 needs a proof-assistant formalization reviewed
+      by human experts.
       Superseded as the verified lower bound on 2026-09-29 by Guzhou0806's R068 (T-043),
       which continues this charge; stays true as stated.
 
@@ -3549,13 +3618,15 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 needs a method-distinct decision; the native parent-core route models only k-of-m
-      threshold atoms and cannot read the weighted and winning-subset features, so extending
-      it to them is the reachable second method. The review's code-independent exact sweep
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained; the mapped 2026-09-28 review is not recorded in this
+      entry's reviews, and whether it counts is the owner's decision. The native parent-core
+      route models only k-of-m threshold atoms and cannot read the weighted and winning-subset
+      features, so extending it to them is the reachable second machine method. The review's
+      code-independent exact sweep
       reproduced nine sampled rows; completing and retaining it would make the exact leg this
-      repository's own but is the same method. C5 would follow the owner's decision on citing
-      the
-      mapped 2026-09-28 review as review_artifact. V5 by a proof-assistant port.
+      repository's own but is the same method. Rung 5 needs a proof-assistant formalization
+      reviewed by human experts.
 
   - id: T-044
     kind: lower-bound
@@ -3601,7 +3672,7 @@ results:
       monotonicity from the n = 39 and n = 70 files; at n = 52 and 68 it is the exact mass
       inequality on the n = 53 and n = 69 files, recorded as their own audited entries. Each
       step is one exact comparison and adds no premise, so every count keeps the replay's
-      V4/C3. All five entries are exact-algebraic, which is one method, so C3 and not C4.
+      V3/C3. All five entries are exact-algebraic, which is one machine method.
     produced_by:
       session: session-152
     evidence:
@@ -3626,8 +3697,10 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 by an interval-certified decision of the same ten files with this repository's
-      fractional interval route, which decides weighted point certificates of this schema.
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained. An interval-certified decision of the same ten files with
+      this repository's fractional interval route, which decides weighted point certificates
+      of this schema, would be a second machine method.
       No packing/tests control reads this packet; the control named is the verifier's own
       adversarial suite. wand125's rectangle reports (T-046) exceed every one of these
       values and would supersede them as their replays land.
@@ -3679,7 +3752,7 @@ results:
       retained beside the others (receipts/replay/rect_n32_L595), which
       E-wand125-rectangle-source-replay's limitations name; that entry's scope lists only 27,
       28 and 31 because it carries field-holding counts, and n = 32 never held one. One
-      interval-certified method, so C3.
+      interval-certified method, replayed here: C3.
     produced_by:
       session: session-160
     evidence:
@@ -3701,7 +3774,9 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 needs a method-distinct decision of rotated coverage; global coverage is still
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained. A second machine method would be a method-distinct
+      decision of rotated coverage; global coverage is still
       decided by the source's C++ checker alone, and the exact preflight does not decide it.
       Further replays of the standing certificates move counts here from T-046, and the
       raised n = 28 and n = 31 certificates of 28 September would supersede these values.
@@ -3847,7 +3922,7 @@ results:
     composition: >-
       Three primary certificates and four monotone transfers (27 and 28 from n = 26, 30 and
       31 from n = 29), each one deletion step that adds no premise, so every count keeps the
-      replay's V4/C3. One interval-certified method, so C3.
+      replay's V3/C3. One interval-certified method, replayed here: C3.
     produced_by:
       session: session-152
     evidence:
@@ -3872,7 +3947,9 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 needs a method-distinct decision of global rotated coverage; the exact rational
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained. A second machine method would be a method-distinct
+      decision of global rotated coverage; the exact rational
       polygon and derivative probes exercise the interval kernel but decide no coverage.
       At n = 26, 29 and 30 these are the verified lower bounds, and wand125's reported
       rectangle certificates (T-046) exceed them pending replay. At n = 27, 28 and 31
@@ -3938,7 +4015,7 @@ results:
       The complete L740 replay, about 10.5 CPU-hours on three workers, by the procedure the
       packet README gives (verify_mixed_full_proof.py, then n50-compare, which must print
       FULL_REPLAY_MATCHES_SHIPPED), recorded as an interval-certified replay entry, which
-      would derive V4/C3. C1 before that, by recording the 2026-09-28 verifier review as an
+      would derive V3/C3. C1 before that, by recording the 2026-09-28 verifier review as an
       external_review on the report entry.
     notes: >-
       V0 because the one cited entry is the source's claim, assurance reported, replay not
@@ -3992,10 +4069,11 @@ results:
       source_keys: ['[evand square-packing 2026]']
       published: '2026-08-25'
     composition: >-
-      Primary at n = 12: one certificate, no monotonicity. C4 is earned by two entries whose
-      methods differ, the source's exact arrangement sweep (exact-algebraic, replayed here)
-      and this repository's directed-rounding interval coverage of every row
-      (interval-certified). Both rest on the source's certificate and the same counting
+      Primary at n = 12: one certificate, no monotonicity. Two entries whose methods differ
+      decide it, the source's exact arrangement sweep (exact-algebraic, replayed here) and
+      this repository's directed-rounding interval coverage of every row (interval-certified);
+      that is C3, with the two methods shown beside the rung. Both rest on the source's
+      certificate and the same counting
       theorem, and the thin reader that maps the source's integer file onto parent-core rows
       has had no review reading of its own.
     produced_by:
@@ -4025,9 +4103,11 @@ results:
       rung.
     next_rung: >-
       A review reading of the native reader (devtools.verify_evand_angle_net_native) would
-      close the one unread link in the C4 route; C5 would then follow the owner's decision
-      on citing a mapped review as review_artifact for others' results. V5 by a
-      proof-assistant port. The exact value remains open; the conjecture is s(12) = 4.
+      close the one unread link in the second method's route. V4 and C4 need two adversarial
+      AI reviews by distinct reviewers and a human oversight record, and none is retained;
+      whether a mapped same-project review of another author's result counts toward them is
+      the owner's decision. Rung 5 needs a proof-assistant formalization reviewed by human
+      experts. The exact value remains open; the conjecture is s(12) = 4.
 
   - id: T-050
     kind: lower-bound
@@ -4085,7 +4165,9 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 by the native parent-core decision, which certified rows 0 to 2,378 of 2,486 before
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained. A second machine method would be the native parent-core
+      decision, which certified rows 0 to 2,378 of 2,486 before
       it was stopped and projects to about 2.8 CPU-hours complete; its journal was not
       retained, so it must run again.
       Superseded as the verified lower bound on 2026-09-29 by Evan Daniel's s(21) = 5
@@ -4147,7 +4229,8 @@ results:
       The lower half rests on two complete replays here of the source's
       zero-margin pose-space subdivision, E-n032-evand-closed-cover-source-run
       (zeromargin.py, exact-algebraic) and E-n032-evand-closed-cover-zmx2-replay (zmx2,
-      interval-certified), whose method values differ, so it is C4.
+      interval-certified), whose method values differ; that is C3, with the two methods shown
+      beside the rung.
 
       The two checkers differ
       in how germs are closed (zmx2's pair lemma Z and pair dynamic programme over lines one
@@ -4186,10 +4269,12 @@ results:
       V3/C3: machine-checked, review record pending. The oversight record restores the
       rung.
     next_rung: >-
-      C5 would follow the owner's decision on citing a mapped review as review_artifact for
-      others' results. V5 by building the source's hypothesis-free Lean theorem s32_eq_6,
-      which decides a generated box tree in the kernel with zeromargin.py
-      only as the tree generator's untrusted oracle. Mathlib's build cache became reachable
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained; whether a mapped same-project review of another author's
+      result counts toward them is the owner's decision. V5 needs the source's hypothesis-free
+      Lean theorem s32_eq_6 built, which decides a generated box tree in the kernel with
+      zeromargin.py only as the tree generator's untrusted oracle, and a human expert's review
+      of the formalization. Mathlib's build cache became reachable
       on 2026-09-30, and the conditional s32_eq_six_of_checker and s13_eq_4 were built here
       (the 2026-09-28 packet's receipts/lean/). The cost that remains is compute: a probe
       puts s32_eq_6 at 14 to 28 CPU-hours emitted in about 320 parts of about 4 GB each,
@@ -4239,9 +4324,9 @@ results:
     composition: >-
       Compound: the lower half is E-n021-evand-mixed-cover-zmx2-replay (interval-certified,
       zmx2 replayed here), the upper half the grid (E-basic-grid-upper, exact-algebraic).
-      The checker derives C4 because the two machine entries differ in method, but they
-      certify different halves; the lower half, which sets the minimum, stands on one
-      replayed method, so the equality is C3, not C4, as T-008 reads its own halves.
+      The two machine entries differ in method, but they certify different halves; the lower
+      half, which sets the minimum, stands on one replayed method, and the equality is C3, as
+      T-008 reads its own halves.
     produced_by:
       session: session-161
     evidence:
@@ -4265,10 +4350,13 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 by a complete zm_mixed.py re-sweep, about 12.9 CPU-hours at the source, recorded as
-      a second, exact-algebraic entry; the shared pose-space architecture stays the residual
-      common-mode risk. V5 would need the checker statement S21CheckerCover proved in Lean;
-      the reduction s21_eq_five_of_checker, from that statement to s(21) = 5, was
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained. A complete zm_mixed.py re-sweep, about 12.9 CPU-hours at
+      the source, recorded as a second, exact-algebraic entry, would give the lower half a
+      second machine method; the shared pose-space architecture stays the residual
+      common-mode risk. V5 would need the checker statement S21CheckerCover proved in Lean and
+      a human expert's review of the formalization; the reduction s21_eq_five_of_checker, from
+      that statement to s(21) = 5, was
       kernel-checked here on 2026-09-30 with the standard axioms only (the 2026-09-28
       packet's receipts/lean/).
 
@@ -4316,9 +4404,10 @@ results:
       published: '2026-09-27'
     composition: >-
       Compound: the lower half is E-n045-evand-mixed-cover-zmx2-replay (interval-certified),
-      the upper half the grid (E-basic-grid-upper, exact-algebraic). As for T-052, the
-      checker derives C4 from two methods that certify different halves; the lower half
-      stands on one replayed method and sets the minimum, so the equality is C3, not C4. wand125's point-only lower half (T-054) is a second certificate under the same
+      the upper half the grid (E-basic-grid-upper, exact-algebraic). As for T-052, the two
+      machine methods certify different halves; the lower half stands on one replayed method
+      and sets the minimum, and the equality is C3. wand125's point-only lower half (T-054) is
+      a second certificate under the same
       checker and is registered separately.
     produced_by:
       session: session-161
@@ -4342,10 +4431,13 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
     next_rung: >-
-      C4 by a complete zm_mixed.py re-sweep, about 16.5 CPU-hours at the source, recorded as
-      a second, exact-algebraic entry; the source's own zm_mixed.py record was imported from
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record, and none is retained. A complete zm_mixed.py re-sweep, about 16.5 CPU-hours at
+      the source, recorded as a second, exact-algebraic entry, would give the lower half a
+      second machine method; the source's own zm_mixed.py record was imported from
       a working-name run (review finding F1), so a fresh complete run also retires that
-      finding. V5 would need a top theorem and the checker programs formalised.
+      finding. V5 would need a top theorem and the checker programs formalised, and a human
+      expert's review of the formalization.
 
   - id: T-054
     kind: simplification
@@ -4386,9 +4478,9 @@ results:
     composition: >-
       Compound: the lower half is E-n045-wand125-point-cover-source-replay
       (interval-certified, on the source-chosen zmx2, the same implementation as T-053's
-      replay), the upper half the grid (E-basic-grid-upper). The checker derives C4 from two
-      methods that certify different halves; the lower half sets the minimum at one method,
-      so C3. The unreduced --full sweep was not run here.
+      replay), the upper half the grid (E-basic-grid-upper). The two machine methods certify
+      different halves; the lower half sets the minimum at one method, and the equality is C3.
+      The unreduced --full sweep was not run here.
     produced_by:
       session: session-161
     evidence:
@@ -4414,8 +4506,10 @@ results:
       pending. The oversight record restores the rung.
     next_rung: >-
       The unreduced zmx2 --full sweep would remove the reliance on the D4 reduction (review
-      F2). C4 would need a checker other than zmx2 to decide this point cover; the exact
-      zeromargin.py route reads point covers and is the reachable one.
+      F2). A second machine method would need a checker other than zmx2 to decide this point
+      cover; the exact zeromargin.py route reads point covers and is the reachable one. V4 and
+      C4 need two adversarial AI reviews by distinct reviewers and a human oversight record,
+      and none is retained.
 
   - id: T-055
     kind: simplification
@@ -4460,9 +4554,9 @@ results:
       published: '2026-09-28'
     composition: >-
       Compound, and the minimum is set by the lower half. The upper half is the grid,
-      E-basic-grid-upper, at V4/C3; the lower half is E-n021-wand125-point-endpoint-report,
-      the source's claim at V0/C0, whose replay here is incomplete. The checker derives V4
-      and C3 from the grid's entry; this note is why the declared rungs are V0 and C0.
+      E-basic-grid-upper, at V3/C3; the lower half is E-n021-wand125-point-endpoint-report,
+      the source's claim at V0/C0, whose replay here is incomplete. The checker derives V3 and
+      C3 from the grid's entry; this note is why the declared rungs are V0 and C0.
     produced_by:
       session: session-161
     evidence:
@@ -4479,7 +4573,7 @@ results:
     next_rung: >-
       Finish the complete local replay (verify_portable.py --workers 2, which must end
       FRESH_ALL_DOMAIN_REPLAY_VERIFIED, then n21-compare against the pinned M1 linkage) and
-      record it as an exact-algebraic replay entry, which would derive V4/C3 for the lower
+      record it as an exact-algebraic replay entry, which would derive V3/C3 for the lower
       half. C1 before that, by recording the 2026-09-28 point-only review as an
       external_review on the report entry.
     notes: >-
@@ -4561,7 +4655,8 @@ results:
     composition: >-
       Both machine entries decide all 49 bounds, each at its case's verified value, by
       different methods (exact-algebraic on a rational rounding of each pose;
-      interval-certified on the printed pose), so every load-bearing part is C4. Their
+      interval-certified on the printed pose), so every load-bearing part is C3, with two
+      machine methods shown beside the rung. Their
       common mode is stated in E-franciscouzo-2026-09-27-interval-replay. The comparisons
       with earlier sides and the live catalogue are recorded values and set no rung.
     notes: >-
@@ -4572,9 +4667,10 @@ results:
       V3/C3: machine-checked, review record pending. The oversight record restores the
       rung.
     next_rung: >-
-      C5 by a mapped, non-superseded review of the complete claim cited as review_artifact;
-      the two reviews so far, of 2026-09-29 and 2026-09-30, are same-project reviews of
-      each route. At n = 206, 259 and 305 both routes refute the printed side for the
+      V4 and C4 need two adversarial AI reviews by distinct reviewers of the complete claim
+      and a human oversight record; the two reviews so far, of 2026-09-29 and 2026-09-30, are
+      same-project reviews of each route and are not recorded in this entry's reviews. At n =
+      206, 259 and 305 both routes refute the printed side for the
       printed pose, so the printed side itself needs a different pose, refined beyond the
       source's binary64 digits, or coordinates the source prints at higher precision; that
       would be a new packing, not a replay.
@@ -4648,8 +4744,9 @@ results:
       V3/C3: machine-checked, review record pending. The oversight record restores the
       rung.
     next_rung: >-
-      C5 by a mapped, non-superseded review of the complete claim cited as review_artifact,
-      beside the same-project reviews of each route (2026-09-29 and 2026-09-30). The
+      V4 and C4 need two adversarial AI reviews by distinct reviewers of the complete claim
+      and a human oversight record; the same-project reviews of each route (2026-09-29 and
+      2026-09-30) are not recorded in this entry's reviews. The
       source's own 80-digit interval run stays unreplayed until it publishes its boxes or
       checker; this record no longer depends on it.
 
@@ -4737,7 +4834,7 @@ results:
       V0 because the full claimed row-minimum equality has no retained complete replay;
       C1 records the scoped source review and its journal-admission defects, not confirmation
       of all row minima. The identical certificate already has complete native threshold coverage
-      and reviewed global counting premises supporting the existing V4/C4 n11 bound;
+      and reviewed global counting premises supporting the existing n11 bound, T-037 at V3/C3;
       that proof need not reproduce every exact row minimum and does not settle T-059.
       This claim was drafted as T-057 before the merge; T-059 is canonical because
       the merged upstream had already allocated T-057. Archived intake evidence
@@ -4778,8 +4875,9 @@ results:
       induction and complete 10-node capture graph eliminate all far branches and
       force the near state into the reviewed local region. Exact local isolation
       and the endpoint embedding argument exclude every side below `T`. The exact
-      Trump witness attains `T`. All premises have completed exact executions and
-      the mapped review, supporting V4/C5; no distinct-method C4 claim is made.
+      Trump witness attains `T`. All premises have completed exact executions, which is V3/C3.
+      One adversarial AI review is retained and mapped, by GPT-6 Astra at max reasoning; it is
+      not a human oversight record. No second machine method is claimed.
     reviews:
       - path: docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
         kind: adversarial
@@ -4802,9 +4900,13 @@ results:
       - packing/resources/web/n11-optimality-2026-09-29/receipts/completion-inventory.json
       - docs/project/reviews/review-2026-09-29-n11-optimality.md
     next_rung: >-
-      V5 requires a proof-assistant formalization. Engineering follow-up think-e2ot
+      V4 and C4 need the owner's oversight record and a second adversarial AI review by a
+      reviewer distinct from Astra. Rung 5 requires a proof-assistant formalization reviewed
+      by human experts. Engineering follow-up think-e2ot
       will orchestrate fresh whole-ensemble replay through reviewed state-equivalence
-      bindings. Simplification precedes the separately tracked n11 explainer.
+      bindings. Simplification was to precede the n11 explainer, tracked separately, which is
+      now the [eleven-square optimality
+      paper](https://jlevy.github.io/squares/n11-optimality/).
     notes: >-
       Confirmed 2026-09-30 after all 2180 exclusions, ten capture nodes and final
       composition passed and received Astra-max review. Source credit is unchanged.
@@ -4872,9 +4974,10 @@ results:
       source_keys: ['[Wang Li n11 2026]']
       published: '2026-09-29'
     composition: >-
-      Primary at n = 11: one certificate and the bound L/A', with no monotonicity step. C4
-      is earned by two evidence entries whose methods differ and that both passed on the
-      retained certificate: the event-cell sweeps (exact-algebraic: the authors' primary,
+      Primary at n = 11: one certificate and the bound L/A', with no monotonicity step. Two
+      evidence entries whose methods differ both passed on the retained certificate, which is
+      C3 with the two methods shown beside the rung: the event-cell sweeps (exact-algebraic:
+      the authors' primary,
       Kleddamag's Python and JavaScript, and the authors' re-implementation are one
       method) and this repository's directed-rounding interval coverage of every row
       (interval-certified). Both rest on the certificate and on T-037's counting and
@@ -4899,17 +5002,18 @@ results:
       - packing/resources/web/wang-li-n11-2026-09-29/receipts/controls/cliff.json
       - packing/tests/test_wang_li_n11.py
     next_rung: >-
-      C5 would need a mapped, non-superseded review of the complete claim cited as
-      review_artifact; the 2026-09-30 review is a same-project read. V5 by a
-      proof-assistant port of the transfer theorem and the counting argument. The
+      V4 and C4 need two adversarial AI reviews by distinct reviewers of the complete claim
+      and a human oversight record; the 2026-09-30 review is a same-project read and is not
+      recorded in this entry's reviews. Rung 5 needs a proof-assistant formalization of the
+      transfer theorem and the counting argument, reviewed by human experts. The
       reweighting is not needed for the bound: Kleddamag's own weights at the scaled sides
       pass Kleddamag's full event-cell sweep with the same minimum 999962528 and surplus
       107864 (the packet's scale-only receipt), so the scaling alone carries the step and
       the thirteen raised orbits only enlarge the surplus to 428125.
     notes: >-
       T-060 has since confirmed s(11) = T, Trump's exact side, so this strict lower bound
-      is historical: it stays true as stated and keeps its source credit, its V4/C4
-      evidence and its S2 score, and it is not the global optimality claim.
+      is historical: it stays true as stated and keeps its source credit, its V3/C3 rungs and
+      its S2 score, and it is not the global optimality claim.
 
       This claim was
       drafted as T-058 on jlevy/squares#249; T-061 is canonical because the merged

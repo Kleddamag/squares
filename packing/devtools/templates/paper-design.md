@@ -617,8 +617,10 @@ it.
   documents keep their own order, verification first.
   A standing chip carries `data-standing` and adds no style of its own: `current best`
   takes the accent, as a settled state, and every other standing
-  (`current best, reported`, `second certificate`, `superseded`, `not a bound`) the
-  plain gray, so a reader sees which results still hold without the others shouting.
+  (`current best, reported`, `second certificate`, `superseded`) the plain gray, so a
+  reader sees which results still hold without the others shouting.
+  A result that bounds no case has its kind in the standing chip, `rigidity` or
+  `case exclusion`, also plain gray.
   A novelty chip (`data-novelty`) is always plain gray.
 
 - **Arrows.** Every arrow on the site is one drawing, never a typed character: the

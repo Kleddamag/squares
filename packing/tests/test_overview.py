@@ -1606,10 +1606,7 @@ def test_the_recent_table_splits_method_credit_and_standing() -> None:
     assert overview_sections.credit_cell("This project") == "This project"
     chips = overview_sections.standing_chips("second certificate, reported")
     assert chips.count('class="site-chip"') == 2
-    assert (
-        overview_sections.standing_chips(render_recent_results.NOT_A_BOUND).count("site-chip")
-        == 1
-    )
+    assert overview_sections.standing_chips("case exclusion").count("site-chip") == 1
     held = overview_sections.standing_chips("current best, reported")
     assert 'data-tone="accent">current best</span>' in held
     assert 'data-standing="reported">reported</span>' in held

@@ -13,8 +13,8 @@ checked itself. A result by others is credited to its authors as their source st
 its `V` and `C` are this repository’s own verification of it.
 Its standing says whether a case bound rests on it now: it is the *current best*
 verified bound, or the current best as reported; it is a *second certificate* for an
-exact value another result holds; it is *superseded*; or it is not a bound at all, such
-as a rigidity or an erratum.
+exact value another result holds; or it is *superseded*. A result that bounds no case,
+such as a rigidity or a case exclusion, shows its kind in that place.
 Open a row for the full claim and its novelty label, and follow the records to the case
 file, the evidence, the retained source and the review.
 The newest, and the ones that matter most, are on the [overview](./#recent-results).

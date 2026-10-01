@@ -21,6 +21,7 @@ from devtools.check_results import (
     repository_file_problem,
     verification_relation,
 )
+from devtools.render_recent_results import STANDINGS
 from sqpack.yamlio import safe_load
 
 MACHINE_ENTRY = {
@@ -247,7 +248,7 @@ def test_results_renderer_escapes_a_pipe_in_a_claim(
         line for line in render_results.render().splitlines() if line.startswith("| T-001 ")
     )
     assert r"Sixteen points \| make" in row
-    assert len(re.findall(r"(?<!\\)\|", row)) == 8
+    assert len(re.findall(r"(?<!\\)\|", row)) == 9
 
 
 def _poisoned_register(tmp_path: Path, old: str, new: str) -> Path:
@@ -846,6 +847,20 @@ def test_a_simplification_names_a_result_on_a_case_it_shares() -> None:
     assert check_results.kind_problems(record, cited, {"T-999": {45}, "T-053": {21}}) == unnamed
     silent = {**record, "claim": "s(45) = 7, proved again."}
     assert check_results.kind_problems(silent, cited, {"T-999": {45}}) == unnamed
+
+
+def test_results_md_labels_every_result_by_its_kind() -> None:
+    register = safe_load(render_results.RESULTS.read_text(encoding="utf-8"))
+    committed = render_results.OUTPUT.read_text(encoding="utf-8")
+    for record in register["results"]:
+        row = next(
+            line for line in committed.splitlines() if line.startswith(f"| {record['id']} |")
+        )
+        cells = row.split(" | ")
+        assert cells[2] == check_results.kind_label(record["kind"]), record["id"]
+        if record.get("attribution"):
+            # The standing column of a result by others: a derived word or its kind.
+            assert cells[8] in STANDINGS, record["id"]
 
 
 def test_results_by_others_awaiting_a_replay_lead_their_group() -> None:

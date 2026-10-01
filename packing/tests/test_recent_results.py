@@ -14,6 +14,7 @@ from fractions import Fraction
 
 import pytest
 
+from devtools import check_results
 from devtools import render_recent_results as view
 from devtools.build_bound_citations import PROJECT_NAME, load_case, recent_lower_bounds
 from devtools.check_results import recent_evidence
@@ -90,6 +91,27 @@ def test_standing_is_one_of_the_derived_words(records: view.Records) -> None:
         assert view.standing(record, records) in view.STANDINGS, record["id"]
 
 
+def test_an_entry_that_is_no_bound_shows_its_kind(records: view.Records) -> None:
+    """No standing says only what an entry is not: where the evidence claims no bound,
+    the standing is the entry's own kind, and never one of the three bound kinds."""
+    kinds = set()
+    for record in records.register.results:
+        standing = view.standing(record, records)
+        assert "not a bound" not in standing, record["id"]
+        assert standing[:1].isalpha(), record["id"]
+        if standing in view.KIND_STANDINGS:
+            assert standing == check_results.kind_label(record["kind"]), record["id"]
+            assert record["kind"] not in check_results.BOUND_KINDS, record["id"]
+            kinds.add(record["kind"])
+    assert kinds == {
+        "rigidity",
+        "case-exclusion",
+        "restricted-optimality",
+        "method-limit",
+        "audit",
+    }
+
+
 def test_standing_agrees_with_the_recent_rows(
     records: view.Records, rows: list[view.Row]
 ) -> None:
@@ -111,8 +133,12 @@ def test_standing_agrees_with_the_recent_rows(
         # A rung of the n = 18 ladder shares its interval decision with the rung that
         # holds the bound; a shared checker does not make it hold.
         ("T-027", view.SUPERSEDED),
-        # A rigidity theorem claims no bound on s(n).
-        ("T-014", view.NOT_A_BOUND),
+        # A rigidity theorem claims no bound on s(n), so its kind stands in that place.
+        ("T-014", "rigidity"),
+        ("T-031", "case exclusion"),
+        ("T-036", "restricted optimality"),
+        ("T-058", "method limit"),
+        ("T-059", "audit"),
         # A second proof of s(45) = 7, whose bound Evan Daniel's cover holds.
         ("T-054", view.SECOND_CERTIFICATE),
         # A second route to s(21) = 5 that is reported and not yet replayed here.

@@ -36,7 +36,7 @@ from devtools.overview_data import (
     tex_bounds,
 )
 from devtools.render_overview import DOCUMENT_PAGES, RESULTS_PAGE
-from devtools.render_recent_results import HOLDS, NOT_A_BOUND, STANDINGS, Lane, Row
+from devtools.render_recent_results import HOLDS, STANDINGS, Lane, Row
 from devtools.repo_links import branch_file
 from sqpack.yamlio import safe_load
 
@@ -57,14 +57,10 @@ def _rung(label: str) -> str:
     return f'<span class="site-chip site-rung-fill" {_fill(label)}>{_esc(label)}</span>'
 
 
-#: What the table and its filter call an entry that is no bound on `s(n)`:
-#: `render_recent_results` spells that standing as a dash, which a filter cannot name.
-NOT_A_BOUND_LABEL = "not a bound"
-
-
 def standing_label(standing: str) -> str:
-    """The words a standing chip shows: `render_recent_results`'s own, the dash spelled."""
-    return NOT_A_BOUND_LABEL if standing == NOT_A_BOUND else standing
+    """The words a standing chip shows: `render_recent_results`'s own. An entry that is
+    no bound on `s(n)` has its kind there, `case exclusion` or `rigidity`."""
+    return standing
 
 
 def standing_key(standing: str) -> str:
@@ -991,8 +987,6 @@ def credit_cell(credit: str) -> str:
 
 def standing_chips(standing: str) -> str:
     """A standing as one chip per part: `second certificate, reported` is two chips."""
-    if standing == NOT_A_BOUND:
-        return standing_chip(standing)
     return " ".join(standing_chip(part) for part in standing.split(", "))
 
 

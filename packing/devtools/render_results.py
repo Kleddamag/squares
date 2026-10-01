@@ -15,7 +15,9 @@ first, since they are the queue. Their credit and published date are shown besid
 rungs, with the result's standing, derived from the case records and never stored by
 `devtools.render_recent_results.standing`, the same function the site's overview uses:
 whether a case bound rests on it now, and if not, whether it was superseded or is a
-second certificate for a value another result holds.
+second certificate for a value another result holds. Every row of both tables states the
+result's `kind`, what the result is: a lower bound, an upper bound, optimality, or one
+of the kinds that are no bound on `s(n)`, whose standing column repeats the kind.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.render_results --update
@@ -29,6 +31,7 @@ from pathlib import Path
 
 from strif import atomic_output_file
 
+from devtools.check_results import kind_label
 from devtools.render_recent_results import load_records, standing
 from devtools.result_credit import OTHERS, credit_line, source_lineage
 from sqpack.yamlio import safe_load
@@ -52,6 +55,9 @@ HEADER = """# Results
 
 One row per registered result: this project's first, then results by others grouped
 by the lineage their sources state, each sorted by significance, then confirmation.
+A result's kind says what it is: a lower bound, an upper bound, optimality (an exact
+value), or one of the kinds [`epistemics.md`](../../epistemics.md#result-kinds) defines
+for a result that is no bound on `s(n)`.
 The axes are defined in [`epistemics.md`](../../epistemics.md): `V` is the
 verification the result carries as certified by its own source, `C` how far that
 verification has been independently confirmed here or by a third party, `S` a
@@ -122,10 +128,11 @@ def render() -> str:
     lines = [HEADER]
     lines.append(f"## {OURS}")
     lines.append("")
-    lines.append("| id | n | V | C | S | novelty | claim |")
-    lines.append("| --- | --- | --- | --- | --- | --- | --- |")
+    lines.append("| id | n | kind | V | C | S | novelty | claim |")
+    lines.append("| --- | --- | --- | --- | --- | --- | --- | --- |")
     lines.extend(
-        f"| {record['id']} | {_scope(record)} | {record['verification']} "
+        f"| {record['id']} | {_scope(record)} | {kind_label(record['kind'])} "
+        f"| {record['verification']} "
         f"| {record['confirmation']} | S{record['significance']['score']} "
         f"| {record['novelty']} | {_claim(record)} |"
         for record in ours
@@ -144,10 +151,13 @@ def render() -> str:
         for title, group in others:
             lines.append(f"### {title}")
             lines.append("")
-            lines.append("| id | n | credit | published | V | C | S | standing | claim |")
-            lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- |")
+            lines.append(
+                "| id | n | kind | credit | published | V | C | S | standing | claim |"
+            )
+            lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |")
             lines.extend(
-                f"| {record['id']} | {_scope(record)} | {credit_line(record, sources)} "
+                f"| {record['id']} | {_scope(record)} | {kind_label(record['kind'])} "
+                f"| {credit_line(record, sources)} "
                 f"| {record['attribution']['published']} | {record['verification']} "
                 f"| {record['confirmation']} | S{record['significance']['score']} "
                 f"| {standing(record, records)} | {_claim(record)} |"

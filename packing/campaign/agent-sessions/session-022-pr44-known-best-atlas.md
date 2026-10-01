@@ -2063,11 +2063,11 @@ The earlier `2/8/23/3` distributions and local content digests in this sessionâ€
 evidence are contemporaneous receipts from the reviewed heads, not current aggregate or
 integrity claims.
 
-The corrected partition search evaluates every exact `F = 0,1,2` slice before
+The corrected partition search evaluates every exact $F = 0,1,2$ slice before
 classification. Its current non-grid distribution is 3 established, 2 conclusively
 outside the registered budget, 23 without a partition in the registered universe, and 8
 search-capped and therefore indeterminate.
-In particular, `n = 26` is established at `F = 2, C = 6`; `n = 65,66,82,85,89` join the
+In particular, $n = 26$ is established at $F = 2, C = 6$; $n = 65,66,82,85,89$ join the
 capped class.
 
 The known-best source inventory retains attributed Kingbird-derived numerical facts but

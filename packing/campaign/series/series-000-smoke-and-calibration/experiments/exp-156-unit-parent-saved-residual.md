@@ -78,15 +78,15 @@ experiment:
 binds the same full execution revision, source receipts, result schema and complete
 status. A later Astra audit separately re-read the saved receipt.
 
-Freeze exp151’s direction-6 saved residual, tuple `(0,0,0,7)`, `q=96/25`,
-`B=9977/10000`, `D=207107/90000000`, original marks, physical corner maps, the complete
+Freeze exp151’s direction-6 saved residual, tuple $(0,0,0,7)$, $q=96/25$,
+$B=9977/10000$, $D=207107/90000000$, original marks, physical corner maps, the complete
 361-direction residual authority, and all 181 frames per selected owner.
 Evaluate owners in `TR, BL, BR, TL` order.
 The retained output is the path under `results/agenda-035` declared in the frontmatter.
 
-For a retained unit direction `r`, set `S=|r.x|+|r.y|`, `T=||r.x|-|r.y||`, and
+For a retained unit direction $r$, set `S=|r.x|+|r.y|`, `T=||r.x|-|r.y||`, and
 `e=max(B*S/2,1/2,(S-T*D)/(2+D^2))`. Intersect the original anchored owner-centre domain
-with `[e,q-e]^2`. Test the residual against its own necessary box without adding an
+with $[e,q-e]^{2}$. Test the residual against its own necessary box without adding an
 owner mark constraint.
 
 ## Frozen Outcomes
@@ -122,7 +122,7 @@ source-bound invocation before any parent-domain gain is attributed.
 
 The residual centre lies inside its necessary parent box, so the direct self-exclusion
 criterion missed. The runner then evaluated the first selected owner only:
-`TR / bottom-left:m1:j7`. All `181/181` B-only frames completed, and literal replay
+`TR / bottom-left:m1:j7`. All $181/181$ B-only frames completed, and literal replay
 returned the same exact global maximum slack,
 
 ```text
@@ -131,7 +131,7 @@ returned the same exact global maximum slack,
 116321554678452558303608800190641648704779316000
 ```
 
-which is approximately `-0.1355136463`. The class is therefore incompatible in the old
+which is approximately $-0.1355136463$. The class is therefore incompatible in the old
 B-only model.
 The parent-restricted feasible set is contained in the B-only feasible set,
 so it also has no positive separation witness.
@@ -141,12 +141,12 @@ absent. Under the frozen protocol, that result ends the invocation as
 and `BL`, `BR` and `TL` were not run.
 
 The receipt samples its clocks before the command’s mandatory in-process readback:
-scientific work reports `0.4452163329697214` seconds, source replay reports
-`8.639562333992217` seconds, and their pre-readback publication clock is
-`9.084778666961938` seconds.
+scientific work reports $0.4452163329697214$ seconds, source replay reports
+$8.639562333992217$ seconds, and their pre-readback publication clock is
+$9.084778666961938$ seconds.
 The external command wall, which includes that mandatory readback and the supervisor and
-is recorded as the experiment effort above, was `20.628132708` seconds.
-A later Astra audit independently re-read the saved receipt in `9.26` seconds; that
+is recorded as the experiment effort above, was $20.628132708$ seconds.
+A later Astra audit independently re-read the saved receipt in $9.26$ seconds; that
 separate review work is not part of the experiment wall.
 
 This is a complete old-model finding, not a parent-domain gain.

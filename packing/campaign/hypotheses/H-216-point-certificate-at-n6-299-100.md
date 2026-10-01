@@ -66,8 +66,8 @@ hypothesis:
 # H-216: Point Certificate at n=6, 299/100
 
 X-037’s M7 lane asked whether a helper-free point certificate exists at a solved case.
-The attic wrote the universal negative: no such certificate at side `299/100` with
-`B = 9977/10000` on the 181-step net, for any site set.
+The attic wrote the universal negative: no such certificate at side $299/100$ with
+$B = 9977/10000$ on the 181-step net, for any site set.
 That sentence is V0/C0 scratch.
 This artifact is the existence claim.
 
@@ -84,7 +84,7 @@ G4, the n-parameterised threshold producer, is a different language and a differ
 question. `exp-161` is reserved for Route S and is not this hypothesis’s experiment.
 
 A decided H-216 is calibration.
-It does not move `s(6) = 3`, and it is not an n=11 bound.
+It does not move $s(6) = 3$, and it is not an n=11 bound.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

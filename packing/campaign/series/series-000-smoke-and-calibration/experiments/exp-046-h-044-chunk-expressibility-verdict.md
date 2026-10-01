@@ -168,21 +168,21 @@ below needed no decision between them.
 The twenty exact-grid records all establish (the grid is one rectangle chunk); three
 non-grid records establish; the seven misses are the tilted stratum, every search
 exhausting within seventeen states — a candidate-universe boundary, not a search-budget
-one, and no `n ≤ 30` record is search-capped, so the slice is fully determinate under
+one, and no $n \le 30$ record is search-capped, so the slice is fully determinate under
 the frozen cap.
 
 The decisive mechanism is sharper than “tilted squares share no angle.”
-Trump’s `n = 11` five-square group is flush — every internal contact residual is exactly
+Trump’s $n = 11$ five-square group is flush — every internal contact residual is exactly
 zero in the normal direction — and shares one fitted angle, but it is *tangentially
 slid*: its members sit at no integer lattice offsets, and the grammar’s adjacency is the
 lattice step.
-So the group enters the universe as five singletons, and `n = 11` dies with
-three candidates; `n = 17` misses by the same mechanism.
-H-044’s own worked decomposition of `n = 11` — corner square, mirrored square, offset
+So the group enters the universe as five singletons, and $n = 11$ dies with
+three candidates; $n = 17$ misses by the same mechanism.
+H-044’s own worked decomposition of $n = 11$ — corner square, mirrored square, offset
 square, an L of three, a five-square group — leaves **three** squares ungrouped, against
 its own registered budget of two: the hypothesis’s headline instance is excluded by its
 own criterion as written.
-At `n = 18`, `19`, `28`, `29` the universe is real (sixteen to thirty-six candidates —
+At $n = 18$, $19$, $28$, $29$ the universe is real (sixteen to thirty-six candidates —
 shared-angle diagonal strips do form chunks) and the failure is coverage: no admissible
 chunk set covers the full square set within two free squares.
 
@@ -190,10 +190,10 @@ Two frozen-contract decisions are what a review would weigh, and both were made 
 registration rather than tonight:
 
 - **Singleton chunks are inadmissible** (candidate generation requires size >= 2). This
-  alone decides `n = 5`: its four corner squares share the frame angle but touch
+  alone decides $n = 5$: its four corner squares share the frame angle but touch
   nothing, so they can never group, and four ungrouped squares exceed the two-free
   budget regardless of the tilted center square.
-  Admitting singletons provably flips `n = 5` (five singleton chunks, zero free) and
+  Admitting singletons provably flips $n = 5$ (five singleton chunks, zero free) and
   lands the broad reading on 24/30 = 0.80 exactly, while moving the sweep reading only
   to 4/10 — which is one reason the round was initially held for review rather than
   closed.

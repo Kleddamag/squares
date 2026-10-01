@@ -134,18 +134,18 @@ Over 567,130,649 reachable cells in 181 directions:
 
 | `epsilon` | tight cells | of reachable | of domain by area | components | largest blob |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| `0` | 0 | 0.0000% | 0.000% | 0 | 0 |
-| `1/100` | 4,320,132 | 0.7618% | 1.519% | 10,908 | 16,447 |
-| `1/20` | 23,112,904 | **4.0754%** | 7.596% | 22,132 | 30,779 |
-| `1/10` | 50,583,976 | 8.9193% | 14.877% | 22,780 | 38,915 |
+| $0$ | 0 | 0.0000% | 0.000% | 0 | 0 |
+| $\frac{1}{100}$ | 4,320,132 | 0.7618% | 1.519% | 10,908 | 16,447 |
+| $\frac{1}{20}$ | 23,112,904 | **4.0754%** | 7.596% | 22,132 | 30,779 |
+| $\frac{1}{10}$ | 50,583,976 | 8.9193% | 14.877% | 22,780 | 38,915 |
 
-`H-065` registered acceptance below `0.20` and its kill line at `0.50`. `0.040754` is a
+`H-065` registered acceptance below $0.20$ and its kill line at $0.50$. $0.040754$ is a
 fifth of the first and an eighth of the second, so the hypothesis is accepted on its own
 threshold and the mass gap is not swamped.
 
 `epsilon = 0` is empty in every direction.
 No reachable cell carries mass exactly one, so `Condition 5` holds with a uniform margin
-of `1/4000` and `epsilon` here is genuinely a band above a floor rather than a
+of $1/4000$ and `epsilon` here is genuinely a band above a floor rather than a
 neighbourhood of a boundary the certificate touches.
 
 ## Why the reading is still “search”
@@ -154,8 +154,8 @@ The threshold `H-065` registered answers one question — is the tight set most 
 domain? — and four per cent answers it *no*. The cell asked a different one, and the
 count is the smallest part of the answer.
 
-**It has positive area.** Not a finite list of positions but `7.596` per cent of the
-centre domain, up to `19.77` per cent in a single direction, and still `1.519` per cent
+**It has positive area.** Not a finite list of positions but $7.596$ per cent of the
+centre domain, up to $19.77$ per cent in a single direction, and still $1.519$ per cent
 at the tenth of that margin.
 A positive-measure active set is a continuum of near-active covering constraints, not a
 set of them to enumerate.
@@ -165,7 +165,7 @@ domain’s own bounding box, exactly, in all 181 directions, at every non-empty 
 including `epsilon = 1/100`, where it is a hundredth of the domain by area and still
 reaches both extremes of both rotated coordinates.
 Nor is it a boundary skin: the deepest tight cell in the directions probed sits at
-normalised depth `0.41` to `0.43`, where `0.5` is the centre.
+normalised depth $0.41$ to $0.43$, where $0.5$ is the centre.
 
 **Its parts are regions.** 22,132 components at `epsilon = 1/20`, median about 554 cells
 each.
@@ -201,7 +201,7 @@ runs. Its second anchor is direction 0 of the retained rung, checked against
 `reduce_to_cells` rather than against the span reduction the census expands, so the two
 paths have to agree.
 A third test pins the margin’s meaning into the emitted record: the bookkeeping point
-that `epsilon` is a census margin and not the mass gap `M − n`, which at `381/100` is
+that `epsilon` is a census margin and not the mass gap $M - n$, which at $381/100$ is
 negative, is now a field a later reader cannot invert.
 
 <!-- This document follows common-doc-guidelines.md.

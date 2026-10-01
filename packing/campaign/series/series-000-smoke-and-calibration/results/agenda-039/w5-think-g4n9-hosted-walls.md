@@ -48,7 +48,7 @@ They do not change the streak: the latest completed pair is over budget.
 Walls remain advisory.
 `think-36n1` is closed.
 `think-g4n9` stays open.
-n=27 `525/100` was already on the core at 10:26 and finishes.
+n=27 $525/100$ was already on the core at 10:26 and finishes.
 Resume covering after 11:26Z on the same `rank-queue.yaml` with
 `--stop-at 2026-09-19T15:26:00Z`.
 

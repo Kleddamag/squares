@@ -31,9 +31,9 @@ reviewed evidence.
 Do not run the proposed unattended census yet.**
 
 The project has unusually strong raw material: a serious primary-source archive, an
-honest distinction between upper bounds and proofs, a useful `n = 1…100` scalar corpus,
-an exact verification of Trump’s `n = 11` construction, a defect log that records
-negative results, and the right high-level decomposition
+honest distinction between upper bounds and proofs, a useful $n = 1\ldots100$ scalar
+corpus, an exact verification of Trump’s $n = 11$ construction, a defect log that
+records negative results, and the right high-level decomposition
 
 ```
 proposer -> quench -> canonicalize -> independently verify -> observation log -> atlas
@@ -53,7 +53,7 @@ These are trust-boundary defects, not polish defects.
 
 The research program also overstates three premises.
 The angle in Trump’s packing is not an algebraic number; rigidity does not imply a small
-basin of attraction; and grid optimality for `m² - 3` is known only for the proved
+basin of attraction; and grid optimality for $m^2 - 3$ is known only for the proved
 finite cases, not as a general family.
 Those errors are especially important because they determine which experiments the
 current plan promotes.
@@ -89,8 +89,8 @@ It covered:
 
 - every research report, review, active spec, handoff, postmortem, hypothesis,
   experiment artifact, and generated synopsis under `explorations/packing/`;
-- the `n = 1…100` frontier artifacts, strategy catalogues, source-availability record,
-  local paper archive, and the current public record catalogue;
+- the $n = 1\ldots100$ frontier artifacts, strategy catalogues, source-availability
+  record, local paper archive, and the current public record catalogue;
 - the exact field arithmetic and verifier, Rust annealer, LP quench, canonicalizer,
   atlas, runner, ledger, schema layer, regression checks, soundness perimeter, and full
   gate;
@@ -150,14 +150,14 @@ prove adjacency, metric distance, or connectedness in configuration space.
 | `test.sh --strict` | Exits non-zero because `README.md` omits the new atlas from the layout tree. The gate runs `canonical_check.py`, but does not run `atlas_check.py` or `tools/regression_test.py`. Its unfrozen `uv run` calls also rewrite the tracked `uv.lock` under this environment. |
 | `runner.py preflight` | Reports `PREFLIGHT PASSED`. An adversarial archive containing five rows with `overlap: 0.001` is nevertheless rebuilt by `cells_from` and receives `unresolved; clauses 1–4 pass`. `read_lines` also writes the invalid row before raising its guard. |
 | Canonical checker | The shipped checker passes. A valid four-square configuration and its vertical reflection have the same geometric key but contact certificates `8dc5…` and `dd8f…`. |
-| Angle-class stability | `[0, 0.75e-6, 1.5e-6]` groups as sizes `[2,1]`; the permutation `[0.75e-6,0,1.5e-6]` groups as `[3]`. |
-| Canonical worst case | The empty, single-colour graph takes 0.098 s at `n = 7`, 0.818 s at `n = 8`, and 7.91 s at `n = 9`; the claim that exhaustive individualization is cheap through `n = 12` is false. |
-| Atlas checker and invariants | The shipped `n = 5` census has only 1 of 12 quenches marked converged but records 12 basins and misses the known optimum. Independently, `Atlas(5)` accepts an `n = 1` key and atlases with `quantum = 1e-3` and `1e-6` merge without refusal. |
+| Angle-class stability | `[0, 0.75e-6, 1.5e-6]` groups as sizes $[2,1]$; the permutation `[0.75e-6,0,1.5e-6]` groups as $[3]$. |
+| Canonical worst case | The empty, single-colour graph takes 0.098 s at $n = 7$, 0.818 s at $n = 8$, and 7.91 s at $n = 9$; the claim that exhaustive individualization is cheap through $n = 12$ is false. |
+| Atlas checker and invariants | The shipped $n = 5$ census has only 1 of 12 quenches marked converged but records 12 basins and misses the known optimum. Independently, `Atlas(5)` accepts an $n = 1$ key and atlases with `quantum = 1e-3` and `1e-6` merge without refusal. |
 | Quantization boundary | Two one-square configurations 2e-12 apart, straddling a 1e-6 rounding boundary, report `same-arrangement-different-metric`; `Atlas.add` stores both as separate basins. |
 | Fixed-angle objective | One fixed three-angle vector, evaluated from eight starting centre sets, returns four distinct sides: 2.473119696597, 2.484453371849, 2.614379463537, and 2.628899625295. Fixed angles alone do not define one objective value. |
 | Generic exact field | `NumberField([1,-3,2], (0,7/5))` accepts the reducible polynomial whose isolated root is 1, but `(alpha - 1).is_zero()` returns false. The advertised equality and sign completeness needs the unverified minimal-polynomial precondition. |
-| `n = 17` discrepancy | The stored degree-18 polynomial has root `4.6755300936045509516…`. The catalogue decimal is within 9.52e-16; the paper transcription `4.6755300960455` is 2.44e-9 away and gives polynomial residual 56.9. The corpus’s “unresolved” label can be narrowed to a source typo or different equation, not an equal ambiguity. |
-| Frontier gap ordering | The three smallest open scalar gaps in the repository are `n = 97` (0.05573), `78` (0.06275), and `61` (0.07180); `n = 11` is fourth (0.08823). |
+| $n = 17$ discrepancy | The stored degree-18 polynomial has root $4.6755300936045509516\ldots$. The catalogue decimal is within 9.52e-16; the paper transcription $4.6755300960455$ is 2.44e-9 away and gives polynomial residual 56.9. The corpus’s “unresolved” label can be narrowed to a source typo or different equation, not an equal ambiguity. |
+| Frontier gap ordering | The three smallest open scalar gaps in the repository are $n = 97$ (0.05573), $78$ (0.06275), and $61$ (0.07180); $n = 11$ is fourth (0.08823). |
 
 The Java-runtime warning printed by this machine’s environment was unrelated to the
 Python checks and did not affect their results.
@@ -174,24 +174,24 @@ PR #14 added three commits after the initial review:
 - `5b1ae65` wires per-step timing into the gate.
 
 The D-030 change is a substantive repair.
-The same `n=5` atlas fixture that initially reported one convergence in twelve now
+The same $n=5$ atlas fixture that initially reported one convergence in twelve now
 converges on all six current proposals at its declared budget.
-The circular quantizer also closes the `0`/`π/2` seam.
+The circular quantizer also closes the $0$/`π/2` seam.
 Neither change repairs the atlas contract itself: the new golden contains one
-non-converged `n=3` endpoint among four proposals, stores it as a basin, and passes
+non-converged $n=3$ endpoint among four proposals, stores it as a basin, and passes
 because the guard accepts any census with at least half its quenches marked converged.
 The checker also printed ten proposals after a six-proposal census because its final
 summary included four synthetic deduplication re-offers; that bookkeeping error is fixed
 and recorded as D-037 on the stack.
 
 The new golden exposed a second trust problem.
-After rebuilding the checked-in Rust engine, its committed seed-7 `n=10` ladder did not
-reproduce: annealing started `0.077126752369` above the proved value and the quench
-ended at `(8 + 5√2)/4`, still `0.06066` high, rather than at `s(10)`. The `n=3` and
-`n=5` map also drifted.
+After rebuilding the checked-in Rust engine, its committed seed-7 $n=10$ ladder did not
+reproduce: annealing started $0.077126752369$ above the proved value and the quench
+ended at $(8 + 5\sqrt{2})/4$, still $0.06066$ high, rather than at $s(10)$. The $n=3$
+and $n=5$ map also drifted.
 The tool nevertheless describes its fixed seeds as reproducible and, when run
 standalone, consumed whichever pre-existing release binary happened to be present.
-This is F-16, not evidence against the known `n=10` optimum.
+This is F-16, not evidence against the known $n=10$ optimum.
 
 Reviewing the new terminator found D-036: `_free_sweep` returned the same tuple after a
 deadline break as after examining every coordinate, so `quench_bracket` could report
@@ -205,13 +205,13 @@ The updated dispositions are therefore:
 | Finding | Disposition at `5b1ae65` plus the stacked fixes |
 | --- | --- |
 | F-05 | Partially repaired: both keys are D4- and seam-invariant on the fixtures. Order-dependent angle clustering, exact two-hash equality, quantization splits, and factorial canonical labeling remain. |
-| F-07 | The D-030 cause is fixed for the `n=5` fixture, but non-converged endpoints are still counted and event order is still absent. Remains P0. |
+| F-07 | The D-030 cause is fixed for the $n=5$ fixture, but non-converged endpoints are still counted and event order is still absent. Remains P0. |
 | F-10 | Deadline propagation is fixed as D-036. The result still certifies only finite coordinate probes, not a coupled local optimum. |
 | F-15 | Atlas, golden, regression, and timing steps are now wired. The raw updated branch’s golden is red against its own source-built engine, the gate costs about eight minutes, and no PR CI exists. |
 | F-16 | New P0: the golden mixes oracle checks with exact characterization data and was not hermetic or reproducible as committed. Partially repaired on the stack; the atlas promotion policy remains open. |
 
 No research-remediation bead is closed by these changes.
-The fix narrows the blocker from “the cold quench demonstrably cannot arrive at `n=5`”
+The fix narrows the blocker from “the cold quench demonstrably cannot arrive at $n=5$”
 to “the project still lacks a sound definition and provenance-complete record of what
 may be counted as a basin.”
 
@@ -220,7 +220,7 @@ may be counted as a basin.”
 PR #14 advanced again during final validation:
 
 - `64ade69` splits the golden into a millisecond stored-file audit and an explicit deep
-  regeneration, and replaces the expensive atlas census with one real `n=4` smoke quench
+  regeneration, and replaces the expensive atlas census with one real $n=4$ smoke quench
   plus synthetic store keys; and
 - `c412b8c` records the seam defect as D-031 and the previously fixed but unguarded
   claim/release defects as D-032 and D-033, then derives another synopsis count from the
@@ -242,7 +242,7 @@ The accompanying explanation also calls the seven single-seed convergence ladder
 “census-scale evidence.”
 It is not: those starts are deliberately selected to lie in the target basins.
 The fixed-seed case maps are the census-shaped experiment, and they still admit and
-count a non-converged `n=3` endpoint.
+count a non-converged $n=3$ endpoint.
 The stacked branch makes strict imply deep, source-builds the engine for every
 deep/update run, checks stored count identities on the fast path, and feeds the atlas
 one explicit `converged=False` offer so the counter’s false branch is exercised.
@@ -281,30 +281,30 @@ F-18 through F-21 below now do so.
 
 | PR ambiguity | Answer | Consequence now | Executable resolution | Bead |
 | --- | --- | --- | --- | --- |
-| Is a basin well-defined at small `n`? | Not under the current two-hash endpoint definition. `n=3` gives an exact positive-dimensional counterexample. | Small-`n` “distinct basin” counts are quantization-dependent endpoint-cluster counts. | Detect rank deficiency, continue terminal stationary sets, and count connected components under a declared quench and quotient. | `think-0yo9` |
+| Is a basin well-defined at small $n$? | Not under the current two-hash endpoint definition. $n=3$ gives an exact positive-dimensional counterexample. | Small-`n` “distinct basin” counts are quantization-dependent endpoint-cluster counts. | Detect rank deficiency, continue terminal stationary sets, and count connected components under a declared quench and quotient. | `think-0yo9` |
 | What are the unrecognised singletons? | The stored evidence cannot decide. “Higher degree” and “not converged” are only two of at least six live classes. | They are unresolved endpoints, not established local optima or basins. | Preserve poses and active sets; run a precision/budget ladder, directional/KKT tests, component detection, and exact promotion. | `think-aans` |
 | Does D-021’s `1e-11` floor merge basins? | D-021 bounds error in the scalar side, not distance between configurations or terminal components. | `closest_pair` cannot validate identity; equal-side rows may differ and one component may contain many keys. | Calibrate pose, topology, and interval separation across tolerance sweeps; carry an explicit ambiguity graph and count interval. | `think-3szr` |
 | Is uniform multistart the right null? | It is one useful baseline, not a canonical or distribution-free null. | Every frequency and rarity statement is conditional on an incompletely recorded proposer/quench regime. | Benchmark several named proposal measures at equal pair tests and report each conditional probability with uncertainty. | `think-apwt` |
 
-The description’s twelve-start `n=5` result is also not a durable result at the current
+The description’s twelve-start $n=5$ result is also not a durable result at the current
 head.
 No checked-in event or atlas artifact preserves those twelve poses, proposal order,
-or regime. The current raw-head golden instead contains six `n=5` proposals, five rows,
+or regime. The current raw-head golden instead contains six $n=5$ proposals, five rows,
 and `found_optimum: false`; the source-built stacked golden contains six proposals, six
 rows, and also misses the optimum.
-Even if the historical `1/12` versus `4/12` counts are accepted, the point ratio is
-`0.25`, not H-012’s registered “below `0.1`” threshold, and exact 95% binomial intervals
-for the two marginal probabilities are approximately `[0.0021, 0.3848]` and
-`[0.0992, 0.6511]`. That sample is a useful smoke observation, not evidence for the
-rarity premise, and it does not test H-012’s registered `n=10,11` sweep.
+Even if the historical $1/12$ versus $4/12$ counts are accepted, the point ratio is
+$0.25$, not H-012’s registered “below $0.1$” threshold, and exact 95% binomial intervals
+for the two marginal probabilities are approximately $[0.0021, 0.3848]$ and
+$[0.0992, 0.6511]$. That sample is a useful smoke observation, not evidence for the
+rarity premise, and it does not test H-012’s registered $n=10,11$ sweep.
 
 The final `f9f119a` source delta correctly elevated terminal isolation into D-034 and
-added the exact `n=3` sliding-family witness.
-It also made one new rank-free claim: the two `n=5` rows were called one connected
+added the exact $n=3$ sliding-family witness.
+It also made one new rank-free claim: the two $n=5$ rows were called one connected
 five-dimensional family solely from 11 raw contacts versus 16 coordinates.
 Fixed-cell LP degeneracy is measurable, but it does not alone determine the full
 angle-moving terminal manifold.
-The living docs now retain the exact `n=3` proof and mark `n=5` unresolved pending
+The living docs now retain the exact $n=3$ proof and mark $n=5$ unresolved pending
 active-matrix rank, full Jacobian, feasible-null-direction, and continuation evidence.
 
 The ambiguity delta and its adjacent documentation errors are now durable logbook
@@ -316,7 +316,7 @@ entries:
 | D-039 | F-20: D-021’s side floor was generalized into component resolution | Outstanding on `think-3szr` |
 | D-040 | F-21: rarity lacked a durable, proposer-conditioned `P/Q/E` estimand | Outstanding on `think-apwt` |
 | D-041 | F-13/F-18: contact counts and a one-angle kink were used as rank, rigidity, dimension, and connectivity proofs | Rank-free prose fixed; certification outstanding on `think-1s0h` |
-| D-042, D-062 | F-14: the open `n=12` case was treated as a known-answer negative control, and the first correction missed the executable runner | Active docs and artifacts corrected; the not-below guard now uses proved `n=16`, with a mutation control for recurrence |
+| D-042, D-062 | F-14: the open $n=12$ case was treated as a known-answer negative control, and the first correction missed the executable runner | Active docs and artifacts corrected; the not-below guard now uses proved $n=16$, with a mutation control for recurrence |
 
 ## Fourth reassessment: reset to the tight research loop
 
@@ -376,10 +376,10 @@ per-stage attribution remain open work on `think-xzew`.
 - **The project records defects and negative results unusually well.** That practice
   should extend to invalid rows, non-convergence, algebraic-recognition failures, and
   disagreements between independent implementations.
-- **`n = 5`, `10`, `16`, and `17` are a useful calibration ladder.** They test a
+- **$n = 5$, $10$, $16$, and $17$ are a useful calibration ladder.** They test a
   non-trivial 45° mechanism, a larger proved 45° case, a proved grid that is a true
   not-below control, and an oblique-record mechanism.
-  `n = 12` should remain a target.
+  $n = 12$ should remain a target.
 
 ## Technical findings
 
@@ -389,7 +389,7 @@ per-stage attribution remain open work on `think-xzew`.
 archive at lines 315–322 *before* parsing or checking it.
 `run` catches `GuardError` at lines 779–785 and then calls `record` unconditionally.
 More seriously, `record` rebuilds cells through `cells_from`, lines 393–412, which reads
-only `n`, `seed`, and `best_side`; it does not re-run any of the JSON, overlap,
+only $n$, `seed`, and `best_side`; it does not re-run any of the JSON, overlap,
 membership, or completeness guards.
 
 The counterexample is direct.
@@ -423,7 +423,7 @@ The harness then checks exact equality to the value zero *reported by the same c
 proposed the configuration*. It cannot recompute containment or separation.
 The PR’s own quench driver illustrates the loss:
 [`run_quench.py:78–120`](../../../packing/cases/campaign_smoke/quench_experiment.py)
-emits side, convergence, counts, and timings but omits `x`, `y`, and `theta`.
+emits side, convergence, counts, and timings but omits $x$, $y$, and `theta`.
 
 The provenance fields repeat the same mistake.
 The claim stub hardcodes `selftest_passed: true` at `runner.py:221–240`; the terminal
@@ -549,17 +549,17 @@ equivalence proof. Test every D4 image and random permutation for **both** keys.
 `_certificate` at `canonical.py:147–177` exhaustively individualizes ambiguous colour
 classes without memoization, automorphism pruning, or a graph-canonicalization backend.
 The docstring calls it cheap for `n <= 12`. The empty graph benchmark above grows from
-0.098 seconds at `n = 7` to 7.91 seconds at `n = 9`. Sparse contact graphs and repeated
+0.098 seconds at $n = 7$ to 7.91 seconds at $n = 9$. Sparse contact graphs and repeated
 attributes are not pathological for early or non-converged packing endpoints; they are
 exactly what the atlas will receive.
 
-At census scale, this can dominate the quench, stall `n = 10`, and make a failure look
+At census scale, this can dominate the quench, stall $n = 10$, and make a failure look
 like landscape complexity.
 
 **Required repair:** use a proven canonical-label implementation such as nauty/bliss or
 an equivalent maintained backend, or implement automorphism-aware memoization with
 special cases for empty and regular colour classes.
-Publish adversarial timing floors through at least `n = 100`; the fast geometric key may
+Publish adversarial timing floors through at least $n = 100$; the fast geometric key may
 screen most cases, but the slow path must have a bounded operating envelope.
 
 **Bead:** `think-siui`.
@@ -569,14 +569,14 @@ screen most cases, but the slow path must have a bounded operating envelope.
 The atlas class calls every row “one distinct local optimum,” but
 [`Atlas.add:82–116`](../../../packing/src/sqpack/research/atlas.py) stores the endpoint
 even when `converged=False`. Its comments explicitly defend that choice.
-The observed result at `n = 5`—11 sweep-limit stops, one convergence, 12 rows, and no
+The observed result at $n = 5$—11 sweep-limit stops, one convergence, 12 rows, and no
 known optimum—is the consequence.
 The result counts termination artifacts rather than basins.
 
 At the updated PR head, D-030 repairs that particular cold-start failure: the revised
-`n=5` fixture converges on all six proposals.
+$n=5$ fixture converges on all six proposals.
 The contract still admits the same error.
-The new golden’s `n=3` case has only three convergences in four proposals, stores the
+The new golden’s $n=3$ case has only three convergences in four proposals, stores the
 fourth stopping point among its three reported basins, and passes a majority threshold.
 A detector that permits up to half its sample to be the object it was introduced to
 exclude does not make basin counts authoritative.
@@ -608,13 +608,13 @@ the curve is regenerated—not remembered—from the event log.
 
 ### F-08 (P1): atlas frequencies have no experimental regime or merge provenance
 
-An atlas header contains `n`, quantization, contact tolerance, proposal count, and
+An atlas header contains $n$, quantization, contact tolerance, proposal count, and
 aggregate rows. It omits proposer distribution and version, quench definition and
 version, seed block, engine commit, budget, host or numeric backend, validity tier, run
 ids, and shard identity.
-Yet `merge` at `atlas.py:208–225` adds frequencies after checking only `n`. Incompatible
+Yet `merge` at `atlas.py:208–225` adds frequencies after checking only $n$. Incompatible
 quantization regimes merge; self-merge doubles counts; the same shard can be merged
-twice; `Atlas(5)` accepts a key whose own `n` is 1; and `load` trusts all counts and
+twice; `Atlas(5)` accepts a key whose own $n$ is 1; and `load` trusts all counts and
 identities without schema validation.
 
 Frequency is meaningful only conditional on a proposal distribution and quench map.
@@ -626,7 +626,7 @@ checker manually points at the repository schema instead of validating through t
 artifact’s declaration.
 
 **Required repair:** give every observation a regime digest and shard id; enforce
-schema, `n`, identity, count, and regime invariants on add/load/save/merge; make merge
+schema, $n$, identity, count, and regime invariants on add/load/save/merge; make merge
 an idempotent union of observation ids; and derive frequency tables by regime.
 The saved schema reference must resolve from every supported output location.
 
@@ -712,7 +712,7 @@ A reducible polynomial can pass, after which a non-zero reduced representative c
 vanish at the selected root.
 Equality is then wrong and sign refinement may not terminate.
 
-The counterexample `P(x)=(x-1)(x-2)` on `(0,7/5)` selects the root 1, but the quotient
+The counterexample $P(x)=(x-1)(x-2)$ on $(0,7/5)$ selects the root 1, but the quotient
 representation reports `alpha - 1 != 0`. The rational-root check in `_bisect` is too
 late and does not establish irreducibility or root uniqueness.
 
@@ -741,7 +741,7 @@ comparisons remain impossible.
 The chain initializes its retained best to the trivial grid at
 [`search.rs:197–224`](../../../packing/sqsearch/src/search.rs) and stores only an
 improving valid best.
-Therefore exp-011 returning exactly side 5 at `n = 17` means only that no better valid
+Therefore exp-011 returning exactly side 5 at $n = 17$ means only that no better valid
 candidate was retained.
 It does **not** show that trajectories never left the grid basin, never visited oblique
 configurations, or are structurally blind “at any n.” The event stream needed to
@@ -764,20 +764,21 @@ fallback best.
 
 **The angle is not algebraic.**
 [`research-2026-08-22-packing-11-unit-squares.md:200–207`](../research/research-2026-08-22-packing-11-unit-squares.md)
-says algebraic `sec(a)` makes the angle itself algebraic of degree 8. In radians, a
-non-zero algebraic `a` would make `exp(i a)` transcendental by Lindemann–Weierstrass;
-algebraic `cos(a)` would make the same number a root of `z² - 2 cos(a) z + 1`, hence
-algebraic. Therefore `a` is transcendental.
-`cos(a)`, `sec(a)`, `tan(a/2)`, and `s` are algebraic; the angle is not.
+says algebraic $\sec(a)$ makes the angle itself algebraic of degree 8. In radians, a
+non-zero algebraic $a$ would make $\exp(i a)$ transcendental by Lindemann–Weierstrass;
+algebraic $\cos(a)$ would make the same number a root of $z^2 - 2 \cos(a) z + 1$, hence
+algebraic. Therefore $a$ is transcendental.
+$\cos(a)$, $\sec(a)$, $\tan(a/2)$, and $s$ are algebraic; the angle is not.
 
-**`m² - 3` is not a proved general grid family.**
+**$m^2 - 3$ is not a proved general grid family.**
 [`search-strategies.yaml:11–17`](../../../packing/frontier/search-strategies.yaml) and
-its generated table say the grid is optimal for all `m²-3`. Nagamochi proves the general
-families `m²`, `m²-1`, and `m²-2` in
+its generated table say the grid is optimal for all $m^2-3$. Nagamochi proves the
+general families $m^2$, $m^2-1$, and $m^2-2$ in
 [Packing Unit Squares in a Rectangle](https://www.combinatorics.org/ojs/index.php/eljc/article/view/v12i1r37).
-The repository’s own research correctly states that `m²-3` is known for `m=3…7`; Bentz’s
+The repository’s own research correctly states that $m^2-3$ is known for $m=3\ldots7$;
+Bentz’s
 [2010 paper](https://www.combinatorics.org/ojs/index.php/eljc/article/view/v17i1r126)
-supplies `m=4,7`. The cases `m=8,9,10`, namely `n=61,78,97`, remain open in the corpus.
+supplies $m=4,7$. The cases $m=8,9,10$, namely $n=61,78,97$, remain open in the corpus.
 
 **Rigidity does not imply a rare attraction basin.** Rigidity is local isolation of a
 feasible/contact structure.
@@ -787,13 +788,13 @@ be difficult for a particular proposer to enter.
 The search-philosophy report’s lines 92–100 briefly acknowledge this distinction, but
 its heading and conclusions, the main research report at lines 1686–1691, H-012, H-018,
 and the idea board turn the correlation into a consequence.
-Exp-005 itself found return behavior out to perturbation `0.1`, contradicting “no
+Exp-005 itself found return behavior out to perturbation $0.1$, contradicting “no
 attracting neighbourhood.”
 
 **Required repair:** correct the angle statement; qualify the grid table; and reframe
 rarity as a proposer-, start-distribution-, and quench-specific empirical hypothesis.
 Contact count, rigidity, algebraic degree, and measured entry probability may be tested
-for association, with held-out `n`, but no causal implication should be presumed.
+for association, with held-out $n$, but no causal implication should be presumed.
 
 **Beads:** `think-zt29` and `think-3b3s`.
 
@@ -803,30 +804,30 @@ H-011 promises a “near-complete atlas” with “exact side lengths.”
 A discovery curve that looks flat does not establish near-completeness when the support
 is unknown, and the atlas stores finite-precision floats, not exact reconstructions.
 It also does not persist the curve.
-The sweep is `n=5…10`.
+The sweep is $n=5\ldots10$.
 
-H-012 says it is a query over H-011 but requires both `n=10` and `n=11`; H-011 produces
-no `n=11` data. Frequencies from one finite sample need uncertainty and a definition of
+H-012 says it is a query over H-011 but requires both $n=10$ and $n=11$; H-011 produces
+no $n=11$ data. Frequencies from one finite sample need uncertainty and a definition of
 the sampling measure.
 Good–Turing coverage, Chao-style unseen-species estimates, or capture–recapture across
 independent proposer/quench regimes are appropriate; “plateau by n=8” alone is not.
 
 H-020’s artifact title says “cannot find an oblique record, at any n,” while its actual
-claim is one method, one budget, five seeds, and `n=17`. Failure to reach the criterion
+claim is one method, one budget, five seeds, and $n=17$. Failure to reach the criterion
 refutes that scoped positive claim.
-It does not prove blindness at all `n` or at all budgets.
+It does not prove blindness at all $n$ or at all budgets.
 Canonicalizing 40 unquenched chain outputs into many float keys likewise does not
 establish one funnel.
 
-Finally, `n=12` is repeatedly encoded as a negative control even though `s(12)=4` is
+Finally, $n=12$ is repeatedly encoded as a negative control even though $s(12)=4$ is
 open and merely believed.
 A genuine sub-4 packing would be censored as a bug by `CONTROLS` and the schema.
-The proved `n=16` grid is the correct not-below-4 control; `n=12` is an upper-bound and
+The proved $n=16$ grid is the correct not-below-4 control; $n=12$ is an upper-bound and
 lower-bound target.
 
 **Required repair:** preregister estimators, confidence intervals, independent
 replicates, and censoring; split exact reconstruction from float census; extend H-011 or
-give H-012 its own `n=11` experiment; scope H-020’s conclusion; and replace `n=12` with
+give H-012 its own $n=11$ experiment; scope H-020’s conclusion; and replace $n=12$ with
 a proved grid control.
 
 **Beads:** `think-rrht`, `think-zt29`, `think-iwlr`, and `think-3b3s`.
@@ -846,11 +847,11 @@ the PR presents the handover as ready.
 
 Other concrete drift found in the same pass:
 
-- the overnight plan promises a check on “two genuinely distinct `n=5` optima,” but the
-  canonical checker compares Trump’s `n=11` packing with an `n=16` grid and an archived
-  wrong `n=11` basin;
-- `SYNOPSIS.md` calls the `n=11` gap the smallest open gap at `n<=100`; it is fourth,
-  after `n=97,78,61`;
+- the overnight plan promises a check on “two genuinely distinct $n=5$ optima,” but the
+  canonical checker compares Trump’s $n=11$ packing with an $n=16$ grid and an archived
+  wrong $n=11$ basin;
+- `SYNOPSIS.md` calls the $n=11$ gap the smallest open gap at `n<=100`; it is fourth,
+  after $n=97,78,61$;
 - the handoff says ten rounds while exp-011 exists, and the synopsis still says the
   atlas is unbuilt;
 - the strict gate invokes project tools through unfrozen `uv run` commands and rewrites
@@ -868,7 +869,7 @@ The updated PR head wires the atlas and golden checks and prints step timings; t
 stacked branch wires the historical regressions and freezes dependency resolution.
 That resolves the missing-command portion of this finding.
 It also makes the next failure visible: the source-built golden is red against its
-committed `n=10` row, the full gate is reported at roughly 480 seconds, and GitHub still
+committed $n=10$ row, the full gate is reported at roughly 480 seconds, and GitHub still
 reports no PR checks.
 Wiring a red or impractically slow check is evidence, not completion.
 
@@ -892,9 +893,9 @@ A legitimate proposer or quench improvement therefore fails the gate in exactly 
 way as a mathematical regression.
 
 The committed file did not reproduce from the checked-in engine.
-After an explicit release build, fixed seed 7 at `n=10` annealed to gap
-`+0.077126752369` and quenched to `(8 + 5√2)/4`, gap `+0.06066`; the committed row says
-gap `+0.021003996488` followed by the proved optimum.
+After an explicit release build, fixed seed 7 at $n=10$ annealed to gap
+$+0.077126752369$ and quenched to $(8 + 5\sqrt{2})/4$, gap $+0.06066$; the committed row
+says gap $+0.021003996488$ followed by the proved optimum.
 The standalone command did not build the engine, so an untracked stale binary could
 supply its supposedly fixed inputs.
 The current source is itself deterministic: two direct runs produced byte-identical
@@ -942,7 +943,7 @@ a YAML row saying `valid: true` is not independent validation.
 The file contains no pose with which the fast path could establish that claim.
 
 At the same time, [`tools/atlas_check.py`](../../../packing/devtools/check_atlas.py)
-replaced its real six-start `n=5` census with one cheap real `n=4` quench and five
+replaced its real six-start $n=5$ census with one cheap real $n=4$ quench and five
 synthetic keys.
 All six offers were passed with `converged=True`; the check then asserted
 that the non-convergence counter was zero and described this as testing that the store
@@ -967,9 +968,9 @@ marker disappear.
 
 ### F-18 (P0): endpoint hashes do not define basins on non-isolated terminal sets
 
-The PR description is right that the `n=3` optimum has slack, but the failure is already
+The PR description is right that the $n=3$ optimum has slack, but the failure is already
 constructive rather than merely possible.
-For every `t` in `[1/2,3/2]`, the three axis-aligned squares with centres
+For every $t$ in $[1/2,3/2]$, the three axis-aligned squares with centres
 
 ```
 (1/2, 1/2), (3/2, 1/2), (t, 3/2)
@@ -977,9 +978,9 @@ For every `t` in `[1/2,3/2]`, the three axis-aligned squares with centres
 
 form a valid packing in a side-2 container.
 The top square slides continuously while the optimum side remains fixed.
-Running the current canonicalizer at `t = 0.50, 0.75, 1.00, 1.25, 1.50` produced one
+Running the current canonicalizer at $t = 0.50, 0.75, 1.00, 1.25, 1.50$ produced one
 contact certificate, `af4ca4659c8fc659a37907833f922899`, but three geometric keys; D4
-identifies `t` with `2-t` and does not identify the remaining continuum.
+identifies $t$ with $2-t$ and does not identify the remaining continuum.
 Because [`Atlas.add`](../../../packing/src/sqpack/research/atlas.py) merges only when
 both hashes agree, a finer geometric quantum creates more rows from the same connected
 optimal family.
@@ -993,11 +994,11 @@ The module-level statement that a basin is “the preimage of one quench endpoin
 the very discreteness that fails here.
 
 The mathematical object has to be declared before it can be counted.
-Let `P` be a proposal measure, `Q` a fully specified deterministic quench including
-tie-breaking and termination, and `E` an equivalence on terminal states after
+Let $P$ be a proposal measure, $Q$ a fully specified deterministic quench including
+tie-breaking and termination, and $E$ an equivalence on terminal states after
 quotienting square relabelling, each square’s quarter-turn symmetry, and container D4.
-An attraction probability is then the `P`-measure of the preimage under `Q` of one
-`E`-class. For isolated minima, `E` may reduce to certified geometric equality.
+An attraction probability is then the $P$-measure of the preimage under $Q$ of one
+$E$-class. For isolated minima, $E$ may reduce to certified geometric equality.
 For a non-isolated stationary set, it should identify a connected terminal component or
 stratum, not each sampled point.
 
@@ -1008,14 +1009,14 @@ Use active-set continuation or a semialgebraic component method to join boundary
 whose contact graphs change without leaving the terminal set.
 Until that exists, label the output `endpoint clusters`; exclude non-isolated cases from
 basin-count and saturation claims.
-The exact `n=3` family above is the minimum regression: changing the geometric quantum
+The exact $n=3$ family above is the minimum regression: changing the geometric quantum
 must not change the reported number of terminal components.
 
 **Beads:** `think-0yo9`, under `think-siui`, and `think-31k1`.
 
 ### F-19 (P1): the unrecognised singleton question is not identifiable from the stored artifact
 
-The PR offers two explanations for the unrecognised `n=5` singletons: legitimate
+The PR offers two explanations for the unrecognised $n=5$ singletons: legitimate
 higher-degree optima or incomplete convergence.
 Both are possible, but the dichotomy is incomplete.
 An unrecognised row may also be:
@@ -1066,9 +1067,9 @@ The current system nevertheless makes that inference in three places:
   the same interpretation.
 
 The project’s own data refutes the premise.
-The stacked `n=5` golden contains two distinct rows at the identical serialized side
-`2.767766953`, while the `n=3` family in F-18 contains continuously many configurations
-with side exactly `2`. Independently, the identity pipeline uses a `1e-6`
+The stacked $n=5$ golden contains two distinct rows at the identical serialized side
+$2.767766953$, while the $n=3$ family in F-18 contains continuously many configurations
+with side exactly $2$. Independently, the identity pipeline uses a `1e-6`
 coordinate/angle quantum and a `1e-9` contact tolerance, neither derived from D-021. A
 scalar objective gap therefore cannot calibrate a high-dimensional equivalence relation.
 
@@ -1086,8 +1087,8 @@ component counts until interval separation or continuation resolves it.
 ### F-21 (P0): “record-basin rarity” has no distribution-free estimand
 
 A basin frequency is conditional on an entire measurement regime.
-For proposal measure `P`, deterministic quench `Q`, and terminal equivalence `E`, the
-frequency estimates the probability that `Q` maps a `P`-draw into one `E`-class.
+For proposal measure $P$, deterministic quench $Q$, and terminal equivalence $E$, the
+frequency estimates the probability that $Q$ maps a $P$-draw into one $E$-class.
 Change the coordinate parameterization, initial container size, feasibility
 conditioning, repair operator, annealing schedule, quench tie-break, or equivalence
 relation and the probability changes.
@@ -1096,21 +1097,21 @@ disappear.
 
 The current proposer samples centres uniformly from `[0.5, side-0.5]`, angles uniformly
 from one quarter turn, and uses an initial side selected from the proved value plus
-`0.6` or from `ceil(sqrt(n)) + 0.6`. It permits overlap and can place rotated squares
+$0.6$ or from `ceil(sqrt(n)) + 0.6`. It permits overlap and can place rotated squares
 through the wall. That is a legitimate raw-coordinate baseline once versioned, but it is
 not invariant to parameterization and is not the landscape’s unique null.
 The atlas does not store its definition or digest, and H-012’s `regime` says only “same
 multistart distribution and polish backend.”
 Merging frequencies across a changed box or quench would silently change the estimand.
 
-The PR description’s `n=5` sample cannot carry the stronger inference.
-Its `1/12` record-to-`4/12` modal ratio is `0.25`, above H-012’s registered `0.1` accept
-threshold; twelve draws give broad uncertainty; and H-012 is registered at `n=10,11`,
-not `n=5`. More importantly, those twelve events are not preserved at the current head.
+The PR description’s $n=5$ sample cannot carry the stronger inference.
+Its $1/12$ record-to-`4/12` modal ratio is $0.25$, above H-012’s registered $0.1$ accept
+threshold; twelve draws give broad uncertainty; and H-012 is registered at $n=10,11$,
+not $n=5$. More importantly, those twelve events are not preserved at the current head.
 
 **Required repair:** retain raw uniform multistart as a named baseline arm, not “the
 null.” Version the proposal density, initial-side rule, feasibility/repair rule,
-random-number generator, `Q`, and `E` in every event and atlas shard.
+random-number generator, $Q$, and $E$ in every event and atlas shard.
 At equal exact pair-test budgets, compare raw uniform, feasible-conditioned or repaired,
 space-filling, record-neighbour, continuation/surgery, and annealer-endpoint measures.
 Report per-regime frequencies, exact or weighted confidence intervals, censoring, and
@@ -1124,20 +1125,20 @@ frequency ratio.
 ### F-22 (P1): living operator and hypothesis artifacts retained superseded campaign state
 
 Two active entry points contradicted the corrected record.
-`run_baseline.sh` still called open `n=12` a negative control and instructed an operator
+`run_baseline.sh` still called open $n=12$ a negative control and instructed an operator
 to treat a side below 4 as a bug.
 H-002 still said its quench instrument was unbuilt after exp-006 through exp-009 had
 built and measured it.
 Either error could make an arriving agent discard a discovery or repeat completed work.
 The script now routes a valid sub-4 candidate to promotion, and H-002 preserves both the
-refuted universal claim and the measured local success on the tested `n=5` and `n=10`
+refuted universal claim and the measured local success on the tested $n=5$ and $n=10$
 starts.
 
 **Beads:** `think-xaa7` (D-066) and `think-lexp` (D-069).
 
 ### F-23 (P1): the campaign omitted a terminal round and mislabeled wall time as CPU time
 
-The five retained exp-011 summaries total `397.474` seconds, but the terminal artifact
+The five retained exp-011 summaries total $397.474$ seconds, but the terminal artifact
 had no `effort.wall_seconds`. The generated total therefore covered ten of eleven
 rounds. The ledger then called its sum of elapsed wall seconds CPU time, although no
 processor time was measured.
@@ -1224,7 +1225,7 @@ unresolved.
 
 ### F-30 (P1): six endpoint rows from six proposals did not identify the cause
 
-PR #16 correctly observed six converged `n=5` terminators and six endpoint-key rows,
+PR #16 correctly observed six converged $n=5$ terminators and six endpoint-key rows,
 then concluded that identity was too fine rather than the landscape being rich.
 The sample establishes only no observed saturation.
 Terminal diversity, insufficient stationarity, quench sensitivity, identity instability,
@@ -1252,7 +1253,7 @@ feasible optimal family.
 The objective level, unilateral constraints, feasible tangent cone, higher-order
 obstruction, and continuation still matter.
 The handoff also retained an implication from record rigidity to possible non-record
-flexibility; the exact `n=3` witness supplies that fact, not the strategy premise.
+flexibility; the exact $n=3$ witness supplies that fact, not the strategy premise.
 
 **Bead:** `think-djru` (D-078, D-079).
 
@@ -1277,10 +1278,10 @@ state.
 
 ### F-35 (P1): the registered neighbor-transfer test was true before search began
 
-The standing H-4 proposed `n=12` budget-to-side-`4+epsilon` as the outcome.
+The standing H-4 proposed $n=12$ budget-to-side-`4+epsilon` as the outcome.
 A cold grid already has side 4, so the control satisfies the target at initialization
 and the test cannot measure transfer.
-H-004 now makes a paired equal-budget comparison at `n=11`, using add-from-10 and
+H-004 now makes a paired equal-budget comparison at $n=11$, using add-from-10 and
 remove-from-12 seeds and a fixed median best-side improvement.
 
 **Disposition:** fixed in the canonical registry artifact (D-080).
@@ -1298,7 +1299,7 @@ reserve beyond the intended horizon.
 
 ### F-37 (P1): living summaries again exceeded two completed experiments
 
-The synopsis repeated D-057’s generalization from one `n=17` method, budget and five-
+The synopsis repeated D-057’s generalization from one $n=17$ method, budget and five-
 seed block to oblique-record blindness as a class.
 It also called Trump’s basin attracting through `epsilon=0.1` after H-018 observed zero
 registered-threshold returns and a finite-quench residual.
@@ -1344,8 +1345,8 @@ capacity and morning-artifact gates.
 
 H-001 used one assertion both for a corpus-wide few-angle law and for a proposer’s
 performance. Neither implies the other.
-H-019 named `n=5,10,11` as its sweep while its claim and measurement concern only
-Trump’s `n=11` shared-tilt slice.
+H-019 named $n=5,10,11$ as its sweep while its claim and measurement concern only
+Trump’s $n=11$ shared-tilt slice.
 H-001 now owns the algorithm comparison, H-024 owns the corpus law, and H-019 declares
 only its measured cell.
 
@@ -1376,7 +1377,7 @@ prior entries are reused where the review reproduced an already known cause.
 | F-15 | D-027, D-028, D-058, D-065 | Local handover and derived README claim reconciled; configured PR CI remains on the remediation bead |
 | F-16 | D-038, D-050, D-059 | Hermetic safety fixes landed; oracle/characterization separation remains open |
 | F-17 | D-060, D-064 | Fixed with strict-implies-deep, a firing mutation control, and a read-only preflight path that remains testable inside the gate |
-| F-18 | D-034, D-140 | Exact `n=3` control closed by exp-014; general and `n=5` terminal-component semantics remain open |
+| F-18 | D-034, D-140 | Exact $n=3$ control closed by exp-014; general and $n=5$ terminal-component semantics remain open |
 | F-19 | D-061 | Open: evidence-complete endpoint classification |
 | F-20 | D-039 | Open: identity calibration independent of side precision |
 | F-21 | D-040 | Open: durable proposer-conditioned `P/Q/E` estimand |
@@ -1413,7 +1414,7 @@ The README itself says tilt angles exist only for a handful of cases.
 
 That omission blocks several advertised strategies at once:
 
-- neighbor transfer has no machine-readable `n-1` or `n+1` pose to transfer;
+- neighbor transfer has no machine-readable $n-1$ or $n+1$ pose to transfer;
 - packing surgery and motif mining cannot operate on scalar bounds;
 - the exact verifier cannot recheck the record corpus;
 - the canonicalizer cannot be calibrated against known alternative packings;
@@ -1427,11 +1428,11 @@ Treating those as importable source data is a more useful foundation than anothe
 strategy list.
 
 **Required artifact:** one versioned `PackingPose` per obtainable record and meaningful
-alternative, with `n`, side, normalized `x/y/theta`, source URL and retrieval date,
+alternative, with $n$, side, normalized `x/y/theta`, source URL and retrieval date,
 original content hash, import transform, independent float validity, canonical/contact
 descriptors, claimed exact data, and verification tier.
 Missing geometry remains an explicit row.
-Start with `n=5,10,11,12,13,16,17,22,28,29,33,37,39,46,51,61,78,97`, then complete
+Start with $n=5,10,11,12,13,16,17,22,28,29,33,37,39,46,51,61,78,97$, then complete
 `n<=100`.
 
 **Bead:** `think-2o5w`, reconciled with `think-ezcx`, `think-0y0g`, and `think-kmwb`.
@@ -1458,7 +1459,7 @@ Trump’s.
 **Required artifact:** `sqpack promote candidate.json -> certificate.json`,
 deterministic from pinned inputs, with separate `recognized`, `ambiguous`,
 `nonisolated`, and `rejected` outcomes.
-Reproduce rational/grid controls, `n=5`, `n=10`, Trump, and the degree-18 `n=17` side
+Reproduce rational/grid controls, $n=5$, $n=10$, Trump, and the degree-18 $n=17$ side
 before trusting a new candidate.
 
 **Bead:** `think-n4f6`.
@@ -1500,8 +1501,8 @@ The source archive is strong but its own availability record still names 11 miss
 primary items. The highest-value gaps now are El Moumni 1999, Trump 2023, and
 Arslanov–Bui 2025. Those affect proof history, local-optimality claims, and constructive
 families. Stromquist’s three memoranda were recovered from the author’s site: Memo III
-proves the restricted `0°/45°` theorem but only asserts the unrestricted `2 + (4/5)√5`
-bound, so it does not repair the 2003 Figure 14 gap.
+proves the restricted $0^\circ/45^\circ$ theorem but only asserts the unrestricted
+$2 + (4/5)\sqrt{5}$ bound, so it does not repair the 2003 Figure 14 gap.
 Exp-016 subsequently refuted the printed cover and exp-017 independently certified a
 source-distinct one-coordinate repair.
 The remaining absences are correctly recorded, but the research program has no
@@ -1550,9 +1551,9 @@ A SAT/SMT outer layer can encode the finite separating-axis disjunction, while i
 branch-and-bound handles the remaining angle boxes.
 Every pruned node retains its dual or interval certificate.
 
-**Calibration.** Enumerate the relevant cells at `n=5` and `10`; recover Trump’s cell
-when seeded; measure topology count and pruning at `n=6…8`; then attack restricted
-orientation/contact classes at `n=11` and `12`. Compare by exact node and pair-test
+**Calibration.** Enumerate the relevant cells at $n=5$ and $10$; recover Trump’s cell
+when seeded; measure topology count and pruning at $n=6\ldots8$; then attack restricted
+orientation/contact classes at $n=11$ and $12$. Compare by exact node and pair-test
 budgets, not only wall time.
 
 **Accept rule.** Better exact side; a certified lower bound for a declared structural
@@ -1578,9 +1579,9 @@ contact topology, wall-contact pattern, LP basis, and oblique-core size—withou
 collapsing them into one hackable reward.
 Rare event weights must survive selection so probability estimates remain meaningful.
 
-**Calibration.** Require recovery of `n=5` and `10`, and non-violation of the proved
-`n=16` control. Use `n=17` to test entry into an oblique-record class before `n=11` and
-`12`. Run all arms through the same independent validator, quench, and event archive at
+**Calibration.** Require recovery of $n=5$ and $10$, and non-violation of the proved
+$n=16$ control. Use $n=17$ to test entry into an oblique-record class before $n=11$ and
+$12$. Run all arms through the same independent validator, quench, and event archive at
 equal pair tests.
 
 **Accept rule.** Predeclare time-to-certified-target and unique-certified-basin yield,
@@ -1596,8 +1597,8 @@ The existing continuation ideas become much stronger when treated as a branch-di
 system rather than a single homotopy.
 
 **Parameters.** Continue in container inflation `delta`, aspect ratio, superdisk
-exponent `p`, corner roundness, or a penalty that interpolates circles to squares.
-Continue across `n` by inserting/deleting one square or duplicating a motif.
+exponent $p$, corner roundness, or a penalty that interpolates circles to squares.
+Continue across $n$ by inserting/deleting one square or duplicating a motif.
 Track the active contact graph and LP basis at every step.
 
 **Branch handling.** Detect contact changes, singular active sets, and basis degeneracy
@@ -1623,7 +1624,7 @@ or claims. Every proposal enters through the same typed proposer interface.
 declared branch coverage, or target-hitting time over restart; after terminal identity
 exists, component diversity may be added as a separate metric.
 A new active topology is an observation until its mathematical status is certified.
-Hold out `n` values when evaluating learned surgery rules.
+Hold out $n$ values when evaluating learned surgery rules.
 
 **Bead:** `think-g2ko`.
 
@@ -1649,8 +1650,8 @@ same finite object.
 **Calibration.** Replay the known Figure 13 escape and certify every implication in
 Stromquist’s five-node conditional argument, including the genuine but insufficient
 Figure 14 unavoidability statement.
-Then replay a published optimal case such as `n=10`, `13`, `22`, `33`, or `46`, before
-targeting `n=12` at side 4 and restricted `m²-3` boundary layers.
+Then replay a published optimal case such as $n=10$, $13$, $22$, $33$, or $46$, before
+targeting $n=12$ at side 4 and restricted $m^2-3$ boundary layers.
 
 **Accept rule.** A new certified lower bound, a smaller published unavoidable set, or a
 strictly stronger relaxation on a known case.
@@ -1662,7 +1663,7 @@ Counterexamples remain reusable poses and drive the next master iteration.
 
 ### Q-01: can n = 12 be moved from either side?
 
-`n=12` is the best small target because both directions are meaningful.
+$n=12$ is the best small target because both directions are meaningful.
 The known grid gives `s(12)<=4`; the repository records a lower bound near 3.788854. A
 construction below 4 is immediately a new upper bound.
 A stronger unavoidable-set certificate is a new theorem even if the grid remains best.
@@ -1681,22 +1682,22 @@ Run the lanes in parallel:
 
 A negative search result requires event-level coverage and uncertainty.
 A proof result must state the exact restricted or global proposition.
-`n=16`, not 12, is the not-below-4 control.
+$n=16$, not 12, is the not-below-4 control.
 
 **Bead:** `think-iwlr`.
 
 ### Q-02: can the m² - 3 theorem be extended to n = 61, 78, or 97?
 
-These are `8²-3`, `9²-3`, and `10²-3`, and they have the smallest open scalar gaps in
+These are $8^2-3$, $9^2-3$, and $10^2-3$, and they have the smallest open scalar gaps in
 the `n<=100` corpus.
 They offer asymmetric opportunities:
 
-- **Construction:** any verified side below `8`, `9`, or `10` breaks the next grid case
+- **Construction:** any verified side below $8$, $9$, or $10$ breaks the next grid case
   and is easy to recognize as progress.
 - **Proof:** because only three cells are missing from a nearly full grid, a lower-bound
   proof may reduce to a boundary-layer or strip classification rather than a free
-  `3n`-variable problem.
-- **Computation:** use the proved `m=3…7` cases as a regression ladder for
+  $3n$-variable problem.
+- **Computation:** use the proved $m=3\ldots7$ cases as a regression ladder for
   contact-graph, boundary-layer, and unavoidable-set generators before extrapolating.
 
 The latest asymptotic work—Bui’s
@@ -1733,11 +1734,11 @@ Each theorem cuts a certified region from the global search.
 ### Q-04: is there a small grammar of record packings, and what really predicts entry probability?
 
 The catalogue repeatedly says “extends,” “removes,” “straightens,” “combines two
-copies,” and “adds an L.” That suggests a finite constructor grammar across `n`. The
+copies,” and “adds an L.” That suggests a finite constructor grammar across $n$. The
 geometry corpus makes two separate questions testable:
 
 - Can a small set of graph/surgery rules generate held-out record topologies or good
-  seeds at neighboring `n`?
+  seeds at neighboring $n$?
 - Conditional on a named proposer, start distribution, and quench, do rigidity, contact
   count, algebraic degree, angle-class count, or wall-contact pattern predict
   basin-entry probability out of sample?
@@ -1755,12 +1756,12 @@ surgeries cannot express.
 | Question | Why it is tractable now | Useful stopping result |
 | --- | --- | --- |
 | Reconstruct and independently verify every obtainable upper bound at `n<=100` | The catalogue already exposes SVGs and many polynomials; the missing piece is the importer/promotion pipeline | A public verified corpus, plus corrected decimal/contact errors |
-| Resolve the full small-n quench landscape at `n=5` and `6` | Cell/contact enumeration is still small enough for exhaustive or interval work | A quench-definition-specific complete list, or a certified count for restricted angles |
-| Find the smallest n where the stock proposer enters an oblique record class | `n=17` is one failed cell, not a theorem; the geometry corpus supplies a mechanism ladder | A scoped success/failure curve by `n`, budget, and proposer |
-| Certify local optimality for analytically optimized records beyond `n=11` | Their contact equations and polynomials are published; the general exact pipeline makes them repeatable | Interval active-set certificates and a catalogue of degeneracies |
-| Detect whether the record corpus’s polynomial/decimal pairs are self-consistent | Polynomial evaluation and root isolation are cheap compared with search | A machine-generated discrepancy ledger; `n=17` is the first resolved example |
+| Resolve the full small-n quench landscape at $n=5$ and $6$ | Cell/contact enumeration is still small enough for exhaustive or interval work | A quench-definition-specific complete list, or a certified count for restricted angles |
+| Find the smallest n where the stock proposer enters an oblique record class | $n=17$ is one failed cell, not a theorem; the geometry corpus supplies a mechanism ladder | A scoped success/failure curve by $n$, budget, and proposer |
+| Certify local optimality for analytically optimized records beyond $n=11$ | Their contact equations and polynomials are published; the general exact pipeline makes them repeatable | Interval active-set certificates and a catalogue of degeneracies |
+| Detect whether the record corpus’s polynomial/decimal pairs are self-consistent | Polynomial evaluation and root isolation are cheap compared with search | A machine-generated discrepancy ledger; $n=17$ is the first resolved example |
 | Turn asymptotic boundary constructions into finite constructors | The 2025–2026 papers provide explicit geometric templates rather than only existence proofs | A finite-n improvement, or measured thresholds where the asymptotic construction loses to known records |
-| Prove restricted-orientation lower bounds at `n=11` or `12` | Angle boxes plus separating-axis disjunctions fit interval/SAT methods sooner than the unrestricted problem | A certified exclusion of a broad angle family |
+| Prove restricted-orientation lower bounds at $n=11$ or $12$ | Angle boxes plus separating-axis disjunctions fit interval/SAT methods sooner than the unrestricted problem | A certified exclusion of a broad angle family |
 
 ## Recommended executable program
 
@@ -1771,7 +1772,7 @@ The critical path is a trust and artifact path, not an overnight-compute path.
 Do not let PR #14 run an unattended census.
 Keep its canonical/atlas code as a prototype, quarantine any guard-invalid output, and
 require full poses on every new run.
-Correct the factual claims and use `n=16` as the true grid control.
+Correct the factual claims and use $n=16$ as the true grid control.
 
 **Exit:** F-01 through F-05, F-09, F-16, and F-17 have failing regression fixtures
 before their repairs, and no invalid or non-converged endpoint can appear as a basin.
@@ -1783,15 +1784,15 @@ idempotent atlas derivation, pair-test meter, and float-to-exact promotion.
 Add independent canonical labeling and certificate replay.
 
 **Exit:** one command can import, validate, quench, canonicalize, promote, and replay
-`n=5,10,11,16,17`, with every intermediate artifact content-addressed and every budget
+$n=5,10,11,16,17$, with every intermediate artifact content-addressed and every budget
 exact.
 
 ### Stage 2 — calibrate the landscape machinery
 
-Use `n=5,6,7,8,9,10` for small landscape work, but call it a statistical census unless
+Use $n=5,6,7,8,9,10$ for small landscape work, but call it a statistical census unless
 completeness is proved.
 Use independent replicates, unseen-species estimators, and regime-specific frequencies.
-Use `n=16` for false-record detection and `n=17` for an oblique mechanism.
+Use $n=16$ for false-record detection and $n=17$ for an oblique mechanism.
 
 **Exit:** discovery curves regenerate from events; coverage intervals and
 non-convergence are visible; a held-out replicate reproduces the basin ranking within
@@ -1818,8 +1819,8 @@ and a lower-bound/no-pose certificate without trusting the search code.
 
 ### Stage 5 — attack the targets in parallel
 
-Allocate the upper-bound portfolio to `n=11`, `12`, and the `m²-3` cases; allocate the
-proof portfolio to `n=12`, local/restricted `n=11`, and boundary-layer `m²-3`. Continue
+Allocate the upper-bound portfolio to $n=11$, $12$, and the $m^2-3$ cases; allocate the
+proof portfolio to $n=12$, local/restricted $n=11$, and boundary-layer $m^2-3$. Continue
 corpus-wide reconstruction in the background because it supplies seeds and catches
 source errors.
 
@@ -1838,7 +1839,7 @@ candidate is reproducible; every claimed bound has a replayable certificate.
 | 13, 22, 33, 46 | Published optimal cases for lower-bound certificate replay |
 | 17 | Oblique-record and degree-18 promotion control |
 | 28, 29, 37, 39, 51 | Diverse record mechanisms and atlas/proposer calibration |
-| 61, 78, 97 | Open `m²-3` frontier with the three smallest scalar gaps |
+| 61, 78, 97 | Open $m^2-3$ frontier with the three smallest scalar gaps |
 
 ## The epic and its bead map
 
@@ -1871,19 +1872,19 @@ lanes, and the missing-primary correction.
 | Process | `think-m79h` | Define lane-specific agent handoffs and evidence contracts | `think-jmjn` |
 | Process | `think-ldq2` | Repair the campaign trust boundary and run lifecycle | — |
 | Process | `think-31k1` | Separate atlas observations from certified basins | `think-siui`, `think-zcx4` |
-| Process | `think-2o5w` | Build a provenance-complete record-packing corpus through `n=100` | `think-zcx4` |
+| Process | `think-2o5w` | Build a provenance-complete record-packing corpus through $n=100$ | `think-zcx4` |
 | Process | `think-rrht` | Add event-level measurement and a statistical census contract | `think-ldq2`, `think-siui`, `think-31k1`, `think-zcx4` |
 | Insight | `think-vcnx` | Design basin-atlas views that expose mathematical structure | — |
 | Insight | `think-9vh7` | Prototype active-set and contact-graph branch-and-bound search | `think-zcx4`, `think-2o5w`, `think-n4f6` |
 | Insight | `think-843f` | Benchmark a rare-event proposer ensemble | `think-ldq2`, `think-31k1`, `think-rrht` |
 | Insight | `think-g2ko` | Build continuation, quality-diversity, and packing-surgery emitters | `think-siui`, `think-31k1`, `think-2o5w`, `think-rrht` |
 | Insight | `think-6yni` | Synthesize unavoidable-set lower bounds by cutting planes | `think-zcx4`, `think-n4f6`, `think-thhk` |
-| Insight | `think-iwlr` | Attack `n=12` from certified upper- and lower-bound lanes | `think-n4f6`, `think-rrht`, `think-843f`, `think-6yni` |
-| Insight | `think-9m9x` | Extend the `m²-3` frontier at `n=61,78,97` | `think-2o5w`, `think-9vh7`, `think-g2ko` |
-| Insight | `think-qv90` | Certify and structurally constrain the `n=11` optimum | `think-2o5w`, `think-n4f6`, `think-9vh7` |
+| Insight | `think-iwlr` | Attack $n=12$ from certified upper- and lower-bound lanes | `think-n4f6`, `think-rrht`, `think-843f`, `think-6yni` |
+| Insight | `think-9m9x` | Extend the $m^2-3$ frontier at $n=61,78,97$ | `think-2o5w`, `think-9vh7`, `think-g2ko` |
+| Insight | `think-qv90` | Certify and structurally constrain the $n=11$ optimum | `think-2o5w`, `think-n4f6`, `think-9vh7` |
 | Insight | `think-3b3s` | Determine cross-`n` packing grammar and proposer-specific basin laws | `think-2o5w`, `think-rrht`, `think-g2ko` |
 | Insight | `think-7gu0` | Deep creativity and mathematical-frontier portfolio review | — |
-| Insight | `think-w5rb` | Reconstruct and test the record angle-class corpus through `n=30` | — |
+| Insight | `think-w5rb` | Reconstruct and test the record angle-class corpus through $n=30$ | — |
 | Insight | `think-chbu` | Classify exact small-`n` optimal configuration spaces | — |
 | Insight | `think-ykt7` | Advance the asymptotic waste and finite-transfer lane | — |
 | Efficiency | `think-xzew` | Baseline and profile the end-to-end research loop | — |
@@ -1916,17 +1917,17 @@ relevant remediation beads, not as a second epic:
 
 | PR-description ambiguity | Bead | Parent | Acceptance boundary |
 | --- | --- | --- | --- |
-| Non-isolated basin definition | `think-0yo9` | `think-siui` | Component count is invariant to quantum on the exact `n=3` sliding family |
+| Non-isolated basin definition | `think-0yo9` | `think-siui` | Component count is invariant to quantum on the exact $n=3$ sliding family |
 | Unrecognised singleton classification | `think-aans` | `think-31k1` | Every endpoint receives an evidence-based promotion class from a retained pose |
 | Numerical identity versus D-021 | `think-3szr` | `think-siui` | Counts carry calibrated ambiguity bounds; scalar side gap has no identity authority |
-| Proposer-conditioned null | `think-apwt` | `think-rrht` | H-012 names `P`, `Q`, and `E`; multiple proposal measures are compared at equal budget |
+| Proposer-conditioned null | `think-apwt` | `think-rrht` | H-012 names $P$, $Q$, and $E$; multiple proposal measures are compared at equal budget |
 
 Fourteen checkpoint defects are tracked separately from the 26 primary research-program
 beads because they are concrete corrections, not new strategy lanes:
 
 | Defect | Bead | State at this checkpoint |
 | --- | --- | --- |
-| D-066 | `think-xaa7` | Fixed: active `n=12` baseline instruction |
+| D-066 | `think-xaa7` | Fixed: active $n=12$ baseline instruction |
 | D-067 | `think-j9o9` | Fixed: exp-011 wall time and terminal-round requirement |
 | D-068 | `think-p418` | Fixed: wall/CPU measurement labels |
 | D-069 | `think-lexp` | Fixed: H-002 reconciled with measured rounds |
@@ -1936,13 +1937,13 @@ beads because they are concrete corrections, not new strategy lanes:
 | D-073 | `think-tsck` | Fixed: session filename/id invariant |
 | D-074 | `think-9ork` | Fixed: provenance regression covers artifact-field mapping |
 | D-075 | `think-v6n1` | Fixed: cross-environment mismatch no longer proves a portable oracle |
-| D-076 | `think-dqhd` | Fixed: `n=5` six-of-six is a no-saturation observation, not a causal result |
+| D-076 | `think-dqhd` | Fixed: $n=5$ six-of-six is a no-saturation observation, not a causal result |
 | D-077 | `think-sk4a`, `think-hej7`, `think-55m2` | Fixed: PR #16 handoff state, counts, and lanes reconciled |
 | D-078, D-079 | `think-djru` | Fixed: rank conditions and rigidity logic completed |
 | D-080 | `think-isa3` | Fixed: H-004 has a discriminating paired criterion |
 | D-081 | `think-kmn2` | Open: price scientifically admissible unresolved cells for both launch horizons |
 | D-082, D-083 | `think-1sxv` | Fixed: H-020 and H-018 summaries no longer exceed their measurements |
-| D-084 | `think-1sxv` | Fixed structured `n=11` rigidity and gap-rank facts; H-022 remains open |
+| D-084 | `think-1sxv` | Fixed structured $n=11$ rigidity and gap-rank facts; H-022 remains open |
 | D-085 | `think-1sxv` | Fixed: living uv commands are frozen |
 | D-086 | `think-ydus` | Fixed: one current readiness agenda and superseded stale handoff |
 | D-087 | `think-w5rb` | Claim split fixed; corpus evidence remains to be reconstructed |
@@ -1963,13 +1964,13 @@ claim.
 
 | Finding | Defect | Disposition |
 | --- | --- | --- |
-| F-42 | D-088 | The 29 July 2026 UnitSquare release replaces the stored `n=68,69` upper bounds; the release validation is cited but not claimed as independently re-run here |
-| F-43 | D-089 | `n=17` uses `0°`, `+39.8049589798°`, and `−36.6237863834°`, not symmetric `±40°` |
-| F-44 | D-090 | The primary `n=29` SVG is a six-angle-class counterexample candidate to H-024; effective angular rank replaces the universal small-class prior |
+| F-42 | D-088 | The 29 July 2026 UnitSquare release replaces the stored $n=68,69$ upper bounds; the release validation is cited but not claimed as independently re-run here |
+| F-43 | D-089 | $n=17$ uses $0^\circ$, $+39.8049589798^\circ$, and $-36.6237863834^\circ$, not symmetric $\pm40^\circ$ |
+| F-44 | D-090 | The primary $n=29$ SVG is a six-angle-class counterexample candidate to H-024; effective angular rank replaces the universal small-class prior |
 | F-45 | D-091, D-148 | The first correction still omitted the genuine Figure 14 unavoidability implication and miscalled it nonexistent; H-010 now registers the complete five-node argument |
-| F-46 | D-092 | The structured asymptotic record no longer attributes an explicit `10^-100` constant to Roth and Vaughan |
+| F-46 | D-092 | The structured asymptotic record no longer attributes an explicit $10^{-100}$ constant to Roth and Vaughan |
 | F-47 | D-093 | Contact canonicalization now preserves angle/wall/degree attributes through individualization, with a colored-`K3` regression |
-| F-48 | D-094, D-095 | The idea board has the correct `n=11` gap rank and no longer schedules refuted H-018 as a fresh experiment |
+| F-48 | D-094, D-095 | The idea board has the correct $n=11$ gap rank and no longer schedules refuted H-018 as a fresh experiment |
 | F-49 | D-096, D-097 | Algebraic degree is a warning rather than a proof-method ceiling, and the strategy catalogues are working maps rather than exhaustive histories |
 | F-50 | D-098, D-104 | A finite stochastic return threshold and a local-refinement failure are no longer called an intrinsic basin radius or a proved wrong component |
 | F-51 | D-099 | H-023 asks same-level terminal connectivity only for the equal-side pair; unequal-side rows get a minimax clearance question |
@@ -1999,35 +2000,35 @@ Twelve additional defects were found before its proposals were promoted:
 
 | Finding | Defect | Disposition |
 | --- | --- | --- |
-| F-57 | D-108 | Bašić–Slivková (2018) is now archived and restores the direct piercing-number precedent; its `n=61` bound is weaker than Nagamochi’s stored bound |
-| F-58 | D-109 | The verifier’s 20 boundary count is corner coordinates, not wall equations; the false `14+20=34` isostatic argument is replaced by branchwise one-sided tangent cones |
+| F-57 | D-108 | Bašić–Slivková (2018) is now archived and restores the direct piercing-number precedent; its $n=61$ bound is weaker than Nagamochi’s stored bound |
+| F-58 | D-109 | The verifier’s 20 boundary count is corner coordinates, not wall equations; the false $14+20=34$ isostatic argument is replaced by branchwise one-sided tangent cones |
 | F-59 | D-110 | A fixed-cell LP dual is an equilibrium-load certificate against the container objective, not automatically a free-framework self-stress or angle certificate |
 | F-60 | D-111 | A calibrated fixed-budget tail fit is a sensitivity analysis, never a proof about all future budgets or proposer support |
 | F-61 | D-112 | H-028 maps one imported cell and class assignment; the global two-class landscape is a separate lower-envelope problem |
 | F-62 | D-113 | A numerical branch merge is not feasible topology; verified paths give only upper bounds on minimax required-side clearance |
-| F-63 | D-114 | Fractional piercing has asymmetric conclusions: `τ*>10` rules out ten points, while `τ*≤10` does not construct an integral set |
+| F-63 | D-114 | Fractional piercing has asymmetric conclusions: $\tau^{\ast}>10$ rules out ten points, while $\tau^{\ast}\le10$ does not construct an integral set |
 | F-64 | D-115 | Claims of “first,” “never,” and “unpublished” are scoped to a recorded retrieved corpus rather than asserted globally |
 | F-65 | D-116 | The review now agrees with the 40-artifact registry and assigns algebraic metadata only to independently verified standing witnesses |
 | F-66 | D-117 | The idea board no longer says H-018 answered an intrinsic basin-width question |
-| F-67 | D-118 | H-017’s fixed-budget reachability and H-012’s `P/Q/E` attraction ratio are separate estimands; H-012 needs a new identified `n=11` sample |
+| F-67 | D-118 | H-017’s fixed-budget reachability and H-012’s `P/Q/E` attraction ratio are separate estimands; H-012 needs a new identified $n=11$ sample |
 | F-68 | D-119 | H-028 now tests for one refined local minimizer and a boundary margin; continuity makes uniqueness inside a fixed positive objective tolerance impossible |
 
 The corrected portfolio registers H-025 through H-040. Its strongest independent fronts
-are Trump’s nonsmooth local geometry, exact optimal configuration spaces at small `n`,
+are Trump’s nonsmooth local geometry, exact optimal configuration spaces at small $n$,
 held-out construction surgery, pure-point piercing limits, robust restricted-angle
-proofs, `s(12)`, the next `m²−3` case at `n=61`, exact record fields, and the asymptotic
-waste exponent. The basin program now has a typed object hierarchy and visualization
-ladder; exp-014 lands the glyph gallery and exact `n=3` quotient, which now gate any
-point-cloud atlas.
+proofs, $s(12)$, the next $m^2-3$ case at $n=61$, exact record fields, and the
+asymptotic waste exponent.
+The basin program now has a typed object hierarchy and visualization ladder; exp-014
+lands the glyph gallery and exact $n=3$ quotient, which now gate any point-cloud atlas.
 
 Three source checks materially changed the frontier.
 The [UnitSquare machine-readable release](https://hmbelvedere.com/data/results.json)
-gives strictly smaller construction-only bounds at `n=68` and `n=69`. The primary
+gives strictly smaller construction-only bounds at $n=68$ and $n=69$. The primary
 Kingbird [`n=17` SVG](https://kingbird.myphotos.cc/packing/square-17.svg) corrects the
 orientation data, while its
 [`n=29` SVG](https://kingbird.myphotos.cc/packing/square-29.svg) declares five distinct
 nonzero angle entities plus the axis-aligned class.
-Exp-012 has now reconstructed the complete `n=29` pose, checked all 406 pairs at 160
+Exp-012 has now reconstructed the complete $n=29$ pose, checked all 406 pairs at 160
 decimal digits, replayed its defining equations, and found six disjoint orientation
 classes. That refutes H-024’s universal upper bound of three while leaving H-001’s
 algorithmic comparison and H-025’s quantitative compressibility question open.
@@ -2070,7 +2071,7 @@ choice:
   D-036 adds deadline checks inside the free-angle pass and refuses to report a
   timed-out partial pass as convergence.
 - The golden tool builds the source-locked Rust engine, records the selected ladder
-  seed, uses a reproducible `n=10` control start, rejects non-converged ladder results,
+  seed, uses a reproducible $n=10$ control start, rejects non-converged ladder results,
   verifies the pose that supplied each stored minimum side, serializes no precision
   below the declared floor, and refuses oracle-invalid updates before an atomic write.
   Its fast path checks stored count/frequency consistency; strict mode implies deep
@@ -2082,12 +2083,12 @@ choice:
 - Every project `uv run` reached by `test.sh`, including negative-control commands, is
   frozen so a verification run no longer rewrites the dependency lock.
 - The research report now distinguishes the transcendental angle from its algebraic
-  trigonometric coordinates; the generated search-strategy table limits the `m²-3`
-  theorem to `m=3…7`; the `n=17` note reports the polynomial evaluation that favours the
-  catalogue decimal; and the synopsis and handoff carry the correct gap rank, round
-  count, and hypothesis count.
+  trigonometric coordinates; the generated search-strategy table limits the $m^2-3$
+  theorem to $m=3\ldots7$; the $n=17$ note reports the polynomial evaluation that
+  favours the catalogue decimal; and the synopsis and handoff carry the correct gap
+  rank, round count, and hypothesis count.
 - The final description-only delta now has four explicit dispositions, four executable
-  ambiguity beads, and exact `n=3` evidence that the current endpoint hashes split a
+  ambiguity beads, and exact $n=3$ evidence that the current endpoint hashes split a
   connected optimal family.
 - Canonicalizer, atlas, schema, closed-form-recognition, census, and H-012 prose now
   distinguish endpoint clusters from terminal components, scalar side precision from
@@ -2095,9 +2096,9 @@ choice:
   from an intrinsic landscape probability.
 - Living tier, rigidity, and campaign docs no longer call a floating-point LP endpoint
   exact, infer terminal dimension from raw contact counts, equate a one-angle kink with
-  full rigidity, or use the open `n=12` instance as a known-answer negative control.
+  full rigidity, or use the open $n=12$ instance as a known-answer negative control.
 - The merged-head delta now has a line-by-line defect crosswalk through D-065. It
-  corrects the executable `n=12` control in the runner, narrows angle-kink and
+  corrects the executable $n=12$ control in the runner, narrows angle-kink and
   oblique-record claims to what their experiments measured, removes a false
   contrapositive from the rigidity premise, and keeps the README’s qualitative defect
   summary reconciled to the defect source.
@@ -2110,11 +2111,11 @@ choice:
   measurements; one versioned soft-schema agent-session artifact records delegation,
   elapsed time, integration evidence, stopping conditions, and the next action.
   The abandoned worktree/snapshot/lease prototype is not in this branch.
-- Exp-011’s raw-derived `397.474` wall seconds and runtime revision `60a50cc` are
+- Exp-011’s raw-derived $397.474$ wall seconds and runtime revision `60a50cc` are
   restored; the eleven-round ledger now reports 23.0 wall-minutes.
   Future runner executions append one timing/provenance receipt to their existing raw
   archive, and terminal rounds without wall time fail the ledger.
-  H-002 and the active `n=12` baseline instructions now agree with the measured record.
+  H-002 and the active $n=12$ baseline instructions now agree with the measured record.
 - Direct execute and release commands now honor the existing cooperative gate marker,
   and agent-session paths use the same filename/id invariant as the scientific
   artifacts. These repairs have named preflight and mutation checks and remain within the
@@ -2130,7 +2131,7 @@ type, Rust, canonical, golden, atlas, negative-control, regression, soundness-pe
 bead, provenance, and campaign checks; the last took 298 seconds.
 After the `c412b8c` rebase and second conflict resolution, the final strict/deep run
 passed the same perimeter plus 21 negative controls and the 35-entry defect ledger in
-291 seconds. The upstream D-030 repair changes the deep `n=5` fixture from one
+291 seconds. The upstream D-030 repair changes the deep $n=5$ fixture from one
 convergence in twelve to six in six; strict mode now runs it.
 `campaign/runner.py preflight` and the focused canonical and regression checks also
 pass.
@@ -2174,7 +2175,7 @@ seconds, and historical regressions at 22 seconds.
 PR #16 was then reviewed and absorbed through a merge parent so its five-commit
 self-correction history remains visible.
 F-29 through F-34 and D-075 through D-079 correct its unsupported portable-oracle and
-`n=5` interpretations, incomplete rank and logic explanations, stale bead state, finding
+$n=5$ interpretations, incomplete rank and logic explanations, stale bead state, finding
 count, and invented dependency chain.
 A fresh deep golden run passed locally in about 91 seconds but does not rebut the
 retained other-environment mismatch; `think-osyp` now requires per-predicate output and
@@ -2242,16 +2243,16 @@ results rather than a CI claim.
 
 The first main-based round chose a cheap primary-source falsifier instead of funding the
 full H-024 corpus sweep.
-Exp-012 retains Kingbird’s `n=29` SVG, reconstructs its 15 aligned and 14 rotated
+Exp-012 retains Kingbird’s $n=29$ SVG, reconstructs its 15 aligned and 14 rotated
 squares, checks all 406 pairs at 160 decimal digits, and replays the source’s nine
 derived offsets and six defining equations.
 An independent derivation reproduced the transform order, square formulas, and class
 multiplicities.
 
 The witness uses six orientation classes modulo quarter turns, with multiplicities
-`15/1/9/1/2/1`. The nearest declared classes differ by `0.296067318913687…°`, while the
-numerical interval radius is `1e-90°`. This refutes H-024’s universal upper bound of
-three at its preregistered first stop cell.
+`15/1/9/1/2/1`. The nearest declared classes differ by $0.296067318913687\ldots^\circ$,
+while the numerical interval radius is `1e-90°`. This refutes H-024’s universal upper
+bound of three at its preregistered first stop cell.
 It does not refute H-001’s proposer comparison; H-025 now owns the more useful claim
 that records may be compressible to a few fitted angles at bounded side loss.
 
@@ -2259,12 +2260,12 @@ The evidence boundary remains numerical.
 The retained SVG serializes a high-precision `FindRoot` solution, not an exact or
 interval certificate, so exp-012 does not certify the record value as exact or optimal.
 D-133 adds generic determination outcomes to the experiment schema, D-134 restores David
-Ellsworth’s provenance and the verified angles to the `n=29` frontier row, and D-135
+Ellsworth’s provenance and the verified angles to the $n=29$ frontier row, and D-135
 narrows the roll-up’s obsolete blanket claim about exploratory record evidence.
 
-The final replay took `0.157556` machine-seconds after 12 agent-minutes of instrument
+The final replay took $0.157556$ machine-seconds after 12 agent-minutes of instrument
 and source work. The pushed result then passed the 25-step strict/deep gate in 38 wall
-seconds: 31 negative controls fired, all 135 defects reconciled, and the retained `n=29`
+seconds: 31 negative controls fired, all 135 defects reconciled, and the retained $n=29$
 source was reconstructed again inside the frontier-corpus step.
 H-024 stopped; the next fast mathematical lane was H-026’s exact branchwise
 linearization screen.
@@ -2280,10 +2281,11 @@ full 512-to-128 map remains in the raw record because branches that agree to fir
 may differ later.
 
 Every one of the 128 matrices has exact rank 33 and a strictly positive left-kernel
-stress over `Q(u)`. For a branch matrix `A`, the retained certificate satisfies `λ > 0`
-and `Aᵀλ = 0`. If `Av ≥ 0`, the equality `λᵀAv = 0` forces every row product to zero;
-full rank then forces `v = 0`. Floating point proposes the nine free stress weights
-only. Deterministic exact elimination chooses the row basis and replays rank, sign, and
+stress over $Q(u)$. For a branch matrix $A$, the retained certificate satisfies
+$\lambda > 0$ and `Aᵀλ = 0`. If `Av ≥ 0`, the equality `λᵀAv = 0` forces every row
+product to zero; full rank then forces $v = 0$. Floating point proposes the nine free
+stress weights only.
+Deterministic exact elimination chooses the row basis and replays rank, sign, and
 residual.
 A separate invocation re-derived the active system and replayed all 128 records
 with zero unresolved branches.
@@ -2306,8 +2308,8 @@ D-137 records and fixes the first replay’s failure to require one-to-one matri
 coverage. The duplicate-record and known-flexible wall-omission controls now run inside
 the retained replay.
 
-Generation took `47.121073` internal seconds and retained replay `10.186803`; external
-process timings were `47.85` and `11.01` seconds.
+Generation took $47.121073$ internal seconds and retained replay $10.186803$; external
+process timings were $47.85$ and $11.01$ seconds.
 This is the loop shape the research program wants: the proof-model audit consumed the
 judgment, while the final exact experiment and its durable recheck stayed below one
 machine-minute.
@@ -2322,7 +2324,7 @@ declarations. The focused provenance step prints both formerly omitted rounds an
 exact total.
 
 Exp-013 closes the focused H-026 execution bead and the qualitative local-isolation leg,
-not the broader `n=11` global-optimality program.
+not the broader $n=11$ global-optimality program.
 The earlier focused D-066 through D-070 and D-072 through D-074 incident beads plus
 D-075 through D-079 remain fixed; D-071 remains open for append-only numerical runner
 reports.
@@ -2336,58 +2338,58 @@ statistical contract remain open.
 
 Exp-014 and exp-015 fill the first two H-032 cells exactly.
 The common orientation lemma writes a contained unit square’s support width as
-`w = |cos(theta)| + |sin(theta)|`. Its center offset is bounded by `1-w/2`, so the
-container center has local-axis projection at most `w(1-w/2) = 1/2 - (w-1)^2/2`. Every
+`w = |cos(theta)| + |sin(theta)|`. Its center offset is bounded by $1-w/2$, so the
+container center has local-axis projection at most $w(1-w/2) = 1/2 - (w-1)^{2}/2$. Every
 contained square contains that point, and every genuinely rotated square contains it in
 its interior; hence no side-2 packing of at least two squares can contain a genuinely
 rotated member.
 
 The remaining axis-aligned problem is finite and exact.
-At `n=3`, 64 raw pairwise separation choices leave 24 one-cells.
+At $n=3$, 64 raw pairwise separation choices leave 24 one-cells.
 Their 24 endpoint states and 24 edges form two labelled 12-cycles.
 Relabelling gives one four-cycle, and quotienting its `D4` action gives the interval
-`[0,1/2]`. Its corner endpoint changes the active wall/contact signature, its open
+$[0,1/2]$. Its corner endpoint changes the active wall/contact signature, its open
 stratum is one-dimensional, and its midpoint is a pure stabilizer jump.
-At `n=4`, 4,096 raw choices leave 96 zero-cells, four aliases for each of 24 labelled
+At $n=4$, 4,096 raw choices leave 96 zero-cells, four aliases for each of 24 labelled
 grids; both declared symmetry quotients are one point.
 
-This resolves the exact `n=3` calibration side of D-034 and fixes D-140’s false
+This resolves the exact $n=3$ calibration side of D-034 and fixes D-140’s false
 closed-family certificate claim.
-Interior `n=3` members have many geometric keys and one contact certificate, while the
+Interior $n=3$ members have many geometric keys and one contact certificate, while the
 wall endpoints have a second; all remain one connected family.
-The general atlas defect and the `n=5` identity problem stay open.
+The general atlas defect and the $n=5$ identity problem stay open.
 
 The result compares labelled and unlabelled invariants separately against the archived
 Alpert et al. and Alvarado-Garduño–González sources.
 Plakhta remains unavailable, so no novelty claim is made.
 D-142 through D-144 record three pre-run checker corrections: conflated
-labelled/unlabelled homology, an unreported `n=4` f-vector, and a tautological
+labelled/unlabelled homology, an unreported $n=4$ f-vector, and a tautological
 polynomial-identity check.
 D-145 records and guards the integration pass that temporarily fixed D-039 instead of
 D-140; no generated roll-up was permitted to make that reversal durable.
 
-The retained `n=3` generation and complete semantic/SVG replay take 0.63 wall seconds;
-the `n=4` pair takes 0.65 seconds.
+The retained $n=3$ generation and complete semantic/SVG replay take 0.63 wall seconds;
+the $n=4$ pair takes 0.65 seconds.
 All fifteen known-answer controls pass.
 The exact quotient SVG makes active-stratum and stabilizer-stratum changes visible
 without confusing either with separate components.
-H-032 remains open at `n=5,6`; the next cell requires complete poses and a certified
+H-032 remains open at $n=5,6$; the next cell requires complete poses and a certified
 component relation rather than more endpoint sampling.
 
 ## Fourth post-merge research result
 
 Exp-016 terminally refutes H-010 on the source-faithful claim registered before the
-measurement. An exact open square of side `10001/10000`, slope `27/10`, and center
+measurement. An exact open square of side $10001/10000$, slope $27/10$, and center
 `(37L/(2sqrt(829)),11/8)` fits inside Stromquist’s side `2 + 4/sqrt(5)` container and
 strictly avoids every point printed in Figure 14. The smallest avoidance margin is about
-`4.94e-5` at `G=(.8,1.85)`.
+`4.94e-5` at $G=(.8,1.85)$.
 
-The failed cover cell is the outer `G`–`A1` quadrilateral.
-Its Lemma 4 parameters are `a=.95,b=.8`, while the exact admissible threshold is
+The failed cover cell is the outer $G$–`A1` quadrilateral.
+Its Lemma 4 parameters are $a=.95,b=.8$, while the exact admissible threshold is
 approximately `.7981534378`. The retained checker binds the primary-source tuple and
 hashes, filters the paper’s separate extraneous stationary root through the unsquared
-equation, replays the conditional `3+9` count, and runs eleven source, geometry, and
-capacity mutations. Generation plus complete-record replay takes `0.55` wall seconds.
+equation, replays the conditional $3+9$ count, and runs eleven source, geometry, and
+capacity mutations. Generation plus complete-record replay takes $0.55$ wall seconds.
 
 The verdict is deliberately narrow.
 It invalidates the 2003 proof as printed; it does not refute the numerical lower bound.
@@ -2407,7 +2409,7 @@ allowed to inherit it.
 ## Fifth post-merge research result
 
 Exp-017 confirms H-041 under the criterion registered before its repaired cover was
-checked. It changes only Figure 14 point `G=(4/5,37/20)` to the source-distinct
+checked. It changes only Figure 14 point $G=(4/5,37/20)$ to the source-distinct
 `G'=(79/100,37/20)` and certifies every implication needed for the lower bound.
 
 The retained exact record contains an 18-cell Figure 13 cover with four exceptional
@@ -2415,9 +2417,9 @@ rectangles in one Klein-four orbit; exact Lemma 2, 4, and 6 premises forcing the
 box to contain `A1,A2,A3`; and a repaired Figure 14 square tiling with 26 faces, 28
 vertices, and 53 edges.
 Its checker verifies vertex containment, edge incidence, container boundary,
-noncrossing, exact area, root selection, sign premises, and the final `3+9` capacity
+noncrossing, exact area, root selection, sign premises, and the final $3+9$ capacity
 count. Thirteen targeted mutations all fire, and complete generation plus replay takes
-`0.70` wall seconds.
+$0.70$ wall seconds.
 
 Uniformly scaling any hypothetical packing below `S=2+4/sqrt(5)` into the side-`S`
 container produces eleven pairwise-disjoint open squares of side strictly greater than
@@ -2430,7 +2432,7 @@ rewrite that history or attribute `G'` to Stromquist.
 It independently restores the numerical inequality, has not undergone external peer
 review, and does not approach global optimality at Trump’s upper bound.
 The proof frontier can now use exp-016/017 as a two-sided falsifier/certificate
-calibration for H-039 at `n=12`. The integration also exposed D-161: the synopsis still
+calibration for H-039 at $n=12$. The integration also exposed D-161: the synopsis still
 reported forty hypotheses after H-041 made forty-one.
 The count now comes from the registry consistency check rather than another unguarded
 scalar.
@@ -2454,10 +2456,10 @@ one bead each:
 | D-173 | Enclosure-only evaluation cannot infer an unknown contact; interval root methods and structural exact zero remain valid certificate routes |
 | D-174 | Centre elimination is contact-graph-specific, numerical values may seed but not decide reconstruction, and exact LP coefficients need not be rational |
 | D-175 | The living status retains exp-024, the 4/4 n=4 control, D-171’s closure, and the canonical campaign agenda |
-| D-176 | `n=11` is the first proved genuinely-oblique improvement over the 0/45-degree class; angle classes are a modeling compression, and n=17 remains f64 evidence |
+| D-176 | $n=11$ is the first proved genuinely-oblique improvement over the 0/45-degree class; angle classes are a modeling compression, and n=17 remains f64 evidence |
 | D-177 | Continuation need not be continuous through bifurcations, and moving geometry code alone is distinct from measuring solver-wrapper or batch cost |
 | D-178 | Project-specific theorem and experiment claims link directly to their retained evidence |
-| D-179 | Inflation hardness requires a named operational event, and determining `s(11)` remains an open mathematical problem rather than scheduled engineering |
+| D-179 | Inflation hardness requires a named operational event, and determining $s(11)$ remains an open mathematical problem rather than scheduled engineering |
 | D-180 | Current orientation routes to the tutorial, synopsis, and agenda rather than the explicitly superseded quench-spine handoff |
 | D-181 | A deterministic quench returns a point; point-basins exist but can split one connected terminal component |
 | D-182 | Loss shaping may preserve minimizers if proved, and duplicate suppression belongs only to exploration—not unbiased frequency measurement |
@@ -2466,13 +2468,13 @@ This leaves a deliberately simple reading order: the tutorial teaches the object
 synopsis owns current status, the agenda owns current experimental priority, and the
 ledger renders what has actually run.
 BC-003 through BC-009 are complete.
-BC-010 is now the active research item at `n=5`, with each candidate-pair slice kept
+BC-010 is now the active research item at $n=5$, with each candidate-pair slice kept
 inside its own 30-minute bound.
 
 ## Sixth post-merge research result
 
 Exp-033 answers the first narrow BC-010 question under a criterion committed before the
-exact checker ran. The two golden `n=5` rows at side `1 + 5sqrt(2)/4` have different
+exact checker ran. The two golden $n=5$ rows at side `1 + 5sqrt(2)/4` have different
 geometric keys. After one declared D4 action and relabelling, four squares coincide and
 the fifth moves on the exact segment `p0(u)=(1/2+u,5/2-sqrt(2)/4+u)` for
 `0<=u<=3sqrt(2)/2-2`.
@@ -2497,7 +2499,7 @@ wall-release and separating-axis cone plus stationary continuation from this fac
 
 Exp-034 answers the first second-order question left by exp-033 under a separately
 committed criterion.
-Write `t = tan(theta_0/2)` for the moving square and `e(t)=|t|(1-|t|)/(1+t^2)`. Exact
+Write `t = tan(theta_0/2)` for the moving square and $e(t)=|t|(1-|t|)/(1+t^{2})$. Exact
 arithmetic proves that every pair
 
 `|t| <= 1/100`,
@@ -2510,7 +2512,7 @@ LP cell in this declared sheet optimal.
 Four exact boundary fixtures, independent regeneration, and all five mutations pass in
 0.27 wall-seconds.
 
-The pre-run review also caught D-186: the first uncommitted pair `(0,3)` bound omitted
+The pre-run review also caught D-186: the first uncommitted pair $(0,3)$ bound omitted
 the slide contribution from one projection and called active boundary inequalities
 strict. The corrected instrument includes the full adverse coefficient and separates
 nonnegative boundary constraints from positive residual margins before preregistration
@@ -2571,12 +2573,12 @@ with this late-head reconciliation following it.
 The exp-035 orientation remained separate until its criterion was frozen.
 Review after PR 19 merged found D-194 and D-195 before measurement.
 The corrected checker at `aa63cf4` derives each slide-stratum contact row and represents
-pair `(3,4)` as two owner-axis branches with both tied support rows in each.
+pair $(3,4)$ as two owner-axis branches with both tied support rows in each.
 Exp-035 then met its frozen criterion: six exact matrices across A, the interior, and B
 admit one exact direction outside exp-034’s sheet, and all seven controls reject.
 Exp-036 then tested that displayed direction under a separately frozen criterion.
 The owner-4 branch requires an exact positive side excess with coefficient `sqrt(2)/8`;
-the owner-3 branch has exact upper-minus-lower coefficient `-1/4`, and its
+the owner-3 branch has exact upper-minus-lower coefficient $-1/4$, and its
 relative-angle cusp has positive margin `sqrt(2)/2 - 1/4`. Those two branches exhaust
 every nearby feasible subsequence, so the vector is not a true Bouligand tangent at A,
 the interior, or B. All seven controls reject and retained replay is identical in 0.21
@@ -2607,8 +2609,8 @@ engine commit. Its 30-step normal gate passes in 37 wall-seconds with all 37 neg
 controls firing and 198 defects reconciled.
 The strict deep gate is not green: its first run exposed D-198 and the already
 outstanding D-126/D-162 golden drift.
-D-198 is fixed; an isolated one-worker deep regeneration still reports `n=4` at 3/4
-converged and stops `n=10` on pair-row 61 at residual `1.503e-10` after 109 seconds.
+D-198 is fixed; an isolated one-worker deep regeneration still reports $n=4$ at 3/4
+converged and stops $n=10$ on pair-row 61 at residual `1.503e-10` after 109 seconds.
 That blocker is retained without changing the `1e-10` screen or the committed golden.
 A bounded source trace shows that the observed n=10 stop is a typed post-check rejection
 after the repair LP, not a wall-deadline stop.
@@ -2616,7 +2618,7 @@ Thus D-126’s deterministic work budget remains necessary but is not this corre
 `think-yi6x` owns the narrower D-162 repair with first-versus-repaired receipts, finite
 solver caps, and unchanged all-row acceptance.
 The implemented D-199 repair re-observes every successful LP under a four-call cap.
-At n=10 the offender sets are `(49, 66)`, then `(61)`, then empty; both declared pool
+At n=10 the offender sets are $(49, 66)$, then $(61)$, then empty; both declared pool
 widths recover all seven known-answer ladder rungs without changing the screen or
 golden. The same replays leave n=4 at 3/4 converged.
 A bounded seed slice identifies a distinct D-203 cause: seed 0 receives a typed HiGHS
@@ -2706,7 +2708,7 @@ Two independent pre-review normal gates pass in 69 and 91 wall-seconds; post-rev
 pass in 31 and 35 wall-seconds.
 The current gate includes 55 negative controls, Python and Rust lint, BasedPyright,
 generated views, all 36 experiment commits, and nine AgentSession records.
-An independent derivation also confirms exp-036’s `sqrt(2)/8` owner-4 excess, `-1/4`
+An independent derivation also confirms exp-036’s `sqrt(2)/8` owner-4 excess, $-1/4$
 owner-3 gap, positive relative-angle cusp margin, finite branch exhaustion, and narrow
 Bouligand-tangent scope.
 
@@ -2725,13 +2727,13 @@ Treat its unattended census as blocked until this operational gate is satisfied:
 2. both canonical keys invariant under D4 and relabelling, with bounded runtime;
 3. non-converged observations excluded from basin counts;
 4. isolated endpoints distinguished from connected terminal components, with the exact
-   `n=3` sliding family passing a quantum-invariance regression;
+   $n=3$ sliding family passing a quantum-invariance regression;
 5. event order and full proposer/quench/equivalence regime provenance persisted;
 6. unrecognised endpoints classified from retained poses rather than side strings;
 7. numerical identity calibrated independently of D-021’s scalar side floor;
 8. H-011/H-012 evaluators implemented with uncertainty, or the overnight claims removed;
 9. fixed-angle semantics corrected;
-10. `n=12` removed as a negative control;
+10. $n=12$ removed as a negative control;
 11. atlas, golden, and regression checks hermetic, wired, and green under strict CI; and
 12. the README, synopsis, handoff, and plan regenerated or corrected.
 
@@ -2748,7 +2750,7 @@ poses are retained and their results are labelled untrusted screen data.
 - The LP formulation for a **fixed cell** is sound and independently reproduced.
   The counterexample concerns cell selection at fixed angles.
 - The current live catalogue agrees with the repository on the examined common-n record
-  values. The `n=17` polynomial supports the repository’s chosen decimal.
+  values. The $n=17$ polynomial supports the repository’s chosen decimal.
 - The earlier primary-source search missed the UnitSquare Project’s 29 July 2026
   construction release.
   F-42 corrects the two affected `n<=100` cases and records the four additional cases

@@ -18,7 +18,7 @@ geometry before the coordinator’s explicit packet dispatch.
 
 The [producer packet](packet.json) names `exp-113-candidate-v1`, reports 134 eligible
 pairs and 134 separation records, and has `witness: null`. Its first and last canonical
-pairs are `[0,2]` and `[57,59]`. The [independent replay](replay.json) reconstructed and
+pairs are $[0,2]$ and $[57,59]$. The [independent replay](replay.json) reconstructed and
 bound the exact source geometry and fixed weights against the frozen accepted parent,
 enumerated eligible pairs independently, and required one correctly ordered separation
 record for every pair.

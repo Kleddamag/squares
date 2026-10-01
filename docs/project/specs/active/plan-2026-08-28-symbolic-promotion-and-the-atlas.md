@@ -3,7 +3,7 @@
 **Date:** 2026-08-28
 
 **Owns:** The top-down capability reading that decides which symbolic work is reachable
-now, why `n = 11` is exact and `n = 29` is not, and the ranked gaps between the current
+now, why $n = 11$ is exact and $n = 29$ is not, and the ranked gaps between the current
 tooling and a complete atlas.
 
 **Does not own:** The bounded commitments, which live in
@@ -47,11 +47,11 @@ the next several sessions.
 [`cases.trump11.derive_field`](../../../../packing/cases/trump11/derive_field.py) states
 its input plainly: it takes **only the published minimal polynomial** of the container
 side, plus the tilted-block contact relation, and re-derives the minimal polynomial of
-`u = tan(a/2)`. `n = 11` is exact because Trump published the degree-eight polynomial in
-1979\. Steps two through five were carried out by a person, decades ago, and this
+$u = \tan(a/2)$. $n = 11$ is exact because Trump published the degree-eight polynomial
+in 1979. Steps two through five were carried out by a person, decades ago, and this
 repository picks the work up at step six, where it is strong.
 
-`n = 29` has no such publication, and the record is explicit that none exists anywhere.
+$n = 29$ has no such publication, and the record is explicit that none exists anywhere.
 `E-n029-kingbird-report` carries `replay_status: public-certificate-missing` with the
 limitation that “the public SVG serializes a FindRoot result and supplies no formal
 certificate”, and the blocker “no outward-rounded interval or exact algebraic
@@ -59,19 +59,19 @@ certificate is public”.
 The repository’s own reconstruction reaches `numerically-checked` at 160 decimal digits
 and tolerance `1e-80`, and stops there by design.
 
-So the best known `n = 29` construction is a numerical root-find, and **no exact
+So the best known $n = 29$ construction is a numerical root-find, and **no exact
 constructive value for it exists in the literature or here**.
 
-The contrast with `n = 5` and `n = 10` is the useful one, because those come from the
+The contrast with $n = 5$ and $n = 10$ is the useful one, because those come from the
 same catalogue yet reach `verified` and `exact-algebraic` in
 [`cases.gobel5`](../../../../packing/cases/gobel5/) and
 [`cases.gobel10`](../../../../packing/cases/gobel10/). The difference is that Göbel’s
 underlying constructions are known in closed form.
-At `n = 29` the construction *is* the numerical solve.
+At $n = 29$ the construction *is* the numerical solve.
 
 This changes what the symbolic pipeline would be doing at each size.
-At `n = 11` it would reproduce a result published in 1979, which is a calibration with a
-known answer. At `n = 29` it would produce a characterization **nobody has**, with no
+At $n = 11$ it would reproduce a result published in 1979, which is a calibration with a
+known answer. At $n = 29$ it would produce a characterization **nobody has**, with no
 published answer to check against — so step six stops being a formality and becomes the
 entire guarantee.
 
@@ -82,10 +82,10 @@ There is no certificate to find; there is only one to derive.
 
 |  | verified minus reported | reading |
 | --- | ---: | --- |
-| `n = 11` | `4.18e-15` | the verified bound **is** the record |
-| `n = 29` | `5.23e-05` | the verified bound is **weaker** than the record |
+| $n = 11$ | `4.18e-15` | the verified bound **is** the record |
+| $n = 29$ | `5.23e-05` | the verified bound is **weaker** than the record |
 
-`n = 29`’s `reported_upper_bound` is Kingbird’s, a better construction than the Schadt
+$n = 29$’s `reported_upper_bound` is Kingbird’s, a better construction than the Schadt
 pose the repository can certify.
 The certified bound sits about `5.23e-5` above the actual record, and that record is not
 verified here at all.
@@ -103,29 +103,29 @@ Recording that here so the next session prices the two kinds of work differently
 A complete atlas needs both, and they are independent.
 
 **Exact entries** need steps two through five, plus the missing half of step six.
-This is the symbolic survey proper, and `n = 29` is its natural first hard target
+This is the symbolic survey proper, and $n = 29$ is its natural first hard target
 because a numerical pose already exists and the failure is purely one of promotion.
 
 **A map that means something** needs the component-identity blocker resolved.
 `distinct_basins` counts endpoint keys rather than connected terminal components, the
-exact `n = 3` sliding family shows one connected optimal set producing many keys, and
+exact $n = 3$ sliding family shows one connected optimal set producing many keys, and
 until that is fixed the census cannot saturate and the rarity premise is untestable
 rather than untested.
 
 Neither program unblocks the other.
 A perfect exact promoter would still leave the map counting keys; a resolved identity
-relation would still leave `n = 29` uncertified.
+relation would still leave $n = 29$ uncertified.
 
 ## Ranked gaps
 
 1. **Precision manufactured from the system.** Corrected by measurement after this plan
    was first written. Contact-structure inference was ranked first here on an ambiguity
-   risk that does not apply at `n = 29`: the retained reconstruction separates contact
+   risk that does not apply at $n = 29$: the retained reconstruction separates contact
    from non-contact by about ninety-nine orders of magnitude, and the structure is
    already computed. The real first blocker is that the source carries about ninety-eight
    digits, which a probe in X-004 shows cannot identify a minimal polynomial.
    More digits require Newton refinement, and refinement requires the closed system —
-   which at `n = 29` is published in the provenance SVG and already transcribed in
+   which at $n = 29$ is published in the provenance SVG and already transcribed in
    [`cases.kingbird29.verify_svg`](../../../../packing/cases/kingbird29/verify_svg.py),
    where it is evaluated but never solved.
    Precision at this size is available today; gaps 2 and 3 below are what generalize the
@@ -159,7 +159,7 @@ exactly the shape of the flattering soundness defects this repository already lo
   — either by exact substitution into the recovered field, which is the stronger route
   and the pipeline’s own success path, or by interval certification where only a
   numerical enclosure is available.
-- No treatment of the `4.93e-31` relaxation as progress toward the `n = 29` record.
+- No treatment of the `4.93e-31` relaxation as progress toward the $n = 29$ record.
 - No atlas saturation, census completeness, or rarity claim while `distinct_basins`
   counts keys.
 - No inference of a contact model from serialized geometry where near-contacts are

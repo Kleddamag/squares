@@ -39,7 +39,7 @@ some leaf, and that leaf can only close through the local theorem.
 | --- | --- |
 | material | The registered negative control (“side $U+10^{-3}$ does not close”) is met only at producer level: the full tree stopped at its node cap with no open leaf, and the Trump-cell control (open at $3.877081$) was produced from a non-root cell the reader does not accept. No reader-verified n11 negative control exists. |
 | material | H-236’s instrument field named `sqpack.exact_lp`; the instrument uses scipy’s HiGHS binding for float proposals and exact `Fraction` arithmetic for every decision. Corrected in the record. |
-| minor | The reader checks the $U$ bracket only when the target is labelled `U` and does not compare the declared box with $\pm10^{-6}$; the final record must read both fields from the reader’s output. |
+| minor | The reader checks the $U$ bracket only when the target is labelled $U$ and does not compare the declared box with $\pm10^{-6}$; the final record must read both fields from the reader’s output. |
 | minor | A missing subtree file raises an exception rather than a `rejected` verdict; it is not a false-accept path. |
 | minor | Producer and reader share `cases/trump11/packing.py` and `sqpack.field.NumberField`; the trust base should be stated with the result. |
 | minor | Sixteen tampering probes were all refused for the right reason; none of them is yet a test. |

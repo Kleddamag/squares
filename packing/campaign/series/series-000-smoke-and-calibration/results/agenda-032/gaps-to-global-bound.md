@@ -175,7 +175,7 @@ The current deletion screens do not reach that threshold.
 Keep [H-135 global pricing](../../../../hypotheses/H-135-paired-full-support-pricing.md)
 as a separate reserve.
 It asks whether full retained positive dual support exposes a site missed by a 32-row
-truncation. Its unit-square transport is a mechanism test, not the present side-$B$
+truncation. Its unit-square transport is a mechanism test, not the present side-`B`
 certificate. A successful witness still needs optimization and complete verification.
 A global cover below eleven could replace the owner split; a mixed proof could instead
 use different verified methods for different cases.

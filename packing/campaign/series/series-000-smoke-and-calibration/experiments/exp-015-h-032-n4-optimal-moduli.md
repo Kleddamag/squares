@@ -64,18 +64,18 @@ experiment:
 
 The preregistered corollary passed as its own sweep cell.
 The orientation-forcing argument from exp-014 makes every square axis-aligned.
-At side 2, all four lower-left coordinates must occupy the four corners of `[0,1]^2`.
+At side 2, all four lower-left coordinates must occupy the four corners of $[0,1]^{2}$.
 
 The checker nevertheless exhausts the full separation disjunction rather than importing
 the conclusion. Of 4,096 raw six-pair choices, 96 are consistent and every one is
 zero-dimensional. They reduce four-to-one to exactly 24 labelled grid states, all
 accepted by the exact packing oracle.
-Thus the labelled space is 24 isolated points with Betti vector `[24,0]`. The `S4`
+Thus the labelled space is 24 isolated points with Betti vector $[24,0]$. The `S4`
 quotient is one point, and the `D4 x S4` quotient is the same point with combined
 stabilizer order eight.
 
 Alpert et al.'s reported Betti vector agrees.
-Their table does not report an `n = 4` f-vector; the retained record preserves that null
+Their table does not report an $n = 4$ f-vector; the retained record preserves that null
 instead of attributing the independently derived 24-state count to the source.
 
 Generation took 0.33 wall seconds and complete replay took 0.32 seconds.
@@ -86,7 +86,7 @@ The retained result is
 A valid rotated or continuously moving side-2 configuration rejects the classification.
 An incomplete orientation argument, state enumeration, group action, or exact replay
 leaves it unresolved.
-Nothing in this round is evidence about `n = 5` or `n = 6`.
+Nothing in this round is evidence about $n = 5$ or $n = 6$.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

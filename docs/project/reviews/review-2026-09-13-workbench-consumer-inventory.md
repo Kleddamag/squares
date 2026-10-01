@@ -198,7 +198,7 @@ must hold:
 - Pack excludes the illustrative tween at `workbench.js` lines 6298–6316.
 - A mode switch stores mode-local selection, stops the old run, clears stale optimizer
   state, and restages the destination mode at lines 6668–6740.
-- Pack starts with all `n` squares on stage, and Animate starts on the first pair in its
+- Pack starts with all $n$ squares on stage, and Animate starts on the first pair in its
   range at lines 6724–6736.
 - Restart has distinct Pack and Animate behavior while preserving current settings at
   lines 6769–6795.

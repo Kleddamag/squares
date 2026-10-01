@@ -134,9 +134,10 @@ experiment:
 # exp-130 — The First Rung of the Band Ladder, Decided
 
 [H-130](../../../hypotheses/H-130-robust-end-band-theorem-at-q.md) asked for one thing:
-an end band around `0°` and `45°`, wide enough that `α + β ≥ 3°`, that no packing of
-eleven unit squares at side `96/25` can lie inside — decided exactly, not transported
-from Stromquist. Lane BC-295 of
+an end band around $0^\circ$ and $45^\circ$, wide enough that
+$\alpha + \beta \ge 3^\circ$, that no packing of eleven unit squares at side $96/25$ can
+lie inside — decided exactly, not transported from Stromquist.
+Lane BC-295 of
 [agenda 030](../../../agendas/agenda-030-parallel-structural-lanes-at-n11.md), bead
 `think-ndqj`, ran the widening in
 [session-102](../../../agent-sessions/session-102-angle-band-theorems-at-q.md) and froze
@@ -155,114 +156,118 @@ stated verdicts; this correction adds no run.
 
 ## What was tested, and what would have refuted it
 
-The class is `[0°, α(a)] ∪ [45° − β(b), 45°]` for `a` leading and `b` trailing half-gap
-cells of the net.
-The tangent of `α(a)` is the exact upper bound of cell `a − 1`, and the
-tangent of `45° − β(b)` is the exact lower bound of cell `181 − b`. Both ends are
-closed. The question is whether the composition-`(11, 0)` class program refutes that
-class: if the class measure has total mass below eleven while every direction of the
-class carries a covered core of mass at least one, then eleven pairwise disjoint
-`B`-cores at class directions cannot fit, so no packing of eleven has all its folded
-angles in the band.
+The class is $[0^\circ, \alpha(a)] \cup [45^\circ - \beta(b), 45^\circ]$ for $a$ leading
+and $b$ trailing half-gap cells of the net.
+The tangent of $\alpha(a)$ is the exact upper bound of cell $a - 1$, and the tangent of
+$45^\circ - \beta(b)$ is the exact lower bound of cell $181 - b$. Both ends are closed.
+The question is whether the composition-`(11, 0)` class program refutes that class: if
+the class measure has total mass below eleven while every direction of the class carries
+a covered core of mass at least one, then eleven pairwise disjoint $B$-cores at class
+directions cannot fit, so no packing of eleven has all its folded angles in the band.
 
 The falsifiers were fixed before the runs: **a fractional packing on the end cells of
-value at least eleven at `96/25`, or eleven pairwise disjoint `B`-cores at end-cell
+value at least eleven at $96/25$, or eleven pairwise disjoint $B$-cores at end-cell
 directions in the container.** Neither occurred.
 A non-refutation on a site set is neither of those — it is a site-set reading, and every
 one of them is labelled as such below.
 
 ## Inputs, fixed for every point
 
-Side `q = 96/25`. Shrink `B = 9977/10000`. The retained 181-direction net from
-`cases/n11_fractional_certificate/certificate.json`: half-tangent limit `207107/500000`,
-180 equal steps, cell width about `0.264°` at the axis end and `0.225°` at the diagonal
-end. Site set `build_site_grid(96/25, 79, 1/10)` — the `79 × 79` product grid inset
-`1/10` from the walls, folded into `D4` orbits, `6241` sites in `820` orbits — and, for
-the refinement, `build_site_grid(96/25, 119, 1/10)` with `14 161` sites.
-Composition `(11, 0)`; `rows_per_direction = 3`; the row loop capped at a hundred
+Side $q = 96/25$. Shrink $B = 9977/10000$. The retained 181-direction net from
+`cases/n11_fractional_certificate/certificate.json`: half-tangent limit $207107/500000$,
+180 equal steps, cell width about $0.264^\circ$ at the axis end and $0.225^\circ$ at the
+diagonal end. Site set `build_site_grid(96/25, 79, 1/10)` — the $79 \times 79$ product
+grid inset $1/10$ from the walls, folded into `D4` orbits, $6241$ sites in $820$ orbits
+— and, for the refinement, `build_site_grid(96/25, 119, 1/10)` with $14 161$ sites.
+Composition $(11, 0)$; `rows_per_direction = 3`; the row loop capped at a hundred
 rounds, with the point reached decided regardless of convergence, because the exact
 sweep is complete and the loop’s rows are a subset of the placements.
-Rationalisation at scale `4096` with the standard bump `1 + 10⁻⁶`. Exact thresholds
-`(1, 0)`. A class is a union of half-gap cells and its folded range is the closed union
+Rationalisation at scale $4096$ with the standard bump $1 + 10^{-6}$. Exact thresholds
+$(1, 0)$. A class is a union of half-gap cells and its folded range is the closed union
 of the cells’ exact-tangent bounds (`DirectionClasses.cell_bounds`).
 
-Legal touching is retained throughout: a square’s `B`-core lies in its open interior
+Legal touching is retained throughout: a square’s $B$-core lies in its open interior
 (Condition 4), so the cores of a packing are pairwise disjoint even where squares touch.
 
 ## The three theorems, and their exact domains
 
 **Theorem A — the first asymmetric band.** No packing of eleven unit squares in
-`[0, 96/25]²` has every folded angle in the closed set whose tangent lies in
-`[0, 40385865000000/1349699746833857] ∪ [1077991935000000/1134804266494367, 1]`. Cells
-`0–6 ∪ 174–180`, grid 79, converged in 49 rounds.
-Mass `5529/512 = 10.798828125` over 152 `D4`-closed atoms, least covered core
-`4099/4096` on every one of the fourteen class directions, Conditions 1, 3 and 4 holding
-with `B(1 + D) = 899996306539/900000000000 < 1`. Here `α + β = 3.1846°`, which clears
-H-130’s width criterion by approximately `0.1846°`. The degree labels for this set are
-approximately `[0°, 1.7139°] ∪ [43.5293°, 45°]`. This asymmetric band alone does not
-establish H-130’s literal distance of `1.5°` from both endpoints; Theorem C does.
+$[0, 96/25]^2$ has every folded angle in the closed set whose tangent lies in
+$[0, 40385865000000/1349699746833857] \cup [1077991935000000/1134804266494367, 1]$.
+Cells $0\text{–}6 \cup 174\text{–}180$, grid 79, converged in 49 rounds.
+Mass $5529/512 = 10.798828125$ over 152 `D4`-closed atoms, least covered core
+$4099/4096$ on every one of the fourteen class directions, Conditions 1, 3 and 4 holding
+with $B(1 + D) = 899996306539/900000000000 < 1$. Here $\alpha + \beta = 3.1846^\circ$,
+which clears H-130’s width criterion by approximately $0.1846^\circ$. The degree labels
+for this set are approximately $[0^\circ, 1.7139^\circ] \cup [43.5293^\circ, 45^\circ]$.
+This asymmetric band alone does not establish H-130’s literal distance of $1.5^\circ$
+from both endpoints; Theorem C does.
 
 **Theorem B — the widest on grid 79.** The same for the closed set with tangent in
-`[0, 12271089750000/66942386977163] ∪ [1077991935000000/1134804266494367, 1]`. Cells
-`0–39 ∪ 174–180`, grid 79, 41 rounds, mass `351/32 = 10.96875` over 216 atoms, least
-core `4101/4096` over the 47 class directions.
-Its degree labels are approximately `[0°, 10.3875°] ∪ [43.5293°, 45°]` and
-`α + β ≈ 11.8582°`, clearing the width criterion by approximately `8.8582°`.
+$[0, 12271089750000/66942386977163] \cup [1077991935000000/1134804266494367, 1]$. Cells
+$0\text{–}39 \cup 174\text{–}180$, grid 79, 41 rounds, mass $351/32 = 10.96875$ over 216
+atoms, least core $4101/4096$ over the 47 class directions.
+Its degree labels are approximately
+$[0^\circ, 10.3875^\circ] \cup [43.5293^\circ, 45^\circ]$ and
+$\alpha + \beta \approx 11.8582^\circ$, clearing the width criterion by approximately
+$8.8582^\circ$.
 
 **Theorem C — the widest decided at all.** The same for the closed set with tangent in
-`[0, 12271089750000/66942386977163] ∪ [177594252500000/189956166180167, 1]`. Cells
-`0–39 ∪ 172–180`, grid 119, 81 rounds, mass `11083/1024 = 10.8232421875` over 296 atoms,
-least core `4101/4096` over the 49 class directions.
-Its degree labels are approximately `[0°, 10.3875°] ∪ [43.0737°, 45°]` and
-`α + β ≈ 12.3138°`, clearing the width criterion by approximately `9.3138°`.
+$[0, 12271089750000/66942386977163] \cup [177594252500000/189956166180167, 1]$. Cells
+$0\text{–}39 \cup 172\text{–}180$, grid 119, 81 rounds, mass
+$11083/1024 = 10.8232421875$ over 296 atoms, least core $4101/4096$ over the 49 class
+directions. Its degree labels are approximately
+$[0^\circ, 10.3875^\circ] \cup [43.0737^\circ, 45^\circ]$ and
+$\alpha + \beta \approx 12.3138^\circ$, clearing the width criterion by approximately
+$9.3138^\circ$.
 
 Theorem C contains Theorem B contains Theorem A. Equivalently, every packing of eleven
-unit squares at side at most `96/25` has a square whose folded angle’s tangent lies
-strictly between `12271089750000/66942386977163` and `177594252500000/189956166180167`,
-the exact complementary interval for Theorem C. That interval lies more than `1.5°` from
-both endpoints, so H-130’s symmetric distance claim holds.
-Trump’s five tilted squares have angle approximately `40.18°` inside that interval.
+unit squares at side at most $96/25$ has a square whose folded angle’s tangent lies
+strictly between $12271089750000/66942386977163$ and $177594252500000/189956166180167$,
+the exact complementary interval for Theorem C. That interval lies more than $1.5^\circ$
+from both endpoints, so H-130’s symmetric distance claim holds.
+Trump’s five tilted squares have angle approximately $40.18^\circ$ inside that interval.
 
 ## How the band was widened
 
-Symmetric first, `a = b`, from the planning lane’s `a = b = 6`: the `(6, 6)` control
-returned the planning lane’s exact mass `10959/1024 = 10.70215` to the fraction,
-`(7, 7)` refuted at `5529/512`, and `(8, 8)` did not, its exact mass reaching
-`5637/512 = 11.00977` with Condition 2′ failing.
+Symmetric first, $a = b$, from the planning lane’s $a = b = 6$: the $(6, 6)$ control
+returned the planning lane’s exact mass $10959/1024 = 10.70215$ to the fraction,
+$(7, 7)$ refuted at $5529/512$, and $(8, 8)$ did not, its exact mass reaching
+$5637/512 = 11.00977$ with Condition 2′ failing.
 From the widest symmetric success the widening went asymmetric: the trailing end held at
-seven cells (`β = 1.4707°`) and the leading end pushed from `(8, 7)` to `(40, 7)`, every
-point refuted, with the float value pinned at `10.7761` across the whole run from
-`1.71°` to `9.08°` of axis width.
-Pushing the trailing end instead — `(6, 8)`, `(3, 8)`, `(1, 8)`, `(1, 10)` — fails on
+seven cells ($\beta = 1.4707^\circ$) and the leading end pushed from $(8, 7)$ to
+$(40, 7)$, every point refuted, with the float value pinned at $10.7761$ across the
+whole run from $1.71^\circ$ to $9.08^\circ$ of axis width.
+Pushing the trailing end instead — $(6, 8)$, $(3, 8)$, $(1, 8)$, $(1, 10)$ — fails on
 grid 79 at every axis width, including a single axis cell.
-The `45°` end is the binding end.
+The $45^\circ$ end is the binding end.
 
 Then the failing points were rerun on grid 119 with nothing else changed, and grid 119
-refuted `(8, 8)`, `(7, 8)`, `(9, 9)`, `(10, 10)`, `(11, 11)`, `(12, 12)`, `(40, 8)` and
-`(40, 9)` — the last being Theorem C. It also lowered the value of `(7, 7)` from
-`10.799` to `43857/4096 = 10.70728`. The site set, not the relaxation, was what stopped
+refuted $(8, 8)$, $(7, 8)$, $(9, 9)$, $(10, 10)$, $(11, 11)$, $(12, 12)$, $(40, 8)$ and
+$(40, 9)$ — the last being Theorem C. It also lowered the value of $(7, 7)$ from
+$10.799$ to $43857/4096 = 10.70728$. The site set, not the relaxation, was what stopped
 the diagonal end on grid 79.
 
 ## Limits
 
 - **A non-refutation on a site set is not a falsification.** This is lane B §3.2 and the
-  exp-064 lesson, and this round is the sharpest illustration of it yet: `(8, 8)` reads
+  exp-064 lesson, and this round is the sharpest illustration of it yet: $(8, 8)$ reads
   as “not refuted” on grid 79 and is refuted on grid 119 with nothing else changed.
   Every grid-79 row in the widening table that failed Condition 2′ is a grid-79 reading
   only.
 - **The duals that reach eleven are not obstructions.** `ceiling.py`, driven through
-  `ceiling_check.py`, decides the symmetrised dual families exactly: continuum depth `2`
-  for the `(8, 8)` and `(7, 8)` duals and `1291/568` for the band toward `40.19°`,
-  scaling their totals to `11/2`, `11/2` and `6392/1291 = 4.9512`. A depth of two is two
+  `ceiling_check.py`, decides the symmetrised dual families exactly: continuum depth $2$
+  for the $(8, 8)$ and $(7, 8)$ duals and $1291/568$ for the band toward $40.19^\circ$,
+  scaling their totals to $11/2$, $11/2$ and $6392/1291 = 4.9512$. A depth of two is two
   cores of a near-integral family overlapping in a region containing no site — at grid
-  79 the spacing is `0.0467` and a `B`-core is `0.9977` wide.
+  79 the spacing is $0.0467$ and a $B$-core is $0.9977$ wide.
   The fractional obstruction the site set shows is an artefact of the site set.
-- **The ladder’s true rung is not here.** `(13, 13)` and `(40, 10)` at grid 119 were cut
+- **The ladder’s true rung is not here.** $(13, 13)$ and $(40, 10)$ at grid 119 were cut
   off by the clock rather than decided, so neither end is known to be exhausted there,
   and the widest exact-decided band is a property of the site set as much as of the
   side. What is registered is a lower bound on the rung, not the rung.
 - **Wall times are not comparable.** Every measurement ran at load average eight on four
-  cores with one worker; the declared `2231` seconds is the sum of the per-point wall
+  cores with one worker; the declared $2231$ seconds is the sum of the per-point wall
   times in the three widening tables and nothing else — the dual and ceiling work is
   reported as a guard here and its time is not counted in it.
 - **Nothing about a packing bound.** The theorems restrict where the angles of a packing

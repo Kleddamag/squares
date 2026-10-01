@@ -168,6 +168,13 @@ docs/project/reviews/review-2026-09-05-strategy-gpt-56-pro-gemini-grok.md
 # strategy review above: the source body is preserved rather than retyped.
 docs/project/reviews/review-2026-09-08-extending-s11-lower-bound-note.md
 
+# The GitHub math probe: each case's exact characters are what is measured. Measured on a
+# copy with the pinned flowmark-rs 0.4.0 on 2026-09-30, the formatter changes four of its
+# cases -- a straight quote retyped as curly, an underscore italic rewritten with stars,
+# and two line breaks joined -- which would measure a different context than the case
+# names.
+packing/tests/fixtures/github-math/cases.md
+
 # Vendored upstream repositories, checked out as submodules; their Markdown is the
 # upstream project's. flowmark skips a directory named `vendor` by default, but a
 # `--exclude` flag replaces that default list, so the exclusion is stated here too.

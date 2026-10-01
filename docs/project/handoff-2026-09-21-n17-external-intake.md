@@ -12,8 +12,8 @@ travel together.
 ## Part 1: validated, in the pull request, ready to land
 
 `s(17) >= 461300/99999 = 4.61304613…` is registered as `T-032` at `V4/C4`. The previous
-verified value was `459/100`, so the movement is `+0.02305` and the gap to Bidwell’s
-packing closes to `0.0625`. It is the first verified bound at this size that came from
+verified value was $459/100$, so the movement is $+0.02305$ and the gap to Bidwell’s
+packing closes to $0.0625$. It is the first verified bound at this size that came from
 outside this project.
 
 Two certificates arrived together, both descended from this repository’s `T-019` and
@@ -21,8 +21,8 @@ both crediting it:
 
 | Source | Claim | How it was decided here |
 | --- | --- | --- |
-| Guzhou0806 R012, 2026-09-20 | `461300/99999` | Its own exact checker recomputed all 2925 parent-angle intervals (340 s), and this repository’s interval branch and bound certified the same 2925 entries over 34,465,227 boxes, none stalled, every bracket containing the source’s exact minimum (226 s) |
-| Mira, 2026-09-07 | `4613/1000` | Accepted unchanged by both stock verifiers: the exact sweep over 2881 directions (423 s) and the interval route over the doubled 5761-direction net (1702 s), agreeing on `1000002103/1000000000` |
+| Guzhou0806 R012, 2026-09-20 | $\frac{461300}{99999}$ | Its own exact checker recomputed all 2925 parent-angle intervals (340 s), and this repository’s interval branch and bound certified the same 2925 entries over 34,465,227 boxes, none stalled, every bracket containing the source’s exact minimum (226 s) |
+| Mira, 2026-09-07 | $\frac{4613}{1000}$ | Accepted unchanged by both stock verifiers: the exact sweep over 2881 directions (423 s) and the interval route over the doubled 5761-direction net (1702 s), agreeing on $\frac{1000002103}{1000000000}$ |
 
 Four receipts are retained under
 `packing/resources/web/n17-weighted-certificates-2026-09-20/receipts/`, and five fast
@@ -34,7 +34,7 @@ found no error in either argument.
 Eleven findings, none blocking.
 It supplies the two steps R012’s written note omits: that the endpoint-only containment
 test covers the whole angle interval, and that the inset from the endpoint minimum of
-`f` gives exactly the union of legal parent centres.
+$f$ gives exactly the union of legal parent centres.
 
 ### What is left to land it
 
@@ -42,15 +42,15 @@ test covers the whole angle interval, and that the inset from the endpoint minim
    overnight stack, claimed the same number.
    The register’s contiguity rule leaves no free number below it, so whichever landed
    second had to renumber.
-   The stack merged into `main` first and kept `T-031` for the `n = 11` octagon corner
+   The stack merged into `main` first and kept `T-031` for the $n = 11$ octagon corner
    class; this result took `T-032` when `main` was merged into this branch, and its row
    moved to the end of the register, because `devtools/check_results.py` reads
    contiguity positionally rather than by label.
 2. **Hosted CI is red on the first run** and was diagnosed, not guessed:
-   - `frontend`: fixed in `48a3ad23`. The workbench layout check staged `n = 17` to
+   - `frontend`: fixed in `48a3ad23`. The workbench layout check staged $n = 17$ to
      assert the “new result” star, which reports that a bound was first proved here;
      that is exactly the fact this branch changed.
-     The fixture moved to `n = 18`.
+     The fixture moved to $n = 18$.
    - `validate`: the session record needed a passing full-gate receipt, and `ledger.md`
      needed rendering. The ledger is rendered.
      The receipt line is deliberately **not** written yet, because no local `--fast` run
@@ -76,7 +76,7 @@ generator. The review’s scratch pass shows the stock kernel decides every entr
 six minutes once its centre domain is a parameter; a retained first-party exact
 instrument would make that leg first-party too.
 
-Mira’s dilation endpoint `4.61302863588611…` is **not** adopted.
+Mira’s dilation endpoint $4.61302863588611\ldots$ is **not** adopted.
 It needs a `T-022`-style proof note this certificate does not carry, and R012’s value is
 larger anyway.
 
@@ -86,7 +86,7 @@ None of this is in the pull request, and none of it should be treated as a findi
 
 The session opened five research and review lanes.
 Three finished and are in Part 1. Two were ideation lanes on how to get a materially
-stronger bound at `n = 17`, and both were cut when the work was rescoped to correctness
+stronger bound at $n = 17$, and both were cut when the work was rescoped to correctness
 and integration. What exists:
 
 - **Inside the covering-measure method**: an unfinished 332-line draft, now at
@@ -102,7 +102,7 @@ and integration. What exists:
 The open question worth the next block is narrow and concrete.
 R012 gains only `1.7e-5` over Mira’s endpoint, on a **fixed** measure: all it changes is
 which core each parent angle may use and where that core’s centre may sit.
-Mira separately reports a failed attempt at `4.615` on the unrestricted test.
+Mira separately reports a failed attempt at $4.615$ on the unrestricted test.
 So nobody has measured what the selector and the parent-centre restriction are worth
 against a measure priced for them.
 That is a covering-LP experiment this repository already has the machinery for, and it
@@ -125,7 +125,7 @@ them.
   for the same reason.
 - Two checker contracts were widened rather than bypassed, and both say why in place:
   the rung-pointer convention no longer demands `certificate.json` naming of another
-  author’s archived bytes, and the case-binding contract declares `n = 17`’s external
+  author’s archived bytes, and the case-binding contract declares $n = 17$’s external
   reduction with its reason in `tests/test_rung_figures.py`.
 
 <!-- This document follows common-doc-guidelines.md.

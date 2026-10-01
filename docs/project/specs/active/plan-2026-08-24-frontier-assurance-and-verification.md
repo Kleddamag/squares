@@ -15,7 +15,7 @@ interval-existence promotion remains open
 ## Overview
 
 Make the square-packing frontier effortless to read without weakening its mathematical
-standards. A reader should be able to open one generated view and see, for every `n` in
+standards. A reader should be able to open one generated view and see, for every $n$ in
 the declared case-corpus range:
 
 - the best upper and lower bounds reported by the public sources we track;
@@ -91,7 +91,7 @@ No normal workflow may need to cite this file.
   conventions. Their indexes and interpretations are in scope; source-faithful contents
   are not.
 - Keeping checksums for Git-tracked sources merely because they already exist.
-- Designing around one `n = 29` repository.
+- Designing around one $n = 29$ repository.
   That case is a regression fixture for a general contract.
 
 ## Background
@@ -102,7 +102,7 @@ The project already has the right broad architecture:
 - [`SYNOPSIS.md`](../../../../SYNOPSIS.md) owns detailed current state, workflow
   contracts, terminology, and capability boundaries;
 - [`frontier/`](../../../../packing/frontier/README.md) holds one structured case per
-  `n`;
+  $n$;
 - [`campaign/`](../../../../packing/campaign/README.md) records hypotheses, experiments,
   sessions, and generated views; and
 - [`resources/`](../../../../packing/resources/README.md) retains the primary-source
@@ -118,11 +118,11 @@ They also cannot distinguish arithmetic from assurance.
 
 The audit that produced this plan found four concrete boundary cases.
 
-1. The public Schadt `n = 29` repository checks decimal coordinates at tolerance
+1. The public Schadt $n = 29$ repository checks decimal coordinates at tolerance
    `1e-100`. Its worst pair margins are slightly negative within that tolerance, and its
    checker accepts incomplete input.
    It is a useful numerical witness for a superseded record, not a formal certificate.
-2. The retained Kingbird `n = 29` SVG is reconstructed at 160 decimal digits with a
+2. The retained Kingbird $n = 29$ SVG is reconstructed at 160 decimal digits with a
    `1e-80` serialization tolerance.
    That supports a numerical structural observation, not exact feasibility or
    optimality. Its current `exact_solution` resource role and the “verified orientation
@@ -132,9 +132,9 @@ The audit that produced this plan found four concrete boundary cases.
    The implementation now requires an exact irreducible finite-field reduction or a
    complete supported-quartic factor-exclusion certificate, plus exact Sturm isolation.
    Unsupported declarations fail closed rather than inheriting verification from the
-   built-in Trump `n = 11` path.
-4. A July 2026 public source reports interval-verified improvements at several `n`,
-   including `68` and `69`. The current `n = 68` and `n = 69` cases already retain those
+   built-in Trump $n = 11$ path.
+4. A July 2026 public source reports interval-verified improvements at several $n$,
+   including $68$ and $69$. The current $n = 68$ and $n = 69$ cases already retain those
    values and state that they have not been verified here; what is missing is typed
    evidence, a conflict or replay disposition, and access to the claimed certificate and
    checker. The result remains an external report pending source and replay adjudication.
@@ -156,7 +156,7 @@ They do not endorse the claim.
 under this plan’s definition.
 A verified upper bound may equal the reported record, trail it, or be only the exact
 grid construction. The grid fallback is one parametric theorem evidence
-record—`s(n) ≤ ⌈√n⌉` for all finite `n`—referenced by each case rather than 100 copied
+record—`s(n) ≤ ⌈√n⌉` for all finite $n$—referenced by each case rather than 100 copied
 witness files.
 
 A case is `proved` only when verified lower and upper bounds meet exactly.
@@ -232,10 +232,10 @@ Every evidence record names the claim it bears on:
 
 | Claim type | What verification establishes | What it does not establish |
 | --- | --- | --- |
-| `witness-feasibility` | The supplied placement contains `n` non-overlapping unit squares | Best known status or optimality |
-| `upper-bound` | `s(n) ≤ u`, normally derived from verified witness feasibility | A matching lower bound |
-| `lower-bound` | `s(n) ≥ l` under the theorem’s stated scope | A construction at `l` |
-| `exact-value` | Verified upper and lower bounds coincide exactly, establishing `s(n)` | Uniqueness or rigidity unless separately proved |
+| `witness-feasibility` | The supplied placement contains $n$ non-overlapping unit squares | Best known status or optimality |
+| `upper-bound` | $s(n) \le u$, normally derived from verified witness feasibility | A matching lower bound |
+| `lower-bound` | $s(n) \ge l$ under the theorem’s stated scope | A construction at $l$ |
+| `exact-value` | Verified upper and lower bounds coincide exactly, establishing $s(n)$ | Uniqueness or rigidity unless separately proved |
 | `witness-optimality` | A separately verified feasible witness attains an already verified exact value | Uniqueness or the mechanism that forces the value |
 | `derived-structure` | A named property such as orientation-class count or contact graph | Feasibility unless that is an explicit prerequisite |
 
@@ -391,21 +391,21 @@ Coverage is a dated claim over a named source set, not a claim to have exhausted
 web. The frontier records:
 
 - the source registries and first-party result pages reviewed;
-- the `n` range each source covers;
+- the $n$ range each source covers;
 - the last successful review date and source revision or page date when available;
 - the case-corpus horizon, initially and explicitly `1 <= n <= 100`;
 - relevant claims beyond that horizon in the source-coverage inventory; and
 - missing local source material, conflicting values, and unresolved newer claims.
 
-Completion requires a case for every `n` through 100 and a disposition for every result
+Completion requires a case for every $n$ through 100 and a disposition for every result
 found in the named primary-source set.
 A beyond-horizon result can live in the coverage inventory until extending the case
-corpus has a reader or research use; the known Kingbird range through at least `n = 324`
+corpus has a reader or research use; the known Kingbird range through at least $n = 324$
 does not by itself justify 224 mostly empty case files.
 
 Coverage state belongs in validated data.
 Beads track actionable work units—one source sweep, one conflict class, or one tooling
-blocker—not every `n` whose state is already represented in that data.
+blocker—not every $n$ whose state is already represented in that data.
 This keeps omissions visible without turning the issue tracker into a second frontier
 database.
 
@@ -508,7 +508,7 @@ documents.
 | `TUTORIAL.md` | first-use path through the tools and record | update examples to use inspect, check, and verify with their exact meanings |
 | `conventions.md` | ids, schemas, field rules, and objective checks | remove “every convention becomes a check”; retain only checks with a named benefit |
 | `frontier/README.md` | frontier semantics, coverage scope, reader and contributor workflows | document v2 case/evidence contracts, source conflicts, replay outcomes, and generated views |
-| `frontier/n-*.md` | one typed claim register per `n` | migrate every case, reclassify every witness, and remove free-text assurance ambiguity |
+| `frontier/n-*.md` | one typed claim register per $n$ | migrate every case, reclassify every witness, and remove free-text assurance ambiguity |
 | `campaign/README.md` | W6 mechanics | adopt the assurance/method split without duplicating synopsis definitions |
 | campaign schemas and artifacts | typed historical and current research record | migrate precision fields and annotate unsupported historical verdicts without rewriting raw results |
 | `resources/README.md` and source indexes | source retention and reconstruction policy | remove redundant checksum requirements; state the real trust-boundary exceptions |
@@ -611,7 +611,7 @@ preconditions).
 - [x] Migrate current campaign artifacts without rewriting raw measurements.
   Preserve unrecorded historical precision or tolerance explicitly and use named defects
   or revision notes for invalid historical conclusions.
-- [x] Correct the `n = 29` source roles and wording.
+- [x] Correct the $n = 29$ source roles and wording.
   Exp-012 remains a 160-digit numerical check; H-024 becomes unresolved under its
   original exact prerequisite or is superseded by a precisely numerical successor claim.
 - [x] Audit assurance claims in current prose.
@@ -627,15 +627,15 @@ preconditions).
 
 **Done when:** all existing structured artifacts validate under the new schemas; no
 current prose blurs numerical and formal evidence; every project doc has an authority
-and lifecycle; and the `n = 29` regression fixture displays only claims its public data
+and lifecycle; and the $n = 29$ regression fixture displays only claims its public data
 and local checks support.
 
 ### Phase 2: Complete Source Coverage and the Reusable Replay Path
 
 - [x] Audit the named primary-source set and record conflicts and review dates.
-  Keep the case corpus complete through the declared `n = 100` horizon and record
+  Keep the case corpus complete through the declared $n = 100$ horizon and record
   relevant beyond-horizon claims in the source inventory.
-- [x] Adjudicate the July 2026 `n = 68` and `n = 69` claims and any other newer results;
+- [x] Adjudicate the July 2026 $n = 68$ and $n = 69$ claims and any other newer results;
   do not promote an inaccessible certificate or expose held-out child geometry before
   preregistered H-030 is settled or versioned.
 - [x] Build the witness interchange format, source adapters, viewer, and independent
@@ -678,7 +678,7 @@ transient spec.
 
 - Every frontier case, evidence record, witness, experiment, and documentation-map entry
   validates against its declared contract.
-- Every `n` through the declared case-corpus horizon occurs exactly once; beyond-horizon
+- Every $n$ through the declared case-corpus horizon occurs exactly once; beyond-horizon
   source claims have an inventory disposition without requiring empty case files.
 - `proved` requires exact equality between verified lower and verified upper bounds.
 - Every new numerical record declares method, actual precision, and tolerance; a
@@ -708,12 +708,12 @@ transient spec.
 
 ### Regression Cases
 
-- The Schadt `n = 29` repository is shown as a superseded numerical record; tolerance
+- The Schadt $n = 29$ repository is shown as a superseded numerical record; tolerance
   `1e-100` never renders as verification.
-- The Kingbird `n = 29` SVG is numerically checked at the recorded 160 digits and
+- The Kingbird $n = 29$ SVG is numerically checked at the recorded 160 digits and
   `1e-80`; its six-class observation is not presented as exact until a formal
   certificate exists.
-- The built-in Trump `n = 11` witness remains verified because its field assumptions are
+- The built-in Trump $n = 11$ witness remains verified because its field assumptions are
   discharged; arbitrary generic fields do not inherit that status.
 - A reported external interval result without a public certificate stays reported.
 - One parametric exact grid theorem gives every case a verified fallback upper bound.

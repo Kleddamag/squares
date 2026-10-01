@@ -46,8 +46,8 @@ independent proof of every retained theorem.
   endpoint.
 - The corner-pair arithmetic agrees with
   [BC303](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/bc-303-first-wave-selection.md#3-replay-of-the-corner-pair-theorem-lane-c):
-  total mass `22524199/2000000`, uncovered allowance `524199/2000000`, pair mass
-  `106251/400000`, and margin `441/125000`. The same source verifies D4 closure, full
+  total mass $22524199/2000000$, uncovered allowance $524199/2000000$, pair mass
+  $106251/400000$, and margin $441/125000$. The same source verifies D4 closure, full
   folded-net mass coverage, strict shrink containment, and cross-corner distance greater
   than the B-core diameter.
   Thus the four distinct selected-core owners follow; they are not assumed literal
@@ -156,7 +156,7 @@ V4/C5, so the combined global bound is `C <= s(11) <= 3.877083590022814...`; the
 construction is unchanged.
 The classification follows [epistemics.md](../../../epistemics.md).
 
-The dilation-limit proof does not establish the separate strict inequality `s(11) > C`.
+The dilation-limit proof does not establish the separate strict inequality $s(11) > C$.
 This does not qualify the proved lower bound.
 T-023 and exp153 retain their conditional and fixed-family scopes and do not supply that
 global improvement. The compact pair instrument and parent-centre proposal remain unrun
@@ -176,8 +176,8 @@ The corrections below concern how the exploratory observations were interpreted.
 | R1: full combined checkpoint | The new finer-net covering and limit replays are deferred checks. A successful fast run with skipped deferred jobs is not full validation. The final matching checkout, source/base identities and substantive job outcomes belong in the PR’s validation receipt |
 | R2: cap transfer | An unconditional B-core witness needs separately verified owners, classes, occupied patches and any additional domain premises before supplying a conditional obstruction at that same side |
 | R3: owner selection and neutrality | Global exclusion needs some excluded valid selection for every hypothetical physical packing. X1’s exact survivor masses obstruct point covers only on the specified endpoint-patch relaxations; they do not establish a method-wide refutation, equal optimization problems or sixteenfold runtime |
-| R4: capacity formula | Four strictly disjoint 45-degree unit squares in the stated `1.99` by `3.95` rectangle refute the generic stacking rule. X3 now withdraws that rule and marks the retained script unfit for reuse. Its finite no-exceedances still imply no exceedance of the weaker area bound on the same boxes |
-| R5: finite domains and searches | Frozen-net measurements do not settle another net; an eight-step grid does not settle arbitrary regions; a fixed-support optimum does not settle other supports. A5’s `32/3` remains exact for its complete budget-one program; ten is exact for the finite final row set and only an upper bound for the full closure |
+| R4: capacity formula | Four strictly disjoint 45-degree unit squares in the stated $1.99$ by $3.95$ rectangle refute the generic stacking rule. X3 now withdraws that rule and marks the retained script unfit for reuse. Its finite no-exceedances still imply no exceedance of the weaker area bound on the same boxes |
+| R5: finite domains and searches | Frozen-net measurements do not settle another net; an eight-step grid does not settle arbitrary regions; a fixed-support optimum does not settle other supports. A5’s $\frac{32}{3}$ remains exact for its complete budget-one program; ten is exact for the finite final row set and only an upper bound for the full closure |
 | R6: completeness | A maximal clique with piercing number at least two does not exclude lower-piercing overweight sub-cliques. Bounded floating separation is not complete rational nonviolation. A5’s special-case completeness remains valid because the relevant maximal-clique rows are certified and imposed |
 
 The related C.1/C.3 corrections in the retained theory report prevent two other
@@ -260,16 +260,16 @@ The global bracket and T-024–T-026 proof packets are unchanged.
 | --- | --- |
 | A6’s 64-placement point family | Independent integer/rational reader passed K0–K3 and D4, all 14,344 arrangement vertices and three negative controls |
 | A6’s old 2,566 atom inequalities | Exact input retained and all memberships replayed without a float screen: 20,524 images, 14,949 sites, no violation; 935 orbits attain ratio one and 1,631 have slack |
-| A6’s six new atoms and 10.42 support calculation | Existing threshold representation suffices; all six cut charges reproduced. Independent reconstruction of the full 280-placement support and seven priced rows verifies upper bound `2605263163/250000000`, with minimum column slack `3/500000000`. The returned family has depth above one; its selected-row lower feasibility was not admitted by this check |
+| A6’s six new atoms and 10.42 support calculation | Existing threshold representation suffices; all six cut charges reproduced. Independent reconstruction of the full 280-placement support and seven priced rows verifies upper bound $\frac{2605263163}{250000000}$, with minimum column slack $\frac{3}{500000000}$. The returned family has depth above one; its selected-row lower feasibility was not admitted by this check |
 | Larger LP after the six atoms | Author-reported objective remains eleven; no global certificate or improved bound follows |
 | Second structural-site LP | Ended by a container restart after remaining unfinished beyond 4,260 seconds; no retained final value. This timing does not establish an asymptotic cost law |
-| H157’s survivor criterion | Separate Astra Max review reproduced six subclasses at ten, two at `19/2` and the 32-class maximum ten; the maximum-based rejection stands |
+| H157’s survivor criterion | Separate Astra Max review reproduced six subclasses at ten, two at $\frac{19}{2}$ and the 32-class maximum ten; the maximum-based rejection stands |
 | H157’s distance mechanism | Two intersecting cases invalidate the delivered positive-distance calculation. Correct those cases and its all-children interpretation; the six neutral distances and survivor counts remain supported |
 | Angular and pose propositions | Valid with the declared finite universe and patch-only residual domain. Guaranteed subpatches inside core 59 give survivor weight at least ten; equality needs the common mark in the patch |
 | Comparative strategy judgments | The counts and two matching cut maxima do not establish a universal productivity or runtime ranking |
 
 The later source review found a positive-area counterexample to T2’s unqualified
-equality: a small corner subpatch of core 59 leaves weight `43/4`. It also independently
+equality: a small corner subpatch of core 59 leaves weight $43/4$. It also independently
 confirmed that cores 59/60 each have a contained isolated unit parent.
 Neither a full packing completion nor an unavoidable neutral owner selection was shown.
 This distinguishes a repaired local obstruction from a claim about every conditional
@@ -331,7 +331,7 @@ change the global bracket.
 | --- | --- |
 | Individual unit-parent domain | The translated retained 88-core point obstruction has an explicit concentric unit parent for every placement throughout `q >= 76469/20000 = 3.82345`, at zero net mismatch. This removes fixed-B point-only solves that merely strengthen isolated-parent containment while retaining the used nodes; it does not decide changed atoms, angle subcells excluding those nodes, owner/contact conditions, joint compatibility or routing |
 | Parent experiment instrument | The exact adapter, source binder, closed schema, production runner and independently recomputing readback passed 56 focused tests and a separate adversarial admission review. A clean implementation commit, prospective registration and independently read actual result remain prerequisites; no target result is recorded |
-| Weighted five-site atom | The token-budget proof is exact. On the abstract five-site trace universe, the weighted `(2,2,1,1,1)`, threshold-four atom has budget one, whereas ordinary distinct-site threshold atoms need budget at least `4/3` to charge every weighted-positive trace. Geometric realization, a maintained representation and a complete cover remain open |
+| Weighted five-site atom | The token-budget proof is exact. On the abstract five-site trace universe, the weighted $(2,2,1,1,1)$, threshold-four atom has budget one, whereas ordinary distinct-site threshold atoms need budget at least $\frac{4}{3}$ to charge every weighted-positive trace. Geometric realization, a maintained representation and a complete cover remain open |
 | Fixed-angle contact argument | A tight row in an arbitrary selected SAT cell need not be physical contact. The old per-cell rank conclusion survives, but its physical-contact inference is withdrawn. A separate lexicographic theorem gives a genuine-contact representative in each connected component of the full fixed-angle feasible space; its independent review is recorded in the structural review |
 
 The parent-instrument row records its September 10 cutoff before exp156’s invocation.
@@ -371,7 +371,7 @@ It does not force a literal corner square, axis alignment, a bounded path length
 eleven, or a finite angle set.
 
 The changed-atom result is likewise an admission motive rather than a measured gain.
-Its `4/3` separation is over Boolean traces on the same five sites.
+Its $4/3$ separation is over Boolean traces on the same five sites.
 A future claim about square geometry must materialize the relevant exact row set, retain
 the multiplicities through D4 transformations, and pass the direct, event and interval
 coverage routes.
@@ -379,7 +379,7 @@ coverage routes.
 The direct 2880-step packet currently has a positive exact geometric ceiling only.
 Its coverage has not run.
 The correct test preserves the original T-025 relative-weight scale, compares its raw
-least charge `m` with `M/11 = 685457679/687500000`, and normalizes by `1/m` only after
+least charge $m$ with $M/11 = 685457679/687500000$, and normalizes by $1/m$ only after
 that strict comparison passes.
 The maintained adaptive refinement command does not implement the fixed packet, so the
 target remains blocked on a bounded runner rather than being classified by a nearby

@@ -9,7 +9,7 @@ outside the repository, which does not survive the session -- and modified no re
 file.
 It is installed here so that the evidence the records cite outlives that directory.
 
-The source was `1299` lines with SHA-256
+The source was $1299$ lines with SHA-256
 `513e6431e09a189f23de2dc141875f54ca64249c24b887aabe84ddf5a343f542`, and that hash names
 the scratchpad source rather than this file.
 The installation added this preface and the closing guidelines footer, and reformatted
@@ -125,7 +125,7 @@ Each is stated with its source text, what the code does, and what would close it
 **1. F-02: “Exact zero is not required at the float screen; independently bounded
 non-overlap is.”** (review line 442-443)
 
-`validated_record:587` still refuses any line whose `overlap` is not exactly `0.0`. The
+`validated_record:587` still refuses any line whose `overlap` is not exactly $0.0$. The
 repair *added* the independent bound and *kept* the screen F-02 asked to drop.
 Measured: an overlap of `1e-18` is refused outright while the identical geometry
 verifies. The engine’s own notion of feasible is a bound, not an exact zero — its
@@ -181,7 +181,7 @@ The gate ran 07:35-07:50Z and reported 5 failed steps (`gate.log:651-656`). I
 checked the attributions and they hold: the lint failures are the rigidity lane’s
 `local_rigidity/binding.py` and `chart.py`; the campaign-record failure is a stale
 generated `ledger.md`; the provenance failure is a pre-existing orphaned commit on
-`exp-002`; the fast-tests step timed out at 901s with its single `F` being the
+`exp-002`; the fast-tests step timed out at 901s with its single $F$ being the
 repository-wide 64 MiB snapshot budget.
 So “red, all five attributed elsewhere” is the true statement, and it is worse-sounding
 than the headline. Correct the headline, not the section.
@@ -366,7 +366,7 @@ Every element checked against the code, not the summary.
 
 | Claim | Where | Verdict |
 | --- | --- | --- |
-| scored lines carry `x`/`y`/`t` of length `n` | `validated_pose` (runner.py:520), called unconditionally from `validated_record:593` | holds; finite, non-bool, non-array and wrong-length all refuse |
+| scored lines carry $x$/`y`/`t` of length $n$ | `validated_pose` (runner.py:520), called unconditionally from `validated_record:593` | holds; finite, non-bool, non-array and wrong-length all refuse |
 | poses content-addressed by sha256 | `pose_digest:597` over canonical `{n,seed,best_side,x,y,t}` | holds |
 | archive content-addressed | `archive_digest:616` over ordered pose digests | holds; receipts excluded, so appending one cannot move it |
 | `record` re-runs the check in a SEPARATE process | `record:1276` → `verify_archive_in_separate_process:766` | holds |
@@ -389,7 +389,7 @@ regression, and it should be described that way rather than as “`record` may r
 verdict only through the child process … enforced structurally”.
 
 **The translation argument is sound.** `verify_packing` tests containment in
-`[0, side]²`. Translating to the bounding-box origin sets `min x = min y = 0`, so
+`[0, side]²`. Translating to the bounding-box origin sets $\min x = \min y = 0$, so
 containment reduces to `extent_x ≤ side` and `extent_y ≤ side` — which is the *best case
 over all translations*. No translation could do better, so the test never falsely
 refuses a configuration that genuinely fits, and a refusal is decisive.
@@ -428,7 +428,7 @@ retained:
 | “**Exact zero is not required at the float screen; independently bounded non-overlap is**” | **no — and unmentioned** |
 
 The last row is the one that matters.
-`validated_record:587` still refuses any line whose `overlap` is not exactly `0.0`. The
+`validated_record:587` still refuses any line whose `overlap` is not exactly $0.0$. The
 repair **added** the independent bound and **kept** the exact-zero screen the source
 review asked to drop.
 That is a change in the refusing direction, so it is not a soundness risk.
@@ -452,7 +452,7 @@ Right now the record does neither.
 **The producer really does satisfy the new contract.** `sqsearch/src/main.rs:47`
 (`json_config`) is interpolated into both the `"kind":"chain"` line (129-142) and the
 `"kind":"summary"` line (151-161), so every scored line on the ordinary search path
-carries `x`/`y`/`t`. `main.rs:64` dispatches `--selftest`, and `selftest()` ends with
+carries $x$/`y`/`t`. `main.rs:64` dispatches `--selftest`, and `selftest()` ends with
 `std::process::exit(1)` on any failure (main.rs:537). Both decisive findings confirmed
 at source.
 
@@ -464,7 +464,7 @@ Every one is addressed:
 - **Transitions.** `require_in_progress` (876) guards `execute` (1056), `record` (1239)
   and `release` (1483). Terminal rounds refuse.
 - **Prerequisites.** `unmet_prereqs` (887) gates both `queue` (305) and `claim` (377).
-- **Per-cell deadlines.** `execute:1091` gives cell `i` an equal share of what is left,
+- **Per-cell deadlines.** `execute:1091` gives cell $i$ an equal share of what is left,
   `remaining / (len(cells) - index)`, reclaiming unspent time.
 - **Lease clamp.** `budget = min(duration(timebox), lease_seconds_remaining(...))` at
   1077\. The second lease read is after the gate runs, so the gate’s cost comes out of
@@ -590,12 +590,12 @@ discover.
 
 **Verified, and it is a real hole that was really closed.** `read_lines`
 (runner.py:1005) now takes `expect_n` and `expect_seed` and refuses any scored line
-whose declared `n` or `seed` disagrees with the invocation, **before** the line is
+whose declared $n$ or `seed` disagrees with the invocation, **before** the line is
 written (1031-1039). `execute:1117` passes both.
 Regressions: `test_a_result_may_not_be_attributed_to_another_cell` (both directions),
 `test_a_matching_line_is_still_archived`, a `preflight` check at 1635, and a permanent
 mutation proof. The archive-side check in `cells_from` (1168) additionally refuses any
-`n`/`seed` outside the declared recipe.
+$n$/`seed` outside the declared recipe.
 
 Worth stating plainly, because it changes how much the pose contract buys: with the
 attribution guard in place, a *producer* can no longer manufacture seeds or cells at
@@ -657,7 +657,7 @@ It is narrow:
   `require_in_progress` refuses any retry.
   The ledger refusal at 1456 and the commit at 1464 are both *after* the write — which
   is why `test_run_reports_the_true_state_when_a_step_fails_after_the_verdict` exists.
-- The only failures between 1279 and 1449 are `cells_from` refusing an `n`/`seed`
+- The only failures between 1279 and 1449 are `cells_from` refusing an $n$/`seed`
   outside the declared recipe, or `standing_best` refusing a missing frontier artifact.
 - And under `run`, any of those goes straight to `safe_release`, which makes the round
   terminal. So the retry is reachable only by hand: fix the frontier artifact or the
@@ -726,7 +726,7 @@ Stated at section 3. The guarantee is narrower than the docstring.
 `sqsearch --basin-entry` prints `"kind":"entry"` lines carrying `best_side` and
 `overlap` and **no pose** (`main.rs:303-321`). Under the new contract any recipe using
 that mode is refused at `execute`. Limit 4 states this generically as “a future producer
-that does not emit `x`/`y`/`t`”, which points outward when the case is inside the same
+that does not emit $x$/`y`/`t`”, which points outward when the case is inside the same
 binary. No live hypothesis is affected — H-018 (the basin-entry hypothesis) is refuted
 and carries no `runner` block — so this is latent, not active.
 It should be named as such.
@@ -1034,7 +1034,7 @@ I checked what I could of the attribution and it holds up:
   coordinator owns. This lane never drove a real `claim`/`record`/`release`.
 - **provenance** — `exp-002-baseline-n10-positive-control.md` orphaned engine commit
   (`gate.log:633-634`), pre-existing.
-- **fast behavioral tests** — timed out at 901s (`gate.log:641`), with the one `F` being
+- **fast behavioral tests** — timed out at 901s (`gate.log:641`), with the one $F$ being
   the repository-wide 64 MiB mutation-snapshot budget.
   This lane is ~9% of the overage; removing it entirely leaves the tree over the cap and
   the step at ~901s.

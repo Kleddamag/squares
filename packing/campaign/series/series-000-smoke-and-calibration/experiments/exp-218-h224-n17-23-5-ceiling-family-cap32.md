@@ -99,7 +99,7 @@ The first round of [H-224](../../../hypotheses/H-224-n17-ceiling-family-at-23-5.
 registered under [agenda-040](../../../agendas/agenda-040-overnight-lower-bound-loop.md)
 BC-361 after exp-213 was lost mid-run; the only change is the support cap of 32 that
 Session 140’s converged n=17 runs used.
-A confirmed family closes the fixed-shrink point route at n=17 from `23/5` for every
+A confirmed family closes the fixed-shrink point route at n=17 from $23/5$ for every
 site set; it moves no bound.
 
 <!-- This document follows common-doc-guidelines.md.

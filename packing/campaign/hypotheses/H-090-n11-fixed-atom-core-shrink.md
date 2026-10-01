@@ -45,7 +45,7 @@ hypothesis:
 # H-090 — Shrink the Core Before Dilating
 
 Write $M=434547/40000$ for the fixed total mass and $m(b)$ for the least mass of an
-admissible side-$b$ core over the retained net.
+admissible side-`b` core over the retained net.
 If $m(b)>M/11$, dividing every weight by $m(b)$ gives least covered mass one and total
 mass below eleven. This permits a decrease of $5563/440000$ from the source minimum
 $4001/4000$.

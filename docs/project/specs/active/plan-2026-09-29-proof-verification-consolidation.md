@@ -365,12 +365,12 @@ The derivative bound below is proposed and unimplemented.
 Its value on the actual n11 certificate needs measurement.
 
 The common-core bound discards coverage gained when a square moves.
-For uniform density $\rho$ throughout every translated side-$B$ square, true coverage is
+For uniform density $\rho$ throughout every translated side-`B` square, true coverage is
 constant $\rho B^2$. For center-box half-widths $h_x,h_y$ and a net orientation
 $c,s\ge0$, $c^2+s^2=1$, the common-core bound is only
 
 $$
-\rho\,[B-2(ch_x+sh_y)]_+\,[B-2(sh_x+ch_y)]_+,
+\rho\thinspace[B-2(ch_x+sh_y)]_+\thinspace[B-2(sh_x+ch_y)]_+,
 \qquad [a]_+=\max(a,0).
 $$
 

@@ -28,8 +28,8 @@ research allocation is **A, S, B, C, D**, with D treated as a separately budgete
 background search.
 This is a judgment from the retained evidence and prerequisites, not a
 measured success probability.
-A global lower bound of $3.84$ would remove approximately $27\%$ of the current
-interval; $3.85$ would remove approximately $47\%$. Either would also prove a physical
+A global lower bound of $3.84$ would remove approximately 27% of the current interval;
+$3.85$ would remove approximately 47%. Either would also prove a physical
 fractional-packing gap beyond the known point/density ceiling.
 Route S offers a different authorized outcome: a substantially simpler proof of the
 existing $3.82$ bound.
@@ -52,7 +52,7 @@ The following facts constrain the choice of route.
 | Registered, V4/C5 | T-025 proves $s(11)\ge3.82$; T-026 proves $s(11)\ge3.826447410572939\ldots$ | The next bound should justify its cost relative to this frontier |
 | Registered upper bound | Trump’s exact construction gives $s(11)\le3.877083590022814\ldots$ | A verified smaller construction would immediately change the upper bound |
 | Registered conditional result, V3/C3 | T-023 excludes one specified four-owner branch at $3.84$, with admitted symmetry transports | Conditional coverage is productive, but global selection remains missing |
-| Independently reviewed analytical deduction | The retained 88-core family transports to full unit squares with fractional mass eleven at $L_*=38200/9977\approx3.82880625$ | Unconditional point measures and the specified density formulation cannot prove a bound above $L_*$ |
+| Independently reviewed analytical deduction | The retained 88-core family transports to full unit squares with fractional mass eleven at $L_{\ast}=38200/9977\approx3.82880625$ | Unconditional point measures and the specified density formulation cannot prove a bound above $L_{\ast}$ |
 | Exact local negative evidence | T1 has a local low-surplus counterexample; H-161’s literal parent union adds no mass there | The existing local resource cannot supply the missing availability theorem |
 | Reviewed analytical deduction | X-031 extends that literal failure to a sufficiently small admissible neighborhood | Subdividing the same local domain does not remove its obstruction |
 | Registered but unmeasured | H-160/H-162 have no scientific target receipt | Their pause carries no scientific verdict; even success would leave local availability open |
@@ -71,9 +71,8 @@ The point/density ceiling is stronger than a limitation of the current sites, sy
 convention, or core shape.
 Selecting a core inside each member of the full-unit fractional family cannot increase
 its point depth. Thus changing an unconditional point-core selection rule cannot evade
-the obstruction.
-A physical integrality gap at $L_*$ remains unproved because the current
-physical lower bound lies below it.
+the obstruction. A physical integrality gap at $L_{\ast}$ remains unproved because the
+current physical lower bound lies below it.
 
 A6 has a narrower scope: it obstructs its specified threshold catalog and core domain.
 It does not obstruct every threshold, floor, compatibility, or conditional certificate.
@@ -91,7 +90,7 @@ The geometric-waste route is speculative.
 
 | Order | Route | Information From the First Proper Discriminator | Potential Payoff | Main Missing Prerequisite |
 | --- | --- | --- | --- | --- |
-| 1 | A: occupancy/contact decomposition | High if a complete difficult family closes or a precise surviving relaxation is exposed | A global $3.84$–$3.85$ bound and reusable subconfiguration exclusions | A complete partition, physical transfer, and a checker for the chosen conditional language |
+| 1 | A: occupancy/contact decomposition | High if a complete difficult family closes or a precise surviving relaxation is exposed | A global $3.84$–`3.85` bound and reusable subconfiguration exclusions | A complete partition, physical transfer, and a checker for the chosen conditional language |
 | 2 | S: proof compression | High relative to the amount of new machinery | A substantially shorter exact $3.82$ proof and reusable certificate templates | A mathematical complexity target beyond smaller serialization |
 | 3 | B: pairwise SDP | High for choosing a proof mechanism | A global bound beyond the point relaxation and a transferable solver architecture | A sound complete pose cover and independently checkable SDP certificate |
 | 4 | C: orientation structure | Moderate initially; high if a complete continuous interval closes | A contact-independent restricted-family theorem or a bridge to optimality | Complete separation branching over continuous angles |
@@ -256,7 +255,7 @@ A sound finite conflict graph requires:
 
 There is a simple capacity-one construction.
 A spatial center tile of diameter strictly below one cannot contain two centers of unit
-squares: their inscribed radius-$1/2$ disks would overlap.
+squares: their inscribed radius-`1/2` disks would overlap.
 All angle cells over that tile share one occupancy budget.
 This is a sound starting point, not a guarantee of useful conflict density.
 The
@@ -433,7 +432,7 @@ its strict core, and its selected folded source index.
 Put
 
 $$
-f_J(Q,C,j)=\mathbf1_{\{j\in J\}}.
+f_J(Q,C,j)=\mathbf1_{\lbrace j\in J\rbrace}.
 $$
 
 If $j\in J$, the parent’s folded angle belongs to the union of the corresponding
@@ -483,7 +482,7 @@ Weighted motifs, genuinely multilevel floor atoms, and higher-rank floor composi
 form the stronger-charge candidate; a physical joint-parent budget theorem forms the
 geometry-dependent candidate.
 The seven-token threshold-four motif has no multilevel floor behavior.
-X-027’s five-site factor-$5/4$ separation concerns domination of a demand profile, not
+X-027’s five-site factor-`5/4` separation concerns domination of a demand profile, not
 an improved unit-demand square-cover budget.
 [Charge mechanisms](../../../packing/campaign/explorations/X-027-stromquist-fractional-and-structural-strategy.md#weighted-binary-atoms-and-floor-atoms-ask-different-questions)
 
@@ -522,7 +521,7 @@ optimal set. [n12 record](../../../packing/frontier/n-012.md)
 A fixed-shrink point certificate cannot reach four.
 A parameterized family approaching four remains logically possible, but its existence is
 unproved.
-The reports at $3.97$–$3.99$ do not establish a universal n12 ceiling: some are
+The reports at $3.97$–`3.99` do not establish a universal n12 ceiling: some are
 finite-site failures, and the historical cutting floor lacks its replayable generating
 family. They cannot justify a limiting-value extrapolation.
 [Covering-value evidence](../../../packing/frontier/CERTIFICATE-REACH.md)
@@ -545,8 +544,8 @@ This is a speculative independent line.
 Assign uncovered area or boundary loss to local arrangements of two or three parents,
 retaining their relative orientations.
 Seek a lower bound on unavoidable empty area that contradicts $L^2-11$. An unconditional
-one-body density reformulation cannot work above $L_*$; a useful version must preserve
-shared geometric information.
+one-body density reformulation cannot work above $L_{\ast}$; a useful version must
+preserve shared geometric information.
 
 **First discriminator:** Derive one exact local gap lemma, calibrate it against Trump
 and the n6 angular-rattler family, then give an accounting rule that sums it over a

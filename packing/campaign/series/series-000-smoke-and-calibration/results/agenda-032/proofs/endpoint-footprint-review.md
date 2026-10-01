@@ -27,7 +27,7 @@ Q_b={0≤cx+sy≤h, 0≤−sx+cy≤h}.
 
 Their intersection is exactly the polygon given by these four inequalities:
 
-`x≥0`, `y≤h`, `cy−sx≥0`, `cx+sy≤h`.
+$x\ge0$, $y\le h$, `cy−sx≥0`, `cx+sy≤h`.
 
 To check the omitted constraints: x≥0 and cy≥sx give y≥0; then cx+sy≥0. Substituting
 y≥sx/c into cx+sy≤h gives x≤hc≤h. Finally cy−sx≤cy≤ch≤h. The converse containment is
@@ -64,7 +64,7 @@ has projections h sinθ and h cosθ, also in [0,h].
 
 For the remaining vertex h(t,1), the normalized projections are
 
-`f(θ)=t cosθ+sinθ`, `g(θ)=cosθ−t sinθ`.
+$f(\theta)=t \cos\theta+\sin\theta$, $g(\theta)=\cos\theta-t \sin\theta$.
 
 Here g decreases from 1 to c−ts=t>0. Thus f'=g>0, and f increases from t to tc+s=1. Both
 projections stay in [0,1]. Every polygon vertex therefore belongs to every intermediate
@@ -74,8 +74,8 @@ In fact, it equals the intersection over the continuous angular interval between
 
 ## Endpoint Selection and Boundary Cases
 
-- Assert exact unit lengths, `s=det(a,b)≥0`, `c=a·b>0`, and `s≤c`. Reversed endpoints or
-  an incorrect wraparound order violate these guards.
+- Assert exact unit lengths, $s=\det(a,b)\ge0$, $c=a\cdot b>0$, and $s\le c$. Reversed
+  endpoints or an incorrect wraparound order violate these guards.
   The derivation also works more widely below π/2, but the instrument should enforce its
   registered π/4 contract.
 - Use the full retained owner direction family and its signed unit axes.

@@ -698,7 +698,7 @@ Lane B’s Opus agent while its Fable agent reviews Agenda 017’s Theorem 3 aud
 coordinator’s explicit assignment when a lane closes early.
 
 **Model assignment**, under `OR-2` and `OR-10`: Claude Fable at maximum thinking for the
-Trump radius proof, the Nagamochi spike, the `n = 40` cone if it opens, and every
+Trump radius proof, the Nagamochi spike, the $n = 40$ cone if it opens, and every
 independent review of a scientific result; Claude Opus at maximum thinking for the Lane
 A rounds, the instrument generalisation, the `H-049` round and the W9 reviewer; Claude
 Opus at extra-high thinking for the W9 writer, the gate measurement and mechanical
@@ -707,17 +707,17 @@ integration.
 ## Why These Lanes Are Next
 
 **Lane A climbs, then takes the shot.** Agenda 017 built the generator and fixed the
-first rung; this block moves the rung and then aims the same instrument at `n = 11`,
-where a measure of total mass below eleven at any side above `2 + 4/√5` would be the
-first improvement to the lower bound of the problem’s motivating case since 2003. The
-survey’s reading makes the shot honest: a certificate above the inherited side needs a
-measure Stromquist’s argument does not supply, and the shrink that a finite direction
-net costs must stay below the gap, which is why the `n = 11` round runs a diagnostic at
+first rung; this block moves the rung and then aims the same instrument at $n = 11$,
+where a measure of total mass below eleven at any side above $2 + 4/\sqrt{5}$ would be
+the first improvement to the lower bound of the problem’s motivating case since 2003.
+The survey’s reading makes the shot honest: a certificate above the inherited side needs
+a measure Stromquist’s argument does not supply, and the shrink that a finite direction
+net costs must stay below the gap, which is why the $n = 11$ round runs a diagnostic at
 an effective side strictly below the inherited one first and uses at least 1,800
 directions.
-The family sweep opens with a calibration against a proved theorem — `n = 13`
-at side `4`, where a fractional value below thirteen would be a machine-checked reproof
-of Bentz’s `s(13) = 4` — and then `n = 20`, the best return per lane after `n = 12`; it
+The family sweep opens with a calibration against a proved theorem — $n = 13$
+at side $4$, where a fractional value below thirteen would be a machine-checked reproof
+of Bentz’s $s(13) = 4$ — and then $n = 20$, the best return per lane after $n = 12$; it
 is the `S4` claim under the rubric and is worth its budget only at the per-size cost the
 earlier rounds measure.
 
@@ -729,13 +729,13 @@ result is reachable at `V4` where `T-014` sits at `V3`. That is `H-022`’s radi
 side-stability clause, at the famous case, on the instrument that the same lane
 generalises first; the closing Taylor-remainder step is a proof, so the compound sits at
 `V3` with `V4` fragments unless the ball is swept by interval arithmetic.
-The `n = 40` theorem stays behind it because its real obligation — characterising the
+The $n = 40$ theorem stays behind it because its real obligation — characterising the
 admissible cone on the disjunctive system, the lesson of `D-391` — was priced at three
 hours with a coin-flip chance of pinning enough functionals, and a conditional theorem
 is the honest fallback.
 
 **Lane C runs the long shot at the right bar.** `H-049`’s positive would settle
-`s(30) < 6` as well as `s(90) < 10`, and that is why it is reviewed at that bar and why
+$s(30) < 6$ as well as $s(90) < 10$, and that is why it is reviewed at that bar and why
 the prior is small; the instrument it needs — a squeeze in a rectangle — is built in the
 first hour with Arslanov’s own two-sided calibration as the gate.
 If the round closes negative over its declared class, the same lane turns to the generic
@@ -755,8 +755,8 @@ lower bound.
 | --- | --- | --- | --- | --- | --- |
 | 00:00--00:30 | `BC-170` preflight, registrations, dispatch | read-only design from 00:10 | read-only | read-only | inventory snapshot |
 | 00:30--02:30 | observe, integrate only frozen packets | `BC-171` ladder round | `BC-175` generalisation; `BC-185` Theorem 3 review 00:30--01:30 in the Fable agent | `BC-178` instrument, controls, class | `BC-179` writer |
-| 02:30--05:00 | first review sitting at 02:30 | `BC-172` diagnostic, then the `n = 11` shot | `BC-175` continues; readiness review at 04:30 | `BC-178` enumeration, freezes at 04:30 | writer to 03:30; reviewer 03:30--04:15; `BC-181` spike 04:15--06:15 |
-| 05:00--07:30 | second review sitting at 05:00 | `BC-173` calibration, then `n = 20` | `BC-176` radius from 04:45 | `BC-184` if assigned | `BC-180` gate 06:15--07:45 |
+| 02:30--05:00 | first review sitting at 02:30 | `BC-172` diagnostic, then the $n = 11$ shot | `BC-175` continues; readiness review at 04:30 | `BC-178` enumeration, freezes at 04:30 | writer to 03:30; reviewer 03:30--04:15; `BC-181` spike 04:15--06:15 |
+| 05:00--07:30 | second review sitting at 05:00 | `BC-173` calibration, then $n = 20$ | `BC-176` radius from 04:45 | `BC-184` if assigned | `BC-180` gate 06:15--07:45 |
 | 07:30--08:00 | third review sitting | freeze | `BC-176` freezes by 08:00; `BC-177` in the closeout window | freeze | freeze |
 | 08:00--10:00 | `BC-182` W10 closeout with all lanes | closeout support | closeout support | closeout support | closeout support |
 
@@ -774,12 +774,12 @@ off, and no agent blocks on a gate or poll for more than 120 seconds.
 1. Every ladder side is fixed at `BC-170` and never moves afterwards; a certificate at a
    lower side is a typed result about the generator.
 2. `BC-174` reviews every Lane A round in its own sitting.
-   Only an exact pass registers a result; the `n = 11` sitting re-derives the whole
+   Only an exact pass registers a result; the $n = 11$ sitting re-derives the whole
    lemma chain by hand first.
 3. `BC-176` opens only on `BC-175`’s readiness pass, and `BC-177` may run inside the
    closeout window, but registration must be complete before the pull request is
    rendered or the result is reported review-pending.
-4. A positive in `BC-178` is reviewed at the `s(30) < 6` bar by a Fable reviewer before
+4. A positive in `BC-178` is reviewed at the $s(30) < 6$ bar by a Fable reviewer before
    anything is registered; a negative closes the declared class only.
 5. `BC-183` and `BC-184` open only on the coordinator’s explicit assignment, never as an
    undeclared fifth lane.
@@ -814,13 +814,13 @@ reports results with their significance, stop reasons, dispositions and file cha
 
 | Rank | Candidate | Disposition before Agenda 018 |
 | ---: | --- | --- |
-| 1 | The `n = 12` ladder and the `n = 11` shot | Execute in Lane A |
+| 1 | The $n = 12$ ladder and the $n = 11$ shot | Execute in Lane A |
 | 2 | The generalised rigidity instrument and the Trump radius | Execute in Lane B |
 | 3 | W9 wave two and the Nagamochi spike | Execute in Lane D |
-| 4 | `H-049` at the `s(30) < 6` bar | Execute in Lane C |
+| 4 | `H-049` at the $s(30) < 6$ bar | Execute in Lane C |
 | 5 | The bound-family sweep | Execute in Lane A if the per-size cost allows |
 | 6 | The generic interval certifier | Tentative in Lane C |
-| 7 | The `n = 40` cone characterisation | Tentative in Lane B |
+| 7 | The $n = 40$ cone characterisation | Tentative in Lane B |
 | 8 | Bentz 2010 Theorem 9 audit (`think-1o1f`), Green17 ceiling (`think-iye2`) | Retain for a later agenda |
 
 `BC-182` reranks this table from actual outcomes and operator input.

@@ -97,7 +97,7 @@ dot-hit conditions before retaining it.
 
 For each checked dot-free x, form four sixteen-bit masks
 
-$$M_c(x)=\{k:x\notin F_{c,k}\}.$$
+$$M_c(x)=\lbrace k:x\notin F_{c,k}\rbrace.$$
 
 Then x refutes D for every tuple in $\prod_cM_c(x)$. An empty mask contributes no tuple.
 Union these products into a 65,536-bit failure table.

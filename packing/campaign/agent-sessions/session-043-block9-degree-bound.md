@@ -179,8 +179,8 @@ half of `BC-060`’s declared scope the integer-relation route could not reach.
 
 ## The question the refusal left open
 
-[session-042](session-042-block8-exact-solve.md) found no relation for `s(29)` through
-degree twenty below a coefficient bound of `10^22`, on a thousand digits.
+[session-042](session-042-block8-exact-solve.md) found no relation for $s(29)$ through
+degree twenty below a coefficient bound of $10^{22}$, on a thousand digits.
 That is a real result and it is easy to over-read, because the reach of such a search is
 
 ```
@@ -194,23 +194,24 @@ the search.
 
 ## Rationalising the system
 
-The published system is six equations in `{s, a, b, c, d, i}` with five of the unknowns
-appearing through sines and cosines.
-Under `u = tan(θ/2)` every trigonometric term becomes rational, and clearing
-denominators leaves six honest polynomials over `Q`:
+The published system is six equations in $\lbrace s, a, b, c, d, i\rbrace$ with five of
+the unknowns appearing through sines and cosines.
+Under $u = \tan(\theta/2)$ every trigonometric term becomes rational, and clearing
+denominators leaves six honest polynomials over $Q$:
 
 |  | f1 | f2 | f3 | f4 | f5 | f6 |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | total degree | 11 | 15 | 10 | 15 | 7 | 6 |
-| degree in `s` | 1 | 1 | 1 | 1 | 1 | 1 |
+| degree in $s$ | 1 | 1 | 1 | 1 | 1 | 1 |
 | terms | 95 | 214 | 69 | 364 | 25 | 20 |
 
-**Bézout bound on the solution variety: `11 × 15 × 10 × 15 × 7 × 6 = 1,039,500`.**
+**Bézout bound on the solution variety:
+$11 \times 15 \times 10 \times 15 \times 7 \times 6 = 1{,}039{,}500$.**
 
 Read that as “not small” rather than “this large” — Bézout is an upper bound and is
 loose for a structured system.
 What it settles is the question it was asked.
-The degree of `s(29)` is not twenty.
+The degree of $s(29)$ is not twenty.
 
 The same transcription served all of this, because
 [`sin_degrees`](../../src/sqpack/promote/interval.py) now dispatches to SymPy as well as
@@ -219,9 +220,9 @@ A second copy of a six-equation contact system would be a second thing to keep c
 
 ## What the structure offers an elimination
 
-Every equation is degree **one** in `s`. Solving the smallest for `s` gives it as a
-rational function of `u_b` and `u_c` alone — three of the five half-angles do not appear
-— and leaves five equations in five unknowns with degrees `[16, 20, 15, 20, 12]`.
+Every equation is degree **one** in $s$. Solving the smallest for $s$ gives it as a
+rational function of $u_b$ and $u_c$ alone — three of the five half-angles do not appear
+— and leaves five equations in five unknowns with degrees $[16, 20, 15, 20, 12]$.
 
 That is where the route either succeeds or is shown to be out of reach, and it is
 deliberately not attempted here: a resultant chain over five variables at these degrees
@@ -230,12 +231,12 @@ is a measurement with its own budget.
 ## The number this block first got wrong
 
 The first computation of this bound was a throwaway script, it reported
-`[11, 20, 23, 22, 19, 6]` for a Bézout bound of **`12,690,480`**, and that number had
-already been said out loud before the tool existed.
+$[11, 20, 23, 22, 19, 6]$ for a Bézout bound of **$12{,}690{,}480$**, and that number
+had already been said out loud before the tool existed.
 
-Composing rotations adds angles, so the raw equations contain `cos(b − i)` and similar.
-Substituting only `sin(a)` and `cos(a)` leaves those untouched and `Poly` treats each as
-an opaque generator.
+Composing rotations adds angles, so the raw equations contain $\cos(b - i)$ and similar.
+Substituting only $\sin(a)$ and $\cos(a)$ leaves those untouched and `Poly` treats each
+as an opaque generator.
 `expand_trig` first is what makes the substitution complete rather than merely
 plausible.
 

@@ -40,7 +40,7 @@ its confirmation rung fixed by how the radius replay is cited (see Registration)
 | Condition | Held | Evidence |
 | --- | --- | --- |
 | Verdict `closed`, no unresolved leaf | yes | `h236-reader-final2.json`: `verdict: closed`, `unresolved_by_reason: {}`; leaves b 19,883,887, c 21,834,304, f 97,722,555, t 3, s 256. The retained copy `exp-232-h236-reader-final2.json.gz` decompresses to the same bytes (SHA-256 `1a04c97a…`). |
-| At least one Trump-degenerate leaf | yes | Three, in subtrees 93, 109 and 117; each re-replayed here with one `t` leaf. |
+| At least one Trump-degenerate leaf | yes | Three, in subtrees 93, 109 and 117; each re-replayed here with one $t$ leaf. |
 | `target_is_at_least_U: true` | yes | Reader field true; this review recomputed $U$ to 60 digits from the witness field: the header’s upper end exceeds $U$ by $2.03\times10^{-45}$, and the closed form $(6u+4)/(1+2u-u^2)$ the reader brackets equals `packing.py`’s side exactly. |
 | Declared box covers the registered box | yes, exactly | Declared $[91442076901/250000000000,\ 73154061521/200000000000]$; with $u$ isolated to $10^{-60}$, the left end is $6.8\times10^{-13}$ below $u_{lo}-10^{-6}$ and the right end $3.2\times10^{-13}$ above $u_{hi}+10^{-6}$, and both equal the declared floor/ceil recipe at $10^{-12}$. The reader does not perform this comparison; it is this review’s. |
 | Reader bytes unchanged | yes | `git hash-object` of the working tree and the blob at `99582155c`, the head this review ran at, and still the blob at `060d5b373`: `c4ae4e489fcf…`, the digest in `FROZEN.txt` before and after Amendment 1. |
@@ -63,7 +63,7 @@ subtree 128 (471 MB, 7,987,265 nodes), a seeded sample stratified by producer ru
 and 90 from M1, 138 and 157 from R1, 177 and 190 from R3, 244 from R4), then the rest
 heaviest-first.
 
-| Subtree | Run | Records | Leaves accepted | `t` | Unresolved | Smallest margin | Enclosure reach |
+| Subtree | Run | Records | Leaves accepted | $t$ | Unresolved | Smallest margin | Enclosure reach |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 93 | R1 | 4,369,961 | c 650,857; f 3,119,205 | 1 | none | $7.02\times10^{-7}$ | $2.93\times10^{-5}$ |
 | 109 | R1 | 651,957 | c 92,776; f 465,421 | 1 | none | $3.19\times10^{-6}$ | $2.93\times10^{-5}$ |
@@ -74,7 +74,7 @@ heaviest-first.
 | 177 | R3 | 2,896,513 | c 452,550; f 2,023,825 | 0 | none | $6.92\times10^{-7}$ | 0 |
 | 244 | R4 | 1,048,957 | c 158,209; f 742,659 | 0 | none | $1.03\times10^{-6}$ | 0 |
 
-Every subtree in the sample is accepted with nothing unresolved; the three `t` leaves
+Every subtree in the sample is accepted with nothing unresolved; the three $t$ leaves
 reach $2.93\times10^{-5}$ beyond the image, the reader’s recorded maximum, and no
 subtree file was rejected for any reason.
 The eleven subtrees hold 17,557,523 of the tree’s 139,441,005 records, 12.6 percent, and
@@ -93,10 +93,10 @@ The four one-leaf subtrees are frontier cells the top tree already made infeasib
 $0$ and five sharing one orientation modulo $\pi/2$ whose half-tangent lies in the
 declared box, every packing has side at least $U$, and equality holds only on the
 $\mathbb Z/4\times S_6\times S_5$ orbit of Trump’s pose.
-Reflections are not in the family: they send the tilt to $\pi/2-\theta^*$, whose
+Reflections are not in the family: they send the tilt to $\pi/2-\theta^{\ast}$, whose
 half-tangent $0.464$ is outside the box, so the orbit is the whole equality set.
 
-**Where BC-240 enters.** Only at the three `t` leaves.
+**Where BC-240 enters.** Only at the three $t$ leaves.
 This review re-derived the step the contract review asserted: undoing the quarter turn
 about the container’s centre carries a leaf’s packing at side $s'\le U$ to a translate
 by $(0, U-s')$ inside $[0,U]^2$, a sup-norm isometry on centre differences, so BC-240’s
@@ -107,9 +107,9 @@ scope on 6 September and the closure review of 24 September replayed its radius
 generator in full, leaving two residuals that do not touch the rung leaves (per-face
 dual witnesses are recomputed rather than retained, and the inactive-feature gap cap is
 single-source and non-binding).
-The declared image (rotation 1, labels `[3,4,2,5,0,1,8,10,6,9,7]`) satisfies every
+The declared image (rotation 1, labels $[3,4,2,5,0,1,8,10,6,9,7]$) satisfies every
 symmetry row strictly and is the only turn with both centroid offsets positive, so the
-row-satisfying element of Trump’s orbit is unique and must sit in a `t` leaf, which it
+row-satisfying element of Trump’s orbit is unique and must sit in a $t$ leaf, which it
 does.
 
 **What it does not say.** Nothing about any tilt outside a window $2\times10^{-6}$ wide
@@ -139,14 +139,15 @@ control not to close; both are met as written.
 **Exact claim, the reduction (registrable now).** Every packing of eleven unit squares
 in a square container, six at orientation $0$ and five sharing one orientation modulo
 $\pi/2$ with half-tangent in $[91442076901/250000000000,\ 73154061521/200000000000]$ (an
-interval containing $[t^*-10^{-6},\ t^*+10^{-6}]$ for Trump’s exact half-tangent
-$t^*=0.365769307604677\ldots$), whose side is at most the rational $U_{hi}$ of the
-certificate header ($U_{hi}-U=2.03\times10^{-45}$), lies, after the quarter turn that
-puts its tilted centroid in the closed upper-right quadrant and the relabelling that
-orders each class by $x+y/4$, strictly within $\rho=808514697/200000000000$ of Trump’s
-labelled image (rotation 1, labels `[3,4,2,5,0,1,8,10,6,9,7]`) in every centre
-coordinate, with every tilted orientation within $2.0\times10^{-6}$ radians of Trump’s;
-every other packing in the family has side greater than $U_{hi}$.
+interval containing $[t^{\ast}-10^{-6},\ t^{\ast}+10^{-6}]$ for Trump’s exact
+half-tangent $t^{\ast}=0.365769307604677\ldots$), whose side is at most the rational
+$U_{hi}$ of the certificate header ($U_{hi}-U=2.03\times10^{-45}$), lies, after the
+quarter turn that puts its tilted centroid in the closed upper-right quadrant and the
+relabelling that orders each class by $x+y/4$, strictly within
+$\rho=808514697/200000000000$ of Trump’s labelled image (rotation 1, labels
+$[3,4,2,5,0,1,8,10,6,9,7]$) in every centre coordinate, with every tilted orientation
+within $2.0\times10^{-6}$ radians of Trump’s; every other packing in the family has side
+greater than $U_{hi}$.
 
 **Exact claim, H-236 (the reduction composed with BC-240).** Every packing in that
 family has container side at least $U=3.877083590022814\ldots$, the exact side of

@@ -37,7 +37,7 @@ That text is recoverable at commit `a40d272c`; none of it is repeated here.
 ## Summary
 
 - **A blind run is not blind.** It starts from the known-best packing for the previous
-  `n`, closes its walls onto the known-best side, places the new square with a
+  $n$, closes its walls onto the known-best side, places the new square with a
   coarse-grid proposal, and in the style measured here welds squares into blocks chosen
   by matching the two records.
   Only the destination poses are withheld.
@@ -47,18 +47,18 @@ That text is recoverable at commit `a40d272c`; none of it is repeated here.
   0.083 of a unit side.
   A container side read from such an arrangement is a bounding box around overlaps, so
   every number taken that way has been discarded.
-- **Repaired to a packing, a single run is worse than the trivial grid.** At every `n`
+- **Repaired to a packing, a single run is worse than the trivial grid.** At every $n$
   and every shake level measured, the median run needs a larger container than
   `ceil(sqrt(n))`.
 - **The best of many runs sometimes comes close and never reaches a record.** At shake
-  level 6 the best of the first 1,000 seeds was 0.28% above `s(5)` and 0.42% above
-  `s(10)`. At `n = 17` and `n = 29` no run in 5,000 beat the grid.
-- **How hard an `n` is depends on the scale and the budget.** In `closed` at the best of
-  the first 1,000 seeds, `n = 26` did better than `n = 11` and `n = 17`; at the best of
-  5,000, or in excess over the record, `n = 11` did better than `n = 26`. Six `n`, one
-  seed stream each, cannot show how difficulty depends on `n`.
+  level 6 the best of the first 1,000 seeds was 0.28% above $s(5)$ and 0.42% above
+  $s(10)$. At $n = 17$ and $n = 29$ no run in 5,000 beat the grid.
+- **How hard an $n$ is depends on the scale and the budget.** In `closed` at the best of
+  the first 1,000 seeds, $n = 26$ did better than $n = 11$ and $n = 17$; at the best of
+  5,000, or in excess over the record, $n = 11$ did better than $n = 26$. Six $n$, one
+  seed stream each, cannot show how difficulty depends on $n$.
 - **The shake dial is a search parameter that the page sets for looks.** At levels 0, 2
-  and 4 no run in 3,000 beat the grid at `n = 5`, 10 or 11. At levels 6, 8 and 10 the
+  and 4 no run in 3,000 beat the grid at $n = 5$, 10 or 11. At levels 6, 8 and 10 the
   best run did in eight cells of nine, and the ninth did within 5,000 seeds.
   These runs used the page’s defaults of the time: level 3, a pair law of rigidity 0.15
   and repulsion 2500 with no attraction, and a 0.8 s moving span.
@@ -67,11 +67,11 @@ That text is recoverable at commit `a40d272c`; none of it is repeated here.
 
 ## 1. What a Blind Run Is
 
-The workbench draws the step from the packing of `n - 1` squares to the packing of `n`
+The workbench draws the step from the packing of $n - 1$ squares to the packing of $n$
 by simulating it:
 
-1. The squares start at the known-best poses for `n - 1`, centred in a container 12%
-   larger than the known-best side for `n`.
+1. The squares start at the known-best poses for $n - 1$, centred in a container 12%
+   larger than the known-best side for $n$.
 2. The new square is dropped, upright, into the emptiest cell of a coarse grid.
 3. Contact forces between squares, wall forces and a decaying shake act while the walls
    close onto the known-best side.
@@ -79,8 +79,8 @@ by simulating it:
    they never go below the known-best side.
 4. In the `bodies` style, which every run in this report used, squares are welded into
    rigid blocks in their starting arrangement.
-   Which squares share a block comes from matching the record for `n - 1` against the
-   record for `n`, so it is information about the destination.
+   Which squares share a block comes from matching the record for $n - 1$ against the
+   record for $n$, so it is information about the destination.
 
 The page has three ways to finish the step:
 
@@ -97,7 +97,7 @@ about finding a packing from nothing.
 
 ## 2. One Trial Per `n`, Until Runs Were Seeded
 
-Every generator on the page was seeded from `n` alone, so a given `n` and parameter set
+Every generator on the page was seeded from $n$ alone, so a given $n$ and parameter set
 had exactly one blind trial.
 That is right for an animation, which must reproduce across builds, and it makes a
 success rate meaningless.
@@ -133,7 +133,7 @@ the committed harness runs blind only, so the control is a recorded observation 
 than a reproducible one.
 
 Across the 123,190 seeded runs of the repaired rounds, no run ended below 1e-5. Of
-those, 9,000 are at level 0, where every seed of an `n` repeats one run.
+those, 9,000 are at level 0, where every seed of an $n$ repeats one run.
 The deepest overlap before repair ranged from 0.002 to 0.118 of a side, with a median of
 0.083. These figures come from local copies of the rows, which are not retained, and
 `workbench_tools.summarize_annealing --overlaps` recomputes them from regenerated rows.
@@ -160,12 +160,12 @@ The score is the container that the repaired arrangement needs.
 The score is `closed = (grid - side) / (grid - record)`, where `grid` is
 `ceil(sqrt(n))`. One is the record, zero is the trivial grid, and a negative value is
 worse than the grid.
-Raw excess over the record cannot be compared across `n`, because the room between the
-record and the grid ranges from 1.12% at `n = 29` to 10.82% at `n = 5`.
+Raw excess over the record cannot be compared across $n$, because the room between the
+record and the grid ranges from 1.12% at $n = 29$ to 10.82% at $n = 5$.
 
 ### Across `n`, at shake level 6
 
-5,000 seeds per `n`, each run repaired and checked before scoring:
+5,000 seeds per $n$, each run repaired and checked before scoring:
 
 | n | gap to grid | median run | median, above record | best of first 100 | best of first 1,000 | best of 5,000 | best, above record |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -178,19 +178,19 @@ record and the grid ranges from 1.12% at `n = 29` to 10.82% at `n = 5`.
 
 What this shows:
 
-- **One run is worse than doing nothing.** The median is below zero at every `n`.
-- **A budget of runs is the method.** A run’s median wall time was 0.3 ms at `n = 5` and
-  2.4 ms at `n = 29`, so the best of a thousand takes seconds.
-  At `n = 5` the best of the first 1,000 is 0.28% above the record; at `n = 10` it is
+- **One run is worse than doing nothing.** The median is below zero at every $n$.
+- **A budget of runs is the method.** A run’s median wall time was 0.3 ms at $n = 5$ and
+  2.4 ms at $n = 29$, so the best of a thousand takes seconds.
+  At $n = 5$ the best of the first 1,000 is 0.28% above the record; at $n = 10$ it is
   0.42%.
-- **No run reached a record.** The closest is at `n = 5`: over 39,871 seeds the best is
-  0.15% above `s(5)`.
-- **The order across `n` depends on the scale and the budget.** In `closed`, `n = 26`
-  beat the grid within its first 100 seeds, `n = 11` needed more than 1,000 and `n = 17`
-  never did. In excess over the record the order changes: the best `n = 11` run is 1.66%
-  above its record and the best `n = 26` run 5.19%. `closed` is a harsh scale where the
-  gap is small, as at `n = 11` and `n = 29`. One seed stream at each of six `n` does not
-  show how difficulty depends on `n`.
+- **No run reached a record.** The closest is at $n = 5$: over 39,871 seeds the best is
+  0.15% above $s(5)$.
+- **The order across $n$ depends on the scale and the budget.** In `closed`, $n = 26$
+  beat the grid within its first 100 seeds, $n = 11$ needed more than 1,000 and $n = 17$
+  never did. In excess over the record the order changes: the best $n = 11$ run is 1.66%
+  above its record and the best $n = 26$ run 5.19%. `closed` is a harsh scale where the
+  gap is small, as at $n = 11$ and $n = 29$. One seed stream at each of six $n$ does not
+  show how difficulty depends on $n$.
 
 ### Across shake levels, at `n = 5`, 10 and 11
 
@@ -209,12 +209,12 @@ What this shows:
 
 - **At level 0 every seed gives the same answer**, because the shake is the only
   randomness in the run.
-- **At levels 0, 2 and 4 no run beat the grid** in 3,000 seeds at any of the three `n`.
+- **At levels 0, 2 and 4 no run beat the grid** in 3,000 seeds at any of the three $n$.
 - **At levels 6, 8 and 10 the best of 3,000 beat it in eight cells of nine.** The ninth,
-  `n = 11` at level 6, is the budget rather than the level: the same seed stream beat
-  the grid before seed 5,000, as the table across `n` shows.
-  At level 8, `n = 11` reached 0.564 in the first 1,000 seeds and 0.616 over 16,319.
-- **The median barely moves with the level**, except `n = 11` at level 10, so the dial
+  $n = 11$ at level 6, is the budget rather than the level: the same seed stream beat
+  the grid before seed 5,000, as the table across $n$ shows.
+  At level 8, $n = 11$ reached 0.564 in the first 1,000 seeds and 0.616 over 16,319.
+- **The median barely moves with the level**, except $n = 11$ at level 10, so the dial
   acts on the best run rather than the typical one.
 - **The page shipped level 3** when these runs were measured, chosen for how the
   animation looked. Level 3 was not measured after the repair existed.
@@ -234,7 +234,7 @@ What this shows:
   and the harness never wrote final poses, so a repaired run’s validity rests on the
   harness’s own separating-axis check.
   Regenerating the rows repeats that check; it is not an independent one.
-- **Coverage is thin.** `n = 17`, 26 and 29 have repaired runs at level 6 only.
+- **Coverage is thin.** $n = 17$, 26 and 29 have repaired runs at level 6 only.
   Levels 1 and 3 were measured only before runs were repaired, and levels 5, 7 and 9 not
   at all.
 - **The repair only translates.** Whether a repair that rotates changes the scores is

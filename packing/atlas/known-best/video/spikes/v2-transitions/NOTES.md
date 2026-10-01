@@ -50,7 +50,7 @@ Correspondence rule through revision 4 (revision 5 replaces the assignment step 
 block-aware matching described under Revision 5; the prefix and shared-picture rules
 stay): exact prefix for grid→grid pairs (the first n poses of n+1 are byte-identical to
 n’s), the recorded removal index for the five shared-picture pairs (the manifest names
-`source_n = n+1` with `n` in `listed_n`, and the geometry is checked to be n+1 with
+`source_n = n+1` with $n$ in `listed_n`, and the geometry is checked to be n+1 with
 exactly one square removed, order preserved), and otherwise a minimum-cost assignment
 (`scipy.optimize.linear_sum_assignment`, scipy 1.17.1 is in the venv) on an n × (n+1)
 matrix. The cost is the squared centre distance in coordinates normalised by the larger
@@ -86,7 +86,7 @@ Review controls: pair selector, previous/next (arrow keys), play/pause (space), 
 scrubber, colour-rule toggle (k), motion phase toggle (m: simultaneous, rotate first,
 slide first), correspondence overlay (l), auto-advance through consecutive pairs, timing
 inputs, and a capture-preview toggle (c) that hides the controls.
-An `aria-live` region announces `n = …` whenever the displayed n changes.
+An `aria-live` region announces $n = \ldots$ whenever the displayed n changes.
 
 Fonts: PT Serif 400, 400 italic and 700, and Source Sans 3 (variable weight) from
 `vendor/kpress/src/kpress/format/static/fonts/`, and from revision 3 KaTeX_Main Regular
@@ -141,7 +141,7 @@ and passes; the stills in `review/` were taken in capture preview and checked by
    never jumps between n and n+1. Across 1..324 the combinations are: `=` with
    optimality and rigidity open (219), `O =` with rigidity open (40), `≈` with all three
    open (37), `O = R` with none (19), star `=` (6), `=` muted `R` (2), star `= R` (1).
-4. **Headline** (replaced in revision 3 by `n =` on its own line).
+4. **Headline** (replaced in revision 3 by $n =$ on its own line).
    The small italic n and the equals sign are raised (`vertical-align` 53.04 px and
    44.35 px) so each sits on the numeral’s visual centre: the median of the ten digits’
    ink centres in PT Serif Bold (0.352 em; the median because the 5’s flag overshoots),
@@ -152,7 +152,7 @@ and passes; the stills in `review/` were taken in capture preview and checked by
    is on its own line directly under the value, never to its right; grids and
    numeric-only n leave that line empty, since the `=` and `≈` badges already say so.
 5. **Progress bar.** Along the bottom of the stage, inside it: a track from x = 100 to
-   1820 at y = 1054, `1` and `324` at the ends, a fill of width (n − 1 + t/duration)/323
+   1820 at y = 1054, $1$ and $324$ at the ends, a fill of width (n − 1 + t/duration)/323
    × 1720 px, and the current n riding above the fill’s leading edge (clamped 16 px from
    the ends), all in `#47525f`. A pure function of the pair and the clock; `progress()`
    exposes it. The n reads n+1 from the panel switch’s midpoint, as the panel does.
@@ -207,18 +207,18 @@ capture preview and checked by eye; the ink positions below are measured by
 
 ### What changed, per request
 
-1. **Headline.** `n =` is one small line above the numeral: italic PT Serif `n`, upright
+1. **Headline.** $n =$ is one small line above the numeral: italic PT Serif $n$, upright
    `=`, both in the muted grey (`#5c6673`) at 44 px, and the numeral beneath it in PT
    Serif Bold at 132 px, 60% of revision 2’s 220. The two are left-aligned on their ink:
    the numeral’s box starts at the panel’s edge and the line’s 6 px in, because a bold
    PT Serif digit carries about 5 px of side bearing at this size and the italic n about
-   2\. Measured (`--ink`, stage pixels): the `n =` ink begins at x = 1168, the `s(n)`
+   2\. Measured (`--ink`, stage pixels): the $n =$ ink begins at x = 1168, the $s(n)$
    lines at 1166, and the numeral at 1165 for a leading 2 and 1173 for a leading 1,
    whose bearing is 13 px; the ink gap from the line (rows 255–277) to the numeral
    (310–406) is 33 px. The line is constant, so it lives outside the two fading layers
    and never blinks; only the numeral drifts during the switch.
    The revision-2 raises (`n_var_raise`, `n_eq_raise`) are gone from the metrics.
-   Every slot is fixed: eyebrow 190, `n =` 238, numeral 290, side 450, exact 524, lower
+   Every slot is fixed: eyebrow 190, $n =$ 238, numeral 290, side 450, exact 524, lower
    584, its note 636, badges 700, open 776, legend 884; the block’s centre moved from y
    ≈ 542 to 545 against the container’s 524.
 2. **Lower bound restored.** For every open n the panel shows `s(n) ≥ value` under the
@@ -262,7 +262,7 @@ capture preview and checked by eye; the ink positions below are measured by
 
 - The lower line goes under the exact line, not directly under the side line, so the
   closed form or degree note stays on the value it annotates; this is the slideshow’s
-  order. For n = 101 the block reads side, `= 7 + (5⁄2)√2`, `s(101) ≥ 10.055385`, note.
+  order. For n = 101 the block reads side, `= 7 + (5⁄2)√2`, $s(101) \ge 10.055385$, note.
 - The lower line is 40 px, the exact line’s size, rather than the side line’s 54: an
   upper bound is what the picture shows and the lower bound is what is proved about it.
 - The symbols face is added to the sans stack as well as the serif stack.
@@ -293,12 +293,12 @@ rest from `index.html`.
 | `review/100-dwell.png` | 100→101, 0.5 s | thin scarlet outline on square 100 from the pair before; `O = R`, Open: none; bar at 100; empty lower-bound slots |
 | `review/100-mid-move.png` | 100→101, 1.7 s | the block turning, no scarlet anywhere, panel still 100 |
 | `review/100-arrival.png` | 100→101, 2.4 s | the new square fully in, tinted, wide outline; panel already 101 |
-| `review/100-settle.png` | 100→101, 2.8 s | `n =` above `101`; side, closed form, `s(101) ≥ 10.055385`, its note; `=`, Open: optimality, rigidity |
+| `review/100-settle.png` | 100→101, 2.8 s | $n =$ above $101$; side, closed form, $s(101) \ge 10.055385$, its note; `=`, Open: optimality, rigidity |
 | `review/101-dwell.png` | 101→102, 0.5 s | the same square still outlined through the next dwell |
 | `review/004-settle.png` | 4→5, 2.8 s | the centre square with its scarlet mark; the closed form line; proved, so no lower line |
-| `review/147-settle.png` | 147→148, 2.8 s | shared picture; the corner square marked; `√2` from KaTeX_Main in the closed form |
-| `review/017-dwell.png` | 17→18, 0.5 s | the star badge and its scarlet label; `s(17) ≥ 4.59` in ink, not scarlet; the degree note on its own line |
-| `review/103-dwell.png` | 103→104, 0.5 s | the KaTeX `≈`; `s(103) ≤` and `≥` from the same face; all three open items on one line |
+| `review/147-settle.png` | 147→148, 2.8 s | shared picture; the corner square marked; $\sqrt{2}$ from KaTeX_Main in the closed form |
+| `review/017-dwell.png` | 17→18, 0.5 s | the star badge and its scarlet label; $s(17) \ge 4.59$ in ink, not scarlet; the degree note on its own line |
+| `review/103-dwell.png` | 103→104, 0.5 s | the KaTeX `≈`; $s(103) \le$ and `≥` from the same face; all three open items on one line |
 | `review/028-dwell.png` | 28→29, 0.5 s | muted `R`; the 58° block in green, no salmon beside the mark |
 
 ## Revision 4
@@ -314,14 +314,14 @@ not retaken.
 ### What changed, per request
 
 1. **The numeral is lighter and smaller.** PT Serif Regular (weight 400) at 96 px, in
-   place of Bold at 132. `n =` stays on its own line above it, now at 34 px, and every
+   place of Bold at 132. $n =$ stays on its own line above it, now at 34 px, and every
    slot is still fixed.
    The numeral’s box offset is no longer a number in the stylesheet: the build reads the
    digits’ left side bearings from the regular face (median 49 units, 4.7 px at 96 px;
    the bold face’s was 39 units, 5.1 px at 132) and the italic n’s (43 units, 1.5 px at
    34 px), and emits `metrics.numeral_left_px = 2.8`, which the page applies, so the
    median digit’s ink begins where the n’s does.
-   Measured (`--ink`, stage pixels): the `n =` ink begins at x = 1167, the numeral at
+   Measured (`--ink`, stage pixels): the $n =$ ink begins at x = 1167, the numeral at
    1167 for a leading 2 and 1174 for a leading 1 (its bearing is 11 px), the s(n) lines
    at 1166, the eyebrow at 1168; the ink gap from the line (rows 264–281) to the numeral
    (315–384) is 34 px, revision 3’s was 33. The test recomputes the offset from the
@@ -343,8 +343,8 @@ not retaken.
 
 | Size | Face | Sets (revision 3’s size in parentheses) |
 | ---: | --- | --- |
-| 28 | Source Sans 3 | the eyebrow (24); the small-caps notes (27); the badge labels (27); the open group’s heading (19) and rows (25); the legend (22); the progress bar’s `1` and `324` (20) and the riding n (24) |
-| 34 | PT Serif | the `n =` line (44); the exact line and the lower bound (40) |
+| 28 | Source Sans 3 | the eyebrow (24); the small-caps notes (27); the badge labels (27); the open group’s heading (19) and rows (25); the legend (22); the progress bar’s $1$ and $324$ (20) and the riding n (24) |
+| 34 | PT Serif | the $n =$ line (44); the exact line and the lower bound (40) |
 | 44 | PT Serif | the side line (54) |
 | 96 | PT Serif Regular | the numeral (132, Bold) |
 
@@ -353,7 +353,7 @@ not retaken.
 | Slot | Top (stage y) | Box height | Ink rows, n = 103 at the dwell |
 | --- | ---: | ---: | --- |
 | eyebrow | 200 | 40 | 210–228 |
-| `n =` | 250 | 40 | 264–281 |
+| $n =$ | 250 | 40 | 264–281 |
 | numeral | 300 | 96 | 315–384 |
 | side | 424 | 53 | 434–474 |
 | exact | 488 | 46 | 509–521 (n = 28’s note); 494–528 (n = 148’s form) |
@@ -392,7 +392,7 @@ The four the owner asked to see: `review/103-dwell.png` (the tallest panel: `≈
 lower bound and its note, all three open items), `review/100-settle.png` (the closed
 form under the side line, then the lower bound with its note, at the new sizes),
 `review/017-dwell.png` (the star row and the degree note at 28 px),
-`review/147-settle.png` (the `√2` closed form at 34 px).
+`review/147-settle.png` (the $\sqrt{2}$ closed form at 34 px).
 
 ## Revision 5
 
@@ -834,9 +834,9 @@ Measured, not asserted: `dump_fills.py` reads every visible square’s fill at t
 resting instants (the dwell at 0.5 s, the start, the end of the settle) over 9 pairs × 3
 styles × 2 colour rules — 162 instants, 20,754 fills — and all 20,754 are byte-identical
 to the build before this revision.
-Mid-move the mean sRGB chroma of `100 → 101` falls from 0.30 to 0.13 under every style.
-A zero-length move (a static append under continuous play) never drains at all, which
-falls out of the curve rather than needing a case.
+Mid-move the mean sRGB chroma of $100 \to 101$ falls from 0.30 to 0.13 under every
+style. A zero-length move (a static append under continuous play) never drains at all,
+which falls out of the curve rather than needing a case.
 
 ### 2. Snap to best known, on or off
 
@@ -875,7 +875,7 @@ All four are computed from the simulation’s final state by `measureMiss`.
 
 The answer is no: the physics does not land on the record by itself even when it is
 pulled straight at it.
-A square ends a whole unit away and up to 43° off, which at `100 → 101` is the diamond
+A square ends a whole unit away and up to 43° off, which at $100 \to 101$ is the diamond
 core stalling near 25° instead of turning the full 45
 (`review/feat-nosnap-100-end.png`). The box the result needs is within about one per
 cent of the record’s, but that number flatters the run: the walls confine the squares,
@@ -925,11 +925,11 @@ record 10.54, 4.0 per cent worse*. `measure_modes.py blind 100 110 272`:
 | 272 → 273 | C, bodies | 18.074 | 16.988 | +6.39% | 0.38 |
 
 Over all 25 pairs of `index.html` under style C the excess runs from +0.01% (the prefix
-pairs, where the square only has to find the free corner) to +6.8% at `307 → 308`; every
-matched pair loses, none wins, and the overlaps stay near the tolerance rather than
-blowing through it. B beats C at this, which is the expected direction: C’s blocks are
-rigid, so a block that should shear cannot, and the whole 17-square core has to fit as
-one body.
+pairs, where the square only has to find the free corner) to +6.8% at $307 \to 308$;
+every matched pair loses, none wins, and the overlaps stay near the tolerance rather
+than blowing through it.
+B beats C at this, which is the expected direction: C’s blocks are rigid, so a block
+that should shear cannot, and the whole 17-square core has to fit as one body.
 
 ### 4. Continuous play, and the jump to n
 
@@ -1373,7 +1373,7 @@ the coordinator with the pinned headless shell.
 
 **The bar carries a scale.** `SCALE_MAJOR`, `SCALE_MINOR` and `SCALE_GAP` draw numbered
 major ticks and unnumbered minor ticks across the whole 1 to 324 span, with the riding
-`n` suppressing the numeral it would collide with.
+$n$ suppressing the numeral it would collide with.
 
 **The annealing dial** is `setAnneal(level)`, 0 to 10, default 3, which is the previous
 behaviour exactly. Three things scale together, so a higher level shakes harder, keeps
@@ -1536,9 +1536,9 @@ belongs to the single-step tab — there is no one n to measure on the other —
   bar, n = 26’s is 8.9 per cent, and a blind run reaches about seven.
   A proved n has no gap at all, and its tick is set 30 per cent of the headroom in from
   the left instead of sitting on the edge.
-- **The two numbers are the panel’s own**, `s(n) ≤ …` and `s(n) ≥ …` read off the record
-  and printed in the same relations (`≥ 4.59`, `≤ 4.68`); the span between them is
-  shaded, because that is the territory nobody has closed.
+- **The two numbers are the panel’s own**, $s(n) \le \ldots$ and $s(n) \ge \ldots$ read
+  off the record and printed in the same relations ($\ge 4.59$, $\le 4.68$); the span
+  between them is shaded, because that is the territory nobody has closed.
   The record’s numeral sits under its tick unless that would put it on the lower
   bound’s, in which case it steps aside.
 - **The hand** rides the side the arrangement on the stage would need, from the same
@@ -1678,7 +1678,7 @@ than one step.
 Removed: the legend line naming the scarlet convention, the line naming the active
 style, the line narrating what a free or blind run was doing, the sentence under the
 stage narrating the block matching (`#pair-info`), and the keyboard-hint line.
-Kept: the numeral, the `n =` line, both side lines, the badges, the Open group with its
+Kept: the numeral, the $n =$ line, both side lines, the badges, the Open group with its
 question-mark badges, the gap bar and the live numeric readouts.
 `review/r9-capture-clean.png` is the proof — a capture frame at the loudest settings
 (style C, no snap, annealing 10, mid motion) carrying the picture and its facts and not
@@ -2063,8 +2063,8 @@ on the stage.
 ### 2. One force law
 
 The hard-coded contact stiffness, cap and damping are gone.
-What replaces them is one law, a function of the signed gap `d` along the separating
-axis the collision test already computes — negative is penetration of depth `p = −d`,
+What replaces them is one law, a function of the signed gap $d$ along the separating
+axis the collision test already computes — negative is penetration of depth $p = -d$,
 zero is touching, positive is a gap:
 
 ```
@@ -2078,13 +2078,13 @@ push-apart already used.
 A damping term, `PHYS.contactDamping = 20` against the closing speed, is added to it
 while the pair is penetrating, exactly as before.
 
-- **Continuous at zero**: the repulsion is `repulsion × min(0, …) = 0` at `p = 0` and
-  the attraction hump is `4u(1 − u) = 0` at `u = 0`, so the law meets itself at the
+- **Continuous at zero**: the repulsion is `repulsion × min(0, …) = 0` at $p = 0$ and
+  the attraction hump is $4u(1 - u) = 0$ at $u = 0$, so the law meets itself at the
   origin from both sides.
-- **Zero at the edge of the range**, again because `4u(1 − u) = 0` at `u = 1`.
+- **Zero at the edge of the range**, again because $4u(1 - u) = 0$ at $u = 1$.
 - **Attraction can never overcome repulsion at contact**, and this is structural rather
   than tuned: the two pieces do not overlap.
-  For every `d ≤ 0` the force is the repulsion alone, so the net force at any
+  For every $d \le 0$ the force is the repulsion alone, so the net force at any
   penetration is repulsive whatever the attraction is set to.
   Two squares can be pulled up to touching and never through each other.
 
@@ -2640,7 +2640,7 @@ at. Three sources, and the choice is exposed as a `target` chooser beside the gr
 index first, deduplicated, **held per packing size**: an index means a different square
 at a different *n*, so a graph drawn at 11 is not a graph at 5, and going back finds
 what was left there.
-`setEdges` accepts a flat list or a list of pairs, folds every edge to `a < b`, drops
+`setEdges` accepts a flat list or a list of pairs, folds every edge to $a < b$, drops
 self-loops and duplicates, and drops any edge naming a square this *n* does not have.
 Because it is the same store the physics reads, **a random or enumerated graph handed to
 `setEdges` drives a run without touching anything** — which is what
@@ -2907,7 +2907,7 @@ a unit side, and the mean was 0.011. Every side the page reported describes an
 arrangement whose squares interpenetrate.
 
 That is not a budget problem, and the control says so.
-Holding `n = 11` from the grid start with the shake off and stepping thirteen times
+Holding $n = 11$ from the grid start with the shake off and stepping thirteen times
 longer:
 
 | steps | overlap | side |
@@ -2931,7 +2931,7 @@ compressing:
 | 918 | 0.006737 | 3.93224 |
 | 12,032 | 0.004858 | 3.88987 |
 
-**That last row is the trap this instrument exists to avoid.** The record at `n = 11` is
+**That last row is the trap this instrument exists to avoid.** The record at $n = 11$ is
 3.87708, so 3.88987 reads as 0.33 per cent off a standing record.
 It is nothing of the kind: those squares overlap by five thousandths, and the number is
 small *because* they do.

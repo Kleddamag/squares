@@ -39,10 +39,10 @@ use `Fraction`. Floating coordinates or rounded keys are not admissible inputs t
 certificate.
 
 Let $R(x,y)=(U-y,x)$ and $F(x,y)=(U-x,y)$, and apply the eight maps $R^kF^e$, ordered by
-$(e,k)$ with $e\in\{0,1\}$ and $k\in\{0,1,2,3\}$. For each image, sort its four corner
-keys, each key being the pair of reduced rational coefficient tuples.
-This sorted tuple identifies the geometric square independently of the starting corner,
-orientation of traversal, and local quarter-turn parametrization.
+$(e,k)$ with $e\in\lbrace0,1\rbrace$ and $k\in\lbrace0,1,2,3\rbrace$. For each image,
+sort its four corner keys, each key being the pair of reduced rational coefficient
+tuples. This sorted tuple identifies the geometric square independently of the starting
+corner, orientation of traversal, and local quarter-turn parametrization.
 Keep the ordered corners separately for incidence calculations.
 
 Deduplicate all 88 labelled images by that exact key.
@@ -50,8 +50,8 @@ Order the resulting support $\mathcal F$ by key, then partition it into D4 orbit
 represented by its least key.
 Record every source-square/map preimage, every distinct orbit member, and $m_O=|O|$.
 These are construction bounds, not measured counts: $|\mathcal F|\leq88$, at most eleven
-orbits, and $m_O\in\{1,2,4,8\}$. Recheck unit edge lengths, orthogonality, corner
-closure, and containment in $[0,U]^2$.
+orbits, and $m_O\in\lbrace1,2,4,8\rbrace$. Recheck unit edge lengths, orthogonality,
+corner closure, and containment in $[0,U]^2$.
 
 Orbit variables are valid without assuming symmetry of an optimizer.
 Given arbitrary feasible weights $w_S$ on this D4-closed support, define
@@ -105,7 +105,7 @@ container and has constant incidence, with positive area $4\varepsilon^2$.
 Define the integer row
 
 $$
-A_{qO}=|\{S\in O:q\in\operatorname{int}S\}|.
+A_{qO}=|\lbrace S\in O:q\in\operatorname{int}S\rbrace|.
 $$
 
 This counts distinct placements, not labelled images and not merely whether an orbit
@@ -165,8 +165,8 @@ minimization program with free variables and rows bounded above.
 Supply exactly
 
 $$
-c=-m,\qquad B=\begin{bmatrix}A\\-I\end{bmatrix},\qquad
-b=\begin{bmatrix}\mathbf1\\0\end{bmatrix},
+c=-m,\qquad B=\begin{bmatrix}A\cr-I\end{bmatrix},\qquad
+b=\begin{bmatrix}\mathbf1\cr0\end{bmatrix},
 \qquad \min c^Ta\text{ subject to }Ba\leq b.
 $$
 
@@ -222,7 +222,7 @@ Report that common value only as the exact finite-row optimum.
 A point with mass above eleven still needs BC-243’s complete almost-everywhere depth
 check before any dual lower-bound claim.
 Only a fully verified $D>11$ obstructs a mass-eleven area density at $U$; it neither
-closes the below-$U$ density question nor establishes global packing optimality.
+closes the below-`U` density question nor establishes global packing optimality.
 
 ## Control-Only Commission and Readiness
 

@@ -26,7 +26,7 @@ The frozen measure source is `39714308ce2081abbd76624387d134fee4be6deb`.
 
 | Source | Accepted result | Boundary of the result |
 | --- | --- | --- |
-| [T1 final review][t1] | The literal parent $Q_0=[0,1]^2$ has an axis core with mass $800003/800000$ and complete labels $\{3,4,11,12\}$ | Refutes the local T1 surplus inequality; does not construct an eleven-parent extension |
+| [T1 final review][t1] | The literal parent $Q_0=[0,1]^2$ has an axis core with mass $800003/800000$ and complete labels $\lbrace3,4,11,12\rbrace$ | Refutes the local T1 surplus inequality; does not construct an eleven-parent extension |
 | [H161 result][h161] and [result audit][h161audit] | The same 19 atoms lie in the full parent; $W\mu(Q_0)=4000015$. Four separated corner copies have union mass $16000060$. Both necessary tests retain $1048233$ integer units of slack | The specified parent-union tests do not exclude either configuration; other poses and stronger resources remain open |
 | [X-029 geometry][geometry] and [charge bridge][bridge] | Complete C geometry and open-cell minimum reduction; a sufficient S first-owner test; automatic opposite-corner parent separation | The S strip is a relaxation. Joint S realizability still requires one simultaneous pair of physical parents |
 | [Integrated-head admission][admission] | The unchanged reader was admitted at `771d480512d9d31c85ab84d5ef4db1d90dd1e0d2`, with source checks and synthetic controls | Current [H-160][h160] has `instrument_ready: false`; [exp-158][exp158] has no result. Admission is not a charge determination |
@@ -62,15 +62,15 @@ labels.
 
 At corner $c$, let $A_c(P,E)$ contain every label supplied by the actual owners and all
 permitted proper signed frames.
-Put $V_c=A_c\cap\{0,15\}$. A forced-0 corner has $V_c=\{0\}$, and a forced-15 corner has
-$V_c=\{15\}$. Role C has one owner of both marks; role S has two distinct owners, one
-per mark; an O role owns one mark and leaves the other missing.
-Missing in a local fixture does not establish globally unowned in an eventual packing.
-The imported seven-mark rule allows at most one globally unowned mark.
+Put $V_c=A_c\cap\lbrace0,15\rbrace$. A forced-0 corner has $V_c=\lbrace0\rbrace$, and a
+forced-15 corner has $V_c=\lbrace15\rbrace$. Role C has one owner of both marks; role S
+has two distinct owners, one per mark; an O role owns one mark and leaves the other
+missing. Missing in a local fixture does not establish globally unowned in an eventual
+packing. The imported seven-mark rule allows at most one globally unowned mark.
 [Definitions and transfer][routing]
 
-For the two admitted tuple geometries $G_0=\{(0,0,0,0),(15,15,15,15)\}$, routing is
-exactly
+For the two admitted tuple geometries $G_0=\lbrace(0,0,0,0),(15,15,15,15)\rbrace$,
+routing is exactly
 
 \[
 \bigl(\prod_c A_c(P,E)\bigr)\cap G_0\ne\varnothing.
@@ -132,9 +132,9 @@ Disjoint closed cores give the exact identity
 U+\sum_{i=1}^{11}\beta_i=\Delta.
 \]
 
-If a selected pair of corner roles contains $k$ distinct owners and $u\in\{0,1\}$
-globally unowned marks, then $U\ge uw$. All omitted $\beta_i$ are nonnegative, so every
-extension must satisfy
+If a selected pair of corner roles contains $k$ distinct owners and
+$u\in\lbrace0,1\rbrace$ globally unowned marks, then $U\ge uw$. All omitted $\beta_i$
+are nonnegative, so every extension must satisfy
 
 \[
 \sum_{i\in I}\beta_i\le\Delta-uw.
@@ -145,7 +145,7 @@ Equivalently its ordinary owner surplus is at most \(\varepsilon-uw-(11-k)g\). X
 already states this necessary extension inequality; the new deduction is its complete
 C/S reduction and integer decision thresholds.
 
-Let $B_*$ be the minimum of \(\sum_{i\in X}\beta_i\) over every full forced-0 local
+Let $B_{\ast}$ be the minimum of \(\sum_{i\in X}\beta_i\) over every full forced-0 local
 configuration $X$, including both actual C and actual S domains from X-029. S requires
 joint physical parents.
 The minimum exists: the domains are nonempty, only finitely many atomic membership sets
@@ -163,19 +163,19 @@ Then
 \]
 
 **Proof.** Diagonal reflection exchanges forced types and preserves measure, equipment,
-and owner count. Every full/full pair therefore has excess at least $2B_*$. A
-one-missing/full pair has excess at least $B_*$, because the O owner’s excess is
+and owner count. Every full/full pair therefore has excess at least $2B_{\ast}$. A
+one-missing/full pair has excess at least $B_{\ast}$, because the O owner’s excess is
 nonnegative. Here
 
 \[
 2Ww=1062510>1048233=W\Delta,
 \]
 
-so $B_*>\Delta/2>\Delta-w$. The two-missing role is absent.
+so $B_{\ast}>\Delta/2>\Delta-w$. The two-missing role is absent.
 These inequalities prove the forward sufficiency for all adjacent and opposite
-realizations. Conversely, an attaining full corner with $B_*\le\Delta/2$ and its
-diagonally reflected opposite copy have excess $2B_*\le\Delta$. X-029’s proved parent
-separation
+realizations. Conversely, an attaining full corner with $B_{\ast}\le\Delta/2$ and its
+diagonally reflected opposite copy have excess $2B_{\ast}\le\Delta$. X-029’s proved
+parent separation
 
 \[
 2q-2(a+b)-4=708/3175>0
@@ -264,7 +264,7 @@ Then:
   stays strictly inside it with the same inset $23/20000$.
 - Both marks remain in the core.
   The centre coordinates $1/2+u,1/2+v$ remain below $b<a$, so all mark-to-centre
-  coordinates are negative and the complete labels remain $\{3,4,11,12\}$.
+  coordinates are negative and the complete labels remain $\lbrace3,4,11,12\rbrace$.
 - Parent and core retain exactly their 19 source atoms and integer mass $F$.
 
 Transport any four independently chosen such configurations by the corner maps

@@ -25,18 +25,18 @@ these exact inputs:
 
 | Input | Value |
 | --- | --- |
-| `n` | `2` |
-| Container side `L` | `3/4` |
-| Core side `B` | `1/2` |
-| Half-tangent limit `T` | `1/2` |
-| Steps `K` | `2880` |
-| Net | `t_k = k/5760`, for `0 <= k <= 2880` |
+| $n$ | $2$ |
+| Container side $L$ | $\frac{3}{4}$ |
+| Core side $B$ | $\frac{1}{2}$ |
+| Half-tangent limit $T$ | $\frac{1}{2}$ |
+| Steps $K$ | $2880$ |
+| Net | $t_k = k/5760$, for `0 <= k <= 2880` |
 | Symmetry | D4 |
-| Center `o` | `(3/8, 3/8)` |
-| Offset `a` | `3/16` |
-| Point atom | `o`, weight `1/2` |
-| Horizontal threshold atom | `{(3/16,3/8), o, (9/16,3/8)}`, threshold 2, weight `3/4` |
-| Vertical threshold atom | `{(3/8,3/16), o, (3/8,9/16)}`, threshold 2, weight `3/4` |
+| Center $o$ | $(\frac{3}{8}, \frac{3}{8})$ |
+| Offset $a$ | $\frac{3}{16}$ |
+| Point atom | $o$, weight $\frac{1}{2}$ |
+| Horizontal threshold atom | $\lbrace(\frac{3}{16},\frac{3}{8}), o, (\frac{9}{16},\frac{3}{8})\rbrace$, threshold 2, weight $\frac{3}{4}$ |
+| Vertical threshold atom | $\lbrace(\frac{3}{8},\frac{3}{16}), o, (\frac{3}{8},\frac{9}{16})\rbrace$, threshold 2, weight $\frac{3}{4}$ |
 
 There are five distinct sites, one positive point atom, and two positive two-of-three
 threshold atoms. The center is invariant under D4; D4 permutes the two threshold atoms.
@@ -52,7 +52,7 @@ while others contain all three.
 
 ### Coverage from first principles
 
-Let a core orientation have nonnegative unit components `(c,s)` and write `S=c+s`. This
+Let a core orientation have nonnegative unit components $(c,s)$ and write $S=c+s$. This
 covers the forward and reflected nets; `1 <= S <= sqrt(2)`. A core centered at
 `p=o+(dx,dy)` is admissible precisely when
 
@@ -61,13 +61,13 @@ covers the forward and reflected nets; `1 <= S <= sqrt(2)`. A core centered at
 ```
 
 Every direction has a nonempty center domain because `L^2 - 2*B^2 = 1/16 > 0`. Also
-`r <= 1/8`. The center atom lies strictly inside every core: its distance from `p` is at
-most `sqrt(2)/8 < 1/4`, and a square of side `1/2` contains its concentric radius-`1/4`
+`r <= 1/8`. The center atom lies strictly inside every core: its distance from $p$ is at
+most `sqrt(2)/8 < 1/4`, and a square of side $1/2$ contains its concentric radius-`1/4`
 disk in every orientation.
 
-Choose the horizontal endpoint on the same side of `o` as `p`’s x coordinate.
-Its x distance from `p` is `a-|dx|`, whose absolute value is at most `a`, because
-`|dx| <= 1/8 < a`. Its y distance is at most `1/8`. Thus its squared distance from `p`
+Choose the horizontal endpoint on the same side of $o$ as $p$’s x coordinate.
+Its x distance from $p$ is `a-|dx|`, whose absolute value is at most $a$, because
+`|dx| <= 1/8 < a`. Its y distance is at most $1/8$. Thus its squared distance from $p$
 is at most
 
 ```text
@@ -89,16 +89,16 @@ M/n = 1;   m > M/n.
 alpha = 1/m = 1/2.
 ```
 
-The raw object deliberately has `M=n`; running a normalized-certificate budget gate on
+The raw object deliberately has $M=n$; running a normalized-certificate budget gate on
 it before normalization would be wrong.
 The raw sweep is permitted to measure this candidate, and the prescribed normalization
 makes the budget strictly feasible.
 
-At direction zero, the interior center `(9/32,9/32)` has each triple’s center and nearer
+At direction zero, the interior center $(9/32,9/32)$ has each triple’s center and nearer
 endpoint inside and its farther endpoint outside: both traces have size exactly two.
-At `(3/8,3/8)` both traces have size three.
+At $(3/8,3/8)$ both traces have size three.
 Both centers have charge 2. These are exact independent membership anchors.
-A mutation from `count >= 2` to `count > 2` changes the first anchor’s charge to `1/2`,
+A mutation from `count >= 2` to `count > 2` changes the first anchor’s charge to $1/2$,
 so the known answer detects it.
 
 For each net direction, an independent admissible anchor in the rotated frame is
@@ -107,7 +107,7 @@ For each net direction, an independent admissible anchor in the rotated frame is
 u = 3*(c+s)/8,   v = 3*(c-s)/8.
 ```
 
-It is the physical center `o` and has charge 2 before normalization and 1 afterward.
+It is the physical center $o$ and has charge 2 before normalization and 1 afterward.
 The sweep may choose a different minimizing witness.
 Do not require its witness to equal this anchor: require its exact charge,
 admissibility, and the existing dense/slab witness agreement contract instead.
@@ -115,16 +115,16 @@ admissibility, and the existing dense/slab witness agreement contract instead.
 ### Net, normalization, and dilation
 
 For adjacent half-tangents, the tangent of half the angular gap is
-`(t_(k+1)-t_k)/(1+t_k*t_(k+1))`. Its largest value is at `k=0`, giving `D=1/5760`. The
+`(t_(k+1)-t_k)/(1+t_k*t_(k+1))`. Its largest value is at $k=0$, giving $D=1/5760$. The
 endpoint test is `T^2+2*T-1=1/4 > 0`, and strict coarse containment is
 
 ```text
 B*(1+D) = 5761/11520 < 1.
 ```
 
-Normalize every weight by `1/2`, preserving coordinates, atom membership, thresholds,
-net, and ordering. The point weight becomes `1/4`; both threshold weights become `3/8`.
-The resulting minimum and budget are both 1, and the budget condition is `1 < 2`. Every
+Normalize every weight by $1/2$, preserving coordinates, atom membership, thresholds,
+net, and ordering. The point weight becomes $1/4$; both threshold weights become $3/8$.
+The resulting minimum and budget are both 1, and the budget condition is $1 < 2$. Every
 normalized closed-form condition holds.
 
 The exact integer representation matters for interpreting interval rows:
@@ -142,7 +142,7 @@ The normalized interval table has three rows and three member slots per row over
 sites.
 Point-row padding must use the false sentinel; it must not count the center again.
 Every expected interval direction has integer lower and upper bounds 8, corresponding to
-rational `[1,1]` on scale 8.
+rational $[1,1]$ on scale 8.
 
 The generic dilation replay must obtain
 
@@ -161,7 +161,7 @@ strict_factor_test_right           = 33177601/33177600.
 Its relation is `>=`, `endpoint_certificate` is false, and `requires_compactness` is
 false. The source minimum and budget are both 1. The side and factor are positive; their
 squared values suffice to check the surds without a decimal tolerance.
-`33177600=5760^2 < 33177601 < 5761^2=33189121`, so the surd is irrational.
+$33177600=5760^{2} < 33177601 < 5761^{2}=33189121$, so the surd is irrational.
 There is no comparison with T-026 in the calibration contract.
 
 The exact geometry establishes the correct interval answer and uniform positive coverage
@@ -175,14 +175,14 @@ program.
 
 ## Full Record Shape and Required Calls
 
-For `K=2880`, the complete labels and counts are:
+For $K=2880$, the complete labels and counts are:
 
 | Route | Required real computation | Retained direction rows |
 | --- | --- | --- |
-| Raw | `run_raw_sweep`, which calls `minimum_charge` for each direction | `0` through `2880`: 2,881 |
-| Normalized exact | `run_exact_route`, which calls dense and slab `minimum_charge` independently for each direction | `0` through `2880`: 2,881 rows, each carrying both results |
-| Reflected interval | `run_interval_route` with `enclose=True`, via `verify_threshold_by_intervals` | `0` through `2880`, then `1'` through `2880'`: 5,761 |
-| Dilation | `run_dilation_replay` / `build_limit_record`, which reopens normalized bytes and runs `verify_threshold` | `0` through `2880`: 2,881 |
+| Raw | `run_raw_sweep`, which calls `minimum_charge` for each direction | `0` through $2880$: 2,881 |
+| Normalized exact | `run_exact_route`, which calls dense and slab `minimum_charge` independently for each direction | $0$ through $2880$: 2,881 rows, each carrying both results |
+| Reflected interval | `run_interval_route` with `enclose=True`, via `verify_threshold_by_intervals` | `0` through $2880$, then `1'` through `2880'`: 5,761 |
+| Dilation | `run_dilation_replay` / `build_limit_record`, which reopens normalized bytes and runs `verify_threshold` | `0` through $2880$: 2,881 |
 | Total | Four route collections | **14,404** |
 
 The formula is `3*(K+1) + (2*K+1) = 5*K+4`. The reflection of direction zero is omitted
@@ -208,9 +208,9 @@ The positive profile must pass these expected results:
 | Stage | Exact admission requirement |
 | --- | --- |
 | Raw | Every row’s charge is 2; minimum 2; stable tied argmin index 0; every witness is admissible and replays to 2 |
-| Normalization | Exactly `alpha=1/2`; point mass `1/4`, threshold budget `3/4`, total budget 1; all normalized closed-form conditions true |
+| Normalization | Exactly `alpha=1/2`; point mass $\frac{1}{4}$, threshold budget $\frac{3}{4}$, total budget 1; all normalized closed-form conditions true |
 | Exact | Every row’s dense and slab charge is 1; both witnesses agree as required by the current route; zero disagreements; stable argmin index 0; every witness replays to 1 |
-| Interval | Every label present; integer bounds `[8,8]`; aggregate `[1,1]`; every row certified; zero stalls and exhausted budgets; finite, admissible witnesses of exact normalized charge 1 |
+| Interval | Every label present; integer bounds $[8,8]$; aggregate $[1,1]$; every row certified; zero stalls and exhausted budgets; finite, admissible witnesses of exact normalized charge 1 |
 | Dilation | Every source-replay row has charge 1 and the expected label; all declarations match normalized bytes; exact factor and side above; source digest equals that of the normalized candidate |
 | Publication and readback | Strict schema, exact direction sets, row filenames, counts, inventories, and byte bindings reconstruct; complete receipt only after readback and supervised success |
 
@@ -236,25 +236,25 @@ controls.
 
 | Mutation or negative control | Required result and defect detected |
 | --- | --- |
-| Change only the positive fixture’s `n` from 2 to 1 in an explicitly separate control | `m=M/n=2`; strict raw comparison refuses normalization. Equality cannot pass the budget test. |
-| Reduce the normalized point weight from `1/4` to `1/8`, without renormalizing, and update its declared budget honestly | Every core has charge `7/8`; exact and interval coverage fail the threshold 1. Dilation refuses this source. |
-| Change a two-of-three implementation to require all three | Direction-zero anchor `(9/32,9/32)` has two members per triple; the erroneous raw charge is `1/2`, contrary to the oracle’s 2. |
+| Change only the positive fixture’s $n$ from 2 to 1 in an explicitly separate control | $m=M/n=2$; strict raw comparison refuses normalization. Equality cannot pass the budget test. |
+| Reduce the normalized point weight from $\frac{1}{4}$ to $\frac{1}{8}$, without renormalizing, and update its declared budget honestly | Every core has charge $\frac{7}{8}$; exact and interval coverage fail the threshold 1. Dilation refuses this source. |
+| Change a two-of-three implementation to require all three | Direction-zero anchor $(\frac{9}{32},\frac{9}{32})$ has two members per triple; the erroneous raw charge is $\frac{1}{2}$, contrary to the oracle’s 2. |
 | Omit the negative triple term in the two-of-three inclusion-exclusion expansion | At the physical center, a three-member trace counts three pairs without the necessary subtraction of two. Direct membership and the known charge expose the excess. |
-| Test a separate larger-domain control with `L=3/2`, center `(3/4,3/4)`, the same offsets and normalized weights | At axis center `(15/32,3/4)`, exactly one horizontal member and no vertical members or point atom are inside; exact charge is 0. This tests the below-threshold branch that the positive fixture cannot reach. |
+| Test a separate larger-domain control with $L=\frac{3}{2}$, center $(\frac{3}{4},\frac{3}{4})$, the same offsets and normalized weights | At axis center $(\frac{15}{32},\frac{3}{4})$, exactly one horizontal member and no vertical members or point atom are inside; exact charge is 0. This tests the below-threshold branch that the positive fixture cannot reach. |
 | Change a non-argmin row’s charge from 2 to 3, and update its digest and summary consistently | Independent per-direction known-answer validation refuses it even though the global minimum remains 2. Aggregate-only checks are insufficient. |
 | Change a witness without updating the binding | Byte readback refuses it. |
 | Change a witness to an inadmissible center and update all bindings consistently | Independent exact geometry refuses it. Digests alone do not verify witnesses. |
 | Change a normalized weight, site, threshold, order, fixture ID, or source identity | Fixture freezing or normalization reconstruction refuses it. No T-025 ancestry may be substituted. |
 | Delete, duplicate, add, or mislabel one row; use a numeric alias such as `01.json` | Exact label-set and filename checks refuse it, even if a reported count is unchanged. |
-| Put `[1,1]` in native normalized interval integer fields | Scale-aware known-answer readback refuses it: these fields must be `[8,8]`. |
+| Put $[1,1]$ in native normalized interval integer fields | Scale-aware known-answer readback refuses it: these fields must be $[8,8]$. |
 | Increase the saved dilation limit or set an endpoint certificate true | Independent rational/surd reconstruction refuses it even after rehashing the file. |
 | Substitute the scientific receipt schema or add `packet-accepted`, scientific acceptance, or a T-026 improvement field | The closed calibration schema refuses it; the scientific reader separately refuses an ordinary calibration receipt. |
 | Kill or interrupt during each route, normalization publication, or readback; include a termination-resistant grandchild in a lifecycle control | No complete admission survives; the exact published set remains recoverable and the supervised group is terminated and reaped within the stated grace policy. |
 | Let readback finish after its deadline, or make the worker exit nonzero after writing a complete candidate receipt | Final admission is revoked. A stale worker summary cannot override the observed process result. |
 
 The larger-domain control’s witness is strictly admissible: its axis core has x range
-`[7/32,23/32]` and y range `[1/2,1]`, inside `[0,3/2]^2`. It contains only the
-horizontal point `(9/16,3/4)`. This makes the expected zero charge a checked geometric
+$[7/32,23/32]$ and y range $[1/2,1]$, inside $[0,3/2]^{2}$. It contains only the
+horizontal point $(9/16,3/4)$. This makes the expected zero charge a checked geometric
 fact rather than an arbitrary mock return.
 
 A coherently rehashed change to a *different valid* witness need not be a mathematical
@@ -277,9 +277,9 @@ If “three profiles” instead means testing worker counts 1, 2, and 4, use thi
 
 | Requested workers | macOS effective raw / exact / interval / dilation at reviewed revision | Linux effective route maximums |
 | --- | --- | --- |
-| 1 | `1 / 1 / 1 / 1` | `1 / 1 / 1 / 1` |
-| 2 | `2 / 2 / 1 / 1` | `2 / 2 / 2 / 2` |
-| 4 | `4 / 4 / 1 / 1` | `4 / 4 / 4 / 4` |
+| 1 | $1 / 1 / 1 / 1$ | $1 / 1 / 1 / 1$ |
+| 2 | $2 / 2 / 1 / 1$ | $2 / 2 / 2 / 2$ |
+| 4 | $4 / 4 / 1 / 1$ | $4 / 4 / 4 / 4$ |
 
 The interval and dilation schedulers explicitly use serial execution off Linux.
 Raw and normalized-exact schedulers request fork pools on the intended macOS host.
@@ -386,16 +386,16 @@ Admission should map each obligation to bytes and an actual check:
    to equal 1, rather than checking only aggregate minima.
    Reconstruct the stable lowest tied argmin and dense/slab disagreements.
 4. At every retained raw, dense, slab, and interval witness, derive the rotation
-   directly from `t=k/5760`; exchange its components for primed labels.
+   directly from $t=k/5760$; exchange its components for primed labels.
    Convert retained binary floats to their exact rational values for interval witnesses.
    Recompute physical admissibility and point/threshold membership using closed
    inequalities and no epsilon.
    Dilation rows do not carry witnesses in the current kernel; their labels and known
    charge still require verification, and their source bytes must equal the normalized
    source used by the other routes.
-5. Independently verify interval scale 8, every `[8,8]` integer enclosure, certified
+5. Independently verify interval scale 8, every $[8,8]$ integer enclosure, certified
    statuses, zero stalls/exhaustion, and nonempty measured work.
-   Recompute the aggregate `[1,1]`. Re-derive every mathematical dilation field with
+   Recompute the aggregate $[1,1]$. Re-derive every mathematical dilation field with
    rational arithmetic and the positive surd, including endpoint semantics.
 6. Validate publication/inventory binding and the final deadline relationships.
    Inspect the actual exit and process-group cleanup evidence.
@@ -426,11 +426,11 @@ receipt is a refusal.
 
 The real `build_limit_record` deliberately emits a generic threshold dilation record for
 the positive fixture, and a generic certificate checker may accept the valid normalized
-`n=2` fixture. Claiming that no generic mathematical reader can accept those bytes would
+$n=2$ fixture. Claiming that no generic mathematical reader can accept those bytes would
 contradict the purpose of a positive control.
 Retain that generic output as explicitly scoped calibration material, and make
 campaign/claim consumers reject its promotion into BC329 evidence.
-There is no new `n=11` claim in these outputs.
+There is no new $n=11$ claim in these outputs.
 
 ## Remaining Gaps and Source Map
 

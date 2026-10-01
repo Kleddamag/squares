@@ -19,43 +19,43 @@ The historical numerical inputs, outputs and script fences are preserved.
 ## A — Corner and wall structure of 11-square packings, 3.81 ≤ L ≤ U
 
 Author: research-mathematician sub-agent, 2026-09-08. Repository read-only; all scripts
-under `scratchpad/corner/`. Reference sides: `3.81`, `q = 96/25 = 3.84`,
-`U = 3.877083590022814`.
+under `scratchpad/corner/`. Reference sides: $3.81$, $q = 96/25 = 3.84$,
+$U = 3.877083590022814$.
 
 **One-paragraph verdict.** X-019’s two elementary facts (four distinct corner blockers;
 the identity `min_Q(x+y) = g_x + g_y + sin φ`) are correct as stated.
 Beyond them, insertion saturation (IS) plus local geometry proves a handful of exact,
 clean statements — an overhang strengthening that shrinks the forced corner box from
-side 1 to side `κ = L − 2.96`, an exact corner-core lemma (every square meeting the
-corner triangle `T_d` contains the box `[d,1]²`), which raises X-019’s uniqueness
-threshold from `1/√2` to the sharp value `1`, the exact blocker-pose region, a
+side 1 to side $\kappa = L - 2.96$, an exact corner-core lemma (every square meeting the
+corner triangle $T_d$ contains the box $[d,1]^2$), which raises X-019’s uniqueness
+threshold from $1/\sqrt{2}$ to the sharp value $1$, the exact blocker-pose region, a
 wall-service lemma, and monotonicity occupancy counts — but it proves **no positive
 corner penetration** and **no angular restriction** on any blocker.
-Both are refuted at the level of the *method*: Trump’s own fourth corner at `L = U` has
-penetration `0.8445` and a free corner box of side `0.8317`, and Trump’s packing placed
-in `[0,3.95]²` (where IS still holds) has a free corner box of side `0.9046` against a
-forced box of side `0.99`. What the proved facts do buy is a **sound, complete,
+Both are refuted at the level of the *method*: Trump’s own fourth corner at $L = U$ has
+penetration $0.8445$ and a free corner box of side $0.8317$, and Trump’s packing placed
+in $[0,3.95]^2$ (where IS still holds) has a free corner box of side $0.9046$ against a
+forced box of side $0.99$. What the proved facts do buy is a **sound, complete,
 implementable case cover of the corners by penetration depth** (Theorem B) and a
 **corner-class certificate** (Theorem A) whose gain is a single LP away from being
 measured.
 The retained-certificate census in §2.6 already decides Theorem A negatively on
-the retained `3.81` site set (the corner-region minimum equals the global minimum, so
+the retained $3.81$ site set (the corner-region minimum equals the global minimum, so
 the corner class can carry no surplus there) and shows that the corner-hugging
 placements are uniformly the tightest constraints — which is exactly what Theorem B’s
 banking credits and its domain clip deletes, so the sign of Theorem B’s gain is
 undetermined without a run.
 
-Notation. `C = [0,L]²`; `Q_1..Q_11` closed unit squares in `C`, pairwise disjoint
-interiors. `S₁₂ = 99/25 = 3.96` (T-017). `κ := L − 2.96` (`0.85`, `0.88`, `0.9171` at
-`3.81`, `3.84`, `U`). A *corner frame* is the D4 image putting a chosen corner at the
+Notation. $C = [0,L]^2$; `Q_1..Q_11` closed unit squares in `C`, pairwise disjoint
+interiors. $S_{12} = 99/25 = 3.96$ (T-017). `κ := L − 2.96` ($0.85$, $0.88$, $0.9171$ at
+$3.81$, $3.84$, $U$). A *corner frame* is the D4 image putting a chosen corner at the
 origin with `C` in the closed first quadrant.
-In a corner frame a unit square has orientation `θ ∈ [−π/4, π/4]` (mod `π/2`), folded
-angle `φ = |θ|`, axis-parallel extent `e = cos φ + sin φ ∈ [1, √2]`, half-extent
-`h = e/2`, centre `(a,b)`, wall gaps `g_x = a − h ≥ 0`, `g_y = b − h ≥ 0`.
-`T_ε := {x,y ≥ 0,
+In a corner frame a unit square has orientation $\theta \in [-\pi/4, \pi/4]$ (mod
+$\pi/2$), folded angle $\varphi = |\theta|$, axis-parallel extent
+$e = \cos \varphi + \sin \varphi \in [1, \sqrt{2}]$, half-extent $h = e/2$, centre
+$(a,b)$, wall gaps $g_x = a - h \ge 0$, $g_y = b - h \ge 0$. `T_ε := {x,y ≥ 0,
 x + y ≤ ε}` (closed corner triangle), `K_ρ := (0,ρ)²` (open corner box),
-`δ(Q) := min_{p∈Q}(x+y)` (penetration of `Q` toward the corner), `δ_j := min_i δ(Q_i)`
-in corner `j`’s frame.
+`δ(Q) := min_{p∈Q}(x+y)` (penetration of $Q$ toward the corner), `δ_j := min_i δ(Q_i)`
+in corner $j$’s frame.
 
 * * *
 
@@ -63,152 +63,166 @@ in corner `j`’s frame.
 
 ### Lemma 0 (insertion saturation with overhang)
 
-Let `d_1, d_2, d_3, d_4 ≥ 0` with `d_1 + d_2 ≤ S₁₂ − L` and `d_3 + d_4 ≤ S₁₂ − L`. Every
-closed unit square `P ⊂ [−d_1, L + d_2] × [−d_3, L + d_4]` satisfies
-`int P ∩ int Q_i ≠ ∅` for some `i`. Valid for every `L ≤ S₁₂`.
+Let $d_1, d_2, d_3, d_4 \ge 0$ with $d_1 + d_2 \le S_{12} - L$ and
+$d_3 + d_4 \le S_{12} - L$. Every closed unit square
+$P \subset [-d_1, L + d_2] \times [-d_3, L + d_4]$ satisfies `int P ∩ int Q_i ≠ ∅` for
+some $i$. Valid for every $L \le S_{12}$.
 
-*Proof.* Translate everything by `(d_1, d_3)`. The container goes to
-`[d_1, d_1+L] × [d_3, d_3+L] ⊂ [0, S₁₂]²` because `d_1 + L ≤ S₁₂ − d_2 ≤ S₁₂` (same in
-`y`), and `P` goes to a subset of `[0, L + d_1 + d_2] × [0, L + d_3 + d_4] ⊂ [0, S₁₂]²`.
-If `int P` met no `int Q_i`, the twelve translated closed unit squares would have
-pairwise disjoint interiors inside `[0, S₁₂]²`, contradicting T-017. ∎
+*Proof.* Translate everything by $(d_1, d_3)$. The container goes to
+$[d_1, d_1+L] \times [d_3, d_3+L] \subset [0, S_{12}]^2$ because
+$d_1 + L \le S_{12} - d_2 \le S_{12}$ (same in $y$), and $P$ goes to a subset of
+$[0, L + d_1 + d_2] \times [0, L + d_3 + d_4] \subset [0, S_{12}]^2$. If `int P` met no
+`int Q_i`, the twelve translated closed unit squares would have pairwise disjoint
+interiors inside $[0, S_{12}]^2$, contradicting T-017. ∎
 
-**Corollary 0.1.** (a) In every corner frame some `Q_i` has `int Q_i ∩ K_κ ≠ ∅` (take
-`P = [−d, 1−d]²`, `d = S₁₂ − L`; then `int P ∩ int Q_i ⊂ (0, 1−d)² = K_κ`). (b) In every
-wall frame and for every `t ∈ [0, L−1]` some `int Q_i` meets `(t, t+1) × (0, κ)`. (c)
-Every unit square in `C` is met (X-019’s form, `d = 0`). Nothing else is gained: an
-interior probe cannot overhang, and a probe overhanging one wall has exactly the trace
-in (b).
+**Corollary 0.1.** (a) In every corner frame some $Q_i$ has `int Q_i ∩ K_κ ≠ ∅` (take
+$P = [-d, 1-d]^2$, $d = S_{12} - L$; then `int P ∩ int Q_i ⊂ (0, 1−d)² = K_κ`). (b) In
+every wall frame and for every $t \in [0, L-1]$ some `int Q_i` meets
+$(t, t+1) \times (0, \kappa)$. (c) Every unit square in `C` is met (X-019’s form,
+$d = 0$). Nothing else is gained: an interior probe cannot overhang, and a probe
+overhanging one wall has exactly the trace in (b).
 
-*Remark.* This is the only place T-017’s margin `S₁₂ − L` enters; a proof of `s(12) = 4`
-would give `κ = L − 3` (`0.84` at `3.84`). The corner box forced to be blocked shrinks
-as the twelve-square bound improves, which is the correct direction.
+*Remark.* This is the only place T-017’s margin $S_{12} - L$ enters; a proof of
+$s(12) = 4$ would give $\kappa = L - 3$ ($0.84$ at $3.84$). The corner box forced to be
+blocked shrinks as the twelve-square bound improves, which is the correct direction.
 
 ### Lemma 1 (four distinct corner blockers — X-019, checked)
 
-Choose for each corner `j` a square `B_j` with `int B_j ∩ K_κ^{(j)} ≠ ∅` (exists by
-0.1(a)). Then `B_1, …, B_4` are pairwise distinct; indeed no square meets two corner
-boxes.
+Choose for each corner $j$ a square $B_j$ with `int B_j ∩ K_κ^{(j)} ≠ ∅` (exists by
+0.1(a)). Then $B_1, \ldots, B_4$ are pairwise distinct; indeed no square meets two
+corner boxes.
 
 *Proof.* A square meeting `K_κ^{(j)}` and `K_κ^{(j')}`, `j ≠ j'`, has in one coordinate
-points `< κ` and `> L − κ`, so its extent `e > L − 2κ = 5.92 − L ≥ 2.04 > √2 ≥ e`. ∎
-X-019’s version (`κ = 1`, gap `L − 2 > √2`) is also correct; there is no gap in its
-argument.
-With `κ` the blockers are forced *closer* to the corners, which is the point of
+points $< \kappa$ and $> L - \kappa$, so its extent
+$e > L - 2\kappa = 5.92 - L \ge 2.04 > \sqrt{2} \ge e$. ∎ X-019’s version ($\kappa = 1$,
+gap $L - 2 > \sqrt{2}$) is also correct; there is no gap in its argument.
+With $\kappa$ the blockers are forced *closer* to the corners, which is the point of
 Lemma 0.
 
 ### Lemma 2 (corner penetration identity — X-019, checked, with the minimiser)
 
-For a unit square with pose `(g_x, g_y, θ)` in a corner frame,
+For a unit square with pose $(g_x, g_y, \theta)$ in a corner frame,
 `min_{p∈Q}(x + y) = a + b − cos θ = g_x + g_y + sin φ`, attained at the lowest vertex
-`(g_x + sin φ, g_y)` when `θ ≥ 0` and at the leftmost vertex `(g_x, g_y + sin φ)` when
-`θ ≤ 0`; also `max_{p∈Q}(x+y) = a + b + cos θ`.
+$(g_x + \sin \varphi, g_y)$ when $\theta \ge 0$ and at the leftmost vertex
+$(g_x, g_y + \sin \varphi)$ when $\theta \le 0$; also `max_{p∈Q}(x+y) = a + b + cos θ`.
 
-*Proof.* `x + y` is linear, so its extrema over `Q` are at the vertices
-`c ± e_1/2 ± e_2/2`, `e_1 = (cos θ, sin θ)`, `e_2 = (−sin θ, cos θ)`, where it takes the
-values `a + b + {−cos θ, −sin θ, sin θ, cos θ}`; on `[−π/4, π/4]`, `cos θ ≥ |sin θ|`, so
-the minimum is `a + b − cos θ` at
-`c − e_1/2 − e_2/2 = (a − (cos θ − sin θ)/2, b − (cos θ + sin θ)/2)`, which is
-`(g_x + sin θ, g_y)` for `θ ≥ 0`. Substituting `a = g_x + h`, `b = g_y + h`,
-`2h = cos φ + sin φ` gives `g_x + g_y + sin φ`. ∎ Hence `Q` meets `T_ε` iff
-`g_x + g_y + sin φ ≤ ε`, which forces `φ ≤ arcsin ε` and `g_x + g_y ≤ ε − sin φ`
+*Proof.* $x + y$ is linear, so its extrema over $Q$ are at the vertices
+$c \pm e_1/2 \pm e_2/2$, $e_1 = (\cos \theta, \sin \theta)$,
+$e_2 = (-\sin \theta, \cos \theta)$, where it takes the values
+$a + b + \lbrace-\cos \theta, -\sin \theta, \sin \theta, \cos \theta\rbrace$; on
+$[-\pi/4, \pi/4]$, $\cos \theta \ge |\sin \theta|$, so the minimum is
+$a + b - \cos \theta$ at
+$c - e_1/2 - e_2/2 = (a - (\cos \theta - \sin \theta)/2, b - (\cos \theta + \sin \theta)/2)$,
+which is $(g_x + \sin \theta, g_y)$ for $\theta \ge 0$. Substituting $a = g_x + h$,
+$b = g_y + h$, $2h = \cos \varphi + \sin \varphi$ gives $g_x + g_y + \sin \varphi$. ∎
+Hence $Q$ meets $T_{\varepsilon}$ iff $g_x + g_y + \sin \varphi \le \varepsilon$, which
+forces $\varphi \le \arcsin \varepsilon$ and $g_x + g_y \le \varepsilon - \sin \varphi$
 (X-019’s consequences, correct).
 Numerical check: `lemmas_check.py` (1), max error `1.3e−15` over 20 000 random poses.
 
 ### Lemma 3 (corner core) — new
 
-Let `0 ≤ d ≤ 1`. Every unit square `Q` in the closed quadrant that meets `T_d` contains
-the closed box `[d, 1]²`. The box is exact: `⋂{Q : Q meets T_d} = [d,1]²`.
+Let $0 \le d \le 1$. Every unit square $Q$ in the closed quadrant that meets $T_d$
+contains the closed box $[d, 1]^2$. The box is exact: `⋂{Q : Q meets T_d} = [d,1]²`.
 
-*Proof.* Reflecting in the diagonal fixes `T_d` and `[d,1]²`, so assume `θ ≥ 0`. With
-the lowest vertex `v = (g_x + sin θ, g_y)`, `Q = {v + s e_1 + t e_2 : s, t ∈ [0,1]}`,
-and for `p = (x,y)` the coordinates are `s = α cos θ + β sin θ`, `t = β cos θ − α sin θ`
-with `α := x − g_x − sin θ`, `β := y − g_y`. The hypothesis is `g_x + g_y + sin θ ≤ d`.
-For `(x,y) ∈ [d,1]²`: `α ≥ d − g_x − sin θ ≥ g_y ≥ 0` and
-`β ≥ d − g_y ≥ g_x + sin θ ≥ sin θ ≥ 0`.
-- `s ≥ 0`: both terms are nonnegative.
-- `s ≤ 1`:
-  `s ≤ (1 − g_x − sin θ) cos θ + (1 − g_y) sin θ = cos θ + sin θ − [g_x cos θ + g_y
-  sin θ + sin θ cos θ] ≤ cos θ + sin θ − sin θ cos θ ≤ 1`, the last since
-  `1 − cos θ − sin θ + sin θ cos θ = (1 − cos θ)(1 − sin θ) ≥ 0`.
-- `t ≥ 0`: using `β ≥ g_x + sin θ` and `α ≤ 1 − g_x − sin θ`,
+*Proof.* Reflecting in the diagonal fixes $T_d$ and $[d,1]^2$, so assume $\theta \ge 0$.
+With the lowest vertex $v = (g_x + \sin \theta, g_y)$,
+$Q = \lbrace v + s e_1 + t e_2 : s, t \in [0,1]\rbrace$, and for $p = (x,y)$ the
+coordinates are $s = \alpha \cos \theta + \beta \sin \theta$,
+$t = \beta \cos \theta - \alpha \sin \theta$ with `α := x − g_x − sin θ`,
+`β := y − g_y`. The hypothesis is $g_x + g_y + \sin \theta \le d$. For
+$(x,y) \in [d,1]^2$: $\alpha \ge d - g_x - \sin \theta \ge g_y \ge 0$ and
+$\beta \ge d - g_y \ge g_x + \sin \theta \ge \sin \theta \ge 0$.
+- $s \ge 0$: both terms are nonnegative.
+- $s \le 1$:
+  $s \le (1 - g_x - \sin \theta) \cos \theta + (1 - g_y) \sin \theta = \cos \theta + \sin \theta - [g_x \cos \theta + g_y \sin \theta + \sin \theta \cos \theta] \le \cos \theta + \sin \theta - \sin \theta \cos \theta \le 1$,
+  the last since
+  $1 - \cos \theta - \sin \theta + \sin \theta \cos \theta = (1 - \cos \theta)(1 - \sin \theta) \ge 0$.
+- $t \ge 0$: using $\beta \ge g_x + \sin \theta$ and $\alpha \le 1 - g_x - \sin \theta$,
   `t ≥ (g_x + sin θ) cos θ − (1 − g_x − sin θ) sin θ = g_x (cos θ + sin θ) + sin θ (cos θ + sin θ − 1) ≥ 0`.
-- `t ≤ 1`: `t ≤ β cos θ ≤ (1 − g_y) cos θ ≤ 1`. So `s, t ∈ [0,1]` and `p ∈ Q`.
-  Exactness: the axis-parallel squares `[g, g+1] × [d−g, d−g+1]`, `g ∈ [0,d]`, all meet
-  `T_d` (at `(g, d−g)`) and their intersection over `g` is `[d,1]²`. ∎
+- $t \le 1$: $t \le \beta \cos \theta \le (1 - g_y) \cos \theta \le 1$. So
+  $s, t \in [0,1]$ and $p \in Q$. Exactness: the axis-parallel squares
+  $[g, g+1] \times [d-g, d-g+1]$, $g \in [0,d]$, all meet $T_d$ (at `(g, d-g)`) and
+  their intersection over $g$ is $[d,1]^2$. ∎
 
 Numerical check: `common_core.py` (grid intersection against 121×181 poses per level)
-returns a core of extent exactly `[d,1]²` and grid area `≈ (1−d)²` for
-`d = 0.05, …, 0.6`, and the four corners of `[d,1]²` lie in every one of 721×61 boundary
-poses.
+returns a core of extent exactly $[d,1]^2$ and grid area $\approx (1-d)^2$ for
+$d = 0.05, \ldots, 0.6$, and the four corners of $[d,1]^2$ lie in every one of 721×61
+boundary poses.
 
-*Lemma 3′ (closed-square Stromquist Lemma 1, for reference).* If `Q` lies in the
-quadrant and its centre is in `[0,α] × [0,β]` with `α, β ≤ 1`, then `(α, β) ∈ Q`. Proof:
-`(α − a, β − b) ∈
-[0, 1−h]²`; its square-frame coordinates are
-`u ∈ [0, (1−h)(cos θ + sin θ)] = [0, 2h(1−h)] ⊂
-[0, ½]` and `v ∈ [−(1−h) sin θ, (1−h) cos θ]`, and
+*Lemma 3′ (closed-square Stromquist Lemma 1, for reference).* If $Q$ lies in the
+quadrant and its centre is in $[0,\alpha] \times [0,\beta]$ with $\alpha, \beta \le 1$,
+then $(\alpha, \beta) \in Q$. Proof: $(\alpha - a, \beta - b) \in [0, 1-h]^2$; its
+square-frame coordinates are
+$u \in [0, (1-h)(\cos \theta + \sin \theta)] = [0, 2h(1-h)] \subset [0, \tfrac{1}{2}]$
+and $v \in [-(1-h) \sin \theta, (1-h) \cos \theta]$, and
 `(1−h) cos θ ≤ ½ ⇔ (1 − cos θ)² + sin θ cos θ ≥ 0`. ∎ (Checked: 0 violations in 200 000
 random poses, `lemmas_check.py` (3).)
 
 ### Lemma 4 (uniqueness of the corner occupant, sharp threshold 1) — improves X-019
 
-For `ε < 1` at most one packed square meets `T_ε`; occupants of `T_ε` at different
-corners are distinct for every `ε ≤ 1`. The threshold is sharp: `[0,1]×[1,2]` and
-`[1,2]×[0,1]` both meet `T_1` with disjoint interiors.
+For $\varepsilon < 1$ at most one packed square meets $T_{\varepsilon}$; occupants of
+$T_{\varepsilon}$ at different corners are distinct for every $\varepsilon \le 1$. The
+threshold is sharp: $[0,1]\times[1,2]$ and $[1,2]\times[0,1]$ both meet $T_1$ with
+disjoint interiors.
 
-*Proof.* Two occupants both contain `[ε,1]²` (Lemma 3), a box with nonempty interior;
-for convex bodies `int(Q_1 ∩ Q_2) = int Q_1 ∩ int Q_2`, so their interiors meet.
-Distinctness across corners: a square meeting `T_ε` at two corners has extent
-`> L − 2ε ≥ L − 2 > √2`. ∎ X-019’s argument (centres in a triangle of diameter `√2 ε`,
-incircles of radius ½) is correct but gives only `ε < 1/√2`. The global search
-`two_occupants.py` (12 differential-evolution restarts + Nelder–Mead polish over both
-poses) finds the minimum of `max(δ(Q_1), δ(Q_2))` over disjoint pairs to be `1.0000000`
-at exactly the sharp configuration.
+*Proof.* Two occupants both contain $[\varepsilon,1]^2$ (Lemma 3), a box with nonempty
+interior; for convex bodies `int(Q_1 ∩ Q_2) = int Q_1 ∩ int Q_2`, so their interiors
+meet. Distinctness across corners: a square meeting $T_{\varepsilon}$ at two corners has
+extent $> L - 2\varepsilon \ge L - 2 > \sqrt{2}$. ∎ X-019’s argument (centres in a
+triangle of diameter $\sqrt{2} \varepsilon$, incircles of radius ½) is correct but gives
+only $\varepsilon < 1/\sqrt{2}$. The global search `two_occupants.py` (12
+differential-evolution restarts + Nelder–Mead polish over both poses) finds the minimum
+of $\max(\delta(Q_1), \delta(Q_2))$ over disjoint pairs to be $1.0000000$ at exactly the
+sharp configuration.
 
 ### Lemma 5 (exact blocker-pose region) — new
 
-In a corner frame with `θ ≥ 0`, put `m(Q) := min_{p∈Q} max(x,y)` and
+In a corner frame with $\theta \ge 0$, put `m(Q) := min_{p∈Q} max(x,y)` and
 `t* := (g_y + cos φ − g_x)/(sin φ + cos φ)`. Then `int Q ∩ K_ρ ≠ ∅ ⇔ m(Q) < ρ`, and
 ```
 m(Q) = (g_x cos φ + g_y sin φ + sin φ cos φ)/(sin φ + cos φ)   if t* ∈ [0,1]
      = max(g_x, g_y + cos φ)                                   if t* < 0
      = max(g_x + sin φ, g_y)                                   if t* > 1 .
 ```
-(For `θ ≤ 0` swap the roles of `x` and `y`.)
+(For $\theta \le 0$ swap the roles of $x$ and $y$.)
 
-*Proof.* `int Q ⊂ (0,∞)²`, so `int Q` meets `K_ρ` iff some point of `Q` has
-`max(x,y) < ρ` (interior points of `Q` near it do too).
-For the formula: for heights `y ∈ [g_y, g_y + cos φ]` the leftmost point of `Q` at
-height `y` lies on the edge `E` from the leftmost vertex `(g_x, g_y + cos φ)` to the
-lowest vertex `(g_x + sin φ, g_y)`, so every `p ∈ Q` at such a height has `max(x,y) ≥`
-the value on `E` at that height; for `y > g_y + cos φ`, `max(x,y) ≥ y >
-max(g_x, g_y + cos φ)`, the value at the top of `E`. So `m(Q) = min_E max(x,y)`. Along
-`E`, `(x,y) = (g_x + t sin φ, g_y + (1−t) cos φ)`, `x` increasing and `y` decreasing, so
-`max(x,y)` is minimised where `x = y` (`t = t*`) if `t* ∈ [0,1]` and at the appropriate
-endpoint otherwise.
-∎ (`lemmas_check.py` (5): 0 mismatches against the SAT test in 50 000
-random poses.)
+*Proof.* `int Q ⊂ (0,∞)²`, so `int Q` meets $K_{\rho}$ iff some point of $Q$ has
+$\max(x,y) < \rho$ (interior points of $Q$ near it do too).
+For the formula: for heights $y \in [g_y, g_y + \cos \varphi]$ the leftmost point of $Q$
+at height $y$ lies on the edge $E$ from the leftmost vertex $(g_x, g_y + \cos \varphi)$
+to the lowest vertex $(g_x + \sin \varphi, g_y)$, so every $p \in Q$ at such a height
+has $\max(x,y) \ge$ the value on $E$ at that height; for $y > g_y + \cos \varphi$,
+$\max(x,y) \ge y > \max(g_x, g_y + \cos \varphi)$, the value at the top of $E$. So
+`m(Q) = min_E max(x,y)`. Along $E$,
+$(x,y) = (g_x + t \sin \varphi, g_y + (1-t) \cos \varphi)$, $x$ increasing and $y$
+decreasing, so $\max(x,y)$ is minimised where $x = y$ ($t = t^{\ast}$) if
+$t^{\ast} \in [0,1]$ and at the appropriate endpoint otherwise.
+∎ (`lemmas_check.py` (5): 0 mismatches against the SAT test in 50 000 random poses.)
 
-**Corollaries.** (i) Every *snug* square (`g_x = g_y = 0`) at any angle blocks `K_κ`:
-`m = sin φ cos φ/(sin φ + cos φ) ≤ 1/(2√2) < κ`. (ii) An axis-aligned blocker has
-`g_x, g_y < κ`. (iii) A `45°` blocker has `(g_x + g_y)/2 + 1/(2√2) < κ`, i.e.
-`g_x + g_y < 0.993 / 1.053 / 1.127` at `3.81 / 3.84 / U`. (iv) Every blocker of `K_κ`
-has penetration `δ(Q) ≤ 2 m(Q) < 2κ` (the minimising point `p*` has
-`x + y ≤ 2 max(x,y)`), i.e. `δ < 1.70 / 1.76 / 1.834`. (v) A blocker with `δ ≤ 1` has
-`φ ≤ arcsin δ` (Lemma 2); a blocker with `δ ∈ (1, 2κ)` is unrestricted in angle.
+**Corollaries.** (i) Every *snug* square ($g_x = g_y = 0$) at any angle blocks
+$K_{\kappa}$:
+$m = \sin \varphi \cos \varphi/(\sin \varphi + \cos \varphi) \le 1/(2\sqrt{2}) < \kappa$.
+(ii) An axis-aligned blocker has $g_x, g_y < \kappa$. (iii) A $45^\circ$ blocker has
+$(g_x + g_y)/2 + 1/(2\sqrt{2}) < \kappa$, i.e. $g_x + g_y < 0.993 / 1.053 / 1.127$ at
+$3.81 / 3.84 / U$. (iv) Every blocker of $K_{\kappa}$ has penetration
+$\delta(Q) \le 2 m(Q) < 2\kappa$ (at the minimising point $p^{\ast}$,
+$x + y \le 2 \max(x,y)$ holds), i.e. $\delta < 1.70 / 1.76 / 1.834$. (v) A blocker with
+$\delta \le 1$ has $\varphi \le \arcsin \delta$ (Lemma 2); a blocker with
+$\delta \in (1, 2\kappa)$ is unrestricted in angle.
 
 ### Lemma 6 (occupancy from monotonicity) — elementary, new in this form
 
-For `w ≥ 0` and `k` with `L − 2w < s(k)`: at most `k − 1` squares are contained in the
-closed central box `[w, L−w]²`, so at least `12 − k` meet the open annulus
-`C \ [w, L−w]²`. In a corner frame, for `L − w < s(k)`: at most `k − 1` squares are
-contained in `[w, L]²`, so at least `12 − k` meet the open corner L-strip
-`{x < w} ∪ {y < w}`. *Proof.* A square not meeting the open annulus lies in the closed
-central square of side `L − 2w < s(k)`, which by definition of `s(k)` cannot hold `k`
-unit squares. Same for the corner L-strip.
-∎ With `s(2) = 2`, `s(5) = 2 + 1/√2`, `s(6) = 3`, `s(10) = 3 + 1/√2`, `s(11) ≥ 3.810025`
-(`thresholds.py`):
+For $w \ge 0$ and $k$ with $L - 2w < s(k)$: at most $k - 1$ squares are contained in the
+closed central box $[w, L-w]^2$, so at least $12 - k$ meet the open annulus
+`C \ [w, L−w]²`. In a corner frame, for $L - w < s(k)$: at most $k - 1$ squares are
+contained in $[w, L]^2$, so at least $12 - k$ meet the open corner L-strip
+$\lbrace x < w\rbrace \cup \lbrace y < w\rbrace$. *Proof.* A square not meeting the open
+annulus lies in the closed central square of side $L - 2w < s(k)$, which by definition
+of $s(k)$ cannot hold $k$ unit squares.
+Same for the corner L-strip.
+∎ With $s(2) = 2$, $s(5) = 2 + 1/\sqrt{2}$, $s(6) = 3$, $s(10) = 3 + 1/\sqrt{2}$,
+$s(11) \ge 3.810025$ (`thresholds.py`):
 
 | at side | ≥10 squares meet the annulus / corner L-strip of width > | ≥7 for width > | ≥6 for width > | ≥2 for width > | ≥1 for width > |
 | --- | --- | --- | --- | --- | --- |
@@ -216,117 +230,124 @@ unit squares. Same for the corner L-strip.
 | 3.84 | 0.920 / 1.840 | 0.566 / 1.133 | 0.420 / 0.840 | 0.066 / 0.133 | 0.015 / 0.030 |
 | U | 0.9385 / 1.877 | 0.585 / 1.170 | 0.4385 / 0.877 | 0.085 / 0.170 | 0.0335 / 0.067 |
 
-Trump check (`trump_structure.py`, `trump_more.py`): squares contained in `[w, S−w]²`
-are `{6, 8, 9}` for every `w ≤ 0.5` and `{8}` for `0.585 ≤ w < 1` (bounds `≤ 5`, `≤ 4`,
-`≤ 1`: satisfied); the bottom-right corner L-strip at `w = 1.17` (box side
-`2.7071 = s(5)`) is avoided by exactly `4 = k−1` squares (`{3,4,5,8}`), so the corner
-form is **tight** on Trump.
+Trump check (`trump_structure.py`, `trump_more.py`): squares contained in $[w, S-w]^2$
+are $\lbrace6, 8, 9\rbrace$ for every $w \le 0.5$ and $\lbrace8\rbrace$ for
+$0.585 \le w < 1$ (bounds $\le 5$, $\le 4$, $\le 1$: satisfied); the bottom-right corner
+L-strip at $w = 1.17$ (box side `2.7071 = s(5)`) is avoided by exactly $4 = k-1$ squares
+($\lbrace3,4,5,8\rbrace$), so the corner form is **tight** on Trump.
 
 ### Lemma 7 (wall service) — new
 
 Fix a wall frame, `W := (0,L) × (0,κ)`, `𝒮 := {i : int Q_i ∩ W ≠ ∅}`, and traces
 `τ_i := π_x(int Q_i ∩ W)` (open intervals).
-(a) Every closed interval `[t, t+1] ⊂ [0,L]` meets some `τ_i`; in particular `|𝒮| ≥ 2`.
-(b) If `|𝒮| = 2` then `𝒮 = {B, B'}` are the two corner blockers of this wall and
-`g(B) + e(B) + 1 + g(B') + e(B') > L`, with `g(B)` the gap of `B` to the left side wall,
-`g(B')` that of `B'` to the right side wall, `e = cos φ + sin φ`. Consequences: two
-axis-aligned blockers alone need `g(B) + g(B') > L − 3 ≥ 0.81`; two snug `45°` blockers
-alone need `L < 1 + 2√2 = 3.8284`, so for `L ≥ 3.8284` (all of `[3.8284, U]`, in
-particular `3.84`) a third square meets `W`; if both blockers meet `T_ε` with
-`ε ≤ 0.214`, a third square meets `W` for every `L ≥ 3.81` (the threshold solves
-`1 + 4ε + 2√(1−ε²) = 3.81`; it is `0.2225` at `3.84` and `0.2330` at `U`).
+(a) Every closed interval $[t, t+1] \subset [0,L]$ meets some $\tau_i$; in particular
+$|\mathcal{S}| \ge 2$. (b) If $|\mathcal{S}| = 2$ then `𝒮 = {B, B'}` are the two corner
+blockers of this wall and `g(B) + e(B) + 1 + g(B') + e(B') > L`, with $g(B)$ the gap of
+$B$ to the left side wall, `g(B')` that of `B'` to the right side wall,
+$e = \cos \varphi + \sin \varphi$. Consequences: two axis-aligned blockers alone need
+`g(B) + g(B') > L − 3 ≥ 0.81`; two snug $45^\circ$ blockers alone need
+$L < 1 + 2\sqrt{2} = 3.8284$, so for $L \ge 3.8284$ (all of $[3.8284, U]$, in particular
+$3.84$) a third square meets $W$; if both blockers meet $T_{\varepsilon}$ with
+$\varepsilon \le 0.214$, a third square meets $W$ for every $L \ge 3.81$ (the threshold
+solves $1 + 4\varepsilon + 2\sqrt{1-\varepsilon^2} = 3.81$; it is $0.2225$ at $3.84$ and
+$0.2330$ at $U$).
 
-*Proof.* (a) is Corollary 0.1(b). (b) `B ∈ 𝒮` because `int B ∩ K_κ ≠ ∅` and `K_κ ⊂ W`;
-same for `B'`; they are distinct (Lemma 1). If `𝒮 = {B, B'}`:
-`τ_B ⊂ (g(B), g(B) + e(B))` and `τ_{B'} ⊂ (L − g(B') − e(B'), L)`. Put
-`t := min(g(B) + e(B), L − 1) ≥ 0`. `[t, t+1]` misses `τ_B`, so it meets `τ_{B'}`:
-`t + 1 > L − g(B') − e(B')`. If `t = g(B) + e(B)` this is the claim; if `t = L − 1` then
-`g(B) + e(B) ≥ L − 1` and the claim holds a fortiori.
-For the `T_ε` corollary use `g ≤ ε`, `sin φ ≤ ε`, `e ≤ ε + √(1 − ε²)`. ∎ Trump check
-(`trump_more.py`): on every wall the two-blocker sum is `3.000` (three walls) or `3.845`
-(top wall, `B = sq2` with gap `0.8445`) against `L = 3.877`, so a third square is forced
-on each wall; Trump has 4–5 serving squares per wall.
+*Proof.* (a) is Corollary 0.1(b). (b) $B \in \mathcal{S}$ because `int B ∩ K_κ ≠ ∅` and
+$K_{\kappa} \subset W$; same for `B'`; they are distinct (Lemma 1). If `𝒮 = {B, B'}`:
+$\tau_B \subset (g(B), g(B) + e(B))$ and `τ_{B'} ⊂ (L − g(B') − e(B'), L)`. Put
+`t := min(g(B) + e(B), L − 1) ≥ 0`. $[t, t+1]$ misses $\tau_B$, so it meets `τ_{B'}`:
+`t + 1 > L − g(B') − e(B')`. If $t = g(B) + e(B)$ this is the claim; if $t = L - 1$ then
+$g(B) + e(B) \ge L - 1$ and the claim holds a fortiori.
+For the $T_{\varepsilon}$ corollary use $g \le \varepsilon$,
+$\sin \varphi \le \varepsilon$, $e \le \varepsilon + \sqrt{1 - \varepsilon^2}$. ∎ Trump
+check (`trump_more.py`): on every wall the two-blocker sum is $3.000$ (three walls) or
+$3.845$ (top wall, `B = sq2` with gap $0.8445$) against $L = 3.877$, so a third square
+is forced on each wall; Trump has 4–5 serving squares per wall.
 
 ### Theorem A (corner-class certificate; sound, unrun)
 
-Let `R_κ` be the set of admissible unit-square placements `Q ⊂ C` with
-`int Q ∩ K_κ^{(j)} ≠ ∅` for some corner `j` (`R_κ` is D4-invariant; membership is
-decided by Lemma 5). Let `μ` be a nonnegative atom measure on `C` satisfying Conditions
-1–4 of the retained certificate format for `(B, net)`, let `w_c ≥ w_f ≥ 0`, and suppose
-(1) every admissible core `P` (a `B`-square at a net direction) that lies inside some
-placement `Q ∈ R_κ` has `μ(P) ≥ w_c`; (2) every admissible core has `μ(P) ≥ w_f`; (3)
-`μ(C) < 4 w_c + 7 w_f`. Then eleven unit squares do not pack in `[0,L]²`.
+Let $R_{\kappa}$ be the set of admissible unit-square placements $Q \subset C$ with
+`int Q ∩ K_κ^{(j)} ≠ ∅` for some corner $j$ ($R_{\kappa}$ is D4-invariant; membership is
+decided by Lemma 5). Let $\mu$ be a nonnegative atom measure on `C` satisfying
+Conditions 1–4 of the retained certificate format for `(B, net)`, let
+$w_c \ge w_f \ge 0$, and suppose (1) every admissible core $P$ (a $B$-square at a net
+direction) that lies inside some placement $Q \in R_{\kappa}$ has $\mu(P) \ge w_c$; (2)
+every admissible core has $\mu(P) \ge w_f$; (3) $\mu(C) < 4 w_c + 7 w_f$. Then eleven
+unit squares do not pack in $[0,L]^2$.
 
-*Proof.* By Lemma 1 the four blockers are distinct squares in `R_κ`; their cores
-(Condition 4) are cores inside placements in `R_κ`, so each has mass `≥ w_c`; the other
-seven have mass `≥ w_f`; the eleven cores are pairwise disjoint, so
-`4 w_c + 7 w_f ≤ μ(C)`. ∎ *Implementation note.* Imposing (1) on a superset of the true
-core set is safe. A cheap safe superset: cores whose centre is within `1/√2` of some
-`K_κ^{(j)}` (every unit square is inside the disk of radius `1/√2` about its centre).
+*Proof.* By Lemma 1 the four blockers are distinct squares in $R_{\kappa}$; their cores
+(Condition 4) are cores inside placements in $R_{\kappa}$, so each has mass $\ge w_c$;
+the other seven have mass $\ge w_f$; the eleven cores are pairwise disjoint, so
+$4 w_c + 7 w_f \le \mu(C)$. ∎ *Implementation note.* Imposing (1) on a superset of the
+true core set is safe.
+A cheap safe superset: cores whose centre is within $1/\sqrt{2}$ of some `K_κ^{(j)}`
+(every unit square is inside the disk of radius $1/\sqrt{2}$ about its centre).
 The LP is X-014 Lemma 3’s with a region class instead of an angle class: variables
-`(μ, w_c, w_f)`, homogeneous objective `μ(C) − 4 w_c − 7 w_f`, normalise `w_f = 1`.
-Because `R_κ` is D4-invariant the folded solver applies unchanged; only the row
+$(\mu, w_c, w_f)$, homogeneous objective $\mu(C) - 4 w_c - 7 w_f$, normalise $w_f = 1$.
+Because $R_{\kappa}$ is D4-invariant the folded solver applies unchanged; only the row
 generator needs the region predicate.
 A gain exists iff the optimum is negative.
 
 ### Theorem B (complete corner cover by penetration depth; sound, unrun)
 
-Fix thresholds `0 < d_1 < ⋯ < d_m ≤ 1`. For each corner `j`, `δ_j ∈ [0, 2κ)` (Lemma
-5(iv)); bin it into `[0, d_1], (d_1, d_2], …, (d_{m−1}, d_m], (d_m, 2κ)`. For a bin
-vector `σ`:
-- if `δ_j ≤ d_k` (bin `≤ k`): a **unique** square `O_j` meets `T_{d_k}` (Lemma 4,
-  `d_k ≤ 1`; for `d_k = 1` uniqueness may fail and one uses any occupant),
-  `O_j ⊇ [d_k, 1]²` in corner `j`’s frame (Lemma 3), `φ(O_j) ≤ arcsin d_k`, and every
-  other square is disjoint from `int O_j`;
-- if `δ_j > d_{k−1}` (bin `≥ k`): the closed triangle `T_{d_{k−1}}` meets no square.
+Fix thresholds $0 < d_1 < \cdots < d_m \le 1$. For each corner $j$,
+$\delta_j \in [0, 2\kappa)$ (Lemma 5(iv)); bin it into
+`[0, d_1], (d_1, d_2], …, (d_{m−1}, d_m], (d_m, 2κ)`. For a bin vector $\sigma$:
+- if $\delta_j \le d_k$ (bin $\le k$): a **unique** square $O_j$ meets `T_{d_k}` (Lemma
+  4, $d_k \le 1$; for $d_k = 1$ uniqueness may fail and one uses any occupant),
+  $O_j \supseteq [d_k, 1]^2$ in corner $j$’s frame (Lemma 3),
+  $\varphi(O_j) \le \arcsin d_k$, and every other square is disjoint from `int O_j`;
+- if `δ_j > d_{k−1}` (bin $\ge k$): the closed triangle `T_{d_{k−1}}` meets no square.
 
-*Case certificate.* Let `I ⊆ {1..4}` be the corners banked in case `σ` with boxes
+*Case certificate.* Let `I ⊆ {1..4}` be the corners banked in case $\sigma$ with boxes
 `X_j = [d_{k_j}, 1]²_j`, and let `X'_j ⊂ X_j` be a box provably inside every admissible
-core of every occupant of `T_{d_{k_j}}` (the core is the concentric `B`-square at the
+core of every occupant of `T_{d_{k_j}}` (the core is the concentric $B$-square at the
 nearest net direction; it contains the occupant shrunk about its centre by
-`β = B/(cos δ + sin δ)`, `δ` the half-gap, so `X'_j = [d + η, 1 − η]²` with
-`η = (1 − β) · 1.42 ≈ 0.005` is conservative: an occupant’s centre coordinates lie in
-`[1/2, d + 1/2]`, so an inset of `(1 − β)/2` already lies in the homothetic image of
-`[d, 1]²`). Let `D_σ` be the admissible domain of cores that avoid every free triangle
-of `σ`. Per net direction this is the rotated-container centre domain cut by the
-half-planes `a + b > d + B cos θ` (one per free corner, Lemma 2 scaled to side `B`),
-hence **convex**, so `sweep.centre_domain` needs only a clip, not a new engine.
-If a nonnegative atom measure `μ` satisfies (1) every core in `D_σ` disjoint from all
-`X_j`, `j ∈ I`, has `μ ≥ 1`, and (2) `μ(C) − Σ_{j∈I} μ(X'_j) < 11 − |I|`, then no
-packing lies in case `σ`. *Proof.* The `11 − |I|` non-occupants have cores in `D_σ`
-disjoint from each `O_j ⊇ X_j`, hence of mass `≥ 1`; each occupant’s core contains
-`X'_j`; all eleven cores are disjoint, so `Σ_{j∈I} μ(X'_j) + (11 − |I|) ≤ μ(C)`. ∎ The
-cases are exhaustive and pairwise disjoint by construction (each `δ_j` is in exactly one
-bin), D4 acts on bin vectors, and the all-top-bin case with `m = 0` is the unconditional
-certificate. The extreme cases are named for §4: **flush-four** (`I = {1,2,3,4}`, `d_1`
+$\beta = B/(\cos \delta + \sin \delta)$, $\delta$ the half-gap, so
+`X'_j = [d + η, 1 − η]²` with $\eta = (1 - \beta) \cdot 1.42 \approx 0.005$ is
+conservative: an occupant’s centre coordinates lie in $[1/2, d + 1/2]$, so an inset of
+$(1 - \beta)/2$ already lies in the homothetic image of $[d, 1]^2$). Let $D_{\sigma}$ be
+the admissible domain of cores that avoid every free triangle of $\sigma$. Per net
+direction this is the rotated-container centre domain cut by the half-planes
+$a + b > d + B \cos \theta$ (one per free corner, Lemma 2 scaled to side $B$), hence
+**convex**, so `sweep.centre_domain` needs only a clip, not a new engine.
+If a nonnegative atom measure $\mu$ satisfies (1) every core in $D_{\sigma}$ disjoint
+from all $X_j$, $j \in I$, has $\mu \ge 1$, and (2) `μ(C) − Σ_{j∈I} μ(X'_j) < 11 − |I|`,
+then no packing lies in case $\sigma$. *Proof.* The $11 - |I|$ non-occupants have cores
+in $D_{\sigma}$ disjoint from each $O_j \supseteq X_j$, hence of mass $\ge 1$; each
+occupant’s core contains `X'_j`; all eleven cores are disjoint, so
+`Σ_{j∈I} μ(X'_j) + (11 − |I|) ≤ μ(C)`. ∎ The cases are exhaustive and pairwise disjoint
+by construction (each $\delta_j$ is in exactly one bin), D4 acts on bin vectors, and the
+all-top-bin case with $m = 0$ is the unconditional certificate.
+The extreme cases are named for §4: **flush-four** ($I = \lbrace1,2,3,4\rbrace$, $d_1$
 small: seven cores in `C` minus four near-unit corner boxes), **three-plus-one**
-(Trump’s pattern: three banked corners and one corner in a deep bin `δ ≥ 0.7`),
-**octagon** (all four corners in the top bin: eleven squares avoiding four `T_d`).
+(Trump’s pattern: three banked corners and one corner in a deep bin $\delta \ge 0.7$),
+**octagon** (all four corners in the top bin: eleven squares avoiding four $T_d$).
 
-**Domain correction, 2026-09-08.** The earlier clip `a + b > d + cos θ` tested the unit
-square at the core’s net angle.
+**Domain correction, 2026-09-08.** The earlier clip $a + b > d + \cos \theta$ tested the
+unit square at the core’s net angle.
 It is unsafe for a parent unit square at another angle in that cell.
-For an exact counterexample, take `d = 7/10`, `tan(φ/2) = 1/1000`, and centre
-`a = b = (d + 1000000/1000001)/2`. The unit square is contained in `[0, 96/25]²` and has
-`min_Q(x + y) = d + 1/1000001 > d`. Its nearest retained direction is zero:
-`tan φ = 2000/999999 < 207107/90000000`, the tangent of the first cell’s upper angle.
-Its axis-aligned `B`-core lies strictly inside it because
-`B(cos φ + sin φ) = 9996944023/10000010000 < 1`. Yet its centre sum is
-`d + 1 − 1/1000001 < d + cos 0`, so the old clip discards this legitimate core.
-The corrected clip is a safe superset because `P ⊂ Q` and `Q ∩ T_d = ∅` imply
-`P ∩ T_d = ∅`. A tighter clip would need the parent square’s entire angle cell.
-The centre bound used for the banked-box inset is also corrected above:
-`a + b − cos φ ≤ d` and `b ≥ (cos φ + sin φ)/2` give `a ≤ d + 1/2`, and likewise for
-`b`. No banking run or certificate used either of the original formulas.
+For an exact counterexample, take $d = 7/10$, $\tan(\varphi/2) = 1/1000$, and centre
+$a = b = (d + 1000000/1000001)/2$. The unit square is contained in $[0, 96/25]^2$ and
+has `min_Q(x + y) = d + 1/1000001 > d`. Its nearest retained direction is zero:
+$\tan \varphi = 2000/999999 < 207107/90000000$, the tangent of the first cell’s upper
+angle. Its axis-aligned $B$-core lies strictly inside it because
+$B(\cos \varphi + \sin \varphi) = 9996944023/10000010000 < 1$. Yet its centre sum is
+$d + 1 - 1/1000001 < d + \cos 0$, so the old clip discards this legitimate core.
+The corrected clip is a safe superset because $P \subset Q$ and $Q \cap T_d = \emptyset$
+imply $P \cap T_d = \emptyset$. A tighter clip would need the parent square’s entire
+angle cell. The centre bound used for the banked-box inset is also corrected above:
+$a + b - \cos \varphi \le d$ and $b \ge (\cos \varphi + \sin \varphi)/2$ give
+$a \le d + 1/2$, and likewise for $b$. No banking run or certificate used either of the
+original formulas.
 
 ### Summary of what is *not* proved (see §3)
 
-No lower bound on `δ_j`, no lower bound on any corner-box overlap, no upper bound on the
-distance from a container corner to the nearest square vertex, no restriction of any
-blocker’s angle beyond Lemma 5(v), no lower bound on the area of squares inside a wall
-strip.
-Each is false at `L = U` for Trump’s fourth corner or is refuted for the method by
-the loosened Trump witness.
+No lower bound on $\delta_j$, no lower bound on any corner-box overlap, no upper bound
+on the distance from a container corner to the nearest square vertex, no restriction of
+any blocker’s angle beyond Lemma 5(v), no lower bound on the area of squares inside a
+wall strip. Each is false at $L = U$ for Trump’s fourth corner or is refuted for the
+method by the loosened Trump witness.
 
 * * *
 
@@ -334,107 +355,109 @@ the loosened Trump witness.
 
 All scripts run with `packing/.venv/bin/python3` (3.14, numpy/scipy/mpmath); `geom.py`
 holds the SAT helpers, `trump_pose.py` reconstructs Trump’s pose from
-`cases/trump11/packing.py`’s closed forms (root `u = 0.36576930760467729…` of
-`U_MIN_POLY`, `a = 40.18193729032972°`, `s = 3.877083590022814177…`, matching the record
-to all printed digits).
+`cases/trump11/packing.py`’s closed forms (root $u = 0.36576930760467729\ldots$ of
+`U_MIN_POLY`, $a = 40.18193729032972^\circ$, $s = 3.877083590022814177\ldots$, matching
+the record to all printed digits).
 
 ### 2.1 Trump’s packing is valid and its corners are as claimed (`trump_structure.py`)
 
 All 11 squares contained; least pairwise SAT separation `−2.2e−16` (touching).
 Corner data:
 
-| corner | `δ_j` | attained by | blockers of `K_1` / `K_κ` / `K_{0.5}` | largest free axis box `[0,a]²` | nearest vertex |
+| corner | $\delta_j$ | attained by | blockers of $K_1$ / $K_{\kappa}$ / `K_{0.5}` | largest free axis box $[0,a]^2$ | nearest vertex |
 | --- | --- | --- | --- | --- | --- |
-| BL `(0,0)` | 0 | sq0 | {0} / {0} / {0} | 0 | 0 |
-| BR `(S,0)` | 0 | sq1 | {1} / {1} / {1} | 0 | 0 |
-| **TR `(S,S)`** | **0.844525** | sq2 | {2,10} / {2,10} / **∅** | **0.831679** | **0.844525** |
-| TL `(0,S)` | 0 | sq3 | {3} / {3} / {3} | 0 | 0 |
+| BL $(0,0)$ | 0 | sq0 | {0} / {0} / {0} | 0 | 0 |
+| BR $(S,0)$ | 0 | sq1 | {1} / {1} / {1} | 0 | 0 |
+| **TR $(S,S)$** | **0.844525** | sq2 | {2,10} / {2,10} / **∅** | **0.831679** | **0.844525** |
+| TL $(0,S)$ | 0 | sq3 | {3} / {3} / {3} | 0 | 0 |
 
-At the TR corner sq2 is axis-aligned, flush to the top wall, at gap `0.8445` from the
-right wall (`δ = 0.8445 + 0 + 0`); sq10 is tilted `40.18°`, flush to the right wall,
-with `δ = 0 + 0.8317 +
-sin 40.18° = 1.4769`. Both meet `K_κ` (`κ = 0.9171`); sq2’s overlap with the forced box
-is a strip of width `0.9171 − 0.8445 = 0.073`. Trump’s fourth corner is therefore an
-actual packing at side `U` in which the corner box of side `0.8317` is entirely free.
+At the TR corner sq2 is axis-aligned, flush to the top wall, at gap $0.8445$ from the
+right wall ($\delta = 0.8445 + 0 + 0$); sq10 is tilted $40.18^\circ$, flush to the right
+wall, with $\delta = 0 + 0.8317 + \sin 40.18^\circ = 1.4769$. Both meet $K_{\kappa}$
+($\kappa = 0.9171$); sq2’s overlap with the forced box is a strip of width
+$0.9171 - 0.8445 = 0.073$. Trump’s fourth corner is therefore an actual packing at side
+$U$ in which the corner box of side $0.8317$ is entirely free.
 
-Wall strips: squares meeting the open strip of width `w` are, for every `w ≤ 0.5`:
-bottom `{0,1,7}`, right `{1,10}`, top `{2,3,4}`, left `{0,3,5}`; at `w = κ`: bottom
-`{0,1,6,7,9}`, right `{1,2,9,10}`, top `{2,3,4,10}`, left `{0,3,5,6}`. The centre
-`(1.9385, 1.9385)` lies in sq8 (distance 0); the next nearest squares are sq6, sq9 at
-`0.3226`.
+Wall strips: squares meeting the open strip of width $w$ are, for every $w \le 0.5$:
+bottom $\lbrace0,1,7\rbrace$, right $\lbrace1,10\rbrace$, top $\lbrace2,3,4\rbrace$,
+left $\lbrace0,3,5\rbrace$; at $w = \kappa$: bottom $\lbrace0,1,6,7,9\rbrace$, right
+$\lbrace1,2,9,10\rbrace$, top $\lbrace2,3,4,10\rbrace$, left $\lbrace0,3,5,6\rbrace$.
+The centre $(1.9385, 1.9385)$ lies in sq8 (distance 0); the next nearest squares are
+sq6, sq9 at $0.3226$.
 
 ### 2.2 Loosened Trump: the method-level witness (`loosened_trump.py`)
 
 Trump’s packing point-reflected (TR corner to BL) and translated into `[0, L']²`,
 verified valid at each `L'`:
 
-| `L'` | `κ(L')` | blockers of `K_κ` | free axis box `a` | free triangle `ε` | nearest vertex |
+| `L'` | `κ(L')` | blockers of $K_{\kappa}$ | free axis box $a$ | free triangle $\varepsilon$ | nearest vertex |
 | --- | --- | --- | --- | --- | --- |
-| `U` | 0.9171 | {2,10} | 0.8317 | 0.8445 | 0.8445 |
+| $U$ | 0.9171 | {2,10} | 0.8317 | 0.8445 | 0.8445 |
 | 3.90 | 0.9400 | {2,10} | 0.8546 | 0.8904 | 0.8677 |
 | 3.95 | 0.9900 | {2,10} | 0.9046 | 0.9904 | 0.9203 |
 | 3.9599 | 0.9999 | {2,10} | 0.9145 | 1.0102 | 0.9310 |
 
 IS holds at every `L' < 3.96`. So an argument that used only IS and geometry valid for
-all `L ≤ 3.96` cannot prove that any corner box of side `< 0.9046` is met, that `T_ε` is
-occupied for any `ε < 0.99`, or that a vertex lies within `0.92` of every corner: at
-`L' = 3.95` the forced box has side `0.99` and the free box has side `0.9046`, a margin
-of `0.085`.
+all $L \le 3.96$ cannot prove that any corner box of side $< 0.9046$ is met, that
+$T_{\varepsilon}$ is occupied for any $\varepsilon < 0.99$, or that a vertex lies within
+$0.92$ of every corner: at `L' = 3.95` the forced box has side $0.99$ and the free box
+has side $0.9046$, a margin of $0.085$.
 
 ### 2.3 Lemma checks (`lemmas_check.py`)
 
 (1) identity error `1.3e−15`; (2) `min_θ max_{p∈Q_snug} min(x,y) = 1.0` exactly (every
-unit square in the quadrant reaches the closed quadrant `[1,∞)²`, which is why an
-L-shaped free region with arms of width `< 1` never admits a probe); (3) Lemma 3′: 0
-violations / 200 000; (4) the snug diamond has `δ = 0.70711`, touches both walls, and
-meets `K_ρ` for every `ρ ≥ 0.7072` including `κ`; (5) Lemma 5 formula vs SAT: 0
-mismatches / 50 000; (6) wall-service thresholds as quoted in Lemma 7.
+unit square in the quadrant reaches the closed quadrant $[1,\infty)^2$, which is why an
+L-shaped free region with arms of width $< 1$ never admits a probe); (3) Lemma 3′: 0
+violations / 200 000; (4) the snug diamond has $\delta = 0.70711$, touches both walls,
+and meets $K_{\rho}$ for every $\rho \ge 0.7072$ including $\kappa$; (5) Lemma 5 formula
+vs SAT: 0 mismatches / 50 000; (6) wall-service thresholds as quoted in Lemma 7.
 
 ### 2.4 Two occupants (`two_occupants.py`)
 
-Global minimisation of `max(δ(Q_1), δ(Q_2))` over disjoint pairs in the quadrant:
-optimum `1.0000000000` at `Q_1 = [0,1]×[1,2]`, `Q_2 = [1,2]×[0,1]` (separation
-`8.9e−16`, centre distance `√2`). Consistent with Lemma 4 (`ε* = 1`) and shows X-019’s
-`1/√2` was not sharp.
+Global minimisation of $\max(\delta(Q_1), \delta(Q_2))$ over disjoint pairs in the
+quadrant: optimum $1.0000000000$ at $Q_1 = [0,1]\times[1,2]$, $Q_2 = [1,2]\times[0,1]$
+(separation `8.9e−16`, centre distance $\sqrt{2}$). Consistent with Lemma 4
+($\varepsilon^{\ast} = 1$) and shows X-019’s $1/\sqrt{2}$ was not sharp.
 
 ### 2.5 Common core (`common_core.py`)
 
-For `d ∈ {0.05, …, 0.6}` the grid intersection of all corner-occupant squares has extent
-exactly `[d,1]²` and area `≈ (1−d)²` (0.912, 0.819, 0.648, 0.497, 0.366, 0.255, 0.164),
-confirming Lemma 3’s exactness numerically.
+For $d \in \lbrace0.05, \ldots, 0.6\rbrace$ the grid intersection of all corner-occupant
+squares has extent exactly $[d,1]^2$ and area $\approx (1-d)^2$ (0.912, 0.819, 0.648,
+0.497, 0.366, 0.255, 0.164), confirming Lemma 3’s exactness numerically.
 
 ### 2.6 Where the retained 3.81 certificate is tight, by geometric class (`cert_readout.py`)
 
 Readout of the repository’s own exact integer mass grid
 (`sqpack.fractional.sweep.scaled_mass_grid`) over all 181 net directions of
-`certificate.json` (1121 atoms, `B = 0.9977`, least cell mass `4001/4000`). Each
+`certificate.json` (1121 atoms, $B = 0.9977$, least cell mass $4001/4000$). Each
 reachable event cell is classified by its midpoint centre and the concentric unit square
-at the net direction (a readout, not proof-grade class membership): meets some `K_κ`
-(`κ = 0.85`), meets some `K_1`, meets some `T_ε`, or is contained in the central box
-`[w, L−w]²`. Result (all 181 directions, 567 130 649 reachable cells):
+at the net direction (a readout, not proof-grade class membership): meets some
+$K_{\kappa}$ ($\kappa = 0.85$), meets some $K_1$, meets some $T_{\varepsilon}$, or is
+contained in the central box $[w, L-w]^2$. Result (all 181 directions, 567 130 649
+reachable cells):
 
 | class of cell (unit square at net direction) | cells | min mass | ≤ 1.005 | ≤ 1.02 | ≤ 1.05 | ≤ 1.1 |
 | --- | --- | --- | --- | --- | --- | --- |
 | all | 567 130 649 | **1.000250** | 2 452 476 | 10 184 524 | 23 112 904 | 50 583 976 |
-| meets some `K_κ`, `κ = 0.85` | 137 377 014 | **1.000250** | 515 316 | 2 372 106 | 7 430 402 | 17 776 302 |
-| meets some `K_1` | 262 639 348 | 1.000250 | 680 710 | 3 219 076 | 9 896 686 | 23 498 814 |
-| meets some `T_0.05` | 2 808 | 1.000250 | **2 808** | 2 808 | 2 808 | 2 808 |
-| meets some `T_0.1` | 21 176 | 1.000250 | **21 176** | 21 176 | 21 176 | 21 176 |
-| meets some `T_0.2` | 85 036 | 1.000250 | **85 036** | 85 036 | 85 036 | 85 036 |
-| meets some `T_0.3` | 364 940 | 1.000250 | 251 216 | 364 940 | 364 940 | 364 940 |
-| meets some `T_0.5` | 2 606 880 | 1.000250 | 441 368 | 1 741 508 | 1 988 156 | 2 606 880 |
-| meets some `T_0.7` | 9 989 324 | 1.000250 | 488 596 | 2 154 068 | 3 727 136 | 7 082 184 |
-| contained in `[0.5, L−0.5]²` | 290 567 277 | 1.000295 | 1 092 912 | 3 458 892 | 5 870 156 | 14 716 684 |
-| contained in `[0.9, L−0.9]²` | 79 033 300 | 1.000295 | 1 086 792 | 3 411 456 | 5 164 280 | 9 287 284 |
+| meets some $K_{\kappa}$, $\kappa = 0.85$ | 137 377 014 | **1.000250** | 515 316 | 2 372 106 | 7 430 402 | 17 776 302 |
+| meets some $K_1$ | 262 639 348 | 1.000250 | 680 710 | 3 219 076 | 9 896 686 | 23 498 814 |
+| meets some $T_{0.05}$ | 2 808 | 1.000250 | **2 808** | 2 808 | 2 808 | 2 808 |
+| meets some $T_{0.1}$ | 21 176 | 1.000250 | **21 176** | 21 176 | 21 176 | 21 176 |
+| meets some $T_{0.2}$ | 85 036 | 1.000250 | **85 036** | 85 036 | 85 036 | 85 036 |
+| meets some $T_{0.3}$ | 364 940 | 1.000250 | 251 216 | 364 940 | 364 940 | 364 940 |
+| meets some $T_{0.5}$ | 2 606 880 | 1.000250 | 441 368 | 1 741 508 | 1 988 156 | 2 606 880 |
+| meets some $T_{0.7}$ | 9 989 324 | 1.000250 | 488 596 | 2 154 068 | 3 727 136 | 7 082 184 |
+| contained in $[0.5, L-0.5]^2$ | 290 567 277 | 1.000295 | 1 092 912 | 3 458 892 | 5 870 156 | 14 716 684 |
+| contained in $[0.9, L-0.9]^2$ | 79 033 300 | 1.000295 | 1 086 792 | 3 411 456 | 5 164 280 | 9 287 284 |
 
-Reading. (i) The global minimum `4001/4000` is attained inside every corner class, so on
-this site set the corner-class weight of Theorem A is forced to `w_c = 1`: **no headroom
+Reading. (i) The global minimum $4001/4000$ is attained inside every corner class, so on
+this site set the corner-class weight of Theorem A is forced to $w_c = 1$: **no headroom
 from over-covering the corner region here.** (ii) Every placement whose square meets
-`T_0.2` — all 85 036 cells, at every direction — is within `0.005` of tight, and those
-meeting `T_0.3` within `0.02`: the certificate spends *exactly* one unit of mass per
-corner, positioned so that any near-flush square captures barely `1`. (iii) Tight cells
-are not concentrated in the corners relative to their share (the `κ`-corner class holds
-24 % of all cells and 21 % of the `≤ 1.005` cells); the certificate is tight
+$T_{0.2}$ — all 85 036 cells, at every direction — is within $0.005$ of tight, and those
+meeting $T_{0.3}$ within $0.02$: the certificate spends *exactly* one unit of mass per
+corner, positioned so that any near-flush square captures barely $1$. (iii) Tight cells
+are not concentrated in the corners relative to their share (the $\kappa$-corner class
+holds 24 % of all cells and 21 % of the $\le 1.005$ cells); the certificate is tight
 “everywhere”, as complementary slackness predicts for an optimised dual.
 Consequence for Theorem B: a banked corner credits precisely the mass that these
 uniformly tight corner-hugging cells were capturing, and the clip in a deep-avoidance
@@ -444,14 +467,14 @@ S2/S3 must run. Nothing in this readout predicts the sign of that gain.
 
 ### 2.7 Local probe-freeness of the corner alternatives (`local_probe.py`)
 
-With a single blocker present, maximise the SAT separation of a unit probe `P ⊂ [0,W]²`
-from the blocker (six DE restarts; a negative maximum means every probe in the window
-overlaps the blocker’s interior).
-Window `W = 2`: near-miss axis blocker `[0.87, 1.87]²` → `−0.130`; snug `45°` diamond →
-`−0.086`; snug `22.5°` square → `−0.047`; flush control `[0,1]²` → `0.000` (the probe
-`[1,2]²` touches, which is legal).
-So no probe fits anywhere near the corner in any of the three alternatives; in `W = 2.2`
-probes appear only at `(1.7, 1.7)`, i.e. away from the corner, where a real packing’s
+With a single blocker present, maximise the SAT separation of a unit probe
+$P \subset [0,W]^2$ from the blocker (six DE restarts; a negative maximum means every
+probe in the window overlaps the blocker’s interior).
+Window $W = 2$: near-miss axis blocker $[0.87, 1.87]^2$ → $-0.130$; snug $45^\circ$
+diamond → $-0.086$; snug $22.5^\circ$ square → $-0.047$; flush control $[0,1]^2$ →
+$0.000$ (the probe $[1,2]^2$ touches, which is legal).
+So no probe fits anywhere near the corner in any of the three alternatives; in $W = 2.2$
+probes appear only at $(1.7, 1.7)$, i.e. away from the corner, where a real packing’s
 other squares block them.
 This is the precise sense in which the alternatives are “locally IS-consistent”; it is
 not a packing witness (only the near-miss alternative has one, §2.2).
@@ -460,63 +483,65 @@ not a packing witness (only the near-miss alternative has one, §2.2).
 
 ## 3. Obstructions — what does not work, and why
 
-**O1. No positive corner penetration is forced.** Neither `δ_j ≤ ε` for some `ε < 2κ`,
-nor a lower bound on the overlap of a blocker with `K_κ`, nor a vertex within distance
-`d` of the corner, follows from IS + geometry.
-Three independent refutations: (i) *at `L = U`*, Trump’s TR corner (§2.1): `δ = 0.8445`,
-free box `0.8317`, nearest vertex `0.8445` — so every candidate of the form “each corner
-has `δ_j ≤ ε`” with `ε < 0.8445`, “each corner box `[0,a]²` is met” with `a ≤ 0.8317`,
-or “a vertex within `d < 0.8445` of each corner” is **false at `L = U`**, hence at best
-true strictly below `U`, out of reach of any argument valid up to `U`; (ii) *for the
-method*, §2.2: at `3.95` IS holds and the free box is `0.9046` against the forced
-`0.99`; (iii) *locally*, the near-miss blocker `[κ−η, κ−η+1]²` leaves `[0, κ−η]²` free
-and, by §2.3(2) and §2.7, no probe fits in the L-region `{min(x,y) < κ−η}` nor anywhere
-in the `[0,2]²` corner window; the remaining probes are blocked elsewhere by other
-squares. The sharpest true statement is Lemma 5(iv): `δ_j < 2κ`.
+**O1. No positive corner penetration is forced.** Neither $\delta_j \le \varepsilon$ for
+some $\varepsilon < 2\kappa$, nor a lower bound on the overlap of a blocker with
+$K_{\kappa}$, nor a vertex within distance $d$ of the corner, follows from IS +
+geometry. Three independent refutations: (i) *at `L = U`*, Trump’s TR corner (§2.1):
+$\delta = 0.8445$, free box $0.8317$, nearest vertex $0.8445$ — so every candidate of
+the form “each corner has $\delta_j \le \varepsilon$” with $\varepsilon < 0.8445$, “each
+corner box $[0,a]^2$ is met” with $a \le 0.8317$, or “a vertex within $d < 0.8445$ of
+each corner” is **false at $L = U$**, hence at best true strictly below $U$, out of
+reach of any argument valid up to $U$; (ii) *for the method*, §2.2: at $3.95$ IS holds
+and the free box is $0.9046$ against the forced $0.99$; (iii) *locally*, the near-miss
+blocker $[\kappa-\eta, \kappa-\eta+1]^2$ leaves $[0, \kappa-\eta]^2$ free and, by
+§2.3(2) and §2.7, no probe fits in the L-region $\lbrace\min(x,y) < \kappa-\eta\rbrace$
+nor anywhere in the $[0,2]^2$ corner window; the remaining probes are blocked elsewhere
+by other squares. The sharpest true statement is Lemma 5(iv): $\delta_j < 2\kappa$.
 
 **O2. No angular restriction on blockers.** Lemma 5(i): every snug square of every angle
-blocks `K_κ`; so “some/at least two/at least three blockers within `δ` of `0°` or `45°`”
-is unprovable by these means.
-The snug-`22.5°` corner square admits no probe in the `[0,2]²` window (§2.7), so it is
+blocks $K_{\kappa}$; so “some/at least two/at least three blockers within $\delta$ of
+$0^\circ$ or $45^\circ$” is unprovable by these means.
+The snug-`22.5°` corner square admits no probe in the $[0,2]^2$ window (§2.7), so it is
 IS-consistent locally like the diamond and the near-miss square.
-The only proved angle information is conditional on depth (`φ ≤ arcsin δ_j` for the
-unique occupant when `δ_j ≤ 1`). Trump has all four blockers axis-aligned, so “all
-blockers axis-aligned” is true at `U` for the only known packing and unreachable by the
-method (the `45°` snug diamond alternative is not refuted: it blocks `K_κ`, avoids `T_ε`
-for all `ε < 0.7071`, and no probe fits near it — §2.3(4)). I could not build a full
-packing at side `≤ 3.96` with a corner diamond; that alternative is therefore “not
-refuted, not realised” (Stromquist’s `0/45` optimum at `3.8856 <
-3.96` exists but its corner structure was not reconstructed here).
+The only proved angle information is conditional on depth
+($\varphi \le \arcsin \delta_j$ for the unique occupant when $\delta_j \le 1$). Trump
+has all four blockers axis-aligned, so “all blockers axis-aligned” is true at $U$ for
+the only known packing and unreachable by the method (the $45^\circ$ snug diamond
+alternative is not refuted: it blocks $K_{\kappa}$, avoids $T_{\varepsilon}$ for all
+$\varepsilon < 0.7071$, and no probe fits near it — §2.3(4)). I could not build a full
+packing at side $\le 3.96$ with a corner diamond; that alternative is therefore “not
+refuted, not realised” (Stromquist’s $0/45$ optimum at $3.8856 < 3.96$ exists but its
+corner structure was not reconstructed here).
 
 **O3. Wall strips: IS forces occupancy, not area.** Corollary 0.1(b) makes the width-`κ`
-strip a 1-net (Lemma 7) but a strip of width `κ − η` can be free of every square as far
-as probes are concerned (no unit square fits in a strip of width `< 1`). Area alone
-excludes a free width-1 strip only for `L(L−1) < 11`, i.e. `L < 3.854`
-(`thresholds.py`): at `U` even the area argument allows it.
+strip a 1-net (Lemma 7) but a strip of width $\kappa - \eta$ can be free of every square
+as far as probes are concerned (no unit square fits in a strip of width $< 1$). Area
+alone excludes a free width-1 strip only for $L(L-1) < 11$, i.e. $L < 3.854$
+(`thresholds.py`): at $U$ even the area argument allows it.
 Monotonicity (Lemma 6) supplies counts for the *annulus* and the *corner L-strip*
 because those complements are squares; a single-wall strip’s complement is an
-`L × (L−w)` rectangle, for which no capacity theorem is on record here (see S3).
+$L \times (L-w)$ rectangle, for which no capacity theorem is on record here (see S3).
 
 **O4. The centre.** The central unit probe (and its rotations) is met, but a single
 square can meet all of them (Trump’s sq8 contains the centre).
-A pinwheel of four unit squares around a square hole of side `w < 1` is IS-consistent,
-and a free disk of radius `< 1/√2` around the centre is IS-consistent; the strongest
-consequence is that some square’s interior meets the open disk of radius `1/√2` about
-the centre (trivial: the closed disk contains the axis probe).
+A pinwheel of four unit squares around a square hole of side $w < 1$ is IS-consistent,
+and a free disk of radius $< 1/\sqrt{2}$ around the centre is IS-consistent; the
+strongest consequence is that some square’s interior meets the open disk of radius
+$1/\sqrt{2}$ about the centre (trivial: the closed disk contains the axis probe).
 So “forced occupancy of the central region” is vacuous beyond “not a unit-square hole”.
 
 **O5. What IS cannot add to the covering LP.** Every unconditional point/measure lemma
 (Stromquist’s Lemmas 1–4, Lemma 3′ here) is already priced by the unconditional covering
-LP; the plateau at `3.82` is the LP’s value, not a missing lemma.
+LP; the plateau at $3.82$ is the LP’s value, not a missing lemma.
 IS-derived structure helps only through (a) a case split with a *convex* domain clip and
 *banked* boxes (Theorem B) or (b) a class count (Theorem A, Lemma 6 annulus classes).
 Both are LPs the current code almost runs; neither has a provable gain without running
 it.
 
 **O6. Lemma 7 does not compound.** A third serving square can be shared by two adjacent
-walls (a diamond with the edge `x + y = 2` wrapping the flush corner square’s outer
-vertex serves both strips without meeting `K_κ`), so “third square per wall” yields only
-two additional distinct squares (opposite walls), not four.
+walls (a diamond with the edge $x + y = 2$ wrapping the flush corner square’s outer
+vertex serves both strips without meeting $K_{\kappa}$), so “third square per wall”
+yields only two additional distinct squares (opposite walls), not four.
 
 * * *
 
@@ -524,80 +549,83 @@ two additional distinct squares (opposite walls), not four.
 
 ### S1 — Corner-class LP (Theorem A) at 3.82 and 3.84
 
-- **Question.** Is the optimum of `min μ(C) − 4 w_c − 7 w_f` (with `w_f = 1`, `μ ≥ 0`,
-  corner-region cores `≥ w_c`, all cores `≥ 1`) negative at `3.82`, and at `3.84`?
+- **Question.** Is the optimum of $\min \mu(C) - 4 w_c - 7 w_f$ (with $w_f = 1$,
+  $\mu \ge 0$, corner-region cores $\ge w_c$, all cores $\ge 1$) negative at $3.82$, and
+  at $3.84$?
 - **Entry.** `classcert.py`’s two-threshold LP; a region predicate for cores (safe
-  superset: core centre within `1/√2` of a `K_κ`, or the exact Lemma 5 test on the union
-  of the cell’s angles); D4-folded site sets from the `3.82` runs (grid-built and
-  atom-seeded) if retrievable, else the `3.81` atoms scaled.
+  superset: core centre within $1/\sqrt{2}$ of a $K_{\kappa}$, or the exact Lemma 5 test
+  on the union of the cell’s angles); D4-folded site sets from the $3.82$ runs
+  (grid-built and atom-seeded) if retrievable, else the $3.81$ atoms scaled.
 - **Instrument.** The existing column-generation loop with one extra row class; exact
   decision by the sweep restricted to the region (the region is a union of event cells
   per direction only approximately — decide on a superset of cells, which is safe).
-- **Falsifier.** Optimum `≥ 0` on a converged site set at `3.82`; more sharply, the
-  §2.6-style census showing tight cells inside `R_κ` (then `w_c = 1` is forced and the
-  gain is zero).
-- **Exit.** A certificate at `3.82` (a new rung — moves `s(11)`) or a scoped
+- **Falsifier.** Optimum $\ge 0$ on a converged site set at $3.82$; more sharply, the
+  §2.6-style census showing tight cells inside $R_{\kappa}$ (then $w_c = 1$ is forced
+  and the gain is zero).
+- **Exit.** A certificate at $3.82$ (a new rung — moves `s(11)`) or a scoped
   obstruction: “on site sets X, Y the corner class carries no surplus; tight corner
   cells listed”.
 - **Hours.** 2–3. **Headroom mechanism.** Four identified squares must sit in a small
   D4-symmetric region; the certificate may over-cover that region at a cost lower than
-  `4(w_c − 1)`. This is the cheapest test of whether *any* corner information has value.
+  $4(w_c - 1)$. This is the cheapest test of whether *any* corner information has value.
   **Dependencies.** None.
   **Parallel.** Yes, with S2–S4.
 
 ### S2 — Flush-four and three-plus-one branches of Theorem B at 3.84
 
-- **Question.** With `d_1 = 0.05`: (a) does a measure exist with
+- **Question.** With $d_1 = 0.05$: (a) does a measure exist with
   `μ(C) − Σ_{j=1..4} μ(X'_j) < 7` covering every core disjoint from the four boxes
   `[0.05, 1]²_j` (flush-four)?
-  (b) with three boxes banked and the fourth corner in the bin `δ ≥ 0.7` (free
-  `T_{0.7}`), does the LP fall below `8` (three-plus-one, Trump’s pattern)?
+  (b) with three boxes banked and the fourth corner in the bin $\delta \ge 0.7$ (free
+  `T_{0.7}`), does the LP fall below $8$ (three-plus-one, Trump’s pattern)?
 - **Entry.** `sweep.centre_domain` extended by safe core half-plane clips
-  (`a + b > d + B cos θ` per free corner; convexity preserved) and a “banked box”
+  ($a + b > d + B \cos \theta$ per free corner; convexity preserved) and a “banked box”
   exclusion in the row generator (cores meeting a banked box are not constrained);
   objective with the `μ(X'_j)` credits (`X'_j = [d+0.005,
   0.995]²`). The T-018 pipeline otherwise unchanged; a folded net suffices when the case
   and measure share a reflection, with that stabiliser checked explicitly.
 - **Instrument.** Column generation + exact sweep on the clipped domain; independent
   replay by the interval route.
-- **Falsifier.** LP value `≥ 7` (resp.
-  `≥ 8`) on a converged site set — then the case cannot be closed by this measure family
-  at `3.84`; report the tight cells.
+- **Falsifier.** LP value $\ge 7$ (resp.
+  $\ge 8$) on a converged site set — then the case cannot be closed by this measure
+  family at $3.84$; report the tight cells.
 - **Exit.** A verified case certificate with its complement (the other bin vectors)
   listed, or an exact obstruction naming the residual region’s covering value.
 - **Hours.** 3–4. **Headroom mechanism.** Banking relocates up to one unit of mass per
   corner into a box no other square can enter, and the domain clip deletes
   corner-hugging placements; the residual-seven problem is a covering problem for seven
-  squares in a plus-shaped region of area `≈ 10.7`, where the certificate no longer pays
-  for four corners. **Dependencies.** None (a small code extension, not a new engine).
+  squares in a plus-shaped region of area $\approx 10.7$, where the certificate no
+  longer pays for four corners.
+  **Dependencies.** None (a small code extension, not a new engine).
   **Parallel.** Yes.
 
 ### S3 — Deep-avoidance branch: octagon and single-diamond corners
 
-- **Question.** For `d = 0.6` (and `0.7`): (a) does the unconditional LP on the octagon
-  `C` minus four `T_d` (all corners in the top bin) fall below `11` at `3.84`? (b) for
-  one corner in the top bin and the other three unconstrained, below `11`? (c) does
-  banking the box `[0.354, 1.06]²` (contained in every snug `45°` corner square) plus
-  free `T_{0.7}` close the “snug diamond corner” case at `3.84`?
+- **Question.** For $d = 0.6$ (and $0.7$): (a) does the unconditional LP on the octagon
+  `C` minus four $T_d$ (all corners in the top bin) fall below $11$ at $3.84$? (b) for
+  one corner in the top bin and the other three unconstrained, below $11$? (c) does
+  banking the box $[0.354, 1.06]^2$ (contained in every snug $45^\circ$ corner square)
+  plus free `T_{0.7}` close the “snug diamond corner” case at $3.84$?
 - **Entry.** S2’s domain clip; nothing else.
-- **Instrument.** As S2. **Falsifier.** LP value `≥ 11` (resp.
-  `≥ 10` for (c)) on a converged site set.
+- **Instrument.** As S2. **Falsifier.** LP value $\ge 11$ (resp.
+  $\ge 10$ for (c)) on a converged site set.
   **Exit.** Certificate or obstruction per sub-case; for (a)/(b) the *side* at which the
-  clipped LP first drops below `11` is itself a useful number (how much a deep-avoided
+  clipped LP first drops below $11$ is itself a useful number (how much a deep-avoided
   corner costs a packing).
-  **Hours.** 2–3. **Headroom mechanism.** Deleting `T_d` removes exactly the placements
+  **Hours.** 2–3. **Headroom mechanism.** Deleting $T_d$ removes exactly the placements
   that force mass into the corner point region; if those were the binding cells at
-  `3.82`, the plateau moves.
+  $3.82$, the plateau moves.
   **Dependencies.** Shares S2’s clip.
   **Parallel.** Yes.
 
 ### S4 — Adversarial witnesses for the corner alternatives
 
-- **Question.** Does a packing of eleven unit squares at side `≤ 3.96` exist with (a) a
-  snug `45°` corner square, (b) all four corners with `δ_j ≥ 0.5`, (c) a corner blocker
-  at `22.5°`? Each found witness refutes the corresponding Theorem B branch *as a method
-  target at that side* and calibrates how far above `U` the branch is closable.
-- **Entry.** Stromquist’s Theorem 3 packing (`3.8856`, all angles `0/45`) reconstructed
+- **Question.** Does a packing of eleven unit squares at side $\le 3.96$ exist with (a)
+  a snug $45^\circ$ corner square, (b) all four corners with $\delta_j \ge 0.5$, (c) a
+  corner blocker at $22.5^\circ$? Each found witness refutes the corresponding Theorem B
+  branch *as a method target at that side* and calibrates how far above $U$ the branch
+  is closable.
+- **Entry.** Stromquist’s Theorem 3 packing ($3.8856$, all angles $0/45$) reconstructed
   from the literature or by search; a numerical packing search (penalty method / the
   atlas tools) seeded by Trump’s pose, Hamalainen’s pose, and the loosened Trump family
   of §2.2.
@@ -614,12 +642,12 @@ two additional distinct squares (opposite walls), not four.
 
 ### S5 (optional) — Rectangle capacity `11 ∉ L × (L − w)`
 
-- **Question.** For `L = 3.84`, the largest `w` with a certificate that eleven unit
-  squares do not pack in an `L × (L−w)` rectangle (would prove every wall strip of width
-  `w` is met by a square, strengthening O3 beyond area’s `w ≤ 0.975`).
+- **Question.** For $L = 3.84$, the largest $w$ with a certificate that eleven unit
+  squares do not pack in an $L \times (L-w)$ rectangle (would prove every wall strip of
+  width $w$ is met by a square, strengthening O3 beyond area’s $w \le 0.975$).
 - **Instrument.** The T-018 pipeline with a rectangular container (the centre domain is
   a rotated rectangle; convex).
-  **Falsifier.** LP `≥ 11` at `w = 0.5`. **Hours.** 2. **Value.** Low for `3.84`
+  **Falsifier.** LP $\ge 11$ at $w = 0.5$. **Hours.** 2. **Value.** Low for $3.84$
   directly (a strip class adds only two forced squares), higher as a reusable capacity
   tool. **Parallel.** Yes.
 
@@ -627,30 +655,30 @@ two additional distinct squares (opposite walls), not four.
 
 ## 5. Open questions, ranked by expected value
 
-1. **Does the `3.82` plateau measure over-cover the corner region?** On the retained
-   `3.81` atoms the answer is no (§2.6: corner minimum = global minimum), so Theorem A
+1. **Does the $3.82$ plateau measure over-cover the corner region?** On the retained
+   $3.81$ atoms the answer is no (§2.6: corner minimum = global minimum), so Theorem A
    is dead unless the LP, re-solved with the corner class as a variable threshold, moves
-   mass into the corners at a cost below `4(w_c − 1)`; S1 should be run once as that LP
-   and then dropped if the optimum is `≥ 0`. Corner conditioning otherwise goes through
-   Theorem B’s banking (S2/S3).
-2. **Value of the flush-four residual-seven LP at `3.84`** (S2a). This is the branch
-   where all the mass mechanisms act at once; a value below `7` would be the first
+   mass into the corners at a cost below $4(w_c - 1)$; S1 should be run once as that LP
+   and then dropped if the optimum is $\ge 0$. Corner conditioning otherwise goes
+   through Theorem B’s banking (S2/S3).
+2. **Value of the flush-four residual-seven LP at $3.84$** (S2a). This is the branch
+   where all the mass mechanisms act at once; a value below $7$ would be the first
    conditional exclusion with a named complement.
 3. **How much does a deep-avoided corner cost?** The side at which the octagon-clipped
-   LP first drops below `11` (S3a) is a quantitative “corner tax” — a number no current
+   LP first drops below $11$ (S3a) is a quantitative “corner tax” — a number no current
    record has.
-4. **Is a snug-diamond corner realisable at side `≤ 3.96`?** (S4a) It is the one
+4. **Is a snug-diamond corner realisable at side $\le 3.96$?** (S4a) It is the one
    alternative in O2 that is neither refuted nor realised; a witness would kill the
-   diamond branch as a target near `U`, and its absence after a real search would raise
+   diamond branch as a target near $U$, and its absence after a real search would raise
    the priority of S3c.
 5. **Sharpen Lemma 7 to a per-wall third-square theorem under weak angle hypotheses**
-   (e.g. both blockers within `20°` of axis), and combine with Lemma 6 into a
+   (e.g. both blockers within $20^\circ$ of axis), and combine with Lemma 6 into a
    wall/annulus class certificate.
    Small expected gain; cheap.
-6. **Exact `s(12) = 4` (or any improvement of `3.96`)** shrinks `κ` toward `L − 3`; the
-   corner data of Trump (`0.8445` gap, `0.073` overlap with `K_κ` at `U`, `0.033`
-   overlap if `κ = L − 3`) shows the fourth corner sits close to the saturation limit —
-   a curiosity worth recording, not a lever.
+6. **Exact $s(12) = 4$ (or any improvement of $3.96$)** shrinks $\kappa$ toward $L - 3$;
+   the corner data of Trump ($0.8445$ gap, $0.073$ overlap with $K_{\kappa}$ at $U$,
+   $0.033$ overlap if $\kappa = L - 3$) shows the fourth corner sits close to the
+   saturation limit — a curiosity worth recording, not a lever.
 
 <!-- Scripts: scratchpad/corner/{trump_pose,trump_structure,trump_more,geom,lemmas_check,
 two_occupants,common_core,loosened_trump,thresholds,cert_readout}.py -->
@@ -1353,13 +1381,13 @@ the rest, or banking their corner boxes, give a covering surplus at 96/25?
 
 The premise the coordinator asked the lane to use is session-101’s corner-pair theorem,
 and the lane reads it in the sharper form its own proof gives.
-Lemma C′ applied to the pair says that a set of atoms of total weight above `ε` has an
-atom inside some *core* — a closed `B`-square at a net direction, strictly inside its
-unit square — not merely inside a placement.
-So at side `96/25`, with `B = 9977/10000` and the retained 181-direction net, every
+Lemma C′ applied to the pair says that a set of atoms of total weight above
+$\varepsilon$ has an atom inside some *core* — a closed $B$-square at a net direction,
+strictly inside its unit square — not merely inside a placement.
+So at side $96/25$, with $B = 9977/10000$ and the retained 181-direction net, every
 packing of eleven unit squares has four distinct squares, one per corner, whose cores
-each contain one of that corner’s two marks `m₁ = (3152/3175, 2336/3175)`,
-`m₂ = (2336/3175, 3152/3175)` (and their images under the container’s symmetries).
+each contain one of that corner’s two marks $m_1 = (3152/3175, 2336/3175)$,
+$m_2 = (2336/3175, 3152/3175)$ (and their images under the container’s symmetries).
 The class this lane prices is therefore “cores containing a mark”, which per net
 direction is the union of the marks’ coverage rectangles in the rotated frame — exactly
 the event geometry the sweep already has.
@@ -1369,131 +1397,134 @@ Theorem B’s deep-corner bins was not built (see the three-plus-one paragraph).
 Two facts about the branches were settled before any run.
 First, under a D4-symmetric measure every one of the sixteen mark branches collapses to
 the union region: the diagonal reflection through a corner is a container symmetry and
-swaps that corner’s two marks, so the folded net cannot tell `m₁` from `m₂`. The
+swaps that corner’s two marks, so the folded net cannot tell $m_1$ from $m_2$. The
 flush-four program under D4 *is* the union-region program.
 A branch needs a measure with only the branch’s stabiliser and a mark set closed under
 it: the sixteen patterns fall into four D4 orbits — the two *opposite-both* patterns
 (stabiliser the Klein group of the two axis reflections, `D2`), the four *U* patterns
 (one axis reflection), the two *pinwheels* (`C4`, no reflection) and the eight
 asymmetric *J* patterns (trivial stabiliser).
-A folded net needs a reflection in the stabiliser, so the `D2` and `U` branches run on
-the retained net at two and four times the site count; the pinwheel and `J` branches
-need a quarter-turn net and a float centre domain that does not assume `cos ≥ sin`,
+A folded net needs a reflection in the stabiliser, so the `D2` and $U$ branches run on
+the retained net at two and four times the site count; the pinwheel and $J$ branches
+need a quarter-turn net and a float centre domain that does not assume $\cos \ge \sin$,
 which the library does not have.
 Second, banking the marks is a special case of pricing: crediting the mark’s own weight
-is the class program with `w_c` fixed at that weight, so the class program dominates
+is the class program with $w_c$ fixed at that weight, so the class program dominates
 mark-banking and only the class program was run.
 
-The program. Sites `S` folded into orbits under a group `G`; a `G`-symmetric measure
-`μ ≥ 0` on `S`; thresholds `w_c ≥ w_f ≥ 0` (the order is without loss, since a region
-core is also some square’s core and must carry `w_f`). Every admissible core carries at
-least `w_f`; every admissible core containing a mark of the chosen set carries at least
-`w_c`. The four corner cores are distinct and in the class, the other seven cores carry
-`w_f`, and the eleven are pairwise disjoint, so `4 w_c + 7 w_f ≤ M` for every packing: a
-measure with `M − 4 w_c − 7 w_f < 0` excludes eleven squares at `96/25`. The LP is
-homogeneous and is solved under `4 w_c + 7 w_f = 1` (the *ratio* form, optimum `M*`; a
-certificate needs `M* < 1`) or, for a branch, under `w_f = 1` (the *slice* form, optimum
-`M − 4 w_c`; a certificate needs it below `7`). The two forms have the same exclusion
-power; a slice also measures a positive gap that the ratio form can hide at `w_f = 0`.
+The program. Sites `S` folded into orbits under a group $G$; a $G$-symmetric measure
+$\mu \ge 0$ on `S`; thresholds $w_c \ge w_f \ge 0$ (the order is without loss, since a
+region core is also some square’s core and must carry $w_f$). Every admissible core
+carries at least $w_f$; every admissible core containing a mark of the chosen set
+carries at least $w_c$. The four corner cores are distinct and in the class, the other
+seven cores carry $w_f$, and the eleven are pairwise disjoint, so $4 w_c + 7 w_f \le M$
+for every packing: a measure with $M - 4 w_c - 7 w_f < 0$ excludes eleven squares at
+$96/25$. The LP is homogeneous and is solved under $4 w_c + 7 w_f = 1$ (the *ratio*
+form, optimum $M^{\ast}$; a certificate needs $M^{\ast} < 1$) or, for a branch, under
+$w_f = 1$ (the *slice* form, optimum $M - 4 w_c$; a certificate needs it below $7$). The
+two forms have the same exclusion power; a slice also measures a positive gap that the
+ratio form can hide at $w_f = 0$.
 
 **Normalization lemma, corrected 2026-09-08.** Every slice point normalizes by
-`T = 4 w_c + 7`, with ratio `M/T = 1 + (M − 4 w_c − 7)/T`. Thus a negative slice
+$T = 4 w_c + 7$, with ratio $M/T = 1 + (M - 4 w_c - 7)/T$. Thus a negative slice
 residual gives a ratio below one.
-Conversely, a ratio below one must have `w_f > 0`: if `w_f = 0`, the four axis-aligned
-`B`-cores centred at the chosen marks are contained and disjoint, forcing
-`M ≥ 4 w_c = 1`. Their least coordinate is `2336/3175 > B/2` and the separation across
-different corners in at least one coordinate is at least `5888/3175 > B`. Dividing by
-positive `w_f` gives a negative slice residual.
+Conversely, a ratio below one must have $w_f > 0$: if $w_f = 0$, the four axis-aligned
+$B$-cores centred at the chosen marks are contained and disjoint, forcing
+$M \ge 4 w_c = 1$. Their least coordinate is $2336/3175 > B/2$ and the separation across
+different corners in at least one coordinate is at least $5888/3175 > B$. Dividing by
+positive $w_f$ gives a negative slice residual.
 Mark banking gives a feasible ratio of one and the mark-depth constraint bounds every
 obstruction dual by one; neither bound forces the optimum to equal one on an arbitrary
 site set.
 
 Falsifiers, stated before each run and recorded in the lane checkpoints.
-For a site set `S`: a `G`-symmetrised fractional packing `y` of exactly re-derived
-admissible placements with depth at most `1` at every site, total weight at least `11 λ`
-and weight at least `4 λ` on placements that contain a chosen mark, with `λ ≥ 1`. Weak
-duality gives, for every feasible `(μ, w_c, w_f)` on `S`,
+For a site set `S`: a $G$-symmetrised fractional packing $y$ of exactly re-derived
+admissible placements with depth at most $1$ at every site, total weight at least
+$11 \lambda$ and weight at least $4 \lambda$ on placements that contain a chosen mark,
+with $\lambda \ge 1$. Weak duality gives, for every feasible $(\mu, w_c, w_f)$ on `S`,
 `M ≥ Σ_r y_r μ(P_r) ≥ w_c Σ_A y + w_f Σ_{¬A} y ≥ λ (4 w_c + 7 w_f)`, so the residual
-`M − 4 w_c − 7 w_f ≥ (λ − 1)(4 w_c + 7 w_f)` is nonnegative and no certificate exists on
-`S`. In the slice form the same packing gives `M − 4 w_c − 7 ≥ Σ y − 11` whenever
-`Σ_A y ≥ 4`. The second falsifier of the cell, eleven disjoint cores satisfying the
-condition, is the integral case of the first and was not available (eleven disjoint
-`B`-squares at `96/25` would be a packing at side `3.849`). Only the exact objects
-count: the rationalised primal decided by the integer event-cell sweep with the marks’
-rectangle boundaries as events, and the dual packing decided in `Fraction` arithmetic on
-re-derived rows; every LP objective is context.
+$M - 4 w_c - 7 w_f \ge (\lambda - 1)(4 w_c + 7 w_f)$ is nonnegative and no certificate
+exists on `S`. In the slice form the same packing gives
+$M - 4 w_c - 7 \ge \Sigma y - 11$ whenever $\Sigma_A y \ge 4$. The second falsifier of
+the cell, eleven disjoint cores satisfying the condition, is the integral case of the
+first and was not available (eleven disjoint $B$-squares at $96/25$ would be a packing
+at side $3.849$). Only the exact objects count: the rationalised primal decided by the
+integer event-cell sweep with the marks’ rectangle boundaries as events, and the dual
+packing decided in `Fraction` arithmetic on re-derived rows; every LP objective is
+context.
 
 ### Inputs common to every run
 
 | Input | Value |
 | --- | --- |
-| Side, shrink | `L = 96/25`, `B = 9977/10000` |
-| Net | `t_k = k · 207107/500000 / 180`, `k = 0..180` (181 directions, the retained net; `B(1 + D) < 1` as for T-018) |
-| Marks | `m₁ = (3152/3175, 2336/3175)`, `m₂ = (2336/3175, 3152/3175)` and their images: eight points, T-018’s `(197/200, 73/100)` orbit scaled by `128/127` |
-| Site set A (grid 79) | `build_site_grid(96/25, 79, 1/10)`: 79 coordinates from `1/10` to `369/100` at pitch `91/1950`, plus the eight marks; folded under the run’s group (D4: 821 orbits over 6249 sites; D2: 1602 orbits; `Sv`: 3163 orbits) |
-| Class region | cores whose closed `B`-square contains a chosen mark; per direction the union of the marks’ coverage rectangles `[u_m ± B/2] × [v_m ± B/2]`, whose boundaries are events in both the float separator and the exact sweep (the marks ride along as zero-weight atoms) |
-| Row generation | three least-covered cells per direction *per class* below its threshold, rows read at a point of the cell’s overlap with the centre domain as `generate.placement_cells` reads them, deduplicated, until no cell is short by more than `10⁻⁹`; HiGHS on the two-threshold LP with `w_f ≤ w_c` |
-| Rationalisation | bump `1000001/1000000`, round up to multiples of `1/4 000 000`, drop empty orbits; group closure of the atoms re-checked exactly |
+| Side, shrink | $L = \frac{96}{25}$, $B = \frac{9977}{10000}$ |
+| Net | $t_k = k \cdot \frac{207107}{500000} / 180$, `k = 0..180` (181 directions, the retained net; $B(1 + D) < 1$ as for T-018) |
+| Marks | $m_1 = (\frac{3152}{3175}, \frac{2336}{3175})$, $m_2 = (\frac{2336}{3175}, \frac{3152}{3175})$ and their images: eight points, T-018’s $(\frac{197}{200}, \frac{73}{100})$ orbit scaled by $\frac{128}{127}$ |
+| Site set A (grid 79) | `build_site_grid(96/25, 79, 1/10)`: 79 coordinates from $\frac{1}{10}$ to $\frac{369}{100}$ at pitch $\frac{91}{1950}$, plus the eight marks; folded under the run’s group (D4: 821 orbits over 6249 sites; D2: 1602 orbits; `Sv`: 3163 orbits) |
+| Class region | cores whose closed $B$-square contains a chosen mark; per direction the union of the marks’ coverage rectangles $[u_m \pm B/2] \times [v_m \pm B/2]$, whose boundaries are events in both the float separator and the exact sweep (the marks ride along as zero-weight atoms) |
+| Row generation | three least-covered cells per direction *per class* below its threshold, rows read at a point of the cell’s overlap with the centre domain as `generate.placement_cells` reads them, deduplicated, until no cell is short by more than $10^{-9}$; HiGHS on the two-threshold LP with $w_f \le w_c$ |
+| Rationalisation | bump $\frac{1000001}{1000000}$, round up to multiples of $\frac{1}{4} 000 000$, drop empty orbits; group closure of the atoms re-checked exactly |
 | Exact primal | `w_c :=` least integer-grid mass over the class cells, `w_f :=` least over all cells, both over all 181 directions on `sweep.scaled_mass_grid` |
-| Exact dual | rows with positive dual weight re-derived from their float centre as a `Fraction`: centre inside the closed centre domain, coverage counts per orbit and mark containment decided exactly; `y` rounded down to multiples of `10⁻⁶`, or solved exactly at the tight vertex where the bound sits on a knife-edge; symmetrised depth `Σ_r y_r |P_r ∩ O| / |O| ≤ 1` checked on every orbit |
+| Exact dual | rows with positive dual weight re-derived from their float centre as a `Fraction`: centre inside the closed centre domain, coverage counts per orbit and mark containment decided exactly; $y$ rounded down to multiples of $10^{-6}$, or solved exactly at the tight vertex where the bound sits on a knife-edge; symmetrised depth `Σ_r y_r |P_r ∩ O| / |O| ≤ 1` checked on every orbit |
 | Machine | one process, `PACK_JOBS=1`, one BLAS thread; two other lanes on the four cores, load average 1.0 to 2.5 |
 
 ### Runs and exact verdicts
 
 **Run 1, the flush-four program (union region, D4, site set A).** Row generation
 converged in 17 rounds and 63 s on 6646 rows (load 1.1 to 1.7). LP: ratio optimum
-`1.032490975`, `w_c / w_f = 1.103`. Rationalised measure: 289 atoms, mass
-`M = 103253/100000`; exact `w_c = 386619/4000000`, `w_f = 175259/2000000`, both attained
-at direction `0`; exact residual `M − 4 w_c − 7 w_f = 65009/2000000 > 0`, i.e. in the
-slice normalisation `M/w_f = 11.7829`, `w_c/w_f = 1.10299`, residual
-`65009/175259 = 0.37093`. Census: 43 305 349 reachable cells, 11 176 736 in the class.
-Exact dual: 41 rows, none dropped, maximum symmetrised depth `7999993/8000000`, total
-`11.357376`, `4.129958` on mark-containing placements, **`λ = 177459/171875 =
-1.0324887 ≥ 1`**: no measure on site set A has a negative residual.
+$1.032490975$, $w_c / w_f = 1.103$. Rationalised measure: 289 atoms, mass
+$M = 103253/100000$; exact $w_c = 386619/4000000$, $w_f = 175259/2000000$, both attained
+at direction $0$; exact residual $M - 4 w_c - 7 w_f = 65009/2000000 > 0$, i.e. in the
+slice normalisation $M/w_f = 11.7829$, $w_c/w_f = 1.10299$, residual
+$65009/175259 = 0.37093$. Census: 43 305 349 reachable cells, 11 176 736 in the class.
+Exact dual: 41 rows, none dropped, maximum symmetrised depth $7999993/8000000$, total
+$11.357376$, $4.129958$ on mark-containing placements,
+**$\lambda = 177459/171875 = 1.0324887 \ge 1$**: no measure on site set A has a negative
+residual.
 
-**Run 2, the free control on the same site set (no class, `11 w_f = 1`).** Converged in
+**Run 2, the free control on the same site set (no class, $11 w_f = 1$).** Converged in
 16 rounds and 55 s on 7575 rows.
-Rationalised: 233 atoms, `M = 2066149/2000000`, exact `w_f = 363641/4000000`,
-`M / w_f = 11.363675`. Exact dual: 48 rows, maximum depth `3999997/4000000`, total
-`11.363421`, of which `4.018083` on mark-containing placements,
+Rationalised: 233 atoms, $M = 2066149/2000000$, exact $w_f = 363641/4000000$,
+$M / w_f = 11.363675$. Exact dual: 48 rows, maximum depth $3999997/4000000$, total
+$11.363421$, of which $4.018083$ on mark-containing placements,
 `λ_free = 11363421/11000000 = 1.0330383`.
 
 **The surplus, exactly.** Each optimum lies between its exact dual and its exact
 rationalised primal ratio: `free* ∈ [11363421/11000000, 4132298/4000051]` and
 `class* ∈ [177459/171875, 2065060/2000051]`, so the corner class lowers the ratio
-optimum on site set A by between `11761534471/22000561000000 = 0.000535` and
-`35788031/62500796875 = 0.000573` — a real surplus, and between `1.6` and `1.8` per cent
-of the gap `0.0325` that separates the free program from the certificate line.
-The free dual’s weight on mark-containing placements, `4.018`, is above `4` but below
+optimum on site set A by between $11761534471/22000561000000 = 0.000535$ and
+$35788031/62500796875 = 0.000573$ — a real surplus, and between $1.6$ and $1.8$ per cent
+of the gap $0.0325$ that separates the free program from the certificate line.
+The free dual’s weight on mark-containing placements, $4.018$, is above $4$ but below
 `4 λ_free = 4.132`, which is why the class constraint binds at all; the class dual then
-spends exactly `4 λ` on the corner region and `7 λ` elsewhere.
+spends exactly $4 \lambda$ on the corner region and $7 \lambda$ elsewhere.
 
-**Run 3, the opposite-both branch, homogeneous (D2, chosen marks `m₁` and its axis
-images, site set A).** The LP converged in five rounds at ratio `1.000000000` with
-`w_f = 0`, `w_c = 1/4` and the measure `1/4` at each chosen mark: the trivial banking
-measure has residual exactly `0`, and the exact vertex of the dual (36 rows, solved in
-`Fraction` arithmetic on the tight system, maximum symmetrised depth exactly `1`, total
-exactly `11`, exactly `4` on chosen-mark placements) gives **`λ = 1` exactly** on site
-set A. This exact dual, together with the banking measure, proves equality on that site
-set.
-The earlier inference of equality on every site set was incorrect; the normalization
-lemma above explains why a negative slice could also be detected in ratio form.
-The slice `w_f = 1` measures the positive gap in run 3b.
+**Run 3, the opposite-both branch, homogeneous (D2, chosen marks $m_1$ and its axis
+images, site set A).** The LP converged in five rounds at ratio $1.000000000$ with
+$w_f = 0$, $w_c = 1/4$ and the measure $1/4$ at each chosen mark: the trivial banking
+measure has residual exactly $0$, and the exact vertex of the dual (36 rows, solved in
+`Fraction` arithmetic on the tight system, maximum symmetrised depth exactly $1$, total
+exactly $11$, exactly $4$ on chosen-mark placements) gives **$\lambda = 1$ exactly** on
+site set A. This exact dual, together with the banking measure, proves equality on that
+site set. The earlier inference of equality on every site set was incorrect; the
+normalization lemma above explains why a negative slice could also be detected in ratio
+form. The slice $w_f = 1$ measures the positive gap in run 3b.
 
-**Run 3b, the opposite-both branch, slice (`w_f = 1`, D2, site set A).** Converged and
+**Run 3b, the opposite-both branch, slice ($w_f = 1$, D2, site set A).** Converged and
 decided exactly. Dual support 97 rows over 65 primal orbits; the tight system (67
 equations, 98 unknowns) solved in `Fraction` arithmetic gives maximum symmetrised depth
-exactly `1`, total `897019/78939 = 11.363445192`, exactly `4` on chosen-mark placements,
-so `Σ_A y = 4` and the residual `M − 4 w_c − 7 ≥ Σ y − 11 = 28690/78939 = 0.363445192 >
-0`. The branch buys nothing over the free program on this site set.
+exactly $1$, total $897019/78939 = 11.363445192$, exactly $4$ on chosen-mark placements,
+so $\Sigma_A y = 4$ and the residual
+$M - 4 w_c - 7 \ge \Sigma y - 11 = 28690/78939 = 0.363445192 > 0$. The branch buys
+nothing over the free program on this site set.
 The census read 28 987 449 reachable cells, 5 455 344 in the corner class over 181
 directions.
 
 **Run 4, the U branch, slice (`Sv`, chosen marks the bottom-wall marks at the bottom
 corners and the side-wall marks at the top corners, site set A).** Did not converge.
 The external usage limit halted the session during round 21 of the row loop, at 19 607
-rows and a float objective of `7.334647511` still rising with a least violation of
-`3.256·10⁻⁴`; no exact decision was taken and none of these figures is a result.
+rows and a float objective of $7.334647511$ still rising with a least violation of
+$3.256\cdot10^{-4}$; no exact decision was taken and none of these figures is a result.
 The inputs are stated here, but the driver and partial state were not retained in this
 document; the appendix records that recovery is required before replay.
 
@@ -1518,11 +1549,11 @@ Under the corner-pair premise all four corners carry a mark-containing core
 unconditionally, so the cover has one case and the sixteen mark branches are its
 refinement; “three-plus-one” in the sense of Theorem B — three corners banked by
 penetration depth and the fourth in a deep bin with `T_{0.7}` free — needs the safe
-half-plane clip `a + b > d + B cos θ` on the centre domain, in both the float separator
-(`generate._CentreDomain` assumes the rotated square and `cos ≥ sin`) and the exact
-`reduce_to_spans` (which calls `sweep.centre_domain` directly), together with the banked
-boxes `X′_j` and their credits, and a measure with the deep corner’s stabiliser (one
-diagonal reflection, four times the site count).
+half-plane clip $a + b > d + B \cos \theta$ on the centre domain, in both the float
+separator (`generate._CentreDomain` assumes the rotated square and $\cos \ge \sin$) and
+the exact `reduce_to_spans` (which calls `sweep.centre_domain` directly), together with
+the banked boxes `X′_j` and their credits, and a measure with the deep corner’s
+stabiliser (one diagonal reflection, four times the site count).
 That is instrument work the lane did not start.
 The flush-four readings bound the mark-pricing program on site set A; they do not bound
 banking programs that remove placements through a case-specific domain clip.
@@ -1536,10 +1567,10 @@ convex-polygon replacement.
 Neither is decided by this session, and neither is refuted.
 
 **H-127** asked whether pricing the four corner blockers’ cores above the rest gives a
-covering surplus at `96/25`. On site set A the surplus is real and exactly bounded but
+covering surplus at $96/25$. On site set A the surplus is real and exactly bounded but
 far too small: the corner class lowers the ratio optimum by between
-`11761534471/22000561000000 = 0.000535` and `35788031/62500796875 = 0.000573`, between
-1.6 and 1.8 per cent of the `0.0325` gap that separates the free program from the
+$11761534471/22000561000000 = 0.000535$ and $35788031/62500796875 = 0.000573$, between
+1.6 and 1.8 per cent of the $0.0325$ gap that separates the free program from the
 certificate line. Recommended status: open, with this bound recorded as the first
 measurement of the surplus rather than a refutation, since the denser corner site set
 (run 5) is untested.

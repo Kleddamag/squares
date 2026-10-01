@@ -33,7 +33,7 @@ The orientations compatible with one residual center are not identified with tho
 compatible with any other residual center.
 
 For $r\ge1/2$ the allowed set is nonempty, since an axis square is admissible.
-Put $t=\min(r,1/\sqrt2)$ and $a=1/(4t)$. The radius-$1/2$ disk lies in every unit
+Put $t=\min(r,1/\sqrt2)$ and $a=1/(4t)$. The radius-`1/2` disk lies in every unit
 square. For any admissible square normal $e=(\cos\theta,\sin\theta)$, the support of
 $[-a,a]^2$ is
 
@@ -74,7 +74,7 @@ directions.
 Call the proposed hull $H$. For any normal $n$, its exact support is
 
 $$
-h_H(n)=\max\left(\|n\|/2,\ a(|n_x|+|n_y|)\right).
+h_H(n)=\max\left(\Vert n\Vert/2,\ a(|n_x|+|n_y|)\right).
 $$
 
 For a unit normal in an allowed arc, $|n_x|+|n_y|\le c+s=2t$, so $h_H(n)=1/2$. Every

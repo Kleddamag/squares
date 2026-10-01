@@ -114,7 +114,7 @@ slacks and all forty-eight point-edge determinants.
 Neither process has an internal timer; the two separately frozen external caps cover the
 whole process.
 
-The actual angle argument is `0<t<1/480`, implying `0<2 arctan(t)<2t<1/240<pi/720`
+The actual angle argument is $0< t<1/480$, implying `0<2 arctan(t)<2t<1/240<pi/720`
 because `pi>3`. Failure of this sufficient guard is unresolved, not evidence that an
 angle lies outside the actual band.
 

@@ -8,11 +8,11 @@ The existence of a checker is separate from a completed run on a particular clai
 ## The n = 11 Argument from First Principles
 
 To prove the optimal side length, two inequalities must meet at the same exact value.
-A feasible packing of eleven unit squares in a square of side `T` establishes
-`s(11) ≤ T`. Global optimality additionally requires excluding every packing with side
-less than `T`, including independently rotated squares and boundary contact.
-Here `T = 3.8770835900228141773078970601…` denotes the exact algebraic endpoint, not the
-printed decimal used as a tolerance.
+A feasible packing of eleven unit squares in a square of side $T$ establishes
+$s(11) \le T$. Global optimality additionally requires excluding every packing with side
+less than $T$, including independently rotated squares and boundary contact.
+Here $T = 3.8770835900228141773078970601\ldots$ denotes the exact algebraic endpoint,
+not the printed decimal used as a tolerance.
 
 The lower-bound proof turns that continuous question into a finite, exhaustive cover.
 The 2,184 canonical patterns cover all configurations under the reviewed reduction.
@@ -235,7 +235,7 @@ Each claim’s retained receipts determine which work is complete.
 | Feasible packing geometry | [`sqpack.verify`](../../packing/src/sqpack/verify.py), [`sqpack.assurance`](../../packing/src/sqpack/assurance.py), [independent rational witness checker](../../packing/devtools/check_rational_witness_independent.py) | Containment, unit-square geometry and pairwise interior disjointness. Exact rational or accepted algebraic-field data can prove an upper bound. The independent checker accepts rational corner witnesses only. Decimal checks remain numerical; feasibility alone does not prove optimality. |
 | Interval enclosure of a packing | [`promote.interval_verify`](../../packing/src/sqpack/promote/interval_verify.py) | Outward-rounded enclosures can certify strict separation and containment. Unresolved contact is `undecided`; this route cannot certify an equality from a positive-width enclosure. |
 | Weighted point certificate | [`decide_certificate`](../../packing/devtools/decide_certificate.py) | Exact event-cell sweep and directed-rounding interval branch and bound decide every required centre and direction. Full retention requires both methods to accept and agree on the minimum, with the input bytes unchanged. The shared certificate representation and theorem remain common premises. |
-| Point and threshold certificate | [`decide_threshold_certificate`](../../packing/devtools/decide_threshold_certificate.py) | Exact sweep and interval branch and bound decide point charges plus threshold atoms: charge when at least `k` of a named set is covered, with its justified budget. The exact route also checks dense-grid and slab agreement. This is a separate schema from rectangle density. |
+| Point and threshold certificate | [`decide_threshold_certificate`](../../packing/devtools/decide_threshold_certificate.py) | Exact sweep and interval branch and bound decide point charges plus threshold atoms: charge when at least $k$ of a named set is covered, with its justified budget. The exact route also checks dense-grid and slab agreement. This is a separate schema from rectangle density. |
 | Relational certificate | [`decide_relational_certificate`](../../packing/devtools/decide_relational_certificate.py) | Two exact routes decide supported point, threshold and floor atoms. Its two-route admission verdict does not claim the floating-point interval confirmation still required for a T-id in this class. Ordinary supported threshold records are delegated to the threshold gate. |
 | Adaptive parent-core certificate | [`parent_core`](../../packing/src/sqpack/fractional/parent_core.py), [`parent_core_interval`](../../packing/src/sqpack/fractional/parent_core_interval.py) | Exact checks prove the angle-row cover, strict core containment, symmetry and budget; interval subdivision decides every centre in each row’s parent domain. Source-specific readers support Kleddamag n11, Evan Daniel’s angle-net format and Guzhou R052. A pilot, input refusal or sizing run cannot establish complete coverage. |
 | Tokoharu rectangle density | [`audit_tokoharu_density`](../../packing/devtools/audit_tokoharu_density.py), [`audit_wand125_rectangles`](../../packing/devtools/audit_wand125_rectangles.py), [native exact prototype](../../packing/devtools/verify_rectangle_density.py) | Existing retained bound replays use the unchanged upstream C++ checker with independent exact prerequisites and input binding. The native prototype implements exact coverage without upstream code and passes a complete analytic control; a complete native run on a retained external certificate remains outstanding. |
@@ -262,12 +262,12 @@ multiplied by their densities.
 This varies continuously with the square’s centre; point-certificate event cells, whose
 captured atom sets are constant, do not decide it.
 
-The counting proof requires total mass strictly below `n` and at least one unit of
+The counting proof requires total mass strictly below $n$ and at least one unit of
 captured mass for every required checking square.
 A rational direction net and a strict shrink inequality place a checked inner square
 inside every unit square, connecting the finite angle list to the continuum of
 orientations. The retained standard Tokoharu format uses 201 directions and the stronger
-coverage target `10001/10000`. All admissible centres at every direction must be
+coverage target $10001/10000$. All admissible centres at every direction must be
 covered; scanning a finite set of centres only tests candidate placements.
 
 The first-party exact preflight recomputes mass from the candidate decimals as rational
@@ -302,7 +302,7 @@ every box has a sufficient lower bound.
 The [CLI](../../packing/devtools/verify_rectangle_density.py) rechecks exact admission
 premises, rejects inconsistent net metadata, and binds its receipt to the candidate
 bytes and checker source.
-Its default threshold is `1`; the source’s `rhs` is recorded separately, and
+Its default threshold is $1$; the source’s `rhs` is recorded separately, and
 `--threshold 10001/10000` requests the standard upstream target.
 Only all 201 required angles can produce `VERIFIED`. A successful subset is `PARTIAL`;
 an exhausted node, depth or cooperative search-time budget is `INCONCLUSIVE`; an exact
@@ -325,9 +325,9 @@ The executed receipts distinguish their outcomes:
 
 | Input | Native result | Scope |
 | --- | --- | --- |
-| [Analytic density](../../packing/resources/web/wand125-tools-2026-09-29/native-analytic-control.json), `n=3`, `L=3/2`, mass `1683003/625000` | [`VERIFIED`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-analytic.json) | All 201 angles at threshold `1`, with no unresolved leaves; a complete control for the new engine |
-| Retained source negative control, `n=1`, mass `289/10` | [`REFUSED`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-admission-refusal.json) | Rejected by the strict mass budget before coverage |
-| Tokoharu n11 certificate at `381/100` | [`INCONCLUSIVE`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-bounded.json) | Angle 1 only, capped at 100 nodes: 46 accepted leaves and 9 unresolved leaves; no complete coverage claim |
+| [Analytic density](../../packing/resources/web/wand125-tools-2026-09-29/native-analytic-control.json), $n=3$, $L=\frac{3}{2}$, mass $\frac{1683003}{625000}$ | [`VERIFIED`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-analytic.json) | All 201 angles at threshold $1$, with no unresolved leaves; a complete control for the new engine |
+| Retained source negative control, $n=1$, mass $\frac{289}{10}$ | [`REFUSED`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-admission-refusal.json) | Rejected by the strict mass budget before coverage |
+| Tokoharu n11 certificate at $\frac{381}{100}$ | [`INCONCLUSIVE`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-bounded.json) | Angle 1 only, capped at 100 nodes: 46 accepted leaves and 9 unresolved leaves; no complete coverage claim |
 | Same n11 input and exact pending frontier | [`DIAGNOSTIC_ONLY`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-bound-comparison.json) | All 9 pending boxes compared; corner bounds improved 3 but produced no new threshold crossing. The predeclared usefulness criterion was not met. |
 | Same n11 input, angle 1 at 1,000 nodes and depth 20 | [`INCONCLUSIVE`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-angle1-1000-nodes.json) | 428 accepted leaves; 67 depth-capped leaves and 11 queued boxes remain. No larger replay selected. |
 | Same n11 input, two further levels on all 67 depth-capped parents | [`DIAGNOSTIC_ONLY`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/native-n11-depth22-refinement.json) | All 268 children evaluated; 15 parents close completely. The other 52 parents and 11 originally queued boxes prevent complete-angle coverage. |
@@ -353,9 +353,9 @@ Cached search checks and batched counterexample screening supply neither obligat
 The
 [executed admission negative control](../../packing/resources/web/wand125-tools-2026-09-29/receipts/admission-control.json)
 shows why these obligations must stay separate: the source wrapper scaled a measure to
-mass `289/10` for `n=1`, passed all 201 coverage checks, and
+mass $289/10$ for $n=1$, passed all 201 coverage checks, and
 [announced `s(1) >= 1.5`](../../packing/resources/web/wand125-tools-2026-09-29/receipts/admission-control.log).
-Since `s(1)=1`, the announcement is false.
+Since $s(1)=1$, the announcement is false.
 Coverage succeeded, but the required `mass < n` check was absent.
 The native checker rejects that retained scaled input at admission, before attempting
 coverage.
@@ -396,8 +396,8 @@ the proved input. This is a required binding contract, not a report of corruptio
 published certificate.
 
 There are three distinct thresholds.
-Native default `1` suffices for its reviewed packing obstruction but is weaker than the
-canonical coverage target `10001/10000`. Nominal compatibility requires that exact
+Native default $1$ suffices for its reviewed packing obstruction but is weaker than the
+canonical coverage target $10001/10000$. Nominal compatibility requires that exact
 target. For a strict performance comparison, use the exact rational value of C++'s
 upward-rounded binary64 cutoff and record both values.
 This matches the leaf cutoff, not the subdivision strategy or interval costs.
@@ -472,7 +472,7 @@ arithmetic cost.
 
 The
 [bounded external n11 probe](../../packing/resources/web/wand125-tools-2026-09-29/update-3eb08e6/parity/n11-angle1-feasibility/result.json)
-uses the retained `L=381/100` certificate and only angle 1 at the same threshold.
+uses the retained $L=381/100$ certificate and only angle 1 at the same threshold.
 C++ completes that angle in 0.740 seconds of subprocess wall; native reaches its
 13-second internal budget and returns `INCONCLUSIVE` in 13.104 seconds.
 This is a concrete performance gap on a real certificate, not a measured full-proof
@@ -600,7 +600,7 @@ identical certificate by the
 [complete native parent-core review](reviews/review-2026-09-22-native-n11-parent-core.md)
 and its retained 12,028-row coverage decision.
 That evidence proves the angle cover, strict enclosures, D4 reduction, threshold-charge
-budget and positive counting gap, supporting the existing `V4/C4` bound `s(11) > 31/8`.
+budget and positive counting gap, supporting the existing `V4/C4` bound $s(11) > 31/8$.
 It is reusable evidence, not a missing proof or a new promotion.
 Native threshold coverage need not reproduce each exact row minimum, so it does not
 settle T-059’s claimed minimum equalities.

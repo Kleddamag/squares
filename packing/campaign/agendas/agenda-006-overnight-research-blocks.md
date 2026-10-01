@@ -1568,15 +1568,15 @@ Blocks 6–10 are closed; 11 onward are the remaining map.
 | 10 | `BC-065` — rationalise the system, bound the degree | `08:02Z`, 45 min | complete, took 20 |
 | 11 | `BC-066` — eliminate the five-unknown system | `08:30Z`, 90 min | ready |
 | 12 | `BC-061` — exact LP over certified coefficients | `10:00Z`, 60 min | ready |
-| 13 | `BC-069` — the one condition `n = 5` still needs | `11:00Z`, 60 min | ready |
-| 14 | `BC-067` — close the round trip at `n = 11` | `12:00Z`, 60 min | ready |
+| 13 | `BC-069` — the one condition $n = 5$ still needs | `11:00Z`, 60 min | ready |
+| 14 | `BC-067` — close the round trip at $n = 11$ | `12:00Z`, 60 min | ready |
 | 15 | `BC-068` — pin the atlas SVG’s emission (D-359) | `13:00Z`, 60 min | ready |
 | 16 | `BC-062` — reachability-scoped verification | `14:00Z`, 45 min | ready |
-| 17 | `BC-063` — `n = 5` rigidity in the catalogue | `14:45Z`, 45 min | ready |
+| 17 | `BC-063` — $n = 5$ rigidity in the catalogue | `14:45Z`, 45 min | ready |
 | 18 | `BC-064` — endpoint check and run close | `15:30Z`, 30 min | reserved |
 
 `BC-066` is first because it is the only remaining block that can change what this run
-concludes about `n = 29`: everything else improves the pipeline, and that one decides
+concludes about $n = 29$: everything else improves the pipeline, and that one decides
 whether the exact route reaches at all.
 `BC-064` is reserved and may not be borrowed from, for the reason D-358 records.
 
@@ -1623,7 +1623,7 @@ This agenda owns when work starts, when it must stop, and what it must leave beh
 
 The accept rule is untouched, and the one clause that is a judgment rather than
 arithmetic stays out of reach: an unattended runner may decline a marginal result and
-may not accept one. Anything at `n = 29` that passes is recorded `unresolved` with
+may not accept one. Anything at $n = 29$ that passes is recorded `unresolved` with
 `needs_review: true`.
 
 <!-- This document follows common-doc-guidelines.md.

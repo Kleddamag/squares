@@ -149,7 +149,7 @@ admissible unattended evidence.
 The agenda makes both statements executable instead of using a green preflight as a
 substitute for either one.
 
-The next scientific loop is intentionally narrow: resolve the observed `n=5` terminal-
+The next scientific loop is intentionally narrow: resolve the observed $n=5$ terminal-
 connectivity ambiguity, then test whether the classifier is decisive enough to support a
 discrete census. Runner capacity and recovery work can proceed in parallel, but no
 numeric night launches until both lanes meet at the supervised-cell gate.

@@ -92,12 +92,12 @@ It does not establish the separate strict inequality `s(11) >
 bound.
 
 The accepted statement is the disjunction registered by H-156: one of its two proposed
-routes produces an unconditional result above `3.826`. The separate rows-complete loop
-at `383/100`, re-optimisation at a finer net, and changed atom families remain open.
+routes produces an unconditional result above $3.826$. The separate rows-complete loop
+at $383/100$, re-optimisation at a finer net, and changed atom families remain open.
 Those questions do not remain open because H-156 failed; they remain possible successor
 routes after its first route succeeded.
 
-The `6713.2` seconds above is the sum of the three reported measurement wall readings
+The $6713.2$ seconds above is the sum of the three reported measurement wall readings
 and three reported gate wall readings.
 It is an additive reported cost, not elapsed wall for one uninterrupted process and not
 a fresh timing.

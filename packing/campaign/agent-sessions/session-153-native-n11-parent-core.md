@@ -227,9 +227,9 @@ This session adds a complete native method of coverage verification.
 
 The complete run certifies every interval, preserves strict containment at the final
 parent side, and finishes with no unresolved boxes.
-Its exact budget margin is `13483/125000000`. Together with the source event-cell
+Its exact budget margin is $13483/125000000$. Together with the source event-cell
 replay, the complete native interval method and reviewed transfer theorem support C4 for
-the strict bound `s(11)>31/8`; no C5 promotion or new result identifier is claimed.
+the strict bound $s(11)>31/8$; no C5 promotion or new result identifier is claimed.
 
 The immutable proof receipt belongs to clean `c183cc9ab`, which includes the repaired
 base `ab1b92bb3`. Later base integration and record changes preserve that provenance.

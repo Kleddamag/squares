@@ -117,10 +117,10 @@ $\sqrt7>0$ with square seven.
 Define
 
 $$
-c_*=(5+\sqrt7)/8,\qquad s_*=(5-\sqrt7)/8.
+c_{\ast}=(5+\sqrt7)/8,\qquad s_{\ast}=(5-\sqrt7)/8.
 $$
 
-Then $c_*^2+s_*^2=1$, both are positive, and $c_*+s_*=5/4$. Set
+Then $c_{\ast}^2+s_{\ast}^2=1$, both are positive, and $c_{\ast}+s_{\ast}=5/4$. Set
 
 $$
 T=\frac{2195+79\sqrt7}{2400}>1.
@@ -139,16 +139,16 @@ Thus $D\ge S$ certifies all four protocol inequalities for that pair at once.
 
 | Pair | Unit normal $n$ | $D=n\cdot(W_k-W_j)$ | $S=h_{K_j}(n)+h_{K_k}(n)$ |
 | --- | --- | --- | --- |
-| $01$ | $(c_*,-s_*)$ | $T$ | $1$ |
+| $01$ | $(c_{\ast},-s_{\ast})$ | $T$ | $1$ |
 | $02$ | $(1,0)$ | $259/150$ | $1$ |
 | $03$ | $(1,0)$ | $259/100$ | $1$ |
 | $04$ | $(0,-1)$ | $243/200$ | $1$ |
 | $05$ | $(1,0)$ | $339/200$ | $1$ |
-| $12$ | $(c_*,s_*)$ | $T$ | $1$ |
+| $12$ | $(c_{\ast},s_{\ast})$ | $T$ | $1$ |
 | $13$ | $(1,0)$ | $259/150$ | $1$ |
 | $14$ | $(-12/13,-5/13)$ | $2687/2600$ | $133/130$ |
 | $15$ | $(4/5,-3/5)$ | $3193/3000$ | $1$ |
-| $23$ | $(c_*,-s_*)$ | $T$ | $1$ |
+| $23$ | $(c_{\ast},-s_{\ast})$ | $T$ | $1$ |
 | $24$ | $(-1,0)$ | $259/150$ | $1$ |
 | $25$ | $(0,-1)$ | $253/200$ | $1$ |
 | $34$ | $(-1,0)$ | $259/100$ | $1$ |
@@ -158,8 +158,8 @@ Thus $D\ge S$ certifies all four protocol inequalities for that pair at once.
 All normals are exactly unit.
 On coordinate normals every hull has support $1/2$. For the three adjacent upper pairs,
 $L=|n_x|+|n_y|=5/4$, so a core with $a=2/5$ has support $1/2$ exactly; a disk has
-support $1/2$ too. Their displacement gives $c_*w+s_*(3/5)=T$, proving those three rows
-with the same normal for every support term.
+support $1/2$ too. Their displacement gives $c_{\ast}w+s_{\ast}(3/5)=T$, proving those
+three rows with the same normal for every support term.
 
 For pair 14, $L=17/13$. The disk has support $1/2$ and the $a=2/5$ hull has support
 $34/65$, giving $S=133/130$. Its exact positive margin is $27/2600$. Pair 15 joins two
@@ -232,7 +232,7 @@ where $\mathcal O_i$ denotes the old selected guard octagons, distinguished from
 residual common cores.
 Even each closed $\mathcal O_i$ is strictly forbidden to the center of a disk avoiding
 the four actual selected squares.
-A further core contains its radius-$1/2$ disk, so its center must satisfy $Y>69/40$ and
+A further core contains its radius-`1/2` disk, so its center must satisfy $Y>69/40$ and
 lie in
 
 $$

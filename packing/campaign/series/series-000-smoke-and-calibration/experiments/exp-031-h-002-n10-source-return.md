@@ -84,7 +84,7 @@ quench wall is 10.337 seconds, the complete command takes 11.35 seconds, and a s
 frozen semantic replay takes 0.48 seconds.
 
 All four endpoints share one geometric key and one contact key.
-That is a diagnostic of this local source-return control, not evidence that `n=10` has
+That is a diagnostic of this local source-return control, not evidence that $n=10$ has
 one terminal component or that random starts reach it.
 
 This round does not reopen H-002’s refuted universal claim.

@@ -3,19 +3,19 @@
 Status: **site set still open, unconverged**. The side stays open.
 No freeze.
 
-Session-140 leftover rank 4: four-grid `(26, 35, 43, 48)` unioned with T-017’s atom
-sites from `certificate.json` scaled from `99/25` to `3969/1000`, plus
+Session-140 leftover rank 4: four-grid $(26, 35, 43, 48)$ unioned with T-017’s atom
+sites from `certificate.json` scaled from $99/25$ to $3969/1000$, plus
 `--seed-windows 7`, `(n, L, B, net) = (12, 3969/1000, 9977/10000, 181 directions)`. Seed
-sites 2533. The 1200 s deadline stopped the row loop after 36 LP rounds at `12.091168`
+sites 2533. The 1200 s deadline stopped the row loop after 36 LP rounds at $12.091168$
 (54 still violated).
-It crossed 12 at round 11 (`12.000732`) and sat near `12.091` from round 32. This is
-lower than the Session-139 four-grid without windows at the same side (`12.116115`).
+It crossed 12 at round 11 ($12.000732$) and sat near $12.091$ from round 32. This is
+lower than the Session-139 four-grid without windows at the same side ($12.116115$).
 
-Remaining rows can only raise this value, so `12.091168` is not a covering below 12.
+Remaining rows can only raise this value, so $12.091168$ is not a covering below 12.
 Adding sites, or more wall, can still lower it.
 T-017 is unchanged. T-029 was not offered.
 H-218 stays unconfirmed.
-Side `3.969` already exists.
+Side $3.969$ already exists.
 
 ## Command
 
@@ -43,11 +43,11 @@ n18-1871-400-t028-auto-windows5: remain=-4s`.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `12.091168` |
+| Restricted optimum | $12.091168$ |
 | Sites / orbits / rows | 8569 / 1184 / 10040 |
 | Seed sites | 2533 |
 | LP rounds | 36 |
-| Crossing | round 11 (`12.000732`) |
+| Crossing | round 11 ($12.000732$) |
 | Wall | 1251.7 s |
 | `least_covered` | 0.997200 |
 | Converged | no (`violated == 54` at stop) |

@@ -93,7 +93,8 @@ experiment:
 ---
 # exp-007 — the bracketing quench at `n = 5`
 
-The first cell of the sweep, and the one whose answer is proved: `s(5) = 2 + 1/√2`.
+The first cell of the sweep, and the one whose answer is proved:
+$s(5) = 2 + 1/\sqrt{2}$.
 
 ## Result
 

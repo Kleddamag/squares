@@ -86,29 +86,29 @@ The assurance checks and the trailing-ceiling tripwire use the same rule
 ([`packing/tests/test_verified_upper_bound_contract.py:265-273`](../../../../packing/tests/test_verified_upper_bound_contract.py)).
 
 **Measured on 2026-09-22 over all 324 records: 129 cases fail the rule, not 128.** The
-extra case is `n = 29`. Its verified bound is `5.93383346267692918974379895098`, under
+extra case is $n = 29$. Its verified bound is $5.93383346267692918974379895098$, under
 `E-n029-interval-certified-upper`: a Krawczyk interval certificate at a relaxation of
 `1e-20` (`T-009` in
 [`packing/frontier/results.yaml`](../../../../packing/frontier/results.yaml)). That
-bound exceeds the reported `5.93383346267692` by about `9.2e-15`, which is more than
+bound exceeds the reported $5.93383346267692$ by about `9.2e-15`, which is more than
 half a unit of the reported value’s last printed place.
 The tripwire expects 129 (`TRAILING_BY_CORPUS["n=1..324"]`,
 `test_verified_upper_bound_contract.py:38`). The citation survey in `think-zb78` and the
-128 in `think-n56i` both count `n = 29` as certified.
+128 in `think-n56i` both count $n = 29$ as certified.
 
 That gap generalizes.
 Each queued case’s reported decimal was compared with its retained witness side, which
 carries more digits.
 
 **The witness side minus the printed value is never below minus half a unit and never
-above one unit, and in 71 of the 129 it is more than half a unit** (up to `0.995` units
-at `n = 239`). So the catalogue truncates rather than rounds.
+above one unit, and in 71 of the 129 it is more than half a unit** (up to $0.995$ units
+at $n = 239$). So the catalogue truncates rather than rounds.
 In the no-closed-form cases, even a perfect certificate at the true side lands more than
 half a unit above the printed value, so the rule calls it trailing.
 The rule allows a full unit only when both fields carry the same exact form, which is
-why the exact certificates pass it and `n = 29` does not.
+why the exact certificates pass it and $n = 29$ does not.
 
-This plan counts the queue as 128, following `think-n56i`, and treats `n = 29` as
+This plan counts the queue as 128, following `think-n56i`, and treats $n = 29$ as
 certified at its own relaxation.
 The stage, the tripwire and this queue must end up on one rule, and choosing it is the
 first [open question](#open-questions).
@@ -122,7 +122,7 @@ The evidence entries are in
 [`packing/frontier/evidence.yaml`](../../../../packing/frontier/evidence.yaml).
 Every replay runs from `packing/`.
 
-| Route | `n` | Evidence (evidence.yaml line) | Certificate | Replay |
+| Route | $n$ | Evidence (evidence.yaml line) | Certificate | Replay |
 | --- | --- | --- | --- | --- |
 | Exact, derived from a published rule | 5 | `E-n005-gobel-upper` (340) | `cases/gobel5/packing.py` | `uv run --frozen python -m cases.gobel5.verify_exact` |
 |  | 10 | `E-n010-gobel-upper` (410) | `cases/gobel10/exact.py` | `… -m cases.gobel10.verify_exact` |
@@ -140,29 +140,29 @@ Read from those entries and their code, the routes share six properties:
 
 - **A certificate carries the construction’s coordinates, never a relabelled witness.**
   Two cases show why. The strip witnesses declare the exact side rounded *down* by about
-  `4.85e-30`. The `n = 82` witness’s layout matches none of the construction’s eight
+  `4.85e-30`. The $n = 82$ witness’s layout matches none of the construction’s eight
   dihedral images (`E-gobel-strip-upper`, `E-n082-gobel-l-upper`, `D-398`).
 - **The exact routes decide every pair by exact sign.** The fields are `Q(sqrt 2)`,
-  `Q(sqrt 7)`, or the degree-8 field at `n = 11`. The arithmetic is
+  `Q(sqrt 7)`, or the degree-8 field at $n = 11$. The arithmetic is
   `sqpack.field.NumberField` with the exact separating-axis test in
   `sqpack.verify.verify_packing`.
 - **Each route has a negative control that fires.** The strip refuses one more diamond,
-  the off-centre family one more column square, and `n = 82` one more L square.
+  the off-centre family one more column square, and $n = 82$ one more L square.
 - **Each verifier declares `CERTIFIES`**, the sizes it decides.
   [`devtools.check_certificate_citations`](../../../../packing/devtools/check_certificate_citations.py)
   fails any declared size whose frontier record does not cite the package.
 - **The lifts are pinned.** `lifted_q2` and `lifted_q7` carry a `SIDES` entry per size
   and lift only the witness’s 0° and 45° poses (or the shared `Q(sqrt 7)` tilt).
   A drifted witness fails; it does not certify something else.
-- **The interval route is bespoke.** `n = 29` needed a hand-written contact system
+- **The interval route is bespoke.** $n = 29$ needed a hand-written contact system
   (`cases/kingbird29/system.py`), then Newton refinement, a Krawczyk proof of existence
   and uniqueness, a layout map, and a relaxation
   ([`cases/kingbird29/certify_interval.py`](../../../../packing/cases/kingbird29/certify_interval.py),
   on `sqpack.promote.{refine,krawczyk,relax,interval}`). Its limitations put it below
   exact on the assurance ladder, because it rests on mpmath’s directed rounding.
 
-Only two of the 19 carry a registered result: `T-011` (`n = 11`, exact, V4/C3) and
-`T-009` (`n = 29`, interval, V4/C3). The Göbel and lifted certificates are evidence
+Only two of the 19 carry a registered result: `T-011` ($n = 11$, exact, V4/C3) and
+`T-009` ($n = 29$, interval, V4/C3). The Göbel and lifted certificates are evidence
 entries only. Their limitations say the novelty is the exact verification of a side
 published in 1979–1980.
 
@@ -191,7 +191,7 @@ It works in three steps:
 2. It rounds the witness to rationals, taking each angle through the tangent of the half
    angle.
 3. It climbs a centre-dilation ladder `1 + 10^-k` until every pair and containment
-   decides exactly over `Q`.
+   decides exactly over $Q$.
 
 What it certifies is the side plus a small increase, never the reported value itself.
 `devtools.check_rational_witness_independent` is a second checker, pure `Fraction` and
@@ -200,8 +200,8 @@ sharing no code with `sqpack`, and it can confirm each output.
 Two beads record what the command did in rehearsal.
 Both are report evidence; neither has been replayed for this plan:
 
-- `think-3nc4`: 34 of 36 decimal witnesses at `n <= 100` promote in about 33 s. `n = 68`
-  and `69` refuse, because their witnesses are in corners form.
+- `think-3nc4`: 34 of 36 decimal witnesses at `n <= 100` promote in about 33 s. $n = 68$
+  and $69$ refuse, because their witnesses are in corners form.
 - `think-stb5` (`BC-165` in
   [Agenda 017](../../../../packing/campaign/agendas/agenda-017-six-hour-generator-rigidity-ceilings-and-w9-block.md),
   lines 480–547): ten cases (37, 39, 41, 51, 55, 70, 71, 83, 87, 88) promoted and
@@ -244,7 +244,7 @@ It does not prove the reported algebraic number.
 
   The SVGs hold six-decimal polygon coordinates.
   The witnesses recovered from them are in corners form, checked at tolerance `2e-6`,
-  and their squares are not exactly unit (one edge measures about `0.99999999977`). The
+  and their squares are not exactly unit (one edge measures about $0.99999999977$). The
   release describes outward-rounded interval validation but publishes no boxes, receipt,
   or checker, and that absence is its whole blocker (`E-unitsquare-release1-report`,
   evidence.yaml line 205).
@@ -276,7 +276,7 @@ Group R has 65 cases: 35 with a minimal polynomial and 30 numerical only.
 It depends on the open question.
 
 Forty queued Kingbird cases also carry a `source-evidence` blocker.
-It names Green’s missing lower-bound proof (MacIver’s at `n = 17`), so it is not about
+It names Green’s missing lower-bound proof (MacIver’s at $n = 17$), so it is not about
 the upper bound, and no block removes it.
 
 #### Group A: existing instruments reach 18 cases (measured)
@@ -287,23 +287,23 @@ the side against the record’s `exact_form`, gives 18 cases:
 | Instrument | New sizes | Side | Via deletion |
 | --- | --- | --- | --- |
 | `cases/gobel_strip`, `a = 9..16` | 104, 125, 149, 174, 201, 231, 262, 296 | `a + 1 + sqrt(2)/2` | 295 from 296 |
-| `cases/gobel_family`, `(a, b)` = (5,7), (5,8), (6,8), (7,11), (8,11) | 109, 124, 148, 233, 265 | `a + 1 + b/sqrt(2)` | 147, 232, 264 |
-| `cases/gobel_offcentre`, `(a, b) = (7, 10)` | 227 | `a + 3/2 + (b/2) sqrt(2)` | — |
+| `cases/gobel_family`, $(a, b)$ = (5,7), (5,8), (6,8), (7,11), (8,11) | 109, 124, 148, 233, 265 | `a + 1 + b/sqrt(2)` | 147, 232, 264 |
+| `cases/gobel_offcentre`, $(a, b) = (7, 10)$ | 227 | `a + 3/2 + (b/2) sqrt(2)` | — |
 
-“Via deletion” is monotonicity: remove one square from a certified `n`-packing and you
-have certified `n - 1` at the same side.
+“Via deletion” is monotonicity: remove one square from a certified $n$-packing and you
+have certified $n - 1$ at the same side.
 The queue holds five pairs with equal reported sides: 147/148, 232/233, 264/265, 290/291
 and 295/296. No verifier does deletion yet.
-The honest form is for the verifier to build the `n`-packing, drop one named square, and
-decide the `n - 1` pairs itself, declaring both sizes in `CERTIFIES`.
+The honest form is for the verifier to build the $n$-packing, drop one named square, and
+decide the $n - 1$ pairs itself, declaring both sizes in `CERTIFIES`.
 
 The builders are already general: `gobel_strip.build(a)` accepts any `a >= 2`. Only each
 verifier’s `SUBJECTS` tuple limits it (`gobel_strip/verify_exact.py:42`). The strip
-stopped at `a = 8` because `n = 84` was the last size in the register when it was
+stopped at $a = 8$ because $n = 84$ was the last size in the register when it was
 written, on 2026-08-31. The atlas grew to 324 on 2026-09-07. The companion pricing tool
 still carries `CEILING = 100` (`devtools/price_gobel_family.py:63`).
 
-The pair count at `n = 296` is 43,660, about eleven times `n = 89`’s. So the first block
+The pair count at $n = 296$ is 43,660, about eleven times $n = 89$’s. So the first block
 measures the replay’s wall before it adds the replay to the fast tier.
 
 #### Group B: new rules or lifts (39 cases, inferred)
@@ -323,15 +323,15 @@ Sub-grouped by the field and shape of the closed form:
   construction.
 - **`Q(sqrt 7)` sides**, `k + sqrt(7)/2`: 53, 127, 151, 176, 204, 234 and 299.
   `cases/lifted_q7` is the instrument.
-  X-009 records that `n = 53` refused recognition, because two of its four tilt classes
+  X-009 records that $n = 53$ refused recognition, because two of its four tilt classes
   gave no stable relation at the witness’s digits.
-- **The `n = 54` shape**, `k - sqrt(2)/2 + sqrt(1 + sqrt(2))`: 54, 107, 178 and 267,
+- **The $n = 54$ shape**, `k - sqrt(2)/2 + sqrt(1 + sqrt(2))`: 54, 107, 178 and 267,
   over a degree-4 field.
   `H-055` planned the lift and stopped on source provenance, never on the mathematics.
   `cases/n54_source_contract` holds only synthetic parser primitives.
-- **Rational sides**: `k + 4/7` at 50, 171 and 198; `k + 28/41` at 230 and 261; and
-  `17 + 26/41` at 293. The `n = 50` witness has 34 squares at 0° and 16 at `atan(3/4)`,
-  so an exact rational lift at `53/7` looks direct (survey inference).
+- **Rational sides**: $k + 4/7$ at 50, 171 and 198; $k + 28/41$ at 230 and 261; and
+  $17 + 26/41$ at 293. The $n = 50$ witness has 34 squares at 0° and 16 at `atan(3/4)`,
+  so an exact rational lift at $53/7$ looks direct (survey inference).
   `H-054` and its experiments `exp-048` and `exp-050` stopped on source serialization,
   not on feasibility.
 - **Singletons**: 202 (`2 + 9 sqrt(2)`), 237, 258 and 263.
@@ -391,7 +391,7 @@ Two routes certify group R. Which one clears the stage’s mark depends on the r
 #### Group C: UnitSquare (6 cases)
 
 **Update, 2026-09-29.** At 68, 103, 105, 110 and 131 Francisco Couzo’s smaller packings
-superseded the release and certify exactly here (T-056); only `n = 69` remains in this
+superseded the release and certify exactly here (T-056); only $n = 69$ remains in this
 group.
 
 68, 69, 103, 105, 110 and 131. These six alone carry no mathematics blocker; the source
@@ -406,7 +406,7 @@ Nothing was tried at 103, 105, 110 or 131. `promote` refuses these witnesses bec
 they are in corners form (`think-3nc4`).
 
 A block here has to recover exact unit-square poses from six-decimal polygons.
-It then runs rational promotion from a center-angle form, or the `n = 29` interval route
+It then runs rational promotion from a center-angle form, or the $n = 29$ interval route
 with a hand-built contact system.
 Either way the result is a relaxed certificate, so it depends on the rule.
 
@@ -440,7 +440,7 @@ Moving the record is a reviewed change, never a side effect of a run; the docstr
 **Input.** The next batch the queue command prints: one sub-family, and the one
 instrument that covers it.
 
-**Criterion, declared before running.** For every `n` in the batch, a verifier decides
+**Criterion, declared before running.** For every $n$ in the batch, a verifier decides
 every pair and every containment:
 
 - at the record’s `reported_upper_bound.exact_form`, by exact sign, for groups A and B;
@@ -457,7 +457,7 @@ A size that refuses stays in the queue, with its refusal recorded.
 2. *Build or extend.* Add the sizes to the verifier’s `SUBJECTS` and `CERTIFIES`, or
    write the new `cases/<package>/{packing,verify_exact}.py` with its negative control.
    For rational promotion, write each output to
-   `packing/witnesses/known-best-nNNN-rational.yaml`, beside the `n = 11` control and
+   `packing/witnesses/known-best-nNNN-rational.yaml`, beside the $n = 11$ control and
    not under `witnesses/known-best/`, which the atlas builder treats as generated.
    Certify the construction’s coordinates, not the witness.
 3. *Replay.* Run the verifier from a clean root, confirm with
@@ -548,7 +548,7 @@ read-only and should finish in under a second.
   No case list is kept by hand, so a block that certifies a case removes it from the
   queue by changing the record alone.
 
-- **Prints** one row per queued `n`, with these fields:
+- **Prints** one row per queued $n$, with these fields:
   - group and sub-family;
   - blocker kinds;
   - `exact_form`, or else the degree;
@@ -615,7 +615,7 @@ integrates them.
 - **Which rule marks an upper bound certified?** This decides whether 71 cases can ever
   clear by any route but an exact one.
   Three options:
-  1. Keep `bounds_agree_at_declared_precision`. Groups A and B clear, `n = 29` stays
+  1. Keep `bounds_agree_at_declared_precision`. Groups A and B clear, $n = 29$ stays
      trailing (129, not 128), and group R and group C clear only through an exact
      certificate whose form the record can compare.
      In the 70 queued cases where the catalogue truncated by more than half a unit, that
@@ -623,7 +623,7 @@ integrates them.
   2. Count a bound as certified when the certified ceiling is at most the reported value
      plus one unit in its last printed place.
      This matches the measured truncation.
-     `n = 29` and every rational-promotion certificate so far would clear, and the
+     $n = 29$ and every rational-promotion certificate so far would clear, and the
      evidence entry states the increase.
   3. A third stage state, *certified to within δ*, shown distinctly.
 
@@ -631,8 +631,8 @@ integrates them.
   the reported algebraic number left uncertified in the claim boundary, as `think-stb5`
   wrote it.
 
-- **Does a certificate for `n - 1` by deletion need its own evidence entry,** or can the
-  `n` entry’s scope carry both sizes?
+- **Does a certificate for $n - 1$ by deletion need its own evidence entry,** or can the
+  $n$ entry’s scope carry both sizes?
   The plan proposes one entry scoped to both.
 
 - **Should a family extension get a `T-NNN` result?** The existing 17 exact certificates

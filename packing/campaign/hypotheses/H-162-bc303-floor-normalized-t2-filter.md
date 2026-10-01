@@ -72,7 +72,7 @@ The complete actual-S condition in X-031 requires simultaneous physical parents 
 second owner drawn from every compatible admitted chart, beyond the 182-chart
 first-owner manifest.
 Neither filter acceptance nor H-161 local stability establishes global owner selection,
-an eleven-parent packing exclusion, or a stronger bound on `s(11)`.
+an eleven-parent packing exclusion, or a stronger bound on $s(11)$.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -394,7 +394,7 @@ neither extension has run a target.
 ## What is established
 
 The global bracket remains `3.810025723614703… ≤ s11 ≤ 3.877083590022814…`. We work at
-`L = 96/25` with strict inner squares of side `B = 9977/10000`. Existing ownership
+$L = 96/25$ with strict inner squares of side $B = 9977/10000$. Existing ownership
 arguments force four distinct selected corner owners, each containing one of two
 specified marks. The reviewed
 [sector lemma](../series/series-000-smoke-and-calibration/results/agenda-031/proofs/corner-owner-sector-footprints.md)
@@ -417,7 +417,7 @@ later targets. It is not the current handoff.
 | Can a conditional gain become a global exclusion? | Full net, strict-core transfer, and exhaustive branch accounting. Eight reflected representatives cover sixteen one-corner classes only with explicit certificate transformations. | One successful branch remains conditional. Avoid a 65,536-case four-owner search until cheaper screens justify it. |
 
 No triangle automatically banks one unit of weight.
-With `k` distinct owners, the remaining count is `11 − k`; the actual weight in
+With $k$ distinct owners, the remaining count is $11 - k$; the actual weight in
 guaranteed occupied regions must still be measured.
 A depth-one fractional family supplies an all-site lower bound on cover mass, even
 though it need not be a physical packing.

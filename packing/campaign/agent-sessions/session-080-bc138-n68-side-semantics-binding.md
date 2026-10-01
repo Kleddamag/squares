@@ -308,12 +308,12 @@ returns exactly that:
 
 | Model | Side | Direction | Width |
 | --- | --- | --- | ---: |
-| `declared:svg-literal` | `880345993651653/100000000000000` | exact | `0` |
-| `nearest-6` | that value ± `1/2000000` | symmetric | `1/1000000` |
-| `truncate-6` | that value to `+1/1000000` | away from zero | `1/1000000` |
+| `declared:svg-literal` | $\frac{880345993651653}{100000000000000}$ | exact | $0$ |
+| `nearest-6` | that value ± $\frac{1}{2000000}$ | symmetric | $\frac{1}{1000000}$ |
+| `truncate-6` | that value to $+\frac{1}{1000000}$ | away from zero | $\frac{1}{1000000}$ |
 
 Both widths sit far below the one-quarter ceiling
-`768618004216131/40000000000000000000`, and every comparison is exact rational
+$768618004216131/40000000000000000000$, and every comparison is exact rational
 arithmetic.
 
 ## No Frozen File Was Edited

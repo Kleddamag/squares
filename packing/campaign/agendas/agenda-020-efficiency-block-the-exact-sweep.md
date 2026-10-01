@@ -276,27 +276,28 @@ against frozen bytes, the only comparison this record trusts:
 
 | Atoms | Case | Time |
 | ---: | --- | ---: |
-| 1184 | `n = 17, 18` (side `459/100`) | `1473 s` |
-| 2097 | `n = 12` (side `99/25`) | `4866 s` |
-| 2260 | `n = 19, 20, 21` (side `24/5`) | `5378 s` |
+| 1184 | $n = 17, 18$ (side $\frac{459}{100}$) | `1473 s` |
+| 2097 | $n = 12$ (side $\frac{99}{25}$) | `4866 s` |
+| 2260 | $n = 19, 20, 21$ (side $\frac{24}{5}$) | `5378 s` |
 
 Three points fit `atoms^2.00` over the range.
 This table is agenda-019’s own, and the two extreme rows are also carried independently
 in `frontier/results.yaml`’s `T-017` and `T-020` `next_rung` fields, so the baseline has
 two citations rather than one.
 
-**Profile.** Measured the same evening, one direction of the `n = 20` certificate (2260
+**Profile.** Measured the same evening, one direction of the $n = 20$ certificate (2260
 atoms) with a `Fraction` replay of the whole verification running beside it in another
 process. `reduce_to_cells` took `2.29 s`; the dense `Fraction` grid took `39.35 s`. This
 session reproduced the shape of that split directly:
 `packing/cases/n20_fractional_certificate/certificate.json` decoded and reduced at
-direction index 37 gives `u = v = 4522` shared events, a `20,448,484`-cell dense grid,
-and exactly `16,599,441` reachable cells — the same figure the commit that made this
-change quotes. The grid was roughly 95% of the direction’s cost and the 16.6M-tuple cell
-list was most of the rest.
+direction index 37 gives $u = v = 4522$ shared events, a $20{,}448{,}484$-cell dense
+grid, and exactly $16{,}599{,}441$ reachable cells — the same figure the commit that
+made this change quotes.
+The grid was roughly 95% of the direction’s cost and the 16.6M-tuple cell list was most
+of the rest.
 
 **Target.** At least `10×`, with the operator’s own figure — under `100 s` for the
-`n = 20` decision — as the number this block was actually held to.
+$n = 20$ decision — as the number this block was actually held to.
 
 **Guard.** The identical `least_cell_mass` on every retained certificate, and
 `minimum_covered_mass_fraction` kept unchanged as the reference rather than replaced,
@@ -314,7 +315,7 @@ Three exact changes, read directly from
 memory.
 
 `weight_scale` takes the least common multiple of the atom weights’ denominators.
-Every retained certificate’s weights are multiples of `1/200000`, because the
+Every retained certificate’s weights are multiples of $1/200000$, because the
 generator’s `rationalise` step rounds each orbit to that scale already, so the scale
 this function finds for a retained certificate is the scale it was built at.
 `minimum_covered_mass_integer` then runs the same difference-array sweep
@@ -349,8 +350,8 @@ exactly that.
 ## The measurement
 
 Measured on the same loaded box, with the `Fraction` replay of the whole verification
-still running beside it in another process: `n = 17` (1184 atoms) decided in `21.8 s`
-against the `1473 s` baseline (`68×`), and `n = 20` (2260 atoms) in `38.7 s` against
+still running beside it in another process: $n = 17$ (1184 atoms) decided in `21.8 s`
+against the `1473 s` baseline (`68×`), and $n = 20$ (2260 atoms) in `38.7 s` against
 `5378 s` (`139×`), both returning the declared least covered mass.
 A later replay of the retained command, `python -m cases.n20_fractional_certificate`,
 with the `Fraction` replay stopped so the box was quiet, took `29.4 s` wall (about
@@ -363,13 +364,13 @@ disagree on the constant and agree on everything the certificate actually claims
 is the only agreement that matters.
 
 Equivalence, the correctness argument and not merely a speed claim: all 181 directions
-of the 373-atom `n = 11` rung, `Fraction` against integer, value and witness cell both,
+of the 373-atom $n = 11$ rung, `Fraction` against integer, value and witness cell both,
 no mismatch, in 145 s. `packing/tests/test_fractional_sweep_integer.py` holds this and
 eleven further checks — the scale is the correct lcm, the two routes agree on every
-direction of a small synthetic net at scale 231, six directions of the retained `n = 11`
+direction of a small synthetic net at scale 231, six directions of the retained $n = 11$
 rung including both ends, `reduce_to_cells` is exactly the spans expanded, the overflow
 fallback declines correctly with the limit patched down, the parallel schedule matches
-the serial one, and the `n = 17` certificate verifies in the fast tier at its declared
+the serial one, and the $n = 17$ certificate verifies in the fast tier at its declared
 value — 12 tests in `31.7 s` (`32.4 s` reproduced in this session).
 The wider fast fractional suite — `test_fractional_certificate.py` and
 `test_fractional_interval.py`, 55 tests, not the exhaustive tier — ran in `24 s` where

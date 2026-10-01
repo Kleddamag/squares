@@ -26,7 +26,7 @@ The review below retains the original findings and their basis.
 1. **Medium: reject self-intersecting polygons.** At source line 192,
    `normalise_convex_polygon` checks consecutive turn signs, which do not prove that a
    polygon is a simple convex boundary.
-   The rational vertex sequence `(0,0), (3,2), (-1,2), (2,0), (1,4)` is a
+   The rational vertex sequence $(0,0), (3,2), (-1,2), (2,0), (1,4)$ is a
    self-intersecting star with positive shoelace area and positive consecutive turns.
    The current helper accepts it; I reproduced that result using only this synthetic
    input. This violates the admitted malformed-polygon guard and leaves the half-plane

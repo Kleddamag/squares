@@ -46,11 +46,11 @@ The control is the exact T-025 endpoint certificate
 in full at that repository-relative path with Git revision
 `5ce2839f17b2f5a337260dc3f649e05ab974bd25`. It fixes all of the following:
 
-- container side `L = 191/50`, core side `B = 9977/10000`, 181 net directions, and D4
+- container side $L = 191/50$, core side $B = 9977/10000$, 181 net directions, and D4
   symmetry;
 - 584 positive point atoms in 79 D4 orbits;
 - 320 positive two-of-three threshold atoms in 40 D4 orbits; and
-- the theorem’s exact budget rule, total budget `685457679/62500000 = 10.967322864`, and
+- the theorem’s exact budget rule, total budget $685457679/62500000 = 10.967322864$, and
   complete closed-core domain.
 
 The 119 orbit representatives expand to 904 atoms.
@@ -71,7 +71,7 @@ Every other field is fixed by T-025:
 - point coordinates and threshold point triples;
 - threshold value two and budget coefficient one;
 - atom type, orbit membership, and canonical expansion order;
-- `L`, `B`, the angle limit, direction net, D4 action, and closed-domain semantics.
+- $L$, $B$, the angle limit, direction net, D4 action, and closed-domain semantics.
 
 The family permits sparse reweighting of an exact support *universe*. It does not permit
 moving or coalescing sites, changing threshold triples, adding atoms, changing the net
@@ -106,7 +106,7 @@ N+(C) = number of U025 orbit representatives assigned strictly positive weight.
 The control has `N+(T-025) = 119`. The fixed compression threshold is `N+(C) <= 23`:
 five copies of 23 account for only 115 of the 119 original orbit representatives.
 Expanded atom count, distinct positive weights, denominator size, manifest bytes, and
-independent coordinate parameters are useful diagnostics, but none may replace `N+`
+independent coordinate parameters are useful diagnostics, but none may replace $N+$
 after a target has run.
 
 A future H-163 target confirms the claim only if all of these statements hold:

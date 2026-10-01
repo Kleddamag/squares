@@ -111,10 +111,10 @@ experiment:
 
 This round spent the first 105-minute deadline of BC-232’s retained four-CPU-hour
 evidence budget, plus the runner’s terminal in-flight tail.
-It raised the exact lower endpoint from approximately `9.907905595` to
-`21342289572/2055263195 ≈ 10.384212408377215`; the only row-converged computational
-upper endpoint remains `11.055616942909783`. The resulting provisional width is about
-`0.671404535`, roughly 41.5 percent narrower than the pre-resume bracket.
+It raised the exact lower endpoint from approximately $9.907905595$ to
+$21342289572/2055263195 \approx 10.384212408377215$; the only row-converged
+computational upper endpoint remains $11.055616942909783$. The resulting provisional
+width is about $0.671404535$, roughly 41.5 percent narrower than the pre-resume bracket.
 
 That percentage is a checkpoint, not the routing decision.
 The frozen rule evaluates the full four-CPU-hour evidence budget, so the remaining 135

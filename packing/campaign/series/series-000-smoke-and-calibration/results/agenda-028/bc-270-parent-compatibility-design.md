@@ -13,7 +13,7 @@ identifies a redundant-remainder issue, corrected explicitly below on 2026-09-07
 The condition below is a list of inequalities in the actual four poses.
 It uses no preset center box, fitted orientation interval, assumed residual anchor or
 residual packing-number oracle.
-The other seven squares supply the contradiction through their radius-$1/2$ incircles
+The other seven squares supply the contradiction through their radius-`1/2` incircles
 and four explicitly constructed regions.
 The lower and upper band siblings remain open.
 No surviving coupled-LP witness is supplied, so
@@ -58,7 +58,7 @@ Impose all eleven containment conditions $h_i\le C_{i,x},C_{i,y}\le q-h_i$ and a
 weak SAT disjunctions
 
 $$
-\bigvee_{n\in\{e_i,f_i,e_j,f_j\},\ \sigma\in\{-1,1\}}
+\bigvee_{n\in\lbrace e_i,f_i,e_j,f_j\rbrace,\ \sigma\in\lbrace-1,1\rbrace}
 \sigma(C_j-C_i)\cdot n\ge H_i(n)+H_j(n),\qquad i<j.
 $$
 
@@ -74,8 +74,8 @@ squares and all their conditions, and is empty by the accepted capacity proof.
 
 ## Universal Guard Polygons
 
-Let $\mathcal D(m)=\{(x,y):|x|+|y|\le m\}$. Every actual unit square $Q_i$ contains
-$\mathcal D(m_i)$, where
+Let $\mathcal D(m)=\lbrace(x,y):|x|+|y|\le m\rbrace$. Every actual unit square $Q_i$
+contains $\mathcal D(m_i)$, where
 
 $$
 m_i=\frac{1}{2\max(|e_{i,x}|,|e_{i,y}|,|f_{i,x}|,|f_{i,y}|)}.
@@ -89,11 +89,11 @@ substituted average angle.
 Fix the closed octagon
 
 $$
-E=\{(x,y): |x|,|y|\le2/5,\quad |x|+|y|\le699/1000\}.
+E=\lbrace(x,y): |x|,|y|\le2/5,\quad |x|+|y|\le699/1000\rbrace.
 $$
 
 Its eight vertices have coordinate magnitudes $2/5$ and $299/1000$. Their squared norm
-is $249401/1000000<1/4$. Thus the whole closed $E$ lies strictly inside the radius-$1/2$
+is $249401/1000000<1/4$. Thus the whole closed $E$ lies strictly inside the radius-`1/2`
 disk. Since every residual unit square contains that disk, a residual center in
 $C_i+\mathcal D(m_i)+E$ forces interior overlap with square $i$, whatever the residual
 orientation. This assertion includes the guard boundary: the guard lies inside the open
@@ -122,7 +122,7 @@ for odd $i$, with inequalities
 $$
 |X-x_i|\le A,\quad |Y-v_i|\le A,\quad
 |X-x_i|+|Y-v_i|\le R,
-\qquad v_i=\begin{cases}\ell&i\text{ even},\\u&i\text{ odd}.\end{cases}
+\qquad v_i=\begin{cases}\ell&i\text{ even},\cr u&i\text{ odd}.\end{cases}
 $$
 
 The octagon $\mathcal D(m_i)+E$ has axis bound $m_i+2/5$ and diagonal bound
@@ -144,8 +144,8 @@ Require the following weak inequalities:
 
 $$
 \begin{gathered}
-b\le\ell\le u\le d,\qquad 0\le\Delta\le A-k,\\
-\ell-A\le b,\qquad u+A\ge d,\\
+b\le\ell\le u\le d,\qquad 0\le\Delta\le A-k,\cr
+\ell-A\le b,\qquad u+A\ge d,\cr
 x_0\le b+k,\qquad x_3\ge d-k,\qquad
 x_{i+1}-x_i\le2k+\Delta\quad(i=0,1,2).
 \tag{F}
@@ -160,10 +160,10 @@ Define
 
 $$
 \begin{aligned}
-y_B&=\ell-R+(x_2-x_0)/2,& w_B&=2(y_B-b),\\
-y_T&=u+R-(x_3-x_1)/2,& w_T&=2(d-y_T),\\
-y_L&=u+R+b-x_1,& v_L&=d-y_L,\\
-x_R&=x_2+R-\ell+b,& w_R&=d-x_R,\\
+y_B&=\ell-R+(x_2-x_0)/2,& w_B&=2(y_B-b),\cr
+y_T&=u+R-(x_3-x_1)/2,& w_T&=2(d-y_T),\cr
+y_L&=u+R+b-x_1,& v_L&=d-y_L,\cr
+x_R&=x_2+R-\ell+b,& w_R&=d-x_R,\cr
 y_R&=u-A,& h_R&=y_R-b.
 \end{aligned}
 $$
@@ -247,7 +247,7 @@ $$
 $$
 
 Every residual unit-square center belongs to this union, and two residual centers in one
-region would have distance at most $\beta<1$. Their radius-$1/2$ incircle interiors
+region would have distance at most $\beta<1$. Their radius-`1/2` incircle interiors
 would overlap, contradicting unit-square interior disjointness.
 Assign a center on a region seam to its lowest-index containing region.
 At most four residual squares fit.
@@ -383,7 +383,7 @@ representation.
 Keep $D$ and, for each $g\in\mathcal G$, keep the closed sibling
 
 $$
-P_{1,I,\pi}\cap\{g\le0\}.
+P_{1,I,\pi}\cap\lbrace g\le0\rbrace.
 $$
 
 Their union covers the parent: outside $D$, the equivalent conjunction has a strictly

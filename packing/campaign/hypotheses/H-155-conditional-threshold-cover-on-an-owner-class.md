@@ -81,7 +81,7 @@ hypothesis:
 ---
 # H-155 — Threshold Atoms Where Five Dots Are Not Enough
 
-PR 137’s five-dot certificate excludes one four-owner class at `96/25` because four
+PR 137’s five-dot certificate excludes one four-owner class at $96/25$ because four
 guaranteed occupied patches leave a residual domain that five points pierce.
 A sufficient global completion would exclude all remaining classes; more generally,
 every hypothetical packing needs at least one excluded valid selection.
@@ -89,7 +89,7 @@ The feasibility of such routing is unknown.
 A depth-one residual family of mass at least seven obstructs a point cover below seven
 on its declared residual domain.
 [X-024](../explorations/X-024-two-lines-at-eleven.md) reads that test as the same
-integrality gap the unconditional line crossed at `191/50`, and this claim is the
+integrality gap the unconditional line crossed at $191/50$, and this claim is the
 discriminator: on a class whose point cover is stuck at seven or above, do threshold
 atoms bring the budget below seven?
 
@@ -113,22 +113,22 @@ refute the existential claim.
 [Lane X1](../series/series-000-smoke-and-calibration/results/agenda-034/lane-x1-corner-conditioning-is-mass-neutral.md)
 provides an exact point-cover obstruction on particular endpoint-patch relaxations.
 The retained family leaves mass ten for the named single-owner classes; the stated
-combinations with disjoint deleted sets leave mass `11-m`. This prevents a point cover
+combinations with disjoint deleted sets leave mass $11-m$. This prevents a point cover
 below the required budget on those domains.
 It does not prove that every physical packing must use one of those selections, or that
 a stronger domain has the same obstruction.
 
-The survivor has a two-of-three violation `5/4` against budget one and a heaviest
-rank-one clique of weight `11/8` with fractional piercing number `5/3`. These match
+The survivor has a two-of-three violation $5/4$ against budget one and a heaviest
+rank-one clique of weight $11/8$ with fractional piercing number $5/3$. These match
 named readings of its source family.
 They do not identify all cuts or establish equality of the two covering optimization
 problems. In particular, the survivor is not feasible for the threshold relaxation and
 does not meet this hypothesis’s refutation criterion.
 
-The cap argument from eleven disjoint B-cores near `3.868983` concerns its unconditional
+The cap argument from eleven disjoint B-cores near $3.868983$ concerns its unconditional
 core domain. Transfer to the corner-owner domain would need separate verification of
 owners, classes, occupied patches and any further restrictions at that same side.
-The physical ownership theorem at `96/25` cannot supply those missing premises.
+The physical ownership theorem at $96/25$ cannot supply those missing premises.
 
 A global owner argument needs an excluded valid selection for every hypothetical
 physical packing; it need not exclude every overlapping raw label independently.

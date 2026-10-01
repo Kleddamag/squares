@@ -35,7 +35,7 @@ other 48 placements each have one.
 Thus the preimage multiplicities sum to $4(6)+8(2)+48=88$ and the averaged mass is
 $\sum_Om_O(n_O/m_O)=11$ exactly.
 The side’s reduced coefficients in the declared basis $(1,u,\ldots,u^7)$ are
-`(5/2, 37/8, -5, 35/8, 8, 15/8, -15/2, 25/8)`.
+$(5/2, 37/8, -5, 35/8, 8, 15/8, -15/2, 25/8)$.
 
 This is the retained packing average from the design, not an optimized weighting.
 Exact source validity and D4 isometries justify averaging eight packings almost
@@ -49,13 +49,13 @@ larger mass.
 [`support_screen.py`](../../../../../src/sqpack/full_size_density/support_screen.py)
 binds the exact source and preimages, orders orbit representatives, and implements the
 declared center-first sequence.
-Its fallback checks the fixed direction `(1, 2)` against every supporting line before
+Its fallback checks the fixed direction $(1, 2)$ against every supporting line before
 trying the fixed dyadic perturbations.
 Only exact boundary equalities are skipped; other guard failures propagate.
 It records trial and skipped indices, then admits first-occurrence integer rows with a
 positive coefficient in every orbit column.
 
-The extension is the design’s 36 points in increasing `(k, i, j)` order, with boundary
+The extension is the design’s 36 points in increasing $(k, i, j)$ order, with boundary
 skips and first-occurrence incidence deduplication.
 The LP adapter retains its explicit zero basis and 64-pivot limit.
 The runner permits at most two solves and independently replays the first certificate

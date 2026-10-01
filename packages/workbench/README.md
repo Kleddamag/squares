@@ -167,9 +167,9 @@ uv run --frozen --all-extras --group dev squares-workbench-check-transitions --t
 ## Regenerating and publishing the ascent videos
 
 The explainer plays, and the README links, two cuts of this page’s Animate mode at
-1080p60 with the CITATION section on: `n = 1…100` under the `social` profile and the
-full `n = 1…324` under `archive`. They are GitHub Release assets, never committed.
-Why, and what each profile holds, is the
+1080p60 with the CITATION section on: $n = 1\ldots100$ under the `social` profile and
+the full $n = 1\ldots324$ under `archive`. They are GitHub Release assets, never
+committed. Why, and what each profile holds, is the
 [delivery-profiles plan](../../docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md#publication);
 this section is the procedure, in order.
 The spikes under `packing/atlas/known-best/video/spikes/` are not part of it.
@@ -196,7 +196,7 @@ of each `python -m` and `squares-workbench-*` command below.
    - Node from `.node-version` (the engines field allows `>=24.18.0 <25`).
    - Disk for the PNG frames, which go to a temporary directory (move it with `TMPDIR`)
      and are deleted after the encode.
-     A trial near `n = 88` measured 160 kB a frame, so the 29,639-frame full cut needs
+     A trial near $n = 88$ measured 160 kB a frame, so the 29,639-frame full cut needs
      about 5 GB and more where the packings are denser; keep 10 GB free.
    - Time: the `v0.4.2` receipts record 562.6 s of capture for 8,401 frames and 2,105 s
      for 29,639 on the owner’s machine.
@@ -245,11 +245,11 @@ of each `python -m` and `squares-workbench-*` command below.
    cuts had 12 and 41 such frames, tracked as `think-dh9j`.
 
 6. **Cut the posters** from the new cuts.
-   The `n = 1…100` cut replaces the explainer’s
+   The $n = 1\ldots100$ cut replaces the explainer’s
    [`assets/ascent-n1-100-poster.png`](assets/ascent-n1-100-poster.png) with its
-   `n = 88` frame, and the `n = 1…324` cut replaces the overview’s
+   $n = 88$ frame, and the $n = 1\ldots324$ cut replaces the overview’s
    [`assets/ascent-n1-324-poster.png`](assets/ascent-n1-324-poster.png) with its
-   `n = 290` frame, both at 1280 × 720, so each updates the version stamp it shows.
+   $n = 290$ frame, both at 1280 × 720, so each updates the version stamp it shows.
    The receipt’s range picks which poster a cut writes:
 
    ```bash
@@ -257,11 +257,11 @@ of each `python -m` and `squares-workbench-*` command below.
    squares-workbench-poster site/workbench/ascent-n1-324-1080p60-citations.receipt.json
    ```
 
-   It takes the step’s settled last frame; `--before-end K` takes one `K` frames
-   earlier. The committed posters are the settled ends of `n = 88` in the `v0.4.2`
-   `n = 1…100` cut, frame 7,864 of 8,401 (17 frames earlier the colour fade has already
-   turned the picture grey), and of `n = 290` in the `v0.4.2` `n = 1…324` cut, frame
-   26,522 of 29,639.
+   It takes the step’s settled last frame; `--before-end K` takes one $K$ frames
+   earlier. The committed posters are the settled ends of $n = 88$ in the `v0.4.2`
+   $n = 1\ldots100$ cut, frame 7,864 of 8,401 (17 frames earlier the colour fade has
+   already turned the picture grey), and of $n = 290$ in the `v0.4.2` $n = 1\ldots324$
+   cut, frame 26,522 of 29,639.
 
 7. **Put the files on the release** named by the version from step 2:
 

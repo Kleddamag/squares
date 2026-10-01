@@ -56,25 +56,25 @@ review does not claim V3 alignment.
 | Axis C strict upper edge | ACCEPT | Label 15 occurs exactly when `y >= delta`; forced 0 requires `y < delta`, including exclusion of the two upper vertices. |
 | C single-wall parent projection | ACCEPT | Bottom and far walls are inactive on this domain. The lower folded endpoint minimizes parent extent, so parent existence is exactly `a+cx-sy >= e_j`. |
 | Rational event-stratum feasibility rule | ACCEPT | Positive maximum slack gives a feasible relative-interior point; negative slack excludes the stratum. At equality the unique maximizing corner must belong to the stratum. |
-| Irrational parent witness required by a C equality case | REFUSE | A rational maximizing value equal to `e_j` makes the lower-endpoint parent ray rational. See the correction below. |
+| Irrational parent witness required by a C equality case | REFUSE | A rational maximizing value equal to $e_j$ makes the lower-endpoint parent ray rational. See the correction below. |
 | S first-owner strip and its inactive walls | ACCEPT | Exclusion of the second mark is precisely `h-delta(c-s) < x <= h`. Every point in the strip has clearance greater than `1/sqrt(2)` from every container wall. |
 | Rational S configuration | ACCEPT | Both cores have the asserted single-mark incidence and labels; their source-matching parents are contained and strictly separated. This proves feasibility only. |
-| Two physical axis parents cannot realize S | ACCEPT | Their centre coordinates lie in an interval of length `2518679/2540000 < 1`, forcing interior overlap in both projections. Non-axis physical angles in axis source cells remain outside this exclusion. |
-| Opposite rolewise product and combined T2 equivalence | ACCEPT | Opposite parent groups have strict separation `708/3175`; symmetry gives the same full-pair minimum for both forced types. The aggregate consists of eight products. |
+| Two physical axis parents cannot realize S | ACCEPT | Their centre coordinates lie in an interval of length $\frac{2518679}{2540000} < 1$, forcing interior overlap in both projections. Non-axis physical angles in axis source cells remain outside this exclusion. |
+| Opposite rolewise product and combined T2 equivalence | ACCEPT | Opposite parent groups have strict separation $\frac{708}{3175}$; symmetry gives the same full-pair minimum for both forced types. The aggregate consists of eight products. |
 | General complete S decision formulation | ACCEPT | Shared centres and parent angles with complete separating-axis alternatives give the stated semialgebraic formulation. No executable complete solver is admitted here. |
 | C or S threshold determination, a charge minimum, adjacent-only T2, opposite T2 | REFUSE | No charge or complete threshold enumeration was evaluated. This refusal records absent evidence, not a scientific rejection. |
 | Global availability, global owner routing, or a changed n11 bound | REFUSE | The required theorem over actual eleven-parent packings is still absent. Local geometry and local helper outcomes cannot replace it. |
 
 ## Exact Geometry Checks
 
-For the unique bin-0 ray `r=(c,s)`, write `z=m1+xr+yJr`. Then
+For the unique bin-0 ray $r=(c,s)$, write `z=m1+xr+yJr`. Then
 
 $$
 z-m_2=(x+\delta(c-s))r+(y-\delta(c+s))Jr.
 $$
 
 The inequalities `h^2>2 delta^2` and `h>delta` imply `0<delta(c+s)<h` and
-`h-delta(c-s)>0`. Thus, throughout the label-0 square `[0,h]^2`, the second coordinate
+`h-delta(c-s)>0`. Thus, throughout the label-0 square $[0,h]^{2}$, the second coordinate
 already satisfies closed containment.
 Its first coordinate gives exactly the C rectangle and its strict S complement.
 For a non-axis eligible ray the four signed rays occupy bins 0, 2, 4, and 6 only.
@@ -101,10 +101,10 @@ coexistence with owner 2 still apply.
 
 For C strata, the complete label set is constant after retaining the interior level
 `y=delta(c+s)` and all rectangle endpoints.
-If `M=a+c sup(I_x)-s inf(I_y)`, positivity of `c,s` makes this the unique maximizing
+If $M=a+c \sup(I_x)-s \inf(I_y)$, positivity of $c,s$ makes this the unique maximizing
 corner of the closure.
-When `M>e_j`, points of the stratum approach that corner while retaining their atomic
-membership. When `M=e_j`, every other point has smaller wall clearance.
+When $M>e_j$, points of the stratum approach that corner while retaining their atomic
+membership. When $M=e_j$, every other point has smaller wall clearance.
 Hence equality requires both maximizing coordinates to be included.
 With singleton/open-interval products this permits only the vertex stratum.
 An excluded lower source endpoint instead requires strict clearance.
@@ -116,8 +116,8 @@ parent ray. The
 [retained X-029 text](../../../packing/campaign/explorations/X-029-bc303-t2-exact-geometry-draft.md)
 includes this correction: every feasible C stratum admits a rational parent witness.
 
-Every event coordinate is rational, so `M` is rational.
-If an accepted equality case has `M=e_j` and lower whole-angle tangent `L=L_j`, then
+Every event coordinate is rational, so $M$ is rational.
+If an accepted equality case has $M=e_j$ and lower whole-angle tangent $L=L_j$, then
 
 $$
 \cos\beta=\frac{1}{\sqrt{1+L^2}}
@@ -130,7 +130,7 @@ Both components are rational.
 The maximizing vertex, and therefore the centre, are rational too.
 Source reflection and quarter turns preserve that property.
 
-If `M>e_j`, choose a rational centre inside the same stratum with positive parent-wall
+If $M>e_j$, choose a rational centre inside the same stratum with positive parent-wall
 clearance. Rational unit rays are dense in each nondegenerate source cell, so a source
 angle sufficiently close to its lower endpoint gives a rational parent with that
 clearance. This also works when a source policy excludes the lower endpoint.
@@ -142,10 +142,10 @@ complete absence proof.
 The quadratic comparison remains necessary to decide the strata exactly.
 No rational-witness assertion for general S follows from this argument.
 
-The independent finite control gives a stronger fact for this particular net: `e_j^2`
+The independent finite control gives a stronger fact for this particular net: $e_j^{2}$
 has a rational square root only at index 0. It tests the reduced numerator and
 denominator using exact integer square roots for all 181 indices.
-Thus none of the actual non-axis C charts can have rational `M=e_j`. Keeping the generic
+Thus none of the actual non-axis C charts can have rational $M=e_j$. Keeping the generic
 equality branch in a reusable oracle is sound, but it is not an active non-axis case for
 these constants.
 
@@ -170,8 +170,9 @@ enumeration of the atomic arrangement.
 
 For the rational S control, independent vertex calculations verify the two mark
 memberships, strict core-in-parent containment, container containment, and complete
-labels `{0,7}` and `{9}`. The second parent’s whole-angle tangent lies strictly between
-`L_180` and 1. The supporting functional `y-x` gives exact parent separation
+labels $\lbrace0,7\rbrace$ and $\lbrace9\rbrace$. The second parent’s whole-angle
+tangent lies strictly between $L_{180}$ and 1. The supporting functional $y-x$ gives
+exact parent separation
 
 $$
 \frac{2022521}{878547000}>0.

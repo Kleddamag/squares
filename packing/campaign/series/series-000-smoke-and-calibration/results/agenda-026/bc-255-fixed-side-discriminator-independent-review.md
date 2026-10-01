@@ -31,7 +31,7 @@ localization, containment of each of the three A-points, and twelve-set coverage
 exact angles.
 The replay again returned all seven true, no escape, six 45-degree avoiding
 strata, and one canonical avoiding stratum.
-The counts by event-product dimension remain `[280, 526, 247]` and `[406, 841, 444]`.
+The counts by event-product dimension remain $[280, 526, 247]$ and $[406, 841, 444]$.
 These dimensions belong to the singleton/open-interval products; clipping can reduce
 their geometric dimension.
 

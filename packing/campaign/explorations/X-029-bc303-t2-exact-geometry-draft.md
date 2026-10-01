@@ -102,8 +102,9 @@ different displayed cores are disjoint, including their boundaries.
 Ownership and atomic charge use closed core membership.
 
 Let $A_c$ be the union of the complete signed-frame label sets supplied by the actual
-local owners. Forced 0 means $A_c\cap\{0,15\}=\{0\}$; forced 15 means that intersection
-is $\{15\}$. Other labels remain allowed.
+local owners.
+Forced 0 means $A_c\cap\lbrace0,15\rbrace=\lbrace0\rbrace$; forced 15 means
+that intersection is $\lbrace15\rbrace$. Other labels remain allowed.
 At a forced-0 corner the roles are C, S, O1; at a forced-15 corner they are C, S, O2. C
 has one core owning both marks, S has distinct owners of the two marks, and O1/O2 has
 one owner and one locally missing mark.
@@ -168,8 +169,8 @@ must be retained in an adjacent-only test.
 Let
 
 $$
-A=\min\{S(X):X\in\mathcal D^0_{{\rm BL},C}\cup
-\mathcal D^0_{{\rm BL},S}\}.
+A=\min\lbrace S(X):X\in\mathcal D^0_{{\rm BL},C}\cup
+\mathcal D^0_{{\rm BL},S}\rbrace.
 $$
 
 The domain is nonempty, and finite atomic charges give an attained minimum even on a
@@ -190,7 +191,7 @@ With $W=4000000$, the two remaining queries are exactly
 
 $$
 \begin{array}{ll}
-\mathrm C:& W\mu(C)\le4524199,\\
+\mathrm C:& W\mu(C)\le4524199,\cr
 \mathrm S:& W(\mu(C_1)+\mu(C_2))\le8524199.
 \end{array}
 $$
@@ -450,8 +451,8 @@ polygon-edge incidence for both marks in both cores.
 | Second parent contained | Half-extent $414151/585698$; minimum wall slack $84729/29284900$ |
 | First core strictly in parent | $1-2h=23/10000>0$ |
 | Second core strictly in parent | $1-2h(u_2\cdot r_2+\lvert\det(u_2,r_2)\rvert)=1660196533717283623/857735127788302010000>0$ |
-| Complete first-core labels | $\{0,7\}$ |
-| Complete second-core labels | $\{9\}$ |
+| Complete first-core labels | $\lbrace0,7\rbrace$ |
+| Complete second-core labels | $\lbrace9\rbrace$ |
 
 For $f(x,y)=y-x$, the first parent’s maximum is $247/1000$. The second parent’s centre
 has $f=287/300$, and its half-width is $\max(u_{2x},u_{2y})=207151/292849$. The parents
@@ -463,10 +464,11 @@ $$
 =\frac{2022521}{878547000}>0.
 $$
 
-The full corner availability is $\{0,7,9\}$, so the relevant set is exactly $\{0\}$.
-Each core owns one mark and their actual parents coexist with strict geometric
-clearance. The first parent uses the admitted physical axis endpoint; the second parent
-angle lies strictly inside its source cell.
+The full corner availability is $\lbrace0,7,9\rbrace$, so the relevant set is exactly
+$\lbrace0\rbrace$. Each core owns one mark and their actual parents coexist with strict
+geometric clearance.
+The first parent uses the admitted physical axis endpoint; the second parent angle lies
+strictly inside its source cell.
 **The two core masses have not been evaluated.** This is a positive feasibility control
 and a disclosed candidate for a later authorized charge check, not a surplus
 counterexample.

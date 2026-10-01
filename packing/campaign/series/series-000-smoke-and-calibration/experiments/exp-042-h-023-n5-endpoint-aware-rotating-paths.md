@@ -128,17 +128,17 @@ derived tied square-1 feature numerators, independent exact fixtures, and positi
 controls required by exp-041.
 
 Derive all forty owner-axis gap polynomials separately in each case.
-For every nonidentically-zero polynomial, divide by its maximal base factor `u^k` and
-maximal endpoint factor `(U-u)^l`, choose its exact fixed sign, and prove the remaining
+For every nonidentically-zero polynomial, divide by its maximal base factor $u^k$ and
+maximal endpoint factor $(U-u)^l$, choose its exact fixed sign, and prove the remaining
 residual strictly positive on the full closed interval.
-Retain `k`, `l`, the signed residual, and its exact positivity certificate.
+Retain $k$, $l$, the signed residual, and its exact positivity certificate.
 This must prove that every case has exactly:
 
-- base zeros at `u = 0`: `0-4:owner4:a-`, `1-4:owner4:a-`, `2-4:owner4:a+`,
+- base zeros at $u = 0$: `0-4:owner4:a-`, `1-4:owner4:a-`, `2-4:owner4:a+`,
   `3-4:owner3:a+`, and `3-4:owner4:a+`;
-- persistent zeros for `0 < u < U`: `0-4:owner4:a-`, `2-4:owner4:a+`, `3-4:owner3:a+`,
+- persistent zeros for $0 < u < U$: `0-4:owner4:a-`, `2-4:owner4:a+`, `3-4:owner3:a+`,
   and `3-4:owner4:a+`; and
-- endpoint zeros at `u = U`: `0-3:owner3:a-` plus those four persistent axes.
+- endpoint zeros at $u = U$: `0-3:owner3:a-` plus those four persistent axes.
 
 The closed-path union therefore has six labels, but no point has six simultaneous zero
 axes.
@@ -154,7 +154,7 @@ with the finite case list.
 
 ## Frozen stress and partial-result criterion
 
-Regenerate both `(3,4)` owner systems for every case from the production row builder,
+Regenerate both $(3,4)$ owner systems for every case from the production row builder,
 derive the exact tied-row labels, retain every multiplier’s exact full-interval positive
 lower bound, derive the cleared numerator degree bound, cancel every pose coefficient,
 and retain side coefficient `sqrt(2)`. Execute and serialize this determination
@@ -176,7 +176,7 @@ the target, and pass only when its actual identifier equals the expected one.
 Catching any `ValueError` or `TypeError`, failing before the mutation reaches its target
 invariant, or returning a boolean sentinel fails the control.
 
-The tied-feature mutation must remove one actual `(3,4)` tied row from production row
+The tied-feature mutation must remove one actual $(3,4)$ tied row from production row
 construction and be rejected by exact row-label or completeness validation.
 It may not branch to a direct “missing feature” exception before construction.
 The anti-sampling polynomial still passes through the production Bernstein prover.
@@ -209,7 +209,7 @@ two-owner stress certificates pass, and all twenty semantic controls reject with
 preregistered failure identifiers.
 
 Every case has five base zeros, four persistent open-interval zeros, and five positive
-endpoint zeros. The base-only `(1,4)` axis has multiplicity two; the endpoint-only
+endpoint zeros. The base-only $(1,4)$ axis has multiplicity two; the endpoint-only
 `0-3:owner3:a-` axis has multiplicity one and cleared factor
 `(sqrt(2)/2)(u^2+4)^2(u-U)`. The stress-only control keeps feasibility `criterion_met`,
 records `stress.pose_identity`, and leaves the combined determination unresolved.

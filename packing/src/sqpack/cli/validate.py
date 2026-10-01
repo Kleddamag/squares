@@ -2947,6 +2947,11 @@ def _readme(context: Context) -> str:
 
 def _math_markup(context: Context) -> str:
     """A file the math migration has done keeps its mathematics out of code spans."""
+    # The ratchet of Phase 3's math migration: a file listed as migrated in
+    # `devtools/math-markup.yaml` may not gain a math-like code span, nor a formula GitHub
+    # would show as dollars; the backlog of unmigrated files is reported, never touched.
+    # 3.6 s measured on 30 September 2026 over all 1,453 migrated files, across the cores
+    # (7.3 s serial, with another agent's load); 0.34 s with nothing migrated.
     return _module(context, "devtools.check_math_markup")
 
 
@@ -4258,15 +4263,18 @@ STEPS: tuple[Step, ...] = (
         fast=True,
         records=True,
         touches=(
-            # Any Markdown file can be listed in the ledger, and `fnmatch` lets `*`
+            *_CORE,
+            # Any Markdown file can be listed in the register, and `fnmatch` lets `*`
             # cross separators, so this claims every one of them.
             "*.md",
+            "packing/devtools/math-markup.yaml",
             "packing/devtools/check_math_markup.py",
             "packing/devtools/migrate_math.py",
-            "packing/devtools/math-migrated.yaml",
+            "packing/devtools/check_math_spans.py",
             "packing/devtools/repo_scope.py",
-            "packing/pyproject.toml",
-            "packing/uv.lock",
+            # The ratchet sorts generated views and exclusions by these two.
+            "docs/project/document-map.yaml",
+            ".flowmarkignore",
         ),
     ),
     Step(
@@ -4926,7 +4934,7 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "X-027 mathematics parses with pinned KaTeX",
         "synopsis agrees with the artifacts",
         "README agrees with the directory",
-        # Reads the ledger and the listed files, and counts `git ls-files`; nothing else.
+        # Reads tracked Markdown, its own register, the document map and .flowmarkignore.
         "migrated Markdown writes its math as LaTeX",
         "AGENTS.md mirrors the operating rules",
         "agenda map agrees with the agendas",

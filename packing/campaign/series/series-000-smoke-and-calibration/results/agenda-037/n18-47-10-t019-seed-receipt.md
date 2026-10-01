@@ -3,14 +3,14 @@
 Status: **converged above 18**. No certificate.
 The side stays open.
 
-Session-139 probe: BC-191 auto `(33, 44, 54)` unioned with T-019’s 1184 atom sites
-scaled from `459/100` to `47/10`,
+Session-139 probe: BC-191 auto $(33, 44, 54)$ unioned with T-019’s 1184 atom sites
+scaled from $459/100$ to $47/10$,
 `(n, L, B, net) = (18, 47/10, 9977/10000, 181 directions)`. The row loop converged at
-`18.165413` with `least_covered` 1 (44 LP rounds, 7117 sites / 939 orbits).
-Exact total mass `18165509/1000000 = 18.165509`. Crossed eighteen at round 7. Remaining
+$18.165413$ with `least_covered` 1 (44 LP rounds, 7117 sites / 939 orbits).
+Exact total mass $18165509/1000000 = 18.165509$. Crossed eighteen at round 7. Remaining
 rows can only raise this value.
-Adding sites can still lower it, so `47/10` is not barred.
-T-027 at `467/100` is unchanged.
+Adding sites can still lower it, so $47/10$ is not barred.
+T-027 at $467/100$ is unchanged.
 
 ## Command
 
@@ -34,13 +34,13 @@ Wall 390.4 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `18.165413` |
-| Artifact mass | `18165509/1000000 = 18.165509` |
+| Restricted optimum | $18.165413$ |
+| Artifact mass | $\frac{18165509}{1000000} = 18.165509$ |
 | Atoms | 636 |
 | Sites / orbits / rows | 7117 / 939 / 11265 |
 | Seed sites | 1184 |
 | LP rounds | 44 |
-| Crossing | round 7 (`18.000000`) |
+| Crossing | round 7 ($18.000000$) |
 | Wall | 390.4 s |
 | `least_covered` | 1 |
 | Converged | yes (`violated == 0`) |

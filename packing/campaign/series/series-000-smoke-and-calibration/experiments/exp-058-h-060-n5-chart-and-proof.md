@@ -235,7 +235,7 @@ experiment:
 ---
 # exp-058 — H-060 Chart, Constraint Accounting and Order-`2m` Coefficient Proof
 
-`BC-152` asked whether Goebel’s exact `n = 5` optimum is locally rigid at fixed side
+`BC-152` asked whether Goebel’s exact $n = 5$ optimum is locally rigid at fixed side
 under `H-060`’s preregistered criterion.
 This round is the mathematics of that lane, frozen.
 The argument itself is the proof artifact,
@@ -246,7 +246,7 @@ this record is the round that produced it, and the two must be read together.
 
 Four things, all replayed exactly and none of them a disposition of `H-060`.
 
-**One chart, and no correction term.** An intrinsic half-angle chart on `R^15`,
+**One chart, and no correction term.** An intrinsic half-angle chart on $R^{15}$,
 injective on all of it rather than on some unstated neighbourhood, with cleared
 denominators `1 + t_i^2 >= 1` everywhere.
 Its second-jet transfer is `J = diag(1, 1, 2)` per square with `Hess Phi(0) = 0`, so
@@ -264,7 +264,7 @@ On a neighbourhood cut out by 128 strict sign conditions, the local feasible sys
 exactly the 20 active rows.
 `D-390`’s endpoint incidence and `D-391`’s disjunction are excluded by computation
 rather than by argument: every active pair corner sits at along-edge parameter exactly
-`1/2`, and exactly one branch is satisfied per touching pair.
+$1/2$, and exactly one branch is satisfied per touching pair.
 
 **T-012 transfers.** All 28 Farkas certificates and the self-stress replay on the chart
 rows, giving `A_chart = A_geo J`, `q_chart = -2` on the pair rows, and
@@ -272,8 +272,8 @@ rows, giving `A_chart = A_geo J`, `q_chart = -2` on the pair rows, and
 
 **The induction closes, conditionally.** Given the cited curve selection lemma, no
 nonconstant analytic feasible arc through the pose exists, because every coefficient
-below order `2m` is forced into the flex line’s kernel and the self-stress contradicts
-feasibility at order `2m`.
+below order $2m$ is forced into the flex line’s kernel and the self-stress contradicts
+feasibility at order $2m$.
 
 ## What This Round Does Not Establish
 
@@ -368,7 +368,7 @@ to `instrument_ready: true`:
   open, now closed. The repair to Controls 1 and 4 was re-verified by removal: replace
   the guard with a no-op and both controls stop rejecting.
   The corrected constant is confirmed on all sixteen support features,
-  `G''(e_u4) = -2(m+1)` exactly; the reviewer’s earlier `-(m + 1/2)` was the geometric
+  `G''(e_u4) = -2(m+1)` exactly; the reviewer’s earlier $-(m + 1/2)$ was the geometric
   gap’s second derivative rather than the cleared chart polynomial’s. The structural
   conclusion is unchanged and now machine-checked: the restricted second jet is an
   affine function of the support feature’s own base margin, and is **not** an
@@ -443,16 +443,16 @@ denied the instrument existed:
   theorem for convex polygons; the topological half of `u -> 2 atan(u)` being a
   homeomorphism onto `(-pi, pi)` (the polynomial injectivity is verified, the topology
   is cited); containment of a convex square in a convex rectangle reducing to its four
-  corners; and continuity of polynomials, which is what makes `U` open.
+  corners; and continuity of polynomials, which is what makes $U$ open.
 - **The binding compares a restricted second jet**, along one chart ray only — the image
-  of `T-012`’s single free direction, `e_u4` halved — not the full chart Hessian.
+  of `T-012`’s single free direction, $e_{u4}$ halved — not the full chart Hessian.
   Directions outside the first-order cone are not compared, because `T-012` supplies no
-  `q` for them.
+  $q$ for them.
 - **Classification covers single-support-feature touches only**; edge-flush and
   corner-on-corner touches are refused rather than classified.
-- **The reduction audit samples only inside `U`**, on a fixed grid rather than a search
-  towards `U`’s boundary, which is where a reduction argument is most likely to fail.
-  Points outside `U` are counted and skipped, so the filter is exercised, but no sampled
+- **The reduction audit samples only inside $U$**, on a fixed grid rather than a search
+  towards $U$’s boundary, which is where a reduction argument is most likely to fail.
+  Points outside $U$ are counted and skipped, so the filter is exercised, but no sampled
   point sits near the boundary by construction.
 
 The frozen packet itself is not subject to the restricted-jet limitation:
@@ -522,7 +522,7 @@ recorded digest.
 
 ## Novelty, as Scoped
 
-The admissible claim is the first exact proof that Goebel’s `n = 5` optimum is locally
+The admissible claim is the first exact proof that Goebel’s $n = 5$ optimum is locally
 rigid at fixed side — a property Kingbird asserts with no method anywhere on the site,
 that Goebel’s 1979 paper does not state (the words “rigid” and “unique” occur zero times
 in it), and that Friedman’s survey does not annotate.
@@ -549,7 +549,7 @@ texts.
 
 Not established and not claimed: a numerical isolation radius; rigidity when the
 container side is free, which `X-007` measured to be false; global uniqueness of the
-`n = 5` optimum; rigidity of any other `n = 5` optimal family; applicability of the
+$n = 5$ optimum; rigidity of any other $n = 5$ optimal family; applicability of the
 Connelly–Whiteley theorem as stated; any novelty beyond the above.
 
 No frontier property, result-register entry or evidence record changed *in this round*,
@@ -573,7 +573,7 @@ code.
 1. **A from-scratch reconstruction.** In sympy, sharing no code with the packet, with
    `sqpack` or with the instrument, the reviewer rebuilt the pose and chart and
    reproduced: all 400 elementary polynomials classified by exact sign (80 wall-corner
-   functions 16/64 with minimum inactive margin `1 - √2/4`; 320 pair functions, 4
+   functions 16/64 with minimum inactive margin $1 - \sqrt{2}/4$; 320 pair functions, 4
    touching pairs and 6 noncontact); the 28 negative witnesses, value for value; the 128
    strict conditions of `N`; the 20 active rows in `T-012`’s own order, with every
    gradient matching the §2.5 table and column `t4` identically zero; `q_chart = -2` on
@@ -583,7 +583,7 @@ code.
    row inequalities; the self-stress, `w · q_chart = -2√2`, and `Φ = Σ w_j g̃_j`
    restricting to `-√2 · t4²`; `T-012`’s 28 stored certificates and its self-stress
    replayed against the reviewer’s own `S A_chart`; and Lemma 8 on random rational arcs
-   at `m = 2, 3`.
+   at $m = 2, 3$.
 2. **This round’s own scripts**, run read-only, all passing, with all seven files
    hashing to the digests retained in this round’s
    [results record](../results/exp-058-h-060-n5-chart-and-proof.json).
@@ -598,19 +598,20 @@ code.
    determination, which confirms independently of this record’s own statement that the
    current build differs from the reviewed one in provenance metadata only.
 
-**The exact scope, and it is the whole of what is claimed.** For `s = 2 + √2/2` and
-Goebel’s labeled pose `P⁰` in `C = (ℝ² × S¹)⁵`, `P⁰` is an isolated point of `Feas(s)`
-(closed unit squares in `[0, s]²`, pairwise disjoint interiors); equivalently there is
-no nonconstant continuous feasible path from `P⁰` and no sequence of distinct feasible
-poses converging to it; hence Kingbird-rigid at fixed side.
+**The exact scope, and it is the whole of what is claimed.** For $s = 2 + \sqrt{2}/2$
+and Goebel’s labeled pose $P^0$ in $C = (\mathbb{R}^2 \times S^1)^5$, $P^0$ is an
+isolated point of `Feas(s)` (closed unit squares in $[0, s]^2$, pairwise disjoint
+interiors); equivalently there is no nonconstant continuous feasible path from $P^0$ and
+no sequence of distinct feasible poses converging to it; hence Kingbird-rigid at fixed
+side.
 
 **Not claimed, and not to be claimed on this review:** any isolation radius; rigidity
-with the side free, which is false (`X-007`); global uniqueness; any other `n = 5`
+with the side free, which is false (`X-007`); global uniqueness; any other $n = 5$
 optimum; applicability of Connelly–Whiteley as stated; and any method novelty — the
 closing principle is classical and the `[CW96]` Theorem 4.3.1 proof shape is not new.
 
 **Novelty, `S3`, in the reviewer’s own words as accepted:** the first exact *proof* of
-fixed-side local rigidity of Goebel’s `n = 5` optimum — a property *asserted without
+fixed-side local rigidity of Goebel’s $n = 5$ optimum — a property *asserted without
 proof* by Kingbird (archived page, line 44), not stated by Goebel, and not stated by
 Friedman (`DS7` Theorem 2 is a lower bound only).
 The reviewer checked those three sources first-hand rather than through the survey.
@@ -620,7 +621,7 @@ None is a condition of the pass, and none is closed by acceptance.**
 
 1. **`BCR` Proposition 8.1.13’s printed page is still unread.** Non-blocking: the
    review’s §6.5 derives the needed statement from primary-text `BPR` Theorem 3.22 plus
-   the one-variable Puiseux fact, through the `t = u^p` bridge Coste states and the
+   the one-variable Puiseux fact, through the $t = u^p$ bridge Coste states and the
    reviewer verified first-hand in his notes; Milnor with the finite-union reduction of
    `X-012` §4.1 is a third route.
 2. **The second-order-sufficiency numbering is from memory** — on the non-acceptance
@@ -628,12 +629,12 @@ None is a condition of the pass, and none is closed by acceptance.**
 3. **Prior-art scoping comes from the coordinator’s survey and is unverified against the
    primary texts** — carried *outside* the claim, which is where it stays.
 4. **The instrument binds only the restricted jet along `e_{u4}`** — sufficient, since
-   Lemma 8 at order `2m` and Theorem 11 consume only `eᵀ H_j e`.
+   Lemma 8 at order $2m$ and Theorem 11 consume only `eᵀ H_j e`.
 5. **The instrument’s reduction audit samples only the neighbourhood interior** —
    irrelevant to the proof: `N` is defined by sign persistence rather than by a radius,
    and the proof consumes no boundary behaviour.
 6. **The Kingbird thirteen-versus-four list tension** (`X-012` §7.3) is real and
-   unresolved, and not load-bearing: `n = 5` is on both lists.
+   unresolved, and not load-bearing: $n = 5$ is on both lists.
 7. **New, minor:** `X-012` §1.3 (i) is terse — a path can be constant on an initial
    segment, so the argument wants one sentence taking the supremum of that interval.
    The conclusion holds; the frozen mathematics is left as it stands and this is
@@ -652,7 +653,7 @@ determination above; and this round’s
 run data and still states the round’s own disposition at the freeze.
 
 **What the pass authorised elsewhere**, and it is the complete list: clearing
-`needs_review` here; setting the `n = 5` frontier rigidity property to locally rigid at
+`needs_review` here; setting the $n = 5$ frontier rigidity property to locally rigid at
 fixed side, with a new evidence record `E-n005-fixed-side-local-rigidity`; and
 registering the theorem as `T-014`, `apparently-novel` at `S3`, which is permitted only
 because the reviewer independently accepted the novelty basis.

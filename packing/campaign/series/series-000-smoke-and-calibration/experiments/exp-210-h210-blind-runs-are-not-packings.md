@@ -93,9 +93,9 @@ cannot also be its test.
 
 ## What Was Measured
 
-A blind run starts from the known-best packing for `n - 1`, drops the new square into
+A blind run starts from the known-best packing for $n - 1$, drops the new square into
 the emptiest cell of a coarse grid, and runs contact forces, wall forces and a decaying
-shake while the container contracts toward the known-best side for `n`. It is not given
+shake while the container contracts toward the known-best side for $n$. It is not given
 the destination poses.
 In the `bodies` style the benchmark used, squares also move as rigid blocks whose
 membership comes from matching the two records.

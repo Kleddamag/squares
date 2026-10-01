@@ -2,7 +2,7 @@
 
 Status: **the confirm half of the criterion is met by set C and awaits the Fable max W2
 review H-240 requires before any register entry.** `decide_certificate` printed
-RETAINABLE on a frozen point certificate of mass `5036431/250000 = 20.145724 < 21`.
+RETAINABLE on a frozen point certificate of mass $5036431/250000 = 20.145724 < 21$.
 Nothing here is a register entry or a retained result until the coordinator admits the
 bytes and the review passes.
 
@@ -26,13 +26,13 @@ uv run --frozen --all-extras --group dev python -m devtools.run_fractional_colge
   --json <X>-run.json --row-log <X>-rows.jsonl --log <X>.log
 ```
 
-Auto grids resolved to `(34, 46, 56)` at inset `1/2` for all three sets.
+Auto grids resolved to $(34, 46, 56)$ at inset $1/2$ for all three sets.
 
 | Set | Site flags | D (s) | Seed sites | Orbits / sites / rows | LP rounds | Wall | Stop | Objective |
 | --- | --- | ---: | ---: | --- | ---: | ---: | --- | --- |
 | A | `--seed-certificate cases/n20_fractional_certificate/certificate.json --seed-map scale --seed-windows 6` | 3600 | 2256 | 1106 / 8472 / 13227 | 54 | 3814.2 s (real 63m35s) | deadline, unconverged; least covered 0.993953, 144 violated | 20.040960 (float LP on an incomplete row set; not a value) |
-| B | `--seed-windows 5` | 3600 | 400 | 861 / 6616 / 12376 | 61 | 1908.8 s (real 31m50s) | converged | 20.131946; frozen mass `20132143/1000000`, 1460 atoms |
-| C | `--seed-windows 0` | 2700 | 0 | 806 / 6216 / 8895 | 36 | 690.9 s (real 11m32s) | converged | 20.145556; frozen mass `5036431/250000`, 1228 atoms |
+| B | `--seed-windows 5` | 3600 | 400 | 861 / 6616 / 12376 | 61 | 1908.8 s (real 31m50s) | converged | 20.131946; frozen mass $\frac{20132143}{1000000}$, 1460 atoms |
+| C | `--seed-windows 0` | 2700 | 0 | 806 / 6216 / 8895 | 36 | 690.9 s (real 11m32s) | converged | 20.145556; frozen mass $\frac{5036431}{250000}$, 1228 atoms |
 
 Set C’s first launch (09:04:49Z) was killed by an external SIGTERM at 09:17:27Z. The
 same SIGTERM ended the n12 leg-2 run and a ceiling reader in the same second.
@@ -64,10 +64,10 @@ The declared file differs from the raw freeze only in `least_cell_mass`, checked
 `jq -S` diff. It declares no `variant`, so the gate decided it as `unconditional`. Its
 header reads `id C-n021-fractional-122-25`, `claim "s(21) >= 122/25"`,
 `direction_steps 181`, `angle_limit 207107/500000`, `symmetry D4`. The declaration sweep
-took 65 s and reported least cell mass `250001/250000`.
+took 65 s and reported least cell mass $250001/250000$.
 
 **Set B: REFUSED by a stalled interval route, not by a counterexample.** The sweep
-accepted it with least cell mass `2000013/2000000`. The interval route then gave:
+accepted it with least cell mass $2000013/2000000$. The interval route then gave:
 
 ```text
 interval accepted=False enclosure=(Fraction(3756841, 4000000), Fraction(2000013, 2000000)) boxes=4894465 stalled=1608 (206s)
@@ -82,8 +82,8 @@ upright squares, with zero width across centre lines such as y = 3.4015333 and y
 That much is measured.
 The cause below is inferred:
 
-- The freeze has 15 distinct atom rows with a partner exactly `B = 9977/10000` above.
-  One example is `58777/60000` and `58777/60000 + B`, both carrying weight.
+- The freeze has 15 distinct atom rows with a partner exactly $B = 9977/10000$ above.
+  One example is $58777/60000$ and $58777/60000 + B$, both carrying weight.
 - A stalled centre line is exactly where an upright placement has both closed edges on
   two such rows. The pitch-B window lattice (`--seed-windows 5`) is the likely source.
 - Set C has no windows and no row pair exactly B apart, and it decided with 0 stalls.

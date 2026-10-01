@@ -57,7 +57,7 @@ hypothesis:
 # H-048 — whether the cheap screen can be trusted
 
 The enumerator’s cost model has two tiers: a **glued** screen that treats each chunk as
-a rigid tile, reducing the LP to roughly `2k + 1` variables, and a **soft** re-solve
+a rigid tile, reducing the LP to roughly $2k + 1$ variables, and a **soft** re-solve
 that frees every square within its angle class.
 Screening is only worth doing if the glued ranking keeps the eventual winner near the
 top.
@@ -69,11 +69,11 @@ If the screen is faithful, enumeration costs one cheap solve per stratum plus on
 expensive solve per retained stratum.
 The nominal budget is `max(1, ceil(0.1 N))`; all candidates tied at its boundary are
 retained, and their actual cost is reported.
-If it is not, every stratum needs the full soft solve and the enumerable `n` shrinks
+If it is not, every stratum needs the full soft solve and the enumerable $n$ shrinks
 accordingly.
 
 The cells are the proved ones on purpose.
-At `n = 5` and `n = 10` the analytic optimum is known, so a disagreement between the two
+At $n = 5$ and $n = 10$ the analytic optimum is known, so a disagreement between the two
 rankings is unambiguously an instrument fact.
 It is also the natural place for any leftover degenerate-cell instability
 ([D-059](../../../defects.md)) to appear, since a glued aligned stratum is the most

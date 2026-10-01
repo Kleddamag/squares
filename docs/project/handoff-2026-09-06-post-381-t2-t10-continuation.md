@@ -68,7 +68,7 @@ accounting entry. Neither boundary promises completion at active minute 600.
   refined-containment test, with registration and instrument controls committed before
   measurement. Its transport `30c44bb6` has now passed independent review: the target
   failed, and the remaining possible fixed-site/net/relative-weight gain is below
-  `0.00000125` above T-022. Integration remains pending; no further target is selected.
+  $0.00000125$ above T-022. Integration remains pending; no further target is selected.
 
 The nominal T+4 integration decision is being closed on completed evidence at actual
 active minute **124:14**, under the
@@ -224,7 +224,7 @@ Preserve these claim labels:
   dual. It proves no strong duality, attainment, singular-primal theorem, or numerical
   endpoint.
 - BC-245 is a finite typed stationary-language theorem, not an enumerated or complete
-  `n = 11` atlas.
+  $n = 11$ atlas.
 - BC-243 may report only an exact dual lower value and the one-sided interval
   `[D, infinity)`. Continuum primal coverage belongs entirely to BC-244.
 
@@ -608,7 +608,7 @@ nonquantified improvement; it is not part of T-022 and cannot change this releas
 claim without its own proof packet and source-distinct review.
 The `think-zq2u` fixed-atom core-shrink route is the quantitative companion: it asks for
 an exact rational shrink with minimum net-core mass above the rescaling threshold
-`434547/440000`, or a retained obstruction.
+$434547/440000$, or a retained obstruction.
 It is likewise nonblocking.
 These mathematical scope statements do not undo the operational disposition of either
 bead.
@@ -634,9 +634,9 @@ an ordinary non-triggering checkpoint.
 
 The implementation controls must prove that:
 
-- a finite, converged objective below `n` stops before site addition and writes all
+- a finite, converged objective below $n$ stops before site addition and writes all
   requested outputs normally;
-- equality, a finite value above `n`, and an unconverged value below `n` do not trigger
+- equality, a finite value above $n$, and an unconverged value below $n$ do not trigger
   the stop;
 - a converged non-finite objective produces a technical refusal before iteration or
   state publication;
@@ -775,7 +775,7 @@ The review must:
 
 5. Run all three falsifying controls: change one active-row coefficient, reverse one
    selected separating-axis row while retaining its stress, and change one per-row
-   factor from `2/K_j` to `1/K_j`. The last mutation changes the exact product from two
+   factor from $2/K_j$ to $1/K_j$. The last mutation changes the exact product from two
    to one and must be rejected before any preferred-radius comparison can pass.
 
 The packet must distinguish the exact tangent replay from the retained-record arithmetic
@@ -819,7 +819,7 @@ local gate and durable push are complete.
 
 ## T+4 to T+8: Fractional Lane
 
-Launch BC-232 leg 03 and the scalar `61/16` probe concurrently after BC-220 opens them.
+Launch BC-232 leg 03 and the scalar $61/16$ probe concurrently after BC-220 opens them.
 Both are single-core background processes.
 Require all named paths to be absent and run each command once from `packing/`.
 
@@ -842,7 +842,7 @@ uv run --frozen --all-extras --group dev python -m devtools.run_fractional_cutti
 
 Leg 03 is the final 30 one-core minutes of BC-232’s frozen four-hour evidence budget.
 After it ends, apply the 25-percent width rule to the cumulative record: continue this
-checkpoint only if the new width is at most `0.86078351094543675`. Record a method
+checkpoint only if the new width is at most $0.86078351094543675$. Record a method
 closure, a safe crossing, or a time-limited width disposition without changing the
 criterion.
 
@@ -903,7 +903,7 @@ exact arrangement with maximum full-dimensional depth at most one may report
 
 The first proposed family is the exact `D4` orbit of Trump’s packing: at most 88 atoms
 after exact deduplication, with nonnegative rational weights.
-Its uniform orbit control must recover exact `D = 11`; edge and corner touching must
+Its uniform orbit control must recover exact $D = 11$; edge and corner touching must
 remain allowed under the Lebesgue-a.e. semantics.
 This control does not kill equality.
 
@@ -913,8 +913,8 @@ Independent controls must also:
 - in the unit-weight Trump control, reject an interior perturbation whose exact
   full-dimensional a.e. depth exceeds one;
 - accept an exact fixture with two distinct, contained, positive-area-overlapping
-  placements of weight `1/2` each and no other atoms; its summed depth is one on the
-  overlap and `1/2` elsewhere on full-dimensional cells;
+  placements of weight $1/2$ each and no other atoms; its summed depth is one on the
+  overlap and $1/2$ elsewhere on full-dimensional cells;
 - reject a rational weight mutation that makes one full-dimensional arrangement cell
   overweight;
 - reject a negative weight and any malformed or non-exact weight;
@@ -936,8 +936,8 @@ closure manager and the one transferable reviewer; BC-220 records which context 
 each side. Stop when a cap expires and preserve an incomplete implementation or pilot
 honestly.
 
-A sound exact `D > 11` kills the mass-eleven equality-density route.
-Exact `D = 11` is a non-kill control, not evidence that a mass-eleven primal exists.
+A sound exact $D > 11$ kills the mass-eleven equality-density route.
+Exact $D = 11$ is a non-kill control, not evidence that a mass-eleven primal exists.
 A failed semantic, containment, arrangement, arithmetic, or mutation control makes the
 pilot `unsound`. Any sound `D <= 11` remains a one-sided non-kill result.
 No BC-243 output has primal upper-bound semantics, and no sampled density, continuum
@@ -946,7 +946,7 @@ coverage guard, singular measure, inverse design, or BC-244 work may enter this
 
 After a terminal BC-243 packet, the closure manager may use only the remaining
 allocation that BC-220 priced for lazy n=3/n=4 controls and Trump compatibility.
-It may not open a global `n = 11` atlas or invoke the BC-240 theorem globally.
+It may not open a global $n = 11$ atlas or invoke the BC-240 theorem globally.
 
 ## T+8 Gate and T+8-to-T+10 Slices
 
@@ -1049,7 +1049,7 @@ Do not merge, cherry-pick, or copy its open head.
   BC-240 retains its author packet and local-only label.
 - Stop BC-243 as `unsound` when any semantic or exact control fails, as `time_limited`
   when its 180 active minutes expire without a terminal sound packet, and as a route
-  kill only for a sound exact `D > 11`.
+  kill only for a sound exact $D > 11$.
 - Stop any run with a missing, reused, malformed, or non-strict output as a technical
   failure. Preserve the paths and allocate no replacement stem without a coordinator
   gate.

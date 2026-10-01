@@ -503,7 +503,7 @@ session:
 ---
 # Session-073 — BC-123 `n = 17` Parent-Bound Parallel Profile
 
-The noncontiguous ordinals `33`, `107` and `180` form a profile-only chain.
+The noncontiguous ordinals $33$, $107$ and $180$ form a profile-only chain.
 No output from this session may be appended to or described as the exp-052 checkpoint.
 
 ## Terminal Handoff
@@ -518,7 +518,7 @@ The arm receipt has SHA-256
 **Result.** Exp-053 is unresolved and review-pending.
 The serial arm is process-cost evidence and a bounded exactness guard: its three
 fragments independently confirm source-faithful equals target-independent at ordinals
-`33`, `107` and `180`, in a valid child chain from the frozen parent hash.
+$33$, $107$ and $180$, in a valid child chain from the frozen parent hash.
 This is not serial-versus-parallel equivalence or a paired timing sample.
 No Pair 1 receipt exists, Pairs 2 and 3 never opened, and the canonical result is
 absent. It neither accepts nor rejects H-057 and does not decide H-052.
@@ -531,9 +531,9 @@ partial arm B. No profiler, spawn worker or resource tracker survived.
 **Next.** BC-135 or BC-136 must review the new experiment decision.
 Any later speed round needs fresh paired roots and conditions under a host-wide quiet
 lease that remains active for the whole pair; it may bind this arm only as historical
-cost evidence. The approximately `177`, `181` and `166` second serial publication
+cost evidence. The approximately $177$, $181$ and $166$ second serial publication
 intervals imply an ideal three-worker ceiling near `2.90x`; the registered `2.8x`
-threshold leaves roughly `6.4` seconds beyond the slowest interval for startup and
+threshold leaves roughly $6.4$ seconds beyond the slowest interval for startup and
 merge. This is a scheduling diagnostic, not a paired measurement.
 
 <!-- This document follows common-doc-guidelines.md.

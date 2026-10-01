@@ -41,27 +41,27 @@ survives it.
 
 Verified against [`SYNOPSIS.md`](../../../SYNOPSIS.md),
 [`conventions.md`](../../../conventions.md), the frontier artifacts, and the source: the
-`n = 11` bounds, the gap of `0.088229208023`, and the degree-8 minimal polynomial; the
+$n = 11$ bounds, the gap of $0.088229208023$, and the degree-8 minimal polynomial; the
 14-of-55 exactly-zero pair separations and 20 boundary corner coordinates;
-`2 + (4/3)√2 ≈ 3.885618` for the `0°`/`45°` class, and the claim that `n = 11` is the
-first case where oblique tilt is proved to beat it; the `4.4e-16` agreement between the
-two independent LP implementations and the `1.3e-15` worst centre error; the D-029
-`n = 10` figures (`+5.6440e-04` for both the annealer and the fixed-angle solve,
-`+4.4409e-16` for the full quench); the 2,001-point `[38°, 42°]` scan landing one grid
-step from `a*`; the corner’s one-sided slopes and the two implementations’ ratios; six
-angle classes at `n = 29`; the `n = 3` sliding family and its stratum-dependent contact
-certificate; the catalogue counts — 20 search strategies in four families (9
-constructive, 7 stochastic, 3 exact refinement, 1 workflow) and 30 proof strategies in
-six families, each checked against `frontier/search-strategies.yaml` and
-`frontier/proof-strategies.yaml`; and the two-then-three unknowns after centre
-elimination at `n = 11` and `n = 17`, which matches Bidwell’s two non-axis-aligned
-tilts.
+$2 + (4/3)\sqrt{2} \approx 3.885618$ for the $0^\circ$/`45°` class, and the claim that
+$n = 11$ is the first case where oblique tilt is proved to beat it; the `4.4e-16`
+agreement between the two independent LP implementations and the `1.3e-15` worst centre
+error; the D-029 $n = 10$ figures (`+5.6440e-04` for both the annealer and the
+fixed-angle solve, `+4.4409e-16` for the full quench); the 2,001-point
+$[38^\circ, 42^\circ]$ scan landing one grid step from $a^{\ast}$; the corner’s
+one-sided slopes and the two implementations’ ratios; six angle classes at $n = 29$; the
+$n = 3$ sliding family and its stratum-dependent contact certificate; the catalogue
+counts — 20 search strategies in four families (9 constructive, 7 stochastic, 3 exact
+refinement, 1 workflow) and 30 proof strategies in six families, each checked against
+`frontier/search-strategies.yaml` and `frontier/proof-strategies.yaml`; and the
+two-then-three unknowns after centre elimination at $n = 11$ and $n = 17$, which matches
+Bidwell’s two non-axis-aligned tilts.
 
 Every relative link in the document resolves.
 
 The document’s editorial stance also holds up.
 Its closing claim — that a hedge here is usually carrying weight — is supported by the
-hedges themselves: the `n = 5`/`n = 10` controls are correctly described as validating
+hedges themselves: the $n = 5$/`n = 10` controls are correctly described as validating
 machinery rather than strategy, the corner is correctly scoped to one slice rather than
 a rigidity proof, and the lower-bound repair is correctly not attributed to Stromquist.
 
@@ -119,20 +119,20 @@ Retained here rather than deleted so the record shows what the branch fixed.
 
 ### TR-3. §4 credits the wrong baseline column
 
-§4 says that replacing smooth descent with class bracketing “took `n = 5` from `3.4e-08`
-to `2.2e-15` and `n = 10` from `5.3e-03` to `1.3e-15`.”
+§4 says that replacing smooth descent with class bracketing “took $n = 5$ from `3.4e-08`
+to `2.2e-15` and $n = 10$ from `5.3e-03` to `1.3e-15`.”
 
 Those baselines are the **annealer** column of the synopsis’s table, not the descent
 column:
 
-| `n` | annealer | + angle descent | + class bracketing |
+| $n$ | annealer | + angle descent | + class bracketing |
 | ---: | ---: | ---: | ---: |
 | 5 | `3.4274e-08` | `3.1875e-08` | `2.2204e-15` |
 | 10 | `5.318e-03` | `4.507e-03` | `1.3323e-15` |
 
 The endpoints are right and the conclusion is unaffected.
 Either name the annealer output as the starting point or use the descent figures.
-The same mismatch appears in §4’s `n = 11` sentence — `8.8e-02 → 6.3e-02` spans annealer
+The same mismatch appears in §4’s $n = 11$ sentence — `8.8e-02 → 6.3e-02` spans annealer
 to bracketing, while descent sits at `6.999e-02` — though there the synopsis phrases it
 the same way, so fixing one should fix both.
 
@@ -154,7 +154,7 @@ after arguing that the case it does have is what makes the subject hard.
 exp-033 through exp-036 landed on 2026-08-24, the same day as the tutorial’s last edit,
 and the tutorial does not mention them.
 They are the campaign’s current frontier: the synopsis gives them their own section
-(“The Current `n = 5` Handoff”) and leads “Where This Stands” with them.
+(“The Current $n = 5$ Handoff”) and leads “Where This Stands” with them.
 
 Between them they establish an exact fixed-angle optimal face shared by two retained
 poses after a `D4` action and relabelling, an exact two-parameter angle-and-slide sheet
@@ -163,22 +163,22 @@ outside the sheet, and an exact second-order obstruction excluding that directio
 the true Bouligand tangent cone.
 
 This matters for the tutorial specifically, not only for completeness.
-§3’s Trap 2 is argued entirely from the `n = 3` sliding family, which a reader can
+§3’s Trap 2 is argued entirely from the $n = 3$ sliding family, which a reader can
 dismiss as a degenerate toy — three squares, side 2, an obvious slack square.
-The `n = 5` sheet is the same phenomenon at a size that is not obviously trivial, and it
+The $n = 5$ sheet is the same phenomenon at a size that is not obviously trivial, and it
 is where the project is actually working now.
 §6’s account of what is built and §8’s account of what is open are both shaped by it.
 
 The SVG merge sharpens this rather than settling it.
-Trap 2 now carries a figure — the exact `n = 3` quotient map — so the toy case gained a
+Trap 2 now carries a figure — the exact $n = 3$ quotient map — so the toy case gained a
 picture while the non-toy case still has no mention, and the retained
 `n5-exact-face-trajectory.svg` that would illustrate it appears in `SYNOPSIS.md` only.
 
 ### TR-6. Minimum versus infimum, deliberately or not
 
-§1 defines `s(n)` as “the side of the **smallest** square that contains `n`
+§1 defines $s(n)$ as “the side of the **smallest** square that contains $n$
 non-overlapping unit squares.”
-[`SYNOPSIS.md`](../../../SYNOPSIS.md) defines it as “the **infimum** of the `s` for
+[`SYNOPSIS.md`](../../../SYNOPSIS.md) defines it as “the **infimum** of the $s$ for
 which one exists.” [`README.md`](../../../README.md) uses “smallest.”
 
 Both readings are in use and they agree only because the infimum is attained, which
@@ -190,10 +190,10 @@ purpose. Filed as a judgement call rather than an error.
 
 ### TR-7. One record is attributed and another is not
 
-§1’s table attributes `3.877083…` to Trump 1979. §7 and §8 give `n = 17`’s `4.6755` with
-no source. It is Bidwell 1998, per the synopsis’s lay-of-the-land table, and `n = 17`
-carries more weight in the argument than its single mention suggests — it is the only
-mechanism-matched calibration cell in the campaign.
+§1’s table attributes $3.877083\ldots$ to Trump 1979. §7 and §8 give $n = 17$’s $4.6755$
+with no source. It is Bidwell 1998, per the synopsis’s lay-of-the-land table, and
+$n = 17$ carries more weight in the argument than its single mention suggests — it is
+the only mechanism-matched calibration cell in the campaign.
 
 ## Exposition
 
@@ -203,30 +203,33 @@ The document has no symbol table, and a reader meets each symbol where it is fir
 
 **Never defined anywhere.**
 
-- `oᵢₖ,ₓ`, in §2’s containment row `0 ≤ xᵢ + oᵢₖ,ₓ ≤ s`. Neither the offset `o`, the
-  corner index `k`, nor the `,ₓ` component convention is introduced.
-  The synopsis does this properly — corners are `(xᵢ, yᵢ) + Rᵢ·(±½, ±½)`, write
-  `oᵢₖ ∈ ℝ²` for the four corner offsets, `k = 1…4`. The tutorial dropped the setup and
-  kept the consequence.
-- `β`, in §5 step 3. The step opens “`β = 0` iff its reduced representative is the zero
-  polynomial” without ever saying that `β` is an element of `ℚ(α)`. A second problem
-  rides on the first: `β` is then used three ways in two lines — `β = 0` the field
-  element, `deg β` the degree of its representative, and `β(α) ≠ 0` that representative
-  evaluated at `α`. `src/sqpack/field.py` keeps element and representative distinct in
-  its docstring; the tutorial collapses them.
-- `a*`, introduced only as “`0°` on six squares and `a*` on five,” so a reader learns it
-  is an angle and nothing more.
-  It is the *minimising* value of `a`, which is what §2 and §4 then rely on.
-- `s*`, one occurrence, in §7’s relaxation-ladder table (`slack δ in side s* + δ`). Here
-  the same `*` decoration means the standing-best side rather than a minimiser.
+- $o_{ik,x}$, in §2’s containment row $0 \le x_i + o_{ik,x} \le s$. Neither the offset
+  $o$, the corner index $k$, nor the `,ₓ` component convention is introduced.
+  The synopsis does this properly — corners are
+  $(x_i, y_i) + R_i\cdot(\pm\tfrac{1}{2}, \pm\tfrac{1}{2})$, write
+  $o_{ik} \in \mathbb{R}^2$ for the four corner offsets, $k = 1\ldots4$. The tutorial
+  dropped the setup and kept the consequence.
+- $\beta$, in §5 step 3. The step opens “`β = 0` iff its reduced representative is the
+  zero polynomial” without ever saying that $\beta$ is an element of
+  $\mathbb{Q}(\alpha)$. A second problem rides on the first: $\beta$ is then used three
+  ways in two lines — $\beta = 0$ the field element, $\deg \beta$ the degree of its
+  representative, and $\beta(\alpha) \ne 0$ that representative evaluated at $\alpha$.
+  `src/sqpack/field.py` keeps element and representative distinct in its docstring; the
+  tutorial collapses them.
+- $a^{\ast}$, introduced only as “`0°` on six squares and $a^{\ast}$ on five,” so a
+  reader learns it is an angle and nothing more.
+  It is the *minimising* value of $a$, which is what §2 and §4 then rely on.
+- $s^{\ast}$, one occurrence, in §7’s relaxation-ladder table
+  (`slack δ in side s* + δ`). Here the same `*` decoration means the standing-best side
+  rather than a minimiser.
   Two meanings for one mark, neither written down.
 
 **One letter, two meanings.**
 
-- `m` is the integer in `s(m²) = m` (§1) and the minimal polynomial in `deg m`,
-  `reduced modulo m`, `deg β < deg m` (§5).
-- `α` is the primitive element of `ℚ(α)` (§5, §6) and **Smale’s α-theory** (§5) — four
-  paragraphs apart inside one section.
+- $m$ is the integer in $s(m^2) = m$ (§1) and the minimal polynomial in $\deg m$,
+  `reduced modulo m`, $\deg \beta < \deg m$ (§5).
+- $\alpha$ is the primitive element of $\mathbb{Q}(\alpha)$ (§5, §6) and **Smale’s
+  α-theory** (§5) — four paragraphs apart inside one section.
 - **gap** carries three senses.
   §1’s table row is upper bound minus lower bound; §3’s “a gap decomposes into a polish
   failure or an exploration failure” and §8’s “the remaining gap” are
@@ -235,47 +238,48 @@ The document has no symbol table, and a reader meets each symbol where it is fir
   The bound gap and the search gap are different quantities and should be named
   differently.
 
-**Scalar versus vector.** §2 introduces only `θᵢ`, per square, then says “fix the angle
-vector `θ`.” The vector `θ = (θ₁, …, θₙ)` is never written, so “fix an angle `θ`” reads
-as one angle rather than one per square.
-The same gap applies to the centres: the LP variable list `(x₁…xₙ, y₁…yₙ, s)` is the
-only place a reader learns these are `2n` separate scalars.
-One stated rule — subscript `i` means one square, bare means the whole `n`-vector —
-fixes every instance.
+**Scalar versus vector.** §2 introduces only $\theta_i$, per square, then says “fix the
+angle vector $\theta$.” The vector $\theta = (\theta_1, \ldots, \theta_n)$ is never
+written, so “fix an angle $\theta$” reads as one angle rather than one per square.
+The same gap applies to the centres: the LP variable list
+$(x_1\ldots x_n, y_1\ldots y_n, s)$ is the only place a reader learns these are $2n$
+separate scalars. One stated rule — subscript $i$ means one square, bare means the whole
+$n$-vector — fixes every instance.
 
 **Introduced out of order.**
 
-- `a*` is used before `a` exists; `a` appears only in the following paragraph, inside a
-  code fence, as part of a sentence rather than a definition.
-- The relation between `a` and `θ` is never stated.
-  `a` is the shared angle of Trump’s five-square class, so `θ = (0,0,0,0,0,0,a,a,a,a,a)`
-  up to labelling. Without that, a reader cannot tell whether `a` is a new object or a
-  coordinate on the old one.
-- `s(n)` is defined in §1 as the optimal value and bare `s` appears in §2 as a decision
-  variable, with the distinction never drawn — though it is load-bearing at “note `s`
+- $a^{\ast}$ is used before $a$ exists; $a$ appears only in the following paragraph,
+  inside a code fence, as part of a sentence rather than a definition.
+- The relation between $a$ and $\theta$ is never stated.
+  $a$ is the shared angle of Trump’s five-square class, so
+  $\theta = (0,0,0,0,0,0,a,a,a,a,a)$ up to labelling.
+  Without that, a reader cannot tell whether $a$ is a new object or a coordinate on the
+  old one.
+- $s(n)$ is defined in §1 as the optimal value and bare $s$ appears in §2 as a decision
+  variable, with the distinction never drawn — though it is load-bearing at “note $s$
   appears here, and only here, as a variable.”
-- `φ` is defined inside a code fence, with no domain, no codomain, and its dependence on
-  the fixed cell only in the surrounding prose.
-  §4 then reasons about `φ` throughout.
+- $\varphi$ is defined inside a code fence, with no domain, no codomain, and its
+  dependence on the fixed cell only in the surrounding prose.
+  §4 then reasons about $\varphi$ throughout.
 
 **Cross-document collisions**, lower priority and out of the tutorial’s control, but a
 glossary should either match the other documents or say it is local:
 
 | Symbol | Here | Elsewhere |
 | --- | --- | --- |
-| `θ` | per-square angle | the tilt of the five central squares in the `n = 11` report — this document’s `a` |
-| `u` | the single primitive element `tan(a/2)` | the per-square rationalising parameter `u_i = tan(θ_i/2)` in the algorithms report |
-| `α` | primitive element | a gap distance, and the Roth–Vaughan real parameter, both in the `n = 11` report |
-| `ν` | separating axis (synopsis) | the matching number of a hypergraph in the `n = 11` report |
+| $\theta$ | per-square angle | the tilt of the five central squares in the $n = 11$ report — this document’s $a$ |
+| $u$ | the single primitive element $\tan(a/2)$ | the per-square rationalising parameter $u_i = \tan(\theta_i/2)$ in the algorithms report |
+| $\alpha$ | primitive element | a gap distance, and the Roth–Vaughan real parameter, both in the $n = 11$ report |
+| $\nu$ | separating axis (synopsis) | the matching number of a hypergraph in the $n = 11$ report |
 
-Subscripts are Unicode here and in the synopsis, ASCII in the algorithms report; `ℚ`
-here, `Q` there.
+Subscripts are Unicode here and in the synopsis, ASCII in the algorithms report;
+$\mathbb{Q}$ here, $Q$ there.
 
 **Proposal.** A short notation section early — before or at the top of §2, since §1 is
-deliberately prose — giving each symbol, its type (scalar, per-square, `n`-vector, field
+deliberately prose — giving each symbol, its type (scalar, per-square, $n$-vector, field
 element), and whether it is fixed or free.
-Then remove the collisions, say what `*` decorates, introduce `a` before `a*`, and state
-the subscript rule once.
+Then remove the collisions, say what `*` decorates, introduce $a$ before $a^{\ast}$, and
+state the subscript rule once.
 §9’s vocabulary card covers prose terms, not symbols; the two should stay separate and
 cross-link.
 
@@ -285,37 +289,40 @@ T-2 is the tutorial’s central structural claim and §2 presents it as four obs
 plus an assertion.
 
 **The program itself is missing.** §2 gives one constraint row — the containment row,
-with `o` undefined per TR-8 — and never gives the separation row, which is the
+with $o$ undefined per TR-8 — and never gives the separation row, which is the
 interesting half. It appears only in the synopsis:
 
-> for axis `ν` and order `(i before j)`, `⟨ν, (xᵢ,yᵢ) + oᵢₖ⟩ ≤ ⟨ν, (xⱼ,yⱼ) + oⱼₗ⟩` for
-> all `k, l`
+> for axis $\nu$ and order `(i before j)`,
+> $\langle\nu, (x_i,y_i) + o_{ik}\rangle \le \langle\nu, (x_j,y_j) + o_{jl}\rangle$ for
+> all $k, l$
 
 A reader of the tutorial alone never sees what a separation constraint looks like, so
 “separation along a fixed axis is a linear inequality” has to be taken on faith — and it
 is the step the whole decomposition turns on.
 
-**The shape is missing too.** `2n + 1 = 23` variables at `n = 11` is never evaluated,
-though `3n + 1 = 34` is.
+**The shape is missing too.** $2n + 1 = 23$ variables at $n = 11$ is never evaluated,
+though $3n + 1 = 34$ is.
 Row count is worth giving precisely because it is *not* unique: the synopsis records one
-separation row per pair in `sqpack.research.quench` against `1,056 = 16 × (11 + 55)` in
-`cases.trump11.independent_lp_cell`, two correct formulations of one feasible set.
+separation row per pair in `sqpack.research.quench` against
+$1{,}056 = 16 \times (11 + 55)$ in `cases.trump11.independent_lp_cell`, two correct
+formulations of one feasible set.
 That contrast teaches something the assertion cannot — that “the LP” is a modelling
 choice.
 
 **The cell count is implied and never stated.** Four candidate axes times two orders is
-eight choices per pair, so at most `8^C(n,2)` cells — `8^55 ≈ 4.7 × 10⁴⁹` at `n = 11`,
-and most of those are empty, since the choices must be jointly realisable by an actual
-configuration. Even as a crude upper bound it is what makes “all the nonconvexity is in
-the angles and the discrete choice of cell” read as a statement about difficulty rather
-than as reassurance.
+eight choices per pair, so at most $8^{C(n,2)}$ cells —
+$8^{55} \approx 4.7 \times 10^{49}$ at $n = 11$, and most of those are empty, since the
+choices must be jointly realisable by an actual configuration.
+Even as a crude upper bound it is what makes “all the nonconvexity is in the angles and
+the discrete choice of cell” read as a statement about difficulty rather than as
+reassurance.
 
 **No LP background, and §4 silently needs it.** The document never says what a linear
 program is or why being one is good news.
 The decisive case is §4, whose mechanism for the corner is:
 
-> Where the LP’s optimal **basis** is locally constant, `φ` is smooth and its derivative
-> reads off the active constraints.
+> Where the LP’s optimal **basis** is locally constant, $\varphi$ is smooth and its
+> derivative reads off the active constraints.
 > A corner is a **change of optimal basis**.
 
 “Basis” is used three times and never defined.
@@ -348,7 +355,7 @@ It is one particular algorithm.
 
 From [`sqpack.research.quench`](../../../packing/src/sqpack/research/quench.py):
 
-**What type of solve.** A linear program over `2n + 1` variables ordered
+**What type of solve.** A linear program over $2n + 1$ variables ordered
 `[s, x₀…x_{n−1}, y₀…y_{n−1}]`. Containment is four inequalities per square against the
 variable side. Separation is **one** inequality per pair — not four — because the cell
 fixes the axis *and* the sign, and fixing the sign is precisely what removes the
@@ -368,7 +375,7 @@ input. That fact is what makes stage 2 necessary, and the tutorial never states 
 *classes*, one class at a time, each minimised by golden-section search inside a window
 that narrows only when a whole sweep fails to improve.
 Derivative-free deliberately, because §4’s corner makes a smooth local model
-misspecified. An optional final free pass brackets each of the `n` angles individually,
+misspecified. An optional final free pass brackets each of the $n$ angles individually,
 to test whether a class-converged point is genuinely stationary or an artifact of the
 merge tolerance.
 
@@ -386,7 +393,7 @@ budget runs out.
 **Why the inner loop exists** is the missing “why,” and the module docstring states it:
 a single cell solve optimises the cell suggested by the incoming centres, but its own
 solution may lie in a different cell, so its value is a path-dependent upper bound.
-That makes `s(θ)` ill-defined, and an angle search over an ill-defined objective
+That makes $s(\theta)$ ill-defined, and an angle search over an ill-defined objective
 optimises a moving target — measured here as the cause of Powell and Nelder–Mead doing
 worse than plain descent, which is the fact §4 reports without explaining.
 Iterating to a cell fixed point removes the path dependence.
@@ -396,7 +403,7 @@ Two consequences make this more than a missing detail.
 **The basin decomposition depends on which refiner is chosen.** The synopsis is explicit
 that a point-basin “is defined *relative to a specific quench*,” and there are two here:
 `quench` descends on the angles, `quench_bracket` brackets.
-§4 reports swapping one for the other moving `n = 5` seven orders, without noting that
+§4 reports swapping one for the other moving $n = 5$ seven orders, without noting that
 this also changes what “basin” refers to in §3.
 
 **It sharpens §3’s own lesson rather than undercutting it.** §3 says whatever defines a
@@ -432,9 +439,9 @@ for their own task:
 | --- | --- |
 | Separating-axis pair test, Rust `f64` | 57 ns |
 | Same test, Python float backend | 2,726 ns |
-| `ℚ(α)` multiplication, degree 8 (`s(11)`), pure Python | 215.5 µs |
+| $\mathbb{Q}(\alpha)$ multiplication, degree 8 (`s(11)`), pure Python | 215.5 µs |
 | Same, python-flint | 1.2 µs |
-| `ℚ(α)` multiplication, degree 62, pure Python | 13 ms |
+| $\mathbb{Q}(\alpha)$ multiplication, degree 62, pure Python | 13 ms |
 | Full exact verification of Trump’s packing, 55 pairs, pure Python | 0.35 s |
 
 Two readings follow, and both belong in a tutorial.
@@ -453,7 +460,7 @@ A reader who knows `f64` will assume machine epsilon and be wrong by five orders
 It is the LP solver’s feasibility tolerance, pinned at HiGHS’s strictest `1e-10`
 ([D-021](../../../defects.md)); at the default `1e-7` the solver returned a packing
 violating its own separation constraint by `9.876e-08`, and so a side below Trump’s
-([D-014](../../../defects.md)). The quench nonetheless reaches `1.33e-15` at `n = 10`,
+([D-014](../../../defects.md)). The quench nonetheless reaches `1.33e-15` at $n = 10$,
 so the floor is what the method *guarantees*, not what runs achieve.
 
 **One architectural fact went missing rather than getting explained.** Every quantity
@@ -474,48 +481,48 @@ it is placed.
 
 ### TR-12. How many polynomial roots a solution needs is never addressed
 
-Every worked example extrapolates from Trump’s packing, which lives in `ℚ(u)` with a
-single primitive element of degree 8. Nothing says whether “one `α`” is a fact about
-square packings, a fact about Trump, or an artifact of the example.
+Every worked example extrapolates from Trump’s packing, which lives in $\mathbb{Q}(u)$
+with a single primitive element of degree 8. Nothing says whether “one $\alpha$” is a
+fact about square packings, a fact about Trump, or an artifact of the example.
 The natural reading is that the number could be anything, and that reading is wrong in a
 way worth one paragraph.
 
 Three questions hide behind it.
 
 **How many primitive elements: always one.** By the primitive element theorem every
-finite extension of `ℚ` is simple, since characteristic zero makes every finite
+finite extension of $\mathbb{Q}$ is simple, since characteristic zero makes every finite
 extension separable.
-So however many algebraic coordinates a packing has — `3n + 1` of them, each with its
-own degree — a single `α` generates all of them, and every coordinate becomes a
-polynomial in `α` with rational coefficients.
+So however many algebraic coordinates a packing has — $3n + 1$ of them, each with its
+own degree — a single $\alpha$ generates all of them, and every coordinate becomes a
+polynomial in $\alpha$ with rational coefficients.
 This is the load-bearing fact under §5 step 1, which currently reads as though putting
-the configuration in `ℚ(α)` for one primitive element were obviously available.
-It is available, for a reason worth stating.
+the configuration in $\mathbb{Q}(\alpha)$ for one primitive element were obviously
+available. It is available, for a reason worth stating.
 It pairs naturally with the point §5 already makes well: only one *root* of that minimal
 polynomial is the intended one, which is why an isolating interval is part of the field
 data and why isolating the intended real root is one of the two guesses to discharge.
 
 **Of what degree: unbounded, and an open question here.** The theorem gives no bound.
 The degree is whatever the active contact system forces after elimination: 8 at
-`n = 11`, and the record table reaches 62, which is also where pure-Python exact
+$n = 11$, and the record table reaches 62, which is also where pure-Python exact
 arithmetic is worst.
 [H-038](../../../packing/campaign/hypotheses/H-038-record-number-fields.md) registers
 exactly this — which fields, degrees, Galois groups and discriminants occur, and how
 they follow from the active cell and angle-class mechanism — and notes that degree is a
 descriptor rather than a ceiling.
 The counterpoint already in the record is worth keeping beside it: at a Pythagorean tilt
-such as `arctan(3/4)` every coordinate is rational and the degree is 1. Degree is a
-property of the mechanism, not of `n`.
+such as $\arctan(3/4)$ every coordinate is rational and the degree is 1. Degree is a
+property of the mechanism, not of $n$.
 
 **Is a packing guaranteed to be algebraic at all: not pointwise.** This is the answer
 that connects to the document’s own Trap 2. The optimal *side* is algebraic: with the
-half-angle substitution the feasible set is semialgebraic over `ℚ` with no
+half-angle substitution the feasible set is semialgebraic over $\mathbb{Q}$ with no
 transcendental functions anywhere, so the set of feasible sides is a projection of a
 semialgebraic set and its infimum is algebraic.
 An individual optimal *configuration* need not be — where the optimum is a
 positive-dimensional terminal family, the family is cut out by polynomials but a point
-of it carries a free parameter, and the `n = 3` family’s `t ∈ [1/2, 3/2]` may be
-transcendental. The `n = 5` angle-and-slide sheet is a two-parameter version of the same
+of it carries a free parameter, and the $n = 3$ family’s $t \in [1/2, 3/2]$ may be
+transcendental. The $n = 5$ angle-and-slide sheet is a two-parameter version of the same
 thing.
 
 So “recover the field” is well posed for a rigid optimum whose active constraints pin it
@@ -558,10 +565,11 @@ own literature, all of it archived under
 **And what implements the exact arithmetic here**, which is a fair question for a reader
 deciding whether to trust or reuse it, and which the document never answers:
 
-- Exact `ℚ(α)` is hand-rolled and standard library only — elements are polynomials with
-  `fractions.Fraction` coefficients reduced modulo the minimal polynomial, equality is a
-  zero-representative test, and sign is rational-interval bisection over an isolating
-  interval. No computer algebra system is involved in the decision path.
+- Exact $\mathbb{Q}(\alpha)$ is hand-rolled and standard library only — elements are
+  polynomials with `fractions.Fraction` coefficients reduced modulo the minimal
+  polynomial, equality is a zero-representative test, and sign is rational-interval
+  bisection over an isolating interval.
+  No computer algebra system is involved in the decision path.
 - SymPy is optional and marginal: only `cases.trump11.derive_field` uses it, to
   re-derive a constant the verifier already carries.
 - The LP is `scipy.optimize.linprog` over HiGHS, whose feasibility tolerance is the
@@ -650,11 +658,11 @@ is `reported | numerically-checked | verified`, and method is
   instance of the TR-8 problem.
 
 Two things I checked here and withdrew, recorded so they are not re-raised: §6’s “The
-retained Schadt `n = 29` decimal pose is numerically checked at 300 digits and tolerance
+retained Schadt $n = 29$ decimal pose is numerically checked at 300 digits and tolerance
 `1e-100`” is correct — `E-n029-schadt-numerical` in `frontier/evidence.yaml` carries
 `assurance: numerically-checked`, `performed_by: repository`, and
 `replay_status: passed` at exactly those parameters, distinct from the source’s
-`E-n029-schadt-report`. And the three `n = 29` side values that look divergent across
+`E-n029-schadt-report`. And the three $n = 29$ side values that look divergent across
 `frontier/n-029.md` and the witness are three different objects, the last deliberately
 weaker.
 
@@ -670,7 +678,8 @@ sources in this directory rather than against the review that proposed them.
 µs, 1.2 µs, 13 ms, 0.35 s), the 177× and 578× ratios, and the three latency budgets all
 match `research-2026-08-22-infrastructure-for-packing-exploration.md`, which records
 13,490.5 µs at degree 62 and itself writes “more than 13 ms”.
-`1.28 ms`, `2n + 1 = 23`, `1,056 = 16 × (11 + 55)`, and `8^55 ≈ 4.7 × 10⁴⁹` all check.
+`1.28 ms`, $2n + 1 = 23$, $1{,}056 = 16 \times (11 + 55)$, and
+$8^{55} \approx 4.7 \times 10^{49}$ all check.
 
 **The quench description.** Re-read against `sqpack.research.quench`. Variable order
 `[s, x₀…x_{n−1}, y₀…y_{n−1}]`, four containment rows per square, one separation row per
@@ -690,22 +699,22 @@ cites Martin 2000. The §1 attribution stands.
 exists, in both directions, and edge-normal candidates suffice for convex polygons.
 
 **The primitive element argument.** Characteristic zero gives separability, and a finite
-separable extension is simple, so one `α` always suffices.
+separable extension is simple, so one $\alpha$ always suffices.
 
 ### Corrected
 
-**A collision the rework introduced.** Moving the minimal polynomial to `μ` freed `m`,
-but the perfect-square root had already been moved to `k`—which is also the corner index
-in `oᵢₖ`. The rework therefore traded one collision for another, and diverged from
-`SYNOPSIS.md`, which still writes `s(m²) = m`. Reverted: the perfect-square root is `m`
-again, `k` means only the corner index, and the notation card carries both.
+**A collision the rework introduced.** Moving the minimal polynomial to $\mu$ freed $m$,
+but the perfect-square root had already been moved to $k$—which is also the corner index
+in $o_{ik}$. The rework therefore traded one collision for another, and diverged from
+`SYNOPSIS.md`, which still writes $s(m^2) = m$. Reverted: the perfect-square root is $m$
+again, $k$ means only the corner index, and the notation card carries both.
 
 **An over-claim on the semialgebraic argument.** TR-12 flagged this as unverified, and
 the tutorial asserted the conclusion without naming the step that carries it.
-The mathematics is standard and correct—the feasible set is semialgebraic over `ℚ` after
-the half-angle substitution, its projection is semialgebraic by **Tarski–Seidenberg**,
-and a semialgebraic subset of `ℝ` has algebraic endpoints—so the fix is attribution
-rather than retraction.
+The mathematics is standard and correct—the feasible set is semialgebraic over
+$\mathbb{Q}$ after the half-angle substitution, its projection is semialgebraic by
+**Tarski–Seidenberg**, and a semialgebraic subset of $\mathbb{R}$ has algebraic
+endpoints—so the fix is attribution rather than retraction.
 The theorem is now named, marked as an argument this directory does not otherwise use,
 and given a further-reading entry.
 
@@ -731,8 +740,8 @@ Deciding whether the split propagates, or whether the tutorial marks the terms l
 an ownership question and belongs to `think-segx` rather than to a correctness pass.
 
 **Cross-document symbol collisions persist**, as the notation card already records: the
-`n = 11` report uses `θ` for the tutorial’s `a`, `u_i` for a per-square parameter, and
-`α` for two further things.
+$n = 11$ report uses $\theta$ for the tutorial’s $a$, $u_i$ for a per-square parameter,
+and $\alpha$ for two further things.
 Out of scope here; recorded on `think-segx`.
 
 **No document links to the tutorial’s section anchors**, only to the file, so
@@ -753,7 +762,7 @@ the **teaching forms**, its §9 vocabulary card and §10 symbol table.
 Conventions is the document other documents must not violate, and it now says so: a term
 either appears in the synopsis or is marked local where it is used.
 
-Four notation rules are written down: the subscript convention, the `s(n)`-versus-`s`
+Four notation rules are written down: the subscript convention, the $s(n)$-versus-`s`
 distinction, what a `*` marks, and that a gap is qualified.
 The neighbouring research reports are explicitly exempted as dated records rather than
 retrofitted, with their collisions named.
@@ -766,12 +775,12 @@ else.
 
 ### One error this surfaced
 
-The rework wrote “a `*` marks a minimiser throughout this document”, and then used `s*`
-for the standing best.
-That is not merely inconsistent—reading `s*` as a minimiser would assert that Trump’s
-packing is optimal, which is the open question the whole document is about.
-Both the rule and the symbol row now say a `*` marks a distinguished value, and `s*`
-carries the explicit warning.
+The rework wrote “a `*` marks a minimiser throughout this document”, and then used
+$s^{\ast}$ for the standing best.
+That is not merely inconsistent—reading $s^{\ast}$ as a minimiser would assert that
+Trump’s packing is optimal, which is the open question the whole document is about.
+Both the rule and the symbol row now say a `*` marks a distinguished value, and
+$s^{\ast}$ carries the explicit warning.
 
 `SYNOPSIS.md` also carried the `numerically checked` misspelling in its own Theoretical
 Results preamble, so all three documents had it.

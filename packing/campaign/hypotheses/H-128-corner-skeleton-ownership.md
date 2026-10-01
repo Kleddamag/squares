@@ -58,13 +58,14 @@ hypothesis:
 The ten-square proof forces containments by replacing one unavoidable point with another
 and observing that ownership is preserved.
 [X-021](../explorations/X-021-what-can-be-proved-about-eleven-squares.md) carries that
-step over to weighted atoms: with mass `11 + ε`, every atom heavier than `ε` lies in
-exactly one core, and atoms too far apart to share a core are owned by distinct squares.
+step over to weighted atoms: with mass $11 + \varepsilon$, every atom heavier than
+$\varepsilon$ lies in exactly one core, and atoms too far apart to share a core are
+owned by distinct squares.
 
 Applied to T-018’s four heaviest atoms this gives a global structural theorem at any
-side where a valid measure of mass below `11.147` exists — strictly sharper than
+side where a valid measure of mass below $11.147$ exists — strictly sharper than
 insertion saturation’s blockers, which need only meet an open corner box.
-Whether such a measure exists at `96/25` is the measurement.
+Whether such a measure exists at $96/25$ is the measurement.
 [Agenda 030](../agendas/agenda-030-parallel-structural-lanes-at-n11.md) owns it as
 BC-293, and BC-299 consumes the pinned anchors it would supply.
 

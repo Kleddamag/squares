@@ -98,7 +98,7 @@ The predicate now carries witness identity -- two boxes are distinct when some c
 has two different known points between them -- and every count above was re-derived
 under it. **Nothing moved:** 12,100 raw pairs, 4,146 orbits (3,089 on exact integer
 keys), 401 forced (352 Theorem 8, 49 six distinct full), 11,699 kill, 0 needs-geometry,
-and the `n = 33` zero-spare control still forced on both lines.
+and the $n = 33$ zero-spare control still forced on both lines.
 The loose and the sound predicate agree on every one of the 72,698 counted-box pairs
 this case reaches.
 

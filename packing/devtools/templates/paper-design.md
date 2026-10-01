@@ -612,41 +612,42 @@ it.
 | Case n | `data-n`, counts and ranges (`18-21 26`) | the result covers that n |
 | From, to | `data-date`, a whole ISO date | the date is in the range |
 
-    A rung select offers All, then each level of the rubric above its lowest as a floor,
-    the top level bare (S5). Standing offers the standings the register holds.
-    A date the register gives only to the year is the first day of it (`1979-01-01`).
+```
+A rung select offers All, then each level of the rubric above its lowest as a floor,
+the top level bare (S5). Standing offers the standings the register holds.
+A date the register gives only to the year is the first day of it (`1979-01-01`).
+```
 
-  - **Composition.** The filters compose: a row shows when it passes every one, and an
-    empty control passes every row.
+- **Composition.** The filters compose: a row shows when it passes every one, and an
+  empty control passes every row.
 
-  - **Default.** Significance starts at S4 and up (`SIGNIFICANCE_DEFAULT`) and every
-    other control at All.
-    A row below the default is `hidden` in the HTML, never left out of it, and the count
-    is written there too, so the first paint is already the filtered table and never
-    flashes every row. A control’s state in the HTML is its default, which is all the
-    script knows of it.
+- **Default.** Significance starts at S4 and up (`SIGNIFICANCE_DEFAULT`) and every other
+  control at All. A row below the default is `hidden` in the HTML, never left out of it,
+  and the count is written there too, so the first paint is already the filtered table
+  and never flashes every row.
+  A control’s state in the HTML is its default, which is all the script knows of it.
 
-  - **Group headings.** A group heading shows while a row under it does: one with no row
-    left is hidden with them, in the HTML for the default.
-    A sort hides the group headings, since the rows are then no longer in their groups.
+- **Group headings.** A group heading shows while a row under it does: one with no row
+  left is hidden with them, in the HTML for the default.
+  A sort hides the group headings, since the rows are then no longer in their groups.
 
-  - **A row named by the address** (`all-results.html#t-048`) shows whatever the filters
-    hide, so a link to a result never lands on nothing.
-    The script keeps it, and without scripts one rule, `.site-table tr[hidden]:target`,
-    shows it.
+- **A row named by the address** (`all-results.html#t-048`) shows whatever the filters
+  hide, so a link to a result never lands on nothing.
+  The script keeps it, and without scripts one rule, `.site-table tr[hidden]:target`,
+  shows it.
 
-  - **Links.** A link can open either table filtered: each query parameter presets the
-    control it names, `s-min=3`, `source=ours`, `n=17`, `date-from=2026-09-01`.
+- **Links.** A link can open either table filtered: each query parameter presets the
+  control it names, `s-min=3`, `source=ours`, `n=17`, `date-from=2026-09-01`.
 
-  - **A row’s popover** follows it through filtering and sorting, since the row finds it
-    by id (**Row popovers**, below).
+- **A row’s popover** follows it through filtering and sorting, since the row finds it
+  by id (**Row popovers**, below).
 
-  The bar wraps onto further lines as the page narrows; on a phone each control takes
-  about a line. Without scripts a filter cannot be changed, so nothing stays filtered:
-  under `@media (scripting: none)` every row shows, each group under its heading, and
-  the bar, which would do nothing, does not.
-  `tests/node/overview_table/` runs the script’s filters, alone and wired to a stand-in
-  table, and `tests/test_overview.py` holds both pages to the identical bar and default.
+The bar wraps onto further lines as the page narrows; on a phone each control takes
+about a line. Without scripts a filter cannot be changed, so nothing stays filtered:
+under `@media (scripting: none)` every row shows, each group under its heading, and the
+bar, which would do nothing, does not.
+`tests/node/overview_table/` runs the script’s filters, alone and wired to a stand-in
+table, and `tests/test_overview.py` holds both pages to the identical bar and default.
 
 - **Row popovers.** The row is the unit: a table row with detail opens one popover for
   the whole row. This is the site’s one way to show detail on a table row, and no cell
@@ -696,6 +697,17 @@ it.
     has no button on the results page, where the row pressed is that row.
     A replay row’s ends in the button to its case in the frontier atlas, and a frontier
     row’s in the button to its case record.
+  - **Deferred bodies.** A body too heavy to render once per row when the page loads can
+    wait in a template: `row_detail(deferred=True)` writes it as
+    `<template data-row-pop-body>` inside `.site-row-pop-body`, which the browser parses
+    but neither lays out nor typesets, and the script places it just before the popover
+    first opens, however it is opened.
+    Its math is typeset then, as any popover’s is.
+    A deferred body costs the same bytes; what it saves is the work of rendering every
+    row’s body at load. Without scripts a template stays inert, so `fallback` is written
+    beside it in a `<noscript>`, and is what that reader’s popover shows.
+    `overview_sections.RESULT_BODIES_DEFERRED` turns this on for every result row, with
+    the result’s records as the fallback.
 
   `tests/node/overview_rows/` runs the script against a stand-in document, and
   `tests/test_overview.py` holds every row of the three pages to this markup and every

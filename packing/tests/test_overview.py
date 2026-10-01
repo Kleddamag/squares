@@ -792,6 +792,15 @@ def _row_popover(page: str, target: str) -> str:
     raise AssertionError(f"{target}: its popover never closes")
 
 
+def _outside_row_popovers(page: str) -> str:
+    """A page's text with every row popover cut out of it, each one whole."""
+    opening = '<div class="site-popover site-row-pop" id="'
+    while opening in page:
+        target = page[page.index(opening) + len(opening) :].split('"', 1)[0]
+        page = page.replace(_row_popover(page, target), "", 1)
+    return page
+
+
 def test_every_result_shows_the_standing_readme_derives(
     page: str,
     results: str,
@@ -840,15 +849,19 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
 ) -> None:
     """The section is one `.site-table` of the recent results, one row each, with the
     date, the result linking its row, the method, the credit and the status chips; no
-    card or list is left in it, and its only popovers are its rows' own."""
+    card or list is left in it, and its only popovers are its rows' own. What a row's
+    popover holds is the popover's own business, so the section is read without them."""
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
     recent = _recent_table(page)
     assert recent in section
     before_replay = section.split("site-replay", 1)[0]
-    assert not re.search(r'class="site-card[ "]', before_replay)
-    assert set(re.findall(r'<div class="(site-popover[^"]*)"', before_replay)) == {
+    assert set(re.findall(r'<div class="(site-popover(?: [^"]*)?)"', before_replay)) == {
         "site-popover site-row-pop"
     }
+    section = _outside_row_popovers(section)
+    before_replay = section.split("site-replay", 1)[0]
+    assert "site-popover" not in before_replay
+    assert not re.search(r'class="site-card[ "]', before_replay)
     assert "<li>" not in before_replay
     assert section.count("<table") == 2  # the recent table, then the replay table
     assert 'class="kpress-table site-table site-results site-recent-table"' in recent
@@ -1773,7 +1786,53 @@ def test_a_row_detail_escapes_its_words_and_keeps_its_html() -> None:
         "pop-y", name="n", trigger="k", label="l", title="t", body="b"
     )
     assert "site-popover-actions" not in plain.popover
+    assert "<template" not in plain.popover
     assert overview_sections.plain_text("`s(11) >= 3`,  reported") == "s(11) >= 3, reported"
+
+
+def test_a_deferred_row_body_waits_in_a_template_with_a_fallback_for_no_scripts(
+    overview: overview_data.Overview, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A body too heavy to render once per row at load is held in a `<template>`, which
+    `row-popover.js` places when the popover first opens (`tests/node/overview_rows`),
+    with a `<noscript>` beside it for a reader whose template would stay inert.
+    `RESULT_BODIES_DEFERRED` turns it on for every result row, on both tables, where
+    the fallback is the result's records; it is off while the body is the short detail."""
+    held = overview_sections.row_detail(
+        "pop-z",
+        name="n",
+        trigger="k",
+        label="l",
+        title="t",
+        body="<p>long</p>",
+        deferred=True,
+        fallback="<p>short</p>",
+    )
+    assert (
+        '<div class="site-row-pop-body"><template data-row-pop-body><p>long</p></template>'
+        "<noscript><p>short</p></noscript></div>"
+    ) in held.popover
+    bare = overview_sections.row_detail(
+        "pop-z", name="n", trigger="k", label="l", title="t", body="<p>long</p>", deferred=True
+    )
+    assert "<noscript>" not in bare.popover
+    assert overview_sections.RESULT_BODIES_DEFERRED is False
+    assert "<template data-row-pop-body>" not in overview_sections.results_table(overview)
+    monkeypatch.setattr(overview_sections, "RESULT_BODIES_DEFERRED", True)
+    result = overview_sections.recent_results(overview)[0]
+    body = overview_sections.result_row_popover_body(result, overview)
+    for table in (
+        overview_sections.results_table(overview),
+        overview_sections.recent_table(overview),
+    ):
+        panel = _row_popover(table, f"pop-result-{result.id.lower()}")
+        assert f"<template data-row-pop-body>{body}</template><noscript>" in panel
+        assert panel.count("<template") == 1
+        fallback = panel.split("<noscript>", 1)[1].split("</noscript>", 1)[0]
+        assert fallback.startswith('<p class="site-records"><a href="')
+        assert table.count("<template data-row-pop-body>") == table.count(
+            '<div class="site-popover site-row-pop"'
+        )
 
 
 def test_a_row_with_detail_takes_the_shared_wash_and_no_disclosure_style() -> None:

@@ -13,6 +13,11 @@
 //     focus to the row.
 // Sorting and filtering (`table.js`) move and hide rows; a row finds its popover by id,
 // so the popover follows its row.
+//
+// A popover's body may wait in a `<template data-row-pop-body>`, which the browser
+// parses but neither lays out nor typesets: it is placed just before the popover first
+// opens, however it is opened, and `popover.js` then typesets its math. A page whose
+// every row carries a long body pays for a body only when a reader asks for it.
 (() => {
   /** What a click on a row leaves alone: the row's own links and controls. */
   const CONTROLS = "a[href], button, input, select, textarea, label, summary";
@@ -112,6 +117,19 @@
       }
       event.preventDefault();
       open();
+    });
+
+    // A body held in a template is placed before the popover shows, so it is there for
+    // the first paint and for the math pass the open popover gets.
+    popover.addEventListener("beforetoggle", (event) => {
+      if (!(event instanceof ToggleEvent) || event.newState !== "open") {
+        return;
+      }
+      for (const held of popover.querySelectorAll("template[data-row-pop-body]")) {
+        if (held instanceof HTMLTemplateElement) {
+          held.replaceWith(held.content);
+        }
+      }
     });
 
     popover.addEventListener("toggle", (event) => {

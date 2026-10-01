@@ -47,6 +47,8 @@ function page() {
       this.listeners = new Map();
       this.tabIndex = tag === "a" || tag === "button" ? 0 : -1;
       this.open = false;
+      /** @type {StandInElement | null} what a `<template>` holds, as its fragment */
+      this.content = null;
       this.append(...children);
     }
 
@@ -142,8 +144,22 @@ function page() {
       document.activeElement = this;
     }
 
+    /** @param {StandInElement | null} fragment whose children take this element's place */
+    replaceWith(fragment) {
+      const parent = this.parentElement;
+      assert.ok(parent !== null && fragment !== null);
+      const placed = fragment.children;
+      parent.children.splice(parent.children.indexOf(this), 1, ...placed);
+      for (const child of placed) {
+        child.parentElement = parent;
+      }
+      fragment.children = [];
+      this.parentElement = null;
+    }
+
     showPopover() {
       assert.ok(!this.open, "showPopover on an open popover throws in a browser");
+      fire(this, "beforetoggle", { newState: "open" });
       this.open = true;
       fire(this, "toggle", { newState: "open" });
     }
@@ -188,7 +204,8 @@ function page() {
    * @param {Press} [init]
    */
   function fire(target, type, init = {}) {
-    const kind = type === "toggle" ? new StandInToggleEvent(init.newState ?? "") : {};
+    const toggles = type === "toggle" || type === "beforetoggle";
+    const kind = toggles ? new StandInToggleEvent(init.newState ?? "") : {};
     const event = Object.assign(kind, {
       button: 0,
       metaKey: false,
@@ -203,13 +220,13 @@ function page() {
         this.defaultPrevented = true;
       },
     });
-    // A toggle event does not bubble; a click and a key press do.
+    // The toggle events do not bubble; a click and a key press do.
     /** @type {StandInElement[]} */
     const path = [];
     for (
       let element = /** @type {StandInElement | null} */ (target);
       element !== null;
-      element = type === "toggle" ? null : element.parentElement
+      element = toggles ? null : element.parentElement
     ) {
       path.push(element);
     }
@@ -225,8 +242,9 @@ function page() {
    * A row with detail and its popover, as `overview_sections.row_detail` writes them.
    * @param {string} key
    * @param {Record<string, string>} [more] further attributes of the row, such as `hidden`
+   * @param {boolean} [deferred] whether the popover's body waits in a template
    */
-  function row(key, more = {}) {
+  function row(key, more = {}, deferred = false) {
     const target = `pop-${key}`;
     const trigger = new StandInElement("button", { class: "site-row-open", popovertarget: target });
     const link = new StandInElement("a", { href: `records/${key}` });
@@ -238,13 +256,20 @@ function page() {
       new StandInElement("td", {}, [link]),
     ]);
     const close = new StandInElement("button", { class: "site-popover-close" });
-    const popover = new StandInElement("div", { id: target, class: "site-popover" }, [close]);
-    return { element, trigger, link, text, popover, close };
+    const detail = new StandInElement("a", { href: `detail/${key}` });
+    const held = new StandInElement("template", { "data-row-pop-body": "" });
+    held.content = new StandInElement("fragment", {}, [detail]);
+    const body = new StandInElement("div", { class: "site-row-pop-body" }, [
+      deferred ? held : detail,
+    ]);
+    const popover = new StandInElement("div", { id: target, class: "site-popover" }, [close, body]);
+    return { element, trigger, link, text, popover, close, body, held, detail };
   }
 
   const first = row("t-001");
-  // The second row is one the filters hide at load, as a results table writes it.
-  const second = row("t-002", { hidden: "" });
+  // The second row is one the filters hide at load, as a results table writes it, and
+  // its popover's body is deferred.
+  const second = row("t-002", { hidden: "" }, true);
   // A row naming a popover the page does not carry: its popover is never appended.
   const orphan = row("t-003");
   const tbody = new StandInElement("tbody", {}, [first.element, second.element, orphan.element]);
@@ -256,6 +281,7 @@ function page() {
       document,
       Element: StandInElement,
       HTMLElement: StandInElement,
+      HTMLTemplateElement: StandInElement,
       ToggleEvent: StandInToggleEvent,
     }),
   );
@@ -383,4 +409,25 @@ void test("a row the filters hide at load is wired all the same, for when they s
   fire(second.text, "click");
   assert.ok(second.popover.open);
   assert.equal(document.activeElement, second.close);
+});
+
+void test("a body held in a template is placed when its popover first opens, and once", () => {
+  const { fire, first, second } = page();
+  assert.deepEqual(second.body.children, [second.held]);
+  fire(second.text, "click");
+  assert.deepEqual(second.body.children, [second.detail]);
+  assert.equal(second.detail.parentElement, second.body);
+  second.popover.hidePopover();
+  fire(second.element, "keydown", { key: "Enter" });
+  assert.deepEqual(second.body.children, [second.detail]);
+  // A body written in place is left as it is.
+  fire(first.text, "click");
+  assert.deepEqual(first.body.children, [first.detail]);
+});
+
+void test("the platform's own opening places a deferred body too", () => {
+  const { second } = page();
+  // What the native trigger does when the script has not taken the click.
+  second.popover.showPopover();
+  assert.deepEqual(second.body.children, [second.detail]);
 });

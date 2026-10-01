@@ -212,6 +212,8 @@ def row_detail(
     title: str,
     body: str,
     action: tuple[str, str] | None = None,
+    deferred: bool = False,
+    fallback: str = "",
 ) -> RowDetail:
     """A table row's popover and the markup that ties its row to it.
 
@@ -221,7 +223,17 @@ def row_detail(
     math is serif as every popover headline's is, then `body`, the row's detail, and, when
     `action` is `(href, words)`, the one button that goes there. `name`, `label` and the
     action's words are escaped here; `trigger`, `title` and `body` are HTML.
+
+    A `deferred` body is held in a `<template>`, which the browser parses but neither
+    lays out nor typesets, and `overview/row-popover.js` places it the first time the
+    popover opens: for a body too heavy to render once per row at load. It costs the
+    same bytes. Without scripts a template stays inert, so `fallback`, HTML in a
+    `<noscript>` beside it, is what such a reader's popover shows.
     """
+    if deferred:
+        body = f"<template data-row-pop-body>{body}</template>" + (
+            f"<noscript>{fallback}</noscript>" if fallback else ""
+        )
     target = _esc(target)
     attributes = f'data-row-popover="{target}" aria-label="{_esc(name)}"'
     button = (
@@ -302,11 +314,18 @@ def result_row_popover_body(result: Result, overview: Overview) -> str:  # noqa:
     return _detail(result)
 
 
+#: Whether a result row's popover body waits in a `<template>` until its popover first
+#: opens (`row_detail`'s `deferred`). Off while the body is the short detail; a body that
+#: is a whole overview of the result, on every row of two tables, wants it on.
+RESULT_BODIES_DEFERRED = False
+
+
 def result_row(result: Result, overview: Overview, *, trigger: str, here: bool) -> RowDetail:
     """A result's row popover, the same on every page: its id as the caps label, its
     summary as the headline, then `result_row_popover_body`. A row on the results page
     (`here`) is the result's own row, so its popover has no button; anywhere else it
-    ends in the button to that row."""
+    ends in the button to that row. Where the body is deferred, a reader without scripts
+    is shown the result's records instead."""
     action = None if here else (result_url(result.id), f"Open {result.id} in the results table")
     return row_detail(
         f"pop-result-{result.id.lower()}",
@@ -316,6 +335,8 @@ def result_row(result: Result, overview: Overview, *, trigger: str, here: bool) 
         title=tex_bounds(result.summary),
         body=result_row_popover_body(result, overview),
         action=action,
+        deferred=RESULT_BODIES_DEFERRED,
+        fallback=f'<p class="site-records">{_records(result)}</p>',
     )
 
 

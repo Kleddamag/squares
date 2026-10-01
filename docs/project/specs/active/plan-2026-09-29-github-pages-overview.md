@@ -241,7 +241,7 @@ explainer build, so the overview job does not depend on `prepare`.
 
 ### The Overview Page
 
-Sections, top to bottom:
+Sections, top to bottom, as first planned; the list after this one is the page as built:
 
 1. **Header and navigation bar.** The project name, the edition stamp
    (`PUBLICATION_EDITION`), and links to Overview, Frontier, Explainer, Tutorial,

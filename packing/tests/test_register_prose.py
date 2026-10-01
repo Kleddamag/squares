@@ -42,6 +42,42 @@ def test_a_blank_line_in_a_folded_scalar_is_a_paragraph_break_on_every_surface()
     assert "[evand/square-packing]" not in tail
 
 
+def test_a_next_rung_keeps_its_paragraphs_under_its_bullet() -> None:
+    """`RESULTS.md` lists each next action as one bullet. A field of several paragraphs
+    is one list item of several paragraphs, not one line of several thousand characters."""
+    one = {"id": "T-001", "next_rung": "V5 by a\n  proof-assistant port."}
+    assert render_results.next_action({"id": "T-001", "next_rung": "V5 by a port."}) == [
+        "- **T-001** — V5 by a port."
+    ]
+    assert len(render_results.next_action(one)) == 4
+
+    record = {
+        "id": "T-019",
+        "next_rung": "C4 is reached by the interval decision.\nThe bound itself: the total is\n"
+        "16.933080.\nOne figure is worth carrying.",
+    }
+    assert render_results.next_action(record) == [
+        "- **T-019** — C4 is reached by the interval decision.",
+        "",
+        "  The bound itself: the total is",
+        "",
+        "  16.933080.",
+        "",
+        "  One figure is worth carrying.",
+        "",
+    ]
+
+    # The live view: no bullet under Next actions carries a second paragraph on its line.
+    rendered = render_results.render()
+    section = rendered.split("## Next actions", 1)[1]
+    register = yaml.safe_load(render_results.RESULTS.read_text(encoding="utf-8"))
+    for entry in register["results"]:
+        first, *rest = register_prose.paragraphs(entry["next_rung"])
+        assert f"- **{entry['id']}** — {first}\n" in section, entry["id"]
+        for paragraph in rest:
+            assert f"\n\n  {paragraph}\n" in section, entry["id"]
+
+
 def test_a_link_must_be_a_web_address_to_be_set_as_one() -> None:
     relative = overview_data.tex_bounds("see [the packet](../resources/web/README.md)")
     assert "<a " not in relative

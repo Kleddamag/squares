@@ -81,6 +81,19 @@ def claim_cell(record: dict) -> str:
     return "<br><br>".join(paragraphs(record["claim"])).replace("|", r"\|")
 
 
+def next_action(record: dict) -> list[str]:
+    """One result's `next_rung` as a list item: its first paragraph on the bullet's line,
+    and each later paragraph as a paragraph of the same item, indented under it."""
+    first, *rest = paragraphs(record["next_rung"])
+    lines = [f"- **{record['id']}** — {first}"]
+    for paragraph in rest:
+        lines += ["", f"  {paragraph}"]
+    if rest:
+        # A blank line closes a multi-paragraph item, so the next bullet starts clean.
+        lines.append("")
+    return lines
+
+
 def order(record: dict) -> tuple[int, int, str]:
     """Significance descending, then confirmation descending, then id."""
     return (-record["significance"]["score"], -int(record["confirmation"][1]), record["id"])
@@ -166,8 +179,7 @@ def render() -> str:
     lines.append("The next evidence-improving action or terminal rationale for each result:")
     lines.append("")
     for record in results:
-        next_rung = " ".join(str(record["next_rung"]).split())
-        lines.append(f"- **{record['id']}** — {next_rung}")
+        lines.extend(next_action(record))
     lines.append("")
     lines.append(f"Register reviewed {register['last_reviewed']}.")
     lines.append("")

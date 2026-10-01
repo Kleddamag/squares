@@ -244,8 +244,8 @@ $defs:
           `resources/bibliography.yaml`, each is the `source_key` of an evidence entry
           this result cites, and every credited name is an author of one of them, so
           the field says only what the record already holds; the checker verifies all
-          three. A packing or theorem a result is about is its subject, not its basis,
-          and is not listed here.
+          three. A proof the result repairs or corrects is a basis. A packing whose
+          property the result proves is its subject, not its basis, and is not listed.
         properties:
           credit:
             type: array

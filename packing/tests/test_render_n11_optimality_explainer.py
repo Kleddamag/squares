@@ -14,6 +14,7 @@ from devtools import n11_optimality_mechanism_figures as mechanism
 from devtools import n11_optimality_overview_figures as overview
 from devtools import render_n11_optimality_explainer as paper
 from devtools.render_explainer import assert_self_contained
+from devtools.render_n11_optimality_explainer import TYPESET_ALL
 from sqpack.probes import probe
 
 ARTICLE = paper.TEMPLATES / "n11-optimality-article.md"
@@ -382,15 +383,15 @@ def test_a_print_can_ask_for_every_formula_at_once(tmp_path: Path) -> None:
     )
     page_path = tmp_path / "far.html"
     page_path.write_text(html, encoding="utf-8")
-    pending = probe(paper.render_explainer.PROBES, "preview_site/math_pending")
+    untypeset = ".kpress-math:not([data-kpress-math-rendered])"
     with sync_playwright() as driver:
         browser = driver.chromium.launch()
         try:
             page = browser.new_page()
             page.goto(page_path.as_uri(), wait_until="domcontentloaded")
-            assert page.evaluate(pending) > 0
-            page.evaluate(paper._TYPESET_ALL)  # noqa: SLF001  # pyright: ignore[reportPrivateUsage]
-            assert page.evaluate(pending) == 0
+            assert page.locator(untypeset).count() > 0
+            page.evaluate(TYPESET_ALL)
+            assert page.locator(untypeset).count() == 0
         finally:
             browser.close()
 

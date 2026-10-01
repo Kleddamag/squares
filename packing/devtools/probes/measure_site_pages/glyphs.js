@@ -126,6 +126,7 @@
     ["chip", ".site-chip"],
     ["page title", ".hero h1, .site-hero h1, .site-title"],
     ["subtitle", ".subtitle"],
+    ["credits name", ".credits strong"],
     ["credits", ".credits, .credits :is(p, div, span, a, time)"],
     ["card label", ".site-card-label"],
     ["card headline", ".site-card-value"],

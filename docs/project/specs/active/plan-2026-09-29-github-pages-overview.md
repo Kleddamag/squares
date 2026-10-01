@@ -291,7 +291,8 @@ As built (amended 2026-09-30), after the owner’s preview review, the page runs
 7. **Footer.**
 
 A card opens a popover that previews where it leads, with a button to go there; a direct
-card, such as an atlas poster, opens its target in a new tab.
+card is the link itself: the four page cards go to their pages in the same tab, with no
+popover (`think-bc5d`), and an atlas poster opens its target in a new tab.
 
 The prose around generated blocks (the problem statement, section introductions) lives
 in a template, `packing/devtools/templates/overview-article.md`, so it is reviewed as

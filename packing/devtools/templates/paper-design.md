@@ -520,22 +520,28 @@ it.
   headings’ leading (**Heading leading**, below), so a headline of two or three lines
   reads as one block. The popover repeats the headline in the same face, weight and
   leading. A card works one of two ways.
-  Most cards open a popover that shows where they lead, and the popover ends in one
-  button that goes there, centred at its foot.
-  A direct card is instead itself the link (`link_card`), for a target whose address or
-  picture is the whole of what a preview would say.
-  **A direct card always opens its target in a new tab** (`target="_blank"`,
-  `rel="noopener noreferrer"`), whether it is a page or file of this site or a place off
-  it, so the page the reader chose it from stays where they left it.
-  - When the card leads to another page of the site, the popover renders that page
-    itself, narrow, in a frame: the page at the same address with `?view=embed` added
-    before any fragment, so a filtered view such as `frontier.html?recent=true` or a
-    case such as `frontier.html#n-11` arrives as it will be seen.
-    The embed view drops the navigation bar and sends every link out of the frame to the
-    full window. The button is **Expand**, which opens the page at full size; a
-    repository document also offers its source “On GitHub”, which opens it on `main`.
-    Every repository link on the site names `main`, never a commit, and is made by
-    `devtools/repo_links.py`.
+  A popover card (`card`) is a button that opens a popover showing where it leads, and
+  the popover ends in one button that goes there, centred at its foot.
+  A direct card is instead itself the link (`link_card`), an `<a>` with no popover.
+  **A page card navigates.** The overview’s four page cards, the explainer, the
+  tutorial, the workbench and the frontier atlas, lead to full pages the site serves, so
+  each is a direct card that goes to its page in the same tab (`new_tab=False`), with
+  the right arrow for its icon (`data-go="page"`) and nothing framed (`think-bc5d`).
+  Popovers are for targets that are not site pages of their own: a result’s row, a
+  repository document rendered for its card’s popover, a case.
+  **Every other direct card opens its target in a new tab** (`target="_blank"`,
+  `rel="noopener noreferrer"`), so the page the reader chose it from stays where they
+  left it: a poster’s PDF, the Visualize page, another project.
+  `link_card` refuses `new_tab=False` for an address off the site.
+  - When a popover card leads to a document or paper the site renders, the popover
+    renders that page itself, narrow, in a frame: the page at the same address with
+    `?view=embed` added before any fragment, so a filtered view such as
+    `frontier.html?recent=true` or a case such as `frontier.html#n-11` arrives as it
+    will be seen. The embed view drops the navigation bar and sends every link out of the
+    frame to the full window.
+    The button is **Expand**, which opens the page at full size; a repository document
+    also offers its source “On GitHub”, which opens it on `main`. Every repository link
+    on the site names `main`, never a commit, and is made by `devtools/repo_links.py`.
   - When the card leads to another project off the site, it is a direct card.
     It shows the address under the note beside the host’s mark (GitHub’s for a GitHub
     URL, otherwise the site’s favicon, saved under `devtools/overview/favicons/` by host
@@ -554,7 +560,7 @@ it.
   The frame loads only when its popover first opens, so the overview stays light.
   The popover is a native `popover` panel with square corners over a faint scrim, set in
   sans, closed by its `×`, by Escape, or by a click outside, and it works without
-  scripting. A card gains a gentle wash on hover.
+  scripting. A card, popover or direct, gains a gentle wash on hover.
   Every popover has the same margin on all four sides, `--site-popover-pad` (1.75rem;
   1.1rem on a phone). Its `×` is a 2.75rem square tap target (`--site-popover-close`) set
   0.6rem in from the corner (0.25rem on a phone), washed on hover.
@@ -1022,17 +1028,19 @@ its defaults.
   and one large card for each paper (`data-card-size="large"`), saying what the paper
   is. The cards come from one ordered list, `overview_sections.PAPERS`, each entry a
   paper’s address, label, title, description and card size, so a new paper is one entry.
-  Each is a page card, as on the overview: pressing it opens a popover that frames the
-  paper and expands to it.
-  A card is a button and holds no link of its own, so what its description names is
-  linked from its popover, beside the button.
+  Each is a popover card: pressing it opens a popover that frames the paper and expands
+  to it. (The overview’s page cards are direct links instead; see Cards.)
+  A popover card is a button and holds no link of its own, so what its description names
+  is linked from its popover, beside the button.
   The optimality paper is first: it explains the result that stands, T-060, where the
   explainer proves the lower bounds T-060 superseded and the tutorial is the background
-  to both. The explainer’s card, the same on the overview, names the newer optimality
-  proofs and links the optimality paper and T-060 there, from the one list that holds
-  them (`OPTIMALITY_LINKS`). The papers keep their addresses, `explainer.html`,
-  `tutorial.html` and `n11-optimality/t-060-explainer.html`, and Papers is the current
-  entry on the papers page and on each of them.
+  to both. The explainer’s card names the newer optimality proofs and links the
+  optimality paper and T-060 from its popover, from the one list that holds them
+  (`OPTIMALITY_LINKS`). Its card on the overview reads the same but is the link to the
+  explainer itself, so it carries no other link.
+  The papers keep their addresses, `explainer.html`, `tutorial.html` and
+  `n11-optimality/t-060-explainer.html`, and Papers is the current entry on the papers
+  page and on each of them.
   The optimality paper has its own renderer, shell and Pages job
   (`render_n11_optimality_explainer`); it carries the bar as the explainer does, through
   `render_overview.nav_html`, with the links climbing one level to the site’s root, and

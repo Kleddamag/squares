@@ -1204,9 +1204,10 @@ class Paper(NamedTuple):
 OPTIMALITY_PAPER = "n11-optimality/t-060-explainer.html"
 
 #: Where the explainer's card sends a reader for the newer optimality proofs it names:
-#: the paper that explains the proof, and T-060's row in the results table. Both of the
-#: explainer's cards carry them. A card is a button and holds no link, so its popover
-#: does.
+#: the paper that explains the proof, and T-060's row in the results table. The
+#: explainer's card on the Papers page carries them: that card is a button and holds no
+#: link, so its popover does. Its card on the overview is the link to the explainer
+#: itself and has no popover, so it carries none.
 OPTIMALITY_LINKS: tuple[tuple[str, str], ...] = (
     (OPTIMALITY_PAPER, "The optimality paper"),
     (result_url("T-060"), "The optimality proof, T-060"),
@@ -1257,13 +1258,13 @@ PAPERS: tuple[Paper, ...] = (
         ),
     ),
 )
-#: The explainer, whose card is the same on the overview as on the Papers page.
+#: The explainer, whose card reads the same on the overview as on the Papers page.
 EXPLAINER = next(paper for paper in PAPERS if paper.href == "explainer.html")
 
 
 def paper_cards() -> str:
-    """One card per paper, the overview's page cards in kind: the whole card is a button
-    that opens a popover framing the paper, which expands to it."""
+    """One card per paper: the whole card is a button that opens a popover framing the
+    paper, which expands to it and links what the paper's description names."""
     return _cards(
         [
             card(
@@ -1284,7 +1285,8 @@ def paper_cards() -> str:
 #: The site's other pages, as the overview's cards show them: the page, a label, its
 #: title, and one line on what a reader finds there. Both are register prose, so a
 #: bound in either is written in ASCII (`s(11) >= 3.8264…`) and set as math. The
-#: explainer's card is its paper's; the tutorial's keeps a shorter line here.
+#: explainer's card takes its paper's words; the tutorial's keeps a shorter line here.
+#: Every address is a full page the site serves, so its card links straight to it.
 PAGES: tuple[tuple[str, str, str, str], ...] = (
     (EXPLAINER.href, EXPLAINER.label, EXPLAINER.title, EXPLAINER.description),
     (
@@ -1309,19 +1311,18 @@ PAGES: tuple[tuple[str, str, str, str], ...] = (
 
 
 def page_cards() -> str:
-    """One card per page of the site other than this one; its popover renders the page
-    and expands to it."""
+    """One card per page of the site other than this one. Each card is the link itself
+    and goes to its page in the same tab: the target is a full page the site serves, so
+    no popover previews it (`link_card`, `new_tab=False`)."""
     return _cards(
         [
-            card(
-                f"pop-page-{label.split()[0].lower()}",
+            link_card(
+                href,
                 label,
                 tex_bounds(title),
                 tex_bounds(note),
-                href=href,
-                action=f"Expand the {label.lower()}",
                 size=SECTION_CARD_SIZES["pages"],
-                links=EXPLAINER.links if href == EXPLAINER.href else (),
+                new_tab=False,
             )
             for href, label, title, note in PAGES
         ]
@@ -1475,19 +1476,27 @@ def link_card(
     *,
     hero: str = "",
     size: CardSize | None = None,
+    new_tab: bool = True,
 ) -> str:
     """A card that is itself the link, with no popover: for a place whose address, or
-    whose picture, is the whole of what a preview would say. It carries the label, the
-    value and note, and `hero` heads it with a picture (`card_hero`). `size` is its
-    width, as `card` takes it; left out, `card_size` chooses it from the value, the note
-    and the address shown.
+    whose picture, is the whole of what a preview would say, and for a full page of this
+    site, which needs no preview. It carries the label, the value and note, and `hero`
+    heads it with a picture (`card_hero`). `size` is its width, as `card` takes it; left
+    out, `card_size` chooses it from the value, the note and the address shown.
 
-    Every card that navigates directly opens its target in a new tab, whether that is a
-    page or file of this site or a place off it, so the page the reader chose it from
-    stays where they left it. An address off the site is shown under the note beside
-    the host's mark; a PDF is typed as one, so the browser opens it in place.
+    A direct card opens its target in a new tab unless `new_tab` is false, so the page
+    the reader chose it from stays where they left it: a poster's PDF, the film, a place
+    off the site. A card for one of the site's own pages passes `new_tab=False` and
+    navigates in the same tab, as the navigation bar does, and only a target on the site
+    may. Its corner icon is `data-go`'s (`card_kind`): the right arrow for a page or file
+    of this site, the external arrow for a place off it. An address off the site is
+    shown under the note beside the host's mark; a PDF is typed as one, so the browser
+    opens it in place.
     """
     kind = card_kind(url)
+    if not new_tab and kind != "page":
+        raise SystemExit(f"{url}: only a page of this site opens in the same tab")
+    tab = ' target="_blank" rel="noopener noreferrer"' if new_tab else ""
     typed = ' type="application/pdf"' if url.endswith(".pdf") else ""
     address = ""
     if kind == "external":
@@ -1498,8 +1507,7 @@ def link_card(
         )
     return (
         f'<a class="site-card site-card-link" href="{_esc(url)}"{typed} data-go="{kind}" '
-        f"{_size_attribute(size, value, note, address)} "
-        'target="_blank" rel="noopener noreferrer">'
+        f"{_size_attribute(size, value, note, address)}{tab}>"
         f"{card_hero(hero) if hero else ''}"
         f'<span class="site-card-label">{_esc(label)}</span>'
         f'<span class="site-card-value"{headline_math_face(value)}>{value}</span>'

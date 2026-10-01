@@ -199,14 +199,89 @@ def test_the_atlas_film_is_a_hero_card_opening_the_visualize_page(page: str) -> 
     assert "<video" not in page
 
 
-def test_every_direct_card_opens_in_a_new_tab(page: str) -> None:
-    """A card that is itself the link opens its target in a new tab, on the site or off
-    it, and never hands the new tab a way back to this one."""
-    direct = re.findall(r'<a class="site-card[^"]*"[^>]*>', page)
-    assert len(direct) == len(overview_sections.OTHER_PROJECTS) + len(
-        overview_sections.ATLAS_CARDS
+def _page_cards(page: str) -> list[tuple[str, str, str]]:
+    """The overview's page cards, its first card section: each card's address, the rest
+    of its opening tag, and its body."""
+    frame = page.split('<div class="site-cards-frame', 1)[1].split("</div></div>", 1)[0]
+    cards = re.findall(
+        r'<a class="site-card site-card-link" href="([^"]+)"([^>]*)>(.*?)</a>', frame, re.DOTALL
     )
-    for tag in direct:
+    assert frame.count("site-card-label") == len(cards), "a page card that is not a link"
+    return cards
+
+
+def _page_card_parts(page: str, href: str) -> tuple[str, str]:
+    """A page card's value and note on the overview, as `card_parts` gives a button's."""
+    (body,) = [body for address, _, body in _page_cards(page) if address == href]
+    value, note = body.split('class="site-card-value">', 1)[1].split(
+        '<span class="site-card-note">'
+    )
+    return value, note
+
+
+def test_each_page_card_is_a_plain_link_to_its_page(page: str) -> None:
+    """The overview's four page cards lead to full pages the site serves, so each card
+    is the link itself and goes there in the same tab: an `<a href>` with the page icon
+    (`data-go="page"`), no popover, no framed preview and no new tab. Each keeps its
+    label, headline, note and size."""
+    cards = _page_cards(page)
+    pages = overview_sections.PAGES
+    assert [href for href, _, _ in cards] == [href for href, *_ in pages]
+    assert [href for href, *_ in pages] == [
+        "explainer.html",
+        "tutorial.html",
+        "workbench/",
+        "frontier.html",
+    ]
+    served = {*render_overview.SITE_PAGES, "workbench/"}
+    size = overview_sections.SECTION_CARD_SIZES["pages"]
+    for (href, tag, body), (_, label, title, note) in zip(cards, pages, strict=True):
+        assert href in served, href
+        assert tag == f' data-go="page" data-card-size="{size}"', href
+        assert "popovertarget" not in tag, href
+        assert 'target="_blank"' not in tag, href
+        assert "<button" not in body, href
+        assert f'<span class="site-card-label">{label}</span>' in body, href
+        value, shown = _page_card_parts(page, href)
+        assert card_text(value) == title, href
+        assert card_text(shown) == note, href
+        assert f'src="{overview_sections.embed_url(href)}"' not in page, href
+    assert "pop-page-" not in page
+    frame = page.split('<div class="site-cards-frame', 1)[1].split("</div></div>", 1)[0]
+    for popover in ("popover", "<iframe", "<button"):
+        assert popover not in frame, popover
+
+
+def test_a_same_tab_link_card_leads_only_to_a_page_of_the_site() -> None:
+    """`link_card` opens a new tab unless told otherwise; told otherwise, it emits no
+    `target`, and refuses an address off the site, which never replaces this page."""
+    made = overview_sections.link_card("frontier.html", "Label", "Headline", "A note.")
+    assert ' target="_blank" rel="noopener noreferrer">' in made
+    same = overview_sections.link_card(
+        "frontier.html", "Label", "Headline", "A note.", new_tab=False
+    )
+    assert same.startswith(
+        '<a class="site-card site-card-link" href="frontier.html" data-go="page" '
+        'data-card-size="small">'
+    )
+    assert "target=" not in same
+    assert "rel=" not in same
+    assert same.split(">", 1)[1] == made.split(">", 1)[1]
+    with pytest.raises(SystemExit, match="only a page of this site"):
+        overview_sections.link_card(
+            "https://github.com/jlevy/squares", "Label", "Headline", "A note.", new_tab=False
+        )
+
+
+def test_every_other_direct_card_opens_in_a_new_tab(page: str) -> None:
+    """A card that is itself the link, other than a page card, opens its target in a new
+    tab, on the site or off it, and never hands the new tab a way back to this one: a
+    poster's PDF, the film, another project."""
+    direct = re.findall(r'<a class="site-card[^"]*"[^>]*>', page)
+    assert len(direct) == len(overview_sections.PAGES) + len(
+        overview_sections.OTHER_PROJECTS
+    ) + len(overview_sections.ATLAS_CARDS)
+    for tag in direct[len(overview_sections.PAGES) :]:
         assert 'target="_blank"' in tag, tag
         assert 'rel="noopener noreferrer"' in tag, tag
 
@@ -1050,8 +1125,8 @@ def test_every_card_shows_where_it_goes_and_gets_there(page: str, results: str) 
     there; a row on another page, such as a result's on the results page, is previewed
     too, and the button goes to that page. The card's icon and the button's agree, and
     every target on the site exists.
-    An other project's card is the exception, the link itself with no popover (its own
-    test above)."""
+    The exceptions are the cards that are the link itself, with no popover: the page
+    cards, the atlas's and the other projects' (their own tests above)."""
     cards = CARD.findall(page)
     assert "page" in {kind for _, kind in cards} <= {"scroll", "page", "external"}
     assert page.count('class="site-card"') == len(cards)
@@ -1758,12 +1833,16 @@ def card_parts(page: str, target: str) -> tuple[str, str, str]:
     return value, note, panel
 
 
-def test_the_explainer_card_says_what_the_explainer_now_is(page: str, results: str) -> None:
+def test_the_explainer_card_says_what_the_explainer_now_is(
+    page: str, results: str, rendered: Callable[[str], str]
+) -> None:
     """The explainer proves the earlier, simpler lower bounds, so its card is titled and
-    described as the owner put it, `n = 11` set as math, and its popover links T-060,
-    the optimality proof since registered: the card itself is a button and holds no link.
-    The wording stays within T-060's rungs: proved, never formally."""
-    value, note, panel = card_parts(page, "pop-page-explainer")
+    described as the owner put it, `n = 11` set as math. On the overview the card is the
+    link to the explainer, so it holds no other; T-060, the optimality proof since
+    registered, is linked from the popover of its card on the Papers page, which is a
+    button. The wording stays within T-060's rungs: proved, never formally."""
+    value, note = _page_card_parts(page, "explainer.html")
+    _, _, panel = card_parts(rendered("papers.html"), "pop-paper-explainer")
     assert card_text(value) == EXPLAINER_TITLE
     assert card_text(note) == EXPLAINER_NOTE
     assert "kpress-math" in value
@@ -1812,9 +1891,9 @@ def test_the_papers_page_holds_one_large_card_for_each_paper(
 ) -> None:
     """`papers.html` is one large card per paper and nothing else in cards, in the order of
     the one list that defines them (`overview_sections.PAPERS`), so a new paper is one
-    entry there. Each is a page card, as on the overview: the whole card is the button,
-    its popover frames the paper in its embedded view, and the popover's one button
-    expands to the paper's own page."""
+    entry there. The whole card is the button, its popover frames the paper in its
+    embedded view, and the popover's one button expands to the paper's own page. (The
+    overview's page cards are plain links instead, with no popover.)"""
     page = rendered("papers.html")
     papers = overview_sections.PAPERS
     assert [paper.href for paper in papers] == [
@@ -1870,22 +1949,22 @@ def test_a_popover_carries_every_quiet_link_its_card_is_given() -> None:
 def test_the_papers_page_says_what_each_paper_is(
     page: str, rendered: Callable[[str], str]
 ) -> None:
-    """The explainer's card is its card on the overview, word for word, with the same
-    links in its popover, to the optimality paper and to T-060; the tutorial's is
-    `TUTORIAL.md`'s own opening, whom it is for and what it covers. The overview keeps a
-    card for the explainer and the tutorial."""
+    """The explainer's card is its card on the overview, word for word, and its popover
+    here links the optimality paper and T-060, which the overview's card, a plain link
+    to the explainer, cannot; the tutorial's is `TUTORIAL.md`'s own opening, whom it is
+    for and what it covers. The overview keeps a card for the explainer and the
+    tutorial."""
     papers = rendered("papers.html")
     value, note, panel = card_parts(papers, "pop-paper-explainer")
     assert card_text(value) == EXPLAINER_TITLE
     assert card_text(note) == EXPLAINER_NOTE
-    assert (value, note) == card_parts(page, "pop-page-explainer")[:2]
+    assert (value, note) == _page_card_parts(page, "explainer.html")
     also = (
         '<a class="site-popover-also" href="n11-optimality/t-060-explainer.html">'
         "The optimality paper</a>"
         ' <a class="site-popover-also" href="all-results.html#t-060">'
     )
     assert also in panel
-    assert also in card_parts(page, "pop-page-explainer")[2]
 
     value, note, _ = card_parts(papers, "pop-paper-tutorial")
     assert card_text(value) == "Square packing from first principles"
@@ -1902,8 +1981,7 @@ def test_the_papers_page_says_what_each_paper_is(
     ):
         assert phrase in card_text(note), phrase
         assert phrase in opening, phrase
-    for target in ("pop-page-explainer", "pop-page-tutorial"):
-        assert f'popovertarget="{target}"' in page, target
+    assert {"explainer.html", "tutorial.html"} <= {href for href, _, _ in _page_cards(page)}
 
 
 def test_the_optimality_papers_card_says_what_t060s_rungs_allow(

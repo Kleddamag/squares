@@ -66,6 +66,10 @@ def test_the_disclaimer_sentence_is_found_whole() -> None:
         "The record is campaign/resource-usage/agent-a5ada27ae702ebba4.yaml, defaced or not.",
         "Pinned at the solver's floor of 1e-10, the wall clock gate reports when CI ran.",
         "It was replayed here in full, each sweep reproducing the ledger byte for byte.",
+        "The formatter rewraps the paragraph at commit time, and the hook stages it.",
+        # The evidential status of one of this project's own results, in the tutorial and
+        # the synopsis, is not the disclaimer a result by others used to carry.
+        "verified (exact-algebraic; apparently novel here, not externally peer-reviewed)",
     ],
 )
 def test_plain_credit_links_numbers_and_paths_are_not_ceremony(sentence: str) -> None:
@@ -81,6 +85,11 @@ def test_plain_credit_links_numbers_and_paths_are_not_ceremony(sentence: str) ->
         ("committed on 23 September 2026 at 22:45 UTC−6", "clock"),
         ("independent of either repository’s clocks; the issue gives no side", "clock"),
         ("is dated 23 September 2026 by his clock, before Casson’s", "clock"),
+        ("is dated 23 September 2026 by Couzo’s clock, before Casson’s", "clock"),
+        ("by the authors’ clocks Casson’s is the earlier", "clock"),
+        ("committed 2026-09-24T04:45:20Z, a day after the first", "clock"),
+        ("authored 2026-09-23T01:35 and committed the next day", "clock"),
+        ("the release at commit 1234567 of 21 September 2026", "commit-phrase"),
         (
             "the v1.0.0 release at commit `a499e2c739ce7853fa04c8bcdc85caf1c2b01b37`",
             "commit-phrase",
@@ -168,9 +177,18 @@ packing:
   reported_lower_bound:
     value: '10.2'
     note: Rectangle-density certificate reported in the retained source at 39d8ecc.
+  rigidity:
+    property: not-rigid
+    scope: Square 26 of the retained witness at a1b2c3d translates along (0, 1).
   priority_notes:
-  - claim: s(103) <= 10.70377984436967189, Griffin Casson's packing
+  - claim: s(103) <= 10.70377984436967189, Griffin Casson's packing by his clock
     published: griffcass/square-packing 82661bc, committed 2026-09-24T04:45:20Z
+  conflicts:
+  - kind: replay-failure
+    detail: The certified side trails the report at commit 82661bc.
+  blockers:
+  - kind: mathematics
+    detail: Closing it needs the pose the source printed at 2026-09-24T04:45:20Z.
   resources:
   - key: '[evand square-packing 2026]'
     url: https://github.com/evand/square-packing/tree/167d842cd27ba1451cb2833773ea930c80b9e65b
@@ -186,15 +204,25 @@ git checkout f3c5a52
 """
 
 
-def test_a_case_record_is_read_in_its_body_and_its_notes_only(tmp_path: Path) -> None:
+def test_a_case_record_is_read_in_its_body_and_the_fields_its_page_prints(
+    tmp_path: Path,
+) -> None:
+    """The body, each `note`, the rigidity scope, a conflict's or blocker's detail and a
+    priority note's claim are sentences on the case page. `priority_notes[].published`
+    and `resources[].url`, beside them, are where a revision and a timestamp belong."""
     record = tmp_path / "n-103.md"
     record.write_text(CASE_RECORD, encoding="utf-8")
     found = ceremony.document_findings(record, repo=tmp_path)
     assert [(finding.where, finding.words) for finding in found] == [
         ("front matter packing.reported_lower_bound.note", "39d8ecc"),
-        ("line 18", "f3c5a52"),
+        ("front matter packing.rigidity.scope", "a1b2c3d"),
+        ("front matter packing.priority_notes[0].claim", "by his clock"),
+        ("front matter packing.conflicts[0].detail", "82661bc"),
+        ("front matter packing.conflicts[0].detail", "commit 82661bc"),
+        ("front matter packing.blockers[0].detail", "2026-09-24T04:45:20Z"),
+        ("line 27", "f3c5a52"),
     ]
-    assert CASE_RECORD.split("\n")[17].startswith("revision `f3c5a52`")
+    assert CASE_RECORD.split("\n")[26].startswith("revision `f3c5a52`")
 
 
 SECTIONED = """# Synopsis
@@ -223,7 +251,7 @@ def test_only_a_documents_named_spans_are_read(tmp_path: Path) -> None:
         ("## The Problem", "## The Cell Decomposition"),
     )
     found = ceremony.document_findings(document, spans, tmp_path)
-    assert {finding.words for finding in found} == {"c183cc9ab", "clean commit"}
+    assert {finding.words for finding in found} == {"c183cc9ab", "commit `c183cc9ab"}
     assert {finding.where for finding in found} == {"line 11"}
 
     # A renamed heading must not silently stop a section being read.

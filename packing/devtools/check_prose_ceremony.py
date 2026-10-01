@@ -23,8 +23,9 @@ This module holds three things to that.
   `significance.rationale` of every entry in `frontier/results.yaml`, which
   `RESULTS.md`, the synopsis and the site print word for word.
 - **Reader documents**: the root reader documents, the frontier README and status table,
-  the site's article templates, and each case record's body and the `note` fields of
-  its front matter, which the site's case pages print.
+  the site's article templates, and each case record's body and the front-matter fields
+  the site's case pages print: every `note`, the rigidity `scope`, and the `detail` of a
+  conflict or blocker and the `claim` of a priority note.
 - **Paragraphs**: a paragraph of a register prose field that runs past
   `PARAGRAPH_CHARS` in more than one sentence is a finding. A blank line in the field
   divides paragraphs, and the renderers keep it (`devtools.register_prose`).
@@ -149,16 +150,22 @@ KINDS: tuple[Kind, ...] = (
     ),
     Kind(
         "commit-phrase",
-        re.compile(r"\b(?:at|bundle|clean|release) commit\b|\bcommits? `", re.IGNORECASE),
+        # "commit" followed by a revision, digits-only ones included, which the hex
+        # pattern above does not read as a hash. "At commit time" is not ceremony.
+        re.compile(r"\bcommits?\s+`?[0-9a-f]{7,40}\b", re.IGNORECASE),
         "say when, as a plain date, and link the source",
     ),
     Kind(
         "clock",
         re.compile(
-            # Either apostrophe: the register writes ASCII, the documents typographic.
-            "\\b(?:author|committer|repositor(?:y|ies))['\u2019]?s?['\u2019]? clocks?\\b"
+            # Anyone's clock, named or not ("the author's clock", "Couzo's clock", "the
+            # authors' clocks"), with either apostrophe: the register writes ASCII, the
+            # documents typographic. A wall clock has no owner and is not one.
+            "\\b\\w+(?:['\u2019]s|s['\u2019]) clocks?\\b"
             r"|\bby (?:his|her|their) clocks?\b"
             r"|\bUTC\b|\bGMT\b|\bP[DS]T\b|\bE[DS]T\b|\bCES?T\b"
+            # An ISO timestamp: a date with its time of day.
+            r"|\b\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2})?Z?"
         ),
         "a plain date",
     ),
@@ -288,12 +295,28 @@ def _is_case_record(path: Path) -> bool:
     return re.fullmatch(r"n-\d{3}\.md", path.name) is not None
 
 
+#: The front-matter fields of a case record that are sentences the site's case page
+#: prints (`render_case_pages`): every `note`, and these four by their place. A path's
+#: list indices are dropped before it is compared. `priority_notes[].published` and
+#: `resources[].url` are beside them and are structured homes, so they are not read.
+FRONT_MATTER_PROSE = (
+    "rigidity.scope",
+    "conflicts.detail",
+    "blockers.detail",
+    "priority_notes.claim",
+)
+
+
 def _notes(node: Any, trail: str = "") -> Iterator[tuple[str, str]]:
-    """Every `note` string in a case record's front matter, with the path to it."""
+    """Every prose field in a case record's front matter (`FRONT_MATTER_PROSE` and each
+    `note`), with the path to it."""
     if isinstance(node, dict):
         for key, value in node.items():
             here = f"{trail}.{key}" if trail else str(key)
-            if key == "note" and isinstance(value, str):
+            placed = re.sub(r"\[\d+\]", "", here)
+            if isinstance(value, str) and (
+                key == "note" or placed.endswith(FRONT_MATTER_PROSE)
+            ):
                 yield here, value
             else:
                 yield from _notes(value, here)

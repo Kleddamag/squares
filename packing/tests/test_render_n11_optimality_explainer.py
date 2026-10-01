@@ -215,6 +215,28 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
     assert markdown.count(f"/blob/{REVISION}/") >= 39
 
 
+def test_a_table_keeps_to_the_column_and_scrolls_inside_its_wrap() -> None:
+    """The shared column rule caps a block at the measure, which outranks KPress's cap on
+    a table's wrap, so on a phone the wrap ran past the article that clips it. The
+    paper's own rule caps the wrap at the column too, later in the page and at a higher
+    specificity than the shared rule, and the page has tables for it to hold.
+    `preview_site --clips` measures the result in the browser."""
+    css = paper.STYLE.read_text(encoding="utf-8")
+    cap = "max-width: min(100%, calc(var(--kpress-measure) + 2 * var(--kpress-column-inset)));"
+    assert f".cert-page.n11-paper > .kpress-table-wrap {{\n  {cap}\n}}" in css
+    shared = paper.render_explainer.PUBLICATION_STYLE.read_text(encoding="utf-8")
+    assert ".cert-page > :not(figure, .cert-figure, .kpress-figure),\n.col {" in shared
+    html, _ = paper.render(
+        paper.ARTICLE.read_text(encoding="utf-8"),
+        figures=paper.render_all_figures(),
+        revision=REVISION,
+    )
+    assert html.index(shared) < html.index(css)
+    article = html.split('<article class="kpress kpress-doc kpress-prose cert-page n11-paper">')
+    assert len(article) == 2
+    assert len(re.findall(r'<div class="kpress-table-wrap"><table\b', article[1])) == 2
+
+
 @pytest.mark.skipif(
     os.environ.get("SQPACK_N11_PAPER_BROWSER") != "1",
     reason="the dedicated T-060 Pages job sets SQPACK_N11_PAPER_BROWSER=1",

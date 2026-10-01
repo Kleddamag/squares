@@ -1,4 +1,14 @@
 /* Diagram geometry for the T-060 figures. Publication type is shared with T-018. */
+/* A table keeps to the column at every width and scrolls inside its own wrap. The shared
+   column rule caps each block of the article at the measure, and that cap outranks the
+   one KPress puts on a table's wrap; on a pane narrower than the measure the wrap then
+   grew to its table's full width and ran past the article, which clips it: 184px and
+   402px at 390px and 72px at 768px, measured by `preview_site --clips`. Capped at the
+   column as well, the wrap is the scroller, as a document's table is on the site's own
+   pages (site.css). Print lays a table out at the page's width and is not affected. */
+.cert-page.n11-paper > .kpress-table-wrap {
+  max-width: min(100%, calc(var(--kpress-measure) + 2 * var(--kpress-column-inset)));
+}
 .n11-paper figure > svg,
 .n11-paper .figure-pair > svg {
   display: block;

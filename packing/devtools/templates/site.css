@@ -1089,13 +1089,13 @@ body {
    line ("Queuingtheorydotcom", 167px of the 184), so a credit wraps between names, two
    or three to a line, and never inside one. KPress's own floor, 6rem, set a credit one
    word to a line while the result column kept the spare width. The rungs column is as
-   wide as its widest chip, since no chip wraps: the three rungs at 114px, and "second
-   certificate" at 159 where a row with one shows. The result column's floor is its
-   18rem (above): the widest piece of a formula a line cannot end inside is narrower
-   than that, now that a long quotient may end a line after its solidus
-   (`overview_data.breakable_quotients`). A result's records are no column of their
-   own, which would set a link to a line; they sit under the summary, in the result's
-   cell, on a line or two. */
+   wide as its widest chip, since no chip wraps: the three rungs at 114px, and the
+   widest kind, "restricted optimality", at 180 where a row with one shows. The result
+   column's floor is its 18rem (above): the widest piece of a formula a line cannot end
+   inside is narrower than that, now that a long quotient may end a line after its
+   solidus (`overview_data.breakable_quotients`). A result's records are no column of
+   their own, which would set a link to a line; they sit under the summary, in the
+   result's cell, on a line or two. */
 @media (width >= 40rem) {
   .site-results .site-col-credit {
     min-width: 11.5rem;

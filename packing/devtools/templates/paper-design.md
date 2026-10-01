@@ -1037,12 +1037,13 @@ it.
   Where no row showing holds a long list, as on the overview when it opens, the column
   is as narrow as its lists, 85 pixels, so a single case has no empty column beside it.
   With every row showing, the id, n, result, credit, rungs and date columns measure 56,
-  225, 358, 205, 159 and 100 pixels at a 1280-pixel window, where T-056’s list takes 6
-  lines, and 56, 156, 288, 184, 159 and 100 at 1024, where it takes 9; the table fits
-  its frame at both. At 768 they measure 56, 120, 288, 184, 159 and 100, the list takes
-  11 lines, and the table runs 221 pixels past its 688-pixel frame.
-  The floors come to 908 pixels, so a table fits its frame down to a window of about 990
-  pixels and scrolls sideways in its wrap below that.
+  225, 342, 200, 180 and 100 pixels at a 1280-pixel window, where T-056’s list takes 6
+  lines, and 56, 135, 288, 184, 180 and 100 at 1024, where it takes 11; the table fits
+  its frame at both, with 14 pixels to spare at 1024 before the n column reaches its
+  floor. At 768 they measure 56, 120, 288, 184, 180 and 100, the list takes 11 lines, and
+  the table runs 242 pixels past its 688-pixel frame.
+  The floors come to 930 pixels, so a table fits its frame down to a window of about
+  1010 pixels and scrolls sideways in its wrap below that.
   The measure is a trade against the result column: each 2ch of it takes about 13 pixels
   from the result at a 1280-pixel window and adds about 75 to the height of the results
   page’s table, whose summaries carry their records.

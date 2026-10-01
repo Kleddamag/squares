@@ -70,9 +70,10 @@ CASES_LINES = 6
 MOST_CASES = "T-056"
 LONG_QUOTIENTS = ("T-022", "T-024", "T-026", "T-033")
 #: How far a table of results ran past its frame at 768 pixels before the result column
-#: could give way, and the most it may now.
+#: could give way, with a rungs column of 159 pixels; and the most it may now, measured
+#: at 242 with a rungs column of 180, as wide as the kind "restricted optimality".
 SCROLL_WAS = 318.7
-SCROLL_MAX = 230
+SCROLL_MAX = 250
 #: The id column: five characters and the cell's padding, well under KPress's 96.
 ID_MAX = 64
 #: The six columns of a table of results, as `overview_sections.result_head` names them.
@@ -166,8 +167,9 @@ def test_a_table_of_results_fits_at_1024_and_scrolls_less_at_768(
 ) -> None:
     """At 1024 pixels the table fits its 944-pixel frame, where the result column, held
     to 411 pixels, ran it 63 past: the result is at its floor and the list of cases has
-    given up what the window lacks. At 768 the floors alone are wider than the frame,
-    and the table scrolls sideways by under three quarters of what it did."""
+    given up what the window lacks, 135 pixels of its 225 left to it and 14 to spare
+    before its own floor. At 768 the floors alone, 930 pixels, are wider than the
+    688-pixel frame, and the table scrolls sideways by 242, where it ran 319 past."""
     table = laid[name, 1024].table
     assert (table["layout"], table["scrolls"]) == ("table", 0), table["table_width"]
     narrow = laid[name, 768].table
@@ -186,6 +188,12 @@ def test_a_long_list_of_cases_wraps_in_its_measure(
     assert cases["width"] == pytest.approx(CASES_MEASURE, abs=1)
     assert cases["lines"] == CASES_LINES
     assert cases["tallest"] is None or cases["tallest"]["lines"] <= CASES_LINES
+    if name == render_overview.RESULTS_PAGE:
+        # Where the summaries carry their records, the list's row is no taller than the
+        # tallest a summary sets: the measure stops where the list stops being the
+        # reason a row is tall.
+        summary = _column(laid[name, 1280].table, "Result")["tallest"]
+        assert cases["tallest"]["height"] <= summary["height"]
     for width in TABLE_WIDTHS:
         column = _column(laid[name, width].table, "n")
         assert CASES_MIN - 0.5 <= column["width"] <= CASES_MEASURE + 1, width

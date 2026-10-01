@@ -889,15 +889,28 @@ def check_unprotected_fix_claims(text: str, expected: int) -> list[str]:
 
 
 #: "at side `4.68`" / "at sides `3.82`, `3.95` and `4.80`" -- the shape the synopsis uses
-#: to attach a covering-value report to the side it was reported at. Backticked decimals
+#: to attach a covering-value report to the side it was reported at. Quoted decimals
 #: only, which is what keeps this off the other "at side" phrases in the document: the
-#: exact ones are written as fractions or surds (`19/5`, `1 + 5√2/4`) and the unbackticked
-#: ones are not quotations of a reported value at all.
-_AT_SIDES = re.compile(r"\bat sides?\s+((?:`\d+\.\d+`(?:,\s+|\s+and\s+)?)+)")
+#: exact ones are written as fractions or surds (`19/5`, `1 + 5√2/4`) and the unquoted
+#: ones are not quotations of a reported value at all. A quotation is a code span or,
+#: since the synopsis moved its mathematics to LaTeX (`devtools.migrate_math`), an inline
+#: math span: `$4.68$` quotes a value exactly as `` `4.68` `` did.
+_QUOTE = r"[`$]"
+_AT_SIDES = re.compile(rf"\bat sides?\s+((?:{_QUOTE}\d+\.\d+{_QUOTE}(?:,\s+|\s+and\s+)?)+)")
 
-#: "`11.9706` at `3.95`" and its neighbours; a backticked decimal inside an `_AT_SIDES`
-#: run.
-_QUOTED_DECIMAL = re.compile(r"`(\d+\.\d+)`")
+#: "`11.9706` at `3.95`" and its neighbours; a quoted decimal inside an `_AT_SIDES` run.
+_QUOTED_DECIMAL = re.compile(rf"{_QUOTE}(\d+\.\d+){_QUOTE}")
+
+#: A quoted figure in a fact-table cell: a code span, or an inline math span.
+_QUOTED_FIGURE = re.compile(r"`([^`]*)`|\$([^$]*)\$")
+
+
+def _quoted_figures(cell: str) -> list[str]:
+    """Each quoted figure in `cell`, with math read back to the characters prose uses."""
+    return [
+        code or math.replace(r"\ldots", "…").replace(r"\ge", "≥").replace(r"\le", "≤")
+        for code, math in _QUOTED_FIGURE.findall(cell)
+    ]
 
 
 def reported_covering_sides() -> tuple[list[str], list[str]]:
@@ -976,7 +989,7 @@ def check_covering_value_reports(text: str) -> list[str]:
             f"sides ({', '.join(sides)})"
         )
 
-    for sentence in re.split(r"(?<=[a-z0-9)`])\.\s+(?=[A-Z])", text):
+    for sentence in re.split(r"(?<=[a-z0-9)`$])\.\s+(?=[A-Z])", text):
         if "recomputable" not in sentence:
             continue
         claimed = {
@@ -1031,7 +1044,7 @@ def check_case_interval(
         return [f"SYNOPSIS.md: fact table has no '{label}' row" for label in sorted(missing)]
 
     rows = {key: row for key, row in found.items() if row is not None}
-    figures = {key: re.findall(r"`([^`]*)`", row) for key, row in rows.items()}
+    figures = {key: _quoted_figures(row) for key, row in rows.items()}
     if empty := [labels[key] for key, found in figures.items() if not found]:
         return [f"SYNOPSIS.md: '{label}' row states no figure" for label in sorted(empty)]
 

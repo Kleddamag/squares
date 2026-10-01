@@ -1,17 +1,23 @@
 #!/usr/bin/env python3
 """Validate structural support for the results register's declared rungs.
 
-`epistemics.md` owns the policy. This checker derives V1 and V3 through V5,
-derives C0 through C5, requires explanations for declared-only V0 and V2, and
-refuses unsupported promotion or unexplained understatement. It also resolves
-evidence, repository-file and `produced_by` references -- the campaign records a
-result came out of, which must exist -- requires retained controls at C3 and
-above, restricts C5 to mapped review artifacts, and rejects unknown result ids
-in the reader tier. It holds every `headline` to one table cell that states no
-number its claim does not, and dates every result of this project by
-`established` and every result by others by `attribution.published`, never
-both. Human review owns evidence relevance, claim coverage, composition,
-significance, novelty, and whether a headline says what its claim says.
+`epistemics.md` owns the policy. This checker derives V1 and V3 through V5 from
+the cited evidence of any origin and the retained reviews, derives C0 through C5
+from the confirming-origin evidence and the confirming-side reviews, requires
+explanations for declared-only V0 and V2, and refuses unsupported promotion,
+unexplained understatement and a confirmation above the verification. It also
+resolves evidence, repository-file and `produced_by` references -- the campaign
+records a result came out of, which must exist -- requires retained controls at
+C3 and above, holds every review in `reviews` to a mapped, non-superseded,
+dated document (two adversarial AI reviews by distinct reviewers and a human
+oversight record at rung 4; human formalization reviews, an axiom receipt and
+an open-review pointer at rung 5), and rejects unknown result ids in the reader
+tier. It holds every `headline` to one table cell that states no
+number its claim does not, dates every result of this project by `established`
+and every result by others by `attribution.published`, never both, and requires
+each entry's `registered` date. Human review owns evidence relevance, claim
+coverage, composition, significance, novelty, and whether a headline says what
+its claim says.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.check_results
@@ -35,7 +41,17 @@ RESULTS = ROOT / "frontier" / "results.yaml"
 EVIDENCE = ROOT / "frontier" / "evidence.yaml"
 BIBLIOGRAPHY = ROOT / "resources" / "bibliography.yaml"
 FRONTIER = ROOT / "frontier"
-READER_TIER = (REPO / "README.md", REPO / "SYNOPSIS.md")
+#: The reader documents whose result mentions must name registered results: README, the
+#: synopsis, and the site's overview and papers prose. The overview's Recent Results
+#: opens with README's `recent-progress` block (`site_documents.overview_progress`), so
+#: the T-060 and T-011 it names are held here through README; each template is held for
+#: the results its own prose names, as the papers page names T-060.
+READER_TIER = (
+    REPO / "README.md",
+    REPO / "SYNOPSIS.md",
+    ROOT / "devtools" / "templates" / "overview-article.md",
+    ROOT / "devtools" / "templates" / "papers-article.md",
+)
 DOCUMENT_MAP = REPO / "docs" / "project" / "document-map.yaml"
 CAMPAIGN = ROOT / "campaign"
 # What each `produced_by` key names, for the refusal message.
@@ -47,8 +63,27 @@ PRODUCED_BY_NOUNS = {
 }
 
 MACHINE_METHODS = {"exact-algebraic", "interval-certified"}
-OURS_ORIGINS = {"audited-here", "replayed-here"}
+FORMAL_METHOD = "proof-assistant-checked"
+#: Confirmation counts work beyond the producing run: this repository's replays and
+#: audits, and a third party's own replay retained here (epistemics.md, Confirmation).
+CONFIRMING_ORIGINS = {"audited-here", "replayed-here", "independently-external"}
+OURS_ORIGINS = CONFIRMING_ORIGINS
 DECLARED_ONLY_V = {"V0", "V2"}
+#: How many adversarial AI reviews, by distinct reviewers, rung 4 needs on either axis.
+#: Provisional: the owner's "multiple adversarial attempts" read as two
+#: (plan-2026-09-30-epistemics-ladder-review, decision 11); one edit reverses it.
+ADVERSARIAL_REVIEWS = 2
+#: How many human formalization reviews rung 5 needs on each axis. The owner set two at
+#: C5; one at V5 is provisional (the same plan, decision 15).
+FORMALIZATION_REVIEWS = {"V": 1, "C": 2}
+#: What a human oversight record must say it checked (epistemics.md, Review Records).
+OVERSIGHT_CHECKS = frozenset({"trust-boundary", "certificate-meaning", "ai-findings"})
+#: What a human formalization review must say it checked.
+FORMALIZATION_CHECKS = frozenset({"statement-fidelity", "definitions", "axioms", "build"})
+ACCEPTING_VERDICTS = frozenset({"accepted", "defects-resolved"})
+#: A review the result's own source performed counts toward V and never toward C.
+SOURCE_RELATION = "source"
+REVIEW_KINDS = frozenset({"adversarial", "confirming", "oversight", "formalization"})
 # Whose result an entry is. A `previously-published` result is someone else's and names
 # its source; a novel one is this project's and names none (epistemics.md, "Results by
 # Others"). `common-knowledge` results owe no citation either way.
@@ -67,20 +102,104 @@ def _rank(rung: str) -> int:
 
 
 def _machine_proof_shaped(entry: dict) -> bool:
+    """A certificate that replays: exact, interval or kernel-checked, with a replay
+    command and a passing status. Rung 3's machine evidence on either axis."""
     return (
-        entry.get("method") in MACHINE_METHODS
+        (entry.get("method") in MACHINE_METHODS or entry.get("method") == FORMAL_METHOD)
         and bool(entry.get("certificate"))
         and bool(entry.get("replay"))
         and entry.get("replay_status") == "passed"
     )
 
 
-def derive_confirmation(entries: list[dict], *, review_ready: bool = False) -> str:
-    ours = [entry for entry in entries if entry.get("origin") in OURS_ORIGINS]
-    machine = [entry for entry in ours if _machine_proof_shaped(entry)]
-    if machine and review_ready:
+def _formal(entry: dict) -> bool:
+    """Rung 5's machine evidence: a kernel check with its axiom receipt retained."""
+    return (
+        entry.get("method") == FORMAL_METHOD
+        and _machine_proof_shaped(entry)
+        and bool(entry.get("axioms_receipt"))
+    )
+
+
+def _confirming_side(review: dict) -> bool:
+    return review.get("relation") != SOURCE_RELATION
+
+
+def _distinct_reviewers(reviews: Iterable[dict]) -> int:
+    return len(
+        {" ".join(str(review.get("reviewer", "")).split()).casefold() for review in reviews}
+    )
+
+
+def adversarially_reviewed(reviews: list[dict], *, confirming: bool = False) -> bool:
+    """Rung 4's AI review: `ADVERSARIAL_REVIEWS` adversarial reviews by distinct
+    reviewers, and the latest-dated review of the result accepts the claim, so every
+    defect found has a disposition. On the confirming side, the source's own reviews
+    do not count."""
+    pool = [review for review in reviews if not confirming or _confirming_side(review)]
+    adversarial = [
+        review
+        for review in pool
+        if review.get("kind") == "adversarial" and review.get("reviewer_kind") == "ai"
+    ]
+    if _distinct_reviewers(adversarial) < ADVERSARIAL_REVIEWS:
+        return False
+    latest = max(pool, key=lambda review: str(review.get("date", "")))
+    return latest.get("verdict") in ACCEPTING_VERDICTS
+
+
+def _human_records(reviews: Iterable[dict], kind: str, checks: frozenset[str]) -> list[dict]:
+    return [
+        review
+        for review in reviews
+        if review.get("kind") == kind
+        and review.get("reviewer_kind") == "human"
+        and checks <= set(review.get("checked") or [])
+        and review.get("verdict") in ACCEPTING_VERDICTS
+    ]
+
+
+def overseen(reviews: list[dict], *, confirming: bool = False) -> bool:
+    """Rung 4's human oversight: one accepting human record that checked the trust
+    boundary, the certificate's meaning and the AI reviews' findings."""
+    pool = [review for review in reviews if not confirming or _confirming_side(review)]
+    return bool(_human_records(pool, "oversight", OVERSIGHT_CHECKS))
+
+
+def formalization_reviews(reviews: list[dict], *, confirming: bool = False) -> int:
+    """How many distinct human experts, none the formalization's author, reviewed the
+    formal statement, definitions, axioms and build and accepted them."""
+    pool = [review for review in reviews if not confirming or _confirming_side(review)]
+    experts = [
+        review
+        for review in _human_records(pool, "formalization", FORMALIZATION_CHECKS)
+        if review.get("independent_of_author") is True
+    ]
+    return _distinct_reviewers(experts)
+
+
+def derive_confirmation(
+    entries: list[dict], reviews: list[dict] | None = None, *, open_review: bool = False
+) -> str:
+    """The confirmation rung the confirming-origin evidence and the confirming-side
+    reviews support (epistemics.md, Confirmation)."""
+    reviews = list(reviews or [])
+    ours = [entry for entry in entries if entry.get("origin") in CONFIRMING_ORIGINS]
+    rebuilt = [
+        entry for entry in ours if _formal(entry) and entry.get("origin") == "replayed-here"
+    ]
+    if (
+        rebuilt
+        and open_review
+        and formalization_reviews(reviews, confirming=True) >= FORMALIZATION_REVIEWS["C"]
+    ):
         return "C5"
-    if len({entry.get("method") for entry in machine}) >= 2:
+    machine = [entry for entry in ours if _machine_proof_shaped(entry)]
+    if (
+        machine
+        and adversarially_reviewed(reviews, confirming=True)
+        and overseen(reviews, confirming=True)
+    ):
         return "C4"
     if machine:
         return "C3"
@@ -93,6 +212,63 @@ def derive_confirmation(entries: list[dict], *, review_ready: bool = False) -> s
     ):
         return "C1"
     return "C0"
+
+
+def distinct_methods(entries: list[dict]) -> int:
+    """The attribute shown beside the rung: how many distinct machine methods the
+    confirming entries decide the claim by. Never a rung (epistemics.md, Confirmation)."""
+    return len(
+        {
+            entry.get("method")
+            for entry in entries
+            if entry.get("origin") in CONFIRMING_ORIGINS and _machine_proof_shaped(entry)
+        }
+    )
+
+
+def third_party_replayed(entries: list[dict]) -> bool:
+    """The attribute shown beside the rung: a third party's own replay is retained."""
+    return any(
+        entry.get("origin") == "independently-external" and _machine_proof_shaped(entry)
+        for entry in entries
+    )
+
+
+def review_problems(record: dict, document_map: dict) -> list[str]:
+    """What is wrong with a result's `reviews` and `open_review`, structurally: each
+    review exists, is mapped as a non-superseded review, names its reviewer and date,
+    covers this result when it names what it covers; a human reviewer states a
+    relation; the open-review pointer's retained copy exists."""
+    rid = record["id"]
+    problems: list[str] = []
+    for review in record.get("reviews") or []:
+        path = str(review.get("path", ""))
+        if problem := repository_file_problem(path):
+            problems.append(f"{rid}: review path {problem}: {path}")
+        entry = _document_map_entry(path, document_map)
+        if not (
+            entry and entry.get("role") == "review" and entry.get("lifecycle") != "superseded"
+        ):
+            problems.append(
+                f"{rid}: review is not a non-superseded review in the document map: {path}"
+            )
+        if review.get("kind") not in REVIEW_KINDS:
+            problems.append(f"{rid}: review {path} has no kind")
+        if _iso_date(review.get("date")) is None:
+            problems.append(f"{rid}: review {path} is not dated")
+        if review.get("reviewer_kind") == "human" and not review.get("relation"):
+            problems.append(f"{rid}: human review {path} states no relation to the project")
+        covers = review.get("covers")
+        if covers and rid not in covers:
+            problems.append(f"{rid}: review {path} covers {covers}, not this result")
+    if open_review := record.get("open_review"):
+        retained = str(open_review.get("retained", ""))
+        pure = PurePosixPath(retained)
+        if pure.is_absolute() or ".." in pure.parts or not (REPO / pure).exists():
+            problems.append(
+                f"{rid}: open_review.retained does not name a retained path: {retained}"
+            )
+    return problems
 
 
 def _qualifying_read(review: dict) -> bool:
@@ -331,11 +507,48 @@ def coverage_problems(
     return problems
 
 
-def derive_verification(entries: list[dict]) -> str:
-    if any(entry.get("method") == "proof-assistant-checked" for entry in entries):
+def _iso_date(value: object) -> date | None:
+    try:
+        return date.fromisoformat(str(value))
+    except ValueError:
+        return None
+
+
+def registered_problems(record: dict, last_reviewed: str) -> list[str]:
+    """What is wrong with a result's `registered` date.
+
+    A registration is a real calendar date no later than the register's own
+    `last_reviewed`, since a result cannot enter a record reviewed before it existed.
+    """
+    rid = record["id"]
+    registered = record.get("registered")
+    if registered is None:
+        return [f"{rid}: registered is required"]
+    if (when := _iso_date(registered)) is None:
+        return [f"{rid}: registered is not a calendar date: {registered}"]
+    if (reviewed := _iso_date(last_reviewed)) is not None and when > reviewed:
+        return [
+            (
+                f"{rid}: registered {when.isoformat()} is after the register's "
+                f"last_reviewed {reviewed.isoformat()}"
+            )
+        ]
+    return []
+
+
+def derive_verification(entries: list[dict], reviews: list[dict] | None = None) -> str:
+    """The verification rung the cited evidence, of any origin, and the retained
+    reviews support (epistemics.md, Verification)."""
+    reviews = list(reviews or [])
+    if any(_formal(entry) for entry in entries) and (
+        formalization_reviews(reviews) >= FORMALIZATION_REVIEWS["V"]
+    ):
         return "V5"
-    if any(_machine_proof_shaped(entry) for entry in entries):
+    machine = any(_machine_proof_shaped(entry) for entry in entries)
+    if machine and adversarially_reviewed(reviews) and overseen(reviews):
         return "V4"
+    if machine:
+        return "V3"
     if any(entry.get("method") in PROOF_METHODS and entry.get("proof") for entry in entries):
         return "V3"
     if any(
@@ -399,6 +612,7 @@ def main() -> int:
             )
 
         problems.extend(attribution_problems(record, sources))
+        problems.extend(registered_problems(record, str(register["last_reviewed"])))
         problems.extend(headline_problems(record))
         problems.extend(established_problems(record, register["last_reviewed"]))
 
@@ -410,17 +624,23 @@ def main() -> int:
                 )
 
         declared_c = record["confirmation"]
-        review = record.get("review_artifact")
-        review_path_problem = repository_file_problem(review) if review else None
-        review_exists = bool(review and review_path_problem is None)
-        review_entry = _document_map_entry(review, document_map) if review else None
-        review_mapped = bool(
-            review_entry
-            and review_entry.get("role") == "review"
-            and review_entry.get("lifecycle") != "superseded"
+        declared_v = record["verification"]
+        review_faults = review_problems(record, document_map)
+        problems.extend(review_faults)
+        # A review with a structural fault earns nothing until it is fixed.
+        reviews = [] if review_faults else list(record.get("reviews") or [])
+        derived_c = derive_confirmation(
+            cited, reviews, open_review=bool(record.get("open_review")) and not review_faults
         )
-        derived_c = derive_confirmation(cited, review_ready=review_exists and review_mapped)
         has_composition = bool(record.get("composition"))
+        # A replay, rebuild or review record is also verification evidence, so C never
+        # exceeds V from C2 up; a read (C1) of a recorded claim is the one exception,
+        # reading being no kind of verification (epistemics.md, Scope and Composition).
+        if _rank(declared_c) >= 2 and _rank(declared_c) > _rank(declared_v):
+            problems.append(
+                f"{rid}: confirmation {declared_c} exceeds verification {declared_v}; "
+                "a confirmation is also verification evidence"
+            )
         if _rank(declared_c) > _rank(derived_c):
             problems.append(
                 f"{rid}: declares {declared_c} but the cited atoms support only {derived_c}"
@@ -431,12 +651,11 @@ def main() -> int:
                 "composition note claiming the minimum over parts"
             )
 
-        declared_v = record["verification"]
         if declared_v in DECLARED_ONLY_V and not record.get("notes"):
             problems.append(
                 f"{rid}: {declared_v} is declared-only and needs a notes field saying why"
             )
-        derived_v = derive_verification(cited)
+        derived_v = derive_verification(cited, reviews)
         relation = verification_relation(declared_v, derived_v)
         if relation == "inflated":
             problems.append(
@@ -450,16 +669,6 @@ def main() -> int:
 
         if _rank(declared_c) >= 3 and not record.get("controls"):
             problems.append(f"{rid}: a {declared_c} rung names at least one control file")
-        if declared_c == "C5":
-            if not review:
-                problems.append(f"{rid}: C5 requires review_artifact")
-            elif not review_exists:
-                problems.append(f"{rid}: review_artifact path {review_path_problem}: {review}")
-            elif not review_mapped:
-                problems.append(
-                    f"{rid}: review_artifact is not a non-superseded review in the "
-                    f"document map: {review}"
-                )
 
     problems.extend(coverage_problems(results, evidence_index, sources, case_bound_evidence()))
 

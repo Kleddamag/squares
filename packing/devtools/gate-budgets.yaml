@@ -58,6 +58,39 @@ policy:
   # Larger rises name the steps or files that grew, their costs, and the cause.
   max_unattributed_rise: 1.2
   attribution_required_from: '2026-09-16'
+  # Rules 3 and 4 on a hosted pull-request run. `enforcing` when absent. `advisory` keeps
+  # both rules computed, printed word for word and annotated on the run, and does not fail
+  # the run for them; it must name a `tracking_bead` and an `advisory_reason`, and
+  # `devtools.check_gate_budgets` refuses one whose bead is closed or unknown, as it does
+  # for an advisory pull-request wall. Rule 1, the ceiling, is outside this block and is
+  # never relaxed (`OR-17`); `--enforce-budget` overrides the relaxation for an operator
+  # asking on purpose, and nothing a contributor runs by hand is a pull-request run.
+  #
+  # The measurement, 2026-09-30, read from the job logs of thirty-four pull-request runs
+  # on twelve branches (`tests/fixtures/tier-walls/hosted-readings-2026-09-30.yaml`): the
+  # `checks` tier read 59.4 to 137.1 s on unchanged steps, 2.31x, and shard C 62.96 to
+  # 143.87 s, 2.29x, both at the reference shape with every test green. Four of those runs
+  # failed on these two rules and nothing else -- PR #262 at 62.3 s (0.54x of the record),
+  # PR #255 at 59.4 s (0.52x) and at 140.2 s (1.58x), PR #254 at 141.3 s -- and a re-run of
+  # the identical commit at 106 s passed. The policy's window around a point is 2.5x
+  # (drift_ratio / stale_ratio), the pool's spread on one day is 2.3x, and the spread keeps
+  # producing new extremes (typecheck 1.63x, suite_b 1.81x, sweeps 1.97x, now 2.31x), so
+  # the next widening fails the next honest run. A single hosted reading cannot tell a
+  # slow draw from a slow change. What can: a median over several hosted readings, which
+  # the `pull_request_walls` register already judges and `think-be1s` owns for the tiers,
+  # or a wall normalised by the runner's own measured speed. Until one of those judges a
+  # pull request, the ceiling is the rule a pull request is held to, and it held both
+  # slow-fleet shard-C walls that day (170.3 s and 172.5 s against 154 s).
+  pull_request_relative_rules:
+    enforcement: advisory
+    tracking_bead: think-be1s
+    advisory_reason: >-
+      Owner decision 2026-10-01 under think-53a2: on 2026-09-30 the checks tier read 59.4
+      to 137.1 s and shard C 62.96 to 143.87 s across one day's hosted runs of unchanged
+      work, 2.3x on identical code, and the drift and stale rules failed four runs with
+      every test green. On a pull request both rules report and do not fail until
+      think-be1s arms them against run-to-run spread -- a median over hosted samples or a
+      runner-normalised wall -- rather than one reading; the ceiling is enforced throughout.
 
 # One entry per tier `packing-validate` can select as a whole. A tier with no entry here
 # fails `devtools.check_gate_budgets`, so a new tier cannot arrive without a ceiling.
@@ -326,6 +359,15 @@ tiers:
   # the record, while preserving the absolute cap. The cap now speaks before the
   # record-relative 1.5x rule; neither limit was raised to accommodate these runs.
   #
+  # 2026-10-01: 140 s stands, at 1.35x of the 103.70 s record below, and it is now the
+  # only rule that fails this tier on a pull request (`policy.pull_request_relative_rules`).
+  # It held every one of the day's thirty-three readings; the slowest, 137.10 s in run
+  # 36802005114, was 98 per cent of it on the slow class of runner. A slow-fleet day can
+  # put this tier over 140 s with no change to its steps, and that is `OR-17`'s decision
+  # to take on purpose rather than this entry's to pre-empt: the ceiling is still under
+  # the 244.77 s of step time the tier costs if its pool stops parallelising, which is
+  # the regression it is for.
+  #
   # It remains outside the 180 s required-workflow wall, which includes checkout, setup,
   # queueing and the aggregator as well as this tier.
   ceiling_seconds: 140.0
@@ -339,45 +381,37 @@ tiers:
   # would arm the stale rule against every honest run of the new one. The gate prints the
   # line to paste the first time a run at the reference shape measures the new tier.
   #
-  # 2026-09-30: both complete hosted checks attempts on PR #250 passed every
-  # mathematical and contract step but failed only the old record-relative cost band.
-  # Their same-source, same-shape walls support a new record; the rise is attributed
-  # below rather than relaxed by changing either enforcement limit.
-  measured_seconds: 114.34
-  measured_on: '2026-09-30'
+  # 2026-10-01: re-taken from one day of hosted readings rather than two attempts of one
+  # run, and recorded as a band, because the day showed the tier has a distribution and
+  # not a cost. The 114.34 s record below it was two readings 1.01x apart on one runner
+  # class; the same steps then read 59.4 s and 137.1 s on the same day, 2.31x apart, and
+  # the record failed three honest runs for being quick (PR #262 at 62.3 s, PR #255 at
+  # 59.4 s, PR #246 at 65.5 s). This is a fall, so it owes the ratchet no attribution;
+  # the attributed rise it supersedes stays in history unchanged.
+  measured_seconds: 103.70
+  measured_on: '2026-10-01'
   measured_where: >-
-    The geometric mean of two complete readings at the reference shape -- 113.94 s in
-    run 36758687712 attempt 1, validate job 110035367595, and 114.74 s in attempt 2,
-    validate job 110037623536 -- on PR #250 at head
-    150f8b0dd35473f7aa9f713a63848b5bd6250b9d. Each selected 54 of 85 steps
-    with --jobs 3 and --inner-jobs 1; every step passed, and only the inherited
-    75.67 s record-relative band failed. Observed spread 1.01x. The unchanged
-    140 s absolute ceiling held both readings.
-  attribution:
-    cause: >-
-      Since the PR #185 record, four fast checks were added to this tier: exact
-      rectangle Rust geometry, class-record bound claims, archive annotation census,
-      and README recent-results agreement. The Rust check alone costs about 8 s in
-      each new run. Existing corpus-wide checks also have more work: tracked Python
-      files grew from 924 at d7f9d94d to 1,399 at 150f8b0dd, and the browser-code
-      scan and bead-tree steps nearly doubled. The unchanged exact-verification and
-      soundness-perimeter step definitions also read longer in both current hosted
-      attempts; the old two-run wall itself ranged from 63.48 to 90.19 s. These are
-      measured step costs and a changed 50-to-54-step selection, not a new ceiling.
-    unit: step-seconds
-    source: >-
-      PR #185 runs 35210073404 job 105165227319 and 35213759889 job 105177226821
-      compared with PR #250 run 36758687712 attempt 1 job 110035367595 and
-      attempt 2 job 110037623536; each job's retained == where the time went ==
-      summary. The PR #185 and PR #250 source trees enumerate exactly 50 and 54
-      checks steps, respectively.
-    grew:
-    - {name: soundness perimeter, before: 61.15, after: 77.06}
-    - {name: exact verification, before: 55.73, after: 72.46}
-    - {name: browser code lives in files (embedded JavaScript, probes), before: 18.73, after: 34.58}
-    - {name: bead tree, before: 12.21, after: 23.15}
-    - {name: exact rectangle Rust geometry, before: 0.0, after: 8.21}
-    - {name: soft-schema validation, before: 13.98, after: 16.21}
+    The geometric mean of thirty-three readings at the reference shape, each selecting
+    54 of 85 steps with --jobs 3 and --inner-jobs 1, every step green, read from the
+    validate job's log by `devtools.read_tier_walls` on 2026-10-01 and retained with
+    their verdicts in `tests/fixtures/tier-walls/hosted-readings-2026-09-30.yaml`:
+    86.40, 65.49, 111.02, 110.11, 105.25, 114.74, 84.20, 114.04, 86.28, 104.50, 129.57,
+    98.56, 115.45, 132.97, 106.34, 73.16, 111.96, 113.96, 131.82, 73.30, 118.07, 114.33,
+    134.68, 137.10, 115.23, 136.43, 87.44, 111.06, 62.31, 114.38 and 114.37 s across runs
+    36739024277, 36740609969, 36741427338, 36746901762, 36752689669, 36758687712,
+    36761061806, 36761316654, 36764002693, 36765135966, 36774106814, 36777196705,
+    36778991813, 36780755829, 36782630217, 36784380981, 36786132529, 36793007878,
+    36794100106, 36796172704, 36796189350, 36796822299, 36801165700, 36802005114,
+    36803051249, 36812063068, 36816880620, 36819825616, 36820520722, 36820960022 and
+    36822915250; 59.40 s in run 36782630217 attempt 1, job 110116358586, which the
+    jobs API's latest-attempt view hides behind the 106.34 s re-run; and 132.31 s in
+    run 36795901221, job 110159146528, which passed before the run was superseded by
+    the next push. Observed spread 2.31x, on twelve branches whose changes touched
+    none of this tier's steps. The band is the readings' own range; a run from its low
+    end can grow to the 140 s ceiling, 2.36x its 59.4 s low edge, before any rule fires,
+    which is the price `band_problems` states and the reason the relative rules are
+    advisory on a pull request.
+  measured_band: {low: 59.4, high: 137.1}
   history:
   - measured_seconds: 99.39
     measured_on: '2026-09-06'
@@ -442,6 +476,43 @@ tiers:
       and 63.48 s is 0.84x, so both readings sit inside the drift and the stale rules the
       record arms. Two readings is the minimum this convention accepts; the first hosted
       run at the reference shape after this lands gives a third and can refine it.
+  - measured_seconds: 114.34
+    measured_on: '2026-09-30'
+    measured_where: >-
+      The geometric mean of two complete readings at the reference shape -- 113.94 s in
+      run 36758687712 attempt 1, validate job 110035367595, and 114.74 s in attempt 2,
+      validate job 110037623536 -- on PR #250 at head
+      150f8b0dd35473f7aa9f713a63848b5bd6250b9d. Each selected 54 of 85 steps
+      with --jobs 3 and --inner-jobs 1; every step passed, and only the inherited
+      75.67 s record-relative band failed. Observed spread 1.01x. The unchanged
+      140 s absolute ceiling held both readings. Superseded on 2026-10-01: two readings
+      from one runner class, written down as the tier's cost, failed three honest runs
+      from the other class the next day.
+    attribution:
+      cause: >-
+        Since the PR #185 record, four fast checks were added to this tier: exact
+        rectangle Rust geometry, class-record bound claims, archive annotation census,
+        and README recent-results agreement. The Rust check alone costs about 8 s in
+        each new run. Existing corpus-wide checks also have more work: tracked Python
+        files grew from 924 at d7f9d94d to 1,399 at 150f8b0dd, and the browser-code
+        scan and bead-tree steps nearly doubled. The unchanged exact-verification and
+        soundness-perimeter step definitions also read longer in both current hosted
+        attempts; the old two-run wall itself ranged from 63.48 to 90.19 s. These are
+        measured step costs and a changed 50-to-54-step selection, not a new ceiling.
+      unit: step-seconds
+      source: >-
+        PR #185 runs 35210073404 job 105165227319 and 35213759889 job 105177226821
+        compared with PR #250 run 36758687712 attempt 1 job 110035367595 and
+        attempt 2 job 110037623536; each job's retained == where the time went ==
+        summary. The PR #185 and PR #250 source trees enumerate exactly 50 and 54
+        checks steps, respectively.
+      grew:
+      - {name: soundness perimeter, before: 61.15, after: 77.06}
+      - {name: exact verification, before: 55.73, after: 72.46}
+      - {name: browser code lives in files (embedded JavaScript, probes), before: 18.73, after: 34.58}
+      - {name: bead tree, before: 12.21, after: 23.15}
+      - {name: exact rectangle Rust geometry, before: 0.0, after: 8.21}
+      - {name: soft-schema validation, before: 13.98, after: 16.21}
   reference: {jobs: 3, inner_jobs: 1, cpus: 4}
   argument: >-
     The part of the pull-request surface that is none of the other seven: every floor,
@@ -822,18 +893,59 @@ tiers:
 
 - id: suite_c
   command: packing-validate --suite-c
+  # 154 s, matching shard B's argument: the shard accumulated 311.7 test-seconds over
+  # 3,538 tests in run 36782630217's attempt 2 (its retained JUnit receipt), so the job
+  # still fails here if `-n 4 --dist=loadfile` stops dividing, which is what an absolute
+  # ceiling on a pre-collection shard is for. 1.50x of the record below. On the slow
+  # fleet of 2026-09-30 evening two walls went over it, 170.30 s (run 36778991813, job
+  # 110104013487) and 172.45 s (run 36780755829, job 110110118579), on the same tests
+  # that read 62.96 s that afternoon; both also failed a test outright on the per-test
+  # backstop. Those are the ceiling's failures to keep (`OR-17`) and the owner's number to
+  # move on purpose, not this entry's to pre-empt.
   ceiling_seconds: 154.0
-  measured_seconds: 88.59
-  measured_on: '2026-09-30'
+  # 2026-10-01: a day of readings in place of one. The 88.59 s below was one wall on a
+  # fast draw; the same shard read 140 to 144 s four times that evening with every test
+  # green, and the drift rule failed PR #255 and PR #254 for it. 1.16x of the single
+  # reading, under the ratchet's 1.2x, and a re-centring rather than a rise.
+  measured_seconds: 102.94
+  measured_on: '2026-10-01'
   measured_where: >-
-    First hosted three-shard cohort, run 36739024277 job 109968163208 at the declared
-    four-CPU reference shape: 88.59s, 3,365 tests passed. This is one observed C-shard
-    wall, not a distribution; the former pending calibration had no measured C baseline.
+    The geometric mean of thirty-one readings at the reference shape, each the one
+    `fast behavioral tests, shard C` step with --jobs 1 and --inner-jobs 1, every test
+    green, read from the suite-c job's log by `devtools.read_tier_walls` on 2026-10-01
+    and retained with their verdicts in
+    `tests/fixtures/tier-walls/hosted-readings-2026-09-30.yaml`: 88.59, 67.88, 102.29,
+    62.96, 114.25, 100.47, 104.60, 101.72, 85.51, 66.67, 84.51, 107.98, 94.44, 93.44,
+    106.06, 143.87, 141.32, 140.32, 111.10, 111.28, 110.36, 106.25, 89.60, 112.64, 81.59,
+    124.85, 114.69, 130.54, 102.87 and 115.98 s across runs 36739024277, 36740609969,
+    36741427338, 36746901762, 36752689669, 36757489226, 36758687712, 36760188036,
+    36761061806, 36761316654, 36764002693, 36765135966, 36774106814, 36777196705,
+    36782630217, 36784380981, 36786132529, 36793007878, 36794100106, 36796172704,
+    36796822299, 36801165700, 36802005114, 36803051249, 36812063068, 36816880620,
+    36819825616, 36820520722, 36820960022 and 36822915250, and 140.24 s in run
+    36782630217 attempt 1, job 110116358780, which the latest-attempt view hides behind
+    the 106.06 s re-run of the identical commit. Observed spread 2.29x. Not averaged:
+    170.30 s and 172.45 s in runs 36778991813 and 36780755829, over the ceiling on the
+    slow fleet and with the test step itself failed, which the reader's rule leaves out
+    (a failed step is not a reading); the policy's 2.5x window could not span them in any
+    case. The band is the counted readings' own range; a run from its low end can grow to
+    the 154 s ceiling, 2.45x its 62.96 s low edge, before any rule fires.
+  measured_band: {low: 62.96, high: 143.87}
+  history:
+  - measured_seconds: 88.59
+    measured_on: '2026-09-30'
+    measured_where: >-
+      First hosted three-shard cohort, run 36739024277 job 109968163208 at the declared
+      four-CPU reference shape: 88.59s, 3,365 tests passed. This is one observed C-shard
+      wall, not a distribution; the former pending calibration had no measured C baseline.
+      Superseded on 2026-10-01 by the day's thirty-one readings, of which it is the first.
   reference: {jobs: 1, inner_jobs: 1, cpus: 4}
   argument: >-
     Third whole-file shard of the same quick behavioral lane. Its 154-second absolute
-    ceiling matches shard B and has applied since its first run. Run 36739024277 is the
-    first observed three-way cohort; later hosted runs will measure its variability.
+    ceiling matches shard B and has applied since its first run. Run 36739024277 was the
+    first observed three-way cohort; the thirty readings after it on 2026-09-30 and
+    2026-10-01 measured its variability at 2.29x on unchanged tests, which is what the
+    record and the band above carry.
 
 - id: typecheck
   command: packing-validate --typecheck
@@ -1320,6 +1432,33 @@ pages:
       The same scope-reason-only notice as the two existing unchanged jobs. This
       explicitly borrowed four-second calibration will be replaced by a direct reading
       when an unrelated pull request first exercises the T-060 skip path (think-x2ln).
+  # The two entries below are the only unmeasured ones, and they are unmeasured because
+  # no hosted run of their jobs exists yet: the plan in
+  # `docs/project/specs/active/plan-2026-09-29-github-pages-overview.md` makes the first
+  # pull-request run of `overview` its measurement. A cost written before that run would
+  # be a number no runner produced. So each carries a ceiling and no measurement, as the
+  # tiers' unmeasured entries do, and the budget test accepts that only when every
+  # measured field is null together; the run that measures them replaces the nulls.
+  - id: overview
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    ceiling_seconds: 79.0
+    argument: >-
+      Renders the site's own pages twice, at once, and requires the renders to agree, then
+      shares them with `publish`. Its setup is `prepare`'s without the browser: the same
+      sparse, blobless checkout and the same uv and Python. The twin render took 13 s on a
+      four-cpu development box on 2026-09-29, against the 18 s of `prepare`'s own twin
+      render, so the ceiling is `prepare`'s until a hosted run gives this job its own. It
+      runs beside `prepare`, not after it, so it is not on the wall's critical path.
+  - id: overview-unchanged
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    ceiling_seconds: 8.0
+    argument: >-
+      The same notice for the site's own pages: one shell step, the shape of the two
+      notices above, which measured 4.0 s each, and the same ceiling.
   - id: pages-required
     measured_seconds: 3.0
     measured_on: 2026-09-16

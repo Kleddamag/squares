@@ -239,6 +239,24 @@ body.capture {
   flex-direction: column;
   align-items: center;
 }
+/* The published page carries the site's navigation bar above `#viewport` (`build_site`; the bar's
+   own box is `site-nav.css`'s). The page is then a column: the bar at its top at its own height,
+   and the workbench in the rest, which is the height `layout` shares between the stage and the
+   controls. A capture hides the bar, as it hides the note, and the workbench has the window. */
+body:has(> .site-app-shell) {
+  display: flex;
+  flex-direction: column;
+}
+body:has(> .site-app-shell) > #viewport {
+  position: relative;
+  inset: auto;
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+}
+body.capture > .site-app-shell {
+  display: none;
+}
 /* The stage is a 1920 x 1080 poster drawn at `--stage-scale`, which `layout` sets on `#viewport`
    from the window and the controls. Until it first does, the property is unset, the wrapper has
    no size and the stage no transform. */
@@ -958,9 +976,10 @@ body.search-active .resize-handle {
 /* The controls are the page's one column: every block in them -- the mode's panel, a row of
    panels, a workspace -- spans the same two edges inside `--layout-gutter`, and sits
    `--layout-stack-gap` from the next. Past the share `layout` allows it, the column scrolls rather
-   than pushing the stage out: `max-height` here and `CONTROLS_SHARE` there are the same number. */
+   than pushing the stage out: `max-height` here and `CONTROLS_SHARE` there are the same number, a share
+   of `#viewport`'s height, which is the window's less the site's navigation bar where there is one. */
 #controls {
-  max-height: 58vh;
+  max-height: 58%;
   overflow-y: auto;
   flex: none;
   width: 100%;
@@ -1060,8 +1079,10 @@ body.capture #site-note {
   color: var(--color-text-label);
   white-space: nowrap;
 }
-/* Controls: one height, one border, one radius. */
-button,
+/* Controls: one height, one border, one radius. The site's navigation bar is not a control of the
+   workbench, and its gear keeps the bar's own look, so the element rules below pass it by; the
+   `:where` keeps their specificity a bare `button`'s. */
+button:not(:where(.site-app-shell *)),
 select,
 input[type="number"],
 input[type="text"],
@@ -1073,17 +1094,17 @@ textarea {
   border: var(--control-border);
   border-radius: var(--radius-sm);
 }
-button,
+button:not(:where(.site-app-shell *)),
 select,
 input[type="number"],
 input[type="text"] {
   height: var(--control-height);
   padding: 0 var(--control-padding-inline);
 }
-button {
+button:not(:where(.site-app-shell *)) {
   cursor: pointer;
 }
-button:hover {
+button:not(:where(.site-app-shell *)):hover {
   background: var(--color-surface-hover);
 }
 button:disabled {
@@ -1102,7 +1123,7 @@ textarea {
   font-family: var(--font-mono);
   font-size: var(--font-size-xs);
 }
-button:focus-visible,
+button:not(:where(.site-app-shell *)):focus-visible,
 select:focus-visible,
 input:focus-visible,
 textarea:focus-visible,

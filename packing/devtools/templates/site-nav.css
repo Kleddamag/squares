@@ -1,0 +1,378 @@
+/* ============================================================
+   The site navigation bar, shared by every page of the site, the explainer included.
+   Part of the design system in paper-design.md. Written in kpress tokens only. Hidden in print, so the explainer's PDF and its
+   print-layout checks do not move.
+   ============================================================ */
+/* The gentle wash of a hovered card or nav item, a table's group row and a targeted row,
+   here because every page carries this file. KPress's own dark hover surface is a light
+   gray that light text cannot sit on, so dark mode washes with a tint of the text. */
+:root {
+  --site-wash: var(--kpress-doc-surface-hover);
+}
+/* ---------- Motion ----------
+   Every hover and focus change on the site runs on one timing, fast and smooth, here
+   because every page carries this file (paper-design.md, Motion). A rule transitions
+   only the properties its hover changes, never `all`, and never with a literal time.
+   KPress's own hover timing takes the same value, so its contents rail and footnote
+   links match. Reduced motion makes every change instant. */
+:root {
+  --site-hover-duration: 140ms;
+  --site-hover-easing: ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --site-hover-duration: 0ms;
+  }
+}
+/* At every scope KPress declares its token, so this value is the one each finds. */
+:root,
+.kpress,
+.kpress-page-main,
+.kpress-tooltip {
+  --kpress-transition-fast: var(--site-hover-duration) var(--site-hover-easing);
+}
+/* The space above the bar, on every page and at every width: kpress's page top margin,
+   narrowed from its 2.5rem so the bar sits close to the top of the window. It sets only
+   the padding above the header (kpress's page main, and the application shell below). */
+:root,
+.kpress,
+.kpress-page-main {
+  --kpress-page-margin-block-start: 1rem;
+  --site-page-top: 4rem;
+  --site-gear-drop: 0.11em;
+}
+/* The space from the bar's rule to the top of a page's first block (its title, its hero,
+   or the explainer's hero), one token for every page: kpress's document padding above
+   the column is dropped on screen, and the column (site.css) or the explainer's hero
+   (explainer-shell.html) starts `--site-page-top` below the rule instead. Print keeps
+   kpress's own spacing, so the explainer's PDF does not move. */
+@media screen {
+  .kpress-page-main > .kpress-doc {
+    padding-block-start: 0;
+  }
+}
+:root:where([data-kpress-resolved-theme="dark"]),
+:where([data-kpress-resolved-theme="dark"]) :is(.kpress, .kpress-page-main, .kpress-tooltip),
+:is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme="dark"] {
+  --site-wash: color-mix(in oklch, var(--kpress-doc-text) 9%, transparent);
+}
+/* The site's accent in dark mode, here rather than in site.css because every page carries
+   this file, the workbench included, and the bar's current item is drawn in it. kpress
+   declares the light value. */
+:root:where([data-kpress-resolved-theme="dark"]),
+:where([data-kpress-resolved-theme="dark"]) :is(.kpress, .kpress-page-main, .kpress-tooltip),
+:is(.kpress, .kpress-page-main, .kpress-tooltip)[data-kpress-resolved-theme="dark"] {
+  --kpress-doc-accent: oklch(76.68% 0.0861 186.4);
+}
+/* ---------- Navigation bar ----------
+   Carried in kpress's own site-header slot, which spans the window, with its links in
+   one fixed-width track so the bar sits in the same place on every page: the pages set
+   different reading measures, and a track sized from the measure moved it. */
+.kpress-site-header,
+.kpress-page-main:has(.kpress-toc) .kpress-site-header {
+  max-width: none;
+  padding: 0;
+}
+.site-nav {
+  font-family: var(--kpress-font-sans);
+  font-feature-settings: var(--kpress-font-features-sans);
+  /* In rem, not from kpress's base size: the explainer sets a larger base than the site
+     pages, and the bar should not change size between them. */
+  font-size: 1rem;
+}
+.site-nav-inner {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.4rem;
+  margin-inline: auto;
+  max-width: 70rem;
+  padding: 0.55rem 1rem;
+}
+/* Every item, the site name included, is a padded box that takes a gentle wash on
+   hover, the cards' own hover; nothing underlines on hover. */
+.site-nav a {
+  color: var(--kpress-doc-muted);
+  font-weight: 550;
+  padding: 0.25rem 0.55rem;
+  text-decoration: none;
+  transition:
+    background-color var(--site-hover-duration) var(--site-hover-easing),
+    color var(--site-hover-duration) var(--site-hover-easing);
+}
+.site-nav a:is(:hover, :focus-visible) {
+  background: var(--site-wash);
+  color: var(--kpress-doc-accent);
+  text-decoration: none;
+}
+/* The name is set as written, in the bar's sans, a step heavier than the links. */
+/* The site name is set in capitals by style, so its text stays "Square Packing". */
+.site-nav .site-name {
+  color: var(--kpress-doc-text);
+  font-weight: 680;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-inline: -0.55rem auto;
+}
+/* The mark, case 11 as the tab's icon draws it, sits before the name at the name's
+   cap height, in the bar's ink, and takes the name's hover with it. */
+.site-nav .site-name {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.45rem;
+}
+/* 18px, whole pixels, the size `render_overview.SITE_LOGO_PX` draws its one-pixel frame
+   for, so the container's outline is one crisp pixel (two on a 2x screen). */
+.site-nav .site-logo {
+  block-size: 18px;
+  flex: none;
+  inline-size: 18px;
+}
+.site-nav .site-name:is(:hover, :focus-visible) {
+  color: var(--kpress-doc-text);
+}
+/* The current page is the one underline in the bar, and it stays through a hover. */
+.site-nav a[aria-current="page"] {
+  color: var(--kpress-doc-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.35em;
+}
+
+/* ---------- Theme control ----------
+   A small gray gear at the end of the bar opens a compact menu of three choices, System,
+   Light and Dark, the current one checked. The choice is kpress's own reader preference
+   (`kpress.theme`), which kpress's head bootstrap applies before first paint, so the
+   stylesheets only ever key on `data-kpress-resolved-theme`; overview/theme.js wires the
+   menu. The gear takes the nav items' wash and never underlines. */
+/* The bar centres the gear on its row, but the eye reads a row of text at the middle of
+   its capitals, which sits lower than the middle of its line box, so the gear drops by
+   `--site-gear-drop` to put its centre there, level with the tab text at every width. */
+.site-theme {
+  align-self: center;
+  display: flex;
+  flex: 0 0 auto;
+  translate: 0 var(--site-gear-drop);
+}
+/* On a wide screen the links keep their centred track and the gear leaves it for the
+   bar's far right, its edge over the right end of the rule under the bar. From 80rem
+   the margin beside the 70rem track holds it clear of the last link; below that the
+   track spans the bar, and the gear ends the row. */
+@media (width >= 80rem) {
+  .site-nav {
+    position: relative;
+  }
+  .site-nav .site-theme {
+    inset-block: 0;
+    inset-inline-end: 0;
+    position: absolute;
+  }
+}
+.site-theme-button {
+  align-items: center;
+  background: none;
+  border: 0;
+  color: var(--kpress-doc-muted);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  padding: 0.3rem 0.45rem;
+  transition:
+    background-color var(--site-hover-duration) var(--site-hover-easing),
+    color var(--site-hover-duration) var(--site-hover-easing);
+}
+.site-theme-button svg {
+  block-size: 1.05rem;
+  inline-size: 1.05rem;
+}
+.site-theme-button:is(:hover, :focus-visible, [aria-expanded="true"]) {
+  background: var(--site-wash);
+  color: var(--kpress-doc-text);
+}
+/* The menu is a native popover, so it sits in the top layer above the bar's sideways
+   scroll on a phone and closes on Escape or an outside click by itself; the script
+   places it under the gear. The place below is only where it opens without the script. */
+.site-theme-menu {
+  background: var(--kpress-doc-bg);
+  border: 1px solid var(--kpress-doc-border);
+  box-shadow: 0 0.5rem 2rem oklch(0% 0 0 / 0.15);
+  color: var(--kpress-doc-text);
+  font-family: var(--kpress-font-sans);
+  font-feature-settings: var(--kpress-font-features-sans);
+  font-size: 0.9rem;
+  inset: 3rem 1rem auto auto;
+  margin: 0;
+  min-inline-size: 8.5rem;
+  padding: 0.25rem;
+  position: fixed;
+}
+.site-theme-menu:popover-open {
+  display: flex;
+  flex-direction: column;
+}
+.site-theme-menu [role="menuitemradio"] {
+  align-items: center;
+  background: none;
+  border: 0;
+  color: var(--kpress-doc-muted);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  font-weight: 550;
+  gap: 0.55rem;
+  padding: 0.35rem 0.55rem;
+  text-align: start;
+  transition:
+    background-color var(--site-hover-duration) var(--site-hover-easing),
+    color var(--site-hover-duration) var(--site-hover-easing);
+}
+.site-theme-menu [role="menuitemradio"]:is(:hover, :focus-visible) {
+  background: var(--site-wash);
+  color: var(--kpress-doc-text);
+  outline: none;
+}
+.site-theme-menu [role="menuitemradio"][aria-checked="true"] {
+  color: var(--kpress-doc-accent);
+}
+.site-theme-menu svg {
+  block-size: 1em;
+  flex: 0 0 auto;
+  inline-size: 1em;
+}
+.site-theme-menu .site-theme-check {
+  margin-inline-start: auto;
+  visibility: hidden;
+}
+.site-theme-menu [aria-checked="true"] .site-theme-check {
+  visibility: visible;
+}
+
+@media print {
+  .site-nav,
+  .kpress-site-header {
+    display: none;
+  }
+}
+/* On a phone the links keep to one row that scrolls sideways rather than wrapping to
+   three lines; the site name goes, since "Overview" is the same link. */
+/* On a phone every link stays in view: the row wraps, centred, rather than scrolling
+   links out of sight, and the gear ends the last line. */
+/* On a phone the links wrap to two or three rows, so each row is set closer: a shorter
+   line and less padding above and below each link, with no gap between rows. A link
+   stays 26px tall, above the 24px a tap target needs. */
+@media (width < 40rem) {
+  .site-nav-inner {
+    gap: 0 0.1rem;
+    justify-content: center;
+    padding-block: 0.4rem;
+    padding-inline: 0.5rem;
+  }
+  .site-nav a {
+    line-height: 1.3;
+    padding-block: 0.15rem;
+    padding-inline: 0.45rem;
+  }
+}
+/* Narrower than the whole bar fits in one row with the name (56rem), the name gives
+   way and the mark alone leads home, so the links keep one row down to a phone. The
+   link keeps its label, "Square Packing home", for a screen reader. */
+@media (width < 56rem) {
+  .site-nav .site-name-text {
+    display: none;
+  }
+  .site-nav .site-name {
+    align-self: flex-start;
+  }
+}
+/* On the explainer the bar is the first thing in the page, not in kpress's header slot. */
+.kpress-page-main > .site-nav {
+  border-block-end: 1px solid var(--kpress-doc-border);
+}
+
+/* ---------- On an application page ----------
+   The workbench is an application rather than a kpress page, so nothing around the bar
+   gives it the margins kpress's standalone page gives every other page, nor the rule under
+   its header slot. Its shell (`render_overview.nav_shell`) takes both itself, from the same
+   tokens, so the bar has the same box on every page at every width. The shell is the
+   page's width and paints the page's background, so the application below starts at its
+   lower edge. */
+.site-app-shell {
+  background: var(--kpress-doc-bg);
+  box-sizing: border-box;
+  color: var(--kpress-doc-text);
+  flex: none;
+  padding: var(--kpress-page-margin-block-start) var(--kpress-page-margin-inline) 0;
+  width: 100%;
+}
+.site-app-shell .kpress-site-header {
+  border-block-end: 1px solid var(--kpress-doc-border);
+  box-sizing: border-box;
+  margin: 0;
+  width: 100%;
+}
+/* kpress narrows its page margin on a phone; so does the shell. */
+@media (max-width: 767px) {
+  .site-app-shell {
+    --kpress-page-margin-inline: 0.5rem;
+  }
+}
+
+/* ---------- Section tabs ----------
+   A section of the site that spans pages, the Visualize section's Film and Workbench,
+   carries one small tab bar in the header slot under the navigation bar, in the same
+   place on each of its pages: a centred, bordered strip of links, one per page, the
+   current one filled with an accent tint. Each tab is a real link to its own page, so
+   the bar needs no script. It is here rather than in site.css because the workbench
+   carries only this stylesheet, and the tabs must look the same on both pages. The tint
+   is mixed in sRGB, since an oklch mix with the near-neutral page takes that page's
+   hue and drew the light tab lavender rather than teal. */
+.site-tabs {
+  border: 1px solid var(--kpress-doc-border);
+  display: flex;
+  font-family: var(--kpress-font-sans);
+  font-feature-settings: var(--kpress-font-features-sans);
+  font-size: 0.9rem;
+  inline-size: fit-content;
+  margin: 0.15rem auto 0.7rem;
+}
+nav.site-tabs a {
+  color: var(--kpress-doc-muted);
+  font-weight: 550;
+  padding: 0.3rem 1.1rem;
+  text-decoration: none;
+  transition:
+    background-color var(--site-hover-duration) var(--site-hover-easing),
+    color var(--site-hover-duration) var(--site-hover-easing);
+}
+nav.site-tabs a + a {
+  border-inline-start: 1px solid var(--kpress-doc-border);
+}
+nav.site-tabs a:is(:hover, :focus-visible) {
+  background: var(--site-wash);
+  color: var(--kpress-doc-accent);
+  text-decoration: none;
+}
+nav.site-tabs a[aria-current="page"] {
+  background: color-mix(in srgb, var(--kpress-doc-accent) 16%, var(--kpress-doc-bg));
+  color: var(--kpress-doc-text);
+}
+@media print {
+  .site-tabs {
+    display: none;
+  }
+}
+
+/* A page framed in a card's popover (`?view=embed`, set by overview/embed.js) shows the
+   document alone: no navigation bar, and no section tabs. */
+:root[data-site-view="embed"] .site-tabs,
+:root[data-site-view="embed"] .kpress-site-header,
+:root[data-site-view="embed"] .site-nav {
+  display: none;
+}
+/* Nor the room left for it: the document starts at the frame's top edge. */
+:root[data-site-view="embed"] .kpress-page-main {
+  padding-block-start: 0;
+}
+:root[data-site-view="embed"] .kpress-page-main > .kpress-doc {
+  padding-block-start: 0.5rem;
+}

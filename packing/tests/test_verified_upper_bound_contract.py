@@ -102,9 +102,20 @@ DECLARED_CONSUMERS = {
         "registered result still holds a case bound; it takes no value from the field and "
         "never reads the ceiling as s(n)"
     ),
+    "packing/devtools/render_case_pages.py": (
+        "shows the field in each case record's own panel, labelled the verified upper bound, "
+        "and as the upper end of the verified interval the record's heading states; it "
+        "reads the field as a ceiling on s(n) and never as s(n)"
+    ),
+    "packing/devtools/result_overview.py": (
+        "shows the field in a result overview's grid of its case record's four bounds, in "
+        "the Upper cell of the Verified row, linked to its line in the case file, beside "
+        "the gap the frontier page computes; the solved note is the record's own status, "
+        "and it reads the field as a ceiling on s(n) and never as s(n)"
+    ),
     "packing/devtools/render_recent_results.py": (
         "reads only the evidence ids a case's bound fields cite, to derive which register "
-        "entries hold a case bound for README's standing column; it takes no value from the "
+        "entries hold a case bound for the standing column; it takes no value from the "
         "field and never reads the ceiling as s(n)"
     ),
     "docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md": (
@@ -284,6 +295,19 @@ DECLARED_CONSUMERS = {
     ),
     "packing/tests/test_frontier_rigidity_assessment.py": (
         "exercises that two-sided pin, including the cases where it must refuse"
+    ),
+    "packing/devtools/render_frontier_page.py": (
+        "shows each case's verified ceiling in its own column beside the verified lower "
+        "bound, links its evidence, and takes their difference as the open gap; a zero gap "
+        "is what the record already calls proved, and the page reads it no further"
+    ),
+    "packing/tests/test_frontier_page.py": (
+        "builds the frontier page's cells from the real records and asserts their text; "
+        "it reads the ceiling only as the page does"
+    ),
+    "docs/project/specs/active/plan-2026-09-29-github-pages-overview.md": (
+        "the plan for the overview and frontier pages, naming the field as the verified "
+        "ceiling those pages show beside the lower bound"
     ),
 }
 

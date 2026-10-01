@@ -1,4 +1,4 @@
-"""Reader-facing result coverage, and which tree the directory checks read."""
+"""Which tree the README directory checks read, and what they find there."""
 
 from __future__ import annotations
 
@@ -10,37 +10,14 @@ import pytest
 
 from devtools.check_readme import (
     NO_INDEX,
+    README,
     TextScan,
+    check_intro,
     content_names,
     meaningful_top_level_entries,
-    result_coverage_problems,
     scan_retired_workflow_identifiers,
     work_model_text,
 )
-
-
-def test_new_results_covers_both_novelty_labels_and_rejects_unknown_ids() -> None:
-    results: list[dict[str, object]] = [
-        {"id": "T-001", "novelty": "apparently-novel"},
-        {"id": "T-002", "novelty": "confirmed-novel"},
-        {"id": "T-003", "novelty": "previously-published"},
-    ]
-    text = """# Front door
-
-## New Results
-
-T-001, T-003, and T-999.
-
-## Survey
-"""
-    assert result_coverage_problems(text, results) == [
-        "README.md: New Results does not name novel result T-002",
-        "README.md: New Results names unregistered result T-999",
-    ]
-
-    final_section = "# Front door\n\n## New Results\n\nT-001 and T-002.\n"
-    assert result_coverage_problems(final_section, results) == []
-
 
 #: The identifier the work-model scan bans, assembled rather than spelled for the same
 #: reason `check_readme` assembles it: a test that writes the token into a tracked file
@@ -156,3 +133,38 @@ def test_without_an_index_the_directory_checks_say_so_rather_than_walking(
     assert scan_retired_workflow_identifiers(tmp_path) == TextScan(
         [f"README.md: {NO_INDEX}"], []
     )
+
+
+def test_readmes_introduction_block_is_held_by_the_readme_check() -> None:
+    """The site's overview renders README's `project-intro` block as its first section
+    and its `recent-progress` block at the head of Recent Results, so the README check
+    refuses a README that has lost either block, parted them, or put more than prose in
+    one, with the reason, where the render would otherwise be the first to say so."""
+    text = README.read_text(encoding="utf-8")
+    assert check_intro(text) == []
+    unmarked = text.replace("<!-- END SHARED: project-intro -->", "")
+    assert check_intro(unmarked) == [
+        "README.md: the project-intro markers must each appear exactly once"
+    ]
+    one_block = text.replace("<!-- END SHARED: recent-progress -->", "")
+    assert check_intro(one_block) == [
+        "README.md: the recent-progress markers must each appear exactly once"
+    ]
+    parted = text.replace(
+        "<!-- END SHARED: project-intro -->\n",
+        "<!-- END SHARED: project-intro -->\n\nA line between the blocks.\n\n",
+    )
+    assert check_intro(parted) == [
+        "README.md: the recent-progress block must follow the project-intro block directly"
+    ]
+    headed = text.replace(
+        "The project covers the problem at every $n$.",
+        "## Coverage\n\nThe project covers the problem at every $n$.",
+    )
+    assert check_intro(headed) == [
+        "README.md: the recent-progress block holds a heading or a comment"
+    ]
+    central = text.replace("A recent major result", "On the central case, a recent result")
+    assert check_intro(central) == [
+        "README.md: the recent-progress block calls a case the central one"
+    ]

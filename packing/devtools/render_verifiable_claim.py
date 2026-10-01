@@ -296,10 +296,14 @@ def render_card(facts: Facts) -> str:
             f"{facts.source.name}: no recorded event-cell count; the card needs one"
         )
     entry = register_entry(RESULT_ID)
-    review = REPO / str(entry.get("review_artifact", ""))
-    if not entry.get("review_artifact") or not review.is_file():
+    reviews = [
+        str(review["path"])
+        for review in cast("list[dict[str, object]]", entry.get("reviews") or [])
+    ]
+    review = REPO / (reviews[0] if reviews else "")
+    if not reviews or not review.is_file():
         raise SystemExit(
-            f"{RESULTS.name}: {RESULT_ID} names no review artifact on disk; the card "
+            f"{RESULTS.name}: {RESULT_ID} names no review on disk; the card "
             "states the rung beside the review it rests on"
         )
     containment = facts.square_side * (1 + facts.half_gap)

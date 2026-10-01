@@ -1,0 +1,7 @@
+{
+  // The site's page scripts: table sorting and filtering for the overview and the frontier
+  // atlas. Classic scripts inlined by `devtools.render_overview`, under the shared floor
+  // with nothing relaxed (floor rule 8).
+  "extends": "./tsconfig.base.json",
+  "include": ["packing/devtools/overview/**/*.js", "packing/devtools/overview/**/*.d.ts"]
+}

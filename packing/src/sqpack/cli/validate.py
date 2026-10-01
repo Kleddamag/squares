@@ -30,7 +30,7 @@ import sys
 import time
 import traceback
 import uuid
-from collections.abc import Callable, Iterator, Sequence
+from collections.abc import Callable, Iterator, Mapping, Sequence
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from contextlib import contextmanager, nullcontext, suppress
 from dataclasses import asdict, dataclass, field, replace
@@ -1694,6 +1694,10 @@ def _lint_floor(context: Context) -> str:
     )
 
 
+#: The retained page scripts' Node tests, which `_browser_floor` runs beside the workbench's.
+NODE_TEST_GLOB = "packing/tests/node/**/*.test.mjs"
+
+
 def _browser_floor(context: Context) -> str:
     """Biome, the promise overlay, `tsc`, and Node tests over browser source.
 
@@ -1717,6 +1721,7 @@ def _browser_floor(context: Context) -> str:
     eslint = REPOSITORY_ROOT / "node_modules/.bin/eslint"
     tsc = REPOSITORY_ROOT / "node_modules/.bin/tsc"
     npm = _required_tool(context, "npm")
+    node = _required_tool(context, "node")
     missing = [str(tool) for tool in (biome, eslint, tsc) if not tool.is_file()]
     if missing:
         raise StepFailureError(
@@ -1750,6 +1755,13 @@ def _browser_floor(context: Context) -> str:
             ),
             (npm, "run", "typecheck:packing-probes"),
             (npm, "test", "--workspace", "@squares/workbench"),
+            # The retained page scripts' `node:test` files, found rather than listed so a
+            # new one cannot sit outside the floor. The site tables' are the first.
+            *(
+                (node, "--test", *(str(path.relative_to(REPOSITORY_ROOT)) for path in tests))
+                for tests in [sorted(REPOSITORY_ROOT.glob(NODE_TEST_GLOB))]
+                if tests
+            ),
         ),
         cwd=REPOSITORY_ROOT,
     )
@@ -2930,6 +2942,11 @@ def _readme(context: Context) -> str:
     return _module(context, "devtools.check_readme")
 
 
+def _math_markup(context: Context) -> str:
+    """A file the math migration has done keeps its mathematics out of code spans."""
+    return _module(context, "devtools.check_math_markup")
+
+
 def _archive_annotations(context: Context) -> str:
     """Every archive transcription's annotation count says the same thing three times.
 
@@ -3096,16 +3113,6 @@ def _results_headline(context: Context) -> str:
     # reader arrives at, in the register's own order. Agenda 016 scored three results and
     # published a synopsis naming none of them, which no other step here would notice.
     return _module(context, "devtools.render_results_headline", "--check")
-
-
-def _recent_results(context: Context) -> str:
-    # About a second: a hundred case records, the register and the bibliography. Records
-    # tier because it checks generated views of the record -- README's three results
-    # tables: New Results and Results by Others, which were a paragraph of prose per
-    # result, and the per-case recent-results table, whose hand-kept predecessor and its
-    # counts drifted three times (think-ti71). A hand edit inside any of the three fails
-    # here; the counts the survey summary quotes are held by `check_readme`.
-    return _module(context, "devtools.render_recent_results", "--check")
 
 
 def _certificate_citations(context: Context) -> str:
@@ -3362,6 +3369,12 @@ _WORKBENCH_INPUTS = (
     # The stage prints the shared version, pinned in `release.py`, so a re-pin changes the page.
     "packing/src/sqpack/release.py",
     "packing/devtools/render_explainer.py",
+    # The site's navigation bar the published page carries, from the shared partial.
+    "packing/devtools/render_overview.py",
+    "packing/devtools/templates/site-nav.html",
+    "packing/devtools/templates/site-nav.css",
+    "packing/devtools/templates/paper-type.css",
+    "packing/devtools/overview/theme.js",
     "packing/witnesses/known-best/*",
     "packing/atlas/known-best/*",
     "package.json",
@@ -4237,6 +4250,23 @@ STEPS: tuple[Step, ...] = (
     Step("synopsis agrees with the artifacts", _synopsis, fast=True, records=True),
     Step("README agrees with the directory", _readme, fast=True, records=True),
     Step(
+        "migrated Markdown writes its math as LaTeX",
+        _math_markup,
+        fast=True,
+        records=True,
+        touches=(
+            # Any Markdown file can be listed in the ledger, and `fnmatch` lets `*`
+            # cross separators, so this claims every one of them.
+            "*.md",
+            "packing/devtools/check_math_markup.py",
+            "packing/devtools/migrate_math.py",
+            "packing/devtools/math-migrated.yaml",
+            "packing/devtools/repo_scope.py",
+            "packing/pyproject.toml",
+            "packing/uv.lock",
+        ),
+    ),
+    Step(
         "archive annotation census agrees with the archive",
         _archive_annotations,
         fast=True,
@@ -4479,25 +4509,6 @@ STEPS: tuple[Step, ...] = (
             "packing/devtools/render_results_headline.py",
             "packing/devtools/render_research_tables.py",
             "packing/devtools/significance.py",
-        ),
-    ),
-    Step(
-        "README's recent results agree with the records",
-        _recent_results,
-        fast=True,
-        records=True,
-        touches=(
-            *_CORE,
-            "README.md",
-            "packing/frontier/n-*.md",
-            "packing/frontier/results.yaml",
-            "packing/frontier/evidence.yaml",
-            "packing/resources/bibliography.yaml",
-            "packing/devtools/render_recent_results.py",
-            "packing/devtools/build_bound_citations.py",
-            "packing/devtools/check_results.py",
-            "packing/devtools/render_research_tables.py",
-            "packing/devtools/render_results.py",
         ),
     ),
     Step(
@@ -4912,6 +4923,8 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "X-027 mathematics parses with pinned KaTeX",
         "synopsis agrees with the artifacts",
         "README agrees with the directory",
+        # Reads the ledger and the listed files, and counts `git ls-files`; nothing else.
+        "migrated Markdown writes its math as LaTeX",
         "AGENTS.md mirrors the operating rules",
         "agenda map agrees with the agendas",
         "D-034's n=5 identity pair still reproduces",
@@ -4928,7 +4941,6 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "the inventory agrees with the register",
         "results rungs are earned and the view agrees",
         "the synopsis headline carries every result",
-        "README's recent results agree with the records",
         "exact certificates are named by their records",
         "rung figures agree with their certificates",
         "case prose agrees with its own front matter",
@@ -5342,6 +5354,20 @@ def _tier_id(namespace: argparse.Namespace) -> str | None:
     return next((flag for flag in TIER_FLAGS if getattr(namespace, flag)), "full")
 
 
+def _hosted_pull_request(environment: Mapping[str, str] | None = None) -> bool:
+    """Whether this process is a GitHub Actions job on a `pull_request` event.
+
+    Both variables are the runner's own: `GITHUB_ACTIONS` is `true` inside any Actions
+    job and `GITHUB_EVENT_NAME` names the event that started it. The register's
+    `policy.pull_request_relative_rules` relaxation applies to exactly this run, and to
+    nothing a contributor runs by hand.
+    """
+    source = os.environ if environment is None else environment
+    return source.get("GITHUB_ACTIONS") == "true" and source.get("GITHUB_EVENT_NAME") == (
+        "pull_request"
+    )
+
+
 def _judge_budget(
     summary: RunSummary,
     *,
@@ -5349,6 +5375,7 @@ def _judge_budget(
     jobs: int,
     inner_jobs: int,
     force: bool,
+    pull_request: bool = False,
 ) -> gate_budgets.Verdict:
     """Compare this run's own wall against the ceiling declared for its tier."""
     steps = tuple((result.name, result.seconds) for result in summary.results)
@@ -5370,6 +5397,7 @@ def _judge_budget(
         inner_jobs=inner_jobs,
         cpus=os.process_cpu_count() or DEFAULT_CPU_COUNT,
         force=force,
+        pull_request=pull_request,
     )
 
 
@@ -5382,6 +5410,10 @@ def _render_budgets(register: gate_budgets.Register) -> None:
         f"over {policy.drift_ratio:g}x of it fails; a run under {policy.stale_ratio:g}x "
         "of it means the record is stale"
     )
+    if policy.pull_request_relative_rules is not None:
+        print(
+            f"  enforcement: {gate_budgets.advisory_note(policy.pull_request_relative_rules)}"
+        )
     for tier in register.tiers:
         recorded = (
             f"{tier.measured_seconds:g}s recorded {tier.measured_on}"
@@ -5457,6 +5489,17 @@ def _render_text(summary: RunSummary, *, strict: bool) -> int:
             "(the budget verdict alone failed)"
         )
         return _summary_status(summary, strict=strict)
+    if budget is not None and budget.advisory is not None and not failed:
+        # The relative rules fired and the register has declared them advisory on this
+        # run. The findings are printed in full, and annotated on the hosted run so the
+        # pull request shows them, the way `check_pr_wall` annotates an advisory wall; the
+        # verdict below is the ordinary one, since only the ceiling fails a pull request.
+        bead = budget.advisory.tracking_bead
+        print(f"THE TIER IS OUTSIDE ITS RECORDED BAND (advisory, not enforced under {bead}):")
+        for reason in budget.advisory_failures:
+            print(f"  - {reason}")
+            if os.environ.get("GITHUB_ACTIONS") == "true":
+                print(f"::warning title=Tier cost band (advisory under {bead})::{reason}")
     if (
         budget is not None
         and budget.status == "unknown"
@@ -5875,6 +5918,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             inner_jobs=inner_jobs,
             force=namespace.enforce_budget
             or _environment_flag("PACKING_VALIDATE_ENFORCE_BUDGET"),
+            pull_request=_hosted_pull_request(),
         )
     except ParserExitError as error:
         if error.message:

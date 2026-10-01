@@ -1,0 +1,100 @@
+# Every whole-tier reading of the `checks` and `suite_c` tiers that the hosted pull-request
+# surface took between 2026-09-30T15:44Z and 2026-10-01T06:05Z: thirty-four pull-request
+# runs across twelve branches, read out of the job logs by `devtools.read_tier_walls`, plus
+# the first attempts and the superseded run that the jobs API's `filter=latest` view hides,
+# read the same way. Every reading selected the same steps (54 of 85 for `checks`, 1 of 85
+# for `suite_c`) at the tier's reference shape, and the walls are of the runner the job
+# drew rather than of any change: the same `checks` work read 59.4 s and 137.1 s, 2.31x
+# apart, and shard C 62.96 s and 143.87 s, 2.29x apart, with every test green.
+#
+# `test_the_day_of_2026_09_30_is_judged_on_code_not_on_the_runner` replays each wall through
+# `gate_budgets.judge` three times and holds it to the three columns:
+#
+#   old_rule          the superseded point records below, every rule enforced -- the rule
+#                     the integration line carried at d078a202, which is what failed PR #262
+#                     at 62.3 s (0.54x) and PR #255 at 59.4 s (0.52x) and 140.2 s (1.58x).
+#                     Branches that had not yet merged PR #250's record saw an older point
+#                     and sometimes a different verdict that day; this column is the rule,
+#                     not a transcript of each branch's own register.
+#   relaxation_alone  the same records with the drift and stale rules advisory on a
+#                     pull request: the enforcement change by itself, before any record
+#                     moved. `advisory` is a run that passed with its finding printed.
+#   intended          the live register, with the records re-taken from these readings and
+#                     the relaxation declared. The two walls over the 154 s ceiling still
+#                     fail: the ceiling is absolute (OR-17), and both jobs also failed a
+#                     test outright when the slow fleet pushed it past its per-test backstop,
+#                     which is why `step_failed` marks them and the record does not count
+#                     them (a failed step is not a reading, `read_tier_walls` rule).
+#
+# `pull_request` is the pull request whose head the run validated. `job` is the GitHub job
+# name; a job id is given where the latest-attempt view would otherwise hide the reading.
+superseded:
+  checks: {measured_seconds: 114.34, ceiling_seconds: 140.0}
+  suite_c: {measured_seconds: 88.59, ceiling_seconds: 154.0}
+readings:
+- {tier: checks, run: 36739024277, job: validate, pull_request: 246, wall: 86.40, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36740609969, job: validate, pull_request: 246, wall: 65.49, old_rule: failed, relaxation_alone: advisory, intended: passed}
+- {tier: checks, run: 36741427338, job: validate, pull_request: 246, wall: 111.02, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36746901762, job: validate, pull_request: 246, wall: 110.11, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36752689669, job: validate, pull_request: 246, wall: 105.25, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36758687712, job: validate, pull_request: 250, wall: 114.74, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36761061806, job: validate, pull_request: 250, wall: 84.20, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36761316654, job: validate, pull_request: 251, wall: 114.04, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36764002693, job: validate, pull_request: 252, wall: 86.28, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36765135966, job: validate, pull_request: 253, wall: 104.50, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36774106814, job: validate, pull_request: 255, wall: 129.57, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36777196705, job: validate, pull_request: 254, wall: 98.56, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36778991813, job: validate, pull_request: 254, wall: 115.45, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36780755829, job: validate, pull_request: 255, wall: 132.97, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36782630217, job: validate, job_id: 110116358586, attempt: 1, pull_request: 255, wall: 59.40, old_rule: failed, relaxation_alone: advisory, intended: passed}
+- {tier: checks, run: 36782630217, job: validate, attempt: 2, pull_request: 255, wall: 106.34, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36784380981, job: validate, pull_request: 254, wall: 73.16, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36786132529, job: validate, pull_request: 254, wall: 111.96, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36793007878, job: validate, pull_request: 255, wall: 113.96, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36794100106, job: validate, pull_request: 258, wall: 131.82, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36795901221, job: validate, job_id: 110159146528, pull_request: 259, wall: 132.31, old_rule: passed, relaxation_alone: passed, intended: passed, note: the run was superseded by the next push after this job had passed}
+- {tier: checks, run: 36796172704, job: validate, pull_request: 258, wall: 73.30, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36796189350, job: validate, pull_request: 259, wall: 118.07, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36796822299, job: validate, pull_request: 259, wall: 114.33, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36801165700, job: validate, pull_request: 249, wall: 134.68, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36802005114, job: validate, pull_request: 261, wall: 137.10, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36803051249, job: validate, pull_request: 261, wall: 115.23, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36812063068, job: validate, pull_request: 262, wall: 136.43, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36816880620, job: validate, pull_request: 255, wall: 87.44, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36819825616, job: validate, pull_request: 261, wall: 111.06, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36820520722, job: validate, pull_request: 262, wall: 62.31, old_rule: failed, relaxation_alone: advisory, intended: passed}
+- {tier: checks, run: 36820960022, job: validate, pull_request: 254, wall: 114.38, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: checks, run: 36822915250, job: validate, pull_request: 261, wall: 114.37, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36739024277, job: suite-c, pull_request: 246, wall: 88.59, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36740609969, job: suite-c, pull_request: 246, wall: 67.88, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36741427338, job: suite-c, pull_request: 246, wall: 102.29, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36746901762, job: suite-c, pull_request: 246, wall: 62.96, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36752689669, job: suite-c, pull_request: 246, wall: 114.25, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36757489226, job: suite-c, pull_request: 250, wall: 100.47, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36758687712, job: suite-c, job_id: 110035367739, attempt: 1, pull_request: 250, wall: 104.60, old_rule: passed, relaxation_alone: passed, intended: passed, note: attempt 2 re-ran only the failed validate job and carried this one forward}
+- {tier: suite_c, run: 36760188036, job: suite-c, pull_request: 251, wall: 101.72, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36761061806, job: suite-c, pull_request: 250, wall: 85.51, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36761316654, job: suite-c, pull_request: 251, wall: 66.67, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36764002693, job: suite-c, pull_request: 252, wall: 84.51, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36765135966, job: suite-c, pull_request: 253, wall: 107.98, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36774106814, job: suite-c, pull_request: 255, wall: 94.44, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36777196705, job: suite-c, pull_request: 254, wall: 93.44, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36778991813, job: suite-c, job_id: 110104013487, pull_request: 254, wall: 170.30, step_failed: true, old_rule: failed, relaxation_alone: failed, intended: failed, note: over the 154 s ceiling on the slow fleet; the test step itself also failed its per-test backstop}
+- {tier: suite_c, run: 36780755829, job: suite-c, job_id: 110110118579, pull_request: 255, wall: 172.45, step_failed: true, old_rule: failed, relaxation_alone: failed, intended: failed, note: over the 154 s ceiling on the slow fleet; the test step itself also failed its per-test backstop}
+- {tier: suite_c, run: 36782630217, job: suite-c, job_id: 110116358780, attempt: 1, pull_request: 255, wall: 140.24, old_rule: failed, relaxation_alone: advisory, intended: passed}
+- {tier: suite_c, run: 36782630217, job: suite-c, attempt: 2, pull_request: 255, wall: 106.06, old_rule: passed, relaxation_alone: passed, intended: passed, note: the re-run of the identical commit}
+- {tier: suite_c, run: 36784380981, job: suite-c, pull_request: 254, wall: 143.87, old_rule: failed, relaxation_alone: advisory, intended: passed}
+- {tier: suite_c, run: 36786132529, job: suite-c, pull_request: 254, wall: 141.32, old_rule: failed, relaxation_alone: advisory, intended: passed}
+- {tier: suite_c, run: 36793007878, job: suite-c, pull_request: 255, wall: 140.32, old_rule: failed, relaxation_alone: advisory, intended: passed}
+- {tier: suite_c, run: 36794100106, job: suite-c, pull_request: 258, wall: 111.10, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36796172704, job: suite-c, pull_request: 258, wall: 111.28, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36796822299, job: suite-c, pull_request: 259, wall: 110.36, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36801165700, job: suite-c, pull_request: 249, wall: 106.25, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36802005114, job: suite-c, pull_request: 261, wall: 89.60, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36803051249, job: suite-c, pull_request: 261, wall: 112.64, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36812063068, job: suite-c, pull_request: 262, wall: 81.59, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36816880620, job: suite-c, pull_request: 255, wall: 124.85, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36819825616, job: suite-c, pull_request: 261, wall: 114.69, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36820520722, job: suite-c, pull_request: 262, wall: 130.54, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36820960022, job: suite-c, pull_request: 254, wall: 102.87, old_rule: passed, relaxation_alone: passed, intended: passed}
+- {tier: suite_c, run: 36822915250, job: suite-c, pull_request: 261, wall: 115.98, old_rule: passed, relaxation_alone: passed, intended: passed}

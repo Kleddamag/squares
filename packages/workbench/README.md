@@ -244,18 +244,24 @@ of each `python -m` and `squares-workbench-*` command below.
    A nonzero exit is a finding for the published record rather than a stop: the `v0.4.2`
    cuts had 12 and 41 such frames, tracked as `think-dh9j`.
 
-6. **Cut the poster** from the new `n = 1…100` cut, which replaces
+6. **Cut the posters** from the new cuts.
+   The `n = 1…100` cut replaces the explainer’s
    [`assets/ascent-n1-100-poster.png`](assets/ascent-n1-100-poster.png) with its
-   `n = 88` frame at 1280 × 720 and so updates the version stamp it shows:
+   `n = 88` frame, and the `n = 1…324` cut replaces the overview’s
+   [`assets/ascent-n1-324-poster.png`](assets/ascent-n1-324-poster.png) with its
+   `n = 290` frame, both at 1280 × 720, so each updates the version stamp it shows.
+   The receipt’s range picks which poster a cut writes:
 
    ```bash
    squares-workbench-poster site/workbench/ascent-n1-100-1080p60-citations.receipt.json
+   squares-workbench-poster site/workbench/ascent-n1-324-1080p60-citations.receipt.json
    ```
 
    It takes the step’s settled last frame; `--before-end K` takes one `K` frames
-   earlier. The committed poster is the settled end of `n = 88` in the `v0.4.2` cut,
-   frame 7,864 of 8,401; 17 frames earlier the colour fade has already turned the
-   picture grey.
+   earlier. The committed posters are the settled ends of `n = 88` in the `v0.4.2`
+   `n = 1…100` cut, frame 7,864 of 8,401 (17 frames earlier the colour fade has already
+   turned the picture grey), and of `n = 290` in the `v0.4.2` `n = 1…324` cut, frame
+   26,522 of 29,639.
 
 7. **Put the files on the release** named by the version from step 2:
 

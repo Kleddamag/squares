@@ -16,7 +16,7 @@ from pathlib import Path
 
 import pytest
 
-from devtools import pages_scope, render_explainer
+from devtools import pages_scope, render_explainer, render_n11_optimality_explainer
 from devtools.pages_scope import (
     REPO,
     WORKFLOW,
@@ -50,6 +50,7 @@ def in_scope(changed: list[str], declared: dict[str, tuple[Path, ...]]) -> set[s
     [
         ("explainer", lambda: render_explainer.RENDER_INPUTS),
         ("workbench", lambda: build_site.RENDER_INPUTS),
+        ("optimality", lambda: render_n11_optimality_explainer.RENDER_INPUTS),
     ],
 )
 def test_every_builder_input_puts_its_page_in_scope(
@@ -185,6 +186,39 @@ def test_pull_request_178_would_have_run_no_browser_work(
     }
 
 
+def test_t060_article_selects_only_its_page(declared: dict[str, tuple[Path, ...]]) -> None:
+    assert in_scope(["packing/devtools/templates/n11-optimality-article.md"], declared) == {
+        "optimality"
+    }
+    assert in_scope(
+        ["packing/resources/web/n11-optimality-2026-09-29/receipts/final-composition.json"],
+        declared,
+    ) == {"optimality"}
+
+
+def test_t060_page_has_an_independent_required_build() -> None:
+    jobs = load_workflow()["jobs"]
+    assert "needs.scope.outputs.optimality == 'true'" in jobs["optimality"]["if"]
+    assert jobs["optimality"]["timeout-minutes"] == 10
+    commands = "\n".join(str(step.get("run", "")) for step in jobs["optimality"]["steps"])
+    assert "render_n11_optimality_explainer --output-dir site/n11-optimality --pdf" in commands
+    assert (
+        "render_n11_optimality_explainer --output-dir site/n11-optimality --check" in commands
+    )
+    assert "test -s site/n11-optimality/t-060-explainer.pdf" in commands
+    assert "optimality" in jobs["publish"]["needs"]
+    assert "optimality" in jobs["pages-required"]["needs"]
+    assert "optimality-unchanged" in jobs["pages-required"]["needs"]
+    required = next(
+        step["run"]
+        for step in jobs["pages-required"]["steps"]
+        if step.get("name") == "Require every page this run builds to pass"
+    )
+    assert (
+        '(.scope.outputs.optimality != "true" or .optimality.result == "success")' in required
+    )
+
+
 def test_a_matching_input_is_a_path_not_a_string_prefix() -> None:
     sqpack = REPO / "packing/src/sqpack"
     assert matches("packing/src/sqpack", sqpack)
@@ -263,6 +297,8 @@ def test_the_workflow_outputs_and_summary_are_written(
         "explainer_reason=every page is built on a test",
         "workbench=true",
         "workbench_reason=every page is built on a test",
+        "optimality=true",
+        "optimality_reason=every page is built on a test",
     ]
     assert "| explainer | builds and checks |" in summary.read_text(encoding="utf-8")
     assert "explainer: in scope" in capsys.readouterr().out

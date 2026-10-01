@@ -47,7 +47,7 @@ They do not themselves admit this integrated execution head or a positive run.
   The maintained verifier advertises `snapshot`, `read`, `join`, `retain`, and
   `source-closure`, with the flags in the verifier contract.
 - The frozen command is exactly `4 / 5400 / 7200 / 2` at lines 173–176. The
-  producer/coordinator route count is `2881 + 2881 + 5761 + 2881 = 14,404` direction
+  producer/coordinator route count is $2881 + 2881 + 5761 + 2881 = 14{,}404$ direction
   rows per profile; dense/slab use the same normalized-exact rows.
   The fixture is 935 bytes and its measured SHA-256 equals the sheet’s
   `1aface38ab79526397b7b9f24325df844e2eb9717d3e29a094fcdefe8822f539`.
@@ -56,7 +56,7 @@ They do not themselves admit this integrated execution head or a positive run.
   calibration, producer readback, and inventory readback.
   The verifier’s retention whitelist has 19 review-root files: five host/coordinator
   records, inventory and admission, and four reader records per profile.
-- The integrated verifier test module passes `15/15` in 8.24 seconds using
+- The integrated verifier test module passes $15/15$ in 8.24 seconds using
   `packing/.venv/bin/python3` 3.14.7, `PYTHONDONTWRITEBYTECODE=1`, disabled pytest
   cache, and a temporary basetemp.
   Its controls are synthetic and target-free.

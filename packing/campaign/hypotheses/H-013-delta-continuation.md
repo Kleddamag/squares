@@ -45,7 +45,7 @@ hypothesis:
 
 Inflating the container may replace a direct hit on a rare terminal component with a
 path that can be followed and checked.
-The small proved case comes first so the method cannot consume an `n = 11` budget before
+The small proved case comes first so the method cannot consume an $n = 11$ budget before
 showing it can recover a known answer.
 
 The bifurcation tree is a secondary deliverable, not an excuse to change the primary

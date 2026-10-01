@@ -264,10 +264,10 @@ Read per-axis that is two different edge-edge contacts and the packing has neith
 intersecting the supports across every realising axis gives the corner-corner contact
 they actually have.
 
-**Counting rows cannot answer whether the system determines the pose.** At `n = 11`
+**Counting rows cannot answer whether the system determines the pose.** At $n = 11$
 there are 35 equations against 34 unknowns — overdetermined — and the Jacobian has rank
 30\. The system is redundant *and* four conditions short at once.
-So `close` is sized by the rank shortfall: one condition at `n = 5`, four at `n = 11`.
+So `close` is sized by the rank shortfall: one condition at $n = 5$, four at $n = 11$.
 The spec’s phase-2 control, which asks for the unclosed system to be reported
 underdetermined, cannot fire as written.
 
@@ -276,22 +276,22 @@ underdetermined, cannot fire as written.
 > The shortfall was this block’s own bug, not a property of the packing: `edge-edge` was
 > assembled as one equation where collinearity in the plane is two, and the four missing
 > conditions were four missing equations.
-> With them the rank is `34` of `34` and `close` refuses.
+> With them the rank is $34$ of $34$ and `close` refuses.
 > The headline claim survives — counting rows still cannot answer the question — but the
-> four is gone, and `n = 5` is now the only size with a genuine shortfall.
+> four is gone, and $n = 5$ is now the only size with a genuine shortfall.
 
 **An angle class does not license an angle identity.** Classes hold modulo ninety
-degrees, so `t_i = t_j` is false for a member a quarter or half turn from another.
-Emitting them left `n = 11` at the noise floor — its classes happen to have equal angles
-— and drove `n = 29` to a residual of exactly `pi`.
+degrees, so $t_i = t_j$ is false for a member a quarter or half turn from another.
+Emitting them left $n = 11$ at the noise floor — its classes happen to have equal angles
+— and drove $n = 29$ to a residual of exactly `pi`.
 
 ## What the equations are worth
 
-They vanish at the packings they came from: `4.44e-16` at `n = 11`, the same order at
-`n = 5`. Retyping one contact drives the residual above `1e-6`, so the check
+They vanish at the packings they came from: `4.44e-16` at $n = 11$, the same order at
+$n = 5$. Retyping one contact drives the residual above `1e-6`, so the check
 discriminates rather than merely passing.
 
-At `n = 29` they do not, and the reason is worth keeping: seven of the twenty-nine
+At $n = 29$ they do not, and the reason is worth keeping: seven of the twenty-nine
 squares are built inside `scale(-1 1)` mirror groups and have clockwise corner winding,
 which a centre-plus-rotation pose cannot produce.
 Assembly refuses them by name rather than describing their mirror images.

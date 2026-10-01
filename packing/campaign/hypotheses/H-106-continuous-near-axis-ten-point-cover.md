@@ -48,15 +48,15 @@ This is the next independently measurable clause after
 It belongs to BC-255 under [H-102](H-102-complete-restricted-angle-support-families.md)
 and does not replace [H-036](H-036-robust-restricted-orientation.md).
 
-Set `q=1939/500`. Reflect the four seeds `(1,1)`, `(q/2,1)`, `(3/2-q/4,q/2)`, and
-`(1/2+q/4,q/2)` in the container’s horizontal and vertical midlines, then deduplicate
+Set $q=1939/500$. Reflect the four seeds $(1,1)$, $(q/2,1)$, $(3/2-q/4,q/2)$, and
+$(1/2+q/4,q/2)$ in the container’s horizontal and vertical midlines, then deduplicate
 the resulting ten points.
-These are the unchanged source formulas, evaluated at `q`, not homothetically scaled
+These are the unchanged source formulas, evaluated at $q$, not homothetically scaled
 from the source side.
 All square containment and point-hit inequalities include the boundary.
 
-For the proposed certificate, write `t=tan(theta/2)` and use both closed slabs `[-T,0]`
-and `[0,T]`, where `x=11/5040` and `T=x/(1-x*x/2)`. The
+For the proposed certificate, write `t=tan(theta/2)` and use both closed slabs $[-T,0]$
+and $[0,T]$, where $x=11/5040$ and `T=x/(1-x*x/2)`. The
 [BC-255 design](../series/series-000-smoke-and-calibration/results/agenda-026/bc-255-angle-instrument-design.md)
 proves that this is an outward enlargement of the actual angle neighborhood.
 A complete certificate on the larger domain accepts this claim.

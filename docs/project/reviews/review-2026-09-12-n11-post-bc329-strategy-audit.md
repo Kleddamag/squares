@@ -135,22 +135,22 @@ Source: preflight:144–154,172–176,203–216.
 
 The retained 88-core family has mass eleven and depth at most one everywhere at side
 $191/50$. Scaling by $10000/9977$ gives **full unit squares** of fractional mass eleven
-in $L_*=38200/9977$, below 3.83. Integrating any unconditional point cover against this
-family forces mass at least eleven.
+in $L_{\ast}=38200/9977$, below 3.83. Integrating any unconditional point cover against
+this family forces mass at least eleven.
 Selecting any individually defined core inside each unit square preserves the depth
-inequality. This excludes all such unconditional point-core methods at $L_*$ and above,
-regardless of asymmetry, net or individually chosen core size.
+inequality. This excludes all such unconditional point-core methods at $L_{\ast}$ and
+above, regardless of asymmetry, net or individually chosen core size.
 It does not exclude threshold charges, restrictions depending on other packed squares,
-or point methods below $L_*$.
+or point methods below $L_{\ast}$.
 
 The full-unit obstruction does not require strong duality.
 X-027’s interior-incidence duality and density result supplies a separate
 value-equivalence theorem with a stated boundary convention.
 Pairing arbitrary singular closed-square cover measures with only almost-everywhere
 capacities is unsound.
-Neither result proves a physical integrality gap at $L_*$; a physical exclusion there
-remains missing. Both T-026 and the proposed BC329 bound lie below $L_*$. See
-X-027:266–378 and
+Neither result proves a physical integrality gap at $L_{\ast}$; a physical exclusion
+there remains missing.
+Both T-026 and the proposed BC329 bound lie below $L_{\ast}$. See X-027:266–378 and
 docs/project/research/research-2026-09-10-x027-fractional-duality.md:104–197.
 
 The independent-parent translation obstruction is narrower: with $B=9977/10000$ and the

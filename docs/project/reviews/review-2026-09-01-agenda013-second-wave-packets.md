@@ -180,7 +180,7 @@ Do not write the missing adapter during review.
 | exp-048 | `unresolved`, `needs_review: true` | E1 source/provenance dependency stopped before reconstruction, with no result | Clear review only if the premeasurement refusal and no-geometry boundary pass |
 | exp-050 | `unresolved`, `needs_review: true` | Executed ordered E1 reason 3, `attribution-unbound`, with zero cells; immutable result exists | Known producer-runner binding gap requires at least `bounded caveat`; leave review pending unless the reviewer disproves that materiality |
 
-Neither experiment reconstructs n = 50, verifies the `53/7` pose, dispositions H-054 or
+Neither experiment reconstructs n = 50, verifies the $53/7$ pose, dispositions H-054 or
 supports work on n = 39 or n = 54. H-054 remains unresolved and instrument-unready.
 No frontier transition is proposed.
 

@@ -112,7 +112,7 @@ result-post, LP-post and README digests are
 `7dffb6e6e6cbff0ac2e887ca445b45f46c95055718219f7229d1c8cb06f84514`,
 `cdd27897f4f6c3b83835d59a317b3248b4f94b888f8568b740c778524a11f177` and
 `b48c0c31cf62366d44cd12f02cf321dd38b5a23391caec95f04445938e0b3d75`. The fixed side is
-the exact rational `22529/5000`.
+the exact rational $22529/5000$.
 
 The two paths intentionally share the fixture, atom and direction data, geometric
 definitions, event-cell reduction, angle-cover lemma, shrink lemma, scaling argument,
@@ -188,7 +188,7 @@ requires a newly declared budget and starts from the same frozen package revisio
 
 Agreement establishes implementation agreement for this one fixed certificate only.
 It is not proof-method independence, frontier adoption, an LP-generator audit, or
-transfer to `n = 18` or `n = 19`.
+transfer to $n = 18$ or $n = 19$.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

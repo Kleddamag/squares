@@ -63,7 +63,7 @@ F = required_side + lambda * total_overlap + mu * spread
 ```
 
 with `mu` ramped geometrically like `lambda`. `required_side` is a max over two to four
-squares; `spread` is a sum over all `n`, so every single-square translation changes the
+squares; `spread` is a sum over all $n$, so every single-square translation changes the
 energy. That is the whole intent: a uniform inward pressure that compacts the
 configuration while the side term is flat.
 
@@ -84,7 +84,7 @@ Two properties are what make it safe to measure:
 
 ## What would refute it
 
-Fewer than six of eleven cells improving by `0.01` with disjoint seed ranges.
+Fewer than six of eleven cells improving by $0.01$ with disjoint seed ranges.
 Since `spread` and `required_side` disagree about what a good packing is — a compact
 blob is not the same object as a tight square — a plausible failure mode is that the
 term helps early and hurts late, and the ramp is the only thing standing between those.

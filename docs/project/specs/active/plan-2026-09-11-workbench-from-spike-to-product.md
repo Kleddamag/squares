@@ -71,7 +71,7 @@ packing-validity contract (`ec0a0604`, page readouts `c0d9db2b`).
 | Outcome | What the user or maintainer can do | Completion evidence |
 | --- | --- | --- |
 | O1 — One owned package | Build and maintain the application, numerical core, animation, tests, probes, and workbench-specific tools in `packages/workbench/`. | Package commands run independently; all live consumers have migrated; no production build or command reads the spike tree. |
-| O2 — Usable Pack | Choose any `n` in a declared measured range, start from generic or supplied poses, manipulate squares, run, pause, restart, reset, resolve, and replay a visible seed. A known record is optional. | Cases with and without catalogue records work; exactly `n` squares are present; raw and repaired scores match displayed geometry; stale/cancelled runs cannot overwrite current state. |
+| O2 — Usable Pack | Choose any $n$ in a declared measured range, start from generic or supplied poses, manipulate squares, run, pause, restart, reset, resolve, and replay a visible seed. A known record is optional. | Cases with and without catalogue records work; exactly $n$ squares are present; raw and repaired scores match displayed geometry; stale/cancelled runs cannot overwrite current state. |
 | O3 — Reusable experiments | Change proposal, contact/force model, ordinary stickiness, annealing or container schedule, repair, objective, and run budget through typed configurations; compare runs under equal work. Inspect Animate trajectories numerically without loading or judging a rendered page. | Browser and headless callers use one kernel and effective configuration; two strategy variants run through it; receipts retain work, seed, validity and provenance. A deterministic CLI emits the same Animate trajectory and its displacement, acceleration, reversal, penetration, contact, gap, endpoint and work metrics. No better packing is promised as a software acceptance condition. |
 | O4 — Clean illustration engine | Replay a trace or author an illustration, seek deterministically, draw SVG, and capture frames/video with explicit timing, arrival, side and rotation. | Drawing a frame needs no solver; seek and capture agree; direct and physically generated motion retain their labels; illustrative frames never acquire numerical assurance. |
 | O5 — Experimental Search | Run many Pack trials, cancel with honest partial accounting, inspect the best valid arrangement and outcome distributions, and use calibration/held-out presets. | The same trial matches Pack and headless output; manifests reproduce disjoint-block reports; invalid outcomes never rank; tuning and held-out cohorts are explicit. Search ships after the clean Pack/Animate release boundary. |
@@ -101,7 +101,7 @@ remains.
 | Python floor | The retained spike tree is still excluded from Ruff and is outside BasedPyright’s include set. Parent PR #125 removes that exclusion at `ee60689b`, but PR #155’s reviewed head does not contain that commit. Python moved into `devtools` is checked, while JavaScript embedded in its strings remains invisible to the browser floor. |
 | Palette | The browser still carries literal copies of the `sqpack.render` palette, shades and angle tolerance. The Phase 0 inventory corrects the earlier statement that generation had landed; `think-fk8h` remains required under `think-w0a1`. |
 | Publication | `devtools.build_workbench_site` still invokes the retained spike builder. At this baseline it reproduces a self-contained 4.4 MB page at `/workbench/`. The old unchecked-prototype banner has been replaced by a quiet evidence warning. |
-| Product shape | Pack runs one interactive trajectory. Animate plays a range of retained atlas records and illustrative transitions. The page has no Search mode and Pack still depends on atlas transition pairs instead of accepting an independent `n`. |
+| Product shape | Pack runs one interactive trajectory. Animate plays a range of retained atlas records and illustrative transitions. The page has no Search mode and Pack still depends on atlas transition pairs instead of accepting an independent $n$. |
 | Runtime shape | One IIFE owns application state, geometry, two related physics loops, timeline, SVG rendering, facts, controls, and the public API. The cached transition simulator and live optimizer repeat collision, wall, broad-phase, and integration logic. |
 
 At the reviewed baseline, one regression crosses the completed extraction boundary:
@@ -167,9 +167,9 @@ The application controller and retained probes still inherit documented compiler
 relaxations; their earlier strict audit reported 1,246 diagnostics.
 `think-4ylo` and merge readiness require zero findings across retained live source.
 
-An independent Pack panel now accepts a chosen `n` without an atlas transition pair.
-Search is exposed as an experimental preview, bounded to `n ≤ 32`, at most eight seeds,
-and at most 5,000 steps per trial.
+An independent Pack panel now accepts a chosen $n$ without an atlas transition pair.
+Search is exposed as an experimental preview, bounded to $n \le 32$, at most eight
+seeds, and at most 5,000 steps per trial.
 This preview does not satisfy Phase 5: proposal and Resolve work can still block
 interaction, and calibration, CLI, and distribution views remain open.
 #160’s review round (2026-09-14) made its Resolve option run and rank the repaired state
@@ -236,9 +236,9 @@ The historical checkers that assumed the earlier defaults were retired at `46b8f
 
 The product has three aspects with one set of computational building blocks:
 
-- **Pack** accepts one `n`, one seed, one starting arrangement, and one parameter set.
+- **Pack** accepts one $n$, one seed, one starting arrangement, and one parameter set.
   It runs a single trajectory and supports direct manipulation.
-  `n` is independent of the presence of an atlas transition pair; the supported resource
+  $n$ is independent of the presence of an atlas transition pair; the supported resource
   envelope is explicit and tested.
   A guided Pack run identifies the supplied target, strength, schedule, use and
   non-target policy in its controls and its requested-guidance record, which sits beside
@@ -437,7 +437,7 @@ This separates a minimal destination from the later migration of the live applic
 | --- | --- | --- |
 | `think-3eha` | Repair campaign integration and provenance (R4). | Unique experiment IDs, actual numerical/effort fields, source references, index, footers and generated views pass their existing gates; unavailable historical evidence is annotated, never invented. |
 | `think-sdmi` | Validate animation imports (R1). | Coincident/out-of-bounds/nonfinite/wrong-count imports cannot acquire checked status; a valid retained control carries the actual validator/tolerance/provenance. |
-| `think-karf` | Enforce strategy and trace semantics (R2). | Grid phases preserve exactly `n`; unsupported sources/fields fail; effective seed/config, per-frame side/time/identity and guidance ancestry survive execution/export. |
+| `think-karf` | Enforce strategy and trace semantics (R2). | Grid phases preserve exactly $n$; unsupported sources/fields fail; effective seed/config, per-frame side/time/identity and guidance ancestry survive execution/export. |
 | `think-1fpa` | Apply one admission rule to run/replay/report/sweep (R3). | Missing/nonfinite/invalid results never rank; empty admitted populations are explicit; all attempts and rejection causes are counted. |
 | `think-dq1l` | Define exact seed semantics (R5). | Boundary seeds and the reproduced alias pair behave under the declared integer mix; effective seed receipts and browser/headless replay agree. |
 | `think-6hqs` | Validate the live optimizer’s exact returned snapshot (R10). | Post-step poses/angles/size are checked before ranking; best receipts retain the checked geometry; growth and convergence are not confused with unit-square feasibility. |
@@ -493,7 +493,7 @@ retroactively block unrelated Phase 3 package slices.
 
 | Bead | Deliverable | Done when |
 | --- | --- | --- |
-| `think-o4wo` | Stable physical trajectories. | Animate derives enough integration substeps for every active force law while retaining one stored sample per animation step. The `n = 17` and crowded `n = 90` controls meet the preregistered displacement, reversal, penetration, determinism, endpoint and work budgets. |
+| `think-o4wo` | Stable physical trajectories. | Animate derives enough integration substeps for every active force law while retaining one stored sample per animation step. The $n = 17$ and crowded $n = 90$ controls meet the preregistered displacement, reversal, penetration, determinism, endpoint and work budgets. |
 | `think-5tyy` | Truthful presets and continuous setting changes. | Tween and other nonphysical states disable force-law and annealing controls; contact give and perturbation are named separately; balanced, rigid, soft and sticky presets have measured effects; a trajectory-defining change pauses and restarts instead of replacing the path at an old playhead. |
 | `think-syjo` | Deterministic kinetic trace and scoring CLI. | A Node command uses the same corpus, settings and trajectory implementation as the browser; stable JSON exposes per-frame poses and summary kinetics; positive controls and a cap-to-cap ringing control prove the metrics fire; browser and CLI effective configurations agree. |
 | `think-e9uo` | New-square-to-resize timing control. | Animate exposes the gap between the arriving square and container resize with a bounded, named timing value shared by the public API, presentation schedule, browser and headless configuration. The default leaves a longer readable pause than the prior fixed staging. |
@@ -615,8 +615,8 @@ outcome at this boundary.
 
 | Bead | Deliverable | Done when |
 | --- | --- | --- |
-| `think-gfqt` | Bounded experimental multi-run scheduler. | Configurations from `think-6qxx` vary proposal, force/contact model, annealing/container schedule, repair and objective; repeated Pack runs report progress, cancellation and exact work/seed manifests without blocking interaction; a Node command runs a Search plan headlessly and writes the ledger that `think-i5pg` re-admits. The current `n ≤ 32`, eight-seed, 5,000-step preview does not meet this responsiveness or configuration contract. |
-| `think-i5pg` | Make Search ledgers independently checkable. | Decode and re-admit each outcome, derive block, budget and `n` from the plan, isolate nonfinite partial encoding failures, and make growth settings effective or reject them. A forged outcome cannot change the summary by supplying its own plan fields. |
+| `think-gfqt` | Bounded experimental multi-run scheduler. | Configurations from `think-6qxx` vary proposal, force/contact model, annealing/container schedule, repair and objective; repeated Pack runs report progress, cancellation and exact work/seed manifests without blocking interaction; a Node command runs a Search plan headlessly and writes the ledger that `think-i5pg` re-admits. The current $n \le 32$, eight-seed, 5,000-step preview does not meet this responsiveness or configuration contract. |
+| `think-i5pg` | Make Search ledgers independently checkable. | Decode and re-admit each outcome, derive block, budget and $n$ from the plan, isolate nonfinite partial encoding failures, and make growth settings effective or reject them. A forged outcome cannot change the summary by supplying its own plan fields. |
 | `think-vhgz` | Complete Search over the shared scheduler. | Best valid poses, rates, status counts, disjoint-block distributions and replay/export agree with headless output; empty or interrupted cohorts are explicit. The preview tab remains exploratory until these views and controls pass. |
 | `think-3yma` | Calibration and held-out presets. | Presets load a tuning/held-out partition declared in a campaign manifest before execution, tested on a fixture manifest, and do not wait for any research partition; configuration-level distributions and individual best poses are distinguished; replay preserves the partition. |
 | `think-wln2` | Final end-to-end acceptance. | Every O1–O8 journey passes, documentation matches the product, required/full checks pass, and the released revision has a live smoke receipt. |

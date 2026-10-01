@@ -686,12 +686,12 @@ Hourly watchdog: `lb-survey-hourly`. Closeout timer: `lb-survey-4h-closeout`.
 ## Ranked queue
 
 See [X-038](../explorations/X-038-n100-lower-bound-survey.md).
-First probe: n=20 at `973/200` with the T-021 seed, a four-grid, and windows 7.
+First probe: n=20 at $973/200$ with the T-021 seed, a four-grid, and windows 7.
 
 ## T-029 recipe if the 2400 s n=20 freeze is RETAINABLE
 
 n=20 is on the H-218 sweep.
-Confirm H-218 only if `decide_certificate` prints `RETAINABLE` at `973/200`. Copy the
+Confirm H-218 only if `decide_certificate` prints `RETAINABLE` at $973/200$. Copy the
 T-021 landing, not a new case class.
 
 - Copy live `cases/n20_fractional_certificate/certificate.json` to
@@ -700,21 +700,21 @@ T-021 landing, not a new case class.
 - Live plus `certificate-973-200.json` hold the new bytes.
 - Do not overwrite `certificate-24-5.json`.
 - `produced_by.session` is `session-140`. Score S3.
-- If freeze mass is in `[19, 20)`, the claim is `s(20) >= 973/200` and
+- If freeze mass is in $[19, 20)$, the claim is `s(20) >= 973/200` and
   `s(21) >= 973/200`. T-020 still holds n=19.
-- DS7 hardcodes n=21 verified `4.85`; that line moves with the pointer.
-- `4.865` is already a covering unique side.
+- DS7 hardcodes n=21 verified $4.85$; that line moves with the pointer.
+- $4.865$ is already a covering unique side.
 - Next T-id is T-029. Do not mint it on an unconverged or above-20 freeze.
 
 ## Leftover ranking
 
 See
 [leftover-side-ranking.md](../series/series-000-smoke-and-calibration/results/agenda-038/leftover-side-ranking.md).
-A float objective above `n` was a session-budget reason to move to another site set; it
+A float objective above $n$ was a session-budget reason to move to another site set; it
 does not establish a lower bound on the restricted optimum.
-After n=21, walk `leftover-queue.yaml`: n=19 `241/50` (done, `19.247109`), n=17
-`461/100` (done, `17.195968`), n=20 `971/200` (done, `19.910044`), n=12 `3969/1000`
-four-grid plus windows 7 (done, `12.091168`), n=18 `1871/400` (not started).
+After n=21, walk `leftover-queue.yaml`: n=19 $241/50$ (done, $19.247109$), n=17
+$461/100$ (done, $17.195968$), n=20 $971/200$ (done, $19.910044$), n=12 $3969/1000$
+four-grid plus windows 7 (done, $12.091168$), n=18 $1871/400$ (not started).
 
 Correctness review (2026-09-19): the original n<=100 census omitted proved cases
 `n = 98..100`; the corrected count is 35 proved and 65 open.
@@ -724,17 +724,17 @@ Their stop was a session-budget decision, not a site-set refutation.
 ## T-029 leftover recipes
 
 T-029 is still free.
-Confirm H-218 only on `RETAINABLE` at n in `{12, 17, 19, 20}`.
+Confirm H-218 only on `RETAINABLE` at n in $\lbrace12, 17, 19, 20\rbrace$.
 
-- Leftover n=19 `241/50` did not retain.
+- Leftover n=19 $241/50$ did not retain.
   Do not mint T-029 from that probe.
-- Leftover n=17 `461/100` did not retain.
+- Leftover n=17 $461/100$ did not retain.
   Do not mint T-029 from that probe.
-- Leftover n=20 `971/200` did not retain.
+- Leftover n=20 $971/200$ did not retain.
   Do not mint T-029 from that probe.
-- Leftover n=12 `3969/1000` did not retain.
+- Leftover n=12 $3969/1000$ did not retain.
   Do not mint T-029 from that probe.
-- Leftover n=18 `1871/400` is off the H-218 sweep.
+- Leftover n=18 $1871/400$ is off the H-218 sweep.
   A retain there is the next T-id and does not confirm H-218.
 
 <!-- This document follows common-doc-guidelines.md.

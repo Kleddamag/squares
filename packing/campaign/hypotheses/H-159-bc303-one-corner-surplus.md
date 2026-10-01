@@ -54,7 +54,7 @@ The fixed candidate and its replay are recorded in
 
 The registration is retrospective to the disclosed candidate.
 The result has no full-packing extension, continuous-domain minimum, T2 forced-type
-verdict, global owner-routing result, or new bound on `s(11)`.
+verdict, global owner-routing result, or new bound on $s(11)$.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

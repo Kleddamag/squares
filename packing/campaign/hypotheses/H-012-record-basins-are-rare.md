@@ -52,7 +52,7 @@ quench changes the probability.
 If the measured ratio is small for the baseline regime, scaling that same sampler
 multiplies effort against a poor hitting probability.
 
-The grounding is real but thin — Ellsworth’s 4-in-3,004 for `s(51)`, the 14 zero-gap
+The grounding is real but thin — Ellsworth’s 4-in-3,004 for $s(51)$, the 14 zero-gap
 pairs in Trump’s packing, and the double-funnel precedent from energy-landscape science.
 None of it is a measurement under this campaign’s declared `P/Q/E`, which is why this is
 registered with an explicit kill criterion rather than assumed.
@@ -61,15 +61,15 @@ registered with an explicit kill criterion rather than assumed.
 
 Because if it is wrong for the baseline, much of the argument against scaling that
 baseline falls away.
-The verdict is not currently a cheap query over H-011: H-011 stops at `n=10`, while this
-hypothesis requires `n=11`, so the instrument must explicitly add and budget that cell.
+The verdict is not currently a cheap query over H-011: H-011 stops at $n=10$, while this
+hypothesis requires $n=11$, so the instrument must explicitly add and budget that cell.
 A strategy that names the observation that would kill it is the kind worth having.
 
 ## What this campaign has already seen that bears on it
 
 [exp-001](../series/series-000-smoke-and-calibration/experiments/exp-001-baseline-sweep.md)
-is weak evidence for the premise: five independent seeds at `n = 11` all landed in a
-narrow band `[3.9144, 3.9361]`, well short of Trump’s `3.8771`, with the band five times
+is weak evidence for the premise: five independent seeds at $n = 11$ all landed in a
+narrow band $[3.9144, 3.9361]$, well short of Trump’s $3.8771$, with the band five times
 narrower than the remaining gap.
 That is consistent with a sampler repeatedly finding one score region, but it is one
 budget and one versioned method, and it measures nothing about terminal-component

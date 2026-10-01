@@ -70,7 +70,7 @@ hypothesis:
 **Status update, September 10, 2026.** T-026 confirms the finer-net and dilation
 disjunct by proving the ordinary exact lower bound
 `s(11) >= 955000*sqrt(518400042893309449)/179696714646249 =
-3.826447410572939744...` at V4/C5. The separate rows-complete loop at `383/100`,
+3.826447410572939744...` at V4/C5. The separate rows-complete loop at $383/100$,
 re-optimisation on a finer net, and changed atom families remain open.
 
 The
@@ -83,7 +83,7 @@ theorem or this hypothesis’s measured outcome.
 `s(11) > 955000*sqrt(518400042893309449)/179696714646249`. This does not qualify the
 proved lower bound.
 
-The threshold certificate at `191/50` is the first result past the point-method ceiling,
+The threshold certificate at $191/50$ is the first result past the point-method ceiling,
 and [X-024](../explorations/X-024-two-lines-at-eleven.md) makes pushing it up in side
 the primary lane, because each success is a global bound in one certificate.
 There are two ways up, and both are cheap to read.
@@ -95,16 +95,16 @@ statement about cores, not about atoms: a finer net admits a larger shrink under
 Condition 4, and the frozen weights, multiplied by one rational factor, either cover
 every closed core at the new shrink or they do not.
 On the point atoms of `T-018` they did, at every net up to 2880 steps, and the 1440-step
-rung dilated to `3.816609502788862`. The same sweep on the threshold certificate, with
+rung dilated to $3.816609502788862$. The same sweep on the threshold certificate, with
 the threshold atoms entering the same difference array, gives the verified covering
 premise for the dilation-limit lower bound `3.826447410572939744...` from the 1440-step
 rung.
 
 The second is the loop.
 Spike B’s rows-only driver, warm-started from the accepted site and atom set, costs
-about forty seconds a round; the question at `383/100` is whether the value stays below
+about forty seconds a round; the question at $383/100$ is whether the value stays below
 eleven once the rows are complete, or refills to eleven the way the point LP did at
-`191/50`. A refill would be read against its dual, which is the fractional packing
+$191/50$. A refill would be read against its dual, which is the fractional packing
 feasible for every two-of-three atom on the site set, and that dual is what the next
 atom families would have to cut.
 

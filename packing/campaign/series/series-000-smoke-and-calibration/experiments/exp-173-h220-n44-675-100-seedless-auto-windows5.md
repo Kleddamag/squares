@@ -92,14 +92,14 @@ experiment:
 
 This is the eighth scientific round of
 [H-220](../../../hypotheses/H-220-seedless-colgen-raises-nagamochi-floor.md), after
-[exp-172](exp-172-h220-n45-684-100-seedless-auto-windows5.md) stopped at `42.137360`
+[exp-172](exp-172-h220-n45-684-100-seedless-auto-windows5.md) stopped at $42.137360$
 unconverged below 45. Remaining rows raise that set.
 
-Auto resolved to `(50, 67, 83)`. The 1200 s run stopped at `41.236782` unconverged below
+Auto resolved to $(50, 67, 83)$. The 1200 s run stopped at $41.236782$ unconverged below
 44 after 28 LP rounds.
 No freeze. T-030 was not offered.
 The eight queued Nagamochi sides are measured.
-The follow-up is exp-174 at n=19 `481/100` four-grid plus windows 7.
+The follow-up is exp-174 at n=19 $481/100$ four-grid plus windows 7.
 
 Confirm only on `RETAINABLE`. There is no n=44 case package.
 

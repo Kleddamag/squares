@@ -9,18 +9,19 @@
 ## Overview
 
 Lean can reduce the code a third party must trust when checking a packing result.
-The immediate target is now the computer-assisted lower bound `s(11) ≥ 381/100 = 3.81`:
-the [proof card](../../../packing/cases/n11_fractional_certificate/t-018-proof-card.md)
+The immediate target is now the computer-assisted lower bound
+$s(11) \ge 381/100 = 3.81$: the
+[proof card](../../../packing/cases/n11_fractional_certificate/t-018-proof-card.md)
 states the argument, and the 329-line
 [minimal verifier](../../../packing/cases/n11_fractional_certificate/minimal_verify.py)
 decides its five certificate conditions with exact arithmetic.
 A complete Lean formalization would check both the geometric implication and the
 certificate computation against stated axioms and the kernel.
 
-- **The upper bound has a finite algebraic formalization target.** `s(11) ≤ 3.877084…`
-  is a single explicit witness plus 55 pairwise disjointness facts plus containment —
-  finitely many polynomial inequalities over one number field.
-  The original survey located no formal theorem about `s(n)` for non-trivial `n`; that
+- **The upper bound has a finite algebraic formalization target.**
+  $s(11) \le 3.877084\ldots$ is a single explicit witness plus 55 pairwise disjointness
+  facts plus containment — finitely many polynomial inequalities over one number field.
+  The original survey located no formal theorem about $s(n)$ for non-trivial $n$; that
   dated search does not establish that none exists.
 - **The lower bound has mathematics to formalize.** The retained
   [Lean spike](../../../packing/cases/n11_fractional_certificate/lean-spike/README.md)
@@ -30,7 +31,7 @@ certificate computation against stated axioms and the kernel.
   This continuation port has source checks only: the pinned Lean toolchain and cache are
   absent on the host, so neither compilation nor a kernel check was replayed.
   The spike does not formalize the geometry, replay Condition 5’s **567,130,649 cells**,
-  or prove the full `s(11)` theorem.
+  or prove the full $s(11)$ theorem.
 - **The lemma layer of the solved cases supplies smaller formalization targets.** A
   formal proof can expose a missing hypothesis in a human argument even before a whole
   optimality theorem is formalized.
@@ -85,7 +86,7 @@ Independent third-party kernel implementations exist and can re-check the same p
 term.
 
 That is exactly the property the requirement asks for.
-The chain of trust for a claim like `s(11) ≤ 3.877084…` becomes:
+The chain of trust for a claim like $s(11) \le 3.877084\ldots$ becomes:
 
 | Level | What you must trust | Independent? |
 | --- | --- | --- |
@@ -135,8 +136,8 @@ Map that onto this project’s
 | Task | Native cost (measured) | × 3,000 | Verdict |
 | --- | --- | --- | --- |
 | One separating-axis pair test | 57 ns | ~170 µs | Fine in isolation |
-| One full `n = 11` verification (55 pairs) | ~3 µs of predicate work | ~10 ms | **Entirely fine** |
-| One annealing basin (`s(51)`, published) | ~23.6 s | ~20 hours | **Hopeless** |
+| One full $n = 11$ verification (55 pairs) | ~3 µs of predicate work | ~10 ms | **Entirely fine** |
+| One annealing basin ($s(51)$, published) | ~23.6 s | ~20 hours | **Hopeless** |
 | A 3,004-basin campaign | ~4.9 GPU-hours | ~14,700 device-hours, or 1.68 device-years | Arithmetic illustration only; GPU throughput and formal proof replay are different workloads |
 
 These multiplications illustrate why a small retained check is a better first target
@@ -178,10 +179,10 @@ Its shape is the one a square-packing optimality proof would take:
   archive that is imported into the proof, rather than re-derived inside it.
 
 Every one of those three moves has a direct counterpart here.
-Unavoidable-point arguments *are* nonlinear inequalities over `(x, y, θ)`. The
+Unavoidable-point arguments *are* nonlinear inequalities over $(x, y, \theta)$. The
 [`n = 11` report’s](research-2026-08-22-packing-11-unit-squares.md) observation that the
 lower-bound methods can be interpreted as resource constraints led to the **fractional
-certificate** now retained for `s(11) ≥ 381/100`. Enumerating contact classes raises a
+certificate** now retained for $s(11) \ge 381/100$. Enumerating contact classes raises a
 separate completeness obligation analogous to the tame-graph archive problem; a list of
 contact graphs alone is not a proof that every packing has been represented.
 
@@ -192,9 +193,9 @@ contact graphs alone is not a proof that every packing has been represented.
 A 2026 result determining a covering-code parameter, structured exactly as this project
 should structure its own:
 
-- **Upper bound:** an explicit 23-word code, verified by checking coverage over all `8⁴`
-  ambient words — a finite exhaustive check on a witness.
-- **Lower bound:** layered combinatorial arguments eliminating `≤ 21` words, then for
+- **Upper bound:** an explicit 23-word code, verified by checking coverage over all
+  $8^4$ ambient words — a finite exhaustive check on a witness.
+- **Lower bound:** layered combinatorial arguments eliminating $\le 21$ words, then for
   the 22-word case a reduction to six missing-pair graphs, with the remaining
   incompatibility discharged by **two Lean-checked LRAT refutations of stored CNF
   instances**.
@@ -228,7 +229,7 @@ discovered its theorem.”
 documents are updated accordingly.
 The realistic reading is still narrow: the solved Erdős problems were ones with short
 proofs once found, and nothing in that result suggests an LLM-plus-Lean loop will
-produce a lower bound for `s(11)`. But it does mean the loop is now a *search* method
+produce a lower bound for $s(11)$. But it does mean the loop is now a *search* method
 with a correctness guarantee attached, not merely a transcription method — and the cost
 is hundreds of dollars, not decades.
 
@@ -236,21 +237,22 @@ is hundreds of dollars, not decades.
 
 #### 1. The upper bound — available today, and unclaimed
 
-`s(11) ≤ 3.87708359002281417730789706010096…` unfolds to: *there exist eleven unit
-squares, pairwise disjoint in their interiors, all contained in a square of that side.*
+$s(11) \le 3.87708359002281417730789706010096\ldots$ unfolds to: *there exist eleven
+unit squares, pairwise disjoint in their interiors, all contained in a square of that
+side.*
 
 Every part of that is finite and algebraic:
 
 - The witness is explicit — six axis-aligned squares and a five-square block at angle
-  `a`, with coordinates rational in `u = tan(a/2)`, where `u` is a root of a known
+  $a$, with coordinates rational in $u = \tan(a/2)$, where $u$ is a root of a known
   irreducible degree-8 polynomial.
 - Non-overlap for each of the 55 pairs is the separating-axis condition: four candidate
   axes, eight dot products each, **no divisions and no square roots**, so every tested
-  quantity is a polynomial in `u`.
+  quantity is a polynomial in $u$.
 - Containment is the same predicate against four container edges.
 - 14 of the 55 pairs touch with **exactly zero** gap, which is why this must be done in
-  the number field and not numerically — but exact zero in `ℚ(u)` is a decidable
-  syntactic test, not an analytic one.
+  the number field and not numerically — but exact zero in $\mathbb{Q}(u)$ is a
+  decidable syntactic test, not an analytic one.
 
 Mathlib has what this needs: polynomial rings, algebraic elements, and `IsAdjoinRoot`
 for working in `ℚ[X]/(m)`. The work is stating the geometry cleanly and discharging a
@@ -268,8 +270,8 @@ analytically-optimized record.
 #### 2. The nonavoidance lemma layer of the solved cases — available, and diagnostic
 
 Friedman’s Lemmas 1–3 and Stromquist’s Lemmas 1–6 are single-variable calculus arguments
-— minimise `D(θ)`, differentiate, find the critical angle — done by hand and checkable
-by a referee with a pencil.
+— minimise $D(\theta)$, differentiate, find the critical angle — done by hand and
+checkable by a referee with a pencil.
 Lemma 2 is representative and small: *any box whose centre lies in the interior of a
 triangle with all sides at most 1 must contain one of its vertices.*
 
@@ -280,19 +282,19 @@ history is the argument for bothering — the structure of Stromquist’s Theore
 misread in this repository until the archived paper was read line by line, and the error
 was in exactly this layer.
 
-Then `s(10)` (Stromquist’s Theorem 1): ten points, each region covered by one of Lemmas
+Then $s(10)$ (Stromquist’s Theorem 1): ten points, each region covered by one of Lemmas
 1, 2 or 4, then a named-box case analysis.
-That is a complete, published optimality proof for a nontrivial `n`.
+That is a complete, published optimality proof for a nontrivial $n$.
 
 #### 3. Unavoidable-set verification — the interesting middle
 
 *Does every unit square placed inside `[0,k]²` contain a point of `P`?* is a `∀` over a
-compact three-parameter family `(x, y, θ)`. It is not finite, so it needs interval
+compact three-parameter family $(x, y, \theta)$. It is not finite, so it needs interval
 arithmetic plus subdivision — Flyspeck’s first move, at much smaller scale.
 
 Lean 4 now has the pieces: `LeanCert` provides verified interval arithmetic over dyadic
 rationals with a “golden theorem” architecture connecting a fast boolean check to
-`∀ x ∈ I, f(x) ≤ c`, and `ComputableReal` gives computable reals.
+$\forall x \in I, f(x) \le c$, and `ComputableReal` gives computable reals.
 Both are young.
 
 This is the first item with genuine research value rather than only assurance value: it
@@ -303,10 +305,10 @@ plausible route to a new bound.
 
 #### 4. A lower bound for an open case — a partial formalization
 
-The retained fractional unavoidable-set certificate establishes `s(11) ≥ 381/100`. Its
+The retained fractional unavoidable-set certificate establishes $s(11) \ge 381/100$. Its
 human implication is short: eleven disjoint inner squares, each covering at least unit
 atom mass, would require total mass at least eleven; the certificate carries only
-`434547/40000 = 10.863675`. The exact Python checker decides the five hypotheses needed
+$434547/40000 = 10.863675$. The exact Python checker decides the five hypotheses needed
 to apply that argument.
 The [result record](../../../packing/frontier/results.yaml) carries T-018’s evidence and
 confirmation status, including its method-distinct interval confirmation.
@@ -321,7 +323,7 @@ They do not check the atom data or prove that the net and geometry imply coverag
 every orientation.
 
 Condition 5 says every contained side-`9977/10000` square at each of 181 rational
-directions covers mass at least one; the retained minimum is `4001/4000`. The Python
+directions covers mass at least one; the retained minimum is $4001/4000$. The Python
 verifier reduces the continuum of centers to **567,130,649 reachable event cells**. The
 separate interval verifier confirms the same certificate on a doubled net of 361
 directions, without needing the diagonal-reflection reduction.
@@ -341,13 +343,13 @@ theorem s11_le : squarePackingSide 11 ≤ trump11Side := ...
 ```
 
 with `trump11Side` defined as the root of the degree-8 polynomial in an isolating
-interval, the eleven squares given explicitly over `ℚ(u)`, and the proof discharging
-containment plus 55 pairwise separations.
+interval, the eleven squares given explicitly over $\mathbb{Q}(u)$, and the proof
+discharging containment plus 55 pairwise separations.
 The deliverable is a Lean file and a checking command.
 A third party runs the kernel; they need not read our Rust, our Python, or this
 repository at all.
 
-**For anything found by search**, follow `K₈(4,2) = 23`: the search stays fast and
+**For anything found by search**, follow $K_8(4,2) = 23$: the search stays fast and
 untrusted, and emits a certificate.
 Two shapes are already supported — LRAT refutations from a SAT solver, replayed inside
 Lean with no external solver, and sum-of-squares certificates for polynomial
@@ -369,30 +371,31 @@ The
 ## Key Insights
 
 1. **The upper bound reduces to a finite algebraic witness.** The original survey
-   located no formal theorem about `s(n)` for non-trivial `n`; `s(11) ≤ 3.877084…` needs
-   only finitely many polynomial sign conditions over one degree-8 number field.
+   located no formal theorem about $s(n)$ for non-trivial $n$;
+   $s(11) \le 3.877084\ldots$ needs only finitely many polynomial sign conditions over
+   one degree-8 number field.
 2. **Measure formal replay on a retained result first.** The historical Flyspeck
    slowdown suggests that a small result check is a more useful first experiment than an
    entire campaign; it does not establish this project’s eventual slowdown.
 3. **The exact-zero contacts are what make this a formalization problem rather than a
    numerical one — and they are also what makes it tractable.** Fourteen of the 55 pairs
    touch with exactly zero gap, which no floating-point or interval method can certify;
-   but in `ℚ(u)` exact zero is a *syntactic* test, which is precisely the kind of thing
-   a kernel checks well.
+   but in $\mathbb{Q}(u)$ exact zero is a *syntactic* test, which is precisely the kind
+   of thing a kernel checks well.
 4. **Audit axioms as well as build success.** A theorem can build with a placeholder or
    custom axiom; `native_decide` adds trust in compiled computation.
    Independent certificate verification requires an explicit account of those
    dependencies.
 5. **The certificate pattern decouples search speed from trust completely.**
-   `K₈(4,2) = 23` ran a SAT solver and shipped LRAT refutations checked inside Lean with
-   no solver at replay.
+   $K_8(4,2) = 23$ ran a SAT solver and shipped LRAT refutations checked inside Lean
+   with no solver at replay.
    Our annealer can be as fast and unprincipled as it likes provided it emits something
    checkable — which also means the choice of search technology stops being a trust
    question.
 6. **Formalization has stopped being only transcription, and our other documents needed
    updating.** AlphaProof Nexus resolved 9 open Erdős problems and 44 OEIS conjectures
    autonomously at a few hundred dollars each.
-   That work did not produce this project’s later `s(11)` certificate, but it is
+   That work did not produce this project’s later $s(11)$ certificate, but it is
    evidence against the blanket claim that formalization never participates in
    discovery.
 7. **The nonavoidance lemmas are small diagnostic targets.** They support several solved
@@ -401,7 +404,7 @@ The
    by interval arithmetic; relaxation to an infeasible LP; a pre-classified
    combinatorial archive imported rather than re-derived.
    The [`n = 11` report’s](research-2026-08-22-packing-11-unit-squares.md) proposed
-   fractional route now has the retained `381/100` certificate.
+   fractional route now has the retained $381/100$ certificate.
    A compact, formally checked coverage receipt is a further assurance target.
 
 ## Comparison Matrix
@@ -412,7 +415,7 @@ Where each layer of assurance stands, for a claim of the form “this packing is
 | --- | --- | --- | --- | --- | --- |
 | Float SAT with tolerance | **No — provably cannot** | No | Trivial | Microseconds | Implemented, and unsound for this purpose |
 | Interval arithmetic | No (proves `>`, never `=`) | No | Low | Milliseconds | Implemented in the FrankenSim probe |
-| Exact arithmetic in `ℚ(α)` | Yes | Only if you read our code | Low | 0.35 s (Python) | **Implemented and passing** |
+| Exact arithmetic in $\mathbb{Q}(\alpha)$ | Yes | Only if you read our code | Low | 0.35 s (Python) | **Implemented and passing** |
 | Two independent exact implementations | Yes | Partly — a shared bug is unlikely | Medium | Seconds | **Achieved once**, Rust vs Python |
 | Lean proof, `native_decide` | Possible | Adds compiler trust | Depends on the formalization | Workload-dependent | Not used in the retained spike |
 | Lean proof without a computation-trusting axiom | Possible | Kernel and declared axioms, with statement review | Unmeasured for the full packing theorem | Unmeasured here | Nine partial lower-bound theorem proofs retained as source; historical build reported, current replay pending; no full packing theorem |
@@ -424,7 +427,7 @@ Ordered by value per unit of effort, and deliberately small at the start.
 1. **Replay the retained Lean spike before relying on its formal status.** Use the
    committed toolchain and manifest, retain build output, and inspect the nine-theorem
    axiom audit. No mathematical research is needed for this operational prerequisite.
-2. **Design a compact proof-producing Condition 5 receipt.** The `381/100` result has a
+2. **Design a compact proof-producing Condition 5 receipt.** The $381/100$ result has a
    short human implication and complete exact Python replay.
    A partition or range-minimum receipt, with a proof of its coverage, could reduce the
    cost of independent formal checking.
@@ -436,11 +439,11 @@ Ordered by value per unit of effort, and deliberately small at the start.
 4. **Formalize the nonavoidance lemma layer** — Friedman’s Lemmas 1–3, Stromquist’s 1–6.
    These small calculus arguments support several solved cases.
    Check their hypotheses against the published statements before formalizing them.
-5. **Formalize `s(11) ≤ 3.877084…` from the exact witness.** Scope it as one packing
-   first; if it works, the record corpus becomes a theorem per analytically-optimized
-   entry.
-6. **Then `s(10) = 3 + ½√2`**, Stromquist’s Theorem 1, a complete published optimality
-   proof at human scale.
+5. **Formalize $s(11) \le 3.877084\ldots$ from the exact witness.** Scope it as one
+   packing first; if it works, the record corpus becomes a theorem per
+   analytically-optimized entry.
+6. **Then $s(10) = 3 + \tfrac{1}{2}\sqrt{2}$**, Stromquist’s Theorem 1, a complete
+   published optimality proof at human scale.
    This is where the lemma layer pays off.
 7. **Evaluate `LeanCert` and `ComputableReal` on one nonavoidance lemma** before
    committing to the unavoidable-set decision procedure.
@@ -458,9 +461,9 @@ those formal proof layers are unfinished.
 
 ## Open Questions
 
-- [ ] How hard is the `s(11)` upper bound in practice?
+- [ ] How hard is the $s(11)$ upper bound in practice?
   The estimate of weeks assumes discharging a few hundred polynomial sign conditions
-  over `ℚ(u)` is routine in Mathlib.
+  over $\mathbb{Q}(u)$ is routine in Mathlib.
   A single pair, done end to end, would calibrate it — and is the obvious first
   experiment.
 - [ ] Does Mathlib’s `IsAdjoinRoot` / `AdjoinRoot` machinery give usable `decide`-able
@@ -473,7 +476,7 @@ those formal proof layers are unfinished.
   object?
 - [ ] Could the Gauss-style autoformalization agents that finished dimension 8 be
   pointed at the lemma layer, and at what cost?
-- [ ] What partition or range-minimum receipt lets Lean check the full `n = 11`
+- [ ] What partition or range-minimum receipt lets Lean check the full $n = 11$
   Condition 5 coverage fact without replaying the search or trusting compiled execution?
 - [ ] Does the 3,000× Flyspeck figure still hold in Lean 4 with modern interval tooling,
   or has it improved? It is a 2013-era measurement on HOL Light.
@@ -498,7 +501,7 @@ verification receipt.
 **Sources consulted directly.** The sphere-packing formalization project pages and
 arXiv:2604.23468; the Flyspeck literature, principally the Taylor-interval verification
 work (arXiv:1301.1702) and the formal-proof account; arXiv:2606.16688 for
-`K₈(4,2) = 23`, fetched and read for its certificate structure; arXiv:2605.22763
+$K_8(4,2) = 23$, fetched and read for its certificate structure; arXiv:2605.22763
 (*Advancing Mathematics Research with AI-Driven Formal Proof Search*), fetched for its
 exact title, authors, dates and reported results; and the `LeanCert` and
 `ComputableReal` project descriptions.
@@ -510,11 +513,11 @@ The 57 ns and 23.6 s figures used in the slowdown table are from the
 [infrastructure study’s](research-2026-08-22-infrastructure-for-packing-exploration.md)
 measurements and the record page respectively.
 
-**Not established.** Neither Condition 5 nor the full `s(11)` theorem has a retained
+**Not established.** Neither Condition 5 nor the full $s(11)$ theorem has a retained
 Lean formalization. The nine-theorem spike is source-reviewed here but awaits current
 Lean replay. Every estimate of the remaining formalization effort is a judgement, not a
-measurement, including the “weeks, not days” estimate for the `s(11)` upper bound.
-The claim that no formal theorem about `s(n)` exists for non-trivial `n` is a negative
+measurement, including the “weeks, not days” estimate for the $s(11)$ upper bound.
+The claim that no formal theorem about $s(n)$ exists for non-trivial $n$ is a negative
 result from search and is weak in the usual way: nothing was found, which is not the
 same as nothing existing.
 The 3,000× figure is quoted from Flyspeck’s own authors, measured on HOL Light in 2013,
@@ -540,7 +543,7 @@ Low for effort estimates.
   [*Formal Verification of Nonlinear Inequalities with Taylor Interval Approximations*](https://arxiv.org/abs/1301.1702)
   — the ~3,000× figure and the ~1,000 inequalities;
   [a critical retrospective](https://arxiv.org/pdf/2402.08032).
-- **`K₈(4,2) = 23`** — [arXiv:2606.16688](https://arxiv.org/pdf/2606.16688). Explicit
+- **$K_8(4,2) = 23$** — [arXiv:2606.16688](https://arxiv.org/pdf/2606.16688). Explicit
   witness for the upper bound; layered combinatorics plus two Lean-checked LRAT
   refutations for the lower, with no external SAT solver at replay.
 - **AlphaProof Nexus** — Tsoukalas et al., *Advancing Mathematics Research with

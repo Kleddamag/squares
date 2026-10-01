@@ -37,7 +37,7 @@ hypothesis:
 2026-09-14.
 
 **Why it is worth testing.** Once runs are repaired to packings, a single run scores
-below the trivial grid at every `n` measured, while the best of a thousand sometimes
+below the trivial grid at every $n$ measured, while the best of a thousand sometimes
 comes within a fraction of a per cent of the record
 ([X-034](../explorations/X-034-the-workbench-physics-as-a-search.md)). If that holds
 under a fair comparison, budget spent on restarts is worth more than budget spent on one

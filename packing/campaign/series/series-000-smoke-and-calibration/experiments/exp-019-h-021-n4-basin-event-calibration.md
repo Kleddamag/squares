@@ -74,7 +74,7 @@ The other two stopped on explicit fixed-cell cycles at sides 2.038794768854 and
 2.209948126046.
 
 The archive contains three geometric keys and three contact keys.
-Exact classification already proves that the optimal `n=4` quotient is one point; the
+Exact classification already proves that the optimal $n=4$ quotient is one point; the
 two optimum descriptors agree.
 The two nonoptimal stopping events are examples for quench diagnosis, not evidence of
 two additional terminal components.
@@ -84,7 +84,7 @@ poses, reasons, validity screens, and timings are durable, while H-021’s denom
 remains undefined.
 
 Per-seed wall times range from 1.63 to 4.45 seconds.
-Moving from `n=3` to `n=4` increased this four-seed block from 10.02 to 13.32 seconds,
+Moving from $n=3$ to $n=4$ increased this four-seed block from 10.02 to 13.32 seconds,
 still far below the validity work that blocks a larger campaign.
 
 <!-- This document follows common-doc-guidelines.md.

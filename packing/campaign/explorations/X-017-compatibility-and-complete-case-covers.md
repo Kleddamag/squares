@@ -296,7 +296,7 @@ These conditions keep the selected mass disjoint even when the packed squares to
 
 $$
 \sum_a z_a=11,\qquad
-\sum_a m_{ja}z_a\le M_j,\qquad z_a\in\{0,1\}.
+\sum_a m_{ja}z_a\le M_j,\qquad z_a\in\lbrace0,1\rbrace.
 $$
 
 Uniformly proved cell conflicts and small-subsystem no-goods add compatibility.
@@ -361,7 +361,7 @@ residual gains a credible closing mechanism.
 Many sampled LP optima, one graph, or a growing catalogue of unrelated tiny boxes do not
 meet that criterion.
 An independent search lane should attack the same claimed family, including alternate
-wall patterns, and verify any sub-$U$ witness rigorously.
+wall patterns, and verify any sub-`U` witness rigorously.
 
 [H-113](../hypotheses/H-113-at-most-two-angle-optimum.md) is the broader successor: all
 multiplicities and both absolute class angles.
@@ -402,7 +402,7 @@ Stop increasing feature degree if each separation pass exposes new unresolved re
 without useful margin.
 The discovered cases can still inform the resource pilot.
 A mass-eleven kernel at $U$ alone excludes twelve, not eleven below $U$; exact-value
-closure needs a below-$U$ family or an additional equality argument.
+closure needs a below-`U` family or an additional equality argument.
 
 **Session097 follow-up, September 7.** The independently reviewed
 [feature design](../series/series-000-smoke-and-calibration/results/agenda-027/bc-264-kernel-feature-design.md)

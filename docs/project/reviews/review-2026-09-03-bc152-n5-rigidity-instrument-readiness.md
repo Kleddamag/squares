@@ -9,7 +9,7 @@ outside the repository, which does not survive the session -- and modified no re
 file.
 It is installed here so that the evidence the records cite outlives that directory.
 
-The source was `468` lines with SHA-256
+The source was $468$ lines with SHA-256
 `b0d9ad71612201186e7bb6765d45b34753f8f344cbc118cd308a3bce955ec43e`, and that hash names
 the scratchpad source rather than this file.
 The installation added this preface and the closing guidelines footer, and reformatted
@@ -107,8 +107,8 @@ Confirmed empirically by byte-identical `-O` output.
 
 ## 4. The counts, recomputed independently (item 3)
 
-`independent_enumeration.py` shares nothing with the instrument: its own `Q(√2)` on
-`Fraction` pairs with an exact sign rule, its own transcription of the pose from
+`independent_enumeration.py` shares nothing with the instrument: its own $Q(\sqrt{2})$
+on `Fraction` pairs with an exact sign rule, its own transcription of the pose from
 `cases/gobel5/packing.py`, its own SAT margins, rows and jets.
 Only at the end does it import the instrument and compare key by key.
 Output in `independent_enumeration.out`.
@@ -116,13 +116,13 @@ Output in `independent_enumeration.out`.
 | quantity | reviewer | author | agrees |
 | --- | --- | --- | --- |
 | wall-corner inequalities | 80 (16 active / 64 inactive / 0 violated) | same | yes |
-| minimum inactive wall margin | `1 − √2/4` | same | yes |
+| minimum inactive wall margin | $1 - \sqrt{2}/4$ | same | yes |
 | pairs | 10 (4 touching / 6 noncontact / 0 overlap) | same | yes |
 | SAT branches / support features | 80 / 320 | same | yes |
 | each touching pair | exactly 1 zero branch, 1 zero corner, 7 refuted branches | same | yes |
-| noncontact witness margins | `√2/2` on all six | (receipt) | yes |
-| `U` | 100 positive + 28 negative = 128 strict | same | yes |
-| least-negative competing witness | `−√2/4` | same | yes |
+| noncontact witness margins | $\sqrt{2}/2$ on all six | (receipt) | yes |
+| $U$ | 100 positive + 28 negative = 128 strict | same | yes |
+| least-negative competing witness | $-\sqrt{2}/4$ | same | yes |
 | active system | 20 = 16 walls + `pair/4/3/0/2, 4/0/1/3, 4/2/2/1, 4/1/3/0` | same | yes |
 | 400 base margins vs instrument, key by key | 0 mismatches | — | yes |
 | 28 negative witnesses, key and value | equal | — | yes |
@@ -135,57 +135,59 @@ is the right shape and is exercised by Control 3.
 
 Geometric preconditions the instrument does **not** machine-check but which the SAT
 encoding needs: counter-clockwise corner order (so `(dy, −dx)` is outward), right
-angles, and centroid-to-edge distance exactly `1/2` (the “1/2” constant is an inradius,
+angles, and centroid-to-edge distance exactly $1/2$ (the “1/2” constant is an inradius,
 and the unit-normal certificate proves only unit edge length).
 I verified all three hold for all five squares.
 Undisclosed; true; see §8.
 
 ## 5. The `q` factor (item 4)
 
-Reviewer’s own algebra, per pair contact (host square 4, corner `p` of the moving
-square, `s = p − c_4`, `n` the host edge’s outward normal):
+Reviewer’s own algebra, per pair contact (host square 4, corner $p$ of the moving
+square, $s = p - c_4$, $n$ the host edge’s outward normal):
 
 - `n_⊥ · s = 0` exactly at all four contacts (foot of the perpendicular), so the
   first-order rotation term vanishes; column `w4` is zero in all 20 rows and is the only
   such column.
-- Along a true rotation at rate `ω = 1`: `g(δ) = n(δ)·s − 1/2`, `n'' = −n`, so
-  `q_geo = −n·s = −1/2`. Matches T-012’s `second_order_terms` exactly.
+- Along a true rotation at rate $\omega = 1$: $g(\delta) = n(\delta)\cdot s - 1/2$,
+  `n'' = −n`, so `q_geo = −n·s = −1/2`. Matches T-012’s `second_order_terms` exactly.
 - Along the chart ray `u4 = t`: the cleared polynomial is
-  `G(t) = (n·s)(1 − t²) + 2t (n × s) − (1 + t²)/2 = −t²` exactly (coefficients
-  `0, 0, −1` for all four rows).
+  $G(t) = (n\cdot s)(1 - t^2) + 2t (n \times s) - (1 + t^2)/2 = -t^2$ exactly
+  (coefficients $0, 0, -1$ for all four rows).
   Hence `G''(e_u4) = −2` and `G''(e_u4/2) = −1/2`.
 - Chain rule: `δ = 2 atan u` has `δ'(0) = 2`, `δ''(0) = 0`, so
-  `d²g/du² = 4 g_δδ + 0 = −2`. The chart unit `e_u4` **is** `ω = 2`, and `q` is
-  quadratic in the direction: `q(2ω) = 4 q(ω)`. The instrument’s `−2` at `e_u4` and
-  `−1/2` at `e_u4/2`, X-012’s `q_chart = 4 q_geo`, `w·q_geo = −√2/2`, `w·q_chart = −2√2`
-  are one fact in two normalizations.
-  I replayed the self-stress (`1/2` on the six named rows) on my own rows:
+  `d²g/du² = 4 g_δδ + 0 = −2`. The chart unit $e_{u4}$ **is** $\omega = 2$, and $q$ is
+  quadratic in the direction: $q(2\omega) = 4 q(\omega)$. The instrument’s $-2$ at
+  $e_{u4}$ and $-1/2$ at $e_{u4}/2$, X-012’s `q_chart = 4 q_geo`, `w·q_geo = −√2/2`,
+  `w·q_chart = −2√2` are one fact in two normalizations.
+  I replayed the self-stress ($1/2$ on the six named rows) on my own rows:
   `w·A_rat = 0`, `w·q_geo = −√2/2`, `w·q_chart = −2√2`; ratio exactly 4.
 - The binding’s convention, stated precisely: `σ_j · grad G_j = A_j^rat · S` with
-  `S = diag(1,1,2)` per square and `σ_j ∈ {1, √2}` the T-012 rationalizing scalar,
-  equivalently `grad G_j = A_j^raw · S`; and
+  `S = diag(1,1,2)` per square and $\sigma_j \in \lbrace1, \sqrt{2}\rbrace$ the T-012
+  rationalizing scalar, equivalently `grad G_j = A_j^raw · S`; and
   `σ_j · G_j''(e_u4/2) = σ_j · q_j^raw(e_w4)`. Since `w·A^rat = 0` gives the chart
   self-stress `w' = wσ ≥ 0` with `w'·G'' = w·q^scaled < 0`, the sign of the obstruction
   is invariant under any positive rescaling of the direction.
   A factor-of-four error could not flip it; and it would not be silently absorbed
-  either: `bind` refuses T-012 data with `q × 4` and with `q / 4` (`refusal_paths.out`).
+  either: `bind` refuses T-012 data with $q \times 4$ and with $q / 4$
+  (`refusal_paths.out`).
 
 Not a discrepancy. One wording caveat, §8 item 7: the receipt binds the *restricted*
 second jet along the free direction, which is all the registered order-`2m` argument
 consumes; it does not verify the full Hessian transform `Jᵀ H J` that X-012 Prop.
-6 also mentions. The receipt should say “restricted second jet along `e_u4`”.
+6 also mentions. The receipt should say “restricted second jet along $e_{u4}$”.
 
 ## 6. The degeneracy the author found (item 6)
 
 Verified on reviewer rows: exactly 4 of the 12 sibling substitutions have the same
 gradient as the contact they replace — `pair/4/3/0/0` for `4/3/0/2`, `4/0/1/1` for
 `4/0/1/3`, `4/2/2/3` for `4/2/2/1`, `4/1/3/2` for `4/1/3/0` — in each case the corner
-diagonally opposite the contact corner, whose offset difference `(±1, ±1)` is parallel
-to the host normal `(±1, ±1)/√2`, so both rotation columns agree; each such sibling has
-base margin exactly `√2`. Consequence for the proof’s claim boundary: the active support
-feature of each touching pair is identified by its exact zero margin and by nothing
-else; a first-order or gradient-based identification is ambiguous at this pose and must
-not be used. This must survive into the packet.
+diagonally opposite the contact corner, whose offset difference $(\pm1, \pm1)$ is
+parallel to the host normal $(\pm1, \pm1)/\sqrt{2}$, so both rotation columns agree;
+each such sibling has base margin exactly $\sqrt{2}$. Consequence for the proof’s claim
+boundary: the active support feature of each touching pair is identified by its exact
+zero margin and by nothing else; a first-order or gradient-based identification is
+ambiguous at this pose and must not be used.
+This must survive into the packet.
 `bind` refuses even the degenerate swap, by key agreement
 (`missing_from_chart = ('pair/4/3/0/0',)`, `missing_from_t012 = ('pair/4/3/0/2',)`, 19
 rows bound, `holds = False`).
@@ -198,8 +200,8 @@ Genuine perturbation controls (each could fail if the instrument were wrong): Co
 fixed side), Control 6 `wrong_chart` (three impostors refused by the chart’s own
 identities), Control 7 `certificate_drift` (digest moves), and Control 8
 `exp034_angle_and_slide` (feasibility predicate finds exp-034’s real family at side
-`1 + 5√2/4` — a positive control — and none of it at Goebel’s side; sides differ by
-`3√2/4 − 1 > 0`). Control 2 `zero_margin` is a thin but real unit test of
+$1 + 5\sqrt{2}/4$ — a positive control — and none of it at Goebel’s side; sides differ
+by $3\sqrt{2}/4 - 1 > 0$). Control 2 `zero_margin` is a thin but real unit test of
 `holds_at_base` strictness.
 
 Tautological (cannot fail once `build_system` has succeeded, and do not call `bind`):
@@ -218,7 +220,7 @@ The binding’s refusal — the certificate this instrument exists to produce �
 negative coverage in the author’s suite or tests.
 I exercised it (`refusal_paths.py`, output `refusal_paths.out`): `bind` returns
 `holds = False` for a swapped contact key (even the gradient-degenerate one), an
-appended contact, a sign-flipped `q`, a wrong row scale, and `q` scaled by 4 or 1/4. So
+appended contact, a sign-flipped $q$, a wrong row scale, and $q$ scaled by 4 or 1/4. So
 the instrument refuses; the suite does not show it.
 
 ## 8. Gaps
@@ -230,13 +232,13 @@ Author-disclosed, checked accurate:
    file (`instrument_ready: false`) all agree; no target determination ran.
 2. Four cited mathematical inputs (SAT, `2 atan` topology, convex-hull containment,
    polynomial continuity) — accurately listed; each is used exactly as stated and the
-   reduction “on `U`, feasible ⇔ the 20 active inequalities” is sound given them (both
+   reduction “on $U$, feasible ⇔ the 20 active inequalities” is sound given them (both
    directions checked by me: seven refuted branches collapse the disjunction; the active
    branch’s three slack siblings keep it a single inequality).
 3. Probe (180 points) and reduction audit (244 points) are corroboration only —
    accurately labelled.
-   Weaker than it reads: all 244 audit points lie inside `U`, so the audit never samples
-   `U`’s boundary or its complement.
+   Weaker than it reads: all 244 audit points lie inside $U$, so the audit never samples
+   $U$’s boundary or its complement.
 4. Single-support-feature touches only; edge-flush and corner-on-corner refused by
    `DisjunctiveTouchError` — confirmed, and the edge-flush test exists.
 
@@ -246,7 +248,7 @@ Undisclosed, found by this review:
 6. Unchecked geometric preconditions (CCW order, right angles, inradius 1/2) behind the
    SAT constant and the outward-normal convention — verified true by me; should be
    machine-checked or declared alongside the four cited inputs.
-7. The second-jet binding is the restricted jet along `e_u4`, not the full Hessian
+7. The second-jet binding is the restricted jet along $e_{u4}$, not the full Hessian
    transform; sufficient for the registered argument, but the receipt’s “second jets”
    should say so.
 8. Receipt prose “the five asserts” is stale; four exist after `2f112f4c`.
@@ -272,13 +274,13 @@ criterion, or that changes any exact quantity.
    Keep the degeneracy finding as a recorded finding, not as the control’s rejection
    mechanism.
 2. Add the same two cases to `tests/test_n5_local_rigidity.py`.
-3. Fix “five asserts” → “four”; say “restricted second jet along `e_u4`”; either
+3. Fix “five asserts” → “four”; say “restricted second jet along $e_{u4}$”; either
    machine-check CCW/right-angle/inradius or add them to `DECLARED_MATHEMATICAL_INPUTS`.
 4. Re-run `build_receipt.py` under both interpreters and re-record the digest (it will
    change, because control findings are in the payload).
    Re-pin the commit.
 
-No re-review of the chart identities, counts, margins, binding or `q` is needed; this
+No re-review of the chart identities, counts, margins, binding or $q$ is needed; this
 document is the independent verification of those and it stands for the pinned code.
 
 ## 10. Novelty basis (S3 as scoped): accepted, with two qualifications
@@ -287,14 +289,14 @@ Checked by me:
 
 - Kingbird’s rigid page (fetched 07:51Z): the definition is verbatim as X-012 quotes it
   ("cannot be continuously transformed into any other valid packing without changing the
-  size of its enclosing square"); `n = 5` is listed as rigid; no method, argument or
+  size of its enclosing square"); $n = 5$ is listed as rigid; no method, argument or
   proof appears. The definition coincides with H-060’s fixed-side notion.
 - Goebel 1979: no PDF text tool is installed here; a stdlib decompression of the PDF’s
   30 content streams yields ~29k characters of text operands with zero occurrences of
   “rigid” or “uniqu”. Partial corroboration of X-012’s “0 hits over 21 pages” (my
   extraction is crude and I could not confirm it reached the square-packing section);
   X-012’s full text-layer extraction is the primary evidence and I did not reproduce it.
-- Friedman DS7 not annotating `n = 5`: taken from `frontier/evidence.yaml`
+- Friedman DS7 not annotating $n = 5$: taken from `frontier/evidence.yaml`
   (`E-n005-second-order-rigidity.novelty_basis`), not re-verified.
 
 Qualifications:
@@ -370,10 +372,10 @@ in `missing_from_t012`; the mutated active set has 21 members.
 - Replacing `instrument.require_active_margins_zero` with a raiser makes `assess()`
   raise: the guard runs on the assessment path, immediately after `build_system`, not
   only in the controls.
-- Key-preserving forgery `pair/4/3/0/2 ← pair/4/3/0/0`: cached margin `0`; recomputed
+- Key-preserving forgery `pair/4/3/0/2 ← pair/4/3/0/0`: cached margin $0$; recomputed
   value `poly[0,1] = √2`; guard refuses.
-  Invented `wall/0/0/right`: enters the active set (size 21) on its cached `0`;
-  recomputed `2 + √2/2`; guard refuses.
+  Invented `wall/0/0/right`: enters the active set (size 21) on its cached $0$;
+  recomputed $2 + \sqrt{2}/2$; guard refuses.
   A cache read would pass both; the re-evaluation is the detection.
 - `assess(..., expected_counts={"active_total": 19})` → `instrument_ready = False`,
   refusal “declared counts disagree with the pose on ['active_total']”. The count gate
@@ -387,20 +389,21 @@ distinguishes 12 of 12. So the support-feature degeneracy is first-order only �
 confirmed. But the second jet is doing less *independent* work than “catches all 12”
 suggests: along a pure host rotation the term is
 `q_host(j′) = −n·s′ = −(margin(j′) + 1/2)` exactly, i.e. an affine function of the
-sibling’s own base margin (chart form `G″(e_u4/2) = −(m + 1)/2`). It separates support
-features precisely when their margins do, and would not separate two siblings of equal
-margin. The claim boundary should say: first-order rows do not identify the support
-feature; the second-order term along the flex does at this pose only because it is the
-base margin in disguise; identification rests on the exact recomputed margin, which is
-the guard. The receipt’s own wording — “the recomputed base margin is what decides” — is
-the right one.
+sibling’s own base margin (chart form $G^{\prime\prime}(e_{u4}/2) = -(m + 1)/2$). It
+separates support features precisely when their margins do, and would not separate two
+siblings of equal margin.
+The claim boundary should say: first-order rows do not identify the support feature; the
+second-order term along the flex does at this pose only because it is the base margin in
+disguise; identification rests on the exact recomputed margin, which is the guard.
+The receipt’s own wording — “the recomputed base margin is what decides” — is the right
+one.
 
 ## 4. The four undisclosed gaps — closed, spot-checked
 
-- Pose preconditions: `pose_shape_certificate` — shoelace `+2`, unit edges, right
-  angles, inradius `1/2` — 65 checks (5 + 20 + 20 + 20), all hold, wired into
+- Pose preconditions: `pose_shape_certificate` — shoelace $+2$, unit edges, right
+  angles, inradius $1/2$ — 65 checks (5 + 20 + 20 + 20), all hold, wired into
   `require_valid` (a CW pose now refuses before any margin is read).
-- Audit widened to 304 points, 252 inside `U`, 52 outside and skipped (denominators 1
+- Audit widened to 304 points, 252 inside $U$, 52 outside and skipped (denominators 1
   and 2 added). Significant, as the coordinator says: the inside-`U` filter had never
   excluded a point before and so had never run; it now demonstrably does.
   The new `sample_is_not_adversarial` caveat is accurate.
@@ -476,18 +479,19 @@ better behaviour — the note should say that.
 ## 2. The corrected constant — confirmed; the author is right about the chart polynomial
 
 On all 16 support features of the four contact branches, using the instrument’s cleared
-polynomials (`constant_check.out`): `G″(e_u4) = −2(m + 1)` exactly, equivalently
-`G″(e_u4/2) = −(m + 1)/2`. The author’s derivation is correct: `G = D_h D_k g`,
-`D″(0) = 2`, `g′(0) = 0` along the host rotation, so
-`G″ = 2m + 4·g_δδ = 2m − 4(m + ½) = −2(m + 1)`.
+polynomials (`constant_check.out`): $G^{\prime\prime}(e_{u4}) = -2(m + 1)$ exactly,
+equivalently $G^{\prime\prime}(e_{u4}/2) = -(m + 1)/2$. The author’s derivation is
+correct: $G = D_h D_k g$, $D^{\prime\prime}(0) = 2$, $g^{\prime}(0) = 0$ along the host
+rotation, so
+$G^{\prime\prime} = 2m + 4\cdot g_{\delta}\delta = 2m - 4(m + \tfrac{1}{2}) = -2(m + 1)$.
 
-My `q_host(j′) = −(m + ½)` is the second derivative of the *geometric* gap `g` at
-`ω = 1` and was labelled as such; it is not the chart’s jet.
-The two differ by exactly `D″(0)·g(0) = 2m`, zero on active rows, which is why the
-binding (active rows only) was never touched.
-My addendum also gave the chart form `G″(e_u4/2) = −(m + 1)/2`, which equals the
-author’s `−2(m + 1)/4`; so the derivations are consistent, and the constant to carry in
-the record is the receipt’s, because it is the object the binding compares.
+My `q_host(j′) = −(m + ½)` is the second derivative of the *geometric* gap $g$ at
+$\omega = 1$ and was labelled as such; it is not the chart’s jet.
+The two differ by exactly $D^{\prime\prime}(0)\cdot g(0) = 2m$, zero on active rows,
+which is why the binding (active rows only) was never touched.
+My addendum also gave the chart form $G^{\prime\prime}(e_{u4}/2) = -(m + 1)/2$, which
+equals the author’s $-2(m + 1)/4$; so the derivations are consistent, and the constant
+to carry in the record is the receipt’s, because it is the object the binding compares.
 The structural conclusion stands unchanged: the restricted second jet along the flex is
 an exact affine function of the support feature’s own base margin, separates support
 features precisely when their margins do, and is not an independent identifier.

@@ -54,12 +54,12 @@ hypothesis:
 ---
 # H-154 — Where the Ceiling Starts, and What It Is Attached To
 
-The exact depth-one family at `191/50` is a statement about a side, a shrink and a net,
+The exact depth-one family at $191/50$ is a statement about a side, a shrink and a net,
 not about a site set, and its edges are not known.
-Downward in side it is bracketed by `61/16`, where the heaviest retained family carries
-`10.08` and the covering loop stalled at `10.72` without converging; upward in shrink it
-is not known to survive at all, since the family that proves it fails at `0.998` with an
-exact maximum depth of `7/4`.
+Downward in side it is bracketed by $61/16$, where the heaviest retained family carries
+$10.08$ and the covering loop stalled at $10.72$ without converging; upward in shrink it
+is not known to survive at all, since the family that proves it fails at $0.998$ with an
+exact maximum depth of $7/4$.
 
 Both edges are cheap to probe and neither has been probed.
 [X-023](../explorations/X-023-three-losses-and-a-new-atom.md) records the ceiling and

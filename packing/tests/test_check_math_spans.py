@@ -22,6 +22,7 @@ import pytest
 from devtools.check_math_spans import (
     MAKEFILE,
     FileResult,
+    located_math_spans,
     mask_fences,
     math_spans,
     pinned_formatter,
@@ -73,6 +74,19 @@ def test_unclosed_fence_masks_to_end_of_file() -> None:
     """What a Markdown parser does, so what the counter must do."""
     assert math_spans("~~~\n$x$\nstill inside $y$\n") == []
     assert mask_fences("```\n$x$\n").strip() == ""
+
+
+def test_frontmatter_dollars_are_not_math() -> None:
+    """A recorded shell command in frontmatter must not pair with the body's first `$`.
+
+    exp-058's frontmatter held `$f`, which paired with the body's first formula, so the
+    text between them counted as one span that flowmark then reflowed, and `migrate_math
+    --apply` refused the file.
+    """
+    text = "---\ncommand: for f in *; do echo $f; done\n---\n\nThe bound $n \\ge 1$.\n"
+    assert math_spans(text) == ["n \\ge 1"]
+    ((start, _end, body),) = located_math_spans(text)
+    assert (text[start], body) == ("$", "n \\ge 1")
 
 
 def test_lone_dollar_is_not_a_span() -> None:

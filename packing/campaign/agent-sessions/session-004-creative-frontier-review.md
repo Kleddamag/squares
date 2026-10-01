@@ -170,9 +170,9 @@ interval, and proof-synthesis work earns promotion on its own observables.
 The basin atlas begins with typed geometry and exact controls, not an embedding of
 endpoint hashes.
 
-The first research rotation is H-026’s Trump tangent screen, H-032’s exact `n=3`
-quotient, source verification of H-024’s `n=29` counterexample, H-023’s regenerated
-equal-side pair, and H-030’s held-out `n=68,69` parent surgery.
+The first research rotation is H-026’s Trump tangent screen, H-032’s exact $n=3$
+quotient, source verification of H-024’s $n=29$ counterexample, H-023’s regenerated
+equal-side pair, and H-030’s held-out $n=68,69$ parent surgery.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

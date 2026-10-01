@@ -611,9 +611,9 @@ shared-record reconciliation, commit validation and publication after lane write
    exists. BC-112 may freeze an adoption recommendation, but BC-115 stays held unless
    BC-120 clears it and BC-121 applies it and explicitly clears the hold for that named
    consumer. Adoption and productization are separate decisions.
-5. Do not open another `n = 5` task.
+5. Do not open another $n = 5$ task.
    Dedicated BC-010 bead think-iivb gets one final bounded block with a preregistered
-   `n = 10` transfer or is parked; legacy H-023 owner think-1s0h is not the queue gate.
+   $n = 10$ transfer or is parked; legacy H-023 owner think-1s0h is not the queue gate.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -17,18 +17,18 @@ The method does not establish a `>` conclusion there.
 
 ## One-Minute Proof
 
-T-018’s frozen measure has total mass below `11`, and every side-`B` square at a net
-direction inside the container carries mass at least `1`. Its full replay accepts
+T-018’s frozen measure has total mass below $11$, and every side-`B` square at a net
+direction inside the container carries mass at least $1$. Its full replay accepts
 Conditions 1–5. For `0 <= t <= D < 1`, the identity
 `(1 + D)^2(1 + t^2) - (1 + t)^2(1 + D^2) = 2(D - t)(1 - Dt) >= 0` bounds the angular
-support by `(1 + D)/sqrt(1 + D²)`. Hence every positive rational `q` with
-`q²B²(1 + D)² < 1 + D²` gives strict containment after common scaling.
+support by `(1 + D)/sqrt(1 + D²)`. Hence every positive rational $q$ with
+$q^2B^2(1 + D)^2 < 1 + D^2$ gives strict containment after common scaling.
 Symmetry and coverage scale with the geometry while mass and the direction net stay
 fixed, so the same counting contradiction rules out side `qL`. Rational density supplies
-such a `q` above every real side smaller than
+such a $q$ above every real side smaller than
 `S* = 38100*sqrt(8100042893309449)/899996306539`; upward embedding then rules out every
-side below `S*`, proving `s(11) >= S*`. As a sanity check, `q = 500003/500000` yields
-the valid side `3.81002286`, already beyond the old coarse ceiling.
+side below $S^{\ast}$, proving `s(11) >= S*`. As a sanity check, $q = 500003/500000$
+yields the valid side $3.81002286$, already beyond the old coarse ceiling.
 
 ## Frozen Premise
 
@@ -43,7 +43,7 @@ D = 207107/90000000
 B(1 + D) = 899996306539/900000000000 < 1
 ```
 
-The full source replay accepts Conditions 1–5, including total mass `434547/40000 < 11`
+The full source replay accepts Conditions 1–5, including total mass $434547/40000 < 11$
 and least reachable-cell mass `4001/4000 >= 1`. The machine-readable
 [`t-022-dilation-limit-corollary.json`](t-022-dilation-limit-corollary.json) parses and
 hashes one byte snapshot, checks that the path did not change during replay, and records
@@ -51,9 +51,9 @@ every accepted source condition.
 
 ## Sharpened Containment Lemma
 
-The frozen certificate theorem uses the sufficient condition `B(1 + D) < 1`. The support
+The frozen certificate theorem uses the sufficient condition $B(1 + D) < 1$. The support
 calculation inside its proof yields a sharper condition.
-For angular error `d`, put `t = tan(d)`. The net gives `0 <= t <= D`, and `D < 1`. The
+For angular error $d$, put $t = \tan(d)$. The net gives `0 <= t <= D`, and $D < 1$. The
 exact identity
 
 ```text
@@ -73,7 +73,7 @@ show that
 cos(d) + sin(d) <= (1 + D)/sqrt(1 + D^2).
 ```
 
-After a positive rational dilation `q`, strict containment therefore holds whenever
+After a positive rational dilation $q$, strict containment therefore holds whenever
 
 ```text
 q^2 B^2(1 + D)^2 < 1 + D^2.                 (1)
@@ -94,8 +94,8 @@ c = sqrt(1 + D^2)/(B(1 + D))
   = 1.0000067516049090307594213677...
 ```
 
-For every rational `q` with `q > 0` and `q^2 < c^2`, multiply every atom coordinate,
-`L`, and `B` by `q`, leaving the weights and direction net unchanged.
+For every rational $q$ with $q > 0$ and $q^{2} < c^{2}$, multiply every atom coordinate,
+$L$, and $B$ by $q$, leaving the weights and direction net unchanged.
 Condition 1 is equivariant under common scaling.
 Conditions 2 and 3 are unchanged.
 Inverse dilation is a bijection on admissible placements and preserves covered mass, so
@@ -110,7 +110,7 @@ q = 500003/500000
 qL = 190501143/50000000 = 3.81002286
 ```
 
-lies strictly above the old coarse ceiling `900000000000/899996306539`. The frozen
+lies strictly above the old coarse ceiling $900000000000/899996306539$. The frozen
 Condition 4 rejects it, but the sharpened test has positive exact slack
 
 ```text
@@ -124,13 +124,14 @@ rather than a different expression for the same ceiling.
 
 ## Density and the Infimum
 
-Fix any real `x` with `0 <= x < cL`. Rational density supplies a rational `q` such that
-`x/L < q < c`; because both sides are positive, this is equivalent to the rational test
-`q^2 < c^2`. If a packing existed at side `x`, placing its container inside the larger
-square of side `qL` would give a packing there, contradicting the strict-subfactor
-proof. Hence no real side below `cL` is packable.
+Fix any real $x$ with `0 <= x < cL`. Rational density supplies a rational $q$ such that
+$x/L < q < c$; because both sides are positive, this is equivalent to the rational test
+$q^{2} < c^{2}$. If a packing existed at side $x$, placing its container inside the
+larger square of side `qL` would give a packing there, contradicting the
+strict-subfactor proof.
+Hence no real side below `cL` is packable.
 
-By the definition of `s(11)` as the infimum of packable container sides,
+By the definition of $s(11)$ as the infimum of packable container sides,
 
 ```text
 s(11) >= cL
@@ -148,8 +149,8 @@ The proof uses neither compactness nor attainment of the infimum.
 
 ## Endpoint and Scope
 
-At `q = c`, equation (1) is an equality.
-A finite net gap attains `D`, and its midpoint realizes the corresponding maximum
+At $q = c$, equation (1) is an equality.
+A finite net gap attains $D$, and its midpoint realizes the corresponding maximum
 angular error, so this uniform strict-containment argument cannot include the endpoint.
 This limit on the method does not weaken the exact conclusion `s(11) >= cL`, which
 follows from the whole strict family by density and upward embedding.
@@ -159,7 +160,7 @@ The proof does not supply any of these stronger statements:
 - no packing exists at `cL`;
 - `s(11) > cL`.
 
-The value `cL` is the supremum for uniform dilation with the fixed `B`, one concentric
+The value `cL` is the supremum for uniform dilation with the fixed $B$, one concentric
 core per unit square, and this strict support-containment lemma.
 It is not proved to be the strongest consequence of the retained atoms or coverage
 cells. Direction-specific cores or an argument using cell geometry may yield more from

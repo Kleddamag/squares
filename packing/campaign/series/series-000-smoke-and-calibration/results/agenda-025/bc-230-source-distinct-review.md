@@ -29,7 +29,7 @@ Cell: BC-230 (`think-c678`)
    maximum over every incident open cell.
 
 2. **[Moderate] F4 and F5 do not isolate the named coverage and endpoint checks.** The
-   contract fixes `q_0 = 0`, `q_{K+1} = 1`, and every interior seam from adjacent
+   contract fixes $q_0 = 0$, `q_{K+1} = 1`, and every interior seam from adjacent
    half-tangents (`bc-230-adaptive-core-contract.md`, lines 45–59), then requires each
    declared boundary to equal the derived rational (`bc-230-adaptive-core-contract.md`,
    lines 307–313). Changing a declared boundary to create F4’s overlap or gap, or
@@ -37,11 +37,11 @@ Cell: BC-230 (`think-c678`)
    first under the prescribed gate order.
    Conversely, if every boundary equals its derivation and the endpoint and monotonicity
    checks hold, a gap or overlap is impossible: consecutive closures share the same
-   derived `q_k`. These mutations show that malformed bytes are rejected, but they
+   derived $q_k$. These mutations show that malformed bytes are rejected, but they
    cannot show that a distinct folded-cover branch detects its named defect.
    Keep F3 as the serialized mutation.
    Replace F4 and F5’s endpoint cases with positive invariant assertions over
-   independently derived seams (`q_0 = 0`, `q_{K+1} = 1`, `q_K < 1`, adjacent endpoints
+   independently derived seams ($q_0 = 0$, `q_{K+1} = 1`, $q_K < 1$, adjacent endpoints
    equal, and the union is `[0,pi/4]`), or test a pure cover validator directly on
    fabricated derived-cell sequences and say that this bypasses serialized-field
    validation. F5’s final-interior-seam case can remain a negative control if it changes
@@ -56,20 +56,20 @@ Cell: BC-230 (`think-c678`)
    broken coverage sweep pass the mutation suite.
    Construct the mutation by changing every distinct member of one complete `D4` orbit
    by the same amount, updating `total_mass`, and declaring the independently known
-   subunit minimum. Preserve nonnegative weights, total mass below `n`, and every format
+   subunit minimum. Preserve nonnegative weights, total mass below $n$, and every format
    and geometry premise.
    Then require all three routes to return the same cell, center, and exact mass below
    one. The side-shrinking alternative is usable only with an independently fixed witness
    and updated cell fields; “so a reachable placement covers less than one” is a fixture
    precondition that the test must establish rather than assume.
 
-4. **[Low] P2 does not freeze its first-worst-direction value.** P1 names direction `0`,
+4. **[Low] P2 does not freeze its first-worst-direction value.** P1 names direction $0$,
    while P2 asks only for “the same first worst direction” between the scalar and
    adaptive routes (`bc-230-control-matrix.md`, lines 17–18). That comparison detects
    specialization drift but permits a common ordering or tie-breaking defect to become
    the new oracle. Record the current scalar direction index in P2 and require both
    routes to equal it. This correction does not affect the theorem or the exact minimum
-   `12501/12500`.
+   $12501/12500$.
 
 ## Contract Determination
 
@@ -77,14 +77,14 @@ The following parts passed source-level review:
 
 - **Quantifiers and closed cover.** The net has `K+1 >= 2` directions.
   The final pair brackets `pi/4`, the last seam lies strictly below it, and the derived
-  closures run from tangent `0` to tangent `1`. The cells
+  closures run from tangent $0$ to tangent $1$. The cells
   `[beta_0,beta_1], (beta_1,beta_2], ..., (beta_K,beta_{K+1}]` are disjoint and cover
   the folded arc. Interior seams belong to the lower index, while both adjacent closures
   remain available for containment bounds.
 - **Rational geometry.** From `t_k = tan(alpha_k/2)`, the formulas
-  `a_k = 2t_k/(1-t_k^2)`, `q_k = (t_{k-1}+t_k)/(1-t_{k-1}t_k)`, and
+  $a_k = 2t_k/(1-t_k^{2})$, `q_k = (t_{k-1}+t_k)/(1-t_{k-1}t_k)`, and
   `r(a,q) = |a-q|/(1+aq)` are exact.
-  Endpoint maximization gives the stated rational `D_k`. The bracket and `q_K < 1` imply
+  Endpoint maximization gives the stated rational $D_k$. The bracket and $q_K < 1$ imply
   every relevant mismatch is below `pi/4`, hence `0 <= D_k < 1`.
 - **Containment.** For every folded angle in a cell, the core’s coordinate half-extent
   is `B_k(cos(delta)+sin(delta))/2`. The inequalities
@@ -101,21 +101,21 @@ The following parts passed source-level review:
   each selected direction.
   Strictly interior cores of interior-disjoint packed squares are disjoint closed sets.
   Nonnegative finite atomic mass is additive on their disjoint union, so mass at least
-  `n` contradicts total mass below `n`. The exact event-cell reduction is justified
+  $n$ contradicts total mass below $n$. The exact event-cell reduction is justified
   because crossing an event can remove or add atoms, while an event boundary for a
   closed square only adds atoms relative to incident open cells.
 - **Scalar specialization.** For the bracketed production nets, each interior endpoint
   mismatch is an adjacent half-gap; the folded endpoint mismatch is smaller than the
   final adjacent half-gap.
-  Therefore `max_k D_k` is the current scalar `D`, and positive equal sides make the
-  per-cell containment predicates equivalent to `B(1+D) < 1`. Condition 5 then uses the
+  Therefore `max_k D_k` is the current scalar $D$, and positive equal sides make the
+  per-cell containment predicates equivalent to $B(1+D) < 1$. Condition 5 then uses the
   same directions, centers, side, atoms, total, global minimum, and first-tie ordering.
   The contract also correctly leaves noncanonical legacy nets on the unchanged scalar
   route rather than silently applying the stricter adaptive bracket.
 - **Refusal boundary.** The schema separates bounded parsing, exact rational and integer
   validation, derived geometry, atom and symmetry premises, strict containment, the
   method ceiling, coverage, cross-route agreement, and frozen-byte identity.
-  The ceiling guard `L > mB_0`, where `m` is the least integer with `m^2 >= n`, follows
+  The ceiling guard `L > mB_0`, where $m$ is the least integer with `m^2 >= n`, follows
   from separated closed axis-aligned cores.
   Equality is correctly left eligible by this guard alone.
 
@@ -135,7 +135,7 @@ existing first-worst direction.
 
 BC-231 remains implementation work.
 In particular, this review did not establish that the future project sweep accepts
-per-cell sides, that the interval route maps reflected directions to the correct `B_k`,
+per-cell sides, that the interval route maps reflected directions to the correct $B_k$,
 that the standalone parser is independent, or that any three route outputs agree.
 Those claims require the implementations and executions specified in the packet.
 

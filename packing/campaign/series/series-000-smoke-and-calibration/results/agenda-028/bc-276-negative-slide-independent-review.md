@@ -55,8 +55,8 @@ The block equations independently reconstruct as
 
 $$
 \begin{aligned}
-x_7&=p_x-\alpha c+s,& y_7&=p_y-\alpha s-c,\\
-x_8&=p_x+c+\beta s,& y_8&=p_y+s-\beta c,\\
+x_7&=p_x-\alpha c+s,& y_7&=p_y-\alpha s-c,\cr
+x_8&=p_x+c+\beta s,& y_8&=p_y+s-\beta c,\cr
 x_9&=p_x+(1-\alpha)c+(1+\beta)s,
 &y_9&=y_8-\alpha s-c=y_7+s-\beta c.
 \end{aligned}
@@ -193,7 +193,7 @@ $$
 s\xi_7+cY_7\ge sD+c(D-s+\beta c)=D+\beta c^2\ge D.
 $$
 
-The remaining negative-$e$ alternative gives
+The remaining negative-`e` alternative gives
 
 $$
 s\xi_7+cY_7\ge\frac{sD+Y_7}{c}
@@ -261,7 +261,7 @@ leaves $B-\beta\ge J$ or $V:Y_9\ge D$. Pair 1–7 leaves $H_7:x_7\le L-1-h$,
 $E_7:A-\alpha\le Q$ and $F_7:B\ge J$. The discarded signs and projections use the same
 threshold $D$; its stated bounds $161/250$, $469/500$, $47/50$ and $329/500$ are all
 strictly below that threshold.
-Retaining the extra positive-$e$ possibility for pair 5–6 is a valid larger case list.
+Retaining the extra positive-`e` possibility for pair 5–6 is a valid larger case list.
 
 In the below-top case, $V$ fails, $F_5$ conflicts with $B-\beta\ge J$, and each of
 $R,E_5$ implies $A\ge u+1/2$. The same side contradiction follows.

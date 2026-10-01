@@ -51,7 +51,7 @@ not a proof that every pixel is exact.
   yellow for contact highlighting rather than square identity.
   Clip each mark to the union of its participating square interiors so the wider
   highlight cannot spill into unrelated empty space.
-- Reuse the exact `n = 3` quotient map as a known-answer control and make later atlas
+- Reuse the exact $n = 3$ quotient map as a known-answer control and make later atlas
   views use the same rendering spine.
 - Keep the core renderer in the Python standard library unless a measured visual or
   compatibility gap justifies a pinned optional dependency.
@@ -245,7 +245,7 @@ a reparse of rendered pixels.
 Contact extraction belongs between an exact construction and its rendering adapter.
 It must not run on projected SVG coordinates, screen distance, or a display tolerance.
 The first implementation consumes the repository’s `FieldElement` packings used by the
-Trump `n = 11` and certified `n = 5` adapters; numerical `BasinEvent` and Göbel pose
+Trump $n = 11$ and certified $n = 5$ adapters; numerical `BasinEvent` and Göbel pose
 arrays carry no contact highlights unless a later source supplies an independent
 certificate.
 
@@ -260,7 +260,7 @@ The extractor uses only exact addition, subtraction, multiplication, and sign te
    pairs. Reusing the verifier’s classification avoids a second quadratic SAT sweep.
 4. Intersect the two polygon boundaries by testing edge endpoints against closed edge
    segments. Collinearity is an exact cross-product zero; membership uses the sign of
-   `(p-a)·(p-b)` and needs no division.
+   $(p-a)\cdot(p-b)$ and needs no division.
    A shared positive-length interval becomes one segment.
    Otherwise the unique shared endpoint becomes one point.
 5. Reject a reported touching pair with no boundary intersection, two disjoint contact
@@ -310,7 +310,7 @@ antialiasing cannot create a second gray or white seam.
 
 Yellow is reserved for contact highlights in this profile and never enters a square hue
 family. The default `angle`/`contacts` assignment uses 20 hue families, five shades per
-family, and a `0.2` total lightness span.
+family, and a $0.2$ total lightness span.
 Angles are compared modulo a quarter turn at full retained precision; strict full-side
 contacts merge tolerance-seeded angle classes that represent the same physical
 orientation. Four flush sides select the darkest shade and zero select the lightest.
@@ -397,7 +397,7 @@ silently drawing them as translations.
 
 The renderer does not invent frames for retained or certified trajectory kinds.
 Retained trajectories use the supplied solver states; a certified adapter may supply
-exact samples plus its full-path certificate, as the `n = 5` face does.
+exact samples plus its full-path certificate, as the $n = 5$ face does.
 If an uncertified caller supplies only endpoints, it may explicitly request
 `illustrative` interpolation.
 The SVG then says in visible text and metadata that intermediate poses are not verified
@@ -552,7 +552,7 @@ node hierarchy would add conversion code without a second semantic contract.
 - `_shared_extent()` and `_panel_layout()` compute one geometry scale for all comparison
   panels and a fixed union viewport for trajectory output.
 - `_project_point()` maps mathematical coordinates into panel coordinates with the
-  explicit upward mathematical `y` convention.
+  explicit upward mathematical $y$ convention.
 - `_append_packing_panel()` projects each square once, then emits stable `fills`,
   `contacts`, and `outlines` groups in that order before labels and other annotations.
 - `_append_square_fill()` emits one stroke-free colored polygon; `_append_container()`
@@ -692,7 +692,7 @@ main
   -> write_svg_atomic
 ```
 
-The exact `n = 3` control intentionally shares only the XML and style spine:
+The exact $n = 3$ control intentionally shares only the XML and style spine:
 
 ```text
 build_n3_model -> render_n3_moduli_svg
@@ -758,7 +758,7 @@ begin in parallel after the shared typed contract is established.
 | `think-tkes` | numerical and exact source adapters | `think-5681` |
 | `think-wt8n` | paper theme, overview, and comparison renderer | `think-5681`, `think-lo8v` |
 | `think-acxh` | explicit-source CLI and atomic output | `think-tkes`, `think-wt8n` |
-| `think-fceb` | exact `n = 3` quotient-map migration | `think-wt8n` |
+| `think-fceb` | exact $n = 3$ quotient-map migration | `think-wt8n` |
 | `think-hzk5` | static safety, determinism, replay, and repository validation gate | `think-acxh`, `think-fceb` |
 | `think-90ix` | certified and illustrative accessible trajectories | `think-hzk5` |
 | `think-ov1d` | typed square, contact, and active-feature overlays | `think-90ix` |
@@ -774,10 +774,10 @@ begin in parallel after the shared typed contract is established.
   exact metadata round trips.
 - [x] Implement the immutable model and the `ElementTree`-based safe serializer.
 - [x] Implement `style.py` and the `overview` and `comparison` paths in `packing.py`.
-- [x] Add `BasinEvent/v3`, Göbel `n = 10`, Trump `n = 11`, and exact `n = 5` adapters
+- [x] Add `BasinEvent/v3`, Göbel $n = 10$, Trump $n = 11$, and exact $n = 5$ adapters
   without moving storage-schema logic into the renderer.
 - [x] Add the explicit-source CLI and atomic output boundary.
-- [x] Rebuild the `n = 3` SVG through the shared XML, numeric, and style spine while
+- [x] Rebuild the $n = 3$ SVG through the shared XML, numeric, and style spine while
   preserving its topology, stratum distinctions, semantic IDs, accessible description,
   and byte-replay gate.
 - [x] Add the focused checker to `packing-validate` with mutation and fresh-process
@@ -789,12 +789,12 @@ begin in parallel after the shared typed contract is established.
   one-pass final state, reduced motion, invalid durations, mismatched square sets, and
   explicit rejection of unmarked endpoint interpolation, rotation, and container-size
   changes.
-- [x] Implement the certified three-frame `n = 5` path first, then retained-frame CSS
+- [x] Implement the certified three-frame $n = 5$ path first, then retained-frame CSS
   animation and the opt-in illustrative endpoint mode.
 - [x] Add contact and active-feature overlays that remain semantically typed across
   frames; never infer a contact from screen-space proximity.
 - [x] Retain the five-figure benchmark gallery and metrics, including the larger
-  high-precision `n = 29` construction.
+  high-precision $n = 29$ construction.
   Each static SVG must remain smaller than its lossless reference PNG at the review
   viewport, with no external resource.
 - [x] Run the pinned-renderer availability spike and review the gallery in a nonbrowser
@@ -815,7 +815,7 @@ begin in parallel after the shared typed contract is established.
   square-edge segment, square point-to-edge contact, strict separation, deduplication,
   and rejection of inconsistent contact geometry.
 - [x] Implement exact source-space contact extraction and attach it in the Trump and
-  `n = 5` adapters; leave numerical candidate sources unmarked.
+  $n = 5$ adapters; leave numerical candidate sources unmarked.
 - [x] Render contact segments and points by default, preserve an explicit no-contact
   export, and keep final-frame contacts hidden until a trajectory ends.
 - [x] Reserve tempered yellow `#e3c64a` for contacts and emit geometry in explicit
@@ -854,7 +854,7 @@ Exercise exact contact extraction against hand-sized point and segment fixtures,
 check the Trump pair-contact count against its verifier report.
 Assert that candidate pose arrays never acquire contacts through a visual tolerance.
 
-**Known-answer control.** The `n = 3` quotient map must retain its two labelled
+**Known-answer control.** The $n = 3$ quotient map must retain its two labelled
 12-cycles, unlabelled four-cycle, `D4 x S3` interval, three packing glyphs, and distinct
 active-signature/stabilizer semantics.
 This catches a renderer that is attractive but mathematically lossy.
@@ -886,9 +886,9 @@ BasedPyright checks, deterministic fixture replay, and `make format-check`.
 1. Land the additive model, serializer, CLI, static fixtures, and checks without
    changing archived provenance SVGs or atlas storage contracts.
 2. Route `check_small_n_moduli.py` through the toolkit and deliberately review the one
-   retained `n = 3` golden update.
+   retained $n = 3$ golden update.
 3. Add comparison and animation artifacts only for retained source records or the exact
-   certified `n = 5` path.
+   certified $n = 5$ path.
    Documents continue to embed the static overview or comparison; animated SVG is an
    explicit browser-oriented export.
 4. Let `think-vcnx` use the toolkit’s visual tokens and evidence semantics, and let
@@ -909,7 +909,7 @@ known-answer semantics and all replay checks pass.
 - No generated file contains a DTD, external entity, script, event handler, render-time
   network reference, `foreignObject`, or deprecated `xlink` attribute.
   Provenance URLs may appear only as inert metadata or text.
-- The `n = 3` topology and strata remain unchanged and byte-replay through the new
+- The $n = 3$ topology and strata remain unchanged and byte-replay through the new
   renderer.
 - Candidate, numerically checked construction, formally certified upper bound, and
   proved optimum are visibly and structurally distinct evidence states.
@@ -921,7 +921,7 @@ known-answer semantics and all replay checks pass.
   Default square assignment uses angle hues and full-side-contact shades, exposes the
   hue count, shade count, and lightness span through `RenderSpec`, and contains no
   yellow.
-- Exact Trump and `n = 5` frames retain stable point/segment contact features; numerical
+- Exact Trump and $n = 5$ frames retain stable point/segment contact features; numerical
   candidate frames retain none.
   Contact display defaults on, can be disabled explicitly, and never marks a trajectory
   before its final frame.
@@ -942,7 +942,7 @@ known-answer semantics and all replay checks pass.
 
 - **Resolved:** use standard-library `ElementTree`, not a custom scene graph or a new
   SVG generation dependency.
-- **Resolved:** use the exact `n = 5` equal-side face as the first animation fixture.
+- **Resolved:** use the exact $n = 5$ equal-side face as the first animation fixture.
   Its endpoints, midpoint, feasibility, and evidence tier are already reproducible.
 - **Resolved:** keep the initial animation profile translation-only and reject other
   frame changes until rotation and a union-viewport model are implemented and tested.

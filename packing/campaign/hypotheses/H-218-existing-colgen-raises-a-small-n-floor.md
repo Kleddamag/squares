@@ -87,14 +87,14 @@ hypothesis:
 [X-038](../explorations/X-038-n100-lower-bound-survey.md) lists every open floor at
 `n <= 100` and ranks the ones the stock covering producer can still touch.
 
-This claim is the first-wave existence statement: at least one of `n = 12, 17, 19, 20`
-admits a freeze below `n` at a side above the current verified floor, accepted by both
+This claim is the first-wave existence statement: at least one of $n = 12, 17, 19, 20$
+admits a freeze below $n$ at a side above the current verified floor, accepted by both
 routes of `decide_certificate`.
 
-A verified lower bound on a restricted optimum above `n` is a negative about that
+A verified lower bound on a restricted optimum above $n$ is a negative about that
 construction, not about the side.
-A float LP objective or feasible frozen mass above `n` is not such a lower bound.
-H-062’s wall at `973/200` binds the two site sets it named.
+A float LP objective or feasible frozen mass above $n$ is not such a lower bound.
+H-062’s wall at $973/200$ binds the two site sets it named.
 It does not bind a windows lattice or a four-grid.
 
 Confirm only on `RETAINABLE` at an n on this sweep.

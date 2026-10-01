@@ -449,7 +449,7 @@ The frozen question is:
 
 > Can one target-blind, proof-carrying single-square instrument distinguish exp-047’s
 > interval-enclosure defect from the first provenance, affine-transform, serialization
-> or pose-compatibility refusal on one deterministically selected `n = 68` parent
+> or pose-compatibility refusal on one deterministically selected $n = 68$ parent
 > polygon?
 
 The baseline outcome is `interval-enclosure / instrument-defect`. On a synthetic rotated
@@ -496,7 +496,7 @@ The retained release record has SHA-256
 `dd7c1c62050b004c86959e59621c51d097f70d51cb142be9c19b15a16693d8b3`. The only W6 parent
 allowed by this round is `https://kingbird.myphotos.cc/packing/square-68.svg`, expected
 SHA-256 `558fbdddfeb0b2f8752b88e172d2776544beb4d2a7122189ef77c1e1c5ebdc6d`. Its cited
-side token is `8.80345993651653`. The token is metadata, not an assertion that the value
+side token is $8.80345993651653$. The token is metadata, not an assertion that the value
 is exact; an absent point or directional-bound declaration causes a
 `serialization-refusal`.
 
@@ -525,8 +525,8 @@ Using homogeneous column vectors, a transform list is consumed left to right wit
 `M_current <- M_current * M_operation`; a descendant receives
 `M_global = M_parent * M_local`. The parser applies `M_global` to each vertex,
 identifies one unambiguous positive-width container `(x0, y0, W, H)`, and maps a global
-point `(X, Y)` to `(L*(X-x0)/W, L*(y0+H-Y)/H)`. The mathematical container is `[0,L]^2`;
-every fitted square has side exactly `1`.
+point $(X, Y)$ to `(L*(X-x0)/W, L*(y0+H-Y)/H)`. The mathematical container is
+$[0,L]^{2}$; every fitted square has side exactly $1$.
 
 Exact decimal matrix, translation and scale operations use rational interval arithmetic.
 A decimal-angle `rotate(...)` requires an outward trigonometric interval with a checked
@@ -537,9 +537,9 @@ the prototype.
 ## Proof-Carrying Single-Square Instrument
 
 The proof parameter is `t = tan(theta/2)` in the canonical orientation quotient.
-Freeze the root interval to `[-1/2, 1/2]` and enumerate cyclic and reversed corner
+Freeze the root interval to $[-1/2, 1/2]$ and enumerate cyclic and reversed corner
 correspondences explicitly.
-For rational `t`, define
+For rational $t$, define
 
 ```text
 c = (1 - t^2) / (1 + t^2)
@@ -548,9 +548,10 @@ x = cx + c*u - s*v
 y = cy + s*u + c*v
 ```
 
-where `(u,v)` ranges over `(±1/2,±1/2)`. The denominator is positive throughout the root
-interval. All certificate endpoints and arithmetic are rational; the proof path does not
-call binary64 trigonometry.
+where $(u,v)$ ranges over $(\pm1/2,\pm1/2)$. The denominator is positive throughout the
+root interval.
+All certificate endpoints and arithmetic are rational; the proof path does
+not call binary64 trigonometry.
 
 An **existence certificate** contains one rational `(cx, cy, t)`, one corner
 correspondence and exact corner images inside the four closed source cells.
@@ -639,7 +640,7 @@ Each mutation must fire its named guard:
 - reverse two noncommuting transforms;
 - move one corner outside its closed source cell;
 - duplicate a square id or reorder the model inventory;
-- forge `c^2+s^2 = 1`, remove one bisection leaf or create overlapping cover leaves;
+- forge $c^{2}+s^{2} = 1$, remove one bisection leaf or create overlapping cover leaves;
 - perturb a wall interval across zero or move a separated synthetic pair into overlap;
 - expose a child channel before parent publication;
 - return raw bytes from the parent consumer, fail cleanup, leave a temporary file or
@@ -657,7 +658,7 @@ The wall is exactly `2026-09-01T12:16:55Z` through `2026-09-01T14:56:55Z`:
 | 15–40 | W7 | Exact rational witness format and target-blind single-square known-answer controls. |
 | 40–65 | W7 | Complete rational outer-cover and independent sign verifier, or the smallest proof-node stop. |
 | 65–90 | W7 | Fully injected authorized runner, cleanup, deterministic serialization and atomicity guards. |
-| 90–115 | W6 | One hash-verified ephemeral `n = 68` parent parse and deterministic polygon selection. |
+| 90–115 | W6 | One hash-verified ephemeral $n = 68$ parent parse and deterministic polygon selection. |
 | 115–140 | W6 | Three separate model certificates, implicated mutations and the first typed localization. |
 | 140–160 | W3 | Localization-only determination, limits, validation and handoff. |
 
@@ -721,7 +722,7 @@ This executable-runner guard failed before W6.
 No network request, parent or child read, gain inspection, target parse or fit, proof
 evaluation on target cells, or result publication occurred.
 It therefore establishes no provenance, serialization, pose-compatibility, contact or
-H-053 outcome for `n = 68`.
+H-053 outcome for $n = 68$.
 
 **Next:** A successor must add and independently mutation-test a production CLI adapter
 around the retained generic runner, including the exact authorization and result-path

@@ -14,30 +14,30 @@ packing, hypothesis, or frontier entry.
 
 ## The Short Answer
 
-`n = 5` remains a retained exact-method control, but another open-ended `n = 5` study
+$n = 5$ remains a retained exact-method control, but another open-ended $n = 5$ study
 has low marginal value.
 Its geometry is too small and too exact to exercise the prioritized uncertainties at the
 current frontier: weighted certificates, multi-block oblique mechanisms, rare basins,
 algebraic reconstruction at scale, and rounded-source uncertainty.
 The one remaining defensible local block is the already-registered BC-010 transfer
-discriminator: the observable must also discriminate at `n = 10`, or the lane parks.
+discriminator: the observable must also discriminate at $n = 10$, or the lane parks.
 
 The best next work is mechanism-first rather than size-first:
 
-- profile and deterministically shard the resumable `n = 17` exact calculation before
+- profile and deterministically shard the resumable $n = 17$ exact calculation before
   buying another long target wall;
-- make the literal `n = 68` production command reachable and independently guarded
+- make the literal $n = 68$ production command reachable and independently guarded
   before retrieving or fitting a parent;
 - prospectively bind and test the producer-ordering contract in a new target-blind
-  `n = 50` round, without changing exp-050; and
+  $n = 50$ round, without changing exp-050; and
 - audit the primary source and formula path for the `n = 19 -> 54` diagonal-strip
   mechanism while reconstruction remains gated.
 
-Work on `n = 68` is not premature when the claim is source serialization, rigid-pose
+Work on $n = 68$ is not premature when the claim is source serialization, rigid-pose
 localization, or adapter readiness.
 A record attempt, contact claim, or blinded surgery run is premature until that bridge
 passes.
-`n = 69` is a later, harder precision control because its released improvement is
+$n = 69$ is a later, harder precision control because its released improvement is
 about twelve times smaller.
 
 ## What the Nine-Hour Run Established
@@ -99,23 +99,23 @@ contract, and a bounded resume sample before it promises a verdict.
 
 ## Why `n = 5` Transfers Only Partly
 
-The return from `n = 5` is methodological.
+The return from $n = 5$ is methodological.
 It supplies a proved optimum and small exact arithmetic, so it has exposed bad contact
 ownership, tied-support, tangent, first-order, second-order, and identity assumptions.
 Those are reusable falsifiers.
 
 Its geometry is not representative of the other work now under consideration:
 
-| Missing dimension at `n = 5` | Better exercise |
+| Missing dimension at $n = 5$ | Better exercise |
 | --- | --- |
 | Weighted lower certificate | `17--19` |
-| Several oblique structural blocks | `17`, `39`, `41`, `55` |
-| Exact or interval reconstruction at scale | `18`, `19`, `50`, `54`, then `39` |
-| Rare stochastic basin | `51`, `55` |
-| Rounded public geometry and source semantics | `68`, `69` |
-| Public parent-child construction surgery | `68`, then `69` |
+| Several oblique structural blocks | $17$, $39$, $41$, $55$ |
+| Exact or interval reconstruction at scale | $18$, $19$, $50$, $54$, then $39$ |
+| Rare stochastic basin | $51$, $55$ |
+| Rounded public geometry and source semantics | $68$, $69$ |
+| Public parent-child construction surgery | $68$, then $69$ |
 
-Effort on `n = 5` translates when it improves a generic verifier and immediately passes
+Effort on $n = 5$ translates when it improves a generic verifier and immediately passes
 a discriminating larger control.
 It translates poorly when it discovers one more local stratum that has no larger
 consumer.
@@ -128,20 +128,20 @@ Algebraic degree, source precision, basin rarity, and local mobility are distinc
 
 | Cases | Present role | Next honest decision |
 | --- | --- | --- |
-| `17` | Highest immediate lower-bound payoff; resumable exact comparison exists | Profile and deterministic shard/merge design, then resume from ordinal 33 |
-| `18` | Verified `Q(sqrt(7))` positive construction control | Keep as a known answer and mechanism parent for the survey’s historical `68` packing; this is not evidence about the current UnitSquare child |
-| `19` | Verified `Q(sqrt(2))` mechanism contrast | Keep geometry closed; use the diagonal-strip genealogy to audit `54` sources |
-| `37`, `50` | Historical L-extension pair; degrees 8 and 1 at the reported sides | Repair `50` provenance first; use `37` later as a cross-mechanism algebraic control |
-| `39` | Degree-five, non-radical reported construction | Mature interval-pose target after the source-cell pipeline works |
-| `41` | Degree-42 hard discriminator | Hold for a mature interval/elimination pipeline |
-| `51` | First-party source-reported rare-basin sample | Use only after a proposer passes a mechanism-matched control at equal counted cost |
-| `53` | Reported exact-side expression with unstable representation | Preserve as a typed refusal control |
-| `54` | Reported nested-radical side and `19 -> 54` historical mechanism | Run a bounded primary-source/formula audit; do not infer 54 poses from decimals |
-| `55` | Seven-angle adversarial construction and finite search benchmark | Hold as a stress test, not a first target |
-| `68` | Public parent-child opportunity with the larger source-reported gain | Production adapter, source cells, pose localization, then conditional surgery |
-| `69` | Historical width-four diagonal-strip lineage; the current UnitSquare child’s method is not identified in the retained source record, and its source-reported gain is smaller | Use after `68` proves the precision bridge |
+| $17$ | Highest immediate lower-bound payoff; resumable exact comparison exists | Profile and deterministic shard/merge design, then resume from ordinal 33 |
+| $18$ | Verified `Q(sqrt(7))` positive construction control | Keep as a known answer and mechanism parent for the survey’s historical $68$ packing; this is not evidence about the current UnitSquare child |
+| $19$ | Verified `Q(sqrt(2))` mechanism contrast | Keep geometry closed; use the diagonal-strip genealogy to audit $54$ sources |
+| $37$, $50$ | Historical L-extension pair; degrees 8 and 1 at the reported sides | Repair $50$ provenance first; use $37$ later as a cross-mechanism algebraic control |
+| $39$ | Degree-five, non-radical reported construction | Mature interval-pose target after the source-cell pipeline works |
+| $41$ | Degree-42 hard discriminator | Hold for a mature interval/elimination pipeline |
+| $51$ | First-party source-reported rare-basin sample | Use only after a proposer passes a mechanism-matched control at equal counted cost |
+| $53$ | Reported exact-side expression with unstable representation | Preserve as a typed refusal control |
+| $54$ | Reported nested-radical side and `19 -> 54` historical mechanism | Run a bounded primary-source/formula audit; do not infer 54 poses from decimals |
+| $55$ | Seven-angle adversarial construction and finite search benchmark | Hold as a stress test, not a first target |
+| $68$ | Public parent-child opportunity with the larger source-reported gain | Production adapter, source cells, pose localization, then conditional surgery |
+| $69$ | Historical width-four diagonal-strip lineage; the current UnitSquare child’s method is not identified in the retained source record, and its source-reported gain is smaller | Use after $68$ proves the precision bridge |
 
-This makes `17`, `18`, and `19` valuable from both directions: they are small enough for
+This makes $17$, $18$, and $19$ valuable from both directions: they are small enough for
 exact controls, but already contain proof and construction mechanisms reused at larger
 sizes. The medium cases form the calibration ladder the high-n work lacks.
 
@@ -149,13 +149,13 @@ sizes. The medium cases form the calibration ladder the high-n work lacks.
 
 The color observation is real under the house renderer and limited by the source.
 House hue encodes recovered orientation modulo a quarter turn.
-The retained `n = 68` reconstruction contains near-axis angles about `0.009` to `0.080`
+The retained $n = 68$ reconstruction contains near-axis angles about $0.009$ to $0.080$
 degrees away from axis alignment, well above the renderer’s grouping tolerance, so the
 hue difference is not just antialiasing.
 
 The recovered pose came from six-decimal SVG polygons.
 Its additional displayed digits are computed, not independent source precision.
-House shade is a tolerance-derived contact diagnostic, and the `n = 68/69` witnesses are
+House shade is a tolerance-derived contact diagnostic, and the $n = 68/69$ witnesses are
 explicitly excluded from contact and motion claims because their square-shape residuals
 are around `1.9e-8` and `1.5e-8`. The UnitSquare release reports much higher-precision
 side intervals, but its coordinate boxes, checker inputs, and receipts were not publicly
@@ -180,7 +180,7 @@ McClenagan papers are asymptotic.
 
 That conclusion is bounded by index coverage and unpublished or uncited work.
 Recent finite-case progress in the retained corpus comes from first-party catalogue
-pages, SVGs, run statistics, the UnitSquare release, and the two 2026 `n = 17`
+pages, SVGs, run statistics, the UnitSquare release, and the two 2026 $n = 17$
 certificate posts.
 The historical Friedman survey adds useful mechanism links—`18 -> 68`,
 `19 -> 54`, and `37 -> 50`—but not current high-precision poses.
@@ -195,14 +195,14 @@ These are source-reported method notes, not repository-verified reproductions
 
 | Case | What the retained source says led to the recent value | What that means here |
 | --- | --- | --- |
-| `39` | Schadt found random-start annealing candidates in December 2025 and January 2026; Ellsworth refound, refined and optimized the January candidate into the reported degree-five construction | Search can find the cell, but exact recognition followed rather than preceded the numerical discovery |
-| `41` | Random-start runs by Schadt and Ellsworth were followed by Ellsworth refinement and optimization into a reported degree-42 value | This is a late interval/elimination discriminator, not a first reconstruction target |
-| `50` | Schadt found a random-start candidate and Ellsworth optimized it; the reported side then simplifies to `53/7` through a `3-4-5` tilt | Algebraic simplicity does not supply the missing pose provenance exposed by exp-050 |
-| `51` | Several random-start and refinement rounds reached the current basin; the retained setup reports 4 qualifying hits among 3,004 categorized instances, about 4.917 hours per record-refinable hit | A head-on run is a rare-basin benchmark whose cost is setup-specific, not a portable promise |
-| `53` | Ellsworth’s third modified annealer found a random-start improvement in February 2026, then optimization produced the reported `13/2 + sqrt(7)/2` side | Exact side recognition can arrive after stochastic discovery while full-pose certification remains separate |
-| `55` | The lineage combines random starts, a cherry-picked state from a Gensane-algorithm reimplementation, repeated refinement and later optimization | Seed provenance and refinement stages matter enough that an equal-wall black-box comparison would be misleading |
-| `68` | The current catalogue parent came from Schadt random-start annealing and Ellsworth optimization; UnitSquare later reports a smaller interval-validated child | The accessible parent-child pair is valuable for a precision bridge, but the released child method and receipts are not retained locally |
-| `69` | UnitSquare reports an interval-validated improvement over the cited parent; its discovery method is not identified in the retained source record | Treat it as the harder second precision case after `68`, not as evidence for a search recipe |
+| $39$ | Schadt found random-start annealing candidates in December 2025 and January 2026; Ellsworth refound, refined and optimized the January candidate into the reported degree-five construction | Search can find the cell, but exact recognition followed rather than preceded the numerical discovery |
+| $41$ | Random-start runs by Schadt and Ellsworth were followed by Ellsworth refinement and optimization into a reported degree-42 value | This is a late interval/elimination discriminator, not a first reconstruction target |
+| $50$ | Schadt found a random-start candidate and Ellsworth optimized it; the reported side then simplifies to $\frac{53}{7}$ through a `3-4-5` tilt | Algebraic simplicity does not supply the missing pose provenance exposed by exp-050 |
+| $51$ | Several random-start and refinement rounds reached the current basin; the retained setup reports 4 qualifying hits among 3,004 categorized instances, about 4.917 hours per record-refinable hit | A head-on run is a rare-basin benchmark whose cost is setup-specific, not a portable promise |
+| $53$ | Ellsworth’s third modified annealer found a random-start improvement in February 2026, then optimization produced the reported `13/2 + sqrt(7)/2` side | Exact side recognition can arrive after stochastic discovery while full-pose certification remains separate |
+| $55$ | The lineage combines random starts, a cherry-picked state from a Gensane-algorithm reimplementation, repeated refinement and later optimization | Seed provenance and refinement stages matter enough that an equal-wall black-box comparison would be misleading |
+| $68$ | The current catalogue parent came from Schadt random-start annealing and Ellsworth optimization; UnitSquare later reports a smaller interval-validated child | The accessible parent-child pair is valuable for a precision bridge, but the released child method and receipts are not retained locally |
+| $69$ | UnitSquare reports an interval-validated improvement over the cited parent; its discovery method is not identified in the retained source record | Treat it as the harder second precision case after $68$, not as evidence for a search recipe |
 
 The retained evidence does not estimate the probability of beating a higher-number
 record. It supports the n = 68 bridge as a prerequisite; after it passes, H-051 supplies

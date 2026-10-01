@@ -98,7 +98,7 @@ than assumed. All seven unchanged boxes have verified strict inclusions
 with41distinct-per-row selected member identities.
 The multiplier sum and all eight combined columns match the declared ceiling and orbit
 sizes. The exact original packing and preimages establish feasible average weights
-`(3/4,1/8,1/4,1/8,1/8,1/8,1/8,1/8)` and mass eleven.
+$(3/4,1/8,1/4,1/8,1/8,1/8,1/8,1/8)$ and mass eleven.
 
 The retained-output audit under `think-cgk6` accepted the predicates, full metadata,
 quotas and scope at13:03:35 after78seconds of read-only inspection.

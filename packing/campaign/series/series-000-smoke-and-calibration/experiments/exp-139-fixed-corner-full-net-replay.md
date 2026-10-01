@@ -66,17 +66,17 @@ experiment:
 
 The source-bound exact reader completed all181directions from published commit
 `e3340cac137b620c57a333f15cb70a3c60551c9e` in18.65seconds wall time.
-The unchanged 88atom residual measure has exact minimum `760979/800000` at direction
+The unchanged 88atom residual measure has exact minimum $760979/800000$ at direction
 indices27through32. That is belowone, so H140 is rejected.
 
 The positive minimum gives the separately declared normalized feasible mass
-`31219612/3804895`, about8.205. It remains above the conditional contradiction threshold
+$31219612/3804895$, about8.205. It remains above the conditional contradiction threshold
 ofseven and does not establish an optimum gap or packing exclusion.
 
 This verification follows the positive numerical exp136 result.
 The unchanged raw receipt is clean tracked Gitblob
 `2b34bdc8842edc836402bd42fe8362e9103ab253`. The exact residual measure has88atoms and
-mass `7804903/1000000`. No target minimum has been evaluated at registration.
+mass $7804903/1000000$. No target minimum has been evaluated at registration.
 
 Accept H140 only if the exact minimum over the complete181folded direction net is at
 leastone. A smaller complete minimum rejects the unscaled claim.
@@ -86,7 +86,7 @@ The primary test does not normalize weights.
 As a predeclared secondary consequence, if the completed full-net minimum m is positive,
 report `7804903/(1000000*m)` as the mass of a feasible rescaled cover.
 This is algebra applied to the verified minimum, not another LP experiment.
-The full-net D4/strict-core transfer requires `B(1+D)<1`, with its exact bound proved in
+The full-net D4/strict-core transfer requires $B(1+D)<1$, with its exact bound proved in
 the retained transfer review.
 The conditional contradiction threshold is seven.
 Neither a feasible rescaled cover above seven nor a difference of two primal objectives

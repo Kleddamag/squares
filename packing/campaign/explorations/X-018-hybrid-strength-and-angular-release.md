@@ -321,7 +321,7 @@ cover. Retain the released-contact equality seam and the coincident/axis angle c
 The parent family contains Trump at $U$; that is a feasible control, not a witness
 inside the sublevel target.
 Keeping $L$ variable matters: enlarging a container can destroy the prescribed wall
-attachments, so a fixed-$q$ attachment test alone does not cover every smaller side.
+attachments, so a fixed-`q` attachment test alone does not cover every smaller side.
 
 For a closed pilot beyond existing local closure, use the complement of the local
 region’s interior, allowing boundary overlap, or impose a positive separation margin.
@@ -333,8 +333,8 @@ minimizing packings.
 The wall attachments and retained segments are substantial restrictions.
 
 H-121 states the larger question precisely: **some global minimizer has orientations in
-$\{0,\theta\}$ modulo quarter turns**. A low-angle representative theorem plus H-112
-alone is insufficient: H-112 covers only multiplicity five.
+$\lbrace0,\theta\rbrace$ modulo quarter turns**. A low-angle representative theorem plus
+H-112 alone is insufficient: H-112 covers only multiplicity five.
 The remaining axis-plus-one multiplicities require a complete bound, or H-113 could
 supply a stronger complete family bound.
 The review’s trimming reduces the one-angle candidate family to oblique multiplicities

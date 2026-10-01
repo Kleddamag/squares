@@ -40,11 +40,11 @@ mass $M/m$, and the seven-core contradiction requires
 
 $$m>M/7=1000001/1400000.$$
 
-The phrase “$m>5/7$” is exact only after dividing these weights by $\beta$. There is a
+The phrase “`m>5/7`” is exact only after dividing these weights by $\beta$. There is a
 stronger simplification for this particular candidate: every core’s mass belongs to
-$\{0,\beta,2\beta,\ldots,5\beta\}$. Therefore a positive exact minimum is at least
-$\beta$. A positive full-net result certifies five unit piercing dots after dividing by
-$\beta$, with total mass five.
+$\lbrace0,\beta,2\beta,\ldots,5\beta\rbrace$. Therefore a positive exact minimum is at
+least $\beta$. A positive full-net result certifies five unit piercing dots after
+dividing by $\beta$, with total mass five.
 If every orientation domain is empty, the branch is already impossible; an empty
 individual orientation is vacuous, not a zero score.
 

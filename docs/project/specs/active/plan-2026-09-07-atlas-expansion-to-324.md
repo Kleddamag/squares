@@ -23,7 +23,7 @@ case schema own; any scientific verdict, which stays with the hypothesis registr
 ## Overview
 
 The known-best atlas retains one normalized construction and one house rendering for
-every `n = 1..100`, and the frontier register holds one typed case record per `n` in the
+every `n = 1..100`, and the frontier register holds one typed case record per $n$ in the
 same range.
 The prospective collection already maps sources for every `n = 101..324`, but
 carries no claims and no geometry for 123 of those 224 cases.
@@ -43,29 +43,29 @@ facts are sourced to the same standard as the first hundred.
 - A frontier record `frontier/n-NNN.md` for every `n = 101..324`, under the same
   `SquarePackingCase/v2` contract, with each lane’s provenance typed rather than null.
 - A `Witness/v2` geometry record, feasibility receipt, and house rendering for every
-  `n = 101..324`, under the retention policy already applied at `n ≤ 100`.
+  `n = 101..324`, under the retention policy already applied at $n \le 100$.
 - One known-best manifest and one builder covering `n = 1..324`, with the existing
   `known-best-1-100` figure family byte-identical after the change.
 - A second composite family, `known-best-1-324.{svg,png,pdf}`, laid out 18 by 18, with
   the same per-card facts, legend, and provenance discipline as the first.
 - The Kingbird exact-form transcription checked by machine before any of the new range
   is transcribed, closing `think-k5z2`.
-- A sourced survey of what is authoritative beyond `n = 324`, so a later extension
+- A sourced survey of what is authoritative beyond $n = 324$, so a later extension
   starts from an audit rather than an assumption.
 - Validation that still runs on the pull-request surface, with any deferral earned by
   measurement.
 
 ## Non-Goals
 
-- No optimality, rigidity-beyond-screen, or `H-044` verdict for any new `n`. A card
+- No optimality, rigidity-beyond-screen, or `H-044` verdict for any new $n$. A card
   reports what the sources say and what this repository verified.
 - No calibration-only annotation (chunk census, partitions, evidence profile, contact
-  overlays, grammar coverage) runs over `n > 100`. Those layers stay pinned to
+  overlays, grammar coverage) runs over $n > 100$. Those layers stay pinned to
   `n = 1..100` so the new range remains an unseen corpus for a future confirmatory run.
 - No raw Kingbird SVG is retained, and no permission is sought from a source author by
   an agent. Seeking express permission is an owner action outside this plan.
 - The `n = 1..100` composite is not replaced, resized, or re-laid.
-- Nothing above `n = 324` is built.
+- Nothing above $n = 324$ is built.
   Phase 6 audits `325..400` and stops.
 - No new top-level tree.
   Code and records stay under `packing/`; reader prose stays at the root.
@@ -89,8 +89,8 @@ separately.
 
 ### Why 324
 
-The retained catalogue states that for every `n ≤ 324` it does not picture, the trivial
-no-tilt grid is the best known packing.
+The retained catalogue states that for every $n \le 324$ it does not picture, the
+trivial no-tilt grid is the best known packing.
 That one sentence is what makes a gapless map derivable.
 Above 324 the catalogue pictures a handful of isolated cases and makes no completeness
 claim, so `325..400` has no authority to lean on until a survey finds one.
@@ -104,7 +104,7 @@ rule.
 
 `think-ezcx` recorded on 2026-08-24 that per-`n` files past 100 should be created only
 when a concrete research or reader need justifies them, not because a catalogue reaches
-`n = 324`. Three things now supply that need:
+$n = 324$. Three things now supply that need:
 
 1. The owner has directed the expansion and the poster.
 2. `H-044`’s confirmatory path is “a successor on an unseen corpus frozen after the
@@ -112,15 +112,15 @@ when a concrete research or reader need justifies them, not because a catalogue 
    corpus as a holdout.
    `n = 101..324` is the only candidate, and it must be frozen as typed geometry before
    it can serve.
-3. `H-035` registers its whole regime at `100 ≤ n ≤ 324` and is blocked at zero rounds
-   on “a finite target list from the extended corpus”.
+3. `H-035` registers its whole regime at $100 \le n \le 324$ and is blocked at zero
+   rounds on “a finite target list from the extended corpus”.
 
 This plan supersedes the note on `think-ezcx`; that bead is re-parented under the new
 epic rather than closed.
 
 ### The retention precedent
 
-At `n ≤ 100` the repository retains no Kingbird SVG. It retains attributed source
+At $n \le 100$ the repository retains no Kingbird SVG. It retains attributed source
 metadata, normalized numerical centre-and-angle facts in `Witness/v2`, and house
 renderings derived from those facts, under
 `retention_policy: metadata-and-derived-numerical-facts-only`. Thirty-four rows of the
@@ -132,7 +132,7 @@ pass.
 ### Three things called “atlas”
 
 This plan concerns the **known-best** and **prospective** atlases only.
-The global typed `n = 11` contact-graph atlas (BC-245) is rejected for the current
+The global typed $n = 11$ contact-graph atlas (BC-245) is rejected for the current
 portfolio, and the **basin** atlas (`think-eq6l`) is closed.
 Neither is touched here.
 
@@ -162,7 +162,7 @@ form listed under Open Questions.
 *Rejected:* building to 400 on grids alone, which would assert “best known” with no
 source saying so.
 
-**D2: apply the `n ≤ 100` retention precedent to the 123 Kingbird cases.** Fetch each
+**D2: apply the $n \le 100$ retention precedent to the 123 Kingbird cases.** Fetch each
 SVG once, ephemerally; parse it to numerical centre-and-angle facts; retain those facts
 in `Witness/v2` with the same attribution, `license_status`, and `raw_asset_retained:
 false` fields as the 34 existing rows; verify feasibility at the same tolerance; render
@@ -190,7 +190,7 @@ The corpus is frozen at the commit that closes Phase 3, named in the epic, for a
 confirmatory run.
 
 **D5: the poster is a second family, built by the same code.** The builder takes a
-composite specification (first `n`, last `n`, columns, file stem) and emits
+composite specification (first $n$, last $n$, columns, file stem) and emits
 `known-best-1-324.svg`, a 1x PNG, and a PDF. Card scale is unchanged from the 1–100
 figure, so the canvas is 18 cards wide; legend and footer baselines are computed from
 the row count rather than written as constants.
@@ -220,10 +220,10 @@ The session record is `session-099`.
 
 | Surface | Change |
 | --- | --- |
-| `devtools/check_source_coverage.py` | Reparse every catalogue exact form and degree lock, fail on divergence from the frontier (`think-k5z2`). Handles the multi-line `aligned` form that hid `n = 54`. |
-| `devtools/generate_frontier_case.py` (new) | Draft `frontier/n-NNN.md` for `n > 100` from the catalogue transcription and the bound rules below; refuses to overwrite a hand-edited record. |
+| `devtools/check_source_coverage.py` | Reparse every catalogue exact form and degree lock, fail on divergence from the frontier (`think-k5z2`). Handles the multi-line `aligned` form that hid $n = 54$. |
+| `devtools/generate_frontier_case.py` (new) | Draft `frontier/n-NNN.md` for $n > 100$ from the catalogue transcription and the bound rules below; refuses to overwrite a hand-edited record. |
 | `frontier/evidence.yaml` | Widen `E-kingbird-upper-register` scope, or add a sibling for `101..324`; add the grid completeness statement as its own evidence item. |
-| `sqpack/known_best.py` | `catalogue_source_map` already takes a range; add the Kingbird fetch-and-derive path for `n > 100` behind the retention fields. |
+| `sqpack/known_best.py` | `catalogue_source_map` already takes a range; add the Kingbird fetch-and-derive path for $n > 100$ behind the retention fields. |
 | `devtools/build_known_best_atlas.py` | Replace the 34 range and layout constants with a corpus range and a list of composite specifications; keep `--fetch` the only network path. |
 | `devtools/build_composite_figure_data.py` | Per-composite record; perfect-square rigidity derivation extended to `k = 11..18`. |
 | `sqpack/render/color.py`, `style.py` | Check hue separation past 20 classes; add the test. |
@@ -255,15 +255,15 @@ The session record is `session-099`.
   parseable, else `null` with provenance `absent`; `construction_method` from the enum,
   `trivial-grid` for rule-generated cases; `catalogue_rigid` from the rigid page, else
   `not-stated`.
-- `verified_upper_bound`: `⌈√n⌉` under `E-basic-grid-upper`.
+- `verified_upper_bound`: $\lceil\sqrt{n}\rceil$ under `E-basic-grid-upper`.
 - `reported_lower_bound` and `verified_lower_bound`: Nagamochi’s closed form under
-  `E-nagamochi-lower`, exactly as at `n ≤ 100`.
+  `E-nagamochi-lower`, exactly as at $n \le 100$.
 - `status: proved` only where the verified lower bound equals the reported upper bound.
-  At `n ≤ 100` that is the rule for every grid-proved case; in `101..324` it yields the
-  24 cases `k²`, `k² − 1`, `k² − 2` for `k = 11..18`, and nothing else.
-- Arslanov’s Table 4 values at `n = 132, 156, 182, 210, 241, 273, 307` are cross-checked
+  At $n \le 100$ that is the rule for every grid-proved case; in `101..324` it yields
+  the 24 cases $k^2$, $k^2 - 1$, $k^2 - 2$ for `k = 11..18`, and nothing else.
+- Arslanov’s Table 4 values at $n = 132, 156, 182, 210, 241, 273, 307$ are cross-checked
   against the catalogue; disagreement becomes a typed `conflict`.
-- De Winter’s unreplayed claims at `n = 126` and `206` are recorded as
+- De Winter’s unreplayed claims at $n = 126$ and $206$ are recorded as
   `source_asserted_unreplayed` notes, not adopted.
 - `rigidity` is `null` until the screen writes it; the perfect-square tiling argument
   covers `k = 11..18`.
@@ -275,7 +275,7 @@ Each phase closes on its own validation and a commit.
 
 ### Phase 0: Source survey beyond 100 (W1)
 
-- [x] Survey every public catalogue with geometry above `n = 100`: range, formats, reuse
+- [x] Survey every public catalogue with geometry above $n = 100$: range, formats, reuse
   terms, primary or secondary, last update.
 - [x] Write
   `docs/project/research/research-2026-09-07-square-packing-sources-beyond-100.md` with
@@ -294,15 +294,15 @@ Each phase closes on its own validation and a commit.
 - [x] `think-k5z2`: machine reparse of catalogue exact forms and degrees, run against
   `n = 1..100` first; it must report zero divergences before Phase 2. Landed as
   `sqpack.kingbird_catalogue`; 206 facts checked, zero divergences.
-  The catalogue’s `n = 179` entry prints a superseded closed form beside a newer
+  The catalogue’s $n = 179$ entry prints a superseded closed form beside a newer
   decimal, so a generated record must check every form against its decimal.
 - [x] Retention record for `101..324`: the prospective map and the retention README
   carry the dated decision; `sources.json` extends when the acquisition pass runs.
 - [x] Evidence items for the new range: three scopes widened to 324 and
   `E-kingbird-grid-completeness` added.
-- [x] `generate_frontier_case.py` with a golden test against a regenerated `n ≤ 100`
-  grid case (the generator must reproduce `n = 100`’s lanes from the same inputs).
-  Every bound lane of `n = 100, 99, 98, 64, 50` reproduces byte for byte.
+- [x] `generate_frontier_case.py` with a golden test against a regenerated $n \le 100$
+  grid case (the generator must reproduce $n = 100$’s lanes from the same inputs).
+  Every bound lane of $n = 100, 99, 98, 64, 50$ reproduces byte for byte.
 - [x] Parameterize the builder and the figure-data tool by range and composite list; the
   `known-best-1-100` family must be byte-identical before and after.
   `CorpusRange` and `CompositeSpec`; the family, renderings, witnesses and records were
@@ -315,7 +315,7 @@ Each phase closes on its own validation and a commit.
   rule); 50 exact grids generated; the four UnitSquare cases taken from the retained
   release renderings.
 - [x] Witnesses, receipts, renderings, frontier records, manifest for `101..200`. Twelve
-  cases come out proved (`k²`, `k² − 1`, `k² − 2` for `k = 11..14`); the `n = 179`
+  cases come out proved ($k^2$, $k^2 - 1$, $k^2 - 2$ for `k = 11..14`); the $n = 179$
   record carries a typed `stale-source` conflict instead of the catalogue’s superseded
   closed form.
 - [x] Escape screen and rigidity blocks over the new cases.
@@ -394,7 +394,8 @@ Each phase closes on its own validation and a commit.
 - The `known-best-1-100` byte-identity check is the regression for the builder refactor
   and runs in Phase 1 before any new case lands.
 - The generator’s golden test reproduces an existing grid case from the same inputs.
-- The reparser reports zero divergences at `n ≤ 100` before it is trusted at `n > 100`.
+- The reparser reports zero divergences at $n \le 100$ before it is trusted at
+  $n > 100$.
 - Every new witness carries a feasibility receipt; the escape screen replays.
 - Existing pins (counts, ranges, `maxItems`) are updated by the change that widens the
   range, never loosened ahead of it, so a silently missing case still fails.

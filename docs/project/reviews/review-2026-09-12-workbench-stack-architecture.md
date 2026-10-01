@@ -93,7 +93,7 @@ to reproduce it.
 [animation_from_trace.py](https://github.com/jlevy/squares/blob/6e191a35bf3948bd2b83a3c024f7156f9dc3a7f5/packing/devtools/animation_from_trace.py),
 lines 148–167, maps `entry.get("feasible", True)` to `NUMERICALLY_CHECKED` and
 constructs `CheckSummary(passed=True)` without checking separation or containment.
-A schema-valid import with two coincident unit squares at `(0.5, 0.5, 0)` in a side-1
+A schema-valid import with two coincident unit squares at $(0.5, 0.5, 0)$ in a side-1
 box, repeated at times 0 and 1, exports successfully with `numerically-checked` metadata
 and a passing “separating-axis violation at most 1e-9” receipt.
 
@@ -105,11 +105,11 @@ Validate record references and provenance at the same boundary.
 ### R2 — Blocker: a valid strategy request can silently lose a square
 
 [packing_strategy.py](https://github.com/jlevy/squares/blob/6e191a35bf3948bd2b83a3c024f7156f9dc3a7f5/packing/devtools/packing_strategy.py),
-lines 116–138, builds only `round(side)²` grid cells and truncates to `n`, without
+lines 116–138, builds only `round(side)²` grid cells and truncates to $n$, without
 refusing an insufficient count.
 For `n: 5`, a grid phase with `side: {relative_to: grid, factor: 0.6666666666666666}`
 returns four squares in a side-2 box.
-The CLI reports `n=5`, zero violation, and −26.12% excess; the trace labels the
+The CLI reports $n=5$, zero violation, and −26.12% excess; the trace labels the
 four-square frame feasible.
 This is a false packing result from an ordinary schema-valid request.
 
@@ -337,13 +337,13 @@ callers. **Bead:** `think-a2j9`, before Pack/Animate merge readiness.
 
 ### Follow-up dispositions — independent Pack and exploratory Search
 
-The independent Pack panel now accepts `n` without an atlas transition pair.
+The independent Pack panel now accepts $n$ without an atlas transition pair.
 This is progress under `think-uhqw`; versioned receipt import/export and deterministic
 replay remain open under `think-adlf`. Pack/Animate readiness depends on both contracts,
 the batch-invariant best control (`think-wqf3`) and truthful stationarity
 (`think-a2j9`).
 
-The Search tab is an experimental preview limited to `n ≤ 32`, eight seeds and 5,000
+The Search tab is an experimental preview limited to $n \le 32$, eight seeds and 5,000
 steps per trial. It is not the Phase 5 result.
 The scheduler and panel beads are `think-gfqt` and `think-vhgz`; synchronous
 proposal/Resolve work still needs a responsive execution path (`think-vwz7` and
@@ -425,7 +425,7 @@ Where they no longer match the code on #160:
   (`animation_render.py`, `animation_records.py`); the controls are in
   `packages/workbench/tests/test_python_contract_repairs.py`. The review round also
   stopped padded ascent frames from carrying a stale feasible flag (`e90187c8`).
-- **R2** is fixed on #160 at `f9099096`. The grid refuses a side that cannot hold `n`,
+- **R2** is fixed on #160 at `f9099096`. The grid refuses a side that cannot hold $n$,
   unimplemented sources are refused, and the seed and per-frame side are recorded
   (`strategy_execution.py`, `strategy_records.py`), with controls in the same test file.
   The review round put the three strategy documents that declare `status: enforced` into

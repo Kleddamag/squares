@@ -8,7 +8,7 @@ Its author wrote only to `scratchpad/bc149/` -- a container-local directory outs
 repository, which does not survive the session -- and modified no repository file.
 It is installed here so that the evidence the records cite outlives that directory.
 
-The source was `316` lines with SHA-256
+The source was $316$ lines with SHA-256
 `dc1548ff7227171c1770cfaacc88e8420ffb6944827d7b1c1991a2fc5d702d78`, and that hash names
 the scratchpad source rather than this file.
 The installation added this preface, and reformatted the body to house Markdown
@@ -98,9 +98,9 @@ real direction 0 (`logs/defect_injection.log`):
 
 | Injected defect in the sweep | Detected | Sweep minimum |
 | --- | --- | --- |
-| second cumulative pass dropped | yes, `minimum` and `witness` differ | `-215/192` |
-| wrong sign on one difference-array corner | yes | `-113/6` |
-| every rectangle’s top edge extended by one event | no | `1` |
+| second cumulative pass dropped | yes, `minimum` and `witness` differ | $-\frac{215}{192}$ |
+| wrong sign on one difference-array corner | yes | $-\frac{113}{6}$ |
+| every rectangle’s top edge extended by one event | no | $1$ |
 
 The third row is inherent to comparing minima: a defect that only raises masses at
 non-minimizing cells is invisible.
@@ -151,9 +151,9 @@ the published bytes plus the synthetic suites.
 | Four frozen sources (`README`, two HTML pages, retained verifier `04531a54…`) | digests match |
 | Driver hashes: successor `ab4dd8fe…`, resume `3e5284fd…`, child `f4522750…`, test `dbe1032f…`, clean room `55d36239…` | match binding and record |
 | `preconditions`, `shrink_and_scaling`, `mutation_guards`, `fixture`, `frozen_expectations` blocks recomputed through the frozen code | byte-identical to the record |
-| The same preconditions recomputed by my own arithmetic from `L, M, B, T, KMAX` | 181 unit directions, 180 gap bounds, quarter-turn bracket, `B(1+T/K) = 899635478111/900000000000 < 1`, `L = (L−M) + M` |
+| The same preconditions recomputed by my own arithmetic from `L, M, B, T, KMAX` | 181 unit directions, 180 gap bounds, quarter-turn bracket, $B(1+T/K) = \frac{899635478111}{900000000000} < 1$, $L = (L-M) + M$ |
 | `atom_hash`, `direction_hash`, `fixture_hash` | reproduced |
-| Both 181-row summaries: 168 atoms, `37d35da0…`, `cc789e1a…`, `203/12`, global minimum `1/1` | byte-identical to each other and to the checkpoint rows |
+| Both 181-row summaries: 168 atoms, `37d35da0…`, `cc789e1a…`, $\frac{203}{12}$, global minimum $\frac{1}{1}$ | byte-identical to each other and to the checkpoint rows |
 | Rows 170–180 recomputed through the frozen accumulators on this host (3 workers, 155–188 s per independent call, 0.6–1.0 s per source call) | all 11 source and independent manifests byte-identical to the checkpoint rows; all 11 row hashes reproduce, ordinal 180 to `60e58a70…` |
 | Self-test, normal and `-O`: 115 guards, 0 skipped, receipt `0109332a…`, stdout `875722ce…` | byte-identical |
 | `pytest` successor, child and base n17 suites under a scratch `basetemp` | 39 passed in 4.9 s |
@@ -235,20 +235,20 @@ digests are unchanged since the last commit that touched them (`313624cc`).
 
 ## The Row Minima Are a Property of the Certificate (Obligation 6)
 
-All 181 row minima being exactly `1/1` is what a tight linear-programming certificate
+All 181 row minima being exactly $1/1$ is what a tight linear-programming certificate
 looks like, and the source’s own assertion is `global_min >= WEIGHT_SCALE`, that is,
-minimum ≥ `576/576`. It is not an artifact of a comparison that cannot fail:
+minimum ≥ $576/576$. It is not an artifact of a comparison that cannot fail:
 
 - The mass function is far from constant.
-  By my third path, the per-direction maximum ranges from `187/96` to `131/48`, and the
+  By my third path, the per-direction maximum ranges from $187/96$ to $131/48$, and the
   cells attaining the minimum number 172 to 7,272 of 2,025 to 94,293 per direction (1.0
   % to 8.5 %). The 181 witnesses are pairwise distinct.
 - Two of three injected arithmetic defects change the minimum and are refused (table
   above).
-- The self-test’s disagreement guards perturb a manifest by `+1` and confirm the stop,
+- The self-test’s disagreement guards perturb a manifest by $+1$ and confirm the stop,
   the retained row and the typed schema.
-- `frozen_expectations.global_minimum` is `1/1`, the reduced form of the registered
-  `576/576`, and `_summary_invariants` checks both summaries’ global minimum against it
+- `frozen_expectations.global_minimum` is $1/1$, the reduced form of the registered
+  $576/576$, and `_summary_invariants` checks both summaries’ global minimum against it
   and against the minimum of their own rows.
 
 ## The Disclosed Limitation (Obligation 7)

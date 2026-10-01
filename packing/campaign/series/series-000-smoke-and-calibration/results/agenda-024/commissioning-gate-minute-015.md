@@ -53,11 +53,11 @@ candidates:
 
 | Inset | Exact candidate mass | Candidate SHA-256 | Summary SHA-256 |
 | --- | ---: | --- | --- |
-| `1/2` | `11142897/1000000` | `628d7e55d664c5256a9331b9a68166306a30c275432a997bfe9fab1a9ca0fc5a` | `3317beb3f4103695e268e40be7d7774e94c0e2b625e8750eddf3d6926f049de0` |
-| `2962983/4505800` | `9268609/800000` | `2d2a955b0549d788fa822085e8ea217abaf78a006d846be01a350b4e9b7cedc9` | `14189bb3076c4d1526a1f228a0e14bda2b2e627753762d71ac48e095006b98c1` |
-| `15513/20000` | `44995603/4000000` | `df5edeaf920951aa2c7d1284bd9f4e101e5f2e29caf39d5862c8dff4d8ba16a2` | `5ede09727467885b0bd56246020f979652b024f4947dfea16d3717450a30ecd3` |
+| $\frac{1}{2}$ | $\frac{11142897}{1000000}$ | `628d7e55d664c5256a9331b9a68166306a30c275432a997bfe9fab1a9ca0fc5a` | `3317beb3f4103695e268e40be7d7774e94c0e2b625e8750eddf3d6926f049de0` |
+| $\frac{2962983}{4505800}$ | $\frac{9268609}{800000}$ | `2d2a955b0549d788fa822085e8ea217abaf78a006d846be01a350b4e9b7cedc9` | `14189bb3076c4d1526a1f228a0e14bda2b2e627753762d71ac48e095006b98c1` |
+| $\frac{15513}{20000}$ | $\frac{44995603}{4000000}$ | `df5edeaf920951aa2c7d1284bd9f4e101e5f2e29caf39d5862c8dff4d8ba16a2` | `5ede09727467885b0bd56246020f979652b024f4947dfea16d3717450a30ecd3` |
 
-The `1/2` screen is the unique exact minimum and the selected seed.
+The $1/2$ screen is the unique exact minimum and the selected seed.
 Every screen mass is above eleven, so none is a lower-bound candidate.
 The released and control stems were fresh and deliberately held for the minute-30 gate,
 as specified in the child agenda.

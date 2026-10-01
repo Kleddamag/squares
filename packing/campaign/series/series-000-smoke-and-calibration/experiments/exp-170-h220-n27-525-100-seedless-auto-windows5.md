@@ -92,13 +92,13 @@ experiment:
 
 This is the fifth scientific round of
 [H-220](../../../hypotheses/H-220-seedless-colgen-raises-nagamochi-floor.md), after
-[exp-169](exp-169-h220-n26-513-100-seedless-auto-windows5.md) stopped at `25.000000`
+[exp-169](exp-169-h220-n26-513-100-seedless-auto-windows5.md) stopped at $25.000000$
 unconverged below 26.
 
-Auto resolved to `(37, 50, 62)`. The 1200 s run stopped at `25.000000` unconverged below
+Auto resolved to $(37, 50, 62)$. The 1200 s run stopped at $25.000000$ unconverged below
 27 after 38 LP rounds.
 No freeze. T-030 was not offered.
-The follow-up is exp-171 at n=29 `548/100` after the 11:26Z resume.
+The follow-up is exp-171 at n=29 $548/100$ after the 11:26Z resume.
 
 Confirm only on `RETAINABLE`. There is no n=27 case package.
 

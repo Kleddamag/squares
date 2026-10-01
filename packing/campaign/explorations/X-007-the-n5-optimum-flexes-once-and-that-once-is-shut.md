@@ -57,15 +57,15 @@ the commitment’s **first** exit branch in substance and stops short of it in n
 first-party certificate with a stated scope, where the scope is second-order rigidity
 rather than local rigidity.
 
-**Owns:** The argument, at `n = 5` and at `n = 40`. `devtools/assess_n5_rigidity.py`
-owns the `n = 5` computation and the shared machinery, `devtools/assess_n40_rigidity.py`
+**Owns:** The argument, at $n = 5$ and at $n = 40$. `devtools/assess_n5_rigidity.py`
+owns the $n = 5$ computation and the shared machinery, `devtools/assess_n40_rigidity.py`
 the extension; `tests/test_n5_rigidity.py` and `tests/test_n40_rigidity.py` pin them,
 and the gate steps `n=5 rigidity certificates still verify` and
 `n=40 rigidity bracket still reproduces` replay them.
 
 ## What the Record Held, and Why Neither Half Was an Answer
 
-Two objects addressed `n = 5` rigidity before this, and the interesting thing is that
+Two objects addressed $n = 5$ rigidity before this, and the interesting thing is that
 both were correct and neither was sufficient.
 
 The **translation-escape screen** finds that no square of the retained witness can be
@@ -74,12 +74,12 @@ Its own registered limitation says why that settles nothing: it exhibits single-
 axis translations only, so a miss rules out one motion family and is silent about
 rotation and about anything coordinated.
 [`evidence.yaml`](../../frontier/evidence.yaml) records this as sound in one direction
-only, and the frontier record for `n = 5` correctly reads `undetermined`.
+only, and the frontier record for $n = 5$ correctly reads `undetermined`.
 
 **`bc-063`** went further and got closer.
 It measured a contact-Jacobian rank of 15 against 16 unknowns, identified the resulting
 one-dimensional motion space as a rotation of the centre square, and found a
-second-order obstruction along it with coefficient `-1/4`. Its own `claim_boundary` then
+second-order obstruction along it with coefficient $-1/4$. Its own `claim_boundary` then
 declined the promotion, in terms worth quoting because they were right:
 
 > Both the rank and the walk are numerical, at the retained pose.
@@ -110,14 +110,14 @@ the rotation.
 
 An **infinitesimal motion** assigns each square a velocity and an angular velocity so
 that to first order no contact is violated.
-Writing `a_j` for the gradient of the `j`-th contact gap, those motions are exactly the
+Writing $a_j$ for the gradient of the $j$-th contact gap, those motions are exactly the
 polyhedral cone `{x : Ax >= 0}`, and the packing is infinitesimally rigid precisely when
 that cone is the origin.
 
 The pose has 20 active contacts — 16 corners on walls, 4 corners of corner squares on
 edges of the middle square — against 15 variables, and the middle square touches no
 wall. That last fact is worth checking rather than assuming: its extreme coordinate is
-`s/2 + sqrt(2)/2 ≈ 2.06` inside a container of side `≈ 2.71`.
+`s/2 + sqrt(2)/2 ≈ 2.06` inside a container of side $\approx 2.71$.
 
 Two things make the computation exact rather than approximate.
 
@@ -127,7 +127,7 @@ invents contacts or misses the ones holding it together, and either way the cons
 matrix describes a different packing.
 
 Pinning is established by **Farkas certificates**, not by rank.
-Non-negative row weights `w` with `w . A = e_k` prove `x_k >= 0` for every admissible
+Non-negative row weights $w$ with `w . A = e_k` prove `x_k >= 0` for every admissible
 motion, since `x_k = w . (Ax)` is a non-negative combination of non-negative numbers;
 the same for `-e_k` pins the coordinate to zero.
 The weights are proposed by a linear program in floating point and then **re-checked in
@@ -147,7 +147,7 @@ written.
 That rescaling turned out to be a special case rather than a trick, and finding its
 limit took three defects.
 It works here because every row is *wholly* rational or *wholly* irrational, and that
-dichotomy is exhaustive at `n = 5` and nowhere else — Göbel’s `n = 40`, in the same
+dichotomy is exhaustive at $n = 5$ and nowhere else — Göbel’s $n = 40$, in the same
 field, has 184 of its 400 contact rows carrying both parts, which no positive scalar
 rationalizes ([`D-388`](../../../defects.md)). What answers those is a Farkas search
 whose weights live in the ordered field: each row gets a weight `p + q sqrt 2` with both
@@ -156,7 +156,7 @@ parts free in sign and non-negativity imposed as the single inequality
 verifies either result exactly, and it reproduces all fourteen certificates below
 without the rescaling.
 
-**Two further assumptions about contacts were wrong, and neither shows at `n = 5`.**
+**Two further assumptions about contacts were wrong, and neither shows at $n = 5$.**
 Both are recorded, both point the same way — toward reporting a pose *more* rigid than
 it is — and the second is still open:
 
@@ -165,7 +165,7 @@ it is — and the second is still open:
   Two squares meeting edge-to-edge have exactly one separating axis, yet each one’s
   corners land on the endpoints of the other’s two perpendicular edges.
   Reading those as contacts asserts that a square free to move cannot.
-  At `n = 40` that was 208 of 560 pair rows; at `n = 5`, none, because every contact
+  At $n = 40$ that was 208 of 560 pair rows; at $n = 5$, none, because every contact
   here is a corner on the *interior* of an edge.
 - [`D-391`](../../../defects.md): the tangent cone at a corner-to-corner touch is a
   **union** of half-spaces, not their intersection.
@@ -180,13 +180,13 @@ The fifteenth, the middle square’s rotation, is free — and free in the stron
 **no row mentions it at all**, which is a two-sided degree of freedom rather than the
 weaker one-sided slack a single inequality would leave.
 
-So the `n = 5` optimum is **not infinitesimally rigid**.
+So the $n = 5$ optimum is **not infinitesimally rigid**.
 
 The reason is a coincidence of this packing’s geometry, and it is checkable in one line.
 Each corner square’s inner corner rests at the **midpoint** of the middle square’s edge,
 which is the foot of the perpendicular from that square’s centre.
 The rotation enters a pair constraint only through `(p - c) . n_perp`, and at the foot
-of the perpendicular `p - c` is parallel to `n`, so that term is identically zero.
+of the perpendicular $p - c$ is parallel to $n$, so that term is identically zero.
 Four contacts, four zeros, and a rotation nothing can see.
 
 This already strictly dominates both prior objects.
@@ -199,7 +199,7 @@ observes, which neither is.
 A nonzero first-order direction is not a motion.
 The question is whether some feasible arc realizes it, and the next term decides.
 
-For a twice-differentiable arc `x(t)` through the pose with `u = x'(0)` and
+For a twice-differentiable arc $x(t)$ through the pose with `u = x'(0)` and
 `y = x''(0)`,
 
 ```
@@ -215,13 +215,13 @@ Turning the middle square rotates each edge **line** about the centre, which lea
 line’s distance from that centre unchanged.
 The resting corner sits at the point of the line nearest the centre.
 Turning the line can therefore only bring it *nearer* to a fixed point at that distance,
-never further — so the gap is exactly `(1/2) cos(t) - 1/2`, curving into the obstacle at
-both signs of `t`. The computation confirms `q_j = -1/2` at each of the four pair
-contacts and `0` at all sixteen wall contacts.
+never further — so the gap is exactly $(1/2) \cos(t) - 1/2$, curving into the obstacle
+at both signs of $t$. The computation confirms $q_j = -1/2$ at each of the four pair
+contacts and $0$ at all sixteen wall contacts.
 
 The remaining question is whether the other fourteen coordinates can absorb that, and it
 is answered by Farkas again, in its affine form: `{y : A y >= -q}` is empty exactly when
-some `w >= 0` has `w . A = 0` and `w . q < 0`. Such a `w` is a **self-stress** — a
+some `w >= 0` has `w . A = 0` and `w . q < 0`. Such a $w$ is a **self-stress** — a
 non-negative combination of the constraint rows that cancels identically — and here one
 exists, verified in the field:
 
@@ -238,18 +238,18 @@ The certificate reads as the picture it describes.
 Squares 1 and 2 sit at opposite corners; each is boxed by two walls behind it and the
 middle square in front.
 The rotation drives the middle square into both of them, and the walls have nowhere to
-give. Because `q` is quadratic in the direction, `q(-u) = q(u)` and the same certificate
+give. Because $q$ is quadratic in the direction, $q(-u) = q(u)$ and the same certificate
 refuses the reverse turn; a line’s two ends are not two questions here.
 
 So every first-order flex is obstructed at second order.
-The `n = 5` optimum is **second-order rigid**.
+The $n = 5$ optimum is **second-order rigid**.
 
 There is an independent check on the coefficient, and it is worth naming because it
 comes from an entirely different method.
 `bc-063` walked this direction numerically and measured contact overlaps of `-2.5e-7`,
 `-2.5e-9` and `-2.5e-11` at steps of `1e-3`, `1e-4` and `1e-5` — a hundredfold per
 decade, so `-t^2/4`, symmetric in both signs.
-The exact gap `(1/2) cos(t) - 1/2` expands to `-t^2/4 + O(t^4)`. A sampled walk at a
+The exact gap $(1/2) \cos(t) - 1/2$ expands to `-t^2/4 + O(t^4)`. A sampled walk at a
 slightly infeasible decimal pose and an exact expansion at the true pose agree to the
 digit, which is the kind of agreement worth having between two methods that share no
 code.
@@ -258,14 +258,14 @@ code.
 
 Established, exactly, at the exact fixed-side pose: the cone of infinitesimal motions is
 the line spanned by the middle square’s rotation; the other fourteen coordinates are
-pinned by verified certificates; along that line every pair gap has curvature `-1/2` and
-every wall gap curvature `0`; and a verified self-stress admits no second-order
+pinned by verified certificates; along that line every pair gap has curvature $-1/2$ and
+every wall gap curvature $0$; and a verified self-stress admits no second-order
 correction. Together: **no twice-differentiable feasible arc leaves this pose with a
 nonzero derivative.**
 
 Not established by the computation: **local rigidity itself.** An arc whose derivative
-vanishes at the pose — one that starts off like `s^2` rather than like `s` — is excluded
-by nothing above.
+vanishes at the pose — one that starts off like $s^{2}$ rather than like $s$ — is
+excluded by nothing above.
 
 There is an argument that closes it, it is short, and it is worth writing down precisely
 because the obvious version of it is wrong.
@@ -275,7 +275,7 @@ semi-algebraic, so a nontrivial motion yields an analytic arc, which reparametri
 have nonzero derivative, and the above applies.
 The last clause is false.
 Puiseux gives `gamma(s) = p + a_m s^m + …` with `a_m != 0`, and when `m >= 2` no
-analytic — indeed no `C^2` — reparametrization makes the first derivative nonzero.
+analytic — indeed no $C^{2}$ — reparametrization makes the first derivative nonzero.
 Substituting `sigma = s^m` does it, but `sigma^(1/m)` is not twice differentiable, so
 the second-order analysis no longer applies to the thing being analysed.
 
@@ -283,39 +283,39 @@ The **correct** version needs no reparametrization at all; it runs the same argu
 inductively on the arc’s own coefficients.
 Suppose the pose is not isolated in the feasible set.
 The set is semi-algebraic, and near this pose it is cut out by exactly these twenty
-polynomial inequalities in the centres and in `(cos θ, sin θ)`. Two convex polygons are
-disjoint when *some* axis separates them, so in general the condition is a maximum over
-candidate axes rather than one inequality.
+polynomial inequalities in the centres and in $(\cos \theta, \sin \theta)$. Two convex
+polygons are disjoint when *some* axis separates them, so in general the condition is a
+maximum over candidate axes rather than one inequality.
 Here that maximum is attained at the contact normal and nowhere near it: along every
 other candidate axis the two squares overlap in projection at this pose, strictly, and
 therefore in a neighbourhood of it.
 
 This paragraph was the only place in the repository where that distinction was written
 down, and writing it down was not the same as checking it.
-It is a claim about `n = 5`’s geometry, it is true, and the tool that depends on it went
+It is a claim about $n = 5$’s geometry, it is true, and the tool that depends on it went
 on intersecting the half-spaces at every pose — which is [`D-391`](../../../defects.md).
 `disjunctive_pairs` now decides the question from the pose, `assess` refuses any pose
 that fails it, and `test_n5_has_no_disjunctive_pair` holds the exemption claimed here.
-The cost of leaving it as prose was not hypothetical: at `n = 40`, 42 of 98 touching
+The cost of leaving it as prose was not hypothetical: at $n = 40$, 42 of 98 touching
 pairs are corner-to-corner, and intersecting them reports that packing rigid when it is
 not. So the curve selection lemma, applied to the feasible set *with the pose removed*,
-gives a semi-algebraic arc into it — one avoiding `p` at every positive parameter value,
+gives a semi-algebraic arc into it — one avoiding $p$ at every positive parameter value,
 hence nonconstant.
-Puiseux gives that arc an expansion in fractional powers `s^(k/N)` for
-some positive integer `N`, so the substitution `s = u^N` comes first: it clears the
-fractional exponents, keeps the arc inside the set (`u > 0` exactly when `s > 0`), and
-leaves an analytic arc, whose parameter is written `s` again below, with
+Puiseux gives that arc an expansion in fractional powers $s^{k/N}$ for
+some positive integer `N`, so the substitution $s = u^N$ comes first: it clears the
+fractional exponents, keeps the arc inside the set ($u > 0$ exactly when $s > 0$), and
+leaves an analytic arc, whose parameter is written $s$ again below, with
 `gamma(s) = p + sum_{k >= m} a_k s^k` and `a_m != 0`. Then:
 
-- The `s^m` coefficient of `g_j(gamma(s))` is `a_j . a_m`, so feasibility forces
-  `a_j . a_m >= 0` for every `j`: `a_m` lies in the first-order cone, hence
-  `a_m = lambda e_{w4}` with `lambda != 0`, and `A a_m = 0`.
-- Inductively, for `m < k < 2m` the quadratic part has not started yet, so the `s^k`
-  coefficient is `a_j . a_k` and the same argument puts every `a_k` in `ker A`.
-- At `s^(2m)` the quadratic part contributes for the first time, and only through the
-  pair `(m, m)`, so the coefficient is `a_j . a_{2m} + (lambda^2 / 2) q_j`. Feasibility
+- The $s^m$ coefficient of `g_j(gamma(s))` is `a_j . a_m`, so feasibility forces
+  `a_j . a_m >= 0` for every $j$: $a_m$ lies in the first-order cone, hence
+  `a_m = lambda e_{w4}` with `lambda != 0`, and $A a_m = 0$.
+- Inductively, for $m < k < 2m$ the quadratic part has not started yet, so the $s^k$
+  coefficient is `a_j . a_k` and the same argument puts every $a_k$ in $\ker A$.
+- At $s^{2m}$ the quadratic part contributes for the first time, and only through the
+  pair $(m, m)$, so the coefficient is `a_j . a_{2m} + (lambda^2 / 2) q_j`. Feasibility
   needs `A a_{2m} >= -(lambda^2 / 2) q`, which is a positive rescaling of the very
-  system the self-stress refutes: applying `w` gives
+  system the self-stress refutes: applying $w$ gives
   `0 = w . A a_{2m} >= -(lambda^2/2) w . q > 0`.
 
 So no such arc exists and the pose is isolated: the packing is locally rigid at fixed
@@ -326,13 +326,13 @@ was missing when this was written.
 The step read “the curve selection lemma gives a semi-algebraic arc into the set, and
 Puiseux gives `gamma(s) = p + sum_{k >= m} a_k s^k` with `a_m != 0`”, which skips one:
 what Puiseux supplies for a merely continuous semi-algebraic arc is an expansion in
-*fractional* powers, and `s = u^N` has to clear them before a coefficient induction can
+*fractional* powers, and $s = u^N$ has to clear them before a coefficient induction can
 run at all. The step is written in above, and no other step of the induction changes.
 **The same edit closed a second, independent gap**, which is worth its own sentence
 because it is not the same repair: the lemma is now applied to the feasible set *with
-the pose removed*, so the arc it returns avoids `p` at every positive parameter value
+the pose removed*, so the arc it returns avoids $p$ at every positive parameter value
 and is therefore nonconstant.
-As written before, the lemma was applied to the set itself, and under `x` in the closure
+As written before, the lemma was applied to the set itself, and under $x$ in the closure
 alone it is entitled to hand back the constant arc — on which the coefficient induction
 has nothing to bite.
 The source verification calls that omission the trap for this proof and the step most
@@ -393,7 +393,7 @@ reviewed under `BC-153`, and registered as `T-014`, so the `n = 5` block now rea
 The reasoning below for why it could not move then is unchanged and is why the later
 move needed a proof.*
 
-The frontier `rigidity` block for `n = 5` keeps `property: undetermined`, and everything
+The frontier `rigidity` block for $n = 5$ keeps `property: undetermined`, and everything
 else about it changes.
 
 The property stays because the schema’s vocabulary is
@@ -413,12 +413,12 @@ That last swap has a mechanical consequence worth naming, because it is the desi
 working as intended rather than a side effect.
 `assess_frontier_rigidity` decides what it owns by evidence id: a record whose evidence
 is not in its own owned set is left alone as belonging to a stronger argument.
-So `n = 5` leaves the assessed bucket and joins `n = 11` there — four `undetermined`
+So $n = 5$ leaves the assessed bucket and joins $n = 11$ there — four `undetermined`
 records assessed rather than five, two left to a stronger argument rather than one.
 A record can leave that bucket without its verdict moving at all, and this is what that
 looks like.
 
-`n = 40` then did the same thing later the same day, for the opposite finding: it is
+$n = 40$ then did the same thing later the same day, for the opposite finding: it is
 infinitesimally *flexible*, its property still reads `undetermined` because a flex is
 not a motion, and it left the assessed bucket on evidence
 `E-n040-first-order-flexibility`. Three assessed and three left to a stronger argument.
@@ -430,19 +430,19 @@ Two things follow, and both are deliberate.
 **[`D-354`](../../../defects.md) is untouched.** The catalogue’s bare “Rigid.”
 stays in `reported_upper_bound.catalogue_rigid` and never becomes our finding.
 The guard in `test_frontier_rigidity_assessment.py` that asserts `undetermined` for
-`n = 5, 28, 40` stays green without being edited, and so does the one forbidding a
+$n = 5, 28, 40$ stays green without being edited, and so does the one forbidding a
 rigidity claim on screen-miss evidence.
 That was the test this change was held to: a guard you have to weaken to land a result
 is a guard that was telling you something.
 
-**`n = 28` is not covered, and `n = 40` now is.** They were in the same `undetermined`
+**$n = 28$ is not covered, and $n = 40$ now is.** They were in the same `undetermined`
 group and this section originally said nothing about either, on the ground that neither
 had an exact construction retained.
 That was true of the repository and false of the mathematics
-([`D-389`](../../../defects.md)): Göbel’s family is published, `a = 3, b = 4` gives
+([`D-389`](../../../defects.md)): Göbel’s family is published, $a = 3, b = 4$ gives
 exactly forty squares in side `4 + 2 sqrt(2)`, and `cases/gobel40` now builds it
 exactly. What the extension found there is in the next section.
-`n = 28` still retains only decimals and is untouched by any of this.
+$n = 28$ still retains only decimals and is untouched by any of this.
 
 ## What Extending It Cost, and What `n = 40` Turned Out to Be
 
@@ -450,26 +450,26 @@ This section predicted the wrong price, and the way it was wrong is the useful p
 
 It said the instrument was general in shape and specific in inputs — that
 `assess_n5_rigidity.py` takes any pose in `Q(sqrt 2)` and does the rest without knowing
-anything about `n = 5` — and that the only obstacle was the pose.
+anything about $n = 5$ — and that the only obstacle was the pose.
 The pose was the smaller half.
-Given an exact `n = 40`, the tool ran and produced an answer, and the answer was wrong
+Given an exact $n = 40$, the tool ran and produced an answer, and the answer was wrong
 in three separate ways before it was right: rational weights against mixed rows
 ([`D-388`](../../../defects.md)), incidences read as contacts
 ([`D-390`](../../../defects.md)), and a union of half-spaces intersected
-([`D-391`](../../../defects.md)). Each is invisible at `n = 5`, each points toward
+([`D-391`](../../../defects.md)). Each is invisible at $n = 5$, each points toward
 reporting a pose *more* rigid than it is, and the third inverts the answer outright.
 
-**`n = 40` is infinitesimally flexible.** All sixteen squares of the tilted central
+**$n = 40$ is infinitesimally flexible.** All sixteen squares of the tilted central
 block turn together, each about its own centre at the same rate, with translations that
 hold every contact surviving in all branches at exactly zero gap rate; the twenty-four
 frame squares do not move.
 The witness is a vector in `Q(sqrt 2)^120`. The mechanism is visible in a single pair:
 for two block squares sharing a full edge, the moving corner’s rotation contributes
-`+1/2` to the gap rate and the host normal’s rotation contributes `-1/2`, and they
+$+1/2$ to the gap rate and the host normal’s rotation contributes $-1/2$, and they
 cancel. That is why the block can turn in place at first order, and why no instrument
 that ignores the host’s rotation could have found it.
 
-Finding it did not need the `2^42` branch enumeration the disjunction seems to demand.
+Finding it did not need the $2^{42}$ branch enumeration the disjunction seems to demand.
 Candidates come from the null space of the rows every branch carries — exact, so no
 rounding can push a candidate out of the cone it came from, which is what defeated a
 search over linear-programming vertices.
@@ -477,14 +477,14 @@ A candidate is a motion exactly when every corner-touching pair still has an axi
 separates along it, and that choice *names* an admitting branch instead of searching for
 one.
 
-**And it is refused at second order**, by the same argument as `n = 5` one scale up: 104
+**And it is refused at second order**, by the same argument as $n = 5$ one scale up: 104
 of the 283 tight contacts curve into the obstacle, and a verified non-negative
 self-stress with `w . A = 0` and `w . q < 0` rules out every second-order correction at
 once.
 
 **The cone is wider than that one direction, and it is confined to the block.** Inside
 the subspace where every all-branch contact stays tight, the admissible set is exactly a
-line — of the 3124 nonzero integer combinations in `[-2, 2]^5` of the null basis, four
+line — of the 3124 nonzero integer combinations in $[-2, 2]^{5}$ of the null basis, four
 extend to a branch and all four are multiples of one vector.
 Outside it there is more: six further motions are retained, each opening between four
 and eight all-branch contacts strictly, each admissible at all 42 corner pairs, together
@@ -507,8 +507,8 @@ not yet a theorem; twenty coordinates stand between.
 
 So the shape of the two results is identical — flexible at first order, shut at second —
 and the strength is not.
-`n = 5` has a one-dimensional cone and that one direction is refused, which is what
-earns the phrase *second-order rigid*. At `n = 40` seven directions are refused and the
+$n = 5$ has a one-dimensional cone and that one direction is refused, which is what
+earns the phrase *second-order rigid*. At $n = 40$ seven directions are refused and the
 cone is not bounded, so the phrase is not available.
 Bounding it is the open question, and the machinery for the refusals is already written.
 

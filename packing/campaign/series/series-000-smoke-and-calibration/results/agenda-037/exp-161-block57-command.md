@@ -5,7 +5,7 @@ Start at 09:33Z from `packing/`. This is the H-163 Route S target on
 Do not wait for a second reading of the producer.
 
 `--search` is a second phase, not the 09:33Z argv.
-The producer writes a receipt only when `build_receipt` returns, omits the dense `A`
+The producer writes a receipt only when `build_receipt` returns, omits the dense $A$
 from JSON, and passes no HiGHS `time_limit`. Adding `--search` on the first invocation
 withholds the encoding receipt until HiGHS returns or the wall kills the process.
 
@@ -71,7 +71,7 @@ The producer does not checkpoint.
 
 `--search` without `--encode-coverage` is refused.
 `--search` with `--encode-coverage` re-runs `encode_frozen_coverage` in the same
-process; the receipt does not store `A`.
+process; the receipt does not store $A$.
 
 Run this only if the encode-only JSON is `encoding_complete` and enough wall remains to
 pay a second full enumeration plus HiGHS. Remaining wall after 12:33Z is zero.
@@ -161,7 +161,7 @@ The authorized default receipt already records those three under
 
 U025 (from the authorized receipt and a coverage-free inventory load): 119 orbits (79
 point + 40 threshold), 904 certificate atoms, 181 directions, budget
-`685457679/62500000`. Event geometry is larger than the certificate: 1544 event atoms
+$685457679/62500000$. Event geometry is larger than the certificate: 1544 event atoms
 (584 points + 960 threshold sites; every threshold orbit is 8 members of 3 sites).
 
 `encode_frozen_coverage` loops all 181 directions.
@@ -175,12 +175,12 @@ this machine (not `--encode-coverage`, not `--search`, not stacked across the ne
 
 | Direction | Grid | Reachable cells | Unique rows | Pareto rows | Rows s | Pareto s | RSS |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 0 (`0`) | 1242² | 1026169 | 19319 | 398 | 3.4 | 3.2 | 0.49 GiB |
-| 45 (`207107/2000000`) | 2882² | 5947837 | 64191 | 1869 | 40.9 | 48.4 | 2.40 GiB |
-| 90 (`207107/1000000`) | 2882² | 5852681 | 64024 | 2244 | 42.4 | 58.8 | 2.40 GiB |
-| 180 (`207107/500000`) | 2882² | 5709041 | 38124 | 491 | 41.0 | 8.8 | 2.40 GiB |
+| 0 ($0$) | 1242² | 1026169 | 19319 | 398 | 3.4 | 3.2 | 0.49 GiB |
+| 45 ($\frac{207107}{2000000}$) | 2882² | 5947837 | 64191 | 1869 | 40.9 | 48.4 | 2.40 GiB |
+| 90 ($\frac{207107}{1000000}$) | 2882² | 5852681 | 64024 | 2244 | 42.4 | 58.8 | 2.40 GiB |
+| 180 ($\frac{207107}{500000}$) | 2882² | 5709041 | 38124 | 491 | 41.0 | 8.8 | 2.40 GiB |
 
-Dense `A` for one diagonal direction is about 5.9e6 × 119 bytes ≈ 0.70 GiB before
+Dense $A$ for one diagonal direction is about 5.9e6 × 119 bytes ≈ 0.70 GiB before
 unique; peak RSS 2.40 GiB is that matrix plus copies.
 `--encode-coverage` holds one direction at a time, so expect **about 2.4 GiB**, not 181
 copies.

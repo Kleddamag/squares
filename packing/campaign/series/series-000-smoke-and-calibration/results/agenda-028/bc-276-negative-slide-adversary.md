@@ -47,8 +47,8 @@ The component equations become
 
 $$
 \begin{aligned}
-x_7&=p_x-\alpha c+s,&y_7&=p_y-\alpha s-c,\\
-x_8&=p_x+c+\beta s,&y_8&=p_y+s-\beta c,\\
+x_7&=p_x-\alpha c+s,&y_7&=p_y-\alpha s-c,\cr
+x_8&=p_x+c+\beta s,&y_8&=p_y+s-\beta c,\cr
 x_9&=x_7+c+\beta s,&y_9&=y_8-\alpha s-c=y_7+s-\beta c.
 \end{aligned}
 $$
@@ -84,9 +84,9 @@ Define the following rows and the protrusion depth:
 
 $$
 \begin{aligned}
-k&=u+1/2,&J&=3/2+u-sL,\\
-M&=cL-c-2s-1/2,&F_0&=cL-2c-s-1/2,\\
-E_0&=c+1/2+s(L-1),&Q&=cL-c-1/2,\\
+k&=u+1/2,&J&=3/2+u-sL,\cr
+M&=cL-c-2s-1/2,&F_0&=cL-2c-s-1/2,\cr
+E_0&=c+1/2+s(L-1),&Q&=cL-c-1/2,\cr
 P&=u(L-1)-3/2,&\delta&=y_8+h-(L-1).
 \end{aligned}
 $$
@@ -323,7 +323,7 @@ Alternative $E_7$, together with square-7 containment, would require
 $$
 \begin{aligned}
 Q&\ge A-\alpha
-\ge c(h+1)+s(h+c+\alpha s)-\alpha\\
+\ge c(h+1)+s(h+c+\alpha s)-\alpha\cr
 &=1/2+c+2cs-\alpha c^2,
 \end{aligned}
 $$
@@ -350,7 +350,7 @@ Combining $R$, (14) and $A\le P$ gives
 
 $$
 \begin{aligned}
-A&\ge c(h+1)+s(h+1+c-s+\alpha s+\beta c)\\
+A&\ge c(h+1)+s(h+1+c-s+\alpha s+\beta c)\cr
 &=1/2+u+2cs-s^2+\alpha s^2+\beta cs,
 \end{aligned}
 $$

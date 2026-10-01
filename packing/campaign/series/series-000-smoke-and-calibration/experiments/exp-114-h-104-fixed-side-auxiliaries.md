@@ -88,8 +88,8 @@ these do not measure operator attention.
 Both process exits were 0, within their separate ten-second caps, and neither was
 repeated.
 
-Event-product stratum counts were `[280,526,247]` at 0 degrees and `[668,1397,728]` at
-45 degrees. Six 45-degree strata avoid the ten-set, one in the canonical region.
+Event-product stratum counts were $[280{,}526{,}247]$ at 0 degrees and $[668,1397,728]$
+at 45 degrees. Six 45-degree strata avoid the ten-set, one in the canonical region.
 These are diagnostic counts, not the independent proof of exhaustive coverage.
 The next decision is whether to fund the separately priced continuous-angle instrument.
 No such extension is automatically authorized by this result.

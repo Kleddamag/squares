@@ -1,0 +1,1889 @@
+# Markdown files whose mathematics is written as LaTeX, not as code spans.
+#
+# Read by `devtools.check_math_markup`, the ratchet that keeps a migrated file migrated:
+# in every file listed under `migrated`, a code span that `devtools.migrate_math` reads
+# as mathematics fails the gate, unless `keep` records why that one span stays code. A
+# file not listed is never read; the check reports how many such files remain, so the
+# backlog is visible without being enforced.
+#
+# A file joins `migrated` in the commit that runs `migrate_math --apply` over it. Its
+# uncertain spans -- ASCII register literals, measurements with units, a character
+# discussed rather than used -- stay code and never fail the check, and the renderers'
+# generated blocks inside a file (`<!-- BEGIN … -->` to `<!-- END … -->`) are skipped,
+# since they move at their renderer. Generated views, the literature archive, vendored
+# trees and tool-owned files cannot be listed at all.
+#
+# Run, from `packing/`:
+#   uv run --frozen --all-extras --group dev python -m devtools.check_math_markup
+#   uv run --frozen --all-extras --group dev python -m devtools.check_math_markup --backlog
+#   uv run --frozen --all-extras --group dev python -m devtools.migrate_math --apply FILE...
+#
+# Fields:
+#   migrated: repository-relative paths, sorted, each a tracked hand-written Markdown file.
+#   keep:     spans that read as math but stay code, each {path, span, reason}. `path` is
+#             listed under `migrated`; `span` is the code span's text exactly; `reason`
+#             says why. An entry whose span is no longer in its file fails the check, so
+#             the list only shrinks.
+#   exempt:   files that never move, each {path, reason}, sorted by path: their exact bytes
+#             are pinned by a replay, or they quote an external source whose spans the
+#             tool would retype. They leave the backlog; listing one as migrated too fails.
+
+migrated:
+- README.md
+- SYNOPSIS.md
+- TUTORIAL.md
+- conventions.md
+- development.md
+- docs/project/handoff-2026-08-23-basin-identity-and-two-reviews.md
+- docs/project/handoff-2026-08-23-quench-spine.md
+- docs/project/handoff-2026-09-04-block-close.md
+- docs/project/handoff-2026-09-06-post-381-t2-commissioning.md
+- docs/project/handoff-2026-09-06-post-381-t2-t10-continuation.md
+- docs/project/handoff-2026-09-21-n17-external-intake.md
+- docs/project/handoff-2026-09-22-low-n-review-and-the-2880-rung.md
+- docs/project/postmortems/postmortem-2026-08-23-soundness-class.md
+- docs/project/research/research-2026-08-22-frankensim-rust-toolkit-for-square-packing.md
+- docs/project/research/research-2026-08-22-infrastructure-for-packing-exploration.md
+- docs/project/research/research-2026-08-22-lean-for-packing-proofs-and-validation.md
+- docs/project/research/research-2026-08-22-square-packing-algorithms-and-tooling.md
+- docs/project/research/research-2026-09-07-n26-best-known-audit.md
+- docs/project/research/research-2026-09-07-square-packing-sources-beyond-100.md
+- docs/project/research/research-2026-09-07-stromquist-memos-and-helper-arguments.md
+- docs/project/research/research-2026-09-07-stromquist-n26-verification.md
+- docs/project/research/research-2026-09-08-annealing-for-square-packing.md
+- docs/project/research/research-2026-09-09-n11-evidence-and-inference.md
+- docs/project/research/research-2026-09-09-n11-inference-audit.md
+- docs/project/research/research-2026-09-10-x027-certificate-mechanisms.md
+- docs/project/research/research-2026-09-10-x027-fractional-duality.md
+- docs/project/research/research-2026-09-13-bc303-literal-parent-union-result.md
+- docs/project/research/research-2026-09-13-bc303-t2-charge-bridge.md
+- docs/project/research/research-2026-09-30-exact-arithmetic-verifier-performance.md
+- docs/project/reviews/review-2026-08-23-engineering-loops-and-efficiency.md
+- docs/project/reviews/review-2026-08-23-experiment-loop-and-campaign.md
+- docs/project/reviews/review-2026-08-23-mathematical-frontier-strategy.md
+- docs/project/reviews/review-2026-08-23-response-to-pr15-review.md
+- docs/project/reviews/review-2026-08-23-square-packing-program-and-pr14.md
+- docs/project/reviews/review-2026-08-23-tooling-layout.md
+- docs/project/reviews/review-2026-08-25-pr34-soundness-review.md
+- docs/project/reviews/review-2026-08-25-research-loop-efficiency.md
+- docs/project/reviews/review-2026-08-25-tutorial-pedagogy-and-accuracy.md
+- docs/project/reviews/review-2026-08-25-tutorial-soundness-iteration-2.md
+- docs/project/reviews/review-2026-08-26-pr44-constructive-enumeration-and-known-best-atlas.md
+- docs/project/reviews/review-2026-08-31-overnight-run-verification-determinations.md
+- docs/project/reviews/review-2026-09-01-agenda013-first-wave-efficiency.md
+- docs/project/reviews/review-2026-09-01-agenda013-independent-lane-review.md
+- docs/project/reviews/review-2026-09-01-agenda013-overnight-synthesis.md
+- docs/project/reviews/review-2026-09-01-agenda013-second-wave-efficiency.md
+- docs/project/reviews/review-2026-09-01-agenda013-second-wave-packets.md
+- docs/project/reviews/review-2026-09-02-agenda014-first-wave-efficiency.md
+- docs/project/reviews/review-2026-09-02-agenda014-first-wave-independent-review.md
+- docs/project/reviews/review-2026-09-02-agenda014-first-wave-packets.md
+- docs/project/reviews/review-2026-09-02-agenda015-first-wave-efficiency.md
+- docs/project/reviews/review-2026-09-02-agenda015-second-wave-efficiency.md
+- docs/project/reviews/review-2026-09-02-agenda015-second-wave-independent-review.md
+- docs/project/reviews/review-2026-09-02-agenda015-second-wave-packets.md
+- docs/project/reviews/review-2026-09-02-agenda015-ten-hour-synthesis.md
+- docs/project/reviews/review-2026-09-02-n50-manifest-and-sentinel-design.md
+- docs/project/reviews/review-2026-09-03-bc149-h052-agreement-independent-review.md
+- docs/project/reviews/review-2026-09-03-bc150-4-5058-adoption-packet.md
+- docs/project/reviews/review-2026-09-03-bc151-4-5058-adoption-independent-review.md
+- docs/project/reviews/review-2026-09-03-bc152-n5-rigidity-instrument-readiness.md
+- docs/project/reviews/review-2026-09-03-bc153-t014-registration-audit.md
+- docs/project/reviews/review-2026-09-03-bc154-w9-disposition-d044-d046.md
+- docs/project/reviews/review-2026-09-04-pr78-s11-adversarial.md
+- docs/project/reviews/review-2026-09-04-pr80-stacked-hardening.md
+- docs/project/reviews/review-2026-09-04-t017-independent-verification.md
+- docs/project/reviews/review-2026-09-05-gpt6-pro-adversarial-review.md
+- docs/project/reviews/review-2026-09-06-agenda024-adversarial-senior-strategy.md
+- docs/project/reviews/review-2026-09-06-change-scoped-exhaustive-validation.md
+- docs/project/reviews/review-2026-09-06-claude-code-adversarial-review.md
+- docs/project/reviews/review-2026-09-06-core-shrink-obstruction.md
+- docs/project/reviews/review-2026-09-06-published-core-claims-adversarial.md
+- docs/project/reviews/review-2026-09-06-t022-dilation-limit.md
+- docs/project/reviews/review-2026-09-06-tbd-testing-and-ci-performance-proposal.md
+- docs/project/reviews/review-2026-09-06-validation-efficiency-implementation.md
+- docs/project/reviews/review-2026-09-06-validation-exhaustive-cost.md
+- docs/project/reviews/review-2026-09-06-validation-slow-and-controls-cost.md
+- docs/project/reviews/review-2026-09-07-atlas-101-324-credit-lines.md
+- docs/project/reviews/review-2026-09-07-maciver-square-packing.md
+- docs/project/reviews/review-2026-09-07-n11-hybrid-strategy.md
+- docs/project/reviews/review-2026-09-07-n17-comprehensive-review.md
+- docs/project/reviews/review-2026-09-07-n6-pure-dots-obstruction.md
+- docs/project/reviews/review-2026-09-07-n6-quantitative-piercing-bound.md
+- docs/project/reviews/review-2026-09-07-research-throughput-and-timeboxes.md
+- docs/project/reviews/review-2026-09-07-stromquist-incorporation.md
+- docs/project/reviews/review-2026-09-07-stromquist-n26-directions.md
+- docs/project/reviews/review-2026-09-07-stromquist-segment-helper.md
+- docs/project/reviews/review-2026-09-07-upstream-research-reconciliation.md
+- docs/project/reviews/review-2026-09-08-paper-font-merge.md
+- docs/project/reviews/review-2026-09-08-pr127-research-readiness.md
+- docs/project/reviews/review-2026-09-09-n11-evidence-interpretation.md
+- docs/project/reviews/review-2026-09-09-threshold-certificate-theorem.md
+- docs/project/reviews/review-2026-09-10-n11-a6-scope-and-plan.md
+- docs/project/reviews/review-2026-09-10-n11-bc329-packet-preflight.md
+- docs/project/reviews/review-2026-09-10-n11-parent-adapter-admission.md
+- docs/project/reviews/review-2026-09-10-n11-parent-centre-author-check.md
+- docs/project/reviews/review-2026-09-10-n11-parent-centre-independent-review.md
+- docs/project/reviews/review-2026-09-10-n11-parent-domain-translation.md
+- docs/project/reviews/review-2026-09-10-n11-parent-realizability-independent.md
+- docs/project/reviews/review-2026-09-10-n11-parent-runner-independent.md
+- docs/project/reviews/review-2026-09-10-n11-strategy-frontier.md
+- docs/project/reviews/review-2026-09-10-n11-structural-normal-forms-independent.md
+- docs/project/reviews/review-2026-09-10-n11-structural-normal-forms.md
+- docs/project/reviews/review-2026-09-10-n11-weighted-five-site-atoms.md
+- docs/project/reviews/review-2026-09-10-t025-t026-verifiable-claims.md
+- docs/project/reviews/review-2026-09-12-n11-bc329-calibration-design.md
+- docs/project/reviews/review-2026-09-12-n11-post-bc329-strategy-audit.md
+- docs/project/reviews/review-2026-09-12-workbench-stack-architecture.md
+- docs/project/reviews/review-2026-09-13-bc303-floor-normalized-t2-independent.md
+- docs/project/reviews/review-2026-09-13-bc303-h162-preregistration-math.md
+- docs/project/reviews/review-2026-09-13-bc303-literal-parent-union-result.md
+- docs/project/reviews/review-2026-09-13-bc303-parent-union-math.md
+- docs/project/reviews/review-2026-09-13-bc303-t2-charge-bridge.md
+- docs/project/reviews/review-2026-09-13-bc303-t2-charge-reader-readmission.md
+- docs/project/reviews/review-2026-09-13-bc303-t2-charge-reader-refusal.md
+- docs/project/reviews/review-2026-09-13-bc303-t2-geometry.md
+- docs/project/reviews/review-2026-09-13-bc303-t2-global-bridge.md
+- docs/project/reviews/review-2026-09-13-bc303-t2-integrated-head-admission.md
+- docs/project/reviews/review-2026-09-13-explainer-pdf-comparison.md
+- docs/project/reviews/review-2026-09-13-n11-bc303-t1-reader-final-math.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-coordinator-arithmetic-final.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-coordinator-final.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-coordinator-rereview.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-integrated-run-sheet.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-reader-f6f7-final.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-reader-f6f7-overflow.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-reader-rereview.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-run-sheet-flowmark-final.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-run-sheet-identity-refusal.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-run-sheet-parent-final.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-runset-verifier-r3-final.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-runset-verifier-rereview.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-runset-verifier.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-source-distinct-reader.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-three-profile-run-sheet.md
+- docs/project/reviews/review-2026-09-13-n11-bc329-topology-coordinator-initial.md
+- docs/project/reviews/review-2026-09-13-pr156-usage-delta.md
+- docs/project/reviews/review-2026-09-13-workbench-consumer-inventory.md
+- docs/project/reviews/review-2026-09-13-x030-publication.md
+- docs/project/reviews/review-2026-09-14-n11-post-w5-route-selection.md
+- docs/project/reviews/review-2026-09-14-n11-w10-route-selection.md
+- docs/project/reviews/review-2026-09-14-small-n-significant-progress-mathematical-audit.md
+- docs/project/reviews/review-2026-09-19-pr199-201-correctness.md
+- docs/project/reviews/review-2026-09-20-n17-r012-and-mira-4613-proof-review.md
+- docs/project/reviews/review-2026-09-21-derived-artifact-currency.md
+- docs/project/reviews/review-2026-09-22-external-square-certificates-integration.md
+- docs/project/reviews/review-2026-09-22-kleddamag-n11-mathematics.md
+- docs/project/reviews/review-2026-09-22-native-n11-parent-core.md
+- docs/project/reviews/review-2026-09-22-tokoharu-density-mathematics.md
+- docs/project/reviews/review-2026-09-23-n21-122-25-certificate.md
+- docs/project/reviews/review-2026-09-23-pr230-w3-directions.md
+- docs/project/reviews/review-2026-09-23-rung0-certificate-contract.md
+- docs/project/reviews/review-2026-09-24-bc241-closure.md
+- docs/project/reviews/review-2026-09-24-rung0-closed-tree.md
+- docs/project/reviews/review-2026-09-25-n17-guzhou-r052.md
+- docs/project/reviews/review-2026-09-27-n17-kleddamag-4640020.md
+- docs/project/reviews/review-2026-09-27-n17-kleddamag-466001.md
+- docs/project/reviews/review-2026-09-27-plan-4640020-lemma-check.md
+- docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md
+- docs/project/reviews/review-2026-09-28-density-solver-comparison.md
+- docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md
+- docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md
+- docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
+- docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md
+- docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md
+- docs/project/reviews/review-2026-09-29-n11-optimality.md
+- docs/project/reviews/review-2026-09-29-native-rectangle-contract.md
+- docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md
+- docs/project/reviews/review-2026-09-29-validation-parallelism.md
+- docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md
+- docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md
+- docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md
+- docs/project/reviews/review-2026-09-30-lean-s13.md
+- docs/project/reviews/review-2026-09-30-n11-expository-simplification.md
+- docs/project/reviews/review-2026-09-30-n11-optimality-explainer.md
+- docs/project/reviews/review-2026-09-30-rectangle-derivative-bound.md
+- docs/project/specs/active/plan-2026-08-22-minimal-packing-toolkit.md
+- docs/project/specs/active/plan-2026-08-23-overnight-cartography-run.md
+- docs/project/specs/active/plan-2026-08-24-deterministic-svg-rendering-toolkit.md
+- docs/project/specs/active/plan-2026-08-24-frontier-assurance-and-verification.md
+- docs/project/specs/active/plan-2026-08-24-packing-engineering-maturity.md
+- docs/project/specs/active/plan-2026-08-25-generalized-motion-lab.md
+- docs/project/specs/active/plan-2026-08-25-research-loop-efficiency-infrastructure.md
+- docs/project/specs/active/plan-2026-08-26-overnight-constructive-enumeration.md
+- docs/project/specs/active/plan-2026-08-28-interval-certification.md
+- docs/project/specs/active/plan-2026-08-28-numeric-symbolic-round-trip.md
+- docs/project/specs/active/plan-2026-08-28-promotion-pipeline-implementation.md
+- docs/project/specs/active/plan-2026-08-28-symbolic-promotion-and-the-atlas.md
+- docs/project/specs/active/plan-2026-08-29-gate-validation-speed.md
+- docs/project/specs/active/plan-2026-09-06-post-381-research-sequence.md
+- docs/project/specs/active/plan-2026-09-06-validation-efficiency-and-checkpoints.md
+- docs/project/specs/active/plan-2026-09-07-atlas-expansion-to-324.md
+- docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
+- docs/project/specs/active/plan-2026-09-07-math-text-face.md
+- docs/project/specs/active/plan-2026-09-09-packing-strategies-as-a-shared-language.md
+- docs/project/specs/active/plan-2026-09-10-n11-daytime-strategy-and-explainer.md
+- docs/project/specs/active/plan-2026-09-10-n11-overnight-three-blocks.md
+- docs/project/specs/active/plan-2026-09-11-annealing-as-a-search.md
+- docs/project/specs/active/plan-2026-09-11-workbench-from-spike-to-product.md
+- docs/project/specs/active/plan-2026-09-13-n11-bc329-runset-verifier.md
+- docs/project/specs/active/plan-2026-09-13-n11-bc329-three-profile-run-sheet.md
+- docs/project/specs/active/plan-2026-09-13-pr157-integrated-calibration-launch-supplement.md
+- docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md
+- docs/project/specs/active/plan-2026-09-22-upper-bound-certification-blocks.md
+- docs/project/specs/active/plan-2026-09-25-after-r052-planning.md
+- docs/project/specs/active/plan-2026-09-27-after-4640020-overnight.md
+- docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
+- docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md
+- docs/project/specs/active/plan-2026-09-29-proof-verification-consolidation.md
+- docs/project/specs/active/plan-2026-09-29-third-party-results-register.md
+- docs/project/specs/active/plan-2026-09-30-epistemics-ladder-review.md
+- docs/project/specs/active/spike-2026-08-25-n5-motion-lab.md
+- docs/project/stromquist-helper-arguments-math-review.md
+- docs/project/three-lane-research-method.md
+- docs/project/verification-tooling.md
+- docs/tbd/shortcuts/create-or-update-pr-simple.md
+- docs/tbd/shortcuts/create-or-update-pr-with-validation-plan.md
+- epistemics.md
+- operating-rules.md
+- packages/workbench/README.md
+- packages/workbench/probes/README.md
+- packages/workbench/tests/fixtures/benchmark-foundation/README.md
+- packing/atlas/README.md
+- packing/atlas/enumerated/README.md
+- packing/atlas/known-best/FIGURE-PLAYBOOK.md
+- packing/atlas/known-best/README.md
+- packing/atlas/known-best/video/spikes/README.md
+- packing/atlas/known-best/video/spikes/v1-slideshow/NOTES.md
+- packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+- packing/atlas/prospective/README.md
+- packing/atlas/rendering/README.md
+- packing/benchmarks/gate-cost-at-324/README.md
+- packing/benchmarks/math-startup/README.md
+- packing/benchmarks/math-startup/experiments/exp-001-control.md
+- packing/benchmarks/math-startup/experiments/exp-002-webkit-readiness.md
+- packing/benchmarks/math-startup/experiments/exp-003-prepared-geometry.md
+- packing/benchmarks/math-startup/experiments/exp-004-startup-pairs.md
+- packing/benchmarks/math-startup/experiments/exp-005-hosted-parameter-pairs.md
+- packing/benchmarks/math-startup/experiments/exp-006-hosted-font-geometry.md
+- packing/benchmarks/math-startup/experiments/exp-007-queued-hosted-parameter-pairs.md
+- packing/benchmarks/math-startup/experiments/exp-008-queued-hosted-font-geometry.md
+- packing/benchmarks/math-startup/experiments/exp-009-protected-hosted-parameter-pairs.md
+- packing/benchmarks/math-startup/experiments/exp-010-protected-hosted-font-geometry.md
+- packing/benchmarks/math-startup/explorations/X-001-startup.md
+- packing/benchmarks/math-startup/explorations/X-002-observer-overhead.md
+- packing/benchmarks/math-startup/explorations/X-003-saved-font-settings.md
+- packing/benchmarks/math-startup/explorations/X-004-hosted-rendering.md
+- packing/benchmarks/math-startup/hypotheses/H-001-layout.md
+- packing/benchmarks/math-startup/hypotheses/H-002-latency.md
+- packing/benchmarks/math-startup/hypotheses/H-003-parameter-only.md
+- packing/benchmarks/math-startup/hypotheses/H-004-saved-font-settings.md
+- packing/benchmarks/math-startup/hypotheses/H-005-corrected-hosted-startup.md
+- packing/benchmarks/math-startup/hypotheses/H-006-queued-recovery-startup.md
+- packing/benchmarks/math-startup/ideas.md
+- packing/benchmarks/validation-efficiency/README.md
+- packing/benchmarks/validation-efficiency/experiments/VE-001-float-oracle.md
+- packing/benchmarks/validation-efficiency/experiments/VE-002-bridge.md
+- packing/benchmarks/validation-efficiency/experiments/VE-003-checks-start-order.md
+- packing/benchmarks/validation-efficiency/experiments/VE-004-checks-start-order.md
+- packing/benchmarks/validation-efficiency/experiments/VE-005-rollup-corpus-snapshot.md
+- packing/benchmarks/validation-efficiency/ideas.md
+- packing/campaign/README.md
+- packing/campaign/agendas/agenda-001-basin-confidence-ladder.md
+- packing/campaign/agendas/agenda-002-constructive-enumeration-groundwork.md
+- packing/campaign/agendas/agenda-003-balanced-ten-hour-research-program.md
+- packing/campaign/agendas/agenda-004-guard-repair-and-instrument-unblock.md
+- packing/campaign/agendas/agenda-005-symbolic-promotion-and-identity.md
+- packing/campaign/agendas/agenda-006-overnight-research-blocks.md
+- packing/campaign/agendas/agenda-007-twelve-hour-steered-run.md
+- packing/campaign/agendas/agenda-008-queue-repair-and-the-discriminating-control.md
+- packing/campaign/agendas/agenda-009-pipeline-hygiene-and-the-search-reassessment.md
+- packing/campaign/agendas/agenda-010-two-lane-overnight-run.md
+- packing/campaign/agendas/agenda-011-verification-review.md
+- packing/campaign/agendas/agenda-012-weighted-proof-precision-bridge-and-cross-scale-controls.md
+- packing/campaign/agendas/agenda-013-nine-hour-autonomous-run.md
+- packing/campaign/agendas/agenda-014-mechanism-first-continuation-and-provenance-closure.md
+- packing/campaign/agendas/agenda-015-ten-hour-earned-routes-and-guard-repairs.md
+- packing/campaign/agendas/agenda-016-results-first-continuation-rigidity-and-remediation.md
+- packing/campaign/agendas/agenda-017-six-hour-generator-rigidity-ceilings-and-w9-block.md
+- packing/campaign/agendas/agenda-018-ten-hour-continuation-ladders-theorems-and-wave-two.md
+- packing/campaign/agendas/agenda-019-efficiency-first-retarget-and-deep-strategy.md
+- packing/campaign/agendas/agenda-020-efficiency-block-the-exact-sweep.md
+- packing/campaign/agendas/agenda-021-three-numbers-and-a-wall.md
+- packing/campaign/agendas/agenda-022-the-conditional-route.md
+- packing/campaign/agendas/agenda-023-efficiency-block-the-gate-itself.md
+- packing/campaign/agendas/agenda-024-post-381-24h-portfolio.md
+- packing/campaign/agendas/agenda-025-adaptive-fractional-frontier.md
+- packing/campaign/agendas/agenda-026-density-stationarity-and-trump-capture.md
+- packing/campaign/agendas/agenda-027-compatibility-and-restricted-families.md
+- packing/campaign/agendas/agenda-028-hybrid-strength-and-angular-release.md
+- packing/campaign/agendas/agenda-029-structural-restrictions-and-conditional-dots.md
+- packing/campaign/agendas/agenda-030-parallel-structural-lanes-at-n11.md
+- packing/campaign/agendas/agenda-031-ownership-and-pricing.md
+- packing/campaign/agendas/agenda-032-conditional-owner-sprint.md
+- packing/campaign/agendas/agenda-033-overnight-owner-geometry.md
+- packing/campaign/agendas/agenda-035-n11-daytime-strategy.md
+- packing/campaign/agendas/agenda-036-n11-strategy-reset-roadmap.md
+- packing/campaign/agendas/agenda-037-n11-relational-certificate-program.md
+- packing/campaign/agendas/agenda-040-overnight-lower-bound-loop.md
+- packing/campaign/agendas/agenda-041-low-n-review-and-first-party-n17.md
+- packing/campaign/agendas/agenda-042-overnight-n11-settlement-and-low-n-angles.md
+- packing/campaign/agent-sessions/README.md
+- packing/campaign/agent-sessions/session-001-pr15-review-reset.md
+- packing/campaign/agent-sessions/session-002-pr16-integration.md
+- packing/campaign/agent-sessions/session-003-unattended-research-readiness.md
+- packing/campaign/agent-sessions/session-004-creative-frontier-review.md
+- packing/campaign/agent-sessions/session-005-h024-fast-falsifier.md
+- packing/campaign/agent-sessions/session-006-h026-exact-tangent.md
+- packing/campaign/agent-sessions/session-007-h032-small-n-moduli.md
+- packing/campaign/agent-sessions/session-008-stromquist-falsification-and-repair.md
+- packing/campaign/agent-sessions/session-009-autonomous-basin-map.md
+- packing/campaign/agent-sessions/session-010-eight-hour-mixed-research.md
+- packing/campaign/agent-sessions/session-011-eight-hour-continuation.md
+- packing/campaign/agent-sessions/session-012-eight-hour-final-continuation.md
+- packing/campaign/agent-sessions/session-013-generated-view-recurrence-checkpoint.md
+- packing/campaign/agent-sessions/session-014-final-portfolio-rotation.md
+- packing/campaign/agent-sessions/session-015-four-hour-r4-r5-loop.md
+- packing/campaign/agent-sessions/session-016-final-hour-continuation.md
+- packing/campaign/agent-sessions/session-017-research-loop-efficiency.md
+- packing/campaign/agent-sessions/session-018-efficiency-plan-refinement.md
+- packing/campaign/agent-sessions/session-019-native-timing-correction-spike.md
+- packing/campaign/agent-sessions/session-020-fast-pr-lane-spike.md
+- packing/campaign/agent-sessions/session-021-pr41-performance-integration.md
+- packing/campaign/agent-sessions/session-022-pr44-known-best-atlas.md
+- packing/campaign/agent-sessions/session-023-pr45-merge-readiness.md
+- packing/campaign/agent-sessions/session-024-pr45-strict-and-ci.md
+- packing/campaign/agent-sessions/session-025-pr45-performance-continuation.md
+- packing/campaign/agent-sessions/session-026-balanced-research-session-a.md
+- packing/campaign/agent-sessions/session-027-balanced-research-session-b.md
+- packing/campaign/agent-sessions/session-028-bc032-n29-promotion-inventory.md
+- packing/campaign/agent-sessions/session-029-finish-agenda-003-cycles.md
+- packing/campaign/agent-sessions/session-030-work-model-and-cell-collision.md
+- packing/campaign/agent-sessions/session-031-merge-main-and-land-pr48.md
+- packing/campaign/agent-sessions/session-032-block1-missing-mutations.md
+- packing/campaign/agent-sessions/session-033-block2-run-exp045.md
+- packing/campaign/agent-sessions/session-034-block3-guards-and-joins.md
+- packing/campaign/agent-sessions/session-035-agenda005-block-a.md
+- packing/campaign/agent-sessions/session-036-block1-interval-operator.md
+- packing/campaign/agent-sessions/session-037-block2-interval-calibration.md
+- packing/campaign/agent-sessions/session-038-block3-contact-assembly.md
+- packing/campaign/agent-sessions/session-039-block5-witness-plumbing.md
+- packing/campaign/agent-sessions/session-040-block6-chirality.md
+- packing/campaign/agent-sessions/session-041-block7-collinearity.md
+- packing/campaign/agent-sessions/session-042-block8-exact-solve.md
+- packing/campaign/agent-sessions/session-043-block9-degree-bound.md
+- packing/campaign/agent-sessions/session-044-agenda006-continuation.md
+- packing/campaign/agent-sessions/session-045-agenda008-queue-and-identity.md
+- packing/campaign/agent-sessions/session-046-gobel-family-constructions.md
+- packing/campaign/agent-sessions/session-047-assurance-structure-and-what-is-ours.md
+- packing/campaign/agent-sessions/session-048-what-every-session-cost.md
+- packing/campaign/agent-sessions/session-049-reassess-and-first-sequenced-slice.md
+- packing/campaign/agent-sessions/session-050-exp045-audit-and-acceptance.md
+- packing/campaign/agent-sessions/session-051-block2-reprice-and-lp-gate.md
+- packing/campaign/agent-sessions/session-052-midrun-checkpoint.md
+- packing/campaign/agent-sessions/session-053-block3-bentz-machine-check.md
+- packing/campaign/agent-sessions/session-054-block1-certifier-and-falsifier.md
+- packing/campaign/agent-sessions/session-055-block4-h044-verdict.md
+- packing/campaign/agent-sessions/session-056-block5-bentz13-figure2.md
+- packing/campaign/agent-sessions/session-057-block6-green-sizes.md
+- packing/campaign/agent-sessions/session-058-block7-m8-sizing.md
+- packing/campaign/agent-sessions/session-059-block8-tau-star-pilot.md
+- packing/campaign/agent-sessions/session-060-verification-review.md
+- packing/campaign/agent-sessions/session-061-epistemics-codification.md
+- packing/campaign/agent-sessions/session-062-agenda013-preflight-and-publication.md
+- packing/campaign/agent-sessions/session-063-agenda013-review-repairs.md
+- packing/campaign/agent-sessions/session-064-agenda013-nine-hour-coordinator.md
+- packing/campaign/agent-sessions/session-065-bc108-n17-certificate.md
+- packing/campaign/agent-sessions/session-066-bc109-n68-n69-precision.md
+- packing/campaign/agent-sessions/session-067-bc110-n50-exact-control.md
+- packing/campaign/agent-sessions/session-068-bc116-n17-resumability.md
+- packing/campaign/agent-sessions/session-069-bc117-n68-refusal-localization.md
+- packing/campaign/agent-sessions/session-070-bc118-n50-source-semantics.md
+- packing/campaign/agent-sessions/session-071-agenda014-publication-and-handoff.md
+- packing/campaign/agent-sessions/session-072-agenda014-six-hour-first-wave.md
+- packing/campaign/agent-sessions/session-073-bc123-n17-parent-bound-parallel-profile.md
+- packing/campaign/agent-sessions/session-074-bc124-n68-production-adapter.md
+- packing/campaign/agent-sessions/session-075-bc125-n50-producer-refusal-ordering.md
+- packing/campaign/agent-sessions/session-076-agenda014-first-wave-closeout-and-review.md
+- packing/campaign/agent-sessions/session-077-agenda014-closeout-and-ten-hour-successor.md
+- packing/campaign/agent-sessions/session-078-agenda015-ten-hour-coordinator.md
+- packing/campaign/agent-sessions/session-079-bc137-n17-sequential-larger-prefix.md
+- packing/campaign/agent-sessions/session-080-bc138-n68-side-semantics-binding.md
+- packing/campaign/agent-sessions/session-081-bc140-target-blind-guard-repairs.md
+- packing/campaign/agent-sessions/session-082-bc141-n54-source-contract.md
+- packing/campaign/agent-sessions/session-083-agenda016-ten-hour-coordinator.md
+- packing/campaign/agent-sessions/session-084-bc148-n17-fresh-successor-completion.md
+- packing/campaign/agent-sessions/session-085-agenda017-continuation-and-efficiency-block.md
+- packing/campaign/agent-sessions/session-086-agenda021-overnight-pass.md
+- packing/campaign/agent-sessions/session-087-agenda022-continuation.md
+- packing/campaign/agent-sessions/session-088-validation-efficiency-checkpoint.md
+- packing/campaign/agent-sessions/session-089-agenda024-next-phases.md
+- packing/campaign/agent-sessions/session-090-four-hour-research.md
+- packing/campaign/agent-sessions/session-091-structural-compatibility.md
+- packing/campaign/agent-sessions/session-092-hybrid-overnight.md
+- packing/campaign/agent-sessions/session-093-full-square-compatibility.md
+- packing/campaign/agent-sessions/session-094-complete-cover-and-density-controls.md
+- packing/campaign/agent-sessions/session-095-collision-cover-and-support-ceiling.md
+- packing/campaign/agent-sessions/session-096-stromquist-memos-and-helpers.md
+- packing/campaign/agent-sessions/session-097-kernel-contract-and-feature-pricing.md
+- packing/campaign/agent-sessions/session-098-residual-skeleton.md
+- packing/campaign/agent-sessions/session-099-atlas-expansion-to-324.md
+- packing/campaign/agent-sessions/session-100-duality-kill-tests-and-unit-value.md
+- packing/campaign/agent-sessions/session-101-corner-skeleton-ownership.md
+- packing/campaign/agent-sessions/session-102-angle-band-theorems-at-q.md
+- packing/campaign/agent-sessions/session-103-plateau-artefact-at-3-82.md
+- packing/campaign/agent-sessions/session-104-ownership-set-at-q.md
+- packing/campaign/agent-sessions/session-105-stromquist-n26-verification.md
+- packing/campaign/agent-sessions/session-106-n26-source-consistency.md
+- packing/campaign/agent-sessions/session-107-first-wave-selection.md
+- packing/campaign/agent-sessions/session-108-anchors-at-q.md
+- packing/campaign/agent-sessions/session-109-corner-class-at-q.md
+- packing/campaign/agent-sessions/session-110-pr127-handoff-review.md
+- packing/campaign/agent-sessions/session-111-font-startup-stability.md
+- packing/campaign/agent-sessions/session-112-ownership-and-pricing.md
+- packing/campaign/agent-sessions/session-113-conditional-owner-sprint.md
+- packing/campaign/agent-sessions/session-114-independent-owner-audit.md
+- packing/campaign/agent-sessions/session-115-wall-aware-owner-footprints.md
+- packing/campaign/agent-sessions/session-116-resumed-wall-research.md
+- packing/campaign/agent-sessions/session-117-wall-owner-containment.md
+- packing/campaign/agent-sessions/session-118-selected-wall-tuple.md
+- packing/campaign/agent-sessions/session-119-selected-wall-tuple-continuation.md
+- packing/campaign/agent-sessions/session-120-selected-wall-tuple-execution.md
+- packing/campaign/agent-sessions/session-121-owner-core-compatibility.md
+- packing/campaign/agent-sessions/session-122-direct-sixth-site-feasibility.md
+- packing/campaign/agent-sessions/session-123-evidence-first-interpretation.md
+- packing/campaign/agent-sessions/session-124-evidence-interpretation-finalization.md
+- packing/campaign/agent-sessions/session-125-past-the-point-atom-ceiling.md
+- packing/campaign/agent-sessions/session-126-stromquist-analytical-exploration.md
+- packing/campaign/agent-sessions/session-127-weighted-five-site-atom-admission.md
+- packing/campaign/agent-sessions/session-128-research-state-rollup.md
+- packing/campaign/agent-sessions/session-129-small-n-mathematical-audit.md
+- packing/campaign/agent-sessions/session-130-n11-w10-route-selection.md
+- packing/campaign/agent-sessions/session-131-n11-w5-validation-efficiency.md
+- packing/campaign/agent-sessions/session-132-n11-post-w5-route-selection.md
+- packing/campaign/agent-sessions/session-133-n11-route-a-admission.md
+- packing/campaign/agent-sessions/session-134-n11-route-s-admission.md
+- packing/campaign/agent-sessions/session-135-n11-route-s-guard-discharge.md
+- packing/campaign/agent-sessions/session-136-ci-topology-reconciliation.md
+- packing/campaign/agent-sessions/session-137-ci-topology-continuation-recovery.md
+- packing/campaign/agent-sessions/session-138-n11-overnight-review.md
+- packing/campaign/agent-sessions/session-139-n11-overnight-research.md
+- packing/campaign/agent-sessions/session-140-lb-survey.md
+- packing/campaign/agent-sessions/session-141-n100-research.md
+- packing/campaign/agent-sessions/session-142-stack-correctness.md
+- packing/campaign/agent-sessions/session-143-lower-bound-math-review.md
+- packing/campaign/agent-sessions/session-144-overnight-chunk-1.md
+- packing/campaign/agent-sessions/session-145-overnight-chunk-2.md
+- packing/campaign/agent-sessions/session-146-overnight-chunk-3.md
+- packing/campaign/agent-sessions/session-147-overnight-chunk-4.md
+- packing/campaign/agent-sessions/session-148-overnight-chunk-5.md
+- packing/campaign/agent-sessions/session-149-n17-external-intake.md
+- packing/campaign/agent-sessions/session-150-n17-consolidation-and-correctness.md
+- packing/campaign/agent-sessions/session-151-low-n-review-and-first-party-n17.md
+- packing/campaign/agent-sessions/session-152-external-density-and-n11-review.md
+- packing/campaign/agent-sessions/session-152-validation/pdf-d490-run-35784981711.md
+- packing/campaign/agent-sessions/session-153-native-n11-parent-core.md
+- packing/campaign/agent-sessions/session-154-pr221-pr222-reconciliation.md
+- packing/campaign/agent-sessions/session-155-w3-proof-directions.md
+- packing/campaign/agent-sessions/session-156-w3-overnight-n11-settlement.md
+- packing/campaign/agent-sessions/session-157-n11-rung0-overnight-cpu.md
+- packing/campaign/agent-sessions/session-158-n11-rung0-lock-in-and-rung1-pilot.md
+- packing/campaign/agent-sessions/session-159-n17-guzhou-r052-intake.md
+- packing/campaign/agent-sessions/session-160-n17-4640020-evand-wand125-intake.md
+- packing/campaign/agent-sessions/session-161-wand125-update-and-sept-28-intake.md
+- packing/campaign/agent-sessions/session-162-wand125-tools-intake.md
+- packing/campaign/agent-sessions/session-163-native-bounds-and-census.md
+- packing/campaign/agent-sessions/session-164-upstream-merge-and-certification.md
+- packing/campaign/documentation-pass.md
+- packing/campaign/explorations/X-001-standing-review-and-search-philosophy.md
+- packing/campaign/explorations/X-002-creative-frontier-and-basin-maps.md
+- packing/campaign/explorations/X-003-stratified-chunk-enumeration.md
+- packing/campaign/explorations/X-004-n29-exact-promotion.md
+- packing/campaign/explorations/X-005-identity-relation-and-its-controls.md
+- packing/campaign/explorations/X-006-the-discriminating-control-at-n5.md
+- packing/campaign/explorations/X-007-the-n5-optimum-flexes-once-and-that-once-is-shut.md
+- packing/campaign/explorations/X-008-the-residue-is-axis-aligned.md
+- packing/campaign/explorations/X-009-where-a-new-packing-is-reachable.md
+- packing/campaign/explorations/X-010-two-lanes-two-ladders.md
+- packing/campaign/explorations/X-011-controls-are-not-targets.md
+- packing/campaign/explorations/X-012-one-chart-four-hundred-inequalities-and-an-order-2m-contradiction.md
+- packing/campaign/explorations/X-013-where-the-certificate-should-go-next.md
+- packing/campaign/explorations/X-014-closing-from-both-ends.md
+- packing/campaign/explorations/X-015-the-map-and-the-three-programs.md
+- packing/campaign/explorations/X-016-after-381-two-managers-one-proof-boundary.md
+- packing/campaign/explorations/X-017-compatibility-and-complete-case-covers.md
+- packing/campaign/explorations/X-018-hybrid-strength-and-angular-release.md
+- packing/campaign/explorations/X-019-structural-restrictions-and-conditional-dots.md
+- packing/campaign/explorations/X-021-what-can-be-proved-about-eleven-squares.md
+- packing/campaign/explorations/X-022-segment-ownership-continuation.md
+- packing/campaign/explorations/X-023-three-losses-and-a-new-atom.md
+- packing/campaign/explorations/X-024-two-lines-at-eleven.md
+- packing/campaign/explorations/X-025-hunting-by-hand-and-the-move-set-threads.md
+- packing/campaign/explorations/X-026-what-conditioning-does-and-does-not-buy.md
+- packing/campaign/explorations/X-027-stromquist-fractional-and-structural-strategy.md
+- packing/campaign/explorations/X-028-n11-strategy-portfolio-draft.md
+- packing/campaign/explorations/X-029-bc303-t2-exact-geometry-draft.md
+- packing/campaign/explorations/X-030-n11-post-t1-proof-obligations-draft.md
+- packing/campaign/explorations/X-031-bc303-floor-normalized-t2-helper-draft.md
+- packing/campaign/explorations/X-032-route-s-threshold-compression.md
+- packing/campaign/explorations/X-034-the-workbench-physics-as-a-search.md
+- packing/campaign/explorations/X-035-animation-kinetics-without-pixels.md
+- packing/campaign/explorations/X-036-graded-guidance-for-annealing.md
+- packing/campaign/explorations/X-037-n11-overnight-review-and-route-slate.md
+- packing/campaign/explorations/X-038-n100-lower-bound-survey.md
+- packing/campaign/explorations/X-039-n100-re-rank-after-session-140.md
+- packing/campaign/explorations/X-040-lower-bound-mechanisms-beyond-the-one-body-ceiling.md
+- packing/campaign/explorations/X-041-after-the-n17-certified-bound.md
+- packing/campaign/explorations/X-042-what-is-left-at-low-n.md
+- packing/campaign/explorations/X-043-new-lower-bound-proof-directions.md
+- packing/campaign/explorations/X-044-low-n-certificate-transfer.md
+- packing/campaign/explorations/X-045-n11-global-capture-and-exact-optimality.md
+- packing/campaign/explorations/X-046-n11-settlement-program.md
+- packing/campaign/explorations/X-047-low-n-angles-after-the-parent-core-advance.md
+- packing/campaign/hypotheses/H-001-angle-class-reduction.md
+- packing/campaign/hypotheses/H-002-lp-in-cell-polish.md
+- packing/campaign/hypotheses/H-003-basin-frequency-and-contacts.md
+- packing/campaign/hypotheses/H-004-neighbor-transfer-seeding.md
+- packing/campaign/hypotheses/H-005-m2-minus-3-construction.md
+- packing/campaign/hypotheses/H-006-lp-dual-unavoidable-sets.md
+- packing/campaign/hypotheses/H-007-saturation-curves.md
+- packing/campaign/hypotheses/H-008-false-basin-rate.md
+- packing/campaign/hypotheses/H-009-symmetry-dedup-ratio.md
+- packing/campaign/hypotheses/H-010-stromquist-triple.md
+- packing/campaign/hypotheses/H-011-small-n-census.md
+- packing/campaign/hypotheses/H-012-record-basins-are-rare.md
+- packing/campaign/hypotheses/H-013-delta-continuation.md
+- packing/campaign/hypotheses/H-014-superdisk-continuation.md
+- packing/campaign/hypotheses/H-015-map-elites-illumination.md
+- packing/campaign/hypotheses/H-016-stock-annealer-reaches-standing-best.md
+- packing/campaign/hypotheses/H-017-budget-scaling.md
+- packing/campaign/hypotheses/H-018-basin-entry.md
+- packing/campaign/hypotheses/H-019-angle-optimum-is-a-kink.md
+- packing/campaign/hypotheses/H-020-oblique-record-finding-n17.md
+- packing/campaign/hypotheses/H-021-endpoint-identifiability.md
+- packing/campaign/hypotheses/H-022-trump-local-geometry.md
+- packing/campaign/hypotheses/H-023-n5-terminal-connectivity.md
+- packing/campaign/hypotheses/H-024-record-angle-class-count.md
+- packing/campaign/hypotheses/H-025-record-angle-compressibility.md
+- packing/campaign/hypotheses/H-026-trump-first-order-rigidity.md
+- packing/campaign/hypotheses/H-027-record-angle-cones.md
+- packing/campaign/hypotheses/H-028-reference-cell-angle-sheets.md
+- packing/campaign/hypotheses/H-029-adaptive-splitting.md
+- packing/campaign/hypotheses/H-030-public-parent-surgery.md
+- packing/campaign/hypotheses/H-031-load-guided-block-moves.md
+- packing/campaign/hypotheses/H-032-small-n-optimal-moduli.md
+- packing/campaign/hypotheses/H-033-m2-minus-3-at-n61.md
+- packing/campaign/hypotheses/H-034-fractional-piercing-ceiling.md
+- packing/campaign/hypotheses/H-035-asymptotic-primitive-finite-transfer.md
+- packing/campaign/hypotheses/H-036-robust-restricted-orientation.md
+- packing/campaign/hypotheses/H-037-asymptotic-waste-exponent.md
+- packing/campaign/hypotheses/H-038-record-number-fields.md
+- packing/campaign/hypotheses/H-039-s12-proof-frontier.md
+- packing/campaign/hypotheses/H-040-active-cell-neighbor-walk.md
+- packing/campaign/hypotheses/H-041-repaired-stromquist-point-set.md
+- packing/campaign/hypotheses/H-042-n29-numerical-angle-classes.md
+- packing/campaign/hypotheses/H-043-trump-incidence-rigidity-cores.md
+- packing/campaign/hypotheses/H-044-chunk-expressibility-of-records.md
+- packing/campaign/hypotheses/H-045-chunk-grammar-rediscovery.md
+- packing/campaign/hypotheses/H-046-regular-predecessor-continuation.md
+- packing/campaign/hypotheses/H-047-chunk-regular-predecessors.md
+- packing/campaign/hypotheses/H-048-glued-screen-fidelity.md
+- packing/campaign/hypotheses/H-049-squeezable-20-in-4x6.md
+- packing/campaign/hypotheses/H-050-n71-angle-split-load-bearing.md
+- packing/campaign/hypotheses/H-051-n68-blinded-surgery-calibration.md
+- packing/campaign/hypotheses/H-052-n17-independent-certificate-agreement.md
+- packing/campaign/hypotheses/H-053-unitsquare-rigid-pose-serialization.md
+- packing/campaign/hypotheses/H-054-n50-exact-rational-reconstruction.md
+- packing/campaign/hypotheses/H-055-n54-nested-radical-promotion.md
+- packing/campaign/hypotheses/H-056-n39-degree-five-interval-certificate.md
+- packing/campaign/hypotheses/H-057-n17-parent-bound-parallel-speedup.md
+- packing/campaign/hypotheses/H-058-n68-one-parent-production-serialization.md
+- packing/campaign/hypotheses/H-059-n50-producer-refusal-ordering.md
+- packing/campaign/hypotheses/H-060-n5-local-rigidity.md
+- packing/campaign/hypotheses/H-061-n12-first-party-fractional-certificate.md
+- packing/campaign/hypotheses/H-062-n20-covering-wall.md
+- packing/campaign/hypotheses/H-063-n11-class-certificate.md
+- packing/campaign/hypotheses/H-064-n11-fractional-packing-floor.md
+- packing/campaign/hypotheses/H-065-n11-near-tight-cell-census.md
+- packing/campaign/hypotheses/H-070-n11-inset-seed-release.md
+- packing/campaign/hypotheses/H-090-n11-fixed-atom-core-shrink.md
+- packing/campaign/hypotheses/H-091-n11-narrow-core-shrink.md
+- packing/campaign/hypotheses/H-093-n11-scalar-61-16-certificate.md
+- packing/campaign/hypotheses/H-094-n11-weight-and-site-redesign.md
+- packing/campaign/hypotheses/H-095-n11-adaptive-core-certificate.md
+- packing/campaign/hypotheses/H-096-n11-angle-cell-kernels.md
+- packing/campaign/hypotheses/H-097-n11-existential-witness-menus.md
+- packing/campaign/hypotheses/H-098-n11-segment-measures.md
+- packing/campaign/hypotheses/H-099-trump-d4-finite-support-dual.md
+- packing/campaign/hypotheses/H-100-below-trump-area-density.md
+- packing/campaign/hypotheses/H-101-trump-equality-density.md
+- packing/campaign/hypotheses/H-102-complete-restricted-angle-support-families.md
+- packing/campaign/hypotheses/H-103-complete-typed-global-capture.md
+- packing/campaign/hypotheses/H-104-fixed-side-point-cover-auxiliaries.md
+- packing/campaign/hypotheses/H-105-exp113-overweight-pair-obstruction.md
+- packing/campaign/hypotheses/H-106-continuous-near-axis-ten-point-cover.md
+- packing/campaign/hypotheses/H-107-fixed-site-scalar-completion.md
+- packing/campaign/hypotheses/H-108-near45-canonical-a3-forcing.md
+- packing/campaign/hypotheses/H-109-near45-canonical-a1-a2-forcing.md
+- packing/campaign/hypotheses/H-110-fixed-near-axis-p12-escape.md
+- packing/campaign/hypotheses/H-111-resource-anchor-case-exclusion.md
+- packing/campaign/hypotheses/H-112-six-axis-five-common-angle-optimum.md
+- packing/campaign/hypotheses/H-113-at-most-two-angle-optimum.md
+- packing/campaign/hypotheses/H-114-two-pose-kernel-exclusion.md
+- packing/campaign/hypotheses/H-115-boundary-null-curved-resources.md
+- packing/campaign/hypotheses/H-116-expanded-full-size-dual-support.md
+- packing/campaign/hypotheses/H-117-forced-angle-complexity.md
+- packing/campaign/hypotheses/H-118-capacity-versus-coupled-lp.md
+- packing/campaign/hypotheses/H-119-shared-anchor-correlation.md
+- packing/campaign/hypotheses/H-120-rank-nine-release-exclusion.md
+- packing/campaign/hypotheses/H-121-axis-plus-one-minimizer.md
+- packing/campaign/hypotheses/H-122-diamond-conditional-nine-point-cover.md
+- packing/campaign/hypotheses/H-123-near45-coordinate-localization.md
+- packing/campaign/hypotheses/H-124-full-distinguished-square-compatibility.md
+- packing/campaign/hypotheses/H-125-biquadratic-two-pose-kernel.md
+- packing/campaign/hypotheses/H-126-insertion-saturation-corner-structure.md
+- packing/campaign/hypotheses/H-127-corner-class-surplus-at-q.md
+- packing/campaign/hypotheses/H-128-corner-skeleton-ownership.md
+- packing/campaign/hypotheses/H-129-unit-shrink-fractional-value-near-u.md
+- packing/campaign/hypotheses/H-130-robust-end-band-theorem-at-q.md
+- packing/campaign/hypotheses/H-131-near-axis-counts-at-q.md
+- packing/campaign/hypotheses/H-132-rectangle-no-fit-at-q.md
+- packing/campaign/hypotheses/H-133-plateau-site-artefact.md
+- packing/campaign/hypotheses/H-134-eleven-mark-ownership-set.md
+- packing/campaign/hypotheses/H-135-paired-full-support-pricing.md
+- packing/campaign/hypotheses/H-136-fixed-corner-residual-cover-pilot.md
+- packing/campaign/hypotheses/H-137-single-owner-dual-salvage.md
+- packing/campaign/hypotheses/H-138-four-owner-dual-salvage.md
+- packing/campaign/hypotheses/H-139-owner-footprint-matched-gain.md
+- packing/campaign/hypotheses/H-140-fixed-corner-full-net-cover.md
+- packing/campaign/hypotheses/H-141-four-owner-footprint-matched-gain.md
+- packing/campaign/hypotheses/H-142-five-dot-full-net-cover.md
+- packing/campaign/hypotheses/H-143-independent-five-dot-union.md
+- packing/campaign/hypotheses/H-144-wall-aware-owner-footprint-gain.md
+- packing/campaign/hypotheses/H-145-wall-owner-containment-expansion.md
+- packing/campaign/hypotheses/H-146-fixed-five-dot-wall-expansion.md
+- packing/campaign/hypotheses/H-147-selected-wall-tuple-cover.md
+- packing/campaign/hypotheses/H-148-wall-owner-escape-compatibility.md
+- packing/campaign/hypotheses/H-149-selected-six-dot-cover.md
+- packing/campaign/hypotheses/H-150-sixth-site-two-core-screen.md
+- packing/campaign/hypotheses/H-151-direct-sixth-site-feasibility.md
+- packing/campaign/hypotheses/H-152-threshold-certificate-at-191-50.md
+- packing/campaign/hypotheses/H-153-reoptimised-certificate-on-a-finer-net.md
+- packing/campaign/hypotheses/H-154-where-the-point-atom-ceiling-begins.md
+- packing/campaign/hypotheses/H-155-conditional-threshold-cover-on-an-owner-class.md
+- packing/campaign/hypotheses/H-156-threshold-certificate-past-3-82.md
+- packing/campaign/hypotheses/H-157-refined-owner-sector-patch-breaks-neutrality.md
+- packing/campaign/hypotheses/H-158-unit-parent-domain-excludes-saved-residual.md
+- packing/campaign/hypotheses/H-159-bc303-one-corner-surplus.md
+- packing/campaign/hypotheses/H-160-bc303-t2-charge-filters.md
+- packing/campaign/hypotheses/H-161-bc303-literal-parent-union.md
+- packing/campaign/hypotheses/H-162-bc303-floor-normalized-t2-filter.md
+- packing/campaign/hypotheses/H-163-route-s-threshold-compression.md
+- packing/campaign/hypotheses/H-201-simultaneous-perturbation-move.md
+- packing/campaign/hypotheses/H-202-wall-pressure-dense-objective.md
+- packing/campaign/hypotheses/H-203-basin-hopping-over-the-lp-quench.md
+- packing/campaign/hypotheses/H-204-cooling-schedule-length.md
+- packing/campaign/hypotheses/H-205-projection-search-reaches-feasibility.md
+- packing/campaign/hypotheses/H-207-restarts-beat-schedule.md
+- packing/campaign/hypotheses/H-208-the-drop-decides.md
+- packing/campaign/hypotheses/H-209-no-parameters-reach-a-record.md
+- packing/campaign/hypotheses/H-210-no-valid-packing.md
+- packing/campaign/hypotheses/H-211-the-shake-has-a-sweet-spot.md
+- packing/campaign/hypotheses/H-212-the-workbench-physics-as-a-search.md
+- packing/campaign/hypotheses/H-213-adaptive-animate-integration.md
+- packing/campaign/hypotheses/H-214-presets-have-distinct-kinetics.md
+- packing/campaign/hypotheses/H-215-kinetics-predict-search-quality.md
+- packing/campaign/hypotheses/H-216-point-certificate-at-n6-299-100.md
+- packing/campaign/hypotheses/H-217-route-f1-majority-floor-at-153-40.md
+- packing/campaign/hypotheses/H-218-existing-colgen-raises-a-small-n-floor.md
+- packing/campaign/hypotheses/H-219-t028-seeded-colgen-raises-s18.md
+- packing/campaign/hypotheses/H-220-seedless-colgen-raises-nagamochi-floor.md
+- packing/campaign/hypotheses/H-221-t029-seeded-colgen-raises-s18.md
+- packing/campaign/hypotheses/H-222-n11-octagon-class-at-96-25.md
+- packing/campaign/hypotheses/H-223-n13-point-covering-at-399-100.md
+- packing/campaign/hypotheses/H-224-n17-ceiling-family-at-23-5.md
+- packing/campaign/hypotheses/H-225-n26-seeded-certificate-at-53-10.md
+- packing/campaign/hypotheses/H-226-n21-one-spare-wall-charge-lemma.md
+- packing/campaign/hypotheses/H-227-n32-one-spare-wall-charge-lemma.md
+- packing/campaign/hypotheses/H-228-n12-unshrunk-covering-at-side-4.md
+- packing/campaign/hypotheses/H-229-n11-tilted-anchor-case-at-96-25.md
+- packing/campaign/hypotheses/H-230-a6-family-violates-a-gap-wedge-conflict.md
+- packing/campaign/hypotheses/H-231-theta-on-pose-cells.md
+- packing/campaign/hypotheses/H-232-n11-all-deep-class-ring-centre-atom.md
+- packing/campaign/hypotheses/H-236-n11-fixed-angle-global-optimality-at-trump.md
+- packing/campaign/hypotheses/H-237-n11-trump-angular-capture-radius.md
+- packing/campaign/hypotheses/H-238-n11-no-third-class-minimum-below-stromquist.md
+- packing/campaign/hypotheses/H-239-n11-rotational-core-relaxation-constant.md
+- packing/campaign/hypotheses/H-240-n21-additive-certificate-at-4-88.md
+- packing/campaign/hypotheses/H-241-n12-additive-route-dead-above-3-9609.md
+- packing/campaign/hypotheses/H-242-n11-rung1-pilot-cost-away-from-trump.md
+- packing/campaign/hypotheses/H-243-n17-triangle-free-34-family-at-4-63.md
+- packing/campaign/hypotheses/H-244-n12-triangle-free-24-family-at-3-99.md
+- packing/campaign/hypotheses/H-245-n11-family-side-profile-along-the-tilt.md
+- packing/campaign/hypotheses/H-246-n11-two-class-certificate-closes-a-rung1-box.md
+- packing/campaign/hypotheses/H-247-n11-rung0-widened-to-half-width-1e-4.md
+- packing/campaign/hypotheses/H-248-n17-clique-weighted-family-at-4-675.md
+- packing/campaign/hypotheses/H-249-n12-rectangle-density-certificate-at-3-99.md
+- packing/campaign/hypotheses/H-250-n50-rectangle-density-certificate-at-7-3.md
+- packing/campaign/hypotheses/H-251-n82-rectangle-density-certificate-at-9-3.md
+- packing/campaign/hypotheses/H-252-n45-zero-margin-closed-cover-at-7.md
+- packing/campaign/ideas.md
+- packing/campaign/remediation-pass.md
+- packing/campaign/research-loop-logbook/README.md
+- packing/campaign/research-loop-logbook/run-001-2026-08-25-four-hour-r4-r5.md
+- packing/campaign/research-loop-logbook/run-002-2026-08-29-overnight-promotion-blocks.md
+- packing/campaign/resource-usage/README.md
+- packing/campaign/results/annealing/README.md
+- packing/campaign/review-planning-oversight.md
+- packing/campaign/series/series-000-smoke-and-calibration/README.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-001-baseline-sweep.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-002-baseline-n10-positive-control.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-003-baseline-n11-target.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-004-baseline-n12-negative-control.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-005-basin-entry-n11.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-006-lp-quench-n5-n10-n11.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-007-quench-bracket-n5.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-008-quench-bracket-n10.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-009-quench-bracket-n11.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-010-angle-kink-n11.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-011-h-020-n17.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-012-h-024-n29-angle-classes.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-013-h-026-trump-tangent.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-014-h-032-n3-optimal-moduli.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-015-h-032-n4-optimal-moduli.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-016-h-010-stromquist-printed-figure14.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-017-h-041-stromquist-repaired-figure14.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-018-h-021-n3-basin-event-calibration.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-019-h-021-n4-basin-event-calibration.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-020-h-021-n5-basin-event-calibration.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-021-h-021-n3-basin-event-v3.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-022-h-021-n3-basin-event-v3-completion.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-023-h-021-n4-basin-event-v3.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-024-h-021-n4-basin-event-v3-repair.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-025-h-021-n5-basin-event-v3.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-026-h-021-n6-basin-event-v3.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-027-h-021-n6-basin-event-v3-retention.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-028-h-021-n7-basin-event-v3.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-029-h-021-n8-basin-event-v3.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-030-h-021-n9-basin-event-v3.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-031-h-002-n10-source-return.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-032-h-021-terminal-component-controls.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-033-h-023-n5-equal-side-face.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-034-h-023-n5-angle-sheet.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-035-h-023-n5-tangent-cones.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-036-h-023-n5-second-order-obstruction.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-037-h-042-n29-numerical-angle-classes.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-038-h-023-n5-tangent-inventory.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-039-h-023-n5-fixed-angle-polytope.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-040-h-023-n5-rotating-release-paths.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-041-h-023-n5-rotating-release-proof-perimeter.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-042-h-023-n5-endpoint-aware-rotating-paths.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-043-h-023-n5-minus-w-obstruction.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-044-h-023-n5-minus-w-row-jets.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-045-h-023-n5-minus-w-scale-and-controls.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-046-h-044-chunk-expressibility-verdict.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-047-h-053-unitsquare-rigid-pose-serialization.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-048-h-054-n50-exact-rational-reconstruction.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-049-h-052-n17-independent-certificate-agreement.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-050-h-054-n50-source-semantics-e1-localization.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-051-h-053-n68-refusal-localization.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-052-h-052-n17-resumable-certificate-agreement.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-053-h-057-n17-parent-bound-parallel-speedup.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-054-h-058-n68-one-parent-production-serialization.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-055-h-059-n50-producer-refusal-ordering.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-056-h-052-n17-sequential-larger-prefix.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-057-h-058-n68-one-parent-localization.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-058-h-060-n5-chart-and-proof.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-059-h-052-n17-fresh-successor-completion.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-060-h-064-n11-fractional-packing-floor.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-061-h-062-m5-covering-wall.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-062-h-062-m5-midpoint-rung.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-063-h-065-n11-near-tight-cell-census.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-064-h-063-two-threshold-class-program.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-070-h-064-n11-fractional-resume.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-071-h-070-n11-inset-seed-release.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-110-h-090-core-shrink.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-111-h-091-core-shrink.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-113-h-099-trump-support-screen.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-114-h-104-fixed-side-auxiliaries.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-115-h-105-fixed-candidate-pair-obstruction.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-116-h-093-scalar-61-16.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-117-h-106-continuous-near-axis.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-118-h-107-fixed-site-completion.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-119-h-108-near45-a3-forcing.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-120-h-109-near45-a1-a2-forcing.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-121-h-110-fixed-p12-escape.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-122-diamond-conditional-cover-screen.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-123-near45-localization.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-124-full-square-compatibility-screen.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-125-h124-complete-residual-cover.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-126-h099-complete-graph-candidate.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-127-h124-collision-augmented-axis-cover.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-128-h099-seven-row-support-ceiling.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-129-h125-finite-kernel-obstruction.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-130-h130-robust-end-band-at-q.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-131-h131-near-axis-counts-replay-at-q.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-132-h134-segment-mark-cover-at-q.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-133-h128-corner-skeleton-verdict-at-q.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-134-paired-full-support-pricing.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-135-fixed-corner-residual-cover-pilot.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-136-repaired-fixed-corner-pilot.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-137-corner-dual-salvage.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-138-four-owner-dual-salvage.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-139-fixed-corner-full-net-replay.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-140-h139-owner-footprint-matched-gain.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-141-independent-dual-salvage-audit.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-142-one-owner-completion.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-143-h141-four-owner-footprint-matched-gain.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-144-five-dot-full-net-replay.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-145-independent-five-dot-union.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-146-wall-owner-footprints.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-147-wall-owner-containment.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-148-fixed-five-dot-wall-expansion.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-149-selected-wall-tuple-cover.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-150-wall-owner-escape-compatibility.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-151-selected-six-dot-cover.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-152-sixth-site-two-core-screen.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-153-direct-sixth-site-feasibility.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-154-h157-sixteen-sector-refinement-limit.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-155-h156-finer-net-threshold-dilation.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-156-unit-parent-saved-residual.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-157-bc303-literal-t1-witness.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-158-bc303-t2-charge-filters.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-159-bc303-literal-parent-union.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-160-bc303-floor-normalized-t2-filter-analysis.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-161-h163-route-s-threshold-compression.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-162-h218-stock-colgen-small-n-floors.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-163-h219-t028-next-rung.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-164-h218-n20-971-200-new-four-grid.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-165-h218-n20-243-50-four-grid.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-166-h220-n32-29-5-seedless-auto-windows5.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-167-h220-n31-57-10-seedless-auto-windows5.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-168-h220-n30-559-100-seedless-auto-windows5.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-169-h220-n26-513-100-seedless-auto-windows5.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-170-h220-n27-525-100-seedless-auto-windows5.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-171-h220-n29-548-100-seedless-auto-windows5.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-172-h220-n45-684-100-seedless-auto-windows5.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-173-h220-n44-675-100-seedless-auto-windows5.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-174-h218-n19-481-100-four-grid.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-175-h218-n12-793-200-t017-auto.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-176-h218-n12-397-100-t017-auto.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-177-h218-n19-241-50-four-grid.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-178-h218-n12-793-200-t017-four-grid.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-179-h221-n18-4679-1000-t029-auto.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-201-arm-calibration.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-202-round-1-perturbation.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-203-round-1-pressure.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-204-basin-hopping.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-205-round-1-schedule.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-206-projection-search.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-207-h207-what-restarts-buy.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-208-h211-the-shake-dial.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-209-h211-an-unretained-compaction-pass.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-210-h210-blind-runs-are-not-packings.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-211-h213-adaptive-animate-integration.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-212-h214-preset-signatures.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-213-h224-n17-23-5-ceiling-family.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-214-h223-n13-399-100-window-covering.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-215-h225-n26-53-10-seeded-covering.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-216-h226-n21-one-spare-inventory.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-217-h227-n32-one-spare-inventory.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-218-h224-n17-23-5-ceiling-family-cap32.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-219-h222-n11-96-25-octagon-class.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-220-h222-n11-96-25-class-refreeze.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-227-h237-trump-growth-cone-capture-radius.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-228-h238-descent-filtered-census.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-229-h240-n21-point-certificate-122-25.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-230-h241-n12-additive-ceiling-3-9609.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-231-h236-rung-zero-cell-tree.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-232-h236-rung-zero-closed.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-233-h241-n12-ceiling-settles-below-12.md
+- packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-234-h242-rung1-pilot.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/checkpoint-hour-02-decision.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/commissioning-gate-minute-015.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/commissioning-gate-minute-030.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/commissioning-gate-minute-060.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/commissioning-gate-minute-090.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/gate-hour-04-decision.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/launch-t-plus-00.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-230-adaptive-core-contract.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-230-control-matrix.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-230-postfreeze-control-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-230-source-distinct-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-231-next-phases-slice-01.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-231-next-phases-slice-02.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-231-slice-01-independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-disposition.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-leg-02-microreceipt-001.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-233-disposition.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-251-readiness-audit.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-252-exp116-next-discriminator.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/checkpoint-hour-02.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/gate-hour-04.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-242-full-size-density-proof-contract.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-243-graph-depth-assessment.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-245-typed-backbone-theorem-packet.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-254-pair-separator-independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-254-pair-separator-readiness.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-254-post-screen-next-discriminator.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-254-support-controls-independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-254-support-controls-slice-01.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-254-support-screen-spec.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-254-target-readiness-independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-254-target-readiness-slice-02.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-255-angle-instrument-design.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-255-center-correlated-collision.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-255-center-correlated-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-255-conditional-compatibility-assessment.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-255-fixed-side-discriminator-independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-255-fixed-side-discriminator-readiness.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-255-independent-reader-cold-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-255-near-axis-reader-independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-255-restricted-angle-assessment.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-255-theorem3-source-control-independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-255-theorem3-source-control-slice-01.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/checkpoint-hour-02.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/gate-hour-04.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/session-089-negative-control-environment.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-027/bc-259-adoption-instrument-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-027/bc-259-support-adoption-author.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-027/bc-259-support-adoption-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-027/bc-264-kernel-acceptance-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-027/bc-264-kernel-feature-design.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-027/bc-265-calibration-extension-design.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-027/bc-265-calibration-extension-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-260-direct-hybrid-contracts.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-261-uniform-leaf-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-270-capacity-comparison-design.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-270-parent-compatibility-design.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-270-parent-compatibility-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-271-comparator-design-assessment.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-273-analytic-adversary.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-273-analytic-author.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-273-analytic-independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-273-analytic-release-protocol.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-273-cap-scope-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-273-release-domain-design.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-273-release-domain-independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-275-first-checkpoint-allocation.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-276-negative-slide-adversary.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-276-negative-slide-author.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-276-negative-slide-domain-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-276-negative-slide-independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-276-negative-slide-protocol.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-277-boundary-band-domain-design.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-277-boundary-band-domain-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-278-boundary-band-adversary.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-278-boundary-band-author.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-278-boundary-band-independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-278-boundary-band-protocol.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-279-wall-core-adversary.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-279-wall-core-author.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-279-wall-core-control-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-279-wall-core-independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-279-wall-core-mathematical-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-279-wall-core-protocol.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-280-full-angle-domain-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-280-full-angle-release-domain.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-281-full-angle-adversary.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-281-full-angle-author.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-281-full-angle-independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-281-full-angle-protocol-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-281-full-angle-release-protocol.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-282-inherited-premise-inventory.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-282-residual-domain-inventory.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-282-residual-skeleton-admission.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/bc-282-residual-skeleton-design.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-028/midpoint-allocation.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/README.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/lane-a-corner-structure.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/lane-b-angle-classes.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/lane-c-n10-transfer.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/lane-d-contacts-and-closing-route.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/lane-e-ownership-set-at-q.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/lane-f-plateau-at-3-82.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/lane-g-anchors-at-q.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/pr127-checkpoint/README.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/adjacent-corner-two-owner-counterexample.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/bc-305-ownership-results.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/fixed-outer-pairs-bottom-corner-incompatibility.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/new-outer-constraints-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/outer-middle-capacity-two-proof.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/outer-pair-corner-counterexample.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/outer-pair-equal-angle-and-cell-exclusions.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/outer-pair-screen-contract-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/remaining-eight-segment-capacity-four.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/robust-outer-corner-incompatibility.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/shared-segment-support-bounds.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/gaps-to-global-bound.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/dual-salvage-contract.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/endpoint-footprint-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/five-dot-transfer-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/multiple-footprint-domain-contract.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/owner-footprint-contract.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/owner-pose-refinement-contract.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/point-extension-lemma.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/receipts-and-multi-domain-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/sprint-report.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-033/pr145-checkpoint/README.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/ceiling-reader-191-50.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/h157-independent-review/correction-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/h157-independent-review/review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a-net-refinement-and-shrink-tax.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a2-threshold-certificate-on-finer-nets.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a3-threshold-loop-at-383-100.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a4-separating-the-plateau-dual-at-153-40.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a5-the-fixed-support-maximum-under-the-atom-classes.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a6-structural-sites-and-the-depth-one-certificate.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-b-threshold-atoms-at-191-50.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-e-lp-runs-61-16-and-191-50.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-m0-fixed-support-polish-191-50.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-t-theory-cuts-and-routes.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-t2-cap-and-next-cuts.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-t2-plateau-reader.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-x1-corner-conditioning-is-mass-neutral.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-x2-owner-instrument-survey.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-x3-box-sweep-capacity-correction.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-x3-containment-atoms-do-not-cut.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-x4-sixteen-sectors-and-the-refinement-limit.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/reconciliation-upstream-142-2026-09-09.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/reconciliation-upstream-2026-09-09.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/exp-161-block57-command.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/g4-n11-191-50-net17/g4-n11-191-50-net17-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/g4-n11-191-50-net9/g4-n11-191-50-net9-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/g4-n11-31-8-net9/g4-n11-31-8-net9-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/h216-n6-299-100-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/h216-n6-299-100-sites2-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/m3-t018-net8-span/README.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/m3-t018-net8/README.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/m3-t018-selftest-span/README.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/m3-t018-selftest/README.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n11-191-50-auto60-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n11-191-50-grid4-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n11-191-50-t025-auto60-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n11-191-50-t025-windows5-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n11-191-50-t026-auto60-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n11-31-8-t025-auto60-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n11-381-100-t025-auto60-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n11-383-100-grid-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n11-383-100-grid4-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n11-383-100-t025-seed-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n11-77-20-t025-auto60-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n11-96-25-t025-auto60-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n12-3969-1000-grid-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n12-3969-1000-t017-grid4-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n12-3969-1000-t017-seed-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n12-397-100-t017-grid4-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n17-23-5-grid-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n17-23-5-t019-seed-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n17-23-5-t019-windows5-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n17-23-5-t019-windows6-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n17-23-5-t019-windows7-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n18-117-25-t019-seed-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n18-117-25-t019-windows5-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n18-117-25-t027-seed-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n18-467-100-grid-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n18-467-100-t019-seed-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n18-469-100-t019-seed-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n18-47-10-t019-seed-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-037/n19-97-20-t020-windows6-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-038/leftover-side-ranking.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-038/n12-3969-1000-t017-grid4-windows7-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-038/n12-397-100-t017-grid4-windows7-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-038/n17-23-5-t019-grid4-windows8-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-038/n17-461-100-t019-auto-windows5-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-038/n18-4675-1000-t027-auto-windows5-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-038/n19-241-50-t020-auto-windows6-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-038/n19-481-100-t020-auto-windows6-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-038/n20-971-200-t021-auto-windows6-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-038/n20-973-200-t021-grid4-windows7-2400-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-038/n20-973-200-t021-grid4-windows7-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-038/n21-97-20-t021-auto-windows6-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-038/second-wave-nagamochi-triage.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n12-397-100-t017-auto-windows7-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n12-793-200-t017-auto-windows7-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n12-793-200-t017-grid4-windows7-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n18-1871-400-t028-auto-windows5-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n18-4679-1000-t029-auto-windows5-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n19-241-50-t020-grid4-windows7-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n19-481-100-t020-grid4-windows7-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n20-243-50-t021-grid4-windows7-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n20-971-200-t021-grid4-windows7-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n26-513-100-auto-windows5-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n27-525-100-auto-windows5-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n29-548-100-auto-windows5-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n30-559-100-auto-windows5-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n31-57-10-auto-windows5-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n32-29-5-auto-windows5-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n44-675-100-auto-windows5-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n45-684-100-auto-windows5-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/ranked-queue.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/w5-think-g4n9-hosted-walls.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-040/bentz2016-one-spare-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-040/exp-213-n17-23-5-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-040/exp-214-n13-399-100-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-040/exp-215-n26-53-10-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-040/exp-218-n17-23-5-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-040/exp-219-n11-96-25-clip-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-040/exp-220-n11-96-25-class-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-040/h222-registration-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-040/h230-gap-wedge-derivation.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-040/h232-ring-centre-derivation.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-040/h232-ring-centre-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-041/bootstrap-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-041/deep-gate-wall-clock-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-041/exp-221-n17-kleddamag-unrestricted-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-041/exp-222-n17-repricing-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-041/exp-223-grid-escape/exp-223-grid-escape-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-041/exp-224-n19-10x/exp-224-n19-10x-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-041/exp-225-n27-n28-548-100-rebump-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-041/exp-226-n11-net2880-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/agenda-042/exp-229-n21-122-25-receipt.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/exp-113-h-099-trump-support-screen/independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/exp-114-h-104-fixed-side-auxiliaries/independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/exp-114-h-104-fixed-side-auxiliaries/target-output-independent-review.md
+- packing/campaign/series/series-000-smoke-and-calibration/results/exp-115-h-105-fixed-candidate-pair-obstruction/independent-review.md
+- packing/cases/n11_five_dot_cover/after-direct-family-decision.md
+- packing/cases/n11_five_dot_cover/after-exp148-strategy.md
+- packing/cases/n11_five_dot_cover/after-exp149-strategy.md
+- packing/cases/n11_five_dot_cover/after-exp150-decision-contract.md
+- packing/cases/n11_five_dot_cover/after-six-dot-refutation-strategy.md
+- packing/cases/n11_five_dot_cover/after-wall-gain-strategy.md
+- packing/cases/n11_five_dot_cover/direct-sixth-site-contract.md
+- packing/cases/n11_five_dot_cover/direct-sixth-site-source-admission.md
+- packing/cases/n11_five_dot_cover/fixed-pattern-source-admission.md
+- packing/cases/n11_five_dot_cover/overnight-strategy-review.md
+- packing/cases/n11_five_dot_cover/owner-case-census-design.md
+- packing/cases/n11_five_dot_cover/owner-compatibility-contract.md
+- packing/cases/n11_five_dot_cover/owner-compatibility-source-admission.md
+- packing/cases/n11_five_dot_cover/selected-cover-source-admission.md
+- packing/cases/n11_five_dot_cover/six-dot-source-admission.md
+- packing/cases/n11_five_dot_cover/sixth-site-cutting-contract.md
+- packing/cases/n11_five_dot_cover/sixth-site-screen-source-admission.md
+- packing/cases/n11_five_dot_cover/two-attainer-source-admission.md
+- packing/cases/n11_five_dot_cover/union-contract.md
+- packing/cases/n11_five_dot_cover/wall-constructor-contract.md
+- packing/cases/n11_five_dot_cover/wall-containment-source-admission.md
+- packing/cases/n11_five_dot_cover/wall-source-admission.md
+- packing/cases/n11_fractional_certificate/a6_dual_upper/README.md
+- packing/cases/n11_fractional_certificate/lean-spike/README.md
+- packing/cases/n11_fractional_certificate/t-022-dilation-limit-proof.md
+- packing/cases/n11_fractional_certificate/t-024-dilation-limit-proof.md
+- packing/cases/n11_fractional_certificate/thirdparty/README.md
+- packing/cases/n11_fractional_certificate/threshold-atom-orbit-admission.md
+- packing/cases/n11_threshold_certificate/t-025-threshold-certificate-proof.md
+- packing/cases/n11_threshold_certificate/t-026-dilation-limit-proof.md
+- packing/cases/w3_lower_bound_directions/README.md
+- packing/frankensim-probe/README.md
+- packing/frontier/README.md
+- packing/frontier/n-001.md
+- packing/frontier/n-002.md
+- packing/frontier/n-003.md
+- packing/frontier/n-004.md
+- packing/frontier/n-005.md
+- packing/frontier/n-006.md
+- packing/frontier/n-007.md
+- packing/frontier/n-008.md
+- packing/frontier/n-009.md
+- packing/frontier/n-010.md
+- packing/frontier/n-011.md
+- packing/frontier/n-012.md
+- packing/frontier/n-013.md
+- packing/frontier/n-014.md
+- packing/frontier/n-015.md
+- packing/frontier/n-016.md
+- packing/frontier/n-017.md
+- packing/frontier/n-018.md
+- packing/frontier/n-019.md
+- packing/frontier/n-020.md
+- packing/frontier/n-021.md
+- packing/frontier/n-022.md
+- packing/frontier/n-023.md
+- packing/frontier/n-024.md
+- packing/frontier/n-025.md
+- packing/frontier/n-026.md
+- packing/frontier/n-027.md
+- packing/frontier/n-028.md
+- packing/frontier/n-029.md
+- packing/frontier/n-030.md
+- packing/frontier/n-031.md
+- packing/frontier/n-032.md
+- packing/frontier/n-033.md
+- packing/frontier/n-034.md
+- packing/frontier/n-035.md
+- packing/frontier/n-036.md
+- packing/frontier/n-037.md
+- packing/frontier/n-038.md
+- packing/frontier/n-039.md
+- packing/frontier/n-040.md
+- packing/frontier/n-041.md
+- packing/frontier/n-042.md
+- packing/frontier/n-043.md
+- packing/frontier/n-044.md
+- packing/frontier/n-045.md
+- packing/frontier/n-046.md
+- packing/frontier/n-047.md
+- packing/frontier/n-048.md
+- packing/frontier/n-049.md
+- packing/frontier/n-050.md
+- packing/frontier/n-051.md
+- packing/frontier/n-052.md
+- packing/frontier/n-053.md
+- packing/frontier/n-054.md
+- packing/frontier/n-055.md
+- packing/frontier/n-056.md
+- packing/frontier/n-057.md
+- packing/frontier/n-058.md
+- packing/frontier/n-059.md
+- packing/frontier/n-060.md
+- packing/frontier/n-061.md
+- packing/frontier/n-062.md
+- packing/frontier/n-063.md
+- packing/frontier/n-064.md
+- packing/frontier/n-065.md
+- packing/frontier/n-066.md
+- packing/frontier/n-067.md
+- packing/frontier/n-068.md
+- packing/frontier/n-069.md
+- packing/frontier/n-070.md
+- packing/frontier/n-071.md
+- packing/frontier/n-072.md
+- packing/frontier/n-073.md
+- packing/frontier/n-074.md
+- packing/frontier/n-075.md
+- packing/frontier/n-076.md
+- packing/frontier/n-077.md
+- packing/frontier/n-078.md
+- packing/frontier/n-079.md
+- packing/frontier/n-080.md
+- packing/frontier/n-081.md
+- packing/frontier/n-082.md
+- packing/frontier/n-083.md
+- packing/frontier/n-084.md
+- packing/frontier/n-085.md
+- packing/frontier/n-086.md
+- packing/frontier/n-087.md
+- packing/frontier/n-088.md
+- packing/frontier/n-089.md
+- packing/frontier/n-090.md
+- packing/frontier/n-091.md
+- packing/frontier/n-092.md
+- packing/frontier/n-093.md
+- packing/frontier/n-094.md
+- packing/frontier/n-095.md
+- packing/frontier/n-096.md
+- packing/frontier/n-097.md
+- packing/frontier/n-098.md
+- packing/frontier/n-099.md
+- packing/frontier/n-100.md
+- packing/frontier/n-101.md
+- packing/frontier/n-102.md
+- packing/frontier/n-103.md
+- packing/frontier/n-104.md
+- packing/frontier/n-105.md
+- packing/frontier/n-106.md
+- packing/frontier/n-107.md
+- packing/frontier/n-108.md
+- packing/frontier/n-109.md
+- packing/frontier/n-110.md
+- packing/frontier/n-111.md
+- packing/frontier/n-112.md
+- packing/frontier/n-113.md
+- packing/frontier/n-114.md
+- packing/frontier/n-115.md
+- packing/frontier/n-116.md
+- packing/frontier/n-117.md
+- packing/frontier/n-118.md
+- packing/frontier/n-119.md
+- packing/frontier/n-120.md
+- packing/frontier/n-121.md
+- packing/frontier/n-122.md
+- packing/frontier/n-123.md
+- packing/frontier/n-124.md
+- packing/frontier/n-125.md
+- packing/frontier/n-126.md
+- packing/frontier/n-127.md
+- packing/frontier/n-128.md
+- packing/frontier/n-129.md
+- packing/frontier/n-130.md
+- packing/frontier/n-131.md
+- packing/frontier/n-132.md
+- packing/frontier/n-133.md
+- packing/frontier/n-134.md
+- packing/frontier/n-135.md
+- packing/frontier/n-136.md
+- packing/frontier/n-137.md
+- packing/frontier/n-138.md
+- packing/frontier/n-139.md
+- packing/frontier/n-140.md
+- packing/frontier/n-141.md
+- packing/frontier/n-142.md
+- packing/frontier/n-143.md
+- packing/frontier/n-144.md
+- packing/frontier/n-145.md
+- packing/frontier/n-146.md
+- packing/frontier/n-147.md
+- packing/frontier/n-148.md
+- packing/frontier/n-149.md
+- packing/frontier/n-150.md
+- packing/frontier/n-151.md
+- packing/frontier/n-152.md
+- packing/frontier/n-153.md
+- packing/frontier/n-154.md
+- packing/frontier/n-155.md
+- packing/frontier/n-156.md
+- packing/frontier/n-157.md
+- packing/frontier/n-158.md
+- packing/frontier/n-159.md
+- packing/frontier/n-160.md
+- packing/frontier/n-161.md
+- packing/frontier/n-162.md
+- packing/frontier/n-163.md
+- packing/frontier/n-164.md
+- packing/frontier/n-165.md
+- packing/frontier/n-166.md
+- packing/frontier/n-167.md
+- packing/frontier/n-168.md
+- packing/frontier/n-169.md
+- packing/frontier/n-170.md
+- packing/frontier/n-171.md
+- packing/frontier/n-172.md
+- packing/frontier/n-173.md
+- packing/frontier/n-174.md
+- packing/frontier/n-175.md
+- packing/frontier/n-176.md
+- packing/frontier/n-177.md
+- packing/frontier/n-178.md
+- packing/frontier/n-179.md
+- packing/frontier/n-180.md
+- packing/frontier/n-181.md
+- packing/frontier/n-182.md
+- packing/frontier/n-183.md
+- packing/frontier/n-184.md
+- packing/frontier/n-185.md
+- packing/frontier/n-186.md
+- packing/frontier/n-187.md
+- packing/frontier/n-188.md
+- packing/frontier/n-189.md
+- packing/frontier/n-190.md
+- packing/frontier/n-191.md
+- packing/frontier/n-192.md
+- packing/frontier/n-193.md
+- packing/frontier/n-194.md
+- packing/frontier/n-195.md
+- packing/frontier/n-196.md
+- packing/frontier/n-197.md
+- packing/frontier/n-198.md
+- packing/frontier/n-199.md
+- packing/frontier/n-200.md
+- packing/frontier/n-201.md
+- packing/frontier/n-202.md
+- packing/frontier/n-203.md
+- packing/frontier/n-204.md
+- packing/frontier/n-205.md
+- packing/frontier/n-206.md
+- packing/frontier/n-207.md
+- packing/frontier/n-208.md
+- packing/frontier/n-209.md
+- packing/frontier/n-210.md
+- packing/frontier/n-211.md
+- packing/frontier/n-212.md
+- packing/frontier/n-213.md
+- packing/frontier/n-214.md
+- packing/frontier/n-215.md
+- packing/frontier/n-216.md
+- packing/frontier/n-217.md
+- packing/frontier/n-218.md
+- packing/frontier/n-219.md
+- packing/frontier/n-220.md
+- packing/frontier/n-221.md
+- packing/frontier/n-222.md
+- packing/frontier/n-223.md
+- packing/frontier/n-224.md
+- packing/frontier/n-225.md
+- packing/frontier/n-226.md
+- packing/frontier/n-227.md
+- packing/frontier/n-228.md
+- packing/frontier/n-229.md
+- packing/frontier/n-230.md
+- packing/frontier/n-231.md
+- packing/frontier/n-232.md
+- packing/frontier/n-233.md
+- packing/frontier/n-234.md
+- packing/frontier/n-235.md
+- packing/frontier/n-236.md
+- packing/frontier/n-237.md
+- packing/frontier/n-238.md
+- packing/frontier/n-239.md
+- packing/frontier/n-240.md
+- packing/frontier/n-241.md
+- packing/frontier/n-242.md
+- packing/frontier/n-243.md
+- packing/frontier/n-244.md
+- packing/frontier/n-245.md
+- packing/frontier/n-246.md
+- packing/frontier/n-247.md
+- packing/frontier/n-248.md
+- packing/frontier/n-249.md
+- packing/frontier/n-250.md
+- packing/frontier/n-251.md
+- packing/frontier/n-252.md
+- packing/frontier/n-253.md
+- packing/frontier/n-254.md
+- packing/frontier/n-255.md
+- packing/frontier/n-256.md
+- packing/frontier/n-257.md
+- packing/frontier/n-258.md
+- packing/frontier/n-259.md
+- packing/frontier/n-260.md
+- packing/frontier/n-261.md
+- packing/frontier/n-262.md
+- packing/frontier/n-263.md
+- packing/frontier/n-264.md
+- packing/frontier/n-265.md
+- packing/frontier/n-266.md
+- packing/frontier/n-267.md
+- packing/frontier/n-268.md
+- packing/frontier/n-269.md
+- packing/frontier/n-270.md
+- packing/frontier/n-271.md
+- packing/frontier/n-272.md
+- packing/frontier/n-273.md
+- packing/frontier/n-274.md
+- packing/frontier/n-275.md
+- packing/frontier/n-276.md
+- packing/frontier/n-277.md
+- packing/frontier/n-278.md
+- packing/frontier/n-279.md
+- packing/frontier/n-280.md
+- packing/frontier/n-281.md
+- packing/frontier/n-282.md
+- packing/frontier/n-283.md
+- packing/frontier/n-284.md
+- packing/frontier/n-285.md
+- packing/frontier/n-286.md
+- packing/frontier/n-287.md
+- packing/frontier/n-288.md
+- packing/frontier/n-289.md
+- packing/frontier/n-290.md
+- packing/frontier/n-291.md
+- packing/frontier/n-292.md
+- packing/frontier/n-293.md
+- packing/frontier/n-294.md
+- packing/frontier/n-295.md
+- packing/frontier/n-296.md
+- packing/frontier/n-297.md
+- packing/frontier/n-298.md
+- packing/frontier/n-299.md
+- packing/frontier/n-300.md
+- packing/frontier/n-301.md
+- packing/frontier/n-302.md
+- packing/frontier/n-303.md
+- packing/frontier/n-304.md
+- packing/frontier/n-305.md
+- packing/frontier/n-306.md
+- packing/frontier/n-307.md
+- packing/frontier/n-308.md
+- packing/frontier/n-309.md
+- packing/frontier/n-310.md
+- packing/frontier/n-311.md
+- packing/frontier/n-312.md
+- packing/frontier/n-313.md
+- packing/frontier/n-314.md
+- packing/frontier/n-315.md
+- packing/frontier/n-316.md
+- packing/frontier/n-317.md
+- packing/frontier/n-318.md
+- packing/frontier/n-319.md
+- packing/frontier/n-320.md
+- packing/frontier/n-321.md
+- packing/frontier/n-322.md
+- packing/frontier/n-323.md
+- packing/frontier/n-324.md
+- packing/strategies/preview/README.md
+
+keep:
+- path: SYNOPSIS.md
+  span: "+W"
+  reason: "names a coefficient direction, paired with the `-W` bridge, which stays code"
+- path: SYNOPSIS.md
+  span: "2966942899906512939318226046481160904289990651293931822604648091421/500000000000000000000000000000000000000000000000000000000000000000"
+  reason: "a 67-digit exact side: typeset math cannot break it, so it ran 1142px wide on the site and pushed the page sideways; a code span wraps"
+- path: development.md
+  span: "3.14"
+  reason: "the Python version this project runs, not a number"
+- path: docs/project/reviews/review-2026-09-01-agenda013-overnight-synthesis.md
+  span: "17--19"
+  reason: "a range written with a TeX-style double hyphen; as math it reads as two minus signs"
+- path: docs/project/reviews/review-2026-09-01-agenda013-overnight-synthesis.md
+  span: "17--19, 37, 39, 41, 50, 51, 53--55, 68, 69"
+  reason: "a list of cases with TeX-style double-hyphen ranges; as math they read as minus signs"
+- path: docs/project/reviews/review-2026-09-01-agenda013-overnight-synthesis.md
+  span: "3-4-5"
+  reason: "the name of the 3-4-5 right triangle, not a subtraction"
+- path: docs/project/reviews/review-2026-09-03-bc149-h052-agreement-independent-review.md
+  span: "[:170]"
+  reason: "a Python slice"
+- path: docs/project/reviews/review-2026-09-03-bc149-h052-agreement-independent-review.md
+  span: "[:33]"
+  reason: "a Python slice"
+- path: docs/project/reviews/review-2026-09-03-bc150-4-5058-adoption-packet.md
+  span: "0x5058"
+  reason: "a hexadecimal seed literal"
+- path: docs/project/reviews/review-2026-09-03-bc154-w9-disposition-d044-d046.md
+  span: "30m"
+  reason: "a timebox of thirty minutes, not 30 times m"
+- path: docs/project/reviews/review-2026-09-04-pr78-s11-adversarial.md
+  span: "13,000/167 s"
+  reason: "a duration in seconds; as math the unit reads as the side s"
+- path: docs/project/reviews/review-2026-09-04-pr78-s11-adversarial.md
+  span: "4,866/110 s"
+  reason: "a duration in seconds; as math the unit reads as the side s"
+- path: docs/project/reviews/review-2026-09-07-n17-comprehensive-review.md
+  span: "g++"
+  reason: "the compiler's name"
+- path: docs/project/reviews/review-2026-09-12-workbench-stack-architecture.md
+  span: "n: 5"
+  reason: "a YAML key and value from a recipe"
+- path: docs/project/reviews/review-2026-09-13-n11-bc329-integrated-run-sheet.md
+  span: "4 / 5400 / 7200 / 2"
+  reason: "the frozen worker and time-allowance tuple of a command, not a quotient"
+- path: docs/project/reviews/review-2026-09-13-n11-bc329-run-sheet-identity-refusal.md
+  span: "4 / 5400 / 7200 / 2"
+  reason: "the frozen worker and time-allowance tuple of a command, not a quotient"
+- path: docs/project/reviews/review-2026-09-13-n11-bc329-run-sheet-parent-final.md
+  span: "4 / 5400 / 7200 / 2"
+  reason: "the frozen worker and time-allowance tuple of a command, not a quotient"
+- path: docs/project/reviews/review-2026-09-13-n11-bc329-three-profile-run-sheet.md
+  span: "4 / 5400 / 7200 / 2"
+  reason: "the frozen worker and time-allowance tuple of a command, not a quotient"
+- path: docs/project/reviews/review-2026-09-22-tokoharu-density-mathematics.md
+  span: "g++"
+  reason: "the compiler's name"
+- path: docs/project/reviews/review-2026-09-24-rung0-closed-tree.md
+  span: "9c92406…"
+  reason: "an abbreviated blob digest"
+- path: docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md
+  span: "0x1p-45"
+  reason: "a hexadecimal floating-point literal from the verifier's source"
+- path: docs/project/reviews/review-2026-09-27-wand125-rectangle-scaling.md
+  span: "g++"
+  reason: "the compiler's name"
+- path: docs/project/reviews/review-2026-09-28-density-solver-comparison.md
+  span: "g++"
+  reason: "the compiler's name"
+- path: docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
+  span: "0x1p+0 0x1p+0"
+  reason: "hexadecimal floating-point literals from the verifier's input"
+- path: docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
+  span: "c++"
+  reason: "the compiler's name"
+- path: docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
+  span: "g++"
+  reason: "the compiler's name"
+- path: docs/project/specs/active/plan-2026-08-24-deterministic-svg-rendering-toolkit.md
+  span: "--"
+  reason: "the literal character pair XML comments forbid"
+- path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
+  span: "158 × 3.3 + 165 × 0.9 + 1.2 = 671 s"
+  reason: "a duration in seconds; as math the unit reads as the side s"
+- path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
+  span: "323 × 0.5 s"
+  reason: "a duration in seconds; as math the unit reads as the side s"
+- path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
+  span: "324 × 1.5 s"
+  reason: "a duration in seconds; as math the unit reads as the side s"
+- path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
+  span: "324 × 2.6 s = 842.4 s"
+  reason: "a duration in seconds; as math the unit reads as the side s"
+- path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
+  span: "O"
+  reason: "a badge glyph the poster draws, listed beside the glyphs `=` and `≈`"
+- path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
+  span: "R"
+  reason: "a badge glyph the poster draws, listed beside the glyphs `=` and `≈`"
+- path: docs/project/specs/active/plan-2026-09-07-known-best-atlas-video.md
+  span: "U+2208, U+221A, U+2248, U+2264-2265, U+2308-230B"
+  reason: "Unicode code points in a CSS unicode-range"
+- path: docs/project/specs/active/plan-2026-09-07-math-text-face.md
+  span: "100 900"
+  reason: "a CSS font-weight range"
+- path: docs/project/specs/active/plan-2026-09-07-math-text-face.md
+  span: "200 900"
+  reason: "a CSS font-weight range"
+- path: docs/project/specs/active/plan-2026-09-13-n11-bc329-three-profile-run-sheet.md
+  span: "4 / 5400 / 7200 / 2"
+  reason: "the frozen worker and time-allowance tuple of a command, not a quotient"
+- path: docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md
+  span: "00"
+  reason: "a hexadecimal byte of the avc1 codec string (the constraint flags), not a number"
+- path: docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md
+  span: "28"
+  reason: "a hexadecimal byte of the avc1 codec string (the level), not a number"
+- path: docs/project/specs/active/plan-2026-09-21-video-delivery-profiles.md
+  span: "64"
+  reason: "a hexadecimal byte of the avc1 codec string (the profile), not a number"
+- path: packages/workbench/README.md
+  span: "2m 20s"
+  reason: "a duration of two minutes twenty seconds"
+- path: docs/project/reviews/review-2026-09-29-n11-optimality.md
+  span: "49880161…"
+  reason: "an abbreviated inventory digest, beside the composition's `eaad8f14…`"
+- path: docs/project/specs/active/plan-2026-09-29-native-rectangle-verification.md
+  span: "0-12027"
+  reason: "a range of census rows; as math it reads as a difference"
+- path: packing/campaign/agendas/agenda-024-post-381-24h-portfolio.md
+  span: "04"
+  reason: "the two-digit `NN` slot of a file name: a string, not a value"
+- path: packing/campaign/agendas/agenda-024-post-381-24h-portfolio.md
+  span: "08"
+  reason: "the two-digit `NN` slot of a file name: a string, not a value"
+- path: packing/campaign/agendas/agenda-024-post-381-24h-portfolio.md
+  span: "12"
+  reason: "the two-digit `NN` slot of a file name: a string, not a value"
+- path: packing/campaign/agendas/agenda-024-post-381-24h-portfolio.md
+  span: "16"
+  reason: "the two-digit `NN` slot of a file name: a string, not a value"
+- path: packing/campaign/agendas/agenda-024-post-381-24h-portfolio.md
+  span: "20"
+  reason: "the two-digit `NN` slot of a file name: a string, not a value"
+- path: packing/campaign/agendas/agenda-024-post-381-24h-portfolio.md
+  span: "24"
+  reason: "the two-digit `NN` slot of a file name: a string, not a value"
+- path: packing/campaign/agent-sessions/session-082-bc141-n54-source-contract.md
+  span: "w{i:02d}"
+  reason: "a Python format string"
+- path: packing/campaign/agent-sessions/session-082-bc141-n54-source-contract.md
+  span: "y_up"
+  reason: "a declared orientation value, beside `y_down`"
+- path: packing/campaign/explorations/X-015-the-map-and-the-three-programs.md
+  span: "021"
+  reason: "agenda numbers, identifiers"
+- path: packing/campaign/explorations/X-015-the-map-and-the-three-programs.md
+  span: "022"
+  reason: "agenda numbers, identifiers"
+- path: packing/campaign/explorations/X-047-low-n-angles-after-the-parent-core-advance.md
+  span: "B*(cos + sin) = 0.99885"
+  reason: "`*` reads as multiplication; the tool sets it as a star, `B^{\\ast}`"
+- path: packing/campaign/research-loop-logbook/run-002-2026-08-29-overnight-promotion-blocks.md
+  span: "16/16"
+  reason: "a rank tally, 16 of 16, which a table cell would set as a stacked fraction"
+- path: packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-057-h-058-n68-one-parent-localization.md
+  span: "2^14 * 5^14"
+  reason: "`*` is multiplication; the tool reads it as a star, `^{\\ast}`, which the proof refuses, so `--apply` leaves it code while the ratchet still reads it as math"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-024/commissioning-gate-minute-090.md
+  span: "R"
+  reason: "the process-state code quoted from the process table"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-230-control-matrix.md
+  span: "0/7"
+  reason: "a noncanonical spelling of a rational string, which is what the control mutates; as math it reads as a value"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-230-control-matrix.md
+  span: "01"
+  reason: "a noncanonical spelling of a rational string, which is what the control mutates; as math it reads as a value"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-230-control-matrix.md
+  span: "2/4"
+  reason: "a noncanonical spelling of a rational string, which is what the control mutates; as math it reads as a value"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-disposition.md
+  span: "R"
+  reason: "the process-state code quoted from the process table"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-leg-02-microreceipt-001.md
+  span: "27576"
+  reason: "an execution-session id"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-leg-02-microreceipt-001.md
+  span: "64895"
+  reason: "process ids"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-leg-02-microreceipt-001.md
+  span: "64896"
+  reason: "process ids"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-leg-02-microreceipt-001.md
+  span: "R"
+  reason: "the process-state code quoted from the process table"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/checkpoint-hour-02.md
+  span: "R"
+  reason: "the process-state code quoted from the process table"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/gate-hour-04.md
+  span: "36339"
+  reason: "an execution-session id and a process id"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/gate-hour-04.md
+  span: "72209"
+  reason: "an execution-session id and a process id"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/gate-hour-04.md
+  span: "72291"
+  reason: "a process id"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-254-post-screen-next-discriminator.md
+  span: "0"
+  reason: "the verifier's return value, set against `None`"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-026/bc-254-post-screen-next-discriminator.md
+  span: "R*(R+1)/2"
+  reason: "`*` is multiplication here; the tool reads it as a star, `R^{\\ast}`"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/lane-c-n10-transfer.md
+  span: "A_ub"
+  reason: "SciPy linprog's parameter name"
+- path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
+  span: "31/8"
+  reason: "the LaTeX source a writer types, set beside `\\frac{31}{8}` as source"
+- path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
+  span: "E-…"
+  reason: "an evidence-id prefix, given as an example of what stays code"
+- path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
+  span: "]("
+  reason: "the characters of a Markdown link, which the sentence names as text"
+- path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
+  span: "k^2 - 4"
+  reason: "the LaTeX source a writer types, listed with `\\sqrt{2}` and `\\ldots` as source"
+- path: packing/atlas/enumerated/README.md
+  span: "0"
+  reason: "a base-four digit of a stable identity string, literal text"
+- path: packing/atlas/enumerated/README.md
+  span: "1"
+  reason: "a base-four digit of a stable identity string, literal text"
+- path: packing/atlas/enumerated/README.md
+  span: "2"
+  reason: "a base-four digit of a stable identity string, literal text"
+- path: packing/atlas/enumerated/README.md
+  span: "3"
+  reason: "a base-four digit of a stable identity string, literal text"
+- path: packing/atlas/known-best/FIGURE-PLAYBOOK.md
+  span: "R"
+  reason: "the rigidity badge's glyph as the figure draws it"
+- path: packing/atlas/known-best/FIGURE-PLAYBOOK.md
+  span: "g"
+  reason: "the SVG `g` element"
+- path: packing/atlas/known-best/README.md
+  span: "F"
+  reason: "the label of free-count minimality, paired with the chunk label `C`, not a variable"
+- path: packing/atlas/known-best/video/spikes/v1-slideshow/NOTES.md
+  span: "(p/q)"
+  reason: "a token of the exact-form grammar, listed with `INT` and `sqrt(...)`"
+- path: packing/atlas/known-best/video/spikes/v1-slideshow/NOTES.md
+  span: "0,198 198,198 198,0 0,0"
+  reason: "an SVG polygon's points attribute, literal text"
+- path: packing/atlas/known-best/video/spikes/v1-slideshow/NOTES.md
+  span: "O"
+  reason: "a badge glyph as the page draws it"
+- path: packing/atlas/known-best/video/spikes/v1-slideshow/NOTES.md
+  span: "R"
+  reason: "a badge glyph as the page draws it"
+- path: packing/atlas/known-best/video/spikes/v1-slideshow/NOTES.md
+  span: "U+2208, U+221A, U+2248, U+2264-2265, U+2308-230B"
+  reason: "a CSS unicode-range value"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "028"
+  reason: "a pair's zero-padded file label"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "110 100 307"
+  reason: "a command's arguments"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "= R"
+  reason: "a badge-glyph combination as the panel draws it"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "O"
+  reason: "a badge glyph as the panel draws it"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "O ="
+  reason: "a badge-glyph combination as the panel draws it"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "O = R"
+  reason: "a badge-glyph combination as the panel draws it"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "R"
+  reason: "a badge glyph as the panel draws it"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "a"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "b"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "c"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "d"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "k"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "l"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "m"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "p"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "s"
+  reason: "a keyboard key"
+- path: packing/atlas/known-best/video/spikes/v2-transitions/NOTES.md
+  span: "t"
+  reason: "a keyboard key"
+- path: packing/atlas/rendering/README.md
+  span: "E"
+  reason: "a keyboard key"
+- path: packing/atlas/rendering/README.md
+  span: "Q"
+  reason: "a keyboard key"
+- path: packing/cases/n11_five_dot_cover/after-wall-gain-strategy.md
+  span: "(0,45,90,135,180)"
+  reason: "a literal index tuple; as math its tail reads as one grouped number"
+- path: packing/cases/n11_five_dot_cover/fixed-pattern-source-admission.md
+  span: "[1,1,1,1]"
+  reason: "a mask array exactly as the coordinator reported it"
+- path: packing/cases/n11_five_dot_cover/fixed-pattern-source-admission.md
+  span: "[32768,32768,32768,32768]"
+  reason: "a mask array exactly as the coordinator reported it"
+- path: packing/cases/n11_fractional_certificate/threshold-atom-orbit-admission.md
+  span: "0"
+  reason: "a process exit status, literal text"
+- path: packing/cases/n11_fractional_certificate/threshold-atom-orbit-admission.md
+  span: "1"
+  reason: "a process exit status, literal text"
+- path: packing/cases/n11_fractional_certificate/threshold-atom-orbit-admission.md
+  span: "2"
+  reason: "a process exit status, literal text"
+- path: docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md
+  span: "+-6.5"
+  reason: "a test input, written with an ASCII plus-minus; as math it reads as a plus and a minus"
+
+exempt:
+- path: docs/project/research/research-2026-08-22-packing-11-unit-squares.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/research/research-2026-08-23-search-philosophy-and-landscape-cartography.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/research/research-2026-09-09-simulation-mechanisms-for-packing.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/research/research-2026-09-10-x027-structural-helpers.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: docs/project/research/research-2026-09-12-n11-selection-routing-first-principles.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: docs/project/reviews/review-2026-08-23-toolkit-docs-and-first-experiments.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/reviews/review-2026-09-03-bc152-curve-selection-source-verification.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/reviews/review-2026-09-03-bc153-h060-proof-independent-review.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/reviews/review-2026-09-04-t018-thirdparty-package.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/reviews/review-2026-09-12-n11-selection-routing-first-principles.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: docs/project/reviews/review-2026-09-21-n17-kleddamag-461300-99853.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/reviews/review-2026-09-27-evand-s32-s12.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md
+  reason: "quotes an external source verbatim, and the tool would retype the quoted spans; archived wording is never edited to look tidy"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/bc-303-first-wave-selection.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/corner-owner-sector-footprints.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-032/proofs/fixed-cover-transfer-review.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: packing/cases/n11_five_dot_cover/unit-parent-centre-contract.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: packing/cases/n11_five_dot_cover/wall-containment-contract.md
+  reason: "exact bytes pinned by devtools.replay_bc303_t1_witness, which replays the BC-303 T1 witness against these sources at their recorded git blob hashes"
+- path: packing/cases/trump11/isolation-theorem.md
+  reason: "exact bytes pinned by devtools.review_trump_local_theorem, which binds the theorem document to its review revision f9ba790a and refuses any content drift"
+- path: packing/resources/README.md
+  reason: "catalogues the archive transcriptions annotations: its code spans quote what the raw extraction and the PDFs print, character for character, and math would retype them"

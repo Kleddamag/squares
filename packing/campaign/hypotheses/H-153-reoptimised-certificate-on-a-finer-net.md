@@ -67,18 +67,18 @@ hypothesis:
 ---
 # H-153 — What the Finer Net Is Worth Once the Measure Moves
 
-The shrink is a tax of `L(1/B - 1)` in side, paid once, and a finer direction net buys
-it back: `0.0088` at `3.82` on the retained net, `0.0011` at 1440 steps.
+The shrink is a tax of $L(1/B - 1)$ in side, paid once, and a finer direction net buys
+it back: $0.0088$ at $3.82$ on the retained net, $0.0011$ at 1440 steps.
 [X-023](../explorations/X-023-three-losses-and-a-new-atom.md) separates that loss from
 the two that follow it, and this claim is about the first one after the measure has been
 allowed to move.
 
 The frozen atoms transfer to every finer net without losing coverage, which is what
 makes the re-optimisation worth running rather than merely worth pricing: their dilation
-supremum rises to `3.81660950` at 1440 directions with the weights untouched.
-The ceiling at `191/50` says where that road ends.
-Scaled to unit squares it caps the one-body point method at side `3.8288`, so a
-certificate on a finer net has about `0.012` of unit side left, and the question this
+supremum rises to $3.81660950$ at 1440 directions with the weights untouched.
+The ceiling at $191/50$ says where that road ends.
+Scaled to unit squares it caps the one-body point method at side $3.8288$, so a
+certificate on a finer net has about $0.012$ of unit side left, and the question this
 claim asks is how much of it the LP takes.
 
 [Lane T](../series/series-000-smoke-and-calibration/results/agenda-034/lane-t-theory-cuts-and-routes.md)

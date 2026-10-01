@@ -296,9 +296,9 @@ every bound so the two cannot be confused.
 
 | Case | Exact side | Certified at `eps = 1e-15` |
 | --- | --- | --- |
-| `n = 5` | `2 + √2/2` | `2.70710678118654973150762554866` |
-| `n = 10` | `3 + 1/√2` | `3.70710678118655073150762554866` |
-| `n = 11` | Trump’s degree-8 root | `3.87708359002281755439148708292` |
+| $n = 5$ | $2 + \sqrt{2}/2$ | $2.70710678118654973150762554866$ |
+| $n = 10$ | $3 + 1/\sqrt{2}$ | $3.70710678118655073150762554866$ |
+| $n = 11$ | Trump’s degree-8 root | $3.87708359002281755439148708292$ |
 
 Each is strictly above its exact side and falls monotonically with `eps`. Separately,
 the operator certifies a unique root of Trump’s published degree-8 polynomial in a box
@@ -331,8 +331,8 @@ The equivalence check — evaluate the symbolic map at the published values and 
 to reproduce the numeric walk — caught a token pattern that dropped the minus in
 `rotate(-&a;)`, mirroring a square about its own rotation centre while leaving a
 perfectly plausible packing.
-It surfaced at square 15, `x = 1.8300` against `2.1700`, symmetric about the rotation
-centre at `x = 2`.
+It surfaced at square 15, $x = 1.8300$ against $2.1700$, symmetric about the rotation
+centre at $x = 2$.
 
 The second is the one worth keeping.
 Verified **unrelaxed**, the chain cannot decide exactly 52 pairs — and those are
@@ -343,7 +343,7 @@ touch.
 ## Claim boundary
 
 This certifies an upper bound at a declared relaxation.
-It is not the optimum, not an optimality result — the `n = 29` bound gap of about `0.46`
+It is not the optimum, not an optimality result — the $n = 29$ bound gap of about $0.46$
 is untouched — and not a promotion.
 
 The certificate sits `5.23371e-5` below the standing verified ceiling, which is the gap

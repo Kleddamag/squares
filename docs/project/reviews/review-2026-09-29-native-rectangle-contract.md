@@ -33,7 +33,7 @@ $$
 M=\int_{[0,L]^2}g=\sum_jw_j.
 $$
 
-Require $0<M<n$. Merely trusting a stored `mass` or `n` field is insufficient; the
+Require $0<M<n$. Merely trusting a stored `mass` or $n$ field is insufficient; the
 admitted count and side must agree with the requested claim.
 There is no need to import source-generated interval input or verification summaries to
 establish these facts.
@@ -49,12 +49,12 @@ All coefficients are rational and $c_r^2+s_r^2=1$. Check $L>0$, $0<B<1$, $L^2>2B
 $t_{200}^2+2t_{200}-1\ge0$, and $B(1+D)<1$. The source’s stronger $B(1+D)+3/20000<1$ is
 sufficient when the implementation retains its smoothing-safe preconditions.
 
-At every net angle prove that every legal closed side-$B$ square has integral at least
+At every net angle prove that every legal closed side-`B` square has integral at least
 $\gamma$, where $\gamma\ge1$ is a declared exact threshold.
 Choosing $\gamma=1$ proves the packing obstruction; reproducing the source’s stronger
 $10001/10000$ is optional and must be recorded explicitly.
 Every orientation has a nearby net direction with discrepancy at most $\arctan D$. The
-corresponding concentric side-$B$ square lies strictly inside the unit square, because
+corresponding concentric side-`B` square lies strictly inside the unit square, because
 $B(\cos\delta+\sin|\delta|)\le B(1+D)<1$. Symmetry reduces arbitrary orientations to the
 net’s arc.
 
@@ -84,10 +84,10 @@ $$
 When $u,v>0$, the rotated rectangle
 
 $$
-P=\{m+\xi e_1+\eta e_2:|\xi|\le u,\ |\eta|\le v\}
+P=\lbrace m+\xi e_1+\eta e_2:|\xi|\le u,\ |\eta|\le v\rbrace
 $$
 
-lies inside every translated side-$B$ square whose centre belongs to the box.
+lies inside every translated side-`B` square whose centre belongs to the box.
 Indeed, the change in the first local coordinate between two such centres and the
 midpoint is at most $|c|h_x+|s|h_y$, with the analogous bound for the second.
 Adding these changes to $u,v$ gives $B/2$. Equivalently, $P$ is the intersection of all

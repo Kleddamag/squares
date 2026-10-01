@@ -86,9 +86,10 @@ admissible center domain.
 
 The minimum-of-total trap uses two density-one rectangles, $[3/4,5/4]\times[3/4,5/4]$
 and $[7/4,9/4]\times[3/4,5/4]$, an axis-aligned square of side $1/2$, and the center
-segment $[1,2]\times\{1\}$. Each endpoint square captures area $1/4$ from one rectangle.
-The midpoint square touches both rectangles only along edges, so its captured area is
-zero. Taking the minimum of endpoint total coverage would incorrectly claim $1/4$
+segment $[1,2]\times\lbrace1\rbrace$. Each endpoint square captures area $1/4$ from one
+rectangle. The midpoint square touches both rectangles only along edges, so its captured
+area is zero.
+Taking the minimum of endpoint total coverage would incorrectly claim $1/4$
 everywhere. Taking the minimum separately for each rectangle gives zero.
 This control exercises the bound primitive; its two-rectangle density is not a
 D4-admitted packing certificate.
@@ -332,7 +333,7 @@ threshold-token budget and the retained receipts.
 | Cover every parent orientation | The 12,028 intervals form a contiguous partition from zero to half-tangent $207107/500000$, whose square plus twice itself exceeds one. Weighted D4 symmetry folds each parent independently into this covered range. |
 | Cover every legal center | The parent margin is $h(u)=A(1+2u-u^2)/(2(1+u^2))$. Its only interior stationary point is a maximum, so each row’s union of center domains is $[r,L-r]^2$ with $r=\min(h(a),h(b))$. The native search encloses that full domain. |
 | Put each closed core strictly inside its parent | Four vertex-projection quadratics are minimized over every row, including interior minima. The recorded minimum numerator is $1/10^{12}>0$. Quarter-turn symmetry supplies the other parent axis. |
-| Bound total charge on disjoint cores | Nonnegative point charges are counted once; each $k$-of-$m$ feature contributes at most $\lfloor m/k\rfloor$ times its weight. Strict core containment makes the closed cores disjoint even when parent boundaries touch. The exact budget is $10999479944/10^9$. |
+| Bound total charge on disjoint cores | Nonnegative point charges are counted once; each $k$-of-`m` feature contributes at most $\lfloor m/k\rfloor$ times its weight. Strict core containment makes the closed cores disjoint even when parent boundaries touch. The exact budget is $10999479944/10^9$. |
 | Prove complete coverage at the required charge | The historical native decision certifies all 12,028 rows at $\Gamma=999962528/10^9$, with zero stalls, exhausted budgets or refutations. The source’s complete event-cell sweeps provide a distinct coverage method. |
 | Transfer coverage to the strict packing bound | The exact gap is $11\Gamma-M=107864/10^9>0$. Scaling gives $L/A=31/8$; compactness and attainment make the exclusion a strict lower bound $s(11)>31/8$. |
 

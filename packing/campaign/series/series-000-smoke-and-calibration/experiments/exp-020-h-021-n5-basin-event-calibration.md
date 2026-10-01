@@ -84,7 +84,7 @@ evidence for the n=5 identity work; they do not count basins and do not support 
 or unseen-mass inference.
 
 The four quenches took 14.82 seconds, with per-seed times from 2.93 to 4.90 seconds.
-The cost increase from `n=4` remains modest, so a later fixed instrument can revisit
+The cost increase from $n=4$ remains modest, so a later fixed instrument can revisit
 this cell cheaply. Until then, additional seeds would multiply blocked examples rather
 than increase scientific coverage.
 

@@ -96,7 +96,7 @@ reject an invalid certificate.
 
 ## Selection Boundary
 
-This record becomes measurable only when BC-111 selects `n = 54`. Selection of `n = 39`
+This record becomes measurable only when BC-111 selects $n = 54$. Selection of $n = 39$
 leaves it registered and unmeasured for this run.
 
 The accepted lift must match the retained witness under the frozen compatibility

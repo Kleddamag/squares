@@ -1,6 +1,6 @@
 # PR 127: Research Handoff Review
 
-The stack contains useful, reproducible progress toward `n = 11`, but its original
+The stack contains useful, reproducible progress toward $n = 11$, but its original
 handoff was not ready to merge.
 Eight findings required corrections to proof claims, acceptance rules and continuation
 inputs. Those corrections are complete, and the corrected checkpoint is certified by the
@@ -31,12 +31,12 @@ The corrected integration tree has its own checkpoint evidence below.
 
 | Finding | Correction and evidence | Bead |
 | --- | --- | --- |
-| R1: Rounded-cover and enlargement arguments fail | Lane E’s proposed scaled T-018 measure assigns only `85353/100000` to the closed `3/500` neighborhood of `[0,1]²`. Its source control covers the square with `4001/4000`. Two exact distance calculations agree on all 1,121 atoms. Separated 45-degree squares also refute the stated `1+2δ` enlargement rule. Retract those helper claims; E.4 does not use them. | `think-vf8g` |
+| R1: Rounded-cover and enlargement arguments fail | Lane E’s proposed scaled T-018 measure assigns only $\frac{85353}{100000}$ to the closed $\frac{3}{500}$ neighborhood of $[0,1]^2$. Its source control covers the square with $\frac{4001}{4000}$. Two exact distance calculations agree on all 1,121 atoms. Separated 45-degree squares also refute the stated $1+2\delta$ enlargement rule. Retract those helper claims; E.4 does not use them. | `think-vf8g` |
 | R2: Deep-corner clip can omit a legitimate off-net core | Triangle avoidance belongs to the actual unit square, not an enclosing square at the net angle. A rational off-net counterexample refutes `a+b>d+cos θ_net`; the safe core-avoidance clip uses `d+B cos θ_net`. | `think-d2hz` |
-| R3: Ratio obstruction overstates its domain | Mark banking proves the ratio optimum is at most one. The exact dual proves equality on site set A only. Ratio normalization and the `w_f=1` slice have the same exclusion power; slice form may improve numerical resolution. | `think-ll7y` |
+| R3: Ratio obstruction overstates its domain | Mark banking proves the ratio optimum is at most one. The exact dual proves equality on site set A only. Ratio normalization and the $w_f=1$ slice have the same exclusion power; slice form may improve numerical resolution. | `think-ll7y` |
 | R4: Feasible lower bounds cannot establish the proposed upper bounds | A family below eleven does not confirm H-129. A family at least eleven obstructs the specified one-body certificate, leaving ownership and compatibility open. H-128’s unsuccessful finite support does not refute its continuum support claim. Rejecting a strip explanation does not rule out full-dual pricing. | `think-3r92` |
 | R5: Handoff scripts and state are not safely runnable | The BC-303 fence assumes `/proc/loadavg` and returns success on failed decisions. Lane E’s distance helper misses segment crossings. Session 100 references absent scratch state, and its resume fence remaps rows already on the new net. Promote guarded tools, retain source history and name the remaining unavailable state. | `think-7z36` |
-| R6: Rounded angles enlarge exact theorem domains | The upper endpoint of cell 39 is approximately `10.38746567°`; cell 117 starts above `30°`. Use rational cell membership as the theorem and degree values only as approximate labels. Positive exact cover transfer is global over that declared angle domain. | `think-2i9v` |
+| R6: Rounded angles enlarge exact theorem domains | The upper endpoint of cell 39 is approximately $10.38746567^\circ$; cell 117 starts above $30^\circ$. Use rational cell membership as the theorem and degree values only as approximate labels. Positive exact cover transfer is global over that declared angle domain. | `think-2i9v` |
 | R7: Retained-net cap has a sign and endpoint error | The cap needs the absolute angular offset and strict separation for closed cores. Its corrected value remains below the Trump upper bound; the old exact endpoint does not follow. Touching closed squares need separation before being used as a depth-one control. | `think-keyj` |
 | R8: Closeout overstates completed work | Run 4 of session 109 is partial; run 5 never ran. Remove unfinished prose placeholders, discharge inherited agenda work at its actual scope, carry complements and missing inputs forward, and resolve certification debt with actual qualifying evidence. | `think-pztz` |
 
@@ -48,8 +48,8 @@ New tools have source controls and deliberate failure controls.
 ## Evidence That Survives
 
 The BC-303 segment reader independently verifies ten horizontal segments of length
-`1/10` at `q=96/25`, tolerance `3/500`: 24,381 boxes, 10,960 certified leaves, 1,231
-discards, no failures, and exact volume `243/128`. Every leaf and discard is re-decided
+$1/10$ at $q=96/25$, tolerance $3/500$: 24,381 boxes, 10,960 certified leaves, 1,231
+discards, no failures, and exact volume $243/128$. Every leaf and discard is re-decided
 rationally. The
 [replay receipt](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/pr127-segment-replay.json)
 and
@@ -60,9 +60,10 @@ portable load reporting and a failing exit status when verification fails.
 The corner-pair theorem and exact angle-cell exclusions retain their earlier independent
 replays; their scope corrections do not remove those results.
 
-A stronger control was already available in exp-070: scale its retained `B=9977/10000`
-family by `10000/9977`. This produces unit squares inside side `38200/9977 < 96/25`
-while preserving depth one and total weight `21342289572/2055263195 ≈ 10.3842`. The
+A stronger control was already available in exp-070: scale its retained $B=9977/10000$
+family by $10000/9977$. This produces unit squares inside side $38200/9977 < 96/25$
+while preserving depth one and total weight $21342289572/2055263195 \approx 10.3842$.
+The
 [transported control](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/pr127-unit-control.json)
 replayed at maximum depth one over 2,702,488 vertices with 19,335 exact tie decisions.
 Only the mass-at-least-eleven condition fails, as expected.
@@ -79,12 +80,13 @@ as a mathematical negative.
 1. **Ownership, principal direction.** Use E.4, corner-pair containment and the exact
    angle cells together.
    Sharing a segment does not force touching.
-   Instead, for a horizontal segment of length `ℓ` centered at `m`, two
-   interior-disjoint squares within distance `δ` admit a separating edge normal `v`
-   whose two facing support values lie in the interval centered at `v·m` of radius
-   `ℓ|v_x|/2+δ`. The resulting thin pose slabs are a candidate reduction for a guarded
-   pair reader. Test compatibility constraints rather than assume unique ownership.
-2. **Fractional depth, efficiency direction.** Start from the retained `10.3842`
+   Instead, for a horizontal segment of length $\ell$ centered at $m$, two
+   interior-disjoint squares within distance $\delta$ admit a separating edge normal $v$
+   whose two facing support values lie in the interval centered at $v\cdot m$ of radius
+   $\ell|v_x|/2+\delta$. The resulting thin pose slabs are a candidate reduction for a
+   guarded pair reader.
+   Test compatibility constraints rather than assume unique ownership.
+2. **Fractional depth, efficiency direction.** Start from the retained $10.3842$
    control, preserve exact angle identities when transporting or resuming, and measure
    improvement against it.
    Full-dual pricing is the first diagnostic; the historical 32-row cap did not settle
@@ -141,7 +143,7 @@ three previously failing full-only components: negative controls, slow behaviora
 and exhaustive exact behavioral tests.
 The retained raw stdout from the failed `ef8a2e72` full invocation records passes for
 four expensive full-only components: the 324-case atlas rebuild, the full
-translation-escape screen, exact rational grid replay and the `n=40` rigidity replay.
+translation-escape screen, exact rational grid replay and the $n=40$ rigidity replay.
 The exact reviewed `ef8a2e72..cbe9fd76` path diff changes only handoff records,
 generated views, the selected-entry control and the negative- control snapshot guard,
 leaving those four component sources and inputs unaffected.

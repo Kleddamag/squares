@@ -211,7 +211,7 @@ Two results arrived together.
 Guzhou0806’s R012, published on 20 September 2026, claims `s(17) >= 461300/99999`. Its
 attribution names Mira’s `17squares` at a September commit, and following that pointer
 found a second unrecorded result, Mira’s weighted certificate of 7 September at
-`s(17) > 4.613028635886`. Both descend from this repository’s own `T-019` certificate
+$s(17) > 4.613028635886$. Both descend from this repository’s own `T-019` certificate
 and credit it. Mira’s was published a few hours after the 2026-09-07 GitHub check that
 produced the earlier packet, which is why the record missed it; R012 postdates that
 check by two weeks.
@@ -240,7 +240,7 @@ It costs nothing, because R012’s value is larger and is the one registered.
 The identifier was contended, and the contest is settled.
 Pull request 208, from the open overnight stack, also claimed `T-031`, and the
 register’s contiguity rule leaves no free number below it, so whichever landed second
-had to renumber. The stack merged into `main` first and kept `T-031` for the `n = 11`
+had to renumber. The stack merged into `main` first and kept `T-031` for the $n = 11$
 octagon corner class; this result took `T-032` when `main` was merged into this branch,
 and its row moved to the end of the register, because `devtools/check_results.py` reads
 contiguity positionally rather than by label.

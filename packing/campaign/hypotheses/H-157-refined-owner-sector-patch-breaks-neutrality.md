@@ -127,10 +127,10 @@ The later outcome and independent source corrections are recorded below.
 [Lane X1](../series/series-000-smoke-and-calibration/results/agenda-034/lane-x1-corner-conditioning-is-mass-neutral.md)
 measured neutrality for a particular fractional family and endpoint patches.
 The proposed sixteen-bin refinement asks whether each refined subclass removes more of
-that same family. With the retained weights in multiples of `1/8`, a survivor below ten
-has weight at most `79/8`.
+that same family. With the retained weights in multiples of $1/8$, a survivor below ten
+has weight at most $79/8$.
 
-The reported gap `0.014978` to a nearest survivor motivates a geometric experiment.
+The reported gap $0.014978$ to a nearest survivor motivates a geometric experiment.
 It does not prove that doubling the bins makes every patch reach that core.
 Before admission, define the claim’s geometric reach, prove the refined patch
 containment and nesting, and specify exact algebraic directions or certified rational
@@ -159,8 +159,8 @@ The registered direction refutes on one surviving class, and six survive.
 | `bottom-left:m1:J6/16` | `m1:j3` | **10** | 1 |
 | `bottom-left:m1:J7/16` | `m1:j3` | **10** | 1 |
 | `bottom-left:m1:J8/16` | `m1:j4` | **10** | 1 |
-| `bottom-left:m1:J9/16` | `m1:j4` | `19/2` | `3/2` |
-| `bottom-left:m2:J6/16` | `m2:j3` | `19/2` | `3/2` |
+| `bottom-left:m1:J9/16` | `m1:j4` | $\frac{19}{2}$ | $\frac{3}{2}$ |
+| `bottom-left:m2:J6/16` | `m2:j3` | $\frac{19}{2}$ | $\frac{3}{2}$ |
 | `bottom-left:m2:J7/16` | `m2:j3` | **10** | 1 |
 | `bottom-left:m2:J8/16` | `m2:j4` | **10** | 1 |
 | `bottom-left:m2:J9/16` | `m2:j4` | **10** | 1 |
@@ -197,7 +197,7 @@ neutral ray in the declared finite retained universe leaves survivor weight ten;
 any guaranteed patch inside owner core `#59` leaves weight at least ten.
 Equality in T2 also requires a common mark inside the patch.
 A positive-area corner subpatch of core59 for its singleton class omits both marks and
-leaves `43/4`, so containment in the owner alone does not give equality.
+leaves $43/4$, so containment in the owner alone does not give equality.
 
 For a partition retaining the neutral ray or pose, these statements leave a class
 unclosed by point covers on the stated relaxation.

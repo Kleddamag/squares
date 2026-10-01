@@ -25,7 +25,7 @@ uv run --frozen --all-extras --group dev python -m devtools.produce_threshold_ce
 | Quantity | Value |
 | --- | --- |
 | Status | unresolved |
-| Finished objective | `11.610187542` |
+| Finished objective | $11.610187542$ |
 | Atom orbits | 30 |
 | Rows | 155 |
 | Sites / site orbits | 456 / 65 |
@@ -34,8 +34,8 @@ uv run --frozen --all-extras --group dev python -m devtools.produce_threshold_ce
 | Seed stopped | round limit 8 reached |
 
 The finished covering is not below 11. On the 119 seed rows the atom loop did drop below
-11 (`atoms-1` `10.649351`, `atoms-2` `10.279720`, `atoms-3` `9.968931`). The two row
-rounds then restored mass to `11.299091` (137 rows) and `11.610188` (155 rows).
+11 (`atoms-1` $10.649351$, `atoms-2` $10.279720$, `atoms-3` $9.968931$). The two row
+rounds then restored mass to $11.299091$ (137 rows) and $11.610188$ (155 rows).
 That dip is a covering of the seed rows only.
 
 Artifacts in this directory: `receipt.json`, `trajectory.json`, `atoms.json`,

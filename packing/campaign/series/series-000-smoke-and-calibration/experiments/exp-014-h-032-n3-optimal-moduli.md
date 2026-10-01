@@ -73,10 +73,10 @@ It classifies the entire physical optimal set, not merely the displayed sliding 
 
 Center the side-2 container at the origin and let `w = |cos(theta)| + |sin(theta)|` for
 one unit square.
-Its axis-aligned half-extent is `w/2`, so containment bounds each center
-coordinate by `1 - w/2`. Projection onto either local square axis is therefore at most
+Its axis-aligned half-extent is $w/2$, so containment bounds each center
+coordinate by $1 - w/2$. Projection onto either local square axis is therefore at most
 
-`w(1 - w/2) = 1/2 - (w - 1)^2/2`.
+$w(1 - w/2) = 1/2 - (w - 1)^{2}/2$.
 
 The container center lies in every contained unit square and lies in the interior of
 every genuinely rotated one.
@@ -86,14 +86,14 @@ Thus every side-2 packing here is axis-aligned.
 
 ## Exact cell and quotient classification
 
-Axis-aligned lower-left coordinates lie in `[0,1]^2`. For each of the three square
+Axis-aligned lower-left coordinates lie in $[0,1]^{2}$. For each of the three square
 pairs, nonoverlap is the four-way disjunction left, right, below, or above.
 Of 64 raw choices, exactly 24 are consistent; every consistent cell has one free
 coordinate. Their endpoints are 24 labelled corner states and their 24 edges form two
-disjoint 12-cycles, so the labelled Betti vector is `[2,2]`.
+disjoint 12-cycles, so the labelled Betti vector is $[2,2]$.
 
 Relabelling identifies the two cycles and reduces the complex to the four-cycle of the
-missing grid corner, with Betti vector `[1,1]`. The `D4` action is transitive on its
+missing grid corner, with Betti vector $[1,1]$. The `D4` action is transitive on its
 four vertices and four edges.
 After subdividing at reflection-fixed edge midpoints, the full `D4 x S3` quotient is the
 closed interval `lambda in [0,1/2]`.
@@ -102,14 +102,14 @@ Its three orbit strata are:
 
 - `C`, the corner/L endpoint: dimension zero, local dimension one, stabilizer two, six
   wall incidences, three pair contacts, and four active SAT axes;
-- `G`, the open generic stratum: dimension and local dimension one, trivial stabilizer,
+- $G$, the open generic stratum: dimension and local dimension one, trivial stabilizer,
   five wall incidences, three pair contacts, and three active axes; and
-- `M`, the centered endpoint: dimension zero, local dimension one, stabilizer two, with
-  the same active signature as `G`.
+- $M$, the centered endpoint: dimension zero, local dimension one, stabilizer two, with
+  the same active signature as $G$.
 
-This separates an active-contact change at `C` from a pure stabilizer jump at `M`. It
+This separates an active-contact change at `C` from a pure stabilizer jump at $M$. It
 also fixes D-140: the closed displayed family has two current contact certificates, not
-one. The open stratum and `M` share one certificate; `C` has the second, while all three
+one. The open stratum and $M$ share one certificate; `C` has the second, while all three
 remain in the same connected family.
 
 ## Independent checks, sources, and cost
@@ -130,7 +130,7 @@ The deterministic map is
 The retained result is
 [`exp-014-h-032-n3-optimal-moduli.json`](../results/exp-014-h-032-n3-optimal-moduli.json).
 
-This answers only the `n = 3` cell of H-032. It does not classify larger containers or
+This answers only the $n = 3$ cell of H-032. It does not classify larger containers or
 `n >= 5`.
 
 ## Preregistered acceptance rule
@@ -141,7 +141,7 @@ Acceptance requires all of the following:
   square’s quarter-turn redundancy;
 - exact labelled counts of 24 vertices and 24 edges forming two circles;
 - an exact `S3` quotient with four vertices and four edges forming one circle;
-- an exact `D4 x S3` quotient homeomorphic to `[0, 1/2]`, with both endpoint stabilizers
+- an exact `D4 x S3` quotient homeomorphic to $[0, 1/2]$, with both endpoint stabilizers
   and the generic stabilizer recorded;
 - the wall-incidence, contact-length, active-feature, and stabilizer transitions kept as
   distinct strata rather than collapsed into one endpoint hash;

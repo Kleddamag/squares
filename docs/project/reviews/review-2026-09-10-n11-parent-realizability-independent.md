@@ -27,7 +27,7 @@ specify the centre-preserving selection relation.
 
 ## Actual Unit Parents and Strict Margins
 
-Let `r` be a unit vector, let `Jr=(-r_y,r_x)`, and put
+Let $r$ be a unit vector, let `Jr=(-r_y,r_x)`, and put
 
 $$
 R_r(s)=[-s/2,s/2]r+[-s/2,s/2]Jr,\qquad S=|r_x|+|r_y|.
@@ -40,13 +40,13 @@ $$
 BS/2\le c_a\le q_0-BS/2\qquad(a=x,y).
 $$
 
-Set `B=9977/10000`, `q=q0+Delta`, `h=(Delta/2,Delta/2)`, and construct
+Set $B=9977/10000$, `q=q0+Delta`, `h=(Delta/2,Delta/2)`, and construct
 
 $$
 P'=P+h,\qquad U=c+h+R_r(1).
 $$
 
-Each coordinate wall margin of `U` is at least
+Each coordinate wall margin of $U$ is at least
 
 $$
 \frac{BS+\Delta-S}{2}
@@ -70,19 +70,19 @@ $$
 This establishes `U subset interior([0,q]^2)` even when an old core touched a wall and
 even at equality in the stated threshold.
 Also `P' subset interior(U)`: in the parent’s own axes, its four boundary margins are
-`(1-B)/2>0`. The proof retains closed cores throughout.
+$(1-B)/2>0$. The proof retains closed cores throughout.
 It needs no perturbation, limiting argument, or positive margin in the old family.
 
 This is stronger than satisfying the conservative necessary parent box.
 Writing `T=||r_x|-|r_y||`, its admitted extent is
 
 $$
-e(r,d)=\max\left\{BS/2,\;1/2,\;\frac{S-Td}{2+d^2}\right\}\le S/2
+e(r,d)=\max\left\lbrace BS/2,\thickspace1/2,\thickspace\frac{S-Td}{2+d^2}\right\rbrace\le S/2
 \quad(0\le d<1).
 $$
 
-The three comparisons follow respectively from `B<1`, `S>=1`, and `-2Td<=Sd^2`. The
-constructed parent has exact extent `S/2`, so it also survives the exact existential
+The three comparisons follow respectively from $B<1$, `S>=1`, and `-2Td<=Sd^2`. The
+constructed parent has exact extent $S/2$, so it also survives the exact existential
 parent domain after any loss in that lower-bound formula is removed.
 
 For the 88-core family, `q0=191/50`, and therefore
@@ -106,10 +106,10 @@ t_j=\frac{207107j}{90000000},\qquad j=0,\ldots,180,
 \qquad\theta_j=2\arctan t_j,
 $$
 
-and only indices `0,1,3,5,99,113`, together with their mirrors.
+and only indices $0,1,3,5,99{,}113$, together with their mirrors.
 The largest used half-tangent is `23403091/90000000 < 1/3 < sqrt(2)-1`. Hence every used
 nonzero folded node lies strictly between zero and `pi/4`. The terminal rational node
-`t_180`, which lies beyond `tan(pi/8)`, is absent.
+$t_{180}$, which lies beyond `tan(pi/8)`, is absent.
 
 For an unreflected retained orientation, fold the constructed parent as prescribed in
 the
@@ -120,11 +120,11 @@ node is positive. For a mirrored orientation the physical angle is `pi/2-theta_j
 reflection folds it to the same `theta_j`. Undoing the same spatial fold on parent and
 core returns `P'` with its original centre and orientation.
 
-The record’s `t=1` entries represent the same square orientation as `t=0`, modulo a
+The record’s $t=1$ entries represent the same square orientation as $t=0$, modulo a
 quarter turn. The reader’s `fold` function performs precisely that canonicalization.
 Any ambiguity between equivalent axis representatives therefore returns the same
 geometric square. The conclusion concerns exact geometric orientation, rather than
-requiring the selection routine to reproduce the literal half-tangent token `1`.
+requiring the selection routine to reproduce the literal half-tangent token $1$.
 
 For each used interior index, the ordinary Voronoi seams are strictly on either side of
 the node. In angle notation they are `(theta_(j-1)+theta_j)/2` and
@@ -145,14 +145,14 @@ their source domains, not their intersection.
 
 The [independent reader source](../../../packing/devtools/independent_ceiling_reader.py)
 implements the rational unit-ray formula, closed corners, source membership, and the
-`t=1` canonicalization used here.
+$t=1$ canonicalization used here.
 Its K0 test proves net-or-mirror membership; the additional physical-fold argument above
 is needed for the new corollary.
 
 ## Point-Cover Consequence and Its Quantifiers
 
 Let `D_iso(q)` be the set of cores produced by the specified concentric, side-`B`,
-nearest-direction selection from individual unit squares contained in `[0,q]^2`. The
+nearest-direction selection from individual unit squares contained in $[0,q]^{2}$. The
 construction proves membership even in the version requiring parents strictly inside the
 container:
 
@@ -165,7 +165,7 @@ This supplies one parent for each fractional placement.
 It does not supply an integral eleven-square packing, pairwise disjoint parents,
 compatible owners, or completion of a particular core to an eleven-parent configuration.
 
-The admitted 88-core family has weights `y_i=1/8`, total eleven, and closed point depth
+The admitted 88-core family has weights $y_i=1/8$, total eleven, and closed point depth
 at most one everywhere in its old container.
 Since its placements are contained there, the depth is zero outside it.
 Translation gives
@@ -179,7 +179,7 @@ domain containing these translated cores by at least one,
 
 $$
 11\le\sum_i y_i\mu(P_i')
-=\int d'(x)\,d\mu(x)
+=\int d'(x)\thinspace d\mu(x)
 \le\mu([0,q]^2).
 $$
 
@@ -208,8 +208,8 @@ Its
 [point receipt](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a6-independent-ceiling.json)
 confirms `q0=153/40`, the same B and net, nonnegative weights totaling eleven,
 containment, depth one, and D4 symmetry.
-Its used folded indices are `0,1,2,3,5,27,116`, with mirrors.
-The maximum used half-tangent is `6006103/22500000 < 1/3`, so the preceding
+Its used folded indices are $0,1,2,3,5,27{,}116$, with mirrors.
+The maximum used half-tangent is $6006103/22500000 < 1/3$, so the preceding
 nearest-selection proof applies unchanged.
 It follows that all these A6 cores have the constructed individually admissible parents
 for
@@ -255,7 +255,7 @@ support bound.
 
 No mathematical correction is required to the private review’s 88-core corollary.
 A durable statement should retain the full-versus-folded symmetry qualification, say
-“same geometric orientation” at the `t=0/1` endpoint, and distinguish complete
+“same geometric orientation” at the $t=0/1$ endpoint, and distinguish complete
 individual-parent domains from extra conditions derived from owners, normalization, or
 coexistence. The checked A6 source premises now justify its explicit extension above.
 The frozen owner/residual comparison remains a separate conditional test.

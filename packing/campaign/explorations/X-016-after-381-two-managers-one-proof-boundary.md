@@ -53,8 +53,8 @@ exploration:
 
 **2026-09-06 endpoint correction.** `T-022` now records
 `s(11) >= 38100*sqrt(8100042893309449)/899996306539 = 3.810025723614703...`, proved by
-dilation of the retained `381/100` certificate, a sharpened containment lemma, and a
-limit argument. This ordinary exact lower bound did not change this plan’s `3.82`
+dilation of the retained $381/100$ certificate, a sharpened containment lemma, and a
+limit argument. This ordinary exact lower bound did not change this plan’s $3.82$
 experimental target or its proof boundary.
 The method does not establish the separate strict inequality beyond the displayed
 constant; this does not qualify the proved lower bound.
@@ -80,7 +80,7 @@ The second develops the two ends needed for an exact-value proof: a quantified l
 neighborhood and a global language capable of sending every survivor into it.
 The coordinator, not either manager, owns the proof boundary between them.
 
-Do not spend this block on a generic contact-graph atlas, a broad `n = 11` exact-cover
+Do not spend this block on a generic contact-graph atlas, a broad $n = 11$ exact-cover
 tree, a repeat of the two-threshold angle classes, or another dense sweep from an empty
 state. Each has either failed its present gate or lacks a sound completeness object.
 
@@ -118,14 +118,14 @@ the agendas.
 | **integral configuration argument** | An argument whose variables describe a whole eleven-square placement, so it may use compatibility among different squares. It is not a stronger row in the one-body LP; it is a different proof object. |
 | **compatibility constraint** | A condition involving several placement choices. Clique rows exclude mutually conflicting selections, odd-cycle rows strengthen pairwise conflict constraints around an odd cycle, Hall rows detect too few compatible regions for the required assignments, and cell-hyperedge rows encode a forbidden combination spanning several pose cells. Their soundness depends on the integral configuration model that gives those selections meaning. |
 | **direction net and angle cell** | The direction net is the finite set of orientations checked by a certificate. Adjacent net directions bound a closed angle interval, or angle cell, whose every orientation must be handled by a proved containment rule. Sampling representatives is not enough. |
-| **witness core and `B_k`** | A witness core is the smaller region placed strictly inside each packed unit square before mass is counted. In the current certificate it is one concentric square of side `B`; an adaptive certificate gives angle cell `k` its own largest proved-safe side `B_k`. |
+| **witness core and $B_k$** | A witness core is the smaller region placed strictly inside each packed unit square before mass is counted. In the current certificate it is one concentric square of side $B$; an adaptive certificate gives angle cell $k$ its own largest proved-safe side $B_k$. |
 | **angle-cell kernel** | A rationally described inner region contained in every unit square whose orientation lies in one angle cell. It may retain more useful area than any common concentric square, but it needs a new exact containment and centre-sweep proof. |
 | **segment measure** | A nonnegative measure supported on finitely many line segments. The mass captured by a moving square changes continuously and piecewise algebraically, so neither the atomic event sweep nor an area-density verifier decides it without new boundary rules. |
 | **full-size absolutely continuous density** | A nonnegative integrable function spread over area in the container, tested by integrating over the full unit square rather than a shrunken core. A total mass below eleven with coverage at least one for every pose would prove a lower bound because shared square boundaries have area measure zero; sampled coverage is only a candidate. |
 | **continuum verifier** | A proof procedure that decides a universal claim over every admissible centre, orientation, and wall stratum. A grid or finite pose sample is a proposer unless a containment, interval, or finite-cell theorem closes the gaps between samples. |
 | **support prior and restricted support** | A support prior biases a generator toward promising atom locations, such as an inset grid. A certificate found on that restricted set is sound once verified; failure there says nothing about measures using excluded locations. |
 | **unrestricted column generation** | An LP loop that alternates solving on the current finite rows and columns with pricing searches for a violated pose row or an improving atom column anywhere in the allowed container. Releasing an inset seed means the pricing oracle may add wall-near support again. |
-| **`nu*` / `tau*` bracket** | `nu*` is the fractional-packing optimum and `tau*` the fractional-covering optimum for the declared one-body formulation, with `nu* <= tau*`. A verified packing family supplies a lower endpoint and a row-converged covering solution an upper endpoint. `tau* < 11` can yield the desired measure; `nu* >= 11` rules out that formulation at the tested side. Intermediate values are optimization evidence, not a new bound on `s(11)`. |
+| **`nu*` / `tau*` bracket** | `nu*` is the fractional-packing optimum and `tau*` the fractional-covering optimum for the declared one-body formulation, with `nu* <= tau*`. A verified packing family supplies a lower endpoint and a row-converged covering solution an upper endpoint. `tau* < 11` can yield the desired measure; `nu* >= 11` rules out that formulation at the tested side. Intermediate values are optimization evidence, not a new bound on $s(11)$. |
 
 ### Typed stationarity and local closure
 
@@ -135,7 +135,7 @@ the agendas.
 | **contact graph** | The graph with a vertex for each square and an edge when two squares touch; boundary contacts may be represented by extra wall vertices. It records incidence but not the geometric equation that realizes a touch. |
 | **typed contact** | A contact together with the data needed to write its branch equation: corner-edge, edge-edge, or wall feature; owner square and supporting axis; separation order and sign; and any angle-chart or wall identity. Different types on the same abstract edge generally produce different equations. |
 | **active constraint or row** | A branch inequality `g_j(z) >= 0` that holds with equality at the candidate, `g_j(z) = 0`. The complete branch list, its active subset, and the multiplier support below are three different objects. |
-| **Fritz–John stationarity** | A necessary first-order condition for a branch minimum. With side objective `L`, there are nonnegative numbers `alpha` and `lambda_j`, not all zero, such that `alpha grad L - sum_j lambda_j grad g_j = 0` and `lambda_j g_j = 0`. It proposes stationary candidates; it does not prove feasibility, local minimality, rigidity, or global optimality. |
+| **Fritz–John stationarity** | A necessary first-order condition for a branch minimum. With side objective $L$, there are nonnegative numbers `alpha` and `lambda_j`, not all zero, such that `alpha grad L - sum_j lambda_j grad g_j = 0` and `lambda_j g_j = 0`. It proposes stationary candidates; it does not prove feasibility, local minimality, rigidity, or global optimality. |
 | **normal, or ordinary, Fritz–John branch** | The case `alpha > 0`. Rescaling makes the objective multiplier one and gives a Karush–Kuhn–Tucker multiplier certificate. “Ordinary” describes this multiplier state, not a constraint qualification or a claim that the stationary point is an optimum. |
 | **abnormal Fritz–John branch** | The case `alpha = 0`, where a nontrivial dependence among active constraint gradients satisfies stationarity without using the objective gradient. One geometry may admit both normal and abnormal certificates. Only a proved constraint qualification that rules out the abnormal case on every affected branch permits the enumeration to omit it. |
 | **constraint qualification** | A local regularity hypothesis on the active constraints that makes KKT necessary. Because tied square contacts can violate such hypotheses, this plan retains abnormal branches unless the qualification is proved rather than assumed. |
@@ -144,7 +144,7 @@ the agendas.
 | **positive multiplier support** | The active rows with `lambda_j > 0`. This is the force- or stress-carrying part of one multiplier certificate, not the whole contact set and not necessarily a connected graph. |
 | **rattler** | A square, or a cluster of squares, that can move locally inside a cage while a remainder stays jammed. It may be absent from positive multiplier support, but its variables and every nonoverlap and wall inequality remain part of the global feasibility problem. |
 | **typed stationary backbone** | This project’s proposed finite record for one stationary branch: the typed contacts and walls, support orders, angle charts, active and inactive rows, positive and zero multiplier states, symmetry labels, and rattler attachments, together with the continuous equations they index. It is broader than the jamming literature’s “backbone,” which usually means the rigid or force-carrying remainder after rattlers are removed. |
-| **anchored chart and local isolation** | The retained anchored chart fixes the container as `[0,L]^2` with one corner at the origin and represents each labelled square by its centre and angle; finite `D4` and relabelling copies are handled separately. Local isolation means that a proved neighborhood in that declared chart contains no other feasible configuration at the tested side. It is a local statement and does not exclude a better packing elsewhere. |
+| **anchored chart and local isolation** | The retained anchored chart fixes the container as $[0,L]^{2}$ with one corner at the origin and represents each labelled square by its centre and angle; finite `D4` and relabelling copies are handled separately. Local isolation means that a proved neighborhood in that declared chart contains no other feasible configuration at the tested side. It is a local statement and does not exclude a better packing elsewhere. |
 | **LP/Farkas, interval, and exact-algebra leaves** | Once angles and branch choices are exact, the centre-and-side problem is linear: an exact LP can realize it, while a Farkas certificate proves infeasibility by an exact nonnegative combination of rows. Interval exclusion proves that a whole angle box has no solution. Exact algebra or root isolation is reserved for the stationary leaves those cheaper decisions cannot close. |
 
 ### Exact-cover language
@@ -174,7 +174,7 @@ through one common measure with class thresholds.
 
 The review is also right that the existing theorem can be strengthened before it is
 abandoned.
-A direction-dependent inscribed side `B_k` uses each angle cell’s actual worst
+A direction-dependent inscribed side $B_k$ uses each angle cell’s actual worst
 mismatch instead of charging every direction for the coarsest net gap.
 Exact angle-cell kernels, segment measures, and full-size absolutely continuous
 densities are progressively more expressive resource languages.
@@ -184,11 +184,11 @@ Each successive language needs a new continuum verifier; none is a parameter tog
 
 ### The margin sweep is a generator
 
-Massaccesi reports sweeping the doubled inset margin at `L = 4.5000`; only `M = 1.5500`
+Massaccesi reports sweeping the doubled inset margin at $L = 4.5000$; only $M = 1.5500$
 among the 0.05-spaced trials gave mass below 17. The retained published generator fixes
 that value rather than containing the sweep wrapper.
-The final verifier, which was retained and replayed locally, uses `L = 4.5058`,
-`M = 1.5513`. The reported sweep is therefore a useful heuristic prior, not a reproduced
+The final verifier, which was retained and replayed locally, uses $L = 4.5058$,
+$M = 1.5513$. The reported sweep is therefore a useful heuristic prior, not a reproduced
 search. It does not show that the unrestricted optimum excludes the walls.
 A restricted support succeeds soundly and fails silently.
 
@@ -209,17 +209,17 @@ abnormal Fritz–John branches, feature ties, zero multipliers, and rattlers.
 Centres can then be eliminated by LP/Farkas certificates, with interval checks and exact
 algebra reserved for surviving leaves.
 Agenda-026 writes and prices that object against Trump, the globally classified
-`n = 3, 4` optimum spaces, and the exact local-rigidity system at `n = 5`. The `n = 5`
+$n = 3, 4$ optimum spaces, and the exact local-rigidity system at $n = 5$. The $n = 5$
 control is not a global all-optima classification.
-It does not enumerate the global `n = 11` atlas in this block.
+It does not enumerate the global $n = 11$ atlas in this block.
 
 ### Trump is a local endpoint, not a global theorem
 
 Trump’s packing is the verified known-best construction and is locally isolated in the
 retained anchored chart.
 It is not known to be globally optimal.
-BC-199 already computed a uniform radius at least `0.0023089`, a per-row radius at least
-`808514697/200000000000`, and `C <= 12.873063` across 128 branches.
+BC-199 already computed a uniform radius at least $0.0023089$, a per-row radius at least
+$808514697/200000000000$, and `C <= 12.873063` across 128 branches.
 The next work is to state and independently review the theorem these constants support,
 not to recompute the constants.
 
@@ -241,7 +241,7 @@ present survivors and a complete search is priced below four CPU-hours.
 | Retained bound | T-022 proves `s(11) >= 38100*sqrt(8100042893309449)/899996306539` by a dilation-limit corollary | The proof method uses a uniform fixed-B, single-core strict-containment supremum. Direction-specific cores and coverage-cell geometry remain open. |
 | 3.82 one-body bracket | `9.907905 <= nu* <= tau* <= 11.055617` | Resume `bc-200-state-191-50.json`; do not restart. |
 | 3.85 floor | `nu* >= 9.049860` | Too loose to route the first block. |
-| Adaptive `B_k` | Valid lemma shape, unimplemented | Formalize certificate semantics and build exact controls first. |
+| Adaptive $B_k$ | Valid lemma shape, unimplemented | Formalize certificate semantics and build exact controls first. |
 | Two-threshold classes | 11.606445 on Trump; route ceiling 3.876681 | Retire this class language; a successor must be materially nonconvex or richer. |
 | Trump isolation | All 128 retained branches agree on a positive local radius | Package and review the theorem packet. |
 | Full-size density | Potentially sound only after its measure class, boundary terms, and weak dual are proved; no instrument | Run a weak-dual kill before inverse design. |
@@ -311,7 +311,7 @@ The fractional packet additionally freezes:
   exp-064’s negative class result;
 - the column-generation, cutting, checkpoint, exact-sweep, and interval-decision tools;
 - Massaccesi’s article, verifier, margin semantics, and retained control; and
-- the retained `n = 11` and `n = 12` positive certificates plus known-feasible negative
+- the retained $n = 11$ and $n = 12$ positive certificates plus known-feasible negative
   controls.
 
 The closure packet additionally freezes:
@@ -363,14 +363,14 @@ one external blocker stops all lanes.
 
 ### Fractional route
 
-- Any exact mass-below-11 certificate at rational `L > 3.81` stops variant
+- Any exact mass-below-11 certificate at rational $L > 3.81$ stops variant
   proliferation. Roughly 75 percent of the next block goes to frozen-byte exactification
   and a source-distinct replay.
   No public claim moves before the central gate.
 - The retained 3.82 bracket continues only if one four-CPU-hour block reduces its width
   by at least 25 percent.
   Otherwise preserve the checkpoint and move that capacity to adaptive cores.
-- Adaptive `B_k` continues if it certifies a rung or removes at least 25 percent of the
+- Adaptive $B_k$ continues if it certifies a rung or removes at least 25 percent of the
   same-support excess over 11 exactly.
   Otherwise route to the angle-cell kernel.
 - An inset-margin run is always followed by unrestricted support release.
@@ -389,8 +389,8 @@ one external blocker stops all lanes.
   side kills the proposed equality density by weak duality.
   Failure to find one proves nothing.
   Any density candidate needs a continuum minimum proof and central exact replay.
-- A global stationary enumeration cannot open until Trump, the complete `n = 3, 4`
-  controls, and the local `n = 5` representability control pass; abnormal Fritz–John or
+- A global stationary enumeration cannot open until Trump, the complete $n = 3, 4$
+  controls, and the local $n = 5$ representability control pass; abnormal Fritz–John or
   a proved constraint qualification is explicit; and the measured branch price fits a
   later budget. Graph-only enumeration, assumed planarity, or center-distance-one
   contacts are guard refusals.

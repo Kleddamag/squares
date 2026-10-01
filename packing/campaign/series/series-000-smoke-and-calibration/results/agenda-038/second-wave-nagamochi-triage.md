@@ -10,18 +10,18 @@ The stock move is `run_fractional_colgen` with `--grid-counts auto` and
 
 | n | Floor | Ceiling | Gap | First side | Why this order |
 | ---: | --- | --- | ---: | --- | --- |
-| 32 | `1+sqrt(32-2*floor(sqrt(32))+1)` ≈ 5.796 | grid 6 | 0.204 | `29/5` | Smallest window in 26–32; auto grids stay cheap. |
-| 31 | ≈ 5.690 | grid 6 | 0.310 | `57/10` | Next window to 6. |
-| 30 | ≈ 5.583 | grid 6 | 0.417 | `559/100` | Same block; no published packing below 6. |
-| 26 | ≈ 5.123 | `(7/2)+(3/2)sqrt(2)` ≈ 5.621 | 0.498 | `513/100` | Published packing sits well below 6; a floor above 5.12 is still a move. |
-| 27 | ≈ 5.243 | `5+(1/2)sqrt(2)` ≈ 5.707 | 0.464 | `525/100` | Same pattern as n=26. |
-| 29 | ≈ 5.472 | ≈ 5.934 | 0.462 | `548/100` | Published packing below 6. |
-| 45 | ≈ 6.831 | grid 7 | 0.169 | `684/100` | Smallest window in 37–45. |
-| 44 | ≈ 6.745 | grid 7 | 0.255 | `675/100` | Next in that block. |
+| 32 | `1+sqrt(32-2*floor(sqrt(32))+1)` ≈ 5.796 | grid 6 | 0.204 | $\frac{29}{5}$ | Smallest window in 26–32; auto grids stay cheap. |
+| 31 | ≈ 5.690 | grid 6 | 0.310 | $\frac{57}{10}$ | Next window to 6. |
+| 30 | ≈ 5.583 | grid 6 | 0.417 | $\frac{559}{100}$ | Same block; no published packing below 6. |
+| 26 | ≈ 5.123 | `(7/2)+(3/2)sqrt(2)` ≈ 5.621 | 0.498 | $\frac{513}{100}$ | Published packing sits well below 6; a floor above 5.12 is still a move. |
+| 27 | ≈ 5.243 | `5+(1/2)sqrt(2)` ≈ 5.707 | 0.464 | $\frac{525}{100}$ | Same pattern as n=26. |
+| 29 | ≈ 5.472 | ≈ 5.934 | 0.462 | $\frac{548}{100}$ | Published packing below 6. |
+| 45 | ≈ 6.831 | grid 7 | 0.169 | $\frac{684}{100}$ | Smallest window in 37–45. |
+| 44 | ≈ 6.745 | grid 7 | 0.255 | $\frac{675}{100}$ | Next in that block. |
 
 n=28 is in the 26–32 block and is omitted: the tighter windows (32, 31, 30) and the
 packings-below-6 trio (26, 27, 29) come first.
-A side such as `271/50` would sit above the floor; it is not on this queue.
+A side such as $271/50$ would sit above the floor; it is not on this queue.
 
 n=61 (gap 0.072 to 8) and n=78 (gap 0.063 to 9) are tighter integer windows and a worse
 fit for this session: no seed, larger placement sets, and they are not low n. They stay

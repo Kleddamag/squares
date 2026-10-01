@@ -95,14 +95,14 @@ experiment:
 This is the Session-141 reopen of
 [H-218](../../../hypotheses/H-218-existing-colgen-raises-a-small-n-floor.md).
 exp-162 is abandoned.
-The leftover auto plus windows 6 construction at `971/200` finished at `19.910044`
+The leftover auto plus windows 6 construction at $971/200$ finished at $19.910044$
 unconverged; remaining rows raise.
-This round uses a different named set: T-021 four-grid `(34, 46, 56, 64)` plus windows
+This round uses a different named set: T-021 four-grid $(34, 46, 56, 64)$ plus windows
 7\.
 
-The 2400 s run stopped at `19.857588` unconverged below 20 after 48 LP rounds.
+The 2400 s run stopped at $19.857588$ unconverged below 20 after 48 LP rounds.
 No freeze. T-030 was not offered.
-The follow-up is exp-165 at `243/50`.
+The follow-up is exp-165 at $243/50$.
 
 Confirm only on `RETAINABLE`. n=18 T-029 does not confirm H-218.
 

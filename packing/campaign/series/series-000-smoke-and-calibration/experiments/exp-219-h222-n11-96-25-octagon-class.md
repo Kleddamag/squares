@@ -105,10 +105,10 @@ experiment:
 The first round of [H-222](../../../hypotheses/H-222-n11-octagon-class-at-96-25.md)
 under [agenda-040](../../../agendas/agenda-040-overnight-lower-bound-loop.md) BC-363, on
 the convex corner-clip instrument admitted by the Session 145 review.
-The gate accepted on both routes: every packing of eleven unit squares in `[0, 96/25]^2`
-has some square meeting a corner triangle `x + y <= 1/2` in its corner frame.
-That is a conditional exclusion at `3.84` for the octagon class only; the other fifteen
-corner-bin classes of lane-a Theorem B are untouched, and `s(11)` does not move.
+The gate accepted on both routes: every packing of eleven unit squares in
+$[0, 96/25]^{2}$ has some square meeting a corner triangle `x + y <= 1/2` in its corner
+frame. That is a conditional exclusion at $3.84$ for the octagon class only; the other
+fifteen corner-bin classes of lane-a Theorem B are untouched, and $s(11)$ does not move.
 Registration as a frontier result is a separate W2 step with its own review.
 
 <!-- This document follows common-doc-guidelines.md.

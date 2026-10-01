@@ -1,973 +1,1992 @@
 #!/usr/bin/env python3
-# ruff: noqa: RUF001, RUF002, RUF003 -- this module reads and writes mathematical Unicode.
-"""Move mathematics out of code spans and into LaTeX math, one file at a time.
+# ruff: noqa: RUF001, RUF002, RUF003 -- the subject is mathematical Unicode: en dashes,
+# minus signs and Greek letters are the characters this tool reads and converts.
+"""Move mathematics written as code spans to LaTeX math, one Markdown file at a time.
 
-Much of this repository's prose writes mathematics as inline code: `` `s(11) ≥ 31/8` ``,
-`` `2 + 4/√5` ``, `` `k² − 4` ``. Code spans render in a fixed-width face and are what a
-reader expects for identifiers and commands, not for a bound. GitHub, kpress (which
-builds the published site with KaTeX) and the pinned flowmark all support LaTeX math, so
-the prose can say what it means. This is the tool for that migration (`OR-1`); the
-ratchet that keeps a migrated file migrated is `devtools.check_math_markup`.
+Most of this repository's prose writes its mathematics as code: `` `s(11) ≥ 3.8269975…` ``,
+`` `31/8` ``, `` `2 + (1/2)√2` ``. GitHub renders `$…$`, kpress renders it with KaTeX on
+the site, and the pinned flowmark keeps a math span whole, so the prose can say what it
+means. This is the instrument that moves it (`OR-1`): a hand edit of fifteen hundred files
+is an edit nobody can re-run or review.
 
-**What is a code span here.** Spans are found by parsing, not by a regex over the file.
-`markdown-it-py` (the parser kpress itself is built on) decides which blocks carry
-inline content, so fenced and indented code, HTML blocks and comments are never read.
-Inside those blocks a small CommonMark backtick tokenizer finds each span's exact
-source offsets, and the list it finds is compared with the parser's own `code_inline`
-tokens for the same block; a block where the two disagree converts nothing. Regions
-between `<!-- BEGIN ... -->` and `<!-- END ... -->` markers belong to the renderer that
-writes them and are skipped: generated Markdown is migrated at its renderer.
+**Every inline code span is classified**, outside fenced and indented code, raw HTML
+blocks, HTML comments, YAML frontmatter and the `<!-- BEGIN … -->`/`<!-- END … -->`
+blocks a renderer owns (those move at their renderer, never here). A span is one of:
 
-**Classification.** Every span is `math`, `identifier`, or `uncertain`, with the name of
-the rule that decided it. Identifiers are tested first and stay code: result and
-evidence ids (`T-018`, `E-...`), rung and label names (`V4`, `C3`), bead and session
-ids, paths, file names, commands and flags, dotted and snake_case names, schema names,
-hashes, version tags, measurements with units, and HTML. A span is math when it is an
-expression (a relation, an operation, a root, a power, an interval), a fraction or
-decimal standing as a value, an angle, or a single variable -- and when every word in
-it is a single letter, a Greek letter's name, or a known function (`sqrt`, `ceil`,
-`sin`, ...). Everything else is uncertain and left alone for a person to read: a bare
-integer (a count, a case number, an exit status?), scientific notation (usually a
-machine tolerance), a named term such as `Feas(s)`, or an expression this translator
-does not know how to write.
+- `identifier` -- literal text that stays code: result, evidence, hypothesis and agenda
+  ids (`T-018`, `E-n011-…`, `BC-241`, `R068`), rung labels (`V4`, `V4/C3`), lists of
+  one-letter labels (`P/Q/E`), paths and globs, commands and flags, dotted and
+  snake_case names, calls such as `load_records()`, commit hashes, versions, dates, bare
+  words, and anything carrying code punctuation (quotes, backslashes, `==`, a YAML
+  `key: value`).
+- `math` -- an expression whose every character has a LaTeX form: a bound or equation in
+  `s(n)`, a number or fraction standing as a value, a formula, a variable.
+- `uncertain` -- everything else, left untouched and listed with its reason: ASCII
+  register literals (`s(11) >= 381/100`, `sqrt`), float literals (`1e-11`), numbers
+  with units, words inside a formula, a label inside a formula (`f1 … f6`, `D4 x S3`),
+  slash-separated counts (`0/1/0`), a decimal quoted without its zero (`.8`), and math
+  whose surroundings make `$…$` unsafe.
 
-Context can also hold a span back. A math span stays code, reported as uncertain, when
-it is in a heading (its text is the anchor other documents link to), in link text,
-across a line break, touching a letter or digit -- see the delimiter form below -- or
-first in a paragraph or table cell whose text ends in a digit, which kpress's parser
-misreads (`_parsed_spans` says how). A span a person has read and decided is not
-mathematics in its file -- `V` naming the verification ladder -- is listed as kept in
-the ledger, `math-migrated.yaml`, and stays code too.
+`classify` decides from the span's text alone; `plan` then applies its surroundings.
+Every span in a heading stays code, as an `identifier`: kpress drops math from a heading's
+slug, so converting one would move the anchor under every link to it. A math span
+elsewhere stays code, as `uncertain`, when a letter, digit, `$` or backslash touches
+either delimiter (kpress's dollarmath refuses a digit beside a `$`, and GitHub's reading
+of `$n$th` is not one to depend on), or when its table-cell form would contain a `|`.
 
-**The delimiter form: plain `$...$`, never GitHub's `` $`...`$ ``.** GitHub renders both,
-but kpress parses math with `mdit_py_plugins.dollarmath` (`allow_space=False,
-allow_digits=False`, in `vendor/kpress/src/kpress/format/markdown.py`), which reads the
-backtick form as math whose source contains backticks. The plain form is the one both
-renderers read, under the intersection of their rules: the content never begins or ends
-with a space (kpress's `allow_space=False`, and GitHub's own rule), and the span never
-touches a letter or digit outside it (kpress's `allow_digits=False` refuses a digit;
-GitHub does not open math after a word character). A span that would touch one is left
-as code. Inside the math nothing is written that GitHub's Markdown pass could take
-first: no `\\{` or other backslash-punctuation escape (sets use `\\lbrace`/`\\rbrace`),
-no bare `|` (a table would split on it; `\\lvert`/`\\rvert` instead), `<` and `>` with
-spaces around them so neither reads as an HTML tag, and no `*` (`\\ast`, `\\cdot`).
-`test_migrate_math` pins each of these against kpress's parser.
+**Conversion is to idiomatic LaTeX**, with every relation kept exactly as written (`≥`
+is `\\ge`, `>` stays `>`): `≤ ≠ ≈ ± × · ∈ …` become `\\le \\ne \\approx \\pm \\times
+\\cdot \\in \\ldots`, `√5` and `√(…)` become `\\sqrt{…}`, `k²` becomes `k^2`, Unicode
+subscripts become `_{…}`, `−` becomes `-`, Greek letters become their commands, `°`
+becomes `^\\circ`, and an en dash between numbers becomes `\\text{–}`. A fraction keeps
+its slash in running text and becomes `\\frac{a}{b}` in a table row or display math, the
+style the overview spec recommends. No conversion contains a `$`, a backtick, or a
+backslash before ASCII punctuation (`\\{`, `\\,`), which a Markdown parser may take for an
+escape before the math renderer sees it: braces are `\\lbrace`/`\\rbrace`, and a marking
+star is `^{\\ast}`.
 
-**The translation** is idiomatic LaTeX: `>=` and `≥` become `\\ge`, `sqrt(x)` and `√x`
-become `\\sqrt{x}`, `²` becomes `^2`, `…` and `...` become `\\ldots`, `−` becomes `-`,
-`×` becomes `\\times`, Greek letters their commands, `ℝ` becomes `\\mathbb{R}`. A
-fraction written `a/b` stays `a/b`: inline in running text the slash reads better than
-`\\frac`, which is reserved for display math and tables.
+**`--apply` proves each rewrite before writing it**, and writes atomically:
 
-**Safety.** `--apply` writes only when the result passes two measurements: kpress's
-parser must read each converted span back as exactly the math that was written, and the
-pinned flowmark must keep every math span in the file whole
-(`devtools.check_math_spans`). Either failing leaves the file untouched and exits 1.
+1. kpress parses the result with the site's parser (dollarmath with `allow_space=False`
+   and `allow_digits=False`), and every converted span must come back as exactly one
+   inline math span its MathML converter accepts. A span that does not is demoted to
+   `uncertain` and the plan is proved again; math appearing or vanishing that the tool
+   did not write refuses the file, since no single span can be blamed for it.
+2. The pinned KaTeX bundle parses every converted span in strict mode
+   (`devtools.check_katex`), where Node is available; a refusal demotes the span.
+3. `devtools.check_math_spans` formats a copy of the result with the pinned flowmark and
+   compares every math span; one that breaks, changes, appears or vanishes refuses the
+   write.
 
 Usage, from `packing/`:
 
-    uv run --frozen --group dev python -m devtools.migrate_math FILE... --report
-    uv run --frozen --group dev python -m devtools.migrate_math FILE... --conversions
-    uv run --frozen --group dev python -m devtools.migrate_math FILE... --apply
+    uv run --frozen --all-extras --group dev python -m devtools.migrate_math FILE...
+    uv run --frozen --all-extras --group dev python -m devtools.migrate_math --apply FILE...
+    ... --list               # also print every conversion, before and after
+    ... --report PATH        # also write the report as JSON
 
-Without `--apply` nothing is written. Converting twice is a no-op, since a converted
-span is no longer code.
+Without `--apply` the files are only read. With it, exit 1 if any file was refused.
+`devtools.check_math_markup` is the ratchet that keeps a migrated file migrated.
+
+**Generated Markdown is migrated at its renderer**, never by editing the output, and the
+renderers share this module's rules through two entry points: `markdown_math` for a
+Markdown fragment they did not write (a register `headline`, in running text or as a
+table cell), and `register_latex` for an ASCII register literal (`s(11) >= 381/100`,
+`2 + 4/sqrt(5) = 3.788854...`), which the register keeps ASCII.
 """
 
 from __future__ import annotations
 
 import argparse
+import bisect
+import html
+import json
 import re
 import shlex
+import shutil
 import sys
 import tempfile
+import unicodedata
 from collections import Counter
-from collections.abc import Collection, Sequence
-from dataclasses import dataclass
+from collections.abc import Callable, Iterable, Sequence
+from dataclasses import dataclass, field, replace
+from functools import cache, lru_cache
 from pathlib import Path
-from typing import Literal, cast
+from typing import Literal, TypedDict
 
 from markdown_it import MarkdownIt
-from markdown_it.token import Token
-from mdit_py_plugins.dollarmath import dollarmath_plugin
+from strif import atomic_output_file
 
-from devtools.check_math_spans import check_file, pinned_formatter
-from sqpack.yamlio import load_yaml
+from devtools.check_math_spans import (
+    FRONTMATTER,
+    FileResult,
+    format_copy,
+    located_math_spans,
+    mask_fences,
+    math_spans,
+    pinned_formatter,
+)
+
+PACKING = Path(__file__).resolve().parents[1]
+REPO = PACKING.parent
 
 Kind = Literal["math", "identifier", "uncertain"]
+Where = Literal["text", "heading", "table", "raw"]
+KINDS: tuple[Kind, ...] = ("math", "identifier", "uncertain")
 
 # ---------------------------------------------------------------------------------------
-# Identifiers: tested in order against the whole stripped span, first match wins.
+# Finding the code spans
 # ---------------------------------------------------------------------------------------
 
-_IDENTIFIERS: tuple[tuple[str, re.Pattern[str]], ...] = tuple(
-    (name, re.compile(pattern))
-    for name, pattern in (
-        ("html", r"^</?[A-Za-z!][^>]*>?.*$|^\{[.#]|^\[[^\]]*\]\{"),
-        ("record-id", r"^[A-Z]{1,3}-\d+[a-z]?$|^[A-Z]-[a-z0-9][\w-]*$"),
-        ("placeholder-id", r"^[A-Za-z]+-(N+)?$"),
-        ("label-list", r"^[A-Z](/[A-Z])+$"),
-        ("time-label", r"^T[+-]\d+$"),
-        ("slug-id", r"^([a-z][a-z0-9]+|[a-z](?=-(\d{3}|[a-z])))(-[a-z0-9]+)+(\.\w+)?$"),
-        ("label", r"^[A-Z]\d+(/[A-Z]\d+)?$|^[A-Za-z]+\d+[A-Za-z]*$"),
-        ("hash", r"^(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}$|\+sha256-"),
-        ("version", r"^v\d+(\.\d+)+$|^\d+\.\d+\.\d+$"),
-        ("flag", r"^--?[A-Za-z]|\s--[A-Za-z]"),
-        (
-            "command",
-            (
-                r"^(uv|git|make|python3?|packing-\w+|tbd|gh|npm|npx|node|cargo|sqsearch|"
-                r"runner\.py|flowmark|pprose)(\s|$)"
-            ),
-        ),
-        ("path", r"^(?=.*[A-Za-z]{2}|.*\.[A-Za-z])[\w.*<>~@+-]*/[\w.*<>/~@+-]*$"),
-        ("file", r"^[\w.*<>-]*\.[A-Za-z][A-Za-z0-9]{0,4}$|^\.\w"),
-        ("dotted-name", r"^[A-Za-z_]\w*(\.[A-Za-z_]\w*)+$"),
-        ("word-or-name", r"^[A-Za-z_]\w*$"),
-        ("key-value", r"^[A-Za-z_][\w-]*:(\s|$)|^[a-z][\w-]*:[\w-]+$"),
-        ("timestamp", r"\d{2}:\d{2}|^\d{4}-\d{2}-\d{2}"),
-        (
-            "measurement",
-            r"^[~≈+−-]?\s*\d[\d.,]*(e[+-]?\d+)?\s?(s|ms|µs|us|ns|GB|MB|KB|x|×|%|h|min)$",
-        ),
-    )
+#: A block a renderer owns, from `<!-- BEGIN GENERATED: … -->` to its `END GENERATED`. Other
+#: marked blocks, such as the synopsis's hand-written readiness dashboard, are prose.
+GENERATED = re.compile(
+    r"<!--\s*BEGIN GENERATED\b[^>]*?-->.*?<!--\s*END GENERATED\b[^>]*?-->", re.DOTALL
 )
-
-# `word-or-name` above matches any bare word. Only these shapes of it are identifiers; a
-# single letter, a Greek name, `P_TR` or `g_j` falls through to the math rules.
-_SNAKE = re.compile(r"^[A-Za-z]{2,}_|_[A-Za-z]{3,}|^[A-Za-z]{2,}$")
-
-# ---------------------------------------------------------------------------------------
-# The translator: known words, symbols, and the pieces of the scan.
-# ---------------------------------------------------------------------------------------
-
-GREEK_NAMES = frozenset(
-    {
-        *("alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota"),
-        *("kappa", "lambda", "mu", "nu", "xi", "pi", "rho", "sigma", "tau", "upsilon"),
-        *("phi", "chi", "psi", "omega", "Gamma", "Delta", "Theta", "Lambda", "Xi", "Pi"),
-        *("Sigma", "Phi", "Psi", "Omega"),
-    }
-)
-FUNCTIONS = frozenset(
-    {
-        *("sin", "cos", "tan", "arctan", "arcsin", "arccos", "log", "ln", "exp"),
-        *("min", "max", "deg", "gcd"),
-    }
-)
-BRACKETED = {"ceil": (r"\lceil ", r" \rceil"), "floor": (r"\lfloor ", r" \rfloor")}
-
-SYMBOLS = {
-    "α": r"\alpha",
-    "β": r"\beta",
-    "γ": r"\gamma",
-    "δ": r"\delta",
-    "ε": r"\varepsilon",
-    "ϵ": r"\epsilon",
-    "ζ": r"\zeta",
-    "η": r"\eta",
-    "θ": r"\theta",
-    "κ": r"\kappa",
-    "λ": r"\lambda",
-    "μ": r"\mu",
-    "ν": r"\nu",
-    "ξ": r"\xi",
-    "π": r"\pi",
-    "ρ": r"\rho",
-    "σ": r"\sigma",
-    "τ": r"\tau",
-    "φ": r"\varphi",
-    "ϕ": r"\phi",
-    "χ": r"\chi",
-    "ψ": r"\psi",
-    "ω": r"\omega",
-    "Γ": r"\Gamma",
-    "Δ": r"\Delta",
-    "Θ": r"\Theta",
-    "Λ": r"\Lambda",
-    "Π": r"\Pi",
-    "Σ": r"\Sigma",
-    "Φ": r"\Phi",
-    "Ψ": r"\Psi",
-    "Ω": r"\Omega",
-    "≤": r"\le",
-    "≥": r"\ge",
-    "≠": r"\ne",
-    "≈": r"\approx",
-    "≡": r"\equiv",
-    "∼": r"\sim",
-    "×": r"\times",
-    "·": r"\cdot",
-    "⋅": r"\cdot",
-    "−": "-",
-    "±": r"\pm",
-    "∓": r"\mp",
-    "…": r"\ldots",
-    "∈": r"\in",
-    "∉": r"\notin",
-    "∪": r"\cup",
-    "∩": r"\cap",
-    "⊂": r"\subset",
-    "⊆": r"\subseteq",
-    "→": r"\to",
-    "↦": r"\mapsto",
-    "←": r"\leftarrow",
-    "↔": r"\leftrightarrow",
-    "⇒": r"\Rightarrow",
-    "∞": r"\infty",
-    "∇": r"\nabla",
-    "∂": r"\partial",
-    "∑": r"\sum",
-    "⌈": r"\lceil ",
-    "⌉": r" \rceil",
-    "⌊": r"\lfloor ",
-    "⌋": r" \rfloor",
-    "⟨": r"\langle ",
-    "⟩": r" \rangle",
-    "ℝ": r"\mathbb{R}",
-    "ℚ": r"\mathbb{Q}",
-    "ℤ": r"\mathbb{Z}",
-    "ℕ": r"\mathbb{N}",
-    "ℂ": r"\mathbb{C}",
-    "𝒫": r"\mathcal{P}",
-    "𝒳": r"\mathcal{X}",
-    "°": r"^{\circ}",
-    "½": r"\tfrac{1}{2}",
-    "¼": r"\tfrac{1}{4}",
-    "¾": r"\tfrac{3}{4}",
-    "′": "'",
-}
-SUPERSCRIPTS = dict(zip("⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻ⁿⁱ", "0123456789+-ni", strict=True))
-# `ᵧ` is GREEK SUBSCRIPT SMALL LETTER GAMMA, but the prose uses it as a subscript y.
-SUBSCRIPTS = dict(
-    zip("₀₁₂₃₄₅₆₇₈₉₊₋ᵢⱼₖₗₘₙₓᵧᵣₐₑₒₕₚₛₜ", "0123456789+-ijklmnxyraeohpst", strict=True)
-)
-PLAIN = frozenset("+-=()[]/,.:'! ")
-
-_NUMBER = re.compile(
-    r"(?P<mantissa>\d{1,3}(?:,\d{3})+(?![\d/])|\d*\.\d+|\d+)"
-    r"(?:e(?P<exponent>[+-]?\d+)(?![A-Za-z]))?"
-)
-_WORD = re.compile(r"[A-Za-z]+")
-_SUPERSCRIPT_RUN = re.compile(f"[{''.join(SUPERSCRIPTS)}]+")
-_SUBSCRIPT_RUN = re.compile(f"[{''.join(SUBSCRIPTS)}]+(?:,[{''.join(SUBSCRIPTS)}]+)*")
-_COMMAND_TAIL = re.compile(r"\\[A-Za-z]+$")
+COMMENT = re.compile(r"<!--.*?-->", re.DOTALL)
+TICKS = re.compile(r"`+")
+BLANK_LINE = re.compile(r"\n[ \t]*\n")
 
 
-class UnconvertibleError(ValueError):
-    """The span cannot be written as math by this translator; the message is the rule."""
+def _blank(text: str) -> str:
+    """`text` with every character but its newlines replaced by a space."""
+    return "\n".join(" " * len(line) for line in text.split("\n"))
 
 
-def _group(text: str, start: int) -> int:
-    """The index just past the parenthesis group opening at `start`."""
-    depth = 0
-    for index in range(start, len(text)):
-        if text[index] == "(":
-            depth += 1
-        elif text[index] == ")":
-            depth -= 1
-            if depth == 0:
-                return index + 1
-    raise UnconvertibleError("unbalanced-parentheses")
+def _matches(
+    text: str, pattern: re.Pattern[str], spans: Sequence[CodeSpan] = ()
+) -> list[re.Match[str]]:
+    """Every match of `pattern` that does not open inside a code span, in order.
+
+    A marker quoted as code (`` `<!-- BEGIN GENERATED: … -->` ``) is text, not a comment,
+    since CommonMark reads whichever construct opens first. A match refused for opening
+    inside a span is searched again from its next character, so a real comment it
+    overlapped is still found.
+    """
+    starts = [span.start for span in spans]
+    found: list[re.Match[str]] = []
+    position = 0
+    while (match := pattern.search(text, position)) is not None:
+        index = bisect.bisect_right(starts, match.start()) - 1
+        if index >= 0 and spans[index].start < match.start() < spans[index].end:
+            position = match.start() + 1
+            continue
+        found.append(match)
+        position = max(match.end(), match.start() + 1)
+    return found
 
 
-class _Writer:
-    """Accumulate LaTeX, inserting the space a control word needs before a letter."""
-
-    def __init__(self) -> None:
-        self.parts: list[str] = []
-
-    def emit(self, piece: str) -> None:
-        if self.parts and piece[:1].isalpha() and _COMMAND_TAIL.search(self.parts[-1]):
-            self.parts.append(" ")
-        self.parts.append(piece)
-
-    def text(self) -> str:
-        return re.sub(r" {2,}", " ", "".join(self.parts)).strip()
+def _mask(text: str, pattern: re.Pattern[str], spans: Sequence[CodeSpan] = ()) -> str:
+    """`text` with every match of `pattern` outside a code span blanked."""
+    pieces: list[str] = []
+    position = 0
+    for match in _matches(text, pattern, spans):
+        pieces.extend((text[position : match.start()], _blank(match.group(0))))
+        position = match.end()
+    pieces.append(text[position:])
+    return "".join(pieces)
 
 
-def _number(match: re.Match[str]) -> str:
-    mantissa = match.group("mantissa").replace(",", "{,}")
-    exponent = match.group("exponent")
-    if exponent is None:
-        return mantissa
-    power = str(int(exponent))
-    power = f"10^{{{power}}}" if len(power) > 1 else f"10^{power}"
-    return power if mantissa == "1" else rf"{mantissa} \times {power}"
+def _only(text: str, pattern: re.Pattern[str], spans: Sequence[CodeSpan] = ()) -> str:
+    """`text` with everything but the pattern's matches outside code spans blanked."""
+    pieces: list[str] = []
+    position = 0
+    for match in _matches(text, pattern, spans):
+        pieces.extend((_blank(text[position : match.start()]), match.group(0)))
+        position = match.end()
+    pieces.append(_blank(text[position:]))
+    return "".join(pieces)
 
 
-def _argument(text: str, index: int) -> tuple[str, int]:
-    """The operand of a root or a power at `index`, translated, and where it ends."""
-    if index < len(text) and text[index] == "(":
-        end = _group(text, index)
-        return to_latex(text[index + 1 : end - 1]), end
-    if match := re.compile(r"-?\d+(\.\d+)?").match(text, index):
-        return match.group(), match.end()
-    if index < len(text) and (text[index].isascii() and text[index].isalpha()):
-        return text[index], index + 1
-    if index < len(text) and text[index] in SYMBOLS and text[index].isalpha():
-        return SYMBOLS[text[index]], index + 1
-    raise UnconvertibleError("operand")
+@lru_cache(maxsize=8)
+def mask(text: str) -> tuple[str, str]:
+    """The prose of `text` with everything else blanked, and its generated blocks alone.
 
-
-def _star(text: str, index: int) -> str:
-    """`*` is a postfix star (`a*`, `τ*(3.85)`) or a product (`955000*sqrt(...)`)."""
-    before = text[index - 1] if index else " "
-    after = text[index + 1] if index + 1 < len(text) else " "
-    if before == " " or (after not in " ),(" and not before.isalpha()):
-        return r" \cdot "
-    return r"^{\ast}"
-
-
-def _word(text: str, index: int, out: _Writer) -> int:
-    """Translate the letter run at `index`; return where it ends."""
-    match = _WORD.match(text, index)
-    assert match is not None
-    word, end = match.group(), match.end()
-    if word == "sqrt":
-        while end < len(text) and text[end] == " ":
-            end += 1
-        argument, end = _argument(text, end)
-        out.emit(rf"\sqrt{{{argument}}}")
-        return end
-    if word in BRACKETED:
-        if end >= len(text) or text[end] != "(":
-            raise UnconvertibleError("bracket-function")
-        close = _group(text, end)
-        left, right = BRACKETED[word]
-        out.emit(f"{left}{to_latex(text[end + 1 : close - 1])}{right}")
-        return close
-    if word in FUNCTIONS or word in GREEK_NAMES:
-        out.emit("\\" + word)
-        return end
-    if len(word) == 1:
-        out.emit(word)
-        return end
-    raise UnconvertibleError("named-term")
-
-
-def _power(text: str, index: int, out: _Writer) -> int:
-    after = index + 1
-    if after < len(text) and text[after].isalpha() and text[after + 1 : after + 2] == "(":
-        raise UnconvertibleError("ambiguous-superscript")
-    argument, end = _argument(text, after)
-    out.emit(f"^{{{argument}}}" if len(argument) > 1 else f"^{argument}")
-    return end
-
-
-def _subscript(text: str, index: int, out: _Writer) -> int:
-    after = index + 1
-    if after < len(text) and text[after] == "(":
-        end = _group(text, after)
-        out.emit(f"_{{{to_latex(text[after + 1 : end - 1])}}}")
-        return end
-    match = re.compile(r"[A-Za-z0-9]+").match(text, after)
-    if match is None:
-        raise UnconvertibleError("subscript")
-    body = match.group()
-    out.emit(f"_{{{body}}}" if len(body) > 1 else f"_{body}")
-    return match.end()
-
-
-def to_latex(text: str) -> str:
-    """LaTeX for the mathematical expression `text`, or `UnconvertibleError`."""
-    out = _Writer()
-    bars = 0
-    index = 0
-    while index < len(text):
-        char = text[index]
-        for ascii_operator, latex in ((">=", r" \ge "), ("<=", r" \le "), ("!=", r" \ne ")):
-            if text.startswith(ascii_operator, index):
-                out.emit(latex)
-                index += 2
-                break
-        else:
-            if text.startswith("->", index):
-                out.emit(r" \to ")
-                index += 2
-            elif text.startswith("...", index):
-                out.emit(r"\ldots ")
-                index += 3
-            elif text.startswith("..", index):
-                out.emit(r"\ldots ")
-                index += 2
-            elif number := _NUMBER.match(text, index):
-                out.emit(_number(number))
-                index = number.end()
-            elif char.isascii() and char.isalpha():
-                index = _word(text, index, out)
-            elif char == "√":
-                argument, index = _argument(text, index + 1)
-                out.emit(rf"\sqrt{{{argument}}}")
-            elif char == "^":
-                index = _power(text, index, out)
-            elif char == "_":
-                index = _subscript(text, index, out)
-            elif superscript := _SUPERSCRIPT_RUN.match(text, index):
-                body = "".join(SUPERSCRIPTS[c] for c in superscript.group())
-                out.emit(f"^{{{body}}}" if len(body) > 1 else f"^{body}")
-                index = superscript.end()
-            elif subscript := _SUBSCRIPT_RUN.match(text, index):
-                body = "".join(SUBSCRIPTS.get(c, c) for c in subscript.group())
-                out.emit(f"_{{{body}}}" if len(body) > 1 else f"_{body}")
-                index = subscript.end()
-            elif char == "*":
-                out.emit(_star(text, index))
-                index += 1
-            elif char == "|":
-                out.emit(r"\lvert " if bars % 2 == 0 else r"\rvert ")
-                bars += 1
-                index += 1
-            elif char in "{}":
-                out.emit(r"\lbrace " if char == "{" else r"\rbrace ")
-                index += 1
-            elif char in "<>":
-                out.emit(f" {char} ")
-                index += 1
-            elif char == "~":
-                out.emit(r"\sim ")
-                index += 1
-            elif char in SYMBOLS:
-                out.emit(SYMBOLS[char])
-                index += 1
-            elif char == "–" and text[index - 1 : index].isdigit():
-                # An en dash in a numeric range, `39–41`: text, since `-` would be a minus.
-                out.emit(r"\text{–}")
-                index += 1
-            elif char in PLAIN:
-                out.emit(char)
-                index += 1
-            else:
-                raise UnconvertibleError(f"character-U+{ord(char):04X}")
-    if bars % 2:
-        raise UnconvertibleError("unpaired-bar")
-    # A control word's trailing space is noise before a closing bracket or a script.
-    return re.sub(r"(\\[A-Za-z]+) (?=[)\]},^_'/])", r"\1", out.text())
-
-
-# ---------------------------------------------------------------------------------------
-# Classification.
-# ---------------------------------------------------------------------------------------
-
-_INTEGER = re.compile(r"^[+−-]?(\d{1,3}(,\d{3})+|0|[1-9]\d{0,5})$")
-_LONG_INTEGER = re.compile(r"^\d{7,}$|^0\d+$")
-_SCIENTIFIC = re.compile(r"^[+−-]?\d+(\.\d+)?e[+-]?\d+$")
-_FRACTION = re.compile(r"^[+−-]?\d+/\d+$")
-_DECIMAL = re.compile(r"^[+−~≈-]?\s*\d*\.\d+(…|\.\.\.)?$")
-_ANGLE = re.compile(r"^[+−-]?\d+(\.\d+)?°$")
-_VARIABLE = re.compile(r"^[^\W\d_]['*]?$")
-_VARIABLES = re.compile(r"^[^\W\d_](,\s*[^\W\d_])+$")
-_PRODUCT = re.compile(r"^\d+[A-Za-z]$")
-_APPLICATION = re.compile(r"^[^\W\d_]\(")
-_FUNCTION = re.compile(rf"\b({'|'.join(sorted(FUNCTIONS | set(BRACKETED)))})\b")
-_BOUND = re.compile(r"(?<![A-Za-z])s\(")
-_EXPRESSION = re.compile(
-    "[=<>≤≥≈≠∈∪→↔×·√^+−*/|⌈⌊⟨_…°{}"
-    + "".join(SUPERSCRIPTS)
-    + "".join(SUBSCRIPTS)
-    + r"]|\.\.|\d–\d|\bsqrt\b"
-)
-# A letter run straight into a digit, `f1` or `Q0`: a label, or a subscript written flat.
-_LABEL_IN_EXPRESSION = re.compile(r"(?<![\w.])[A-Za-z]+\d")
-
-
-@dataclass(frozen=True)
-class Classification:
-    kind: Kind
-    rule: str
-    latex: str | None = None
-
-
-def _math_rule(text: str) -> str | None:
-    """The math rule `text` satisfies, before any attempt to translate it."""
-    for rule, pattern in (
-        ("integer-value", _INTEGER),
-        ("scientific-value", _SCIENTIFIC),
-        ("fraction", _FRACTION),
-        ("decimal-value", _DECIMAL),
-        ("angle", _ANGLE),
-        ("variable", _VARIABLE),
-        ("variables", _VARIABLES),
-        ("product", _PRODUCT),
-        ("bound-in-s(n)", _BOUND),
-        ("application", _APPLICATION),
-        ("function", _FUNCTION),
-    ):
-        if pattern.search(text):
-            return rule
-    if _EXPRESSION.search(text) or re.search(r"[\[(].*[,;].*[\])]", text):
-        return "expression"
-    return None
-
-
-def classify(content: str) -> Classification:  # noqa: PLR0911 -- one verdict per rule
-    """Decide what the text of one code span is, and give its LaTeX when it is math."""
-    text = content.strip()
-    if not text:
-        return Classification("identifier", "empty")
-    for rule, pattern in _IDENTIFIERS:
-        if pattern.search(text) and (rule != "word-or-name" or _SNAKE.search(text)):
-            return Classification("identifier", rule)
-    if not any(char.isalnum() for char in text):
-        return Classification("uncertain", "no-operand")
-    if re.fullmatch(r"\d+(/\d+){2,}", text):
-        return Classification("uncertain", "slash-sequence")
-    if _LONG_INTEGER.match(text):
-        return Classification("uncertain", "long-integer")
-    if re.search(r"[A-Za-z]{2,}_|_[A-Za-z]{3,}", text):
-        return Classification("uncertain", "snake-name-in-expression")
-    if _LABEL_IN_EXPRESSION.search(text):
-        return Classification("uncertain", "label-in-expression")
-    rule = _math_rule(text)
-    if rule is None:
-        return Classification("uncertain", "no-math-signal")
-    try:
-        latex = to_latex(text)
-    except UnconvertibleError as error:
-        return Classification("uncertain", str(error))
-    if not latex or "$" in latex or "`" in latex:
-        return Classification("uncertain", "unwritable")
-    return Classification("math", rule, latex)
-
-
-# ---------------------------------------------------------------------------------------
-# Finding code spans in a Markdown file.
-# ---------------------------------------------------------------------------------------
-
-_GENERATED_BEGIN = re.compile(r"^\s*<!--\s*BEGIN\b")
-_GENERATED_END = re.compile(r"^\s*<!--\s*END\b")
-_BACKTICKS = re.compile(r"`+")
+    Both keep every offset and newline of `text`, so a span found in either sits where it
+    sits in the file. Fences go first, so a marker quoted inside a code block never opens
+    a generated block.
+    """
+    code_free = _mask(mask_fences(text), FRONTMATTER)
+    quoted = code_spans(code_free) if "<!--" in code_free else []
+    prose = _mask(_mask(code_free, GENERATED, quoted), COMMENT, quoted)
+    generated = _mask(_only(code_free, GENERATED, quoted), COMMENT, quoted)
+    return prose, generated
 
 
 @dataclass(frozen=True)
 class CodeSpan:
-    """One inline code span: where it is in the file, and what may be done with it."""
+    """One inline code span: where its backtick runs sit and what lies between them."""
 
-    line: int
     start: int
     end: int
+    ticks: int
     content: str
-    context: str | None
-    """Why the span may not be converted whatever it holds, or None when it may be."""
-    block: tuple[int, int] = (0, 0)
-    """The offsets of the paragraph, heading or table row that holds the span."""
+    line: int
+
+    @property
+    def text(self) -> str:
+        """The content a reader sees, without the padding a backtick may need."""
+        return self.content.strip()
+
+
+def _escaped(text: str, index: int) -> bool:
+    """Whether the character at `index` follows an odd run of backslashes."""
+    backslashes = 0
+    while index - backslashes - 1 >= 0 and text[index - backslashes - 1] == "\\":
+        backslashes += 1
+    return backslashes % 2 == 1
+
+
+def code_spans(masked: str) -> list[CodeSpan]:
+    """Every inline code span in already-masked text, in order.
+
+    The CommonMark rule: a run of n backticks opens a span that the next run of exactly n
+    backticks closes. A span never crosses a blank line, and a backslash before the first
+    backtick of a run makes that one backtick literal.
+    """
+    starts = [0, *(match.end() for match in re.finditer("\n", masked))]
+    spans: list[CodeSpan] = []
+    position = 0
+    while (opener := TICKS.search(masked, position)) is not None:
+        begin = opener.start()
+        if _escaped(masked, begin):
+            position = begin + 1
+            continue
+        width = len(opener.group(0))
+        closer = next(
+            (run for run in TICKS.finditer(masked, opener.end()) if len(run.group(0)) == width),
+            None,
+        )
+        if closer is None or BLANK_LINE.search(masked, opener.end(), closer.start()):
+            position = opener.end()
+            continue
+        spans.append(
+            CodeSpan(
+                start=begin,
+                end=closer.end(),
+                ticks=width,
+                content=masked[opener.end() : closer.start()],
+                line=bisect.bisect_right(starts, begin),
+            )
+        )
+        position = closer.end()
+    return spans
+
+
+_BLOCKS: dict[str, Where] = {
+    "fence": "raw",
+    "code_block": "raw",
+    "html_block": "raw",
+    "heading_open": "heading",
+    "table_open": "table",
+}
+
+
+@cache
+def _block_parser() -> MarkdownIt:
+    # kpress's own preset and options: raw HTML blocks are blocks, not paragraphs.
+    parser = MarkdownIt("js-default", {"html": True})
+    # Only the block structure is wanted, and inline parsing is most of the cost.
+    parser.core.ruler.disable(["inline", "text_join"], ignoreInvalid=True)
+    return parser
 
 
 @dataclass(frozen=True)
-class Finding:
-    span: CodeSpan
-    classification: Classification
-    kept: bool = False
-    """A person read this span in context and decided it stays code (see `LEDGER`)."""
+class Blocks:
+    """A file's block structure, as a CommonMark parser with GFM tables reads it.
 
-    @property
-    def converts(self) -> bool:
-        return (
-            self.classification.kind == "math" and self.span.context is None and not self.kept
-        )
-
-    @property
-    def kind(self) -> Kind:
-        if self.kept:
-            return "identifier"
-        if self.classification.kind == "math" and self.span.context is not None:
-            return "uncertain"
-        return self.classification.kind
-
-    @property
-    def rule(self) -> str:
-        if self.kept:
-            return "kept"
-        if self.classification.kind == "math" and self.span.context is not None:
-            return f"math-but-{self.span.context}"
-        return self.classification.rule
-
-
-def _parser() -> MarkdownIt:
-    return MarkdownIt("commonmark").enable("table")
-
-
-def _generated_lines(lines: Sequence[str]) -> set[int]:
-    """Zero-based line numbers inside BEGIN/END generated regions, markers included."""
-    inside: set[int] = set()
-    depth = 0
-    for number, line in enumerate(lines):
-        if _GENERATED_BEGIN.match(line):
-            depth += 1
-        if depth:
-            inside.add(number)
-        if _GENERATED_END.match(line):
-            depth = max(0, depth - 1)
-    return inside
-
-
-def _raw_spans(text: str, offset: int) -> list[tuple[int, int, str]]:
-    """(start, end, content) of every code span in `text`, offsets shifted by `offset`.
-
-    CommonMark's rule: a backtick run opens a span closed by the next run of exactly the
-    same length; a run with no such partner is literal. A backslash escapes the next
-    character outside code, and an HTML comment or autolink holds no code.
+    `lines` says what kind of block each line belongs to: `raw` for code and HTML blocks,
+    where a backtick is a literal character and no code span exists; `heading` and `table`
+    for the blocks that change how a span may be written; `text` for the rest. `runs`
+    holds the inline source of every paragraph, heading and table cell, keyed by the
+    zero-based line it starts on.
     """
-    spans: list[tuple[int, int, str]] = []
-    index = 0
-    while index < len(text):
-        char = text[index]
-        if char == "\\":
-            index += 2
-            continue
-        if text.startswith("<!--", index):
-            close = text.find("-->", index + 4)
-            index = len(text) if close < 0 else close + 3
-            continue
-        if autolink := re.compile(r"<[A-Za-z][\w+.-]{1,31}:[^\s<>]*>").match(text, index):
-            index = autolink.end()
-            continue
-        if char != "`":
-            index += 1
-            continue
-        run = _BACKTICKS.match(text, index)
-        assert run is not None
-        width = len(run.group())
-        search = run.end()
-        while True:
-            closing = _BACKTICKS.search(text, search)
-            if closing is None:
-                index = run.end()
-                break
-            if len(closing.group()) == width:
-                body = text[run.end() : closing.start()].replace("\n", " ")
-                if body.startswith(" ") and body.endswith(" ") and body.strip():
-                    body = body[1:-1]
-                spans.append((offset + index, offset + closing.end(), body))
-                index = closing.end()
-                break
-            search = closing.end()
-    return spans
+
+    lines: list[Where]
+    runs: dict[int, list[str]]
 
 
-def _parsed_spans(token: Token) -> list[tuple[str, str | None]]:
-    """The parser's code spans in one inline token: content, and a context if any.
-
-    Two contexts come from the parse. A span in link text stays code. And a span that
-    opens its inline content -- the first thing in a paragraph or a table cell -- stays
-    code when that content ends in a digit: `dollarmath` checks the character before an
-    opening `$` by index, and at position 0 the index wraps to the content's last
-    character, so kpress refuses `$x$ ... 11` as though the `$` followed a digit.
-    """
-    children = token.children or []
-    wraps = token.content.rstrip()[-1:].isdigit()
-    spans: list[tuple[str, str | None]] = []
-    depth = 0
-    for position, child in enumerate(children):
-        if child.type == "link_open":
-            depth += 1
-        elif child.type == "link_close":
-            depth -= 1
-        elif child.type == "code_inline":
-            context = "link-text" if depth else None
-            leading = all(c.type == "text" and not c.content for c in children[:position])
-            if context is None and wraps and leading:
-                context = "kpress-leading-dollar"
-            spans.append((child.content, context))
-    return spans
-
-
-def code_spans(text: str) -> list[CodeSpan]:
-    """Every inline code span outside code blocks and generated regions, in order."""
-    lines = text.splitlines(keepends=True)
-    starts = [0]
-    for line in lines:
-        starts.append(starts[-1] + len(line))
-    generated = _generated_lines(lines)
-    tokens = _parser().parse(text)
-
-    # Group inline tokens by their source lines: a table row is one range holding many
-    # cells, a paragraph is one range holding one inline token.
-    blocks: dict[tuple[int, int], list[tuple[str, str | None]]] = {}
-    headings: set[tuple[int, int]] = set()
-    for position, token in enumerate(tokens):
-        if token.type != "inline" or token.map is None:
+def block_context(text: str) -> Blocks:
+    """Parse `text`'s block structure once, for every span `plan` places."""
+    lines: list[Where] = ["text"] * (text.count("\n") + 1)
+    runs: dict[int, list[str]] = {}
+    for token in _block_parser().parse(text):
+        if token.map is None:
             continue
         first, last = token.map
-        if first in generated:
+        if token.type == "inline":
+            runs.setdefault(first, []).append(token.content)
+        where = _BLOCKS.get(token.type)
+        if where is None:
             continue
-        key = (first, last)
-        blocks.setdefault(key, []).extend(_parsed_spans(token))
-        if position and tokens[position - 1].type == "heading_open":
-            headings.add(key)
-
-    found: list[CodeSpan] = []
-    for (first, last), parsed in blocks.items():
-        if not parsed:
-            continue
-        bounds = (starts[first], starts[last])
-        raw = _raw_spans(text[bounds[0] : bounds[1]], bounds[0])
-        agree = [content for _, _, content in raw] == [content for content, _ in parsed]
-        if not agree:
-            # The parser is the authority on what a span is; offsets we cannot trust are
-            # reported so a person can look, and never rewritten.
-            found.extend(
-                CodeSpan(first + 1, -1, -1, content, "parser-disagreement", bounds)
-                for content, _ in parsed
-            )
-            continue
-        for (start, end, content), (_, link) in zip(raw, parsed, strict=True):
-            line = text.count("\n", 0, start) + 1
-            found.append(
-                CodeSpan(
-                    line,
-                    start,
-                    end,
-                    content,
-                    _context(text, start, end, link, heading=(first, last) in headings),
-                    bounds,
-                )
-            )
-    found.sort(key=lambda span: (span.line, span.start))
-    return found
+        for index in range(first, min(last, len(lines))):
+            if lines[index] != "raw":
+                lines[index] = where
+    return Blocks(lines, runs)
 
 
-def _context(text: str, start: int, end: int, link: str | None, *, heading: bool) -> str | None:
-    if heading:
-        return "heading"
-    if link is not None:
-        return link
-    if "\n" in text[start:end]:
-        return "line-break"
-    before = text[start - 1] if start else " "
-    after = text[end] if end < len(text) else " "
-    if before.isalnum() or after.isalnum() or "$" in (before, after) or before == "\\":
-        return "adjacent"
+# ---------------------------------------------------------------------------------------
+# Classifying one span's text
+# ---------------------------------------------------------------------------------------
+
+EXTENSIONS = (
+    "md|py|pyi|yaml|yml|json|jsonl|toml|lock|rs|ts|tsx|js|mjs|cjs|html|css|svg|png|jpg|"
+    "jpeg|gif|webp|pdf|mp4|webm|txt|csv|tsv|sh|bash|cfg|ini|tex|bib|ipynb|zip|gz|tar|"
+    "whl|log|sql|mmd|dot|woff2?|ttf|otf"
+)
+COMMANDS = (
+    "uv|uvx|python3?|pip|git|gh|make|npm|npx|node|cargo|rustc|tbd|pytest|packing-[a-z]+|"
+    "sqsearch|flowmark|ruff|basedpyright|pprose|softschema|bash|sh|cd|ls|cat|grep|rg|curl|"
+    "jq|sed|awk|docker|export|source"
+)
+
+#: Identifier rules, tried in order on the span's text; the first match decides.
+IDENTIFIER_RULES: tuple[tuple[str, re.Pattern[str]], ...] = (
+    ("url", re.compile(r"[a-z][a-z0-9+.-]*://|^www\.")),
+    ("date", re.compile(r"^\d{4}-\d{2}-\d{2}(?:[T ][\d:.]+Z?)?$")),
+    # A clock time or a launch-relative time: `03:18:37Z`, `T+0`.
+    ("time", re.compile(r"^\d{1,2}:\d{2}(?::\d{2})?(?:\.\d+)?Z?$|^T\+\d+\w*$")),
+    (
+        "version",
+        re.compile(r"^v\d+(?:\.\d+)+(?:[-+.][\w.-]+)?$|^\d+\.\d+\.\d+(?:[-+.][\w.-]+)?$"),
+    ),
+    # T-018, E-n011-…, H-236, X-027, BC-241, D-397, OR-2, and placeholders such as T-NNN.
+    # An id anywhere in the span (`H-00x → H-01x`) makes it about ids, not arithmetic.
+    ("record id", re.compile(r"^[A-Z]{1,4}-[A-Za-z0-9][\w.…-]*$|\b[A-Z]{1,4}-\d{2,}")),
+    # The prefix of an id family: `T-`, `exp-`, `H-`.
+    ("id prefix", re.compile(r"^[A-Za-z]{1,8}-$")),
+    # V4, C3, S5, V4/C3, V0/C0, C0–C5, and labels such as R068 and BC303.
+    ("rung or label", re.compile(r"^[A-Z]{1,3}\d+[a-z]?(?:\s*[/–-]\s*[A-Z]{1,3}\d+[a-z]?)*$")),
+    # Section and run labels: `C.3`, `T5-01/0000`, `m1:j5`.
+    (
+        "label",
+        re.compile(r"^[A-Z]{1,3}\.\d+(?:\.\d+)*$|^[A-Z]{1,3}\d+(?:[-/]\d+)+$|\w:[A-Za-z]"),
+    ),
+    # The confirmation and verification axes, alone or as `V/C`.
+    ("rung axis", re.compile(r"^[VC]$|^[VCSN](?:/[VCSN])+$")),
+    # Three or more one-letter labels between slashes, `P/Q/E`: named regimes or points,
+    # not a chain of quotients. Two stay math, since `L/B` and `B/A` are ratios. From the
+    # overview branch's classifier (3eebc2bdf), which took two as well, as are the three
+    # uncertain rules marked below and the padded label under `kebab-case name`.
+    ("label list", re.compile(r"^[A-Z](?:/[A-Z]){2,}$")),
+    # A number printed by a program in exponent form: run output lifted verbatim, which
+    # the conventions never retype. In an expression it is left `uncertain` below.
+    ("float literal", re.compile(r"^[+\-−]?\d+(?:\.\d+)?[eE][+\-−]?\d+$")),
+    ("placeholder", re.compile(r"^<[\w .:/-]+>$")),
+    ("html", re.compile(r"^</?[a-z][\w-]*[\s>/]")),
+    ("command", re.compile(rf"(?:^|\s)--?[A-Za-z][\w-]*|(?:^|\s)-m\s|^(?:{COMMANDS})(?:\s|$)")),
+    ("dotfile", re.compile(r"^\.[A-Za-z]")),
+    (
+        "path",
+        re.compile(
+            rf"^[~.]{{0,2}}/|[A-Za-z]{{2,}}[\w.*-]*/|/[\w.*-]*[A-Za-z]{{2,}}|\w/$"
+            rf"|\.(?:{EXTENSIONS})(?:[#:?]\S*)?$"
+        ),
+    ),
+    ("glob", re.compile(r"\*\*|\*\.\w|/\*|\*/|[A-Za-z_-]{2,}\*")),
+    # A content address or digest: `909efafa+sha256-9c90a04e5691f168`.
+    ("digest", re.compile(r"sha\d+[-:]|\b(?=[0-9a-f]*[a-f])(?=[0-9a-f]*\d)[0-9a-f]{8,}\b")),
+    (
+        "code punctuation",
+        re.compile(
+            r"""[`'"\\$#@;~&%?]|==|!=|->|=>|::|:=|&&|\|\||^[\w.-]{2,}:(?:\s|$)"""
+            r"""|[A-Za-z]{2,}:\S|\w\[|\[\]|\{[.#]|^:\d|[A-Za-z]{2,}<[A-Z]\w*>"""
+            r"""|^(?:if|elif|else|for|while|return|def|class|import|from|assert)\b"""
+            r"""|\b(?:True|False|None)\b"""
+        ),
+    ),
+    ("dotted name", re.compile(r"[A-Za-z_][\w-]*\.[A-Za-z_]")),
+    # A name with an underscore, or a subscript of three letters or more, which reads as a
+    # code name (`q_chart`) where `ν_ij` and `P_TR` read as subscripts.
+    (
+        "snake_case",
+        re.compile(r"(?:^|\W)[A-Za-z][A-Za-z0-9]+_\w|(?:^|\W)_\w|\w__\w|_\w*_|_[A-Za-z]{3,}"),
+    ),
+    ("commit hash", re.compile(r"^(?=[0-9a-f]*[a-f])(?=[0-9a-f]*\d)[0-9a-f]{7,40}$")),
+    # exp-001, think-qqzs, apparently-novel, known-best-1-324, and case ids such as n-011.
+    # `n-1` and `y-x` are arithmetic, so a kebab name needs a two-letter run or one letter
+    # before a zero-padded number (`n-011`, the `x-010` beads).
+    (
+        "kebab-case name",
+        re.compile(r"^(?=.*[A-Za-z]{2})[A-Za-z][A-Za-z0-9]*(?:-[A-Za-z0-9.]+)+$|^[a-z]-\d{3}$"),
+    ),
+)
+
+#: Spans whose LaTeX would silently say something else, or that may be a character named
+#: rather than used; tried after the identifiers.
+UNCERTAIN_RULES: tuple[tuple[str, re.Pattern[str]], ...] = (
+    # `1e-11` in LaTeX reads as 1·e−11.
+    ("float literal in an expression", re.compile(r"\d(?:\.\d+)?[eE][+\-−]?\d")),
+    # The register's ASCII form, often quoted as the literal it is.
+    ("ASCII relation", re.compile(r">=|<=|=<")),
+    ("ASCII sqrt", re.compile(r"\bsqrt\b")),
+    ("ASCII ellipsis or range", re.compile(r"\.\.")),
+    # A long run of digits is as often an id or an abbreviated hash as a value.
+    ("long digit string", re.compile(r"^\d{7,}$")),
+    # A position or a time: `124:14`.
+    ("colon between digits", re.compile(r"\d:\d")),
+    # A measurement: `1.28 ms`, `1369.60 s`, `13.8 GB`, `1.38x`.
+    (
+        "number with a unit",
+        re.compile(r"^[+\-−≈~]?\s*[\d.,]+\s*(?:[µu]s|ms|ns|s|min|h|[KMGT]i?B|B|x|×|%)$"),
+    ),
+    # `S` names the significance axis, and `N` the novelty axis, as often as a variable.
+    ("rung axis or variable", re.compile(r"^[SN]$")),
+    # From the overview branch's classifier. A letter run straight into a digit inside a
+    # formula -- `f1 … f6`, `Q0=[0,1]^2`, `D4 x S3` -- is a label, or a subscript written
+    # flat, which LaTeX would set as a product. A lone one (`f64`, `x1`) is a word already.
+    (
+        "label in an expression",
+        re.compile(r"^(?![A-Za-z][A-Za-z0-9]*$).*(?<![\w.])[A-Za-z]+\d"),
+    ),
+    # Three or more integers between slashes, `0/1/0` or `8/6/8`: counts in a row, which
+    # LaTeX would set as a chain of divisions.
+    ("slash sequence", re.compile(r"^\d+(?:/\d+){2,}$")),
+    # A decimal without its leading zero, `.8`: a figure quoted as its source prints it.
+    ("decimal without its zero", re.compile(r"^[+\-−]?\.\d+…?$")),
+    # One character alone is as often the character discussed as the symbol used:
+    # "maps `…` back to `...`".
+    ("a lone character", re.compile(r"^[^\w\s]$")),
+)
+
+# Each rule set as one alternation: most spans are identifiers, and one search that finds
+# none is how a span skips twenty. The rule that matched is then named by the loop.
+_ANY_IDENTIFIER = re.compile(
+    "|".join(f"(?:{pattern.pattern})" for _rule, pattern in IDENTIFIER_RULES)
+)
+_ANY_UNCERTAIN = re.compile(
+    "|".join(f"(?:{pattern.pattern})" for _rule, pattern in UNCERTAIN_RULES)
+)
+
+MATH_FUNCTIONS = frozenset({
+    "sin", "cos", "tan", "sec", "csc", "cot", "arcsin", "arccos", "arctan", "sinh", "cosh",
+    "tanh", "log", "ln", "exp", "lim", "inf", "sup", "min", "max", "det", "dim", "deg",
+    "gcd", "ker", "arg",
+})  # fmt: skip
+#: A named call, ASCII-only so `F₃(2)` is not one: `load_records()`, `render(x)`.
+CALL = re.compile(r"(?<![\w\\])(?P<name>[A-Za-z_][A-Za-z0-9_]+)\s*\(", re.ASCII)
+#: Two or more letters with no operator: a word or a name, never a formula.
+WORD = re.compile(r"^[A-Za-z][A-Za-z0-9]+$")
+#: Words and the punctuation of a sentence, with no digit or operator: literal prose.
+PROSE = re.compile(r"^[\[(]?[A-Za-z][A-Za-z0-9]*(?:[ ,.’()]+[A-Za-z0-9]+)*[.)\]]*$")
+
+
+@dataclass(frozen=True)
+class Verdict:
+    """What one span is, the rule that decided it, and its LaTeX when it is math."""
+
+    kind: Kind
+    rule: str
+    latex: str | None = None
+    reason: str = ""
+
+
+class UnconvertibleError(ValueError):
+    """A span with no faithful LaTeX form; the message says which character or word."""
+
+
+def _named(text: str) -> Verdict | None:
+    """A call of a function that is not mathematics, a word, or prose, is literal text."""
+    if any(match.group("name") not in MATH_FUNCTIONS for match in CALL.finditer(text)):
+        return Verdict("identifier", "function call")
+    if WORD.match(text) and text in MATH_FUNCTIONS:
+        return Verdict("uncertain", "bare function name", reason=f"`{text}` alone")
+    if WORD.match(text):
+        return Verdict("identifier", "word")
+    if PROSE.match(text) and set(re.findall(r"[A-Za-z]{2,}", text)) - MATH_FUNCTIONS:
+        return Verdict("identifier", "prose")
+    return None
+
+
+def _literal(text: str) -> Verdict | None:
+    """The verdict for a span that is not mathematics, or `None` if it may be."""
+    if not text:
+        return Verdict("uncertain", "empty", reason="an empty span")
+    groups: tuple[tuple[Kind, tuple[tuple[str, re.Pattern[str]], ...]], ...] = (
+        ("identifier", IDENTIFIER_RULES),
+        ("uncertain", UNCERTAIN_RULES),
+    )
+    for kind, rules in groups:
+        rule = next((rule for rule, pattern in rules if pattern.search(text)), None)
+        if rule is not None:
+            return Verdict(kind, rule, reason=rule if kind == "uncertain" else "")
+    return _named(text)
+
+
+def classify(content: str, *, frac: bool = False) -> Verdict:
+    """Classify one code span's content, knowing nothing of where it sits.
+
+    `frac` asks for the form a table row or display math takes: `\\frac{a}{b}` for a
+    fraction of two integers, where running text keeps the slash. A case or range never
+    takes it, since `n = 68/69` names two cases rather than a fraction. A span that
+    crosses a line break is read as CommonMark reads it, with the break as a space.
+
+    Cached: a file repeats its spans (`n = 11` a hundred times in the synopsis), and the
+    ratchet classifies every span of every migrated file on each run.
+    """
+    return _classify(" ".join(content.split()), frac=frac)
+
+
+@cache
+def _classify(text: str, *, frac: bool) -> Verdict:
+    if _ANY_IDENTIFIER.search(text) is None and _ANY_UNCERTAIN.search(text) is None:
+        verdict = _named(text) if text else _literal(text)
+    else:
+        verdict = _literal(text)
+    if verdict is not None:
+        return verdict
+    rule = _math_rule(text)
+    try:
+        latex = to_latex(text, frac=frac and rule != "case or range")
+    except UnconvertibleError as error:
+        return Verdict("uncertain", "no LaTeX form", reason=str(error))
+    return Verdict("math", rule, latex=latex)
+
+
+_RELATION = re.compile(r"[≥≤><=≠≈]")
+#: The kinds of mathematics the report names, tried in order; the last always matches.
+MATH_RULES: tuple[tuple[str, Callable[[str], object]], ...] = (
+    ("s(n)", re.compile(r"s\s*\([^()]*\)").fullmatch),
+    (
+        "bound in s(n)",
+        lambda text: re.search(r"(?<![A-Za-z\\])s\s*\(", text) and _RELATION.search(text),
+    ),
+    (
+        "case or range",
+        lambda text: (
+            re.fullmatch(r"[nkm]\s*=\s*[\d+\-−].*", text)
+            and not re.search(r"[A-Za-z]{2}", text)
+        ),
+    ),
+    (
+        "number",
+        re.compile(r"(?=.*\d)[+\-−]?(?:\d{1,3}(?:,\d{3})+|\d+)?(?:\.\d+)?…?°?").fullmatch,
+    ),
+    ("fraction", re.compile(r"\d+/\d+").fullmatch),
+    (
+        "variable",
+        re.compile(
+            r"(?:[A-Za-z]|[α-ωΓΔΘΛΞΠΣΥΦΨΩϑϕϵϱϖ])[₀-₉ₐ-ₜᵢⱼᵣᵤᵥ,]*[⁰¹²³⁴-⁹ⁿⁱ]*[*′]?"
+        ).fullmatch,
+    ),
+    ("symbol", lambda text: len(text) == 1),
+    ("formula", lambda _text: True),
+)
+
+
+def _math_rule(text: str) -> str:
+    """Name the kind of mathematics a convertible span is, for the report."""
+    return next(name for name, test in MATH_RULES if test(text))
+
+
+# ---------------------------------------------------------------------------------------
+# Converting to LaTeX
+# ---------------------------------------------------------------------------------------
+
+_GREEK_NAMES = (
+    ("α", "alpha"), ("β", "beta"), ("γ", "gamma"), ("δ", "delta"), ("ε", "varepsilon"),
+    ("ϵ", "epsilon"), ("ζ", "zeta"), ("η", "eta"), ("θ", "theta"), ("ϑ", "vartheta"),
+    ("ι", "iota"), ("κ", "kappa"), ("λ", "lambda"), ("μ", "mu"), ("ν", "nu"), ("ξ", "xi"),
+    ("π", "pi"), ("ϖ", "varpi"), ("ρ", "rho"), ("ϱ", "varrho"), ("σ", "sigma"),
+    ("ς", "varsigma"), ("τ", "tau"), ("υ", "upsilon"), ("φ", "varphi"), ("ϕ", "phi"),
+    ("χ", "chi"), ("ψ", "psi"), ("ω", "omega"), ("Γ", "Gamma"), ("Δ", "Delta"),
+    ("Θ", "Theta"), ("Λ", "Lambda"), ("Ξ", "Xi"), ("Π", "Pi"), ("Σ", "Sigma"),
+    ("Υ", "Upsilon"), ("Φ", "Phi"), ("Ψ", "Psi"), ("Ω", "Omega"),
+)  # fmt: skip
+#: Greek letters as their commands. `φ` and `ε` are the curly forms LaTeX calls `\varphi`
+#: and `\varepsilon`; the capitals that look Latin have no command and are refused.
+GREEK = {letter: rf"\{name}" for letter, name in _GREEK_NAMES}
+#: Each symbol's LaTeX and the token kind it reads as: a relation or operator, something
+#: that can carry a script (a `letter` or `number`), an opening or closing bracket, or a
+#: script itself.
+SYMBOLS: dict[str, tuple[str, str]] = {
+    "≥": (r"\ge", "relation"),
+    "≤": (r"\le", "relation"),
+    "≠": (r"\ne", "relation"),
+    "≈": (r"\approx", "relation"),
+    "≡": (r"\equiv", "relation"),
+    "∼": (r"\sim", "relation"),
+    "≅": (r"\cong", "relation"),
+    "∝": (r"\propto", "relation"),
+    "≪": (r"\ll", "relation"),
+    "≫": (r"\gg", "relation"),
+    "∈": (r"\in", "relation"),
+    "∉": (r"\notin", "relation"),
+    "⊂": (r"\subset", "relation"),
+    "⊆": (r"\subseteq", "relation"),
+    "⊃": (r"\supset", "relation"),
+    "⊇": (r"\supseteq", "relation"),
+    "⊥": (r"\perp", "relation"),
+    "∥": (r"\parallel", "relation"),
+    "→": (r"\to", "relation"),
+    "↦": (r"\mapsto", "relation"),
+    "⇒": (r"\Rightarrow", "relation"),
+    "⟹": (r"\implies", "relation"),
+    "↔": (r"\leftrightarrow", "relation"),
+    "±": (r"\pm", "op"),
+    "∓": (r"\mp", "op"),
+    "×": (r"\times", "op"),
+    "·": (r"\cdot", "op"),
+    "⋅": (r"\cdot", "op"),
+    "∘": (r"\circ", "op"),
+    "∪": (r"\cup", "op"),
+    "∩": (r"\cap", "op"),
+    "∖": (r"\setminus", "op"),
+    "∧": (r"\wedge", "op"),
+    "∨": (r"\vee", "op"),
+    "¬": (r"\neg", "op"),
+    "∀": (r"\forall", "op"),
+    "∃": (r"\exists", "op"),
+    "∑": (r"\sum", "op"),
+    "∏": (r"\prod", "op"),
+    "∫": (r"\int", "op"),
+    "−": ("-", "op"),
+    "-": ("-", "op"),
+    "…": (r"\ldots", "op"),
+    "⋯": (r"\cdots", "op"),
+    "∅": (r"\emptyset", "letter"),
+    "∞": (r"\infty", "letter"),
+    "∂": (r"\partial", "letter"),
+    "∇": (r"\nabla", "letter"),
+    "ℓ": (r"\ell", "letter"),
+    "½": (r"\tfrac{1}{2}", "number"),
+    "¼": (r"\tfrac{1}{4}", "number"),
+    "¾": (r"\tfrac{3}{4}", "number"),
+    "⟨": (r"\langle", "open"),
+    "⌈": (r"\lceil", "open"),
+    "⌊": (r"\lfloor", "open"),
+    "{": (r"\lbrace", "open"),
+    "(": ("(", "open"),
+    "[": ("[", "open"),
+    "⟩": (r"\rangle", "close"),
+    "⌉": (r"\rceil", "close"),
+    "⌋": (r"\rfloor", "close"),
+    "}": (r"\rbrace", "close"),
+    ")": (")", "close"),
+    "]": ("]", "close"),
+    "°": (r"^\circ", "script"),
+    "′": (r"^{\prime}", "script"),
+    "″": (r"^{\prime\prime}", "script"),
+    "+": ("+", "op"),
+    "=": ("=", "relation"),
+    "<": ("<", "relation"),
+    ">": (">", "relation"),
+    ",": (",", "op"),
+    ":": (":", "op"),
+    "!": ("!", "op"),
+    "|": ("|", "op"),
+    "/": ("/", "slash"),
+}
+SUBSCRIPTS = {
+    **dict(
+        zip("₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑₒₓₕₖₗₘₙₚₛₜᵢⱼᵣᵤᵥ", "0123456789+-=()aeoxhklmnpstijruv", strict=True)
+    ),
+    # The Greek subscripts are written as the letters they are. `ᵧ` often stands in for a
+    # subscript y, which Unicode lacks; `\gamma` keeps the glyph the prose already shows
+    # rather than guess at what it meant.
+    **dict(zip("ᵦᵧᵨᵩᵪ", (r"\beta", r"\gamma", r"\rho", r"\varphi", r"\chi"), strict=True)),
+}
+SUPERSCRIPTS = dict(zip("⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾ⁿⁱ", "0123456789+-=()ni", strict=True))
+#: A number: with thousands separators (`1,039,500`), a decimal, or a bare fraction part.
+_NUMBER_TOKEN = re.compile(r"\d{1,3}(?:,\d{3})+(?![\d,])(?:\.\d+)?|\d+(?:\.\d+)?|\.\d+")
+_LETTERS = re.compile(r"[A-Za-z]+")
+_CONTROL_WORD_END = re.compile(r"\\[A-Za-z]+$")
+#: A backslash before anything but a letter: an escape to a Markdown parser.
+_ESCAPE = re.compile(r"\\[^A-Za-z]")
+
+
+def _join(pieces: Iterable[str]) -> str:
+    """Concatenate LaTeX, spacing a control word from a letter that follows it."""
+    latex = ""
+    for piece in pieces:
+        if _CONTROL_WORD_END.search(latex) and piece[:1].isascii() and piece[:1].isalpha():
+            latex += " "
+        latex += piece
+    return latex
+
+
+def _styled_letter(char: str) -> str | None:
+    """`\\mathbb{R}` for `ℝ`, `\\mathcal{X}` for `𝒳`: letters in a mathematical alphabet."""
+    name = unicodedata.name(char, "")
+    if match := re.fullmatch(r"(?:MATHEMATICAL )?DOUBLE-STRUCK CAPITAL ([A-Z])", name):
+        return rf"\mathbb{{{match.group(1)}}}"
+    if match := re.fullmatch(r"(?:MATHEMATICAL )?SCRIPT CAPITAL ([A-Z])", name):
+        return rf"\mathcal{{{match.group(1)}}}"
     return None
 
 
 @dataclass(frozen=True)
-class Keep:
-    """A math-like span a person read in context and decided stays code.
-
-    `where`, when set, limits the exception to spans whose paragraph (or heading, or
-    table row) contains that text, compared with its whitespace collapsed so a reflow
-    does not move it. It is for a file that uses one letter both ways: `S` naming the
-    significance axis in one sentence and a point set in another.
-    """
-
-    span: str
-    where: str | None = None
-
-    def matches(self, text: str, span: CodeSpan) -> bool:
-        if span.content != self.span:
-            return False
-        if self.where is None:
-            return True
-        start, end = span.block
-        return self.where in " ".join(text[start:end].split())
+class _Token:
+    kind: str
+    latex: str
 
 
-def analyze(text: str, keep: Collection[Keep] = ()) -> list[Finding]:
-    """Classify every code span in `text`; spans a `keep` entry matches stay code."""
-    return [
-        Finding(span, classify(span.content), kept=any(k.matches(text, span) for k in keep))
-        for span in code_spans(text)
-    ]
+@dataclass
+class _Scanner:
+    """A left-to-right reader of one span that turns its characters into LaTeX tokens."""
+
+    source: str
+    frac: bool
+    index: int = 0
+    tokens: list[_Token] = field(default_factory=list)
+
+    def peek(self, offset: int = 0) -> str:
+        at = self.index + offset
+        return self.source[at] if 0 <= at < len(self.source) else ""
+
+    def base(self) -> _Token | None:
+        """The last token that is not a space: what a script would attach to."""
+        return next((token for token in reversed(self.tokens) if token.kind != "space"), None)
+
+    def emit(self, kind: str, latex: str) -> None:
+        self.tokens.append(_Token(kind, latex))
 
 
-# ---------------------------------------------------------------------------------------
-# The ledger of migrated files.
-# ---------------------------------------------------------------------------------------
-
-PACKING = Path(__file__).resolve().parents[1]
-REPO = PACKING.parent
-LEDGER = PACKING / "devtools" / "math-migrated.yaml"
-
-
-def _keep(entry: object, where: str) -> Keep:
-    if isinstance(entry, str):
-        return Keep(entry)
-    if isinstance(entry, dict):
-        fields = cast(dict[str, object], entry)
-        span, context = fields.get("span"), fields.get("where")
-        if isinstance(span, str) and (context is None or isinstance(context, str)):
-            return Keep(span, context)
-    raise TypeError(f"{where}: a keep entry is a span, or a mapping of `span` and `where`")
-
-
-def load_ledger(path: Path = LEDGER) -> dict[str, tuple[Keep, ...]]:
-    """Each migrated file, repository-relative, with the math-like spans kept as code.
-
-    The file maps each path to `{keep: [...]}`, or to nothing. A kept span is one a
-    person read in context and decided is not mathematics there -- `V` and `C` naming
-    the verification and confirmation ladders, say -- so neither this tool nor the
-    ratchet converts it or complains about it.
-    """
-    document = load_yaml(path.read_text(encoding="utf-8")) or {}
-    files = document.get("files") or {}
-    if not isinstance(files, dict):
-        raise TypeError(f"{path}: `files` must map a path to its settings")
-    ledger: dict[str, tuple[Keep, ...]] = {}
-    for name, settings in cast(dict[str, object], files).items():
-        entries: object = []
-        if isinstance(settings, dict):
-            entries = cast(dict[str, object], settings).get("keep") or []
-        if not isinstance(entries, list):
-            raise TypeError(f"{path}: `{name}.keep` must be a list")
-        where = f"{path.name}: {name}"
-        ledger[str(name)] = tuple(_keep(entry, where) for entry in cast(list[object], entries))
-    return ledger
-
-
-def kept_for(path: Path, ledger: dict[str, tuple[Keep, ...]] | None = None) -> tuple[Keep, ...]:
-    """The kept spans the ledger names for `path`, or none when it is not listed."""
-    try:
-        relative = path.resolve().relative_to(REPO).as_posix()
-    except ValueError:
-        return ()
-    return (load_ledger() if ledger is None else ledger).get(relative, ())
-
-
-# ---------------------------------------------------------------------------------------
-# Rewriting, and the two measurements that must pass before a write.
-# ---------------------------------------------------------------------------------------
-
-
-def migrate(text: str, keep: Collection[Keep] = ()) -> tuple[str, list[Finding]]:
-    """`text` with every convertible math span written as `$...$`, and the findings."""
-    findings = analyze(text, keep)
+def _script(scanner: _Scanner, table: dict[str, str], mark: str) -> None:
+    """A run of Unicode sub- or superscripts as one `_{…}` or `^{…}` group."""
+    base = scanner.base()
+    if base is None or base.kind in {"op", "relation", "open", "slash"}:
+        raise UnconvertibleError(f"a {'sub' if mark == '_' else 'super'}script with no base")
     pieces: list[str] = []
-    cursor = 0
-    for finding in findings:
-        if not finding.converts:
+    while scanner.peek() in table or (
+        mark == "_" and scanner.peek() == "," and pieces and scanner.peek(1) in table
+    ):
+        pieces.append(table.get(scanner.peek(), ","))
+        scanner.index += 1
+    run = _join(pieces)
+    scanner.emit("script", f"{mark}{run}" if len(run) == 1 else f"{mark}{{{run}}}")
+
+
+def _radicand(scanner: _Scanner) -> str:
+    """What a `√` applies to: a parenthesised group, a number, or one symbol."""
+    head = scanner.peek()
+    if head == "(":
+        return to_latex(_group(scanner, scanner.index), frac=scanner.frac)
+    if number := _NUMBER_TOKEN.match(scanner.source, scanner.index):
+        scanner.index = number.end()
+        return number.group(0)
+    if head.isascii() and head.isalpha():
+        scanner.index += 1
+        return head
+    if head in GREEK:
+        scanner.index += 1
+        return GREEK[head]
+    raise UnconvertibleError(f"`√` before {head!r}")
+
+
+def _group(scanner: _Scanner, at: int) -> str:
+    """The text inside the parentheses opening at `at`, consumed through the closing one."""
+    depth, end = 0, at
+    while end < len(scanner.source):
+        depth += {"(": 1, ")": -1}.get(scanner.source[end], 0)
+        if depth == 0:
+            break
+        end += 1
+    if depth != 0:
+        raise UnconvertibleError("an unclosed parenthesis")
+    scanner.index = end + 1
+    return scanner.source[at + 1 : end]
+
+
+def _caret(scanner: _Scanner) -> None:
+    """An ASCII exponent, braced: `10^22` is `10^{22}`, which `10^22` in LaTeX is not.
+
+    A parenthesised exponent loses the parentheses that only grouped it (`ℝ^(3n+1)` is
+    `\\mathbb{R}^{3n+1}`), and an exponent that is a call keeps its argument
+    (`8^C(n,2)` is `8^{C(n,2)}`, where `8^C(n,2)` would raise only the `C`).
+    """
+    scanner.index += 1
+    if scanner.peek() == "(":
+        exponent = to_latex(_group(scanner, scanner.index), frac=scanner.frac)
+        scanner.emit("script", f"^{{{exponent}}}")
+        return
+    head = scanner.peek()
+    if head.isascii() and head.isalpha() and scanner.peek(1) == "(":
+        scanner.index += 1
+        argument = to_latex(_group(scanner, scanner.index), frac=scanner.frac)
+        scanner.emit("script", f"^{{{head}({argument})}}")
+        return
+    sign = ""
+    if scanner.peek() in {"-", "−"}:
+        sign = "-"
+        scanner.index += 1
+    if number := _NUMBER_TOKEN.match(scanner.source, scanner.index):
+        scanner.index = number.end()
+        scanner.emit("script", f"^{{{sign}{number.group(0)}}}")
+        return
+    if not sign and scanner.peek().isascii() and scanner.peek().isalpha():
+        scanner.emit("script", f"^{scanner.peek()}")
+        scanner.index += 1
+        return
+    raise UnconvertibleError("an ASCII `^` before something other than a number or letter")
+
+
+def _underscore(scanner: _Scanner) -> None:
+    """An ASCII subscript on a one-letter base: `ν_ij` is `\\nu_{ij}`; `K_κ`, `K_{\\kappa}`."""
+    base = scanner.base()
+    if base is None or base.kind not in {"letter", "greek"}:
+        raise UnconvertibleError("an `_` that is not a subscript on a letter")
+    if (greek := GREEK.get(scanner.peek(1))) is not None:
+        scanner.index += 2
+        scanner.emit("script", f"_{{{greek}}}")
+        return
+    run = re.match(r"[A-Za-z0-9]+", scanner.source[scanner.index + 1 :])
+    if run is None:
+        raise UnconvertibleError("an `_` with no subscript after it")
+    scanner.index += 1 + run.end()
+    text = run.group(0)
+    scanner.emit("script", f"_{text}" if len(text) == 1 else f"_{{{text}}}")
+
+
+def _star(scanner: _Scanner) -> None:
+    """`s*` and `a*` mark a distinguished value; any other `*` is ASCII arithmetic."""
+    base = scanner.base()
+    after = scanner.peek(1)
+    if base is None or base.kind not in {"letter", "greek", "script"} or after.isalnum():
+        raise UnconvertibleError("an ASCII `*` that is not a marking star")
+    scanner.index += 1
+    scanner.emit("script", r"^{\ast}")
+
+
+def _en_dash(scanner: _Scanner) -> None:
+    """An en dash is a range only between two numbers: `18–95` is `18\\text{–}95`."""
+    before = scanner.source[: scanner.index].rstrip()
+    after = scanner.source[scanner.index + 1 :].lstrip()
+    if not (before[-1:].isdigit() or before.endswith("°")) or not after[:1].isdigit():
+        raise UnconvertibleError("an en dash outside a numeric range")
+    scanner.index += 1
+    scanner.emit("op", r"\text{–}")
+
+
+def _letters(scanner: _Scanner) -> None:
+    """One letter is a variable; a longer run must be a known function."""
+    word = _LETTERS.match(scanner.source, scanner.index)
+    if word is None:  # pragma: no cover - `_step` only calls this on a letter
+        raise UnconvertibleError("no letters")
+    text = word.group(0)
+    scanner.index = word.end()
+    if len(text) == 1:
+        scanner.emit("letter", text)
+    elif text in MATH_FUNCTIONS:
+        scanner.emit("function", rf"\{text}")
+    else:
+        raise UnconvertibleError(f"the word `{text}`")
+
+
+_HANDLERS: dict[str, Callable[[_Scanner], None]] = {
+    "^": _caret,
+    "_": _underscore,
+    "*": _star,
+    "–": _en_dash,
+}
+
+
+def _step(scanner: _Scanner) -> None:
+    """Read one token from `scanner`, or refuse the character in front of it."""
+    char = scanner.peek()
+    if char.isspace():
+        while scanner.peek().isspace():
+            scanner.index += 1
+        scanner.emit("space", " ")
+    elif number := _NUMBER_TOKEN.match(scanner.source, scanner.index):
+        scanner.index = number.end()
+        digits = number.group(0)
+        # A thousands comma is `{,}`: bare, LaTeX spaces it as punctuation, `1, 039`.
+        kind = "integer" if digits.isdigit() else "number"
+        scanner.emit(kind, digits.replace(",", "{,}"))
+    elif char.isascii() and char.isalpha():
+        _letters(scanner)
+    elif char in _HANDLERS:
+        _HANDLERS[char](scanner)
+    elif char in SUBSCRIPTS:
+        _script(scanner, SUBSCRIPTS, "_")
+    elif char in SUPERSCRIPTS:
+        _script(scanner, SUPERSCRIPTS, "^")
+    elif char == "√":
+        scanner.index += 1
+        scanner.emit("letter", rf"\sqrt{{{_radicand(scanner)}}}")
+    elif char in GREEK:
+        scanner.index += 1
+        scanner.emit("greek", GREEK[char])
+    elif char in SYMBOLS:
+        scanner.index += 1
+        latex, kind = SYMBOLS[char]
+        scanner.emit(kind, latex)
+    elif styled := _styled_letter(char):
+        scanner.index += 1
+        scanner.emit("letter", styled)
+    else:
+        raise UnconvertibleError(f"no LaTeX for {char!r}")
+
+
+def _fractions(tokens: list[_Token]) -> list[_Token]:
+    """`a/b` of two integers as `\\frac{a}{b}`, and `(\\frac{a}{b})` without its parens.
+
+    The parentheses stay where they mean application or multiplication (`s(1/2)`,
+    `2(1/2)`), and a slash in a chain (`1/2/3`) or beside a script is left alone.
+    """
+    out: list[_Token] = []
+    index = 0
+    while index < len(tokens):
+        kinds = [token.kind for token in tokens[index : index + 3]]
+        before = out[-1].kind if out else "start"
+        after = tokens[index + 3].kind if index + 3 < len(tokens) else "end"
+        if (
+            kinds == ["integer", "slash", "integer"]
+            and before not in {"slash", "script"}
+            and after not in {"slash", "script", "integer", "number"}
+        ):
+            numerator, denominator = tokens[index].latex, tokens[index + 2].latex
+            out.append(_Token("frac", rf"\frac{{{numerator}}}{{{denominator}}}"))
+            index += 3
             continue
-        latex = finding.classification.latex
-        assert latex is not None
-        pieces.extend((text[cursor : finding.span.start], f"${latex}$"))
-        cursor = finding.span.end
-    pieces.append(text[cursor:])
-    return "".join(pieces), findings
+        out.append(tokens[index])
+        index += 1
+    unwrapped: list[_Token] = []
+    index = 0
+    while index < len(out):
+        window = out[index : index + 3]
+        before = unwrapped[-1].kind if unwrapped else "start"
+        if (
+            [token.latex for token in window[::2]] == ["(", ")"]
+            and window[1].kind == "frac"
+            and before in {"start", "space", "op", "relation"}
+        ):
+            unwrapped.append(window[1])
+            index += 3
+            continue
+        unwrapped.append(out[index])
+        index += 1
+    return unwrapped
 
 
-def kpress_parser() -> MarkdownIt:
-    """The math parsing kpress applies: `dollarmath` with the options kpress passes."""
-    return _parser().use(dollarmath_plugin, allow_space=False, allow_digits=False)
+def to_latex(source: str, *, frac: bool = False) -> str:
+    """The LaTeX for one mathematical expression, or `UnconvertibleError` saying why not.
+
+    Spacing is the source's, collapsed; a control word gains a space when a letter comes
+    next, so `x≥y` is `x\\ge y` rather than the undefined `\\gey`.
+    """
+    scanner = _Scanner(source.strip(), frac=frac)
+    while scanner.index < len(scanner.source):
+        _step(scanner)
+    tokens = _fractions(scanner.tokens) if frac else scanner.tokens
+    # `<` before a letter could open an HTML tag to a parser that reads it before the
+    # math, so it is spaced: `x<y` is `x< y`, which LaTeX sets identically.
+    latex = re.sub(r"<(?=[A-Za-z/!?])", "< ", _join(token.latex for token in tokens))
+    if not latex or "$" in latex or "`" in latex or _ESCAPE.search(latex):
+        raise UnconvertibleError("a conversion Markdown could read as an escape or a delimiter")
+    return latex
 
 
-def math_inline(text: str) -> Counter[str]:
-    """The content of every inline math span kpress's parser reads in `text`."""
-    found: Counter[str] = Counter()
-    for token in kpress_parser().parse(text):
-        for child in token.children or []:
-            if child.type == "math_inline":
-                found[child.content] += 1
-    return found
+#: Every control word this module writes, back to the character it came from. Where two
+#: characters share a command (`·` and `⋅`, `−` and `-`), the first listed is the answer.
+_PLAIN_WORDS = {
+    **{latex: char for char, (latex, _) in reversed(SYMBOLS.items()) if latex.startswith("\\")},
+    **{latex: letter for letter, latex in GREEK.items()},
+}
+_FRACTION = re.compile(r"\\t?frac\{([^{}]*)\}\{([^{}]*)\}")
+_SQRT = re.compile(r"\\sqrt\{([^{}]*)\}")
+_TEXT = re.compile(r"\\text\{([^{}]*)\}")
+_WORD = re.compile(r"\\[A-Za-z]+")
 
 
-def verify_kpress(before: str, after: str, findings: Sequence[Finding]) -> list[str]:
-    """Problems if kpress would not read each converted span back as what was written."""
-    expected = math_inline(before)
-    for finding in findings:
-        if finding.converts and finding.classification.latex is not None:
-            expected[finding.classification.latex] += 1
-    actual = math_inline(after)
-    problems = [
-        f"kpress reads {actual[latex]} math span(s) `{latex}`, expected {count}"
-        for latex, count in sorted(expected.items())
-        if actual[latex] != count
-    ]
-    problems.extend(
-        f"kpress reads an unexpected math span `{latex}`"
-        for latex in sorted(actual)
-        if latex not in expected
+def plain(latex: str) -> str:
+    """The expression `to_latex` was given, near enough to read a figure back from.
+
+    A checker that holds prose to a record reads its figures out of the prose, and once a
+    file is migrated those figures are `$…$` rather than code. This undoes the conversions
+    `to_latex` makes -- control words to their characters, `\\frac{a}{b}` to `a/b`,
+    `\\sqrt{x}` to `√x` or `√(…)`, `\\text{–}` to `–` -- so `$\\frac{31}{8} = 3.875$` reads
+    `31/8 = 3.875` and `$3.8770835\\ldots$` reads `3.8770835…`. Spacing is the LaTeX's,
+    so the space `to_latex` puts after a control word before a letter stays.
+    """
+
+    def root(match: re.Match[str]) -> str:
+        return f"√{match[1]}" if match[1].isalnum() else f"√({match[1]})"
+
+    text = _TEXT.sub(r"\1", latex)
+    # Innermost first, until nothing is left to fold: `\\sqrt{2 + \\sqrt{2}}`.
+    while (folded := _SQRT.sub(root, _FRACTION.sub(r"\1/\2", text))) != text:
+        text = folded
+    text = text.replace("^\\circ", "°").replace("^{\\prime\\prime}", "″")
+    text = text.replace("^{\\prime}", "′")
+    return _WORD.sub(lambda m: _PLAIN_WORDS.get(m[0], m[0]), text)
+
+
+# ---------------------------------------------------------------------------------------
+# Planning a file
+# ---------------------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class Decision:
+    """One code span and what happens to it."""
+
+    span: CodeSpan
+    verdict: Verdict
+
+    @property
+    def converts(self) -> bool:
+        return self.verdict.kind == "math" and self.verdict.latex is not None
+
+
+@dataclass(frozen=True)
+class Plan:
+    """Every code span in a file with its decision, and the spans renderers own."""
+
+    decisions: tuple[Decision, ...]
+    generated: int
+
+    def converting(self) -> list[Decision]:
+        return [decision for decision in self.decisions if decision.converts]
+
+
+#: What GitHub opens inline math after: whitespace, the start of a line, an opening
+#: parenthesis, and bold's stars. It opens none after a quote, a dash, a slash, a square
+#: bracket, a comma or colon, a closing parenthesis or an operator. Measured, not read
+#: from any documentation: `devtools.check_github_math --probe` over
+#: `packing/tests/fixtures/github-math/cases.md`, whose record `tests/test_migrate_math.py`
+#: holds these rules to.
+GITHUB_OPENS_AFTER = frozenset({"", " ", "\t", "\n", "(", "*"})
+#: The inline markup GitHub draws no math inside, by the token that opens it, measured by
+#: the same probe: a link's text, and italics, bold italics included. Bold, strikethrough,
+#: table cells and quotations draw it.
+GITHUB_NO_MATH_INSIDE = {"link_open": "a link's text", "em_open": "italics"}
+#: A formula that ends in `)` is left as dollars when a `)` follows its closing dollar:
+#: `(the case $s(21)$)` shows its dollars, where `(the case $n$)` and `$s(21)$,` are
+#: drawn. A `]` before a `]` does the same. Measured on 1 October 2026: ten formulas of
+#: ten in seven migrated files (`devtools.check_github_math --ref 50fd223fb`), then the
+#: probe's c_87 to c_90 at abf890171.
+GITHUB_NO_CLOSE_BEFORE_ITS_OWN = frozenset({")", "]"})
+GITHUB_NO_CLOSE_REASON = (
+    "`{bracket}` after a {what} that ends in `{bracket}`, where GitHub closes no math"
+)
+
+
+def _adjacent(text: str, span: CodeSpan) -> str | None:
+    """Why a `$` in place of this span's backticks would touch something it must not."""
+    before = text[span.start - 1] if span.start > 0 else ""
+    after = text[span.end] if span.end < len(text) else ""
+    for side, char in (("before", before), ("after", after)):
+        if char == "$" or (side == "before" and char == "\\"):
+            return f"`{char}` {side} the span"
+        if char.isalnum():
+            return f"`{char}` directly {side} the span"
+    if before not in GITHUB_OPENS_AFTER:
+        return f"`{before}` before the span, after which GitHub opens no math"
+    if after in GITHUB_NO_CLOSE_BEFORE_ITS_OWN and span.text.endswith(after):
+        return GITHUB_NO_CLOSE_REASON.format(what="span", bracket=after)
+    return None
+
+
+@cache
+def _inline_parser() -> MarkdownIt:
+    # The same preset as the block pass, with inline parsing left on.
+    return MarkdownIt("js-default", {"html": True})
+
+
+def _normal(content: str) -> str:
+    return " ".join(content.split())
+
+
+def inline_markup(text: str, spans: Sequence[CodeSpan]) -> dict[int, str]:
+    """The spans sitting inside markup GitHub draws no math in, by start, with where.
+
+    Inline tokens carry no offsets, only their block's lines, so each code span the parser
+    reports is matched, in order and by content, to the next unmatched span of `spans` on
+    those lines. A span the parser does not report -- one in a generated block, which the
+    parser reads and `spans` omits, or the reverse -- is simply not matched.
+    """
+    ordered = sorted(spans, key=lambda span: span.start)
+    lines = [span.line - 1 for span in ordered]
+    marks: dict[int, str] = {}
+    matched: set[int] = set()
+    for token in _inline_parser().parse(text):
+        if token.type != "inline" or token.map is None or not token.children:
+            continue
+        first, last = token.map
+        low, high = bisect.bisect_left(lines, first), bisect.bisect_left(lines, last)
+        candidates = [span for span in ordered[low:high] if span.start not in matched]
+        cursor = 0
+        opened: list[str] = []
+        for child in token.children:
+            if child.type.endswith("_open"):
+                opened.append(child.type)
+            elif child.type.endswith("_close") and opened:
+                opened.pop()
+            elif child.type == "code_inline":
+                index = _next_match(candidates, cursor, child.content)
+                if index is None:
+                    continue
+                span, cursor = candidates[index], index + 1
+                matched.add(span.start)
+                inside = [GITHUB_NO_MATH_INSIDE[kind] for kind in opened
+                          if kind in GITHUB_NO_MATH_INSIDE]  # fmt: skip
+                if inside:
+                    marks[span.start] = f"inside {inside[0]}, where GitHub draws no math"
+    return marks
+
+
+def _next_match(candidates: Sequence[CodeSpan], cursor: int, content: str) -> int | None:
+    """The first candidate from `cursor` on holding `content`, spacing aside."""
+    wanted = _normal(content)
+    return next(
+        (i for i in range(cursor, len(candidates)) if _normal(candidates[i].content) == wanted),
+        None,
     )
-    return problems
 
 
-def verify_formatter(path: Path, after: str, command: Sequence[str]) -> list[str]:
-    """Problems if the pinned flowmark would split or retype a math span in `after`."""
-    with tempfile.TemporaryDirectory(prefix="migrate-math-") as directory:
-        copy = Path(directory) / path.name
-        copy.write_text(after, encoding="utf-8")
-        result = check_file(copy, list(command))
-    if result.ok:
-        return []
+#: Why a heading's code spans are left alone, whatever they hold. kpress drops math from a
+#: heading's slug (`## The $n = 11$ case` becomes `#the--case`), so a converted span would
+#: move the anchor under every link to it, the tutorial's contents entries among them.
+HEADING = "heading: math would change the anchor"
+
+
+def _run_quirk(raw: str, runs: Sequence[str]) -> str | None:
+    """Why kpress would refuse math that opens an inline run, or `None`.
+
+    mdit-py-plugins' dollarmath, which kpress uses with `allow_digits=False`, checks the
+    character before an opening `$` as `src[pos - 1]`. At the start of a paragraph, list
+    item or table cell `pos` is 0, the index wraps, and the check reads the run's *last*
+    character: `$x$ is 1` is refused as if a digit touched the `$`. GitHub is not affected;
+    the site would print the dollars.
+    """
+    for run in runs:
+        if run.lstrip().startswith(raw) and run.rstrip()[-1:].isdigit():
+            return "math opening a run that ends in a digit, which kpress's dollarmath refuses"
+    return None
+
+
+def _in_table(raw: str, cells: Sequence[str]) -> bool:
+    """Whether a table row's parsed cells hold this span, unsplit by a `|` inside it."""
+    return any(raw in cell for cell in cells)
+
+
+def _unsafe_here(
+    text: str, span: CodeSpan, runs: Sequence[str], marks: dict[int, str]
+) -> tuple[str, str] | None:
+    """The rule and reason `$…$` could not stand where this span sits, or `None`."""
+    if reason := _adjacent(text, span) or _run_quirk(text[span.start : span.end], runs):
+        return "delimiter adjacency", reason
+    if reason := marks.get(span.start):
+        return "inside a link or italics", reason
+    return None
+
+
+def _in_context(
+    text: str, span: CodeSpan, verdict: Verdict, blocks: Blocks, marks: dict[int, str]
+) -> Verdict:
+    """A verdict adjusted for where its span sits.
+
+    Every span in a heading is kept as code, as an `identifier`; elsewhere only a math
+    verdict can change, to `uncertain` when a `$` could not safely replace the backticks,
+    or when GitHub would not draw math where the span sits (`marks`).
+    """
+    where = blocks.lines[span.line - 1]
+    if where == "heading":
+        return Verdict("identifier", "in a heading", reason=HEADING)
+    if verdict.kind != "math":
+        return verdict
+    raw = text[span.start : span.end]
+    runs = blocks.runs.get(span.line - 1, [])
+    if unsafe := _unsafe_here(text, span, runs, marks):
+        rule, reason = unsafe
+        return Verdict("uncertain", rule, reason=reason)
+    if where == "table":
+        if not _in_table(raw, runs):
+            reason = "a `|` in the row splits this span across table cells"
+            return Verdict("uncertain", "split by a table cell", reason=reason)
+        verdict = classify(span.content, frac=True)
+        if verdict.latex is not None and "|" in verdict.latex:
+            return Verdict("uncertain", "pipe in a table", reason="a `|` would split the cell")
+    return verdict
+
+
+#: Why a span the register keeps stays code, whatever it reads as.
+KEPT = "kept as code in math-markup.yaml"
+
+
+def plan(text: str, *, keep: frozenset[str] = frozenset()) -> Plan:
+    """Classify every code span in `text` and decide, in context, which ones convert.
+
+    `keep` holds the spans, spacing collapsed, that the register records as staying code in
+    this file: they are planned `uncertain`, so a re-run never converts what a person kept.
+    """
+    prose, generated = mask(text)
+    blocks = block_context(text)
+    spans = [span for span in code_spans(prose) if blocks.lines[span.line - 1] != "raw"]
+    verdicts = [
+        Verdict("uncertain", "kept", reason=KEPT)
+        if " ".join(span.content.split()) in keep
+        else classify(span.content)
+        for span in spans
+    ]
+    # Only a span that would otherwise convert needs its inline markup read.
+    candidates = [
+        (span.start, span.end, span.content)
+        for span, verdict in zip(spans, verdicts, strict=True)
+        if verdict.kind == "math"
+        and blocks.lines[span.line - 1] != "heading"
+        and _adjacent(text, span) is None
+    ]
+    marks = _markup_reasons(prose, candidates, delimiter="`")
+    decisions = tuple(
+        Decision(span, _in_context(text, span, verdict, blocks, marks))
+        for span, verdict in zip(spans, verdicts, strict=True)
+    )
+    return Plan(decisions, generated=len(code_spans(generated)))
+
+
+def open_math_spans(text: str) -> list[CodeSpan]:
+    """The code spans that read as math by their text and whose backticks `$` could replace.
+
+    What `plan` could still convert, less the block parse: a span a heading, a raw block, a
+    table's `|` or a link or italics would keep as code is still listed. A file with none
+    has nothing `plan` would convert, whatever its context, which is what lets the ratchet
+    skip the block parse on a migrated file whose only math-like spans sit where `$` cannot.
+    """
+    prose, _generated = mask(text)
+    lines = prose.split("\n")
     return [
-        (
-            f"flowmark changes {result.changed} math span(s), breaks {result.broken}, "
-            f"and moves the count from {result.before} to {result.after}"
-        )
+        span
+        for span in code_spans(prose)
+        if _reads_as_math(" ".join(span.content.split()))
+        and _adjacent(text, span) is None
+        and not _ATX_HEADING.match(lines[span.line - 1])
     ]
 
 
+#: An ATX heading line, whose spans `plan` always keeps as code (`HEADING`): a cheap test
+#: that spares the ratchet the block parse on a file whose only math-like spans are there.
+_ATX_HEADING = re.compile(r" {0,3}#{1,6}(?:[ \t]|$)")
+
+
+def has_math_spans(text: str) -> bool:
+    """Whether any code span's content alone reads as math: `plan`'s cheap first pass.
+
+    A file for which this is false has nothing `plan` could convert, so a caller that only
+    wants the math can skip the block parse.
+    """
+    prose, _generated = mask(text)
+    return any(_reads_as_math(" ".join(span.content.split())) for span in code_spans(prose))
+
+
+@cache
+def _reads_as_math(text: str) -> bool:
+    """`classify(text).kind == "math"`, without naming the rule of a span that is not."""
+    if _ANY_IDENTIFIER.search(text) is not None or _ANY_UNCERTAIN.search(text) is not None:
+        return False
+    return _classify(text, frac=False).kind == "math"
+
+
+def rewrite(text: str, decisions: Iterable[Decision]) -> str:
+    """`text` with every converting span's backticks replaced by `$…$` around its LaTeX."""
+    pieces: list[str] = []
+    position = 0
+    for decision in sorted(decisions, key=lambda item: item.span.start):
+        if decision.converts:
+            pieces.extend((text[position : decision.span.start], f"${decision.verdict.latex}$"))
+            position = decision.span.end
+    pieces.append(text[position:])
+    return "".join(pieces)
+
+
 # ---------------------------------------------------------------------------------------
-# Command line.
+# Math GitHub would not draw
 # ---------------------------------------------------------------------------------------
 
 
-def _report(path: Path, findings: Sequence[Finding], *, conversions: bool) -> None:
-    kinds = Counter(finding.kind for finding in findings)
-    converting = sum(1 for finding in findings if finding.converts)
-    print(
-        f"{path.as_posix()}: {len(findings)} code spans -- {converting} math to convert, "
-        f"{kinds['identifier']} identifier, {kinds['uncertain']} uncertain"
+#: What GitHub does to TeX before drawing it, measured by the probe: every backslash
+#: before ASCII punctuation is read as a Markdown escape and loses its backslash, inline
+#: and in display blocks alike, so `\{` draws `{`, `\,` a comma, and `\\` a backslash
+#: instead of a line break. Each of these has a letter-named equivalent that KaTeX and
+#: GitHub both read unchanged; the rest (`\#`, `\%`, `\&`, `\_`, `\$`) have none that
+#: is safe in math mode, and are left for a person.
+GITHUB_SAFE_TEX = {
+    "\\\\": "\\cr",
+    "\\{": "\\lbrace",
+    "\\}": "\\rbrace",
+    "\\,": "\\thinspace",
+    "\\:": "\\medspace",
+    "\\;": "\\thickspace",
+    "\\!": "\\negthinspace",
+    "\\|": "\\Vert",
+}
+#: A backslash before ASCII punctuation, the pair GitHub reads as an escape. `\\[`, a
+#: line break with a spacing argument, is matched whole: `\cr` takes no argument.
+_TEX_ESCAPE = re.compile(r"\\\\\[|\\[!-/:-@\[-`{-~]")
+
+
+#: A star in TeX, which GitHub pairs with a star in another formula of the same paragraph
+#: as Markdown emphasis, leaving every formula between them as dollars (the probe's
+#: c_70 to c_76). As a script it is braced, `L_{\ast}`; `\*`, an escape, is not a star.
+_TEX_STAR = re.compile(r"(?<!\\)([_^]?)\*")
+
+
+def github_safe_tex(tex: str) -> tuple[str, list[str]]:
+    """`tex` with every escape GitHub would strip, and every star, in a form it keeps.
+
+    An escape becomes its letter-named equivalent (`GITHUB_SAFE_TEX`) and a star `\\ast`.
+    Returns the rewritten TeX and the escapes that have no safe equivalent, in order. A
+    command gains a space when a letter follows it, so `\\,b` is `\\thinspace b`.
+    """
+    left: list[str] = []
+
+    def spaced(command: str, source: str, end: int) -> str:
+        return command + (" " if source[end : end + 1].isalpha() else "")
+
+    def safe(match: re.Match[str]) -> str:
+        replacement = GITHUB_SAFE_TEX.get(match[0])
+        if replacement is None:
+            left.append(match[0])
+            return match[0]
+        return spaced(replacement, tex, match.end())
+
+    escaped = _TEX_ESCAPE.sub(safe, tex)
+
+    def star(match: re.Match[str]) -> str:
+        return f"{match[1]}{{\\ast}}" if match[1] else spaced("\\ast", escaped, match.end())
+
+    return _TEX_STAR.sub(star, escaped), left
+
+
+@dataclass(frozen=True)
+class UnsafeMath:
+    """A formula GitHub will not draw as written, why, and what to write instead.
+
+    `replacement` is the text to put in place of the whole span, delimiters included:
+    the code span this tool would have left, for a formula it wrote where GitHub draws no
+    math; the same formula with GitHub-safe TeX, for escapes GitHub would strip; `None`
+    when only a person can fix it.
+    """
+
+    start: int
+    end: int
+    tex: str
+    line: int
+    reason: str
+    replacement: str | None
+
+    @property
+    def code(self) -> str | None:
+        """The replacement when it is a code span, the form the ratchet asks for."""
+        return self.replacement if (self.replacement or "").startswith("`") else None
+
+
+def _tool_code(tex: str) -> str | None:
+    """The code span this tool would have left in a formula's place, or `None`.
+
+    `None` when the formula is not one `to_latex` writes -- hand-written TeX, which only a
+    person can move into a context GitHub draws, or rephrase.
+    """
+    source = plain(tex)
+    if "`" in source or "\n" in source:
+        return None
+    for frac in (False, True):
+        try:
+            if to_latex(source, frac=frac) == tex:
+                return f"`{source}`"
+        except UnconvertibleError:
+            continue
+    return None
+
+
+#: A blank line: emphasis and links never cross one, so a paragraph is parsed alone.
+_PARAGRAPH_BREAK = re.compile(r"\n[ \t]*\n")
+
+
+@cache
+def _inline_markers(delimiter: str) -> re.Pattern[str]:
+    """What a paragraph needs to hold before its inline markup is worth parsing.
+
+    A `[` with the span's delimiter after it before any `]`, which could be a link's text
+    around it, or a lone `*` or `_` that could open italics with the delimiter after it
+    before the next one. Bold's doubled stars do not count; bold draws math.
+    """
+    d = re.escape(delimiter)
+    return re.compile(
+        rf"\[[^\]]*{d}|(?<![*\w])\*(?![*\s])[^*]*{d}|(?<![_\w])_(?![_\s])[^_]*{d}"
     )
-    rules = Counter(finding.rule for finding in findings if finding.kind == "uncertain")
-    if rules:
-        print("  uncertain by rule: " + ", ".join(f"{r} {n}" for r, n in rules.most_common()))
-    for finding in findings:
-        if finding.kind == "uncertain":
-            line = finding.span.line
-            print(f"  {line:>5d}  uncertain [{finding.rule}]  `{finding.span.content}`")
-        elif conversions and finding.converts:
-            print(
-                f"  {finding.span.line:>5d}  math [{finding.rule}]  `{finding.span.content}`"
-                f"  ->  ${finding.classification.latex}$"
+
+
+def _adjacency_reason(text: str, start: int, end: int) -> str | None:
+    before = text[start - 1] if start > 0 else ""
+    after = text[end] if end < len(text) else ""
+    if after.isalnum():
+        return f"`{after}` directly after the formula, where GitHub closes no math"
+    if before not in GITHUB_OPENS_AFTER:
+        return f"`{before}` before the formula, after which GitHub opens no math"
+    if after in GITHUB_NO_CLOSE_BEFORE_ITS_OWN and (
+        text[start:end].rstrip("$").rstrip().endswith(after)
+    ):
+        return GITHUB_NO_CLOSE_REASON.format(what="formula", bracket=after)
+    return None
+
+
+def _markup_reasons(
+    text: str, located: Sequence[tuple[int, int, str]], *, delimiter: str
+) -> dict[int, str]:
+    """For the spans in link text or italics, why, by start; one paragraph at a time.
+
+    `located` holds each span's start, end and content, and `delimiter` is what opens it:
+    `$` for a formula, a backtick for a code span `plan` might convert. Each paragraph
+    holding such a span after a `[`, `*` or `_` is parsed on its own, its lines unindented
+    so a list item's continuation is not read as code, with every span made a marker code
+    span (`inline_markup` reads code spans) of the same line count. A whole-file inline
+    parse cost the ratchet four seconds over the first 860 migrated files; this is the
+    paragraphs that can matter.
+    """
+    breaks = [0, *(match.end() for match in _PARAGRAPH_BREAK.finditer(text)), len(text)]
+    reasons: dict[int, str] = {}
+    by_paragraph: dict[int, list[tuple[int, int, str]]] = {}
+    for item in located:
+        by_paragraph.setdefault(bisect.bisect_right(breaks, item[0]) - 1, []).append(item)
+    for paragraph, items in by_paragraph.items():
+        low, high = breaks[paragraph], breaks[paragraph + 1]
+        if _inline_markers(delimiter).search(text, low, high) is None:
+            continue
+        pieces: list[str] = []
+        shadows: list[CodeSpan] = []
+        position = low
+        for index, (start, end, tex) in enumerate(items):
+            pieces.extend(
+                (text[position:start], f"`MATHSPAN{index}{chr(10) * tex.count(chr(10))}`")
             )
+            line = text.count("\n", low, start) + 1
+            shadows.append(CodeSpan(start, end, 1, f"MATHSPAN{index}", line))
+            position = end
+        pieces.append(text[position:high])
+        shadow = "\n".join(line.lstrip() for line in "".join(pieces).split("\n"))
+        reasons.update(inline_markup(shadow, shadows))
+    return reasons
 
 
-def _arguments() -> argparse.ArgumentParser:
+def github_unsafe_math(text: str) -> list[UnsafeMath]:
+    """Every formula in `text`'s prose that GitHub would not draw as written.
+
+    Two kinds. Where it sits: the same rules `plan` applies before converting, read off an
+    inline `$…$` instead of a code span -- the character before the opening dollar
+    (`GITHUB_OPENS_AFTER`), a letter or digit after the closing one, and a link's text or
+    italics around it (`_markup_reasons`). What it holds: a backslash before punctuation,
+    which GitHub strips (`GITHUB_SAFE_TEX`), inline or display. Formulas in raw HTML
+    blocks are left out: GitHub does not read Markdown there at all. It runs on every
+    migrated file in the edit tier, so the block parse happens only when something was
+    found, and the inline parse only on paragraphs that could hold markup.
+    """
+    prose, _generated = mask(text)
+    every = located_math_spans(prose)
+    located = [
+        (start, end, tex) for start, end, tex in every if not prose.startswith("$$", start)
+    ]
+    reasons = _markup_reasons(prose, located, delimiter="$")
+    found: list[tuple[int, int, str, str, str | None]] = []
+    for start, end, tex in every:
+        inline = not prose.startswith("$$", start)
+        context = (
+            (_adjacency_reason(text, start, end) or reasons.get(start)) if inline else None
+        )
+        if context is not None:
+            found.append((start, end, tex, context, _tool_code(tex.strip())))
+            continue
+        safe, left = github_safe_tex(tex)
+        if safe != tex or left:
+            escapes = ", ".join(sorted({m[0] for m in _TEX_ESCAPE.finditer(tex)}))
+            why = [f"GitHub strips the backslash from {escapes}"] if escapes else []
+            if _TEX_STAR.search(tex):
+                why.append("GitHub pairs a star with another formula's as emphasis")
+            reason = "; ".join(why)
+            whole = text[start:end]
+            replacement = None if left else whole.replace(tex, safe, 1)
+            if left:
+                reason += f"; {', '.join(sorted(set(left)))} has no safe form"
+            found.append((start, end, tex, reason, replacement))
+    if not found:
+        return []
+    lines = block_context(text).lines
+    return [
+        UnsafeMath(start, end, tex.strip(), text.count("\n", 0, start) + 1, reason, replacement)
+        for start, end, tex, reason, replacement in found
+        if lines[text.count("\n", 0, start)] != "raw"
+    ]
+
+
+def demote_unsafe(text: str) -> tuple[str, list[UnsafeMath], list[UnsafeMath]]:
+    """`text` with every formula GitHub would not draw as written put right where it can be.
+
+    A formula this tool wrote where GitHub draws no math goes back to code; one whose TeX
+    GitHub would strip is rewritten with `github_safe_tex`, and kept only if the pinned
+    KaTeX still parses it. Returns the text, the formulas changed, and those left for a
+    person: hand-written TeX in a place GitHub draws none, or an escape with no safe form.
+    """
+    unsafe = github_unsafe_math(text)
+    fixable = [item for item in unsafe if item.replacement is not None]
+    rewritten = [item for item in fixable if not item.code]
+    if rewritten:
+        refused = (
+            katex_refusals(
+                _replaced(text, rewritten),
+                [github_safe_tex(item.tex)[0] for item in rewritten],
+            )
+            or set()
+        )
+        fixable = [
+            item for item in fixable if item.code or github_safe_tex(item.tex)[0] not in refused
+        ]
+    changed = {item.start for item in fixable}
+    return (
+        _replaced(text, fixable),
+        fixable,
+        [item for item in unsafe if item.start not in changed],
+    )
+
+
+def _replaced(text: str, items: Sequence[UnsafeMath]) -> str:
+    pieces: list[str] = []
+    position = 0
+    for item in sorted(items, key=lambda item: item.start):
+        pieces.extend((text[position : item.start], item.replacement or ""))
+        position = item.end
+    pieces.append(text[position:])
+    return "".join(pieces)
+
+
+# ---------------------------------------------------------------------------------------
+# For renderers: generated Markdown is migrated where it is written, never after
+# ---------------------------------------------------------------------------------------
+
+_CELL_PREFIX = "| x |\n| --- |\n| "
+_CELL_SUFFIX = " |\n"
+
+
+def markdown_math(fragment: str, *, table: bool = False) -> str:
+    """A Markdown fragment with its math code spans as `$…$`, planned as a file would be.
+
+    For a renderer that writes prose it does not own, such as a register's `headline`.
+    `table` plans the fragment as one table cell, so it takes the cell's `\\frac` style
+    and the cell's refusals: a `|` in the math, and math opening a cell that ends in a
+    digit, which kpress's dollarmath would print as dollars.
+    """
+    if not table:
+        return rewrite(fragment, plan(fragment).decisions)
+    source = f"{_CELL_PREFIX}{fragment}{_CELL_SUFFIX}"
+    converted = rewrite(source, plan(source).decisions)
+    return converted[len(_CELL_PREFIX) : len(converted) - len(_CELL_SUFFIX)]
+
+
+#: The register's ASCII operators and their Unicode forms, which `to_latex` then reads.
+_REGISTER_ASCII = (
+    (re.compile(r">="), "≥"),
+    (re.compile(r"<="), "≤"),
+    (re.compile(r"!="), "≠"),
+    (re.compile(r"\.\.\."), "…"),
+    (re.compile(r"\bsqrt\s*\("), "√("),
+    (re.compile(r"\*"), "·"),
+)
+
+
+def register_latex(literal: str, *, frac: bool = False) -> str:
+    """The LaTeX for one ASCII register literal: an exact form, a value or a bound.
+
+    The register stores `s(11) >= 955000*sqrt(518400042893309449)/179696714646249` and
+    keeps it ASCII; a renderer shows it as mathematics. Only the literal goes in, never
+    the prose around it: a word raises `UnconvertibleError`, as it does in `to_latex`.
+    """
+    text = literal
+    for pattern, replacement in _REGISTER_ASCII:
+        text = pattern.sub(replacement, text)
+    for name, (left, right) in _BRACKETS.items():
+        text = _bracketed(text, name, left, right)
+    return to_latex(text, frac=frac)
+
+
+#: The register's rounding functions and the brackets that write them.
+_BRACKETS = {"floor": ("⌊", "⌋"), "ceil": ("⌈", "⌉")}
+
+
+def _bracketed(text: str, name: str, left: str, right: str) -> str:
+    """`floor(x)` as `⌊x⌋`, innermost first, so the parentheses always balance."""
+    call = re.compile(rf"\b{name}\(")
+    while (match := call.search(text)) is not None:
+        depth, end = 1, match.end()
+        while end < len(text) and depth:
+            depth += {"(": 1, ")": -1}.get(text[end], 0)
+            end += 1
+        if depth:
+            raise UnconvertibleError(f"an unclosed `{name}(`")
+        text = f"{text[: match.start()]}{left}{text[match.end() : end - 1]}{right}{text[end:]}"
+    return text
+
+
+# ---------------------------------------------------------------------------------------
+# Proving a rewrite
+# ---------------------------------------------------------------------------------------
+
+# kpress writes each inline span's TeX source into the element KaTeX enhances, and writes a
+# source its MathML converter refused into an element flagged as an error. Reading both
+# from the page is reading exactly what the site's parser took for math.
+_RENDERED = re.compile(
+    r'<span class="kpress-math-render" aria-hidden="true">\\\((?P<source>.*?)\\\)</span>',
+    re.DOTALL,
+)
+_REFUSED = re.compile(
+    r'<span class="kpress-math kpress-math-inline" data-kpress-math="inline" '
+    r'data-kpress-math-renderer="katex" data-kpress-math-error="true">(?P<source>.*?)</span>',
+    re.DOTALL,
+)
+
+
+@dataclass(frozen=True)
+class KpressMath:
+    """The inline math kpress reads in a document, and the part it cannot render."""
+
+    sources: Counter[str]
+    refused: Counter[str]
+
+
+def kpress_math(text: str) -> KpressMath:
+    """Parse `text` as the site does and collect the source of every inline math span."""
+    from kpress.format.markdown import parse_markdown  # noqa: PLC0415
+
+    page = parse_markdown(text, title="migrate_math", trust_mode="trusted", math="auto").html
+    rendered = Counter(
+        html.unescape(match.group("source")) for match in _RENDERED.finditer(page)
+    )
+    refused = Counter(html.unescape(match.group("source")) for match in _REFUSED.finditer(page))
+    return KpressMath(rendered + refused, refused)
+
+
+def katex_refusals(text: str, sources: Iterable[str]) -> set[str] | None:
+    """The given sources the pinned KaTeX refuses in strict mode, or `None` without Node."""
+    wanted = set(sources)
+    if not wanted:
+        return set()
+    if shutil.which("node") is None:
+        return None
+    from devtools.check_katex import check_files  # noqa: PLC0415
+
+    with tempfile.TemporaryDirectory(prefix="migrate-math-katex-") as directory:
+        copy = Path(directory) / "converted.md"
+        copy.write_text(text, encoding="utf-8")
+        try:
+            report = check_files([copy])
+        except OSError, ValueError:
+            return None
+    return {error["source"] for file in report["files"] for error in file["errors"]} & wanted
+
+
+@dataclass(frozen=True)
+class SpanSafety:
+    """What the pinned formatter did to the math spans of a converted file."""
+
+    result: FileResult
+    changed: tuple[tuple[str, str], ...] = ()
+
+
+def flowmark_safety(text: str, name: str, command: Sequence[str]) -> SpanSafety:
+    """Format a copy of `text` with the pinned formatter and compare its math spans.
+
+    `check_math_spans`' own measurement, taken on text rather than on a path: its span
+    reader and its copy formatter, so this and `make format` cannot disagree about what a
+    span is. The pairs that changed are kept so a refusal can say which they were.
+    """
+    with tempfile.TemporaryDirectory(prefix="migrate-math-") as directory:
+        copy = Path(directory) / name
+        copy.write_text(text, encoding="utf-8")
+        before = math_spans(text)
+        after = math_spans(format_copy(copy, list(command)))
+    pairs = tuple((old, new) for old, new in zip(before, after, strict=False) if old != new)
+    broken = sum(1 for old, new in pairs if "\n" in new and "\n" not in old)
+    return SpanSafety(
+        FileResult(Path(name), len(before), len(after), broken, len(pairs)), pairs
+    )
+
+
+#: Given the converted text and the file's name, what the formatter does to its math.
+SafetyCheck = Callable[[str, str], SpanSafety]
+
+
+def pinned_safety(flowmark: str | None = None) -> SafetyCheck:
+    """The span check with the given formatter command, or the Makefile's pin."""
+    command = shlex.split(flowmark or pinned_formatter())
+
+    def check(converted: str, name: str) -> SpanSafety:
+        return flowmark_safety(converted, name, command)
+
+    return check
+
+
+@dataclass
+class Migration:
+    """The outcome of migrating one file: its final plan, text, refusals and notes."""
+
+    path: Path
+    plan: Plan
+    text: str
+    converted: str
+    refusals: list[str] = field(default_factory=list)
+    notes: list[str] = field(default_factory=list)
+
+
+def _demote(decisions: Iterable[Decision], bad: set[str], check: str) -> tuple[Decision, ...]:
+    return tuple(
+        replace(
+            decision,
+            verdict=Verdict(
+                "uncertain", check, reason=f"`${decision.verdict.latex}$` failed {check}"
+            ),
+        )
+        if decision.converts and decision.verdict.latex in bad
+        else decision
+        for decision in decisions
+    )
+
+
+def _kpress_round(
+    migration: Migration, current: Plan, baseline: Counter[str]
+) -> tuple[Plan, bool]:
+    """One proof by kpress and KaTeX: the plan to try next, and whether it is settled."""
+    converted = rewrite(migration.text, current.decisions)
+    expected = Counter(decision.verdict.latex or "" for decision in current.converting())
+    found = kpress_math(converted)
+    gained = found.sources - baseline
+    stray = (gained - expected) + (baseline - found.sources)
+    if stray:
+        listed = ", ".join(f"${source}$" for source in sorted(stray))
+        migration.refusals.append(f"kpress math changed beyond the rewrite: {listed}")
+        return current, True
+    missing = set(expected - gained) | (set(found.refused) & set(expected))
+    if missing:
+        return replace(
+            current, decisions=_demote(current.decisions, missing, "the kpress parse")
+        ), False
+    refused = katex_refusals(converted, expected)
+    if refused is None:
+        migration.notes.append("KaTeX strict parse skipped: Node or the bundle is unavailable")
+    elif refused:
+        return replace(
+            current, decisions=_demote(current.decisions, refused, "the KaTeX parse")
+        ), False
+    return current, True
+
+
+def prove(
+    path: Path, text: str, *, safety: SafetyCheck | None, keep: frozenset[str] = frozenset()
+) -> Migration:
+    """Plan `text`, then demote or refuse until every rewrite is proved safe.
+
+    kpress must read each converted span as exactly one inline math span it can render,
+    and KaTeX must accept it; a span that fails either is demoted and the plan proved
+    again. `safety`, when given, is the pinned formatter's span check on the final text.
+    """
+    current = plan(text, keep=keep)
+    migration = Migration(path, current, text, text)
+    if current.converting():
+        baseline = kpress_math(text).sources
+        for _attempt in range(4):
+            current, settled = _kpress_round(migration, current, baseline)
+            if settled or not current.converting():
+                break
+        else:
+            migration.refusals.append("the plan did not settle in four proofs")
+    migration.plan = current
+    migration.converted = rewrite(text, current.decisions)
+    if safety is not None and not migration.refusals and migration.converted != text:
+        outcome = safety(migration.converted, path.name)
+        if not outcome.result.ok:
+            detail = "; ".join(f"${old}$ became ${new}$" for old, new in outcome.changed[:5])
+            migration.refusals.append(
+                "the pinned formatter does not keep the math whole: "
+                + " ".join(outcome.result.line().split())
+                + (f" ({detail})" if detail else "")
+            )
+    return migration
+
+
+# ---------------------------------------------------------------------------------------
+# Reporting
+# ---------------------------------------------------------------------------------------
+
+
+class Conversion(TypedDict):
+    line: int
+    code: str
+    math: str
+    rule: str
+
+
+class Uncertain(TypedDict):
+    line: int
+    code: str
+    rule: str
+    reason: str
+
+
+class FileReport(TypedDict):
+    path: str
+    spans: int
+    generated_spans: int
+    counts: dict[str, int]
+    rules: dict[str, dict[str, int]]
+    conversions: list[Conversion]
+    uncertain: list[Uncertain]
+    refusals: list[str]
+    notes: list[str]
+
+
+def display_path(path: Path) -> str:
+    """`path` relative to the repository when it is inside it."""
+    resolved = path.resolve()
+    return (
+        resolved.relative_to(REPO).as_posix()
+        if resolved.is_relative_to(REPO)
+        else path.as_posix()
+    )
+
+
+def file_report(migration: Migration) -> FileReport:
+    """One file's account: counts per class and rule, every conversion and uncertain span."""
+    decisions = migration.plan.decisions
+    rules: dict[str, Counter[str]] = {kind: Counter() for kind in KINDS}
+    for decision in decisions:
+        rules[decision.verdict.kind][decision.verdict.rule] += 1
+    return {
+        "path": display_path(migration.path),
+        "spans": len(decisions),
+        "generated_spans": migration.plan.generated,
+        "counts": {kind: rules[kind].total() for kind in KINDS},
+        "rules": {kind: dict(rules[kind].most_common()) for kind in KINDS},
+        "conversions": [
+            {
+                "line": item.span.line,
+                "code": item.span.text,
+                "math": item.verdict.latex or "",
+                "rule": item.verdict.rule,
+            }
+            for item in decisions
+            if item.converts
+        ],
+        "uncertain": [
+            {
+                "line": item.span.line,
+                "code": item.span.text,
+                "rule": item.verdict.rule,
+                "reason": item.verdict.reason,
+            }
+            for item in decisions
+            if item.verdict.kind == "uncertain"
+        ],
+        "refusals": list(migration.refusals),
+        "notes": list(migration.notes),
+    }
+
+
+def print_report(report: FileReport, *, listing: bool) -> None:
+    counts = report["counts"]
+    generated = report["generated_spans"]
+    print(
+        f"{report['path']}: {report['spans']} code spans -- {counts['math']} math, "
+        f"{counts['identifier']} identifier, {counts['uncertain']} uncertain"
+        + (
+            f" ({generated} more in generated blocks, left to their renderers)"
+            if generated
+            else ""
+        )
+    )
+    for kind in KINDS:
+        if report["rules"][kind]:
+            rules = ", ".join(
+                f"{rule} {count}" for rule, count in report["rules"][kind].items()
+            )
+            print(f"  {kind}: {rules}")
+    if listing:
+        for item in report["conversions"]:
+            print(f"  L{item['line']}: `{item['code']}` -> ${item['math']}$")
+    for item in report["uncertain"]:
+        print(
+            f"  L{item['line']}: uncertain `{item['code']}` -- {item['reason'] or item['rule']}"
+        )
+    for note in report["notes"]:
+        print(f"  note: {note}")
+    for refusal in report["refusals"]:
+        print(f"  REFUSED: {refusal}")
+
+
+#: The register of migrated files, whose `keep` entries a re-run honours.
+REGISTER = Path(__file__).resolve().parent / "math-markup.yaml"
+
+
+def register_keeps(register: Path = REGISTER) -> dict[str, frozenset[str]]:
+    """The spans the register keeps as code, spacing collapsed, by repository path."""
+    from sqpack.yamlio import load_yaml  # noqa: PLC0415
+
+    if not register.is_file():
+        return {}
+    data = load_yaml(register.read_text(encoding="utf-8"))
+    keeps: dict[str, set[str]] = {}
+    for item in (data or {}).get("keep") or []:
+        keeps.setdefault(item["path"], set()).add(" ".join(str(item["span"]).split()))
+    return {path: frozenset(spans) for path, spans in keeps.items()}
+
+
+def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="migrate_math", description="Convert math written as code spans to LaTeX math."
+        prog="migrate_math",
+        description="Classify code spans as math, identifier or uncertain; rewrite the math.",
     )
     parser.add_argument("files", nargs="+", type=Path, metavar="FILE")
-    parser.add_argument("--apply", action="store_true", help="rewrite the files in place")
     parser.add_argument(
-        "--report", action="store_true", help="print counts and every uncertain span"
+        "--apply", action="store_true", help="rewrite the math spans in place, once proved"
     )
     parser.add_argument(
-        "--conversions", action="store_true", help="with the report, list every conversion"
+        "--github",
+        action="store_true",
+        help="with --apply, only make the existing formulas GitHub-safe; convert nothing",
     )
+    parser.add_argument("--report", type=Path, metavar="PATH", help="also write JSON here")
+    parser.add_argument("--list", action="store_true", help="print every conversion")
     parser.add_argument(
-        "--flowmark", default=None, metavar="COMMAND", help="formatter to measure against"
+        "--flowmark",
+        default=None,
+        metavar="COMMAND",
+        help="formatter command for the span check (default: the Makefile's FLOWMARK pin)",
     )
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    arguments = _arguments().parse_args(argv)
-    status = 0
-    command: list[str] | None = None
+    arguments = _parser().parse_args(argv)
+    safety = pinned_safety(arguments.flowmark) if arguments.apply else None
+    keeps = register_keeps()
+    reports: list[FileReport] = []
+    refused = 0
     for path in arguments.files:
         if not path.is_file():
             print(f"no such file: {path.as_posix()}", file=sys.stderr)
             return 2
-        before = path.read_text(encoding="utf-8")
-        after, findings = migrate(before, kept_for(path))
-        if arguments.report or arguments.conversions or not arguments.apply:
-            _report(path, findings, conversions=arguments.conversions)
-        if not arguments.apply or after == before:
-            continue
-        if command is None:
-            command = shlex.split(arguments.flowmark or pinned_formatter())
-        problems = verify_kpress(before, after, findings)
-        problems += verify_formatter(path, after, command)
-        if problems:
-            status = 1
-            print(f"{path.as_posix()}: refused, nothing written", file=sys.stderr)
-            for problem in problems:
-                print(f"  {problem}", file=sys.stderr)
-            continue
-        path.write_text(after, encoding="utf-8")
-        converted = sum(1 for finding in findings if finding.converts)
-        print(f"{path.as_posix()}: wrote {converted} math span(s)")
-    return status
+        text = path.read_text(encoding="utf-8")
+        keep = keeps.get(display_path(path), frozenset())
+        demoted_text, demoted, unsafe = demote_unsafe(text)
+        if arguments.apply and arguments.github:
+            migration = Migration(path, plan(text, keep=keep), text, demoted_text)
+        elif arguments.apply:
+            migration = prove(path, demoted_text, safety=safety, keep=keep)
+        else:
+            migration = Migration(path, plan(text, keep=keep), text, text)
+        migration.notes.extend(
+            f"L{item.line}: ${item.tex}$ -> {item.replacement} -- {item.reason}"
+            for item in demoted
+        )
+        migration.notes.extend(
+            f"L{item.line}: ${item.tex}$ is not this tool's and GitHub will not draw it -- "
+            f"{item.reason}; move or rephrase it by hand"
+            for item in unsafe
+        )
+        report = file_report(migration)
+        reports.append(report)
+        print_report(report, listing=arguments.list)
+        if migration.refusals:
+            refused += 1
+        elif arguments.apply and migration.converted != text:
+            with atomic_output_file(path) as temporary:
+                Path(temporary).write_text(migration.converted, encoding="utf-8")
+            converted = 0 if arguments.github else len(migration.plan.converting())
+            print(
+                f"  wrote {converted} math spans"
+                + (f", {len(demoted)} made GitHub-safe" if demoted else "")
+            )
+    totals: Counter[str] = Counter()
+    for report in reports:
+        totals.update(report["counts"])
+    print(
+        f"total: {len(reports)} files, {totals['math']} math, {totals['identifier']} "
+        f"identifier, {totals['uncertain']} uncertain"
+        + (f", {refused} refused" if arguments.apply else "")
+    )
+    if arguments.report is not None:
+        arguments.report.write_text(
+            json.dumps(reports, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        )
+    return 1 if refused else 0
 
 
 if __name__ == "__main__":

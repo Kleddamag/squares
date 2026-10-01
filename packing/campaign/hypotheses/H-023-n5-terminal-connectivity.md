@@ -83,7 +83,7 @@ hypothesis:
 ---
 # H-023 — resolve the first ambiguous census cell
 
-The `n = 5` sample is the earliest place where endpoint keys, matching side/contact
+The $n = 5$ sample is the earliest place where endpoint keys, matching side/contact
 summaries, and geometric interpretation disagree.
 It contains no observed optimum and therefore cannot be described as six points in one
 optimum-side family.
@@ -102,8 +102,8 @@ fixed-angle optimal face.
 This removes key inequality as evidence of separation for this pair.
 Exp-034 goes further: for `t = tan(theta_0/2)` with `|t| <= 1/100`, it certifies every
 slide parameter in the exact strip `e(t) <= u <= 3sqrt(2)/2 - 2 - e(t)`, where
-`e(t) = |t|(1 - |t|)/(1 + t^2)`. The same exact dual proves the resulting two-parameter
-sheet optimal because its support avoids the moving square.
+$e(t) = |t|(1 - |t|)/(1 + t^{2})$. The same exact dual proves the resulting
+two-parameter sheet optimal because its support avoids the moving square.
 
 This still does not identify the full stationary component.
 Exp-035 derives the complete active first-order rows at both endpoints and one interior
@@ -111,7 +111,7 @@ point. Both owner-axis branches admit the same exact non-sheet direction, with b
 support rows enforced.
 Exp-036 then proves that displayed direction is not a true Bouligand tangent: the
 owner-4 branch has exact excess coefficient `sqrt(2)/8`, and the owner-3 branch has gap
-coefficient `-1/4` with positive relative-angle cusp margin `sqrt(2)/2 - 1/4`.
+coefficient $-1/4$ with positive relative-angle cusp margin `sqrt(2)/2 - 1/4`.
 
 This is a strict linearized-versus-true-tangent gap for one direction, not a local
 isolation theorem. Exp-038 completes the branchwise linear inventory: the owner branches

@@ -89,8 +89,8 @@ They cannot establish what is inside an unacquired source object.
 Construct the ordered universe independently:
 
 $$
-\mathcal C=\operatorname{sorted}\{\min(J,\tau J):J\subset\{0,\ldots,15\},\ |J|=11\},
-\qquad \tau J=\operatorname{sorted}\{15-j:j\in J\}.
+\mathcal C=\operatorname{sorted}\lbrace\min(J,\tau J):J\subset\lbrace0,\ldots,15\rbrace,\ |J|=11\rbrace,
+\qquad \tau J=\operatorname{sorted}\lbrace15-j:j\in J\rbrace.
 $$
 
 There must be 4,368 raw masks and 2,184 representatives.
@@ -115,8 +115,9 @@ Require the following exact sets and source identities:
   A5’s completed list must equal those 173 cases and its unresolved list must be empty
   before accepting the complete reported census.
 - The returned set is disjoint from the 2,007 prior cases.
-  Their union must equal $\{0,\ldots,2183\}\setminus\{438,999,1462,1659\}$. Reconstruct
-  the four actual masks from the universe and compare them with the symmetry component’s
+  Their union must equal
+  $\lbrace0,\ldots,2183\rbrace\setminus\lbrace438,999,1462,1659\rbrace$. Reconstruct the
+  four actual masks from the universe and compare them with the symmetry component’s
   inputs.
 
 Refuse out-of-range or noninteger IDs, duplicate entries in lists that claim distinct
@@ -277,9 +278,9 @@ Normalize accepted polygons before later clipping; equal convex hulls do not jus
 clipping an unnormalized source vertex sequence.
 
 For a proposed self-owned-hull cut $n\cdot c\le h$, set $E=h-\min_{p\in H}n\cdot p$. For
-each pair of signs $\sigma_1,\sigma_2\in\{-1,1\}$, define $A=\sigma_1n_x+\sigma_2n_y$
-and $D=\sigma_1n_y-\sigma_2n_x$. Require $(E-BA/2)-BDt+(E+BA/2)t^2\ge0$ throughout the
-row’s closed half-angle interval.
+each pair of signs $\sigma_1,\sigma_2\in\lbrace-1,1\rbrace$, define
+$A=\sigma_1n_x+\sigma_2n_y$ and $D=\sigma_1n_y-\sigma_2n_x$. Require
+$(E-BA/2)-BDt+(E+BA/2)t^2\ge0$ throughout the row’s closed half-angle interval.
 Checking endpoints and any interior quadratic minimum proves the full physical square’s
 support is at most $E$, making the center cut necessary.
 This uses an upper bound on the full square; the smaller strict collision core cannot
@@ -344,8 +345,8 @@ rational sites, zero point weights, and one majority-hull feature using all five
 with threshold three and weight one.
 Its total budget is one.
 Cells 1 and 2 have required charge one; the other cell thresholds are zero.
-The conditional owner set is $O=\{0,1,2,3,6\}$, whose five groups contain 55 owned-point
-proposals.
+The conditional owner set is $O=\lbrace0,1,2,3,6\rbrace$, whose five groups contain 55
+owned-point proposals.
 
 The A1 audit `evidence/research/phase3-fresh-fields/04-mask0-minimized-packet.json`
 supplies proposed angle intervals.
@@ -384,9 +385,9 @@ Unused owner groups need no ownership proof for this specialized certificate.
 reconstruct $t=(a+b)/2$, $(c,s)=(c(t),s(t))$, and
 
 $$
-f=\max_{z\in\{a,b\}}\bigl(c\,c(z)+s\,s(z)+\lvert c\,s(z)-s\,c(z)\rvert\bigr),
+f=\max_{z\in\lbrace a,b\rbrace}\bigl(c\thinspace c(z)+s\thinspace s(z)+\lvert c\thinspace s(z)-s\thinspace c(z)\rvert\bigr),
 \quad q=\frac{B-10^{-12}}{f},
-\quad H=\frac L2-\frac B2\min_{z\in\{a,b\}}(c(z)+s(z)).
+\quad H=\frac L2-\frac B2\min_{z\in\lbrace a,b\rbrace}(c(z)+s(z)).
 $$
 
 Require $0<q<B$ and $qf<B$. Check the full-angle quadratic inequalities from the pinned
@@ -409,8 +410,8 @@ Check the coordinate-axis normals and every nonzero perpendicular to a site pair
 Between consecutive such directions, the median site and signs in the square’s support
 function are fixed, so these inequalities are linear in the normal.
 The other allowed cover regions are closed axis boxes of radius $q/2$ around owned
-points of $O\setminus\{i\}$. Those boxes represent collisions with other occupied
-squares; they add nothing to the physical charge budget.
+points of $O\setminus\lbrace i\rbrace$. Those boxes represent collisions with other
+occupied squares; they add nothing to the physical charge budget.
 
 Prove that the union contains the entire closed center domain for every row.
 A rational slab and endpoint-chain consumer can provide an implementation distinct from
@@ -445,7 +446,7 @@ not establish a runtime bound.
 
 ## Candidate 438 Capture Contract
 
-The case mask is `(0,1,2,3,4,8,9,10,11,13,15)`. The claimed capture partitions its
+The case mask is $(0,1,2,3,4,8,9,10,11,13,15)$. The claimed capture partitions its
 domain into four closed leaves.
 Here $y_{15}$ is the owner’s centered unit-coordinate height and $t_i$ is its half-angle
 parameter in $[0,1]$.
@@ -507,7 +508,7 @@ do not establish this conclusion.
 
 ## Independent Near-State Pose Inclusion
 
-`think-hjne` checks inclusion after the fixed-$T$ local-isolation component under
+`think-hjne` checks inclusion after the fixed-`T` local-isolation component under
 `think-sw68`. The accepted
 [local receipt](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/local-isolation/result.json)
 binds the 33 radii through focused input SHA-256
@@ -546,7 +547,7 @@ $$
 c=(y_f/B-U/2,\ U/2-x_f/B).
 $$
 
-Independently enclose the exact construction center $c_i^*-(T/2,T/2)$ in rational
+Independently enclose the exact construction center $c_i^{\ast}-(T/2,T/2)$ in rational
 intervals. For each coordinate, the maximum distance from $c$ to **both** enclosure
 endpoints must be at most its accepted radius.
 The affine map and convex coordinate bounds extend the vertex check to the whole encoded
@@ -626,7 +627,7 @@ The root acceptance kernel must establish the following induction:
 
 1. Reconstruct each field-coordinate center cell $W_i=B(1/2+(U-1)V_i)$ from the accepted
    cover cell $V_i$. Check the exact case, cap, scale, and all 130 seed points belonging
-   to occupied owners. Every such point must lie strictly inside every legal side-$B$
+   to occupied owners. Every such point must lie strictly inside every legal side-`B`
    square with center in its owner cell.
    The existing exact disk test or closed-angle wall subdivision can establish this.
 2. Bind each round’s prior point groups to the preceding accepted state.
@@ -640,7 +641,7 @@ The root acceptance kernel must establish the following induction:
    Empty inherited residuals may delete an angle only after accepting the referenced
    row.
 4. Treat each proposed core $Q$ as geometric input: prove that it is strictly inside
-   every side-$B$ square orientation throughout the row.
+   every side-`B` square orientation throughout the row.
    For prior owned hulls $H_j$, reconstruct the forbidden center regions $H_j-Q$ for
    occupied owners $j\ne i$. Prove that their union with the proposed residual polygons
    covers the entire closed center domain.
@@ -709,8 +710,8 @@ progress. For these later transitions, extend the root kernel with these obligat
   angular interval. For a proposed core vertex $(x,y)$ and half-angle $t$, strict
   containment follows by proving both quadratics
   $B/2-\sigma x-2\sigma yt+(B/2+\sigma x)t^2>0$ and
-  $B/2-\sigma y+2\sigma xt+(B/2+\sigma y)t^2>0$ for each $\sigma\in\{-1,1\}$. Check
-  endpoints and every in-interval quadratic minimum exactly.
+  $B/2-\sigma y+2\sigma xt+(B/2+\sigma y)t^2>0$ for each $\sigma\in\lbrace-1,1\rbrace$.
+  Check endpoints and every in-interval quadratic minimum exactly.
 - Bind every partner pose domain $D_j$ and core $Q_j$ to accepted parent geometry and a
   complete permitted angular partition.
   A proposed universal collision polygon $P$ for query core $Q_i$ must satisfy
@@ -1079,10 +1080,10 @@ A separate upper-witness replay is therefore not a missing premise of this compo
 
 For any putative packing of side $S<T$, centering its container at $(U/2,U/2)$ embeds it
 into the cap without changing the unit squares.
-Every $D_4$ image preserves that concentric side-$S$ container.
+Every $D_4$ image preserves that concentric side-`S` container.
 The accepted inclusion map is exactly $Q^{-1}(p_f/B-(U/2,U/2))+(T/2,T/2)$, so it places
 the image in $[(T-S)/2,(T+S)/2]^2\subset[0,T]^2$. The same labeled centers and
-orientation charts then satisfy the fixed-$T$ local theorem once the near-state ancestry
+orientation charts then satisfy the fixed-`T` local theorem once the near-state ancestry
 is proved. That theorem forces the exact construction, whose span $T$ contradicts
 containment in side $S<T$. Once the pending exclusion and capture premises are accepted,
 the verified witness at $T$ supplies the matching upper bound.
@@ -1773,10 +1774,11 @@ acceptance uses the reviewed executions and the composition argument together.
 
 1. **Cap and census.** Require the shared exact $U$, $B$, $L$, cover, and pinned source
    revision. Reconstruct the ordered 2,184 canonical masks and require the exclusion
-   union to equal exactly $\{0,\ldots,2183\}\setminus\{438,999,1462,1659\}$. The
-   accepted census receipt `98dad854` binds the A1--A5 assignments but contributes no
-   geometry. The accepted 1,904-case field union plus all 276 non-field IDs suffice;
-   completing redundant overlapping field certificates is unnecessary.
+   union to equal exactly
+   $\lbrace0,\ldots,2183\rbrace\setminus\lbrace438,999,1462,1659\rbrace$. The accepted
+   census receipt `98dad854` binds the A1--A5 assignments but contributes no geometry.
+   The accepted 1,904-case field union plus all 276 non-field IDs suffice; completing
+   redundant overlapping field certificates is unnecessary.
    Each admitted singleton must retain its reviewed execution and complete dependency
    closure.
 2. **Conditional exclusions.** The 2175 and 2176 executions must bind freshly checked
@@ -1847,8 +1849,8 @@ Use the actual final-state digests below, not the inconsistent claimed leaf dige
    $T=(6u+4)/(1+2u-u^2)$ for the specified root $u\in(9/25,37/100)$, its verified
    packing, $T<U$, and opposite-wall contacts.
    A putative side $S<T$ embeds concentrically in the cap; the D4 map and the accepted
-   inverse frame place the resulting unit squares in a concentric side-$S$ subcontainer
-   of the fixed side-$T$ container.
+   inverse frame place the resulting unit squares in a concentric side-`S` subcontainer
+   of the fixed side-`T` container.
    Capture, inclusion, and local isolation force the construction, whose span $T$ is
    impossible there. The verified packing at $T$ supplies the upper bound.
 
@@ -2379,10 +2381,10 @@ summed process CPU time was 20,359.523 seconds.
 All 32 cases are distinct from earlier accepted exclusions.
 
 Together these executions close the exact required exclusion set
-$\{0,\ldots,2183\}\setminus\{438,999,1462,1659\}$: 1,904 field cases and 276 nonfield
-cases, totaling 2,180. This is an execution-based mathematical acceptance conditional on
-the reviewed programs and their observed runs, not a geometric proof inferred from
-stored success strings.
+$\lbrace0,\ldots,2183\rbrace\setminus\lbrace438,999,1462,1659\rbrace$: 1,904 field cases
+and 276 nonfield cases, totaling 2,180. This is an execution-based mathematical
+acceptance conditional on the reviewed programs and their observed runs, not a geometric
+proof inferred from stored success strings.
 The
 [complete exclusion inventory](../../../packing/resources/web/n11-optimality-2026-09-29/receipts/exclusion-inventory.json),
 SHA-256 `498801611757f8ce4557dd105697c4e6c4ab8aa3d460e0306b90bda4657ffe48`, was

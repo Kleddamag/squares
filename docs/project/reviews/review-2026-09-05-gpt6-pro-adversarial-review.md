@@ -114,9 +114,9 @@ If \(d>0\), then \(d<\pi/2\) and \(\cos d<1\), giving
 $$
 \begin{aligned}
 B(\cos d+\sin d)
-&=B\cos d(1+\tan d)\\
-&<B(1+\tan d)\\
-&\le B(1+D)\\
+&=B\cos d(1+\tan d)\cr
+&<B(1+\tan d)\cr
+&\le B(1+D)\cr
 &\le1.
 \end{aligned}
 $$
@@ -315,7 +315,7 @@ The generator explicitly takes both.
 A more accurate notation would be
 
 $$
-\tau^*(A,\Theta;L,B),
+\tau^{\ast}(A,\Theta;L,B),
 $$
 
 where \(A\) is the site set and \(\Theta\) the net.

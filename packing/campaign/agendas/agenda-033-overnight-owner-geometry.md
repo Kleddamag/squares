@@ -434,7 +434,7 @@ agenda:
 ---
 # Overnight Owner-Geometry Agenda — Closed
 
-This agenda produced one specified conditional exclusion at side `96/25`, exact
+This agenda produced one specified conditional exclusion at side $96/25$, exact
 wall-aware owner domains, several sharply scoped negative results, and the terminology
 and inference account used to reconcile the work with the threshold-certificate branch.
 The global lower bound was later improved independently by T-025 and T-026. PR139 merged

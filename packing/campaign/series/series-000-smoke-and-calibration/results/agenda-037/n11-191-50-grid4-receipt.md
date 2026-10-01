@@ -5,10 +5,10 @@ This is not a superset of the historical 6637-site grid that sat at exactly elev
 
 Session-139 probe on `--grid-counts 26,35,43,48` at
 `(n, L, B, net) = (11, 191/50, 9977/10000, 181 directions)`. BC-191 auto at this side is
-`(25, 34, 41)` (3365 sites).
+$(25, 34, 41)$ (3365 sites).
 These counts are a different named set (6037 sites), not a densification of the
 historical `grid` row (6637 sites).
-Restricted optimum `11.142857` on a converged loop refutes this site set only.
+Restricted optimum $11.142857$ on a converged loop refutes this site set only.
 T-025 at this side is unchanged.
 
 ## Command
@@ -32,11 +32,11 @@ Column generation added one orbit after the row loop and stopped; wall 125.8 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `11.142857` |
-| Rationalised total | `5571447/500000` = `11.142894` |
+| Restricted optimum | $11.142857$ |
+| Rationalised total | $\frac{5571447}{500000}$ = $11.142894$ |
 | Sites / orbits / rows | 6037 / 810 / 7677 |
 | LP rounds | 31 |
-| Crossing | round 8 (`11.010582`); rounds 4–7 sat at `11.000000` |
+| Crossing | round 8 ($11.010582$); rounds 4–7 sat at $11.000000$ |
 | Wall | 125.8 s |
 | `least_covered` | 1 |
 | Converged | yes (`violated == 0`) |

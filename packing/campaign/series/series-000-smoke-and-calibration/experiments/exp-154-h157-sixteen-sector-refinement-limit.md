@@ -110,9 +110,9 @@ withdraws two invalid distance calculations and narrows the angular/pose deducti
 It does not rerun or change the original target criterion.
 
 **H-157 is refuted on its own registered direction.** It predicted exact survivor weight
-at most `79/8 = 9.875` for every refined subclass of the four neutral eight-sector
-classes. Six of the eight read **exactly 10**, and two improve to `19/2`, satisfying the
-registered upper bound `79/8` more strongly.
+at most $79/8 = 9.875$ for every refined subclass of the four neutral eight-sector
+classes. Six of the eight read **exactly 10**, and two improve to $19/2$, satisfying the
+registered upper bound $79/8$ more strongly.
 The refutation clause says one neutral class defeats the split, and six survive.
 
 | refined subclass | parent | survivor weight | deletion |
@@ -120,14 +120,14 @@ The refutation clause says one neutral class defeats the split, and six survive.
 | `bottom-left:m1:J6/16` | `m1:j3` | **10** | 1 |
 | `bottom-left:m1:J7/16` | `m1:j3` | **10** | 1 |
 | `bottom-left:m1:J8/16` | `m1:j4` | **10** | 1 |
-| `bottom-left:m1:J9/16` | `m1:j4` | `19/2` | `3/2` |
-| `bottom-left:m2:J6/16` | `m2:j3` | `19/2` | `3/2` |
+| `bottom-left:m1:J9/16` | `m1:j4` | $\frac{19}{2}$ | $\frac{3}{2}$ |
+| `bottom-left:m2:J6/16` | `m2:j3` | $\frac{19}{2}$ | $\frac{3}{2}$ |
 | `bottom-left:m2:J7/16` | `m2:j3` | **10** | 1 |
 | `bottom-left:m2:J8/16` | `m2:j4` | **10** | 1 |
 | `bottom-left:m2:J9/16` | `m2:j4` | **10** | 1 |
 
 All exact. The two that break delete four extra weight-`1/8` placements each, indices
-`[7, 16, 29, 55]` for `m1:J9` and `[2, 22, 25, 50]` for `m2:J6`.
+$[7, 16, 29, 55]$ for `m1:J9` and $[2, 22, 25, 50]$ for `m2:J6`.
 
 **The patch enlargement is verified.** The guaranteed wedge widens from `pi/4` to
 `3pi/8`, the refined patch does contain its parent vertex for vertex and is strictly

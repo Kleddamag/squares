@@ -272,9 +272,9 @@ results:
       including every one of the 209 cover chunks (E-n013-evand-casefree-cover-lean-kernel). A
       kernel check is machine evidence at V3: V5 also needs a human expert's review of the
       formalization, and the retained review of s13_eq_4 was written by an AI lane. The
-      confirmation is C3 on the machine-method replay E-n013-evand-casefree-cover-zmx2-replay;
-      the Lean build, replayed here, is proof-assistant evidence that the C table also reads
-      at C3.
+      confirmation rung comes from the machine-method replay
+      E-n013-evand-casefree-cover-zmx2-replay (C3); whether a kernel check itself counts
+      toward C is the owner's open question.
     evidence:
       - E-bentz-2010-proof
       - E-bentz13-figure2-audit

@@ -205,7 +205,7 @@ def test_a_result_about_a_few_cases_draws_each(bodies: dict[str, str]) -> None:
 def test_the_chain_is_every_result_on_the_case_oldest_first(
     result_id: str, overview: overview_data.Overview, bodies: dict[str, str]
 ) -> None:
-    """Each step names its result, links its row, and carries its kind and its standing;
+    """Each step names its result, links its row, and carries its kind and its status;
     the result the overview is about is marked; and each step links the register entry
     at its line."""
     result = _result(overview, result_id)
@@ -230,7 +230,7 @@ def test_the_chain_is_every_result_on_the_case_oldest_first(
         assert f'<p class="site-result-step-head">{dated} <a href=' in step
         assert not re.search(r'class="site-date-kind">\w+</span> [\d-]+', step)
         assert overview_data.tex_bounds(other.summary) in step
-        assert overview_sections.kind_and_standing(other) in step
+        assert overview_sections.kind_and_status(other) in step
         assert f"packing/frontier/results.yaml?plain=1#L{lines[other.id]}" in step
         assert html.escape(other.credit) in step
         for key in (other.record.get("attribution") or {}).get("source_keys") or []:
@@ -251,7 +251,7 @@ def test_the_chain_on_eleven_squares_says_how_each_result_stands_there(
     step = bodies[SETTLED].split('data-step="t-047"', 1)[1].split("</li>", 1)[0]
     # A result that still stands draws no chip, so the step has none for its standing
     # elsewhere and says in words how it stands on this case.
-    assert overview_sections.standing_chips(HOLDS) == ""
+    assert not overview_sections.is_superseded(wide)
     assert ">current best<" not in step
     assert "on this case, superseded" in step
     assert steps["t-047"] == overview_sections.standing_key(SUPERSEDED)

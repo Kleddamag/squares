@@ -209,6 +209,7 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-050](packing/frontier/RESULTS.md) | 21 | `V3` | `C3` | `S3` | `previously-published` | s(21) >= 5000/1001 = 4.995004995 …, by Evan Daniel’s weighted point certificate of 23 September 2026. |
 | [T-056](packing/frontier/RESULTS.md) | 68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307 | `V3` | `C3` | `S3` | `previously-published` | For each of 49 counts n from 68 to 307, s(n) is at most the verified upper bound its case record carries, from Francisco Couzo’s packings as published on 27 September 2026. |
 | [T-057](packing/frontier/RESULTS.md) | 211 | `V3` | `C3` | `S3` | `previously-published` | s(211) <= 14.99796070496771500150 < 15, by Joost de Winter’s packing of 16 September 2026: 211 unit squares in a square of that side. |
+| [T-065](packing/frontier/RESULTS.md) | 17 | `V3` | `C3` | `S3` | `previously-published` | s(17) <= 4.6755300936045509516342148538535054: seventeen unit squares fit in a square of at most that side. |
 | [T-036](packing/frontier/RESULTS.md) | 11 | `V3` | `C2` | `S3` | `apparently-novel` | Every packing of eleven unit squares in a square container, six at orientation 0 and five sharing one orientation modulo pi/2 with half-tangent in [91442076901/250000000000, 73154061521/200000000000] (an interval containing [t* - 10^-6, t* + 10^-6] for Trump’s exact half-tangent t*), has container side at least U = 3.877083590022814 …, the exact side of Trump’s packing, and a packing in the family has side exactly U only if it is a quarter-turn image of Trump’s pose with the squares relabelled within the two classes. |
 | [T-007](packing/frontier/RESULTS.md) | 4-100 | `V3` | `C1` | `S3` | `previously-published` | For every integer 4 <= N <= 100, Nagamochi 2005, Theorem 2 gives s(N) >= min(ceil(sqrt(N)), sqrt(N - 2*floor(sqrt(N)) + 1) + 1). |
 | [T-062](packing/frontier/RESULTS.md) | 60 | `V0` | `C1` | `S3` | `previously-published` | Evan Daniel reports s(60) = 8, published on 28 September 2026: the lower half by a mixed cover of the side-8 square, the upper half by the 8 x 8 grid. |
@@ -259,7 +260,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 195 | 39 confirmed; 32 refuted; 61 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 170 | 53 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
-| Frontier results | 64 | 64 registered, 36 by others |
+| Frontier results | 65 | 65 registered, 37 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
 
@@ -584,6 +585,7 @@ case or experiment separately.
 | [Plan: Others’ Results in the Results Register](docs/project/specs/active/plan-2026-09-29-third-party-results-register.md) | implementation plan | current | transient | — |
 | [Plan: Revising the Verification and Confirmation Ladders](docs/project/specs/active/plan-2026-09-30-epistemics-ladder-review.md) | implementation plan | current | transient | — |
 | [Plan: A Kind for Every Registered Result](docs/project/specs/active/plan-2026-10-01-result-kinds.md) | implementation plan | current | transient | — |
+| [Plan: A Workflow Status for Every Result, and No Separate Block for Reported Ones](docs/project/specs/active/plan-2026-10-01-result-status.md) | implementation plan | current | transient | — |
 | [Feature: A Top-Level Overview Page for the Published Site](docs/project/specs/active/plan-2026-09-29-github-pages-overview.md) | implementation plan | current | transient | — |
 | [BC329 Calibration Reader: Source-Distinct Review](docs/project/reviews/review-2026-09-13-n11-bc329-source-distinct-reader.md) | dated review record | record | retained | — |
 | [BC329 Reader Repair: Exact-Commit Rereview](docs/project/reviews/review-2026-09-13-n11-bc329-reader-rereview.md) | dated review record | record | retained | — |

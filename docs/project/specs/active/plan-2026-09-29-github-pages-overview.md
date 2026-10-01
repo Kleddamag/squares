@@ -276,11 +276,12 @@ runs:
    followed by five page cards: the optimality paper, the explainer, the tutorial, the
    workbench and the frontier atlas.
 3. **Recent Results.** One table of every result, newest first, in the results page’s
-   six columns (id, n, result, credit, rungs with the standing under them, date),
-   filtered by default to significance S4 and up, a maximum age of 180 days and
+   six columns (id, n, result, credit, rungs with the kind and the status under them,
+   date), filtered by default to significance S4 and up, a maximum age of 180 days and
    superseded results hidden, with a link to the full table on `all-results.html`. It
-   replaces the headline cards, the exact-value cards and the recent-changes list, and
-   is followed by the cases awaiting a replay.
+   replaces the headline cards, the exact-value cards and the recent-changes list.
+   Until 2026-10-01 a separate disclosure followed it, the cases awaiting a replay; a
+   reported result is now a row of the table with the status *recorded* (`think-d04u`).
 4. **Verification Ladders**, named Verification at a Glance until 2026-10-01. One ladder
    diagram in place of the three dimension cards, which had replaced the counts and
    stacked bar: a column per rung dimension (Significance, Verification, Confirmation),
@@ -794,8 +795,7 @@ decisions that changed the plan above:
   The two tables differ only in where the bar starts: Recent Results at “S4 and up” and
   180 days, the results page at All and no maximum age (`think-1vo2`).
 - **The row is the unit.** A table row with detail opens one popover for the whole row,
-  on the recent, awaiting-replay, results and frontier tables; no cell expands on its
-  own.
+  on the recent, results and frontier tables; no cell expands on its own.
 - **A result’s row opens its full overview**: the case drawn, the chain of results on
   it, and every link. No page carries the overviews, about 2.8 MB between them; each is
   written once beside the pages and fetched when its row is first opened, and the page
@@ -821,6 +821,15 @@ decisions that changed the plan above:
   once a squash merge left that commit on no branch (`think-eefp`, `think-xv28`).
 - **The site lands with current `main` and presents T-060**, the n = 11 optimality
   result, on the site and the reader pages (`think-v4vq`, `think-4ccp`).
+- **No separate block for reported results, and a status in place of the standing**
+  (2026-10-01). The “Reported, awaiting replay” disclosure under the recent table is
+  gone: its 48 cases were two register entries, T-046 and T-048, which the results table
+  already listed. Each result now shows a workflow status under its rungs (recorded,
+  reviewed, confirmed or incomplete), the filter bar’s Standing select is a Status
+  select, and *superseded* stays as its own mark and its own checkbox.
+  The proposal, the status of every result and the choices left to the owner are in
+  [the result-status plan](plan-2026-10-01-result-status.md) (`think-d04u`,
+  `think-ai94`).
 
 ## References
 

@@ -236,7 +236,10 @@ credited, is policy in
    The revision and digests of the retained copy belong to the evidence entry and the
    packet, not to the claim or the case record’s prose;
    [`devtools.check_prose_ceremony`](../devtools/check_prose_ceremony.py) holds both to
-   that.
+   that. Its [status](../../epistemics.md#status) is derived and reads *recorded* from
+   this step on. Once a replay or review of it is under way here, or a question about it
+   is with its authors, say so in the entry’s `activity`, dated and linked to the bead
+   or issue that shows it, and remove it when the work lands or the answer arrives.
 4. If geometry is available, adapt it once to
    [`Witness/v2`](../witnesses/witness.schema.yaml), then use `packing-witness inspect`
    or `check` with explicit arithmetic, precision, and tolerance.

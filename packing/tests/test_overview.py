@@ -22,6 +22,7 @@ from devtools import (
     overview_sections,
     render_overview,
     render_recent_results,
+    result_status,
 )
 from devtools.check_results import scope_values
 from devtools.render_explainer import COMPOSITE_ASSETS, OVERVIEW_FILM_POSTER
@@ -1818,34 +1819,105 @@ def _outside_row_popovers(page: str) -> str:
     return page
 
 
-def test_every_result_shows_the_standing_readme_derives(
+def test_every_result_shows_its_status_and_its_place_on_the_frontier(
     page: str,
     results: str,
     overview: overview_data.Overview,
     records: render_recent_results.Records,
 ) -> None:
-    """Standing is `render_recent_results.standing`, never restated: every table row
-    carries it as an attribute, for the filters, and draws it as chips under its rungs,
-    one a part, after the result's kind chip. A result that still stands is the default
-    and draws no chip: the row of a current best has none, and one that is the current
-    best as reported has only `reported`. A result that claims no bound has no standing
-    and draws none. Every standing chip is the one plain chip."""
+    """A row's status line is derived, never restated. Its first chip is the status,
+    which every row draws (`result_status.status`) and carries as an attribute, for the
+    filter. After it comes `superseded`, on a bound that no case bound rests on now
+    (`render_recent_results.superseded`), and that is all a row shows of a standing.
+    That a bound is only reported is the status `recorded` and no chip of its own; a
+    second proof of a held value says so by its kind; and a result that is no bound is
+    never marked superseded, whatever its evidence makes its standing. Every chip is
+    the one plain chip (think-ai94)."""
     held = render_recent_results.HOLDS
     recent = _recent_table(page)
+    status = re.compile(r'<span class="site-chip" data-status="([^"]*)"[^>]*>([^<]+)</span>')
     standing = re.compile(r'<span class="site-chip" data-standing="[^"]*"[^>]*>([^<]+)</span>')
+    evidence = records.register.evidence
     for result in overview.results:
         expected = render_recent_results.standing(result.record, records)
         assert result.standing == expected, result.id
-        parts = [part for part in expected.split(", ") if part and part != held]
+        assert result.status == result_status.status(result.record, evidence), result.id
+        marks = render_recent_results.position_marks(result.record, expected)
+        assert overview_sections.is_superseded(result) is bool(marks), result.id
         for row in (_row(results, result.id), _recent_row(recent, result.id)):
-            assert f'data-standing="{overview_sections.standing_key(expected)}"' in row
-            assert standing.findall(row) == parts, result.id
-            assert ('class="site-standing"' in row) is bool(parts), result.id
-            assert ">current best<" not in row, result.id
-    assert overview_sections.standing_chips(held) == ""
+            tag = row.split(">", 1)[0]
+            assert f'data-status="{result.status}"' in tag, result.id
+            assert "data-standing=" not in tag, result.id
+            assert status.findall(row) == [(result.status, result.status)], result.id
+            assert standing.findall(row) == marks, result.id
+            line = row.split('<span class="site-standing">', 1)[1]
+            assert line.startswith(overview_sections.status_chip(result.status)), result.id
+            for word in (">current best<", ">reported<", ">second certificate<"):
+                assert word not in row, (result.id, word)
+    assert {result.status for result in overview.results} <= set(result_status.STATUSES)
     assert any(result.standing == held for result in overview.results)
+    # A method's limit cites the bound it measures and derives `superseded`; it is no
+    # bound, so nothing supersedes it and its row is not marked.
+    by_id = {result.id: result for result in overview.results}
+    assert by_id["T-003"].standing == render_recent_results.SUPERSEDED
+    assert not overview_sections.is_superseded(by_id["T-003"])
+    assert overview_sections.is_superseded(by_id["T-037"])
+    for second in ("T-054", "T-055"):
+        assert by_id[second].record["kind"] == "simplification"
+        assert "second certificate" not in _row(results, second), second
     for other in render_recent_results.STANDINGS:
         assert "data-tone" not in overview_sections.standing_chip(other), other
+    for other in result_status.STATUSES:
+        assert "data-tone" not in overview_sections.status_chip(other), other
+
+
+def test_an_activity_is_a_chip_beside_the_status_and_only_where_recorded(
+    overview: overview_data.Overview,
+) -> None:
+    """Who has the next move is drawn where the register records an `activity`, straight
+    after the status: `in analysis` for work under way here, `waiting on source` for a
+    request with another party, its title what is in hand and since when. A result with
+    none recorded draws nothing for it."""
+    for result in overview.results:
+        chip = overview_sections.activity_chip(result)
+        activity = result.record.get("activity")
+        marks = overview_sections.status_marks(result)
+        if not activity:
+            assert chip == "", result.id
+            assert "data-activity=" not in marks, result.id
+            continue
+        assert result.activity == result_status.activity_label(activity), result.id
+        assert f'data-activity="{activity["state"]}"' in chip, result.id
+        assert f">{html.escape(result.activity)}</span>" in chip, result.id
+        assert f"Since {activity['since']}." in html.unescape(chip), result.id
+        status = overview_sections.status_chip(result.status)
+        assert marks.startswith(f"{status} {chip}"), result.id
+    doing = overview_data.Result(
+        {"activity": {"state": "in-analysis", "what": "a <b> replay", "since": "2026-09-29"}},
+        group="",
+        credit="",
+        ours=False,
+        status="recorded",
+    )
+    assert overview_sections.activity_chip(doing) == (
+        '<span class="site-chip" data-activity="in-analysis" '
+        'title="a &lt;b&gt; replay Since 2026-09-29.">in analysis</span>'
+    )
+    waiting = overview_data.Result(
+        {
+            "activity": {
+                "state": "waiting",
+                "party": "third-party",
+                "what": "the boxes",
+                "since": "2026-09-30",
+            }
+        },
+        group="",
+        credit="",
+        ours=False,
+        status="confirmed",
+    )
+    assert ">waiting on third party</span>" in overview_sections.activity_chip(waiting)
 
 
 def test_every_result_shows_its_kind(
@@ -1855,9 +1927,8 @@ def test_every_result_shows_its_kind(
 ) -> None:
     """A result's kind is the register's `kind`, never restated: every row of both
     tables carries it as `data-kind`, for the Kind filter, and draws it as one plain
-    chip in the rubric's words, on a line of its own under its rungs and above any
-    standing chip. A result with no standing shows its kind alone, and its kind is no
-    bound."""
+    chip in the rubric's words, on a line of its own under its rungs and above its
+    status line. A result with no standing is of a kind that is no bound."""
     recent = _recent_table(page)
     for result in overview.results:
         kind = result.record["kind"]
@@ -1865,23 +1936,31 @@ def test_every_result_shows_its_kind(
         label = check_results.kind_label(kind)
         assert chip == f'<span class="site-chip" data-kind="{kind}">{label}</span>'
         assert "data-tone" not in chip
-        standing = overview_sections.standing_chips(result.standing)
-        under = f'{overview_sections.rung_chips(result)}<span class="site-kind">{chip}</span>'
-        if standing:
-            under += f'<span class="site-standing">{standing}</span>'
+        marks = overview_sections.status_marks(result)
+        under = (
+            f'{overview_sections.rung_chips(result)}<span class="site-kind">{chip}</span>'
+            f'<span class="site-standing">{marks}</span>'
+        )
         for row in (_row(results, result.id), _recent_row(recent, result.id)):
             assert f' data-kind="{kind}" ' in row.split(">", 1)[0], result.id
             assert f">{under}</td>" in row, result.id
             assert row.count(chip) == 1, result.id
         if result.standing == render_recent_results.NO_STANDING:
             assert kind not in check_results.BOUND_KINDS, result.id
-            assert standing == "", result.id
+        if kind not in check_results.BOUND_KINDS:
+            assert not overview_sections.is_superseded(result), result.id
+            assert ">superseded<" not in marks, result.id
     assert ">not a bound<" not in results + recent
     assert 'data-standing="not-a-bound"' not in results + recent
-    # The popover's head and a chain's step show the kind beside the rungs.
+    # The popover's head and a chain's step show the kind beside the rungs, then the
+    # status line.
     t036 = next(result for result in overview.results if result.id == "T-036")
     assert overview_sections.status_chips(t036) == (
-        f"{overview_sections.rung_chips(t036)} {overview_sections.kind_chip(t036)}"
+        f"{overview_sections.rung_chips(t036)} {overview_sections.kind_chip(t036)} "
+        f"{overview_sections.status_marks(t036)}"
+    )
+    assert overview_sections.kind_and_status(t036) == (
+        f"{overview_sections.kind_chip(t036)} {overview_sections.status_chip('confirmed')}"
     )
     from devtools import result_overview  # noqa: PLC0415
 
@@ -1919,16 +1998,16 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
     recent = _recent_table(page)
     assert recent in section
-    before_replay = section.split("site-replay", 1)[0]
-    assert set(re.findall(r'<div class="(site-popover(?: [^"]*)?)"', before_replay)) == {
+    assert set(re.findall(r'<div class="(site-popover(?: [^"]*)?)"', section)) == {
         "site-popover site-row-pop"
     }
     section = _outside_row_popovers(section)
-    before_replay = section.split("site-replay", 1)[0]
-    assert "site-popover" not in before_replay
-    assert not re.search(r'class="site-card[ "]', before_replay)
-    assert "<li>" not in before_replay
-    assert section.count("<table") == 2  # the recent table, then the replay table
+    assert "site-popover" not in section
+    assert not re.search(r'class="site-card[ "]', section)
+    assert "<li>" not in section
+    # The recent table and no other: a reported bound is a row of it (think-d04u).
+    assert section.count("<table") == 1
+    assert "<details" not in section
     assert 'class="kpress-table site-table site-results"' in recent
     assert "site-recent-table" not in page
     # The script that sorts and filters the results page's table wires this one too.
@@ -1998,7 +2077,7 @@ def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_d
         dated = overview_sections.first_day(result.dated[1])
         assert f'data-s="{score}"' in row, result.id
         assert f'data-date="{dated}"' in row, result.id
-        current = result.standing != "superseded"
+        current = not overview_sections.is_superseded(result)
         assert f'data-current="{"true" if current else "false"}"' in row, result.id
         keeps = score >= 4 and dated >= cutoff and current
         assert (" hidden>" in row.split(">", 1)[0] + ">") == (not keeps), result.id
@@ -2040,9 +2119,12 @@ def test_the_html_measures_an_age_from_the_register_and_never_from_the_clock(
     assert overview_sections.age_cutoff(date(2026, 10, 1), 0) == "2026-10-01"
     assert overview_sections.age_cutoff(date(2024, 3, 1), 1) == "2024-02-29"
 
-    def result(dated: str, score: int, standing: str = "current best") -> overview_data.Result:
+    def result(
+        dated: str, score: int, standing: str = "current best", kind: str = "lower-bound"
+    ) -> overview_data.Result:
         record = {
             "id": "T-900",
+            "kind": kind,
             "scope": {"n_values": [11]},
             "established": dated,
             "registered": "2026-09-30",
@@ -2067,14 +2149,21 @@ def test_the_html_measures_an_age_from_the_register_and_never_from_the_clock(
         assert shows(result(dated, score), every, day), dated
     assert shows(result("1979", 4), overview_sections.FilterDefaults(significance=4), day)
     assert not shows(result("1979", 2), overview_sections.FilterDefaults(max_age=30), day)
-    # Hide superseded hides the one standing, and keeps every other.
+    # Hide superseded hides a bound of the one standing, and keeps every other.
     hiding = overview_sections.FilterDefaults(hide_superseded=True)
     for standing in render_recent_results.STANDINGS:
         current = standing != "superseded"
-        assert overview_sections.is_superseded(standing) == (not current), standing
-        assert shows(result("1979", 2, standing), hiding, day) == current, standing
+        bound = result("1979", 2, standing)
+        assert overview_sections.is_superseded(bound) == (not current), standing
+        assert shows(bound, hiding, day) == current, standing
         assert shows(result("2026-09-29", 5, standing), recent, day) == current, standing
-        assert shows(result("1979", 2, standing), every, day), standing
+        assert shows(bound, every, day), standing
+    # A result that is no bound is never superseded, whatever standing its evidence
+    # gives it: no later bound supersedes the limit of a method.
+    for kind in sorted(set(check_results.KINDS) - check_results.BOUND_KINDS):
+        other = result("1979", 2, "superseded", kind)
+        assert not overview_sections.is_superseded(other), kind
+        assert shows(other, hiding, day), kind
 
 
 def test_a_credit_splits_at_what_it_builds_on_and_a_standing_into_its_chips() -> None:
@@ -2089,14 +2178,11 @@ def test_a_credit_splits_at_what_it_builds_on_and_a_standing_into_its_chips() ->
         'Levy <span class="site-cell-quiet">after Burns, Massaccesi</span>'
     )
     assert overview_sections.credit_cell("A & B") == "A &amp; B"
-    chips = overview_sections.standing_chips("second certificate, reported")
-    assert chips.count('class="site-chip"') == 2
-    assert overview_sections.standing_chips("case exclusion").count("site-chip") == 1
-    # A result that still stands draws no chip; what else its standing says, it draws.
-    held = overview_sections.standing_chips("current best, reported")
-    assert held == '<span class="site-chip" data-standing="reported">reported</span>'
-    assert overview_sections.standing_chips("current best") == ""
-    assert "superseded</span>" in overview_sections.standing_chips("superseded")
+    # Of a standing a table draws one chip, `superseded`, the plain one.
+    assert overview_sections.standing_chip("superseded") == (
+        '<span class="site-chip" data-standing="superseded">superseded</span>'
+    )
+    assert not hasattr(overview_sections, "standing_chips")
 
 
 def test_only_t060_of_the_s5_results_still_holds(overview: overview_data.Overview) -> None:
@@ -2692,25 +2778,21 @@ def test_the_film_note_says_the_films_predate_t060(
     assert released.isoformat() < str(t060["registered"])
 
 
-def test_the_standing_filter_offers_each_standing_on_the_page(
+def test_the_status_filter_offers_each_status_a_result_has(
     results: str, overview: overview_data.Overview
 ) -> None:
-    tools = re.search(r'<select data-filter="standing">(.*?)</select>', results, re.DOTALL)
+    """Status offers All, then each status some result has, in the workflow's order,
+    each under its own word. Superseded is no status: the checkbox beside it asks that."""
+    tools = re.search(r'<select data-filter="status">(.*?)</select>', results, re.DOTALL)
     assert tools
-    offered = re.findall(r'<option value="([^"]*)"[^>]*>', tools.group(1))
-    present = {overview_sections.standing_key(r.standing) for r in overview.results}
-    assert offered[0] == ""
-    # A result that claims no bound has no standing, so its empty key is no choice.
-    assert set(offered[1:]) == present - {""}
-    assert "" in present
-    # The unmarked state keeps its name as a choice, first after All, whether or not a
-    # row draws a chip for it; `superseded` is the one choice Hide superseded leaves no
-    # row for (think-nr0y).
-    assert offered[1:3] == ["current-best", "current-best-reported"]
-    assert "superseded" in offered[3:]
-    words = dict(re.findall(r'<option value="([^"]+)"[^>]*>([^<]+)</option>', tools.group(1)))
-    assert words["current-best"] == "current best"
-    assert words["superseded"] == "superseded"
+    offered = re.findall(r'<option value="([^"]*)"[^>]*>([^<]+)</option>', tools.group(1))
+    present = {result.status for result in overview.results}
+    assert offered[0] == ("", "All")
+    assert offered[1:] == [
+        (status, status) for status in result_status.STATUSES if status in present
+    ]
+    assert "superseded" not in dict(offered)
+    assert '<select data-filter="standing">' not in results
 
 
 def test_the_survey_counts_are_readmes(page: str, overview: overview_data.Overview) -> None:
@@ -2723,32 +2805,48 @@ def test_the_survey_counts_are_readmes(page: str, overview: overview_data.Overvi
     assert f"{counts.cases} have a lower bound published or proved since 22 August 2026" in text
 
 
-def test_reported_bounds_awaiting_replay_are_listed(
-    page: str, overview: overview_data.Overview
+def test_a_reported_bound_is_a_row_of_the_results_table_and_no_block_of_its_own(
+    page: str, results: str, overview: overview_data.Overview
 ) -> None:
-    """Every recent case whose reported lane differs from the verified one has a row
-    linking its frontier record, with the reported value set as math, not code."""
-    waiting = [row.n for row in overview.recent if row.shows_reported]
+    """Every recent case whose reported lower bound says more than its verified one is
+    carried by register entries, and each of those is a row of both tables with its
+    status. The overview lists no case of them on its own: it says how many results are
+    not yet confirmed, each count the link to those rows (think-d04u)."""
+    waiting = [row for row in overview.recent if row.shows_reported]
     assert waiting
-    assert waiting == [row.n for row in overview.awaiting_replay]
-    block = overview_sections.awaiting_replay(overview)
-    assert '<details class="site-wide site-replay">' in page
-    for n in waiting:
-        assert f'<tr id="replay-n-{n}"' in page, n
-    listed = [int(n) for n in re.findall(r'<tr id="replay-n-(\d+)"', block)]
-    assert sorted(listed) == waiting
-    for n in waiting:
-        assert f'<a href="frontier.html#n-{n}">{n}</a>' in block, n
-    assert "`" not in block
-    assert "<code>" not in block
-    assert {18, 19, 20} <= set(listed)
+    carrying = {
+        entry for row in waiting for entry in re.findall(r"T-\d{3}", row.reported.results)
+    }
+    assert carrying
+    recent = _recent_table(page)
+    by_id = {result.id: result for result in overview.results}
+    for entry in sorted(carrying):
+        chip = overview_sections.status_chip(by_id[entry].status)
+        assert chip in _row(results, entry), entry
+        assert chip in _recent_row(recent, entry), entry
     # n = 11 reports T-060 rounded, and T-060 is verified: nothing awaits (think-pd2g).
-    assert 11 not in listed
-    eighteen = re.search(r'<tr id="replay-n-18".*?</tr>', block, re.DOTALL)
-    assert eighteen
-    assert "939/200" in eighteen.group(0)
-    assert "kpress-math" in eighteen.group(0)
-    assert "wand125" in block
+    assert 11 not in [row.n for row in waiting]
+    for gone in ("site-replay", "awaiting replay", 'id="replay-n-', "pop-replay-n-"):
+        assert gone not in page, gone
+    assert not hasattr(overview, "awaiting_replay")
+    assert not hasattr(overview_sections, "awaiting_replay")
+    sentence = overview_sections.status_counts(overview)
+    held = Counter(result.status for result in overview.results)
+    opening = f"Of the {len(overview.results)} results, {held['confirmed']} are confirmed"
+    assert opening in sentence
+    for status, count in held.items():
+        link = f"[{count} {status}](all-results.html?status={status})"
+        assert (link in sentence) is (status != "confirmed"), status
+        if status != "confirmed":
+            assert f'<a href="all-results.html?status={status}">{count} {status}</a>' in page
+    reference = overview_sections.reference_date(overview)
+    shown = sum(
+        overview_sections.shown_by_default(result, overview_sections.RECENT_DEFAULTS, reference)
+        for result in overview.results
+        if result.status != "confirmed"
+    )
+    words = {0: "none of them"}.get(shown, f"{shown} of them")
+    assert f"this table shows {words} until its filters are changed" in sentence
 
 
 def test_results_by_others_show_their_publication_date(
@@ -3212,25 +3310,24 @@ def test_a_page_title_stands_one_space_above_what_follows_it() -> None:
 
 def test_every_table_stands_one_shared_space_from_the_text_around_it() -> None:
     """The space above and below a table is one token: above the filter bar of a table
-    that has one, below every table's wrap, around the awaiting-replay disclosure, and
-    around a document's own table, which KPress wraps. The rules that read it are for
+    that has one, below every table's wrap, and around a document's own table, which
+    KPress wraps. The rules that read it are for
     the screen alone, so print keeps KPress's spacing; the bar is not printed at all."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     assert css.count("--site-table-space: 2rem;") == 1
     bar = css[css.index("\n.site-table-tools {") :]
     assert "margin-block: var(--site-table-space) 0.5rem;" in bar[: bar.index("}")]
-    start = css.index("@media screen {\n  .kpress details.site-replay,")
+    start = css.index("@media screen {\n  .kpress-table-wrap,")
     screen = css[start : css.index("\n}\n", start)]
     assert (
-        "  .kpress details.site-replay,\n  .kpress-table-wrap,\n  .site-table-wrap {\n"
+        "  .kpress-table-wrap,\n  .site-table-wrap {\n"
         "    margin-block: var(--site-table-space);\n  }"
     ) in screen
-    # The bar keeps its own gap to its table, and the disclosure's table sits flush.
+    # The bar keeps its own gap to its table.
     assert (
-        "  .site-table-tools + .site-table-wrap,\n  .site-replay .site-table-wrap {\n"
-        "    margin-block-start: 0;\n  }"
+        "  .site-table-tools + .site-table-wrap {\n    margin-block-start: 0;\n  }"
     ) in screen
-    assert "  .site-replay .site-table-wrap {\n    margin-block-end: 0;\n  }" in screen
+    assert "site-replay" not in css
     # The rating ladders, which are no table, stand the same space clear of the text.
     ladders = css[css.index("@media screen {\n  .site-ladders-frame {") :]
     assert "margin-block: var(--site-table-space);" in ladders[: ladders.index("}")]
@@ -3626,9 +3723,7 @@ def test_a_headline_that_is_all_math_sets_it_serif(page: str) -> None:
     assert "closest('[data-math-face=\"serif\"]')" in shell
 
 
-TABLE_BLEED = (
-    ".site-page .site-wide:is(.site-table-wrap, :has(> .site-table-wrap)):not(.site-replay) {"
-)
+TABLE_BLEED = ".site-page .site-wide:is(.site-table-wrap, :has(> .site-table-wrap)) {"
 
 
 def test_data_tables_bleed_like_the_atlas_only_above_1280_pixels() -> None:
@@ -3741,10 +3836,7 @@ def test_every_data_table_is_the_shared_component(page: str, results: str) -> No
             wrap = around[0].split()
             parent = around[1].split() if len(around) > 1 else []
             assert "site-table-wrap" in wrap, classes
-            if "site-replay-table" in classes.split():
-                assert "site-replay" in parent
-            else:
-                assert "site-wide" in wrap or "site-wide" in parent, classes
+            assert "site-wide" in wrap or "site-wide" in parent, classes
     assert seen >= 3
 
 
@@ -3787,7 +3879,7 @@ class _RowWiring(HTMLParser):
             self.cells += 1
         elif tag == "tr":
             self._row = None
-            if self._site_table and self._depth["tbody"] and "site-group-row" not in classes:
+            if self._site_table and self._depth["tbody"]:
                 self._row = []
                 self.rows.append((found, self._row))
         elif tag == "button" and "site-row-open" in classes and self._row is not None:
@@ -3861,15 +3953,13 @@ def test_every_row_with_detail_is_wired_to_one_popover(name: str) -> None:
 def test_the_tables_with_row_detail_are_the_ones_named(
     overview: overview_data.Overview,
 ) -> None:
-    """The recent table and the replay table on the overview, the results table on its
-    page and the frontier atlas: each row's popover is its own, by its key."""
+    """The recent table on the overview, the results table on its page and the frontier
+    atlas: each row's popover is its own, by its key."""
     from devtools.render_frontier_page import frontier_cases  # noqa: PLC0415
 
     recent = {f"pop-result-{r.id.lower()}" for r in overview_sections.recent_results(overview)}
-    replay = {f"pop-replay-n-{row.n}" for row in overview.awaiting_replay}
     assert recent
-    assert replay
-    assert set(_row_wiring("index.html").popovers) == recent | replay
+    assert set(_row_wiring("index.html").popovers) == recent
     assert set(_row_wiring("all-results.html").popovers) == {
         f"pop-result-{r.id.lower()}" for r in overview.results
     }
@@ -4032,40 +4122,6 @@ def test_a_result_row_popover_is_the_same_panel_in_both_tables(
     assert away == here
 
 
-def test_a_replay_rows_popover_body_comes_from_one_function(
-    overview: overview_data.Overview, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """`replay_row_popover_body` is the one source of an awaiting-replay row's detail:
-    the reported and the verified bound, each with its holder and its entries. The
-    popovers follow the disclosure rather than sit in it, and each ends in the button
-    to its case in the frontier atlas."""
-    row = overview.awaiting_replay[0]
-    body = overview_sections.replay_row_popover_body(row)
-    assert "<dt>Reported</dt>" in body
-    assert "<dt>Verified here</dt>" in body
-    assert html.escape(row.reported.holder) in body
-    # Each lane's date is what the tables' Date column says it is: a bound by others was
-    # published then, and this project's own was established then.
-    ours = next(r for r in overview.awaiting_replay if r.verified.ours and r.reported.published)
-    detail = overview_sections.replay_row_popover_body(ours)
-    assert f", established {ours.verified.published}" in detail
-    assert f", published {ours.reported.published}" in detail
-    assert f", published {ours.verified.published}" not in detail.split("Verified here")[1]
-    block = overview_sections.awaiting_replay(overview)
-    assert body in _row_popover(block, f"pop-replay-n-{row.n}")
-    assert block.index("</details>") < block.index('<div class="site-popover site-row-pop"')
-    (action,) = ACTION.findall(_row_popover(block, f"pop-replay-n-{row.n}"))
-    assert action == (f"frontier.html#n-{row.n}", "page")
-
-    def marked(row: render_recent_results.Row) -> str:
-        return f"<p>BODY OF {row.n}</p>"
-
-    monkeypatch.setattr(overview_sections, "replay_row_popover_body", marked)
-    block = overview_sections.awaiting_replay(overview)
-    for waiting in overview.awaiting_replay:
-        assert block.count(f"<p>BODY OF {waiting.n}</p>") == 1, waiting.n
-
-
 def test_a_row_detail_escapes_its_words_and_keeps_its_html() -> None:
     """`row_detail` is the component: the row's attributes, its native trigger and its
     popover. The name, the label and the action's words are escaped; the trigger, the
@@ -4170,7 +4226,7 @@ def test_a_row_with_detail_takes_the_shared_wash_and_no_disclosure_style() -> No
     keyboard focus, with a ring, and while its popover is open, and shows the pointer
     once the script has made it the control. No rule styles a `<details>` in a table."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
-    hover = css[css.index(".kpress .site-table tbody tr:not(.site-group-row):hover {") :]
+    hover = css[css.index(".kpress .site-table tbody tr:hover {") :]
     assert "background: var(--site-wash);" in hover[: hover.index("}")]
     row = ".kpress .site-table tbody tr[data-row-popover]"
     held = css[css.index(f'{row}:is(:focus-visible, [aria-expanded="true"]) {{') :]
@@ -4193,7 +4249,7 @@ RESULT_FILTERS = [
     ("v", "min"),
     ("c", "min"),
     ("kind", ""),
-    ("standing", ""),
+    ("status", ""),
     ("current", ""),
     ("source", ""),
     ("n", "covers"),
@@ -4204,7 +4260,7 @@ RESULT_FILTERS = [
     ("s", ""),
 ]
 
-#: The bar's one checkbox, as `result_filters` writes it: its own label, after Standing.
+#: The bar's one checkbox, as `result_filters` writes it: its own label, after Status.
 HIDE_SUPERSEDED = (
     '<label><input type="checkbox" data-filter="current"{checked}> Hide superseded</label>'
 )
@@ -4255,7 +4311,7 @@ def test_both_tables_of_results_carry_the_identical_filter_set(page: str, result
     assert _without_defaults(here) == _without_defaults(there)
     assert here != there
     assert _controls(here) == _controls(there) == RESULT_FILTERS
-    everything = {"s": "", "v": "", "c": "", "kind": "", "standing": "", "source": ""}
+    everything = {"s": "", "v": "", "c": "", "kind": "", "status": "", "source": ""}
     for bar in (here, there):
         # Six selects of the bar's own, each with its starting choice marked, and the two
         # preset-only selects (`tests/test_site_project_tallies.py`), which start at All.
@@ -4266,9 +4322,9 @@ def test_both_tables_of_results_carry_the_identical_filter_set(page: str, result
         assert bar.count('type="checkbox"') == 1
         assert "<label>Max age <input " in bar
         assert "> days</label>" in bar
-        # The checkbox is the control straight after Standing, in a label of its own.
+        # The checkbox is the control straight after Status, in a label of its own.
         assert re.search(
-            r'<select data-filter="standing">.*?</select></label>'
+            r'<select data-filter="status">.*?</select></label>'
             r'<label><input type="checkbox" data-filter="current"(?: checked)?> '
             r"Hide superseded</label><label>Source ",
             bar,
@@ -4328,11 +4384,11 @@ def test_the_filter_bar_is_one_helpers_and_reads_the_whole_register(
         assert choices[0] == ("", "All")
         assert choices[1] == ("1", f"{scale}1 and up")
         assert choices[-1] == ("5", f"{scale}5")
-    standings = re.search(r'<select data-filter="standing">(.*?)</select>', full)
-    assert standings
-    assert set(re.findall(r'<option value="([^"]+)"', standings[1])) == {
-        overview_sections.standing_key(result.standing) for result in overview.results
-    } - {""}
+    statuses = re.search(r'<select data-filter="status">(.*?)</select>', full)
+    assert statuses
+    assert set(re.findall(r'<option value="([^"]+)"', statuses[1])) == {
+        result.status for result in overview.results
+    }
     # Kind offers the kinds the register holds, in the rubric's order and words.
     kinds = re.search(r'<label>Kind <select data-filter="kind">(.*?)</select>', full)
     assert kinds
@@ -4363,8 +4419,8 @@ def test_every_facet_a_result_row_carries_has_a_filter_and_every_filter_a_facet(
 ) -> None:
     """A row of either table carries the same facets, each from the register: whose
     result it is, its V, C and S levels, its kind, the listed projects it is attributed
-    to, its standing, whether that is a current best, its cases and its date. The bar
-    has a control for each and no control without one."""
+    to, its status, whether it is current, which is to say not superseded, its cases and
+    its date. The bar has a control for each and no control without one."""
     filtered = {key for key, _ in RESULT_FILTERS}
     recent = _recent_table(page)
     listed = {r.id for r in overview_sections.recent_results(overview)}
@@ -4377,8 +4433,8 @@ def test_every_facet_a_result_row_carries_has_a_filter_and_every_filter_a_facet(
             "s": str(record["significance"]["score"]),
             "kind": record["kind"],
             "project": " ".join(overview_sections.result_projects(result)),
-            "standing": overview_sections.standing_key(result.standing),
-            "current": "false" if result.standing == "superseded" else "true",
+            "status": result.status,
+            "current": "false" if overview_sections.is_superseded(result) else "true",
             "n": overview_sections.result_cases(result),
             "date": overview_sections.first_day(result.dated[1]),
         }
@@ -4453,9 +4509,11 @@ def test_hide_superseded_starts_checked_on_the_overview_and_clear_on_the_results
     without = 0
     kept = set()
     for result in overview.results:
-        superseded = overview_sections.is_superseded(result.standing)
-        assert superseded == (result.standing == render_recent_results.SUPERSEDED), result.id
-        assert superseded == (overview_sections.standing_key(result.standing) == "superseded")
+        superseded = overview_sections.is_superseded(result)
+        assert superseded == (
+            result.standing == render_recent_results.SUPERSEDED
+            and result.record["kind"] in check_results.BOUND_KINDS
+        ), result.id
         flag = f'data-current="{"false" if superseded else "true"}"'
         ours = _recent_row(recent, result.id).split(">", 1)[0] + ">"
         theirs = _row(results, result.id).split(">", 1)[0] + ">"
@@ -4470,13 +4528,11 @@ def test_hide_superseded_starts_checked_on_the_overview_and_clear_on_the_results
         without += overview_sections.shown_by_default(result, unchecked, reference)
         if result.id in overview.starred:
             assert not superseded, result.id
-    # Every standing but the one stays, and so does a result with none: nothing but a
-    # superseded result is hidden for it.
-    assert kept == {
-        *render_recent_results.STANDINGS,
-        render_recent_results.NO_STANDING,
-    } - {render_recent_results.SUPERSEDED}
-    current = sum(not overview_sections.is_superseded(r.standing) for r in overview.results)
+    # Every standing stays, and so does a result with none: nothing but a superseded
+    # bound is hidden for it. The one result that derives `superseded` and stays is the
+    # limit of a method, which is no bound.
+    assert kept == {*render_recent_results.STANDINGS, render_recent_results.NO_STANDING}
+    current = sum(not overview_sections.is_superseded(r) for r in overview.results)
     assert 0 < shown < without < len(overview.results)
     assert shown < current < len(overview.results)
     assert f">{shown} of {len(overview.results)} results</span>" in here

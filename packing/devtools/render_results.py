@@ -14,13 +14,14 @@ than restated: building on this project, crediting it second-hand, independent o
 and published before it began.
 Within each group the entries still waiting on a replay here (`C` below `C3`) come
 first, since they are the queue. Their credit and published date are shown beside the
-rungs, with the result's standing, derived from the case records and never stored by
-`devtools.render_recent_results.standing`, the same function the site's overview uses:
-whether a case bound rests on it now, and if not, whether it was superseded or is a
-second certificate for a value another result holds. Every row of both tables states the
-result's `kind`, what the result is: a lower bound, an upper bound, optimality, or one
-of the kinds that are no bound on `s(n)`. A result whose evidence claims no bound has
-no standing, and its standing cell is a dash.
+rungs. Every row of both tables states the result's `kind`, what the result is: a
+lower bound, an upper bound, optimality, or one of the kinds that are no bound on
+`s(n)`. Every row ends its ratings with the result's status (`devtools.result_status`,
+the function the site's tables use): recorded, reviewed, confirmed or incomplete,
+derived from the rungs and the cited evidence and never stored; then who has the next
+move, where the register records an `activity`; then `superseded`, where the result is
+a bound no case bound rests on now, which `devtools.render_recent_results.standing`
+derives from the case records.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.render_results --update
@@ -36,8 +37,9 @@ from strif import atomic_output_file
 
 from devtools.check_results import kind_label
 from devtools.register_prose import paragraphs
-from devtools.render_recent_results import load_records, standing
+from devtools.render_recent_results import load_records, position_marks, standing
 from devtools.result_credit import OTHERS, credit_line, source_lineage
+from devtools.result_status import status_line
 from sqpack.yamlio import safe_load
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -50,8 +52,6 @@ OUTPUT = ROOT / "frontier" / "RESULTS.md"
 #: diff and ambiguous on sight.
 APOSTROPHE = "\u2019"
 
-#: The standing cell of a result whose evidence claims no bound: it has no standing.
-NO_STANDING_CELL = "\u2014"
 
 #: The title of the first group: this project's own results.
 OURS = f"This Project{APOSTROPHE}s Results"
@@ -64,8 +64,7 @@ One row per registered result: this project's first, then results by others grou
 by the lineage their sources state, each sorted by significance, then confirmation.
 A result's kind says what it is: a lower bound, an upper bound, optimality (an exact
 value), or one of the kinds [`epistemics.md`](../../epistemics.md#result-kinds) defines
-for a result that is no bound on `s(n)`. A result that claims no bound has no
-standing, and its standing column is a dash.
+for a result that is no bound on `s(n)`.
 Every credit names people: `X`, or `X after Y` where X's result rests directly on Y's
 proof, method or tool.
 The axes are defined in [`epistemics.md`](../../epistemics.md): `V` is the
@@ -77,6 +76,10 @@ record; rung 5, formal verification reviewed by human experts; a rung-3 result i
 machine-checked with its review record pending.
 `devtools/check_results.py` validates the structural support and required
 explanations for every declared `V` and `C`.
+A result's status says how far the work on it here has gone, and follows `C`:
+*recorded* (`C0`), *reviewed* (`C1`), *confirmed* (`C2` and up), or *incomplete* while a
+defect found in it is open. After it come who has the next move, where one is recorded,
+and *superseded*, where the result is a bound that no case bound rests on now.
 """
 
 
@@ -152,19 +155,25 @@ def render() -> str:
     lines = [HEADER]
     lines.append(f"## {OURS}")
     lines.append("")
-    lines.append("| id | n | kind | credit | V | C | S | novelty | claim |")
-    lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- |")
+    records = load_records()
+    evidence = records.register.evidence
+
+    def status(record: dict) -> str:
+        position = position_marks(record, standing(record, records))
+        return status_line(record, evidence, position)
+
+    lines.append("| id | n | kind | credit | V | C | S | status | novelty | claim |")
+    lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |")
     lines.extend(
         f"| {record['id']} | {_scope(record)} | {kind_label(record['kind'])} "
         f"| {credit_line(record, sources)} "
         f"| {record['verification']} "
         f"| {record['confirmation']} | S{record['significance']['score']} "
-        f"| {record['novelty']} | {claim_cell(record)} |"
+        f"| {status(record)} | {record['novelty']} | {claim_cell(record)} |"
         for record in ours
     )
     lines.append("")
     if others:
-        records = load_records()
         lines.append("## Results by Others")
         lines.append("")
         lines.append(
@@ -176,16 +185,14 @@ def render() -> str:
         for title, group in others:
             lines.append(f"### {title}")
             lines.append("")
-            lines.append(
-                "| id | n | kind | credit | published | V | C | S | standing | claim |"
-            )
+            lines.append("| id | n | kind | credit | published | V | C | S | status | claim |")
             lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |")
             lines.extend(
                 f"| {record['id']} | {_scope(record)} | {kind_label(record['kind'])} "
                 f"| {credit_line(record, sources)} "
                 f"| {record['attribution']['published']} | {record['verification']} "
                 f"| {record['confirmation']} | S{record['significance']['score']} "
-                f"| {standing(record, records) or NO_STANDING_CELL} | {claim_cell(record)} |"
+                f"| {status(record)} | {claim_cell(record)} |"
                 for record in group
             )
             lines.append("")

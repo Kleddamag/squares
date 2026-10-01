@@ -111,6 +111,41 @@ def cell_tex(tex: str) -> str:
     return tex
 
 
+def exact_decimal(value: Any) -> tuple[str, bool]:
+    """An exact value's decimal as a cell prints it, and whether that is the whole of it.
+
+    The digits come from the exact value and from nothing looser. A rational is divided
+    in whole numbers, so its decimal either ends within `DECIMAL_PLACES` and is printed
+    in full, or is cut there. Anything else is evaluated by sympy to 30 significant
+    digits and cut by `decimal_text`, the rule every decimal on the page follows. A cut
+    drops digits and never rounds, so the digits dropped must not be all nines or all
+    zeros as far as they are known: there the last digit kept would depend on digits
+    that were never computed, and the render stops instead of printing a guess.
+    """
+    import sympy  # noqa: PLC0415
+
+    if value.is_Rational:
+        scaled, left = divmod(abs(int(value.p)) * 10**DECIMAL_PLACES, int(value.q))
+        whole, fraction = divmod(scaled, 10**DECIMAL_PLACES)
+        sign = "-" if value.p < 0 else ""
+        digits = f"{fraction:0{DECIMAL_PLACES}d}"
+        if left:
+            return f"{sign}{whole}.{digits}…", False
+        return f"{sign}{whole}.{digits}".rstrip("0").rstrip("."), True
+    numeric = f"{Decimal(str(sympy.N(value, 30))):f}"
+    dropped = numeric.partition(".")[2][DECIMAL_PLACES:-2]
+    if not dropped.strip("9") or not dropped.strip("0"):
+        raise SystemExit(f"{value} is too close to a {DECIMAL_PLACES}-place decimal to cut")
+    return decimal_text(numeric), False
+
+
+def approx_html(value: Any) -> str:
+    """The decimal a closed form is set over, quiet, on a line of its own under it:
+    `= 4.695` where the decimal is the value, `≈ 3.96861554…` where it is cut."""
+    text, whole = exact_decimal(value)
+    return f'<span class="site-approx">{"=" if whole else "≈"} {text}</span>'
+
+
 def value_html(bound: dict[str, Any]) -> str:
     """A bound as a reader should see it: integers plain, closed forms as math."""
     exact = bound.get("exact_form")
@@ -121,6 +156,24 @@ def value_html(bound: dict[str, Any]) -> str:
         if len(tex) <= VALUE_SHOWN:
             return math_html(cell_tex(tex))
     return f'<span class="site-decimal">{html.escape(decimal_text(bound["value"]))}</span>'
+
+
+def bound_approx_html(bound: dict[str, Any]) -> str:
+    """The decimal under a bound the table sets as a closed form, and nothing under a
+    whole number or a bound already set as a decimal. It is read from the closed form,
+    never from the record's own decimal, which a lower bound may hold to fewer places
+    (`15680/3951` is recorded as `3.968615`)."""
+    exact = bound.get("exact_form")
+    if (
+        not isinstance(exact, str)
+        or not exact
+        or tables.ROOT_FORM.fullmatch(exact)
+        or is_integer(exact)
+        or len(tables.latex(exact)) > VALUE_SHOWN
+    ):
+        return ""
+    value = exact_value(exact)
+    return "" if value.is_Integer else approx_html(value)
 
 
 def polynomial_html(case: dict[str, Any], case_url: str) -> str:
@@ -145,6 +198,7 @@ def credit(names: Iterable[str] | None, year: object) -> str:
     return html.escape(" ".join(part for part in (who, when) if part))
 
 
+@cache
 def exact_value(form: str) -> Any:
     """A sympy value for an exact form, or `None` for a polynomial root."""
     import sympy  # noqa: PLC0415
@@ -167,10 +221,10 @@ def gap(case: dict[str, Any]) -> tuple[str, str]:
     """Verified upper minus verified lower: `(cell HTML, decimal for sorting)`.
 
     Exact where both bounds are closed forms and the difference is short enough to read
-    in a cell, with its decimal beneath when it is irrational; otherwise the decimal
-    difference, cut like every other decimal here. Both bounds written as the same exact
-    form -- one polynomial root, as for n = 11 since T-060 -- are one number, so the gap
-    is zero without evaluating the root.
+    in a cell, with its decimal beneath unless it is a whole number; otherwise the
+    decimal difference, cut like every other decimal here. Both bounds written as the
+    same exact form -- one polynomial root, as for n = 11 since T-060 -- are one number,
+    so the gap is zero without evaluating the root.
     """
     import sympy  # noqa: PLC0415
 
@@ -187,10 +241,7 @@ def gap(case: dict[str, Any]) -> tuple[str, str]:
         if difference.is_Integer:
             return html.escape(str(difference)), sort_value
         if len(tex) <= GAP_SHOWN:
-            shown = math_html(cell_tex(tex))
-            if not difference.is_Rational:
-                shown += f'<span class="site-frontier-approx">≈ {decimal_text(numeric)}</span>'
-            return shown, sort_value
+            return math_html(cell_tex(tex)) + approx_html(difference), sort_value
         return f'<span class="site-decimal">{decimal_text(numeric)}</span>', sort_value
     numeric = Decimal(str(upper["value"])) - Decimal(str(lower["value"]))
     return (
@@ -234,9 +285,10 @@ def thumbnail_svg(n: int) -> str:
     The full drawing carries exact coordinates to 28 digits and a metadata block, about
     51 MB over the corpus; a cell 50 pixels across needs the outline of each square at
     whole units of a 100-unit frame, half a pixel at
-    that size, one path per fill colour, and nothing else.
+    that size, one path per fill colour, and nothing else. The cell that holds it is
+    the `.site-thumb` and sizes it, so the drawing has no wrapper of its own.
     """
-    return f'<span class="site-thumb">{packing_svg(n)}</span>'
+    return packing_svg(n)
 
 
 def packing_svg(
@@ -354,7 +406,7 @@ def _cell(content: str, *, value: str | None = None, classes: str = "") -> str:
 
 
 def _bound_cell(bound: dict[str, Any], note: str = "") -> str:
-    parts = [value_html(bound)]
+    parts = [value_html(bound), bound_approx_html(bound)]
     if note:
         parts.append(f'<span class="site-frontier-note site-cell-quiet">{note}</span>')
     return _cell("".join(parts), value=str(bound["value"]), classes="num")
@@ -369,7 +421,11 @@ def _verified_cell(verified: dict[str, Any], reported: dict[str, Any]) -> str:
             value=str(verified["value"]),
             classes="num",
         )
-    return _cell(value_html(verified), value=str(verified["value"]), classes="num")
+    return _cell(
+        value_html(verified) + bound_approx_html(verified),
+        value=str(verified["value"]),
+        classes="num",
+    )
 
 
 def _upper_details(case: dict[str, Any], case_url: str) -> str:
@@ -433,8 +489,10 @@ def case_row(
     case: dict[str, Any], evidence: dict[str, dict[str, Any]], *, recent: bool
 ) -> tuple[str, str]:
     """One table row, every cell from the record, and the popover it opens. Its `n`
-    opens the case's record; anywhere else on the row opens the popover, whose body is
-    `frontier_row_popover_body` and whose button opens the record too."""
+    opens the case's record; anywhere else on the row, the drawing included, opens the
+    popover, whose body is `frontier_row_popover_body` and whose button opens the record
+    too. The cells are in `HEADERS`' order: the drawing, `n`, the star, and then what is
+    known."""
     from devtools.overview_sections import row_detail  # noqa: PLC0415
     from devtools.render_case_pages import case_link  # noqa: PLC0415
     from devtools.render_case_pages import case_url as record_url  # noqa: PLC0415
@@ -459,23 +517,19 @@ def case_row(
         action=(record_url(n), f"Open the case record for n = {n}"),
     )
     cells = [
+        _cell(thumbnail_svg(n), classes="site-thumb"),
         _cell(
-            case_link(
-                n,
-                f"{n}{thumbnail_svg(n)}",
-                classes="site-frontier-n",
-                label=f"n = {n}: open its case record",
-            ),
+            case_link(n, str(n), label=f"n = {n}: open its case record"),
             value=str(n),
             classes="num site-col-n",
         ),
+        _cell(star, value="1" if recent else "0"),
         _cell(shown_status, value=status),
         _bound_cell(upper, credit(upper.get("found_by"), upper.get("found_year"))),
         _verified_cell(case["verified_upper_bound"], upper),
         _bound_cell(lower, credit(lower.get("proved_by"), lower.get("proved_year"))),
         _verified_cell(case["verified_lower_bound"], lower),
         _cell(gap_html, value=gap_value, classes="num"),
-        _cell(star, value="1" if recent else "0"),
         _cell(
             f'<a href="{case_url}">n-{n:03d}.md</a> '
             f'<span class="site-cell-quiet">{detail.trigger}</span>',
@@ -491,24 +545,32 @@ def case_row(
     return f"<tr {attributes}>{''.join(cells)}</tr>", detail.popover
 
 
-#: The columns: heading, sort type (none for a column that does not sort), alignment.
+#: The drawing's column has no heading to read; this is its name for a screen reader.
+THUMB_LABEL = "Packing"
+#: The columns: heading, sort type (none for a column that does not sort), classes. The
+#: drawing comes first, under no heading, then `n`, then the star, so the left edge of the
+#: table says which case a row is and whether its bound is new; what is known follows.
 HEADERS: tuple[tuple[str, str, str], ...] = (
-    ("n", "num", "num"),
+    ("", "", "site-thumb"),
+    ("n", "num", "num site-col-n"),
+    ("Recent", "num", "site-col-recent"),
     ("Status", "text", ""),
     ("Best known packing", "num", "num"),
     ("Verified upper", "num", "num"),
     ("Reported lower", "num", "num"),
     ("Verified lower", "num", "num"),
     ("Gap", "num", "num"),
-    ("Recent", "num", ""),
     ("Records", "", ""),
 )
 
 
-def _heading(label: str, kind: str, align: str) -> str:
+def _heading(label: str, kind: str, classes: str) -> str:
+    """A column's header cell. One with no words is named for a screen reader."""
     sort = f' data-sort="{kind}"' if kind else ""
-    classes = f' class="{align}"' if align else ""
-    return f'<th scope="col"{sort}{classes}>{html.escape(label)}</th>'
+    named = f' class="{classes}"' if classes else ""
+    if not label:
+        named += f' aria-label="{THUMB_LABEL}"'
+    return f'<th scope="col"{sort}{named}>{html.escape(label)}</th>'
 
 
 def _tools(count: int, last: int) -> str:

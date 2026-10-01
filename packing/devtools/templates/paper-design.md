@@ -1113,9 +1113,10 @@ it.
   holder; a table of results does not.
   A row with detail opens its popover, and no cell expands on its own (**Row popovers**,
   below). Rows are separated by a light rule, not zebra stripes, and a row takes the wash
-  on hover. Cells are padded 0.55rem by 0.5rem, top-aligned, at line height 1.4. Headers
-  sit at the bottom of their cell, aligned as their column is: text columns to the
-  start, number columns (`.num`, tabular figures) to the end.
+  on hover. Cells are padded 0.55rem by 0.5rem, top-aligned, at line height 1.4 (the
+  frontier table centres its cells and keeps 0.4rem at their sides: **Frontier table**,
+  below). Headers sit at the bottom of their cell, aligned as their column is: text
+  columns to the start, number columns (`.num`, tabular figures) to the end.
   The short columns (the id, n and date, `.site-col-id`, `.site-col-n` and
   `.site-col-date`) are as narrow as their content, the id and the date on one line,
   which leaves the spare width to the long text column.
@@ -1214,6 +1215,62 @@ it.
   `tr[data-standing="superseded"]`; its chips keep their fills.
   A row reached by its address (`frontier.html#n-11`, `all-results.html#t-018`) takes
   the wash, in every site table.
+
+- **Frontier table.** The frontier atlas’s table is a site table of ten columns, in this
+  order (`render_frontier_page.HEADERS`): the drawing, n, Recent, Status, Best known
+  packing, Verified upper, Reported lower, Verified lower, Gap and Records.
+  The left edge of a row says which case it is and whether its bound is new, and what is
+  known follows.
+  - **The drawing** of the best known packing has the first column to itself.
+    Its header shows no words and is named “Packing” for a screen reader (`aria-label`).
+    The cell is the drawing alone, an inline SVG with no wrapper, and the column is the
+    drawing and the row’s start padding.
+    Its side is `--site-frontier-thumb`, two lines of the table’s text (2.8 times the
+    note size, 49 pixels; it was 2.6rem, 42 pixels, set under the number).
+    Every row holds two lines at least, since its Records cell is the case file’s link
+    over the row’s trigger, so the drawing never makes a row taller than its text does.
+    The drawing is no link: pressing it opens the row’s popover, as pressing anywhere
+    else on the row does, and the number beside it opens the case record.
+  - **The case number** is the number alone and the only bold text in a row, in
+    `--site-font-weight-sans-bold`.
+  - **Recent** holds the star of a recent verified lower bound, third, as narrow as its
+    heading. It sorts, and “recent only” filters on it.
+  - **Centring.** Every body cell is centred on its row’s height
+    (`vertical-align: middle`), so a value of one line sits level with the drawing and
+    with the middle of a neighbour of three lines.
+    No cell is exempt: the longest, a fraction over its decimal and its credit, is four
+    lines, and reads as one block beside the others.
+    Headers keep the foot of their cell, as in every site table.
+  - **Decimals.** A bound set as a closed form that is not a whole number (a fraction, a
+    radical) has its decimal on a quiet line under it, `.site-approx`, in the four bound
+    columns and under the gap.
+    Where the decimal is the whole value it reads `= 4.695`, and where it is cut,
+    `≈ 3.96861554…`. The digits are the closed form’s own
+    (`render_frontier_page.exact_decimal`): a rational is divided in whole numbers,
+    anything else is evaluated to 30 significant digits, and both are cut after eight
+    places and never rounded, the page’s one rule for a decimal.
+    They are not the record’s `value`, which a lower bound may hold to fewer places
+    (`15680/3951` is recorded as `3.968615`); that value stays the cell’s sort key.
+    A whole number, and a root shown as a decimal already, carry none.
+    The credit follows on its own line and wraps between words, never inside a name.
+  - **Widths.** The table fits the 1200 pixels a 1280-pixel window gives it, with 6 to
+    spare, and scrolls sideways in its wrap below that, on a phone too: it has no card
+    layout. Every column is as wide as what it holds, without KPress’s 6rem floor, which
+    set n and the star in 96 pixels each.
+    A cell keeps 0.4rem at either side (`--site-frontier-cell-inline`) where the other
+    tables keep 0.5rem, and the Records cell half a rem more at its start, which keeps a
+    decimal in the gap clear of the case file’s name.
+    At 1280 the columns are 56, 42, 88, 85, 196, 165, 185, 152, 139 and 91 pixels.
+    Before the drawing had its column the table was 1282 pixels wide at every window
+    width and ran 82 past its track at 1280.
+  - **Bytes.** The page is held under 4 MiB (`tests/test_frontier_page.py`), and a row’s
+    markup is paid 324 times, so a cell carries a class and no wrapper it can do
+    without.
+  - **Checks.** `tests/test_site_frontier_table.py` holds the order, the drawing’s
+    column and size, the bold number, the centring, the fit at 1280, the decimal under a
+    fraction, and sorting, filtering and both popovers, in a browser at 1280, 1024, 768
+    and 390 pixels; `tests/test_frontier_page.py` holds every decimal to its closed
+    form’s exact value. `devtools.measure_site_pages columns` reports the widths.
 
 - **Result filters.** Every table of results sits under one tools bar, the same on the
   overview’s recent table and on the results page: the same controls, the same choices

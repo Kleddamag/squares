@@ -413,11 +413,12 @@ def _bound_cell(bound: dict[str, Any], note: str = "") -> str:
 
 
 def _verified_cell(verified: dict[str, Any], reported: dict[str, Any]) -> str:
-    """A verified bound, or the mark that it is the reported one, shown once."""
+    """A verified bound, or the mark that it is the reported one, shown once. The mark
+    carries no tooltip: the page's introduction says what it means, and the phrase 470
+    times over was 20 KB of a page held under a byte ceiling."""
     if bounds_agree_at_declared_precision(reported, verified):
         return _cell(
-            '<span class="site-frontier-same" title="Verified here at the reported value">'
-            "✓ same</span>",
+            '<span class="site-frontier-same">✓ same</span>',
             value=str(verified["value"]),
             classes="num",
         )

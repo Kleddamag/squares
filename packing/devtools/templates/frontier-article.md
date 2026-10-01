@@ -18,8 +18,8 @@ For how the results fit together, start at the [overview](./).
 what the published sources say, credited to whoever found or proved them.
 The *verified* columns hold only exact formal bounds: a complete proof, an exact
 algebraic replay, or a rigorous certificate.
-Where the verified bound is the reported one, the cell says so rather than printing the
-value twice.
+Where the verified bound is the reported one, the cell says *✓ same*, meaning verified
+here at the reported value, rather than printing the value twice.
 A finite-precision result is numerically checked and never enters a verified
 column.
 

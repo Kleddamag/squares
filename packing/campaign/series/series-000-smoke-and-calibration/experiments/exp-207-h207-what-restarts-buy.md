@@ -95,11 +95,11 @@ The previous text is at commit `a40d272c`.
 
 ## What Was Measured
 
-One seed stream of blind runs at `n = 5` and shake level 6, 39,871 seeds long.
+One seed stream of blind runs at $n = 5$ and shake level 6, 39,871 seeds long.
 Every run was repaired to a packing and checked before scoring.
-The table gives the best of the first `k` runs.
+The table gives the best of the first $k$ runs.
 
-| k | best of first k, `closed` | above `s(5)` |
+| k | best of first k, `closed` | above $s(5)$ |
 | ---: | ---: | ---: |
 | 1 | −0.084 | 11.72% |
 | 10 | −0.037 | 11.22% |
@@ -108,8 +108,8 @@ The table gives the best of the first `k` runs.
 | 10,000 | 0.977 | 0.25% |
 | 39,871 | 0.986 | 0.15% |
 
-The trivial grid is 10.82% above `s(5)`. The same command asked for `n = 10`; no
-`n = 10` result from it was retained.
+The trivial grid is 10.82% above $s(5)$. The same command asked for $n = 10$; no
+$n = 10$ result from it was retained.
 
 ## What It Shows
 

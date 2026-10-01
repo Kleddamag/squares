@@ -74,7 +74,7 @@ packings, the full exact segment stays in one fixed-angle separating cell, and a
 dual proves that cell cannot use a smaller side.
 Generation and independent regeneration agree, and all five declared controls pass.
 
-Write `r = sqrt(2)` and `S = 1 + 5r/4`. After the D4 action and relabelling, four
+Write `r = sqrt(2)` and $S = 1 + 5r/4$. After the D4 action and relabelling, four
 squares coincide exactly.
 The fifth moves as
 
@@ -85,11 +85,11 @@ Both endpoints satisfy the exact packing verifier.
 The common separating cell has 30 rows; endpoint feasibility therefore proves the whole
 segment feasible by convexity.
 
-An exact dual has weights `-1/2` on the lower walls of square 2 and upper walls of
-square 3, and `-r/2` on pair rows `(2,4)` and `(3,4)`. It satisfies `A^T y = e_side`,
-`y <= 0`, and `b^T y = S`, proving that `S` is the minimum side in this fixed-angle
+An exact dual has weights $-1/2$ on the lower walls of square 2 and upper walls of
+square 3, and `-r/2` on pair rows $(2,4)$ and $(3,4)$. It satisfies `A^T y = e_side`,
+`y <= 0`, and $b^T y = S$, proving that `S` is the minimum side in this fixed-angle
 cell. With side fixed, the active matrix has rank 11 at each endpoint and rank 10 in the
-interior, so the local linear-face nullities are `0, 1, 0`. The interior kernel is
+interior, so the local linear-face nullities are $0, 1, 0$. The interior kernel is
 exactly the declared slide `dx0 = dy0`.
 
 Generation took 0.13 wall-seconds and separate regeneration and replay took 0.11

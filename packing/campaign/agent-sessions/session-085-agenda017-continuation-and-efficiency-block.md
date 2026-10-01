@@ -427,14 +427,14 @@ a measurement one harness cannot supply.
 ## What Actually Ran, Against What Agenda 017 Planned
 
 Agenda 017 opened four lanes after its preflight: Lane A (the certificate generator and
-an `n = 12` test of `H-061`), Lane B (the general rigidity theorem and a Stromquist
+an $n = 12$ test of `H-061`), Lane B (the general rigidity theorem and a Stromquist
 Theorem 3 audit), Lane C (ten verified-upper-bound promotions and `T-009`’s rung), and
 Lane D (the `think-ldq2` W9 handoff, then two gate defects).
 Only Lane A left a trace in this branch’s commit history, and its own scope grew well
-past what was fixed for it: `H-061` fixed `n = 12` at side `19/5`; what got retained was
-an eight-rung ladder to `99/25`, plus a fresh certificate at `n = 11` (`T-018`,
-`381/100`, displacing Stromquist’s 2003 value for the first time since it was stated)
-and another at `n = 17`-`21` (`T-019`/`T-020`). Lane B, Lane C and Lane D do not appear
+past what was fixed for it: `H-061` fixed $n = 12$ at side $19/5$; what got retained was
+an eight-rung ladder to $99/25$, plus a fresh certificate at $n = 11$ (`T-018`,
+$381/100$, displacing Stromquist’s 2003 value for the first time since it was stated)
+and another at $n = 17$-`21` (`T-019`/`T-020`). Lane B, Lane C and Lane D do not appear
 in this branch’s commits; `D-431`, deferred to Lane C’s `BC-165`, is still outstanding,
 and `T-009` remains at `C3`. This is recorded plainly rather than folded into a claim
 that the four-lane plan executed as written -- see `OR-9` on leading with what a branch
@@ -444,18 +444,18 @@ cost, which includes what it did not do.
 
 | Result | Bound | Displaces | Movement |
 | --- | --- | --- | --- |
-| `T-018` | `s(11) >= 381/100 = 3.81` | `2 + 4/sqrt(5) = 3.788854`, Stromquist 2003 | `+0.021146` |
-| `T-017` | `s(12) >= 99/25 = 3.96` | `3.788854`, inherited from `n = 11` | `+0.171146` |
-| `T-019` | `s(17), s(18) >= 459/100 = 4.59` | `22529/5000 = 4.5058`, Massaccesi 2026 | `+0.0842` |
-| `T-020` | `s(19), s(20), s(21) >= 24/5 = 4.80` | `4.5058`; `1 + sqrt(13)`; `1 + sqrt(14)` | `+0.2942`, `+0.194449`, `+0.058343` |
+| `T-018` | `s(11) >= 381/100 = 3.81` | `2 + 4/sqrt(5) = 3.788854`, Stromquist 2003 | $+0.021146$ |
+| `T-017` | `s(12) >= 99/25 = 3.96` | $3.788854$, inherited from $n = 11$ | $+0.171146$ |
+| `T-019` | `s(17), s(18) >= 459/100 = 4.59` | `22529/5000 = 4.5058`, Massaccesi 2026 | $+0.0842$ |
+| `T-020` | `s(19), s(20), s(21) >= 24/5 = 4.80` | $4.5058$; `1 + sqrt(13)`; `1 + sqrt(14)` | $+0.2942$, $+0.194449$, $+0.058343$ |
 
 All four are `V4`/`C4`: each certificate is decided twice from the same frozen bytes, by
 the exact event-cell sweep and by an interval branch-and-bound with directed rounding,
 and the two routes agree on the least covered mass to the digit.
 Seven distinct cases now carry a result from this instrument; Nagamochi’s 2005 closed
 form holds 58 of 65 open cases at `n <= 100`, down from 60. Full detail, including the
-two searches that stopped on cost rather than an answer (`n = 18` at `4.68`, `n = 11` at
-`3.82`), is in
+two searches that stopped on cost rather than an answer ($n = 18$ at $4.68$, $n = 11$ at
+$3.82$), is in
 [the block-close handoff](../../../docs/project/handoff-2026-09-04-block-close.md) and
 in each result’s own `next_rung` in [`results.yaml`](../../frontier/results.yaml).
 
@@ -465,8 +465,8 @@ in each result’s own `next_rung` in [`results.yaml`](../../frontier/results.ya
 directly on the operator’s own direction and recorded as its own commitment rather than
 folded into Agenda 019’s `BC-190`. The exact event-cell sweep that decides `Condition 5`
 at the retention gate now decides in `int64` on the atom weights’ common scale, holding
-reachable cells as spans and running the 181 directions in parallel: `68x` at `n = 17`
-and `139x` at `n = 20` on a loaded box, about `183x` on a quiet one, the identical least
+reachable cells as spans and running the 181 directions in parallel: `68x` at $n = 17$
+and `139x` at $n = 20$ on a loaded box, about `183x` on a quiet one, the identical least
 covered mass every time and the `Fraction` route kept unchanged as the reference.
 No bound, verdict, or certificate moved.
 What this retires is `BC-190`’s premise that the retention gate was the dominant cost;
@@ -477,7 +477,7 @@ run.
 
 `D-430` through `D-443` were filed in this block.
 Thirteen are fixed; `D-431` (T-009’s significance rationale compares its interval
-certificate against a rational certificate on a *different* `n = 29` packing) is
+certificate against a rational certificate on a *different* $n = 29$ packing) is
 outstanding, deferred to Lane C’s `BC-165`, which did not run.
 Three of the fourteen -- `D-439`, `D-442` and `D-443` -- are the same class recurring at
 three different surfaces on the same day: a durable record described a rung, and the
@@ -490,15 +490,15 @@ Full detail for every entry is in [`defects.yaml`](../../defects.yaml).
 ## Where Next
 
 [X-013](../explorations/X-013-where-the-certificate-should-go-next.md) reads the
-attainment ratio three certificates actually landed on (`0.98171`-`0.98270` of their
-binding packing, mean `0.98229`) and recommends `n = 26` next -- a near-tie on predicted
-gain against `n = 51`’s higher raw prize, at about a quarter of its cost.
-But the search side is now the binding cost, not the gate: row generation is `79`-`94`
+attainment ratio three certificates actually landed on ($0.98171$-`0.98270` of their
+binding packing, mean $0.98229$) and recommends $n = 26$ next -- a near-tie on predicted
+gain against $n = 51$’s higher raw prize, at about a quarter of its cost.
+But the search side is now the binding cost, not the gate: row generation is $79$-`94`
 per cent of every round, site density has never been set as a function of container
-side, and an untuned grid cost `8.8x` at `n = 20`’s own side.
+side, and an untuned grid cost `8.8x` at $n = 20$’s own side.
 `BC-191` (`think-ji0r`) prices that before any retarget; `BC-190` (`think-jgeg`) follows
 on the integer sweep’s own baseline; the retarget candidates (`BC-192`/`BC-194`,
-`n = 26` per X-013) wait on both.
+$n = 26$ per X-013) wait on both.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

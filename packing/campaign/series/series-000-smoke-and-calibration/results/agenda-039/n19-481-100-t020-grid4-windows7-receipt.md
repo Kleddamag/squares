@@ -4,13 +4,13 @@ Status: **site set still open, unconverged**. The side stays open.
 No freeze.
 
 Session-141 exp-174: T-020 seed from `certificate-24-5.json` plus four-grid
-`(34, 45, 56, 64)` plus `--seed-windows 7`,
+$(34, 45, 56, 64)$ plus `--seed-windows 7`,
 `(n, L, B, net) = (19, 481/100, 9977/10000, 181 directions)`. Seed sites 3044. The 1200
-s deadline stopped the row loop after 34 LP rounds at `19.111435` (369 still violated).
-It crossed 19 at round 15 (`19.017579`). Closer than leftover auto plus windows 6 at
-this side (`19.132115`).
+s deadline stopped the row loop after 34 LP rounds at $19.111435$ (369 still violated).
+It crossed 19 at round 15 ($19.017579$). Closer than leftover auto plus windows 6 at
+this side ($19.132115$).
 
-Remaining rows can only raise this value, so `19.111435` is not a covering below 19. Do
+Remaining rows can only raise this value, so $19.111435$ is not a covering below 19. Do
 not more-wall this set.
 T-020 stands. T-030 was not offered.
 H-218 stays unconfirmed.
@@ -34,19 +34,19 @@ uv run --frozen --all-extras --group dev python -m devtools.run_fractional_colge
 ```
 
 No freeze file: the 1200 s deadline stopped the row loop after 34 rounds.
-Wall 1285.3 s. The walker then started n=12 `793/200` T-017 auto plus windows 7 as
+Wall 1285.3 s. The walker then started n=12 $793/200$ T-017 auto plus windows 7 as
 exp-175.
 
 ## Covering
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `19.111435` |
+| Restricted optimum | $19.111435$ |
 | Sites / orbits / rows | 13153 / 1724 / 11449 |
 | Seed sites | 3044 |
-| Grids | `(34, 45, 56, 64)` |
+| Grids | $(34, 45, 56, 64)$ |
 | LP rounds | 34 |
-| Crossing | round 15 (`19.017579`) |
+| Crossing | round 15 ($19.017579$) |
 | Wall | 1285.3 s |
 | `least_covered` | 0.966385 |
 | Converged | no (`violated == 369` at stop) |

@@ -61,8 +61,8 @@ owns the reopening conditions; this scheduling decision changes no mathematical 
 scientific cap.
 
 Freeze the terminal state from exp-116: 24,653 exact sites in 3,180 D4 orbits, 11,885
-initial exact placement rows, and the net `t_k=(207107/500000)k/180`, for `k=0,...,180`.
-Here `L=61/16` is the containing square’s side and `B=9977/10000` is the core square’s
+initial exact placement rows, and the net $t_k=(207107/500000)k/180$, for `k=0,...,180`.
+Here $L=61/16$ is the containing square’s side and $B=9977/10000$ is the core square’s
 side.
 D4 invariance means invariance under the containing square’s quarter-turn rotations
 and reflections; a cover assigns mass at least one to every contained closed core square

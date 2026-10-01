@@ -333,7 +333,7 @@ BC-039 fills block 1 because it is independent of BC-036’s outcome.
   was frozen before implementation.
 - **Block 2.** Hard stop at the block boundary.
   If exp-045 has not reached a terminal disposition, terminalize it `stopped` rather
-  than extending. A second typed blocker here is itself a signal about the `n = 5` lane
+  than extending. A second typed blocker here is itself a signal about the $n = 5$ lane
   and should be surfaced, not pushed through.
 - **Block 3.** If fewer than four of BC-035’s and BC-041’s items close, split again
   rather than extend.

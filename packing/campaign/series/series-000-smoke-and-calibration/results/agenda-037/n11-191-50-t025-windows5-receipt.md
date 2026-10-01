@@ -2,11 +2,11 @@
 
 Status: **site set refuted**. The side stays open.
 
-Session-139 probe: the T-025-seeded auto-plus-60 construction at native `191/50`, plus
+Session-139 probe: the T-025-seeded auto-plus-60 construction at native $191/50$, plus
 `--seed-windows 5` (225 ceiling-window lattice sites).
 `(n, L, B, net) = (11, 191/50, 9977/10000, 181 directions)`. Seed sites 809 = 584 T-025
-\+ 225 windows. The same grids without windows converged at `11.020212` on 7249 sites.
-Windows dropped that by 0.0016 to `11.018646` on 7473 sites.
+\+ 225 windows. The same grids without windows converged at $11.020212$ on 7249 sites.
+Windows dropped that by 0.0016 to $11.018646$ on 7473 sites.
 Closest session-139 point-atom construction, still above eleven.
 T-025 is unchanged.
 
@@ -33,12 +33,12 @@ Column generation added one orbit after the row loop and stopped; wall 176.2 s.
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `11.018646` |
-| Rationalised total | `5509353/500000` = `11.018706` |
+| Restricted optimum | $11.018646$ |
+| Rationalised total | $\frac{5509353}{500000}$ = $11.018706$ |
 | Sites / orbits / rows | 7473 / 993 / 7832 |
 | Seed sites | 809 |
 | LP rounds | 35 |
-| Crossing | round 17 (`11.008586`); rounds 6–16 sat at `11.000000` |
+| Crossing | round 17 ($11.008586$); rounds 6–16 sat at $11.000000$ |
 | Wall | 176.2 s |
 | `least_covered` | 1 |
 | Converged | yes (`violated == 0`) |

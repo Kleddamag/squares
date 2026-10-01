@@ -116,9 +116,9 @@ placement and nonnegative weights; it does not require a sweep at any unmeasured
 ## Why This Excludes the Entire Ordinary-Containment Window
 
 Write $B=9977/10000$ and $D=207107/90000000$ for the source core side and largest
-half-gap tangent. T-022’s endpoint is $S_*=L\sqrt{1+D^2}/(B(1+D))$. For a smaller core
-$b$ and dilation $q$ to improve it using ordinary containment, both $qL>S_*$ and
-$qb(1+D)<1$ must hold.
+half-gap tangent. T-022’s endpoint is $S_{\ast}=L\sqrt{1+D^2}/(B(1+D))$. For a smaller
+core $b$ and dilation $q$ to improve it using ordinary containment, both $qL>S_{\ast}$
+and $qb(1+D)<1$ must hold.
 Combining these strict inequalities requires
 
 $$

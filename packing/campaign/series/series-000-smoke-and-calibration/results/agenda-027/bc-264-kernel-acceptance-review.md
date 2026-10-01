@@ -177,7 +177,7 @@ proved, without assuming a particular matrix representation.
 For $L\ge3$, take nine axis-aligned unit squares with centers
 
 $$
-z_{ij}=(L/2+i,L/2+j),\qquad i,j\in\{-1,0,1\}.
+z_{ij}=(L/2+i,L/2+j),\qquad i,j\in\lbrace-1,0,1\rbrace.
 $$
 
 Their coordinates stay at least $1/2$ from the container walls.

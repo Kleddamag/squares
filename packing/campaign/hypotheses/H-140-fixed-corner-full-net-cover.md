@@ -40,11 +40,11 @@ hypothesis:
 
 Exp139 rejected this claim after the source-bound exact reader completed
 all181directions. The unchanged rationalized residual weights attain minimum
-`760979/800000` at direction indices27through32, below the required massone.
+$760979/800000$ at direction indices27through32, below the required massone.
 
 No full-net target minimum was inspected before registration, and the reader did not
 resolve the LP or edit the atom weights.
-The positive minimum gives normalized feasible mass `31219612/3804895`, above seven,
+The positive minimum gives normalized feasible mass $31219612/3804895$, above seven,
 without an optimum-gap or packing claim.
 
 <!-- This document follows common-doc-guidelines.md.

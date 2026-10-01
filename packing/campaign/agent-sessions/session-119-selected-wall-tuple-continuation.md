@@ -97,7 +97,7 @@ its guarded publication window.
 This fresh continuation keeps the tuple, dots, inputs, criteria and process limits
 unchanged. It does not complete exp148’s seed bank.
 
-The selected tuple is `(0,0,0,7)` in BL, BR, TL, TR order.
+The selected tuple is $(0,0,0,7)$ in BL, BR, TL, TR order.
 Acceptance requires exact zero uncovered area at all361 directions.
 The first positive deficit must carry an independently replayed strict escape and
 refutes only this selected H147 cover.

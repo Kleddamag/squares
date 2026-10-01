@@ -406,7 +406,7 @@ Freeze the accepted [exp-113 packet](../exp-113-h-099-trump-support-screen/packe
 retained at `a105f729`, and its
 [experiment scope](../../experiments/exp-113-h-099-trump-support-screen.md).
 The source is `trump11-v1`, with 60 distinct placements, orbit sizes
-`(4, 8, 8, 8, 8, 8, 8, 8)` and per-member weights `(1, 0, 2/5, 1/10, 0, 1/10, 3/10, 0)`,
+$(4, 8, 8, 8, 8, 8, 8, 8)$ and per-member weights $(1, 0, 2/5, 1/10, 0, 1/10, 3/10, 0)$,
 giving total mass $56/5$. Keep all placements, including the zero-weight ones, in the
 source identity. In the [source constructor](../../../../../cases/trump11/packing.py),
 `U_MIN_POLY` defines the half-angle parameter $u=\tan(a/2)$, not the container side
@@ -482,7 +482,7 @@ The next selected slice changes exact arithmetic, not the cap.
 A static review found that each facet recomputes inverses of `4*abs(a_j*a_k+b_j*b_k)`,
 although this value depends only on two canonical line normals.
 A local per-arrangement reciprocal cache reduces those inversions to at most `R*(R+1)/2`
-nonzero normal pairs, where `R` is the number of distinct normals.
+nonzero normal pairs, where $R$ is the number of distinct normals.
 It leaves the exact clearance, probe coordinates, membership tests and strict excess
 witness unchanged. This is an operation-count argument, not a measured source speedup.
 `think-063l` allocates at most 20 author minutes and a separate ten-minute independent

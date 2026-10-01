@@ -163,53 +163,52 @@ net; no search or replay is added by this correction.
 
 | Boundary | Exact tangent |
 | --- | --- |
-| Upper cell 24 | `1522236450000/13457106690551` |
-| Upper cell 29 | `36657939000000/268756094025979` |
-| Upper cell 39 | `12271089750000/66942386977163` |
-| Lower cell 117 | `120639827500000/208829222337727` |
-| Lower cell 149 | `1383992527500000/1788529185007663` |
-| Upper cell 169 | `631883457000000/686767521953023` |
-| Lower cell 171 | `70623487000000/76145461047973` |
-| Lower cell 175 | `43368205800000/45292658181853` |
+| Upper cell 24 | $\frac{1522236450000}{13457106690551}$ |
+| Upper cell 29 | $\frac{36657939000000}{268756094025979}$ |
+| Upper cell 39 | $\frac{12271089750000}{66942386977163}$ |
+| Lower cell 117 | $\frac{120639827500000}{208829222337727}$ |
+| Lower cell 149 | $\frac{1383992527500000}{1788529185007663}$ |
+| Upper cell 169 | $\frac{631883457000000}{686767521953023}$ |
+| Lower cell 171 | $\frac{70623487000000}{76145461047973}$ |
+| Lower cell 175 | $\frac{43368205800000}{45292658181853}$ |
 
-Cells 0–39 end at approximately `10.3874656704°`, so the exact result does not extend to
-`10.39°`. Cells 149–169 end at approximately `42.6166465824°`, before the upper end of
-`40.19° ± 2.44°`. The lower boundary of cell 117 is approximately `30.0148587980°` and
-is strictly above `30°`; the exact squared comparison is recorded in
-[H-131](../../../hypotheses/H-131-near-axis-counts-at-q.md).
-These runs therefore do not establish that some square has tilt below `30°`.
+Cells 0–39 end at approximately $10.3874656704^\circ$, so the exact result does not
+extend to $10.39^\circ$. Cells 149–169 end at approximately $42.6166465824^\circ$,
+before the upper end of $40.19^\circ \pm 2.44^\circ$. The lower boundary of cell 117 is
+approximately $30.0148587980^\circ$ and is strictly above $30^\circ$; the exact squared
+comparison is recorded in [H-131](../../../hypotheses/H-131-near-axis-counts-at-q.md).
+These runs therefore do not establish that some square has tilt below $30^\circ$.
 
 ## What was tested, and what would have refuted it
 
-For a class `Θ` — a union of half-gap cells of the net — and a claimed bound “at most
-`N`”, the class program decides the bound when the class measure has total mass `M` and
-every direction of `Θ` carries a covered core of mass at least one (Condition 5′). Each
-square of a packing contains its closed `B`-core at the net direction whose cell holds
-its angle, and those cores are pairwise disjoint, so at most `⌊M⌋` of them can have an
-angle in `Θ`. That is Theorem 1.5’s counting step, and the nine-point control is what
-keeps it honest.
+For a class $\Theta$ — a union of half-gap cells of the net — and a claimed bound “at
+most `N`”, the class program decides the bound when the class measure has total mass $M$
+and every direction of $\Theta$ carries a covered core of mass at least one (Condition
+5′). Each square of a packing contains its closed $B$-core at the net direction whose
+cell holds its angle, and those cores are pairwise disjoint, so at most
+$\lfloor M\rfloor$ of them can have an angle in $\Theta$. That is Theorem 1.5’s counting
+step, and the nine-point control is what keeps it honest.
 
 The falsifiers were fixed before the runs.
 **For a count class: the exact sweep reports a core of mass below one at some direction
-of `Θ`, or the exact mass reaches `N + 1`, or `N + 1` pairwise disjoint `B`-cores at
-directions in `Θ` fit in `[0, 96/25]²`. For the nine-point control: an admissible
-`B`-core at a direction of the leading eighteen cells that misses all nine atoms.** None
-occurred on any class H-131 names.
+of $\Theta$, or the exact mass reaches $N + 1$, or $N + 1$ pairwise disjoint $B$-cores
+at directions in $\Theta$ fit in $[0, 96/25]^2$. For the nine-point control: an
+admissible $B$-core at a direction of the leading eighteen cells that misses all nine
+atoms.** None occurred on any class H-131 names.
 
 ## Inputs, fixed for every row
 
-Side `q = 96/25`, and `3877084/10⁶ ≥ U` for the three `U` rows.
-Shrink `B = 9977/10000`. The retained 181-direction net from
-`cases/n11_fractional_certificate/certificate.json`: half-tangent limit `207107/500000`,
-180 equal steps, cell width about `0.264°` at the axis end and `0.225°` at the diagonal
-end.
-Site set `build_site_grid(side, 79, 1/10)` — the `79 × 79` product grid inset `1/10`
-from the walls, folded into `D4` orbits, `6241` sites in `820` orbits.
-Composition `(11, 0)`; `rows_per_direction = 3`; the row loop capped at a hundred
+Side $q = 96/25$, and $3877084/10^6 \ge U$ for the three $U$ rows.
+Shrink $B = 9977/10000$. The retained 181-direction net from
+`cases/n11_fractional_certificate/certificate.json`: half-tangent limit $207107/500000$,
+180 equal steps, cell width about $0.264^\circ$ at the axis end and $0.225^\circ$ at the
+diagonal end. Site set `build_site_grid(side, 79, 1/10)` — the $79 \times 79$ product
+grid inset $1/10$ from the walls, folded into `D4` orbits, $6241$ sites in $820$ orbits.
+Composition $(11, 0)$; `rows_per_direction = 3`; the row loop capped at a hundred
 rounds, with the point reached decided regardless of convergence.
-Rationalisation at scale `4096` with the standard bump `1 + 10⁻⁶`. Exact thresholds
-`(1, 0)`. Folded ranges are the closed union of the cells’ exact-tangent bounds
-(`DirectionClasses.cell_bounds`). Legal touching is retained: a square’s `B`-core lies
+Rationalisation at scale $4096$ with the standard bump $1 + 10^{-6}$. Exact thresholds
+$(1, 0)$. Folded ranges are the closed union of the cells’ exact-tangent bounds
+(`DirectionClasses.cell_bounds`). Legal touching is retained: a square’s $B$-core lies
 in its open interior (Condition 4), so the cores are pairwise disjoint even where
 squares touch.
 
@@ -217,45 +216,49 @@ squares touch.
 
 Each row is one `solve_class_program` search followed by `decide_class_program` on the
 rationalised point reached; “least core” is the exact least covered mass over every
-direction of the class, and the count bound is `⌊M⌋` whenever Condition 5′ holds.
+direction of the class, and the count bound is $\lfloor M\rfloor$ whenever Condition 5′
+holds.
 
-| class (cells) | folded range, degree endpoints approximate | side | rounds | exact `M` | least core | count | planning lane | wall |
+| class (cells) | folded range, degree endpoints approximate | side | rounds | exact $M$ | least core | count | planning lane | wall |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 0–24 | `[0°, 6.4537°]` | `96/25` | 9, converged | `4611/512 = 9.00586` | `2049/2048` | **≤ 9** | `9.00586` | 3 s |
-| 0–39 | `[0°, 10.3875°]` | `96/25` | 14, converged | `10765/1024 = 10.51270` | `1025/1024` | **≤ 10** | `10.51270` | 6 s |
-| 171–180 | `[42.8453°, 45°]` | `96/25` | 100, cap | `9989/1024 = 9.75488` | `2053/2048` | **≤ 9** | `9.75488` | 67 s |
-| 149–169 | `[37.7333°, 42.6166°]` | `96/25` | 100, cap | `41529/4096 = 10.13892` | `1037/1024` | **≤ 10** | `10.13892` | 596 s |
-| 117–180 | `[30.0149°, 45°]` | `96/25` | 60, converged | `42589/4096 = 10.39771` | `4147/4096` | **≤ 10** | `10.39771` | 1149 s |
-| 0–5 | `[0°, 1.4503°]` | `96/25` | 12, converged | `2305/256 = 9.00391` | `4097/4096` | **≤ 9** | `9.00391` | 1 s |
-| 175–180 | `[43.7565°, 45°]` | `96/25` | 100, cap | `9925/1024 = 9.69238` | `1021/1024` at 175 | undecided, 5′ fails | float only | 24 s |
-| 0–5 ∪ 175–180 | `[0°, 1.4503°] ∪ [43.7565°, 45°]` | `96/25` | 29, converged | `10959/1024 = 10.70215` | `1025/1024` | **refutes `(11, 0)`** | `10.70215` | 5 s |
-| 0–24 | `[0°, 6.4537°]` | `3877084/10⁶` | 17, converged | `10065/1024 = 9.82910` | `4101/4096` | **≤ 9** | `9.82910` | 6 s |
-| 0–29 | `[0°, 7.7671°]` | `3877084/10⁶` | 7, converged | `10243/1024 = 10.00293` | `4097/4096` | **≤ 10** | `10.00293` | 4 s |
-| 175–180 | `[43.7565°, 45°]` | `3877084/10⁶` | 63, converged | `5201/512 = 10.15820` | `2051/2048` | **≤ 10** | `10.15820` | 9 s |
+| 0–24 | $[0^\circ, 6.4537^\circ]$ | $\frac{96}{25}$ | 9, converged | $\frac{4611}{512} = 9.00586$ | $\frac{2049}{2048}$ | **≤ 9** | $9.00586$ | 3 s |
+| 0–39 | $[0^\circ, 10.3875^\circ]$ | $\frac{96}{25}$ | 14, converged | $\frac{10765}{1024} = 10.51270$ | $\frac{1025}{1024}$ | **≤ 10** | $10.51270$ | 6 s |
+| 171–180 | $[42.8453^\circ, 45^\circ]$ | $\frac{96}{25}$ | 100, cap | $\frac{9989}{1024} = 9.75488$ | $\frac{2053}{2048}$ | **≤ 9** | $9.75488$ | 67 s |
+| 149–169 | $[37.7333^\circ, 42.6166^\circ]$ | $\frac{96}{25}$ | 100, cap | $\frac{41529}{4096} = 10.13892$ | $\frac{1037}{1024}$ | **≤ 10** | $10.13892$ | 596 s |
+| 117–180 | $[30.0149^\circ, 45^\circ]$ | $\frac{96}{25}$ | 60, converged | $\frac{42589}{4096} = 10.39771$ | $\frac{4147}{4096}$ | **≤ 10** | $10.39771$ | 1149 s |
+| 0–5 | $[0^\circ, 1.4503^\circ]$ | $\frac{96}{25}$ | 12, converged | $\frac{2305}{256} = 9.00391$ | $\frac{4097}{4096}$ | **≤ 9** | $9.00391$ | 1 s |
+| 175–180 | $[43.7565^\circ, 45^\circ]$ | $\frac{96}{25}$ | 100, cap | $\frac{9925}{1024} = 9.69238$ | `1021/1024` at 175 | undecided, 5′ fails | float only | 24 s |
+| 0–5 ∪ 175–180 | $[0^\circ, 1.4503^\circ] \cup [43.7565^\circ, 45^\circ]$ | $\frac{96}{25}$ | 29, converged | $\frac{10959}{1024} = 10.70215$ | $\frac{1025}{1024}$ | **refutes $(11, 0)$** | $10.70215$ | 5 s |
+| 0–24 | $[0^\circ, 6.4537^\circ]$ | $3877084/10^6$ | 17, converged | $\frac{10065}{1024} = 9.82910$ | $\frac{4101}{4096}$ | **≤ 9** | $9.82910$ | 6 s |
+| 0–29 | $[0^\circ, 7.7671^\circ]$ | $3877084/10^6$ | 7, converged | $\frac{10243}{1024} = 10.00293$ | $\frac{4097}{4096}$ | **≤ 10** | $10.00293$ | 4 s |
+| 175–180 | $[43.7565^\circ, 45^\circ]$ | $3877084/10^6$ | 63, converged | $\frac{5201}{512} = 10.15820$ | $\frac{2051}{2048}$ | **≤ 10** | $10.15820$ | 9 s |
 
 Every exact mass reproduces the planning lane’s to the fraction, on the same inputs.
 H-131’s eight cell counts are decided under this record with the domains in the table.
-In particular, at `96/25` at most ten squares have folded tilt in cells 117–180, so some
-square’s folded angle has tangent below `120639827500000/208829222337727`. The three
-rows at `3877084/10⁶ ≥ U` imply their corresponding cell counts at `U` by containment.
+In particular, at $96/25$ at most ten squares have folded tilt in cells 117–180, so some
+square’s folded angle has tangent below $120639827500000/208829222337727$. The three
+rows at $3877084/10^6 \ge U$ imply their corresponding cell counts at $U$ by
+containment.
 
 ## The one row that stays undecided, and why it costs nothing
 
-The trailing six cells alone at `96/25` fail Condition 5′: the least covered core is
-`1021/1024` at direction 175, below one, so the class program declines to give a bound
+The trailing six cells alone at $96/25$ fail Condition 5′: the least covered core is
+$1021/1024$ at direction 175, below one, so the class program declines to give a bound
 there. That row was float-only in the planning lane too, and it is not one of H-131’s
-claims at `96/25`: the count within `2.1547°` of `45°` comes from the decided class
-`171–180`, and `[43.7565°, 45°] ⊂ [42.8453°, 45°]`, so at most nine holds on the smaller
-band as well. At `U` the same six cells do decide, least core `2051/2048`, which is the
-row H-131’s `U` clause needs.
+claims at $96/25$: the count within $2.1547^\circ$ of $45^\circ$ comes from the decided
+class $171\text{–}180$, and
+$[43.7565^\circ, 45^\circ] \subset [42.8453^\circ, 45^\circ]$, so at most nine holds on
+the smaller band as well.
+At $U$ the same six cells do decide, least core $2051/2048$, which is the row H-131’s
+$U$ clause needs.
 
 ## The controls
 
 `nine_replay.py` replayed Theorem 1.5’s nine-point control — the pushed set at
-`{1 − δ, L/2, L − 1 + δ}²` through `class_minima` — at both sides for
-`δ ∈ {0, 1/200, 1/100}`, together with an `L/4` grid control, and no declared falsifier
-occurred: nothing produced an admissible `B`-core at a direction of the leading eighteen
-cells that missed all nine atoms.
+$\lbrace1 - \delta, L/2, L - 1 + \delta\rbrace^2$ through `class_minima` — at both sides
+for $\delta \in \lbrace0, 1/200, 1/100\rbrace$, together with an $L/4$ grid control, and
+no declared falsifier occurred: nothing produced an admissible $B$-core at a direction
+of the leading eighteen cells that missed all nine atoms.
 The per-run cell counts are in the lane’s queue log in the session scratchpad, not in
 the result section, and are not restated here.
 Beyond that, every row is its own control, because each carries the planning lane’s
@@ -270,13 +273,13 @@ exact mass and had to reproduce it as a fraction rather than as a rounded figure
   What transfers unconditionally is the direction of the inequality: a decided mass is
   an upper bound on the count, so refining the site set can only lower it.
 - **The floors are sharp in kind, not in width.** Nine squares at any common tilt up to
-  `30°` fit in the container, so no covering method gets a near-axis count below nine;
-  the only room left in these statements is the width of the band, not the count.
+  $30^\circ$ fit in the container, so no covering method gets a near-axis count below
+  nine; the only room left in these statements is the width of the band, not the count.
 - **Wall times are not comparable.** The measurements ran at load average eight on four
-  cores with one worker: the `[30°, 45°]` row took 1 149 s here against 700 s in the
-  planning lane. The declared `1870` seconds is the sum of the table’s per-row wall
-  times; the two controls were not separately timed in the result section and are not in
-  it.
+  cores with one worker: the $[30^\circ, 45^\circ]$ row took 1 149 s here against 700 s
+  in the planning lane.
+  The declared $1870$ seconds is the sum of the table’s per-row wall times; the two
+  controls were not separately timed in the result section and are not in it.
 - **Nothing about a packing bound.** These are constraints on where the angles of a
   packing of eleven can be.
   No side is established and no result is written to the frontier register.

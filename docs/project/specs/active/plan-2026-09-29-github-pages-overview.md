@@ -43,7 +43,7 @@ the one in `packing/frontier/n-NNN.md`.
 ## Goals
 
 - A top-level overview page at the site root, simpler than `README.md` but covering the
-  same ground: the problem, the headline brackets (`s(11)`, `s(17)`, the new exact
+  same ground: the problem, the headline brackets ($s(11)$, $s(17)$, the new exact
   values), this project’s results, results by others, the survey, and the research
   process.
 - Links from the overview to the explainer, the tutorial (`TUTORIAL.md`) and the
@@ -54,7 +54,7 @@ the one in `packing/frontier/n-NNN.md`.
   tokens, reading faces, math, tables, TOC rail, light and dark themes and print rules),
   extended only where a page needs something the system lacks, such as sortable and
   filterable tables.
-- A results table with full details: identifier, `n`, bound, credit, `V`, `C` and `S`
+- A results table with full details: identifier, $n$, bound, credit, `V`, `C` and `S`
   rungs, novelty, date, and links to the case record, the register entry, the evidence,
   the retained source copy and the review, where each exists.
 - Verification statistics: how many results stand at each `V` and `C` rung, how many are
@@ -64,7 +64,7 @@ the one in `packing/frontier/n-NNN.md`.
   they arrived in, generated from the register and the release record rather than
   written by hand.
 - A frontier atlas page, separate from the overview: one table with a row for every
-  `n = 1…324`, each value rendered cleanly from the case’s `SquarePackingCase/v2`
+  $n = 1\ldots324$, each value rendered cleanly from the case’s `SquarePackingCase/v2`
   softschema record in `packing/frontier/n-NNN.md`.
 - Mathematics written as LaTeX math (`$…$` and `$$…$$`) across the repository’s Markdown
   wherever it is currently set as monospace code, and rendered wherever the documents
@@ -140,8 +140,8 @@ The recent merges the page has to reflect:
   original credit and this repository’s verification tracked apart.
 - PR #242: every results listing and the survey refreshed for all sources, grouped by
   lineage.
-- PR #241: Evan Daniel’s `s(21) = 5` and `s(45) = 7`, Guzhou0806’s R068 at
-  `s(17) > 116511/25000`, and wand125’s rectangle bounds to `n = 95`.
+- PR #241: Evan Daniel’s $s(21) = 5$ and $s(45) = 7$, Guzhou0806’s R068 at
+  $s(17) > 116511/25000$, and wand125’s rectangle bounds to $n = 95$.
 - PRs #239 and #240: the v0.4.2 edition, the starred recent results on the atlas, and
   the ascent films.
 
@@ -189,14 +189,14 @@ As built (amended 2026-09-30):
 | Path | Page | Nav tab |
 | --- | --- | --- |
 | `/` | the overview (new) | Overview |
-| `/frontier.html` | the frontier atlas, `n = 1…324` (new) | Frontier |
+| `/frontier.html` | the frontier atlas, $n = 1\ldots324$ (new) | Frontier |
 | `/all-results.html` | every register entry, the results table (new) | Results |
-| `/cases.html#n-N` | one case record per tracked `n` (new) | none; opened from the atlas grid and the frontier atlas |
+| `/cases.html#n-N` | one case record per tracked $n$ (new) | none; opened from the atlas grid and the frontier atlas |
 | `/papers.html` | the papers page: one large card each for the optimality paper, the explainer and the tutorial, each a link that goes to its paper in the same tab (new) | Papers |
 | `/n11-optimality/t-060-explainer.html` | the n = 11 optimality paper, from its own renderer and Pages job, with its Markdown and PDF beside it | Papers |
 | `/explainer.html` | the n = 11 explainer (moved from `/`) | Papers |
 | `/tutorial.html` | `TUTORIAL.md`, rendered (new) | Papers |
-| `/visualize.html` | the `n = 1…324` film at full width, with Film and Workbench tabs (new) | Visualize |
+| `/visualize.html` | the $n = 1\ldots324$ film at full width, with Film and Workbench tabs (new) | Visualize |
 | `/workbench/` | the workbench, now carrying the site nav and the Workbench tab | Visualize |
 | `/readme.html`, `/synopsis.html`, `/results.html`, `/status.html`, `/epistemics.html`, `/conventions.html`, `/development.html`, `/defects.html` | the repository documents, rendered for the documentation cards’ popovers | none |
 | `/result/t-nnn.html` | one result’s overview, a fragment its row’s popover fetches; not a page | none |
@@ -247,13 +247,13 @@ Sections, top to bottom:
    (`PUBLICATION_EDITION`), and links to Overview, Frontier, Explainer, Tutorial,
    Synopsis, Workbench and the GitHub repository.
    The current page is marked.
-2. **The problem.** Two or three sentences defining `s(n)`, and the central bracket
-   `31/8 < s(11) ≤ 3.8770835…` with its gap, read from `n-011.md`.
+2. **The problem.** Two or three sentences defining $s(n)$, and the central bracket
+   $31/8 < s(11) \le 3.8770835\ldots$ with its gap, read from `n-011.md`.
 3. **Headline results.** Cards for the `S5` results (six at the baseline) and the new
    exact values (cases whose `status` is now `proved` by a recent result), each with its
    bound, its credit, its `V`/`C` rungs, and a link into the table.
 4. **The atlas.** The `known-best-1-100` figure (already served beside the page), with
-   links to the PDF, the `1…324` poster and the two ascent films on the release.
+   links to the PDF, the $1\ldots324$ poster and the two ascent films on the release.
 5. **Results table.** Described [below](#the-results-table).
 6. **Verification at a glance.** The statistics in the goals, as a small set of counts
    and one stacked bar of `C` rungs by source, drawn as inline SVG at render time.
@@ -284,9 +284,9 @@ As built (amended 2026-09-30), after the owner’s preview review, the page runs
    a row per level, and in each cell the rung’s chip and a two-line description
    (`think-mvr0`). It carries no tally of results and no rule between its rows
    (`think-m2hd`).
-5. **The Atlas.** A grid of every known-best packing, `n = 1…100` expanding to 324, each
-   opening a popover with the film’s panel for that `n` and a link to its case record;
-   then three cards: the two posters, each opening its PDF, and Visualize.
+5. **The Atlas.** A grid of every known-best packing, $n = 1\ldots100$ expanding to 324,
+   each opening a popover with the film’s panel for that $n$ and a link to its case
+   record; then three cards: the two posters, each opening its PDF, and Visualize.
 6. **The Survey**, **Other Square Packing Projects** and **Squares Project
    Documentation**, the last a card per repository document whose popover renders it and
    links its copy on GitHub.
@@ -314,13 +314,13 @@ shared `grouped_results()`. Amended 2026-09-30: the table is its own page,
 | Column | Source |
 | --- | --- |
 | ID | `id` |
-| `n` | `scope.n_values`, compressed to ranges |
+| $n$ | `scope.n_values`, compressed to ranges |
 | Result | `headline`, else `significance.headline`; the full `claim` in an expandable row |
 | Credit | “This project”, or `attribution.source_keys` resolved through `resources/bibliography.yaml` (`credit`, else `authors`), as `render_results` does |
 | `V` / `C` / `S` | `verification`, `confirmation`, `significance.score`, with the rung definitions from `epistemics.md` as tooltips |
 | Novelty | `novelty` |
 | Registered | `registered`; `attribution.published` alongside for others |
-| Records | the case file (or the frontier atlas filtered to the scope, for ranges such as `18–95`), each `evidence` entry at its line in `evidence.yaml`, the entry’s line in `results.yaml`, `review_artifact` where set, and the retained source copy through the evidence entry’s `certificate` or `proof.source` path |
+| Records | the case file (or the frontier atlas filtered to the scope, for ranges such as $18\text{–}95$), each `evidence` entry at its line in `evidence.yaml`, the entry’s line in `results.yaml`, `review_artifact` where set, and the retained source copy through the evidence entry’s `certificate` or `proof.source` path |
 
 The expanded row adds `composition`, `next_rung`, `artifacts` and `controls`, each
 linked. Every repository link names `main` (`devtools/repo_links.py`); the deployed-site
@@ -329,7 +329,7 @@ Amended 2026-09-30: build-commit permalinks 404ed once a squash merge left the c
 no branch.
 
 Behaviour: the table works with JavaScript off (all rows present, `<details>` for
-expansion). A small script adds sorting by column and filters by source, `n` and `C`
+expansion). A small script adds sorting by column and filters by source, $n$ and `C`
 rung. It lives in `packing/devtools/overview/table.js` with JSDoc types, its own
 `tsconfig.overview.json`, and Biome and `tsc` coverage, the same arrangement as the
 explainer’s scripts.
@@ -339,8 +339,8 @@ bounds rather than repeating them.
 
 ### The Frontier Atlas Page
 
-A separate page, `/frontier.html`, with one row for every case `n = 1…324`. Each row is
-rendered from the case’s softschema record, the `packing:` envelope of
+A separate page, `/frontier.html`, with one row for every case $n = 1\ldots324$. Each
+row is rendered from the case’s softschema record, the `packing:` envelope of
 `packing/frontier/n-NNN.md` under the enforced `packing.squares:SquarePackingCase/v2`
 contract, loaded and validated the way `validate.py` and
 `devtools.render_research_tables.load_cases` already load it.
@@ -348,7 +348,7 @@ No value on the page is typed by hand or read from `STATUS.md`.
 
 | Column | Source in the case record |
 | --- | --- |
-| `n` and thumbnail | `packing.n`; the drawing `atlas/known-best/rendering/n-NNN.svg`, inlined |
+| $n$ and thumbnail | `packing.n`; the drawing `atlas/known-best/rendering/n-NNN.svg`, inlined |
 | Status | `status` (and `reported_status` where they differ) |
 | Best known packing | `reported_upper_bound`: `value`, `exact_form`, `found_by`, `found_year`, `construction_method`, `catalogue_rigid` |
 | Verified upper | `verified_upper_bound`: `exact_form`, else `value` |
@@ -359,8 +359,8 @@ No value on the page is typed by hand or read from `STATUS.md`.
 | Records | the case file, and each `evidence` id on the bounds, linked |
 
 **Rendering values cleanly.** Exact forms are shown as mathematics, not as ASCII: `31/8`
-as a fraction, `2 + (1/2)√2` with a radical, a `root(P, x)` form as its decimal with the
-minimal polynomial (`minimal_polynomial`) in the expanded row.
+as a fraction, $2 + (1/2)\sqrt{2}$ with a radical, a `root(P, x)` form as its decimal
+with the minimal polynomial (`minimal_polynomial`) in the expanded row.
 The formatting reuses `render_research_tables.pretty` and `compact_bound` where they
 already do this, and extends them in one place rather than forking them.
 A reported value that agrees with the verified one at declared precision is shown once,
@@ -369,7 +369,7 @@ applies.
 
 **Behaviour.** The full table is in the HTML, so it reads with JavaScript off.
 The same script as the results table adds sorting and filters (status, open only, recent
-only, a range of `n`). The thumbnails are small inline SVGs; the page is checked against
+only, a range of $n$). The thumbnails are small inline SVGs; the page is checked against
 a size ceiling so 324 drawings do not make it slow to load.
 
 **Tests.** Every case file is a row and every row is a case file; each rendered value
@@ -582,8 +582,8 @@ Added during the owner’s review, all built on the branch:
 - [x] Results page `all-results.html` with a Results nav tab (`think-x8ev`)
 - [x] Case records at `cases.html#n-N`, opened from the atlas grid and the frontier
   atlas (`think-7vjh`)
-- [x] `visualize.html`: the `n = 1…324` film at full width, with Film and Workbench tabs
-  (`think-88zu`)
+- [x] `visualize.html`: the $n = 1\ldots324$ film at full width, with Film and Workbench
+  tabs (`think-88zu`)
 - [x] Recent Results: every result since 1 August 2026 in one table, filtered by default
   to S3 and up (`think-kjd1`, `think-5oih`)
 - [x] Homepage atlas grid of every known-best packing, with the atlas popover
@@ -635,11 +635,11 @@ Measured at the baseline: 86 math-like code spans in `README.md`, 145 in `SYNOPS
 28 in `TUTORIAL.md`, and about 1,500 tracked Markdown files outside the archive.
 
 **What converts and what does not.** A code span converts when its content is a
-mathematical expression: a bound or equation in `s(n)`, a number or fraction standing as
-a value, a formula (`2 + 4/√5`, `k² − 4`), or a variable (`n`, `k`). It stays code when
-it is an identifier or literal text: result and evidence ids (`T-018`, `E-…`), rung
-labels (`V4`, `C3`, `S5`), file paths, commands, field names, commit hashes, version
-tags, and anything inside a fenced block.
+mathematical expression: a bound or equation in $s(n)$, a number or fraction standing as
+a value, a formula ($2 + 4/\sqrt{5}$, $k^2 - 4$), or a variable ($n$, $k$). It stays
+code when it is an identifier or literal text: result and evidence ids (`T-018`, `E-…`),
+rung labels (`V4`, `C3`, `S5`), file paths, commands, field names, commit hashes,
+version tags, and anything inside a fenced block.
 Conversion is to idiomatic LaTeX: `s(11) \ge \frac{31}{8}` or `31/8` as the context
 reads best, `\sqrt{2}`, `k^2 - 4`, `\ldots` for elided digits.
 

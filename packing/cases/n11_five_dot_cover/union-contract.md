@@ -8,8 +8,8 @@ rational input patches and dots with a different geometric computation.
 ## The Set the Checker Must Cover
 
 Fix one proper rational rotation with orthonormal axes $u,v$. Let
-$S=\{au+bv:|a|,|b|\le B/2\}$ be the closed, centred square of side $B$. For $u=(c,s)$
-and $v=(-s,c)$, put
+$S=\lbrace au+bv:|a|,|b|\le B/2\rbrace$ be the closed, centred square of side $B$. For
+$u=(c,s)$ and $v=(-s,c)$, put
 
 $$e=\frac B2(|c|+|s|),\qquad K=[e,q-e]^2.$$
 
@@ -40,9 +40,9 @@ It must therefore contain a dot.
 Put $C_i=K\cap F_i$. Inclusion-exclusion gives
 
 $$
-\operatorname{area}\!\left(\bigcup_{i=1}^9 C_i\right)
-=\sum_{\varnothing\ne I\subseteq\{1,\ldots,9\}}
-(-1)^{|I|+1}\operatorname{area}\!\left(\bigcap_{i\in I}C_i\right).
+\operatorname{area}\negthinspace\left(\bigcup_{i=1}^9 C_i\right)
+=\sum_{\varnothing\ne I\subseteq\lbrace1,\ldots,9\rbrace}
+(-1)^{|I|+1}\operatorname{area}\negthinspace\left(\bigcap_{i\in I}C_i\right).
 $$
 
 There are at most $2^9-1=511$ terms.

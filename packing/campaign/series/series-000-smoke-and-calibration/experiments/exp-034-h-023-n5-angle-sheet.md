@@ -63,7 +63,7 @@ experiment:
 ---
 # exp-034 — an exact n = 5 angle-and-slide sheet
 
-Write `r = sqrt(2)`, `S = 1 + 5r/4`, and `t = tan(theta_0/2)` for the angle of the
+Write `r = sqrt(2)`, $S = 1 + 5r/4$, and `t = tan(theta_0/2)` for the angle of the
 moving square in exp-033. This round accepts only if exact arithmetic proves that every
 parameter pair
 
@@ -71,14 +71,14 @@ parameter pair
 
 `e(t) <= u <= 3r/2 - 2 - e(t)`,
 
-with `e(t) = |t|(1 - |t|)/(1 + t^2)`, gives a valid packing at side `S` when square 0
-has centre `(1/2 + u, 5/2 - r/4 + u)` and angle `2 atan(t)`, while the other four
+with $e(t) = |t|(1 - |t|)/(1 + t^{2})$, gives a valid packing at side `S` when square 0
+has centre $(1/2 + u, 5/2 - r/4 + u)$ and angle `2 atan(t)`, while the other four
 squares remain fixed.
 
 The checker must verify the universal containment and separating-axis inequalities, not
 infer them from samples.
 Four exact boundary fixtures, covering both angle signs and both slide endpoints at
-`|t| = 1/100`, must also pass the independent exact packing verifier.
+$|t| = 1/100$, must also pass the independent exact packing verifier.
 The exp-033 LP dual may certify optimality only if its support excludes the moving
 square and replays unchanged.
 Excessive angle, an unshrunk endpoint, a signed rather than absolute support correction,
@@ -94,7 +94,7 @@ mutations fail.
 This proves a two-dimensional sheet of optima within the declared orientation-indexed
 separating cells.
 It does not prove that this sheet is a whole stationary component, that
-every point attracts the quench, or that the `n = 5` census is complete.
+every point attracts the quench, or that the $n = 5$ census is complete.
 
 [`exp-034-h-023-n5-angle-sheet.json`](../results/exp-034-h-023-n5-angle-sheet.json)
 retains the universal certificate, four exact fixtures, dual, determination scope, and

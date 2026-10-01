@@ -764,7 +764,7 @@ is verified.
 ## Clocks and Publication
 
 Exp-116 launched once at `2026-09-07T00:46:18Z`; the retained execution handle is
-`16679`. Its source worktree is `/private/tmp/squares-session090-scalar.rw72vS` at
+$16679$. Its source worktree is `/private/tmp/squares-session090-scalar.rw72vS` at
 `4d305597`. Stdout is `/private/tmp/squares-session090-exp116.stdout.log`; stderr and
 the outer process timer are `/private/tmp/squares-session090-exp116.stderr.log`. The
 four scientific output paths are frozen in the experiment.
@@ -879,7 +879,7 @@ controls precede any new source measurement.
 The previous timeout stays in its original record.
 There is no cap increase or target authorization in this change.
 
-In parallel, H-106 registers the unchanged ten-point set at side `1939/500` throughout
+In parallel, H-106 registers the unchanged ten-point set at side $1939/500$ throughout
 the full near-axis neighborhood.
 The author and source-distinct reader use complete closed rational outer angle slabs and
 a fixed center grid, without target construction in their toy controls.
@@ -1070,11 +1070,11 @@ This amendment does not extend Session 090 or change any completed result.
 Do not restart exp-116 or hide support changes inside a future fixed-site test.
 
 If the P12 candidate is rejected, the next positive-proof priority is near-45 P10
-localization. Fix `q=1939/500` and `theta in [pi/4-pi/720,pi/4+pi/720]`. Let
+localization. Fix $q=1939/500$ and `theta in [pi/4-pi/720,pi/4+pi/720]`. Let
 `h=(abs(cos(theta))+abs(sin(theta)))/2` and `D_theta=[h,q-h]^2`. The four
 container-midline reflections of the canonical region have union
 `[1,q-1]x([0,1] union [q-1,q])`; their complement is D_theta intersected with the union
-of the three strips `x<1`, `x>q-1` and `1<y<q-1`. Those boundaries are strict.
+of the three strips $x<1$, $x>q-1$ and $1< y< q-1$. Those boundaries are strict.
 Covering the closures would be a stronger sufficient test.
 Source-free mesh design and independent coverage review remain unbuilt.
 Complete near-45 P12 coverage follows in priority, not by automatic allocation.

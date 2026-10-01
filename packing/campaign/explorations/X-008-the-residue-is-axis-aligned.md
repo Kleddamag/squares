@@ -56,15 +56,15 @@ population at all.
 Two thirds of the corpus is a row-major subset of an integer grid with no tilt anywhere
 in it.
 It contributes exactly one component per record — a grid subset is connected — and
-that component is a rectangle only when `n` factors conveniently.
+that component is a rectangle only when $n$ factors conveniently.
 For the other 44 it is the `other-polyomino` shape the grammar does not express.
 
 **So the largest single part of the residue is trivial geometry.** That is worth saying
 plainly because the shape of the word “residue” invites the opposite reading: something
 exotic left over after the easy cases are handled.
-Here it is `n = 7`, an integer grid with two squares missing.
+Here it is $n = 7$, an integer grid with two squares missing.
 
-The third stratum is `n = 68` and `n = 69`, whose witness geometry the
+The third stratum is $n = 68$ and $n = 69$, whose witness geometry the
 translation-escape screen also excludes.
 Every one of their 137 squares is a singleton, and 58 of those singletons are tilted —
 so this stratum is not unstructured *because* it is a grid, it is unstructured because
@@ -74,7 +74,7 @@ nothing in it lines up with anything else.
 
 This is the finding, and it is the reverse of what the categories suggest.
 
-**Every `other-polyomino` component in the corpus has angle exactly `0`.** One distinct
+**Every `other-polyomino` component in the corpus has angle exactly $0$.** One distinct
 angle value across all 109 of them.
 So every tilted component the repository holds — 295 of them, across 36 records — is a
 singleton, a bar, an L or a rectangle, and all four of those the grammar expresses.
@@ -105,10 +105,10 @@ two.
 
 The seating computation is checked against the one packing whose contacts are known
 exactly. [`X-007`](X-007-the-n5-optimum-flexes-once-and-that-once-is-shut.md) enumerates
-`n = 5` in `Q(sqrt 2)`: sixteen corner-on-wall contacts across four corner squares, two
+$n = 5$ in `Q(sqrt 2)`: sixteen corner-on-wall contacts across four corner squares, two
 walls each, and a middle square touching no wall.
 The seating here, computed from decimal witness corners at a `1e-9` tolerance, reports
-exactly that — `[0, 2, 2, 2, 2]`. Had it disagreed, the taxonomy would have been
+exactly that — $[0, 2, 2, 2, 2]$. Had it disagreed, the taxonomy would have been
 measuring the witnesses’ precision rather than the packings’ geometry.
 
 ## What This Is Not

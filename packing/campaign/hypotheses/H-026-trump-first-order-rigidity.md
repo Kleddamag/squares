@@ -46,9 +46,9 @@ hypothesis:
 # H-026 — confirmed by exp-013
 
 All 128 exact branch matrices have rank 33 and strictly positive exact left-kernel
-stresses, so every cone is `{0}`. A separate finite-branch subsequence argument now
-upgrades that result to local isolation and strict local side optimality of Trump’s pose
-in the anchored pose–side chart.
+stresses, so every cone is $\lbrace0\rbrace$. A separate finite-branch subsequence
+argument now upgrades that result to local isolation and strict local side optimality of
+Trump’s pose in the anchored pose–side chart.
 It does not address global optimality or provide a quantitative neighborhood radius.
 
 <!-- This document follows common-doc-guidelines.md.

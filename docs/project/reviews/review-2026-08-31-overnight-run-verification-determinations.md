@@ -30,7 +30,7 @@ From [conventions.md §4](../../../conventions.md#4-evidence) and the
 
 ## The Six Determinations
 
-**1. Bentz 2010, Theorem 8 (`s(46) = 7` lower half) — VERIFIED, fully machine-audited.**
+**1. Bentz 2010, Theorem 8 ($s(46) = 7$ lower half) — VERIFIED, fully machine-audited.**
 The printed 45-point system certifies exactly over `Q(sqrt 2, sqrt 3)` (92 cells, three
 lemma kinds, the Lemma 5 threshold by a rigorous rational subdivision bound), and 45
 points against 46 boxes is pigeonhole, so the machine check covers the whole lower-bound
@@ -39,11 +39,11 @@ independent implementation of the Section 1 lemma hypotheses on the other, in ag
 Recorded as `E-bentz46-theorem8-audit`, attached to `n-046`’s `verified_lower_bound`.
 
 **2. The Lemma 10 settlement — VERIFIED both ways, and now source-settled.** The lemma
-as printed is *refuted* by an exact escape certificate (a box of side `1001/1000`
+as printed is *refuted* by an exact escape certificate (a box of side $1001/1000$
 avoiding the printed replacement set entirely), and *certified* under the corrected
 reading: all three corrected replacement covers are exact, inside the paper’s own Lemma
 5 parameter families.
-The overnight caveat — whether the transposition `(1, 1.74)` for `(1.74, 1)` was the
+The overnight caveat — whether the transposition $(1, 1.74)$ for $(1.74, 1)$ was the
 paper’s or the extraction pipeline’s — is discharged at the strongest layer available:
 the published PDF’s page 5, rendered as an image and read visually, prints the
 transposed value, matching the byte-level text layer.
@@ -53,7 +53,7 @@ Recorded as `E-bentz13-figure2-audit` plus `external_review: defect-found` on
 `E-bentz-2010-proof`; the transcription carries the settlement note beside the printed
 text.
 The partial-audit boundary is explicit: Sections 3.1–3.2’s case analysis completing
-`s(13) = 4` is audited as prose only, so `n-013`’s verified floor continues to rest on
+$s(13) = 4$ is audited as prose only, so `n-013`’s verified floor continues to rest on
 the published proof, now with the repaired lemma machine-checked beside it.
 
 **3. exp-046 / H-044 — hold RESOLVED; the hypothesis stays undisposed by its own
@@ -70,31 +70,31 @@ disposition the registration forbids.
 Decision stands `unresolved`, `needs_review: false`, `reopen_when` naming the
 confirmatory successor and the two priced relaxations.
 
-**4. `s(17)` / `s(18)` — VERIFIED and UPGRADED; frontier fields moved.** The run’s
-`17/4` was held partly because the claim was first-party with no external derivation.
+**4. $s(17)$ / $s(18)$ — VERIFIED and UPGRADED; frontier fields moved.** The run’s
+$17/4$ was held partly because the claim was first-party with no external derivation.
 The independence gap was closed by building
 [`cases/green17/interval_audit.py`](../../../packing/cases/green17/interval_audit.py):
 exhaustive branch-and-bound over the full pose space in exact fixed-scale integer
 arithmetic, sharing the point data and nothing else with the lemma-cell certificate.
-Its verdict did more than confirm: **`17/4` was the cell plan’s ceiling, not the
-set’s.** The audit certified the same sixteen points at `4.3`, `4.4`, and
-`4426213/1000000 = 4.426213`, refuted `4427/1000` with an exact escaping pose, and the
+Its verdict did more than confirm: **$17/4$ was the cell plan’s ceiling, not the
+set’s.** The audit certified the same sixteen points at $4.3$, $4.4$, and
+$4426213/1000000 = 4.426213$, refuted $4427/1000$ with an exact escaping pose, and the
 bracket has an exact explanation — the top wall strips’ Lemma 4 hypothesis
 `a + 2b <= 2 sqrt 2` becomes equality at `t* = 753/250 + sqrt 2 = 4.42621356...`,
-squarely inside it, with the escape at `4.427` sitting at `theta` near `pi/4` between
+squarely inside it, with the escape at $4.427$ sitting at `theta` near `pi/4` between
 two unit-spaced strip points, exactly Lemma 4’s tight case.
-The cell certificate was rebuilt at `4.426213` (right-wall Lemma 4 rectangles replacing
+The cell certificate was rebuilt at $4.426213$ (right-wall Lemma 4 rectangles replacing
 the margin band and near-slabs), both methods certify, the falsifier saturates with
-negative margin at the adopted side (and finds genuine escape candidates at `4.45` and
-`4.5`, corroborating the ceiling from above), and **`verified_lower_bound` at `n = 17`
-and `n = 18` moved to `4.426213`** on `E-green17-sixteen-point-lower` (exact-algebraic)
+negative margin at the adopted side (and finds genuine escape candidates at $4.45$ and
+$4.5$, corroborating the ceiling from above), and **`verified_lower_bound` at $n = 17$
+and $n = 18$ moved to $4.426213$** on `E-green17-sixteen-point-lower` (exact-algebraic)
 plus `E-green17-interval-audit` (interval-certified, independent implementation).
-Above Nagamochi’s `4.1623`; `0.019` below Green’s reported but sourceless
-`(40 sqrt 2 + 19)/17`. Certifying at `t*` exactly needs `Q(sqrt 2)` arithmetic in the
-shared certifier and is typed as follow-on on `think-iye2`.
+Above Nagamochi’s $4.1623$; $0.019$ below Green’s reported but sourceless
+`(40 sqrt 2 + 19)/17`. Certifying at $t^{\ast}$ exactly needs `Q(sqrt 2)` arithmetic in
+the shared certifier and is typed as follow-on on `think-iye2`.
 
-**5. The `m = 8` sizing statement — stands as verified arithmetic.** Every load-bearing
-comparison is an exact integer inequality (the pattern ceiling via `18816 < 21025`; the
+**5. The $m = 8$ sizing statement — stands as verified arithmetic.** Every load-bearing
+comparison is an exact integer inequality (the pattern ceiling via $18816 < 21025$; the
 lattice dilemma exact).
 The parking decision is a plan decision, not a mathematical claim; nothing further to
 verify, nothing pending.
@@ -104,7 +104,7 @@ LP on restricted grids can never meet the `verified` bar in either direction, an
 pilot says so on every run.
 The determination is that this is the *final* typing, not a pending review: no claim
 enters the record, the certified two-sided instrument H-034 registered remains the named
-gap, and the method reading (a pure eleven-point set at `n = 12` has at most a
+gap, and the method reading (a pure eleven-point set at $n = 12$ has at most a
 `~0.04`-wide window) stands as an uncertified diagnostic guiding the next agenda.
 
 ## What the Independent Instrument Taught
@@ -142,7 +142,7 @@ kind of failure the control discipline exists to catch.
   designed against the lemma-cell certifier, recorded as `same-implementation` on the
   cell-certificate entry with the independent leg on the audit entry; confirm that
   reading or name a better value.
-- **`reported_lower_bound` at `n = 17` still carries Nagamochi**, not Green’s stronger
+- **`reported_lower_bound` at $n = 17$ still carries Nagamochi**, not Green’s stronger
   reported value, because Green has no recoverable primary source.
   That is a sourcing decision deliberately left standing; the review notes it rather
   than deciding it.

@@ -1050,64 +1050,64 @@ and refuses dispatch at the first failure.
 ## Why These Lanes Are Next
 
 **Lane A is where the machinery now points.** Agenda 016 adopted, at source-backed
-scope, Massaccesi’s fractional unavoidable-set certificate for `s(17) ≥ 4.5058`, and in
-doing so built and reviewed five independent replays of the exact event-cell reduction
-that turns “every unit square captures mass at least one” into finitely many rational
-directions and cells.
+scope, Massaccesi’s fractional unavoidable-set certificate for $s(17) \ge 4.5058$, and
+in doing so built and reviewed five independent replays of the exact event-cell
+reduction that turns “every unit square captures mass at least one” into finitely many
+rational directions and cells.
 The generation side of that architecture does not exist here.
 Building it is the most valuable instrument the program can add: the same LP that
-produced the `n = 17` certificate can produce certificates at the sizes the survey
-priced as reachable, `n = 20` to `32`, where the proved lower bound is still Nagamochi’s
+produced the $n = 17$ certificate can produce certificates at the sizes the survey
+priced as reachable, $n = 20$ to $32$, where the proved lower bound is still Nagamochi’s
 2005 closed form, and at the two sizes that matter most.
-The first target is `n = 12`, where the standing lower bound is Stromquist’s `n = 11`
-bound `2 + 4/√5 ≈ 3.7889` inherited by monotonicity and nothing specific to `n = 12` has
-ever been proved. `H-061` fixes the threshold before synthesis, as `H-039` requires, and
-a certificate there is the first `n = 12`-specific result in the problem’s history — by
-`0.011`, which the record will say plainly; the durable value is the crossing curve the
-ladder measures and the exact ceilings the dual yields where a certificate does not
-exist.
-Agenda 018 then climbs the ladder and takes the `n = 11` shot, where a certificate
-with total mass below eleven at any side above `2 + 4/√5` would be the first movement on
-the central open case since 2003.
+The first target is $n = 12$, where the standing lower bound is Stromquist’s $n = 11$
+bound $2 + 4/\sqrt{5} \approx 3.7889$ inherited by monotonicity and nothing specific to
+$n = 12$ has ever been proved.
+`H-061` fixes the threshold before synthesis, as `H-039` requires, and a certificate
+there is the first $n = 12$-specific result in the problem’s history — by $0.011$, which
+the record will say plainly; the durable value is the crossing curve the ladder measures
+and the exact ceilings the dual yields where a certificate does not exist.
+Agenda 018 then climbs the ladder and takes the $n = 11$ shot, where a certificate with
+total mass below eleven at any side above $2 + 4/\sqrt{5}$ would be the first movement
+on the central open case since 2003.
 
 **Lane B turns one theorem into a technique.** `T-014` proved fixed-side local rigidity
-of Goebel’s `n = 5` optimum by a chart, a complete inequality accounting, curve
+of Goebel’s $n = 5$ optimum by a chart, a complete inequality accounting, curve
 selection and an order-`2m` coefficient induction closed by a non-negative self-stress.
 Whether that argument is a reusable technique — `S4` under the rubric — or one case
 depends on a question nobody had written down: what exactly the induction needs from the
 stress on a cone of dimension above one.
 The planning survey’s answer, to be written out and checked in `X-013`, is that the
 condition is pointwise — every flex in every local branch refused by a stress supported
-on the rows tight along it — so `T-013`’s seven refusals at `n = 40` are the hypothesis
+on the rows tight along it — so `T-013`’s seven refusals at $n = 40$ are the hypothesis
 at fourteen rays and not on any face, and the real obligation there is the cone
 characterisation `D-391` names.
 The same survey found, by exact computation on `cases.gobel40`, that the devtools
 incidence model intersects the two host-side versions of a flush contact, which is exact
 at first order and flattering at second; `BC-163` verifies that first-hand before it is
-filed. It also found that the `n = 11` radius `H-022` asks for is a different and easier
-theorem than `n = 40`: first-order rigidity in every branch gives an explicit radius by
+filed. It also found that the $n = 11$ radius `H-022` asks for is a different and easier
+theorem than $n = 40$: first-order rigidity in every branch gives an explicit radius by
 Taylor bounds with no curve selection, reachable at `V4`, which is why Agenda 018’s
 rigidity lane targets Trump’s packing first.
-The same Fable agent then audits Stromquist’s Theorem 3, the `0°/45°` theorem that
-settled Gardner’s conjecture at `n = 11`: its twelve points are printed exactly, the
-cover machinery exists at another side, and the printed `G` point has the shape of the
-one `D-152` showed escapes in Theorem 2, so a twenty-minute escape search is a
+The same Fable agent then audits Stromquist’s Theorem 3, the $0^\circ/45^\circ$ theorem
+that settled Gardner’s conjecture at $n = 11$: its twelve points are printed exactly,
+the cover machinery exists at another side, and the printed $G$ point has the shape of
+the one `D-152` showed escapes in Theorem 2, so a twenty-minute escape search is a
 determination on its own.
 
 **Lane C banks what is already within reach.** Every route above is a lower bound or a
 rigidity theorem, and the verified upper bounds have their own cheap movement waiting:
 the planning survey ran the shipped rational promotion on the ten open cases whose
 verified ceiling still sits at the grid while a decimal record is reported, and every
-one returned an exact certificate at a side above the decimal by less than `8 × 10⁻²⁹`;
-the coordinator reproduced two of them first-hand before dispatch.
-Recording them moves ten verified upper bounds by `1.830` in total for about three hours
-of record work at a risk the survey already retired, and the same command at `n = 29`
-lands `5.4 × 10⁻²⁰` below `T-009`’s interval certificate, which both reaches that
-result’s declared next rung and exposes that its comparative rationale compared two
+one returned an exact certificate at a side above the decimal by less than
+$8 \times 10^{-29}$; the coordinator reproduced two of them first-hand before dispatch.
+Recording them moves ten verified upper bounds by $1.830$ in total for about three hours
+of record work at a risk the survey already retired, and the same command at $n = 29$
+lands $5.4 \times 10^{-20}$ below `T-009`’s interval certificate, which both reaches
+that result’s declared next rung and exposes that its comparative rationale compared two
 different packings (`D-431`). The upper-bound construction avenue is not dropped:
-`H-049`, the `n = 90` primitive, moves to Agenda 018 with the correction the survey
-derived from Arslanov’s own inequality — a squeezable `(4, 6)/20` primitive would also
-pack thirty squares below side six, the `m = 6` instance of `s(m² − m) = m` — and with
+`H-049`, the $n = 90$ primitive, moves to Agenda 018 with the correction the survey
+derived from Arslanov’s own inequality — a squeezable $(4, 6)/20$ primitive would also
+pack thirty squares below side six, the $m = 6$ instance of $s(m^2 - m) = m$ — and with
 the instrument gap it found, since nothing in the tree measures a squeeze in a rectangle
 yet.
 
@@ -1123,10 +1123,10 @@ own output (`D-429`) — so that this agenda’s own closeout gate can pass wher
 
 ## Exact Wall and Reviewer Rotation
 
-| Elapsed | Coordinator | Lane A (`n = 12`) | Lane B (rigidity, Theorem 3) | Lane C (ten ceilings) | Lane D (W9, gate) |
+| Elapsed | Coordinator | Lane A ($n = 12$) | Lane B (rigidity, Theorem 3) | Lane C (ten ceilings) | Lane D (W9, gate) |
 | --- | --- | --- | --- | --- | --- |
 | 00:00--00:20 | `BC-159` preflight; lanes read frozen inputs from 00:05 and run nothing | read-only design from 00:05 | read-only | read-only | inventory snapshot, read-only |
-| 00:20--01:50 | observe, integrate only frozen packets | `BC-160` build | `BC-163` theorem and `n = 40` decision | `BC-165` sweep, controls, records | `BC-167` writer |
+| 00:20--01:50 | observe, integrate only frozen packets | `BC-160` build | `BC-163` theorem and $n = 40$ decision | `BC-165` sweep, controls, records | `BC-167` writer |
 | 01:50--02:35 | dispatch the readiness reviewer at 02:25 | `BC-160` controls, freeze at 02:25, answers read-only to 02:35 | `BC-164` transcription, escape search, then cover | `BC-165` continues | `BC-167` writer to 02:00; reviewer 02:00--02:45 |
 | 02:35--04:00 | integrate reviews; flip `H-061` instrument-ready at 02:40 | `BC-161` target round 02:40--04:25 | `BC-164` continues | `BC-165` gates to 03:20; `BC-166` review 03:20--03:50 | `BC-168` writer 02:45--03:50; reviewer 03:50--04:20 |
 | 04:00--04:45 | freeze lanes; draft the outcome-row skeleton; six-document review as a card | `BC-162` review from 04:25, its last 25 minutes inside the closeout by design | `BC-164` freezes by 04:35 | registration and consumers by 04:20 | integration and hand-back to 04:20 |
@@ -1155,7 +1155,7 @@ the launch packet’s amendment log and the other lanes read status once without
 1. `BC-160` freezes before any target side is named, and its readiness reviewer never
    sees a target. `H-061` moves to instrument-ready only on that review’s pass.
 2. `BC-162` reviews `BC-161` whatever its outcome.
-   Only an exact pass registers a result, moves the `n = 12` verified lower bound, and
+   Only an exact pass registers a result, moves the $n = 12$ verified lower bound, and
    scores its significance; every other determination leaves the frontier unchanged and
    names the follow-up.
 3. `BC-164` opens only after `BC-163` freezes, and its first twenty minutes are the
@@ -1183,12 +1183,12 @@ agent’s own work.
 2. **Readiness review of the generator, 15 minutes.** Replay `BC-160`’s controls from a
    clean root without seeing a target; return pass or bounded caveat.
 3. **Green17 exact-ceiling readiness, 25 minutes.** Read `think-iye2` and the retained
-   `753/250 + √2` evidence; list the exact obligations without changing code.
+   $753/250 + \sqrt{2}$ evidence; list the exact obligations without changing code.
 4. **Stale-count sweep, 20 minutes.** The frontier prose said sixty-three open cases
    rest on Nagamochi’s closed form when the count is sixty; this planning revision
    corrected it and filed `D-430`, and the launchability review found the figure
    surviving at line 933 of the 2026-08-22 research report on eleven squares.
-   Sweep `docs/project/` and `TUTORIAL.md` for that figure and for stale `n = 17`--`19`
+   Sweep `docs/project/` and `TUTORIAL.md` for that figure and for stale $n = 17$--`19`
    lower bounds the adoption review named as unsurveyed; a dated report is appended to,
    not rewritten.
 
@@ -1231,33 +1231,33 @@ recorded them as unverified.
 With the CLI restored under Node 22, every declared id was resolved against the sync
 branch: `think-c46d`, named for `D-422` and `D-429`, is a closed bead (`BC-075`’s gate
 retiering), and `think-xdly`, named for `D-427`, is the open rigidity task for
-`n = 5, 28, 40`. Those four defect records now name the live beads that own the work —
+$n = 5, 28, 40$. Those four defect records now name the live beads that own the work —
 `think-ahyr` for `D-422` and `D-429` under `BC-168`, and `think-g4qi` for `D-427` and
 `D-428` under Agenda 018’s W9 wave — while the terminal agenda-016 record keeps its
 declared text, since it was true to what the run could verify when written.
 Separately, the frontier prose in `packing/frontier/README.md` and the generated case
 bodies said sixty-three of the sixty-five open cases rest on Nagamochi’s closed form;
-the count over the case records is sixty, because the 4.5058 adoption took `n = 17`,
-`18` and `19` off it.
+the count over the case records is sixty, because the 4.5058 adoption took $n = 17$,
+$18$ and $19$ off it.
 Corrected here and recorded as `D-430`. The survey also found, and the coordinator
 reproduced, that `T-009`’s significance rationale compares its interval certificate
-against a certificate on a different `n = 29` packing; that is `D-431`, repaired in
+against a certificate on a different $n = 29$ packing; that is `D-431`, repaired in
 `BC-165`.
 
 ## Ranked Portfolio Outside the Wall
 
 | Rank | Candidate | Disposition before Agenda 017 |
 | ---: | --- | --- |
-| 1 | The certificate generator and the first `n = 12` bound (`H-061`) | Execute in Lane A |
-| 2 | The general rigidity theorem and the `n = 40` decision | Execute in Lane B; the proof itself waits for Agenda 018 |
-| 3 | Stromquist Theorem 3 audit at `n = 11` | Execute in Lane B after the decision; the only published-proof audit that can reach a determination inside a block |
+| 1 | The certificate generator and the first $n = 12$ bound (`H-061`) | Execute in Lane A |
+| 2 | The general rigidity theorem and the $n = 40$ decision | Execute in Lane B; the proof itself waits for Agenda 018 |
+| 3 | Stromquist Theorem 3 audit at $n = 11$ | Execute in Lane B after the decision; the only published-proof audit that can reach a determination inside a block |
 | 4 | The ten exact ceilings and `T-009`’s rung change | Execute in Lane C; the survey retired the risk |
 | 5 | `think-ldq2`, the four W9 clauses, then `D-422` and `D-429` | Execute in Lane D |
 | 6 | Bentz 2010 Theorem 9 audit (`T-006` to `C3`, `think-1o1f`) | Park: 12--18 agent-hours, cannot reach a determination in either block |
-| 7 | Nagamochi Theorem 1’s unargued `λ = 1` step | Agenda 018’s `BC-181`, a two-hour spike under sixty open lower bounds |
-| 8 | `H-049`, the `n = 90` primitive, now read as `s(30) < 6` | Agenda 018’s `BC-178`, with the rectangle instrument it needs built first |
-| 9 | The generic interval certifier (`H-056` at `n = 39` first) | Agenda 018’s `BC-184`, tentative, as the technique rather than the bounds |
-| 10 | Green17 exact ceiling (`think-iye2`), bespoke `n = 12` set (`think-0z9b`) | Retain; the generator supersedes the integral-set framing |
+| 7 | Nagamochi Theorem 1’s unargued $\lambda = 1$ step | Agenda 018’s `BC-181`, a two-hour spike under sixty open lower bounds |
+| 8 | `H-049`, the $n = 90$ primitive, now read as $s(30) < 6$ | Agenda 018’s `BC-178`, with the rectangle instrument it needs built first |
+| 9 | The generic interval certifier (`H-056` at $n = 39$ first) | Agenda 018’s `BC-184`, tentative, as the technique rather than the bounds |
+| 10 | Green17 exact ceiling (`think-iye2`), bespoke $n = 12$ set (`think-0z9b`) | Retain; the generator supersedes the integral-set framing |
 
 `BC-169` reranks this table from actual outcomes and operator input.
 
@@ -1284,21 +1284,22 @@ That is the first thing to say, because the record would otherwise read as a pla
 that went well.
 
 What the one lane did is the second thing.
-Lane A was to build a certificate generator, prove it on Massaccesi’s published `n = 17`
-certificate as a control, and certify `s(12) ≥ 19/5`. It did that, and then kept
-climbing: `19/5` to `99/25` at `n = 12`, `3.81` at `n = 11` — the smallest open case’s
-first movement since 2003 — `459/100` at `n = 17` and `n = 18`, and `24/5` at `n = 19`,
-`20` and `21`. Seven registered cases moved; Nagamochi’s closed form holds 58 of the 65
-open cases at `n ≤ 100` where it held 60, and every one of the seven exceptions is a
+Lane A was to build a certificate generator, prove it on Massaccesi’s published $n = 17$
+certificate as a control, and certify $s(12) \ge 19/5$. It did that, and then kept
+climbing: $19/5$ to $99/25$ at $n = 12$, $3.81$ at $n = 11$ — the smallest open case’s
+first movement since 2003 — $459/100$ at $n = 17$ and $n = 18$, and $24/5$ at $n = 19$,
+$20$ and $21$. Seven registered cases moved; Nagamochi’s closed form holds 58 of the 65
+open cases at $n \le 100$ where it held 60, and every one of the seven exceptions is a
 certificate held here.
 
 Two things it learned were not on the plan.
-No certificate for `n` exists above `⌈√n⌉ · B`, which forecloses `n = 12` against its
-conjectured `4` and says the method approaches the grid value and never reaches it.
-And only `Condition 2` mentions `n`, so one atom set certifies its side for every
-integer above its own mass — which is why one certificate at `24/5` moved three cases,
-and why the reach table now ranks cases the program has never touched above the ones it
-spent itself on.
+No certificate for $n$ exists above $\lceil\sqrt{n}\rceil \cdot B$, which forecloses
+$n = 12$ against its conjectured $4$ and says the method approaches the grid value and
+never reaches it.
+And only `Condition 2` mentions $n$, so one atom set certifies its side
+for every integer above its own mass — which is why one certificate at $24/5$ moved
+three cases, and why the reach table now ranks cases the program has never touched above
+the ones it spent itself on.
 
 The cost of the block is in the record as 24 receipts, and the largest single cost — the
 exact sweep at the retention gate, `5378 s` at 2260 atoms — was taken down to `29 s` the

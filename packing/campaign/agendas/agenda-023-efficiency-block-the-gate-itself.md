@@ -304,7 +304,7 @@ anything that would notice.
 `--edit` is 59 s and catches every floor and every record check.
 It catches no behavioural test.
 On this branch today, CI’s behavioural step caught eight real failures — a stale
-constant in the witness walk, four reach-table controls, three `n = 20` rung tests — and
+constant in the witness walk, four reach-table controls, three $n = 20$ rung tests — and
 not one of them would have been caught by a floor or a record check.
 
 So moving the behavioural suite off the pull-request surface is not free, and `BC-214`

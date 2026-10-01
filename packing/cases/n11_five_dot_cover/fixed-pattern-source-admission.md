@@ -88,7 +88,7 @@ classes. The containment input is bound to its exact expected Git blob.
 Its parser requires the completed no-gain status, matching endpoint and wall blobs,
 implementation revision, orientation/class/corner settings, and relevant summary fields.
 It derives the certified set from both Cartesian products of the masks and requires
-exactly `{(0,0,0,0),(15,15,15,15)}`.
+exactly $\lbrace(0,0,0,0),(15,15,15,15)\rbrace$.
 
 **This is a consumer of the admitted exp147 receipt, not an independent replay of its
 128 relations.** The parser does not traverse the matrix or recompute its relation

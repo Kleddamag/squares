@@ -12,14 +12,14 @@ sentence rather than a local line number.
 
 ## Definitions and the Direction of Inference
 
-1. **Physical packing.** Eleven closed unit squares lie in `K=[0,q]^2`, `q=96/25`, with
-   pairwise disjoint interiors and arbitrary physical angles.
+1. **Physical packing.** Eleven closed unit squares lie in $K=[0,q]^{2}$, $q=96/25$,
+   with pairwise disjoint interiors and arbitrary physical angles.
    A global exclusion says no such eleven-square configuration exists.
    The current work has not proved this.
    A conditional exclusion assumes additional, explicitly stated owner conditions.
 
 2. **Selected B-core.** Each physical square can be assigned a concentric closed square
-   of side `B=9977/10000` at a retained rational direction.
+   of side $B=9977/10000$ at a retained rational direction.
    The nearest-frame mismatch bound `D_net=207107/90000000` and `B*(1+D_net)<1` put that
    core strictly inside its parent.
    Therefore selected cores of distinct parents are disjoint compact sets, and have
@@ -46,7 +46,7 @@ sentence rather than a local line number.
    For ray r, an allowed centre has `centre=mark+a*r+b*Jr`, `0<=a,b<=B/2`. Two marks
    give sixteen labels per corner; a tuple selects four labels in BL, BR, TL, TR order.
    Closed sectors and multiple owned marks make labels overlap.
-   `16^4=65536` is a label count, not a count or measure of physical packings.
+   $16^{4}=65536$ is a label count, not a count or measure of physical packings.
    The continuous parent angle is not required to lie in its snapped core’s sector.
    [Class proof](../../../packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/proofs/corner-owner-sector-footprints.md)
 

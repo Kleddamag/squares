@@ -51,11 +51,11 @@ It does not make basin identity canonical, does not cross basin boundaries, and 
 replace certification.
 
 On the tested annealer outputs, class-bracketing reaches the analytic values to machine
-precision at `n = 5` and `n = 10`
+precision at $n = 5$ and $n = 10$
 ([exp-007](../series/series-000-smoke-and-calibration/experiments/exp-007-quench-bracket-n5.md)
 and
 [exp-008](../series/series-000-smoke-and-calibration/experiments/exp-008-quench-bracket-n10.md)).
-At `n = 11`, it remains `6.29e-02` above the standing best
+At $n = 11$, it remains `6.29e-02` above the standing best
 ([exp-009](../series/series-000-smoke-and-calibration/experiments/exp-009-quench-bracket-n11.md)).
 For these tested starts, the contrast distinguishes a residual the quench can remove
 from one it cannot; it does not prove that the latter start lies in a different basin or
@@ -63,7 +63,7 @@ establish a global landscape partition.
 
 ## The structural reduction is exact; the solve is numerical
 
-For fixed angles, and with each pair’s separating axis fixed, minimising `s` is a
+For fixed angles, and with each pair’s separating axis fixed, minimising $s$ is a
 **linear program**: corners are affine in centres, the separating-axis conditions are
 linear inequalities, containment is linear, the objective is linear.
 All of this problem’s nonconvexity lives in the angles and in the combinatorial choice
@@ -71,7 +71,7 @@ of cell.
 
 The fixed-cell solve was independently reproduced in
 [exp-006](../series/series-000-smoke-and-calibration/experiments/exp-006-lp-quench-n5-n10-n11.md):
-at the supplied angles of the standing `n = 11` packing it returns a side within
+at the supplied angles of the standing $n = 11$ packing it returns a side within
 `4.4e-16` of the reference.
 This is a binary64 numerical result for that supplied cell, not an algebraic certificate
 or evidence that all starts with those angles reach that cell.
@@ -79,10 +79,10 @@ or evidence that all starts with those angles reach that cell.
 ## Why this campaign needs it specifically
 
 [exp-001](../series/series-000-smoke-and-calibration/experiments/exp-001-baseline-sweep.md)
-found a near-optimal `n = 10` start.
+found a near-optimal $n = 10$ start.
 Class-bracketing then reached the proved analytic value on the tested outputs, whereas
 finite-difference descent did not.
-In contrast, the `n = 11` outputs tested in
+In contrast, the $n = 11$ outputs tested in
 [exp-006](../series/series-000-smoke-and-calibration/experiments/exp-006-lp-quench-n5-n10-n11.md)
 and
 [exp-009](../series/series-000-smoke-and-calibration/experiments/exp-009-quench-bracket-n11.md)

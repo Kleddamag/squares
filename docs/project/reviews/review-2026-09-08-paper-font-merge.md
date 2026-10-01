@@ -33,7 +33,7 @@ name that defect.
 composite. The merge introduced that composite and pruned its bold slots in
 [`render_explainer.py`](../../../packing/devtools/render_explainer.py), assuming that
 bold mathematics appeared only in serif prose.
-The three bold `D` symbols in the symmetry-group expressions then requested an absent
+The three bold $D$ symbols in the symmetry-group expressions then requested an absent
 650-weight sans face.
 Restoring that face changes the browser’s measured glyph width, confirming that the
 missing slot changes rendering.

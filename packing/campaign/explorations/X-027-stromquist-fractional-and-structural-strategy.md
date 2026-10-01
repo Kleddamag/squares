@@ -96,7 +96,7 @@ $S_{p_i}^\circ\cap S_{p_j}^\circ=\varnothing$ whenever $i\ne j$. Its squares may
 The quantity we want to bound is
 
 $$
-s(n)=\inf\{L:\text{a physical packing of }n\text{ unit squares exists in }K_L\}.
+s(n)=\inf\lbrace L:\text{a physical packing of }n\text{ unit squares exists in }K_L\rbrace.
 $$
 
 A **strict core** is a closed square $C_i$ of side $B<1$ contained in $S_{p_i}^\circ$;
@@ -124,8 +124,8 @@ $$
 
 Thus $M<n$, together with the containment argument, excludes $n$ unit squares.
 A general nonnegative measure can spread weight continuously; a **density** $\rho$
-assigns $\mu(E)=\int_E\rho(x)\,dx$ to a region $E$, where $dx$ is planar area and
-$\rho\geq0$. Boundary conventions for such measures are specified in §2.
+assigns $\mu(E)=\int_E\rho(x)\thinspace dx$ to a region $E$, where $dx$ is planar area
+and $\rho\geq0$. Boundary conventions for such measures are specified in §2.
 
 A more general **charge atom** is a nonnegative function $f_j(C)$ with a proved
 **budget** $b_j$: every allowed disjoint core family satisfies
@@ -141,16 +141,16 @@ $\lambda_i\geq0$. Under the closed-square convention its **point depth** and **m
 are
 
 $$
-d(x)=\sum_i\lambda_i\mathbf 1_{\{x\in Q_i\}}\leq1,
+d(x)=\sum_i\lambda_i\mathbf 1_{\lbrace x\in Q_i\rbrace}\leq1,
 \qquad v=\sum_i\lambda_i.
 $$
 
-Here $\mathbf 1_{\{\cdot\}}$ is $1$ when the stated condition holds and $0$ otherwise.
-If a point cover charges every $Q_i$ by at least $1$, then
+Here $\mathbf 1_{\lbrace\cdot\rbrace}$ is $1$ when the stated condition holds and $0$
+otherwise. If a point cover charges every $Q_i$ by at least $1$, then
 
 $$
 v\leq\sum_i\lambda_i\mu(Q_i)
-=\int d(x)\,d\mu(x)\leq M.
+=\int d(x)\thinspace d\mu(x)\leq M.
 $$
 
 This is an **obstruction** to a point cover of mass below $v$, even when the $Q_i$ do
@@ -170,8 +170,8 @@ under discussion, not one constant shared by every example.
 
 ## Outcome and Evidence Status
 
-A covering proof past $L_* = 38200/9977$ needs a counting rule or a geometric relation
-that ordinary point depth forgets.
+A covering proof past $L_{\ast} = 38200/9977$ needs a counting rule or a geometric
+relation that ordinary point depth forgets.
 Recent work has made both kinds of progress: threshold charges produced T-025, and owner
 restrictions produced T-023’s conditional exclusion.
 Finer angular containment then carried the threshold certificate to T-026. The threshold
@@ -195,7 +195,7 @@ $$
 The most consequential deductions are:
 
 - The retained 88-core obstruction scales exactly to **full unit squares** of fractional
-  mass $11$ at $L_* = 38200/9977$, approximately $3.8288$. It obstructs arbitrary
+  mass $11$ at $L_{\ast} = 38200/9977$, approximately $3.8288$. It obstructs arbitrary
   unconditional point measures at that side and above, without a symmetry assumption.
   A new search for such a witness at $3.83\leq L\leq3.85$ is unnecessary.
 - An open-interior formulation gives a self-contained strong-duality argument, including
@@ -277,7 +277,7 @@ $191/50$, each of weight $1/8$, with closed depth at most one everywhere.
 Scaling all positions and sides by $1/B$ gives unit squares in
 
 $$
-L_* = \frac{191/50}{9977/10000} = \frac{38200}{9977}
+L_{\ast} = \frac{191/50}{9977/10000} = \frac{38200}{9977}
 < \frac{383}{100}.
 $$
 
@@ -296,10 +296,10 @@ A directly consumable full-unit export would be useful engineering; another exis
 search at $3.83\leq L\leq3.85$ would not.
 
 **A strict physical integrality gap remains unproved.** The current physical lower bound
-lies below $L_*$. To prove that the fractional relaxation actually permits more squares
-than physical packing at $L_*$, we still need a physical exclusion there.
-A global lower bound strictly above $L_*$, for example $3.83$, would establish both a
-stronger bound and this gap.
+lies below $L_{\ast}$. To prove that the fractional relaxation actually permits more
+squares than physical packing at $L_{\ast}$, we still need a physical exclusion there.
+A global lower bound strictly above $L_{\ast}$, for example $3.83$, would establish both
+a stronger bound and this gap.
 T-025 already demonstrates a matched gap in its declared closed-core model; the
 unit-square statement is separate.
 
@@ -307,21 +307,21 @@ unit-square statement is separate.
 
 The legal pose space $P_L$ is **compact**: every sequence of poses has a subsequence
 converging to a legal pose.
-Use **interior incidence** $A(x,p)=\mathbf 1_{\{x\in S_p^\circ\}}$, which records
-whether the point $x$ lies strictly inside the square at pose $p$. A pose measure
-$\lambda$ assigns weight to families of legal poses, extending the finite sums above.
-A point measure $\mu$ assigns covering weight in $K_L$. Define
+Use **interior incidence** $A(x,p)=\mathbf 1_{\lbrace x\in S_p^\circ\rbrace}$, which
+records whether the point $x$ lies strictly inside the square at pose $p$. A pose
+measure $\lambda$ assigns weight to families of legal poses, extending the finite sums
+above. A point measure $\mu$ assigns covering weight in $K_L$. Define
 
 $$
 \begin{aligned}
 \nu_\circ(L)
 &=\sup_{\lambda\geq0}
-\left\{\lambda(P_L):
-\int_{P_L}A(x,p)\,d\lambda(p)\leq1\quad\forall x\in K_L\right\},\\
+\left\lbrace\lambda(P_L):
+\int_{P_L}A(x,p)\thinspace d\lambda(p)\leq1\quad\forall x\in K_L\right\rbrace,\cr
 \tau_\circ(L)
 &=\inf_{\mu\geq0}
-\left\{\mu(K_L):
-\int_{K_L}A(x,p)\,d\mu(x)\geq1\quad\forall p\in P_L\right\}.
+\left\lbrace\mu(K_L):
+\int_{K_L}A(x,p)\thinspace d\mu(x)\geq1\quad\forall p\in P_L\right\rbrace.
 \end{aligned}
 $$
 
@@ -375,7 +375,7 @@ fractional packing. Rational description uses rational centre coordinates and ra
 rotation matrices. The proof shrinks a finite partition of pose space to strictly
 interior representative cores, rationalizes with margin, and dilates.
 Exact-side finite attainment is not proved.
-The retained family already supplies a concrete $k=8$ witness at $L_*$.
+The retained family already supplies a concrete $k=8$ witness at $L_{\ast}$.
 
 ## 3. Stronger Charges: Test Expressiveness Before a Large Covering Run
 
@@ -385,12 +385,12 @@ sites it contains; $\lvert T\rvert$ denotes the number of sites in a subset $T$.
 An abstract or **Boolean trace** is any subset $T\subseteq F$, without requiring
 geometric realization.
 
-An ordinary point atom is $f_x(C)=\mathbf 1_{\{x\in C\}}$, with budget $1$. For
-$r=\lvert F\rvert$ and an integer threshold $1\leq k\leq r$, an **ordinary threshold
+An ordinary point atom is $f_x(C)=\mathbf 1_{\lbrace x\in C\rbrace}$, with budget $1$.
+For $r=\lvert F\rvert$ and an integer threshold $1\leq k\leq r$, an **ordinary threshold
 atom** is
 
 $$
-f_{F,k}(C)=\mathbf 1_{\{\lvert T(C)\rvert\geq k\}},
+f_{F,k}(C)=\mathbf 1_{\lbrace\lvert T(C)\rvert\geq k\rbrace},
 \qquad b_{F,k}=\left\lfloor\frac rk\right\rfloor.
 $$
 
@@ -425,7 +425,7 @@ a core, and $A=\sum_{x\in F}a_x$ the total tokens.
 The two globally valid charges are
 
 $$
-f_{\mathrm{bin}}(C)=\mathbf 1_{\{h(C)\geq t\}},\qquad
+f_{\mathrm{bin}}(C)=\mathbf 1_{\lbrace h(C)\geq t\rbrace},\qquad
 f_{\mathrm{floor}}(C)=\left\lfloor\frac{h(C)}{t}\right\rfloor,
 \qquad b=\left\lfloor\frac A t\right\rfloor.
 $$
@@ -476,7 +476,7 @@ face** is the entire set of dual solutions attaining $v$:
 
 $$
 \mathcal F_{\mathrm{old}}
-=\{y\geq0:A^{\mathsf T}y\leq b,\ \mathbf 1^{\mathsf T}y=v\}.
+=\lbrace y\geq0:A^{\mathsf T}y\leq b,\ \mathbf 1^{\mathsf T}y=v\rbrace.
 $$
 
 The superscript $\mathsf T$ means transpose, $\mathbf 1$ is the vector of ones, and
@@ -485,8 +485,8 @@ Proposed new atom columns have matrix $A_{\mathrm{new}}$ and budgets $b_{\mathrm
 The new columns strictly lower the finite covering optimum **if and only if**
 
 $$
-\{y\in\mathcal F_{\mathrm{old}}:
-A_{\mathrm{new}}^{\mathsf T}y\leq b_{\mathrm{new}}\}=\varnothing.
+\lbrace y\in\mathcal F_{\mathrm{old}}:
+A_{\mathrm{new}}^{\mathsf T}y\leq b_{\mathrm{new}}\rbrace=\varnothing.
 $$
 
 In words, no old optimal dual solution satisfies all the new capacity inequalities.
@@ -565,7 +565,7 @@ strict common-surplus bound.
 A **contact graph** has one vertex for each physical unit square and an edge when two
 squares touch. A **contact component** is a maximal group connected by paths in this
 graph; it refers to parents, not their strict cores.
-A square’s **incircle** is the radius-$1/2$ circle centred at its centre and contained
+A square’s **incircle** is the radius-`1/2` circle centred at its centre and contained
 in the square.
 
 For two unit squares touching the left wall, their centre $x$ coordinates differ by at
@@ -630,7 +630,7 @@ The Cartesian product chooses one available label at each corner:
 
 $$
 \Gamma(\mathcal P)
-=\prod_{c\in\{\mathrm{BL},\mathrm{BR},\mathrm{TL},\mathrm{TR}\}}
+=\prod_{c\in\lbrace\mathrm{BL},\mathrm{BR},\mathrm{TL},\mathrm{TR}\rbrace}
 A_c(\mathcal P).
 $$
 
@@ -724,7 +724,7 @@ known; X-027 is not an instruction to run every row at once.
 - **Find fractional mass eleven at $3.83\leq L\leq3.85$.** Already answered by exact
   transport. Reopen for a smaller frozen side or a new capacity family, not existence in
   that range.
-- **Replace point sites by unrestricted continuous density to cross $L_*$.** The
+- **Replace point sites by unrestricted continuous density to cross $L_{\ast}$.** The
   retained family and the duality argument block this unconditional method.
   Reopen with a richer charge or conditional domain whose witness membership is checked.
 - **Split the same neutral endpoint patches again.** These guaranteed occupied regions
@@ -764,7 +764,7 @@ known; X-027 is not an instruction to run every row at once.
 
 The coordinator checked the source scopes and consequential deductions, and assembled
 the comparison. A separate integrated review found no mathematical blocker and prompted
-four scope corrections: limit the introductory cap claim to sides past $L_*$,
+four scope corrections: limit the introductory cap claim to sides past $L_{\ast}$,
 distinguish timeouts from exact packet rejection, preserve the possible usefulness of
 ordinary replacement columns, and separate the angle-demand and charge-language
 controls. Its broken structural-section link was also corrected.

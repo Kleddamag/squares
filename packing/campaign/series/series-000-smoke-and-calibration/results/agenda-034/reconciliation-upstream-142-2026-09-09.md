@@ -103,7 +103,7 @@ match count was checked against an independent count.
 | `H-146` | `H-155` | " | " |
 | `H-147` | `H-156` | " | " |
 | `H-149` | `H-157` | " | " |
-| idea rows `139` to `144` | `148` to `153` | `ideas.md` only, anchored to the table cell | 6 |
+| idea rows $139$ to $144$ | $148$ to $153$ | `ideas.md` only, anchored to the table cell | 6 |
 | `results/agenda-033/` | `results/agenda-034/` | `git mv`, then repository-wide reference pass | 97 files, 137 references over 35 files |
 | `session-114-past-the-point-atom-ceiling` | `session-125-past-the-point-atom-ceiling` | repository, file rename included | 8 over 4 files |
 
@@ -159,7 +159,7 @@ Every generated view was re-rendered afterwards: `render_results --update`,
 
 The `n-011.md` front-matter evidence list is a union of twenty ids, seventeen ours and
 nine theirs over a shared six, with nothing dropped and nothing invented.
-The verified lower bound reads `3.826447410572939` in all three places it appears.
+The verified lower bound reads $3.826447410572939$ in all three places it appears.
 
 ## 4. The exp-137 receipt: their prune, our citation
 

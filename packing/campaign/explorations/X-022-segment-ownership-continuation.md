@@ -42,24 +42,24 @@ The working side is q = 96/25. No local result here decides whether eleven squar
 
 ## What the local proofs establish
 
-For the ten horizontal segment labels of H-134 at tolerance `δ = 3/500`:
+For the ten horizontal segment labels of H-134 at tolerance $\delta = 3/500$:
 
 - Each of the two outer middle-row segments has sharp owner capacity two.
   Every owner contains one of two rational piercing points in its interior, with a
   closed radius-`1/1000` disk about the selected point.
   Two axis-aligned touching squares attain the capacity.
 - Each of the other eight segments has sharp owner capacity four.
-  Every owner centre is within `1/√2 + 7/125 < 4/5` of the segment midpoint; five such
-  centres would put two less than one unit apart.
+  Every owner centre is within $1/\sqrt{2} + 7/125 < 4/5$ of the segment midpoint; five
+  such centres would put two less than one unit apart.
   Four axis-aligned squares sharing the midpoint as a vertex attain the capacity.
-- If `Q₋` and `Q₊` own the same outer segment and are ordered by the lower and upper
-  piercing points, any separating unit normal `v` directed from `Q₋` to `Q₊` satisfies
-  `v_y ≥ 1/280` and `56v_y ≥ 62|v_x| - 1`. The stronger signed-angle argument excludes
-  any pair whose folded half-tangents both lie in `[1997/6000, √2 - 1]`, or both lie in
-  its reflected band `[1 - √2, -1997/6000]`, with exact contradiction margin
-  `501/1000000`. The reviewed fixed-angle screen enumerates every separating-axis branch
-  of the declared necessary relaxation for one supplied rational angle pair.
-  A surviving branch remains unresolved geometry.
+- If $Q_-$ and $Q_+$ own the same outer segment and are ordered by the lower and upper
+  piercing points, any separating unit normal $v$ directed from $Q_-$ to $Q_+$ satisfies
+  $v_y \ge 1/280$ and $56v_y \ge 62|v_x| - 1$. The stronger signed-angle argument
+  excludes any pair whose folded half-tangents both lie in $[1997/6000, \sqrt{2} - 1]$,
+  or both lie in its reflected band $[1 - \sqrt{2}, -1997/6000]$, with exact
+  contradiction margin $501/1000000$. The reviewed fixed-angle screen enumerates every
+  separating-axis branch of the declared necessary relaxation for one supplied rational
+  angle pair. A surviving branch remains unresolved geometry.
 
 ## What the exact counterexamples prevent us from claiming
 
@@ -67,7 +67,7 @@ Two four-square constructions close two tempting shortcuts:
 
 1. Two owners of one outer segment coexist with distinct owners of the two adjacent
    selected corner marks.
-   The corner marks lie strictly in their selected nearest-net `B = 9977/10000` cores.
+   The corner marks lie strictly in their selected nearest-net $B = 9977/10000$ cores.
    Thus outer-pair ownership plus those two distinct corner owners is compatible
    locally.
 2. Four diamond squares give two distinct owners for each of two adjacent corner-pair
@@ -82,7 +82,7 @@ squares.
 There is one exact partial-pattern exclusion.
 Fix the lower left and lower right outer owners as the axis-aligned squares used by the
 capacity witness. Two additional squares cannot own the forced bottom-left and
-bottom-right marks: both would contain the same point `(48/25, 2336/3175)` in their
+bottom-right marks: both would contain the same point $(48/25, 2336/3175)$ in their
 interiors. The alternate marks already lie inside the fixed outer squares.
 This excludes the specified fixed cross-container pattern, including selected-core
 ownership and boundary touching.
@@ -93,8 +93,8 @@ It does not extend to arbitrary placements of the outer owners.
 The
 [robust outer-corner proof](../series/series-000-smoke-and-calibration/results/agenda-031/proofs/robust-outer-corner-incompatibility.md)
 extends the fixed-pattern exclusion to outer squares containing the specified
-`1/1000`-inset rectangles.
-Euclidean Hausdorff distance at most `1/1000` from each fixed axis square is a
+$1/1000$-inset rectangles.
+Euclidean Hausdorff distance at most $1/1000$ from each fixed axis square is a
 sufficient condition.
 Any additional owner of a forced bottom mark contains the same closed radius-`1/100`
 disk in its interior, so the two additional opposite-bottom owners cannot coexist.

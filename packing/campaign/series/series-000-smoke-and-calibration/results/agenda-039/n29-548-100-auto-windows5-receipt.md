@@ -6,20 +6,20 @@ T-030 was not offered.
 
 Session-141 exp-171: seedless auto grids plus `--seed-windows 5`,
 `(n, L, B, net) = (29, 548/100, 9977/10000, 181 steps / 182 directions)`. Auto resolved
-to `(39, 53, 65)`. Seed sites 625 (windows only).
-The row loop converged at LP round 52 (violated 0) at `26.040745` on 9145 sites / 1230
-orbits. Freeze mass `52081879/2000000 = 26.0409395`. 1329 atoms.
+to $(39, 53, 65)$. Seed sites 625 (windows only).
+The row loop converged at LP round 52 (violated 0) at $26.040745$ on 9145 sites / 1230
+orbits. Freeze mass $52081879/2000000 = 26.0409395$. 1329 atoms.
 Never crossed 29.
 
-Declare accepted least cell mass `4000013/4000000`. Decide interval: `accepted=False`,
-enclosure `(398409/400000, 4000013/4000000)`, 4,960,181 boxes, 272 stalled (65 s).
+Declare accepted least cell mass $4000013/4000000$. Decide interval: `accepted=False`,
+enclosure $(398409/400000, 4000013/4000000)$, 4,960,181 boxes, 272 stalled (65 s).
 Condition 5 refused.
 The enclosure has width.
 The exact route did not run in this original decision; the later replay is recorded
 below. `EXIT:1`. Not `RETAINABLE`.
 
 This is the first first-party covering row at n=29, and the first Nagamochi freeze with
-mass `< n`. A freeze that the interval route refuses is not a verified floor.
+mass $< n$. A freeze that the interval route refuses is not a verified floor.
 The original scheduling decision deferred more work on this set.
 No new LP run is needed for the existing candidate; a future interval-verification
 budget may retry it as specified by exp-171. Nagamochi `1 + sqrt(20)` stands.
@@ -49,11 +49,11 @@ Covering wall 1068.7 s. Declare ~45 s (`11:45:12Z`–`11:45:57Z`). Decide 66 s
 
 | Quantity | Value |
 | --- | --- |
-| Restricted optimum | `26.040745` |
+| Restricted optimum | $26.040745$ |
 | Freeze mass | `52081879/2000000` = 26.0409395 |
 | Sites / orbits / rows | 9145 / 1230 / 14722 |
 | Seed sites | 625 |
-| Auto grids | `(39, 53, 65)` |
+| Auto grids | $(39, 53, 65)$ |
 | LP rounds | 52 |
 | Atoms | 1329 |
 | Crossing | none |
@@ -65,16 +65,16 @@ Covering wall 1068.7 s. Declare ~45 s (`11:45:12Z`–`11:45:57Z`). Decide 66 s
 
 | Quantity | Value |
 | --- | --- |
-| Declare | accepted; least `4000013/4000000` |
+| Declare | accepted; least $\frac{4000013}{4000000}$ |
 | Interval | refused; 272 stalled; Condition 5 |
-| Enclosure | `(398409/400000, 4000013/4000000)` |
+| Enclosure | $(\frac{398409}{400000}, \frac{4000013}{4000000})$ |
 | Boxes | 4,960,181 |
 | Exact | not run |
 | Verdict | not `RETAINABLE` |
 
 Correctness review (2026-09-19): the table preserves the original run.
 A fresh exact replay accepts the retained frozen candidate with least mass
-`4000013/4000000`. The stalled interval route remains unresolved; no result is promoted
+$4000013/4000000$. The stalled interval route remains unresolved; no result is promoted
 from this one-route success.
 
 <!-- This document follows common-doc-guidelines.md.

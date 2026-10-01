@@ -43,7 +43,7 @@ Human record tables often advance by adding or removing a square from a nearby
 construction. This turns that practice into a controlled proposer comparison at a cell
 where the target is cheap to recognize.
 
-The target is deliberately an equal-budget improvement at the open `n = 11` cell.
+The target is deliberately an equal-budget improvement at the open $n = 11$ cell.
 Reaching or missing Trump’s standing upper bound is reported separately; it is not
 needed to decide whether transfer is a useful proposer.
 

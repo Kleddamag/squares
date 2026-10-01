@@ -143,7 +143,7 @@ required before acceptance.
 supplies the weak-duality semantics.
 [Agenda 026](../agendas/agenda-026-density-stationarity-and-trump-capture.md) routes the
 screen through `think-01q4` and any justified BC-243 certification through `think-mt6q`.
-A verified $D>11$ rules out mass-eleven area density at $U$, not below-$U$ density.
+A verified $D>11$ rules out mass-eleven area density at $U$, not below-`U` density.
 This is the finite discriminator for
 [X-016’s closure route](../explorations/X-016-after-381-two-managers-one-proof-boundary.md#closure-route).
 

@@ -46,19 +46,19 @@ Stated so a checker can hold it:
 Not registered, and kept where they are now (the case record, the retained packet):
 
 - rungs of a ladder that the same release supersedes before anything is done with them
-  (wand125’s same-day `3659/500` and `147/20` below `37/5`);
+  (wand125’s same-day $3659/500$ and $147/20$ below $37/5$);
 - publication records never replayed and never holding a field (Guzhou0806’s R042, R043,
   R050 and the R052 continuation; ahyangyi’s unretained `v1.1.1`);
 - results below the standing verified bound that ask for no work (Evan Daniel’s
-  `s(11) ≥ 3040/797`, `s(12) ≥ 35/9` and `3920/997`);
+  $s(11) \ge 3040/797$, $s(12) \ge 35/9$ and $3920/997$);
 - reports of already-known values that move nothing and have no review queued (Evan
-  Daniel’s case-free `s(13) = 4`), unless the owner queues a review;
+  Daniel’s case-free $s(13) = 4$), unless the owner queues a review;
 - 2026 results dated before 22 August that never held a verified field here (Brandwijk,
   Burns, MacIver, Mira’s and Fort’s sixteen-point sets, anabologyco-maker).
 
 **Granularity.** One entry per source release and claim, where every part of the claim
 stands at the same rung.
-One entry may cover several `n` through `scope`, as `T-019` does.
+One entry may cover several $n$ through `scope`, as `T-019` does.
 When the parts stand at different rungs, the entry splits, for example wand125’s
 rectangle certificates into the replayed counts and the reported ones.
 As replays land, counts move from the reported entry to the replayed one.
@@ -70,25 +70,25 @@ Rungs are as the records stand at `901dbc59`, derived by `check_results`.
 
 | Group | Entry | Result | Rung | Holds a case bound |
 | --- | --- | --- | --- | --- |
-| Building on this project | `T-037` | Kleddamag, `s(11) > 31/8` | `V4/C4` | yes |
-|  | `T-038` | Kleddamag `v1.0.0`, `s(17) > 461300/99853` | `V4/C3` | no |
-|  | `T-039` | Guzhou0806 R052, `s(17) > 231001/50000` | `V4/C3` | no |
-|  | `T-040` | Kleddamag `v1.1.0`, `s(17) > 232001/50000` | `V4/C3` | no |
-|  | `T-041` | Kleddamag, `s(17) > 466001/100000` | `V4/C3` | no |
-|  | `T-042` | Guzhou0806 R067, `s(17) > 233009/50000` | `V4/C3` | never held |
-|  | `T-043` | Guzhou0806 R068, `s(17) > 116511/25000` | `V4/C3` | yes |
-|  | `T-044` | wand125 point certificates, `n = 26, 29, 39–41, 52, 53, 55, 56, 68–72` | `V4/C3` | yes |
-|  | `T-045` | wand125 rectangle certificates, replayed: `n = 27, 28, 31, 32` | `V4/C3` | yes |
-|  | `T-046` | wand125 rectangle certificates, reported: 48 counts, `n = 18–95` | `V0/C0` | yes, reported lane |
-| Crediting this project second-hand | `T-047` | Tokoharu, `n = 11, 26–31` | `V4/C3` | yes |
-| Independent | `T-048` | wand125, `s(50) ≥ 37/5` (its source credits Evan Daniel and Tokoharu) | `V0/C0`, replay running | yes, reported lane |
-|  | `T-049` | Evan Daniel, `s(12) ≥ 15680/3951` | `V4/C4` | yes |
-|  | `T-050` | Evan Daniel, `s(21) ≥ 5000/1001` | `V4/C3` | no |
-|  | `T-051` | Evan Daniel, `s(32) = 6` | `V4/C3` | yes |
-|  | `T-052` | Evan Daniel, `s(21) = 5` | `V4/C3` | yes |
-|  | `T-053` | Evan Daniel, `s(45) = 7` | `V4/C3` | yes |
-|  | `T-054` | wand125, point-only `s(45) = 7` | `V4/C3` | second certificate |
-|  | `T-055` | wand125, point-only `s(21) = 5` | `V0/C0`, replay running | second certificate |
+| Building on this project | `T-037` | Kleddamag, $s(11) > \frac{31}{8}$ | `V4/C4` | yes |
+|  | `T-038` | Kleddamag `v1.0.0`, $s(17) > \frac{461300}{99853}$ | `V4/C3` | no |
+|  | `T-039` | Guzhou0806 R052, $s(17) > \frac{231001}{50000}$ | `V4/C3` | no |
+|  | `T-040` | Kleddamag `v1.1.0`, $s(17) > \frac{232001}{50000}$ | `V4/C3` | no |
+|  | `T-041` | Kleddamag, $s(17) > \frac{466001}{100000}$ | `V4/C3` | no |
+|  | `T-042` | Guzhou0806 R067, $s(17) > \frac{233009}{50000}$ | `V4/C3` | never held |
+|  | `T-043` | Guzhou0806 R068, $s(17) > \frac{116511}{25000}$ | `V4/C3` | yes |
+|  | `T-044` | wand125 point certificates, $n = 26, 29, 39\text{–}41, 52, 53, 55, 56, 68\text{–}72$ | `V4/C3` | yes |
+|  | `T-045` | wand125 rectangle certificates, replayed: $n = 27, 28, 31, 32$ | `V4/C3` | yes |
+|  | `T-046` | wand125 rectangle certificates, reported: 48 counts, $n = 18\text{–}95$ | `V0/C0` | yes, reported lane |
+| Crediting this project second-hand | `T-047` | Tokoharu, $n = 11, 26\text{–}31$ | `V4/C3` | yes |
+| Independent | `T-048` | wand125, $s(50) \ge \frac{37}{5}$ (its source credits Evan Daniel and Tokoharu) | `V0/C0`, replay running | yes, reported lane |
+|  | `T-049` | Evan Daniel, $s(12) \ge \frac{15680}{3951}$ | `V4/C4` | yes |
+|  | `T-050` | Evan Daniel, $s(21) \ge \frac{5000}{1001}$ | `V4/C3` | no |
+|  | `T-051` | Evan Daniel, $s(32) = 6$ | `V4/C3` | yes |
+|  | `T-052` | Evan Daniel, $s(21) = 5$ | `V4/C3` | yes |
+|  | `T-053` | Evan Daniel, $s(45) = 7$ | `V4/C3` | yes |
+|  | `T-054` | wand125, point-only $s(45) = 7$ | `V4/C3` | second certificate |
+|  | `T-055` | wand125, point-only $s(21) = 5$ | `V0/C0`, replay running | second certificate |
 | Before this project | `T-004`, `T-006`, `T-007`, `T-008`, `T-011`, `T-015`, `T-016` | Bentz, Nagamochi, Trump, Massaccesi | unchanged | varies |
 | Building on this project | `T-032` | Guzhou0806 R012 and Mira | unchanged | no |
 
@@ -115,7 +115,7 @@ The credit line, the authors and the lineage are read from the bibliography entr
 keys resolve to, never restated here, so the credit on an original result has one home.
 `published` may be a year alone for a source that carries no date (Trump’s 1979
 packing). `published` is the date the result entered its source, which can precede the
-date this record first saw it (Evan Daniel’s `s(12)`, in his repository from 25 August
+date this record first saw it (Evan Daniel’s $s(12)$, in his repository from 25 August
 and first seen here on 27 September).
 
 **`lineage`** on each bibliography entry cited by an attributed result dated on or after
@@ -125,9 +125,9 @@ second-hand and brings its own method), or `independent`. It is typed because th
 `credit` string is prose that `build_bound_citations` declines to parse.
 A test holds the two together: a credit that reads “after … Levy” is `builds-on-project`
 or `credits-project`, and one that does not is `independent`. That test would have
-caught the four `n = 17` credit gaps the W8 inventory found.
+caught the four $n = 17$ credit gaps the W8 inventory found.
 
-**Whether a result holds a case bound** is derived, not declared: yes when some `n` in
+**Whether a result holds a case bound** is derived, not declared: yes when some $n$ in
 its scope has a reported or verified bound that cites one of its evidence entries.
 A result that does not was superseded, or is a second certificate for a value another
 holds. The renderer prints it; nothing stores it.
@@ -209,8 +209,8 @@ jlevy/squares#241.
 
 1. The source-run refinement above: `V4/C0` for reported results with a retained source
    receipt, or `V0` until this repository replays them.
-2. Whether Evan Daniel’s case-free `s(13) = 4` should enter with a review queued.
-3. `T-017`’s claim to be “the first lower bound specific to `n = 12` in the retained
+2. Whether Evan Daniel’s case-free $s(13) = 4$ should enter with a review queued.
+3. `T-017`’s claim to be “the first lower bound specific to $n = 12$ in the retained
    corpus”: the corpus now holds Evan Daniel’s earlier certificate.
    The default is to annotate the claim “reached independently” and keep
    `apparently-novel`, since the search that supported it was sound when made.

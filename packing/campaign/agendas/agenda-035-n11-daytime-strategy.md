@@ -583,10 +583,10 @@ BC337 is the secondary parent-conditioning lane.
 BC327 still needs multiplicity admission, a paired-program adapter and a fresh common
 row manifest before its changed-atom comparison can run.
 
-The analytic `76469/20000` translation threshold does more than place the obstruction in
+The analytic $76469/20000$ translation threshold does more than place the obstruction in
 the conservative box: every translated core has an explicit individually contained
 zero-mismatch unit parent.
-This removes point-only singleton-parent tightenings at `3.827` with the old B and
+This removes point-only singleton-parent tightenings at $3.827$ with the old B and
 retained nodes. It does not remove the conditional saved-escape test, changed-core
 packet, changed-charge program, or owner/contact route.
 

@@ -295,8 +295,8 @@ against a 240 s ceiling**, which is 52% of the tier’s budget and inside its ba
 
 `BC-371` is the one cell on the slate that could convert a retained external artifact
 into a first-party bound.
-The registered value is `T-032`’s `461300/99999 = 4.613046`; the artifact claims
-`461300/99853 = 4.619791` in a restricted parent-centre language this repository does
+The registered value is `T-032`’s $461300/99999 = 4.613046$; the artifact claims
+$461300/99853 = 4.619791$ in a restricted parent-centre language this repository does
 not implement, which is why it is retained at `V4/C3` and registered by nothing.
 
 The cell is worth running in both directions, and `X-041` says why.
@@ -307,7 +307,7 @@ nobody has.
 
 What makes the negative trustworthy is the control, and it is stated before the run
 rather than after it: the translated sites must reproduce the artifact’s own stated
-minimum of `1,000,020,517` units over its own 7,853 restricted rows, exactly.
+minimum of $1{,}000{,}020{,}517$ units over its own 7,853 restricted rows, exactly.
 A translation that cannot do that decides nothing, and a bound read off it would be an
 artifact of the translation rather than of the measure.
 

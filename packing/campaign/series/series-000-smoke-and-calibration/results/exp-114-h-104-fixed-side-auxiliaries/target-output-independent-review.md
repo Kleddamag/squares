@@ -25,7 +25,7 @@ the coordinator’s recorded provenance responsibilities.
 The independent reader bound the exact side and both point sets to its separate formula
 transcription, including ten distinct points, the ordered twelve points, and their
 first-three A labels.
-It checked the completed angle order `0,45`, all seven Boolean outcomes, the
+It checked the completed angle order $0,45$, all seven Boolean outcomes, the
 checked/unchecked inventories, the absence of failed clauses and witnesses, and
 consistency with the supplied producer exit status.
 The packet retains `perturbed_angles_evaluated: false` and `theorem_acceptance: false`.
@@ -35,8 +35,8 @@ localization, the three separate A-point forcing clauses in the canonical region
 45-degree twelve-cover.
 Closed-unit boundary placements and the four $K_4$ reflections retain the reviewed
 algorithm’s semantics.
-The packet reports event-product strata by dimensions 0, 1, and 2 as `[280, 526, 247]`
-at 0° and `[668, 1397, 728]` at 45°. It reports six 45-degree ten-set-avoiding strata,
+The packet reports event-product strata by dimensions 0, 1, and 2 as $[280, 526, 247]$
+at 0° and $[668, 1397, 728]$ at 45°. It reports six 45-degree ten-set-avoiding strata,
 one in the canonical region.
 These counts are diagnostics, not independent evidence of exhaustive coverage.
 

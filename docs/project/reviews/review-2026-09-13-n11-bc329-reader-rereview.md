@@ -39,8 +39,8 @@ execution identity and the actual reader commit, with no revision-binder mock.
 
 The exact arithmetic continues to support the frozen fixture’s raw minimum and budget 2,
 normalized minimum and budget 1, integer scale 8, and 14,404 retained direction rows.
-The factor and side squares are respectively `132710404/33189121` and
-`298598409/132756484`; their positive-root polynomials and decimal presentations agree
+The factor and side squares are respectively $132710404/33189121$ and
+$298598409/132756484$; their positive-root polynomials and decimal presentations agree
 with the repaired record.
 The endpoint remains a non-strict supremum conclusion with no individual endpoint
 certificate. These mathematical checks do not verify that a synthetic row collection
@@ -95,9 +95,9 @@ record bindings and the inventory, then invokes full real-binder readback.
 
 | Control | Contradiction | Observed |
 | --- | --- | --- |
-| Shift raw tasks by `-0.19` seconds | First raw task starts at approximately 0.01, before the 0.1-second preflight can finish. | Accepted |
-| Shift exact tasks by `-0.3` seconds | First exact task starts at 0.5; preflight, raw, and normalization already require at least 0.7 seconds. Raw task observations nevertheless finish before exact task observations. | Accepted |
-| Shift exact tasks by `+0.8` seconds | Last exact task finishes at approximately 1.88805; the subsequent interval, dilation, and worker readback require another 0.3 seconds, beyond worker elapsed 2.0. | Accepted |
+| Shift raw tasks by $-0.19$ seconds | First raw task starts at approximately 0.01, before the 0.1-second preflight can finish. | Accepted |
+| Shift exact tasks by $-0.3$ seconds | First exact task starts at 0.5; preflight, raw, and normalization already require at least 0.7 seconds. Raw task observations nevertheless finish before exact task observations. | Accepted |
+| Shift exact tasks by $+0.8$ seconds | Last exact task finishes at approximately 1.88805; the subsequent interval, dilation, and worker readback require another 0.3 seconds, beyond worker elapsed 2.0. | Accepted |
 
 The sequence is explicit in producer `run_worker` and `execute_calibration`: preflight
 finishes before raw begins; normalization follows raw; exact precedes interval,

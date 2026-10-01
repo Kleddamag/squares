@@ -41,9 +41,9 @@ scaled_total   = 9.907906
 ```
 
 The latest completed row, iteration 7, was not converged.
-Its printed objective `11.012417` is not an upper endpoint.
-Its exact scaled total was `43984176092/4477804693`; the best exact lower endpoint
-remained `43715381412/4362517039` from iteration 2. At the boundary the mutable state
+Its printed objective $11.012417$ is not an upper endpoint.
+Its exact scaled total was $43984176092/4477804693$; the best exact lower endpoint
+remained $43715381412/4362517039$ from iteration 2. At the boundary the mutable state
 and log hashes were, respectively,
 `3f63a5f1c1a95c24d4db4eecd6ebbfb0c3aaebac400c48333dfd656c5628f353` and
 `72883364cca26d960159333326a520ea1330a8a365bfeea3c4ed0bebbe47992a`.
@@ -60,7 +60,7 @@ dcc220357eeb7b5a37e775c00fcf5569608ffa77d6ee4796feff026bb3e46f2c  run_fractional
 ## BC-233 matched launch
 
 All three screen summaries remained strict JSON, converged, zero-exit, and paired with
-frozen candidates. The selected `1/2` candidate retained exact mass `11142897/1000000`
+frozen candidates. The selected $1/2$ candidate retained exact mass $11142897/1000000$
 and SHA-256 `628d7e55d664c5256a9331b9a68166306a30c275432a997bfe9fab1a9ca0fc5a`. All
 eight released/control paths were absent at the boundary.
 

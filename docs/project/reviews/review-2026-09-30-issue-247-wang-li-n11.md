@@ -7,17 +7,17 @@ and no bound was moved by writing it.
 The separate retention and replay lane’s directory and receipts were not consulted, so
 the numbers below rest on this lane’s own downloads and code.
 
-**In one line:** the bound is Kleddamag’s reviewed `s(11) > 31/8` parent-core
+**In one line:** the bound is Kleddamag’s reviewed $s(11) > 31/8$ parent-core
 certificate (T-037) with thirteen threshold-orbit weights raised and the parent and
-every core shrunk by the same rational factor `λ = 1 − 10⁻⁹`; no mathematical defect was
-found, every hypothesis of the counting and transfer theorem was re-derived here for the
-new parameters with exact arithmetic by code sharing nothing with the release or with
-Kleddamag, 651 of the 12,028 rows, the shrink-sensitive and the historically weakest
-rows first, were re-decided here by that code and every one returns exactly
-`1000047559`, and the claimed constants are all exact.
-The improvement, `31/7999999992 ≈ 3.9 × 10⁻⁹`, is real and is the smallest step the
-public `s(11)` ladder has taken; the release itself calls it a proof-of-slack result,
-and the register should describe it in those terms.
+every core shrunk by the same rational factor $\lambda = 1 - 10^{-9}$; no mathematical
+defect was found, every hypothesis of the counting and transfer theorem was re-derived
+here for the new parameters with exact arithmetic by code sharing nothing with the
+release or with Kleddamag, 651 of the 12,028 rows, the shrink-sensitive and the
+historically weakest rows first, were re-decided here by that code and every one returns
+exactly `1000047559`, and the claimed constants are all exact.
+The improvement, $31/7999999992 \approx 3.9 \times 10^{-9}$, is real and is the smallest
+step the public $s(11)$ ladder has taken; the release itself calls it a proof-of-slack
+result, and the register should describe it in those terms.
 
 ## 1. What Was Reviewed
 
@@ -26,8 +26,8 @@ and the register should describe it in those terms.
 | Source | Zenodo record 23038546, DOI `10.5281/zenodo.23038546`, published 2026-09-29 |
 | Creators | Wang Ke and Li Can, Fudan University (no ORCIDs) |
 | Issue | jlevy/squares #247, opened 2026-09-29T13:38Z by GitHub user `XiaoLiaoShe`, signed Ke Wang and Can Li |
-| Claim | `s(11) > 3875000000/999999999 = 3.875000003875000003875…`, strict |
-| Container, parent | `L = 191/50`, `A′ = 190999999809/193750000000 = λ · 764/775`, `L/A′ = 3875000000/999999999` |
+| Claim | $s(11) > \frac{3875000000}{999999999} = 3.875000003875000003875\ldots$, strict |
+| Container, parent | $L = \frac{191}{50}$, $A^{\prime} = \frac{190999999809}{193750000000} = \lambda \cdot \frac{764}{775}$, $L/A^{\prime} = \frac{3875000000}{999999999}$ |
 | Archive | `n11_wang_li_zenodo_release_2026-09-29_stage10_doi_23038546-1.zip`, 2,495,053 bytes, MD5 `52c82aee798ab94d3733c749eecd70de` (matches Zenodo), SHA-256 `80381e22ab3535cdd113fb35f3a475b1071593af5d809ab65684af46ad98e648` |
 | Source certificate | `certificate/global-certificate-original.json`, SHA-256 `57e9927da5c13f42dd8bcbf8f08c84363635fece626657ee63a810c61cd44458`, byte-identical to the repository’s retained Kleddamag v1.0.2 certificate |
 | Improved certificate | `certificate/improved-global-certificate.json`, 3,513,169 bytes, SHA-256 `31e10ceb8368cc858e61f45ce7cfee783e8d0c7910893559164810f45439cc34` |
@@ -76,86 +76,87 @@ Nothing in the argument is tied to the old numbers.
 
 ## 3. The Theorem
 
-**Statement.** Let `L`, `A` be positive rationals.
-A *parent* is a closed side-`A` square in `[0, L]²` at any orientation; parents may
+**Statement.** Let $L$, $A$ be positive rationals.
+A *parent* is a closed side-`A` square in $[0, L]^2$ at any orientation; parents may
 touch, their interiors are disjoint.
-The certificate supplies a finite D4-invariant set of sites in `[0, L]²` (679 orbits,
+The certificate supplies a finite D4-invariant set of sites in $[0, L]^2$ (679 orbits,
 5,284 distinct sites), nonnegative integer weights on ordinary sites (66 positive
-orbits, 496 sites) and on `k`-of-`m` threshold features (132 two-of-three orbits, 10
+orbits, 496 sites) and on $k$-of-`m` threshold features (132 two-of-three orbits, 10
 two-of-five, 142 three-of-five; 2,220 features in all), and a catalogue of 12,028 rows
-`(a, b, t, B)`: for every parent whose folded half-tangent `u` lies in `[a, b]` it
-assigns the concentric closed core of side `B` at half-tangent `t`. The charge of a core
-`Q` is the weighted count of ordinary sites it holds plus the weight of every threshold
-feature of which it holds at least `k` of the `m` sites.
+$(a, b, t, B)$: for every parent whose folded half-tangent $u$ lies in $[a, b]$ it
+assigns the concentric closed core of side $B$ at half-tangent $t$. The charge of a core
+$Q$ is the weighted count of ordinary sites it holds plus the weight of every threshold
+feature of which it holds at least $k$ of the $m$ sites.
 
-*Budget.* Across pairwise disjoint closed cores an ordinary site pays at most `w` and a
-`k`-of-`m` feature at most `⌊m/k⌋ w`, because `q` firing cores hold `q` disjoint
-captured subsets of at least `k` sites each, so `qk ≤ m`; the inequalities add even when
-features share sites.
-Hence `Σ C(Qᵢ) ≤ M` for any disjoint family.
-*Transport.* If `B(cos δ + |sin δ|) < A` for every `u ∈ [a, b]`, with
-`δ = 2 arctan u − 2 arctan t`, the core lies strictly inside every parent of the row;
-and if `C(Q) ≥ Γ` for every legal centre of every row, then eleven parents with disjoint
-interiors have eleven pairwise disjoint cores with total charge `≥ 11Γ`.
-*Contradiction.* `11Γ > M` excludes eleven parents of side `A` in side `L`, hence eleven
-unit squares in side `L/A`. *Strictness.* Feasible packings with container side at most
-4 form a compact set on which containment and interior-disjointness are closed
-conditions, so the infimum is attained, and exclusion at `L/A` gives `s(11) > L/A`.
-*Folding.* The eight symmetries of the container preserve the weighted charge system
-(every point orbit is a full D4 orbit, every threshold orbit is a complete set of 4 or 8
-images with one weight), so each parent’s orientation is folded into `[0, π/4]`
-separately, with no symmetry imposed on the packing.
+*Budget.* Across pairwise disjoint closed cores an ordinary site pays at most $w$ and a
+$k$-of-`m` feature at most $\lfloor m/k\rfloor w$, because $q$ firing cores hold $q$
+disjoint captured subsets of at least $k$ sites each, so `qk ≤ m`; the inequalities add
+even when features share sites.
+Hence $\Sigma C(Q_i) \le M$ for any disjoint family.
+*Transport.* If $B(\cos \delta + |\sin \delta|) < A$ for every $u \in [a, b]$, with
+$\delta = 2 \arctan u - 2 \arctan t$, the core lies strictly inside every parent of the
+row; and if $C(Q) \ge \Gamma$ for every legal centre of every row, then eleven parents
+with disjoint interiors have eleven pairwise disjoint cores with total charge
+$\ge 11\Gamma$. *Contradiction.* $11\Gamma > M$ excludes eleven parents of side $A$ in
+side $L$, hence eleven unit squares in side $L/A$. *Strictness.* Feasible packings with
+container side at most 4 form a compact set on which containment and
+interior-disjointness are closed conditions, so the infimum is attained, and exclusion
+at $L/A$ gives $s(11) > L/A$. *Folding.* The eight symmetries of the container preserve
+the weighted charge system (every point orbit is a full D4 orbit, every threshold orbit
+is a complete set of 4 or 8 images with one weight), so each parent’s orientation is
+folded into $[0, \pi/4]$ separately, with no symmetry imposed on the packing.
 
 **Each hypothesis for the new parameters**, all re-derived here with `Fraction`
 arithmetic on the frozen improved certificate:
 
 | Hypothesis | How checked here | Result |
 | --- | --- | --- |
-| Charge system nonnegative | every point weight and orbit weight read as `int ≥ 0` | holds; the thirteen changes are `+1` to `+34344` |
+| Charge system nonnegative | every point weight and orbit weight read as `int ≥ 0` | holds; the thirteen changes are $+1$ to $+34344$ |
 | D4 invariance | orbit of `sets[0]` under the 8 symmetries equals the listed sets, one weight per orbit; point orbits expanded and deduplicated, no site repeated | holds for all 284 charge orbits and 679 point orbits (identical to the source) |
 | Sites distinct within a feature, indices in range | asserted per feature | holds |
-| Catalogue contiguous from 0, past `tan(π/8)` | `a₀ = 0`, each `a` equals the previous `b`, last `b = 207107/500000` with `b² + 2b − 1 = 309449/250000000000 > 0` | holds (unchanged) |
-| Relative angle in `[−π/4, π/4]` | `dot > 0` and `dot ≥ |cross|` at both endpoints, `2 arctan` monotone | holds (depends on `a, b, t` only) |
-| Core strictly inside every parent | `A′ − B′·max endpoint width > 0` for all rows; **and independently** by maximising the two exact quadratics `q(u) < 0` on `[a, t]` and `[t, b]`, vertices included, which does not use the endpoint-extremum lemma | holds; minimum endpoint margin `999999999/10²¹ = λ · 10⁻¹²` at row 0; all 12,028 rows also pass the quadratic form, whose supremum of `(1+u²)(BW − A)` is `−999999999/10²¹`, at row 0 |
-| Centre envelope `[r, L−r]²` with `r = A′ min(f(a), f(b))/2` | `f(u) = (1+2u−u²)/(1+u²)` has its only stationary point at `u = √2 − 1`, a maximum, so the interval minimum is at an endpoint; sign of `1 − 2u − u²` checked per row | holds for all rows; `H = L/2 − r > 0` everywhere |
-| Parent-envelope sanity `B′(c_t + s_t)/2 ≤ r < L/2` | per row | 0 violations in 12,028 |
-| `0 < B′ < A′ < L` | per row | holds |
+| Catalogue contiguous from 0, past $\tan(\pi/8)$ | $a_0 = 0$, each $a$ equals the previous $b$, last $b = \frac{207107}{500000}$ with $b^2 + 2b - 1 = \frac{309449}{250000000000} > 0$ | holds (unchanged) |
+| Relative angle in $[-\pi/4, \pi/4]$ | `dot > 0` and `dot ≥ |cross|` at both endpoints, `2 arctan` monotone | holds (depends on `a, b, t` only) |
+| Core strictly inside every parent | `A′ − B′·max endpoint width > 0` for all rows; **and independently** by maximising the two exact quadratics $q(u) < 0$ on $[a, t]$ and $[t, b]$, vertices included, which does not use the endpoint-extremum lemma | holds; minimum endpoint margin $999999999/10^{21} = \lambda \cdot 10^{-12}$ at row 0; all 12,028 rows also pass the quadratic form, whose supremum of `(1+u²)(BW − A)` is $-999999999/10^{21}$, at row 0 |
+| Centre envelope $[r, L-r]^2$ with $r = A^{\prime} \min(f(a), f(b))/2$ | $f(u) = (1+2u-u^2)/(1+u^2)$ has its only stationary point at $u = \sqrt{2} - 1$, a maximum, so the interval minimum is at an endpoint; sign of $1 - 2u - u^2$ checked per row | holds for all rows; $H = L/2 - r > 0$ everywhere |
+| Parent-envelope sanity $B^{\prime}(c_t + s_t)/2 \le r < L/2$ | per row | 0 violations in 12,028 |
+| $0 < B^{\prime} < A^{\prime} < L$ | per row | holds |
 | Accumulation exact | `Σ ordinary weights + Σ |signed rectangle coefficients| < 2⁵⁰` per row | holds on every swept row |
-| `11Γ > M` | `11 × 1000047559 − 11000095024 = 428125 > 0` | holds |
+| $11\Gamma > M$ | $11 \times 1000047559 - 11000095024 = 428125 > 0$ | holds |
 
 **Why scaling parent and cores together is legitimate.** The container and the sites are
-untouched; only the two lengths `A` and `B_r` are multiplied by `λ > 0`. The containment
-inequality `B W < A` is homogeneous of degree one in `(A, B)`, so it is preserved with
-the same relative margin; the folding, the angle range and the catalogue depend only on
-`(a, b, t)`. What is not preserved is coverage: a smaller core captures a subset of the
-sites the old core captured at the same centre, so each threshold indicator and hence
-the charge at every fixed centre is nonincreasing in `B`, and a smaller parent has a
-larger legal-centre domain `[r′, L − r′]² ⊇ [r, L − r]²`, so the row minimum is taken
-over a superset. Both effects push `Γ` down, never up, which is why the release replays
-every row rather than arguing by continuity, and it is right to do so.
-The bound `L/A′ = (31/8)/λ` follows exactly as before.
+untouched; only the two lengths $A$ and $B_r$ are multiplied by $\lambda > 0$. The
+containment inequality $B W < A$ is homogeneous of degree one in $(A, B)$, so it is
+preserved with the same relative margin; the folding, the angle range and the catalogue
+depend only on $(a, b, t)$. What is not preserved is coverage: a smaller core captures a
+subset of the sites the old core captured at the same centre, so each threshold
+indicator and hence the charge at every fixed centre is nonincreasing in $B$, and a
+smaller parent has a larger legal-centre domain
+$[r^{\prime}, L - r^{\prime}]^2 \supseteq [r, L - r]^2$, so the row minimum is taken
+over a superset. Both effects push $\Gamma$ down, never up, which is why the release
+replays every row rather than arguing by continuity, and it is right to do so.
+The bound $L/A^{\prime} = (31/8)/\lambda$ follows exactly as before.
 
 **Why the reweighting is needed first.** In the source certificate the eleven-bin
-histogram has its minimum `999962528` on row 11962, only `9,805.8` units above
-`M/11 = 999952722.18…`; a shrink that lowered that one row by ten thousand units would
-break the counting inequality.
+histogram has its minimum `999962528` on row 11962, only $9{,}805.8$ units above
+$M/11 = 999952722.18\ldots$; a shrink that lowered that one row by ten thousand units
+would break the counting inequality.
 The thirteen increments raise every one of the 12,028 rows (11,981 rows sat at
-`1000047518`, now `1000047559`; row 11962 rises by `85,031`) onto a flat plateau at
-`1000047559`, while the budget rises by only `615,080`, so the surplus grows from
-`107,864` to `428,125` and the slack on every row from `9,805.8` to
-`428125/11 = 38,920.5` units.
-The shrink by `10⁻⁹` then changes no row minimum at all: the release’s histogram is
-still `{1000047559: 12028}`, the 651 rows swept here agree, and the first row to fall,
-615, falls only at `λ = 1 − 10⁻⁸` (the ladder in §4).
+`1000047518`, now `1000047559`; row 11962 rises by $85{,}031$) onto a flat plateau at
+`1000047559`, while the budget rises by only $615{,}080$, so the surplus grows from
+$107{,}864$ to $428{,}125$ and the slack on every row from $9{,}805.8$ to
+$428125/11 = 38{,}920.5$ units.
+The shrink by $10^{-9}$ then changes no row minimum at all: the release’s histogram is
+still $\lbrace1000047559: 12028\rbrace$, the 651 rows swept here agree, and the first
+row to fall, 615, falls only at $\lambda = 1 - 10^{-8}$ (the ladder in §4).
 
 **Nothing in `PROOF.md` is tied to the old numbers.** The argument is stated for
-arbitrary positive rationals `L`, `A`; the tables of `764/775`, the budgets and the
-`10⁻¹²` margin are the instantiation, not premises.
-The endpoint-extremum lemma (`cos δ + |sin δ|` increases with `|δ|` on `[−π/4, π/4]`)
-and the envelope lemma are independent of `A` and `B`. The only hard-coded number on the
-verifier path is `L = 191/50` (twice in `exact_mixed.py`), which is unchanged; `A` and
-each `B_r` are read from the certificate and rechecked.
-The `2⁵⁰` accumulation guard is rechecked with the new weights.
+arbitrary positive rationals $L$, $A$; the tables of $764/775$, the budgets and the
+$10^{-12}$ margin are the instantiation, not premises.
+The endpoint-extremum lemma ($\cos \delta + |\sin \delta|$ increases with $|\delta|$ on
+$[-\pi/4, \pi/4]$) and the envelope lemma are independent of $A$ and $B$. The only
+hard-coded number on the verifier path is $L = 191/50$ (twice in `exact_mixed.py`),
+which is unchanged; $A$ and each $B_r$ are read from the certificate and rechecked.
+The $2^{50}$ accumulation guard is rechecked with the new weights.
 
 ## 4. The Certificate
 
@@ -164,15 +165,15 @@ comparison):
 
 | Field | Source | Improved |
 | --- | --- | --- |
-| `A` | `764/775` | `190999999809/193750000000` (`= λ · 764/775` exactly) |
+| $A$ | $\frac{764}{775}$ | $\frac{190999999809}{193750000000}$ ($= \lambda \cdot \frac{764}{775}$ exactly) |
 | `minimum_units` | `999962528` | `1000047559` |
 | `budget_units` | `10999479944` | `11000095024` |
-| `bound` | `31/8` | `3875000000/999999999` |
+| `bound` | $\frac{31}{8}$ | $\frac{3875000000}{999999999}$ |
 | `point_orbits` (679) | — | identical |
 | `charge_orbits` sets and thresholds (284) | — | identical; 13 weights changed, listed below |
-| `entries` `(a, b, t)` (12,028) | — | identical |
-| `entries` `B` (12,028) | — | every one exactly `λ · B` |
-| `L`, denominators | — | identical |
+| `entries` $(a, b, t)$ (12,028) | — | identical |
+| `entries` $B$ (12,028) | — | every one exactly $\lambda \cdot B$ |
+| $L$, denominators | — | identical |
 
 The file has no duplicate JSON keys and no floating-point literal.
 
@@ -198,17 +199,17 @@ The file has no duplicate JSON keys and no floating-point literal.
 | Quantity | Value |
 | --- | --- |
 | Budget by family, improved | points `2247714156` (66 orbits, 496 sites); 2-of-3 `3188007732` (1,020 features); 2-of-5 `990221920` (76 features, capacity 2); 3-of-5 `4574151216` (1,124 features) |
-| `M` | `11000095024`, equal to the declared value; source `10999479944` likewise |
-| `11 Γ` | `11000523149` |
-| `11 Γ − M` | `428125` |
-| `M/11` | `1000008638 + 6/11`, so each row has `38920 + 5/11` units of slack |
-| `L/A′` | `3875000000/999999999`, and `(31/8)/λ` gives the same fraction |
-| `L/A′ − 31/8` | `31/7999999992 = 3.875000003875…× 10⁻⁹` |
-| Decimal | `3.875000003875000003875000003875…` (period `003875`) |
-| Increments | `Γ + 85031`, `M + 615080`, surplus `+ 320261`, as the preprint’s table states |
+| $M$ | `11000095024`, equal to the declared value; source `10999479944` likewise |
+| $11 \Gamma$ | `11000523149` |
+| $11 \Gamma - M$ | $428125$ |
+| $M/11$ | $1000008638 + \frac{6}{11}$, so each row has $38920 + \frac{5}{11}$ units of slack |
+| $L/A^{\prime}$ | $\frac{3875000000}{999999999}$, and $\frac{31}{8}/\lambda$ gives the same fraction |
+| $L/A^{\prime} - \frac{31}{8}$ | $\frac{31}{7999999992} = 3.875000003875\ldots\times 10^{-9}$ |
+| Decimal | $3.875000003875000003875000003875\ldots$ (period $003875$) |
+| Increments | $\Gamma + 85031$, $M + 615080$, surplus $+ 320261$, as the preprint’s table states |
 
 **Independent row re-decision.** `wl_verify.py` expands the orbits, builds the signed
-capture-rectangle expansion of each `k`-of-`m` indicator, sweeps the rotated
+capture-rectangle expansion of each $k$-of-`m` indicator, sweeps the rotated
 centre-domain polygon slab by slab with exact rational edge values, accumulates in a
 plain NumPy `int64` array by direct range addition (no segment tree), and takes the
 minimum over the legal cells of each slab.
@@ -226,7 +227,7 @@ twentieth row across the catalogue.
 | Band 615–626 | 12 | all `1000047559` | 12 of 12 |
 | Source-histogram extremes 0, 1, 3985, 6014, 8844, 9281, 9740, 11962, 12027 | 9 | all `1000047559` | 9 of 9 |
 | Every twentieth row, 0 to 12020 | 602 | all `1000047559` | 602 of 602 |
-| **Distinct total** | **651** | histogram `{1000047559: 651}` | 651 of 651 |
+| **Distinct total** | **651** | histogram $\lbrace1000047559: 651\rbrace$ | 651 of 651 |
 
 That is 4,649,917 slabs and 27,639,745,555 represented cells in 637 s, 0.98 s per row on
 a loaded machine. The arg-min cell’s direct count equalled the sweep on every row, the
@@ -239,24 +240,24 @@ The same code run on the **source** certificate returns the source’s nonunifor
 is not a checker that returns a plateau regardless of input.
 
 **Sensitivity of the shrink.** On a reconstruction of the reweighted certificate at the
-source geometry (`A = 764/775`, source `B_r`, improved weights; equal to the frozen file
-after scaling, as checked above), the same code was run at several `λ` on the named
-sensitive rows and on control rows:
+source geometry ($A = 764/775$, source $B_r$, improved weights; equal to the frozen file
+after scaling, as checked above), the same code was run at several $\lambda$ on the
+named sensitive rows and on control rows:
 
-| `1 − λ` | bound `(31/8)/λ` | row 0 | 543 | 560 | 574 | 600 | 615 | 620 | 626 | 11962 | counting on these rows |
+| $1 - \lambda$ | bound $\frac{31}{8}/\lambda$ | row 0 | 543 | 560 | 574 | 600 | 615 | 620 | 626 | 11962 | counting on these rows |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| `0` | `3.8750000000` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | passes |
-| `10⁻⁹` | `3.8750000039` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | passes |
-| `10⁻⁸` | `3.8750000388` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `998920060` | `1000047559` | `1000047559` | `1000047559` | fails on 615 |
-| `5 × 10⁻⁸` | `3.8750001938` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `998920060` | `998920060` | `998920060` | `1000047559` | fails on 615, 620, 626 |
-| `10⁻⁷` | `3.8750003875` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `996661034` | `996661034` | `996661034` | `1000047559` | fails on 615, 620, 626 |
-| `2 × 10⁻⁷` | `3.8750007750` | `1000047559` | `998920060` | `998920060` | `998920060` | `1000047559` | `996661034` | `996661034` | `996661034` | `1000047559` | fails on 543, 560, 574, 615, 620, 626 |
+| $0$ | $3.8750000000$ | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | passes |
+| $10^{-9}$ | $3.8750000039$ | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | passes |
+| $10^{-8}$ | $3.8750000388$ | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `998920060` | `1000047559` | `1000047559` | `1000047559` | fails on 615 |
+| $5 \times 10^{-8}$ | $3.8750001938$ | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `998920060` | `998920060` | `998920060` | `1000047559` | fails on 615, 620, 626 |
+| $10^{-7}$ | $3.8750003875$ | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `1000047559` | `996661034` | `996661034` | `996661034` | `1000047559` | fails on 615, 620, 626 |
+| $2 \times 10^{-7}$ | $3.8750007750$ | `1000047559` | `998920060` | `998920060` | `998920060` | `1000047559` | `996661034` | `996661034` | `996661034` | `1000047559` | fails on 543, 560, 574, 615, 620, 626 |
 
-The threshold is `M/11 = 1000008638.54…`. `λ = 1` and `1 − 10⁻⁹` leave every one of
-these rows on the plateau.
-At `1 − 10⁻⁸` row 615 drops by `1,127,499` units to `998920060` and the counting
-inequality fails; rows 620 and 626 follow at `1 − 5 × 10⁻⁸`, and rows 543, 560 and 574
-at `1 − 2 × 10⁻⁷`, which is exactly the preprint’s sentence.
+The threshold is $M/11 = 1000008638.54\ldots$. $\lambda = 1$ and $1 - 10^{-9}$ leave
+every one of these rows on the plateau.
+At $1 - 10^{-8}$ row 615 drops by $1{,}127{,}499$ units to `998920060` and the counting
+inequality fails; rows 620 and 626 follow at $1 - 5 \times 10^{-8}$, and rows 543, 560
+and 574 at $1 - 2 \times 10^{-7}$, which is exactly the preprint’s sentence.
 Rows 0, 600 and 11962 are unmoved throughout.
 The drops are cliffs rather than drifts — a whole feature leaving the shrunken core —
 which is why no continuity argument could have replaced the replay, and why the release
@@ -268,12 +269,13 @@ was right to replay every row.
 Kleddamag’s retained v1.0.2 file; `integer_sweep.py` differs only by two blank lines and
 `replay_parallel.py` by a docstring line and three blank lines.
 So the primary replay is Kleddamag’s checker run on the new certificate, and it does
-check the theorem’s hypotheses for the new parameters: `validate` reads `A` and every
-`B_r` from the file, tests the angle range, strict containment, the envelope, catalogue
-contiguity and the `b² + 2b > 1` gap, D4 completeness of every orbit, the `2⁵⁰` guard,
-the recomputed budget against the declared one, and `11 · minimum_units > budget_units`
-as an inequality; each row then has to reach the certificate’s declared minimum.
-It hard-codes only `L = 191/50`. Its decisions are on Python integers and `Fraction`s;
+check the theorem’s hypotheses for the new parameters: `validate` reads $A$ and every
+$B_r$ from the file, tests the angle range, strict containment, the envelope, catalogue
+contiguity and the $b^2 + 2b > 1$ gap, D4 completeness of every orbit, the $2^{50}$
+guard, the recomputed budget against the declared one, and
+`11 · minimum_units > budget_units` as an inequality; each row then has to reach the
+certificate’s declared minimum.
+It hard-codes only $L = 191/50$. Its decisions are on Python integers and `Fraction`s;
 the Numba sweep is `int64` under the checked guard.
 This is the reviewed T-037 code path.
 
@@ -293,8 +295,8 @@ Four things it assumes rather than checks:
 
 1. **It never reads `improved-global-certificate.json`.** It loads the *source*
    certificate, applies the `weight_deltas` of
-   `evidence/reweighted_fullscan_receipt.json`, and multiplies `A` and every `B_r` by a
-   hard-coded `λ` in memory.
+   `evidence/reweighted_fullscan_receipt.json`, and multiplies $A$ and every $B_r$ by a
+   hard-coded $\lambda$ in memory.
    `run_independent_full.py` records the improved file’s SHA but does not open it.
    The frozen file is tied to that reconstruction only by `verify.py`’s `integrity()`,
    which compares the two certificates against its own hard-coded `DELTAS` dictionary,
@@ -313,7 +315,7 @@ Four things it assumes rather than checks:
    or the accumulation guard.
    In this release those are checked only by the pinned Kleddamag code.
 4. **Its self-test constants come from Kleddamag’s evidence.** `independent_core.main`
-   asserts seven source row minima (`0: 1000047518`, `11962: 999962528`, …) taken from
+   asserts seven source row minima ($0: 1000047518$, `11962: 999962528`, …) taken from
    the source’s receipts; this audit entry point is not invoked by `verify.py`.
 
 Neither verifier uses a trusted precomputed table for the decision; both recompute every
@@ -321,9 +323,9 @@ rectangle and cell. `verify.py --mode quick` runs row 0 through both and is a sm
 only.
 
 **Receipts.** The primary evidence with per-row data is the four fresh quarter receipts
-(rows 0–3006, 3007–6013, 6014–9020, 9021–12027, each `3007` rows, histogram
-`{1000047559: 3007}`, merged into `primary_full_fresh_12028.json` with 86,299,918 slabs
-and 511,649,696,956 cells).
+(rows 0–3006, 3007–6013, 6014–9020, 9021–12027, each $3007$ rows, histogram
+$\lbrace1000047559: 3007\rbrace$, merged into `primary_full_fresh_12028.json` with
+86,299,918 slabs and 511,649,696,956 cells).
 The older `scaledA_full12028_receipt.json` is a merge of two staged runs ("rows 0–5999:
 PASS (prior staged exact sweep receipt)") with no per-row data.
 The independent receipt carries only aggregates (histogram, min, max, `bad_count = 0`,
@@ -334,19 +336,19 @@ count exactly on every sampled row.
 
 | Claim | Where | Evidence | Status |
 | --- | --- | --- | --- |
-| `s(11) > 3875000000/999999999 = 3.875000003875…` | issue, abstract, theorem | §3–§4 | supported |
-| Improvement `31/7999999992` | issue, §1 | exact | correct |
-| 12,028 rows, `bad_count = 0`, histogram `{1000047559: 12028}` | issue, README | fresh quarter receipts (per row) and independent receipt (aggregate); 651 rows re-decided here | consistent |
+| $s(11) > \frac{3875000000}{999999999} = 3.875000003875\ldots$ | issue, abstract, theorem | §3–§4 | supported |
+| Improvement $\frac{31}{7999999992}$ | issue, §1 | exact | correct |
+| 12,028 rows, `bad_count = 0`, histogram $\lbrace1000047559: 12028\rbrace$ | issue, README | fresh quarter receipts (per row) and independent receipt (aggregate); 651 rows re-decided here | consistent |
 | Improved certificate SHA-256 `31e10ceb…` | issue, preprint, README | recomputed | correct |
-| Surplus `428125` | everywhere | recomputed | correct |
-| Source table `999962528 / 10999479944 / 107864` and deltas `+85031 / +615080 / +320261` | preprint §2 | Kleddamag `PROOF.md`, recomputed | correct |
+| Surplus $428125$ | everywhere | recomputed | correct |
+| Source table $999962528 / 10999479944 / 107864$ and deltas $+85031 / +615080 / +320261$ | preprint §2 | Kleddamag `PROOF.md`, recomputed | correct |
 | Thirteen orbits, increments and new weights | preprint §3, README | file diff | correct, and only those |
 | Budget unchanged by scaling | preprint §5.1 | budget depends on weights and orbit sizes only | correct |
 | Independent replay 659.6 s | preprint §5.2 | receipt `elapsed_seconds = 659.5959` | correct |
-| `λ = 1 − 2 × 10⁻⁷` fails on rows 543–574 and 615–626 | preprint §7 | reproduced here at `1 − 2 × 10⁻⁷` on rows 543, 560, 574, 615, 620 and 626, with rows 0, 600 and 11962 unaffected; the ladder also shows row 615 already failing at `1 − 10⁻⁸` | correct; the first cliff is earlier than the sentence suggests |
+| `λ = 1 − 2 × 10⁻⁷` fails on rows 543–574 and 615–626 | preprint §7 | reproduced here at $1 - 2 \times 10^{-7}$ on rows 543, 560, 574, 615, 620 and 626, with rows 0, 600 and 11962 unaffected; the ladder also shows row 615 already failing at $1 - 10^{-8}$ | correct; the first cliff is earlier than the sentence suggests |
 | Source row 11962 has charge `999962528` | preprint §7 | 2026-09-22 review table; my source-control sweep | correct |
-| Strict core margin `λ · 10⁻¹²` | receipts | recomputed | correct |
-| “No stronger registered lower bound” on 2026-09-29 | abstract, §8 | `n-011.md` verified lane is `31/8`; the owner’s comment on #247 says stronger results are reported but unconfirmed | correct as dated |
+| Strict core margin $\lambda \cdot 10^{-12}$ | receipts | recomputed | correct |
+| “No stronger registered lower bound” on 2026-09-29 | abstract, §8 | `n-011.md` verified lane is $\frac{31}{8}$; the owner’s comment on #247 says stronger results are reported but unconfirmed | correct as dated |
 
 **Provenance and credit.** The release is explicit and consistent.
 `SOURCE_ATTRIBUTION.md` calls it “a derivative continuation of **Kleddamag**, *Eleven
@@ -396,38 +398,42 @@ is the place to ask.
 
 ## 7. Significance, Honestly
 
-The step is `31/7999999992 ≈ 3.875 × 10⁻⁹`, against a remaining gap to Trump’s packing
-of `0.0020836`: it closes `1.9 × 10⁻⁴` per cent of that gap.
+The step is $31/7999999992 \approx 3.875 \times 10^{-9}$, against a remaining gap to
+Trump’s packing of $0.0020836$: it closes $1.9 \times 10^{-4}$ per cent of that gap.
 The preprint says as much ("deliberately modest numerically", “a proof-of-slack
 result”).
 
-**It is a one-parameter family.** With the weights fixed, define `Γ(λ)` as the minimum
-row charge after shrinking `A` and every `B_r` by `λ`. By the monotonicity argument in
-§3, `Γ(λ)` is nondecreasing in `λ`, so the set of `λ` with `11 Γ(λ) > M` is an interval
-`(λ*, 1]`, and every rational `λ` in it yields the strict bound `(31/8)/λ`. The
-release’s two data points bracket `λ*`: `1 − 10⁻⁹` passes on all rows and, by the
-preprint, `1 − 2 × 10⁻⁷` fails on rows 543–574 and 615–626, which the ladder in §4
-reproduces on six of those rows.
-The ladder also shows row 615 already failing at `1 − 10⁻⁸`, so
-`λ* ∈ [1 − 10⁻⁸, 1 − 10⁻⁹)`. Every member of the family from these exact data therefore
-lies in `(3.875, (31/8)/(1 − 10⁻⁸)] = (3.875, 3.8750000388]`: at most ten times the
-present step. The chosen `λ` is not the best the data support, only the one with a tidy
-decimal; the true `λ*` is computable exactly, since the row minima are piecewise
-constant in `λ`, or by bisection with full replays at about ten minutes each.
-Going beyond `3.87500004` needs new weights or new geometry, which is a new certificate
+**It is a one-parameter family.** With the weights fixed, define $\Gamma(\lambda)$ as
+the minimum row charge after shrinking $A$ and every $B_r$ by $\lambda$. By the
+monotonicity argument in §3, $\Gamma(\lambda)$ is nondecreasing in $\lambda$, so the set
+of $\lambda$ with $11 \Gamma(\lambda) > M$ is an interval $(\lambda^{\ast}, 1]$, and
+every rational $\lambda$ in it yields the strict bound $(31/8)/\lambda$. The release’s
+two data points bracket $\lambda^{\ast}$: $1 - 10^{-9}$ passes on all rows and, by the
+preprint, $1 - 2 \times 10^{-7}$ fails on rows 543–574 and 615–626, which the ladder in
+§4 reproduces on six of those rows.
+The ladder also shows row 615 already failing at $1 - 10^{-8}$, so
+$\lambda^{\ast} \in [1 - 10^{-8}, 1 - 10^{-9})$. Every member of the family from these
+exact data therefore lies in $(3.875, (31/8)/(1 - 10^{-8})] = (3.875, 3.8750000388]$: at
+most ten times the present step.
+The chosen $\lambda$ is not the best the data support, only the one with a tidy decimal;
+the true $\lambda^{\ast}$ is computable exactly, since the row minima are piecewise
+constant in $\lambda$, or by bisection with full replays at about ten minutes each.
+Going beyond $3.87500004$ needs new weights or new geometry, which is a new certificate
 of Kleddamag’s kind, not another turn of this step.
 The authors say as much in §9 of the preprint.
 
 **Recommendation for the register.** Enter it as the authors’ result under its own
 `T-NNN` with attribution `[Wang Li n11 2026]`, `published: 2026-09-29`, headline
 `` `s(11) > 3875000000/999999999 = 3.875000003875…` ``, a claim that states the step
-`31/7999999992` and that it is T-037’s certificate reweighted on 13 orbits and shrunk by
-`λ = 1 − 10⁻⁹`, and significance **S2** by the T-042 precedent ("a citable intermediate
-that changes no standing bound" was scored S2 for a `+0.00017` step superseded on its
-day). T-037’s S5 rationale, 96 per cent of the gap closed, does not transfer to a
-`3.9 × 10⁻⁹` step. If the stronger reported results the owner mentions on #247 are
-confirmed first, this entry is exactly T-042’s situation.
-README prose should give the exact rational and its distance from `31/8` in the same
+$31/7999999992$ and that it is T-037’s certificate reweighted on 13 orbits and shrunk by
+$\lambda = 1 - 10^{-9}$, and significance **S2** by the T-042 precedent ("a citable
+intermediate that changes no standing bound" was scored S2 for a $+0.00017$ step
+superseded on its day).
+T-037’s S5 rationale, 96 per cent of the gap closed, does not transfer to a
+$3.9 \times 10^{-9}$ step.
+If the stronger reported results the owner mentions on #247 are confirmed first, this
+entry is exactly T-042’s situation.
+README prose should give the exact rational and its distance from $31/8$ in the same
 sentence, so no reader takes “improved bound” to mean substantive movement; the case
 record’s verified lane may move to it once the replay lane’s complete run and this
 review are on file, with T-037’s evidence retained as history.
@@ -449,7 +455,7 @@ None.
    receipts’ “completed this turn” and “after a tool timeout” read as an agent harness;
    the policy records the source’s own words, and there are none (§6).
 3. **Describe the step honestly in the register (record).** S2, headline with the exact
-   rational, claim with the `31/7999999992` step and the λ construction; the T-037 S5
+   rational, claim with the $31/7999999992$ step and the λ construction; the T-037 S5
    rationale does not carry over (§7).
 4. **Reconcile the Zenodo record with the archive (authors).** The record’s licence
    field lists only CC-BY-4.0 where `LICENSE_STATUS.md` asks for CC-BY-4.0 and MIT, and
@@ -473,7 +479,7 @@ None.
   directory.
 - The issue was opened from a GitHub account (`XiaoLiaoShe`) that names neither author;
   the Zenodo creators and the preprint agree on Wang Ke and Li Can, Fudan University.
-- `exact_mixed.py` hard-codes `L = 191/50` in `validate` and again in `geometry`; a
+- `exact_mixed.py` hard-codes $L = 191/50$ in `validate` and again in `geometry`; a
   future certificate with another container would silently need a code change.
 
 ## 9. Verified
@@ -484,19 +490,19 @@ None.
 | Source certificate identity | `cmp` against the repository’s retained Kleddamag file | byte-identical, SHA-256 `57e9927d…` |
 | Improved certificate identity and hygiene | SHA-256; `object_pairs_hook` duplicate-key and float-literal refusal | `31e10ceb…`; clean |
 | Field-by-field diff | own code | exactly the fields in §4 |
-| `A′ = λA`, `B′_r = λB_r` for all rows | `Fraction` | 12,028 of 12,028 |
+| $A^{\prime} = \lambda A$, `B′_r = λB_r` for all rows | `Fraction` | 12,028 of 12,028 |
 | Budget, surplus, ratio, improvement | `Fraction`/`int`, own orbit expansion | all equal to the claimed values |
-| Budget delta of the 13 increments | per orbit | `615080` |
+| Budget delta of the 13 increments | per orbit | $615080$ |
 | D4 completeness, nonnegativity, distinct sites | own expansion of 679 point and 284 charge orbits | holds |
 | Catalogue contiguity, gap, angle range, envelope, parent envelope | per row, `Fraction` | holds, 0 violations |
-| Strict containment, endpoint form | per row | min margin `999999999/10²¹`, row 0 |
-| Strict containment, quadratic form without the endpoint lemma | `containment_quadratic.py` | 12,028 of 12,028 strictly contained; supremum `−999999999/10²¹` at row 0; envelope endpoint-minimum valid on every row |
-| Row minima on the improved certificate | own sweep, worst rows first | 651 rows, histogram `{1000047559: 651}`; 27,639,745,555 cells; 0.98 s per row |
-| Arg-min cell cross-check | direct `k`-of-`m` count at an interior point, no signed expansion | equal on every sampled row |
+| Strict containment, endpoint form | per row | min margin $999999999/10^{21}$, row 0 |
+| Strict containment, quadratic form without the endpoint lemma | `containment_quadratic.py` | 12,028 of 12,028 strictly contained; supremum $-999999999/10^{21}$ at row 0; envelope endpoint-minimum valid on every row |
+| Row minima on the improved certificate | own sweep, worst rows first | 651 rows, histogram $\lbrace1000047559: 651\rbrace$; 27,639,745,555 cells; 0.98 s per row |
+| Arg-min cell cross-check | direct $k$-of-`m` count at an interior point, no signed expansion | equal on every sampled row |
 | Random-cell cross-check | direct count equals signed sum | equal on every sampled cell |
 | Per-row slab and cell counts | against the fresh primary quarter receipts | equal on every sampled row |
 | Source-certificate controls | own sweep on the source file | 5 of 5 nonuniform source values reproduced |
-| Shrink sensitivity | own sweep at `λ ∈ {1, 1−10⁻⁹, 1−10⁻⁸, 1−5·10⁻⁸, 1−10⁻⁷, 1−2·10⁻⁷}` | `1` and `1 − 10⁻⁹` pass on all nine rows; `1 − 10⁻⁸` fails on row 615 (`998920060`); `1 − 2 × 10⁻⁷` fails on all six named rows and passes on 0, 600, 11962 |
+| Shrink sensitivity | own sweep at $\lambda \in \lbrace1, 1-10^{-9}, 1-10^{-8}, 1-5\cdot10^{-8}, 1-10^{-7}, 1-2\cdot10^{-7}\rbrace$ | `1` and $1 - 10^{-9}$ pass on all nine rows; $1 - 10^{-8}$ fails on row 615 (`998920060`); $1 - 2 \times 10^{-7}$ fails on all six named rows and passes on 0, 600, 11962 |
 | Preprint formats | LaTeX read; PDF and DOCX text-extracted and compared | one sentence differs in the DOCX (§8) |
 | AI-assistance statements | grep over every file of the archive | none; two agent-session phrases quoted in §6 |
 
@@ -506,7 +512,7 @@ None.
   Kleddamag, Levy” with `lineage: builds-on-project`, as this review recommends.
   The intake branch (jlevy/squares#249) first registered it as T-058; it became T-061
   when that branch took in jlevy/squares#246, which had already allocated T-058 to
-  T-060. T-060 has since confirmed `s(11) = T`, so this bound is historical.
+  T-060. T-060 has since confirmed $s(11) = T$, so this bound is historical.
 
 - **The replays in the intake packet** (`packing/resources/web/wang-li-n11-2026-09-29/`)
   completed and passed:
@@ -517,12 +523,12 @@ None.
   Every mutated control is refused.
 
 - **The shrink cliff is tighter than this review’s ladder showed.** The packet’s `cliff`
-  measurement finds `λ = 1 − 2·10⁻⁹` already failing at row 615, so the admissible
-  factors lie in `(1 − 2·10⁻⁹, 1]`, and these data give at most about twice the present
-  step.
+  measurement finds $\lambda = 1 - 2\cdot10^{-9}$ already failing at row 615, so the
+  admissible factors lie in $(1 - 2\cdot10^{-9}, 1]$, and these data give at most about
+  twice the present step.
 
 - **Scaling alone suffices.** A full event-cell sweep of Kleddamag’s unreweighted
-  certificate, scaled by `λ = 999999999/1000000000` (the packet’s
+  certificate, scaled by $\lambda = 999999999/1000000000$ (the packet’s
   `receipts/scale-only/`), passes with the same minimum 999,962,528 and surplus 107,864,
   so the bound does not need the reweighting.
   This review’s sampled rows could not show it.

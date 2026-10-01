@@ -542,20 +542,20 @@ published sources, which is why it is in this agenda rather than a later one.
 
 ## Two targets, used differently
 
-`n = 11` is the **calibration** and `n = 29` is the **target**, and they are not
+$n = 11$ is the **calibration** and $n = 29$ is the **target**, and they are not
 alternatives.
 
-At `n = 11` the answer is known from Trump’s 1979 polynomial, so every stage has
+At $n = 11$ the answer is known from Trump’s 1979 polynomial, so every stage has
 something to be caught being wrong against: the extraction must reproduce a known
 contact structure, the assembly must reproduce a known system, and the solve must
 recover a known minimal polynomial.
 That is what makes the chain trustworthy.
 
-At `n = 29` there is no published answer, and the best known construction is a numerical
+At $n = 29$ there is no published answer, and the best known construction is a numerical
 root-find recorded as `public-certificate-missing`. That is the end-to-end test, and it
 is where a derived certificate would be new.
 
-The earlier reason for sequencing — that `n = 29`’s contact structure was uncertain —
+The earlier reason for sequencing — that $n = 29$’s contact structure was uncertain —
 was withdrawn on measurement.
 It is not uncertain; see X-004.
 
@@ -563,30 +563,30 @@ It is not uncertain; see X-004.
 
 Replanned on 2026-08-28 after the second correction in
 [X-004](../explorations/X-004-n29-exact-promotion.md).
-The previous ordering rested on a chain that does not hold at `n = 29`: it assumed
+The previous ordering rested on a chain that does not hold at $n = 29$: it assumed
 precision had to come from a system this project assembles, so assembly had to come
 first. The source publishes the system, and it publishes the layout map with it, so at
 this size neither assembly step gates anything.
 
 | Block | Commitments | Checkpoint question | State |
 | --- | --- | --- | --- |
-| A | BC-047, BC-042 | Can precision be manufactured on demand in-repository, and is the contact structure frozen at `n = 11` and `n = 29`? | **Closed** in [session 035](../agent-sessions/session-035-agenda005-block-a.md). Yes to both. |
+| A | BC-047, BC-042 | Can precision be manufactured on demand in-repository, and is the contact structure frozen at $n = 11$ and $n = 29$? | **Closed** in [session 035](../agent-sessions/session-035-agenda005-block-a.md). Yes to both. |
 | B | BC-045 phases 1–2 | Does the operator prove *uniqueness* on a known root, and refuse on the two-root and no-root controls? | Next |
-| C | BC-045 phases 3–4 | Does the interval verdict agree with the exact route where both apply, and what does `n = 29` return? | After B |
+| C | BC-045 phases 3–4 | Does the interval verdict agree with the exact route where both apply, and what does $n = 29$ return? | After B |
 
 Block A answered its checkpoint question in the affirmative on both lanes.
 Precision is manufactured rather than inherited — 1000 declared digits at a reported
 residual bound of `1.09829e-1039`, with the residual tracking working precision across
-five rungs — and the `n = 29` contact structure is frozen with 89 incidences at
-`97.5013` decades of separation, calibrated against the known `n = 11` answer.
+five rungs — and the $n = 29$ contact structure is frozen with 89 incidences at
+$97.5013$ decades of separation, calibrated against the known $n = 11$ answer.
 Neither result gates block B; they remove the two reasons it might have had to wait.
 
 The ordering is now driven by which route can actually reach the prize.
-Certifying the reported `n = 29` value moves `verified_upper_bound` from the Schadt
+Certifying the reported $n = 29$ value moves `verified_upper_bound` from the Schadt
 rational to Kingbird’s, closing `5.23e-5`, and there are two routes to it.
 BC-044 recovers a minimal polynomial and discharges it exactly — strictly stronger, and
 of uncertain feasibility: the completed sweep in X-004 found no integer relation through
-degree twenty with coefficients below `10^22`, so the polynomial is large and
+degree twenty with coefficients below $10^{22}$, so the polynomial is large and
 elimination in six unknowns may not terminate.
 BC-045 needs no polynomial at all.
 **The robust route is therefore the one that had no specification**, which is why
@@ -600,7 +600,7 @@ so they are two lanes rather than a sequence.
 
 | Commitment | Why it is not scheduled |
 | --- | --- |
-| BC-043 | Generalizes the route to sizes with no published system. Real value, but it gates nothing at `n = 29`. |
+| BC-043 | Generalizes the route to sizes with no published system. Real value, but it gates nothing at $n = 29$. |
 | BC-044 | The ambitious route. Its honest prior is poor; run it against a BC-047 refinement if a block closes early. |
 | BC-048 | Independent of the whole symbolic lane; the natural filler. |
 | BC-046 | A different program, and a decision before it is a build. It also unblocks BC-033. |
@@ -630,7 +630,7 @@ Each row is one session artifact under
 | ---: | --- | --- | --- | --- | --- |
 | 1 | session-036 | BC-051 | `think-ej1d` | ~60 min | Change-scoped verification — it pays for itself inside the next session |
 | 2 | session-037 | BC-045 phases 1–2 (block B) | `think-75ll` | ~4h | An operator that proves *uniqueness*, and refuses on the two-root and no-root controls |
-| 3 | session-038 | BC-045 phases 3–4 (block C) | `think-75ll` | ~4h | Calibration at `n = 5, 10, 11`, then the `n = 29` verdict — the prize |
+| 3 | session-038 | BC-045 phases 3–4 (block C) | `think-75ll` | ~4h | Calibration at $n = 5, 10, 11$, then the $n = 29$ verdict — the prize |
 | 4 | session-039 | BC-049, then BC-046 | `think-xdly`, `think-0yo9` | ~60 min each | The rigidity residue, then what the atlas counts |
 
 **Reserve, in the order to reach for them:** BC-048 (`think-nfsd`, the natural filler
@@ -647,19 +647,19 @@ Why this order, given the priorities are not a total ordering:
   next session, and every session after it.
   Sequencing it behind four hours of interval-certification work would spend that four
   hours at the old rate for no reason.
-- **BC-045 leads the research line because it is the only route to the `n = 29` prize
+- **BC-045 leads the research line because it is the only route to the $n = 29$ prize
   that needs no minimal polynomial.** Certifying the reported value moves
   `verified_upper_bound` from the Schadt rational to Kingbird’s, closing `5.23e-5` that
   no amount of better sourcing can close.
   BC-044 is the stronger route and may simply not terminate.
 - **BC-046 is also `priority: 0` and still goes fourth**, because it is a different
-  program. A resolved identity relation leaves `n = 29` uncertified, and the census
+  program. A resolved identity relation leaves $n = 29$ uncertified, and the census
   cannot saturate either way until it is resolved — real value, no interaction with the
   prize.
 - **BC-049 is short and mostly discharged.** The bulk first-party rigidity assessment
-  covers 94 of 100 records; what remains is `n = 5, 28, 40`, where the catalogue says
+  covers 94 of 100 records; what remains is $n = 5, 28, 40$, where the catalogue says
   “Rigid.” and this repository deliberately does not restate that as its own finding.
-- **Block C ends in a human decision.** An unattended runner may not accept the `n = 29`
+- **Block C ends in a human decision.** An unattended runner may not accept the $n = 29$
   verdict: it is recorded `unresolved` with `needs_review: true` and a person decides.
   Plan for the session to stop there rather than treating it as a failure.
 
@@ -668,8 +668,8 @@ Why this order, given the priorities are not a total ordering:
 - **Any block.** A typed refusal is a valid ending.
   An inference that cannot decide an incidence, or a checker defeated by conditioning,
   is a result — not a failure to be worked around by loosening a tolerance.
-- **BC-042.** If the `n = 11` calibration cannot reproduce the known contact structure,
-  stop. Do not proceed to `n = 29` on an inference that fails where the answer is known.
+- **BC-042.** If the $n = 11$ calibration cannot reproduce the known contact structure,
+  stop. Do not proceed to $n = 29$ on an inference that fails where the answer is known.
 - **BC-044.** An integer relation is not a proof.
   If irreducibility, root isolation, or exact back-substitution cannot be completed, the
   round is `invalid`, not `unresolved`.
@@ -680,7 +680,7 @@ Why this order, given the priorities are not a total ordering:
 - That a promoted pose certifies a reported value, until the claim is discharged: by
   exact substitution into the recovered field, or failing that by interval
   certification.
-- That the `4.93e-31` Schadt relaxation is progress toward the `n = 29` record.
+- That the `4.93e-31` Schadt relaxation is progress toward the $n = 29$ record.
   The distance to that record is about `1e26` times larger.
 - Atlas saturation, census completeness, or any rarity verdict while `distinct_basins`
   counts endpoint keys.

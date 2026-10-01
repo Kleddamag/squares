@@ -3,7 +3,7 @@
 Date: September 13, 2026. Owner: `think-vy5i`. Admission owners: `think-gscz`,
 `think-5dql`, `think-n4gh`, and `think-pp3j`.
 
-This sheet measures the fixed-core runner on a solved `n=2` fixture before BC329 is
+This sheet measures the fixed-core runner on a solved $n=2$ fixture before BC329 is
 allowed to run. Each profile exercises the same four route shapes and retains 14,404
 direction rows. The fixture is deliberately easy, so its time and memory measurements
 describe operating overhead.
@@ -40,15 +40,15 @@ All three profiles use one tuple:
 
 | Setting | Frozen value |
 | --- | ---: |
-| Requested workers | `4` |
-| Effective raw workers | `4` |
-| Effective normalized-exact workers | `4` |
-| Effective reflected-interval workers | `1` |
-| Effective dilation workers | `1` |
-| Internal calibration allowance | `5400` seconds |
-| External supervisor allowance | `7200` seconds |
-| Termination grace | `2` seconds |
-| Expected direction rows per profile | `14,404` |
+| Requested workers | $4$ |
+| Effective raw workers | $4$ |
+| Effective normalized-exact workers | $4$ |
+| Effective reflected-interval workers | $1$ |
+| Effective dilation workers | $1$ |
+| Internal calibration allowance | $5400$ seconds |
+| External supervisor allowance | $7200$ seconds |
+| Termination grace | $2$ seconds |
+| Expected direction rows per profile | $14{,}404$ |
 
 The tuple is `4 / 5400 / 7200 / 2`. A different worker count or allowance requires a new
 reviewed sheet. These values do not set the later BC329 allowance.
@@ -330,7 +330,7 @@ or an immediate readback fails.
 
 Refuse operational admission if any profile lacks one of its 14,404 direction rows;
 contains a wrong or duplicate label; reports a raw charge other than 2, a normalized
-exact or dilation charge other than 1, an interval enclosure other than `[8,8]`, a
+exact or dilation charge other than 1, an interval enclosure other than $[8,8]$, a
 dense/slab disagreement, a stall, or exhausted interval budget; changes the candidate,
 dilation, topology, RSS, source, invocation, or receipt binding; or fails the
 source-distinct reader.

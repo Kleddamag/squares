@@ -31,7 +31,7 @@ conflicts are resolved explicitly and annotated rather than rewritten, the one
 correction that ran *against* the reviewed documents (the calibration ladder is
 machinery-validation only) is accurately attributed and recorded where it bites, and the
 first experiment artifact contains a documented case of the process catching its own
-author — a pre-registration miss at `n = 10` that the generated frontmatter exposed and
+author — a pre-registration miss at $n = 10$ that the generated frontmatter exposed and
 the prose had glossed.
 That is the system working, and it is worth more than the baseline numbers.
 
@@ -54,7 +54,7 @@ Everything marked *verified here* was reproduced in this review’s own containe
 | Check | Result |
 | --- | --- |
 | `explorations/packing/test.sh` on the PR head, fresh container | **passes end to end**, including the new interpreter-selection fallback, the engine gate, and the campaign invariants |
-| `sqsearch --selftest` (built with local cargo) | 12/12, positive control recovers `s(5)` to `+4.3e-5` here |
+| `sqsearch --selftest` (built with local cargo) | 12/12, positive control recovers $s(5)$ to `+4.3e-5` here |
 | SAT half-extent simplification (`½ + ½(\|cos Δ\| + \|sin Δ\|)`) | re-derived analytically; selftest agrees with the naive four-axis form to `8.9e-16` over 200k random pairs |
 | exp-001’s table (best/median/range/gap per cell) | recomputed from the archived JSONL; **every number matches** — the “lifted, never retyped” discipline held |
 | All 10 campaign artifacts against their four schemas | **pass** when validated directly with jsonschema (the artifacts are clean; the wiring is what is missing — F-1) |
@@ -80,10 +80,10 @@ failing at review time.
   frontier editable only by a deliberate human-reviewed change, encodes the repository’s
   central lesson (14 zero-gap pairs; no float check can certify) as *process*, not just
   prose.
-- **The controls mostly earned their keep.** The `n = 10` positive control killed two
+- **The controls mostly earned their keep.** The $n = 10$ positive control killed two
   broken search formulations; the inert `--budget-moves` defect was caught by its own
   tell (results worsening at larger declared budget).
-  The original review incorrectly praised `n = 12` as a negative control; `s(12)=4` is
+  The original review incorrectly praised $n = 12$ as a negative control; $s(12)=4$ is
   open, so it is now an open-case calibration (D-042), not known-answer evidence.
   Dead ends are recorded with reasons (GPU loss measured, not asserted; the jammed-grid
   failure mode explained).
@@ -139,8 +139,8 @@ standing practice here.
 Three small holes line up:
 
 1. `run_baseline.sh` filters the engine output to `"kind":"summary"` lines.
-   The per-chain records — which carry the **actual best configurations** (`x`, `y`,
-   `t`) and the per-chain `overlap` — are discarded.
+   The per-chain records — which carry the **actual best configurations** ($x$, $y$,
+   $t$) and the per-chain `overlap` — are discarded.
    The archived JSONL therefore contains no packing and no overlap value.
 2. The artifact’s `checked_by` says “overlap == 0 on every reported packing”, but that
    guard is not auditable from the archive (see 1), and in the engine it is asserted
@@ -235,11 +235,11 @@ tight).
 
 The contract is explicit that a sweep is “ordinary rounds” viewed together — one
 instance per round, `sweep.points` declared on the hypothesis so the ledger can show
-filled cells. exp-001 measured `n = 10, 11, 12` in one artifact with
+filled cells. exp-001 measured $n = 10, 11, 12$ in one artifact with
 `instance: {point: 11}`, so the generated ledger shows H-016’s coverage as
 `n: 10 11* 12` — two measured cells unstarred.
 Since “an unfilled cell is a queue item”, an unattended runner following the ledger
-would re-run `n = 10` and `n = 12`.
+would re-run $n = 10$ and $n = 12$.
 
 **Fix:** either split future sweep rounds one-per-cell (the contract’s intent), or give
 the experiment schema a declared multi-cell form and teach `sweep_coverage` to read it.
@@ -314,8 +314,8 @@ Within it, the highest-information next steps, cheapest first:
 3. **H-011 → H-012** — the census and the premise test, exactly as Phase 5 orders them.
 4. Only then strategy proposers (Phase 4), compared through one pipeline.
 
-One addition: since the PR’s own correction demotes `n = 5`/`n = 10` to
-machinery-validation, `s(17)` should enter the standing sweep early as the
+One addition: since the PR’s own correction demotes $n = 5$/`n = 10` to
+machinery-validation, $s(17)$ should enter the standing sweep early as the
 mechanism-matched cell — cheap to carry from the start, and it is the only calibration
 that speaks to record-finding rather than machinery.
 
@@ -383,10 +383,10 @@ Every P1 was reproduced before being fixed.
 | **F-3** beads never reached the shared store | **fixed** — `tbd sync` landed them. The old tree is reconciled: `think-q3hl` and `think-pmhe` closed as superseded, `think-lpse` and `think-19gf` updated with cross-references rather than closed, since they are related but distinct. |
 | **F-4** renumber residue | **fixed** — all five stale references corrected, plus a sixth the review did not catch (a miscounted `../` depth). Two compensating controls added: a relative-link checker, and a rule that a reserved id may be named but not linked. |
 | **F-5** overlap guard on a drifting accumulator | **fixed** — recomputed from the stored configuration at record time; the selftest asserts the recomputed value. The two adjacent nits are recorded in the bead and left: both are sub-1% and neither affects a verdict today. |
-| **F-6** three-cell sweep as a one-cell round | **fixed** — split one round per cell; `H-016` now shows `n: 10* 11* 12*`. Exposed a latent bug: `status_of` ranked `accepted` above `rejected`, so `n = 12` passing would have reported a refuted swept claim as confirmed. Corrected. |
+| **F-6** three-cell sweep as a one-cell round | **fixed** — split one round per cell; `H-016` now shows `n: 10* 11* 12*`. Exposed a latent bug: `status_of` ranked `accepted` above `rejected`, so $n = 12$ passing would have reported a refuted swept claim as confirmed. Corrected. |
 | **D-1** name the layers | **adopted, and made a test** — `differential_test.py` checks `sqsearch`’s `pair_depth == 0` against `sqpack`’s `separated()` on 20,000 near-contact pairs, in `test.sh`, mutation-checked. The boundary is enforced rather than described. |
 | **D-2** hypothesis ownership | **adopted** — one rule in the runbook: once codified the registry artifact is canonical, the register entry is historical, beads track build work and never scientific claims. |
-| **D-3** `s(17)` into the standing sweep | **adopted** — added as the mechanism-matched cell, with value and attribution read from `frontier/n-017.md` (Bidwell 1998) rather than memory; the first draft credited Göbel/Bidwell, which the corpus does not support. |
+| **D-3** $s(17)$ into the standing sweep | **adopted** — added as the mechanism-matched cell, with value and attribution read from `frontier/n-017.md` (Bidwell 1998) rather than memory; the first draft credited Göbel/Bidwell, which the corpus does not support. |
 | **D-4** file the softschema limitation upstream | **deferred** — filing an issue on another repository is an outward action awaiting a go-ahead. Tracked as `think-rk66`. |
 
 Three things this review prompted that it did not ask for:

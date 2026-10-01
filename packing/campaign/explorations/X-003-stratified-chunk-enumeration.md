@@ -37,7 +37,7 @@ exploration:
 This report consolidates a 2026-08-26 design discussion between the repository owner and
 an agent into a mineable idea source for the proposer layer, which the synopsis names as
 the record-finding lane’s live bottleneck: the refiner takes proved controls to `1e-15`
-and leaves the tested `n = 11` starts at `6e-02`, and proposal is the layer with the
+and leaves the tested $n = 11$ starts at `6e-02`, and proposal is the layer with the
 fewest built parts. Nothing here spends experiment budget or asserts a scientific
 verdict.
 
@@ -49,19 +49,19 @@ a shared angle. The proposal is to enumerate the discrete arrangement data exhau
 and let the built LP and quench machinery do everything continuous.
 
 The two most celebrated oblique records are instances.
-Trump’s `n = 11` packing decomposes as one corner square, one mirrored against the
+Trump’s $n = 11$ packing decomposes as one corner square, one mirrored against the
 opposite side, one offset along the top, an L-shaped block of three, and a five-square
 group tilted as one rigid unit
 ([the exact construction](../../../docs/project/research/research-2026-08-22-packing-11-unit-squares.md#trumps-packing-1979-structure-and-exact-characterization)).
-Bidwell’s `n = 17` record is an aligned frame plus two tilted groups at `+39.80496°` and
-`-36.62379°`.
+Bidwell’s $n = 17$ record is an aligned frame plus two tilted groups at
+$+39.80496^\circ$ and $-36.62379^\circ$.
 
 ## The Discussion’s Intuitions, Graded Against the Record
 
 1. **Records use few angle classes.** Partially true.
    Trump uses two classes and Bidwell three, but
    [exp-037](../series/series-000-smoke-and-calibration/experiments/exp-037-h-042-n29-numerical-angle-classes.md)
-   measures six numerical classes in the retained `n = 29` record serialization,
+   measures six numerical classes in the retained $n = 29$ record serialization,
    rejecting the registered three-class claim.
    The defensible quantitative form is
    [H-025](../hypotheses/H-025-record-angle-compressibility.md) (compressibility to
@@ -75,8 +75,8 @@ Bidwell’s `n = 17` record is an aligned frame plus two tilted groups at `+39.8
    Partially true, with two cautions.
    Friedman’s DS7 records that Trump improved Göbel’s earlier 11-square packing, and
    Bidwell’s record is annotated as based on Hämäläinen’s 1980 packing.
-   But Stromquist’s Theorem 3 proves no `0°/45°` packing reaches Trump’s side, so the
-   `n = 11` “perturbation” crosses a proved structural boundary; and
+   But Stromquist’s Theorem 3 proves no $0^\circ/45^\circ$ packing reaches Trump’s side,
+   so the $n = 11$ “perturbation” crosses a proved structural boundary; and
    [T-3](../../../SYNOPSIS.md#the-corner-and-the-method-it-forced) shows the
    perturbation endpoint is a nonsmooth corner, not a smooth critical point.
 4. **Perturbing a regular packing beats cold search.** Plausible and registered three
@@ -88,15 +88,15 @@ Bidwell’s `n = 17` record is an aligned frame plus two tilted groups at `+39.8
    [exp-005](../series/series-000-smoke-and-calibration/experiments/exp-005-basin-entry-n11.md)
    showed the default schedule wandering away from a start `1e-5` off Trump’s pose.
    Perturbation needs slack, which is the container-inflation ladder’s role.
-5. **Regularity returns at large `n`.** Supported: Erdős–Graham asymptotic constructions
-   are grid bulk plus structured boundary layers, and the `m² - 3` grid records at
-   `n = 61, 78, 97` carry the narrowest gaps in the corpus.
+5. **Regularity returns at large $n$.** Supported: Erdős–Graham asymptotic constructions
+   are grid bulk plus structured boundary layers, and the $m^2 - 3$ grid records at
+   $n = 61, 78, 97$ carry the narrowest gaps in the corpus.
    The weakest regime for the ansatz is the mid-range annealing records, where minimal
-   polynomial degrees reach 42 (`n = 41`) and 44 (`n = 87`).
+   polynomial degrees reach 42 ($n = 41$) and 44 ($n = 87$).
 
 ## The Pipeline, and What Is Already Built
 
-A **stratum label** is discrete data: a partition of `n` into chunk sizes, a lattice
+A **stratum label** is discrete data: a partition of $n$ into chunk sizes, a lattice
 skeleton per chunk (bar, L, rectangle), an angle-class assignment naming which chunks
 tilt, and a contact hypothesis on the graph of chunks plus the four container walls.
 
@@ -106,7 +106,7 @@ tilt, and a contact hypothesis on the graph of chunks plus the four container wa
 | 2 | Glued LP screen: equality rows fix intra-chunk offsets | unbuilt, but only the glue rows are new |
 | 3 | Soft LP to a cell fixed point: free centers at fixed angles | built ([`sqpack.research.quench`](../../src/sqpack/research/quench.py) inner loop) |
 | 4 | Class-angle bracketing: tilted chunks rotate as units | built (quench outer loop; T-3’s corner mandates bracketing over gradients) |
-| 5 | Free-angle audit: each of the `n` angles bracketed individually | built (the quench’s final pass) |
+| 5 | Free-angle audit: each of the $n$ angles bracketed individually | built (the quench’s final pass) |
 
 Three facts from the built record make the division of labor exact:
 
@@ -121,8 +121,8 @@ Three facts from the built record make the division of labor exact:
   Trump’s certificate returns the published side to `4.4e-16` with the centers never
   given to the solver.
 - **The combinatorics collapses at the chunk level.** The unrestricted cell count is
-  `8^C(11,2) ≈ 5e49`; with `k ≈ 5` chunks the free inter-chunk combinatorics is on the
-  order of `8^C(5,2) ≈ 1e9` before symmetry reduction and feasibility pruning, times
+  `8^C(11,2) ≈ 5e49`; with $k \approx 5$ chunks the free inter-chunk combinatorics is on
+  the order of `8^C(5,2) ≈ 1e9` before symmetry reduction and feasibility pruning, times
   polynomial partition and skeleton counts.
   That reduction is substantial, but `1e9` before partition and skeleton factors is
   still a feasibility blocker.
@@ -132,12 +132,12 @@ Angle constraints, stated once: the LP requires every angle fixed to a number an
 no restriction on the values; the class count controls only the outer search dimension
 and the enumeration size.
 No angle can be pinned without loss of generality in a square container, so “the frame
-chunk sits at `0°`” is part of the stratum label.
+chunk sits at $0^\circ$” is part of the stratum label.
 
 ## The Ranking Rule
 
 Aligned stage-1 side values cannot rank strata: every all-aligned arrangement of 11
-squares sits at side `4.0`, including the stratum that becomes Trump’s after rotation,
+squares sits at side $4.0$, including the stratum that becomes Trump’s after rotation,
 so the coarse stage systematically undervalues exactly the strata that become records.
 The consequence is a design rule, not a defeat: **every stratum surviving feasibility
 gets a coarse angle sweep before any triage**, at roughly `0.13 s` per tilted-chunk
@@ -151,19 +151,19 @@ shared by the grid and the record cannot separate them.
   packing several times with s11 = 3.87708359…”*, after thousands of random-start
   billiard runs; the same section notes the procedure *“seems to be ‘attracted’ by
   configurations with angle θ = 0 which are rarely good.”* Their program also “leads to”
-  Bidwell’s `n = 17` figure, with the text ambiguous about cold versus seeded starts.
+  Bidwell’s $n = 17$ figure, with the text ambiguous about cold versus seeded starts.
 - **Berthold, Kamp, Mexi, Pokutta, Pólik 2026** (SCIP 10 and FICO Xpress 9.8, recorded
   in
   [the algorithms report](../../../docs/project/research/research-2026-08-22-square-packing-algorithms-and-tooling.md#general-purpose-global-optimization)):
-  `3.87709` at `n = 11` from scratch on a 48-core budget; `4.00001` at `n = 16`, missing
-  the trivial grid; `4.67682` at `n = 17`, short of Bidwell.
+  $3.87709$ at $n = 11$ from scratch on a 48-core budget; $4.00001$ at $n = 16$, missing
+  the trivial grid; $4.67682$ at $n = 17$, short of Bidwell.
 - **This repository’s negatives**:
-  [H-016](../hypotheses/H-016-stock-annealer-reaches-standing-best.md) refuted (`3.9144`
-  at `n = 11` on every seed), and
+  [H-016](../hypotheses/H-016-stock-annealer-reaches-standing-best.md) refuted ($3.9144$
+  at $n = 11$ on every seed), and
   [exp-011](../series/series-000-smoke-and-calibration/experiments/exp-011-h-020-n17.md)
-  returning the bare grid at `n = 17` on all five seeds.
+  returning the bare grid at $n = 17$ on all five seeds.
 
-So `n = 11` rediscovery exists at cost, and a cold `n = 17` rediscovery would be, on
+So $n = 11$ rediscovery exists at cost, and a cold $n = 17$ rediscovery would be, on
 this archive’s evidence, a first for any published method.
 The differentiating deliverable of enumeration is therefore not rediscovery but
 **coverage semantics**.
@@ -182,16 +182,16 @@ itself in counted LP solves, the machine-independent work unit
 
 The certified upgrade is the interesting endgame: per-stratum optimization made rigorous
 (exact or interval LP over the cell, certified bracketing over the class angles) yields
-restricted-class optimality statements of the form “no packing expressible as `k`
+restricted-class optimality statements of the form “no packing expressible as $k$
 aligned chunks plus one rotating chunk beats Trump’s.” Stromquist’s Theorem 3 is the
-only existing theorem of that shape at `n = 11`; the prerequisite is the exact LP named
+only existing theorem of that shape at $n = 11$; the prerequisite is the exact LP named
 as the general fix for [D-021](../../../defects.md).
 
 ## Registry Relations
 
 [H-001](../hypotheses/H-001-angle-class-reduction.md) asserts the angle-class half of
 the ansatz with no enumeration stage behind it; this design supplies that stage.
-[H-025](../hypotheses/H-025-record-angle-compressibility.md) prices how large `k` must
+[H-025](../hypotheses/H-025-record-angle-compressibility.md) prices how large $k$ must
 be for the grammar to cover the record corpus, and
 [H-030](../hypotheses/H-030-public-parent-surgery.md) is the registered calibration for
 the insertion and surgery moves.
@@ -211,8 +211,8 @@ reads them as blocked until the tooling beads land.
   Registered first for that reason.
 
 - **[H-045](../hypotheses/H-045-chunk-grammar-rediscovery.md) — rediscovery ladder.**
-  Does a grammar frozen on the proved cells rank the standing best first at `n = 11`,
-  with `n = 16` as guard and `n = 17` as differentiator?
+  Does a grammar frozen on the proved cells rank the standing best first at $n = 11$,
+  with $n = 16$ as guard and $n = 17$ as differentiator?
 
 - **[H-046](../hypotheses/H-046-regular-predecessor-continuation.md) — predecessor
   continuation.** Does a class-angle path run from Trump’s aligned form to the record
@@ -231,7 +231,7 @@ reads them as blocked until the tooling beads land.
 ## Risks and Open Edges
 
 Coverage is a reduction: the grammar may exclude records.
-The six angle classes measured at `n = 29` price the fitted-angle count `A` and the
+The six angle classes measured at $n = 29$ price the fitted-angle count $A$ and the
 outer bracketing dimension; they do not determine the chunk count `C`. Chunk fission
 must be a grammar move or the coverage claim silently shrinks.
 Stage 3 endpoints sit on corners, so nothing gradient-based enters the angle stage.

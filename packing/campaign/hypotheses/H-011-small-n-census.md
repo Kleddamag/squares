@@ -44,20 +44,20 @@ hypothesis:
 
 A numerical quench endpoint does not automatically become a discrete local minimum when
 its key is canonicalized.
-At `n=3`, an exact side-2 family contains a continuously sliding square; the current
+At $n=3$, an exact side-2 family contains a continuously sliding square; the current
 geometric key splits that connected family, interior members share one contact key, and
 the wall endpoints have a second contact key.
 The census is therefore blocked on a declared terminal-component relation, isolation
 tests, and an ambiguity policy as well as on canonical endpoint comparison.
 
-Once proposer `P`, quench `Q`, and terminal equivalence `E` are versioned, the countable
+Once proposer $P$, quench $Q$, and terminal equivalence $E$ are versioned, the countable
 question is conditional: how much component support under this regime has the sample
 covered, with what uncertainty?
 That can be answered by an event archive, an unseen-mass estimator, and independent
 replicates; a flat key-discovery curve alone cannot establish completeness.
 
 The census starts where the answers are proved, so the atlas machinery is validated
-against ground truth before it is pointed at `n = 11`.
+against ground truth before it is pointed at $n = 11$.
 
 This is the cheapest strategic item in the registry: it runs on the existing Python plus
 the LP that the standing review already validated, so it needs no Rust and no new

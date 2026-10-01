@@ -171,7 +171,7 @@ The structural risk here is real and worth naming: **the gate only samples the a
 `known-best atlas records and sample` runs `build_known_best_atlas --check --sample` —
 every Nth case — because the full rebuild measured 691.19 s of a 703.28 s step and was
 moved to the deferred surface.
-So on a pull request, an un-sampled `n` can drift unseen.
+So on a pull request, an un-sampled $n$ can drift unseen.
 
 I ran the full rebuild anyway.
 It passes:
@@ -446,7 +446,7 @@ Consistent with `check_documentation` ("footers and links resolve", 1401 documen
 
 ## Will go stale when the n=17 work lands
 
-Distinct from anything above: the external n=17 bound `461300/99853` is on
+Distinct from anything above: the external n=17 bound $461300/99853$ is on
 `claude/n17-mira-guzhou-4613-intake`. Diffing that branch against `9fe9999d` shows
 exactly what it moves.
 
@@ -461,7 +461,7 @@ packing/atlas/known-best/known-best-1-324.svg / .png / .pdf
 **Not** the 324 per-n renderings —
 `git diff --name-only 9fe9999d -- packing/atlas/known-best/rendering/` returns **0
 files**. That is the right shape: a lower bound moved, the known-best packing did not,
-and only the composites annotate bounds per `n`.
+and only the composites annotate bounds per $n$.
 
 **Records and prose:** `packing/frontier/{results,evidence}.yaml`, `n-017.md`,
 `n-018.md`, `RESULTS.md`, `STATUS.md`, `INVENTORY.md`, `CERTIFICATE-REACH.md`;

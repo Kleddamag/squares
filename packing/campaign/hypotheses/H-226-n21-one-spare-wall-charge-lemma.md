@@ -70,8 +70,8 @@ hypothesis:
 ---
 # H-226: The One-Spare Wall-Charge Lemma at n=21
 
-Lane 3 identified `n = 21` as the integer case one spare point past Bentz 2016’s proved
-`n = 22`, and review R3 corrected both the constant the finishing line needs and the
+Lane 3 identified $n = 21$ as the integer case one spare point past Bentz 2016’s proved
+$n = 22$, and review R3 corrected both the constant the finishing line needs and the
 size of the case tree.
 This claim is the lemma that would close the case.
 Its first output is the exact replay of Theorem 11 at the printed constants; only then

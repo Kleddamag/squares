@@ -117,7 +117,7 @@ every mathematical nonlinear branch.
 The experiment is registered, but target execution is blocked.
 The first two admitted implementation slices add the owner-3 scale perimeter and the
 three-stratum owner-4 proof-data helper.
-Both run only on the exp-036 `+W` control and make no pure `-W`, sign-symmetry, or H-023
+Both run only on the exp-036 $+W$ control and make no pure `-W`, sign-symmetry, or H-023
 disposition. An accepted execution-scoped active-row inventory now lets those two
 controls share one exact row construction per field identity and stratum while every
 owner view repeats authoritative key and gradient validation.
@@ -139,7 +139,7 @@ obstruction.
 
 ## Frozen Owner and Scale Inventory
 
-The six case keys are the Cartesian product of `A`, `interior`, and `B` with `owner3`
+The six case keys are the Cartesian product of $A$, `interior`, and $B$ with `owner3`
 and `owner4`. One execution-scoped inventory may construct the full production rows
 through `exact_jets` once per stratum.
 Each owner case must then regenerate the complete stored `-W` vector, derive a fresh
@@ -170,12 +170,12 @@ B = G dot d_beta
 d_beta = e_theta3
 ```
 
-The checker must derive and retain all fifteen `G_j` and `B` from production rows and
+The checker must derive and retain all fifteen $G_j$ and $B$ from production rows and
 prove them exactly zero before the sign of `C` decides anything.
 It must not represent or sample `beta` as a `FieldElement`.
 
 For unbounded `abs(delta)/t^2`, derive `tau`, both tied-row gradients, `b_plus`,
-`b_minus`, `h`, `kappa_positive`, and `kappa_negative` from current production rows.
+`b_minus`, $h$, `kappa_positive`, and `kappa_negative` from current production rows.
 Verify `b_plus = -(h + tau)` and `-b_minus = -(h - tau)`, and require both cusp
 coefficients to be strictly negative.
 Retain nuisance-column cancellation and the three normalized remainder limits
@@ -184,7 +184,7 @@ Stored expected constants are not proof data.
 The scale-only helper retains typed symbolic reductions from explicit, sign-stable route
 premises and derives tied-row sign ownership from the production projection.
 This proves only what follows if those premises hold.
-Target admission still requires the driver to establish `t -> 0`, eventual `t > 0`,
+Target admission still requires the driver to establish `t -> 0`, eventual $t > 0$,
 `delta = o(t)`, `abs(delta)/t^2 -> infinity`, eventual nonzero `delta`, and its stable
 sign for the actual route.
 Neither a handler label nor a declared route premise is a contradiction certificate.
@@ -210,7 +210,7 @@ the obstruction outcome.
 ## Frozen Controls and Failures
 
 Run an instrument-valid target baseline of any scientific disposition, the exp-034
-compatible sheet witness, and the exp-036 `+W` positive obstruction before mutations.
+compatible sheet witness, and the exp-036 $+W$ positive obstruction before mutations.
 Each mutation changes a production input or intermediate before rebuilding a fresh
 certificate and must match exactly one typed exception and specific message:
 
@@ -221,7 +221,7 @@ certificate and must match exactly one typed exception and specific message:
 5. nonzero center-angle Hessian mutation: `jet.center_axis_cross`
 6. declared-versus-applied correction mismatch: `jet.correction_unused`
 7. strict SAT feature-sign mutation: `jet.absolute_branch`
-8. zero-correction `W` and `2W` homogeneity mutation: `jet.curvature_homogeneity`
+8. zero-correction $W$ and $2W$ homogeneity mutation: `jet.curvature_homogeneity`
 9. production stress-weight mutation: `certificate.weighted_curvature`
 10. same-evaluator bad sheet correction: `control.sheet_witness`
 11. real scale-handler deletion: `certificate.scale_exhaustion`
@@ -254,7 +254,7 @@ registered poses under the justified local owner and scale inventory.
 It does not establish nonlinear realization, other mixed directions, whole-component
 stationarity or identity, an A-to-B stationary connection, connectivity frequency, local
 isolation, terminality, quench selection, basin mass, census completeness, unequal-side
-clearance, or any `n = 11` claim.
+clearance, or any $n = 11$ claim.
 H-023 remains an open question whose bidirectional-continuation instrument is not ready.
 
 ## Amendment — the 2026-08-31 Independent Audit and Acceptance
@@ -284,16 +284,16 @@ The frozen list is retained unedited as what was registered.
 
 **The driver never routed through the accepted helpers, and the retention clause was met
 in condensed form.** The certificate’s owner-3 cases retain a two-scale contradiction
-(negative `t²` gap plus negative cusp term) rather than the fifteen `G_j`-bearing scale
+(negative $t^2$ gap plus negative cusp term) rather than the fifteen $G_j$-bearing scale
 records this registration froze.
 The gap is closed by corroboration rather than by rewriting the driver:
 [`devtools/check_minus_w_bridge.py`](../../../../devtools/check_minus_w_bridge.py) runs
 the accepted `minus_w_row_jets`/`minus_w_stress`/`minus_w_scale`/`minus_w_owner4`
 helpers on the actual `-W` direction and rebuilds **all fifteen** owner-3 scale records
 and all three owner-4 records — every correction coefficient and beta coefficient
-exactly zero, every deciding constant `-1/4 < 0`, both cusp coefficients strictly
-negative, and every coefficient equal to its `+W` twin — after first checking that the
-negated production `W` equals this certificate’s retained `canonical_minus_W` and that
+exactly zero, every deciding constant $-1/4 < 0$, both cusp coefficients strictly
+negative, and every coefficient equal to its $+W$ twin — after first checking that the
+negated production $W$ equals this certificate’s retained `canonical_minus_W` and that
 the helper constant matches the retained `obstruction_coefficient`.
 `tests/test_minus_w_bridge.py` holds the bridge in place, including sensitivity controls
 proving the deciding constant is a genuine quadratic in the direction.

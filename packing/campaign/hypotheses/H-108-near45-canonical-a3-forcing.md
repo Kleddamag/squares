@@ -47,46 +47,46 @@ premise.
 Localization into the canonical region, A1 and A2 forcing, and both twelve-point
 clauses remain separate.
 
-Here `q=1939/500`, `A3=(3/2,13/10)` and the canonical center region is
+Here $q=1939/500$, `A3=(3/2,13/10)` and the canonical center region is
 `R=[1,q/2]x[0,1]`. The angle neighborhood is `[pi/4-pi/720,pi/4+pi/720]`, and
-containment means containment in `[0,q]^2`.
+containment means containment in $[0,q]^{2}$.
 
 The unchanged point set comes from
 [the source-formula implementation](../../cases/stromquist/restricted_orientation.py).
-It contains the horizontal and vertical reflections of the four seeds `(1,1)`,
-`(q/2,1)`, `(3/2-q/4,q/2)`, and `(1/2+q/4,q/2)`. The sufficient implication uses only
-`L=(1,1)` and `M=(q/2,1)`. Avoiding these two points is a weaker antecedent than
+It contains the horizontal and vertical reflections of the four seeds $(1,1)$,
+$(q/2,1)$, $(3/2-q/4,q/2)$, and $(1/2+q/4,q/2)$. The sufficient implication uses only
+$L=(1,1)$ and $M=(q/2,1)$. Avoiding these two points is a weaker antecedent than
 avoiding P10, so proving that it forces A3 establishes a stronger theorem.
 Avoidance of a closed square is strict; a boundary hit is not avoidance.
 
 ## Reduction to Three Moving Vertices
 
-Write `C=cos(theta)`, `S=sin(theta)` and `h=(C+S)/2`. For this angle chart, `0<C,S<1`
-and `h>1/2`. Containment puts the center `(x,y)` in `[h,q-h]^2`. Together with the
+Write `C=cos(theta)`, `S=sin(theta)` and $h=(C+S)/2$. For this angle chart, $0< C,S<1$
+and $h>1/2$. Containment puts the center $(x,y)$ in $[h,q-h]^{2}$. Together with the
 canonical region, this gives `X=x-1 in [0,W]`, `W=q/2-1 in (0,1)` and
 `Y=1-y in [0,1-h]`.
 
 Avoidance of L reduces to `CX-SY>1/2` or `SX+CY>1/2`. Avoidance of M reduces to
 `C(W-X)+SY>1/2` or `S(W-X)-CY>1/2`. The other signed failures are impossible because
-`X,W-X,Y` are nonnegative and `Y<1/2`. Three of the four combinations would force
-respectively `CW>1`, `SW>1`, or `CX+S(W-X)-(C+S)Y>1`; each contradicts `W<1` and
-`C,S<1`.
+$X,W-X,Y$ are nonnegative and $Y<1/2$. Three of the four combinations would force
+respectively `CW>1`, `SW>1`, or `CX+S(W-X)-(C+S)Y>1`; each contradicts $W<1$ and
+$C,S<1$.
 
 Thus, in square-frame coordinates `U=Cx+Sy`, `V=-Sx+Cy`, every square avoiding L and M
 under these hypotheses has its center in the closed enlargement
 
 $$
-K_\theta=\{U\le u_*,\ V\le v_*,\ SU+CV\ge h\},\qquad
-u_*=Cq/2+S-1/2,\quad v_*=C-S-1/2.
+K_\theta=\lbrace U\le u_{\ast},\ V\le v_{\ast},\ SU+CV\ge h\rbrace,\qquad
+u_{\ast}=Cq/2+S-1/2,\quad v_{\ast}=C-S-1/2.
 $$
 
 For positive C and S this set is empty, a singleton, or the triangle with formal
 vertices
 
 $$
-E=(u_*,v_*),\qquad
-F=((h-Cv_*)/S,v_*),\qquad
-G=(u_*,(h-Su_*)/C).
+E=(u_{\ast},v_{\ast}),\qquad
+F=((h-Cv_{\ast})/S,v_{\ast}),\qquad
+G=(u_{\ast},(h-Su_{\ast})/C).
 $$
 
 Indeed, let `Delta=Su*+Cv*-h`. For positive Delta the barycentric coefficients at F, G
@@ -96,18 +96,18 @@ At zero Delta the vertices coincide; at negative Delta the set is empty.
 Checking all three formal vertices even in that last case is a stronger sufficient test,
 not an assertion that those vertices are admissible centers.
 
-Containment of the marked point `A=(a,b)` requires nonnegativity of the four affine
+Containment of the marked point $A=(a,b)$ requires nonnegativity of the four affine
 margins `1/2 +/- (Ca+Sb-U)` and `1/2 +/- (-Sa+Cb-V)`. Nonnegativity at all three
 vertices therefore covers the whole closed triangle, including its boundary.
 
 ## Exact Angle Certificate and Its Limits
 
-Put `t=tan((theta-pi/4)/2)` and use both closed slabs `[-T,0]` and `[0,T]`, with
-`T=110880/50803079`. The
+Put `t=tan((theta-pi/4)/2)` and use both closed slabs $[-T,0]$ and $[0,T]$, with
+$T=110880/50803079$. The
 [angle design](../series/series-000-smoke-and-calibration/results/agenda-026/bc-255-angle-instrument-design.md)
 proves that T exceeds `tan(pi/1440)`. Let `D=1+t*t`, `c=(sqrt(2)/2)(1-2t-t*t)` and
-`s=(sqrt(2)/2)(1+2t-t*t)`, so `C=c/D` and `S=s/D`. Since `T<1/3`, both quadratic factors
-exceed `2/9`; D, cD and sD are positive.
+`s=(sqrt(2)/2)(1+2t-t*t)`, so $C=c/D$ and $S=s/D$. Since $T<1/3$, both quadratic factors
+exceed $2/9$; D, cD and sD are positive.
 Clearing these denominators turns each margin into a polynomial of degree at most four
 over `Q(sqrt(2))`.
 

@@ -147,11 +147,11 @@ next.
 
 In one sentence: the bounded measure H-128 asked for does not exist on the retained
 shrink and net at the precision this block could buy (the least valid four-bound measure
-has mass `23596423/2000000 ≈ 11.798`, against the `11.15` criterion, and pricing the
-corner orbit shows the position rather than the bound is the obstacle), but the free
-measure at `96/25` proves a weaker four-corner theorem outright: four distinct squares
+has mass $23596423/2000000 \approx 11.798$, against the $11.15$ criterion, and pricing
+the corner orbit shows the position rather than the bound is the obstacle), but the free
+measure at $96/25$ proves a weaker four-corner theorem outright: four distinct squares
 each containing one of two marks near its corner.
-The price `M(forced) − M(free)` is `33507/62500 = 0.536112` on one site set.
+The price `M(forced) − M(free)` is $33507/62500 = 0.536112$ on one site set.
 The floor for the net is the unfinished part.
 
 ## Integration Certification Addendum — 2026-09-08

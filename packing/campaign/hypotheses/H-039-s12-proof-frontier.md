@@ -45,7 +45,7 @@ Search saturation is never a proof of unavoidability.
 Exp-016 and exp-017 now provide the calibrated pair: a strict escape from a broken
 candidate and a complete exact certificate for a repaired one.
 The next instrument must preserve that two-sided behavior while changing the target from
-reproducing an `n=11` bound to improving the declared `n=12` threshold.
+reproducing an $n=11$ bound to improving the declared $n=12$ threshold.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

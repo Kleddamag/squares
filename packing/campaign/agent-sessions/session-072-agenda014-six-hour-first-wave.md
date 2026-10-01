@@ -369,7 +369,7 @@ lane may borrow unused time or switch targets.
 
 ### 00:15--00:30Z — W1 source freeze
 
-- **Artifact:** the `n = 54` case, retained witness, DS7 revisions, current and history
+- **Artifact:** the $n = 54$ case, retained witness, DS7 revisions, current and history
   catalogue captures, live SVG URL, and their exact hashes or HTTP identity.
 - **Result:** the source question is frozen at genealogy, exact field and embedding,
   symbolic pose availability, labeled correspondence, serialization semantics, and
@@ -400,7 +400,7 @@ lane may borrow unused time or switch targets.
 - **Artifact:** `audit_n54_source_formula.py`, two focused tests, the indexed
   source/formula report and the corrected finite-case audit pointer.
 - **Result:** with `p = sqrt(1 + sqrt(2))`, the side, tangent and exact orientation
-  vector all lie in `Q(p)`; the tool reproduces their minimal polynomials and the
+  vector all lie in $Q(p)$; the tool reproduces their minimal polynomials and the
   positive embedding. The first blocker is now
   `exact-source-parser-and-labeled-correspondence-absent`, not absence of exact source
   formulas.

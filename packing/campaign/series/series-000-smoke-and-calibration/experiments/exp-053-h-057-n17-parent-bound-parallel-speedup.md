@@ -135,9 +135,9 @@ The launch revision is `909efafa0773fbea23b24de072ef59a03a01317a`. The read-only
 checkpoint and progress SHA-256 digests are
 `db5c156959b6de4e6f2c9be283454d01dd5f3a436e6489f5e6bb60c38559fdb8` and
 `08e301b01c7ac6eef4b03c3a4daa5f72c5f1bdbe217dbbb061b57f5c94d947af`. The checkpoint
-contains ordinals `0` through `32`; the first profile row chains from row hash
+contains ordinals $0$ through $32$; the first profile row chains from row hash
 `9badcc57c05e328344b0ec7ae4fbf9815e8eae027a79bec1bf1a35b9871fade6`. The progress marker
-remains at ordinal `33`, stage `independent_started`, with binding hash
+remains at ordinal $33$, stage `independent_started`, with binding hash
 `2446fa39e154800410b9b5cc19f19aed7cc0c797d116f7ece1c97a2c7c0b4d1a`.
 
 The retained fixture, ordered directions and frozen scientific package remain bound to
@@ -156,7 +156,7 @@ Each worker receives one preassigned ordinal and one fresh path under its arm’
 working directory. It imports both unchanged accumulators, writes one canonical exact
 fragment and cannot write the parent checkpoint.
 The single parent process validates the binding, ordinal, direction, event hashes,
-manifest equality and complete selected set before sorting rows as `33`, `107`, `180`
+manifest equality and complete selected set before sorting rows as $33$, $107$, $180$
 and deriving the profile-only hash chain.
 The serial and parallel arms must produce identical merged bytes.
 

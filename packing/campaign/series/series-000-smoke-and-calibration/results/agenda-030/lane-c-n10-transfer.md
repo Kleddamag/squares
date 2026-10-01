@@ -974,53 +974,53 @@ Only the exact sweep decides validity; every LP objective below is context.
 finite-support attempt.
 An above-threshold feasible measure or a time limit is not a falsifier of H-128’s
 existence claim. A refutation needs an exact lower certificate over the entire declared
-measure domain; the retained bound `10.785 < 11.15` does not provide one.
+measure domain; the retained bound $10.785 < 11.15$ does not provide one.
 
 ### The ownership step, exactly
 
-Setting. Side `L = 96/25`, shrink `B = 9977/10000`, the retained net of 181 directions
-(`t_k = k · 207107/500000 / 180`, `k = 0..180`, reaching `π/4`), a measure `μ` that is
-D4-symmetric (Condition 1) and covers every reachable event cell at every net direction
-with mass at least 1 (Condition 5); Conditions 3 and 4 are the net’s and hold as for
-T-018. Write `M = μ(S) = 11 + ε`.
+Setting. Side $L = 96/25$, shrink $B = 9977/10000$, the retained net of 181 directions
+($t_k = k \cdot 207107/500000 / 180$, `k = 0..180`, reaching $\pi/4$), a measure $\mu$
+that is D4-symmetric (Condition 1) and covers every reachable event cell at every net
+direction with mass at least 1 (Condition 5); Conditions 3 and 4 are the net’s and hold
+as for T-018. Write $M = \mu(S) = 11 + \varepsilon$.
 
 Lemma C′ (lane C, X-014 Corollary 1a restated).
-In any packing of eleven unit squares in `[0, L]²`, each square contains, strictly
-inside its interior, a closed `B`-square at a net direction (Condition 4); these eleven
-cores `P_1, …, P_11` are pairwise disjoint, and by Condition 5 each has `μ(P_i) ≥ 1`.
-Hence `Σ_i μ(P_i) ≤ M = 11 + ε` gives `μ(P_i) ≤ 1 + ε` for every `i` and
-`μ(S ∖ ⋃ P_i) ≤ ε`. An atom `p` of weight `w > ε` therefore lies in at least one core
-(else it contributes `w > ε` to the mass outside the cores) and in at most one (the
-cores are disjoint).
-So it lies in exactly one core.
+In any packing of eleven unit squares in $[0, L]^2$, each square contains, strictly
+inside its interior, a closed $B$-square at a net direction (Condition 4); these eleven
+cores $P_1, \ldots, P_{11}$ are pairwise disjoint, and by Condition 5 each has
+$\mu(P_i) \ge 1$. Hence $\Sigma_i \mu(P_i) \le M = 11 + \varepsilon$ gives
+$\mu(P_i) \le 1 + \varepsilon$ for every $i$ and `μ(S ∖ ⋃ P_i) ≤ ε`. An atom $p$ of
+weight $w > \varepsilon$ therefore lies in at least one core (else it contributes
+$w > \varepsilon$ to the mass outside the cores) and in at most one (the cores are
+disjoint). So it lies in exactly one core.
 
-Corollary C.2 at `96/25`. The four corner atoms are the D4 orbit of `(a, a)` with
-`a = 1849127/1853400 · 384/381 = 29586032/29422725 ≈ 1.005550`, that is
-`(a, a), (L − a, a), (a, L − a), (L − a, L − a)` — four members, the point being on the
-diagonal mirror. Their least squared pairwise distance is `(L − 2a)² =
-4633032392704/1385114794281 ≈ 1.82890²`; the diameter of a closed `B`-square is `B√2`
-with `2B² = 99540529/50000000 ≈ 1.41096²`; and `4633032392704/1385114794281 >
-99540529/50000000` (decided in `Fraction` arithmetic by the driver, which refuses to run
-otherwise). So no core contains two corner atoms.
+Corollary C.2 at $96/25$. The four corner atoms are the D4 orbit of $(a, a)$ with
+$a = 1849127/1853400 \cdot 384/381 = 29586032/29422725 \approx 1.005550$, that is
+$(a, a), (L - a, a), (a, L - a), (L - a, L - a)$ — four members, the point being on the
+diagonal mirror. Their least squared pairwise distance is
+$(L - 2a)^2 = 4633032392704/1385114794281 \approx 1.82890^2$; the diameter of a closed
+$B$-square is $B\sqrt{2}$ with $2B^2 = 99540529/50000000 \approx 1.41096^2$; and
+$4633032392704/1385114794281 > 99540529/50000000$ (decided in `Fraction` arithmetic by
+the driver, which refuses to run otherwise).
+So no core contains two corner atoms.
 
 Theorem (conditional on the measure).
-If a valid `μ` at `(96/25, 9977/10000, the net)` carries weight `w_c ≥ 3/20` on each
-corner atom and has `M < 11 + 3/20`, then `ε <
-3/20 ≤ w_c`, each corner atom lies in exactly one core by C′, the four cores are
-distinct by C.2, and each core is strictly inside its own unit square: every packing of
-eleven unit squares at side `96/25` has four distinct squares each containing one of the
-four corner atoms in its interior.
-No further geometry enters; the centre atom is not needed for this statement (H-128’s
-fifth bound serves Lemma H’s two-pattern split, not the theorem).
+If a valid $\mu$ at `(96/25, 9977/10000, the net)` carries weight $w_c \ge 3/20$ on each
+corner atom and has $M < 11 + 3/20$, then $\varepsilon < 3/20 \le w_c$, each corner atom
+lies in exactly one core by C′, the four cores are distinct by C.2, and each core is
+strictly inside its own unit square: every packing of eleven unit squares at side
+$96/25$ has four distinct squares each containing one of the four corner atoms in its
+interior. No further geometry enters; the centre atom is not needed for this statement
+(H-128’s fifth bound serves Lemma H’s two-pattern split, not the theorem).
 
 What the LP variable is.
-In `sqpack.fractional.colgen` the column for a D4 orbit `O` is one variable `w_O` with
-objective coefficient `|O|` and row coefficient “members of `O` the placement covers”;
-`rationalise_sites` gives every member of `O` the weight `w_O`. So `w_O` *is* the
-per-atom weight, and the corner constraint is the single bound `w_O ≥ 3/20` on the
+In `sqpack.fractional.colgen` the column for a D4 orbit $O$ is one variable $w_O$ with
+objective coefficient $|O|$ and row coefficient “members of $O$ the placement covers”;
+`rationalise_sites` gives every member of $O$ the weight $w_O$. So $w_O$ *is* the
+per-atom weight, and the corner constraint is the single bound $w_O \ge 3/20$ on the
 corner orbit (four members, orbit 122 of the scaled seed); the centre bound is
-`w_O ≥ 1/8` on the centre orbit (one member).
-The library fixes every bound at `(0, ∞)` (`colgen.solve_lp`), so the lane’s driver
+$w_O \ge 1/8$ on the centre orbit (one member).
+The library fixes every bound at $(0, \infty)$ (`colgen.solve_lp`), so the lane’s driver
 re-implements `solve_rows` line for line with a bounded `linprog` call and drives
 `generate_adaptive`’s column loop itself; `sqpack` is not edited.
 Rounding up in `rationalise_sites` can only raise a weight, so the bound survives
@@ -1028,28 +1028,28 @@ rationalisation, and the driver checks it exactly on the rationalised atoms.
 
 A proved floor from the bounded dual.
 The bounded program’s dual gives more than a reading on a site set.
-Let `(P_r, y_r)` be the final row placements and duals, `depth` the D4-symmetrised
+Let $(P_r, y_r)$ be the final row placements and duals, `depth` the D4-symmetrised
 closed-cover depth, `D = max(1, max depth)` decided exactly at the arrangement vertices
 as `colgen.check_ceiling` does.
-For every valid D4 measure `μ` on this `(L, B, net)` with `μ({p}) ≥ lb_p` at the bounded
-atoms, `Σ_r y_r / D ≤ ∫ depth/D dμ ≤ μ(free atoms) + Σ_p (depth(p)/D) μ({p})`, hence
-`M(μ) ≥ Σ_r y_r / D + Σ_p (1 − depth(p)/D) lb_p`. That floor holds for *every* site set
-and every atom count, not only the one the run used; it is the statement that turns a
-converged obstruction into a theorem about the net.
+For every valid D4 measure $\mu$ on this `(L, B, net)` with `μ({p}) ≥ lb_p` at the
+bounded atoms, `Σ_r y_r / D ≤ ∫ depth/D dμ ≤ μ(free atoms) + Σ_p (depth(p)/D) μ({p})`,
+hence `M(μ) ≥ Σ_r y_r / D + Σ_p (1 − depth(p)/D) lb_p`. That floor holds for *every*
+site set and every atom count, not only the one the run used; it is the statement that
+turns a converged obstruction into a theorem about the net.
 
 ### Inputs common to every run
 
 | Input | Value |
 | --- | --- |
-| Side, shrink | `L = 96/25`, `B = 9977/10000` |
-| Net | `t_k = k · 207107/500000 / 180`, `k = 0..180` (181 directions; `D = 207107/90000000`, `B(1 + D) = 899996306539/900000000000 < 1`) |
-| Seed | T-018’s 1121 atoms (`cases/n11_fractional_certificate/certificate.json`, mass `434547/40000` at `381/100`) with every coordinate scaled by `384/381 = 128/127`; 149 D4 orbits; the weights are not read |
-| Grids | none (run 1); the library’s density rule `site_counts_for_side(96/25, 9977/10000)` = counts `25, 34, 42` at inset `1/2` (runs 2 and 4) |
+| Side, shrink | $L = \frac{96}{25}$, $B = \frac{9977}{10000}$ |
+| Net | $t_k = k \cdot \frac{207107}{500000} / 180$, `k = 0..180` (181 directions; $D = \frac{207107}{90000000}$, $B(1 + D) = \frac{899996306539}{900000000000} < 1$) |
+| Seed | T-018’s 1121 atoms (`cases/n11_fractional_certificate/certificate.json`, mass $\frac{434547}{40000}$ at $\frac{381}{100}$) with every coordinate scaled by $\frac{384}{381} = \frac{128}{127}$; 149 D4 orbits; the weights are not read |
+| Grids | none (run 1); the library’s density rule `site_counts_for_side(96/25, 9977/10000)` = counts $25, 34, 42$ at inset $\frac{1}{2}$ (runs 2 and 4) |
 | Corner orbit | `(29586032/29422725, 29586032/29422725)` and its three images; orbit 122 of the seed, size 4 |
 | Centre orbit | `(48/25, 48/25)`; size 1 |
-| Bounds | four-bound: corner `w ≥ 3/20`; five-bound: corner `w ≥ 3/20` and centre `w ≥ 1/8`; priced: corner orbit cost `3` (objective `M − w_c`); free: none |
+| Bounds | four-bound: corner $w \ge \frac{3}{20}$; five-bound: corner $w \ge \frac{3}{20}$ and centre $w \ge \frac{1}{8}$; priced: corner orbit cost $3$ (objective $M - w_c$); free: none |
 | Column generation | `rows_per_direction 3`, `max_rounds 60`, `support_cap 32` for pricing, `settle 0`, one candidate orbit per column round, at most 10 column rounds per phase; rows carried across every phase |
-| Rationalisation | `rationalise_sites` at scale `4 000 000` with the `1000001/1000000` bump (round-up only) |
+| Rationalisation | `rationalise_sites` at scale $4 000 000$ with the $\frac{1000001}{1000000}$ bump (round-up only) |
 | Verifier | `certificate.verify(workers=1)`: Conditions 1–5 exact; validity is 1, 3, 4, 5 (Condition 2 reports the mass against 11) |
 | Machine | one process, `PACK_JOBS=1`, one BLAS thread; four cores shared with five other agents, load average 3–5 throughout; wall times are not comparable with the planning lane’s |
 | Deadlines | four-bound 1500 s, free 1200 s, other phases 600 s each; no phase reached one |
@@ -1073,16 +1073,16 @@ Every phase converged.
 
 | Phase | LP objective | Rationalised mass | Atoms | Corner weight | Centre weight | Least cell (direction) | Valid |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| four-bound, final site set | 12.504868914 | `50019567/4000000 = 12.50489175` | 181 | `600001/4000000` | `218727/4000000` | `4000007/4000000` (0) | yes |
-| five-bound | 12.531451613 | `50125929/4000000 = 12.53148225` | 133 | `600001/4000000` | `500001/4000000` | `4000007/4000000` (0) | yes |
-| free, final site set | 12.103825137 | `48415397/4000000 = 12.10384925` | 161 | none | `502733/4000000` | `800001/800000` (0) | yes |
+| four-bound, final site set | 12.504868914 | $\frac{50019567}{4000000} = 12.50489175$ | 181 | $\frac{600001}{4000000}$ | $\frac{218727}{4000000}$ | $\frac{4000007}{4000000}$ (0) | yes |
+| five-bound | 12.531451613 | $\frac{50125929}{4000000} = 12.53148225$ | 133 | $\frac{600001}{4000000}$ | $\frac{500001}{4000000}$ | $\frac{4000007}{4000000}$ (0) | yes |
+| free, final site set | 12.103825137 | $\frac{48415397}{4000000} = 12.10384925$ | 161 | none | $\frac{502733}{4000000}$ | $\frac{800001}{800000}$ (0) | yes |
 
-The seed alone is a site artefact at `96/25`: its free value sits a unit above the
-record’s `11.23` at `3.85`. It is retained as the control that shows why the grids are
+The seed alone is a site artefact at $96/25$: its free value sits a unit above the
+record’s $11.23$ at $3.85$. It is retained as the control that shows why the grids are
 needed, not as a reading of the geometry.
 
 **Run 2 (decision) and run 4 (its replay with the dual saved and the priced phase).**
-Site set: the density-matched grids `25, 34, 42` unioned with the scaled seed, 619
+Site set: the density-matched grids $25, 34, 42$ unioned with the scaled seed, 619
 orbits and 4645 sites at the start, 637 orbits and 4777 sites after the column rounds
 (18 orbits added, every one from the dual’s arrangement vertices); 8517 rows at the
 final phases; 495 s wall for run 2. Every phase converged (no deadline was reached; the
@@ -1094,172 +1094,172 @@ Run 4 reproduced run 2’s objectives to the last printed digit.
 | Phase | LP objective | Rationalised mass | Atoms | Corner weight | Centre weight | Least cell (direction) | Valid |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | four-bound, first converged LP on the 619-orbit set | 11.849054622 | — | — | — | — | — | — |
-| four-bound, final site set (E) | 11.798148881 | `23596423/2000000 = 11.7982115` | 401 | `600001/4000000 ≥ 3/20` | `41/16000` | `400001/400000` (0) | yes |
-| five-bound (C) | 11.819153276 | `47276821/4000000 = 11.81920525` | 369 | `600001/4000000` | `500001/4000000 ≥ 1/8` | `400001/400000` (0) | yes |
-| free, final site set (D) | 11.262035287 | `22524199/2000000 = 11.2620995` | 377 | none (the orbit carries 0) | `9767/2000000` | `800003/800000` (0) | yes |
-| priced `M − w_c` (F), first LP on the 637-orbit set | 11.262035287 | — | — | — | — | — | — |
-| priced `M − w_c` (F), after nine more column rounds (646 orbits, 9934 rows) | 11.189559666 | `44758451/4000000 = 11.18961275` | 373 | none | `38307/4000000` | `250001/250000` (0) | yes |
+| four-bound, final site set (E) | 11.798148881 | $\frac{23596423}{2000000} = 11.7982115$ | 401 | $\frac{600001}{4000000} \ge \frac{3}{20}$ | $\frac{41}{16000}$ | $\frac{400001}{400000}$ (0) | yes |
+| five-bound (C) | 11.819153276 | $\frac{47276821}{4000000} = 11.81920525$ | 369 | $\frac{600001}{4000000}$ | $\frac{500001}{4000000} \ge \frac{1}{8}$ | $\frac{400001}{400000}$ (0) | yes |
+| free, final site set (D) | 11.262035287 | $\frac{22524199}{2000000} = 11.2620995$ | 377 | none (the orbit carries 0) | $\frac{9767}{2000000}$ | $\frac{800003}{800000}$ (0) | yes |
+| priced $M - w_c$ (F), first LP on the 637-orbit set | 11.262035287 | — | — | — | — | — | — |
+| priced $M - w_c$ (F), after nine more column rounds (646 orbits, 9934 rows) | 11.189559666 | $\frac{44758451}{4000000} = 11.18961275$ | 373 | none | $\frac{38307}{4000000}$ | $\frac{250001}{250000}$ (0) | yes |
 
 **Verdict on the cell.** The falsifier stated before the run is met: the least
 four-bound measure column generation reaches on this site set has mass
-`23596423/2000000 ≈ 11.798 ≥ 11.15`, and it is a valid measure (so the reading is of a
-real measure, not of an infeasible program).
-The theorem is therefore *not* obtained at `96/25` on the retained shrink and net.
+$23596423/2000000 \approx 11.798 \ge 11.15$, and it is a valid measure (so the reading
+is of a real measure, not of an infeasible program).
+The theorem is therefore *not* obtained at $96/25$ on the retained shrink and net.
 
 **The price.** On one site set (637 orbits) and one row set (8517 rows):
 `M(forced) − M(free) = 23596423/2000000 − 22524199/2000000 = 33507/62500 = 0.536112`
-exactly (LP: `0.5361136`). Four atoms at `3/20` add `3/5` of mass; the free optimum
-recovers `0.064` of it elsewhere.
-The free measure itself carries mass `11.262 > 11` at `96/25` on this net, `0.262` above
-the certificate line, consistent with the record’s `11.23` unconverged at `3.85` and
-with the plateau at `11.000` at `3.82`.
+exactly (LP: $0.5361136$). Four atoms at $3/20$ add $3/5$ of mass; the free optimum
+recovers $0.064$ of it elsewhere.
+The free measure itself carries mass $11.262 > 11$ at $96/25$ on this net, $0.262$ above
+the certificate line, consistent with the record’s $11.23$ unconverged at $3.85$ and
+with the plateau at $11.000$ at $3.82$.
 
 **The bound is not the obstacle; the position is.** Phase F prices the corner orbit at
-`3` instead of `4`, so its objective is `M − w_c` and its optimum is `min_t (M(t) − t)`
-over every bound `t ≥ 0`; the theorem needs that minimum below 11. On the 637-orbit site
-set it equals the free value, `11.262035287`: the LP leaves T-018’s scaled corner site
-at weight zero even when a unit of its weight is free, because the site’s orbit-averaged
-depth under the free dual is `0.559`, below `3/4`. Nine further column rounds on the
-priced program (646 orbits, 9934 rows) lowered the objective to `11.189559666` with the
-corner orbit *still at zero*, so the fall is the free mass itself moving with columns,
-not the corner site earning weight; the rationalised measure of that phase,
-`44758451/4000000 = 11.18961275` over 373 atoms, is valid (least cell `250001/250000` at
-direction 0) and is the lightest valid measure this lane holds at `96/25`. So no lower
-bound at that position, of any size, yields the ownership theorem on these site sets;
-H-128’s `3/20` is not a tunable that was set too high.
+$3$ instead of $4$, so its objective is $M - w_c$ and its optimum is `min_t (M(t) − t)`
+over every bound $t \ge 0$; the theorem needs that minimum below 11. On the 637-orbit
+site set it equals the free value, $11.262035287$: the LP leaves T-018’s scaled corner
+site at weight zero even when a unit of its weight is free, because the site’s
+orbit-averaged depth under the free dual is $0.559$, below $3/4$. Nine further column
+rounds on the priced program (646 orbits, 9934 rows) lowered the objective to
+$11.189559666$ with the corner orbit *still at zero*, so the fall is the free mass
+itself moving with columns, not the corner site earning weight; the rationalised measure
+of that phase, $44758451/4000000 = 11.18961275$ over 373 atoms, is valid (least cell
+$250001/250000$ at direction 0) and is the lightest valid measure this lane holds at
+$96/25$. So no lower bound at that position, of any size, yields the ownership theorem
+on these site sets; H-128’s $3/20$ is not a tunable that was set too high.
 Every free reading here is an upper reading: each phase’s last candidate orbit still had
-averaged depth above 1 (`1.09` to `1.29`) when its ten column rounds ran out.
+averaged depth above 1 ($1.09$ to $1.29$) when its ten column rounds ran out.
 
 **Where the mass went.** The free measure’s heaviest orbit is not T-018’s corner point
-but T-018’s `(197/200, 73/100)` orbit scaled: the eight atoms `(3152/3175, 2336/3175)`,
-`(2336/3175, 3152/3175)` and their images, `106251/800000 =
-0.1328` each — a *pair* of marks per corner straddling the diagonal, `0.3635` apart, so
-one core can hold both.
-The next orbit carries `26087/250000 = 0.1043` at `(3.0818, 1.9630)`, a wall-midpoint
-pair. At `3.84` the corner skeleton is a pair, not a point.
+but T-018’s $(197/200, 73/100)$ orbit scaled: the eight atoms $(3152/3175, 2336/3175)$,
+$(2336/3175, 3152/3175)$ and their images, $106251/800000 = 0.1328$ each — a *pair* of
+marks per corner straddling the diagonal, $0.3635$ apart, so one core can hold both.
+The next orbit carries $26087/250000 = 0.1043$ at $(3.0818, 1.9630)$, a wall-midpoint
+pair. At $3.84$ the corner skeleton is a pair, not a point.
 
 ### A four-corner theorem the free measure does prove
 
-Lemma C′ applies to sets as it does to atoms: with `M = 11 + ε` the mass outside the
-eleven cores is at most `ε`, so any set of atoms of total weight above `ε` has at least
-one atom inside some core.
-The free measure of phase D (mass `22524199/2000000`, `ε =
-524199/2000000 = 0.2620995`, exactly verified valid) carries `106251/800000` on each of
-the eight atoms `(3152/3175, 2336/3175)`, `(2336/3175, 3152/3175)` and their images —
-T-018’s `(197/200, 73/100)` orbit scaled by `128/127`. Per corner that pair has mass
-`106251/400000 = 0.2656275 > ε`, margin `441/125000 = 0.003528`; the two marks of a
-corner are `√(1331712/10080625) ≈ 0.3635` apart (one core can hold both, which is why
-the pair and not either mark is the anchor); and the least squared distance between
-marks of different corners is `34668544/10080625 ≈ 1.8545² > 2B² = 99540529/50000000`,
-so no core meets two corners’ pairs.
+Lemma C′ applies to sets as it does to atoms: with $M = 11 + \varepsilon$ the mass
+outside the eleven cores is at most $\varepsilon$, so any set of atoms of total weight
+above $\varepsilon$ has at least one atom inside some core.
+The free measure of phase D (mass $22524199/2000000$,
+$\varepsilon = 524199/2000000 = 0.2620995$, exactly verified valid) carries
+$106251/800000$ on each of the eight atoms $(3152/3175, 2336/3175)$,
+$(2336/3175, 3152/3175)$ and their images — T-018’s $(197/200, 73/100)$ orbit scaled by
+$128/127$. Per corner that pair has mass $106251/400000 = 0.2656275 > \varepsilon$,
+margin $441/125000 = 0.003528$; the two marks of a corner are
+$\sqrt{1331712/10080625} \approx 0.3635$ apart (one core can hold both, which is why the
+pair and not either mark is the anchor); and the least squared distance between marks of
+different corners is $34668544/10080625 \approx 1.8545^2 > 2B^2 = 99540529/50000000$, so
+no core meets two corners’ pairs.
 Hence:
 
-> **Theorem (four-corner pair containment at `96/25`).** Every packing of eleven unit
-> squares in `[0, 96/25]²` has four distinct squares, one per corner, each containing in
-> its interior at least one of its corner’s two marks `(3152/3175, 2336/3175)` and
-> `(2336/3175, 3152/3175)` (and their images under the container’s symmetries).
+> **Theorem (four-corner pair containment at $96/25$).** Every packing of eleven unit
+> squares in $[0, 96/25]^2$ has four distinct squares, one per corner, each containing
+> in its interior at least one of its corner’s two marks $(3152/3175, 2336/3175)$ and
+> $(2336/3175, 3152/3175)$ (and their images under the container’s symmetries).
 
 It is proved by the phase-D measure and the exact sweep alone; it needs no bound, no
 column settlement and no floor, because a single valid measure suffices.
 It is the two-point form of what H-128 asked for at one point, and it is *not* implied
 by insertion saturation’s blockers (which need only meet the open corner box).
-The margin is `0.0035` of mass, so the phase-F measure (`ε = 0.1896`), which spreads its
-corner mass differently, does not reproduce it: the theorem is a property of this
-measure, and a measure built to widen the margin — phase G, the pair orbit priced at
-`|O| − 2` — is run 5 below.
+The margin is $0.0035$ of mass, so the phase-F measure ($\varepsilon = 0.1896$), which
+spreads its corner mass differently, does not reproduce it: the theorem is a property of
+this measure, and a measure built to widen the margin — phase G, the pair orbit priced
+at $|O| - 2$ — is run 5 below.
 
-**Run 5 (phase G, the pair orbit priced at `|O| − 2`)** did not finish inside the lane’s
+**Run 5 (phase G, the pair orbit priced at $|O| - 2$)** did not finish inside the lane’s
 clock; its objective is `min (M − μ(pair))` and it is the next session’s first reading.
 
 ### The floor for the net
 
-**Run 6 (four-bound only, `45` column rounds of six candidate orbits each, settle
-threshold `0.005`, wall 35 min).** Final LP objective `11.730827068` on 883 orbits and
+**Run 6 (four-bound only, $45$ column rounds of six candidate orbits each, settle
+threshold $0.005$, wall 35 min).** Final LP objective $11.730827068$ on 883 orbits and
 10364 rows; the last candidate orbit’s averaged depth was `nan`, so the dual did **not**
 settle (`deadline reached after 4 rounds`). Its rationalised measure: mass
-`2932721/250000 = 11.730884000`, valid = True, least cell `250001/250000`, corner
+$2932721/250000 = 11.730884000$, valid = True, least cell $250001/250000$, corner
 weights `['600001/4000000']`.
 
-The floor from that dual, decided exactly: 70 of 70 dual rows kept (weight `11.130827`
-of `11.130827`), symmetrised to 560 squares, 1487212 arrangement vertices, 3076 decided
-exactly above the threshold `T = 1.058083`; exact maximum symmetrised depth found
-`1.092857`, so `D = 1.092857` (`153`/140); depth at the four corner atoms `0.000000`,
-`0.000000`, `0.000000`, `0.000000`; correction `Σ (1 − depth/D)·3/20 = 0.600000`;
-**floor `Σy/D + correction = 10.785071`**. (that is `Σy/D = 10.185071` for the free part
-plus the correction).
+The floor from that dual, decided exactly: 70 of 70 dual rows kept (weight $11.130827$
+of $11.130827$), symmetrised to 560 squares, 1487212 arrangement vertices, 3076 decided
+exactly above the threshold $T = 1.058083$; exact maximum symmetrised depth found
+$1.092857$, so $D = 1.092857$ ($153$/140); depth at the four corner atoms $0.000000$,
+$0.000000$, $0.000000$, $0.000000$; correction `Σ (1 − depth/D)·3/20 = 0.600000`;
+**floor `Σy/D + correction = 10.785071`**. (that is $\Sigma y/D = 10.185071$ for the
+free part plus the correction).
 Every valid D4 measure on this `(L, B, net)` with the corner bound has mass at least
 that floor. The four corner atoms have depth exactly 0 under this dual: no tight
 placement of the final row set covers T-018’s corner site, so the bound’s price in the
-dual is the full `4 · 3/20 = 3/5` with no substitution at all, which is the dual’s way
-of saying what phase F said in the primal.
-It is far below `11.15` because the dual is feasible at the sites and not pointwise —
+dual is the full $4 \cdot 3/20 = 3/5$ with no substitution at all, which is the dual’s
+way of saying what phase F said in the primal.
+It is far below $11.15$ because the dual is feasible at the sites and not pointwise —
 the price of an unsettled column generation — so the obstruction is, in this block, a
 reading on the site set and not yet a theorem for the net.
-A settled dual (depth within `0.005` of 1 everywhere) would put the floor within half a
+A settled dual (depth within $0.005$ of 1 everywhere) would put the floor within half a
 per cent of the LP value, which is what the next session should buy first.
 
 ### Lemma C dry run on T-018
 
-T-018 at `381/100` (mass `434547/40000`, `ε = -5453/40000 < 0`, so every atom is owned):
-the heaviest atom `(1849127/1853400, 1849127/1853400)` of weight `917/6250` and its
-orbit moved together along the diagonal mirror (the only displacements that keep a
-four-point orbit D4-closed); base sweep 48.2 s, least cell `4001/4000`. Surviving
+T-018 at $381/100$ (mass $434547/40000$, $\varepsilon = -5453/40000 < 0$, so every atom
+is owned): the heaviest atom $(1849127/1853400, 1849127/1853400)$ of weight $917/6250$
+and its orbit moved together along the diagonal mirror (the only displacements that keep
+a four-point orbit D4-closed); base sweep 48.2 s, least cell $4001/4000$. Surviving
 displacements: 0 of 4.
 
-| Radius | Direction | `d` | Valid | Least cell | Failed | s |
+| Radius | Direction | $d$ | Valid | Least cell | Failed | s |
 | --- | --- | --- | --- | --- | --- | --- |
-| `1/1000` | +diag | `(1/1000, 1/1000)` | False | `85353/100000` | Condition 5 every reachable cell carries mass 1 | 60.1 |
-| `1/1000` | -diag | `(-1/1000, -1/1000)` | False | `10951/12500` | Condition 5 every reachable cell carries mass 1 | 51.7 |
-| `1/100` | +diag | `(1/100, 1/100)` | False | `85353/100000` | Condition 5 every reachable cell carries mass 1 | 45.4 |
-| `1/100` | -diag | `(-1/100, -1/100)` | False | `85367/100000` | Condition 5 every reachable cell carries mass 1 | 46.9 |
+| $\frac{1}{1000}$ | +diag | $(\frac{1}{1000}, \frac{1}{1000})$ | False | $\frac{85353}{100000}$ | Condition 5 every reachable cell carries mass 1 | 60.1 |
+| $\frac{1}{1000}$ | -diag | $(-\frac{1}{1000}, -\frac{1}{1000})$ | False | $\frac{10951}{12500}$ | Condition 5 every reachable cell carries mass 1 | 51.7 |
+| $\frac{1}{100}$ | +diag | $(\frac{1}{100}, \frac{1}{100})$ | False | $\frac{85353}{100000}$ | Condition 5 every reachable cell carries mass 1 | 45.4 |
+| $\frac{1}{100}$ | -diag | $(-\frac{1}{100}, -\frac{1}{100})$ | False | $\frac{85367}{100000}$ | Condition 5 every reachable cell carries mass 1 | 46.9 |
 
-Reading: with T-018’s least cell at `4001/4000`, a margin of `1/4000`, moving `917/6250`
-of weight along the diagonal by the radii tried empties some tight cell, so `R(p) = {p}`
-for the corner atom at this granularity and the transfer lemma has no slack to give at
-`381/100` — the falsifier S5 named.
+Reading: with T-018’s least cell at $4001/4000$, a margin of $1/4000$, moving $917/6250$
+of weight along the diagonal by the radii tried empties some tight cell, so
+$R(p) = \lbrace p\rbrace$ for the corner atom at this granularity and the transfer lemma
+has no slack to give at $381/100$ — the falsifier S5 named.
 The automation itself (move an orbit, re-sweep, read the verdict) is the dry run’s
 deliverable.
 
 ### Status of H-128 and what this feeds
 
 H-128 remains open over the retained shrink and net.
-The converged four-bound measure has mass `11.798`, so this finite-support attempt did
+The converged four-bound measure has mass $11.798$, so this finite-support attempt did
 not obtain the theorem.
 On that support the priced program identifies the corner position as the obstacle.
-The global lower bound in the floor section is only `10.785 < 11.15`, which does not
+The global lower bound in the floor section is only $10.785 < 11.15$, which does not
 refute the hypothesis.
 This corrects the original recommendation to reject H-128 on the entire net.
-The free value at `96/25` on this net (`11.19` to `11.26`) sits `0.19` to `0.26` above
+The free value at $96/25$ on this net ($11.19$ to $11.26$) sits $0.19$ to $0.26$ above
 the certificate line, which is the number BC-297’s ladder and BC-294’s duality readings
 should be checked against.
 
 What BC-299 (H-111, the anchored certificate) can pin from this lane: not a single
 corner point, but a corner *pair* — four distinct squares each containing one of two
-marks at `≈ (0.9928, 0.7357)` and `(0.7357, 0.9928)` from its corner.
+marks at $\approx (0.9928, 0.7357)$ and $(0.7357, 0.9928)$ from its corner.
 That is a two-branch anchor per corner (sixteen patterns before symmetry, two up to D4
 per corner choice), each branch a pinned point inside a named square, which is the input
 the frame-conditioned certificate asked for in a weaker but proved form.
 The ownership- conditioned split of Lemma H is unchanged: the centre atom carries
-`≈ 0.005` in the free measure at `96/25`, so no centre anchor is available from the LP
-at this side.
+$\approx 0.005$ in the free measure at $96/25$, so no centre anchor is available from
+the LP at this side.
 
 What the next session should do first: run phase G to settlement and read the largest
 margin `μ(pair) − ε` the net allows (a proved margin is what makes the pair anchor
 robust to the shrink tax); then settle the free program with many columns per round,
-take its exact floor `Σy/D`, and record it against 11 — if it clears 11 it is the method
-ceiling at `96/25` for this net, which BC-294 and BC-297 both need.
+take its exact floor $\Sigma y/D$, and record it against 11 — if it clears 11 it is the
+method ceiling at $96/25$ for this net, which BC-294 and BC-297 both need.
 
 ### Obstructions and mistakes worth recording
 
-- **The seed alone is a site artefact.** T-018’s 1121 atoms scaled to `96/25` give a
-  free value of `12.10`, a unit above the geometry’s; the density-matched grids bring it
-  to `11.26`. A run “seeded with T-018” must union the grids, as the devtool does.
+- **The seed alone is a site artefact.** T-018’s 1121 atoms scaled to $96/25$ give a
+  free value of $12.10$, a unit above the geometry’s; the density-matched grids bring it
+  to $11.26$. A run “seeded with T-018” must union the grids, as the devtool does.
 - **Column generation at this size does not settle in ten rounds.** Every phase’s last
-  candidate orbit still had averaged depth `1.09` to `1.29`, so every reading is an
+  candidate orbit still had averaged depth $1.09$ to $1.29$, so every reading is an
   upper reading and the ten-round duals are feasible at the sites only: their exact
-  maximum symmetrised depth is `1.31` to `1.34` and the floors they give (`8.6` to
-  `9.5`) say nothing. A floor for the net needs settlement, which run 6 buys with six
-  columns per round and a `0.005` settle threshold.
+  maximum symmetrised depth is $1.31$ to $1.34$ and the floors they give ($8.6$ to
+  $9.5$) say nothing. A floor for the net needs settlement, which run 6 buys with six
+  columns per round and a $0.005$ settle threshold.
 - **The floor script’s first screen was unsound** (it re-decided only vertices within
   `1e-6` of the float maximum, and float depth over-counts at edge-touching vertices);
   it was replaced by the threshold rule stated above before any floor was read into the
@@ -1274,12 +1274,12 @@ ceiling at `96/25` for this net, which BC-294 and BC-297 both need.
 - **Run 5 crashed after its free phase hit the wall.** The driver’s wall fallback hands
   back the last converged solution on its own site set, but the shared row matrix
   already carries the column added for the unconverged round, so the next phase’s warm
-  solve fails on a dimension mismatch (`A_ub` columns against `c`). Run 6 escaped it
+  solve fails on a dimension mismatch (`A_ub` columns against $c$). Run 6 escaped it
   because it ran one phase.
-  The free phase of run 5 had reached LP `11.232919611` on 626 orbits before the wall
+  The free phase of run 5 had reached LP $11.232919611$ on 626 orbits before the wall
   (under load average 7–8 the from-scratch free phase took ten minutes, not four), and
   the pair-priced phase never ran: the pair theorem’s margin beyond the phase-D
-  measure’s `441/125000` is unmeasured.
+  measure’s $441/125000$ is unmeasured.
   The fix is one line (truncate the row matrix to the returned site set’s columns) and
   is left to the next session with the scripts.
 

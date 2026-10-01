@@ -62,13 +62,14 @@ class.
 
 **Statement correction, 2026-09-08.** The registered runs used exact half-gap cells.
 Some earlier degree summaries rounded their domains outward: cells 0–39 end at
-approximately `10.3874656704°`, and cells 149–169 cover approximately
-`[37.7332782363°, 42.6166465824°]`, which does not contain the whole interval
-`40.19° ± 2.44°`. The lower tangent of cell 117 is `120639827500000/208829222337727`,
-whose angle is approximately `30.0148587980°`. It is strictly above `30°`: three times
-its numerator squared minus its denominator squared is `52259835509451319152473471 > 0`.
-The proved conclusion is that one square has tilt below this exact cell boundary.
-No result here forces tilt below `30°`. This correction restates the recorded
+approximately $10.3874656704^\circ$, and cells 149–169 cover approximately
+$[37.7332782363^\circ, 42.6166465824^\circ]$, which does not contain the whole interval
+$40.19^\circ \pm 2.44^\circ$. The lower tangent of cell 117 is
+$120639827500000/208829222337727$, whose angle is approximately $30.0148587980^\circ$.
+It is strictly above $30^\circ$: three times its numerator squared minus its denominator
+squared is $52259835509451319152473471 > 0$. The proved conclusion is that one square
+has tilt below this exact cell boundary.
+No result here forces tilt below $30^\circ$. This correction restates the recorded
 certificates and adds no run.
 
 <!-- This document follows common-doc-guidelines.md.

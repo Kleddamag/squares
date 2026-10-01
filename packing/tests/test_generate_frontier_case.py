@@ -738,7 +738,7 @@ def test_the_unitsquare_prose_names_the_parent_the_release_improved_on() -> None
     assert credited_surnames(_parsed_facts(69).credit_line) == ("Morandi", "Cantrell")
     sentence = (
         "The UnitSquare Project’s 29 July 2026 release improves the public "  # noqa: RUF001
-        "Brendberg-Schadt-Ellsworth parent by `0.0000768618004216131`."
+        "Brendberg-Schadt-Ellsworth parent by $0.0000768618004216131$."
     )
     for text in (_regenerate(68).split("---\n", 2)[2], _committed(68)[1]):
         # Compared with the wrapping collapsed: the formatter breaks lines where it likes.

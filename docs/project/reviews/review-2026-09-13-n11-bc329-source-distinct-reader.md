@@ -1,7 +1,7 @@
 # BC329 Calibration Reader: Source-Distinct Review
 
 **Disposition: REFUSE source-distinct calibration admission at the reviewed revision.**
-The exact `n=2` geometry and the 14,404-row contract check out, but the reader admits
+The exact $n=2$ geometry and the 14,404-row contract check out, but the reader admits
 records that contradict the producer contract or the retained operational observations.
 These are reader admission defects.
 They do not refute the fixture mathematics or establish any scientific result.
@@ -204,8 +204,8 @@ charges `"1"`, and `agree: true`. Rebind the row digest and inventory.
 Full source-distinct readback accepts it.
 
 Both witnesses are admissible and have the correct charge.
-At direction 0 the first core is `[1/8,5/8]^2`, which captures all three sites of each
-cross. The second is `[1/32,17/32]^2`, which captures the center and the negative
+At direction 0 the first core is $[1/8,5/8]^{2}$, which captures all three sites of each
+cross. The second is $[1/32,17/32]^{2}$, which captures the center and the negative
 endpoint of each cross, but excludes the positive endpoint.
 Both two-of-three threshold charges fire, so both normalized charges are exactly 1.
 
@@ -240,17 +240,17 @@ the synthetic record:
 
 | Intended field | Admitted substituted value |
 | --- | --- |
-| Invocation and identity `run_order` | `true` instead of integer `1` |
-| Raw `observed_argmin` | `false` instead of integer `0` |
-| First two raw completed directions | `[false, true]` instead of `[0, 1]` |
-| Raw `witness_admissible` | integer `1` instead of `true` |
-| Effective worker counts | `true` instead of integer `1` |
-| Raw direction 0 row label | `false` instead of integer `0` |
-| Interval lower/upper enclosure | `8.0` instead of integer `8` |
-| Interval `stalled` | `false` instead of integer `0` |
+| Invocation and identity `run_order` | `true` instead of integer $1$ |
+| Raw `observed_argmin` | `false` instead of integer $0$ |
+| First two raw completed directions | `[false, true]` instead of $[0, 1]$ |
+| Raw `witness_admissible` | integer $1$ instead of `true` |
+| Effective worker counts | `true` instead of integer $1$ |
+| Raw direction 0 row label | `false` instead of integer $0$ |
+| Interval lower/upper enclosure | $8.0$ instead of integer $8$ |
+| Interval `stalled` | `false` instead of integer $0$ |
 
-A separate full-readback control changes normalized candidate `n` to `2.0`,
-`direction_steps` to `2880.0`, and both threshold counts to `2.0`, rebinding the
+A separate full-readback control changes normalized candidate $n$ to $2.0$,
+`direction_steps` to $2880.0$, and both threshold counts to $2.0$, rebinding the
 candidate and its dependent record hashes.
 It is also accepted.
 
@@ -281,7 +281,7 @@ Do not coerce input with `int()`, `bool()`, or `float()` to make a malformed rec
 
 **Required mutation controls.** Parametrize each typed field independently with Boolean,
 floating-point, string, and null alternatives as applicable.
-In particular, exercise every `0`/`1` field and every fixed integer in nested
+In particular, exercise every $0$/`1` field and every fixed integer in nested
 candidates, route summaries, resource summaries, invocation identities, and supervision
 records. Each semantically invalid substitution must refuse even after hashes are
 updated. Retain positive finite measured-time floats and exact conversion of interval
@@ -302,8 +302,8 @@ output. Do not broadly catch all exceptions and conceal implementation defects.
 ### F5: Mathematical Dilation Fields Are Present but Unverified
 
 **Observed false admission.** Keep the accepted factor and side squared fields, but
-change the factor defining polynomial to `x - 1`, the side defining polynomial to
-`x - 7`, and both decimal presentations to `999`. Rebind the dilation record and
+change the factor defining polynomial to $x - 1$, the side defining polynomial to
+$x - 7$, and both decimal presentations to $999$. Rebind the dilation record and
 inventory hashes. Full readback accepts the contradictory record.
 
 `_validate_dilation`, at lines 866–998, enforces exact keys and checks the source, two
@@ -414,24 +414,24 @@ does not depend on an invalid placement.
 
 ### Frozen Geometry and Exact Charge
 
-Let the parent side be `L = 3/4`, the core side be `B = 1/2`, and the cross center be
-`o = (3/8,3/8)`. The raw measure has mass `1/2` at `o`, plus two threshold atoms of
-weight `3/4` each: the horizontal and vertical triples at offsets `-3/16, 0, 3/16`, each
+Let the parent side be $L = 3/4$, the core side be $B = 1/2$, and the cross center be
+$o = (3/8,3/8)$. The raw measure has mass $1/2$ at $o$, plus two threshold atoms of
+weight $3/4$ each: the horizontal and vertical triples at offsets $-3/16, 0, 3/16$, each
 with threshold 2.
 
-For a core orientation with nonnegative sine and cosine, write `S = c+s`. Its physical
-center must lie in `[BS/2,L-BS/2]^2`. Therefore each coordinate differs from `o` by at
-most `(L-BS)/2 <= 1/8`. The center atom is at squared distance at most `1/32` from the
-core center, strictly below `(B/2)^2 = 1/16`, so it lies in the inscribed disk and is
+For a core orientation with nonnegative sine and cosine, write $S = c+s$. Its physical
+center must lie in `[BS/2,L-BS/2]^2`. Therefore each coordinate differs from $o$ by at
+most `(L-BS)/2 <= 1/8`. The center atom is at squared distance at most $1/32$ from the
+core center, strictly below $(B/2)^{2} = 1/16$, so it lies in the inscribed disk and is
 captured by every admissible core.
 
-For the horizontal triple, select the endpoint on the same side of `o` as the
+For the horizontal triple, select the endpoint on the same side of $o$ as the
 core-center horizontal displacement.
-Its horizontal distance from the core center is at most `3/16`, and its vertical
-distance at most `1/8`. The squared distance is at most `13/256 < 1/16`. It is captured
-along with `o`. The same argument applies to the vertical triple.
+Its horizontal distance from the core center is at most $3/16$, and its vertical
+distance at most $1/8$. The squared distance is at most $13/256 < 1/16$. It is captured
+along with $o$. The same argument applies to the vertical triple.
 Thus both two-of-three thresholds fire at every admissible placement.
-Admissible placements exist at every orientation because `L^2 - 2 B^2 = 1/16 > 0`.
+Admissible placements exist at every orientation because $L^{2} - 2 B^{2} = 1/16 > 0$.
 
 Every raw charge is exactly
 
@@ -440,8 +440,8 @@ Every raw charge is exactly
 ```
 
 Each threshold atom has budget multiplier `floor(3/2) = 1`, so the raw budget is also 2.
-At `n=2`, the strict comparison is `2 > 2/2 = 1`. Multiplying every weight by `1/2`
-gives normalized point weight `1/4`, two threshold weights `3/8`, budget 1, minimum 1,
+At $n=2$, the strict comparison is $2 > 2/2 = 1$. Multiplying every weight by $1/2$
+gives normalized point weight $1/4$, two threshold weights $3/8$, budget 1, minimum 1,
 and integer scale `lcm(4,8) = 8`.
 
 The reader independently computes rational rotations, physical containment, and closed
@@ -460,31 +460,31 @@ generic-kernel execution.
 
 ### Net, Reflections, and the 14,404 Direction Rows
 
-For `k = 0,...,2880`, the rational half-angle parameter is `t = k/5760`. The reader uses
+For `k = 0,...,2880`, the rational half-angle parameter is $t = k/5760$. The reader uses
 
 ```text
 c = (1 - t^2)/(1 + t^2),  s = 2t/(1 + t^2).
 ```
 
-Primed interval labels exchange `c` and `s`. The maximum tangent of an adjacent half-gap
+Primed interval labels exchange $c$ and $s$. The maximum tangent of an adjacent half-gap
 is
 
 ```text
 (1/5760)/(1 + t_k t_(k+1)),
 ```
 
-attained at `k=0`, hence `D=1/5760`. The final parameter `1/2` exceeds `sqrt(2)-1`,
-since `t^2+2t-1=1/4>0`; the forward net reaches past `pi/4`. The coarse containment
-value is `B(1+D)=5761/11520<1`.
+attained at $k=0$, hence $D=1/5760$. The final parameter $1/2$ exceeds `sqrt(2)-1`,
+since $t^{2}+2t-1=1/4>0$; the forward net reaches past `pi/4`. The coarse containment
+value is $B(1+D)=5761/11520<1$.
 
 The required label collections are:
 
 | Route | Labels | Retained direction rows |
 | --- | --- | ---: |
-| Raw | `0` through `2880` | 2,881 |
-| Normalized exact | `0` through `2880`; dense and slab share one row | 2,881 |
-| Normalized interval | `0` through `2880`, then `1'` through `2880'` | 5,761 |
-| Dilation | `0` through `2880` | 2,881 |
+| Raw | $0$ through $2880$ | 2,881 |
+| Normalized exact | $0$ through $2880$; dense and slab share one row | 2,881 |
+| Normalized interval | $0$ through $2880$, then `1'` through `2880'` | 5,761 |
+| Dilation | $0$ through $2880$ | 2,881 |
 | Total | `3*2881 + 5761` | **14,404** |
 
 Only primed zero is omitted by this route contract.
@@ -493,8 +493,8 @@ labels. The reader correctly reconstructs the full sets and hashes in prescribed
 The direction count excludes candidate, dilation record, receipts, RSS records, and
 topology sidecars. Dense and slab do not double the normalized-exact row count.
 
-Every interval row must carry the integer enclosure `[8,8]`, yielding normalized
-`[1,1]`, certified status, a positive box count, zero stalls, and no exhausted budget.
+Every interval row must carry the integer enclosure $[8,8]$, yielding normalized
+$[1,1]$, certified status, a positive box count, zero stalls, and no exhausted budget.
 The reader checks these values and aggregates box counts, with the integer type defect
 described in F4. The synthetic test’s 5,761 boxes are invented test data, not a measured
 interval workload.
@@ -518,9 +518,9 @@ q_sup       = 2*sqrt(33177601)/5761
 L q_sup     = 3*sqrt(33177601)/11522.
 ```
 
-The positive root is irrational because `5760^2 < 33177601 < 5761^2`. Strict positive
-rational subfactors yield the family of bounds, and rational density plus monotone
-embedding gives the non-strict supremum conclusion.
+The positive root is irrational because $5760^{2} < 33177601 < 5761^{2}$. Strict
+positive rational subfactors yield the family of bounds, and rational density plus
+monotone embedding gives the non-strict supremum conclusion.
 No individual endpoint certificate is supplied: at the supremum, the strict containment
 test is equality. Thus the retained relation `>=`, `endpoint_certificate: false`, and
 `requires_compactness: false` are consistent.
@@ -653,7 +653,7 @@ Then freeze a commit and request exact-head rereview.
 Do not infer eligibility merely from the current eight passing tests or this review’s
 exact fixture derivations.
 
-No conclusion is drawn about BC329 acceptance, runtime, memory needs, any `n=11`
+No conclusion is drawn about BC329 acceptance, runtime, memory needs, any $n=11$
 mathematical role, or a global packing bound.
 No actual calibration execution has been admitted by this review.
 

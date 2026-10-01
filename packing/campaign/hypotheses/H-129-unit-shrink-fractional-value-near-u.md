@@ -66,7 +66,7 @@ certificate. A verified fractional family supplies a lower bound on that value; 
 covering measure supplies an upper bound on its declared domain.
 [X-021](../explorations/X-021-what-can-be-proved-about-eleven-squares.md) records the
 corrected weak-duality scope.
-The particular retained-shrink obstruction below `U` disappears at `B = 1`, which
+The particular retained-shrink obstruction below $U$ disappears at $B = 1$, which
 motivates measuring this value without deciding the fate of ownership or multi-square
 arguments.
 
@@ -94,7 +94,7 @@ does not defeat ownership, geometric case splits, or strengthened programs with
 compatibility and capacity cuts.
 The old claim that the retained 3.82 bracket says nothing about the unit value at q is
 also withdrawn: scaling by the reciprocal shrink gives the exact lower bound
-`21342289572/2055263195 > 10` there.
+$21342289572/2055263195 > 10$ there.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

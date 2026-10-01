@@ -48,10 +48,10 @@ session-011 receipt field for field — status `completed`, proper core deleting
 `pair:4-5`, 24 retained incidence groups, 42 → 40 oriented row classes, every structural
 and minimization selftest true.
 The oracle’s logic is sound as implemented: floating-point LP only proposes; acceptance
-requires an exact rank-33 row basis over `Q(u)`, a strictly positive exact stress with
-exactly zero residual (which forces the cone to `{0}`), and an exact nonzero direction
-witness re-replayed against the *final* core minus each retained group (which is
-group-level inclusion minimality, independent of greedy order).
+requires an exact rank-33 row basis over $Q(u)$, a strictly positive exact stress with
+exactly zero residual (which forces the cone to $\lbrace0\rbrace$), and an exact nonzero
+direction witness re-replayed against the *final* core minus each retained group (which
+is group-level inclusion minimality, independent of greedy order).
 The witnesses are computed on supersets of the final core and replayed on the core
 itself, so monotonicity is used in the safe direction.
 D-289 through D-293 accurately describe the pilot’s residual gaps, and D-291’s
@@ -66,34 +66,36 @@ duplicated at all.
 **Bui Proposition 7 repairs (D-302, D-303, `af3002d`).** Rendered page 16 of the
 archived PDF directly.
 The printed proposition does state `real 0 < ν < β + 1/2`, which the cleaned
-transcription had dropped, and the printed waste term is `x/√m`, which the extraction
-had flattened to `x√m`. Both `GARBLED/NOTE` annotations are accurate, the raw extraction
-is untouched, and the archive README counts (3 → 5) match the markers in the file.
-The H-037 balance reproduction is algebraically right: with `β = ν = 3/4` and `ε = 0`,
-`m = x^(4/5)` makes `m^β` and `x/√m` both `x^(3/5)`, matching the printed
-`W(x) = O(x^(2β/(2β+1)))`.
+transcription had dropped, and the printed waste term is $x/\sqrt{m}$, which the
+extraction had flattened to $x\sqrt{m}$. Both `GARBLED/NOTE` annotations are accurate,
+the raw extraction is untouched, and the archive README counts (3 → 5) match the markers
+in the file. The H-037 balance reproduction is algebraically right: with
+$\beta = \nu = 3/4$ and $\varepsilon = 0$, $m = x^{4/5}$ makes `m^β` and $x/\sqrt{m}$
+both $x^{3/5}$, matching the printed $W(x) = O(x^{2\beta/(2\beta+1)})$.
 
 **McClenagan Section 3 repair (D-304, D-310, `07f3af3`).** The contradiction is
-confirmed in the archived PDF itself: page 7 prints `d₁ + d₂ > d` and
+confirmed in the archived PDF itself: page 7 prints $d_1 + d_2 > d$ and
 `d > d₁ + d₂ > DB = 1` in one paragraph, so the flag “source error, not transcription
 error” is correct. The equation-only repair in H-037 was rederived symbolically end to
-end: from (2.2), `tan((φ+θ)/2) = p/(2−p)`; with `ψ + θ = φ` (which does follow from
-substituting (2.2) into (2.5)), `tan(ψ/2) = p(1−p)/(2−p+p²)`; (3.2) gives
-`tan(ψ+θ′) = 2t/(1−t) = p(1−p)/(1−p+p²)`; and `p − tan(ψ+θ′) = p³/(1−p+p²) > 0` on
-`0 < p < 1`. Every identity checks, so `0 < θ′ < θ` and the `O(φ³)` discrepancy bound
-follow as stated.
-The diagrammatic repair is also internally consistent (`D(φ) = d₁ + d₂`
-exactly, `d₁ − DC = (1 − tan φ)(cos φ − cos(φ+θ)) > 0` from (2.1)–(2.2),
-`d₂ − CB = (1 − cos θ) sin(φ+θ)/cos θ > 0`), with the caveat the document itself states:
-Figure 6 is not extractable, so only the equation-only branch is figure-free.
-The whole chain was additionally confirmed numerically across `p` from 0.001 to 0.999.
-The claims boundary is properly conservative: a local sign-step repair, not an audit of
-the full theorem.
+end: from (2.2), $\tan((\varphi+\theta)/2) = p/(2-p)$; with $\psi + \theta = \varphi$
+(which does follow from substituting (2.2) into (2.5)),
+$\tan(\psi/2) = p(1-p)/(2-p+p^2)$; (3.2) gives
+$\tan(\psi+\theta^{\prime}) = 2t/(1-t) = p(1-p)/(1-p+p^2)$; and
+$p - \tan(\psi+\theta^{\prime}) = p^3/(1-p+p^2) > 0$ on $0 < p < 1$. Every identity
+checks, so $0 < \theta^{\prime} < \theta$ and the $O(\varphi^3)$ discrepancy bound
+follow as stated. The diagrammatic repair is also internally consistent
+($D(\varphi) = d_1 + d_2$ exactly, `d₁ − DC = (1 − tan φ)(cos φ − cos(φ+θ)) > 0` from
+(2.1)–(2.2), `d₂ − CB = (1 − cos θ) sin(φ+θ)/cos θ > 0`), with the caveat the document
+itself states: Figure 6 is not extractable, so only the equation-only branch is
+figure-free.
+The whole chain was additionally confirmed numerically across $p$ from 0.001
+to 0.999. The claims boundary is properly conservative: a local sign-step repair, not an
+audit of the full theorem.
 
 **Session-011 meter receipts (`67e9c6b`).** The pair-test arithmetic in the retained
-evidence is exact (`81·C(11,2) + 2·32,000,000·10 = 640,004,455`), and withholding the
-overhead measurement after the preregistered host-load guard failed is the conservative
-reading of that guard.
+evidence is exact ($81\cdot C(11,2) + 2\cdot32{,}000{,}000\cdot10 = 640{,}004{,}455$),
+and withholding the overhead measurement after the preregistered host-load guard failed
+is the conservative reading of that guard.
 D-283’s zero-step spin claim matches the engine source: `run_chain` checks the move
 budget outside the anneal, so `steps = 0` with the default restart cap never reaches a
 stopping condition.
@@ -214,7 +216,7 @@ Recorded so the addressing agent does not “fix” them:
 
 PR #37 was reconciled with the framework and parallel-research work before publication:
 
-- H-042 became H-043 because the integrated H-042 is the `n = 29` numerical-angle claim
+- H-042 became H-043 because the integrated H-042 is the $n = 29$ numerical-angle claim
 - provisional D-320 and D-321 became D-326 and D-327
 - the review is a retained record in `DocumentMap/v1`
 - formal “verified” language is limited to the exact certificate and exact conclusions

@@ -17,7 +17,7 @@ author: Codex, for the project maintainer
 
 ## Overview
 
-Turn the narrow `n = 5` motion spike into a small family of square-packing labs without
+Turn the narrow $n = 5$ motion spike into a small family of square-packing labs without
 building a separate user interface for every experiment.
 One shared shell will own square rendering, scenario selection, editing, playback,
 evidence labels, solver-phase explanations, and the visual system.
@@ -44,7 +44,7 @@ Those modes require an explicit constraint model and are outside the first deliv
 
 - Provide one shared Motion Lab shell and a small scenario interface so exact paths,
   numerical quenches, and later constraint experiments reuse the same components.
-- Keep the current exact `n = 5` release-path and obstruction study as a known-answer
+- Keep the current exact $n = 5$ release-path and obstruction study as a known-answer
   scenario with its existing evidence boundaries.
 - Add a setup-only snap workflow for quickly assembling touching clusters at arbitrary
   square angles.
@@ -83,7 +83,7 @@ Those modes require an explicit constraint model and are outside the first deliv
 The [implemented spike](spike-2026-08-25-n5-motion-lab.md) proves that a generated,
 self-contained HTML+SVG document can replay analytic square motions, show source-backed
 contacts and first-order predictors, and keep exact and illustrative geometry separate.
-It covers one specialized `n = 5` family.
+It covers one specialized $n = 5$ family.
 Its CSS, controls, timeline behavior, and scene logic are still embedded in one
 generator, so another scenario would currently repeat much of that work.
 
@@ -114,7 +114,7 @@ The Motion Lab will separate a shared shell from scenario-specific behavior.
 
 | Scenario | Source | User operations | Output and evidence |
 | --- | --- | --- | --- |
-| Exact `n = 5` motions | exp-035, exp-036, exp-042 and exact case functions | choose R4, R5, or `+W`; select stratum; scrub or play | exact certified paths or a labeled first-order predictor and second-order obstruction |
+| Exact $n = 5$ motions | exp-035, exp-036, exp-042 and exact case functions | choose R4, R5, or $+W$; select stratum; scrub or play | exact certified paths or a labeled first-order predictor and second-order obstruction |
 | Setup-only snap and free quench | edited or seeded floating-point poses plus the existing quench | randomize, drag, rotate, snap into chunks, release and run | typed numerical trace and independently checked endpoint |
 | Persistent contacts (later) | explicit user-authored contact constraints | choose which contacts survive the run | constrained numerical trace; no exactness claim without separate evidence |
 | Rigid groups (later) | explicit relative transforms within selected groups | translate or rotate glued polyomino-like bodies | constrained numerical trace with named rigid-group semantics |
@@ -215,7 +215,7 @@ It does not add an optimizer constraint.
    Manual or seeded starts may still contain overlap; the lab marks that condition
    rather than silently repairing it.
 9. **Run quench** displays a release confirmation in the run summary, discards the group
-   graph, and submits only `side`, `x`, `y`, and `theta` plus explicit solver settings.
+   graph, and submits only `side`, $x$, $y$, and `theta` plus explicit solver settings.
 
 The interface must say “setup groups release when optimization starts” beside the run
 control and in the trace’s initial event.
@@ -226,16 +226,16 @@ front-end bug cannot accidentally turn a setup aid into a scientific constraint.
 
 The free-quench scenario starts with explicit controls for:
 
-- square count `n`;
+- square count $n$;
 - starting container side;
 - integer seed;
 - solver and declared numerical budget; and
 - snapping on or off.
 
 Randomize uses the existing deterministic proposer semantics and records the inputs in
-the trace. The service declares the tested `n` and budget envelope instead of promising
+the trace. The service declares the tested $n$ and budget envelope instead of promising
 that every larger instance is interactive.
-Known-answer acceptance covers at least `n = 5`, `n = 10`, and `n = 11`.
+Known-answer acceptance covers at least $n = 5$, $n = 10$, and $n = 11$.
 
 Direct editing supports square selection, translation, continuous angle adjustment,
 reset to the last seed, and a readable pose table.
@@ -388,7 +388,7 @@ The loopback service exposes a narrow same-origin API:
 - `POST /api/quench` accepts a versioned run request and streams or returns
   `QuenchTrace/v1` as newline-delimited JSON.
 - The server binds to loopback only, performs no remote request, enforces the declared
-  `n` and numerical budgets, and returns typed failures.
+  $n$ and numerical budgets, and returns typed failures.
 
 Standalone exact artifacts inline their scenario data, CSS, and JavaScript and keep
 `connect-src 'none'`. The served numerical profile changes the policy only to permit
@@ -407,7 +407,7 @@ implementation work.
 | --- | --- | --- | --- |
 | `think-9yz7` | Shared scenario, pose-frame, request, event, and trace contracts | — | Complete |
 | `think-2f8m` | Zero-behavior-change quench trace observation | `think-9yz7` | Complete |
-| `think-no7o` | Shared shell, compact theme, and exact `n = 5` migration | `think-9yz7` | Complete |
+| `think-no7o` | Shared shell, compact theme, and exact $n = 5$ migration | `think-9yz7` | Complete |
 | `think-5t0r` | Setup-only snap geometry and editor-group reducer | `think-9yz7` | Complete |
 | `think-la6m` | Loopback free-quench service and deterministic replay | `think-9yz7`, `think-2f8m` | Complete |
 | `think-0l1y` | Free-quench editor and phase-aware trace playback | `think-no7o`, `think-5t0r`, `think-la6m` | Complete |
@@ -418,7 +418,7 @@ implementation work.
 
 - [x] Extract shared pose, scenario, timeline, stage, controls, evidence, and theme code
   from the current spike without changing its mathematical claims.
-- [x] Generate the stable exact `n = 5` artifact through the shared shell and retain its
+- [x] Generate the stable exact $n = 5$ artifact through the shared shell and retain its
   analytic formula and Python/JavaScript parity controls.
 - [x] Add the free-quench scenario with seeded random starts and direct pose editing.
 - [x] Implement deterministic setup-only snapping, temporary editor groups, group
@@ -446,7 +446,7 @@ presentation, and an independently checked endpoint.
 Phase 1 passed its merge checkpoint on 2026-08-26:
 
 - 40 focused Motion Lab tests covered the versioned contracts, unchanged traced and
-  untraced quench endpoints, exact `n = 5` compatibility, snap geometry, group release,
+  untraced quench endpoints, exact $n = 5$ compatibility, snap geometry, group release,
   loopback request validation, canonical replay, browser reducers, reduced-motion
   behavior, and the CSS token contract.
 - The retained one-square transport fixture regenerated byte for byte as a 144-event
@@ -460,8 +460,8 @@ Phase 1 passed its merge checkpoint on 2026-08-26:
   Wide and narrow layouts had no control overflow, and the browser console remained
   clean.
 - The ordinary full `packing-validate` gate passed all 32 stages in 274.95 seconds of
-  wall time. Its 166 behavioral tests, 83 deterministic SVG controls, exact `n = 5`,
-  `n = 10`, and `n = 11` verification lanes, 67 negative controls, schema checks, defect
+  wall time. Its 166 behavioral tests, 83 deterministic SVG controls, exact $n = 5$,
+  $n = 10$, and $n = 11$ verification lanes, 67 negative controls, schema checks, defect
   reconciliation, and documentation checks all passed.
 
 Browser inspection exposed D-348: expanding every low-level solver event into a DOM
@@ -509,7 +509,7 @@ the two explicit constraint types do not answer the geometric questions.
 
 ### Shared Shell and Scenarios
 
-- Run the existing exact `n = 5` source, formula, evidence, and JavaScript parity checks
+- Run the existing exact $n = 5$ source, formula, evidence, and JavaScript parity checks
   through the new scenario adapter.
 - Prove that every scenario uses the same palette assignment, stage renderer, timeline,
   control primitives, and evidence panel.
@@ -559,7 +559,7 @@ The ordinary full `packing-validate` command remains the merge checkpoint.
 
 ## Rollout Plan
 
-1. Land the shared shell with the exact `n = 5` scenario as the compatibility control.
+1. Land the shared shell with the exact $n = 5$ scenario as the compatibility control.
 2. Add the setup-only free-quench scenario and loopback service behind an explicit
    developer command.
 3. Retain one small deterministic numerical trace as a replay known answer; do not
@@ -575,7 +575,7 @@ and the ordinary campaign record rules.
 
 ## Open Questions
 
-- What tested `n` and solver-budget envelope gives acceptable interactive latency on the
+- What tested $n$ and solver-budget envelope gives acceptable interactive latency on the
   supported development machines?
   The service must publish the measured envelope before the control is labeled general.
 - Should live runs stream each trace event as it occurs or return a completed trace for

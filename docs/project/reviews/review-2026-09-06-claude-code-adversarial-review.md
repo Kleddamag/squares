@@ -23,7 +23,7 @@ misleading as written, and what would fix it.
 
 **Verdict.** The mathematical claim stands.
 The theorem is correct, its proof in the claim document is complete, and the certificate
-for `s(11) ≥ 381/100` passes three verifiers and an independent re-derivation of every
+for $s(11) \ge 381/100$ passes three verifiers and an independent re-derivation of every
 number the page states.
 A numerical attack that searched unit squares at all angles, not only the net angles the
 certificate checks, found no placement below mass 1.
@@ -31,10 +31,10 @@ certificate checks, found no placement below mass 1.
 The explainer’s own presentation of the argument does not stand as written.
 Its Contradiction box asserts that every unit square, “whatever its angle,” contains a
 concentric side-`B` square at one of the 181 net angles and attributes that to Condition
-4\. That is false for every angle past `π/4`: the net covers only `[0, π/4]`, and the
-proof needs the diagonal reflection and Conditions 1 and 3 to get there.
+4\. That is false for every angle past $\pi/4$: the net covers only $[0, \pi/4]$, and
+the proof needs the diagonal reflection and Conditions 1 and 3 to get there.
 The same omission runs through the section that derives the shrink.
-The Five Conditions box leaves out two hypotheses the proof uses (`t₀ = 0` and the sign
+The Five Conditions box leaves out two hypotheses the proof uses ($t_0 = 0$ and the sign
 of the weights). The budget section’s informal argument double-counts boundary atoms.
 None of this affects the theorem, which is stated and proved correctly in the linked
 claim documents. All of it affects a reader who takes the page as the proof.
@@ -53,8 +53,8 @@ The highest-priority corrections, in order:
 
 1. Rewrite the Contradiction box and the opening of “From a Continuum of Angles to 181”
    to carry the reflection step (Findings A1 and A2).
-2. State every hypothesis in the Five Conditions box: `0 = t₀ < t₁ < ⋯ < t_K`, and
-   nonnegative weights (A3).
+2. State every hypothesis in the Five Conditions box: $0 = t_0 < t_1 < \cdots < t_K$,
+   and nonnegative weights (A3).
 3. Fix the budget section’s “disjoint, so no atom is counted twice” (A4).
 4. Attribute the method to Burns and Massaccesi, with the Göbel and Nagamochi lineage
    (C1).
@@ -92,14 +92,14 @@ Documents read in full:
 
 | Check | Result |
 | --- | --- |
-| `minimal_verify.py certificate.json` (CPython 3.13, pinned SHA-256) | `VERIFIED s(11) >= 381/100`, least mass `4001/4000` at direction 0, 57.6 s |
-| `verify_claim.py` on the 381/100 claim document | `VERIFIED`, least mass `4001/4000` at `(27/50, 27/50)`, 567,130,649 cells |
-| `verify_claim.py` on the 19/5 claim document | `VERIFIED`, least mass `50003/50000` at `(53/100, 53/100)` |
-| `verify_claim.py` on the 189/50 calibration rung | `VERIFIED`, least mass `200009/200000` |
-| `thirdparty/check.py` | control rebuilt identically; 19/5 and Massaccesi’s `n = 17` both `VERIFIED` |
+| `minimal_verify.py certificate.json` (CPython 3.13, pinned SHA-256) | `VERIFIED s(11) >= 381/100`, least mass $\frac{4001}{4000}$ at direction 0, 57.6 s |
+| `verify_claim.py` on the 381/100 claim document | `VERIFIED`, least mass $\frac{4001}{4000}$ at $(\frac{27}{50}, \frac{27}{50})$, 567,130,649 cells |
+| `verify_claim.py` on the 19/5 claim document | `VERIFIED`, least mass $\frac{50003}{50000}$ at $(\frac{53}{100}, \frac{53}{100})$ |
+| `verify_claim.py` on the 189/50 calibration rung | `VERIFIED`, least mass $\frac{200009}{200000}$ |
+| `thirdparty/check.py` | control rebuilt identically; 19/5 and Massaccesi’s $n = 17$ both `VERIFIED` |
 | Independent recomputation of every number on the page (own code, exact rationals) | all match; see the table in “What Holds” |
-| From-scratch exact event-cell enumeration at direction 0 | minimum `4001/4000`, attained at the cell containing `(27/50, 27/50)` |
-| Numerical attack: minimise the mass of a unit square at any angle and position | least found `1.00025`, at angle 0; no placement below 1 |
+| From-scratch exact event-cell enumeration at direction 0 | minimum $\frac{4001}{4000}$, attained at the cell containing $(\frac{27}{50}, \frac{27}{50})$ |
+| Numerical attack: minimise the mass of a unit square at any angle and position | least found $1.00025$, at angle 0; no placement below 1 |
 | Comparison of the two verifiers’ reachable-cell sets, direction by direction | `minimal_verify.py` scores cells outside the centre domain; see B1 |
 
 ### How the review was organised
@@ -126,16 +126,18 @@ fails.
 ## What Holds
 
 The theorem in the claim documents was checked step by step: the orientation reduction
-(the reflection `(x, y) ↦ (y, x)` sends orientation `φ` to `π/2 − φ`, and `φ = π/4` is
-its own image); the nearest-net-angle step (`d ≤` half a gap and `tan d ≤ D`, since
-`tan` is increasing and `tan(arctan t₂ − arctan t₁) = (t₂ − t₁)/(1 + t₁t₂)`); the
-support-function containment (`(B/2)(cos d + sin d)` is the half-width of the rotated
-`B`-square along each edge normal of the unit square, so `B(cos d + sin d) < 1` puts it
-in the open interior, corners included);
-`cos d + sin d = cos d (1 + tan d) ≤ 1 + tan d`; the pull-back through the reflection,
-which needs only invariance under that one reflection; the counting step, which needs
-nonnegative weights and the pairwise disjointness of closed sets each inside a different
-open interior; and the passage from “no packing in side `L`” to `s(n) ≥ L`. All correct.
+(the reflection $(x, y) \mapsto (y, x)$ sends orientation $\varphi$ to
+$\pi/2 - \varphi$, and $\varphi = \pi/4$ is its own image); the nearest-net-angle step
+($d \le$ half a gap and $\tan d \le D$, since
+$\tan(\arctan t_2 - \arctan t_1) = (t_2 - t_1)/(1 + t_1t_2)$ and `tan` is increasing);
+the support-function containment ($(B/2)(\cos d + \sin d)$ is the half-width of the
+rotated $B$-square along each edge normal of the unit square, so
+$B(\cos d + \sin d) < 1$ puts it in the open interior, corners included);
+$\cos d + \sin d = \cos d (1 + \tan d) \le 1 + \tan d$; the pull-back through the
+reflection, which needs only invariance under that one reflection; the counting step,
+which needs nonnegative weights and the pairwise disjointness of closed sets each inside
+a different open interior; and the passage from “no packing in side $L$” to
+$s(n) \ge L$. All correct.
 
 The sweep-exactness argument is also correct: mass is constant on each open cell of the
 arrangement, a boundary point carries at least its neighbouring cell’s mass because the
@@ -147,29 +149,28 @@ Every number on the page reproduces from the certificate with independent code:
 
 | Quantity on the page | Recomputed |
 | --- | --- |
-| `D = 207107/90000000` | same; the widest half-gap is the first one, at `k = 0` |
-| `B(1 + D) = 0.999995896154` | `899996306539/900000000000` |
-| `t_K² + 2t_K − 1 = 309449/250000000000` | same |
-| total mass `434547/40000 = 10.863675` | same, summed over the 1,121 atoms |
-| 1,121 atoms in 149 orbits, 100 distinct weights in `[0.000075, 0.14672]` | 149 = 132 orbits of size 8, 16 of size 4, and the centre; weights `3/40000` to `917/6250`, all multiples of `1/200000` |
-| least covered mass `4001/4000`, “50 parts in 200000 above” | same; `1/4000 = 50/200000` |
-| Stromquist `3.7888543…`, Trump `3.8770835…` | `2 + 4/√5 = 3.78885438…`; the stated polynomial has a root at `3.87708359002281…` |
-| Figure 3 gaps `0.0670835…` and `0.0882292…` | same |
-| Figure 6 peaks `0.9999971…` at `B = 9977039/10⁷` and `0.9999932…` at `B = 9977/10⁴` | `B(1 + D)/√(1 + D²)` gives `0.99999715…` and `0.99999324…`; `9977039/10⁷` is one step below the largest seven-place side Condition 4 admits |
-| Figure 7: halving the 19/5 net shrinks `B` by ≈0.23% and costs ≈9% of the least mass | 0.229% and 9.30% from the retained measurement |
-| “23 years”, “21 results”, “7 of the lower bounds” | 2026 − 2003; 21 register entries; seven atlas cells marked first proved here (`n = 11, 12, 17, 18, 19, 20, 21`) |
-| calibration rung `189/50` below Stromquist | `(189/50 − 2)² · 5 = 7921/500 < 16` |
+| $D = \frac{207107}{90000000}$ | same; the widest half-gap is the first one, at $k = 0$ |
+| $B(1 + D) = 0.999995896154$ | $\frac{899996306539}{900000000000}$ |
+| $t_K^2 + 2t_K - 1 = \frac{309449}{250000000000}$ | same |
+| total mass $\frac{434547}{40000} = 10.863675$ | same, summed over the 1,121 atoms |
+| 1,121 atoms in 149 orbits, 100 distinct weights in $[0.000075, 0.14672]$ | 149 = 132 orbits of size 8, 16 of size 4, and the centre; weights $\frac{3}{40000}$ to $\frac{917}{6250}$, all multiples of $\frac{1}{200000}$ |
+| least covered mass $\frac{4001}{4000}$, “50 parts in 200000 above” | same; $\frac{1}{4000} = \frac{50}{200000}$ |
+| Stromquist $3.7888543\ldots$, Trump $3.8770835\ldots$ | $2 + 4/\sqrt{5} = 3.78885438\ldots$; the stated polynomial has a root at $3.87708359002281\ldots$ |
+| Figure 3 gaps $0.0670835\ldots$ and $0.0882292\ldots$ | same |
+| Figure 6 peaks $0.9999971\ldots$ at $B = 9977039/10^7$ and $0.9999932\ldots$ at $B = 9977/10^4$ | $B(1 + D)/\sqrt{1 + D^2}$ gives $0.99999715\ldots$ and $0.99999324\ldots$; $9977039/10^7$ is one step below the largest seven-place side Condition 4 admits |
+| Figure 7: halving the 19/5 net shrinks $B$ by ≈0.23% and costs ≈9% of the least mass | 0.229% and 9.30% from the retained measurement |
+| “23 years”, “21 results”, “7 of the lower bounds” | 2026 − 2003; 21 register entries; seven atlas cells marked first proved here ($n = 11, 12, 17, 18, 19, 20, 21$) |
+| calibration rung $\frac{189}{50}$ below Stromquist | $(\frac{189}{50} - 2)^2 \cdot 5 = \frac{7921}{500} < 16$ |
 
 The numerical attack, written without the project’s code, minimised the mass of a closed
-unit square over centre and angle in `[0, π/2)` with 5,000 random restarts, local
+unit square over centre and angle in $[0, \pi/2)$ with 5,000 random restarts, local
 descent, and starts placed along the edges, in the corners, on the ring inside the
 corners, and at angles halfway between net directions.
-The least mass found is `1.00025 = 4001/4000`, at angle 0, the same value the exact
-sweep reports for `B`-squares at net angles.
+The least mass found is $1.00025 = 4001/4000$, at angle 0, the same value the exact
+sweep reports for $B$-squares at net angles.
 The shrink argument costs nothing at this certificate: the axis-parallel placement is
-the global minimum.
-The worst value of `B(cos d + sin d)` over all mismatches `d` the net
-allows is `0.99999325…`, at the midpoint of the widest gap, matching Figure 6.
+the global minimum. The worst value of $B(\cos d + \sin d)$ over all mismatches $d$ the
+net allows is $0.99999325\ldots$, at the midpoint of the widest gap, matching Figure 6.
 
 ## Part A: Logical and Mathematical Gaps in the Explainer
 
@@ -179,28 +180,28 @@ page presents them.
 
 ### A1. The Contradiction box is false for angles past π/4 (High)
 
-**Where.** The Contradiction: “Each square, whatever its angle, contains a side-$B$
+**Where.** The Contradiction: “Each square, whatever its angle, contains a side-`B`
 square $Q_i$ with the same center at one of the 181 net angles.
 That is Condition 4.”
 
-**Problem.** The 181 net angles lie in `[0, π/4]`. A unit square at orientation 60° is
-nearest to the net angle `π/4`, a mismatch `d` of 15°, and
-`B(cos 15° + sin 15°) = 0.9977 × 1.2247 = 1.222 > 1`: no concentric `B`-square at a net
-angle fits inside it.
-Containment holds only for `d` up to about 0.13°. The proof in the claim document
+**Problem.** The 181 net angles lie in $[0, \pi/4]$. A unit square at orientation 60° is
+nearest to the net angle $\pi/4$, a mismatch $d$ of 15°, and
+$B(\cos 15^\circ + \sin 15^\circ) = 0.9977 \times 1.2247 = 1.222 > 1$: no concentric
+$B$-square at a net angle fits inside it.
+Containment holds only for $d$ up to about 0.13°. The proof in the claim document
 handles this in two steps the box omits: reflect the square across the container’s
-diagonal so that its orientation lands in `[0, π/4]` (step 1), and, after finding the
-`B`-square inside the reflected square, pull it back through the reflection, which
+diagonal so that its orientation lands in $[0, \pi/4]$ (step 1), and, after finding the
+$B$-square inside the reflected square, pull it back through the reflection, which
 preserves covered mass because the atom set is reflection-invariant (step 5). The square
-the argument actually finds inside `S_i` is the *mirror image* of a net-angle square,
+the argument actually finds inside $S_i$ is the *mirror image* of a net-angle square,
 not a net-angle square.
 The box’s conclusion needs Conditions 1, 3, and 4 together; “That is Condition 4”
 credits one of them.
 
 The Atom Set section does say, two pages earlier, that invariance “lets the proof check
 angles only up to $\pi/4$, since a square at any other angle reflects onto that arc and
-covers the same mass,” and the sentence introducing Condition 3 calls `π/4` “the end of
-the arc that Condition 1 reflects every angle onto.”
+covers the same mass,” and the sentence introducing Condition 3 calls $\pi/4$ “the end
+of the arc that Condition 1 reflects every angle onto.”
 Neither is wired into the box’s chain of reasoning, which is the place a reader will
 check.
 
@@ -212,8 +213,8 @@ check.
 > under (Condition 1), so the reflected square has orientation at most $\pi/4$ and every
 > mass is unchanged. The net reaches $\pi/4$ (Condition 3), so the nearest net angle is
 > within half a gap, and by Condition 4 the square contains, with the same centre, a
-> side-$B$ square $Q_i$ at that net angle.
-> Reflecting back if needed gives a side-$B$ square inside the original square that
+> side-`B` square $Q_i$ at that net angle.
+> Reflecting back if needed gives a side-`B` square inside the original square that
 > covers the same mass as $Q_i$.
 
 The rest of the box then follows as written.
@@ -232,8 +233,8 @@ net angle. […] So if every placement of the smaller square at a net angle cove
 least 1, every unit square at any angle does too.”
 
 **Problem.** The same omission as A1, at the point where the shrink is derived.
-For `φ` outside `[0, π/4]` the nearest net angle can be 45° away, the mismatch is not
-bounded by half a gap, and the displayed containment fails.
+For $\varphi$ outside $[0, \pi/4]$ the nearest net angle can be 45° away, the mismatch
+is not bounded by half a gap, and the displayed containment fails.
 The section’s conclusion ("every unit square at any angle does too") is true, but not by
 the argument the section gives; it needs the reflection, which the section never
 invokes.
@@ -262,18 +263,18 @@ five conditions, and “Together the five prove $s(n) \ge L$.”
 
 **Problem.** Two hypotheses the proof uses are absent.
 
-- *The net starts at zero and increases:* `0 = t₀ < t₁ < ⋯ < t_K`. Condition 3 fixes the
-  top of the net; nothing in the box fixes the bottom.
-  `D` is a maximum over gaps between consecutive net angles, so a net starting at
-  `θ₀ > 0` would leave orientations in `[0, θ₀)` farther from any net angle than `D`
-  accounts for. The claim document’s Data section states it, its proof uses it by name
-  ("By Condition 3 and $t_0 = 0$"), and the project verifier refuses a net that does not
-  start at zero.
+- *The net starts at zero and increases:* $0 = t_0 < t_1 < \cdots < t_K$. Condition 3
+  fixes the top of the net; nothing in the box fixes the bottom.
+  $D$ is a maximum over gaps between consecutive net angles, so a net starting at
+  $\theta_0 > 0$ would leave orientations in $[0, \theta_0)$ farther from any net angle
+  than $D$ accounts for.
+  The claim document’s Data section states it, its proof uses it by name ("By Condition
+  3 and $t_0 = 0$"), and the project verifier refuses a net that does not start at zero.
 - *Nonnegative weights.* The counting step $\sum_i \mu(Q_i) \le \mu([0,L]^2)$ holds only
   because uncounted atoms cannot subtract.
   The project’s prior review found that the verifier at the time lacked this check and
-  accepted a five-atom certificate with a weight of `−1` that satisfied all five stated
-  conditions and “proved” `s(1) ≥ 11/10`. The box, presented as the complete list of
+  accepted a five-atom certificate with a weight of $-1$ that satisfied all five stated
+  conditions and “proved” $s(1) \ge 11/10$. The box, presented as the complete list of
   what a certificate is, does not mention the sign.
   The later definition ("An **atom** is a point in the container with a positive
   rational weight") covers it for a sequential reader, but it comes one section after
@@ -283,7 +284,7 @@ five conditions, and “Together the five prove $s(n) \ge L$.”
 **Fix.** In the preamble: “a finite set of points in the container, each with a
 nonnegative rational weight (the atoms; every weight in this certificate is positive), a
 net of directions $\theta_k = 2\arctan t_k$ with rational half-tangents $0 = t_0 < t_1 <
-\cdots < t_K$, and a shrink $B$, such that:”. `B < 1` can go; Condition 4 implies it.
+\cdots < t_K$, and a shrink $B$, such that:”. $B < 1$ can go; Condition 4 implies it.
 In the Contradiction box: “Because the weights are nonnegative and no atom is counted
 twice, the eleven together cover at most the container’s total mass.”
 
@@ -332,40 +333,41 @@ leaving the container, at every net direction, carries mass at least 1.”
 
 ### A6. The covering linear program is not pinned down, and two sentences about it are each true only under a different reading (Medium)
 
-**Where.** Generator and Verifier: the display $\tau^*(L,B) = \min_{w \ge 0} \sum_a w_a$
-subject to $\sum_{a \in Q} w_a \ge 1$ “for every placement $Q$”, followed by “A
-certificate exists exactly when $\tau^* \lt n$. Since $\tau^*$ depends on $L$ and $B$
-alone, an optimum that lands on a round number is a sign of a bug, not a result: the
-target never enters the program.”
+**Where.** Generator and Verifier: the display
+$\tau^{\ast}(L,B) = \min_{w \ge 0} \sum_a w_a$ subject to $\sum_{a \in Q} w_a \ge 1$
+“for every placement $Q$”, followed by “A certificate exists exactly when
+$\tau^{\ast} \lt n$. Since $\tau^{\ast}$ depends on $L$ and $B$ alone, an optimum that
+lands on a round number is a sign of a bug, not a result: the target never enters the
+program.”
 
-**Problem.** The display does not say which placements `Q` range over (unit squares or
-`B`-squares; all angles or the net’s) or what the index `a` ranges over (a fixed finite
+**Problem.** The display does not say which placements $Q$ range over (unit squares or
+$B$-squares; all angles or the net’s) or what the index $a$ ranges over (a fixed finite
 site set, as the generator uses, or all points).
 
-- If the program is the one the generator solves, over `B`-squares at the net’s
-  directions on a fixed site set, then “exists exactly when $\tau^* < n$” is right up to
-  rationalisation, but $\tau^*$ depends on the site set and the net as well as on `L`
-  and `B`. The register entry for this result records two site sets at side 3.82 whose
-  optima differ, which is the dependence the sentence denies.
-- If the program is the idealised one over all sites and all angles, then $\tau^*$ does
-  depend on `L` and `B` alone, but “exactly when” fails in one direction: a certificate
-  needs mass at least 1 only for `B`-squares at net angles, so a certificate can exist
-  while the all-angle `B`-square program has $\tau^* \ge n$.
+- If the program is the one the generator solves, over $B$-squares at the net’s
+  directions on a fixed site set, then “exists exactly when $\tau^{\ast} < n$” is right
+  up to rationalisation, but $\tau^{\ast}$ depends on the site set and the net as well
+  as on $L$ and $B$. The register entry for this result records two site sets at side
+  3.82 whose optima differ, which is the dependence the sentence denies.
+- If the program is the idealised one over all sites and all angles, then $\tau^{\ast}$
+  does depend on $L$ and $B$ alone, but “exactly when” fails in one direction: a
+  certificate needs mass at least 1 only for $B$-squares at net angles, so a certificate
+  can exist while the all-angle $B$-square program has $\tau^{\ast} \ge n$.
 
-The sentence’s point, that `n` never enters the program, is right under either reading.
+The sentence’s point, that $n$ never enters the program, is right under either reading.
 Also, “exactly when” glosses the rationalisation step: the search runs in floating
-point, and the retained total (`10.863675`) is not the LP objective (`10.8603`, per the
+point, and the retained total ($10.863675$) is not the LP objective ($10.8603$, per the
 register) because the weights were scaled up and rounded so that Condition 5 still holds
 in exact arithmetic.
 
 **Fix.** State the program the generator solves and say what depends on what:
 
-> $\tau^*$ is the least total weight on a candidate set of sites such that every
+> $\tau^{\ast}$ is the least total weight on a candidate set of sites such that every
 > $B$-square at a net direction inside the container carries weight at least 1. It
 > depends on the container, the shrink, the net and the candidate sites, and not on $n$:
 > an optimum that lands exactly on an integer is a sign of a bug, not a result.
-> If $\tau^* < n$, scaling a solution up slightly and rounding it to rationals gives a
-> certificate; if $\tau^* \ge n$, none exists on those sites.
+> If $\tau^{\ast} < n$, scaling a solution up slightly and rounding it to rationals
+> gives a certificate; if $\tau^{\ast} \ge n$, none exists on those sites.
 
 ### A7. “A wrong linear program will be rejected by the verifier” (Nit)
 
@@ -413,7 +415,7 @@ The comment block in `verify_claim.py` says the same.
 **Problem.** At any direction other than 0 the centre domain is a rotated square in the
 sweep’s coordinates, and its four bounding lines are oblique.
 The code does not add those lines.
-It adds the domain’s extreme `u` and `v` values, that is, its axis-parallel bounding box
+It adds the domain’s extreme $u$ and $v$ values, that is, its axis-parallel bounding box
 (`umin, umax` and `vmin, vmax`), and then decides which cells meet the rotated domain by
 clipping. The decision is correct either way, because mass is constant on the cells cut
 by the atom rectangles alone and the clip test is exact.
@@ -441,15 +443,15 @@ centre can reach, at all 181 directions”; `minimal_verify.py` prints the same 
 
 **Problem.** The difference was traced by comparing the two programs’ cell sets
 direction by direction on the 19/5 certificate and testing each disputed cell exactly.
-`minimal_verify.py` clips the centre domain to each strip between consecutive `u` events
+`minimal_verify.py` clips the centre domain to each strip between consecutive $u$ events
 and skips a strip whose clipped polygon has fewer than three vertices.
 A strip that touches the domain only along an edge (at direction 0, the strip just left
-of `u = h`) or at a vertex (two strips at every other direction) clips to a degenerate
+of $u = h$) or at a vertex (two strips at every other direction) clips to a degenerate
 polygon with four coincident or collinear vertices, passes the test, and contributes
 cells whose open interiors lie entirely outside the domain: 374 at direction 0 on the
 19/5 certificate, 2 at each other direction; 834 + 360 = 1,194 on the 381/100
 certificate. `verify_claim.py` iterates only over strips within the domain’s
-`u`-projection and counts none of them.
+$u$-projection and counts none of them.
 
 This is conservative: an extra cell can only lower the reported minimum, never raise it,
 so the verifier cannot accept a bad certificate because of it.
@@ -460,7 +462,7 @@ card. And a valid certificate could in principle be refused because a cell outsi
 domain, which the theorem says nothing about, carries mass below 1.
 
 **Fix.** In `minimal_verify.py`, skip a strip whose clipped polygon has zero area (or
-iterate strips from the domain’s minimum `u` event to its maximum, as `verify_claim.py`
+iterate strips from the domain’s minimum $u$ event to its maximum, as `verify_claim.py`
 does). Regenerate the proof card’s count.
 Until then, the card could say “over 567,131,843 event cells (a superset of those its
 centre can reach).”
@@ -484,9 +486,8 @@ verifier, not the certificate, is broken.
 
 **Where.** `verify_claim.py` `symmetric` merges the weights of atoms at a repeated site
 (`weight[x, y] = weight.get((x, y), 0) + w`); `minimal_verify.py` `condition_1` refuses
-a repeated site.
-`minimal_verify.py` refuses an atom outside `[0, L]²`; `verify_claim.py`
-does not check.
+a repeated site. `minimal_verify.py` refuses an atom outside $[0, L]^2$;
+`verify_claim.py` does not check.
 
 **Problem.** Both are offered as verifiers of the same theorem, and a certificate with a
 duplicated site or an atom outside the container passes one and fails the other.
@@ -503,21 +504,21 @@ merges duplicates and tolerates outside atoms because both are harmless.
 ### B4. `certificate.py` says the certificate proves `s(n) > L`; everything else says `≥` (Low, linked code)
 
 **Where.** The explainer links `certificate.py` as “the verifier.”
-Its module docstring concludes “so `n` unit squares do not fit in a container of side
-`L`, and `s(n) > L`,” and `bounded_side` says “what the certificate proves is
-`s(n) > L`. Reported as `>= L`.” The same docstring’s opening line says “It proves
-`s(n) >= L`.” The claim documents prove `≥ L` from the infimum and deliberately do not
+Its module docstring concludes “so $n$ unit squares do not fit in a container of side
+$L$, and $s(n) > L$,” and `bounded_side` says “what the certificate proves is
+$s(n) > L$. Reported as `>= L`.” The same docstring’s opening line says “It proves
+`s(n) >= L`.” The claim documents prove $\ge L$ from the infimum and deliberately do not
 use compactness.
 
 **Problem.** The strict inequality is true (a packing exists at the infimum, so no
-packing at side `L` gives `s(n) > L`), but it is not what the claim documents prove, and
+packing at side $L$ gives $s(n) > L$), but it is not what the claim documents prove, and
 the linked file contradicts itself.
 The explainer could turn this into a sentence of value: the certificate shows the side
-`3.81` is too small, and by compactness `s(11)` is strictly larger; the claim is stated
+$3.81$ is too small, and by compactness $s(11)$ is strictly larger; the claim is stated
 as `≥` because that is what the proof in the file establishes without an appeal to
 compactness.
 
-**Fix.** Make `certificate.py` consistent (`≥ L`, with a one-line remark that `> L`
+**Fix.** Make `certificate.py` consistent ($\ge L$, with a one-line remark that $> L$
 follows by compactness), and consider adding that remark to the explainer’s
 Contradiction section.
 
@@ -641,7 +642,7 @@ Friedman’s survey, Kingbird’s register, and the 2026 posts, not the preprint
 ### C8. Optional: the status of the bound being displaced (Low)
 
 The register records (`T-010`) that the project found Stromquist’s printed argument for
-`s(11) ≥ 2 + 4/√5` does not close at his Figure 14 and repaired it with a
+$s(11) \ge 2 + 4/\sqrt{5}$ does not close at his Figure 14 and repaired it with a
 source-distinct point set.
 Both refuters judged its omission from the explainer acceptable, since the bound itself
 is correct and the new proof is independent of it.
@@ -670,12 +671,12 @@ to a final section, “About the Project,” after Verifiable Claim.
 **Where.** The section title; the caption concedes “This shows these atoms are tight
 against their own net, not that no coarser net could be made to work.”
 
-**Problem.** The section prices coarsening the net under atoms optimised for `K = 180`;
+**Problem.** The section prices coarsening the net under atoms optimised for $K = 180$;
 it does not show that 181 directions are needed, or say why 181 was chosen.
 Both refuters read the title as the mathematical “why” and accepted it.
 The coordinator’s view is that the caption’s own disclaimer is the better title.
 
-**Fix.** “What a Coarser Net Costs,” plus one sentence on how `K = 180` was chosen, if
+**Fix.** “What a Coarser Net Costs,” plus one sentence on how $K = 180$ was chosen, if
 the reason is known (the coarsest net the generator was run on, a compute budget, or the
 net Massaccesi used).
 
@@ -792,7 +793,7 @@ mass than the unit square if it fits inside it, because the weights are nonnegat
 container. Reflect any square whose angle exceeds $\pi/4$ across the container’s
 diagonal, which changes no mass (Condition 1). Its angle is then within half a gap of a
 net angle (Condition 3), and by Condition 4 it contains, with the same centre, a
-side-$B$ square $Q_i$ at that net angle; reflecting back gives a side-$B$ square inside
+side-`B` square $Q_i$ at that net angle; reflecting back gives a side-`B` square inside
 the original square with the same mass as $Q_i$. Because Condition 4 is a *strict*
 inequality, each of these sits inside its unit square’s interior, so the eleven are
 pairwise disjoint and no atom is counted twice.

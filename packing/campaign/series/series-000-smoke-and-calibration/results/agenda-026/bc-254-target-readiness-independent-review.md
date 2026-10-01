@@ -58,7 +58,7 @@ passing. No dangerous exponent conversion was executed.
 
 The stable repair adds a bounded ASCII integer or numerator/positive-denominator lexical
 check before conversion, retaining normalization equality afterward.
-The latter still rejects safely bounded spellings such as `-0`, `0/3`, and `2/4`.
+The latter still rejects safely bounded spellings such as $-0$, $0/3$, and $2/4$.
 Expanded public-packet controls reject positive and negative exponents, decimals,
 Unicode digits, underscores, whitespace, leading zeros, invalid denominators, empty
 strings, and overlength strings before conversion.
@@ -69,8 +69,8 @@ Canonical strings reach the separate geometry guards.
 
 The source-only replay independently confirms 88 labelled images, 60 distinct
 placements, and eight orbits.
-The orbit sizes are `(4, 8, 8, 8, 8, 8, 8, 8)` and original-square counts are
-`(3, 1, 2, 1, 1, 1, 1, 1)`. Each distinct member receives its labelled preimage count
+The orbit sizes are $(4, 8, 8, 8, 8, 8, 8, 8)$ and original-square counts are
+$(3, 1, 2, 1, 1, 1, 1, 1)$. Each distinct member receives its labelled preimage count
 divided by eight, equivalently $n_O/m_O$. Four members have six preimages, eight have
 two, and 48 have one: $4(6)+8(2)+48=88$. The averaged mass is exactly $\sum_O n_O=11$.
 The reviewer’s source test replaces both row-sequence entry points and the optimizer
@@ -104,10 +104,10 @@ The fixed extension has 36 candidates, and first-occurrence deduplication preser
 row order. Every orbit column has a positive initial coefficient, yielding finite
 coordinate bounds before optimization.
 
-The adapter uses `min -mᵀa`, rows `A` and `-I`, and the independent active `-I` basis at
+The adapter uses `min -mᵀa`, rows $A$ and `-I`, and the independent active `-I` basis at
 the feasible point zero.
-Its incidence multipliers have the correct sign: `Aᵀy - z = m`, with nonnegative `y` and
-`z`. Replay directly checks `Aᵀy ≥ m` and returns `sum(y)`, establishing the upper bound
+Its incidence multipliers have the correct sign: `Aᵀy - z = m`, with nonnegative $y$ and
+$z$. Replay directly checks `Aᵀy ≥ m` and returns `sum(y)`, establishing the upper bound
 by weak duality without solver status.
 It also checks nonnegative primal weights, every row inequality, equality of objectives,
 and the retained mass-eleven feasible control.

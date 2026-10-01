@@ -64,7 +64,7 @@ hypothesis:
 # H-045 — the rediscovery ladder
 
 The registered claim is about **coverage semantics**, not about finding a packing nobody
-has. Both existing from-scratch successes at `n = 11` are stochastic or opaque:
+has. Both existing from-scratch successes at $n = 11$ are stochastic or opaque:
 Gensane-Ryckelynck report obtaining the packing “several times” after thousands of
 random-start billiard runs, and the general-purpose solver study reports an incumbent
 after a fixed compute budget.
@@ -73,7 +73,7 @@ Neither can say what was searched.
 An enumerator can report what it actually returned.
 If a frozen grammar enumerates `N` strata and the standing best ranks first among their
 returned candidates under a declared tie rule, the round establishes a statement of a
-different kind: the record is stratum `k` of `N`, visited deterministically, and no
+different kind: the record is stratum $k$ of `N`, visited deterministically, and no
 other returned candidate beats it.
 That is not a claim that a stopped numerical solve found each stratum’s optimum.
 The near-miss corpus is the by-product, with identity given by the stratum label rather
@@ -85,14 +85,14 @@ The failure mode of any grammar-based rediscovery is leaking the answer into the
 grammar. The ladder is therefore ordered so that all design freedom is spent before the
 target is approached:
 
-1. **Calibrate on proved cells.** `n = 5` and `n = 10` are each an aligned frame plus
-   one `45°` group, and the built quench already takes both to `1e-15`. Grammar
+1. **Calibrate on proved cells.** $n = 5$ and $n = 10$ are each an aligned frame plus
+   one $45^\circ$ group, and the built quench already takes both to `1e-15`. Grammar
    iteration stops here.
 2. **Freeze and commit** the grammar, chunk-size caps, sweep resolution, and enumeration
    order. The round record names the freeze commit.
-3. **Run the guard.** `n = 16` must return exactly 4.
-4. **Run the target once.** `n = 11`, unrestricted, no target geometry supplied.
-5. **Run the differentiator.** `n = 17`, reported as its own cell.
+3. **Run the guard.** $n = 16$ must return exactly 4.
+4. **Run the target once.** $n = 11$, unrestricted, no target geometry supplied.
+5. **Run the differentiator.** $n = 17$, reported as its own cell.
 
 ## What this round may not claim
 
@@ -106,7 +106,7 @@ aligned strata are maximally degenerate cells, so endpoint reproducibility acros
 toolchains ([D-059](../../../defects.md)) is a declared risk for this instrument rather
 than an assumed property.
 
-The 2026-08-26 atlas review also changes the evidentiary role of `n = 11`: its geometry
+The 2026-08-26 atlas review also changes the evidentiary role of $n = 11$: its geometry
 was inspected during instrument design.
 A future run is useful as retrospective replay and engineering calibration, but not as
 unseen rediscovery evidence.

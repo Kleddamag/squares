@@ -38,7 +38,7 @@ hypothesis:
 ---
 # H-003 — does contact structure predict attraction frequency?
 
-Ellsworth’s four hits in 3,004 starts for the highly constrained `s(51)` construction
+Ellsworth’s four hits in 3,004 starts for the highly constrained $s(51)$ construction
 motivates the claim, but it does not measure the proposed relation across components.
 The test must use held-out components or cells: fitting and evaluating on the same small
 atlas would turn a descriptive correlation into a flattering steering rule.

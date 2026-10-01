@@ -15,7 +15,7 @@ Frontier field.
 - `weak-pose-graph.json` builds and checks a greedy clique partition of retained n17
   low-charge witness centres.
 - `weak-pose-graph-margins.json` rechecks that partition at the source parent side and
-  at the illustrative target side `463/100`.
+  at the illustrative target side $463/100$.
 
 `frontier_transfer_audit.py` produced `frontier-transfer-audit.json` and
 `frontier-transfer-count-slack.json` from immutable Git objects at

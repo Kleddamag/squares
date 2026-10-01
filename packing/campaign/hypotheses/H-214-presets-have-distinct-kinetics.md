@@ -47,8 +47,8 @@ violating the motion and geometry guards.
 
 [Exp-212](../series/series-000-smoke-and-calibration/experiments/exp-212-h214-preset-signatures.md)
 rejects that universal ordering over the registered two-transition sweep.
-Rigid penetration reverses against soft in Physics at `n = 90`, and sticky mean contact
-count reverses against balanced at `n = 90` in both solvers.
+Rigid penetration reverses against soft in Physics at $n = 90$, and sticky mean contact
+count reverses against balanced at $n = 90$ in both solvers.
 The complete matrix was measured at frozen commit
 `9cca493c17ab61d5efb3e1032f32c54a9b87320e` and retains all 48 rows.
 The interface should treat the four bundles as parameter starting points rather than

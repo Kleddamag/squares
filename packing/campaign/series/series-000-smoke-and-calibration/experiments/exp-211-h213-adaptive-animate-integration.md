@@ -88,8 +88,9 @@ experiment:
 
 The command sampled the actual poses supplied to the painter at deterministic 60 Hz.
 The frozen-commit matrix covers balanced and rigid laws, the physics and bodies solvers,
-the `16 → 17` and `89 → 90` transitions, and seeds 0 through 2. It also retains the raw
-solver metrics, endpoint landing, penetration, integration work and replay determinism.
+the $16 \to 17$ and $89 \to 90$ transitions, and seeds 0 through 2. It also retains the
+raw solver metrics, endpoint landing, penetration, integration work and replay
+determinism.
 
 The retained result stores the three seed values for every metric rather than only the
 medians in this report.
@@ -116,17 +117,17 @@ Displacement units are one square side.
 | Physics | 90 | balanced | 0.01645 (0.01625–0.01671) | 0.20534 (0.20224–0.21740) | 0.04238 (0.03850–0.04625) |
 | Physics | 90 | rigid | 0.01729 (0.01723–0.01764) | 0.20826 (0.20365–0.21146) | 0.05401 (0.04793–0.05969) |
 
-Balanced requires maximum displacement at most `0.1`, reversal ratio at most `0.03` and
-mean displacement from `0.0136` through `0.0204`. Rigid permits `0.15` and `0.05` for
+Balanced requires maximum displacement at most $0.1$, reversal ratio at most $0.03$ and
+mean displacement from $0.0136$ through $0.0204$. Rigid permits $0.15$ and $0.05$ for
 the first two limits with the same mean interval.
 No row satisfies every limit over all three seeds.
 
 The raw adaptive path is materially smoother than its presented form.
-For example, balanced Physics at `n = 90` has raw maximum displacement
-`0.092485 (0.092485–0.092486)` and raw reversal ratio `0.013980 (0.013653–0.015809)`,
-both inside the declared limits.
-The presented path reaches maximum displacement `0.205341 (0.202237–0.217397)` and
-reversal ratio `0.041808 (0.038281–0.045989)`.
+For example, balanced Physics at $n = 90$ has raw maximum displacement
+$0.092485 (0.092485\text{–}0.092486)$ and raw reversal ratio
+$0.013980 (0.013653\text{–}0.015809)$, both inside the declared limits.
+The presented path reaches maximum displacement $0.205341 (0.202237\text{–}0.217397)$
+and reversal ratio $0.041808 (0.038281\text{–}0.045989)$.
 
 ## Screening Sweeps
 
@@ -139,7 +140,7 @@ rejection.
 Adaptive substeps address the cap-to-cap motion in the raw numerical path, but raw
 stability does not guarantee that the sampled presentation meets its kinetic budgets.
 One set of global speed, damping, timing and annealing controls also cannot preserve the
-declared mean motion at `n = 17` while bounding the largest `n = 90` Bodies motion.
+declared mean motion at $n = 17$ while bounding the largest $n = 90$ Bodies motion.
 The next experiment needs a rotational or Bodies-member response control, or normalized
 perturbation torque and frequency, followed by the same frozen 24-cell matrix.
 It must not use a smoothing filter to hide motion the solver produced.

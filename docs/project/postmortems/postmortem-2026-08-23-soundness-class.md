@@ -12,7 +12,7 @@ it is the only one that produced a false claim about the mathematics.
 
 ## What happened
 
-A quench built to refine packings reported, for `n = 11`, a side of
+A quench built to refine packings reported, for $n = 11$, a side of
 
 ```
 3.877083568103152   against Walter Trump's   3.877083590022814
@@ -35,12 +35,12 @@ does not produce noise, it produces apparent discoveries.
 The investigation was triggered by a sentence written before any of this code existed,
 in the campaign runbook:
 
-> The `n = 12` negative control.
-> The 4×4 grid is almost certainly optimal, so a run reporting anything below `4` has
+> The $n = 12$ negative control.
+> The 4×4 grid is almost certainly optimal, so a run reporting anything below $4$ has
 > found a bug in the geometry, not a packing.
 
-That sentence was a useful alarm but an invalid oracle: `s(12) = 4` is not proved, so a
-valid value below `4` could be a discovery ([D-042](../../../defects.md)). The sound
+That sentence was a useful alarm but an invalid oracle: $s(12) = 4$ is not proved, so a
+valid value below $4$ could be a discovery ([D-042](../../../defects.md)). The sound
 rule is the one generalized in the same document: *do not record `beat_record: true` at
 any precision below `exact`*. The independent geometry check established the actual
 defect; the open-case incumbent did not.

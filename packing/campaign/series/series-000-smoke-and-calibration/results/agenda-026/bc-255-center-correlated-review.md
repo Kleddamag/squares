@@ -3,7 +3,7 @@
 The coordinate displacement bound $\varepsilon=1/500$ is proved for all three formal
 triangle vertices throughout the actual closed near-45 angle band.
 The derivative estimates below give the stronger bound $1/720$. They also justify the
-fixed collision region $C^*$ defined below.
+fixed collision region $C^{\ast}$ defined below.
 This review does not construct that region, evaluate a scientific source, or prove its
 remaining nine-mark cover.
 
@@ -27,7 +27,7 @@ W=939/1000,\quad m=1+W,\quad k=1+W/2,\quad r=\sqrt2/2,
 $$
 
 and write $C=\cos\theta$, $S=\sin\theta$, $h=(C+S)/2$ and $\Delta=1-2h+WCS$. The frame
-bounds are $u_*=Cm+S-1/2$ and $v_*=C-S-1/2$. The angle satisfies
+bounds are $u_{\ast}=Cm+S-1/2$ and $v_{\ast}=C-S-1/2$. The angle satisfies
 
 $$
 \theta=\pi/4+\delta,\qquad |\delta|\le\pi/720<1/180.
@@ -40,14 +40,15 @@ The three formal world-frame vertices are
 
 $$
 \begin{aligned}
-v_E&=\left(1+WC^2+\frac{S-C}{2},\ 1+WCS-h\right),\\
-v_L&=\left(v_{E,x}-\frac CS\Delta,\ h\right),\\
+v_E&=\left(1+WC^2+\frac{S-C}{2},\ 1+WCS-h\right),\cr
+v_L&=\left(v_{E,x}-\frac CS\Delta,\ h\right),\cr
 v_R&=\left(v_{E,x}+\frac SC\Delta,\ h\right).
 \end{aligned}
 $$
 
-These follow by applying $R_\theta$ to $(u_*,v_*)$, $(u_*-\Delta/S,v_*)$ and
-$(u_*,v_*-\Delta/C)$. At $\theta=\pi/4$ they are exactly
+These follow by applying $R_\theta$ to $(u_{\ast},v_{\ast})$,
+$(u_{\ast}-\Delta/S,v_{\ast})$ and $(u_{\ast},v_{\ast}-\Delta/C)$. At $\theta=\pi/4$
+they are exactly
 
 $$
 v_E^0=(k,k-r),\qquad v_L^0=(2r,r),\qquad
@@ -136,9 +137,9 @@ Every coordinate derivative therefore has absolute value less than $1/4$. The me
 theorem, on the interval between $\theta$ and $\pi/4$, proves
 
 $$
-\boxed{\ \|v_i(\theta)-v_i^0\|_\infty
+\boxed{\ \Vert v_i(\theta)-v_i^0\Vert_\infty
 <\frac14\frac1{180}=\frac1{720}<\frac1{500}=\varepsilon,
-\qquad i\in\{E,L,R\}.\ }
+\qquad i\in\lbrace E,L,R\rbrace.\ }
 $$
 
 This includes both angle signs and the actual band endpoints.
@@ -148,14 +149,15 @@ cores.
 
 ## Empty Triangles and Closed Boundaries
 
-H124’s outer center set has constraints $U\le u_*$, $V\le v_*$ and $SU+CV\ge h$, with
-$Su_*+Cv_*-h=\Delta$. Positive $C,S$ imply that it is empty when $\Delta<0$, a singleton
-when $\Delta=0$, and the closed triangle with the three stated vertices when $\Delta>0$.
+H124’s outer center set has constraints $U\le u_{\ast}$, $V\le v_{\ast}$ and
+$SU+CV\ge h$, with $Su_{\ast}+Cv_{\ast}-h=\Delta$. Positive $C,S$ imply that it is empty
+when $\Delta<0$, a singleton when $\Delta=0$, and the closed triangle with the three
+stated vertices when $\Delta>0$.
 
 The displacement estimates remain valid for the formal formulas in all these cases.
-A canonical P10 avoider must satisfy the stricter inequalities $U<u_*$ and $V<v_*$, so
-no such avoider exists when $\Delta\le0$. The H124 implication is then vacuous.
-No positivity test at a sampled angle is needed for this case distinction.
+A canonical P10 avoider must satisfy the stricter inequalities $U<u_{\ast}$ and
+$V<v_{\ast}$, so no such avoider exists when $\Delta\le0$. The H124 implication is then
+vacuous. No positivity test at a sampled angle is needed for this case distinction.
 
 When the triangle is nonempty, checking its vertices is sufficient for the collision
 argument below because its other centers are convex combinations of them.
@@ -189,36 +191,37 @@ square is therefore $\alpha(\cos d+\sin d)\le1/2$. Hence $B_{45}\subseteq U_\the
 every near-45 angle $\theta$, and $B_0\subseteq U_\psi$ for every near-axis angle
 $\psi$.
 
-Set $M_*=B_{45}+B_0$. It is the convex Minkowski sum of two centrally symmetric squares.
-Its eight facet normals can be taken without normalization as
+Set $M_{\ast}=B_{45}+B_0$. It is the convex Minkowski sum of two centrally symmetric
+squares. Its eight facet normals can be taken without normalization as
 
 $$
-N=\{\pm(1,0),\ \pm(0,1),\ \pm(1,1),\ \pm(1,-1)\}.
+N=\lbrace\pm(1,0),\ \pm(0,1),\ \pm(1,1),\ \pm(1,-1)\rbrace.
 $$
 
-For $n=(n_x,n_y)$, its support function, the maximum of $n\cdot x$ over $x\in M_*$, is
+For $n=(n_x,n_y)$, its support function, the maximum of $n\cdot x$ over $x\in M_{\ast}$,
+is
 
 $$
-H_*(n)=\alpha\|n\|_1+\alpha\sqrt2\|n\|_\infty.
+H_{\ast}(n)=\alpha\Vert n\Vert_1+\alpha\sqrt2\Vert n\Vert_\infty.
 $$
 
 This follows by adding the support functions of $B_0$ and $B_{45}$. The normals listed
 above are complete because every edge of a polygon Minkowski sum is parallel to an edge
 of one of its summands.
-Thus $M_*=\{x:n\cdot x\le H_*(n)\text{ for every }n\in N\}$.
+Thus $M_{\ast}=\lbrace x:n\cdot x\le H_{\ast}(n)\text{ for every }n\in N\rbrace$.
 
 The coordinate displacement bound gives, for every listed normal and vertex,
 
 $$
-n\cdot v_i(\theta)\ge n\cdot v_i^0-\varepsilon\|n\|_1.
+n\cdot v_i(\theta)\ge n\cdot v_i^0-\varepsilon\Vert n\Vert_1.
 $$
 
 Define the fixed closed region
 
 $$
-C^*=\left\{z:
-n\cdot z\le H_*(n)+\min_{i\in\{E,L,R\}}n\cdot v_i^0
--\varepsilon\|n\|_1\quad\text{for every }n\in N\right\}.
+C^{\ast}=\left\lbrace z:
+n\cdot z\le H_{\ast}(n)+\min_{i\in\lbrace E,L,R\rbrace}n\cdot v_i^0
+-\varepsilon\Vert n\Vert_1\quad\text{for every }n\in N\right\rbrace.
 $$
 
 The axis support values are $\alpha(1+\sqrt2)$, with penalty $\varepsilon$. The
@@ -227,31 +230,32 @@ $2\varepsilon$. Rescaling a normal requires rescaling both its support and its p
 In particular, using only $\varepsilon$ on an unnormalized diagonal is not justified by
 the coordinate bound.
 
-For $z\in C^*$ and every $i,n$,
+For $z\in C^{\ast}$ and every $i,n$,
 
 $$
 n\cdot(z-v_i(\theta))
-\le H_*(n)+\min_j n\cdot v_j^0-n\cdot v_i^0
-\le H_*(n).
+\le H_{\ast}(n)+\min_j n\cdot v_j^0-n\cdot v_i^0
+\le H_{\ast}(n).
 $$
 
-Therefore $z-v_i(\theta)\in M_*$ for all three vertices.
+Therefore $z-v_i(\theta)\in M_{\ast}$ for all three vertices.
 If an actual Q center is $a=\sum_i\lambda_i v_i(\theta)$, convexity gives
-$z-a=\sum_i\lambda_i(z-v_i(\theta))\in M_*$. Write this difference as $b_{45}+b_0$ with
-$b_{45}\in B_{45}$ and $b_0\in B_0$. Then
+$z-a=\sum_i\lambda_i(z-v_i(\theta))\in M_{\ast}$. Write this difference as $b_{45}+b_0$
+with $b_{45}\in B_{45}$ and $b_0\in B_0$. Then
 
 $$
 a+b_{45}=z-b_0\in(a+U_\theta)\cap(z+U_\psi),
 $$
 
-where central symmetry supplies $-b_0\in B_0$. Thus a near-axis square centered in $C^*$
-intersects every admissible distinguished Q. Its point of intersection may depend on Q.
+where central symmetry supplies $-b_0\in B_0$. Thus a near-axis square centered in
+$C^{\ast}$ intersects every admissible distinguished Q. Its point of intersection may
+depend on Q.
 
 This proves the fixed collision region’s sufficient meaning, including its boundary.
-It does not prove that $C^*$ is nonempty, maximal, or large enough to complete the
-remaining cover. Appending a correctly reconstructed $C^*$ to the existing thirteen
-regions preserves those regions’ separate proofs and does not require a claim that $C^*$
-contains the old obstacle dilation.
+It does not prove that $C^{\ast}$ is nonempty, maximal, or large enough to complete the
+remaining cover. Appending a correctly reconstructed $C^{\ast}$ to the existing thirteen
+regions preserves those regions’ separate proofs and does not require a claim that
+$C^{\ast}$ contains the old obstacle dilation.
 Any cover invocation and its independent source-bound replay still require a separately
 committed prospective allocation.
 

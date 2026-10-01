@@ -64,7 +64,7 @@ A failed replay or inconsistent radius/extremum is invalid, not a scientific ref
 
 ## Controls and Corrected Receipt Semantics
 
-The focused controls cover the oblique `(3/5,4/5)` radius and positive pair, real strict
+The focused controls cover the oblique $(3/5,4/5)$ radius and positive pair, real strict
 replay through the selected patch path, zero and negative gaps, M=0, both positive-M
 coefficient branches, exact attainer reconstruction, closed dot and patch tangencies,
 changed source chain and prefix, pre-replay expiry, replay failure, and expiry after

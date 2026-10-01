@@ -94,7 +94,7 @@ The checker exited zero, reporting:
 {"finite_row_optimum": "56/5", "scope": "specified finite support only; no almost-everywhere depth claim"}
 ```
 
-The packet contains 20 admitted rows and pivot receipts `[6, 8]`, within the frozen
+The packet contains 20 admitted rows and pivot receipts $[6, 8]$, within the frozen
 limits. Its orbit primal is $(1,0,2/5,1/10,0,1/10,3/10,0)$. The nonzero upper
 multipliers, at zero-based row indices $(0,3,7,10,18,19)$, are
 $(4/5,16/5,16/5,8/5,4/5,8/5)$. Substitution into the retained rows gives
@@ -113,8 +113,8 @@ Pivot counts remain execution receipts, not independently attested solver histor
 | Reviewer’s one file replay | 0 | 9.10 | 9.06 |
 
 CPU is retained user plus system time.
-The producer log separately reports worker wall time `19.561851291917264` seconds and
-CPU `17.245133` seconds, excluding outer startup and teardown.
+The producer log separately reports worker wall time $19.561851291917264$ seconds and
+CPU $17.245133$ seconds, excluding outer startup and teardown.
 The reviewer observed replay completion by `20:58:31 UTC`. Neither process hit its cap,
 and neither was retried.
 These are single-run costs, not statistical performance comparisons.

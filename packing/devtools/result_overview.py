@@ -786,8 +786,12 @@ def _path_link(path: Path, label: str = "") -> str:
 
 
 def links_section(result: Result, overview: Overview, cases: Sequence[int]) -> str:
-    """Where to read more: this site's pages, and the record on GitHub at `main`."""
-    from devtools.overview_sections import result_url  # noqa: PLC0415
+    """Where to read more: this site's pages, and the record on GitHub at `main`.
+
+    A result on eleven squares links both papers on that case, the one on the result
+    that stands first: the optimality paper, which explains T-060, then the explainer,
+    which proves the lower bounds T-060 superseded."""
+    from devtools.overview_sections import OPTIMALITY_PAPER, result_url  # noqa: PLC0415
     from devtools.render_case_pages import case_url  # noqa: PLC0415
 
     record = result.record
@@ -801,6 +805,7 @@ def links_section(result: Result, overview: Overview, cases: Sequence[int]) -> s
             site.append(_link(f"frontier.html#n-{n}", f"Frontier row, {math_html(f'n = {n}')}"))
     site.append(_link(result_url(result.id), f"{_esc(result.id)} in the results table"))
     if 11 in cases:
+        site.append(_link(OPTIMALITY_PAPER, f"The {math_html('n = 11')} optimality paper"))
         site.append(_link("explainer.html", f"The {math_html('n = 11')} explainer"))
 
     evidence_rows: list[str] = []

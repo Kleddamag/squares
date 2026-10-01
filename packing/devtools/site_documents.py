@@ -21,11 +21,14 @@ into a page against the ids the target page actually has. A target that does not
 resolve fails the render with the whole list, so a broken link is found when the page is
 built rather than by a reader.
 
-One document is also read in part. README's introduction, the block between its
-`project-intro` markers, is the overview's first section: the overview's template holds a
-placeholder where the prose would be, `overview_intro` fills it with the block, and
-`rewrite_overview_intro` makes the block's links work on the site, as a document's are
-made to. The project is introduced in one text, on GitHub and on the site.
+One document is also read in part. README's introduction is marked as two blocks, and
+each is prose of the overview: the block between the `project-intro` markers is the
+overview's first section, and the block between the `recent-progress` markers, the two
+paragraphs on what the project covers and on its newest major result, opens Recent
+Results. The overview's template holds a placeholder where each would be,
+`overview_intro` and `overview_progress` fill them, and `rewrite_overview_blocks` makes
+the blocks' links work on the site, as a document's are made to. The project is
+introduced in one text, on GitHub and on the site.
 """
 
 from __future__ import annotations
@@ -35,6 +38,7 @@ import posixpath
 import re
 from dataclasses import dataclass, field
 from functools import cache
+from itertools import pairwise
 from pathlib import Path
 from urllib.parse import quote, unquote
 
@@ -45,15 +49,51 @@ from devtools.repo_links import RepositoryTree, repo_url, repository_tree
 TUTORIAL = REPO / repo_links.TUTORIAL
 README = REPO / repo_links.README
 
-#: The block of README that is also the overview's first section. It is hand-written in
-#: README, between these two lines, and read from there; nothing writes it.
-INTRO_BEGIN = "<!-- BEGIN SHARED: project-intro (devtools.site_documents) -->"
-INTRO_END = "<!-- END SHARED: project-intro -->"
-#: The same block in the overview, as Markdown and then as rendered HTML: kpress passes a
-#: comment through, so these two mark the run whose links `rewrite_overview_intro`
-#: rewrites, and nothing else on the overview is touched.
-OVERVIEW_INTRO_OPEN = "<!-- README project-intro -->"
-OVERVIEW_INTRO_CLOSE = "<!-- /README project-intro -->"
+
+@dataclass(frozen=True)
+class SharedBlock:
+    """A block of README that is also prose of the overview.
+
+    It is hand-written in README, between `begin` and `end`, and read from there; nothing
+    writes it. In the overview, as Markdown and then as rendered HTML, the same block
+    sits between `opened` and `closed`: kpress passes a comment through, so the two mark
+    the run whose links `rewrite_overview_blocks` rewrites, and nothing else on the
+    overview is touched.
+    """
+
+    name: str
+
+    @property
+    def begin(self) -> str:
+        return f"<!-- BEGIN SHARED: {self.name} (devtools.site_documents) -->"
+
+    @property
+    def end(self) -> str:
+        return f"<!-- END SHARED: {self.name} -->"
+
+    @property
+    def opened(self) -> str:
+        return f"<!-- README {self.name} -->"
+
+    @property
+    def closed(self) -> str:
+        return f"<!-- /README {self.name} -->"
+
+
+#: README's first paragraph, what the project studies: the overview's first section.
+INTRO = SharedBlock("project-intro")
+#: README's next two paragraphs, what the project covers and its newest major result:
+#: the head of the overview's Recent Results.
+PROGRESS = SharedBlock("recent-progress")
+#: README's shared blocks, in the order README writes them.
+SHARED_BLOCKS = (INTRO, PROGRESS)
+INTRO_BEGIN, INTRO_END = INTRO.begin, INTRO.end
+OVERVIEW_INTRO_OPEN, OVERVIEW_INTRO_CLOSE = INTRO.opened, INTRO.closed
+#: The framing the owner refused on 2026-09-30: eleven squares is a central case of the
+#: problem, and never the one the project is about.
+THE_CENTRAL_CASE = re.compile(
+    "\\b(?:the|its|project[\u2019']s)\\s+central\\s+(?:open\\s+)?case\\b", re.IGNORECASE
+)
 
 
 @dataclass(frozen=True)
@@ -304,36 +344,80 @@ def unresolved(pages: dict[str, Page], report: LinkReport) -> list[str]:
     return sorted(set(problems))
 
 
-def intro_block(readme: str) -> str:
-    """README's introduction: the Markdown between its `project-intro` markers.
+def shared_block(readme: str, block: SharedBlock) -> str:
+    """One shared block of README: the Markdown between its two markers.
 
     Raises `ValueError` unless each marker appears once, in order, around prose alone. A
-    heading or a comment inside the block would land in the middle of the overview's
-    first section, and a link to the site would point the overview at itself.
+    heading or a comment inside the block would land in the middle of a section of the
+    overview, which is also why one block may not hold another's marker; a link to the
+    site would point the overview at itself; and no case is called the central one.
     """
-    if readme.count(INTRO_BEGIN) != 1 or readme.count(INTRO_END) != 1:
-        raise ValueError("the project-intro markers must each appear exactly once")
-    begin, end = readme.index(INTRO_BEGIN), readme.index(INTRO_END)
+    name = block.name
+    if readme.count(block.begin) != 1 or readme.count(block.end) != 1:
+        raise ValueError(f"the {name} markers must each appear exactly once")
+    begin, end = readme.index(block.begin), readme.index(block.end)
     if end < begin:
-        raise ValueError("the project-intro block ends before it begins")
-    block = readme[begin + len(INTRO_BEGIN) : end].strip()
-    if not block:
-        raise ValueError("the project-intro block is empty")
-    if "<!--" in block or re.search(r"^#", block, re.MULTILINE):
-        raise ValueError("the project-intro block holds a heading or a comment")
-    if render_overview.SITE_URL in block:
-        raise ValueError("the project-intro block links the site it is rendered on")
-    return block
+        raise ValueError(f"the {name} block ends before it begins")
+    text = readme[begin + len(block.begin) : end].strip()
+    if not text:
+        raise ValueError(f"the {name} block is empty")
+    if "<!--" in text or re.search(r"^#", text, re.MULTILINE):
+        raise ValueError(f"the {name} block holds a heading or a comment")
+    if render_overview.SITE_URL in text:
+        raise ValueError(f"the {name} block links the site it is rendered on")
+    if THE_CENTRAL_CASE.search(text):
+        raise ValueError(f"the {name} block calls a case the central one")
+    return text
+
+
+def shared_blocks(readme: str) -> dict[str, str]:
+    """Every shared block of README by name, each as `shared_block` reads it.
+
+    Raises `ValueError` for a block `shared_block` refuses, and unless the blocks follow
+    one another in README in the order `SHARED_BLOCKS` lists them, with nothing but
+    blank lines between: the overview shows them in two sections, and README reads them
+    as one introduction.
+    """
+    blocks = {block.name: shared_block(readme, block) for block in SHARED_BLOCKS}
+    for first, second in pairwise(SHARED_BLOCKS):
+        between = readme[readme.index(first.end) + len(first.end) : readme.index(second.begin)]
+        if readme.index(second.begin) < readme.index(first.end) or between.strip():
+            raise ValueError(
+                f"the {second.name} block must follow the {first.name} block directly"
+            )
+    return blocks
+
+
+def intro_block(readme: str) -> str:
+    """README's first paragraph, the Markdown between its `project-intro` markers."""
+    return shared_block(readme, INTRO)
+
+
+def progress_block(readme: str) -> str:
+    """README's two paragraphs on what the project covers and its newest major result,
+    the Markdown between its `recent-progress` markers."""
+    return shared_block(readme, PROGRESS)
+
+
+def _overview_block(block: SharedBlock) -> str:
+    """One shared block as the overview's Markdown, between the two comments
+    `rewrite_overview_blocks` finds it by once the page is rendered."""
+    try:
+        text = shared_blocks(README.read_text(encoding="utf-8"))[block.name]
+    except ValueError as error:
+        raise SystemExit(f"{repo_links.README}: {error}") from None
+    return f"{block.opened}\n\n{text}\n\n{block.closed}"
 
 
 def overview_intro() -> str:
-    """README's introduction as the overview's Markdown, between the two comments
-    `rewrite_overview_intro` finds it by once the page is rendered."""
-    try:
-        block = intro_block(README.read_text(encoding="utf-8"))
-    except ValueError as error:
-        raise SystemExit(f"{repo_links.README}: {error}") from None
-    return f"{OVERVIEW_INTRO_OPEN}\n\n{block}\n\n{OVERVIEW_INTRO_CLOSE}"
+    """README's first paragraph as the Markdown of the overview's first section."""
+    return _overview_block(INTRO)
+
+
+def overview_progress() -> str:
+    """README's coverage and newest-result paragraphs as the Markdown that opens the
+    overview's Recent Results."""
+    return _overview_block(PROGRESS)
 
 
 _CASE_FILE = re.compile(r"packing/frontier/n-(\d{3})\.md")
@@ -353,20 +437,21 @@ def _result_rows(markup: str) -> str:
     return _RESULT_LINK.sub(row, markup)
 
 
-def rewrite_overview_intro(page: str) -> str:
-    """The rendered overview with the links of README's introduction made to work there.
+def rewrite_overview_blocks(page: str) -> str:
+    """The rendered overview with the links of README's shared blocks made to work there.
 
-    The block is written for GitHub, so its links are repository paths. Each becomes the
-    site's own page for what it names where the site has one: a result's row in the
+    The blocks are written for GitHub, so their links are repository paths. Each becomes
+    the site's own page for what it names where the site has one: a result's row in the
     results table, the results table for the register, the frontier atlas for the status
     table, a case's record for its case file, and a reader document's page. Any other
     path becomes its link on `main`, checked against the tree, as on a document's page.
-    Nothing outside the block is rewritten.
+    Nothing outside the blocks is rewritten.
     """
-    if page.count(OVERVIEW_INTRO_OPEN) != 1 or page.count(OVERVIEW_INTRO_CLOSE) != 1:
-        raise SystemExit("index.html: README's introduction is not marked in the page")
-    head, _, rest = page.partition(OVERVIEW_INTRO_OPEN)
-    body, _, tail = rest.partition(OVERVIEW_INTRO_CLOSE)
+    for block in SHARED_BLOCKS:
+        if page.count(block.opened) != 1 or page.count(block.closed) != 1:
+            raise SystemExit(
+                f"index.html: README's {block.name} block is not marked in the page"
+            )
     tree = repository_tree()
     cases = {
         path: f"cases.html#n-{int(match.group(1))}"
@@ -384,16 +469,20 @@ def rewrite_overview_intro(page: str) -> str:
         },
     )
     report = LinkReport()
-    body = rewrite_links(_result_rows(body), context=context, report=report)
+    for block in SHARED_BLOCKS:
+        head, _, rest = page.partition(block.opened)
+        body, _, tail = rest.partition(block.closed)
+        body = rewrite_links(_result_rows(body), context=context, report=report)
+        page = head + block.opened + body + block.closed + tail
     # An anchor into a reader document is checked against that document's page, which
-    # is rendered only when the block has such a link.
+    # is rendered only when a block has such a link.
     problems = unresolved(site_documents() if report.anchors else {}, report)
     if problems:
         listing = "\n  ".join(problems)
         raise SystemExit(
             f"{len(problems)} unresolved links in README's introduction:\n  {listing}"
         )
-    return head + OVERVIEW_INTRO_OPEN + body + OVERVIEW_INTRO_CLOSE + tail
+    return page
 
 
 @cache

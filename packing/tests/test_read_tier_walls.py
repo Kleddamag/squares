@@ -45,6 +45,38 @@ def budget_only_failure() -> str:
     )
 
 
+def advisory_verdict() -> str:
+    """The excerpt as a run whose stale finding was advisory on a pull request."""
+    return (
+        excerpt()
+        .replace(
+            "note: no cost is recorded",
+            "FAIL (advisory, not enforced): the checks tier ran 135.7s against a recorded "
+            "250s, which is 0.54x. The record is stale in the flattering direction\n"
+            "2026-09-15T16:48:26.9922197Z   enforcement: the drift and stale rules are "
+            "advisory on pull requests under think-aaaa: a reason. Only the ceiling fails a "
+            "pull-request run.\n"
+            "2026-09-15T16:48:26.9922197Z   note: no cost is recorded",
+        )
+        .replace(
+            "49 of 74 STEPS PASSED (a named tier; this is not the full gate)",
+            "THE TIER IS OUTSIDE ITS RECORDED BAND (advisory, not enforced under think-aaaa):\n"
+            "  - the checks tier ran 135.7s against a recorded 250s, which is 0.54x\n"
+            "49 of 74 STEPS PASSED (a named tier; this is not the full gate)",
+        )
+    )
+
+
+def test_an_advisory_finding_is_still_a_reading_at_the_reference_shape() -> None:
+    """A run whose drift or stale finding was advisory passed at the reference shape, so
+    its wall is a reading the mean counts: the band was enforced and the run was judged,
+    only the relative verdict was not what failed it."""
+    (reading,) = parse_log(advisory_verdict())
+    assert reading.enforced
+    assert not reading.budget_only_failure
+    assert reading.wall_seconds == 135.71
+
+
 def test_the_tier_and_its_wall_are_read_from_the_log() -> None:
     """The tier comes from the command, not from the job's name.
 

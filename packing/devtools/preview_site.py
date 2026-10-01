@@ -12,14 +12,18 @@ Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.preview_site
     uv run --frozen --all-extras --group dev python -m devtools.preview_site --serve
     uv run --frozen --all-extras --group dev python -m devtools.preview_site --shots DIR
+    uv run --frozen --all-extras --group dev python -m devtools.preview_site --clips
 
 `--skip explainer`, `--skip workbench` or `--skip optimality` leaves a slow build out;
 a link to it then points at a missing page, which the link check reports rather than
 fails on, and a build already in `--output` stays. `--page` shoots only the pages it
 names, each with any fragment (`cases.html#n-11` is one case's record), and `--press`
 names an element to press on each page that has one (a card, an atlas cell), so what it
-opens is checked and shot too. Set `SQPACK_CHROMIUM` to use a browser the environment
-supplies, as the explainer's own tools do.
+opens is checked and shot too. Every page is also laid out at `CLIP_WIDTHS`, with and
+without a scrollbar's width taken from the layout, and fails where a table, a filter
+bar, a count or any other wide block runs past an ancestor that clips or scrolls
+sideways. Set `SQPACK_CHROMIUM` to use a browser the environment supplies, as the
+explainer's own tools do.
 """
 
 from __future__ import annotations
@@ -59,6 +63,16 @@ MATH_FACE = probe(PROBES, "preview_site/math_face")
 _SCROLL_TOP = probe(PROBES, "preview_site/scroll_top")
 _AT_FOOT = probe(PROBES, "preview_site/at_foot")
 _CARDS = probe(PROBES, "measure_site_pages/cards")
+CLIPPED = probe(PROBES, "preview_site/clipped")
+#: The widths every page is laid out at to look for a clipped wide block, beside the
+#: two it is shot at: a tablet upright and on its side, where a narrow page clips at the
+#: document's edge and a wide block has no room to spare.
+CLIP_WIDTHS = (1024, 768)
+#: A classic scrollbar's width, taken from the layout but not from the window: `100vw`
+#: and a media query still see the whole window, which is what a block sized from the
+#: window gets wrong. A headless browser draws its scrollbar over the page, so the check
+#: narrows the page by this much itself.
+SCROLLBAR_PX = 15
 #: How far, in CSS pixels, a row of cards may sit off the centre of its line.
 CENTRE_TOLERANCE = 1.0
 #: How long a page may take to typeset all its math before it is shot as it stands. The
@@ -186,6 +200,56 @@ def off_centre(sections: list[dict[str, Any]]) -> list[str]:
     ]
 
 
+def clipped(page: Page) -> list[str]:
+    """Every wide block on the page as it stands that runs past an ancestor which clips
+    or scrolls sideways, as laid out now and again with a scrollbar's width taken from
+    the layout; each named once, with how far it runs past either side."""
+    problems: list[str] = []
+    for scrollbar in (0, SCROLLBAR_PX):
+        for found in page.evaluate(CLIPPED, {"scrollbar": scrollbar}):
+            problem = clip_problem(found, scrollbar=scrollbar)
+            if problem not in problems:
+                problems.append(problem)
+    return problems
+
+
+def clip_problem(found: dict[str, Any], *, scrollbar: int = 0) -> str:
+    """One clipped block, as the probe reports it, in words."""
+    sides = " and ".join(
+        f"{found[side]:g}px past its {side} edge" for side in ("left", "right") if found[side]
+    )
+    under = f", with a {scrollbar}px scrollbar" if scrollbar else ""
+    return f"{found['block']} runs {sides} of {found['frame']}, which clips it{under}"
+
+
+def clip_check(
+    output: Path, port: int, pages: Sequence[str], widths: Sequence[int] = CLIP_WIDTHS
+) -> list[str]:
+    """Every clipped wide block on every built page at each of `widths`. A page is only
+    laid out here, not walked or shot, since a block's box does not wait on its math."""
+    from playwright.sync_api import sync_playwright  # noqa: PLC0415
+
+    errors: list[str] = []
+    server = serve(output, port)
+    try:
+        with sync_playwright() as driver:
+            browser = driver.chromium.launch(executable_path=os.environ.get(BROWSER_OVERRIDE))
+            for name in pages:
+                if not (output / name.partition("#")[0]).is_file():
+                    continue
+                for width in widths:
+                    page = browser.new_page(viewport={"width": width, "height": 900})
+                    page.goto(f"http://127.0.0.1:{port}/{name}", wait_until="load")
+                    page.wait_for_timeout(200)
+                    errors.extend(f"{name} @{width}: {problem}" for problem in clipped(page))
+                    page.close()
+            browser.close()
+    finally:
+        server.shutdown()
+        server.server_close()
+    return errors
+
+
 def settle_math(page: Page) -> int:
     """Scroll the page through once, a screen at a time, to its foot, and on until every
     formula is typeset, then return to the top; returns how many were still untypeset
@@ -232,9 +296,10 @@ def screenshots(
 ) -> list[str]:
     """A full-page screenshot of every built page at each width, with what went wrong:
     console errors, math left untypeset or set in the other face from its text, a row of
-    cards off the centre of its line, and any page wider than its viewport. Each
-    selector in `presses` is then pressed on every page that has a match, its math checked
-    the same way, and the window shot as `<page>-<width>-press<n>.png`."""
+    cards off the centre of its line, any page wider than its viewport, and any wide
+    block that runs past an ancestor which clips it (`clipped`). Each selector in
+    `presses` is then pressed on every page that has a match, its math and its blocks
+    checked the same way, and the window shot as `<page>-<width>-press<n>.png`."""
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
     shots.mkdir(parents=True, exist_ok=True)
@@ -269,6 +334,8 @@ def screenshots(
                     overflow = page.evaluate(_OVERFLOW)
                     if overflow > 0:
                         errors.append(f"{name} @{width}: {overflow}px wider than the viewport")
+                    cut = clipped(page)
+                    errors.extend(f"{name} @{width}: {problem}" for problem in cut)
                     stem = shot_stem(name)
                     target = shots / f"{stem}-{width}.png"
                     page.screenshot(path=str(target), full_page=True)
@@ -281,6 +348,11 @@ def screenshots(
                             for mismatch in press(page, selector)
                             if mismatch not in faces
                         )
+                        errors.extend(
+                            f"{name} @{width}, {selector} pressed: {problem}"
+                            for problem in clipped(page)
+                            if problem not in cut
+                        )
                         target = shots / f"{stem}-{width}-press{index}.png"
                         page.screenshot(path=str(target))
                         print(f"shot {target}")
@@ -289,6 +361,7 @@ def screenshots(
             browser.close()
     finally:
         server.shutdown()
+        server.server_close()
     return errors
 
 
@@ -310,7 +383,7 @@ def main(argv: list[str] | None = None) -> int:
         action="append",
         type=_site_page,
         metavar="PAGE",
-        help="with --shots: shoot only this page, with any #fragment; repeatable",
+        help="with --shots or --clips: only this page, with any #fragment; repeatable",
     )
     parser.add_argument(
         "--press",
@@ -319,6 +392,12 @@ def main(argv: list[str] | None = None) -> int:
         metavar="SELECTOR",
         help="with --shots: press the first element this CSS selector matches on each page "
         "that has one, then check and shoot what it opens; repeatable",
+    )
+    parser.add_argument(
+        "--clips",
+        action="store_true",
+        help="lay every page out at 1024, 768 and 390 pixels and report each wide block an "
+        "ancestor clips, without shooting anything; --page narrows it",
     )
     parser.add_argument("--serve", action="store_true", help="serve the site until stopped")
     parser.add_argument("--port", type=int, default=8765)
@@ -333,7 +412,14 @@ def main(argv: list[str] | None = None) -> int:
         print(f"missing: {problem}", file=sys.stderr)
     if args.shots:
         pages = tuple(args.page or render_overview.SITE_PAGES)
-        for error in screenshots(output, args.shots.resolve(), args.port, pages, args.press):
+        problems = screenshots(output, args.shots.resolve(), args.port, pages, args.press)
+        problems += clip_check(output, args.port, pages)
+        for error in problems:
+            print(f"problem: {error}", file=sys.stderr)
+            status = 1
+    if args.clips:
+        pages = tuple(args.page or render_overview.SITE_PAGES)
+        for error in clip_check(output, args.port, pages, (*CLIP_WIDTHS, WIDTHS[-1])):
             print(f"problem: {error}", file=sys.stderr)
             status = 1
     if args.serve:

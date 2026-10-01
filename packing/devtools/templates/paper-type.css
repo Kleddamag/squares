@@ -30,14 +30,30 @@
   --kpress-font-size-h2: calc(var(--kpress-font-size-base) * 1.2);
 }
 
-/* The space above a section heading (`h2`), on every page: 1.8 of the base on screen.
-   Print keeps the paper's 2.8, so the explainer's PDF paginates as before. */
+/* The space around a section heading (`h2`), on every page: 2.7 of the base above it on
+   screen and 1.7rem below it, to the section's first block. Print keeps the paper's 2.8
+   above and 1.3rem below, so the explainer's PDF paginates as before. */
 .kpress {
-  --paper-section-space: calc(var(--kpress-font-size-base) * 1.8);
+  --paper-section-space: calc(var(--kpress-font-size-base) * 2.7);
+  --paper-section-space-below: 1.7rem;
 }
 @media print {
   .kpress {
     --paper-section-space: calc(var(--kpress-font-size-base) * 2.8);
+    --paper-section-space-below: 1.3rem;
+  }
+}
+
+/* The leading of every heading, on every page: 1.15 on screen, tighter than KPress's 1.2,
+   so a heading that wraps reads as one block. A card's headline, a popover's and a page's
+   subtitle read the same token (site.css). The explainer's hero title keeps KPress's own
+   1.05. Print keeps KPress's leading, so the explainer's PDF paginates as before. */
+:root {
+  --paper-heading-leading: 1.15;
+}
+@media screen {
+  .kpress-prose :is(h1, h2, h3, h4, h5, h6) {
+    line-height: var(--paper-heading-leading);
   }
 }
 

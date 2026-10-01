@@ -8,7 +8,7 @@
   <span class="credits-review">Human oversight: <a href="https://x.com/ojoshe"><strong>Joshua Levy</strong></a></span>
   <span>Agents: <strong>GPT-6 Astra</strong> and <strong>GPT-6 Sol</strong></span>
   <span>Draft v0.1.0</span>
-  <span class="publication-date">Original proof September 29, 2026 · This review revised September 30, 2026</span>
+  <span class="publication-date">Original proof September 29, 2026 · This review revised October 1, 2026</span>
 </div>
 
 </div>

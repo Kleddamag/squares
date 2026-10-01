@@ -206,7 +206,7 @@ of each `python -m` and `squares-workbench-*` command below.
    version is fixed before capture, never after.
    New data does not move it by itself: the stamp’s data revision names the data, and
    the version names an edition the owner cuts, at most one per merge, by
-   [Cutting an edition](../../development.md#publishing-the-explainer).
+   [Cutting an edition](../../development.md#cutting-an-edition).
    Ask the owner whether this re-cut goes out under the current version or a new one.
    A new one is cut and merged in its own pull request, and this procedure then starts
    from that merge.

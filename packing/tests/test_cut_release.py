@@ -1,0 +1,168 @@
+"""A version bump is one command: it names the edition, redraws, checks, and stops there.
+
+The bump is when the large generated assets are rebuilt (the owner, 2026-10-01). What is
+pinned here is the one edit the command makes by hand -- a new edition at the front of
+`release.py`'s history, written as the formatter leaves one -- its refusals, and that it
+changes nothing until the tree is clean and the pin is current. The redraw and the
+checks it then runs are other modules' commands, with tests of their own.
+"""
+
+from __future__ import annotations
+
+import subprocess
+import sys
+from pathlib import Path
+
+import pytest
+
+from devtools import build_known_best_atlas, cut_release, release_pin
+from sqpack import release
+
+PACKING = Path(__file__).resolve().parents[1]
+SOURCE = release_pin.RELEASE.read_text(encoding="utf-8")
+LONG = (
+    "The atlas edition: the posters state the data they were drawn from, the site's "
+    "pages carry one footer, and $s(11) = 3.8770835…$ is recorded as proved optimal."
+)
+
+
+def _module(text: str) -> dict[str, object]:
+    namespace: dict[str, object] = {"__name__": "scratch_release"}
+    exec(compile(text, "release.py", "exec"), namespace)
+    return namespace
+
+
+def _next() -> str:
+    major, minor, patch = cut_release.parsed(release.PUBLICATION_VERSION)
+    return f"v{major}.{minor + 1}.0" if patch else f"v{major}.{minor}.{patch + 1}"
+
+
+@pytest.mark.parametrize("scope", [LONG, "A short edition."])
+def test_a_bump_adds_the_edition_at_the_front_and_moves_nothing_else(scope: str) -> None:
+    """One entry more, newest first; the claim documents' revision; the data pin untouched."""
+    version = _next()
+    bumped = cut_release.with_edition(
+        SOURCE,
+        version=version,
+        first_published="October 2, 2026",
+        scope=scope,
+        revision="0123abcd",
+    )
+    module = _module(bumped)
+    history = module["PUBLICATION_HISTORY"]
+    assert isinstance(history, tuple)
+    assert len(history) == len(release.PUBLICATION_HISTORY) + 1
+    assert tuple(history[0]) == (version, "October 2, 2026", scope)
+    assert [tuple(entry) for entry in history[1:]] == [
+        tuple(entry) for entry in release.PUBLICATION_HISTORY
+    ]
+    assert module["PUBLICATION_VERSION"] == version
+    assert module["PUBLICATION_DATE"] == "October 2, 2026"
+    assert module["FIRST_PUBLISHED"] == release.FIRST_PUBLISHED
+    assert module["PUBLICATION_REVISION"] == "0123abcd"
+    assert module["DATA_REVISION"] == release.DATA_REVISION
+    assert module["PUBLICATION_EDITION"] == (
+        f"{version}-{release.DATA_REVISION[: release.DATA_REVISION_LENGTH]}"
+    )
+
+    # The lint floor formats every tracked Python file, so the edit has to be written
+    # the way the formatter writes it, or a bump would fail the gate on its own output.
+    formatted = subprocess.run(
+        (sys.executable, "-m", "ruff", "format", "--check", "--stdin-filename", "release.py"),
+        input=bumped,
+        capture_output=True,
+        text=True,
+        cwd=PACKING,
+        check=False,
+    )
+    assert formatted.returncode == 0, formatted.stdout + formatted.stderr
+
+
+@pytest.mark.parametrize(
+    ("change", "refusal"),
+    [
+        ({"version": release.PUBLICATION_VERSION}, "is not after the current edition"),
+        ({"version": "v0.1.0"}, "is not after the current edition"),
+        ({"version": "0.5.0"}, "is not a version"),
+        ({"version": "v0.5"}, "is not a version"),
+        ({"first_published": "2026-10-02"}, "does not match format"),
+        ({"scope": "No full stop"}, "one trimmed sentence"),
+        ({"scope": " Padded. "}, "one trimmed sentence"),
+        ({"scope": "Two\nlines."}, "one trimmed sentence"),
+        ({"revision": "HEAD"}, "is not a commit"),
+    ],
+)
+def test_a_bump_that_is_not_one_is_refused(change: dict[str, str], refusal: str) -> None:
+    arguments = {
+        "version": _next(),
+        "first_published": "October 2, 2026",
+        "scope": "A short edition.",
+        "revision": "0123abcd",
+    } | change
+    with pytest.raises(ValueError, match=refusal):
+        cut_release.with_edition(SOURCE, **arguments)
+
+
+def test_the_steps_are_commands_that_exist() -> None:
+    """Each step names a module's own command, so a renamed option fails here first."""
+    plan = cut_release.steps("v9.9.9")
+    atlas_steps = [command for _what, command in plan if command[0].endswith("atlas")]
+    assert [command[1:] for command in atlas_steps] == [
+        ("--update-composites",),
+        ("--check-composites",),
+    ]
+    for command in atlas_steps:
+        build_known_best_atlas.parser().parse_args(list(command[1:]))
+    assert all((PACKING / test).is_file() for test in cut_release.TESTS)
+    assert [command[0] for _what, command in plan] == [
+        "devtools.build_known_best_atlas",
+        "devtools.render_verifiable_claim",
+        "devtools.build_known_best_atlas",
+        "pytest",
+    ]
+
+
+def test_a_dry_run_prints_the_plan_and_changes_nothing(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """The whole plan, and what is left for the owner, without touching the tree."""
+    answers = {("rev-parse", "--short=8", "HEAD"): "0123abcd", ("status", "--porcelain"): ""}
+    monkeypatch.setattr(cut_release, "_git", lambda *arguments: answers[arguments])
+    monkeypatch.setattr(release_pin, "check", lambda _repo, _source: 0)
+    version = _next()
+    status = cut_release.main(
+        [version, "--scope", "A short edition.", "--date", "October 2, 2026", "--dry-run"]
+    )
+    printed = capsys.readouterr().out
+    assert status == 0
+    assert f"{release.PUBLICATION_VERSION} -> {version}, first published October 2, 2026" in (
+        printed
+    )
+    assert "python -m devtools.build_known_best_atlas --update-composites" in printed
+    assert "dry run: nothing was changed" in printed
+    assert f"git tag {version} <merge commit>" in printed
+    assert f"gh release create {version}" in printed
+    assert release_pin.RELEASE.read_text(encoding="utf-8") == SOURCE
+
+
+@pytest.mark.parametrize(
+    ("dirty", "pin", "refusal"),
+    [
+        (" M packing/frontier/n-017.md", 0, "the working tree is not clean"),
+        ("", 1, "the pinned data revision is stale"),
+    ],
+)
+def test_a_bump_starts_only_from_a_clean_tree_and_a_current_pin(
+    dirty: str,
+    pin: int,
+    refusal: str,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    """A poster drawn over uncommitted data, or under a stale pin, would be stamped wrong."""
+    answers = {("rev-parse", "--short=8", "HEAD"): "0123abcd", ("status", "--porcelain"): dirty}
+    monkeypatch.setattr(cut_release, "_git", lambda *arguments: answers[arguments])
+    monkeypatch.setattr(release_pin, "check", lambda _repo, _source: pin)
+    assert cut_release.main([_next(), "--scope", "A short edition."]) == 1
+    assert refusal in capsys.readouterr().err
+    assert release_pin.RELEASE.read_text(encoding="utf-8") == SOURCE

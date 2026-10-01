@@ -21,9 +21,16 @@ the last deploy built from once `git fetch` has run. One line per check, `ok` or
   page links on `main` exists in the expected commit's tree, which is `main` when the
   deploy runs, and each link on the explainer, its Markdown edition, the overview and
   the frontier atlas is also asked of GitHub;
+- every result overview the results table's rows name (`data-row-pop-src`) is served
+  beside the pages and is that result's, and the overviews' repository links pass the
+  same two checks against the tree;
 - the Markdown edition, the PDF and the composite assets are served beside the page,
   and the PDF is a PDF with the expected page count and a source receipt matching
   the exact HTML bytes the site serves;
+- the optimality paper, which the Papers page's first card opens, is served where that
+  card points, with its landing address, Markdown and PDF, and its bar marks Papers as
+  the current section. Its own Pages job builds and checks its content, and its
+  citations name the commit it was built from by design, so they are not held to `main`;
 - the workbench names the expected source commit, starts its public API in the pinned
   browser, and links back to this project's root rather than the account site's root.
 
@@ -49,6 +56,7 @@ from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
 from devtools import render_overview
+from devtools.overview_sections import OPTIMALITY_PAPER, result_fragment
 from devtools.render_explainer import (
     COMPOSITE_ASSETS,
     MARKDOWN_OUTPUT,
@@ -75,6 +83,10 @@ PROBES = Path(__file__).resolve().parent / "probes"
 #: `blob/` for a file and `tree/` for a directory.
 REPOSITORY_LINK = re.compile(re.escape(REPO_URL) + r"/(blob|tree)/([^/\s\"<>)]+)/([^\s\"<>)]*)")
 CANONICAL = re.compile(r'<link\s+rel="canonical"\s+href="([^"]*)"')
+#: The fuller body a row's popover fetches, as its address beside the page, and how a
+#: result's overview opens: the one block it is, naming its result.
+ROW_SOURCE = re.compile(r'data-row-pop-src="([^"]+)"')
+RESULT_OVERVIEW = re.compile(r'\A<div class="site-result" data-result-overview="(t-\d{3})">')
 
 #: Where the explainer is served. It is built as `index.html` and renamed when the site
 #: is assembled, because the root is the overview's.
@@ -90,6 +102,17 @@ SITE_PAGES = tuple(render_overview.PAGES)
 #: on every deploy. The results page is one, since its records are the register's links
 #: and were asked of GitHub when the table was on the overview.
 LINK_CHECKED_PAGES = frozenset({"index.html", "frontier.html", render_overview.RESULTS_PAGE})
+
+#: The optimality paper's page, by path under the site's root, and what is served with
+#: it: its directory's landing address, its Markdown and its PDF. The path is the one the
+#: Papers card links (`overview_sections.OPTIMALITY_PAPER`).
+OPTIMALITY_PAPER_FILES = (
+    f"{OPTIMALITY_PAPER.rsplit('/', 1)[0]}/",
+    f"{OPTIMALITY_PAPER.removesuffix('.html')}.md",
+    f"{OPTIMALITY_PAPER.removesuffix('.html')}.pdf",
+)
+#: The bar's current entry on that page, a level below the root.
+PAPERS_CURRENT = '<a data-page="papers" aria-current="page" href="../papers.html">'
 
 #: Every file the deploy serves beside the explainer, by name.
 SERVED = (
@@ -276,12 +299,40 @@ def check(
         )
 
     checked_links: set[tuple[str, str, str]] = set()
+    overviews: list[str] = []
     for name in SITE_PAGES:
         url = site if name == "index.html" else site + name
         _, text = served_page(name, url, render_overview.canonical_url(name))
         links_main(name, text)
         if name in LINK_CHECKED_PAGES:
             checked_links |= repository_links(text)
+        if name == render_overview.RESULTS_PAGE:
+            overviews = sorted(set(ROW_SOURCE.findall(text)))
+
+    # The result overviews are files beside the pages, fetched when a row is opened: a
+    # deploy that lost one would show only as a popover that keeps its short detail.
+    results.append(
+        (
+            bool(overviews),
+            f"{render_overview.RESULTS_PAGE} names {len(overviews)} result overviews",
+        )
+    )
+    bodies = []
+    for address in overviews:
+        status, body = fetch(site + address, timeout=timeout)
+        fragment = body.decode("utf-8", errors="replace")
+        found = RESULT_OVERVIEW.match(fragment)
+        holds = None if found is None else result_fragment(found.group(1))
+        results.append(
+            (
+                status == 200 and holds == address,
+                f"result overview {address}: HTTP {status}, {len(body)} bytes"
+                + ("" if holds == address else f", but it is {holds!r}"),
+            )
+        )
+        bodies.append(fragment)
+    if bodies:
+        links_main("the result overviews", "\n".join(bodies))
 
     # The explainer's bytes are what the PDF's source receipt names, so they are kept whole.
     page, text = served_page(EXPLAINER, site + EXPLAINER, PAGE_URL)
@@ -321,6 +372,15 @@ def check(
                 else "missing, malformed, or mismatched"
             )
         results.append((ok, line))
+
+    status, paper = fetch(site + OPTIMALITY_PAPER, timeout=timeout)
+    current = PAPERS_CURRENT in paper.decode("utf-8", errors="replace")
+    marked = f"Papers is {'' if current else 'not '}the bar's current entry"
+    line = f"optimality paper {OPTIMALITY_PAPER}: HTTP {status}, {len(paper)} bytes, {marked}"
+    results.append((status == 200 and current, line))
+    for name in OPTIMALITY_PAPER_FILES:
+        status, _ = fetch(site + name, head=True, timeout=timeout)
+        results.append((status == 200, f"served {name}: HTTP {status}"))
 
     workbench_url = site + WORKBENCH_PATH
     status, workbench = fetch(workbench_url, timeout=timeout)

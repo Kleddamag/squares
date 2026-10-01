@@ -75,7 +75,7 @@ def browser_check_jobs(jobs: Mapping[str, Mapping[str, Any]]) -> list[str]:
     return [
         name
         for name, job in jobs.items()
-        if name not in {"prepare", *DEPLOY_PATH}
+        if name not in {"prepare", "optimality", *DEPLOY_PATH}
         and any("playwright install" in step.get("run", "") for step in job.get("steps", []))
     ]
 
@@ -151,7 +151,7 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
     workflow = load()
     jobs = workflow["jobs"]
     scope = jobs["scope"]
-    halves = ("explainer", "workbench", "overview")
+    halves = ("explainer", "workbench", "overview", "optimality")
     assert set(scope["outputs"]) == {
         name for half in halves for name in (half, f"{half}_reason")
     }
@@ -177,6 +177,7 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
         "explainer": {"prepare", *OVERLAPPED_PREPARED_PAGE_JOBS},
         "workbench": {"workbench"},
         "overview": {"overview"},
+        "optimality": {"optimality"},
     }
     for half, roots in gated.items():
         assert all(needs_of(jobs[root]) == ["scope"] for root in roots)
@@ -191,11 +192,12 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
         (step,) = notice["steps"]
         assert step["env"]["REASON"] == f"${{{{ needs.scope.outputs.{half}_reason }}}}"
         assert step["run"].splitlines()[0] == 'test -n "$REASON"'
-        assert half in step["run"]
+        assert ("T-060" if half == "optimality" else half) in step["run"]
         assert "not built" in step["run"]
 
     builders = (
-        r"python -m (devtools\.render_(?:explainer|overview)|workbench_tools\.build_site)\b"
+        r"python -m (devtools\.render_(?:explainer|overview|n11_optimality_explainer)"
+        r"|workbench_tools\.build_site)\b"
     )
     for name, job in jobs.items():
         commands = "\n".join(step.get("run", "") for step in job.get("steps", []))
@@ -205,9 +207,11 @@ def test_every_pull_request_job_is_scoped_to_its_page_or_says_why() -> None:
                 "needs.scope.outputs.explainer == 'true'",
                 "needs.scope.outputs.workbench == 'true'",
                 "needs.scope.outputs.overview == 'true'",
+                "needs.scope.outputs.optimality == 'true'",
             }
             assert (
-                upstream(jobs, name) & {"prepare", "workbench", "overview"} or directly_scoped
+                upstream(jobs, name) & {"prepare", "workbench", "overview", "optimality"}
+                or directly_scoped
             ), f"{name} does page work on a pull request without waiting for the scope"
 
 
@@ -230,8 +234,12 @@ def test_the_required_aggregate_passes_a_justified_skip_and_nothing_else() -> No
     assert step["env"]["NEEDS"] == "${{ toJSON(needs) }}"
     program = step["run"]
     assert '.scope.result == "success"' in program
-    decisions = "[.scope.outputs.explainer, .scope.outputs.workbench, .scope.outputs.overview]"
+    decisions = (
+        "[.scope.outputs.explainer, .scope.outputs.workbench, .scope.outputs.overview, "
+        ".scope.outputs.optimality]"
+    )
     assert f'{decisions} | all(. == "true" or . == "false")' in program
+    assert '(.scope.outputs.optimality != "true" or .optimality.result == "success")' in program
     assert '[.[].result] | all(. == "success" or . == "skipped")' in program
     assert "jq -e" in program
     assert set(needs_of(jobs["deploy"])) == {"publish", "pages-required"}
@@ -627,15 +635,16 @@ def test_live_verification_waits_for_the_exact_deployed_revision() -> None:
 
 
 def test_publication_assembles_the_checked_products_and_only_main_uploads_it() -> None:
-    """What `build` uploaded from one directory is now four artifacts put back together.
+    """What `build` uploaded from one directory is now five artifacts put back together.
 
     The prepared page renamed to `explainer.html`, the checked PDF beside it, the site's
-    own pages at the root, the workbench under `/workbench/`; the only upload to Pages is
-    a push to `main`.
+    own pages at the root, the workbench under `/workbench/`, and T-060 under
+    `/n11-optimality/` share one published tree; the only upload to Pages is a push to
+    `main`.
     """
     jobs = load()["jobs"]
     publish = jobs["publish"]
-    assert set(needs_of(publish)) == {"prepare", "pdf", "overview", "workbench"}
+    assert set(needs_of(publish)) == {"prepare", "pdf", "overview", "workbench", "optimality"}
     steps = publish["steps"]
     assert steps[0]["name"] == ARTIFACT_ID_GUARD
     assert steps[0]["env"] == {
@@ -655,6 +664,7 @@ def test_publication_assembles_the_checked_products_and_only_main_uploads_it() -
         {"name": "explainer-pdf", "path": "packing/site"},
         {"name": "overview-pages", "path": "${{ runner.temp }}/overview-pages"},
         {"name": "workbench-page", "path": "packing/site/workbench"},
+        {"name": "n11-optimality-page", "path": "packing/site/n11-optimality"},
     ]
     prepare = jobs["prepare"]
     assert prepare["outputs"] == {
@@ -674,6 +684,7 @@ def test_publication_assembles_the_checked_products_and_only_main_uploads_it() -
     assert produced["explainer-pdf"] == ("pdf", "packing/site/t-018-explainer.pdf")
     assert produced["workbench-page"] == ("workbench", "packing/site/workbench")
     assert produced["overview-pages"] == ("overview", "packing/site")
+    assert produced["n11-optimality-page"] == ("optimality", "packing/site/n11-optimality")
     (upload,) = [
         step
         for step in steps
@@ -859,17 +870,22 @@ def pull_request_outcomes(decision: Mapping[str, bool]) -> dict[str, str]:
 
 
 def test_every_scope_decision_passes_the_aggregate_and_builds_its_pages() -> None:
-    """Eight decisions, from nothing in scope to everything, on a pull request.
+    """Sixteen decisions, from nothing in scope to everything, on a pull request.
 
     Each build runs exactly when its page is in scope and says why when it is not; the
     assembly runs only for a whole site, which is every push to `main`; and the required
     aggregate, which sees a skip as a pass only because its scope decided it, passes all
-    eight. A pull request that changes only the overview's inputs builds the overview and
-    nothing else.
+    sixteen. A pull request that changes only the overview's inputs builds the overview
+    and nothing else.
     """
     halves = tuple(BUILDER_INPUTS)
-    assert halves == ("explainer", "workbench", "overview")
-    builds = {"explainer": "prepare", "workbench": "workbench", "overview": "overview"}
+    assert halves == ("explainer", "workbench", "overview", "optimality")
+    builds = {
+        "explainer": "prepare",
+        "workbench": "workbench",
+        "overview": "overview",
+        "optimality": "optimality",
+    }
     jq = shutil.which("jq")
     program = next(
         step["run"]
@@ -902,7 +918,7 @@ def test_every_scope_decision_passes_the_aggregate_and_builds_its_pages() -> Non
             )
             assert passed.returncode == 0, (decision, passed)
     only_overview = pull_request_outcomes(
-        {"explainer": False, "workbench": False, "overview": True}
+        {"explainer": False, "workbench": False, "overview": True, "optimality": False}
     )
     ran = {name for name, result in only_overview.items() if result == "success"}
     assert "startup-timing" in only_overview, "dispatch-only jobs are modelled as skips"
@@ -911,6 +927,7 @@ def test_every_scope_decision_passes_the_aggregate_and_builds_its_pages() -> Non
         "overview",
         "explainer-unchanged",
         "workbench-unchanged",
+        "optimality-unchanged",
         "pages-required",
     }
 
@@ -1279,6 +1296,8 @@ def test_the_partial_checkouts_keep_the_directories_the_render_links() -> None:
     """
     jobs = load()["jobs"]
     patterns = "/*\n!/packing/resources/*/\n!/packing/campaign/*/\n"
+    packet = REPO / "packing/resources/web/n11-optimality-2026-09-29"
+    optimality_patterns = patterns + "/packing/resources/web/n11-optimality-2026-09-29/\n"
     sparse = []
     for name, job in jobs.items():
         for step in job.get("steps", []):
@@ -1294,19 +1313,27 @@ def test_the_partial_checkouts_keep_the_directories_the_render_links() -> None:
                     assert settings["sparse-checkout-cone-mode"] is False, name
                     assert settings["filter"] == "blob:none", name
                     continue
-                assert settings["sparse-checkout"] == patterns, name
+                expected_patterns = optimality_patterns if name == "optimality" else patterns
+                assert settings["sparse-checkout"] == expected_patterns, name
                 assert settings["sparse-checkout-cone-mode"] is False, name
                 assert settings["filter"] == "blob:none", name
                 sparse.append(name)
-    assert {"scope", "prepare", "workbench", "overview", *browser_check_jobs(jobs)} <= set(
-        sparse
-    )
+    assert {
+        "scope",
+        "prepare",
+        "workbench",
+        "overview",
+        "optimality",
+        *browser_check_jobs(jobs),
+    } <= set(sparse)
     omitted_roots = (REPO / "packing/resources", REPO / "packing/campaign")
     for half, builder in BUILDER_INPUTS.items():
         omitted = []
         for declared in builder():
             for root in omitted_roots:
                 if declared.is_relative_to(root):
+                    if half == "optimality" and declared.is_relative_to(packet):
+                        continue
                     relative = declared.relative_to(root)
                     if relative.parts and (root / relative.parts[0]).is_dir():
                         omitted.append(declared.relative_to(REPO).as_posix())

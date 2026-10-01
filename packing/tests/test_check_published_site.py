@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import hashlib
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from pathlib import Path
 
 import pytest
@@ -13,6 +13,9 @@ from devtools import render_explainer_pdf as pdf
 from devtools.check_published_site import (
     EXPLAINER,
     LINK_CHECKED_PAGES,
+    OPTIMALITY_PAPER,
+    OPTIMALITY_PAPER_FILES,
+    PAPERS_CURRENT,
     SERVED,
     SITE_PAGES,
     WORKBENCH_HOME,
@@ -72,14 +75,42 @@ def page(
     ).encode()
 
 
+#: The result overviews the fixture's results table names, by address beside the pages.
+OVERVIEWS = ("result/t-001.html", "result/t-002.html")
+
+
+def result_overview(
+    result_id: str, *, ref: str = DEFAULT_BRANCH, link: str = "README.md"
+) -> bytes:
+    """A result's overview as it is served: the one block, with a repository link."""
+    return (
+        f'<div class="site-result" data-result-overview="{result_id}">'
+        f'<a href="{REPO_URL}/blob/{ref}/{link}">Register</a></div>\n'
+    ).encode()
+
+
 def site_pages(**overrides: bytes) -> dict[str, bytes]:
-    """Every page a good deploy serves, by served name, each named as its renderer names it."""
+    """Every page a good deploy serves, by served name, each named as its renderer names it,
+    and the result overviews its results table names, by their address."""
+    return site_naming(OVERVIEWS, **overrides)
+
+
+def site_naming(named: Sequence[str], /, **overrides: bytes) -> dict[str, bytes]:
+    """`site_pages`, with the results table, whichever page stands for it, naming the
+    overviews in `named`."""
     pages = {
         name: page(render_overview.canonical_url(name), link=f"packing/{name}.md")
         for name in SITE_PAGES
     }
     pages[EXPLAINER] = page(PAGE_URL)
+    for address in OVERVIEWS:
+        pages[address] = result_overview(address.rsplit("/", 1)[1].removesuffix(".html"))
+    pages[OPTIMALITY_PAPER] = PAPERS_CURRENT.encode() + b"Papers</a>"
     pages.update(overrides)
+    pages[render_overview.RESULTS_PAGE] += "".join(
+        f'<div class="site-row-pop-body" data-row-pop-src="{address}"></div>'
+        for address in named
+    ).encode()
     return pages
 
 
@@ -90,13 +121,17 @@ def fake_site(
     pdf_page_count: int = EXPECTED_PAGE_COUNT,
     receipt: bytes | None = None,
     requested: list[str] | None = None,
+    lost: Sequence[str] = (),
 ) -> Fetch:
-    """A deployed site at any root: its pages, the workbench, the PDF, and every link."""
+    """A deployed site at any root: its pages, the workbench, the PDF, and every link.
+    An address ending in one of `lost` is a 404."""
 
     def fetch(url: str, *, head: bool = False, timeout: float = 30.0) -> tuple[int, bytes]:
         assert timeout == 1
         if requested is not None:
             requested.append(url)
+        if any(url.endswith(name) for name in lost):
+            return 404, b"Not found"
         if url.startswith(REPO_URL):
             return 200, b""
         if url.endswith("/workbench/"):
@@ -106,7 +141,10 @@ def fake_site(
             tail = receipt if receipt is not None else source_receipt(pages[EXPLAINER])
             return 200, b"%PDF-1.7\n" + pages_ + b"%%EOF" + tail
         name = "index.html" if url.endswith("/") else url.rsplit("/", 1)[1]
-        body = pages.get(name, b"served")
+        nested = "/".join(url.rsplit("/", 2)[1:])
+        if nested.startswith("result/") and nested not in pages:
+            return 404, b"Not found"
+        body = pages.get(nested, pages.get(name, b"served"))
         return 200, b"" if head else body
 
     return fetch
@@ -173,6 +211,9 @@ def test_the_checked_pages_are_every_page_the_site_serves_but_the_workbench() ->
     assert {"index.html", "frontier.html", "all-results.html"} == LINK_CHECKED_PAGES
     assert render_overview.canonical_url("index.html") == check_published_site.SITE_URL
     assert render_overview.canonical_url("tutorial.html").endswith("/squares/tutorial.html")
+    # The papers page was added to the renderer alone, and is checked here for it.
+    assert "papers.html" in SITE_PAGES
+    assert render_overview.canonical_url("papers.html").endswith("/squares/papers.html")
 
 
 def test_live_source_check_accepts_the_receipt_written_by_the_pdf_exporter(
@@ -267,6 +308,77 @@ def test_check_requires_every_path_linked_on_main_to_be_in_the_commit(
         assert found == [
             f"{name}: linked on main but not in {COMMIT[:12]}: ['blob/packing/gone.md']"
         ], name
+
+
+def test_check_requires_every_result_overview_the_results_table_names(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A row's popover fetches its result's overview from beside the page, so a deploy
+    without one, or with another result's under its name, shows only as a popover that
+    keeps its short detail. Each named overview is asked for, and its repository links
+    are held to `main` and to the commit's tree as a page's are."""
+    requested: list[str] = []
+    assert failures(monkeypatch, fake_site(site_pages(), requested=requested)) == []
+    for address in OVERVIEWS:
+        assert f"https://example.org/{address}" in requested
+
+    lost = site_naming((*OVERVIEWS, "result/t-003.html"))
+    assert failures(monkeypatch, fake_site(lost)) == [
+        "result overview result/t-003.html: HTTP 404, 9 bytes, but it is None"
+    ]
+
+    swapped = site_pages(**{"result/t-002.html": result_overview("t-001")})
+    (failure,) = failures(monkeypatch, fake_site(swapped))
+    assert failure.startswith("result overview result/t-002.html: HTTP 200, ")
+    assert failure.endswith("but it is 'result/t-001.html'")
+
+    assert failures(monkeypatch, fake_site(site_naming(()))) == [
+        "all-results.html names 0 result overviews"
+    ]
+
+    pinned = site_pages(**{"result/t-001.html": result_overview("t-001", ref=COMMIT[:8])})
+    url = f"{REPO_URL}/blob/{COMMIT[:8]}/README.md"
+    assert failures(monkeypatch, fake_site(pinned)) == [
+        f"the result overviews: 1 repository links pinned to a commit: [{url!r}]"
+    ]
+
+    gone = site_pages(**{"result/t-001.html": result_overview("t-001", link="packing/gone.md")})
+    missing = f"linked on main but not in {COMMIT[:12]}: ['blob/packing/gone.md']"
+    assert failures(monkeypatch, fake_site(gone)) == [f"the result overviews: {missing}"]
+
+
+def test_check_requires_the_optimality_paper_where_the_papers_card_points(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The Papers page's first card opens the optimality paper, which another build
+    writes into a directory of its own: a deploy without it, or with a page there whose
+    bar does not mark Papers, fails, and so does one without its landing address, its
+    Markdown or its PDF."""
+    assert OPTIMALITY_PAPER == "n11-optimality/t-060-explainer.html"
+    assert OPTIMALITY_PAPER in render_overview.SITE_PAGES
+    assert OPTIMALITY_PAPER_FILES == (
+        "n11-optimality/",
+        "n11-optimality/t-060-explainer.md",
+        "n11-optimality/t-060-explainer.pdf",
+    )
+    requested: list[str] = []
+    assert failures(monkeypatch, fake_site(site_pages(), requested=requested)) == []
+    for name in (OPTIMALITY_PAPER, *OPTIMALITY_PAPER_FILES):
+        assert f"https://example.org/{name}" in requested, name
+
+    (failure,) = failures(monkeypatch, fake_site(site_pages(), lost=(OPTIMALITY_PAPER,)))
+    assert failure.startswith(f"optimality paper {OPTIMALITY_PAPER}: HTTP 404, ")
+    assert failure.endswith("Papers is not the bar's current entry")
+
+    bare = site_pages(**{OPTIMALITY_PAPER: b"<p>a page with no bar</p>"})
+    (failure,) = failures(monkeypatch, fake_site(bare))
+    assert failure.startswith(f"optimality paper {OPTIMALITY_PAPER}: HTTP 200, ")
+    assert failure.endswith("Papers is not the bar's current entry")
+
+    for name in OPTIMALITY_PAPER_FILES[1:]:
+        assert failures(monkeypatch, fake_site(site_pages(), lost=(name,))) == [
+            f"served {name}: HTTP 404"
+        ]
 
 
 def test_check_fails_when_the_commit_tree_cannot_be_read(

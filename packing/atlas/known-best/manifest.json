@@ -3805,7 +3805,7 @@
           "path": "atlas/known-best/rendering/n-126.svg",
           "renderer": "sqpack deterministic house renderer"
         },
-        "reported_side": "11.77617894651987",
+        "reported_side": "11.77473513240654",
         "source": {
           "derivation": "deterministic reuse of retained Witness/v2 numerical center/angle facts",
           "kind": "kingbird-derived-facts",
@@ -5400,7 +5400,7 @@
           "path": "atlas/known-best/rendering/n-179.svg",
           "renderer": "sqpack deterministic house renderer"
         },
-        "reported_side": "13.89540982243640",
+        "reported_side": "13.89534106997649",
         "source": {
           "derivation": "deterministic reuse of retained Witness/v2 numerical center/angle facts",
           "kind": "kingbird-derived-facts",

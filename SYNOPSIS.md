@@ -20,7 +20,8 @@ what it is doing next.
 
 $s(n)$ is the side of the smallest square that contains $n$ non-overlapping unit
 squares, which may be rotated freely.
-The motivating case is $n = 11$, now solved at Walter Trump’s exact algebraic side.
+The program covers every $n$ and goes into most depth where there is recent progress;
+$n = 11$, a central case, is now solved at Walter Trump’s exact algebraic side.
 
 This project works under four independent principles, defined at the top level in
 [`README.md`](README.md#operating-principles): **Correctness** (Soundness) owns
@@ -72,8 +73,9 @@ $s(11) \ge 955000 \cdot \sqrt{518400042893309449}/179696714646249 = 3.8264474\ld
 $s(11) \ge 955000 \cdot \sqrt{2073600042893309449}/359341754646249 = 3.8269975\ldots$ at
 `V4/C3`. The exact value is now $s(11) = T = 3.877083590022814\ldots$: T-060’s
 independently replayed global lower bound matches T-011’s exact Trump witness.
-Kleddamag’s $s(11) > 31/8 = 3.875$ remains the earlier verified T-037 bound.
-Future research follows the
+Kleddamag’s $s(11) > 31/8 = 3.875$ remains the earlier verified T-037 bound, and Wang
+and Li’s scaling of its certificate, $s(11) > 3875000000/999999999$ (T-061), a later
+historical one. Future research follows the
 [payoff policy](docs/project/handoff-2026-09-06-post-381-t2-t10-continuation.md#research-payoff-and-exposition):
 prioritize substantial bound improvements and methods or theorems that make them
 possible.
@@ -172,6 +174,7 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-001](packing/frontier/RESULTS.md) | 17 | `V3` | `C3` | `S3` | `apparently-novel` | Sixteen points make [0, 4426213/1000000]^2 unavoidable for open squares of side above one, so s(17) >= 4426213/1000000 = 4.426213. |
 | [T-002](packing/frontier/RESULTS.md) | 18 | `V3` | `C3` | `S3` | `apparently-novel` | s(18) >= 4426213/1000000, by monotonicity from T-001 (a packing of 18 unit squares contains a packing of 17). |
 | [T-004](packing/frontier/RESULTS.md) | 46 | `V3` | `C3` | `S3` | `previously-published` | Bentz 2010, Theorem 8: the printed 45-point unavoidable-set argument for s(46) >= 7 is correct as printed, machine-audited in full. |
+| [T-006](packing/frontier/RESULTS.md) | 13 | `V3` | `C3` | `S3` | `previously-published` | s(13) = 4 (Bentz 2010, Theorem 9). |
 | [T-008](packing/frontier/RESULTS.md) | 46 | `V3` | `C3` | `S3` | `previously-published` | s(46) = 7: the lower half by T-004’s audited unavoidable set, the upper half by the exact 7 x 7 grid packing of 46 squares. |
 | [T-009](packing/frontier/RESULTS.md) | 29 | `V3` | `C3` | `S3` | `apparently-novel` | s(29) <= 5.93383346267692918974379895098, by a Krawczyk interval certificate over the retained rational 29-square witness at a declared relaxation of 1e-20. |
 | [T-012](packing/frontier/RESULTS.md) | 5 | `V3` | `C3` | `S3` | `apparently-novel` | Goebel’s n = 5 optimal packing is not infinitesimally rigid but is second-order rigid at fixed side: the cone of infinitesimal motions is exactly the middle square’s rotation about its own centre, and that one direction is refused at second order by a verified non-negative self-stress, all exactly over Q(sqrt 2). |
@@ -198,10 +201,9 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-045](packing/frontier/RESULTS.md) | 27, 28, 31, 32 | `V3` | `C3` | `S3` | `previously-published` | s(27) >= 28/5, s(28) >= 28/5, s(31) >= 148/25 and s(32) >= 119/20, by three rectangle-density certificates of wand125/square-packing-bounds at revision ad43d29 (added 26 and 27 September 2026), rect_n27_L56, rect_n31_L592 and rect_n32_L595, built with and checked by Tokoharu’s solver and interval verifier; the source keeps its credit to this project for the method lineage and says parts of the work were produced with AI assistance under human direction. |
 | [T-049](packing/frontier/RESULTS.md) | 12 | `V3` | `C3` | `S3` | `previously-published` | s(12) >= 15680/3951 = 3.9686155 …, by Evan Daniel’s weighted point certificate in evand/square-packing (formerly square-packing-12), which entered the source at commit 144f4d3f on 25 August 2026 by the author’s clock and was first seen here on 27 September. |
 | [T-050](packing/frontier/RESULTS.md) | 21 | `V3` | `C3` | `S3` | `previously-published` | s(21) >= 5000/1001 = 4.995004995 …, by Evan Daniel’s weighted point certificate in evand/square-packing, introduced at commit 0eee6bae on 23 September 2026 by the author’s clock: 4,604 D4-invariant rational points in 580 orbits, total weight 260057/12500 = 20.80456 < 21, decided over the rational angle net at N = 6000 by the method of T-049. |
-| [T-056](packing/frontier/RESULTS.md) | 68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307 | `V3` | `C3` | `S3` | `previously-published` | For each of 49 counts n from 68 to 307 (68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206 to 210, 228, 236 to 241, 259, 263, 268 to 273, 292, 297 and 301 to 307), s(n) is at most the verified upper bound its case record carries: the side franciscouzo/square-packing prints at f3c5a529 (27 September 2026), from 8.798795237222592 at n = 68 to 17.981030548643712 at n = 307, or, where the exact certificate’s side rounds up past it, that side plus one unit of its fifteenth decimal at 26 counts and 2, 3 and 2 units at n = 206, 259 and 305. |
+| [T-056](packing/frontier/RESULTS.md) | 68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307 | `V3` | `C3` | `S3` | `previously-published` | For each of 49 counts n from 68 to 307 (68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206 to 210, 228, 236 to 241, 259, 263, 268 to 273, 292, 297 and 301 to 307), s(n) is at most the verified upper bound its case record carries: the side franciscouzo/square-packing prints at f3c5a529 (27 September 2026), from 8.798795237222592 at n = 68 to 17.981030548643712 at n = 307, or, where the printed pose’s own side rounds up past it, that side plus one unit of its fifteenth decimal at 26 counts and 2, 3 and 2 units at n = 206, 259 and 305. |
 | [T-057](packing/frontier/RESULTS.md) | 211 | `V3` | `C3` | `S3` | `previously-published` | s(211) <= 14.99796070496771500150 < 15. |
 | [T-036](packing/frontier/RESULTS.md) | 11 | `V3` | `C2` | `S3` | `apparently-novel` | Every packing of eleven unit squares in a square container, six at orientation 0 and five sharing one orientation modulo pi/2 with half-tangent in [91442076901/250000000000, 73154061521/200000000000] (an interval containing [t* - 10^-6, t* + 10^-6] for Trump’s exact half-tangent t*), has container side at least U = 3.877083590022814 …, the exact side of Trump’s packing, and a packing in the family has side exactly U only if it is a quarter-turn image of Trump’s pose with the squares relabelled within the two classes. |
-| [T-006](packing/frontier/RESULTS.md) | 13 | `V3` | `C1` | `S3` | `previously-published` | s(13) = 4 (Bentz 2010, Theorem 9). |
 | [T-007](packing/frontier/RESULTS.md) | 4-100 | `V3` | `C1` | `S3` | `previously-published` | For every integer 4 <= N <= 100, Nagamochi 2005, Theorem 2 gives s(N) >= min(ceil(sqrt(N)), sqrt(N - 2*floor(sqrt(N)) + 1) + 1). |
 | [T-046](packing/frontier/RESULTS.md) | 18, 19, 20, 26, 27, 28, 29, 30, 31, 37, 38, 39, 40, 41, 42, 43, 44, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 86, 88, 89, 90, 91, 94, 95 | `V0` | `C0` | `S3` | `previously-published` | wand125/square-packing-bounds reports one standing rectangle-density certificate for each of 48 counts from n = 18 to n = 95, at revisions ad43d29 (added 26 and 27 September 2026) and 39d8ecc (raised or added 27 and 28 September), built with Tokoharu’s solver, weights scaled by one exact rational factor to mass n - 1/100 (n - 1/1000 at n = 27) before the recorded run, and each accepted there at every net direction by Tokoharu’s unchanged interval checker (verify.cpp, SHA-256 a75140df …). |
 | [T-048](packing/frontier/RESULTS.md) | 50 | `V0` | `C0` | `S3` | `previously-published` | wand125/square-packing-bounds (introduced at commit 75dd0952, 28 September 2026; pinned at 39d8ecc) reports s(50) >= 37/5 = 7.4 from a D4-expanded rectangle density of 553 orbit representatives, total mass 4999999/100000 < 50, core side 9977/10000 and 201 net half-angles of step 83/40000, accepted at every oblique net angle by code/mixed_rotated_verify.cpp, a research copy of Tokoharu’s verify.cpp that accepts coverage at least 1 instead of 10001/10000 and checks each net node’s unit-square centre domain, and at angle zero by exact integer tables. |
@@ -211,6 +213,7 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-031](packing/frontier/RESULTS.md) | 11 | `V3` | `C3` | `S2` | `apparently-novel` | At L = 96/25 and B = 9977/10000 on the 181-direction net (half-tangents k*207107/90000000, k = 0..180), the D4-symmetric point measure of total mass 10868617/1000000 = 10.868617 in cases/n11_corner_class_certificate/certificate.json, the retained exp-220 covering (SHA-256 876820dde8d55c727dec73c85f245db27661556bb3c7aa06ffb15b01ec97a461) charges at least 2000013/2000000 to every closed B-square at a net direction whose minimum of x + y is at least 1/2 in each of the four corner frames, decided by the exact event-cell sweep and by the interval branch and bound, which agree at that value. |
 | [T-042](packing/frontier/RESULTS.md) | 17 | `V3` | `C3` | `S2` | `previously-published` | s(17) > 233009/50000 = 4.66018, by Guzhou0806 / N17 project’s R067 release (commit d4e2c287, 28 September 2026, named as made “with AI assistance”): Kleddamag’s 4.66001 charge (T-041) unchanged, budget 17000402008 units of 10^-9, at the larger parent side 32950/33287, with strict cores rebuilt over 2,808 parent-angle intervals whose endpoints contain every 4.66001 endpoint; seventeen cores at the minimum core charge 1000026844 exceed the budget by 54340. |
 | [T-054](packing/frontier/RESULTS.md) | 45 | `V3` | `C3` | `S2` | `previously-published` | s(45) = 7 by a second, point-only route. |
+| [T-061](packing/frontier/RESULTS.md) | 11 | `V3` | `C3` | `S2` | `previously-published` | s(11) > 3875000000/999999999 = 3.875000003875000003875 …, by Ke Wang and Can Li’s Zenodo record 23038546 of 29 September 2026, reported on jlevy/squares#247. |
 | [T-058](packing/frontier/RESULTS.md) | 1-100 | `V0` | `C1` | `S2` | `previously-published` | wand125/square-packing-tools claims that rectangle-density certificates using core side B=9977/10000 cannot meet mass<n when L>=B*UB(n), for the n=1..100 witness table. |
 | [T-059](packing/frontier/RESULTS.md) | 11 | `V0` | `C1` | `S2` | `previously-published` | wand125/square-packing-tools reports that its exact general_pose_tree checker reproduces all 12028 per-row core minima of Kleddamag’s n11 certificate at commit 6a733f3, with global row minimum 999962528 units and all witnesses replayed. |
 | [T-055](packing/frontier/RESULTS.md) | 21 | `V0` | `C0` | `S2` | `previously-published` | wand125/square-packing-bounds reports s(21) = 5 by a point-only route, completed at commit d38917c6 on 28 September 2026 with a Lean 4 reduction at b64f96e6: Evan Daniel’s s21_lower_4.9950.txt support (T-050) scaled by 1001/1000 and re-weighted, 4,604 D4-invariant entries of total 2624862500021/125000000000, with capture threshold q = 249987/250000 over every closed unit square in [0,5]^2, so that 21q exceeds the total by 999979/125000000000. |
@@ -247,7 +250,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Explorations | 45 | 26 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 187 | 32 confirmed; 32 refuted; 60 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 163 | 46 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
-| Frontier results | 60 | 60 registered, 32 by others |
+| Frontier results | 61 | 61 registered, 33 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
 
@@ -313,9 +316,10 @@ hypothesis is not a frontier result.
 
 The exact value is now $s(11) = T = 3.877083590022814\ldots$ by T-060 and T-011. Session
 152 fully replayed and mathematically reviewed Kleddamag’s earlier external certificate,
-which closed 95.89% of the gap from T-026 to the Trump upper bound.
-Session 153 independently certifies every one of the 12,028 parent-angle intervals by
-directed-rounding box coverage, with no stalled or exhausted boxes.
+which closed 95.89% of the gap from T-026 to the Trump upper bound; Wang and Li’s
+scaling of it (T-061) then added $3.9 \times 10^{-9}$. Session 153 independently
+certifies every one of the 12,028 parent-angle intervals by directed-rounding box
+coverage, with no stalled or exhausted boxes.
 The event-sweep replay remains C3 by itself; the complete native decision and reviewed
 transfer theorem provide method-distinct C4 confirmation of the strict bound.
 Research on $s(11)$ lower bounds is now method development only: T-060 settles the
@@ -509,6 +513,8 @@ case or experiment separately.
 | [Research: Exact Arithmetic and Verifier Performance](docs/project/research/research-2026-09-30-exact-arithmetic-verifier-performance.md) | research synthesis | record | retained | — |
 | [Eleven-Square Global Optimality: Source Intake and Verification Handoff](docs/project/reviews/review-2026-09-29-n11-optimality.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality: Census and Capture Ancestry Contract](docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md) | dated review record | record | retained | — |
+| [Eleven-Square Optimality: Expository Simplification Review](docs/project/reviews/review-2026-09-30-n11-expository-simplification.md) | dated review record | record | retained | — |
+| [Eleven-Square Optimality Explainer: Mathematical Review](docs/project/reviews/review-2026-09-30-n11-optimality-explainer.md) | dated review record | record | retained | — |
 | [D-490 PDF Incident: Run 35784981711](packing/campaign/agent-sessions/session-152-validation/pdf-d490-run-35784981711.md) | failure analysis and lessons | record | retained | — |
 | [Senior Review of PRs 199–201](docs/project/reviews/review-2026-09-19-pr199-201-correctness.md) | dated review record | record | retained | — |
 | [Proof Review: R012 `s(17) >= 461300/99999` and Mira’s `4.613` Certificate](docs/project/reviews/review-2026-09-20-n17-r012-and-mira-4613-proof-review.md) | dated review record | record | retained | — |
@@ -994,6 +1000,9 @@ case or experiment separately.
 | [Proof Review: wand125’s Point-Only Certificates for `s(45) = 7` and `s(21) = 5`](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) | dated review record | record | retained | — |
 | [wand125 n = 50 Mixed Certificates: The Threshold-One Verifier and the Containment Argument](docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md) | dated review record | record | retained | — |
 | [Mathematics Review: Couzo’s 49 Packings and de Winter’s `s(211) < 15` (T-056, T-057)](docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md) | dated review record | record | retained | — |
+| [Review: The Interval Route for T-056 and T-057 (`devtools.upper_bound_intervals`)](docs/project/reviews/review-2026-09-30-interval-route-t056-t057.md) | dated review record | record | retained | — |
+| [Mathematical Review: Wang–Li `s(11) > 3875000000/999999999` (issue #247)](docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md) | dated review record | record | retained | — |
+| [Review: Evan Daniel’s Kernel-Checked `s(13) = 4`, Built Here](docs/project/reviews/review-2026-09-30-lean-s13.md) | dated review record | record | retained | — |
 | [The Three-Lane Research Method](docs/project/three-lane-research-method.md) | component scope and use | record | retained | — |
 | [Handoff — 2026-09-04, close of the fractional-certificate block](docs/project/handoff-2026-09-04-block-close.md) | dated handoff record | record | retained | — |
 | [Handoff: Post-3.81 Portfolio at T+2](docs/project/handoff-2026-09-06-post-381-t2-commissioning.md) | dated handoff record | record | retained | — |
@@ -1293,6 +1302,18 @@ source-bound geometry, not those cached results.
 T-037’s verified $s(11) > 31/8$ and T-059’s reported row-minimum equality retain their
 separate scopes. PR 246 merged with the verified result; the next handoff is a bounded
 fresh-ensemble replay entry point.
+
+The [dedicated optimality paper](packing/devtools/templates/n11-optimality-article.md)
+explains that complete argument from first principles, separately from the historical
+lower-bound explainer.
+Its
+[simplification review](docs/project/reviews/review-2026-09-30-n11-expository-simplification.md)
+consolidates the proof dependencies and geometric invariant without removing required
+cases, branches or checks.
+The [rendered paper](https://jlevy.github.io/squares/n11-optimality/) and
+[PDF](https://jlevy.github.io/squares/n11-optimality/t-060-explainer.pdf) include the
+exact center cover, occupied mask and capture ancestry, with the implementation-sharing
+and fresh-replay limits stated beside the verification record.
 
 The following paragraphs retain the previous intake handoff as an execution record.
 It placed tooling and efficiency off the proof’s critical path, then assigned

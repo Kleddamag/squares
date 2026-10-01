@@ -1,0 +1,8 @@
+command: .venv/bin/python3 -m devtools.verify_n11_parent_core_native --pilot --workers 1 --output /home/user/squares/packing/resources/web/wang-li-n11-2026-09-29/receipts/native/native-pilot.json
+started: 2026-09-30T05:47:02Z load: 11.46 9.00 5.88
+row 0: certified, 20255 boxes, 0 stalled, 4.881s
+row 11962: certified, 14383 boxes, 0 stalled, 2.793s
+row 12027: certified, 11731 boxes, 0 stalled, 2.208s
+PASS_PARTIAL: /home/user/squares/packing/resources/web/wang-li-n11-2026-09-29/receipts/native/native-pilot.json
+wall 45.839 s, user 18.560 s, system 1.061 s
+exit: 0

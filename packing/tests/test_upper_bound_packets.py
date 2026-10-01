@@ -122,7 +122,10 @@ def test_a_case_trails_its_report_exactly_where_the_certificate_does() -> None:
             case["reported_upper_bound"], case["verified_upper_bound"]
         )
         assert agrees == (plan.n not in TRAILING), plan.n
-        assert case["verified_upper_bound"]["evidence"] == [plan.registration.replay]
+        assert case["verified_upper_bound"]["evidence"] == [
+            plan.registration.replay,
+            plan.registration.interval_replay,
+        ]
         kinds = {conflict["kind"] for conflict in case["conflicts"]}
         assert ("replay-failure" in kinds) == (plan.n in TRAILING), plan.n
 

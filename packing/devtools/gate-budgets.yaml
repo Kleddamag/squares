@@ -473,14 +473,42 @@ tiers:
   # baseline below now replaces that estimate; the ceiling leaves room for the
   # build/browser contract and ordinary runner variance without exceeding the
   # pull-request wall.
+  #
+  # 2026-09-30: the record was re-based to the hosted readings. The previous record
+  # was 85.25 s, from two readings on PR 185. Since then the Chromium behaviour
+  # contract has grown, and the tier's hosted walls have sat above that record: the
+  # median of the last 32 is 105 s, and the 1.5x drift edge of 127.9 s is where
+  # jlevy/squares#249's README-only head failed at 128.50 s. The 32 readings span 1.90x.
+  # A point record at their geometric mean holds every one of them inside the 0.6x
+  # stale rule and the 1.5x drift rule (0.678x to 1.288x), so this tier needs no band.
   ceiling_seconds: 150.0
-  measured_seconds: 85.25
-  measured_on: '2026-09-16'
+  measured_seconds: 104.74
+  measured_on: '2026-09-30'
   measured_where: >-
-    The geometric mean of two green readings at the reference shape: 84.90 s in run
-    35050021006 and 85.61 s in run 35052543153, job frontend, on PR 185. The latter
-    selected three of 77 steps, including browser-floor liveness. Refresh after the
-    reconciliation topology runs on its exact head.
+    The geometric mean of the 32 non-skipped hosted readings of job frontend in the last
+    40 Packing validation runs, 36526959043 to 36675048546 (27 to 30 September; main,
+    PR 246, PR 248 and PR 249), all at the reference shape and three steps each: 70.97 s
+    to 134.86 s, median 105.65 s. Every one of them passed its three steps.
+  attribution:
+    cause: >-
+      The Chromium behaviour contract grew, and its step is the tier's wall: the two floor
+      steps run beside it and finish first. Since the 16 September record, 6bc255597
+      (17 September) added `check_layout`, which measures one gutter, edge, stack gap and
+      control height across seven views at three viewports, 969 lines. 06029438e
+      (21 September) added `check_transitions`, 16 steps at 60 frames per second, 247
+      lines. `check_animate_view` grew from 733 to 1,115 lines and `check_animation_editor`
+      from 389 to 510, all in one browser session. The two floor steps grew too, but
+      stay under the behaviour step. The rise is the contract doing more, not a
+      regression in any one check.
+    unit: step-seconds
+    source: >-
+      Per-step lines of job frontend: runs 35050021006 and 35052543153 (the record's
+      readings; geometric means) against the 32 runs named in measured_where (geometric
+      means).
+    grew:
+    - {name: workbench browser behavior in Chromium, before: 72.69, after: 104.74}
+    - {name: 'browser floor (biome, eslint, tsc, node:test)', before: 35.44, after: 44.45}
+    - {name: browser floor liveness tests, before: 12.54, after: 22.29}
   history:
   - measured_seconds: 76.66
     measured_on: '2026-09-15'
@@ -489,6 +517,12 @@ tiers:
       49.75, 95.49, 94.50, 83.92 and 79.04 -- across runs 34924677097, 34925616821,
       34926777301, 34929890466, 34930296150, 35012847055 and 35013703659, each selecting
       2 of the gate's 76 steps. Observed spread 1.92x.
+  - measured_seconds: 85.25
+    measured_on: '2026-09-16'
+    measured_where: >-
+      The geometric mean of two green readings at the reference shape: 84.90 s in run
+      35050021006 and 85.61 s in run 35052543153, job frontend, on PR 185. The latter
+      selected three of 77 steps, including browser-floor liveness.
   reference: {jobs: 2, inner_jobs: 1, cpus: 4}
   argument: >-
     The source and built-page contracts for the top-level workbench package: Biome,
@@ -1176,6 +1210,19 @@ pages:
       blobless sparse checkout omits 504 MB in `packing/resources/` and
       `packing/campaign/`; a contract test proves those omitted trees contain no declared
       workbench or explainer build input.
+  - id: optimality
+    measured_seconds: 49.0
+    measured_on: 2026-10-01
+    measured_where: >-
+      PR 259 exact-head run 36796189326, job 110160194859 at a3fd9510:
+      00:27:00Z to 00:27:49Z, including the new T-060 render, real Chromium
+      controls, PDF print, and artifact upload.
+    ceiling_seconds: 80.0
+    argument: >-
+      The independent T-060 page reads only its own pinned proof packet, exact-backed
+      figures, article, and KPress assets. Its 10-minute operational job timeout bounds
+      setup faults; this 80-second cost ceiling detects work growth on the measured
+      warm-cache reference shape.
   - id: pdf
     measured_seconds: 73.3
     measured_on: 2026-09-16
@@ -1261,6 +1308,18 @@ pages:
     measured_where: run 35039355763, the scope demonstration
     ceiling_seconds: 8.0
     argument: The same notice for the workbench half.
+  - id: optimality-unchanged
+    measured_seconds: 4.0
+    measured_on: 2026-09-16
+    measured_where: >-
+      Proxy from the structurally identical explainer/workbench unchanged notices in
+      run 35039355763; the new T-060 notice has not yet been directly observed as a
+      successful job on a pull request where its inputs did not change.
+    ceiling_seconds: 8.0
+    argument: >-
+      The same scope-reason-only notice as the two existing unchanged jobs. This
+      explicitly borrowed four-second calibration will be replaced by a direct reading
+      when an unrelated pull request first exercises the T-060 skip path (think-x2ln).
   # The two entries below are the only unmeasured ones, and they are unmeasured because
   # no hosted run of their jobs exists yet: the plan in
   # `docs/project/specs/active/plan-2026-09-29-github-pages-overview.md` makes the first

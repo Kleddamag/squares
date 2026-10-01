@@ -330,11 +330,14 @@ body {
   .hero { clear: both; padding-block-start: var(--site-page-top); }
   .cert-page .hero h1 { margin-block-start: 0; }
 }
-/* The heading is set in caps by kpress; its s(n) run is mathematics and keeps both
-   mathematical italic and lowercase rather than inheriting the heading transform. */
-.hero h1 .tex { letter-spacing: 0; text-transform: none; }
-/* Prepared math reserves its full measured ascent and descent. In this single-line
-   title, s(11)'s 1.27-1.30em profile reservations are taller than the heading's 1.05
+/* The heading is set in caps by kpress; its math run, `n = 11`, is mathematics and keeps
+   both mathematical italic and lowercase rather than inheriting the heading transform.
+   It also stays on one line: KaTeX allows a break after a relation, and at phone width
+   the title ended one line on `n =` and began the next with `11`. */
+.hero h1 .tex { letter-spacing: 0; text-transform: none; white-space: nowrap; }
+/* Prepared math reserves its full measured ascent and descent. In the title, a math
+   run's 1.27-1.30em profile reservations (measured on `s(11)`, which the title once
+   carried; `n = 11` reserves 1.20-1.27em) are taller than the heading's 1.05
    line-height and can push Figure 1 onto the next printed page. Both profiles keep a
    0.9123em ascent, so this limits only the invisible inline box while leaving the 1em
    glyphs in the same painted position: 1.05 - 0.9123 = 0.1377em below the baseline. */

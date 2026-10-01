@@ -1,0 +1,43 @@
+command: /tmp/claude-0/-home-user-squares/758894fa-d681-5043-a940-b28fb37110ba/scratchpad/lane-247/venv-authors/bin/python replay_parallel.py /tmp/claude-0/-home-user-squares/758894fa-d681-5043-a940-b28fb37110ba/scratchpad/lane-247/scaleonly/scale-only-certificate.json --output /tmp/claude-0/-home-user-squares/758894fa-d681-5043-a940-b28fb37110ba/scratchpad/lane-247/scaleonly/python.json --jobs 1   (cwd: scratch copy of kleddamag-11)
+certificate: written by .venv/bin/python3 -m devtools.audit_wang_li_n11 scale-only
+started: 2026-09-30T10:31:39Z load: 12.49 11.84 11.18
+REPLAY 500 of 12028 seconds 153.9222824310018
+REPLAY 1000 of 12028 seconds 280.43433216300036
+REPLAY 1500 of 12028 seconds 406.12341837200074
+REPLAY 2000 of 12028 seconds 533.7903013600007
+REPLAY 2500 of 12028 seconds 666.457760188001
+REPLAY 3000 of 12028 seconds 795.6156158510021
+REPLAY 3500 of 12028 seconds 919.2764293540022
+REPLAY 4000 of 12028 seconds 1049.4463254170005
+REPLAY 4500 of 12028 seconds 1181.4563254880013
+REPLAY 5000 of 12028 seconds 1311.6166771140015
+REPLAY 5500 of 12028 seconds 1437.5702694620013
+REPLAY 6000 of 12028 seconds 1584.4536666900021
+REPLAY 6500 of 12028 seconds 1709.3552777450022
+REPLAY 7000 of 12028 seconds 1835.1743668130002
+REPLAY 7500 of 12028 seconds 1936.2103637260007
+REPLAY 8000 of 12028 seconds 2042.2620150020011
+REPLAY 8500 of 12028 seconds 2143.224902091002
+REPLAY 9000 of 12028 seconds 2258.3009548610025
+REPLAY 9500 of 12028 seconds 2376.173323320003
+REPLAY 10000 of 12028 seconds 2492.060880486002
+REPLAY 10500 of 12028 seconds 2636.7200511850024
+REPLAY 11000 of 12028 seconds 2820.102284708002
+REPLAY 11500 of 12028 seconds 2942.2666462730012
+REPLAY 12000 of 12028 seconds 3056.044359871001
+{
+  "status": "PASS_FULL_EXACT_PYTHON_REPLAY",
+  "certificate_sha256": "0d3dfe833779f99aac915c0d0aee90694119038edfebf2a6d62c4d4978c04d22",
+  "parent_side": "190999999809/193750000000",
+  "bound": "3875000000/999999999",
+  "intervals": 12028,
+  "budget_units": 10999479944,
+  "minimum_units": 999962528,
+  "strict_core_margin": "999999999/1000000000000000000000",
+  "counting_surplus_units": 107864,
+  "slabs": 86299918,
+  "cells": 511649696956,
+  "seconds": 3062.357938352001
+}
+wall 3065.255 s, user 2459.962 s, system 22.132 s
+exit: 0 finished: 2026-09-30T11:22:44Z

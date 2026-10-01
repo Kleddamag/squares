@@ -11,8 +11,7 @@ name: Certificate page
         description: Also test unchanged math text reconstruction (requires trace_pdf)
         type: boolean
         default: false
-  # The page is rendered from the retained certificate, so it is republished
-  # whenever that certificate, the renderer, or the template moves.
+  # The pages are rebuilt when their retained inputs, renderers, or templates move.
   # The list is every input the renderer reads or imports: the case directory
   # (certificates, coarsening rows, claim documents), the templates, the atlas
   # rendering it inlines as Figure 1, the composite assets it serves beside
@@ -65,12 +64,15 @@ name: Certificate page
       - packing/devtools/templates/site-nav.css
       - packing/devtools/templates/paper-type.css
       - packing/devtools/templates/site.css
+      - packing/devtools/templates/site-result.css
       - packing/devtools/templates/overview-article.md
       - packing/devtools/templates/all-results-article.md
       - packing/devtools/templates/visualize-article.md
+      - packing/devtools/templates/papers-article.md
       - packing/devtools/render_overview.py
       - packing/devtools/overview_data.py
       - packing/devtools/overview_sections.py
+      - packing/devtools/result_overview.py
       - packing/devtools/overview/**
       - packing/devtools/render_frontier_page.py
       - packing/devtools/templates/frontier-article.md
@@ -113,6 +115,16 @@ name: Certificate page
       - packages/workbench/**
       - packing/devtools/check_published_site.py
       - packing/devtools/pages_scope.py
+      - packing/devtools/render_n11_optimality_explainer.py
+      - packing/devtools/n11_optimality_figures.py
+      - packing/devtools/packing_render_adapters.py
+      - packing/devtools/check_n11_optimality_d4.py
+      - packing/devtools/templates/n11-optimality-article.md
+      - packing/devtools/templates/n11-optimality-shell.html
+      - packing/devtools/templates/n11-optimality.css
+      - packing/atlas/rendering/trump11-overview.svg
+      - packing/cases/trump11/**
+      - packing/resources/web/n11-optimality-2026-09-29/**
       - packing/devtools/wait_for_run_artifact.py
       - packing/devtools/explainer/**
       - packing/devtools/probes/**
@@ -139,6 +151,8 @@ concurrency:
 #   scope ─┬─ explainer-unchanged                  (only when the explainer is skipped)
 #          ├─ workbench-unchanged                  (only when the workbench is skipped)
 #          ├─ overview-unchanged                   (only when the overview is skipped)
+#          ├─ optimality-unchanged                 (only when T-060 is skipped)
+#          ├─ optimality ───────────────────────────────┤
 #          ├─ workbench ───────────────────────────────┐
 #          ├─ overview ────────────────────────────────┤
 #          ├─ prepare ─┬─ pdf ─────────────────────────┼─ publish ─┐
@@ -163,13 +177,14 @@ concurrency:
 # than serializing it. Every check that ran before still runs, on the same prepared
 # artifact; nothing moved off the pull request (`OR-13`).
 jobs:
-  # Which of the three builds this change can affect: the explainer, the workbench, and
-  # the site's own pages (the overview at `/` and the pages beside it). A pull request
-  # that touches none of their inputs does no browser work at all, and a workbench-only
-  # change no longer pays for the explainer's checks (#178 did: ten workbench probe
-  # files, about 330 s of explainer Chromium). `devtools.pages_scope` derives each half's
-  # inputs from the builder's own declaration and from the tools the jobs below run; see
-  # its docstring for the rule and its tests for the comparison.
+  # Which of the four builds this change can affect: the explainer, the workbench, the
+  # site's own pages (the overview at `/` and the pages beside it), and the T-060
+  # article. A pull request that touches none of their inputs does no browser work at
+  # all, and a workbench-only change no longer pays for the explainer's checks (#178
+  # did: ten workbench probe files, about 330 s of explainer Chromium).
+  # `devtools.pages_scope` derives each half's inputs from the builder's own declaration
+  # and from the tools the jobs below run; see its docstring for the rule and its tests
+  # for the comparison.
   #
   # It sits on the critical path, so it checks out without `packing/resources` and
   # `packing/campaign` (523 MB of a 665 MB tree) and fetches no blob it does not read.
@@ -184,6 +199,8 @@ jobs:
       workbench_reason: ${{ steps.scope.outputs.workbench_reason }}
       overview: ${{ steps.scope.outputs.overview }}
       overview_reason: ${{ steps.scope.outputs.overview_reason }}
+      optimality: ${{ steps.scope.outputs.optimality }}
+      optimality_reason: ${{ steps.scope.outputs.optimality_reason }}
     defaults:
       run:
         working-directory: packing
@@ -191,7 +208,7 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # The declared inputs are read by importing the three builders, and kpress is
+          # The declared inputs are read by importing the four builders, and kpress is
           # installed from the submodule.
           submodules: true
           persist-credentials: false
@@ -264,6 +281,85 @@ jobs:
           test -n "$REASON"
           echo "The overview and the site's own pages are not built on this run: $REASON."
           echo "The overview and the site's own pages are not built on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
+
+  optimality-unchanged:
+    needs: scope
+    if: needs.scope.outputs.optimality != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say why the T-060 article is not built
+        env:
+          REASON: ${{ needs.scope.outputs.optimality_reason }}
+        run: |
+          test -n "$REASON"
+          echo "The T-060 article is not built or checked on this run: $REASON."
+          echo "The T-060 article is not built or checked on this run: $REASON." >> "$GITHUB_STEP_SUMMARY"
+
+  optimality:
+    needs: scope
+    if: needs.scope.outputs.optimality == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: packing
+    steps:
+      - name: Check out the repository and retained T-060 inputs
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: true
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/packing/resources/*/
+            !/packing/campaign/*/
+            /packing/resources/web/n11-optimality-2026-09-29/
+
+      - name: Install uv and Python 3.14
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.8"
+          python-version: "3.14.7"
+          working-directory: packing
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Install Node 24 for KPress math
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: "24.18.0"
+
+      - name: Cache the pinned Chromium browser
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('packing/uv.lock') }}
+
+      - name: Install the pinned Chromium headless shell
+        run: uv run --frozen --group dev python -m playwright install --only-shell chromium
+
+      - name: Check T-060 figures and article renderer
+        env:
+          SQPACK_N11_PAPER_BROWSER: "1"
+        run: |
+          uv run --frozen --all-extras --group dev pytest -q tests/test_n11_optimality_figures.py
+          uv run --frozen --all-extras --group dev pytest -q tests/test_render_n11_optimality_explainer.py
+
+      - name: Render and check the T-060 article in HTML, Markdown, and PDF
+        run: |
+          uv run --frozen --group dev python -m devtools.render_n11_optimality_explainer --output-dir site/n11-optimality --pdf
+          uv run --frozen --group dev python -m devtools.render_n11_optimality_explainer --output-dir site/n11-optimality --check
+          test -s site/n11-optimality/t-060-explainer.pdf
+
+      - name: Share the checked T-060 article
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: n11-optimality-page
+          path: packing/site/n11-optimality
+          if-no-files-found: error
+          retention-days: 7
 
   prepare:
     needs: scope
@@ -1444,10 +1540,10 @@ jobs:
   # skips it with that producer, as one that skipped the workbench always has; each
   # producer's own job has already built and checked what it would contribute, and the
   # assembly itself is exercised on every push to `main` and on every pull request that
-  # touches an input all three builds share (the workflow, the scope tool, kpress, the
+  # touches an input all four builds share (the workflow, the scope tool, kpress, the
   # lockfile). A partial tree is never a publication, so there is nothing to assemble.
   publish:
-    needs: [prepare, pdf, overview, workbench]
+    needs: [prepare, pdf, overview, workbench, optimality]
     runs-on: ubuntu-latest
     steps:
       # With `merge-multiple`, an empty `artifact-ids` downloads every artifact in the
@@ -1514,6 +1610,12 @@ jobs:
           name: workbench-page
           path: packing/site/workbench
 
+      - name: Use the checked T-060 article
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: n11-optimality-page
+          path: packing/site/n11-optimality
+
       - name: List what the publication holds
         working-directory: packing/site
         run: find . -type f -printf '%P\n' | sort | while read -r file; do printf '%10s  %s  %s\n' "$(stat -c %s "$file")" "$(sha256sum "$file" | cut -c1-16)" "$file"; done
@@ -1528,7 +1630,7 @@ jobs:
   # passed, and when a job was skipped because its page was out of scope; it fails on any
   # failure or cancellation, and on a skip whose cause was an upstream failure -- that
   # upstream job is also needed here, so its own failure is what fails the aggregate. The
-  # scope's three outputs must be exactly `true` or `false`, so a scope that wrote nothing
+  # scope's four outputs must be exactly `true` or `false`, so a scope that wrote nothing
   # cannot pass as a decision to skip everything.
   pages-required:
     if: always()
@@ -1537,9 +1639,11 @@ jobs:
       - explainer-unchanged
       - workbench-unchanged
       - overview-unchanged
+      - optimality-unchanged
       - prepare
       - workbench
       - overview
+      - optimality
       - pdf
       - print-layout
       - typography
@@ -1561,7 +1665,8 @@ jobs:
           jq -r 'to_entries[] | "\(.value.result)\t\(.key)"' <<< "$NEEDS"
           jq -e '
             .scope.result == "success"
-            and ([.scope.outputs.explainer, .scope.outputs.workbench, .scope.outputs.overview] | all(. == "true" or . == "false"))
+            and ([.scope.outputs.explainer, .scope.outputs.workbench, .scope.outputs.overview, .scope.outputs.optimality] | all(. == "true" or . == "false"))
+            and (.scope.outputs.optimality != "true" or .optimality.result == "success")
             and ([.[].result] | all(. == "success" or . == "skipped"))
           ' <<< "$NEEDS" > /dev/null
 

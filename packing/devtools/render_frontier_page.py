@@ -349,14 +349,10 @@ def _cell(content: str, *, value: str | None = None, classes: str = "") -> str:
     return f"<td{attributes}>{content}</td>"
 
 
-def _bound_cell(bound: dict[str, Any], note: str = "", details: str = "") -> str:
+def _bound_cell(bound: dict[str, Any], note: str = "") -> str:
     parts = [value_html(bound)]
     if note:
         parts.append(f'<span class="site-frontier-note site-cell-quiet">{note}</span>')
-    if details:
-        parts.append(
-            f'<details><summary>more</summary><dl class="site-detail">{details}</dl></details>'
-        )
     return _cell("".join(parts), value=str(bound["value"]), classes="num")
 
 
@@ -392,8 +388,9 @@ def _lower_details(lower: dict[str, Any]) -> str:
     )
 
 
-def _records(case: dict[str, Any], case_url: str, evidence: dict[str, dict[str, Any]]) -> str:
-    refs = list(
+def _evidence_refs(case: dict[str, Any]) -> list[str]:
+    """The evidence behind a case's four bounds, each once, in the order they are cited."""
+    return list(
         dict.fromkeys(
             [
                 *case["reported_upper_bound"]["evidence"],
@@ -403,20 +400,38 @@ def _records(case: dict[str, Any], case_url: str, evidence: dict[str, dict[str, 
             ]
         )
     )
+
+
+def frontier_row_popover_body(case: dict[str, Any], evidence: dict[str, dict[str, Any]]) -> str:
+    """The body of a frontier row's popover, the one source of it: how the best known
+    packing was built, the minimal polynomial behind a decimal and its source; the
+    reported lower bound's kind and source; then how the bounds were verified, the case's
+    notes and the evidence entries behind them. The row's cells used to open these one at
+    a time in place."""
+    case_url = repo_url(tables.FRONTIER / f"n-{case['n']:03d}.md")
     origins = html.escape(tables.verification_origins(case, evidence))
     notes = html.escape(tables.case_disposition(case))
     return (
-        f'<a href="{case_url}">n-{case["n"]:03d}.md</a>'
-        f"<details><summary>{len(refs)} evidence</summary>"
+        '<p class="site-popover-heading">Best known packing</p>'
+        f'<dl class="site-detail">{_upper_details(case, case_url)}</dl>'
+        '<p class="site-popover-heading">Reported lower bound</p>'
+        f'<dl class="site-detail">{_lower_details(case["reported_lower_bound"])}</dl>'
+        '<p class="site-popover-heading">Verification and evidence</p>'
         f'<dl class="site-detail"><dt>Verification</dt><dd>{origins}</dd>'
         f"<dt>Notes</dt><dd>{notes}</dd>"
-        f"<dt>Evidence</dt><dd>{evidence_links(refs)}</dd></dl></details>"
+        f"<dt>Evidence</dt><dd>{evidence_links(_evidence_refs(case))}</dd></dl>"
     )
 
 
-def case_row(case: dict[str, Any], evidence: dict[str, dict[str, Any]], *, recent: bool) -> str:
-    """One table row, every cell from the record. Its `n` opens the case's record."""
+def case_row(
+    case: dict[str, Any], evidence: dict[str, dict[str, Any]], *, recent: bool
+) -> tuple[str, str]:
+    """One table row, every cell from the record, and the popover it opens. Its `n`
+    opens the case's record; anywhere else on the row opens the popover, whose body is
+    `frontier_row_popover_body` and whose button opens the record too."""
+    from devtools.overview_sections import row_detail  # noqa: PLC0415
     from devtools.render_case_pages import case_link  # noqa: PLC0415
+    from devtools.render_case_pages import case_url as record_url  # noqa: PLC0415
 
     n = case["n"]
     case_url = repo_url(tables.FRONTIER / f"n-{n:03d}.md")
@@ -428,6 +443,15 @@ def case_row(case: dict[str, Any], evidence: dict[str, dict[str, Any]], *, recen
         shown_status += f" (reported {html.escape(case['reported_status'])})"
     gap_html, gap_value = gap(case)
     star = '<span class="site-star" title="Recent lower bound">★</span>' if recent else ""
+    detail = row_detail(
+        f"pop-frontier-n-{n}",
+        name=f"n = {n}, {status}",
+        trigger="Details",
+        label="Frontier atlas",
+        title=f"<var>n</var> = {n}",
+        body=frontier_row_popover_body(case, evidence),
+        action=(record_url(n), f"Open the case record for n = {n}"),
+    )
     cells = [
         _cell(
             case_link(
@@ -440,28 +464,25 @@ def case_row(case: dict[str, Any], evidence: dict[str, dict[str, Any]], *, recen
             classes="num site-col-n",
         ),
         _cell(shown_status, value=status),
-        _bound_cell(
-            upper,
-            credit(upper.get("found_by"), upper.get("found_year")),
-            _upper_details(case, case_url),
-        ),
+        _bound_cell(upper, credit(upper.get("found_by"), upper.get("found_year"))),
         _verified_cell(case["verified_upper_bound"], upper),
-        _bound_cell(
-            lower,
-            credit(lower.get("proved_by"), lower.get("proved_year")),
-            _lower_details(lower),
-        ),
+        _bound_cell(lower, credit(lower.get("proved_by"), lower.get("proved_year"))),
         _verified_cell(case["verified_lower_bound"], lower),
         _cell(gap_html, value=gap_value, classes="num"),
         _cell(star, value="1" if recent else "0"),
-        _cell(_records(case, case_url, evidence), classes="site-records"),
+        _cell(
+            f'<a href="{case_url}">n-{n:03d}.md</a> '
+            f'<span class="site-cell-quiet">{detail.trigger}</span>',
+            classes="site-records",
+        ),
     ]
     flag = {True: "true", False: "false"}
     attributes = (
         f'id="n-{n}" data-n="{n}" data-status="{html.escape(status)}" '
-        f'data-open="{flag[status == "open"]}" data-recent="{flag[recent]}"'
+        f'data-open="{flag[status == "open"]}" data-recent="{flag[recent]}" '
+        f"{detail.attributes}"
     )
-    return f"<tr {attributes}>{''.join(cells)}</tr>"
+    return f"<tr {attributes}>{''.join(cells)}</tr>", detail.popover
 
 
 #: The columns: heading, sort type (none for a column that does not sort), alignment.
@@ -502,22 +523,22 @@ def _tools(count: int, last: int) -> str:
 
 
 def table_html(cases: list[dict[str, Any]]) -> str:
-    """The controls, the table and the popover its cases open in, as one HTML block with
-    no blank line inside it."""
+    """The controls, the table, each row's popover and the popover its cases open in, as
+    one HTML block with no blank line inside it."""
     from devtools.render_case_pages import case_popover  # noqa: PLC0415
 
     evidence = tables.load_evidence()
     recent = recent_lower_bounds()
     head = "".join(_heading(*column) for column in HEADERS)
-    rows = "\n".join(
-        case_row(case, evidence, recent=recent.get(case["n"], False)) for case in cases
-    )
+    built = [case_row(case, evidence, recent=recent.get(case["n"], False)) for case in cases]
+    rows = "\n".join(row for row, _ in built)
+    popovers = "\n".join(popover for _, popover in built)
     return (
         f"{_tools(len(cases), max(case['n'] for case in cases))}\n"
         '<div class="site-table-wrap site-wide site-frontier" id="frontier-table">\n'
         '<table class="kpress-table site-table">\n'
         f"<thead><tr>{head}</tr></thead>\n<tbody>\n{rows}\n</tbody>\n</table>\n</div>\n"
-        f"{case_popover()}"
+        f"{popovers}\n{case_popover()}"
     )
 
 

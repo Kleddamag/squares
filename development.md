@@ -170,9 +170,9 @@ alone is not full pre-merge evidence.
 | `--push` | contributor, once before a push — the edit tier plus tests reachable from the diff (`--since`) | varies with the diff | 1800 s | about a minute for a narrow code change; an implicitly configured broad diff selects the whole suite and assigns one outer job so pytest can use the host, see below |
 | `--fast` | contributor, at a block boundary; the union of the eight tiers below | 74 of 85 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
 | `--checks` | **CI, on every pull request**, in the `validate` job | 54 of 85 | 140 s | 75.67 s, the geometric mean of 90.19 s and 63.48 s on PR 185 heads `e8c79fe4` and `80a5976f`, the first two readings with `exact verification` concurrent |
-| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 3 of 85 | 150 s | 85.25 s on the three-step, two-worker topology, the mean of two readings |
-| `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 85 | 111 s | 76.50 s on CI, the geometric mean of eighteen hosted readings on 2026-09-29 |
-| `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 85 | 180 s | 102.73 s on the predecessor topology, the mean of seven readings |
+| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 3 of 85 | 150 s | 104.74 s, the geometric mean of 32 hosted readings from 27 to 30 September (70.97–134.86 s, 1.90x); 85.25 s from two readings stays in the register as history |
+| `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 85 | 111 s | 76.5 s, the centre of eighteen hosted readings, with the band 56.67–92.27 s that its two runner regimes span |
+| `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 85 | 180 s | 98.07 s, the geometric mean of fourteen hosted readings, with the band 58.75–116.19 s that its two runner regimes span |
 | `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 85 | 131 s | 85.03 s geometric mean of the three-shard observations 65.67/110.09 s in runs 36739024277 and 36740609969 |
 | `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 85 | 154 s | 104.65 s on the three-shard partition, run 36739024277, job 109968163416 |
 | `--suite-c` | **CI, on every pull request**, in the `suite-c` job, concurrently | 1 of 85 | 154 s | 88.59 s on the three-shard partition, run 36739024277, job 109968163208 |
@@ -926,6 +926,27 @@ workflow runs for that page, and a page none of the changed files touches is ski
 a job named for the reason.
 `pages-required` is the aggregate a branch rule would require; it passes such a skip and
 nothing else.
+
+The separate **T-060 optimality paper** lives at `/n11-optimality/`. Its source is
+[`n11-optimality-article.md`](packing/devtools/templates/n11-optimality-article.md);
+[`render_n11_optimality_explainer.py`](packing/devtools/render_n11_optimality_explainer.py)
+uses the same KPress typography and inlined fonts with a separate article and print
+layout. It reuses the Trump witness rendering and draws the center cells and capture
+graph from the retained proof packet.
+From `packing/`, with the scratch environment required by `AGENTS.md`:
+
+```bash
+uv run --frozen --all-extras --group dev python -m devtools.render_n11_optimality_explainer --pdf
+```
+
+The outputs are `site/n11-optimality/t-060-explainer.html`, `.md`, and `.pdf`, with an
+`index.html` entry point.
+`--output-dir` selects another destination; `--check` compares the HTML and Markdown
+without writing. Repository citations name the source commit selected by `--revision`
+(the publication revision by default).
+A dedicated Pages job builds this paper and its PDF independently of the historical
+explainer. The paper is an explanation of accepted evidence, and rendering it does not
+rerun the geometric proof.
 
 Publication uses `python -m devtools.render_explainer --prepare-math` after installing
 the locked Playwright Chromium.

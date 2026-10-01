@@ -192,11 +192,14 @@ As built (amended 2026-09-30):
 | `/frontier.html` | the frontier atlas, `n = 1…324` (new) | Frontier |
 | `/all-results.html` | every register entry, the results table (new) | Results |
 | `/cases.html#n-N` | one case record per tracked `n` (new) | none; opened from the atlas grid and the frontier atlas |
-| `/explainer.html` | the n = 11 explainer (moved from `/`) | Explainer |
-| `/tutorial.html` | `TUTORIAL.md`, rendered (new) | Tutorial |
+| `/papers.html` | the papers page: one large card each for the optimality paper, the explainer and the tutorial (new) | Papers |
+| `/n11-optimality/t-060-explainer.html` | the n = 11 optimality paper, from its own renderer and Pages job, with its Markdown and PDF beside it | Papers |
+| `/explainer.html` | the n = 11 explainer (moved from `/`) | Papers |
+| `/tutorial.html` | `TUTORIAL.md`, rendered (new) | Papers |
 | `/visualize.html` | the `n = 1…324` film at full width, with Film and Workbench tabs (new) | Visualize |
 | `/workbench/` | the workbench, now carrying the site nav and the Workbench tab | Visualize |
 | `/readme.html`, `/synopsis.html`, `/results.html`, `/status.html`, `/epistemics.html`, `/conventions.html`, `/development.html`, `/defects.html` | the repository documents, rendered for the documentation cards’ popovers | none |
+| `/result/t-nnn.html` | one result’s overview, a fragment its row’s popover fetches; not a page | none |
 | `/t-018-explainer.{md,pdf}` and the composite assets | unchanged | none |
 
 The nav also links the repository on GitHub.
@@ -271,7 +274,7 @@ As built (amended 2026-09-30), after the owner’s preview review, the page runs
    followed by cards for the explainer, the tutorial, the workbench and the frontier
    atlas.
 3. **Recent Results.** One table (date, result, method, credit, status) of every result
-   since 1 August 2026, newest first, filtered by default to significance S3 and up,
+   since 1 August 2026, newest first, filtered by default to significance S4 and up,
    with a link to the full table on `all-results.html`. It replaces the headline cards,
    the exact-value cards and the recent-changes list, and is followed by the cases
    awaiting a replay.
@@ -766,14 +769,31 @@ decisions that changed the plan above:
   `cases.html#n-N`, and Visualize (`visualize.html`) shows the film with the workbench
   under a second tab (`think-x8ev`, `think-7vjh`, `think-88zu`).
 - **Recent Results replaces the headline cards and the recent-changes list**: one table
-  of everything since 1 August 2026, filtered by default to S3 and up (`think-vvns`,
-  `think-kjd1`, `think-5oih`).
+  of everything since 1 August 2026 (`think-vvns`, `think-kjd1`, `think-5oih`).
+- **One set of filters on both result tables**, the recent table and the results page:
+  significance, verification, confirmation, standing, source, case and date, composing,
+  with “S4 and up” as the default.
+- **The row is the unit.** A table row with detail opens one popover for the whole row,
+  on the recent, awaiting-replay, results and frontier tables; no cell expands on its
+  own.
+- **A result’s row opens its full overview**: the case drawn, the chain of results on
+  it, and every link. No page carries the overviews, about 2.8 MB between them; each is
+  written once beside the pages and fetched when its row is first opened, and the page
+  keeps the result’s short detail for a reader without scripts.
 - **Rung cards replace the stacked verification bar**, and Verification at a Glance
   moves near the top (`think-6hre`, `think-1f2m`).
 - **One look on every page**: a theme gear, the n = 11 packing as logo and favicon, one
   chip design, one shared table component, and math set in the face of its text, with a
-  popover’s headline math in serif (`think-4085`, `think-38h1`, `think-w7ef`,
+  headline that is mathematics alone in serif (`think-4085`, `think-38h1`, `think-w7ef`,
   `think-5oih`, `think-g63b`, `think-e2dp`).
+- **Cards come in three sizes**, small, medium and large, chosen by a card’s text or
+  declared by its section, and every line of cards is centred on its line.
+- **Papers is one tab.** The optimality paper, the explainer and the tutorial share the
+  bar’s Papers entry and a page of three large cards, the optimality paper first
+  (`think-afxf`, `think-ux5l`).
+- **The homepage’s problem section is README’s introduction**, read from one shared
+  block, followed by the site’s own statement and where to report a result.
+  Eleven squares is a central case, never the central one.
 - **Repository links name `main`**, never a commit: permalinks at the build commit 404ed
   once a squash merge left that commit on no branch (`think-eefp`, `think-xv28`).
 - **The site lands with current `main` and presents T-060**, the n = 11 optimality

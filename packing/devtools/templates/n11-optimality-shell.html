@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-kpress-viewport data-kpress-theme="system"
+      data-kpress-resolved-theme="light" data-kpress-palette="neutral"
+      data-kpress-prose-font="serif" data-kpress-math-text="prose"
+      data-kpress-mono-font="planetaire">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="generator" content="kpress">
+<title>{{PAGE_TITLE}}</title>
+<meta name="description" content="{{PAGE_DESCRIPTION}}">
+{{SITE_FAVICON}}
+<style>{{KPRESS_CSS}}</style>
+<style>{{KATEX_CSS}}</style>
+<style>{{RELATION_CSS}}</style>
+<!-- The site's navigation bar, shared with every other page of the site and hidden in
+     print, so the PDF does not move. See templates/site-nav.css. -->
+<style>{{SITE_NAV_CSS}}</style>
+<style>{{PAPER_CSS}}</style>
+<script>{{THEME_BOOTSTRAP}}</script>
+<script>{{SITE_EMBED}}</script>
+</head>
+<body>
+<main class="kpress-page-main kpress-viewport">
+{{SITE_NAV}}
+<article class="kpress kpress-doc kpress-prose n11-paper">
+<nav class="paper-formats kpress-no-print" aria-label="Paper formats">
+  <a aria-current="page" href="{{HTML_NAME}}">HTML</a>
+  <a href="{{PDF_NAME}}">PDF</a>
+  <a href="{{MARKDOWN_NAME}}">Source</a>
+</nav>
+{{BODY_HTML}}
+<footer class="paper-footer">Typeset with <a href="https://github.com/jlevy/kpress">KPress</a>.</footer>
+</article>
+</main>
+<script>{{SITE_THEME}}</script>
+<script>{{KATEX_JS}}</script>
+</body>
+</html>

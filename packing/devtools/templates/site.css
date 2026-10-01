@@ -170,33 +170,108 @@ body {
 }
 
 /* ---------- Cards ---------- */
-/* A card section is a frame the width of the wide track holding the grid, so the grid
-   can ask how many columns its frame fits. Four or more cards fill the columns as they
-   come. Three or fewer centre as a group, each card the width it would have had in a
-   full row: four columns from 67rem (four 16rem tracks and three gaps), five from 84rem.
-   Below that the row holds three or fewer anyway. */
+/* A card section is a frame the width of the wide track holding the cards, so the cards
+   can ask how wide their frame is. A card comes in three sizes, which it names in
+   `data-card-size`, and is as wide as a column of the grid of its size's columns the
+   frame fits, with 1rem gaps: small columns are at least 12rem, medium 16rem and large
+   21rem, so a 69rem frame holds five small cards to a line, four medium or three large.
+   `--site-cards-small`, `-medium` and `-large` are those counts, each stepped by its own
+   container queries: n columns of minimum m and n - 1 gaps need (m + 1)n - 1 rem. A card
+   that names no size is medium. On screen the cards are one wrapping row that centres
+   every line it does not fill, a short section and the last line of a long one alike.
+   Print keeps the plain grid of medium columns, filled from the left. A card's popover
+   is its sibling but never in the row: closed it is not displayed, and open it is in the
+   top layer. */
 .site-cards-frame {
   container-type: inline-size;
   margin-block: 1.5rem;
 }
 .site-cards {
+  --site-card-gap: 1rem;
+  --site-cards-small: 1;
+  --site-cards-medium: 1;
+  --site-cards-large: 1;
   display: grid;
-  gap: 1rem;
+  gap: var(--site-card-gap);
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
 }
+@container (width >= 25rem) {
+  .site-cards {
+    --site-cards-small: 2;
+  }
+}
+@container (width >= 33rem) {
+  .site-cards {
+    --site-cards-medium: 2;
+  }
+}
+@container (width >= 38rem) {
+  .site-cards {
+    --site-cards-small: 3;
+  }
+}
+@container (width >= 43rem) {
+  .site-cards {
+    --site-cards-large: 2;
+  }
+}
+@container (width >= 50rem) {
+  .site-cards {
+    --site-cards-medium: 3;
+  }
+}
+@container (width >= 51rem) {
+  .site-cards {
+    --site-cards-small: 4;
+  }
+}
+@container (width >= 64rem) {
+  .site-cards {
+    --site-cards-small: 5;
+  }
+}
+@container (width >= 65rem) {
+  .site-cards {
+    --site-cards-large: 3;
+  }
+}
 @container (width >= 67rem) {
-  .site-cards:not(
-    :has(> :not(.site-popover) ~ :not(.site-popover) ~ :not(.site-popover) ~ :not(.site-popover))
-  ) {
-    grid-template-columns: repeat(auto-fit, calc((100% - 3rem) / 4));
-    justify-content: center;
+  .site-cards {
+    --site-cards-medium: 4;
+  }
+}
+@container (width >= 77rem) {
+  .site-cards {
+    --site-cards-small: 6;
   }
 }
 @container (width >= 84rem) {
-  .site-cards:not(
-    :has(> :not(.site-popover) ~ :not(.site-popover) ~ :not(.site-popover) ~ :not(.site-popover))
-  ) {
-    grid-template-columns: repeat(auto-fit, calc((100% - 4rem) / 5));
+  .site-cards {
+    --site-cards-medium: 5;
+  }
+}
+@container (width >= 87rem) {
+  .site-cards {
+    --site-cards-large: 4;
+  }
+}
+@media screen {
+  .site-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .site-cards > .site-card {
+    --site-cards-line: var(--site-cards-medium);
+    --site-cards-gaps: calc((var(--site-cards-line) - 1) * var(--site-card-gap));
+    flex: 0 0 calc((100% - var(--site-cards-gaps)) / var(--site-cards-line));
+    min-inline-size: 0;
+  }
+  .site-cards > .site-card[data-card-size="small"] {
+    --site-cards-line: var(--site-cards-small);
+  }
+  .site-cards > .site-card[data-card-size="large"] {
+    --site-cards-line: var(--site-cards-large);
   }
 }
 /* A card is a clean summary with square corners. Most cards are a button that opens a
@@ -539,8 +614,15 @@ body {
   letter-spacing: var(--kpress-caps-spacing);
   text-transform: var(--kpress-caps-transform);
 }
-/* A long closed form, such as a nested radical, scrolls inside its card rather than
-   widening the page. */
+/* A card's headline, and its popover's, which repeats it: the sans face at the medium
+   weight, the face and weight of the page title and of the sans section headings
+   (`h3`). A long closed form, such as a nested radical, scrolls inside its card rather
+   than widening the page. */
+.kpress .site-card .site-card-value,
+.site-popover .site-popover-value {
+  font-family: var(--kpress-font-sans);
+  font-weight: var(--site-font-weight-sans-medium);
+}
 .kpress .site-card .site-card-value {
   font-size: 1.15em;
   max-inline-size: 100%;
@@ -665,11 +747,29 @@ body {
 .site-table tr[hidden] {
   display: none;
 }
-.site-table details > summary {
-  cursor: pointer;
+/* The row a page's address names (`all-results.html#t-018`) shows whatever the filters
+   hide, so a link to a row never lands on nothing: with scripts `table.js` keeps it,
+   and without them this rule does. */
+.site-table tr[hidden]:target {
+  display: table-row;
 }
-.site-table details > summary::marker {
-  color: var(--kpress-doc-accent);
+/* Without scripts the filters cannot be changed, so nothing stays filtered: every row
+   shows, each group under its heading, and the bar, which would do nothing, does not. */
+@media (scripting: none) {
+  .site-result-filters {
+    display: none;
+  }
+  .site-table tbody tr[hidden] {
+    display: table-row;
+  }
+}
+@media (scripting: none) and (width < 40rem) {
+  .site-results tbody tr[hidden] {
+    display: grid;
+  }
+  .site-results tbody tr.site-group-row[hidden] {
+    display: block;
+  }
 }
 :is(.site-table, .site-popover) .site-detail {
   color: var(--site-support-color);
@@ -815,39 +915,6 @@ body {
   word-break: normal;
 }
 
-/* kpress draws a <details> as a bordered disclosure with a caps label; inside a table
-   row the summary is the result itself, so it reads as plain text with only the chevron.
-   It stays in the sans face: kpress sets math in a <details> or a table in sans, and
-   math matches the text around it. */
-.kpress .site-table details {
-  border: 0;
-  font-family: inherit;
-  font-weight: inherit;
-  margin: 0;
-}
-.kpress .site-table summary {
-  color: var(--kpress-doc-text);
-  display: block;
-  font-family: var(--kpress-font-sans);
-  font-size: inherit;
-  font-variant-caps: normal;
-  font-weight: inherit;
-  letter-spacing: normal;
-  line-height: 1.4;
-  padding: 0;
-  text-transform: none;
-}
-.kpress .site-table summary::before {
-  color: var(--kpress-doc-accent);
-  display: inline-block;
-  margin-inline-end: 0.3rem;
-}
-.kpress .site-table details[open] summary {
-  border-bottom: 0;
-}
-.kpress .site-table details > :not(summary) {
-  padding: 0.3rem 0 0;
-}
 .kpress .site-table {
   font-size: var(--site-font-size-note);
 }
@@ -912,7 +979,10 @@ body {
   .site-results tr[hidden] {
     display: none;
   }
-  .site-results tr.site-group-row {
+  .site-results tr[hidden]:target {
+    display: grid;
+  }
+  .site-results tr.site-group-row:not([hidden]) {
     display: block;
   }
   .kpress .site-results td {
@@ -969,7 +1039,7 @@ body {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);
 }
-.kpress .site-table tr[data-standing="superseded"] :is(td, summary) {
+.kpress .site-table tr[data-standing="superseded"] td {
   color: var(--site-support-color);
 }
 
@@ -1013,6 +1083,42 @@ body {
 }
 .kpress .site-table tbody tr:not(.site-group-row):hover {
   background: var(--site-wash);
+}
+/* A row reached by its address (`frontier.html#n-11`, `all-results.html#t-018`) is
+   marked with the same wash. */
+.kpress .site-table tbody tr:target {
+  background: var(--site-wash);
+}
+
+/* ---------- Row popovers ----------
+   The row is the unit (paper-design.md, Row popovers): a row with detail opens one
+   popover, a card's, wherever it is pressed, and no cell expands on its own. Beyond the
+   hover wash above, it keeps the wash while it has keyboard focus, with an accent ring
+   inside its edge, and while its popover is open. Once `row-popover.js` has made it the
+   control it shows the pointer anywhere on it; its native trigger, which opens the
+   popover without scripts, reads as the text it wraps. */
+.kpress .site-table tbody tr[data-row-popover]:is(:focus-visible, [aria-expanded="true"]) {
+  background: var(--site-wash);
+}
+.kpress .site-table tbody tr[data-row-popover]:focus-visible {
+  outline: 2px solid var(--kpress-doc-accent);
+  outline-offset: -2px;
+}
+.kpress .site-table tbody tr[data-row-ready] {
+  cursor: pointer;
+}
+.kpress .site-table .site-row-open {
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-align: inherit;
+}
+/* A row's detail can carry long unbroken names, such as evidence identifiers. */
+.site-row-pop .site-detail dd {
+  overflow-wrap: anywhere;
 }
 
 /* kpress wraps a wide table in its own full-bleed wrap, sized from the viewport. The
@@ -1081,10 +1187,6 @@ body {
 .site-page .site-frontier {
   --site-wide: 86rem;
 }
-/* A case reached by its anchor (`frontier.html#n-11`) is marked with the card wash. */
-.kpress .site-frontier tbody tr:target {
-  background: var(--site-wash);
-}
 .site-frontier .site-frontier-n {
   align-items: center;
   display: inline-flex;
@@ -1125,34 +1227,10 @@ body {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.site-frontier td.num .site-detail {
-  text-align: start;
-}
-/* A cell's "more" is a quiet inline toggle, not kpress's boxed section disclosure. */
-.kpress .site-frontier details {
-  border: 0;
-  margin: 0.1rem 0 0;
-}
-.kpress .site-frontier details > summary {
-  display: inline-flex;
-  font-size: var(--site-font-size-note);
-  font-variant-caps: normal;
-  letter-spacing: normal;
-  padding: 0;
-  text-transform: none;
-  white-space: nowrap;
-}
-.kpress .site-frontier details[open] summary {
-  border-bottom: 0;
-}
-.kpress .site-frontier details > :not(summary) {
-  padding: 0;
-}
-.site-frontier .site-detail {
-  min-width: 12rem;
-}
-.site-frontier .site-detail dd {
-  overflow-wrap: anywhere;
+/* The row's trigger sits under the case file's link, so the Records column stays as
+   narrow as the link. */
+.site-frontier .site-records .site-cell-quiet {
+  display: block;
 }
 
 /* The homepage's picture: one packing, centered under the title, in the page's ink. */
@@ -1200,6 +1278,12 @@ body {
 }
 .site-level .site-chip {
   text-align: center;
+}
+/* How many results stand at a level, after its meaning; an empty rung says so. */
+.site-level-count {
+  color: var(--kpress-doc-text-muted, inherit);
+  font-size: 0.85em;
+  white-space: nowrap;
 }
 
 /* The atlas grid: every case's known-best packing in a square cell, numbered beneath.

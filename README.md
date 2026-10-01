@@ -1,22 +1,34 @@
 # The Squares Project
 
-The Squares Project studies $s(n)$, the side of the smallest square that holds $n$
-non-overlapping unit squares.
-The problem is elementary to state and remains open even at small $n$. Its central case,
-eleven squares, is now settled: $s(11) = T = 3.877083590022814\ldots$, the exact side of
-Walter Trump’s 1979 packing.
+<!-- BEGIN SHARED: project-intro (devtools.site_documents) -->
 
+The Squares Project studies $s(n)$, the side of the smallest square that holds $n$
+non-overlapping unit squares, which may be rotated.
+The problem is elementary to state and open for most $n$: the answer is known only to
+lie between the best packing found and the best lower bound proved.
+
+The project covers the problem at every $n$. Its [frontier](packing/frontier/STATUS.md)
+keeps one record for each case $n = 1\ldots324$, with reported and verified bounds kept
+separate, and its [results register](packing/frontier/RESULTS.md) grades each registered
+result, this project’s or another’s, by how far it has been checked.
+It goes into most depth where there is recent progress, which in September 2026 means
+$n = 11$, $n = 17$, and the exact values newly proved at $n = 21$, $32$ and $45$.
+
+A recent major result settles eleven squares, until then the smallest case still open:
+$s(11) = T = 3.877083590022814\ldots$, the exact side of Walter Trump’s 1979 packing.
 [T-060](packing/frontier/RESULTS.md) records the global lower bound from the
 Astra-assisted
 [11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal) proof by
 Queuingtheorydotcom, building on this project and Kleddamag.
 This repository independently replayed the pinned exact proof inputs and audited their
-mathematical composition (`V4/C5/S5`); [T-011](packing/frontier/RESULTS.md) verifies
-Trump’s matching witness.
+mathematical composition (`V3/C3/S5`: machine-checked, review record pending);
+[T-011](packing/frontier/RESULTS.md) verifies Trump’s matching witness.
 The [case record](packing/frontier/n-011.md),
 [review](docs/project/reviews/review-2026-09-29-n11-optimality.md), and
 [retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) state the
 method’s shared dependencies and the publisher’s four stale cached-audit digests.
+
+<!-- END SHARED: project-intro -->
 
 **The results live on the project site,
 [Square Packing](https://jlevy.github.io/squares/).** It carries the
@@ -32,6 +44,17 @@ per-case [status table](packing/frontier/STATUS.md), and
 [`epistemics.md`](epistemics.md), which defines how each claim is graded; the atlas
 films are on the
 [`v0.4.2` release](https://github.com/jlevy/squares/releases/tag/v0.4.2).
+
+The site’s [papers](https://jlevy.github.io/squares/papers.html) explain the proofs.
+The
+[**eleven-square optimality paper**](https://jlevy.github.io/squares/n11-optimality/)
+explains T-060 from the exact construction through the exhaustive case exclusions,
+geometric capture and local-isolation argument that prove $s(11) = 3.8770835900\ldots$.
+It has a [PDF](https://jlevy.github.io/squares/n11-optimality/t-060-explainer.pdf) and
+[maintained source](packing/devtools/templates/n11-optimality-article.md), with figures
+drawn from the retained proof data.
+The [explainer](https://jlevy.github.io/squares/explainer.html) proves the earlier,
+simpler lower bounds on $s(11)$.
 
 This repository also contains
 **[a set of tools and AI workflows for automated mathematical research](#autonomous-research-process)**:

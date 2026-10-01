@@ -3,8 +3,9 @@
 The page's prose lives in `templates/overview-article.md`; every block that states a
 fact is built here and substituted into it, so a bound or a count never appears in the
 template as a literal. Values are set as `$…$` inline math for KaTeX, and every table
-works without scripts: rows are all present, details open with `<details>`, and
-`overview/table.js` adds sorting and filters on top.
+works without scripts: rows are all present, a row's detail opens in its popover from
+the native trigger in the row (`row_detail`), and `overview/table.js` adds sorting and
+filters on top while `overview/row-popover.js` makes the whole row the control.
 """
 
 from __future__ import annotations
@@ -13,9 +14,12 @@ import base64
 import html
 import re
 from collections import Counter
+from collections.abc import Iterable, Sequence
 from datetime import date
 from functools import cache
+from html.parser import HTMLParser
 from pathlib import Path
+from typing import Literal, NamedTuple, get_args
 from urllib.parse import urlsplit
 
 from devtools import repo_links
@@ -31,12 +35,9 @@ from devtools.overview_data import (
     tex_bounds,
 )
 from devtools.render_overview import DOCUMENT_PAGES, RESULTS_PAGE
-from devtools.render_recent_results import HOLDS, NOT_A_BOUND, STANDINGS, Lane
+from devtools.render_recent_results import HOLDS, NOT_A_BOUND, STANDINGS, Lane, Row
 from devtools.repo_links import branch_file
 from sqpack.yamlio import safe_load
-
-#: Confirmation rungs from strongest to weakest.
-C_RUNGS = ("C5", "C4", "C3", "C2", "C1", "C0")
 
 
 def _esc(text: object) -> str:
@@ -119,6 +120,142 @@ def card_hero(src: str) -> str:
     )
 
 
+#: A card's size, narrowest first. A card says which it is in `data-card-size`, and
+#: `site.css` gives each its width: a column of the grid of that size's minimum column
+#: the card section's frame fits (`paper-design.md`, Cards).
+CardSize = Literal["small", "medium", "large"]
+CARD_SIZES: tuple[CardSize, ...] = get_args(CardSize)
+
+#: The default size's two thresholds, in characters of a card's own text, its headline
+#: and its note together: fewer than the first is a small card, the second or more a
+#: large one, and anything between a medium one.
+CARD_SMALL_BELOW = 80
+CARD_LARGE_FROM = 160
+
+#: Each card section's size, declared here so its cards are one width and its lines one
+#: grid. Each is the size its typical card's text asks for by `card_size` (a test holds
+#: the two together): the documents' one-line notes are small; the dimension cards list a
+#: whole rung ladder, so they are large; the rest carry a sentence and are medium.
+SECTION_CARD_SIZES: dict[str, CardSize] = {
+    "pages": "medium",
+    "dimensions": "large",
+    "atlas": "medium",
+    "projects": "medium",
+    "documents": "small",
+}
+
+
+#: Elements with no end tag, which open nothing a parser must later close.
+_VOID_TAGS = frozenset({"br", "hr", "img", "input", "wbr"})
+
+
+class _ReadingText(HTMLParser):
+    """An HTML fragment's text as a reader sees it: a formula is its MathML's text, not
+    also the TeX kpress carries beside it for KaTeX to set. `outside` is the text that
+    is in no formula, and `formulas` counts them."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.parts: list[str] = []
+        self.outside: list[str] = []
+        self.formulas = 0
+        self._skipping = 0
+        self._in_math = 0
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag in _VOID_TAGS:
+            return
+        classes = (dict(attrs).get("class") or "").split()
+        if self._in_math:
+            self._in_math += 1
+        elif "kpress-math" in classes:
+            self._in_math = 1
+            self.formulas += 1
+        if self._skipping:
+            self._skipping += 1
+        elif "kpress-math-render" in classes:
+            self._skipping = 1
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag in _VOID_TAGS:
+            return
+        if self._skipping:
+            self._skipping -= 1
+        if self._in_math:
+            self._in_math -= 1
+
+    def handle_data(self, data: str) -> None:
+        if not self._skipping:
+            self.parts.append(data)
+        if not self._in_math:
+            self.outside.append(data)
+
+
+def _read(fragment: str) -> _ReadingText:
+    reader = _ReadingText()
+    reader.feed(fragment)
+    reader.close()
+    return reader
+
+
+def reading_text(fragment: str) -> str:
+    """`fragment`'s text as it reads, with runs of white space as one space."""
+    return " ".join("".join(_read(fragment).parts).split())
+
+
+def formulas(fragment: str) -> int:
+    """How many formulas `fragment` holds."""
+    return _read(fragment).formulas
+
+
+def words(fragment: str) -> str:
+    """`fragment`'s text that is in no formula, with runs of white space as one space."""
+    return " ".join("".join(_read(fragment).outside).split())
+
+
+def is_all_math(fragment: str) -> bool:
+    """Whether `fragment` is mathematics standing alone: at least one formula, and no
+    word, digit or mark outside one. `$n = 11$` is; "Earlier $n = 11$ lower bounds" is
+    not."""
+    return formulas(fragment) > 0 and not words(fragment)
+
+
+#: The mark that sets a block's mathematics in the serif face whatever the words around
+#: it are set in; the host adapter's sans test (`host_math_init.js`) honours it.
+SERIF_MATH = 'data-math-face="serif"'
+
+
+def headline_math_face(headline: str) -> str:
+    """The attribute, with its leading space, for a headline's element: `SERIF_MATH`
+    when the headline is mathematics standing alone, such as `$n = 11$`, and nothing
+    when it has words, whose math then follows them into the sans face."""
+    return f" {SERIF_MATH}" if is_all_math(headline) else ""
+
+
+def size_for_length(length: float) -> CardSize:
+    """The size a card whose text runs to `length` characters takes by default: under
+    `CARD_SMALL_BELOW` is small, `CARD_LARGE_FROM` or more is large, and between them
+    medium."""
+    if length < CARD_SMALL_BELOW:
+        return "small"
+    return "large" if length >= CARD_LARGE_FROM else "medium"
+
+
+def card_size(*text: str) -> CardSize:
+    """The size a card takes when its spec declares none, from how much text it carries:
+    its headline and its note (and a direct card's address), as HTML, counted as they
+    read (`reading_text`) and sized by `size_for_length`."""
+    return size_for_length(sum(len(reading_text(part)) for part in text))
+
+
+def _size_attribute(size: CardSize | None, *text: str) -> str:
+    """A card's `data-card-size`: the size its spec declares, or `card_size`'s default."""
+    chosen = size or card_size(*text)
+    if chosen not in CARD_SIZES:
+        raise SystemExit(f"{chosen!r} is not a card size: {', '.join(CARD_SIZES)}")
+    return f'data-card-size="{chosen}"'
+
+
 def card(
     target: str,
     label: str,
@@ -130,6 +267,8 @@ def card(
     preview: str = "",
     also: tuple[str, str] | None = None,
     hero: str = "",
+    size: CardSize | None = None,
+    links: Sequence[tuple[str, str]] = (),
 ) -> str:
     """A card and the popover it opens. The card is a caps label, the summary and a line
     under it; pressing it opens a popover that repeats the label and summary, shows
@@ -141,13 +280,18 @@ def card(
     previewed from `preview`, and the button scrolls there; so is a row on another page,
     such as a result's in the results table, and the button goes to that page. `also`
     adds a second, quiet link, such as the document on GitHub. `hero` heads the card
-    with a picture (`card_hero`).
+    with a picture (`card_hero`). `size` is the card's width, small, medium or large;
+    left out, `card_size` chooses it from the length of the value and note. `links` are
+    further quiet links beside the button, each its address and its words, for what a
+    card's note names but cannot link: a card is a button.
 
     The popover is native (`popover`), so it opens, closes on Escape or a click outside,
-    and follows its button with no script. It is set in sans, and its attribute tells
-    kpress so, so its math is sans too. The label and action are escaped here; the value,
-    note and preview are HTML, so they may carry math.
+    and follows its button with no script. It is set in sans, so its math is sans too,
+    with one exception the card shares: a headline that is mathematics standing alone
+    (`headline_math_face`) is set in the serif. The label and action are escaped here;
+    the value, note and preview are HTML, so they may carry math.
     """
+    face = headline_math_face(value)
     kind = card_kind(href)
     if kind == "page" and not preview:
         body = (
@@ -156,24 +300,23 @@ def card(
         )
     else:
         body = f'<div class="site-popover-preview">{preview}</div>'
-    second = (
-        f' <a class="site-popover-also" href="{_esc(also[0])}">{_esc(also[1])}</a>'
-        if also
-        else ""
+    second = "".join(
+        f' <a class="site-popover-also" href="{_esc(url)}">{_esc(words)}</a>'
+        for url, words in (*((also,) if also else ()), *links)
     )
     return (
         f'<button type="button" class="site-card" popovertarget="{_esc(target)}" '
-        f'data-go="{kind}">'
+        f'data-go="{kind}" {_size_attribute(size, value, note)}>'
         f"{card_hero(hero) if hero else ''}"
         f'<span class="site-card-label">{_esc(label)}</span>'
-        f'<span class="site-card-value">{value}</span>'
+        f'<span class="site-card-value"{face}>{value}</span>'
         f'<span class="site-card-note">{note}</span></button>'
         f'<div class="site-popover" id="{_esc(target)}" popover '
         f'data-go="{kind}">'
         f'<button type="button" class="site-popover-close" popovertarget="{_esc(target)}" '
         'popovertargetaction="hide" aria-label="Close">\u00d7</button>'
         f'<span class="site-card-label">{_esc(label)}</span>'
-        f'<p class="site-popover-value" data-math-face="serif">{value}</p>{body}'
+        f'<p class="site-popover-value"{face}>{value}</p>{body}'
         f'<p class="site-popover-actions"><a class="site-popover-action" href="{_esc(href)}" '
         f'data-go="{kind}">{_esc(action)}</a>{second}</p>'
         "</div>"
@@ -185,14 +328,114 @@ def _cards(cards: list[str]) -> str:
     return frame + "".join(cards) + "</div></div>"
 
 
+# ---------- Row popovers: the one way a table row shows its detail ----------
+
+
+class RowDetail(NamedTuple):
+    """The three pieces that make a table row the unit (paper-design.md, Row popovers).
+
+    The caller writes `attributes` into the row's `<tr>`, `trigger` into one of its
+    cells, and `popover` after the table, outside every cell, so no cell expands and the
+    panel takes no style from the table. The row finds its popover by id, so sorting and
+    filtering, which move and hide rows, never part a row from its popover.
+    """
+
+    attributes: str
+    """For the `<tr>`: `data-row-popover`, the id of the row's popover, and `aria-label`,
+    the row's accessible name. It carries no `tabindex`: `overview/row-popover.js` makes
+    the row focusable, so a row is never a stop that does nothing."""
+    trigger: str
+    """The row's one native trigger, a `<button popovertarget>` around the row's own key:
+    without scripts it is what opens the popover; with them the whole row does, and the
+    button leaves the tab order so each row is one stop."""
+    popover: str
+    """The panel: a card's popover in every way (`.site-popover`: the close cross, the caps
+    label, the headline, Escape and a click outside), with the row's body and an optional
+    action at its foot."""
+
+
+def row_detail(
+    target: str,
+    *,
+    name: str,
+    trigger: str,
+    label: str,
+    title: str,
+    body: str,
+    action: tuple[str, str] | None = None,
+    deferred: bool = False,
+    fallback: str = "",
+    source: str = "",
+) -> RowDetail:
+    """A table row's popover and the markup that ties its row to it.
+
+    `target` is the popover's id, unique on the page; `name` the row's accessible name,
+    plain text; `trigger` the HTML the native trigger wraps, the row's own key such as its
+    id. The popover repeats `label` as its caps label and `title` as its headline, set as
+    every headline is (`headline_math_face`: serif when it is mathematics standing alone,
+    sans with its words otherwise), then `body`, the row's detail, and, when
+    `action` is `(href, words)`, the one button that goes there. `name`, `label` and the
+    action's words are escaped here; `trigger`, `title` and `body` are HTML.
+
+    A `deferred` body is held in a `<template>`, which the browser parses but neither
+    lays out nor typesets, and `overview/row-popover.js` places it the first time the
+    popover opens: for a body too heavy to render once per row at load. It costs the
+    same bytes. Without scripts a template stays inert, so `fallback`, HTML in a
+    `<noscript>` beside it, is what such a reader's popover shows.
+
+    `source` is for a body too heavy to carry in the page at all: the address, beside
+    the page, of a fuller body that the script fetches when the popover is first opened
+    and puts in place of `body`, which is then the short form the page itself holds and
+    what a reader without scripts, or off the network, keeps. The page gains only the
+    address.
+    """
+    if deferred and source:
+        raise SystemExit(f"{target}: a row body waits in a template or is fetched, not both")
+    if deferred:
+        body = f"<template data-row-pop-body>{body}</template>" + (
+            f"<noscript>{fallback}</noscript>" if fallback else ""
+        )
+    fetched = f' data-row-pop-src="{_esc(source)}"' if source else ""
+    target = _esc(target)
+    attributes = f'data-row-popover="{target}" aria-label="{_esc(name)}"'
+    button = (
+        f'<button type="button" class="site-row-open" popovertarget="{target}">'
+        f"{trigger}</button>"
+    )
+    foot = ""
+    if action:
+        href, words = action
+        kind = card_kind(href)
+        foot = (
+            f'<p class="site-popover-actions"><a class="site-popover-action" '
+            f'href="{_esc(href)}" data-go="{kind}">{_esc(words)}</a></p>'
+        )
+    popover = (
+        f'<div class="site-popover site-row-pop" id="{target}" popover role="dialog" '
+        f'aria-labelledby="{target}-title">'
+        f'<button type="button" class="site-popover-close" popovertarget="{target}" '
+        'popovertargetaction="hide" aria-label="Close">\u00d7</button>'
+        f'<span class="site-card-label">{_esc(label)}</span>'
+        f'<p class="site-popover-value"{headline_math_face(title)} id="{target}-title">'
+        f"{title}</p>"
+        f'<div class="site-row-pop-body"{fetched}>{body}</div>{foot}</div>'
+    )
+    return RowDetail(attributes, button, popover)
+
+
+def plain_text(register: str) -> str:
+    """Register prose as an accessible name: its code marks dropped, its spaces one."""
+    return " ".join(register.replace("`", "").split())
+
+
 def _dl(rows: list[tuple[str, str]]) -> str:
     body = "".join(f"<dt>{label}</dt><dd>{value}</dd>" for label, value in rows)
     return f'<dl class="site-detail">{body}</dl>'
 
 
 def _detail(result: Result) -> str:
-    """A result's claim, composition, next rung, why it matters and novelty label: what
-    its row in the results table opens to."""
+    """A result's claim, composition, next rung, why it matters and novelty label: the
+    short form of what its row opens to, which the page itself carries (`result_row`)."""
     record = result.record
     rows = [("Claim", tex_bounds(" ".join(str(record["claim"]).split())))]
     for key, label in (("composition", "Composition"), ("next_rung", "Next rung")):
@@ -224,11 +467,188 @@ def _records(result: Result) -> str:
     )
 
 
+def result_row_popover_body(result: Result, overview: Overview) -> str:
+    """The body of a result row's popover, the one source of it for every table that
+    lists results: the recent table on the overview and the results page's table. It is
+    the result's whole overview (`result_overview.result_popover_html`): its case drawn,
+    the chain of results on that case, and every link.
+
+    The overviews run to 2.8 MB between them, and two pages list the results, so no page
+    carries one. Each is written once, beside the pages (`result_fragment`,
+    `render_overview.result_fragments`), and a row's popover fetches its own when it
+    first opens (`result_row`).
+    """
+    # `result_overview` reads this module for the chips and the film's facts.
+    from devtools import result_overview  # noqa: PLC0415
+
+    return result_overview.result_popover_html(result, overview)
+
+
+#: Where the result overviews are served, under the site's root: a directory of
+#: fragments, one a result, which are not pages. Not `results/`: `results.html` is
+#: `RESULTS.md`, and a host may serve either at `/results`.
+RESULT_FRAGMENTS = "result"
+
+
+def result_fragment(result_id: str) -> str:
+    """The address of a result's overview, from a page at the site's root. Its links
+    are written from the root too, so only a page there may place it."""
+    return f"{RESULT_FRAGMENTS}/{result_id.lower()}.html"
+
+
+def result_row(result: Result, *, trigger: str, here: bool) -> RowDetail:
+    """A result's row popover, the same on every page: its id as the caps label, its
+    summary as the headline, then the result's short detail (`_detail`), which the
+    script replaces with the whole overview, fetched from `result_fragment` when the
+    popover first opens. A row on the results page (`here`) is the result's own row, so
+    its popover has no button; anywhere else it ends in the button to that row."""
+    action = None if here else (result_url(result.id), f"Open {result.id} in the results table")
+    return row_detail(
+        f"pop-result-{result.id.lower()}",
+        name=f"{result.id}: {plain_text(result.summary)}",
+        trigger=trigger,
+        label=result.id,
+        title=tex_bounds(result.summary),
+        body=_detail(result),
+        action=action,
+        source=result_fragment(result.id),
+    )
+
+
+# ---------- Result filters: one tools bar for every table of results ----------
+
+#: The lowest significance a table of results shows until the reader asks for more.
+SIGNIFICANCE_DEFAULT = 4
+
+#: The rung filters, in the bar's order: the scale, which names the row's attribute
+#: (`data-s`), and the select's label.
+RUNG_FILTERS: tuple[tuple[str, str], ...] = (
+    ("S", "Significance"),
+    ("V", "Verification"),
+    ("C", "Confirmation"),
+)
+
+#: What every select of the bar offers first: no filter on that facet.
+ALL = "All"
+
+
+def result_cases(result: Result) -> str:
+    """A result's cases as its row's `data-n`, which the Case filter reads: each count,
+    and a run of counts as a range, `18-21 26`."""
+    return result.scope.replace(EN_DASH, "-").replace(",", "")
+
+
+def result_facets(result: Result) -> str:
+    """A result row's facets as attributes, the same on every table of results, each one
+    a filter of `result_filters`: whose result it is, its V, C and S rungs as numbers,
+    its standing, its cases and the date the table shows."""
+    record = result.record
+    return (
+        f'data-source="{"ours" if result.ours else "others"}" '
+        f'data-v="{_esc(record["verification"][1:])}" '
+        f'data-c="{_esc(record["confirmation"][1:])}" '
+        f'data-s="{significance(result)}" '
+        f'data-standing="{_esc(standing_key(result.standing))}" '
+        f'data-n="{_esc(result_cases(result))}" '
+        f'data-date="{_esc(first_day(result.dated[1]))}"'
+    )
+
+
+def shown_by_default(result: Result) -> bool:
+    """Whether a result's row shows before the reader touches the filters."""
+    return significance(result) >= SIGNIFICANCE_DEFAULT
+
+
+def rung_options(scale: str) -> list[tuple[str, str]]:
+    """A rung filter's choices: all, then each level above the scale's lowest as a
+    floor, `S4 and up`, the top one bare. The levels are the rubric's own."""
+    levels = sorted(level for level, _ in rubric_levels()[scale])
+    return [
+        ("", ALL),
+        *(
+            (str(level), f"{scale}{level}" + ("" if level == levels[-1] else " and up"))
+            for level in levels[1:]
+        ),
+    ]
+
+
+def _options(options: Iterable[tuple[str, str]], selected: str = "") -> str:
+    return "".join(
+        f'<option value="{_esc(value)}"{" selected" if value == selected else ""}>'
+        f"{_esc(label)}</option>"
+        for value, label in options
+    )
+
+
+def first_day(dated: str) -> str:
+    """A date the register gives only to its year or its month, as the first day of it,
+    so every row's `data-date` is a whole date and orders as text: `1979` is
+    `1979-01-01`, and `2005-03` is `2005-03-01`."""
+    missing = "-01-01"[max(len(dated) - 4, 0) :]
+    return dated + missing if len(dated) < len("2026-01-01") else dated
+
+
+def count_text(shown: int, total: int, noun: str = "results") -> str:
+    """A tools bar's count, as `overview/table.js` writes it (`countText`)."""
+    return f"{total} {noun}" if shown == total else f"{shown} of {total} {noun}"
+
+
+def result_filters(overview: Overview, listed: Sequence[Result]) -> str:
+    """The one tools bar every table of results carries: the overview's recent table and
+    the results page's table. `overview/table.js` drives it.
+
+    One control per facet a row carries (`result_facets`), and they compose: Significance,
+    Verification and Confirmation as floors (`data-bound="min"`), Standing and Source as
+    equalities, Case as a number the row's cases must hold (`covers`), and the date as a
+    range (`from`, `to`). Significance starts at `SIGNIFICANCE_DEFAULT` and every other
+    control at all, so the tables write the rows below that floor `hidden` and the bar
+    writes the count of the rows left: the first paint is the filtered table. Without
+    scripts nothing stays filtered: `site.css` shows every row and drops the bar.
+
+    The choices come from the whole register, never from `listed`, the rows of the table
+    the bar sits over, so the bar is the same on both pages but for its count.
+    """
+    present = {result.standing for result in overview.results}
+    dates = sorted(first_day(result.dated[1]) for result in overview.results)
+    span = f' min="{_esc(dates[0])}" max="{_esc(dates[-1])}"' if dates else ""
+    last = f' max="{max(overview.cases)}"' if overview.cases else ""
+    rungs = "".join(
+        f'<label>{label} <select data-filter="{scale.lower()}" data-bound="min">'
+        f"{_options(rung_options(scale), str(SIGNIFICANCE_DEFAULT) if scale == 'S' else '')}"
+        "</select></label>"
+        for scale, label in RUNG_FILTERS
+    )
+    standings = [
+        ("", ALL),
+        *(
+            (standing_key(standing), standing_label(standing))
+            for standing in STANDINGS
+            if standing in present
+        ),
+    ]
+    sources = [("", ALL), ("ours", "This project"), ("others", "Others")]
+    shown = sum(shown_by_default(result) for result in listed)
+    return (
+        '<div class="site-table-tools site-result-filters">'
+        f"{rungs}"
+        f'<label>Standing <select data-filter="standing">{_options(standings)}</select></label>'
+        f'<label>Source <select data-filter="source">{_options(sources)}</select></label>'
+        '<label>Case <var>n</var> <input type="number" data-filter="n" data-bound="covers" '
+        f'min="1"{last} placeholder="any"></label>'
+        f'<label>From <input type="date" data-filter="date" data-bound="from"{span}></label>'
+        f'<label>to <input type="date" data-filter="date" data-bound="to"{span}></label>'
+        '<span class="site-count" data-count data-noun="results" aria-live="polite">'
+        f"{count_text(shown, len(listed))}</span></div>"
+    )
+
+
 def results_table(overview: Overview) -> str:
     """Every registered result, grouped as `RESULTS.md` groups them, which is by the
     relation `RESULTS.md` prints (`result_credit.source_lineage`), with its
-    standing and, for a result by others, the date it was published."""
-    present = {result.standing for result in overview.results}
+    standing and, for a result by others, the date it was published. Each row opens its
+    result's popover (`result_row`), placed after the table; its id is the trigger.
+    The bar above it is `result_filters`: a row below its default is `hidden` in the
+    HTML, and so is a group heading with no row left under it."""
     head = (
         "<thead><tr>"
         '<th data-sort="text" class="site-col-id">ID</th>'
@@ -243,25 +663,25 @@ def results_table(overview: Overview) -> str:
         "</tr></thead>"
     )
     body = []
+    popovers = []
     for title, members in overview.groups:
+        hidden = "" if any(shown_by_default(result) for result in members) else " hidden"
         body.append(
-            f'<tr class="site-group-row" data-group="{_esc(title)}">'
+            f'<tr class="site-group-row" data-group="{_esc(title)}"{hidden}>'
             f'<th colspan="7" scope="colgroup">{_esc(title)}</th></tr>'
         )
         for result in members:
             record = result.record
             kind, date = result.dated
+            detail = result_row(result, trigger=_esc(result.id), here=True)
+            popovers.append(detail.popover)
             body.append(
-                f'<tr id="{_esc(result.id.lower())}" '
-                f'data-source="{"ours" if result.ours else "others"}" '
-                f'data-c="{_esc(record["confirmation"])}" '
-                f'data-standing="{_esc(standing_key(result.standing))}">'
-                f'<td class="site-col-id" data-value="{_esc(result.id)}">{_esc(result.id)}</td>'
+                f'<tr id="{_esc(result.id.lower())}" {result_facets(result)} '
+                f"{detail.attributes}{'' if shown_by_default(result) else ' hidden'}>"
+                f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
                 f'<td class="num site-col-n" data-value="{result.first_n}">'
                 f"{_esc(result.scope)}</td>"
-                f'<td class="site-col-result"><details><summary>'
-                f"{tex_bounds(result.summary)}</summary>"
-                f"{_detail(result)}</details></td>"
+                f'<td class="site-col-result">{tex_bounds(result.summary)}</td>'
                 '<td class="site-col-credit site-cell-quiet" '
                 f'data-value="{_esc(result.credit)}">'
                 f"{_esc(result.credit)}</td>"
@@ -275,31 +695,11 @@ def results_table(overview: Overview) -> str:
                 f'<td class="site-records">{_records(result)}</td>'
                 "</tr>"
             )
-    tools = (
-        '<div class="site-table-tools">'
-        '<label>Source <select data-filter="source">'
-        '<option value="">all</option><option value="ours">this project</option>'
-        '<option value="others">others</option></select></label>'
-        '<label>Confirmation <select data-filter="c">'
-        '<option value="">all</option>'
-        + "".join(f'<option value="{c}">{c}</option>' for c in C_RUNGS)
-        + "</select></label>"
-        '<label>Standing <select data-filter="standing">'
-        '<option value="">all</option>'
-        + "".join(
-            f'<option value="{_esc(standing_key(standing))}">'
-            f"{_esc(standing_label(standing))}</option>"
-            for standing in STANDINGS
-            if standing in present
-        )
-        + "</select></label>"
-        '<span class="site-count" data-count data-noun="results"></span>'
-        "</div>"
-    )
     return (
-        f'<div class="site-wide">{tools}<div class="site-table-wrap">'
+        f'<div class="site-wide">{result_filters(overview, overview.results)}'
+        '<div class="site-table-wrap">'
         f'<table class="kpress-table site-table site-results" data-site-table>{head}'
-        f"<tbody>{''.join(body)}</tbody></table></div></div>"
+        f"<tbody>{''.join(body)}</tbody></table></div>{''.join(popovers)}</div>"
     )
 
 
@@ -399,6 +799,7 @@ def verification_block() -> str:
                 href=f"epistemics.html#{section}",
                 action=f"Expand {name} in epistemics.md",
                 also=(branch_file(repo_links.EPISTEMICS, f"#{section}"), "On GitHub"),
+                size=SECTION_CARD_SIZES["dimensions"],
             )
         )
     return (
@@ -410,15 +811,6 @@ def verification_block() -> str:
 #: The first day the overview's Recent Results table lists: every result dated on or
 #: after it, by the date the table shows.
 RECENT_FROM = date(2026, 8, 1)
-
-#: The recent table's Significance filter, as (the lowest S rung shown, its label), the
-#: default first. The empty value shows every row.
-RECENT_SIGNIFICANCE: tuple[tuple[str, str], ...] = (
-    ("3", "S3 and up"),
-    ("4", "S4 and up"),
-    ("5", "S5"),
-    ("", "All"),
-)
 
 #: A summary that leads with its formula: the formula, then the method after "by", then
 #: a trailing ", reported" that the standing chips already say.
@@ -477,32 +869,15 @@ def status_chips(result: Result) -> str:
     return " ".join(_rung(rung) for rung in rungs) + " " + standing_chips(result.standing)
 
 
-def recent_filter(shown: int, total: int) -> str:
-    """The recent table's tools bar: one Significance select over the rows' `data-s`,
-    read as a lower bound and set to its default, and the count of the rows it leaves,
-    written as `table.js` writes it so the first paint already reads right."""
-    options = "".join(
-        f'<option value="{value}"{" selected" if index == 0 else ""}>{_esc(label)}</option>'
-        for index, (value, label) in enumerate(RECENT_SIGNIFICANCE)
-    )
-    count = f"{total} results" if shown == total else f"{shown} of {total} results"
-    return (
-        '<div class="site-table-tools site-recent-tools">'
-        '<label>Significance <select data-filter="s" data-bound="min">'
-        f"{options}</select></label>"
-        '<span class="site-count" data-count data-noun="results" aria-live="polite">'
-        f"{count}</span></div>"
-    )
-
-
 def recent_table(overview: Overview) -> str:
     """Every result since `RECENT_FROM` as one table, newest first: the date, the result
     linking to its row on the results page with its id quiet beside it, the method, the
     credit and the status chips. A result by others is dated by its publication, as
     `RESULTS.md` dates it, and this project's by the day it was established; the cell
-    says which. The Significance filter above it starts at its default, and a row below
-    that is `hidden` in the HTML, so the first paint is already filtered."""
-    floor = int(RECENT_SIGNIFICANCE[0][0])
+    says which. The bar above it is `result_filters`, the results page's: a row below
+    its default is `hidden` in the HTML, so the first paint is already filtered. Each
+    row opens its result's popover (`result_row`), the results page's, ending in the
+    button to that page's row; the quiet id is its trigger."""
     results = recent_results(overview)
     head = (
         "<thead><tr>"
@@ -515,31 +890,31 @@ def recent_table(overview: Overview) -> str:
         "</tr></thead>"
     )
     rows = []
+    popovers = []
     for result in results:
         kind, dated = result.dated
         formula, method = split_summary(result.summary)
-        score = significance(result)
+        detail = result_row(result, trigger=_esc(result.id), here=False)
+        popovers.append(detail.popover)
         rows.append(
-            f'<tr data-result="{_esc(result.id.lower())}" '
-            f'data-standing="{_esc(standing_key(result.standing))}" '
-            f'data-s="{score}"{" hidden" if score < floor else ""}>'
+            f'<tr data-result="{_esc(result.id.lower())}" {result_facets(result)} '
+            f"{detail.attributes}{'' if shown_by_default(result) else ' hidden'}>"
             f'<td class="site-col-date"><span class="site-date-kind">{_esc(kind)}</span> '
             f"{_esc(dated)}</td>"
             f'<td class="site-col-result"><a href="{_esc(result_url(result.id))}">'
             f"{tex_bounds(formula)}</a> "
-            f'<span class="site-cell-quiet">{_esc(result.id)}</span></td>'
+            f'<span class="site-cell-quiet">{detail.trigger}</span></td>'
             f'<td class="site-col-method">{tex_bounds(method)}</td>'
             f'<td class="site-col-credit" title="{_esc(result.credit)}">'
             f"{credit_cell(result.credit)}</td>"
             f'<td class="site-col-status">{status_chips(result)}</td>'
             "</tr>"
         )
-    shown = sum(significance(r) >= floor for r in results)
     return (
-        f'<div class="site-wide">{recent_filter(shown, len(results))}'
+        f'<div class="site-wide">{result_filters(overview, results)}'
         '<div class="site-table-wrap">'
         '<table class="kpress-table site-table site-results site-recent-table">'
-        f"{head}<tbody>{''.join(rows)}</tbody></table></div></div>"
+        f"{head}<tbody>{''.join(rows)}</tbody></table></div>{''.join(popovers)}</div>"
     )
 
 
@@ -609,20 +984,54 @@ def _lane_results(results: str) -> str:
     )
 
 
+def _lane_detail(lane: Lane) -> str:
+    """One lane in a replay row's popover: its value, who holds it and when it was
+    published, and the register entries that carry it with their rungs."""
+    held = _esc(lane.holder) + (f", published {_esc(lane.published)}" if lane.published else "")
+    entries = _lane_results(lane.results)
+    return f'{_lane_math(lane)} <span class="site-cell-quiet">{held}</span>' + (
+        f"<br>{entries}" if entries else ""
+    )
+
+
+def replay_row_popover_body(row: Row) -> str:
+    """The body of an awaiting-replay row's popover: the bound a source reports and the
+    one verified here, each with its holder, date and the entries that carry it."""
+    return (
+        '<dl class="site-detail">'
+        f"<dt>Reported</dt><dd>{_lane_detail(row.reported)}</dd>"
+        f"<dt>Verified here</dt><dd>{_lane_detail(row.verified)}</dd></dl>"
+    )
+
+
 def awaiting_replay(overview: Overview) -> str:
     """The recent cases whose reported lower bound differs from the verified one: a
     source's bound waiting on a replay here. One row per case, grouped by holder and the
-    entries that carry the claim, each case linked to its row in the frontier atlas."""
+    entries that carry the claim, each case linked to its row in the frontier atlas.
+    Each row opens its popover (`replay_row_popover_body`), its reported value the
+    trigger, ending in the button to the frontier row; the popovers follow the
+    disclosure, so none takes its compact table's style."""
     rows = overview.awaiting_replay
     if not rows:
         return ""
     groups: dict[tuple[str, str], list[str]] = {}
+    popovers = []
     for row in rows:
         reported = row.reported
+        detail = row_detail(
+            f"pop-replay-n-{row.n}",
+            name=f"n = {row.n}, reported {plain_text(reported.shown)}",
+            trigger=_lane_math(reported),
+            label="Awaiting replay",
+            title=math_html(f"n = {row.n}"),
+            body=replay_row_popover_body(row),
+            action=(f"frontier.html#n-{row.n}", f"Open n = {row.n} in the frontier atlas"),
+        )
+        popovers.append(detail.popover)
         groups.setdefault((reported.holder, reported.results), []).append(
-            f'<tr id="replay-n-{row.n}" data-n="{row.n}">'
+            f'<tr id="replay-n-{row.n}" data-n="{row.n}" {detail.attributes}>'
             f'<td class="num"><a href="frontier.html#n-{row.n}">{row.n}</a></td>'
-            f"<td>{_lane_math(reported)}</td>"
+            f"<td>{detail.trigger}</td>"
             f"<td>{_lane_math(row.verified)}</td>"
             f'<td class="site-col-date">{_esc(reported.published or "")}</td></tr>'
         )
@@ -639,7 +1048,7 @@ def awaiting_replay(overview: Overview) -> str:
         '<div class="site-table-wrap">'
         '<table class="kpress-table site-table site-replay-table">'
         "<thead><tr><th>n</th><th>Reported</th><th>Verified here</th><th>Published</th>"
-        f"</tr></thead><tbody>{body}</tbody></table></div></details>"
+        f"</tr></thead><tbody>{body}</tbody></table></div></details>{''.join(popovers)}"
     )
 
 
@@ -678,25 +1087,125 @@ def document_cards() -> str:
                 href=page,
                 action=f"Expand {path.rsplit('/', 1)[-1]}",
                 also=(branch_file(path), "On GitHub"),
+                size=SECTION_CARD_SIZES["documents"],
             )
             for (path, label, note), page in zip(DOCUMENTS, DOCUMENT_PAGES, strict=True)
         ]
     )
 
 
-#: The site's other pages, as the overview's cards show them: the page, a label, its
-#: title, and one line on what a reader finds there. Both are register prose, so a
-#: bound in either is written in ASCII (`s(11) >= 3.8264…`) and set as math.
-PAGES: tuple[tuple[str, str, str, str], ...] = (
-    (
-        "explainer.html",
-        "Explainer",
-        "Earlier n = 11 lower bounds",
-        (
-            "How weighted certificates proved s(11) >= 3.8264… before T-060 settled the case, "
-            "with the certificate drawn and checkable in the page."
+#: When the explainer's proofs are from, as its cards say it: T-018 was established on
+#: 4 September 2026 and T-025 and T-026 on 9 September (`results.yaml`), first published
+#: on 5 and 13 September (`sqpack.release.PUBLICATION_HISTORY`). A test holds this phrase
+#: to those dates.
+EXPLAINER_AS_OF = "early September"
+
+
+class Paper(NamedTuple):
+    """One of the site's papers, as its card says what it is: where it is served, a caps
+    label naming its kind, its title, one or two sentences on what it is, the size of
+    its card on the Papers page, and the quiet links its card's popover carries for
+    what the description names. The title and description are register prose, so
+    `n = 11` in either is set as math."""
+
+    href: str
+    label: str
+    title: str
+    description: str
+    size: CardSize = "large"
+    links: tuple[tuple[str, str], ...] = ()
+
+
+#: Where the optimality paper is served, which `render_n11_optimality_explainer` builds
+#: (its `SITE_PATH`; a test holds the two together). Named here rather than read from
+#: that module, which loads the explainer's renderer and so this one's.
+OPTIMALITY_PAPER = "n11-optimality/t-060-explainer.html"
+
+#: Where the explainer's card sends a reader for the newer optimality proofs it names:
+#: the paper that explains the proof, and T-060's row in the results table. Both of the
+#: explainer's cards carry them. A card is a button and holds no link, so its popover
+#: does.
+OPTIMALITY_LINKS: tuple[tuple[str, str], ...] = (
+    (OPTIMALITY_PAPER, "The optimality paper"),
+    (result_url("T-060"), "The optimality proof, T-060"),
+)
+
+#: The site's papers, in the order the Papers page shows them, one large card each
+#: (`paper_cards`). A new paper is one entry here. The optimality paper is first: it
+#: explains the result that stands, T-060, where the explainer proves the lower bounds
+#: T-060 superseded and the tutorial is the background to both. Its title is its
+#: renderer's (`render_n11_optimality_explainer.TITLE`) in sentence case, and its
+#: description says what T-060's rungs allow: a proof, machine-checked and reviewed
+#: here with its review record pending (`V3/C3`), never "formal". The explainer's title
+#: is the owner's (2026-09-30), as `render_explainer.TITLE`
+#: has it in title case; the tutorial's description is `TUTORIAL.md`'s own opening, its
+#: audience and what it owns.
+PAPERS: tuple[Paper, ...] = (
+    Paper(
+        href=OPTIMALITY_PAPER,
+        label="Optimality paper",
+        title="Why eleven squares need this much room",
+        description=(
+            "Explains the accepted proof that Trump\u2019s 1979 packing of eleven squares "
+            "is optimal, s(11) = 3.8770835\u2026 (T-060): the exact construction, the "
+            "exhaustive case exclusions, the geometric capture and the local-isolation "
+            "argument, with figures drawn from the retained proof data."
+        ),
+        links=((result_url("T-060"), "The optimality proof, T-060"),),
+    ),
+    Paper(
+        href="explainer.html",
+        label="Explainer",
+        title="New lower bounds for square packing for n = 11",
+        description=(
+            "An explainer and proof of certain lower bounds for n = 11. It explains the "
+            f"earlier, simpler proofs as of {EXPLAINER_AS_OF}; newer optimality proofs now "
+            "exist (T-060)."
+        ),
+        links=OPTIMALITY_LINKS,
+    ),
+    Paper(
+        href="tutorial.html",
+        label="Tutorial",
+        title="Square packing from first principles",
+        description=(
+            "An introduction for anyone new to the problem: what the objects are, why the "
+            "approach is shaped the way it is, and what the research has and has not "
+            "established. Each outside idea it uses, from linear programming to algebraic "
+            "number fields, is introduced where it is first needed."
         ),
     ),
+)
+#: The explainer, whose card is the same on the overview as on the Papers page.
+EXPLAINER = next(paper for paper in PAPERS if paper.href == "explainer.html")
+
+
+def paper_cards() -> str:
+    """One card per paper, the overview's page cards in kind: the whole card is a button
+    that opens a popover framing the paper, which expands to it."""
+    return _cards(
+        [
+            card(
+                "pop-paper-" + re.sub(r"[^a-z0-9]+", "-", paper.href.removesuffix(".html")),
+                paper.label,
+                tex_bounds(paper.title),
+                tex_bounds(paper.description),
+                href=paper.href,
+                action=f"Expand the {paper.label.lower()}",
+                size=paper.size,
+                links=paper.links,
+            )
+            for paper in PAPERS
+        ]
+    )
+
+
+#: The site's other pages, as the overview's cards show them: the page, a label, its
+#: title, and one line on what a reader finds there. Both are register prose, so a
+#: bound in either is written in ASCII (`s(11) >= 3.8264…`) and set as math. The
+#: explainer's card is its paper's; the tutorial's keeps a shorter line here.
+PAGES: tuple[tuple[str, str, str, str], ...] = (
+    (EXPLAINER.href, EXPLAINER.label, EXPLAINER.title, EXPLAINER.description),
     (
         "tutorial.html",
         "Tutorial",
@@ -730,6 +1239,8 @@ def page_cards() -> str:
                 tex_bounds(note),
                 href=href,
                 action=f"Expand the {label.lower()}",
+                size=SECTION_CARD_SIZES["pages"],
+                links=EXPLAINER.links if href == EXPLAINER.href else (),
             )
             for href, label, title, note in PAGES
         ]
@@ -875,10 +1386,20 @@ def _breakable(address: str) -> str:
     return "/<wbr>".join(_esc(part) for part in address.split("/"))
 
 
-def link_card(url: str, label: str, value: str, note: str, *, hero: str = "") -> str:
+def link_card(
+    url: str,
+    label: str,
+    value: str,
+    note: str,
+    *,
+    hero: str = "",
+    size: CardSize | None = None,
+) -> str:
     """A card that is itself the link, with no popover: for a place whose address, or
     whose picture, is the whole of what a preview would say. It carries the label, the
-    value and note, and `hero` heads it with a picture (`card_hero`).
+    value and note, and `hero` heads it with a picture (`card_hero`). `size` is its
+    width, as `card` takes it; left out, `card_size` chooses it from the value, the note
+    and the address shown.
 
     Every card that navigates directly opens its target in a new tab, whether that is a
     page or file of this site or a place off it, so the page the reader chose it from
@@ -896,10 +1417,11 @@ def link_card(url: str, label: str, value: str, note: str, *, hero: str = "") ->
         )
     return (
         f'<a class="site-card site-card-link" href="{_esc(url)}"{typed} data-go="{kind}" '
+        f"{_size_attribute(size, value, note, address)} "
         'target="_blank" rel="noopener noreferrer">'
         f"{card_hero(hero) if hero else ''}"
         f'<span class="site-card-label">{_esc(label)}</span>'
-        f'<span class="site-card-value">{value}</span>'
+        f'<span class="site-card-value"{headline_math_face(value)}>{value}</span>'
         f'<span class="site-card-note">{note}</span>'
         f"{address}"
         "</a>"
@@ -908,11 +1430,20 @@ def link_card(url: str, label: str, value: str, note: str, *, hero: str = "") ->
 
 def other_project_cards() -> str:
     """One card per other project: its repository's name, its author, what it holds and
-    its address. Each card is the link itself, opening the project in a new tab."""
+    its address. Each card is the link itself, opening the project in a new tab. The note
+    is prose like a page card's, so a case it names (`n = 21`) is set as math."""
     cards = []
     for url, author, note in OTHER_PROJECTS:
         name = urlsplit(url).path.rstrip("/").rsplit("/", 1)[-1]
-        cards.append(link_card(url, f"By {author}", _esc(name), _esc(note)))
+        cards.append(
+            link_card(
+                url,
+                f"By {author}",
+                _esc(name),
+                tex_bounds(note),
+                size=SECTION_CARD_SIZES["projects"],
+            )
+        )
     return _cards(cards)
 
 
@@ -960,7 +1491,14 @@ def atlas_cards() -> str:
     picture and itself the link: a poster opens its PDF, the film its own page."""
     return _cards(
         [
-            link_card(href, label, tex_bounds(value), _esc(note), hero=hero)
+            link_card(
+                href,
+                label,
+                tex_bounds(value),
+                tex_bounds(note),
+                hero=hero,
+                size=SECTION_CARD_SIZES["atlas"],
+            )
             for href, hero, label, value, note in ATLAS_CARDS
         ]
     )
@@ -1078,7 +1616,7 @@ def atlas_popover() -> str:
         '<button type="button" class="site-popover-close" popovertarget="pop-atlas" '
         'popovertargetaction="hide" aria-label="Close">\u00d7</button>'
         '<span class="site-card-label">Best known packing</span>'
-        '<p class="site-popover-value site-atlas-pop-title" data-math-face="serif" '
+        f'<p class="site-popover-value site-atlas-pop-title" {SERIF_MATH} '
         'id="pop-atlas-title" data-atlas-title></p>'
         '<div class="site-atlas-pop-body">'
         '<div class="site-atlas-pop-figure" data-atlas-figure></div>'

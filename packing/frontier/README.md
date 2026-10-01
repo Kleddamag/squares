@@ -182,6 +182,21 @@ The selected source register has no remaining beyond-horizon claims.
 The check is local and deterministic; refreshing a public source is a dated W1 research
 survey, not a network operation hidden inside ordinary validation.
 
+The catalogue was last captured on 2026-09-30. The capture of 2026-08-22 is kept beside
+it byte for byte, because the UnitSquare and certified-packet intakes read it and their
+paragraphs about the packing each replaced are drafted from it;
+`devtools.diff_kingbird_catalogue --before REV` compares two captures count by count.
+Where a newer capture prints a side below a record’s and taking it is an intake of its
+own — a result by others published on or after 22 August 2026, which the register must
+hold first — the count is listed under `pending_catalogue_intake`, with the side the
+record still reports, the side the current capture prints, and the capture the record
+transcribes (`n = 69, 83, 87` today).
+The check reconciles such a count against that earlier capture, requires its record to
+carry a `source-evidence` blocker naming `pending_catalogue_intake` and the newer side
+(which `STATUS.md` shows as “catalogue ahead, intake pending”), and fails the entry as
+soon as either capture or the record stops bearing it out, so an entry is removed in the
+commit that takes the side.
+
 ```shell
 uv run --frozen python -m devtools.check_source_coverage
 ```
@@ -512,6 +527,10 @@ status, and attributions were parsed from the retained Kingbird catalogue.
 `uv run --frozen python -m devtools.audit_kingbird_catalogue --rigidity` re-reads the
 rigidity annotations from that archive and checks them against the case records, so a
 dropped or invented transcription fails instead of being migrated forward.
+Beside it, `uv run --frozen python -m devtools.diff_kingbird_catalogue --before REV`
+compares the retained transcription with the one at `REV`, count by count: each count
+whose side, closed form, degree, polynomial, rigidity annotation or credit sentences
+moved, and where the new side stands against the record.
 Newer first-party claims are selected through the source-coverage record rather than
 silently overwriting that baseline.
 Lower bounds were computed from four sources and the strongest taken.
@@ -524,7 +543,10 @@ Adding editorial to a case is just editing its body; nothing regenerates over it
 
 **Known limits.** The Kingbird catalogue is parsed as annotation text, so an entry
 phrased unusually can be miscounted; `improved_by` in particular under-reports where it
-uses “Refound”, “Optimized by”, or prose.
+uses “Refound” or prose.
+Above `n = 100` it also credits an “Optimized by” author the entry names nowhere else
+(Tej Stead at `n = 179`), and the packing paragraph quotes the catalogue’s own
+AI-assistance sentences; the hand-written records below read neither.
 Tilt angles are recorded only for the handful of cases where this research established
 them. The coverage inventory is dated and named; a newly published source still requires
 a new research survey and disposition.

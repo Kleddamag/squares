@@ -1,0 +1,64 @@
+command: .venv/bin/python3 -m devtools.audit_wang_li_n11 diff --output /home/user/squares/packing/resources/web/wang-li-n11-2026-09-29/receipts/certificate/diff.json
+started: 2026-09-30T06:12:25Z load: 11.36 10.56 10.31
+{
+  "schema": "WangLiN11CertificateDiff/v1",
+  "source": "packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/global-certificate.json",
+  "improved": "packing/resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29/certificate/improved-global-certificate.json",
+  "top_level_keys": [
+    "A",
+    "L",
+    "bound",
+    "budget_units",
+    "charge_orbits",
+    "coordinate_denominator",
+    "entries",
+    "minimum_units",
+    "point_orbits",
+    "weight_denominator"
+  ],
+  "changed_keys": [
+    "A",
+    "bound",
+    "budget_units",
+    "charge_orbits",
+    "entries",
+    "minimum_units"
+  ],
+  "point_orbits_identical": true,
+  "charge_orbits": 284,
+  "changed_orbits_match_stated": true,
+  "rows": 12028,
+  "row_intervals_and_core_angles_identical": true,
+  "container_side": "191/50",
+  "parent_side_before": "764/775",
+  "parent_side_after": "190999999809/193750000000",
+  "factor": "999999999/1000000000",
+  "factor_matches_stated": true,
+  "every_core_side_scaled_by_factor": true,
+  "budget_units_before": 10999479944,
+  "budget_units_after": 11000095024,
+  "minimum_units_before": 999962528,
+  "minimum_units_after": 1000047559,
+  "surplus_units_before": 107864,
+  "surplus_units_after": 428125,
+  "declared_bound_before": "31/8",
+  "declared_bound_after": "3875000000/999999999",
+  "bound_before": "31/8",
+  "bound_after": "3875000000/999999999",
+  "bound_after_matches_stated": true,
+  "bound_after_equals_bound_before_over_factor": true,
+  "improvement": "31/7999999992",
+  "improvement_decimal": "3.875000e-09",
+  "bound_after_decimal_30": "3.875000003875000003875000003875",
+  "premises": {
+    "strict_core_margin_before": "1/1000000000000",
+    "strict_core_margin_after": "999999999/1000000000000000000000",
+    "every_margin_and_centre_margin_scaled_by_factor": true,
+    "envelope_holds_every_row_after": true,
+    "final_half_tangent": "207107/500000",
+    "angle_cover_reaches_pi_over_4": true
+  },
+  "seconds": 4.836403298999812
+}
+wall 4.970 s, user 2.859 s, system 0.047 s
+exit: 0

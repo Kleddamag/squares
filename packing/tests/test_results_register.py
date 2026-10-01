@@ -356,14 +356,14 @@ def test_an_inflated_rung_is_refused(
 ) -> None:
     poisoned = _poisoned_register(
         tmp_path,
-        "    verification: V3\n    confirmation: C1\n    significance:\n"
+        "    verification: V5\n    confirmation: C3\n    significance:\n"
         "      score: 3\n      rationale: >-\n        A published exact value",
-        "    verification: V3\n    confirmation: C4\n    significance:\n"
+        "    verification: V5\n    confirmation: C5\n    significance:\n"
         "      score: 3\n      rationale: >-\n        A published exact value",
     )
     monkeypatch.setattr(check_results, "RESULTS", poisoned)
     assert check_results.main() == 1
-    assert "T-006: declares C4" in capsys.readouterr().out
+    assert "T-006: declares C5" in capsys.readouterr().out
 
 
 def test_an_unexplained_understatement_is_refused(

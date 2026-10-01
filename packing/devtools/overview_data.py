@@ -268,6 +268,8 @@ class Overview:
     cases: dict[int, dict]
     recent_lower: frozenset[int]
     groups: list[tuple[str, list[Result]]]
+    """The results as `RESULTS.md` groups them, by lineage. No page shows the groups:
+    a table of results is one flat list, and a result's credit says its lineage."""
     recent: list[Row] = field(default_factory=list)
     """Every case `n <= 100` with a recent lower bound in either lane, as the survey
     section lists them: `render_recent_results.recent_rows`."""

@@ -2218,7 +2218,6 @@ def test_both_tables_of_results_have_the_same_columns(
     assert table.count("<thead>") == recent.count("<thead>") == 1
     heads = re.findall(r"<th([^>]*)>([^<]+)</th>", head)
     assert [words for _, words in heads] == ["ID", "n", "Result", "Credit", "Rungs", "Date"]
-    assert len(heads) == overview_sections.RESULT_COLUMNS
     sorts = ["data-sort=" in attributes for attributes, _ in heads]
     assert sorts == [True, True, False, True, True, True]
     # As each page serves it, after KPress has labelled the cells.
@@ -2408,12 +2407,62 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
     assert "\u00a0" not in table + recent
 
 
+def test_a_table_of_results_is_one_flat_list_newest_first(
+    page: str, results: str, overview: overview_data.Overview
+) -> None:
+    """Neither table of results has a heading row among its rows: every row is a
+    result's, in one order on both pages, newest first by the date the table shows and
+    then by id. The lineage the headings said is read from each row's credit, which is
+    the register's credit line set whole, and the Source filter still narrows the table
+    to this project's results or to others'."""
+    table = overview_sections.results_table(overview)
+    recent = overview_sections.recent_table(overview)
+    order = [result.id.lower() for result in overview_sections.recent_results(overview)]
+    assert re.findall(r'<tr id="(t-\d+)"', table) == order
+    assert re.findall(r'<tr data-result="(t-\d+)"', recent) == order
+    dates = [overview_sections.first_day(r.dated[1]) for r in overview.results]
+    assert sorted(dates, reverse=True) == [
+        overview_sections.first_day(r.dated[1])
+        for r in overview_sections.recent_results(overview)
+    ]
+    for served in (table, recent, results, _recent_table(page)):
+        assert 'class="site-group-row"' not in served
+        assert "data-group=" not in served
+        assert 'scope="colgroup"' not in served
+    assert table.count("<tr ") == recent.count("<tr ") == len(overview.results)
+    for title, _ in overview.groups:
+        assert html.escape(title) not in results, title
+    assert len(overview.groups) > 1
+    # Each row's credit is the register's, whole: the finder, then what it builds on.
+    for result in overview.results:
+        cell = (
+            f'<td class="site-col-credit" data-value="{html.escape(result.credit)}">'
+            f"{overview_sections.credit_cell(result.credit)}</td>"
+        )
+        assert cell in _row(table, result.id), result.id
+        assert cell in _recent_row(recent, result.id), result.id
+        source = "ours" if result.ours else "others"
+        assert f'data-source="{source}"' in _row(table, result.id), result.id
+    assert {result.ours for result in overview.results} == {True, False}
+    bar = _filter_bar(results)
+    assert '<label>Source <select data-filter="source">' in bar
+    assert ">This project</option>" in bar
+    assert ">Others</option>" in bar
+    # The script has no heading logic left, and the stylesheet none for a results table.
+    script = render_overview.TABLE_SCRIPT.read_text(encoding="utf-8")
+    assert "site-group-row" not in script
+    assert "rowsShown" not in script
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    assert ".site-results tr.site-group-row" not in css
+    assert ".site-results tbody tr.site-group-row" not in css
+
+
 def test_grouping_agrees_with_readmes_relation(
     overview: overview_data.Overview, records: render_recent_results.Records
 ) -> None:
-    """The table's groups are `source_lineage`'s, the lineage `render_recent_results.relation`
-    names, so wand125's T-048, T-054 and T-055 read as crediting this project
-    second-hand in both."""
+    """The register's groups, which `RESULTS.md` prints and no page of the site does, are
+    `source_lineage`'s, the lineage `render_recent_results.relation` names, so wand125's
+    T-048, T-054 and T-055 read as crediting this project second-hand in both."""
     titles = dict(OTHERS)
     for title, members in overview.groups[1:]:
         for result in members:
@@ -3167,8 +3216,7 @@ def test_no_page_carries_a_result_overview(
     sources = re.findall(r'data-row-pop-src="([^"]+)"', results)
     assert sources == [
         overview_sections.result_fragment(result.id)
-        for _, members in overview.groups
-        for result in members
+        for result in overview_sections.recent_results(overview)
     ]
     assert set(re.findall(r'data-row-pop-src="([^"]+)"', page)) == {
         overview_sections.result_fragment(result.id)
@@ -3577,17 +3625,13 @@ def test_the_results_page_starts_with_every_result_showing(
     results: str, overview: overview_data.Overview
 ) -> None:
     """The results page's bar starts with Significance at All and no maximum age, so no
-    row and no group heading is `hidden` in its HTML and its count is the whole
-    register's."""
+    row is `hidden` in its HTML and its count is the whole register's."""
     for result in overview.results:
         tag = _row(results, result.id).split(">", 1)[0] + ">"
         assert not tag.endswith(" hidden>"), result.id
     assert f">{len(overview.results)} results</span>" in _filter_bar(results)
-    headings = re.findall(r'<tr class="site-group-row" data-group="[^"]+"( hidden)?>', results)
-    assert len(headings) == len(overview.groups)
-    assert not any(headings)
     text = " ".join(re.sub(r"<[^>]+>", "", results).split())
-    assert "The table starts with every result showing." in text
+    assert "The table starts with every result showing, newest first." in text
     assert "case and age, and they combine." in text
     assert "starts filtered" not in text
 
@@ -3597,9 +3641,8 @@ def test_rows_outside_a_tables_defaults_are_hidden_in_the_html_and_stay_in_it(
 ) -> None:
     """Under defaults that hide rows, as the overview's are, a row outside them is
     `hidden` in the HTML, never left out of it, and the count is written for the rows
-    left, so the first paint is the filtered table. A group heading with no row left
-    under it is hidden with them. The results table is the one with groups, so it is
-    rendered here under the overview's defaults."""
+    left, so the first paint is the filtered table. Both tables are the one table, so
+    the results page's is rendered here under the overview's defaults."""
     defaults = overview_sections.RECENT_DEFAULTS
     reference = overview_sections.reference_date(overview)
     table = overview_sections.results_table(overview, defaults)
@@ -3611,15 +3654,7 @@ def test_rows_outside_a_tables_defaults_are_hidden_in_the_html_and_stay_in_it(
         shown += keeps
     assert 0 < shown < len(overview.results)
     assert f"{shown} of {len(overview.results)} results</span>" in _filter_bar(table)
-    headings = re.findall(r'<tr class="site-group-row" data-group="[^"]+"( hidden)?>', table)
-    assert len(headings) == len(overview.groups)
-    for hidden, (title, members) in zip(headings, overview.groups, strict=True):
-        left = any(
-            overview_sections.shown_by_default(result, defaults, reference)
-            for result in members
-        )
-        assert bool(hidden) == (not left), title
-    assert {bool(hidden) for hidden in headings} == {True, False}
+    assert table.count("<tr ") == len(overview.results)
 
 
 def test_a_row_named_by_the_address_shows_whatever_the_filters_hide() -> None:
@@ -3638,7 +3673,6 @@ def test_a_row_named_by_the_address_shows_whatever_the_filters_hide() -> None:
     )
     phone = css[css.index("  .site-results tr[hidden]:target {") :]
     assert "display: grid;" in phone[: phone.index("}")]
-    assert "  .site-results tr.site-group-row:not([hidden]) {" in css
     wash = css[css.index("\n.kpress .site-table tbody tr:target {") :]
     assert "background: var(--site-wash);" in wash[: wash.index("}")]
 
@@ -3646,8 +3680,8 @@ def test_a_row_named_by_the_address_shows_whatever_the_filters_hide() -> None:
 def test_without_scripts_no_row_stays_filtered() -> None:
     """A reader without scripts cannot change a filter, so the default must not hide
     anything from them: under `scripting: none` every row shows, as a table row or, on a
-    phone, as the results table's card, each group under its heading, and the bar, which
-    would do nothing, is not shown."""
+    phone, as the results table's card, and the bar, which would do nothing, is not
+    shown."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     block = css[css.index("\n@media (scripting: none) {") :]
     block = block[: block.index("\n}\n")]
@@ -3656,7 +3690,6 @@ def test_without_scripts_no_row_stays_filtered() -> None:
     phone = css[css.index("\n@media (scripting: none) and (width < 40rem) {") :]
     phone = phone[: phone.index("\n}\n")]
     assert ".site-results tbody tr[hidden] {\n    display: grid;" in phone
-    assert ".site-results tbody tr.site-group-row[hidden] {\n    display: block;" in phone
 
 
 def test_secondary_cell_content_is_quiet(results: str) -> None:

@@ -761,10 +761,6 @@ def result_head() -> str:
     )
 
 
-#: How many columns a table of results has, for a row that spans them.
-RESULT_COLUMNS = len(re.findall(r"<th[ >]", result_head()))
-
-
 def id_cell(result: Result, detail: RowDetail) -> str:
     """A result's id cell, the first of its row in both tables of results: the id in a
     column of its own (`.site-col-id`), as the row's native trigger, which opens the
@@ -851,21 +847,34 @@ def result_table_row(
     return row, detail.popover
 
 
-def table_of_results(
-    overview: Overview,
-    listed: Sequence[Result],
-    defaults: FilterDefaults,
-    body: Iterable[str],
-    popovers: Iterable[str],
-    *,
-    classes: str = "",
-) -> str:
-    """A table of results as the page carries it: the tools bar (`result_filters`), the
-    table under `result_head`, sortable and filterable (`overview/table.js`), and the
-    rows' popovers after it. `classes` names the table for its page."""
-    table = f"kpress-table site-table site-results{' ' + classes if classes else ''}"
+def table_of_results(overview: Overview, defaults: FilterDefaults, *, here: bool) -> str:
+    """A table of results as a page carries it: the tools bar (`result_filters`), every
+    result as one flat table under `result_head`, newest first (`recent_results`),
+    sortable and filterable (`overview/table.js`), and the rows' popovers after it.
+
+    Both pages' tables are this one. They differ in `defaults`, where the bar starts,
+    with a row outside them `hidden` in the HTML, so the first paint is already
+    filtered; and in `here`, which is the results page: there each row is the result's
+    own address, and anywhere else the table is named `site-recent-table` and its rows
+    link to that address (`result_table_row`).
+
+    No heading divides the rows. Whose a result is, and what it builds on, is read from
+    its credit (`credit_cell`), and the Source filter narrows the table to this
+    project's results or to others'.
+    """
+    results = recent_results(overview)
+    reference = reference_date(overview)
+    body = []
+    popovers = []
+    for result in results:
+        row, popover = result_table_row(
+            result, overview, here=here, shown=shown_by_default(result, defaults, reference)
+        )
+        body.append(row)
+        popovers.append(popover)
+    table = "kpress-table site-table site-results" + ("" if here else " site-recent-table")
     return (
-        f'<div class="site-wide">{result_filters(overview, listed, defaults)}'
+        f'<div class="site-wide">{result_filters(overview, results, defaults)}'
         '<div class="site-table-wrap">'
         f'<table class="{table}" data-site-table>{result_head()}'
         f"<tbody>{''.join(body)}</tbody></table></div>{''.join(popovers)}</div>"
@@ -873,29 +882,9 @@ def table_of_results(
 
 
 def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULTS) -> str:
-    """Every registered result, grouped as `RESULTS.md` groups them, which is by the
-    relation `RESULTS.md` prints (`result_credit.source_lineage`). Its columns and its
-    rows are the ones every table of results has (`result_head`, `result_table_row`);
-    each row is the result's own address and opens its popover (`result_row`), placed
-    after the table.
-    The bar above it is `result_filters`, starting at `defaults`, which on the results
-    page hide nothing; a row outside them is `hidden` in the HTML, and so is a group
-    heading with no row left under it."""
-    reference = reference_date(overview)
-    body = []
-    popovers = []
-    for title, members in overview.groups:
-        shown = {result.id: shown_by_default(result, defaults, reference) for result in members}
-        hidden = "" if any(shown.values()) else " hidden"
-        body.append(
-            f'<tr class="site-group-row" data-group="{_esc(title)}"{hidden}>'
-            f'<th colspan="{RESULT_COLUMNS}" scope="colgroup">{_esc(title)}</th></tr>'
-        )
-        for result in members:
-            row, popover = result_table_row(result, overview, here=True, shown=shown[result.id])
-            body.append(row)
-            popovers.append(popover)
-    return table_of_results(overview, overview.results, defaults, body, popovers)
+    """The results page's table: every registered result (`table_of_results`), each row
+    the result's own address, under a bar that starts by hiding nothing."""
+    return table_of_results(overview, defaults, here=True)
 
 
 #: The rubric's three scored dimensions, in the site's order, significance first: the
@@ -1075,9 +1064,10 @@ _LEADING_FORMULA = re.compile(r"(`[^`]+`)(?:,? by (?:an? )?(?P<method>.+?))?(?:,
 
 
 def recent_results(overview: Overview) -> list[Result]:
-    """Every result, newest first: by the date the table shows, then by id. What makes
-    the table recent is its bar's defaults (`RECENT_DEFAULTS`), which a reader can
-    change, and never a cut the page makes for them."""
+    """Every result, newest first: by the date the table shows, then by id. It is the
+    order of both tables of results. What makes the overview's table recent is its
+    bar's defaults (`RECENT_DEFAULTS`), which a reader can change, and never a cut the
+    page makes for them."""
     return sorted(overview.results, key=lambda r: (first_day(r.dated[1]), r.id), reverse=True)
 
 
@@ -1129,28 +1119,10 @@ def status_chips(result: Result) -> str:
 
 
 def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS) -> str:
-    """Every result as one table, newest first (`recent_results`), with the columns and
-    the rows every table of results has (`result_head`, `result_table_row`): it is the
-    results page's table in another order, starting at other defaults. A result by
-    others is dated by its publication, as `RESULTS.md` dates it, and this project's by
-    the day it was established; the cell says which, after the date. The bar above it is
-    `result_filters`, starting at `defaults`: a row outside them is `hidden` in the
-    HTML, so the first paint is already filtered. Each row opens its result's popover
-    (`result_row`), the results page's, ending in the button to that page's row, and
-    its summary's leading formula links there too (`result_text`)."""
-    results = recent_results(overview)
-    reference = reference_date(overview)
-    body = []
-    popovers = []
-    for result in results:
-        row, popover = result_table_row(
-            result, overview, here=False, shown=shown_by_default(result, defaults, reference)
-        )
-        body.append(row)
-        popovers.append(popover)
-    return table_of_results(
-        overview, results, defaults, body, popovers, classes="site-recent-table"
-    )
+    """The overview's Recent Results: the results page's table (`table_of_results`), its
+    bar starting at the recent defaults, each row opening the result's popover, which
+    ends in the button to the result's row on the results page."""
+    return table_of_results(overview, defaults, here=False)
 
 
 def _since() -> str:

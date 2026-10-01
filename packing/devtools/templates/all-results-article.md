@@ -10,10 +10,10 @@ Each result has an identifier, a claim, and three ratings defined in
 [`epistemics.md`]({{EPISTEMICS_URL}}): **S**, how much the result matters; **V**, the
 strongest verification its evidence supports; and **C**, what this repository has
 checked itself. Every credit names people: a result by others is credited to its authors
-as their source states it, and this project’s results to Levy.
-*X after Y* means that X’s result rests directly on Y’s proof, method or tool.
+as their source states it, and this project’s results to Joshua Levy, as *Levy*. *X
+after Y* means that X’s result rests directly on Y’s proof, method or tool.
 The `V` and `C` of a result by others are this repository’s own verification of it.
-Its standing says whether a case bound rests on it now: it is the *current best*
+A result’s standing says whether a case bound rests on it now: it is the *current best*
 verified bound, or the current best as reported; it is a *second certificate* for an
 exact value another result holds; it is *superseded*; or it is not a bound at all, such
 as a rigidity or an erratum.

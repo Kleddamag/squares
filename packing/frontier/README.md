@@ -312,7 +312,8 @@ certificate’s replay command.
    names to print after `Levy after` and the bibliography keys they come from, and name
    those keys as the `source_key` of the evidence entries that use them; the checker
    refuses a name the cited evidence does not support.
-   A packing or theorem the result is about is its subject and is not listed.
+   A proof the result repairs or corrects is a basis; a packing whose property it proves
+   is its subject and is not listed.
 
 3. **Keep first-party certificate packages under `cases/`.** `T-026`’s certificates,
    limit records, proof note, and verifier are all in

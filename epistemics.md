@@ -286,7 +286,10 @@ to credit it as carefully as this project’s own.
   The `after` is the entry’s `builds_on` in
   [`results.yaml`](packing/frontier/results.yaml): each source it names is one the
   result’s own evidence cites, and each name is an author of that source.
-  A packing or theorem a result is about is its subject and is not listed.
+  A repair or correction of a proof is `after` that proof’s author, since the result
+  reuses the argument it mends.
+  A property proved of a packing, such as its rigidity, is not `after` the packing’s
+  finder: the packing is the result’s subject, and its argument owes it nothing.
   The credit carries the lineage in both directions, so a table of results needs no
   grouping to say whose work rests on whose.
 - **People and projects, never tools.** Credit names people, or the handles they publish

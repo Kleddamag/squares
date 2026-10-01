@@ -40,7 +40,7 @@ It is separate from H-027’s local angle-cone question.
 
 Use the exact source, side and source digest fixed by
 [H-253](H-253-n17-retained-rational-upper.md).
-Map source rows to labels by `[1,5,2,6,3,7,4,8,9,10,11,12,13,14,15,16,17]`. Without
+Map source rows to labels by $[1,5,2,6,3,7,4,8,9,10,11,12,13,14,15,16,17]$. Without
 fitting, take $t=\tan(\theta/2)$ from square 9 and $b=\tan(\beta/2)$ as the negative of
 square 16’s source half-angle.
 Freeze
@@ -100,10 +100,10 @@ Here
 
 $$
 \begin{aligned}
-U_{10}&=3/2+cs+2s,&V_{10}&=c(S-1)-s-1/2,\\
-U_{11}&=c+2s+1/2,&V_{11}&=2c+(c^2-s^2)/2-1,\\
-U_{12}&=U_{11}+1,&V_{12}&=V_{10}-1,\\
-U_{13}&=2c+s+1/2,\\
+U_{10}&=3/2+cs+2s,&V_{10}&=c(S-1)-s-1/2,\cr
+U_{11}&=c+2s+1/2,&V_{11}&=2c+(c^2-s^2)/2-1,\cr
+U_{12}&=U_{11}+1,&V_{12}&=V_{10}-1,\cr
+U_{13}&=2c+s+1/2,\cr
 U_{14}&=U_{13}+1,&V_{14}&=V_{10}-2.
 \end{aligned}
 $$

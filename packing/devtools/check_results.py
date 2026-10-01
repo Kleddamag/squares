@@ -15,9 +15,12 @@ an open-review pointer at rung 5), and rejects unknown result ids in the reader
 tier. It holds every `headline` to one table cell that states no
 number its claim does not, dates every result of this project by `established`
 and every result by others by `attribution.published`, never both, and requires
-each entry's `registered` date. Human review owns evidence relevance, claim
-coverage, composition, significance, novelty, and whether a headline says what
-its claim says.
+each entry's `registered` date. It requires each entry's `kind`, one of `KINDS`,
+and cross-checks it against the relations the headline and the claim state and
+the claims of the cited evidence (`kind_problems`). Human review owns evidence
+relevance, claim coverage, composition, significance, novelty, whether a
+headline says what its claim says, and the choice between kinds the record
+cannot tell apart.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.check_results
@@ -95,6 +98,48 @@ HEADLINE_LIMIT = 100
 _NUMBER = re.compile(r"\d+(?:\.\d+)?")
 #: What marks a decimal cut short of the one the claim writes.
 TRUNCATION = "…"
+
+#: The kinds of result the register holds, each named for what its claim concludes
+#: (epistemics.md, Result Kinds), in the order the views list them. The schema's enum
+#: is this tuple.
+KINDS = (
+    "lower-bound",
+    "upper-bound",
+    "optimality",
+    "simplification",
+    "rigidity",
+    "case-exclusion",
+    "restricted-optimality",
+    "method-limit",
+    "correction",
+    "audit",
+)
+SIMPLIFICATION = "simplification"
+#: The relations on `s(n)` each bound kind states, as a headline (`≥`) and a claim (`>=`)
+#: write them. These three kinds are the bounds; every other kind is no bound on `s(n)`.
+KIND_RELATIONS = {
+    "lower-bound": frozenset({"≥", ">=", ">"}),
+    "upper-bound": frozenset({"≤", "<=", "<"}),
+    "optimality": frozenset({"="}),
+}
+BOUND_KINDS = frozenset(KIND_RELATIONS)
+#: The kinds that say nothing about `s(n)`: a property of one packing or one class of
+#: configurations, which the evidence contract types as `derived-structure`.
+STRUCTURE_KINDS = frozenset({"rigidity", "case-exclusion", "restricted-optimality"})
+STRUCTURE_CLAIM = "derived-structure"
+#: `s(n)` and the relation written after it. Several counts may share one relation,
+#: `s(27), s(28) ≥ 28/5`. The lookbehind keeps `cos(x) =` from reading as `s(x) =`.
+_COUNT = r"(?<![A-Za-z])s\([^)`]*\)"
+_RELATION = r"\s*(≥|>=|≤|<=|>|<|=)"
+_STATED_RELATION = re.compile(_COUNT + _RELATION)
+_LEADING_RELATION = re.compile(rf"`{_COUNT}(?:,\s*{_COUNT})*{_RELATION}")
+_RESULT_ID = re.compile(r"\bT-\d{3}\b")
+#: How a refusal names the bound a headline opens with.
+_OPENS_WITH = {
+    "lower-bound": "a lower bound",
+    "upper-bound": "an upper bound",
+    "optimality": "an exact value",
+}
 
 
 def _rank(rung: str) -> int:
@@ -440,6 +485,111 @@ def headline_problems(record: dict) -> list[str]:
     return problems
 
 
+def kind_label(kind: str) -> str:
+    """A kind as a reader sees it: `case-exclusion` is "case exclusion"."""
+    return kind.replace("-", " ")
+
+
+def stated_relations(text: str) -> set[str]:
+    """Every relation `text` writes directly after an `s(n)`."""
+    return set(_STATED_RELATION.findall(text))
+
+
+def headline_kind(headline: str) -> str | None:
+    """The bound a headline states where it opens with one: `` `s(17) ≥ …` `` is a
+    lower bound, `` `s(29) ≤ …` `` an upper bound and `` `s(13) = 4` `` optimality.
+    A headline that opens with words derives nothing."""
+    match = _LEADING_RELATION.match(headline)
+    if not match:
+        return None
+    return next(kind for kind, relations in KIND_RELATIONS.items() if match[1] in relations)
+
+
+def _relation_problems(kind: str, headline: str, claim: str) -> list[str]:
+    """Where the relations a headline and a claim write disagree with a declared kind."""
+    label = kind_label(kind)
+    opens = headline_kind(headline)
+    if opens is not None and kind not in {opens, SIMPLIFICATION}:
+        return [f"kind is {label}, but its headline opens with {_OPENS_WITH[opens]}"]
+    in_headline, in_claim = stated_relations(headline), stated_relations(claim)
+    if kind == "optimality":
+        if "=" not in in_headline | in_claim:
+            return ["an optimality result states an exact value, s(n) = v"]
+        return []
+    if kind in BOUND_KINDS:
+        relations = KIND_RELATIONS[kind]
+        problems = [
+            f"kind is {label}, but its headline states s(n) {relation}"
+            for relation in sorted(in_headline - relations)
+        ]
+        if in_claim and not in_claim & relations:
+            problems.append(
+                f"kind is {label}, but its claim states only s(n) {', '.join(sorted(in_claim))}"
+            )
+        return problems
+    if kind in STRUCTURE_KINDS and in_headline:
+        relation = min(in_headline)
+        return [f"a {label} is no bound on s(n), but its headline states s(n) {relation}"]
+    return []
+
+
+def _evidence_needed(kind: str, claims: set[str]) -> str | None:
+    """What a kind's cited evidence must claim and does not, or nothing."""
+    if kind == "optimality":
+        if "exact-value" in claims or {"lower-bound", "upper-bound"} <= claims:
+            return None
+        return "`exact-value`, or both `lower-bound` and `upper-bound`"
+    if kind in BOUND_KINDS:
+        return None if claims & {kind, "exact-value"} else f"`{kind}` or `exact-value`"
+    if kind in STRUCTURE_KINDS and STRUCTURE_CLAIM not in claims:
+        return f"`{STRUCTURE_CLAIM}`"
+    return None
+
+
+def kind_problems(
+    record: dict, cited: Iterable[Mapping[str, Any]], scopes: Mapping[str, set[int]]
+) -> list[str]:
+    """What is wrong with a result's `kind`, read against its own record.
+
+    The kind is declared, and three things the record already holds check it.
+
+    - **The relations written.** A headline that opens with a relation on `s(n)` states
+      its kind, and only a simplification, a second proof of a result the record holds,
+      may restate one under another kind. A bound's headline writes no relation of
+      another direction, its claim writes one of its own if it writes any, and an
+      optimality result writes its `=`. A kind that says nothing about `s(n)` has a
+      headline that writes none.
+    - **The cited evidence.** It claims what the kind needs: the bound for a bound, an
+      exact value or both halves for optimality, and `derived-structure` for the kinds
+      that say nothing about `s(n)`.
+    - **The results the claim names.** A simplification's claim names the registered
+      result it proves again, on a case they share. `scopes` is every result's cases.
+
+    Method limit, correction and audit are told apart by review alone.
+    """
+    rid = record["id"]
+    kind = record.get("kind")
+    if kind is None:
+        return [f"{rid}: states no kind"]
+    if kind not in KINDS:
+        return [f"{rid}: kind {kind} is not one of {', '.join(KINDS)}"]
+    headline = str(record.get("headline", ""))
+    claim = " ".join(str(record.get("claim", "")).split())
+    problems = _relation_problems(kind, headline, claim)
+    needed = _evidence_needed(kind, {str(entry.get("claim")) for entry in cited})
+    if needed is not None:
+        problems.append(f"kind is {kind_label(kind)}, and no cited evidence claims {needed}")
+    if kind == SIMPLIFICATION:
+        cases = scopes.get(rid, set())
+        named = {other for other in _RESULT_ID.findall(claim) if other != rid}
+        if not any(cases & scopes.get(other, set()) for other in named):
+            problems.append(
+                "a simplification's claim names the registered result it proves again, "
+                "on a case they share"
+            )
+    return [f"{rid}: {problem}" for problem in problems]
+
+
 def established_problems(record: dict, last_reviewed: str) -> list[str]:
     """What is wrong with the date a result carries, given whose result it is.
 
@@ -588,6 +738,7 @@ def main() -> int:
     actual_ids = [record["id"] for record in results]
     if actual_ids != expected_ids:
         problems.append(f"register ids are not contiguous T-001..: {actual_ids}")
+    scopes = {record["id"]: scope_values(record["scope"]) for record in results}
 
     for record in results:
         rid = record["id"]
@@ -614,6 +765,7 @@ def main() -> int:
         problems.extend(attribution_problems(record, sources))
         problems.extend(registered_problems(record, str(register["last_reviewed"])))
         problems.extend(headline_problems(record))
+        problems.extend(kind_problems(record, cited, scopes))
         problems.extend(established_problems(record, register["last_reviewed"]))
 
         for kind, value in (record.get("produced_by") or {}).items():
@@ -690,8 +842,8 @@ def main() -> int:
     print(
         f"{len(results)} registered results: every declared rung passes its "
         "structural checks, every path, source and produced_by id resolves, every "
-        "headline and date holds, every recent case lower bound is covered, every "
-        "reader-tier mention exists"
+        "headline and date holds, every kind agrees with its claim and evidence, every "
+        "recent case lower bound is covered, every reader-tier mention exists"
     )
     return 0
 

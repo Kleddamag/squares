@@ -5,6 +5,7 @@ softschema:
 last_reviewed: '2026-09-30'
 results:
   - id: T-001
+    kind: lower-bound
     registered: '2026-08-31'
     headline: "`s(17) ≥ 4426213/1000000 = 4.426213`, from a sixteen-point unavoidable set"
     established: '2026-08-31'
@@ -45,6 +46,7 @@ results:
       narrative, code map, replays); V5 by a proof-assistant port. The stronger
       side at the exact ceiling is T-003's business.
   - id: T-002
+    kind: lower-bound
     registered: '2026-08-31'
     headline: "`s(18) ≥ 4426213/1000000`, by monotonicity from T-001"
     established: '2026-08-31'
@@ -88,6 +90,7 @@ results:
       Rises with T-001; a bespoke n = 18 set stronger than the inherited bound
       would be a new result, not a rung change.
   - id: T-003
+    kind: method-limit
     registered: '2026-08-31'
     headline: "The sixteen-point set's unavoidability ceiling lies in `[4426213/1000000, 4427/1000)`"
     established: '2026-08-31'
@@ -133,6 +136,7 @@ results:
       certifies at the ceiling exactly and an exact escape family above it
       turns the bracket into an equality at C3.
   - id: T-004
+    kind: audit
     registered: '2026-08-31'
     headline: "Bentz 2010, Theorem 8 (`s(46) ≥ 7`) is correct as printed, machine-audited in full"
     claim: >-
@@ -171,6 +175,7 @@ results:
       V5 by a proof-assistant port; C4 by a second independent mechanism such
       as the pose-space interval audit generalized to Q(sqrt 2, sqrt 3) sides.
   - id: T-005
+    kind: correction
     registered: '2026-08-31'
     headline: "Bentz 2010, Lemma 10 is false as printed and true as corrected to `(1.74, 1)`"
     established: '2026-08-31'
@@ -210,6 +215,7 @@ results:
       Communicate the erratum to the author or journal; nothing mechanical
       remains on our side.
   - id: T-006
+    kind: optimality
     registered: '2026-08-31'
     headline: "`s(13) = 4`"
     claim: >-
@@ -272,6 +278,7 @@ results:
       sets (typed on think-1o1f), which would also make it the second fully audited
       theorem of the paper.
   - id: T-007
+    kind: lower-bound
     registered: '2026-08-31'
     headline: "`s(n) ≥ min(⌈√n⌉, √(n - 2⌊√n⌋ + 1) + 1)` for `4 ≤ n ≤ 100`"
     claim: >-
@@ -306,6 +313,7 @@ results:
       reported context and are not current bounds. C3 means machine-checking Theorem 1's
       unavoidable-set capacity argument.
   - id: T-008
+    kind: optimality
     registered: '2026-08-31'
     headline: "`s(46) = 7`"
     claim: >-
@@ -350,6 +358,7 @@ results:
       C4 by a method-independent second confirmation of the lower half; rises
       with T-004.
   - id: T-009
+    kind: upper-bound
     registered: '2026-08-31'
     headline: "`s(29) ≤ 5.933833…`, by a Krawczyk interval certificate"
     established: '2026-08-29'
@@ -387,6 +396,7 @@ results:
       reported-value promotion question is the owner's evidence-contract
       decision, not a rung.
   - id: T-010
+    kind: lower-bound
     registered: '2026-08-31'
     headline: "`s(11) ≥ 2 + 4/√5`, by a repair of Stromquist 2003's Figure 14 point set"
     established: '2026-08-24'
@@ -428,6 +438,7 @@ results:
       built for T-001, run at side 2 + 4/sqrt(5) over the repaired
       twelve-point set; V5 by a proof-assistant port.
   - id: T-011
+    kind: upper-bound
     registered: '2026-08-31'
     headline: "Trump's 1979 packing is exactly valid, so `s(11) ≤ 3.877083590022814…`"
     claim: >-
@@ -468,6 +479,7 @@ results:
       witness (the retained rational control proves a slightly weaker side
       and does not confirm this claim); V5 by a proof-assistant port.
   - id: T-012
+    kind: rigidity
     registered: '2026-08-31'
     headline: "Goebel's `n = 5` packing is second-order rigid at fixed side"
     established: '2026-08-30'
@@ -510,6 +522,7 @@ results:
       BC-153 and registered as T-014, which is where the n = 5 frontier
       property now rests. What remains here is V5 by a proof-assistant port.
   - id: T-013
+    kind: rigidity
     registered: '2026-08-31'
     headline: "Goebel's `n = 40` packing: seven verified first-order flexes, each refused at second order"
     established: '2026-08-30'
@@ -550,6 +563,7 @@ results:
       branch obstruction, D-391) or establish local rigidity by another
       route; the rigidity property stays undetermined until then.
   - id: T-014
+    kind: rigidity
     registered: '2026-09-03'
     headline: "Goebel's `n = 5` optimum is rigid at fixed side: its pose is an isolated feasible point"
     established: '2026-09-03'
@@ -646,6 +660,7 @@ results:
       for this result, so it stands at V3/C3: machine-checked, review record pending. The
       oversight record restores the rung.
   - id: T-015
+    kind: lower-bound
     registered: '2026-09-03'
     headline: "`s(17) ≥ 22529/5000 = 4.5058`"
     claim: >-
@@ -714,6 +729,7 @@ results:
       longer reads 22529/5000 as the strongest available at this size.
 
   - id: T-016
+    kind: lower-bound
     registered: '2026-09-03'
     headline: "`s(n) ≥ 22529/5000` for `n = 18, 19`, by monotonicity from T-015"
     claim: >-
@@ -768,6 +784,7 @@ results:
       from a larger base. This result stays true as stated and keeps its rungs.
 
   - id: T-017
+    kind: lower-bound
     registered: '2026-09-04'
     headline: "`s(12) ≥ 99/25 = 3.96`"
     established: '2026-09-04'
@@ -895,6 +912,7 @@ results:
       V3/C3: machine-checked, review record pending. The oversight record restores the
       rung.
   - id: T-018
+    kind: lower-bound
     registered: '2026-09-04'
     headline: "`s(11) ≥ 381/100 = 3.81`"
     established: '2026-09-04'
@@ -1029,6 +1047,7 @@ results:
       decimals is evidence about the restricted optima, not a proof that tau* equals
       eleven, and nothing here rules out a site set neither run found.
   - id: T-019
+    kind: lower-bound
     registered: '2026-09-04'
     headline: "`s(n) ≥ 459/100 = 4.59` for `n = 17, 18, 19`"
     established: '2026-09-04'
@@ -1174,6 +1193,7 @@ results:
       remains as the previous rung. 117/25 remains the open probe this next_rung named.
 
   - id: T-020
+    kind: lower-bound
     registered: '2026-09-04'
     headline: "`s(n) ≥ 24/5 = 4.80` for `n = 19, 20, 21`"
     established: '2026-09-04'
@@ -1291,6 +1311,7 @@ results:
       and replays by name. This result stays true as stated at all three of its sizes.
 
   - id: T-021
+    kind: lower-bound
     registered: '2026-09-05'
     headline: "`s(n) ≥ 97/20 = 4.85` for `n = 20, 21`"
     established: '2026-09-05'
@@ -1389,6 +1410,7 @@ results:
       sizes.
 
   - id: T-022
+    kind: lower-bound
     registered: '2026-09-06'
     headline: "`s(11) ≥ 38100√(8100042893309449)/899996306539 = 3.8100257…`"
     established: '2026-09-06'
@@ -1464,6 +1486,7 @@ results:
       fixed-atom core shrinkage might extract more from the same data; the present
       argument does not establish s(11) greater than the displayed bound.
   - id: T-023
+    kind: case-exclusion
     registered: '2026-09-08'
     headline: "Conditional exclusion: no eleven-square packing in the four-owner branch at `q = 96/25`"
     established: '2026-09-08'
@@ -1538,6 +1561,7 @@ results:
       search was performed. The subsequent independent exp145 replay passed in
       Session115 with its own process cost and preserved the original claim and grades.
   - id: T-024
+    kind: lower-bound
     registered: '2026-09-09'
     headline: "`s(11) ≥ 3175000√(518400042893309449)/598960960743657 = 3.8166095…`"
     established: '2026-09-09'
@@ -1640,6 +1664,7 @@ results:
       dilation-limit argument rather than one individual-side certificate at the
       algebraic value.
   - id: T-025
+    kind: lower-bound
     registered: '2026-09-09'
     headline: "`s(11) ≥ 191/50 = 3.82`, by a threshold certificate"
     established: '2026-09-09'
@@ -1737,6 +1762,7 @@ results:
       The self-contained T-025 claim embeds its standard-library verifier and certificate
       bytes. T-025 needs no limit argument, so no dilation record belongs at this rung.
   - id: T-026
+    kind: lower-bound
     registered: '2026-09-09'
     headline: "`s(11) ≥ 955000√(518400042893309449)/179696714646249 = 3.8264474…`"
     established: '2026-09-09'
@@ -1856,6 +1882,7 @@ results:
       formalization, external review, or an independently reproduced full decision.
 
   - id: T-027
+    kind: lower-bound
     registered: '2026-09-18'
     headline: "`s(18) ≥ 467/100 = 4.67`"
     established: '2026-09-18'
@@ -1926,6 +1953,7 @@ results:
       written for this result.
 
   - id: T-028
+    kind: lower-bound
     registered: '2026-09-19'
     headline: "`s(18) ≥ 187/40 = 4.675`"
     established: '2026-09-19'
@@ -1997,6 +2025,7 @@ results:
       been written for this result.
 
   - id: T-029
+    kind: lower-bound
     registered: '2026-09-19'
     headline: "`s(18) ≥ 1871/400 = 4.6775`"
     established: '2026-09-19'
@@ -2069,6 +2098,7 @@ results:
       been written for this result.
 
   - id: T-030
+    kind: lower-bound
     registered: '2026-09-19'
     headline: "`s(18) ≥ 4679/1000 = 4.679`"
     established: '2026-09-19'
@@ -2145,6 +2175,7 @@ results:
       review-ready under epistemics.md -- a mapped, non-superseded review artifact
       -- and none has been written for this result.
   - id: T-031
+    kind: case-exclusion
     registered: '2026-09-20'
     headline: "The octagon corner class (threshold `1/2`) holds no eleven-square packing at side `96/25`"
     established: '2026-09-20'
@@ -2257,6 +2288,7 @@ results:
       retained for this result, so it stands at V3/C3: machine-checked, review record
       pending. The oversight record restores the rung.
   - id: T-032
+    kind: lower-bound
     registered: '2026-09-21'
     headline: "`s(17) ≥ 461300/99999 = 4.61304613…`, and beneath it Mira's `s(17) ≥ 4613/1000`"
     claim: >-
@@ -2361,6 +2393,7 @@ results:
       unrestricted test.
 
   - id: T-033
+    kind: lower-bound
     registered: '2026-09-22'
     headline: "`s(11) ≥ 955000√(2073600042893309449)/359341754646249 = 3.8269975…`"
     established: '2026-09-22'
@@ -2497,6 +2530,7 @@ results:
       independently reproduced full decision.
 
   - id: T-034
+    kind: lower-bound
     registered: '2026-09-23'
     headline: "`s(21) ≥ 122/25 = 4.88`"
     established: '2026-09-23'
@@ -2601,6 +2635,7 @@ results:
       C5 is reached; V5 would need a proof-assistant port of the five-condition theorem.
 
   - id: T-035
+    kind: case-exclusion
     registered: '2026-09-24'
     headline: "Six-plus-five packings near Trump's tilt with side `≤ U_hi` lie within `rho` of his pose"
     established: '2026-09-24'
@@ -2691,6 +2726,7 @@ results:
       1.7e8 nodes comes before more boxes.
 
   - id: T-036
+    kind: restricted-optimality
     registered: '2026-09-24'
     headline: "Trump's pose is optimal among six-plus-five packings near its tilt, unique up to symmetry"
     established: '2026-09-24'
@@ -2789,6 +2825,7 @@ results:
       from distinct source are the closure review's two bounded residual tasks.
 
   - id: T-037
+    kind: lower-bound
     registered: '2026-09-29'
     headline: "`s(11) > 31/8 = 3.875`"
     claim: >-
@@ -2871,6 +2908,7 @@ results:
       s(11) = T; stays true as stated.
 
   - id: T-038
+    kind: lower-bound
     registered: '2026-09-29'
     headline: "`s(17) > 461300/99853 = 4.6197910929…`"
     claim: >-
@@ -2935,6 +2973,7 @@ results:
       stays true as stated.
 
   - id: T-039
+    kind: lower-bound
     registered: '2026-09-29'
     headline: "`s(17) > 231001/50000 = 4.62002`"
     claim: >-
@@ -2997,6 +3036,7 @@ results:
       stays true as stated.
 
   - id: T-040
+    kind: lower-bound
     registered: '2026-09-29'
     headline: "`s(17) > 232001/50000 = 4.64002`"
     claim: >-
@@ -3062,6 +3102,7 @@ results:
       (T-041); stays true as stated.
 
   - id: T-041
+    kind: lower-bound
     registered: '2026-09-29'
     headline: "`s(17) > 466001/100000 = 4.66001`"
     claim: >-
@@ -3127,6 +3168,7 @@ results:
       which continues this charge; stays true as stated.
 
   - id: T-042
+    kind: lower-bound
     registered: '2026-09-29'
     headline: "`s(17) > 233009/50000 = 4.66018`"
     claim: >-
@@ -3183,6 +3225,7 @@ results:
       held the verified field; stays true as stated.
 
   - id: T-043
+    kind: lower-bound
     registered: '2026-09-29'
     headline: "`s(17) > 116511/25000 = 4.66044`"
     claim: >-
@@ -3248,6 +3291,7 @@ results:
       mapped 2026-09-28 review as review_artifact. V5 by a proof-assistant port.
 
   - id: T-044
+    kind: lower-bound
     registered: '2026-09-29'
     headline: "Weighted point lower bounds for ten counts in `n = 26…72`, plus four from the same files"
     claim: >-
@@ -3319,6 +3363,7 @@ results:
       certificates (T-047), before either held the verified field; stays true as stated.
 
   - id: T-045
+    kind: lower-bound
     registered: '2026-09-29'
     headline: "`s(27), s(28) ≥ 28/5`, `s(31) ≥ 148/25` and `s(32) ≥ 119/20`"
     claim: >-
@@ -3388,6 +3433,7 @@ results:
       it held the verified field; stays true as stated.
 
   - id: T-046
+    kind: lower-bound
     registered: '2026-09-29'
     headline: "Rectangle-density lower bounds reported for 48 counts in `n = 18…95`"
     claim: >-
@@ -3472,6 +3518,7 @@ results:
       entry while its verified field cites the replay.
 
   - id: T-047
+    kind: lower-bound
     registered: '2026-09-29'
     headline: "`s(11) ≥ 381/100`; `s(n) ≥ 1377/250` for `n = 26…28`; `s(n) ≥ 571/100` for `n = 29…31`"
     claim: >-
@@ -3544,6 +3591,7 @@ results:
       Kleddamag's 31/8 (T-037). Stays true as stated.
 
   - id: T-048
+    kind: lower-bound
     registered: '2026-09-29'
     headline: "`s(50) ≥ 37/5 = 7.4`, reported"
     claim: >-
@@ -3606,6 +3654,7 @@ results:
       registered.
 
   - id: T-049
+    kind: lower-bound
     registered: '2026-09-29'
     headline: "`s(12) ≥ 15680/3951 = 3.9686155…`"
     claim: >-
@@ -3682,6 +3731,7 @@ results:
       proof-assistant port. The exact value remains open; the conjecture is s(12) = 4.
 
   - id: T-050
+    kind: lower-bound
     registered: '2026-09-29'
     headline: "`s(21) ≥ 5000/1001 = 4.995004995…`"
     claim: >-
@@ -3738,6 +3788,7 @@ results:
       (T-052); stays true as stated.
 
   - id: T-051
+    kind: optimality
     registered: '2026-09-29'
     headline: "`s(32) = 6`"
     claim: >-
@@ -3832,6 +3883,7 @@ results:
       with 8 to 10 GB for the generator (think-angg).
 
   - id: T-052
+    kind: optimality
     registered: '2026-09-29'
     headline: "`s(21) = 5`, by a mixed cover of points and grid-line segments"
     claim: >-
@@ -3902,6 +3954,7 @@ results:
       packet's receipts/lean/).
 
   - id: T-053
+    kind: optimality
     registered: '2026-09-29'
     headline: "`s(45) = 7`, by a mixed cover of points and grid-line segments"
     claim: >-
@@ -3970,6 +4023,7 @@ results:
       finding. V5 would need a top theorem and the checker programs formalised.
 
   - id: T-054
+    kind: simplification
     registered: '2026-09-29'
     headline: "`s(45) = 7` by a second, point-only route"
     claim: >-
@@ -4035,6 +4089,7 @@ results:
       zeromargin.py route reads point covers and is the reachable one.
 
   - id: T-055
+    kind: simplification
     registered: '2026-09-29'
     headline: "`s(21) = 5` by a point-only route, reported"
     claim: >-
@@ -4101,6 +4156,7 @@ results:
       n = 45 replay entry only. The Lean build was not run here.
 
   - id: T-056
+    kind: upper-bound
     registered: '2026-09-29'
     headline: "Smaller packings for 49 counts from `n = 68` to `307`, each certified two independent ways"
     claim: >-
@@ -4182,6 +4238,7 @@ results:
       would be a new packing, not a replay.
 
   - id: T-057
+    kind: upper-bound
     registered: '2026-09-29'
     headline: "`s(211) ≤ 14.99796070496771500150 < 15`, the first packing of 211 squares below the grid on record"
     claim: >-
@@ -4252,6 +4309,7 @@ results:
       checker; this record no longer depends on it.
 
   - id: T-058
+    kind: method-limit
     registered: '2026-09-29'
     headline: "Reported `B·UB(n)` rectangle-certificate ceiling has unresolved premises"
     claim: >-
@@ -4288,6 +4346,7 @@ results:
       retains its original provisional label.
 
   - id: T-059
+    kind: audit
     registered: '2026-09-29'
     headline: "Reported equality of 12028 n11 row minima awaits a complete bound replay"
     claim: >-
@@ -4330,6 +4389,7 @@ results:
       retains its original provisional label.
 
   - id: T-060
+    kind: optimality
     registered: '2026-09-29'
     headline: "Trump's eleven-square packing is globally optimal"
     claim: >-
@@ -4406,6 +4466,7 @@ results:
       V4/C4.
 
   - id: T-061
+    kind: lower-bound
     registered: '2026-09-30'
     headline: "`s(11) > 3875000000/999999999 = 3.875000003875…`, 3.9e-9 above `31/8`"
     claim: >-

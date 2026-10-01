@@ -683,6 +683,171 @@ def test_grouped_results_lists_every_result_once_in_the_rendered_order() -> None
     assert [h for h in headings if h in dict(render_results.OTHERS).values()] == titles[1:]
 
 
+def test_the_kind_vocabulary_is_one_list_in_three_places() -> None:
+    """The checker's tuple, the schema's enum and the rubric's table name the same kinds
+    in the same order, so none can gain or lose one alone."""
+    schema = safe_load((check_results.FRONTIER / "results.schema.yaml").read_text("utf-8"))
+    result = schema["$defs"]["result"]
+    assert tuple(result["properties"]["kind"]["enum"]) == check_results.KINDS
+    assert "kind" in result["required"]
+    rubric = (check_results.REPO / "epistemics.md").read_text(encoding="utf-8")
+    section = rubric.split("## Result Kinds")[1].split("\n## ")[0]
+    listed = re.findall(r"^\| ([a-z][a-z ]+) \| [A-Z]", section, re.MULTILINE)
+    assert listed == [check_results.kind_label(kind) for kind in check_results.KINDS]
+    assert set(check_results.KINDS) > check_results.BOUND_KINDS | check_results.STRUCTURE_KINDS
+
+
+def test_every_result_declares_its_kind_right_after_its_id() -> None:
+    """One kind each, on the line after `id`, where a second branch's field cannot
+    collide with it; and every kind the vocabulary holds is one a result uses."""
+    text = check_results.RESULTS.read_text(encoding="utf-8")
+    declared = re.findall(r"^  - id: (T-\d{3})\n    kind: ([a-z-]+)\n", text, re.MULTILINE)
+    register = safe_load(text)
+    assert [rid for rid, _ in declared] == [record["id"] for record in register["results"]]
+    assert {kind for _, kind in declared} == set(check_results.KINDS)
+    assert len(re.findall(r"^    kind: ", text, re.MULTILINE)) == len(declared)
+
+
+def test_a_result_without_a_kind_is_refused(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.setattr(check_results, "RESULTS", _dropped_field(tmp_path, "T-017", "kind"))
+    assert check_results.main() == 1
+    assert "T-017: states no kind" in capsys.readouterr().out
+
+
+def test_not_a_bound_is_not_a_kind(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A kind says what a result is. The retired tag said only what it was not."""
+    vague = _changed_result(tmp_path, "T-014", kind="not-a-bound")
+    monkeypatch.setattr(check_results, "RESULTS", vague)
+    assert check_results.main() == 1
+    assert "T-014: kind not-a-bound is not one of lower-bound, upper-bound" in (
+        capsys.readouterr().out
+    )
+
+
+@pytest.mark.parametrize(
+    ("result", "kind", "refusal"),
+    [
+        # A headline that opens with a relation on s(n) states its kind.
+        ("T-001", "upper-bound", "upper bound, but its headline opens with a lower bound"),
+        ("T-009", "lower-bound", "lower bound, but its headline opens with an upper bound"),
+        ("T-017", "optimality", "optimality, but its headline opens with a lower bound"),
+        ("T-051", "lower-bound", "lower bound, but its headline opens with an exact value"),
+        (
+            "T-037",
+            "case-exclusion",
+            "case exclusion, but its headline opens with a lower bound",
+        ),
+        # A headline that opens with words still states its relation, and so does a claim.
+        ("T-011", "lower-bound", "kind is lower bound, but its headline states s(n) ≤"),
+        ("T-044", "upper-bound", "kind is upper bound, but its claim states only s(n) >="),
+        ("T-004", "rigidity", "a rigidity is no bound on s(n), but its headline states s(n) ≥"),
+        # The cited evidence claims what the kind needs.
+        ("T-056", "lower-bound", "and no cited evidence claims `lower-bound` or `exact-value`"),
+        ("T-014", "upper-bound", "and no cited evidence claims `upper-bound` or `exact-value`"),
+        ("T-036", "optimality", "an optimality result states an exact value, s(n) = v"),
+        ("T-003", "case-exclusion", "and no cited evidence claims `derived-structure`"),
+        # A simplification names the result it proves again, on a case they share.
+        ("T-001", "simplification", "a simplification's claim names the registered result"),
+    ],
+)
+def test_a_kind_its_record_contradicts_is_refused(result: str, kind: str, refusal: str) -> None:
+    """Each live result, declared as a kind it is not, is refused by its own record:
+    its headline, its claim or the evidence it cites."""
+    record, cited, scopes = _live_record(result)
+    assert check_results.kind_problems(record, cited, scopes) == []
+    problems = check_results.kind_problems({**record, "kind": kind}, cited, scopes)
+    assert any(refusal in problem for problem in problems), problems
+    assert all(problem.startswith(f"{result}: ") for problem in problems)
+
+
+def test_a_contradicted_kind_fails_the_register_gate(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.setattr(
+        check_results, "RESULTS", _changed_result(tmp_path, "T-001", kind="upper-bound")
+    )
+    assert check_results.main() == 1
+    assert "T-001: kind is upper bound, but its headline opens with a lower bound" in (
+        capsys.readouterr().out
+    )
+
+
+def _live_record(result_id: str) -> tuple[dict, list[dict], dict[str, set[int]]]:
+    """A live result, the evidence entries it cites and every result's cases."""
+    register = safe_load(check_results.RESULTS.read_text(encoding="utf-8"))
+    evidence = {
+        entry["id"]: entry
+        for entry in safe_load(check_results.EVIDENCE.read_text(encoding="utf-8"))["evidence"]
+    }
+    scopes = {
+        record["id"]: check_results.scope_values(record["scope"])
+        for record in register["results"]
+    }
+    record = next(record for record in register["results"] if record["id"] == result_id)
+    return record, [evidence[ref] for ref in record["evidence"]], scopes
+
+
+def test_the_kind_a_headline_opens_with_is_derived() -> None:
+    derive = check_results.headline_kind
+    assert derive("`s(17) ≥ 4426213/1000000 = 4.426213`, from a set") == "lower-bound"
+    assert derive("`s(11) > 31/8 = 3.875`") == "lower-bound"
+    assert derive("`s(27), s(28) ≥ 28/5`, `s(31) ≥ 148/25`") == "lower-bound"
+    assert derive("`s(29) ≤ 5.933833…`, by a Krawczyk interval certificate") == "upper-bound"
+    assert derive("`s(13) = 4`") == "optimality"
+    assert derive("Trump's 1979 packing is exactly valid, so `s(11) ≤ 3.877…`") is None
+    assert derive("Goebel's `n = 5` packing is second-order rigid at fixed side") is None
+    assert check_results.stated_relations("s(12) > s(11) strictly, cos(x) = 1") == {">"}
+    register = safe_load(check_results.RESULTS.read_text(encoding="utf-8"))
+    for record in register["results"]:
+        opens = derive(record["headline"])
+        assert opens in {None, record["kind"]} or record["kind"] == "simplification", record[
+            "id"
+        ]
+
+
+def test_optimality_needs_both_halves_or_an_exact_value() -> None:
+    record = {
+        "id": "T-999",
+        "kind": "optimality",
+        "headline": "`s(9) = 3`",
+        "claim": "s(9) = 3.",
+    }
+    scopes = {"T-999": {9}}
+    lower, upper, exact = ({"claim": c} for c in ("lower-bound", "upper-bound", "exact-value"))
+    assert check_results.kind_problems(record, [lower, upper], scopes) == []
+    assert check_results.kind_problems(record, [exact], scopes) == []
+    assert check_results.kind_problems(record, [lower], scopes) == [
+        (
+            "T-999: kind is optimality, and no cited evidence claims `exact-value`, or both "
+            "`lower-bound` and `upper-bound`"
+        )
+    ]
+
+
+def test_a_simplification_names_a_result_on_a_case_it_shares() -> None:
+    record = {
+        "id": "T-999",
+        "kind": "simplification",
+        "headline": "`s(45) = 7` by a shorter route",
+        "claim": "s(45) = 7, proved again without segments; T-053 holds the value.",
+    }
+    cited = [{"claim": "lower-bound"}, {"claim": "upper-bound"}]
+    unnamed = [
+        (
+            "T-999: a simplification's claim names the registered result it proves again, "
+            "on a case they share"
+        )
+    ]
+    assert check_results.kind_problems(record, cited, {"T-999": {45}, "T-053": {45}}) == []
+    assert check_results.kind_problems(record, cited, {"T-999": {45}, "T-053": {21}}) == unnamed
+    silent = {**record, "claim": "s(45) = 7, proved again."}
+    assert check_results.kind_problems(silent, cited, {"T-999": {45}}) == unnamed
+
+
 def test_results_by_others_awaiting_a_replay_lead_their_group() -> None:
     register = safe_load(render_results.RESULTS.read_text(encoding="utf-8"))
     for title, group in render_results.grouped_results(register)[1:]:
@@ -708,3 +873,31 @@ def test_the_registration_backfill_inserts_only_missing_dates() -> None:
         "    registered: '2026-09-03'\n"
         "    claim: b\n"
     )
+
+
+def test_the_registration_backfill_dates_an_entry_after_its_kind() -> None:
+    """`kind` is the line after `id`, so a date goes after both and an entry dated there
+    is not dated twice."""
+    text = (
+        "results:\n"
+        "  - id: T-001\n"
+        "    kind: audit\n"
+        "    registered: '2026-08-31'\n"
+        "  - id: T-002\n"
+        "    kind: rigidity\n"
+        "    claim: b\n"
+    )
+    dates = {"T-001": "2026-10-01", "T-002": "2026-09-03"}
+    assert backfill_result_registration.insert_dates(text, dates) == (
+        "results:\n"
+        "  - id: T-001\n"
+        "    kind: audit\n"
+        "    registered: '2026-08-31'\n"
+        "  - id: T-002\n"
+        "    kind: rigidity\n"
+        "    registered: '2026-09-03'\n"
+        "    claim: b\n"
+    )
+    live = check_results.RESULTS.read_text(encoding="utf-8")
+    ids = re.findall(r"^  - id: (T-\d{3})$", live, re.MULTILINE)
+    assert backfill_result_registration.insert_dates(live, dict.fromkeys(ids, "x")) == live

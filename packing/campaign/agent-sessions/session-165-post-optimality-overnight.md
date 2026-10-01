@@ -466,10 +466,10 @@ session:
       algebraically.
     kill_condition: Independent root checker or fixed domain cannot be specified soundly.
     fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
-    outcome: "Two Astra reviews derive positive slider triangle and fixed centroid, classify15 wall / 21 pair\
-      \ zero identities (including2/3 corner), and approve all 68wall/136pair coverage. H256 fixes accepted\
-      \ m\xB1eta enclosure and all strict remaining clauses before target arithmetic. Sol builds the named\
-      \ instrument in parallel."
+    outcome: "Two Astra reviews derive positive slider triangle and fixed centroid, classify15 wall /\
+      \ 21 pair zero identities (including2/3 corner), and approve all 68wall/136pair coverage. H256 fixes\
+      \ accepted m\xB1eta enclosure and all strict remaining clauses before target arithmetic. Sol builds\
+      \ the named instrument in parallel."
     evidence:
     - packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md
     stop_reason: Mathematical criterion and full coverage independently reviewed; no target sampled.
@@ -481,7 +481,7 @@ session:
     bead: think-ndyz
     objective: Complete and independently review the fixed H256 endpoint-feasibility instrument and synthetic
       controls.
-    status: in_progress
+    status: completed
     entered_by: planned_checkpoint
     switch_reason: H254 is accepted and the conditional minimum reduces the next missing premise to a
       two-polynomial root.
@@ -493,10 +493,38 @@ session:
     validation_command: cd packing && .venv/bin/pytest tests/test_n17_endpoint_feasibility.py -q -p no:cacheprovider
     kill_condition: Independent root checker or fixed domain cannot be specified soundly.
     fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
+    outcome: H256 instrument frozen at addc5331e after nine synthetic controls, clean Ruff/types and two
+      Astra mathematical/code reviews. Independent control replay25.61s. No target input read. Root evaluate_exact
+      naming repair passes browser-code guard without arithmetic change.
+    evidence:
+    - packing/devtools/check_n17_endpoint_feasibility.py
+    - packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md
+    stop_reason: Reviewed instrument and scientific criterion frozen before target execution.
+    next_action: Run one bounded endpoint certificate and retain raw output.
+  - workflow: research-loop
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-bj81
+    objective: Execute H256 once with exact symbolic identities and complete interval geometry at fixed
+      centroid sliders.
+    status: in_progress
+    entered_by: planned_checkpoint
+    switch_reason: H254 is accepted and the conditional minimum reduces the next missing premise to a
+      two-polynomial root.
+    budget_minutes: 5
+    started_at: '2026-10-01T12:21:50Z'
+    deadline_at: '2026-10-01T12:26:50Z'
+    expected_output: exp238 raw certificate and separate symbolic, root-check, interval and orchestration
+      timing; one180second target ceiling.
+    validation_command: cd packing && .venv/bin/python3 -m devtools.check_n17_endpoint_feasibility campaign/series/series-000-smoke-and-calibration/results/exp-237-n17-polynomial-root/run-001/certificate.json
+    kill_condition: Independent root checker or fixed domain cannot be specified soundly.
+    fallback: Retain think-bj81 blocked on a named checker and continue separate admitted work.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Freeze reviewed H256 instrument and exp238 before one 180-second target run.
+    next_action: Independent Astra output review before acceptance; parallel read-only W3 investigates
+      split-orientation capture.
   budget:
     wall_minutes: 268.3
     orientation_minutes: 10
@@ -633,7 +661,8 @@ session:
   - CI head8e5b15b94 failed only the stale synopsis mutation anchor in validate and shardB; corrected165-round
     anchor now passes bothanchorresolution andactualmutation. HostedCIatfinalcheckpoint remains separate.
   stop_reason: null
-  next_action: Freeze reviewed H256 instrument and exp238 before one 180-second target run.
+  next_action: Independent Astra output review before acceptance; parallel read-only W3 investigates split-orientation
+    capture.
 ---
 # Session 165: Post-optimality Research
 

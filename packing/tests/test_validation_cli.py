@@ -607,6 +607,7 @@ def test_list_is_read_only_and_exposes_fast_and_full_check_groups() -> None:
     assert "fast behavioral tests, shard A [fast, suite-a]" in stdout
     assert "fast behavioral tests, shard B [fast, suite-b]" in stdout
     assert "fast behavioral tests, shard C [fast, suite-c]" in stdout
+    assert "fast behavioral tests, shard D [fast, suite-d]" in stdout
     assert "exhaustive exact behavioral tests [full]" in stdout
     assert "soundness perimeter [fast, checks, engine]" in stdout
 
@@ -619,6 +620,7 @@ def test_list_applies_the_same_fast_and_name_filters_as_execution() -> None:
     assert "fast behavioral tests, shard A [fast, suite-a]" in stdout
     assert "fast behavioral tests, shard B [fast, suite-b]" in stdout
     assert "fast behavioral tests, shard C [fast, suite-c]" in stdout
+    assert "fast behavioral tests, shard D [fast, suite-d]" in stdout
     assert "exhaustive exact behavioral tests" not in stdout
     assert "negative controls" not in stdout
 
@@ -689,6 +691,7 @@ def test_skip_is_only_read_the_other_way_round() -> None:
     assert "fast behavioral tests, shard A [fast, suite-a]" in stdout
     assert "fast behavioral tests, shard B [fast, suite-b]" in stdout
     assert "fast behavioral tests, shard C [fast, suite-c]" in stdout
+    assert "fast behavioral tests, shard D [fast, suite-d]" in stdout
 
 
 def test_a_skip_naming_no_step_is_refused_rather_than_ignored() -> None:
@@ -773,7 +776,7 @@ def test_fast_behavioral_step_excludes_exhaustive_exact_tests(
         "--dist=loadfile",
         "-p",
         "devtools.suite_files",
-        "--suite-shard=1/3",
+        "--suite-shard=1/4",
         # The plugin that prints the cpu section, loaded by name across the subprocess
         # boundary because `sqpack.cli` may not import `devtools`.
         "-p",
@@ -1333,6 +1336,7 @@ def test_exhaustive_shard_uses_the_recorded_whole_file_partition(
         "devtools.suite_files",
         "--suite-shard=2/3",
         "--suite-file-costs=devtools/exhaustive-file-costs.json",
+        "--suite-unrecorded-share=1",
         "--durations=0",
         "--durations-min=0",
     )
@@ -1394,6 +1398,7 @@ def test_invalid_worker_count_and_unmatched_selection_are_actionable() -> None:
         ("--suite-a",),
         ("--suite-b",),
         ("--suite-c",),
+        ("--suite-d",),
         ("--sweeps",),
         ("--since", "HEAD"),
     ],
@@ -2804,6 +2809,7 @@ def test_the_edit_tier_cannot_under_run() -> None:
     suite_a = names(fast=False, suite_a=True)
     suite_b = names(fast=False, suite_b=True)
     suite_c = names(fast=False, suite_c=True)
+    suite_d = names(fast=False, suite_d=True)
     geometry = names(fast=False, geometry=True)
     typecheck = names(fast=False, typecheck=True)
 
@@ -2814,7 +2820,17 @@ def test_the_edit_tier_cannot_under_run() -> None:
     # The pull request's jobs are a partition of `--fast` rather than independent filters,
     # which is what makes it safe to run them on separate runners: no step can be in two
     # and none in none.
-    parts = [checks, frontend, typecheck, geometry, suite_a, suite_b, suite_c, sweeps]
+    parts = [
+        checks,
+        frontend,
+        typecheck,
+        geometry,
+        suite_a,
+        suite_b,
+        suite_c,
+        suite_d,
+        sweeps,
+    ]
     assert set().union(*parts) == fast
     for index, part in enumerate(parts):
         for other in parts[index + 1 :]:
@@ -3061,11 +3077,12 @@ def test_the_pull_request_surface_defers_only_what_was_measured() -> None:
 def test_the_pull_request_runs_its_sweeps_and_its_suite_apart() -> None:
     """Which steps leave the `checks` job for a runner of their own, and why each did.
 
-    `frontend`, `sweep`, `suite_a`, `suite_b`, `geometry`, and `typecheck` decide which
-    pull-request job runs a step. All six default to False, so forgetting one makes
-    a slower `checks` job rather than a step nobody runs -- the safe direction, as with
-    `broad` and `touches`. What needs a guard is the other direction: a step moved out to
-    make the `checks` job look fast. Adding a name below means typing a number next to it.
+    `frontend`, `sweep`, `suite_a`, `suite_b`, `suite_c`, `suite_d`, `geometry`, and
+    `typecheck` decide which pull-request job runs a step. All eight default to False, so
+    forgetting one makes a slower `checks` job rather than a step nobody runs -- the safe
+    direction, as with `broad` and `touches`. What needs a guard is the other direction: a
+    step moved out to make the `checks` job look fast. Adding a name below means typing a
+    number next to it.
 
     The measurements are CI's, run 34010470187 on a four-cpu runner: `--checks --jobs 3
     --inner-jobs 1` at 221.70s of wall over 58 steps, and `--sweeps --jobs 4
@@ -3109,7 +3126,7 @@ def test_the_pull_request_runs_its_sweeps_and_its_suite_apart() -> None:
       xdist workers, which was two beside 57 steps at `--jobs 3` and is four at
       `--jobs 1` on a runner of its own.
 
-    That measurement justified extracting the lane. The current lane has three step
+    That measurement justified extracting the lane. The current lane has four step
     instances, one for each file shard. The plugin filters before collection
     and assigns every module to exactly one of them. Their separate jobs reduce the lane
     wall without dropping a test or importing the other shard.
@@ -3147,7 +3164,7 @@ def test_the_pull_request_runs_its_sweeps_and_its_suite_apart() -> None:
     That leaves 269.60s in `checks`, two halves within two per cent of each other. At the
     reference shape on the same box the two walls are 93.27s and 86.20s.
 
-    The current surface exposes eight tier readings instead of one queue, and no coverage
+    The current surface exposes nine tier readings instead of one queue, and no coverage
     change at all: every one of these steps runs on every pull request exactly as it did
     before, which is what
     `test_the_pull_request_surface_defers_only_what_was_measured` re-checks from the
@@ -3167,6 +3184,9 @@ def test_the_pull_request_runs_its_sweeps_and_its_suite_apart() -> None:
     }
     assert {step.name for step in validate.STEPS if step.suite_c} == {
         "fast behavioral tests, shard C",
+    }
+    assert {step.name for step in validate.STEPS if step.suite_d} == {
+        "fast behavioral tests, shard D",
     }
     assert {step.name for step in validate.STEPS if step.frontend} == {
         "browser floor (biome, eslint, tsc, node:test)",
@@ -3197,6 +3217,7 @@ def test_the_pull_request_runs_its_sweeps_and_its_suite_apart() -> None:
         {step.name for step in validate.STEPS if step.suite_a},
         {step.name for step in validate.STEPS if step.suite_b},
         {step.name for step in validate.STEPS if step.suite_c},
+        {step.name for step in validate.STEPS if step.suite_d},
         {step.name for step in validate.STEPS if step.geometry},
         {step.name for step in validate.STEPS if step.typecheck},
     ]
@@ -3208,6 +3229,7 @@ def test_the_pull_request_runs_its_sweeps_and_its_suite_apart() -> None:
         or step.suite_a
         or step.suite_b
         or step.suite_c
+        or step.suite_d
         or step.geometry
         or step.typecheck
     )
@@ -3266,6 +3288,7 @@ def _workflow_selections(*, pull_request: bool) -> dict[str, set[str]]:
                 suite_a=namespace.suite_a,
                 suite_b=namespace.suite_b,
                 suite_c=namespace.suite_c,
+                suite_d=namespace.suite_d,
                 geometry=namespace.geometry,
                 typecheck=namespace.typecheck,
             )
@@ -3289,12 +3312,12 @@ def test_the_pull_request_jobs_partition_the_surface() -> None:
     shape is shortened by cpus and by nothing else.
 
     What a split like this risks is the gap `D-455` came through in the other direction --
-    a step in no selection, run by nobody, reported by nothing -- so the seven commands are
+    a step in no selection, run by nobody, reported by nothing -- so the nine commands are
     read from the workflow and checked to be a partition rather than trusted to be.
 
-    `--checks`, `--frontend`, `--geometry`, all three suite shards and `--sweeps` partition
+    `--checks`, `--frontend`, `--geometry`, all four suite shards and `--sweeps` partition
     `_select_steps` by construction, so this is really a check on the YAML: that the
-    workflow invokes all eight, on a pull request, and narrows none of them with `--only`
+    workflow invokes all nine, on a pull request, and narrows none of them with `--only`
     or `--skip`.
 
     Pairwise disjointness is asserted rather than inferred from the union. Two jobs make
@@ -3311,6 +3334,7 @@ def test_the_pull_request_jobs_partition_the_surface() -> None:
         "suite-a",
         "suite-b",
         "suite-c",
+        "suite-d",
         "sweeps",
         "typecheck",
     }
@@ -3325,6 +3349,7 @@ def test_the_pull_request_jobs_partition_the_surface() -> None:
     assert selections["suite-a"] == {step.name for step in validate.STEPS if step.suite_a}
     assert selections["suite-b"] == {step.name for step in validate.STEPS if step.suite_b}
     assert selections["suite-c"] == {step.name for step in validate.STEPS if step.suite_c}
+    assert selections["suite-d"] == {step.name for step in validate.STEPS if step.suite_d}
     assert selections["geometry"] == {step.name for step in validate.STEPS if step.geometry}
     assert selections["frontend"] == {step.name for step in validate.STEPS if step.frontend}
     assert selections["typecheck"] == {step.name for step in validate.STEPS if step.typecheck}
@@ -3505,7 +3530,7 @@ def test_browser_floor_liveness_runs_only_with_the_frontend_node_toolchain() -> 
         if "browser floor liveness tests" in selected
     ]
     assert owners == ["frontend"]
-    for job_name in ("suite-a", "suite-b", "suite-c"):
+    for job_name in ("suite-a", "suite-b", "suite-c", "suite-d"):
         steps = document["jobs"][job_name]["steps"]
         assert not any("setup-node" in str(step.get("uses", "")) for step in steps)
         assert not any("npm ci" in str(step.get("run", "")) for step in steps)
@@ -3563,6 +3588,7 @@ def test_every_tier_band_is_declared_for_the_shape_ci_runs() -> None:
         "suite_a",
         "suite_b",
         "suite_c",
+        "suite_d",
         "sweeps",
         "typecheck",
     }
@@ -3625,7 +3651,7 @@ def test_post_merge_workers_bind_one_sha_and_a_separate_complete_aggregate() -> 
         assert len(matching) == 1, job
         assert f'test "${matching[0]}" = "success"' in command
 
-    # No deferred job can enter the eight-prerequisite pull-request context.
+    # No deferred job can enter the nine-prerequisite pull-request context.
     assert set(jobs["packing-required"]["needs"]) == {
         "validate",
         "frontend",
@@ -3634,6 +3660,7 @@ def test_post_merge_workers_bind_one_sha_and_a_separate_complete_aggregate() -> 
         "suite-a",
         "suite-b",
         "suite-c",
+        "suite-d",
         "sweeps",
     }
     for name in expected - {"validate"}:
@@ -3800,6 +3827,7 @@ def test_broad_is_opt_out_so_a_new_step_joins_the_edit_tier() -> None:
         "fast behavioral tests, shard A",
         "fast behavioral tests, shard B",
         "fast behavioral tests, shard C",
+        "fast behavioral tests, shard D",
         "browser floor liveness tests",
         "workbench browser behavior in Chromium",
         # Measured 2026-08-30: 31.6s in CI against a 43s edit tier, so carrying it there

@@ -91,6 +91,7 @@ $defs:
     additionalProperties: false
     required:
       - id
+      - kind
       - registered
       - headline
       - claim
@@ -111,6 +112,29 @@ $defs:
     else: {required: [established]}
     properties:
       id: {type: string, pattern: '^T-[0-9]{3}$'}
+      kind:
+        type: string
+        enum:
+          - lower-bound
+          - upper-bound
+          - optimality
+          - simplification
+          - rigidity
+          - case-exclusion
+          - restricted-optimality
+          - method-limit
+          - correction
+          - audit
+        description: >-
+          What the result is, named for what its claim concludes (epistemics.md, Result
+          Kinds): a lower or an upper bound on s(n); optimality, an exact value settled;
+          a simplification, a second and simpler proof of a result the record holds; the
+          rigidity of one packing; the exclusion of one class of configurations; the
+          best packing within a restricted family; the limit of a method; a correction
+          to a published statement; or an audit of an existing proof or certificate.
+          One kind per result, written right after `id`. Declared, and cross-checked by
+          `devtools.check_results` against the headline's and the claim's relations and
+          the cited evidence's claims.
       registered:
         type: string
         pattern: '^\d{4}-\d{2}-\d{2}$'

@@ -17,7 +17,10 @@ first, since they are the queue. Their credit and published date are shown besid
 rungs, with the result's standing, derived from the case records and never stored by
 `devtools.render_recent_results.standing`, the same function the site's overview uses:
 whether a case bound rests on it now, and if not, whether it was superseded or is a
-second certificate for a value another result holds.
+second certificate for a value another result holds. Every row of both tables states the
+result's `kind`, what the result is: a lower bound, an upper bound, optimality, or one
+of the kinds that are no bound on `s(n)`. A result whose evidence claims no bound has
+no standing, and its standing cell is a dash.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.render_results --update
@@ -31,6 +34,7 @@ from pathlib import Path
 
 from strif import atomic_output_file
 
+from devtools.check_results import kind_label
 from devtools.register_prose import paragraphs
 from devtools.render_recent_results import load_records, standing
 from devtools.result_credit import OTHERS, credit_line, source_lineage
@@ -46,6 +50,9 @@ OUTPUT = ROOT / "frontier" / "RESULTS.md"
 #: diff and ambiguous on sight.
 APOSTROPHE = "\u2019"
 
+#: The standing cell of a result whose evidence claims no bound: it has no standing.
+NO_STANDING_CELL = "\u2014"
+
 #: The title of the first group: this project's own results.
 OURS = f"This Project{APOSTROPHE}s Results"
 
@@ -55,6 +62,10 @@ HEADER = """# Results
 
 One row per registered result: this project's first, then results by others grouped
 by the lineage their sources state, each sorted by significance, then confirmation.
+A result's kind says what it is: a lower bound, an upper bound, optimality (an exact
+value), or one of the kinds [`epistemics.md`](../../epistemics.md#result-kinds) defines
+for a result that is no bound on `s(n)`. A result that claims no bound has no
+standing, and its standing column is a dash.
 Every credit names people: `X`, or `X after Y` where X's result rests directly on Y's
 proof, method or tool.
 The axes are defined in [`epistemics.md`](../../epistemics.md): `V` is the
@@ -141,10 +152,11 @@ def render() -> str:
     lines = [HEADER]
     lines.append(f"## {OURS}")
     lines.append("")
-    lines.append("| id | n | credit | V | C | S | novelty | claim |")
-    lines.append("| --- | --- | --- | --- | --- | --- | --- | --- |")
+    lines.append("| id | n | kind | credit | V | C | S | novelty | claim |")
+    lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- |")
     lines.extend(
-        f"| {record['id']} | {_scope(record)} | {credit_line(record, sources)} "
+        f"| {record['id']} | {_scope(record)} | {kind_label(record['kind'])} "
+        f"| {credit_line(record, sources)} "
         f"| {record['verification']} "
         f"| {record['confirmation']} | S{record['significance']['score']} "
         f"| {record['novelty']} | {claim_cell(record)} |"
@@ -164,13 +176,16 @@ def render() -> str:
         for title, group in others:
             lines.append(f"### {title}")
             lines.append("")
-            lines.append("| id | n | credit | published | V | C | S | standing | claim |")
-            lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- |")
+            lines.append(
+                "| id | n | kind | credit | published | V | C | S | standing | claim |"
+            )
+            lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |")
             lines.extend(
-                f"| {record['id']} | {_scope(record)} | {credit_line(record, sources)} "
+                f"| {record['id']} | {_scope(record)} | {kind_label(record['kind'])} "
+                f"| {credit_line(record, sources)} "
                 f"| {record['attribution']['published']} | {record['verification']} "
                 f"| {record['confirmation']} | S{record['significance']['score']} "
-                f"| {standing(record, records)} | {claim_cell(record)} |"
+                f"| {standing(record, records) or NO_STANDING_CELL} | {claim_cell(record)} |"
                 for record in group
             )
             lines.append("")

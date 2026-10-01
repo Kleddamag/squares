@@ -944,13 +944,18 @@ it.
   only the record its fragment names (`overview/case-view.js`) and typesets that
   record’s math when it is shown; without scripting it lists every record.
 
-- **Atlas cards.** Under the grid, the atlas’s posters and film are three direct hero
-  cards side by side, one card section (`atlas_cards`): the n = 1 to 100 poster, headed
-  by its landscape card image, opens its PDF; the n = 1 to 324 poster, headed by the top
-  of the poster itself, opens its PDF; and **Visualize**, headed by a frame of the n = 1
-  to 324 film at n = 290 (`ascent-n1-324-poster.png`), opens `visualize.html`, the film
-  alone at full size. The overview embeds no video, so nothing on it moves or fetches a
-  film.
+- **Atlas cards.** The atlas’s posters and film have a section of their own under The
+  Atlas, **PDFs and Videos**, an ordinary `h2`; The Atlas keeps the grid, its expander
+  and the grid’s own note, and holds no card.
+  They are three direct hero cards side by side, one card section (`atlas_cards`): the n
+  = 1 to 100 poster, headed by its landscape card image, opens its PDF; the n = 1 to 324
+  poster, headed by the top of the poster itself, opens its PDF; and the film, headed by
+  a frame of the n = 1 to 324 film at n = 290 (`ascent-n1-324-poster.png`), opens
+  `visualize.html`, the film alone at full size.
+  A card’s caps label says what it is and the form it opens in, the heading’s two words:
+  “Poster · PDF” twice and “Film · Video”.
+  The note under the cards, the star, the shorter film, the release and the SVGs, is the
+  section’s. The overview embeds no video, so nothing on it moves or fetches a film.
 
 - **The film.** The Visualize section’s Film tab, `visualize.html`, is the n = 1 to 324
   film at full size directly under the section tabs, with no page title and no subtitle

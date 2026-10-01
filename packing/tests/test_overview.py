@@ -161,12 +161,43 @@ def test_the_hero_draws_its_case_and_links_to_its_row(page: str) -> None:
 
 
 def _atlas_cards(page: str) -> list[tuple[str, str]]:
-    """The atlas's direct cards, between its grid and its note: each href and body."""
-    section = page.split('id="the-atlas"', 1)[1].split("<h2", 1)[0]
-    after_grid = section.split('class="site-cards-frame', 1)[1]
+    """The atlas's direct cards, the PDFs and Videos section's: each href and body."""
+    section = page.split('id="pdfs-and-videos"', 1)[1].split("<h2", 1)[0]
+    frame = section.split('class="site-cards-frame', 1)[1]
     return re.findall(
-        r'<a class="site-card site-card-link" href="([^"]+)"(.*?)</a>', after_grid, re.DOTALL
+        r'<a class="site-card site-card-link" href="([^"]+)"(.*?)</a>', frame, re.DOTALL
     )
+
+
+def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
+    page: str,
+) -> None:
+    """The Atlas keeps the grid, its expander and the grid's own note, and holds no card.
+    The two posters and the film follow under an ordinary section heading, PDFs and
+    Videos, with its own id and its entry in the page's contents, and their note, the
+    star, the shorter film, the release and the SVGs, goes with them."""
+    heading = '<h2 id="pdfs-and-videos">PDFs and Videos</h2>'
+    assert page.count(heading) == 1
+    atlas = page.split('id="the-atlas"', 1)[1].split("<h2", 1)[0]
+    assert "data-atlas-grid" in atlas
+    assert 'class="site-cards-frame' not in atlas
+    assert 'class="site-card ' not in atlas
+    assert atlas.count('class="site-atlas-note"') == 1
+    assert 'class="site-wide site-atlas-note"' not in atlas
+    assert page.index('id="the-atlas"') < page.index(heading) < page.index('id="the-survey"')
+    section = page.split(heading, 1)[1].split("<h2", 1)[0]
+    assert section.lstrip().startswith('<div class="site-cards-frame')
+    assert section.count('<a class="site-card site-card-link"') == len(
+        overview_sections.ATLAS_CARDS
+    )
+    note = section.split('<p class="site-wide site-atlas-note">', 1)[1].split("</p>", 1)[0]
+    assert note.startswith("The best packings known. A star marks")
+    assert section.index('class="site-cards-frame') < section.index("site-atlas-note")
+    for linked in ("ascent-n1-100-1080p60-citations.mp4", "known-best-1-324.svg"):
+        assert linked in note, linked
+    contents = '{"href": "#pdfs-and-videos", "level": 1, "title": "PDFs and Videos"}'
+    assert contents in page
+    assert page.index('{"href": "#the-atlas"') < page.index(contents)
 
 
 def test_the_atlas_posters_are_hero_cards_each_opening_its_pdf(page: str) -> None:
@@ -195,7 +226,11 @@ def test_the_atlas_film_is_a_hero_card_opening_the_visualize_page(page: str) -> 
     ]
     body = dict(cards)[overview_sections.VISUALIZE_PAGE]
     assert f'<img src="{OVERVIEW_FILM_POSTER.name}" alt=""' in body
-    assert '<span class="site-card-label">Visualize</span>' in body
+    # Under a heading that says PDFs and Videos, each label says which its card is.
+    assert '<span class="site-card-label">Film \u00b7 Video</span>' in body
+    assert [
+        re.search(r'<span class="site-card-label">([^<]*)</span>', body)[1] for _, body in cards
+    ] == ["Poster \u00b7 PDF", "Poster \u00b7 PDF", "Film \u00b7 Video"]
     assert OVERVIEW_FILM_POSTER in COMPOSITE_ASSETS
     assert OVERVIEW_FILM_POSTER.is_file()
     assert "<video" not in page

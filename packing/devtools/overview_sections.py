@@ -1666,8 +1666,10 @@ def other_project_cards() -> str:
 #: The page the atlas's film card opens: the film alone, at full size.
 VISUALIZE_PAGE = "visualize.html"
 
-#: The atlas's three direct cards: where each goes, the picture heading it (a file
-#: served beside the page), its label, value and note.
+#: The atlas's three direct cards, the overview's PDFs and Videos section: where each
+#: goes, the picture heading it (a file served beside the page), its label, value and
+#: note. A label says what the card is and the form it opens in, which are the section
+#: heading's two words: a poster is a PDF, the film a video.
 ATLAS_CARDS: tuple[tuple[str, str, str, str, str], ...] = (
     (
         "known-best-1-100.pdf",
@@ -1692,7 +1694,7 @@ ATLAS_CARDS: tuple[tuple[str, str, str, str, str], ...] = (
     (
         VISUALIZE_PAGE,
         "ascent-n1-324-poster.png",
-        "Visualize",
+        "Film \u00b7 Video",
         "The ascent to n = 324",
         (
             "The atlas built one square at a time, each step naming the bound it reaches and "
@@ -1704,7 +1706,8 @@ ATLAS_CARDS: tuple[tuple[str, str, str, str, str], ...] = (
 
 def atlas_cards() -> str:
     """The atlas's posters and film as three cards side by side, each headed by its
-    picture and itself the link: a poster opens its PDF, the film its own page."""
+    picture and itself the link: a poster opens its PDF, the film its own page. They
+    are the overview's PDFs and Videos section, under The Atlas."""
     return _cards(
         [
             link_card(

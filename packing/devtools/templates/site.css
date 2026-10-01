@@ -1011,7 +1011,7 @@ body {
     display: none;
   }
 }
-/* The atlas's closing note, under its poster and film cards, in the support gray. */
+/* The note under the poster and film cards (PDFs and Videos), in the support gray. */
 .site-atlas-note {
   color: var(--site-support-color);
   font-family: var(--kpress-font-sans);

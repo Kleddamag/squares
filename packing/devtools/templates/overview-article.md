@@ -102,6 +102,11 @@ packing drawn large, with a link to its case record.
 
 {{ATLAS_GRID}}
 
+<!-- The atlas as files and as a film: the two posters, each opening its PDF, and the
+     film. The cards and their note stood under the grid, in The Atlas, until 2026-10-01. -->
+
+## PDFs and Videos
+
 {{ATLAS_CARDS}}
 
 <p class="site-wide site-atlas-note">The best packings known. A star marks a verified lower bound proved since 22 August 2026. There is also a shorter film of the <a href="https://github.com/jlevy/squares/releases/download/v0.4.2/ascent-n1-100-1080p60-citations.mp4">ascent from 1 to 100</a> (2 m 20 s). Both films are on the <a href="https://github.com/jlevy/squares/releases/tag/v0.4.2">v0.4.2 release</a> with the receipt recording each file and the page it was drawn from. Each poster is also an SVG (<a href="repo:packing/atlas/known-best/known-best-1-100.svg">1 to 100</a>, <a href="repo:packing/atlas/known-best/known-best-1-324.svg">1 to 324</a>). The <a href="repo:packing/atlas/known-best/README.md">atlas README</a> describes both.</p>

@@ -418,7 +418,7 @@ All but T-007 are wand125’s, taken in on 29 September.
 
 | What | Count | Source | Why it has no entry | What a registration needs |
 | --- | ---: | --- | --- | --- |
-| The verified upper bound of $n = 17$, $s(17) \le 4.6755300936045509516342148538535054$ | 1 result; perhaps 2 | This project, 1 October 2026 (`E-n017-certified-endpoint`, `exp-238`), from Kleddamag’s rational witness of 21 September (`E-n017-kleddamag-rational-upper`, `exp-235`) | Pull request 265 moved the case record and registered nothing | See the next section |
+| The verified upper bound of $n = 17$, $s(17) \le 4.6755300936045509516342148538535054$ | 1 result | This project, 1 October 2026 (`E-n017-certified-endpoint`, `exp-238`), from Kleddamag’s rational witness of 21 September (`E-n017-kleddamag-rational-upper`, `exp-235`) | Pull request 265 moved the case record and registered nothing | See the next section |
 | Catalogue sides newer than the record | 3: $n = 69, 83, 87$ | David Ellsworth; Allen Chang with Ellsworth; Chang, all September 2026, as the Kingbird catalogue’s capture of 30 September prints them | `source-coverage.yaml` lists them under `pending_catalogue_intake`: “the register holds it before the record takes it” | A bibliography key for each with `dated`, `credit` and `lineage`. The catalogue gives a month, and `attribution.published` takes a day or a year; and the three witnesses have to be taken in. |
 | Evan Daniel’s claims of 1 October | 3: $s(60) = 8$, $s(61) = 8$, $s(k^2 - 3) = k$ | Issue 256 | Being registered in pull request 267 as T-062, T-063 and T-064, at `V0/C1` | Nothing from this branch. Each would read *reviewed*; T-064 is `S4` and would show on the homepage. |
 
@@ -447,67 +447,115 @@ All but the last predate the project.
 
 The case record of $n = 17$ carries a verified upper bound that no register entry
 states. It should have one.
-It is not registered on this branch, for three reasons, each of which is a decision and
-not a computation.
+It is drafted here and not registered on this branch, for three reasons, each a decision
+and not a computation.
 
-1. **Whose result it is.** The evidence entry says its novelty is not assessed and that
+1. **Its identifier.** Pull request 267 holds T-062, T-063 and T-064 for Evan Daniel’s
+   claims, so this result would be T-065. The checker requires the register’s
+   identifiers to run without a gap, so a branch that does not hold those three cannot
+   add T-065 and pass, and adding it as T-062 would collide with 267.
+2. **Whose result it is.** The evidence entry says its novelty is not assessed and that
    no new packing is claimed.
    The packing is John Bidwell’s of 1998, as the atlas credits it.
-   Kleddamag’s release of 21 September supplies an exact rational witness at
-   $4675530093604551/10^{15}$, replayed here.
-   This project derived the certified endpoint, which lowers that ceiling in the
-   seventeenth decimal.
-   The register can say this two ways.
-   Like T-011, it can be Bidwell’s bound, verified here; that needs a bibliography key
-   for Bidwell’s packing, which does not exist.
-   Like T-044, it can be a result of Kleddamag’s with a part derived here from the
-   source’s files.
-2. **Its significance.** A score and its rationale are a judgment.
-   `S3` is the level of T-009 and T-057, the register’s other first verified upper
-   bounds.
-3. **Its identifier.** Pull request 267 holds T-062 to T-064, and the checker requires
-   the register’s identifiers to run without a gap, so this branch cannot take T-065 and
-   pass.
+   Kleddamag’s release of 21 September carries that construction forward as an exact
+   rational witness at $4675530093604551/10^{15}$, replayed here.
+   This project derived the certified endpoint from that witness, which lowers the
+   ceiling in the seventeenth decimal.
+   The draft follows T-044 and T-045, where a bound derived here from a source’s files
+   is part of the source’s result: it is a result by others, credited to Kleddamag’s
+   release, with Bidwell and this project’s part named in the claim.
+   The other reading follows T-011, Bidwell’s bound verified here, and needs a
+   bibliography key for Bidwell’s packing, which does not exist.
+3. **Its significance.** A score and its rationale are a judgment.
+   The draft says `S3`, the level of T-009 and T-057, the register’s other first
+   verified upper bounds, and marks the score a draft.
 
-What the record does support: the rungs derive as `V3/C3` from the two evidence entries,
-both exact with a certificate and a passing replay; the controls are
-`tests/test_n17_endpoint_receipt_audit.py` and
-`tests/test_rational_witness_independent_contract.py`; and its status would be
-*confirmed*.
-
-The recommended entry, once those three are settled, is one result by others in the
-shape of T-044:
+What the record does support is checked.
+Appended to the register as its next entry, the draft passes `devtools.check_results`:
+the rungs derive as `V3/C3` from the two evidence entries, both exact with a certificate
+and a passing replay; the kind agrees with the headline and the evidence; every path,
+source and campaign id resolves.
+Its status would be *confirmed*, and it would be the current best, unmarked.
 
 ```yaml
-  - id: T-065            # the next free identifier when it lands
+  - id: T-065    # T-062 if this lands before pull request 267
     kind: upper-bound
     registered: '2026-10-01'
     headline: "`s(17) ≤ 4.6755300936045509516342148538535054`, Bidwell's packing certified exactly"
     claim: >-
-      s(17) <= 4.6755300936045509516342148538535054: seventeen unit squares fit in a
-      square of at most that side, a rational outward ceiling. Kleddamag's v1.0.0 release
-      of 21 September 2026 supplies an exact rational witness at
-      4675530093604551/10^15, accepted here by two exact implementations; from that seed
-      this project certified the packing at the unique root of its contact chart, by
-      exact identities and rational interval bounds on all 68 wall and 136 pair
-      obligations. The ceiling agrees with John Bidwell's 1998 record at the catalogue's
-      printed precision. No identity with the catalogue's degree-18 polynomial is
-      proved, no new packing is claimed, and optimality is not claimed.
+      s(17) <= 4.6755300936045509516342148538535054: seventeen unit squares fit in a square
+      of at most that side. The figure is a rational outward ceiling, not the exact side of
+      the packing.
+
+      Kleddamag's release of 21 September 2026 carries John Bidwell's 1998 construction
+      forward as an exact rational witness, s(17) <= 4675530093604551/10^15, which two exact
+      implementations here and the source's own checker accept: 17 unit squares, 68 vertices
+      contained, 136 pairs separated.
+
+      From that seed this project certified the packing at the unique root of its contact
+      chart: the root exists and is unique in a frozen rational box, and all 68 wall and 136
+      pair obligations hold there, 36 as exact identities and 168 by rational interval
+      bounds, and an independent audit reconstructs every interval record. This lowers
+      Kleddamag's rational ceiling in the seventeenth decimal.
+
+      The ceiling agrees with Bidwell's record in the Kingbird catalogue at the catalogue's
+      printed precision. No identity with the catalogue's degree-18 polynomial is proved, no
+      new packing is claimed, and optimality is not claimed.
+
+      Kleddamag,
+      [Kleddamag/17-squares-certified-bound](https://github.com/Kleddamag/17-squares-certified-bound),
+      for the rational witness of Bidwell's packing; its AUTHORS.md says the work was
+      produced with AI agents under Kleddamag's direction.
     scope: {n_values: [17]}
     verification: V3
     confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        The first verified upper bound at n = 17 below the grid's 5: the case's verified
+        bracket becomes 4.66044 < s(17) <= 4.67553009..., both ends machine-checked, where
+        the upper end was a reported catalogue value. S3 by the anchor "a substantive case
+        result or machine audit"; it moves no reported bound.
+      scored: '2026-10-01'
+      by: think-7nez registration (repository; draft)
     novelty: previously-published
     attribution:
       source_keys: ['[Kleddamag n17 certified bound]']
       published: '2026-09-21'
+    composition: >-
+      Two parts, both V3/C3. Kleddamag's rational witness is E-n017-kleddamag-rational-upper,
+      replayed here exactly. The registered ceiling is E-n017-certified-endpoint, derived
+      here from that witness and audited here; its accepted root proof and its reviewed
+      symbolic identities are stated premises of the audit. The second part sets the bound.
+    produced_by:
+      hypothesis: H-256
+      experiment: exp-238
     evidence:
       - E-n017-kleddamag-rational-upper
       - E-n017-certified-endpoint
+    artifacts:
+      - packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/README.md
+      - packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/portable-witness.yaml
+      - packing/campaign/series/series-000-smoke-and-calibration/results/exp-235-n17-rational-upper/output-review.md
+      - packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/run-001/certificate.json
+      - packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/output-review.md
+      - packing/devtools/check_rational_witness_independent.py
+      - packing/devtools/audit_n17_endpoint_receipt.py
+      - docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md
+    controls:
+      - packing/tests/test_rational_witness_independent_contract.py
+      - packing/tests/test_n17_endpoint_receipt_audit.py
+    next_rung: >-
+      Rung 4 on either axis needs two adversarial AI reviews by distinct reviewers and a
+      retained human oversight record. A proof that the endpoint's side is the root of the
+      catalogue's degree-18 polynomial would make the bound Bidwell's exact value. First-order
+      stationarity, local minimality and global optimality are unproved.
 ```
 
 When it exists, the shared README and homepage paragraph on recent progress gains one
-clause for seventeen squares, after the sentence on eleven: that Bidwell’s 1998 packing
-is now certified exactly, so $4.66044 < s(17) \le 4.67553009\ldots$, both ends verified.
+clause for seventeen squares, after the sentence on eleven: Bidwell’s 1998 packing is
+now certified exactly, so $4.66044 < s(17) \le 4.67553009\ldots$ with both ends
+verified.
 
 ## What Is Built on the Branch
 
@@ -557,9 +605,10 @@ At `S3` and up it would show 23 rows, T-046 and T-048 among them; at every signi
    homepage, which starts at `S4`. Recommended: keep it.
    T-064 will be the first unassessed result on the homepage when pull request 267
    lands.
-9. **The $n = 17$ upper bound.** Whose result it is, as set out above.
-   Recommended: one entry in the shape of T-044, credited to Kleddamag, with Bidwell
-   named in the claim.
+9. **The $n = 17$ upper bound.** Whose result it is, and when it takes its identifier,
+   as set out above. Recommended: the drafted entry, credited to Kleddamag with Bidwell
+   and this project’s part named in the claim, registered as T-065 once pull request 267
+   has landed.
 
 ## Follow-Up Work, Not Done Here
 

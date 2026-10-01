@@ -143,13 +143,19 @@ def _atlas_pdfs() -> None:
 
 
 def _site_pages(scratch: Path) -> None:
-    """The site's own pages and result overviews, as `preview_site` writes them."""
-    from devtools import render_overview  # noqa: PLC0415
+    """The site's own pages, result overviews, forwarders and link-preview card, as
+    `preview_site.build` writes them."""
+    from devtools import render_overview, social_card  # noqa: PLC0415
 
     pages = render_overview.render_all()
     fragments = render_overview.result_fragments()
-    render_overview.write_site(scratch, [*pages, *fragments])
-    print(f"wrote {len(pages)} pages and {len(fragments)} result overviews")
+    forwarders = render_overview.forwarder_pages()
+    render_overview.write_site(scratch, [*pages, *fragments, *forwarders])
+    card = social_card.write(scratch)
+    print(
+        f"wrote {len(pages)} pages, {len(fragments)} result overviews, "
+        f"{len(forwarders)} forwarders and {card.name}"
+    )
 
 
 def _preview_explainer(scratch: Path) -> None:
@@ -266,7 +272,8 @@ PHASES: tuple[Phase, ...] = (
     Phase(
         "preview: site pages",
         "preview",
-        "preview_site's second build: render_overview's pages and result overviews",
+        "preview_site's second build: render_overview's pages, result overviews and "
+        "forwarders, and the link-preview card",
         _internal("site-pages"),
     ),
     Phase(

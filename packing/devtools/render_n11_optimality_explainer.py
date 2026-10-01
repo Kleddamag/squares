@@ -28,13 +28,19 @@ from devtools import artifact_dates, render_explainer
 from devtools.render_explainer_pdf import dated
 from devtools.render_overview import (
     EMBED_SCRIPT,
+    MATH_SCRIPT,
     PAPER_TYPE_CSS,
     SITE_NAV,
     SITE_NAV_CSS,
     THEME_SCRIPT,
+    PageMeta,
+    canonical_url,
+    colophon_lines,
     favicon_html,
+    head_tags,
     nav_html,
 )
+from sqpack.probes import probe
 
 PACKING = Path(__file__).resolve().parents[1]
 REPO = PACKING.parent
@@ -49,7 +55,13 @@ STEM = "t-060-explainer"
 SITE_PATH = f"{OUTPUT_DIR.name}/{STEM}.html"
 SITE_ROOT = "../"
 TITLE = "A Review of the Optimality Proof of the Trump Packing of 11 Squares"
-DESCRIPTION = "A review of the optimality proof of the Trump packing of eleven squares."
+DESCRIPTION = (
+    "A review of Queuingtheorydotcom's computer-assisted proof that Trump's 1979 packing "
+    "of eleven unit squares is optimal, explained step by step."
+)
+#: The day the article says it was last revised, in its credits. The head states the
+#: same day to a link preview (`page_meta`).
+REVISED = re.compile(r"This review revised ([A-Z][a-z]+ \d{1,2}, \d{4})")
 FIGURE_KEYS = (
     "WITNESS_SVG",
     "ROADMAP_SVG",
@@ -65,7 +77,13 @@ FIGURE_KEYS = (
     "ENDPOINT_SVG",
 )
 MATH_WAIT_MS = 15_000
+#: Asks the page's math driver for every formula at once, before a print.
+TYPESET_ALL = probe(render_explainer.PROBES, "render_n11_optimality_explainer/typeset_all")
 FIGURE_SLOT = re.compile(r"\{\{([A-Z_]+_SVG)\}\}")
+#: A figure's caption, and a formula in one. A caption is an HTML block, where KPress
+#: leaves `$…$` as it is written, so the renderer typesets a caption's formulas itself.
+FIGCAPTION = re.compile(r"<figcaption>.*?</figcaption>", re.DOTALL)
+CAPTION_MATH = re.compile(r"\$([^$\n]+)\$")
 LEFTOVER_SLOT = re.compile(r"\{\{[A-Z][A-Z_]*\}\}")
 RELATIVE_LINK = re.compile(r"(?P<start>\]\()(?P<url>\.\.?/[^\s)]+)(?P<end>\))")
 RELATIVE_REFERENCE = re.compile(r"(?m)^(?P<start>\[[^\]\n]+\]:[ \t]*)(?P<url>\.\.?/[^\s]+)")
@@ -88,14 +106,22 @@ RENDER_INPUTS = (
     PACKING / "devtools" / "render_explainer.py",
     PACKING / "devtools" / "explainer" / "diagram-labels.js",
     PACKING / "devtools" / "render_overview.py",
+    PACKING / "devtools" / "render_frontier_page.py",
     PAPER_TYPE_CSS,
     SITE_NAV,
     SITE_NAV_CSS,
     THEME_SCRIPT,
     EMBED_SCRIPT,
+    MATH_SCRIPT,
+    render_explainer.INLINE_SCRIPT_ASSETS["NATIVE_MATH_METRICS"],
+    render_explainer.PROBES / "render_explainer" / "host_math_init.js",
+    render_explainer.PROBES / "render_n11_optimality_explainer" / "typeset_all.js",
     PACKING / "atlas" / "rendering" / "trump11-overview.svg",
     PACKING / "devtools" / "packing_render_adapters.py",
     PACKING / "src" / "sqpack" / "render",
+    # The closing credit prints the shared version, which is pinned here, so a re-pin
+    # redraws the page, as it does the workbench's (`build_site.RENDER_INPUTS`).
+    PACKING / "src" / "sqpack" / "release.py",
     PACKING / "cases" / "trump11" / "packing.py",
     PACKING / "resources/web/n11-optimality-2026-09-29/receipts/final-composition.json",
     PACKING / "resources/web/n11-optimality-2026-09-29/receipts/d4-independent/result.json",
@@ -139,6 +165,47 @@ def render_all_figures() -> dict[str, str]:
     return figures
 
 
+def render_all_facts() -> dict[str, str]:
+    """What the captions say of the figures that is data, from the modules that draw
+    them: each value comes from the receipt its figure is drawn from, once that receipt
+    checks, so a caption can name a count and cannot retype one."""
+    from devtools import (  # noqa: PLC0415
+        n11_optimality_figures,
+        n11_optimality_mechanism_figures,
+        n11_optimality_overview_figures,
+    )
+
+    groups = (
+        n11_optimality_figures.caption_facts(),
+        n11_optimality_overview_figures.caption_facts(),
+        n11_optimality_mechanism_figures.caption_facts(),
+    )
+    facts: dict[str, str] = {}
+    for group in groups:
+        if facts.keys() & group.keys():
+            raise ValueError("figure modules supplied duplicate caption facts")
+        facts.update(group)
+    return facts
+
+
+def caption_math(markdown: str) -> str:
+    """The article with each caption's `$…$` formulas in KPress's own math markup.
+
+    A figure and its caption are an HTML block, where KPress leaves `$…$` literal, so a
+    caption used to write its mathematics as text (`17/32 ≤ t ≤ 9/16`, `tᵢ = tan(θᵢ/2)`),
+    in characters the sans face does not carry and the reader's machine drew. A caption
+    writes LaTeX as the prose does, the page's math pipeline typesets it in the
+    caption's own face, and the Markdown edition keeps the `$…$` as written."""
+    from devtools.render_frontier_page import math_html  # noqa: PLC0415
+
+    return FIGCAPTION.sub(
+        lambda caption: CAPTION_MATH.sub(
+            lambda formula: math_html(formula.group(1)), caption.group(0)
+        ),
+        markdown,
+    )
+
+
 def link_revision() -> str:
     """The commit the paper's repository citations name: the one it is built from.
 
@@ -156,7 +223,16 @@ def link_revision() -> str:
     return revision
 
 
-def _fill(template: str, values: Mapping[str, str], *, source: Path) -> str:
+def _fill(
+    template: str, values: Mapping[str, str], *, source: Path, strict: bool = False
+) -> str:
+    """Substitute every `{{NAME}}`; a placeholder left over fails, and with `strict` so
+    does a value the template has no place for, which is how a shell that drops one
+    half of a shared layer is refused rather than rendered without it."""
+    if strict:
+        unused = [key for key in values if "{{" + key + "}}" not in template]
+        if unused:
+            raise ValueError(f"{source.name}: values with no placeholder: {sorted(unused)}")
     rendered = template
     for key, value in values.items():
         rendered = rendered.replace("{{" + key + "}}", value)
@@ -201,9 +277,20 @@ def _repository_links(markdown: str, *, source: Path, revision: str) -> str:
 
 
 def expanded_markdown(
-    source: str, *, figures: Mapping[str, str], article: Path = ARTICLE, revision: str
+    source: str,
+    *,
+    figures: Mapping[str, str],
+    article: Path = ARTICLE,
+    revision: str,
+    facts: Mapping[str, str] | None = None,
 ) -> str:
-    """Fill only declared figure slots and pin local source citations to a Git commit."""
+    """Fill the declared figure slots and the caption facts, and pin local source
+    citations to a Git commit. A fact the article does not use is refused, as a slot it
+    does not fill is: the two lists are the article's and the figure modules' alike."""
+    facts = facts or {}
+    unused = sorted(key for key in facts if "{{" + key + "}}" not in source)
+    if unused or any(FIGURE_SLOT.fullmatch("{{" + key + "}}") for key in facts):
+        raise ValueError(f"{article.name}: caption facts unused or named as figures: {unused}")
     if set(figures) != set(FIGURE_KEYS):
         raise ValueError("figures must provide exactly the declared SVG slots")
     if set(FIGURE_SLOT.findall(source)) != set(FIGURE_KEYS):
@@ -219,18 +306,49 @@ def expanded_markdown(
             re.IGNORECASE,
         ):
             raise ValueError(f"{key} contains active or remote SVG content")
-    filled = _fill(source, figures, source=article)
+    filled = _fill(source, {**figures, **facts}, source=article)
     return _repository_links(filled, source=article, revision=revision)
 
 
-def _katex_js(static: Path) -> str:
-    from kpress.format.assets import KATEX_JS_ASSETS  # noqa: PLC0415
+def _script(text: str, *, name: str) -> str:
+    """A program's text, refused if it would close its own script element early."""
+    if "</script" in text.lower():
+        raise ValueError(f"{name} closes its inline script")
+    return text
 
-    parts = [(static / name).read_text(encoding="utf-8") for name in KATEX_JS_ASSETS]
-    joined = "\n".join(parts)
-    if "</script" in joined.lower():
-        raise ValueError("KaTeX asset closes its inline script")
-    return joined
+
+def math_scripts(static: Path) -> dict[str, str]:
+    """The paper's mathematics, typeset as every page of the site typesets its own.
+
+    `KATEX_JS` is the explainer's pipeline (`render_explainer.katex_js`): KaTeX, KPress's
+    metric tables and shared runtime, and the host adapter `squaresMath`. `SITE_MATH` is
+    the site pages' driver (`overview/math.js`), which runs the adapter over KPress's
+    math markup and marks the page `math-ready`. So a formula here gets what it gets on
+    the explainer and on every other page: the one-mu kern after a function's name, the
+    face of the text it sits in read from that text's computed face, and a reveal only
+    once the faces its glyphs need have loaded, so a formula that asks for a face the
+    page does not ship keeps its MathML and fails the PDF rather than being drawn from
+    the reader's machine. KPress's own entry points, `auto-render.min.js` and
+    `katex-init.js`, which the paper used to inline, do none of the three.
+    """
+    return {
+        "KATEX_JS": _script(render_explainer.katex_js(static), name="the math pipeline"),
+        "SITE_MATH": _script(MATH_SCRIPT.read_text(encoding="utf-8"), name=MATH_SCRIPT.name),
+    }
+
+
+def page_meta(source: str) -> PageMeta:
+    """What the page says of itself in its head (`render_overview.head_tags`): its title,
+    its sentence, the address it is served at, and the day `source`, the article, says
+    it was last revised, when it says one."""
+    revised = REVISED.search(source)
+    return PageMeta(
+        name=TITLE,
+        description=DESCRIPTION,
+        path=SITE_PATH,
+        kind="article",
+        modified=render_explainer.iso_date(revised.group(1)) if revised else "",
+    )
 
 
 def render(
@@ -239,33 +357,38 @@ def render(
     figures: Mapping[str, str],
     revision: str,
     article: Path = ARTICLE,
+    facts: Mapping[str, str] | None = None,
 ) -> tuple[str, str]:
     """Return self-contained HTML and the expanded Markdown it typesets."""
     from kpress.format.markdown import parse_markdown  # noqa: PLC0415
 
-    markdown = expanded_markdown(source, figures=figures, article=article, revision=revision)
-    document = parse_markdown(markdown, title=TITLE, trust_mode="trusted", math="auto")
+    markdown = expanded_markdown(
+        source, figures=figures, article=article, revision=revision, facts=facts
+    )
+    document = parse_markdown(
+        caption_math(markdown), title=TITLE, trust_mode="trusted", math="auto"
+    )
     errors = [item.message for item in document.diagnostics if item.severity == "error"]
     if errors:
         raise ValueError(f"{article.name}: KPress refused the article: {'; '.join(errors)}")
     static = render_explainer.kpress_static()
     values = {
-        "PAGE_TITLE": escape(TITLE),
-        "PAGE_DESCRIPTION": escape(DESCRIPTION),
+        "PAGE_HEAD": head_tags(page_meta(source)),
         "KPRESS_CSS": render_explainer.kpress_css(static),
         "KATEX_CSS": render_explainer.katex_css(static) if document.has_math else "",
         "RELATION_CSS": render_explainer.relation_face_css(static),
         "PAPER_TYPE_CSS": PAPER_TYPE_CSS.read_text(encoding="utf-8"),
-        "PUBLICATION_CSS": render_explainer.PUBLICATION_STYLE.read_text(encoding="utf-8"),
+        **render_explainer.publication_layer(),
         "PAPER_CSS": STYLE.read_text(encoding="utf-8"),
         "SITE_FAVICON": favicon_html(),
         "SITE_NAV_CSS": SITE_NAV_CSS.read_text(encoding="utf-8"),
         "SITE_NAV": nav_html("papers", root=SITE_ROOT),
+        "COLOPHON": colophon_lines(),
         "SITE_EMBED": EMBED_SCRIPT.read_text(encoding="utf-8"),
         "SITE_THEME": THEME_SCRIPT.read_text(encoding="utf-8"),
         "THEME_BOOTSTRAP": render_explainer.theme_bootstrap(static),
         "BODY_HTML": document.html,
-        "KATEX_JS": _katex_js(static) if document.has_math else "",
+        **(math_scripts(static) if document.has_math else {"KATEX_JS": "", "SITE_MATH": ""}),
         "DIAGRAM_LABEL_SCRIPT": render_explainer.INLINE_SCRIPT_ASSETS[
             "DIAGRAM_LABEL_SCRIPT"
         ].read_text(encoding="utf-8"),
@@ -273,17 +396,20 @@ def render(
         "MARKDOWN_NAME": STEM + ".md",
         "REPO_URL": render_explainer.REPO_URL,
     }
-    page = _fill(SHELL.read_text(encoding="utf-8"), values, source=SHELL)
+    page = _fill(SHELL.read_text(encoding="utf-8"), values, source=SHELL, strict=True)
     render_explainer.assert_self_contained(page)
     return page, markdown
 
 
 def _index() -> str:
+    """The directory's landing address, a forwarder to the paper. Its canonical link is
+    the paper's own address in full, as the paper's head states it: a crawler has no
+    base to resolve a relative one against."""
     destination = STEM + ".html"
     return (
         '<!doctype html><html lang="en"><head><meta charset="utf-8">'
         f'<meta http-equiv="refresh" content="0; url={destination}">'
-        f'<link rel="canonical" href="{destination}">'
+        f'<link rel="canonical" href="{escape(canonical_url(SITE_PATH))}">'
         f"<title>{escape(TITLE)}</title></head><body>"
         f'<p><a href="{destination}">Read the T-060 paper</a>.</p></body></html>\n'
     )
@@ -316,6 +442,9 @@ def _print_pdf(html_path: Path, pdf_path: Path) -> None:
             hosts = page.locator(".kpress-math")
             if hosts.count() == 0:
                 raise ValueError("the paper has no typeset math")
+            # The driver leaves the formulas far from the window to idle time; a print
+            # asks for them all, so the wait below is for work already under way.
+            page.evaluate(TYPESET_ALL)
             try:
                 expect(page.locator(".kpress-math:not(:has(.katex))")).to_have_count(
                     0, timeout=MATH_WAIT_MS
@@ -343,6 +472,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     html, markdown = render(
         ARTICLE.read_text(encoding="utf-8"),
         figures=render_all_figures(),
+        facts=render_all_facts(),
         revision=args.revision or link_revision(),
     )
     output_dir = args.output_dir.resolve()

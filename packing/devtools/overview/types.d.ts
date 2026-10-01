@@ -7,9 +7,10 @@ interface SiteTableFilter {
   /**
    * How the control's value is held against the row's: equal to it, a flag that must be
    * set, a numeric bound, a first day the row's ISO date may be (which orders as it
-   * reads), or a number the row's list of numbers and ranges must hold.
+   * reads), a number the row's list of numbers and ranges must hold, or a name the
+   * row's list of names must have.
    */
-  kind: "equals" | "flag" | "min" | "max" | "since" | "covers";
+  kind: "equals" | "flag" | "min" | "max" | "since" | "covers" | "has";
   value: string;
 }
 

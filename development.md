@@ -960,6 +960,11 @@ uses the same KPress fonts and
 [`explainer-publication.css`](packing/devtools/templates/explainer-publication.css) as
 the historical explainer for screen and print typography, metadata, and format links.
 Its separate stylesheet contains diagram layout only.
+It takes the publication layer whole, the stylesheet with the head script its math rule
+reads the platform from (`render_explainer.publication_layer`), and typesets its
+mathematics with the pipeline every page of the site shares
+(`render_n11_optimality_explainer.math_scripts`); the Math section of
+[`paper-design.md`](packing/devtools/templates/paper-design.md) says why both matter.
 It reuses the Trump witness rendering and draws the center cells and capture graph from
 the retained proof packet.
 From `packing/`, with the scratch environment required by `AGENTS.md`:
@@ -1055,6 +1060,12 @@ what record links it writes at that commit: every result row of the overview and
 results page carries its own, and the overviews of three sampled results carry every
 repository link the renderer writes for them ([D-512](defects.md)). Run it from a
 checkout at the deployed commit, since the register it reads is the checkout’s.
+
+The check also reads every page’s head for the site’s identity and link-preview tags and
+fetches the card they name:
+[paper-design.md → Page Metadata and Social Cards](packing/devtools/templates/paper-design.md#page-metadata-and-social-cards)
+has the rule. `--local DIR` asks only that, of a site built into a directory, and
+`devtools.preview_site` runs it on every build.
 
 **One version, shared by every artifact** (the owner, 2026-09-22): the explainer’s
 credits, every page’s footer and the workbench stage print `PUBLICATION_EDITION` from

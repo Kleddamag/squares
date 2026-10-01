@@ -9,10 +9,13 @@ from typing import Literal
 
 import pytest
 
+from devtools import check_published_site, render_explainer, render_overview
+from devtools import measure_site_pages as measure
 from devtools import n11_optimality_mechanism_figures as mechanism
 from devtools import n11_optimality_overview_figures as overview
 from devtools import render_n11_optimality_explainer as paper
 from devtools.render_explainer import assert_self_contained
+from devtools.render_n11_optimality_explainer import TYPESET_ALL
 from sqpack.probes import probe
 
 ARTICLE = paper.TEMPLATES / "n11-optimality-article.md"
@@ -69,6 +72,53 @@ def test_rendered_page_is_offline_and_contains_proof_figures(rendered: tuple[str
     assert 'href="https://github.com/jlevy/squares"' in html
 
 
+def test_the_papers_head_is_the_sites_set_at_the_papers_own_address(
+    rendered: tuple[str, str],
+) -> None:
+    """The paper's head carried a title and a description and nothing else, so a shared
+    link to it previewed as a line of text. It is the site's one set now
+    (`render_overview.head_tags`), written from the paper's record: an article, at the
+    address its own path constant gives, with the day the article says it was revised."""
+    html, _ = rendered
+    url = render_overview.canonical_url(paper.SITE_PATH)
+    assert url == render_overview.SITE_URL + paper.SITE_PATH
+    assert check_published_site.head_problems(html, url) == []
+    head = check_published_site.read_head(html)
+    assert head.titles == (f"{paper.TITLE} · {render_overview.PROJECT_NAME}",)
+    assert head.meta("og:title") == [paper.TITLE]
+    assert head.meta("og:type") == ["article"]
+    assert head.meta("description") == [paper.DESCRIPTION]
+    assert not paper.DESCRIPTION.startswith(paper.TITLE)
+    # The stand-in article states no date, so its head states none.
+    assert head.meta("article:modified_time") == []
+    # The article's own: the head says what its credits say, or nothing.
+    article = ARTICLE.read_text(encoding="utf-8")
+    stated = re.search(r"This review revised ([A-Z][a-z]+ \d{1,2}, \d{4})</span>", article)
+    meta = paper.page_meta(article)
+    assert meta.modified == (render_explainer.iso_date(stated.group(1)) if stated else "")
+    assert meta.published == ""
+    assert (meta.kind, meta.path) == ("article", paper.SITE_PATH)
+    if stated:
+        tags = render_overview.head_tags(meta)
+        assert f'<meta property="article:modified_time" content="{meta.modified}">' in tags
+
+
+def test_the_paper_ends_with_the_sites_closing_credit(rendered: tuple[str, str]) -> None:
+    """The paper's closing paragraph holds the two lines every page's footer is made of,
+    the project and its repository, then the version and the credit to the two tools.
+    The version is pinned in `release.py`, which is therefore one of the paper's declared
+    inputs, so a re-pin puts the paper in the Pages workflow's scope."""
+    from devtools import render_overview  # noqa: PLC0415
+    from sqpack.release import PUBLICATION_EDITION  # noqa: PLC0415
+
+    html, _ = rendered
+    footer = f'<p class="col colophon centred">{render_overview.colophon_lines()}</p>'
+    assert html.count(footer) == 1
+    assert html.count('class="site-colophon-line"') == 2
+    assert f'<span class="site-colophon-part">{PUBLICATION_EDITION}</span>' in footer
+    assert paper.PACKING / "src" / "sqpack" / "release.py" in paper.RENDER_INPUTS
+
+
 def test_the_page_carries_the_sites_bar_with_papers_current(rendered: tuple[str, str]) -> None:
     """The paper is one of the site's papers, so it carries the site's navigation bar as
     the explainer does, through the shared helper: Papers is the current entry, the
@@ -112,6 +162,94 @@ def test_the_page_carries_the_sites_bar_with_papers_current(rendered: tuple[str,
     # first paper's hero uses; this paper declares no top space of its own.
     assert "    padding-block-start: var(--site-page-top);\n" in publication_css
     assert "--site-page-top" not in paper_css
+
+
+def test_the_paper_takes_the_publication_layer_and_the_sites_math_pipeline(
+    rendered: tuple[str, str],
+) -> None:
+    """The paper draws its text and its mathematics as the explainer and every site page
+    do, from the same sources. The publication layer is the stylesheet and the head
+    script its math rule reads the platform from, both from
+    `render_explainer.publication_layer` and both in the head: the paper once inlined
+    the stylesheet alone, and on macOS every formula was drawn a sixth lighter than the
+    explainer's (think-jc3w). The math pipeline is the explainer's, driven by the site
+    pages' own script, and not KPress's auto-render entry points, which neither kern a
+    function's name nor wait for a formula's faces."""
+    from devtools import render_overview  # noqa: PLC0415
+
+    html, _ = rendered
+    head, body = html.split("</head>", 1)
+    layer = paper.render_explainer.publication_layer()
+    assert set(layer) == {"PUBLICATION_CSS", "NATIVE_MATH_METRICS"}
+    for name, value in layer.items():
+        assert head.count(value) == 1, name
+    assert f"<script>{layer['NATIVE_MATH_METRICS']}</script>" in head
+    static = paper.render_explainer.kpress_static()
+    scripts = paper.math_scripts(static)
+    assert scripts["KATEX_JS"] == paper.render_explainer.katex_js(static)
+    assert scripts["SITE_MATH"] == render_overview.MATH_SCRIPT.read_text(encoding="utf-8")
+    assert body.index(scripts["KATEX_JS"]) < body.index(scripts["SITE_MATH"])
+    assert "squaresMath" in scripts["KATEX_JS"]
+    for stock in ("katex/auto-render.min.js", "katex/katex-init.js"):
+        assert (static / stock).read_text(encoding="utf-8") not in html, stock
+    for needed in (
+        render_overview.MATH_SCRIPT,
+        paper.render_explainer.INLINE_SCRIPT_ASSETS["NATIVE_MATH_METRICS"],
+        paper.render_explainer.PROBES / "render_explainer" / "host_math_init.js",
+        paper.render_explainer.PROBES / "render_n11_optimality_explainer" / "typeset_all.js",
+    ):
+        assert needed.is_file()
+        assert needed in paper.RENDER_INPUTS, needed.name
+
+
+@pytest.mark.parametrize(
+    "dropped",
+    ["<script>{{NATIVE_MATH_METRICS}}</script>\n", "<script>{{SITE_MATH}}</script>\n"],
+)
+def test_a_shell_that_drops_half_of_a_shared_layer_is_refused(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, dropped: str
+) -> None:
+    """A value the shell has no place for fails the render, so the stylesheet cannot be
+    inlined without its head script, nor the math pipeline without its driver."""
+    shell = paper.SHELL.read_text(encoding="utf-8")
+    assert shell.count(dropped) == 1
+    broken = tmp_path / paper.SHELL.name
+    broken.write_text(shell.replace(dropped, ""), encoding="utf-8")
+    monkeypatch.setattr(paper, "SHELL", broken)
+    with pytest.raises(ValueError, match="values with no placeholder"):
+        paper.render(SOURCE, figures=FIGURES, revision=REVISION, article=ARTICLE)
+
+
+def test_a_caption_fact_the_article_does_not_use_is_refused() -> None:
+    """The captions' facts are the article's list and the figure modules' alike: one the
+    article does not name is refused, and one it names with no value is a leftover
+    slot."""
+    with pytest.raises(ValueError, match="caption facts unused"):
+        paper.render(
+            SOURCE, figures=FIGURES, revision=REVISION, article=ARTICLE, facts={"A": "1"}
+        )
+    used = SOURCE.replace("exact witness check</a>.", "exact witness check</a>, {{ROWS}} rows.")
+    html, markdown = paper.render(
+        used, figures=FIGURES, revision=REVISION, article=ARTICLE, facts={"ROWS": "32"}
+    )
+    assert "exact witness check</a>, 32 rows." in html
+    assert "32 rows." in markdown
+    with pytest.raises(ValueError, match="unresolved placeholders"):
+        paper.render(used, figures=FIGURES, revision=REVISION, article=ARTICLE)
+
+
+def test_a_captions_formula_is_typeset_and_kept_as_latex_in_the_markdown() -> None:
+    source = SOURCE.replace(
+        "exact witness check</a>.", "exact witness check</a>, $t_i \\le 1$."
+    )
+    html, markdown = paper.render(source, figures=FIGURES, revision=REVISION, article=ARTICLE)
+    caption = re.search(r"<figcaption[^>]*>(.*?)</figcaption>", html, re.DOTALL)
+    assert caption is not None
+    assert "$" not in caption.group(1)
+    assert '<span class="kpress-math-render" aria-hidden="true">\\(t_i \\le 1\\)</span>' in (
+        caption.group(1)
+    )
+    assert "exact witness check</a>, $t_i \\le 1$." in markdown
 
 
 def test_link_revision_is_the_commit_the_paper_is_built_from(
@@ -194,6 +332,7 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
     html, markdown = paper.render(
         paper.ARTICLE.read_text(encoding="utf-8"),
         figures=paper.render_all_figures(),
+        facts=paper.render_all_facts(),
         revision=REVISION,
     )
     assert "A Review of the Optimality Proof of the Trump Packing of 11 Squares" in html
@@ -202,10 +341,46 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
     assert (
         html.count("<svg") >= len(paper.FIGURE_KEYS) + 1
     )  # article figures and KPress icon sprite
-    assert all(
-        "$" not in caption
-        for caption in re.findall(r"<figcaption>(.*?)</figcaption>", html, re.DOTALL)
+    captions = re.findall(r"<figcaption[^>]*>(.*?)</figcaption>", html, re.DOTALL)
+    assert len(captions) == 11
+    assert all("$" not in caption for caption in captions)
+    # A caption's formulas are KPress math, typeset by the page as the prose's are, and
+    # the Markdown edition keeps them as LaTeX; none is written as text any more.
+    assert (
+        sum(caption.count('class="kpress-math kpress-math-inline"') for caption in captions)
+        >= 12
     )
+    written = re.findall(r"<figcaption>(.*?)</figcaption>", markdown, re.DOTALL)
+    assert sum(caption.count("$") for caption in written) >= 24
+    assert not UNICODE_MATH.search("".join(written))
+    # Each count a caption states is the figure module's, from its receipt.
+    facts = paper.render_all_facts()
+    assert set(facts) == {
+        "CAPACITY_CELL",
+        "LOCAL_BRANCHES",
+        "LOCAL_MARGINS",
+        "ROW_UPDATE_ROWS",
+        "ROW_CASE_UPDATES",
+        "D4_BAN_REGIONS",
+        "D4_REGIONS",
+        "D4_BANS",
+    }
+    said = " ".join(" ".join(caption.split()) for caption in written)
+    for phrase in (
+        f"cell {facts['CAPACITY_CELL']}, comes from the exact cover",
+        f"one of {facts['ROW_UPDATE_ROWS']} in its update",
+        f"{facts['ROW_CASE_UPDATES']} complete updates exclude case 2095",
+        f"overlay regions {facts['D4_BAN_REGIONS']} is below 1",
+        f"over {facts['D4_REGIONS']} closed regions and {facts['D4_BANS']} bans",
+        f"{facts['LOCAL_MARGINS']} exact margins over {facts['LOCAL_BRANCHES']} branches",
+    ):
+        assert phrase in said, phrase
+    # The first figure is set as the first paper sets its own: the drawing alone in a
+    # centred stage, linked to the rendering it is cut from, its caption under it.
+    first = html.split("<figure", 2)[1]
+    assert '<div class="stage trump"><a href="https://github.com/jlevy/squares/blob/' in first
+    assert f"/blob/{REVISION}/packing/atlas/rendering/trump11-overview.svg" in first
+    assert "<text" not in first
     assert "<pre><code><svg" not in html
     assert "kpress-math-render" in html
     assert "{{" not in markdown
@@ -217,16 +392,17 @@ def test_actual_article_renders_all_retained_figures_and_pinned_sources() -> Non
 
 def test_a_diagram_drawn_in_fixed_ink_keeps_a_light_ground_on_the_dark_theme() -> None:
     """The page carries the site's theme control, so a diagram is read on the dark theme
-    too. One drawn in the theme's tokens follows it; one whose labels are a fixed dark
-    ink needs a light ground there, or its labels are dark on dark. The stylesheet's list
-    of diagrams that take that ground is exactly the diagrams that carry fixed ink, and
-    it keys on KPress's resolved theme, as every site stylesheet does."""
+    too. One drawn in the theme's tokens follows it; one painted in fixed colours, its
+    labels and its dark strokes among them, needs a light ground there, or it is dark on
+    dark. The stylesheet's list of diagrams that take that ground is exactly the diagrams
+    that carry a fixed colour, and it keys on KPress's resolved theme, as every site
+    stylesheet does."""
     fixed, themed = set(), set()
     for svg in paper.render_all_figures().values():
         found = re.match(r'<svg\b[^>]*\bclass="n11-diagram (n11-[a-z-]+)"', svg)
         if found is None:
-            continue  # Figure 1, the atlas's rendering, which draws its own ground.
-        ink = re.findall(r'<text\b[^>]*\bfill="(#[0-9a-fA-F]{3,6})"', svg)
+            continue  # Figure 1, the atlas's rendering, which carries no lettering.
+        ink = re.findall(r'\b(?:fill|stroke)="(#[0-9a-fA-F]{3,6})"', svg)
         (fixed if ink else themed).add(found.group(1))
     assert fixed, "no diagram carries fixed ink: the ground rule has nothing to hold"
     assert themed, "no diagram follows the theme: the rule would apply to every diagram"
@@ -282,6 +458,7 @@ def test_a_table_keeps_to_the_column_and_scrolls_inside_its_wrap() -> None:
     html, _ = paper.render(
         paper.ARTICLE.read_text(encoding="utf-8"),
         figures=paper.render_all_figures(),
+        facts=paper.render_all_facts(),
         revision=REVISION,
     )
     assert html.index(shared) < html.index(css)
@@ -304,6 +481,38 @@ def test_pdf_refuses_a_math_host_without_rendered_katex(
     with pytest.raises(ValueError, match="unrendered math"):
         paper._print_pdf(html, pdf)  # noqa: SLF001  # pyright: ignore[reportPrivateUsage]
     assert not pdf.exists()
+
+
+@pytest.mark.skipif(
+    os.environ.get("SQPACK_N11_PAPER_BROWSER") != "1",
+    reason="the dedicated T-060 Pages job sets SQPACK_N11_PAPER_BROWSER=1",
+)
+def test_a_print_can_ask_for_every_formula_at_once(tmp_path: Path) -> None:
+    """The site's math driver typesets the formulas near the window and leaves the rest
+    to the browser's idle time, after the page and its fonts have loaded. A print does
+    not wait for that: asked through the probe `_print_pdf` evaluates, the driver
+    typesets every formula, three hundred paragraphs down included, before it answers.
+    The page is read as soon as its markup is parsed, when the far formulas are still
+    waiting, so the answer is the probe's doing."""
+    from playwright.sync_api import sync_playwright  # noqa: PLC0415
+
+    far = "\n\n".join(f"Paragraph {index} holds $z_{{{index}}}^9$." for index in range(300))
+    html, _ = paper.render(
+        SOURCE + "\n\n" + far + "\n", figures=FIGURES, revision=REVISION, article=ARTICLE
+    )
+    page_path = tmp_path / "far.html"
+    page_path.write_text(html, encoding="utf-8")
+    untypeset = ".kpress-math:not([data-kpress-math-rendered])"
+    with sync_playwright() as driver:
+        browser = driver.chromium.launch()
+        try:
+            page = browser.new_page()
+            page.goto(page_path.as_uri(), wait_until="domcontentloaded")
+            assert page.locator(untypeset).count() > 0
+            page.evaluate(TYPESET_ALL)
+            assert page.locator(untypeset).count() == 0
+        finally:
+            browser.close()
 
 
 @pytest.mark.skipif(
@@ -347,6 +556,7 @@ def test_diagram_labels_keep_publication_sizes_through_viewbox_scale(tmp_path: P
     html, _ = paper.render(
         paper.ARTICLE.read_text(encoding="utf-8"),
         figures=paper.render_all_figures(),
+        facts=paper.render_all_facts(),
         revision=REVISION,
     )
     page_path = tmp_path / "diagram-roles.html"
@@ -366,7 +576,9 @@ def test_diagram_labels_keep_publication_sizes_through_viewbox_scale(tmp_path: P
                 page.emulate_media(media=media)
                 page.wait_for_function(measure, arg={"readyOnly": True})
                 roles = page.evaluate(measure, {"readyOnly": False})
-                assert len(roles) == len(paper.FIGURE_KEYS)
+                # Every diagram that carries a label: the construction and the capacity
+                # drawing carry none.
+                assert len(roles) == len(paper.FIGURE_KEYS) - 2
                 for role in roles:
                     assert not role["overflowingLabels"], (width, media, role)
                     assert abs(role["label"] - role["support"]) < 0.1, (width, media, role)
@@ -382,6 +594,81 @@ def test_diagram_labels_keep_publication_sizes_through_viewbox_scale(tmp_path: P
                 page.close()
         finally:
             browser.close()
+
+
+#: Mathematics written as text, which a caption once had to be: the relations, Greek
+#: letters, subscripts and minus sign the sans face does not carry.
+UNICODE_MATH = re.compile("[\u2264\u2265\u03c4\u03b8\u1d62\u1d67\u2081\u2085\u00b2\u2212]")
+#: The article's `s(11)=T` as the site's pipeline typesets it.
+KERNED = r"s\mkern1mu(11)=T"
+#: Mathematics on each surface the paper sets it on: prose, a sans heading, a table's
+#: cells, a display, and a footnote. `s(11)` is a function's name before a bracket,
+#: which the site's pipeline kerns by one mu.
+MATH_SURFACES = """
+
+### A sans heading with $n = 11$
+
+The side is $s(11)=T$.[^side]
+
+| Branch | Verdict |
+| --- | --- |
+| $y_{15}\\le5/4$ | $u^2<1$ |
+
+$$
+\\left\\|\\lambda^{\\top}A-\\sigma e_j^{\\top}\\right\\|_1\\le\\epsilon_j.
+$$
+
+[^side]: Where $T$ is the side of the construction.
+"""
+
+
+@pytest.mark.skipif(
+    os.environ.get("SQPACK_N11_PAPER_BROWSER") != "1",
+    reason="the dedicated T-060 Pages job sets SQPACK_N11_PAPER_BROWSER=1",
+)
+def test_formulas_are_drawn_as_their_text_is_on_macos_and_linearly_elsewhere(
+    tmp_path: Path,
+) -> None:
+    """The paper told it is on macOS and told it is not, on whatever machine this runs:
+    on macOS the head script stamps the root and every formula is rasterised as the text
+    around it; elsewhere it keeps the publication layer's linear advances. On both,
+    every formula is typeset, at its text's size, colour and weight, in the face its
+    text is in, from faces the page ships, with the function's name kerned."""
+    html, _ = paper.render(
+        SOURCE + MATH_SURFACES, figures=FIGURES, revision=REVISION, article=ARTICLE
+    )
+    (tmp_path / "paper.html").write_text(html, encoding="utf-8")
+    for platform, flag, rendering in (
+        ("MacIntel", "true", "auto"),
+        ("Linux x86_64", None, "geometricprecision"),
+    ):
+        (found,) = measure.measure_glyphs(
+            tmp_path.as_uri(),
+            ("paper.html",),
+            widths=(1280,),
+            platform=platform,
+            tex=(KERNED,),
+            every_ink=False,
+        )
+        assert found["platform"] == platform
+        assert found["root"].get(measure.NATIVE_METRICS) == flag, platform
+        assert measure.glyph_problems(found, katex=measure.shipped_katex()) == [], platform
+        formulas = {(row["surface"], row["layout"]): row for row in found["math"]}
+        assert set(formulas) == {
+            ("prose", "inline"),
+            ("prose", "display"),
+            ("heading", "inline"),
+            ("table cell", "inline"),
+            ("footnote", "inline"),
+        }
+        assert {row["text_rendering"] for row in found["math"]} == {rendering}, platform
+        sans = {
+            surface
+            for (surface, _), row in formulas.items()
+            if row["math"] == measure.SANS_MATH
+        }
+        assert sans == {"heading", "table cell", "footnote"}
+        assert [row["example"] for row in found["math"] if row["compared"]] == [KERNED]
 
 
 def test_new_figure_dependencies_are_declared_to_publication_scope() -> None:

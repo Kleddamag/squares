@@ -574,9 +574,9 @@ It also makes no separate claim of global uniqueness of all optimal packings.
 
 The public proof source is
 [Queuingtheorydotcom/11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal/tree/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c),
-pinned at `f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c`. The Squares Project’s confirmation
-uses independently written consumers of its proposed certificate data and a mathematical
-review of the implications above.
+linked at the revision that was confirmed.
+The Squares Project’s confirmation uses independently written consumers of its proposed
+certificate data and a mathematical review of the implications above.
 The accepted computation covers the required proof ensemble, including all 2,180
 exclusions and all ten capture nodes.[^review]
 

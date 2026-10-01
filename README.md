@@ -20,13 +20,13 @@ $s(11) = T = 3.877083590022814\ldots$, the exact side of Walter Trump’s 1979 p
 Astra-assisted
 [11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal) proof by
 Queuingtheorydotcom, building on this project and Kleddamag.
-This repository independently replayed the pinned exact proof inputs and audited their
+This repository independently replayed the proof’s exact inputs and audited their
 mathematical composition (`V3/C3/S5`: machine-checked, review record pending);
 [T-011](packing/frontier/RESULTS.md) verifies Trump’s matching witness.
 The [case record](packing/frontier/n-011.md),
 [review](docs/project/reviews/review-2026-09-29-n11-optimality.md), and
-[retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) state the
-method’s shared dependencies and the publisher’s four stale cached-audit digests.
+[retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) state what
+the confirmation depends on and the reproducibility defects found in the source.
 
 <!-- END SHARED: project-intro -->
 

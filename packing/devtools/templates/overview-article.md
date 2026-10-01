@@ -8,16 +8,11 @@
      still reach the explainer (forward.js), so this heading keeps the overview's own id. -->
 <h2 id="the-problem" class="site-title">The Square Packing Problem</h2>
 
-How small can a square be and still hold $n$ unit squares that do not overlap?
-Call the answer $s(n)$. The squares may be rotated, and they may touch.
-The question is easy to state and hard to settle: for most $n$ the answer is known only
-to lie between the best packing found and a proved lower bound.
+<!-- The section's prose is README's introduction, read from its project-intro block
+     (site_documents.overview_intro), so the project is introduced in one text. Edit it
+     in README.md. Only the site's own statement below is written here. -->
 
-Eleven squares, until now the smallest case still open, is settled: Walter Trump’s 1979
-packing is optimal, and $s(11) = 3.8770835\ldots$. The proof is Queuingtheorydotcom’s,
-Astra-assisted and building on this project and Kleddamag; it is machine-verified here
-and its mathematics reviewed ([T-060](all-results.html#t-060),
-[case 11](cases.html#n-11)).
+{{README_INTRO}}
 
 This site collects what the project has proved, what others have proved alongside it,
 and how each claim was checked.

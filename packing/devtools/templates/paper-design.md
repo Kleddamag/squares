@@ -324,6 +324,10 @@ it.
   KPress’s italic `h2`) at 1.5 times the sans base, centred.
   The homepage’s first section, The Square Packing Problem, takes it through
   `.site-title`, so it reads as the frontier atlas’s title does.
+  That section’s prose is README’s introduction: the block between README’s
+  `project-intro` markers, read at render time and its links rewritten for the site
+  (`site_documents.overview_intro`), so it is edited in `README.md` and nowhere else.
+  The site’s own statement follows it and is the only prose the template holds there.
 
 - **Report layout.** Every report page (the tutorial, the synopsis and the other
   documents) has one layout.
@@ -340,13 +344,13 @@ it.
   entries that change colour on hover or when current, with no fill or side bar.
 
 - **Site icon and hero.** Both are atlas drawings, reduced to each square’s outline and
-  fill. The icon is case 11, the project’s central case, settled by T-060, in the atlas
-  ink on white, inlined as a data URI on every page, the workbench included; the same
-  drawing is the mark in the navigation bar, drawn there in the bar’s ink, so it is
-  light in dark mode. In both, the container’s frame is exactly one pixel of the drawing
-  at its size (16px in a tab, 18px in the bar; `packing_svg(frame_px=)`), its outer edge
-  on the drawing’s edge and snapped to the pixel grid, so the container reads as a
-  square: one crisp pixel on a 1x screen, two on a 2x screen.
+  fill. The icon is case 11, Trump’s packing of eleven squares, in the atlas ink on
+  white, inlined as a data URI on every page, the workbench included; the same drawing
+  is the mark in the navigation bar, drawn there in the bar’s ink, so it is light in
+  dark mode. In both, the container’s frame is exactly one pixel of the drawing at its
+  size (16px in a tab, 18px in the bar; `packing_svg(frame_px=)`), its outer edge on the
+  drawing’s edge and snapped to the pixel grid, so the container reads as a square: one
+  crisp pixel on a 1x screen, two on a 2x screen.
   Its squares’ outlines are half that pixel, one device pixel on a 2x screen, so each
   square stays distinct at icon size; the page’s drawings keep their hairline.
   The homepage’s hero is case 53, centered under the title in the page’s ink and linked

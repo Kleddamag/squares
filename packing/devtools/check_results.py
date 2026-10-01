@@ -37,7 +37,9 @@ EVIDENCE = ROOT / "frontier" / "evidence.yaml"
 BIBLIOGRAPHY = ROOT / "resources" / "bibliography.yaml"
 FRONTIER = ROOT / "frontier"
 #: The reader documents whose result mentions must name registered results: README, the
-#: synopsis, and the site's overview prose, which names T-060 in its problem section.
+#: synopsis, and the site's overview prose. The overview's problem section is README's
+#: introduction (`site_documents.overview_intro`), so the T-060 and T-011 it names are
+#: held here through README; the template is held for the results its own prose names.
 READER_TIER = (
     REPO / "README.md",
     REPO / "SYNOPSIS.md",

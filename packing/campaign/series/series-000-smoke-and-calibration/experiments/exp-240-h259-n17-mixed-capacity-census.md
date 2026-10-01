@@ -20,6 +20,7 @@ experiment:
     method: exact-algebraic
     host_system: macOS ARM64, projectPython3.14, standardlibrary integer arithmetic,oneworker
     selftest_passed: true
+    engine_commit: b8e3e170f3141c3d893abdbeefa0bce944783c64
   instance:
     axis: n
     point: 17
@@ -39,15 +40,33 @@ experiment:
       geometry.
     record: packing/campaign/series/series-000-smoke-and-calibration/results/exp-240-n17-mixed-capacity-census/run-001
     dirty: false
-  results: []
+    commit: b8e3e170f3141c3d893abdbeefa0bce944783c64
+  results:
+  - shape: determination
+    role: outcome
+    question: Do independent exact counts agree and improve the complete baseline census?
+    outcome: criterion_met
+    checked_by: Full18coefficient prefixes and totals agree for both covers;161100756 mixed versus8597496600
+      baseline. Independent output review binds all inputs, geometry and receipts.
+  - shape: determination
+    role: guard
+    question: Do frozen provenance, controls and resource limits hold?
+    outcome: criterion_met
+    checked_by: 53synthetic controls; trackedcleanb8e3e170f; allfourCLIandgroup exits0;0.35s group wall
+      andeveryfile below1MiB. Outer30s wrapper coordinator-reported; retained commands and timing independently
+      reviewed.
   verdict:
-    decision: in-progress
+    decision: accepted
     primary_criterion: Independent exact prefix/target/total count agreement and strict targetcount reduction
       versusbaseline, with reviewed complete geometric capacities and seamownership.
-    reason: Registered before target evaluation; controlled instruments and reviewed geometry are ready.
-    needs_review: true
-  lease:
-    expires: '2026-10-01T14:15:00Z'
+    reason: Reviewed complete cover and exact census agree independently. Raw occupancy reduction only;
+      geometric realization and exclusion remain open.
+    needs_review: false
+    commit: b8e3e170f3141c3d893abdbeefa0bce944783c64
+  effort:
+    timebox: 30seconds;oneworker
+    wall_seconds: 0.35
+    stopped_by: criterion
 ---
 # exp-240: n17 Mixed-Capacity Occupancy Census
 
@@ -69,6 +88,15 @@ No symmetry reduction, contact pattern, orientation restriction or endpoint occu
 cut is used. Acceptance requires independent output review.
 Even success leaves a large necessary occupancy relaxation whose geometric cases have
 not been excluded.
+
+## Accepted Outcome
+
+The
+[independent output review](../results/exp-240-n17-mixed-capacity-census/output-review.md)
+confirms all36 prefix coefficients, both totals and spatial input binding.
+The mixed census has161,100,756 patterns versus8,597,496,600 for the baseline, an exact
+ratio4475021/238819350. All four processes and their supervision completed
+in0.35seconds. This supplies no geometric exclusions or new lower bound.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

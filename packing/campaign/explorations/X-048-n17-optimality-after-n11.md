@@ -42,7 +42,7 @@ exploration:
     - docs/project/reviews/review-2026-09-28-evand-s21-s45-mixed-covers.md
     - docs/project/reviews/review-2026-10-01-evand-source-coverage.md
     - docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
-  proposes: [H-253, H-254, H-255, H-256, H-257, H-258, H-259]
+  proposes: [H-253, H-254, H-255, H-256, H-257, H-258, H-259, H-260]
 ---
 # X-048: Optimality Routes After n = 11
 

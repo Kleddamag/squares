@@ -826,8 +826,9 @@ session:
     kill_condition: Invalid support/capacity premise, failed control, three repeated instrument failures
       orslice deadline.
     fallback: Retain mathematical cover proposal without a computed target census or global claim.
-    outcome: ExactDP producer and independent binomial auditor pass52target-free controls in0.11s combined; an additional deepJSON refusal control and all21producer tests pass in0.12s after the parser repair;53controls total.
-      Ruff/format/types pass. TwoAstra and coordinator approve support lemma, closedseams, capacities
+    outcome: ExactDP producer and independent binomial auditor pass52target-free controls in0.11s combined;
+      an additional deepJSON refusal control and all21producer tests pass in0.12s after the parser repair;53controls
+      total. Ruff/format/types pass. TwoAstra and coordinator approve support lemma, closedseams, capacities
       and rational capacity-one falsifier. No targetcoefficient evaluated.
     evidence:
     - packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md
@@ -841,7 +842,7 @@ session:
     bead: think-70sf
     objective: Execute the frozen H259 exact mixed-capacity and binary-baseline census, independently
       audit every prefix coefficient and retain scoped results.
-    status: in_progress
+    status: completed
     entered_by: evidence_checkpoint
     switch_reason: All mathematical/control readiness gates pass; exact finite census is the admitted
       useful test.
@@ -854,11 +855,59 @@ session:
       receipts under a30second group deadline.
     kill_condition: Count mismatch,invalidcapacitypremise,30second group ceiling or1MiB outputlimit.
     fallback: Retain unresolved census withoutchanginggrid/cap/criterion or inferringglobalgeometry.
-    outcome: null
+    outcome: H259accepted after independent full36coefficient/input/receipt review:161100756 mixedversus8597496600
+      baseline; allfourprocesses0.35s. No geometricexclusions.
     evidence:
     - packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-240-h259-n17-mixed-capacity-census.md
+    stop_reason: Single frozen run and independent review completed within slice.
+    next_action: One final bounded closed-assignment D4 census if controlled instrument ready14:15UTC.
+  - workflow: pipeline-improvement
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-gr22
+    objective: Freeze and control the H260 D4 census and independent polynomial auditor before bounded
+      execution.
+    status: completed
+    entered_by: evidence_checkpoint
+    switch_reason: All mathematical/control readiness gates pass; exact finite census is the admitted
+      useful test.
+    budget_minutes: 10
+    started_at: '2026-10-01T14:07:00Z'
+    deadline_at: '2026-10-01T14:17:00Z'
+    expected_output: Reviewed closed-assignment proof and controlled producer/checker readyby14:15UTC,else
+      retained blocker.
+    validation_command: Target-free tiny-grid brute-force and malformed receipt controls.
+    kill_condition: Instrument notready14:15UTC;targetreviewnotcomplete14:25UTC;allresearchfinalizes14:30UTC.
+    fallback: Retain proof and unexecuted instrument for future preregistered continuation.
+    outcome: 29target-free controls andindependentmath/code reviews completeby14:14UTC; no targetcount
+      yet.
+    evidence:
+    - packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md
+    stop_reason: Controlled instrumentreadybefore14:15 cutoff.
+    next_action: Commitfrozeninstruments, then supervisedtargetaudit by14:25.
+  - workflow: research-loop
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    bead: think-gr22
+    objective: Execute frozenH260 D4count andindependentpolynomialaudit, thenreviewoutputs.
+    status: in_progress
+    entered_by: evidence_checkpoint
+    switch_reason: All mathematical/control readiness gates pass; exact finite census is the admitted
+      useful test.
+    budget_minutes: 11
+    started_at: '2026-10-01T14:14:00Z'
+    deadline_at: '2026-10-01T14:25:00Z'
+    expected_output: Eight agreeingfixedcounts andscopedorbitverdict.
+    validation_command: One30second count_grid_symmetry and audit_grid_symmetry group.
+    kill_condition: Instrument notready14:15UTC;targetreviewnotcomplete14:25UTC;allresearchfinalizes14:30UTC.
+    fallback: Retain proof and unexecuted instrument for future preregistered continuation.
+    outcome: null
+    evidence:
+    - packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md
     stop_reason: null
-    next_action: Freeze trackedclean code then execute once and independently review outputs.
+    next_action: Runfrozencompletegroup once.
   budget:
     wall_minutes: 268.3
     orientation_minutes: 10
@@ -1001,8 +1050,7 @@ session:
   - CI head8e5b15b94 failed only the stale synopsis mutation anchor in validate and shardB; corrected165-round
     anchor now passes bothanchorresolution andactualmutation. HostedCIatfinalcheckpoint remains separate.
   stop_reason: null
-  next_action: Freeze and execute H259 census once, then independently review and retain result. H258
-    stopped. Finalization14:30UTC/deadline15UTC unchanged.
+  next_action: Finish bounded H260 only if readiness14:15UTC; finalize14:30UTC,deadline15UTC unchanged.
 ---
 # Session 165: Post-optimality Research
 

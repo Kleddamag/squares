@@ -286,6 +286,29 @@ Further cuts require independent validity over their whole domains and another d
 comparison. This result supplies a smaller complete occupancy problem; it does not solve
 global capture or establish n17 optimality.
 
+## Accepted Census
+
+The coordinator accepted
+[H259](../../../packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md) after the
+independent receipt review.
+The
+[frozen run](../../../packing/campaign/series/series-000-smoke-and-calibration/results/exp-240-n17-mixed-capacity-census/run-001/)
+at commit `b8e3e170f` returned 161,100,756 mixed-capacity occupancy vectors, compared
+with 8,597,496,600 for the six-by-six binary baseline.
+Their exact ratio is
+
+$$
+\frac{161100756}{8597496600}=\frac{4475021}{238819350}.
+$$
+
+Both independent arithmetic audits passed.
+The recorded group took 0.35 seconds, including four Python process startups.
+This is a measured reduction in the complete necessary occupancy census at the fixed
+cap. It supplies no geometric exclusions and does not measure the cost of proving any
+occupancy case impossible.
+The values above were appended after acceptance; the earlier unevaluated checkpoint
+records the order in which the mathematical criterion and target run were established.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

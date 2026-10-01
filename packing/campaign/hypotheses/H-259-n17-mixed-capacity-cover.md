@@ -66,7 +66,7 @@ Seam ownership still uses spatial lexicographic indices; the grouped capacity li
 explicit bijection, not row-major grid order.
 
 The exact target is the coefficient of $x^{17}$ in $(1+x)^{16}(1+x+x^2)^9$. The baseline
-is $inom{36}{17}$. The proposal already bounds all mixed-cell states by $2^{16}3^9$,
+is $\binom{36}{17}$. The proposal already bounds all mixed-cell states by $2^{16}3^9$,
 below that baseline; this prior expectation is disclosed.
 The selected computation quantifies the exact fixed-sum census and independently checks
 the implementation. It is not a blind search for a favourable grid or threshold.

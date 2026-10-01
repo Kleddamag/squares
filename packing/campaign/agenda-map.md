@@ -2,7 +2,7 @@
 
 # Agenda map
 
-392 agenda commitments across 39 agendas, as declared in each agenda's own frontmatter.
+393 agenda commitments across 39 agendas, as declared in each agenda's own frontmatter.
 Source of truth is [`agendas/`](agendas/); this view is regenerated, never edited.
 
 An agenda's queue owns priority ordering, so this map preserves each agenda's
@@ -10,7 +10,7 @@ order rather than imposing one across them.
 
 ## The short version
 
-- **14** in_progress, **24** ready, **21** tentative, **71** blocked, **63** stopped, **199** complete.
+- **14** in_progress, **24** ready, **21** tentative, **71** blocked, **63** stopped, **200** complete.
 
 - **28 blocked commitments carry a manual condition** (`BC-016`, `BC-025`, `BC-033`, `BC-050`, `BC-115`, `BC-170`, `BC-204`, `BC-205`, `BC-212`, `BC-207`, `BC-208`, `BC-209`, `BC-215`, `BC-217`, `BC-221`, `BC-238`, `BC-248`, `BC-270`, `BC-306`, `BC-337`, `BC-327`, `BC-329`, `BC-330`, `BC-358`, `BC-364`, `BC-365`, `BC-396`, `BC-402`). Dependency edges alone cannot make these ready; each condition is named in the table below and must be explicitly cleared.
 
@@ -70,7 +70,7 @@ Commitments a session may take now, in each agenda's declared order.
 | agenda-041 | `BC-371` | in_progress | 0 | insight | research | Does the external n = 17 measure, which is stated in a restricted parent-centre language this repository does… | `think-xdoh` |
 | agenda-041 | `BC-369` | in_progress | 1 | efficiency | tool_validation | The deep gate costs about 45 minutes of wall and its exhaustive tier runs at 1.376x its own declared price,… | `think-zmos` |
 | agenda-041 | `BC-372` | in_progress | 2 | insight | research | Can this repository's own site sets cover at the external side L = 4613/1000 at all, and at which shrink do… | `think-xdoh` |
-| agenda-042 | `BC-403` | in_progress | 0 | correctness | research | Does the exact mixed-capacity5by5 cover reduce the complete raw n17 occupancy census? | `think-70sf` |
+| agenda-042 | `BC-404` | in_progress | 0 | correctness | research | Does a closed-assignment D4 quotient reduce the n17 occupancy census with independent exact counting? | `think-gr22` |
 | agenda-042 | `BC-387` | ready | 1 | insight | research | With the capacity-one ceiling lemma proved in the 4.640020 review, does a clique-weighted family of unit… | `think-68la` |
 | agenda-042 | `BC-388` | ready | 1 | insight | research | What is the least side f(theta) along the six-axis plus five-common-angle family at 200 tilts, and on which… | `think-91yk` |
 | agenda-042 | `BC-393` | ready | 1 | correctness | tool_validation | Does this repository's native coverage engine decide every one of the 2,168 rows of Kleddamag's 4.66001… | `think-0rbj` |
@@ -218,7 +218,7 @@ A commitment whose exit another agenda's commitment satisfied. Recorded as an ed
 | agenda-037 | active | 1 |  | 1 | 1 | 1 | 1 | 5 |
 | agenda-040 | active |  | 1 |  | 2 | 1 | 3 | 7 |
 | agenda-041 | active | 4 |  |  |  |  | 2 | 6 |
-| agenda-042 | active | 1 | 8 |  | 3 | 2 | 16 | 30 |
+| agenda-042 | active | 1 | 8 |  | 3 | 2 | 17 | 31 |
 
 ## By program
 
@@ -515,9 +515,10 @@ Open frontier: `BC-306`.
 | agenda-042 | `BC-400` | complete | Does the exact H255 root with fixed centroid sliders give a feasible17square endpoint packing? |
 | agenda-042 | `BC-401` | complete | Does the exact n17 endpoint have the complete predicted owner-axis and wall-corner feature… |
 | agenda-042 | `BC-402` | blocked | Does the fixed analytic common-core stress exclude negative-side first-order directions in both… |
-| agenda-042 | `BC-403` | in_progress | Does the exact mixed-capacity5by5 cover reduce the complete raw n17 occupancy census? |
+| agenda-042 | `BC-403` | complete | Does the exact mixed-capacity5by5 cover reduce the complete raw n17 occupancy census? |
+| agenda-042 | `BC-404` | in_progress | Does a closed-assignment D4 quotient reduce the n17 occupancy census with independent exact… |
 
-Open frontier: `BC-402`, `BC-403`.
+Open frontier: `BC-402`, `BC-404`.
 
 ### `reach-table-ladder`
 

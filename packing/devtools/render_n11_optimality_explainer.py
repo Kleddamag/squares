@@ -68,7 +68,7 @@ FIGURE_KEYS = (
 )
 MATH_WAIT_MS = 15_000
 #: Asks the page's math driver for every formula at once, before a print.
-_TYPESET_ALL = probe(render_explainer.PROBES, "render_n11_optimality_explainer/typeset_all")
+TYPESET_ALL = probe(render_explainer.PROBES, "render_n11_optimality_explainer/typeset_all")
 FIGURE_SLOT = re.compile(r"\{\{([A-Z_]+_SVG)\}\}")
 LEFTOVER_SLOT = re.compile(r"\{\{[A-Z][A-Z_]*\}\}")
 RELATIVE_LINK = re.compile(r"(?P<start>\]\()(?P<url>\.\.?/[^\s)]+)(?P<end>\))")
@@ -351,7 +351,7 @@ def _print_pdf(html_path: Path, pdf_path: Path) -> None:
                 raise ValueError("the paper has no typeset math")
             # The driver leaves the formulas far from the window to idle time; a print
             # asks for them all, so the wait below is for work already under way.
-            page.evaluate(_TYPESET_ALL)
+            page.evaluate(TYPESET_ALL)
             try:
                 expect(page.locator(".kpress-math:not(:has(.katex))")).to_have_count(
                     0, timeout=MATH_WAIT_MS

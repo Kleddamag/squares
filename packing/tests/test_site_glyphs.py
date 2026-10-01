@@ -93,14 +93,14 @@ SANS_WEIGHT = re.compile(
 )
 #: The roles both papers set by one rule, compared on every property but colour, which
 #: a link inside one changes. A paper's own emphasis and links are its prose's to choose,
-#: and its diagrams' labels are its own figures'.
-SHARED_ROLES = (
+#: and its diagrams' labels are its own figures'. These every paper has, so the
+#: comparison cannot pass for want of anything to compare.
+STRUCTURAL_ROLES = (
     "prose",
-    "list item",
     "h2",
-    "h3",
     "page title",
     "credits",
+    "credits name",
     "caption",
     "caption lead",
     "footnote",
@@ -108,8 +108,9 @@ SHARED_ROLES = (
     "source chip",
     "nav name",
     "nav link",
-    "inline code",
 )
+#: With them, the roles a paper's prose may or may not use, compared where both do.
+SHARED_ROLES = (*STRUCTURAL_ROLES, "list item", "h3", "inline code")
 
 
 def text_row(role: str, **changes: Any) -> dict[str, Any]:
@@ -519,7 +520,7 @@ def test_the_paper_sets_every_shared_role_as_the_explainer_does(
         if row["part"] == "text" and row["role"] in SHARED_ROLES and row["property"] != "color"
     ]
     assert differences == []
-    for role in SHARED_ROLES:
+    for role in STRUCTURAL_ROLES:
         for name in (EXPLAINER, PAPER):
             assert any(row["role"] == role for row in pages[name]["text"]), (name, role)
 

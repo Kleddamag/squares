@@ -42,7 +42,7 @@ The table lists every result since {{RECENT_FROM}}, newest first, each dated by 
 publication if it is by others and by the day it was established if it is this
 project’s, with its rungs and its standing: *current best* where a verified case bound
 rests on it now, and otherwise why not.
-It starts filtered to significance S3 and up; choose All to see every row.
+It starts filtered to significance S4 and up; choose All to see every row.
 
 {{RECENT_LEAD}}
 

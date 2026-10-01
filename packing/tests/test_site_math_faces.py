@@ -138,24 +138,28 @@ def case_records(browser: Any, root: Path) -> dict[int, Walk]:
 def test_the_overviews_sans_surfaces_set_sans_math_and_its_math_headline_serif(
     overview: Walk,
 ) -> None:
-    """The overview's cards, notes, popovers and tables are sans text with sans math; the
-    atlas popover's headline, `n = 11` alone, is serif; and nothing is set wrongly."""
+    """The overview's cards, notes, popovers and tables are sans text with sans math; a
+    popover headline that is mathematics alone is serif, the atlas popover's `n = 11` and
+    each result row's whose summary is one bound; and nothing is set wrongly."""
     wrong, rows = overview
     assert wrong == []
     for surface in ("card headline", "card note", "popover headline", "table cell"):
         assert rows[(surface, SANS_TEXT, SANS_MATH)]["count"] > 0, surface
         assert rows[(surface, SANS_TEXT, SANS_MATH)]["alone"] == 0, surface
     headline = rows[("popover headline", SANS_TEXT, SERIF_MATH)]
-    assert headline["count"] == headline["alone"] == 1
-    assert headline["example"] == "n = 11"
+    assert headline["count"] == headline["alone"] >= 1
     assert ("card headline", SANS_TEXT, SERIF_MATH) not in rows
 
 
 def test_the_results_table_sets_sans_math(results: Walk) -> None:
+    """The results table's cells and its row popovers are sans text with sans math, and
+    the only serif math in sans text is a popover headline that is mathematics alone."""
     wrong, rows = results
     assert wrong == []
-    assert rows[("summary", SANS_TEXT, SANS_MATH)]["count"] > 0
-    assert {key[2] for key in rows if key[1] == SANS_TEXT} == {SANS_MATH}
+    assert rows[("table cell", SANS_TEXT, SANS_MATH)]["count"] > 0
+    serif = {key[0]: row for key, row in rows.items() if key[1:] == (SANS_TEXT, SERIF_MATH)}
+    assert set(serif) <= {"popover headline"}
+    assert all(row["count"] == row["alone"] for row in serif.values())
 
 
 def test_the_case_popovers_headline_is_serif_math(frontier_atlas: Walk) -> None:
@@ -183,13 +187,11 @@ def test_the_walk_catches_serif_math_in_a_sans_headline(
 ) -> None:
     """The control: mark a headline that has words in it for serif mathematics, as every
     popover's headline once was, and the walk names it."""
-    plain = '<p class="site-popover-value">Earlier '
+    plain = '<p class="site-popover-value">New lower bounds for square packing for '
     assert overview_html.count(plain) == 1
     marked = root / "marked.html"
     marked.write_text(
-        overview_html.replace(
-            plain, '<p class="site-popover-value" data-math-face="serif">Earlier '
-        ),
+        overview_html.replace(plain, plain.replace(">", ' data-math-face="serif">', 1)),
         encoding="utf-8",
     )
     wrong, _ = walk(browser, marked.as_uri(), presses=(EXPLAINER_CARD,), whole=False)

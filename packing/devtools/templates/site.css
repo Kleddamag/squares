@@ -752,6 +752,11 @@ body {
   font: inherit;
   padding: 0.1rem 0.35rem;
 }
+/* An age in days is a few digits. A number input with no `max` to size it by would
+   otherwise take a text field's width. */
+.site-table-tools input[data-bound="age"] {
+  inline-size: 4.5rem;
+}
 .site-table-tools .site-count {
   color: var(--site-support-color);
   margin-inline-start: auto;

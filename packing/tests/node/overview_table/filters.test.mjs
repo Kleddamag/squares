@@ -1,7 +1,8 @@
 // The table script wired to a stand-in results table and its tools bar: two groups of
 // rows carrying the facets `overview_sections.result_facets` writes, under the controls
-// `overview_sections.result_filters` writes, Significance starting at S4 and up. The
-// stand-ins are only what the script reads; the test reads what it then shows.
+// `overview_sections.result_filters` writes, Significance starting at S4 and up and
+// Max age wherever the page under test starts it. The stand-ins are only what the script
+// reads, the day among them; the test reads what it then shows.
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
@@ -51,11 +52,28 @@ function row(id, facets, hidden = false) {
 }
 
 /**
- * A page with the results table, as the HTML has it: Significance at S4 and up, the
- * rows below it and the heading of the group they leave empty already hidden.
- * @param {{ search?: string, hash?: string }} [address]
+ * A `Date` whose now is noon on `today`, by the local clock, which is the one the script
+ * reads the reader's day from.
+ * @param {string} today an ISO date
  */
-function page({ search = "", hash = "" } = {}) {
+function clock(today) {
+  const [year = 0, month = 1, day = 1] = today.split("-").map(Number);
+  const now = new Date(year, month - 1, day, 12).getTime();
+  return class extends Date {
+    /** @param {number} [time] */
+    constructor(time) {
+      super(time ?? now);
+    }
+  };
+}
+
+/**
+ * A page with a table of results, as the HTML has it: Significance at S4 and up, the
+ * rows below it and the heading of the group they leave empty already hidden, and Max
+ * age at `age`, empty for none. The reader opens it on `today`.
+ * @param {{ search?: string, hash?: string, age?: string, today?: string }} [opened]
+ */
+function page({ search = "", hash = "", age = "", today = "2026-10-01" } = {}) {
   const ours = { source: "ours", standing: "current-best" };
   const others = { source: "others", standing: "superseded" };
   const rows = [
@@ -75,8 +93,7 @@ function page({ search = "", hash = "" } = {}) {
     standing: new Select("standing", null, ""),
     source: new Select("source", null, ""),
     n: new Input("n", "covers", ""),
-    from: new Input("date", "from", ""),
-    to: new Input("date", "to", ""),
+    age: new Input("date", "age", age),
   };
   const count = { textContent: "2 of 5 results", getAttribute: () => "results" };
   /** @type {Record<string, (() => void)[]>} */
@@ -127,6 +144,7 @@ function page({ search = "", hash = "" } = {}) {
     vm.createContext({
       URLSearchParams,
       decodeURIComponent,
+      Date: clock(today),
       location,
       document: { readyState: "complete", querySelectorAll: () => [table] },
       window: {
@@ -188,7 +206,7 @@ void test("each facet filters, and the filters compose", () => {
   /** @param {Parameters<typeof results.choose>[0]} values */
   const rows = (values) => {
     results.choose({
-      ...{ s: "", v: "", c: "", standing: "", source: "", n: "", from: "", to: "" },
+      ...{ s: "", v: "", c: "", standing: "", source: "", n: "", age: "" },
       ...values,
     });
     return results.shown().rows;
@@ -199,9 +217,12 @@ void test("each facet filters, and the filters compose", () => {
   assert.deepEqual(rows({ standing: "superseded" }), ["t-003", "t-004", "t-005"]);
   assert.deepEqual(rows({ source: "ours" }), ["t-001", "t-002"]);
   assert.deepEqual(rows({ n: "18" }), ["t-002", "t-003", "t-004"]);
-  assert.deepEqual(rows({ from: "2026-09-01" }), ["t-001", "t-004", "t-005"]);
-  assert.deepEqual(rows({ to: "2026-08-31" }), ["t-002", "t-003"]);
-  assert.deepEqual(rows({ from: "2026-08-01", to: "2026-09-10" }), ["t-001", "t-002"]);
+  // On 1 October the rows are 27, 31, some 17,000, 4 and 4 days old.
+  assert.deepEqual(rows({ age: "30" }), ["t-001", "t-004", "t-005"]);
+  assert.deepEqual(rows({ age: "31" }), ["t-001", "t-002", "t-004", "t-005"]);
+  assert.deepEqual(rows({ age: "4" }), ["t-004", "t-005"]);
+  assert.deepEqual(rows({ age: "3" }), []);
+  assert.deepEqual(rows({ age: "30", source: "ours" }), ["t-001"]);
   assert.deepEqual(rows({ s: "3", source: "others", v: "4" }), ["t-004", "t-005"]);
   assert.deepEqual(rows({ s: "3", source: "others", v: "4", n: "45" }), ["t-004", "t-005"]);
   assert.deepEqual(rows({ s: "3", source: "others", v: "4", n: "45", c: "4" }), ["t-005"]);
@@ -223,13 +244,38 @@ void test("the row the address names shows whatever the filters hide", () => {
   assert.deepEqual(results.shown().rows, ["t-001", "t-005"]);
 });
 
+void test("an age is measured from the reader's day, again on every load", () => {
+  // The overview's Recent Results: S4 and up, and no older than 180 days. The HTML's
+  // `hidden` rows and count are as of the day the page was built, and are settled here.
+  const recent = page({ age: "180" });
+  assert.deepEqual(recent.shown(), { rows: ["t-001", "t-005"], headings: 2 });
+  assert.equal(recent.count.textContent, "2 of 5 results");
+  // The same HTML, opened later: 4 March 2027 is 181 days after t-001, 158 after t-005.
+  const later = page({ age: "180", today: "2027-03-04" });
+  assert.deepEqual(later.shown(), { rows: ["t-005"], headings: 1 });
+  assert.equal(later.count.textContent, "1 of 5 results");
+  assert.deepEqual(page({ age: "180", today: "2027-03-03" }).shown().rows, ["t-001", "t-005"]);
+  assert.deepEqual(page({ age: "180", today: "2028-01-01" }).shown(), { rows: [], headings: 0 });
+  // Clearing the age brings them back, whatever the day.
+  later.choose({ age: "" });
+  assert.deepEqual(later.shown().rows, ["t-001", "t-005"]);
+  // The row the address names shows however old it is.
+  assert.deepEqual(page({ age: "180", today: "2028-01-01", hash: "#t-003" }).shown().rows, [
+    "t-003",
+  ]);
+});
+
 void test("a link can open the table filtered, by each control's parameter", () => {
-  const results = page({ search: "?s-min=3&n=17&date-from=2026-08-01" });
+  const results = page({ search: "?s-min=3&n=17&age=40" });
   assert.equal(results.controls.s.value, "3");
   assert.equal(results.controls.n.value, "17");
-  assert.equal(results.controls.from.value, "2026-08-01");
+  assert.equal(results.controls.age.value, "40");
   assert.deepEqual(results.shown().rows, ["t-002", "t-004"]);
+  assert.deepEqual(page({ search: "?s-min=3&n=17&age=30" }).shown().rows, ["t-004"]);
   assert.deepEqual(page({ search: "?s-min=" }).shown().rows.length, 5);
+  // An empty parameter clears a default the HTML sets.
+  assert.deepEqual(page({ age: "3", search: "?s-min=" }).shown().rows, []);
+  assert.deepEqual(page({ age: "3", search: "?s-min=&age=" }).shown().rows.length, 5);
 });
 
 void test("a sort keeps the filters and hides the group headings", () => {

@@ -570,7 +570,6 @@ def overview_page() -> Page:
         "PAGE_CARDS": overview_sections.page_cards(),
         "VERIFICATION": overview_sections.verification_block(),
         "RECENT": overview_sections.recent_table(overview),
-        "RECENT_FROM": overview_sections.recent_from(),
         "AWAITING_REPLAY": overview_sections.awaiting_replay(overview),
         "SURVEY_COUNTS": overview_sections.survey_counts(overview),
         "ARROW_RIGHT": overview_sections.arrow_icon("right"),

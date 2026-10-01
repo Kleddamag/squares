@@ -240,7 +240,7 @@ def test_a_tally_link_selects_exactly_its_projects_rows(
     assert '<label hidden>At significance <select data-filter="s" data-preset>' in bar
     # The bar's own controls keep their order, and the preset-only ones follow them.
     order = re.findall(r'data-filter="([a-z]+)"', bar)
-    own = ["s", "v", "c", "kind", "standing", "current", "source", "n", "date"]
+    own = ["s", "v", "c", "kind", "status", "current", "source", "n", "date"]
     assert order == [*own, "project", "s"]
 
 

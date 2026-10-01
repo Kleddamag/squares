@@ -175,6 +175,71 @@ identifies the part that sets the minimum.
 That note, the relevance of each evidence reference, and coverage of every load-bearing
 premise are review obligations rather than machine inferences.
 
+## Status
+
+A result’s status says in one word how far this project’s own work on it has gone.
+[`devtools/result_status.py`](packing/devtools/result_status.py) derives it from the
+register and the evidence the result cites.
+It is never stored, so it cannot disagree with the rungs.
+
+| Status | Meaning | Decided by |
+| --- | --- | --- |
+| `recorded` | Registered here from its source; nothing here has read or replayed it | `C0` |
+| `reviewed` | Its argument has been read here and the read is on file; no replay has passed | `C1` |
+| `confirmed` | A confirming replay has passed, here or by a third party whose replay is retained | `C2` and up |
+| `incomplete` | The record holds an open defect against it | Any predicate below; it wins over the other three |
+
+A result is `incomplete` while any of these holds:
+
+- a read found a defect and nothing here has replayed past it: a cited evidence entry’s
+  `external_review.state` is `defect-found` and the result stands below `C2`;
+- the latest review in its `reviews` ends `defect-open` or `refuted`;
+- a cited replay ran and failed (`replay_status: failed`).
+
+A defect that a passing replay has gone past is dispositioned by that replay.
+`T-005`’s subject is the defect in Bentz’s Lemma 10, and it is confirmed.
+
+Status does not compete with the two ladders.
+`V` says what the result’s own source certifies, anywhere.
+`C` says how far that has been independently confirmed, rung by rung.
+Status is the confirmation ladder read in three words, for a reader who wants the
+workflow step and not the rung, and it adds the one thing the ladder cannot say: that a
+defect is open. `confirmed` means `C2` and up and nothing more.
+A result of this project is confirmed from the day it is registered, since its
+certificate is replayed from the repository before it enters the register.
+
+Two marks sit beside a status and are no part of it.
+
+- **Superseded** is the result’s place on the frontier: it is a bound, a result whose
+  [kind](#result-kinds) is lower bound, upper bound or optimality, and no case bound
+  rests on it now. It is derived from the case records by
+  `render_recent_results.standing`, and
+  [`devtools/check_standing.py`](packing/devtools/check_standing.py) holds it to the
+  bounds each entry states.
+  A confirmed result may be superseded, and a recorded one may hold a case’s reported
+  bound. A result of any other kind is never marked superseded, though it may cite the
+  evidence of the bound it is about: no later bound supersedes the limit of a method or
+  the audit of a proof.
+- **Activity** says who has the next move, where the record shows it.
+  A register entry may carry `activity`, with a `state` of `in-analysis` (a replay, a
+  review or an audit of the result is under way here) or `waiting` (a question, a
+  request or a missing artifact is with another `party`: the `source`, the `owner` or a
+  `third-party`), `what` is in hand, `since` when, and a `link` to the bead, issue,
+  branch or file that shows it.
+  It is the one hand-recorded fact in this section, so it expires: the checker refuses
+  one dated more than 30 days before the register’s `last_reviewed`, and it is then
+  re-dated with what happened since, or removed.
+  Work that is queued and not begun stays in `next_rung`.
+
+Until 2026-10-01 the site and `RESULTS.md` showed a *standing* in this place, which
+mixed three things: the frontier position (`current best`, `superseded`), whether the
+bound had been replayed (`current best, reported`), and what kind of result the entry
+was (`second certificate`, `not a bound`). The first is now the superseded mark, the
+second is the status, and the third is the result’s kind: a second certificate is a
+*simplification*. The vocabulary is provisional until the owner confirms it; the
+proposal and the status of every result are in
+[the result-status plan](docs/project/specs/active/plan-2026-10-01-result-status.md).
+
 ## What Changed on 2026-09-30
 
 Ratings published between 2026-08-31 and 2026-09-30 used a ladder on which `V4` meant
@@ -266,8 +331,9 @@ state no relation on $s(n)$ in their headline.
 Method limit, correction and audit are told apart by review alone.
 
 A result’s standing, whether a case bound rests on it now, is about bounds.
-A result whose evidence claims no bound has no standing: nothing supersedes it, and the
-register’s views show its kind alone.
+A result whose evidence claims no bound has no standing: nothing supersedes it.
+Of a standing, the register’s views show one thing, the *superseded* mark, and only on a
+result whose kind is a bound ([Status](#status)).
 
 ## Results by Others
 
@@ -295,6 +361,8 @@ verification anywhere, and `C` what this repository has done.
 A reported result enters at `V0/C0`, or `C1` once a review has read it, with a
 `next_rung` naming the replay and review it waits on, and rises by the same derivation
 as this project’s own results.
+Its [status](#status) reads `recorded`, then `reviewed`, then `confirmed`, and every
+table that lists results lists it as a row like any other.
 Whether an entry is current or superseded is derived from the case records and never
 stored.
 
@@ -400,9 +468,9 @@ gate checks it.
 
 | Record | Holds | Reader view |
 | --- | --- | --- |
-| [`n-NNN.md`](packing/frontier/README.md) case records | Both lanes’ bounds for each case, with their evidence | [`STATUS.md`](packing/frontier/STATUS.md); the site’s [recent results](https://jlevy.github.io/squares/#recent-results) and [frontier survey](https://jlevy.github.io/squares/#the-frontier-survey); the standing column of `RESULTS.md` and the site’s [results table](https://jlevy.github.io/squares/all-results.html) |
+| [`n-NNN.md`](packing/frontier/README.md) case records | Both lanes’ bounds for each case, with their evidence | [`STATUS.md`](packing/frontier/STATUS.md); the site’s [recent results](https://jlevy.github.io/squares/#recent-results) and [frontier survey](https://jlevy.github.io/squares/#the-frontier-survey); the superseded mark in `RESULTS.md` and in the site’s [results table](https://jlevy.github.io/squares/all-results.html) |
 | [`evidence.yaml`](packing/frontier/evidence.yaml) | Who performed each check, by which method, within which limits | [`INVENTORY.md`](packing/frontier/INVENTORY.md) |
-| [`results.yaml`](packing/frontier/results.yaml) | Each result’s kind, headline, claim, date, `V`/`C`/`S`, novelty and attribution | [`RESULTS.md`](packing/frontier/RESULTS.md), grouped by lineage; the site’s [results table](https://jlevy.github.io/squares/all-results.html) |
+| [`results.yaml`](packing/frontier/results.yaml) | Each result’s kind, headline, claim, date, `V`/`C`/`S`, novelty, attribution and `activity` | [`RESULTS.md`](packing/frontier/RESULTS.md), grouped by lineage; the site’s [results table](https://jlevy.github.io/squares/all-results.html), each with the derived status |
 | [`bibliography.yaml`](packing/resources/bibliography.yaml) | Each source’s date, credit and lineage | The atlas citation line; the holders, credit and relation in `RESULTS.md` and on the site’s [overview](https://jlevy.github.io/squares/#recent-results) |
 | [`source-coverage.yaml`](packing/frontier/source-coverage.yaml) | Which sources were read, and when | None |
 
@@ -445,7 +513,10 @@ The checker:
   labels and not arguments, so whether a requirement is stated correctly is a review
   obligation;
 - fails when a case’s reported or verified lower bound cites evidence from a source
-  dated on or after 22 August 2026 that no register entry covering that $n$ cites; and
+  dated on or after 22 August 2026 that no register entry covering that $n$ cites;
+- holds an entry’s `activity` to its fields, a link that resolves and an age of at most
+  30 days at the register’s last review, and reports how many results hold each
+  [status](#status); and
 - rejects unknown `T-NNN` references in the README and synopsis.
 
 [`packing/frontier/results.yaml`](packing/frontier/results.yaml) states each result’s

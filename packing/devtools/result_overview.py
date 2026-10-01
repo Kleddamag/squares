@@ -703,10 +703,10 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
     (`overview_sections.date_cell`).
 
     A broad result's chain runs to dozens of results, so a step there keeps its kind and
-    standing and leaves its rungs to its own row."""
+    status and leaves its rungs to its own row."""
     from devtools.overview_sections import (  # noqa: PLC0415
         date_cell,
-        kind_and_standing,
+        kind_and_status,
         result_url,
         standing_key,
         status_chips,
@@ -725,7 +725,7 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
     if other.id == current.id:
         current_mark = ' data-current=""'
         this = ' <span class="site-result-this">this result</span>'
-    chips = kind_and_standing(other) if is_broad(cases) else status_chips(other)
+    chips = kind_and_status(other) if is_broad(cases) else status_chips(other)
     here = standing_on(other, shared)
     if here != other.standing:
         on_case = "on this case" if len(cases) == 1 else "on these cases"

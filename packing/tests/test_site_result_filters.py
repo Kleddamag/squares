@@ -5,8 +5,8 @@ Both tables of results sit under one filter bar (`overview_sections.result_filte
 checked on the overview and clear on the results page. This opens both rendered pages in
 Chromium and uses the checkbox as a reader does, with the pointer on its label and with
 the keyboard, and reads the table after each change through one probe: the rows showing
-are the ones the register's standings say, the count follows, the checkbox narrows
-Standing, and a fresh load of the page starts again from that page's own default. The
+are the ones the register's standings say, the count follows, the checkbox composes
+with Status, and a fresh load of the page starts again from that page's own default. The
 bar has no reset control, so a load is the only reset there is; the default a load
 returns to is the checkbox's state in the HTML, which the probe reports too.
 
@@ -31,7 +31,7 @@ from typing import Any
 
 import pytest
 
-from devtools import overview_data, overview_sections, render_recent_results
+from devtools import overview_data, overview_sections, render_recent_results, result_status
 from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import probe
 from tests import site_renders
@@ -47,7 +47,7 @@ PAGES = {
 #: The widths the design is shot at: a desktop, a tablet and a phone.
 WIDTHS = (1280, 768, 390)
 LABEL = "Hide superseded"
-STANDING = '.site-result-filters select[data-filter="standing"]'
+STATUS = '.site-result-filters select[data-filter="status"]'
 KIND = '.site-result-filters select[data-filter="kind"]'
 
 
@@ -138,15 +138,21 @@ def test_the_checkbox_starts_at_its_pages_default_and_the_table_with_it(
     current = sorted(
         result.id.lower()
         for result in overview.results
-        if result.standing != render_recent_results.SUPERSEDED
+        if not overview_sections.is_superseded(result)
     )
     assert sorted(found["current"]) == current
-    assert {result.standing for result in overview.results if result.id.lower() in current} >= {
+    # What stays: every standing but superseded, and a result that is no bound whatever
+    # its evidence makes its standing, the limit of a method among them (T-003).
+    kept = [result for result in overview.results if result.id.lower() in current]
+    assert {result.standing for result in kept} == {
         render_recent_results.HOLDS,
         render_recent_results.HOLDS_REPORTED,
         render_recent_results.SECOND_CERTIFICATE,
+        render_recent_results.SECOND_CERTIFICATE_REPORTED,
         render_recent_results.NO_STANDING,
+        render_recent_results.SUPERSEDED,
     }
+    assert [result.id for result in kept if result.standing == "superseded"] == ["T-003"]
     if defaults.hide_superseded:
         assert set(found["shown"]) < set(found["current"])
     else:
@@ -178,8 +184,8 @@ def test_toggling_it_hides_and_shows_the_superseded_rows(
             assert sorted(found["shown"]) == expected[now]
             assert found["count"] == count(len(expected[now]), overview)
             assert found["total"] == len(overview.results)
-        # The keyboard: Tab from Standing lands on it, and the space bar toggles it.
-        page.locator(STANDING).focus()
+        # The keyboard: Tab from Status lands on it, and the space bar toggles it.
+        page.locator(STATUS).focus()
         page.keyboard.press("Tab")
         found = state(page)
         assert found["focused"]
@@ -220,47 +226,42 @@ def test_a_fresh_load_returns_to_the_pages_own_default(
     assert found["count"] == count(len(rows(overview, defaults)), overview)
 
 
-def test_it_narrows_standing_and_never_sets_it(
+def test_it_composes_with_status_and_neither_sets_the_other(
     browser: Any, pages: dict[str, Path], overview: overview_data.Overview
 ) -> None:
-    """Checked, with Standing at All, the results page shows every result but the
-    superseded ones, and Standing then chooses among the standings left: each still
-    shows all its rows. The one standing the box hides, superseded, leaves no row while
-    it is checked, and the count says so; clearing the box brings those rows back.
-    Neither control changes the other."""
-    by_standing: dict[str, list[str]] = {}
+    """Checked, with Status at All, the results page shows every result but the
+    superseded ones. Status then chooses among them by a different question, how far the
+    work here has gone: each status shows its rows that are not superseded, and clearing
+    the box brings its superseded rows back. Superseded is no status, so no choice of
+    Status leaves the box nothing to hide by itself. Neither control changes the other."""
+    by_status: dict[str, list[str]] = {}
+    superseded = set()
     for result in overview.results:
-        key = overview_sections.standing_key(result.standing)
-        by_standing.setdefault(key, []).append(result.id.lower())
-    kept = sorted(by_standing.keys() - {"superseded"})
-    # A result that claims no bound has no standing: its key is empty, which is the
-    # select's All and no choice of its own.
-    assert {"current-best", "current-best-reported", "second-certificate", ""} <= set(kept)
-    chosen = [key for key in kept if key]
+        by_status.setdefault(result.status, []).append(result.id.lower())
+        if overview_sections.is_superseded(result):
+            superseded.add(result.id.lower())
+    assert set(by_status) == set(result_status.STATUSES)
+    # Some confirmed results are superseded and some are not, so the two controls differ.
+    assert set(by_status["confirmed"]) & superseded
+    assert set(by_status["confirmed"]) - superseded
     page = opened(browser, pages["all-results.html"], overview)
     try:
         box = page.get_by_label(LABEL)
         box.check()
         found = state(page)
-        assert sorted(found["shown"]) == sorted(
-            entry for key in kept for entry in by_standing[key]
-        )
-        assert len(found["shown"]) == len(overview.results) - len(by_standing["superseded"])
-        for key in chosen:
-            page.locator(STANDING).select_option(key)
+        assert len(found["shown"]) == len(overview.results) - len(superseded)
+        assert not set(found["shown"]) & superseded
+        for status in result_status.STATUSES:
+            page.locator(STATUS).select_option(status)
             found = state(page)
-            assert sorted(found["shown"]) == sorted(by_standing[key]), key
+            assert sorted(found["shown"]) == sorted(set(by_status[status]) - superseded), status
+            assert found["count"] == count(len(found["shown"]), overview)
             assert found["checked"]
-        page.locator(STANDING).select_option("superseded")
-        found = state(page)
-        assert found["shown"] == []
-        assert found["count"] == count(0, overview)
-        assert found["checked"]
-        assert page.locator(STANDING).input_value() == "superseded"
-        box.uncheck()
-        found = state(page)
-        assert sorted(found["shown"]) == sorted(by_standing["superseded"])
-        assert page.locator(STANDING).input_value() == "superseded"
+            box.uncheck()
+            found = state(page)
+            assert sorted(found["shown"]) == sorted(by_status[status]), status
+            assert page.locator(STATUS).input_value() == status
+            box.check()
     finally:
         page.close()
 
@@ -269,8 +270,8 @@ def test_kind_shows_the_results_of_one_kind(
     browser: Any, pages: dict[str, Path], overview: overview_data.Overview
 ) -> None:
     """Kind is the bar's select for what a result is. Each kind the register holds shows
-    exactly its results and the count follows; All shows every row again; a rigidity
-    has no standing, so a standing chosen beside it leaves no row; and a link can preset
+    exactly its results and the count follows; All shows every row again; it composes
+    with Status, so a kind with no recorded result leaves no row; and a link can preset
     it, `?kind=optimality`."""
     by_kind: dict[str, list[str]] = {}
     for result in overview.results:
@@ -284,9 +285,9 @@ def test_kind_shows_the_results_of_one_kind(
             assert sorted(found["shown"]) == sorted(ids), kind
             assert found["count"] == count(len(ids), overview), kind
         page.locator(KIND).select_option("rigidity")
-        page.locator(STANDING).select_option("superseded")
+        page.locator(STATUS).select_option("recorded")
         assert state(page)["shown"] == []
-        page.locator(STANDING).select_option("")
+        page.locator(STATUS).select_option("")
         page.locator(KIND).select_option("")
         assert len(state(page)["shown"]) == len(overview.results)
         page.goto(pages["all-results.html"].as_uri() + "?kind=optimality", wait_until="load")

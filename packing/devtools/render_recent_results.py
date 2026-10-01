@@ -69,7 +69,7 @@ from devtools.build_bound_citations import (
     project_result,
     results_carrying,
 )
-from devtools.check_results import recent_evidence, scope_values
+from devtools.check_results import BOUND_KINDS, recent_evidence, scope_values
 from devtools.result_credit import source_lineage
 from sqpack.assurance import bounds_agree_at_declared_precision
 from sqpack.yamlio import safe_load
@@ -469,6 +469,27 @@ def standing(record: Mapping[str, Any], records: Records) -> str:
             return SECOND_CERTIFICATE
         return SECOND_CERTIFICATE_REPORTED
     return SUPERSEDED
+
+
+def superseded(record: Mapping[str, Any], held: str) -> bool:
+    """Whether a table of results marks an entry superseded, given its standing `held`:
+    it is a bound, a result whose `kind` is one of `BOUND_KINDS`, and no case bound rests
+    on it now.
+
+    Of a standing, this is all a table draws beside a result's kind and status. That a
+    bound is only reported is the result's status (`devtools.result_status`: recorded).
+    A second proof of a value another result holds says so by its kind, simplification.
+    And a result that is no bound has no place on the frontier to lose, though it may
+    cite the evidence of the bound it is about and so derive a standing: `T-003`, the
+    limit of a method, cites the bound it measures and derives `superseded`, and no
+    later bound supersedes a method's limit."""
+    return held == SUPERSEDED and str(record.get("kind")) in BOUND_KINDS
+
+
+def position_marks(record: Mapping[str, Any], held: str) -> list[str]:
+    """An entry's place on the frontier as the marks a table draws after its status:
+    `superseded` (`superseded`), or nothing."""
+    return [SUPERSEDED] if superseded(record, held) else []
 
 
 def is_recent_by_others(record: Mapping[str, Any]) -> bool:

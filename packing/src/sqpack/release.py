@@ -156,7 +156,7 @@ DATA_REVISION_LENGTH = 6
 #: The last data commit, pinned in full: what `data_revision` returned when it was last
 #: re-pinned. Full rather than six characters so the drift check compares a commit, not
 #: a prefix.
-DATA_REVISION = "675d156551fc5d8048393e6748bb15c1b4ed1a83"
+DATA_REVISION = "1061d2bcede8c4a0885ecd15d17784dd9232c2e2"
 
 #: The version, written the one way it is ever written: `v0.4.1-f5e113`. Semver core,
 #: then the data revision, in the shape a build identifier takes everywhere else.
@@ -182,11 +182,11 @@ PUBLICATION_DATE = PUBLICATION_HISTORY[0].first_published
 FIRST_PUBLISHED = PUBLICATION_HISTORY[-1].first_published
 
 #: The commit the committed claim documents link to
-#: (`render_n11_lower_bounds_explainer.edition_file`), at this repository's short length. It is
-#: pinned for the reason `DATA_REVISION` is: those documents are compared byte for byte with a
-#: fresh render, so a link naming the build commit would fail their drift check forever. It is
-#: in no version string. It moves when the claim documents are regenerated for an edition. It
-#: must be a commit on `main`; the site's own links name `main` itself (`devtools.repo_links`).
+#: (`render_n11_lower_bounds_explainer.edition_file`), at this repository's short length. It is pinned for the reason `DATA_REVISION` is: those
+#: documents are compared byte for byte with a fresh render, so a link naming the build
+#: commit would fail their drift check forever. It is in no version string. It moves
+#: when the claim documents are regenerated for an edition. It must be a commit on
+#: `main`; the site's own links name `main` itself (`devtools.repo_links`).
 PUBLICATION_REVISION = "0d7bb0fa"
 
 

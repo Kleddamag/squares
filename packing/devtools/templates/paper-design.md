@@ -535,7 +535,10 @@ it.
   **Every other direct card opens its target in a new tab** (`target="_blank"`,
   `rel="noopener noreferrer"`), so the page the reader chose it from stays where they
   left it: a poster’s PDF, the Visualize page, another project.
-  `link_card` refuses `new_tab=False` for an address off the site.
+  `link_card` refuses `new_tab=False` for anything but a page the site serves, which one
+  rule decides (`overview_sections.is_site_page`): an entry of
+  `render_overview.SITE_PAGES`, the optimality paper among them, or a directory served
+  by its `index.html`, as `workbench/` is.
   - When a popover card leads to a repository document the site renders, the popover
     renders that page itself, narrow, in a frame: the page at the same address with
     `?view=embed` added before any fragment, so a filtered view such as

@@ -256,7 +256,9 @@ def test_each_page_card_is_a_plain_link_to_its_page(page: str) -> None:
 
 def test_a_same_tab_link_card_leads_only_to_a_page_of_the_site() -> None:
     """`link_card` opens a new tab unless told otherwise; told otherwise, it emits no
-    `target`, and refuses an address off the site, which never replaces this page."""
+    `target`, and refuses anything but a page the site serves (`is_site_page`): an
+    address off the site, which never replaces this page, and a file beside the page,
+    which is not one."""
     made = overview_sections.link_card("frontier.html", "Label", "Headline", "A note.")
     assert ' target="_blank" rel="noopener noreferrer">' in made
     same = overview_sections.link_card(
@@ -269,10 +271,41 @@ def test_a_same_tab_link_card_leads_only_to_a_page_of_the_site() -> None:
     assert "target=" not in same
     assert "rel=" not in same
     assert same.split(">", 1)[1] == made.split(">", 1)[1]
-    with pytest.raises(SystemExit, match="only a page of this site"):
-        overview_sections.link_card(
-            "https://github.com/jlevy/squares", "Label", "Headline", "A note.", new_tab=False
-        )
+    for address in ("https://github.com/jlevy/squares", "known-best-1-100.pdf"):
+        with pytest.raises(SystemExit, match="only a page of this site"):
+            overview_sections.link_card(address, "Label", "Headline", "A note.", new_tab=False)
+
+
+def test_a_site_page_is_a_page_the_site_serves() -> None:
+    """`is_site_page` is the one rule for which cards navigate in the same tab: every
+    page the site serves (`render_overview.SITE_PAGES`), the optimality paper in its
+    own directory among them, and a directory served by its `index.html`, as
+    `workbench/` is, with or without a query or fragment. Every page card's address and
+    every paper's is one; nothing else is."""
+    is_site_page = overview_sections.is_site_page
+    for name in render_overview.SITE_PAGES:
+        assert is_site_page(name), name
+    assert overview_sections.OPTIMALITY_PAPER in render_overview.SITE_PAGES
+    for address in (
+        "workbench/",
+        overview_sections.OPTIMALITY_PAPER,
+        "frontier.html?recent=true",
+        "cases.html#n-11",
+        overview_sections.result_url("T-060"),
+        *(href for href, *_ in overview_sections.PAGES),
+        *(paper.href for paper in overview_sections.PAPERS),
+    ):
+        assert is_site_page(address), address
+    for address in (
+        "",
+        "#recent-results",
+        "https://github.com/jlevy/squares",
+        "known-best-1-100.pdf",
+        "nowhere.html",
+        "n11-optimality/",
+        "workbench",
+    ):
+        assert not is_site_page(address), address
 
 
 def test_every_other_direct_card_opens_in_a_new_tab(page: str) -> None:

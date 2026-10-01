@@ -36,7 +36,7 @@ from devtools.overview_data import (
     math_html,
     tex_bounds,
 )
-from devtools.render_overview import DOCUMENT_PAGES, RESULTS_PAGE
+from devtools.render_overview import DOCUMENT_PAGES, RESULTS_PAGE, SITE_PAGES
 from devtools.render_recent_results import HOLDS, NOT_A_BOUND, STANDINGS, Lane, Row
 from devtools.repo_links import branch_file
 from sqpack.yamlio import safe_load
@@ -95,6 +95,18 @@ def card_kind(href: str) -> str:
     if href.startswith("https://"):
         return "external"
     return "page"
+
+
+def is_site_page(href: str) -> bool:
+    """Whether `href` is a full page this site serves, the one rule for which cards
+    navigate in the same tab (`link_card`, `new_tab=False`): an entry of
+    `render_overview.SITE_PAGES`, the optimality paper's
+    `n11-optimality/t-060-explainer.html` among them, or a directory the site serves by
+    its `index.html`, as `workbench/` is. A query or fragment on it does not matter. A
+    file beside the page, such as a poster's PDF, an address off the site and a place
+    on this page are not pages."""
+    page = href.partition("#")[0].partition("?")[0]
+    return page in SITE_PAGES or (page.endswith("/") and f"{page}index.html" in SITE_PAGES)
 
 
 def embed_url(href: str) -> str:
@@ -1542,14 +1554,14 @@ def link_card(
     A direct card opens its target in a new tab unless `new_tab` is false, so the page
     the reader chose it from stays where they left it: a poster's PDF, the film, a place
     off the site. A card for one of the site's own pages passes `new_tab=False` and
-    navigates in the same tab, as the navigation bar does, and only a target on the site
-    may. Its corner icon is `data-go`'s (`card_kind`): the right arrow for a page or file
-    of this site, the external arrow for a place off it. An address off the site is
-    shown under the note beside the host's mark; a PDF is typed as one, so the browser
-    opens it in place.
+    navigates in the same tab, as the navigation bar does, and only a page the site
+    serves may (`is_site_page`). Its corner icon is `data-go`'s (`card_kind`): the right
+    arrow for a page or file of this site, the external arrow for a place off it. An
+    address off the site is shown under the note beside the host's mark; a PDF is typed
+    as one, so the browser opens it in place.
     """
     kind = card_kind(url)
-    if not new_tab and kind != "page":
+    if not new_tab and not is_site_page(url):
         raise SystemExit(f"{url}: only a page of this site opens in the same tab")
     tab = ' target="_blank" rel="noopener noreferrer"' if new_tab else ""
     typed = ' type="application/pdf"' if url.endswith(".pdf") else ""

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from decimal import Decimal
 from fractions import Fraction
 
@@ -143,8 +144,24 @@ def test_shared_counts_state_both_sources_dates_and_values() -> None:
         first = apply.day(plan.case["history"][0]["authored_utc"])
         assert "dated 23 September 2026 and made with the help of Claude" in flat, plan.n
         assert f"`{plan.case['history'][0]['side']}`, is dated {first}" in flat, plan.n
-        assert "by the timestamps this record\u2019s priority notes keep" in flat, plan.n
         assert "infers nothing about whether either packing derives" in flat, plan.n
+        # Which is the earlier is said only as firmly as the timestamps allow. Where
+        # Couzo's packing was authored before Casson's commit and the history now public
+        # was committed after it, the body says both.
+        casson_time = datetime.fromisoformat(str(plan.casson["first_authored_utc"]))
+        history = plan.case["history"][0]
+        if datetime.fromisoformat(history["authored_utc"]) < casson_time:
+            assert f"is dated {first}, before Casson\u2019s" in flat, plan.n
+            assert "The priority notes keep the timestamps." in flat, plan.n
+            recommitted = datetime.fromisoformat(history["committed_utc"]) > casson_time
+            caveat = (
+                f"the history now public was committed on {apply.day(history['committed_utc'])}"
+                ", after it"
+            )
+            assert (caveat in flat) == recommitted, plan.n
+        else:
+            assert "Casson\u2019s is the earlier of the two by the timestamps" in flat, plan.n
+            assert "before Casson\u2019s" not in flat, plan.n
 
 
 def test_the_body_gives_plain_dates_and_the_priority_notes_keep_the_timestamps() -> None:

@@ -522,7 +522,11 @@ def _casson_paragraph(plan: Plan) -> str | None:
     """Casson's packing at a count both report, and which of the two is the earlier.
 
     The order is decided on the full timestamps, which `priority_notes` writes into the
-    front matter; the sentences give each packing's plain date and point there.
+    front matter; the sentences give each packing's plain date and point there. Couzo's
+    history carries two: the date his first packing was authored, and the date the
+    history now public was committed. Where the first precedes Casson's commit and the
+    second follows it, the paragraph says both, since "earlier" on the authored date
+    alone would state the order more firmly than the record does.
     """
     casson = plan.casson
     if casson is None:
@@ -530,10 +534,17 @@ def _casson_paragraph(plan: Plan) -> str | None:
     first = plan.case["history"][0]
     casson_time = str(casson["first_authored_utc"])
     earlier = _when(first["authored_utc"]) < _when(casson_time)
+    recommitted = _when(first["committed_utc"]) > _when(casson_time)
     kept = "by the timestamps this record’s priority notes keep"
+    caveat = (
+        f"; the history now public was committed on {day(first['committed_utc'])}, after it"
+        if recommitted
+        else ""
+    )
     ordering = (
         f"Couzo’s first packing for this count, of side `{first['side']}`, is dated "
-        f"{day(first['authored_utc'])} and is the earlier of the two {kept}"
+        f"{day(first['authored_utc'])}, before Casson’s{caveat}. The priority notes keep "
+        "the timestamps"
         if earlier
         else f"Casson’s is the earlier of the two {kept}: Couzo’s first packing for this "
         f"count, of side `{first['side']}`, is dated {day(first['authored_utc'])}"

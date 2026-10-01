@@ -78,6 +78,8 @@ ATLAS_GRID_SCRIPT = BROWSER / "atlas-grid.js"
 EMBED_SCRIPT = BROWSER / "embed.js"
 CASE_POPOVER_SCRIPT = BROWSER / "case-popover.js"
 CASE_VIEW_SCRIPT = BROWSER / "case-view.js"
+#: What starts the Visualize page's film when the page is visited.
+FILM_SCRIPT = BROWSER / "film.js"
 THEME_SCRIPT = BROWSER / "theme.js"
 #: The frame the site's flattened kpress client modules are placed in.
 KPRESS_CLIENT_FRAME = BROWSER / "kpress-client.js"
@@ -367,7 +369,9 @@ def visualize_tabs(current: str, *, root: str = "") -> str:
 
     Each tab is a real link to its own page, so the bar needs no script and a tab can be
     opened, bookmarked and shared. Its look is `.site-tabs` in `site-nav.css`, the one
-    stylesheet both the film's page and the workbench carry.
+    stylesheet both the film's page and the workbench carry, which also draws the rule
+    under the navigation bar over the tabs: they follow the bar in the header slot, and
+    the bar, not the slot, carries the rule on a page that has them.
     """
     if current not in {key for key, _, _ in VISUALIZE_TABS}:
         raise SystemExit(f"the Visualize section has no tab {current!r}")
@@ -612,7 +616,6 @@ def results_page() -> Page:
 
     overview = overview_data.load()
     values = {
-        "COUNT": str(len(overview.results)),
         "EPISTEMICS_URL": repo_url(repo_links.EPISTEMICS),
         "RESULTS_TABLE": overview_sections.results_table(overview),
         "STAR_LEGEND": overview_sections.star_legend(),
@@ -681,7 +684,12 @@ def cases_page() -> Page:
 
 
 def visualize_page() -> Page:
-    """The Visualize section's first tab: the film of the ascent at full size."""
+    """The Visualize section's first tab: the film of the ascent at full size.
+
+    The film starts when the page is visited: its markup mutes it and marks it
+    `data-autoplay`, and `overview/film.js` starts it unless the reader asks for reduced
+    motion or the page is framed in a popover. No other page carries that script, so no
+    other film on the site starts unasked."""
     values = {
         "FILM_URL": FILM_URL,
         "SHORT_FILM_URL": SHORT_FILM_URL,
@@ -699,6 +707,7 @@ def visualize_page() -> Page:
         title=f"Visualize · {SITE_NAME}",
         description=VISUALIZE_DESCRIPTION,
         toc=False,
+        page_scripts=(FILM_SCRIPT,),
         tabs=visualize_tabs("film"),
     )
 

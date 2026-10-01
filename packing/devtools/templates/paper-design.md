@@ -213,8 +213,8 @@ Popovers carry no `data-kpress-prose-font` mark, so every other formula in them 
 its own text. The rule holds on every surface, walked formula by formula on the built
 site: a card’s headline and note, a popover and the atlas popover, a table’s cells,
 heads, summaries and disclosures, a caption, a footnote, a case record’s head, panels
-and detail, and a sans heading are sans text with sans math; prose and its lists are
-serif with serif math.
+and detail, a page’s subtitle, and a sans heading are sans text with sans math; prose
+and its lists are serif with serif math.
 A card’s headline and note are prose whose mathematical runs are set as math, so a case
 a note names, such as $n = 21$, is sans math too, never upright words.
 Documents write math as LaTeX (`$…$`) rather than in code spans;
@@ -302,7 +302,8 @@ one of them changes.
 
 | Space | Token | Screen value | Declared in |
 | --- | --- | --- | --- |
-| From the bar’s rule to a page’s first block | `--site-page-top` | 4rem, 64px | `site-nav.css` |
+| From the bar’s rule to a page’s first block, or from the section tabs where a page has them | `--site-page-top` | 4rem, 64px | `site-nav.css` |
+| From the bar’s rule to the section tabs, and from them to an application | `--site-tabs-space` | 0.7rem, 11.2px | `site-nav.css` |
 | How much nearer the bar an opening picture starts | `--site-hero-lift` | 0.5rem, 8px | `site.css` |
 | Above a section heading (`h2`) | `--paper-section-space` | 2.7 of the prose base, 48.6px | `paper-type.css` |
 | Below a section heading (`h2`) | `--paper-section-space-below` | 1.7rem, 27.2px | `paper-type.css` |
@@ -312,9 +313,11 @@ one of them changes.
 
 A page’s title, or the picture that opens the homepage, starts `--site-page-top` under
 the bar’s rule on every page, the explainer and the optimality paper included.
-Every section heading on the site pages and the explainer takes the two section tokens;
-print reads its own values of both (2.8 of the base and 1.3rem), which are the paper’s.
-On the explainer the credits start 2.25rem under the title on screen and 2rem in print.
+The film’s page has section tabs under that rule, and its film starts the same space
+under the tabs. Every section heading on the site pages and the explainer takes the two
+section tokens; print reads its own values of both (2.8 of the base and 1.3rem), which
+are the paper’s. On the explainer the credits start 2.25rem under the title on screen
+and 2rem in print.
 
 `--site-table-space` is the space above and below every table, and above and below the
 rating ladders. A site table (`.site-table`) takes it above its filter bar, which keeps
@@ -408,6 +411,22 @@ it.
   `site-nav.css` rather than `site.css` because the workbench carries only the bar’s
   stylesheet. On the film’s page it opens the document; on the workbench it sits in the
   application shell under the bar, above the application.
+  From the top, both pages read bar, rule, tabs, content: the tabs stand under the rule
+  that runs under the bar, never over it.
+  They are in the header slot, whose lower border is that rule, so a header that holds
+  tabs gives up its border and the bar draws the rule at its own foot (`:has()`, in
+  `site-nav.css`), where it is on every other page and as long.
+  The tabs start `--site-tabs-space` (0.7rem, 11.2px) under the rule.
+  On the film’s page the first block starts `--site-page-top` under the tabs; on the
+  workbench, where the application starts at the shell’s lower edge, the tabs keep the
+  same 0.7rem below them.
+  Measured at 1280px, on both pages: the bar from 16 to 68.6px with the rule its last
+  pixel, the tabs from 79.8 to 112.4px, then the film at 176.4px and the application at
+  123.6px; at 390px, where the bar wraps to two lines, the rule ends at 81.8px, the tabs
+  run from 92.9 to 125.5px, the film starts at 189.5px and the application at 136.7px.
+  `devtools.measure_site_pages header` reports these, `preview_site` fails a built page
+  whose tabs start over the rule (`tabs_problems`), and `tests/test_site_wide_blocks.py`
+  holds both pages to it in a browser.
   It is hidden in print and in the embed view.
 
 - **Theme control.** A small gray gear, an inline SVG, ends the navigation bar on every
@@ -439,14 +458,28 @@ it.
   icons.
 
 - **Page headings.** The homepage has no title heading: its hero picture leads, and its
-  sections are `h2`s. A page that has a title (the frontier atlas, the case records)
-  sets it in the hero, centred, with a subtitle under it such as “Every tracked case, n
-  = 1 to 324”. The subtitle is the sans face at 1.1 times the sans base
-  (`--site-subtitle-scale`, about 21px), in the page’s own text colour, never gray, with
-  the same space above it and below it (`--site-subtitle-space`, 1.5rem). A title with
-  no subtitle, a document’s own `h1` among them, stands that space above its first
-  paragraph. The page title style (every hero `h1`, and `.site-title`) is the sans face
-  in upright caps (not KPress’s italic `h2`) at 1.5 times the sans base, centred.
+  sections are `h2`s. The Visualize page shows none either: the bar, the section tabs
+  and the film are the page, and its `h1`, “Visualize”, is for a screen reader alone
+  (`.site-visually-hidden`, in `site.css`: out of the flow, one pixel, clipped, the
+  class for any block a reader does not see and a screen reader should).
+  The film after the hidden title is the page’s first block, so on screen it brings no
+  margin above and starts `--site-page-top` under the header.
+  A page that has a title (the frontier atlas, the case records) sets it in the hero,
+  centred, with a subtitle under it.
+  The frontier atlas’s is “A survey of everything known for cases $n = 1, \ldots, 324$”,
+  the results page’s “A survey of all reviewed results” and the Papers page’s “Papers
+  and interactive explanations for specific results”.
+  The subtitle is the sans face at 1.1 times the sans base (`--site-subtitle-scale`,
+  about 21px), in the page’s own text colour, never gray, with the same space above it
+  and below it (`--site-subtitle-space`, 1.5rem). A formula in a subtitle is math, not
+  `<var>` and digits: the subtitle is an HTML block, where KPress leaves `$…$` literal,
+  so the renderer fills it with KPress’s own math markup
+  (`render_frontier_page.math_html`), and it is set sans as the subtitle’s text is.
+  The atlas’s range is read from the case records, first and last, never typed.
+  A title with no subtitle, a document’s own `h1` among them, stands that space above
+  its first paragraph.
+  The page title style (every hero `h1`, and `.site-title`) is the sans face in upright
+  caps (not KPress’s italic `h2`) at 1.5 times the sans base, centred.
   The homepage’s first section, The Square Packing Problem, takes it through
   `.site-title`, so it reads as the frontier atlas’s title does.
   That section opens with README’s two opening paragraphs: the block between README’s
@@ -819,13 +852,29 @@ it.
   film.
 
 - **The film.** The Visualize section’s Film tab, `visualize.html`, is the n = 1 to 324
-  film at full size under the section tabs and a page title, “Visualize”, with the
-  subtitle “The ascent, n = 1 to 324”. It is as wide as the window allows less the page
-  gutters, up to 120rem, but never so tall that it will not fit the window whole
-  (`.site-film-frame`), and embedded as the explainer embeds its film: inline, with its
-  controls, fetching nothing until a reader presses play (`preload="none"`), and showing
-  its poster until then, `ascent-n1-324-poster.png`, published beside the explainer’s
-  assets, at the video’s own 16:9, so starting playback moves nothing.
+  film at full size directly under the section tabs, with no page title and no subtitle
+  (**Page headings**, above).
+  It is as wide as the window allows less the page gutters, up to 120rem, but never so
+  tall that it will not fit the window whole (`.site-film-frame`), and embedded inline,
+  with its controls. Its poster, `ascent-n1-324-poster.png`, published beside the
+  explainer’s assets, shows until playback starts, at the video’s own 16:9, so starting
+  moves nothing. The film starts when the page is visited.
+  Its markup mutes it (`muted`, which a browser requires of a film it starts unasked)
+  and marks it `data-autoplay`, and `overview/film.js`, which only this page carries,
+  sets `autoplay` and plays it.
+  It does not loop. **Visiting the page therefore starts the film’s download**, a 216 MB
+  file on the release, which the browser fetches as it plays.
+  A reader who asks for reduced motion (`prefers-reduced-motion: reduce`) keeps the
+  poster and the play control, and so does a reader without scripts, the page framed in
+  a card’s popover, and a browser that refuses to start the film.
+  For them nothing is fetched until they press play: the markup keeps `preload="none"`
+  and has no `autoplay` of its own, since markup cannot make that depend on the motion
+  preference. No other film on the site starts unasked: the explainer’s stays as it was,
+  fetching nothing until a reader presses play, and the overview embeds no video.
+  The tools that open the site’s pages in a browser (`preview_site`,
+  `measure_site_pages header`, the browser tests) open them under reduced motion
+  (`preview_site.REDUCED_MOTION`), so none of them starts the download.
+  `tests/node/overview_film/` runs the script against a stand-in film.
   A caption and a note in the support colour follow at the reading measure: what the
   film shows, its length, the shorter 1 to 100 film, the release both are on, and the
   Workbench.
@@ -1052,9 +1101,9 @@ its defaults.
   (`results.html` is `RESULTS.md` rendered as a reader document, so the table’s page
   takes the other name.)
   The page has the frontier atlas’s shape: a hero title, “Every Result”, whose id is
-  `every-result`, a subtitle with the count, the prose that defines the ratings and
-  standings, and the table under its filters (**Result filters**, above), which start
-  with significance at All and no maximum age, so every result shows.
+  `every-result`, a subtitle, the prose that defines the ratings and standings, and the
+  table under its filters (**Result filters**, above), which start with significance at
+  All and no maximum age, so every result shows.
   Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
   recent table and replay table, and each case record’s results link.
   A row opens its result’s popover, the full claim and its novelty label, with the id in

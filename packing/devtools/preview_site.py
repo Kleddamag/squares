@@ -42,7 +42,7 @@ import time
 from collections.abc import Sequence
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Literal
 
 from devtools import render_overview
 
@@ -64,6 +64,7 @@ _SCROLL_TOP = probe(PROBES, "preview_site/scroll_top")
 _AT_FOOT = probe(PROBES, "preview_site/at_foot")
 _CARDS = probe(PROBES, "measure_site_pages/cards")
 CLIPPED = probe(PROBES, "preview_site/clipped")
+HEADER = probe(PROBES, "preview_site/header")
 #: The widths every page is laid out at to look for a clipped wide block, beside the
 #: two it is shot at: a tablet upright and on its side, where a narrow page clips at the
 #: document's edge and a wide block has no room to spare.
@@ -84,6 +85,12 @@ LAZY_WAIT_MS = 5_000
 #: How long what a press opens may take to typeset its math.
 PRESS_WAIT_MS = 5_000
 HREF = re.compile(r'<nav class="site-nav".*?</nav>', re.DOTALL)
+#: The motion preference a tool opens the site's pages under: a reader's who asks for
+#: reduced motion. The Visualize page starts its film on a visit unless the reader asks
+#: that (`overview/film.js`), and the film is a 216 MB release download a page would wait
+#: on and a shot would catch mid-frame; under this it stands at its poster and nothing
+#: is fetched. The only other difference is that a hover's colour changes at once.
+REDUCED_MOTION: Literal["reduce"] = "reduce"
 
 
 def _run(*args: str) -> None:
@@ -200,6 +207,30 @@ def off_centre(sections: list[dict[str, Any]]) -> list[str]:
     ]
 
 
+def tabs_problems(found: dict[str, Any]) -> list[str]:
+    """What is wrong with where a page's section tabs stand, in a `preview_site/header`
+    report. From the top a page of a section reads bar, rule, tabs, content: the tabs
+    start at or below the foot of the rule under the navigation bar, and the content
+    starts at or below the foot of the tabs. A page with no tabs has nothing to say."""
+    tabs, rule, first = found["tabs"], found["rule"], found["first"]
+    if tabs is None:
+        return []
+    if rule is None:
+        return ["the section tabs have no rule over them, under the navigation bar"]
+    problems: list[str] = []
+    if tabs["top"] < rule["bottom"]:
+        problems.append(
+            f"the section tabs start {rule['bottom'] - tabs['top']:g}px above the foot of "
+            f"the rule under the navigation bar, which is on {rule['on']}"
+        )
+    if first is not None and first["top"] < tabs["bottom"]:
+        problems.append(
+            f"{first['block']} starts {tabs['bottom'] - first['top']:g}px above the foot of "
+            "the section tabs"
+        )
+    return problems
+
+
 def clipped(page: Page) -> list[str]:
     """Every wide block on the page as it stands that runs past an ancestor which clips
     or scrolls sideways, as laid out now and again with a scrollbar's width taken from
@@ -238,7 +269,10 @@ def clip_check(
                 if not (output / name.partition("#")[0]).is_file():
                     continue
                 for width in widths:
-                    page = browser.new_page(viewport={"width": width, "height": 900})
+                    page = browser.new_page(
+                        viewport={"width": width, "height": 900},
+                        reduced_motion=REDUCED_MOTION,
+                    )
                     page.goto(f"http://127.0.0.1:{port}/{name}", wait_until="load")
                     page.wait_for_timeout(200)
                     errors.extend(f"{name} @{width}: {problem}" for problem in clipped(page))
@@ -296,10 +330,13 @@ def screenshots(
 ) -> list[str]:
     """A full-page screenshot of every built page at each width, with what went wrong:
     console errors, math left untypeset or set in the other face from its text, a row of
-    cards off the centre of its line, any page wider than its viewport, and any wide
-    block that runs past an ancestor which clips it (`clipped`). Each selector in
+    cards off the centre of its line, any page wider than its viewport, section tabs
+    that do not stand under the bar's rule (`tabs_problems`), and any wide block that
+    runs past an ancestor which clips it (`clipped`). Each selector in
     `presses` is then pressed on every page that has a match, its math and its blocks
-    checked the same way, and the window shot as `<page>-<width>-press<n>.png`."""
+    checked the same way, and the window shot as `<page>-<width>-press<n>.png`. Every
+    page is opened as for a reader who asks for reduced motion (`REDUCED_MOTION`), so
+    the Visualize page's film is shot at its poster and its download never starts."""
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
     shots.mkdir(parents=True, exist_ok=True)
@@ -312,7 +349,10 @@ def screenshots(
                 if not (output / name.partition("#")[0]).is_file():
                     continue
                 for width in WIDTHS:
-                    page = browser.new_page(viewport={"width": width, "height": 900})
+                    page = browser.new_page(
+                        viewport={"width": width, "height": 900},
+                        reduced_motion=REDUCED_MOTION,
+                    )
                     page.on(
                         "console",
                         lambda message, name=name, width=width: (
@@ -334,6 +374,10 @@ def screenshots(
                     overflow = page.evaluate(_OVERFLOW)
                     if overflow > 0:
                         errors.append(f"{name} @{width}: {overflow}px wider than the viewport")
+                    errors.extend(
+                        f"{name} @{width}: {problem}"
+                        for problem in tabs_problems(page.evaluate(HEADER))
+                    )
                     cut = clipped(page)
                     errors.extend(f"{name} @{width}: {problem}" for problem in cut)
                     stem = shot_stem(name)

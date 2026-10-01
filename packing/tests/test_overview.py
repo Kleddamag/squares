@@ -1196,18 +1196,49 @@ def test_the_visualize_section_is_marked_current_on_both_its_pages(
         assert page.count('class="site-tabs"') == 1
         assert tabs in page
         assert re.findall(r'<a data-tab="(\w+)" aria-current="page"', tabs) == [tab]
-        # In the header slot, after the bar, on both pages alike.
+        # In the header slot, directly after the bar, on both pages alike: the bar's
+        # stylesheet draws the rule between the two (the next test).
         header = page.split('class="kpress-site-header"', 1)[1].split("</header>", 1)[0]
         assert header.index('class="site-nav"') < header.index(tabs)
+        assert re.search(r'</nav>\s*<nav class="site-tabs"', header)
     with pytest.raises(SystemExit):
         render_overview.visualize_tabs("stills")
+
+
+def test_the_section_tabs_sit_below_the_bars_rule() -> None:
+    """The tabs are in the header slot, whose lower border is the rule under the bar, so
+    they would stand over it. A header that holds tabs gives up its border and the bar
+    draws the rule at its own foot, over the tabs, on a kpress page and in the
+    application shell alike. The tabs stand one space under the rule and keep it below
+    them only in the shell, where the application starts at the shell's edge; on a kpress
+    page the first block starts `--site-page-top` under them. Print hides all three.
+    `test_site_wide_blocks` measures the same in a browser."""
+    css = render_overview.SITE_NAV_CSS.read_text(encoding="utf-8")
+    shell_rule = ".site-app-shell .kpress-site-header {\n  border-block-end: 1px solid"
+    handed = ".kpress-site-header:has(> .site-tabs) {\n  border-block-end: 0;\n}"
+    drawn = (
+        ".kpress-site-header > .site-nav:has(+ .site-tabs) {\n"
+        "  border-block-end: 1px solid var(--kpress-doc-border);\n}"
+    )
+    # After the shell's own rule, which it has the same specificity as.
+    assert css.index(shell_rule) < css.index(handed) < css.index(drawn)
+    tabs = css[css.index("\n.site-tabs {") :]
+    tabs = tabs[: tabs.index("}")]
+    assert "--site-tabs-space: 0.7rem;" in tabs
+    assert "margin: var(--site-tabs-space) auto 0;" in tabs
+    assert (
+        ".site-app-shell .site-tabs {\n  margin-block-end: var(--site-tabs-space);\n}"
+    ) in css
+    assert css.count("--site-tabs-space: ") == 1
+    assert "@media print {\n  .site-tabs {\n    display: none;\n  }\n}" in css
+    assert "@media print {\n  .site-nav,\n  .kpress-site-header {\n    display: none;" in css
 
 
 def test_the_film_page_embeds_the_film_at_its_own_proportions(
     rendered: Callable[[str], str],
 ) -> None:
-    """The film is inline with its controls, fetches nothing until played, and shows a
-    poster at the video's own 16:9, so starting playback moves nothing."""
+    """The film is inline with its controls, fetches nothing until it is started, and
+    shows a poster at the video's own 16:9, so starting playback moves nothing."""
     page = rendered("visualize.html")
     video = re.search(r"<video [^>]*>", page)
     assert video is not None
@@ -1222,6 +1253,83 @@ def test_the_film_page_embeds_the_film_at_its_own_proportions(
         assert attribute in video[0], attribute
     assert f'<source src="{render_overview.FILM_URL}" type="video/mp4' in page
     assert page.index('class="site-tabs"') < page.index("<h1") < page.index("<video")
+
+
+def test_the_film_starts_on_a_visit_to_its_page_and_nowhere_else(
+    rendered: Callable[[str], str],
+) -> None:
+    """Visiting the Visualize page starts its film. The markup mutes it, which a browser
+    requires of a film it starts unasked, keeps its controls and its inline playback, and
+    marks it `data-autoplay`; `overview/film.js`, which only this page carries, starts it
+    unless the reader asks for reduced motion or the page is framed in a popover
+    (`tests/node/overview_film` runs it). The markup itself has no `autoplay`, so a
+    reader the script leaves alone fetches nothing (`preload="none"`), and no `loop`.
+    No other page carries the script, and the explainer's film is not marked."""
+    page = rendered("visualize.html")
+    videos = re.findall(r"<video [^>]*>", page)
+    assert len(videos) == 1
+    attributes = videos[0].removeprefix("<video ").removesuffix(">").split()
+    for attribute in ("controls", "muted", "playsinline", "data-autoplay", 'preload="none"'):
+        assert attribute in attributes, attribute
+    assert not {"autoplay", "loop"} & {name.partition("=")[0] for name in attributes}
+    script = render_overview.FILM_SCRIPT.read_text(encoding="utf-8")
+    assert page.count(script) == 1
+    assert page.index("</video>") < page.index(script)
+    for needle in (
+        'document.querySelector("video[data-autoplay]")',
+        'window.matchMedia("(prefers-reduced-motion: reduce)").matches',
+        'getAttribute("data-site-view") === "embed"',
+        "film.autoplay = true;",
+        "film.play().catch(",
+    ):
+        assert needle in script, needle
+    for name in render_overview.PAGES:
+        if name != "visualize.html":
+            other = rendered(name)
+            assert script not in other, name
+            assert "data-autoplay" not in other, name
+            assert not re.search(r"<video\b[^>]*\sautoplay\b", other), name
+    explainer = re.findall(r"<video [^>]*>", EXPLAINER_ARTICLE.read_text(encoding="utf-8"))
+    assert len(explainer) == 1
+    assert 'preload="none"' in explainer[0]
+    for absent in ("autoplay", "muted", "loop"):
+        assert absent not in explainer[0], absent
+
+
+def test_the_film_page_shows_no_title_and_keeps_one_for_a_screen_reader(
+    rendered: Callable[[str], str],
+) -> None:
+    """The Visualize page shows the bar, the section tabs and the film: no page title and
+    no subtitle. It keeps its document title and one `h1`, for a screen reader alone, and
+    the film, the first block a reader sees, brings no margin of its own."""
+    page = rendered("visualize.html")
+    assert "<title>Visualize · Square Packing</title>" in page
+    assert re.findall(r"<h1\b[^>]*>.*?</h1>", page, re.DOTALL) == [
+        '<h1 class="site-visually-hidden" id="visualize">Visualize</h1>'
+    ]
+    article = page.split('class="kpress-prose kpress-long-text site-page">', 1)[1]
+    assert article.lstrip().startswith('<h1 class="site-visually-hidden"')
+    assert re.search(r'</h1>\s*<figure class="site-film-frame', article)
+    for gone in ('class="site-hero"', 'class="subtitle"', "The ascent"):
+        assert gone not in article, gone
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    hidden = css[css.index("\n.site-visually-hidden {") :]
+    hidden = hidden[: hidden.index("}")]
+    for declaration in (
+        "block-size: 1px;",
+        "clip-path: inset(50%);",
+        "inline-size: 1px;",
+        "overflow: hidden;",
+        "position: absolute;",
+    ):
+        assert declaration in hidden, declaration
+    assert "display: none" not in hidden
+    assert "visibility" not in hidden
+    assert (
+        "@media screen {\n"
+        "  .site-page .site-visually-hidden:first-child + .site-film-frame {\n"
+        "    margin-block-start: 0;\n  }\n}"
+    ) in css
 
 
 def test_no_site_stylesheet_keys_on_the_system_theme_alone() -> None:
@@ -2653,12 +2761,40 @@ def test_the_icon_frame_is_one_pixel_at_icon_size() -> None:
 
 
 def test_page_subtitles_share_one_size() -> None:
-    """Every hero's subtitle ("The ascent, n = 1 to 324") is set from one scale of the sans
-    base, a small step above it."""
+    """Every hero's subtitle ("A survey of all reviewed results") is set from one scale of
+    the sans base, a small step above it."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     assert "--site-subtitle-scale: 1.1;" in css
     rule = css[css.index(".kpress .site-hero .subtitle {") :]
     assert "var(--site-subtitle-scale)" in rule[: rule.index("}")]
+
+
+def test_the_frontier_results_and_papers_pages_carry_their_subtitles(
+    rendered: Callable[[str], str],
+) -> None:
+    """Each page's subtitle is one line under its title. The atlas's names its range as a
+    formula, kpress's own math markup, with both ends read from the case records; the
+    results page's carries no count, so its template takes none."""
+    from devtools.render_frontier_page import (  # noqa: PLC0415
+        FRONTIER_ARTICLE,
+        frontier_cases,
+        math_html,
+    )
+
+    numbers = [case["n"] for case in frontier_cases()]
+    cases = math_html(rf"n = {min(numbers)}, \ldots, {max(numbers)}")
+    for name, subtitle in (
+        ("frontier.html", f"A survey of everything known for cases {cases}"),
+        (render_overview.RESULTS_PAGE, "A survey of all reviewed results"),
+        ("papers.html", "Papers and interactive explanations for specific results"),
+    ):
+        page = rendered(name)
+        assert page.count('<p class="subtitle">') == 1, name
+        assert f'<p class="subtitle">{subtitle}</p>' in page, name
+    assert 'class="kpress-math' in cases
+    assert "<var>" not in cases
+    assert "{{CASE_RANGE}}" in FRONTIER_ARTICLE.read_text(encoding="utf-8")
+    assert "{{COUNT}}" not in render_overview.RESULTS_ARTICLE.read_text(encoding="utf-8")
 
 
 def test_wrapped_chips_never_touch() -> None:

@@ -2,7 +2,7 @@
 
 # Papers
 
-<p class="subtitle">The project’s explanations, written out in full</p>
+<p class="subtitle">Papers and interactive explanations for specific results</p>
 
 </div>
 

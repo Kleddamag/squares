@@ -1193,9 +1193,12 @@ def _lane_results(results: str) -> str:
 
 
 def _lane_detail(lane: Lane) -> str:
-    """One lane in a replay row's popover: its value, who holds it and when it was
-    published, and the register entries that carry it with their rungs."""
-    held = _esc(lane.holder) + (f", published {_esc(lane.published)}" if lane.published else "")
+    """One lane in a replay row's popover: its value, who holds it and when, and the
+    register entries that carry it with their rungs. The date is what the tables' Date
+    column says it is (`date_cell`): a bound by others was published then, and this
+    project's own was established then, the register's `established`."""
+    dated = "established" if lane.ours else "published"
+    held = _esc(lane.holder) + (f", {dated} {_esc(lane.published)}" if lane.published else "")
     entries = _lane_results(lane.results)
     return f'{_lane_math(lane)} <span class="site-cell-quiet">{held}</span>' + (
         f"<br>{entries}" if entries else ""

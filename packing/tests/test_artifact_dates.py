@@ -59,23 +59,31 @@ def test_a_papers_revised_date_is_the_day_its_article_last_changed() -> None:
     """Both papers, by one rule: the last commit that changed the article, merges aside.
 
     This is the check that fails when an article changes and its date does not: the
-    explainer's is `release.EXPLAINER_REVISED`, the optimality paper's is in its own
-    credits, and each is changed in the commit that changes the article. The articles
-    are `n11-lower-bounds-explainer-article.md` and `n11-optimality-review-article.md`,
-    named here so that the pre-push tier selects this file when either changes.
+    explainer's is `release.EXPLAINER_REVISED`, the optimality paper's is
+    `release.OPTIMALITY_REVIEW_REVISED`, and each is changed in the commit that changes
+    the article. The articles are `n11-lower-bounds-explainer-article.md` and
+    `n11-optimality-review-article.md`, named here so that the pre-push tier selects
+    this file when either changes.
     """
-    for article, stated in (
-        (artifact_dates.EXPLAINER_ARTICLE, release.EXPLAINER_REVISED),
-        (artifact_dates.OPTIMALITY_ARTICLE, artifact_dates.optimality_dates()[1]),
+    assert artifact_dates.optimality_dates() == (
+        release.OPTIMALITY_PROOF_PUBLISHED,
+        release.OPTIMALITY_REVIEW_REVISED,
+    )
+    for article, stated, constant in (
+        (artifact_dates.EXPLAINER_ARTICLE, release.EXPLAINER_REVISED, "EXPLAINER_REVISED"),
+        (
+            artifact_dates.OPTIMALITY_ARTICLE,
+            release.OPTIMALITY_REVIEW_REVISED,
+            "OPTIMALITY_REVIEW_REVISED",
+        ),
     ):
         changed = artifact_dates.last_change(article)
         if changed is None:
             pytest.skip("git cannot date the articles here")
         assert stated == artifact_dates.long_date(changed), (
             f"{article.name} last changed on {changed}, and its paper says it was last "
-            f"revised {stated}: state {artifact_dates.long_date(changed)!r}, in "
-            "release.EXPLAINER_REVISED for the explainer or in the article's credits "
-            "for the optimality paper"
+            f"revised {stated}: state {artifact_dates.long_date(changed)!r} in "
+            f"release.{constant}"
         )
 
 
@@ -111,22 +119,20 @@ def test_a_stale_revised_date_is_reported_and_fails_the_check(
     assert artifact_dates.main([]) == 0
 
 
-@pytest.mark.parametrize(
-    "stated",
-    [
-        "Original proof September 29, 2026",
-        "Original proof September 29, 2026 · This review revised 2026-10-01",
-        "Original proof September 29, 2026 · This review revised October 1, 2026\n" * 2,
-    ],
-)
-def test_an_article_that_does_not_state_its_two_dates_once_is_refused(
-    stated: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    article = tmp_path / "article.md"
-    article.write_text(stated + "\n")
-    monkeypatch.setattr(artifact_dates, "OPTIMALITY_ARTICLE", article)
-    with pytest.raises(ValueError, match="must state its two dates exactly once"):
-        artifact_dates.optimality_dates()
+def test_the_optimality_papers_front_prints_the_two_dates_the_rules_hold() -> None:
+    """The dates the tool holds are the ones the paper's front prints, in one line, the
+    proof's day first and the review's last; the paper reads both from the release
+    module, so neither can be typed into the article and stand still under it."""
+    front = render_n11_optimality_review.FRONT
+    proof, review = artifact_dates.optimality_dates()
+    assert [(dated.label, dated.day) for dated in front.dates] == [
+        ("Original proof", proof),
+        ("Last revised", review),
+    ]
+    assert artifact_dates.optimality_revised() == artifact_dates.written_date(review)
+    assert "This review revised" not in render_n11_optimality_review.ARTICLE.read_text(
+        encoding="utf-8"
+    )
 
 
 def test_dates_are_written_and_read_the_way_the_papers_write_them() -> None:
@@ -135,6 +141,9 @@ def test_dates_are_written_and_read_the_way_the_papers_write_them() -> None:
     assert artifact_dates.written_date("October 1, 2026") == date(2026, 10, 1)
     assert artifact_dates.written_date(release.EXPLAINER_REVISED) <= date.today()  # noqa: DTZ011
     assert artifact_dates.written_date(release.FIRST_PUBLISHED) == date(2026, 9, 5)
+    # The explainer's first day is its own history's oldest, and the site began as the
+    # explainer, so the two are one day.
+    assert artifact_dates.written_date(release.EXPLAINER_FIRST_PUBLISHED) == date(2026, 9, 5)
 
 
 def test_a_printed_pdf_is_dated_in_place_by_its_revision() -> None:

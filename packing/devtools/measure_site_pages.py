@@ -6,7 +6,7 @@ page's header stands, the baselines its labels stand on, the size of what a pres
 opens, how every run of text and every formula is drawn, and where each figure's
 drawing stands and what is lettered into it.
 
-Fourteen measurements, each over pages of a directory `preview_site` has built:
+Fifteen measurements, each over pages of a directory `preview_site` has built:
 
 - `load` serves the directory on a local port and opens each page in a fresh Chromium
   context, cold cache, at a desktop or phone width. An init script (a probe) records
@@ -127,6 +127,12 @@ Fourteen measurements, each over pages of a directory `preview_site` has built:
   shoots each figure with its caption. This is the tool the optimality paper's figures
   were brought to the first paper's treatment with (`templates/paper-design.md`,
   Figures).
+- `credits` reports the front of each page, once its math is typeset, at each `--width`,
+  one row an item: each chip of the formats row with its size and weight, then each line
+  of the credits with the weight it is set at, the weights of the names and the links in
+  it, the space above it in line heights, the lines its words take and its width as a
+  share of the column's. This is the tool the two papers' fronts are held together
+  with in the browser (`templates/paper-design.md`, The Papers' Front).
 
 Every mode but `faces` also takes, in place of the directory, the address a site is
 served at, and measures the published pages as they are.
@@ -178,7 +184,6 @@ import hashlib
 import io
 import itertools
 import json
-import os
 import re
 import statistics
 import sys
@@ -190,6 +195,7 @@ from devtools import render_overview
 from devtools.preview_site import (
     BASELINES,
     HEADER,
+    launch_chromium,
     motion_for,
     press,
     serve,
@@ -198,7 +204,6 @@ from devtools.preview_site import (
     split_words,
 )
 from devtools.render_n11_lower_bounds_explainer import MATH_WRAPPERS
-from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import applied, probe
 
 PROBES = Path(__file__).resolve().parent / "probes"
@@ -216,6 +221,7 @@ POPOVER = probe(PROBES, "measure_site_pages/popover")
 GLYPHS = probe(PROBES, "measure_site_pages/glyphs")
 PLATFORM = probe(PROBES, "measure_site_pages/platform")
 FIGURES = probe(PROBES, "measure_site_pages/figures")
+CREDITS = probe(PROBES, "measure_site_pages/credits")
 #: What a press opens, which `space` then reports alone: an open popover or disclosure.
 OPENED = ":popover-open, details[open]"
 
@@ -237,7 +243,7 @@ FAMILY = re.compile(r"font-family:\s*(\"[^\"]+\"|[^;]+);")
 
 
 def _launch(driver: Any) -> Any:
-    return driver.chromium.launch(executable_path=os.environ.get(BROWSER_OVERRIDE))
+    return launch_chromium(driver)
 
 
 def measure_load(
@@ -652,6 +658,50 @@ def measure_chips(
                     )
                     page.keyboard.press("Escape")
                 page.close()
+        browser.close()
+    return results
+
+
+def measure_credits(
+    base: str, pages: Sequence[str], *, widths: Sequence[int], shots: Path | None = None
+) -> list[dict[str, Any]]:
+    """The front of each page at each width, once its math is typeset, one row an item
+    (`probes/measure_site_pages/credits.js`): each chip of the formats row, then each
+    line of the credits with the weight it is set at, the weights of the names and the
+    links in it, the space above it in line heights, the lines its words take and its
+    width as a share of the column's. This is what `tests/test_site_glyphs.py` holds
+    the two papers' fronts together with, in the browser; `devtools.paper_structure`
+    reads the same front from the markup. With `shots`, the page is measured in the
+    light and the dark scheme, each row says which, and the front, from the top of the
+    page to the foot of the credits, is shot there at each width in each:
+    `front-<page>-<width>-<scheme>.png`."""
+    from playwright.sync_api import sync_playwright  # noqa: PLC0415
+
+    schemes = ("light", "dark") if shots is not None else ("light",)
+    if shots is not None:
+        shots.mkdir(parents=True, exist_ok=True)
+    results: list[dict[str, Any]] = []
+    with sync_playwright() as driver:
+        browser = _launch(driver)
+        for width, name, scheme in itertools.product(widths, pages, schemes):
+            print(f"measuring {name} at {width}, {scheme}", file=sys.stderr, flush=True)
+            page = browser.new_page(
+                viewport={"width": width, "height": 900}, color_scheme=scheme
+            )
+            page.goto(f"{base}/{name}", wait_until="load")
+            settle_math(page)
+            results.extend(
+                {"page": name, "width": width, "scheme": scheme, **row}
+                for row in page.evaluate(CREDITS)
+            )
+            if shots is not None:
+                box = page.locator(".credits").first.bounding_box()
+                foot = box["y"] + box["height"] if box else 900
+                page.screenshot(
+                    path=str(shots / f"front-{shot_stem(name)}-{width}-{scheme}.png"),
+                    clip={"x": 0, "y": 0, "width": width, "height": min(foot + 32, 900)},
+                )
+            page.close()
         browser.close()
     return results
 
@@ -1577,6 +1627,7 @@ MODES = (
     "popover",
     "glyphs",
     "figures",
+    "credits",
 )
 
 
@@ -1628,6 +1679,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         "with `columns`: also shoot each table here at each width; "
         "with `glyphs`: also shoot each formula sampled here, at twice its size; "
         "with `figures`: also shoot each figure here, with its caption; "
+        "with `credits`: also shoot each page's front here at each width, light and dark; "
         "with `popover`: also shoot the window here with each popover open",
     )
     parser.add_argument(
@@ -1705,6 +1757,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                 report = measure_columns(base, pages, widths=widths, shots=args.shots)
             elif args.mode == "chips":
                 report = measure_chips(base, pages, widths=widths, presses=args.press)
+            elif args.mode == "credits":
+                report = measure_credits(base, pages, widths=widths, shots=args.shots)
             elif args.mode == "header":
                 report = measure_header(base, pages, widths=widths)
             elif args.mode == "baselines":

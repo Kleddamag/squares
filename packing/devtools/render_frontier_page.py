@@ -28,6 +28,7 @@ from typing import Any, cast
 from devtools import render_research_tables as tables
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.build_bound_citations import RECORD as BOUND_CITATIONS
+from devtools.render_recent_results import RecentCounts, recent_counts, recent_rows
 from devtools.repo_links import repo_url
 from devtools.validate_schemas import check as check_record
 from sqpack.assurance import bounds_agree_at_declared_precision
@@ -37,8 +38,14 @@ TEMPLATES = PACKING / "devtools" / "templates"
 FRONTIER_ARTICLE = TEMPLATES / "frontier-article.md"
 RENDERINGS = PACKING / "atlas" / "known-best" / "rendering"
 TABLE_SCRIPT = PACKING / "devtools" / "overview" / "table.js"
+#: The two repository documents the page's prose links: the literature archive's README
+#: and the evidence inventory.
+ARCHIVE_README = "packing/resources/README.md"
+EVIDENCE_INVENTORY = "packing/frontier/INVENTORY.md"
 
-#: Every file this page reads beyond the site shell's own inputs.
+#: Every file this page reads beyond the site shell's own inputs. The survey's counts
+#: are `render_recent_results`', which reads the register and the bibliography beside
+#: the case records.
 FRONTIER_INPUTS: tuple[Path, ...] = (
     Path(__file__).resolve(),
     FRONTIER_ARTICLE,
@@ -46,11 +53,36 @@ FRONTIER_INPUTS: tuple[Path, ...] = (
     PACKING / "frontier",
     RENDERINGS,
     BOUND_CITATIONS,
+    PACKING / "resources" / "bibliography.yaml",
     PACKING / "devtools" / "render_research_tables.py",
+    PACKING / "devtools" / "render_recent_results.py",
     PACKING / "devtools" / "build_bound_citations.py",
     PACKING / "devtools" / "validate_schemas.py",
     PACKING / "src" / "sqpack" / "assurance.py",
 )
+
+
+def since_prose() -> str:
+    """`RECENT_SINCE`, the first day of this project's work, as the site's prose writes a
+    date: 22 August 2026. The one place the day is written out, so the Frontier page's
+    star sentence and the results tables' star legend read the same date."""
+    return f"{RECENT_SINCE.day} {RECENT_SINCE:%B %Y}"
+
+
+def survey_counts(counts: RecentCounts) -> str:
+    """The survey's four counts as one Markdown sentence, for the Frontier page's Recent
+    results paragraph, which has just said what the star marks and the date it runs
+    from: of the first hundred cases, how many have a recent lower bound in either lane,
+    how many of those a recent verified one, which are the starred cases, and of those
+    how many are this project's and how many new exact values
+    (`render_recent_results.recent_counts`)."""
+    return (
+        f"Of the first hundred cases, {counts.cases} have a lower bound published or proved "
+        f"since then, reported or verified; {counts.verified} of those have a recent "
+        f"verified one, the starred cases; {counts.ours} of the {counts.verified} are this "
+        f"project\u2019s, and {counts.exact} are new exact values."
+    )
+
 
 #: The digits a decimal cell shows before it is cut, with an ellipsis rather than rounded:
 #: a rounded bound can read as a different bound.
@@ -612,19 +644,22 @@ def table_html(cases: list[dict[str, Any]]) -> str:
 
 
 def frontier_markdown(fill: Callable[..., str]) -> str:
-    """The article with every count and link filled from the record."""
+    """The article with every count and link filled from the record: the case counts
+    from the case records, the survey's four counts from `render_recent_results`, and
+    the two documents the prose links at their addresses on `main`. The star's own
+    count over every case is not written: the prose counts the starred cases among the
+    first hundred, and the bar's "recent only" counts them all."""
     cases = frontier_cases()
-    recent = recent_lower_bounds()
-    first, last = min(case["n"] for case in cases), max(case["n"] for case in cases)
     values = {
         "COUNT": str(len(cases)),
-        # The subtitle's range, as math: the subtitle is an HTML block, where kpress
-        # leaves `$…$` literal, and it is sans text, so the formula is set sans.
-        "CASE_RANGE": math_html(rf"n = {first}, \ldots, {last}"),
+        # The page carried a subtitle naming its range, `n = 1, …, 324`, set as sans
+        # math (`math_html`), until 2026-10-02 (the owner, think-wz9d).
         "PROVED": str(sum(case["status"] == "proved" for case in cases)),
         "OPEN": str(sum(case["status"] == "open" for case in cases)),
-        "RECENT": str(sum(recent.values())),
-        "RECENT_SINCE": f"{RECENT_SINCE:%B %Y}",
+        "RECENT_SINCE": since_prose(),
+        "SURVEY_COUNTS": survey_counts(recent_counts(recent_rows())),
+        "ARCHIVE_URL": repo_url(ARCHIVE_README),
+        "INVENTORY_URL": repo_url(EVIDENCE_INVENTORY),
         "TABLE": table_html(cases),
     }
     template = FRONTIER_ARTICLE.read_text(encoding="utf-8")

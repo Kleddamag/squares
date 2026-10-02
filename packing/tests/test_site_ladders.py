@@ -4,7 +4,8 @@ Verification Ladders is one diagram of three ladders (`templates/paper-design.md
 Rating ladders): every rung is the same height, a chip and a description that is a box of
 exactly two lines its words never run past, with no tally of results and no rule between
 the rows. Whether a text takes two lines is the browser's to say, from the face and the
-cell's width, so this opens the rendered overview in Chromium and measures the diagram
+cell's width, so this opens the rendered results page in Chromium (the diagram was the
+overview's until 2026-10-02) and measures the diagram
 with the probe `devtools.measure_site_pages ladders` reports from, at the widths the
 design is shot at and at the ones where a description is narrowest: 716 pixels, the least
 window that sets three columns, and 715, where the ladders stack; 768, where the page's
@@ -52,9 +53,9 @@ WIDTHS = {
 #: chip; at the others it lies under the chip, across the cell.
 BESIDE = frozenset({1280, 1024, 908, 715, 390, 360, 320, 296})
 #: A rung's height in pixels where its description stands beside its chip, and where it
-#: lies under it: the two lines, or the chip's line and the two, and 0.75rem
+#: lies under it: the two lines, or the chip's line and the two, and 0.4rem
 #: (`--site-ladders-row-space`) above and below, which is all that parts the rows.
-RUNG_HEIGHT = {True: 75.3, False: 103.1}
+RUNG_HEIGHT = {True: 64.1, False: 91.8}
 #: The diagram's one rule, under each column's head, in pixels.
 HEAD_RULE = 1
 #: `--site-ladders-meaning-min`, 13.5rem, in pixels: the narrowest a description is set.
@@ -67,8 +68,9 @@ GUTTER = 8
 def diagrams(tmp_path_factory: pytest.TempPathFactory) -> Iterator[dict[int, dict[str, Any]]]:
     """The overview's one ladder diagram as laid out at each of `WIDTHS`."""
     sync_api = pytest.importorskip("playwright.sync_api")
-    path = Path(tmp_path_factory.mktemp("site")) / "index.html"
-    path.write_text(site_renders.html("index.html"), encoding="utf-8")
+    # The diagram is the results page's since 2026-10-02, under its table.
+    path = Path(tmp_path_factory.mktemp("site")) / "all-results.html"
+    path.write_text(site_renders.html("all-results.html"), encoding="utf-8")
     with sync_api.sync_playwright() as driver:
         try:
             browser = driver.chromium.launch(executable_path=os.environ.get(BROWSER_OVERRIDE))

@@ -413,11 +413,15 @@ body {
    font (paper-design.md, Arrows). A shaft and an open head in a 16-unit box, stroke 1.6
    with round caps and joins, painted as a mask over the text colour. Each direction is
    the drawing turned: right as drawn, left mirrored, down and up a quarter turn,
-   external an eighth turn back. The sort pair is the one other shape. Inline markup is
-   `overview_sections.arrow_icon`; the rest are the pseudo-elements named here. */
+   external an eighth turn back. The two other shapes are the sort pair and the double
+   chevron: the arrow's open head twice, one over the other, in the same box and stroke,
+   pointing down as drawn (double-down) and up turned half round (double-up), which the
+   atlas's expander carries. Inline markup is `overview_sections.arrow_icon`; the rest
+   are the pseudo-elements named here. */
 :root {
   --site-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 8h11M9 3.5 13.5 8 9 12.5'/%3E%3C/svg%3E");
   --site-arrow-sort: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13.5v-11M2 5.5l3-3 3 3M11 2.5v11M8 10.5l3 3 3-3'/%3E%3C/svg%3E");
+  --site-arrow-double: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 3 8 7.5 12.5 3M3.5 8 8 12.5 12.5 8'/%3E%3C/svg%3E");
 }
 /* Kept at low specificity, so each place an arrow sits can place and time it. */
 .site-icon-arrow,
@@ -470,6 +474,15 @@ body {
 .kpress :is(.site-card, .site-popover-action)[data-go="external"]::after {
   --site-arrow-turn: -45deg;
   --site-arrow-nudge: 1.5px -1.5px;
+}
+.site-icon-arrow[data-arrow="double-down"],
+.site-icon-arrow[data-arrow="double-up"] {
+  --site-arrow-nudge: 0 2px;
+  mask-image: var(--site-arrow-double);
+}
+.site-icon-arrow[data-arrow="double-up"] {
+  --site-arrow-turn: 180deg;
+  --site-arrow-nudge: 0 -2px;
 }
 /* The one hover: an arrow in a link or button moves a little the way it points and keeps
    the element's colour. A disabled button's arrow stays still; a card's corner icon fades
@@ -693,10 +706,17 @@ body {
 .site-popover .site-popover-more {
   list-style: none;
 }
-/* The site's one action button: a popover's link to where it leads, and the few page
-   buttons that act in place, such as the atlas grid's "Show all 324". A <button> takes
-   it too, with the browser's own border, face and size put back to the link's. */
-.kpress :is(.site-popover a, button).site-popover-action {
+/* The site's one action button, in two places: a popover's link to where it leads
+   (`.site-popover-action`), and the one action under a table or grid (`.site-action`,
+   in a centred `.site-action-row`): "See all results" under the recent table, a link
+   with the arrow right, and the atlas's expander, a button with the double chevron down
+   or up (paper-design.md, Action under a table or grid). One look for all of them: the
+   accent fill, the page's background for the text, the medium sans, and the icon after
+   the label at the label's own size. A <button> takes it with the browser's own border,
+   face and size put back to the link's. */
+.kpress :is(.site-popover a, button).site-popover-action,
+.kpress :is(a, button).site-action {
+  align-items: center;
   background: var(--kpress-doc-accent);
   color: var(--kpress-doc-bg);
   display: inline-flex;
@@ -706,11 +726,12 @@ body {
   text-decoration: none;
   transition: background-color var(--site-hover-duration) var(--site-hover-easing);
 }
-.kpress .site-popover a.site-popover-action::after {
+.kpress .site-popover a.site-popover-action::after,
+.kpress .site-action .site-icon-arrow {
   align-self: center;
   margin: 0;
 }
-.kpress button.site-popover-action {
+.kpress button:is(.site-popover-action, .site-action) {
   border: 0;
   border-radius: 0;
   cursor: pointer;
@@ -719,9 +740,21 @@ body {
   font-weight: var(--site-font-weight-sans-medium);
   line-height: inherit;
 }
-.kpress :is(.site-popover a, button).site-popover-action:hover,
-.kpress :is(.site-popover a, button).site-popover-action:focus-visible {
+.kpress :is(.site-popover a, button).site-popover-action:is(:hover, :focus-visible),
+.kpress :is(a, button).site-action:is(:hover, :focus-visible) {
   background: color-mix(in oklch, var(--kpress-doc-accent) 85%, var(--kpress-doc-text));
+  color: var(--kpress-doc-bg);
+}
+/* The row that holds the one action under a table or grid: centred, in the sans at the
+   note size, `--site-action-space` under what it follows and nothing of its own below,
+   where the next heading's space begins. */
+.site-action-row {
+  --site-action-space: 1.2rem;
+  font-family: var(--kpress-font-sans);
+  font-size: var(--site-font-size-note);
+  font-weight: var(--site-font-weight-sans-medium);
+  margin-block: var(--site-action-space) 0;
+  text-align: center;
 }
 
 .kpress :is(.site-card, .site-popover, .site-case) .site-card-label {
@@ -1070,12 +1103,6 @@ body {
   font-size: var(--site-font-size-note);
   font-weight: var(--site-font-weight-sans-light);
   text-align: center;
-}
-/* The pointer under the recent table to the full results table, in the sans face. */
-.site-more {
-  font-family: var(--kpress-font-sans);
-  font-size: var(--site-font-size-note);
-  font-weight: var(--site-font-weight-sans-light);
 }
 /* A date comes first, and then what it dates, "published" or "established", in the
    support colour, on its own line under the date so the column stays narrow. */
@@ -1573,8 +1600,10 @@ body {
      more than lets three columns stand in the wide track of a 768-pixel window, 43rem
      (below). */
   --site-ladders-inset: 0.75rem;
-  /* Half the space between two rows, which no rule divides. */
-  --site-ladders-row-space: 0.75rem;
+  /* Half the space between two rows, which no rule divides: enough to tell one rung's
+     second line from the next rung's first, and little enough that the rungs read as
+     one ladder. */
+  --site-ladders-row-space: 0.4rem;
   display: grid;
   font-family: var(--kpress-font-sans);
   font-size: var(--site-font-size-note);
@@ -1690,9 +1719,50 @@ body {
 .site-page .site-atlas-grid {
   --site-wide: var(--site-bleed-max);
   --site-atlas-toggle-space: 1.2rem;
+  /* The triangle's tiles: the least width one may have, which sets how many a line
+     holds (overview/atlas-view.js reads it, in rem or px), and the most. The least is
+     the smallest at which a drawing still reads as a packing and its three-figure
+     number fits under it, a little over the 24 pixels a pointer target needs; it lets
+     all 35 tiles of the eighteenth row stand on one line from a 1024-pixel window up. */
+  --site-atlas-tile-min: 1.625rem;
+  --site-atlas-tile-max: 4.5rem;
+  /* The move between the views: one duration and one easing for every tile, read by
+     the script. Reduced motion makes the switch instant, as it does every hover. */
+  --site-atlas-move-duration: 360ms;
+  --site-atlas-move-easing: cubic-bezier(0.2, 0, 0, 1);
+  /* The block is a size container, so a tile's width can be written from the block's
+     (`100cqi`) and the tiles a line holds. */
+  container-type: inline-size;
   position: relative;
 }
+/* Under a finger a tile is at least 2.5rem, 40 pixels, so a phone's line holds eight. */
+@media (max-width: 40rem), (pointer: coarse) {
+  .site-page .site-atlas-grid {
+    --site-atlas-tile-min: 2.5rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-page .site-atlas-grid {
+    --site-atlas-move-duration: 0ms;
+  }
+}
+/* The view tabs: the section tabs' strip (site-nav.css), centred over the tiles and set
+   on the bar's line, so it is as tall here as under the bar. Hidden until the script
+   has tiles to rearrange. */
+.site-atlas-grid .site-atlas-views {
+  line-height: var(--site-nav-line);
+  margin: 0 auto var(--site-atlas-toggle-space);
+}
+.site-atlas-grid .site-atlas-views[hidden] {
+  display: none;
+}
+/* The two custom properties are the triangle's (below); they are declared here, in the
+   rule both views share, because every line of every drawing inherits them, and a
+   declaration for the triangle alone would have the browser restyle all of those, some
+   three thousand elements, at each change of view. */
 .site-atlas-cells {
+  --site-atlas-tile: min(var(--site-atlas-tile-max), calc(100cqi / var(--site-atlas-per-line, 1)));
+  --site-atlas-row-space: 0.12;
   display: grid;
   gap: 0.5rem;
   grid-template-columns: repeat(auto-fill, minmax(6.4rem, 1fr));
@@ -1703,12 +1773,16 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(4.6rem, 1fr));
   }
 }
+/* A tile in a move between the views is scaled about its own corner, which is where the
+   script measures from (overview/atlas-view.js). It has no transform at rest, so the
+   origin changes nothing then. */
 .kpress .site-atlas-cell {
   color: var(--kpress-doc-text);
   display: block;
   padding: 0.3rem;
   text-align: center;
   text-decoration: none;
+  transform-origin: 0 0;
   transition: background-color var(--site-hover-duration) var(--site-hover-easing);
 }
 .kpress .site-atlas-cell:is(:hover, :focus-visible) {
@@ -1735,6 +1809,62 @@ body {
   font-weight: var(--site-font-weight-sans-light);
   margin-block-start: 0.2rem;
 }
+/* Nothing in the atlas transitions its place: the move between the views is the
+   script's (overview/atlas-view.js), and the layout a view sets must be the whole of it
+   the moment it is set, since the script reads every box right then. KPress's
+   reduced-motion rule (`components.css`, `.kpress [class]`) gives every classed element
+   a 0.01ms transition of every property, under which the triangle was laid out for one
+   frame with the grid's gaps, 1344 pixels wide at 1280, before it settled. A tile keeps
+   its own transition, which is the wash alone. */
+.site-atlas-cells,
+.site-atlas-cell svg,
+.site-atlas-n {
+  transition: none;
+}
+/* The triangle: the same tiles, set by the grid bound. Row k holds the 2k - 1 cases a
+   square of side k is known to hold and ends at k squared on the right edge, so the
+   perfect squares, whose packing is the grid itself, run down it. A row too long for
+   the block wraps in reading order: every line but its last is full, from the left,
+   and the last holds what is left over, set from the right so it still ends at the
+   square. overview/atlas-view.js says how many tiles a line holds
+   (`--site-atlas-per-line`) and writes each tile's line and column; every size here
+   follows from that one number and the block's width. A tile is its line's share of
+   the block, no wider than `--site-atlas-tile-max`, and its inset, its number and the
+   space over a new row are fractions of it, so the triangle keeps its proportions from
+   a phone to a wide screen. A triangle narrower than the block is centred. The tile's
+   width, `--site-atlas-tile`, is declared with the grid's rule above, for the reason
+   given there. */
+.site-atlas-grid[data-atlas-view="triangle"] .site-atlas-cells {
+  gap: 0;
+  grid-template-columns: repeat(var(--site-atlas-per-line, 1), var(--site-atlas-tile));
+  justify-content: center;
+}
+/* The space over a new row, `--site-atlas-row-space`, is a share of a tile: 0.12 where
+   every row is one line, and where a row wraps 0.4, larger than anything between two
+   lines of one row, so the lines of a row read as one group. */
+.site-atlas-cells[data-atlas-wrapped] {
+  --site-atlas-row-space: 0.4;
+}
+.kpress .site-atlas-grid[data-atlas-view="triangle"] .site-atlas-cell {
+  grid-area: var(--site-atlas-line, auto) / var(--site-atlas-column, auto);
+  margin-block-start: calc(
+    var(--site-atlas-opens, 0) *
+    var(--site-atlas-tile) *
+    var(--site-atlas-row-space)
+  );
+  padding: calc(var(--site-atlas-tile) * 0.07);
+}
+.site-atlas-grid[data-atlas-view="triangle"] .site-atlas-n {
+  font-size: clamp(0.5rem, calc(var(--site-atlas-tile) * 0.25), 0.8rem);
+  line-height: 1.15;
+  margin-block-start: calc(var(--site-atlas-tile) * 0.04);
+}
+/* The perfect squares, down the right edge, are numbered in the text's own colour and
+   the medium weight: the row ends there. */
+.site-atlas-grid[data-atlas-view="triangle"] [data-atlas-square] .site-atlas-n {
+  color: var(--kpress-doc-text);
+  font-weight: var(--site-font-weight-sans-medium);
+}
 /* The grid shows n = 1 to 100 until its button, centred under it, places the rest. The
    rest sit in one box the grid lays out as its own cells, so hiding them again is the
    box's `hidden`. */
@@ -1744,20 +1874,12 @@ body {
 .site-atlas-rest[hidden] {
   display: none;
 }
+/* The expander's row is the action row, set the grid's own space under the tiles. */
 .site-atlas-grid .site-atlas-toggle-row {
-  margin-block: var(--site-atlas-toggle-space) 0;
-  text-align: center;
+  --site-action-space: var(--site-atlas-toggle-space);
 }
 .site-atlas-grid .site-atlas-toggle-row[hidden] {
   display: none;
-}
-.site-atlas-grid .site-atlas-note {
-  color: var(--site-support-color);
-  font-family: var(--kpress-font-sans);
-  font-size: var(--site-font-size-note);
-  font-weight: var(--site-font-weight-sans-light);
-  margin-block: 0.8rem 0;
-  text-align: center;
 }
 
 /* The atlas popover: one panel every cell opens, what the ascent film's panel says about

@@ -9,21 +9,9 @@
 .cert-page.n11-paper > .kpress-table-wrap {
   max-width: min(100%, calc(var(--kpress-measure) + 2 * var(--kpress-column-inset)));
 }
-/* The credits are one column the width of the page, and the original proof's address
-   may break anywhere. As a grid's automatic column the credits were as wide as that
-   address, wider than a phone's column, so every credit centred on a column wider than
-   the page and was cut at its edge. */
-.n11-paper .credits {
-  grid-template-columns: minmax(0, 1fr);
-}
-.n11-paper .credits a {
-  overflow-wrap: anywhere;
-}
-/* The original proof is credited first, by name and address; a line's space then sets
-   this review's own credits apart from it, as the dates are set apart below. */
-.n11-paper .credits .credits-review {
-  margin-block-start: 1lh;
-}
+/* The credits, their one column and the space before this paper's own, are the
+   publication layer's: both papers write them from one component
+   (`devtools.paper_front`), and nothing here is theirs. */
 .n11-paper figure > svg,
 .n11-paper .figure-pair > svg {
   display: block;

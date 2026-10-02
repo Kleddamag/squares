@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import base64
 import html
+import math
 import re
 import textwrap
 from collections.abc import Iterable, Sequence
@@ -23,7 +24,6 @@ from typing import Literal, NamedTuple, get_args
 from urllib.parse import urlsplit
 
 from devtools import repo_links
-from devtools.build_bound_citations import RECENT_SINCE
 from devtools.check_results import KINDS, kind_label
 from devtools.overview_data import (
     APOSTROPHE,
@@ -186,11 +186,12 @@ CARD_SMALL_BELOW = 80
 CARD_LARGE_FROM = 160
 
 #: Each card section's size, declared here so its cards are one width and its lines one
-#: grid. Each is the size its typical card's text asks for by `card_size` (a test holds
-#: the two together): the documents' one-line notes are small; the rest carry a sentence
-#: and are medium.
+#: grid, in the order the sections stand on the page. Each is the size its typical
+#: card's text asks for by `card_size` (a test holds the two together): the documents'
+#: one-line notes are small; the rest carry a sentence and are medium.
 SECTION_CARD_SIZES: dict[str, CardSize] = {
     "pages": "medium",
+    "survey": "medium",
     "atlas": "medium",
     "projects": "medium",
     "documents": "small",
@@ -973,12 +974,14 @@ def results_table(overview: Overview, defaults: FilterDefaults = RESULTS_DEFAULT
 
 #: The rubric's three scored dimensions, in the site's order, significance first: the
 #: scale, its name, the `epistemics.md` section that defines it, and the question it
-#: answers, in the axis table's terms: `V` is what the result's own source certifies,
-#: `C` how far that has been independently confirmed.
+#: answers, each a short plain question in the same form (the owner's wording,
+#: 2026-10-01). In the axis table's terms `V` is what the result's own source certifies
+#: and `C` how far that has been independently confirmed; the rungs under each head say
+#: so in full.
 DIMENSIONS: tuple[tuple[str, str, str, str], ...] = (
-    ("S", "Significance", "significance-and-novelty", "How much does the result matter?"),
-    ("V", "Verification", "verification", "What does the result's own source certify?"),
-    ("C", "Confirmation", "confirmation", "How far is it confirmed, here or by a third party?"),
+    ("S", "Significance", "significance-and-novelty", "How significant is the result?"),
+    ("V", "Verification", "verification", "How was it originally verified?"),
+    ("C", "Confirmation", "confirmation", "How has it been confirmed?"),
 )
 
 _LEVEL_ROW = re.compile(r"^\| `([VCS])(\d)` \| ([^|]+?) \|", re.MULTILINE)
@@ -1195,18 +1198,14 @@ def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS)
     return table_of_results(overview, defaults, here=False)
 
 
-def status_counts(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS) -> str:
+def status_counts(overview: Overview) -> str:
     """One Markdown sentence on the results this project has not confirmed, counted from
-    the register: how many are confirmed, how many are recorded, reviewed or incomplete,
-    each count the link to those rows on the results page, and how many of them the
-    overview's table shows where its bar starts (`defaults`). It is what the overview
-    says of results reported and not yet replayed: they are rows of the one table, and
-    their status is a value of its filter."""
+    the register, for the results page's prose where the statuses are defined: how many
+    are confirmed, and how many are recorded, reviewed or incomplete, each count the
+    link to those rows of the table. A result reported and not yet replayed is a row
+    like any other, and its status is a value of the table's filter."""
     held = [result.status for result in overview.results]
     confirmed = held.count(CONFIRMED)
-    reference = reference_date(overview)
-    waiting = [result for result in overview.results if result.status != CONFIRMED]
-    shown = sum(shown_by_default(result, defaults, reference) for result in waiting)
     links = [
         f"[{held.count(status)} {status}]({RESULTS_PAGE}?status={status})"
         for status in STATUSES
@@ -1215,29 +1214,15 @@ def status_counts(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS
     if not links:
         return f"All {len(held)} results are confirmed."
     listed = links[0] if len(links) == 1 else ", ".join(links[:-1]) + " and " + links[-1]
-    here = {0: "none of them", len(waiting): "all of them"}.get(shown, f"{shown} of them")
-    return (
-        f"Of the {len(held)} results, {confirmed} are confirmed; the rest are {listed}, "
-        f"and this table shows {here} until its filters are changed."
-    )
+    return f"Of the {len(held)} results, {confirmed} are confirmed; the rest are {listed}."
 
 
 def _since() -> str:
-    """`RECENT_SINCE` as prose: 22 August 2026."""
-    return f"{RECENT_SINCE.day} {RECENT_SINCE:%B %Y}"
+    """`RECENT_SINCE` as prose, 22 August 2026, written by the Frontier page's own
+    helper so every page writes the date one way."""
+    from devtools.render_frontier_page import since_prose  # noqa: PLC0415
 
-
-def survey_counts(overview: Overview) -> str:
-    """The survey's four counts as one Markdown sentence, from
-    `render_recent_results.recent_counts`."""
-    counts = overview.counts
-    return (
-        f"Of the hundred cases $n \\le 100$, {counts.cases} have a lower bound published or "
-        f"proved since {_since()}, reported or verified; {counts.verified} of those have "
-        f"a recent verified lower bound, the cases the atlas stars; {counts.ours} of the "
-        f"{counts.verified} are this project{APOSTROPHE}s, and {counts.exact} are new "
-        "exact values."
-    )
+    return since_prose()
 
 
 #: The repository's reader documents, as the overview's cards show them: the file, a
@@ -1384,13 +1369,16 @@ def paper_cards() -> str:
     )
 
 
-#: The site's other pages, as the overview's cards show them: the page, a label, its
-#: title, and one line on what a reader finds there. Both are register prose, so a
-#: bound in either is written in ASCII (`s(11) >= 3.8264…`) and set as math. The
-#: explainer's card takes its paper's words; the optimality paper's and the tutorial's
-#: keep a shorter line here. The optimality paper is first, as on the Papers page: it
-#: explains the result that stands. Every address is a full page the site serves, the
-#: paper's a directory below the root, so its card links straight to it.
+#: The site's reading and working pages, as the overview's cards under The Squares
+#: Project show them: the page, a label, its title, and one line on what a reader finds
+#: there. Both are register prose, so a bound in either is written in ASCII
+#: (`s(11) >= 3.8264…`) and set as math. The explainer's card takes its paper's words;
+#: the optimality paper's and the tutorial's keep a shorter line here. The optimality
+#: paper is first, as on the Papers page: it explains the result that stands. Every
+#: address is a full page the site serves, the paper's a directory below the root, so
+#: its card links straight to it. The Frontier page's card stood here until 2026-10-02
+#: and is The Frontier Survey's own (`SURVEY_CARDS`), as the Results page's pointer is
+#: Recent Results' own.
 PAGES: tuple[tuple[str, str, str, str], ...] = (
     (
         OPTIMALITY.href,
@@ -1414,19 +1402,45 @@ PAGES: tuple[tuple[str, str, str, str], ...] = (
         "Pack squares by hand",
         "Move squares yourself and watch the known packings.",
     ),
+)
+
+
+def page_cards() -> str:
+    """One card per page of `PAGES`. Each card is the link itself and goes to its page
+    in the same tab: the target is a full page the site serves, so no popover previews
+    it (`link_card`, `new_tab=False`)."""
+    return _page_cards(PAGES, "pages")
+
+
+#: The Frontier Survey section's way onward: the Frontier page, every case, and the same
+#: page narrowed to the cases whose verified lower bound is recent, the ones the atlas
+#: stars, through the query its table script presets a filter from (`recent=true`,
+#: `overview/table.js`). The section's one paragraph says what the survey is; the counts
+#: and the rest of its account are the Frontier page's own prose.
+SURVEY_CARDS: tuple[tuple[str, str, str, str], ...] = (
     (
         "frontier.html",
         "Frontier survey",
         "Every case from n = 1 to 324",
         "Reported and verified bounds side by side, with their sources.",
     ),
+    (
+        "frontier.html?recent=true",
+        "Frontier survey",
+        "The recent cases",
+        "Every case whose verified lower bound was proved since this project began.",
+    ),
 )
 
 
-def page_cards() -> str:
-    """One card per page of the site other than this one. Each card is the link itself
-    and goes to its page in the same tab: the target is a full page the site serves, so
-    no popover previews it (`link_card`, `new_tab=False`)."""
+def survey_cards() -> str:
+    """The Frontier Survey section's two cards, each the link to its view of the
+    Frontier page in the same tab (`SURVEY_CARDS`)."""
+    return _page_cards(SURVEY_CARDS, "survey")
+
+
+def _page_cards(cards: tuple[tuple[str, str, str, str], ...], section: str) -> str:
+    """A section of direct cards to pages of the site, at the section's declared size."""
     return _cards(
         [
             link_card(
@@ -1434,10 +1448,10 @@ def page_cards() -> str:
                 label,
                 tex_bounds(title),
                 tex_bounds(note),
-                size=SECTION_CARD_SIZES["pages"],
+                size=SECTION_CARD_SIZES[section],
                 new_tab=False,
             )
-            for href, label, title, note in PAGES
+            for href, label, title, note in cards
         ]
     )
 
@@ -2064,7 +2078,9 @@ def atlas_popover() -> str:
 
 #: The directions of the site's one arrow (paper-design.md, Arrows): each is the one
 #: drawing, `--site-arrow` in site.css, turned or mirrored by `data-arrow`.
-ARROW_DIRECTIONS = ("right", "left", "down", "up", "external")
+#: The arrow's five directions, and the double chevron's two: `double-down` for a control
+#: that shows more below, `double-up` for one that shows less.
+ARROW_DIRECTIONS = ("right", "left", "down", "up", "external", "double-down", "double-up")
 
 
 def arrow_icon(direction: str = "right") -> str:
@@ -2082,51 +2098,102 @@ def step_arrow(*, back: bool = False) -> str:
     return arrow_icon("left" if back else "right")
 
 
+#: The atlas's two views, in tab order: the key the block's `data-atlas-view` and the
+#: address's `?atlas=` take, and the tab's label. The first is the default and the one
+#: the page is rendered in; `overview/atlas-view.js` lays the other out.
+ATLAS_VIEWS: tuple[tuple[str, str], ...] = (("grid", "Grid"), ("triangle", "Triangle"))
+
+#: The id the script gives the box of tiles, which each view tab controls.
+ATLAS_PANEL = "atlas-cells"
+
+
+def atlas_view_tabs() -> str:
+    """The tabs over the atlas's tiles that choose its view, Grid or Triangle: the
+    section tabs' strip (`.site-tabs`), but a tablist of two buttons that rearrange the
+    one set of tiles in place, where the Visualize section's are links to two pages.
+
+    The first view is selected and is the only tab in the page's tab order; the arrow
+    keys move between the two (`overview/atlas-view.js`). The strip ships `hidden`, as
+    the expander's row does: without the script it would do nothing, and the script
+    shows it once the tiles are placed.
+    """
+    default = ATLAS_VIEWS[0][0]
+    tabs = "".join(
+        f'<button type="button" role="tab" id="atlas-view-{key}" data-atlas-tab="{key}" '
+        f'aria-selected="{"true" if key == default else "false"}" '
+        f'aria-controls="{ATLAS_PANEL}"{"" if key == default else ' tabindex="-1"'}>'
+        f"{_esc(label)}</button>"
+        for key, label in ATLAS_VIEWS
+    )
+    return (
+        '<div class="site-tabs site-atlas-views" role="tablist" aria-label="Atlas layout" '
+        f'data-atlas-views data-atlas-panel="{ATLAS_PANEL}" hidden>{tabs}</div>'
+    )
+
+
 def atlas_grid() -> str:
     """Every tracked case's known-best packing, n = 1 to 324, as a grid of drawings,
     each a link to its case record. With scripts, `overview/atlas-grid.js` opens a cell
     in the one atlas popover instead: what the ascent film's panel says about that n,
     from `atlas_film_facts`, beside the drawing shown large, with a button to the record.
 
+    The block is rendered in the grid view (`data-atlas-view`), under tabs that switch
+    it to the triangle (`atlas_view_tabs`). Both views are one set of tiles: the triangle
+    places each by properties the script writes, so a tile's markup is the same in both.
+    A perfect square's tile is marked `data-atlas-square`: it ends its row of the
+    triangle, on the right edge, and the triangle numbers it in the text's colour.
+
     The cells, about a megabyte of SVG, sit in two `<template>`s, which the browser
     parses but does not render. The script places the first `ATLAS_FIRST` when the grid
     nears the viewport, so the page opens as fast as it did without them, and the rest
-    only when the reader presses the button under the grid, "Show all 324", or steps the
-    popover past the last case shown. The button then reads "Show 1 to 100" and collapses
-    the grid again. Its row ships `hidden`, since without the script it would do
-    nothing. The facts are one JSON element, a tenth the size the same facts would take
-    as markup in every cell.
+    only when the reader presses the button under the grid, "Show More" with the double
+    chevron down, or steps the popover past the last case shown. The button then reads
+    "Show Less" with the chevron up and collapses the grid again; its name for assistive
+    technology says what each does and how many cases that is (`data-name-more`,
+    `data-name-less`), it controls the box of tiles (`ATLAS_PANEL`), and it is the site's
+    one action under a table or grid (`.site-action`, with "See all results"). Its row
+    ships `hidden`, since without the script it would do nothing. The facts are one JSON
+    element, a tenth the size the same facts would take as markup in every cell.
     """
     import json  # noqa: PLC0415
 
     from devtools import render_frontier_page as frontier  # noqa: PLC0415
-    from devtools.render_case_pages import CASES_PAGE, case_url  # noqa: PLC0415
+    from devtools.render_case_pages import case_url  # noqa: PLC0415
 
     cases = frontier.frontier_cases()
     cells = []
     for case in cases:
         n = case["n"]
         status = case["status"]
+        square = " data-atlas-square" if math.isqrt(n) ** 2 == n else ""
         cells.append(
-            f'<a class="site-atlas-cell" href="{case_url(n)}" data-atlas-n="{n}" '
+            f'<a class="site-atlas-cell" href="{case_url(n)}" data-atlas-n="{n}"{square} '
             f'data-status="{_esc(status)}" aria-label="n = {n}, {_esc(status)}">'
             f"{frontier.packing_svg(n, units=ATLAS_UNITS)}"
             f'<span class="site-atlas-n">{n}</span></a>'
         )
     facts = json.dumps(atlas_film_facts(), ensure_ascii=False, separators=(",", ":"))
-    more, less = f"Show all {len(cases)}", f"Show 1 to {ATLAS_FIRST}"
+    more, less = "Show More", "Show Less"
+    name_more = f"Show more: all {len(cases)} cases"
+    name_less = f"Show less: the first {ATLAS_FIRST}"
     return (
-        '<div class="site-wide site-atlas-grid" data-atlas-grid>'
+        f'<div class="site-wide site-atlas-grid" data-atlas-view="{ATLAS_VIEWS[0][0]}" '
+        f"data-atlas-grid>{atlas_view_tabs()}"
         f"<template data-atlas-first>{''.join(cells[:ATLAS_FIRST])}</template>"
         f"<template data-atlas-rest>{''.join(cells[ATLAS_FIRST:])}</template>"
         '<script type="application/json" data-atlas-facts>'
         + facts.replace("</", "<\\/")
         + "</script>"
-        '<p class="site-atlas-toggle-row" hidden>'
-        '<button type="button" class="site-popover-action site-atlas-toggle" '
-        'data-atlas-toggle aria-expanded="false" '
-        f'data-label-more="{more}" data-label-less="{less}">{more}</button></p>'
-        '<p class="site-atlas-note">Every case from n = 1 to 324 is also in the '
-        '<a href="frontier.html">frontier survey</a>, and each has a '
-        f'<a href="{CASES_PAGE}">case record</a>.</p></div>{atlas_popover()}'
+        # The triangle's one-line key ("Each row ends at a perfect square…") stood here
+        # and the line under the expander ("Every case from n = 1 to 324 is also in the
+        # frontier survey, and each has a case record.") after it, until 2026-10-02 (the
+        # owner, think-l38m): each tile opens its case record, and the Frontier page is a
+        # page card. The expander's row ends the block.
+        '<p class="site-action-row site-atlas-toggle-row" hidden>'
+        '<button type="button" class="site-action site-atlas-toggle" '
+        f'data-atlas-toggle aria-expanded="false" aria-controls="{ATLAS_PANEL}" '
+        f'aria-label="{name_more}" data-label-more="{more}" data-label-less="{less}" '
+        f'data-name-more="{name_more}" data-name-less="{name_less}">'
+        f"<span data-atlas-label>{more}</span>{arrow_icon('double-down')}</button></p>"
+        f"</div>{atlas_popover()}"
     )

@@ -260,6 +260,38 @@ The two provers complement each other.
 The kernel closes W7 and stalls on A, and the branch and bound closes A and does not
 finish W7. A’s margin is large and its squares are interior; W7’s is a wall chain.
 
+## The Capture Pilot
+
+Lane C1, Opus, built `devtools/pilot_n17_capture.py` (SHA-256 `e22ca457…`). It runs the
+kernel’s certified rounds on the endpoint’s own occupancy state, at the capture cap
+$U' = 935106018721/200000000000$, $4.49\times10^{-13}$ above $S^\ast$, in the
+composition review’s frame.
+Square 6 stays coarse, and every update is checked by the sequential grammar before the
+next. The capture feasibility review’s falsifier is a contraction factor $g>0.95$ at the
+$10^{-3}$ scale, or more than 16 splits.
+
+| Receipt | Run | Outcome |
+| --- | --- | --- |
+| `receipts/capture-main-box1024.json` | Each owner’s cell cut to its guard polygon widened by $\rho = 1/1024$, 32 bins, 224 updates | position $g = 1.000$ for every owner over 14 rounds; turns contract to 0.002–0.042 rad, then stall |
+| `receipts/capture-main-box64.json` | The same at $\rho = 1/64$, 240 updates | position $g = 1.000$; turns stall at 0.035–0.26 rad |
+| `receipts/capture-control-U-box1024.json` | The $\rho = 1/1024$ box at the exclusion cap $U = 1169/250$ | positions identical to $U'$; only the angles differ |
+| `receipts/capture-replay-box1024.json` | The saved $\rho = 1/1024$ node replayed whole | `PASS_REPLAYED`, 224 steps |
+| `receipts/capture-try-b32-g64.json`, `capture-control-U-b32-g64.json` | The cell seed itself, on an earlier revision (`98d98482…`) | nothing contracts: all 544 rows stay live, and 13 of 17 owners own no point |
+
+**The falsifier is met.** No run brings any position coordinate below its starting
+radius, so the first round under $10^{-2}$, $10^{-3}$, $3\times10^{-4}$ and
+$2\times10^{-4}$ is never.
+Starting from the cells, roughly 190 position splits would be needed before boxes even
+reach $1/64$, against the falsifier’s 16. The endpoint control holds after all 1,197
+certified updates.
+
+Lane C1’s reading, not yet reviewed: pairwise propagation reaches the box itself as its
+fixpoint. The soft mode’s slope of $1/175.8$ means a cycle of contacts gains only
+$\delta/176$ against per-link losses from row width, so contraction would need rows
+about $2^{-18}$ wide, and even then $g\ge0.994$. The pilot’s producer is simple, with no
+self-hull cuts or branch predicates, so the verdict that n11’s architecture is the wrong
+engine for n17 capture needs an independent check before the route is changed.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

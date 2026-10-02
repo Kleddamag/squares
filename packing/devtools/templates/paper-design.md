@@ -838,9 +838,10 @@ it.
   rem, so medium steps at 33, 50, 67 and 84rem, as the grid did.
   A section declares one size for all its cards, in `SECTION_CARD_SIZES`
   (`overview_sections.py`), so its lines are one grid; the size is the one its typical
-  card’s text asks for, and `tests/test_overview.py` holds the two together.
-  The page cards, the atlas cards and the other projects are medium; the documents,
-  whose notes are a line, are small.
+  card’s text asks for, the median card’s, which for an even count is the mean of the
+  two middle lengths, and `tests/test_overview.py` holds the two together.
+  The page cards, the survey’s cards, the atlas cards and the other projects are medium;
+  the documents, whose notes are a line, are small.
   A card built without a size (`card()` or `link_card()` with no `size=`) takes the
   default for its own text: its headline and note, and a direct card’s address, counted
   as they read, a formula once.

@@ -896,10 +896,19 @@ def test_no_card_leaves_its_math_as_plain_text(page: str) -> None:
 def test_each_sections_size_is_what_its_typical_card_asks_for(page: str) -> None:
     """A section's declared size is the size its median card's text takes by default, so
     the sizes follow the text: a section whose cards grow or shrink past a threshold
-    fails here until its size is declared again."""
+    fails here until its size is declared again. The median of an even count is the
+    mean of its two middle lengths, as a median is: the four page cards, two short and
+    two long, are 71, 103, 171 and 206 characters since the Frontier card left the row
+    on 2026-10-02, and their typical card is the 137 of a medium card, not the 171 of a
+    large one that the upper middle value alone would say."""
     for name, cards in _card_sections(page).items():
         lengths = sorted(len(overview_sections.reading_text(text)) for _, text in cards)
-        typical = lengths[len(lengths) // 2]
+        middle = len(lengths) // 2
+        typical = (
+            lengths[middle]
+            if len(lengths) % 2
+            else (lengths[middle - 1] + lengths[middle]) // 2
+        )
         assert (
             overview_sections.size_for_length(typical)
             == overview_sections.SECTION_CARD_SIZES[name]
@@ -1127,8 +1136,15 @@ def test_the_frontier_page_opens_with_the_surveys_account(
     assert "The survey audits what it records." in text
     assert "The earliest published proof of $s(7) = 3$ carries four recorded defects" in text
     assert 'href="cases.html#n-7"' in prose
-    assert f'href="{repo_url(ARCHIVE_README)}">literature archive</a>' in prose
-    assert f'href="{repo_url(EVIDENCE_INVENTORY)}">evidence inventory</a>' in prose
+    # Each repository document is linked on `main`, in a new tab as every link off the
+    # site opens.
+    for path, words in (
+        (ARCHIVE_README, "literature archive"),
+        (EVIDENCE_INVENTORY, "evidence inventory"),
+    ):
+        assert (
+            f'<a href="{repo_url(path)}" target="_blank" rel="noopener noreferrer">{words}</a>'
+        ) in prose, words
     # The star's date is written once, and the counts run "since then".
     assert since_prose() == "22 August 2026"
     assert text.count("22 August 2026") == 1
@@ -1449,11 +1465,18 @@ def test_the_document_cards_lead_with_readme_and_epistemics(
     for gone in ("RESULTS.md", "STATUS.md", "defects.md"):
         assert f">Expand {gone}<" not in page, gone
     # The survey's two case records are the site's own, not the files on GitHub; they
-    # are linked from the Frontier page's prose since 2026-10-02.
+    # are linked from the Frontier page's prose since 2026-10-02. The files are linked
+    # where a record is shown, the Records column and a result's popover, and from no
+    # prose of either page.
     frontier = rendered("frontier.html")
     assert '<a href="cases.html#n-17">seventeen-square record</a>' in frontier
     assert '<a href="cases.html#n-7">record for seven squares</a>' in frontier
-    for served in (page, frontier):
+    frontier_prose = frontier.split("</h1>", 1)[1].split('<div class="site-table-tools', 1)[0]
+    overview_prose = re.sub(
+        r'<div class="site-popover.*?</div>\s*</div>', "", page, flags=re.DOTALL
+    )
+    overview_prose = re.sub(r"<table.*?</table>", "", overview_prose, flags=re.DOTALL)
+    for served in (overview_prose, frontier_prose):
         assert 'packing/frontier/n-007.md"' not in served
         assert 'packing/frontier/n-017.md"' not in served
 
@@ -2498,7 +2521,8 @@ def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_d
     text = " ".join(re.sub(r"<[^>]+>", "", section).split())
     assert (
         "The table lists every result, newest first: new bounds for particular numbers of "
-        "squares, found here or by others."
+        "squares, found here or by others, each with its credit, its ratings, its kind and "
+        "its status, all defined on the Results page."
     ) in text
     # The retired lead, not the date: a row's claim may cite a source of 21 August.
     assert "since 1 August" not in text

@@ -25,6 +25,7 @@ Under its rungs each result shows its kind, which says what it is: a *lower boun
 *upper bound*, an *optimality* result, which settles an exact value, or one of the kinds
 that bound no case, such as a *rigidity*, a *case exclusion* or a *simplification*, a
 second and simpler proof of a value another result holds.
+
 Under its kind is its status, how far the work on it here has gone: *recorded*,
 registered from its source with nothing here yet read or replayed; *reviewed*, its
 argument read here; *confirmed*, a replay of its certificate passed; or *incomplete*, a
@@ -35,6 +36,7 @@ The status follows the confirmation rung and is never set by hand;
 Beside it, *in analysis* marks a replay or review under way here and *waiting on* a
 request that is with the source or another party.
 A bound that no case bound rests on now is marked *superseded*.
+
 {{STAR_LEGEND}}
 Open a row for the full claim and its novelty label, and follow the records to the case
 file, the evidence, the retained source and the review.

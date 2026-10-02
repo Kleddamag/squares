@@ -775,6 +775,7 @@ documents:
   - {path: docs/project/reviews/review-2026-10-02-wand125-rectangle-bounds-t068.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md, role: review, authority: record, lifecycle: retained}
   - path: docs/project/reviews/review-2026-09-28-density-solver-comparison.md
     role: review
     authority: record

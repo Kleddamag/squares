@@ -174,7 +174,7 @@ This is the actionable list.
 | D-505 | Bentz 2016 transcription moved the finishing line of Theorems 9 and 11 | docs |
 | D-506 | Bentz 2016 transcription inverted Lemma 7's bound and rewrote its lemma reference | docs |
 | D-508 | Rung-0 records counted the reader's branch nodes as leaf certificates | record |
-| D-514 | The Erdős–Graham transcription stated Theorem (1) as a two-sided bound the paper does not prove | docs |
+| D-513 | The Erdős–Graham transcription stated Theorem (1) as a two-sided bound the paper does not prove | docs |
 
 ## Still open
 
@@ -769,7 +769,7 @@ This is the actionable list.
 | [D-510](docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md) | 2026-10-01 | verifier | soundness | flattering | `review` | high | fixed | Independent rational checker ignored the declared coordinate frame |
 | [D-511](docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md) | 2026-10-01 | tooling | robustness |  | `review` | medium | fixed | Half-angle witness export declared a schema absent beside its output |
 | [D-512](packing/devtools/repo_links.py) | 2026-10-01 | tooling | bookkeeping | conservative | `drift_check` | medium | fixed | The deployed site dropped every record link into the archive and the campaign |
-| [D-514](packing/campaign/explorations/X-049-families-shading-and-the-large-n-limit.md) | 2026-10-02 | docs | soundness | flattering | `inspection` | medium | fixed | The Erdős–Graham transcription stated Theorem (1) as a two-sided bound the paper does not prove |
+| [D-513](packing/campaign/explorations/X-049-families-shading-and-the-large-n-limit.md) | 2026-10-02 | docs | soundness | flattering | `inspection` | medium | fixed | The Erdős–Graham transcription stated Theorem (1) as a two-sided bound the paper does not prove |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

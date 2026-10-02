@@ -77,7 +77,9 @@ from sqpack.yamlio import load_yaml
 ROOT = Path(__file__).resolve().parent.parent
 REPO = ROOT.parent
 OUTPUT = (
-    ROOT / "campaign/series/series-000-smoke-and-calibration/results" / "t007-consumer-audit.json"
+    ROOT
+    / "campaign/series/series-000-smoke-and-calibration/results"
+    / "t007-consumer-audit.json"
 )
 GENERATOR = "python -m devtools.audit_t007_consumers"
 RECORD = nagamochi.RECORD
@@ -141,21 +143,26 @@ KARAKUS = {
     ),
 }
 
+LITERATURE = (
+    "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/"
+    "literature-s32.md"
+)
+SOURCES_PAGE = (
+    "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html"
+)
 #: Where the archived Evand sources report chelokot's Lean work. Each needle must occur in
 #: its file, and the line it is found on is what the inventory cites.
 CHELOKOT_REPORTS = (
     (
-        "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/"
-        "literature-s32.md",
+        LITERATURE,
         "s(n²-2) = n re-proved by a replacement argument",
     ),
     (
-        "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/"
-        "literature-s32.md",
+        LITERATURE,
         "s(n²-2) = n, s(6), s(10), s(13), s(22), s(33), s(46) (+47, 48, 23, 34)",
     ),
     (
-        "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html",
+        SOURCES_PAGE,
         "kernel-checked proof: s(n²−2) = n",
     ),
 )
@@ -163,14 +170,12 @@ CHELOKOT_REPORTS = (
 CHELOKOT_INDIVIDUAL = (
     (
         (23, 34),
-        "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/"
-        "literature-s32.md",
+        LITERATURE,
         "chelokot generalizes (s(23): 3×4 + 2×5 = 22 pts; s(34): 3×5 + 3×6 = 33 pts)",
     ),
     (
         (23, 34, 47, 48),
-        "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/"
-        "literature-s32.md",
+        LITERATURE,
         "s(n²-2) = n, s(6), s(10), s(13), s(22), s(33), s(46) (+47, 48, 23, 34)",
     ),
 )
@@ -269,7 +274,9 @@ class Surd:
 
     def __truediv__(self, other: Surd) -> Surd:
         if len(other.terms) != 1:
-            raise ValueError("division by zero or by a sum of radicals is outside this arithmetic")
+            raise ValueError(
+                "division by zero or by a sum of radicals is outside this arithmetic"
+            )
         radicand, coefficient = other.terms[0]
         return self * Surd(((radicand, 1 / (coefficient * radicand)),))
 
@@ -289,7 +296,10 @@ class Surd:
                 high += coefficient
                 continue
             floor = math.isqrt(radicand * scale * scale)
-            ends = (coefficient * Fraction(floor, scale), coefficient * Fraction(floor + 1, scale))
+            ends = (
+                coefficient * Fraction(floor, scale),
+                coefficient * Fraction(floor + 1, scale),
+            )
             low += min(ends)
             high += max(ends)
         return low, high
@@ -576,9 +586,7 @@ def monotone_best(sources: Mapping[int, Source], last: int) -> dict[int, list[So
             sign = 1 if not best else compare(source.quantity, best[0].quantity)
             if sign > 0:
                 best = [source]
-            elif sign == 0 and all(
-                set(source.evidence) != set(kept.evidence) for kept in best
-            ):
+            elif sign == 0 and all(set(source.evidence) != set(kept.evidence) for kept in best):
                 best = [*best, source]
         table[n] = list(best)
     return table
@@ -679,6 +687,43 @@ def chelokot_entry(n: int) -> dict[str, Any] | None:
     return {"status": "reported-unchecked", "claims": claims}
 
 
+_PAPER_LINK = re.compile(r"\[([^\]]+)\]\(\.\./resources/papers/([^)#]+)\)")
+_DEFECT_LINK = re.compile(r"\[(D-\d+(?:[–-]D-\d+)?)\]")
+
+
+def prose_published_proofs(n: int) -> dict[str, Any] | None:
+    """Papers other than Nagamochi's that the case's lower-bound prose cites as proofs.
+
+    They are archived but carry no evidence record, so they count as published support
+    the register has not adopted; defects named in the same section travel with them.
+    """
+    path = f"packing/frontier/n-{n:03d}.md"
+    lines = (REPO / path).read_text(encoding="utf-8").split("\n")
+    start = next((i for i, line in enumerate(lines) if line == "## The lower bound"), None)
+    if start is None:
+        return None
+    end = next(
+        (i for i in range(start + 1, len(lines)) if lines[i].startswith(("## ", "<!--"))),
+        len(lines),
+    )
+    proofs = [
+        {
+            "label": match.group(1),
+            "source": f"packing/resources/papers/{match.group(2)}",
+            "at": f"{path}:{i + 1}",
+        }
+        for i in range(start, end)
+        for match in _PAPER_LINK.finditer(lines[i])
+        if "nagamochi" not in match.group(2)
+    ]
+    if not proofs:
+        return None
+    defects = sorted(
+        {m.group(1) for i in range(start, end) for m in _DEFECT_LINK.finditer(lines[i])}
+    )
+    return {"status": "published-archived-unregistered", "proofs": proofs, "defects": defects}
+
+
 def classify(
     *,
     cites_t007: bool,
@@ -694,7 +739,11 @@ def classify(
     classification without Karakuş is asked for.
     """
     if not cites_t007:
-        return {"class": UNAFFECTED, "reason": "operative-bound-independent", "weakened_to": None}
+        return {
+            "class": UNAFFECTED,
+            "reason": "operative-bound-independent",
+            "weakened_to": None,
+        }
     if target is None:
         raise ValueError("a case citing the record must have a Nagamochi value")
     if compare(area, target) >= 0:
@@ -817,6 +866,7 @@ def case_row(
             "other_registered_results_at_n": others,
             "area_bound": area_entry,
             "chelokot_lean_reported": chelokot_entry(n),
+            "case_prose_published_proofs": prose_published_proofs(n),
         },
         "exposure_class": primary["class"],
         "exposure_reason": primary["reason"],
@@ -856,7 +906,7 @@ DOCUMENT_GROUPS: tuple[tuple[str, tuple[str, ...]], ...] = (
 #: `s(k^2 - 2)`-style identities, in any variable the record uses for the side.
 IDENTITY = re.compile(r"\b[kmnN]\s*(?:\^\s*2|²|\^\{2\})\s*[-−–]\s*2(?![0-9.a-zA-Z(])")
 #: The closed form's distinctive `2 floor(sqrt N)` term, in each spelling the record uses.
-CLOSED_FORM = re.compile(r"2\s*\*?\s*(?:floor\b|⌊|\\lfloor)|min\s*\(\s*ceil")
+CLOSED_FORM = re.compile(r"(?<![\w.-])2\s*\*?\s*(?:floor\s*\(|⌊|\\lfloor)|min\s*\(\s*ceil")
 #: The author named as a person; identifiers such as `E-nagamochi-lower` are lowercase.
 NAMES = re.compile(r"\bNagamochi\b")
 #: Beside his name, words that state a theorem or a proof: the line `states` it.
@@ -865,14 +915,18 @@ STATES = re.compile(
     r"|verified|exact values?)\b"
 )
 #: Beside his name, words that use his bound as a standing floor: the line `relies` on it.
-RELIES = re.compile(r"(?i)\b(?:bound\w*|floor\w*|closed[ -]form|formula|governed|default|tight)\b")
+RELIES = re.compile(
+    r"(?i)\b(?:bound\w*|floor\w*|closed[ -]form|formula|governed|default|tight)\b"
+)
 #: A table cell holding only his name, as in a column of lower-bound sources.
 CELL = re.compile(r"^\s*(?:Hiroshi\s+)?Nagamochi\s*$")
-#: A paragraph carrying any of these already qualifies what it says.
+#: A paragraph naming Karakuş's finding already qualifies what it says. Generic caveat words
+#: ("incomplete", "unproven") are not enough: in this record they are about other claims.
 QUALIFIED = re.compile(
-    r"(?i)karaku|counterexample|incomplete|published gap|proof gap|does not establish"
-    r"|not established|unestablished|disputed|unproven"
+    r"(?i)karaku|scoring (?:lemma|assertion)|nagamochi[’']s lemma 1\b|lemma 1 of nagamochi"
 )
+#: How far either side of his name a cue word may sit and still be about him.
+WINDOW = 80
 EXCERPT = 160
 TIERS = ("states", "relies", "mentions")
 
@@ -890,23 +944,35 @@ def paragraphs(lines: Sequence[str]) -> list[int]:
     return index
 
 
-def tier(line: str, kinds: Sequence[str]) -> str:
+def tier(line: str, kinds: Sequence[str], before: str = "", after: str = "") -> str:
     """`states`, `relies` or `mentions`, judged on the line or, in a table, on the cell.
 
-    A table row is judged by the cells naming Nagamochi, so a lineage credit ("after
-    Stromquist, Nagamochi, Burns") in a row whose kind column says "lower bound" stays a
-    mention. The identity and the closed form state the theorem wherever they appear.
+    Cue words count only within `WINDOW` characters of his name -- reaching into the
+    neighbouring lines of the same paragraph, since prose wraps -- and in a table only inside
+    the cell naming him, so a lineage credit ("after Stromquist, Nagamochi, Burns") in a row
+    whose kind column says "lower bound" stays a mention. The identity and the closed form
+    state the theorem wherever they appear.
     """
     if "k2-minus-2-identity" in kinds or "closed-form" in kinds:
         return "states"
-    contexts = (
-        [cell for cell in line.split("|") if NAMES.search(cell)]
-        if line.lstrip().startswith("|")
-        else [line]
-    )
+    if line.lstrip().startswith("|"):
+        cells = line.split("|")
+        if any(CELL.match(cell) for cell in cells):
+            return "relies"
+        contexts = [
+            cell[max(0, match.start() - WINDOW) : match.end() + WINDOW]
+            for cell in cells
+            for match in NAMES.finditer(cell)
+        ]
+    else:
+        joined, offset = f"{before} {line} {after}", len(before) + 1
+        contexts = [
+            joined[max(0, offset + match.start() - WINDOW) : offset + match.end() + WINDOW]
+            for match in NAMES.finditer(line)
+        ]
     if any(STATES.search(context) for context in contexts):
         return "states"
-    if any(RELIES.search(context) or CELL.match(context) for context in contexts):
+    if any(RELIES.search(context) for context in contexts):
         return "relies"
     return "mentions"
 
@@ -915,7 +981,12 @@ def scan_text(text: str, first_line: int = 1) -> list[dict[str, Any]]:
     """Every line that states the theorem or the identity, or names Nagamochi."""
     lines = text.split("\n")
     owner = paragraphs(lines)
-    qualified_paragraphs = {owner[i] for i, line in enumerate(lines) if QUALIFIED.search(line)}
+    text_of: dict[int, list[str]] = {}
+    for i, line in enumerate(lines):
+        text_of.setdefault(owner[i], []).append(line)
+    qualified_paragraphs = {
+        paragraph for paragraph, block in text_of.items() if QUALIFIED.search(" ".join(block))
+    }
     hits: list[dict[str, Any]] = []
     for i, line in enumerate(lines):
         kinds = [
@@ -929,11 +1000,13 @@ def scan_text(text: str, first_line: int = 1) -> list[dict[str, Any]]:
         ]
         if not kinds:
             continue
+        before = lines[i - 1] if i and owner[i - 1] == owner[i] else ""
+        after = lines[i + 1] if i + 1 < len(lines) and owner[i + 1] == owner[i] else ""
         hits.append(
             {
                 "line": first_line + i,
                 "kinds": kinds,
-                "tier": tier(line, kinds),
+                "tier": tier(line, kinds, before, after),
                 "qualified": owner[i] in qualified_paragraphs,
                 "excerpt": line.strip()[:EXCERPT],
             }
@@ -946,7 +1019,8 @@ def document_paths() -> list[tuple[str, str]]:
     for group, patterns in DOCUMENT_GROUPS:
         for pattern in patterns:
             found.extend(
-                (group, path.relative_to(REPO).as_posix()) for path in sorted(REPO.glob(pattern))
+                (group, path.relative_to(REPO).as_posix())
+                for path in sorted(REPO.glob(pattern))
             )
     return found
 
@@ -1103,7 +1177,9 @@ def summary(rows: Sequence[dict[str, Any]]) -> dict[str, Any]:
         "classes_open": tally(open_rows, "exposure_class"),
         "classes_without_karakus": tally(rows, "exposure_class_without_karakus"),
         "classes_open_without_karakus": tally(open_rows, "exposure_class_without_karakus"),
-        "exposure_reasons": dict(sorted(Counter(row["exposure_reason"] for row in rows).items())),
+        "exposure_reasons": dict(
+            sorted(Counter(row["exposure_reason"] for row in rows).items())
+        ),
         "exact_value_claims_citing_t007": [row["n"] for row in exact_claims],
         "exact_value_claims_by_class": by_class(exact_claims, "exposure_class"),
         "exact_value_claims_by_class_without_karakus": by_class(
@@ -1205,18 +1281,23 @@ def report(document: Mapping[str, Any]) -> str:
     totals = document["summary"]
     operative = totals["operative_cites_t007"]
     lines = [
-        f"{document['scope']['cases']} case records; the operative verified lower bound cites "
-        f"{RECORD} at {operative['all']} ({operative['open']} of {totals['open_cases']} open, "
-        f"{operative['proved']} proved), {operative['outside_t007_registered_scope']} of them "
-        f"outside {T007}'s registered scope ({operative['outside_t007_registered_scope_n']}).",
+        (
+            f"{document['scope']['cases']} case records; the operative verified lower bound "
+            f"cites {RECORD} at {operative['all']} ({operative['open']} of "
+            f"{totals['open_cases']} open, {operative['proved']} proved), "
+            f"{operative['outside_t007_registered_scope']} of them outside {T007}'s registered "
+            f"scope ({operative['outside_t007_registered_scope_n']})."
+        ),
         "",
         "exposure class               with Karakuş   without   (open: with / without)",
     ]
-    lines.extend(
-        f"  {name:<27} {totals['classes'][name]:>8} {totals['classes_without_karakus'][name]:>9}"
-        f"   ({totals['classes_open'][name]} / {totals['classes_open_without_karakus'][name]})"
-        for name in CLASSES
-    )
+    for name in CLASSES:
+        with_k, without_k = totals["classes"][name], totals["classes_without_karakus"][name]
+        open_with = totals["classes_open"][name]
+        open_without = totals["classes_open_without_karakus"][name]
+        lines.append(
+            f"  {name:<27} {with_k:>8} {without_k:>9}   ({open_with} / {open_without})"
+        )
     lines.extend(
         [
             "",
@@ -1242,12 +1323,15 @@ def report(document: Mapping[str, Any]) -> str:
             totals["weakened_shortfall"]["largest"],
         )
         lines.append(
-            f"weakened-to shortfall below Nagamochi: {smallest['shortfall']} (n={smallest['n']})"
-            f" to {largest['shortfall']} (n={largest['n']})"
+            "weakened-to shortfall below Nagamochi: "
+            f"{smallest['shortfall']} (n={smallest['n']}) to "
+            f"{largest['shortfall']} (n={largest['n']})"
         )
     files = document["documents"]["files"]
     stating = [entry for entry in files if entry["unqualified_states_lines"]]
-    lines.extend(["", f"documents stating the theorem or an identity unqualified: {len(stating)}"])
+    lines.extend(
+        ["", f"documents stating the theorem or an identity unqualified: {len(stating)}"]
+    )
     lines.extend(
         f"  {entry['path']}: {len(entry['unqualified_states_lines'])} line(s): "
         + ranges(entry["unqualified_states_lines"])

@@ -593,9 +593,8 @@ def main() -> int:
                 f"= {float(report['shrunk_interior']):.6f} < 1"
             )
     chelokot = check_chelokot_instance()
-    print(
-        f"chelokot in [0,4]^2: interior {chelokot['interior']} = {float(chelokot['interior']):.9f}"
-    )
+    interior = chelokot["interior"]
+    print(f"chelokot in [0,4]^2: interior {interior} = {float(interior):.9f}")
     repairs = check_local_repairs(Fraction(4), Fraction(4))
     for variant, values in repairs.items():
         print(
@@ -618,7 +617,8 @@ def main() -> int:
             "n/a (needs N >= 8)" if values["karakus"] is None else f"{values['karakus']:.6f}"
         )
         print(
-            f"N={n:>3}: area {values['area']:.6f}  Nagamochi {values['nagamochi']:.6f}  Karakus {karakus}"
+            f"N={n:>3}: area {values['area']:.6f}  Nagamochi {values['nagamochi']:.6f}  "
+            f"Karakus {karakus}"
         )
     return 0
 

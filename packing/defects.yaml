@@ -17126,7 +17126,7 @@ defects:
     directories of both omitted trees, and renders the same in a partial checkout. The
     Pages workflow's verify-deployment job runs the check after every deploy.
   recorded_in: packing/devtools/repo_links.py
-- id: D-514
+- id: D-513
   title: The Erdős–Graham transcription stated Theorem (1) as a two-sided bound the paper does not prove
   date: '2026-10-02'
   layer: docs

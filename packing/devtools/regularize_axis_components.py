@@ -136,7 +136,7 @@ STAGE_RULE = _rule("workbench-stage")
 """The workbench catalogue stage's rule: `core/geometry.ts` `contactFacts`."""
 STAGE_GAP = STAGE_RULE.gap
 STAGE_ANGLE_TOLERANCE_RADIANS = STAGE_RULE.angle_tolerance
-STAGE_ANGLE_TOLERANCE_DEGREES = math.degrees(STAGE_ANGLE_TOLERANCE_RADIANS)
+STAGE_ANGLE_TOLERANCE_DEGREES = round(math.degrees(STAGE_ANGLE_TOLERANCE_RADIANS), 12)
 ANGLE_SNAP_TOLERANCE_RADIANS = 1e-4
 """Squares tilted less than this are straightened exactly; more is a real rotation."""
 SNAP_TOLERANCE = Fraction("1e-9")
@@ -195,7 +195,9 @@ def rational_sign(value: Fraction) -> int:
 
 def literal(value: Fraction) -> str:
     return (
-        str(value.numerator) if value.denominator == 1 else f"{value.numerator}/{value.denominator}"
+        str(value.numerator)
+        if value.denominator == 1
+        else f"{value.numerator}/{value.denominator}"
     )
 
 
@@ -467,7 +469,8 @@ def house_partners(poses: Sequence[Pose], side: float, ids: Sequence[str]) -> li
     the walls by name and the neighbours by square id, from the census's replica of
     `sqpack.render.color`."""
     packing = shades.Packing(
-        side, tuple(shades.make_square(ident, *pose) for ident, pose in zip(ids, poses, strict=True))
+        side,
+        tuple(shades.make_square(ident, *pose) for ident, pose in zip(ids, poses, strict=True)),
     )
     return [
         [contact.other for contact in found]
@@ -615,7 +618,7 @@ def _decimal_frame(witness: dict[str, Any]) -> tuple[list[Corners], Fraction]:
     return [list(square) for square in squares], side
 
 
-def exact_frame(witness: dict[str, Any], source_path: str) -> ExactFrame:
+def exact_frame(witness: dict[str, Any]) -> ExactFrame:
     """The exact rational pose this witness is regularized from, and where it came from."""
     kind = witness["scalar"]["kind"]
     reported_side = Fraction(str(witness["side"]))
@@ -654,7 +657,9 @@ def exact_frame(witness: dict[str, Any], source_path: str) -> ExactFrame:
     corners, side = _decimal_frame(witness)
     pieces = [
         Piece(str(square["id"]), square_corners, angle_gap(pose[2]))
-        for square, square_corners, pose in zip(witness["squares"], corners, before, strict=True)
+        for square, square_corners, pose in zip(
+            witness["squares"], corners, before, strict=True
+        )
     ]
     provenance = {
         "kind": "rational",
@@ -669,7 +674,6 @@ def exact_frame(witness: dict[str, Any], source_path: str) -> ExactFrame:
         "certified_side": literal(side),
         "certified_side_decimal": f"{float(side):.17g}",
     }
-    _ = source_path
     return ExactFrame(pieces, side, reported_side, before, provenance)
 
 
@@ -736,9 +740,9 @@ def _attempt_slide(
     axis: int,
     pieces: list[Piece],
     side: Fraction,
+    *,
     ids: Sequence[str],
     by_id: dict[str, Piece],
-    *,
     snap_tolerance: Fraction,
 ) -> dict[str, Any] | None:
     """Slide one square along one axis toward its lattice target; return the move or None."""
@@ -815,7 +819,13 @@ def compact(
         for index in order:
             for _name, axis in AXES:
                 move = _attempt_slide(
-                    index, axis, pieces, side, ids, by_id, snap_tolerance=snap_tolerance
+                    index,
+                    axis,
+                    pieces,
+                    side,
+                    ids=ids,
+                    by_id=by_id,
+                    snap_tolerance=snap_tolerance,
                 )
                 if move is None:
                     continue
@@ -1140,7 +1150,7 @@ def settle(
             return Outcome(pieces, moves, held, rounds, baseline, final, regressions)
         held.update(escalations)
     message = "the non-regression rounds did not settle"
-    raise AssertionError(message)
+    raise RuntimeError(message)
 
 
 def regularize_frame(
@@ -1169,8 +1179,14 @@ def regularize_frame(
         for rule in RULE_NAMES
     }
     greens = {
-        "house": ([house_green(p) for p in frame.before], [house_green(p) for p in after_poses]),
-        "stage": ([stage_green(p) for p in frame.before], [stage_green(p) for p in after_poses]),
+        "house": (
+            [house_green(p) for p in frame.before],
+            [house_green(p) for p in after_poses],
+        ),
+        "stage": (
+            [stage_green(p) for p in frame.before],
+            [stage_green(p) for p in after_poses],
+        ),
     }
     report = verify_packing([p.corners for p in pieces], side, sign=rational_sign, bucket=True)
     certified = [p.corners for p in frame.pieces]
@@ -1251,9 +1267,7 @@ def regularize_frame(
             },
         },
         "regularization": {**summary, "rounds": outcome.rounds},
-        "contacts": {
-            rule: contact_tally(*counts[rule], *greens[rule]) for rule in RULE_NAMES
-        },
+        "contacts": {rule: contact_tally(*counts[rule], *greens[rule]) for rule in RULE_NAMES},
         "residual_regressions": [
             {
                 "id": ids[r.index],
@@ -1299,7 +1313,7 @@ def regularize(
     """Regularize one witness; return the report and the regularized Witness/v2 record."""
     return regularize_frame(
         witness,
-        exact_frame(witness, source_path),
+        exact_frame(witness),
         source_path=source_path,
         angle_snap=angle_snap,
         snap_tolerance=snap_tolerance,
@@ -1440,7 +1454,10 @@ def atlas_parameters() -> dict[str, Any]:
             "gap": HOUSE_RULE.gap,
             "angle_tolerance_radians": HOUSE_RULE.angle_tolerance,
         },
-        "stage_rule": {"gap": STAGE_GAP, "angle_tolerance_degrees": STAGE_ANGLE_TOLERANCE_DEGREES},
+        "stage_rule": {
+            "gap": STAGE_GAP,
+            "angle_tolerance_degrees": STAGE_ANGLE_TOLERANCE_DEGREES,
+        },
         "shades_measured_by": "devtools.census_atlas_contact_shades.witness_shades",
     }
 
@@ -1489,13 +1506,15 @@ def atlas_record(
     }
     before = shades.witness_shades(source)
     try:
-        frame = exact_frame(witness, layout.relative(source))
+        frame = exact_frame(witness)
     except RegularizeError as error:
         record["status"] = "refused"
         record["refusal"] = {"kind": error.kind, "reason": str(error)}
         record["shades"] = _shade_record(before, before)
         return record, None, time.perf_counter() - started
-    certificate = next(iter(sorted(layout.certificates.glob(f"*/n-{n:03d}-rational.yaml.gz"))), None)
+    certificate = next(
+        iter(sorted(layout.certificates.glob(f"*/n-{n:03d}-rational.yaml.gz"))), None
+    )
     record["exact_frame"] = {
         "derivation": frame.provenance["derivation"],
         "retained_certificate": layout.relative(certificate) if certificate else None,
@@ -1631,7 +1650,9 @@ def manifest_entries(layout: AtlasLayout) -> list[dict[str, Any]]:
     return json.loads(layout.manifest.read_text(encoding="utf-8"))["atlas"]["entries"]
 
 
-def _select(entries: Sequence[dict[str, Any]], only: Collection[int] | None) -> list[dict[str, Any]]:
+def _select(
+    entries: Sequence[dict[str, Any]], only: Collection[int] | None
+) -> list[dict[str, Any]]:
     if not only:
         return list(entries)
     known = {entry["n"] for entry in entries}
@@ -1765,9 +1786,11 @@ def check_atlas(layout: AtlasLayout) -> list[str]:
         if record is None:
             continue
         problems.extend(_check_record(layout, entry, record, kept))
-    for path in sorted(layout.directory.iterdir()):
-        if path.name != layout.index.name and path.name not in kept:
-            problems.append(f"unexpected file {layout.relative(path)}")
+    problems.extend(
+        f"unexpected file {layout.relative(path)}"
+        for path in sorted(layout.directory.iterdir())
+        if path.name != layout.index.name and path.name not in kept
+    )
     return problems
 
 
@@ -1794,7 +1817,9 @@ def _check_record(
         if data[:8] != b"\x1f\x8b\x08\x00\x00\x00\x00\x00":
             problems.append(f"n={n}: the view is not a deterministic gzip")
         if digest(gzip.decompress(data)) != record["view"]["sha256"]:
-            problems.append(f"n={n}: the view differs from the one its verdict was recorded for")
+            problems.append(
+                f"n={n}: the view differs from the one its verdict was recorded for"
+            )
         if not record["exact_verification"]["passed"]:
             problems.append(f"n={n}: recorded exact verification did not pass")
     elif status in {"unchanged", "refused"}:
@@ -1805,7 +1830,9 @@ def _check_record(
     return problems
 
 
-def verify_atlas(layout: AtlasLayout, *, only: Collection[int] | None, workers: int) -> list[str]:
+def verify_atlas(
+    layout: AtlasLayout, *, only: Collection[int] | None, workers: int
+) -> list[str]:
     """Re-derive every selected record and require it, and its view, to be identical."""
     index = _committed_index(layout)
     if index is None:
@@ -1817,7 +1844,9 @@ def verify_atlas(layout: AtlasLayout, *, only: Collection[int] | None, workers: 
         if _normalized(record) != committed.get(n):
             problems.append(f"n={n}: the re-derived record differs from the index")
         view = layout.view(n)
-        retained = gzip.decompress(view.read_bytes()).decode("utf-8") if view.is_file() else None
+        retained = (
+            gzip.decompress(view.read_bytes()).decode("utf-8") if view.is_file() else None
+        )
         if text != retained:
             problems.append(f"n={n}: the re-derived view differs from the retained one")
     return problems
@@ -1907,8 +1936,7 @@ def _atlas_main(args: argparse.Namespace, layout: AtlasLayout) -> int:
         print(problem)
     elapsed = time.perf_counter() - started
     print(
-        f"regularized atlas verification {'FAILED' if problems else 'passed'} "
-        f"in {elapsed:.0f}s"
+        f"regularized atlas verification {'FAILED' if problems else 'passed'} in {elapsed:.0f}s"
     )
     return 1 if problems else 0
 

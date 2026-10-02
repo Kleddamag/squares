@@ -866,11 +866,10 @@ def overview_page() -> Page:
         "ATLAS_GRID": overview_sections.atlas_grid(),
         "ATLAS_CARDS": overview_sections.atlas_cards(),
         "PAGE_CARDS": overview_sections.page_cards(),
+        "SURVEY_CARDS": overview_sections.survey_cards(),
         "VERIFICATION": overview_sections.verification_block(),
         "RECENT": overview_sections.recent_table(overview),
         "STAR_LEGEND": overview_sections.star_legend(),
-        "STATUS_COUNTS": overview_sections.status_counts(overview),
-        "SURVEY_COUNTS": overview_sections.survey_counts(overview),
         "ARROW_RIGHT": overview_sections.arrow_icon("right"),
     }
     markdown = fill(
@@ -911,6 +910,7 @@ def results_page() -> Page:
         "EPISTEMICS_URL": repo_url(repo_links.EPISTEMICS),
         "RESULTS_TABLE": overview_sections.results_table(overview),
         "STAR_LEGEND": overview_sections.star_legend(),
+        "STATUS_COUNTS": overview_sections.status_counts(overview),
     }
     markdown = fill(
         RESULTS_ARTICLE.read_text(encoding="utf-8"), values, where=RESULTS_ARTICLE.name

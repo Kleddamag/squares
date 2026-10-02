@@ -13,7 +13,13 @@ checked itself. Every credit names people: a result by others is credited to its
 as their source states it, and this project’s results to Joshua Levy, as *Levy*. *X
 after Y* means that X’s result rests directly on Y’s proof, method or tool, so the
 credit also says which results build on this project’s. The `V` and `C` of a result by
-others are this repository’s own verification of it.
+others are this repository’s own verification of it: the result is recorded when its
+source is taken in, and its bound counts as verified only after its certificate is
+replayed here in full and its mathematics reviewed, with the credit its authors give;
+[`epistemics.md`]({{EPISTEMICS_URL}}#results-by-others) states the policy.
+
+<!-- The kinds and statuses are defined here and nowhere else on the site: the
+     homepage's Recent Results names them and links this page (2026-10-02). -->
 
 Under its rungs each result shows its kind, which says what it is: a *lower bound*, an
 *upper bound*, an *optimality* result, which settles an exact value, or one of the kinds
@@ -23,6 +29,7 @@ Under its kind is its status, how far the work on it here has gone: *recorded*,
 registered from its source with nothing here yet read or replayed; *reviewed*, its
 argument read here; *confirmed*, a replay of its certificate passed; or *incomplete*, a
 defect found in it still open.
+{{STATUS_COUNTS}}
 The status follows the confirmation rung and is never set by hand;
 [`epistemics.md`]({{EPISTEMICS_URL}}#status) defines it.
 Beside it, *in analysis* marks a replay or review under way here and *waiting on* a

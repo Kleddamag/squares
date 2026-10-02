@@ -750,15 +750,16 @@ it.
   A popover card (`card`) is a button that opens a popover showing where it leads, and
   the popover ends in one button that goes there, centred at its foot.
   A direct card is instead itself the link (`link_card`), an `<a>` with no popover.
-  **A card whose target is a full page of the site navigates.** The overview’s five page
-  cards, the optimality paper, the explainer, the tutorial, the workbench and the
-  Frontier page, and the Papers page’s three paper cards lead to full pages the site
-  serves, so each is a direct card that goes to its page in the same tab
-  (`new_tab=False`), with the right arrow for its icon (`data-go="page"`) and nothing
-  framed (`think-bc5d`, `think-w82r`). Popovers are for records, targets that are not
-  site pages of their own: a result, a case, a repository document rendered for its
-  card’s popover. A direct card is a link and holds no other link, so what its note names
-  is linked from the prose beside it.
+  **A card whose target is a full page of the site navigates.** The overview’s four page
+  cards, the optimality paper, the explainer, the tutorial and the workbench, The
+  Frontier Survey’s two cards to the Frontier page (**Overview sections**, below), and
+  the Papers page’s three paper cards lead to full pages the site serves, so each is a
+  direct card that goes to its page in the same tab (`new_tab=False`), with the right
+  arrow for its icon (`data-go="page"`) and nothing framed (`think-bc5d`, `think-w82r`).
+  Popovers are for records, targets that are not site pages of their own: a result, a
+  case, a repository document rendered for its card’s popover.
+  A direct card is a link and holds no other link, so what its note names is linked from
+  the prose beside it.
   **Every other direct card opens its target in a new tab** (`target="_blank"`,
   `rel="noopener noreferrer"`), so the page the reader chose it from stays where they
   left it: a poster’s PDF, the Visualize page, another project.
@@ -1628,22 +1629,45 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   `tests/test_overview.py` holds every row of the three pages to this markup and every
   cell free of `<details>`.
 
+- **Overview sections.** The homepage is an overview: each of its sections is a short
+  lead, one compact paragraph at most, the section’s key structural element where it has
+  one (the recent table, the ladders, the atlas grid), and one way onward to the page
+  that holds the full account.
+  A fact has one home.
+  What a page defines, the Results page’s ratings, kinds and statuses and the rule for
+  how a result by others comes to count, or the Frontier page’s counts, its audit of its
+  sources and the seventeen-square history before this project, is stated on that page
+  and nowhere else; the overview names it and links it.
+  The way onward follows the section’s shape: a section whose key element is a table or
+  a grid ends in the one action button (**Action under a table or grid**, below), and a
+  section that is prose leads on with direct cards (**Cards**, above), as The Frontier
+  Survey does with its two, every case and the recent cases
+  (`frontier.html?recent=true`, the query its table script presets a filter from).
+  The page cards under The Squares Project are the site’s reading and working pages, the
+  three papers and the workbench; the Results and Frontier pages are reached from their
+  own sections. The owner set this on 2026-10-02 (`think-f1tu`): the overview “a little
+  more structured and a little less verbose”, the survey’s account moved into the
+  Frontier page, Recent Results slimmed to the essentials and its table, and “cards that
+  point to the frontier and the results pages where appropriate”.
+  `tests/test_overview.py` holds each section’s prose to one paragraph of its own where
+  this applies, the cards to their pages, and the three pages to saying each thing once.
+
 - **Recent results.** The overview’s Recent Results section opens with README’s
-  `recent-progress` block (**Page headings**, above), then its own short prose on what
-  the table lists, and then one table, not cards or a list: every result, by the date
-  the table shows, newest first, one row each (`recent_table`). It is the results page’s
-  table, with its columns, its rows, its sorting and its card-per-row form on a phone
-  (**Tables**, above).
+  `recent-progress` block (**Page headings**, above), then one paragraph of its own on
+  what the table lists, with the star legend and where the filters start, and then one
+  table, not cards or a list: every result, by the date the table shows, newest first,
+  one row each (`recent_table`). It is the results page’s table, with its columns, its
+  rows, its sorting and its card-per-row form on a phone (**Tables**, above).
+  The ratings, the kinds and the statuses are defined on the Results page, which the
+  paragraph links; the section does not repeat them.
   The results page’s tools bar sits above it (**Result filters**, above), starting at
   significance S4 and up, a maximum age of 180 days and Hide superseded checked, with
   the count of rows shown out of the total at the bar’s end.
   Those three defaults are all that make the table recent and current: no result is left
   out of it by a date or a status the page fixes, and none is listed anywhere but in it.
   A result reported and not yet replayed here is a row like any other, its status
-  `recorded`; the prose above the table counts the results not yet confirmed
-  (`status_counts`), each count the link to those rows on the results page.
-  A row shows its records and opens its result’s popover (**Row popovers**, above), as
-  the same row of the results page does, and links nowhere else.
+  `recorded`. A row shows its records and opens its result’s popover (**Row popovers**,
+  above), as the same row of the results page does, and links nowhere else.
   The section holds no card or bulleted list, and the “See all results” line, with the
   right arrow, follows the table.
 
@@ -1653,9 +1677,11 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   took the other name; since 2026-10-01 `results.html` is a forwarder to this page.)
   The page has the Frontier page’s shape: a hero title, “Every Result”, whose id is
   `every-result`, a subtitle, the prose that defines the ratings, kinds and statuses,
-  and the table under its filters (**Result filters**, above), which start with
-  significance at All, no maximum age and Hide superseded clear, so every result shows,
-  newest first, in one flat list.
+  with the rule for how a result by others comes to count as verified and, where the
+  statuses are defined, how many results stand at each (`status_counts`, each count the
+  link to those rows), and the table under its filters (**Result filters**, above),
+  which start with significance at All, no maximum age and Hide superseded clear, so
+  every result shows, newest first, in one flat list.
   Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
   recent table and each case record’s results link.
   A row opens its result’s popover, the full claim and its novelty label, with the id in

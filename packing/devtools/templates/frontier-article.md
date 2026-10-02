@@ -6,26 +6,54 @@
 
 </div>
 
+<!-- What the survey records, how a bound comes to count, the audit of its sources, the
+     recent counts and the seventeen-square history stood on the homepage, in The
+     Frontier Survey, until 2026-10-02; they are this page's own prose now, and the
+     homepage says the survey in one paragraph and leads here. Every count is filled
+     from the record (render_frontier_page.frontier_markdown). -->
+
 For each number $n$ of unit squares, $s(n)$ is the side of the smallest square that
 holds them without overlap.
-This page lists all {{COUNT}} cases the project tracks: {{PROVED}} have a proved optimum
-and {{OPEN}} are open.
+The frontier survey records the best-known packing and the strongest verified lower
+bound for each of the {{COUNT}} cases the project tracks, with its provenance:
+{{PROVED}} have a proved optimum and {{OPEN}} are open.
 Every row is read from the case’s record, `packing/frontier/n-NNN.md`, when the page is
 built; nothing on it is typed by hand.
-For how the results fit together, start at the [overview](./).
 
 **Reported and verified.** The *best known packing* and the *reported lower* bound are
 what the published sources say, credited to whoever found or proved them.
 The *verified* columns hold only exact formal bounds: a complete proof, an exact
 algebraic replay, or a rigorous certificate.
-Where the verified bound is the reported one, the cell says *✓ same*, meaning verified
-here at the reported value, rather than printing the value twice.
+An external certificate counts once it is replayed here in full and its mathematical
+assumptions are discharged, and each record says who ran the checks and how independent
+they were. Where the verified bound is the reported one, the cell says *✓ same*, meaning
+verified here at the reported value.
 A finite-precision result is numerically checked and never enters a verified column.
+
+**Audited sources.** The survey audits what it records.
+The earliest published proof of $s(7) = 3$ carries four recorded defects in its printed
+route, so the [record for seven squares](cases.html#n-7) rests the case on independent
+later proofs. The [literature archive]({{ARCHIVE_URL}}) keeps each primary source, a
+cleaned transcription and the unedited extraction it was checked against, and the
+[evidence inventory]({{INVENTORY_URL}}) shows what each claim rests on and who did the
+work.
+
+**Recent results.** A star marks a recent result: one of the {{RECENT}} verified lower
+bounds proved since {{RECENT_SINCE}}, when this project’s work began.
+{{SURVEY_COUNTS}}
+
+**Seventeen squares.** Before this project’s work began, seven authors had published
+lower bounds for seventeen squares, some also for eighteen, all independently:
+Brandwijk’s $89/20$ (18 July), Burns’s $4.4811$ (6 August), MacIver’s $4.4502\ldots$ (8
+August), Mira’s and Fort’s sixteen-point sets (10 and 11 August), anabologyco-maker’s
+$4.57$ and $9141/2000$ (13 and 16 August), and Massaccesi’s $4.5058$ (21 August),
+replayed here as [T-015](all-results.html#t-015) and [T-016](all-results.html#t-016).
+The [seventeen-square record](cases.html#n-17) lists them all; each has since been
+superseded.
 
 **The other columns.** The *gap* is the verified upper bound minus the verified lower
 bound, exact where both are closed forms and zero where the case is solved.
-A star marks a recent result: one of the {{RECENT}} verified lower bounds proved since
-{{RECENT_SINCE}}. *Records* links each case file.
+*Records* links each case file.
 Values that are roots of a polynomial are shown as decimals, cut rather than rounded.
 
 **A row’s details.** Open a row for how its packing was built, the polynomial behind a

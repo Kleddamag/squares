@@ -72,6 +72,36 @@ def points(value: Any) -> Polygon:
     return [parse_point(point) for point in value]
 
 
+def node_mask(
+    frame: Frame, *, mask_index: int | None = None, mask: Sequence[int] | None = None
+) -> list[int]:
+    """A node's owner cells: a frame state by index, explicit cells, or both agreeing.
+
+    n11's nodes name a canonical state (`mask_index`); an n17 sub-pattern names its cells
+    and has no index (`mask_index` None), since it is a partial mask.
+    """
+    if mask is None:
+        require(mask_index is not None, "a node needs a mask or a mask index")
+        assert mask_index is not None
+        return list(frame.representatives[mask_index])
+    cells = list(mask)
+    require(
+        bool(cells)
+        and cells == sorted(set(cells))
+        and all(0 <= cell < len(frame.cells) for cell in cells),
+        "a mask is a sorted list of distinct cells",
+    )
+    require(
+        mask_index is None or list(frame.representatives[mask_index]) == cells,
+        "the mask differs from the indexed state",
+    )
+    return cells
+
+
+def _same_index(value: object, mask_index: int | None) -> bool:
+    return value == mask_index and (mask_index is None or type(value) is int)
+
+
 @dataclass
 class Seed:
     """The proved starting state: owned hulls, normalised rows and the ownership proofs."""
@@ -85,18 +115,23 @@ def admit_seed(
     frame: Frame,
     seed: Mapping[str, Any],
     *,
-    mask_index: int,
+    mask_index: int | None = None,
+    mask: Sequence[int] | None = None,
     bins: int,
     budget: Budget,
     owners: Sequence[int] | None = None,
+    allow_empty_groups: bool = False,
 ) -> Seed:
     """Prove every seed point owned and every seed row the owner's whole legal domain.
 
-    `owners` restricts the check to some owners, for a partial replay.
+    `owners` restricts the check to some owners, for a partial replay. With
+    `allow_empty_groups` an owner may start owning nothing (n17's axis interior cells,
+    whose least enclosing radius exceeds one half, own no point from the cell alone);
+    n11's grammar keeps the frozen requirement of at least one point.
     """
-    mask = list(frame.representatives[mask_index])
+    mask = node_mask(frame, mask_index=mask_index, mask=mask)
     require(seed.get("schema") == "generic_wall_seed_v1", "wrong seed schema")
-    require(type(seed.get("mask_index")) is int and seed["mask_index"] == mask_index, "seed ID")
+    require(_same_index(seed.get("mask_index"), mask_index), "seed ID")
     require(seed.get("mask") == mask, "seed mask changed")
     require(Q(seed["U"]) == frame.cap and Q(seed["B"]) == frame.scale, "seed U/B")
     require(type(seed.get("bins")) is int and seed["bins"] == bins > 0, "seed bins")
@@ -116,7 +151,8 @@ def admit_seed(
         require(owner in mask, "owner outside the seed mask")
         group = points(seed["groups"][str(owner)])
         require(
-            group and len(set(group)) == len(group), "seed group has duplicate/empty points"
+            (group or allow_empty_groups) and len(set(group)) == len(group),
+            "seed group has duplicate/empty points",
         )
         for index, point in enumerate(group):
             remaining(budget)
@@ -161,20 +197,18 @@ def admit_header(
     source: Mapping[str, Any],
     seed: Seed,
     *,
-    mask_index: int,
+    mask_index: int | None = None,
+    mask: Sequence[int] | None = None,
     seed_sha256: str,
 ) -> None:
     """The node's premises: no ancestry, constraints or guard, and the proved seed."""
-    mask = list(frame.representatives[mask_index])
+    mask = node_mask(frame, mask_index=mask_index, mask=mask)
     require(source.get("schema") == "exact_generic_owned_hull_v1", "wrong terminal schema")
     require(
         source.get("parent") is None and source.get("constraints") == [], "unsupported ancestry"
     )
     require(source.get("guard_source") is None, "guarded source unsupported")
-    require(
-        type(source.get("mask_index")) is int and source["mask_index"] == mask_index,
-        "source ID",
-    )
+    require(_same_index(source.get("mask_index"), mask_index), "source ID")
     require(source.get("mask") == mask, "source mask changed")
     require(Q(source["U"]) == frame.cap and Q(source["B"]) == frame.scale, "source U/B")
     require(source["source"]["sha256"] == seed_sha256, "terminal seed binding")
@@ -327,12 +361,13 @@ def replay_node(
     source: Mapping[str, Any],
     seed: Seed,
     *,
-    mask_index: int,
+    mask_index: int | None = None,
+    mask: Sequence[int] | None = None,
     bins: int,
     budget: Budget,
 ) -> NodeTrace:
     """Replay every sequential step, the final state and the terminal contradiction."""
-    mask = list(frame.representatives[mask_index])
+    mask = node_mask(frame, mask_index=mask_index, mask=mask)
     state_groups = dict(seed.groups)
     state_rows = dict(seed.rows)
     trace = NodeTrace()
@@ -394,7 +429,7 @@ def replay_node(
         state_rows[owner] = [result[3] for result in results]
         seen.add(owner)
         trace.steps.append(StepTrace(owner, results, state_groups[owner]))
-    admit_final_state(frame, source, state_groups, state_rows, mask_index=mask_index)
+    admit_final_state(frame, source, state_groups, state_rows, mask_index=mask_index, mask=mask)
     trace.groups, trace.rows = state_groups, state_rows
     trace.contradiction = admit_contradiction(source, state_rows)
     return trace
@@ -406,9 +441,10 @@ def admit_final_state(
     groups: Mapping[int, Polygon],
     rows: Mapping[int, list[Row]],
     *,
-    mask_index: int,
+    mask_index: int | None = None,
+    mask: Sequence[int] | None = None,
 ) -> None:
-    mask = list(frame.representatives[mask_index])
+    mask = node_mask(frame, mask_index=mask_index, mask=mask)
     final = source["final_state"]
     require(
         final["mask_index"] == mask_index

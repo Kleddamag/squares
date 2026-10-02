@@ -1,32 +1,43 @@
 """The regularizer on fixtures small enough to be checked by hand.
 
-Three synthetic witnesses, each built so the exact answer is known before the tool runs:
-a row with slack that compacts into the wall and each other, a block one part in ten to
-the thirteenth off its lattice that snaps onto it, and a square whose slide would run
-into a tilted neighbour and so must stop short and be refused.  A fourth case holds the
-tool to its boundary: it never writes under `witnesses/` or `atlas/`.
+Synthetic witnesses, each built so the exact answer is known before the tool runs: a row
+with slack that compacts into the wall and each other, a block one part in ten to the
+thirteenth off its lattice that snaps onto it, and a square whose slide would run into a
+tilted neighbour and so must stop short and be refused. Two more hold the neighbour
+non-regression rule: a slide that costs a tilted neighbour its stage contact, and one
+that costs an aligned neighbour its exact house contact while the stage's coarser gap
+still counts it; each must be undone. The command is held to its boundary (it never
+writes under `witnesses/` or `atlas/`), and the atlas layer's three modes are run on a
+scratch tree of three records: one regularized, one unchanged and one refused.
 """
 
 from __future__ import annotations
 
+import gzip
 import json
 from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
 from devtools.regularize_axis_components import (
-    ATLAS_GAP,
+    ALGORITHM,
     ROOT,
     SNAP_TOLERANCE,
+    STAGE_GAP,
     WITNESS_SCHEMA,
-    atlas_contacts,
+    AtlasLayout,
     axis_square,
     centre,
+    check_atlas,
+    house_count_of,
+    house_partners,
     interior_overlap_interval,
     lattice_target,
     main,
     regularize,
     slide_limit,
+    stage_contacts,
+    stage_count_of,
 )
 from sqpack.witness import exact_verify, load_witness, witness_document
 
@@ -64,15 +75,70 @@ def decimal_witness(
     }
 
 
+def corner_witness(
+    squares: list[list[tuple[str, str]]], side: str, *, kind: str, name: str
+) -> dict[str, Any]:
+    """A corner-form Witness/v2 record: rational as the exact grids are, or decimal as the
+    one digitized record is."""
+    exact = kind == "rational"
+    return {
+        "id": f"W-{name}",
+        "n": len(squares),
+        "side": side,
+        "square_size": "1",
+        "representation": "corners",
+        "scalar": {"kind": kind},
+        "coordinates": {
+            "origin": "lower-left",
+            "axes": "x-right-y-up",
+            "angle_unit": "not-applicable",
+        },
+        "squares": [
+            {"id": index, "corners": [list(point) for point in corners]}
+            for index, corners in enumerate(squares, start=1)
+        ],
+        "claim": {
+            "coordinate_provenance": "verified" if exact else "numerically-checked",
+            "method": "exact-algebraic" if exact else "numerical-multiprecision",
+            **(
+                {}
+                if exact
+                else {
+                    "precision": {"decimal_digits": 120, "rounding": "nearest"},
+                    "tolerance": "2e-6",
+                }
+            ),
+            "limitations": "synthetic fixture",
+        },
+        "source": {"path": "tests/synthetic"},
+        **(
+            {"certificate": {"kind": "exact-rational-sat", "replay": "synthetic"}}
+            if exact
+            else {}
+        ),
+    }
+
+
 def write_witness(path: Path, witness: dict[str, Any]) -> Path:
     path.write_text(witness_document(witness, schema=str(WITNESS_SCHEMA)), encoding="utf-8")
     return path
+
+
+def view_centres(view: dict[str, Any]) -> list[tuple[Fraction, Fraction]]:
+    return [
+        centre([(Fraction(x), Fraction(y)) for x, y in s["corners"]]) for s in view["squares"]
+    ]
 
 
 # A square pinned in a container's top-right corner, so the exact frame's side is exactly
 # the declared one and the right-wall lattice sits at side - 1/2, not a hair below it.
 PIN_3 = ("2.5", "2.5", "0")
 PIN_4 = ("3.5", "3.5", "0")
+# A square pinned in the top-left corner, so the exact frame's left wall stays at zero:
+# the promotion translates a pose to its bounding box, and without it a row seated a
+# little off the left wall would be carried onto it before any slide.
+LEFT_3 = ("0.5", "2.5", "0")
+LEFT_4 = ("0.5", "3.5", "0")
 
 
 def test_a_row_with_slack_compacts_into_the_wall_and_each_other() -> None:
@@ -82,22 +148,27 @@ def test_a_row_with_slack_compacts_into_the_wall_and_each_other() -> None:
     )
     report, view = regularize(witness, source_path="tests/synthetic")
 
-    centres = [
-        centre([(Fraction(x), Fraction(y)) for x, y in s["corners"]]) for s in view["squares"]
+    assert view_centres(view)[:3] == [
+        (HALF, HALF),
+        (Fraction(3, 2), HALF),
+        (Fraction(5, 2), HALF),
     ]
-    assert centres[:3] == [(HALF, HALF), (Fraction(3, 2), HALF), (Fraction(5, 2), HALF)]
     assert view["side"] == "4"
     assert report["exact_verification"]["repository_verifier"]["valid"] is True
     # Before: only the bottom wall counts for each (0.03 is three gaps).  After: the
     # first touches the left wall, the bottom and its neighbour; the last has a hole on
     # its right, half a side short of the far wall's lattice.
-    assert report["atlas_contacts"]["histogram_before"][1] == 3
-    assert [s["contacts_after"] for s in report["squares"][:3]] == [3, 3, 2]
+    assert report["contacts"]["stage"]["histogram_before"][1] == 3
+    assert [s["stage"][1] for s in report["squares"][:3]] == [3, 3, 2]
+    # The house rule agrees here: every contact the stage counts is exact.
+    assert [s["house"][1] for s in report["squares"][:3]] == [3, 3, 2]
+    assert report["contacts"]["house"]["became_lighter"] == 0
     assert report["squares"][2]["light_faces"] == {"right": "hole", "top": "hole"}
     assert report["regularization"]["moves"]["compactions"] == 3
     assert report["regularization"]["moves"]["converged"] is True
     assert report["regularization"]["exact_contacts_after"] == 2
     assert view["certificate"]["kind"] == "regularized-view"
+    assert view["certificate"]["label"] == "regularized"
     assert "regularized" in view["claim"]["limitations"]
 
 
@@ -123,10 +194,7 @@ def test_a_block_off_its_lattice_by_a_hair_snaps_onto_it_exactly() -> None:
     )
     report, view = regularize(witness, source_path="tests/synthetic")
 
-    centres = [
-        centre([(Fraction(x), Fraction(y)) for x, y in s["corners"]]) for s in view["squares"]
-    ]
-    assert centres[:4] == [
+    assert view_centres(view)[:4] == [
         (Fraction(5, 2), Fraction(5, 2)),
         (Fraction(7, 2), Fraction(5, 2)),
         (Fraction(5, 2), Fraction(7, 2)),
@@ -141,8 +209,7 @@ def test_a_block_off_its_lattice_by_a_hair_snaps_onto_it_exactly() -> None:
     assert report["regularization"]["statuses"] == {"exact-axis": 6}
     # The block's shades do not change: a snap changes the representation, not the
     # drawing.  Each block square has its two neighbours and no wall.
-    assert [s["contacts_before"] for s in report["squares"][:4]] == [2, 2, 2, 2]
-    assert [s["contacts_after"] for s in report["squares"][:4]] == [2, 2, 2, 2]
+    assert [s["stage"] for s in report["squares"][:4]] == [[2, 2]] * 4
     # Four exact face contacts inside the block; the verifier also reports a zero gap for
     # the block's two diagonal corner touches and for its outer corner, which now meets
     # the pinned square's corner exactly.
@@ -174,17 +241,91 @@ def test_a_slide_into_a_tilted_square_stops_short_and_is_refused() -> None:
     assert refused["reached_target"] is False
     assert Fraction(refused["distance"]) < Fraction("0.0100001")
     assert Fraction(refused["distance"]) > Fraction("0.0099999")
-    assert refused["contacts_before"] == refused["contacts_after"] == 1
+    assert refused["stage_contacts"] == [1, 1]
+    assert refused["house_contacts"] == [1, 1]
     assert moved["light_faces"] == {
         "left": "tilted-neighbour",
         "right": "hole",
         "top": "tilted-neighbour",
     }
-    centres = [
-        centre([(Fraction(x), Fraction(y)) for x, y in s["corners"]]) for s in view["squares"]
-    ]
-    assert centres[1] == (Fraction("1.53"), HALF)
+    assert view_centres(view)[1] == (Fraction("1.53"), HALF)
     assert report["exact_verification"]["repository_verifier"]["valid"] is True
+
+
+def test_a_slide_that_costs_a_tilted_neighbour_its_stage_contact_is_undone() -> None:
+    """Square 1 sits 0.02 off the left wall; square 2, tilted 0.002 radians, is 1.003 to its
+    right, a stage contact. Sliding 1 onto the wall gains it the wall and costs it 2, which
+    its own counts allow, but leaves 2 with 1.023 between centres: past the stage's gap.
+    The rule holds square 1's slides and runs again, and nothing is lighter than before.
+    """
+    witness = decimal_witness(
+        [("0.52", "0.5", "0"), ("1.523", "0.502", "0.002"), LEFT_3, PIN_3], "3"
+    )
+    report, view = regularize(witness, source_path="tests/synthetic")
+
+    rounds = report["regularization"]["rounds"]
+    assert rounds[0] == {"regressions": {"house": 0, "stage": 1}, "newly_held": {"1": "slides"}}
+    assert rounds[1] == {"regressions": {"house": 0, "stage": 0}, "newly_held": {}}
+    assert report["regularization"]["non_regression"]["held"] == {"1": "slides"}
+    assert report["residual_regressions"] == []
+    assert report["contacts"]["stage"]["became_lighter"] == 0
+    assert report["squares"][0]["held"] == "slides"
+    assert report["squares"][1]["status"] == "near-axis-untouched"
+    assert [s["stage"] for s in report["squares"][:2]] == [[2, 2], [2, 2]]
+    assert view_centres(view)[0] == (Fraction("0.52"), HALF)
+    assert report["exact_verification"]["repository_verifier"]["valid"] is True
+
+
+def test_a_slide_that_costs_a_neighbour_its_exact_house_contact_is_undone() -> None:
+    """Squares 1 and 2 share a side exactly, 0.005 off the left wall's lattice; a tilted
+    square 3 sits 1.008 to the right of 2, a stage contact. Square 1 slides onto the wall,
+    trading its house contact with 2 for the wall. Square 2 cannot follow: closing the
+    gap would carry it 1.013 from square 3 and cost it that stage contact. The stage's
+    0.01 gap still counts 1 and 2 as touching, so only the house rule sees square 2 lose
+    a side, and that alone undoes square 1's slide.
+    """
+    witness = decimal_witness(
+        [
+            ("0.505", "0.5", "0"),
+            ("1.505", "0.5", "0"),
+            ("2.513", "0.502", "0.002"),
+            LEFT_4,
+            PIN_4,
+        ],
+        "4",
+    )
+    report, view = regularize(witness, source_path="tests/synthetic")
+
+    rounds = report["regularization"]["rounds"]
+    assert rounds[0] == {"regressions": {"house": 1, "stage": 0}, "newly_held": {"1": "slides"}}
+    assert rounds[-1]["regressions"] == {"house": 0, "stage": 0}
+    assert report["contacts"]["house"]["became_lighter"] == 0
+    assert report["contacts"]["stage"]["became_lighter"] == 0
+    assert [s["house"] for s in report["squares"][:2]] == [[2, 2], [2, 2]]
+    # The report is the last round's: square 1 held, square 2 already touching it.
+    assert report["squares"][0]["held"] == "slides"
+    assert report["squares"][1]["moves"] == []
+    assert view_centres(view)[:2] == [(Fraction("0.505"), HALF), (Fraction("1.505"), HALF)]
+
+
+def test_single_square_counts_match_the_whole_packing_counts() -> None:
+    """The counts that judge one slide are the counts the whole packing is shaded with."""
+    poses = [
+        (0.5, 0.5, 0.0),
+        (1.5, 0.5, 0.0),
+        (2.5 + 1e-7, 0.5, 0.0),
+        (0.5, 1.5 + 3e-6, 0.0),
+        (1.52, 1.5, 0.002),
+        (3.5, 3.5, 0.0),
+    ]
+    ids = [str(index) for index in range(1, len(poses) + 1)]
+    whole = [len(found) for found in house_partners(poses, 4.0, ids)]
+    assert [house_count_of(index, poses, 4.0, ids) for index in range(len(poses))] == whole
+    # Square 2 meets square 3 a tenth of a micron off: inside the house rule's 2e-6.
+    # Square 4 sits 3e-6 above square 1: outside it, so only the wall counts.
+    assert whole == [3, 3, 2, 1, 0, 2]
+    staged = stage_contacts(poses, 4.0)
+    assert [stage_count_of(index, poses, 4.0) for index in range(len(poses))] == staged
 
 
 def test_exact_slide_limits_on_rational_corners() -> None:
@@ -214,11 +355,11 @@ def test_lattice_targets_seat_from_the_nearer_wall() -> None:
     assert lattice_target(Fraction(1), Fraction(3)) == HALF
 
 
-def test_the_atlas_rule_counts_as_the_workbench_does() -> None:
+def test_the_stage_rule_counts_as_the_workbench_does() -> None:
     poses = [(0.5, 0.5, 0.0), (1.5, 0.5, 0.0), (0.5, 1.5, 0.0), (1.5, 1.5, 1e-9)]
-    assert atlas_contacts(poses, 2.0) == [4, 4, 4, 4]
-    slack = [(0.5, 0.5, 0.0), (1.5 + 2 * ATLAS_GAP, 0.5, 0.0), (1.0, 1.5, 0.8)]
-    assert atlas_contacts(slack, 2.0) == [2, 1, 0]
+    assert stage_contacts(poses, 2.0) == [4, 4, 4, 4]
+    slack = [(0.5, 0.5, 0.0), (1.5 + 2 * STAGE_GAP, 0.5, 0.0), (1.0, 1.5, 0.8)]
+    assert stage_contacts(slack, 2.0) == [2, 1, 0]
 
 
 def test_the_command_writes_a_verifiable_view_only_where_it_is_told(tmp_path: Path) -> None:
@@ -232,12 +373,110 @@ def test_the_command_writes_a_verifiable_view_only_where_it_is_told(tmp_path: Pa
     report = json.loads((output / "cli-regularized.json").read_text())
     assert report["exact_verification"]["passed"] is True
     assert report["exact_verification"]["independent_checker"]["verification_passed"] is True
-    view = load_witness(output / "cli-regularized.yaml", fallback_schema=WITNESS_SCHEMA)
+    view = load_witness(output / "cli-regularized.yaml")
     result, verdict = exact_verify(view)
     assert verdict.valid is True
     assert result["coordinate_provenance"] == "verified"
     assert view["certificate"]["derived_from"] == "W-cli"
+    # The view names its schema by a path relative to itself, not by this machine's.
+    assert (
+        not (output / "cli-regularized.yaml").read_text().split("schema: ")[1].startswith("/")
+    )
 
     assert main([str(source), "--output-dir", str(ROOT / "witnesses" / "nowhere")]) == 2
     assert main([str(source), "--output-dir", str(ROOT / "atlas")]) == 2
     assert not (ROOT / "witnesses" / "nowhere").exists()
+
+
+def scratch_atlas(tmp_path: Path) -> AtlasLayout:
+    """Three records: a decimal row with slack, an exact grid with a vacancy, and a
+    digitized corner witness that has no exact frame."""
+    packing = tmp_path / "packing"
+    (packing / "w").mkdir(parents=True)
+    (packing / "certificates").mkdir()
+    row = decimal_witness(
+        [("0.53", "0.5", "0"), ("1.56", "0.5", "0"), ("2.59", "0.5", "0"), PIN_4],
+        "4",
+        name="row",
+    )
+    unit = [("0", "0"), ("1", "0"), ("1", "1"), ("0", "1")]
+    grid = corner_witness(
+        [
+            unit,
+            [(str(int(x) + 1), y) for x, y in unit],
+            [(x, str(int(y) + 1)) for x, y in unit],
+        ],
+        "2",
+        kind="rational",
+        name="grid",
+    )
+    digitized = corner_witness(
+        [
+            [("0", "0"), ("1", "0.000001"), ("0.999999", "1.000001"), ("0", "1")],
+            [("1.1", "0"), ("2.1", "0"), ("2.1", "1"), ("1.1", "1")],
+        ],
+        "2.1",
+        kind="decimal",
+        name="digitized",
+    )
+    entries = []
+    for n, witness in ((2, digitized), (3, grid), (4, row)):
+        write_witness(packing / "w" / f"n-{n:03d}.yaml", witness)
+        entries.append({"n": n, "witness": {"path": f"w/n-{n:03d}.yaml"}})
+    manifest = packing / "manifest.json"
+    manifest.write_text(json.dumps({"atlas": {"entries": entries}}), encoding="utf-8")
+    return AtlasLayout(
+        packing, tmp_path, manifest, packing / "regularized", packing / "certificates"
+    )
+
+
+def test_the_atlas_layer_updates_checks_and_verifies(tmp_path: Path) -> None:
+    layout = scratch_atlas(tmp_path)
+
+    assert main(["--update-atlas"], layout=layout) == 0
+    index = json.loads(layout.index.read_text())
+    assert index["algorithm"] == ALGORITHM
+    assert index["label"] == "regularized"
+    statuses = {record["n"]: record["status"] for record in index["entries"]}
+    assert statuses == {2: "refused", 3: "unchanged", 4: "regularized"}
+    refused, unchanged, regularized = index["entries"]
+    assert refused["refusal"]["kind"] == "promotion-unsupported"
+    # The grid's two squares beside the vacancy are light, and stay so: it is a hole.
+    assert unchanged["shades"]["house"]["light_after"] == 2
+    # The row compacts, but no square reaches four sides: shading counts squares, and a
+    # row on a wall is still light; the moves are what the record shows.
+    assert regularized["shades"]["house"]["light_before"] == 4
+    assert regularized["shades"]["house"]["light_after"] == 4
+    assert regularized["moves"]["compactions"] == 3
+    assert regularized["exact_verification"]["passed"] is True
+    assert regularized["view"]["path"] == "packing/regularized/n-004-regularized.yaml.gz"
+    assert sorted(path.name for path in layout.directory.iterdir()) == [
+        "index.json",
+        "n-004-regularized.yaml.gz",
+    ]
+    view = gzip.decompress(layout.view(4).read_bytes()).decode("utf-8")
+    assert "W-row-regularized" in view
+    assert index["totals"]["statuses"] == {"refused": 1, "regularized": 1, "unchanged": 1}
+
+    assert check_atlas(layout) == []
+    assert main(["--check-atlas"], layout=layout) == 0
+    assert main(["--verify-atlas"], layout=layout) == 0
+
+    retained = layout.view(4).read_bytes()
+    layout.view(4).write_bytes(
+        gzip.compress(view.replace("W-row", "W-other").encode(), mtime=0)
+    )
+    assert check_atlas(layout) == [
+        "n=4: the view differs from the one its verdict was recorded for"
+    ]
+    assert main(["--verify-atlas", "--n", "4"], layout=layout) == 1
+    layout.view(4).write_bytes(retained)
+
+    grid = layout.packing / "w/n-003.yaml"
+    grid.write_text(grid.read_text() + "# touched\n", encoding="utf-8")
+    (layout.directory / "stray.txt").write_text("", encoding="utf-8")
+    assert check_atlas(layout) == [
+        "n=3: the witness changed since its view was derived (stale)",
+        "unexpected file packing/regularized/stray.txt",
+    ]
+    assert main(["--check-atlas"], layout=layout) == 1

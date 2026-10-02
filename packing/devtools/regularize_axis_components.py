@@ -1142,7 +1142,10 @@ def settle(
         escalations = escalations_for(regressions, pieces, certified, held, index_of)
         rounds.append(
             {
-                "regressions": len(regressions),
+                "regressions": {
+                    rule: sum(regression.rule == rule for regression in regressions)
+                    for rule in RULE_NAMES
+                },
                 "newly_held": {ids[i]: level for i, level in sorted(escalations.items())},
             }
         )

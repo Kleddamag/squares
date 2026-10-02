@@ -136,7 +136,7 @@ lower_bounds:
       Göbel 1979 (Math. Centre Tracts 106), printed page 179, which quotes the bound
       as W(z) >= c(||z|| z)^{1/2} "where c = 10^{-100}" -- an equals sign on the
       rendered page -- and opens page 180 "Since c is small, the result can be
-      considered as an asymptotic one." Goebel cites Roth and Vaughan for the bound
+      considered as an asymptotic one." Göbel cites Roth and Vaughan for the bound
       and gives no source for the value. DS7 and McClenagan 2026 (PDF page 1) print
       it as an explicit factor, McClenagan as W(x) > 10^{-100} sqrt(x - floor(x)).
 

@@ -23,6 +23,10 @@ Independent support is kept in separate fields, never merged:
 - The area bound `sqrt(n)`, and Nagamochi's excess over it.
 - chelokot's reported Lean re-proof of `s(n^2 - 2) = n`, located in the archived Evand
   sources that report it. The Lean archive itself is neither archived nor checked here.
+- Published proofs a case's own lower-bound prose cites without an evidence record (El
+  Moumni 1999, Friedman's DS7 theorems), with any defect the same section names.
+- Where an independent proof imports one of Nagamochi's auxiliary lemmas (Bentz 2010 and
+  2016), the source says which, so its independence can be weighed.
 
 Exposure classes, decided in this order for a case whose operative bound cites the record
 (a case whose operative bound does not is `unaffected` outright):
@@ -42,10 +46,11 @@ enclosures (nonzero sign). The one verified value outside that arithmetic, the `
 root of Trump's polynomial, is compared by its display decimal with one unit in the last
 place of slack, and a comparison that slack cannot separate is refused rather than guessed.
 
-The document inventory is lexical, not semantic: it lists every line in the reader-facing
-documents, the register, the research reports, the site templates and the case-prose
-generator that states Nagamochi's closed form or a `k^2 - 2` identity, or names Nagamochi
-beside a bound or a proof, and flags a line whose paragraph already carries a caveat.
+The document inventory is lexical, not semantic. Over the reader-facing documents, the
+register, the research reports, the site templates and the case-prose generator, a line
+`states` the theorem when it carries the closed form or a `k^2 - 2` identity or names
+Nagamochi beside a proof word, `relies` on it when it names him beside a bound or floor, and
+otherwise `mentions` him; a line is `qualified` once its paragraph names Karakuş's finding.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.audit_t007_consumers --update
@@ -166,17 +171,19 @@ CHELOKOT_REPORTS = (
         "kernel-checked proof: s(n²−2) = n",
     ),
 )
-#: The cases the same source lists individually, beyond the `n^2 - 2` family.
+#: The cases the same source names individually, beyond the `n^2 - 2` family.
 CHELOKOT_INDIVIDUAL = (
     (
         (23, 34),
         LITERATURE,
         "chelokot generalizes (s(23): 3×4 + 2×5 = 22 pts; s(34): 3×5 + 3×6 = 33 pts)",
+        "a staggered-lattice unavoidable set of n - 1 points, generalizing Bentz's s(46)",
     ),
     (
         (23, 34, 47, 48),
         LITERATURE,
         "s(n²-2) = n, s(6), s(10), s(13), s(22), s(33), s(46) (+47, 48, 23, 34)",
+        "listed among the archive's kernel-checked values",
     ),
 )
 
@@ -672,11 +679,11 @@ def chelokot_entry(n: int) -> dict[str, Any] | None:
                 "reported_at": [pointer(path, needle) for path, needle in CHELOKOT_REPORTS],
             }
         )
-    for values, path, needle in CHELOKOT_INDIVIDUAL:
+    for values, path, needle, statement in CHELOKOT_INDIVIDUAL:
         if n in values:
             claims.append(
                 {
-                    "statement": f"s({n}) listed individually among the archive's results",
+                    "statement": f"s({n}): {statement}",
                     "applies": "direct",
                     "value": math.isqrt(n - 1) + 1,
                     "reported_at": [pointer(path, needle)],
@@ -1343,11 +1350,15 @@ def report(document: Mapping[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def shown(path: Path) -> str:
+    return path.relative_to(REPO).as_posix() if path.is_relative_to(REPO) else str(path)
+
+
 def check() -> int:
     expected = render(build_document())
     if not OUTPUT.is_file() or OUTPUT.read_text(encoding="utf-8") != expected:
         print(
-            f"{OUTPUT.relative_to(REPO)} is missing or stale; "
+            f"{shown(OUTPUT)} is missing or stale; "
             "rerun python -m devtools.audit_t007_consumers --update"
         )
         return 1
@@ -1360,7 +1371,7 @@ def update() -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     with atomic_output_file(OUTPUT) as temporary:
         temporary.write_text(text, encoding="utf-8")
-    print(f"wrote {OUTPUT.relative_to(REPO)}")
+    print(f"wrote {shown(OUTPUT)}")
 
 
 def parser() -> argparse.ArgumentParser:

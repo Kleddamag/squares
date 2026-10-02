@@ -5,17 +5,23 @@ title: "Import wand125: mixed rectangle-measure certificates at n = 37, 65, 66, 
 kind: task
 status: in_progress
 priority: 2
-version: 7
+version: 9
 spec_path: docs/project/specs/active/plan-2026-10-01-result-import-first-application.md
 labels:
   - packing
   - result-import
-dependencies: []
+dependencies:
+  - type: blocks
+    target: is-01m3yrzkz80qd1wv5sjr0kkkv0
 parent_id: is-01m3yrdxte02c7bnygkke34ct4
 created_at: 2026-10-01T23:55:47.217Z
-updated_at: 2026-10-02T16:53:19.295Z
+updated_at: 2026-10-02T17:01:35.698Z
 ---
 Result import process from stage 1. New lower-bound entry for five counts; T-048 keeps its claim. Tarballs (125 MB) pinned by digest and not retained, as for n = 50. audit_wand125_point_and_mixed is hard-coded to n = 50 and needs a certificate parameter. Complete replay 45 to 90 CPU-h. T-048 own replay sits unmerged on claude/replay-wand125-n50-l740-local (think-nnlg). A rolling request: n = 82 to 85 are announced.
+
+## To finish (validation backlog, 2026-10-02)
+
+T-069 (mixed rectangle measures at n = 37, 65, 66, 90, 92, V0/C1). From packing/, per certificate: `.venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-replay nNN --range A-B --work W --workers 4` over all 201 angles, `mixed-merge nNN`, and `mixed-control nNN --work W`. Packet resources/web/wand125-point-and-mixed-2026-10-01/. Expected CPU by `mixed-price`: n37 3.1, n65 13.2, n66 10.3, n90 8.2, n92 9.0, 43.8 CPU-hours in all (wall up to twice that). Refutes: an angle refused, or a replay not matching the shipped record. Moves the rung: the five merged receipts recorded as replayed-here entries derive V3/C3. mixed_n92_L975 (think-r7yt) raises n = 92's reported value; T-069 stays true as stated. Run `uv run --frozen --all-extras --group dev python -m devtools.check_results`.
 
 ## Notes
 

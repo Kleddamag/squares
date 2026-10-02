@@ -5,7 +5,7 @@ title: Import, confirm and answer every reported result (2 October 2026 effort)
 kind: epic
 status: open
 priority: 1
-version: 17
+version: 19
 labels:
   - result-import
 dependencies: []
@@ -26,7 +26,9 @@ child_order_hints:
   - is-01m3wyajwc1tbyq4f2rbhjhqdh
   - is-01m3xrx8b86kp8t1k6gj71p4ej
   - is-01m3xvdvhf7hsd6x6svf0x81zj
+  - is-01m3yrzkz80qd1wv5sjr0kkkv0
+  - is-01m3yrzmzcpq964zt2kr14w8jv
 created_at: 2026-10-02T16:51:15.917Z
-updated_at: 2026-10-02T16:53:39.854Z
+updated_at: 2026-10-02T17:00:56.683Z
 ---
 Umbrella for the 2 October 2026 effort: PRs #290 -> #292 -> #298 (imports and records), plus a stacked PR for verifier provenance and the independent verifier. Children track each lane; done when every reported result is confirmed or refuted (or has a bead naming exactly what remains), every issue has a current status reply, closeable issues are closed, and all PRs are merged.

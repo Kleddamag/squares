@@ -5,17 +5,23 @@ title: "Import wand125: s(77) = 9 (#279)"
 kind: task
 status: in_progress
 priority: 1
-version: 7
+version: 9
 spec_path: docs/project/specs/active/plan-2026-10-01-result-import-first-application.md
 labels:
   - packing
   - result-import
-dependencies: []
+dependencies:
+  - type: blocks
+    target: is-01m3yrzkz80qd1wv5sjr0kkkv0
 parent_id: is-01m3yrdxte02c7bnygkke34ct4
 created_at: 2026-10-01T23:55:43.131Z
-updated_at: 2026-10-02T16:53:07.746Z
+updated_at: 2026-10-02T17:01:31.844Z
 ---
 Result import process from stage 1. New optimality entry; s(78) = 9 follows by monotonicity, a second route beside T-064. Certificate directory first published at bd4de4f6, retained at 1a25a5e. Same checksum-file defect as #280. The cover replaces 84 points on loaded lines by segments of length 2/1000, a shape the reviewed s21, s45 and s60 covers do not have: the review checks whether either checker depends on the earlier shape. Cheapest complete replay zmx2 --d4 --pair-points, up to about 5 thread-hours.
+
+## To finish (validation backlog, 2026-10-02)
+
+T-067 (s(77) = 9) reached V3/C3 on 2 October on PR #298's branch (claude/zealous-gauss-jem7l9): both zmx2 sweeps replayed in full, review accepted. To finish: merge PR #298; then this bead closes, and #279's reply is drafted from main (`check_requests --draft 279`). Nothing refutes it short of a new defect in the review's scope. The second method (zm_mixed.py, about 94 CPU-hours) is think-mx3k's and is beyond V3/C3.
 
 ## Notes
 

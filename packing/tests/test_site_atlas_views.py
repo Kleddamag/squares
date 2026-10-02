@@ -258,7 +258,6 @@ def test_a_plain_address_opens_the_grid_under_its_two_tabs(seen: Readings) -> No
     assert {tab["font_px"] for tab in tabs.values()} == {17.48}
     assert tabs["grid"]["box"]["top"] == tabs["triangle"]["box"]["top"]
     assert tabs["grid"]["box"]["right"] <= tabs["triangle"]["box"]["left"] + 1
-    assert not grid["key_shown"]
     assert len(grid["tiles"]) == 100
 
 
@@ -298,7 +297,6 @@ def test_the_triangle_sets_row_k_as_2k_minus_1_tiles_ending_at_the_right_edge(
     tops = [tiles[k * k]["top"] for k in range(1, 11)]
     assert tops == sorted(tops)
     assert len(set(tops)) == 10
-    assert triangle["key_shown"]
     assert _tabs(triangle)["triangle"]["selected"] == "true"
     assert triangle["panel"]["labelledby"] == _tabs(triangle)["triangle"]["id"]
 

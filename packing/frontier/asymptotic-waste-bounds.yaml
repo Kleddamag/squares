@@ -30,7 +30,7 @@ upper_bounds:
       An upper bound only: Theorem (1) prints W(alpha) = O(alpha^{7/11}) (PDF page 4,
       printed page 2), and printed page 6 says the authors have no nontrivial lower
       estimate for W. The archive's cleaned transcription read it as a two-sided
-      Theta(alpha^{7/11}) until 2026-10-02 (D-513). Göbel 1979, printed page 179,
+      Theta(alpha^{7/11}) until 2026-10-02 (D-514). Göbel 1979, printed page 179,
       quotes it as W(z) = O(z^{7/11}).
   - bound: O(x^{(3-sqrt(3))/2 + eps})
     exponent: 0.63397
@@ -46,7 +46,7 @@ upper_bounds:
       CORRECTED 2026-10-02: McClenagan 2026 does not contradict it. Its PDF, page 1,
       prints Montgomery's bound as O(x^{(3-sqrt(3))/2}). The attribution of
       (3+sqrt(2))/7 to Montgomery was read from this archive's cleaned transcription
-      of that page, which swapped the paragraph's exponents until 2026-10-02 (D-514);
+      of that page, which swapped the paragraph's exponents until 2026-10-02 (D-515);
       the exponent above stands. Göbel 1979, printed page 180, also reports
       Montgomery's result as lowering 7/11 to (3-sqrt(3))/2, citing Roth and Vaughan.
   - bound: O(x^{(3+sqrt(2))/7} log x)
@@ -60,7 +60,7 @@ upper_bounds:
       Not read in the primary. The form is as Wang-Dong-Li 2016 and McClenagan 2026
       (PDF page 1) print it, with the factor log x. The square root over log x that
       this archive's cleaned McClenagan transcription carried until 2026-10-02
-      (D-514) is not in its PDF.
+      (D-515) is not in its PDF.
   - bound: O(x^{5/8})
     exponent: 0.62500
     authors: [Shuang Wang, Tian Dong, Jiamin Li]

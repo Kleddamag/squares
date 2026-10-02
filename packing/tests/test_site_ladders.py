@@ -4,7 +4,8 @@ Verification Ladders is one diagram of three ladders (`templates/paper-design.md
 Rating ladders): every rung is the same height, a chip and a description that is a box of
 exactly two lines its words never run past, with no tally of results and no rule between
 the rows. Whether a text takes two lines is the browser's to say, from the face and the
-cell's width, so this opens the rendered overview in Chromium and measures the diagram
+cell's width, so this opens the rendered results page in Chromium (the diagram was the
+overview's until 2026-10-02) and measures the diagram
 with the probe `devtools.measure_site_pages ladders` reports from, at the widths the
 design is shot at and at the ones where a description is narrowest: 716 pixels, the least
 window that sets three columns, and 715, where the ladders stack; 768, where the page's
@@ -67,8 +68,9 @@ GUTTER = 8
 def diagrams(tmp_path_factory: pytest.TempPathFactory) -> Iterator[dict[int, dict[str, Any]]]:
     """The overview's one ladder diagram as laid out at each of `WIDTHS`."""
     sync_api = pytest.importorskip("playwright.sync_api")
-    path = Path(tmp_path_factory.mktemp("site")) / "index.html"
-    path.write_text(site_renders.html("index.html"), encoding="utf-8")
+    # The diagram is the results page's since 2026-10-02, under its table.
+    path = Path(tmp_path_factory.mktemp("site")) / "all-results.html"
+    path.write_text(site_renders.html("all-results.html"), encoding="utf-8")
     with sync_api.sync_playwright() as driver:
         try:
             browser = driver.chromium.launch(executable_path=os.environ.get(BROWSER_OVERRIDE))

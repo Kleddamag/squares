@@ -2106,22 +2106,6 @@ ATLAS_VIEWS: tuple[tuple[str, str], ...] = (("grid", "Grid"), ("triangle", "Tria
 #: The id the script gives the box of tiles, which each view tab controls.
 ATLAS_PANEL = "atlas-cells"
 
-#: What a tile's fills say, in the grid's note: the house renderer's color is the square's
-#: tilt and its shade the full-side contacts (`sqpack.render.color`). The second clause is
-#: X-049's finding: in the packet-derived records 2,400 of the 4,234 light grid squares are
-#: loose in the retained pose, so a light shade there is not a shortage of neighbors.
-ATLAS_SHADE_KEY = (
-    "Color marks the tilt of a square and shade its full-side contacts; a lighter grid "
-    "square can be loose in the source packing rather than short of neighbors."
-)
-
-#: What the triangle's rows are, in words, under the triangle.
-ATLAS_TRIANGLE_KEY = (
-    "Each row ends at a perfect square, where the best packing is the plain grid, and "
-    "holds the cases that need a square of that side: 2 to 4 need side 2, 5 to 9 side 3, "
-    "and so on."
-)
-
 
 def atlas_view_tabs() -> str:
     """The tabs over the atlas's tiles that choose its view, Grid or Triangle: the
@@ -2174,7 +2158,7 @@ def atlas_grid() -> str:
     import json  # noqa: PLC0415
 
     from devtools import render_frontier_page as frontier  # noqa: PLC0415
-    from devtools.render_case_pages import CASES_PAGE, case_url  # noqa: PLC0415
+    from devtools.render_case_pages import case_url  # noqa: PLC0415
 
     cases = frontier.frontier_cases()
     cells = []
@@ -2200,14 +2184,16 @@ def atlas_grid() -> str:
         '<script type="application/json" data-atlas-facts>'
         + facts.replace("</", "<\\/")
         + "</script>"
-        f'<p class="site-atlas-key">{_esc(ATLAS_TRIANGLE_KEY)}</p>'
+        # The triangle's one-line key ("Each row ends at a perfect square…") stood here
+        # and the line under the expander ("Every case from n = 1 to 324 is also in the
+        # frontier survey, and each has a case record.") after it, until 2026-10-02 (the
+        # owner, think-l38m): each tile opens its case record, and the Frontier page is a
+        # page card. The expander's row ends the block.
         '<p class="site-action-row site-atlas-toggle-row" hidden>'
         '<button type="button" class="site-action site-atlas-toggle" '
         f'data-atlas-toggle aria-expanded="false" aria-controls="{ATLAS_PANEL}" '
         f'aria-label="{name_more}" data-label-more="{more}" data-label-less="{less}" '
         f'data-name-more="{name_more}" data-name-less="{name_less}">'
         f"<span data-atlas-label>{more}</span>{arrow_icon('double-down')}</button></p>"
-        f'<p class="site-atlas-note">{_esc(ATLAS_SHADE_KEY)} Every case from n = 1 to 324 '
-        'is also in the <a href="frontier.html">frontier survey</a>, and each has a '
-        f'<a href="{CASES_PAGE}">case record</a>.</p></div>{atlas_popover()}'
+        f"</div>{atlas_popover()}"
     )

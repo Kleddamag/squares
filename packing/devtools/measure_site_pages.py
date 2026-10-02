@@ -184,7 +184,6 @@ import hashlib
 import io
 import itertools
 import json
-import os
 import re
 import statistics
 import sys
@@ -196,6 +195,7 @@ from devtools import render_overview
 from devtools.preview_site import (
     BASELINES,
     HEADER,
+    launch_chromium,
     motion_for,
     press,
     serve,
@@ -204,7 +204,6 @@ from devtools.preview_site import (
     split_words,
 )
 from devtools.render_n11_lower_bounds_explainer import MATH_WRAPPERS
-from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import applied, probe
 
 PROBES = Path(__file__).resolve().parent / "probes"
@@ -244,7 +243,7 @@ FAMILY = re.compile(r"font-family:\s*(\"[^\"]+\"|[^;]+);")
 
 
 def _launch(driver: Any) -> Any:
-    return driver.chromium.launch(executable_path=os.environ.get(BROWSER_OVERRIDE))
+    return launch_chromium(driver)
 
 
 def measure_load(

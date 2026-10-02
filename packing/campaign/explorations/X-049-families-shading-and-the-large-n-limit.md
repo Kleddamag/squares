@@ -418,8 +418,10 @@ step, and whether a view may use the smallest verifying dilation, which would op
 89 refused Kingbird records.
 Algebraic-field witnesses, where the same algorithm runs in $\mathbb Q(\alpha)$, were
 not prototyped; interval-enclosure witnesses admit no exact lattice statement at all.
-Both legends now say that a lighter grid square can be loose in the source packing
-rather than short of neighbours.
+The workbench stage legend now says that a lighter grid square can be loose in the
+source packing rather than short of neighbours.
+The homepage atlas carries no such sentence: the owner removed the notes under the atlas
+grid on 2026-10-02 (`think-l38m`), and this branch follows that decision.
 
 ## The Large-n Limit
 
@@ -576,8 +578,8 @@ floor+	frac14}$ that is strictly weaker except at $N=m^2-1$. $s(k^2-2)=k$ now re
   Lean replay.
 - **Two asymptotic transcriptions were wrong.** The Erdős–Graham cleaned text wrote
   Theorem (1) as $\Theta(lpha^{7/11})$ where the paper prints $O(lpha^{7/11})$
-  (D-513), and the McClenagan text swapped Montgomery’s and Chung–Graham’s exponents,
-  which the n11 research report then charged to McClenagan (D-514). Both are corrected
+  (D-514), and the McClenagan text swapped Montgomery’s and Chung–Graham’s exponents,
+  which the n11 research report then charged to McClenagan (D-515). Both are corrected
   with dated notes, and `asymptotic-waste-bounds.yaml` now records the Göbel origin of
   the $10^{-100}$ constant, Wang–Dong–Li’s explicit constant and Kearney–Shiu’s
   $\delta_k$ bounds.
@@ -592,7 +594,7 @@ floor+	frac14}$ that is strictly weaker except at $N=m^2-1$. $s(k^2-2)=k$ now re
 | `think-xucp` (P1) | Re-ground the 287 floors and the $k^2-1$, $k^2-2$ values per the review | continue; awaits the owner’s choice of order with `think-ym34` |
 | `think-ym34` (P1) | Replay chelokot’s Lean proof of $s(n^2-2)=n$ with an axiom receipt | continue |
 | `think-ptt7` | H-269, H-270 and H-272 registered; $\beta=2/5$ parked under H-037 | retire-success |
-| `think-hzv3`, `think-1n8w` | Sources archived; D-513 and D-514 corrected | retire-success |
+| `think-hzv3`, `think-1n8w` | Sources archived; D-514 and D-515 corrected | retire-success |
 | `think-bgkz` | Regularized-view layer | see its lane |
 
 **Selected next entry:** `think-ym34`, the Lean replay, because it decides whether the

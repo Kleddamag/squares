@@ -115,7 +115,7 @@ session:
       gap reaching T-007 for every N >= 10, Karakus Theorem 1.1 sound as read, s(k^2-1) = k recovered
       and s(k^2-2) = k resting on an unreplayed Lean proof; the consumer inventory finds the bound operative
       at 287 records. No register value changed; think-xucp and think-ym34 own the changes and the Lean
-      replay. think-1n8w and think-hzv3: sources archived, D-513 and D-514 corrected. think-ptt7: H-269,
+      replay. think-1n8w and think-hzv3: sources archived, D-514 and D-515 corrected. think-ptt7: H-269,
       H-270 and H-272 registered. think-bgkz: a regularized-view layer for 51 records cuts the atlas light
       green squares from 7,725 to 5,475 with no square lighter; the homepage toggle remains.'
     evidence:
@@ -334,7 +334,7 @@ session:
     recording: contemporaneous
     phase: 3
     elapsed_quality: platform_measured
-    outcome: Karakus, chelokot and five Kingbird pages archived; D-513 (Erdos-Graham) and D-514 (McClenagan)
+    outcome: Karakus, chelokot and five Kingbird pages archived; D-514 (Erdos-Graham) and D-515 (McClenagan)
       corrected; register notes added.
     evidence:
     - packing/defects.yaml

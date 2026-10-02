@@ -14,13 +14,14 @@ scrolls sideways in its wrap (the frontier has no card layout). It then uses the
 as a reader does: sorts it, filters it, opens a row's popover from its drawing and a
 case's record from its number.
 
-Skipped where no Chromium can be launched; `SQPACK_CHROMIUM` names one the environment
-supplies, as the other browser tools read it.
+The browser is launched as `tests.site_browser` launches it: the pinned Chromium, or the
+one `SQPACK_CHROMIUM` names, with its text unhinted so that the pixels pinned here read
+the same on Linux as on macOS, where they were measured; skipped where none can be
+launched, unless the run requires one.
 """
 
 from __future__ import annotations
 
-import os
 from collections.abc import Iterator
 from fractions import Fraction
 from pathlib import Path
@@ -29,9 +30,8 @@ from typing import Any
 import pytest
 
 from devtools.preview_site import settle_math
-from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import probe
-from tests import site_renders
+from tests import site_browser, site_renders
 from tests.test_frontier_page import COLUMNS, column
 
 PROBES = Path(__file__).resolve().parent / "probes"
@@ -60,14 +60,11 @@ LEVEL = 1.5
 @pytest.fixture(scope="module")
 def page(tmp_path_factory: pytest.TempPathFactory) -> Iterator[Any]:
     """The rendered frontier atlas, loaded once with its math typeset."""
-    sync_api = pytest.importorskip("playwright.sync_api")
+    sync_api = site_browser.api()
     path = Path(tmp_path_factory.mktemp("site")) / "frontier.html"
     path.write_text(site_renders.html("frontier.html"), encoding="utf-8")
     with sync_api.sync_playwright() as driver:
-        try:
-            browser = driver.chromium.launch(executable_path=os.environ.get(BROWSER_OVERRIDE))
-        except sync_api.Error as error:
-            pytest.skip(f"no Chromium to launch: {error.message.splitlines()[0]}")
+        browser = site_browser.launch(driver)
         opened = browser.new_page(viewport={"width": WIDTHS[0], "height": 900})
         opened.goto(path.as_uri(), wait_until="load")
         settle_math(opened)

@@ -12,7 +12,7 @@ his missing computational artifacts to the source-availability table; his three
 manuscripts are now archived, and no operative bound changes from that addition.
 A source correction of 2026-10-02 withdraws this report’s claim that McClenagan 2026
 misattributes Montgomery’s exponent: the misreading was this archive’s own transcription
-([D-514](../../../defects.md)).
+([D-515](../../../defects.md)).
 
 **Current status, 2026-09-30:** `s(11)` is now verified exactly at Walter Trump’s
 algebraic side by [T-060](../../../packing/frontier/RESULTS.md) and the exact witness
@@ -1909,7 +1909,7 @@ confirming the corrigendum **[Friedman DS7]** issued in March 2023 ~~and contrad
 2026-10-02: McClenagan makes no such attribution.
 Rendered PDF page 1 prints Montgomery’s bound as `O(x^{(3−√3)/2})`, in agreement with
 Roth and Vaughan; the `(3+√2)/7` came from this archive’s cleaned transcription of that
-page, which swapped the paragraph’s exponents, [D-514](../../../defects.md).
+page, which swapped the paragraph’s exponents, [D-515](../../../defects.md).
 Montgomery’s exponent as stated here, and DS7’s corrigendum, stand.)* And it records
 that Erdős and Graham *speculated* the truth is `O(α^{1/2})`; Roth and Vaughan say they
 are “dubious as to the validity of such a small bound” but prove that if it is true, it
@@ -1945,7 +1945,7 @@ worth recording so they are not propagated.
 | *Our own earlier draft:* rigorous interval branch-and-bound is “the most plausible untried line of attack” | **Wrong — corrected** | It is not untried. It has been applied to rotating unit squares (Montanher et al. 2018) and rigorously reaches `n = 3`. It is the most *developed* modern approach and falls far short of `n = 11`. |
 | *Our own earlier draft:* the Roth–Vaughan bound is `W(x) ≥ 10⁻¹⁰⁰√(x·\|x − ⌊x⌋ + 1/2\|)`, “stated precisely in [Friedman DS7]” | **Wrong — corrected against the primary** | The theorem is `w(α) ≫ (‖α‖ α)^{1/2}` under `α(α − [α]) > 1/6`. The bound uses distance to the **nearest integer**; the side condition uses the **fractional part**; and there is **no explicit constant at all**. |
 | **[Friedman DS7]** and **[McClenagan 2026]**: the Roth–Vaughan bound carries an explicit `10⁻¹⁰⁰` | **False** | No such constant appears anywhere in Roth and Vaughan. The relation is Vinogradov `≫`, whose implied constant is never evaluated. Two independent secondary sources carry the same phantom number. |
-| ~~**[McClenagan 2026]**: Montgomery’s improvement is `O(x^{(3+√2)/7})`~~ | ~~**False**~~ **Withdrawn 2026-10-02**: McClenagan makes no such claim | Roth and Vaughan record it as `(3 − √3)/2 + ε = 0.633974… + ε`, matching the corrigendum **[Friedman DS7]** issued 1 March 2023. `(3+√2)/7` is Chung–Graham’s 2009 exponent. *(Corrected 2026-10-02: McClenagan’s PDF, page 1, prints Montgomery’s bound as `O(x^{(3−√3)/2})`, and Chung–Graham 2009 as `O(x^{(3+√2)/7} log x)`. The claim this row refuted was this archive’s misreading of that page, [D-514](../../../defects.md); the correct statement here stands.)* |
+| ~~**[McClenagan 2026]**: Montgomery’s improvement is `O(x^{(3+√2)/7})`~~ | ~~**False**~~ **Withdrawn 2026-10-02**: McClenagan makes no such claim | Roth and Vaughan record it as `(3 − √3)/2 + ε = 0.633974… + ε`, matching the corrigendum **[Friedman DS7]** issued 1 March 2023. `(3+√2)/7` is Chung–Graham’s 2009 exponent. *(Corrected 2026-10-02: McClenagan’s PDF, page 1, prints Montgomery’s bound as `O(x^{(3−√3)/2})`, and Chung–Graham 2009 as `O(x^{(3+√2)/7} log x)`. The claim this row refuted was this archive’s misreading of that page, [D-515](../../../defects.md); the correct statement here stands.)* |
 | *Our own earlier draft:* Kearney–Shiu prove `n_r ≤ 27r^{3/2} + O(r²)` | **Wrong — corrected** | The bound is `27r³/2 + O(r²)` — cubic in `r`, from `p(⌈3r/2⌉)` with `p(t) = 4t³ + 4t² + 3t + 1`. A misread fraction. |
 | *Our own earlier draft:* Stromquist’s Theorem 2 is “ten unavoidable points, eleven boxes, pigeonhole” | **Wrong — corrected** | The ten points are *not* unavoidable; the proof is two-stage and finishes with twelve points of which one box must contain **three**. Same for Theorem 3. See [What Stromquist actually proved](#what-stromquist-actually-proved-2003). |
 | *Our own earlier draft:* Gensane–Ryckelynck and Nagamochi could not be retrieved | **Wrong — corrected** | Both are freely available: Springer serves the Gensane–Ryckelynck PDF openly, and Nagamochi is open access in *Electron. J. Combin.* 12 #R37. Both are now in the local archive and read. |

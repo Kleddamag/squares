@@ -26,8 +26,8 @@ We and several others have proved new results as part of this project for low va
 $n$, including $n = 11$, $n = 12$, $n = 17$ and many others.
 As part of a collaborative open effort, several people have built on results from this
 project or developed other new proofs, and this site
-[independently checks and documents](#verification-ladders) the proofs and certificates
-behind them.
+[independently checks and documents](all-results.html#verification-ladders) the proofs
+and certificates behind them.
 
 If you have new results or know of newer results, please
 [file an issue]({{NEW_ISSUE_URL}}) to report them, and we will gladly incorporate them
@@ -37,58 +37,38 @@ and cite your work.
 
 ## Recent Results
 
-<!-- The section opens with README's next two paragraphs, what the project covers and
-     its newest major result, read from its recent-progress block
-     (site_documents.overview_progress). Edit them in README.md. -->
+<!-- One paragraph before the table (the owner, 2026-10-02): the headline of recent
+     progress with its result ids, which check_results.READER_TIER holds to the
+     register, then the star legend and where the table's filters start. README carries
+     its own fuller account of the same progress, and the two stopped being one shared
+     block that day (site_documents, think-ekw5). The ratings, the kinds, the statuses
+     and the dating rule are defined once, on the Results page; a result's rungs, review
+     and retained packet are its row's; and when a bound by others counts as verified is
+     said once, on the Frontier page. -->
 
-{{README_PROGRESS}}
-
-<!-- The ratings, the kinds, the statuses and the dating rule are defined once, on the
-     Results page, and when a bound by others counts as verified is said once, on the
-     Frontier page; this section says only what the table is and where its filters
-     start. -->
-
-The table lists every result, newest first: new bounds for particular numbers of
-squares, found here or by others, each with its credit, its ratings, its kind and its
-status, all defined on the [Results](all-results.html) page.
+Eleven squares is settled: $s(11) = 3.8770835\ldots$, the exact side of Trump’s 1979
+packing, by [T-060](all-results.html#t-060). Seventeen squares is bracketed by
+machine-checked bounds, [T-043](all-results.html#t-043) below and
+[T-065](all-results.html#t-065) above, and [$n = 21$](cases.html#n-21),
+[$32$](cases.html#n-32) and [$45$](cases.html#n-45) have new exact values.
 {{STAR_LEGEND}}
-The table starts with superseded results hidden, at significance S4 and up and a maximum
-age of 180 days; clear Hide superseded, choose All and clear Max age to see every row.
+The chips on a row say how significant the result is (S), how it was originally verified
+(V) and how it has been confirmed (C), each rung defined on the
+[Verification Ladders](all-results.html#verification-ladders).
+The table starts at significance S4 and up, max age 180 days and superseded hidden.
 
 {{RECENT}}
 
 <p class="site-action-row site-more"><a class="site-action" href="all-results.html">See all results{{ARROW_RIGHT}}</a></p>
 
-<!-- This section's fragment was #verification-at-a-glance until 2026-10-01. The empty
-     anchor in its heading keeps an old link landing here, with no script, and keeps
-     forward.js from sending that fragment on to the explainer as one the overview lacks. -->
-
-## Verification Ladders<a id="verification-at-a-glance"></a>
-
-{{VERIFICATION}}
-
-Evidence carries one of three assurance labels: *reported*, a named source’s claim not
-checked here; *numerically checked*, a finite-precision calculation with its precision,
-rounding and tolerance recorded; and *verified*, an exact check, rigorous interval
-certificate or complete proof covering the claim and its preconditions.
-A verified packing proves an upper bound only; calling it optimal needs a matching
-verified lower bound.
-
-Finite precision is not enough where squares touch exactly.
-A tolerance that accepts a true zero-gap contact also accepts a small overlap, so a
-contact-heavy packing is verified only with exact algebraic signs or outward-rounded
-intervals ([why](synopsis.html#why-exactness-is-not-optional)). Schadt’s $n = 29$
-packing passes its 300-digit numerical check, while the interval witness that is
-verified proves a slightly weaker side; Trump’s $n = 11$ packing is verified exactly
-over a degree-eight number field, fourteen zero-gap contacts included.
-
-The same checks audit published work, where the theorem stays the source’s and this
-repository adds an exact machine check: T-004 and T-008 check Bentz’s 2010 Theorem 8,
-both halves of $s(46) = 7$ included, and T-011 checks Trump’s 1979 packing for eleven
-squares.
+<!-- Verification Ladders stood here, between Recent Results and the atlas, until
+     2026-10-02 (the owner, think-hqb3): the section is the Results page's, under its
+     table, and the sentence above says what the chips indicate and links it. Its two
+     fragments, #verification-ladders and the older #verification-at-a-glance, are sent
+     there by forward.js (overview/forward.js). -->
 
 <!-- This section's fragment was #the-atlas until 2026-10-01. The empty anchor in its
-     heading keeps an old link landing here, as Verification Ladders keeps its own. -->
+     heading keeps an old link landing here, as The Frontier Survey keeps its own. -->
 
 ## The Atlas of Square Packings<a id="the-atlas"></a>
 

@@ -21,9 +21,13 @@ Independent support is kept in separate fields, never merged:
   `E-nagamochi-lower`, carried to `n` by monotonicity (`s` is nondecreasing: delete squares).
   The verified and reported lanes stay apart; only the verified lane can clear a case.
 - The area bound `sqrt(n)`, and Nagamochi's excess over it.
-- chelokot's reported Lean re-proof of `s(n^2 - 2) = n`, located in his archived note and
-  the archived Evand sources that report it. Its Lean source is not run here, so it is a
-  reported, unreplayed claim: listed for every `k^2 - 2` case, never deciding a class.
+- chelokot's Lean re-proof of `s(n^2 - 2) = n`, located in his archived note and the
+  archived Evand sources that report it. Since 2 October 2026 it is replayed here
+  (`devtools.replay_chelokot_lean`, with its axiom receipt) and registered as
+  `E-chelokot-square-minus-two-lean` (`T-069`), so a `k^2 - 2` case's operative bound cites
+  it like any other verified evidence. This entry says whether the register holds the
+  family theorem as verified, read from that evidence record; the individual values the
+  same sources list stay reported pointers.
 - Published proofs a case's own lower-bound prose cites without an evidence record (El
   Moumni 1999, Friedman's DS7 theorems), with any defect the same section names.
 - Where an independent proof imports one of Nagamochi's auxiliary lemmas (Bentz 2010 and
@@ -177,7 +181,7 @@ CHELOKOT_README = f"{CHELOKOT_ARCHIVE}/README.md"
 CHELOKOT = {
     "repository": "https://github.com/chelokot/square-packing-archive",
     "archived": CHELOKOT_ARCHIVE,
-    "kind": "reported, unreplayed Lean claim",
+    "kind": "Lean theorem, replayed here with its axiom receipt",
     "claim": (
         "A closed Lean theorem, Records.NearSquare.squareMinusTwo_isMinimumSide, that "
         "s(n^2 - 2) = n for every integer n >= 2, compensating low-scoring squares with "
@@ -185,9 +189,19 @@ CHELOKOT = {
     ),
     "claim_document": (
         "docs/nagamochi-compensation-proof.md at upstream head 753079eb, pinned by digest in "
-        "the archive README and not retained; neither it nor the Lean source was run here"
+        "the archive README and not retained"
     ),
-    "status": "Never verified here; it is listed beside the classes and never decides one.",
+    "evidence": "E-chelokot-square-minus-two-lean",
+    "result": "T-069",
+    "receipt": (
+        "packing/campaign/series/series-000-smoke-and-calibration/results/"
+        "chelokot-lean-replay/receipt.json"
+    ),
+    "status": (
+        "Replayed here on 2 October 2026: the archive built at 753079eb with its pinned "
+        "toolchain, and the theorem's axioms are exactly propext, Classical.choice and "
+        "Quot.sound. A `k^2 - 2` case's operative bound cites it directly."
+    ),
 }
 #: Where the archived sources report chelokot's Lean claim. Each needle must occur in its
 #: file, and the line it is found on is what the inventory cites.
@@ -709,8 +723,19 @@ def support_entry(
     return entry
 
 
+def chelokot_replayed() -> bool:
+    """Whether the register holds chelokot's family theorem as verified evidence."""
+    record = register().evidence.get(str(CHELOKOT["evidence"]))
+    return (
+        record is not None
+        and record.get("assurance") == "verified"
+        and record.get("replay_status") == "passed"
+    )
+
+
 def chelokot_entry(n: int) -> dict[str, Any] | None:
     shape = family(n)
+    family_verified = chelokot_replayed()
     claims: list[dict[str, Any]] = []
     if shape is not None and shape[0] in {"k^2-2", "k^2-1"} and shape[1] >= 2:
         claims.append(
@@ -718,6 +743,7 @@ def chelokot_entry(n: int) -> dict[str, Any] | None:
                 "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
                 "applies": "direct" if shape[0] == "k^2-2" else "monotonicity from s(k^2 - 2)",
                 "value": shape[1],
+                "verified": family_verified,
                 "reported_at": [pointer(path, needle) for path, needle in CHELOKOT_REPORTS],
             }
         )
@@ -728,12 +754,17 @@ def chelokot_entry(n: int) -> dict[str, Any] | None:
                     "statement": f"s({n}): {statement}",
                     "applies": "direct",
                     "value": math.isqrt(n - 1) + 1,
+                    "verified": False,
                     "reported_at": [pointer(path, needle)],
                 }
             )
     if not claims:
         return None
-    return {"kind": CHELOKOT["kind"], "verified": False, "claims": claims}
+    return {
+        "kind": CHELOKOT["kind"],
+        "verified": any(claim["verified"] for claim in claims),
+        "claims": claims,
+    }
 
 
 _PAPER_LINK = re.compile(r"\[([^\]]+)\]\(\.\./resources/papers/([^)#]+)\)")
@@ -918,7 +949,7 @@ def case_row(
             "registered_reported": support_entry(reported, n, target),
             "other_registered_results_at_n": others,
             "area_bound": area_entry,
-            "chelokot_lean_reported": chelokot_entry(n),
+            "chelokot_lean": chelokot_entry(n),
             "case_prose_published_proofs": prose_published_proofs(n),
         },
         "exposure_class": primary["class"],

@@ -466,7 +466,14 @@ lower-bound side has underused methods.
 
 Counts below are computed from the artifacts, not asserted.
 
-Of the 261 open cases, **238** have Nagamochi’s formula as their verified lower bound.
+Of the 261 open cases, **0** have Nagamochi’s formula as their verified lower bound,
+**235** have Karakuş’s weaker general bound in its place (T-066), and $n = 54, 57, 73$
+have wand125’s registered point bounds carried by monotonicity (T-044), which the
+formula had masked. Until 2 October 2026 those 238 rested on Nagamochi’s formula; that
+day his Lemma 1 was found false
+([review](../../docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md),
+T-068), so his formula became a reported bound and each of the 238 verified floors fell
+to the strongest registered bound below it.
 Five others use certificates already integrated into the register: current external
 certificate bounds at $n = 12$ ($15680/3951$) and $n = 17$ ($116511/25000$), plus the
 first-party bounds at $n = 18$ ($4679/1000$), $n = 19$ ($24/5$) and $n = 20$ ($97/20$).
@@ -478,7 +485,7 @@ $n = 70,71$ at $171/20$; and $n = 72$ at $861/100$. $n = 32$ left the open cases
 2026-09-27, when a replayed external closed cover proved $s(32) = 6$, and $n = 21$ and
 $n = 45$ on 2026-09-29, when replayed external mixed covers proved $s(21) = 5$ and
 $s(45) = 7$. Within the original $n \le 100$ corpus, the corresponding Nagamochi count
-is 38. The count is checked against the case records by
+is 0, and 38 until 2 October 2026. The count is checked against the case records by
 `devtools.check_nagamochi_bounds` (`D-430`), because earlier hand-maintained counts
 outlived their case promotions.
 
@@ -502,9 +509,9 @@ Ranked by gap—the best-known packing minus the verified lower bound, which is 
 | --- | --- | --- | --- |
 | 17 | 0.0151 | Bidwell | carried to $\frac{116511}{25000}$ by Guzhou0806 after Kleddamag |
 | 12 | 0.0314 | grid | $4^2 - 4$, carried to $\frac{15680}{3951}$ by Daniel after Burns, Massaccesi |
-| 97 | 0.0557 | grid | $10^2 - 3$ |
-| 78 | 0.0627 | grid | $9^2 - 3$ |
-| 61 | 0.0718 | grid | $8^2 - 3$ |
+| 31 | 0.0800 | grid | $6^2 - 5$, carried to $\frac{148}{25}$ by wand125’s rectangle certificate |
+| 19 | 0.0856 | Wainwright | carried to $\frac{24}{5}$ by this repository’s certificate (T-020) |
+| 27 | 0.1071 | Göbel | carried to $\frac{28}{5}$ by wand125’s rectangle certificate |
 
 The $n = 17$ bound is Guzhou0806 / N17 project’s R068, continuing Kleddamag’s charge
 (Kleddamag building on Squares Project (Joshua Levy), Mira and Guzhou0806): an exact
@@ -525,6 +532,13 @@ conjectured optima are **integers**—the case the existing proof technique is b
 
 Their small gaps and integer conjectured optima make them candidates for the existing
 technique; the retained source audit found little case-specific treatment.
+
+**Corrected 2 October 2026.** Until that date the last three rows were $n = 97$, $78$
+and $61$, at gaps $0.0557$, $0.0627$ and $0.0718$ against Nagamochi’s closed form.
+Against Karakuş’s verified floor their gaps are $0.1059$, $0.1185$ and $0.1345$, and
+since 1 October Evan Daniel reports all three proved (T-064), so `devtools.gap_ranking`,
+which ranks the cases still open as reported, leaves them out.
+The two paragraphs above are kept as written.
 
 Among the cases with a *non-trivial* record, $n = 19$ follows $n = 17$ at $0.0856$, then
 $n = 27$ at $0.1071$, $n = 26$ at $0.1133$ and $n = 18$ at $0.1439$. First-party

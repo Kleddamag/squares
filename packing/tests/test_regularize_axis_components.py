@@ -19,13 +19,18 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
+import pytest
+
 from devtools.regularize_axis_components import (
     ALGORITHM,
+    RATIONAL_DIGITS,
     ROOT,
+    SMALLEST_DILATION,
     SNAP_TOLERANCE,
     STAGE_GAP,
     WITNESS_SCHEMA,
     AtlasLayout,
+    RegularizeError,
     axis_square,
     centre,
     check_atlas,
@@ -34,12 +39,14 @@ from devtools.regularize_axis_components import (
     interior_overlap_interval,
     lattice_target,
     main,
+    promotion_dilations,
     regularize,
     slide_limit,
     stage_contacts,
     stage_count_of,
 )
-from sqpack.witness import exact_verify, load_witness, witness_document
+from devtools.upper_bound_packets import MAX_SIDE_INCREASE
+from sqpack.witness import exact_verify, load_witness, promote_rational, witness_document
 
 HALF = Fraction(1, 2)
 
@@ -430,7 +437,12 @@ def scratch_atlas(tmp_path: Path) -> AtlasLayout:
     )
 
 
-def test_the_atlas_layer_updates_checks_and_verifies(tmp_path: Path) -> None:
+def test_the_atlas_layer_updates_checks_and_verifies(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # The pool follows the gate's cap, as `sqpack.workers` does for every pooled tool, so
+    # one worker here keeps the scratch layer in this process.
+    monkeypatch.setenv("PACK_JOBS", "1")
     layout = scratch_atlas(tmp_path)
 
     assert main(["--update-atlas"], layout=layout) == 0
@@ -458,6 +470,9 @@ def test_the_atlas_layer_updates_checks_and_verifies(tmp_path: Path) -> None:
     assert "W-row-regularized" in view
     assert index["totals"]["statuses"] == {"refused": 1, "regularized": 1, "unchanged": 1}
 
+    # The drawings of the views live beside them and answer to their renderer's check.
+    (layout.directory / "rendering").mkdir()
+    (layout.directory / "rendering" / "n-004.svg").write_text("<svg/>", encoding="utf-8")
     assert check_atlas(layout) == []
     assert main(["--check-atlas"], layout=layout) == 0
     assert main(["--verify-atlas"], layout=layout) == 0
@@ -480,3 +495,86 @@ def test_the_atlas_layer_updates_checks_and_verifies(tmp_path: Path) -> None:
         "unexpected file packing/regularized/stray.txt",
     ]
     assert main(["--check-atlas"], layout=layout) == 1
+
+
+# Two squares meeting a hair too closely: their 31-digit centres put them 1e-30 into each
+# other, the way a decimal witness rounds an exact contact. A pinned corner square fixes
+# the frame. Dilation 1 is not a packing; the smallest dilation that is spreads the
+# centres by 1e-29 about the container's centre.
+OVERLAP = [("0.5", "0.5", "0"), ("1.499999999999999999999999999999", "0.5", "0"), PIN_3]
+
+
+def test_the_smallest_verifying_dilation_is_promote_rationals_own() -> None:
+    """The prototype walks `promote_rational`'s ladder and stops where it would.
+
+    Without the flag the layer's rule holds: dilation 1 or refusal. With it, the frame is
+    the first packing on the ladder, its side grows past the printed one by the spread,
+    and the compaction snaps the opened contact shut again.
+    """
+    witness = decimal_witness(OVERLAP, "3", name="overlap")
+    ladder = promotion_dilations(RATIONAL_DIGITS)
+    assert ladder[0] == 1
+    assert len(ladder) == 16
+    assert ladder[1:] == sorted(ladder[1:])
+    assert ladder[-1] == 1 + Fraction(1, 1000)
+
+    with pytest.raises(RegularizeError) as refused:
+        regularize(witness, source_path="tests/synthetic")
+    assert refused.value.kind == "promotion-overlap"
+    assert "at dilation 1 is not a packing" in str(refused.value)
+
+    report, view = regularize(witness, source_path="tests/synthetic", smallest_dilation=True)
+    promotion, _certificate = promote_rational(
+        witness,
+        rational_digits=RATIONAL_DIGITS,
+        max_side_increase=MAX_SIDE_INCREASE,
+        source_path="tests/synthetic",
+        replay_path="tests/synthetic",
+    )
+    dilation = report["exact_frame"]["center_dilation"]
+    assert dilation == promotion["center_dilation"]
+    assert Fraction(dilation) == 1 + Fraction(1, 10**29)
+    # The whole packing spread: the side is the printed one plus twice the spread.
+    assert Fraction(view["side"]) == 3 + Fraction(2, 10**29)
+    assert report["exact_frame"]["fits_reported_side"] is False
+    assert report["exact_verification"]["repository_verifier"]["valid"] is True
+    # The 9e-30 the dilation opened between the pair is a snap, and it closes exactly.
+    assert view_centres(view)[:2] == [(HALF, HALF), (Fraction(3, 2), HALF)]
+    assert report["contacts"]["house"]["became_lighter"] == 0
+
+
+def test_the_atlas_records_a_dilation_only_when_the_prototype_is_asked_for(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("PACK_JOBS", "1")
+    packing = tmp_path / "packing"
+    (packing / "w").mkdir(parents=True)
+    (packing / "certificates").mkdir()
+    write_witness(packing / "w/n-003.yaml", decimal_witness(OVERLAP, "3", name="overlap"))
+    manifest = packing / "manifest.json"
+    entries = [{"n": 3, "witness": {"path": "w/n-003.yaml"}}]
+    manifest.write_text(json.dumps({"atlas": {"entries": entries}}), encoding="utf-8")
+    layout = AtlasLayout(
+        packing, tmp_path, manifest, packing / "regularized", packing / "certificates"
+    )
+
+    assert main(["--update-atlas"], layout=layout) == 0
+    (record,) = json.loads(layout.index.read_text())["entries"]
+    assert record["status"] == "refused"
+    assert record["refusal"]["kind"] == "promotion-overlap"
+
+    assert main(["--update-atlas", "--smallest-dilation"], layout=layout) == 0
+    index = json.loads(layout.index.read_text())
+    assert index["parameters"]["center_dilation"] == SMALLEST_DILATION
+    (record,) = index["entries"]
+    assert record["status"] == "regularized"
+    assert Fraction(record["exact_frame"]["center_dilation"]) == 1 + Fraction(1, 10**29)
+    assert record["side"]["fits_reported_side"] is False
+    assert record["exact_verification"]["passed"] is True
+
+    # A layer built under one dilation policy is checked under that policy only.
+    assert main(["--check-atlas", "--smallest-dilation"], layout=layout) == 0
+    assert main(["--verify-atlas", "--smallest-dilation"], layout=layout) == 0
+    (problem,) = check_atlas(layout)
+    assert problem.startswith("index parameters is ")
+    assert main(["--verify-atlas"], layout=layout) == 1

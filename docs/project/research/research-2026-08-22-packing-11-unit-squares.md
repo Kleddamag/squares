@@ -716,6 +716,9 @@ General families:
   of this research recorded it as unlocated, which was wrong).
   It is titled *Packing Unit Squares in a Rectangle*, and the square-container result is
   a corollary of a rectangle theorem — see the general bound immediately below.
+  **Corrected 2 October 2026:** the paper’s proof is incomplete, its Lemma 1 being false
+  (Karakuş 2026); see the
+  [correction under the general bound](#nagamochis-general-lower-bound--the-only-closed-form-bound-beyond-area).
 - **`s(m² − 3) = m`** established for `m = 3, 4, 7`, extended by Bentz to `m = 5, 6`
   (via `s(22) = 5` and `s(33) = 6`), supporting the conjecture that it holds for all
   `m ≥ 3`.
@@ -738,6 +741,18 @@ s(N) ≥ min{ ⌈√N⌉,  √(N − 2⌊√N⌋ + 1) + 1 }
 ```
 
 and in particular `s(n²) = s(n² − 1) = s(n² − 2) = n` for every `n ≥ 2`.
+
+**Correction, 2 October 2026.** Nagamochi’s Lemma 1, the per-square scoring assertion
+his rectangle bound is summed from, is false for every container with `a > 3` and
+`b > 2` (Karakuş 2026; chelokot 2026), and the paper has no other proof of the rectangle
+bound, so the closed form above and both exact families are unproved by this paper at
+every `N ≥ 10`. Nothing is disproved, and no packing beating any of its values is known.
+Karakuş proves the weaker `s(N) ≥ 1/2 + √(N − ⌊√N⌋ + 1/4)` for every nonsquare `N ≥ 8`
+and, with it, `s(m² − 1) = m`; `s(m² − 2) = m` rests on chelokot’s Lean proof alone.
+The register now holds Nagamochi’s values as reported bounds, and `T-007`, `T-066`,
+`T-067`, `T-068` and `T-069` record where each part stands
+([review](../reviews/review-2026-10-02-nagamochi-lemma1-karakus.md)). This section is
+kept as written.
 
 For `n = 11` this gives `min{4, √6 + 1} ≈ 3.449`, which is **weaker than Stromquist’s
 `3.7889`** and so changes nothing for the headline case.
@@ -852,6 +867,10 @@ it: `2, 3, 5, 6, 7, 8, 10, 13, 14, 15, 22, 23, 24, 33, 34, 35`. The union across
 sources, plus Nagamochi’s family stated in general form, is the safe reading; `n = 23`
 **is** covered by the theorem, and Wikipedia’s omission appears to be an incomplete
 enumeration rather than a mathematical subtlety.
+**Corrected 2 October 2026:** Nagamochi’s proof of that family is incomplete (Karakuş
+2026; see the
+[correction under the general bound](#nagamochis-general-lower-bound--the-only-closed-form-bound-beyond-area)),
+but `s(23) = 5` also follows from Bentz’s `s(22) = 5` by monotonicity.
 
 ### The open frontier: what is actually unknown
 
@@ -878,7 +897,10 @@ Stromquist’s Theorem 2 for `n ≥ 11`. Exp-017 now supplies an exact source-di
 certificate for the last value; D-152 still requires every provenance display to say
 that the published Figure 14 proof is false as printed.
 The n26–27 correction additionally uses Green’s reported bound, cited by Friedman as
-private communication in 2000.
+private communication in 2000. **Corrected 2 October 2026:** Nagamochi’s closed form is
+now a reported bound, its Lemma 1 being false (Karakuş 2026), and Karakuş’s weaker
+general bound is the verified one where nothing stronger is; see the
+[correction under the general bound](#nagamochis-general-lower-bound--the-only-closed-form-bound-beyond-area).
 
 This table and the solved-case table below are **generated** from
 [`packing/frontier/`](../../../packing/frontier/README.md), where the same facts live as
@@ -1384,7 +1406,7 @@ successive papers refining rather than replacing it.
 | 5 | Duality / lattice rotation | unavoidable points | Rotate the unavoidable lattice a quarter turn; colour argument | Yes — Kearney–Shiu combine two unavoidable lattices in a dual counting argument for `s(6) = s(7) = 3` |
 | 6 | “Almost unavoidable” sets + forcing | unavoidable points | Force squares into positions, then derive further points | Yes — Friedman, for the harder `n = 7, 14` |
 | 7 | Continuously varying families | unavoidable points | Replace a fixed point set by a parametrised family | Yes — Bentz 2016, for `s(22)=5`, `s(33)=6` |
-| 8 | Generalised unavoidable points | unavoidable points | Assign nonnegative scores to points, segments, and area so every unit square consumes more than one unit | Yes — Nagamochi 2005, including `s(m²−1) = s(m²−2) = m` |
+| 8 | Generalised unavoidable points | unavoidable points | Assign nonnegative scores to points, segments, and area so every unit square consumes more than one unit | Yes — Nagamochi 2005, including `s(m²−1) = s(m²−2) = m`. Corrected 2 October 2026: his Lemma 1 is false, so that proof is incomplete; Karakuş 2026 proves `s(m²−1) = m` again by a strip measure, and chelokot’s Lean compensation proof, replayed here, proves `s(m²−2) = m` |
 | 9 | Restricted-orientation analysis | unavoidable points | Prove a bound for a *subclass* of packings | Yes — Stromquist Thm 3 (0°/45°), settling Gardner |
 | 10 | Exhaustive case analysis | unavoidable points | Enumerate combinatorial configurations | Yes — inside most of the above |
 | 11 | Symmetry reduction | unavoidable points | Quotient the search by the container’s symmetry group | Yes — standard within case analyses |
@@ -2273,6 +2295,9 @@ Every item in the proof lane above exists because of this.
 - [x] ~~Resolve the `n = 23` discrepancy~~ — **resolved**: `n = 23` is covered by
   Nagamochi’s `s(m²−1) = s(m²−2) = m` at `m = 5`, and other enumerations list it
   explicitly. Wikipedia’s list is simply incomplete.
+  (**Corrected 2 October 2026:** Nagamochi’s proof of that family is incomplete, its
+  Lemma 1 being false (Karakuş 2026); `s(23) = 5` also follows from Bentz’s `s(22) = 5`
+  by monotonicity.)
 - [ ] Has any Positivstellensatz/SOS infeasibility certificate ever been attempted for a
   square-packing lower bound, in any case, at any `n`? Nothing was found.
 - [ ] What is the practical branching cost of interval branch-and-bound on `s(11)` given
@@ -2562,6 +2587,10 @@ instead have explicitly bounded reading aids and unedited raw OCR.
   rectangle theorem, the closed-form lower bound for every `N ≥ 4`, and the
   `s(n²) = s(n²−1) = s(n²−2) = n` corollary.* **Open access** — an earlier pass of this
   research recorded it as unlocated, which was wrong.
+  **Corrected 2 October 2026:** its Lemma 1 is false for every container with `a > 3`
+  and `b > 2` (Karakuş 2026), so the rectangle theorem and its corollaries are unproved
+  by this paper; see the
+  [correction under the general bound](#nagamochis-general-lower-bound--the-only-closed-form-bound-beyond-area).
 - **[El Moumni 1999]** — Said El Moumni, “Optimal Packings of Unit Squares in a Square,”
   *Studia Sci. Math. Hungar.* **35** (1999), no.
   3–4, 281–290. [Institutional volume scan](https://real-j.mtak.hu/5478/), article at

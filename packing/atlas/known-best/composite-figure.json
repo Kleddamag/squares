@@ -18,7 +18,7 @@
           "degree_recorded_upstream": 11,
           "exact_value_known": 95,
           "lower_bound_first_proved_here": 3,
-          "lower_bound_recent_result": 27,
+          "lower_bound_recent_result": 81,
           "only_known_numerically": 5,
           "proved_optimal": 39,
           "rigidity_catalogue_annotated": 2,
@@ -42,7 +42,7 @@
           "degree_recorded_upstream": 21,
           "exact_value_known": 269,
           "lower_bound_first_proved_here": 3,
-          "lower_bound_recent_result": 27,
+          "lower_bound_recent_result": 297,
           "only_known_numerically": 55,
           "proved_optimal": 63,
           "rigidity_catalogue_annotated": 2,
@@ -235,7 +235,7 @@
         "lower": {
           "display": "s(4) ≥ 2",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-basic-area-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
@@ -390,11 +390,11 @@
         "lower": {
           "display": "s(7) ≥ 3",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-chelokot-square-minus-two-lean"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "3"
         },
@@ -440,11 +440,11 @@
         "lower": {
           "display": "s(8) ≥ 3",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "3"
         },
@@ -495,7 +495,7 @@
         "lower": {
           "display": "s(9) ≥ 3",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-basic-area-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
@@ -746,11 +746,11 @@
         "lower": {
           "display": "s(14) ≥ 4",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-chelokot-square-minus-two-lean"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "4"
         },
@@ -796,11 +796,11 @@
         "lower": {
           "display": "s(15) ≥ 4",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "4"
         },
@@ -851,7 +851,7 @@
         "lower": {
           "display": "s(16) ≥ 4",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-basic-area-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
@@ -1184,11 +1184,11 @@
         "lower": {
           "display": "s(23) ≥ 5",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-chelokot-square-minus-two-lean"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "5"
         },
@@ -1234,11 +1234,11 @@
         "lower": {
           "display": "s(24) ≥ 5",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "5"
         },
@@ -1289,7 +1289,7 @@
         "lower": {
           "display": "s(25) ≥ 5",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-basic-area-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
@@ -1715,11 +1715,11 @@
         "lower": {
           "display": "s(34) ≥ 6",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-chelokot-square-minus-two-lean"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "6"
         },
@@ -1765,11 +1765,11 @@
         "lower": {
           "display": "s(35) ≥ 6",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "6"
         },
@@ -1820,7 +1820,7 @@
         "lower": {
           "display": "s(36) ≥ 6",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-basic-area-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
@@ -1863,15 +1863,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(37) ≥ 6.099019",
+          "display": "s(37) ≥ 6.090169",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "6.09901951359"
+          "value": "6.09016994374"
         },
         "n": 37,
         "optimality": {
@@ -1908,15 +1908,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(38) ≥ 6.196152",
+          "display": "s(38) ≥ 6.178908",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "6.19615242271"
+          "value": "6.1789083458"
         },
         "n": 38,
         "optimality": {
@@ -2093,15 +2093,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(42) ≥ 6.567764",
+          "display": "s(42) ≥ 6.520797",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "6.56776436283"
+          "value": "6.52079728939"
         },
         "n": 42,
         "optimality": {
@@ -2138,15 +2138,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(43) ≥ 6.656854",
+          "display": "s(43) ≥ 6.603277",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "6.65685424949"
+          "value": "6.60327780786"
         },
         "n": 43,
         "optimality": {
@@ -2183,15 +2183,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(44) ≥ 6.744562",
+          "display": "s(44) ≥ 6.684658",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "6.74456264654"
+          "value": "6.68465843842"
         },
         "n": 44,
         "optimality": {
@@ -2336,11 +2336,11 @@
         "lower": {
           "display": "s(47) ≥ 7",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-chelokot-square-minus-two-lean"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "7"
         },
@@ -2386,11 +2386,11 @@
         "lower": {
           "display": "s(48) ≥ 7",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "7"
         },
@@ -2441,7 +2441,7 @@
         "lower": {
           "display": "s(49) ≥ 7",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-basic-area-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
@@ -2484,15 +2484,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(50) ≥ 7.082762",
+          "display": "s(50) ≥ 7.076473",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "7.0827625303"
+          "value": "7.07647321898"
         },
         "n": 50,
         "optimality": {
@@ -2529,15 +2529,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(51) ≥ 7.164414",
+          "display": "s(51) ≥ 7.152067",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "7.16441400297"
+          "value": "7.15206734782"
         },
         "n": 51,
         "optimality": {
@@ -2664,15 +2664,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(54) ≥ 7.403124",
+          "display": "s(54) ≥ 7.380000",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-wand125-point-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "7.40312423743"
+          "value": "7.38"
         },
         "n": 54,
         "optimality": {
@@ -2799,15 +2799,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(57) ≥ 7.633249",
+          "display": "s(57) ≥ 7.620000",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-wand125-point-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "7.63324958071"
+          "value": "7.62"
         },
         "n": 57,
         "optimality": {
@@ -2844,15 +2844,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(58) ≥ 7.708203",
+          "display": "s(58) ≥ 7.658910",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "7.7082039325"
+          "value": "7.65891053163"
         },
         "n": 58,
         "optimality": {
@@ -2889,15 +2889,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(59) ≥ 7.782329",
+          "display": "s(59) ≥ 7.728416",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "7.78232998313"
+          "value": "7.7284161474"
         },
         "n": 59,
         "optimality": {
@@ -2934,15 +2934,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(60) ≥ 7.855654",
+          "display": "s(60) ≥ 7.797259",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "7.8556546004"
+          "value": "7.79725975966"
         },
         "n": 60,
         "optimality": {
@@ -2979,15 +2979,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(61) ≥ 7.928203",
+          "display": "s(61) ≥ 7.865459",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "7.92820323028"
+          "value": "7.86545993132"
         },
         "n": 61,
         "optimality": {
@@ -3031,11 +3031,11 @@
         "lower": {
           "display": "s(62) ≥ 8",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-chelokot-square-minus-two-lean"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "8"
         },
@@ -3081,11 +3081,11 @@
         "lower": {
           "display": "s(63) ≥ 8",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "8"
         },
@@ -3136,7 +3136,7 @@
         "lower": {
           "display": "s(64) ≥ 8",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-basic-area-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
@@ -3179,15 +3179,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(65) ≥ 8.071067",
+          "display": "s(65) ≥ 8.066372",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "8.07106781187"
+          "value": "8.06637297521"
         },
         "n": 65,
         "optimality": {
@@ -3224,15 +3224,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(66) ≥ 8.141428",
+          "display": "s(66) ≥ 8.132168",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "8.14142842854"
+          "value": "8.13216876123"
         },
         "n": 66,
         "optimality": {
@@ -3269,15 +3269,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(67) ≥ 8.211102",
+          "display": "s(67) ≥ 8.197402",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "8.21110255093"
+          "value": "8.19740215917"
         },
         "n": 67,
         "optimality": {
@@ -3539,15 +3539,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(73) ≥ 8.615773",
+          "display": "s(73) ≥ 8.610000",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-wand125-point-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "8.61577310586"
+          "value": "8.61"
         },
         "n": 73,
         "optimality": {
@@ -3584,15 +3584,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(74) ≥ 8.681145",
+          "display": "s(74) ≥ 8.639410",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "8.68114574787"
+          "value": "8.63941029804"
         },
         "n": 74,
         "optimality": {
@@ -3629,15 +3629,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(75) ≥ 8.745966",
+          "display": "s(75) ≥ 8.700609",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "8.74596669241"
+          "value": "8.70060973342"
         },
         "n": 75,
         "optimality": {
@@ -3674,15 +3674,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(76) ≥ 8.810249",
+          "display": "s(76) ≥ 8.761355",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "8.81024967591"
+          "value": "8.76135582092"
         },
         "n": 76,
         "optimality": {
@@ -3719,15 +3719,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(77) ≥ 8.874007",
+          "display": "s(77) ≥ 8.821658",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "8.87400787401"
+          "value": "8.82165848854"
         },
         "n": 77,
         "optimality": {
@@ -3764,15 +3764,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(78) ≥ 8.937253",
+          "display": "s(78) ≥ 8.881527",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "8.93725393319"
+          "value": "8.88152730712"
         },
         "n": 78,
         "optimality": {
@@ -3816,11 +3816,11 @@
         "lower": {
           "display": "s(79) ≥ 9",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-chelokot-square-minus-two-lean"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "9"
         },
@@ -3866,11 +3866,11 @@
         "lower": {
           "display": "s(80) ≥ 9",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "9"
         },
@@ -3921,7 +3921,7 @@
         "lower": {
           "display": "s(81) ≥ 9",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-basic-area-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
@@ -3964,15 +3964,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(82) ≥ 9.062257",
+          "display": "s(82) ≥ 9.058621",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.0622577483"
+          "value": "9.05862138431"
         },
         "n": 82,
         "optimality": {
@@ -4009,15 +4009,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(83) ≥ 9.124038",
+          "display": "s(83) ≥ 9.116843",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.12403840464"
+          "value": "9.1168439698"
         },
         "n": 83,
         "optimality": {
@@ -4054,15 +4054,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(84) ≥ 9.185352",
+          "display": "s(84) ≥ 9.174675",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.18535277187"
+          "value": "9.17467578644"
         },
         "n": 84,
         "optimality": {
@@ -4099,15 +4099,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(85) ≥ 9.246211",
+          "display": "s(85) ≥ 9.232124",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.24621125124"
+          "value": "9.23212459828"
         },
         "n": 85,
         "optimality": {
@@ -4144,15 +4144,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(86) ≥ 9.306623",
+          "display": "s(86) ≥ 9.289197",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.30662386292"
+          "value": "9.28919791562"
         },
         "n": 86,
         "optimality": {
@@ -4189,15 +4189,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(87) ≥ 9.366600",
+          "display": "s(87) ≥ 9.345903",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.36660026534"
+          "value": "9.34590300647"
         },
         "n": 87,
         "optimality": {
@@ -4234,15 +4234,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(88) ≥ 9.426149",
+          "display": "s(88) ≥ 9.402246",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.42614977318"
+          "value": "9.40224690738"
         },
         "n": 88,
         "optimality": {
@@ -4279,15 +4279,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(89) ≥ 9.485281",
+          "display": "s(89) ≥ 9.458236",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.48528137424"
+          "value": "9.45823643358"
         },
         "n": 89,
         "optimality": {
@@ -4324,15 +4324,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(90) ≥ 9.544003",
+          "display": "s(90) ≥ 9.513878",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.54400374532"
+          "value": "9.51387818865"
         },
         "n": 90,
         "optimality": {
@@ -4369,15 +4369,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(91) ≥ 9.602325",
+          "display": "s(91) ≥ 9.569178",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.60232526704"
+          "value": "9.5691785736"
         },
         "n": 91,
         "optimality": {
@@ -4414,15 +4414,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(92) ≥ 9.660254",
+          "display": "s(92) ≥ 9.624143",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.66025403784"
+          "value": "9.62414379544"
         },
         "n": 92,
         "optimality": {
@@ -4459,15 +4459,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(93) ≥ 9.717797",
+          "display": "s(93) ≥ 9.678779",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.71779788708"
+          "value": "9.67877987534"
         },
         "n": 93,
         "optimality": {
@@ -4504,15 +4504,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(94) ≥ 9.774964",
+          "display": "s(94) ≥ 9.733092",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.77496438739"
+          "value": "9.7330926563"
         },
         "n": 94,
         "optimality": {
@@ -4549,15 +4549,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(95) ≥ 9.831760",
+          "display": "s(95) ≥ 9.787087",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.83176086633"
+          "value": "9.7870878105"
         },
         "n": 95,
         "optimality": {
@@ -4594,15 +4594,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(96) ≥ 9.888194",
+          "display": "s(96) ≥ 9.840770",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.88819441732"
+          "value": "9.84077084613"
         },
         "n": 96,
         "optimality": {
@@ -4639,15 +4639,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(97) ≥ 9.944271",
+          "display": "s(97) ≥ 9.894147",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "9.94427191"
+          "value": "9.89414711402"
         },
         "n": 97,
         "optimality": {
@@ -4691,11 +4691,11 @@
         "lower": {
           "display": "s(98) ≥ 10",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-chelokot-square-minus-two-lean"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "10"
         },
@@ -4741,11 +4741,11 @@
         "lower": {
           "display": "s(99) ≥ 10",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "10"
         },
@@ -4796,7 +4796,7 @@
         "lower": {
           "display": "s(100) ≥ 10",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-basic-area-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
@@ -4839,15 +4839,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(101) ≥ 10.055385",
+          "display": "s(101) ≥ 10.052486",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.0553851381"
+          "value": "10.0524865872"
         },
         "n": 101,
         "optimality": {
@@ -4884,15 +4884,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(102) ≥ 10.110433",
+          "display": "s(102) ≥ 10.104686",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.1104335791"
+          "value": "10.1046863561"
         },
         "n": 102,
         "optimality": {
@@ -4929,15 +4929,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(103) ≥ 10.165151",
+          "display": "s(103) ≥ 10.156603",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.1651513899"
+          "value": "10.1566039579"
         },
         "n": 103,
         "optimality": {
@@ -4974,15 +4974,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(104) ≥ 10.219544",
+          "display": "s(104) ≥ 10.208243",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.2195444573"
+          "value": "10.2082439194"
         },
         "n": 104,
         "optimality": {
@@ -5019,15 +5019,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(105) ≥ 10.273618",
+          "display": "s(105) ≥ 10.259610",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.2736184955"
+          "value": "10.2596106479"
         },
         "n": 105,
         "optimality": {
@@ -5064,15 +5064,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(106) ≥ 10.327379",
+          "display": "s(106) ≥ 10.310708",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.3273790531"
+          "value": "10.3107084351"
         },
         "n": 106,
         "optimality": {
@@ -5109,15 +5109,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(107) ≥ 10.380831",
+          "display": "s(107) ≥ 10.361541",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.3808315196"
+          "value": "10.3615414616"
         },
         "n": 107,
         "optimality": {
@@ -5154,15 +5154,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(108) ≥ 10.433981",
+          "display": "s(108) ≥ 10.412113",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.4339811321"
+          "value": "10.4121138007"
         },
         "n": 108,
         "optimality": {
@@ -5199,15 +5199,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(109) ≥ 10.486832",
+          "display": "s(109) ≥ 10.462429",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.4868329805"
+          "value": "10.4624294225"
         },
         "n": 109,
         "optimality": {
@@ -5244,15 +5244,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(110) ≥ 10.539392",
+          "display": "s(110) ≥ 10.512492",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.5393920142"
+          "value": "10.5124921972"
         },
         "n": 110,
         "optimality": {
@@ -5289,15 +5289,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(111) ≥ 10.591663",
+          "display": "s(111) ≥ 10.562305",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.5916630466"
+          "value": "10.5623058987"
         },
         "n": 111,
         "optimality": {
@@ -5334,15 +5334,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(112) ≥ 10.643650",
+          "display": "s(112) ≥ 10.611874",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.643650761"
+          "value": "10.611874208"
         },
         "n": 112,
         "optimality": {
@@ -5379,15 +5379,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(113) ≥ 10.695359",
+          "display": "s(113) ≥ 10.661200",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.6953597148"
+          "value": "10.6612007164"
         },
         "n": 113,
         "optimality": {
@@ -5424,15 +5424,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(114) ≥ 10.746794",
+          "display": "s(114) ≥ 10.710288",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.7467943448"
+          "value": "10.7102889283"
         },
         "n": 114,
         "optimality": {
@@ -5469,15 +5469,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(115) ≥ 10.797958",
+          "display": "s(115) ≥ 10.759142",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.7979589711"
+          "value": "10.7591422643"
         },
         "n": 115,
         "optimality": {
@@ -5514,15 +5514,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(116) ≥ 10.848857",
+          "display": "s(116) ≥ 10.807764",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.8488578018"
+          "value": "10.807764064"
         },
         "n": 116,
         "optimality": {
@@ -5559,15 +5559,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(117) ≥ 10.899494",
+          "display": "s(117) ≥ 10.856157",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.8994949366"
+          "value": "10.8561575886"
         },
         "n": 117,
         "optimality": {
@@ -5604,15 +5604,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(118) ≥ 10.949874",
+          "display": "s(118) ≥ 10.904326",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.9498743711"
+          "value": "10.9043260233"
         },
         "n": 118,
         "optimality": {
@@ -5656,11 +5656,11 @@
         "lower": {
           "display": "s(119) ≥ 11",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-chelokot-square-minus-two-lean"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "11"
         },
@@ -5706,11 +5706,11 @@
         "lower": {
           "display": "s(120) ≥ 11",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "11"
         },
@@ -5761,7 +5761,7 @@
         "lower": {
           "display": "s(121) ≥ 11",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-basic-area-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
@@ -5804,15 +5804,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(122) ≥ 11.049875",
+          "display": "s(122) ≥ 11.047511",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.0498756211"
+          "value": "11.0475115548"
         },
         "n": 122,
         "optimality": {
@@ -5849,15 +5849,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(123) ≥ 11.099504",
+          "display": "s(123) ≥ 11.094810",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.0995049384"
+          "value": "11.0948100502"
         },
         "n": 123,
         "optimality": {
@@ -5894,15 +5894,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(124) ≥ 11.148891",
+          "display": "s(124) ≥ 11.141898",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.1488915651"
+          "value": "11.1418983268"
         },
         "n": 124,
         "optimality": {
@@ -5939,15 +5939,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(125) ≥ 11.198039",
+          "display": "s(125) ≥ 11.188779",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.1980390272"
+          "value": "11.1887791632"
         },
         "n": 125,
         "optimality": {
@@ -5984,15 +5984,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(126) ≥ 11.246950",
+          "display": "s(126) ≥ 11.235455",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.246950766"
+          "value": "11.2354552767"
         },
         "n": 126,
         "optimality": {
@@ -6029,15 +6029,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(127) ≥ 11.295630",
+          "display": "s(127) ≥ 11.281929",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.295630141"
+          "value": "11.2819293264"
         },
         "n": 127,
         "optimality": {
@@ -6074,15 +6074,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(128) ≥ 11.344080",
+          "display": "s(128) ≥ 11.328203",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.3440804328"
+          "value": "11.3282039138"
         },
         "n": 128,
         "optimality": {
@@ -6119,15 +6119,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(129) ≥ 11.392304",
+          "display": "s(129) ≥ 11.374281",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.3923048454"
+          "value": "11.3742815854"
         },
         "n": 129,
         "optimality": {
@@ -6164,15 +6164,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(130) ≥ 11.440306",
+          "display": "s(130) ≥ 11.420164",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.4403065089"
+          "value": "11.4201648339"
         },
         "n": 130,
         "optimality": {
@@ -6209,15 +6209,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(131) ≥ 11.488088",
+          "display": "s(131) ≥ 11.465856",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.4880884817"
+          "value": "11.4658560997"
         },
         "n": 131,
         "optimality": {
@@ -6254,15 +6254,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(132) ≥ 11.535653",
+          "display": "s(132) ≥ 11.511357",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.5356537529"
+          "value": "11.5113577727"
         },
         "n": 132,
         "optimality": {
@@ -6299,15 +6299,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(133) ≥ 11.583005",
+          "display": "s(133) ≥ 11.556672",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.5830052443"
+          "value": "11.5566721937"
         },
         "n": 133,
         "optimality": {
@@ -6344,15 +6344,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(134) ≥ 11.630145",
+          "display": "s(134) ≥ 11.601801",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.6301458127"
+          "value": "11.6018016555"
         },
         "n": 134,
         "optimality": {
@@ -6389,15 +6389,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(135) ≥ 11.677078",
+          "display": "s(135) ≥ 11.646748",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.677078252"
+          "value": "11.6467484048"
         },
         "n": 135,
         "optimality": {
@@ -6434,15 +6434,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(136) ≥ 11.723805",
+          "display": "s(136) ≥ 11.691514",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.7238052948"
+          "value": "11.6915146427"
         },
         "n": 136,
         "optimality": {
@@ -6479,15 +6479,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(137) ≥ 11.770329",
+          "display": "s(137) ≥ 11.736102",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.7703296143"
+          "value": "11.7361025271"
         },
         "n": 137,
         "optimality": {
@@ -6524,15 +6524,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(138) ≥ 11.816653",
+          "display": "s(138) ≥ 11.780514",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.8166538264"
+          "value": "11.7805141726"
         },
         "n": 138,
         "optimality": {
@@ -6569,15 +6569,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(139) ≥ 11.862780",
+          "display": "s(139) ≥ 11.824751",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.8627804912"
+          "value": "11.8247516529"
         },
         "n": 139,
         "optimality": {
@@ -6614,15 +6614,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(140) ≥ 11.908712",
+          "display": "s(140) ≥ 11.868817",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.9087121146"
+          "value": "11.8688170009"
         },
         "n": 140,
         "optimality": {
@@ -6659,15 +6659,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(141) ≥ 11.954451",
+          "display": "s(141) ≥ 11.912712",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "11.9544511501"
+          "value": "11.9127122105"
         },
         "n": 141,
         "optimality": {
@@ -6711,11 +6711,11 @@
         "lower": {
           "display": "s(142) ≥ 12",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-chelokot-square-minus-two-lean"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "12"
         },
@@ -6761,11 +6761,11 @@
         "lower": {
           "display": "s(143) ≥ 12",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "12"
         },
@@ -6816,7 +6816,7 @@
         "lower": {
           "display": "s(144) ≥ 12",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-basic-area-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
@@ -6859,15 +6859,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(145) ≥ 12.045361",
+          "display": "s(145) ≥ 12.043396",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.0453610172"
+          "value": "12.0433963806"
         },
         "n": 145,
         "optimality": {
@@ -6904,15 +6904,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(146) ≥ 12.090536",
+          "display": "s(146) ≥ 12.086630",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.0905365064"
+          "value": "12.0866302262"
         },
         "n": 146,
         "optimality": {
@@ -6949,15 +6949,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(147) ≥ 12.135528",
+          "display": "s(147) ≥ 12.129703",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.1355287257"
+          "value": "12.1297033496"
         },
         "n": 147,
         "optimality": {
@@ -6994,15 +6994,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(148) ≥ 12.180339",
+          "display": "s(148) ≥ 12.172617",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.1803398875"
+          "value": "12.1726175299"
         },
         "n": 148,
         "optimality": {
@@ -7039,15 +7039,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(149) ≥ 12.224972",
+          "display": "s(149) ≥ 12.215374",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.2249721603"
+          "value": "12.2153745138"
         },
         "n": 149,
         "optimality": {
@@ -7084,15 +7084,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(150) ≥ 12.269427",
+          "display": "s(150) ≥ 12.257976",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.2694276696"
+          "value": "12.2579760163"
         },
         "n": 150,
         "optimality": {
@@ -7129,15 +7129,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(151) ≥ 12.313708",
+          "display": "s(151) ≥ 12.300423",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.313708499"
+          "value": "12.3004237212"
         },
         "n": 151,
         "optimality": {
@@ -7174,15 +7174,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(152) ≥ 12.357816",
+          "display": "s(152) ≥ 12.342719",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.3578166916"
+          "value": "12.3427192823"
         },
         "n": 152,
         "optimality": {
@@ -7219,15 +7219,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(153) ≥ 12.401754",
+          "display": "s(153) ≥ 12.384864",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.401754251"
+          "value": "12.384864324"
         },
         "n": 153,
         "optimality": {
@@ -7264,15 +7264,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(154) ≥ 12.445523",
+          "display": "s(154) ≥ 12.426860",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.4455231423"
+          "value": "12.4268604418"
         },
         "n": 154,
         "optimality": {
@@ -7309,15 +7309,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(155) ≥ 12.489125",
+          "display": "s(155) ≥ 12.468709",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.4891252931"
+          "value": "12.4687092035"
         },
         "n": 155,
         "optimality": {
@@ -7354,15 +7354,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(156) ≥ 12.532562",
+          "display": "s(156) ≥ 12.510412",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.5325625947"
+          "value": "12.5104121494"
         },
         "n": 156,
         "optimality": {
@@ -7399,15 +7399,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(157) ≥ 12.575836",
+          "display": "s(157) ≥ 12.551970",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.5758369028"
+          "value": "12.5519707931"
         },
         "n": 157,
         "optimality": {
@@ -7444,15 +7444,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(158) ≥ 12.618950",
+          "display": "s(158) ≥ 12.593386",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.6189500386"
+          "value": "12.5933866224"
         },
         "n": 158,
         "optimality": {
@@ -7489,15 +7489,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(159) ≥ 12.661903",
+          "display": "s(159) ≥ 12.634661",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.6619037897"
+          "value": "12.6346610995"
         },
         "n": 159,
         "optimality": {
@@ -7534,15 +7534,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(160) ≥ 12.704699",
+          "display": "s(160) ≥ 12.675795",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.7046999107"
+          "value": "12.6757956618"
         },
         "n": 160,
         "optimality": {
@@ -7579,15 +7579,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(161) ≥ 12.747340",
+          "display": "s(161) ≥ 12.716791",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.7473401245"
+          "value": "12.7167917228"
         },
         "n": 161,
         "optimality": {
@@ -7624,15 +7624,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(162) ≥ 12.789826",
+          "display": "s(162) ≥ 12.757650",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.7898261226"
+          "value": "12.7576506721"
         },
         "n": 162,
         "optimality": {
@@ -7669,15 +7669,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(163) ≥ 12.832159",
+          "display": "s(163) ≥ 12.798373",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.8321595662"
+          "value": "12.7983738762"
         },
         "n": 163,
         "optimality": {
@@ -7714,15 +7714,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(164) ≥ 12.874342",
+          "display": "s(164) ≥ 12.838962",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.874342087"
+          "value": "12.8389626792"
         },
         "n": 164,
         "optimality": {
@@ -7759,15 +7759,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(165) ≥ 12.916375",
+          "display": "s(165) ≥ 12.879418",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.9163752878"
+          "value": "12.8794184031"
         },
         "n": 165,
         "optimality": {
@@ -7804,15 +7804,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(166) ≥ 12.958260",
+          "display": "s(166) ≥ 12.919742",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "12.9582607431"
+          "value": "12.9197423483"
         },
         "n": 166,
         "optimality": {
@@ -7856,11 +7856,11 @@
         "lower": {
           "display": "s(167) ≥ 13",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-chelokot-square-minus-two-lean"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "13"
         },
@@ -7906,11 +7906,11 @@
         "lower": {
           "display": "s(168) ≥ 13",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "13"
         },
@@ -7961,7 +7961,7 @@
         "lower": {
           "display": "s(169) ≥ 13",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-basic-area-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
@@ -8004,15 +8004,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(170) ≥ 13.041594",
+          "display": "s(170) ≥ 13.039936",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.0415945788"
+          "value": "13.0399362039"
         },
         "n": 170,
         "optimality": {
@@ -8049,15 +8049,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(171) ≥ 13.083045",
+          "display": "s(171) ≥ 13.079745",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.0830459736"
+          "value": "13.0797456254"
         },
         "n": 171,
         "optimality": {
@@ -8094,15 +8094,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(172) ≥ 13.124355",
+          "display": "s(172) ≥ 13.119429",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.124355653"
+          "value": "13.1194294641"
         },
         "n": 172,
         "optimality": {
@@ -8139,15 +8139,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(173) ≥ 13.165525",
+          "display": "s(173) ≥ 13.158988",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.1655250606"
+          "value": "13.1589889011"
         },
         "n": 173,
         "optimality": {
@@ -8184,15 +8184,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(174) ≥ 13.206555",
+          "display": "s(174) ≥ 13.198425",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.2065556157"
+          "value": "13.1984250992"
         },
         "n": 174,
         "optimality": {
@@ -8229,15 +8229,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(175) ≥ 13.247448",
+          "display": "s(175) ≥ 13.237739",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.2474487139"
+          "value": "13.2377392028"
         },
         "n": 175,
         "optimality": {
@@ -8274,15 +8274,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(176) ≥ 13.288205",
+          "display": "s(176) ≥ 13.276932",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.2882057274"
+          "value": "13.2769323391"
         },
         "n": 176,
         "optimality": {
@@ -8319,15 +8319,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(177) ≥ 13.328828",
+          "display": "s(177) ≥ 13.316005",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.3288280059"
+          "value": "13.3160056179"
         },
         "n": 177,
         "optimality": {
@@ -8364,15 +8364,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(178) ≥ 13.369316",
+          "display": "s(178) ≥ 13.354960",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.3693168769"
+          "value": "13.3549601321"
         },
         "n": 178,
         "optimality": {
@@ -8409,15 +8409,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(179) ≥ 13.409673",
+          "display": "s(179) ≥ 13.393796",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.409673646"
+          "value": "13.3937969582"
         },
         "n": 179,
         "optimality": {
@@ -8454,15 +8454,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(180) ≥ 13.449899",
+          "display": "s(180) ≥ 13.432517",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.449899598"
+          "value": "13.4325171563"
         },
         "n": 180,
         "optimality": {
@@ -8499,15 +8499,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(181) ≥ 13.489995",
+          "display": "s(181) ≥ 13.471121",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.4899959968"
+          "value": "13.471121771"
         },
         "n": 181,
         "optimality": {
@@ -8544,15 +8544,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(182) ≥ 13.529964",
+          "display": "s(182) ≥ 13.509611",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.5299640861"
+          "value": "13.5096118312"
         },
         "n": 182,
         "optimality": {
@@ -8589,15 +8589,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(183) ≥ 13.569805",
+          "display": "s(183) ≥ 13.547988",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.56980509"
+          "value": "13.5479883506"
         },
         "n": 183,
         "optimality": {
@@ -8634,15 +8634,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(184) ≥ 13.609520",
+          "display": "s(184) ≥ 13.586252",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.6095202129"
+          "value": "13.5862523283"
         },
         "n": 184,
         "optimality": {
@@ -8679,15 +8679,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(185) ≥ 13.649110",
+          "display": "s(185) ≥ 13.624404",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.6491106407"
+          "value": "13.6244047484"
         },
         "n": 185,
         "optimality": {
@@ -8724,15 +8724,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(186) ≥ 13.688577",
+          "display": "s(186) ≥ 13.662446",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.6885775404"
+          "value": "13.662446581"
         },
         "n": 186,
         "optimality": {
@@ -8769,15 +8769,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(187) ≥ 13.727922",
+          "display": "s(187) ≥ 13.700378",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.7279220614"
+          "value": "13.7003787824"
         },
         "n": 187,
         "optimality": {
@@ -8814,15 +8814,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(188) ≥ 13.767145",
+          "display": "s(188) ≥ 13.738202",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.7671453348"
+          "value": "13.7382022948"
         },
         "n": 188,
         "optimality": {
@@ -8859,15 +8859,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(189) ≥ 13.806248",
+          "display": "s(189) ≥ 13.775918",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.8062484749"
+          "value": "13.7759180473"
         },
         "n": 189,
         "optimality": {
@@ -8904,15 +8904,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(190) ≥ 13.845232",
+          "display": "s(190) ≥ 13.813526",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.8452325787"
+          "value": "13.8135269556"
         },
         "n": 190,
         "optimality": {
@@ -8949,15 +8949,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(191) ≥ 13.884098",
+          "display": "s(191) ≥ 13.851029",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.8840987267"
+          "value": "13.8510299228"
         },
         "n": 191,
         "optimality": {
@@ -8994,15 +8994,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(192) ≥ 13.922847",
+          "display": "s(192) ≥ 13.888427",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.9228479833"
+          "value": "13.8884278389"
         },
         "n": 192,
         "optimality": {
@@ -9039,15 +9039,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(193) ≥ 13.961481",
+          "display": "s(193) ≥ 13.925721",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "13.9614813968"
+          "value": "13.925721582"
         },
         "n": 193,
         "optimality": {
@@ -9091,11 +9091,11 @@
         "lower": {
           "display": "s(194) ≥ 14",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-chelokot-square-minus-two-lean"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "14"
         },
@@ -9141,11 +9141,11 @@
         "lower": {
           "display": "s(195) ≥ 14",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "14"
         },
@@ -9196,7 +9196,7 @@
         "lower": {
           "display": "s(196) ≥ 14",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-basic-area-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
@@ -9239,15 +9239,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(197) ≥ 14.038404",
+          "display": "s(197) ≥ 14.036986",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.0384048104"
+          "value": "14.0369863706"
         },
         "n": 197,
         "optimality": {
@@ -9284,15 +9284,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(198) ≥ 14.076696",
+          "display": "s(198) ≥ 14.073871",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.0766968306"
+          "value": "14.0738719604"
         },
         "n": 198,
         "optimality": {
@@ -9329,15 +9329,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(199) ≥ 14.114877",
+          "display": "s(199) ≥ 14.110657",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.1148770486"
+          "value": "14.1106575888"
         },
         "n": 199,
         "optimality": {
@@ -9374,15 +9374,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(200) ≥ 14.152946",
+          "display": "s(200) ≥ 14.147344",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.152946438"
+          "value": "14.1473440639"
         },
         "n": 200,
         "optimality": {
@@ -9419,15 +9419,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(201) ≥ 14.190905",
+          "display": "s(201) ≥ 14.183932",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.1909059583"
+          "value": "14.1839321834"
         },
         "n": 201,
         "optimality": {
@@ -9464,15 +9464,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(202) ≥ 14.228756",
+          "display": "s(202) ≥ 14.220422",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.2287565553"
+          "value": "14.220422734"
         },
         "n": 202,
         "optimality": {
@@ -9509,15 +9509,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(203) ≥ 14.266499",
+          "display": "s(203) ≥ 14.256816",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.2664991614"
+          "value": "14.2568164921"
         },
         "n": 203,
         "optimality": {
@@ -9554,15 +9554,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(204) ≥ 14.304134",
+          "display": "s(204) ≥ 14.293114",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.3041346957"
+          "value": "14.2931142241"
         },
         "n": 204,
         "optimality": {
@@ -9599,15 +9599,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(205) ≥ 14.341664",
+          "display": "s(205) ≥ 14.329316",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.3416640641"
+          "value": "14.3293166859"
         },
         "n": 205,
         "optimality": {
@@ -9644,15 +9644,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(206) ≥ 14.379088",
+          "display": "s(206) ≥ 14.365424",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.3790881603"
+          "value": "14.3654246238"
         },
         "n": 206,
         "optimality": {
@@ -9689,15 +9689,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(207) ≥ 14.416407",
+          "display": "s(207) ≥ 14.401438",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.416407865"
+          "value": "14.4014387744"
         },
         "n": 207,
         "optimality": {
@@ -9734,15 +9734,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(208) ≥ 14.453624",
+          "display": "s(208) ≥ 14.437359",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.4536240471"
+          "value": "14.4373598647"
         },
         "n": 208,
         "optimality": {
@@ -9779,15 +9779,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(209) ≥ 14.490737",
+          "display": "s(209) ≥ 14.473188",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.4907375632"
+          "value": "14.4731886124"
         },
         "n": 209,
         "optimality": {
@@ -9824,15 +9824,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(210) ≥ 14.527749",
+          "display": "s(210) ≥ 14.508925",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.5277492585"
+          "value": "14.5089257261"
         },
         "n": 210,
         "optimality": {
@@ -9869,15 +9869,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(211) ≥ 14.564659",
+          "display": "s(211) ≥ 14.544571",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.5646599663"
+          "value": "14.5445719051"
         },
         "n": 211,
         "optimality": {
@@ -9914,15 +9914,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(212) ≥ 14.601470",
+          "display": "s(212) ≥ 14.580127",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.6014705087"
+          "value": "14.5801278403"
         },
         "n": 212,
         "optimality": {
@@ -9959,15 +9959,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(213) ≥ 14.638181",
+          "display": "s(213) ≥ 14.615594",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.638181697"
+          "value": "14.6155942134"
         },
         "n": 213,
         "optimality": {
@@ -10004,15 +10004,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(214) ≥ 14.674794",
+          "display": "s(214) ≥ 14.650971",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.6747943312"
+          "value": "14.650971698"
         },
         "n": 214,
         "optimality": {
@@ -10049,15 +10049,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(215) ≥ 14.711309",
+          "display": "s(215) ≥ 14.686260",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.7113092008"
+          "value": "14.6862609591"
         },
         "n": 215,
         "optimality": {
@@ -10094,15 +10094,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(216) ≥ 14.747727",
+          "display": "s(216) ≥ 14.721462",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.7477270849"
+          "value": "14.7214626533"
         },
         "n": 216,
         "optimality": {
@@ -10139,15 +10139,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(217) ≥ 14.784048",
+          "display": "s(217) ≥ 14.756577",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.7840487521"
+          "value": "14.7565774293"
         },
         "n": 217,
         "optimality": {
@@ -10184,15 +10184,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(218) ≥ 14.820274",
+          "display": "s(218) ≥ 14.791605",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.8202749611"
+          "value": "14.7916059279"
         },
         "n": 218,
         "optimality": {
@@ -10229,15 +10229,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(219) ≥ 14.856406",
+          "display": "s(219) ≥ 14.826548",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.8564064606"
+          "value": "14.8265487818"
         },
         "n": 219,
         "optimality": {
@@ -10274,15 +10274,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(220) ≥ 14.892443",
+          "display": "s(220) ≥ 14.861406",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.8924439894"
+          "value": "14.8614066163"
         },
         "n": 220,
         "optimality": {
@@ -10319,15 +10319,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(221) ≥ 14.928388",
+          "display": "s(221) ≥ 14.896180",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.9283882772"
+          "value": "14.8961800488"
         },
         "n": 221,
         "optimality": {
@@ -10364,15 +10364,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(222) ≥ 14.964240",
+          "display": "s(222) ≥ 14.930869",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "14.9642400438"
+          "value": "14.9308696896"
         },
         "n": 222,
         "optimality": {
@@ -10416,11 +10416,11 @@
         "lower": {
           "display": "s(223) ≥ 15",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-chelokot-square-minus-two-lean"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "15"
         },
@@ -10466,11 +10466,11 @@
         "lower": {
           "display": "s(224) ≥ 15",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "15"
         },
@@ -10521,7 +10521,7 @@
         "lower": {
           "display": "s(225) ≥ 15",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-basic-area-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
@@ -10564,15 +10564,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(226) ≥ 15.035668",
+          "display": "s(226) ≥ 15.034441",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.0356688476"
+          "value": "15.0344418537"
         },
         "n": 226,
         "optimality": {
@@ -10609,15 +10609,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(227) ≥ 15.071247",
+          "display": "s(227) ≥ 15.068802",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.0712472795"
+          "value": "15.0688022843"
         },
         "n": 227,
         "optimality": {
@@ -10654,15 +10654,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(228) ≥ 15.106735",
+          "display": "s(228) ≥ 15.103081",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.1067359797"
+          "value": "15.1030818665"
         },
         "n": 228,
         "optimality": {
@@ -10699,15 +10699,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(229) ≥ 15.142135",
+          "display": "s(229) ≥ 15.137281",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.1421356237"
+          "value": "15.1372811683"
         },
         "n": 229,
         "optimality": {
@@ -10744,15 +10744,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(230) ≥ 15.177446",
+          "display": "s(230) ≥ 15.171400",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.1774468788"
+          "value": "15.1714007511"
         },
         "n": 230,
         "optimality": {
@@ -10789,15 +10789,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(231) ≥ 15.212670",
+          "display": "s(231) ≥ 15.205441",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.2126704036"
+          "value": "15.2054411698"
         },
         "n": 231,
         "optimality": {
@@ -10834,15 +10834,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(232) ≥ 15.247806",
+          "display": "s(232) ≥ 15.239402",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.2478068488"
+          "value": "15.2394029729"
         },
         "n": 232,
         "optimality": {
@@ -10879,15 +10879,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(233) ≥ 15.282856",
+          "display": "s(233) ≥ 15.273286",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.2828568571"
+          "value": "15.2732867026"
         },
         "n": 233,
         "optimality": {
@@ -10924,15 +10924,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(234) ≥ 15.317821",
+          "display": "s(234) ≥ 15.307092",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.3178210633"
+          "value": "15.3070928949"
         },
         "n": 234,
         "optimality": {
@@ -10969,15 +10969,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(235) ≥ 15.352700",
+          "display": "s(235) ≥ 15.340822",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.3527000944"
+          "value": "15.3408220796"
         },
         "n": 235,
         "optimality": {
@@ -11014,15 +11014,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(236) ≥ 15.387494",
+          "display": "s(236) ≥ 15.374474",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.3874945699"
+          "value": "15.3744747806"
         },
         "n": 236,
         "optimality": {
@@ -11059,15 +11059,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(237) ≥ 15.422205",
+          "display": "s(237) ≥ 15.408051",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.4222051019"
+          "value": "15.4080515158"
         },
         "n": 237,
         "optimality": {
@@ -11104,15 +11104,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(238) ≥ 15.456832",
+          "display": "s(238) ≥ 15.441552",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.4568322948"
+          "value": "15.4415527974"
         },
         "n": 238,
         "optimality": {
@@ -11149,15 +11149,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(239) ≥ 15.491376",
+          "display": "s(239) ≥ 15.474979",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.4913767462"
+          "value": "15.4749791318"
         },
         "n": 239,
         "optimality": {
@@ -11194,15 +11194,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(240) ≥ 15.525839",
+          "display": "s(240) ≥ 15.508331",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.5258390463"
+          "value": "15.5083310198"
         },
         "n": 240,
         "optimality": {
@@ -11239,15 +11239,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(241) ≥ 15.560219",
+          "display": "s(241) ≥ 15.541608",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.5602197786"
+          "value": "15.5416089564"
         },
         "n": 241,
         "optimality": {
@@ -11284,15 +11284,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(242) ≥ 15.594519",
+          "display": "s(242) ≥ 15.574813",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.5945195193"
+          "value": "15.5748134316"
         },
         "n": 242,
         "optimality": {
@@ -11329,15 +11329,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(243) ≥ 15.628738",
+          "display": "s(243) ≥ 15.607944",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.6287388383"
+          "value": "15.6079449297"
         },
         "n": 243,
         "optimality": {
@@ -11374,15 +11374,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(244) ≥ 15.662878",
+          "display": "s(244) ≥ 15.641003",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.6628782986"
+          "value": "15.6410039297"
         },
         "n": 244,
         "optimality": {
@@ -11419,15 +11419,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(245) ≥ 15.696938",
+          "display": "s(245) ≥ 15.673990",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.6969384567"
+          "value": "15.6739909054"
         },
         "n": 245,
         "optimality": {
@@ -11464,15 +11464,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(246) ≥ 15.730919",
+          "display": "s(246) ≥ 15.706906",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.7309198627"
+          "value": "15.7069063257"
         },
         "n": 246,
         "optimality": {
@@ -11509,15 +11509,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(247) ≥ 15.764823",
+          "display": "s(247) ≥ 15.739750",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.7648230602"
+          "value": "15.7397506541"
         },
         "n": 247,
         "optimality": {
@@ -11554,15 +11554,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(248) ≥ 15.798648",
+          "display": "s(248) ≥ 15.772524",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.7986485869"
+          "value": "15.7725243493"
         },
         "n": 248,
         "optimality": {
@@ -11599,15 +11599,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(249) ≥ 15.832396",
+          "display": "s(249) ≥ 15.805227",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.8323969742"
+          "value": "15.805227865"
         },
         "n": 249,
         "optimality": {
@@ -11644,15 +11644,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(250) ≥ 15.866068",
+          "display": "s(250) ≥ 15.837861",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.8660687473"
+          "value": "15.8378616501"
         },
         "n": 250,
         "optimality": {
@@ -11689,15 +11689,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(251) ≥ 15.899664",
+          "display": "s(251) ≥ 15.870426",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.8996644258"
+          "value": "15.8704261489"
         },
         "n": 251,
         "optimality": {
@@ -11734,15 +11734,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(252) ≥ 15.933184",
+          "display": "s(252) ≥ 15.902921",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.9331845231"
+          "value": "15.9029218007"
         },
         "n": 252,
         "optimality": {
@@ -11779,15 +11779,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(253) ≥ 15.966629",
+          "display": "s(253) ≥ 15.935349",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "15.9666295471"
+          "value": "15.9353490404"
         },
         "n": 253,
         "optimality": {
@@ -11831,11 +11831,11 @@
         "lower": {
           "display": "s(254) ≥ 16",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-chelokot-square-minus-two-lean"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "16"
         },
@@ -11881,11 +11881,11 @@
         "lower": {
           "display": "s(255) ≥ 16",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "16"
         },
@@ -11936,7 +11936,7 @@
         "lower": {
           "display": "s(256) ≥ 16",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-basic-area-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
@@ -11979,15 +11979,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(257) ≥ 16.033296",
+          "display": "s(257) ≥ 16.032224",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.0332963784"
+          "value": "16.032224567"
         },
         "n": 257,
         "optimality": {
@@ -12024,15 +12024,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(258) ≥ 16.066519",
+          "display": "s(258) ≥ 16.064382",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.0665191733"
+          "value": "16.0643824162"
         },
         "n": 258,
         "optimality": {
@@ -12069,15 +12069,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(259) ≥ 16.099668",
+          "display": "s(259) ≥ 16.096473",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.0996688705"
+          "value": "16.0964739604"
         },
         "n": 259,
         "optimality": {
@@ -12114,15 +12114,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(260) ≥ 16.132745",
+          "display": "s(260) ≥ 16.128499",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.1327459504"
+          "value": "16.128499608"
         },
         "n": 260,
         "optimality": {
@@ -12159,15 +12159,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(261) ≥ 16.165750",
+          "display": "s(261) ≥ 16.160459",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.1657508881"
+          "value": "16.1604597633"
         },
         "n": 261,
         "optimality": {
@@ -12204,15 +12204,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(262) ≥ 16.198684",
+          "display": "s(262) ≥ 16.192354",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.1986841536"
+          "value": "16.1923548264"
         },
         "n": 262,
         "optimality": {
@@ -12249,15 +12249,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(263) ≥ 16.231546",
+          "display": "s(263) ≥ 16.224185",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.2315462117"
+          "value": "16.2241851935"
         },
         "n": 263,
         "optimality": {
@@ -12294,15 +12294,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(264) ≥ 16.264337",
+          "display": "s(264) ≥ 16.255951",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.2643375225"
+          "value": "16.2559512565"
         },
         "n": 264,
         "optimality": {
@@ -12339,15 +12339,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(265) ≥ 16.297058",
+          "display": "s(265) ≥ 16.287653",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.2970585408"
+          "value": "16.2876534038"
         },
         "n": 265,
         "optimality": {
@@ -12384,15 +12384,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(266) ≥ 16.329709",
+          "display": "s(266) ≥ 16.319292",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.3297097168"
+          "value": "16.3192920195"
         },
         "n": 266,
         "optimality": {
@@ -12429,15 +12429,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(267) ≥ 16.362291",
+          "display": "s(267) ≥ 16.350867",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.3622914957"
+          "value": "16.3508674841"
         },
         "n": 267,
         "optimality": {
@@ -12474,15 +12474,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(268) ≥ 16.394804",
+          "display": "s(268) ≥ 16.382380",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.3948043183"
+          "value": "16.3823801742"
         },
         "n": 268,
         "optimality": {
@@ -12519,15 +12519,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(269) ≥ 16.427248",
+          "display": "s(269) ≥ 16.413830",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.4272486205"
+          "value": "16.4138304628"
         },
         "n": 269,
         "optimality": {
@@ -12564,15 +12564,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(270) ≥ 16.459624",
+          "display": "s(270) ≥ 16.445218",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.4596248337"
+          "value": "16.4452187191"
         },
         "n": 270,
         "optimality": {
@@ -12609,15 +12609,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(271) ≥ 16.491933",
+          "display": "s(271) ≥ 16.476545",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.4919333848"
+          "value": "16.4765453086"
         },
         "n": 271,
         "optimality": {
@@ -12654,15 +12654,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(272) ≥ 16.524174",
+          "display": "s(272) ≥ 16.507810",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.5241746963"
+          "value": "16.5078105935"
         },
         "n": 272,
         "optimality": {
@@ -12699,15 +12699,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(273) ≥ 16.556349",
+          "display": "s(273) ≥ 16.539014",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.5563491861"
+          "value": "16.5390149323"
         },
         "n": 273,
         "optimality": {
@@ -12744,15 +12744,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(274) ≥ 16.588457",
+          "display": "s(274) ≥ 16.570158",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.5884572681"
+          "value": "16.5701586799"
         },
         "n": 274,
         "optimality": {
@@ -12789,15 +12789,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(275) ≥ 16.620499",
+          "display": "s(275) ≥ 16.601242",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.6204993518"
+          "value": "16.6012421881"
         },
         "n": 275,
         "optimality": {
@@ -12834,15 +12834,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(276) ≥ 16.652475",
+          "display": "s(276) ≥ 16.632265",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.6524758425"
+          "value": "16.6322658049"
         },
         "n": 276,
         "optimality": {
@@ -12879,15 +12879,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(277) ≥ 16.684387",
+          "display": "s(277) ≥ 16.663229",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.6843871414"
+          "value": "16.6632298752"
         },
         "n": 277,
         "optimality": {
@@ -12924,15 +12924,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(278) ≥ 16.716233",
+          "display": "s(278) ≥ 16.694134",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.7162336455"
+          "value": "16.6941347407"
         },
         "n": 278,
         "optimality": {
@@ -12969,15 +12969,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(279) ≥ 16.748015",
+          "display": "s(279) ≥ 16.724980",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.748015748"
+          "value": "16.7249807395"
         },
         "n": 279,
         "optimality": {
@@ -13014,15 +13014,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(280) ≥ 16.779733",
+          "display": "s(280) ≥ 16.755768",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.7797338381"
+          "value": "16.755768207"
         },
         "n": 280,
         "optimality": {
@@ -13059,15 +13059,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(281) ≥ 16.811388",
+          "display": "s(281) ≥ 16.786497",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.8113883008"
+          "value": "16.7864974749"
         },
         "n": 281,
         "optimality": {
@@ -13104,15 +13104,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(282) ≥ 16.842979",
+          "display": "s(282) ≥ 16.817168",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.8429795178"
+          "value": "16.817168872"
         },
         "n": 282,
         "optimality": {
@@ -13149,15 +13149,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(283) ≥ 16.874507",
+          "display": "s(283) ≥ 16.847782",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.8745078664"
+          "value": "16.8477827242"
         },
         "n": 283,
         "optimality": {
@@ -13194,15 +13194,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(284) ≥ 16.905973",
+          "display": "s(284) ≥ 16.878339",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.9059737206"
+          "value": "16.8783393541"
         },
         "n": 284,
         "optimality": {
@@ -13239,15 +13239,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(285) ≥ 16.937377",
+          "display": "s(285) ≥ 16.908839",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.9373774505"
+          "value": "16.9088390814"
         },
         "n": 285,
         "optimality": {
@@ -13284,15 +13284,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(286) ≥ 16.968719",
+          "display": "s(286) ≥ 16.939282",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "16.9687194227"
+          "value": "16.9392822227"
         },
         "n": 286,
         "optimality": {
@@ -13336,11 +13336,11 @@
         "lower": {
           "display": "s(287) ≥ 17",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-chelokot-square-minus-two-lean"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "17"
         },
@@ -13386,11 +13386,11 @@
         "lower": {
           "display": "s(288) ≥ 17",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "17"
         },
@@ -13441,7 +13441,7 @@
         "lower": {
           "display": "s(289) ≥ 17",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-basic-area-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
@@ -13484,15 +13484,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(290) ≥ 17.031219",
+          "display": "s(290) ≥ 17.030275",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.0312195419"
+          "value": "17.0302752548"
         },
         "n": 290,
         "optimality": {
@@ -13529,15 +13529,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(291) ≥ 17.062378",
+          "display": "s(291) ≥ 17.060495",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.0623784042"
+          "value": "17.0604951616"
         },
         "n": 291,
         "optimality": {
@@ -13574,15 +13574,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(292) ≥ 17.093476",
+          "display": "s(292) ≥ 17.090660",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.0934769394"
+          "value": "17.090660023"
         },
         "n": 292,
         "optimality": {
@@ -13619,15 +13619,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(293) ≥ 17.124515",
+          "display": "s(293) ≥ 17.120770",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.1245154966"
+          "value": "17.1207701385"
         },
         "n": 293,
         "optimality": {
@@ -13664,15 +13664,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(294) ≥ 17.155494",
+          "display": "s(294) ≥ 17.150825",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.1554944214"
+          "value": "17.1508258053"
         },
         "n": 294,
         "optimality": {
@@ -13709,15 +13709,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(295) ≥ 17.186414",
+          "display": "s(295) ≥ 17.180827",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.1864140562"
+          "value": "17.1808273176"
         },
         "n": 295,
         "optimality": {
@@ -13754,15 +13754,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(296) ≥ 17.217274",
+          "display": "s(296) ≥ 17.210774",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.2172747402"
+          "value": "17.210774967"
         },
         "n": 296,
         "optimality": {
@@ -13799,15 +13799,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(297) ≥ 17.248076",
+          "display": "s(297) ≥ 17.240669",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.2480768093"
+          "value": "17.2406690427"
         },
         "n": 297,
         "optimality": {
@@ -13844,15 +13844,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(298) ≥ 17.278820",
+          "display": "s(298) ≥ 17.270509",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.2788205961"
+          "value": "17.2705098312"
         },
         "n": 298,
         "optimality": {
@@ -13889,15 +13889,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(299) ≥ 17.309506",
+          "display": "s(299) ≥ 17.300297",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.3095064303"
+          "value": "17.3002976164"
         },
         "n": 299,
         "optimality": {
@@ -13934,15 +13934,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(300) ≥ 17.340134",
+          "display": "s(300) ≥ 17.330032",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.3401346384"
+          "value": "17.3300326797"
         },
         "n": 300,
         "optimality": {
@@ -13979,15 +13979,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(301) ≥ 17.370705",
+          "display": "s(301) ≥ 17.359715",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.3707055437"
+          "value": "17.3597153"
         },
         "n": 301,
         "optimality": {
@@ -14024,15 +14024,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(302) ≥ 17.401219",
+          "display": "s(302) ≥ 17.389345",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.4012194669"
+          "value": "17.389345754"
         },
         "n": 302,
         "optimality": {
@@ -14069,15 +14069,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(303) ≥ 17.431676",
+          "display": "s(303) ≥ 17.418924",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.4316767252"
+          "value": "17.4189243156"
         },
         "n": 303,
         "optimality": {
@@ -14114,15 +14114,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(304) ≥ 17.462077",
+          "display": "s(304) ≥ 17.448451",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.4620776332"
+          "value": "17.4484512566"
         },
         "n": 304,
         "optimality": {
@@ -14159,15 +14159,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(305) ≥ 17.492422",
+          "display": "s(305) ≥ 17.477926",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.4924225025"
+          "value": "17.4779268463"
         },
         "n": 305,
         "optimality": {
@@ -14204,15 +14204,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(306) ≥ 17.522711",
+          "display": "s(306) ≥ 17.507351",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.5227116419"
+          "value": "17.5073513516"
         },
         "n": 306,
         "optimality": {
@@ -14249,15 +14249,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(307) ≥ 17.552945",
+          "display": "s(307) ≥ 17.536725",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.5529453572"
+          "value": "17.5367250374"
         },
         "n": 307,
         "optimality": {
@@ -14294,15 +14294,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(308) ≥ 17.583123",
+          "display": "s(308) ≥ 17.566048",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.5831239518"
+          "value": "17.5660481658"
         },
         "n": 308,
         "optimality": {
@@ -14339,15 +14339,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(309) ≥ 17.613247",
+          "display": "s(309) ≥ 17.595320",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.6132477258"
+          "value": "17.5953209972"
         },
         "n": 309,
         "optimality": {
@@ -14384,15 +14384,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(310) ≥ 17.643316",
+          "display": "s(310) ≥ 17.624543",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.6433169771"
+          "value": "17.6245437895"
         },
         "n": 310,
         "optimality": {
@@ -14429,15 +14429,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(311) ≥ 17.673332",
+          "display": "s(311) ≥ 17.653716",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.6733320005"
+          "value": "17.6537167984"
         },
         "n": 311,
         "optimality": {
@@ -14474,15 +14474,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(312) ≥ 17.703293",
+          "display": "s(312) ≥ 17.682840",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.7032930885"
+          "value": "17.6828402774"
         },
         "n": 312,
         "optimality": {
@@ -14519,15 +14519,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(313) ≥ 17.733200",
+          "display": "s(313) ≥ 17.711914",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.7332005307"
+          "value": "17.711914478"
         },
         "n": 313,
         "optimality": {
@@ -14564,15 +14564,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(314) ≥ 17.763054",
+          "display": "s(314) ≥ 17.740939",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.7630546142"
+          "value": "17.7409396495"
         },
         "n": 314,
         "optimality": {
@@ -14609,15 +14609,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(315) ≥ 17.792855",
+          "display": "s(315) ≥ 17.769916",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.7928556237"
+          "value": "17.7699160391"
         },
         "n": 315,
         "optimality": {
@@ -14654,15 +14654,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(316) ≥ 17.822603",
+          "display": "s(316) ≥ 17.798843",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.8226038413"
+          "value": "17.798843892"
         },
         "n": 316,
         "optimality": {
@@ -14699,15 +14699,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(317) ≥ 17.852299",
+          "display": "s(317) ≥ 17.827723",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.8522995464"
+          "value": "17.8277234511"
         },
         "n": 317,
         "optimality": {
@@ -14744,15 +14744,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(318) ≥ 17.881943",
+          "display": "s(318) ≥ 17.856554",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.8819430161"
+          "value": "17.8565549577"
         },
         "n": 318,
         "optimality": {
@@ -14789,15 +14789,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(319) ≥ 17.911534",
+          "display": "s(319) ≥ 17.885338",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.9115345253"
+          "value": "17.8853386507"
         },
         "n": 319,
         "optimality": {
@@ -14834,15 +14834,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(320) ≥ 17.941074",
+          "display": "s(320) ≥ 17.914074",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.9410743461"
+          "value": "17.9140747672"
         },
         "n": 320,
         "optimality": {
@@ -14879,15 +14879,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(321) ≥ 17.970562",
+          "display": "s(321) ≥ 17.942763",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "17.9705627485"
+          "value": "17.9427635425"
         },
         "n": 321,
         "optimality": {
@@ -14931,11 +14931,11 @@
         "lower": {
           "display": "s(322) ≥ 18",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-chelokot-square-minus-two-lean"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "18"
         },
@@ -14981,11 +14981,11 @@
         "lower": {
           "display": "s(323) ≥ 18",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-karakus-strip-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": false,
           "value": "18"
         },
@@ -15036,7 +15036,7 @@
         "lower": {
           "display": "s(324) ≥ 18",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-basic-area-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
@@ -15081,7 +15081,7 @@
       "degree_recorded_upstream": 21,
       "exact_value_known": 269,
       "lower_bound_first_proved_here": 3,
-      "lower_bound_recent_result": 27,
+      "lower_bound_recent_result": 297,
       "only_known_numerically": 55,
       "proved_optimal": 63,
       "rigidity_catalogue_annotated": 2,

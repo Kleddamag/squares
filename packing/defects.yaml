@@ -11,7 +11,7 @@ softschema:
   schema: defects.schema.yaml
   envelope: null
   status: enforced
-count: 515
+count: 516
 defects:
 - id: D-001
   title: Fixed-side search never left the grid basin
@@ -17275,3 +17275,48 @@ defects:
     corrections.
   regression: none
   recorded_in: packing/resources/papers/mcclenagan-2026-optimally-packing-large-square.md
+- id: D-516
+  title: The register held Nagamochi 2005's Theorem 2 as verified and rested 287 case floors on it, though its Lemma 1 is false
+  date: '2026-10-02'
+  layer: record
+  class: soundness
+  direction: flattering
+  detected_by: review
+  latent_for: >-
+    From the frontier's first records, which cited E-nagamochi-lower as a verified
+    published proof, to 2026-10-02. The read of 2026-08-30 judged the paper's spine sound
+    with four named items unverified, and the defect lay in none of them. chelokot's note
+    of 2026-09-04 and Karakuş's preprint of 2026-09-29 were public for 28 and 3 days of
+    that time; the X-049 literature lane found both on 2026-10-02.
+  severity: high
+  status: fixed
+  bead: think-xucp
+  what: >-
+    E-nagamochi-lower recorded Nagamochi 2005, Theorem 2, as a verified published proof,
+    and T-007 stood at V3/C1 on it. Lemma 1 of that paper, the per-square scoring
+    assertion Theorem 1 is summed from, is false for every container with a > 3 and
+    b > 2: Karakuş's squares K_t and chelokot's square of side 10001/10000 score below
+    one, recomputed here exactly (T-068). The paper has no other proof of Theorem 1, so
+    Theorem 2 is unproved by it at every N >= 10. The operative verified lower bound of
+    287 case records cited it: 238 open floors, all 17 perfect squares from 4 on, the 16
+    cases k^2 - 1 and the 16 cases k^2 - 2 from 7 on.
+  consequence: >-
+    The register called 287 lower bounds verified on a proof that does not hold. At the
+    238 open cases the verified floor stood above anything proved: Karakuş's replacement
+    is strictly lower at each of them. The exact values s(k^2 - 2) = k from k = 8 on had
+    no other proof the register held. Nothing is disproved: no packing beating any of
+    Nagamochi's values is known, and the perfect squares and k^2 - 1 cases were true at
+    the same values on other proofs.
+  fix: >-
+    Per the review of 2026-10-02: E-nagamochi-lower is now reported, with its external
+    review defect-found, and T-007 stands at V0/C1, status incomplete. The verified floors
+    were re-grounded: the perfect squares on the area bound, s(k^2 - 1) = k on Karakuş's
+    Corollary 1.2 (T-067), and the general floor on his weaker Corollary 6.2 (T-066), all
+    at V3/C1, except at n = 54, 57 and 73, where T-044's registered bounds, masked until
+    then, are stronger; T-068 records Lemma 1's correction. Nagamochi's values stay in the
+    reported lane. The case bodies, the generator, the frontier README and three research
+    reports carry dated corrections, and devtools.check_nagamochi_bounds now re-derives
+    Karakuş's values in the verified lane and Nagamochi's in the reported lane.
+    The k^2 - 2 family rests on chelokot's Lean proof, replayed here with its axiom receipt (T-069), at the same values.
+  regression: none
+  recorded_in: docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md

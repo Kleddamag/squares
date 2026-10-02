@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:FrontierEvidenceSet/v1
   schema: frontier-evidence.schema.yaml
   status: enforced
-last_reviewed: '2026-10-01'
+last_reviewed: '2026-10-02'
 evidence:
   - id: E-n017-kleddamag-rational-upper
     claim: upper-bound
@@ -320,7 +320,7 @@ evidence:
     source_reviewed: '2026-09-29'
   - id: E-wand125-point-source-replay
     claim: lower-bound
-    scope: {n_values: [26, 29, 39, 40, 41, 53, 55, 56, 69, 70, 71, 72]}
+    scope: {n_values: [26, 29, 39, 40, 41, 53, 54, 55, 56, 57, 69, 70, 71, 72, 73]}
     assurance: verified
     method: exact-algebraic
     performed_by: repository
@@ -346,7 +346,11 @@ evidence:
     proof:
       source: packing/src/sqpack/fractional/certificate.py
       theorem: Exact weighted covering obstruction over the complete rational direction net
-      scope: Unrestricted independent rotations and disjoint interiors; n41 follows from n39 and n71 from n70 by monotonicity.
+      scope: >-
+        Unrestricted independent rotations and disjoint interiors; n41 follows from n39 and
+        n71 from n70 by monotonicity, and since 2026-10-02 n54 from n53, n57 from n56 and
+        n73 from n72, where Nagamochi's closed form had held the verified field until its
+        proof was found incomplete (T-068).
       pinpoints: All five Certificate verification conditions; complete successful entries for the ten named files in receipts/wand125-points/sqpack-exact-replay.log.
       assumptions:
         - Exact nonnegative point weights have total mass strictly below the target count.
@@ -1426,8 +1430,8 @@ evidence:
   - id: E-nagamochi-lower
     claim: lower-bound
     scope: {n_min: 4, n_max: 324}
-    assurance: verified
-    method: published-proof
+    assurance: reported
+    reported_method: published-proof
     performed_by: source-author
     novelty: previously-published
     relationship_to_generator: not-applicable
@@ -1443,44 +1447,172 @@ evidence:
         - Unit squares may rotate inside an open square container.
         - The square-packing side function is the paper's s(N).
     external_review:
-      state: informally-verified
-      date: '2026-08-30'
+      state: defect-found
+      date: '2026-10-02'
       reviewed_by: repository
       note: >-
-        Read here because the inventory's own arithmetic named it: at the review date
-        this record carried the verified lower bound for 88 of the hundred cases and the
-        next most-cited carried two, so it was simultaneously the most load-bearing
-        external argument in the register and the only one nobody had opened. The argument closes. Theorem 1 is the
-        substantive part -- an upper bound on how many unit squares fit strictly inside an
-        a-by-b rectangle, proved by an explicit unavoidable set whose capacity is computed
-        rather than asserted, with Lemmas 2 through 7 proved in the paper and only an
-        elementary containment fact cited outward. Theorem 2 follows by algebra. It is
-        stated for general packings with arbitrary rotation, the case analysis is
-        parametrised by angle throughout, and no figure carries weight the text does not.
-        Three load-bearing steps were re-derived symbolically here rather than taken from
-        the reading. The unavoidable set's capacity sums to `ab - 2` on the integer branch,
-        matching the claimed `ab - (a+1-ceil a) - (b+1-ceil b)`. The substitution behind
-        Theorem 2(ii) is exact: with `alpha = sqrt(N-2k+1)+1-k`, `(k+alpha)^2 - 2*alpha`
-        simplifies to `N` identically. The boundary has no off-by-one -- at `N = n^2-2` the
-        bound is `sqrt((n-1)^2)+1 = n` exactly, and at `N = n^2-3` it is `sqrt(n(n-2))+1`,
-        strictly below `n` because `n^2-2n < (n-1)^2`. What this is NOT: a careful reading
-        with the spine checked, not a line-by-line re-derivation. Four things are
-        unverified -- the coordinate-geometry formulas inside Lemmas 2, 3, 5 and 6, whose
-        structure and endpoint behaviour were followed but whose trigonometric expressions
-        were not re-derived; the completeness of the Case 5 subargument; the figures, which
-        were not rendered; and one step the paper itself does not prove, that the
-        intersection length is monotone in the square's side, where it says "we can assume
-        lambda = 1 to estimate the minimum". That last is geometrically evident and is the
-        only place the argument leans on something unargued. This promotes nothing: the
-        method stays `published-proof`, and `proof-assistant-checked` is a different thing.
-        Separately `devtools/check_nagamochi_bounds.py` re-derives the 63 operative
-        verified-field values from Theorem 2 in the gate, so a transcription slip in a
-        current bound is caught even though the proof behind them is not machine-checked.
-        95 of the hundred case records cite this record and it supplies the operative
-        verified lower bound in 63 of them; the other 32 citations are historical or
-        reported context, and a citation count is not a count of current bounds.
-    limitations: External published proof; its arithmetic is not independently replayed here.
-    source_reviewed: '2026-08-24'
+        Lemma 1, the per-square scoring assertion that Theorem 1 is summed from, is false
+        for every container with a > 3 and b > 2. Karakuş's squares K_t
+        (arXiv:2609.37410, Section 4, 0 < t <= 1/50) and chelokot's square of side
+        10001/10000 in [0,4]^2 each score below one after a concentric shrink;
+        devtools/check_nagamochi_lemma1_counterexample.py recomputes every printed quantity
+        of both in exact rational arithmetic (E-nagamochi-lemma1-counterexample, T-068).
+        The gap is in Section 5.5, Case 6, where the reduction reaches a contact
+        configuration that the hypothesis of Lemma 6 does not cover. The paper has no other
+        proof of Theorem 1 and Theorem 2 is algebra on it, so Theorem 2 is unproved by this
+        paper at every N >= 10 -- the general floor and the m^2 - 1 and m^2 - 2 families
+        alike -- and the lemma is undecided for the containers of N = 4 to 9, where the
+        values are classical in any case. Nothing is disproved: no packing beating any value
+        of the theorem is known, and the bound may be true. The read of 2026-08-30 (kept in
+        migration_annotation) judged the spine sound with four named items unverified; the
+        defect lies in none of them. Record:
+        docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md.
+    limitations: >-
+      Reported, not verified, since 2026-10-02: a published proof whose Lemma 1 is refuted,
+      with no replacement at full strength. Its values stay in the case records' reported
+      lane. The verified floors that rested on it were re-grounded the same day on the area
+      bound (perfect squares), on Karakuş's Corollary 1.2 (s(m^2 - 1) = m) and on his
+      weaker general bound, Corollary 6.2 (E-karakus-strip-lower).
+    migration_annotation: >-
+      2026-10-02: assurance verified -> reported and method published-proof ->
+      reported_method published-proof, after the adversarial review of that date found
+      Lemma 1 false; external_review informally-verified (2026-08-30) -> defect-found. Until
+      then this entry carried the verified lower bound of 287 case records, 63 of them at
+      n <= 100. The read of 2026-08-30, in substance: Theorem 1 is the substantive part,
+      proved by an explicit unavoidable set whose capacity is computed, with Lemmas 2 to 7
+      proved in the paper, and Theorem 2 follows by algebra. Three load-bearing steps were
+      re-derived symbolically: the capacity sums to `ab - 2` on the integer branch; with
+      `alpha = sqrt(N-2k+1)+1-k`, `(k+alpha)^2 - 2*alpha` simplifies to `N`; and at
+      `N = n^2-2` the bound is exactly `n` while at `N = n^2-3` it is `sqrt(n(n-2))+1 < n`.
+      Unverified then: the coordinate-geometry formulas inside Lemmas 2, 3, 5 and 6, the
+      completeness of the Case 5 subargument, the figures, and the unargued monotonicity of
+      the intersection length in the square's side. Those re-derivations still stand; the
+      defect is a hypothesis of Lemma 6 dropped where Case 6 applies it. The note's full
+      text is in the history of this file.
+    source_reviewed: '2026-10-02'
+
+  - id: E-karakus-strip-lower
+    claim: lower-bound
+    scope: {n_min: 8, n_max: 324}
+    assurance: verified
+    method: published-proof
+    performed_by: source-author
+    novelty: previously-published
+    relationship_to_generator: not-applicable
+    origin: external
+    source_key: '[Karakuş 2026]'
+    replay_status: not-attempted
+    proof:
+      source: resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma.pdf
+      theorem: >-
+        Theorem 1.1 (rectangle bound) with Corollaries 1.2, 6.1 and 6.2:
+        s(N) >= 1/2 + sqrt(N - floor(sqrt(N)) + 1/4) for every nonsquare N >= 8, which is
+        exactly m at N = m^2 - 1, so s(m^2 - 1) = m for every m >= 3 with the grid.
+      scope: >-
+        Every nonsquare integer N >= 8, unit squares with arbitrary rotations and disjoint
+        interiors in a square; perfect squares are outside it.
+      pinpoints: >-
+        Theorem 1.1 and Corollary 1.2 on printed p. 3; the strip measure and Proposition 5.1
+        in Section 5 with Lemma 5.2; Corollaries 6.1 and 6.2, eq. (6.1), in Section 6,
+        printed pp. 11-12.
+      assumptions:
+        - Packings permit arbitrary orientations and boundary contact.
+        - The proof uses none of the scoring assertion or the technical lemmas of Nagamochi 2005.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: repository
+      note: >-
+        Read in full and re-derived step by step in the adversarial review of 2026-10-02
+        (docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md). The strip
+        measure is area density 1 on [0,a] x [1, b-1], line density 1/2 on the lines y = 1
+        and y = b - 1, and mass 1/2 at the points (j, 4/5) and (j, b - 4/5) for
+        j = 1, ..., ceil(a) - 1, of total ab - (a + 1 - ceil a). Lemma 5.2's chord bounds
+        were re-derived (its printed range for r was confirmed on the rendered page, the
+        text extraction being garbled there), as were both cases of Lemma 5.2(ii),
+        Proposition 5.1's three cases for centres in the strip, and the algebra of
+        Corollary 6.2. No gap was found. The bound sits strictly between sqrt(N) and
+        Nagamochi's Theorem 2 at every nonsquare N, touching Theorem 2 exactly at
+        N = m^2 - 1; devtools/check_nagamochi_lemma1_counterexample.py checks that ordering
+        exactly and checks the measure's total, which is all it replays. This is a read,
+        not a machine check.
+    limitations: >-
+      A published, unrefereed preprint, read and re-derived here and not machine-checked.
+      Weaker than Nagamochi 2005's Theorem 2 at every nonsquare N other than m^2 - 1; it
+      establishes neither that theorem nor s(m^2 - 2) = m.
+    source_reviewed: '2026-10-02'
+
+  - id: E-nagamochi-lemma1-counterexample
+    claim: derived-structure
+    scope: {n_min: 10, n_max: 324}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    novelty: previously-published
+    relationship_to_generator: independent-implementation
+    origin: replayed-here
+    source_key: '[Karakuş 2026]'
+    certificate: packing/devtools/check_nagamochi_lemma1_counterexample.py
+    replay: uv run --frozen --all-extras --group dev python -m devtools.check_nagamochi_lemma1_counterexample
+    replay_status: passed
+    limitations: >-
+      Exact rational recomputation, from their printed coordinates, of Karakuş's
+      counterexample family K_t to Lemma 1 of Nagamochi 2005 (arXiv:2609.37410, Section 4
+      and Appendix A) at t = 1/50, 1/100, 1/1000 and 10^-6 in four containers, and of
+      chelokot's square of side 10001/10000 in [0,4]^2; every shrunken square scores below
+      one under either boundary convention. It refutes Lemma 1 for a > 3 and b > 2 and
+      thereby removes the published proof of Theorem 2 at N >= 10, which is this scope; it
+      bounds no s(n) and disproves no value of Theorem 2. The containers of N = 4 to 9 are
+      outside the family. tests/test_nagamochi_lemma1_counterexample.py is its control.
+    source_reviewed: '2026-10-02'
+
+  - id: E-chelokot-square-minus-two-lean
+    claim: exact-value
+    scope: {n_values: [7, 14, 23, 34, 47, 62, 79, 98, 119, 142, 167, 194, 223, 254, 287, 322]}
+    assurance: verified
+    method: proof-assistant-checked
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[chelokot Nagamochi counterexample 2026]'
+    certificate: packing/campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/receipt.json
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.replay_chelokot_lean --run --workdir DIR, with DIR outside the repository: clone
+      chelokot/square-packing-archive at its pinned commit, take Mathlib's prebuilt cache,
+      lake build the library with the pinned toolchain, rerun the archive's axiom
+      assertions and policy test, and print the axioms of
+      Records.NearSquare.squareMinusTwo_isMinimumSide and its instances. uv run --frozen --all-extras --group dev python -m devtools.replay_chelokot_lean
+      --check validates the retained receipt offline.
+    replay_status: passed
+    axioms_receipt: packing/campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/receipt.json
+    proof:
+      source: packing/campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/receipt.json
+      theorem: >-
+        Records.NearSquare.squareMinusTwo_isMinimumSide : IsMinimumSide (size * size - 2)
+        size for every natural size >= 2, that is s(n^2 - 2) = n.
+      scope: >-
+        Closed unit squares with arbitrary rotations and pairwise disjoint interiors in the
+        closed square [0, side]^2; boundary contact allowed.
+      pinpoints: >-
+        formal/SquarePackingArchive/NagamochiPackingTheorem.lean; the definitions in
+        Geometry.lean (PlacedSquare, Frame, Contains, Container.Contains, Packing, Fits,
+        InteriorDisjoint, HasPacking, IsMinimumSide); the build and axiom output in the
+        retained receipt and its build log.
+      assumptions:
+        - The Lean kernel at the pinned toolchain and Mathlib's official cache are sound.
+        - IsMinimumSide and Packing state this register's s(n), on the reading in the review of 2026-10-02; no human formalization review is retained.
+    limitations: >-
+      Kernel-checked here by replaying the source's own Lean development, whose axioms
+      are exactly propext, Classical.choice and Quot.sound by the retained receipt. The
+      statement-fidelity reading is the review lane's, not a human expert's formalization
+      review, so this supports rung 3 and not rung 5. The receipt's run rebuilt four
+      modules (NagamochiPackingTheorem, Audit, ManifestEvidence and the root) over a
+      same-session build of the other 273 from source with Mathlib's prebuilt cache; a
+      fresh from-source rebuild in a single run (--fresh-build, about an hour) was not
+      repeated. The source scan found 0 sorry, 0 axiom declarations and 0 native_decide
+      in its 277 .lean files, and the archive's 79 axiom assertions pass.
+    source_reviewed: '2026-10-02'
 
   - id: E-migrated-lower-report
     claim: lower-bound

@@ -1972,6 +1972,20 @@ ci_gates:
       it is a process pool sized by `PACK_JOBS` and two workers were not enough. 1240s is
       1.36x of the record and well under `SCREEN_BUDGET_SECONDS` (1800s).
 
+  - id: regularized-views
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-bgkz
+    ceiling_seconds: 450.0
+    argument: >-
+      The regularized atlas layer re-derived whole, one pooled step alone at
+      `--inner-jobs 4`. No hosted reading yet. Derived from 2026-10-02 local readings on
+      a four-cpu host shared with other work: 223.35s at four workers, 406.32s at two,
+      810.6s of summed record time. 450s allows the hosted pool's 1.43x slow class over
+      the four-worker reading plus about 30s of setup; the first dispatch replaces it.
+
 - id: post-merge
   file: .github/workflows/packing-validation.yml
   aggregate: post-merge-required
@@ -2103,3 +2117,14 @@ ci_gates:
     argument: >-
       Derived reporting estimate from the identically shaped deep-gate screen worker.
       That proxy is not an observation of this workflow's post-merge worker.
+  - id: regularized-views
+    measured_seconds: null
+    measured_on: null
+    measured_where: null
+    spread: null
+    pending_measurement: think-0atx
+    ceiling_seconds: 450.0
+    argument: >-
+      Derived reporting estimate from the identically shaped deep-gate
+      `regularized-views` worker, itself derived from local readings. That proxy is not
+      an observation of this workflow's post-merge worker.

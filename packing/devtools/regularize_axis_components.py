@@ -9,6 +9,10 @@ Usage, from `packing/`, each after
     --check-atlas
     --verify-atlas [--n N ...] [--workers K]
 
+Each mode also takes `--smallest-dilation`, the prototype described under "Dilation"
+below. `--workers` defaults to `sqpack.workers.worker_count`: the `PACK_JOBS` cap the gate
+exports, and the whole machine from a shell.
+
 Two renderers shade a square by how many of its four sides it shares whole with a wall
 or a same-angle neighbour (X-049, "Why Grid Squares Render Light"). The *house* rule
 draws the homepage atlas: `sqpack.render.color` counts an edge matching a wall or a
@@ -73,6 +77,18 @@ witness the atlas now holds, so a changed witness reads as a stale view rather t
 passing. The view's binds the verification verdict recorded beside it to the bytes it was
 computed on, so a view regenerated or edited without its verdict being re-derived fails
 the cheap check instead of inheriting a verdict it never earned.
+
+**Dilation.** `promote_rational` scales every rounded centre about the container's centre
+by `1 + 10^-p`, for `p` from `digits - 5` down to 3 in steps of two, and keeps the first
+factor whose pose is exactly a packing within `1e-9` of the printed side. The factor
+spreads the whole packing apart: every contact the decimal witness rounded into a sliver
+of overlap opens into a gap, and the container grows by about `(side - 1) * 10^-p`. The
+atlas layer uses factor 1 only. `--smallest-dilation` is the measured alternative, kept
+as a prototype behind a flag: it walks the same ladder and frames the view at the first
+factor that verifies. It is not the layer's policy, for the reason the atlas README's
+"The regularized views" records: on the records it would open, an exactly verified view
+would certify a side the register does not, which is a tier promotion under a drawing's
+name.
 """
 
 from __future__ import annotations
@@ -100,13 +116,14 @@ from sqpack.verify import separated, verify_packing
 from sqpack.witness import (
     WitnessError,
     # `promote_rational` tries centre dilation 1 first and then up to fifteen wider ones,
-    # each a full exact verification. This tool refuses any dilation but 1, so it builds
-    # that first candidate itself and verifies it the same way, rather than paying for
-    # verdicts it would discard.
+    # each a full exact verification. The atlas layer refuses any dilation but 1, so this
+    # builds each candidate itself and verifies it the same way, rather than paying for
+    # verdicts it would discard; `--smallest-dilation` walks the same ladder.
     _promoted_candidate,  # pyright: ignore[reportPrivateUsage]
     load_witness,
     witness_document,
 )
+from sqpack.workers import worker_count
 from sqpack.yamlio import load_yaml
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -124,6 +141,9 @@ ALGORITHM = "regularize_axis_components/2"
 check sees the index, not the code, so this is how it learns the views are out of date."""
 VIEW_SUFFIX = "-regularized.yaml.gz"
 DRAWING_LABEL = "regularized"
+RENDERINGS = "rendering"
+"""The subdirectory `devtools.render_regularized_atlas` draws the views into. Its own
+`--check` holds those files to the index; this tool's check leaves the directory to it."""
 
 
 def _rule(name: str) -> shades.Rule:
@@ -588,37 +608,62 @@ def _witness_poses(witness: dict[str, Any]) -> list[Pose]:
     return poses
 
 
-def _decimal_frame(witness: dict[str, Any]) -> tuple[list[Corners], Fraction]:
-    """The 36-digit rational pose at centre dilation 1, refused unless exactly a packing."""
+def promotion_dilations(rational_digits: int) -> list[Fraction]:
+    """`promote_rational`'s ladder of centre dilations, smallest first: 1, then
+    `1 + 10^-p` for `p` from `rational_digits - 5` down to 3 in steps of two."""
+    exponents = range(max(2, rational_digits - 5), 1, -2)
+    return [Fraction(1), *(Fraction(1) + Fraction(1, 10**power) for power in exponents)]
+
+
+def _decimal_frame(
+    witness: dict[str, Any], *, smallest_dilation: bool = False
+) -> tuple[list[Corners], Fraction, Fraction]:
+    """The 36-digit rational pose and the centre dilation it was built at.
+
+    Dilation 1 alone unless `smallest_dilation`, which tries `promote_rational`'s ladder in
+    its order and takes the first pose that is exactly a packing within `1e-9` of the
+    printed side; refused when none is.
+    """
     reported_side = Fraction(str(witness["side"]))
-    try:
-        squares, side = _promoted_candidate(
-            witness, rational_digits=RATIONAL_DIGITS, dilation=Fraction(1)
-        )
-    except WitnessError as error:
-        raise RegularizeError(
-            "promotion-unsupported",
-            f"no {RATIONAL_DIGITS}-digit rational pose can be built from this witness: {error}",
-        ) from error
-    if side > reported_side + Fraction(MAX_SIDE_INCREASE):
-        raise RegularizeError(
-            "promotion-side",
-            f"the {RATIONAL_DIGITS}-digit rational pose at dilation 1 needs side "
-            f"{float(side):.17g}, more than {MAX_SIDE_INCREASE} above the printed "
-            f"{witness['side']}",
-        )
-    report = verify_packing(squares, side, sign=rational_sign, bucket=True)
-    if not report.valid:
-        raise RegularizeError(
+    allowed = reported_side + Fraction(MAX_SIDE_INCREASE)
+    ladder = promotion_dilations(RATIONAL_DIGITS) if smallest_dilation else [Fraction(1)]
+    refusal = RegularizeError("promotion-overlap", "no candidate attempted")
+    for dilation in ladder:
+        at = f"the {RATIONAL_DIGITS}-digit rational pose at dilation {literal(dilation)}"
+        try:
+            squares, side = _promoted_candidate(
+                witness, rational_digits=RATIONAL_DIGITS, dilation=dilation
+            )
+        except WitnessError as error:
+            raise RegularizeError(
+                "promotion-unsupported",
+                f"no {RATIONAL_DIGITS}-digit rational pose can be built from this witness: "
+                f"{error}",
+            ) from error
+        if side > allowed:
+            refusal = RegularizeError(
+                "promotion-side",
+                f"{at} needs side {float(side):.17g}, more than {MAX_SIDE_INCREASE} above "
+                f"the printed {witness['side']}",
+            )
+            continue
+        report = verify_packing(squares, side, sign=rational_sign, bucket=True)
+        if report.valid:
+            return [list(square) for square in squares], side, dilation
+        refusal = RegularizeError(
             "promotion-overlap",
-            f"the {RATIONAL_DIGITS}-digit rational pose at dilation 1 is not a packing "
-            f"({len(report.failures)} failures, first {report.failures[:2]}); only a "
-            "dilated pose would be, and that is not the author's packing",
+            f"{at} is not a packing ({len(report.failures)} failures, first "
+            f"{report.failures[:2]}); "
+            + (
+                "no dilation on promote_rational's ladder within the side allowance is"
+                if smallest_dilation
+                else "only a dilated pose would be, and that is not the author's packing"
+            ),
         )
-    return [list(square) for square in squares], side
+    raise refusal
 
 
-def exact_frame(witness: dict[str, Any]) -> ExactFrame:
+def exact_frame(witness: dict[str, Any], *, smallest_dilation: bool = False) -> ExactFrame:
     """The exact rational pose this witness is regularized from, and where it came from."""
     kind = witness["scalar"]["kind"]
     reported_side = Fraction(str(witness["side"]))
@@ -654,23 +699,28 @@ def exact_frame(witness: dict[str, Any]) -> ExactFrame:
             f"{kind!r} geometry has no exact rational frame here: an enclosure proves no "
             "equality and an algebraic field needs field arithmetic this tool lacks",
         )
-    corners, side = _decimal_frame(witness)
+    corners, side, dilation = _decimal_frame(witness, smallest_dilation=smallest_dilation)
     pieces = [
         Piece(str(square["id"]), square_corners, angle_gap(pose[2]))
         for square, square_corners, pose in zip(
             witness["squares"], corners, before, strict=True
         )
     ]
+    derivation = (
+        f"the {RATIONAL_DIGITS}-digit rational pose at centre dilation 1, the first "
+        "candidate promote_rational tries and the procedure upper_bound_packets "
+        "certify uses, verified exactly in process"
+        if dilation == 1
+        else f"the {RATIONAL_DIGITS}-digit rational pose at centre dilation "
+        f"{literal(dilation)}, the first on promote_rational's ladder that is exactly a "
+        "packing, verified exactly in process (the --smallest-dilation prototype)"
+    )
     provenance = {
         "kind": "rational",
-        "derivation": (
-            f"the {RATIONAL_DIGITS}-digit rational pose at centre dilation 1, the first "
-            "candidate promote_rational tries and the procedure upper_bound_packets "
-            "certify uses, verified exactly in process"
-        ),
+        "derivation": derivation,
         "rational_digits": RATIONAL_DIGITS,
         "max_side_increase": MAX_SIDE_INCREASE,
-        "center_dilation": "1",
+        "center_dilation": literal(dilation),
         "certified_side": literal(side),
         "certified_side_decimal": f"{float(side):.17g}",
     }
@@ -1312,11 +1362,12 @@ def regularize(
     angle_snap: float = ANGLE_SNAP_TOLERANCE_RADIANS,
     snap_tolerance: Fraction = SNAP_TOLERANCE,
     max_passes: int | None = None,
+    smallest_dilation: bool = False,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Regularize one witness; return the report and the regularized Witness/v2 record."""
     return regularize_frame(
         witness,
-        exact_frame(witness),
+        exact_frame(witness, smallest_dilation=smallest_dilation),
         source_path=source_path,
         angle_snap=angle_snap,
         snap_tolerance=snap_tolerance,
@@ -1355,6 +1406,7 @@ def run_one(
     angle_snap: float,
     snap_tolerance: Fraction,
     max_passes: int | None,
+    smallest_dilation: bool = False,
 ) -> dict[str, Any]:
     witness = load_witness(path, fallback_schema=WITNESS_SCHEMA)
     report, view = regularize(
@@ -1363,6 +1415,7 @@ def run_one(
         angle_snap=angle_snap,
         snap_tolerance=snap_tolerance,
         max_passes=max_passes,
+        smallest_dilation=smallest_dilation,
     )
     output_dir.mkdir(parents=True, exist_ok=True)
     stem = f"{path.stem}-regularized"
@@ -1389,8 +1442,11 @@ def summarize(report: dict[str, Any]) -> str:
     moves = report["regularization"]["moves"]
     guard = report["regularization"]["non_regression"]
     exact = report["exact_verification"]
+    dilation = report["exact_frame"]["center_dilation"]
     return (
-        f"n={report['source']['n']}: house light {house['light_before']} of "
+        f"n={report['source']['n']}"
+        f"{'' if dilation == '1' else f' (centre dilation {dilation})'}: "
+        f"house light {house['light_before']} of "
         f"{house['green_before']} -> {house['light_after']} of {house['green_after']}; "
         f"stage light {stage['light_before']} of {stage['green_before']} -> "
         f"{stage['light_after']} of {stage['green_after']}; lighter after: house "
@@ -1446,13 +1502,17 @@ def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def atlas_parameters() -> dict[str, Any]:
+SMALLEST_DILATION = "smallest on promote_rational's ladder that is exactly a packing"
+"""What the index's parameters say when a layer is built with `--smallest-dilation`."""
+
+
+def atlas_parameters(*, smallest_dilation: bool = False) -> dict[str, Any]:
     return {
         "angle_snap_tolerance_radians": ANGLE_SNAP_TOLERANCE_RADIANS,
         "snap_tolerance": str(SNAP_TOLERANCE),
         "rational_digits": RATIONAL_DIGITS,
         "max_side_increase": MAX_SIDE_INCREASE,
-        "center_dilation": "1",
+        "center_dilation": SMALLEST_DILATION if smallest_dilation else "1",
         "house_rule": {
             "gap": HOUSE_RULE.gap,
             "angle_tolerance_radians": HOUSE_RULE.angle_tolerance,
@@ -1489,7 +1549,7 @@ def _certificate_matches(frame: ExactFrame, path: Path) -> bool:
 
 
 def atlas_record(
-    entry: dict[str, Any], layout: AtlasLayout
+    entry: dict[str, Any], layout: AtlasLayout, *, smallest_dilation: bool = False
 ) -> tuple[dict[str, Any], str | None, float]:
     """One manifest entry's index record, its view's text when it keeps one, and the
     seconds it took. Runs in a worker process under `--workers`."""
@@ -1509,7 +1569,7 @@ def atlas_record(
     }
     before = shades.witness_shades(source)
     try:
-        frame = exact_frame(witness)
+        frame = exact_frame(witness, smallest_dilation=smallest_dilation)
     except RegularizeError as error:
         record["status"] = "refused"
         record["refusal"] = {"kind": error.kind, "reason": str(error)}
@@ -1525,6 +1585,10 @@ def atlas_record(
             _certificate_matches(frame, certificate) if certificate else None
         ),
     }
+    # Only a dilated frame names its factor, so a layer built at dilation 1 reads the same
+    # whether or not the prototype exists.
+    if frame.provenance["center_dilation"] != "1":
+        record["exact_frame"]["center_dilation"] = frame.provenance["center_dilation"]
     report, view = regularize_frame(witness, frame, source_path=layout.relative(source))
     regularization = report["regularization"]
     record["moves"] = {
@@ -1617,7 +1681,9 @@ def atlas_totals(records: Sequence[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def atlas_index(records: Sequence[dict[str, Any]]) -> dict[str, Any]:
+def atlas_index(
+    records: Sequence[dict[str, Any]], *, smallest_dilation: bool = False
+) -> dict[str, Any]:
     return {
         "contract": ATLAS_CONTRACT,
         "generated_by": ATLAS_GENERATOR,
@@ -1634,7 +1700,7 @@ def atlas_index(records: Sequence[dict[str, Any]]) -> dict[str, Any]:
             "the witness the atlas now holds; view.sha256, of the decompressed YAML, binds "
             "the verification verdict recorded beside it to those bytes."
         ),
-        "parameters": atlas_parameters(),
+        "parameters": atlas_parameters(smallest_dilation=smallest_dilation),
         "totals": atlas_totals(records),
         "entries": list(records),
     }
@@ -1667,7 +1733,11 @@ def _select(
 
 
 def run_records(
-    entries: Sequence[dict[str, Any]], layout: AtlasLayout, *, workers: int
+    entries: Sequence[dict[str, Any]],
+    layout: AtlasLayout,
+    *,
+    workers: int,
+    smallest_dilation: bool = False,
 ) -> dict[int, tuple[dict[str, Any], str | None, float]]:
     """Every entry's record, the largest n first so the workers finish together."""
     ordered = sorted(entries, key=lambda entry: -entry["n"])
@@ -1683,10 +1753,15 @@ def run_records(
 
     if workers <= 1:
         for entry in ordered:
-            note(entry["n"], atlas_record(entry, layout))
+            note(entry["n"], atlas_record(entry, layout, smallest_dilation=smallest_dilation))
         return results
     with ProcessPoolExecutor(max_workers=workers) as pool:
-        futures = {pool.submit(atlas_record, entry, layout): entry["n"] for entry in ordered}
+        futures = {
+            pool.submit(
+                atlas_record, entry, layout, smallest_dilation=smallest_dilation
+            ): entry["n"]
+            for entry in ordered
+        }
         for future in as_completed(futures):
             note(futures[future], future.result())
     return results
@@ -1703,11 +1778,20 @@ def _gzip(text: str) -> bytes:
     return gzip.compress(text.encode("utf-8"), compresslevel=9, mtime=0)
 
 
-def update_atlas(layout: AtlasLayout, *, only: Collection[int] | None, workers: int) -> int:
+def update_atlas(
+    layout: AtlasLayout,
+    *,
+    only: Collection[int] | None,
+    workers: int | None,
+    smallest_dilation: bool = False,
+) -> int:
     started = time.perf_counter()
     entries = manifest_entries(layout)
     selected = _select(entries, only)
-    results = run_records(selected, layout, workers=workers)
+    workers = worker_count(len(selected)) if workers is None else workers
+    results = run_records(
+        selected, layout, workers=workers, smallest_dilation=smallest_dilation
+    )
     committed = _committed_index(layout)
     previous = {record["n"]: record for record in (committed or {}).get("entries", [])}
     records: list[dict[str, Any]] = []
@@ -1732,7 +1816,7 @@ def update_atlas(layout: AtlasLayout, *, only: Collection[int] | None, workers: 
     for stray in layout.directory.glob(f"*{VIEW_SUFFIX}"):
         if stray.name not in kept:
             stray.unlink()
-    index = atlas_index(records)
+    index = atlas_index(records, smallest_dilation=smallest_dilation)
     with atomic_output_file(layout.index) as temporary:
         temporary.write_text(_index_text(index), encoding="utf-8")
     elapsed = time.perf_counter() - started
@@ -1761,7 +1845,7 @@ def _totals_line(totals: dict[str, Any]) -> str:
     )
 
 
-def check_atlas(layout: AtlasLayout) -> list[str]:
+def check_atlas(layout: AtlasLayout, *, smallest_dilation: bool = False) -> list[str]:
     """The cheap check: the index against the manifest, the witnesses and the retained
     views, by digest. It re-derives and re-verifies nothing."""
     index = _committed_index(layout)
@@ -1772,7 +1856,7 @@ def check_atlas(layout: AtlasLayout) -> list[str]:
         ("contract", ATLAS_CONTRACT),
         ("algorithm", ALGORITHM),
         ("label", DRAWING_LABEL),
-        ("parameters", _normalized(atlas_parameters())),
+        ("parameters", _normalized(atlas_parameters(smallest_dilation=smallest_dilation))),
     ):
         if index.get(key) != expected:
             problems.append(f"index {key} is {index.get(key)!r}, the tool's is {expected!r}")
@@ -1792,7 +1876,8 @@ def check_atlas(layout: AtlasLayout) -> list[str]:
     problems.extend(
         f"unexpected file {layout.relative(path)}"
         for path in sorted(layout.directory.iterdir())
-        if path.name != layout.index.name and path.name not in kept
+        if path.name not in {layout.index.name, *kept}
+        and not (path.name == RENDERINGS and path.is_dir())
     )
     return problems
 
@@ -1834,14 +1919,25 @@ def _check_record(
 
 
 def verify_atlas(
-    layout: AtlasLayout, *, only: Collection[int] | None, workers: int
+    layout: AtlasLayout,
+    *,
+    only: Collection[int] | None,
+    workers: int | None,
+    smallest_dilation: bool = False,
 ) -> list[str]:
     """Re-derive every selected record and require it, and its view, to be identical."""
     index = _committed_index(layout)
     if index is None:
         return [f"{layout.relative(layout.index)} is missing; run --update-atlas"]
+    expected = _normalized(atlas_parameters(smallest_dilation=smallest_dilation))
+    if index.get("parameters") != expected:
+        return [f"index parameters are {index.get('parameters')!r}, the tool's {expected!r}"]
     committed = {record["n"]: record for record in index.get("entries", [])}
-    results = run_records(_select(manifest_entries(layout), only), layout, workers=workers)
+    selected = _select(manifest_entries(layout), only)
+    workers = worker_count(len(selected)) if workers is None else workers
+    results = run_records(
+        selected, layout, workers=workers, smallest_dilation=smallest_dilation
+    )
     problems: list[str] = []
     for n, (record, text, _seconds) in sorted(results.items()):
         if _normalized(record) != committed.get(n):
@@ -1892,7 +1988,18 @@ def parser() -> argparse.ArgumentParser:
         "--n", type=int, nargs="+", default=None, help="only these n (update and verify)"
     )
     command.add_argument(
-        "--workers", type=int, default=1, help="worker processes (update and verify)"
+        "--workers",
+        type=int,
+        default=None,
+        help="worker processes (update and verify); default: the PACK_JOBS cap, or every cpu",
+    )
+    command.add_argument(
+        "--smallest-dilation",
+        action="store_true",
+        help=(
+            "prototype: frame a decimal witness at the smallest centre dilation on "
+            "promote_rational's ladder that is exactly a packing, not at dilation 1 only"
+        ),
     )
     command.add_argument(
         "--angle-snap",
@@ -1917,9 +2024,10 @@ def _atlas_main(args: argparse.Namespace, layout: AtlasLayout) -> int:
     if args.witnesses or args.output_dir is not None:
         print("the atlas modes take no witness files and no --output-dir")
         return 2
+    dilate = bool(args.smallest_dilation)
     if args.check_atlas:
         started = time.perf_counter()
-        problems = check_atlas(layout)
+        problems = check_atlas(layout, smallest_dilation=dilate)
         for problem in problems:
             print(problem)
         elapsed = time.perf_counter() - started
@@ -1932,9 +2040,9 @@ def _atlas_main(args: argparse.Namespace, layout: AtlasLayout) -> int:
         return 0
     only = set(args.n) if args.n else None
     if args.update_atlas:
-        return update_atlas(layout, only=only, workers=args.workers)
+        return update_atlas(layout, only=only, workers=args.workers, smallest_dilation=dilate)
     started = time.perf_counter()
-    problems = verify_atlas(layout, only=only, workers=args.workers)
+    problems = verify_atlas(layout, only=only, workers=args.workers, smallest_dilation=dilate)
     for problem in problems:
         print(problem)
     elapsed = time.perf_counter() - started
@@ -1965,6 +2073,7 @@ def main(argv: Sequence[str] | None = None, *, layout: AtlasLayout = ATLAS) -> i
                 angle_snap=args.angle_snap,
                 snap_tolerance=args.snap_tolerance,
                 max_passes=args.max_passes,
+                smallest_dilation=args.smallest_dilation,
             )
         except (RegularizeError, WitnessError) as error:
             print(f"{path}: refused [{error.kind}]: {error}")

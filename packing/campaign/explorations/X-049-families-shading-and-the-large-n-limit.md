@@ -408,14 +408,17 @@ slide may not lower its own square’s count under either rule.
 *From the index’s totals and `devtools.regularize_axis_components --check-atlas`.*
 
 `--check-atlas` compares digests in about a tenth of a second and runs in the records
-tier; `--verify-atlas` re-derives every view in about five minutes and is not yet wired
-into a deferred checkpoint.
+tier; `--verify-atlas` re-derives every view, about 800 cpu-seconds (223 s at four
+workers), and runs as the deferred `regularized-views` job.
 The prototype’s six-case receipt above is superseded for 206 by the layer, which holds
 three squares there.
-Still open under `think-bgkz`: the homepage toggle that draws the views with a
-“regularized” badge (a design note is in the lane record), the deferred `--verify-atlas`
-step, and whether a view may use the smallest verifying dilation, which would open the
-89 refused Kingbird records.
+The homepage atlas draws the views behind an “Atlas drawings” toggle
+(`?layer=regularized`), each tile badged and drawn by the house renderer from
+`devtools.render_regularized_atlas`. The 89 refused Kingbird records stay refused.
+Every one verifies at its smallest dilation ($1+10^{-31}$ to $1+10^{-27}$), but 75 of
+those views would be exact packings below the register’s verified upper bound, which is
+a tier promotion. The other 14 would enlarge the container past the printed side.
+And the gain is two squares across all 89. The atlas README records the measurement.
 Algebraic-field witnesses, where the same algorithm runs in $\mathbb Q(\alpha)$, were
 not prototyped; interval-enclosure witnesses admit no exact lattice statement at all.
 The workbench stage legend now says that a lighter grid square can be loose in the

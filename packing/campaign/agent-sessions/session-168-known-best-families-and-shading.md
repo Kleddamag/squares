@@ -464,6 +464,155 @@ session:
     - packing/atlas/known-best/regularized/
     - packages/workbench/src/application.js
     - packing/devtools/overview_sections.py
+  - task: 'think-bgkz item 1: the homepage House/Regularized atlas toggle.'
+    operator: Claude subagent
+    status: completed
+    recording: contemporaneous
+    phase: 6
+    elapsed_quality: platform_measured
+    outcome: 'An "Atlas drawings" tab strip swaps each of the 51 regularized cases to a badged tile drawn
+      by the house renderer from the regularized pose, selected by ?layer=regularized; cases without a
+      view keep their house tile. devtools.render_regularized_atlas draws the 51 renderings from index.json,
+      refuses digest mismatches, and --check names missing, stale or unexpected files in about 7 s.'
+    evidence:
+    - packing/atlas/known-best/regularized/rendering/
+    files:
+    - packing/devtools/render_regularized_atlas.py
+    - packing/devtools/overview/atlas-layer.js
+    - packing/tests/test_render_regularized_atlas.py
+    - packing/tests/node/overview_atlas_layer/atlas-layer.test.mjs
+    checks:
+    - coordinator ran render_regularized_atlas --check (51 views, 6.6 s), its 5 tests and --check-atlas
+      with the rendering directory exempted
+    uncertainty: The browser tests ran here on the pre-installed Chromium 141 only; hosted CI runs the
+      pinned build. The renderings add 11 MB to the repository and 48 kB gzipped to the homepage.
+    elapsed_seconds: 2619.0
+    next_action: Integrated by the coordinator with a gate step and the data-revision re-pin.
+    write_scope:
+    - packing/devtools/render_regularized_atlas.py
+    - packing/devtools/overview/
+    - packing/devtools/overview_sections.py
+    - packing/devtools/render_overview.py
+    - packing/devtools/render_frontier_page.py
+    - packing/devtools/measure_atlas_views.py
+    - packing/devtools/templates/
+    - packing/atlas/known-best/regularized/rendering/
+    - packing/tests/
+    - .github/workflows/pages.yml
+  - task: 'think-ym34: replay chelokot''s Lean proof of s(n^2-2) = n with an axiom receipt.'
+    operator: Claude subagent
+    status: completed
+    recording: contemporaneous
+    phase: 6
+    elapsed_quality: operator_reported_approximate
+    outcome: 'The replay passed: SquarePackingArchive.Records.NearSquare.squareMinusTwo_isMinimumSide
+      builds at 753079eb under Lean v4.33.0 and Mathlib db584cd6 and depends only on propext, Classical.choice
+      and Quot.sound; the archive has 0 sorry, 0 axiom declarations and 0 native_decide in 277 files,
+      and its 79 axiom assertions pass. IsMinimumSide reads as the register''s s(N).'
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/receipt.json
+    files:
+    - packing/devtools/replay_chelokot_lean.py
+    - packing/tests/test_replay_chelokot_lean.py
+    - packing/campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/receipt.json
+    - packing/campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/build.log
+    checks:
+    - coordinator ran replay_chelokot_lean --check (exit 0), the 61 tests, and read the theorem's axiom
+      line in the retained build log (line 284)
+    uncertainty: The final run rebuilt 4 modules over a same-session build of the other 273 from source;
+      a single-run from-source rebuild (about 1 hour) was not repeated. The statement-fidelity read is
+      not a human formalization review, so it supports V3/C3, not V5.
+    elapsed_seconds: 4690.0
+    next_action: The pass branch of think-xucp applies it.
+    write_scope:
+    - packing/devtools/replay_chelokot_lean.py
+    - packing/tests/test_replay_chelokot_lean.py
+    - packing/campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/
+  - task: 'think-bgkz items 2 and 3: the deferred --verify-atlas checkpoint and the smallest-dilation
+      policy.'
+    operator: Claude subagent
+    status: completed
+    recording: contemporaneous
+    phase: 6
+    elapsed_quality: operator_reported_approximate
+    outcome: '--verify-atlas is the deferred step `regularized atlas views re-derive exactly` in its own
+      regularized-views job (about 800 cpu-seconds; 223 s at four workers) with a 450 s derived ceiling.
+      The smallest verifying dilation opens all 89 refused Kingbird records, but 75 views would sit below
+      the register''s verified upper bound (a tier promotion) and 14 would enlarge the container, for
+      a gain of two squares, so the refusal stays and the flag remains as the instrument.'
+    evidence:
+    - packing/atlas/known-best/README.md
+    files:
+    - packing/devtools/regularize_axis_components.py
+    - packing/tests/test_regularize_axis_components.py
+    - packing/src/sqpack/cli/validate.py
+    - .github/workflows/deep-gate.yml
+    - .github/workflows/packing-validation.yml
+    - packing/devtools/gate-budgets.yaml
+    - development.md
+    checks:
+    - coordinator ran the validation CLI, module-boundary, deep-gate and post-merge contract tests (194
+      passed with the frontier-corpus test deselected for lane B's interim state) and --check-atlas
+    uncertainty: The 450 s ceiling is derived from a local four-worker reading on a shared host; the first
+      hosted dispatch replaces it.
+    elapsed_seconds: 3800.0
+    next_action: Integrated by the coordinator.
+    write_scope:
+    - packing/devtools/regularize_axis_components.py
+    - packing/tests/
+    - packing/atlas/known-best/regularized/
+    - packing/atlas/known-best/README.md
+    - packing/src/sqpack/cli/validate.py
+    - .github/workflows/
+    - packing/devtools/gate-budgets.yaml
+    - development.md
+  - task: 'think-xucp: re-ground the register''s reliance on T-007 per the 2026-10-02 review, with the
+      k^2-2 branch decided by the Lean replay.'
+    operator: Claude subagent
+    status: completed
+    recording: contemporaneous
+    phase: 6
+    elapsed_quality: operator_reported_approximate
+    outcome: 'T-007 to V0/C1 incomplete; E-nagamochi-lower reported with a defect-found review; new
+      E-karakus-strip-lower, E-nagamochi-lemma1-counterexample and E-chelokot-square-minus-two-lean; new
+      T-066 (Karakus general floor, V3/C1), T-067 (s(k^2-1) = k, V3/C1), T-068 (Lemma 1 correction,
+      V3/C3) and T-069 (s(k^2-2) = k on the replayed Lean proof, V3/C3). 271 case records re-grounded:
+      perfect squares on the area bound, k^2-1 on Karakus, k^2-2 on the Lean proof (values unchanged),
+      238 open floors on Karakus Corollary 6.2, and n = 54, 57, 73 on T-044''s registered monotonicity
+      values. No status changed; no verified floor rests on T-007. D-516 records the defect.'
+    evidence:
+    - packing/frontier/results.yaml
+    - packing/frontier/evidence.yaml
+    - packing/campaign/series/series-000-smoke-and-calibration/results/t007-consumer-audit.json
+    files:
+    - packing/frontier/results.yaml
+    - packing/frontier/evidence.yaml
+    - packing/devtools/generate_frontier_case.py
+    - packing/devtools/audit_t007_consumers.py
+    - packing/devtools/check_nagamochi_bounds.py
+    - packing/devtools/check_basic_bounds.py
+    - packing/devtools/render_frontier_page.py
+    - packing/defects.yaml
+    checks:
+    - coordinator set FRONTIER_COUNTS to the lane's measured (261, 249, 0) and the frontier corpus step
+      passed; the coordinator's gate run covers the rest
+    uncertainty: 'Two departures from the review''s literal text, both by coordinator decision: n = 54,
+      57 and 73 carry the stronger registered T-044 values rather than Karakus''s, and n = 61 keeps Karakus''s
+      value with a note naming Basic-Slivkova''s stronger archived bound (think-jkeu). T-066 and T-067
+      carry S3 by the lane''s judgement.'
+    elapsed_seconds: 5200.0
+    next_action: Integrated by the coordinator.
+    write_scope:
+    - packing/frontier/
+    - packing/atlas/known-best/bound-citations.json
+    - packing/atlas/known-best/composite-figure.json
+    - packing/defects.yaml
+    - defects.md
+    - SYNOPSIS.md
+    - docs/project/research/
+    - packing/devtools/
+    - packing/tests/
+    - packing/campaign/series/series-000-smoke-and-calibration/results/t007-consumer-audit.json
   outputs:
   - packing/campaign/explorations/X-049-families-shading-and-the-large-n-limit.md
   - packing/campaign/explorations/X049-families-data/family-census.json

@@ -322,6 +322,7 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
         "exhaustive-2",
         "exhaustive-3",
         "screen",
+        "regularized-views",
         "macos-portability",
     ):
         raw_steps = _mapping(jobs[job_name])["steps"]
@@ -583,6 +584,7 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
             "known-best n=1..324 atlas rebuild",
             "finer-net dilation-limit record, 720 steps",
             "exact rational grid replay",
+            "regularized atlas views re-derive exactly",
             "negative controls",
             "finer-net dilation-limit record, 1440 steps",
             "threshold dilation-limit record, 720 steps",

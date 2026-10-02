@@ -61,15 +61,20 @@ def test_the_atlas_grid_and_the_frontier_atlas_link_the_same_record(
 ) -> None:
     """Both entry points link each case to `cases.html#n-N`. The frontier atlas marks
     its links with `data-case`, which the shared case popover opens; the atlas grid's
-    cells open the atlas popover instead, whose button leads to the same record."""
+    cells open the atlas popover instead, whose button leads to the same record. A case's
+    regularized tile, its second drawing, links the same record as its house tile."""
     grid = overview_sections.atlas_grid()
     links = re.findall(r'href="cases\.html#n-(\d+)" data-case="(\d+)"', frontier)
     assert [int(n) for n, _ in links] == numbers
     assert all(n == case for n, case in links)
     assert frontier.count(render_case_pages.case_popover()) == 1
-    cells = re.findall(r'href="cases\.html#n-(\d+)" data-atlas-n="(\d+)"', grid)
+    house, regularized = grid.split("<template data-atlas-regularized>", 1)
+    cells = re.findall(r'href="cases\.html#n-(\d+)" data-atlas-n="(\d+)"', house)
     assert [int(n) for n, _ in cells] == numbers
     assert all(n == cell for n, cell in cells)
+    second = re.findall(r'href="cases\.html#n-(\d+)" data-atlas-n="(\d+)"', regularized)
+    assert [int(n) for n, _ in second] == list(overview_sections.atlas_regularized())
+    assert all(n == cell for n, cell in second)
     assert "data-case=" not in grid
 
 

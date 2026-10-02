@@ -315,6 +315,7 @@ def test_isolated_jobs_use_the_host_without_multiplying_concurrent_pools() -> No
         ("packing-validation.yml", "deferred-atlas-grid"),
         ("packing-validation.yml", "deferred-controls-finer"),
         ("packing-validation.yml", "deferred-threshold-720-rigidity"),
+        ("packing-validation.yml", "regularized-views"),
         ("deep-gate.yml", "exhaustive-1"),
         ("deep-gate.yml", "exhaustive-2"),
         ("deep-gate.yml", "exhaustive-3"),
@@ -324,6 +325,7 @@ def test_isolated_jobs_use_the_host_without_multiplying_concurrent_pools() -> No
         ("deep-gate.yml", "deferred-threshold-720-rigidity"),
         ("deep-gate.yml", "screen"),
         ("deep-gate.yml", "deferred-slow-lane"),
+        ("deep-gate.yml", "regularized-views"),
     }
 
 
@@ -3036,6 +3038,21 @@ def test_the_pull_request_surface_defers_only_what_was_measured() -> None:
     reader embedded in the T-025 and T-026 claim documents is also an exhaustive check;
     it does not make either repository replay cheap enough for this tier.
 
+    **A twelfth arrived on 2026-10-02 with `think-bgkz`.** `regularized atlas views
+    re-derive exactly` is `devtools.regularize_axis_components --verify-atlas`: every
+    record of the derived regularized layer regularized again from its witness, both
+    exact verifications over `Q` re-run, and every view required byte-identical. It is
+    about 800 cpu-seconds on a four-cpu host: 406.32s at two workers and 223.35s at four
+    on 2026-10-02, on a host other sessions were also using. The `sweeps` job would give
+    it `--inner-jobs 2`, about twice that job's 200s ceiling on its own, and a runner of
+    its own at four workers would be about four minutes of pull-request wall with setup,
+    past `OR-14`'s outer edge. The stand-in is the complement:
+    `regularized atlas views match their index` runs in the records tier on every pull
+    request and compares the index with the manifest, every source witness and every
+    retained view by digest in about a tenth of a second, so a changed witness or an
+    edited view still fails the pull request in the minute it lands. What waits for the
+    deep gate is whether the code that now ships still earns the recorded verdicts.
+
     `slow behavioral tests` is `BC-214`. It is not a step that was never decided: it is
     the half of the behavioural suite that carries the wall, split out by measurement
     rather than by name. Of 2,251 collected tests, 92 are marked `slow` and 2,106 remain
@@ -3073,6 +3090,7 @@ def test_the_pull_request_surface_defers_only_what_was_measured() -> None:
         "finer-net dilation-limit record, 1440 steps",
         "threshold dilation-limit record, 720 steps",
         "threshold dilation-limit record, 1440 steps",
+        "regularized atlas views re-derive exactly",
     }
     # And the same set is what `--fast` leaves out, so the flag and the workflow cannot
     # drift apart: a step marked `fast` that no pull-request job invokes is deferred in
@@ -3736,9 +3754,17 @@ def test_the_post_merge_jobs_partition_the_gate() -> None:
         "deferred-threshold-720-rigidity",
     }
     shards = {f"exhaustive-{index}" for index in (1, 2, 3)}
-    assert set(selections) == {"validate", "slow-lane", "screen", *deferred, *shards}
+    assert set(selections) == {
+        "validate",
+        "slow-lane",
+        "screen",
+        "regularized-views",
+        *deferred,
+        *shards,
+    }
     assert selections["slow-lane"] == {"slow behavioral tests"}
     assert selections["screen"] == {"single-square translation escape screen"}
+    assert selections["regularized-views"] == {"regularized atlas views re-derive exactly"}
     commands = _workflow_commands(pull_request=False)
     for index in (1, 2, 3):
         job = f"exhaustive-{index}"
@@ -3771,6 +3797,7 @@ def test_post_merge_workers_bind_one_sha_and_a_separate_complete_aggregate() -> 
         "exhaustive-2",
         "exhaustive-3",
         "screen",
+        "regularized-views",
     }
     aggregate = jobs["post-merge-required"]
     assert aggregate["if"] == "!cancelled() && github.event_name != 'pull_request'"

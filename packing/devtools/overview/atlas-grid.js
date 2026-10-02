@@ -15,12 +15,21 @@
 // The tabs over the tiles choose between two views of the one set, the grid and the
 // triangle, which `atlas-view.js` lays out and moves between (`SiteAtlasView.mount`).
 // They ship `hidden` and show once the tiles are placed.
+//
+// Beside them, where some case has a regularized view, a second pair chooses the drawing,
+// House or Regularized (`SiteAtlasLayer.mount`, `atlas-layer.js`): a case with a
+// regularized view has a second tile in a third template, which stands in for its house
+// tile wherever the grid places one. The popover shows whichever drawing the pressed
+// tile carries, and says so under a regularized one.
 (() => {
   const grid = document.querySelector("[data-atlas-grid]");
   const template = grid?.querySelector("template[data-atlas-first]");
   const restTemplate = grid?.querySelector("template[data-atlas-rest]");
   const toggle = grid?.querySelector("[data-atlas-toggle]");
   const tabs = grid?.querySelector("[data-atlas-views]");
+  const controls = grid?.querySelector("[data-atlas-controls]");
+  const layerTabs = grid?.querySelector("[data-atlas-layers]");
+  const layerTemplate = grid?.querySelector("template[data-atlas-regularized]");
   if (
     !(grid instanceof HTMLElement) ||
     !(template instanceof HTMLTemplateElement) ||
@@ -39,13 +48,23 @@
   rest.hidden = true;
 
   // The view the address names is set here, before any tile is placed, so the page
-  // never shows one view and then the other.
+  // never shows one view and then the other; and so is the drawing.
   const views = SiteAtlasView.mount({ block: grid, cells, tabs });
+  const layers =
+    layerTabs instanceof HTMLElement && layerTemplate instanceof HTMLTemplateElement
+      ? SiteAtlasLayer.mount({ block: grid, cells, tabs: layerTabs, template: layerTemplate })
+      : null;
 
+  // The tiles go after the row of tabs, and each placed tile is the drawing the block is
+  // in before the box is put in the page.
   const place = () => {
     cells.append(template.content.cloneNode(true), rest);
-    tabs.after(cells);
+    layers?.apply();
+    (controls instanceof HTMLElement ? controls : tabs).after(cells);
     tabs.hidden = false;
+    if (layers !== null && layerTabs instanceof HTMLElement) {
+      layerTabs.hidden = false;
+    }
     if (toggle.parentElement) {
       toggle.parentElement.hidden = false;
     }
@@ -85,6 +104,7 @@
   const expandGrid = (open, settle) => {
     if (open && rest.childElementCount === 0) {
       rest.append(restTemplate.content.cloneNode(true));
+      layers?.apply();
     }
     views.change(() => {
       rest.hidden = !open;
@@ -133,6 +153,7 @@
   };
   const title = slot("[data-atlas-title]");
   const figure = slot("[data-atlas-figure]");
+  const layerNote = slot("[data-atlas-layer-note]");
   const bound = slot("[data-atlas-bound]");
   const badges = slot("[data-atlas-badges]");
   const citation = slot("[data-atlas-citation]");
@@ -379,6 +400,17 @@
   /** @type {HTMLAnchorElement | null} */
   let current = null;
 
+  // The tile that stands for `cell`'s case now: the cell, or the case's other drawing if
+  // the drawing tabs have swapped it in since the cell was pressed.
+  /** @param {HTMLAnchorElement} cell */
+  const live = (cell) => {
+    if (cells.contains(cell)) {
+      return cell;
+    }
+    const found = cells.querySelector(`[data-atlas-n="${cell.dataset.atlasN}"]`);
+    return found instanceof HTMLAnchorElement ? found : cell;
+  };
+
   // The site's math driver (overview/math.js) typesets the panel's fresh formulas.
   const typeset = () => {
     fitGap();
@@ -399,6 +431,7 @@
     title.replaceChildren(math(`n = ${n}`, `n = ${n}`));
     const drawing = cell.querySelector("svg")?.cloneNode(true);
     figure.replaceChildren(...(drawing ? [drawing] : []));
+    layerNote.hidden = cell.dataset.atlasLayer !== "regularized";
     drawGap(fact);
     drawBound(fact);
     drawFacts(fact);
@@ -462,7 +495,9 @@
       return;
     }
     // The browser has already put focus back on the cell that opened the popover, which
-    // is not the case shown once the arrows have moved.
+    // is not the case shown once the arrows have moved, nor the tile standing for it once
+    // the drawing tabs have swapped it.
+    current = live(current);
     const focus = document.activeElement;
     if (
       focus === null ||

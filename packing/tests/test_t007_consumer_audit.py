@@ -165,38 +165,58 @@ def test_classification_follows_its_declared_order() -> None:
 
 
 def test_the_register_counts_match_the_frontier_readme() -> None:
+    """Since the correction of 2 October 2026 no operative verified bound cites T-007."""
     summary = audit.build_document()["summary"]
     operative = summary["operative_cites_t007"]
-    assert (operative["all"], operative["open"], summary["open_cases"]) == (287, 238, 261)
-    assert operative["outside_t007_registered_scope_n"] == "101-324"
-    assert sum(summary["classes"].values()) == 324
+    assert (operative["all"], operative["open"], summary["open_cases"]) == (0, 0, 261)
+    assert operative["outside_t007_registered_scope_n"] == ""
+    assert summary["classes"] == {
+        audit.UNAFFECTED: 324,
+        audit.REPROVED: 0,
+        audit.WEAKENED: 0,
+        audit.ONLY: 0,
+    }
+    assert summary["reported_lower_bounds_citing_t007"].startswith("23, 34, 47-48, 62-63")
 
 
-def test_the_k2_minus_2_exact_values_from_k8_rest_on_t007_alone() -> None:
+def test_no_exact_value_rests_on_t007_and_each_family_names_its_new_proof() -> None:
     summary = audit.build_document()["summary"]
-    k2_minus_2 = [k * k - 2 for k in range(8, 19)]
-    assert summary["exact_value_claims_on_t007_alone"] == k2_minus_2
-    assert summary["exact_value_claims_on_t007_alone_without_karakus"] == sorted(
-        [*k2_minus_2, *(k * k - 1 for k in range(8, 19))]
-    )
+    assert summary["exact_value_claims_citing_t007"] == []
+    assert summary["exact_value_claims_on_t007_alone"] == []
+    assert summary["exact_value_claims_on_t007_alone_without_karakus"] == []
+    by_n = rows()
+    for k in range(3, 19):
+        minus_two = by_n[k * k - 2]["operative_lower_bound"]
+        assert (minus_two["evidence"], minus_two["results"]) == (
+            ["E-chelokot-square-minus-two-lean"],
+            ["T-069"],
+        )
+        minus_one = by_n[k * k - 1]["operative_lower_bound"]
+        assert minus_one["evidence"] == ["E-karakus-strip-lower"]
+        assert "T-067" in minus_one["results"]
 
 
 def test_case_rows_carry_each_kind_of_support_separately() -> None:
     by_n = rows()
     n62 = by_n[62]
-    assert (n62["exposure_class"], n62["exposure_reason"]) == (audit.WEAKENED, "karakus-6.1")
-    assert n62["exposure_class_without_karakus"] == audit.ONLY
+    assert (n62["exposure_class"], n62["exposure_reason"]) == (
+        audit.UNAFFECTED,
+        "operative-bound-independent",
+    )
+    assert n62["reported_lower_bound"]["cites_t007"] is True
+    assert [s["results"] for s in n62["support"]["registered_verified"]["sources"]] == [
+        ["T-069"]
+    ]
     assert n62["support"]["registered_reported"]["reaches_nagamochi"] is True
     assert [s["results"] for s in n62["support"]["registered_reported"]["sources"]] == [
         ["T-062"],
         ["T-063"],
     ]
-    assert n62["support"]["chelokot_lean_reported"]["verified"] is False
-    assert by_n[63]["exposure_class"] == audit.REPROVED
+    assert n62["support"]["karakus_explicit_bound"]["reaches_nagamochi"] is False
+    assert n62["support"]["chelokot_lean"]["verified"] is True
     assert by_n[63]["support"]["karakus_k2_minus_1"]["value"] == 8
-    assert by_n[16]["exposure_reason"] == "area-bound"
-    assert by_n[12]["exposure_reason"] == "operative-bound-independent"
-    assert by_n[73]["weakened_to_without_karakus"]["exact"] == "861/100"
+    assert by_n[73]["operative_lower_bound"]["exact_form"] == "861/100"
+    assert by_n[73]["operative_lower_bound"]["results"] == ["T-044"]
     assert by_n[150]["operative_lower_bound"]["t007_scope_covers_n"] is False
 
 
@@ -205,6 +225,7 @@ def test_an_independent_route_through_a_nagamochi_lemma_says_so() -> None:
     assert [(source["n"], source["results"]) for source in sources] == [
         (45, ["T-053"]),
         (46, ["T-004", "T-008"]),
+        (47, ["T-069"]),
     ]
     assert "shares_a_nagamochi_lemma" not in sources[0]
     caveat = sources[1]["shares_a_nagamochi_lemma"]
@@ -246,27 +267,33 @@ def test_the_scan_sorts_lines_into_tiers() -> None:
     assert [line for line, hit in hits.items() if hit["qualified"]] == [8]
 
 
-def test_the_inventory_finds_the_statements_a_correction_must_reach() -> None:
+def test_the_inventory_finds_the_statements_the_correction_reached() -> None:
+    """Each statement the correction of 2 October 2026 reached is still found, now qualified.
+
+    T-007's own register row still states its theorem without the qualifier, as the row of
+    a result whose status is `incomplete` should, so the scan must still report it.
+    """
     files = {entry["path"]: entry for entry in audit.build_document()["documents"]["files"]}
     expected = (
-        ("packing/frontier/RESULTS.md", "| T-007 |"),
-        ("packing/frontier/evidence.yaml", "exact values for N in {m^2, m^2-1, m^2-2}"),
-        ("packing/frontier/README.md", "have Nagamochi’s formula as their verified"),
-        ("packing/devtools/generate_frontier_case.py", "Established by Nagamochi’s general"),
-        ("packing/frontier/n-322.md", "Established by Nagamochi’s general theorem"),
+        ("packing/frontier/RESULTS.md", "| T-007 |", False),
+        ("packing/frontier/evidence.yaml", "exact values for N in {m^2, m^2-1, m^2-2}", True),
+        ("packing/frontier/README.md", "have Nagamochi’s formula as their verified", True),
+        ("packing/frontier/n-322.md", "that Nagamochi’s general theorem (2005) stated", True),
         (
             "docs/project/research/research-2026-08-22-square-packing-algorithms-and-tooling.md",
             "Nagamochi’s $s(n^2 - 1) = s(n^2 - 2) = n$",
+            True,
         ),
     )
     groups = {path: group for group, path in audit.document_paths()}
-    for path, needle in expected:
-        live = [
-            hit["line"]
+    for path, needle, qualified in expected:
+        stated = {
+            hit["line"]: hit["qualified"]
             for hit in audit.scan_document(groups[path], path)
-            if hit["tier"] == "states" and not hit["qualified"]
-        ]
-        assert line_of(path, needle) in live, path
+            if hit["tier"] == "states"
+        }
+        assert stated.get(line_of(path, needle)) is qualified, path
+        live = [line for line, is_qualified in stated.items() if not is_qualified]
         assert files[path]["statements"]["unqualified_states"] == len(live), path
 
 
@@ -338,11 +365,31 @@ def test_the_archived_preprint_is_the_one_whose_statements_are_used() -> None:
     assert "\\tag{6.1}" in printed
 
 
-def test_chelokot_is_listed_at_every_k2_minus_2_case_and_never_verified() -> None:
+def test_chelokot_is_listed_at_every_k2_minus_2_case_as_the_register_holds_it() -> None:
     by_n = rows()
     for k in range(2, 19):
-        entry = by_n[k * k - 2]["support"]["chelokot_lean_reported"]
-        assert entry["kind"] == "reported, unreplayed Lean claim"
-        assert entry["verified"] is False
-        assert entry["claims"][0]["value"] == k
-    assert by_n[322]["exposure_class_without_karakus"] == audit.ONLY
+        entry = by_n[k * k - 2]["support"]["chelokot_lean"]
+        assert entry["kind"] == "Lean theorem, replayed here with its axiom receipt"
+        assert entry["verified"] is True
+        assert (entry["claims"][0]["value"], entry["claims"][0]["verified"]) == (k, True)
+    individual = by_n[23]["support"]["chelokot_lean"]["claims"][1:]
+    assert individual
+    assert not [claim for claim in individual if claim["verified"]]
+
+
+def test_chelokot_reads_as_reported_when_the_register_does_not_hold_it_verified(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    held = audit.register()
+    evidence = dict(held.evidence)
+    evidence[str(audit.CHELOKOT["evidence"])] = {
+        **evidence[str(audit.CHELOKOT["evidence"])],
+        "replay_status": "failed",
+    }
+    monkeypatch.setattr(
+        audit, "register", lambda: audit.Register(held.cases, held.results, evidence)
+    )
+    entry = audit.chelokot_entry(62)
+    assert entry is not None
+    assert entry["verified"] is False
+    assert entry["claims"][0]["verified"] is False

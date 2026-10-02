@@ -37,6 +37,11 @@ PACKING = Path(__file__).resolve().parents[1]
 TEMPLATES = PACKING / "devtools" / "templates"
 FRONTIER_ARTICLE = TEMPLATES / "frontier-article.md"
 RENDERINGS = PACKING / "atlas" / "known-best" / "rendering"
+#: The regularized views' index and their drawings, by the house renderer at the house
+#: settings (`devtools.render_regularized_atlas`), which the homepage's atlas offers as
+#: its second layer and reduces to tiles with `packing_svg(root=)`.
+REGULARIZED_INDEX = PACKING / "atlas" / "known-best" / "regularized" / "index.json"
+REGULARIZED_RENDERINGS = REGULARIZED_INDEX.parent / "rendering"
 TABLE_SCRIPT = PACKING / "devtools" / "overview" / "table.js"
 #: The two repository documents the page's prose links: the literature archive's README
 #: and the evidence inventory.
@@ -297,8 +302,15 @@ def evidence_lines() -> dict[str, int]:
 def evidence_links(refs: Iterable[str]) -> str:
     """Each evidence id once, as code linking to its entry in `evidence.yaml`, with commas
     between. A name and the comma after it are one `.site-name` box, so a line breaks
-    between names and never on a hyphen inside one (`site.css`, Words stay whole)."""
-    base = repo_url(tables.FRONTIER / "evidence.yaml")
+    between names and never on a hyphen inside one (`site.css`, Words stay whole).
+
+    The link is scheme-relative (`//github.com/...`): the same entry, opened in the same
+    tab. The frontier page carries one of these per evidence id per row, about 1,600 in
+    all, and the absolute form, which kpress decorates with `target` and `rel`, cost 47
+    bytes more each; that difference is what took the page over its 4 MiB ceiling on
+    2026-10-02, when Karakuş's bound joined the verified lane of 254 rows.
+    """
+    base = repo_url(tables.FRONTIER / "evidence.yaml").removeprefix("https:")
     lines = evidence_lines()
     links = []
     for ref in dict.fromkeys(refs):
@@ -330,9 +342,14 @@ def packing_svg(
     ink: str = "currentColor",
     paper: str = "none",
     frame_px: int | None = None,
+    root: Path = RENDERINGS,
 ) -> str:
     """Case `n`'s atlas drawing as a bare `<svg>`: the frame and each square's outline at
     whole units of a `units`-wide frame, drawn in `ink` on `paper`.
+
+    The drawing is read from `root`: the house renderings, or another set the house
+    renderer drew, as the regularized views are (`REGULARIZED_RENDERINGS`), so one code
+    reduces both and a tile of either is the same kind of picture.
 
     A table cell needs 100 units; a drawing shown large needs more, or the rounding shows
     as uneven gaps. A drawing used outside the page, where `currentColor` means nothing,
@@ -341,7 +358,7 @@ def packing_svg(
     so the container reads as a square at icon size and lands on the pixel grid, and
     its squares' outlines half a pixel, so each square stays distinct.
     """
-    source = (RENDERINGS / f"n-{n:03d}.svg").read_text(encoding="utf-8")
+    source = (root / f"n-{n:03d}.svg").read_text(encoding="utf-8")
     frame = re.search(
         r'<rect data-feature="container-outline" x="([\d.]+)" y="([\d.]+)" '
         r'width="([\d.]+)" height="([\d.]+)"',

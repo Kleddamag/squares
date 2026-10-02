@@ -605,7 +605,8 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
     # The grid ceiling is derived whoever the catalogue credits (think-dlof).
     6: (None, ("Kearney & Shiu 2002, Electron. J. Combin. 9, #R14", "external", "verified")),
     # What the register verified, not the earlier reported proof (the owner, 2026-09-22).
-    7: (None, ("Nagamochi 2005, Electron. J. Combin. 12, #R37", "external", "verified")),
+    # chelokot's Lean theorem s(n^2 - 2) = n, replayed here (T-069), since 2026-10-02.
+    7: (None, ("chelokot 2026, GitHub (confirmed T-069)", "external", "verified")),
     10: (
         ("Göbel 1979, Squares in Squares", "external", "verified"),
         ("Stromquist 2003, Electron. J. Combin. 10, #R8", "external", "verified"),
@@ -639,25 +640,27 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
         ("wand125 after Levy et al. 2026, GitHub (confirmed T-044)", "external", "verified"),
     ),
     # The catalogue credits nobody, so the line cites the catalogue by its compilers.
+    # Since 2026-10-02 the verified floors past 100 are Karakuş's, which replaced
+    # Nagamochi's when his Lemma 1 was found false (T-068).
     101: (
         ("Friedman & Ellsworth, Squares in Squares (reported)", "external", "reported"),
-        ("Nagamochi 2005, Electron. J. Combin. 12, #R37", "external", "verified"),
+        ("Karakuş 2026, arXiv:2609.37410", "external", "verified"),
     ),
     # Three finders and two improvers gave "Arslanov et al." with no year here until
     # Couzo's certified packing took the case; the synthetic test above keeps that shape.
     132: (
         ("Couzo 2026, GitHub (confirmed T-056)", "external", "verified"),
-        ("Nagamochi 2005, Electron. J. Combin. 12, #R37", "external", "verified"),
+        ("Karakuş 2026, arXiv:2609.37410", "external", "verified"),
     ),
     # A certified ceiling that trails its report by two units of the printed place is
     # still cited as reported, with the register entry that confirms the packing.
     206: (
         ("Couzo 2026, GitHub (reported; confirmed T-056)", "external", "reported"),
-        ("Nagamochi 2005, Electron. J. Combin. 12, #R37", "external", "verified"),
+        ("Karakuş 2026, arXiv:2609.37410", "external", "verified"),
     ),
     211: (
         ("de Winter 2026, GitHub (confirmed T-057)", "external", "verified"),
-        ("Nagamochi 2005, Electron. J. Combin. 12, #R37", "external", "verified"),
+        ("Karakuş 2026, arXiv:2609.37410", "external", "verified"),
     ),
 }
 
@@ -731,9 +734,10 @@ RECORDED_LINKS: dict[tuple[int, str], tuple[list[str], list[str]]] = {
     # Two results cite Bentz 2010 at n = 13 -- one of them says a lemma is false as
     # printed -- and neither replays the bound, so neither confirms it.
     (13, "lower"): (["T-005", "T-006"], []),
-    # The register records Nagamochi's theorem below 100 without replaying it.
-    (7, "lower"): (["T-007"], []),
-    (101, "lower"): ([], []),
+    # chelokot's Lean proof, replayed here with its axiom receipt, since 2026-10-02.
+    (7, "lower"): (["T-069"], ["T-069"]),
+    # Karakuş's general bound, read here and not replayed, since 2026-10-02.
+    (101, "lower"): (["T-066"], []),
     # This project's own bound: established, not confirmed.
     (18, "lower"): (["T-030"], []),
 }
@@ -892,7 +896,7 @@ def test_the_star_marks_recent_results_whoever_proved_them() -> None:
     assert lines[18]["recent"]
     assert lines[18]["text"].startswith(citations.PROJECT_NAME)
     assert all(line["recent"] for line in lines.values() if line and line["basis"] == "project")
-    assert not lines[4]["recent"]  # Nagamochi 2005
+    assert not lines[6]["recent"]  # Kearney and Shiu 2002
 
 
 def test_a_source_from_the_recent_year_must_say_its_date() -> None:

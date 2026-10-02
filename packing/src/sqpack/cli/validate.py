@@ -73,10 +73,13 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # from the n=1..324 reported-open count. T-062 and T-063 report exact values
     # at n=60 and n=61, while T-064 reports the k^2-3 family. Its ten new open
     # instances n=78..321 bring the reported-open count down without changing
-    # the formal-open or Nagamochi-bounded counts.
-    "n=1..100": (61, 57, 38),
-    "n=1..200": (149, 141, 126),
-    "n=1..324": (261, 249, 238),
+    # the formal-open or Nagamochi-bounded counts. 0 Nagamochi-bounded since
+    # 2026-10-02: Nagamochi's Lemma 1 is false (think-589i), so no verified floor
+    # rests on T-007 any more; the open cases' floors are Karakus 2026's, and
+    # s(k^2-2) = k rests on the replayed Lean proof (T-069), so no case opened.
+    "n=1..100": (61, 57, 0),
+    "n=1..200": (149, 141, 0),
+    "n=1..324": (261, 249, 0),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
 #: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the
@@ -3229,6 +3232,47 @@ def _regularized_atlas(context: Context) -> str:
     return output
 
 
+def _regularized_atlas_verify(context: Context) -> str:
+    """Re-derive every regularized view from its witness and require the layer to match.
+
+    The complement of `regularized atlas views match their index`, not a sample of it:
+    that step compares digests and re-verifies nothing, and this one runs the whole
+    regularization again for all 324 records -- the exact frame, the straightening and
+    compaction, the non-regression rounds, both exact verifications over `Q` and the
+    census's shades of each file -- and requires every index record and every retained
+    view to come out byte-identical. It is the only check that the verdicts the index
+    records were earned by the code that now ships.
+
+    Deferred on its own measurement: about 800 cpu-seconds on a four-cpu host, 223s of
+    wall at four workers, against the 0.1s digest check that stays on every pull
+    request. The tool's pool follows `PACK_JOBS`, so the `regularized-views` jobs run it
+    alone at `--inner-jobs 4`, as the screen is run; the readings at one, two and four
+    workers are in `development.md`'s deep-gate section.
+    """
+    output = _module(context, "devtools.regularize_axis_components", "--verify-atlas")
+    _require_text(output, "regularized atlas verification passed")
+    return output
+
+
+def _regularized_atlas_drawings(context: Context) -> str:
+    # About seven seconds: the homepage's regularized drawings are re-rendered from
+    # index.json by the house renderer and compared with the retained SVGs, so a view
+    # added, changed or dropped by the layer cannot leave a stale drawing behind.
+    output = _module(context, "devtools.render_regularized_atlas", "--check")
+    _require_text(output, "regularized renderings check passed")
+    return output
+
+
+def _chelokot_lean_replay(context: Context) -> str:
+    # Milliseconds: the retained receipt of the Lean replay that s(k^2-2) = k rests on
+    # (think-ym34) is re-read offline -- the pinned commit, toolchain and Mathlib, the
+    # theorem's statement, exactly the three standard axioms, and the build log's digest.
+    # The replay itself takes about an hour and 9 GB and is run by hand.
+    output = _module(context, "devtools.replay_chelokot_lean", "--check")
+    _require_text(output, "replay passed")
+    return output
+
+
 def _evidence_inventory(context: Context) -> str:
     # Sub-second: it reads one register and re-renders a table. Records tier because it is
     # a generated view of the record, and a generated view that has drifted from its source
@@ -4685,6 +4729,50 @@ STEPS: tuple[Step, ...] = (
             "packing/witnesses/*",
         ),
     ),
+    # The whole re-derivation behind the digest check above, deferred on its measured
+    # cost (about 800 cpu-seconds). It reads everything the regularizer imports as well
+    # as what the check above compares, so its patterns are a superset of that step's.
+    Step(
+        "regularized atlas views re-derive exactly",
+        _regularized_atlas_verify,
+        touches=(
+            *_CORE,
+            "packing/devtools/regularize_axis_components.py",
+            "packing/devtools/census_atlas_contact_shades.py",
+            "packing/devtools/check_rational_witness_independent.py",
+            "packing/devtools/upper_bound_packets.py",
+            "packing/atlas/known-best/regularized/*",
+            "packing/atlas/known-best/manifest.json",
+            "packing/witnesses/*",
+        ),
+    ),
+    Step(
+        "regularized atlas drawings match their index",
+        _regularized_atlas_drawings,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "packing/devtools/render_regularized_atlas.py",
+            "packing/devtools/render_frontier_page.py",
+            "packing/devtools/build_known_best_atlas.py",
+            "packing/devtools/regularize_axis_components.py",
+            "packing/src/sqpack/render/*",
+            "packing/atlas/known-best/regularized/*",
+            "packing/witnesses/known-best/*",
+        ),
+    ),
+    Step(
+        "the Lean replay receipt for s(k^2-2) = k holds",
+        _chelokot_lean_replay,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "packing/devtools/replay_chelokot_lean.py",
+            "packing/campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/*",
+        ),
+    ),
     Step(
         "the register's reliance on T-007 is inventoried",
         _t007_consumer_audit,
@@ -5216,6 +5304,8 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "the borrowed lower bounds re-derive",
         "the register's reliance on T-007 is inventoried",
         "regularized atlas views match their index",
+        "regularized atlas drawings match their index",
+        "the Lean replay receipt for s(k^2-2) = k holds",
         "the inventory agrees with the register",
         "results rungs are earned and the view agrees",
         "the synopsis headline carries every result",

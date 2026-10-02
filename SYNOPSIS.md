@@ -773,6 +773,16 @@ case or experiment separately.
 | [H-002: Cheaper Exact Admission](packing/benchmarks/measure-verifier/experiments/exp-004-h002-cheap-admission.md) | research synthesis | record | retained | — |
 | [H-007: Branch-Free Directed Steps](packing/benchmarks/measure-verifier/experiments/exp-005-h007-branch-free-directed-steps.md) | research synthesis | record | retained | — |
 | [Soundness of sqverify-fast](packing/sqverify_fast/SOUNDNESS.md) | component scope and use | definitive | maintained | — |
+| [sqverify-fast](packing/sqverify_fast/README.md) | component scope and use | supporting | maintained | — |
+| [Milestone A Census](packing/benchmarks/measure-verifier/census/README.md) | generated status view | generated | generated | — |
+| [Whole `rect_n32_L595`: c2 Against verify.cpp](packing/benchmarks/measure-verifier/experiments/exp-006-whole-certificate-n32.md) | research synthesis | record | retained | — |
+| [H-005: One Error Budget per Edge](packing/benchmarks/measure-verifier/experiments/exp-007-h005-error-budget.md) | research synthesis | record | retained | — |
+| [H-008: Skipping Hopeless Boxes’ Own Enclosures](packing/benchmarks/measure-verifier/experiments/exp-008-h008-skip-hopeless-own-gradient.md) | research synthesis | record | retained | — |
+| [Skipping the Own Derivative Enclosure on Hopeless Boxes](packing/benchmarks/measure-verifier/hypotheses/H-008-skip-hopeless-own-gradient.md) | implementation plan | supporting | maintained | — |
+| [Lazy First-Leg Enclosures](packing/benchmarks/measure-verifier/hypotheses/H-009-lazy-first-leg-enclosures.md) | implementation plan | supporting | maintained | — |
+| [H-004: First-Leg Enclosures on Every Box](packing/benchmarks/measure-verifier/experiments/exp-009-h004-path-specific-gradient.md) | research synthesis | record | retained | — |
+| [H-009: Lazy First-Leg Enclosures](packing/benchmarks/measure-verifier/experiments/exp-010-h009-lazy-first-leg-enclosures.md) | research synthesis | record | retained | — |
+| [c2 Beside verify.cpp, Single Directions](packing/benchmarks/measure-verifier/experiments/exp-011-c2-cells-against-verify-cpp.md) | research synthesis | record | retained | — |
 | [Independence Record for sqverify-fast](packing/sqverify_fast/INDEPENDENCE.md) | research synthesis | record | maintained | — |
 | [PR 127 Integration Checkpoint Evidence](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/pr127-checkpoint/README.md) | research synthesis | record | retained | — |
 | [Correction: the stacking capacity bound in lane X3’s box sweep is false](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-x3-box-sweep-capacity-correction.md) | dated review record | record | retained | — |

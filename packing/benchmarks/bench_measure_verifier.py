@@ -32,6 +32,11 @@ on an otherwise idle host:
     .venv/bin/python3 -m benchmarks.bench_measure_verifier \\
         --arm fast:candidate=sqverify_fast/target/release/sqverify-fast \\
         --arm verify-cpp --whole rect_n32_L595,rect_n31_L592 --out whole.jsonl
+
+`--headline` runs the whole comparison the coordinator asked for in one command: the
+per-direction cells where the replay tool times `verify.cpp` (`HEADLINE_CELLS`),
+interleaved over `--repeats`, then those two certificates whole. Build the binary
+first with `cargo build --release` in `sqverify_fast/`; `g++` must be on `PATH`.
 """
 
 from __future__ import annotations
@@ -79,6 +84,17 @@ class Cell:
     def key(self) -> str:
         return f"{self.certificate}@r{self.direction}"
 
+
+# The cells where the replay tool's control mode does run verify.cpp (its mutation
+# premise holds there), measured on 2026-10-02.
+HEADLINE_CELLS = (
+    "rect_n32_L595@r1",
+    "rect_n32_L595@r100",
+    "rect_n32_L595@r150",
+    "rect_n32_L595@r200",
+    "rect_n78_L8955@r1",
+    "rect_n78_L8955@r50",
+)
 
 # The fixed benchmark (declared in the campaign README before any experiment):
 # three certificates of 1,080, 3,000 and 6,496 expanded rectangles, at five
@@ -201,6 +217,7 @@ def fast_run(binary: Path, cell: Cell, *, callgrind: bool) -> dict[str, Any]:
     result["leaves"] = row.get("leaves")
     result["min_certified_lower_bound"] = row.get("min_certified_lower_bound")
     result["direction_seconds"] = row.get("seconds")
+    result["direction_cpu_seconds"] = row.get("cpu_seconds")
     result["summary_status"] = summary.get("status")
     if result["returncode"] != 0:
         result["stderr_tail"] = result["stderr"][-2000:]
@@ -434,6 +451,14 @@ def main(argv: list[str] | None = None) -> int:
         default="",
         help="comma-separated certificates to replay whole, e.g. rect_n32_L595",
     )
+    parser.add_argument(
+        "--headline",
+        action="store_true",
+        help=(
+            "the comparison for an idle host: the per-direction cells where the replay"
+            " tool times verify.cpp, then rect_n32_L595 and rect_n31_L592 whole"
+        ),
+    )
     args = parser.parse_args(argv)
     os.chdir(PROJECT)
     if args.summarize:
@@ -441,8 +466,16 @@ def main(argv: list[str] | None = None) -> int:
         print("\n".join(summarize(rows)))
         return 0
     arms = [parse_arm(text) for text in args.arm]
+    if args.headline:
+        args.cells = ",".join(HEADLINE_CELLS)
+        status = run_cells(args, arms)
+        return status or run_whole(arms, ["rect_n32_L595", "rect_n31_L592"], args.out)
     if args.whole:
         return run_whole(arms, [name for name in args.whole.split(",") if name], args.out)
+    return run_cells(args, arms)
+
+
+def run_cells(args: argparse.Namespace, arms: list[tuple[str, Path | None]]) -> int:
     cells = (
         CELLS
         if args.cells == "all"

@@ -67,9 +67,15 @@ complexity.
 3. Run the CPU cells, interleaved: the same with `--repeats 2` and no `--callgrind`.
 4. Apply the accept rule; write `experiments/exp-NNN-*.md` with the numbers lifted from
    the JSONL, and commit the raw results with it.
-5. For the headline comparison against `verify.cpp`, add `--arm verify-cpp`. The replay
-   tool’s control mode refuses some directions before running the checker (its mutation
-   premise does not hold there); those cells have no reference reading.
+5. For the headline comparison against `verify.cpp`, replay whole certificates:
+   `python -m benchmarks.bench_measure_verifier --arm fast:candidate=PATH --arm
+   verify-cpp --whole rect_n32_L595,rect_n31_L592 --out results/whole.jsonl`. Both arms
+   then do all 201 directions on one worker, `verify.cpp` through the replay tool’s
+   `--replay --workers 1` (its CPU includes the tool’s exact preflight and the compile,
+   a few seconds). Per-direction cells against `verify.cpp` use `--arm
+   verify-cpp` without `--whole`. The replay tool’s control mode refuses some directions
+   before running the checker (its mutation premise does not hold there); those cells
+   have no reference reading.
 
 The coordinator runs the headline comparison on a dedicated idle runner with the same
 script; this campaign’s CPU readings were taken under load and are the ratio’s local

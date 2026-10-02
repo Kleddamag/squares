@@ -267,11 +267,43 @@ which R2–R5 handle soundly.
 
 - `rotated_tests::area_lower_bound_is_below_and_close_to_exact`: R2 against exact
   rational clipping on random rectangles and directions, below and within $10^{-9}$.
+- `rotated_tests::edge_length_enclosures_contain_exact_lengths_over_the_box`: R5 against
+  exact rational edge lengths at the corners and interior points of 2,000 random boxes
+  over five directions; a seeded wrong endpoint makes it fail.
+- `interval::tests::steps_reach_the_adjacent_values`: I1 on special values and 100,000
+  random bit patterns.
 - The debug build re-derives every box’s incremental centre bound from the full
   rectangle list (R1’s inheritance) and panics on a difference.
 - `devtools/check_sqverify_fast.py` compares, on retained certificates, the probe’s
   centre and box bounds with `sqpack.rectangle_density`’s exact coverage at sampled
-  centres and box points, and runs the mutation controls.
+  centres and box points, and runs the mutation controls; its `--quick` subset runs in
+  the gate step `measure verifier Rust (sqverify-fast)`.
+- `devtools/sqverify_fast_census.py` verifies every replayed certificate at all 201
+  directions and evaluates, in exact rationals, the capture at the centre of each
+  certificate’s least-bound leaf.
+
+## The First Leg on Its Own Segment
+
+**Lemma R7.** In R3’s path $p_0 \to (p_x, y_0) \to p$, the first leg lies on the segment
+$S_x = [x_0 \pm d_x] \times \{y_0\}$, so it needs only $G^S_x \ge \sup_{S_x}
+|\partial_x F|$; the second leg needs $G_y$ over the whole box.
+Hence $F(p) \ge F(p_0) -
+G^S_x d_x - G_y d_y$, and with the other order, $F(p) \ge F(p_0) - G_x d_x - G^S_y d_y$;
+the larger of the two lower bounds holds.
+$G^S_x$ is R5’s enclosure with the centre’s ordinate fixed at $y_0$ (the segment ends’
+offsets enclosed with half-width zero), its abscissa still ranging over the box.
+Any bound valid on the box is valid on the segment, so each segment bound is also capped
+by the box’s. The current build does not use R7: experiments exp-009 and exp-010 found
+that it removes about a third of the boxes but costs as much again in enclosures,
+eagerly or lazily.
+
+## Inheritance of Derivative Bounds
+
+**Lemma R6.** A bound $G_x \ge \sup_C |\partial_x F|$ proved on a box $C$ holds on every
+sub-box $C' \subseteq C$. So a child may apply R3 with its parent’s bounds, and with the
+smaller of its parent’s and its own, per axis.
+Skipping a box’s own enclosure is only a choice of where to spend work: it never accepts
+a box (experiment exp-003).
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

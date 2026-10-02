@@ -84,12 +84,25 @@ Certificate data and summaries (packets under `packing/resources/web/`):
   --direction 1 --out …` and, through `benchmarks/bench_measure_verifier.py`, the same
   command for other certificates and directions: black-box timing of the unchanged
   `verify.cpp`. The tool’s receipts were read for CPU seconds, node counts and verdicts.
-- `cargo build`, `cargo test`, `valgrind --tool=callgrind` on this crate.
+- `python -m devtools.audit_wand125_rectangles --packet 2026-09-27 --n 32 --replay
+  --workers 1 --out …`, through the harness’s `--whole` mode: a black-box replay of
+  every direction of one certificate, for whole-certificate CPU. Only the tool’s
+  receipts (status, per-direction rows) were read; the process list showed the checker
+  binary’s name and arguments (`./verify R R`), nothing of its source.
+- `cargo build`, `cargo test`, `cargo clippy`, `valgrind --tool=callgrind` and
+  `callgrind_annotate` on this crate only.
+- `packing-validate --edit` and `--only` on this worktree.
+
+The census reads, from the replay receipts, only the authors’ summary fields (status,
+node total, least printed bound, wall seconds and the worker count in the recorded
+command), to set them beside this verifier’s results.
 
 ## Outside References
 
 None beyond the reviews above: the IEEE 754 round-to-nearest model, the Brunn–Minkowski
 concavity of sections of convex sets, and Fubini’s theorem are standard.
+Lemma I1’s branch-free step is the textbook bound that no gap between adjacent binary64
+values exceeds $2^{-52}|x|$, applied directly; no source was consulted for it.
 No web source, paper or other implementation was consulted.
 
 <!-- This document follows common-doc-guidelines.md.

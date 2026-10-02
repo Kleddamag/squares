@@ -845,24 +845,22 @@ it.
   The page cards, the atlas cards and the other projects are medium; the documents,
   whose notes are a line, are small.
   A section can also be set in lines of its own, in `SECTION_CARD_LINES`, where one
-  wrapping row would leave a card alone on its last line: the five page cards stand two
-  over three, the two papers over the tutorial, the workbench and the Frontier page,
-  where one row would set four at 1280 pixels and the fifth alone.
-  Each line is a grid of its own in the section’s one frame, a gap below the line
-  before, and none sets more cards to a line than the longest line holds
+  wrapping row would not set its cards as they are meant to read: the five page cards
+  stand one, two and two, the Frontier page alone at the top, then the two papers, then
+  the tutorial and the workbench, where one row would set four at 1280 pixels and the
+  fifth alone. Each line is a grid of its own in the section’s one frame, a gap below the
+  line before, and none sets more cards to a line than the longest line holds
   (`data-cards-most`, at which the stylesheet caps its size’s count), so the lines share
-  one column width and each centres in it: three medium columns of 357px at 1280 pixels,
-  the papers’ two centred over the other three.
-  Where the frame fits two medium cards, from 33 to 50rem, the second line is two and
-  then one, as five cards of one width two to a line must end; on a phone every card
-  takes the line. The owner asked for the page cards in two rows on 2026-10-02
-  (`think-ec5k`), and two over three was chosen over three over two from screenshots at
-  1280 pixels: both fill two lines with no card alone, but two over three keeps the
-  papers’ long notes on one line and the three short notes on the other, where three
-  over two stretched the tutorial’s card to the explainer’s height and left half of it
-  empty. A card built without a size (`card()` or `link_card()` with no `size=`) takes
-  the default for its own text: its headline and note, and a direct card’s address,
-  counted as they read, a formula once.
+  one column width and each centres in it: two medium columns of 544px at 1280 pixels,
+  the Frontier page’s card centred over the papers.
+  Wherever the frame fits two medium cards, from 33rem, every line stands as set; on a
+  phone every card takes the line.
+  The owner asked for the page cards in two rows on 2026-10-02 (`think-ec5k`), and two
+  over three was chosen over three over two from screenshots at 1280 pixels; later the
+  same day the owner set the Frontier page’s card on a line of its own at the top and
+  the rest two and two (`think-ns3d`). A card built without a size (`card()` or
+  `link_card()` with no `size=`) takes the default for its own text: its headline and
+  note, and a direct card’s address, counted as they read, a formula once.
 
 - **Card foot.** A direct card may end with a line that holds links of its own
   (`link_card(foot=)`), as an other project’s card ends with its tally of results.
@@ -928,19 +926,21 @@ it.
   A kind chip (`kind_chip`) says what a result is, in the rubric’s words, `lower bound`
   or `case exclusion`, and carries `data-kind`. Every result draws one: on a line of its
   own under its rungs in a table, and after the rungs in a popover’s head and a chain’s
-  step. A result’s status line follows it (`status_marks`), on a line of its own in a
-  table. Its first chip is the status, `recorded`, `reviewed`, `confirmed` or
-  `incomplete` (`data-status`), which every result has: how far the work on it here has
-  gone, derived by `devtools.result_status` from the confirmation rung and the defects
-  on record, and defined in `epistemics.md`. Next, where the register records one, is
-  who has the next move (`data-activity`): `in analysis` for a replay or review under
-  way here, `waiting on source` for a request with another party; its title says what is
-  in hand and since when.
-  Last is `superseded` (`data-standing`), on a bound that no case bound rests on now.
-  A result that still stands draws no chip for that: `current best` is the default, so
-  it is left unsaid. That a bound is only reported is no chip of its own: it is the
-  status `recorded`. A second proof of a value another result holds says so by its kind,
-  `simplification`, and a result that bounds nothing by its kind too.
+  step. A result’s status line follows it (`status_marks`), in a column of its own in a
+  table, Status, since 2026-10-02 (`think-ybt5`): it stood under the kind, in the rungs’
+  cell, until then, though it is where the result stands and no rung.
+  Its first chip is the status, `recorded`, `reviewed`, `confirmed` or `incomplete`
+  (`data-status`), which every result has: how far the work on it here has gone, derived
+  by `devtools.result_status` from the confirmation rung and the defects on record, and
+  defined in `epistemics.md`. Next, where the register records one, is who has the next
+  move (`data-activity`): `in analysis` for a replay or review under way here,
+  `waiting on source` for a request with another party; its title says what is in hand
+  and since when. Last is `superseded` (`data-standing`), on a bound that no case bound
+  rests on now. A result that still stands draws no chip for that: `current best` is the
+  default, so it is left unsaid.
+  That a bound is only reported is no chip of its own: it is the status `recorded`. A
+  second proof of a value another result holds says so by its kind, `simplification`,
+  and a result that bounds nothing by its kind too.
   Each of these chips adds no style of its own, so every one is the same plain gray
   chip, one font size, line height and height, and they differ only in their words.
   The Rungs column is as wide as its widest chip, so in a table each chip of the status
@@ -997,10 +997,12 @@ it.
   table, since 2026-10-02 (the owner, `think-hqb3`); it was the homepage’s section
   between Recent Results and the atlas before that (**Results page**, below, for its
   place and its lead).
-  Its diagram, `.site-ladders`, is one diagram, which is neither a set of cards nor the
-  shared data table: a column for each scored dimension of the rubric, in the order
-  Significance, Verification, Confirmation, and a row for each level, the highest at the
-  top, so the rungs of the three ladders line up across a row.
+  The homepage keeps a key of the same grid under Recent Results (`rung_key`, the same
+  day, `think-tgjv`), its heads the ratings’ names and letters alone (**Recent
+  results**, below). Its diagram, `.site-ladders`, is one diagram, which is neither a set
+  of cards nor the shared data table: a column for each scored dimension of the rubric,
+  in the order Significance, Verification, Confirmation, and a row for each level, the
+  highest at the top, so the rungs of the three ladders line up across a row.
   A column is headed by the dimension’s name, which links to its section of
   `epistemics.md`, and the question it answers, with no caps label.
   A cell holds the rung’s chip and a description of exactly two lines, and nothing else:
@@ -1193,11 +1195,16 @@ it.
   gutters or `--site-table-max` (100rem, 1600 pixels), past which its columns would only
   spread apart and a row would be harder to follow.
   So nothing changes at 1280 pixels or narrower, and on a large screen a table’s text
-  columns wrap less. The Every Result table is 1104 pixels wide up to 1280, 1424 at 1600
-  and 1600 from about 1780 up; the frontier table, whose own track is 86rem, is the
-  page’s content area less its gutters up to 1456 pixels and goes from 1376 to 1600
-  above that. The rule takes any `.site-wide` that is or holds a `.site-table-wrap`, so a
-  new table bleeds with no rule of its own.
+  columns wrap less. The frontier table, whose own track is 86rem, is the page’s content
+  area less its gutters up to 1456 pixels and goes from 1376 to 1600 above that.
+  The tables of results are the one exception: since they hold eight columns
+  (2026-10-02, `think-ybt5`, `think-e4o3`), their floors come to 1139 pixels with every
+  row showing, more than the 1104 of the wide track, so they bleed from 74rem, 1184
+  pixels. They fit from about 1220, are 1200 pixels wide at 1280, as the frontier table
+  is there, 1520 at 1600 and 1600 from about 1680 up, and below 1220 they scroll in
+  their wrap: by 195 pixels at 1024 and 451 at 768 with every row showing.
+  The rule takes any `.site-wide` that is or holds a `.site-table-wrap`, so a new table
+  bleeds with no rule of its own.
 
 - **Atlas popover.** Pressing a cell opens the page’s one atlas popover on that case, a
   card popover in every other way (square corners, the scrim, the caps label, the close
@@ -1314,27 +1321,39 @@ it.
   `.site-col-date`) are as narrow as their content, the id and the date on one line,
   which leaves the spare width to the long text column.
   The two tables of results, the overview’s recent table and the results page’s, are one
-  table: one header (`result_head`) and one row (`result_table_row`), so the same six
+  table: one header (`result_head`) and one row (`result_table_row`), so the same
   columns in the same order.
-  They are the id, the first column and the row’s trigger, as narrow as an id, under the
-  6rem KPress keeps a cell to; the cases, n; the result, its summary whole, method and
-  all, with its records on a quiet line under it; the credit, the finder first and
-  “after …”, what the result builds on, quiet after it, in full; the rungs, with the
-  kind on a line under them and the status line under that (**Chips**, above); and the
-  date. The tables are two filters of one table, and differ only in where the filter bar
+  They are the date; the result, its summary whole, method and all, and its star; the
+  cases, n; the credit, the finder first and “after …”, what the result builds on, quiet
+  after it, in full; the rungs, with the kind on a line under them; the status line, its
+  chips one under another (**Chips**, above); the details, the result’s records (its
+  case link, the register, its evidence, source and reviews), a link to a line; and the
+  id, the last column and the row’s trigger, as narrow as an id, under the 6rem KPress
+  keeps a cell to. The owner set that order on 2026-10-02: the id led and the date closed
+  the row until then (`think-t090`); the status line stood under the kind
+  (`think-ybt5`); and the records stood on a quiet line under the summary, a dot between
+  two links, where the result’s cell holds the claim alone now (`think-e4o3`). The
+  status cell sorts on the status word; the details do not sort.
+  On a phone each row is a card that places its cells by class, not by column, so the
+  card reads as before: the id, the cases and the rungs on its first line, the status
+  under the rungs, the claim with its details on a line under it, a dot drawn between
+  two links, then the credit and the date.
+  The tables are two filters of one table, and differ only in where the filter bar
   starts, which sets the rows that begin `hidden` and the count, and in a row’s key: on
   the results page a row is the result’s own address (`id="t-018"`), and on the overview
   it names the result as `data-result`. Every other byte of a row and of its popover is
-  the same, so each shows the result’s records under its summary, each opens its popover
+  the same, so each shows the result’s records in its details, each opens its popover
   from the id, and no row of one links to the other.
   The line under the overview’s table, “See all results”, is the one link between them.
   Both sort on any column whose header carries the sort pair.
   The widths follow from each column’s floor and from what the n column asks for.
-  The id, the rungs and the date are as narrow as what they hold.
+  The id, the rungs, the status, the details and the date are as narrow as what they
+  hold. The details are as wide as their widest link, 96 pixels, and a result with many
+  records is the tallest row: T-051’s nine links stand 239 pixels.
   The rungs column is as wide as its widest chip, since no chip wraps: the three rungs
   at 114 pixels, and the widest kind, “restricted optimality”, at 180 where a row with
-  one shows. The kind and the standing each take a line under the rungs, so a superseded
-  bound has three lines of chips, 114 pixels of row.
+  one shows. The kind takes a line under the rungs, and the status column is as wide as
+  its widest chip, its chips one under another.
   The credit column is at least 11.5rem wide, which holds the longest name on one line
   (“Queuingtheorydotcom”, 167 pixels of the 184), so a credit wraps between names and
   never inside one; KPress’s own floor, 6rem, set it a word to a line.
@@ -1671,7 +1690,7 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   this project, and when a bound by others counts as verified, which is the rule its
   verified columns apply.
   Each table keeps its own star legend, since a star without one reads as decoration,
-  and one function writes it (`star_legend`); the atlas note links the legend above the
+  and one function writes it (`star_legend`); the atlas note links the legend under the
   recent table in place of a third.
   The Frontier page opens with the survey’s account, its audit, its recent counts and
   the seventeen-square history, and ends its prose with the key to its columns, beside
@@ -1680,8 +1699,8 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   below), and a section that is prose leads on with direct cards (**Cards**, above), as
   The Squares Project does with its page cards.
   The page cards under The Squares Project are the site’s reading and working pages, the
-  three papers, the workbench and the Frontier page, set two over three (**Card sizes**,
-  above); the Results page is reached from Recent Results.
+  Frontier page alone on the first line, then the three papers and the workbench two to
+  a line (**Card sizes**, above); the Results page is reached from Recent Results.
   The owner set this shape on 2026-10-02 (`think-f1tu`): the overview “a little more
   structured and a little less verbose”, the survey’s account moved into the Frontier
   page, Recent Results slimmed to the essentials and its table, and “cards that point to
@@ -1694,22 +1713,34 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   `tests/test_overview.py` holds each section’s prose to one paragraph of its own where
   this applies, the cards to their pages, and the three pages to saying each thing once.
 
-- **Recent results.** The overview’s Recent Results section is one paragraph of 60 to
-  125 words before its table (the owner, 2026-10-02): the headline of recent progress,
-  eleven squares settled by T-060, seventeen squares bracketed by T-043 and T-065, the
-  new exact values at $n = 21$, $32$ and $45$, each id linked to its row and held to the
+- **Recent results.** The overview’s Recent Results section opens with its table, and
+  under the table’s one action, “See all results”, stand two short paragraphs and a key
+  (the owner, 2026-10-02, `think-tgjv`; one paragraph of up to 125 words stood between
+  the heading and the filter bar until then).
+  The first paragraph, 50 to 100 words, is the headline of recent progress, eleven
+  squares settled by T-060, seventeen squares bracketed by T-043 and T-065, the new
+  exact values at $n = 21$, $32$ and $45$, each id linked to its row and held to the
   register by `check_results.READER_TIER`; then the star legend (`star_legend`); then
-  one sentence, in the legend’s manner, on what the three chips on a row indicate, in
-  the ladder heads’ words (how significant the result is, how it was originally
-  verified, how it has been confirmed), linking the Verification Ladders on the Results
-  page, which joined the paragraph when the ladders left the homepage (`think-hqb3`) and
-  raised its ceiling from 90 words; and one sentence on where the filters start.
-  Then one table, not cards or a list: every result, by the date the table shows, newest
-  first, one row each (`recent_table`). It is the results page’s table, with its
-  columns, its rows, its sorting and its card-per-row form on a phone (**Tables**,
-  above). The ratings, the kinds, the statuses and the dating rule are defined on the
-  Results page, and a result’s rungs, review and retained packet are its row’s; the
-  section repeats none of them.
+  one sentence on where the table above starts.
+  The second, at most 130 words, says what the three ratings on a row mean, a sentence
+  to each: significance, S1 to S5, how much the result matters; verification, V0 to V5,
+  how it was first established; confirmation, C0 to C5, how far it has been checked
+  since; each with its lowest and highest rungs, and V3 and C1 to C3 between, in the
+  rubric’s words shortened.
+  It links the Verification Ladders on the Results page, which define each rung in full
+  (`think-hqb3` moved them there the same day).
+  The key under it (`rung_key`) is the ladders’ grid (**Rating ladders**, above) without
+  their questions or links: a column per rating headed by its name and its letter, a row
+  per level with the highest at the top, each rung the chip the table draws beside its
+  short meaning, the same cells as the ladders’ own, so the two never disagree; it
+  stacks a rating to a block on a narrow screen, as the ladders do.
+  The table is one table, not cards or a list: every result, by the date the table
+  shows, newest first, one row each (`recent_table`). It is the results page’s table,
+  with its columns, its rows, its sorting and its card-per-row form on a phone
+  (**Tables**, above).
+  The ratings, the kinds, the statuses and the dating rule are defined on the Results
+  page, and a result’s rungs, review and retained packet are its row’s; the section
+  repeats none of them.
   README’s two paragraphs on the same progress opened the section until that day and are
   README’s own now (**Page headings**, above).
   The results page’s tools bar sits above it (**Result filters**, above), starting at

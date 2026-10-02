@@ -31,7 +31,8 @@ Two further checks support the review that owns this tool
   neither is a repair. Those squares are the witnesses the review cites.
 
 Usage, from `packing/`:
-    uv run --frozen --all-extras --group dev python -m devtools.check_nagamochi_lemma1_counterexample
+    uv run --frozen --all-extras --group dev python -m \\
+        devtools.check_nagamochi_lemma1_counterexample
 """
 
 from __future__ import annotations
@@ -250,7 +251,7 @@ def nagamochi_measure(a: Fraction, b: Fraction) -> Measure:
 
 
 def nagamochi_total(a: Fraction, b: Fraction) -> Fraction:
-    """Theorem 1's right-hand side, `ab - Delta(a) - Delta(b)` with `Delta(t) = t + 1 - ceil t`."""
+    """Theorem 1's right-hand side `ab - Delta(a) - Delta(b)`, `Delta(t) = t + 1 - ceil t`."""
     return a * b - (a + 1 - math.ceil(a)) - (b + 1 - math.ceil(b))
 
 
@@ -478,7 +479,9 @@ def check_chelokot_instance() -> dict[str, Fraction]:
     _require(contains_point(s, (Fraction(1), NINE_TENTHS), closed=False), "(1, 0.9) outside")
     _require(not contains_point(s, (Fraction(2), NINE_TENTHS), closed=True), "(2, 0.9) inside")
     for point, _ in measure.points:
-        on = contains_point(s, point, closed=True) and not contains_point(s, point, closed=False)
+        on = contains_point(s, point, closed=True) and not contains_point(
+            s, point, closed=False
+        )
         _require(not on, f"weighted point {point} lies on the boundary")
     interior = measure.score(s, closed=False)
     _require(interior == CHELOKOT_SCORE, f"score {interior} is not the printed fraction")
@@ -495,7 +498,11 @@ def check_local_repairs(a: Fraction, b: Fraction) -> dict[str, dict[str, Fractio
     measure gives it `1.0191`; drop the extensions and it falls to `0.9691`, whichever
     way their mass is moved. The augmented measure passes both squares and costs `2/5`.
     """
-    beta = shrink(karakus_contact_square(DECLARED_T[0]), shrink_factor(DECLARED_T[0]), centre(karakus_contact_square(DECLARED_T[0])))
+    beta = shrink(
+        karakus_contact_square(DECLARED_T[0]),
+        shrink_factor(DECLARED_T[0]),
+        centre(karakus_contact_square(DECLARED_T[0])),
+    )
     alpha = axis_square(NINE_TENTHS, Fraction(0), SIDE_CEILING)
     _require(inside_container(alpha, a, b) and inside_container(beta, a, b), "witness outside")
     base = nagamochi_measure(a, b)
@@ -527,7 +534,7 @@ def check_local_repairs(a: Fraction, b: Fraction) -> dict[str, dict[str, Fractio
 
 
 def karakus_bound(n: int) -> Decimal:
-    """Corollary 6.2 of Karakus: `1/2 + sqrt(N - floor(sqrt N) + 1/4)` for nonsquare `N >= 8`."""
+    """Corollary 6.2 of Karakus: `1/2 + sqrt(N - floor(sqrt N) + 1/4)`, nonsquare `N >= 8`."""
     k = math.isqrt(n)
     if k * k == n or n < 8:
         message = f"Corollary 6.2 is stated for nonsquare N >= 8, not N = {n}"
@@ -557,7 +564,7 @@ def karakus_at_most_nagamochi(n: int) -> tuple[bool, bool]:
 
 
 def karakus_above_area(n: int) -> bool:
-    """Exactly: `1/2 + sqrt(N - k + 1/4) > sqrt N` iff `N > k^2`, i.e. for every nonsquare `N`."""
+    """Exactly: `1/2 + sqrt(N - k + 1/4) > sqrt N` iff `N > k^2`, so for every nonsquare `N`."""
     k = math.isqrt(n)
     return n > k * k
 
@@ -586,7 +593,9 @@ def main() -> int:
                 f"= {float(report['shrunk_interior']):.6f} < 1"
             )
     chelokot = check_chelokot_instance()
-    print(f"chelokot in [0,4]^2: interior {chelokot['interior']} = {float(chelokot['interior']):.9f}")
+    print(
+        f"chelokot in [0,4]^2: interior {chelokot['interior']} = {float(chelokot['interior']):.9f}"
+    )
     repairs = check_local_repairs(Fraction(4), Fraction(4))
     for variant, values in repairs.items():
         print(
@@ -597,14 +606,20 @@ def main() -> int:
         if math.isqrt(n) ** 2 == n:
             continue
         below, equal = karakus_at_most_nagamochi(n)
-        if not (below and karakus_above_area(n)) or equal != (n == (math.isqrt(n) + 1) ** 2 - 1):
+        if not (below and karakus_above_area(n)) or equal != (
+            n == (math.isqrt(n) + 1) ** 2 - 1
+        ):
             print(f"N={n}: the exact comparison failed")
             return 1
     print("N in [8, 400], nonsquare: area < Karakus <= Nagamochi, equality only at N = m^2 - 1")
     for n in REVIEW_N:
         values = compare_bounds(n)
-        karakus = "n/a (needs N >= 8)" if values["karakus"] is None else f"{values['karakus']:.6f}"
-        print(f"N={n:>3}: area {values['area']:.6f}  Nagamochi {values['nagamochi']:.6f}  Karakus {karakus}")
+        karakus = (
+            "n/a (needs N >= 8)" if values["karakus"] is None else f"{values['karakus']:.6f}"
+        )
+        print(
+            f"N={n:>3}: area {values['area']:.6f}  Nagamochi {values['nagamochi']:.6f}  Karakus {karakus}"
+        )
     return 0
 
 

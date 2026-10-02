@@ -859,17 +859,22 @@ IDENTITY = re.compile(r"\b[kmnN]\s*(?:\^\s*2|²|\^\{2\})\s*[-−–]\s*2(?![0-9.
 CLOSED_FORM = re.compile(r"2\s*\*?\s*(?:floor\b|⌊|\\lfloor)|min\s*\(\s*ceil")
 #: The author named as a person; identifiers such as `E-nagamochi-lower` are lowercase.
 NAMES = re.compile(r"\bNagamochi\b")
-#: Words that make a line naming Nagamochi a statement about a bound or a proof.
-ASSERTS = re.compile(
-    r"(?i)\b(?:prov(?:ed|es|en|ing)|establish\w*|theorem|closed[ -]form|bound\w*|floor\w*"
-    r"|gives|exact|family|families|formula|identity|governed|default)\b"
+#: Beside his name, words that state a theorem or a proof: the line `states` it.
+STATES = re.compile(
+    r"(?i)\b(?:prov(?:ed|es|en|ing)|establish\w*|theorem|identit(?:y|ies)|famil(?:y|ies)"
+    r"|verified|exact values?)\b"
 )
+#: Beside his name, words that use his bound as a standing floor: the line `relies` on it.
+RELIES = re.compile(r"(?i)\b(?:bound\w*|floor\w*|closed[ -]form|formula|governed|default|tight)\b")
+#: A table cell holding only his name, as in a column of lower-bound sources.
+CELL = re.compile(r"^\s*(?:Hiroshi\s+)?Nagamochi\s*$")
 #: A paragraph carrying any of these already qualifies what it says.
 QUALIFIED = re.compile(
     r"(?i)karaku|counterexample|incomplete|published gap|proof gap|does not establish"
     r"|not established|unestablished|disputed|unproven"
 )
 EXCERPT = 160
+TIERS = ("states", "relies", "mentions")
 
 
 def paragraphs(lines: Sequence[str]) -> list[int]:
@@ -883,6 +888,27 @@ def paragraphs(lines: Sequence[str]) -> list[int]:
         index.append(current)
         previous_blank = blank or row
     return index
+
+
+def tier(line: str, kinds: Sequence[str]) -> str:
+    """`states`, `relies` or `mentions`, judged on the line or, in a table, on the cell.
+
+    A table row is judged by the cells naming Nagamochi, so a lineage credit ("after
+    Stromquist, Nagamochi, Burns") in a row whose kind column says "lower bound" stays a
+    mention. The identity and the closed form state the theorem wherever they appear.
+    """
+    if "k2-minus-2-identity" in kinds or "closed-form" in kinds:
+        return "states"
+    contexts = (
+        [cell for cell in line.split("|") if NAMES.search(cell)]
+        if line.lstrip().startswith("|")
+        else [line]
+    )
+    if any(STATES.search(context) for context in contexts):
+        return "states"
+    if any(RELIES.search(context) or CELL.match(context) for context in contexts):
+        return "relies"
+    return "mentions"
 
 
 def scan_text(text: str, first_line: int = 1) -> list[dict[str, Any]]:
@@ -903,17 +929,11 @@ def scan_text(text: str, first_line: int = 1) -> list[dict[str, Any]]:
         ]
         if not kinds:
             continue
-        asserts = (
-            "k2-minus-2-identity" in kinds
-            or "closed-form" in kinds
-            or bool(ASSERTS.search(line))
-            or line.lstrip().startswith("|")
-        )
         hits.append(
             {
                 "line": first_line + i,
                 "kinds": kinds,
-                "asserts": asserts,
+                "tier": tier(line, kinds),
                 "qualified": owner[i] in qualified_paragraphs,
                 "excerpt": line.strip()[:EXCERPT],
             }
@@ -942,23 +962,28 @@ def scan_document(group: str, path: str) -> dict[str, Any] | None:
     hits = scan_text(text, first_line)
     if not hits:
         return None
-    asserting = [hit for hit in hits if hit["asserts"]]
     entry: dict[str, Any] = {
         "path": path,
         "group": group,
-        "asserting_lines": [hit["line"] for hit in asserting],
-        "unqualified_asserting_lines": [hit["line"] for hit in asserting if not hit["qualified"]],
+        **{
+            f"{name}_lines": [hit["line"] for hit in hits if hit["tier"] == name]
+            for name in TIERS
+        },
+        "unqualified_states_lines": [
+            hit["line"] for hit in hits if hit["tier"] == "states" and not hit["qualified"]
+        ],
+        "qualified_lines": [hit["line"] for hit in hits if hit["qualified"]],
         "k2_minus_2_identity_lines": [
             hit["line"] for hit in hits if "k2-minus-2-identity" in hit["kinds"]
         ],
         "closed_form_lines": [hit["line"] for hit in hits if "closed-form" in hit["kinds"]],
-        "mention_only_lines": [hit["line"] for hit in hits if not hit["asserts"]],
     }
     if group != "case-record":
         # Case-record prose is generated from one template, so its lines are listed bare.
         entry["statements"] = [
-            {key: hit[key] for key in ("line", "kinds", "qualified", "excerpt")}
-            for hit in asserting
+            {key: hit[key] for key in ("line", "tier", "kinds", "qualified", "excerpt")}
+            for hit in hits
+            if hit["tier"] != "mentions"
         ]
     return entry
 
@@ -985,26 +1010,33 @@ def documents() -> dict[str, Any]:
         for group, path in document_paths()
         if (entry := scan_document(group, path)) is not None
     ]
-    stating = [entry for entry in files if entry["unqualified_asserting_lines"]]
     return {
         "method": (
-            "Lexical: a line is listed when it states a k^2 - 2 identity, Nagamochi's closed "
-            "form, or names Nagamochi; it asserts when it is an identity, the closed form, a "
-            "table row, or names him beside a bound or proof word; it is qualified when its "
-            "paragraph (or table row) already carries a caveat word. Case-record front "
-            "matter is excluded, since the per-case rows inventory it."
+            "Lexical. A line is listed when it states a k^2 - 2 identity or Nagamochi's "
+            "closed form, or names Nagamochi. It `states` the theorem when it carries the "
+            "identity or the closed form, or names him beside a proof or theorem word; it "
+            "`relies` on it when it names him beside a bound, floor or formula word, or as a "
+            "lone table cell; otherwise it `mentions` him. Table rows are judged on the cells "
+            "naming him. A line is `qualified` when its paragraph, or its table row, already "
+            "carries a caveat word. Case-record front matter is excluded, since the per-case "
+            "rows inventory it."
         ),
         "groups": {group: list(patterns) for group, patterns in DOCUMENT_GROUPS},
         "patterns": {
             "k2-minus-2-identity": IDENTITY.pattern,
             "closed-form": CLOSED_FORM.pattern,
             "names-nagamochi": NAMES.pattern,
-            "asserts": ASSERTS.pattern,
+            "states": STATES.pattern,
+            "relies": RELIES.pattern,
+            "lone-cell": CELL.pattern,
             "qualified": QUALIFIED.pattern,
         },
         "files": files,
         "files_stating_without_qualification": {
-            group: sum(entry["group"] == group for entry in stating)
+            group: sum(
+                entry["group"] == group and bool(entry["unqualified_states_lines"])
+                for entry in files
+            )
             for group, _ in DOCUMENT_GROUPS
         },
         "site_data": site_data(),
@@ -1214,11 +1246,11 @@ def report(document: Mapping[str, Any]) -> str:
             f" to {largest['shortfall']} (n={largest['n']})"
         )
     files = document["documents"]["files"]
-    stating = [entry for entry in files if entry["unqualified_asserting_lines"]]
+    stating = [entry for entry in files if entry["unqualified_states_lines"]]
     lines.extend(["", f"documents stating the theorem or an identity unqualified: {len(stating)}"])
     lines.extend(
-        f"  {entry['path']}: {len(entry['unqualified_asserting_lines'])} line(s), first "
-        f"{entry['unqualified_asserting_lines'][0]}"
+        f"  {entry['path']}: {len(entry['unqualified_states_lines'])} line(s): "
+        + ranges(entry["unqualified_states_lines"])
         for entry in stating
         if entry["group"] != "case-record"
     )

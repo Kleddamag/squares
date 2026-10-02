@@ -226,7 +226,8 @@ body {
    `--site-cards-small`, `-medium` and `-large` are those counts, each stepped by its own
    container queries: n columns of minimum m and n - 1 gaps need (m + 1)n - 1 rem. A card
    that names no size is medium. On screen the cards are one wrapping row that centres
-   every line it does not fill, a short section and the last line of a long one alike.
+   every line it does not fill, a short section and the last line of a long one alike;
+   a section set in lines of its own is one such row per line.
    Print keeps the plain grid of medium columns, filled from the left. A card's popover
    is its sibling but never in the row: closed it is not displayed, and open it is in the
    top layer. */
@@ -242,6 +243,11 @@ body {
   display: grid;
   gap: var(--site-card-gap);
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+}
+/* Each line of a section set in lines of its own is a row of its cards, a gap below the
+   line before it. */
+.site-cards + .site-cards {
+  margin-block-start: var(--site-card-gap);
 }
 @container (width >= 25rem) {
   .site-cards {
@@ -320,6 +326,12 @@ body {
   }
   .site-cards > .site-card[data-card-size="large"] {
     --site-cards-line: var(--site-cards-large);
+  }
+  /* A section set in lines of its own (`SECTION_CARD_LINES`) sets no more cards to a
+     line than its longest line holds, so its lines share one column width: the page
+     cards stand two over three, at the width of three to a line. */
+  .site-cards[data-cards-most="3"] > .site-card {
+    --site-cards-line: min(var(--site-cards-medium), 3);
   }
 }
 /* A card is a clean summary with square corners. Most cards are a button that opens a

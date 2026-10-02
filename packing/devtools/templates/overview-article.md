@@ -68,7 +68,7 @@ The table starts at significance S4 and up, max age 180 days and superseded hidd
      there by forward.js (overview/forward.js). -->
 
 <!-- This section's fragment was #the-atlas until 2026-10-01. The empty anchor in its
-     heading keeps an old link landing here, as The Frontier Survey keeps its own. -->
+     heading keeps an old link landing here. -->
 
 ## The Atlas of Square Packings<a id="the-atlas"></a>
 
@@ -78,29 +78,16 @@ packing drawn large, with a link to its case record.
 
 {{ATLAS_GRID}}
 
-<!-- This section's fragment was #the-survey until 2026-10-01. The empty anchor in its
-     heading keeps an old link landing here, as Verification Ladders keeps its own. It
-     followed PDFs and Videos until the same day, when the owner set it directly after
-     the atlas. What the survey counts, how a bound comes to count as verified, the
-     audit of its sources and the seventeen-square history before this project are the
-     Frontier page's own prose since 2026-10-02; here the survey is said in one
-     paragraph and its cards lead there. -->
-
-## The Frontier Survey<a id="the-survey"></a>
-
-The frontier survey is the record the atlas is drawn from: for every case, the
-best-known packing and the strongest verified lower bound, each with its source and the
-evidence it rests on.
-The [Frontier](frontier.html) page lists every case, counts the cases that have moved
-since this project began, and says how the survey audits its sources and when a bound by
-others counts as verified.
-
-{{SURVEY_CARDS}}
+<!-- The Frontier Survey stood here, between the atlas and PDFs and Videos, until
+     2026-10-02 (the owner, think-ec5k): its account is the Frontier page's own prose,
+     and its card to that page is one of the page cards under The Squares Project. Its
+     two fragments, #the-frontier-survey and the older #the-survey, are sent to the
+     Frontier page by forward.js (overview/forward.js). -->
 
 <!-- The atlas as files and as a film: the two posters, each opening its PDF, and the
      film. The cards and their note stood under the grid, in The Atlas, until 2026-10-01,
-     and this section followed the atlas directly until the survey moved between them
-     the same day. -->
+     and The Frontier Survey stood between this section and the atlas from that day until
+     2026-10-02. -->
 
 ## PDFs and Videos
 

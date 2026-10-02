@@ -199,11 +199,11 @@ def _atlas_cards(page: str) -> list[tuple[str, str]]:
 def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
     page: str,
 ) -> None:
-    """The Atlas of Square Packings keeps the grid, its expander and the grid's own note,
-    and holds no card. The two posters and the film follow under an ordinary section
-    heading, PDFs and Videos, after The Frontier Survey, with its own id and its entry in
-    the page's contents, and their note, the star, the shorter film, the release and the
-    SVGs, goes with them."""
+    """The Atlas of Square Packings keeps the grid and its expander, and holds no card.
+    The two posters and the film follow under an ordinary section heading, PDFs and
+    Videos, directly after it since The Frontier Survey went on 2026-10-02, with its own
+    id and its entry in the page's contents, and their note, the star, the shorter film,
+    the release and the SVGs, goes with them."""
     heading = '<h2 id="pdfs-and-videos">PDFs and Videos</h2>'
     assert page.count(heading) == 1
     atlas = page.split('id="the-atlas-of-square-packings"', 1)[1].split("<h2", 1)[0]
@@ -214,11 +214,7 @@ def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
     # posters' note is the PDFs and Videos section's.
     assert atlas.count('class="site-atlas-note"') == 0
     assert 'class="site-wide site-atlas-note"' not in atlas
-    assert (
-        page.index('id="the-atlas-of-square-packings"')
-        < page.index('id="the-frontier-survey"')
-        < page.index(heading)
-    )
+    assert page.index('id="the-atlas-of-square-packings"') < page.index(heading)
     section = page.split(heading, 1)[1].split("<h2", 1)[0]
     assert section.lstrip().startswith('<div class="site-cards-frame')
     assert section.count('<a class="site-card site-card-link"') == len(
@@ -239,15 +235,16 @@ def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
     assert page.index('{"href": "#the-atlas-of-square-packings"') < page.index(contents)
 
 
-def test_the_atlas_section_is_named_for_its_packings_and_the_survey_follows_it(
+def test_the_atlas_section_is_named_for_its_packings_and_the_sections_run_in_order(
     page: str,
 ) -> None:
     """The homepage's atlas section is The Atlas of Square Packings, and it was The Atlas
-    until 2026-10-01: an empty anchor in the heading keeps `#the-atlas` landing on it, the
-    device The Frontier Survey uses. The sections run in the owner's order: the project,
-    the recent results, the atlas, the survey directly after it, then the posters and
-    film, the other projects and the documents; Verification Ladders stood between the
-    recent results and the atlas until 2026-10-02, and is the results page's since."""
+    until 2026-10-01: an empty anchor in the heading keeps `#the-atlas` landing on it.
+    The sections run in the owner's order: the problem, the project with its page cards,
+    the recent results, the atlas, then the posters and film, the other projects and the
+    documents. Verification Ladders stood between the recent results and the atlas until
+    2026-10-02, and is the results page's since; The Frontier Survey stood after the
+    atlas until the same day, and its card is a page card since."""
     heading = (
         '<h2 id="the-atlas-of-square-packings">The Atlas of Square Packings'
         '<a id="the-atlas"></a></h2>'
@@ -264,7 +261,6 @@ def test_the_atlas_section_is_named_for_its_packings_and_the_survey_follows_it(
         "the-squares-project",
         "recent-results",
         "the-atlas-of-square-packings",
-        "the-frontier-survey",
         "pdfs-and-videos",
         "other-square-packing-projects",
         "squares-project-documentation",
@@ -339,13 +335,14 @@ def test_each_page_card_is_a_plain_link_to_its_page(page: str) -> None:
     cards = _page_cards(page)
     pages = overview_sections.PAGES
     assert [href for href, _, _ in cards] == [href for href, *_ in pages]
-    # The Frontier page's card is The Frontier Survey's own since 2026-10-02
-    # (`test_the_survey_is_the_frontier_survey_and_its_cards_lead_to_its_page`).
+    # The Frontier page's card is last, up from The Frontier Survey's section since
+    # 2026-10-02 (`test_the_frontier_survey_is_the_frontier_pages_and_its_card_is_a_page_card`).
     assert [href for href, *_ in pages] == [
         "papers/n11-optimality-review.html",
         "papers/n11-lower-bounds-explainer.html",
         "tutorial.html",
         "workbench/",
+        "frontier.html",
     ]
     paper = overview_sections.PAPERS[0]
     assert pages[0][:3] == (overview_sections.OPTIMALITY_PAPER, paper.label, paper.title)
@@ -435,7 +432,7 @@ def test_every_other_direct_card_opens_in_a_new_tab(page: str) -> None:
     tab, on the site or off it, and never hands the new tab a way back to this one: a
     poster's PDF, the film, another project."""
     direct = re.findall(r'<a class="site-card[^"]*"[^>]*>', page)
-    same_tab = len(overview_sections.PAGES) + len(overview_sections.SURVEY_CARDS)
+    same_tab = len(overview_sections.PAGES)
     assert len(direct) == same_tab + len(overview_sections.OTHER_PROJECTS) + len(
         overview_sections.ATLAS_CARDS
     )
@@ -778,12 +775,54 @@ def test_the_document_is_kpress_viewport_with_its_contents_behaviours(page: str)
 
 def test_every_card_grid_sits_in_a_frame_it_can_measure(page: str) -> None:
     """A card is as wide as a column of the grid its frame fits, which it can know only by
-    asking the frame, so every card section is the only child of a `.site-cards-frame`."""
-    grids = re.findall(r'<div class="([^"]*)"><div class="(site-cards[^"]*)">', page)
+    asking the frame, so every card section is a `.site-cards-frame` holding its grid
+    and nothing else: one grid, or for a section set in lines of its own
+    (`SECTION_CARD_LINES`) one grid per line, each directly after the one before."""
+    grids = re.findall(r'(<div class="[^"]*">|</div>)<div class="site-cards[" ]', page)
     every = re.findall(r'<div class="site-cards[" ]', page)
     assert len(grids) == len(every), "a card grid outside a frame"
-    assert all(frame == "site-cards-frame site-wide" for frame, _ in grids)
+    opened = [before for before in grids if before != "</div>"]
+    assert all(before == '<div class="site-cards-frame site-wide">' for before in opened)
+    assert len(grids) - len(opened) == sum(
+        len(lines) - 1 for lines in overview_sections.SECTION_CARD_LINES.values()
+    )
     assert "site-cards-dimensions" not in page, "the rating ladders are no card grid"
+
+
+def test_the_page_cards_stand_two_over_three_at_one_column_width(
+    page: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The five page cards stand in two lines, the two papers over the tutorial, the
+    workbench and the Frontier page (the owner, 2026-10-02, `think-ec5k`): one wrapping
+    row would set four where the frame fits four and leave the fifth alone. A section set
+    in lines of its own (`SECTION_CARD_LINES`) is one frame holding a grid per line, a
+    gap apart, each marked with its longest line's count, which the stylesheet caps a
+    line of its size at, so the lines share one column width and each centres in it.
+    Lines that do not count the section's cards are refused."""
+    assert overview_sections.SECTION_CARD_LINES == {"pages": (2, 3)}
+    assert len(overview_sections.PAGES) == 5
+    frame = page.split('<div class="site-cards-frame site-wide">', 1)[1]
+    rows = re.findall(r'<div class="site-cards" data-cards-most="3">(.*?)</div>', frame)
+    assert [
+        re.findall(r'class="site-card site-card-link" href="([^"]+)"', row) for row in rows
+    ] == [
+        ["papers/n11-optimality-review.html", "papers/n11-lower-bounds-explainer.html"],
+        ["tutorial.html", "workbench/", "frontier.html"],
+    ]
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    gap = css[css.index(".site-cards + .site-cards {") :]
+    assert "margin-block-start: var(--site-card-gap);" in gap[: gap.index("}")]
+    screen = _screen_card_rules()
+    for section, lines in overview_sections.SECTION_CARD_LINES.items():
+        most, size = max(lines), overview_sections.SECTION_CARD_SIZES[section]
+        rule = screen[screen.index(f'.site-cards[data-cards-most="{most}"] > .site-card {{') :]
+        assert (
+            f"--site-cards-line: min(var(--site-cards-{size}), {most});"
+            in rule[: rule.index("}")]
+        ), section
+    monkeypatch.setitem(overview_sections.SECTION_CARD_LINES, "pages", (2, 2))
+    with pytest.raises(SystemExit, match="pages: 5 cards in lines of"):
+        overview_sections.page_cards()
 
 
 #: A container query naming how many cards of one size its frame fits to a line from a
@@ -882,7 +921,6 @@ def test_every_card_names_one_of_three_sizes(page: str) -> None:
     ), "a card with no size"
     assert [len(cards) for cards in sections.values()] == [
         len(overview_sections.PAGES),
-        len(overview_sections.SURVEY_CARDS),
         len(overview_sections.ATLAS_CARDS),
         len(overview_sections.OTHER_PROJECTS),
         len(overview_sections.DOCUMENTS),
@@ -892,7 +930,6 @@ def test_every_card_names_one_of_three_sizes(page: str) -> None:
         assert {size for size, _ in cards} == {declared}, name
     assert overview_sections.SECTION_CARD_SIZES == {
         "pages": "medium",
-        "survey": "medium",
         "atlas": "medium",
         "projects": "medium",
         "documents": "small",
@@ -1071,101 +1108,35 @@ def test_the_ladders_are_the_results_pages_and_the_overview_points_to_them(
         assert question in results, scale
 
 
-def test_the_survey_is_the_frontier_survey_and_its_old_fragment_lands_on_it(
+def test_the_frontier_survey_is_the_frontier_pages_and_its_card_is_a_page_card(
     page: str, rendered: Callable[[str], str]
 ) -> None:
-    """The homepage's section on the record of every case is headed The Frontier Survey,
-    and it was The Survey until 2026-10-01: an empty anchor in the heading keeps
-    `#the-survey` landing on it, the device Verification Ladders uses. One vocabulary
-    holds in what a reader sees: the page and its bar entry are Frontier, what the page
-    holds is the frontier survey, and "atlas" is the grid of packings, never the table of
-    cases, so no page calls the Frontier page an atlas."""
-    heading = '<h2 id="the-frontier-survey">The Frontier Survey<a id="the-survey"></a></h2>'
-    assert page.count(heading) == 1
-    assert 'href="#the-survey"' not in page
-    contents = '{"href": "#the-frontier-survey", "level": 1, "title": "The Frontier Survey"}'
-    assert contents in page
-    section = page.split(heading, 1)[1].split("<h2", 1)[0]
-    assert _rendered_text(section).startswith("The frontier survey is the record the atlas")
-    assert '<a href="frontier.html">Frontier</a> page lists every case' in section
+    """The homepage had a section headed The Frontier Survey, one paragraph and two cards
+    to the Frontier page, until the owner dropped it on 2026-10-02 (`think-ec5k`): its
+    account is the Frontier page's own prose, and its card to every case is the last of
+    the page cards under The Squares Project; the card to the recent cases went with it.
+    The section's two fragments, `#the-frontier-survey` and the older `#the-survey`, name
+    nothing on the homepage, so `forward.js` sends them to the Frontier page, whose title
+    carries the first. One vocabulary holds in what a reader sees: the page and its bar
+    entry are Frontier, what the page holds is the frontier survey, and "atlas" is the
+    grid of packings, never the table of cases, so no page calls the Frontier page an
+    atlas."""
+    for gone in ('id="the-frontier-survey"', 'id="the-survey"', 'href="#the-survey"'):
+        assert gone not in page, gone
+    assert '"href": "#the-frontier-survey"' not in page
+    assert "The frontier survey is the record the atlas" not in _seen(page)
+    assert "frontier.html?recent=true" not in page
     assert '<a data-page="frontier" href="frontier.html">Frontier</a>' in page
+    href, tag, body = _page_cards(page)[-1]
+    assert (href, tag) == ("frontier.html", ' data-go="page" data-card-size="medium"')
+    assert '<span class="site-card-label">Frontier survey</span>' in body
     frontier = rendered("frontier.html")
     assert "<title>The Frontier Survey · The Squares Project</title>" in frontier
-    assert re.search(r"<h1[^>]*>The Frontier Survey</h1>", frontier)
-    card = next(body for href, _, body in _survey_cards(page) if href == "frontier.html")
-    assert '<span class="site-card-label">Frontier survey</span>' in card
+    assert re.search(r'<h1 id="the-frontier-survey"[^>]*>The Frontier Survey</h1>', frontier)
     for name in ("index.html", "frontier.html", "cases.html", render_overview.RESULTS_PAGE):
         # What a reader sees or hears: the page without its inlined styles and programs.
         text = re.sub(r"<(script|style)\b.*?</\1>", "", rendered(name), flags=re.DOTALL)
         assert "frontier atlas" not in text.lower(), name
-
-
-def _survey_cards(page: str) -> list[tuple[str, str, str]]:
-    """The Frontier Survey section's cards: each card's address, the rest of its opening
-    tag, and its body."""
-    section = page.split('id="the-frontier-survey"', 1)[1].split("<h2", 1)[0]
-    frame = section.split('<div class="site-cards-frame', 1)[1].split("</div></div>", 1)[0]
-    return re.findall(
-        r'<a class="site-card site-card-link" href="([^"]+)"([^>]*)>(.*?)</a>', frame, re.DOTALL
-    )
-
-
-def test_the_survey_is_one_paragraph_and_its_cards_lead_to_the_frontier_page(
-    page: str, rendered: Callable[[str], str]
-) -> None:
-    """Since 2026-10-02 the homepage says the survey in one paragraph, what it records
-    and what the Frontier page adds, and leads there with two direct cards: every case,
-    and the page narrowed to the recent cases by the query its table script reads
-    (`recent=true`). Each is a page card, in the same tab, at the section's size. What
-    the section used to carry, the counts, how a certificate counts, the audit of its
-    sources and the seventeen-square history, is the Frontier page's own prose
-    (`test_the_frontier_page_opens_with_the_surveys_account`), so the section states
-    none of it: no count, no date, no author of a seventeen-square bound. Nor does it
-    say that the reported and the verified bounds are kept apart, which is the Frontier
-    page's Reported and verified."""
-    section = page.split('id="the-frontier-survey"', 1)[1].split("<h2", 1)[0]
-    prose = section.split('<div class="site-cards-frame', 1)[0]
-    paragraphs = re.findall(r"<p>(.*?)</p>", prose, re.DOTALL)
-    assert len(paragraphs) == 1
-    text = _rendered_text(paragraphs[0])
-    assert text.startswith("The frontier survey is the record the atlas is drawn from")
-    assert text.endswith("when a bound by others counts as verified.")
-    for gone in (
-        "22 August",
-        "hundred",
-        "s(7)",
-        "Brandwijk",
-        "T-015",
-        "archive",
-        "kept separate",
-        "apart from",
-        "replayed",
-    ):
-        assert gone not in _rendered_text(section), gone
-    cards = _survey_cards(page)
-    assert [href for href, _, _ in cards] == [
-        href for href, *_ in overview_sections.SURVEY_CARDS
-    ]
-    assert [href for href, *_ in overview_sections.SURVEY_CARDS] == [
-        "frontier.html",
-        "frontier.html?recent=true",
-    ]
-    size = overview_sections.SECTION_CARD_SIZES["survey"]
-    for (href, tag, body), (_, label, title, note) in zip(
-        cards, overview_sections.SURVEY_CARDS, strict=True
-    ):
-        assert overview_sections.is_site_page(href), href
-        assert tag == f' data-go="page" data-card-size="{size}"', href
-        assert 'target="_blank"' not in tag, href
-        assert f'<span class="site-card-label">{label}</span>' in body
-        assert _rendered_text(body.split('<span class="site-card-note">', 1)[1]) == note
-        assert overview_sections.reading_text(title.replace("n = 1", "n=1")) in (
-            overview_sections.reading_text(body)
-        )
-    # The section's prose names the page once and the cards hold no other link.
-    assert prose.count('href="frontier.html"') == 1
-    assert "frontier.html?recent=true" in rendered("index.html")
-    assert "section-tabs" not in section
 
 
 def test_the_frontier_page_opens_with_the_surveys_account(

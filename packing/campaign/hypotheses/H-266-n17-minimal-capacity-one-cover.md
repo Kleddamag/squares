@@ -82,6 +82,11 @@ tabbed design fails on squares 13 and 11. It also built
 (least margin $0.002111$) and keeps 43,593 orbits.
 It awaits review and a recorded run.
 
+*Accepted 2026-10-02 in Session 168.*
+[exp-247](../series/series-000-smoke-and-calibration/experiments/exp-247-h266-n17-unique-state-cover.md)
+records the unique-state design passing every item after an
+[independent review](../../../docs/project/reviews/review-2026-10-02-n17-unique-state-cover.md).
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

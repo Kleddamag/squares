@@ -1420,7 +1420,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: in_progress
+    state: complete
     priority: 0
     question: Does a D4-symmetric capacity-one cover of at most 25 cells hold the n17 endpoint family in one state?
     hypotheses:
@@ -1443,13 +1443,14 @@ agenda:
       Started in Session 167 as lanes G (checker) and G-proof (wall lemma). exp-246 certifies the tabbed 24-cell cover (43,593
       orbits) and the review proves the wall lemma; unresolved because the family also realises a second
       state through side cell S1 and square 6's range is declared. Next, a unique-state check and a derived
-      square-6 range. Lane G2 then built the unique-state design (0dabde12), unreviewed.
+      square-6 range. Lane G2 then built the unique-state design (0dabde12);
+      Session 168 accepted H-266 on it in exp-247 after an independent review.
   - id: BC-416
     purpose: research
     owner_focus: correctness
     instances:
     - 17
-    state: blocked
+    state: ready
     priority: 1
     question: Do certified isolated sub-patterns of arity at most seven leave at most 1e4 orbits on the H-266 cover?
     hypotheses:
@@ -1460,7 +1461,6 @@ agenda:
     bead: think-1s3i
     depends_on:
     - BC-415
-    blocked_on: H-266 acceptance.
     next_evidence: packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md
     workflows:
     - pipeline-improvement

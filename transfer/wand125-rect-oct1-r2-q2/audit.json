@@ -7,6 +7,50 @@
   "cases": [
     {
       "status": "PASS",
+      "n": 19,
+      "L": "1927/400",
+      "B": "9977/10000",
+      "mass_exact": "1899/100",
+      "mass_below_n_exact": "1/100",
+      "net_safety_exact": "399908091/400000000",
+      "smoothing_safety_exact": "399968091/400000000",
+      "net_endpoint_polynomial_exact": "89/40000",
+      "positive_basis_rectangles": 309,
+      "expanded_rectangles": 2472,
+      "axis_event_count": 1843,
+      "axis_vertex_count": 3396649,
+      "certificate": "rect_n19_L48175",
+      "input_sha256": "f0ebada7e747286fbdfdba421ddc77ea5383352388c62e0fbcd87baa47f9209c",
+      "input_bytes": 597020,
+      "upstream_nodes": 32216311,
+      "upstream_wall_seconds": "3934038885831833/1000000000000",
+      "replay": {
+        "status": "PASS",
+        "command": [
+          "/home/user/squares/packing/.venv/bin/python",
+          "run_verify.py",
+          "--workers",
+          "1"
+        ],
+        "working_directory": "temporary copy of retained certificate directory",
+        "elapsed_seconds_including_compile": 19417.013069873003,
+        "timeout_seconds": 86400,
+        "summary": {
+          "status": "VERIFIED",
+          "angle_cases": 201,
+          "target_lower_bound_exact": "10001/10000",
+          "nodes": 32216311,
+          "leaves": 17806580,
+          "minimum_printed_leaf_lower_bound": "5000500001946243/5000000000000000",
+          "wall_seconds": "19415823726654053/1000000000000",
+          "input_sha256": "f0ebada7e747286fbdfdba421ddc77ea5383352388c62e0fbcd87baa47f9209c",
+          "verifier_source_sha256": "a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602",
+          "method": "Outward-rounded binary64 intervals; certified inscribed polygon area; derivative bounds over center boxes; rational angular net."
+        }
+      }
+    },
+    {
+      "status": "PASS",
       "n": 44,
       "L": "2777/400",
       "B": "9977/10000",
@@ -67,5 +111,6 @@
     }
   },
   "platform": "Linux-6.18.44-fc-v51-x86_64-with-glibc2.39",
-  "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+  "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "status": "PASS"
 }

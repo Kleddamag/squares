@@ -546,6 +546,12 @@ def test_ci_jobs_fetch_provenance_history_and_key_the_uv_cache_from_the_lock() -
         "/packing/resources/web/franciscouzo-square-packing-2026-09-27/",
         "/packing/resources/web/de-winter-square-packing-211-2026-09-16/",
         "/packing/resources/papers/kingbird-square-29-provenance.svg",
+        # X-049's two censuses compare against JSON retained beside the exploration, and
+        # the campaign history is otherwise outside the slice; without this directory the
+        # family census reports its output missing, as it did on jlevy/squares#305.
+        "/packing/campaign/explorations/",
+        "!/packing/campaign/explorations/*",
+        "/packing/campaign/explorations/X049-families-data/",
         "/packages/workbench/",
         "/vendor/kpress/",
     } <= sparse

@@ -43,7 +43,7 @@ the confirmation depends on and the reproducibility defects found in the source.
 [Square Packing](https://jlevy.github.io/squares/).** It carries the
 [recent results](https://jlevy.github.io/squares/#recent-results) by this project and by
 others with their credit, the
-[verification ratings](https://jlevy.github.io/squares/#verification-ladders),
+[verification ratings](https://jlevy.github.io/squares/all-results.html#verification-ladders),
 [the atlas](https://jlevy.github.io/squares/#the-atlas-of-square-packings) of known-best
 packings and its films, the table of
 [every result](https://jlevy.github.io/squares/all-results.html), and

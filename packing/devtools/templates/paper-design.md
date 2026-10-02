@@ -644,22 +644,22 @@ it.
   class for any block a reader does not see and a screen reader should).
   The film after the hidden title is the page’s first block, so on screen it brings no
   margin above and starts `--site-page-top` under the header.
-  A page that has a title (the Frontier page, the case records) sets it in the hero,
-  centred, with a subtitle under it.
-  The Frontier page’s title is “The Frontier Survey” and its subtitle “A survey of
-  everything known for cases $n = 1, \ldots, 324$”, the results page’s “A survey of all
-  reviewed results” and the Papers page’s “Papers and interactive explanations for
-  specific results”. The subtitle is the sans face at 1.1 times the sans base
+  A page that has a title (the Frontier page, the Results page, the Papers page, the
+  case records) sets it in the hero, centred.
+  The Frontier page’s title is “The Frontier Survey”, the Results page’s “Every Result”
+  and the Papers page’s “Papers”; each stood over a subtitle the owner dictated on 1
+  October (“A survey of everything known for cases $n = 1, \ldots, 324$”, “A survey of
+  all reviewed results”, “Papers and interactive explanations for specific results”) and
+  dropped on 2 October as adding little (`think-wz9d`); the page descriptions in each
+  `<head>` are their own constants and stay.
+  The case records’ page keeps its subtitle, “Every tracked case, n = 1 to 324, one
+  record each”, the one the owner did not name.
+  A subtitle, where a page has one, is the sans face at 1.1 times the sans base
   (`--site-subtitle-scale`, about 21px), in the page’s own text colour, never gray, with
-  the same space above it and below it (`--site-subtitle-space`, 1.5rem). A formula in a
-  subtitle is math, not `<var>` and digits: the subtitle is an HTML block, where KPress
-  leaves `$…$` literal, so the renderer fills it with KPress’s own math markup
-  (`render_frontier_page.math_html`), and it is set sans as the subtitle’s text is.
-  The atlas’s range is read from the case records, first and last, never typed.
-  A title with no subtitle, a document’s own `h1` among them, stands that space above
-  its first paragraph.
-  The page title style (every hero `h1`, and `.site-title`) is the sans face in upright
-  caps (not KPress’s italic `h2`) at 1.5 times the sans base, centred.
+  the same space above it and below it (`--site-subtitle-space`, 1.5rem). A title with
+  no subtitle, a document’s own `h1` among them, stands that space above its first
+  paragraph. The page title style (every hero `h1`, and `.site-title`) is the sans face
+  in upright caps (not KPress’s italic `h2`) at 1.5 times the sans base, centred.
   The homepage’s first section, The Square Packing Problem, takes it through
   `.site-title`, so it reads as the Frontier page’s title does.
   That section opens with README’s two opening paragraphs: the block between README’s
@@ -703,7 +703,8 @@ it.
   The generated `STATUS.md`, served as `status.html`, is “the status table”.
   The homepage’s section was The Survey until 2026-10-01; an empty anchor in its heading
   keeps the old fragment, `#the-survey`, landing on it, as Verification Ladders keeps
-  `#verification-at-a-glance`.
+  `#verification-at-a-glance` on the Results page, where the section is since
+  2026-10-02.
 
 - **Report layout.** Every report page (the tutorial, the synopsis and the other
   documents) has one layout.
@@ -976,17 +977,23 @@ it.
   Under `prefers-reduced-motion: reduce` the duration is 0ms, so colours change at once
   and no arrow moves.
 
-- **Rating ladders.** Verification Ladders is one diagram, `.site-ladders`, which is
-  neither a set of cards nor the shared data table: a column for each scored dimension
-  of the rubric, in the order Significance, Verification, Confirmation, and a row for
-  each level, the highest at the top, so the rungs of the three ladders line up across a
-  row. A column is headed by the dimension’s name, which links to its section of
+- **Rating ladders.** Verification Ladders is a section of the Results page, under its
+  table, since 2026-10-02 (the owner, `think-hqb3`); it was the homepage’s section
+  between Recent Results and the atlas before that (**Results page**, below, for its
+  place and its lead).
+  Its diagram, `.site-ladders`, is one diagram, which is neither a set of cards nor the
+  shared data table: a column for each scored dimension of the rubric, in the order
+  Significance, Verification, Confirmation, and a row for each level, the highest at the
+  top, so the rungs of the three ladders line up across a row.
+  A column is headed by the dimension’s name, which links to its section of
   `epistemics.md`, and the question it answers, with no caps label.
   A cell holds the rung’s chip and a description of exactly two lines, and nothing else:
   the diagram says what each rung means, and carries no tally of the results at it.
   A ladder with no rung at a level leaves its cell empty: Significance has no level 0.
   The section was Verification at a Glance until 2026-10-01; an empty anchor in its
-  heading keeps the old fragment, `#verification-at-a-glance`, landing on it.
+  heading keeps the old fragment, `#verification-at-a-glance`, landing on it, and the
+  homepage’s `overview/forward.js` sends both that fragment and `#verification-ladders`
+  to the Results page, fragment kept.
   - **Rules.** One rule, in the text’s colour, stands under the column heads.
     No rule stands between the rows: 0.8rem between one rung’s description and the next
     rung (`--site-ladders-row-space`, 0.4rem, either side of a row) keeps them apart and
@@ -1067,16 +1074,18 @@ it.
   those are the cases whose best packing is the $k \times k$ grid itself, and their
   tiles are numbered in the text’s colour at the medium weight.
   Ten rows show the first hundred cases, the last 19 tiles wide; eighteen show all 324,
-  the last 35 wide. A one-line key under the triangle says what the rows are
-  (`ATLAS_TRIANGLE_KEY`). The view is in the address as `?atlas=triangle` (the grid has
-  no parameter), written with `history.replaceState` so every other parameter and the
-  fragment keep their places, and read before any tile is placed, so a linked triangle
-  never shows the grid first.
-  **Wrapping, by one rule at every width.** A line holds as many tiles as the block’s
-  width allows at the least tile width, `--site-atlas-tile-min` (1.625rem, 26px, which
-  keeps a tile over a pointer target’s 24px with its three-figure number legible under
-  it; 2.5rem, 40px, under 40rem or with a coarse pointer, for a finger), and never more
-  than the longest row holds.
+  the last 35 wide. A one-line key under the triangle said what the rows are until
+  2026-10-02, when the owner dropped it as obvious (`think-l38m`), with the line under
+  the expander that said every case is in the frontier survey and has a case record:
+  each tile opens its case record, and the Frontier page is a page card.
+  The view is in the address as `?atlas=triangle` (the grid has no parameter), written
+  with `history.replaceState` so every other parameter and the fragment keep their
+  places, and read before any tile is placed, so a linked triangle never shows the grid
+  first. **Wrapping, by one rule at every width.** A line holds as many tiles as the
+  block’s width allows at the least tile width, `--site-atlas-tile-min` (1.625rem, 26px,
+  which keeps a tile over a pointer target’s 24px with its three-figure number legible
+  under it; 2.5rem, 40px, under 40rem or with a coarse pointer, for a finger), and never
+  more than the longest row holds.
   A row wider than a line wraps in reading order, as text does: its first line is full,
   from the row’s first case at the left edge; further full lines follow, each from the
   left edge; and what is left over goes on its last line, right-aligned, so the row
@@ -1146,7 +1155,8 @@ it.
   It carries `aria-expanded` and `aria-controls` (the box of tiles, `ATLAS_PANEL`), and
   its name for assistive technology says what it does and how many cases that is, “Show
   more: all 324 cases” and “Show less: the first 100”, while the visible label stays
-  short; the total is also in the sentence under the grid.
+  short. The expander’s row ends the block: the sentence that followed it is gone since
+  2026-10-02 (`think-l38m`), and the next section’s heading brings its own space.
   It is the action under a table or grid (above), set `--site-atlas-toggle-space` below
   the grid. Cases 101 to 324 ship in a second `<template>` and are placed only the first
   time the grid expands, into one box the grid lays out as its own cells
@@ -1226,18 +1236,19 @@ it.
 
 - **Atlas cards.** The atlas’s posters and film have a section of their own, **PDFs and
   Videos**, an ordinary `h2`; **The Atlas of Square Packings** keeps the grid, its
-  expander and the grid’s own note, and holds no card.
-  The homepage’s sections run The Squares Project, Recent Results, Verification Ladders,
-  The Atlas of Square Packings, The Frontier Survey directly after it, PDFs and Videos,
-  Other Square Packing Projects and Squares Project Documentation, the owner’s order of
-  1 October; the atlas section was The Atlas until that day, and its heading keeps an
-  empty anchor so `#the-atlas` still lands on it, as Verification Ladders and The
-  Frontier Survey keep theirs (`tests/test_overview.py` holds the order and the anchor).
-  They are three direct hero cards side by side, one card section (`atlas_cards`): the n
-  = 1 to 100 poster, headed by its landscape card image, opens its PDF; the n = 1 to 324
-  poster, headed by the top of the poster itself, opens its PDF; and the film, headed by
-  a frame of the n = 1 to 324 film at n = 290 (`ascent-n1-324-poster.png`), opens
-  `visualize.html`, the film alone at full size.
+  expander, and holds no card and, since 2026-10-02, no note under the expander.
+  The homepage’s sections run The Squares Project, Recent Results, The Atlas of Square
+  Packings, The Frontier Survey directly after it, PDFs and Videos, Other Square Packing
+  Projects and Squares Project Documentation, the owner’s order of 1 October less
+  Verification Ladders, which stood between Recent Results and the atlas until
+  2026-10-02 and is the Results page’s since; the atlas section was The Atlas until 1
+  October, and its heading keeps an empty anchor so `#the-atlas` still lands on it, as
+  The Frontier Survey keeps its own (`tests/test_overview.py` holds the order and the
+  anchor). They are three direct hero cards side by side, one card section
+  (`atlas_cards`): the n = 1 to 100 poster, headed by its landscape card image, opens
+  its PDF; the n = 1 to 324 poster, headed by the top of the poster itself, opens its
+  PDF; and the film, headed by a frame of the n = 1 to 324 film at n = 290
+  (`ascent-n1-324-poster.png`), opens `visualize.html`, the film alone at full size.
   A card’s caps label says what it is and the form it opens in, the heading’s two words:
   “Poster · PDF” twice and “Film · Video”.
   The note under the cards, the star, the shorter film, the release and the SVGs, is the
@@ -1633,14 +1644,15 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
 
 - **Overview sections.** The homepage is an overview: each of its sections is a short
   lead, one compact paragraph at most, the section’s key structural element where it has
-  one (the recent table, the ladders, the atlas grid), and one way onward to the page
-  that holds the full account.
-  A fact has one home.
+  one (the recent table, the atlas grid), and one way onward to the page that holds the
+  full account. A fact has one home.
   What a page defines is stated on that page and nowhere else, and the overview names it
-  and links it: the Results page’s ratings, kinds, statuses and dating rule, with how
-  many results stand at each status; the Frontier page’s counts, its audit of its
-  sources, the seventeen-square history before this project, and when a bound by others
-  counts as verified, which is the rule its verified columns apply.
+  and links it: the Results page’s ratings, with the rating ladders that define every
+  rung (**Rating ladders**, above, the homepage’s own section until 2026-10-02), its
+  kinds, statuses and dating rule, with how many results stand at each status; the
+  Frontier page’s counts, its audit of its sources, the seventeen-square history before
+  this project, and when a bound by others counts as verified, which is the rule its
+  verified columns apply.
   Each table keeps its own star legend, since a star without one reads as decoration,
   and one function writes it (`star_legend`); the atlas note links the legend above the
   recent table in place of a third.
@@ -1660,12 +1672,16 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   `tests/test_overview.py` holds each section’s prose to one paragraph of its own where
   this applies, the cards to their pages, and the three pages to saying each thing once.
 
-- **Recent results.** The overview’s Recent Results section is one paragraph of 60 to 90
-  words before its table (the owner, 2026-10-02): the headline of recent progress,
+- **Recent results.** The overview’s Recent Results section is one paragraph of 60 to
+  125 words before its table (the owner, 2026-10-02): the headline of recent progress,
   eleven squares settled by T-060, seventeen squares bracketed by T-043 and T-065, the
   new exact values at $n = 21$, $32$ and $45$, each id linked to its row and held to the
-  register by `check_results.READER_TIER`; then the star legend (`star_legend`) and one
-  sentence on where the filters start.
+  register by `check_results.READER_TIER`; then the star legend (`star_legend`); then
+  one sentence, in the legend’s manner, on what the three chips on a row indicate, in
+  the ladder heads’ words (how significant the result is, how it was originally
+  verified, how it has been confirmed), linking the Verification Ladders on the Results
+  page, which joined the paragraph when the ladders left the homepage (`think-hqb3`) and
+  raised its ceiling from 90 words; and one sentence on where the filters start.
   Then one table, not cards or a list: every result, by the date the table shows, newest
   first, one row each (`recent_table`). It is the results page’s table, with its
   columns, its rows, its sorting and its card-per-row form on a phone (**Tables**,
@@ -1690,12 +1706,21 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   (`results.html` was `RESULTS.md` rendered as a reader document, so the table’s page
   took the other name; since 2026-10-01 `results.html` is a forwarder to this page.)
   The page has the Frontier page’s shape: a hero title, “Every Result”, whose id is
-  `every-result`, a subtitle, the prose that defines the ratings, kinds, statuses and
-  dating rule, with how many results stand at each status where the statuses are defined
-  (`status_counts`, each count the link to those rows) and a pointer to the policy for
-  results by others, and the table under its filters (**Result filters**, above), which
-  start with significance at All, no maximum age and Hide superseded clear, so every
-  result shows, newest first, in one flat list.
+  `every-result`, a subtitle, the prose that names the three ratings and points at the
+  ladders, defines the kinds, statuses and dating rule, with how many results stand at
+  each status where the statuses are defined (`status_counts`, each count the link to
+  those rows), and the table under its filters (**Result filters**, above), which start
+  with significance at All, no maximum age and Hide superseded clear, so every result
+  shows, newest first, in one flat list.
+  Under the table stands **Verification Ladders** (`#verification-ladders`, with the
+  empty anchor `#verification-at-a-glance` the section carried on the homepage), since
+  2026-10-02 (the owner, `think-hqb3`): a lead that defines the three ratings once, S, V
+  and C in the ladder heads’ words, with the policy for results by others; the diagram
+  (**Rating ladders**, above); and then what the diagram does not show, the three
+  assurance labels on evidence, where finite precision falls short, and the audit of
+  published work. It stands under the table rather than above it so a reader meets the
+  table without a long preamble; the opening paragraph points down to it, and the
+  homepage’s Recent Results links it.
   Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
   recent table and each case record’s results link.
   A row opens its result’s popover, the full claim and its novelty label, with the id in
@@ -1703,11 +1728,11 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   The overview keeps the newest results and ends that table with a “See all results”
   line and the right arrow, in the sans face at the note size.
   The table used to be the overview’s Every Result section, and its old addresses still
-  arrive: the overview’s `overview/forward.js` sends `#every-result` and any `#t-nnn` to
-  the results page with the fragment kept, and every other fragment the overview lacks
-  to the explainer, as before.
-  `tests/node/overview_forward/` runs the forwarder, and `tests/test_overview.py` holds
-  every row id to the form it recognises.
+  arrive: the overview’s `overview/forward.js` sends `#every-result`, any `#t-nnn`,
+  `#verification-ladders` and `#verification-at-a-glance` to the results page with the
+  fragment kept, and every other fragment the overview lacks to the explainer, as
+  before. `tests/node/overview_forward/` runs the forwarder, and `tests/test_overview.py`
+  holds every row id to the form it recognises.
 
 - **Document cards and moved pages.** The overview’s documentation section has one card
   for each repository document the site renders, in the order of

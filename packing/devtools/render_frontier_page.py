@@ -650,12 +650,10 @@ def frontier_markdown(fill: Callable[..., str]) -> str:
     count over every case is not written: the prose counts the starred cases among the
     first hundred, and the bar's "recent only" counts them all."""
     cases = frontier_cases()
-    first, last = min(case["n"] for case in cases), max(case["n"] for case in cases)
     values = {
         "COUNT": str(len(cases)),
-        # The subtitle's range, as math: the subtitle is an HTML block, where kpress
-        # leaves `$…$` literal, and it is sans text, so the formula is set sans.
-        "CASE_RANGE": math_html(rf"n = {first}, \ldots, {last}"),
+        # The page carried a subtitle naming its range, `n = 1, …, 324`, set as sans
+        # math (`math_html`), until 2026-10-02 (the owner, think-wz9d).
         "PROVED": str(sum(case["status"] == "proved" for case in cases)),
         "OPEN": str(sum(case["status"] == "open" for case in cases)),
         "RECENT_SINCE": since_prose(),

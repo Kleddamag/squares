@@ -1,10 +1,10 @@
 # Nagamochi’s Lemma 1 Is False: What T-007 Rests On Now
 
 **Date:** October 2, 2026. **Lane:** A of bead `think-589i`, the W2 factual review of
-`T-007`. Adversarial review by an AI reviewer at maximum reasoning effort (Claude Fable 5.1).
-This review reads the sources, recomputes the counterexample exactly with a retained
-tool, audits the published replacement bound, and recommends register statuses.
-It edits no register file.
+`T-007`. Adversarial review by an AI reviewer at extra-high (`xhigh`) reasoning effort
+(Claude Fable 5.1). This review reads the sources, recomputes the counterexample exactly
+with a retained tool, audits the published replacement bound, and recommends register
+statuses. It edits no register file.
 
 Karakuş’s counterexample is correct.
 Lemma 1 of [Nagamochi 2005], the per-square scoring assertion from which the paper’s

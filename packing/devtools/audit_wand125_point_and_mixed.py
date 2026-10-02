@@ -512,9 +512,11 @@ def n21_collect(out: Path, receipts: Path, m1_linkage: Path | None) -> dict[str,
 
     The comparison is written as ``comparison.json``; logs over the line threshold are
     stored as deterministic gzip. Proof objects and ``linkage.json`` stay in ``out``;
-    the comparison records their digests.
+    the comparison records their digests. ``receipts`` may be relative to the working
+    directory, as the packet README writes it; the table rows are relative to the packet.
     """
     result = n21_compare(out, m1_linkage=m1_linkage)
+    receipts = receipts.resolve()
     receipts.mkdir(parents=True, exist_ok=True)
     names = [*N21_RECEIPT_FILES, *(p.name for p in sorted(out.glob("*-exit.json")))]
     names += [p.name for p in sorted(out.glob("*.log"))]

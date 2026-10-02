@@ -239,7 +239,7 @@ with its exit status, wall and child CPU time.
 | `s(21)`, data | `python inspect_certificate.py` | 0.3 s | 0.3 s | `EXACT_CERTIFICATE_DATA_CHECKED`, output byte-identical to the shipped `certificate-data-check.json` |
 | `s(21)`, bundle bytes | `python unpack_bundle.py` | 51 s | 47 s | `BUNDLE_BYTES_VERIFIED`: all 14 parts, the combined archive and 75,130 files, manifest `bb2883c5…` |
 | `s(21)`, Lean overlay | every step of `lean/build_lean.sh` before `lake` | 0.3 s | 0.1 s | Daniel’s `Sqpack.lean` has the pinned SHA-256; `gen_n21pts_data.py --check` regenerates `N21PtsData.lean` byte for byte; no `sorry`, `native_decide` or `axiom` in the overlay. `lake build` not run: no Lean toolchain here |
-| `s(21)`, the source’s full replay | `python verify_portable.py --workers 2 --out OUT` | running | — | Root and sieve stages passed, their proof files byte-identical to the source’s M1 run; frontier pending, see below |
+| `s(21)`, the source’s full replay | `python verify_portable.py --workers 2 --out OUT` | 13,773 s | 20,765 s | `FRESH_ALL_DOMAIN_REPLAY_VERIFIED`, every proof file byte-identical to the source’s M1 run; see [Complete Replays](#complete-replays-here-29-september-2026) |
 | `s(50)`, bundle bytes | `n50-bundle-check` on a pristine unpacking | 0.5 s | 0.4 s | All 621 entries of `files-sha256.json` match; nothing unlisted |
 | `s(50)`, inputs | `n50-inputs` on the same unpacking | 26 s | 18 s | Each of the 200 oblique inputs hashes to the digest its `result.json` records, and every interval in it encloses the exact datum recomputed here |
 | `s(50)`, sampled replay | `n50-replay BUNDLE --index 0 --index 1 --index 150 --index 200 --workers 2` | 852 s | 814 s, summed per angle | All four equal the shipped records; see below |
@@ -275,12 +275,10 @@ then exact assembly.
   repairs the assembler requires.
   All 8,758 of its per-parent proof files are byte-identical to the M1 run’s; the same
   four stage files differ.
-- The frontier stage was still running when this packet was written.
-  After 21 minutes each shard had replayed about 300 of its 15,839 parents, at about
-  1.65 CPU-seconds a parent against the M1’s whole-shard average of 0.50 (7,873 s and
-  7,968 s per shard), with each of this lane’s two processes getting about 40% of a core
-  on the shared host. At that pace a shard needs seven CPU-hours or more, about nineteen
-  hours of wall at that share of the machine.
+- The frontier stage was still running when this packet was first written, and ended
+  the same night: both shards exited zero, after 12,626 s and 12,575 s (7,873 s and
+  7,968 s on the M1), and the run ended `FRESH_ALL_DOMAIN_REPLAY_VERIFIED`.
+  [Complete Replays](#complete-replays-here-29-september-2026) gives what it printed.
 
 The run must end with `FRESH_ALL_DOMAIN_REPLAY_VERIFIED`. Then, from `packing/`,
 
@@ -390,6 +388,34 @@ records:
 
 None of it decides coverage.
 
+## Complete Replays Here, 29 September 2026
+
+The complete `s(21)` run ended on 29 September in the session that ran the checks of
+[Replay Here](#replay-here), on the host [`receipts/host.json`](receipts/host.json)
+records. Its records came into this packet on 2 October from the transfer branch that
+held them, `claude/replay-wand125-n21-point`, and that day the compare step ran on the
+retained records under the project interpreter, with its receipt written by
+`devtools.replay_receipt`.
+
+- **`s(21)`.** `verify_portable.py --workers 2 --out OUT` ran from 00:24:41Z to
+  04:14:14Z, 13,773 s of wall and 20,765 CPU-s against the M1’s 8,577 s
+  ([`n21_verify_portable.log`](receipts/n21/n21_verify_portable.log)). Every stage
+  exited zero, and it printed `FRESH_ALL_DOMAIN_REPLAY_VERIFIED`: 5,000 roots, 8,758
+  sieve and 31,678 frontier parents, 7,052 excluded
+  ([`result.json`](receipts/n21/result.json)). `n21-compare --collect`, against the
+  pinned M1 linkage fetched at `39d8ecc` (SHA-256 `0d93072b…`), printed
+  `MATCHES_SOURCE_M1_RECORD` ([`comparison.log`](receipts/n21/comparison.log)): every
+  certified quantity agrees with `m1-full-replay.json`, and 45,436 of the 45,446 output
+  files are byte-identical to the M1 run’s.
+  The other ten are stage bookkeeping that carries absolute paths or timings:
+  `inputs.json`, `portable-reads.json`, `progress.json` and `result.json` of the root
+  and sieve stages, and each frontier shard’s `result.json`.
+  The run’s own `linkage.json` (22,317,976 bytes, SHA-256 `646c4369…`) is not retained,
+  as the tool intends; [`comparison.json`](receipts/n21/comparison.json) records its
+  digest.
+- **Controls.** The `s(21)` replay has none: no tool here runs `verify_portable.py` on a
+  mutated certificate.
+
 ## Receipts
 
 - [`receipts/host.json`](receipts/host.json): CPU, cores and toolchain versions.
@@ -400,10 +426,12 @@ None of it decides coverage.
   `cargo_build.log`, and `comparison.json`, which `n45-compare receipts/n45` rebuilds
   from those logs.
 - [`receipts/n21/`](receipts/n21/): `inspect.log`, `unpack.log`, the Lean overlay steps
-  (`lean_overlay_prefix.sh`, with this lane’s scratch paths, and its log), the running
-  replay’s `run-inputs.json`, the root and sieve stages’ logs and exit records, and
-  `stage_comparison.json`, their outputs against the M1 run’s; `n21-compare --collect`
-  adds the complete run’s records when it ends.
+  (`lean_overlay_prefix.sh`, with this lane’s scratch paths, and its log),
+  `stage_comparison.json` (the root and sieve outputs against the M1 run’s, made while
+  the frontier ran), and the complete run’s records as `n21-compare --collect` copied
+  them: `n21_verify_portable.log`, `run-inputs.json`, `result.json`, each stage’s log
+  and exit record (the two frontier logs as `.gz`), and `comparison.json` with its
+  receipt `comparison.log`.
 - [`receipts/n50/`](receipts/n50/): `bundle_check.json`, `inputs.json` and
   `sample.json`, each with the log of the run that wrote it.
 
@@ -430,16 +458,18 @@ keeps its fast part true.
 - **`n = 50`.** Only four of 201 directions were replayed; the complete replay is
   pending above. The soundness of the threshold and centre-domain changes is the subject
   of the 2026-09-28 review, not of this packet.
+- **Controls.** The `s(21)` replay has none.
 - **Priority.** For `s(21) = 5` and `s(45) = 7` Evan Daniel’s mixed point-and-segment
   proofs came first, and the source claims no priority; these are second, point-only
   routes.
 
 ## Compressed Files
 
-Twelve data files of more than 1,000 lines are stored as deterministic gzip made by
+Fourteen data files of more than 1,000 lines are stored as deterministic gzip made by
 `gzip -9n`: eleven upstream files — the two `n = 21` point files with Daniel’s support
 file, the `n = 45` cover, and the `n = 50` candidates, certificates and audit record —
-and one receipt, the `n = 45` per-root census.
+and three receipts, the two `n = 21` frontier-shard logs and the `n = 45` per-root
+census.
 Each has no file name or timestamp in its header, following the
 [R052 packet](../n17-guzhou-r052-2026-09-25/README.md).
 The table gives the Git blob and SHA-256 of the decompressed bytes, which for an
@@ -463,6 +493,8 @@ present, the repository’s readers require them to agree.
 
 | Stored file | Origin | Git blob | SHA-256, decompressed |
 | --- | --- | --- | --- |
+| `receipts/n21/frontier-s0.log.gz` | receipt | `fe34f614c5824ff54dafc0b91e61bd8cd5486e9c` | `34950ceae8c6ed75d70ced698106bcbe7f2b487a194fb79927d9a5b582a041d6` |
+| `receipts/n21/frontier-s1.log.gz` | receipt | `2b352fad97f4e4d8aaa7b1382bcc357a6dd88d4e` | `8db8376070249d8c61499a39078cb5111df7437780c0ee0d2592c1bb0880cd0e` |
 | `receipts/n45/roots.log.gz` | receipt | `5da0ec48641158ac8100ad99044d472b110f709f` | `45c1c221013b019062b8d43e985886604656f8b4b1ff398853ab32fa2ef505bd` |
 | `square-packing-bounds/certificates/mixed_n50_L7318/candidate.json.gz` | upstream | `7d63faad0fc6ec167d077328fb14955726a7f84c` | `096a3219fb53574af28109d3cae2f6ad39aedb4b85bcf5333010b8dc2fe7a590` |
 | `square-packing-bounds/certificates/mixed_n50_L7318/certificate.json.gz` | upstream | `35afd2d15762cea809cf3e670d6bd28955ea769f` | `59c13465a2b1cd12626166879deb292598d1063b0655330a36c608d80212bc4d` |

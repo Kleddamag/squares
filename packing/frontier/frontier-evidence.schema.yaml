@@ -85,7 +85,45 @@ $defs:
       performed_by:
         enum: [source-author, independent-external, repository, unknown-historical]
       relationship_to_generator:
-        enum: [generator, same-implementation, independent-implementation, not-applicable, unknown-historical]
+        enum: [generator, same-implementation, shared-components, independent-implementation, not-applicable, unknown-historical]
+        description: >-
+          How the code that verified this entry stands to the code that produced the
+          result: its generator, and the checker its producer verified it with
+          (epistemics.md, Confirmation). generator -- the producing code checked its own
+          output. same-implementation -- the producer's checker, re-run: a replay that
+          establishes reproducibility, not independence; for this project's own results,
+          the code that produced them. shared-components -- separately written code that
+          reuses named parts of the producer's code, listed in shared_components.
+          independent-implementation -- code that shares none of the producer's code,
+          written from the mathematics and the certificate format; a new one names the
+          record of what its authors read (independence_record). not-applicable -- no
+          code runs: a proof, a hand derivation, or nothing to compare with.
+      shared_components:
+        type: array
+        minItems: 1
+        description: >-
+          The parts of the producer's code a shared-components verification reuses, such
+          as a parser, the certificate loader or an arithmetic kernel.
+        items: {type: string, minLength: 1}
+      verifiers:
+        type: array
+        uniqueItems: true
+        description: >-
+          The programs that verified this entry's claim, by their ids in verifiers.yaml,
+          each marked there external or first-party: for a source's report, the checker
+          the source says it ran; for a replay or an audit, every program the replay
+          runs, deciders and premise checks alike. Required wherever the method runs code
+          or the entry names a replay. A reported entry may list none, which says the
+          record holds none of the code its source used.
+        items: {type: string, pattern: '^V-[a-z0-9-]+$'}
+      independence_record:
+        type: string
+        minLength: 1
+        description: >-
+          For an independent-implementation entry: the repository path of the record of
+          what the verifying program's authors read and used, where the program's own
+          registry entry names none. devtools.verifier_registry requires one of the two
+          on every independent-implementation entry not grandfathered by name.
       origin:
         enum: [external, independently-external, replayed-here, audited-here]
       # Whose result this is, separate from assurance and origin. The values differ
@@ -180,3 +218,31 @@ $defs:
       blocker: {$ref: '#/$defs/blocker'}
       source_reviewed: {type: string, pattern: '^\d{4}-\d{2}-\d{2}$'}
       migration_annotation: {type: string, minLength: 1}
+    allOf:
+      # shared_components belongs to, and only to, a shared-components relation.
+      - if:
+          required: [relationship_to_generator]
+          properties: {relationship_to_generator: {const: shared-components}}
+        then:
+          required: [shared_components]
+        else:
+          not: {required: [shared_components]}
+      # Which programs ran is recorded wherever code runs: a computational method, as
+      # performed or as the source reports it, or a replay of any method.
+      - if:
+          anyOf:
+            - required: [method]
+              properties: {method: {enum: [numerical-f64, numerical-multiprecision, interval-certified, exact-algebraic, proof-assistant-checked]}}
+            - required: [reported_method]
+              properties: {reported_method: {enum: [numerical-f64, numerical-multiprecision, interval-certified, exact-algebraic, proof-assistant-checked]}}
+            - required: [replay]
+        then:
+          required: [verifiers]
+      # A replay recorded here, or an entry that is more than a report, names what ran.
+      - if:
+          anyOf:
+            - required: [replay]
+            - required: [assurance]
+              properties: {assurance: {enum: [numerically-checked, verified]}}
+        then:
+          properties: {verifiers: {minItems: 1}}

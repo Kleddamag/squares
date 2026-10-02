@@ -49,6 +49,13 @@ margins are Euclidean distances to the seams of the assigned cell, and are minim
 over the family by evaluating each linear margin at the vertices of its slider range.
 The family is in one state when a single assignment of the 17 labels to distinct cells
 holds every member with margin at least `1/1000`.
+
+Unique state. Overlapping cells let one centre sit in two closed cells, and then the
+family realises a second state that no sound engine can exclude. The state is unique
+when, besides the common assignment, every family centre over the slider domain lies at
+least `1/1000` outside every other cell. Distance outside is bounded below by separating
+axes: for each edge line of the other cell the outward signed distance is linear, so its
+least value over the family's hull is taken at a corner of an outward member rectangle.
 """
 
 # pyright: reportPrivateUsage=false
@@ -104,6 +111,11 @@ class Design:
 
     `tabs` pairs a representative interior site offset (from the centre) with extra hull
     points (offsets from the centre) for that site's cell; D4 carries both to the orbit.
+    `clips` pairs a representative site offset with closed halfplanes `(a, b, c)`, kept as
+    `a x + b y <= c` in offsets from the centre, cut from that cell after the tabs; D4
+    turns the normal `(a, b)` with the site. With `per_wall` odd, `middle_width` and
+    `middle_depth` set the middle side cell of each wall; the other side cells share the
+    rest of the wall equally and keep `depth`.
     """
 
     name: str
@@ -114,6 +126,9 @@ class Design:
     diagonal: Q | None
     centre_site: bool
     tabs: tuple[tuple[Point, tuple[Point, ...]], ...]
+    clips: tuple[tuple[Point, tuple[tuple[Q, Q, Q], ...]], ...] = ()
+    middle_width: Q | None = None
+    middle_depth: Q | None = None
 
 
 @dataclass(frozen=True)
@@ -168,7 +183,41 @@ GRID_25 = Design(
     centre_site=True,
     tabs=(((Q(0), -Q(309, 500)), ((Q(3, 25), -Q(26, 25)), (-Q(3, 25), -Q(26, 25)))),),
 )
-DESIGNS = {design.name: design for design in (VORONOI_24, TABBED_24, GRID_25)}
+# The unique-state design. Square 13 slides across S1's top `y = 1.411`, and no convex,
+# mirror-symmetric S1 can stay 1/1000 below the slide while the strip it gives up stays
+# covered: (2083/1000, 13703/10000) is then at distance >= 1 from the box centre, which
+# every axis cell holds, at distance >= 1 from its mirror in the diagonal, which the
+# diagonal cell would also hold, and 0.803 from S0's start, past S0's admissible width.
+# Square 13 moves to side S1 instead. S1 is deepened to 93/100 and narrowed to 257/375,
+# inside the wall lemma's curve (w_max(93/100) > 0.6905), and the corners grow to 79/100
+# so that S0 and S2 keep 529/750. Each axis cell is cut at S1's top (`y >= 143/100` for
+# interior-S), which leaves square 13 outside it, and its tab points (+-17/50, -227/250)
+# meet S1's top corners, so the cut strip stays covered. Each diagonal cell is cut below
+# the chord through the axis tab (-19/25, -33/100) and (-3/10, -3/10), and its mirror,
+# which takes square 11's slide out of interior-SW; the axis cells cover what it removes.
+UNIQUE_24 = replace(
+    TABBED_24,
+    name="ring-3-voronoi-8-tabbed-unique",
+    corner=Q(79, 100),
+    middle_width=Q(257, 375),
+    middle_depth=Q(93, 100),
+    tabs=(
+        (
+            (Q(0), -Q(129, 250)),
+            (
+                (Q(33, 100), -Q(19, 25)),
+                (-Q(33, 100), -Q(19, 25)),
+                (Q(17, 50), -Q(227, 250)),
+                (-Q(17, 50), -Q(227, 250)),
+            ),
+        ),
+    ),
+    clips=(
+        ((Q(0), -Q(129, 250)), ((Q(0), Q(-1), Q(227, 250)),)),
+        ((-Q(233, 400), -Q(233, 400)), ((Q(-3), Q(46), -Q(129, 10)),)),
+    ),
+)
+DESIGNS = {design.name: design for design in (VORONOI_24, TABBED_24, UNIQUE_24, GRID_25)}
 
 
 def cross(origin: Point, a: Point, b: Point) -> Q:
@@ -247,17 +296,38 @@ def _compass(offset: Point) -> str:
     return (vertical + horizontal) or "C"
 
 
+def side_spans(design: Design) -> list[tuple[Q, Q, Q]]:
+    """`(start, end, depth)` of each side cell along a wall, from the low corner."""
+    corner, wall = design.corner, HI - LO - 2 * design.corner
+    widths = [wall / design.per_wall] * design.per_wall
+    depths = [design.depth] * design.per_wall
+    if design.middle_width is not None or design.middle_depth is not None:
+        if design.per_wall % 2 == 0:
+            raise ValueError("a middle side cell needs an odd number of side cells")
+        middle = design.per_wall // 2
+        if design.middle_width is not None:
+            rest = (wall - design.middle_width) / (design.per_wall - 1)
+            widths = [rest] * design.per_wall
+            widths[middle] = design.middle_width
+        if design.middle_depth is not None:
+            depths[middle] = design.middle_depth
+    spans: list[tuple[Q, Q, Q]] = []
+    start = LO + corner
+    for width, depth in zip(widths, depths, strict=True):
+        spans.append((start, start + width, depth))
+        start += width
+    return spans
+
+
 def ring_cells(design: Design) -> list[Cell]:
-    corner, depth = design.corner, design.depth
-    width = (HI - LO - 2 * corner) / design.per_wall
+    corner = design.corner
     cells = [
         Cell("corner-SW", "corner", _rectangle(LO, LO + corner, LO, LO + corner)),
         Cell("corner-SE", "corner", _rectangle(HI - corner, HI, LO, LO + corner)),
         Cell("corner-NW", "corner", _rectangle(LO, LO + corner, HI - corner, HI)),
         Cell("corner-NE", "corner", _rectangle(HI - corner, HI, HI - corner, HI)),
     ]
-    for j in range(design.per_wall):
-        a0, a1 = LO + corner + j * width, LO + corner + (j + 1) * width
+    for j, (a0, a1, depth) in enumerate(side_spans(design)):
         cells.extend(
             (
                 Cell(f"side-S{j}", "side", _rectangle(a0, a1, LO, LO + depth)),
@@ -301,11 +371,25 @@ def interior_cells(design: Design) -> list[Cell]:
             extras[image].update(
                 d4_apply(action, (CENTRE + tx, CENTRE + ty)) for tx, ty in tabs
             )
+    cuts: dict[Point, set[tuple[Q, Q, Q]]] = {site: set() for site in sites}
+    for (ox, oy), halfplanes in design.clips:
+        representative = (CENTRE + ox, CENTRE + oy)
+        for action in D4:
+            image = d4_apply(action, representative)
+            if image not in cuts:
+                raise ValueError("a clip representative is not an interior site")
+            for a, b, c in halfplanes:
+                nx, ny = d4_apply(action, (CENTRE + a, CENTRE + b))
+                cuts[image].add((nx - CENTRE, ny - CENTRE, c))
     cells: list[Cell] = []
     for site in sites:
         base = voronoi_cell(site, sites, region)
+        polygon = list(convex_hull([*base, *extras[site]]))
+        for a, b, c in sorted(cuts[site]):
+            # a (x - C) + b (y - C) <= c, in absolute coordinates.
+            polygon = clip(polygon, a, b, c + (a + b) * CENTRE)
         name = "interior-" + _compass((site[0] - CENTRE, site[1] - CENTRE))
-        cells.append(Cell(name, "interior", convex_hull([*base, *extras[site]])))
+        cells.append(Cell(name, "interior", convex_hull(polygon)))
     return cells
 
 
@@ -992,6 +1076,91 @@ def family_state(cells: list[Cell], point: Endpoint, domain: SliderDomain) -> di
     return record
 
 
+def outside_distance(
+    cell: Cell, members: list[tuple[tuple[Q, Q], tuple[Q, Q]]]
+) -> tuple[Q, bool]:
+    """A lower bound on the distance from the members' hull to the cell, and whether >= 1/1000.
+
+    Each member is a rectangle `([x_lo, x_hi], [y_lo, y_hi])`. For every edge line of the
+    cell the outward signed distance is linear, so its least value over the hull of the
+    rectangles is taken at a rectangle corner; the cell lies on the inner side, so the
+    largest of these least values bounds the distance from below (separating axes). A
+    negative value means no edge line separates the family from the cell.
+    """
+    best: Q | None = None
+    clear = False
+    for start, end in _edges(cell.vertices):
+        ex, ey = end[0] - start[0], end[1] - start[1]
+        # outward = ey (x - x_s) - ex (y - y_s), minimised over every member rectangle.
+        low = min(
+            ey * ((x_lo if ey >= 0 else x_hi) - start[0])
+            - ex * ((y_hi if ex >= 0 else y_lo) - start[1])
+            for (x_lo, x_hi), (y_lo, y_hi) in members
+        )
+        length2 = ex * ex + ey * ey
+        if low > 0:
+            clear = clear or low * low >= SEAM_MARGIN**2 * length2
+            bound = low / _sqrt_upper(length2)
+        else:
+            bound = low / _sqrt_lower(length2)
+        if best is None or bound > best:
+            best = bound
+    assert best is not None
+    return best, clear
+
+
+def unique_state(
+    cells: list[Cell], point: Endpoint, domain: SliderDomain, family: dict[str, Any]
+) -> dict[str, Any]:
+    """Whether the family's state is unique: each centre at least 1/1000 outside every cell
+    other than its assigned one, over the whole slider domain.
+
+    `family` is the `family_state` record for the same cells and domain; without a common
+    state there is nothing to make unique. Per square, the least lower bound on the
+    distance outside any other cell is reported with that cell.
+    """
+    if not family["one_state"]:
+        return {"domain": domain.name, "unique": False, "reason": "no common state"}
+    assigned = {entry["label"]: entry["cell"] for entry in family["squares"]}
+    squares: list[dict[str, Any]] = []
+    second: list[int] = []
+    least: tuple[Q, int] | None = None
+    for label in range(1, TARGET + 1):
+        members = [(outward(x), outward(y)) for x, y in family_points(point, label, domain)]
+        nearest: tuple[Q, str] | None = None
+        clear = True
+        for cell in cells:
+            if cell.name == assigned[label]:
+                continue
+            distance, cell_clear = outside_distance(cell, members)
+            clear = clear and cell_clear
+            if nearest is None or distance < nearest[0]:
+                nearest = (distance, cell.name)
+        assert nearest is not None
+        if not clear:
+            second.append(label)
+        if least is None or nearest[0] < least[0]:
+            least = (nearest[0], label)
+        squares.append(
+            {
+                "label": label,
+                "cell": assigned[label],
+                "nearest_other_cell": nearest[1],
+                "outside_lower_bound": decimal(nearest[0]),
+                "clear": clear,
+            }
+        )
+    assert least is not None
+    return {
+        "domain": domain.name,
+        "unique": not second,
+        "squares_in_a_second_cell": second,
+        "least_outside_lower_bound": decimal(least[0]),
+        "least_outside_square": least[1],
+        "squares": squares,
+    }
+
+
 def domain_containment(point: Endpoint) -> dict[str, Any]:
     """Prove the triangle box holds the H256 slides: T/s, T, 2T/3, T/3 against its ends."""
     slack, sine = point.aux["T"], point.aux["s"]
@@ -1146,6 +1315,10 @@ def check_design(
         domain.name: family_state(cells, point, domain)
         for domain in (ENDPOINT, TRIANGLE, RECIPE_BOX)
     }
+    uniqueness = {
+        domain.name: unique_state(cells, point, domain, family[domain.name])
+        for domain in (ENDPOINT, TRIANGLE, RECIPE_BOX)
+    }
     containment = domain_containment(point)
     receipt: dict[str, Any] = {
         "schema": SCHEMA,
@@ -1156,7 +1329,13 @@ def check_design(
             "corner": str(design.corner),
             "depth": str(design.depth),
             "per_wall": design.per_wall,
-            "side_width": str((HI - LO - 2 * design.corner) / design.per_wall),
+            "side_width": str(side_spans(design)[0][1] - side_spans(design)[0][0]),
+            "side_spans": [
+                {"start": str(a0), "end": str(a1), "depth": str(depth)}
+                for a0, a1, depth in side_spans(design)
+            ],
+            "middle_width": None if design.middle_width is None else str(design.middle_width),
+            "middle_depth": None if design.middle_depth is None else str(design.middle_depth),
             "axis_site": None if design.axis is None else str(design.axis),
             "diagonal_site": None if design.diagonal is None else str(design.diagonal),
             "centre_site": design.centre_site,
@@ -1166,6 +1345,13 @@ def check_design(
                     "points": [[str(x), str(y)] for x, y in tabs],
                 }
                 for site, tabs in design.tabs
+            ],
+            "clips": [
+                {
+                    "site_offset": [str(x) for x in site],
+                    "halfplanes_a_b_c": [[str(v) for v in plane] for plane in planes],
+                }
+                for site, planes in design.clips
             ],
         },
         "cells": [cell_record(cell) for cell in cells],
@@ -1194,6 +1380,7 @@ def check_design(
             "root": provenance,
             "slider_containment": containment,
             "family": family,
+            "unique_state": uniqueness,
         },
         "seam_margin_required": str(SEAM_MARGIN),
     }
@@ -1205,6 +1392,7 @@ def check_design(
         and permutations is not None
         and containment["passed"]
         and family[TRIANGLE.name]["one_state"]
+        and uniqueness[TRIANGLE.name]["unique"]
         and provenance["criterion_passed"]
         and len(cells) <= 25
         and census is not None
@@ -1222,6 +1410,7 @@ def check_design(
         "controls": None if not controls else receipt["controls"]["passed"],
         "family_one_state_triangle": family[TRIANGLE.name]["one_state"],
         "family_one_state_recipe_box": family[RECIPE_BOX.name]["one_state"],
+        "family_unique_state_triangle": uniqueness[TRIANGLE.name]["unique"],
         "passed": passed,
     }
     receipt["module_sha256"] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
@@ -1231,7 +1420,7 @@ def check_design(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    _ = parser.add_argument("--design", choices=sorted(DESIGNS), default=TABBED_24.name)
+    _ = parser.add_argument("--design", choices=sorted(DESIGNS), default=UNIQUE_24.name)
     _ = parser.add_argument("--certificate", type=Path, default=CERTIFICATE)
     _ = parser.add_argument("--output", type=Path, help="write the receipt here as well")
     arguments = parser.parse_args(argv)

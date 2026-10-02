@@ -14,10 +14,12 @@ from pathlib import Path
 from devtools import check_n17_capacity_one_cover as cover
 from devtools.check_n17_capacity_one_cover import (
     CERTIFICATE,
+    ENDPOINT,
     GRID_25,
     RECIPE_BOX,
     TABBED_24,
     TRIANGLE,
+    UNIQUE_24,
     VORONOI_24,
     Cell,
     Design,
@@ -35,7 +37,9 @@ from devtools.check_n17_capacity_one_cover import (
     load_root_box,
     poly_value,
     ring_cells,
+    side_spans,
     sturm_root_count,
+    unique_state,
     wall_bound,
     wall_lemma,
     wall_polynomial,
@@ -230,11 +234,66 @@ def test_the_25_cell_grid_holds_the_recipe_box_above_the_threshold() -> None:
     assert 8 * orbits >= comb(25, 17)
 
 
+def test_the_tabbed_cover_realises_a_second_state_through_squares_11_and_13() -> None:
+    point = root_point()
+    cells = list(cells_of(TABBED_24))
+    centroid = unique_state(cells, point, ENDPOINT, family_state(cells, point, ENDPOINT))
+    assert not centroid["unique"]
+    assert centroid["squares_in_a_second_cell"] == [13]
+    square = centroid["squares"][12]
+    assert (square["cell"], square["nearest_other_cell"]) == ("interior-S", "side-S1")
+    assert Q(square["outside_lower_bound"]) < 0  # 0.0023 inside side-S1, as reviewed
+    triangle = unique_state(cells, point, TRIANGLE, family_state(cells, point, TRIANGLE))
+    assert not triangle["unique"]
+    assert triangle["squares_in_a_second_cell"] == [11, 13]
+    assert triangle["squares"][10]["nearest_other_cell"] == "interior-SW"
+
+
+def test_the_unique_cover_holds_the_family_in_exactly_one_cell_per_square() -> None:
+    point = root_point()
+    cells = list(cells_of(UNIQUE_24))
+    family = family_state(cells, point, TRIANGLE)
+    assert family["one_state"]
+    assigned = {entry["label"]: entry["cell"] for entry in family["squares"]}
+    assert assigned[13] == "side-S1"
+    assert assigned[11] == "interior-W"
+    assert assigned[6] == "side-S2"
+    assert Q(family["least_margin_lower_bound"]) >= Q(1, 1000)
+    result = unique_state(cells, point, TRIANGLE, family)
+    assert result["unique"]
+    assert result["squares_in_a_second_cell"] == []
+    assert result["least_outside_square"] == 13
+    assert Q(result["least_outside_lower_bound"]) >= Q(1, 1000)
+    # Exactly one closed cell holds any member of the slider box, by exact containment.
+    for label in (11, 13):
+        for x, y in cover.family_points(point, label, TRIANGLE):
+            holders = [cell.name for cell in cells if inside(cell, (x.lo, y.lo))]
+            assert holders == [assigned[label]], (label, holders)
+
+
+def test_the_unique_cover_keeps_capacity_coverage_and_the_orbit_count() -> None:
+    cells = list(cells_of(UNIQUE_24))
+    assert len(cells) == 24
+    assert all(capacity_proof(cell, {})["passed"] for cell in cells)
+    assert coverage(cells)["passed"]
+    permutations = d4_permutations(cells)
+    assert permutations is not None
+    assert burnside(permutations)["orbits"] == 43593
+    spans = side_spans(UNIQUE_24)
+    assert [end - start for start, end, _ in spans] == [Q(529, 750), Q(257, 375), Q(529, 750)]
+    assert [depth for _, _, depth in spans] == [Q(911, 1000), Q(93, 100), Q(911, 1000)]
+    assert wall_lemma(Q(93, 100), Q(257, 375))["passed"]
+    assert not wall_lemma(Q(93, 100), Q(529, 750))["passed"]  # S1 had to narrow
+    assert spans[-1][1] == cover.HI - UNIQUE_24.corner
+
+
 def test_cli_writes_a_passing_receipt(tmp_path: Path) -> None:
     output = tmp_path / "receipt.json"
     assert cover.main(["--output", str(output)]) == 0
     receipt = json.loads(output.read_text(encoding="utf-8"))
+    assert receipt["design"]["name"] == UNIQUE_24.name
     assert receipt["criterion"]["passed"]
+    assert receipt["criterion"]["family_unique_state_triangle"]
     assert receipt["controls"]["passed"]
     assert receipt["census"]["orbits"] == 43593
     module = Path(cover.__file__).read_bytes()

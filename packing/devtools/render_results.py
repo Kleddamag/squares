@@ -120,7 +120,7 @@ def next_action(record: dict) -> list[str]:
     return lines
 
 
-def confirmed_how(record: dict, evidence: Mapping[str, Mapping[str, Any]]) -> str:
+def confirmed_how(record: Mapping[str, Any], evidence: Mapping[str, Mapping[str, Any]]) -> str:
     """How a confirmed result was confirmed, as the status cell says it: the label of
     `check_results.confirmation_code`, or nothing."""
     code = confirmation_code(record, [evidence[ref] for ref in record["evidence"]])

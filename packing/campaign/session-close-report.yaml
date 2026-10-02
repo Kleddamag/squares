@@ -11,15 +11,15 @@ count: 166
 generated_by: >-
   uv run --frozen --all-extras --group dev python -m devtools.close_session --render
 totals:
-  sessions_measured: 111
-  sessions_unmeasured: 55
+  sessions_measured: 112
+  sessions_unmeasured: 54
   attributed:
-    rollups: 254
-    turns: 63978
-    tool_calls: 35394
-    tool_errors: 773
-    one_off_code: 5088
-    wall_hours: 557.08
+    rollups: 265
+    turns: 67076
+    tool_calls: 37007
+    tool_errors: 790
+    one_off_code: 5328
+    wall_hours: 572.85
   unattributed:
     rollups: 65
     turns: 14196
@@ -28,12 +28,12 @@ totals:
     one_off_code: 1184
     wall_hours: 67.13
   measured:
-    rollups: 319
-    turns: 78174
-    tool_calls: 43543
-    tool_errors: 958
-    one_off_code: 6272
-    wall_hours: 624.21
+    rollups: 330
+    turns: 81272
+    tool_calls: 45156
+    tool_errors: 975
+    one_off_code: 6512
+    wall_hours: 639.98
 codex_receipts:
   attributed: 68
   unattributed: 2
@@ -2862,8 +2862,22 @@ sessions:
   status: in_progress
   primary_bead: think-los0
   phases: 4
-  measured: false
-  unmeasured_reason: >-
-    declares no resource measurement
-  rollups: []
+  measured: true
+  rollups:
+  - packing/campaign/resource-usage/6179239e-fec5-52e8-aabb-a0e229f3f822.yaml
+  - packing/campaign/resource-usage/agent-a30ab1dd97b959c63.yaml
+  - packing/campaign/resource-usage/agent-a4a764a6285487659.yaml
+  - packing/campaign/resource-usage/agent-a665a16af102749a0.yaml
+  - packing/campaign/resource-usage/agent-a68c888b24723b197.yaml
+  - packing/campaign/resource-usage/agent-a86fe91008fdb802b.yaml
+  - packing/campaign/resource-usage/agent-a92ea862bac5a1405.yaml
+  - packing/campaign/resource-usage/agent-a9f4406a56646937f.yaml
+  - packing/campaign/resource-usage/agent-abfdcf4d3642c3fe2.yaml
+  - packing/campaign/resource-usage/agent-ad8c36a04ebcd61d9.yaml
+  - packing/campaign/resource-usage/agent-ae1c5c75727ba7c4d.yaml
+  turns: 3098
+  tool_calls: 1613
+  tool_errors: 17
+  one_off_code: 240
+  wall_hours: 15.77
   codex_receipts: []

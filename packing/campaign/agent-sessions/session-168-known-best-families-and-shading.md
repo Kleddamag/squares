@@ -429,9 +429,21 @@ session:
   - packing-validate --edit passed (54 steps) with the follow-up lanes in the tree, 187 s.
   - 'packing-validate --records passed after integration; new steps: the T-007 inventory (1.15 s) and
     the regularized atlas check (0.11 s).'
+  resource_rollups:
+  - packing/campaign/resource-usage/6179239e-fec5-52e8-aabb-a0e229f3f822.yaml
+  - packing/campaign/resource-usage/agent-a30ab1dd97b959c63.yaml
+  - packing/campaign/resource-usage/agent-a4a764a6285487659.yaml
+  - packing/campaign/resource-usage/agent-a665a16af102749a0.yaml
+  - packing/campaign/resource-usage/agent-a68c888b24723b197.yaml
+  - packing/campaign/resource-usage/agent-a86fe91008fdb802b.yaml
+  - packing/campaign/resource-usage/agent-a92ea862bac5a1405.yaml
+  - packing/campaign/resource-usage/agent-a9f4406a56646937f.yaml
+  - packing/campaign/resource-usage/agent-abfdcf4d3642c3fe2.yaml
+  - packing/campaign/resource-usage/agent-ad8c36a04ebcd61d9.yaml
+  - packing/campaign/resource-usage/agent-ae1c5c75727ba7c4d.yaml
   stop_reason: null
-  next_action: 'Owner decisions: the order of think-xucp and think-ym34, and how the cost rollups are
-    retained; then certify and close.'
+  next_action: 'Owner decisions: the order of think-xucp and think-ym34; the owner replaces the eleven
+    rollups'' withheld model labels with the originals; then certify and close.'
 ---
 # Families of Known-Best Packings, Contact Shading, and the Large-n Limit
 

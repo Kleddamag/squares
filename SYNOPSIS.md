@@ -5463,9 +5463,9 @@ in separate tables: their units differ, and the same work can appear in both.
 
 | Rollups | count | turns | tool calls | errors | one-off code | wall |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| claimed by a session | 254 | 63,978 | 35,394 | 773 | 5,088 | 557.08 h |
+| claimed by a session | 265 | 67,076 | 37,007 | 790 | 5,328 | 572.85 h |
 | claimed by none | 65 | 14,196 | 8,149 | 185 | 1,184 | 67.13 h |
-| **measured** | **319** | **78,174** | **43,543** | **958** | **6,272** | **624.21 h** |
+| **measured** | **330** | **81,272** | **45,156** | **975** | **6,512** | **639.98 h** |
 
 | Session | Phases | Rollups | Turns | Tool calls | Errors | Wall |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -5521,7 +5521,8 @@ in separate tables: their units differ, and the same work can appear in both.
 | [session-159](packing/campaign/agent-sessions/session-159-n17-guzhou-r052-intake.md) | 2 | 6 | 844 | 484 | 10 | 2.34 h |
 | [session-160](packing/campaign/agent-sessions/session-160-n17-4640020-evand-wand125-intake.md) | 3 | 28 | 5,648 | 3,354 | 161 | 42.62 h |
 | [session-161](packing/campaign/agent-sessions/session-161-wand125-update-and-sept-28-intake.md) | 2 | 10 | 2,617 | 1,468 | 27 | 11.09 h |
-| *shared by 52 sessions* | — | 8 | 25,382 | 13,685 | 285 | 355.07 h |
+| [session-168](packing/campaign/agent-sessions/session-168-known-best-families-and-shading.md) | 4 | 11 | 3,098 | 1,613 | 17 | 15.77 h |
+| *shared by 53 sessions* | — | 8 | 25,382 | 13,685 | 285 | 355.07 h |
 
 | Codex interval receipt | declaring sessions | model responses | agent time | active union | wall window | live lower bound |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
@@ -5598,8 +5599,8 @@ in separate tables: their units differ, and the same work can appear in both.
 
 | Coverage | sessions |
 | --- | ---: |
-| measured | 111 |
-| unmeasured | 55 |
+| measured | 112 |
+| unmeasured | 54 |
 | **total** | **166** |
 
 <!-- END GENERATED: session-close-report -->

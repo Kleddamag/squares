@@ -1,0 +1,24 @@
+  ok   differential rect_n32_L595 r=1: centre bound below exact, worst gap 2.69e-13; box bound below exact at box points
+  ok   differential rect_n32_L595 r=57: centre bound below exact, worst gap 1.92e-13; box bound below exact at box points
+  ok   differential rect_n32_L595 r=133: centre bound below exact, worst gap 1.99e-13; box bound below exact at box points
+  ok   differential rect_n32_L595 r=200: centre bound below exact, worst gap 3.67e-13; box bound below exact at box points
+  ok   differential rect_n78_L8955 r=1: centre bound below exact, worst gap 1.04e-12; box bound below exact at box points
+  ok   differential rect_n78_L8955 r=57: centre bound below exact, worst gap 1.08e-12; box bound below exact at box points
+  ok   differential rect_n78_L8955 r=133: centre bound below exact, worst gap 1.48e-12; box bound below exact at box points
+  ok   differential rect_n78_L8955 r=200: centre bound below exact, worst gap 1.05e-12; box bound below exact at box points
+  ok   control original rect_n41_L676 r=32 verified
+  ok   control scale-weights rect_n41_L676 r=32 refused (counterexample-candidate)
+  ok   control drop-top-contributor rect_n41_L676 r=32 refused (unresolved)
+  ok   control near-threshold (1 - 1e-6 at the witness) r=32 refused (unresolved)
+  ok   control drop-own-top-orbit row 2463 r=32 refused (unresolved)
+  ok   control n32 near-threshold at least box r=1 refused (counterexample-candidate)
+  ok   control n32 drop-top at least box r=1 refused (counterexample-candidate)
+  ok   control n32 near-threshold at least box r=100 refused (counterexample-candidate)
+  ok   control n32 drop-top at least box r=100 refused (counterexample-candidate)
+  ok   admission refuses mass-at-n (exit 2)
+  ok   admission refuses negative-weight (exit 2)
+  ok   admission refuses count-mismatch (exit 2)
+  ok   admission refuses outside-container (exit 2)
+  ok   admission refuses degenerate-rectangle (exit 2)
+  ok   admission refuses duplicate-key (exit 2)
+SQVERIFY-FAST CHECKS PASSED

@@ -1222,7 +1222,9 @@ agenda:
     - packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md
     note: Exploratory first-order estimate of the radius is 3e-4 (worst ratio 0.86); it defines the capture
       target. Session 167 accepted H-258 (exp-242); the recipe review fixes items C1-C12
-      and a uniform radius of about 1/5000 over the slider box; the checker's point half is at 11bdcd7c.
+      and a uniform radius of about 1/5000 over the slider box; the checker's point half is at 11bdcd7c. exp-244 (unresolved)
+      certifies the ratio test at r = 1/5000 over the declared box (worst 0.925818); the claim's physical
+      slider domain exceeds it, and H-268 (BC-417) owes the bound.
   - id: BC-408
     purpose: research
     owner_focus: correctness
@@ -1464,6 +1466,35 @@ agenda:
     note: >-
       n11 excluded 1,904 of 2,180 cases with 59 such certificates; an exploratory
       arity-five proxy leaves 11,939 orbits on the 24-cell design.
+  - id: BC-417
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: blocked
+    priority: 0
+    question: Does square 6's H-266 cell keep the slides of squares 5 and 13 inside the box exp-244 certifies?
+    hypotheses:
+    - H-268
+    budget: One short build and review slice.
+    entry: exp-244 recorded; H-266 cover committed.
+    exit: An exact bound with independent review, or a widened box and a re-run of exp-244.
+    bead: think-set0
+    depends_on:
+    - BC-407
+    - BC-415
+    blocked_on: H-266 acceptance (BC-415); BC-407 stays open until this closes.
+    next_evidence: packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md
+    workflows:
+    - pipeline-improvement
+    - research-loop
+    - factual-review
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md
+    note: >-
+      Closes H-261's scope gap. With square 6 at its centroid the review's float scan keeps a
+      below 0.037 and z above -0.0235, well inside the box.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

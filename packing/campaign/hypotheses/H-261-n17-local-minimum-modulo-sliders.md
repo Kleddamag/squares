@@ -41,7 +41,7 @@ hypothesis:
     devtools.check_n17_local_minimum, to be built: exact Fraction linear algebra and
     LP duals over the H-258 rows, the n11 curvature-bound recipe, and outward interval
     checks over the slider domain, with an independent kernel and dual checker
-  instrument_ready: false
+  instrument_ready: true
   regime: >-
     The H255 root box and H256 centroid endpoint; the H257 feature inventory; the H-258
     allocation; angles reduced modulo pi/2 in the H254 labelling; the l-infinity norm on
@@ -73,6 +73,22 @@ so the n11 focused-rectangle method applies once those directions are quotiented
 
 The certified radius matters as much as the verdict: it is what the global capture step
 must reach.
+
+## Outcome
+
+*Added 2026-10-02 by Session 167.*
+[exp-244](../series/series-000-smoke-and-calibration/experiments/exp-244-h261-n17-local-minimum.md)
+certifies the local minimum modulo sliders at $r=1/5000$ over the declared slider box
+$B_W=[0,\tfrac14]\times[0,\tfrac1{12}]\times[-\tfrac18,\tfrac1{16}]$. The worst ratio is
+$0.925818$, and an
+[independent review](../../../docs/project/reviews/review-2026-10-02-n17-local-theorem-instrument.md)
+found no blocking defect in the mathematics, the instrument or the certificates.
+The verdict is unresolved, because the claim above covers the whole physical slider
+domain and $B_W$ does not once square 6 is dropped.
+[H-268](H-268-n17-local-theorem-slider-coverage.md) registers the capture-side bound
+that would close the gap.
+The criterion’s 135 unavailable alternatives are checked as the 125 of the retained
+pairs, a recorded deviation.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

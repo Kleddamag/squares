@@ -868,6 +868,7 @@ these rows as BC-406 to BC-411.
 | 274 | A reusable stress-to-local-minimum instrument for endpoints with translational sliders | shaped | — | The H-261 tool, generalised for n18, n19, n26 and n29 under OR-1. |
 | 275 | A D4-symmetric capacity-one n17 cover of at most 25 cells holding the endpoint family in one state | registered | [H-266](hypotheses/H-266-n17-minimal-capacity-one-cover.md) | The H259 grid counts like a 30-cell cover; n11 used 16 cells for 11 squares. An exploratory 24-cell design has 43,593 orbits, 177 times below the cut H259 count. |
 | 276 | Isolated sub-pattern exclusion leaves at most 10^4 orbits on the minimal cover | registered | [H-267](hypotheses/H-267-n17-isolated-sub-pattern-residue.md) | n11’s field certificates excluded 1,904 of 2,180 cases by containment; an exploratory arity-five proxy leaves 11,939 orbits on the 24-cell design. |
+| 277 | Square 6’s cover cell bounds the slides of squares 5 and 13 inside the box the local theorem certifies | registered | [H-268](hypotheses/H-268-n17-local-theorem-slider-coverage.md) | exp-244 certifies H-261 on a declared slider box; with square 6 dropped the physical slides exceed it, so capture must supply the bound. |
 
 ## Dead ends
 

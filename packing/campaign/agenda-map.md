@@ -2,7 +2,7 @@
 
 # Agenda map
 
-405 agenda commitments across 39 agendas, as declared in each agenda's own frontmatter.
+406 agenda commitments across 39 agendas, as declared in each agenda's own frontmatter.
 Source of truth is [`agendas/`](agendas/); this view is regenerated, never edited.
 
 An agenda's queue owns priority ordering, so this map preserves each agenda's
@@ -10,9 +10,9 @@ order rather than imposing one across them.
 
 ## The short version
 
-- **15** in_progress, **26** ready, **21** tentative, **71** blocked, **65** stopped, **207** complete.
+- **15** in_progress, **26** ready, **21** tentative, **72** blocked, **65** stopped, **207** complete.
 
-- **28 blocked commitments carry a manual condition** (`BC-016`, `BC-025`, `BC-033`, `BC-050`, `BC-115`, `BC-170`, `BC-204`, `BC-205`, `BC-212`, `BC-207`, `BC-208`, `BC-209`, `BC-215`, `BC-217`, `BC-221`, `BC-238`, `BC-248`, `BC-270`, `BC-306`, `BC-337`, `BC-327`, `BC-329`, `BC-330`, `BC-358`, `BC-364`, `BC-365`, `BC-396`, `BC-416`). Dependency edges alone cannot make these ready; each condition is named in the table below and must be explicitly cleared.
+- **29 blocked commitments carry a manual condition** (`BC-016`, `BC-025`, `BC-033`, `BC-050`, `BC-115`, `BC-170`, `BC-204`, `BC-205`, `BC-212`, `BC-207`, `BC-208`, `BC-209`, `BC-215`, `BC-217`, `BC-221`, `BC-238`, `BC-248`, `BC-270`, `BC-306`, `BC-337`, `BC-327`, `BC-329`, `BC-330`, `BC-358`, `BC-364`, `BC-365`, `BC-396`, `BC-416`, `BC-417`). Dependency edges alone cannot make these ready; each condition is named in the table below and must be explicitly cleared.
 
 ## Live queue
 
@@ -157,6 +157,7 @@ A commitment blocked by other commitments names them; one blocked by something e
 | agenda-037 | `BC-358` | 1 | — | no | think-g3j7 must land a new reader for weighted-majority and floor atoms without mutating T-025/T-026 verify_claim.py.… |
 | agenda-040 | `BC-364` | 2 | `BC-363` | yes | The non-convex box-avoidance domain predicate (BC-204) and a conflict-edge atom class in the relational reader. |
 | agenda-040 | `BC-365` | 3 | — | no | An unshrunk exact-orientation verifier generalised from cases/green17/interval_audit.py and an unshrunk column… |
+| agenda-042 | `BC-417` | 0 | `BC-407`, `BC-415` | no | H-266 acceptance (BC-415); BC-407 stays open until this closes. |
 | agenda-042 | `BC-384` | 1 | `BC-388`, `BC-389` | no | — |
 | agenda-042 | `BC-396` | 1 | — | no | The intake lane's accepting review of evand/square-packing's s(32) certificate at 167d842, which is also the reading of… |
 | agenda-042 | `BC-416` | 1 | `BC-415` | no | H-266 acceptance. |
@@ -221,7 +222,7 @@ A commitment whose exit another agenda's commitment satisfied. Recorded as an ed
 | agenda-037 | active | 1 |  | 1 | 1 | 1 | 1 | 5 |
 | agenda-040 | active |  | 1 |  | 2 | 1 | 3 | 7 |
 | agenda-041 | active | 4 |  |  |  |  | 2 | 6 |
-| agenda-042 | active | 2 | 10 |  | 3 | 4 | 24 | 43 |
+| agenda-042 | active | 2 | 10 |  | 4 | 4 | 24 | 44 |
 
 ## By program
 
@@ -532,8 +533,9 @@ Open frontier: `BC-306`.
 | agenda-042 | `BC-414` | complete | What bulk exclusion engine could take the n17 census to a residue geometric exclusion can absorb? |
 | agenda-042 | `BC-415` | in_progress | Does a D4-symmetric capacity-one cover of at most 25 cells hold the n17 endpoint family in one… |
 | agenda-042 | `BC-416` | blocked | Do certified isolated sub-patterns of arity at most seven leave at most 1e4 orbits on the H-266… |
+| agenda-042 | `BC-417` | blocked | Does square 6's H-266 cell keep the slides of squares 5 and 13 inside the box exp-244 certifies? |
 
-Open frontier: `BC-406`, `BC-407`, `BC-409`, `BC-415`, `BC-416`.
+Open frontier: `BC-406`, `BC-407`, `BC-409`, `BC-415`, `BC-416`, `BC-417`.
 
 ### `reach-table-ladder`
 

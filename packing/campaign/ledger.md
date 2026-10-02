@@ -879,12 +879,13 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-414 | research | 17 | complete | 0 | think-8ul6 | docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md |
 | BC-415 | research | 17 | in_progress | 0 | think-qjdb | packing/campaign/hypotheses/H-266-n17-minimal-capacity-one-cover.md |
 | BC-416 | research | 17 | blocked | 1 | think-1s3i | packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md |
+| BC-417 | research | 17 | blocked | 0 | think-set0 | packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md |
 
 ## Series
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 172 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 173 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1085,13 +1086,14 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-258 | confirmed | proof | The fixed analytic common-core stress at the accepted n17 endpoint has |  | 1 |  | 30s wall |
 | H-259 | confirmed | proof | At side cap1169/250, a closed5by5 centre grid has16 boundary cells of  |  | 1 |  | 0s wall |
 | H-260 | confirmed | proof | D4 acts on existential closed-cell assignments of the H259 cover and i |  | 1 |  | 0s wall |
-| H-261 | blocked | proof | For an explicit rational radius r > 0, every packing of 17 unit square |  | 0 |  |  |
+| H-261 | unresolved | proof | For an explicit rational radius r > 0, every packing of 17 unit square |  | 1 |  | 15s wall |
 | H-262 | refuted | proof | On the H259 closed grid at cap 1169/250, the subcontainer cuts from s( |  | 1 |  | 2.2m wall |
 | H-263 | open question | proof | Which closed centre cover with proved cell capacities keeps every endp |  | 0 |  |  |
 | H-264 | open question | proof | On 10 to 20 closed-assignment D4 orbits drawn uniformly from the resid |  | 0 |  |  |
 | H-265 | blocked | proof | The side S* of the H255 chart root is a root of the degree-18 polynomi |  | 0 |  |  |
 | H-266 | blocked | proof | At cap U = 1169/250 there is a D4-symmetric closed cover of the centre |  | 0 |  |  |
 | H-267 | blocked | proof | On the H-266 cover, forbidden occupancy sub-patterns of arity at most  |  | 0 |  |  |
+| H-268 | blocked | proof | Every packing of 17 unit squares in [0,S]^2 with S <= S* whose occupan |  | 0 |  |  |
 
 ## Needs review — held for a human, not decided
 
@@ -1159,7 +1161,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-162 | series-000 | 20 | Cursor session-140 | H-218 | The Session-140 research wall expired with no RETAINABLE freeze on the H-218 sweep. Closest masses were leftover n=20 971/200 at 19.910044 unconverged and leftover n=12 3969/1000 at 12.091168 after crossing 12. T-028 at n=18 does not confirm H-218. The unfinished float LPs remain unresolved; their objectives do not refute their site sets. |
 | exp-231 | series-000 | 11 | Claude Session 156, Opus extra-high lane and coordinator | H-236 | The declared caps ran out with 58 of 256 subtrees open and no counterexample candidate, so H-236 is neither confirmed nor refuted; the remaining subtrees are a bounded computation for the unchanged frozen instrument. |
 
-### unresolved (52)
+### unresolved (53)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1215,6 +1217,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-218 | series-000 | 17 | Claude session-144 Opus runner | H-224 | The converged restricted optimum 17.0423 refutes point certificates on this site set only, and the accepted depth-one family has total just below 14, not 17, so H-224 is neither confirmed nor killed at this scope; the fixed-shrink point route at n=17 is bounded below by 14 for every site set at 23/5 and above by this site set's 17.04. |
 | exp-230 | series-000 | 12 | Claude Session 156, Opus high lane | H-241 | The loop ran to its time limits with the covering value unsettled just below 12 and no family reaching 12, so whether additive routes at n12 survive above 3.9609 is still open; a row objective of 11.98 is suggestive of a little headroom but is not a value. |
 | exp-234 | series-000 | 11 | Claude Session 158 coordinator | H-242 | No box closed at the cap, so rung 1's total cost is not measured, only bounded below; but the flat response to width and tilt shows the cost lives in the centre enumeration, so the stronger per-node relaxation, not more or narrower boxes, is the prerequisite for H-112, while wide boxes remain usable once it exists. |
+| exp-244 | series-000 | 17 | Claude Session 167; lanes A2-build and A2-build-2 built the instrument, the coordinator ran it from a clean worktree | H-261 | The mathematics, instrument and certificates have no blocking defect, and the local minimum modulo sliders is certified on the declared box B_W at r = 1/5000. The frozen claim covers the whole physical slider domain, which B_W does not, so H-261 as worded is neither confirmed nor refuted. Closing it needs a capture-side lemma that a <= 1/4 and z >= -1/8 whenever square 6 lies in its occupancy cell, or a wider box. |
 
 ### blocked (11)
 
@@ -1354,7 +1357,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-172 rounds, 2512.1 agent-minutes, 4023.5 wall-minutes.
+173 rounds, 2512.1 agent-minutes, 4023.7 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

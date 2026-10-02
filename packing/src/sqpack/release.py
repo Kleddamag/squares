@@ -250,12 +250,19 @@ FIRST_PUBLISHED = PUBLICATION_HISTORY[-1].first_published
 # front of both papers from these, and `tests/test_release.py` holds the rules.
 # ---------------------------------------------------------------------------
 
-#: The first paper's own editions, newest first: the editions of the publication in which
-#: the paper itself changed, with the site's own number and date for each, since the
-#: paper carried the site's number while the two were one (through v0.5.0). What changed
-#: in the paper under each, read from the article's history between the deployments
-#: listed above `PUBLICATION_HISTORY` on 2026-10-02:
+#: The first paper's own editions, newest first. Through v0.5.0 the paper carried the
+#: site's number, so the entries up to v0.4.2 are the editions of the publication in
+#: which the paper itself changed, with the site's own number and date for each; v0.4.3
+#: is the paper's first number of its own. What changed in the paper under each, read
+#: from the article's history between the deployments listed above `PUBLICATION_HISTORY`
+#: on 2026-10-02:
 #:
+#:   v0.4.3  the frontier update of September 30 records T-060's proof that s(11) is
+#:           Trump's side, the T-026 rating moves from V4/C5 to V3/C3 under the ladder
+#:           of 2026-09-30, Figure 3 marks the settled endpoint, and a footnote records
+#:           the n = 12 and n = 17 bounds others have since raised (249d42c37,
+#:           d205561f0, 7862dc3e8, a6f630dd7); a patch revision of the paper (the owner,
+#:           2026-10-01), published under the v0.4.2 label until it was numbered
 #:   v0.4.2  the frontier update of September 22 records Kleddamag's verified
 #:           s(11) >= 3.875, built on T-026's certificate, and the paper presents T-026's
 #:           bound as historical; Figure 2's star marks every recent result
@@ -265,13 +272,30 @@ FIRST_PUBLISHED = PUBLICATION_HISTORY[-1].first_published
 #:
 #: Not versions of the paper: v0.4.1, under which the article did not change at all (the
 #: shared version stamp and the atlas's T-030), and v0.5.0, the website edition, which
-#: changed nothing in either paper. The article has changed since the v0.4.2 deployment
-#: (the T-060 frontier update of September 30, the V3/C3 rating) under the v0.4.2 label;
-#: whether that is a version of the paper is the owner's to say, and no number is
-#: invented for it here. A new version of the paper goes on the front with its own number
-#: and the day it is first published; `EXPLAINER_REVISED` moves with the article either
-#: way.
+#: changed nothing in either paper. A new version of the paper goes on the front with its
+#: own number and the day it is first published; `EXPLAINER_REVISED` moves with the
+#: article either way.
+#:
+#: v0.4.3 is dated by the deployment that first served the article in its present
+#: substance, the last substantive change being the V3/C3 regrade (d205561f0):
+#:
+#:   v0.4.3  2026-10-01T08:01:58Z  f9a3409f0  the first deployment holding d205561f0;
+#:                                            the T-060 update was live from d44ec0408,
+#:                                            2026-09-30T17:44:28Z, and the cosmetic
+#:                                            changes after it (the slug, the credits
+#:                                            form, 9b459da65 and 97e4069d5) went live
+#:                                            on October 1 and 2, so the substantive
+#:                                            day is the one recorded
 EXPLAINER_HISTORY = (
+    PublicationHistoryEntry(
+        version="v0.4.3",
+        first_published="October 1, 2026",
+        result_scope=(
+            "The settled-case revision: the frontier update records T-060's proof that "
+            "$s(11)$ is Trump's side, Figure 3 marks the endpoint, T-026 is rated V3/C3, "
+            "and the raised $n = 12$ and $17$ bounds are noted."
+        ),
+    ),
     PublicationHistoryEntry(
         version="v0.4.2",
         first_published="September 28, 2026",

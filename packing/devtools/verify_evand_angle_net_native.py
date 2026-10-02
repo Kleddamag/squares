@@ -79,6 +79,8 @@ class Case:
     #: The source's recorded least captured weight and bin at N = 6000.
     source_minimum: str
     source_bin: int
+    #: The angle net the case is decided over.
+    net: int = NET
 
 
 CASES = {
@@ -141,7 +143,7 @@ def net_rows(net: int = NET) -> tuple[ParentCoreRow, ...]:
         k += 1
 
 
-def parse_certificate(n: int, values: list[int]) -> ParentCoreCertificate:
+def parse_certificate(n: int, values: list[int], net: int = NET) -> ParentCoreCertificate:
     """Build the native certificate from the source's ``s_num s_den D W m (X Y w)^m``."""
     _require(len(values) >= 5, "truncated header")
     s_num, s_den, denominator, weight_scale, count = values[:5]
@@ -157,14 +159,27 @@ def parse_certificate(n: int, values: list[int]) -> ParentCoreCertificate:
         if w:
             atoms.append(Atom(str(index), *point, Fraction(w, weight_scale)))
     return ParentCoreCertificate(
-        n, side, Fraction(1), Fraction(1), tuple(atoms), (), net_rows()
+        n, side, Fraction(1), Fraction(1), tuple(atoms), (), net_rows(net)
     )
 
 
 def load_case(name: str) -> tuple[Case, ParentCoreCertificate]:
     case = CASES[name]
     _, values = read_source(case.path, case.sha256)
-    return case, parse_certificate(case.n, values)
+    return case, parse_certificate(case.n, values, case.net)
+
+
+def file_case(path: Path, n: int, net: int) -> str:
+    """Register a certificate file in the source's format as a case of its own.
+
+    For certificates derived from the source's, such as a rescaled or re-weighted s(12)
+    file, decided over the net ``net``. The digest is the file's own, so a journal or
+    receipt names exactly the bytes it decided; there is no recorded source minimum.
+    """
+    data, _ = read_source(path, None)
+    name = f"file:{path.name}:{net}"
+    CASES[name] = Case(n, path, hashlib.sha256(data).hexdigest(), "", -1, net)
+    return name
 
 
 def _git(*arguments: str) -> str:
@@ -220,7 +235,9 @@ def run(
         "command": sys.argv,
         "source_url": SOURCE_URL,
         "source_commit": SOURCE_COMMIT,
-        "certificate": str(case.path.relative_to(REPO)),
+        "certificate": str(case.path.relative_to(REPO))
+        if case.path.is_relative_to(REPO)
+        else str(case.path),
         "certificate_sha256": case.sha256,
     }
     if journal is not None:
@@ -288,7 +305,7 @@ def run(
         "provenance": provenance,
         "claim": f"s({case.n}) >= {certificate.outer_side}",
         "native_bound": f"s({case.n}) > {certificate.outer_side / certificate.parent_side}",
-        "net": NET,
+        "net": case.net,
         "sigma_scale": SIGMA_SCALE,
         "points": len(certificate.atoms),
         "budget": str(certificate.budget),
@@ -321,7 +338,11 @@ def run(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--case", choices=sorted(CASES), required=True)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--case", choices=sorted(CASES))
+    source.add_argument("--certificate", type=Path, help="a file in the source's format")
+    parser.add_argument("--n", type=int, default=12, help="with --certificate")
+    parser.add_argument("--net", type=int, default=NET, help="with --certificate")
     select = parser.add_mutually_exclusive_group(required=True)
     select.add_argument("--rows", nargs="+", type=int)
     select.add_argument("--pilot", action="store_true", help="first, source-minimum, last row")
@@ -332,6 +353,8 @@ def main() -> int:
     parser.add_argument("--resume", type=Path, help="a previous row journal of this case")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    if args.certificate is not None:
+        args.case = file_case(args.certificate.resolve(), args.n, args.net)
     source_state = _git("rev-parse", "HEAD"), bool(_git("status", "--porcelain"))
     if args.premises:
         case, certificate = load_case(args.case)
@@ -350,8 +373,8 @@ def main() -> int:
         if args.all:
             rows = None
         elif args.pilot:
-            last = len(net_rows()) - 1
-            rows = tuple(sorted({0, case.source_bin, last}))
+            last = len(net_rows(case.net)) - 1
+            rows = tuple(sorted({0, case.source_bin, last} - {-1}))
         else:
             rows = tuple(args.rows)
         resumed = (

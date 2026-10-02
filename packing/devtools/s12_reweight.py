@@ -258,6 +258,20 @@ def dump_rows(
     return cells, least
 
 
+def _same_points(a: Certificate, b: Certificate) -> bool:
+    """The same source points, possibly at another scale: proportional integer coordinates."""
+    if len(a.points) != len(b.points):
+        return False
+    (ax, ay, _), (bx, by, _) = max(a.points), max(b.points)
+    return (
+        all(
+            x * bx == u * ax and y * bx == v * ax
+            for (x, y, _), (u, v, _) in zip(a.points, b.points, strict=True)
+        )
+        and ay * bx == by * ax
+    )
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=(__doc__ or "").split("\n\n")[0])
     parser.add_argument("--work", type=Path, required=True)
@@ -283,10 +297,20 @@ def main(argv: list[str] | None = None) -> int:
     source = load_source()
     scaled = rescale(source, args.multiplier, args.denominator)
     if args.start is not None:
+        # a weighting of the same source points at any scale: keep this run's geometry
         start = parse_certificate(args.start.read_bytes())
-        if [(x, y) for x, y, _ in start.points] != [(x, y) for x, y, _ in scaled.points]:
-            raise ValueError("--start is not a weighting of this scaled point set")
-        scaled = start
+        if not _same_points(start, scaled):
+            raise ValueError("--start is not a weighting of the source's points")
+        scaled = Certificate(
+            scaled.s_num,
+            scaled.s_den,
+            scaled.denominator,
+            start.weight_scale,
+            tuple(
+                (x, y, w)
+                for (x, y, _), (_, _, w) in zip(scaled.points, start.points, strict=True)
+            ),
+        )
     orbits = d4_orbits(scaled)
     orbit_of = np.empty(len(scaled.points), dtype=np.int64)
     for o, orbit in enumerate(orbits):

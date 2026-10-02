@@ -180,6 +180,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-163](agent-sessions/session-163-native-bounds-and-census.md) | stopped | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 5 | think-8cps | Under think-niqx, merge current main and certify the resulting PR head through required local and hosted checks. The mathematical obligations identified above remain separate after this integration debt is discharged. |
 | [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | completed | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 39 | think-3i74 | After the reviewed helper cleanup lands, implement the bounded fresh-ensemble replay entry point under think-e2ot; preserve the accepted historical evidence. PR 249 reconciliation, optional Rust performance and later exposition remain separate tracks. |
 | [session-165](agent-sessions/session-165-post-optimality-overnight.md) | completed | contemporaneous | `insight-iteration` (insight) | `pipeline-improvement` (correctness) | 36 | think-kaqh | think-11ma: in a separately scheduled W3 block, preregister a small exact geometric-exclusion pilot below the certified endpoint. The overnight heartbeat is to be paused by15:00UTC; no new overnight research or H258 retry. |
+| [session-168](agent-sessions/session-168-known-best-families-and-shading.md) | in_progress | contemporaneous | `insight-iteration` (insight) | `insight-iteration` (insight) | 1 | think-los0 | Integrate the five lane notes into X-049. |
 
 ### Workflow summary
 
@@ -189,7 +190,7 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | --- | ---: | ---: | ---: | ---: |
 | `research-survey` | 4 | 2 | 16 | 2 |
 | `factual-review` | 11 | 1 | 66 | 3 |
-| `insight-iteration` | 28 | 1 | 88 | 4 |
+| `insight-iteration` | 29 | 1 | 89 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 40 | 1 |
 | `research-loop` | 31 | 4 | 115 | 8 |
@@ -1357,6 +1358,7 @@ These totals exclude 4 historical rounds with unrecorded timing; their cost is u
 - X-043 — New Lower-Bound Proof Directions After the External Advances
 - X-044 — Transfer Opportunities at the Lowest Open Square-Packing Cases
 - X-045 — N11 Global Capture and Exact Optimality
+- X-049 — Families of Known-Best Packings, Contact Shading, and the Large-n Limit
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

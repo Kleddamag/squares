@@ -20,15 +20,16 @@ and standing chip one size.
 Each page is rendered and loaded once, in a module fixture, with every row showing, its
 math typeset, and then resized for each width; the overview is then loaded as it opens,
 for the one check that needs its own filters. The checks that need no browser, of the
-list a cell holds and of the formulas' TeX, read the same render. Skipped where no
-Chromium can be launched; `SQPACK_CHROMIUM` names one the environment supplies, as the
-other browser tools read it.
+list a cell holds and of the formulas' TeX, read the same render. The browser is launched
+as `tests.site_browser` launches it: the pinned Chromium, or the one `SQPACK_CHROMIUM`
+names, with its text unhinted so that the pixels pinned here read the same on Linux as on
+macOS, where they were measured; skipped where none can be launched, unless the run
+requires one.
 """
 
 from __future__ import annotations
 
 import html
-import os
 import re
 from collections.abc import Iterator
 from pathlib import Path
@@ -39,8 +40,7 @@ import pytest
 from devtools import overview_data, overview_sections, render_overview
 from devtools.measure_site_pages import CHIPS, COLUMNS
 from devtools.preview_site import settle_math
-from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
-from tests import site_renders
+from tests import site_browser, site_renders
 
 #: The pages that hold a table of results.
 PAGES = ("index.html", render_overview.RESULTS_PAGE)
@@ -101,13 +101,10 @@ class Laid(NamedTuple):
 @pytest.fixture(scope="module")
 def laid(tmp_path_factory: pytest.TempPathFactory) -> Iterator[dict[tuple[str, int], Laid]]:
     """Each page's table of results and chips as laid out at each width."""
-    sync_api = pytest.importorskip("playwright.sync_api")
+    sync_api = site_browser.api()
     site = Path(tmp_path_factory.mktemp("site"))
     with sync_api.sync_playwright() as driver:
-        try:
-            browser = driver.chromium.launch(executable_path=os.environ.get(BROWSER_OVERRIDE))
-        except sync_api.Error as error:
-            pytest.skip(f"no Chromium to launch: {error.message.splitlines()[0]}")
+        browser = site_browser.launch(driver)
         found: dict[tuple[str, int], Laid] = {}
         for name in PAGES:
             path = site / name

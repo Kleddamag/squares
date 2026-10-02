@@ -15,10 +15,13 @@
 // The overview is not a forwarder, and forwards by fragment. The results table moved from
 // it to `all-results.html`: its section, `#every-result`, and each result's row (`#t-018`)
 // are sent there, fragment kept. The results page's title is "Every Result", so the
-// section's old fragment lands on it. The explainer was once the site's root, so any
-// other fragment that names nothing on the overview is sent to the explainer, query
-// string and all. The overview's own ids, the explainer's and the results page's are kept
-// disjoint by a test, so no old link is captured by the wrong page.
+// section's old fragment lands on it. Verification Ladders moved there too, on
+// 2026-10-02: its fragment, `#verification-ladders`, and the older
+// `#verification-at-a-glance`, which an empty anchor in its heading keeps, are sent
+// there the same way. The explainer was once the site's root, so any other fragment
+// that names nothing on the overview is sent to the explainer, query string and all. The
+// overview's own ids, the explainer's and the results page's are kept disjoint by a
+// test, so no old link is captured by the wrong page.
 (() => {
   /** @param {string} target */
   const forward = (target) => {
@@ -42,6 +45,10 @@
   if (document.getElementById(id)) {
     return;
   }
-  const result = id === "every-result" || /^t-\d+$/.test(id);
+  const result =
+    id === "every-result" ||
+    id === "verification-ladders" ||
+    id === "verification-at-a-glance" ||
+    /^t-\d+$/.test(id);
   forward(result ? "all-results.html" : "papers/n11-lower-bounds-explainer.html");
 })();

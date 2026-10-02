@@ -53,10 +53,15 @@ from devtools.render_n11_lower_bounds_explainer_pdf import OUTPUT as PDF_OUTPUT
 from devtools.render_overview import PAPERS_DIR, SITE_PAGES
 from devtools.repo_links import REPO_URL
 from sqpack.release import (
+    DATA_REVISION,
+    DATA_REVISION_LENGTH,
+    EXPLAINER_FIRST_PUBLISHED,
+    EXPLAINER_HISTORY,
     EXPLAINER_REVISED,
-    FIRST_PUBLISHED,
+    EXPLAINER_VERSION,
     PUBLICATION_EDITION,
     PUBLICATION_HISTORY,
+    PUBLICATION_STAMP,
     PUBLICATION_VERSION,
     edition_at,
 )
@@ -106,16 +111,22 @@ def test_no_placeholder_survives_substitution(page: str) -> None:
     assert re.findall(r"\{\{[A-Z_]+\}\}", page) == []
 
 
-def test_the_explainer_ends_with_the_sites_closing_credit(page: str) -> None:
+def test_the_explainer_ends_with_the_sites_closing_credit_without_its_version(
+    page: str,
+) -> None:
     """The explainer's closing paragraph holds the two lines every page's footer is made
     of (`render_overview.colophon_lines`): the project and its repository, then the
-    version and the credit to Flowmark and KPress. The paragraph keeps the paper's own
-    class, and so its type and its print rules."""
-    footer = f'<p class="col colophon centred">{render_overview.colophon_lines()}</p>'
+    credit to Flowmark and KPress, with no version between them. The paper's own version
+    is in its credits, and the site's edition goes on no paper (the owner, 2026-10-01).
+    The paragraph keeps the paper's own class, and so its type and its print rules."""
+    footer = f'<p class="col colophon centred">{render_overview.colophon_lines(edition="")}</p>'
     assert page.count(footer) == 1
     assert page.count('class="site-colophon-line"') == 2
-    assert f'<span class="site-colophon-part">{PUBLICATION_EDITION}</span>' in footer
+    assert footer.count('class="site-colophon-part"') == 3
     assert '<a href="https://github.com/jlevy/squares">github.com/jlevy/squares</a>' in footer
+    assert "Formatted and typeset with" in footer
+    assert PUBLICATION_EDITION not in footer
+    assert re.search(r"v\d+\.\d+\.\d+", footer) is None
 
 
 def test_the_bar_marks_papers_current_on_the_explainer(page: str) -> None:
@@ -556,7 +567,7 @@ def test_the_card_and_the_page_say_the_same_thing(page: str) -> None:
     assert len(description) <= render_overview.DESCRIPTION_LIMIT
     # The two dates the hero prints, as a crawler reads a date.
     assert head.meta("article:published_time") == [
-        render_n11_lower_bounds_explainer.iso_date(FIRST_PUBLISHED)
+        render_n11_lower_bounds_explainer.iso_date(EXPLAINER_FIRST_PUBLISHED)
     ]
     assert head.meta("article:modified_time") == [
         render_n11_lower_bounds_explainer.iso_date(EXPLAINER_REVISED)
@@ -1109,14 +1120,12 @@ def test_every_repository_link_names_main_and_exists_there(page: str, document: 
     assert not missing, f"linked on {DEFAULT_BRANCH} but not in HEAD: {missing}"
 
 
-def test_the_page_stamps_the_shared_version_the_atlas_carries(page: str, document: str) -> None:
-    """The credits print the one version, as the atlas footer does, not the build commit.
-
-    The page names the data it is drawn from now, the pin. A poster names the data it
-    was drawn from, in the same spelling at its own data commit, and is not re-stamped
-    when the pin moves (`sqpack.release`, rule 4): the two agree in the version and may
-    differ in the six characters after it.
-    """
+def test_the_atlas_figure_carries_the_shared_version_at_its_own_data_commit() -> None:
+    """A poster names the data it was drawn from, in the site's one spelling at its own
+    data commit, and is not re-stamped when the pin moves (`sqpack.release`, rule 4):
+    the posters agree with the site's edition in the version and may differ in the six
+    characters after it. The posters are the site's assets, so they keep the site's
+    version; the paper that shows them does not."""
     for composite in (path for path in COMPOSITE_ASSETS if path.suffix == ".svg"):
         text = composite.read_text()
         footer = re.search(r'<text data-feature="release-stamp"[^>]*>([^<]*)</text>', text)
@@ -1125,22 +1134,28 @@ def test_the_page_stamps_the_shared_version_the_atlas_carries(page: str, documen
         assert drawn_from is not None, composite.name
         assert footer.group(1) == edition_at(drawn_from.group(1)), composite.name
         assert footer.group(1).rsplit("-", 1)[0] == PUBLICATION_EDITION.rsplit("-", 1)[0]
-    # The top names which edition is being read, linking the full list rather than
-    # repeating it (the owner, 2026-09-22), then when the result was first published and
-    # when it was last revised, in the two papers' one credits form (the owner,
-    # 2026-10-01: the version line, plain, before the dates). The first date is the
-    # oldest edition's; the second is the day the article last changed, which
-    # `test_artifact_dates` holds to git. The front is `paper_front`'s, from this
-    # paper's record, and the article carries one slot for it.
-    dates = f"First published {FIRST_PUBLISHED} · Last revised {EXPLAINER_REVISED}"
-    edition = f'{PUBLICATION_EDITION} (<a href="#version-history">version history</a>)'
+
+
+def test_the_credits_print_the_papers_own_version_and_not_the_sites(
+    page: str, document: str
+) -> None:
+    """The top names which version of the paper is being read, the paper's own, linking
+    the full list rather than repeating it (the owner, 2026-09-22), then when the paper
+    was first published and when it was last revised, in the two papers' one credits
+    form (the owner, 2026-10-01: the version line, plain, before the dates). The first
+    date is the paper's oldest edition's; the second is the day the article last
+    changed, which `test_artifact_dates` holds to git. The front is `paper_front`'s,
+    from this paper's record, and the article carries one slot for it.
+    """
+    dates = f"First published {EXPLAINER_FIRST_PUBLISHED} · Last revised {EXPLAINER_REVISED}"
+    edition = f'{EXPLAINER_VERSION} (<a href="#version-history">version history</a>)'
     assert f'<span class="edition">{edition}</span>' in page
     assert f'<span class="publication-date">{dates}</span>' in page
     assert page.index('class="edition"') < page.index('class="publication-date"')
-    assert FIRST_PUBLISHED != EXPLAINER_REVISED
+    assert EXPLAINER_FIRST_PUBLISHED != EXPLAINER_REVISED
     compact = " ".join(document.split())
     assert dates in compact
-    assert f"{PUBLICATION_EDITION} ([version history](#version-history))" in compact
+    assert f"{EXPLAINER_VERSION} ([version history](#version-history))" in compact
     assert 'id="version-history"' in page
     article = render_n11_lower_bounds_explainer.MARKDOWN.read_text(encoding="utf-8")
     assert article.count("{{FRONT_MATTER}}") == 1
@@ -1154,12 +1169,53 @@ def test_the_page_stamps_the_shared_version_the_atlas_carries(page: str, documen
     assert block.count("<span") == 4
     assert "github.com/jlevy/squares" not in block
     assert block.lstrip().startswith('<span class="credits-own">Human oversight: ')
+    # The version line is the paper's own, plain: no status, no data hash.
+    assert re.fullmatch(r"v\d+\.\d+\.\d+", EXPLAINER_VERSION)
+    assert render_n11_lower_bounds_explainer.FRONT.version == EXPLAINER_VERSION
 
 
-def test_version_history_is_source_derived_and_lists_every_edition(
+def _visible_text(page: str) -> str:
+    """The page's words: what a reader, or `pdftotext`, sees, with the inlined scripts,
+    stylesheets and base64 faces out of the way. A six-character hash occurs by chance
+    in a megabyte of base64, so the hash is held out of the words, not the bytes."""
+    stripped = re.sub(r"<(script|style)\b.*?</\1>", " ", page, flags=re.DOTALL | re.IGNORECASE)
+    stripped = re.sub(r"<[^>]+>", " ", stripped)
+    return " ".join(stripped.split())
+
+
+def test_no_site_version_or_data_hash_reaches_the_paper(page: str, document: str) -> None:
+    """The site's edition and the data hash are on no paper page, in no Markdown edition
+    and in no PDF (the owner, 2026-10-01: the repository's version does not go on the
+    papers). The PDF is drawn from this page and its receipt holds it to these bytes
+    (`render_n11_lower_bounds_explainer_pdf`), so what is not in the page's words is not
+    in the PDF's. The hash is held out of the words rather than the bytes: the page
+    inlines its faces as base64, where six hex characters occur by chance.
+    """
+    words = _visible_text(page)
+    for forbidden in (PUBLICATION_EDITION, PUBLICATION_STAMP):
+        assert forbidden not in page
+        assert forbidden not in document
+    assert DATA_REVISION[:DATA_REVISION_LENGTH] not in words
+    assert DATA_REVISION[:DATA_REVISION_LENGTH] not in document
+    assert DATA_REVISION not in page
+    # Every version on the page is the paper's own or the release the films are on;
+    # the site's edition is neither.
+    allowed = {EXPLAINER_VERSION, render_overview.FILM_RELEASE} | {
+        entry.version for entry in EXPLAINER_HISTORY
+    }
+    for found in set(re.findall(r"v\d+\.\d+\.\d+(?:-[0-9a-f]{6})?", words)):
+        assert found in allowed, found
+    for found in set(re.findall(r"v\d+\.\d+\.\d+(?:-[0-9a-f]{6})?", document)):
+        assert found in allowed, found
+
+
+def test_version_history_lists_the_papers_own_editions_and_no_others(
     page: str, document: str
 ) -> None:
-    """The page history comes from release metadata and carries every edition."""
+    """The page's history is `release.EXPLAINER_HISTORY`, exactly: the editions in which
+    the paper changed, each with the day it was first published, and none of the site's
+    editions under which it did not (the owner, 2026-10-01: the version history on a
+    paper reflects versions of the paper, not of the website)."""
     match = re.search(
         r"^## Version History\n\n(?P<history>.*?)(?=\n\[\^|\Z)",
         document,
@@ -1168,17 +1224,31 @@ def test_version_history_is_source_derived_and_lists_every_edition(
     assert match is not None
     assert document.index("## Version History") > document.index("## Further Reading")
     history = match.group("history")
-    assert len(re.findall(r"^- \*\*v", history, re.MULTILINE)) == len(PUBLICATION_HISTORY)
+    listed = re.findall(r"^- \*\*(v\d+\.\d+\.\d+) — ", history, re.MULTILINE)
+    assert listed == [entry.version for entry in EXPLAINER_HISTORY]
     compact_history = " ".join(history.split())
-    for entry in PUBLICATION_HISTORY:
+    for entry in EXPLAINER_HISTORY:
         expected = f"- **{entry.version} — {entry.first_published}.** {entry.result_scope}"
         assert " ".join(expected.split()) in compact_history
         assert entry.version in page
         assert entry.first_published in page
+    site_only = {e.version for e in PUBLICATION_HISTORY} - set(listed)
+    assert site_only, "the site has had editions in which the paper did not change"
+    for version in site_only:
+        assert f"**{version} — " not in history
 
 
 def test_reader_facing_version_references_follow_release_metadata() -> None:
-    """Nearby entry points do not retain the previous edition number."""
-    for path in (REPO / "README.md", REPO / "TUTORIAL.md"):
-        assert PUBLICATION_VERSION in path.read_text()
-    assert "PUBLICATION_HISTORY" in (REPO / "development.md").read_text()
+    """Nearby entry points name the right version: the README the site's edition, where
+    it speaks of the site and the posters, and the tutorial the explainer's own, where it
+    points at the paper; neither retains a previous number."""
+    readme = (REPO / "README.md").read_text()
+    assert PUBLICATION_VERSION in readme
+    assert "its papers and the atlas posters are at edition" not in readme
+    tutorial = (REPO / "TUTORIAL.md").read_text()
+    assert f"the standalone {EXPLAINER_VERSION} explainer" in tutorial
+    if PUBLICATION_VERSION != EXPLAINER_VERSION:
+        assert PUBLICATION_VERSION not in tutorial
+    development = (REPO / "development.md").read_text()
+    assert "PUBLICATION_HISTORY" in development
+    assert "EXPLAINER_HISTORY" in development

@@ -633,17 +633,20 @@ def favicon_html() -> str:
     return f'<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,{quote(svg)}">'
 
 
-def colophon_lines() -> str:
+def colophon_lines(*, edition: str = PUBLICATION_EDITION) -> str:
     """The closing credit's two lines, the one definition every page's footer is made of:
     the site's pages (`colophon_html`), the explainer and the optimality paper, whose
     shells set it in their own closing paragraph.
 
     The first line is the project's formal name and its repository, shown without its
-    scheme and linked. The second is the version every artifact prints, then the credit
-    to the two tools. The version is `sqpack.release.PUBLICATION_EDITION` taken whole,
-    the stamp the atlas footer and the film carry (`v0.4.2-8ac5de`, with the edition's
+    scheme and linked. The second is `edition`, then the credit to the two tools. On the
+    site's pages the edition is `sqpack.release.PUBLICATION_EDITION` taken whole, the
+    stamp the atlas footer and the film carry (`v0.4.2-8ac5de`, with the edition's
     status ahead of it while it has one), so it follows a re-pin and a new edition with
-    no edit here; a build that prints it names `release.py` among its inputs.
+    no edit here; a build that prints it names `release.py` among its inputs. A paper
+    passes none: its own version is in its credits, and the site's version and the data
+    hash go nowhere on a paper (the owner, 2026-10-01), so its second line is the credit
+    to the tools alone.
 
     A line is a block, so there are two at every width, and each part beside a middle
     dot is an inline block, so a line too long for a phone breaks at its dot before it
@@ -654,14 +657,15 @@ def colophon_lines() -> str:
         return f'<span class="site-colophon-part">{markup}</span>'
 
     def line(*parts: str) -> str:
-        return f'<span class="site-colophon-line">{" · ".join(map(part, parts))}</span>'
+        shown = [part(markup) for markup in parts if markup]
+        return f'<span class="site-colophon-line">{" · ".join(shown)}</span>'
 
     repository = repo_links.REPO_URL
     return line(
         html.escape(PROJECT_NAME),
         f'<a href="{repository}">{html.escape(repository.removeprefix("https://"))}</a>',
     ) + line(
-        html.escape(PUBLICATION_EDITION),
+        html.escape(edition),
         f'Formatted and typeset with <a href="{FLOWMARK_URL}">Flowmark</a> '
         f'and <a href="{KPRESS_URL}">KPress</a>',
     )
@@ -849,9 +853,9 @@ def overview_page() -> Page:
     """The front door: prose from its template, every fact from the record.
 
     Its first section, The Square Packing Problem, opens with README's two opening
-    paragraphs and its Recent Results with README's next two, read from README's
-    `project-intro` and `recent-progress` blocks and their links rewritten for the site
-    (`site_documents`).
+    paragraphs, read from README's `project-intro` block with their links rewritten for
+    the site (`site_documents`). Recent Results is one paragraph of the template's own
+    before its table; README keeps its fuller account of the same progress.
     """
     from devtools import overview_data, overview_sections, site_documents  # noqa: PLC0415
 
@@ -859,18 +863,15 @@ def overview_page() -> Page:
     values = {
         "HERO": overview_sections.hero(),
         "README_INTRO": site_documents.overview_intro(),
-        "README_PROGRESS": site_documents.overview_progress(),
         "NEW_ISSUE_URL": NEW_ISSUE_URL,
         "DOCUMENT_CARDS": overview_sections.document_cards(),
         "OTHER_PROJECTS": overview_sections.other_project_cards(overview),
         "ATLAS_GRID": overview_sections.atlas_grid(),
         "ATLAS_CARDS": overview_sections.atlas_cards(),
         "PAGE_CARDS": overview_sections.page_cards(),
-        "VERIFICATION": overview_sections.verification_block(),
+        "SURVEY_CARDS": overview_sections.survey_cards(),
         "RECENT": overview_sections.recent_table(overview),
         "STAR_LEGEND": overview_sections.star_legend(),
-        "STATUS_COUNTS": overview_sections.status_counts(overview),
-        "SURVEY_COUNTS": overview_sections.survey_counts(overview),
         "ARROW_RIGHT": overview_sections.arrow_icon("right"),
     }
     markdown = fill(
@@ -911,6 +912,9 @@ def results_page() -> Page:
         "EPISTEMICS_URL": repo_url(repo_links.EPISTEMICS),
         "RESULTS_TABLE": overview_sections.results_table(overview),
         "STAR_LEGEND": overview_sections.star_legend(),
+        "STATUS_COUNTS": overview_sections.status_counts(overview),
+        # The rating ladders, the homepage's Verification Ladders until 2026-10-02.
+        "VERIFICATION": overview_sections.verification_block(),
     }
     markdown = fill(
         RESULTS_ARTICLE.read_text(encoding="utf-8"), values, where=RESULTS_ARTICLE.name

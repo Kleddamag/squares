@@ -128,12 +128,18 @@ def test_each_papers_credits_follow_the_owners_form(
         assert dates.text.endswith(
             f"{paper_front.REVISED} {release.EXPLAINER_REVISED}"
         ) or dates.text.endswith(f"{paper_front.REVISED} {release.OPTIMALITY_REVIEW_REVISED}")
-    assert explainer[-2].text == f"{release.PUBLICATION_EDITION} (version history)"
+    # Each paper's version line is its own version (the owner, 2026-10-01), never the
+    # site's edition or the data hash.
+    assert explainer[-2].text == f"{release.EXPLAINER_VERSION} (version history)"
     assert explainer[-2].links == (("version history", "#version-history"),)
     assert review[-2].text == release.OPTIMALITY_REVIEW_EDITION
     assert review[-2].links == ()
+    for lines in (explainer, review):
+        assert release.PUBLICATION_EDITION not in lines[-2].text
+        assert release.DATA_REVISION[: release.DATA_REVISION_LENGTH] not in lines[-2].text
     assert explainer[-1].text == (
-        f"First published {release.FIRST_PUBLISHED} · Last revised {release.EXPLAINER_REVISED}"
+        f"First published {release.EXPLAINER_FIRST_PUBLISHED} · "
+        f"Last revised {release.EXPLAINER_REVISED}"
     )
     assert review[-1].text == (
         f"Original proof {release.OPTIMALITY_PROOF_PUBLISHED} · "

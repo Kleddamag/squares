@@ -1,10 +1,12 @@
-"""A version bump is one command: it names the edition, redraws, checks, and stops there.
+"""A site version bump is one command: it names the edition, redraws, checks, and stops.
 
 The bump is when the large generated assets are rebuilt (the owner, 2026-10-01). What is
 pinned here is the one edit the command makes by hand -- a new edition at the front of
-`release.py`'s history, written as the formatter leaves one -- its refusals, and that it
-changes nothing until the tree is clean and the pin is current. The redraw and the
-checks it then runs are other modules' commands, with tests of their own.
+`release.py`'s site history, written as the formatter leaves one, with no paper's own
+history or version moved -- its refusals, that it changes nothing until the tree is clean
+and the pin is current, and that what it leaves to the owner ends at the deployment
+check, with no tag and no GitHub release. The redraw and the checks it then runs are
+other modules' commands, with tests of their own.
 """
 
 from __future__ import annotations
@@ -64,6 +66,10 @@ def test_a_bump_adds_the_edition_at_the_front_and_moves_nothing_else(scope: str)
     assert module["PUBLICATION_EDITION"] == (
         f"{version}-{release.DATA_REVISION[: release.DATA_REVISION_LENGTH]}"
     )
+    # A site bump moves no paper: each paper's own history and version stay as they are.
+    assert module["EXPLAINER_HISTORY"] == release.EXPLAINER_HISTORY
+    assert module["EXPLAINER_VERSION"] == release.EXPLAINER_VERSION
+    assert module["OPTIMALITY_REVIEW_EDITION"] == release.OPTIMALITY_REVIEW_EDITION
 
     # The lint floor formats every tracked Python file, so the edit has to be written
     # the way the formatter writes it, or a bump would fail the gate on its own output.
@@ -140,8 +146,15 @@ def test_a_dry_run_prints_the_plan_and_changes_nothing(
     )
     assert "python -m devtools.build_known_best_atlas --update-composites" in printed
     assert "dry run: nothing was changed" in printed
-    assert f"git tag {version} <merge commit>" in printed
-    assert f"gh release create {version}" in printed
+    # A site bump ends at the deployment check. No tag and no GitHub release are
+    # routine (the owner, 2026-10-01: releases matter only for the generated assets
+    # that need a download address, the films), and no paper's version moves.
+    assert f"The site's version {version} is complete when that passes" in printed
+    assert "git tag" not in printed
+    assert "gh release create" not in printed
+    assert "a release is cut only to host generated assets" in printed
+    assert "render_overview.FILM_RELEASE" in printed
+    assert "Neither paper's version changed" in printed
     assert release_pin.RELEASE.read_text(encoding="utf-8") == SOURCE
 
 

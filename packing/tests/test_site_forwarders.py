@@ -196,7 +196,12 @@ def test_the_overview_sends_an_old_explainer_fragment_to_the_paper(
     assert _arrives(browser, f"{served}?review=fonts#fn-3", arrival, scripts=True) == arrival
     arrival = f"{served}{render_overview.RESULTS_PAGE}#t-018"
     assert _arrives(browser, f"{served}index.html#t-018", arrival, scripts=True) == arrival
-    stays = f"{served}#verification-ladders"
+    # Verification Ladders is the results page's since 2026-10-02: both its fragments
+    # go there, and one the overview has stays.
+    for ladders in ("verification-ladders", "verification-at-a-glance"):
+        arrival = f"{served}{render_overview.RESULTS_PAGE}#{ladders}"
+        assert _arrives(browser, f"{served}#{ladders}", arrival, scripts=True) == arrival
+    stays = f"{served}#recent-results"
     assert _arrives(browser, stays, stays, scripts=True) == stays
 
 

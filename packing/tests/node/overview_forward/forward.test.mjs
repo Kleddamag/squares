@@ -71,14 +71,17 @@ void test("a fragment the overview has, or none, stays", () => {
   assert.equal(forwarded(""), null);
 });
 
+void test("the ladders' two fragments go to the results page where the section is", () => {
+  // Verification Ladders left the overview for the results page on 2026-10-02; it was
+  // `#verification-at-a-glance` until 2026-10-01, and its heading there keeps an empty
+  // anchor of that id, so both fragments are sent on with the fragment kept.
+  assert.equal(forwarded("#verification-ladders"), "all-results.html#verification-ladders");
+  assert.equal(forwarded("#verification-at-a-glance"), "all-results.html#verification-at-a-glance");
+});
+
 void test("a renamed section's old fragment stays while an anchor keeps its id", () => {
-  // Verification Ladders was `#verification-at-a-glance`; its heading keeps an empty
-  // anchor of that id, without which the old link would be sent to the explainer.
-  const old = "#verification-at-a-glance";
-  const kept = ["verification-ladders", "verification-at-a-glance"];
-  assert.equal(forwarded(old, { ids: kept }), null);
-  assert.equal(forwarded(old, { ids: ["verification-ladders"] }), `${EXPLAINER}${old}`);
-  // The Frontier Survey was `#the-survey`, kept the same way.
+  // The Frontier Survey was `#the-survey`; its heading keeps an empty anchor of that id,
+  // without which the old link would be sent to the explainer.
   const survey = "#the-survey";
   assert.equal(forwarded(survey, { ids: ["the-frontier-survey", "the-survey"] }), null);
   assert.equal(forwarded(survey, { ids: ["the-frontier-survey"] }), `${EXPLAINER}${survey}`);

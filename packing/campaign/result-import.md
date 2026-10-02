@@ -128,6 +128,16 @@ is not a condition of it.
 - It runs the retained copy of each checker, which is read before it is run.
   A script that fetches one over the network is run with the fetch replaced, and the
   receipt says so.
+- Its evidence entry names every program the replay runs in `verifiers`, deciders and
+  premise checks alike, and registers a new one in
+  [`verifiers.yaml`](../frontier/verifiers.yaml) with the digest that ran and the
+  retained path of its source.
+  `relationship_to_generator` is read from the deciding programs: `same-implementation`
+  for the source’s own checker, `shared-components` with the reused parts listed,
+  `independent-implementation` with the record of what its authors read
+  ([epistemics.md](../../epistemics.md#which-code-confirmed-it)).
+  `devtools.backfill_verifier_relation --dry-run` shows what it would write and which
+  values look wrong.
 - Where the source’s script cannot pass as published, the evidence entry’s `limitations`
   say so, the author is told, and the same checks are run as this repository’s own
   sequence.
@@ -153,6 +163,13 @@ defect open, rewrites the entry’s `claim`, `notes` and `next_rung` together an
 its `activity`, so that no field says a replay is pending while another says it passed.
 The reviewer also confirms or changes the draft significance score.
 An open defect goes to the author with the review.
+
+The reviewer of the pull request checks one thing in every sentence the stage writes:
+where the claim, the case record, the review or the reply says the result is
+*confirmed*, it says which confirmation, reproduced with the producer’s code,
+re-implemented sharing named components, or independently re-implemented.
+The checker holds the register’s `claim`, `composition` and `next_rung` to it; the case
+record, the review and the reply are held to it here.
 
 ## Stage 5: Publish
 
@@ -188,6 +205,8 @@ The process adds when and how:
   branch dies with the branch, and a `T-NNN` quoted from one can change.
 - There is one reply when the result is imported and one when it is confirmed or a
   defect is found, and a follow-up whenever the record moves past what a reply said.
+  The reply that reports a confirmation names the programs that ran, and says whether
+  they were the author’s own code re-run or a re-implementation.
 - The issue is closed with a final comment when nothing the author asked for is queued.
 
 <!-- This document follows common-doc-guidelines.md.

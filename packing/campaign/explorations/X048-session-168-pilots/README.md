@@ -285,12 +285,18 @@ Starting from the cells, roughly 190 position splits would be needed before boxe
 reach $1/64$, against the falsifier’s 16. The endpoint control holds after all 1,197
 certified updates.
 
-Lane C1’s reading, not yet reviewed: pairwise propagation reaches the box itself as its
-fixpoint. The soft mode’s slope of $1/175.8$ means a cycle of contacts gains only
-$\delta/176$ against per-link losses from row width, so contraction would need rows
-about $2^{-18}$ wide, and even then $g\ge0.994$. The pilot’s producer is simple, with no
-self-hull cuts or branch predicates, so the verdict that n11’s architecture is the wrong
-engine for n17 capture needs an independent check before the route is changed.
+Lane C1’s reading was that pairwise propagation reaches the box as its fixpoint, so the
+architecture is wrong for n17 capture.
+The
+[independent review](../../../../docs/project/reviews/review-2026-10-02-n17-capture-after-pilot.md)
+finds the result producer-limited instead.
+In a first-order model of the best any pairwise ownership induction can do, there is no
+fixpoint above zero for n17 or n11. With the pilot’s cap of 24 live rows per owner,
+positions stay at the box for 23 rounds, and the pilot ran 14. With 96 rows they
+contract from round 12 at $g\approx0.70$; calibrated against n11’s record, the real
+kernel would sit near $g\approx0.9$. The review specifies a second pilot with the
+live-row cap lifted, a sharper core and an n11 contraction control, and its own
+falsifier.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

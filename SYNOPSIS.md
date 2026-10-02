@@ -535,6 +535,7 @@ case or experiment separately.
 | [n17 W7 Closure Review](docs/project/reviews/review-2026-10-02-n17-w7-closure.md) | dated review record | record | retained | — |
 | [n17 Branch-and-Bound Certifier Review](docs/project/reviews/review-2026-10-02-n17-branch-and-bound-certifier.md) | dated review record | record | retained | — |
 | [n17 Residue Process](docs/project/reviews/review-2026-10-02-n17-residue-process.md) | dated review record | record | retained | — |
+| [n17 Capture After the Pilot](docs/project/reviews/review-2026-10-02-n17-capture-after-pilot.md) | dated review record | record | retained | — |
 | [n17 Optimality Route After PR 265](docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md) | dated review record | record | retained | — |
 | [X-048 Session 168 Pilots: Receipts](packing/campaign/explorations/X048-session-168-pilots/README.md) | research synthesis | record | retained | — |
 | [X-048 Session 167 Pilots: Receipts](packing/campaign/explorations/X048-session-167-pilots/README.md) | research synthesis | record | retained | — |

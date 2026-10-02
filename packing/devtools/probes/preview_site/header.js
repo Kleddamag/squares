@@ -45,7 +45,9 @@
   };
   const nav = document.querySelector(".site-nav");
   const header = document.querySelector(".kpress-site-header");
-  const tabs = document.querySelector(".site-tabs");
+  // The section tabs are the strip that is a `nav` of links; the homepage's atlas has
+  // the same strip as a tablist of buttons over its tiles, which is not a header.
+  const tabs = document.querySelector("nav.site-tabs");
   /** @param {Element | null} el */
   const ruled = (el) =>
     el !== null && Number.parseFloat(getComputedStyle(el).borderBottomWidth) > 0;
@@ -99,7 +101,7 @@
       name: size(document.querySelector(".site-nav .site-name")),
       name_shown: nameText !== null && nameText.getClientRects().length > 0,
       link: size(links[0] ?? null),
-      tab: size(document.querySelector(".site-tabs a")),
+      tab: size(document.querySelector("nav.site-tabs a")),
       links_rows: lines.size,
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       scale,

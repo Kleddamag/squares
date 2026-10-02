@@ -2,7 +2,7 @@
 
 # Defect log
 
-512 defects recorded across the packing toolchain.
+513 defects recorded across the packing toolchain.
 One line each here; the narrative lives in the artifact named by every row.
 Source of truth is [`defects.yaml`](packing/defects.yaml).
 
@@ -23,9 +23,9 @@ Source of truth is [`defects.yaml`](packing/defects.yaml).
 | `inspection` | 63 | reading the code or the design with intent |
 | `drift_check` | 17 | a generated view disagreeing with its source |
 | `design` | 1 | caught while designing, before it reached data |
-| `gate` | 81 | the automated test suite |
+| `gate` | 82 | the automated test suite |
 
-The line worth reading twice: **the automated gate caught 81 of 512, and none of the 104 soundness defects.** Gates confirm what you already thought to check. The rest were found by a device built to be *surprised* — a control cell, a pre-registered rule, a generated view contradicting itself — or by someone reading carefully.
+The line worth reading twice: **the automated gate caught 82 of 513, and none of the 104 soundness defects.** Gates confirm what you already thought to check. The rest were found by a device built to be *surprised* — a control cell, a pre-registered rule, a generated view contradicting itself — or by someone reading carefully.
 
 ## Where they arise
 
@@ -35,7 +35,7 @@ The line worth reading twice: **the automated gate caught 81 of 512, and none of
 | quench | 23 |
 | verifier | 14 |
 | record | 159 |
-| tooling | 191 |
+| tooling | 192 |
 | docs | 114 |
 
 ## By kind
@@ -44,7 +44,7 @@ The line worth reading twice: **the automated gate caught 81 of 512, and none of
 | --- | ---: |
 | soundness | 104 |
 | validity | 127 |
-| bookkeeping | 192 |
+| bookkeeping | 193 |
 | robustness | 70 |
 | performance | 19 |
 
@@ -768,6 +768,7 @@ This is the actionable list.
 | [D-510](docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md) | 2026-10-01 | verifier | soundness | flattering | `review` | high | fixed | Independent rational checker ignored the declared coordinate frame |
 | [D-511](docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md) | 2026-10-01 | tooling | robustness |  | `review` | medium | fixed | Half-angle witness export declared a schema absent beside its output |
 | [D-512](packing/devtools/repo_links.py) | 2026-10-01 | tooling | bookkeeping | conservative | `drift_check` | medium | fixed | The deployed site dropped every record link into the archive and the campaign |
+| [D-513](packing/tests/site_browser.py) | 2026-10-02 | tooling | bookkeeping | conservative | `gate` | medium | fixed | The site's table-layout tests skipped on every pull request, and read hinted text on Linux |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

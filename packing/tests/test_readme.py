@@ -136,35 +136,33 @@ def test_without_an_index_the_directory_checks_say_so_rather_than_walking(
 
 
 def test_readmes_introduction_block_is_held_by_the_readme_check() -> None:
-    """The site's overview renders README's `project-intro` block as its first section
-    and its `recent-progress` block at the head of Recent Results, so the README check
-    refuses a README that has lost either block, parted them, or put more than prose in
-    one, with the reason, where the render would otherwise be the first to say so."""
+    """The site's overview renders README's `project-intro` block as its first section,
+    so the README check refuses a README that has lost the block or put more than prose
+    in it, with the reason, where the render would otherwise be the first to say so.
+    README's `recent-progress` block was shared too until 2026-10-02; its two paragraphs
+    stay in README unmarked, so a heading or a central case in them is README's own
+    business and not the check's."""
     text = README.read_text(encoding="utf-8")
     assert check_intro(text) == []
+    assert "recent-progress" not in text
+    assert "The project covers the problem at every $n$." in text
     unmarked = text.replace("<!-- END SHARED: project-intro -->", "")
     assert check_intro(unmarked) == [
         "README.md: the project-intro markers must each appear exactly once"
     ]
-    one_block = text.replace("<!-- END SHARED: recent-progress -->", "")
-    assert check_intro(one_block) == [
-        "README.md: the recent-progress markers must each appear exactly once"
-    ]
-    parted = text.replace(
-        "<!-- END SHARED: project-intro -->\n",
-        "<!-- END SHARED: project-intro -->\n\nA line between the blocks.\n\n",
-    )
-    assert check_intro(parted) == [
-        "README.md: the recent-progress block must follow the project-intro block directly"
-    ]
     headed = text.replace(
-        "The project covers the problem at every $n$.",
-        "## Coverage\n\nThe project covers the problem at every $n$.",
+        "The question is elementary to understand",
+        "## The question\n\nThe question is elementary to understand",
     )
     assert check_intro(headed) == [
-        "README.md: the recent-progress block holds a heading or a comment"
+        "README.md: the project-intro block holds a heading or a comment"
     ]
-    central = text.replace("A recent major result", "On the central case, a recent result")
+    central = text.replace(
+        "is an open problem for most $n$.",
+        "is an open problem for most $n$, eleven its central case.",
+    )
     assert check_intro(central) == [
-        "README.md: the recent-progress block calls a case the central one"
+        "README.md: the project-intro block calls a case the central one"
     ]
+    unshared = text.replace("A recent major result", "On the central case, a recent result")
+    assert check_intro(unshared) == []

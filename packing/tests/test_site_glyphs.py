@@ -715,6 +715,70 @@ def test_the_first_figure_is_the_drawing_alone_at_the_first_papers_width(
         assert ours["caption"].startswith("Figure 1."), width
 
 
+@pytest.fixture(scope="module")
+def fronts(site: Path) -> list[dict[str, Any]]:
+    """The formats row and the credits of the two papers, at a desktop and a phone
+    width, as laid out."""
+    return measure.measure_credits(site.as_uri(), (EXPLAINER, PAPER), widths=(1280, 390))
+
+
+@pytest.mark.parametrize("width", [1280, 390])
+def test_both_papers_lay_the_front_out_one_way(
+    fronts: list[dict[str, Any]], width: int
+) -> None:
+    """Both papers write their front from one record (`devtools.paper_front`), and the
+    browser lays it out one way: the same three chips at the same size and weight; the
+    credits one column the width of the page, every line at the regular weight with
+    its names at the bold and its addresses at the regular; the grid's own gap between
+    lines, a line's space more before the dates on both, and before the review's own
+    credits, which follow the proof it reviews."""
+    rows = {
+        name: [row for row in fronts if (row["page"], row["width"]) == (name, width)]
+        for name in (EXPLAINER, PAPER)
+    }
+    chips = {
+        name: [
+            (r["text"], r["font_size"], r["weight"], r["block_size"])
+            for r in found
+            if r["part"] == "chip"
+        ]
+        for name, found in rows.items()
+    }
+    assert chips[EXPLAINER] == chips[PAPER]
+    assert [chip[0] for chip in chips[PAPER]] == ["MD", "PDF", "GITHUB"]
+    lines_of = {
+        name: [r for r in found if r["part"] == "credit"] for name, found in rows.items()
+    }
+    assert len(lines_of[EXPLAINER]) == 4
+    assert len(lines_of[PAPER]) == 6
+    regular, bold = "410", "680"
+    reference = lines_of[EXPLAINER][0]
+    for name, lines in lines_of.items():
+        assert {line["weight"] for line in lines} == {regular}, name
+        assert {line["font_size"] for line in lines} == {reference["font_size"]}, name
+        assert {line["width_share"] for line in lines} == {reference["width_share"]}, name
+        oversight, agents, version, dates = lines[-4:]
+        assert oversight["bold"] == bold
+        assert oversight["links"] == f"{bold} (name)"
+        assert set(agents["bold"].split()) == {bold}
+        assert version["bold"] == ""
+        assert dates["bold"] == ""
+        assert dates["links"] == ""
+    source, address = lines_of[PAPER][:2]
+    assert source["bold"] == bold
+    assert address["bold"] == ""
+    assert address["links"] == regular
+    # The space between lines is the grid's gap, a fraction of a line; a line's space
+    # more stands before the dates on both papers and before the review's own credits.
+    gaps = {name: [line["gap"] for line in lines] for name, lines in lines_of.items()}
+    small = gaps[EXPLAINER][1]
+    assert 0 < small < 0.3
+    assert gaps[EXPLAINER] == pytest.approx([0, small, small, small + 1], abs=0.05)
+    assert gaps[PAPER] == pytest.approx(
+        [0, small, small + 1, small, small, small + 1], abs=0.05
+    )
+
+
 def test_the_pages_run_one_math_pipeline(pages: dict[str, dict[str, Any]]) -> None:
     """One KaTeX, the version KPress ships, and every formula typeset the same way."""
     assert {found["katex"] for found in pages.values()} == {measure.shipped_katex()}

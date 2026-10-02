@@ -56,7 +56,6 @@ import sys
 from collections import Counter
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from datetime import datetime
 from fractions import Fraction
 from functools import cache
 from math import isqrt
@@ -65,7 +64,7 @@ from typing import Any, Final, NamedTuple, TypedDict
 
 from strif import atomic_output_file
 
-from devtools import repo_links
+from devtools import paper_front, repo_links
 from devtools.build_bound_citations import RECENT_SINCE
 from devtools.build_composite_figure_data import load_record as load_figure_record
 from devtools.measure_net_coarsening import largest_admissible_side
@@ -84,7 +83,7 @@ from devtools.render_overview import (
     nav_html,
     paper_path,
 )
-from devtools.repo_links import REPO_URL, repo_url
+from devtools.repo_links import repo_url
 from sqpack.fractional.certificate import (
     Certificate,
     closed_form_conditions,
@@ -95,10 +94,10 @@ from sqpack.fractional.model import Atom
 from sqpack.fractional.sweep import minimum_covered_mass, weight_scale
 from sqpack.probes import applied, probe
 from sqpack.release import (
+    EXPLAINER_FIRST_PUBLISHED,
+    EXPLAINER_HISTORY,
     EXPLAINER_REVISED,
-    FIRST_PUBLISHED,
-    PUBLICATION_EDITION,
-    PUBLICATION_HISTORY,
+    EXPLAINER_VERSION,
     PUBLICATION_REVISION,
 )
 from sqpack.render.style import SQUARE_HUE_PALETTE
@@ -403,11 +402,13 @@ THIRDPARTY = CASE / "thirdparty" / "README.md"
 THIRDPARTY_CERTIFICATE = THIRDPARTY.with_name("certificate.json")
 
 
-def publication_history_markdown() -> str:
-    """Every edition, newest first, each with the date it was first published."""
+def version_history_markdown() -> str:
+    """The paper's own editions, newest first, each with the date it was first published
+    and what changed in the paper: `sqpack.release.EXPLAINER_HISTORY`, not the site's
+    record, which lists editions in which this paper did not change."""
     return "\n".join(
         f"- **{entry.version} — {entry.first_published}.** {entry.result_scope}"
-        for entry in PUBLICATION_HISTORY
+        for entry in EXPLAINER_HISTORY
     )
 
 
@@ -2197,11 +2198,32 @@ TITLE = "New Lower Bounds for Square Packing for n = 11"
 #: `n` (`.hero h1 .tex`), where plain text would print `N = 11`, a different symbol. The
 #: Markdown edition writes it `$n = 11$`.
 HERO_TITLE = TITLE.replace("n = 11", '<span class="tex">n = 11</span>')
+#: The paper's front, in the two papers' one form (`devtools.paper_front`): who oversaw
+#: it and which agents wrote it; the paper's own version, which links its version
+#: history at the foot of the page, since this paper has had several; and its dates,
+#: when the paper was first published, its oldest edition's day, and when the article
+#: last changed (`sqpack.release`). The site's edition and the data hash are on no paper
+#: (the owner, 2026-10-01). It explains the project's own proofs, so it credits no
+#: source.
+FRONT = paper_front.check(
+    paper_front.PaperFront(
+        slug=SLUG,
+        title=HERO_TITLE,
+        oversight=(paper_front.Person("Joshua Levy", "https://x.com/ojoshe"),),
+        agents=("Opus 5", "Fable 5.1", "GPT 5.6 Sol", "GPT-6 Astra"),
+        version=EXPLAINER_VERSION,
+        dates=(
+            paper_front.Dated("First published", EXPLAINER_FIRST_PUBLISHED),
+            paper_front.Dated(paper_front.REVISED, EXPLAINER_REVISED),
+        ),
+        history="version-history",
+    )
+)
 
 
 def iso_date(written: str) -> str:
     """A date as `sqpack.release` writes one (`September 5, 2026`), as an ISO date."""
-    return datetime.strptime(written, "%B %d, %Y").date().isoformat()  # noqa: DTZ007
+    return paper_front.iso_date(written)
 
 
 def page_meta(headline: Facts, current: CurrentBoundFacts) -> PageMeta:
@@ -2211,8 +2233,8 @@ def page_meta(headline: Facts, current: CurrentBoundFacts) -> PageMeta:
     The title is the page's own, with no bound after it: one bound beside a title about
     several, in a case T-060 has since settled, would read as the case's current bound.
     The bound in the sentence is the headline certificate's own, like every other number
-    on the page. The dates are the publication's, first published and last revised
-    (`sqpack.release`), the same two the hero states.
+    on the page. The dates are the front's, first published and last revised
+    (`FRONT`, from `sqpack.release`), the same two the hero states.
     """
     return PageMeta(
         name=TITLE,
@@ -2223,8 +2245,8 @@ def page_meta(headline: Facts, current: CurrentBoundFacts) -> PageMeta:
         ),
         path=PAGE_URL.removeprefix(SITE_URL),
         kind="article",
-        published=iso_date(FIRST_PUBLISHED),
-        modified=iso_date(EXPLAINER_REVISED),
+        published=iso_date(FRONT.dates[0].day),
+        modified=iso_date(paper_front.revised(FRONT)),
     )
 
 
@@ -2355,23 +2377,16 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         "N_STARRED": str(starred_lower_bounds()),
         "N_PROVED_HERE": str(lower_bounds_proved_here()),
         "RECENT_SINCE_DATE": f"{RECENT_SINCE.day} {RECENT_SINCE:%B %Y}",
-        "SOURCE_URL": MARKDOWN_OUTPUT.name,
-        # The PDF is drawn beside the page by `render_n11_lower_bounds_explainer_pdf`,
-        # under the same slug; the atlas's files are a level up, at the site's root.
-        "PDF_URL": OUTPUT.with_suffix(".pdf").name,
+        # The atlas's files the page links are a level up, at the site's root.
         "SITE_ROOT": SITE_ROOT,
-        "REPO_URL": REPO_URL,
-        # The top of the page names when the result was first published, when it was last
-        # revised, and which edition is being read; the full list of editions is linked
-        # rather than repeated there (the owner, 2026-09-22).
-        "FIRST_PUBLISHED": FIRST_PUBLISHED,
-        # When the article's own text last changed, not when the edition was first
-        # published: the page changes between editions, and this date goes with it.
-        "LAST_REVISED": EXPLAINER_REVISED,
-        # The shared version, taken whole: the atlas footer and the videos print the same
-        # string, so the credits name the data rather than the commit that built the page.
-        "EDITION": PUBLICATION_EDITION,
-        "VERSION_HISTORY": publication_history_markdown(),
+        # The front of the paper, the two papers' one component: the formats row, which
+        # offers the Markdown and the PDF beside the page under its slug, the title and
+        # the credits. The top of the page names when the paper was first published,
+        # when the article last changed, and which version of the paper is being read,
+        # the paper's own; the full list of the paper's editions is linked rather than
+        # repeated there (the owner, 2026-09-22).
+        "FRONT_MATTER": paper_front.front_matter(FRONT),
+        "VERSION_HISTORY": version_history_markdown(),
         "PRIOR_YEAR": str(PRIOR_YEAR),
         "YEARS_SINCE_PRIOR": str(RESULT_YEAR - PRIOR_YEAR),
         "PRIOR_MEMO_YEAR": str(PRIOR_MEMO_YEAR),
@@ -2476,7 +2491,9 @@ def shell_substitutions(static: Path, shared: dict[str, str], body: str) -> dict
         "KPRESS_CLIENT_SCRIPT": kpress_client_js(static),
         "SITE_NAV_CSS": SITE_NAV_CSS.read_text(encoding="utf-8"),
         "SITE_NAV": nav_html("papers", root=SITE_ROOT),
-        "COLOPHON": colophon_lines(),
+        # A paper's closing credit carries no version: its own is in its credits, and
+        # the site's goes on no paper.
+        "COLOPHON": colophon_lines(edition=""),
         **shared,
         "BODY_HTML": body,
     }
@@ -2749,6 +2766,8 @@ RENDER_INPUTS = (
     THRESHOLD_CASE,
     Path(__file__),
     EXPLAINER_SCRIPTS,
+    # The front of the paper is written by the component both papers share.
+    PACKING / "devtools" / "paper_front.py",
     PACKING / "devtools" / "prepare_n11_lower_bounds_explainer_math.py",
     PACKING / "devtools" / "measure_net_coarsening.py",
     PACKING / "devtools" / "build_composite_figure_data.py",
@@ -2906,9 +2925,13 @@ def published_markdown(source: str, *, default_slug: str) -> str:
 
     Two reductions beyond that. The page carries one copy of every figure per retained
     certificate and switches between them, which as text would read as the same figure
-    stated twice; only the certificate the page opens on is kept. And the chip row is
-    navigation, whose one purpose is to offer this file.
+    stated twice; only the certificate the page opens on is kept. And the front is
+    written in this edition's form by the component that wrote the page's
+    (`paper_front.published`): the chip row is navigation, whose one purpose is to
+    offer this file, so it goes, and the credits are a list rather than a grid of
+    spans, so they survive the formatter as separate lines.
     """
+    source = paper_front.published(source, FRONT)
     kept = f'<div class="cert-figure" data-cert="{default_slug}"'
     while (start := source.find('<div class="cert-figure"')) != -1:
         end = _balanced(source, start, "div")
@@ -2919,9 +2942,8 @@ def published_markdown(source: str, *, default_slug: str) -> str:
         inner = block[block.index(">") + 1 : -len("</div>")]
         source = source[:start] + inner + source[end:]
 
-    for opening in ('<div class="doc-links', '<div class="fig-choose"'):
-        while (start := source.find(opening)) != -1:
-            source = source[:start] + source[_balanced(source, start, "div") :]
+    while (start := source.find('<div class="fig-choose"')) != -1:
+        source = source[:start] + source[_balanced(source, start, "div") :]
 
     out: list[str] = []
     position = 0
@@ -2950,18 +2972,6 @@ def published_markdown(source: str, *, default_slug: str) -> str:
     source = "".join(out)
 
     source = _IMG.sub(lambda m: _image_markdown(m.group(0)), source)
-
-    # The credits are one span per line inside a div. As a list they survive the
-    # formatter, which would otherwise run four separate facts into one paragraph.
-    def _credits(match: re.Match[str]) -> str:
-        items = re.findall(r"<span\b[^>]*>(.*?)</span>", match.group(1), re.DOTALL)
-        return "\n".join(f"- {_inline_markdown(item)}" for item in items)
-
-    # The template gives the div a second class for its alignment; the list is keyed on
-    # the first, since the credits fell through to the paragraph flattener as one line
-    # when the pattern asked for the class attribute to be the word alone (review of
-    # 2026-09-06, D3).
-    source = re.sub(r'<div class="credits[^"]*">(.*?)</div>', _credits, source, flags=re.DOTALL)
     source = _with_edition_note(source)
     # Every remaining div is a named block whose name is a style. The content is the
     # document; the box around it is the page's.

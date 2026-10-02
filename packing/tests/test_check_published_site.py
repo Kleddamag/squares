@@ -45,7 +45,7 @@ from devtools.render_n11_lower_bounds_explainer import (
 from devtools.render_n11_lower_bounds_explainer_pdf import EXPECTED_PAGE_COUNT
 from devtools.render_n11_lower_bounds_explainer_pdf import OUTPUT as PDF_OUTPUT
 from devtools.repo_links import DEFAULT_BRANCH, REPO_URL, RepositoryTree, branch_paths
-from sqpack.release import PUBLICATION_EDITION
+from sqpack.release import EXPLAINER_VERSION, OPTIMALITY_REVIEW_EDITION, PUBLICATION_EDITION
 from tests import site_renders
 
 #: A page's text linking into the repository four ways: from markup, from Markdown, from plain
@@ -123,7 +123,9 @@ def page(
 
 def explainer_page(canonical: str = PAGE_URL, **kwargs: str) -> bytes:
     """The lower-bounds explainer as the check reads it: a page with Papers current in
-    its bar, linked from a level below the root."""
+    its bar, linked from a level below the root, carrying the paper's own version and
+    not the site's edition."""
+    kwargs.setdefault("stamp", EXPLAINER_VERSION)
     return page(canonical, bar=PAPERS_CURRENT + "Papers</a>", **kwargs)
 
 
@@ -170,11 +172,13 @@ def results_table(*, here: bool) -> bytes:
 
 def optimality_paper(*, ref: str = COMMIT, link: str = "README.md") -> bytes:
     """The optimality paper's page as the check reads one: the bar with Papers current,
-    and one citation, which the paper pins to the commit it was built from."""
+    its own version, and one citation, which the paper pins to the commit it was built
+    from."""
     return (
         head(OPTIMALITY_PAPER)
         + PAPERS_CURRENT
-        + f'Papers</a><a href="{REPO_URL}/blob/{ref}/{link}#anchor">Receipt</a>'
+        + f"Papers</a><p>({OPTIMALITY_REVIEW_EDITION})</p>"
+        + f'<a href="{REPO_URL}/blob/{ref}/{link}#anchor">Receipt</a>'
     ).encode()
 
 
@@ -368,15 +372,33 @@ def test_check_accepts_the_requested_build_and_rejects_a_stale_stamp(
     assert f"https://example.org/{EXPLAINER}" in requested
     assert "https://example.org/index.html" not in requested, "the overview is the root"
 
-    stale = site_pages(**{EXPLAINER: explainer_page(stamp="v0.0.0-deadbe")})
+    stale = site_pages(**{EXPLAINER: explainer_page(stamp="v0.0.0")})
     (failure,) = failures(monkeypatch, fake_site(stale))
-    assert "edition stamp" in failure
-    assert EXPLAINER in failure
+    assert failure == f"version {EXPLAINER_VERSION!r} is not on {EXPLAINER}"
 
     stale = site_pages(**{"index.html": page(render_overview.SITE_URL, stamp="v0.0.0-deadbe")})
     (failure,) = failures(monkeypatch, fake_site(stale))
-    assert "edition stamp" in failure
-    assert "index.html" in failure
+    assert failure == f"version {PUBLICATION_EDITION!r} is not on index.html"
+
+    # A paper carries its own version and not the site's edition (the owner,
+    # 2026-10-01); a paper that prints the site's edition beside its own fails for that.
+    site_edition = f"<p>({PUBLICATION_EDITION})</p>".encode()
+    for name, paper in ((EXPLAINER, explainer_page()), (OPTIMALITY_PAPER, optimality_paper())):
+        stamped = site_pages(**{name: paper + site_edition})
+        (failure,) = failures(monkeypatch, fake_site(stamped))
+        assert failure == (
+            f"the site's edition {PUBLICATION_EDITION!r} is on {name}, which carries its "
+            "own version"
+        )
+    unversioned = site_pages(
+        **{
+            OPTIMALITY_PAPER: optimality_paper().replace(
+                OPTIMALITY_REVIEW_EDITION.encode(), b""
+            )
+        }
+    )
+    (failure,) = failures(monkeypatch, fake_site(unversioned))
+    assert failure == f"version {OPTIMALITY_REVIEW_EDITION!r} is not on {OPTIMALITY_PAPER}"
 
 
 def test_check_requires_each_page_to_name_its_own_canonical_url(
@@ -1031,7 +1053,8 @@ def test_check_fails_a_page_whose_head_is_not_the_sites(
     # was: every other tag is named as missing.
     bare = '<html lang="en"><head><title>A Review</title><meta name="description" content="A.">'
     body = (
-        f'</head>{PAPERS_CURRENT}Papers</a><a href="{REPO_URL}/blob/{COMMIT}/README.md">R</a>'
+        f"</head>{PAPERS_CURRENT}Papers</a><p>({OPTIMALITY_REVIEW_EDITION})</p>"
+        f'<a href="{REPO_URL}/blob/{COMMIT}/README.md">R</a>'
     )
     (failure,) = found(**{OPTIMALITY_PAPER: (bare + body).encode()})
     assert failure.startswith(

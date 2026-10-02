@@ -17,8 +17,8 @@ the exit status is 0 only when every check passes:
 
 - every page `render_overview.PAGES` owns is served at its URL (the overview at the
   root), and the lower-bounds explainer at `papers/n11-lower-bounds-explainer.html`;
-  each carries the edition stamp `sqpack.release` names and the canonical URL its
-  renderer wrote;
+  each carries the canonical URL its renderer wrote, a site page the edition stamp
+  `sqpack.release` names, and a paper its own version and not the site's stamp;
 - no page and not the Markdown edition links a repository file at a commit hash: every
   repository link names `main` (`repo_links`), because a permalink to the commit a page
   was built from 404s once a squash merge leaves that commit on no branch. Every path a
@@ -111,7 +111,7 @@ from devtools.repo_links import (
     repository_tree,
 )
 from sqpack.probes import probe
-from sqpack.release import PUBLICATION_EDITION
+from sqpack.release import EXPLAINER_VERSION, OPTIMALITY_REVIEW_EDITION, PUBLICATION_EDITION
 
 #: The JavaScript this runs in the deployed workbench, as files (`sqpack.probes`).
 PROBES = Path(__file__).resolve().parent / "probes"
@@ -897,17 +897,35 @@ def check(
     results: list[tuple[bool, str]] = []
     site = site.rstrip("/") + "/"
 
-    def served_page(name: str, url: str, canonical: str) -> tuple[bytes, str]:
-        """Fetch one page and check it is served, stamped and canonical; its bytes and text."""
+    def served_page(
+        name: str, url: str, canonical: str, *, version: str = PUBLICATION_EDITION
+    ) -> tuple[bytes, str]:
+        """Fetch one page and check it is served, stamped and canonical; its bytes and text.
+
+        `version` is what the page must print: the site's edition on a site page, and a
+        paper's own version on a paper, which must then not carry the site's edition
+        (the owner, 2026-10-01: papers are individually versioned).
+        """
         status, body = fetch(url, timeout=timeout)
         text = body.decode("utf-8", errors="replace")
         results.append((status == 200, f"page {url}: HTTP {status}, {len(body)} bytes"))
-        # The shared version (think-qsuu), pinned in release.py: a page names the data it
-        # was drawn from, as the atlas and the videos do, whatever commit built it. The
-        # commit is still what the workbench's source revision must name.
-        stamped = PUBLICATION_EDITION in text
+        # The shared version (think-qsuu), pinned in release.py: a site page names the
+        # data it was drawn from, as the atlas and the videos do, whatever commit built
+        # it. The commit is still what the workbench's source revision must name.
+        stamped = version in text
         where = f"{'' if stamped else 'not '}on {name}"
-        results.append((stamped, f"edition stamp {PUBLICATION_EDITION!r} is {where}"))
+        results.append((stamped, f"version {version!r} is {where}"))
+        if version != PUBLICATION_EDITION:
+            absent = PUBLICATION_EDITION not in text
+            results.append(
+                (
+                    absent,
+                    (
+                        f"the site's edition {PUBLICATION_EDITION!r} is "
+                        f"{'not ' if absent else ''}on {name}, which carries its own version"
+                    ),
+                )
+            )
         found = CANONICAL.search(text)
         declared = found.group(1) if found is not None else None
         results.append(
@@ -1016,7 +1034,9 @@ def check(
         )
 
     # The explainer's bytes are what the PDF's source receipt names, so they are kept whole.
-    page, text = served_page(LOWER_BOUNDS_PAPER, site + LOWER_BOUNDS_PAPER, PAGE_URL)
+    page, text = served_page(
+        LOWER_BOUNDS_PAPER, site + LOWER_BOUNDS_PAPER, PAGE_URL, version=EXPLAINER_VERSION
+    )
     current = PAPERS_CURRENT in text
     marked = f"Papers is {'' if current else 'not '}the bar's current entry"
     results.append((current, f"{LOWER_BOUNDS_PAPER}: {marked}, linked from a level below"))
@@ -1097,6 +1117,28 @@ def check(
     line = f"optimality paper {OPTIMALITY_PAPER}: HTTP {status}, {len(paper)} bytes, {marked}"
     results.append((status == 200 and current, line))
     if status == 200:
+        # The review carries its own version and not the site's, as the explainer does.
+        versioned = OPTIMALITY_REVIEW_EDITION in paper_text
+        results.append(
+            (
+                versioned,
+                (
+                    f"version {OPTIMALITY_REVIEW_EDITION!r} is {'' if versioned else 'not '}"
+                    f"on {OPTIMALITY_PAPER}"
+                ),
+            )
+        )
+        unstamped = PUBLICATION_EDITION not in paper_text
+        results.append(
+            (
+                unstamped,
+                (
+                    f"the site's edition {PUBLICATION_EDITION!r} is "
+                    f"{'not ' if unstamped else ''}on {OPTIMALITY_PAPER}, which carries its "
+                    "own version"
+                ),
+            )
+        )
         cites_commit(OPTIMALITY_PAPER, paper_text)
     heads[OPTIMALITY_PAPER] = paper_text
     for name in OPTIMALITY_PAPER_FILES:

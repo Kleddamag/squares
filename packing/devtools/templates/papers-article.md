@@ -2,9 +2,10 @@
 
 # Papers
 
-<p class="subtitle">Papers and interactive explanations for specific results</p>
-
 </div>
+
+<!-- The title stood over a subtitle, "Papers and interactive explanations for specific
+     results", until 2026-10-02 (the owner, think-wz9d). -->
 
 These are the project’s papers, each written to be read on its own.
 Trump’s 1979 packing of eleven squares has been proved optimal by Queuingtheorydotcom’s

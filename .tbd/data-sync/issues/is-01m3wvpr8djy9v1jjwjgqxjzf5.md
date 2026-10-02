@@ -5,13 +5,13 @@ title: "Owner decisions pending from 1 October: one list"
 kind: task
 status: open
 priority: 2
-version: 6
+version: 7
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-10-01T23:10:01.995Z
-updated_at: 2026-10-02T05:42:40.120Z
+updated_at: 2026-10-02T05:43:51.701Z
 ---
 Collected so the owner can answer in one pass. (1) Credits: T-025, T-026, T-031, T-033 as 'Levy after Burns, Massaccesi' like T-024, or T-024 plain; T-009 after the packers? (2) Status (merged provisional in #277): confirmed from C2 or C3; whether to draw 'confirmed' on most rows; activity as a mark or as statuses; which activities to record; T-065's credit and S3. (3) Result kinds (merged in #270): ten medium-confidence classifications (T-054, T-055, T-006, T-004, T-011, T-010, T-003, T-058, T-035, T-036, T-059); whether standing derives from kind. (4) The nav bar's short name 'Square Packing' against the formal name 'The Squares Project'. (5) Page titles ending in the formal name; the social card with the name under the packing (think-9y87). (6) Tutorial under papers/ or left at tutorial.html (recommended: left). (7) Posters may trail the data between version bumps (merged in #285; recommended yes). (8) T-006's composition: whether the Lean build replayed here reads at C3. (9) Results tables below 1280: 242 px sideways scroll at 768 remains (think-b245). (10) The film card's label 'Film · Video'; Visualize's place in the bar. (11) The result popover's 'T-NNN in the results table' link, lateral from the homepage.
 
@@ -46,3 +46,5 @@ From papers individually versioned (jlevy/squares#301), 2026-10-02:
 - Open: the first paper's PDF text still contains the site's stamp once, inside Figure 2, which embeds the atlas poster with the poster's own footer. Leave it as a picture of a site asset, or crop the poster's footer in the paper's figure.
 - Open: no page of the site shows the site's edition history now (it is in release.py and development.md). Show it somewhere, for example on the Overview, or leave it.
 - Chosen by default: the colophon on a paper is the two lines without a version; the alternative is the paper's own version there.
+
+Answered 2026-10-02: the first paper's changes since v0.4.2 are a patch revision of the paper ("it could be a patch revision to the paper itself"), so v0.4.3; tracked on think-1qk8.

@@ -8,6 +8,7 @@ exact cell membership, and the retained candidate's well-formedness and total.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 from fractions import Fraction
@@ -151,3 +152,39 @@ def test_failing_bins_from_witness_lines() -> None:
     theta = 2 * math.atan(17 / net)
     text = f"0.98 {theta} 1.0 2.0 0\n0.99 {theta} 1.5 2.0 0\n0.97 0.0 0.5 0.5 0\n"
     assert failing_bins(text, net) == [0, 17]
+
+
+@pytest.mark.skipif(not (CASE / "certificate.txt.gz").exists(), reason="no candidate retained")
+def test_retained_bytes_are_the_verified_ones() -> None:
+    claim = json.loads((CASE / "claim.json").read_text(encoding="utf-8"))
+    receipt = json.loads(
+        (CASE / "receipts" / "route-b-source-verifier.json").read_text(encoding="utf-8")
+    )
+    data = read_retained_bytes(CASE / "certificate.txt")
+    assert hashlib.sha256(data).hexdigest() == claim["certificate_sha256"]
+    assert receipt["certificate_sha256"] == claim["certificate_sha256"]
+    assert receipt["status"] == "VERIFIED"
+    assert receipt["binary"] == "overflow-checked"
+    assert receipt["net"] == claim["net"]
+    assert receipt["least_weight"] == claim["least_weight"]
+    assert receipt["container"] == claim["container"]
+    # the geometry is Daniel's, scaled: only the weights were re-solved
+    cert = parse_certificate(data)
+    source = load_source()
+    scaled = rescale(source, 1000, 3949423)
+    assert [p[:2] for p in cert.points] == [p[:2] for p in scaled.points]
+    assert cert.side == scaled.side
+
+
+@pytest.mark.skipif(not (CASE / "certificate.txt.gz").exists(), reason="no candidate retained")
+def test_retained_route_a_is_309s_rescaling_pushed_further() -> None:
+    claim = json.loads((CASE / "claim.json").read_text(encoding="utf-8"))["route_a"]
+    receipt = json.loads(
+        (CASE / "receipts" / "route-a-source-verifier.json").read_text(encoding="utf-8")
+    )
+    data = read_retained_bytes(CASE / "rescaled-certificate.txt")
+    assert data.decode() == rescale(load_source(), 1000, 3950390).text()
+    assert hashlib.sha256(data).hexdigest() == claim["certificate_sha256"]
+    assert receipt["certificate_sha256"] == claim["certificate_sha256"]
+    assert receipt["status"] == "VERIFIED"
+    assert f"s(12) >= {receipt['container']}" == claim["claim"]

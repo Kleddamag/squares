@@ -1,0 +1,23 @@
+{
+  "schema": "S12BeyondRescalingClaim/v1",
+  "claim": "s(12) >= 15680000/3949423",
+  "container": "15680000/3949423",
+  "decimal": "3.9702002039285...",
+  "total_weight": "14970347/1250000",
+  "points": 1736,
+  "zero_weight_points": 120,
+  "certificate": "packing/cases/n12_beyond_rescaling/certificate.txt.gz",
+  "certificate_sha256": "6823e8e872259a6cf3ed258400bf1a0973e1972ab671e8fdcab25938ca605a66",
+  "net": 96000,
+  "least_weight": "10000045/10000000",
+  "exceeds": {"rescaled_309": "31360/7901", "by": "about 0.0010824"},
+  "geometry": "Evan Daniel's 1,736 points of s12_lower_3.9686.txt, coordinates times 1000 over 3949423 (scale 3951000/3949423)",
+  "weights": "re-solved here by linear programming over the D4 orbits, rows from the source verifier's TIGHT_DUMP cells (devtools.s12_reweight)",
+  "route_a": {
+    "claim": "s(12) >= 1568000/395039",
+    "certificate": "packing/cases/n12_beyond_rescaling/rescaled-certificate.txt.gz",
+    "certificate_sha256": "93ccef6363b0814ec34c66e94ac8bc83b707e3f7430955c9ccd9ab250e8ae235",
+    "construction": "Daniel's certificate unchanged, coordinates times 1000 over 3950390 (scale 395100/395039)",
+    "least_weight": "10000056/10000000"
+  }
+}

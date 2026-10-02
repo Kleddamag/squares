@@ -546,6 +546,7 @@ case or experiment separately.
 | [Plan: Transfer Recent Optimality Methods to n = 17 and Other Low Cases](docs/project/specs/active/plan-2026-10-01-post-optimality-w3-session.md) | implementation plan | current | transient | — |
 | [Plan: Release Assets on Demand, and One Rule per Date](docs/project/specs/active/plan-2026-10-01-release-assets-on-demand.md) | implementation plan | current | transient | — |
 | [N11 Optimality Review — Intuition and Visual Structure](docs/project/reviews/review-2026-09-30-n11-explainer-intuition.md) | dated review record | record | retained | — |
+| [Research: s(12) Beyond Rescaling](docs/project/research/research-2026-10-02-s12-beyond-rescaling.md) | research synthesis | record | retained | — |
 | [Research: Exact Arithmetic and Verifier Performance](docs/project/research/research-2026-09-30-exact-arithmetic-verifier-performance.md) | research synthesis | record | retained | — |
 | [Eleven-Square Global Optimality: Source Intake and Verification Handoff](docs/project/reviews/review-2026-09-29-n11-optimality.md) | dated review record | record | retained | — |
 | [Eleven-Square Optimality: Census and Capture Ancestry Contract](docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md) | dated review record | record | retained | — |

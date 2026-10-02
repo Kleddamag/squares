@@ -298,6 +298,38 @@ def failing_bins(witness_text: str, net: int) -> list[int]:
     return sorted(bins)
 
 
+def lower_orbit(cert: Certificate, x: int, y: int, by: int) -> Certificate:
+    """Control: lower by ``by`` the weight of the point ``(x, y)`` and of its D4 images.
+
+    The set stays D4-symmetric and its total falls, so only coverage can refuse it.
+    """
+    units = cert.side * cert.denominator
+    if units.denominator != 1:
+        raise ValueError("container is off the coordinate grid")
+    u = int(units)
+    orbit = {
+        (x, y), (u - x, y), (x, u - y), (u - x, u - y),
+        (y, x), (u - y, x), (y, u - x), (u - y, u - x),
+    }  # fmt: skip
+    if not any((px, py) in orbit for px, py, _ in cert.points):
+        raise ValueError("no such point")
+    points = tuple((px, py, w - by if (px, py) in orbit else w) for px, py, w in cert.points)
+    if any(w < 0 for _, _, w in points):
+        raise ValueError("a weight would go negative")
+    return Certificate(cert.s_num, cert.s_den, cert.denominator, cert.weight_scale, points)
+
+
+def regrid(cert: Certificate, denominator: int) -> Certificate:
+    """Control: the same integer coordinates and weights over another denominator."""
+    units = cert.side * cert.denominator
+    if units.denominator != 1:
+        raise ValueError("container is off the coordinate grid")
+    side = Fraction(int(units), denominator)
+    return Certificate(
+        side.numerator, side.denominator, denominator, cert.weight_scale, cert.points
+    )
+
+
 def _git(*arguments: str) -> str:
     return subprocess.run(
         ["git", *arguments], cwd=REPO, check=True, capture_output=True, text=True
@@ -374,6 +406,11 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--stride", type=int, default=16)
     s.add_argument("--offset", type=int, default=0)
     s.add_argument("--workers", type=int, default=4)
+    c = sub.add_parser("mutate", help="write a control that the verifier must refuse")
+    c.add_argument("--certificate", type=Path, required=True)
+    c.add_argument("--lower-orbit", type=int, nargs=3, metavar=("X", "Y", "BY"))
+    c.add_argument("--denominator", type=int, help="same integers over this denominator")
+    c.add_argument("--output", type=Path, required=True)
     v = sub.add_parser("verify", help="the complete sweep, with a receipt")
     v.add_argument("--work", type=Path, required=True)
     v.add_argument("--certificate", type=Path, required=True)
@@ -395,6 +432,14 @@ def main(argv: list[str] | None = None) -> int:
             f"scale {factor} -> container {scaled.side} = {float(scaled.side):.9f}; "
             f"above #309's {RESCALED_309}: {scaled.side > RESCALED_309}"
         )
+    elif args.command == "mutate":
+        cert = parse_certificate(args.certificate.read_bytes())
+        if args.lower_orbit is not None:
+            cert = lower_orbit(cert, *args.lower_orbit)
+        if args.denominator is not None:
+            cert = regrid(cert, args.denominator)
+        args.output.write_text(cert.text(), encoding="ascii")
+        print(f"container {cert.side} = {float(cert.side):.9f}, total {cert.total_weight}")
     elif args.command == "screen":
         binary = binary_path(args.work, overflow_checked=False)
         result = screen(

@@ -12,7 +12,7 @@ from collections.abc import Callable
 from datetime import date, timedelta
 from html.parser import HTMLParser
 from pathlib import Path
-from typing import cast
+from typing import Any, cast
 
 import pytest
 
@@ -2786,10 +2786,19 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
         cell = row.split('<td class="site-col-result"', 1)[1].split("</td>", 1)[0]
         assert "site-row-open" not in cell
         assert "<br" not in row
-    # Evan Daniel's three exact values, the closures the exact-value cards used to show.
+    # Evan Daniel's three exact values, the closures the exact-value cards used to show,
+    # and since 2026-10-02 the k^2-1 and k^2-2 families, whose exact values rest on 2026
+    # results (T-067, T-069) that each cover a whole family rather than one case.
     exact = {n for n in overview.recent_lower if overview.cases[n]["status"] == "proved"}
-    shown = {r.first_n for r in newest}
+    shown = {n for r in newest for n in _scope_numbers(r.record["scope"])}
     assert exact <= shown
+
+
+def _scope_numbers(scope: dict[str, Any]) -> set[int]:
+    """Every case a result's scope covers: its listed values, or its whole range."""
+    if "n_values" in scope:
+        return set(scope["n_values"])
+    return set(range(scope["n_min"], scope["n_max"] + 1))
 
 
 def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_days(

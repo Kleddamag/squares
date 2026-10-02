@@ -30,6 +30,7 @@ from typing import Any
 import pytest
 
 from devtools.preview_site import settle_math
+from devtools.render_frontier_page import recent_lower_bounds
 from sqpack.probes import probe
 from tests import site_browser, site_renders
 from tests.test_frontier_page import COLUMNS, column
@@ -217,7 +218,10 @@ def test_the_table_still_sorts_filters_and_opens(page: Any, laid: dict[int, Any]
     assert shown.first.get_attribute("data-recent") == "false"
     recent.click()
     assert recent.get_attribute("aria-sort") == "descending"
-    assert shown.first.get_attribute("id") == "n-11"
+    # Which floors are recent is the citation record's to say, not this test's: since
+    # 2026-10-02 the open floors rest on Karakus 2026 and s(k^2-2) on a 2026 Lean proof.
+    starred = sorted(n for n, is_recent in recent_lower_bounds().items() if is_recent)
+    assert shown.first.get_attribute("id") == f"n-{starred[0]}"
     number = page.locator("#frontier-table thead th.site-col-n")
     number.click()
     number.click()
@@ -229,9 +233,10 @@ def test_the_table_still_sorts_filters_and_opens(page: Any, laid: dict[int, Any]
     assert page.locator("#frontier-table thead th.site-thumb").get_attribute("tabindex") is None
 
     page.get_by_label("recent only").check()
-    assert page.locator(".site-table-tools .site-count").inner_text() == "27 of 324 cases"
-    assert shown.count() == 27
-    assert shown.first.get_attribute("id") == "n-11"
+    count = page.locator(".site-table-tools .site-count").inner_text()
+    assert count == f"{len(starred)} of 324 cases"
+    assert shown.count() == len(starred)
+    assert shown.first.get_attribute("id") == f"n-{starred[0]}"
     page.get_by_label("recent only").uncheck()
     assert shown.count() == 324
 

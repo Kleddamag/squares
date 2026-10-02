@@ -72,7 +72,12 @@ The epic is `think-los0`; the session record is
    [family census](#what-the-atlas-shows) is the first such classification here, and it
    is descriptive.
 2. **Is light shading inexact arithmetic?** PENDING the contact-shade census.
-3. **Can exact regularization fix it?** PENDING the regularization lane.
+3. **Can exact regularization fix it?** For the slack squares, yes, as a derived view
+   verified twice over $\mathbb Q$ at the certificate’s side: at the six named cases 79
+   of 317 light axis-aligned squares become dark, with no change of side.
+   The rest cannot and should not change, because they border tilted squares, offset
+   rows or holes. The view never replaces a witness; see
+   [Exact Regularization](#exact-regularization).
 4. **What happens as $n$ grows?** Every family visible in the atlas is transient.
    For fixed $d$, $s(k^2+d)-k\to 0$ at a rate between $k^{-1}$ and $k^{-2/5}$; for
    $d=ck$ the limit is exactly $c/2$; the integer-side region at the top of each row is
@@ -87,7 +92,7 @@ The epic is `think-los0`; the session record is
 | --- | --- | --- | --- |
 | `devtools.classify_known_best_families` | [`family-census.json`](X049-families-data/family-census.json) | `--check`, byte for byte | 8.8 s for 324 records |
 | `devtools.census_atlas_contact_shades` | [`contact-shade-census.json`](X049-families-data/contact-shade-census.json) | `--check`, byte for byte | PENDING |
-| `devtools.regularize_axis_components` | derived poses outside the record | exact feasibility, refusals tested | PENDING |
+| `devtools.regularize_axis_components` | [`regularized/`](X049-families-data/regularized/) derived poses and receipt | exact feasibility twice over $\mathbb Q$ | 99 s for six cases |
 
 Run them from `packing/` with `uv run --frozen --all-extras --group dev python -m`. Both
 censuses read the retained witnesses as projected geometry and declare
@@ -272,7 +277,23 @@ square, at 206.
 
 ### Results
 
-PENDING the retained rerun.
+| $n$ | Axis-aligned | Light before | Light after | Became dark | Lost a contact | Largest move | Exact check | $S$ − printed side |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 102 | 73 | 49 | 26 | 23 | 0 | 0.163 | passed | $-1.1\times10^{-15}$ |
+| 103 | 65 | 48 | 31 | 17 | 0 | 0.192 | passed | $+1.5\times10^{-16}$ |
+| 106 | 83 | 21 | 21 | 0 | 0 | 0.0055 | passed | $+3.5\times10^{-16}$ |
+| 206 | 172 | 69 | 59 | 10 | 2 | 0.365 | passed | $+1.1\times10^{-15}$ |
+| 268 | 213 | 86 | 68 | 18 | 0 | 0.362 | passed | $-1.6\times10^{-15}$ |
+| 269 | 227 | 44 | 33 | 11 | 0 | 0.015 | passed | $+4.1\times10^{-16}$ |
+
+*“Light” means axis-aligned under the atlas rule with fewer than four counted sides.
+The two squares at 206 that lost a contact were already light and became one shade
+lighter; no dark square turned light.
+From [`run.txt`](X049-families-data/regularized/run.txt), the tool’s receipt for one run
+of 99 seconds over the six cases.
+The regularized poses are retained gzipped beside it; decompress one before passing it
+to `devtools.check_rational_witness_independent`, which on the 106 view reports 106
+squares, 5,565 pairs and a minimum pair gap of zero.*
 
 The remaining light squares are what the packing looks like: faces against tilted
 squares, rows offset by part of a side, holes where the two walls’ lattices disagree

@@ -5,13 +5,13 @@ title: "Handoff: the website lane at the end of 1 October 2026 — what merged, 
 kind: task
 status: open
 priority: 1
-version: 8
+version: 9
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-10-02T01:05:01.478Z
-updated_at: 2026-10-02T05:43:52.070Z
+updated_at: 2026-10-02T05:49:38.354Z
 ---
 Handoff of the website lane (epic think-xjq4) at 2026-10-02 01:35 UTC, 18:35 PT on 1 October. Read this first, then the beads it names.
 
@@ -58,3 +58,5 @@ Update 07:00 UTC. Merged: jlevy/squares#301 (papers individually versioned; rele
 What is left is the owner's list on think-cv22 (new from #301: whether the first paper's changes since v0.4.2 are a new version of the paper and under what number; the poster's site stamp visible inside the paper's Figure 2; whether the site's edition history is shown anywhere on the site), think-hatf (thirteen browser-backed test files still skip on pull requests), think-t7k5 (suite_d's recorded measurement, due 2026-10-08), think-d5l5 (housekeeping of worktrees and merged branches), and the older follow-up beads listed in the description.
 
 Update 07:15 UTC. One lane reopened by an owner answer: think-1qk8, the first paper becomes v0.4.3 (a patch revision for its changes since the v0.4.2 deployment). The papers subagent works on branch claude/explainer-v0.4.3 in worktree overview-papers; a small draft PR is to come (gh pr list --head claude/explainer-v0.4.3). Review, mark ready, merge when green.
+
+Update 07:40 UTC. A second lane opened by the owner: think-hqb3, the Verification Ladders section moves from the Overview to the Results page, and Recent Results gains one sentence on what the S, V, C chips indicate, linking there. The restructure subagent works on branch claude/ladders-to-results in .claude/worktrees/overview-restructure; draft PR to come (gh pr list --head claude/ladders-to-results). In flight beside it: think-1qk8 (first paper v0.4.3) on claude/explainer-v0.4.3. Open placement question for the owner: PDFs and Videos sits after The Frontier Survey now, not directly below the atlas.

@@ -532,6 +532,24 @@ sources:
       co-author. web/wand125-mixed-bounds-n76-2026-10-02/acquisition/sources.json pins
       revision 7975030a192607ef27edd1559aee4e98bd93047b. Dated by that revision, 2026-10-02
       UTC.
+  - key: '[wand125 point n61 2026-09-30]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-09-30'
+    credit: wand125 after Daniel, Burns, Massaccesi
+    short_credit: wand125 after Daniel et al.
+    lineage: credits-project
+    note: >-
+      The point-only cover for s(61) = 8 that wand125/square-packing-bounds added on
+      2026-09-30 (point_n61_L8), requested for retention in a comment of 2026-10-02 on
+      jlevy/squares#238. The README says the capture condition is checked by Evan Daniel's
+      unmodified zmx2, fetched at evand/square-packing 6e1223cf, that the measure was lifted
+      from the source's own point-only s(45) cover, and that s(61) = 8 already follows from
+      Daniel's s(60) = 8; the root README says parts of the work were produced with AI
+      assistance under human direction. web/wand125-point-n61-2026-09-30/acquisition/sources.json
+      pins revision f8846cec9661773dbd0cc7cbeee7d01ddb12a2b8. Dated by that revision,
+      2026-09-30 UTC.
   - key: '[wand125 linear certificates 2026-10-02]'
     authors: [wand125]
     year: 2026

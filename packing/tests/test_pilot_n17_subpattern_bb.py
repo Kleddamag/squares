@@ -21,6 +21,16 @@ def rectangle(x0: str, x1: str, y0: str, y1: str) -> tuple[tuple[Fraction, Fract
     return ((a, c), (b, c), (b, d), (a, d))
 
 
+@pytest.fixture(autouse=True)
+def _restore_mpmath_precision() -> Any:
+    """Several tests raise `mpmath.mp.prec`; put it back so later modules on the worker
+    see the default. Leaving it raised made `test_promote_krawczyk`'s enclosure check
+    compare at about 30 digits and fail in suite C on PR 307 (run 37034789370)."""
+    saved = mpmath.mp.prec
+    yield
+    mpmath.mp.prec = saved
+
+
 def contains(interval: bb.Iv, value: Fraction | float) -> bool:
     return Q(interval[0]) <= Q(value) <= Q(interval[1])
 

@@ -247,6 +247,12 @@ PRUNE = frozenset(
         # unrelated research progress. Markdown linked from checked documents is copied
         # back by `linked_pruned_targets`, and registered frontier evidence is copied by
         # `result_pruned_targets`, so the checkers keep every dependency they declare.
+        # Session 168's sub-pattern certificates are exact proof objects read only by
+        # `check_n17_subpattern --check-saved` and the certified-census ledger check, and
+        # named by no control. W7's node alone is 16,200,330 bytes; with it the snapshot
+        # read 204,358,533 against the 201,326,592-byte cap and failed suite A on PR 307
+        # (run 37034789370). Pruning the directory leaves every receipt and the README.
+        ROOT / "campaign/explorations/X048-session-168-pilots/certificates",
         ROOT / "campaign/series/series-000-smoke-and-calibration/results/agenda-024",
         ROOT / "campaign/series/series-000-smoke-and-calibration/results/agenda-025",
         ROOT / "campaign/series/series-000-smoke-and-calibration/results/agenda-026",

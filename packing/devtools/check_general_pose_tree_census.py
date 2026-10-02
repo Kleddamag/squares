@@ -10,8 +10,8 @@ The ``run`` command snapshots the pinned checker and both inputs before executio
 uses a wall timeout, checks that those bytes did not change, and tags every emitted
 row with that production-time binding.  ``validate`` refuses journals without that
 binding.  ``pack`` gzips a journal deterministically for retention, and ``validate``
-reads the gzip directly, with every digest over the inflated bytes.  ``inspect`` can describe legacy JSONL, but always reports it as unbound
-inventory rather than as a verified replay.
+reads the gzip directly, with every digest over the inflated bytes.  ``inspect`` can describe
+legacy JSONL, but always reports it as unbound inventory rather than as a verified replay.
 """
 
 from __future__ import annotations

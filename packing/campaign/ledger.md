@@ -1085,6 +1085,8 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-263 | open question | proof | Which closed centre cover with proved cell capacities keeps every endp |  | 0 |  |  |
 | H-264 | open question | proof | On 10 to 20 closed-assignment D4 orbits drawn uniformly from the resid |  | 0 |  |  |
 | H-265 | blocked | proof | The side S* of the H255 chart root is a root of the degree-18 polynomi |  | 0 |  |  |
+| H-266 | blocked | proof | At cap U = 1169/250 there is a D4-symmetric closed cover of the centre |  | 0 |  |  |
+| H-267 | blocked | proof | On the H-266 cover, forbidden occupancy sub-patterns of arity at most  |  | 0 |  |  |
 
 ## Needs review — held for a human, not decided
 

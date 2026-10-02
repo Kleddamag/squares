@@ -258,7 +258,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Commitments | 400 | 204 complete; 65 stopped; 70 blocked; 26 ready; 21 tentative; 14 in progress |
 | Sessions | 166 | 103 completed; 63 stopped; all terminal |
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
-| Hypotheses | 200 | 40 confirmed; 33 refuted; 62 blocked; 17 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
+| Hypotheses | 202 | 40 confirmed; 33 refuted; 64 blocked; 17 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 172 | 54 accepted; 38 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
 | Frontier results | 65 | 65 registered, 37 by others |
 
@@ -523,6 +523,7 @@ case or experiment separately.
 | [Review: The Site’s Documentation Cards and the Records Behind Them](docs/project/reviews/review-2026-10-01-site-documentation-records.md) | dated review record | record | retained | — |
 | [n17 Capture Feasibility by Local Radius](docs/project/reviews/review-2026-10-02-n17-capture-feasibility.md) | dated review record | record | retained | — |
 | [n17 Charge-Floor Pilot Review](docs/project/reviews/review-2026-10-02-n17-charge-floor-pilot.md) | dated review record | record | retained | — |
+| [n17 Bulk Exclusion Design](docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md) | dated review record | record | retained | — |
 | [n17 Local Theorem Modulo Sliders — Argument Review and Instrument Recipe](docs/project/reviews/review-2026-10-02-n17-local-theorem-recipe.md) | dated review record | record | retained | — |
 | [n17 Optimality Route After PR 265](docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md) | dated review record | record | retained | — |
 | [X-048 Session 167 Pilots: Receipts](packing/campaign/explorations/X048-session-167-pilots/README.md) | research synthesis | record | retained | — |
@@ -5324,6 +5325,8 @@ round that names the hypothesis, control roles included.
 | [H-263](packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md) | open question | Which closed cover keeps the whole endpoint family inside one occupancy state and leaves the fewest survivors (BC-410) | 0 | — |
 | [H-264](packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md) | open question | The cost of one exact geometric exclusion on a uniform residue sample at a cap at or above the endpoint; re-scopes think-11ma (BC-411) | 0 | — |
 | [H-265](packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md) | blocked | The certified chart endpoint is a root of the catalogue’s irreducible degree-18 polynomial; instrument to build (BC-409) | 0 | — |
+| [H-266](packing/campaign/hypotheses/H-266-n17-minimal-capacity-one-cover.md) | blocked | A D4-symmetric capacity-one cover of at most 25 cells holds the endpoint family in one occupancy state; replaces the H259 grid; instrument to build | 0 | — |
+| [H-267](packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md) | blocked | Isolated sub-pattern certificates of arity at most seven leave at most 10^4 orbits on the H-266 cover; waits on H-266 | 0 | — |
 
 ### Confirmed
 

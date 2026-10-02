@@ -866,6 +866,8 @@ these rows as BC-406 to BC-411.
 | 272 | Capture of the endpoint’s occupancy states into the H-261 neighbourhood | shaped | — | Starts from the n11 case-438 pipeline once the radius and cover exist; must handle a 6-dimensional minimizer family. |
 | 273 | The conditional minimum over all common orientations and sides in [4.66, 4.676] | shaped | — | A grid shows the same derivative signs on the wider side range and the least side over common orientations at the root; worth proving only if capture needs a wider angle target. |
 | 274 | A reusable stress-to-local-minimum instrument for endpoints with translational sliders | shaped | — | The H-261 tool, generalised for n18, n19, n26 and n29 under OR-1. |
+| 275 | A D4-symmetric capacity-one n17 cover of at most 25 cells holding the endpoint family in one state | registered | [H-266](hypotheses/H-266-n17-minimal-capacity-one-cover.md) | The H259 grid counts like a 30-cell cover; n11 used 16 cells for 11 squares. An exploratory 24-cell design has 43,593 orbits, 177 times below the cut H259 count. |
+| 276 | Isolated sub-pattern exclusion leaves at most 10^4 orbits on the minimal cover | registered | [H-267](hypotheses/H-267-n17-isolated-sub-pattern-residue.md) | n11’s field certificates excluded 1,904 of 2,180 cases by containment; an exploratory arity-five proxy leaves 11,939 orbits on the 24-cell design. |
 
 ## Dead ends
 

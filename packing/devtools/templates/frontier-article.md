@@ -9,10 +9,11 @@
 
 <!-- What the survey records, how a bound comes to count, the audit of its sources, the
      recent counts and the seventeen-square history stood on the homepage, in The
-     Frontier Survey, until 2026-10-02; they are this page's own prose now, and the
-     homepage says the survey in one paragraph and leads here. Every count is filled
-     from the record (render_frontier_page.frontier_markdown). The survey's account comes
-     first, and the key to the table's columns last, beside the table. -->
+     Frontier Survey, until 2026-10-02; they are this page's own prose now. The
+     homepage's section went the same day (think-ec5k), and one of its page cards leads
+     here. Every count is filled from the record (render_frontier_page.frontier_markdown).
+     The survey's account comes first, and the key to the table's columns last, beside
+     the table. -->
 
 For each number $n$ of unit squares, $s(n)$ is the side of the smallest square that
 holds them without overlap.

@@ -28,7 +28,11 @@ mixed certificate a packet retains. Neither decides coverage.
 The other commands work on the source's own runs. ``n45-compare``, ``n21-compare`` and
 ``n50-compare`` read a replay's outputs and compare them with the source's records (for
 ``s(21)``, output file by output file against the pinned M1 linkage, also for the
-finished stages of a run in progress). ``n50-bundle-check`` checks an unpacked bundle
+finished stages of a run in progress). ``n21-control`` is stage 4 of
+``campaign/result-import.md`` for the ``s(21)`` replay: the source's ``verify_portable.py``
+run on two mutated covers, each provably uncovered at an exact witness square, with the
+bundle's records re-bound to the mutated cover by digest; each run must end in the
+checker's own refusal. ``n50-bundle-check`` checks an unpacked bundle
 against its ``files-sha256.json``; ``n50-inputs`` binds all 200 oblique inputs to the
 exact candidate by an independent enclosure check; and ``n50-replay`` re-executes chosen
 per-angle proofs by calling the shipped Python driver functions and C++ checker
@@ -63,6 +67,8 @@ Usage, from ``packing/`` with the project interpreter::
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed n45-compare RUN_DIR --out F
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed n21-compare OUT_DIR \\
         --m1-linkage M1 [--stage root --stage sieve | --collect RECEIPTS] --out F
+    .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed n21-control \\
+        drop-heaviest-point move-point --bundle BUNDLE --work W
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed n50-bundle-check BUNDLE --out F
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed n50-inputs BUNDLE --out F
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed n50-replay BUNDLE \\
@@ -89,6 +95,7 @@ import argparse
 import gzip
 import hashlib
 import importlib
+import importlib.metadata
 import itertools
 import json
 import os
@@ -113,6 +120,7 @@ from typing import Any, cast
 
 from strif import atomic_write_text
 
+from devtools import replay_receipt
 from devtools.audit_wand125_rectangles import (
     CONTROL_FACTOR,
     coverage_exact,
@@ -121,6 +129,7 @@ from devtools.audit_wand125_rectangles import (
     net_rotation,
     orbit_contributions,
 )
+from devtools.replay_evand_zmx2 import D4, d4_image
 from devtools.retained_data import (
     GZIP_SUFFIX,
     LINE_THRESHOLD,
@@ -512,9 +521,11 @@ def n21_collect(out: Path, receipts: Path, m1_linkage: Path | None) -> dict[str,
 
     The comparison is written as ``comparison.json``; logs over the line threshold are
     stored as deterministic gzip. Proof objects and ``linkage.json`` stay in ``out``;
-    the comparison records their digests.
+    the comparison records their digests. ``receipts`` may be relative to the working
+    directory, as the packet README writes it; the table rows are relative to the packet.
     """
     result = n21_compare(out, m1_linkage=m1_linkage)
+    receipts = receipts.resolve()
     receipts.mkdir(parents=True, exist_ok=True)
     names = [*N21_RECEIPT_FILES, *(p.name for p in sorted(out.glob("*-exit.json")))]
     names += [p.name for p in sorted(out.glob("*.log"))]
@@ -629,6 +640,495 @@ def n21_compare(
             "their SHA-256 differs between runs; the certified quantities are compared."
         ),
     }
+
+
+# --------------------------------------------------------------------------- n = 21 controls
+
+#: Stage 4 of ``campaign/result-import.md`` for the ``s(21)`` replay: the source's
+#: ``verify_portable.py``, run on two mutated covers, must refuse each.
+N21_CONTROL_KIND = "wand125-n21-control/v1"
+N21_MUTATIONS = ("drop-heaviest-point", "move-point")
+#: ``move-point`` moves the entry at ``(1, 7/10)`` by ``(1/1000, 0)``, in the file's
+#: units of 1/1000, and each D4 image of it by the image of that move.
+N21_MOVE = ((1000, 700), (1, 0))
+#: The witness: the closed unit square ``[0, 1]^2`` at angle zero, the one admissible
+#: pose of root box 832 (centre ``[2/5, 1/2]^2``, ``t`` in ``[0, 1/16]``), which is the
+#: first of the 5,000 root boxes, in the order the root stage runs them, to hold one.
+N21_WITNESS_CORNER = (0, 0)
+N21_WITNESS_ROOT = 832
+N21_WORKERS = 2
+N21_CONTROL_TIMEOUT = 1800
+N21_CONTROLS = PACKET / "receipts/controls"
+#: The cover inside the bundle, byte-identical to ``certificates/n21-original.txt``.
+N21_BUNDLE_CANDIDATE = (
+    "runs/evand_n21_n32_bridge_20260927/results/"
+    "n21_L5_refit29_counterexample_trial/refit/candidate.txt"
+)
+#: The checker's own refusals of a root-stage witness (``replay_physical_point_witness``).
+N21_REFUSALS = (
+    re.compile(r"ValueError: Insufficient witness mass"),
+    re.compile(r"ValueError: Point containment not proved: (?P<index>\d+)"),
+)
+#: A maximal run of lower-case hex; one of exactly 64 characters is a SHA-256 as the
+#: records write one. (Faster than look-arounds, and the same tokens.)
+_HEX_RUN = re.compile(rb"[0-9a-f]{64,}")
+_FRAME = re.compile(r'^\s*File "(?P<file>[^"]+)", line (?P<line>\d+), in (?P<name>\S+)$')
+
+
+@dataclass(frozen=True, slots=True)
+class N21Mutation:
+    """A mutated ``s(21)`` cover: its bytes, the entries it changed, and how."""
+
+    kind: str
+    data: bytes
+    #: Entry indices changed, in file order; the proof records index entries by position,
+    #: so no entry is ever removed.
+    rows: tuple[int, ...]
+    detail: str
+
+
+def _n21_rows(data: bytes) -> tuple[list[bytes], int, tuple[int, ...], list[list[int]]]:
+    """The file's lines, the line of entry 0, the five header integers, and the entries.
+
+    Every entry must be alone on its own line, so that a mutation rewrites lines.
+    """
+    lines = data.splitlines(keepends=True)
+    tokens = 0
+    first = 0
+    while tokens < 5:
+        _require(first < len(lines), "the header is incomplete")
+        tokens += len(lines[first].split())
+        first += 1
+    _require(tokens == 5, "the header shares a line with an entry")
+    a, b, d, w, n, *values = (int(token) for token in data.split())
+    _require(min(a, b, d, w) > 0 and len(values) == 3 * n, "invalid point header")
+    entries = [values[3 * i : 3 * i + 3] for i in range(n)]
+    _require(len(lines) == first + n, "an entry is not alone on its line")
+    for i, entry in enumerate(entries):
+        _require([int(t) for t in lines[first + i].split()] == entry, f"entry {i} is split")
+    return lines, first, (a, b, d, w, n), entries
+
+
+def mutate_n21(data: bytes, kind: str) -> N21Mutation:
+    """Apply ``kind`` (one of `N21_MUTATIONS`) to an ``s(21)`` point file.
+
+    ``drop-heaviest-point`` sets to zero the weight of every entry at a D4 image of the
+    location carrying the most weight (ties to the least ``(X, Y)``); ``move-point``
+    moves the entry at ``N21_MOVE`` and each of its D4 images by the image of the move.
+    Both keep every entry in place, as ``FORMAT.md`` requires of a file the proof trees
+    index, and keep the cover D4-invariant, so the replay's quarter-turn reduction still
+    applies.
+    """
+    lines, first, (a, b, d, w, _n), entries = _n21_rows(data)
+    edge, remainder = divmod(a * d, b)
+    _require(remainder == 0, "the side is not a multiple of 1/D")
+    where = {(x, y): i for i, (x, y, _v) in enumerate(entries)}
+    _require(len(where) == len(entries), "coordinates are not distinct")
+    changed: dict[int, list[int]] = {}
+    if kind == "drop-heaviest-point":
+        heaviest = min(where, key=lambda p: (-entries[where[p]][2], p))
+        orbit = sorted({d4_image(heaviest, edge, g) for g in D4})
+        for image in orbit:
+            x, y, _v = entries[where[image]]
+            changed[where[image]] = [x, y, 0]
+        weight = entries[where[heaviest]][2]
+        detail = (
+            f"sets to zero the weights of the {len(orbit)} entries at the D4 images of "
+            f"({heaviest[0]}, {heaviest[1]})/{d}, {weight}/{w} each"
+        )
+    elif kind == "move-point":
+        (px, py), (dx, dy) = N21_MOVE
+        moves: dict[tuple[int, int], tuple[int, int]] = {}
+        for g in D4:
+            image, moved = d4_image((px, py), edge, g), d4_image((px + dx, py + dy), edge, g)
+            _require(moves.setdefault(image, moved) == moved, "the move is not D4-equivariant")
+        for image, moved in sorted(moves.items()):
+            _require(image in where, f"no entry at {image}")
+            _require(all(0 <= v <= edge for v in moved), f"{moved} leaves the container")
+            _require(moved not in where, f"{moved} is already an entry")
+            changed[where[image]] = [*moved, entries[where[image]][2]]
+        _require(len(set(moves.values())) == len(moves), "two images move to one place")
+        detail = (
+            f"moves the {len(moves)} entries at the D4 images of ({px}, {py})/{d} by the "
+            f"images of ({dx}, {dy})/{d}, keeping their weights"
+        )
+    else:
+        raise ValueError(f"unknown mutation: {kind}")
+    out = list(lines)
+    for i, entry in changed.items():
+        line = lines[first + i]
+        ending = line[len(line.rstrip(b"\r\n")) :]
+        out[first + i] = " ".join(map(str, entry)).encode() + ending
+    return N21Mutation(kind, b"".join(out), tuple(sorted(changed)), detail)
+
+
+def n21_square_capture(data: bytes, corner: tuple[int, int]) -> Fraction:
+    """The weight in the closed axis-parallel unit square with lower-left ``corner``."""
+    _lines, _first, (_a, _b, d, w, _n), entries = _n21_rows(data)
+    x0, y0 = corner
+    inside = (v for x, y, v in entries if x0 <= x <= x0 + d and y0 <= y <= y0 + d)
+    return Fraction(sum(inside), w)
+
+
+def n21_cover_facts(data: bytes) -> dict[str, Any]:
+    """Exact facts of a cover in the ``s(21)`` format: total, D4 invariance, distinctness."""
+    _lines, _first, (a, b, d, w, _n), entries = _n21_rows(data)
+    edge = a * d // b
+    weights = {(x, y): v for x, y, v in entries}
+    total = Fraction(sum(v for *_, v in entries), w)
+    return {
+        "sha256": _sha256(data),
+        "entries": len(entries),
+        "positive_entries": sum(1 for *_, v in entries if v > 0),
+        "coordinates_distinct": len(weights) == len(entries),
+        "nonnegative": all(v >= 0 for *_, v in entries),
+        "d4_invariant": all(
+            weights.get(d4_image(p, edge, g)) == v for p, v in weights.items() for g in D4
+        ),
+        "total": str(total),
+        "below_21q": total < 21 * N21_THRESHOLD,
+    }
+
+
+@dataclass(slots=True)
+class _BundleFile:
+    """One bundle file as the re-binding sees it."""
+
+    sha256: str
+    #: SHA-256 of the decompressed bytes, for a ``.gz`` file.
+    content_sha256: str | None
+    tokens: frozenset[bytes]
+
+
+def _payload(rel: str, raw: bytes) -> bytes:
+    return gzip.decompress(raw) if rel.endswith(".gz") else raw
+
+
+def scan_n21_bundle(bundle: Path) -> tuple[dict[str, Any], dict[str, _BundleFile]]:
+    """Check an unpacked bundle against its manifest, and index the digests each file names.
+
+    The manifest must be the one the retained ``archive-index.json`` pins, and every file
+    it lists must have its size and SHA-256, as ``unpack_bundle.py`` checks; byte-code
+    caches are the only other files allowed.
+    """
+    index = _json(N21 / "archive-index.json")
+    raw_manifest = (bundle / "portable-manifest.json").read_bytes()
+    _require(_sha256(raw_manifest) == index["manifest_sha256"], "the manifest is not pinned")
+    manifest = json.loads(raw_manifest)
+    files: dict[str, _BundleFile] = {}
+    for rel, record in manifest["files"].items():
+        raw = (bundle / rel).read_bytes()
+        digest = _sha256(raw)
+        _require(len(raw) == record["bytes"] and digest == record["sha256"], f"{rel} differs")
+        payload = _payload(rel, raw)
+        files[rel] = _BundleFile(
+            digest,
+            _sha256(payload) if rel.endswith(".gz") else None,
+            frozenset(token for token in _HEX_RUN.findall(payload) if len(token) == 64),
+        )
+    present = {
+        p.relative_to(bundle).as_posix()
+        for p in bundle.rglob("*")
+        if p.is_file() and "__pycache__" not in p.parts
+    }
+    _require(present == set(files) | {"portable-manifest.json"}, "the bundle's file set")
+    _require(files[N21_BUNDLE_CANDIDATE].sha256 == N21_HASHES["n21-original.txt"], "candidate")
+    return manifest, files
+
+
+def rebind_n21_bundle(
+    bundle: Path,
+    target: Path,
+    data: bytes,
+    scanned: tuple[dict[str, Any], dict[str, _BundleFile]] | None = None,
+) -> dict[str, Any]:
+    """Write ``target``: the bundle with its cover replaced by ``data`` and re-bound to it.
+
+    The proof records name the cover by its SHA-256, and name other records by theirs. A
+    file that names the cover's digest, or the digest of a file so rewritten (its own or,
+    for ``.gz``, its decompressed bytes'), is rewritten with each such digest replaced by
+    the new one, in dependency order, and the manifest is rewritten to the new sizes and
+    digests. Every other file is a hard link to the pristine one. Python files are never
+    rewritten: one that names a replaced digest is listed, and left as it is.
+    """
+    manifest, files = scanned or scan_n21_bundle(bundle)
+    old = files[N21_BUNDLE_CANDIDATE].sha256
+    by_digest: dict[str, list[str]] = {}
+    naming: dict[bytes, list[str]] = {}
+    for rel, item in files.items():
+        for digest in filter(None, (item.sha256, item.content_sha256)):
+            by_digest.setdefault(digest, []).append(rel)
+        for token in item.tokens:
+            naming.setdefault(token, []).append(rel)
+    # Every file that names the cover's digest, or a digest of a file already in the set.
+    affected = {N21_BUNDLE_CANDIDATE}
+    code: set[str] = set()
+    queue, seen = deque([old]), {old}
+    while queue:
+        for rel in naming.get(queue.popleft().encode(), []):
+            if rel.endswith(".py"):
+                code.add(rel)
+            elif rel not in affected:
+                affected.add(rel)
+                fresh = {files[rel].sha256, files[rel].content_sha256} - {None} - seen
+                seen |= fresh
+                queue.extend(sorted(d for d in fresh if d is not None))
+    # A file is rewritten once every affected file it names has its new digests.
+    waiting: dict[str, set[str]] = {}
+    named_by: dict[str, list[str]] = {}
+    for rel in sorted(affected - {N21_BUNDLE_CANDIDATE}):
+        deps = {
+            other
+            for token in files[rel].tokens
+            for other in by_digest.get(token.decode(), [])
+            if other in affected and other != rel
+        }
+        waiting[rel] = deps
+        for other in deps:
+            named_by.setdefault(other, []).append(rel)
+    new: dict[str, str] = {}
+    sizes: dict[str, tuple[str, int]] = {}
+    if target.exists():
+        shutil.rmtree(target)
+
+    def substitute(payload: bytes) -> bytes:
+        return _HEX_RUN.sub(lambda m: new.get(m[0].decode(), m[0].decode()).encode(), payload)
+
+    def finish(rel: str, raw: bytes, payload: bytes) -> None:
+        item = files[rel]
+        for before, after in (
+            (item.sha256, _sha256(raw)),
+            (item.content_sha256, _sha256(payload)),
+        ):
+            if before is not None:
+                _require(new.setdefault(before, after) == after, f"{rel}: two rewrites")
+        path = target / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(raw)
+        sizes[rel] = (_sha256(raw), len(raw))
+        for other in named_by.get(rel, []):
+            waiting[other].discard(rel)
+            if not waiting[other]:
+                ready.append(other)
+
+    ready = deque(sorted(rel for rel, deps in waiting.items() if not deps))
+    finish(N21_BUNDLE_CANDIDATE, data, data)
+    while ready:
+        rel = ready.popleft()
+        if rel in sizes:
+            continue
+        payload = substitute(_payload(rel, (bundle / rel).read_bytes()))
+        packed = rel.endswith(".gz")
+        finish(
+            rel,
+            gzip.compress(payload, compresslevel=9, mtime=0) if packed else payload,
+            payload,
+        )
+    _require(set(sizes) == affected, "the records' digests form a cycle")
+    rebound = json.loads(substitute(json.dumps(manifest).encode()))
+    for rel, (digest, size) in sizes.items():
+        rebound["files"][rel] = {"sha256": digest, "bytes": size}
+    for rel in files:
+        if rel not in sizes:
+            path = target / rel
+            path.parent.mkdir(parents=True, exist_ok=True)
+            os.link(bundle / rel, path)
+    manifest_text = json.dumps(rebound, indent=2) + "\n"
+    (target / "portable-manifest.json").write_text(manifest_text, encoding="utf-8")
+    folders = Counter(rel.split("/")[3] if rel.startswith("runs/") else rel for rel in sizes)
+    return {
+        "pristine_manifest_sha256": _sha256((bundle / "portable-manifest.json").read_bytes()),
+        "rebound_manifest_sha256": _sha256(manifest_text.encode()),
+        "files": len(files),
+        "files_rewritten": len(sizes),
+        "gzip_rewritten": sum(1 for rel in sizes if rel.endswith(".gz")),
+        "digests_replaced": len(new),
+        "rewritten_by_folder": dict(sorted(folders.items())),
+        "python_naming_a_replaced_digest": sorted(code),
+    }
+
+
+def _n21_outcome(run: Path, mutation: N21Mutation) -> dict[str, Any]:
+    """What a ``verify_portable.py`` run on a mutated cover ended with, read from ``run``."""
+    exits = [json.loads(p.read_text()) for p in sorted(run.glob("*-exit.json"))]
+    failed = [item for item in exits if item["exit_code"] != 0]
+    failure = run / "failure.json"
+    outcome: dict[str, Any] = {
+        "stage_exits": [
+            {key: item[key] for key in ("stage", "shard", "exit_code", "seconds")}
+            for item in exits
+        ],
+        "failure": json.loads(failure.read_text()) if failure.exists() else None,
+        "result": json.loads((run / "result.json").read_text())
+        if (run / "result.json").exists()
+        else None,
+    }
+    if len(failed) != 1:
+        return outcome | {"verdict": "ACCEPTED" if outcome["result"] else "CRASHED"}
+    item = failed[0]
+    name = item["stage"] if item["shard"] is None else f"frontier-s{item['shard']}"
+    log = (run / f"{name}.log").read_text(encoding="utf-8")
+    last = log.rstrip().splitlines()[-1]
+    frames = [m for line in log.splitlines() if (m := _FRAME.match(line))]
+    refusal = next((m for pattern in N21_REFUSALS if (m := pattern.fullmatch(last))), None)
+    index = refusal.groupdict().get("index") if refusal else None
+    refused = refusal is not None and (index is None or int(index) in mutation.rows)
+    proofs = run / name / "proofs"
+    return outcome | {
+        "verdict": "REFUSED" if refused else "CRASHED",
+        "stage": name,
+        "stage_log": name + ".log",
+        "parents_completed": len(list(proofs.glob("*.json"))) if proofs.is_dir() else None,
+        "refusal": last,
+        "raised_in": {
+            "file": Path(frames[-1]["file"]).name,
+            "function": frames[-1]["name"],
+            "line": int(frames[-1]["line"]),
+        }
+        if frames
+        else None,
+    }
+
+
+def n21_control(
+    kind: str,
+    bundle: Path,
+    work: Path,
+    out: Path = N21_CONTROLS,
+    scanned: tuple[dict[str, Any], dict[str, _BundleFile]] | None = None,
+) -> dict[str, Any]:
+    """Run ``verify_portable.py`` on the ``kind`` mutation of the ``s(21)`` cover.
+
+    The cover is regenerated from the retained ``n21-original.txt``; the witness square
+    must hold at least the threshold before the mutation and less after it, so the
+    mutated cover is provably not a certificate. ``bundle`` is a pristine unpacking,
+    checked file by file against the pinned manifest (``scanned``, when one scan serves
+    several controls); a hard-linked copy is re-bound to the mutated cover
+    (`rebind_n21_bundle`), so that the source's digest checks pass and only the replay's
+    arithmetic can refuse. The retained ``verify_portable.py`` and
+    ``assemble_portable.py``, which must be the accepting run's, then run on it with the
+    accepting run's ``--workers``, under ``devtools.replay_receipt``. The source's runner
+    has no subset mode, so it runs to its first failure, which must be one of the
+    witness replay's own refusals (`N21_REFUSALS`), not a crash. The re-bound copy is
+    removed afterwards; the run's own directory is kept in ``work``.
+    """
+    accepted = json.loads((PACKET / "receipts/n21/run-inputs.json").read_text())["bindings"]
+    by_name = {Path(path).name: digest for path, digest in accepted.items()}
+    package = work / "package"
+    package.mkdir(parents=True, exist_ok=True)
+    for name in ("verify_portable.py", "assemble_portable.py"):
+        script = _read(N21 / name)
+        _require(_sha256(script) == by_name[name], f"{name} is not the accepting run's")
+        (package / name).write_bytes(script)
+    original = _read(N21 / "certificates/n21-original.txt")
+    mutation = mutate_n21(original, kind)
+    before = n21_square_capture(original, N21_WITNESS_CORNER)
+    after = n21_square_capture(mutation.data, N21_WITNESS_CORNER)
+    _require(before >= N21_THRESHOLD > after, "the witness square does not lose its cover")
+    facts = n21_cover_facts(mutation.data)
+    _require(
+        facts["nonnegative"] and facts["d4_invariant"] and facts["coordinates_distinct"],
+        "the mutated cover is not a well-formed D4-invariant measure",
+    )
+    _require(facts["below_21q"] and facts["sha256"] != _sha256(original), "mutated cover")
+    scanned = scanned or scan_n21_bundle(bundle)
+    _require(
+        _sha256((bundle / "portable_replay.py").read_bytes()) == by_name["portable_replay.py"],
+        "portable_replay.py is not the accepting run's",
+    )
+    folder = work / kind
+    if folder.exists():
+        shutil.rmtree(folder)
+    rebinding = rebind_n21_bundle(bundle, folder / "bundle", mutation.data, scanned)
+    run = folder / "run"
+    os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
+    out.mkdir(parents=True, exist_ok=True)
+    receipt = out / f"n21_control_{kind}.log"
+    fields = replay_receipt.run(
+        [
+            sys.executable,
+            "verify_portable.py",
+            "--bundle",
+            str(folder / "bundle"),
+            "--workers",
+            str(N21_WORKERS),
+            "--out",
+            str(run),
+        ],
+        receipt=receipt,
+        cwd_label=(
+            f"point_n21_L5/ staged by devtools.audit_wand125_point_and_mixed n21-control: "
+            f"verify_portable.py {by_name['verify_portable.py']} and assemble_portable.py "
+            f"{by_name['assemble_portable.py']} from {PACKET.relative_to(REPO)}; bundle "
+            f"{rebinding['pristine_manifest_sha256']} re-bound to cover {facts['sha256']}, "
+            f"the {kind} mutation of {N21_HASHES['n21-original.txt']}: {mutation.detail}"
+        ),
+        python_note=(
+            f"the project interpreter, CPython {platform.python_version()} with NumPy "
+            f"{_version('numpy')} and SciPy {_version('scipy')}"
+        ),
+        chdir=package,
+        time_limit=N21_CONTROL_TIMEOUT,
+    )
+    outcome = _n21_outcome(run, mutation)
+    shutil.rmtree(folder / "bundle")
+    if "stage_log" in outcome:
+        shutil.copyfile(
+            run / outcome["stage_log"], out / f"n21_control_{kind}_{outcome['stage_log']}"
+        )
+    refused = outcome["verdict"] == "REFUSED" and fields["exit"] != 0
+    result = {
+        "kind": N21_CONTROL_KIND,
+        "status": "CONTROL_REFUSED" if refused else "CONTROL_FAILED",
+        "certificate": N21.as_posix(),
+        "revision": REVISION,
+        "mutation": {
+            "kind": kind,
+            "detail": mutation.detail,
+            "rows": list(mutation.rows),
+            "original_sha256": N21_HASHES["n21-original.txt"],
+        }
+        | facts,
+        "witness": {
+            "square": f"[{N21_WITNESS_CORNER[0]}, 1] x [{N21_WITNESS_CORNER[1]}, 1], closed, "
+            "at angle zero",
+            "root": N21_WITNESS_ROOT,
+            "threshold": str(N21_THRESHOLD),
+            "capture_original_exact": str(before),
+            "capture_mutated_exact": str(after),
+        },
+        "checker": {
+            "verify_portable_sha256": by_name["verify_portable.py"],
+            "assemble_portable_sha256": by_name["assemble_portable.py"],
+            "portable_replay_sha256": by_name["portable_replay.py"],
+            "accepting_run": "receipts/n21/run-inputs.json",
+            "workers": N21_WORKERS,
+        },
+        "rebinding": rebinding,
+        "run": {
+            key: fields[key]
+            for key in ("started_utc", "ended_utc", "exit", "wall_seconds", "cpu_seconds")
+        }
+        | outcome,
+        "receipt": receipt.name,
+        "scope": (
+            "A stage-4 negative control: the source's verify_portable.py, unchanged, on a "
+            "copy of the pinned bundle whose cover is mutated and whose records are "
+            "re-bound to it by digest. The witness square proves the mutated cover is not "
+            "a certificate; the runner has no subset mode and runs to its first failure."
+        ),
+    }
+    atomic_write_text(
+        out / f"n21_control_{kind}.json", json.dumps(result, indent=2) + "\n", encoding="utf-8"
+    )
+    return result
+
+
+def _version(distribution: str) -> str | None:
+    try:
+        return importlib.metadata.version(distribution)
+    except importlib.metadata.PackageNotFoundError:
+        return None
 
 
 # --------------------------------------------------------------------------- n = 50
@@ -3023,6 +3523,18 @@ def _run_mixed(args: argparse.Namespace) -> int:
     return 0 if outcome["status"] in PASSING else 1
 
 
+def _run_n21_control(args: argparse.Namespace) -> int:
+    """``n21-control``: one bundle scan serves every mutation named; receipts in ``--out``."""
+    bundle = args.bundle.resolve()
+    scanned = scan_n21_bundle(bundle)
+    statuses = []
+    for kind in args.mutation:
+        result = n21_control(kind, bundle, args.work.resolve(), args.out.resolve(), scanned)
+        print(json.dumps({key: result[key] for key in ("status", "mutation", "run")}, indent=2))
+        statuses.append(result["status"])
+    return 0 if all(status in PASSING for status in statuses) else 1
+
+
 #: The exit status of a ``mixed-replay`` that stopped with angles left and none refused:
 #: the same command resumes it.
 RESUMABLE = 3
@@ -3041,6 +3553,7 @@ PASSING = frozenset(
         "BUNDLE_READY",
         "RANGE_REPLAYED",
         "CONTROLS_REFUSED",
+        "CONTROL_REFUSED",
     }
 )
 
@@ -3064,6 +3577,17 @@ def main() -> int:
     n21.add_argument("--collect", type=Path, help="also copy the run's records here")
     n21.add_argument(
         "--stage", action="append", help="compare only these finished stage directories"
+    )
+    n21_controlling = commands.add_parser(
+        "n21-control", help="run verify_portable.py on a mutated s(21) cover (stage 4)"
+    )
+    n21_controlling.add_argument("mutation", choices=N21_MUTATIONS, nargs="+")
+    n21_controlling.add_argument(
+        "--bundle", type=Path, required=True, help="a pristine unpack_bundle.py output"
+    )
+    n21_controlling.add_argument("--work", type=Path, required=True, help="a scratch directory")
+    n21_controlling.add_argument(
+        "--out", type=Path, default=N21_CONTROLS, help="default: PACKET/receipts/controls"
     )
     n50 = commands.add_parser("n50-replay", help="replay chosen angles of an n50 bundle")
     n50.add_argument("bundle", type=Path)
@@ -3101,8 +3625,10 @@ def main() -> int:
             atomic_write_text(args.out, text, encoding="utf-8")
         print(text, end="")
         return 0
-    if args.command.startswith("mixed-"):
-        return _run_mixed(args)
+    own_tail = _run_mixed if args.command.startswith("mixed-") else None
+    own_tail = {"n21-control": _run_n21_control}.get(args.command, own_tail)
+    if own_tail is not None:
+        return own_tail(args)
     if args.command == "n45-compare":
         result = n45_compare(args.run_dir, _json(N45 / "provenance.json"))
     elif args.command == "n21-compare":

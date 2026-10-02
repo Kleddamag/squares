@@ -1,0 +1,8 @@
+{
+  "status": "ANGLE_RESULT_REPLAYED",
+  "candidate_digest": "fdfaed937a788e0f2dcd45689927c59ffe62b1436aa06a4363a0ea6dd1a53fda",
+  "index": 88,
+  "lower": 1.0000000918313172,
+  "nodes": 377593,
+  "scope": "Same outward-rounded algorithm re-executed; not an independent proof implementation."
+}

@@ -1,0 +1,12 @@
+{
+  "status": "FULL_REPLAY_MATCHES_SHIPPED",
+  "fresh_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+  "progress": {
+    "done": 201,
+    "total": 201
+  },
+  "differing_fields": [],
+  "oblique_angles_matching": 200,
+  "axis_matches": true,
+  "certificate_sha256": "545de253151146e4977a03d8fe3524a9ae83382b51e6fe1d66f825534f260bf0"
+}

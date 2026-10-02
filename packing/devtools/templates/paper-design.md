@@ -696,15 +696,15 @@ it.
 - **Names.** Three words are kept apart in everything a reader sees.
   The page at `frontier.html` and its entry in the bar are **Frontier** (“the Frontier
   page”). What that page holds, the record of every case with its reported and verified
-  bounds, is **the frontier survey**: the page’s title, the homepage’s section The
-  Frontier Survey, the page card’s label, and every link to a case’s row (“Open n = 12
-  in the frontier survey”). **Atlas** is the grid of packings on the homepage and the
-  posters and film drawn from it, and never the table of cases.
-  The generated `STATUS.md`, served as `status.html`, is “the status table”.
-  The homepage’s section was The Survey until 2026-10-01; an empty anchor in its heading
-  keeps the old fragment, `#the-survey`, landing on it, as Verification Ladders keeps
-  `#verification-at-a-glance` on the Results page, where the section is since
-  2026-10-02.
+  bounds, is **the frontier survey**: the page’s title, the page card’s label, and every
+  link to a case’s row (“Open n = 12 in the frontier survey”). **Atlas** is the grid of
+  packings on the homepage and the posters and film drawn from it, and never the table
+  of cases. The generated `STATUS.md`, served as `status.html`, is “the status table”.
+  The homepage had a section The Frontier Survey, The Survey until 2026-10-01, until the
+  owner dropped it on 2026-10-02 (`think-ec5k`): `forward.js` sends both its fragments,
+  `#the-frontier-survey` and `#the-survey`, to the Frontier page, whose title carries
+  the first, as it sends Verification Ladders’ two to the Results page, where that
+  section is since the same day.
 
 - **Report layout.** Every report page (the tutorial, the synopsis and the other
   documents) has one layout.
@@ -752,14 +752,14 @@ it.
   A popover card (`card`) is a button that opens a popover showing where it leads, and
   the popover ends in one button that goes there, centred at its foot.
   A direct card is instead itself the link (`link_card`), an `<a>` with no popover.
-  **A card whose target is a full page of the site navigates.** The overview’s four page
-  cards, the optimality paper, the explainer, the tutorial and the workbench, The
-  Frontier Survey’s two cards to the Frontier page (**Overview sections**, below), and
-  the Papers page’s three paper cards lead to full pages the site serves, so each is a
-  direct card that goes to its page in the same tab (`new_tab=False`), with the right
-  arrow for its icon (`data-go="page"`) and nothing framed (`think-bc5d`, `think-w82r`).
-  Popovers are for records, targets that are not site pages of their own: a result, a
-  case, a repository document rendered for its card’s popover.
+  **A card whose target is a full page of the site navigates.** The overview’s five page
+  cards, the optimality paper, the explainer, the tutorial, the workbench and the
+  Frontier page (**Overview sections**, below), and the Papers page’s three paper cards
+  lead to full pages the site serves, so each is a direct card that goes to its page in
+  the same tab (`new_tab=False`), with the right arrow for its icon (`data-go="page"`)
+  and nothing framed (`think-bc5d`, `think-w82r`). Popovers are for records, targets
+  that are not site pages of their own: a result, a case, a repository document rendered
+  for its card’s popover.
   A direct card is a link and holds no other link, so what its note names is linked from
   the prose beside it.
   **Every other direct card opens its target in a new tab** (`target="_blank"`,
@@ -842,11 +842,27 @@ it.
   (`overview_sections.py`), so its lines are one grid; the size is the one its typical
   card’s text asks for, the median card’s, which for an even count is the mean of the
   two middle lengths, and `tests/test_overview.py` holds the two together.
-  The page cards, the survey’s cards, the atlas cards and the other projects are medium;
-  the documents, whose notes are a line, are small.
-  A card built without a size (`card()` or `link_card()` with no `size=`) takes the
-  default for its own text: its headline and note, and a direct card’s address, counted
-  as they read, a formula once.
+  The page cards, the atlas cards and the other projects are medium; the documents,
+  whose notes are a line, are small.
+  A section can also be set in lines of its own, in `SECTION_CARD_LINES`, where one
+  wrapping row would leave a card alone on its last line: the five page cards stand two
+  over three, the two papers over the tutorial, the workbench and the Frontier page,
+  where one row would set four at 1280 pixels and the fifth alone.
+  Each line is a grid of its own in the section’s one frame, a gap below the line
+  before, and none sets more cards to a line than the longest line holds
+  (`data-cards-most`, at which the stylesheet caps its size’s count), so the lines share
+  one column width and each centres in it: three medium columns of 357px at 1280 pixels,
+  the papers’ two centred over the other three.
+  Where the frame fits two medium cards, from 33 to 50rem, the second line is two and
+  then one, as five cards of one width two to a line must end; on a phone every card
+  takes the line. The owner asked for the page cards in two rows on 2026-10-02
+  (`think-ec5k`), and two over three was chosen over three over two from screenshots at
+  1280 pixels: both fill two lines with no card alone, but two over three keeps the
+  papers’ long notes on one line and the three short notes on the other, where three
+  over two stretched the tutorial’s card to the explainer’s height and left half of it
+  empty. A card built without a size (`card()` or `link_card()` with no `size=`) takes
+  the default for its own text: its headline and note, and a direct card’s address,
+  counted as they read, a formula once.
 
 - **Card foot.** A direct card may end with a line that holds links of its own
   (`link_card(foot=)`), as an other project’s card ends with its tally of results.
@@ -1237,18 +1253,19 @@ it.
 - **Atlas cards.** The atlas’s posters and film have a section of their own, **PDFs and
   Videos**, an ordinary `h2`; **The Atlas of Square Packings** keeps the grid, its
   expander, and holds no card and, since 2026-10-02, no note under the expander.
-  The homepage’s sections run The Squares Project, Recent Results, The Atlas of Square
-  Packings, The Frontier Survey directly after it, PDFs and Videos, Other Square Packing
-  Projects and Squares Project Documentation, the owner’s order of 1 October less
-  Verification Ladders, which stood between Recent Results and the atlas until
-  2026-10-02 and is the Results page’s since; the atlas section was The Atlas until 1
-  October, and its heading keeps an empty anchor so `#the-atlas` still lands on it, as
-  The Frontier Survey keeps its own (`tests/test_overview.py` holds the order and the
-  anchor). They are three direct hero cards side by side, one card section
-  (`atlas_cards`): the n = 1 to 100 poster, headed by its landscape card image, opens
-  its PDF; the n = 1 to 324 poster, headed by the top of the poster itself, opens its
-  PDF; and the film, headed by a frame of the n = 1 to 324 film at n = 290
-  (`ascent-n1-324-poster.png`), opens `visualize.html`, the film alone at full size.
+  The homepage’s sections run The Square Packing Problem, The Squares Project, Recent
+  Results, The Atlas of Square Packings, PDFs and Videos, Other Square Packing Projects
+  and Squares Project Documentation, the owner’s order of 1 October less two sections
+  that went on 2026-10-02: Verification Ladders, which stood between Recent Results and
+  the atlas and is the Results page’s since, and The Frontier Survey, which stood
+  directly after the atlas and whose card is a page card since; the atlas section was
+  The Atlas until 1 October, and its heading keeps an empty anchor so `#the-atlas` still
+  lands on it (`tests/test_overview.py` holds the order and the anchor).
+  They are three direct hero cards side by side, one card section (`atlas_cards`): the n
+  = 1 to 100 poster, headed by its landscape card image, opens its PDF; the n = 1 to 324
+  poster, headed by the top of the poster itself, opens its PDF; and the film, headed by
+  a frame of the n = 1 to 324 film at n = 290 (`ascent-n1-324-poster.png`), opens
+  `visualize.html`, the film alone at full size.
   A card’s caps label says what it is and the form it opens in, the heading’s two words:
   “Poster · PDF” twice and “Film · Video”.
   The note under the cards, the star, the shorter film, the release and the SVGs, is the
@@ -1661,14 +1678,19 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   the table. The way onward follows the section’s shape: a section whose key element is a
   table or a grid ends in the one action button (**Action under a table or grid**,
   below), and a section that is prose leads on with direct cards (**Cards**, above), as
-  The Frontier Survey does with its two, every case and the recent cases
-  (`frontier.html?recent=true`, the query its table script presets a filter from).
+  The Squares Project does with its page cards.
   The page cards under The Squares Project are the site’s reading and working pages, the
-  three papers and the workbench; the Results and Frontier pages are reached from their
-  own sections. The owner set this on 2026-10-02 (`think-f1tu`): the overview “a little
-  more structured and a little less verbose”, the survey’s account moved into the
-  Frontier page, Recent Results slimmed to the essentials and its table, and “cards that
-  point to the frontier and the results pages where appropriate”.
+  three papers, the workbench and the Frontier page, set two over three (**Card sizes**,
+  above); the Results page is reached from Recent Results.
+  The owner set this shape on 2026-10-02 (`think-f1tu`): the overview “a little more
+  structured and a little less verbose”, the survey’s account moved into the Frontier
+  page, Recent Results slimmed to the essentials and its table, and “cards that point to
+  the frontier and the results pages where appropriate”.
+  That left the Frontier page’s card in a section of its own, The Frontier Survey,
+  beside a card to the recent cases (`frontier.html?recent=true`, the query the table
+  script presets a filter from), until the owner dropped the section later the same day
+  and moved the card to every case up to the page cards (`think-ec5k`); the query still
+  works, and nothing on the homepage links it.
   `tests/test_overview.py` holds each section’s prose to one paragraph of its own where
   this applies, the cards to their pages, and the three pages to saying each thing once.
 

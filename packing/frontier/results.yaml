@@ -3070,8 +3070,27 @@ results:
 
       Confirmation is C2 by the C table: the clause's replay command, the source-distinct
       BC-241 checker, passes at this head, and a proof-audited entry does not derive
-      above C2. The radius generator has no replay mode, so its full 2026-09-24 replay is
-      a retained comparison, not a replay command.
+      above C2.
+
+      2026-10-02: the radius generator gained a replay mode, so rho_row =
+      808514697/200000000000 now carries an exact-algebraic entry of its own,
+      E-n011-trump-isolation-radius (replayed-here, same-implementation, passed), and
+      C3 for the radius is derived. It does not set the composed theorem's minimum,
+      because the closed-tree review's question, whether BC-240's audited prose steps are
+      load-bearing for confirmation, is answered yes.
+
+      The replay and the BC-241 checker confirm the quantities the proof consumes (the
+      moduli, the curvature constants, the stresses, the caps and their aggregate
+      arithmetic) and not the steps that use them. Those steps are prose, and the first
+      clause rests on each: that the second-order
+      remainder of every active function is at most K/2 times the squared norm, so that
+      the modulus forces the norm to be at least 2 kappa/K; that every packing in the ball
+      selects one of the 128 branches, which needs the inactive-feature gap cap, itself a
+      single-source computation; and the composing step through the quarter turn.
+
+      A mutation or a perturbed radius is refused by the replay, but a wrong prose step
+      would not be. So C2 stands until those steps are mechanised or reviewed again by a distinct
+      reviewer with the oversight record the ladder asks for.
     produced_by:
       hypothesis: H-236
       agenda_cell: BC-381
@@ -3090,6 +3109,7 @@ results:
     evidence:
       - E-n011-h236-rung0-reduction
       - E-n011-trump-local-theorem-first-clause
+      - E-n011-trump-isolation-radius
     artifacts:
       - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-042/exp-232-h236-reader-final2.json.gz
       - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-042/exp-232-h236-tree-manifest.sha256
@@ -3102,18 +3122,17 @@ results:
       - packing/campaign/series/series-000-smoke-and-calibration/results/bc-199-trump-isolation-radius.json
       - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-042/bc382-isolation-radius-replay.json.gz
       - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-042/bc382-capture-radius-replay.json.gz
+      - packing/campaign/series/series-000-smoke-and-calibration/results/bc-199-isolation-radius-replay-receipt.json
       - docs/project/reviews/review-2026-09-24-bc241-closure.md
     controls:
       - packing/tests/test_fixed_angle_tree.py
       - packing/tests/test_trump_isolation_radius.py
       - packing/tests/test_review_trump_local_theorem.py
     next_rung: >-
-      The closed-tree review reads C3 as following once cases.trump11.isolation_radius gains a
-      replay mode (the closure review's
-      residual 3), so that the radius can carry an exact-algebraic entry of its own. By
-      the C table a proof-audited entry does not derive above C2, so that reading also
-      needs a composition note judging that the audited prose steps do not set the
-      confirmation minimum.
+      The replay mode the closed-tree review asked for exists, and the radius has its own
+      exact-algebraic entry, but the composition note judges BC-240's audited prose steps
+      load-bearing, so C3 needs those steps mechanised or reviewed again by a distinct
+      reviewer, not more replay of the radius.
       V4 would need BC-240's closing steps mechanised rather than only the quantities they
       consume, and with C4 a second adversarial AI review by a distinct reviewer and a human
       oversight record. Retaining the per-face dual witnesses and recomputing the gap cap

@@ -3,7 +3,7 @@ softschema:
   schema: source-coverage.schema.yaml
   status: enforced
 
-last_reviewed: '2026-10-01'
+last_reviewed: '2026-10-02'
 coverage_scope: >
   Current public upper-bound catalogues and first-party result releases known to this
   project, the Schadt n=29 witness-contract regression source, and the September 2026
@@ -125,7 +125,7 @@ sources:
     local: resources/web/evand-square-packing-2026-10-01/source/s12/
     source_key: '[evand square-packing 2026-10-01]'
     scope: {n_values: [32, 33, 46, 60, 61, 78, 97, 118, 141, 166, 193, 222, 253, 286, 321]}
-    reviewed: '2026-10-01'
+    reviewed: '2026-10-02'
     source_date: '2026-10-01'
     disposition: current-report
     replay_disposition: case-specific
@@ -144,6 +144,7 @@ sources:
       - frontier/n-321.md
     evidence:
       - E-n060-evand-mixed-cover-report
+      - E-n060-evand-mixed-cover-zmx2-replay
       - E-n061-evand-derived-report
       - E-k2m3-evand-family-report
       - E-n032-evand-zmx2-full-sym-report
@@ -158,7 +159,7 @@ sources:
       This map projects that infinite family to the cases through n = 324; the
       universal claim and the conditional Lean reduction are recorded in T-064.
       The exact Valid7 premise has one source Python checker and has not been
-      freshly replayed here. No verified case bound changes on this intake.
+      freshly replayed here. No verified case bound changed on this intake.
       The source's CREDITS.md says it was produced by Claude (Anthropic)
       in a single session under human direction.
       An independent point-only s(61) = 8 source by wand125 at f8846cec is noted
@@ -167,6 +168,10 @@ sources:
       records (jlevy/squares#256, which names the earlier d9f79bc1, where no file of the
       bundle but its README differs) and the records of a zmx2 run that certifies the
       s(32) cover without the D4 fold (jlevy/squares#238), reported and not replayed.
+      On 2026-10-02 the s(60) cover's zmx2 sweeps were replayed here, root for root equal
+      to the source's records (E-n060-evand-mixed-cover-zmx2-replay), which put s(60) = 8
+      and s(61) = 8 in the verified lane (T-062, T-063); zm_mixed.py and the k2m3 family
+      were not replayed.
   - id: kleddamag-n17-466001-2026
     title: Seventeen unit squares — a certified lower bound, 4.66001 package
     role: source-repository
@@ -505,20 +510,23 @@ sources:
     local: resources/web/wand125-point-and-mixed-2026-10-01/
     source_key: '[wand125 exact covers 2026-10-01]'
     scope: {n_values: [59, 77]}
-    reviewed: '2026-10-01'
+    reviewed: '2026-10-02'
     source_date: '2026-10-01'
     disposition: current-report
     replay_disposition: case-specific
     represented_by: [frontier/n-059.md, frontier/n-077.md]
     evidence:
       - E-n059-wand125-mixed-cover-report
+      - E-n059-wand125-mixed-cover-zmx2-replay
       - E-n077-wand125-mixed-cover-report
     notes: >-
       Revision 1a25a5ed745fdd905a52f48fcc48150a0669032d, retrieved at 2026-10-02T00:18Z for
       jlevy/squares#280 and #279. Two mixed covers in Evan Daniel's format, built from his
       s(60) = 8 cover and reported accepted by his checkers pinned at evand/square-packing
       b91d70b6, whose four checker files earlier packets here retain byte for byte. Both
-      are recorded as reported exact values (T-066, T-067); nothing was replayed. Each
+      were recorded as reported exact values (T-066, T-067). On 2026-10-02 the s(59)
+      cover's zmx2 sweeps were replayed here (E-n059-wand125-mixed-cover-zmx2-replay),
+      which put s(59) = 8 in the verified lane; the s(77) cover was not yet replayed. Each
       directory's SHA256SUMS lists run logs that are not in the published tree, so the
       source's verify.sh cannot pass its first step as published. The s(59) exact-rational
       evidence is two runs, the complete one ending NOT VERIFIED with six boxes. The same

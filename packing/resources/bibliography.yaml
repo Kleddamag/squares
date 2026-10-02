@@ -271,7 +271,8 @@ sources:
       Its CREDITS.md states that Claude (Anthropic) produced the work in a
       single session under human direction. A selective source packet retains proof notes,
       checker sources and research obstructions; it is not a complete replay bundle.
-      No fresh certificate replay is implied by the source audit
+      No fresh certificate replay is implied by the source audit; the s(60) cover's zmx2
+      sweeps were replayed here on 2026-10-02, with their receipts in the packet
       (web/evand-square-packing-2026-10-01/README.md).
   - key: '[Kleddamag n11 2026]'
     authors: [Kleddamag]
@@ -450,6 +451,8 @@ sources:
       parts of the work were produced with AI assistance under human direction.
       web/wand125-point-and-mixed-2026-10-01/acquisition/sources.json pins revision
       1a25a5ed745fdd905a52f48fcc48150a0669032d. Dated by that revision, 2026-10-01 UTC.
+      The s(59) cover's zmx2 sweeps were replayed here on 2026-10-02, with their receipts
+      in the packet.
   - key: '[wand125 mixed bounds 2026-10-01]'
     authors: [wand125]
     year: 2026

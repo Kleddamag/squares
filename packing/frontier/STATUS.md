@@ -66,9 +66,9 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`56`](n-056.md) | `8` | `8` | `3113/400` | `381/50` | open | replayed here | formal lower differs from report | 2026-10-01 |
 | [`57`](n-057.md) | `8` | `8` | `1567/200` | `1 + √44` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
 | [`58`](n-058.md) | `8` | `8` | `789/100` | `1 + √45` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
-| [`59`](n-059.md) | `8` | `8` | `8` | `198/25` | open | replayed here | formal lower differs from report; proof audit pending | 2026-10-01 |
-| [`60`](n-060.md) | `8` | `8` | `8` | `198/25` | open | replayed here | formal lower differs from report; proof audit pending | 2026-10-01 |
-| [`61`](n-061.md) | `8` | `8` | `8` | `199/25` | open | replayed here | formal lower differs from report; proof audit pending | 2026-10-01 |
+| [`59`](n-059.md) | `8` | `8` | `8` | `8` | proved | replayed here | — | 2026-10-02 |
+| [`60`](n-060.md) | `8` | `8` | `8` | `8` | proved | replayed here | — | 2026-10-02 |
+| [`61`](n-061.md) | `8` | `8` | `8` | `8` | proved | replayed here | — | 2026-10-02 |
 | [`62`](n-062.md) | `8` | `8` | `8` | `8` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`63`](n-063.md) | `8` | `8` | `8` | `8` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`64`](n-064.md) | `8` | `8` | `8.0` | `8` | proved | replayed here, external proof | — | 2026-08-24 |

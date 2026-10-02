@@ -143,8 +143,8 @@ their own site sets only. 90 heterogeneous reports across a side band
 this register has ever been claimed from one. Rank on `prize` to choose where to
 look; measure and retain the run before believing any extrapolation.
 
-Of 324 registered cases, 66 are foreclosed and 258 are
-not. 63 of the foreclosed sit at the grid bound `ceil(sqrt(n))`,
+Of 324 registered cases, 69 are foreclosed and 255 are
+not. 66 of the foreclosed sit at the grid bound `ceil(sqrt(n))`,
 which is where the refuting grid fits — so that foreclosure costs nothing except
 where the case is open and its conjectured value is that bound.
 The other 3 — n = 5, 10, 11 — are foreclosed by their own packing:
@@ -393,8 +393,6 @@ lower bound, so nothing was on offer.
 | 31 | 6 | 5.9200 | 6.0000 | 5.9862 | 5.9862 | 5.9862 | ceiling | +0.0662 |
 | 140 | 12 | 11.9087 | 12.0000 | 11.9724 | 11.9724 | 11.9724 | ceiling | +0.0637 |
 | 251 | 16 | 15.8997 | 16.0000 | 15.9633 | 15.9633 | 15.9633 | ceiling | +0.0636 |
-| 59 | 8 | 7.9200 | 8.0000 | 7.9816 | 7.9816 | 7.9816 | ceiling | +0.0616 |
-| 60 | 8 | 7.9200 | 8.0000 | 7.9816 | 7.9816 | 7.9816 | ceiling | +0.0616 |
 | 284 | 17 | 16.9060 | 17.0000 | 16.9610 | 16.9610 | 16.9610 | ceiling | +0.0550 |
 | 165 | 13 | 12.9164 | 13.0000 | 12.9702 | 12.9702 | 12.9702 | ceiling | +0.0538 |
 | 319 | 18 | 17.9115 | 18.0000 | 17.9587 | 17.9587 | 17.9587 | ceiling | +0.0471 |
@@ -406,7 +404,6 @@ lower bound, so nothing was on offer.
 | 78 | 9 | 8.9550 | 9.0000 | 8.9793 | 8.9793 | 8.9793 | ceiling | +0.0243 |
 | 285 | 17 | 16.9374 | 17.0000 | 16.9610 | 16.9610 | 16.9610 | ceiling | +0.0236 |
 | 12 | 4 | 3.9686 | 4.0000 | 3.9908 | 3.9908 | 3.9908 | ceiling | +0.0222 |
-| 61 | 8 | 7.9600 | 8.0000 | 7.9816 | 7.9816 | 7.9816 | ceiling | +0.0216 |
 | 141 | 12 | 11.9545 | 12.0000 | 11.9724 | 11.9724 | 11.9724 | ceiling | +0.0180 |
 | 320 | 18 | 17.9411 | 18.0000 | 17.9587 | 17.9587 | 17.9587 | ceiling | +0.0176 |
 | 166 | 13 | 12.9583 | 13.0000 | 12.9702 | 12.9702 | 12.9702 | ceiling | +0.0119 |
@@ -650,9 +647,6 @@ reaches, not this extrapolation.
 | 27 | 6 | 5.6000 | 5.7071 | 5.9862 | — | 5.9862 | packing | +0.1071 | 5.5826 | +0.0000 |
 | 31 | 6 | 5.9200 | 6.0000 | 5.9862 | 5.9862 | 5.9862 | ceiling | +0.0662 | 5.8691 | +0.0000 |
 | 40 | 7 | 6.6950 | 6.8284 | 6.9839 | — | 6.9839 | packing | +0.1334 | 6.6795 | +0.0000 |
-| 59 | 8 | 7.9200 | 8.0000 | 7.9816 | 7.9816 | 7.9816 | ceiling | +0.0616 | 7.8255 | +0.0000 |
-| 60 | 8 | 7.9200 | 8.0000 | 7.9816 | 7.9816 | 7.9816 | ceiling | +0.0616 | 7.8255 | +0.0000 |
-| 61 | 8 | 7.9600 | 8.0000 | 7.9816 | 7.9816 | 7.9816 | ceiling | +0.0216 | 7.8255 | +0.0000 |
 | 75 | 9 | 8.8900 | 9.0000 | 8.9793 | 8.9793 | 8.9793 | ceiling | +0.0893 | 8.8037 | +0.0000 |
 | 76 | 9 | 8.8900 | 9.0000 | 8.9793 | 8.9793 | 8.9793 | ceiling | +0.0893 | 8.8037 | +0.0000 |
 | 77 | 9 | 8.8900 | 9.0000 | 8.9793 | 8.9793 | 8.9793 | ceiling | +0.0893 | 8.8037 | +0.0000 |
@@ -757,6 +751,9 @@ reaches, not this extrapolation.
 | 47 | 7 | 7.0000 | 6.9839 | 6.9839 | ceiling |
 | 48 | 7 | 7.0000 | 6.9839 | 6.9839 | ceiling |
 | 49 | 7 | 7.0000 | 6.9839 | 6.9839 | ceiling |
+| 59 | 8 | 8.0000 | 7.9816 | 7.9816 | ceiling |
+| 60 | 8 | 8.0000 | 7.9816 | 7.9816 | ceiling |
+| 61 | 8 | 8.0000 | 7.9816 | 7.9816 | ceiling |
 | 62 | 8 | 8.0000 | 7.9816 | 7.9816 | ceiling |
 | 63 | 8 | 8.0000 | 7.9816 | 7.9816 | ceiling |
 | 64 | 8 | 8.0000 | 7.9816 | 7.9816 | ceiling |

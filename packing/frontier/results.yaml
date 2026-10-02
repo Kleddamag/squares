@@ -3811,9 +3811,10 @@ results:
       here. Higher claims reported at every count but n = 18 and 32 would supersede these
       values as their replays land: wand125's raised certificates of 28 September at n =
       28, 31, 76 and 77 (T-046) and of 1 October at n = 19, 20, 26 to 28, 30, 31, 40, 75
-      and 76 (T-068), and the exact values s(61) = 8 (T-063), s(77) = 9 (T-067) and s(78) = 9
-      (T-064). At n = 32 superseded on intake, 2026-09-27, by Evan Daniel's s(32) = 6
-      (T-051), before it held the verified field; stays true as stated.
+      and 76 (T-068), and the exact values s(77) = 9 (T-067) and s(78) = 9 (T-064). At n =
+      32 superseded on intake, 2026-09-27, by Evan Daniel's s(32) = 6 (T-051), before it
+      held the verified field, and at n = 61 on 2026-10-02 by s(61) = 8 (T-063), when the
+      s(60) cover's replay landed; stays true as stated.
 
   - id: T-046
     kind: lower-bound
@@ -4302,6 +4303,17 @@ results:
       fold, and stated that zmx2's author was permitted to read zeromargin.py
       (E-n032-evand-zmx2-full-sym-report, jlevy/squares#238). That run has not been replayed
       here, so the fold stays in the common mode as this record has confirmed it.
+    reviews:
+      - path: docs/project/reviews/review-2026-10-02-evand-s32-no-fold-run.md
+        kind: adversarial
+        reviewer: Claude (model Fable) at maximum thinking effort, review lane R2, prompted separately from the replay lane
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-02'
+        scope: >-
+          Evan Daniel's s(32) cover certified without the D4 fold, and what the checkers share: the run zmx2 --full --pair-points --sym-atoms, its new Lemma A, and the author's account of what zmx2's author was permitted to read; an evidence update to T-051, whose theorem was reviewed on 27 September.
+        verdict: accepted
+        covers: [T-051]
     produced_by:
       session: session-160
     evidence:
@@ -4323,6 +4335,7 @@ results:
       - packing/devtools/check_basic_bounds.py
       - docs/project/reviews/review-2026-09-27-evand-s32-s12.md
       - docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md
+      - docs/project/reviews/review-2026-10-02-evand-s32-no-fold-run.md
     controls:
       - packing/tests/test_evand_square_packing.py
       - packing/tests/test_evand_mixed_covers.py
@@ -4346,7 +4359,10 @@ results:
       with 8 to 10 GB for the generator (think-angg).
 
       Beside the rung, think-48e1 replays the source's zmx2 --full --pair-points --sym-atoms
-      run, which would take the D4 fold out of what the two checkers share.
+      run, which would take the D4 fold out of what the two checkers share. The 2 October
+      review of that run found it sound and its Lemma A proved, with no blocking defect;
+      the composition's account of what the checkers share is rewritten when the replay
+      lands.
 
   - id: T-052
     kind: optimality
@@ -5106,28 +5122,27 @@ results:
   - id: T-062
     kind: optimality
     registered: '2026-10-01'
-    headline: "`s(60) = 8`, reported, by a mixed cover of points and grid-line segments"
+    headline: "`s(60) = 8`, by a mixed cover of points and grid-line segments"
     claim: >-
-      Evan Daniel reports s(60) = 8, published on 28 September 2026: the lower half by a
-      mixed cover of the side-8 square, the upper half by the 8 x 8 grid.
+      s(60) = 8: the lower half by Evan Daniel's mixed cover of 28 September 2026, the upper
+      half by the 8 x 8 grid.
 
       The cover is 23,744 weighted points of [0,8]^2 plus mass spread uniformly along 5,216
       segments of length 1/50 on the interior grid lines, total 748233441/12500000 =
-      59.85867528 < 60. The source states that every closed unit square in [0,8]^2 captures
-      mass at least one, a boundary point and a segment along an edge counting in full, so
-      that a packing of 60 at side s below 8, its centres scaled by 8/s, would give 60
-      pairwise disjoint closed unit squares in [0,8]^2 capturing at least 60.
+      59.85867528 < 60, exactly D4-invariant. Every closed unit square in [0,8]^2 captures
+      mass at least one, a boundary point and a segment along an edge counting in full, so a
+      packing of 60 at side s below 8, its centres scaled by 8/s, would give 60 pairwise
+      disjoint closed unit squares in [0,8]^2 capturing at least 60.
 
-      The source reports that statement decided at margin zero by its two checkers:
+      The source certifies that at margin zero with two separately written checkers:
       zm_mixed.py in exact rational arithmetic over 102,400 root boxes, and the Rust zmx2
       with outward-rounded binary64 enclosures over 6,400 symmetry-reduced roots and 51,200
       unreduced ones, none uncertified. It has no Lean theorem for this cover.
 
-      Here the bundle's report and the argument from the cover to the bound were read, and
-      nothing was replayed: neither checker was run, and no check of the cover's mass or
-      pose coverage is retained here. The value stands as reported, and the case's verified
-      lower bound is unchanged. wand125's reported s(59) = 8 of 1 October 2026 (T-066) would
-      give this value by monotonicity as well.
+      zmx2 was replayed here in full on 2 October 2026, over all 6,400 D4 roots and all
+      51,200 unreduced roots, every root's census equal to the source's; zm_mixed.py was not
+      run. wand125's s(59) = 8 (T-066), replayed here the same day with the same checker,
+      gives this value a second route by monotonicity.
 
       Evan Daniel,
       [evand/square-packing](https://github.com/evand/square-packing/tree/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/certificates/s60),
@@ -5135,108 +5150,157 @@ results:
       jlevy/squares#256. The source's CREDITS.md says the work was produced by Claude
       (Anthropic) in a single session under human direction.
     scope: {n_values: [60]}
-    verification: V0
-    confirmation: C1
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
-        Scored as a claim: an exact value for an open case if the reported cover passes
-        replay and review here. A substantive case result at S3; the score gates nothing,
-        and V0/C1 says how far it stands.
-      scored: '2026-10-01'
-      by: W1 and W2 source intake
+        An exact value for a case that was open, by the line-cover recipe of T-052 and T-053
+        carried to side 8, adding no technique: a substantive case result, S3. The 2 October
+        review of the geometric premises confirmed the draft, and noted that the family
+        argument that lifted T-053 to S4 applies here exactly as there, so the two should
+        carry one score; which one is the rescoring pass's (think-qh3s).
+      scored: '2026-10-02'
+      by: think-x73z stage 4 review, confirming the W1 and W2 draft (repository)
     novelty: previously-published
     attribution:
       source_keys: ['[evand square-packing 2026-10-01]']
       published: '2026-09-28'
     composition: >-
-      Compound, and the minimum is set by the lower half. The upper half is the 8 x 8 grid,
-      E-basic-grid-upper, replayed exactly here; the lower half is
-      E-n060-evand-mixed-cover-report, the source's claim, read here and not replayed. The
-      checker derives V3 and C3 from the grid's entry; this note is why the declared rungs
-      are V0 and C1.
+      Compound, and the minimum is set by the lower half. The lower half is
+      E-n060-evand-mixed-cover-zmx2-replay (interval-certified, zmx2 replayed here), the
+      upper half the grid (E-basic-grid-upper, exact-algebraic). As for T-052 and T-053, the
+      two machine entries certify different halves; the lower half stands on one replayed
+      method, and the equality is C3. The second route, T-066's s(59) cover, was made from
+      this cover and decided by the same zmx2, so it adds a certificate and not a method.
+    reviews:
+      - path: docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md
+        kind: adversarial
+        reviewer: Claude (model Fable) at maximum thinking effort, review lane R2, prompted separately from the replay lane
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-02'
+        scope: >-
+          The geometric premises of Evan Daniel's s(60) = 8 and s(61) = 8: the closed-square capture convention, boundary points and segment mass along edges, the scaling from a side below 8, the D4 reduction, the pose-space parametrisation and whether every rotation is covered, the interval checker's outward rounding on x86-64, and the corollary.
+        verdict: accepted
+        covers: [T-062, T-063]
     evidence:
       - E-n060-evand-mixed-cover-report
+      - E-n060-evand-mixed-cover-zmx2-replay
       - E-basic-grid-upper
     artifacts:
       - packing/frontier/n-060.md
       - packing/resources/web/evand-square-packing-2026-10-01/README.md
       - packing/resources/web/evand-square-packing-2026-10-01/source/s12/certificates/s60/README.md
       - packing/resources/web/evand-square-packing-2026-10-01/source/s12/certificates/s60/s60_mixed_cover_8.txt.gz
+      - packing/resources/web/evand-square-packing-2026-10-01/receipts/s60_cover_audit.json
+      - packing/resources/web/evand-square-packing-2026-10-01/receipts/s60_zmx2_d4_compare.json
+      - packing/resources/web/evand-square-packing-2026-10-01/receipts/s60_zmx2_full_compare.json
+      - packing/devtools/replay_evand_zmx2.py
+      - packing/devtools/audit_evand_mixed_covers.py
+      - packing/devtools/check_basic_bounds.py
       - docs/project/reviews/review-2026-10-01-evand-source-coverage.md
       - docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
+      - docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md
+    controls:
+      - packing/tests/test_replay_controls.py
+      - packing/tests/test_audit_evand_mixed_covers.py
+      - packing/resources/web/evand-square-packing-2026-10-01/receipts/controls/s60_control_drop-heaviest-point_zmx2_d4_x16-16_y17-17.log
+      - packing/resources/web/evand-square-packing-2026-10-01/receipts/controls/s60_control_drop-heaviest-segment_zmx2_d4_x5-5_y38-38.log
     next_rung: >-
-      think-e7xa: replay the source's two checkers on the retained cover, with the complete
-      root censuses retained, and review the geometric premises, before the verified lower
-      bound of the case is raised.
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record; one adversarial review, of the geometric premises, is retained. A complete
+      zm_mixed.py sweep, about 20 CPU-hours at the source, recorded as a second,
+      exact-algebraic entry, would give the lower half a second machine method
+      (think-mx3k); the shared author, agent and pose-space architecture stay the residual
+      common-mode risk. V5 would need a Lean data file and top theorem for this cover,
+      which the source has not attempted, and a human expert's review of the
+      formalization.
     notes: >-
-      V0 because the lower half rests on the source's claim alone: assurance reported, replay
-      not attempted. The source reports both of its checkers accepting the cover, and the
-      root records of those runs are retained in the packet since 1 October 2026; the source
-      says the bundle has had no independent review. C1 because the 1 October mathematical review read the
-      bundle's report and the argument from the cover to the bound and found no defect in
-      it; a read is no kind of verification, which is why C1 may stand above V0.
+      Raised from V0/C1 on 2 October 2026, when the zmx2 replay (think-x73z) and the review
+      of the geometric premises landed with no blocking defect; the reads of 1 October had
+      found none in the argument from the cover to the bound. The source's verify.sh builds
+      the pin's later zmx2.rs, not the version that made the shipped records (review
+      finding F2), so the replay built the version the records name; the review's other
+      findings are about provenance and wording, for the author.
 
   - id: T-063
     kind: optimality
     registered: '2026-10-01'
-    headline: "`s(61) = 8`, reported, by monotonicity from T-062"
+    headline: "`s(61) = 8`, by monotonicity from T-062"
     claim: >-
-      Evan Daniel reports s(61) = 8 as a corollary of the reported s(60) = 8 (T-062),
-      published with it on 28 September 2026.
+      s(61) = 8, as a corollary of s(60) = 8 (T-062), which Evan Daniel published with it on
+      28 September 2026.
 
       Removing a square from a packing leaves a packing, so s(61) is at least s(60), and the
-      8 x 8 grid holds 61 unit squares.
+      8 x 8 grid holds 61 unit squares. The s(60) cover's total, 59.86, is below 61 too, so
+      its certificate decides both counts.
 
-      Here the deduction was read. Its premise, the lower half of T-062, has not been
-      replayed here, so this value stands as reported too. The same source's family
-      s(k^2 - 3) = k (T-064) states the value again at k = 8, by a separate certificate, and
-      wand125's reported s(59) = 8 (T-066) would give it by monotonicity.
+      T-062's lower half was replayed here in full on 2 October 2026, and this value with it.
+      wand125's s(59) = 8 (T-066), replayed here the same day, gives it a second route by
+      the same deduction, and the same source's family s(k^2 - 3) = k (T-064) states it again
+      at k = 8, by a separate certificate not replayed here.
 
       Evan Daniel,
       [evand/square-packing](https://github.com/evand/square-packing/tree/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/certificates/s60),
       building on Burns's and Massaccesi's method. The source's CREDITS.md says the work was
       produced by Claude (Anthropic) in a single session under human direction.
     scope: {n_values: [61]}
-    verification: V0
-    confirmation: C1
+    verification: V3
+    confirmation: C3
     significance:
       score: 1
       rationale: >-
         A routine consequence of T-062, immediate once its premise is proved, though it
-        would close a second open case.
-      scored: '2026-10-01'
-      by: W1 and W2 source intake
+        closes a second open case. The 2 October review of the geometric premises confirmed
+        the draft.
+      scored: '2026-10-02'
+      by: think-x73z stage 4 review, confirming the W1 and W2 draft (repository)
     novelty: previously-published
     attribution:
       source_keys: ['[evand square-packing 2026-10-01]']
       published: '2026-09-28'
     composition: >-
       Derived, and the minimum is set by its premise. The inputs are the lower half of
-      T-062, E-n060-evand-mixed-cover-report, the source's claim, read here and not
-      replayed; monotonicity by deletion, E-n061-evand-derived-report; and the 8 x 8 grid,
-      E-basic-grid-upper, replayed exactly here. The checker derives V3 and C3 from the
-      grid's entry; this note is why the declared rungs are V0 and C1. wand125's separate
-      point-only route to s(61) = 8 is another source's claim and no evidence for this
-      entry.
+      T-062, E-n060-evand-mixed-cover-zmx2-replay (interval-certified, replayed here),
+      whose scope takes in n = 61 because the cover's total is below 61; monotonicity by
+      deletion, E-n061-evand-derived-report, read and found sound; and the 8 x 8 grid,
+      E-basic-grid-upper. It stands at T-062's V3/C3 and never above it. wand125's s(59) =
+      8 (T-066) is a second route under the same checker; its separate point-only route to
+      s(61) = 8 is another source's claim and no evidence for this entry.
+    reviews:
+      - path: docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md
+        kind: adversarial
+        reviewer: Claude (model Fable) at maximum thinking effort, review lane R2, prompted separately from the replay lane
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-02'
+        scope: >-
+          The geometric premises of Evan Daniel's s(60) = 8 and s(61) = 8: the closed-square capture convention, boundary points and segment mass along edges, the scaling from a side below 8, the D4 reduction, the pose-space parametrisation and whether every rotation is covered, the interval checker's outward rounding on x86-64, and the corollary.
+        verdict: accepted
+        covers: [T-062, T-063]
     evidence:
       - E-n060-evand-mixed-cover-report
+      - E-n060-evand-mixed-cover-zmx2-replay
       - E-n061-evand-derived-report
       - E-basic-grid-upper
     artifacts:
       - packing/frontier/n-061.md
+      - packing/resources/web/evand-square-packing-2026-10-01/README.md
       - packing/resources/web/evand-square-packing-2026-10-01/source/s12/certificates/s60/README.md
       - docs/project/reviews/review-2026-10-01-evand-source-coverage.md
       - docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
+      - docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md
+    controls:
+      - packing/tests/test_replay_controls.py
+      - packing/tests/test_audit_evand_mixed_covers.py
     next_rung: >-
-      Nothing of its own: this entry rises with T-062, once that cover is replayed here and
-      its deduction reviewed (think-e7xa). think-hxrz tracks the intake of wand125's
-      separate point-only source for the same value.
+      Nothing of its own: this entry rises with T-062. think-hxrz tracks the intake of
+      wand125's separate point-only source for the same value.
     notes: >-
-      V0 because the premise is the source's claim alone, assurance reported, replay not
-      attempted. C1 because the 1 October mathematical review read the deduction and the
-      premise's argument; a read is no kind of verification, which is why C1 may stand above
-      V0.
+      Raised from V0/C1 with T-062 on 2 October 2026. The deduction was read on 1 October
+      and again in the review of the geometric premises (section 4.9), which found it sound
+      as stated and worth nothing on its own.
 
   - id: T-064
     kind: optimality
@@ -5402,32 +5466,29 @@ results:
   - id: T-066
     kind: optimality
     registered: '2026-10-01'
-    headline: "`s(59) = 8`, reported, by a mixed cover of points and grid-line segments"
+    headline: "`s(59) = 8`, by a mixed cover of points and grid-line segments"
     claim: >-
-      wand125 reports s(59) = 8, published on 1 October 2026: the lower half by a mixed
-      cover of the side-8 square, the upper half by the 8 x 8 grid. By monotonicity it would
-      give s(60) = 8 and s(61) = 8 as well, the values Evan Daniel reports (T-062, T-063).
+      s(59) = 8: the lower half by wand125's mixed cover of 1 October 2026, the upper half
+      by the 8 x 8 grid. The cover's total is below 60 and 61 too, so it gives s(60) = 8 and
+      s(61) = 8 as well, a second route to T-062 and T-063.
 
       The cover is 26,308 weighted points of [0,8]^2 plus mass spread uniformly along 5,240
       segments of length 1/50 on the interior grid lines, total 1474762899/25000000 =
-      58.99051596 < 59, in Evan Daniel's mixed format. The source states that every closed
-      unit square in [0,8]^2 captures mass at least one, so that a packing of 59 at side
-      below 8, scaled up to side 8, would capture at least 59. It was made with Daniel's
-      line-cover linear program from his s(60) = 8 cover, and scaled to a margin the source
-      puts at about 0.09% over the exact threshold.
+      58.99051596 < 59, exactly D4-invariant, in Evan Daniel's mixed format. Every closed
+      unit square in [0,8]^2 captures mass at least one, so a packing of 59 at side below 8,
+      scaled up to side 8, would capture at least 59. It was made with Daniel's line-cover
+      linear program from his s(60) = 8 cover, and scaled to a margin the source puts at
+      about 0.09% over the exact threshold.
 
-      The source reports the cover accepted by Daniel's checkers: zmx2, with outward-rounded
-      binary64 enclosures, over 6,400 symmetry-reduced roots and over 51,200 unreduced ones,
-      none uncertified. Its exact-rational evidence is two zm_mixed.py runs: the complete
-      sweep of 102,400 roots leaves six boxes uncertified in one root, and a second run of
-      that root alone at a greater depth limit certifies it. It has no Lean statement, and
-      the source says it has had no review outside its project.
+      The source reports the cover accepted by Daniel's zmx2, with outward-rounded binary64
+      enclosures, over 6,400 symmetry-reduced roots and 51,200 unreduced ones, none
+      uncertified. Its exact-rational evidence is two zm_mixed.py runs whose joint coverage
+      cannot be checked from what is published, so it is not recorded here. It has no Lean
+      statement.
 
-      Here the source was retained and its report read into the record, and nothing was
-      replayed: no checker was run, and the cover's mass and symmetry were not recomputed.
-      The source's own verification script cannot pass as published, because its checksum
-      file lists run logs that are not in the repository. The value stands as reported, and
-      the case's verified lower bound is unchanged.
+      zmx2 was replayed here in full on 2 October 2026, over all 6,400 D4 roots and all
+      51,200 unreduced roots, none uncertified, with the box totals the source states; its
+      run records are not published, so no root-for-root comparison was possible.
 
       wand125,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/1a25a5ed745fdd905a52f48fcc48150a0669032d/certificates/k2m5_n59_L8),
@@ -5435,45 +5496,75 @@ results:
       Registration was requested in jlevy/squares#280. The source says parts of the work were
       produced with AI assistance under human direction.
     scope: {n_values: [59]}
-    verification: V0
-    confirmation: C0
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
-        Scored as a claim: an exact value for an open case if the reported cover passes
-        replay and review here, and with it the values at n = 60 and 61. A substantive case
-        result at S3, set beside T-062, whose cover it starts from; the score gates nothing,
-        and V0/C0 says how far it stands.
-      scored: '2026-10-01'
-      by: 'think-oy3i import, registering lane (repository; draft)'
+        An exact value for a case that was open, by Daniel's recipe applied one count lower,
+        and a second route to T-062 and T-063: a substantive case result, not a new technique
+        or a family, so S3 beside T-062 and below T-052, which introduced line mass. The 2
+        October review of the s(59) and s(77) covers confirmed the draft.
+      scored: '2026-10-02'
+      by: think-oy3i stage 4 review, confirming the registering lane's draft (repository)
     novelty: previously-published
     attribution:
       source_keys: ['[wand125 exact covers 2026-10-01]']
       published: '2026-10-01'
     composition: >-
-      Compound, and the minimum is set by the lower half. The upper half is the 8 x 8 grid,
-      E-basic-grid-upper, replayed exactly here; the lower half is
-      E-n059-wand125-mixed-cover-report, the source's claim, not read or replayed here. The
-      checker derives V3 and C3 from the grid's entry; this note is why the declared rungs
-      are V0 and C0.
+      Compound, and the minimum is set by the lower half. The lower half is
+      E-n059-wand125-mixed-cover-zmx2-replay (interval-certified, zmx2 replayed here), the
+      upper half the grid (E-basic-grid-upper, exact-algebraic); the equality is C3, as
+      T-052 and T-053 read theirs. The checker is Daniel's, which also decides T-062, so
+      the two routes to s(60) and s(61) share one checker. The source's two-run zm_mixed.py
+      composite is not recorded as evidence (review finding F1).
+    reviews:
+      - path: docs/project/reviews/review-2026-10-02-wand125-s59-s77-mixed-covers.md
+        kind: adversarial
+        reviewer: Claude (model Fable) at maximum thinking effort, review lane R1, prompted separately from the replay lane with no shared context
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-02'
+        scope: >-
+          An adversarial soundness review of wand125's s(59) = 8 and s(77) = 9 by mixed covers, and of the corollaries the record states for them in T-062, T-063 and T-064: the reduction, both checkers' trust boundaries and what they share, both covers' data facts recomputed, and the lemmas the new cover shapes touch.
+        verdict: accepted
+        covers: [T-066, T-067]
     evidence:
       - E-n059-wand125-mixed-cover-report
+      - E-n059-wand125-mixed-cover-zmx2-replay
       - E-basic-grid-upper
     artifacts:
       - packing/frontier/n-059.md
       - packing/resources/web/wand125-point-and-mixed-2026-10-01/README.md
       - packing/resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m5_n59_L8/README.md
       - packing/resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m5_n59_L8/n59_mixed_cover_8.txt.gz
+      - packing/resources/web/wand125-point-and-mixed-2026-10-01/receipts/n59_cover_audit.json
+      - packing/resources/web/wand125-point-and-mixed-2026-10-01/receipts/n59_zmx2_d4_audit.json
+      - packing/resources/web/wand125-point-and-mixed-2026-10-01/receipts/n59_zmx2_full_audit.json
+      - packing/resources/web/wand125-point-and-mixed-2026-10-01/receipts/n59_zm_mixed_manifest_audit.json
+      - packing/devtools/replay_evand_zmx2.py
+      - packing/devtools/audit_evand_mixed_covers.py
+      - packing/devtools/check_basic_bounds.py
+      - docs/project/reviews/review-2026-10-02-wand125-s59-s77-mixed-covers.md
+    controls:
+      - packing/tests/test_replay_controls.py
+      - packing/tests/test_audit_evand_mixed_covers.py
+      - packing/resources/web/wand125-point-and-mixed-2026-10-01/receipts/controls/n59_control_drop-heaviest-point_zmx2_d4_x14-14_y24-24.log
+      - packing/resources/web/wand125-point-and-mixed-2026-10-01/receipts/controls/n59_control_drop-heaviest-segment_zmx2_d4_x5-5_y38-38.log
     next_rung: >-
-      think-oy3i: replay zmx2 --d4 and --full on the retained cover with the retained copies
-      of Daniel's checkers, and review the mathematics, including whether the two-run
-      zm_mixed.py evidence on the checker that predates the zero-width-bin guard is a proof,
-      before the verified lower bound of the case is raised.
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record; one adversarial review is retained. A complete zm_mixed.py sweep, about 127
+      CPU-hours at the source, recorded as a second, exact-algebraic entry, would give the
+      lower half a second machine method and regenerate the per-root records the source
+      does not publish (finding F1; think-mx3k). V5 would need a Lean statement for this
+      cover and a human expert's review of the formalization.
     notes: >-
-      V0 because the lower half rests on the source's claim alone: assurance reported, replay
-      not attempted. C0 because no read of it is recorded as an external_review. The source
-      reports its checkers accepting the cover and publishes two manifests; its run logs and
-      per-root records are not in the repository.
+      Raised from V0/C0 on 2 October 2026, when the zmx2 replay (think-oy3i) and the review
+      of the s(59) and s(77) covers landed with no defect blocking the claim. The source's
+      verify.sh cannot pass as published, since its checksum file names unpublished run
+      logs (finding F2), so its two zmx2 steps were run as this repository's own sequence.
+      For the author: publishing the two zm_mixed.py root records and logs, or the six
+      boxes with their root, would make the exact route checkable.
 
   - id: T-067
     kind: optimality
@@ -5511,14 +5602,16 @@ results:
       assistance under human direction.
     scope: {n_values: [77]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
         Scored as a claim: an exact value for an open case if the reported cover passes
         replay and review here, and a second route to s(78) = 9. A substantive case result
-        at S3, set beside T-062, whose cover it extends; the score gates nothing, and V0/C0
-        says how far it stands.
+        at S3, set beside T-062, whose cover it extends; the score gates nothing, and V0/C1
+        says how far it stands. The 2 October review of the s(59) and s(77) covers confirmed
+        S3: the band insertion that carries a side-8 cover to side 9 is the one new idea, and
+        at one instance it is a case result, not yet a technique.
       scored: '2026-10-01'
       by: 'think-xujq import, registering lane (repository; draft)'
     novelty: previously-published
@@ -5528,26 +5621,41 @@ results:
     composition: >-
       Compound, and the minimum is set by the lower half. The upper half is the 9 x 9 grid,
       E-basic-grid-upper, replayed exactly here; the lower half is
-      E-n077-wand125-mixed-cover-report, the source's claim, not read or replayed here. The
-      checker derives V3 and C3 from the grid's entry; this note is why the declared rungs
-      are V0 and C0.
+      E-n077-wand125-mixed-cover-report, the source's claim, read here by the 2 October
+      review and not replayed. The checker derives V3 and C3 from the grid's entry; this
+      note is why the declared rungs are V0 and C1.
     evidence:
       - E-n077-wand125-mixed-cover-report
       - E-basic-grid-upper
+    reviews:
+      - path: docs/project/reviews/review-2026-10-02-wand125-s59-s77-mixed-covers.md
+        kind: adversarial
+        reviewer: Claude (model Fable) at maximum thinking effort, review lane R1, prompted separately from the replay lane with no shared context
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-02'
+        scope: >-
+          An adversarial soundness review of wand125's s(59) = 8 and s(77) = 9 by mixed covers, and of the corollaries the record states for them in T-062, T-063 and T-064: the reduction, both checkers' trust boundaries and what they share, both covers' data facts recomputed, and the lemmas the new cover shapes touch.
+        verdict: accepted
+        covers: [T-066, T-067]
     artifacts:
       - packing/frontier/n-077.md
       - packing/resources/web/wand125-point-and-mixed-2026-10-01/README.md
       - packing/resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m4_n77_L9/README.md
       - packing/resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m4_n77_L9/n77_mixed_cover_9.txt.gz
+      - docs/project/reviews/review-2026-10-02-wand125-s59-s77-mixed-covers.md
     next_rung: >-
       think-xujq: replay zmx2 --d4 --pair-points and --full --pair-points on the retained
-      cover with the retained copies of Daniel's checkers, and review the mathematics,
-      including whether either checker's lemmas depend on the shape of the s(21), s(45) and
-      s(60) covers, which have no point on a segment line, before the verified lower bound of
-      the case is raised.
+      cover with the retained copies of Daniel's checkers before the verified lower bound of
+      the case is raised. The review is done: the 2 October review read every lemma the
+      cover's new shapes touch (three segment lengths including 2/1000, overlapping segments
+      on one line, a 2^-49 weight unit, and --pair-points partner lines) and found no
+      defect; the cover has no point on a loaded line, so that is not what is new (finding
+      F5).
     notes: >-
       V0 because the lower half rests on the source's claim alone: assurance reported, replay
-      not attempted. C0 because no read of it is recorded as an external_review. The source
+      not attempted. C1 because the 2 October review of the s(59) and s(77) covers is
+      recorded as the report entry's external_review, with no defect found. The source
       reports its checkers accepting the cover and publishes one manifest; its run logs and
       per-root records are not in the repository.
 
@@ -5590,14 +5698,14 @@ results:
       n_values: [19, 20, 26, 27, 28, 29, 30, 31, 38, 39, 40, 41, 42, 43, 44, 53, 54, 55, 56,
         66, 68, 69, 70, 74, 75, 76, 86, 87, 88, 89, 90, 93, 94, 95]
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
         Scored as a claim: if the replays pass, the strongest rectangle-density lower bounds
         on record at 34 counts, each above the certificate T-046 reports there. Further sizes
-        and raised rungs from one generator at S3; the score gates nothing, and V0/C0 says
-        how far they stand.
+        and raised rungs from one generator at S3; the score gates nothing, and V0/C1 says
+        how far they stand. The 2 October review of these certificates confirmed S3.
       scored: '2026-10-01'
       by: 'think-6ei5 import, registering lane (repository; draft)'
     novelty: previously-published
@@ -5606,13 +5714,25 @@ results:
       published: '2026-10-01'
     composition: >-
       One claim per count, each on its own certificate at one source revision. Every part
-      stands at V0/C0.
+      stands at V0/C1: read by the 2 October review, and not replayed.
     evidence:
       - E-wand125-rectangle-2026-10-01-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-02-wand125-rectangle-bounds-t068.md
+        kind: adversarial
+        reviewer: Claude (model Fable) at extra-high thinking effort, review lane R3, prompted separately from the replay lane with no shared context
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-02'
+        scope: >-
+          The 34 raised rectangle-density certificates T-068 registers, against the method and checker reviewed on 22 and 27 September: the argument from certificate to bound, the hypotheses the checker assumes, its trust boundary, what changed since 27 September, and where issue 281 and the record differ.
+        verdict: accepted
+        covers: [T-068]
     artifacts:
       - packing/resources/web/wand125-rectangle-certificates-2026-10-01/README.md
       - packing/devtools/audit_wand125_rectangles.py
       - packing/devtools/apply_wand125_rectangles.py
+      - docs/project/reviews/review-2026-10-02-wand125-rectangle-bounds-t068.md
     next_rung: >-
       think-6ei5: the complete 201-direction replay of each certificate, 148.5 CPU-hours at
       the source, each replayed into the packet that retains it and recorded under
@@ -5621,10 +5741,11 @@ results:
       certificates landed first, on 2026-10-02 (T-045, T-070).
     notes: >-
       V0 because every cited entry is the source's public claim: assurance reported, replay
-      not attempted. C0 because no cited entry carries a qualifying external_review. The
-      source ships each accepting run's verification_summary.json and verified_angles.jsonl,
-      which are retained. T-046 keeps its claim as of 28 September; the case records decide
-      which certificate is current at each count.
+      not attempted. C1 because the 2 October review is recorded as the report entry's
+      external_review, with no defect found. The source ships each accepting run's
+      verification_summary.json and verified_angles.jsonl, which are retained. T-046 keeps
+      its claim as of 28 September; the case records decide which certificate is current at
+      each count.
 
   - id: T-069
     kind: lower-bound
@@ -5647,7 +5768,7 @@ results:
       full replay was run again from the published tarball before publication, by the same
       algorithm and not an independent implementation.
 
-      At n = 65 the value exceeds Green's reported 8.2899658, which is 2 sqrt(2) + 71/13, and at n =
+      At n = 65 the value exceeds Green's reported 8.2899656, which is 2 sqrt(2) + 71/13, and at n =
       92 Nagamochi's 1 + sqrt(75) = 9.6602540. At n = 37, 66 and 90 it exceeds the rectangle
       certificates of the same source that this record reports.
 
@@ -5660,14 +5781,14 @@ results:
       produced with AI assistance under human direction.
     scope: {n_values: [37, 65, 66, 90, 92]}
     verification: V0
-    confirmation: C0
+    confirmation: C1
     significance:
       score: 3
       rationale: >-
         Scored as a claim: if the replays pass, the strongest lower bounds on record at five
         counts, two of them past Green's and Nagamochi's values, by the certificate kind of
-        T-048. Further sizes from one generator at S3; the score gates nothing, and V0/C0
-        says how far they stand.
+        T-048. Further sizes from one generator at S3; the score gates nothing, and V0/C1
+        says how far they stand. The 2 October review of these certificates confirmed S3.
       scored: '2026-10-01'
       by: 'think-ye2x import, registering lane (repository; draft)'
     novelty: previously-published
@@ -5676,13 +5797,24 @@ results:
       published: '2026-10-01'
     composition: >-
       One claim per count, each on its own certificate and its own reported entry. Every
-      part stands at V0/C0.
+      part stands at V0/C1: read by the 2 October review, and not replayed.
     evidence:
       - E-n037-wand125-mixed-644-report
       - E-n065-wand125-mixed-835-report
       - E-n066-wand125-mixed-842-report
       - E-n090-wand125-mixed-960-report
       - E-n092-wand125-mixed-969-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md
+        kind: adversarial
+        reviewer: Claude (model Fable) at extra-high thinking effort, review lane R3, prompted separately from the replay lane with no shared context
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-02'
+        scope: >-
+          The five mixed rectangle-measure certificates T-069 registers, at n = 37, 65, 66, 90 and 92, and the two of 2 October at n = 84 and 85, against the certificate kind and checker reviewed on 28 September for s(50) >= 37/5: the argument from certificate to bound, the hypotheses the checker assumes, its trust boundary, and what changed since.
+        verdict: accepted
+        covers: [T-069]
     artifacts:
       - packing/resources/web/wand125-point-and-mixed-2026-10-01/README.md
       - packing/resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n37_L644/README.md
@@ -5690,16 +5822,19 @@ results:
       - packing/resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n66_L842/README.md
       - packing/resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n90_L960/README.md
       - packing/resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n92_L969/README.md
+      - docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md
     next_rung: >-
       think-ye2x: the complete replay of each of the five certificates, about 45 to 90
-      CPU-hours in all by the cost of the s(50) replay, after audit_wand125_point_and_mixed
-      takes a certificate as a parameter, and a short review of what differs from the s(50)
-      certificate reviewed on 2026-09-28, before any verified lower bound is raised.
+      CPU-hours in all by the cost of the s(50) replay, before any verified lower bound is
+      raised. The short review of what differs from the s(50) certificate reviewed on
+      2026-09-28 is done (2 October), with no blocking defect.
     notes: >-
       V0 because every cited entry is the source's claim: assurance reported, replay not
-      attempted. C0 because no read of them is recorded as an external_review. The source
-      ships a completion audit and a certificate of its full replay for each count, which
-      are retained; the proof-bundle tarballs are pinned by digest and not retained.
+      attempted. C1 because the 2 October review is recorded as the five report entries'
+      external_review, with no blocking defect; it corrected the record's copy of Green's
+      value at n = 65 (finding MX-1). The source ships a completion audit and a certificate
+      of its full replay for each count, which are retained; the proof-bundle tarballs are
+      pinned by digest and not retained.
 
   - id: T-070
     kind: lower-bound
@@ -5780,11 +5915,14 @@ results:
       record, and none is retained. A second machine method would be a method-distinct
       decision of rotated coverage; global coverage is still decided by the source's C++
       checker alone, and the exact preflight does not decide it. Higher claims reported at
-      every count but n = 52, 67 and 71 would supersede these values as their replays land:
-      the same revision's own certificates at the eleven counts taken by mass (T-046),
-      wand125's raised certificates of 1 October at 16 of these counts (T-068), and the
-      exact values s(59) = 8 (T-066) and s(60) = 8 (T-062). apply_wand125_rectangles
-      --replay-plan lists the replays that would raise them, with their cost.
+      every count but n = 52, 59, 60, 67 and 71 would supersede these values as their
+      replays land: the same revision's own certificates at the eleven counts taken by mass
+      (T-046) and wand125's raised certificates of 1 October at 16 of these counts (T-068).
+      apply_wand125_rectangles --replay-plan lists the replays that would raise them, with
+      their cost.
+
+      At n = 59 and 60 superseded on 2026-10-02 by the exact values s(59) = 8 (T-066) and
+      s(60) = 8 (T-062), when their covers' replays landed; stays true as stated.
     notes: >-
       Machine-checked, review record pending, as T-045: V3/C3. A later release than T-045's,
       so a separate entry (result-import.md, register table). The rung does not rest on an

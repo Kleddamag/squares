@@ -20,7 +20,7 @@
           "lower_bound_first_proved_here": 0,
           "lower_bound_recent_result": 44,
           "only_known_numerically": 5,
-          "proved_optimal": 39,
+          "proved_optimal": 42,
           "rigidity_catalogue_annotated": 2,
           "rigidity_established": 12
         }
@@ -44,7 +44,7 @@
           "lower_bound_first_proved_here": 0,
           "lower_bound_recent_result": 44,
           "only_known_numerically": 55,
-          "proved_optimal": 63,
+          "proved_optimal": 66,
           "rigidity_catalogue_annotated": 2,
           "rigidity_established": 20
         }
@@ -2872,6 +2872,11 @@
       {
         "badges": [
           {
+            "glyph": "O",
+            "meaning": "proved optimal",
+            "style": "solid"
+          },
+          {
             "glyph": "=",
             "meaning": "exact value known",
             "style": "solid"
@@ -2886,20 +2891,20 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(59) ≥ 7.920000",
+          "display": "s(59) ≥ 8",
           "evidence": [
-            "E-wand125-rectangle-2026-09-28-source-replay"
+            "E-n059-wand125-mixed-cover-zmx2-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
-          "shown": true,
-          "value": "7.92"
+          "shown": false,
+          "value": "8"
         },
         "n": 59,
         "optimality": {
           "provenance": "frontier",
-          "status": "open"
+          "status": "proved"
         },
         "rigidity": {
           "basis": "none",
@@ -2908,14 +2913,19 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(59) ≤ 8",
+          "display": "s(59) = 8",
           "provenance": "frontier",
-          "relation": "upper-bound",
+          "relation": "equality",
           "value": "8.0"
         }
       },
       {
         "badges": [
+          {
+            "glyph": "O",
+            "meaning": "proved optimal",
+            "style": "solid"
+          },
           {
             "glyph": "=",
             "meaning": "exact value known",
@@ -2931,20 +2941,20 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(60) ≥ 7.920000",
+          "display": "s(60) ≥ 8",
           "evidence": [
-            "E-wand125-rectangle-2026-09-28-source-replay"
+            "E-n060-evand-mixed-cover-zmx2-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
-          "shown": true,
-          "value": "7.92"
+          "shown": false,
+          "value": "8"
         },
         "n": 60,
         "optimality": {
           "provenance": "frontier",
-          "status": "open"
+          "status": "proved"
         },
         "rigidity": {
           "basis": "none",
@@ -2953,14 +2963,19 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(60) ≤ 8",
+          "display": "s(60) = 8",
           "provenance": "frontier",
-          "relation": "upper-bound",
+          "relation": "equality",
           "value": "8.0"
         }
       },
       {
         "badges": [
+          {
+            "glyph": "O",
+            "meaning": "proved optimal",
+            "style": "solid"
+          },
           {
             "glyph": "=",
             "meaning": "exact value known",
@@ -2976,20 +2991,20 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(61) ≥ 7.960000",
+          "display": "s(61) ≥ 8",
           "evidence": [
-            "E-wand125-rectangle-source-replay"
+            "E-n060-evand-mixed-cover-zmx2-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
-          "shown": true,
-          "value": "7.96"
+          "shown": false,
+          "value": "8"
         },
         "n": 61,
         "optimality": {
           "provenance": "frontier",
-          "status": "open"
+          "status": "proved"
         },
         "rigidity": {
           "basis": "none",
@@ -2998,9 +3013,9 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(61) ≤ 8",
+          "display": "s(61) = 8",
           "provenance": "frontier",
-          "relation": "upper-bound",
+          "relation": "equality",
           "value": "8.0"
         }
       },
@@ -15080,7 +15095,7 @@
       "lower_bound_first_proved_here": 0,
       "lower_bound_recent_result": 44,
       "only_known_numerically": 55,
-      "proved_optimal": 63,
+      "proved_optimal": 66,
       "rigidity_catalogue_annotated": 2,
       "rigidity_established": 20
     }

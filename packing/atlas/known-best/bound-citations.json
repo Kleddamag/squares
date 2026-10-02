@@ -1340,17 +1340,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-070"
+            "T-066"
           ],
-          "note": "(confirmed T-070)",
+          "note": "(confirmed T-066)",
           "recent": true,
           "result": null,
           "results": [
-            "T-070"
+            "T-066"
           ],
-          "source_key": "[wand125 rectangle bounds 2026-09-28]",
-          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
-          "value": "7.92"
+          "source_key": "[wand125 exact covers 2026-10-01]",
+          "text": "wand125 after Daniel, Levy et al. 2026, GitHub",
+          "value": "8"
         },
         "n": 59,
         "record": "n-059",
@@ -1361,17 +1361,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-070"
+            "T-062"
           ],
-          "note": "(confirmed T-070)",
+          "note": "(confirmed T-062)",
           "recent": true,
           "result": null,
           "results": [
-            "T-070"
+            "T-062"
           ],
-          "source_key": "[wand125 rectangle bounds 2026-09-28]",
-          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
-          "value": "7.92"
+          "source_key": "[evand square-packing 2026-10-01]",
+          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
+          "value": "8"
         },
         "n": 60,
         "record": "n-060",
@@ -1382,17 +1382,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-045"
+            "T-063"
           ],
-          "note": "(confirmed T-045)",
+          "note": "(confirmed T-063)",
           "recent": true,
           "result": null,
           "results": [
-            "T-045"
+            "T-063"
           ],
-          "source_key": "[wand125 rectangle bounds 2026]",
-          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
-          "value": "7.96"
+          "source_key": "[evand square-packing 2026-10-01]",
+          "text": "Daniel after Burns, Massaccesi 2026, GitHub",
+          "value": "8"
         },
         "n": 61,
         "record": "n-061",

@@ -1130,35 +1130,13 @@ still asked. A preview has the first paper’s PDF only if one is put there: tha
 drawn from `packing/site/` by `render_n11_lower_bounds_explainer_pdf`, which a preview
 never writes.
 
-**One version, shared by every artifact** (the owner, 2026-09-22): the explainer’s
-credits, every page’s footer and the workbench stage print `PUBLICATION_EDITION` from
+**One version, shared by the site and its data** (the owner, 2026-09-22): every site
+page’s footer and the workbench stage print `PUBLICATION_EDITION` from
 `src/sqpack/release.py`, written like `v0.4.1-3b50e2`. The version comes from the first
 entry in `PUBLICATION_HISTORY`, and the six characters after it name the data.
 The atlas posters and the films carry the same spelling at the data commit each was
 drawn from, as
 [Release assets](#release-assets-are-drawn-at-a-version-bump-or-on-demand) describes.
-
-**The version history keeps every edition, and dates each by first publication.** The
-top of the page reads, on two lines, like “v0.4.2-971e5f (version history)” and “First
-published September 5, 2026 · Last revised October 1, 2026”: which edition is being
-read, with a link to the full list at the foot of the page, then when the result first
-reached a reader and when the article last changed.
-Both papers write their front, the formats row, the title and the credits, from one
-component (`devtools.paper_front`), and `devtools.paper_structure` compares the two
-rendered papers axis by axis
-([paper-design.md → The Papers’ Front](packing/devtools/templates/paper-design.md#the-papers-front)).
-The first date is the oldest edition’s, so it does not move.
-The second is `EXPLAINER_REVISED`, the date of the last commit that changed the article,
-which is changed in that commit; [Dates](#dates-on-generated-artifacts) has the rule.
-`PUBLICATION_HISTORY` lists every edition ever published, newest first, and an edition
-never comes off it — a new one goes on the front.
-It used to keep “the two retained editions”, and adding v0.4.1 under that rule dropped
-v0.3.0, the proof of s(11) ≥ 381/100 the publication began with.
-Each date is when that edition was first *live on the public page*, read from the
-repository’s GitHub Pages deployments, not when its version label first appeared in Git.
-The two differ in both directions — v0.3.0 went live on September 5 and was named on
-September 8; v0.4.0 was named on September 10 and went live on September 13 — and the
-deployment behind each date is recorded beside the list.
 The six characters after the version name the data, not the build: they are the pinned
 `DATA_REVISION`, the last commit that changed `DATA_PATHS` (the frontier records and the
 atlas data), so artifacts built from the same data carry the same version whatever code
@@ -1167,9 +1145,67 @@ clone stamps correctly.
 The claim documents still link to the pinned `PUBLICATION_REVISION` (`edition_file()`),
 which moves only when an edition is cut.
 
-**A release tag carries the version alone, without the data revision.** `v0.4.1` is
-`PUBLICATION_VERSION`; the stamp in a frame’s corner is `PUBLICATION_EDITION`, which
-appends the data revision.
+**`PUBLICATION_HISTORY` is the site’s edition record.** It lists every edition ever
+published, newest first, and an edition never comes off it — a new one goes on the
+front. It used to keep “the two retained editions”, and adding v0.4.1 under that rule
+dropped v0.3.0, the proof of s(11) ≥ 381/100 the publication began with.
+Each date is when that edition was first *live on the public page*, read from the
+repository’s GitHub Pages deployments, not when its version label first appeared in Git.
+The two differ in both directions — v0.3.0 went live on September 5 and was named on
+September 8; v0.4.0 was named on September 10 and went live on September 13 — and the
+deployment behind each date is recorded beside the list.
+No page of the site lists this record: the first paper did until 2026-10-02, when it was
+the paper’s own history, and a site-only edition read as an edition of the paper.
+A reader finds it in `release.py` and here.
+
+**The papers are versioned on their own, and the site’s version goes on no paper** (the
+owner, 2026-10-01: “the repository version should not go on the papers anymore.
+Papers should be individually versioned”). Each paper’s version line prints its own
+version from `release.py`: the explainer’s is `EXPLAINER_VERSION`, the newest entry of
+`EXPLAINER_HISTORY`, and the review’s is `OPTIMALITY_REVIEW_EDITION` (“Draft v0.1.0”).
+The top of the explainer reads, on two lines, like “v0.4.2 (version history)” and “First
+published September 5, 2026 · Last revised October 1, 2026”: which version of the paper
+is being read, with a link to the paper’s own editions at the foot of the page, then
+when the paper first reached a reader and when the article last changed.
+Both papers write their front, the formats row, the title and the credits, from one
+component (`devtools.paper_front`), and `devtools.paper_structure` compares the two
+rendered papers axis by axis
+([paper-design.md → The Papers’ Front](packing/devtools/templates/paper-design.md#the-papers-front)).
+The first date is `EXPLAINER_FIRST_PUBLISHED`, the paper’s oldest edition’s, so it does
+not move.
+The second is `EXPLAINER_REVISED`, the date of the last commit that changed the
+article, which is changed in that commit; [Dates](#dates-on-generated-artifacts) has the
+rule. The colophon on a paper is the site’s two lines without the version part
+(`render_overview.colophon_lines(edition="")`): the project and its repository, then the
+credit to Flowmark and KPress.
+`PUBLICATION_EDITION`, `PUBLICATION_STAMP` and the data hash appear on no paper page, in
+no Markdown edition and in no PDF; `tests/test_n11_lower_bounds_explainer.py` and the
+review’s tests hold that, and `check_published_site` refuses a served paper that carries
+the site’s edition or lacks its own.
+
+**A paper’s history lists the editions in which the paper changed, and nothing else.** A
+published number under which the paper changed stays exactly as published, number and
+date, and is never renumbered; an edition under which the paper did not change is not a
+version of the paper and is not in its history (the owner, 2026-10-01). The explainer
+carried the site’s number while the two were one, so `EXPLAINER_HISTORY` keeps v0.4.2,
+v0.4.0 and v0.3.0 at the site’s dates and drops v0.4.1 and v0.5.0, under which the
+article did not change; the comment on it records what changed in the paper under each
+and the commits read.
+`tests/test_release.py` holds the shared editions to the site’s record and the site-only
+ones out. Each entry’s sentence says what changed in the paper, and the explainer’s
+Version History is written from the list.
+
+**A release is cut only to host generated assets.** The site’s version is complete when
+the merge deploys and `check_published_site` passes; no tag and no GitHub release follow
+a version bump (the owner, 2026-10-01: releases “are only important for the assets that
+are generated, like the PDFs or the videos”). A release exists to give an asset a
+download address, which only the films need: they are linked through
+`render_overview.FILM_RELEASE` (currently `v0.4.2`) and stay on the release that carries
+them until they are cut again.
+The posters are served from the site itself, and the papers’ PDFs are built by Pages
+from the merge. A release tag carries the version alone, without the data revision:
+`v0.4.2` is `PUBLICATION_VERSION`; the stamp in a frame’s corner is
+`PUBLICATION_EDITION`, which appends the data revision.
 A tag names a release; a stamp names the evidence one artifact was drawn from, and a
 release may carry assets drawn from different revisions.
 
@@ -1249,7 +1285,7 @@ its source and whether it is what the rule gives:
 
 ### Cutting an edition
 
-Bumping the version is editorial, and it is when the release assets are redrawn.
+Bumping the site’s version is editorial, and it is when the release assets are redrawn.
 Use at most one publication patch bump per merge, and keep the chosen version fixed
 throughout a pull request.
 One command prepares the bump and prints what is left.
@@ -1270,15 +1306,46 @@ It does these, and `--dry-run` lists them without doing any:
    see the cairo note under Supported Environment).
 3. Regenerates the claim documents (`render_verifiable_claim`).
 4. Runs `--check-composites` and
-   `pytest tests/test_release.py tests/test_n11_lower_bounds_explainer.py tests/test_verify_claim.py tests/test_known_best_composites.py`.
+   `pytest tests/test_release.py tests/test_n11_lower_bounds_explainer.py tests/test_verify_claim.py tests/test_known_best_composites.py tests/test_artifact_dates.py`.
 
-It commits nothing, tags nothing and publishes nothing.
+It commits nothing and publishes nothing, and it moves no paper: a site bump adds no
+entry to any paper’s history and changes no paper’s version line.
 What it prints for the owner to do: commit the release module, the eight atlas files and
-the generated documents together and merge them; wait for the “Certificate page”
-workflow and run `check_published_site`; tag the merge `v0.5.0`; create the GitHub
-release with the poster PDFs and PNGs attached.
+the generated documents together and merge them, with README’s edition sentence updated;
+wait for the “Certificate page” workflow and run `check_published_site`, which completes
+the version; correct the date and record the deployment above the history.
+No tag and no GitHub release: a release is cut only when there are generated assets that
+need a download address, the films, and they stay on `render_overview.FILM_RELEASE`
+until they are cut again
+([Regenerating and publishing the ascent videos](packages/workbench/README.md#regenerating-and-publishing-the-ascent-videos)).
 The papers’ PDFs are built by Pages from the merge.
-The films stay on the release that carries them until they are cut again.
+
+### Bumping a paper’s version
+
+A paper’s version moves when the paper changes in a way its author calls a new version,
+and only then; a site bump, a re-pin, a redraw of the posters and a change to the page’s
+chrome are not versions of the paper.
+It is one edit, in the commit that makes the change, with no command:
+
+1. Add a `PublicationHistoryEntry` to the front of the paper’s history in `release.py`
+   (`EXPLAINER_HISTORY`; the review gets one as the explainer’s when it leaves
+   `OPTIMALITY_REVIEW_VERSION` behind, linked from its front through
+   `PaperFront.history`): the new number, the day it will first be published, written
+   `October 2, 2026`, and one sentence on what changed in the paper.
+   The number is the paper’s own and is not the site’s; a number already published is
+   never changed.
+2. Set `EXPLAINER_REVISED` (or `OPTIMALITY_REVIEW_REVISED`) to the commit’s date, as any
+   change to the article requires; `python -m devtools.artifact_dates --check` and
+   `tests/test_artifact_dates.py` hold it to git.
+3. Where the entry points name the paper’s version, update them: TUTORIAL.md names the
+   explainer’s (`test_reader_facing_version_references_follow_release_metadata`).
+4. Run
+   `pytest tests/test_release.py tests/test_n11_lower_bounds_explainer.py tests/test_paper_structure.py tests/test_artifact_dates.py`.
+   The explainer’s Version History is written from the list, so a longer history can
+   move its PDF’s page count; draw the PDF and update `EXPECTED_PAGE_COUNT` if it does.
+
+The version line and the history on a paper reflect versions of the paper, not of the
+website or anything else.
 
 ## Focused Quality Commands
 

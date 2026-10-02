@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import math
 import time
 from fractions import Fraction as Q
@@ -14,6 +15,8 @@ import pytest
 from devtools import pilot_n17_capture as pilot
 from sqpack.hull_kernel import Budget, node, sequential
 from sqpack.hull_kernel.frame import Frame
+from sqpack.hull_kernel.geometry import area2, trig
+from sqpack.hull_kernel.induction import strict_core
 
 EXCLUSION_CAP = Q(1169, 250)
 
@@ -147,8 +150,9 @@ def test_refinement_bisects_the_widest_live_rows_and_the_checker_admits_it() -> 
 
 
 def test_two_certified_steps_keep_the_endpoint_and_replay_agrees(
-    endpoint: pilot.Endpoint, frame: Frame
+    endpoint: pilot.Endpoint, frame: Frame, tmp_path: Path
 ) -> None:
+    partial = tmp_path / "run.partial.json"
     result = pilot.run_pilot(
         frame,
         endpoint,
@@ -160,6 +164,7 @@ def test_two_certified_steps_keep_the_endpoint_and_replay_agrees(
         max_seconds=120,
         max_steps=2,
         progress=False,
+        partial=partial,
     )
     assert result.endpoint_lost is None
     assert result.outcome == "step_cap"
@@ -173,6 +178,10 @@ def test_two_certified_steps_keep_the_endpoint_and_replay_agrees(
     assert replayed["steps"] == 2
     assert replayed["final_state_agrees"] is True
     assert replayed["closure"] is None
+    written = json.loads(partial.read_text())
+    assert written["tool_sha256"] == pilot.TOOL_SHA256
+    assert [entry["round"] for entry in written["rounds"]] == [0, 1]
+    assert len(written["updates"]) == 2
 
 
 def test_turns_are_read_modulo_a_quarter_turn() -> None:
@@ -272,3 +281,94 @@ def test_the_box_sub_case_cuts_every_cell_but_six_around_the_endpoint(
             assert max(xs) - min(xs) > Q(1, 4)
         elif item.label not in (11, 13):
             assert max(xs) - min(xs) <= 2 * rho
+
+
+def test_the_octagon_core_is_strict_and_beats_the_envelope(frame: Frame) -> None:
+    for lo, hi in ((Q(0), Q(1, 32)), (Q(11, 32), Q(3, 8)), (Q(31, 32), Q(1))):
+        octagon = pilot.octagon_core(frame, lo, hi)
+        envelope = pilot.producer.envelope_core(frame, lo, hi)
+        strict_core(frame, octagon, lo, hi)
+        assert len(octagon) == 8
+        assert area2(octagon) > area2(envelope)
+    lo, hi = Q(1, 3), Q(1, 3) + Q(1, 2**12)
+    narrow = pilot.octagon_core(frame, lo, hi)
+    c, s = trig((lo + hi) / 2)
+    for nx, ny in ((c, s), (-s, c), (-c, -s), (s, -c)):
+        support = max(nx * x + ny * y for x, y in narrow)
+        assert Q(1, 2) - support < Q(1, 10**6), "the face-normal loss is not second order"
+    envelope = pilot.producer.envelope_core(frame, lo, hi)
+    assert Q(1, 2) - max(c * x + s * y for x, y in envelope) > Q(1, 10**4)
+
+
+def test_the_n11_control_is_case_438_with_its_optimum_inside_its_cells() -> None:
+    n11_frame = pilot.n11_frame()
+    optimum = pilot.load_n11_endpoint(n11_frame)
+    assert optimum.system == "n11"
+    assert optimum.coarse is None
+    assert not optimum.slides
+    assert sorted(item.owner for item in optimum.targets) == [
+        0,
+        1,
+        2,
+        3,
+        4,
+        8,
+        9,
+        10,
+        11,
+        13,
+        15,
+    ]
+    assert 0 < n11_frame.cap - optimum.side.hi < Q(1, 10**20)
+    for item in optimum.targets:
+        cell = n11_frame.world(item.owner)
+        corners = [
+            (x, y)
+            for x in (item.centre[0].lo, item.centre[0].hi)
+            for y in (item.centre[1].lo, item.centre[1].hi)
+        ]
+        assert all(pilot.in_convex(cell, corner) for corner in corners), item.label
+    assert pilot.coordinates(3, (0.1, 0.2), optimum) == {"x": 0.1, "y": 0.2}
+
+
+def test_partner_pruning_reads_boxes_apart_by_the_reach() -> None:
+    first = (Q(0), Q(1), Q(0), Q(1))
+    assert pilot.separated(first, (Q(5, 2), Q(3), Q(0), Q(1)), Q(3, 2))
+    assert not pilot.separated(first, (Q(2), Q(3), Q(0), Q(1)), Q(3, 2))
+    rows: list[dict[str, Any]] = [
+        {"outer_domain": [["0", "0"], ["1", "0"], ["1", "2"]], "residual_polygons": []},
+        {"outer_domain": [], "residual_polygons": [[["3", "1"]]]},
+    ]
+    assert pilot.bounding_box(rows, "outer_domain") == (Q(0), Q(1), Q(0), Q(2))
+    assert pilot.bounding_box(rows, "residual_polygons") == (Q(3), Q(3), Q(1), Q(1))
+
+
+def test_the_review_falsifier_and_the_contraction_start_are_read_from_rounds() -> None:
+    def entry(index: int, extent: float, ratio: float, *, drop: bool) -> dict[str, Any]:
+        return {
+            "round": index,
+            "worst_position_extent": extent,
+            "max_row_to_extent": ratio,
+            "median_row_to_extent": ratio,
+            "rows_fine": ratio < pilot.FINE_ROWS,
+            "rows_past_model_threshold": ratio < pilot.MODEL_THRESHOLD,
+            "no_extent_drop": not drop,
+            "complete": True,
+        }
+
+    flat = [entry(index, 1.0, 0.01, drop=False) for index in range(4)]
+    reading = pilot.falsifier_reading(flat)
+    assert reading["falsified"] is True
+    assert reading["contraction_start"] is None
+    falling = [
+        entry(0, 1.0, 0.5, drop=False),
+        entry(1, 1.0, 0.08, drop=False),
+        entry(2, 0.5, 0.04, drop=True),
+        entry(3, 0.25, 0.04, drop=True),
+    ]
+    reading = pilot.falsifier_reading(falling)
+    assert reading["falsified"] is False
+    assert reading["first_round_rows_under_a_tenth"] == 1
+    assert reading["contraction_start"]["round"] == 2
+    assert reading["contraction_start"]["max_row_to_extent_before"] == 0.08
+    assert reading["g_after_start_geometric_mean"] == pytest.approx(0.5)

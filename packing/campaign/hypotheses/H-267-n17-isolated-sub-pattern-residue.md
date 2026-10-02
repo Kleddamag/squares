@@ -62,6 +62,9 @@ the proxy’s arity-five flags, and on the unique-state cover it flags nothing a
 five or below. At arity six it flags three interior-crowd classes; if all three are
 certified, 23,354 orbits survive, above this hypothesis’s threshold, so arity seven is
 the next measurement.
+At arity seven it flags 44 classes; if all are certified, 5,084 orbits survive, below
+the threshold, with the endpoint surviving.
+The thinnest flags (penetration $6.2\times10^{-5}$) are the likeliest to be false.
 The [selector receipts](../explorations/X048-session-168-pilots/README.md) hold the
 counts; none of them is a certificate.
 

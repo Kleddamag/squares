@@ -26,6 +26,8 @@ pattern.
 | `receipts/selector-arity6-seed1.json` | The run to arity 6 with seed 1, its controls and survivor counts, and the certification priority |
 | `receipts/selector-arity6-seed1.log` | Its progress log, 264 s on two workers |
 | `receipts/selector-seed-study.json` | The three flagged classes re-searched under seeds 1 to 4 |
+| `receipts/selector-arity7-seed1.json` | The run to arity 7 with seed 1 at commit d674e665, 2,028 s on two workers: 44 flagged classes and the certification priority |
+| `receipts/selector-arity7-seed1.log` | Its progress log |
 | `receipts/selector-lane-f-retest.json` | The bulk-exclusion lane’s exploratory arity-5 flags re-searched on its own design |
 
 The findings:
@@ -39,6 +41,11 @@ The findings:
   across four seeds. If all three are certified, 185,424 states and 23,354 orbits
   survive. That is still above H-267’s threshold of $10^4$, so arity 7 (43,086 connected
   classes) is needed.
+- **Arity 7 reaches the threshold, heuristically.** 44 classes are flagged, with best
+  penetrations from $6.2\times10^{-5}$ to $2.3\times10^{-2}$. If all are certified,
+  40,016 states and **5,084 orbits** survive, below H-267’s $10^4$. The thinnest flags
+  are the likeliest to be false, and the top-priority class is now a west-wall column
+  plus two interior cells.
 - **The endpoint survives at every arity.** Its own sub-pattern classes are witnessed at
   its pose to penetration $7\times10^{-16}$ and are never flagged.
 - **One false flag can remove half the census.** Before the deep stage was added, two

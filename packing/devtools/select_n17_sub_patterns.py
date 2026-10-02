@@ -22,6 +22,29 @@ the local shape of n11's fields. The default is no window, which tests every con
 class. Classes are taken up to D4, bottom up by arity, and a pattern containing an
 already flagged one is skipped, since the consumer needs only the minimal flagged set.
 
+Restriction to survivors. With `--restrict-to-survivors K`, at every arity `k >= K` a
+class is tested only when it lies in some state that survives every flag of arity below
+`k`; the classes this skips beyond the superset rule are counted per arity as
+`restricted_out`, beside the number of surviving states it used. The flags come in whole
+D4 orbits, so the surviving states are closed under D4, and a class lies in an image of
+a surviving state exactly when its canonical mask lies in a surviving state. The
+restriction is exact for the consumer. A class in no surviving state can remove only
+states that are already removed. And every connected `k - 1`-cell sub-pattern of a class
+that is tested lies in the same surviving state, which survives the lower flags too, so it
+was tested, and the class gets the warm starts, the generator and so the verdict it gets
+without the option; by induction the two runs agree on every tested class and on every
+survivor count. They differ only in flagging classes that remove nothing. `--count-only`
+measures the restriction without searching, under the flags of an earlier receipt
+(`--flags-from`). The option is off by default, and the receipt is then unchanged.
+
+Priority. Flags are crowds: at arity 7, seed 1, all 41 new flags have at most two pairs
+of cells that do not interact, against 8,211 of the 43,052 classes tested. Where the
+restriction applies, classes are therefore searched fewest missing pairs first, so a
+wall ceiling cuts the least crowded, and `--max-missing-pairs D` keeps only those with at
+most `D` missing pairs. That subset is a priority choice, not exact: the classes it
+defers are unsearched, their flags unknown, and they leave no warm start for the arity
+above, so it is meant for the last arity of a run.
+
 Search. Variables are the centres, the angles, and for each interacting pair a
 separating line (normal angle and offset). The penalty sums squared hinge violations of
 every square vertex against the container walls, every centre against its cell's
@@ -85,6 +108,7 @@ from devtools import check_n17_capacity_one_cover as cover
 from devtools.check_n17_endpoint_feasibility import THETA_LABELS
 
 SCHEMA = "n17-sub-pattern-selector/v1"
+COUNT_SCHEMA = "n17-sub-pattern-class-count/v1"
 STATUS = (
     "heuristic selector, not a certificate: a flagged pattern is one the float search "
     "could not place; the prover must certify each flagged pattern before any exclusion "
@@ -99,6 +123,9 @@ POLISH_BELOW = 1e-4
 INTERACTION = math.sqrt(2.0) + 1e-9
 ENDPOINT_POSE_TOLERANCE = 1e-12
 TIGHT_HALF_SIDE = 1e-3
+# The bytes this process imported. A receipt written later must not name the file on disk
+# then, which may have been edited while a long run was searching.
+MODULE_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 CORNER_X = np.array([-0.5, 0.5, 0.5, -0.5])
 CORNER_Y = np.array([-0.5, -0.5, 0.5, 0.5])
 
@@ -255,6 +282,13 @@ def connected(geometry: Geometry, cells: tuple[int, ...]) -> bool:
     return len(seen) == len(cells)
 
 
+def missing_pairs(geometry: Geometry, mask: int) -> int:
+    """The pairs of the pattern's cells that do not interact; zero for mutual neighbours."""
+    cells = list(cells_of(mask))
+    near = int(np.count_nonzero(np.triu(geometry.interact[np.ix_(cells, cells)], 1)))
+    return len(cells) * (len(cells) - 1) // 2 - near
+
+
 def window_side(geometry: Geometry, cells: tuple[int, ...]) -> float:
     """The side of the least axis-aligned square holding the union of the cells."""
     index = list(cells)
@@ -271,6 +305,32 @@ def pattern_classes(geometry: Geometry, arity: int, window: float | None) -> lis
         if connected(geometry, cells):
             classes.add(canonical(mask_of(cells), geometry.group))
     return sorted(classes)
+
+
+def occurring_classes(classes: list[int], alive: NDArray[np.int64]) -> set[int]:
+    """The classes whose mask lies in some state of `alive`.
+
+    For `alive` closed under the group, as the survivors of whole flagged orbits are, this
+    is the set of classes that occur in some group image of a surviving state.
+    """
+    return {mask for mask in classes if bool(np.any((alive & mask) == mask))}
+
+
+def split_classes(
+    classes: list[int], flagged_images: list[int], alive: NDArray[np.int64] | None
+) -> tuple[list[int], list[int], list[int]]:
+    """Classes pruned as supersets of a flag, restricted out, and to be tested.
+
+    `alive` is `None` where the restriction does not apply, and nothing is restricted out.
+    """
+    pruned = [m for m in classes if any(f & m == f for f in flagged_images)]
+    pruned_set = set(pruned)
+    candidates = [m for m in classes if m not in pruned_set]
+    if alive is None:
+        return pruned, [], candidates
+    occurring = occurring_classes(candidates, alive)
+    restricted = [m for m in candidates if m not in occurring]
+    return pruned, restricted, [m for m in candidates if m in occurring]
 
 
 # ---------------------------------------------------------------------------
@@ -858,8 +918,20 @@ def sweep(
     witnessed: set[int] | None = None,
     timeout: float | None = None,
     progress: bool = False,
+    restrict_from: int | None = None,
+    size: int = TARGET,
+    progress_every: int | None = None,
+    max_missing: int | None = None,
 ) -> dict[str, Any]:
-    """Bottom-up search of every connected class; flags, false flags and timings."""
+    """Bottom-up search of every connected class; flags, false flags and timings.
+
+    With `restrict_from`, each arity from it on tests only the classes lying in a state of
+    `size` cells that survives the flags of lower arities, fewest missing pairs first. With
+    `max_missing` as well, it tests at those arities only the classes with at most that many
+    non-interacting pairs, a priority subset that is not exact.
+    """
+    if max_missing is not None and restrict_from is None:
+        raise ValueError("max_missing applies only where the restriction does")
     clock = time.perf_counter()
     witnessed = witnessed or set()
     witnesses: dict[int, Floats] = {}
@@ -877,17 +949,29 @@ def sweep(
     if executor is None:
         _initialise(geometry, budget, seed)
     complete = True
+    states: NDArray[np.int64] | None = None
+    restricted_total = 0
     try:
         for arity in range(1, max_arity + 1):
             level_clock = time.perf_counter()
             classes = pattern_classes(geometry, arity, window)
-            pruned = [m for m in classes if any(f & m == f for f in flagged_masks)]
-            pruned_set = set(pruned)
-            tasks = [
-                (mask, _sub_witness_payload(cells_of(mask), witnesses))
-                for mask in classes
-                if mask not in pruned_set
-            ]
+            alive: NDArray[np.int64] | None = None
+            if restrict_from is not None and arity >= restrict_from:
+                if states is None:
+                    states = all_states(len(geometry.names), size)
+                alive = survivors(states, flagged_masks)
+            pruned, restricted, tested = split_classes(classes, flagged_masks, alive)
+            restricted_total += len(restricted)
+            deferred: list[int] = []
+            if alive is not None:
+                # Most crowded first, so a wall ceiling cuts the classes least likely flagged;
+                # outcomes are taken in mask order, so a complete level is unaffected.
+                missing = {m: missing_pairs(geometry, m) for m in tested}
+                if max_missing is not None:
+                    deferred = [m for m in tested if missing[m] > max_missing]
+                    tested = [m for m in tested if missing[m] <= max_missing]
+                tested = sorted(tested, key=lambda m: (missing[m], m))
+            tasks = [(mask, _sub_witness_payload(cells_of(mask), witnesses)) for mask in tested]
             results = (
                 executor.map(_solve, tasks, chunksize=8)
                 if executor is not None
@@ -896,6 +980,15 @@ def sweep(
             outcomes = []
             for outcome in results:
                 outcomes.append(outcome)
+                if progress_every and len(outcomes) % progress_every == 0:
+                    partial = {
+                        "arity": arity,
+                        "searched_so_far": len(outcomes),
+                        "of": len(tasks),
+                        "unplaced_so_far": sum(1 for o in outcomes if not o[1]),
+                        "seconds": round(time.perf_counter() - level_clock, 3),
+                    }
+                    print(json.dumps(partial), flush=True)
                 if timeout is not None and time.perf_counter() - clock > timeout:
                     complete = False
                     break
@@ -934,6 +1027,11 @@ def sweep(
                 "attempts": attempts,
                 "seconds": round(time.perf_counter() - level_clock, 3),
             }
+            if alive is not None:
+                levels[str(arity)]["restricted_out"] = len(restricted)
+                levels[str(arity)]["surviving_states_used"] = int(alive.size)
+            if alive is not None and max_missing is not None:
+                levels[str(arity)]["deferred_by_missing_pairs"] = len(deferred)
             if progress:
                 print(json.dumps({"arity": arity, **levels[str(arity)]}), flush=True)
             if not complete:
@@ -941,7 +1039,7 @@ def sweep(
     finally:
         if executor is not None:
             executor.shutdown(cancel_futures=True)
-    return {
+    record: dict[str, Any] = {
         "levels": levels,
         "flagged": [flagged[mask] for mask in sorted(flagged)],
         "flagged_masks": sorted(flagged),
@@ -949,6 +1047,9 @@ def sweep(
         "complete": complete,
         "seconds": round(time.perf_counter() - clock, 3),
     }
+    if restrict_from is not None:
+        record["restricted_out"] = restricted_total
+    return record
 
 
 # ---------------------------------------------------------------------------
@@ -1061,6 +1162,60 @@ def greedy_order(
     return order
 
 
+def receipt_flags(path: Path, geometry: Geometry, design_name: str) -> list[int]:
+    """The canonical masks an earlier receipt flagged, checked against the cover's cells."""
+    receipt = json.loads(path.read_text(encoding="utf-8"))
+    if receipt.get("design") != design_name or receipt.get("cells") != list(geometry.names):
+        raise ValueError(f"{path} was not run on design {design_name} with these cells")
+    return sorted(
+        {canonical(mask_of(entry["indices"]), geometry.group) for entry in receipt["flagged"]}
+    )
+
+
+def count_classes(
+    geometry: Geometry,
+    *,
+    max_arity: int,
+    flagged: list[int],
+    window: float | None = None,
+    size: int = TARGET,
+) -> dict[str, Any]:
+    """Per arity, without searching: what the restriction would test under given flags.
+
+    At each arity, the flags of lower arity prune their supersets and leave the surviving
+    states; `in_survivors` counts the classes a restricted sweep with those flags would
+    test, and `restricted_out` the further classes it would skip. Both those classes and
+    the given flags of this arity are tallied by missing pairs, which is what a
+    `max_missing_pairs` subset would keep.
+    """
+    states = all_states(len(geometry.names), size)
+    levels: dict[str, Any] = {}
+    for arity in range(1, max_arity + 1):
+        lower = [mask for mask in flagged if mask.bit_count() < arity]
+        images = sorted({image for mask in lower for image in orbit(mask, geometry.group)})
+        classes = pattern_classes(geometry, arity, window)
+        alive = survivors(states, images)
+        pruned, restricted, tested = split_classes(classes, images, alive)
+        here = [mask for mask in flagged if mask.bit_count() == arity]
+        levels[str(arity)] = {
+            "classes": len(classes),
+            "flags_below": len(lower),
+            "surviving_states_used": int(alive.size),
+            "pruned_as_supersets": len(pruned),
+            "restricted_out": len(restricted),
+            "in_survivors": len(tested),
+            "in_survivors_by_missing_pairs": _histogram(geometry, tested),
+            "flags_by_missing_pairs": _histogram(geometry, here),
+        }
+    return levels
+
+
+def _histogram(geometry: Geometry, masks: list[int]) -> list[int]:
+    """Counts of the masks by missing pairs, indexed by the number missing."""
+    counts = [missing_pairs(geometry, mask) for mask in masks]
+    return [counts.count(missing) for missing in range(max(counts, default=-1) + 1)]
+
+
 # ---------------------------------------------------------------------------
 # Receipt
 # ---------------------------------------------------------------------------
@@ -1077,6 +1232,9 @@ def run(
     timeout: float | None = None,
     tight_sizes: tuple[int, ...] = (3, 4, 5),
     progress: bool = False,
+    restrict_from: int | None = None,
+    progress_every: int | None = None,
+    max_missing: int | None = None,
 ) -> dict[str, Any]:
     clock = time.perf_counter()
     budget = budget or Budget()
@@ -1099,6 +1257,9 @@ def run(
         witnessed=witnessed,
         timeout=timeout,
         progress=progress,
+        restrict_from=restrict_from,
+        progress_every=progress_every,
+        max_missing=max_missing,
     )
     states = all_states(len(geometry.names), TARGET)
     by_arity: dict[str, Any] = {}
@@ -1169,12 +1330,20 @@ def run(
             "timeout": timeout,
         },
         "controls": controls,
-        "sweep": {key: swept[key] for key in ("levels", "complete", "seconds")},
+        "sweep": {
+            key: swept[key]
+            for key in ("levels", "complete", "seconds", "restricted_out")
+            if key in swept
+        },
         "flagged": swept["flagged"],
         "survivors_by_arity": by_arity,
         "certification_priority": priority,
-        "module_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "module_sha256": MODULE_SHA256,
     }
+    if restrict_from is not None:
+        receipt["parameters"]["restrict_to_survivors_from"] = restrict_from
+    if max_missing is not None:
+        receipt["parameters"]["max_missing_pairs"] = max_missing
     receipt["seconds"] = round(time.perf_counter() - clock, 3)
     return receipt
 
@@ -1191,6 +1360,37 @@ def without_timings(receipt: dict[str, Any]) -> dict[str, Any]:
     return document
 
 
+def count_main(arguments: argparse.Namespace) -> int:
+    """The `--count-only` path: class counts under a receipt's flags, with no search."""
+    clock = time.perf_counter()
+    geometry = cover_geometry(arguments.design)
+    source: Path | None = arguments.flags_from
+    flagged = [] if source is None else receipt_flags(source, geometry, arguments.design)
+    record = {
+        "schema": COUNT_SCHEMA,
+        "status": "class counts only; nothing is searched and nothing is certified",
+        "design": arguments.design,
+        "max_arity": arguments.max_arity,
+        "window": arguments.window,
+        "state_size": TARGET,
+        "flags_from": None if source is None else str(source),
+        "flags_from_sha256": None
+        if source is None
+        else hashlib.sha256(source.read_bytes()).hexdigest(),
+        "flagged_classes": len(flagged),
+        "levels": count_classes(
+            geometry, max_arity=arguments.max_arity, flagged=flagged, window=arguments.window
+        ),
+        "module_sha256": MODULE_SHA256,
+        "seconds": round(time.perf_counter() - clock, 3),
+    }
+    text = json.dumps(record, indent=1, sort_keys=True)
+    if arguments.output is not None:
+        _ = arguments.output.write_text(text + "\n", encoding="utf-8")
+    print(text)
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     _ = parser.add_argument("--design", choices=sorted(cover.DESIGNS), default=DEFAULT_DESIGN)
@@ -1205,7 +1405,36 @@ def main(argv: list[str] | None = None) -> int:
     _ = parser.add_argument("--workers", type=int, default=1)
     _ = parser.add_argument("--timeout", type=float, default=None, help="wall ceiling, s")
     _ = parser.add_argument("--output", type=Path, help="write the receipt here")
+    _ = parser.add_argument(
+        "--restrict-to-survivors",
+        type=int,
+        default=None,
+        metavar="ARITY",
+        help="from this arity on, test only classes lying in a state that survives the "
+        "flags of lower arities",
+    )
+    _ = parser.add_argument(
+        "--max-missing-pairs",
+        type=int,
+        default=None,
+        metavar="D",
+        help="where the restriction applies, test only classes with at most D "
+        "non-interacting pairs (a priority subset, not exact)",
+    )
+    _ = parser.add_argument(
+        "--progress-every", type=int, default=None, help="print a line every N searches"
+    )
+    _ = parser.add_argument(
+        "--count-only",
+        action="store_true",
+        help="search nothing: count classes per arity and those lying in survivors",
+    )
+    _ = parser.add_argument(
+        "--flags-from", type=Path, default=None, help="with --count-only: a receipt's flags"
+    )
     arguments = parser.parse_args(argv)
+    if arguments.count_only:
+        return count_main(arguments)
     receipt = run(
         design_name=arguments.design,
         max_arity=arguments.max_arity,
@@ -1221,6 +1450,9 @@ def main(argv: list[str] | None = None) -> int:
         workers=arguments.workers,
         timeout=arguments.timeout,
         progress=True,
+        restrict_from=arguments.restrict_to_survivors,
+        progress_every=arguments.progress_every,
+        max_missing=arguments.max_missing_pairs,
     )
     text = json.dumps(receipt, indent=1, sort_keys=True, default=float)
     if arguments.output is not None:

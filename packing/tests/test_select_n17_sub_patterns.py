@@ -2,30 +2,44 @@
 
 from __future__ import annotations
 
+import hashlib
 import itertools
+import json
 from functools import cache
+from pathlib import Path
 from typing import Any
 
 import numpy as np
+import pytest
 
+from devtools import select_n17_sub_patterns as selector
 from devtools.select_n17_sub_patterns import (
     MARGIN,
     Budget,
     Geometry,
     Problem,
+    all_states,
     canonical,
     consume,
     contact_clusters,
+    count_classes,
     cover_geometry,
     endpoint_pose,
     endpoint_witnesses,
     greedy_order,
     image_mask,
+    main,
     make_geometry,
     mask_of,
+    missing_pairs,
+    occurring_classes,
+    orbit,
     pattern_rng,
     polygon_distance,
+    run,
     search,
+    split_classes,
+    survivors,
     sweep,
     tight_control,
     transform_pose,
@@ -59,6 +73,44 @@ def strip() -> Geometry:
         [box(0.5, 0.7, 0.5, 0.6), box(1.1, 1.5, 0.5, 0.6), box(1.9, 2.1, 0.5, 0.6)],
         ["A", "B", "C"],
     )
+
+
+@cache
+def strip_with_roof() -> Geometry:
+    """The strip with a cell above each end: A to C crowd, every other pattern fits.
+
+    With five-cell states the one state holds A to C, so once that triple is flagged no
+    state survives and every arity-4 class that is not its superset is restricted out.
+    """
+    return make_geometry(
+        [
+            box(0.5, 0.7, 0.5, 0.6),
+            box(1.1, 1.5, 0.5, 0.6),
+            box(1.9, 2.1, 0.5, 0.6),
+            box(0.5, 0.7, 1.6, 1.7),
+            box(1.9, 2.1, 1.6, 1.7),
+        ],
+        ["A", "B", "C", "D", "E"],
+    )
+
+
+LEVEL_KEYS = {
+    "classes",
+    "pruned_as_supersets",
+    "searched",
+    "feasible",
+    "feasible_by",
+    "flagged",
+    "attempts",
+    "seconds",
+}
+
+
+def without_seconds(record: dict[str, Any]) -> dict[str, Any]:
+    levels = {arity: dict(level) for arity, level in record["levels"].items()}
+    for level in levels.values():
+        level.pop("seconds")
+    return {**{k: v for k, v in record.items() if k != "seconds"}, "levels": levels}
 
 
 def ring_group() -> tuple[tuple[int, ...], ...]:
@@ -203,3 +255,147 @@ def test_consumer_without_flags_reproduces_the_h266_census() -> None:
     assert record["states"] == 346104
     assert record["orbits"] == 43593
     assert record["endpoint_survives"]
+
+
+def ring_classes(arity: int) -> list[int]:
+    group = ring_group()
+    return sorted(
+        {canonical(mask_of(c), group) for c in itertools.combinations(range(8), arity)}
+    )
+
+
+def occurs_by_brute_force(
+    group: tuple[tuple[int, ...], ...], size: int, flagged: list[int], mask: int
+) -> bool:
+    """Some state avoiding every flagged image holds some image of the class."""
+    images = [image_mask(m, permutation) for m in flagged for permutation in group]
+    for state in itertools.combinations(range(8), size):
+        held = mask_of(state)
+        if any(image & held == image for image in images):
+            continue
+        if any(image_mask(mask, p) & held == image_mask(mask, p) for p in group):
+            return True
+    return False
+
+
+def test_restriction_matches_brute_force_and_goes_beyond_pruning_on_the_ring() -> None:
+    group = ring_group()
+    beyond = 0
+    for size, flagged in ((4, [0b11]), (5, [0b10100]), (5, [0b11, 0b10100]), (4, [])):
+        images = sorted({image for mask in flagged for image in orbit(mask, group)})
+        alive = survivors(all_states(8, size), images)
+        for arity in (2, 3, 4):
+            classes = ring_classes(arity)
+            occurring = occurring_classes(classes, alive)
+            assert occurring == {
+                m for m in classes if occurs_by_brute_force(group, size, flagged, m)
+            }
+            pruned, restricted, tested = split_classes(classes, images, alive)
+            assert set(tested) == occurring
+            assert sorted(pruned + restricted + tested) == classes
+            beyond += len(restricted)
+    # On an eight-cycle with adjacent pairs flagged, {0, 2, 5} in cycle order is
+    # independent but in no independent four-set: the restriction is not just pruning.
+    assert beyond > 0
+
+
+def test_restriction_is_exact_for_the_consumer_on_the_ring() -> None:
+    group = ring_group()
+    for size, prior in ((4, [0b11]), (5, [0b10100]), (5, [])):
+        images = sorted({image for mask in prior for image in orbit(mask, group)})
+        alive = survivors(all_states(8, size), images)
+        for arity in (2, 3, 4):
+            candidates = split_classes(ring_classes(arity), images, None)[2]
+            kept = sorted(occurring_classes(candidates, alive))
+            for chosen in (candidates, candidates[::2], candidates[1::3]):
+                full = consume(8, group, prior + chosen, size=size)
+                restricted = consume(
+                    8, group, prior + [m for m in chosen if m in kept], size=size
+                )
+                assert full["surviving_states"] == restricted["surviving_states"]
+                assert full["orbits"] == restricted["orbits"]
+
+
+def test_restricted_sweep_agrees_with_the_full_sweep_on_every_survivor() -> None:
+    geometry = strip_with_roof()
+    for size, skipped in ((4, 0), (5, 3)):
+        full = sweep(geometry, max_arity=5, seed=11, budget=QUICK, size=size)
+        cut = sweep(geometry, max_arity=5, seed=11, budget=QUICK, size=size, restrict_from=1)
+        assert full["flagged_masks"] == cut["flagged_masks"] == [0b111]
+        assert cut["restricted_out"] == skipped
+        assert cut["levels"]["4"]["restricted_out"] == skipped
+        assert cut["levels"]["4"]["searched"] == full["levels"]["4"]["searched"] - skipped
+        assert cut["flagged"] == full["flagged"]
+        for arity in ("1", "2", "3"):
+            level = without_seconds(cut)["levels"][arity]
+            assert level.pop("restricted_out") == 0
+            assert level.pop("surviving_states_used") == (5 if size == 4 else 1)
+            assert level == without_seconds(full)["levels"][arity]
+        for flagged in (full["flagged_masks"], cut["flagged_masks"]):
+            record = consume(5, geometry.group, flagged, size=size)
+            assert record == consume(5, geometry.group, [0b111], size=size)
+
+
+def test_default_sweep_records_nothing_new() -> None:
+    record = sweep(strip(), max_arity=3, seed=11, budget=QUICK)
+    assert set(record) == {
+        "levels",
+        "flagged",
+        "flagged_masks",
+        "false_flags",
+        "complete",
+        "seconds",
+    }
+    assert all(set(level) == LEVEL_KEYS for level in record["levels"].values())
+    late = sweep(strip(), max_arity=3, seed=11, budget=QUICK, restrict_from=4)
+    assert late.pop("restricted_out") == 0
+    assert without_seconds(late) == without_seconds(record)
+
+
+def test_count_only_matches_the_restricted_sweep() -> None:
+    geometry = strip_with_roof()
+    levels = count_classes(geometry, max_arity=5, flagged=[0b111], size=5)
+    assert levels["4"] == {
+        "classes": 5,
+        "flags_below": 1,
+        "surviving_states_used": 0,
+        "pruned_as_supersets": 2,
+        "restricted_out": 3,
+        "in_survivors": 0,
+        "in_survivors_by_missing_pairs": [],
+        "flags_by_missing_pairs": [],
+    }
+    assert levels["3"]["flags_by_missing_pairs"] == [1]
+    assert levels["3"]["in_survivors"] == levels["3"]["classes"]
+    # A and E, and C and D, are the two pairs that do not interact.
+    assert missing_pairs(geometry, 0b11111) == 2
+    assert missing_pairs(geometry, 0b00111) == 0
+
+
+def test_priority_subset_defers_the_least_crowded() -> None:
+    geometry = strip_with_roof()
+    record = sweep(
+        geometry, max_arity=4, seed=11, budget=QUICK, size=4, restrict_from=4, max_missing=1
+    )
+    level = record["levels"]["4"]
+    # The arity-4 classes in survivors are ABDE and BCDE, missing one pair each, and ACDE,
+    # missing both A-E and C-D: only ACDE is deferred.
+    assert [missing_pairs(geometry, m) for m in (0b11011, 0b11110, 0b11101)] == [1, 1, 2]
+    assert level["deferred_by_missing_pairs"] == 1
+    assert level["searched"] == 2
+    with pytest.raises(ValueError, match="max_missing"):
+        _ = sweep(geometry, max_arity=1, seed=11, budget=QUICK, max_missing=0)
+
+
+def test_receipts_name_the_bytes_imported_not_the_file_at_write_time(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    imported = selector.MODULE_SHA256
+    assert imported == hashlib.sha256(Path(selector.__file__).read_bytes()).hexdigest()
+    edited = tmp_path / "select_n17_sub_patterns.py"
+    _ = edited.write_text("# edited on disk after the run imported the module\n")
+    monkeypatch.setattr(selector, "__file__", str(edited))
+    assert run(max_arity=1, tight_sizes=())["module_sha256"] == imported
+    output = tmp_path / "count.json"
+    assert main(["--count-only", "--max-arity", "1", "--output", str(output)]) == 0
+    assert json.loads(output.read_text(encoding="utf-8"))["module_sha256"] == imported

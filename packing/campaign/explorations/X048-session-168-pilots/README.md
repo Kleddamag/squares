@@ -53,7 +53,7 @@ The findings:
   arity. The seed-2 run imported the committed selector (`a40f34fb…`) at launch; its
   receipt’s `module_sha256` names `d33762ab…`, a later working-tree edit by another
   lane, because the selector hashes its file when it writes the receipt rather than when
-  it imports it. That defect is being fixed in the selector.
+  it imports it. The selector now hashes its bytes at import (`f17a1dbb…`).
 - **The endpoint survives at every arity.** Its own sub-pattern classes are witnessed at
   its pose to penetration $7\times10^{-16}$ and are never flagged.
 - **One false flag can remove half the census.** Before the deep stage was added, two
@@ -62,6 +62,35 @@ The findings:
 
 Reproduce, from `packing/`:
 `uv run --frozen --all-extras --group dev python -m devtools.select_n17_sub_patterns --max-arity 6 --seed 1 --workers 2 --output FILE`.
+
+### Arity 8, a Priority Subset
+
+Lane S2, Opus, added `--restrict-to-survivors K`: from arity `K` on, a class is tested
+only if it lies in a state that survives every lower flag.
+That is exact for the consumer, because the surviving set is closed under D4 and a
+tested class sees the same warm starts and seed either way.
+It also added `--count-only` and `--max-missing-pairs`, a priority subset that is not
+exact and records what it defers.
+It also fixed the digest defect above: the selector now hashes the bytes it imports.
+
+| Receipt | What it holds |
+| --- | --- |
+| `receipts/selector-count-arity8-under-arity7-flags.json` | Class counts at arity 8 without search |
+| `receipts/selector-arity8-seed1-restricted.json` | Seed 1 to arity 8, restricted, classes with at most two non-interacting pairs: 7,341 s on one worker |
+| `receipts/selector-arity8-seed1-restricted.log` | Its progress log |
+| `receipts/selector-arity8-ran-to-committed.diff` | The run imported `d33762ab…`; reverse-applying this diff to the committed selector reproduces those bytes |
+
+- **Restriction saves almost nothing at arity 8.** 91,133 of the 92,065 connected
+  8-classes still lie in a surviving state.
+- **The priority subset adds 46 flags.** 7,790 classes were searched and 83,343
+  deferred. Best penetrations run from $6.2\times10^{-5}$ to $2.7\times10^{-2}$, with six
+  below $10^{-3}$. Arity 7 and below reproduce bit-identically.
+- **If all 90 flags at arity 8 or below are certified, 17,636 states and 2,256 orbits
+  survive,** down from 5,084. This is an upper bound for a full arity-8 sweep.
+- **The value is in the head.** In greedy order the top arity-8 class removes 1,163
+  orbits, the top five 2,293 (81%), and the last twelve nothing once the first 34 are
+  in. The top class is corner-SW, corner-NW, side-S0, side-W0, side-W1, side-W2,
+  interior-SW and interior-NW, with penetration $3.5\times10^{-3}$.
 
 ## The Kernel on Flagged Patterns
 

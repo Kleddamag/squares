@@ -66,6 +66,8 @@ At arity seven it flags 41 more, 44 in all; if all are certified, 5,084 orbits s
 below the threshold, with the endpoint surviving.
 A second seed flags exactly the same 44 classes.
 The thinnest flags (penetration $6.2\times10^{-5}$) are the likeliest to be false.
+A priority subset of arity eight adds 46 flags; with all 90 certified, 2,256 orbits
+would survive, and the top five arity-eight classes carry 81% of that gain.
 The [selector receipts](../explorations/X048-session-168-pilots/README.md) hold the
 counts; none of them is a certificate.
 

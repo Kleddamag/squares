@@ -997,10 +997,12 @@ it.
   table, since 2026-10-02 (the owner, `think-hqb3`); it was the homepage’s section
   between Recent Results and the atlas before that (**Results page**, below, for its
   place and its lead).
-  Its diagram, `.site-ladders`, is one diagram, which is neither a set of cards nor the
-  shared data table: a column for each scored dimension of the rubric, in the order
-  Significance, Verification, Confirmation, and a row for each level, the highest at the
-  top, so the rungs of the three ladders line up across a row.
+  The homepage keeps a key of the same grid under Recent Results (`rung_key`, the same
+  day, `think-tgjv`), its heads the ratings’ names and letters alone (**Recent
+  results**, below). Its diagram, `.site-ladders`, is one diagram, which is neither a set
+  of cards nor the shared data table: a column for each scored dimension of the rubric,
+  in the order Significance, Verification, Confirmation, and a row for each level, the
+  highest at the top, so the rungs of the three ladders line up across a row.
   A column is headed by the dimension’s name, which links to its section of
   `epistemics.md`, and the question it answers, with no caps label.
   A cell holds the rung’s chip and a description of exactly two lines, and nothing else:
@@ -1688,7 +1690,7 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   this project, and when a bound by others counts as verified, which is the rule its
   verified columns apply.
   Each table keeps its own star legend, since a star without one reads as decoration,
-  and one function writes it (`star_legend`); the atlas note links the legend above the
+  and one function writes it (`star_legend`); the atlas note links the legend under the
   recent table in place of a third.
   The Frontier page opens with the survey’s account, its audit, its recent counts and
   the seventeen-square history, and ends its prose with the key to its columns, beside
@@ -1711,22 +1713,34 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   `tests/test_overview.py` holds each section’s prose to one paragraph of its own where
   this applies, the cards to their pages, and the three pages to saying each thing once.
 
-- **Recent results.** The overview’s Recent Results section is one paragraph of 60 to
-  125 words before its table (the owner, 2026-10-02): the headline of recent progress,
-  eleven squares settled by T-060, seventeen squares bracketed by T-043 and T-065, the
-  new exact values at $n = 21$, $32$ and $45$, each id linked to its row and held to the
+- **Recent results.** The overview’s Recent Results section opens with its table, and
+  under the table’s one action, “See all results”, stand two short paragraphs and a key
+  (the owner, 2026-10-02, `think-tgjv`; one paragraph of up to 125 words stood between
+  the heading and the filter bar until then).
+  The first paragraph, 50 to 100 words, is the headline of recent progress, eleven
+  squares settled by T-060, seventeen squares bracketed by T-043 and T-065, the new
+  exact values at $n = 21$, $32$ and $45$, each id linked to its row and held to the
   register by `check_results.READER_TIER`; then the star legend (`star_legend`); then
-  one sentence, in the legend’s manner, on what the three chips on a row indicate, in
-  the ladder heads’ words (how significant the result is, how it was originally
-  verified, how it has been confirmed), linking the Verification Ladders on the Results
-  page, which joined the paragraph when the ladders left the homepage (`think-hqb3`) and
-  raised its ceiling from 90 words; and one sentence on where the filters start.
-  Then one table, not cards or a list: every result, by the date the table shows, newest
-  first, one row each (`recent_table`). It is the results page’s table, with its
-  columns, its rows, its sorting and its card-per-row form on a phone (**Tables**,
-  above). The ratings, the kinds, the statuses and the dating rule are defined on the
-  Results page, and a result’s rungs, review and retained packet are its row’s; the
-  section repeats none of them.
+  one sentence on where the table above starts.
+  The second, at most 130 words, says what the three ratings on a row mean, a sentence
+  to each: significance, S1 to S5, how much the result matters; verification, V0 to V5,
+  how it was first established; confirmation, C0 to C5, how far it has been checked
+  since; each with its lowest and highest rungs, and V3 and C1 to C3 between, in the
+  rubric’s words shortened.
+  It links the Verification Ladders on the Results page, which define each rung in full
+  (`think-hqb3` moved them there the same day).
+  The key under it (`rung_key`) is the ladders’ grid (**Rating ladders**, above) without
+  their questions or links: a column per rating headed by its name and its letter, a row
+  per level with the highest at the top, each rung the chip the table draws beside its
+  short meaning, the same cells as the ladders’ own, so the two never disagree; it
+  stacks a rating to a block on a narrow screen, as the ladders do.
+  The table is one table, not cards or a list: every result, by the date the table
+  shows, newest first, one row each (`recent_table`). It is the results page’s table,
+  with its columns, its rows, its sorting and its card-per-row form on a phone
+  (**Tables**, above).
+  The ratings, the kinds, the statuses and the dating rule are defined on the Results
+  page, and a result’s rungs, review and retained packet are its row’s; the section
+  repeats none of them.
   README’s two paragraphs on the same progress opened the section until that day and are
   README’s own now (**Page headings**, above).
   The results page’s tools bar sits above it (**Result filters**, above), starting at

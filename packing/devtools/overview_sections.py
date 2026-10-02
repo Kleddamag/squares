@@ -1136,17 +1136,48 @@ def verification_block() -> str:
     page in its own scroller and restyles it as `.kpress-table`, which this diagram is
     not. Each name links to that section of `epistemics.md`.
     """
-    levels = {scale: {level for level, _ in rungs} for scale, rungs in rubric_levels().items()}
-    heads = "".join(
-        f'<div class="site-ladders-head" role="columnheader" data-ladder="{scale}">'
-        f'<a class="site-ladders-name" href="epistemics.html#{section}">{_esc(name)}</a> '
-        f'<span class="site-ladders-question">{_esc(question)}</span></div>'
+    heads = {
+        scale: (
+            f'<a class="site-ladders-name" href="epistemics.html#{section}">{_esc(name)}</a> '
+            f'<span class="site-ladders-question">{_esc(question)}</span>'
+        )
         for scale, name, section, question in DIMENSIONS
+    }
+    names = ", ".join(name.lower() for _, name, _, _ in DIMENSIONS)
+    return _ladder_grid(heads, f"Verification ladders by level: {names}", "site-ladders-frame")
+
+
+def rung_key() -> str:
+    """The overview's key to the three ratings on a row of its table: the rating ladders'
+    grid (`verification_block`) with each column headed by its rating and its letter
+    alone, no question and no link, each rung its chip and its short meaning. It stands
+    under Recent Results' account of the ratings (the owner, 2026-10-02, `think-tgjv`);
+    the ladders themselves, with what each rating asks, are the Results page's."""
+    heads = {
+        scale: f'<span class="site-ladders-name">{_esc(name)} ({scale})</span>'
+        for scale, name, _, _ in DIMENSIONS
+    }
+    names = ", ".join(name.lower() for _, name, _, _ in DIMENSIONS)
+    return _ladder_grid(
+        heads, f"The ratings' rungs by level: {names}", "site-ladders-frame site-ladders-key"
+    )
+
+
+def _ladder_grid(heads: dict[str, str], label: str, frame: str) -> str:
+    """The ladders' grid under `heads`, each column's head by its letter: a header row,
+    then a row per level, the highest at the top, each cell a rung (`_ladder_cell`) or
+    empty where a ladder has no rung at that level, in a frame of class `frame` in the
+    wide track."""
+    levels = {scale: {level for level, _ in rungs} for scale, rungs in rubric_levels().items()}
+    columns = "".join(
+        f'<div class="site-ladders-head" role="columnheader" data-ladder="{scale}">'
+        f"{heads[scale]}</div>"
+        for scale, *_ in DIMENSIONS
     )
     rows = [
         (
             '<div class="site-ladders-row" role="row">'
-            f'<span class="site-ladders-level" role="columnheader">Level</span>{heads}</div>'
+            f'<span class="site-ladders-level" role="columnheader">Level</span>{columns}</div>'
         )
     ]
     every = sorted({level for scale, *_ in DIMENSIONS for level in levels[scale]}, reverse=True)
@@ -1163,10 +1194,8 @@ def verification_block() -> str:
             f'<span class="site-ladders-level" role="rowheader">Level {level}</span>'
             f"{cells}</div>"
         )
-    names = ", ".join(name.lower() for _, name, _, _ in DIMENSIONS)
-    label = f"Verification ladders by level: {names}"
     return (
-        '<div class="site-ladders-frame site-wide">'
+        f'<div class="{frame} site-wide">'
         f'<div class="site-ladders" role="table" aria-label="{label}">'
         f"{''.join(rows)}</div></div>"
     )

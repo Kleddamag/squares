@@ -1047,14 +1047,45 @@ def _ladders(results: str) -> str:
     return section.split('<div class="site-ladders-frame site-wide">', 1)[1].split("<p", 1)[0]
 
 
+def test_recent_results_keys_every_rung_with_its_chip_and_short_meaning(page: str) -> None:
+    """Under Recent Results' account of the ratings stands a key to them (the owner,
+    2026-10-02, `think-tgjv`): the rating ladders' grid, a column per rating headed by
+    its name and its letter alone, a row per level with the highest at the top, each
+    rung the chip the table draws beside its short meaning. Its cells are the ladders'
+    own (`_ladder_cell`), so the key and the Results page's diagram never disagree; what
+    each rating asks, and the links to `epistemics.md`, are the diagram's alone."""
+    key = overview_sections.rung_key()
+    assert key.startswith('<div class="site-ladders-frame site-ladders-key site-wide">')
+    heads = re.findall(r'<span class="site-ladders-name">([^<]+)</span>', key)
+    assert heads == ["Significance (S)", "Verification (V)", "Confirmation (C)"]
+    assert "href=" not in key
+    assert "site-ladders-question" not in key
+    meanings = overview_sections.rung_short_meanings()
+    cells = re.findall(r'<div class="site-ladders-cell" role="cell".*?</div></div>', key)
+    assert len(cells) == len(meanings) == 17
+    for label, meaning in meanings.items():
+        assert f">{label}</span>" in key, label
+        assert (
+            f'<span class="site-ladders-meaning">{html.escape(meaning, quote=False)}</span>'
+            in (key)
+        ), label
+    diagram = overview_sections.verification_block()
+    assert cells == re.findall(
+        r'<div class="site-ladders-cell" role="cell".*?</div></div>', diagram
+    )
+    section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
+    assert section.count(" site-ladders-key ") == 1
+
+
 def test_the_ladders_are_the_results_pages_and_the_overview_points_to_them(
     page: str, results: str
 ) -> None:
     """Verification Ladders left the overview for the results page on 2026-10-02 (the
     owner, think-hqb3): the section stands under the table there, headed as it was, with
-    the empty anchor of its older fragment; the overview has no ladders section and no
-    diagram, and its Recent Results paragraph says what the three chips on a row
-    indicate, in the ladder heads' words, and links the section. The results page's
+    the empty anchor of its older fragment; the overview has no ladders section, and its
+    Recent Results says what the three ratings on a row mean, links the section, and
+    shows every rung in a key, the ladders' grid without their questions or links
+    (think-tgjv). The results page's
     opening paragraph points at the section, so a reader meets the table first and the
     account of the ratings is written once, as the section's lead."""
     heading = (
@@ -1087,25 +1118,24 @@ def test_the_ladders_are_the_results_pages_and_the_overview_points_to_them(
     # defines them.
     assert "how much the result matters" not in intro
     assert "the strongest verification its evidence supports" not in intro
-    # The stylesheet every page inlines keeps the diagram's rules; the markup is gone.
+    # The section and its diagram are gone; its grid is the key's, once.
     for gone in (
         'id="verification-ladders"',
         'id="verification-at-a-glance"',
-        'class="site-ladders',
+        '<span class="site-ladders-question">',
+        '<a class="site-ladders-name"',
     ):
         assert gone not in page, gone
+    assert page.count('class="site-ladders"') == 1
+    assert page.count('<div class="site-ladders-frame site-ladders-key site-wide">') == 1
     # The overview names the ladders once, in the chips' sentence, and nowhere else a
     # reader sees: its inlined stylesheet and the templates' comments name them too.
     assert _seen(page).count("Verification Ladders") == 1
-    chips = (
-        "The chips on a row say how significant the result is (S), how it was originally "
-        "verified (V) and how it has been confirmed (C), each rung defined on the "
-        "Verification Ladders."
-    )
-    assert chips in _rendered_text(_recent_lead(page))
+    ladders = "the Verification Ladders on the Results page define each one in full."
+    assert ladders in _rendered_text(_recent_prose(page))
     assert (
         '<a href="all-results.html#verification-ladders">Verification Ladders</a>'
-        in _recent_lead(page)
+        in _recent_prose(page)
     )
     for scale, _, _, question in overview_sections.DIMENSIONS:
         assert question in results, scale
@@ -2602,7 +2632,8 @@ def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_d
     # Where the bar starts, said once, in the bar's own words; the sentence on clearing
     # the filters left with the rest of the detail on 2026-10-02.
     starts = (
-        "The table starts at significance S4 and up, max age 180 days and superseded hidden."
+        "The table above starts at significance S4 and up, max age 180 days and "
+        "superseded hidden."
     )
     assert text.count(starts) == 1
     assert "clear Hide superseded" not in text
@@ -2702,14 +2733,14 @@ def test_only_t060_of_the_s5_results_still_holds(overview: overview_data.Overvie
 
 
 def test_recent_results_has_no_lead_line(page: str) -> None:
-    """Nothing stands between the section's prose and its filter bar: the generated
-    "Lead result" line the owner dropped on 2026-10-01 is gone, from the page, the
-    template and the module that wrote it."""
+    """Nothing stands between the section's heading and its filter bar, since its prose
+    follows the table (think-tgjv): the generated "Lead result" line the owner dropped
+    on 2026-10-01 is gone, from the page, the template and the module that wrote it."""
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
     assert "site-recent-lead" not in section
     assert "Lead result" not in section
     before = section.split('<div class="site-table-tools', 1)[0]
-    assert re.search(r'</p>\s*<div class="site-wide">$', before)
+    assert re.search(r'(?:</h2>|-->)\s*<div class="site-wide">$', before)
     template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
     assert "RECENT_LEAD" not in template
     assert not hasattr(overview_sections, "recent_lead")
@@ -2731,11 +2762,12 @@ def _intro(page: str) -> str:
     return _shared(page, "project-intro")
 
 
-def _recent_lead(page: str) -> str:
-    """Recent Results' one paragraph, the markup between its heading and its filter
-    bar."""
+def _recent_prose(page: str) -> str:
+    """Recent Results' two paragraphs, the markup under its table's action and over its
+    key to the ratings (`rung_key`)."""
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
-    return section.split("</h2>", 1)[1].split('<div class="site-table-tools', 1)[0]
+    after = section.split('<p class="site-action-row site-more">', 1)[1].split("</p>", 1)[1]
+    return after.split('<div class="site-ladders-frame site-ladders-key', 1)[0]
 
 
 #: One formula as kpress writes it: the TeX for KaTeX, then its MathML.
@@ -2825,44 +2857,64 @@ def test_the_overviews_first_section_is_readmes_one_block(page: str) -> None:
     assert "eleven" not in own.lower()
     recent = template.split("## Recent Results", 1)[1].split("\n## ", 1)[0]
     assert "README_PROGRESS" not in template
-    assert _template_paragraphs(recent)[0].startswith("Eleven squares is settled:")
+    # The table and its action come first since 2026-10-02 (think-tgjv), then the prose.
+    prose = [part for part in _template_paragraphs(recent) if not part.startswith(("{{", "<p"))]
+    assert prose[0].startswith("Eleven squares is settled:")
 
 
-def test_recent_results_is_one_paragraph_before_its_table(page: str) -> None:
-    """Recent Results is one paragraph of 60 to 125 words between its heading and the
-    filter bar (the owner, 2026-10-02): the headline of recent progress, the star
-    legend, one sentence on what the three chips on a row indicate, in the ladder heads'
-    words, linking the Verification Ladders on the results page, and one sentence on
-    where the filters start. The ceiling was 90 before the chips' sentence joined the
-    paragraph later that day (think-hqb3), when the ladders left the page. What stood
-    there until that day, README's two paragraphs and a paragraph on the table, is gone
-    from the page: the rungs, review, packet and defects of T-060 are its row's, the
-    ratings, kinds and statuses the Results page's, and the sentence on clearing the
-    filters is not needed where the bar is."""
+def test_recent_results_opens_with_its_table_and_says_what_it_shows_under_it(
+    page: str,
+) -> None:
+    """Recent Results opens with its table, and under the table's one action stand two
+    short paragraphs and a key (the owner, 2026-10-02, `think-tgjv`; one paragraph stood
+    between the heading and the filter bar until then). The first is the headline of
+    recent progress, the star legend and where the filters start; the second says what
+    the three ratings on a row mean, rung by rung in brief, links the Verification
+    Ladders on the Results page, and leads to the key (`rung_key`), which shows every
+    chip with its short meaning. What stood there before 2026-10-02, README's two
+    paragraphs and a paragraph on the table, is gone from the page: the rungs, review,
+    packet and defects of T-060 are its row's, and the kinds and statuses the Results
+    page's."""
     problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
-    lead = _recent_lead(page)
-    assert len(re.findall(r"<p>", lead)) == 1
-    assert re.sub(r"<!--.*?-->", "", lead.split("<p>", 1)[0], flags=re.DOTALL).strip() == ""
-    text = _rendered_text(lead)
-    assert text.startswith("Eleven squares is settled: $s(11) = 3.8770835\\ldots$")
-    assert text.endswith(
-        "The table starts at significance S4 and up, max age 180 days and superseded hidden."
+    head = section.split("</h2>", 1)[1]
+    # The table first: nothing a reader sees stands between the heading and its bar,
+    # which opens the table's wide block.
+    before = re.sub(
+        r"<!--.*?-->", "", head.split('<div class="site-table-tools', 1)[0], flags=re.DOTALL
     )
-    words = len(text.split())
-    assert 60 <= words <= 125, words
+    assert before.strip() == '<div class="site-wide">'
+    lead = _recent_prose(page)
+    paragraphs = re.findall(r"<p>(.*?)</p>", lead, re.DOTALL)
+    assert len(paragraphs) == 2
+    first, second = (_rendered_text(paragraph) for paragraph in paragraphs)
+    assert first.startswith("Eleven squares is settled: $s(11) = 3.8770835\\ldots$")
+    assert first.endswith(
+        "The table above starts at significance S4 and up, max age 180 days and "
+        "superseded hidden."
+    )
+    assert 50 <= len(first.split()) <= 100, len(first.split())
     legend = re.sub(r"<[^>]+>", "", overview_sections.star_legend())
-    assert legend in text
-    chips = "The chips on a row say how significant the result is (S)"
-    assert (
-        text.index("T-065")
-        < text.index(legend)
-        < text.index(chips)
-        < text.index("The table starts")
-    )
-    # The lead, then the filter bar, then the table.
-    tools = section.index('<div class="site-table-tools')
-    assert section.index(lead) < tools < section.index(_recent_table(page))
+    assert first.index("T-065") < first.index(legend) < first.index("The table above")
+    assert second.startswith("Each row carries three ratings, each a rung of its own ladder.")
+    for scale in (
+        "Significance, S1 to S5,",
+        "Verification, V0 to V5,",
+        "Confirmation, C0 to C5,",
+    ):
+        assert scale in second, scale
+    assert second.endswith("on the Results page define each one in full.")
+    assert len(second.split()) <= 130, len(second.split())
+    # The table, its action, the two paragraphs, then the key.
+    order = [
+        section.index('<div class="site-table-tools'),
+        section.index(_recent_table(page)),
+        section.index('<p class="site-action-row site-more">'),
+        section.index(lead),
+        section.index('<div class="site-ladders-frame site-ladders-key'),
+    ]
+    assert order == sorted(order)
+    text = first + " " + second
     # The section's prose is the lead; its bar and rows name sources and credits of
     # their own (Guzhou0806 is a Source option, Kleddamag a credit), so they are read
     # out of the lead and the sections before it only.
@@ -2883,7 +2935,7 @@ def test_recent_results_is_one_paragraph_before_its_table(page: str) -> None:
     for gone in ("The project covers the problem at every", "retained packet", "clear Hide"):
         assert gone not in _rendered_text(section), gone
     assert "These are the recent results this project tracks" not in _rendered_text(section)
-    for defined_there in ("recorded", "reviewed", "incomplete", "replayed here in full"):
+    for defined_there in ("reviewed", "incomplete", "replayed here in full"):
         assert defined_there not in text, defined_there
     assert "epistemics" not in lead
 
@@ -2898,7 +2950,7 @@ def test_recent_results_names_the_headline_results_at_their_rows(
     account."""
     from devtools import check_results, site_documents  # noqa: PLC0415
 
-    lead = _recent_lead(page)
+    lead = _recent_prose(page)
     text = _rendered_text(lead)
     assert "the exact side of Trump\u2019s 1979 packing" in text
     assert "Seventeen squares is bracketed by machine-checked bounds, T-043 below" in text
@@ -3638,8 +3690,11 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
     )
     for served in (page, results):
         assert legend in re.sub(r"<[^>]+>", "", served)
-        assert served.index("marks a new result") < served.index('<div class="site-table-tools')
         assert len(ROW_STAR.findall(served)) == len(starred)
+    # The results page says it before its table; the overview, under its table since
+    # 2026-10-02 (think-tgjv), with the rest of what the table shows.
+    assert results.index("marks a new result") < results.index('<div class="site-table-tools')
+    assert page.index(_recent_table(page)) < page.index("marks a new result")
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     assert ".site-star {\n  color: oklch(52% 0.19 25);\n}" in css
     # The star hangs after the text's last character: with no width it cannot wrap to a

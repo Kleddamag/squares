@@ -186,19 +186,22 @@ method.
 
 ## 6. Replays and Controls
 
-On a four-core Linux container shared with other lanes, at load averages of 18 to 30
+On a four-core Linux container shared with other lanes, at load averages of 13 to 30
 throughout, so every wall time is contended.
-Receipts are in the packet’s
+A container restart at about 19:20 UTC killed the first full runs of `verify` and of the
+native route; `verify` was rerun whole, and the native route resumed from its journal of
+the 1,810 rows it had certified on clean commit `119d1bab`, the same tool code, both
+reniced to 10. Receipts are in the packet’s
 [`receipts/`](../../../packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/receipts/),
 each by `devtools.replay_receipt`.
 
 | Checker | Input | Result | CPU |
 | --- | --- | --- | ---: |
-| `verify`, `N = 24000`, two threads | The certificate | VERIFIED; least `10000056/10⁷` at `k = 0`, over bins `0..9941` | DANIEL_CPU |
+| `verify`, `N = 24000`, two threads | The certificate | VERIFIED; least `10000056/10⁷` at `k = 0`, over bins `0..9941`; every printed line equals the source’s `logs/daniel_verify_N24000.log` | 982 s |
 | `indep_check`, `N = 24000` | The certificate | VERIFIED; least `10000056/10⁷` at `k = 0`; every printed line equals the source’s `logs/indep_check_N24000.log` | 67.7 s |
 | `indep_check`, `N = 6000` and `12000` | The certificate | NOT VERIFIED; least `9849809/10⁷` at `k = 976` and `9867834/10⁷` at `k = 362`, both outputs equal to the source’s logs | 16.2 s, 30.9 s |
 | `verify`, `N = 6000` and `12000`, bins `970..980` and `355..370` | The certificate | FAIL from bin `975` and from `361`, at the same values | 0.9 s, 1.0 s |
-| Native, `N = 24000`, two workers | The certificate | `PASS_COMPLETE`: all 9,942 rows certified at the threshold, NATIVE_BOXES boxes, no stalled box, no exhausted budget, no refutation, on clean commit `119d1bab` | NATIVE_CPU |
+| Native, `N = 24000`, two workers | The certificate | `PASS_COMPLETE`: all 9,942 rows certified at the threshold, 89,403,350 boxes, no stalled box, no exhausted budget, no refutation; 1,810 rows on clean commit `119d1bab`, the rest resumed on `44cf3444` with the tool unchanged | 2,856 s resumed; the first run’s not recorded |
 
 The controls, written by `devtools.audit_s12_rescaled_certificate --write-controls` and
 pinned by digest, are two mutations that any correct checker must refuse:
@@ -212,8 +215,8 @@ pinned by digest, are two mutations that any correct checker must refuse:
 | Checker | `scaled-7901-7900` | `weights-minus-57` |
 | --- | --- | --- |
 | `verify`, bins near the reported failure | FAIL at bins `3893..3899` of `3880..3910`, least `9849809/10⁷` | FAIL at bins `0..6` of `0..15`, least `9988604/10⁷` |
-| `indep_check`, every bin | NOT VERIFIED, least `9849809/10⁷` at `k = 3894`, as the source’s log | NOT VERIFIED, least INDEP_B |
-| Native, rows NATIVE_A_ROWS / NATIVE_B_ROWS | NATIVE_A | NATIVE_B |
+| `indep_check`, every bin | NOT VERIFIED, least `9849809/10⁷` at `k = 3894`, as the source’s log | NOT VERIFIED, least `9985548/10⁷` at `k = 4154` |
+| Native, two rows each | rows `3893` and `3894` refuted, admissible witnesses of charge `1973359/2000000` and `9849809/10⁷` | rows `0` and `4154` refuted, each with a witness of charge `39987/40000` |
 
 The `verify` controls sweep a window of bins (`VERIFY_BINS`), which cannot print
 VERIFIED; a refused bin in it is refused in the full sweep too, since each bin is an

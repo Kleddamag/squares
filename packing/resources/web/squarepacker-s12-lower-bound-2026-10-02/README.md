@@ -86,19 +86,24 @@ and the source’s `31360/7900` control is the same integers over `7900`.
 
 ## Replays Here
 
-On a four-core Linux container shared with other lanes, at load averages of 18 to 30
-throughout, so every wall time is contended. Each receipt is written by
+On a four-core Linux container shared with other lanes, at load averages of 13 to 30
+throughout, so every wall time is contended.
+A container restart at about 19:20 UTC killed the first full runs of `verify` and of the
+native route; `verify` was rerun whole, and the native route resumed from its journal
+of the 1,810 rows it had certified on clean commit `119d1bab`, the same tool code, both
+reniced to 10.
+Each receipt is written by
 `devtools.replay_receipt` (command, working directory, load, exit status, wall and
 CPU), and the checkers ran on the certificate restored from this packet’s `.gz`, whose
 SHA-256 the receipt’s header names.
 
 | Checker | Built from | Run | Wall | CPU | Result |
 | --- | --- | --- | ---: | ---: | --- |
-| Daniel’s `verify` (external, the producer’s verifier) | the 26 September evand packet’s `s12/verify/` by cargo 1.97.0 `--release`, target outside the packet; binary SHA-256 `9e79ec32…` | `verify s12_lower_3.969118.txt 12 24000 2 0` | DANIEL_WALL | DANIEL_CPU | VERIFIED, least captured weight `10000056/10⁷` at bin `k = 0` ([receipt](receipts/daniel-verify-N24000.log)) |
+| Daniel’s `verify` (external, the producer’s verifier) | the 26 September evand packet’s `s12/verify/` by cargo 1.97.0 `--release`, target outside the packet; binary SHA-256 `9e79ec32…` | `verify s12_lower_3.969118.txt 12 24000 2 0` | 2,134 s | 982 s | VERIFIED, least captured weight `10000056/10⁷` at bin `k = 0`; every printed line equals `logs/daniel_verify_N24000.log` ([receipt](receipts/daniel-verify-N24000.log)) |
 | squarepacker’s `indep_check` (external, the producer’s own checker) | `tools/indep_check.cpp` by g++ 13.3.0 `-O2` ([build](receipts/indep-check-build.log)); binary `e7748f8b…` | `indep_check s12_lower_3.969118.txt 24000` | 289.7 s | 67.7 s | VERIFIED, least `10000056/10⁷` at `k = 0`; every printed line equals `logs/indep_check_N24000.log` ([receipt](receipts/indep-check-N24000.log)) |
 | The coarse nets, `indep_check` | as above | `indep_check … 6000` and `… 12000` | 67.1 s, 137.1 s | 16.2 s, 30.9 s | NOT VERIFIED, least `9849809/10⁷` at `k = 976` and `9867834/10⁷` at `k = 362`; both outputs equal the source’s logs ([6000](receipts/nets/indep-check-N6000.log), [12000](receipts/nets/indep-check-N12000.log)) |
 | The coarse nets, `verify` | as above | `VERIFY_BINS=970:980 verify … 6000 1 0` and `VERIFY_BINS=355:370 … 12000 1 0` | 3.8 s, 4.5 s | 0.9 s, 1.0 s | FAIL at bins `975..980` and `361..367` with the same values, the bins before them accepted ([6000](receipts/nets/daniel-verify-N6000-bins-970-980.log), [12000](receipts/nets/daniel-verify-N12000-bins-355-370.log)) |
-| This repository’s native parent-core route (first party) | [`devtools.verify_evand_angle_net_native`](../../../devtools/verify_evand_angle_net_native.py), case `s12-rescaled`, on clean commit `119d1bab` | `--case s12-rescaled --all --workers 2` | NATIVE_WALL | NATIVE_CPU | `PASS_COMPLETE`: all 9,942 rows certified at the threshold, NATIVE_BOXES boxes, no stalled box, no exhausted budget, no refutation ([receipt](receipts/native-parent-core-N24000.json), [row journal](receipts/native-parent-core-N24000.rows.jsonl), [log](receipts/native-parent-core-N24000.log)) |
+| This repository’s native parent-core route (first party) | [`devtools.verify_evand_angle_net_native`](../../../devtools/verify_evand_angle_net_native.py), case `s12-rescaled`: 1,810 rows on clean commit `119d1bab`, the rest resumed on clean commit `44cf3444`, the tool unchanged between them | `--case s12-rescaled --all --workers 2`, then the same with `--resume` | 4,704 s for the resumed run | 2,856 s for the resumed run; the killed first run’s is not recorded | `PASS_COMPLETE`: all 9,942 rows certified at the threshold `10⁷/10⁷`, 89,403,350 boxes, no stalled box, no exhausted budget, no refutation; the least row bound is the threshold itself, at row 1985 ([receipt](receipts/native-parent-core-N24000.json), [row journal](receipts/native-parent-core-N24000.rows.jsonl.gz), [log](receipts/native-parent-core-N24000.log); the killed first run’s [journal](receipts/native-parent-core-N24000-first-run.rows.jsonl.gz) and [log](receipts/native-parent-core-N24000-first-run.log)) |
 
 The native reader builds the rows `[k/N, (k+1)/N]` of half-tangents, the core side
 Daniel’s `σ_k` rounded down to `10⁻⁶`, at `N = 24000`; the case carries its own net and
@@ -157,6 +162,8 @@ Upstream files and receipts of more than 1,000 lines are stored as deterministic
 | --- | --- | --- | --- |
 | `s12-lower-bound/s12_lower_3.969118.txt.gz` | upstream | `1ba9daed88559402212afc8ba4e65f2105c59b8d` | `6ad9b0e8257166687f4e861b97f024f4993d7b2125897173b2f5e9f6e2167578` |
 | `s12-lower-bound/controls/scaled_further_31360_7900.txt.gz` | upstream | `ceff7e884f59be751723d48de25a0bbdd4bdd11e` | `04d7105c5b6d8b85cd0655f544b5c59163f9a36fa86814601a30c4114d1526f1` |
+| `receipts/native-parent-core-N24000.rows.jsonl.gz` | receipt | `d37a30c6fededa188dc7d64cf00e801977c1c8a6` | `15f9a2bb426946ebe20592d0ab94383d57876617876ecf5e65c3e091771ea1ef` |
+| `receipts/native-parent-core-N24000-first-run.rows.jsonl.gz` | receipt | `88d64d7ecef96397750b840ece2cc32e77d55974` | `c882fe8d926262368e780b59dc494060bf4ecf3372dc2a4a703fcedb35552636` |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

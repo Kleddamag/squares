@@ -533,11 +533,13 @@ def press(page: Page, selector: str) -> list[str]:
     return page.evaluate(MATH_FACE)
 
 
+#: A colour scheme a page is shot in, as Playwright names the two the site styles.
+Scheme = Literal["light", "dark"]
 #: The colour schemes a page is shot in: light alone unless `--scheme` asks for dark too.
-SCHEMES = ("light", "dark")
+SCHEMES: tuple[Scheme, ...] = ("light", "dark")
 
 
-def shot_name(name: str, width: int, scheme: str = "light", press: int = 0) -> str:
+def shot_name(name: str, width: int, scheme: Scheme = "light", press: int = 0) -> str:
     """A screenshot's file name: the page's stem (`shot_stem`) and its width, `-dark`
     when it is shot in the dark scheme, and `-press<n>` for what the n-th selector
     pressed on it opened: `index-1280.png`, `index-390-dark.png`,
@@ -554,7 +556,7 @@ def screenshots(
     pages: Sequence[str] = render_overview.SITE_PAGES,
     presses: Sequence[str] = (),
     *,
-    schemes: Sequence[str] = SCHEMES[:1],
+    schemes: Sequence[Scheme] = SCHEMES[:1],
 ) -> list[str]:
     """A full-page screenshot of every built page at each width, in each of `schemes`
     (light alone by default; a dark shot is named `-dark`, `shot_name`), with what went
@@ -719,7 +721,8 @@ def main(argv: list[str] | None = None) -> int:
             args.port,
             pages,
             args.press,
-            schemes=tuple(dict.fromkeys(args.scheme or SCHEMES[:1])),
+            # Each scheme asked for, once, in `SCHEMES`' order: light before dark.
+            schemes=tuple(s for s in SCHEMES if s in (args.scheme or SCHEMES[:1])),
         )
         problems += clip_check(output, args.port, pages)
         for error in problems:

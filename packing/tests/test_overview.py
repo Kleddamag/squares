@@ -1173,18 +1173,25 @@ def test_the_frontier_page_opens_with_the_surveys_account(
     assert 'href="all-results.html#t-016">T-016</a>' in prose
     assert 'href="cases.html#n-17">seventeen-square record</a>' in prose
     # Neither other page says any of this a second time: the Results page points to the
-    # policy for results by others and does not restate when a certificate counts.
+    # policy for results by others and does not restate when a certificate counts. Each
+    # page's prose is read without its rows' popovers, whose detail may say a result
+    # was replayed here in full, which is that result's own account.
     overview_page = rendered("index.html")
     results_page = rendered(render_overview.RESULTS_PAGE)
     for stated in ("audits what it records", "Brandwijk", "four recorded defects"):
         assert stated not in overview_page, stated
         assert stated not in results_page, stated
-    for served in (overview_page, results_page):
-        assert "replayed here in full" not in served
-        assert "assumptions are discharged" not in served
-    results_text = _rendered_text(
-        results_page.split("</h1>", 1)[1].split('<div class="site-table-tools', 1)[0]
+    results_prose = results_page.split("</h1>", 1)[1].split('<div class="site-table-tools', 1)[
+        0
+    ]
+    overview_prose = _outside_row_popovers(
+        re.sub(r"<table.*?</table>", "", overview_page, flags=re.DOTALL)
     )
+    for served in (overview_prose, results_prose):
+        assert "certificate is replayed here in full" not in served
+        assert "certificate counts once" not in served
+        assert "assumptions are discharged" not in served
+    results_text = _rendered_text(results_prose)
     assert (
         "are this repository\u2019s own verification of it, under the policy epistemics.md "
         "states."

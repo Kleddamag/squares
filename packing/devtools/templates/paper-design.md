@@ -644,22 +644,22 @@ it.
   class for any block a reader does not see and a screen reader should).
   The film after the hidden title is the page’s first block, so on screen it brings no
   margin above and starts `--site-page-top` under the header.
-  A page that has a title (the Frontier page, the case records) sets it in the hero,
-  centred, with a subtitle under it.
-  The Frontier page’s title is “The Frontier Survey” and its subtitle “A survey of
-  everything known for cases $n = 1, \ldots, 324$”, the results page’s “A survey of all
-  reviewed results” and the Papers page’s “Papers and interactive explanations for
-  specific results”. The subtitle is the sans face at 1.1 times the sans base
+  A page that has a title (the Frontier page, the Results page, the Papers page, the
+  case records) sets it in the hero, centred.
+  The Frontier page’s title is “The Frontier Survey”, the Results page’s “Every Result”
+  and the Papers page’s “Papers”; each stood over a subtitle the owner dictated on 1
+  October (“A survey of everything known for cases $n = 1, \ldots, 324$”, “A survey of
+  all reviewed results”, “Papers and interactive explanations for specific results”) and
+  dropped on 2 October as adding little (`think-wz9d`); the page descriptions in each
+  `<head>` are their own constants and stay.
+  The case records’ page keeps its subtitle, “Every tracked case, n = 1 to 324, one
+  record each”, the one the owner did not name.
+  A subtitle, where a page has one, is the sans face at 1.1 times the sans base
   (`--site-subtitle-scale`, about 21px), in the page’s own text colour, never gray, with
-  the same space above it and below it (`--site-subtitle-space`, 1.5rem). A formula in a
-  subtitle is math, not `<var>` and digits: the subtitle is an HTML block, where KPress
-  leaves `$…$` literal, so the renderer fills it with KPress’s own math markup
-  (`render_frontier_page.math_html`), and it is set sans as the subtitle’s text is.
-  The atlas’s range is read from the case records, first and last, never typed.
-  A title with no subtitle, a document’s own `h1` among them, stands that space above
-  its first paragraph.
-  The page title style (every hero `h1`, and `.site-title`) is the sans face in upright
-  caps (not KPress’s italic `h2`) at 1.5 times the sans base, centred.
+  the same space above it and below it (`--site-subtitle-space`, 1.5rem). A title with
+  no subtitle, a document’s own `h1` among them, stands that space above its first
+  paragraph. The page title style (every hero `h1`, and `.site-title`) is the sans face
+  in upright caps (not KPress’s italic `h2`) at 1.5 times the sans base, centred.
   The homepage’s first section, The Square Packing Problem, takes it through
   `.site-title`, so it reads as the Frontier page’s title does.
   That section opens with README’s two opening paragraphs: the block between README’s

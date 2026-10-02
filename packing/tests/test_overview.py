@@ -980,6 +980,14 @@ _LADDER_CELL = re.compile(
 )
 
 
+def _seen(page: str) -> str:
+    """A page's text as a reader sees it: without its inlined styles and programs, its
+    comments, and its tags."""
+    bare = re.sub(r"<(script|style)\b.*?</\1>", "", page, flags=re.DOTALL)
+    bare = re.sub(r"<!--.*?-->", "", bare, flags=re.DOTALL)
+    return re.sub(r"<[^>]+>", "", bare)
+
+
 def _ladders(results: str) -> str:
     """The Verification Ladders section's diagram on the results page, the one block
     between the section's lead and the prose under it."""
@@ -1012,7 +1020,10 @@ def test_the_ladders_are_the_results_pages_and_the_overview_points_to_them(
     assert "S, how significant the result is; V, how it was originally verified" in lead
     assert "C, how it has been confirmed, what this repository has checked itself" in lead
     assert "under the policy epistemics.md states" in lead
-    after = _rendered_text(section.split("</div></div>", 1)[1])
+    # The diagram holds no paragraph, so the first `<p>` after its frame opens the prose
+    # under it.
+    frame_on = section.split('<div class="site-ladders-frame', 1)[1]
+    after = _rendered_text(frame_on[frame_on.index("<p>") :])
     assert after.startswith("The ladders grade a result; the evidence under it carries")
     assert "Finite precision is not enough where squares touch exactly." in after
     assert "T-004 and T-008 check Bentz" in after
@@ -1025,10 +1036,16 @@ def test_the_ladders_are_the_results_pages_and_the_overview_points_to_them(
     # defines them.
     assert "how much the result matters" not in intro
     assert "the strongest verification its evidence supports" not in intro
-    for gone in ('id="verification-ladders"', 'id="verification-at-a-glance"', "site-ladders"):
+    # The stylesheet every page inlines keeps the diagram's rules; the markup is gone.
+    for gone in (
+        'id="verification-ladders"',
+        'id="verification-at-a-glance"',
+        'class="site-ladders',
+    ):
         assert gone not in page, gone
-    # The overview names the ladders once, in the chips' sentence, and nowhere else.
-    assert re.sub(r"<[^>]+>", "", page).count("Verification Ladders") == 1
+    # The overview names the ladders once, in the chips' sentence, and nowhere else a
+    # reader sees: its inlined stylesheet and the templates' comments name them too.
+    assert _seen(page).count("Verification Ladders") == 1
     chips = (
         "The chips on a row say how significant the result is (S), how it was originally "
         "verified (V) and how it has been confirmed (C), each rung defined on the "
@@ -3894,7 +3911,9 @@ def test_the_icon_frame_is_one_pixel_at_icon_size() -> None:
 
 
 def test_page_subtitles_share_one_size() -> None:
-    """Every hero's subtitle ("A survey of all reviewed results") is set from one scale of
+    """Every hero's subtitle (the case records' "Every tracked case, n = 1 to 324, one
+    record each"; the Results, Papers and Frontier pages carried one until 2026-10-02) is
+    set from one scale of
     the sans base, a small step above it."""
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     assert "--site-subtitle-scale: 1.1;" in css
@@ -3902,32 +3921,41 @@ def test_page_subtitles_share_one_size() -> None:
     assert "var(--site-subtitle-scale)" in rule[: rule.index("}")]
 
 
-def test_the_frontier_results_and_papers_pages_carry_their_subtitles(
+def test_the_frontier_results_and_papers_pages_carry_no_subtitle(
     rendered: Callable[[str], str],
 ) -> None:
-    """Each page's subtitle is one line under its title. The atlas's names its range as a
-    formula, kpress's own math markup, with both ends read from the case records; the
-    results page's carries no count, so its template takes none."""
-    from devtools.render_frontier_page import (  # noqa: PLC0415
-        FRONTIER_ARTICLE,
-        frontier_cases,
-        math_html,
-    )
+    """The three section pages' titles stand over their first paragraph with no subtitle
+    between, since 2026-10-02 (the owner, think-wz9d): the lines "A survey of everything
+    known for cases n = 1, …, 324", "A survey of all reviewed results" and "Papers and
+    interactive explanations for specific results" are gone from the pages, the
+    templates and the Frontier renderer's values, with no empty element left in the
+    hero. The page descriptions are their own constants and stay. The case records'
+    page keeps its subtitle, which the owner did not name."""
+    from devtools.render_frontier_page import FRONTIER_ARTICLE  # noqa: PLC0415
 
-    numbers = [case["n"] for case in frontier_cases()]
-    cases = math_html(rf"n = {min(numbers)}, \ldots, {max(numbers)}")
-    for name, subtitle in (
-        ("frontier.html", f"A survey of everything known for cases {cases}"),
-        (render_overview.RESULTS_PAGE, "A survey of all reviewed results"),
-        ("papers.html", "Papers and interactive explanations for specific results"),
-    ):
+    gone = (
+        "A survey of everything known",
+        "A survey of all reviewed results",
+        "Papers and interactive explanations for specific results",
+    )
+    for name in ("frontier.html", render_overview.RESULTS_PAGE, "papers.html"):
         page = rendered(name)
-        assert page.count('<p class="subtitle">') == 1, name
-        assert f'<p class="subtitle">{subtitle}</p>' in page, name
-    assert 'class="kpress-math' in cases
-    assert "<var>" not in cases
-    assert "{{CASE_RANGE}}" in FRONTIER_ARTICLE.read_text(encoding="utf-8")
+        assert 'class="subtitle"' not in page, name
+        hero = page.split('<div class="site-hero">', 1)[1].split("</div>", 1)[0]
+        assert re.fullmatch(r"\s*<h1[^>]*>[^<]+</h1>\s*", hero), name
+        # The templates' comments record the dropped lines, and the stylesheet's comment
+        # quotes one; a reader sees none of them.
+        seen = _seen(page)
+        for line in gone:
+            assert line not in seen, (name, line)
+        assert '<meta name="description" content="' in page, name
+    assert "{{CASE_RANGE}}" not in FRONTIER_ARTICLE.read_text(encoding="utf-8")
     assert "{{COUNT}}" not in render_overview.RESULTS_ARTICLE.read_text(encoding="utf-8")
+    assert render_overview.RESULTS_DESCRIPTION
+    assert render_overview.PAPERS_DESCRIPTION
+    assert render_overview.FRONTIER_DESCRIPTION
+    cases = rendered("cases.html")
+    assert cases.count('<p class="subtitle">') == 1
 
 
 def test_wrapped_chips_never_touch() -> None:

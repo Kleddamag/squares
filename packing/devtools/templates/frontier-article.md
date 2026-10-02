@@ -2,9 +2,10 @@
 
 # The Frontier Survey
 
-<p class="subtitle">A survey of everything known for cases {{CASE_RANGE}}</p>
-
 </div>
+
+<!-- The title stood over a subtitle, "A survey of everything known for cases n = 1,
+     …, 324", until 2026-10-02 (the owner, think-wz9d). -->
 
 <!-- What the survey records, how a bound comes to count, the audit of its sources, the
      recent counts and the seventeen-square history stood on the homepage, in The

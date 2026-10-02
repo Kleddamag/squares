@@ -2,9 +2,10 @@
 
 # Every Result
 
-<p class="subtitle">A survey of all reviewed results</p>
-
 </div>
+
+<!-- The title stood over a subtitle, "A survey of all reviewed results", until
+     2026-10-02 (the owner, think-wz9d). -->
 
 Each result has an identifier, a claim, and three ratings, **S**, **V** and **C**, the
 rungs of the [Verification Ladders](#verification-ladders) under the table.

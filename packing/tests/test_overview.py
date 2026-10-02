@@ -2349,6 +2349,17 @@ def test_every_result_shows_its_status_and_its_place_on_the_frontier(
             assert standing.findall(row) == marks, result.id
             line = row.split('<span class="site-standing">', 1)[1]
             assert line.startswith(overview_sections.status_chip(result.status)), result.id
+            # The status line is a column of its own since 2026-10-02 (think-ybt5),
+            # sorted on the status word, and the rungs' cell holds no part of it.
+            # As a page serves it, KPress has labelled the cell, after its own attributes.
+            marks = re.escape(overview_sections.status_marks(result))
+            cell = re.compile(
+                rf'<td class="site-col-status" data-value="{result.status}"[^>]*>'
+                rf'<span class="site-standing">{marks}</span></td>'
+            )
+            assert len(cell.findall(row)) == 1, result.id
+            rungs = row.split('<td class="site-rungs"', 1)[1].split("</td>", 1)[0]
+            assert "data-status=" not in rungs, result.id
             for word in (">current best<", ">reported<", ">second certificate<"):
                 assert word not in row, (result.id, word)
     assert {result.status for result in overview.results} <= set(result_status.STATUSES)
@@ -2424,8 +2435,9 @@ def test_every_result_shows_its_kind(
 ) -> None:
     """A result's kind is the register's `kind`, never restated: every row of both
     tables carries it as `data-kind`, for the Kind filter, and draws it as one plain
-    chip in the rubric's words, on a line of its own under its rungs and above its
-    status line. A result with no standing is of a kind that is no bound."""
+    chip in the rubric's words, on a line of its own under its rungs, the last thing in
+    their cell: the status line has a column of its own since 2026-10-02 (`think-ybt5`).
+    A result with no standing is of a kind that is no bound."""
     recent = _recent_table(page)
     for result in overview.results:
         kind = result.record["kind"]
@@ -2434,10 +2446,7 @@ def test_every_result_shows_its_kind(
         assert chip == f'<span class="site-chip" data-kind="{kind}">{label}</span>'
         assert "data-tone" not in chip
         marks = overview_sections.status_marks(result)
-        under = (
-            f'{overview_sections.rung_chips(result)}<span class="site-kind">{chip}</span>'
-            f'<span class="site-standing">{marks}</span>'
-        )
+        under = f'{overview_sections.rung_chips(result)}<span class="site-kind">{chip}</span>'
         for row in (_row(results, result.id), _recent_row(recent, result.id)):
             assert f' data-kind="{kind}" ' in row.split(">", 1)[0], result.id
             assert f">{under}</td>" in row, result.id
@@ -2510,7 +2519,7 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     # The script that sorts and filters the results page's table wires this one too.
     assert "data-site-table" in recent
     heads = re.findall(r"<th[^>]*>([^<]+)</th>", recent.split("</thead>", 1)[0])
-    assert heads == ["Date", "Result", "n", "Credit", "Rungs", "ID"]
+    assert heads == ["Date", "Result", "n", "Credit", "Rungs", "Status", "ID"]
     newest = overview_sections.recent_results(overview)
     assert re.findall(r'<tr data-result="(t-\d+)"', recent) == [r.id.lower() for r in newest]
     for result in newest:
@@ -3412,17 +3421,25 @@ def test_both_tables_of_results_have_the_same_columns(
     where each table's filters start. So the overview shows each result's records, as
     the results page does, and no row of one links to the other. Both sort and both
     filter. A result's records are a line under its summary, no column. The columns run
-    date, result, cases, credit, rungs and id, the owner's order of 2026-10-02
-    (`think-t090`)."""
+    date, result, cases, credit, rungs, status and id, the owner's order of 2026-10-02
+    (`think-t090`, `think-ybt5`)."""
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
     head = overview_sections.result_head()
     assert table.count(head) == recent.count(head) == 1
     assert table.count("<thead>") == recent.count("<thead>") == 1
     heads = re.findall(r"<th([^>]*)>([^<]+)</th>", head)
-    assert [words for _, words in heads] == ["Date", "Result", "n", "Credit", "Rungs", "ID"]
+    assert [words for _, words in heads] == [
+        "Date",
+        "Result",
+        "n",
+        "Credit",
+        "Rungs",
+        "Status",
+        "ID",
+    ]
     sorts = ["data-sort=" in attributes for attributes, _ in heads]
-    assert sorts == [True, False, True, True, True, True]
+    assert sorts == [True, False, True, True, True, True, True]
     # As each page serves it, after KPress has labelled the cells.
     served = re.compile(r"<th[^>]*>([^<]+)</th>")
     on_overview = served.findall(_recent_table(page).split("</thead>", 1)[0])
@@ -3445,6 +3462,7 @@ def test_both_tables_of_results_have_the_same_columns(
             "num site-col-n",
             "site-col-credit",
             "site-rungs",
+            "site-col-status",
             "site-col-id",
         ]
         # The records close the result's own cell, after its summary and its star.
@@ -3474,8 +3492,10 @@ def test_both_tables_of_results_have_the_same_columns(
     assert "site-recent-table" not in css + table + recent
     assert not re.search(r"\.site-records\s*\{[^}]*display:\s*none", css)
     assert "Records" not in head
-    for gone in ("site-col-method", "site-col-status"):
-        assert gone not in css + table + recent, gone
+    # The overview's old Status column held every chip, the rungs among them, until
+    # 2026-10-01 (think-3vh9); the status line has a column again since 2026-10-02
+    # (think-ybt5), with the status chips alone.
+    assert "site-col-method" not in css + table + recent
 
 
 def test_both_tables_of_results_end_with_the_same_id_column(

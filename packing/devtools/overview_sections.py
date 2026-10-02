@@ -835,10 +835,12 @@ def result_filters(
 def result_head() -> str:
     """The header row of a table of results: the one set of columns both tables carry,
     in one order. The date; the result, with its records under it; the cases; the
-    credit; the rungs, with the kind under them and the status under that; and the id,
-    which is the row's trigger. The owner set this order on 2026-10-02 (`think-t090`):
-    the id led and the date closed the row until then. A column sorts where an order
-    means something, on either page."""
+    credit; the rungs, with the kind under them; the status; and the id, which is the
+    row's trigger. The owner set this order on 2026-10-02 (`think-t090`): the id led and
+    the date closed the row until then. The status had no column until the same day
+    (`think-ybt5`): it stood under the kind, in the rungs' cell, though it is where the
+    result stands and no rung. A column sorts where an order means something, on either
+    page."""
     return (
         "<thead><tr>"
         '<th data-sort="text" title="Published, for a result by others; established, for '
@@ -847,7 +849,10 @@ def result_head() -> str:
         '<th data-sort="num" class="num site-col-n">n</th>'
         '<th data-sort="text">Credit</th>'
         '<th data-sort="text" title="Significance, verification and confirmation, then '
-        'what the result is, and how far the work on it here has gone">Rungs</th>'
+        'what the result is">Rungs</th>'
+        '<th data-sort="text" class="site-col-status" title="How far the work on it here '
+        "has gone: recorded, reviewed, confirmed or incomplete; then who has the next "
+        'move, and superseded where it is">Status</th>'
         '<th data-sort="text" class="site-col-id">ID</th>'
         "</tr></thead>"
     )
@@ -907,10 +912,10 @@ def result_cells(result: Result, overview: Overview, detail: RowDetail) -> str:
     its date (`date_cell`), its summary with the star a new result earns (`result_text`,
     `new_result_star`) and its records on a quiet line under it, its cases
     (`case_list`), its credit (`credit_cell`), its rung chips with its kind on a line
-    under them (`kind_chip`) and its status line under that (`status_marks`), and its id
-    (`id_cell`). The records are no column of their own: a column narrow enough to fit
-    set them a link to a line, and under the summary they take a line or two, in both
-    tables."""
+    under them (`kind_chip`), its status line (`status_marks`), and its id (`id_cell`).
+    The status cell sorts on the status word alone. The records are no column of their
+    own: a column narrow enough to fit set them a link to a line, and under the summary
+    they take a line or two, in both tables."""
     record = result.record
     standing = f'<span class="site-standing">{status_marks(result)}</span>'
     return (
@@ -924,8 +929,8 @@ def result_cells(result: Result, overview: Overview, detail: RowDetail) -> str:
         f"{credit_cell(result.credit)}</td>"
         f'<td class="site-rungs" '
         f'data-value="{_esc(record["confirmation"] + record["verification"])}">'
-        f'{rung_chips(result)}<span class="site-kind">{kind_chip(result)}</span>'
-        f"{standing}</td>"
+        f'{rung_chips(result)}<span class="site-kind">{kind_chip(result)}</span></td>'
+        f'<td class="site-col-status" data-value="{_esc(result.status)}">{standing}</td>'
         f"{id_cell(result, detail)}"
     )
 

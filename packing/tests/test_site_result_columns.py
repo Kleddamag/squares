@@ -81,8 +81,8 @@ SCROLL_WAS = 318.7
 SCROLL_MAX = 250
 #: The id column: five characters and the cell's padding, well under KPress's 96.
 ID_MAX = 64
-#: The six columns of a table of results, as `overview_sections.result_head` names them.
-COLUMNS_SHOWN = ["Date", "Result", "n", "Credit", "Rungs", "ID"]
+#: The seven columns of a table of results, as `overview_sections.result_head` names them.
+COLUMNS_SHOWN = ["Date", "Result", "n", "Credit", "Rungs", "Status", "ID"]
 #: A cell's padding either side, 0.5rem, in pixels.
 PADDING = 16
 
@@ -314,16 +314,17 @@ def test_a_long_quotient_may_end_a_line_after_its_solidus() -> None:
 def test_both_tables_lay_out_the_same_columns(
     laid: dict[tuple[str, int], Laid], name: str, width: int
 ) -> None:
-    """Both tables are laid out with the six columns in one order. The id's is as narrow
-    as an id, and the rungs' holds its widest chip with the cell's padding, so its three
-    rung chips share a line and no kind or standing chip is cut or wrapped."""
+    """Both tables are laid out with the seven columns in one order. The id's is as
+    narrow as an id; the rungs' holds its widest chip with the cell's padding, so its
+    three rung chips share a line and no kind chip is cut or wrapped; and the status
+    column, the status line's own since 2026-10-02, holds its widest chip the same way."""
     table, chips, _ = laid[name, width]
     assert [column["column"] for column in table["columns"]] == COLUMNS_SHOWN
     assert 0 < _column(table, "ID")["width"] <= ID_MAX
     in_table = [chip for chip in chips if chip["surface"] == "table"]
-    under = [chip for chip in in_table if chip["chip"] in {"kind", "standing"}]
-    widest = max(chip["inline_size"] for chip in under)
-    assert _column(table, "Rungs")["width"] >= widest + PADDING - 0.5
+    for column, held in (("Rungs", {"rung", "kind"}), ("Status", {"standing"})):
+        widest = max(chip["inline_size"] for chip in in_table if chip["chip"] in held)
+        assert _column(table, column)["width"] >= widest + PADDING - 0.5, column
     # Every row shows its kind: one kind chip to a row showing.
     kinds = [chip for chip in in_table if chip["chip"] == "kind"]
     assert len(kinds) == table["shown_rows"]

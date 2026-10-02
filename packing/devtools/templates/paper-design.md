@@ -928,19 +928,21 @@ it.
   A kind chip (`kind_chip`) says what a result is, in the rubric’s words, `lower bound`
   or `case exclusion`, and carries `data-kind`. Every result draws one: on a line of its
   own under its rungs in a table, and after the rungs in a popover’s head and a chain’s
-  step. A result’s status line follows it (`status_marks`), on a line of its own in a
-  table. Its first chip is the status, `recorded`, `reviewed`, `confirmed` or
-  `incomplete` (`data-status`), which every result has: how far the work on it here has
-  gone, derived by `devtools.result_status` from the confirmation rung and the defects
-  on record, and defined in `epistemics.md`. Next, where the register records one, is
-  who has the next move (`data-activity`): `in analysis` for a replay or review under
-  way here, `waiting on source` for a request with another party; its title says what is
-  in hand and since when.
-  Last is `superseded` (`data-standing`), on a bound that no case bound rests on now.
-  A result that still stands draws no chip for that: `current best` is the default, so
-  it is left unsaid. That a bound is only reported is no chip of its own: it is the
-  status `recorded`. A second proof of a value another result holds says so by its kind,
-  `simplification`, and a result that bounds nothing by its kind too.
+  step. A result’s status line follows it (`status_marks`), in a column of its own in a
+  table, Status, since 2026-10-02 (`think-ybt5`): it stood under the kind, in the rungs’
+  cell, until then, though it is where the result stands and no rung.
+  Its first chip is the status, `recorded`, `reviewed`, `confirmed` or `incomplete`
+  (`data-status`), which every result has: how far the work on it here has gone, derived
+  by `devtools.result_status` from the confirmation rung and the defects on record, and
+  defined in `epistemics.md`. Next, where the register records one, is who has the next
+  move (`data-activity`): `in analysis` for a replay or review under way here,
+  `waiting on source` for a request with another party; its title says what is in hand
+  and since when. Last is `superseded` (`data-standing`), on a bound that no case bound
+  rests on now. A result that still stands draws no chip for that: `current best` is the
+  default, so it is left unsaid.
+  That a bound is only reported is no chip of its own: it is the status `recorded`. A
+  second proof of a value another result holds says so by its kind, `simplification`,
+  and a result that bounds nothing by its kind too.
   Each of these chips adds no style of its own, so every one is the same plain gray
   chip, one font size, line height and height, and they differ only in their words.
   The Rungs column is as wide as its widest chip, so in a table each chip of the status
@@ -1314,18 +1316,19 @@ it.
   `.site-col-date`) are as narrow as their content, the id and the date on one line,
   which leaves the spare width to the long text column.
   The two tables of results, the overview’s recent table and the results page’s, are one
-  table: one header (`result_head`) and one row (`result_table_row`), so the same six
+  table: one header (`result_head`) and one row (`result_table_row`), so the same
   columns in the same order.
   They are the date; the result, its summary whole, method and all, with its records on
   a quiet line under it; the cases, n; the credit, the finder first and “after …”, what
   the result builds on, quiet after it, in full; the rungs, with the kind on a line
-  under them and the status line under that (**Chips**, above); and the id, the last
-  column and the row’s trigger, as narrow as an id, under the 6rem KPress keeps a cell
-  to. The owner set that order on 2026-10-02 (`think-t090`); the id led and the date
-  closed the row until then.
+  under them; the status line, its chips one under another (**Chips**, above); and the
+  id, the last column and the row’s trigger, as narrow as an id, under the 6rem KPress
+  keeps a cell to. The owner set that order on 2026-10-02 (`think-t090`); the id led and
+  the date closed the row until then, and the status line stood under the kind until the
+  same day (`think-ybt5`). The status cell sorts on the status word.
   On a phone each row is a card that places its cells by class, not by column, so the
-  card reads as before: the id, the cases and the rungs on its first line, the claim,
-  then the credit and the date.
+  card reads as before: the id, the cases and the rungs on its first line, the status
+  under the rungs, the claim, then the credit and the date.
   The tables are two filters of one table, and differ only in where the filter bar
   starts, which sets the rows that begin `hidden` and the count, and in a row’s key: on
   the results page a row is the result’s own address (`id="t-018"`), and on the overview
@@ -1338,8 +1341,8 @@ it.
   The id, the rungs and the date are as narrow as what they hold.
   The rungs column is as wide as its widest chip, since no chip wraps: the three rungs
   at 114 pixels, and the widest kind, “restricted optimality”, at 180 where a row with
-  one shows. The kind and the standing each take a line under the rungs, so a superseded
-  bound has three lines of chips, 114 pixels of row.
+  one shows. The kind takes a line under the rungs, and the status column is as wide as
+  its widest chip, its chips one under another.
   The credit column is at least 11.5rem wide, which holds the longest name on one line
   (“Queuingtheorydotcom”, 167 pixels of the 184), so a credit wraps between names and
   never inside one; KPress’s own floor, 6rem, set it a word to a line.

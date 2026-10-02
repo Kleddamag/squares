@@ -475,12 +475,12 @@ def _committed_composite_svg() -> str:
     return (ATLAS / "known-best-1-100.svg").read_text(encoding="utf-8")
 
 
-def _assert_current_composite_equalities(bounds: list[str]) -> None:
-    assert len(bounds) == 100
-    assert all(re.fullmatch(r"s\(\d+\) [=≤] .+", bound) for bound in bounds)
-    assert all(bound.startswith(f"s({n}) ") for n, bound in enumerate(bounds, 1))
-    equalities = {n for n, bound in enumerate(bounds, 1) if " = " in bound}
-    assert equalities == {
+#: The cases the retained `n = 1..100` poster prints as an exact value: the 39 of its
+#: drawing. A poster trails the data until the next version redraws it
+#: (`sqpack.release.COMPOSITES_MAY_TRAIL`), so when it is redrawn this pin fails and moves
+#: to `REBUILT_EQUALITIES`.
+RETAINED_EQUALITIES = frozenset(
+    {
         *range(1, 12),
         *range(13, 17),
         *range(21, 26),
@@ -490,6 +490,19 @@ def _assert_current_composite_equalities(bounds: list[str]) -> None:
         *range(79, 82),
         *range(98, 101),
     }
+)
+#: What a rebuild from the current records prints: the poster's 39, and the five cases
+#: proved here on 2026-10-02 by replayed mixed covers, s(59) = s(60) = s(61) = 8 and
+#: s(77) = s(78) = 9.
+REBUILT_EQUALITIES = RETAINED_EQUALITIES | {59, 60, 61, 77, 78}
+
+
+def _assert_current_composite_equalities(bounds: list[str], expected: frozenset[int]) -> None:
+    assert len(bounds) == 100
+    assert all(re.fullmatch(r"s\(\d+\) [=≤] .+", bound) for bound in bounds)
+    assert all(bound.startswith(f"s({n}) ") for n, bound in enumerate(bounds, 1))
+    equalities = {n for n, bound in enumerate(bounds, 1) if " = " in bound}
+    assert equalities == expected
     assert bounds[10] == "s(11) = 3.877084"
     figure = json.loads((ATLAS / "composite-figure.json").read_text(encoding="utf-8"))["figure"]
     n11 = next(entry for entry in figure["entries"] if entry["n"] == 11)
@@ -503,7 +516,7 @@ def test_retained_composite_equalities_match_classified_cases() -> None:
         "".join(node.itertext())
         for node in root.findall(".//svg:text[@data-feature='side-bound']", SVG)
     ]
-    _assert_current_composite_equalities(bounds)
+    _assert_current_composite_equalities(bounds, RETAINED_EQUALITIES)
 
 
 def test_a_pool_worker_builds_the_same_bytes_as_this_process() -> None:
@@ -607,8 +620,10 @@ def test_known_best_composite_contains_every_case_and_square() -> None:
         for node in root.findall(".//svg:text[@data-feature='side-bound']", SVG)
     ]
     assert labels == [str(n) for n in range(1, 101)]
-    # The slow rebuild and the quick retained-vector control share the same contract.
-    _assert_current_composite_equalities(bounds)
+    # The slow rebuild and the quick retained-vector control share the same contract, each
+    # against its own data: the rebuild reads the current records, and the retained poster
+    # may trail them until the next version.
+    _assert_current_composite_equalities(bounds, REBUILT_EQUALITIES)
 
 
 def test_known_best_composite_png_is_derived_from_current_svg() -> None:

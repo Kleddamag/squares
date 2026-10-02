@@ -16,7 +16,13 @@ type Point = (BigRational, BigRational);
 /// Corners of the square of side `side` centred at `(x, y)` with direction
 /// `(c, s)`, counterclockwise.
 #[must_use]
-pub fn square(x: &BigRational, y: &BigRational, c: &BigRational, s: &BigRational, side: &BigRational) -> Vec<Point> {
+pub fn square(
+    x: &BigRational,
+    y: &BigRational,
+    c: &BigRational,
+    s: &BigRational,
+    side: &BigRational,
+) -> Vec<Point> {
     let two = BigRational::from_integer(BigInt::from(2));
     let h = side / &two;
     [(-1, -1), (1, -1), (1, 1), (-1, 1)]
@@ -86,12 +92,38 @@ pub fn intersection_area(rect: &ExactRect, polygon: &[Point]) -> BigRational {
 /// Exact mass captured by the shrunk square centred at `(x, y)` at direction
 /// `(c, s)`.
 #[must_use]
-pub fn coverage(cert: &Certificate, x: &BigRational, y: &BigRational, c: &BigRational, s: &BigRational) -> BigRational {
+pub fn coverage(
+    cert: &Certificate,
+    x: &BigRational,
+    y: &BigRational,
+    c: &BigRational,
+    s: &BigRational,
+) -> BigRational {
     let polygon = square(x, y, c, s, &cert.core);
-    let left = polygon.iter().map(|p| &p.0).min().cloned().unwrap_or_default();
-    let right = polygon.iter().map(|p| &p.0).max().cloned().unwrap_or_default();
-    let bottom = polygon.iter().map(|p| &p.1).min().cloned().unwrap_or_default();
-    let top = polygon.iter().map(|p| &p.1).max().cloned().unwrap_or_default();
+    let left = polygon
+        .iter()
+        .map(|p| &p.0)
+        .min()
+        .cloned()
+        .unwrap_or_default();
+    let right = polygon
+        .iter()
+        .map(|p| &p.0)
+        .max()
+        .cloned()
+        .unwrap_or_default();
+    let bottom = polygon
+        .iter()
+        .map(|p| &p.1)
+        .min()
+        .cloned()
+        .unwrap_or_default();
+    let top = polygon
+        .iter()
+        .map(|p| &p.1)
+        .max()
+        .cloned()
+        .unwrap_or_default();
     let mut total = BigRational::zero();
     for rect in &cert.exact {
         if rect.x2 <= left || rect.x1 >= right || rect.y2 <= bottom || rect.y1 >= top {

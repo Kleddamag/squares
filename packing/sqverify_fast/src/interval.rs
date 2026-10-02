@@ -1,25 +1,35 @@
 //! Outward-rounded binary64 arithmetic.
 //!
 //! Every operation is evaluated in the hardware's round-to-nearest mode and the
-//! result is then moved one representable value outward with `next_down` or
-//! `next_up`. Lemma I1 of `SOUNDNESS.md` proves that `next_down(fl(x)) <= x <=
-//! next_up(fl(x))` for every real `x` whose rounding `fl(x)` is finite, so each
-//! helper here returns a valid bound on the exact real result of its operands.
-//! Rust performs no implicit fused multiply-add and x86-64 uses SSE2, so every
-//! operation is a single correctly rounded IEEE 754 operation.
+//! result is then moved outward by at least one representable value. Lemma I1
+//! of `SOUNDNESS.md` proves that `dn(fl(x)) <= x <= up(fl(x))` for every real `x`
+//! whose rounding `fl(x)` is finite, so each helper here returns a valid bound
+//! on the exact real result of its operands. Rust performs no implicit fused
+//! multiply-add and x86-64 uses SSE2, so every operation is a single correctly
+//! rounded IEEE 754 operation.
+//!
+//! The step is branch-free: `up(x) = fl(x + fl(fl(|x| 2^-52) + 2^-1074))`. The
+//! added amount is at least the gap from `x` to the next binary64 value above it
+//! (lemma I1), so the result is at least that next value; it may be two values
+//! up, which costs nothing measurable.
+
+/// `2^-52`: no gap between adjacent binary64 values exceeds `2^-52 |x|`.
+const GAP: f64 = 1.0 / 4_503_599_627_370_496.0;
+/// The smallest positive subnormal, the gap at and below the normal range.
+const TINY: f64 = 5e-324;
 
 /// A lower bound on the exact real result `x` from its rounded value.
 #[inline]
 #[must_use]
 pub fn dn(x: f64) -> f64 {
-    x.next_down()
+    x - (x.abs() * GAP + TINY)
 }
 
 /// An upper bound on the exact real result `x` from its rounded value.
 #[inline]
 #[must_use]
 pub fn up(x: f64) -> f64 {
-    x.next_up()
+    x + (x.abs() * GAP + TINY)
 }
 
 /// A lower bound on `a + b`.
@@ -92,21 +102,21 @@ impl Iv {
     /// The enclosure of a sum.
     #[inline]
     #[must_use]
-    pub fn add(self, other: Self) -> Self {
+    pub fn plus(self, other: Self) -> Self {
         Self::new(add_dn(self.lo, other.lo), add_up(self.hi, other.hi))
     }
 
     /// The enclosure of a difference.
     #[inline]
     #[must_use]
-    pub fn sub(self, other: Self) -> Self {
+    pub fn minus(self, other: Self) -> Self {
         Self::new(sub_dn(self.lo, other.hi), sub_up(self.hi, other.lo))
     }
 
     /// The enclosure of a product, by the four endpoint products.
     #[inline]
     #[must_use]
-    pub fn mul(self, other: Self) -> Self {
+    pub fn times(self, other: Self) -> Self {
         let a = self.lo * other.lo;
         let b = self.lo * other.hi;
         let c = self.hi * other.lo;
@@ -185,10 +195,57 @@ mod tests {
     }
 
     #[test]
+    fn steps_reach_the_adjacent_values() {
+        for x in [
+            0.0,
+            -0.0,
+            1.0,
+            -1.0,
+            1.5,
+            0.1,
+            -0.3,
+            2.0,
+            -2.0,
+            1e-310,
+            -1e-310,
+            5e-324,
+            1e300,
+            0.999_999_999_999_999_9,
+            4096.0,
+            -4096.0,
+        ] {
+            assert!(
+                up(x) >= x.next_up(),
+                "up({x}) = {} below {}",
+                up(x),
+                x.next_up()
+            );
+            assert!(
+                dn(x) <= x.next_down(),
+                "dn({x}) = {} above {}",
+                dn(x),
+                x.next_down()
+            );
+            assert!(up(x) <= x.next_up().next_up().next_up());
+        }
+        let mut state = 1u64;
+        for _ in 0..100_000 {
+            state = state
+                .wrapping_mul(6_364_136_223_846_793_005)
+                .wrapping_add(1);
+            let x = f64::from_bits(state >> 2);
+            if !x.is_finite() || x.abs() > 1e300 {
+                continue;
+            }
+            assert!(up(x) >= x.next_up() && dn(x) <= x.next_down(), "{x:e}");
+        }
+    }
+
+    #[test]
     fn interval_product_covers_sign_changes() {
         let a = Iv::new(-2.0, 3.0);
         let b = Iv::new(-5.0, 7.0);
-        let p = a.mul(b);
+        let p = a.times(b);
         assert!(p.lo <= -15.0 && p.hi >= 21.0);
         let q = a.mul_nonneg(Iv::new(2.0, 4.0));
         assert!(q.lo <= -8.0 && q.hi >= 12.0);

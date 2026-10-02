@@ -223,10 +223,29 @@ refusal.
 
 ## Floating Point
 
-**Lemma I1 (directed steps).** For a real $z$ with $\mathrm{fl}(z)$ its round-to-nearest
-value (finite), $\mathrm{next\_down}(\mathrm{fl}(z)) \le z \le \mathrm{next\_up}
-(\mathrm{fl}(z))$. If $\mathrm{fl}(z) \le z$ the first is immediate; otherwise the float
-below $\mathrm{fl}(z)$ cannot exceed $z$, or it would be nearer.
+**Lemma I1 (directed steps).** Let $z$ be real, $x = \mathrm{fl}(z)$ its
+round-to-nearest value (finite), $x^+$ and $x^-$ the adjacent binary64 values above and
+below $x$, and
+
+$$
+\mathrm{up}(x) = \mathrm{fl}\big(x + \mathrm{fl}(\mathrm{fl}(|x| 2^{-52}) +
+2^{-1074})\big),\qquad \mathrm{dn}(x) = \mathrm{fl}\big(x -
+\mathrm{fl}(\mathrm{fl}(|x| 2^{-52}) + 2^{-1074})\big).
+$$
+
+Then $\mathrm{dn}(x) \le z \le \mathrm{up}(x)$. *Proof.* $z \le x^+$: if $z > x^+$, then
+$x^+$ would be nearer to $z$ than $x$. Let $g = x^+ - x$, a power of two.
+For normal $x$, $g \le 2^{-52}|x|$ (also for $x =
+-2^e$, where $g = 2^{e-53}$); rounding is monotone and $g$ is representable, so
+$\delta = \mathrm{fl}(|x| 2^{-52}) \ge g$. For zero or subnormal $x$, $g = 2^{-1074}$.
+Either way $\mathrm{fl}(\delta + 2^{-1074}) \ge g$, hence $x + \mathrm{fl}(\delta +
+2^{-1074}) \ge x^+$, and by monotonicity $\mathrm{up}(x) \ge \mathrm{fl}(x^+) = x^+ \ge
+z$. The lower step is symmetric.
+The step is branch-free and may land two values out, which costs a few units in the last
+place and nothing in soundness.
+`interval::tests::steps_reach_the_adjacent_values` checks $\mathrm{up}(x) \ge x^+$ on
+special values and 100,000 random bit patterns.
+(The first build used `next_up` and `next_down`; experiment exp-005 replaced them.)
 Rust neither fuses multiply-adds nor uses x87, so each `+ - * /` is one correctly
 rounded IEEE operation.
 Every interval operation in `interval.rs` applies I1 to each endpoint.

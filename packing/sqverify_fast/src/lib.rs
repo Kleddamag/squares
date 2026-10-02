@@ -22,6 +22,27 @@ use crate::certificate::{Certificate, direction};
 use crate::exact::of_f64;
 use crate::rotated::{Limits, Verdict};
 
+/// CPU time consumed so far by the calling thread, in seconds, from Linux's
+/// `/proc/thread-self/schedstat` (nanoseconds on the CPU); `None` elsewhere.
+#[must_use]
+pub fn thread_cpu_seconds() -> Option<f64> {
+    let text = std::fs::read_to_string("/proc/thread-self/schedstat").ok()?;
+    let nanos: u64 = text.split_whitespace().next()?.parse().ok()?;
+    Some(nanos as f64 * 1e-9)
+}
+
+/// The implementation's identity: a digest of the sources and lockfile it was
+/// built from, and its build flags.
+#[must_use]
+pub fn build_identity() -> Value {
+    json!({
+        "source_sha256": env!("SQVERIFY_FAST_SOURCE_SHA256"),
+        "profile": if cfg!(debug_assertions) { "debug" } else { "release" },
+        "target": env!("SQVERIFY_FAST_TARGET"),
+        "rustc": env!("SQVERIFY_FAST_RUSTC"),
+    })
+}
+
 /// The receipt for one direction.
 #[derive(Clone, Debug)]
 pub struct DirectionReport {
@@ -52,6 +73,23 @@ pub fn run_direction(
     confirm: bool,
 ) -> Result<DirectionReport, String> {
     let threshold_hi = crate::exact::enclose(threshold)?.hi;
+    let cpu_start = thread_cpu_seconds();
+    let mut report = run_direction_inner(cert, index, threshold, threshold_hi, limits, confirm)?;
+    if let (Some(start), Some(end)) = (cpu_start, thread_cpu_seconds()) {
+        report.receipt["cpu_seconds"] = json!(end - start);
+    }
+    report.receipt["threshold"] = json!(threshold.to_string());
+    Ok(report)
+}
+
+fn run_direction_inner(
+    cert: &Certificate,
+    index: u32,
+    threshold: &BigRational,
+    threshold_hi: f64,
+    limits: Limits,
+    confirm: bool,
+) -> Result<DirectionReport, String> {
     if index == 0 {
         let start = std::time::Instant::now();
         let result = crate::axis::verify_axis(cert, threshold_hi)?;
@@ -67,7 +105,12 @@ pub fn run_direction(
             "argmin": [result.argmin.0, result.argmin.1],
             "seconds": seconds,
         });
-        return Ok(DirectionReport { index, verified: result.verified, seconds, receipt });
+        return Ok(DirectionReport {
+            index,
+            verified: result.verified,
+            seconds,
+            receipt,
+        });
     }
     let result = crate::rotated::verify_direction(cert, index, threshold_hi, limits)?;
     let mut receipt = json!({
@@ -84,13 +127,31 @@ pub fn run_direction(
     if let Some((x, y, dx, dy)) = result.argmin {
         receipt["least_bound_box"] = json!({"x": x, "y": y, "dx": dx, "dy": dy});
     }
-    if let Some((x, y, value)) = result.witness {
-        receipt["witness"] = json!({"x": x, "y": y, "centre_lower_bound": value});
-        if confirm && result.verdict == Verdict::CounterexampleCandidate {
+    if let Some((x, y, value, dx, dy)) = result.witness {
+        receipt["witness"] =
+            json!({"x": x, "y": y, "dx": dx, "dy": dy, "centre_lower_bound": value});
+        if confirm {
+            // The exact capture at the stopping box's centre and corners: a value
+            // below the threshold is an exact refutation at that pose.
             let (c, s) = direction(&cert.step, index);
-            let exact = crate::oracle::coverage(cert, &of_f64(x), &of_f64(y), &c, &s);
-            receipt["witness"]["exact_coverage"] = json!(exact.to_string());
-            receipt["witness"]["exact_below_threshold"] = json!(&exact < threshold);
+            let mut poses = vec![(x, y)];
+            if result.verdict == Verdict::Unresolved {
+                for (sx, sy) in [(-1.0, -1.0), (1.0, -1.0), (-1.0, 1.0), (1.0, 1.0)] {
+                    poses.push((x + sx * dx, y + sy * dy));
+                }
+            }
+            let mut least: Option<(BigRational, f64, f64)> = None;
+            for (px, py) in poses {
+                let exact = crate::oracle::coverage(cert, &of_f64(px), &of_f64(py), &c, &s);
+                if least.as_ref().is_none_or(|(v, _, _)| &exact < v) {
+                    least = Some((exact, px, py));
+                }
+            }
+            if let Some((exact, px, py)) = least {
+                receipt["witness"]["exact_pose"] = json!([px, py]);
+                receipt["witness"]["exact_coverage"] = json!(exact.to_string());
+                receipt["witness"]["exact_below_threshold"] = json!(&exact < threshold);
+            }
         }
     }
     Ok(DirectionReport {

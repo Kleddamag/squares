@@ -37,6 +37,7 @@ pub(crate) fn test_cert(rects: Vec<ExactRect>) -> Certificate {
         exact: rects,
         rects: floats,
         input_sha256: String::new(),
+        declared_threshold: None,
     }
 }
 
@@ -78,7 +79,10 @@ fn area_lower_bound_is_below_and_close_to_exact() {
                     truth.to_f64().unwrap()
                 );
                 let gap = truth.to_f64().unwrap() - bound;
-                assert!(gap < 1e-9, "area bound {bound} loose by {gap} at r={index}, rect {rect:?}, centre ({x0}, {y0})");
+                assert!(
+                    gap < 1e-9,
+                    "area bound {bound} loose by {gap} at r={index}, rect {rect:?}, centre ({x0}, {y0})"
+                );
             }
         }
     }

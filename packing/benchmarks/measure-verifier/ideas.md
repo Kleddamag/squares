@@ -12,6 +12,8 @@ experiments own.
 | registered | [H-002](hypotheses/H-002-cheap-admission.md) | Admit the certificate without exact work it does not need | Zero-weight rows, normalized rational enclosures and recomputed masses dominate a short run |
 | registered | [H-003](hypotheses/H-003-merged-jump-segments.md) | Enclose the derivative from merged density jumps, not per-rectangle edges | Coincident edges of adjacent rectangles cancel before the interval sum widens |
 | registered | [H-004](hypotheses/H-004-path-specific-gradient.md) | Bound the first leg’s derivative on the segment, not the box | The first leg of the mean-value path stays on the line through the centre |
+| registered | [H-006](hypotheses/H-006-inherited-derivative-bound.md) | Try acceptance with the parent’s derivative bound before computing the child’s | A bound proved on a box holds on its sub-boxes, and most leaves are one split from a near miss |
+| registered | [H-007](hypotheses/H-007-branch-free-directed-steps.md) | Step outward by adding a scaled magnitude instead of calling `next_up` | The library step’s branches were three quarters of the edge enclosure |
 | registered | [H-005](hypotheses/H-005-error-budget-arithmetic.md) | Replace per-operation directed rounding in the edge enclosures by one a-priori error budget | Rounding steps are a large share of the hot loop |
 
 ## Raw

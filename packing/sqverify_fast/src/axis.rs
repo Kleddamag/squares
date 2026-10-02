@@ -31,6 +31,17 @@ pub struct AxisResult {
     pub verified: bool,
 }
 
+/// Where a slope step of the ordinate sweep takes effect.
+#[derive(Clone, Copy)]
+enum Step {
+    /// Below the domain: part of the initial slope.
+    Initial,
+    /// At this event index.
+    At(usize),
+    /// Above the domain: never inside it.
+    Never,
+}
+
 fn sorted_events(values: Vec<BigRational>) -> Vec<BigRational> {
     let mut values = values;
     values.sort();
@@ -83,12 +94,6 @@ pub fn verify_axis(cert: &Certificate, threshold_hi: f64) -> Result<AxisResult, 
     // r(y-h-y2), with r(z) = max(z, 0). Its slope steps by +1, -1, -1, +1 at
     // y1-h, y2-h, y1+h, y2+h. A step below the domain belongs to the initial
     // slope; a step above it never takes effect inside the domain.
-    #[derive(Clone, Copy)]
-    enum Step {
-        Initial,
-        At(usize),
-        Never,
-    }
     let mut steps: Vec<[(Step, f64); 4]> = Vec::with_capacity(cert.exact.len());
     for rect in &cert.exact {
         let points = [
@@ -104,7 +109,9 @@ pub fn verify_axis(cert: &Certificate, threshold_hi: f64) -> Result<AxisResult, 
                 _ if p > upper => Step::Never,
                 _ => match locate(&ys, &p) {
                     Ok(index) => Step::At(index),
-                    Err(_) => return Err("an in-range breakpoint is missing from the events".into()),
+                    Err(_) => {
+                        return Err("an in-range breakpoint is missing from the events".into());
+                    }
                 },
             };
             *slot = (step, sign);
@@ -114,9 +121,9 @@ pub fn verify_axis(cert: &Certificate, threshold_hi: f64) -> Result<AxisResult, 
 
     let overlap = |centre: Iv, a: Iv, b: Iv| -> Iv {
         // |[c - h, c + h] intersect [a, b]| = (min(c + h, b) - max(c - h, a))^+
-        let right = centre.add(h_iv).min(b);
-        let left = centre.sub(h_iv).max(a);
-        right.sub(left).pos()
+        let right = centre.plus(h_iv).min(b);
+        let left = centre.minus(h_iv).max(a);
+        right.minus(left).pos()
     };
 
     let mut min_lower = f64::INFINITY;
@@ -135,7 +142,7 @@ pub fn verify_axis(cert: &Certificate, threshold_hi: f64) -> Result<AxisResult, 
                 continue;
             }
             let weight = ox.mul_nonneg(rect.rho);
-            value = value.add(weight.mul_nonneg(overlap(y0, rect.y1, rect.y2)));
+            value = value.plus(weight.mul_nonneg(overlap(y0, rect.y1, rect.y2)));
             for &(step, sign) in row {
                 let signed = if sign > 0.0 {
                     weight
@@ -143,24 +150,24 @@ pub fn verify_axis(cert: &Certificate, threshold_hi: f64) -> Result<AxisResult, 
                     Iv::new(-weight.hi, -weight.lo)
                 };
                 match step {
-                    Step::Initial => slope = slope.add(signed),
-                    Step::At(index) => delta[index] = delta[index].add(signed),
+                    Step::Initial => slope = slope.plus(signed),
+                    Step::At(index) => delta[index] = delta[index].plus(signed),
                     Step::Never => {}
                 }
             }
         }
         // A step at index 0 is at the domain's lower end, so it already governs
         // the first cell: fold it into the initial slope.
-        slope = slope.add(delta[0]);
+        slope = slope.plus(delta[0]);
         for j in 0..m {
             if value.lo < min_lower {
                 min_lower = value.lo;
                 argmin = (k, j);
             }
             if j + 1 < m {
-                let width = y_iv[j + 1].sub(y_iv[j]);
-                value = value.add(slope.mul(width));
-                slope = slope.add(delta[j + 1]);
+                let width = y_iv[j + 1].minus(y_iv[j]);
+                value = value.plus(slope.times(width));
+                slope = slope.plus(delta[j + 1]);
             }
         }
     }

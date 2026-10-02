@@ -27,8 +27,9 @@ algorithms there and one ratio would swamp the rest.
 
 | Metric | Role | Measured by |
 | --- | --- | --- |
-| Instructions per process, summed over the callgrind cells `n32@r1`, `n32@r100`, `n61@r100` | outcome | `--callgrind` (valgrind `Ir`), independent of load |
-| CPU seconds per process (user plus system, `wait4`), total of per-cell medians | outcome | interleaved runs, arm order rotated each repeat |
+| Instructions in the direction search (`search_instructions`: inclusive cost of `rotated::verify_direction`), summed over the callgrind cells `n32@r1`, `n32@r100`, `n61@r100` | outcome | `--callgrind` (valgrind `Ir`), independent of load |
+| Instructions per process, the same cells | outcome for admission changes; cost otherwise | the same run |
+| CPU seconds per process (user plus system, `wait4`), total of per-cell medians | guard | interleaved runs, arm order rotated each repeat |
 | Verdict of every cell | guard | must equal the control’s; any difference invalidates the round |
 | Nodes per cell | mechanism | the verifier’s receipt |
 | Load average before and after each run | regime | `/proc/loadavg` |
@@ -38,11 +39,14 @@ Wall time is recorded and never decides: the host’s load stayed above 6 throug
 ## Accept Rule
 
 Declared 2026-10-02T18:01Z, after exp-002’s instruction counts for H-001 had been seen
-and before any other candidate was measured.
+and before any other candidate was measured; the outcome metric was narrowed to the
+search’s own instructions at 19:55Z, after exp-002 showed that admission diluted process
+totals, and before exp-003 was measured.
 A candidate is **accepted** when, against its control (the standing best build):
 
 1. every benchmark cell it ran has the control’s verdict;
-2. its callgrind total is at least 10% lower; and
+2. its outcome metric (the search’s instructions, or the process’s for a change to
+   admission) is at least 10% lower; and
 3. its CPU total of medians, over at least two interleaved repeats of the cells both
    ran, is not higher than the control’s.
 

@@ -92,21 +92,21 @@ def probe(binary: Path, candidate: Path, n: int, spec: str) -> dict[str, Any]:
     return value
 
 
-def differential(binary: Path, rng: random.Random) -> list[tuple[bool, str]]:
+def differential(binary: Path, rng: random.Random, *, quick: bool) -> list[tuple[bool, str]]:
     outcomes: list[tuple[bool, str]] = []
-    for packet, certificate, n in (
-        ("2026-09-27", "rect_n32_L595", 32),
-        ("2026-09-27", "rect_n78_L8955", 78),
-    ):
+    certificates = [("2026-09-27", "rect_n32_L595", 32)]
+    if not quick:
+        certificates.append(("2026-09-27", "rect_n78_L8955", 78))
+    for packet, certificate, n in certificates:
         path = candidate_path(packet, certificate)
         exact_candidate = load_candidate(path, n=n)
         side = float(exact_candidate.side)
-        for index in (1, 57, 133, 200):
+        for index in (1, 200) if quick else (1, 57, 133, 200):
             cosine, sine = direction(index)
             extent = float(exact_candidate.core_side * (cosine + sine) / 2)
             worst_gap = 0.0
             ok = True
-            for _ in range(4):
+            for _ in range(2 if quick else 4):
                 x = side / 2 + rng.random() * (side / 2 - extent)
                 y = side / 2 + rng.random() * (side / 2 - extent)
                 half = 10.0 ** rng.uniform(-6, -3)
@@ -209,7 +209,7 @@ def refused_at(
     )
 
 
-def controls(binary: Path, scratch: Path) -> list[tuple[bool, str]]:
+def controls(binary: Path, scratch: Path, *, quick: bool) -> list[tuple[bool, str]]:
     outcomes: list[tuple[bool, str]] = []
     # The retained stage-4 controls, rebuilt from their recorded mutations.
     receipt = json.loads(
@@ -271,7 +271,7 @@ def controls(binary: Path, scratch: Path) -> list[tuple[bool, str]]:
     # Own controls on n32 at the least-bound box of two directions.
     path32 = candidate_path("2026-09-27", "rect_n32_L595")
     raw32 = read_raw(path32)
-    for index32 in (1, 100):
+    for index32 in (1,) if quick else (1, 100):
         result = run_binary(
             binary, path32, 32, "--directions", str(index32), "--threshold", "1"
         )
@@ -343,15 +343,20 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=(__doc__ or "").splitlines()[0])
     parser.add_argument("--binary", type=Path, required=True)
     parser.add_argument("--only", choices=("differential", "controls"))
+    parser.add_argument(
+        "--quick",
+        action="store_true",
+        help="the gate subset: n32 only, two directions, one n32 control direction",
+    )
     parser.add_argument("--seed", type=int, default=20261002)
     args = parser.parse_args(argv)
     binary = args.binary.resolve()
     outcomes: list[tuple[bool, str]] = []
     if args.only in (None, "differential"):
-        outcomes += differential(binary, random.Random(args.seed))
+        outcomes += differential(binary, random.Random(args.seed), quick=args.quick)
     if args.only in (None, "controls"):
         with tempfile.TemporaryDirectory(prefix="sqverify-fast-controls-") as scratch:
-            outcomes += controls(binary, Path(scratch))
+            outcomes += controls(binary, Path(scratch), quick=args.quick)
     for ok, line in outcomes:
         print(("  ok   " if ok else "  FAIL ") + line, flush=True)
     if all(ok for ok, _ in outcomes):

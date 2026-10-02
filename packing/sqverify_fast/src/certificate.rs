@@ -83,6 +83,8 @@ pub struct Certificate {
     pub rects: Vec<Rect>,
     /// SHA-256 of the input bytes as read (before decompression).
     pub input_sha256: String,
+    /// The coverage threshold the certificate declares, if any.
+    pub declared_threshold: Option<BigRational>,
 }
 
 /// An admission refusal.
@@ -258,17 +260,27 @@ pub fn admit(
     let Value::Object(object) = value else {
         return refuse("candidate JSON must be an object");
     };
-    if let Some(declared) = object.get("n") {
-        if declared.as_u64() != Some(n) {
-            return refuse(format!("candidate n {declared} does not match requested n {n}"));
-        }
+    if let Some(declared) = object.get("n")
+        && declared.as_u64() != Some(n)
+    {
+        return refuse(format!(
+            "candidate n {declared} does not match requested n {n}"
+        ));
     }
-    let side = rational_of(object.get("L").ok_or(AdmissionError("missing L".into()))?, "L")?;
-    let core = rational_of(object.get("B").ok_or(AdmissionError("missing B".into()))?, "B")?;
-    if let Some(expected) = expected_side {
-        if &side != expected {
-            return refuse(format!("candidate side {side} is not the requested {expected}"));
-        }
+    let side = rational_of(
+        object.get("L").ok_or(AdmissionError("missing L".into()))?,
+        "L",
+    )?;
+    let core = rational_of(
+        object.get("B").ok_or(AdmissionError("missing B".into()))?,
+        "B",
+    )?;
+    if let Some(expected) = expected_side
+        && &side != expected
+    {
+        return refuse(format!(
+            "candidate side {side} is not the requested {expected}"
+        ));
     }
     let mut step = ratio(83, 40_000);
     let mut angle_count: u32 = 201;
@@ -286,10 +298,12 @@ pub fn admit(
                 .ok_or(AdmissionError("bad angle_count".into()))?;
         }
         for (key, mine) in [("L", &side), ("B", &core)] {
-            if let Some(declared) = metadata.get(key) {
-                if &rational_of(declared, key)? != mine {
-                    return refuse(format!("certificate metadata {key} disagrees with the candidate"));
-                }
+            if let Some(declared) = metadata.get(key)
+                && &rational_of(declared, key)? != mine
+            {
+                return refuse(format!(
+                    "certificate metadata {key} disagrees with the candidate"
+                ));
             }
         }
     }
@@ -353,26 +367,34 @@ pub fn admit(
             .iter()
             .map(|v| rational_of(v, &format!("rectangle {index}")))
             .collect::<Result<_, _>>()?;
-        let (x1, y1, x2, y2) = (&coordinates[0], &coordinates[1], &coordinates[2], &coordinates[3]);
+        let (x1, y1, x2, y2) = (
+            &coordinates[0],
+            &coordinates[1],
+            &coordinates[2],
+            &coordinates[3],
+        );
         if !(&zero <= x1 && x1 < x2 && x2 <= &side && &zero <= y1 && y1 < y2 && y2 <= &side) {
-            return refuse(format!("positive rectangle {index} is degenerate or outside [0, L]^2"));
+            return refuse(format!(
+                "positive rectangle {index} is degenerate or outside [0, L]^2"
+            ));
         }
         source_rectangles += 1;
         let area = (x2 - x1) * (y2 - y1);
         let density = &weight / (&eight * &area);
         mass += &weight;
         for image in d4_images(&side, x1, y1, x2, y2) {
-            match merged.get_mut(&image) {
-                Some(total) => *total += &density,
-                None => {
-                    order.push(image.clone());
-                    merged.insert(image, density.clone());
-                }
+            if let Some(total) = merged.get_mut(&image) {
+                *total += &density;
+            } else {
+                order.push(image.clone());
+                merged.insert(image, density.clone());
             }
         }
     }
     if !(mass.is_positive() && mass < BigRational::from_integer(BigInt::from(n))) {
-        return refuse(format!("exact mass {mass} is not strictly between 0 and n = {n}"));
+        return refuse(format!(
+            "exact mass {mass} is not strictly between 0 and n = {n}"
+        ));
     }
     let mut exact = Vec::with_capacity(order.len());
     let mut rects = Vec::with_capacity(order.len());
@@ -381,7 +403,13 @@ pub fn admit(
         let density = merged[&key].clone();
         let [x1, y1, x2, y2] = key;
         let image_mass = &density * (&x2 - &x1) * (&y2 - &y1);
-        let rect = ExactRect { x1, y1, x2, y2, density };
+        let rect = ExactRect {
+            x1,
+            y1,
+            x2,
+            y2,
+            density,
+        };
         rects.push(float_rect(&rect, &image_mass).map_err(AdmissionError)?);
         integrated += image_mass;
         exact.push(rect);
@@ -389,10 +417,17 @@ pub fn admit(
     if integrated != mass {
         return refuse("the D4 expansion does not integrate to the declared mass");
     }
+    let declared_threshold = object
+        .get("coverage_lower_bound_exact")
+        .map(|value| rational_of(value, "coverage_lower_bound_exact"))
+        .transpose()?;
     let input_sha256 = Sha256::digest(raw)
         .iter()
-        .map(|byte| format!("{byte:02x}"))
-        .collect();
+        .fold(String::new(), |mut text, byte| {
+            use std::fmt::Write;
+            let _ = write!(text, "{byte:02x}");
+            text
+        });
     Ok(Certificate {
         n,
         side,
@@ -404,6 +439,7 @@ pub fn admit(
         exact,
         rects,
         input_sha256,
+        declared_threshold,
     })
 }
 
@@ -428,8 +464,8 @@ pub fn float_rect(rect: &ExactRect, mass: &BigRational) -> Result<Rect, String> 
         y2,
         rho,
         mass,
-        mx: 0.5 * (x1.lo + x2.lo),
-        my: 0.5 * (y1.lo + y2.lo),
+        mx: f64::midpoint(x1.lo, x2.lo),
+        my: f64::midpoint(y1.lo, y2.lo),
         wx: 0.5 * (x2.lo - x1.lo),
         wy: 0.5 * (y2.lo - y1.lo),
     })
@@ -442,7 +478,13 @@ mod tests {
     #[test]
     fn images_preserve_area_and_cover_the_orbit() {
         let side = ratio(10, 1);
-        let images = d4_images(&side, &ratio(1, 1), &ratio(2, 1), &ratio(3, 1), &ratio(7, 1));
+        let images = d4_images(
+            &side,
+            &ratio(1, 1),
+            &ratio(2, 1),
+            &ratio(3, 1),
+            &ratio(7, 1),
+        );
         let unique: HashSet<_> = images.iter().cloned().collect();
         assert_eq!(unique.len(), 8);
         for [x1, y1, x2, y2] in &images {

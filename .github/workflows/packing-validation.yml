@@ -206,6 +206,30 @@ jobs:
         if: "steps.exact-cache.outputs.cache-hit == 'true'"
         run: git ls-files -z -- sqverify_exact | xargs -0 touch -t 200001010000
 
+      # The clean-room measure verifier (think-gpe0) is cached the same way: an exact
+      # source/compiler pair only, and every lint, test, build and oracle check still
+      # runs in its gate step.
+      - name: Key the measure verifier cache on its sources and compiler
+        id: measure-key
+        working-directory: packing/sqverify_fast
+        run: |
+          rustc_vv="$(rustc -vV)"
+          echo "tree=$(git rev-parse HEAD:packing/sqverify_fast)" >> "$GITHUB_OUTPUT"
+          echo "rustc=$(printf '%s' "$rustc_vv" | sha256sum | cut -c1-16)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore the measure verifier build
+        id: measure-cache
+        uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: packing/sqverify_fast/target
+          key: >-
+            ${{ runner.os }}-sqverify-fast-${{ steps.measure-key.outputs.rustc }}-${{
+            steps.measure-key.outputs.tree }}
+
+      - name: Date measure verifier sources before their identical cached build
+        if: "steps.measure-cache.outputs.cache-hit == 'true'"
+        run: git ls-files -z -- sqverify_fast | xargs -0 touch -t 200001010000
+
       # `--fast` is the pull-request surface, and two separate pieces of work in one day
       # made it what it is. They pull in opposite directions on purpose.
       #
@@ -393,6 +417,15 @@ jobs:
         with:
           path: packing/sqverify_exact/target
           key: ${{ steps.exact-cache.outputs.cache-primary-key }}
+
+      - name: Save the measure verifier build intermediates
+        if: >-
+          always() && steps.measure-cache.outcome == 'success' &&
+          steps.measure-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: packing/sqverify_fast/target
+          key: ${{ steps.measure-cache.outputs.cache-primary-key }}
 
       - name: Preserve validation timings and partial logs
         if: always()

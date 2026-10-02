@@ -758,6 +758,22 @@ case or experiment separately.
 | [Math Startup and Layout Stability](packing/benchmarks/math-startup/README.md) | component scope and use | supporting | maintained | — |
 | [Math Startup Ideas](packing/benchmarks/math-startup/ideas.md) | implementation plan | supporting | maintained | — |
 | [Math Startup Ledger](packing/benchmarks/math-startup/ledger.md) | generated status view | generated | generated | — |
+| [Measure-Verifier Performance Campaign](packing/benchmarks/measure-verifier/README.md) | component scope and use | supporting | maintained | — |
+| [Idea Board: Measure-Verifier Performance](packing/benchmarks/measure-verifier/ideas.md) | implementation plan | supporting | maintained | — |
+| [Edge Classification Removes Most Edge-Length Enclosures](packing/benchmarks/measure-verifier/hypotheses/H-001-edge-classification.md) | implementation plan | supporting | maintained | — |
+| [Cheaper Exact Admission Halves a Short Run’s Instructions](packing/benchmarks/measure-verifier/hypotheses/H-002-cheap-admission.md) | implementation plan | supporting | maintained | — |
+| [Merged Density Jumps Tighten the Derivative Enclosure](packing/benchmarks/measure-verifier/hypotheses/H-003-merged-jump-segments.md) | implementation plan | supporting | maintained | — |
+| [Bounding the First Leg’s Derivative on Its Segment Cuts Nodes](packing/benchmarks/measure-verifier/hypotheses/H-004-path-specific-gradient.md) | implementation plan | supporting | maintained | — |
+| [One A-Priori Error Budget Beats Per-Operation Directed Rounding](packing/benchmarks/measure-verifier/hypotheses/H-005-error-budget-arithmetic.md) | implementation plan | supporting | maintained | — |
+| [Inheriting the Parent’s Derivative Bound](packing/benchmarks/measure-verifier/hypotheses/H-006-inherited-derivative-bound.md) | implementation plan | supporting | maintained | — |
+| [Branch-Free Directed Rounding](packing/benchmarks/measure-verifier/hypotheses/H-007-branch-free-directed-steps.md) | implementation plan | supporting | maintained | — |
+| [Baseline: v0 Beside verify.cpp](packing/benchmarks/measure-verifier/experiments/exp-001-baseline-v0-against-verify-cpp.md) | research synthesis | record | retained | — |
+| [H-001: Edge Classification](packing/benchmarks/measure-verifier/experiments/exp-002-h001-edge-classification.md) | research synthesis | record | retained | — |
+| [H-006: Inherited Derivative Bounds](packing/benchmarks/measure-verifier/experiments/exp-003-h006-inherited-derivative-bound.md) | research synthesis | record | retained | — |
+| [H-002: Cheaper Exact Admission](packing/benchmarks/measure-verifier/experiments/exp-004-h002-cheap-admission.md) | research synthesis | record | retained | — |
+| [H-007: Branch-Free Directed Steps](packing/benchmarks/measure-verifier/experiments/exp-005-h007-branch-free-directed-steps.md) | research synthesis | record | retained | — |
+| [Soundness of sqverify-fast](packing/sqverify_fast/SOUNDNESS.md) | component scope and use | definitive | maintained | — |
+| [Independence Record for sqverify-fast](packing/sqverify_fast/INDEPENDENCE.md) | research synthesis | record | maintained | — |
 | [PR 127 Integration Checkpoint Evidence](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/pr127-checkpoint/README.md) | research synthesis | record | retained | — |
 | [Correction: the stacking capacity bound in lane X3’s box sweep is false](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-x3-box-sweep-capacity-correction.md) | dated review record | record | retained | — |
 | [Agenda 034, lane A6: structural site placement at L = 153/40, and the certificate that closes the site side](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a6-structural-sites-and-the-depth-one-certificate.md) | research synthesis | record | retained | — |

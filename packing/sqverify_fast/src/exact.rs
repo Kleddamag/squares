@@ -84,7 +84,8 @@ fn parse_decimal(text: &str) -> Result<BigRational, String> {
     if negative {
         numerator = -numerator;
     }
-    let scale = exponent - i64::try_from(fraction_part.len()).map_err(|_| "too long".to_string())?;
+    let scale =
+        exponent - i64::try_from(fraction_part.len()).map_err(|_| "too long".to_string())?;
     let ten = BigInt::from(10u8);
     let power = num_traits::pow(ten, usize::try_from(scale.unsigned_abs()).unwrap_or(0));
     Ok(if scale >= 0 {
@@ -160,7 +161,7 @@ pub fn compare(q: &BigRational, x: f64) -> Ordering {
     }
     let bits = x.to_bits();
     let negative = bits >> 63 == 1;
-    let exponent_bits = ((bits >> 52) & 0x7ff) as i64;
+    let exponent_bits = i64::from(u16::try_from((bits >> 52) & 0x7ff).unwrap_or(0));
     let fraction = bits & ((1u64 << 52) - 1);
     let (mantissa, exponent) = if exponent_bits == 0 {
         (fraction, -1074)
@@ -225,7 +226,14 @@ mod tests {
 
     #[test]
     fn enclosures_are_tight_and_contain_the_value() {
-        for (p, q) in [(1, 10), (1, 3), (2, 1), (-7, 9), (9977, 20000), (1_000_001, 1)] {
+        for (p, q) in [
+            (1, 10),
+            (1, 3),
+            (2, 1),
+            (-7, 9),
+            (9977, 20000),
+            (1_000_001, 1),
+        ] {
             let value = r(p, q);
             let iv = enclose(&value).unwrap();
             assert!(of_f64(iv.lo) <= value && value <= of_f64(iv.hi));

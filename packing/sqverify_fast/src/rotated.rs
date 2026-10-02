@@ -78,7 +78,8 @@ pub struct DirectionResult {
     /// Centre and half-widths of the accepted box with the least bound.
     pub argmin: Option<(f64, f64, f64, f64)>,
     /// For a non-verified direction, the box centre that stopped the search.
-    pub witness: Option<(f64, f64, f64)>,
+    /// `(x, y, centre lower bound, dx, dy)` of that box.
+    pub witness: Option<(f64, f64, f64, f64, f64)>,
     /// Wall seconds of this direction's search.
     pub seconds: f64,
     /// Mean number of boundary rectangles per evaluated box.
@@ -252,12 +253,12 @@ fn segment_length(k: &LineCoeffs, w: Iv, e: Iv, b: Iv, len: Iv) -> Iv {
     let cw = w.mul_nonneg(k.cs);
     let sw = w.mul_nonneg(k.sc);
     let iw = w.mul_nonneg(k.isc);
-    let t2 = e.add(k.hs).add(cw);
-    let t3 = e.add(k.hc).sub(sw);
-    let t4 = k.hs.sub(cw).sub(b);
-    let t5 = k.hc.add(sw).sub(b);
-    let t8 = k.hsum.sub(iw);
-    let t9 = k.hsum.add(iw);
+    let t2 = e.plus(k.hs).plus(cw);
+    let t3 = e.plus(k.hc).minus(sw);
+    let t4 = k.hs.minus(cw).minus(b);
+    let t5 = k.hc.plus(sw).minus(b);
+    let t8 = k.hsum.minus(iw);
+    let t9 = k.hsum.plus(iw);
     len.min(t2)
         .min(t3)
         .min(t4)
@@ -272,7 +273,10 @@ fn segment_length(k: &LineCoeffs, w: Iv, e: Iv, b: Iv, len: Iv) -> Iv {
 /// Offset enclosure `a - (centre +- half)` for a coordinate enclosure `a`.
 #[inline]
 fn offset(a: Iv, centre: f64, half: f64) -> Iv {
-    Iv::new(sub_dn(sub_dn(a.lo, centre), half), add_up(sub_up(a.hi, centre), half))
+    Iv::new(
+        sub_dn(sub_dn(a.lo, centre), half),
+        add_up(sub_up(a.hi, centre), half),
+    )
 }
 
 /// The geometry of one box of centres, shared by every rectangle test.
@@ -293,8 +297,8 @@ struct BoxGeom {
 /// Gradient enclosure of one rectangle's overlap area over the box.
 #[inline]
 fn gradient(fr: &Frame, g: &BoxGeom, rect: &Rect) -> (Iv, Iv) {
-    let ylen = rect.y2.sub(rect.y1);
-    let xlen = rect.x2.sub(rect.x1);
+    let ylen = rect.y2.minus(rect.y1);
+    let xlen = rect.x2.minus(rect.x1);
     let ye = offset(rect.y2, g.y0, g.dy);
     let yb = offset(rect.y1, g.y0, g.dy);
     let xe = offset(rect.x2, g.x0, g.dx);
@@ -306,8 +310,8 @@ fn gradient(fr: &Frame, g: &BoxGeom, rect: &Rect) -> (Iv, Iv) {
     let bottom = segment_length(hz, yb, xe, xb, xlen);
     let top = segment_length(hz, ye, xe, xb, xlen);
     (
-        left.sub(right).mul_nonneg(rect.rho),
-        bottom.sub(top).mul_nonneg(rect.rho),
+        left.minus(right).mul_nonneg(rect.rho),
+        bottom.minus(top).mul_nonneg(rect.rho),
     )
 }
 
@@ -359,6 +363,10 @@ struct Node {
     parent_start: usize,
     parent_end: usize,
     inner: f64,
+    /// Bounds on `|dF/dx|`, `|dF/dy|` proved over the parent box, which
+    /// contains this one, so valid here (infinite at the root).
+    gx_inherited: f64,
+    gy_inherited: f64,
 }
 
 /// Verify one rotated net direction `index >= 1`.
@@ -383,7 +391,8 @@ pub fn verify_direction(
     let ext = approx(&extent)?;
 
     let rects = &cert.rects;
-    let mut arena: Vec<u32> = (0..u32::try_from(rects.len()).map_err(|_| "too many rectangles")?).collect();
+    let mut arena: Vec<u32> =
+        (0..u32::try_from(rects.len()).map_err(|_| "too many rectangles")?).collect();
     let mut stack = vec![Node {
         xl: lower,
         xh: upper,
@@ -393,6 +402,8 @@ pub fn verify_direction(
         parent_start: 0,
         parent_end: rects.len(),
         inner: 0.0,
+        gx_inherited: f64::INFINITY,
+        gy_inherited: f64::INFINITY,
     }];
     let mut nodes = 0u64;
     let mut leaves = 0u64;
@@ -406,8 +417,8 @@ pub fn verify_direction(
         arena.truncate(node.parent_end);
         nodes += 1;
         max_depth = max_depth.max(node.depth);
-        let x0 = 0.5 * (node.xl + node.xh);
-        let y0 = 0.5 * (node.yl + node.yh);
+        let x0 = f64::midpoint(node.xl, node.xh);
+        let y0 = f64::midpoint(node.yl, node.yh);
         let dx = up((node.xh - x0).max(x0 - node.xl));
         let dy = up((node.yh - y0).max(y0 - node.yl));
         let g = BoxGeom {
@@ -433,14 +444,9 @@ pub fn verify_direction(
         let own_end = arena.len();
         boundary_total += (own_end - own_start) as u64;
         let mut value = inner;
-        let mut gx = Iv::point(0.0);
-        let mut gy = Iv::point(0.0);
         for position in own_start..own_end {
             let rect = &rects[arena[position] as usize];
             value = add_dn(value, mul_dn(rect.rho.lo, area_dn(&fr, rect, x0, y0)));
-            let (rx, ry) = gradient(&fr, &g, rect);
-            gx = gx.add(rx);
-            gy = gy.add(ry);
         }
         #[cfg(debug_assertions)]
         {
@@ -452,8 +458,34 @@ pub fn verify_direction(
                 (node.xl, node.xh, node.yl, node.yh)
             );
         }
-        let px = mul_up(gx.mag(), dx);
-        let py = mul_up(gy.mag(), dy);
+        // Lemma R3 with the parent's derivative bounds, valid on this sub-box:
+        // a box that certifies with them needs no derivative work of its own.
+        if node.gx_inherited.is_finite() && node.gy_inherited.is_finite() {
+            let bound = sub_dn(
+                value,
+                add_up(mul_up(node.gx_inherited, dx), mul_up(node.gy_inherited, dy)),
+            );
+            if bound >= threshold_hi {
+                leaves += 1;
+                if bound < min_lower {
+                    min_lower = bound;
+                    argmin = Some((x0, y0, dx, dy));
+                }
+                continue;
+            }
+        }
+        let mut gx = Iv::point(0.0);
+        let mut gy = Iv::point(0.0);
+        for position in own_start..own_end {
+            let (rx, ry) = gradient(&fr, &g, &rects[arena[position] as usize]);
+            gx = gx.plus(rx);
+            gy = gy.plus(ry);
+        }
+        // Both this box's enclosure and the inherited one bound the derivative here.
+        let gx_bound = gx.mag().min(node.gx_inherited);
+        let gy_bound = gy.mag().min(node.gy_inherited);
+        let px = mul_up(gx_bound, dx);
+        let py = mul_up(gy_bound, dy);
         let bound = sub_dn(value, add_up(px, py));
         if bound >= threshold_hi {
             leaves += 1;
@@ -463,14 +495,17 @@ pub fn verify_direction(
             }
             continue;
         }
-        if value < threshold_hi - 1e-7 {
+        // The centre bound is within about 1e-11 of the exact capture (lemma R2's
+        // nodes sit at the breakpoints), so a centre this far below the threshold
+        // is almost surely a counterexample; `--confirm` decides it exactly.
+        if value < threshold_hi - 1e-9 {
             verdict = Verdict::CounterexampleCandidate;
-            witness = Some((x0, y0, value));
+            witness = Some((x0, y0, value, dx, dy));
             break;
         }
         if node.depth >= limits.max_depth || nodes >= limits.max_nodes {
             verdict = Verdict::Unresolved;
-            witness = Some((x0, y0, value));
+            witness = Some((x0, y0, value, dx, dy));
             break;
         }
         let split_x = if px == py { dx >= dy } else { px > py };
@@ -483,11 +518,13 @@ pub fn verify_direction(
             parent_start: own_start,
             parent_end: own_end,
             inner,
+            gx_inherited: gx_bound,
+            gy_inherited: gy_bound,
         };
         if split_x {
             if !(x0 > node.xl && x0 < node.xh) {
                 verdict = Verdict::Unresolved;
-                witness = Some((x0, y0, value));
+                witness = Some((x0, y0, value, dx, dy));
                 break;
             }
             stack.push(child(x0, node.xh, node.yl, node.yh));
@@ -495,7 +532,7 @@ pub fn verify_direction(
         } else {
             if !(y0 > node.yl && y0 < node.yh) {
                 verdict = Verdict::Unresolved;
-                witness = Some((x0, y0, value));
+                witness = Some((x0, y0, value, dx, dy));
                 break;
             }
             stack.push(child(node.xl, node.xh, y0, node.yh));
@@ -508,7 +545,11 @@ pub fn verify_direction(
         nodes,
         leaves,
         max_depth,
-        min_lower: if verdict == Verdict::Verified { min_lower } else { f64::NAN },
+        min_lower: if verdict == Verdict::Verified {
+            min_lower
+        } else {
+            f64::NAN
+        },
         argmin,
         witness,
         seconds: start.elapsed().as_secs_f64(),
@@ -537,7 +578,14 @@ pub fn centre_lower_bound(cert: &Certificate, index: u32, x0: f64, y0: f64) -> R
 /// # Errors
 ///
 /// Returns a message if a constant cannot be enclosed.
-pub fn box_lower_bound(cert: &Certificate, index: u32, x0: f64, y0: f64, dx: f64, dy: f64) -> Result<f64, String> {
+pub fn box_lower_bound(
+    cert: &Certificate,
+    index: u32,
+    x0: f64,
+    y0: f64,
+    dx: f64,
+    dy: f64,
+) -> Result<f64, String> {
     let fr = frame(cert, index)?;
     let (c, s) = direction(&cert.step, index);
     let two = BigRational::from_integer(BigInt::from(2));
@@ -561,12 +609,15 @@ pub fn box_lower_bound(cert: &Certificate, index: u32, x0: f64, y0: f64, dx: f64
             Class::Boundary => {
                 value = add_dn(value, mul_dn(rect.rho.lo, area_dn(&fr, rect, x0, y0)));
                 let (rx, ry) = gradient(&fr, &g, rect);
-                gx = gx.add(rx);
-                gy = gy.add(ry);
+                gx = gx.plus(rx);
+                gy = gy.plus(ry);
             }
         }
     }
-    Ok(sub_dn(value, add_up(mul_up(gx.mag(), dx), mul_up(gy.mag(), dy))))
+    Ok(sub_dn(
+        value,
+        add_up(mul_up(gx.mag(), dx), mul_up(gy.mag(), dy)),
+    ))
 }
 
 #[cfg(test)]

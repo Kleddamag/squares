@@ -122,6 +122,7 @@ REPOSITORY_ROOT = PROJECT_ROOT.parent
 WORKBENCH_ROOT = REPOSITORY_ROOT / "packages/workbench"
 ENGINE = PROJECT_ROOT / "sqsearch/target/release/sqsearch"
 EXACT_GEOMETRY_CRATE = PROJECT_ROOT / "sqverify_exact"
+MEASURE_VERIFIER_CRATE = PROJECT_ROOT / "sqverify_fast"
 RESULTS = Path("campaign/series/series-000-smoke-and-calibration/results")
 ACTIVITY_MARKER = PROJECT_ROOT / ".gate-running"
 DEFAULT_CPU_COUNT = 4
@@ -2479,6 +2480,49 @@ def _rust_quality(context: Context) -> str:
     ).strip()
 
 
+def _rust_measure_verifier(context: Context) -> str:
+    """Lint, test and build the clean-room measure verifier, then hold it to the exact
+    oracle and the mutation controls (`devtools.check_sqverify_fast --quick`)."""
+    cargo = shutil.which("cargo", path=context.environment.get("PATH"))
+    if cargo is None:
+        raise StepFailureError("measure verifier gate requires cargo")
+    environment = dict(context.environment)
+    environment["RUSTDOCFLAGS"] = f"{environment.get('RUSTDOCFLAGS', '')} -D warnings".strip()
+    child = replace(
+        context, environment=environment, timeout_seconds=min(context.timeout_seconds, 240)
+    )
+    output = _commands(
+        child,
+        (
+            (cargo, "fmt", "--all", "--check"),
+            (cargo, "clippy", "--locked", "--release", "--all-targets", "--", "-D", "warnings"),
+            (cargo, "test", "--locked", "--release", "--all-targets", "--quiet"),
+            (cargo, "doc", "--locked", "--no-deps", "--quiet"),
+            (cargo, "build", "--locked", "--release", "--quiet"),
+        ),
+        cwd=MEASURE_VERIFIER_CRATE,
+    )
+    if not sum(int(count) for count in re.findall(r"test result: ok\. (\d+) passed", output)):
+        raise StepFailureError("measure verifier gate ran no passing Rust tests")
+    target = Path(environment.get("CARGO_TARGET_DIR", "target"))
+    if not target.is_absolute():
+        target = MEASURE_VERIFIER_CRATE / target
+    binary = target / "release/sqverify-fast"
+    checks = _run(
+        child,
+        (
+            sys.executable,
+            "-m",
+            "devtools.check_sqverify_fast",
+            "--binary",
+            str(binary),
+            "--quick",
+        ),
+    )
+    _require_text(checks, "SQVERIFY-FAST CHECKS PASSED")
+    return f"{output}\n{checks}"
+
+
 def _rust_exact_geometry(context: Context) -> str:
     """Check the diagnostic exact batch kernel against the Python area oracle."""
     cargo = shutil.which("cargo", path=context.environment.get("PATH"))
@@ -3477,6 +3521,14 @@ _TOOLCHAIN = ("packing/pyproject.toml", "packing/uv.lock", "packing/.python-vers
 # per-file devtools pattern, so it belongs with the shared core rather than repeated.
 _CORE = ("packing/src/sqpack/*", "packing/devtools/__init__.py", *_TOOLCHAIN)
 _ENGINE_SRC = ("packing/sqsearch/*",)
+_MEASURE_VERIFIER_SRC = (
+    "packing/sqverify_fast/*",
+    "packing/devtools/check_sqverify_fast.py",
+    "packing/src/sqpack/rectangle_density.py",
+    "packing/resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles/certificates/rect_n32_L595/*",
+    "packing/resources/web/wand125-rectangle-certificates-2026-10-01/wand125-rectangles/certificates/rect_n41_L676/*",
+    "packing/resources/web/wand125-rectangle-certificates-2026-10-01/receipts/controls/*",
+)
 _EXACT_GEOMETRY_SRC = (
     "packing/sqverify_exact/*",
     "packing/devtools/check_exact_rust_kernel.py",
@@ -4145,6 +4197,16 @@ STEPS: tuple[Step, ...] = (
             "packing/devtools/check_rust_floor.py",
             "packing/tests/test_rust_floor_contract.py",
         ),
+    ),
+    # The clean-room measure verifier (think-gpe0): its crate's lint, tests and release
+    # build, then the quick differential against the exact oracle and the mutation
+    # controls. Broad for the toolchain, like the exact crate beside it.
+    Step(
+        "measure verifier Rust (sqverify-fast)",
+        _rust_measure_verifier,
+        fast=True,
+        broad=True,
+        touches=_MEASURE_VERIFIER_SRC,
     ),
     Step(
         "exact rectangle Rust geometry",
@@ -5103,6 +5165,7 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         # Locked Rust sources and tracked exact differential fixtures determine the
         # verdict; no repository history, remote state, or stored result is consulted.
         "exact rectangle Rust geometry",
+        "measure verifier Rust (sqverify-fast)",
         "Trump exact branchwise linearized cones",
         "H-041 Stromquist repaired-cover exact certificate",
         "H-010 Stromquist printed-cover exact rejection",

@@ -27,7 +27,7 @@ struct Options {
     n: u64,
     side: Option<String>,
     directions: String,
-    threshold: String,
+    threshold: Option<String>,
     threads: usize,
     limits: Limits,
     receipts: Option<PathBuf>,
@@ -44,9 +44,12 @@ fn parse_args() -> Result<Options, String> {
         n: 0,
         side: None,
         directions: "all".into(),
-        threshold: "1".into(),
+        threshold: None,
         threads: 1,
-        limits: Limits { max_nodes: 50_000_000, max_depth: 60 },
+        limits: Limits {
+            max_nodes: 50_000_000,
+            max_depth: 60,
+        },
         receipts: None,
         confirm: false,
         probe: None,
@@ -58,10 +61,22 @@ fn parse_args() -> Result<Options, String> {
             "--n" => n = Some(value()?.parse().map_err(|_| "--n must be an integer")?),
             "--side" => options.side = Some(value()?),
             "--directions" => options.directions = value()?,
-            "--threshold" => options.threshold = value()?,
-            "--threads" => options.threads = value()?.parse().map_err(|_| "--threads must be an integer")?,
-            "--max-nodes" => options.limits.max_nodes = value()?.parse().map_err(|_| "--max-nodes must be an integer")?,
-            "--max-depth" => options.limits.max_depth = value()?.parse().map_err(|_| "--max-depth must be an integer")?,
+            "--threshold" => options.threshold = Some(value()?),
+            "--threads" => {
+                options.threads = value()?
+                    .parse()
+                    .map_err(|_| "--threads must be an integer")?;
+            }
+            "--max-nodes" => {
+                options.limits.max_nodes = value()?
+                    .parse()
+                    .map_err(|_| "--max-nodes must be an integer")?;
+            }
+            "--max-depth" => {
+                options.limits.max_depth = value()?
+                    .parse()
+                    .map_err(|_| "--max-depth must be an integer")?;
+            }
             "--receipts" => options.receipts = Some(PathBuf::from(value()?)),
             "--confirm" => options.confirm = true,
             "--probe" => options.probe = Some(value()?),
@@ -82,11 +97,21 @@ fn parse_directions(spec: &str, count: u32) -> Result<Vec<u32>, String> {
     }
     for part in spec.split(',') {
         if let Some((a, b)) = part.split_once('-') {
-            let a: u32 = a.trim().parse().map_err(|_| format!("bad direction {part}"))?;
-            let b: u32 = b.trim().parse().map_err(|_| format!("bad direction {part}"))?;
+            let a: u32 = a
+                .trim()
+                .parse()
+                .map_err(|_| format!("bad direction {part}"))?;
+            let b: u32 = b
+                .trim()
+                .parse()
+                .map_err(|_| format!("bad direction {part}"))?;
             out.extend(a..=b);
         } else {
-            out.push(part.trim().parse().map_err(|_| format!("bad direction {part}"))?);
+            out.push(
+                part.trim()
+                    .parse()
+                    .map_err(|_| format!("bad direction {part}"))?,
+            );
         }
     }
     out.sort_unstable();
@@ -99,7 +124,10 @@ fn parse_directions(spec: &str, count: u32) -> Result<Vec<u32>, String> {
 
 /// `--probe r,x,y[,dx,dy]`: the certified bound at a centre (or over a box)
 /// beside the exact coverage at the centre, for differential tests.
-fn probe(cert: &sqverify_fast::certificate::Certificate, spec: &str) -> Result<serde_json::Value, String> {
+fn probe(
+    cert: &sqverify_fast::certificate::Certificate,
+    spec: &str,
+) -> Result<serde_json::Value, String> {
     let parts: Vec<&str> = spec.split(',').collect();
     if parts.len() != 3 && parts.len() != 5 {
         return Err("--probe takes r,x,y or r,x,y,dx,dy".into());
@@ -110,7 +138,10 @@ fn probe(cert: &sqverify_fast::certificate::Certificate, spec: &str) -> Result<s
     }
     let numbers: Vec<f64> = parts[1..]
         .iter()
-        .map(|p| p.parse::<f64>().map_err(|_| format!("bad probe number {p}")))
+        .map(|p| {
+            p.parse::<f64>()
+                .map_err(|_| format!("bad probe number {p}"))
+        })
         .collect::<Result<_, _>>()?;
     let (x, y) = (numbers[0], numbers[1]);
     let (c, s) = sqverify_fast::certificate::direction(&cert.step, index);
@@ -127,7 +158,9 @@ fn probe(cert: &sqverify_fast::certificate::Certificate, spec: &str) -> Result<s
     if numbers.len() == 4 {
         out["dx"] = json!(numbers[2]);
         out["dy"] = json!(numbers[3]);
-        out["box_lower_bound"] = json!(sqverify_fast::rotated::box_lower_bound(cert, index, x, y, numbers[2], numbers[3])?);
+        out["box_lower_bound"] = json!(sqverify_fast::rotated::box_lower_bound(
+            cert, index, x, y, numbers[2], numbers[3]
+        )?);
     }
     Ok(out)
 }
@@ -146,19 +179,29 @@ fn main() -> ExitCode {
 fn run() -> Result<bool, String> {
     let options = parse_args()?;
     let side = options.side.as_deref().map(parse_rational).transpose()?;
-    let threshold = parse_rational(&options.threshold)?;
+    let (raw, value) = read_json(&options.candidate).map_err(|e| e.to_string())?;
+    let cert = admit(&raw, &value, options.n, side.as_ref()).map_err(|e| e.to_string())?;
+    // The default threshold is the one the certificate declares, so verdicts
+    // compare with its authors'; without a declaration it is 1, which the
+    // packing bound needs.
+    let threshold = match &options.threshold {
+        Some(text) => parse_rational(text)?,
+        None => cert
+            .declared_threshold
+            .clone()
+            .unwrap_or_else(sqverify_fast::exact::one),
+    };
     if threshold < sqverify_fast::exact::one() {
         return Err("the threshold must be at least 1".into());
     }
-    let (raw, value) = read_json(&options.candidate).map_err(|e| e.to_string())?;
-    let cert = admit(&raw, &value, options.n, side.as_ref()).map_err(|e| e.to_string())?;
     if let Some(spec) = &options.probe {
         println!("{}", probe(&cert, spec)?);
         return Ok(true);
     }
     let directions = parse_directions(&options.directions, cert.angle_count)?;
     if let Some(dir) = &options.receipts {
-        std::fs::create_dir_all(dir).map_err(|e| format!("cannot create {}: {e}", dir.display()))?;
+        std::fs::create_dir_all(dir)
+            .map_err(|e| format!("cannot create {}: {e}", dir.display()))?;
     }
     let started = std::time::Instant::now();
     let next = AtomicUsize::new(0);
@@ -169,7 +212,9 @@ fn run() -> Result<bool, String> {
             scope.spawn(|| {
                 loop {
                     let position = next.fetch_add(1, Ordering::Relaxed);
-                    let Some(&index) = directions.get(position) else { break };
+                    let Some(&index) = directions.get(position) else {
+                        break;
+                    };
                     match run_direction(&cert, index, &threshold, options.limits, options.confirm) {
                         Ok(report) => {
                             println!("{}", report.receipt);
@@ -199,7 +244,8 @@ fn run() -> Result<bool, String> {
             let mut receipt = report.receipt.clone();
             receipt["certificate_sha256"] = json!(cert.input_sha256);
             let text = serde_json::to_string_pretty(&receipt).map_err(|e| e.to_string())? + "\n";
-            std::fs::write(&path, text).map_err(|e| format!("cannot write {}: {e}", path.display()))?;
+            std::fs::write(&path, text)
+                .map_err(|e| format!("cannot write {}: {e}", path.display()))?;
         }
     }
     let all_verified = reports.len() == directions.len() && reports.iter().all(|r| r.verified);
@@ -217,8 +263,10 @@ fn run() -> Result<bool, String> {
         "refused_directions": reports.iter().filter(|r| !r.verified).map(|r| r.index).collect::<Vec<_>>(),
         "nodes": reports.iter().map(|r| r.receipt["nodes"].as_u64().unwrap_or(0)).sum::<u64>(),
         "direction_seconds": reports.iter().map(|r| r.seconds).sum::<f64>(),
+        "direction_cpu_seconds": reports.iter().filter_map(|r| r.receipt["cpu_seconds"].as_f64()).sum::<f64>(),
         "wall_seconds": started.elapsed().as_secs_f64(),
         "threads": options.threads,
+        "build": sqverify_fast::build_identity(),
         "premises": premises(&cert),
     });
     println!("{summary}");

@@ -23,7 +23,15 @@ From `packing/`, for example:
         --arm verify-cpp --repeats 3 --out /tmp/measure-bench.jsonl
 
 `--callgrind` replaces CPU time by instruction counts for the fast arms
-(valgrind's `Ir`), which do not depend on the host's load.
+(valgrind's `Ir`), which do not depend on the host's load. `--whole NAMES` replays
+whole certificates instead (all 201 directions, one worker): `verify.cpp` through
+`devtools.audit_wand125_rectangles --replay --workers 1`, the fast arms through
+`--directions all --threads 1`. This is the headline comparison; from `packing/`,
+on an otherwise idle host:
+
+    .venv/bin/python3 -m benchmarks.bench_measure_verifier \\
+        --arm fast:candidate=sqverify_fast/target/release/sqverify-fast \\
+        --arm verify-cpp --whole rect_n32_L595,rect_n31_L592 --out whole.jsonl
 """
 
 from __future__ import annotations
@@ -34,6 +42,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import sys
 import tempfile
 import time
@@ -132,6 +141,29 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def search_instructions(outfile: Path) -> int | None:
+    """Inclusive instructions of the direction search, excluding admission.
+
+    Read from `callgrind_annotate --inclusive=yes`: the line of the one function
+    that runs a direction (`rotated::verify_direction`, or `axis::verify_axis` at
+    r = 0).
+    """
+    if not outfile.is_file():
+        return None
+    annotated = subprocess.run(
+        ["callgrind_annotate", "--inclusive=yes", str(outfile)],
+        capture_output=True,
+        text=True,
+        check=False,
+    ).stdout
+    for line in annotated.splitlines():
+        if "rotated::verify_direction" in line or "axis::verify_axis" in line:
+            match = re.match(r"\s*([\d,]+)", line)
+            if match:
+                return int(match.group(1).replace(",", ""))
+    return None
+
+
 def fast_run(binary: Path, cell: Cell, *, callgrind: bool) -> dict[str, Any]:
     argv = [
         str(binary.resolve()),
@@ -158,6 +190,7 @@ def fast_run(binary: Path, cell: Cell, *, callgrind: bool) -> dict[str, Any]:
                 r"refs:\s*([\d,]+)", result["stderr"]
             )
             result["instructions"] = int(match.group(1).replace(",", "")) if match else None
+            result["search_instructions"] = search_instructions(outfile)
     else:
         result = run_with_rusage(argv)
     lines = [json.loads(line) for line in result.pop("stdout").splitlines() if line.strip()]
@@ -221,6 +254,115 @@ def reference_run(cell: Cell) -> dict[str, Any]:
     }
 
 
+# Whole-certificate comparison: every one of the 201 directions, one worker each, so the
+# CPU is the cost of replaying the certificate. `verify.cpp` runs through the replay
+# tool's own `--replay` (compile, exact preflight, all directions); its CPU from `wait4`
+# includes those children, and its per-direction receipt rows are kept beside it.
+WHOLE: dict[str, Cell] = {
+    "rect_n32_L595": Cell("2026-09-27", "rect_n32_L595", 32, -1),
+    "rect_n31_L592": Cell("2026-09-27", "rect_n31_L592", 31, -1),
+    "rect_n27_L56": Cell("2026-09-27", "rect_n27_L56", 27, -1),
+    "rect_n78_L8955": Cell("2026-09-27", "rect_n78_L8955", 78, -1),
+}
+
+
+def whole_fast(binary: Path, cell: Cell) -> dict[str, Any]:
+    argv = [
+        str(binary.resolve()),
+        "--candidate",
+        str(cell.candidate),
+        "--n",
+        str(cell.n),
+        "--directions",
+        "all",
+        "--threshold",
+        THRESHOLD,
+        "--threads",
+        "1",
+    ]
+    result = run_with_rusage(argv)
+    lines = [json.loads(line) for line in result.pop("stdout").splitlines() if line.strip()]
+    summary = lines[-1] if lines else {}
+    rows = [line for line in lines if "r" in line]
+    result["verdict"] = summary.get("status")
+    result["nodes"] = summary.get("nodes")
+    result["directions"] = len(rows)
+    result["axis_cpu_seconds"] = next(
+        (row.get("cpu_seconds") for row in rows if row.get("r") == 0), None
+    )
+    result.pop("stderr")
+    return result
+
+
+def whole_reference(cell: Cell) -> dict[str, Any]:
+    with tempfile.TemporaryDirectory() as scratch:
+        argv = [
+            sys.executable,
+            "-m",
+            "devtools.audit_wand125_rectangles",
+            "--packet",
+            cell.packet,
+            "--n",
+            str(cell.n),
+            "--replay",
+            "--workers",
+            "1",
+            "--out",
+            scratch,
+        ]
+        result = run_with_rusage(argv)
+        receipt_path = Path(scratch) / "audit.json"
+        receipt = (
+            json.loads(receipt_path.read_text(encoding="utf-8"))
+            if receipt_path.is_file()
+            else {}
+        )
+        rows: list[dict[str, Any]] = []
+        for path in Path(scratch).rglob("verified_angles.jsonl"):
+            rows += [
+                json.loads(line)
+                for line in path.read_text(encoding="utf-8").splitlines()
+                if line.strip()
+            ]
+    result.pop("stdout")
+    result["stderr_tail"] = result.pop("stderr")[-2000:]
+    result["verdict"] = receipt.get("status")
+    result["nodes"] = sum(int(row.get("nodes", 0)) for row in rows)
+    result["directions"] = len(rows)
+    result["axis_seconds"] = next(
+        (row.get("seconds") for row in rows if row.get("r") == 0), None
+    )
+    result["direction_seconds"] = sum(float(row.get("seconds", 0.0)) for row in rows)
+    return result
+
+
+def run_whole(arms: list[tuple[str, Path | None]], names: list[str], out: Path) -> int:
+    rows: list[dict[str, Any]] = []
+    with out.open("a", encoding="utf-8") as sink:
+        for name in names:
+            cell = WHOLE[name]
+            for label, path in arms:
+                result = whole_reference(cell) if path is None else whole_fast(path, cell)
+                row = {
+                    "arm": label,
+                    "cell": f"{name}@all",
+                    "host": os.uname().nodename,
+                    "cpus": os.cpu_count(),
+                    **result,
+                }
+                rows.append(row)
+                sink.write(json.dumps(row, sort_keys=True) + "\n")
+                sink.flush()
+                print(
+                    f"{name:18} {label:12} cpu={row.get('cpu_seconds')} "
+                    f"verdict={row.get('verdict')} directions={row.get('directions')} "
+                    f"nodes={row.get('nodes')} load={row.get('load_before')}",
+                    flush=True,
+                )
+    print("\n".join(summarize(rows)))
+    return 0
+
+
 def parse_arm(text: str) -> tuple[str, Path | None]:
     if text == "verify-cpp":
         return ("verify-cpp", None)
@@ -233,7 +375,13 @@ def parse_arm(text: str) -> tuple[str, Path | None]:
 def summarize(rows: list[dict[str, Any]]) -> list[str]:
     arms = sorted({row["arm"] for row in rows})
     cells = list(dict.fromkeys(row["cell"] for row in rows))
-    metric = "instructions" if any(row.get("instructions") for row in rows) else "cpu_seconds"
+    metric = (
+        "search_instructions"
+        if any(row.get("search_instructions") for row in rows)
+        else "instructions"
+        if any(row.get("instructions") for row in rows)
+        else "cpu_seconds"
+    )
     lines = [f"metric: {metric}", "cell".ljust(26) + "".join(arm.rjust(28) for arm in arms)]
     totals = dict.fromkeys(arms, 0.0)
     complete = dict.fromkeys(arms, True)
@@ -281,6 +429,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", type=Path, required=True, help="JSONL of raw runs")
     parser.add_argument("--callgrind", action="store_true")
     parser.add_argument("--summarize", action="store_true", help="only summarize --out")
+    parser.add_argument(
+        "--whole",
+        default="",
+        help="comma-separated certificates to replay whole, e.g. rect_n32_L595",
+    )
     args = parser.parse_args(argv)
     os.chdir(PROJECT)
     if args.summarize:
@@ -288,6 +441,8 @@ def main(argv: list[str] | None = None) -> int:
         print("\n".join(summarize(rows)))
         return 0
     arms = [parse_arm(text) for text in args.arm]
+    if args.whole:
+        return run_whole(arms, [name for name in args.whole.split(",") if name], args.out)
     cells = (
         CELLS
         if args.cells == "all"

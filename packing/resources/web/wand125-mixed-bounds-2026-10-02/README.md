@@ -174,7 +174,7 @@ returned another record, and reports how far each replay has got.
 
 ## Replaying the Certificates
 
-Neither certificate has been replayed in full.
+Both certificates have since been replayed in full; the next section records the runs.
 The source’s check is its driver `code/verify_mixed_full_proof.py`, run from the unpacked
 tarball. `devtools.audit_wand125_point_and_mixed` runs the same check split by net
 angle, so that one certificate can be shared across sessions, one command per batch:
@@ -222,6 +222,28 @@ certificate’s own node counts: about 11.7 CPU-hours for $n = 84$ and 10.2 for 
 or 3 and 2.5 hours of wall time at four workers. On a busier guest, $n = 50$’s complete
 replay took twice its estimate, so a session should allow for that.
 
+## Complete Replays Here, 2 October 2026
+
+Each certificate was replayed over all 201 directions in two `mixed-replay` runs of four
+workers on shared 4-core x86-64 Linux containers (Intel Xeon, `c++` 13.3.0, one BLAS
+and OpenMP thread, `PYTHONOPTIMIZE` unset), each run bound to the pinned tarball, and
+`mixed-merge` printed `FULL_REPLAY_MATCHES_SHIPPED`: every direction returned the record
+the certificate holds, the axis direction its cells and integer minimum and each oblique
+direction its node count and lower bound.
+
+| Certificate | Directions | Least oblique bound (index) | Axis cells, minimum | CPU-hours | Receipts |
+| --- | ---: | --- | --- | ---: | --- |
+| `mixed_n84_L940` | 201 | $1.0000000008975796$ (175) | 18,198,756, $1.0083383947166207$ | 12.29 | [`receipts/n84/`](receipts/n84/) |
+| `mixed_n85_L942` | 201 | $1.0000000017271347$ (44) | 15,784,729, $1.013816765469528$ | 9.77 | [`receipts/n85/`](receipts/n85/) |
+
+Each `merged.json` is the merged verdict, and `mixed-merge NAME --check` re-derives it.
+The runs replay the source’s own checker and per-angle functions, so they confirm the
+source’s runs rather than deciding coverage a second way.
+The checker’s controls are the $n = 37$ ones of the
+[October 1 packet](../wand125-point-and-mixed-2026-10-01/README.md#controls-for-the-mixed-checker),
+made with the same checker bytes and compile; no mutation of these two certificates was
+run.
+
 ## Where the Request and the Retained Files Differ
 
 - **The comparison value is below Green’s bound.** Each `completion-audit.json` compares
@@ -251,9 +273,9 @@ replay took twice its estimate, so a session should allow for that.
 
 ## Limitations
 
-- **Neither certificate was replayed in full.** One oblique angle of each, of 201, was
-  replayed and returned the certificate’s record; that decides nothing about the other
-  200 or the axis. Every other statement above is read from the retained files,
+- **One implementation.** The complete replays run the source’s checker, so coverage is
+  decided by one C++ program; the axis tables are a second implementation for one
+  direction only. Every other statement above is read from the retained files,
   recomputed by the exact audit, or a digest comparison.
 - **The bundles are pinned and not held.** A replay needs the tarballs from the source at
   the pinned revision; each must have the digest above.

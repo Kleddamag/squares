@@ -25,7 +25,7 @@ The rest has an owner, and is not repeated here:
 | 2. Retain | W1 | The source in a packet at a pinned revision, with its bibliography key |
 | 3. Record | W1 | The claim registered as reported, with its coverage entry, and merged: *imported* |
 | 4. Validate | W2 | Replay evidence, a mapped review and the rungs they derive: status `confirmed`, or `incomplete` |
-| 5. Publish | The change that moves the record | The reader documents state the result: *integrated* |
+| 5. Publish | The change that moves the record | The reader documents state the result; once stage 4 has passed, *integrated* |
 | 6. Explain | W8, with a W2 review | A review paper, for the results that warrant one |
 | 7. Answer | The owner | The reply on the issue: *answered* |
 
@@ -38,7 +38,7 @@ Two rules shape every import:
 
 - **One bead.** Each import has a bead labelled `result-import`, titled
   `Import <author>: <claim> (#<issue>)`, that holds the claim map and stays open until
-  the author is answered.
+  the author is answered, or until the result is integrated where no author asked.
 - **Two pull requests.** Stages 1 to 3 merge on the day the result is first seen.
   Stage 4 merges when its replay and review are done, which can be days later.
   A reported result is then visible while it waits, and no branch holds an unmerged
@@ -51,7 +51,8 @@ Two rules shape every import:
 Triage decides what the import is before anything is retained, in an hour or less.
 
 1. **Pin the source**, the author’s own publication and not a report of it, at a full
-   commit id or a DOI with file checksums.
+   commit id or a DOI with file checksums: its current head, unless the claim depends on
+   an older revision.
 2. **List every claim the release makes**, including those the request does not mention.
    Issue 227 asked about $n = 102$ and $103$; the source held 49 packings.
    A claim in scope that the request does not mention becomes an import of its own.
@@ -62,8 +63,8 @@ Triage decides what the import is before anything is retained, in an hour or les
    A missing tool is a W7 slice, and the plan says so.
 5. **Open the bead and draft the acknowledgement:** what was received, the revision
    pinned, and what will be checked.
-   It states no `T-NNN` and no rung, and the owner posts it within a day, as with every
-   reply.
+   It states no `T-NNN` and no rung, and the owner, or an agent at the owner’s request,
+   posts it within a day.
 
 | Claim | Register action |
 | --- | --- |
@@ -71,9 +72,9 @@ Triage decides what the import is before anything is retained, in an hour or les
 | Bounds of one kind at several counts in one release | One entry whose `scope` covers them |
 | A later release that raises an earlier entry’s values or adds counts | A new entry; the earlier one keeps its claim, and the case records decide which is current |
 | A theorem with an unbounded parameter | One entry stating the theorem, whose `scope` lists the cases this record holds |
-| A second proof of a value the record holds | A new `simplification` entry |
-| A consequence of another claim, such as monotonicity | Its own entry only when it settles a case; otherwise the parent’s `scope` covers it |
-| A result that makes a registered one a corollary | Both stand; the older claim gains a sentence naming the newer route |
+| A second certificate for a value the record holds | A new `simplification` entry |
+| A consequence of another claim, such as monotonicity, at a count where the record holds no such value | Its own entry only when it settles a case; otherwise the parent’s `scope` covers it |
+| A consequence that another entry already registers | No new entry and no change of scope: both stand, and the older claim gains a sentence naming the newer route |
 | New evidence or an author’s answer about a registered entry | No new entry: the source retained at the revision that holds it, and an evidence update |
 | A request for a result already registered | No new entry: link the issue and continue from the entry’s stage |
 | Below the standing bound and asking for no work | None; it stays in the packet |
@@ -140,8 +141,8 @@ It states the claim and each `T-NNN` it covers; re-derives the argument from the
 certificate to the claim, with every hypothesis the checker assumes; gives each
 checker’s trust boundary and what any two share; and marks each defect blocking or not.
 It is recorded as `external_review` on the reported evidence entry, which makes the
-entry `reviewed`, and listed in the register entry’s `reviews` under the kind it was run
-as.
+entry `reviewed`, or `incomplete` when the read found a defect, and listed in the
+register entry’s `reviews` under the kind it was run as.
 
 **The exit** follows both lanes.
 It adds the replay evidence, moves the verified lane if the review has no blocking

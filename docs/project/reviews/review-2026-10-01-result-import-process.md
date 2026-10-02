@@ -152,7 +152,7 @@ The audit found seven.
 7. **Missing session records.** Five import pull requests declared no workflow, six had
    no session record of their own, and session 162’s was reconstructed.
    The runbook’s answer: one bead for each import.
-   A routine import needs no session record, as the synopsis already says.
+   Each phase is declared as any other is.
 
 ## How the Ratings Were Assessed
 
@@ -241,7 +241,7 @@ workflow contracts in the synopsis, and the render and check commands in the W8 
 It holds the sequence and the rules that had no home: the entry from an issue or a link,
 one bead and two pull requests for each import, the claim map, the packet’s name and
 README, which date is the publication date, when the `T-NNN` is taken, how a replay is
-run and its receipts kept, what a review states, the exit commit, when a review paper is
+run and its receipts kept, what a review states, the exit, when a review paper is
 written, and when the author is answered.
 
 Outside the runbook, `epistemics.md` gains three rules for scoring significance, and

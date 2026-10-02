@@ -192,6 +192,24 @@ Four things must come first:
 
 A plateaus at 32 bins and needs 64 bins or row splitting.
 
+### Reproduction, Saved Certificate and Falsifiers
+
+The fourth slice met three of those conditions, from a worktree at `fe152c30`. The
+independent review was running alongside it.
+
+| Receipt | What it shows | Wall |
+| --- | --- | ---: |
+| `receipts/kernel-closure-W7-reproduce.json` | W7 re-run with `--save-objects`: the same node `2d516d00…` and seed `8949a798…`, the same closure and transfer | 29.7 min |
+| `receipts/kernel-closure-W7-check-saved.json` | `--check-saved` on the saved objects in a fresh process: `PASS_SAVED_CLOSED`, the producer never imported, every cover re-proved by the reference all-pairs sweep rather than the indexed one | 27.3 min |
+| `receipts/kernel-falsifier-endpoint7.json` | The endpoint’s own west-wall arity-7 sub-pattern (its squares 1, 2, 3, 4, 9, 10, 11) at W7’s settings: certified stall | 4.2 min |
+| `receipts/kernel-falsifier-W7-minus-N0.json` | W7 without side-N0, which the selector places: certified true stall. Its rows match W7’s through round 3, then plateau | 28.3 min |
+
+The certificate is in `certificates/W7/`: the gzipped seed and node, each named by the
+SHA-256 of its decompressed canonical JSON, and a `README.txt` giving the format for an
+independent reader. The sharper falsifier is the useful one.
+It runs the same cascade as W7, so it exercises the collision path that closes W7, and
+without side-N0 it plateaus with side-W2 at 48 live rows rather than 12.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

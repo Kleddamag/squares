@@ -3,8 +3,13 @@
 from __future__ import annotations
 
 import copy
+import gzip
+import hashlib
+import subprocess
+import sys
 import time
 from fractions import Fraction as Q
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -193,3 +198,45 @@ def test_a_forged_collision_region_or_partner_cover_is_refused(blind_pair: Frame
     live["domain"] = live["domain"][:1]
     with pytest.raises(RefusalError, match="partner cover domain differs"):
         certify(blind_pair, shrunk, [0, 1], 16)
+
+
+def test_a_saved_closure_is_certified_by_the_checker_alone(
+    blind_pair: Frame, tmp_path: Path
+) -> None:
+    production = producer.produce(blind_pair, [0, 1], bins=16, max_rounds=2, budget=budget())
+    tool.save_certificate(tmp_path, production.seed, production.node)
+    result = tool.check_saved(tmp_path, blind_pair, max_seconds=60, require_no_producer=False)
+    assert result["status"] == "PASS_SAVED_CLOSED"
+    assert result["closure"]["kind"] == "all_parent_poses_forbidden"
+    assert result["excluded_orbits"] == 1
+    assert result["node_sha256"] == tool.content_sha256(production.node)
+    with pytest.raises(RefusalError, match="producer is loaded"):
+        tool.check_saved(tmp_path, blind_pair)
+    saved = next(tmp_path.glob("node-*.json.gz"))
+    raw = gzip.decompress(saved.read_bytes())
+    saved.write_bytes(gzip.compress(raw.replace(b'"closed":true', b'"closed":false')))
+    with pytest.raises(RefusalError, match="digest"):
+        tool.check_saved(tmp_path, blind_pair, require_no_producer=False)
+    edited = raw.replace(b'"closed":true', b'"closed":false')
+    saved.unlink()
+    (tmp_path / f"node-{hashlib.sha256(edited).hexdigest()}.json.gz").write_bytes(
+        gzip.compress(edited)
+    )
+    with pytest.raises(RefusalError, match="declared closure differs"):
+        tool.check_saved(tmp_path, blind_pair, require_no_producer=False)
+
+
+def test_the_saved_check_path_never_imports_the_producer() -> None:
+    code = (
+        "import sys; import devtools.check_n17_subpattern as tool; "
+        "assert tool.PRODUCER not in sys.modules, 'producer imported'"
+    )
+    completed = subprocess.run(
+        [sys.executable, "-c", code],
+        cwd=Path(tool.__file__).resolve().parents[1],
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=60,
+    )
+    assert completed.returncode == 0, completed.stderr

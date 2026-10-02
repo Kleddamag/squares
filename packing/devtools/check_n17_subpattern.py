@@ -25,6 +25,7 @@ from __future__ import annotations
 import argparse
 import gzip
 import hashlib
+import importlib
 import json
 import math
 import sys
@@ -33,9 +34,9 @@ from pathlib import Path
 from typing import Any
 
 from devtools import check_hull_kernel_mask0 as mask0_tool
-from sqpack.hull_kernel import node, producer, sequential
+from sqpack.hull_kernel import node, sequential
 from sqpack.hull_kernel.frame import Frame
-from sqpack.hull_kernel.geometry import Budget, IncompleteError
+from sqpack.hull_kernel.geometry import Budget, IncompleteError, RefusalError
 
 PATTERNS = {
     "A": (
@@ -58,9 +59,133 @@ PATTERNS = {
         "interior-W",
     ),
     "endpoint6": ("corner-SW", "side-S0", "side-W0", "side-W2", "corner-NW", "interior-W"),
+    # Second in the arity-7 certification priority (best penetration 6.3e-5).
+    "NW7": (
+        "side-N0",
+        "side-N1",
+        "side-W2",
+        "interior-SW",
+        "interior-NW",
+        "interior-W",
+        "interior-S",
+    ),
+    # The endpoint's own west-wall cells (its squares 1, 2, 3, 4, 9, 10 and 11): W7's
+    # falsifier, which shares five of W7's seven cells.
+    "endpoint7": (
+        "corner-SW",
+        "side-S0",
+        "side-W0",
+        "side-W2",
+        "side-N0",
+        "corner-NW",
+        "interior-W",
+    ),
 }
-CONTROLS = frozenset({"endpoint6"})
+CONTROLS = frozenset({"endpoint6", "endpoint7"})
+PRODUCER = "sqpack.hull_kernel.producer"
 MAX_EVENTS = 200_000
+
+
+def canonical_bytes(value: Any) -> bytes:
+    """The bytes an object is digested and saved as: sorted keys, no spaces, UTF-8."""
+    return json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
+
+
+def content_sha256(value: Any) -> str:
+    return hashlib.sha256(canonical_bytes(value)).hexdigest()
+
+
+def save_certificate(
+    directory: Path, seed: dict[str, Any], node_object: dict[str, Any]
+) -> None:
+    """Write `seed-<sha256>.json.gz` and `node-<sha256>.json.gz` of the canonical bytes."""
+    directory.mkdir(parents=True, exist_ok=True)
+    for kind, value in (("seed", seed), ("node", node_object)):
+        raw = canonical_bytes(value)
+        target = directory / f"{kind}-{hashlib.sha256(raw).hexdigest()}.json.gz"
+        target.write_bytes(gzip.compress(raw, mtime=0))
+
+
+def load_certificate(directory: Path) -> tuple[dict[str, Any], dict[str, Any], str, str]:
+    """The saved seed and node, each refused unless its bytes are canonical and its file
+    name is the SHA-256 of those bytes."""
+    loaded: list[tuple[dict[str, Any], str]] = []
+    for kind in ("seed", "node"):
+        found = sorted(directory.glob(f"{kind}-*.json.gz"))
+        if len(found) != 1:
+            raise RefusalError(f"expected exactly one saved {kind} in {directory}")
+        raw = gzip.decompress(found[0].read_bytes())
+        digest = hashlib.sha256(raw).hexdigest()
+        if found[0].name != f"{kind}-{digest}.json.gz":
+            raise RefusalError(f"saved {kind} differs from the digest it is named by")
+        value = json.loads(raw)
+        if canonical_bytes(value) != raw:
+            raise RefusalError(f"saved {kind} is not in canonical form")
+        loaded.append((value, digest))
+    (seed, seed_sha), (node_object, node_sha) = loaded
+    return seed, node_object, seed_sha, node_sha
+
+
+def checker_modules() -> dict[str, str]:
+    """SHA-256 of every `sqpack.hull_kernel` module this process has imported."""
+    digests: dict[str, str] = {}
+    for name, module in sorted(sys.modules.items()):
+        location = getattr(module, "__file__", None)
+        if name.startswith("sqpack.hull_kernel") and location:
+            digests[name] = hashlib.sha256(Path(location).read_bytes()).hexdigest()
+    return digests
+
+
+def check_saved(
+    directory: Path,
+    frame: Frame | None = None,
+    *,
+    max_seconds: float = 3600.0,
+    require_no_producer: bool = True,
+) -> dict[str, Any]:
+    """Certify saved objects with the checker alone: seed admission, the sequential
+    replay and the transfer. The producer is never imported; with `require_no_producer`
+    its absence from `sys.modules` is asserted before and after the check."""
+    if require_no_producer and PRODUCER in sys.modules:
+        raise RefusalError("the producer is loaded; a saved check must run without it")
+    started = time.monotonic()
+    seed, node_object, seed_sha, node_sha = load_certificate(directory)
+    frame = frame if frame is not None else mask0_tool.n17_unique_frame()
+    mask = node_object["mask"]
+    bins = seed["bins"]
+    budget = Budget(started + max_seconds, MAX_EVENTS)
+    seed_state = node.admit_seed(
+        frame, seed, mask=mask, bins=bins, budget=budget, allow_empty_groups=True
+    )
+    trace = sequential.replay_sequential(
+        frame, node_object, seed_state, mask=mask, seed_sha256=seed_sha, budget=budget
+    )
+    if require_no_producer and PRODUCER in sys.modules:
+        raise RefusalError("the producer was imported during a saved check")
+    closed = trace.closure is not None
+    result: dict[str, Any] = {
+        "status": "PASS_SAVED_CLOSED" if closed else "PASS_SAVED_STALL",
+        "frame": frame.name,
+        "cells": [frame.cell_names[owner] for owner in mask],
+        "mask": mask,
+        "bins": bins,
+        "seed_sha256": seed_sha,
+        "node_sha256": node_sha,
+        "closure": trace.closure,
+        "steps_checked": len(trace.steps),
+        "rows_checked": sum(step["rows"] for step in trace.steps),
+        "events": sum(step["events"] for step in trace.steps),
+        "collision_regions": sum(step.get("collision_regions", 0) for step in trace.steps),
+        "producer_imported": PRODUCER in sys.modules,
+        "checker_modules_sha256": checker_modules(),
+        "check_seconds": time.monotonic() - started,
+    }
+    excluded = frame.states_containing(mask) if closed else []
+    result["excluded_orbits"] = len(excluded)
+    result["excluded_states"] = sum(
+        orbit_size(frame, frame.representatives[index]) for index in excluded
+    )
+    return result
 
 
 def orbit_size(frame: Frame, state: tuple[int, ...]) -> int:
@@ -81,6 +206,7 @@ def run(
     producer_share: float = 0.5,
     save_objects: Path | None = None,
 ) -> dict[str, Any]:
+    producer = importlib.import_module(PRODUCER)
     started = time.monotonic()
     mask = sorted(frame.cell_names.index(cell) for cell in cells)
     budget = Budget(started + max_seconds, MAX_EVENTS)
@@ -109,19 +235,13 @@ def run(
         production.node,
         seed,
         mask=mask,
-        seed_sha256=producer.content_sha256(production.seed),
+        seed_sha256=content_sha256(production.seed),
         budget=budget,
         cover=cover,
     )
     checked = time.monotonic()
     if save_objects is not None:
-        save_objects.mkdir(parents=True, exist_ok=True)
-        for kind, value in (("seed", production.seed), ("node", production.node)):
-            digest = producer.content_sha256(value)
-            target = save_objects / f"{kind}-{digest}.json.gz"
-            target.write_bytes(
-                gzip.compress(json.dumps(value, sort_keys=True, separators=(",", ":")).encode())
-            )
+        save_certificate(save_objects, production.seed, production.node)
     closed = trace.closure is not None
     result: dict[str, Any] = {
         "pattern": name,
@@ -160,8 +280,8 @@ def run(
             for entry in production.rounds
         ],
         "final_extents": trace.extents,
-        "node_sha256": producer.content_sha256(production.node),
-        "seed_sha256": producer.content_sha256(production.seed),
+        "node_sha256": content_sha256(production.node),
+        "seed_sha256": content_sha256(production.seed),
         "producer_seconds": produced - started,
         "checker_seconds": checked - produced,
     }
@@ -175,7 +295,7 @@ def run(
         result["excluded_orbits"] = 0
         result["excluded_states"] = 0
     if name in CONTROLS:
-        result["control"] = "endpoint sub-pattern must stall"
+        result["control"] = "an endpoint sub-pattern must stall"
         result["status"] = "REFUSED_CONTROL_CLOSED" if closed else "PASS_CONTROL_STALLED"
     else:
         result["status"] = "PASS_CERTIFIED_CLOSED" if closed else "PASS_CERTIFIED_STALL"
@@ -201,6 +321,11 @@ def main(argv: list[str] | None = None) -> int:
         default=0.5,
         help="the share of the wall ceiling after which the producer starts no new step",
     )
+    parser.add_argument(
+        "--check-saved",
+        type=Path,
+        help="certify a saved seed and node with the checker alone; nothing is produced",
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
     if not math.isfinite(args.max_seconds) or args.max_seconds <= 0:
@@ -212,6 +337,24 @@ def main(argv: list[str] | None = None) -> int:
     name = "custom" if args.cells else args.pattern
     cells = tuple(args.cells) if args.cells else PATTERNS[args.pattern]
     start, cpu = time.monotonic(), time.process_time()
+    if args.check_saved is not None:
+        try:
+            result = check_saved(args.check_saved, max_seconds=args.max_seconds)
+        except IncompleteError as error:
+            result = {"status": "INCOMPLETE", "reason": str(error), "excluded_orbits": 0}
+        except (ValueError, KeyError, IndexError, TypeError, OSError) as error:
+            result = {"status": "REFUSED", "reason": str(error), "excluded_orbits": 0}
+        result.update(
+            tool_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            wall_seconds=time.monotonic() - start,
+            process_cpu_seconds=time.process_time() - cpu,
+        )
+        encoded = json.dumps(result, indent=2, sort_keys=True, default=str) + "\n"
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(encoded, encoding="utf-8")
+        print(encoded, end="")
+        return 0 if str(result["status"]).startswith("PASS") else 2
     try:
         frame = mask0_tool.n17_unique_frame()
         result = run(

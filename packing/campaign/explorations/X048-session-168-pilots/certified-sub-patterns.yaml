@@ -1,0 +1,25 @@
+# Sub-patterns certified infeasible on the n17 unique-state cover, and their admission.
+# `devtools/census_n17_certified.py` reads this file. Its certified count uses only the
+# entries marked `admitted`; a `pending` entry is a projection, reported on its own line.
+# Every path is repository-relative. Admitting an entry means setting `status: admitted`
+# and naming the review document that admits it in `evidence`.
+schema: n17-certified-sub-patterns/v1
+design: ring-3-voronoi-8-tabbed-unique
+entries:
+  - name: W7
+    cells: [corner-SW, side-N0, side-W0, side-W1, side-W2, interior-SW, interior-W]
+    certifier: kernel
+    receipt: packing/campaign/explorations/X048-session-168-pilots/receipts/kernel-closure-W7-check-saved.json
+    receipt_sha256: 3648f27b2c2239708c068222ef4f22768a5549d31633d1297f3d7ee5465f6957
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/W7
+    status: pending
+    evidence: null
+  - name: A
+    cells: [interior-SW, interior-NW, interior-W, interior-S, interior-N, interior-SE]
+    certifier: branch-and-bound
+    # Lane P2's reproduction from the committed bytes is in progress; its receipt goes here.
+    receipt: null
+    receipt_sha256: null
+    certificate: null
+    status: pending
+    evidence: null

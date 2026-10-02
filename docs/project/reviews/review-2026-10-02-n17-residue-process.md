@@ -269,7 +269,7 @@ The kernel’s frame already implements this: `make_frame` takes `capture_cap`, 
 cells in the $U$-frame and centres the wall bounds at $[(U-U')/2+h,\ (U+U')/2-h]$
 (`sqpack/hull_kernel/frame.py`, lines 174–195), which is what the capture pilot uses at
 $U'$, the exp-238 root box’s enclosure of $S^{\ast}$ rounded up to the $10^{-12}$ grid
-([`pilot_n17_capture.py`](../../../packing/devtools/pilot_n17_capture.py), docstring).
+(`pilot_n17_capture.py`, a lane’s uncommitted pilot, docstring).
 The branch-and-bound tool reads its cap from the pattern (`cover.U`) and clips centres
 to $[h,\ \text{cap}-h]$, so a lower cap there needs the same centring before it is
 sound.

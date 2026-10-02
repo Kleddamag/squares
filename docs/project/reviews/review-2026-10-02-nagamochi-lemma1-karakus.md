@@ -1,8 +1,7 @@
 # Nagamochi’s Lemma 1 Is False: What T-007 Rests On Now
 
 **Date:** October 2, 2026. **Lane:** A of bead `think-589i`, the W2 factual review of
-`T-007`. Adversarial review by an AI reviewer at maximum reasoning effort; no model is
-named in this file by project rule.
+`T-007`. Adversarial review by an AI reviewer at maximum reasoning effort (Claude Fable 5.1).
 This review reads the sources, recomputes the counterexample exactly with a retained
 tool, audits the published replacement bound, and recommends register statuses.
 It edits no register file.

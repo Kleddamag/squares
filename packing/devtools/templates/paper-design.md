@@ -1613,9 +1613,10 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   to the site’s root. Its page shares the explainer’s publication layer and
   `paper-type.css`, and keeps only its diagrams’ rules in
   [n11-optimality-review.css](n11-optimality-review.css).
-  There a table keeps to the column and scrolls inside its own wrap, the credits are one
-  column no wider than the page, and a diagram drawn in fixed ink keeps a light ground
-  on the dark theme, as the construction in its first figure does.
+  There a table keeps to the column and scrolls inside its own wrap, and a diagram drawn
+  in fixed ink keeps a light ground on the dark theme, as the construction in its first
+  figure does. Its front, the formats row, the title and the credits, is the two papers’
+  one component (**The Papers’ Front**, below).
 
   **The paper’s citations name a commit, the one exception to links on `main`.** A paper
   cites the evidence as it stood when it was typeset: its links carry anchors into
@@ -1770,6 +1771,86 @@ The 100-packing atlas is an explicit exception: it is a standalone SVG with its 
 dense grid, title, and labels.
 Enlarging every internal label to the figure-label size would obscure its cells.
 Its caption uses the shared role; the linked full-size PDF provides the detailed view.
+
+## The Papers’ Front
+
+Both papers open the same way, and one component writes it: `devtools.paper_front`, from
+a small record each renderer keeps (`PaperFront`: the slug, the title, who oversaw the
+paper, its agents, its version, its dates, and the source it explains where that is
+someone else’s work).
+The page, the Markdown edition and the PDF, which takes its title and its dates from the
+page, follow from that record; neither article carries a copy, only the slot
+`{{FRONT_MATTER}}`.
+
+The front is, in order:
+
+- **The formats row.** Three chips at the top corner of the page, on screen only: MD,
+  the Markdown the page is rendered from, and PDF, its typeset PDF, each beside the page
+  under its slug; then GITHUB, the project, with its mark.
+  The row is navigation, so the Markdown edition leaves it out.
+
+- **The title.** A Markdown `h1` in the hero, centred, in the page-title role.
+
+- **The credits.** One line each, in the owner’s form (2026-10-01): names in bold,
+  addresses as plain links, the version plain.
+
+  ```
+  From the original proof by **Queuingtheorydotcom**
+  github.com/Queuingtheorydotcom/11SquaresOptimal
+
+  Human oversight: **Joshua Levy**
+  Agents: **GPT-6 Astra** and **GPT-6 Sol**
+  Draft v0.1.0
+  Original proof September 29, 2026 · Last revised October 1, 2026
+  ```
+
+  A paper that explains someone else’s work credits its source first, by the author’s
+  name and the work’s address, and a line’s space sets the paper’s own credits apart; a
+  paper that explains the project’s own proofs begins at its own credits.
+  Then who oversaw it, the agents, the version line and the dates line, with a line’s
+  space before the dates.
+  The project’s repository is not a line of the credits on either paper: the footer
+  every page carries names it, and so does the GITHUB chip.
+
+- **The version line.** The paper’s version, plain: the publication’s edition for the
+  explainer (`PUBLICATION_EDITION`, the stamp every artifact carries) and the review’s
+  own draft version (`OPTIMALITY_REVIEW_EDITION`), both from `sqpack.release`. A paper
+  that has had more than one edition links its version history, the section at the foot
+  of the explainer that lists every edition with the day each was first published; a
+  paper at its first version has no history to link.
+
+- **The dates line.** One grammar on both: `<What> <Month D, YYYY>` parts joined by a
+  middle dot, ending with “Last revised”, the day the article last changed.
+  A paper with a source leads with the day the source published its proof (“Original
+  proof September 29, 2026”); the explainer leads with the day its first edition went
+  live (“First published September 5, 2026”). Every value is `sqpack.release`’s, and
+  `devtools.artifact_dates` holds each to its rule.
+
+- **The closing.** The paper’s own last sections (the explainer’s version history, the
+  review’s sources and verification record), then the footnotes, then the colophon every
+  page shares (`render_overview.colophon_lines`).
+
+In the Markdown edition the front is the title as a heading and the credits as a list,
+one item a line, bold and linked as the page is.
+In the head, the title is the paper’s name, a middle dot and the project’s name, and the
+revised day is `article:modified_time`; the explainer’s first publication is
+`article:published_time` too (**Page Metadata and Social Cards**, above).
+
+The credits are one grid column the width of the page (`.credits`, in the publication
+layer), an address in them may break anywhere, and the two lines’ spaces are `1lh`, on
+`.credits-source + .credits-own` and on `.publication-date`.
+
+`devtools.paper_structure` reads both rendered papers, from a built site or from the
+published one, and prints every structural axis side by side: the head, the formats row,
+the title, each line of the credits with what is bold and linked in it, the version and
+dates lines, the heading case, the figures and their captions, the tables, the
+footnotes, the closing, the Markdown edition’s opening and the PDF’s title, size and
+dates. A form axis is one both papers set one way; a content axis is each paper’s own,
+such as how many figures it has.
+`tests/test_paper_structure.py` fails when a form axis differs.
+`devtools.measure_site_pages credits` measures the front as laid out, the weight, the
+gap above and the width of every line and chip, and `tests/test_site_glyphs.py` holds
+the two papers’ fronts equal in a browser at 1280 and 390 pixels.
 
 ## Figures
 

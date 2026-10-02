@@ -9,13 +9,19 @@ from typing import Literal
 
 import pytest
 
-from devtools import check_published_site, render_n11_lower_bounds_explainer, render_overview
+from devtools import (
+    check_published_site,
+    paper_front,
+    render_n11_lower_bounds_explainer,
+    render_overview,
+)
 from devtools import measure_site_pages as measure
 from devtools import n11_optimality_mechanism_figures as mechanism
 from devtools import n11_optimality_overview_figures as overview
 from devtools import render_n11_optimality_review as paper
 from devtools.render_n11_lower_bounds_explainer import assert_self_contained
 from devtools.render_n11_optimality_review import TYPESET_ALL
+from sqpack import release
 from sqpack.probes import probe
 
 ARTICLE = paper.TEMPLATES / "n11-optimality-review-article.md"
@@ -26,7 +32,7 @@ SVG = (
     '<title>Exact diagram</title><rect width="2" height="2"/></svg>'
 )
 FIGURES: dict[str, str] = dict.fromkeys(paper.FIGURE_KEYS, SVG)
-SOURCE = """# A Review of the Optimality Proof of the Trump Packing of 11 Squares
+SOURCE = """{{FRONT_MATTER}}
 
 An exact formula is $x^2$.[^proof] See the
 [review](../../../docs/project/reviews/review-2026-09-29-n11-optimality.md)
@@ -89,20 +95,16 @@ def test_the_papers_head_is_the_sites_set_at_the_papers_own_address(
     assert head.meta("og:type") == ["article"]
     assert head.meta("description") == [paper.DESCRIPTION]
     assert not paper.DESCRIPTION.startswith(paper.TITLE)
-    # The stand-in article states no date, so its head states none.
-    assert head.meta("article:modified_time") == []
-    # The article's own: the head says what its credits say, or nothing.
-    article = ARTICLE.read_text(encoding="utf-8")
-    stated = re.search(r"This review revised ([A-Z][a-z]+ \d{1,2}, \d{4})</span>", article)
-    meta = paper.page_meta(article)
-    assert meta.modified == (
-        render_n11_lower_bounds_explainer.iso_date(stated.group(1)) if stated else ""
+    # The head says what the front says: the day the review was last revised, from the
+    # release module, and no first publication, which the review does not record.
+    meta = paper.page_meta()
+    assert meta.modified == render_n11_lower_bounds_explainer.iso_date(
+        release.OPTIMALITY_REVIEW_REVISED
     )
+    assert head.meta("article:modified_time") == [meta.modified]
     assert meta.published == ""
     assert (meta.kind, meta.path) == ("article", paper.SITE_PATH)
-    if stated:
-        tags = render_overview.head_tags(meta)
-        assert f'<meta property="article:modified_time" content="{meta.modified}">' in tags
+    assert paper_front.revised(paper.FRONT) == release.OPTIMALITY_REVIEW_REVISED
 
 
 def test_the_paper_ends_with_the_sites_closing_credit(rendered: tuple[str, str]) -> None:
@@ -441,30 +443,68 @@ def test_a_diagram_drawn_in_fixed_ink_keeps_a_light_ground_on_the_dark_theme() -
     assert "prefers-color-scheme" not in css
 
 
-def test_the_credits_are_one_column_no_wider_than_the_page() -> None:
-    """The credits carry the original proof's address, one unbreakable word wider than a
-    phone's column. As a grid's automatic column the credits took that width, and every
-    credit was cut at the page's edge; the column is the page's width and the address
-    may break."""
-    css = paper.STYLE.read_text(encoding="utf-8")
-    assert ".n11-paper .credits {\n  grid-template-columns: minmax(0, 1fr);\n}" in css
-    assert ".n11-paper .credits a {\n  overflow-wrap: anywhere;\n}" in css
-    parts = paper.ARTICLE.read_text(encoding="utf-8").split('<div class="credits centred">')
-    assert len(parts) == 2
-    block = parts[1].split("</div>", 1)[0]
-    # The original proof leads, by its author's name in bold and then its address as a
-    # plain link; this review's own credits follow a line's space below, names in bold,
-    # and the draft's version is not bold.
+def test_the_front_is_the_shared_components_in_the_owners_form(
+    rendered: tuple[str, str],
+) -> None:
+    """The article carries one slot for its front, and the page and the Markdown edition
+    take it from `paper_front`, written from this paper's record: the original proof
+    first, by its author's name in bold and then its address as a plain link; this
+    review's own credits a line's space below, names in bold; the draft's version not
+    bold, with no history to link; then the dates. The credits' column and the space
+    before a paper's own credits are the publication layer's, so the paper's own sheet
+    says nothing about them."""
+    article = paper.ARTICLE.read_text(encoding="utf-8")
+    assert article.count("{{FRONT_MATTER}}") == 1
+    assert '<div class="credits' not in article
+    assert "doc-links" not in article
+    assert "doc-links" not in paper.SHELL.read_text(encoding="utf-8")
+    assert ".credits" not in paper.STYLE.read_text(encoding="utf-8")
+    html, markdown = rendered
     address = "github.com/Queuingtheorydotcom/11SquaresOptimal"
-    oversight = '<a href="https://x.com/ojoshe"><strong>Joshua Levy</strong></a>'
-    assert [line.strip() for line in block.strip().splitlines()][:5] == [
-        "<span>From the original proof by <strong>Queuingtheorydotcom</strong></span>",
-        f'<span><a href="https://{address}">{address}</a></span>',
-        f'<span class="credits-review">Human oversight: {oversight}</span>',
+    oversight = '<a href="https://x.com/ojoshe" target="_blank" rel="noopener noreferrer">'
+    block = html.split('<div class="credits centred">', 1)[1].split("</div>", 1)[0]
+    assert [line.strip() for line in block.strip().splitlines()] == [
+        (
+            '<span class="credits-source">From the original proof by '
+            "<strong>Queuingtheorydotcom</strong></span>"
+        ),
+        (
+            f'<span class="credits-source"><a href="https://{address}" target="_blank" '
+            f'rel="noopener noreferrer">{address}</a></span>'
+        ),
+        (
+            f'<span class="credits-own">Human oversight: {oversight}'
+            "<strong>Joshua Levy</strong></a></span>"
+        ),
         "<span>Agents: <strong>GPT-6 Astra</strong> and <strong>GPT-6 Sol</strong></span>",
-        "<span>Draft v0.1.0</span>",
+        f'<span class="edition">{release.OPTIMALITY_REVIEW_EDITION}</span>',
+        (
+            '<span class="publication-date">'
+            f"Original proof {release.OPTIMALITY_PROOF_PUBLISHED} · "
+            f"Last revised {release.OPTIMALITY_REVIEW_REVISED}</span>"
+        ),
     ]
-    assert ".n11-paper .credits .credits-review {\n  margin-block-start: 1lh;\n}" in css
+    assert html.index('<div class="doc-links screen-only">') < html.index('<div class="hero">')
+    shared = paper.render_n11_lower_bounds_explainer.PUBLICATION_STYLE.read_text(
+        encoding="utf-8"
+    )
+    assert "  grid-template-columns: minmax(0, 1fr);\n" in shared
+    assert ".credits a {\n  overflow-wrap: anywhere;\n}" in shared
+    assert (
+        ".credits .credits-source + .credits-own,\n.credits .publication-date {\n"
+        "  margin-block-start: 1lh;\n}"
+    ) in shared
+    assert markdown.startswith(
+        f"# {paper.TITLE}\n\n- From the original proof by **Queuingtheorydotcom**\n"
+        f"- [{address}](https://{address})\n"
+        "- Human oversight: [**Joshua Levy**](https://x.com/ojoshe)\n"
+        "- Agents: **GPT-6 Astra** and **GPT-6 Sol**\n"
+        f"- {release.OPTIMALITY_REVIEW_EDITION}\n"
+        f"- Original proof {release.OPTIMALITY_PROOF_PUBLISHED} · "
+        f"Last revised {release.OPTIMALITY_REVIEW_REVISED}\n\n"
+    )
+    assert "doc-links" not in markdown
+    assert '<div class="hero">' not in markdown
 
 
 def test_a_table_keeps_to_the_column_and_scrolls_inside_its_wrap() -> None:

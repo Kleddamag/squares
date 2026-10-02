@@ -1139,10 +1139,14 @@ drawn from, as
 [Release assets](#release-assets-are-drawn-at-a-version-bump-or-on-demand) describes.
 
 **The version history keeps every edition, and dates each by first publication.** The
-top of the page reads, on two lines, like “First published September 5, 2026 · Last
-revised September 30, 2026” and “v0.4.1-3b50e2 (version history)”: when the result first
-reached a reader, when the article last changed, which edition is being read, and a link
-to the full list at the foot of the page.
+top of the page reads, on two lines, like “v0.4.2-971e5f (version history)” and “First
+published September 5, 2026 · Last revised October 1, 2026”: which edition is being
+read, with a link to the full list at the foot of the page, then when the result first
+reached a reader and when the article last changed.
+Both papers write their front, the formats row, the title and the credits, from one
+component (`devtools.paper_front`), and `devtools.paper_structure` compares the two
+rendered papers axis by axis
+([paper-design.md → The Papers’ Front](packing/devtools/templates/paper-design.md#the-papers-front)).
 The first date is the oldest edition’s, so it does not move.
 The second is `EXPLAINER_REVISED`, the date of the last commit that changed the article,
 which is changed in that commit; [Dates](#dates-on-generated-artifacts) has the rule.
@@ -1233,10 +1237,10 @@ its source and whether it is what the rule gives:
 - A date derived from a commit is the commit’s author date, on the author’s own
   calendar.
 - A paper’s “revised” date is the date of the last commit that changed its article.
-  The explainer’s is `EXPLAINER_REVISED` in `release.py`; the optimality paper’s is in
-  its article’s credits.
-  Change it in the commit that changes the article; `tests/test_artifact_dates.py` fails
-  when it stands still.
+  The explainer’s is `EXPLAINER_REVISED` and the optimality paper’s is
+  `OPTIMALITY_REVIEW_REVISED`, both in `release.py`, where each paper’s front reads it
+  (`devtools.paper_front`). Change it in the commit that changes the article;
+  `tests/test_artifact_dates.py` fails when it stands still.
 - A poster’s dateline is the date of the data commit it was drawn from.
 - A PDF’s `CreationDate` and `ModDate` are the date on its face, at noon UTC, and never
   the build clock.

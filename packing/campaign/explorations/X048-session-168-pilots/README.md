@@ -210,6 +210,22 @@ independent reader. The sharper falsifier is the useful one.
 It runs the same cascade as W7, so it exercises the collision path that closes W7, and
 without side-N0 it plateaus with side-W2 at 48 live rows rather than 12.
 
+### The Next Three Arity-7 Classes
+
+At W7’s settings, the kernel closes none of the next three classes in priority order.
+
+| Receipt | Class | Outcome | Wall |
+| --- | --- | --- | ---: |
+| `receipts/kernel-stall-NW7-bins64.json` | NW7: side-N0, side-N1, side-W2, interior-SW, interior-NW, interior-W, interior-S (penetration $6.3\times10^{-5}$) | certified true stall at round 9; five owners end in residual boxes under 0.35 a side | 20.4 min |
+| `receipts/kernel-incomplete-P4-bins64.log` | P4: corner-SW, side-N0, side-W0, side-W1, interior-SW, interior-NW, interior-W | incomplete: the checker ran out of the 30-minute ceiling; the producer’s live rows stopped changing at round 4 | 30.0 min |
+| `receipts/kernel-stall-P5-bins64.json` | P5: corner-SW, side-S0, side-W0, side-W2, interior-SW, interior-NW, interior-W | certified true stall at round 9 | 18.1 min |
+
+NW7 pins its interior owners to near-points without closing, which fits the suspicion
+that its thin flag is false.
+Its final boxes can seed a placement search to decide that.
+The devtool now saves the seed and node before checking, so a run cut off by the ceiling
+can be finished with `--check-saved`.
+
 ## An Independent Certifier: Interval Branch and Bound
 
 Lane P2, Opus, built `devtools/pilot_n17_subpattern_bb.py`, which shares no code with

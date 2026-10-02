@@ -227,6 +227,10 @@ def run(
         ),
     )
     produced = time.monotonic()
+    if save_objects is not None:
+        # Saved before checking, so a check the ceiling cuts short can be finished later
+        # with --check-saved; saved objects claim nothing until a check passes on them.
+        save_certificate(save_objects, production.seed, production.node)
     seed = node.admit_seed(
         frame, production.seed, mask=mask, bins=bins, budget=budget, allow_empty_groups=True
     )
@@ -240,8 +244,6 @@ def run(
         cover=cover,
     )
     checked = time.monotonic()
-    if save_objects is not None:
-        save_certificate(save_objects, production.seed, production.node)
     closed = trace.closure is not None
     result: dict[str, Any] = {
         "pattern": name,

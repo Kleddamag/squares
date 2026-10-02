@@ -1316,12 +1316,17 @@ it.
   The two tables of results, the overview’s recent table and the results page’s, are one
   table: one header (`result_head`) and one row (`result_table_row`), so the same six
   columns in the same order.
-  They are the id, the first column and the row’s trigger, as narrow as an id, under the
-  6rem KPress keeps a cell to; the cases, n; the result, its summary whole, method and
-  all, with its records on a quiet line under it; the credit, the finder first and
-  “after …”, what the result builds on, quiet after it, in full; the rungs, with the
-  kind on a line under them and the status line under that (**Chips**, above); and the
-  date. The tables are two filters of one table, and differ only in where the filter bar
+  They are the date; the result, its summary whole, method and all, with its records on
+  a quiet line under it; the cases, n; the credit, the finder first and “after …”, what
+  the result builds on, quiet after it, in full; the rungs, with the kind on a line
+  under them and the status line under that (**Chips**, above); and the id, the last
+  column and the row’s trigger, as narrow as an id, under the 6rem KPress keeps a cell
+  to. The owner set that order on 2026-10-02 (`think-t090`); the id led and the date
+  closed the row until then.
+  On a phone each row is a card that places its cells by class, not by column, so the
+  card reads as before: the id, the cases and the rungs on its first line, the claim,
+  then the credit and the date.
+  The tables are two filters of one table, and differ only in where the filter bar
   starts, which sets the rows that begin `hidden` and the count, and in a row’s key: on
   the results page a row is the result’s own address (`id="t-018"`), and on the overview
   it names the result as `data-result`. Every other byte of a row and of its popover is

@@ -834,26 +834,27 @@ def result_filters(
 
 def result_head() -> str:
     """The header row of a table of results: the one set of columns both tables carry,
-    in one order. The id, which is the row's trigger; the cases; the result, with its
-    records under it; the credit; the rungs, with the kind under them and the status
-    under that; and the date. A column sorts where an order means something, on either
-    page."""
+    in one order. The date; the result, with its records under it; the cases; the
+    credit; the rungs, with the kind under them and the status under that; and the id,
+    which is the row's trigger. The owner set this order on 2026-10-02 (`think-t090`):
+    the id led and the date closed the row until then. A column sorts where an order
+    means something, on either page."""
     return (
         "<thead><tr>"
-        '<th data-sort="text" class="site-col-id">ID</th>'
-        '<th data-sort="num" class="num site-col-n">n</th>'
+        '<th data-sort="text" title="Published, for a result by others; established, for '
+        f'this project{APOSTROPHE}s">Date</th>'
         '<th class="site-col-result">Result</th>'
+        '<th data-sort="num" class="num site-col-n">n</th>'
         '<th data-sort="text">Credit</th>'
         '<th data-sort="text" title="Significance, verification and confirmation, then '
         'what the result is, and how far the work on it here has gone">Rungs</th>'
-        '<th data-sort="text" title="Published, for a result by others; established, for '
-        f'this project{APOSTROPHE}s">Date</th>'
+        '<th data-sort="text" class="site-col-id">ID</th>'
         "</tr></thead>"
     )
 
 
 def id_cell(result: Result, detail: RowDetail) -> str:
-    """A result's id cell, the first of its row in both tables of results: the id in a
+    """A result's id cell, the last of its row in both tables of results: the id in a
     column of its own (`.site-col-id`), as the row's native trigger, which opens the
     row's popover without scripts (`row_detail`)."""
     return f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
@@ -903,29 +904,29 @@ def date_cell(result: Result) -> str:
 
 def result_cells(result: Result, overview: Overview, detail: RowDetail) -> str:
     """A result's cells, one for each column of `result_head`, the same on both tables:
-    its id (`id_cell`), its cases (`case_list`), its summary with the star a new result
-    earns (`result_text`, `new_result_star`) and its records on a quiet line under it,
-    its credit (`credit_cell`), its rung chips with its kind on a line under them
-    (`kind_chip`) and its status line under that (`status_marks`), and its date
-    (`date_cell`). The records are no column of their own: a column narrow enough to fit
+    its date (`date_cell`), its summary with the star a new result earns (`result_text`,
+    `new_result_star`) and its records on a quiet line under it, its cases
+    (`case_list`), its credit (`credit_cell`), its rung chips with its kind on a line
+    under them (`kind_chip`) and its status line under that (`status_marks`), and its id
+    (`id_cell`). The records are no column of their own: a column narrow enough to fit
     set them a link to a line, and under the summary they take a line or two, in both
     tables."""
     record = result.record
     standing = f'<span class="site-standing">{status_marks(result)}</span>'
     return (
-        f"{id_cell(result, detail)}"
-        f'<td class="num site-col-n" data-value="{result.first_n}">{case_list(result)}</td>'
+        f'<td class="site-col-date" data-value="{_esc(result.dated[1])}">'
+        f"{date_cell(result)}</td>"
         f'<td class="site-col-result">{result_text(result)}'
         f"{new_result_star(result, overview)}"
         f'<div class="site-records">{_records(result)}</div></td>'
+        f'<td class="num site-col-n" data-value="{result.first_n}">{case_list(result)}</td>'
         f'<td class="site-col-credit" data-value="{_esc(result.credit)}">'
         f"{credit_cell(result.credit)}</td>"
         f'<td class="site-rungs" '
         f'data-value="{_esc(record["confirmation"] + record["verification"])}">'
         f'{rung_chips(result)}<span class="site-kind">{kind_chip(result)}</span>'
         f"{standing}</td>"
-        f'<td class="site-col-date" data-value="{_esc(result.dated[1])}">'
-        f"{date_cell(result)}</td>"
+        f"{id_cell(result, detail)}"
     )
 
 

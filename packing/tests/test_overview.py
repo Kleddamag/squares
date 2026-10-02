@@ -2510,7 +2510,7 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     # The script that sorts and filters the results page's table wires this one too.
     assert "data-site-table" in recent
     heads = re.findall(r"<th[^>]*>([^<]+)</th>", recent.split("</thead>", 1)[0])
-    assert heads == ["ID", "n", "Result", "Credit", "Rungs", "Date"]
+    assert heads == ["Date", "Result", "n", "Credit", "Rungs", "ID"]
     newest = overview_sections.recent_results(overview)
     assert re.findall(r'<tr data-result="(t-\d+)"', recent) == [r.id.lower() for r in newest]
     for result in newest:
@@ -2525,7 +2525,8 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
             f'popovertarget="pop-result-{result.id.lower()}">{result.id}</button></td>'
         ) in row
         assert row.count(f">{result.id}<") == 1
-        assert "site-row-open" not in row.split('<td class="site-col-result"', 1)[1]
+        cell = row.split('<td class="site-col-result"', 1)[1].split("</td>", 1)[0]
+        assert "site-row-open" not in cell
         assert "<br" not in row
     # Evan Daniel's three exact values, the closures the exact-value cards used to show.
     exact = {n for n in overview.recent_lower if overview.cases[n]["status"] == "proved"}
@@ -3410,16 +3411,18 @@ def test_both_tables_of_results_have_the_same_columns(
     (`id`) on the results page and `data-result` on the overview, and `hidden`, which is
     where each table's filters start. So the overview shows each result's records, as
     the results page does, and no row of one links to the other. Both sort and both
-    filter. A result's records are a line under its summary, no column."""
+    filter. A result's records are a line under its summary, no column. The columns run
+    date, result, cases, credit, rungs and id, the owner's order of 2026-10-02
+    (`think-t090`)."""
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
     head = overview_sections.result_head()
     assert table.count(head) == recent.count(head) == 1
     assert table.count("<thead>") == recent.count("<thead>") == 1
     heads = re.findall(r"<th([^>]*)>([^<]+)</th>", head)
-    assert [words for _, words in heads] == ["ID", "n", "Result", "Credit", "Rungs", "Date"]
+    assert [words for _, words in heads] == ["Date", "Result", "n", "Credit", "Rungs", "ID"]
     sorts = ["data-sort=" in attributes for attributes, _ in heads]
-    assert sorts == [True, True, False, True, True, True]
+    assert sorts == [True, False, True, True, True, True]
     # As each page serves it, after KPress has labelled the cells.
     served = re.compile(r"<th[^>]*>([^<]+)</th>")
     on_overview = served.findall(_recent_table(page).split("</thead>", 1)[0])
@@ -3437,17 +3440,17 @@ def test_both_tables_of_results_have_the_same_columns(
         there = _recent_row(recent, result.id)
         assert classes.findall(here) == classes.findall(there), result.id
         assert classes.findall(here) == [
-            "site-col-id",
-            "num site-col-n",
+            "site-col-date",
             "site-col-result",
+            "num site-col-n",
             "site-col-credit",
             "site-rungs",
-            "site-col-date",
+            "site-col-id",
         ]
         # The records close the result's own cell, after its summary and its star.
         assert here.count('<div class="site-records">') == 1, result.id
         assert re.search(
-            r'<div class="site-records">.*?</div></td><td class="site-col-credit"', here
+            r'<div class="site-records">.*?</div></td><td class="num site-col-n"', here
         )
         assert f'<tr id="{result.id.lower()}" ' in here
         assert f'<tr data-result="{result.id.lower()}" ' in there
@@ -3475,17 +3478,18 @@ def test_both_tables_of_results_have_the_same_columns(
         assert gone not in css + table + recent, gone
 
 
-def test_both_tables_of_results_lead_with_the_same_id_column(
+def test_both_tables_of_results_end_with_the_same_id_column(
     overview: overview_data.Overview,
 ) -> None:
-    """The id is a column of its own, the first, in the results table and in Recent
-    Results alike: one cell, written by one helper, holding the row's trigger and
-    nothing else. On a phone it opens each card, in both tables."""
+    """The id is a column of its own, the last since 2026-10-02 (`think-t090`; it was the
+    first), in the results table and in Recent Results alike: one cell, written by one
+    helper, holding the row's trigger and nothing else. On a phone it still opens each
+    card, in both tables, which place their cells by class."""
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
-    first = re.compile(r"<thead><tr><th([^>]*)>([^<]+)</th>")
+    last = re.compile(r"<th([^>]*)>([^<]+)</th></tr></thead>")
     for html_table in (table, recent):
-        head = first.search(html_table)
+        head = last.search(html_table)
         assert head
         assert head.group(2) == "ID"
         assert 'class="site-col-id"' in head.group(1)
@@ -3496,15 +3500,17 @@ def test_both_tables_of_results_lead_with_the_same_id_column(
         )
         cell = f'<td class="site-col-id" data-value="{result.id}">{trigger}</td>'
         for row in (_row(table, result.id), _recent_row(recent, result.id)):
-            # The row's first cell, straight after the row's own tag.
-            assert row.split(">", 1)[1].startswith(cell), result.id
+            # The row's last cell, straight before the row's end.
+            assert row.endswith(f"{cell}</tr>"), result.id
             assert row.count("site-row-open") == 1, result.id
             assert row.count(f">{result.id}<") == 1, result.id
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     # As narrow as an id, below the floor KPress keeps a cell to.
     assert "  .site-table .site-col-id {\n    min-width: 0;\n  }" in css
-    # On a phone the id opens the card, in both tables.
+    # On a phone the id opens the card, in both tables, and the date, the row's first
+    # cell, still follows the credit there.
     assert "  .site-results .site-col-id {\n    font-weight: 650;\n    grid-area: 1 / 1;" in css
+    assert "    grid-column: 3;\n    order: 1;\n    text-align: end;" in css
 
 
 def test_a_date_cell_leads_with_the_date_and_then_says_what_it_dates(

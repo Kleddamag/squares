@@ -1252,7 +1252,9 @@ body {
    wrong trade: each row becomes a small card, id, cases and rungs on its first line,
    then the claim with its records under it, and the credit and date; the status line
    sits under the rungs. The results page's table and the overview's recent table are the one
-   table (`.site-results`), so both take it. */
+   table (`.site-results`), so both take it. The card places its cells by class, not by
+   column: the wide table's row opens with the date, which the card places after the
+   credit (`order`), so the card reads as it did before the columns were reordered. */
 @media (width < 40rem) {
   .site-results thead {
     display: none;
@@ -1325,6 +1327,7 @@ body {
   }
   .site-results .site-col-date {
     grid-column: 3;
+    order: 1;
     text-align: end;
   }
   .site-results .site-date-kind {

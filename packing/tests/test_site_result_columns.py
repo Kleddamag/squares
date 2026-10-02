@@ -82,7 +82,7 @@ SCROLL_MAX = 250
 #: The id column: five characters and the cell's padding, well under KPress's 96.
 ID_MAX = 64
 #: The six columns of a table of results, as `overview_sections.result_head` names them.
-COLUMNS_SHOWN = ["ID", "n", "Result", "Credit", "Rungs", "Date"]
+COLUMNS_SHOWN = ["Date", "Result", "n", "Credit", "Rungs", "ID"]
 #: A cell's padding either side, 0.5rem, in pixels.
 PADDING = 16
 

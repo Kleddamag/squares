@@ -238,6 +238,41 @@ $9.645$, and the `compared_note` of the $n = 92$ `completion-audit.json` says $9
 - **Dates come from GitHub.** The clone is shallow, so first-commit dates rest on the
   commits API and not on local history.
 
+## Replay of `s(59) = 8` Here, 2 October 2026
+
+Stage 4 of the [result import](../../../campaign/result-import.md) for
+[jlevy/squares#280](https://github.com/jlevy/squares/issues/280) replayed Daniel’s
+interval checker, the one the source’s `verify.sh` requires, on the retained cover. The
+receipts are in [`receipts/`](receipts/).
+
+| Run | Roots | Boxes | Uncertified | Max depth | Verdict | Wall, CPU |
+| --- | ---: | ---: | ---: | ---: | --- | --- |
+| `zmx2 cert … --d4 --threads 3` | 6,400 | 9,844,124 | 0 | 31 | `VERIFIED-D4` | 49 s, 143 s |
+| `zmx2 cert … --full --threads 3` | 51,200 | 79,108,328 | 0 | 31 | `VERIFIED` | 394 s, 1,161 s |
+
+- **The checker** is `zmx2.rs` SHA-256 `6b7f0f79…`, the version `verify.sh` requires,
+  retained in the [September 28 evand packet](../evand-square-packing-2026-09-28/README.md)
+  and built as for `s(60)`
+  ([October 1 evand packet](../evand-square-packing-2026-10-01/README.md#replay-of-s60--8-here-2-october-2026)):
+  rustc 1.97.0, binary SHA-256 `cba78a9e…`, on a 4-core x86-64 Linux container. The
+  source’s `verify.sh` cannot pass as published (its checksum step names unpublished
+  logs), so its two `zmx2` steps were run as this repository’s own sequence, with the
+  same flags.
+- **The audit** by `devtools.audit_evand_mixed_covers`: both root logs cover their
+  regions exactly once with no uncertified or capped box
+  ([`n59_zmx2_d4_audit.json`](receipts/n59_zmx2_d4_audit.json),
+  [`n59_zmx2_full_audit.json`](receipts/n59_zmx2_full_audit.json)), and the box totals
+  equal those the source’s README states for its unpublished runs. The source’s logs
+  are not published, so no root-for-root comparison is possible. The cover facts are in
+  [`n59_cover_audit.json`](receipts/n59_cover_audit.json) and
+  [`n77_cover_audit.json`](receipts/n77_cover_audit.json).
+- **The exact-rational route is undecided** from what is published:
+  [`n59_zm_mixed_manifest_audit.json`](receipts/n59_zm_mixed_manifest_audit.json) records
+  that the two `zm_mixed.py` manifests do not say whether the complete run’s six
+  uncertified boxes lie in the region the second run certified, and only the
+  unpublished per-root records could. The review of 2 October found that blocking for
+  recording that route as evidence, and the `zmx2` route above is the one recorded.
+
 ## Compressed Files
 
 Twelve upstream data files of more than 1,000 lines are stored as deterministic gzip
@@ -274,6 +309,9 @@ present, the acquisition check reports each as retained twice.
 | `square-packing-bounds/certificates/mixed_n90_L960/certificate.json.gz` | upstream | `3d4dfae78ccc193faa89ae83e8430f2dc95f40a7` | `ad166589b414c861f5b882d109b30ae3b50b66ca062d92df06cc84720ee53e62` |
 | `square-packing-bounds/certificates/mixed_n92_L969/candidate.json.gz` | upstream | `6575f6e3af85e163d7b3e7b1212557fa31e152de` | `4cab1b5e21a24c12e6718b17c78c27b58af2c6d7215425939732e424bbc0e5bc` |
 | `square-packing-bounds/certificates/mixed_n92_L969/certificate.json.gz` | upstream | `e33f3931c1e5714eab70bfc24140a2068779a432` | `d4a9aeacf4409efa2aec531df3163a7bb0b74bfdc02e6416b625c66914218469` |
+| `receipts/n59_zmx2_full.log.gz` | receipt | `9ad580f1383546bc35f20d3ebef17bf42b9937b6` | `ce60c5f6e0644a0f437d30b838158c4f482a6a55699b2fa1cff02b14d85f73d9` |
+| `receipts/n59_zmx2_d4_roots.log.gz` | receipt | `39dd994f89fc468d7fc35f235fa875afa413fb5f` | `8e012c81d21603dd8140dfc9fb4ccdde1ffbd3d38ad46ed4497319c4071d1261` |
+| `receipts/n59_zmx2_full_roots.log.gz` | receipt | `d64d9c33fd19f03ef842ce67d3b62c76a5c090ab` | `2d6c765a4a7120ed3d60d640acb77088b621a93c8f6a5475d05ced800208b79e` |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

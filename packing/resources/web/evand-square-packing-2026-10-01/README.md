@@ -152,9 +152,47 @@ Decompressed, the `xz` log is 3,261,664 bytes in 28,801 lines with SHA-256 `3b86
 the manifest’s `log sha256`. These are identity checks on bytes; they decide nothing
 about coverage.
 
+## Replay of `s(60) = 8` Here, 2 October 2026
+
+Stage 4 of the [result import](../../../campaign/result-import.md) for
+[jlevy/squares#256](https://github.com/jlevy/squares/issues/256) replayed the source’s
+interval checker on the retained cover. The receipts are in [`receipts/`](receipts/).
+
+| Run | Roots | Boxes | Uncertified | Verdict | Wall, CPU |
+| --- | ---: | ---: | ---: | --- | --- |
+| `zmx2 cert … --d4 --threads 3` | 6,400 | 2,617,534 | 0 | `VERIFIED-D4` | 16 s, 48 s |
+| `zmx2 cert … --full --threads 3` | 51,200 | 21,036,120 | 0 | `VERIFIED` | 128 s, 380 s |
+
+- **The checker** is `zmx2.rs` SHA-256 `6b7f0f79…`, the version both of the source’s
+  `zmx2` manifests name, retained in the
+  [September 28 packet](../evand-square-packing-2026-09-28/README.md), built with the
+  crate files of the [September 26 packet](../evand-square-packing-2026-09-26/README.md)
+  by `cargo build --release` under rustc 1.97.0; binary SHA-256 `cba78a9e…`
+  ([`zmx2_6b7f0f79_build.log`](receipts/zmx2_6b7f0f79_build.log)). It was read before it
+  was run, as the review of 28 September read it. The source’s `verify.sh` was not run:
+  it builds the pin’s later `zmx2.rs`, not the one that made the records (finding F2 of
+  the [review of the geometric premises](../../../../docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md)),
+  so its sweep was run directly with the version the records name.
+- **The host** was a 4-core x86-64 Linux container; each receipt’s header and footer give
+  the command, load, wall and CPU, written by `devtools.replay_receipt`.
+- **The audit** by `devtools.audit_evand_mixed_covers`, which parses with its own code:
+  both root logs cover their regions exactly once with no uncertified or capped box
+  ([`s60_zmx2_d4_audit.json`](receipts/s60_zmx2_d4_audit.json),
+  [`s60_zmx2_full_audit.json`](receipts/s60_zmx2_full_audit.json)), and root for root
+  their census equals the source’s `zmx2_d4/roots.log` and `zmx2_full/roots.log`, 6,400
+  of 6,400 and 51,200 of 51,200 roots, with identical headers
+  ([`s60_zmx2_d4_compare.json`](receipts/s60_zmx2_d4_compare.json),
+  [`s60_zmx2_full_compare.json`](receipts/s60_zmx2_full_compare.json)). The cover’s exact
+  total, D4 invariance and loaded lines are in
+  [`s60_cover_audit.json`](receipts/s60_cover_audit.json).
+- **Not run:** the exact-rational `zm_mixed.py` sweep, about 19.6 CPU-hours at the
+  source, which is the same author’s second checker and is recorded as a second route
+  when it runs (`think-mx3k`).
+
 ## Compressed Files
 
-Five `s60` files have more than 1,000 lines and were compressed locally with `gzip -9n`:
+Five `s60` files have more than 1,000 lines and were compressed locally with `gzip -9n`,
+and so were three replay receipts of 2 October, the rows whose origin is `receipt`:
 38,022,279 bytes upstream, 2,210,505 stored.
 Each row gives the Git blob and SHA-256 of the decompressed upstream bytes, as produced
 by `devtools.retained_data.describe`. `gunzip -k` on a stored file restores the upstream
@@ -167,6 +205,9 @@ file beside it.
 | `source/s12/certificates/s60/zmx2_d4/roots.log.gz` | upstream | `b50d1309b86ed04898b336326259a7cf20eab29e` | `8a599325e8db3670eff8a3645ae035eb9d125716f10811d651ecc62841c656c8` |
 | `source/s12/certificates/s60/zmx2_full/roots.log.gz` | upstream | `93686590cf2a8d396205cbc96d2f25c6644ee2dd` | `b88c66565acee3c6c2154b9d487f68b47200ace31d8f4182e7b69f71f244578a` |
 | `source/s12/certificates/s60/zmx2_full/run.out.gz` | upstream | `14d03caf272a80746f0578af5d7955a77b80776f` | `f03e4620f114755b2c96d8f727ed2d6233510202e8c9acecda9706b9a7f8bcec` |
+| `receipts/s60_zmx2_full.log.gz` | receipt | `6cae3dd180d1eec4e088e0a05d953da86492a40d` | `f8843b53108141c626fcb7332fd3c8ca999dd182ac9090aa4712fe9f3286215c` |
+| `receipts/s60_zmx2_d4_roots.log.gz` | receipt | `58a884336118da5db3253947e81dec54d1e71be0` | `58f90b89e220fa5ef623ae75a7b48e3bdfe8d6ce5e5181a8f8f96afd0342edf3` |
+| `receipts/s60_zmx2_full_roots.log.gz` | receipt | `06fad9c541064734aff448a375d77d22363d1190` | `c3ed66ea3c1ee768f48a0e4e5281647907fb36e8ca81d4dd69d256621ecd26c7` |
 
 Two files were compressed by the source and are stored verbatim, so their *compressed*
 bytes match the raw Git blob in the source manifest:

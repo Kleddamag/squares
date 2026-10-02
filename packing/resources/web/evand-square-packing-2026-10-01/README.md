@@ -215,6 +215,36 @@ explains each of these; none is a complete replay of either checker.
   packet’s $s(32)$ cover. It was not built: this container lacked the disk for the
   toolchain and Mathlib’s cache.
 
+## Lean Build Here, 2 October 2026
+
+`T-064`'s Lean reduction, `SquarePacking.Bentz.bentz_of_valid7 : Valid7 → ∀ k ≥ 6, minSide (k² − 3) = k`,
+was built in this container.
+`devtools.stage_evand_bentz_lean` staged the ten-module closure from retained bytes, each
+file at its `08e8a5fa` Git blob; elan installed `leanprover/lean4:v4.33.1`, and Mathlib
+came from `lake exe cache get` (8,690 files).
+
+- **Build:** `lake build Sqpack.Bentz` finished with exit 0 and 8,715 jobs, no `sorry`,
+  and linter warnings only (`open Classical`, deprecated `push_neg` and
+  `Set.mem_setOf_eq`).
+  Receipt: [`receipts/lean/build_bentz.log`](receipts/lean/build_bentz.log).
+  The kept log is the final, successful run; the first modules show as `Replayed` because
+  the two earlier runs had already built them.
+- **Axioms:** `#print axioms` for `bentz_of_valid7`, `valid_of_valid7`,
+  `box7Cover_measure`, `famCover_total` and `mass_shift` each print
+  `[propext, Classical.choice, Quot.sound]`, which is what the source reports.
+  Receipt: [`receipts/lean/axioms_bentz.log`](receipts/lean/axioms_bentz.log), from
+  `AxiomsBentz.lean`, which also prints `Valid7`, `minSide` and `Packs`.
+- **Memory:** `Sqpack/Bentz.lean` peaks above 13 GB resident.
+  On this 16 GB host with no swap, the build was killed by the kernel twice (two threads,
+  then one thread, exit 137 and −9).
+  With a 10 GB swapfile and `LEAN_NUM_THREADS=1` it finished in 1,207 s wall.
+  A host with at least 16 GB of free memory should not need swap.
+  The killed runs' logs were not retained.
+- **Scope:** this checks that the reduction's Lean source compiles against Mathlib and
+  uses only the three standard axioms.
+  It is the source's own Lean, so it is the same implementation as the source, not an
+  independent statement of the theorem; `Valid7` remains a hypothesis.
+
 ## Compressed Files
 
 Five `s60` files have more than 1,000 lines and were compressed locally with `gzip -9n`,

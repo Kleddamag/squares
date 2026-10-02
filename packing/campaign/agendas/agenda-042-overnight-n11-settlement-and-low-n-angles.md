@@ -1171,7 +1171,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: ready
+    state: complete
     priority: 0
     question: Can the n17 local theorem, the occupancy census and the polynomial identification proceed
       as three disjoint parallel lanes?
@@ -1500,6 +1500,38 @@ agenda:
     note: >-
       Closes H-261's scope gap. With square 6 at its centroid the review's float scan keeps a
       below 0.037 and z above -0.0235, well inside the box.
+  - id: BC-418
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: ready
+    priority: 0
+    question: Can the n17 local theorem and cover be closed, and do sub-pattern exclusion and capture fit the budget?
+    hypotheses:
+    - H-261
+    - H-266
+    - H-267
+    - H-268
+    budget: One coordinated session; lane budgets per BC-415, BC-416 and BC-417, and a bounded capture pilot.
+    entry: Session 167 complete with exp-242 to exp-246 recorded.
+    exit: >-
+      H-266 and H-268 decided and H-261 re-recorded with review; the H-267 instrument built
+      with its method control; a measured capture contraction rate; then W10 on the results.
+    bead: think-tmz6
+    depends_on:
+    - BC-406
+    next_evidence: packing/campaign/agent-sessions/session-167-n17-parallel-lanes-after-route-review.md
+    workflows:
+    - pipeline-improvement
+    - research-loop
+    - review-planning-oversight
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/agent-sessions/session-167-n17-parallel-lanes-after-route-review.md
+    note: >-
+      Selected next entry after Session 167. Read that session record, the capture,
+      bulk-exclusion and local-theorem instrument reviews, and exp-244 and exp-246 first.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

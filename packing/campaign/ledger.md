@@ -181,6 +181,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | completed | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 39 | think-3i74 | After the reviewed helper cleanup lands, implement the bounded fresh-ensemble replay entry point under think-e2ot; preserve the accepted historical evidence. PR 249 reconciliation, optional Rust performance and later exposition remain separate tracks. |
 | [session-165](agent-sessions/session-165-post-optimality-overnight.md) | completed | contemporaneous | `insight-iteration` (insight) | `pipeline-improvement` (correctness) | 36 | think-kaqh | think-11ma: in a separately scheduled W3 block, preregister a small exact geometric-exclusion pilot below the certified endpoint. The overnight heartbeat is to be paused by15:00UTC; no new overnight research or H258 retry. |
 | [session-166](agent-sessions/session-166-n17-route-after-pr265.md) | stopped | mixed | `review-planning-oversight` (insight) | `review-planning-oversight` (process) | 2 | think-9fc1 | BC-406 (think-c7kv): dispatch the route review's lanes A1, B and C in parallel, then lane A2 once H-258 is accepted. Hosted certification of this handoff is owned by think-od9c. |
+| [session-167](agent-sessions/session-167-n17-parallel-lanes-after-route-review.md) | stopped | mixed | `review-planning-oversight` (insight) | `research-loop` (correctness) | 2 | think-c7kv | BC-418 (think-tmz6): close H-266's single-state item and H-268's slide bound, then re-record H-261 and H-266; build the H-267 selector and adapt the n11 kernel; pilot the capture contraction rate on the endpoint's occupancy state. Hosted certification of this branch is owned by think-iuz2. |
 
 ### Workflow summary
 
@@ -193,11 +194,11 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `insight-iteration` | 28 | 1 | 88 | 4 |
 | `process-review` | 16 | 4 | 64 | 6 |
 | `efficiency-loop` | 11 | 1 | 40 | 1 |
-| `research-loop` | 31 | 4 | 115 | 8 |
+| `research-loop` | 31 | 4 | 116 | 8 |
 | `pipeline-improvement` | 38 | 2 | 208 | 6 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
-| `review-planning-oversight` | 6 | 1 | 41 | 3 |
+| `review-planning-oversight` | 6 | 2 | 41 | 4 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas
@@ -868,7 +869,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-403 | research | 17 | complete | 0 | think-70sf | packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md |
 | BC-404 | research | 17 | complete | 0 | think-gr22 | packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md |
 | BC-405 | research | 17 | complete | 0 | think-9fc1 | docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md |
-| BC-406 | research | 17 | ready | 0 | think-c7kv | docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md |
+| BC-406 | research | 17 | complete | 0 | think-c7kv | docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md |
 | BC-407 | research | 17 | in_progress | 0 | think-n95s | packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md |
 | BC-408 | research | 17 | complete | 0 | think-j1uw | packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md |
 | BC-409 | research | 17 | complete | 2 | think-e6y1 | packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md |
@@ -880,6 +881,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-415 | research | 17 | in_progress | 0 | think-qjdb | packing/campaign/hypotheses/H-266-n17-minimal-capacity-one-cover.md |
 | BC-416 | research | 17 | blocked | 1 | think-1s3i | packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md |
 | BC-417 | research | 17 | blocked | 0 | think-set0 | packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md |
+| BC-418 | research | 17 | ready | 0 | think-tmz6 | packing/campaign/agent-sessions/session-167-n17-parallel-lanes-after-route-review.md |
 
 ## Series
 

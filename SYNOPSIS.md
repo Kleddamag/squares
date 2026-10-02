@@ -255,8 +255,8 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 406 | 208 complete; 65 stopped; 72 blocked; 25 ready; 21 tentative; 15 in progress |
-| Sessions | 166 | 103 completed; 63 stopped; all terminal |
+| Commitments | 407 | 209 complete; 65 stopped; 72 blocked; 25 ready; 21 tentative; 15 in progress |
+| Sessions | 167 | 103 completed; 64 stopped; all terminal |
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 203 | 41 confirmed; 33 refuted; 62 blocked; 19 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 175 | 55 accepted; 38 rejected; 54 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
@@ -1337,6 +1337,45 @@ controller, not permission to blur contracts.
 
 ### Current Handoff
 
+[Session 167](packing/campaign/agent-sessions/session-167-n17-parallel-lanes-after-route-review.md)
+merged PR 283 onto current main and ran BC-406’s lanes, plus the follow-ups their
+results selected.
+Every verdict rests on an independent review and a clean committed-tree
+run.
+
+- **Accepted.** H-258, the common-core stress, is accepted
+  ([exp-242](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-242-h258-n17-core-stress.md)).
+  H-265 identifies the certified side with the catalogue’s irreducible degree-18
+  polynomial
+  ([exp-245](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-245-h265-n17-catalogue-polynomial.md)).
+- **Rejected.** H-262: R068’s charge at the cap excludes nothing, and one symmetric
+  linear per-cell floor vector leaves at least 30,966 orbits whatever the charge
+  ([exp-243](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-243-h262-n17-charge-floor-pilot.md)).
+- **Unresolved, each with a stated closing item.** The local minimum modulo sliders is
+  certified at radius $1/5000$ over a declared slider box, worst ratio $0.926$, but the
+  claim names the whole physical slider domain, and H-268 owes the bound
+  ([exp-244](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-244-h261-n17-local-minimum.md)).
+  A 24-cell capacity-one cover is certified with 43,593 orbits, against 7.7 million on
+  the H259 grid, but the endpoint family realises a second state through an overlapping
+  cell
+  ([exp-246](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-246-h266-n17-capacity-one-cover.md)).
+- **Replanned.** n11’s focused radii were of the n17 scale, so capture is priced as
+  logarithmic in the radius
+  ([capture review](docs/project/reviews/review-2026-10-02-n17-capture-feasibility.md)).
+  The global half’s next engine is isolated sub-pattern exclusion on the minimal cover
+  ([design review](docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md)).
+
+No bound, frontier field or open status changed.
+
+**Selected next entry:** `think-tmz6`, the BC-418 coordinator.
+It first closes H-266’s single-state item and H-268’s slide bound, then re-records H-261
+and H-266 with review.
+In parallel it builds the H-267 selector and adapts n11’s kernel as prover, with n11’s
+mask 0 as the method control, and pilots the capture contraction rate on the endpoint’s
+occupancy state. Session 167 stops with hosted certification pending under `think-iuz2`.
+
+#### Previous: Session 166 n17 Route Review
+
 [Session 166](packing/campaign/agent-sessions/session-166-n17-route-after-pr265.md) ran
 a W10 checkpoint on the merged PR 265 record with two Fable extra-high lanes.
 The [route review](docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md)
@@ -1351,7 +1390,7 @@ The conditional minimum holds only for sides in $[4.675,4.676]$ and cannot be th
 terminal theorem; the morning report and projection review carry dated scope notes.
 No bound, frontier field or verdict changed.
 
-**Selected next entry:** `think-c7kv`, the BC-406 coordinator.
+Its selected entry was `think-c7kv`, the BC-406 coordinator.
 It dispatches three disjoint lanes in parallel: BC-402 repairs the H258 identity proof
 (then BC-407 proves H-261, the local minimum modulo the slider cone); BC-408 measures
 H-262, the survivors under settled-case cuts and conditional charge floors; and BC-409
@@ -5501,9 +5540,9 @@ in separate tables: their units differ, and the same work can appear in both.
 
 | Rollups | count | turns | tool calls | errors | one-off code | wall |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| claimed by a session | 258 | 64,493 | 35,736 | 781 | 5,112 | 562.1 h |
+| claimed by a session | 276 | 66,342 | 36,751 | 797 | 5,364 | 573.29 h |
 | claimed by none | 65 | 14,196 | 8,149 | 185 | 1,184 | 67.13 h |
-| **measured** | **323** | **78,689** | **43,885** | **966** | **6,296** | **629.23 h** |
+| **measured** | **341** | **80,538** | **44,900** | **982** | **6,548** | **640.42 h** |
 
 | Session | Phases | Rollups | Turns | Tool calls | Errors | Wall |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -5560,7 +5599,8 @@ in separate tables: their units differ, and the same work can appear in both.
 | [session-160](packing/campaign/agent-sessions/session-160-n17-4640020-evand-wand125-intake.md) | 3 | 28 | 5,648 | 3,354 | 161 | 42.62 h |
 | [session-161](packing/campaign/agent-sessions/session-161-wand125-update-and-sept-28-intake.md) | 2 | 10 | 2,617 | 1,468 | 27 | 11.09 h |
 | [session-166](packing/campaign/agent-sessions/session-166-n17-route-after-pr265.md) | 2 | 4 | 515 | 342 | 8 | 5.02 h |
-| *shared by 53 sessions* | — | 8 | 25,382 | 13,685 | 285 | 355.07 h |
+| [session-167](packing/campaign/agent-sessions/session-167-n17-parallel-lanes-after-route-review.md) | 2 | 18 | 1,849 | 1,015 | 16 | 11.19 h |
+| *shared by 54 sessions* | — | 8 | 25,382 | 13,685 | 285 | 355.07 h |
 
 | Codex interval receipt | declaring sessions | model responses | agent time | active union | wall window | live lower bound |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
@@ -5637,9 +5677,9 @@ in separate tables: their units differ, and the same work can appear in both.
 
 | Coverage | sessions |
 | --- | ---: |
-| measured | 112 |
+| measured | 113 |
 | unmeasured | 54 |
-| **total** | **166** |
+| **total** | **167** |
 
 <!-- END GENERATED: session-close-report -->
 

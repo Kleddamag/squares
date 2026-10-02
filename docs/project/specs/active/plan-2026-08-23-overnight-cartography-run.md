@@ -470,10 +470,10 @@ fast-tier certification.
 The prototype and controls do not establish complete coverage of an external rectangle
 certificate.
 
-For the next supervised exact-research goal, the current handoff is `think-c7kv`, the
-BC-406 coordinator from the n17 route review after PR 265: dispatch its local-theorem,
-occupancy-census and polynomial-identity lanes in parallel.
-Session 166 launches no run itself.
+For the next supervised exact-research goal, the current handoff is `think-tmz6`, the
+BC-418 coordinator after Session 167: close the H-266 single-state item and the H-268
+slide bound, build the H-267 sub-pattern engine, and pilot the capture contraction rate.
+Session 167 launches no run itself.
 See [Current Handoff](../../../../SYNOPSIS.md#current-handoff) for the accepted
 evidence, exact scope and allocation boundaries.
 

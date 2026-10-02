@@ -78,8 +78,8 @@ REGISTER = Register(
             "origin": "replayed-here",
             "assurance": "verified",
             "replay_status": "passed",
-            "verifier_relation": "producer-code",
-            "verifier_program": "zmx2",
+            "relationship_to_generator": "same-implementation",
+            "verifiers": ["V-zmx2"],
         },
         "E-defect": {
             "origin": "external",
@@ -87,6 +87,7 @@ REGISTER = Register(
             "external_review": {"state": "defect-found", "date": "2026-10-01"},
         },
     },
+    verifiers={"V-zmx2": "zmx2", "V-sqpack": "sqpack.fractional"},
 )
 
 
@@ -334,32 +335,77 @@ def test_closeable_needs_every_result_settled_triage_done_and_no_ask_queued() ->
     ("relation", "expected"),
     [
         (
-            {"verifier_relation": "producer-code", "verifier_program": "zmx2"},
+            {"relationship_to_generator": "same-implementation", "verifiers": ["V-zmx2"]},
             "reproduced here with the author's own checker (zmx2)",
         ),
         (
-            {"verifier_relation": "independent-implementation", "verifier_program": "sqpack"},
-            "re-verified here by an independent implementation (sqpack)",
+            {
+                "relationship_to_generator": "independent-implementation",
+                "verifiers": ["V-sqpack", "V-zmx2"],
+            },
+            "re-verified here by an independent implementation (sqpack.fractional, zmx2)",
+        ),
+        (
+            {"relationship_to_generator": "same-implementation"},
+            "reproduced here with the author's own checker",
         ),
         (
             {
-                "verifier_relation": {
-                    "relation": "shared-components",
-                    "components": ["the point test"],
-                }
+                "relationship_to_generator": "independent-implementation",
+                "verifiers": ["V-gone"],
             },
-            "re-verified by code sharing the point test with the author's",
+            "re-verified here by an independent implementation",
         ),
         (
-            {"verifier_relation": "producer-code", "origin": "independently-external"},
+            {
+                "relationship_to_generator": "same-implementation",
+                "origin": "independently-external",
+            },
             "reproduced by a third party with the author's own checker",
         ),
+        ({"relationship_to_generator": "unknown-historical"}, ""),
+        ({}, ""),
     ],
 )
 def test_a_confirmation_says_whose_code_reproduced_it(
     relation: Mapping[str, Any], expected: str
 ) -> None:
-    assert check_requests.verifier_phrase({"origin": "replayed-here", **relation}) == expected
+    entry = {"origin": "replayed-here", **relation}
+    assert check_requests.verifier_phrase(entry, REGISTER.verifiers) == expected
+
+
+def test_verifier_names_come_from_the_verifiers_file_and_nothing_without_it(
+    tmp_path: Any,
+) -> None:
+    assert check_requests.load_verifiers(tmp_path / "absent.yaml") == {}
+    listed = tmp_path / "listed.yaml"
+    listed.write_text(
+        "verifiers:\n  - id: V-a\n    name: zmx2\n  - id: V-b\n", encoding="utf-8"
+    )
+    assert check_requests.load_verifiers(listed) == {"V-a": "zmx2", "V-b": "V-b"}
+    mapped = tmp_path / "mapped.yaml"
+    mapped.write_text("V-c:\n  program: zm_mixed.py\n", encoding="utf-8")
+    assert check_requests.load_verifiers(mapped) == {"V-c": "zm_mixed.py"}
+
+
+def test_an_exact_value_is_described_by_its_lower_half_and_not_by_the_grid() -> None:
+    grid = {
+        "claim": "upper-bound",
+        "origin": "replayed-here",
+        "replay_status": "passed",
+        "relationship_to_generator": "independent-implementation",
+    }
+    lower = {**REGISTER.evidence["E-replay"], "claim": "lower-bound"}
+    exact = Register(
+        results={
+            "T-001": result_entry("T-001", "V3", "C3", "E-lower", "E-grid", kind="optimality")
+        },
+        evidence={"E-lower": lower, "E-grid": grid},
+        verifiers=REGISTER.verifiers,
+    )
+    assert check_requests.entry_state("T-001", exact).how == (
+        "reproduced here with the author's own checker (zmx2)"
+    )
 
 
 def test_a_confirmation_without_the_relation_says_it_is_not_yet_recorded() -> None:
@@ -390,7 +436,7 @@ def test_the_draft_states_each_result_links_main_and_ends_in_the_footer() -> Non
     text = check_requests.draft(entry, REGISTER, "owner/repo")
     assert text.endswith(FOOTER)
     assert (
-        "T-001, confirmed, at V3/C3: reproduced here with the author's own checker (zmx2)."
+        "T-001, confirmed at V3/C3: reproduced here with the author's own checker (zmx2)."
         in text
     )
     assert "registered as reported" in text
@@ -400,6 +446,24 @@ def test_the_draft_states_each_result_links_main_and_ends_in_the_footer() -> Non
     assert "stays open" in text
     closing = check_requests.draft(issue(), REGISTER, "owner/repo")
     assert "closed with this comment" in closing
+
+
+def test_the_draft_corrects_what_earlier_replies_said() -> None:
+    said = [
+        {
+            "result": "bound",
+            "id": "T-001",
+            "as": "T-058",
+            "verification": "V4",
+            "confirmation": "C4",
+        }
+    ]
+    earlier = reply(1, reported=said, outdated=["a link into a branch; it is on main"])
+    text = check_requests.draft(issue(replies=[earlier]), REGISTER, "owner/repo")
+    assert "**Corrections to earlier replies.**" in text
+    assert "- The reply of 2026-10-02 said a link into a branch; it is on main." in text
+    assert "- The reply of 2026-10-02 named this result T-058; it is T-001." in text
+    assert "- The reply of 2026-10-02 gave T-001 as V4/C4; it now reads V3/C3." in text
 
 
 def test_the_draft_refuses_off_main(

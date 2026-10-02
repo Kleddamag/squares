@@ -391,8 +391,12 @@ issues:
             confirmation: C4
             status: confirmed
         outdated:
-          - the review is linked on the branch claude/determined-goldberg-ura2ed
-          - T-061 is the verified lower bound in the n = 11 case record (s(11) is settled by T-060)
+          - >-
+            the review is on the branch claude/determined-goldberg-ura2ed; it is on main at
+            docs/project/reviews/review-2026-09-30-issue-247-wang-li-n11.md
+          - >-
+            the result is the verified lower bound in the n = 11 case record; s(11) is now
+            settled (T-060), and T-061 stays registered as true and is marked superseded
       - url: https://github.com/jlevy/squares/issues/247#issuecomment-5912312559
         date: '2026-09-30'
         by: jlevy
@@ -515,7 +519,10 @@ issues:
             verification: V4
             confirmation: C3
         outdated:
-          - the intake and the review are linked on the branch claude/determined-goldberg-ura2ed
+          - >-
+            the intake and the review are on the branch claude/determined-goldberg-ura2ed;
+            both are on main, the review at
+            docs/project/reviews/review-2026-09-29-issue-227-upper-bound-packings.md
       - url: https://github.com/jlevy/squares/issues/227#issuecomment-5910782477
         date: '2026-09-30'
         by: jlevy
@@ -527,8 +534,8 @@ issues:
             confirmation: C4
         outdated:
           - >-
-            the interval route is linked on the branch claude/determined-goldberg-ura2ed;
-            the import is on main (jlevy/squares#248 and #249)
+            the interval route is on the branch claude/determined-goldberg-ura2ed; it is on
+            main in packing/resources/web/franciscouzo-square-packing-2026-09-27/README.md
           - jlevy/squares#249 is not merged yet; it has merged
     close_when: >-
       A follow-up states V3/C3 under the ladder of 30 September and links the review and

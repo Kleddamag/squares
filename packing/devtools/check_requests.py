@@ -45,7 +45,7 @@ import re
 import subprocess
 import sys
 from collections.abc import Callable, Iterable, Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -60,6 +60,8 @@ RECORD = ROOT / "campaign" / "result-requests.yaml"
 SCHEMA = ROOT / "campaign" / "schemas" / "result-requests.schema.yaml"
 RESULTS = ROOT / "frontier" / "results.yaml"
 EVIDENCE = ROOT / "frontier" / "evidence.yaml"
+#: The verifier programs evidence entries name in `verifiers`, when that file exists.
+VERIFIERS = ROOT / "frontier" / "verifiers.yaml"
 #: The repository-relative paths the draft and the on-main column read at `origin/main`.
 RESULTS_PATH = "packing/frontier/RESULTS.md"
 STATUS_PATH = "packing/frontier/STATUS.md"
@@ -76,6 +78,8 @@ CONFIRMED_RANK = 3
 #: Evidence origins that count as confirmation (epistemics.md, Confirmation).
 CONFIRMING_ORIGINS = frozenset({"audited-here", "replayed-here", "independently-external"})
 THIRD_PARTY = "independently-external"
+OPTIMALITY = "optimality"
+UPPER_BOUND = "upper-bound"
 
 CONFIRMED = "confirmed"
 REFUTED = "refuted"
@@ -103,6 +107,7 @@ class Register:
 
     results: dict[str, Mapped]
     evidence: dict[str, Mapped]
+    verifiers: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass(frozen=True, slots=True)
@@ -140,12 +145,15 @@ class IssueState:
     blockers: tuple[str, ...]
 
 
-def load_register(results: Path = RESULTS, evidence: Path = EVIDENCE) -> Register:
+def load_register(
+    results: Path = RESULTS, evidence: Path = EVIDENCE, verifiers: Path | None = None
+) -> Register:
     register = safe_load(results.read_text(encoding="utf-8"))
     entries = safe_load(evidence.read_text(encoding="utf-8"))
     return Register(
         results={str(item["id"]): item for item in register["results"]},
         evidence={str(item["id"]): item for item in entries["evidence"]},
+        verifiers=load_verifiers(VERIFIERS if verifiers is None else verifiers),
     )
 
 
@@ -175,59 +183,76 @@ def _rank(rung: object) -> int:
     return int(str(rung)[1])
 
 
-def _join(value: object) -> str:
-    if isinstance(value, str):
-        return value
-    if isinstance(value, Iterable):
-        return ", ".join(str(item) for item in value)
-    return str(value)
+#: How a confirming entry's checker stands to the code that produced the certificate,
+#: the evidence schema's `relationship_to_generator`, in the words an author is told. The
+#: other values (`not-applicable`, `unknown-historical`) say nothing an author can use,
+#: and read as not yet recorded.
+RELATION_PHRASES = {
+    "same-implementation": "reproduced {where} with the author's own checker",
+    "independent-implementation": "re-verified {where} by an independent implementation",
+    "generator": "reproduced {where} by the program that produced it",
+}
 
 
-def verifier_phrase(entry: Mapped) -> str:
-    """How a confirming evidence entry re-verified the result, from `verifier_relation`.
+def load_verifiers(path: Path = VERIFIERS) -> dict[str, str]:
+    """Each verifier's id and the program name a reader is told, or nothing without the file.
 
-    The field says whether the replay ran the producer's own code, an independently
-    written implementation, or code sharing components with the producer's. It is read
-    as a plain value with the program beside it, or as a mapping that carries the program
-    and the shared components itself, and an entry without it says so rather than
-    guessing from the replay command.
+    Read as a list of entries under `verifiers`, or as a mapping from id to entry; an
+    entry's `name`, else its `program`, else its id, is what a draft prints.
     """
-    raw = entry.get("verifier_relation")
-    if raw is None:
+    if not path.exists():
+        return {}
+    document = safe_load(path.read_text(encoding="utf-8")) or {}
+    listed = document.get("verifiers", document) if isinstance(document, Mapping) else document
+    if isinstance(listed, Mapping):
+        listed = [
+            {"id": key, **(value if isinstance(value, Mapping) else {})}
+            for key, value in listed.items()
+        ]
+    names: dict[str, str] = {}
+    for item in listed or ():
+        if isinstance(item, Mapping) and item.get("id"):
+            names[str(item["id"])] = str(item.get("name") or item.get("program") or item["id"])
+    return names
+
+
+def verifier_phrase(entry: Mapped, verifiers: Mapping[str, str] | None = None) -> str:
+    """How a confirming evidence entry re-verified the result, or nothing if unrecorded.
+
+    The relation is the entry's `relationship_to_generator`: the author's own checker run
+    here, or an independently written one. The programs are its `verifiers`, resolved
+    against `frontier/verifiers.yaml`; without the field or the file no program is named,
+    rather than one guessed from the replay command.
+    """
+    template = RELATION_PHRASES.get(str(entry.get("relationship_to_generator")))
+    if template is None:
         return ""
-    if isinstance(raw, Mapping):
-        relation = raw.get("relation") or raw.get("kind") or raw.get("value")
-        program = raw.get("program") or raw.get("programs") or raw.get("checker")
-        components = raw.get("components") or raw.get("shared_components") or raw.get("shared")
-    else:
-        relation = raw
-        program = entry.get("verifier_program") or entry.get("program") or entry.get("checker")
-        components = entry.get("shared_components") or entry.get("verifier_components")
     where = "by a third party" if entry.get("origin") == THIRD_PARTY else "here"
-    named = f" ({_join(program)})" if program else ""
-    match relation:
-        case "producer-code":
-            return f"reproduced {where} with the author's own checker{named}"
-        case "independent-implementation":
-            return f"re-verified {where} by an independent implementation{named}"
-        case "shared-components":
-            shared = _join(components) if components else "components"
-            return f"re-verified by code sharing {shared} with the author's{named}"
-        case _:
-            return f"re-verified {where}, verifier relation {relation!r}{named}"
+    known = verifiers or {}
+    names = [known[ident] for ident in entry.get("verifiers") or () if ident in known]
+    named = f" ({', '.join(names)})" if names else ""
+    return template.format(where=where) + named
 
 
-def confirmation_phrase(cited: Iterable[str], register: Register) -> str:
-    """How a confirmed result was re-verified, one phrase for each confirming entry."""
+def confirmation_phrase(cited: Iterable[str], register: Register, kind: str = "") -> str:
+    """How a confirmed result was re-verified, one phrase for each confirming entry.
+
+    An exact value takes its confirmation from its lower half (epistemics.md, Scope and
+    Composition), so the upper half's entry, most often the grid's, is not described: an
+    author told that their lower bound was "re-verified by an independent implementation"
+    because the grid was would be told something false.
+    """
     phrases: list[str] = []
     missing: list[str] = []
     for ref in cited:
         entry = register.evidence.get(ref)
         if not entry or entry.get("origin") not in CONFIRMING_ORIGINS:
             continue
+        if kind == OPTIMALITY and entry.get("claim") == UPPER_BOUND:
+            continue
         if entry.get("replay_status") != "passed":
             continue
-        phrase = verifier_phrase(entry)
+        phrase = verifier_phrase(entry, register.verifiers)
         if phrase:
             if phrase not in phrases:
                 phrases.append(phrase)
@@ -259,7 +284,7 @@ def _register_entry(ident: str, register: Register) -> Entry:
         return Entry(ident, rungs, DEFECT, status, "; ".join(issues), "")
     how = ""
     if _rank(record["confirmation"]) >= result_status.CONFIRMED_FROM:
-        how = confirmation_phrase(record["evidence"], register)
+        how = confirmation_phrase(record["evidence"], register, str(record.get("kind", "")))
     confirmed = (
         _rank(record["verification"]) >= CONFIRMED_RANK
         and _rank(record["confirmation"]) >= CONFIRMED_RANK
@@ -368,15 +393,42 @@ def _describe(state: ResultState) -> str:
     return f"{named}: {state.state}" if named else state.state
 
 
-def _uncorrected(replies: Sequence[Mapped]) -> list[str]:
-    """The outdated statements no later reply has said it corrects."""
+def _uncorrected(replies: Sequence[Mapped]) -> list[tuple[str, str]]:
+    """The outdated statements no later reply has said it corrects, with their dates."""
     corrected = {str(url) for reply in replies for url in reply.get("corrects", ())}
     return [
-        f"a follow-up: the reply of {reply['date']} said {statement}"
+        (str(reply["date"]), str(statement))
         for reply in replies
         if str(reply["url"]) not in corrected
         for statement in reply.get("outdated", ())
     ]
+
+
+def corrections(issue: Mapped, states: Sequence[ResultState]) -> list[str]:
+    """What earlier replies on an issue said that the record no longer holds, for the author.
+
+    The same facts `replies_due` reports, in the words a follow-up uses: an outdated
+    statement, an id the result no longer has, a rung or status it no longer reads."""
+    replies = list(issue.get("replies", ()))
+    found = [
+        f"The reply of {date} said {statement}." for date, statement in _uncorrected(replies)
+    ]
+    for state in states:
+        reply, items = _last_mention(replies, state.key)
+        if reply is None:
+            continue
+        named = {str(item["id"]): item for item in items if "id" in item}
+        for entry in state.entries:
+            item = named.get(entry.id)
+            if item is None:
+                continue
+            if item.get("as") and item["as"] != entry.id:
+                said = f"The reply of {reply['date']}"
+                found.append(f"{said} named this result {item['as']}; it is {entry.id}.")
+            if moved := _moved(entry, item):
+                said = f"The reply of {reply['date']} gave {entry.id} as {moved[0]}"
+                found.append(f"{said}; it now reads {moved[1]}.")
+    return found
 
 
 def replies_due(issue: Mapped, states: Sequence[ResultState]) -> list[str]:
@@ -387,7 +439,10 @@ def replies_due(issue: Mapped, states: Sequence[ResultState]) -> list[str]:
     due: list[str] = []
     if not replies:
         due.append("an acknowledgement: nothing has been posted on this issue")
-    due.extend(_uncorrected(replies))
+    due.extend(
+        f"a follow-up: the reply of {date} said {statement}"
+        for date, statement in _uncorrected(replies)
+    )
     for state in states:
         reply, items = _last_mention(replies, state.key)
         if reply is None:
@@ -716,7 +771,8 @@ def _for_author(text: str) -> str:
 def _plain(entry: Entry, record: Mapped | None) -> str:
     """An entry's state in words an author can read without the ladder beside them."""
     if entry.state == CONFIRMED:
-        return f"confirmed, at {entry.rungs}: {entry.how}"
+        where = f"at {entry.rungs}" if entry.id.startswith("T-") else "here"
+        return f"confirmed {where}: {entry.how}"
     if entry.state == REFUTED:
         return f"refuted, by the review at {entry.why}"
     if entry.state == DEFECT:
@@ -737,6 +793,15 @@ def _plain(entry: Entry, record: Mapped | None) -> str:
             f". Under way here since {activity.get('since')}: {_for_author(activity['what'])}"
         )
     return sentence
+
+
+def _shown(result: ResultState, reported: Mapped) -> list[Entry]:
+    """The entries a draft names for a result: every register entry, and the evidence
+    entries that decide something. A report entry beside its register entry adds only
+    the word "recorded", which the register entry already says better."""
+    if reported.get("defect") or not any(e.id.startswith("T-") for e in result.entries):
+        return list(result.entries)
+    return [e for e in result.entries if e.id.startswith("T-") or e.state != OPEN]
 
 
 def _links(states: Sequence[ResultState], register: Register, base: str) -> list[str]:
@@ -763,6 +828,11 @@ def draft(issue: Mapped, register: Register, repository: str) -> str:
     lines = ["Where this request stands in the record on `main`.", ""]
     if issue["triage"] == "pending":
         lines += ["Thank you. This is being triaged; the claims are not yet mapped.", ""]
+    corrected = corrections(issue, state.results)
+    if corrected:
+        lines += ["**Corrections to earlier replies.**", ""]
+        lines += [f"- {line}" for line in corrected]
+        lines.append("")
     reported = {str(result["key"]): result for result in issue.get("results", ())}
     imported = [result for result in state.results if result.entries]
     if imported:
@@ -777,7 +847,7 @@ def draft(issue: Mapped, register: Register, repository: str) -> str:
                 lines.append(f"- {result.claim}: {held}.")
             else:
                 lines.append(f"- {result.claim}:")
-            for entry in result.entries:
+            for entry in _shown(result, reported[result.key]):
                 record = register.results.get(entry.id)
                 lines.append(f"  - {entry.id}, {_plain(entry, record)}.")
         lines.append("")

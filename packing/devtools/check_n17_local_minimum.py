@@ -5,8 +5,9 @@ of the positively weighted H-258 rows, exact coordinate duals for the 90 signed
 non-slider directions, and the margins of the 135 unavailable owner alternatives.
 
 `--ratio` implements the frozen recipe of
-`docs/project/reviews/review-2026-10-02-n17-local-theorem-recipe.md` over the declared
-slider box `B_W = [0, 1/4] x [0, 1/12] x [-1/8, 1/16]` in `(a, b, z)` and a uniform
+`docs/project/reviews/review-2026-10-02-n17-local-theorem-recipe.md` over a declared
+slider box in `(a, b, z)`, by default `B_W = [0, 1/4] x [0, 1/12] x [-1/8, 1/16]`
+(`--box` declares another, recorded as the receipt's `slider_box`), and a uniform
 radius (1/5000): the rows rebuilt at the moving base point `x*(w)` with
 `k = (1 - |tau|)/2` on the 45 non-slider columns (C4, exact and at symbolic root
 parameters), the tau branches (C3), the curvature constants (C7), the 125 unavailable
@@ -17,6 +18,18 @@ adaptive cell partition (C8, root-box residual folded in) and the strict ratio t
 kernel re-checked at every vertex (C11), and the C12 refusal controls with the n11
 replay. Its receipt is planning evidence, not an H-261 verdict: the recipe's lemmas are
 hand proofs and tightness at `x*(0)` is H-257's.
+
+Every box item reads the declared box's own vertices. A box on which some retained
+face's tau leaves its declared sign branch or reaches `|tau| = 1` (for instance `a < 0`,
+`b <= -tau_{11,12}(0)`, about `-0.0568`, or `z >= tau_{13,14}(0)`, about `0.0806`) is
+refused before any dual is sought: the face rows use `|tau| = branch * tau`, so they
+and C4's affine form are right only inside the branches. A floor `b < 0` is allowed,
+since H-268's slide range reaches `b* = -1.685 r`, where square 11 has moved toward
+square 9. The family point `x*(w)` then overlaps 9 and 11 by `|b|` across the dropped
+9/11 face: its rows are not retained, its weights stay exactly zero (C11), its offset
+`tau_{9,11}` does not depend on `b`, and C2 and C10 are identities in the sliders with
+no sign on `b`. The conclusion `x = x*(w(x))` then says no packing in the
+neighbourhood has `b < 0`.
 
 Point. Everything is evaluated in `fractions.Fraction` arithmetic at the exact
 rational point H-258 uses: the exp-237 root-box midpoint `(t, b)`, with the H-254
@@ -882,6 +895,16 @@ Point = tuple[Q, Q, Q]
 SparseRow = dict[int, Q]
 
 
+def slider_box(values: Sequence[Q]) -> tuple[tuple[Q, Q], tuple[Q, Q], tuple[Q, Q]]:
+    """`(a, b, z)` bounds from `A_LO A_HI B_LO B_HI Z_LO Z_HI`, exact and nondegenerate."""
+    if len(values) != 6 or any(type(value) is not Q for value in values):
+        raise ValueError("slider box needs six exact rationals: A_LO A_HI B_LO B_HI Z_LO Z_HI")
+    box = ((values[0], values[1]), (values[2], values[3]), (values[4], values[5]))
+    if not all(lo < hi for lo, hi in box):
+        raise ValueError("slider box needs LO < HI in each of a, b and z")
+    return box
+
+
 def box_vertices(box: Sequence[tuple[Q, Q]]) -> tuple[Point, ...]:
     """The eight vertices of a box in `(a, b, z)`, low corner first."""
     first, second, third = box
@@ -1326,8 +1349,9 @@ def slide_invariance_audit(
     the anchor wall gaps are C10. So tightness along the family reduces to tightness
     at `x*(0)`, which is H-257's at the root. At the rational midpoint those margins
     are reported exactly; nonzero ones carry the midpoint's closing residual.
-    `restore` puts dropped pairs back: the C12 control restores 9/11, whose face opens
-    as square 11 slides (`b > 0`), and must be refused.
+    `restore` puts dropped pairs back: the C12 control restores 9/11, whose face gap
+    is `b` along the family (open for `b > 0`, overlapping for `b < 0`), and must be
+    refused. Nothing here depends on the sign of a slider.
     """
     field = ExactField()
     t, beta = field.generator("t"), field.generator("b")
@@ -2748,12 +2772,20 @@ def ratio_certify(
     The certificates are exact at the root-box midpoint `(t, beta)`. With `root_radii`
     (the H-255 inclusion radii) the curvature constants, C3 and C6 also hold over the
     whole root box and every dual's residual carries the root-box term of C8(i).
-    Returns the receipt body and the exact certificates (one document per direction).
+    A box outside the declared tau branches (C3) is refused with `ValueError` before
+    the other items run. Returns the receipt body and the exact certificates (one
+    document per direction).
     """
     timings: dict[str, float] = {}
     started = time.monotonic()
+    box = slider_box([bound for interval in box for bound in interval])
     family = build_family(t, beta)
     branches = sign_branch_audit(family, box)
+    if not branches["passed"]:
+        raise ValueError(
+            "slider box leaves the declared tau branch of face "
+            + ", ".join(branches["failures"])
+        )
     matrix, affine = affine_audit(family, box)
     enclosure = None if root_radii is None else root_enclosure(family, root_radii)
     deviation: tuple[Q, ...] | None = None
@@ -3015,6 +3047,13 @@ def main(argv: list[str] | None = None) -> int:
         help="run the ratio test over the declared slider box (C3, C4, C7, C8, C9, C12)",
     )
     parser.add_argument("--radius", type=Q, default=DECLARED_RADIUS, help="uniform radius")
+    parser.add_argument(
+        "--box",
+        nargs=6,
+        type=Q,
+        metavar=("A_LO", "A_HI", "B_LO", "B_HI", "Z_LO", "Z_HI"),
+        help="ratio mode: the slider box in (a, b, z), rationals (default B_W)",
+    )
     parser.add_argument("--certificates", type=Path, help="write the exact cell duals here")
     parser.add_argument("--no-n11", action="store_true", help="skip the n11 replay control")
     parser.add_argument(
@@ -3099,8 +3138,10 @@ def ratio_main(args: argparse.Namespace) -> int:
         _check_frozen_root_bytes(raw)
         midpoint, root_radii = read_point(raw)
         _check_radius(args.radius)
+        box = DECLARED_BOX if args.box is None else slider_box(args.box)
         body, certificates = ratio_certify(
             *midpoint,
+            box=box,
             radius=args.radius,
             n11=not args.no_n11,
             only=args.direction,
@@ -3143,6 +3184,7 @@ def ratio_main(args: argparse.Namespace) -> int:
     summary = {
         "schema": RATIO_SCHEMA,
         "passed": receipt["passed"],
+        "slider_box": receipt["slider_box"],
         "checks": receipt["checks"],
         "worst": {
             key: (receipt["c8_c9"]["worst"] or {}).get(key)

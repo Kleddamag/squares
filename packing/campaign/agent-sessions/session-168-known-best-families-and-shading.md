@@ -10,7 +10,7 @@ session:
   title: Families of Known-Best Packings, Contact Shading, and the Large-n Limit
   date: '2026-10-02'
   started_at: '2026-10-02T05:15:20Z'
-  deadline_at: '2026-10-02T09:15:20Z'
+  deadline_at: '2026-10-02T12:15:20Z'
   branch: claude/ecstatic-archimedes-62hj6a
   primary_bead: think-los0
   status: in_progress
@@ -64,27 +64,58 @@ session:
     focus: process
     recording: contemporaneous
     clock_role: work
-    objective: Wire the two censuses into the gate, finish the records, certify the integration commit
-      with packing-validate --fast, and close.
+    objective: Wire the two censuses into the gate, finish the records, and push the integration commit
+      for hosted CI.
     bead: think-vhha
-    status: in_progress
+    status: completed
     entered_by: planned_checkpoint
     switch_reason: Every lane reached its exit and X-049 is written.
     budget_minutes: 60
     started_at: '2026-10-02T06:00:00Z'
-    deadline_at: '2026-10-02T07:05:00Z'
-    expected_output: A passing fast gate at the integration commit, a terminal record, closed lane beads,
-      and a pushed branch.
+    deadline_at: '2026-10-02T07:00:00Z'
+    expected_output: The censuses in the gate, closed lane beads, and a pushed integration commit.
     validation_command: cd packing && uv run --frozen --all-extras --group dev packing-validate --fast
     kill_condition: The fast gate fails on a step this session did not touch and cannot be repaired within
       the phase.
     fallback: Stop with certification_pending naming a follow-up bead.
+    outcome: The census sweep step passes through the gate in 16.42 s; the validation CLI tests (185)
+      pass; lane beads closed; integration commit d8473d553 pushed. A local --fast run was stopped after
+      eight minutes when the owner asked for the follow-ups, because lane writes would have invalidated
+      it; hosted CI on the pull request checks the pushed commit instead, and the certifying run moves
+      to the end of the session.
+    evidence:
+    - packing/src/sqpack/cli/validate.py
+    - packing/tests/test_validation_cli.py
+    stop_reason: The owner asked for every follow-up bead before the session closes.
+    next_action: Open the pull request and dispatch the follow-up lanes.
+  - workflow: factual-review
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    objective: 'Work every X-049 follow-up bead in parallel lanes: think-589i, the review of T-007 against
+      Karakus 2026 (a mathematical audit and a consumer inventory); think-1n8w with think-hzv3, archive
+      acquisition and the asymptotic-record corrections; think-ptt7, codifying the four candidate hypotheses;
+      and think-bgkz, the regularized-view layer.'
+    bead: think-589i
+    status: in_progress
+    entered_by: user_request
+    switch_reason: The owner asked to follow up on all follow-up beads with sub-agents.
+    budget_minutes: 240
+    started_at: '2026-10-02T06:20:00Z'
+    deadline_at: '2026-10-02T10:20:00Z'
+    expected_output: A dated review of T-007 with a disposition per consumer; archived sources; corrected
+      asymptotic record with a defect entry; registered or rejected hypotheses; a regularized-view layer
+      or a scoped refusal.
+    validation_command: cd packing && uv run --frozen --all-extras --group dev packing-validate --records
+    kill_condition: The review finds a register value that is false and cannot be scoped without a decision
+      from the owner.
+    fallback: Record the finding, keep register values unchanged, and hand the decision to the owner.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Run packing-validate --fast at the integration commit.
+    next_action: Dispatch the five follow-up lanes.
   budget:
-    wall_minutes: 240
+    wall_minutes: 420
     slice_minutes: 30
     finalization_minutes: 60
   stop_conditions:
@@ -231,7 +262,8 @@ session:
   - 'ruff check, ruff format and basedpyright: zero findings on every new or changed Python file.'
   - 'devtools.check_math_markup: clean, backlog 0.'
   stop_reason: null
-  next_action: Certify with packing-validate --fast at the integration commit, then close.
+  next_action: Dispatch the five follow-up lanes; certify the final commit with packing-validate --fast
+    before closing.
 ---
 # Families of Known-Best Packings, Contact Shading, and the Large-n Limit
 

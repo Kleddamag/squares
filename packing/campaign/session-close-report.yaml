@@ -2861,7 +2861,7 @@ sessions:
   title: "Families of Known-Best Packings, Contact Shading, and the Large-n Limit"
   status: in_progress
   primary_bead: think-los0
-  phases: 2
+  phases: 3
   measured: false
   unmeasured_reason: >-
     declares no resource measurement

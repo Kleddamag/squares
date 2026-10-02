@@ -462,6 +462,36 @@ evidence:
       detail: Bind a rigorous packing witness and its orientations, or use the reviewed sufficient factor B*(1+83/40000); distinguish a sufficient ceiling from a sharp optimum.
     source_reviewed: '2026-09-29'
 
+  - id: E-wand125-tools-ceiling-certificates
+    claim: derived-structure
+    scope: {n_min: 1, n_max: 100}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    origin: audited-here
+    novelty: previously-published
+    source_key: '[wand125 tools 2026]'
+    certificate: resources/web/wand125-tools-2026-09-29/receipts/ceiling-certificates-2026-10-02.json.gz
+    replay: uv run --frozen --all-extras --group dev python -m devtools.certify_rectangle_ceiling --check
+    replay_status: passed
+    limitations: >-
+      Performed by the repository's own verifier, sqpack.rectangle_ceiling (verify_ceiling
+      and premise_checks), driven by devtools.certify_rectangle_ceiling; it is independent
+      of the source, whose l_cap.py computes floats and checks nothing. For each n = 1..100
+      the certificate is n side-9977/10000 cores at exact net directions with rational
+      centres; containment in [0, L]^2 and pairwise interior-disjointness are decided in
+      exact rational arithmetic, and the numeric premises of the general B(1 + 83/40000)
+      ceiling (net reaches 45 degrees, half-gaps at most arctan D, sharp factor below
+      1 + D) are decided exactly. The repository known-best witnesses only place the
+      cores; their own assurance is not relied on. The step from a ceiling certificate to
+      "no rectangle-density certificate at side >= L has mass < n" is the lemma in
+      review-2026-10-02-wand125-ceiling-resolution.md, read and not mechanized, and it
+      assumes the coverage predicate over the whole legal centre domain of a D4-invariant
+      density as reviewed on 2026-09-22 and 2026-09-29. Ceilings are sufficient, not sharp;
+      the source's B*UB(n) is proved only at the 64 integer-grid rows.
+    source_reviewed: '2026-10-02'
+
   - id: E-wand125-tools-n11-row-report
     claim: derived-structure
     scope: {n_values: [11]}

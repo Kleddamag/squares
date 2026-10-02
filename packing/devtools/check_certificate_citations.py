@@ -96,6 +96,17 @@ def referenced_evidence(node: object) -> set[str]:
     return found
 
 
+def method_limit_evidence() -> set[str]:
+    """Evidence cited by a registered result of kind `method-limit`."""
+    register = safe_load((FRONTIER / "results.yaml").read_text(encoding="utf-8"))
+    return {
+        identifier
+        for result in register["results"]
+        if result.get("kind") == "method-limit"
+        for identifier in result.get("evidence", [])
+    }
+
+
 def orphaned_evidence(evidence_by_id: dict[str, dict]) -> list[str]:
     """Verified, replayable evidence that no frontier record cites.
 
@@ -108,11 +119,17 @@ def orphaned_evidence(evidence_by_id: dict[str, dict]) -> list[str]:
     This is the general form: evidence that is verified, has passed its replay, and names a
     certificate is evidence somebody meant to bear on a case. If no case cites it, either
     the record is behind or the evidence should not be in the register.
+
+    A method limit is the one exception to "a case cites it": it bounds what a proof
+    method can reach across many cases, and a case record has no block for that. Its
+    citing record is the method-limit result in the register (T-058's exact ceilings).
+    Bound-bearing kinds still need the case to cite their evidence.
     """
     cited: set[str] = set()
     for path in sorted(FRONTIER.glob("n-*.md")):
         case = safe_load(path.read_text(encoding="utf-8").split("---\n")[1])
         cited |= referenced_evidence(case["packing"])
+    cited |= method_limit_evidence()
 
     return sorted(
         identifier

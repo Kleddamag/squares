@@ -5,7 +5,7 @@ title: Import, confirm and answer every reported result (2 October 2026 effort)
 kind: epic
 status: open
 priority: 1
-version: 25
+version: 26
 labels:
   - result-import
 dependencies: []
@@ -31,7 +31,7 @@ child_order_hints:
   - is-01m3ytdhr6h2xnsvj4f2nc2nk2
   - is-01m3z77bdhk8tn3epx63ywhxft
 created_at: 2026-10-02T16:51:15.917Z
-updated_at: 2026-10-02T22:57:06.154Z
+updated_at: 2026-10-02T22:57:32.800Z
 ---
 Umbrella for the 2 October 2026 effort: PRs #290 -> #292 -> #298 (imports and records), plus a stacked PR for verifier provenance and the independent verifier. Children track each lane; done when every reported result is confirmed or refuted (or has a bead naming exactly what remains), every issue has a current status reply, closeable issues are closed, and all PRs are merged.
 
@@ -102,3 +102,5 @@ Next steps for the next agent, in order:
 - #298 shows "dirty" (conflicting) on GitHub although its base 91bd92b78 is an ancestor of the head and `git merge-tree` is clean; pull-request CI stopped triggering after 41ae96c22. packing-validation was dispatched by workflow_dispatch (run 37075005561) on 1dd6069eb. If the flag persists, investigate (diff is 871 files / ~77k lines vs base) rather than pushing empty commits.
 - All cloud runners and lanes were sent resume messages; the local records lane (T-068, afternoon V0, #309 register) and W2 resumed.
 - New cloud lanes: RV session_01QGiY88KH4PgVRDMTUMsua1 (blind review of BB's s(12) >= 15680000/3949423, branch claude/lane-rv-s12-review, bead think-4srr); SP session_01Hqz93p1waL3UQYW44eKsWd (assemble the stacked verifier PR, branch claude/verifier-provenance-and-independent-verifier, bead think-tatg).
+- 22:57 m5 done: mixed n85-L946 FULL_REPLAY_MATCHES_SHIPPED (201 angles), receipts on claude/replay-wand125-afternoon-m5.
+- 22:57 LL done (claude/lane-ll-t064-lean @9e8e66f63): `lake build Sqpack.Bentz` exit 0 on leanprover/lean4:v4.33.1 with Mathlib cache; bentz_of_valid7, valid_of_valid7, box7Cover_measure, famCover_total, mass_shift print [propext, Classical.choice, Quot.sound]; receipts packing/resources/web/evand-square-packing-2026-10-01/receipts/lean/{build_bentz,axioms_bentz}.log; needs >13 GB RAM (swap). Evidence: proof-assistant-checked, performed_by repository, same-implementation, verifiers [V-lean4-4.33.1]; Valid7 stays a hypothesis until the qx2 replay (q1, q2) completes.

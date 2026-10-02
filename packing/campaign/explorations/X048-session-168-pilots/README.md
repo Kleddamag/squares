@@ -124,6 +124,45 @@ The two changes are confounded.
 B does not move: four of its six owners never own a point.
 Collision cost now dominates, and exact plane construction is most of it.
 
+### The First Closure, Not Yet Admitted
+
+The third slice made collision 2.4 to 3.2 times cheaper in the producer only.
+It builds the facets of $Q_r-Q_i$ by edge merge, caches each partner row once per step
+and verifies by integer cross-multiplication.
+On W7’s round-0 rows it brought side-W0 from 38.9 s to 14.5 s, with the same 421
+collision regions. The checker is unchanged.
+
+| Receipt | Pattern | Bins | Outcome | Wall |
+| --- | --- | ---: | --- | ---: |
+| `receipts/kernel-collision-A-bins32-to-stall.json` | A | 32 | true stall: round 8 equals round 7 | 609 s |
+| `receipts/kernel-closure-W7-bins64.json` | W7 | 64 | **closed**: every parent pose of side-N0 forbidden at step 57 | 1,513 s |
+| `receipts/kernel-closure-endpoint6-bins64.json` | Control | 64 | stall, as required | 171 s |
+| `receipts/kernel-collision-cost-before.json`, `…-after.json` | W7 round 0 | 64 | per-step producer cost before and after | — |
+
+**W7 closes under the kernel’s checker.** Its west wall pins first: side-W2 goes from 64
+live rows to 12 and from $0.91\times0.71$ to $0.11\times0.05$, side-W1 to 20 rows and
+$0.16\times0.12$. side-N0 owns points from round 4, then loses every row by collision
+against side-W2’s nearly pinned cover.
+The transfer excludes 133,152 states and 16,701 D4 orbits, the same state count the
+selector predicted for the class.
+Every checker module is byte-identical to `214601ac`; only the producer differs.
+
+The closure is not admitted, and nothing in the census uses it yet.
+Four things must come first:
+- The seed and node objects were not saved; the receipt holds their SHA-256 (node
+  `2d516d00…`, seed `8949a798…`). A re-run must reproduce them and save them, and a
+  fresh process must re-check them.
+- The new grammar has only its builder’s soundness argument: partner covers from the
+  hull of each accepted row’s residual vertices, collision regions, replace-mode owned
+  hulls and empty seed groups.
+  It needs an independent review.
+- The endpoint control above never contracts, so it is weak.
+  The decisive falsifier is the endpoint’s own west-wall arity-7 sub-pattern at the same
+  settings. It must not close.
+- A second certifier on W7, the interval branch-and-bound pilot.
+
+A plateaus at 32 bins and needs 64 bins or row splitting.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

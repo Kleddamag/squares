@@ -28,13 +28,14 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import time
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
 from fractions import Fraction as Q
 from typing import Any
 
-from sqpack.hull_kernel.collision import SUPPORT_NORMALS, facets, outward_round
+from sqpack.hull_kernel.collision import SUPPORT_NORMALS, outward_round
 from sqpack.hull_kernel.counting import row_envelope
 from sqpack.hull_kernel.covers import convex_halfplanes
 from sqpack.hull_kernel.frame import Frame
@@ -235,90 +236,154 @@ def cached_core(
     return cores[(lo, hi)]
 
 
-def collision_region(
-    core: Polygon, domain: Polygon, partner_rows: list[tuple[Polygon, Polygon]]
-) -> Polygon:
+@dataclass(frozen=True)
+class PartnerRow:
+    """One live partner row, with what every query row reuses computed once.
+
+    `own` holds, for each outward edge normal `n` of the partner core `Q_r`, the support
+    `max over Q_r of n.v` plus `min over D_r of n.y`: the part of that facet's bound that
+    does not depend on the query core.
+    """
+
+    domain: Polygon
+    core: Polygon
+    own: tuple[tuple[Q, Q, Q], ...]
+    float_domain: tuple[tuple[float, float], ...]
+    float_own: tuple[tuple[float, float, float], ...]
+
+
+def _normals(polygon: Polygon) -> list[tuple[Q, Q]]:
+    """Outward edge normals of a counterclockwise convex polygon."""
+    return [
+        (b[1] - a[1], a[0] - b[0])
+        for a, b in zip(polygon, polygon[1:] + polygon[:1], strict=True)
+    ]
+
+
+def prepare_partner(domain: Polygon, core: Polygon) -> PartnerRow:
+    own = tuple(
+        (
+            nx,
+            ny,
+            max(nx * x + ny * y for x, y in core) + min(nx * x + ny * y for x, y in domain),
+        )
+        for nx, ny in _normals(core)
+    )
+    return PartnerRow(
+        domain,
+        core,
+        own,
+        tuple((float(x), float(y)) for x, y in domain),
+        tuple((float(a), float(b), float(c)) for a, b, c in own),
+    )
+
+
+def collision_planes(core: Polygon, partner: PartnerRow) -> list[Halfplane]:
+    """The facets of `Q_r - Q_i`, each shifted by `min over D_r`, by edge merge.
+
+    A Minkowski sum's facet normals are its summands' edge normals: `Q_r`'s, with support
+    `h_r(n) - min over Q_i of n.w`, and `-Q_i`'s, which are `-m` for each normal `m` of
+    `Q_i`, with support `max over Q_i of m.w - min over Q_r of m.v`. The planes cut out
+    exactly the polygon the hull of the pairwise differences bounds, with no hull built.
+    """
+    planes: list[Halfplane] = [
+        (nx, ny, own - min(nx * x + ny * y for x, y in core)) for nx, ny, own in partner.own
+    ]
+    for mx, my in _normals(core):
+        planes.append(
+            (
+                -mx,
+                -my,
+                max(mx * x + my * y for x, y in core)
+                - min(mx * x + my * y for x, y in partner.core)
+                - max(mx * x + my * y for x, y in partner.domain),
+            )
+        )
+    return planes
+
+
+def _integer_planes(planes: list[Halfplane]) -> list[tuple[int, int, int]]:
+    result: list[tuple[int, int, int]] = []
+    for a, b, c in planes:
+        scale = math.lcm(a.denominator, b.denominator, c.denominator)
+        result.append(
+            (
+                a.numerator * (scale // a.denominator),
+                b.numerator * (scale // b.denominator),
+                c.numerator * (scale // c.denominator),
+            )
+        )
+    return result
+
+
+def _satisfies(planes: list[tuple[int, int, int]], point: Point) -> bool:
+    """`a x + b y <= c` for every integer plane, at a rational point, by cross-multiplying."""
+    x, y = point
+    z = math.lcm(x.denominator, y.denominator)
+    px, py = x.numerator * (z // x.denominator), y.numerator * (z // y.denominator)
+    return all(a * px + b * py <= c * z for a, b, c in planes)
+
+
+def collision_region(core: Polygon, domain: Polygon, partner_rows: list[PartnerRow]) -> Polygon:
     """A convex part of `domain` every centre of which collides with every partner pose.
 
     The exact set is the domain cut by every facet `n.p <= h + min over D_r of n.y` of
-    every live partner row's `Q_r - Q_i`. It is located in floating point; the region
-    returned is the hull of grid points pulled inside it, each checked exactly against
-    every one of those halfplanes and the domain's, together with the domain's own vertices
-    that pass the same exact check, so a domain that collides everywhere is removed whole;
-    the checker verifies the same inequalities itself.
+    every live partner row's `Q_r - Q_i` (`collision_planes`). It is located in floating
+    point; the region returned is the hull of grid points pulled inside it and of the
+    domain's own vertices, each kept only if it satisfies every one of those halfplanes and
+    the domain's exactly, in integers; the checker verifies the same inequalities itself.
     """
     if not _float_collision(core, domain, partner_rows):
         return []
-    planes: list[Halfplane] = []
-    for partner_domain, partner_core in partner_rows:
-        difference = hull([(x - qx, y - qy) for x, y in partner_core for qx, qy in core])
-        planes.extend(
-            (nx, ny, upper + min(nx * x + ny * y for x, y in partner_domain))
-            for nx, ny, upper in facets(difference)
-        )
+    planes = [plane for partner in partner_rows for plane in collision_planes(core, partner)]
     region = [(float(x), float(y)) for x, y in domain]
     for a, b, c in planes:
         region = _float_clip(region, float(a), float(b), float(c))
         if len(region) < 3:
             return []
-    planes.extend(convex_halfplanes(domain))
+    exact = _integer_planes(planes + convex_halfplanes(domain))
     cx = sum(x for x, _ in region) / len(region)
     cy = sum(y for _, y in region) / len(region)
-    kept = [
-        vertex
-        for vertex in domain
-        if all(a * vertex[0] + b * vertex[1] <= c for a, b, c in planes)
-    ]
+    kept = [vertex for vertex in domain if _satisfies(exact, vertex)]
     for x, y in region:
         for pull in (2.0**-12, 2.0**-6, 2.0**-3):
             point = (
                 Q(round((x + (cx - x) * pull) * GRID), GRID),
                 Q(round((y + (cy - y) * pull) * GRID), GRID),
             )
-            if all(a * point[0] + b * point[1] <= c for a, b, c in planes):
+            if _satisfies(exact, point):
                 kept.append(point)
                 break
     polygon = hull(kept)
     return polygon if len(polygon) >= 3 and area2(polygon) > 0 else []
 
 
-def _float_hull(points_: list[tuple[float, float]]) -> list[tuple[float, float]]:
-    ordered = sorted(set(points_))
-    if len(ordered) <= 2:
-        return ordered
-
-    def turn(a: tuple[float, float], b: tuple[float, float], c: tuple[float, float]) -> float:
-        return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])
-
-    lower: list[tuple[float, float]] = []
-    upper: list[tuple[float, float]] = []
-    for point in ordered:
-        while len(lower) >= 2 and turn(lower[-2], lower[-1], point) <= 0:
-            lower.pop()
-        lower.append(point)
-    for point in reversed(ordered):
-        while len(upper) >= 2 and turn(upper[-2], upper[-1], point) <= 0:
-            upper.pop()
-        upper.append(point)
-    return lower[:-1] + upper[:-1]
-
-
-def _float_collision(
-    core: Polygon, domain: Polygon, partner_rows: list[tuple[Polygon, Polygon]]
-) -> bool:
+def _float_collision(core: Polygon, domain: Polygon, partner_rows: list[PartnerRow]) -> bool:
     """Whether the collision set meets the domain in floating point: a cheap prefilter
     that only decides whether the exact construction is worth attempting."""
     query = [(float(x), float(y)) for x, y in core]
+    query_normals = [
+        (b[1] - a[1], a[0] - b[0]) for a, b in zip(query, query[1:] + query[:1], strict=True)
+    ]
     region = [(float(x), float(y)) for x, y in domain]
-    for partner_domain, partner_core in partner_rows:
-        centres = [(float(x), float(y)) for x, y in partner_domain]
-        difference = _float_hull(
-            [(float(x) - qx, float(y) - qy) for x, y in partner_core for qx, qy in query]
+    for partner in partner_rows:
+        partner_core = [(float(x), float(y)) for x, y in partner.core]
+        planes = [
+            (nx, ny, own - min(nx * x + ny * y for x, y in query))
+            for nx, ny, own in partner.float_own
+        ]
+        planes.extend(
+            (
+                -mx,
+                -my,
+                max(mx * x + my * y for x, y in query)
+                - min(mx * x + my * y for x, y in partner_core)
+                - max(mx * x + my * y for x, y in partner.float_domain),
+            )
+            for mx, my in query_normals
         )
-        for a, b in zip(difference, difference[1:] + difference[:1], strict=True):
-            nx, ny = b[1] - a[1], a[0] - b[0]
-            bound = nx * a[0] + ny * a[1] + min(nx * x + ny * y for x, y in centres)
-            region = _float_clip(region, nx, ny, bound)
+        for a, b, c in planes:
+            region = _float_clip(region, a, b, c)
             if len(region) < 3:
                 return False
     return True
@@ -326,10 +391,10 @@ def _float_collision(
 
 def partner_cover(
     frame: Frame, accepted: list[Row], cores: dict[tuple[Q, Q], Polygon]
-) -> tuple[list[dict[str, Any]], list[tuple[Polygon, Polygon]]]:
+) -> tuple[list[dict[str, Any]], list[PartnerRow]]:
     """A partner's complete pose cover in the grammar, and its live rows."""
     given: list[dict[str, Any]] = []
-    live: list[tuple[Polygon, Polygon]] = []
+    live: list[PartnerRow] = []
     for row in accepted:
         vertices = [
             vertex for polygon in row["residual_polygons"] for vertex in points(polygon)
@@ -344,7 +409,7 @@ def partner_cover(
             lo, hi = (Q(value) for value in row["interval"])
             domain, core = hull(vertices), cached_core(frame, lo, hi, cores)
             item["domain"], item["core"] = encode(domain), encode(core)
-            live.append((domain, core))
+            live.append(prepare_partner(domain, core))
         given.append(item)
     return given, live
 
@@ -372,7 +437,7 @@ def produce_row(
     owner: int,
     predecessor: Row,
     groups: dict[int, Polygon],
-    partners: dict[int, list[tuple[Polygon, Polygon]]] | None = None,
+    partners: dict[int, list[PartnerRow]] | None = None,
     cores: dict[tuple[Q, Q], Polygon] | None = None,
 ) -> tuple[dict[str, Any], Row, list[Halfplane]]:
     lo, hi = (Q(value) for value in predecessor["interval"])
@@ -540,7 +605,7 @@ def produce(
             step_index = len(steps)
             prior_hulls = {str(other): encode(groups[other]) for other in mask}
             covers: dict[str, list[dict[str, Any]]] = {}
-            partners: dict[int, list[tuple[Polygon, Polygon]]] = {}
+            partners: dict[int, list[PartnerRow]] = {}
             if collision:
                 for other in mask:
                     if other != owner:

@@ -23,6 +23,7 @@ and the run refuses.
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import json
 import math
@@ -77,6 +78,8 @@ def run(
     cover: str,
     collision: bool = True,
     hull_limit: int | None = 16,
+    producer_share: float = 0.5,
+    save_objects: Path | None = None,
 ) -> dict[str, Any]:
     started = time.monotonic()
     mask = sorted(frame.cell_names.index(cell) for cell in cells)
@@ -90,7 +93,7 @@ def run(
         node_id=f"n17-{name}",
         collision=collision,
         hull_limit=hull_limit,
-        stop_at=started + max_seconds / 2,
+        stop_at=started + max_seconds * producer_share,
         progress=lambda event: print(
             json.dumps({**event, "seconds": round(time.monotonic() - started, 1)}),
             file=sys.stderr,
@@ -111,6 +114,14 @@ def run(
         cover=cover,
     )
     checked = time.monotonic()
+    if save_objects is not None:
+        save_objects.mkdir(parents=True, exist_ok=True)
+        for kind, value in (("seed", production.seed), ("node", production.node)):
+            digest = producer.content_sha256(value)
+            target = save_objects / f"{kind}-{digest}.json.gz"
+            target.write_bytes(
+                gzip.compress(json.dumps(value, sort_keys=True, separators=(",", ":")).encode())
+            )
     closed = trace.closure is not None
     result: dict[str, Any] = {
         "pattern": name,
@@ -121,6 +132,7 @@ def run(
         "cover_backend": cover,
         "collision_regions": collision,
         "hull_limit": hull_limit,
+        "producer_share": producer_share,
         "producer_outcome": production.outcome,
         "certified": "closed" if closed else "stalled",
         "closure": trace.closure,
@@ -180,12 +192,23 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--max-seconds", type=float, default=1800.0)
     parser.add_argument("--no-collision", action="store_true", help="no partner collisions")
     parser.add_argument("--hull-limit", type=int, default=16, help="0 keeps every vertex")
+    parser.add_argument(
+        "--save-objects", type=Path, help="write the certified seed and node here, gzipped"
+    )
+    parser.add_argument(
+        "--producer-share",
+        type=float,
+        default=0.5,
+        help="the share of the wall ceiling after which the producer starts no new step",
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
     if not math.isfinite(args.max_seconds) or args.max_seconds <= 0:
         parser.error("the wall ceiling must be positive and finite")
     if args.bins <= 0 or args.max_rounds <= 0:
         parser.error("bins and rounds must be positive")
+    if not 0 < args.producer_share < 1:
+        parser.error("the producer share must lie in (0, 1)")
     name = "custom" if args.cells else args.pattern
     cells = tuple(args.cells) if args.cells else PATTERNS[args.pattern]
     start, cpu = time.monotonic(), time.process_time()
@@ -201,6 +224,8 @@ def main(argv: list[str] | None = None) -> int:
             cover=args.cover,
             collision=not args.no_collision,
             hull_limit=args.hull_limit or None,
+            producer_share=args.producer_share,
+            save_objects=args.save_objects,
         )
     except IncompleteError as error:
         result = {"status": "INCOMPLETE", "reason": str(error), "excluded_orbits": 0}

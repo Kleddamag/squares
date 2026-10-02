@@ -68,8 +68,9 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Any, Literal
 
-import yaml
 from strif import atomic_output_file
+
+from sqpack.yamlio import load_yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "atlas/known-best/manifest.json"
@@ -77,7 +78,6 @@ OUTPUT = ROOT / "campaign/explorations/X049-families-data/contact-shade-census.j
 GENERATOR = "python -m devtools.census_atlas_contact_shades"
 CONTRACT = "packing.squares:AtlasContactShadeCensus/v1"
 
-LOADER = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
 QUARTER = math.pi / 2
 
 HOLE_CLEARANCE = 0.5
@@ -109,11 +109,20 @@ WALL_NAMES = {"-x": "wall-left", "+x": "wall-right", "-y": "wall-bottom", "+y": 
 STRUCTURAL = frozenset({"hole-or-open", "tilted-neighbour", "offset"})
 SLIDES = frozenset({"slack", "misaligned"})
 BANDS = frozenset({"angle-near-miss", "near-miss", "rule-boundary"})
+AXIS_EXACT = 1e-6
+"""Radians: within this of the axes a square is one the house renderer calls a right angle."""
+NEAR_AXIS = 0.5 * math.pi / 180
+"""Radians: a square tilted past `AXIS_EXACT` but within this is near-axis, a right angle to
+the workbench's half-degree colour tolerance and another angle family to the house."""
 STAGGER_ACROSS = 0.1
 """An aligned neighbour offset by more than this across the face is a staggered row."""
 DECADES = (2e-6, 2e-5, 1e-4, 1e-3, 1e-2, 1e-1, 0.5)
 SPECTRUM = (0.0, *(10.0**-power for power in range(15, 0, -1)), 0.5)
 """The miss spectrum's edges: exactly zero, then every decade from 1e-15 to 0.1, then 0.5."""
+ACROSS_EDGES = (2e-5, 1e-4, 1e-3, 1e-2, 0.04, 0.1, 0.25, 0.5, 0.75)
+TILT_EDGES = (1e-5, 1e-4, 1e-3, 0.5 * math.pi / 180, 0.1, 0.4, math.pi / 4)
+"""Tilt edges in radians; the fourth is the workbench's half degree, so a tilted neighbour
+below it is one the stage would call aligned."""
 
 FILL_RE = re.compile(r'<polygon data-feature="square-fill" ([^>]*?)/>')
 ATTR_RE = re.compile(r'([\w-]+)="([^"]*)"')
@@ -197,6 +206,24 @@ class Grid:
         return sorted(found)
 
 
+PAIR_REACH = 1.6
+"""Both rules look no farther than this between centres: the stage's `sqrt(2.5)` is under
+it by more than the frame's rounding, and the house's edge match needs a distance of 1."""
+
+
+def near_pairs(packing: Packing) -> list[tuple[int, int]]:
+    """Every index pair `i < j` whose centres lie within `PAIR_REACH`, in index order."""
+    grid = Grid(packing.squares)
+    pairs: list[tuple[int, int]] = []
+    for left, first in enumerate(packing.squares):
+        for right in grid.near(first.x, first.y, PAIR_REACH):
+            if right > left:
+                second = packing.squares[right]
+                if math.hypot(second.x - first.x, second.y - first.y) <= PAIR_REACH:
+                    pairs.append((left, right))
+    return pairs
+
+
 @dataclass(frozen=True)
 class Sweep:
     """How far one face can slide, and what it meets."""
@@ -208,6 +235,8 @@ class Sweep:
     """The obstacle's centre offset across the face (zero for a wall)."""
     tilt: float
     """The obstacle's orientation against the square (the square's own tilt for a wall)."""
+    obstacle_tilt: float
+    """The obstacle's own tilt from the axes, in radians (zero for a wall)."""
 
 
 def _project(
@@ -298,7 +327,7 @@ def sweep_face(packing: Packing, grid: Grid, index: int, face: str) -> Sweep:
         break
     wall = wall_clearance(square, face, packing.side)
     if best is None or wall < best[0] - TIE:
-        return Sweep(wall, "wall", WALL_NAMES[face], 0.0, abs(square.tilt))
+        return Sweep(wall, "wall", WALL_NAMES[face], 0.0, abs(square.tilt), 0.0)
     target = packing.squares[best[2]]
     rx, ry = target.x - square.x, target.y - square.y
     return Sweep(
@@ -307,6 +336,7 @@ def sweep_face(packing: Packing, grid: Grid, index: int, face: str) -> Sweep:
         target.ident,
         abs(rx * wx + ry * wy),
         tilt_between(square, target),
+        abs(target.tilt),
     )
 
 
@@ -365,7 +395,9 @@ class Contact:
     residual: float
 
 
-def edge_rule_contacts(packing: Packing, rule: Rule) -> list[list[Contact]]:
+def edge_rule_contacts(
+    packing: Packing, rule: Rule, pairs: Sequence[tuple[int, int]] | None = None
+) -> list[list[Contact]]:
     """`sqpack.render.color._full_side_contacts`, in floats: per edge, its best match.
 
     An axis-aligned square's edge meets a wall when both its endpoints lie within the
@@ -392,40 +424,37 @@ def edge_rule_contacts(packing: Packing, rule: Rule) -> list[list[Contact]]:
                     candidates[index][edge].append(
                         Contact(EDGE_FACES[edge], WALL_NAMES[face], residual)
                     )
-    grid = Grid(squares)
-    for left, first in enumerate(squares):
-        for right in grid.near(first.x, first.y, 1.5):
-            if right <= left:
-                continue
-            second = squares[right]
-            distance = math.hypot(second.x - first.x, second.y - first.y)
-            if abs(distance - 1) > 1e-4 or tilt_between(first, second) > rule.angle_tolerance:
-                continue
-            for left_edge in range(4):
-                a0, a1 = first.corners[left_edge], first.corners[(left_edge + 1) % 4]
-                for right_edge in range(4):
-                    b0, b1 = second.corners[right_edge], second.corners[(right_edge + 1) % 4]
-                    direct = max(
-                        abs(a0[0] - b0[0]),
-                        abs(a0[1] - b0[1]),
-                        abs(a1[0] - b1[0]),
-                        abs(a1[1] - b1[1]),
-                    )
-                    reverse = max(
-                        abs(a0[0] - b1[0]),
-                        abs(a0[1] - b1[1]),
-                        abs(a1[0] - b0[0]),
-                        abs(a1[1] - b0[1]),
-                    )
-                    residual = min(direct, reverse)
-                    if residual > rule.gap:
-                        continue
-                    candidates[left][left_edge].append(
-                        Contact(EDGE_FACES[left_edge], second.ident, residual)
-                    )
-                    candidates[right][right_edge].append(
-                        Contact(EDGE_FACES[right_edge], first.ident, residual)
-                    )
+    for left, right in near_pairs(packing) if pairs is None else pairs:
+        first, second = squares[left], squares[right]
+        distance = math.hypot(second.x - first.x, second.y - first.y)
+        # Edges matching at both ends within the gap put the centres one side apart.
+        if abs(distance - 1) > 1e-4 or tilt_between(first, second) > rule.angle_tolerance:
+            continue
+        for left_edge in range(4):
+            a0, a1 = first.corners[left_edge], first.corners[(left_edge + 1) % 4]
+            for right_edge in range(4):
+                b0, b1 = second.corners[right_edge], second.corners[(right_edge + 1) % 4]
+                direct = max(
+                    abs(a0[0] - b0[0]),
+                    abs(a0[1] - b0[1]),
+                    abs(a1[0] - b1[0]),
+                    abs(a1[1] - b1[1]),
+                )
+                reverse = max(
+                    abs(a0[0] - b1[0]),
+                    abs(a0[1] - b1[1]),
+                    abs(a1[0] - b0[0]),
+                    abs(a1[1] - b0[1]),
+                )
+                residual = min(direct, reverse)
+                if residual > rule.gap:
+                    continue
+                candidates[left][left_edge].append(
+                    Contact(EDGE_FACES[left_edge], second.ident, residual)
+                )
+                candidates[right][right_edge].append(
+                    Contact(EDGE_FACES[right_edge], first.ident, residual)
+                )
     return [
         [
             min(edge, key=lambda contact: (contact.residual, contact.other))
@@ -446,7 +475,9 @@ def _js_angle_gap(left: float, right: float) -> float:
     return min(distance, QUARTER - distance)
 
 
-def centre_rule_contacts(packing: Packing, rule: Rule) -> list[list[Contact]]:
+def centre_rule_contacts(
+    packing: Packing, rule: Rule, pairs: Sequence[tuple[int, int]] | None = None
+) -> list[list[Contact]]:
     """`contactFacts` in `core/geometry.ts`, line for line, keeping every contact found.
 
     The count the page shades by is `min(4, len(contacts))`. Walls count only for a
@@ -454,6 +485,8 @@ def centre_rule_contacts(packing: Packing, rule: Rule) -> list[list[Contact]]:
     side in from the wall; a pair counts when both fold to one angle within tolerance,
     the centres are within `sqrt(2.5)`, and in the lower-indexed square's recorded frame
     `| |along| - 1 |` and `|across|` (or the two swapped) are both within the gap.
+    `nearbyPairs` buckets the same pairs differently, but it visits each once, lower index
+    first, and the cap at four commutes with the order the increments arrive in.
     """
     squares = packing.squares
     side = packing.side
@@ -469,31 +502,24 @@ def centre_rule_contacts(packing: Packing, rule: Rule) -> list[list[Contact]]:
         ):
             if abs(offset) <= rule.gap:
                 found[index].append(Contact(face, WALL_NAMES[face], abs(offset)))
-    grid = Grid(squares)
-    for left, first in enumerate(squares):
-        for right in grid.near(first.x, first.y, 1.6):
-            if right <= left:
-                continue
-            second = squares[right]
-            dx, dy = second.x - first.x, second.y - first.y
-            if dx * dx + dy * dy > 2.5:
-                continue
-            if (
-                _js_angle_gap(_js_fold(first.angle), _js_fold(second.angle))
-                > rule.angle_tolerance
-            ):
-                continue
-            cosine, sine = math.cos(first.angle), math.sin(first.angle)
-            along = dx * cosine + dy * sine
-            across = -dx * sine + dy * cosine
-            if abs(abs(along) - 1) <= rule.gap and abs(across) <= rule.gap:
-                residual = max(abs(abs(along) - 1), abs(across))
-            elif abs(abs(across) - 1) <= rule.gap and abs(along) <= rule.gap:
-                residual = max(abs(abs(across) - 1), abs(along))
-            else:
-                continue
-            found[left].append(Contact(first.face_towards(dx, dy), second.ident, residual))
-            found[right].append(Contact(second.face_towards(-dx, -dy), first.ident, residual))
+    for left, right in near_pairs(packing) if pairs is None else pairs:
+        first, second = squares[left], squares[right]
+        dx, dy = second.x - first.x, second.y - first.y
+        if dx * dx + dy * dy > 2.5:
+            continue
+        if _js_angle_gap(_js_fold(first.angle), _js_fold(second.angle)) > rule.angle_tolerance:
+            continue
+        cosine, sine = math.cos(first.angle), math.sin(first.angle)
+        along = dx * cosine + dy * sine
+        across = -dx * sine + dy * cosine
+        if abs(abs(along) - 1) <= rule.gap and abs(across) <= rule.gap:
+            residual = max(abs(abs(along) - 1), abs(across))
+        elif abs(abs(across) - 1) <= rule.gap and abs(along) <= rule.gap:
+            residual = max(abs(abs(across) - 1), abs(along))
+        else:
+            continue
+        found[left].append(Contact(first.face_towards(dx, dy), second.ident, residual))
+        found[right].append(Contact(second.face_towards(-dx, -dy), first.ident, residual))
     return found
 
 
@@ -570,8 +596,17 @@ class Case:
     rendering: tuple[dict[str, str], ...]
 
 
+def _number(value: str) -> float:
+    """A witness scalar as the nearest float: a decimal directly (`float` rounds a decimal
+    string correctly, exactly as `float(Fraction(value))` does), a ratio through `Fraction`."""
+    try:
+        return float(value)
+    except ValueError:
+        return float(Fraction(value))
+
+
 def _radians(value: str, unit: str) -> float:
-    angle = float(Fraction(value))
+    angle = _number(value)
     if unit == "radians":
         return angle
     if unit == "degrees":
@@ -581,7 +616,7 @@ def _radians(value: str, unit: str) -> float:
 
 def _frame_degrees(value: str, unit: str) -> float:
     """`build_candidate._angle_degrees`, which the corpus frame is written from."""
-    angle = float(Fraction(value))
+    angle = _number(value)
     if unit == "degrees":
         return angle
     if unit == "radians":
@@ -589,27 +624,25 @@ def _frame_degrees(value: str, unit: str) -> float:
     raise ValueError(f"center-angle witness declares angle_unit {unit!r}")
 
 
-def load_case(entry: dict[str, Any]) -> Case:
-    """The witness at full precision, the page's rounded frame of it, and its rendering.
+def packings_from_witness(
+    witness: dict[str, Any],
+) -> tuple[Packing, Packing, tuple[float, ...]]:
+    """A Witness/v2 body at full precision, the page's rounded frame of it, and the frame's
+    angles in degrees.
 
     The frame is `build_candidate.load_witness` then `compact_frame`: centres rounded to
     six decimals, the angle in degrees modulo 90 rounded to four, the side to nine.
     """
-    n = entry["n"]
-    data = yaml.load(
-        (ROOT / entry["witness"]["path"]).read_text(encoding="utf-8"), Loader=LOADER
-    )
-    witness = data["witness"]
     representation = witness["representation"]
     unit = witness["coordinates"]["angle_unit"]
-    side = float(Fraction(witness["side"]))
+    side = _number(witness["side"])
     exact: list[Square] = []
     framed: list[Square] = []
     degrees: list[float] = []
     for row in witness["squares"]:
         ident = str(row["id"])
         if representation == "center-angle":
-            x, y = (float(Fraction(value)) for value in row["center"])
+            x, y = (_number(value) for value in row["center"])
             angle = _radians(row["angle"], unit)
             frame_angle = _frame_degrees(row["angle"], unit) % 90.0
         else:
@@ -623,22 +656,33 @@ def load_case(entry: dict[str, Any]) -> Case:
         rounded = round(frame_angle, 4)
         degrees.append(rounded)
         framed.append(make_square(ident, round(x, 6), round(y, 6), rounded * math.pi / 180))
-    text = (ROOT / entry["rendering"]["path"]).read_text(encoding="utf-8")
+    return (
+        Packing(side, tuple(exact)),
+        Packing(round(side, 9), tuple(framed)),
+        tuple(degrees),
+    )
+
+
+def parse_rendering(text: str, n: int) -> tuple[dict[str, str], ...]:
+    """Each square's fill attributes from a house rendering, in witness order."""
     rows = {
         attrs["data-square"]: attrs
         for attrs in (dict(ATTR_RE.findall(match.group(1))) for match in FILL_RE.finditer(text))
     }
-    rendering = tuple(rows[f"square-{index + 1:03d}"] for index in range(n))
-    if len(exact) != n or len(rows) != n:
-        raise ValueError(f"n={n}: witness or rendering does not carry {n} squares")
-    return Case(
-        n,
-        entry,
-        Packing(side, tuple(exact)),
-        Packing(round(side, 9), tuple(framed)),
-        tuple(degrees),
-        rendering,
-    )
+    if len(rows) != n:
+        raise ValueError(f"n={n}: the rendering draws {len(rows)} squares")
+    return tuple(rows[f"square-{index + 1:03d}"] for index in range(n))
+
+
+def load_case(entry: dict[str, Any]) -> Case:
+    """One manifest entry's witness, frame and committed rendering."""
+    n = entry["n"]
+    data = load_yaml((ROOT / entry["witness"]["path"]).read_text(encoding="utf-8"))
+    witness, frame, degrees = packings_from_witness(data["witness"])
+    if len(witness.squares) != n:
+        raise ValueError(f"n={n}: the witness carries {len(witness.squares)} squares")
+    text = (ROOT / entry["rendering"]["path"]).read_text(encoding="utf-8")
+    return Case(n, entry, witness, frame, degrees, parse_rendering(text, n))
 
 
 # --------------------------------------------------------------------------- the census
@@ -685,15 +729,28 @@ class RuleResult:
     faces: dict[int, dict[str, tuple[str, Sweep]]] = field(default_factory=dict)
 
 
-def apply_rule(
-    case: Case, rule: Rule, sweeps: dict[tuple[int, str], Sweep], grid: Grid
-) -> RuleResult:
+@dataclass
+class Scratch:
+    """What the rules over one case share: its buckets, its near pairs, and the sweeps
+    already run, since a face's sweep is geometry and only its classification is a rule's."""
+
+    grid: Grid
+    pairs: list[tuple[int, int]]
+    sweeps: dict[tuple[int, str], Sweep] = field(default_factory=dict)
+
+    @classmethod
+    def of(cls, case: Case) -> Scratch:
+        return cls(Grid(case.witness.squares), near_pairs(case.witness))
+
+
+def apply_rule(case: Case, rule: Rule, scratch: Scratch) -> RuleResult:
+    pairs = scratch.pairs
     if rule.metric == "edge":
-        contacts = edge_rule_contacts(case.witness, rule)
+        contacts = edge_rule_contacts(case.witness, rule, pairs)
         green = [row["data-hue-index"] == "0" for row in case.rendering]
         shades = [int(row["data-shade-index"]) for row in case.rendering]
     else:
-        contacts = centre_rule_contacts(case.frame, rule)
+        contacts = centre_rule_contacts(case.frame, rule, pairs)
         tolerance_degrees = rule.angle_tolerance * 180 / math.pi
         green = [slot == 0 for slot in atlas_slots(case.frame_degrees, tolerance_degrees)]
         shades = [4 - min(4, len(found)) for found in contacts]
@@ -708,9 +765,9 @@ def apply_rule(
             if face in touched:
                 continue
             key = (index, face)
-            if key not in sweeps:
-                sweeps[key] = sweep_face(case.witness, grid, index, face)
-            diagnosed[face] = (classify(sweeps[key], rule), sweeps[key])
+            if key not in scratch.sweeps:
+                scratch.sweeps[key] = sweep_face(case.witness, scratch.grid, index, face)
+            diagnosed[face] = (classify(scratch.sweeps[key], rule), scratch.sweeps[key])
         result.faces[index] = diagnosed
     return result
 
@@ -781,7 +838,54 @@ def witness_class(entry: dict[str, Any]) -> str:
     return f"{witness['method']}/{witness['coordinate_provenance']}/{tolerance}"
 
 
-def entry_row(case: Case, result: RuleResult) -> dict[str, Any]:
+def is_near_axis(tilt: float) -> bool:
+    return AXIS_EXACT < abs(tilt) <= NEAR_AXIS
+
+
+def near_axis_face(sweep: Sweep, square: Square) -> bool:
+    """A face of a near-axis square, or one whose obstacle is a near-axis square."""
+    return is_near_axis(square.tilt) or (
+        sweep.obstacle == "square" and is_near_axis(sweep.obstacle_tilt)
+    )
+
+
+def tilt_explains(sweep: Sweep, square: Square, rule: Rule) -> bool:
+    """Whether a near-axis tilt is all that keeps a face from being a contact: the face
+    touches within the gap and its obstacle is aligned across it within the gap, so only
+    the turn is left (for the stage, only its centre metric or the tilted square's frame)."""
+    return near_axis_face(sweep, square) and slide(sweep) <= rule.gap
+
+
+def near_axis_tally(case: Case, result: RuleResult, rule: Rule) -> dict[str, int]:
+    """Near-axis squares in one record, and how far their tilt explains its light shades."""
+    squares = case.witness.squares
+    tally = {
+        "squares": sum(is_near_axis(square.tilt) for square in squares),
+        "green": sum(
+            is_near_axis(square.tilt) and green
+            for square, green in zip(squares, result.green, strict=True)
+        ),
+        "light": 0,
+        "light_facing": 0,
+        "light_only_facing": 0,
+        "light_tilt_alone": 0,
+        "faces_facing": 0,
+        "faces_tilt_alone": 0,
+    }
+    for index, faces in result.faces.items():
+        square = squares[index]
+        facing = [near_axis_face(sweep, square) for _, sweep in faces.values()]
+        explained = [tilt_explains(sweep, square, rule) for _, sweep in faces.values()]
+        tally["light"] += is_near_axis(square.tilt)
+        tally["light_facing"] += any(facing)
+        tally["light_only_facing"] += all(facing)
+        tally["light_tilt_alone"] += all(explained)
+        tally["faces_facing"] += sum(facing)
+        tally["faces_tilt_alone"] += sum(explained)
+    return tally
+
+
+def entry_row(case: Case, result: RuleResult, rule: Rule) -> dict[str, Any]:
     causes: Counter[str] = Counter()
     kinds: Counter[str] = Counter()
     slides: list[float] = []
@@ -800,15 +904,19 @@ def entry_row(case: Case, result: RuleResult) -> dict[str, Any]:
         "faces": dict(sorted(causes.items())),
         "squares": dict(sorted(kinds.items())),
         "max_regularizable_slide": sig(max(slides)) if slides else None,
+        "near_axis": near_axis_tally(case, result, rule),
     }
 
 
-def _totals(rows: Sequence[dict[str, Any]]) -> dict[str, Any]:
+def totals(rows: Sequence[dict[str, Any]]) -> dict[str, Any]:
+    """A group of entry rows summed: the summary is rebuilt from the rows alone."""
     faces: Counter[str] = Counter()
     kinds: Counter[str] = Counter()
+    near: Counter[str] = Counter()
     for row in rows:
         faces.update(row["faces"])
         kinds.update(row["squares"])
+        near.update(row["near_axis"])
     return {
         "records": len(rows),
         "records_with_light": sum(row["light"] > 0 for row in rows),
@@ -816,6 +924,8 @@ def _totals(rows: Sequence[dict[str, Any]]) -> dict[str, Any]:
         "light": sum(row["light"] for row in rows),
         "faces": dict(sorted(faces.items())),
         "squares": dict(sorted(kinds.items())),
+        "near_axis": dict(sorted(near.items())),
+        "records_with_near_axis_squares": sum(row["near_axis"]["squares"] > 0 for row in rows),
     }
 
 
@@ -909,9 +1019,8 @@ class Collector:
 
 
 def census_case(case: Case, collector: Collector) -> None:
-    grid = Grid(case.witness.squares)
-    sweeps: dict[tuple[int, str], Sweep] = {}
-    results = {rule.name: apply_rule(case, rule, sweeps, grid) for rule in RULES}
+    scratch = Scratch.of(case)
+    results = {rule.name: apply_rule(case, rule, scratch) for rule in RULES}
     house = results["atlas-house"]
     for index, row in enumerate(case.rendering):
         drawn = int(row["data-contact-sides"])
@@ -929,7 +1038,7 @@ def census_case(case: Case, collector: Collector) -> None:
             )
     for rule in RULES:
         result = results[rule.name]
-        collector.rows[rule.name].append(entry_row(case, result))
+        collector.rows[rule.name].append(entry_row(case, result, rule))
         for index, found in enumerate(result.contacts):
             residuals = [contact.residual for contact in found]
             collector.contact_residuals[rule.name].extend(residuals)
@@ -1009,9 +1118,9 @@ def rule_summary(rule: Rule, collector: Collector) -> dict[str, Any]:
             "poses": rule.poses,
             "governs": rule.governs,
         },
-        "totals": _totals(rows),
-        "by_source_kind": {kind: _totals(group) for kind, group in sorted(by_source.items())},
-        "by_witness_class": {kind: _totals(group) for kind, group in sorted(by_class.items())},
+        "totals": totals(rows),
+        "by_source_kind": {kind: totals(group) for kind, group in sorted(by_source.items())},
+        "by_witness_class": {kind: totals(group) for kind, group in sorted(by_class.items())},
         "contact_residuals": distribution(collector.contact_residuals[rule.name]),
         "contact_residuals_by_witness_class": {
             kind: distribution(values)
@@ -1033,7 +1142,14 @@ def rule_summary(rule: Rule, collector: Collector) -> dict[str, Any]:
             cause: sig(min(values))
             for cause, values in sorted(collector.clearances[rule.name].items())
         },
-        "offset_across_decades": decades(collector.offsets[rule.name]),
+        "across_decades": {
+            cause: decades(values, ACROSS_EDGES)
+            for cause, values in sorted(collector.across[rule.name].items())
+        },
+        "tilt_decades_radians": {
+            cause: decades(values, TILT_EDGES)
+            for cause, values in sorted(collector.tilts[rule.name].items())
+        },
         "faces_by_obstacle": dict(sorted(collector.obstacles[rule.name].items())),
         "band_faces": (
             collector.band_faces[rule.name]
@@ -1110,29 +1226,33 @@ def _text(document: dict[str, Any]) -> str:
     return json.dumps(document, indent=2, sort_keys=True) + "\n"
 
 
+def _records(document: dict[str, Any]) -> int:
+    return len(document["entries"][RULES[0].name])
+
+
 def update() -> None:
-    text = _text(expected_document())
+    document = expected_document()
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     with atomic_output_file(OUTPUT) as temporary:
-        temporary.write_text(text, encoding="utf-8")
-    print(f"contact-shade census updated: {OUTPUT.relative_to(ROOT)}")
+        temporary.write_text(_text(document), encoding="utf-8")
+    print(f"contact-shade census updated: {_records(document)} records")
 
 
 def check() -> None:
-    expected = _text(expected_document())
-    if not OUTPUT.is_file() or OUTPUT.read_text(encoding="utf-8") != expected:
+    document = expected_document()
+    if not OUTPUT.is_file() or OUTPUT.read_text(encoding="utf-8") != _text(document):
         raise ValueError(f"{OUTPUT.relative_to(ROOT)} is missing or stale")
-    print("contact-shade census check passed")
+    print(f"contact-shade census check passed: {_records(document)} records")
 
 
 def report() -> None:
     document = expected_document()
     for name, summary in document["rules"].items():
-        totals = summary["totals"]
+        overall = summary["totals"]
         print(
-            f"{name}: {totals['light']} of {totals['green']} green squares light in "
-            f"{totals['records_with_light']} records; faces {totals['faces']}; "
-            f"squares {totals['squares']}"
+            f"{name}: {overall['light']} of {overall['green']} green squares light in "
+            f"{overall['records_with_light']} records; faces {overall['faces']}; "
+            f"squares {overall['squares']}"
         )
         print(f"  contact residuals {summary['contact_residuals']}")
         print(f"  band faces {len(summary['band_faces'])}")

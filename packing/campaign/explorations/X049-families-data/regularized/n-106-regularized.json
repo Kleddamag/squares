@@ -1,0 +1,4455 @@
+{
+  "atlas_contacts": {
+    "axis_aligned_squares": 83,
+    "became_dark": 0,
+    "became_lighter": 0,
+    "histogram_after": [
+      21,
+      4,
+      17,
+      2,
+      62
+    ],
+    "histogram_before": [
+      21,
+      4,
+      17,
+      2,
+      62
+    ],
+    "light_after": 21,
+    "light_before": 21,
+    "total_after": 292,
+    "total_before": 292
+  },
+  "atlas_rule": {
+    "angle_tolerance_degrees": 0.5,
+    "cap": 4,
+    "gap": 0.01,
+    "walls": "axis-aligned squares only"
+  },
+  "claim_boundary": "Derived view only. Same n, the certificate's exact side (never larger than the verified upper bound), tilted squares unchanged from the certificate. Not the source witness, not a frontier change, not an evidence-tier promotion; a drawing of it must say it is regularized.",
+  "exact_frame": {
+    "center_dilation": "1",
+    "certified_side": "16910793818971825541568407462616843942891545434563394692809496493146959599848552612270262254351830012857210859783652797603669570782719569536641305628994285804546103998583007465396126458366696597633529500447369168906011452787/1562500000000000000000000000000001713699901270425888582244384968867216503209354473582921662043543963914459247687663389227246191505063177385191564957335053254887315014792778980614922611360842500000000000470890000000000000000",
+    "certified_side_decimal": "10.82290804414197",
+    "derivation": "promote_rational in process, the procedure upper_bound_packets certify uses",
+    "fits_reported_side": false,
+    "kind": "rational",
+    "max_side_increase": "1e-9",
+    "rational_digits": 36,
+    "side_minus_reported": "541568407462616825395675098729574678266629164289517201694114337271554648261293288345022766290605644352296081624732393152970661821604283345035194857170930418504964659215112009184476783407310970000000000141267/1562500000000000000000000000000001713699901270425888582244384968867216503209354473582921662043543963914459247687663389227246191505063177385191564957335053254887315014792778980614922611360842500000000000470890000000000000000",
+    "side_minus_reported_decimal": "3.466e-16"
+  },
+  "exact_verification": {
+    "arithmetic": "rational (fractions.Fraction), exact separating-axis predicates",
+    "independent_checker": {
+      "coordinate_provenance": "verified",
+      "failures": [],
+      "field": "Q",
+      "limitations": "Verifies witness feasibility and its upper bound, not optimality.",
+      "method": "exact-algebraic",
+      "minimum_best_pair_gap": "0",
+      "minimum_containment_clearance": "0",
+      "n": 106,
+      "pairs_tested": 5565,
+      "side": "16910793818971825541568407462616843942891545434563394692809496493146959599848552612270262254351830012857210859783652797603669570782719569536641305628994285804546103998583007465396126458366696597633529500447369168906011452787/1562500000000000000000000000000001713699901270425888582244384968867216503209354473582921662043543963914459247687663389227246191505063177385191564957335053254887315014792778980614922611360842500000000000470890000000000000000",
+      "verification_passed": true
+    },
+    "passed": true,
+    "repository_verifier": {
+      "container_contacts": 76,
+      "failures": [],
+      "pairs_tested": 1195,
+      "touching_pairs": 237,
+      "valid": true
+    }
+  },
+  "operation": "regularize",
+  "outputs": {
+    "report": "/home/user/squares/packing/campaign/explorations/X049-families-data/regularized/n-106-regularized.json",
+    "witness": "/home/user/squares/packing/campaign/explorations/X049-families-data/regularized/n-106-regularized.yaml"
+  },
+  "regularization": {
+    "angle_snap_tolerance_radians": 0.0001,
+    "exact_contacts_after": 237,
+    "moves": {
+      "accepted": 214,
+      "compactions": 20,
+      "converged": true,
+      "largest_move": "8607040646208105782570465017241442575690964087510218937416607822623922287443475192444487741871179185693456916979784827/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+      "largest_move_decimal": "5.509e-03",
+      "passes": 4,
+      "rejected": 4,
+      "snaps": 194
+    },
+    "snap_tolerance": "1/1000000000",
+    "statuses": {
+      "exact-axis": 83,
+      "tilted": 23
+    }
+  },
+  "source": {
+    "coordinate_provenance": "numerically-checked",
+    "id": "W-known-best-n106",
+    "method": "numerical-multiprecision",
+    "n": 106,
+    "path": "packing/witnesses/known-best/n-106.yaml",
+    "reported_side": "676431752758873/62500000000000",
+    "representation": "center-angle",
+    "scalar_kind": "decimal"
+  },
+  "squares": [
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "1",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=0"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "5677657570465017241386521250830330195272487479491702696506871704016088793690917085650506500000000170405433/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "3.634e-15",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=s"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "6934920976837108986079009972304906116091501362923837493166291398211834842719536066886742381390000000066644389/1000000000000000000000000000000000440027695096935459661364813881712432556390075713692590000000000000009610000000000000000",
+          "distance_decimal": "6.935e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.213e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "2",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:1"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "330418282570465017241386521250832445109639842416217083739056149210756707162100166055269221500000010138331907/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "2.115e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=s"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "6934920976837108986079009972304906116091501362923837493166291398211834842719536066886742381390000000066644389/1000000000000000000000000000000000440027695096935459661364813881712432556390075713692590000000000000009610000000000000000",
+          "distance_decimal": "6.935e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.640e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "3",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:2"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "655152657570465017241386521250834559983303282356263639846685393435599142545658651256708146500000020106066537/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "4.193e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=s"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "1387704195367421797215801994460981223535120213054561029589440945637199919984508067891207141078000000013335797/200000000000000000000000000000000088005539019387091932272962776342486511278015142738518000000000000001922000000000000000",
+          "distance_decimal": "6.939e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.109e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "4",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:3"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "4139/20000000000000000",
+          "distance_decimal": "2.069e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=s"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "6934920976837108986079009972304906116091501362923837493166291398211834842719536066886742381390000000066644389/1000000000000000000000000000000000440027695096935459661364813881712432556390075713692590000000000000009610000000000000000",
+          "distance_decimal": "6.935e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:3"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "655152657570465017241386521250834559983303282356263639846685393435599142545658651256708146500000020106066537/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "4.193e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.438e-18",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "5",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:4"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "2609/12500000000000000",
+          "distance_decimal": "2.087e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=s"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "2097683710898607900997230490306454343863518611828756744360992428630740999999999999999039/100000000000000000000000000000000044002769509693545966136481388171243255639007571369259000000000000000961",
+          "distance_decimal": "2.098e-17",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:4"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "4139/20000000000000000",
+          "distance_decimal": "2.069e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:4"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "655152657570465017241386521250834559983303282356263639846685393435599142545658651256708146500000020106066537/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "4.193e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.973e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "6",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:5"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "8331/20000000000000000",
+          "distance_decimal": "4.165e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=s"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "2097683710898607900997230490306454343863518611828756744360992428630740999999999999999039/100000000000000000000000000000000044002769509693545966136481388171243255639007571369259000000000000000961",
+          "distance_decimal": "2.098e-17",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:5"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "4139/20000000000000000",
+          "distance_decimal": "2.069e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:5"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "655152657570465017241386521250834559983303282356263639846685393435599142545658651256708146500000020106066537/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "4.193e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.195e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 3,
+      "contacts_before": 3,
+      "id": "7",
+      "light_faces": {
+        "bottom": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:6"
+          ],
+          "contacts_after": 3,
+          "contacts_before": 3,
+          "direction": -1,
+          "distance": "977/1562500000000000",
+          "distance_decimal": "6.253e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=s"
+          ],
+          "contacts_after": 3,
+          "contacts_before": 3,
+          "direction": 1,
+          "distance": "2097683710898607900997230490306454343863518611828756744360992428630740999999999999999039/100000000000000000000000000000000044002769509693545966136481388171243255639007571369259000000000000000961",
+          "distance_decimal": "2.098e-17",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:6"
+          ],
+          "contacts_after": 3,
+          "contacts_before": 3,
+          "direction": -1,
+          "distance": "4139/20000000000000000",
+          "distance_decimal": "2.069e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:6"
+          ],
+          "contacts_after": 3,
+          "contacts_before": 3,
+          "direction": -1,
+          "distance": "655152657570465017241386521250834559983303282356263639846685393435599142545658651256708146500000020106066537/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "4.193e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.522e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 2,
+      "contacts_before": 2,
+      "id": "8",
+      "light_faces": {
+        "bottom": "tilted-neighbour",
+        "right": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:7"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "417/500000000000000",
+          "distance_decimal": "8.340e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=s"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "6934920976837108986079009972304906116091501362923837493166291398211834842719536066886742381390000000066644389/1000000000000000000000000000000000440027695096935459661364813881712432556390075713692590000000000000009610000000000000000",
+          "distance_decimal": "6.935e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:7"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "4139/20000000000000000",
+          "distance_decimal": "2.069e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:7"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "655152657570465017241386521250834559983303282356263639846685393435599142545658651256708146500000020106066537/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "4.193e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.838e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "9",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=0"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "1329688530132292406514093003448285964014790468826238668887063027652978645858258059269819464438841271114842619951146611/312500000000000000000000000000002035195749833941246746001664094909149242538188408989500000000000009592200000000000000000",
+          "distance_decimal": "4.255e-03",
+          "kind": "compaction",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:1"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "71445509768371089860790099723049062083345070860944179019781973322352120795155876387481200230900000000686589333/10000000000000000000000000000000004400276950969354596613648138817124325563900757136925900000000000000096100000000000000000",
+          "distance_decimal": "7.145e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "3.334e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "10",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:9"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "7848559021012137032570465017241437635983508324387005859965477794891572350012718041627923973193863712411833092324516207/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "5.023e-03",
+          "kind": "compaction",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:2"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "71445509768371089860790099723049062083345070860944179019781973322352120795155876387481200230900000000686589333/10000000000000000000000000000000004400276950969354596613648138817124325563900757136925900000000000000096100000000000000000",
+          "distance_decimal": "7.145e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "8.412e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "11",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:10"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "8607040646208105782570465017241442575690964087510218937416607822623922287443475192444487741871179185693456916979784827/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "5.509e-03",
+          "kind": "compaction",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:3"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "8935126221046386232598762465381132762370756754610673479720053026894114018863465509414660896987500000085866311/1250000000000000000000000000000000550034618871169324576706017352140540695487594642115737500000000000012012500000000000000",
+          "distance_decimal": "7.148e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.182e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "12",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:11"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "3155284332399/10000000000000000",
+          "distance_decimal": "3.155e-04",
+          "kind": "compaction",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:4",
+            "square:5"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "71445509768371089860790099723049062083345070860944179019781973322352120795155876387481200230900000000686589333/10000000000000000000000000000000004400276950969354596613648138817124325563900757136925900000000000000096100000000000000000",
+          "distance_decimal": "7.145e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:11"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "8607040646208105782570465017241442575690964087510218937416607822623922287443475192444487741871179185693456916979784827/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "5.509e-03",
+          "kind": "compaction",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "3.751e-15",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "13",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:12"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "7955547610239/25000000000000000",
+          "distance_decimal": "3.182e-04",
+          "kind": "compaction",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:5",
+            "square:6"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "2096509768371089860790099723049031567864443583566986963793495439476635442060515718613776320900000000020145443/10000000000000000000000000000000004400276950969354596613648138817124325563900757136925900000000000000096100000000000000000",
+          "distance_decimal": "2.097e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:12"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "3155284332399/10000000000000000",
+          "distance_decimal": "3.155e-04",
+          "kind": "compaction",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:12"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "8607040646208105782570465017241442575690964087510218937416607822623922287443475192444487741871179185693456916979784827/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "5.509e-03",
+          "kind": "compaction",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.000e-15",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 3,
+      "contacts_before": 3,
+      "id": "14",
+      "light_faces": {
+        "right": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:13"
+          ],
+          "contacts_after": 3,
+          "contacts_before": 3,
+          "direction": -1,
+          "distance": "29299064312749/50000000000000000",
+          "distance_decimal": "5.860e-04",
+          "kind": "compaction",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:6",
+            "square:7"
+          ],
+          "contacts_after": 3,
+          "contacts_before": 3,
+          "direction": 1,
+          "distance": "2096509768371089860790099723049031567864443583566986963793495439476635442060515718613776320900000000020145443/10000000000000000000000000000000004400276950969354596613648138817124325563900757136925900000000000000096100000000000000000",
+          "distance_decimal": "2.097e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:13"
+          ],
+          "contacts_after": 3,
+          "contacts_before": 3,
+          "direction": -1,
+          "distance": "3155284332399/10000000000000000",
+          "distance_decimal": "3.155e-04",
+          "kind": "compaction",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:13"
+          ],
+          "contacts_after": 3,
+          "contacts_before": 3,
+          "direction": -1,
+          "distance": "8607040646208105782570465017241442575690964087510218937416607822623922287443475192444487741871179185693456916979784827/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "5.509e-03",
+          "kind": "compaction",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "9.155e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "15",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.033e-02",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "16",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=0"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "38536908180344709401409300344827981401502175075240780671003890600640975730238913425038990176994544462891938071930659/31250000000000000000000000000000203519574983394124674600166409490914924253818840898950000000000000959220000000000000000",
+          "distance_decimal": "1.233e-03",
+          "kind": "compaction",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:9"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "20961/100000000000000000",
+          "distance_decimal": "2.096e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:9"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "71445509768371089860790099723049062083345070860944179019781973322352120795155876387481200230900000000686589333/10000000000000000000000000000000004400276950969354596613648138817124325563900757136925900000000000000096100000000000000000",
+          "distance_decimal": "7.145e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.860e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "17",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:16"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "2457983171250246407570465017241402529176920827151783356696516257553563184337860658183987499983413071947891760849292997/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "1.573e-03",
+          "kind": "compaction",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:10"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "36770804884185544930395049861524531502843561276815298007984379849904775338302557045476119064950000000353366427/5000000000000000000000000000000002200138475484677298306824069408562162781950378568462950000000000000048050000000000000000",
+          "distance_decimal": "7.354e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.399e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "18",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:17"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "3038354222959074532570465017241406308916753673428724825461159872408275192920313834167246040160246464762404407893840647/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "1.945e-03",
+          "kind": "compaction",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:11"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "36770804884185544930395049861524531502843561276815298007984379849904775338302557045476119064950000000353366427/5000000000000000000000000000000002200138475484677298306824069408562162781950378568462950000000000000048050000000000000000",
+          "distance_decimal": "7.354e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.464e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "19",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:18",
+            "square:24"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "3150750151530277657570465017241407040909445279034627601010947178660517404177847914475772586750904043212401931224063417/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "2.016e-03",
+          "kind": "compaction",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:12"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "73577109768371089860790099723049063021308105729571804833947210592610342032356961778788325074900000000707074009/10000000000000000000000000000000004400276950969354596613648138817124325563900757136925900000000000000096100000000000000000",
+          "distance_decimal": "7.358e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.811e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "20",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:19"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "2840228653689/50000000000000000",
+          "distance_decimal": "5.680e-05",
+          "kind": "compaction",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:12",
+            "square:13"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "36770804884185544930395049861524531502843561276815298007984379849904775338302557045476119064950000000353366427/5000000000000000000000000000000002200138475484677298306824069408562162781950378568462950000000000000048050000000000000000",
+          "distance_decimal": "7.354e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:19"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "3150750151530277657570465017241407040909445279034627601010947178660517404177847914475772586750904043212401931224063417/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "2.016e-03",
+          "kind": "compaction",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "3.989e-15",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 2,
+      "contacts_before": 2,
+      "id": "21",
+      "light_faces": {
+        "bottom": "tilted-neighbour",
+        "right": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:20"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "2760260800283/100000000000000000",
+          "distance_decimal": "2.760e-05",
+          "kind": "compaction",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:13",
+            "square:14"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "1048152442092772465197524930762258122551623819063350989995070454233516330877438355521203554975000000010072241/2500000000000000000000000000000001100069237742338649153412034704281081390975189284231475000000000000024025000000000000000",
+          "distance_decimal": "4.193e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:20"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "2840228653689/50000000000000000",
+          "distance_decimal": "5.680e-05",
+          "kind": "compaction",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:20"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "3150750151530277657570465017241407040909445279034627601010947178660517404177847914475772586750904043212401931224063417/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "2.016e-03",
+          "kind": "compaction",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.240e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "22",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=0"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "126095070465017241386521250830294040019991679525454253787309057955052499999999999952039/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961",
+          "distance_decimal": "8.070e-17",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:16"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "2609/12500000000000000",
+          "distance_decimal": "2.087e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:16"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "20961/100000000000000000",
+          "distance_decimal": "2.096e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:16"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "71445509768371089860790099723049062083345070860944179019781973322352120795155876387481200230900000000686589333/10000000000000000000000000000000004400276950969354596613648138817124325563900757136925900000000000000096100000000000000000",
+          "distance_decimal": "7.145e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.156e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "23",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:22",
+            "square:27"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "324871407570465017241386521250832408984915282863759953997526611526119308107047321795705596500000009968070357/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "2.079e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:17"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "2609/12500000000000000",
+          "distance_decimal": "2.087e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:17"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "36770804884185544930395049861524531502843561276815298007984379849904775338302557045476119064950000000353366427/5000000000000000000000000000000002200138475484677298306824069408562162781950378568462950000000000000048050000000000000000",
+          "distance_decimal": "7.354e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.435e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "24",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:23",
+            "square:28"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "649605782570465017241386521250834523858578722803806510105155855750961743490605806997144521500000019935804987/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "4.157e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:18"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "4139/20000000000000000",
+          "distance_decimal": "2.069e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:18"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "36770804884185544930395049861524531502843561276815298007984379849904775338302557045476119064950000000353366427/5000000000000000000000000000000002200138475484677298306824069408562162781950378568462950000000000000048050000000000000000",
+          "distance_decimal": "7.354e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.943e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "25",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:24",
+            "square:29"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "977121407570465017241386521250836656845484336265930162252199910420495607132754169038589996500000029988910197/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "6.254e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:19"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "75575509768371089860790099723049063900659451611287627421218654653824467253046889085031596930900000000726278633/10000000000000000000000000000000004400276950969354596613648138817124325563900757136925900000000000000096100000000000000000",
+          "distance_decimal": "7.558e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "3.909e-15",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 2,
+      "contacts_before": 2,
+      "id": "26",
+      "light_faces": {
+        "bottom": "tilted-neighbour",
+        "right": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:25",
+            "square:30"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "1303246407570465017241386521250838780775768862967015266379536559867683756645607592660032196500000039999330117/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "8.341e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:20"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "75611109768371089860790099723049063916324437556738529785163242028013429852054375780439053134900000000726620749/10000000000000000000000000000000004400276950969354596613648138817124325563900757136925900000000000000096100000000000000000",
+          "distance_decimal": "7.561e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "3.949e-15",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "27",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=0"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "126095070465017241386521250830294040019991679525454253787309057955052499999999999952039/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961",
+          "distance_decimal": "8.070e-17",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:22"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "5207/12500000000000000",
+          "distance_decimal": "4.166e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:22"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "20961/100000000000000000",
+          "distance_decimal": "2.096e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:22"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "71445509768371089860790099723049062083345070860944179019781973322352120795155876387481200230900000000686589333/10000000000000000000000000000000004400276950969354596613648138817124325563900757136925900000000000000096100000000000000000",
+          "distance_decimal": "7.145e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.306e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "28",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:27",
+            "square:31"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "324871407570465017241386521250832408984915282863759953997526611526119308107047321795705596500000009968070357/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "2.079e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:23"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "5207/12500000000000000",
+          "distance_decimal": "4.166e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:23"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "36770804884185544930395049861524531502843561276815298007984379849904775338302557045476119064950000000353366427/5000000000000000000000000000000002200138475484677298306824069408562162781950378568462950000000000000048050000000000000000",
+          "distance_decimal": "7.354e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.491e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "29",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:28",
+            "square:32"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "655152657570465017241386521250834559983303282356263639846685393435599142545658651256708146500000020106066537/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "4.193e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:24"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "5207/12500000000000000",
+          "distance_decimal": "4.166e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:24"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "36770804884185544930395049861524531502843561276815298007984379849904775338302557045476119064950000000353366427/5000000000000000000000000000000002200138475484677298306824069408562162781950378568462950000000000000048050000000000000000",
+          "distance_decimal": "7.354e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "9.983e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 2,
+      "contacts_before": 2,
+      "id": "30",
+      "light_faces": {
+        "bottom": "tilted-neighbour",
+        "right": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:29"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "979902657570465017241386521250836674958726509788007258291614720865187035391344045878596546500000030074280777/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "6.271e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:25"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "77680509768371089860790099723049064826917749790336770008391587874829137784247998462354498880900000000746507683/10000000000000000000000000000000004400276950969354596613648138817124325563900757136925900000000000000096100000000000000000",
+          "distance_decimal": "7.768e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.132e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "31",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=0"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "126095070465017241386521250830294040019991679525454253787309057955052499999999999952039/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961",
+          "distance_decimal": "8.070e-17",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:27"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "62439/100000000000000000",
+          "distance_decimal": "6.244e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:27"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "20961/100000000000000000",
+          "distance_decimal": "2.096e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:27"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "71445509768371089860790099723049062083345070860944179019781973322352120795155876387481200230900000000686589333/10000000000000000000000000000000004400276950969354596613648138817124325563900757136925900000000000000096100000000000000000",
+          "distance_decimal": "7.145e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.614e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "32",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:31",
+            "square:34"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "324871407570465017241386521250832408984915282863759953997526611526119308107047321795705596500000009968070357/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "2.079e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:28"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "62439/100000000000000000",
+          "distance_decimal": "6.244e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:28"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "36770804884185544930395049861524531502843561276815298007984379849904775338302557045476119064950000000353366427/5000000000000000000000000000000002200138475484677298306824069408562162781950378568462950000000000000048050000000000000000",
+          "distance_decimal": "7.354e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.861e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 2,
+      "contacts_before": 2,
+      "id": "33",
+      "light_faces": {
+        "bottom": "tilted-neighbour",
+        "right": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:32"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "649605782570465017241386521250834523858578722803806510105155855750961743490605806997144521500000019935804987/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "4.157e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:29"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "20783/100000000000000000",
+          "distance_decimal": "2.078e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:29"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "5207/12500000000000000",
+          "distance_decimal": "4.166e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:29"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "36770804884185544930395049861524531502843561276815298007984379849904775338302557045476119064950000000353366427/5000000000000000000000000000000002200138475484677298306824069408562162781950378568462950000000000000048050000000000000000",
+          "distance_decimal": "7.354e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.128e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "34",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=0"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "126095070465017241386521250830294040019991679525454253787309057955052499999999999952039/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961",
+          "distance_decimal": "8.070e-17",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:31"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "83311/100000000000000000",
+          "distance_decimal": "8.331e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:31"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "20961/100000000000000000",
+          "distance_decimal": "2.096e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:31"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "71445509768371089860790099723049062083345070860944179019781973322352120795155876387481200230900000000686589333/10000000000000000000000000000000004400276950969354596613648138817124325563900757136925900000000000000096100000000000000000",
+          "distance_decimal": "7.145e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.840e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 2,
+      "contacts_before": 2,
+      "id": "35",
+      "light_faces": {
+        "bottom": "tilted-neighbour",
+        "right": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:34",
+            "square:36"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "322090157570465017241386521250832390871673109341682857958111801081427879848457444955699046500000009882699777/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961000000000000000000",
+          "distance_decimal": "2.061e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:32"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "2609/12500000000000000",
+          "distance_decimal": "2.087e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:32"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "62439/100000000000000000",
+          "distance_decimal": "6.244e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:32"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "36770804884185544930395049861524531502843561276815298007984379849904775338302557045476119064950000000353366427/5000000000000000000000000000000002200138475484677298306824069408562162781950378568462950000000000000048050000000000000000",
+          "distance_decimal": "7.354e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.025e-15",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 2,
+      "contacts_before": 2,
+      "id": "36",
+      "light_faces": {
+        "bottom": "tilted-neighbour",
+        "right": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=0"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "126095070465017241386521250830294040019991679525454253787309057955052499999999999952039/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961",
+          "distance_decimal": "8.070e-17",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:34"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "20819/20000000000000000",
+          "distance_decimal": "1.041e-12",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:34"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "20961/100000000000000000",
+          "distance_decimal": "2.096e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:34"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "71445509768371089860790099723049062083345070860944179019781973322352120795155876387481200230900000000686589333/10000000000000000000000000000000004400276950969354596613648138817124325563900757136925900000000000000096100000000000000000",
+          "distance_decimal": "7.145e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.426e-18",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "37",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=s"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "130270412089386990379615494637595934558569133463201083306308187563645235468120227650711386647162207279558617660695847625244806090383579965522980313933920792779023560769194795348661008250194228259130397855042765547427756035086176068473462651131596695933320135785502288799105861064757005083131580312981974309904327309/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "6.937e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=0"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "40042099479826076942593372318535775888638136721308910903485825947926749999999999999951/1562500000000000000000000000000001026156627681464232861361863278691089096514174052073250000000000000049",
+          "distance_decimal": "2.563e-17",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "3.958e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "38",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:37"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "134174032882656221148846263868365195031989857988271551381126064408238243768265942737543598886481626153415152381911302758311939609996131129766661720638156711909067203344043567679807406760235493027021856135826780551473524360458186040645977059739980316737159171195057817408952994336315877082342884017212779651320408689/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.144e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=0"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "40042099479826076942593372318535775888638136721308910903485825947926749999999999999951/1562500000000000000000000000000001026156627681464232861361863278691089096514174052073250000000000000049",
+          "distance_decimal": "2.563e-17",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.165e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "39",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:38"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "138077090274483144225769340791442147808815746461500625661840965517695402023915341210055571703270593845869706462110513959626970685629136558732139959622768234437677663443778102239521425822786614246645072601213780639469444840887632940081239590005930321123100991310365839688297407440463285759318181086635892679832408079/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.352e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=0"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "40042099479826076942593372318535775888638136721308910903485825947926749999999999999951/1562500000000000000000000000000001026156627681464232861361863278691089096514174052073250000000000000049",
+          "distance_decimal": "2.563e-17",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.275e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "40",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:39"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "141996861909098528841153956176057562251288437806024382500944146769516111599622132574067980721796279919916352892458295136254374265988665467617645507622903522808805870305235024018396035160878660731559462923378889903610851387946450997388307844430744279239993531821683216439222518844484106329295008322020544324498839839/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.561e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=0"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "40042099479826076942593372318535775888638136721308910903485825947926749999999999999951/1562500000000000000000000000000001026156627681464232861361863278691089096514174052073250000000000000049",
+          "distance_decimal": "2.563e-17",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.160e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "41",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:40"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "145916821344194682687307802329903745925959407834495270604748319933048771190161029476187136214498783054430326203144824290132478661008042954929218778196246943380411804658396691721081437648134088399229933850676337473102207216652790078941126724969702776162851810764416428633648536970975414673350504435674426740133298929/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.770e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=0"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "40042099479826076942593372318535775888638136721308910903485825947926749999999999999951/1562500000000000000000000000000001026156627681464232861361863278691089096514174052073250000000000000049",
+          "distance_decimal": "2.563e-17",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.125e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "42",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:41"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "149753209565348528841153956176057621272396363506492745916611092384763674180412961920804110698517694280983837763088503567448720532394803042640655503691971534739429005202946423327963888757684889740444535494083239161866132712212273371134916984714341504430956487727102868470171063598099663552398349719520616074995596169/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.974e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=0"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "40042099479826076942593372318535775888638136721308910903485825947926749999999999999951/1562500000000000000000000000000001026156627681464232861361863278691089096514174052073250000000000000049",
+          "distance_decimal": "2.563e-17",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.414e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "43",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:42"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "153672981199963913456538571560673035714869054851016502755714273636584383756119753284816519717043380355030484193436284744076124112754331951526161051692106823110557212064403345106838498095776936225358925816248348426007539259271091428441985239139155462547849028238420245221096175002120484122375176954905267719662027929/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "8.183e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=0"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "40042099479826076942593372318535775888638136721308910903485825947926749999999999999951/1562500000000000000000000000000001026156627681464232861361863278691089096514174052073250000000000000049",
+          "distance_decimal": "2.563e-17",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.647e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "44",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:43"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "157642895562944682687307802329903835154282154809424307269982295315495747291998723323330237340779221573853407674229775846640645207293431300171748526738813409009238659211027428543194878260491758506146837708747785218585404006218022959364470666040561281857593729937765685386763381305761540371356594688174535212791756799/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "8.394e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=0"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "40042099479826076942593372318535775888638136721308910903485825947926749999999999999951/1562500000000000000000000000000001026156627681464232861361863278691089096514174052073250000000000000049",
+          "distance_decimal": "2.563e-17",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.463e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 2,
+      "contacts_before": 2,
+      "id": "45",
+      "light_faces": {
+        "left": "tilted-neighbour",
+        "top": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:44"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "161562667197560067302692417714519249596754846153948064109085476567316456867705514687342646359304907647900054104577557023268048787652960209057254074738948697380366866072484350322069487598583804991061228030912894482726810553276841016671538920465375239974486270449083062137688492709782360941333421923559186857458188559/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "8.603e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=0"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "40042099479826076942593372318535775888638136721308910903485825947926749999999999999951/1562500000000000000000000000000001026156627681464232861361863278691089096514174052073250000000000000049",
+          "distance_decimal": "2.563e-17",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.075e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "46",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=s"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "130270412089386990379615494637595934558569133463201083306308187563645235468120227650711386647162207279558617660695847625244806090383579965522980313933920792779023560769194795348661008250194228259130397855042765547427756035086176068473462651131596695933320135785502288799105861064757005083131580312981974309904327309/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "6.937e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:37"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "32477441709947982607694259337231874904202056917543282448773953103631697367854079324238349850000000001018367/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "2.079e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.596e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "47",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:46",
+            "square:54"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "134174032882656221148846263868365195031989857988271551381126064408238243768265942737543598886481626153415152381911302758311939609996131129766661720638156711909067203344043567679807406760235493027021856135826780551473524360458186040645977059739980316737159171195057817408952994336315877082342884017212779651320408689/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.144e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:38"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "32477441709947982607694259337231874904202056917543282448773953103631697367854079324238349850000000001018367/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "2.079e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.905e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "48",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:47"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "138077090274483144225769340791442147808815746461500625661840965517695402023915341210055571703270593845869706462110513959626970685629136558732139959622768234437677663443778102239521425822786614246645072601213780639469444840887632940081239590005930321123100991310365839688297407440463285759318181086635892679832408079/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.352e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:39"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "32477441709947982607694259337231874904202056917543282448773953103631697367854079324238349850000000001018367/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "2.079e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.625e-18",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "49",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:48"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "141996861909098528841153956176057562251288437806024382500944146769516111599622132574067980721796279919916352892458295136254374265988665467617645507622903522808805870305235024018396035160878660731559462923378889903610851387946450997388307844430744279239993531821683216439222518844484106329295008322020544324498839839/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.561e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:40"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "32477441709947982607694259337231874904202056917543282448773953103631697367854079324238349850000000001018367/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "2.079e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.356e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "50",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:49"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "145883392858617759610384725406826822594665802091905905487971759648321668550046243693186263811025346291246141502847684339507733651554995995089164160165199411695376311134951917282760257097052237868647586137120119120811235083394047763197515276651974868700950369972397719690487140371228590887347444103751349507824434189/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.768e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:41"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "32755566709947982607694259337231875086857936644843915898096364767238711227033602305507388350000000001027089/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "2.096e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "3.993e-15",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "51",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:50"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "20961/100000000000000000",
+          "distance_decimal": "2.096e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:42",
+            "square:43"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "32477441709947982607694259337231874904202056917543282448773953103631697367854079324238349850000000001018367/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "2.079e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:50"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "145883392858617759610384725406826822594665802091905905487971759648321668550046243693186263811025346291246141502847684339507733651554995995089164160165199411695376311134951917282760257097052237868647586137120119120811235083394047763197515276651974868700950369972397719690487140371228590887347444103751349507824434189/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.768e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "6.837e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "52",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:51"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "41833/100000000000000000",
+          "distance_decimal": "4.183e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:43",
+            "square:44"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "32477441709947982607694259337231874904202056917543282448773953103631697367854079324238349850000000001018367/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "2.079e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:51"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "145883392858617759610384725406826822594665802091905905487971759648321668550046243693186263811025346291246141502847684339507733651554995995089164160165199411695376311134951917282760257097052237868647586137120119120811235083394047763197515276651974868700950369972397719690487140371228590887347444103751349507824434189/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.768e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.543e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 2,
+      "contacts_before": 2,
+      "id": "53",
+      "light_faces": {
+        "left": "tilted-neighbour",
+        "top": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:52"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "62617/100000000000000000",
+          "distance_decimal": "6.262e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:44",
+            "square:45"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "32477441709947982607694259337231874904202056917543282448773953103631697367854079324238349850000000001018367/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "2.079e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:52"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "145883392858617759610384725406826822594665802091905905487971759648321668550046243693186263811025346291246141502847684339507733651554995995089164160165199411695376311134951917282760257097052237868647586137120119120811235083394047763197515276651974868700950369972397719690487140371228590887347444103751349507824434189/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.768e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.388e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "54",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=s"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "130270412089386990379615494637595934558569133463201083306308187563645235468120227650711386647162207279558617660695847625244806090383579965522980313933920792779023560769194795348661008250194228259130397855042765547427756035086176068473462651131596695933320135785502288799105861064757005083131580312981974309904327309/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "6.937e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:46"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "65021191709947982607694259337231896276992298267080324485218841472209701070051296480820000850000000002038939/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "4.161e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.262e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "55",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:54",
+            "square:61"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "134174032882656221148846263868365195031989857988271551381126064408238243768265942737543598886481626153415152381911302758311939609996131129766661720638156711909067203344043567679807406760235493027021856135826780551473524360458186040645977059739980316737159171195057817408952994336315877082342884017212779651320408689/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.144e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:47"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "65021191709947982607694259337231896276992298267080324485218841472209701070051296480820000850000000002038939/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "4.161e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.049e-18",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "56",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:55",
+            "square:62"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "138077090274483144225769340791442147808815746461500625661840965517695402023915341210055571703270593845869706462110513959626970685629136558732139959622768234437677663443778102239521425822786614246645072601213780639469444840887632940081239590005930321123100991310365839688297407440463285759318181086635892679832408079/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.352e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:48"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "8136438026243497825961782417153987040396168314093276870497515664968850009924304289145412137500000000255143/19531250000000000000000000000000012826957846018302910767023290983638613706427175650915625000000000000612500000000000000",
+          "distance_decimal": "4.166e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "6.314e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "57",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:56"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "142013576151886990379615494637596023916935240677319065059332426911879662919679525465568416923532998301508445242606865111566746770715188947537672816638427288651323617066957411237556625436419585996850636780156999079756337454575822155260113568589608232970944252217692570910803217144357518222296538487982082940653272209/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.562e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:49"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "8136438026243497825961782417153987040396168314093276870497515664968850009924304289145412137500000000255143/19531250000000000000000000000000012826957846018302910767023290983638613706427175650915625000000000000612500000000000000",
+          "distance_decimal": "4.166e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "6.422e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "58",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:57"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "145933347786502374995000110022211438359407932021842821898435608163700372495386316829580825942058684375555091672954646288194150351074717856423178364638562577022451823928414333016431234774511632481765027102322108343897744001634640212567181823014422191087836792729009947661728328548378338792273365723366734585319703969/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.771e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:50"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "65646191709947982607694259337231896687454949339666017629763586783686136708656966101649300850000000002058539/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "4.201e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.108e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "59",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:58"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "1299/6250000000000000",
+          "distance_decimal": "2.078e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:51",
+            "square:52"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "8136438026243497825961782417153987040396168314093276870497515664968850009924304289145412137500000000255143/19531250000000000000000000000000012826957846018302910767023290983638613706427175650915625000000000000612500000000000000",
+          "distance_decimal": "4.166e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:58"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "145933347786502374995000110022211438359407932021842821898435608163700372495386316829580825942058684375555091672954646288194150351074717856423178364638562577022451823928414333016431234774511632481765027102322108343897744001634640212567181823014422191087836792729009947661728328548378338792273365723366734585319703969/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.771e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "9.948e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 2,
+      "contacts_before": 2,
+      "id": "60",
+      "light_faces": {
+        "left": "tilted-neighbour",
+        "top": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:59"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "20961/100000000000000000",
+          "distance_decimal": "2.096e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:52",
+            "square:53"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "65021191709947982607694259337231896276992298267080324485218841472209701070051296480820000850000000002038939/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "4.161e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:59"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "1299/6250000000000000",
+          "distance_decimal": "2.078e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:59"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "145933347786502374995000110022211438359407932021842821898435608163700372495386316829580825942058684375555091672954646288194150351074717856423178364638562577022451823928414333016431234774511632481765027102322108343897744001634640212567181823014422191087836792729009947661728328548378338792273365723366734585319703969/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.771e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "3.274e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "61",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=s"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "130270412089386990379615494637595934558569133463201083306308187563645235468120227650711386647162207279558617660695847625244806090383579965522980313933920792779023560769194795348661008250194228259130397855042765547427756035086176068473462651131596695933320135785502288799105861064757005083131580312981974309904327309/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "6.937e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:54"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "97633691709947982607694259337231917694933431234601792767563651825050112692495137295692874850000000003061667/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "6.249e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.056e-15",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "62",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:61",
+            "square:67"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "134207273567752374995000110022211349131085185046913785233201632781253396393548622982437724815778245856132010201869694731685983804789329511180648616095996111393624969375783596194317794162153962374848123244250660598414547212069407332143837881943563685393094873555660690908613484213592213094267275470866626112661246099/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.146e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:55"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "97564941709947982607694259337231917649782539616617366521663729840787704772248513637401651850000000003059511/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "6.244e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.719e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "63",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:62",
+            "square:68"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "138077090274483144225769340791442147808815746461500625661840965517695402023915341210055571703270593845869706462110513959626970685629136558732139959622768234437677663443778102239521425822786614246645072601213780639469444840887632940081239590005930321123100991310365839688297407440463285759318181086635892679832408079/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.352e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:56"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "1526625065780437228245222802144248714704851241879182550723827119884237682841223048875565173437500000047873/2441406250000000000000000000000001603369730752287863845877911372954826713303396956364453125000000000076562500000000000",
+          "distance_decimal": "6.253e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "3.858e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "64",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:63",
+            "square:69"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "141996861909098528841153956176057562251288437806024382500944146769516111599622132574067980721796279919916352892458295136254374265988665467617645507622903522808805870305235024018396035160878660731559462923378889903610851387946450997388307844430744279239993531821683216439222518844484106329295008322020544324498839839/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.561e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:57"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "1526625065780437228245222802144248714704851241879182550723827119884237682841223048875565173437500000047873/2441406250000000000000000000000001603369730752287863845877911372954826713303396956364453125000000000076562500000000000",
+          "distance_decimal": "6.253e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.809e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "65",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:64"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "20873/100000000000000000",
+          "distance_decimal": "2.087e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:58"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "97564941709947982607694259337231917649782539616617366521663729840787704772248513637401651850000000003059511/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "6.244e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:64"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "141996861909098528841153956176057562251288437806024382500944146769516111599622132574067980721796279919916352892458295136254374265988665467617645507622903522808805870305235024018396035160878660731559462923378889903610851387946450997388307844430744279239993531821683216439222518844484106329295008322020544324498839839/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.561e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.821e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 2,
+      "contacts_before": 2,
+      "id": "66",
+      "light_faces": {
+        "left": "tilted-neighbour",
+        "top": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "square:65"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "5207/12500000000000000",
+          "distance_decimal": "4.166e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:59"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "1526625065780437228245222802144248714704851241879182550723827119884237682841223048875565173437500000047873/2441406250000000000000000000000001603369730752287863845877911372954826713303396956364453125000000000076562500000000000",
+          "distance_decimal": "6.253e-13",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:65"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "141996861909098528841153956176057562251288437806024382500944146769516111599622132574067980721796279919916352892458295136254374265988665467617645507622903522808805870305235024018396035160878660731559462923378889903610851387946450997388307844430744279239993531821683216439222518844484106329295008322020544324498839839/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.561e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.448e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "67",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=s"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "130270412089386990379615494637595934558569133463201083306308187563645235468120227650711386647162207279558617660695847625244806090383579965522980313933920792779023560769194795348661008250194228259130397855042765547427756035086176068473462651131596695933320135785502288799105861064757005083131580312981974309904327309/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "6.937e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:61"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "651582521049739913038471296686159695795258062238945757643348730127158116621410579714545225500000000020433/781250000000000000000000000000000513078313840732116430680931639345544548257087026036625000000000000024500000000000000",
+          "distance_decimal": "8.340e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.121e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "68",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:67",
+            "square:72"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "134174032882656221148846263868365195031989857988271551381126064408238243768265942737543598886481626153415152381911302758311939609996131129766661720638156711909067203344043567679807406760235493027021856135826780551473524360458186040645977059739980316737159171195057817408952994336315877082342884017212779651320408689/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.144e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:62"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "20783/100000000000000000",
+          "distance_decimal": "2.078e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:62"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "97564941709947982607694259337231917649782539616617366521663729840787704772248513637401651850000000003059511/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "6.244e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.025e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "69",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:68",
+            "square:73"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "138077090274483144225769340791442147808815746461500625661840965517695402023915341210055571703270593845869706462110513959626970685629136558732139959622768234437677663443778102239521425822786614246645072601213780639469444840887632940081239590005930321123100991310365839688297407440463285759318181086635892679832408079/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.352e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:63"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "651582521049739913038471296686159695795258062238945757643348730127158116621410579714545225500000000020433/781250000000000000000000000000000513078313840732116430680931639345544548257087026036625000000000000024500000000000000",
+          "distance_decimal": "8.340e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.181e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "70",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:69",
+            "square:74"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "141996861909098528841153956176057562251288437806024382500944146769516111599622132574067980721796279919916352892458295136254374265988665467617645507622903522808805870305235024018396035160878660731559462923378889903610851387946450997388307844430744279239993531821683216439222518844484106329295008322020544324498839839/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.561e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:64"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "65019189604973991303847129668615969488197866360244259039673667180912304732551296480820003300000000002038939/78125000000000000000000000000000051307831384073211643068093163934554454825708702603662500000000000002450000000000000000",
+          "distance_decimal": "8.322e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.804e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 2,
+      "contacts_before": 2,
+      "id": "71",
+      "light_faces": {
+        "left": "tilted-neighbour",
+        "top": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:70",
+            "square:75"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "145950062029290836533461648483749900025054734893137504456823888306063923815443709721081262143795402757147184023103216263506522855801241336343205673654086342864969570690136720235591825050052557747056200959100217520043230068264011370438987547173286144818787513125019302133309026848251750685274895889328273201474136339/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.772e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:65"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "651582521049739913038471296686159695795258062238945757643348730127158116621410579714545225500000000020433/781250000000000000000000000000000513078313840732116430680931639345544548257087026036625000000000000024500000000000000",
+          "distance_decimal": "8.340e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "3.555e-15",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "72",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=s"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "130270412089386990379615494637595934558569133463201083306308187563645235468120227650711386647162207279558617660695847625244806090383579965522980313933920792779023560769194795348661008250194228259130397855042765547427756035086176068473462651131596695933320135785502288799105861064757005083131580312981974309904327309/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "6.937e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:67"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "162789941709947982607694259337231960485664805551660303086353350546468528017136195267147399850000000005104967/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "1.042e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.348e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "73",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:72",
+            "square:76"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "134174032882656221148846263868365195031989857988271551381126064408238243768265942737543598886481626153415152381911302758311939609996131129766661720638156711909067203344043567679807406760235493027021856135826780551473524360458186040645977059739980316737159171195057817408952994336315877082342884017212779651320408689/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.144e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:68"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "2609/6250000000000000",
+          "distance_decimal": "4.174e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:68"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "97564941709947982607694259337231917649782539616617366521663729840787704772248513637401651850000000003059511/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "6.244e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.904e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "74",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:73",
+            "square:77"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "138077090274483144225769340791442147808815746461500625661840965517695402023915341210055571703270593845869706462110513959626970685629136558732139959622768234437677663443778102239521425822786614246645072601213780639469444840887632940081239590005930321123100991310365839688297407440463285759318181086635892679832408079/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.352e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:69"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "162789941709947982607694259337231960485664805551660303086353350546468528017136195267147399850000000005104967/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "1.042e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "9.743e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 2,
+      "contacts_before": 2,
+      "id": "75",
+      "light_faces": {
+        "left": "tilted-neighbour",
+        "top": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:74",
+            "square:78"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "142013576151886990379615494637596023916935240677319065059332426911879662919679525465568416923532998301508445242606865111566746770715188947537672816638427288651323617066957411237556625436419585996850636780156999079756337454575822155260113568589608232970944252217692570910803217144357518222296538487982082940653272209/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.562e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:70"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "162789941709947982607694259337231960485664805551660303086353350546468528017136195267147399850000000005104967/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "1.042e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.047e-15",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "76",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=s"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "130270412089386990379615494637595934558569133463201083306308187563645235468120227650711386647162207279558617660695847625244806090383579965522980313933920792779023560769194795348661008250194228259130397855042765547427756035086176068473462651131596695933320135785502288799105861064757005083131580312981974309904327309/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "6.937e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:72"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "195264941709947982607694259337231981813304155283212918876898316930784123799086788765437827850000000006123383/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "1.250e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.874e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "77",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:76",
+            "square:79"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "134174032882656221148846263868365195031989857988271551381126064408238243768265942737543598886481626153415152381911302758311939609996131129766661720638156711909067203344043567679807406760235493027021856135826780551473524360458186040645977059739980316737159171195057817408952994336315877082342884017212779651320408689/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.144e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:73"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "977/1562500000000000",
+          "distance_decimal": "6.253e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:73"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "97564941709947982607694259337231917649782539616617366521663729840787704772248513637401651850000000003059511/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "6.244e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.061e-16",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 2,
+      "contacts_before": 2,
+      "id": "78",
+      "light_faces": {
+        "left": "tilted-neighbour",
+        "top": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:77",
+            "square:80"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "138077090274483144225769340791442147808815746461500625661840965517695402023915341210055571703270593845869706462110513959626970685629136558732139959622768234437677663443778102239521425822786614246645072601213780639469444840887632940081239590005930321123100991310365839688297407440463285759318181086635892679832408079/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.352e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:74"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "195264941709947982607694259337231981813304155283212918876898316930784123799086788765437827850000000006123383/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "1.250e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.171e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 4,
+      "contacts_before": 4,
+      "id": "79",
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=s"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": 1,
+          "distance": "130270412089386990379615494637595934558569133463201083306308187563645235468120227650711386647162207279558617660695847625244806090383579965522980313933920792779023560769194795348661008250194228259130397855042765547427756035086176068473462651131596695933320135785502288799105861064757005083131580312981974309904327309/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "6.937e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:76"
+          ],
+          "contacts_after": 4,
+          "contacts_before": 4,
+          "direction": -1,
+          "distance": "227877441709947982607694259337232003231245288250734387159243127283624535421530629580310701850000000007146111/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "1.458e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.460e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 2,
+      "contacts_before": 2,
+      "id": "80",
+      "light_faces": {
+        "left": "tilted-neighbour",
+        "top": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "square:79",
+            "square:81"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "134174032882656221148846263868365195031989857988271551381126064408238243768265942737543598886481626153415152381911302758311939609996131129766661720638156711909067203344043567679807406760235493027021856135826780551473524360458186040645977059739980316737159171195057817408952994336315877082342884017212779651320408689/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "7.144e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "square:77"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "417/500000000000000",
+          "distance_decimal": "8.340e-13",
+          "kind": "snap",
+          "reached_target": false
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:77"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "97564941709947982607694259337231917649782539616617366521663729840787704772248513637401651850000000003059511/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "6.244e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.782e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 2,
+      "contacts_before": 2,
+      "id": "81",
+      "light_faces": {
+        "left": "tilted-neighbour",
+        "top": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=s"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "130270412089386990379615494637595934558569133463201083306308187563645235468120227650711386647162207279558617660695847625244806090383579965522980313933920792779023560769194795348661008250194228259130397855042765547427756035086176068473462651131596695933320135785502288799105861064757005083131580312981974309904327309/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "6.937e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:79"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": -1,
+          "distance": "130175439604973991303847129668616012278929240677302769358463365902330720057192354452274528300000000004082239/78125000000000000000000000000000051307831384073211643068093163934554454825708702603662500000000000002450000000000000000",
+          "distance_decimal": "1.666e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "2.130e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 2,
+      "contacts_before": 2,
+      "id": "82",
+      "light_faces": {
+        "bottom": "tilted-neighbour",
+        "left": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=s"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "130270412089386990379615494637595934558569133463201083306308187563645235468120227650711386647162207279558617660695847625244806090383579965522980313933920792779023560769194795348661008250194228259130397855042765547427756035086176068473462651131596695933320135785502288799105861064757005083131580312981974309904327309/18780048076923076923076923076923219827868394713126470099191171195001483210553810674647417681706046732688033874797725070081465984857842606772257320813220047772749170474592381079314916338118275608060513233830534994928164752102424575062611414453880596573843141583544350090672247048777407866887826923077096802733000000000000000000",
+          "distance_decimal": "6.937e-12",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=s"
+          ],
+          "contacts_after": 2,
+          "contacts_before": 2,
+          "direction": 1,
+          "distance": "6934920976837108986079009972304906116091501362923837493166291398211834842719536066886742381390000000066644389/1000000000000000000000000000000000440027695096935459661364813881712432556390075713692590000000000000009610000000000000000",
+          "distance_decimal": "6.935e-12",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "1.518e-17",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 1,
+      "contacts_before": 1,
+      "id": "83",
+      "light_faces": {
+        "left": "wall-slack",
+        "right": "tilted-neighbour",
+        "top": "offset"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "wall:y=0"
+          ],
+          "contacts_after": 1,
+          "contacts_before": 1,
+          "direction": -1,
+          "distance": "40042099479826076942593372318535775888638136721308910903485825947926749999999999999951/1562500000000000000000000000000001026156627681464232861361863278691089096514174052073250000000000000049",
+          "distance_decimal": "2.563e-17",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [
+        {
+          "accepted": false,
+          "axis": "x",
+          "blockers": [
+            "square:88"
+          ],
+          "contacts_after": 1,
+          "contacts_before": 1,
+          "direction": 1,
+          "distance": "327076607443353501985276239009295965542195730658284205097798998146063931051824400383893/952178373645777355964861656179268413323600990560921313674256148366884991000000000000000000",
+          "distance_decimal": "3.435e-04",
+          "kind": "compaction",
+          "reached_target": false
+        },
+        {
+          "accepted": false,
+          "axis": "x",
+          "blockers": [
+            "square:88"
+          ],
+          "contacts_after": 1,
+          "contacts_before": 1,
+          "direction": 1,
+          "distance": "511057199130257359789859793674328484979472039118108511614087412365795411968888682487604463162864485549777830393055731550543499954519202673268180089720949267922907581713294871539395618810757/1487778708821527118695096337780107872902275399323528886195636881160621039275655147176805526138594080247368197532900775950013378955999853137368285845813001960788551269977364559000000000000000000",
+          "distance_decimal": "3.435e-04",
+          "kind": "compaction",
+          "reached_target": false
+        }
+      ],
+      "source_angle_from_axis": "0.000e+00",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 1,
+      "contacts_before": 1,
+      "id": "84",
+      "light_faces": {
+        "bottom": "offset",
+        "right": "tilted-neighbour",
+        "top": "tilted-neighbour"
+      },
+      "moves": [
+        {
+          "accepted": true,
+          "axis": "x",
+          "blockers": [
+            "target",
+            "wall:x=0"
+          ],
+          "contacts_after": 1,
+          "contacts_before": 1,
+          "direction": -1,
+          "distance": "126095070465017241386521250830294040019991679525454253787309057955052499999999999952039/1562500000000000000000000000000010175978749169706233730008320474545746212690942044947500000000000047961",
+          "distance_decimal": "8.070e-17",
+          "kind": "snap",
+          "reached_target": true
+        },
+        {
+          "accepted": true,
+          "axis": "y",
+          "blockers": [
+            "target",
+            "square:83"
+          ],
+          "contacts_after": 1,
+          "contacts_before": 1,
+          "direction": -1,
+          "distance": "32477441709947982607694259337231874904202056917543282448773953103631697367854079324238349850000000001018367/156250000000000000000000000000000102615662768146423286136186327869108909651417405207325000000000000004900000000000000000",
+          "distance_decimal": "2.079e-13",
+          "kind": "snap",
+          "reached_target": true
+        }
+      ],
+      "rejected_moves": [],
+      "source_angle_from_axis": "0.000e+00",
+      "status": "exact-axis"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "85",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.602e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "86",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.602e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "87",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.306e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "88",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.306e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "89",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.306e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "90",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.306e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 1,
+      "contacts_before": 1,
+      "id": "91",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.306e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "92",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.306e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 1,
+      "contacts_before": 1,
+      "id": "93",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.306e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "94",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.306e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "95",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.306e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "96",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.306e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "97",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.306e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "98",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.306e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "99",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.577e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "100",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.577e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "101",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.872e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "102",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.442e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "103",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.872e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "104",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "5.872e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "105",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.306e-01",
+      "status": "tilted"
+    },
+    {
+      "contacts_after": 0,
+      "contacts_before": 0,
+      "id": "106",
+      "moves": [],
+      "rejected_moves": [],
+      "source_angle_from_axis": "4.306e-01",
+      "status": "tilted"
+    }
+  ],
+  "structural_light_faces": {
+    "offset": 2,
+    "tilted-neighbour": 39,
+    "wall-slack": 1
+  }
+}

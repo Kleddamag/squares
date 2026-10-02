@@ -9,6 +9,7 @@ compared byte for byte by `python -m devtools.classify_known_best_families --che
 
 from __future__ import annotations
 
+import itertools
 import json
 import math
 from fractions import Fraction
@@ -49,7 +50,7 @@ def test_square_indices_report_floor_and_nearest_conventions(
 def test_small_library_is_unambiguous_at_the_side_tolerance() -> None:
     values = [form[0] for form in families.closed_form_library()]
     assert len(values) == 45 * 45
-    assert min(b - a for a, b in zip(values, values[1:], strict=False)) > 1e-6
+    assert min(b - a for a, b in itertools.pairwise(values)) > 1e-6
 
 
 def test_closed_forms_cover_both_tiers_and_refuse_a_generic_side() -> None:
@@ -191,7 +192,6 @@ def test_l_construction_follows_the_definition_on_synthetic_sides() -> None:
         8: 3.0,
         9: 3.0,
         10: 3 + HALF_ROOT_TWO,
-        11: 3.9,
     }
     assert families.l_step(2.9999999999) == 7
     assert families.l_parent(10, sides) == 5
@@ -199,9 +199,12 @@ def test_l_construction_follows_the_definition_on_synthetic_sides() -> None:
     assert families.l_chain(9, sides) == (1, 2)
     assert families.l_parent(5, sides) is None
     assert families.l_bound(5, sides) is None
-    beaten = families.l_bound(11, sides)
-    assert beaten == {"from": 6, "side": 4.0, "margin": 0.1}
-    assert families.l_parent(11, sides) is None
+    improved = {**sides, 10: 3.6}
+    assert families.l_parent(10, improved) is None
+    beaten = families.l_bound(10, improved)
+    assert beaten is not None
+    assert beaten["from"] == 5
+    assert beaten["margin"] == pytest.approx(HALF_ROOT_TWO - 0.6, abs=1e-12)
 
 
 def test_witness_projection_folds_degrees_radians_and_corners() -> None:
@@ -227,7 +230,6 @@ def test_witness_projection_folds_degrees_radians_and_corners() -> None:
         )
     )
     assert radians.poses[0].angle == pytest.approx(60.0, abs=1e-9)
-    h = str(HALF_ROOT_TWO)
     diamond = families.witness_geometry(
         witness(
             [
@@ -245,8 +247,9 @@ def test_witness_projection_folds_degrees_radians_and_corners() -> None:
             "not-applicable",
         )
     )
-    assert h
-    assert diamond.poses[0] == Pose(1.0, 1.0, pytest.approx(45.0, abs=1e-9))
+    pose = diamond.poses[0]
+    assert (pose.x, pose.y) == pytest.approx((1.0, 1.0), abs=1e-12)
+    assert pose.angle == pytest.approx(45.0, abs=1e-9)
 
 
 @pytest.fixture(scope="module")
@@ -283,6 +286,11 @@ def test_row_summary_keeps_the_fields_the_asymptotics_lane_reads(
     assert sum(row["grid_held_width"] for row in rows) == sum(
         entry["integer_side"] for entry in retained["entries"]
     )
+
+
+@pytest.mark.parametrize(("k", "offset"), [(5, 2), (7, 3), (12, 5), (17, 7)])
+def test_goebel_offset_takes_the_floor_exactly(k: int, offset: int) -> None:
+    assert families.goebel_offset(k) == offset
 
 
 def test_small_library_constants_are_what_the_detector_declares() -> None:

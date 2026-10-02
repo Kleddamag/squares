@@ -934,6 +934,123 @@ def _counts(values: Iterable[str]) -> dict[str, int]:
     return dict(sorted(Counter(values).items()))
 
 
+CONVENTIONS = {
+    "triangle_row": (
+        "row k holds n = (k-1)^2+1 .. k^2, every n with ceil(sqrt n) = k; `rows`, "
+        "grid_held_width and the row_max/mid_row fields use it"
+    ),
+    "nearest_square": (
+        "n = k^2 + d with k = round(sqrt n); `by_nearest_offset`, excess_table, "
+        "gobel_strip_check, delta_plateau and best_known_d_max index n this way"
+    ),
+    "floor_square": "n = m^2 + r with m = floor(sqrt n); `by_floor_remainder` and L columns",
+}
+"""How each summary block indexes n, recorded once so two conventions cannot blur."""
+
+EXCESS_OFFSETS = tuple(range(-3, 4))
+EXCESS_ROWS = tuple(range(2, 18))
+GOEBEL_ROWS = tuple(range(5, 18))
+PLATEAU_EXCESS = 5 * SQRT2 / 2 - 3
+D_MAX_ROWS = tuple(range(2, 19))
+BAND_ELONGATION = 5.0
+BAND_DIRECTION_TOLERANCE = 10.0
+
+
+def _diagonal_band(record: Mapping[str, Any]) -> bool:
+    """Whether the visibly tilted squares lie in an elongated set along a diagonal."""
+    layout = record["tilted_layout"]
+    elongation, direction = layout["elongation"], layout["principal_direction_degrees"]
+    if direction is None or (elongation is not None and elongation < BAND_ELONGATION):
+        return False
+    return min(abs(direction - 45.0), abs(direction - 135.0)) <= BAND_DIRECTION_TOLERANCE
+
+
+def goebel_offset(k: int) -> int:
+    """d_G(k) = 3 - k + floor((k - 2) * sqrt 2), the floor taken exactly as an isqrt."""
+    return 3 - k + math.isqrt(2 * (k - 2) ** 2)
+
+
+def _side_minus(by_n: Mapping[int, Mapping[str, Any]], n: int, k: int) -> float | None:
+    return _rounded(float(by_n[n]["side"]) - k) if n in by_n else None
+
+
+def _asymptotics(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Tables the asymptotics lane reads, all in the nearest-square convention n = k^2 + d."""
+    by_n = {record["n"]: record for record in records}
+    plateau = [
+        by_n[k * k + 1]
+        for k in range(1, math.isqrt(max(by_n)) + 1)
+        if k * k + 1 in by_n
+        and _equal_sides(float(by_n[k * k + 1]["side"]) - k, PLATEAU_EXCESS)
+    ]
+    return {
+        "excess_table": {
+            "description": "side(k^2 + d) - k; null where k^2 + d is outside the atlas",
+            "offsets": list(EXCESS_OFFSETS),
+            "rows": [
+                {"k": k, "excess": [_side_minus(by_n, k * k + d, k) for d in EXCESS_OFFSETS]}
+                for k in EXCESS_ROWS
+            ],
+        },
+        "gobel_strip_check": {
+            "description": (
+                "d_G(k) = 3 - k + floor((k - 2)*sqrt 2) and n = k^2 + d_G(k); whether "
+                f"side(n) - k = 1/sqrt(2) within {SIDE_TOLERANCE}, and n's 45-degree squares"
+            ),
+            "rows": [
+                {
+                    "k": k,
+                    "d_G": goebel_offset(k),
+                    "n": k * k + goebel_offset(k),
+                    "side_minus_k": _side_minus(by_n, k * k + goebel_offset(k), k),
+                    "equals_inverse_root_two": _equal_sides(
+                        float(by_n[k * k + goebel_offset(k)]["side"]) - k, SQRT2 / 2
+                    ),
+                    "forty_five": by_n[k * k + goebel_offset(k)]["angles"]["forty_five"][
+                        "tight"
+                    ],
+                }
+                for k in GOEBEL_ROWS
+                if k * k + goebel_offset(k) in by_n
+            ],
+        },
+        "delta_plateau": {
+            "description": (
+                f"k with side(k^2 + 1) - k = 5/sqrt(2) - 3 within {SIDE_TOLERANCE}, and "
+                "those records' axis-aligned and 45-degree square counts at 1e-6 radians"
+            ),
+            "k": [record["k"] for record in plateau],
+            "members": [
+                {
+                    "k": record["k"],
+                    "n": record["n"],
+                    "axis_aligned": record["angles"]["axis_aligned"]["tight"],
+                    "forty_five": record["angles"]["forty_five"]["tight"],
+                }
+                for record in plateau
+            ],
+        },
+        "best_known_d_max": {
+            "description": (
+                "the largest d >= 0 with side(k^2 - d) = k within the side tolerance, read "
+                "from the atlas's best-known sides: a best-known value, not a proved one"
+            ),
+            "rows": [
+                {
+                    "k": k,
+                    "d_max": max(
+                        d
+                        for d in range(k * k)
+                        if k * k - d in by_n and _equal_sides(float(by_n[k * k - d]["side"]), k)
+                    ),
+                }
+                for k in D_MAX_ROWS
+                if k * k in by_n
+            ],
+        },
+    }
+
+
 def _l_chains(records: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
     """Every chain of one or more L steps, from its root, in root order.
 
@@ -1057,6 +1174,8 @@ def summary(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     non_grid = [record for record in records if record["source"]["kind"] != "exact-grid"]
     closed = [record for record in records if record["closed_form"] is not None]
     return {
+        "conventions": CONVENTIONS,
+        **_asymptotics(records),
         "records": len(records),
         "source_kinds": _counts(record["source"]["kind"] for record in records),
         "by_nearest_offset": [
@@ -1098,11 +1217,46 @@ def summary(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
             ],
         },
         "symmetry": {
-            band: {
-                "all": _counts(record["symmetry"][band]["group"] for record in records),
-                "non_grid": _counts(record["symmetry"][band]["group"] for record in non_grid),
-            }
-            for band, _center, _angle in SYMMETRY_BANDS
+            **{
+                band: {
+                    "all": _counts(record["symmetry"][band]["group"] for record in records),
+                    "non_grid": _counts(
+                        record["symmetry"][band]["group"] for record in non_grid
+                    ),
+                }
+                for band, _center, _angle in SYMMETRY_BANDS
+            },
+            "tight_non_trivial_by_source_kind": {
+                kind: {
+                    "count": sum(record["source"]["kind"] == kind for record in records),
+                    "non_trivial": sum(
+                        record["source"]["kind"] == kind
+                        and record["symmetry"]["tight"]["group"] != "trivial"
+                        for record in records
+                    ),
+                }
+                for kind in sorted({record["source"]["kind"] for record in records})
+            },
+            "tight_non_grid_by_closed_form": {
+                "closed_form": _counts(
+                    record["symmetry"]["tight"]["group"]
+                    for record in non_grid
+                    if record["closed_form"] is not None
+                ),
+                "no_closed_form": _counts(
+                    record["symmetry"]["tight"]["group"]
+                    for record in non_grid
+                    if record["closed_form"] is None
+                ),
+            },
+        },
+        "diagonal_bands": {
+            "description": (
+                f"records whose tilted_layout elongation is at least {BAND_ELONGATION} with "
+                f"a principal direction within {BAND_DIRECTION_TOLERANCE} degrees of a "
+                "container diagonal"
+            ),
+            "n": [record["n"] for record in records if _diagonal_band(record)],
         },
         "tilted": {
             "with_tilted": sum(record["tilted"] > 0 for record in records),

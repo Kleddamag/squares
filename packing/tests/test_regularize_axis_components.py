@@ -93,7 +93,7 @@ def test_a_row_with_slack_compacts_into_the_wall_and_each_other() -> None:
     # its right, half a side short of the far wall's lattice.
     assert report["atlas_contacts"]["histogram_before"][1] == 3
     assert [s["contacts_after"] for s in report["squares"][:3]] == [3, 3, 2]
-    assert report["squares"][2]["light_faces"] == {"right": "hole"}
+    assert report["squares"][2]["light_faces"] == {"right": "hole", "top": "hole"}
     assert report["regularization"]["moves"]["compactions"] == 3
     assert report["regularization"]["moves"]["converged"] is True
     assert report["regularization"]["exact_contacts_after"] == 2
@@ -102,21 +102,24 @@ def test_a_row_with_slack_compacts_into_the_wall_and_each_other() -> None:
 
 
 def test_a_block_off_its_lattice_by_a_hair_snaps_onto_it_exactly() -> None:
-    """A 2-by-2 block a few 1e-13 off the lattice lands on it, by snaps only.
+    """A 2-by-2 block a few 1e-13 short of its lattice lands on it, by snaps only.
 
+    Two exact squares in opposite corners of a side-5 container fix the exact frame:
+    the promotion translates a pose to its bounding box and takes the side from it, so
+    without them the block's own hair-width residual would become the frame's origin.
     The residuals leave 2e-13 between neighbours, room for the 1e-15 tilts: two squares
-    whose centres are exactly a side apart cannot both be tilted, and the exact frame
-    would refuse such a fixture rather than dilate it.
+    whose centres are exactly a side apart cannot both be tilted.
     """
     witness = decimal_witness(
         [
-            ("0.5000000000001", "0.5", "1e-15"),
-            ("1.5000000000003", "0.5", "-2e-15"),
-            ("0.5000000000001", "1.5000000000002", "0"),
-            ("1.5000000000003", "1.5000000000002", "3e-16"),
-            PIN_3,
+            ("2.4999999999997", "2.4999999999996", "1e-15"),
+            ("3.4999999999999", "2.4999999999996", "-2e-15"),
+            ("2.4999999999997", "3.4999999999998", "0"),
+            ("3.4999999999999", "3.4999999999998", "3e-16"),
+            ("0.5", "0.5", "0"),
+            ("4.5", "4.5", "0"),
         ],
-        "3",
+        "5",
     )
     report, view = regularize(witness, source_path="tests/synthetic")
 
@@ -124,35 +127,41 @@ def test_a_block_off_its_lattice_by_a_hair_snaps_onto_it_exactly() -> None:
         centre([(Fraction(x), Fraction(y)) for x, y in s["corners"]]) for s in view["squares"]
     ]
     assert centres[:4] == [
-        (HALF, HALF),
-        (Fraction(3, 2), HALF),
-        (HALF, Fraction(3, 2)),
-        (Fraction(3, 2), Fraction(3, 2)),
+        (Fraction(5, 2), Fraction(5, 2)),
+        (Fraction(7, 2), Fraction(5, 2)),
+        (Fraction(5, 2), Fraction(7, 2)),
+        (Fraction(7, 2), Fraction(7, 2)),
     ]
+    assert view["side"] == "5"
     moves = report["regularization"]["moves"]
     assert moves["compactions"] == 0
-    assert moves["snaps"] == 4
+    assert moves["snaps"] >= 8
+    assert moves["converged"] is True
     assert Fraction(moves["largest_move"]) <= SNAP_TOLERANCE
-    assert report["regularization"]["statuses"] == {"exact-axis": 5}
-    # Every square of the block was already dark under the atlas rule and stays so: a snap
-    # changes the representation, not the drawing.
-    assert [s["contacts_before"] for s in report["squares"][:4]] == [4, 4, 4, 4]
-    assert [s["contacts_after"] for s in report["squares"][:4]] == [4, 4, 4, 4]
-    assert report["regularization"]["exact_contacts_after"] == 4
-    assert report["exact_verification"]["repository_verifier"]["touching_pairs"] == 4
+    assert report["regularization"]["statuses"] == {"exact-axis": 6}
+    # The block's shades do not change: a snap changes the representation, not the
+    # drawing.  Each block square has its two neighbours and no wall.
+    assert [s["contacts_before"] for s in report["squares"][:4]] == [2, 2, 2, 2]
+    assert [s["contacts_after"] for s in report["squares"][:4]] == [2, 2, 2, 2]
+    # Four exact face contacts inside the block; the verifier also reports a zero gap for
+    # the block's two diagonal corner touches and for its outer corner, which now meets
+    # the pinned square's corner exactly.
+    assert report["regularization"]["exact_contacts_after"] == 7
+    assert report["exact_verification"]["repository_verifier"]["touching_pairs"] == 7
 
 
 def test_a_slide_into_a_tilted_square_stops_short_and_is_refused() -> None:
-    """The tilted diamond's lower corner dips 0.02 into the lane the square would sweep."""
-    # The diamond at 45 degrees has its lowest corner at (1, 0.98): at height 1 it spans
-    # x in [0.98, 1.02], so the square at 1.53 may slide only 0.01 before touching it.
-    diamond_y = str(Fraction("0.98") + Fraction("0.70710678118654752440084436210484904"))
+    """The tilted diamond's lower corner dips 0.01 into the lane the square would sweep."""
+    # The diamond at 45 degrees has its lowest corner at (1.01, 0.99): at height 1 it
+    # spans x in [1, 1.02], touching the seated square's right edge without entering it,
+    # so the square at 1.53 may slide only 0.01 before its top-left corner meets it.
+    diamond_y = str(Fraction("0.99") + Fraction("0.70710678118654752440084436210484904"))
     witness = decimal_witness(
         [
             ("0.5", "0.5", "0"),
             ("1.53", "0.5", "0"),
-            ("1.0", diamond_y, "0.78539816339744830962"),
-            PIN,
+            ("1.01", diamond_y, "0.78539816339744830962"),
+            PIN_3,
         ],
         "3",
     )
@@ -214,7 +223,7 @@ def test_the_atlas_rule_counts_as_the_workbench_does() -> None:
 
 def test_the_command_writes_a_verifiable_view_only_where_it_is_told(tmp_path: Path) -> None:
     witness = decimal_witness(
-        [("0.53", "0.5", "0"), ("1.56", "0.5", "0"), PIN], "3", name="cli"
+        [("0.53", "0.5", "0"), ("1.56", "0.5", "0"), PIN_3], "3", name="cli"
     )
     source = write_witness(tmp_path / "cli.yaml", witness)
     output = tmp_path / "out"

@@ -9,7 +9,7 @@ exploration:
   id: X-049
   title: Families of Known-Best Packings, Contact Shading, and the Large-n Limit
   date: '2026-10-02'
-  author: Claude session-168 coordinator, with two Opus survey and census lanes, one Opus census lane, and two Fable mathematical lanes
+  author: Claude session-168 coordinator, with three Opus lanes (literature, family census, contact-shade census) and two Fable lanes (asymptotics, exact regularization)
   campaign: packing.squares
   brief: >-
     The owner's questions after the atlas triangle view: have the families visible by
@@ -17,12 +17,447 @@ exploration:
     squares inexact arithmetic; can exact regularization fix the ones that are not; how
     do the families behave as n grows, is the limiting set of patterns finite, and does
     the research frontier carry these questions.
-  sources: []
+  sources:
+  - packing/atlas/known-best/manifest.json
+  - packing/witnesses/known-best/
+  - packages/workbench/src/core/geometry.ts
+  - packages/workbench/src/view/colour.ts
+  - packing/campaign/explorations/X049-families-data/family-census.json
+  - packing/campaign/explorations/X049-families-data/contact-shade-census.json
+  - packing/frontier/README.md
+  - packing/frontier/RESULTS.md
+  - packing/frontier/asymptotic-waste-bounds.yaml
+  - packing/campaign/hypotheses/H-035-asymptotic-primitive-finite-transfer.md
+  - packing/campaign/hypotheses/H-037-asymptotic-waste-exponent.md
+  - packing/campaign/hypotheses/H-044-chunk-expressibility-of-records.md
+  - packing/resources/papers/friedman-ds7-packing-unit-squares-in-squares.md
+  - packing/resources/papers/gobel-1979-geometrical-packing-and-covering-problems.pdf
+  - packing/resources/papers/kearney-shiu-2002-efficient-packing-unit-squares.md
+  - packing/resources/papers/nagamochi-2005-packing-unit-squares-in-a-rectangle.raw.md
+  - packing/resources/papers/arslanov-improved-packings-n-n-1.md
+  - packing/resources/papers/bentz-2010-optimal-packings-13-and-46.md
+  - packing/resources/papers/erdos-graham-1975-on-packing-squares-with-equal-squares.pdf
+  - packing/resources/papers/roth-vaughan-1978-inefficiency-packing-squares.md
+  - packing/resources/papers/wang-dong-li-2016-new-result-packing-unit-squares.raw.md
+  - packing/resources/papers/square-packing-good-squares-2504.09489.md
+  - packing/resources/papers/square-packing-x06-wasted-area-2508.04603.md
+  - packing/resources/papers/mcclenagan-2026-optimally-packing-large-square.md
+  - packing/resources/papers/graham-lubachevsky-1996-repeated-patterns-dense-packings-disks-square.raw.md
+  - packing/resources/web/kingbird-squares-in-squares.md
+  - packing/resources/web/kingbird-squares-in-squares-gobel-squares.md
+  - packing/resources/web/kingbird-squares-in-squares-gobel-strips.md
+  - docs/project/research/research-2026-09-07-square-packing-sources-beyond-100.md
+  - https://arxiv.org/abs/2609.37410
   proposes: []
 ---
 # X-049: Families of Known-Best Packings, Contact Shading, and the Large-n Limit
 
-PENDING: assembled from the lane notes.
+**Status: an exploration with three new instruments and no verdict.** It answers four
+owner questions at the evidential scope each allows.
+Every retained number comes from one of three tools listed under
+[Instruments](#instruments); the literature claims cite the archived source or a dated
+web read. No bound moved, no witness changed, and no hypothesis was registered.
+The epic is `think-los0`; the session record is
+[session-168](../agent-sessions/session-168-known-best-families-and-shading.md).
+
+## The Answers in Brief
+
+1. **Have the families been studied?** One at a time, never as a taxonomy.
+   The literature has named constructions with closed-form sides (Göbel’s strips and
+   squares, Friedman’s off-centre square) and a few theorems about whole families
+   (Nagamochi for $k^2-1$ and $k^2-2$, Kearney–Shiu for $n^2+1$, Arslanov et al.
+   for $n^2-n$, Bentz for $k^2-3$ up to $k=7$). Nobody has classified best-known square
+   packings by $n-k^2$; the closest precedent is for equal circles in a square, where
+   Graham–Lubachevsky and Nurmela–Östergård track pattern series against $k^2$. The
+   [family census](#what-the-atlas-shows) is the first such classification here, and it
+   is descriptive.
+2. **Is light shading inexact arithmetic?** PENDING the contact-shade census.
+3. **Can exact regularization fix it?** PENDING the regularization lane.
+4. **What happens as $n$ grows?** Every family visible in the atlas is transient.
+   For fixed $d$, $s(k^2+d)-k\to 0$ at a rate between $k^{-1}$ and $k^{-2/5}$; for
+   $d=ck$ the limit is exactly $c/2$; the integer-side region at the top of each row is
+   at most $O(k^{3/5})$ wide, and whether it grows without bound is open.
+   Every asymptotic construction is one finite template whose tilts and strip widths
+   drift with $n$; nothing proves the set of optimal patterns finite or infinite.
+   The register carries the wasted-area exponent (H-037) but none of these limits.
+
+## Instruments
+
+| Tool | Output | Check | Cost |
+| --- | --- | --- | --- |
+| `devtools.classify_known_best_families` | [`family-census.json`](X049-families-data/family-census.json) | `--check`, byte for byte | 8.8 s for 324 records |
+| `devtools.census_atlas_contact_shades` | [`contact-shade-census.json`](X049-families-data/contact-shade-census.json) | `--check`, byte for byte | PENDING |
+| `devtools.regularize_axis_components` | derived poses outside the record | exact feasibility, refusals tested | PENDING |
+
+Run them from `packing/` with `uv run --frozen --all-extras --group dev python -m`. Both
+censuses read the retained witnesses as projected geometry and declare
+`exploratory-no-verdict`. One caveat governs every structural reading below: the 176
+integer-side records are canonical row-major subsets of a $k\times k$ grid, so their
+arrangement and symmetry are a drawing convention and only their side is evidence.
+
+Three indexing conventions are named in the census and used consistently here.
+A **triangle row** $k$ holds $n=(k-1)^2+1,\dots,k^2$, as the atlas draws it.
+The **nearest-square offset** writes $n=k^2+d$ with $k=\operatorname{round}(\sqrt n)$,
+which is how the owner named the families.
+The **floor remainder** writes $n=m^2+r$ with $m=\lfloor\sqrt n\rfloor$, which is the
+convention under which the L step below keeps $r$ fixed.
+
+## Have the Families Been Studied
+
+### What exists
+
+| Family | Side or statement | Status | Source |
+| --- | --- | --- | --- |
+| $k^2$, $k^2-1$, $k^2-2$ | $s=k$ | proved by Nagamochi 2005, Theorem 2; see the correction below | `nagamochi-2005-...raw.md` |
+| $k^2-3$ | $s=k$ | proved for $k=3,\dots,7$; reported for all $k\ge 6$ (T-064, `V0`) | Bentz 2010, 2016; `frontier/RESULTS.md` |
+| $k^2-4$ | $s=k$ | proved at $k=5,6,7$ (T-051–T-053) | `frontier/README.md` |
+| $n^2-n$ | $s(n^2-n)<n$ for $n\ge 12$ | proved by construction | Arslanov et al. 2021 |
+| Göbel strip | $a+1+1/\sqrt2$ at $n=a^2+a+3+\lfloor(a-1)\sqrt2\rfloor$ | best known for $a<44$ except $a=3$; proved at 5 and 10 | DS7 §2; Kingbird strips page |
+| Göbel square | $a+1+b/\sqrt2$ at $n=2a(a+1)+b^2$, $a-1<b/\sqrt2<a+1$ | best-known upper bounds | DS7 §2; Kingbird squares page |
+| Off-centre square plus column | $a+3/2+b/\sqrt2$ at $n=2a^2+4a+b^2+1$ | best known at 26, 85, 227 | DS7 §3 |
+| $n^2+1$, Pell subfamily | $\delta=k/\sqrt2-t\downarrow 1/2$ at $(2t+1)^2+1=2k^2$ | proved construction | Kearney–Shiu 2002 §4 |
+| $n^2+1$, general | $\delta_n<3/(2n)^{1/3}+3/(2n)^{2/3}$ | proved | Kearney–Shiu 2002 |
+| Friedman’s Conjecture 1 | $s(n^2-k)=n\Rightarrow s((n+1)^2-k)=n+1$ | conjecture | DS7 §3 |
+
+Here $\delta_k=s(k^2+1)-k$, Kearney–Shiu’s notation.
+Kingbird’s group pages (Göbel squares, Göbel strips, the $s(n^2-n-1)$ pattern, rigid
+packings) and its “Extends” and “Adds an L” credit lines are catalogue groupings with no
+theorem behind them.
+The literature lane’s dated negative searches (2026-10-02) found no taxonomy keyed by
+$n-k^2$, no OEIS sequence for $s(n)$, and no progress on Friedman’s Conjecture 1.
+
+### Why the triangle shows columns: the L step
+
+DS7 §2 states the elementary construction behind most of the visible repetition: if $n'$
+squares fit in side $s'$, then $n'+2\lfloor s'\rfloor+1$ squares fit in side $s'+1$, by
+adding an L of squares along two walls.
+For $n'=m^2+r$ with $m<s'<m+1$ the L adds $2m+1$, which lands on $(m+1)^2+r$: the same
+column of a left-justified triangle, at the same excess $s-m$. So the excess is
+non-increasing down a column, which is a theorem about upper bounds.
+
+The census measures how much of the atlas the L step actually explains.
+No record violates the bound, so the atlas is consistent with it.
+Of the 148 non-integer records, 130 have an L candidate one row up; 32 are exactly that
+candidate’s L-extension and 98 beat it, by margins from $3.2\times10^{-5}$ (127 against
+the L of 106) to 0.116 (27 against the L of 18). Columns therefore repeat a packing in
+about a quarter of the cases where they could; the rest of the visible similarity is a
+family constructed again at the larger size, not the same packing carried down.
+
+The non-integer L chains are 5–10, 27–38, 52–67–84, 65 through 290 (nine steps),
+104–125, 124–147, 148–173–200–229–260, 149–174–201, 150–175, 151–176, 171–198, 172–199,
+203–232, 227–258, 230–261, 231–262–295, 233–264 and 265–298.
+
+## What the Atlas Shows
+
+### The integer-side region
+
+Every row ends in a run of integer-side records, contiguous up to $k^2$. The best-known
+$d_{\max}(k)$, the largest $d$ with $s(k^2-d)=k$ in the atlas, is $d_{\max}(k)=k$ for
+$k\le 10$, then 10, 11, 12, 13, 13, 14, 15, 16 for $k=11,\dots,18$. These are best-known
+values, not proved ones: Nagamochi’s theorem reaches $d=2$, the register reaches $d=3$
+and 4 at a few $k$, and everything beyond is the grid holding because nobody has beaten
+it. So the owner’s “$k^2-1$ and $k^2-2$ are clean grids” holds, but the integer run is
+much wider than those two offsets: it is complete through $d=-13$ wherever the atlas
+reaches.
+
+### The $k^2+1$ family
+
+All 16 records with $n=k^2+1$ have non-integer sides.
+Fourteen contain 45-degree squares and have non-trivial symmetry (D4 at 5, 65, 101, 145
+and 197). The two exceptions are 17 (Bidwell: tilts near 40 and 53 degrees, no symmetry)
+and 50 (side $53/7$, sixteen squares on 3-4-5 tilts, C2). The sides pass through three
+regimes: $k+1/\sqrt2$ at $k=2,3$; no common form at $k=4,\dots,7$; and from $k=8$ to 17
+a plateau at $s-k=5/\sqrt2-3\approx 0.53553$, the Göbel square at 65 carried down by L
+steps. At 170, 257 and 290 the source draws a different arrangement with the same side.
+Kearney–Shiu already beat the plateau at $k=42$ and $k=43$, so it is not the family’s
+limit; see [the large-n limit](#the-large-n-limit).
+
+### The $k^2+2$ offset is not one family
+
+Its 15 non-integer records use five different closed forms or none: 27 and 38 are Göbel
+strips, 66 is $3+4\sqrt2$, 171 and 198 are $95/7$ and $102/7$, 227 and 258 belong to the
+off-centre series, and 291 is 290 plus one square at the same side.
+Seven (11, 18, 51, 83, 102, 123, 146) match no closed form in the census library.
+What the offset shares is short L-linked pairs and a borrowed $k^2+1$ packing.
+
+### Equal-side pairs: 232–233 and 264–265
+
+Both pairs have equal sides, $8+\tfrac{11}{2}\sqrt2$ and $9+\tfrac{11}{2}\sqrt2$. Every
+square of the smaller record reappears in the larger under the identity alignment, all
+121 45-degree squares included: these are Göbel squares $(a,b)=(7,11)$ and $(8,11)$, and
+the smaller record is the larger with a corner square removed.
+264 is the L-extension of 233, and 298 of 265. The only non-integer equal-side pairs in
+the atlas are 147–148, 232–233, 264–265, 290–291 and 295–296, each with a Göbel
+construction as its upper member.
+That pairing is how the catalogue presents them, not a theorem.
+
+### The diagonal records: 268–269 and 301–302
+
+These four share a layout rather than a packing.
+Between the members of each pair there is no equal side, no L relation and no shared
+tilted square; the tilted squares sit at about 70 degrees in 268, near 45 in 269,
+between 55 and 61 in 301, and between 41 and 51 in 302. What they share is tilted
+squares strung along a container diagonal.
+301 and 302 sit at the same offsets one row below 268 and 269 but beat their
+L-extensions, by 0.0321 and 0.0200. Their lineage, traced by the catalogue’s credits,
+runs back to Friedman’s 1997 width-2 diagonal strips at 70 and 88 and Cantrell’s 37;
+nobody names it as a family.
+A declared band rule (tilted centres elongated at least fivefold within 10 degrees of a
+diagonal) selects 56 records, and in each row from $k=9$ to 17 a run of such offsets
+moves right as $k$ grows: 86–88, 106–108, 127–130, 151–153, 176–179, 204–207, 234–237,
+266–269, and 299, 300, 302.
+
+### Closed forms and symmetry
+
+Of the 148 non-integer sides, 56 match a closed form $a+b\sqrt2$ or a small rational (42
+in the declared small library, 14 more in a declared wider tier that catches the
+121-square diamond family and the $53/7$-type 3-4-5 sides); every residual is at most
+$8\times10^{-15}$. The families that recur most are $m+\sqrt2/2$ (16 records), the
+$k^2+1$ plateau (11), $-5+4\sqrt2$ (9) and $-7+\tfrac{11}{2}\sqrt2$ (8).
+
+**Symmetry follows the source, not the family.** At $10^{-6}$, 68 of the 97
+Kingbird-derived records are symmetric, against none of the 50 packet-derived records
+(Couzo, de Winter) and none of the UnitSquare record.
+Every closed-form side is symmetric; 80 of the 92 non-integer sides without one are not.
+Kingbird draws constructions and the packets are optimizer output, so the “fully
+symmetric” impression at $k^2+1$ is partly a property of who drew the packing.
+Thirty-eight records also have squares between $10^{-6}$ radians and half a degree off
+axis; at 301, 149 squares are exactly axis-aligned and 247 within half a degree.
+
+## Why Grid Squares Render Light
+
+PENDING the contact-shade census.
+
+## Exact Regularization
+
+**Yes for slack squares, as a derived view verified exactly; no for the structural
+ones.** The prototype is `devtools.regularize_axis_components`, and its outputs for the
+six named cases are retained under
+[`X049-families-data/regularized/`](X049-families-data/regularized/).
+
+### The definition and its boundary
+
+A regularized view starts from the exact frame the record already certifies, not from
+the decimal witness.
+All six named cases are Couzo packings (T-056) with rational certificates at 36 digits;
+the view uses the certificate’s exact side $S$, which equals the printed side at 102 and
+268 and lies one or two units of the fifteenth decimal above it at 103, 106, 206 and
+269\. Then:
+
+1. every square tilted more than $10^{-4}$ radians stays exactly as certified;
+2. every square within $10^{-4}$ radians is replaced by the exactly axis-aligned unit
+   square at the same rational centre, where that is exactly feasible;
+3. each such square slides along one axis toward the nearest lattice position,
+   $\tfrac12+i$ from one wall or $S-\tfrac12-j$ from the other, and stops at the first
+   exact contact, computed over $\mathbb Q$; a slide is kept only if it is a snap of at
+   most $10^{-9}$, ends on a wall or an axis-aligned square without lowering that
+   square’s contact count, or raises it;
+4. the result is verified twice over $\mathbb Q$, by `sqpack.verify.verify_packing` and
+   by the independent `devtools.check_rational_witness_independent`.
+
+The view never replaces the source witness, never changes the side, and never promotes
+an evidence tier: it proves nothing the certificate had not already proved, and any
+drawing of it must say “regularized”.
+Where $S$ exceeds the printed side by a unit in the fifteenth decimal, the honest
+statement is “feasible at the verified upper bound”.
+
+Two facts make the definition necessary rather than fussy.
+A square tilted by $\theta$ protrudes $\theta/2$ past a wall-seated lattice slot, so the
+certificate’s “axis” squares, tilted by about $10^{-17}$ from 36-digit rounding, are all
+off their lattice by that much: no exact lattice statement exists until they are
+straightened.
+And straightening can fail, because two squares tilted opposite ways can be
+separated while their straightened copies overlap; the exact check refused one such
+square, at 206.
+
+### Results
+
+PENDING the retained rerun.
+
+The remaining light squares are what the packing looks like: faces against tilted
+squares, rows offset by part of a side, holes where the two walls’ lattices disagree
+(the 0.607 gap in 102’s top row), and, at 206, a twisted near-lattice of 33 squares
+tilted between 0.01 and 0.39 degrees that the atlas’s half-degree colour class calls
+axis-aligned. No case needed a change of side.
+
+### What applying it across the atlas would take
+
+A derived layer, never a witness change: a regularized pose per decimal record, a
+manifest field naming it, a `--check` mode comparing digests, and a workbench toggle
+that draws it with a “regularized” badge and shades from it.
+Before an atlas-wide run it needs a neighbour non-regression rule (at 206 two untouched
+near-axis squares lost a contact when a neighbour moved onto its lattice), a separate
+colour class for squares tilted by a hundredth of a degree rather than straightening
+them, and a decision on the algebraic-field witnesses, where the same algorithm runs in
+$\mathbb Q(\alpha)$ but was not prototyped.
+Interval-enclosure witnesses admit no exact lattice statement at all.
+The lane estimates 20 to 40 serial minutes over the 148 decimal records, which places
+the check outside the fast gate.
+
+## The Large-n Limit
+
+### What is proved
+
+Write $W(x)=x^2-N(x)$, where $N(x)$ is the most unit squares that fit in side $x$. The
+current upper bound is $W(x)=O(x^{3/5})$ (Bui 2025; McClenagan 2026), with no hypothesis
+on the fractional part of $x$, which their constructions absorb into a strip width;
+Chung and Graham’s 2020 claim of the same exponent contains an error.
+The only lower bound is Roth–Vaughan 1978: if $x(x-\lfloor x\rfloor)>1/6$ then
+$W(x)\gg(\lVert x\rVert x)^{1/2}$, where $\lVert x\rVert$ is the distance to the nearest
+integer. Translating these into the owner’s families (derivations by the asymptotics
+lane, checked by the coordinator):
+
+- **Fixed offset $d\ge 1$.** The area bound and the upper bound give
+  $\frac{d}{2k}-\frac{d^2}{8k^3}\le s(k^2+d)-k\le\frac{d}{2k}+\frac{C}{2}\frac{(k+1)^{3/5}}{k}$.
+  Every fixed-offset family converges to the integer $k$, at a rate between $k^{-1}$ and
+  $k^{-2/5}$. Which end is right is open; it is Bui’s Question 1 and Kearney–Shiu’s
+  exponent $\beta$, now known to satisfy $2/5\le\beta\le 1$.
+- **Offset proportional to the row, $d=ck$.**
+  $\lim_{k\to\infty}[s(k^2+\lceil ck\rceil)-k]=c/2$. Any $W(x)=o(x)$ suffices, so this
+  has been a theorem since Erdős–Graham 1975. At mid-row, Roth–Vaughan forces
+  $s(k^2+k)>k+\tfrac12$ strictly for all large $k$.
+- **The integer-side region.** At $x=k-\varepsilon$ the upper bound packs
+  $k^2-2k\varepsilon-Ck^{3/5}$ squares, so $s(k^2-d)<k$ once $d>Ck^{3/5}+1$:
+  $d_{\max}(k)=O(k^{3/5})$. Below, $d_{\max}(k)\ge 2$ (Nagamochi) and
+  $d_{\max}(k)\le k-1$ for $k\ge 12$ (Arslanov).
+  Whether $d_{\max}(k)\to\infty$ is open, and no lower bound keyed to $\lVert x\rVert$
+  can decide it: proving $s(k^2-d)=k$ needs $W(k-\varepsilon)>d-2k\varepsilon$ for every
+  $\varepsilon>0$, and Roth–Vaughan’s bound tends to zero there.
+  Göbel asked the question in 1979, p. 180.
+- **Across all $n$.** $s(n)-\sqrt n=O(n^{-1/5})$, and on the mid-row subsequence
+  $s(n)-\sqrt n\gg n^{-1/4}$. This is the finite-$n$ face of H-037’s exponent question.
+
+### What the finite data show
+
+The atlas is far from the asymptotic regime, and every visible family is provably
+transient.
+
+| $k$ | $d=+1$ | $d=+2$ | $d=+3$ |
+| --- | --- | --- | --- |
+| 2 | 0.7071 | 1.0000 | 1.0000 |
+| 5 | 0.6213 | 0.7071 | 0.8244 |
+| 8 | 0.5355 | 0.6569 | 0.7071 |
+| 12 | 0.5355 | 0.6009 | 0.6569 |
+| 17 | 0.5355 | 0.5355 | 0.5972 |
+
+*Excess $s(k^2+d)-k$ for selected rows, from the census’s `excess_table`.*
+
+- The $k^2+1$ plateau at 0.53553 holds for every $k$ from 8 to 17; the first known
+  improvement is Kearney–Shiu’s at $k=42$.
+- The Göbel strip sits at $d_G(k)=3-k+\lfloor(k-2)\sqrt2\rfloor\approx 0.414k$ with
+  excess exactly $1/\sqrt2$ in all 13 rows $k=5,\dots,17$. The proved limit at that
+  offset is about 0.207, so this family must eventually be beaten.
+- The largest excess over the area bound in each row stays between 0.53 and 0.59 for
+  every $k$ from 2 to 18, where the theorem says it decays like $k^{-2/5}$ eventually.
+- Mid-row $s(m^2+m)-m$ is 1 for $k\le 10$ and 0.9634 at 306, against a proved limit of
+  $1/2$.
+- Taking Wang–Dong–Li’s explicit constant $16\sqrt2+38$ at face value (their threshold
+  $x_0$ is not printed), their construction beats the grid region only for
+  $k>(16\sqrt2+38)^{8/3}\approx 5.7\times10^4$. Hand-tuned constructions do far better,
+  which is why the honest crossover estimate for $k^2+1$ is “between 18 and 42”.
+
+### Finite or infinite set of patterns
+
+What the theory says about **structure**, as opposed to waste:
+
+- Roth–Vaughan’s proof forces tilted squares whenever $\lVert x\rVert$ is not tiny: each
+  of $\gg x$ horizontal chains needs a tilt of order $(\lVert x\rVert/x)^{1/2}$.
+- Bui’s good-squares theorem shows that removing every square tilted more than
+  $10^{-10}$ costs at most a constant factor in $W$. Forty-five-degree ingredients are
+  asymptotically dispensable up to a constant, which is not the same as absent.
+- Every upper bound from Erdős–Graham to McClenagan is one finite template: grid bulk,
+  boundary strips of width about $x^{4/5}$ filled by stacks tilted about $x^{-2/5}$, and
+  end trapezoids filled by a second-level primitive.
+  The template is finite; its parameters never stop changing.
+- On the proof side, one unavoidable-set template per offset proves $d=-1,-2$ for all
+  $k$ (Nagamochi), and one periodic measure reportedly proves $d=-3$ (T-064).
+
+The owner’s question becomes precise in three forms, strongest first.
+Call a *template* a finite recipe of regions (grid blocks, stacks of $L$ squares at a
+tilt, a bounded list of filler primitives) with continuous parameters.
+
+- **F1.** A finite set of templates contains an optimal packing for every $n$. Falsified
+  by a sequence of $n$ whose optima need unboundedly many orientation classes that no
+  single template’s parameter drift explains.
+  Open, even for $k^2+1$.
+- **F2.** The same, up to a constant factor in $s(n)-\sqrt n$. The construction chain
+  and Bui’s theorem are evidence for this form; unproved.
+- **F3.** For each fixed $d$, one periodic certificate proves $s(k^2-d)=k$ for all
+  $k\ge k_0(d)$. Proved for $d\le 2$, reported for $d=3$, and impossible for $d$ beyond
+  $O(k^{3/5})$.
+
+Nothing in the literature proves the pattern set finite or infinite.
+What is proved is that the finite atlas families—the 45-degree blocks at $d=1$, the
+$1/\sqrt2$ strips at $d\approx 0.414k$, and the grid down to $d\approx -k$—are all
+transient.
+
+## What the Frontier Carries
+
+| Question | Carried by | Gap |
+| --- | --- | --- |
+| Wasted-area exponent | [H-037](../hypotheses/H-037-asymptotic-waste-exponent.md), [`asymptotic-waste-bounds.yaml`](../../frontier/asymptotic-waste-bounds.yaml) | the $s(n)$ translation, Kearney–Shiu as the $\delta_k$ source, the explicit Wang–Dong–Li constant |
+| Asymptotic primitives at finite $n$ | [H-035](../hypotheses/H-035-asymptotic-primitive-finite-transfer.md) | predicts failure on the $k^2+1$ family below $k=42$; not stated |
+| Integer-side families | T-007, T-064, T-051–T-053, the frontier’s gap table | $d_{\max}(k)$ as a question; T-007’s proof gap (below) |
+| Structure of records | [H-044](../hypotheses/H-044-chunk-expressibility-of-records.md)–H-047, X-003, X-008, calibration-only at $n\le 100$ | no family taxonomy, no L-chain account, no source-symmetry confound |
+| Limits of families | nothing | fixed-$d$ rate, the $c/2$ limit, $s(k^2+k)>k+\tfrac12$, F1–F3 |
+| Atlas shading semantics | the page legend only | PENDING |
+
+### Candidate hypotheses, for the codifier
+
+None is registered here; each names its falsifier.
+
+1. **Periodic certificates reach $d=4$ and $d=5$.** Daniel’s periodic-measure
+   construction extends to $s(k^2-4)=k$ and $s(k^2-5)=k$ for all $k\ge k_0(d)$.
+   Falsified by infeasibility of the periodic linear program at bounded period over a
+   range of $k$, or by any $s(k^2-4)<k$. Value: the first proof that $d_{\max}(k)\ge 4$
+   for all large $k$, and a test of Friedman’s Conjecture 1.
+2. **The $k^2+1$ crossover lies between 18 and 42.** Some $k$ in that range has
+   $s(k^2+1)<k+5/\sqrt2-3$ by a Kearney–Shiu strip construction.
+   Falsified by an exact parameter scan of that construction finding nothing below
+   $k=42$. Value: locates the start of the asymptotic regime on the cleanest family and
+   scopes H-035.
+3. **$\beta=2/5$.** $\delta_k\asymp k^{-2/5}$, so Bui’s Question 1 has a negative
+   answer. Falsified by any construction with $\delta_k=o(k^{-2/5})$ along a sequence.
+   Paper mathematics; it sharpens H-037 at its finite face.
+4. **The atlas families are source artifacts in part.** Re-optimizing the 68 symmetric
+   Kingbird-derived non-grid records with the packet sources’ optimizer breaks symmetry
+   and lowers the side at a measurable fraction.
+   Falsified if no side moves by more than $10^{-9}$. Value: separates construction
+   families from optimum families.
+
+## Corrections and Side Findings
+
+- **Nagamochi’s proof has a published gap.** H. Karakuş, “A counterexample to
+  Nagamochi’s scoring lemma and a new rectangle packing bound”,
+  [arXiv:2609.37410](https://arxiv.org/abs/2609.37410), 29 September 2026 (read by the
+  coordinator on 2026-10-02): counterexamples to the scoring assertion in Lemma 1 show
+  the published proof of the rectangle bound is incomplete, “but do not disprove the
+  bound itself”. An independent strip-measure proof recovers $s(k^2-1)=k$ for every
+  $k\ge 2$ and “does not establish … the identity $s(k^2-2)=k$”. T-007 is the verified
+  lower bound at 238 of the 261 open cases, and the $k^2-2$ exact values rest on it.
+  `think-589i` owns the review; no register value changes before it concludes.
+- **The Erdős–Graham transcription overstates the theorem.** The archived cleaned text
+  writes Theorem (1) as $w(\alpha)=\Theta(\alpha^{7/11})$; the paper prints
+  $W(\alpha)=O(\alpha^{7/11})$ (checked on the rendered page) and says it has no
+  nontrivial lower estimate.
+  `think-hzv3` owns the correction with the register’s other asymptotic citations.
+- **A quoted catalogue side disagrees with the atlas.** The literature lane quoted
+  $s(301)=17.8689$; the atlas, which uses Couzo’s packet at 301, has 17.846667.
+
+## Follow-ups
+
+Ranked by information value per cost; each is a bead under `think-los0`.
+
+1. `think-589i` (P1): the T-007 review against Karakuş 2026. It is the only finding here
+   that can change a register value.
+2. PENDING: the shading and regularization dispositions.
+3. Candidate hypothesis 2, the $k^2+1$ crossover scan, which is cheap and decides how
+   H-035 should be scoped.
+4. `think-hzv3`: the asymptotic-record corrections.
+5. `think-1n8w`: archive the sources found outside the archive.
+
+**Selected next entry:** `think-589i`, a W2 factual review, because it is the one result
+that bears on what the register already claims.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -3,7 +3,7 @@
 
 Usage:
     uv run --frozen --all-extras --group dev python -m devtools.regularize_axis_components \
-        witnesses/known-best/n-102.yaml
+        witnesses/known-best/n-102.yaml --output-dir /some/scratch/dir
     uv run --frozen --all-extras --group dev python -m devtools.regularize_axis_components \
         witnesses/known-best/n-102.yaml witnesses/known-best/n-103.yaml \
         --output-dir /some/scratch/dir --json
@@ -58,10 +58,6 @@ from sqpack.witness import WitnessError, load_witness, promote_rational, witness
 ROOT = Path(__file__).resolve().parent.parent
 WITNESS_SCHEMA = ROOT / "witnesses/witness.schema.yaml"
 FORBIDDEN_OUTPUT_ROOTS = (ROOT / "witnesses", ROOT / "atlas")
-DEFAULT_OUTPUT_DIR = Path(
-    "/tmp/claude-0/-home-user-squares/6179239e-fec5-52e8-aabb-a0e229f3f822/scratchpad/regularized"
-)
-"""The prototype's scratch default; pass `--output-dir` for anything that should last."""
 
 ATLAS_GAP = 0.01
 """The workbench's `CONTACT.gap`: a hundredth of a side, under half a pixel at stage size."""
@@ -991,7 +987,7 @@ def parser() -> argparse.ArgumentParser:
     command.add_argument(
         "--output-dir",
         type=Path,
-        default=DEFAULT_OUTPUT_DIR,
+        required=True,
         help="where the regularized witness and report go (never under witnesses/ or atlas/)",
     )
     command.add_argument(

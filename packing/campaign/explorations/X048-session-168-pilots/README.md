@@ -298,6 +298,39 @@ kernel would sit near $g\approx0.9$. The review specifies a second pilot with th
 live-row cap lifted, a sharper core and an n11 contraction control, and its own
 falsifier.
 
+## The Residue Survey
+
+Lane Q1, Opus, built `devtools/survey_n17_residue.py` (SHA-256 `824c5335…`). It samples
+the orbits that survive the 90 selector flags, stratified by corner and interior counts
+and by Hamming distance from the endpoint’s state, and weighted toward the endpoint.
+For each one it searches for a full 17-square placement at $U$, then shrinks the state
+by deletion to a minimal failing sub-pattern.
+
+| Receipt | What it holds |
+| --- | --- |
+| `receipts/residue-survey-calibration.json` | The positive control: the endpoint’s state placed blind, 3 of 6 seeds in one round and 6 of 6 by round 5, at penetration exactly 0 |
+| `receipts/residue-survey-arity8-seed1.json` | The 45-state sample (44 random plus the control), merged from a run of 15 states and a resumed run of 30 on the same tool bytes |
+| `receipts/residue-survey-resume.py.txt` | The script that resumed the run, checked the tool digest and the draw, and merged |
+
+- **No sampled state other than the endpoint’s fits at $U$.** That includes 9 distinct
+  states at distance 2. The best full-state penetration is $9.1\times10^{-3}$, and 43 of
+  44 exceed $10^{-2}$. The 95% upper bound is about 27 of the 95 distance-2 orbits, and
+  about 148 of all 2,256, feasible at $U$.
+- **What kills each state is large and new.** Of 21 reductions, 19 are confirmed: arity
+  8 to 15, median 11, best penetrations $3.8\times10^{-4}$ to $1.6\times10^{-2}$. Every
+  one is a new class, and no class recurs.
+  Together, if certified, the 19 would take the projected 2,256 orbits to 987. The top
+  one is an arity-8 north-wall crowd the arity-8 priority subset deferred, which alone
+  removes 539 orbits.
+- **The selector’s search is too short for full states.** Its descent stops at 600
+  iterations and polishes only below $10^{-4}$, so on the endpoint’s state it stalls at
+  about $2\times10^{-3}$. One long descent from its best pose places it exactly.
+  Its flags between $10^{-4}$ and $10^{-2}$ never had that descent, so some may be
+  false.
+- Two reductions overshot: their confirmation search placed them.
+  The receipt’s `found_classes` still counts them, and the confirmed-only figures above
+  do not. “Minimal” means irreducible under deletion, not smallest.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

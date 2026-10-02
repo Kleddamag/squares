@@ -870,7 +870,6 @@ def overview_page() -> Page:
         "ATLAS_CARDS": overview_sections.atlas_cards(),
         "PAGE_CARDS": overview_sections.page_cards(),
         "SURVEY_CARDS": overview_sections.survey_cards(),
-        "VERIFICATION": overview_sections.verification_block(),
         "RECENT": overview_sections.recent_table(overview),
         "STAR_LEGEND": overview_sections.star_legend(),
         "ARROW_RIGHT": overview_sections.arrow_icon("right"),
@@ -914,6 +913,8 @@ def results_page() -> Page:
         "RESULTS_TABLE": overview_sections.results_table(overview),
         "STAR_LEGEND": overview_sections.star_legend(),
         "STATUS_COUNTS": overview_sections.status_counts(overview),
+        # The rating ladders, the homepage's Verification Ladders until 2026-10-02.
+        "VERIFICATION": overview_sections.verification_block(),
     }
     markdown = fill(
         RESULTS_ARTICLE.read_text(encoding="utf-8"), values, where=RESULTS_ARTICLE.name

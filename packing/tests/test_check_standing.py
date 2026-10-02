@@ -213,8 +213,9 @@ def _entry(records: view.Records, entry: str, **changed: Any) -> Mapping[str, An
 
 def test_a_superseded_entry_whose_bound_still_stands_is_refused(records: view.Records) -> None:
     """The mismatch one way: marked superseded, and still the best on record. T-043
-    holds the verified bound at n = 17, and T-048's reported 37/5 is above the verified
-    bound at n = 50. The reported lane is held too: n = 11's record reports the proved
+    holds the verified bound at n = 17, and T-048's 37/5 is the verified bound at n = 50
+    since its replay was recorded on 2026-10-02. The reported lane is held too: n = 11's
+    record reports the proved
     value as the source rounds it, below the verified one."""
     assert view.standing(records.results["T-043"], records) == view.HOLDS
     for entry, n in (("T-043", 17), ("T-048", 50)):

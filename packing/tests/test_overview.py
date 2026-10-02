@@ -5085,8 +5085,13 @@ def test_hide_superseded_starts_checked_on_the_overview_and_clear_on_the_results
             assert not superseded, result.id
     # Every standing stays, and so does a result with none: nothing but a superseded
     # bound is hidden for it. The one result that derives `superseded` and stays is the
-    # limit of a method, which is no bound.
-    assert kept == {*render_recent_results.STANDINGS, render_recent_results.NO_STANDING}
+    # limit of a method, which is no bound. No result has stood as a reported second
+    # certificate since 2026-10-02, when T-055's replay was recorded; when one does again,
+    # this pin fails and the standing returns to the set.
+    assert kept == {
+        *render_recent_results.STANDINGS,
+        render_recent_results.NO_STANDING,
+    } - {render_recent_results.SECOND_CERTIFICATE_REPORTED}
     current = sum(not overview_sections.is_superseded(r) for r in overview.results)
     assert 0 < shown < without < len(overview.results)
     assert shown < current < len(overview.results)

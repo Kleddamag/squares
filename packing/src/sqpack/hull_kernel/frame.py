@@ -171,11 +171,33 @@ class Frame:
     actions: tuple[SymmetryAction, ...]
     core_slack: Q = DEFAULT_CORE_SLACK
     provenance: str = ""
+    capture_cap: Q | None = None
 
     @property
     def scale(self) -> Q:
         """`B = L/U`: a unit square is a square of side `B` in field coordinates."""
         return self.length / self.cap
+
+    @property
+    def inner_cap(self) -> Q:
+        """`U'`, the side that confines the squares; `U` unless a capture cap is set."""
+        return self.cap if self.capture_cap is None else self.capture_cap
+
+    def centre_bounds(self, half_extent: Q) -> tuple[Q, Q]:
+        """The closed legal centre interval on either axis, in physical coordinates.
+
+        A square whose axis-parallel half-extent is at least `half_extent` lies in the
+        container `[(U - U')/2, (U + U')/2]^2` only if its centre does in
+        `[(U - U')/2 + h, (U + U')/2 - h]`. With no capture cap that is `[h, U - h]`,
+        n11's one-sided wall bounds, as the same exact rationals.
+        """
+        offset = (self.cap - self.inner_cap) / 2
+        return offset + half_extent, self.cap - offset - half_extent
+
+    def field_centre_bounds(self, half_extent: Q) -> tuple[Q, Q]:
+        """`centre_bounds` in field coordinates; `half_extent` stays physical."""
+        low, high = self.centre_bounds(half_extent)
+        return self.scale * low, self.scale * high
 
     def cell(self, index: int) -> Polygon:
         """The closed cell in physical coordinates."""
@@ -201,6 +223,18 @@ class Frame:
             len(self.cells), self.occupancy, [action.permutation for action in self.actions]
         )
 
+    def states_containing(self, pattern: Sequence[int]) -> list[int]:
+        """Representatives a symmetry image of which contains `pattern`: the states that an
+        unconditional contradiction on the cells of `pattern` excludes, by containment
+        (the other squares are unconstrained) and by the symmetry of container and cover.
+        """
+        target = set(pattern)
+        return [
+            index
+            for index, state in enumerate(self.representatives)
+            if any(target.issubset(self.image(action, state)) for action in self.actions)
+        ]
+
     def cells_reaching_diameter_one(self) -> tuple[str, ...]:
         """Cells whose diameter is at least one, which a diameter argument would refuse."""
         return tuple(
@@ -221,10 +255,15 @@ def make_frame(
     action_names: Sequence[str],
     core_slack: Q = DEFAULT_CORE_SLACK,
     provenance: str = "",
+    capture_cap: Q | None = None,
 ) -> Frame:
     """Validate the inputs and compute every action's cell permutation from geometry."""
     require(cap > 1 and length > 0, "the cap must exceed one and the field side be positive")
     require(0 < core_slack < length / cap, "the core slack must lie strictly inside (0, B)")
+    require(
+        capture_cap is None or 1 < capture_cap <= cap,
+        "a capture cap must lie in (1, U]",
+    )
     polygons = tuple(tuple(cell) for cell in cells)
     names = tuple(cell_names)
     require(
@@ -271,4 +310,5 @@ def make_frame(
         actions=actions,
         core_slack=core_slack,
         provenance=provenance,
+        capture_cap=capture_cap,
     )

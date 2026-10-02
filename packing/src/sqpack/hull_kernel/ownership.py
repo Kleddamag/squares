@@ -7,11 +7,11 @@ closed cell and its half-angle `t` over `[0, 1]`.
 The disk bound accepts when every cell vertex lies within distance `1/2` of the point
 (in physical units), since the square holds the open disc of radius `1/2` about its
 centre and the cell is convex. Otherwise the angle interval is bisected: on `[lo, hi]`
-the centre is confined to the cell clipped by the one-sided wall bounds
-`[h, U - h]^2` with `h = min(c + s)/2` over the endpoints, and for each legal vertex
-the point's two body coordinates are bounded by interval products over the endpoint
-cosines and sines; a positive margin below `1/2` on both proves strict containment over
-the whole sub-interval, by convexity in the centre.
+the centre is confined to the cell clipped by the frame's centred legal box for the
+half-extent `h = min(c + s)/2` over the endpoints (`[h, U - h]^2` without a capture
+cap), and for each legal vertex the point's two body coordinates are bounded by
+interval products over the endpoint cosines and sines; a positive margin below `1/2` on
+both proves strict containment over the whole sub-interval, by convexity in the centre.
 """
 
 from __future__ import annotations
@@ -37,7 +37,7 @@ def ownership(
 ) -> dict[str, Any]:
     """Prove strict capture over all legal centers and the full angle interval."""
     polygon = frame.cell(cell)
-    scale, cap = frame.scale, frame.cap
+    scale = frame.scale
     unit = field_point[0] / scale, field_point[1] / scale
     require(all(0 <= x <= frame.length for x in field_point), "field point outside container")
     max_distance2 = max((unit[0] - v[0]) ** 2 + (unit[1] - v[1]) ** 2 for v in polygon)
@@ -61,12 +61,12 @@ def ownership(
         nodes += 1
         clo, slo = trig(lo)
         chi, shi = trig(hi)
-        h = min(clo + slo, chi + shi) / 2
+        low, high = frame.centre_bounds(min(clo + slo, chi + shi) / 2)
         legal = polygon
         for axis in (0, 1):
             normal = (Q(1), Q(0)) if axis == 0 else (Q(0), Q(1))
-            legal = clip(legal, (-normal[0], -normal[1], -h))
-            legal = clip(legal, (normal[0], normal[1], cap - h))
+            legal = clip(legal, (-normal[0], -normal[1], -low))
+            legal = clip(legal, (normal[0], normal[1], high))
         deepest = max(deepest, depth)
         if not legal:
             leaves += 1

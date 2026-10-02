@@ -7,20 +7,30 @@ group, the state size) is a `Frame` here; everything else is the same exact rati
 arithmetic in the same order. `docs/project/reviews/` holds the adaptation spec
 (`review-2026-10-02-n17-kernel-adaptation-spec.md`).
 
-Lifted so far, from `check_n11_optimality_field_mask0.py`:
+Lifted so far, each module naming the frozen file it copies:
 
 * `geometry`: clipping, areas, the half-angle chart, quadratic envelopes;
-* `sweep`: the exact vertical-sweep union cover;
+* `sweep`: the exact vertical-sweep union cover (the reference);
+* `covers`: the fast and indexed forms of that sweep, and the closed point-or-segment
+  cover;
 * `ownership`: strict capture of a field point over a cell and every angle;
-* `counting`: the row envelope and strict core, the majority median strip, one row of
-  the counting mode, the row partition, the containment-plus-symmetry transfer, and the
-  packet replay;
-* `frame`: frames, symmetry actions and orbit representatives;
+* `counting`: the counting mode (mask 0's packet): row envelope and strict core, the
+  majority median strip, one row, the row partition, transfer and the packet replay;
+* `induction`: mode A's row geometry: hull normal forms, wall lines, the vertex-quadratic
+  strict core, Minkowski forbidden regions, common-core planes, convex combinations;
+* `node`: mode A's node grammar: the wall seed, the header, one row, compression, the
+  sequential replay, the final state and the terminal contradiction;
+* `collision`: self-hull cuts, universal collision (rational and integer), the support
+  outer domain and the common-core output check of a capture row;
+* `frame`: frames, the centred legal box, symmetry actions, orbit representatives and
+  the containment-plus-symmetry transfer;
 * `n11` and `n17`: the two frame adapters.
 
-The method control is `devtools/check_hull_kernel_mask0.py`, which replays n11's mask-0
-field packet through this package and refuses unless it matches the frozen checker and
-its retained receipt exactly.
+Every wall clip goes through `Frame.centre_bounds`, which is n11's `[h, U - h]` exactly
+when no capture cap is set. The method controls are `devtools/check_hull_kernel_mask0.py`
+(the counting path) and `devtools/check_hull_kernel_case2095.py` (the induction path),
+which replay n11's mask 0 and case 2095 through this package and refuse unless they match
+the frozen checkers and their retained receipts exactly.
 """
 
 from sqpack.hull_kernel.counting import (

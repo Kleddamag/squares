@@ -977,6 +977,12 @@ def test_the_slow_marker_is_declared_only_by_measured_nodes() -> None:
         "test_hull_kernel_mask0.py": {
             "test_the_full_replay_reproduces_the_receipt_and_the_frozen_checker",  # 22.44s
         },
+        # The hull kernel's case-2095 replay (seed, five steps, 160 rows) beside the frozen
+        # checker's own, two workers, measured 2026-10-02 (Session 168, BC-418); the fast
+        # tests keep a frozen-checked seed owner, row and compression, and the refusals.
+        "test_hull_kernel_case2095.py": {
+            "test_the_full_replay_reproduces_case_2095",  # 52.38s
+        },
         # 18s of call time across 3.
         "test_audit_n54_source_formula.py": {
             "test_n54_source_formula_cli_agrees_under_optimization",  # 7.8s

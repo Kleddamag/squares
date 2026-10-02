@@ -103,7 +103,7 @@ def admit_packet(frame: Frame, packet: CountingPacket) -> None:
 
 def row_envelope(frame: Frame, interval: tuple[Q, Q]) -> tuple[Q, Q, Q, Q]:
     """Strict core side, legal centre half-width and midpoint `(c, s)` of one row."""
-    scale, length = frame.scale, frame.length
+    scale = frame.scale
     left, right = interval
     require(0 <= left < right <= 1, "row interval outside closed angle domain")
     mid = (left + right) / 2
@@ -113,7 +113,8 @@ def row_envelope(frame: Frame, interval: tuple[Q, Q]) -> tuple[Q, Q, Q, Q]:
     factor = max(factors)
     min_width = min(cz + sz for cz, sz in endpoint)
     core = (scale - frame.core_slack) / factor
-    halfwidth = length / 2 - scale * min_width / 2
+    low, high = frame.field_centre_bounds(min_width / 2)
+    halfwidth = (high - low) / 2
     require(0 < core < scale and core * factor < scale, "strict inner core fails")
     require(
         quadratic_nonnegative(factor - c - s, 2 * (c - s), factor + c + s, left, mid)
@@ -155,15 +156,10 @@ def counting_row(
     """One row of one positive cell: every legal centre is charged or impossible."""
     require(cell in packet.positive_cells, "row outside positive cells")
     core, h, c, s = row_envelope(frame, interval)
-    length = frame.length
+    low, high = frame.field_centre_bounds(min(sum(trig(t), Q()) for t in interval) / 2)
     legal = intersect(
         frame.world(cell),
-        [
-            (Q(1), Q(0), length / 2 + h),
-            (Q(-1), Q(0), -length / 2 + h),
-            (Q(0), Q(1), length / 2 + h),
-            (Q(0), Q(-1), -length / 2 + h),
-        ],
+        [(Q(1), Q(0), high), (Q(-1), Q(0), -low), (Q(0), Q(1), high), (Q(0), Q(-1), -low)],
     )
     require(area2(legal) > 0, "degenerate row domain needs a separate proof")
     domain = [frame.rotate(p, c, s) for p in legal]

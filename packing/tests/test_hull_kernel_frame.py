@@ -156,3 +156,34 @@ def test_a_cell_set_that_d4_does_not_preserve_is_refused(n17_frame: Frame) -> No
             occupancy=17,
             action_names=("r1", "r0", "r2", "r3"),
         )
+
+
+def test_the_centred_box_is_n11s_wall_box_without_a_capture_cap(
+    n11_cover: dict[str, Any],
+) -> None:
+    frame = n11.frame_from_cover(n11_cover)
+    h = Q(3, 7)
+    assert frame.centre_bounds(h) == (h, frozen.U - h)
+    assert frame.field_centre_bounds(h) == (frozen.B * h, frozen.L - frozen.B * h)
+    capped = make_frame(
+        name="n11-captured",
+        cap=frame.cap,
+        length=frame.length,
+        cells=frame.cells,
+        cell_names=frame.cell_names,
+        occupancy=11,
+        action_names=("r0", "r2"),
+        capture_cap=frame.cap - Q(1, 10),
+    )
+    assert capped.centre_bounds(h) == (Q(1, 20) + h, frame.cap - Q(1, 20) - h)
+    with pytest.raises(RefusalError, match="capture cap"):
+        make_frame(
+            name="n11-overcapped",
+            cap=frame.cap,
+            length=frame.length,
+            cells=frame.cells,
+            cell_names=frame.cell_names,
+            occupancy=11,
+            action_names=("r0", "r2"),
+            capture_cap=frame.cap + 1,
+        )

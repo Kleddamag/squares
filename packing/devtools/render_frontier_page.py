@@ -71,14 +71,15 @@ def since_prose() -> str:
 
 def survey_counts(counts: RecentCounts) -> str:
     """The survey's four counts as one Markdown sentence, for the Frontier page's Recent
-    results paragraph, which has just said the date the counts run from: of the first
-    hundred cases, how many have a recent lower bound in either lane, how many of those
-    a recent verified one, and of those how many are this project's and how many new
-    exact values (`render_recent_results.recent_counts`)."""
+    results paragraph, which has just said what the star marks and the date it runs
+    from: of the first hundred cases, how many have a recent lower bound in either lane,
+    how many of those a recent verified one, which are the starred cases, and of those
+    how many are this project's and how many new exact values
+    (`render_recent_results.recent_counts`)."""
     return (
         f"Of the first hundred cases, {counts.cases} have a lower bound published or proved "
         f"since then, reported or verified; {counts.verified} of those have a recent "
-        f"verified lower bound; {counts.ours} of the {counts.verified} are this "
+        f"verified one, the starred cases; {counts.ours} of the {counts.verified} are this "
         f"project\u2019s, and {counts.exact} are new exact values."
     )
 
@@ -644,11 +645,11 @@ def table_html(cases: list[dict[str, Any]]) -> str:
 
 def frontier_markdown(fill: Callable[..., str]) -> str:
     """The article with every count and link filled from the record: the case counts
-    and the star's count from the case records and the atlas citations, the survey's
-    four counts from `render_recent_results`, and the two documents the prose links at
-    their addresses on `main`."""
+    from the case records, the survey's four counts from `render_recent_results`, and
+    the two documents the prose links at their addresses on `main`. The star's own
+    count over every case is not written: the prose counts the starred cases among the
+    first hundred, and the bar's "recent only" counts them all."""
     cases = frontier_cases()
-    recent = recent_lower_bounds()
     first, last = min(case["n"] for case in cases), max(case["n"] for case in cases)
     values = {
         "COUNT": str(len(cases)),
@@ -657,7 +658,6 @@ def frontier_markdown(fill: Callable[..., str]) -> str:
         "CASE_RANGE": math_html(rf"n = {first}, \ldots, {last}"),
         "PROVED": str(sum(case["status"] == "proved" for case in cases)),
         "OPEN": str(sum(case["status"] == "open" for case in cases)),
-        "RECENT": str(sum(recent.values())),
         "RECENT_SINCE": since_prose(),
         "SURVEY_COUNTS": survey_counts(recent_counts(recent_rows())),
         "ARCHIVE_URL": repo_url(ARCHIVE_README),

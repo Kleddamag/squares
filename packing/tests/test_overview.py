@@ -1004,7 +1004,7 @@ def test_the_survey_is_the_frontier_survey_and_its_old_fragment_lands_on_it(
     contents = '{"href": "#the-frontier-survey", "level": 1, "title": "The Frontier Survey"}'
     assert contents in page
     section = page.split(heading, 1)[1].split("<h2", 1)[0]
-    assert _rendered_text(section).startswith("The frontier survey records the best-known")
+    assert _rendered_text(section).startswith("The frontier survey is the record the atlas")
     assert '<a href="frontier.html">Frontier</a> page lists every case' in section
     assert '<a data-page="frontier" href="frontier.html">Frontier</a>' in page
     frontier = rendered("frontier.html")
@@ -1038,16 +1038,29 @@ def test_the_survey_is_one_paragraph_and_its_cards_lead_to_the_frontier_page(
     the section used to carry, the counts, how a certificate counts, the audit of its
     sources and the seventeen-square history, is the Frontier page's own prose
     (`test_the_frontier_page_opens_with_the_surveys_account`), so the section states
-    none of it: no count, no date, no author of a seventeen-square bound."""
+    none of it: no count, no date, no author of a seventeen-square bound. Nor does it
+    say again what README's `recent-progress` block says higher on the page, that the
+    reported and the verified bounds are kept apart."""
     section = page.split('id="the-frontier-survey"', 1)[1].split("<h2", 1)[0]
     prose = section.split('<div class="site-cards-frame', 1)[0]
     paragraphs = re.findall(r"<p>(.*?)</p>", prose, re.DOTALL)
     assert len(paragraphs) == 1
     text = _rendered_text(paragraphs[0])
-    assert text.startswith("The frontier survey records the best-known packing")
-    assert text.endswith("counts the cases that have moved since this project began.")
-    for gone in ("22 August", "hundred", "s(7)", "Brandwijk", "T-015", "archive", "audits"):
+    assert text.startswith("The frontier survey is the record the atlas is drawn from")
+    assert text.endswith("when a bound by others counts as verified.")
+    for gone in (
+        "22 August",
+        "hundred",
+        "s(7)",
+        "Brandwijk",
+        "T-015",
+        "archive",
+        "kept separate",
+        "apart from",
+        "replayed",
+    ):
         assert gone not in _rendered_text(section), gone
+    assert "kept separate" in _rendered_text(_progress(page))
     cards = _survey_cards(page)
     assert [href for href, _, _ in cards] == [
         href for href, *_ in overview_sections.SURVEY_CARDS
@@ -1078,16 +1091,21 @@ def test_the_frontier_page_opens_with_the_surveys_account(
     rendered: Callable[[str], str], overview: overview_data.Overview
 ) -> None:
     """The Frontier page's prose, before its table, carries what the homepage's survey
-    section carried until 2026-10-02, refined: what the survey records with the case
-    counts; how a bound comes to count as verified, the external certificate's rule
-    included; the audit of its sources, with the $s(7) = 3$ example and the archive and
+    section carried until 2026-10-02, refined, the survey's account first and the key to
+    the table's columns last, beside the table: what the survey records with the case
+    counts; the audit of its sources, with the $s(7) = 3$ example and the archive and
     inventory links; the star and the survey's four counts, every number from the record
-    and the date written once; and the seven authors' seventeen-square bounds before
-    this project, replayed as T-015 and T-016. The run-in heads are the page's own
-    device, so the account groups without a sub-heading."""
+    and the date written once; the seven authors' seventeen-square bounds before this
+    project, replayed as T-015 and T-016; then the columns, with the external
+    certificate's rule where the verified columns are defined. The run-in heads are the
+    page's own device, so the account groups without a sub-heading. The star's count
+    over every case is not written beside the starred cases' count among the first
+    hundred, since the two were the one number, 27, on 2026-10-02, and read as a
+    stutter."""
     from devtools.render_frontier_page import (  # noqa: PLC0415
         ARCHIVE_README,
         EVIDENCE_INVENTORY,
+        recent_lower_bounds,
         since_prose,
         survey_counts,
     )
@@ -1097,19 +1115,14 @@ def test_the_frontier_page_opens_with_the_surveys_account(
     text = _rendered_text(prose)
     heads = re.findall(r"<p><strong>([^<]+)</strong>", prose)
     assert heads == [
-        "Reported and verified.",
         "Audited sources.",
         "Recent results.",
         "Seventeen squares.",
+        "Reported and verified.",
         "The other columns.",
         "A row\u2019s details.",
     ]
-    assert (
-        text.index("Audited sources.")
-        < text.index("Recent results.")
-        < text.index("Seventeen squares.")
-        < text.index("The other columns.")
-    )
+    assert text.endswith("Click a column heading to sort; the filters narrow the rows.")
     assert "An external certificate counts once it is replayed here in full" in text
     assert "The survey audits what it records." in text
     assert "The earliest published proof of $s(7) = 3$ carries four recorded defects" in text
@@ -1119,6 +1132,11 @@ def test_the_frontier_page_opens_with_the_surveys_account(
     # The star's date is written once, and the counts run "since then".
     assert since_prose() == "22 August 2026"
     assert text.count("22 August 2026") == 1
+    assert (
+        "A star marks a recent verified lower bound, one proved since 22 August 2026, "
+        "when this project\u2019s work began."
+    ) in text
+    assert "Recent holds the star." in text
     counts = render_recent_results.recent_counts(render_recent_results.recent_rows())
     assert overview.counts == counts
     sentence = survey_counts(counts)
@@ -1128,17 +1146,38 @@ def test_the_frontier_page_opens_with_the_surveys_account(
         f"Of the first hundred cases, {counts.cases} have a lower bound published or "
         "proved since then"
     )
+    assert f"{counts.verified} of those have a recent verified one, the starred cases" in text
     assert sentence in text
+    starred = sum(recent_lower_bounds().values())
+    assert f"one of the {starred} verified" not in text
     assert "Before this project\u2019s work began, seven authors had published" in text
     for author in ("Brandwijk", "Burns", "MacIver", "Mira", "Fort", "Massaccesi"):
         assert author in text, author
     assert 'href="all-results.html#t-015">T-015</a>' in prose
     assert 'href="all-results.html#t-016">T-016</a>' in prose
     assert 'href="cases.html#n-17">seventeen-square record</a>' in prose
-    # The homepage says none of this a second time.
+    # Neither other page says any of this a second time: the Results page points to the
+    # policy for results by others and does not restate when a certificate counts.
     overview_page = rendered("index.html")
+    results_page = rendered(render_overview.RESULTS_PAGE)
     for stated in ("audits what it records", "Brandwijk", "four recorded defects"):
         assert stated not in overview_page, stated
+        assert stated not in results_page, stated
+    for served in (overview_page, results_page):
+        assert "replayed here in full" not in served
+        assert "assumptions are discharged" not in served
+    results_text = _rendered_text(
+        results_page.split("</h1>", 1)[1].split('<div class="site-table-tools', 1)[0]
+    )
+    assert (
+        "are this repository\u2019s own verification of it, under the policy epistemics.md "
+        "states."
+    ) in results_text
+    assert (
+        "A result by others is dated by its publication, and this project\u2019s by the day "
+        "it was established."
+    ) in results_text
+    assert "dated by its publication" not in _rendered_text(overview_page)
 
 
 def test_verification_ladders_is_one_ladder_diagram_significance_first(page: str) -> None:

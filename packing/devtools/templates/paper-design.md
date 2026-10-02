@@ -1634,14 +1634,20 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   one (the recent table, the ladders, the atlas grid), and one way onward to the page
   that holds the full account.
   A fact has one home.
-  What a page defines, the Results page’s ratings, kinds and statuses and the rule for
-  how a result by others comes to count, or the Frontier page’s counts, its audit of its
-  sources and the seventeen-square history before this project, is stated on that page
-  and nowhere else; the overview names it and links it.
-  The way onward follows the section’s shape: a section whose key element is a table or
-  a grid ends in the one action button (**Action under a table or grid**, below), and a
-  section that is prose leads on with direct cards (**Cards**, above), as The Frontier
-  Survey does with its two, every case and the recent cases
+  What a page defines is stated on that page and nowhere else, and the overview names it
+  and links it: the Results page’s ratings, kinds, statuses and dating rule, with how
+  many results stand at each status; the Frontier page’s counts, its audit of its
+  sources, the seventeen-square history before this project, and when a bound by others
+  counts as verified, which is the rule its verified columns apply.
+  Each table keeps its own star legend, since a star without one reads as decoration,
+  and one function writes it (`star_legend`); the atlas note links the legend above the
+  recent table in place of a third.
+  The Frontier page opens with the survey’s account, its audit, its recent counts and
+  the seventeen-square history, and ends its prose with the key to its columns, beside
+  the table. The way onward follows the section’s shape: a section whose key element is a
+  table or a grid ends in the one action button (**Action under a table or grid**,
+  below), and a section that is prose leads on with direct cards (**Cards**, above), as
+  The Frontier Survey does with its two, every case and the recent cases
   (`frontier.html?recent=true`, the query its table script presets a filter from).
   The page cards under The Squares Project are the site’s reading and working pages, the
   three papers and the workbench; the Results and Frontier pages are reached from their
@@ -1676,12 +1682,12 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   (`results.html` was `RESULTS.md` rendered as a reader document, so the table’s page
   took the other name; since 2026-10-01 `results.html` is a forwarder to this page.)
   The page has the Frontier page’s shape: a hero title, “Every Result”, whose id is
-  `every-result`, a subtitle, the prose that defines the ratings, kinds and statuses,
-  with the rule for how a result by others comes to count as verified and, where the
-  statuses are defined, how many results stand at each (`status_counts`, each count the
-  link to those rows), and the table under its filters (**Result filters**, above),
-  which start with significance at All, no maximum age and Hide superseded clear, so
-  every result shows, newest first, in one flat list.
+  `every-result`, a subtitle, the prose that defines the ratings, kinds, statuses and
+  dating rule, with how many results stand at each status where the statuses are defined
+  (`status_counts`, each count the link to those rows) and a pointer to the policy for
+  results by others, and the table under its filters (**Result filters**, above), which
+  start with significance at All, no maximum age and Hide superseded clear, so every
+  result shows, newest first, in one flat list.
   Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
   recent table and each case record’s results link.
   A row opens its result’s popover, the full claim and its novelty label, with the id in

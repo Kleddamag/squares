@@ -43,9 +43,10 @@ and cite your work.
 
 {{README_PROGRESS}}
 
-<!-- The columns, the kinds and the statuses are defined once, on the Results page, and
-     the rule for how a result by others comes to count is there too; this section says
-     only what the table is and where its filters start. -->
+<!-- The ratings, the kinds, the statuses and the dating rule are defined once, on the
+     Results page, and when a bound by others counts as verified is said once, on the
+     Frontier page; this section says only what the table is and where its filters
+     start. -->
 
 The table lists every result, newest first: new bounds for particular numbers of
 squares, found here or by others, each with its credit, its ratings, its kind and its
@@ -107,12 +108,12 @@ packing drawn large, with a link to its case record.
 
 ## The Frontier Survey<a id="the-survey"></a>
 
-The frontier survey records the best-known packing and the strongest verified lower
-bound for every $n \le 324$, with its provenance, keeping the bound a source reports
-apart from the bound verified here.
-The [Frontier](frontier.html) page lists every case with its bounds, their sources and
-the evidence each rests on, says how a bound comes to count as verified, and counts the
-cases that have moved since this project began.
+The frontier survey is the record the atlas is drawn from: for every case, the
+best-known packing and the strongest verified lower bound, each with its source and the
+evidence it rests on.
+The [Frontier](frontier.html) page lists every case, counts the cases that have moved
+since this project began, and says how the survey audits its sources and when a bound by
+others counts as verified.
 
 {{SURVEY_CARDS}}
 

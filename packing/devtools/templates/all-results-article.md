@@ -13,13 +13,13 @@ checked itself. Every credit names people: a result by others is credited to its
 as their source states it, and this project’s results to Joshua Levy, as *Levy*. *X
 after Y* means that X’s result rests directly on Y’s proof, method or tool, so the
 credit also says which results build on this project’s. The `V` and `C` of a result by
-others are this repository’s own verification of it: the result is recorded when its
-source is taken in, and its bound counts as verified only after its certificate is
-replayed here in full and its mathematics reviewed, with the credit its authors give;
-[`epistemics.md`]({{EPISTEMICS_URL}}#results-by-others) states the policy.
+others are this repository’s own verification of it, under the policy
+[`epistemics.md`]({{EPISTEMICS_URL}}#results-by-others) states.
 
-<!-- The kinds and statuses are defined here and nowhere else on the site: the
-     homepage's Recent Results names them and links this page (2026-10-02). -->
+<!-- The kinds, the statuses and the dating rule are defined here and nowhere else on
+     the site: the homepage's Recent Results names them and links this page
+     (2026-10-02). When a bound by others counts as verified is the Frontier page's,
+     under Reported and verified. -->
 
 Under its rungs each result shows its kind, which says what it is: a *lower bound*, an
 *upper bound*, an *optimality* result, which settles an exact value, or one of the kinds
@@ -41,6 +41,8 @@ file, the evidence, the retained source and the review.
 The newest, and the ones that matter most, are on the [overview](./#recent-results).
 
 The table starts with every result showing, newest first.
-The filters narrow it by rating, kind, status, source, case and age, and they combine.
+A result by others is dated by its publication, and this project’s by the day it was
+established. The filters narrow it by rating, kind, status, source, case and age, and
+they combine.
 
 {{RESULTS_TABLE}}

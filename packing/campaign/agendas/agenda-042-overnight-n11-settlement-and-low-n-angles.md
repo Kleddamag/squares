@@ -1262,7 +1262,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: ready
+    state: complete
     priority: 2
     question: Is the certified n17 chart endpoint a root of the catalogue's irreducible degree-18 polynomial?
     hypotheses:
@@ -1280,7 +1280,9 @@ agenda:
     program: post-optimality-low-n
     artifacts:
     - packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md
-    note: Closes the frontier identification blocker; not on the optimality proof's critical path.
+    note: Closes the frontier identification blocker; not on the optimality proof's critical path. Session 167
+      accepted H-265 in exp-245 (identical with unit 1, irreducible); the n-017.md blocker text is updated
+      separately.
   - id: BC-410
     purpose: research
     owner_focus: insight

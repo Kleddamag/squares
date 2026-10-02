@@ -31,7 +31,7 @@ hypothesis:
   instrument: >-
     A small identification tool to be built under BC-409, using exact polynomial
     arithmetic (sympy.polys or python-flint) with an independent recheck
-  instrument_ready: false
+  instrument_ready: true
   regime: The unchanged H255 polynomials and box; the polynomial as recorded in n-017.md
   instance: {axis: n, point: 17}
   priority: 2
@@ -49,6 +49,13 @@ hypothesis:
 The certified chart endpoint and the catalogue’s degree-18 side agree to every printed
 digit, but no one has shown they are the same algebraic number.
 An exact resultant settles it cheaply.
+
+## Outcome
+
+*Added 2026-10-02 by Session 167.*
+[exp-245](../series/series-000-smoke-and-calibration/experiments/exp-245-h265-n17-catalogue-polynomial.md)
+accepts this hypothesis after an independent review: the certified side is a root of the
+catalogue’s degree-18 polynomial, which is irreducible over $\mathbb{Q}$.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -871,7 +871,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-406 | research | 17 | ready | 0 | think-c7kv | docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md |
 | BC-407 | research | 17 | in_progress | 0 | think-n95s | packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md |
 | BC-408 | research | 17 | complete | 0 | think-j1uw | packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md |
-| BC-409 | research | 17 | ready | 2 | think-e6y1 | packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md |
+| BC-409 | research | 17 | complete | 2 | think-e6y1 | packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md |
 | BC-410 | research | 17 | stopped | 2 | think-x4a6 | packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md |
 | BC-411 | research | 17 | stopped | 1 | think-11ma | packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md |
 | BC-412 | research | 17 | complete | 1 | think-rode | docs/project/reviews/review-2026-10-02-n17-capture-feasibility.md |
@@ -885,7 +885,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 174 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 175 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1090,7 +1090,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-262 | refuted | proof | On the H259 closed grid at cap 1169/250, the subcontainer cuts from s( |  | 1 |  | 2.2m wall |
 | H-263 | open question | proof | Which closed centre cover with proved cell capacities keeps every endp |  | 0 |  |  |
 | H-264 | open question | proof | On 10 to 20 closed-assignment D4 orbits drawn uniformly from the resid |  | 0 |  |  |
-| H-265 | blocked | proof | The side S* of the H255 chart root is a root of the degree-18 polynomi |  | 0 |  |  |
+| H-265 | confirmed | proof | The side S* of the H255 chart root is a root of the degree-18 polynomi |  | 1 |  | 1s wall |
 | H-266 | unresolved | proof | At cap U = 1169/250 there is a D4-symmetric closed cover of the centre |  | 1 |  | 1s wall |
 | H-267 | blocked | proof | On the H-266 cover, forbidden occupancy sub-patterns of arity at most  |  | 0 |  |  |
 | H-268 | blocked | proof | Every packing of 17 unit squares in [0,S]^2 with S <= S* whose occupan |  | 0 |  |  |
@@ -1236,7 +1236,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-158 | series-000 | 11 | Codex BC303 T2 charge-sweep agent | H-160 | The September 14 strategy reset paused this route before the target charge ran; no target receipt or scientific verdict exists. |
 | exp-160 | series-000 | 11 | Codex BC303 H-162 retained-receipt analyst | H-162 | The September 14 strategy reset paused this route with no exp-158 target receipt; no H-162 comparison or scientific verdict exists. |
 
-### accepted (54)
+### accepted (55)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1294,6 +1294,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-240 | series-000 | 17 | Codex Session165 coordinator | H-259 | Reviewed complete cover and exact census agree independently. Raw occupancy reduction only; geometric realization and exclusion remain open. |
 | exp-241 | series-000 | 17 | Codex Session165 coordinator | H-260 | Complete independent eight-term audit and closed-assignment cover review pass. Necessaryoccupancyorbits only; no geometriccaseexcluded ornewbound. |
 | exp-242 | series-000 | 17 | Claude Session 167 coordinator; lane A1 built the instrument and run-001 | H-258 | Every criterion item is met. This is first-order stationarity of the complete local model in both corner branches; it is not local minimality, rigidity or global optimality. |
+| exp-245 | series-000 | 17 | Claude Session 167; lane C built the instrument, the coordinator ran it from a clean worktree | H-265 | Every clause holds. S* is an algebraic number of degree 18 with the catalogue's polynomial as its minimal polynomial. No packing, feasibility or optimality claim; the admitted rational ceiling and the open status of s(17) are unchanged. |
 
 ### baseline (12)
 
@@ -1358,7 +1359,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-174 rounds, 2512.1 agent-minutes, 4023.7 wall-minutes.
+175 rounds, 2512.1 agent-minutes, 4023.8 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

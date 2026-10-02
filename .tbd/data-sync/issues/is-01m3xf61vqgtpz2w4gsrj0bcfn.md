@@ -3,15 +3,19 @@ type: is
 id: is-01m3xf61vqgtpz2w4gsrj0bcfn
 title: "Papers are individually versioned: the repository's version no longer appears on a paper"
 kind: feature
-status: in_progress
+status: closed
 priority: 2
-version: 5
+version: 6
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-10-02T04:50:26.294Z
-updated_at: 2026-10-02T05:18:31.386Z
+updated_at: 2026-10-02T05:41:51.715Z
+closed_at: 2026-10-02T05:41:51.707Z
+close_reason: "Merged as jlevy/squares#301 (commits 9db42a9f9, ba222a506): each paper has its own version in sqpack.release (EXPLAINER_HISTORY, EXPLAINER_VERSION; the review keeps Draft v0.1.0), written by paper_front; no site version or data hash on a paper page, Markdown edition or colophon. The first paper reads v0.4.2 with a three-entry history (v0.3.0, v0.4.0, v0.4.2 as published; v0.4.1 and v0.5.0 dropped because the article did not change); its PDF stays 22 pages. Owner questions (a new paper version for the changes since v0.4.2; the poster's stamp inside Figure 2; where the site's edition history shows) are on think-cv22."
+resolution: null
+duplicate_of: null
 ---
 Owner, 2026-10-01: 'And the repository version should not go on the papers anymore. Papers should be individually versioned in the future.' Today the first paper's credits print the publication's edition and data hash ('v0.5.0-971e5f (version history)'), its Version History lists every publication edition including site-only ones (v0.5.0, 'The website edition'), and the site's colophon with the repository version closes each paper and its PDF; the review already carries its own 'Draft v0.1.0'. Wanted: each paper has its own version and its own history in sqpack.release, written by devtools.paper_front; no repository version or data hash anywhere on a paper page, its Markdown edition or its PDF; the site's pages keep the repository version in their footer. This settles the first of #289's four questions on think-cv22 (the review keeps its own version). Done together with think-be7y in one PR, since both change devtools.cut_release and development.md's Cutting an edition.
 

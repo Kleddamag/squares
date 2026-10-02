@@ -572,6 +572,24 @@ sources:
       READ_LOG.md. web/wand125-valid7-independent-check-2026-10-02/acquisition/sources.json
       pins the revision, and the release records are pinned by SHA-256. Dated by that
       revision, 2026-10-02 UTC.
+  - key: '[wand125 Green DS7 Theorem 9 2026-10-02]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-02'
+    credit: wand125 after Friedman, MacIver
+    lineage: independent
+    note: >-
+      The gist 9e5f27e25607c0966c4f91bc1253ce8b at 9d6de784d98169b90a1af8d5e57c0499cfb12874
+      (2026-10-02T12:35:13Z; its commit author's name is Hiroaki Hosono), bylined "wand125,
+      2026-10-02": DS7 Figure 34's sixteen points are not unavoidable at side G_4, and Green's
+      pattern reconstructed for every k fails the same way for k >= 4, so the published
+      material does not establish DS7 Theorem 9 there; not a counterexample to the bound.
+      It credits Friedman's survey and MacIver's manuscript, which uses the same pattern at
+      k = 4, and does not mention this project. No licence and no statement of how it was
+      written. Requested in jlevy/squares#308.
+      web/wand125-green-ds7-theorem9-2026-10-02/acquisition/sources.json pins the revision.
+      Dated by that revision, 2026-10-02 UTC.
   - key: '[franciscouzo square-packing 2026-09-27]'
     authors: [Couzo]
     year: 2026

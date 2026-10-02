@@ -1,0 +1,33 @@
+{"completed": 10, "total": 201, "elapsed_seconds": 56.231218576431274, "nodes": 571720}
+{"completed": 20, "total": 201, "elapsed_seconds": 101.89002251625061, "nodes": 1113098}
+{"completed": 30, "total": 201, "elapsed_seconds": 148.92086386680603, "nodes": 1629532}
+{"completed": 40, "total": 201, "elapsed_seconds": 211.85377073287964, "nodes": 2126266}
+{"completed": 50, "total": 201, "elapsed_seconds": 266.16667437553406, "nodes": 2618714}
+{"completed": 60, "total": 201, "elapsed_seconds": 327.9170608520508, "nodes": 3118354}
+{"completed": 70, "total": 201, "elapsed_seconds": 407.2324814796448, "nodes": 3628148}
+{"completed": 80, "total": 201, "elapsed_seconds": 487.0097210407257, "nodes": 4173096}
+{"completed": 90, "total": 201, "elapsed_seconds": 580.9315857887268, "nodes": 4767378}
+{"completed": 100, "total": 201, "elapsed_seconds": 692.3789234161377, "nodes": 5390378}
+{"completed": 110, "total": 201, "elapsed_seconds": 804.9705033302307, "nodes": 6041712}
+{"completed": 120, "total": 201, "elapsed_seconds": 929.63889336586, "nodes": 6727262}
+{"completed": 130, "total": 201, "elapsed_seconds": 1072.8428859710693, "nodes": 7444166}
+{"completed": 140, "total": 201, "elapsed_seconds": 1220.2220568656921, "nodes": 8199618}
+{"completed": 150, "total": 201, "elapsed_seconds": 1379.54448056221, "nodes": 8993098}
+{"completed": 160, "total": 201, "elapsed_seconds": 1558.2272758483887, "nodes": 9832914}
+{"completed": 170, "total": 201, "elapsed_seconds": 1746.8863694667816, "nodes": 10742462}
+{"completed": 180, "total": 201, "elapsed_seconds": 1973.0547688007355, "nodes": 11762828}
+{"completed": 190, "total": 201, "elapsed_seconds": 2238.2294297218323, "nodes": 12898228}
+{"completed": 200, "total": 201, "elapsed_seconds": 2510.8940234184265, "nodes": 14130602}
+{"completed": 201, "total": 201, "elapsed_seconds": 3868.6465475559235, "nodes": 18162666}
+{
+  "status": "VERIFIED",
+  "angle_cases": 201,
+  "target_lower_bound_exact": "10001/10000",
+  "nodes": 18162666,
+  "leaves": 11097465,
+  "minimum_printed_leaf_lower_bound": 1.0001000003054408,
+  "wall_seconds": 3868.647337913513,
+  "input_sha256": "6be6946d32c7cd7ef904e6bf081905c90db05ab11a53114a2dca29acdc4743b4",
+  "verifier_source_sha256": "a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602",
+  "method": "Outward-rounded binary64 intervals; certified inscribed polygon area; derivative bounds over center boxes; rational angular net."
+}

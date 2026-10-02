@@ -26,6 +26,30 @@ the first, so the commands its records give still mean what they said.
 
 Global rotated coverage is still decided by the external C++ checker, so a replay is
 V4/C3 machine evidence, exactly as for Tokoharu's own certificates.
+
+Replays take hours each, so they run in batches, often on other machines, each into its
+own ``--out``. ``--merge DIR...`` folds such receipts into one (normally the packet's
+``receipts/replay``). Every case must be a passed replay of all 201 directions of this
+packet's standing certificate: its exact preflight equal to the packet's own preflight
+receipt, its input and checker digests the published ones, and the files beside it
+present and consistent with it in full (the summary file equal to the receipt's summary,
+the runner's output ending with it, the per-angle rows covering every direction with the
+summary's totals). A receipt failing any of that, or not of the packet's revision, or
+recording a failed run, is refused whole, and so is a case two receipts replayed with
+different results; a refusal writes nothing. A run interrupted between cases records no
+status, and the cases it lists, each complete, are taken. Agreeing duplicates (the same
+results, other timings) keep the case already held. The merged receipt lists cases by
+count, each with the host it ran on, and is the same bytes whatever the order of its
+inputs and however often it is rerun. ``--check`` checks the receipt in ``--out`` the
+same way and writes nothing; with ``--merge`` it is a dry run.
+
+Usage, from ``packing/``::
+
+    .venv/bin/python3 -m devtools.audit_wand125_rectangles --packet 2026-09-28 \\
+        --out resources/web/wand125-rectangle-certificates-2026-09-28/receipts/replay \\
+        --merge BATCH_A/sep28 BATCH_B
+    .venv/bin/python3 -m devtools.audit_wand125_rectangles --packet 2026-09-28 \\
+        --out resources/web/wand125-rectangle-certificates-2026-09-28/receipts/replay --check
 """
 
 from __future__ import annotations
@@ -45,13 +69,16 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
-from strif import atomic_write_text
+from strif import atomic_output_file, atomic_write_text
 
 from devtools import audit_tokoharu_density as tokoharu
 from devtools.retained_data import (
+    DATA_SUFFIXES,
     GZIP_SUFFIX,
+    LINE_THRESHOLD,
     compress,
     compressed_path,
+    describe,
     read_retained_bytes,
     read_retained_text,
     retained_exists,
@@ -75,6 +102,20 @@ COMPRESSED_CASE_FILES = frozenset({"certified_candidate.json"})
 RETAINED_TOP = ("LICENSE", "README.md", "requirements.txt", "docs")
 DEFAULT_TIMEOUT = 24 * 3600
 _CERTIFICATE_NAME = re.compile(r"rect_n(\d+)_L\d+")
+KIND = "wand125-rectangle-audit/v1"
+SCOPE = (
+    "Independent exact preconditions and input binding; "
+    "optional upstream global interval replay"
+)
+#: What a replay leaves in each certificate's directory beside the receipt.
+REPLAY_FILES = (
+    "stdout.log",
+    "stderr.log",
+    "verification_summary.json",
+    "verified_angles.jsonl",
+)
+#: The top-level fields naming the host of a run; a merged case carries its own copy.
+HOST_FIELDS = ("python", "platform", "compiler")
 
 # The standing (highest) certificate for each n at ad43d29, and its exact side.
 CASES: dict[int, tuple[str, Fraction]] = {
@@ -789,6 +830,231 @@ def _write(out: Path, record: dict[str, Any]) -> None:
     compressed_path(out / "audit.json").unlink(missing_ok=True)
 
 
+def store_receipt(path: Path, data: bytes) -> Path | None:
+    """Write receipt bytes plain, or as deterministic gzip past the retained-data threshold.
+
+    Returns the ``.gz`` path when it compresses, whose row the packet README's Compressed
+    Files table then needs (`devtools.retained_data`).
+    """
+    with atomic_output_file(path) as temporary:
+        temporary.write_bytes(data)
+    compressed_path(path).unlink(missing_ok=True)
+    if path.suffix in DATA_SUFFIXES and data.count(b"\n") > LINE_THRESHOLD:
+        return compress(path)
+    return None
+
+
+def _as_recorded(value: object) -> object:
+    """A value as a receipt records it: exact rationals as their strings."""
+    return json.loads(json.dumps(value, default=str))
+
+
+def _preflight_cases(packet: Packet) -> dict[int, dict[str, Any]]:
+    """The packet's own exact preflight of each standing certificate, by count."""
+    record = json.loads(read_retained_text(packet.directory / "receipts/preflight/audit.json"))
+    if record.get("status") != "PASS" or record.get("source_revision") != packet.revision:
+        raise ValueError(f"the {packet.date} packet's preflight receipt is not a passing run")
+    return {case["n"]: case for case in record["cases"]}
+
+
+@dataclass(frozen=True, slots=True)
+class Replayed:
+    """One checked case of a replay receipt and the directory holding its files."""
+
+    case: dict[str, Any]
+    directory: Path
+    #: Everything two replays of one certificate must share: all but timings and host.
+    outcome: tuple[Any, ...]
+
+
+def check_case(
+    packet: Packet, directory: Path, case: dict[str, Any], preflight: Mapping[int, Any]
+) -> tuple[Any, ...]:
+    """Check one replayed case against the packet and its files; return its outcome."""
+    n = case.get("n")
+    replay = case.get("replay") or {}
+    summary = replay.get("summary") or {}
+    where = f"{directory}: n = {n}"
+    if not isinstance(n, int) or n not in packet.cases or n not in preflight:
+        raise ValueError(f"{where} is not a standing certificate of the {packet.date} packet")
+    name, side = packet.cases[n]
+    if (
+        case.get("status") != "PASS"
+        or replay.get("status") != "PASS"
+        or summary.get("status") != "VERIFIED"
+        or summary.get("angle_cases") != tokoharu.ANGLE_COUNT
+    ):
+        raise ValueError(f"{where} is not a passed replay of all {tokoharu.ANGLE_COUNT} angles")
+    exact = {key: value for key, value in case.items() if key != "replay"}
+    if exact != preflight[n] or case["certificate"] != name or Fraction(case["L"]) != side:
+        raise ValueError(f"{where} differs from the packet's own preflight of {name}")
+    if (
+        summary.get("input_sha256") != case["input_sha256"]
+        or summary.get("verifier_source_sha256") != VERIFY_SHA256
+    ):
+        raise ValueError(
+            f"{where} did not replay the published input under the reviewed checker"
+        )
+    folder = directory / name
+    if missing := [file for file in REPLAY_FILES if not retained_exists(folder / file)]:
+        raise ValueError(f"{where}: missing {', '.join(missing)}")
+    text = read_retained_text(folder / "verification_summary.json")
+    if _as_recorded(tokoharu.load_json(folder / "verification_summary.json")) != summary:
+        raise ValueError(f"{where}: verification_summary.json differs from the receipt")
+    if not read_retained_text(folder / "stdout.log").endswith(text + "\n"):
+        raise ValueError(f"{where}: stdout.log does not end with the run's summary")
+    rows = [
+        json.loads(line)
+        for line in read_retained_text(folder / "verified_angles.jsonl").splitlines()
+    ]
+    if (
+        sorted(row["r"] for row in rows) != list(range(tokoharu.ANGLE_COUNT))
+        or any(
+            row["status"] != "verified" or Fraction(row["lower_bound"]) < tokoharu.TARGET
+            for row in rows
+        )
+        or sum(row["nodes"] for row in rows) != summary["nodes"]
+        or sum(row["leaves"] for row in rows) != summary["leaves"]
+        or min(row["lower_bound"] for row in rows)
+        != float(Fraction(summary["minimum_printed_leaf_lower_bound"]))
+    ):
+        raise ValueError(f"{where}: verified_angles.jsonl is not the summary's accepted angles")
+    return (
+        exact,
+        {key: value for key, value in summary.items() if key != "wall_seconds"},
+        sorted((row["r"], row["nodes"], row["leaves"], row["lower_bound"]) for row in rows),
+    )
+
+
+def check_receipt(packet: Packet, directory: Path) -> dict[int, Replayed]:
+    """Every case of the replay receipt in ``directory``, checked; any failure refuses it."""
+    record = _load(directory)
+    if record is None:
+        raise ValueError(f"{directory} holds no audit.json")
+    revision = record.get("source_revision")
+    provenance = record.get("provenance") or {}
+    if (
+        record.get("kind") != KIND
+        or revision != packet.revision
+        or provenance.get("revision") != revision
+    ):
+        owner = [item.date for item in PACKETS.values() if item.revision == revision]
+        raise ValueError(
+            f"{directory} is a receipt of revision {revision}"
+            + (f" (the {owner[0]} packet)" if owner else "")
+            + f", not of the {packet.date} packet's {packet.revision}"
+        )
+    if provenance.get("tree_manifest") != str(packet.tree_manifest.relative_to(packet.root)):
+        raise ValueError(f"{directory} was not checked against the {packet.date} tree manifest")
+    # A run lists a case only once its replay has passed, and records its status only at
+    # the end: no status is a run interrupted between cases, whose listed cases are whole.
+    if record.get("status", "PASS") != "PASS":
+        raise ValueError(
+            f"{directory} records a run with status {record['status']!r}: {record.get('error')}"
+        )
+    preflight = _preflight_cases(packet)
+    host = {key: record[key] for key in HOST_FIELDS if key in record}
+    result: dict[int, Replayed] = {}
+    for case in record.get("cases") or []:
+        try:
+            outcome = check_case(packet, directory, case, preflight)
+        except (AttributeError, KeyError, TypeError) as error:
+            raise ValueError(f"{directory}: malformed case: {error!r}") from error
+        if case["n"] in result:
+            raise ValueError(f"{directory} lists n = {case['n']} twice")
+        replay = case["replay"]
+        settled = case | {"replay": replay | {"host": replay.get("host") or host}}
+        result[case["n"]] = Replayed(settled, directory, outcome)
+    if not result:
+        raise ValueError(f"{directory} lists no replayed case")
+    return result
+
+
+def matches_upstream(packet: Packet, item: Replayed) -> bool:
+    """Whether the replay reproduced the upstream accepting run's results angle by angle."""
+    name = item.case["certificate"]
+    path = packet.case_directory(packet.source, name) / "verified_angles.jsonl"
+    rows = [json.loads(line) for line in read_retained_text(path).splitlines()]
+    return item.outcome[2] == sorted(
+        (row["r"], row["nodes"], row["leaves"], row["lower_bound"]) for row in rows
+    )
+
+
+def merge(
+    packet: Packet, out: Path, sources: Iterable[Path], *, write: bool = True
+) -> dict[str, Any]:
+    """Fold checked replay receipts into the one in ``out``; every check precedes any write."""
+    held = check_receipt(packet, out) if retained_exists(out / "audit.json") else {}
+    incoming = sorted(
+        (
+            (n, json.dumps(item.case, sort_keys=True), item)
+            for source in sources
+            for n, item in check_receipt(packet, source).items()
+        ),
+        key=lambda entry: entry[:2],
+    )
+    added: list[int] = []
+    duplicates: list[dict[str, Any]] = []
+    for n, _key, item in incoming:
+        if n not in held:
+            held[n] = item
+            added.append(n)
+        elif held[n].outcome != item.outcome:
+            raise ValueError(
+                f"n = {n}: {item.directory} disagrees with the replay in {held[n].directory}"
+            )
+        elif held[n].directory != item.directory:
+            duplicates.append({"n": n, "agrees_with_held": str(item.directory)})
+    record = {
+        "kind": KIND,
+        "source_revision": packet.revision,
+        "source": str(packet.source.relative_to(packet.root)),
+        "scope": SCOPE,
+        "cases": [held[n].case for n in sorted(held)],
+        "provenance": source_provenance(packet, packet.source),
+        "status": "PASS",
+    }
+    compressed: list[Path] = []
+    if write:
+        out.mkdir(parents=True, exist_ok=True)
+        for n in added:
+            name = held[n].case["certificate"]
+            staging = out / f".{name}.merging"
+            shutil.rmtree(staging, ignore_errors=True)
+            staging.mkdir()
+            for file in REPLAY_FILES:
+                data = read_retained_bytes(held[n].directory / name / file)
+                if (stored := store_receipt(staging / file, data)) is not None:
+                    compressed.append(out / name / stored.name)
+            shutil.rmtree(out / name, ignore_errors=True)
+            staging.rename(out / name)
+        text = json.dumps(record, indent=2, default=str) + "\n"
+        if (stored := store_receipt(out / "audit.json", text.encode())) is not None:
+            compressed.append(stored)
+    return {
+        "packet": packet.date,
+        "out": str(out),
+        "written": write,
+        "added": [
+            {
+                "n": n,
+                "certificate": held[n].case["certificate"],
+                "L": held[n].case["L"],
+                "from": str(held[n].directory),
+                "matches_upstream_angles": matches_upstream(packet, held[n]),
+            }
+            for n in added
+        ],
+        "held": sorted(set(held) - set(added)),
+        "agreeing_duplicates": duplicates,
+        "compressed_rows": [
+            describe(packet.directory, path.resolve(), "receipt").markdown()
+            for path in compressed
+            if path.resolve().is_relative_to(packet.directory)
+        ],
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--packet", choices=tuple(PACKETS), default=DEFAULT_PACKET)
@@ -805,6 +1071,16 @@ def main() -> int:
     )
     parser.add_argument("--workers", type=int, default=2)
     parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT)
+    parser.add_argument(
+        "--merge",
+        type=Path,
+        nargs="+",
+        metavar="DIR",
+        help="fold these replay receipts into --out",
+    )
+    parser.add_argument(
+        "--check", action="store_true", help="check the replay receipt in --out; write nothing"
+    )
     args = parser.parse_args()
     packet = PACKETS[args.packet]
     source = packet.source if args.source is None else args.source
@@ -815,6 +1091,24 @@ def main() -> int:
         return 0
     if args.out is None:
         parser.error("--out is required unless --acquire is given")
+    if args.merge or args.check:
+        if args.replay or args.resume or args.n or args.source:
+            parser.error("--merge and --check take only --packet and --out")
+        try:
+            if args.merge:
+                result = merge(packet, args.out, args.merge, write=not args.check)
+            else:
+                cases = check_receipt(packet, args.out)
+                result = {
+                    "packet": packet.date,
+                    "checked": str(args.out),
+                    "cases": {n: cases[n].case["L"] for n in sorted(cases)},
+                }
+        except (OSError, ValueError) as error:
+            print(str(error), file=sys.stderr)
+            return 1
+        print(json.dumps(result, indent=2))
+        return 0
     args.out.mkdir(parents=True, exist_ok=True)
     previous = _load(args.out) if args.resume else None
     done = {
@@ -823,14 +1117,11 @@ def main() -> int:
         if case.get("status") == "PASS" and (case.get("replay") or not args.replay)
     }
     record: dict[str, Any] = {
-        "kind": "wand125-rectangle-audit/v1",
+        "kind": KIND,
         "source_revision": packet.revision,
         "source": str(source.resolve()),
         "python": sys.version,
-        "scope": (
-            "Independent exact preconditions and input binding; "
-            "optional upstream global interval replay"
-        ),
+        "scope": SCOPE,
         "cases": [done[n] for n in sorted(done)],
     }
     try:

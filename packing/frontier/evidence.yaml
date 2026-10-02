@@ -898,6 +898,60 @@ evidence:
         axis tables are the source's until the replays here pass.
     source_reviewed: '2026-10-01'
 
+  - id: E-wand125-rectangle-2026-10-01-source-replay
+    claim: lower-bound
+    scope: {n_values: [19, 20, 26, 27, 28, 29, 30, 31, 38, 39, 40, 41, 42, 43, 44, 53, 54, 55, 56, 57, 58, 68, 69, 70, 74, 75, 88, 89, 93, 94, 95]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-10-01]'
+    certificate: resources/web/wand125-rectangle-certificates-2026-10-01/wand125-rectangles/certificates
+    replay: >-
+      wand125_replay_output="$(mktemp -d "${TMPDIR:-/tmp}/wand125-rectangle-replay.XXXXXX")" &&
+      .venv/bin/python3 -m devtools.audit_wand125_rectangles --packet 2026-10-01 --out "$wand125_replay_output"
+      --replay --workers 2 --n 19 --n 20 --n 26 --n 27 --n 28 --n 29 --n 30 --n 31 --n 38 --n 39 --n 40 --n 41 --n 42 --n 43 --n 44 --n 53 --n 54 --n 55 --n 56 --n 68 --n 69 --n 70 --n 74 --n 75 --n 88 --n 89 --n 93 --n 94 --n 95
+    replay_status: passed
+    proof:
+      source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
+      theorem: Rectangle-density covering obstruction, applied to wand125's standing certificates of 1 October 2026
+      scope: Unrestricted square packing with disjoint interiors and arbitrary rotations; monotonic transfer to larger counts below which a certificate's mass lies.
+      pinpoints: >-
+        The theorem and interval-verifier correspondence audited in the linked review;
+        the byte-identical verify.cpp and run_verify.py retained with Tokoharu's packet;
+        per-case preflight and replay records in receipts/preflight/audit.json.gz and
+        receipts/replay/audit.json.gz of the 2026-10-01 wand125 rectangle packet.
+      assumptions:
+        - Nonnegative exact rational rectangle densities have total mass strictly below the target square count.
+        - All angles and legal centres are covered by the certified core net and interval subdivision.
+        - Binary64 arithmetic has the reviewed IEEE-754 semantics, without fast math or FMA contraction.
+        - The replayed interval input is the one regenerated from the exact candidate, whose SHA-256 equals the digest the upstream accepting run recorded.
+      audit_record: docs/project/reviews/review-2026-09-22-tokoharu-density-mathematics.md
+    limitations: >-
+      The scope lists the counts whose verified lower bound this entry carries: each is
+      a count whose own standing certificate at 1a25a5ed passed the complete
+      201-direction replay, or a larger count reached by monotonicity from one. Thirty
+      certificates were replayed with Tokoharu's unchanged verify.cpp (SHA-256
+      a75140df...) through run_verify.py, one worker each, in sixteen cloud batches on 2
+      October 2026 (claude/replay-wand125-rect-oct1-r1 to -r4, four batches each), about
+      143 hours of wall in all; their receipts were folded into the packet's
+      receipts/replay/audit.json.gz by devtools.audit_wand125_rectangles --merge, which
+      checks each case against the packet's own preflight, the published input digest and
+      the reviewed checker digest; every replay reproduced the upstream accepting run's
+      nodes, leaves and lower bound angle by angle. The transfer branches are not merged
+      and transfer/ is not in the tree. Global rotated coverage is still decided by the
+      source C++ checker, so this is a machine replay of the source's checker, not an
+      independent decision of the certificate. The 2026-10-02 review of T-068 read the
+      same checker for these certificates, at sides up to 49259/5000 and 926 orbits, and
+      found no defect; it read them before their replays, so the rung does not rest on it.
+      The controls are Tokoharu's checker's on rect_n41_L676 of this packet
+      (receipts/controls/rect_n41_L676.json, held by
+      tests/test_wand125_checker_controls.py). Run the replay from packing/ with the
+      project CPython 3.14 environment and a C++17-capable g++ on PATH.
+    source_reviewed: '2026-10-01'
+
   - id: E-n045-wand125-point-cover-report
     claim: lower-bound
     scope: {n_values: [45]}
@@ -3343,11 +3397,11 @@ evidence:
         lambda = 1 to estimate the minimum". That last is geometrically evident and is the
         only place the argument leans on something unargued. This promotes nothing: the
         method stays `published-proof`, and `proof-assistant-checked` is a different thing.
-        Separately `devtools/check_nagamochi_bounds.py` re-derives the 36 operative
+        Separately `devtools/check_nagamochi_bounds.py` re-derives the 30 operative
         verified-field values from Theorem 2 in the gate, so a transcription slip in a
         current bound is caught even though the proof behind them is not machine-checked.
         95 of the hundred case records cite this record and it supplies the operative
-        verified lower bound in 36 of them; the other 59 citations are historical or
+        verified lower bound in 30 of them; the other 65 citations are historical or
         reported context, and a citation count is not a count of current bounds.
     limitations: External published proof; its arithmetic is not independently replayed here.
     source_reviewed: '2026-08-24'

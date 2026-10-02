@@ -137,10 +137,10 @@ $s(21) \ge 5000/1001$ was superseded by the same author’s mixed covers of 27 S
 weighted points plus mass on interior grid-line segments, which prove $s(21) = 5$ and
 $s(45) = 7$, both `V3/C3`. Its case-free proof of Bentz’s $s(13) = 4$ was kernel-checked
 in Lean here on 30 September and is recorded under T-006. wand125’s rectangle-density
-certificates, 44 as of 27 September and 50 standing as of 28 September for $n = 18$ to
-$95$, built with Tokoharu’s solver and decided by Tokoharu’s reviewed interval verifier,
-are verified at $n = 27$, $28$ by monotonicity, and $31$, and reported at the other
-counts until their replays run.
+certificates, 44 as of 27 September, 50 standing as of 28 September and raised again on
+1 October for $n = 18$ to $95$, built with Tokoharu’s solver and decided by Tokoharu’s
+reviewed interval verifier, are verified by complete replays here at 37 counts (T-045,
+T-070, T-074) and reported at the others until their replays run.
 wand125’s point-only routes to $s(21) = 5$ and $s(45) = 7$, both verified here as second
 certificates, and its $s(50) \ge 37/5$, verified here by a complete replay, followed on
 28 September. Guzhou0806’s continuation of R052, $s(17) > 4.62003$, superseded by
@@ -218,6 +218,7 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-070](packing/frontier/RESULTS.md) | 29, 38, 39, 41, 42, 43, 44, 52, 53, 54, 55, 59, 60, 67, 68, 69, 70, 71, 72, 73, 74, 86, 95 | `V3` | `C3` | `S3` | `previously-published` | Twelve rectangle-density certificates in wand125/square-packing-bounds, added or raised on 27 and 28 September 2026, prove s(29) >= 579/100, s(38) >= 327/50, s(39) >= 663/100, s(41) >= 1351/200, s(52) >= 1507/200, s(53) >= 1519/200, s(59) >= 198/25, s(67) >= 1691/200, s(69) >= 343/40, s(71) >= 1737/200, s(86) >= 1871/200 and s(95) >= 49209/5000. |
 | [T-071](packing/frontier/RESULTS.md) | 84, 85, 86, 87 | `V3` | `C3` | `S3` | `previously-published` | Two rectangle densities of wand125/square-packing-bounds, checked at coverage one and published on 2 October 2026, prove s(84) >= 47/5 = 9.4 and s(85) >= 471/50 = 9.42. |
 | [T-072](packing/frontier/RESULTS.md) | 76 | `V3` | `C3` | `S3` | `previously-published` | s(76) >= 447/50 = 8.94, by a rectangle density of wand125/square-packing-bounds checked at coverage one, published on 2 October 2026. |
+| [T-074](packing/frontier/RESULTS.md) | 19, 20, 26, 27, 28, 29, 30, 31, 38, 39, 40, 41, 42, 43, 44, 53, 54, 55, 56, 57, 58, 68, 69, 70, 74, 75, 88, 89, 93, 94, 95 | `V3` | `C3` | `S3` | `previously-published` | Twenty-nine rectangle-density certificates in wand125/square-packing-bounds, raised or added between 29 September and 1 October 2026, prove s(19) >= 1927/400, s(20) >= 1959/400, s(26) >= 2213/400, s(27) >= 1127/200, s(28) >= 2289/400, s(29) >= 2319/400, s(30) >= 47/8, s(31) >= 2381/400, s(38) >= 1309/200, s(39) >= 1327/200, s(40) >= 67/10, s(41) >= 169/25, s(42) >= 1363/200, s(43) >= 551/80, s(44) >= 2777/400, s(53) >= 3043/400, s(54) >= 3069/400, s(55) >= 617/80, s(56) >= 3113/400, s(68) >= 851/100, s(69) >= 1717/200, s(70) >= 69/8, s(74) >= 3539/400, s(75) >= 89/10, s(88) >= 3791/400, s(89) >= 1913/200, s(93) >= 3889/400, s(94) >= 1961/200 and s(95) >= 49259/5000. |
 | [T-036](packing/frontier/RESULTS.md) | 11 | `V3` | `C2` | `S3` | `apparently-novel` | Every packing of eleven unit squares in a square container, six at orientation 0 and five sharing one orientation modulo pi/2 with half-tangent in [91442076901/250000000000, 73154061521/200000000000] (an interval containing [t* - 10^-6, t* + 10^-6] for Trump’s exact half-tangent t*), has container side at least U = 3.877083590022814 …, the exact side of Trump’s packing, and a packing in the family has side exactly U only if it is a quarter-turn image of Trump’s pose with the squares relabelled within the two classes. |
 | [T-007](packing/frontier/RESULTS.md) | 4-100 | `V3` | `C1` | `S3` | `previously-published` | For every integer 4 <= N <= 100, Nagamochi 2005, Theorem 2 gives s(N) >= min(ceil(sqrt(N)), sqrt(N - 2*floor(sqrt(N)) + 1) + 1). |
 | [T-068](packing/frontier/RESULTS.md) | 19, 20, 26, 27, 28, 29, 30, 31, 38, 39, 40, 41, 42, 43, 44, 53, 54, 55, 56, 66, 68, 69, 70, 74, 75, 76, 86, 87, 88, 89, 90, 93, 94, 95 | `V0` | `C1` | `S3` | `previously-published` | wand125/square-packing-bounds reports a higher standing rectangle-density certificate at each of 34 counts from n = 19 to n = 95, published between 29 September and 1 October 2026. |
@@ -268,7 +269,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 195 | 39 confirmed; 32 refuted; 61 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 170 | 53 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
-| Frontier results | 73 | 73 registered, 45 by others |
+| Frontier results | 74 | 74 registered, 46 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
 

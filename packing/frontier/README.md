@@ -459,24 +459,23 @@ lower-bound side has underused methods.
 
 Counts below are computed from the artifacts, not asserted.
 
-Of the 256 open cases, **211** have Nagamochi’s formula as their verified lower bound.
+Of the 256 open cases, **205** have Nagamochi’s formula as their verified lower bound.
 Two others use certificates already integrated into the register, the current external
 certificate bounds at $n = 12$ ($15680/3951$) and $n = 17$ ($116511/25000$). Complete
-interval and exact replays of external certificates hold the other 43: wand125’s point
-certificate at $n = 56$ ($381/50$), its mixed rectangle-measure certificates at
-$n = 37$, 50, 65, 66, 76, 84, 85, 90 and 92, and by monotonicity at $n = 51$ from
-$n = 50$ and at $n = 86$ and 87 from $n = 85$, and its rectangle-density certificates,
-directly or by monotonicity, at $n = 18$ to 20, 26 to 31, 38 to 44, 52 to 55, 67 to 75
-and 95. On 2026-10-02 those replays superseded this repository’s first-party bounds at
-$n = 18$, 19 and 20 ($4679/1000$, $24/5$ and $97/20$), Tokoharu’s at $n = 26$, 29 and
-30, wand125’s point certificates at $n = 39$ to 41, 52, 53, 55 and 68 to 72, and
-Nagamochi’s formula at 27 counts.
+interval and exact replays of external certificates hold the other 49: wand125’s mixed
+rectangle-measure certificates at $n = 37$, 50, 65, 66, 76, 84, 85, 90 and 92, and by
+monotonicity at $n = 51$ from $n = 50$ and at $n = 86$ and 87 from $n = 85$, and its
+rectangle-density certificates, directly or by monotonicity, at $n = 18$ to 20, 26 to
+31, 38 to 44, 52 to 58, 67 to 75, 88, 89 and 93 to 95. On 2026-10-02 those replays
+superseded this repository’s first-party bounds at $n = 18$, 19 and 20 ($4679/1000$,
+$24/5$ and $97/20$), Tokoharu’s at $n = 26$, 29 and 30, wand125’s point certificates at
+$n = 39$ to 41, 52, 53, 55, 56 and 68 to 72, and Nagamochi’s formula at 33 counts.
 $n = 32$ left the open cases on 2026-09-27, when a replayed external closed cover proved
 $s(32) = 6$, and $n = 21$ and $n = 45$ on 2026-09-29, when replayed external mixed
 covers proved $s(21) = 5$ and $s(45) = 7$; $n = 59$, 60 and 61 left them on 2026-10-02,
 when replayed mixed covers proved $s(59) = s(60) = s(61) = 8$, and $n = 77$ and 78 later
 that day, when the replayed $s(77)$ cover proved $s(77) = s(78) = 9$. Within the
-original $n \le 100$ corpus, the corresponding Nagamochi count is 11. The count is
+original $n \le 100$ corpus, the corresponding Nagamochi count is 5. The count is
 checked against the case records by `devtools.check_nagamochi_bounds` (`D-430`), because
 earlier hand-maintained counts outlived their case promotions.
 
@@ -500,9 +499,9 @@ Ranked by gap—the best-known packing minus the verified lower bound, which is 
 | --- | --- | --- | --- |
 | 17 | 0.0151 | Bidwell | carried to $\frac{116511}{25000}$ by Guzhou0806 after Kleddamag |
 | 12 | 0.0314 | grid | $4^2 - 4$, carried to $\frac{15680}{3951}$ by Daniel after Burns, Massaccesi |
+| 31 | 0.0475 | grid | $6^2 - 5$, carried to $\frac{2381}{400}$ by wand125 after Tokoharu |
 | 97 | 0.0557 | grid | $10^2 - 3$ |
-| 76 | 0.0600 | grid | $9^2 - 5$, carried to $\frac{447}{50}$ by wand125 after Tokoharu |
-| 19 | 0.0706 | Wainwright | carried to $\frac{963}{200}$ by wand125 after Tokoharu |
+| 44 | 0.0575 | grid | $7^2 - 5$, carried to $\frac{2777}{400}$ by wand125 after Tokoharu |
 
 The $n = 17$ bound is Guzhou0806 / N17 project’s R068, continuing Kleddamag’s charge
 (Kleddamag building on Squares Project (Joshua Levy), Mira and Guzhou0806): an exact
@@ -527,12 +526,12 @@ an **integer**—the case the existing proof technique is built for.
 Its small gap and integer conjectured optimum make it a candidate for the existing
 technique; the retained source audit found little case-specific treatment.
 
-Among the cases with a *non-trivial* record, $n = 19$ follows $n = 17$ at $0.0706$, then
-$n = 26$ at $0.0913$, $n = 27$ at $0.1071$ and $n = 18$ at $0.1279$. First-party
+Among the cases with a *non-trivial* record, $n = 19$ follows $n = 17$ at $0.0681$, then
+$n = 27$ at $0.0721$, $n = 26$ at $0.0888$ and $n = 28$ at $0.1019$. First-party
 certificates moved $n = 11$, $17$, $18$ and $19$ beginning on 2026-09-04; the retained
 $n = 18$ ladder reached $4.679$ on 2026-09-19. External certificates now carry $n = 11$,
-$17$, $26$ and $27$, and wand125’s reported rectangle bounds stand above the verified
-values at $18$ and $19$ until their replays run.
+$17$ to $20$ and $26$ to $28$, wand125’s replayed rectangle certificates of 1 October
+among them.
 
 ## Cross-References
 

@@ -86,6 +86,9 @@ WAND125 = Statement(
             "[wand125 rectangle bounds 2026]",
             "[wand125 rectangle bounds 2026-09-28]",
             "[wand125 point and mixed bounds 2026-09-28]",
+            "[wand125 rectangle bounds 2026-10-01]",
+            "[wand125 exact covers 2026-10-01]",
+            "[wand125 mixed bounds 2026-10-01]",
         }
     ),
     anchor=re.compile(r"wand125"),

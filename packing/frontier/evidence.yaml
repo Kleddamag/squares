@@ -578,6 +578,46 @@ evidence:
       source premise or substitute for its complete replay.
     source_reviewed: '2026-09-28'
 
+  - id: E-wand125-rectangle-2026-10-01-report
+    claim: lower-bound
+    scope: {n_values: [19, 20, 26, 27, 28, 29, 30, 31, 38, 39, 40, 41, 42, 43, 44, 53, 54, 55, 56, 59, 66, 68, 69, 70, 74, 75, 76, 77, 78, 86, 87, 88, 89, 90, 93, 94, 95]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-10-01]'
+    certificate: resources/web/wand125-rectangle-certificates-2026-10-01/wand125-rectangles/certificates
+    replay_status: not-attempted
+    limitations: >-
+      Source 1a25a5ed745fdd905a52f48fcc48150a0669032d, committed 2026-10-01 (UTC),
+      reports one standing rectangle-density certificate in Tokoharu's format for each
+      listed count, each new or raised since 39d8ecc and first committed between
+      2026-09-29 and 2026-10-01 (UTC), accepted there by Tokoharu's unchanged interval
+      checker (verify.cpp SHA-256
+      a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602). The listed
+      sides run from 1927/400 at n19 to 49259/5000 at n95; the complete list is the
+      CASES_2026_10_01 table of devtools/audit_wand125_rectangles.py and the source's own
+      README. Registration was requested in jlevy/squares#281, which lists 34 of the 37
+      and leaves out n59, n77 and n78. The sixteen standing certificates the revision
+      left unchanged, at n18, 21, 32, 37, 45, 51, 52, 57, 58, 60, 61, 67, 71, 72, 73 and
+      91, are byte-identical to those E-wand125-rectangle-report and
+      E-wand125-rectangle-2026-09-28-report record, and their cases stay on those
+      entries. Each certificate's weights were multiplied by one exact rational factor,
+      between 1.00004 and 1.04329, to bring its mass to n - 1/100 before the recorded
+      run, which checked the scaled data. The n31 certificate, of mass 3099/100, also
+      gives s(32) >= 2381/400, above the unchanged direct n32 claim 119/20 and below
+      Evan Daniel's s(32) = 6. Lower rungs, matching certificates, the point
+      certificates and the point-only, exact-cover and mixed-measure bundles at the same
+      revision are pinned by digest only. This is the public-claim entry, not a local
+      verification receipt. At n59, n66, n77, n78 and n90 a stronger bound was
+      registered separately when this entry was written, so those five case records do
+      not cite this entry: the source's own exact covers s(59) = 8 and s(77) = 9, Evan
+      Daniel's s(78) = 9, and the source's mixed rectangle-measure certificates 421/50
+      at n66 and 48/5 at n90.
+    source_reviewed: '2026-10-01'
+
   - id: E-n045-wand125-point-cover-report
     claim: lower-bound
     scope: {n_values: [45]}
@@ -760,6 +800,235 @@ evidence:
       source claim.
     source_reviewed: '2026-09-28'
 
+  - id: E-n059-wand125-mixed-cover-report
+    claim: lower-bound
+    scope: {n_values: [59]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 exact covers 2026-10-01]'
+    certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m5_n59_L8/n59_mixed_cover_8.txt.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at 1a25a5ed745fdd905a52f48fcc48150a0669032d (the
+      directory's one commit, 2026-10-01T21:10:40Z) reports s(59) = 8 from a mixed cover
+      of [0,8]^2 in Evan Daniel's "mixed 1" format: 26,308 weighted points and 5,240
+      segments of length 1/50 on the interior lattice lines, total mass
+      1474762899/25000000 = 58.99051596 < 59, D4-invariant. It was made with Daniel's
+      line-cover linear program from his s(60) cover as warm start, then scaled by
+      2019/2000; the source puts its margin over the exact threshold at about 0.09%.
+      The source reports Daniel's checkers, pinned at evand/square-packing b91d70b6,
+      accepting it: zmx2 --d4 over 6,400 roots (9,844,124 boxes) and zmx2 --full over
+      51,200 roots (79,108,328 boxes), none uncertified. Its exact-rational evidence is
+      two zm_mixed.py runs: the complete depth-24 sweep of 102,400 roots ends NOT VERIFIED
+      with six uncertified boxes in one root, and a second run of that root alone at
+      depth limit 34 certifies it. Both used the zm_mixed.py that predates Daniel's
+      guard against a zero-width angle bin. The directory's SHA256SUMS lists four run
+      logs that are not in the published tree, so the source's verify.sh stops at its
+      first step on a fresh checkout, and its per-root records are published by digest
+      only. Nothing was replayed here: no checker was run, and the cover's mass and
+      symmetry were not recomputed. No Lean statement exists for this cover and the
+      source says it has had no review outside its project. The grid gives the upper
+      bound.
+    source_reviewed: '2026-10-01'
+  - id: E-n077-wand125-mixed-cover-report
+    claim: lower-bound
+    scope: {n_values: [77]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 exact covers 2026-10-01]'
+    certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m4_n77_L9/n77_mixed_cover_9.txt.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at 1a25a5ed745fdd905a52f48fcc48150a0669032d (the
+      directory's one commit, bd4de4f6, 2026-10-01T20:23:50Z) reports s(77) = 9 from a
+      mixed cover of [0,9]^2 in Evan Daniel's "mixed 1" format: 28,273 weighted points
+      and 6,420 segments, total mass 43347137744028965/2^49 = 76.999984600031... < 77,
+      D4-invariant. It is Daniel's s(60) cover cut at 4 in both coordinates with a
+      central band inserted, plus a D4-symmetric band measure of mass about 16.43 found
+      by a linear program over 31 rounds, the whole scaled to just below 77. Eighty-four
+      points of the band measure that lay on loaded lattice lines were replaced by
+      segments of length 2/1000, because zm_mixed.py's certificate mode does not count
+      such a point with its line; before the replacement that checker left 291 boxes
+      uncertified. The reviewed s(21), s(45) and s(60) covers have no point on a
+      segment line, so this cover's shape is new to the checkers as reviewed here.
+      The source reports Daniel's checkers, pinned at evand/square-packing b91d70b6,
+      accepting it: zmx2 --d4 --pair-points over 8,100 roots (5,810,824 boxes), zmx2
+      --full --pair-points over 64,800 roots (46,583,600 boxes), and zm_mixed.py
+      --d4 --cert-mode in exact rationals over 129,600 roots, none uncertified. The
+      directory's SHA256SUMS lists three run logs that are not in the published tree,
+      so the source's verify.sh stops at its first step on a fresh checkout. Nothing
+      was replayed here: no checker was run, and the cover's mass and symmetry were not
+      recomputed. No Lean statement exists for this cover and the source says it has
+      had no review outside its project. The grid gives the upper bound.
+    source_reviewed: '2026-10-01'
+  - id: E-n037-wand125-mixed-644-report
+    claim: lower-bound
+    scope: {n_values: [37]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds 2026-10-01]'
+    certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n37_L644/candidate.json.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at 1a25a5ed745fdd905a52f48fcc48150a0669032d
+      (introduced at baff9d23, 2026-09-30T13:08:55Z) reports s(37) >= 161/25 = 6.44 from a
+      rectangle density of 350 uniform-density rectangles and no point mass, total
+      mass 3699999/100000, core side B = 9977/10000 and 201 net half-angles of step 83/40000,
+      checked there by code/mixed_rotated_verify.cpp (SHA-256 89b674a6...), the
+      research copy of Tokoharu's verify.cpp that the n = 50 certificate uses: it
+      accepts a centre box at lower bound 1 instead of 10001/10000, with the axis
+      direction decided by exact integer tables. The least oblique lower bound the
+      source records is 1.0000000054. The source compares it with Green's reported 6.3506030; this record already reports wand125's own rectangle certificate 257/40 = 6.425 at this count. The source says the full 201-angle replay was
+      run again from the published tarball before publication and that the replay is
+      the same outward-rounded algorithm, not an independent implementation. The
+      tarball is pinned by digest and not retained. Nothing was replayed here.
+    source_reviewed: '2026-10-01'
+  - id: E-n065-wand125-mixed-835-report
+    claim: lower-bound
+    scope: {n_values: [65]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds 2026-10-01]'
+    certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n65_L835/candidate.json.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at 1a25a5ed745fdd905a52f48fcc48150a0669032d
+      (introduced at c21d1bd5, 2026-09-29T13:37:05Z) reports s(65) >= 167/20 = 8.35 from a
+      rectangle density of 787 uniform-density rectangles and no point mass, total
+      mass 6499999/100000, core side B = 9977/10000 and 201 net half-angles of step 83/40000,
+      checked there by code/mixed_rotated_verify.cpp (SHA-256 89b674a6...), the
+      research copy of Tokoharu's verify.cpp that the n = 50 certificate uses: it
+      accepts a centre box at lower bound 1 instead of 10001/10000, with the axis
+      direction decided by exact integer tables. The least oblique lower bound the
+      source records is 1.0000000004. It exceeds Green's reported 8.2899658, which is 2 sqrt(2) + 71/13, by more than 0.060034, by the source's exact comparison. The source says the full 201-angle replay was
+      run again from the published tarball before publication and that the replay is
+      the same outward-rounded algorithm, not an independent implementation. The
+      tarball is pinned by digest and not retained. Nothing was replayed here.
+    source_reviewed: '2026-10-01'
+  - id: E-n066-wand125-mixed-842-report
+    claim: lower-bound
+    scope: {n_values: [66]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds 2026-10-01]'
+    certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n66_L842/candidate.json.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at 1a25a5ed745fdd905a52f48fcc48150a0669032d
+      (introduced at 1807160d, 2026-10-01T08:20:08Z) reports s(66) >= 421/50 = 8.42 from a
+      rectangle density of 631 uniform-density rectangles and no point mass, total
+      mass 6599999/100000, core side B = 9977/10000 and 201 net half-angles of step 83/40000,
+      checked there by code/mixed_rotated_verify.cpp (SHA-256 89b674a6...), the
+      research copy of Tokoharu's verify.cpp that the n = 50 certificate uses: it
+      accepts a centre box at lower bound 1 instead of 10001/10000, with the axis
+      direction decided by exact integer tables. The least oblique lower bound the
+      source records is 1.0000000009. It exceeds the same release's rectangle certificate 1677/200 = 8.385 at this count. The source says the full 201-angle replay was
+      run again from the published tarball before publication and that the replay is
+      the same outward-rounded algorithm, not an independent implementation. The
+      tarball is pinned by digest and not retained. Nothing was replayed here.
+    source_reviewed: '2026-10-01'
+  - id: E-n090-wand125-mixed-960-report
+    claim: lower-bound
+    scope: {n_values: [90]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds 2026-10-01]'
+    certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n90_L960/candidate.json.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at 1a25a5ed745fdd905a52f48fcc48150a0669032d
+      (introduced at 8038d64d, 2026-10-01T00:52:31Z) reports s(90) >= 48/5 = 9.6 from a
+      rectangle density of 762 uniform-density rectangles and no point mass, total
+      mass 8999999/100000, core side B = 9977/10000 and 201 net half-angles of step 83/40000,
+      checked there by code/mixed_rotated_verify.cpp (SHA-256 89b674a6...), the
+      research copy of Tokoharu's verify.cpp that the n = 50 certificate uses: it
+      accepts a centre box at lower bound 1 instead of 10001/10000, with the axis
+      direction decided by exact integer tables. The least oblique lower bound the
+      source records is 1.000000000042. It exceeds the same release's rectangle certificate 3831/400 = 9.5775 at this count; it was obtained from the n = 89 rectangle certificate read with the budget of 90 and stretched. The source says the full 201-angle replay was
+      run again from the published tarball before publication and that the replay is
+      the same outward-rounded algorithm, not an independent implementation. The
+      tarball is pinned by digest and not retained. Nothing was replayed here.
+    source_reviewed: '2026-10-01'
+  - id: E-n092-wand125-mixed-969-report
+    claim: lower-bound
+    scope: {n_values: [92]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds 2026-10-01]'
+    certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n92_L969/candidate.json.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at 1a25a5ed745fdd905a52f48fcc48150a0669032d
+      (introduced at 8038d64d, 2026-10-01T00:52:31Z) reports s(92) >= 969/100 = 9.69 from a
+      rectangle density of 832 uniform-density rectangles and no point mass, total
+      mass 9199999/100000, core side B = 9977/10000 and 201 net half-angles of step 83/40000,
+      checked there by code/mixed_rotated_verify.cpp (SHA-256 89b674a6...), the
+      research copy of Tokoharu's verify.cpp that the n = 50 certificate uses: it
+      accepts a centre box at lower bound 1 instead of 10001/10000, with the axis
+      direction decided by exact integer tables. The least oblique lower bound the
+      source records is 1.0000000034. It exceeds Nagamochi's 1 + sqrt(75) = 9.6602540; it was obtained from the n = 91 rectangle certificate read with the budget of 92 and stretched. The source says the full 201-angle replay was
+      run again from the published tarball before publication and that the replay is
+      the same outward-rounded algorithm, not an independent implementation. The
+      tarball is pinned by digest and not retained. Nothing was replayed here.
+    source_reviewed: '2026-10-01'
+  - id: E-n032-evand-zmx2-full-sym-report
+    claim: lower-bound
+    scope: {n_values: [32]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-10-01]'
+    certificate: resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s32/s32_closed_cover_6.txt.gz
+    replay_status: not-attempted
+    limitations: >-
+      evand/square-packing at 08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5 (the run's
+      records entered at 044885da, 2026-10-01T01:12:00Z, and the author's comment on
+      jlevy/squares#238 names 2bf33bc3, whose s32 directory is identical) reports that
+      zmx2 cert s32_closed_cover_6.txt --full --pair-points --sym-atoms certifies the
+      s(32) cover without the D4 fold: 28,800 roots, 11,268,760 boxes, none uncertified,
+      11,592 CPU-seconds, by a zmx2 built from source SHA-256 92a4cfe8... at e4af291c.
+      The new flag bounds each box with the vertical-first assignment of points to
+      lines and its mirror and keeps the larger (the source's Lemma A, search/ZMX2.md
+      section 4.9). It answers the no-symmetry run recorded under
+      E-n032-evand-closed-cover-zmx2-replay, which without the flag left 152 boxes
+      uncertified here. The author also states that zmx2's author was permitted to
+      read zeromargin.py, so zmx2's point test derives from it, and offers
+      zeromargin.py with zmcheck on a second cover as a pair that does not involve
+      zmx2. The retained bundle's verify.sh re-reads the shipped log and does not rerun
+      the sweep. Nothing was replayed here, and the zmx2 source that made the record is
+      not retained; the 08e8a5fa source, which has the flag, is.
+    source_reviewed: '2026-10-01'
   - id: E-n011-kleddamag-3875-source-replay
     claim: lower-bound
     scope: {n_values: [11]}

@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:Bibliography/v1
   schema: bibliography.schema.yaml
   status: enforced
-last_reviewed: '2026-09-29'
+last_reviewed: '2026-10-01'
 # The citation fields a generator needs, keyed by the source keys the frontier records
 # use. The Markdown tables in README.md stay the human index; this file holds only what
 # a line of citation text is built from, for the keys something cites.
@@ -411,6 +411,67 @@ sources:
       web/wand125-point-and-mixed-2026-09-28/acquisition/sources.json pins revision
       39d8ecc74d651b54ec977c331c8f2015b442a6c4 and every file of the five claim
       directories. Dated by that revision, 2026-09-28.
+  - key: '[wand125 rectangle bounds 2026-10-01]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-01'
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
+    lineage: builds-on-project
+    note: >-
+      The rectangle-density certificates wand125/square-packing-bounds added or raised
+      between 2026-09-29 and 2026-10-01, built with and checked by Tokoharu's solver and
+      interval verifier, requested for registration in jlevy/squares#281;
+      web/wand125-rectangle-certificates-2026-10-01/acquisition/sources.json pins revision
+      1a25a5ed745fdd905a52f48fcc48150a0669032d and every file of its tree. Credited as the
+      September 27 key is, on the same README attribution ("The method is not ours",
+      README.md lines 749-773 at this revision). The README says parts of the work were
+      produced with AI assistance under human direction. Dated by that revision,
+      2026-10-01 UTC.
+  - key: '[wand125 exact covers 2026-10-01]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-01'
+    credit: wand125 after Daniel, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Daniel, Levy et al.
+    lineage: credits-project
+    note: >-
+      The mixed covers for s(59) = 8 and s(77) = 9 that wand125/square-packing-bounds added
+      on 2026-10-01 (certificates/k2m5_n59_L8 and certificates/k2m4_n77_L9), requested for
+      registration in jlevy/squares#280 and #279. Each directory's README says the result is
+      built directly on Evan Daniel's work: his line-cover linear program, his mixed cover
+      format, both of his checkers, and his s(60) = 8 cover as warm start (s(59)) or as base
+      cover (s(77)); the checkers are pinned at evand/square-packing b91d70b6. The repository
+      README keeps "The method is not ours", attributing the method to Stromquist,
+      Nagamochi, Burns and Massaccesi, and to jlevy/squares (lines 749-773), so this project
+      is credited second-hand, as for the September 28 point-only certificates. It says
+      parts of the work were produced with AI assistance under human direction.
+      web/wand125-point-and-mixed-2026-10-01/acquisition/sources.json pins revision
+      1a25a5ed745fdd905a52f48fcc48150a0669032d. Dated by that revision, 2026-10-01 UTC.
+  - key: '[wand125 mixed bounds 2026-10-01]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-01'
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
+    lineage: builds-on-project
+    note: >-
+      The mixed rectangle-measure certificates for n = 37, 65, 66, 90 and 92 that
+      wand125/square-packing-bounds added between 2026-09-29 and 2026-10-01, requested for
+      registration in jlevy/squares#282: rectangle densities at the setting of the source's
+      rectangle certificates, which each README says are not in Tokoharu's format because
+      their least coverage is below the 10001/10000 his verify.cpp requires. They are checked
+      by code/mixed_rotated_verify.cpp, the source's research copy of verify.cpp that
+      accepts coverage at least 1, as for its n = 50 certificate. Credited as the
+      rectangle keys are, on the same README attribution (lines 749-773); the issue says
+      format and base checker are Tokoharu's and the measures and the modified checker
+      wand125's. The README says parts of the work were produced with AI assistance under
+      human direction. web/wand125-point-and-mixed-2026-10-01/acquisition/sources.json pins
+      revision 1a25a5ed745fdd905a52f48fcc48150a0669032d. Dated by that revision,
+      2026-10-01 UTC.
   - key: '[franciscouzo square-packing 2026-09-27]'
     authors: [Couzo]
     year: 2026

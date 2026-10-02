@@ -291,6 +291,26 @@ sources:
       work was produced by Claude (Anthropic) in a single session under human direction.
       The selective packet web/evand-square-packing-2026-10-02/ retains them; nothing was
       replayed. Dated by that revision, 2026-10-02 UTC.
+  - key: '[squarepacker s12 2026]'
+    authors: [Ryu]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-02'
+    credit: squarepacker (Ryu Sungjoon) after Evan Daniel
+    lineage: independent
+    note: >-
+      squarepacker/s12-lower-bound at 8c53049025b94bb589ed25a90203f0a34c2945e4
+      (2026-10-02T16:45:25Z), by Ryu Sungjoon (GitHub squarepacker), archived as Zenodo
+      10.5281/zenodo.23106582 (v1.0, tag v1.0 = 7acf812c, published 2026-10-02), and
+      reported on jlevy/squares#309. It claims s(12) >= 31360/7901 from Evan Daniel's
+      s12_lower_3.9686.txt with every coordinate and the container multiplied by
+      7902/7901, verified by Daniel's verifier and by the author's own indep_check.cpp
+      at the angle net N = 24000. Its README credits the certificate, the verifier, the
+      reduction and its Lean formalisation to Daniel, and says the rescaling, the
+      verification runs and indep_check.cpp were prepared with the help of an AI
+      assistant from Anthropic. MIT, derived material under Daniel's licence. Retained
+      whole in web/squarepacker-s12-lower-bound-2026-10-02/; dated by that revision,
+      2026-10-02 UTC.
   - key: '[Kleddamag n11 2026]'
     authors: [Kleddamag]
     year: 2026

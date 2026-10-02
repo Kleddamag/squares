@@ -3263,6 +3263,15 @@ def _standing(context: Context) -> str:
     return _module(context, "devtools.check_standing")
 
 
+def _result_requests(context: Context) -> str:
+    # Sub-second: one record, its schema and the register. Records tier because it checks
+    # the record against the register -- that every issue's results name entries that
+    # exist and every reply is a comment on its own issue, the join stage 7 of the result
+    # import process reads to say which author is owed a reply. A reply due is reported,
+    # never failed: it is the owner's next move, not a broken record.
+    return _module(context, "devtools.check_requests")
+
+
 def _case_prose(context: Context) -> str:
     # Sub-second: it regex-scans a hundred case bodies against their own front matter and
     # reuses check_rung_figures's exact-arithmetic rule. Records tier because it checks the
@@ -4708,6 +4717,21 @@ STEPS: tuple[Step, ...] = (
         ),
     ),
     Step(
+        "result requests name registered results",
+        _result_requests,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "packing/devtools/check_requests.py",
+            "packing/devtools/result_status.py",
+            "packing/campaign/result-requests.yaml",
+            "packing/campaign/schemas/result-requests.schema.yaml",
+            "packing/frontier/results.yaml",
+            "packing/frontier/evidence.yaml",
+        ),
+    ),
+    Step(
         "case prose agrees with its own front matter",
         _case_prose,
         fast=True,
@@ -5141,6 +5165,9 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         # The register, the bibliography and the case records, read and compared: no
         # clock, no network and no history.
         "standings agree with the bounds their entries state",
+        # One record, its schema and the register; `--report`, `--draft` and `--github`
+        # read git and GitHub, and the step runs none of them.
+        "result requests name registered results",
         "case prose agrees with its own front matter",
         # Reads the register, the reader documents and its own allowlist; the `git grep`
         # in the module belongs to `--retained`, which this step does not run.

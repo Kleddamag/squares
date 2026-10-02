@@ -870,7 +870,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-404 | research | 17 | complete | 0 | think-gr22 | packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md |
 | BC-405 | research | 17 | complete | 0 | think-9fc1 | docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md |
 | BC-406 | research | 17 | complete | 0 | think-c7kv | docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md |
-| BC-407 | research | 17 | in_progress | 0 | think-n95s | packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md |
+| BC-407 | research | 17 | complete | 0 | think-n95s | packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md |
 | BC-408 | research | 17 | complete | 0 | think-j1uw | packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md |
 | BC-409 | research | 17 | complete | 2 | think-e6y1 | packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md |
 | BC-410 | research | 17 | stopped | 2 | think-x4a6 | packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md |
@@ -880,14 +880,14 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-414 | research | 17 | complete | 0 | think-8ul6 | docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md |
 | BC-415 | research | 17 | complete | 0 | think-qjdb | packing/campaign/hypotheses/H-266-n17-minimal-capacity-one-cover.md |
 | BC-416 | research | 17 | ready | 1 | think-1s3i | packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md |
-| BC-417 | research | 17 | blocked | 0 | think-set0 | packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md |
+| BC-417 | research | 17 | complete | 0 | think-set0 | packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md |
 | BC-418 | research | 17 | ready | 0 | think-tmz6 | packing/campaign/agent-sessions/session-167-n17-parallel-lanes-after-route-review.md |
 
 ## Series
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 176 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 177 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1095,7 +1095,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-265 | confirmed | proof | The side S* of the H255 chart root is a root of the degree-18 polynomi |  | 1 |  | 1s wall |
 | H-266 | confirmed | proof | At cap U = 1169/250 there is a D4-symmetric closed cover of the centre |  | 2 |  | 2s wall |
 | H-267 | blocked | proof | On the H-266 cover, forbidden occupancy sub-patterns of arity at most  |  | 0 |  |  |
-| H-268 | blocked | proof | Every packing of 17 unit squares in [0,S]^2 with S <= S* whose occupan |  | 0 |  |  |
+| H-268 | confirmed | proof | Every packing of 17 unit squares in [0,S]^2 with S <= S* whose occupan |  | 1 |  | 27s wall |
 
 ## Needs review — held for a human, not decided
 
@@ -1238,7 +1238,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-158 | series-000 | 11 | Codex BC303 T2 charge-sweep agent | H-160 | The September 14 strategy reset paused this route before the target charge ran; no target receipt or scientific verdict exists. |
 | exp-160 | series-000 | 11 | Codex BC303 H-162 retained-receipt analyst | H-162 | The September 14 strategy reset paused this route with no exp-158 target receipt; no H-162 comparison or scientific verdict exists. |
 
-### accepted (56)
+### accepted (57)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1298,6 +1298,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-242 | series-000 | 17 | Claude Session 167 coordinator; lane A1 built the instrument and run-001 | H-258 | Every criterion item is met. This is first-order stationarity of the complete local model in both corner branches; it is not local minimality, rigidity or global optimality. |
 | exp-245 | series-000 | 17 | Claude Session 167; lane C built the instrument, the coordinator ran it from a clean worktree | H-265 | Every clause holds. S* is an algebraic number of degree 18 with the catalogue's polynomial as its minimal polynomial. No packing, feasibility or optimality claim; the admitted rational ceiling and the open status of s(17) are unchanged. |
 | exp-247 | series-000 | 17 | Claude Session 168; lane G2 built the design in Session 167, the coordinator ran it from a clean worktree | H-266 | Every criterion item holds for the unique-state design, which keeps the 43,593-orbit census. The exp-246 tabbed design stays unresolved; this round supersedes it for H-266. |
+| exp-248 | series-000 | 17 | Claude Session 168; lanes H, H2 and A3 built the tools, the coordinator ran both from a clean worktree | H-268 | Every criterion item holds with strict margin, and the composition with the B_W' local theorem and the H-266 cover gives the capture-target theorem. The deviation is recorded; H-261, whose claim names the whole physical slider domain, stays unresolved. |
 
 ### baseline (12)
 
@@ -1362,7 +1363,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-176 rounds, 2512.1 agent-minutes, 4023.8 wall-minutes.
+177 rounds, 2512.1 agent-minutes, 4024.2 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

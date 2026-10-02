@@ -90,6 +90,13 @@ that would close the gap.
 The criterion’s 135 unavailable alternatives are checked as the 125 of the retained
 pairs, a recorded deviation.
 
+*Session 168.* The local theorem now holds over $B_W'$, with the $b$ floor at $-1/2500$
+([exp-248](../series/series-000-smoke-and-calibration/experiments/exp-248-h268-n17-local-half-composition.md)).
+Composed with H-268 and the H-266 cover, it gives the capture-target theorem.
+This hypothesis stays unresolved as worded: the composition review exhibits a packing at
+side $S^\ast$ that meets every premise outside $B_W'$, the family with squares 5 and 6
+exchanged.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

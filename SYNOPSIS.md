@@ -255,11 +255,11 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 407 | 210 complete; 65 stopped; 71 blocked; 26 ready; 21 tentative; 14 in progress |
+| Commitments | 407 | 212 complete; 65 stopped; 70 blocked; 26 ready; 21 tentative; 13 in progress |
 | Sessions | 167 | 103 completed; 64 stopped; all terminal |
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
-| Hypotheses | 203 | 42 confirmed; 33 refuted; 62 blocked; 18 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
-| Experiments | 176 | 56 accepted; 38 rejected; 54 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
+| Hypotheses | 203 | 43 confirmed; 33 refuted; 61 blocked; 18 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
+| Experiments | 177 | 57 accepted; 38 rejected; 54 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
 | Frontier results | 65 | 65 registered, 37 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
@@ -530,6 +530,7 @@ case or experiment separately.
 | [n17 Depth-Width Wall Lemma](docs/project/reviews/review-2026-10-02-n17-depth-width-wall-lemma.md) | dated review record | record | retained | — |
 | [n17 Unique-State Capacity-One Cover](docs/project/reviews/review-2026-10-02-n17-unique-state-cover.md) | dated review record | record | retained | — |
 | [n17 Kernel Adaptation Specification](docs/project/reviews/review-2026-10-02-n17-kernel-adaptation-spec.md) | dated review record | record | retained | — |
+| [n17 Local Half — Composition of the Local Theorem, the Slide Coverage and the Cover](docs/project/reviews/review-2026-10-02-n17-local-half-composition.md) | dated review record | record | retained | — |
 | [n17 Optimality Route After PR 265](docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md) | dated review record | record | retained | — |
 | [X-048 Session 168 Pilots: Receipts](packing/campaign/explorations/X048-session-168-pilots/README.md) | research synthesis | record | retained | — |
 | [X-048 Session 167 Pilots: Receipts](packing/campaign/explorations/X048-session-167-pilots/README.md) | research synthesis | record | retained | — |
@@ -1383,6 +1384,12 @@ The certified slider box’s faces $a\ge0$, $b\ge0$ and $z\le1/16$ still need th
 argument. Hosted certification of Sessions 166 and 167 passed on PR 307. In Session 168,
 H-266 is accepted on the unique-state design
 ([exp-247](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-247-h266-n17-unique-state-cover.md)).
+H-268 is accepted
+([exp-248](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-248-h268-n17-local-half-composition.md)):
+square 6’s cell bounds every slide inside a widened box $B_W'$, over which the local
+theorem passes, so the local half is the capture-target theorem of the
+[composition review](docs/project/reviews/review-2026-10-02-n17-local-half-composition.md).
+H-261 stays unresolved as worded.
 
 #### Previous: Session 166 n17 Route Review
 
@@ -5379,8 +5386,8 @@ round that names the hypothesis, control roles included.
 | [H-264](packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md) | open question | The cost of one exact geometric exclusion on a uniform residue sample at a cap at or above the endpoint; re-scopes think-11ma (BC-411) | 0 | — |
 | [H-265](packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md) | confirmed | The certified chart endpoint is a root of the catalogue’s irreducible degree-18 polynomial | 1 | exp-245 accepted: identical with unit 1; irreducible over Q |
 | [H-266](packing/campaign/hypotheses/H-266-n17-minimal-capacity-one-cover.md) | confirmed | A D4-symmetric capacity-one cover of at most 25 cells holds the endpoint family in one occupancy state; the unique-state 24-cell cover replaces the H259 grid | 2 | exp-247 accepted: 43,593 orbits; unique state, margin 0.002112 |
-| [H-267](packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md) | blocked | Isolated sub-pattern certificates of arity at most seven leave at most 10^4 orbits on the H-266 cover; waits on H-266 | 0 | — |
-| [H-268](packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md) | blocked | With square 6 in its H-266 cell, the slides of squares 5 and 13 stay inside the box exp-244 certifies; closes H-261’s scope gap | 0 | — |
+| [H-267](packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md) | blocked | Isolated sub-pattern certificates of arity at most seven leave at most 10^4 orbits on the H-266 cover; the heuristic selector projects 5,084 at arity 7, and the prover is being built | 0 | — |
+| [H-268](packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md) | confirmed | With square 6 in its H-266 cell, the slides of squares 5 and 13 stay inside the box exp-244 certifies; b can go negative, so the local theorem was re-run over the widened box B_W′ | 1 | exp-248 accepted: a ≤ 23/200, z ≥ −49/1000, b ≥ −1.685r; B_W′ worst ratio 0.925931 |
 
 ### Confirmed
 
@@ -5705,9 +5712,9 @@ The relevant generator writes the receipt, and the entry fills in on the next
 
 ## Experiments Conducted
 
-There are 176 rounds registered in `series-000`.
+There are 177 rounds registered in `series-000`.
 
-They record 2512.1 agent-minutes and 4023.8 wall-minutes.
+They record 2512.1 agent-minutes and 4024.2 wall-minutes.
 These totals exclude four historical annealing rounds with unrecorded timing; their wall
 and operator costs are unknown, not zero.
 Exp129 closed as blocked without invocation and contributes zero scientific elapsed
@@ -5925,6 +5932,7 @@ archive beside it.
 | [exp-245](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-245-h265-n17-catalogue-polynomial.md) | 17 | target | H-265 | Exact resultant identification of the certified side with the catalogue polynomial | Identical up to unit 1; irreducible; second elimination route agrees | accepted |
 | [exp-246](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-246-h266-n17-capacity-one-cover.md) | 17 | target | H-266 | Exact 24-cell D4-symmetric capacity-one cover with the depth-width wall lemma | 346,104 states, 43,593 orbits; the family realises two states through an overlapping side cell | unresolved |
 | [exp-247](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-247-h266-n17-unique-state-cover.md) | 17 | target | H-266 | Unique-state 24-cell capacity-one cover with an independent review | 43,593 orbits; family in one unique state, margin 0.002112 | accepted |
+| [exp-248](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-248-h268-n17-local-half-composition.md) | 17 | target | H-268 | Exact slide bounds from square 6’s cover cell, and the local theorem over the box they need | Slides certified inside B_W′; the local theorem passes over B_W′ at r = 1/5000, worst 0.925931 | accepted |
 
 ### Cost and provenance
 
@@ -6106,10 +6114,11 @@ archive beside it.
 | exp-245 | 60 seconds; one worker | 0.75 s | — | criterion | `603d5cb36`; clean run, receipt byte-identical to the lane’s |
 | exp-246 | 60 seconds; one worker | 0.77 s | — | criterion | `e1f8b14b4`; clean run at 603d5cb3 |
 | exp-247 | 120 seconds; one worker | 1.0 s | — | criterion | `0dabde129`; clean run at 37b5fc2f |
+| exp-248 | 900 seconds per run; one worker | 27.4 s | — | criterion | `9c26793c1`; two clean runs at f8c1246b |
 
-### What the 176 rounds jointly establish
+### What the 177 rounds jointly establish
 
-The 176 rounds use 2512.1 agent-minutes and 4023.8 wall-minutes under the campaign’s
+The 177 rounds use 2512.1 agent-minutes and 4024.2 wall-minutes under the campaign’s
 retained effort accounting.
 The never-invoked exp129 adds no scientific result or execution time.
 Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is recorded

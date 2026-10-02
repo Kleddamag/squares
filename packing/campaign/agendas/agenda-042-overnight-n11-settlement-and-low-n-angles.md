@@ -1198,7 +1198,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: in_progress
+    state: complete
     priority: 0
     question: Is the n17 endpoint a strict local minimum modulo its slider cone, with an explicit radius?
     hypotheses:
@@ -1224,7 +1224,9 @@ agenda:
       target. Session 167 accepted H-258 (exp-242); the recipe review fixes items C1-C12
       and a uniform radius of about 1/5000 over the slider box; the checker's point half is at 11bdcd7c. exp-244 (unresolved)
       certifies the ratio test at r = 1/5000 over the declared box (worst 0.925818); the claim's physical
-      slider domain exceeds it, and H-268 (BC-417) owes the bound.
+      slider domain exceeds it, and H-268 (BC-417) owes the bound. Session 168 met the exit with exp-248,
+      which re-runs the ratio test over the widened box B_W' (worst 0.925931). H-261 stays unresolved as
+      worded, since the family with squares 5 and 6 exchanged meets its premises outside B_W'.
   - id: BC-408
     purpose: research
     owner_focus: correctness
@@ -1476,7 +1478,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: blocked
+    state: complete
     priority: 0
     question: Does square 6's H-266 cell keep the slides of squares 5 and 13 inside the box exp-244 certifies?
     hypotheses:
@@ -1488,7 +1490,6 @@ agenda:
     depends_on:
     - BC-407
     - BC-415
-    blocked_on: H-266 acceptance (BC-415); BC-407 stays open until this closes.
     next_evidence: packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md
     workflows:
     - pipeline-improvement
@@ -1501,7 +1502,10 @@ agenda:
       Closes H-261's scope gap. With square 6 at its centroid the review's float scan keeps a
       below 0.037 and z above -0.0235, well inside the box. Lane H proved a <= 21/100, z >= -1/20, b <= 3/40 on
       the tabbed design's S2 (7cd4e652); re-run on the unique design and review remain, and the box's
-      faces a >= 0, b >= 0, z <= 1/16 need their own argument.
+      faces a >= 0, b >= 0, z <= 1/16 need their own argument. Session 168 accepted H-268 (exp-248) on the
+      unique design, with a in [0, 23/200], b in [-1.684957 r, 37/500] and z in [-49/1000, 0.0241]; since b
+      can go negative, the local theorem was re-run over B_W' and passes. The capture target is the composed
+      theorem in the local-half composition review.
   - id: BC-418
     purpose: research
     owner_focus: correctness

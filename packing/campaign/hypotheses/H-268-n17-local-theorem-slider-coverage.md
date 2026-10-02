@@ -32,7 +32,7 @@ hypothesis:
     A small exact geometric check to be built: square 6's cell from
     devtools.check_n17_capacity_one_cover, separating-axis bounds on the 5/6 and 6/13
     pairs over square 6's cell and orientations, and the 11/13 bound on b
-  instrument_ready: false
+  instrument_ready: true
   regime: >-
     n=17; the exact H255 root; the H-266 24-cell cover and the endpoint's occupancy
     state; the exp-244 radius and box
@@ -65,6 +65,17 @@ cell side-S2. The unique-state design shifts that cell left by $0.01$, so the bo
 be re-run on it before review.
 The exp-244 box also has faces $a\ge0$, $b\ge0$ and $z\le1/16$, which this claim does
 not cover; $b\ge0$ rests on the 9/11 contact, which the local theorem drops.
+
+## Outcome
+
+*Added 2026-10-02 by Session 168.* The bounds quoted under Progress were for the earlier
+tabbed design. On the unique-state cover the certified slides are $a\in[0,23/200]$,
+$b\in[b^\ast,37/500]$ with $b^\ast=-1.685r$, and $z\in[-49/1000,0.0241]$.
+[exp-248](../series/series-000-smoke-and-calibration/experiments/exp-248-h268-n17-local-half-composition.md)
+accepts this hypothesis after an
+[independent composition review](../../../docs/project/reviews/review-2026-10-02-n17-local-half-composition.md).
+It records one deviation: the slides lie in $B_W'$, which has a $b$ floor of $-1/2500$,
+not in $B_W$, and the local theorem is certified over $B_W'$ in the same experiment.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

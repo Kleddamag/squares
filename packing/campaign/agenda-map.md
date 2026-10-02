@@ -10,9 +10,9 @@ order rather than imposing one across them.
 
 ## The short version
 
-- **14** in_progress, **26** ready, **21** tentative, **71** blocked, **65** stopped, **210** complete.
+- **13** in_progress, **26** ready, **21** tentative, **70** blocked, **65** stopped, **212** complete.
 
-- **28 blocked commitments carry a manual condition** (`BC-016`, `BC-025`, `BC-033`, `BC-050`, `BC-115`, `BC-170`, `BC-204`, `BC-205`, `BC-212`, `BC-207`, `BC-208`, `BC-209`, `BC-215`, `BC-217`, `BC-221`, `BC-238`, `BC-248`, `BC-270`, `BC-306`, `BC-337`, `BC-327`, `BC-329`, `BC-330`, `BC-358`, `BC-364`, `BC-365`, `BC-396`, `BC-417`). Dependency edges alone cannot make these ready; each condition is named in the table below and must be explicitly cleared.
+- **27 blocked commitments carry a manual condition** (`BC-016`, `BC-025`, `BC-033`, `BC-050`, `BC-115`, `BC-170`, `BC-204`, `BC-205`, `BC-212`, `BC-207`, `BC-208`, `BC-209`, `BC-215`, `BC-217`, `BC-221`, `BC-238`, `BC-248`, `BC-270`, `BC-306`, `BC-337`, `BC-327`, `BC-329`, `BC-330`, `BC-358`, `BC-364`, `BC-365`, `BC-396`). Dependency edges alone cannot make these ready; each condition is named in the table below and must be explicitly cleared.
 
 ## Live queue
 
@@ -70,7 +70,6 @@ Commitments a session may take now, in each agenda's declared order.
 | agenda-041 | `BC-371` | in_progress | 0 | insight | research | Does the external n = 17 measure, which is stated in a restricted parent-centre language this repository does… | `think-xdoh` |
 | agenda-041 | `BC-369` | in_progress | 1 | efficiency | tool_validation | The deep gate costs about 45 minutes of wall and its exhaustive tier runs at 1.376x its own declared price,… | `think-zmos` |
 | agenda-041 | `BC-372` | in_progress | 2 | insight | research | Can this repository's own site sets cover at the external side L = 4613/1000 at all, and at which shrink do… | `think-xdoh` |
-| agenda-042 | `BC-407` | in_progress | 0 | correctness | research | Is the n17 endpoint a strict local minimum modulo its slider cone, with an explicit radius? | `think-n95s` |
 | agenda-042 | `BC-418` | ready | 0 | correctness | research | Can the n17 local theorem and cover be closed, and do sub-pattern exclusion and capture fit the budget? | `think-tmz6` |
 | agenda-042 | `BC-387` | ready | 1 | insight | research | With the capacity-one ceiling lemma proved in the 4.640020 review, does a clique-weighted family of unit… | `think-68la` |
 | agenda-042 | `BC-388` | ready | 1 | insight | research | What is the least side f(theta) along the six-axis plus five-common-angle family at 200 tilts, and on which… | `think-91yk` |
@@ -156,7 +155,6 @@ A commitment blocked by other commitments names them; one blocked by something e
 | agenda-037 | `BC-358` | 1 | — | no | think-g3j7 must land a new reader for weighted-majority and floor atoms without mutating T-025/T-026 verify_claim.py.… |
 | agenda-040 | `BC-364` | 2 | `BC-363` | yes | The non-convex box-avoidance domain predicate (BC-204) and a conflict-edge atom class in the relational reader. |
 | agenda-040 | `BC-365` | 3 | — | no | An unshrunk exact-orientation verifier generalised from cases/green17/interval_audit.py and an unshrunk column… |
-| agenda-042 | `BC-417` | 0 | `BC-407`, `BC-415` | no | H-266 acceptance (BC-415); BC-407 stays open until this closes. |
 | agenda-042 | `BC-384` | 1 | `BC-388`, `BC-389` | no | — |
 | agenda-042 | `BC-396` | 1 | — | no | The intake lane's accepting review of evand/square-packing's s(32) certificate at 167d842, which is also the reading of… |
 
@@ -220,7 +218,7 @@ A commitment whose exit another agenda's commitment satisfied. Recorded as an ed
 | agenda-037 | active | 1 |  | 1 | 1 | 1 | 1 | 5 |
 | agenda-040 | active |  | 1 |  | 2 | 1 | 3 | 7 |
 | agenda-041 | active | 4 |  |  |  |  | 2 | 6 |
-| agenda-042 | active | 1 | 10 |  | 3 | 4 | 27 | 45 |
+| agenda-042 | active |  | 10 |  | 2 | 4 | 29 | 45 |
 
 ## By program
 
@@ -521,7 +519,7 @@ Open frontier: `BC-306`.
 | agenda-042 | `BC-404` | complete | Does a closed-assignment D4 quotient reduce the n17 occupancy census with independent exact… |
 | agenda-042 | `BC-405` | complete | What does PR 265 leave for an n17 optimality proof, which route is most likely to finish one, and… |
 | agenda-042 | `BC-406` | complete | Can the n17 local theorem, the occupancy census and the polynomial identification proceed as three… |
-| agenda-042 | `BC-407` | in_progress | Is the n17 endpoint a strict local minimum modulo its slider cone, with an explicit radius? |
+| agenda-042 | `BC-407` | complete | Is the n17 endpoint a strict local minimum modulo its slider cone, with an explicit radius? |
 | agenda-042 | `BC-408` | complete | How many H260 occupancy orbits survive the s(6) and s(10) subcontainer cuts and exact conditional… |
 | agenda-042 | `BC-409` | complete | Is the certified n17 chart endpoint a root of the catalogue's irreducible degree-18 polynomial? |
 | agenda-042 | `BC-410` | stopped | Which closed cover keeps the n17 endpoint family inside one occupancy state and leaves the fewest… |
@@ -531,10 +529,10 @@ Open frontier: `BC-306`.
 | agenda-042 | `BC-414` | complete | What bulk exclusion engine could take the n17 census to a residue geometric exclusion can absorb? |
 | agenda-042 | `BC-415` | complete | Does a D4-symmetric capacity-one cover of at most 25 cells hold the n17 endpoint family in one… |
 | agenda-042 | `BC-416` | ready | Do certified isolated sub-patterns of arity at most seven leave at most 1e4 orbits on the H-266… |
-| agenda-042 | `BC-417` | blocked | Does square 6's H-266 cell keep the slides of squares 5 and 13 inside the box exp-244 certifies? |
+| agenda-042 | `BC-417` | complete | Does square 6's H-266 cell keep the slides of squares 5 and 13 inside the box exp-244 certifies? |
 | agenda-042 | `BC-418` | ready | Can the n17 local theorem and cover be closed, and do sub-pattern exclusion and capture fit the… |
 
-Open frontier: `BC-407`, `BC-416`, `BC-417`, `BC-418`.
+Open frontier: `BC-416`, `BC-418`.
 
 ### `reach-table-ladder`
 

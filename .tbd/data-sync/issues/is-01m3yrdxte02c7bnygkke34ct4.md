@@ -5,7 +5,7 @@ title: Import, confirm and answer every reported result (2 October 2026 effort)
 kind: epic
 status: open
 priority: 1
-version: 22
+version: 23
 labels:
   - result-import
 dependencies: []
@@ -31,7 +31,7 @@ child_order_hints:
   - is-01m3ytdhr6h2xnsvj4f2nc2nk2
   - is-01m3z77bdhk8tn3epx63ywhxft
 created_at: 2026-10-02T16:51:15.917Z
-updated_at: 2026-10-02T21:09:49.104Z
+updated_at: 2026-10-02T21:10:03.726Z
 ---
 Umbrella for the 2 October 2026 effort: PRs #290 -> #292 -> #298 (imports and records), plus a stacked PR for verifier provenance and the independent verifier. Children track each lane; done when every reported result is confirmed or refuted (or has a bead naming exactly what remains), every issue has a current status reply, closeable issues are closed, and all PRs are merged.
 
@@ -79,3 +79,8 @@ Push A: merge the six branches above; record T-048, T-055 (controls: receipts/co
 
 ### How to resume
 Fetch the branches above; `tbd show think-20pp` (and children) for per-item next steps; `python -m devtools.check_requests --backlog` lists every entry below V3/C3 with its next_rung. Check runners with get_session / list_events on the session ids above; resend a short "resume" message if one stopped (usage limits stop them).
+
+### Updates after 20:20 UTC
+- Push A landed on #298 (0586bacb3): merges of lanes Q, Z, T, V, CC, DD; T-048 and T-055 at V3/C3. Push B in progress (40d83d262: receipts for n37, n65, n66, n90, n92, n84, n85, all FULL_REPLAY_MATCHES_SHIPPED).
+- #309 (lane AA) done: all three checkers accept 31360/7901 at N=24000; branch worktree-agent-a398285876beb6313 @b33e5b390 is LOCAL ONLY (its push was refused by the permission classifier); handoff saved in think-gh2o notes; records lane will merge and register.
+- Lane BB done: s(12) >= 15680000/3949423 = 3.9702002 by re-weighting (this project's own result), on claude/lane-bb-s12-improvement; needs an independent review before registering: think-4srr.

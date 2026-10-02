@@ -874,6 +874,11 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-409 | research | 17 | ready | 2 | think-e6y1 | packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md |
 | BC-410 | research | 17 | stopped | 2 | think-x4a6 | packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md |
 | BC-411 | research | 17 | stopped | 1 | think-11ma | packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md |
+| BC-412 | research | 17 | complete | 1 | think-rode | docs/project/reviews/review-2026-10-02-n17-capture-feasibility.md |
+| BC-413 | research | 17 | complete | 2 | think-xnhx | docs/project/reviews/review-2026-10-02-n17-widened-projection-scope.md |
+| BC-414 | research | 17 | complete | 0 | think-8ul6 | docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md |
+| BC-415 | research | 17 | in_progress | 0 | think-qjdb | packing/campaign/hypotheses/H-266-n17-minimal-capacity-one-cover.md |
+| BC-416 | research | 17 | blocked | 1 | think-1s3i | packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md |
 
 ## Series
 

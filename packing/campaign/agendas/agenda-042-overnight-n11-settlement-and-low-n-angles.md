@@ -1335,6 +1335,135 @@ agenda:
     - packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md
     note: Re-scopes Session 165's handoff. A cap below the endpoint (the candidate 4.67) would leave sides
       in (4.67, S*) uncovered; exclusions at a cap U >= S* apply to every smaller side. Stopped 2026-10-02 with BC-410, since no residue small enough to sample exists yet.
+  - id: BC-412
+    purpose: research
+    owner_focus: insight
+    instances:
+    - 17
+    state: complete
+    priority: 1
+    question: What does capture cost as a function of the local radius, and must the radius be enlarged first?
+    budget: One Fable analysis lane of about 90 minutes in Session 167.
+    entry: BC-406 dispatched; H-261 radius estimated.
+    exit: A dated review with n11's capture statistics, a cost model by radius and a recommendation.
+    bead: think-rode
+    depends_on:
+    - BC-406
+    next_evidence: docs/project/reviews/review-2026-10-02-n17-capture-feasibility.md
+    workflows:
+    - insight-iteration
+    program: post-optimality-low-n
+    artifacts:
+    - docs/project/reviews/review-2026-10-02-n17-capture-feasibility.md
+    note: >-
+      n11's focused radii were 6.5e-4 to 6.8e-3, not 1/64, so the n17 target is 1.5 to 16
+      times finer rather than 50. Capture cost is modelled as logarithmic in the radius;
+      leaves and the contraction rate drive it. The route review carries a dated correction.
+  - id: BC-413
+    purpose: research
+    owner_focus: insight
+    instances:
+    - 17
+    state: complete
+    priority: 2
+    question: Can the conditional projection theorem be widened into a theorem whose premises capture can deliver?
+    budget: One Fable analysis lane of about 80 minutes in Session 167.
+    entry: BC-412 complete.
+    exit: A dated scope review with the plausible radius, the hardest premise and an instrument plan.
+    bead: think-xnhx
+    depends_on:
+    - BC-412
+    next_evidence: docs/project/reviews/review-2026-10-02-n17-widened-projection-scope.md
+    workflows:
+    - insight-iteration
+    program: post-optimality-low-n
+    artifacts:
+    - docs/project/reviews/review-2026-10-02-n17-widened-projection-scope.md
+    note: >-
+      Plausible at angle radius 5e-3 to 1e-2 as a parametric-LP dual-sheet certificate over
+      patches of seven backbone angles; nests inside H-261; the slider domain is the hardest
+      premise. Next slice builds the certificate on a coarse patching and reports the patch
+      count before any target run.
+  - id: BC-414
+    purpose: research
+    owner_focus: insight
+    instances:
+    - 17
+    state: complete
+    priority: 0
+    question: What bulk exclusion engine could take the n17 census to a residue geometric exclusion can absorb?
+    hypotheses:
+    - H-266
+    - H-267
+    budget: One Fable analysis lane of about 100 minutes in Session 167.
+    entry: BC-408 reported a no-go for per-cell charge floors.
+    exit: A dated design review with registrable hypotheses.
+    bead: think-8ul6
+    depends_on:
+    - BC-408
+    next_evidence: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
+    workflows:
+    - insight-iteration
+    program: post-optimality-low-n
+    artifacts:
+    - docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
+    note: >-
+      n11's census was tractable through a minimal capacity-one cover and isolated
+      sub-pattern certificates. The H259 grid counts like a 30-cell cover; an exploratory
+      24-cell design has 43,593 orbits. Registered H-266 and H-267.
+  - id: BC-415
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: in_progress
+    priority: 0
+    question: Does a D4-symmetric capacity-one cover of at most 25 cells hold the n17 endpoint family in one state?
+    hypotheses:
+    - H-266
+    budget: One Opus build lane and one Fable proof review of the depth-width wall lemma.
+    entry: H-266 registered.
+    exit: An exact cover receipt with an independently reviewed wall lemma, or the seam or capacity failure retained.
+    bead: think-qjdb
+    depends_on:
+    - BC-414
+    next_evidence: packing/campaign/hypotheses/H-266-n17-minimal-capacity-one-cover.md
+    workflows:
+    - pipeline-improvement
+    - research-loop
+    - factual-review
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-266-n17-minimal-capacity-one-cover.md
+    note: >-
+      Started in Session 167 as lanes G (checker) and G-proof (wall lemma).
+  - id: BC-416
+    purpose: research
+    owner_focus: correctness
+    instances:
+    - 17
+    state: blocked
+    priority: 1
+    question: Do certified isolated sub-patterns of arity at most seven leave at most 1e4 orbits on the H-266 cover?
+    hypotheses:
+    - H-267
+    budget: About a week to adapt the n11 kernel; hours of CPU for certificates.
+    entry: H-266 accepted.
+    exit: A certified residue count with the endpoint surviving and n11 mask 0 reproduced, or a retained refusal.
+    bead: think-1s3i
+    depends_on:
+    - BC-415
+    blocked_on: H-266 acceptance.
+    next_evidence: packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md
+    workflows:
+    - pipeline-improvement
+    - research-loop
+    program: post-optimality-low-n
+    artifacts:
+    - packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md
+    note: >-
+      n11 excluded 1,904 of 2,180 cases with 59 such certificates; an exploratory
+      arity-five proxy leaves 11,939 orbits on the 24-cell design.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

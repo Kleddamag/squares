@@ -11,7 +11,7 @@ softschema:
   schema: defects.schema.yaml
   envelope: null
   status: enforced
-count: 512
+count: 513
 defects:
 - id: D-001
   title: Fixed-side search never left the grid basin
@@ -17126,3 +17126,61 @@ defects:
     directories of both omitted trees, and renders the same in a partial checkout. The
     Pages workflow's verify-deployment job runs the check after every deploy.
   recorded_in: packing/devtools/repo_links.py
+- id: D-513
+  title: The site's table-layout tests skipped on every pull request, and read hinted text on Linux
+  date: '2026-10-02'
+  layer: tooling
+  class: bookkeeping
+  direction: conservative
+  detected_by: gate
+  latent_for: >-
+    The skip, since the first browser-backed site test joined the quick lane; the
+    pixels, from 70366bb27 and 1254d79d1 on 2026-10-01, which pinned the tables' widths,
+    to main's first full run with them that night, 07f014386
+  severity: medium
+  status: fixed
+  what: >-
+    tests/test_site_result_columns.py and tests/test_site_frontier_table.py open the
+    rendered pages in Chromium and pin what they measure: a 24ch measure at 224.8 px,
+    a credit column at its 184 px floor with no name broken inside, a frontier table
+    that fills its 1200 px track exactly. They were measured in Playwright's pinned
+    Chromium headless shell on macOS. The same shell on Linux read every one of them
+    wider: the shell hints text at HINTING_FULL unless told otherwise
+    (headless/public/headless_browser.h), which under FreeType rounds each glyph's
+    advance to a whole pixel, where CoreText does not. So the 24ch measure read 232 px,
+    9 px a digit against 8.7; the frontier table 1210.8 px in its 1200 px track; the
+    results table 250.2 px of sideways scroll at 768 against 241.6; a credit broke
+    inside Queuingtheorydotcom at the column's floor; and a summary began a line with
+    the comma after its formula. Eleven tests failed in run 36943941580, both attempts,
+    on main at 07f014386. The faces are the page's own, inlined as data; what differed
+    was how the shell metered them. No pull request had run the tests: the four
+    behavioural shards install no Chromium, so the tests skipped there (shard A's
+    summary on PR runs reads "2062 passed, 6 skipped"), the frontend job, which
+    installs one, ran only check_frontend, and every main run since the pins reused a
+    pull request's tree. 07f014386 was the first tree no pull request had run.
+  consequence: >-
+    A layout regression in either table would pass every pull request and show only on
+    a merge whose tree no pull request had run, which is where this one showed, as a
+    red main that was not a regression. Nothing on the site was wrong: the Pages
+    deployment of the same commit succeeded and check_published_site passed 848 of 848.
+  fix: >-
+    devtools.preview_site.launch_chromium launches every site measurement with
+    --font-render-hinting=none, the switch the shell takes to lift its default
+    (headless/lib/browser/command_line_handler.cc); on macOS both tables measure the
+    same with it as without, 74 passed. tests.site_browser is how the site's tests
+    launch: it skips where no Chromium can be launched, unless SQPACK_REQUIRE_CHROMIUM
+    says the run must have one, when it fails. The quick lane ignores the two files
+    (SITE_LAYOUT_TESTS), and the new step "site table layout in Chromium" runs them in
+    the frontend job, the one pull-request runner that installs Chromium, with the
+    requirement set, so a shell that will not launch is a failed step and not a green
+    one. The thirteen other browser-backed test files still skip on pull requests: all
+    fifteen cost 203 s locally against the frontend tier's 150 s ceiling, so they wait
+    on a job of their own.
+  regression: >-
+    tests/test_validation_cli.py holds the quick lane's two ignores, the step's command
+    and its environment, that every job selecting the step installs Chromium on the
+    event and no shard does, with a negative control that strips the install from the
+    frontend job; tests/test_site_browser.py holds that launch_chromium carries the
+    switch ahead of any other argument and that the launcher fails rather than skips
+    where required. The pull request's own frontend job is the Linux reading.
+  recorded_in: packing/tests/site_browser.py

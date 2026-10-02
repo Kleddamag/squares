@@ -20,10 +20,23 @@ What it re-derives, from scratch:
 - for the rows checked in full: the required domain, the strict core, every collision
   region against every live partner row and every facet of the exact Minkowski
   difference, and coverage of the required domain by forbidden, collision and residual
-  regions by an exact area argument (the leftover area of a closed clipping subtraction
-  must be zero);
+  regions by an exact vertical sweep (every event abscissa, and one probe inside every
+  open slab between two of them);
 - the closure: derived after each step and equal to the declared one, with no step after
   it, and the final state equal to the derived one.
+
+Arithmetic. The collision facets and the row cover run on homogeneous integers, with
+`Fraction` kept for everything else. A Minkowski difference's facets come from the two
+cores' edge normals: a Minkowski sum of convex polygons has exactly the edge directions
+of its summands, so these are the hull's facets up to positive scaling, as many of them,
+with parallel directions merged and their supports added. The sweep compares ordinates
+by cross-multiplication. Four caches hold pure functions of exact inputs and nothing
+else: the facets of a (partner core, core) pair, the least value of `n . y` over a
+partner row's domain by direction, the forbidden region of an (owned hull, core) pair,
+and a partner row's admitted cover, reused at a later step only when that step publishes
+identical domain and core lists for the same accepted row. `covered_by_area`, the
+area-subtraction form of the cover, is kept as the reference the tests hold the sweep
+against.
 
 Modes. Full, the default, checks every row of every step and is what admission requires.
 `--sample N` checks `N` rows per step drawn by a seeded generator, and every row of the
@@ -40,10 +53,13 @@ import argparse
 import gzip
 import hashlib
 import json
+import math
 import random
 import time
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from fractions import Fraction as Q
+from itertools import pairwise
 from pathlib import Path
 from typing import Any
 
@@ -279,6 +295,307 @@ def covered_by_area(domain: list[Point], regions: list[list[Point]]) -> tuple[bo
 
 
 # ---------------------------------------------------------------------------
+# Homogeneous integers: the collision facets and the row cover without Fraction
+# ---------------------------------------------------------------------------
+
+HPoint = tuple[int, int, int]
+Ratio = tuple[int, int]
+Direction = tuple[int, int]
+Facet = tuple[int, int, int, int]
+
+
+def homogeneous(pt: Point) -> HPoint:
+    """`(x, y)` as integers `(X, Y, Z)` with `x = X/Z`, `y = Y/Z` and `Z > 0`."""
+    x, y = pt
+    z = x.denominator * y.denominator // math.gcd(x.denominator, y.denominator)
+    return x.numerator * (z // x.denominator), y.numerator * (z // y.denominator), z
+
+
+def ratio_lt(a: Ratio, b: Ratio) -> bool:
+    """`a < b` for ratios with positive denominators."""
+    return a[0] * b[1] < b[0] * a[1]
+
+
+def normalised(numerator: int, denominator: int) -> Ratio:
+    """The ratio in lowest terms with a positive denominator, so equal values are equal."""
+    if denominator < 0:
+        numerator, denominator = -numerator, -denominator
+    g = math.gcd(numerator, denominator)
+    return numerator // g, denominator // g
+
+
+def between(a: Ratio, b: Ratio) -> Ratio:
+    """A ratio strictly inside `(a, b)` with small terms: the continued-fraction choice.
+
+    An integer inside the interval is taken when there is one; otherwise the interval is
+    shifted into `[0, 1]` and inverted, which exchanges its ends, and the answer is
+    `whole + 1/inner`. The terms stay about the size of the gap's, where the midpoint
+    would carry the product of both ends' denominators.
+    """
+    an, ad = a
+    bn, bd = b
+    whole = an // ad
+    if (whole + 1) * bd < bn:
+        return whole + 1, 1
+    rest_an, rest_bn = an - whole * ad, bn - whole * bd
+    if rest_an == 0:
+        k = bd // rest_bn + 1
+        return whole * k + 1, k
+    n, d = between((bd, rest_bn), (ad, rest_an))
+    return whole * n + d, n
+
+
+def ratio_extremes(values: Sequence[Ratio]) -> tuple[Ratio, Ratio]:
+    least = most = values[0]
+    for value in values[1:]:
+        if ratio_lt(value, least):
+            least = value
+        elif ratio_lt(most, value):
+            most = value
+    return least, most
+
+
+def directions(polygon: Sequence[HPoint]) -> list[Direction]:
+    """Outward normals of a counterclockwise convex polygon's edges, each in lowest terms."""
+    out: list[Direction] = []
+    count = len(polygon)
+    for i in range(count):
+        px, py, pz = polygon[i]
+        qx, qy, qz = polygon[(i + 1) % count]
+        nx, ny = qy * pz - py * qz, px * qz - qx * pz
+        g = math.gcd(nx, ny)
+        out.append((nx // g, ny // g))
+    return out
+
+
+def support(polygon: Sequence[HPoint], nx: int, ny: int, *, largest: bool) -> Ratio:
+    """The largest, or the least, value of `n . v` over the polygon's vertices."""
+    best_n, best_d = 0, 0
+    for x, y, z in polygon:
+        value = nx * x + ny * y
+        if best_d == 0:
+            better = True
+        elif largest:
+            better = value * best_d > best_n * z
+        else:
+            better = value * best_d < best_n * z
+        if better:
+            best_n, best_d = value, z
+    return best_n, best_d
+
+
+def difference_facets(partner: Sequence[HPoint], core: Sequence[HPoint]) -> list[Facet]:
+    """The facets `n . p <= h` of `partner - core`, the hull of the vertex differences.
+
+    A Minkowski sum of convex polygons has exactly the edge directions of its summands,
+    so the facets of `partner + (-core)` are the outward normals of `partner` and the
+    negated normals of `core`, each direction once, with support `max over partner of
+    n . v` minus `min over core of n . w`. These are the hull's facets up to positive
+    scaling, and as many of them. Each is `(nx, ny, hn, hd)` for `n . p <= hn/hd`,
+    `hd > 0`.
+    """
+    facets: dict[Direction, Facet] = {}
+    negated = [(-nx, -ny) for nx, ny in directions(core)]
+    for nx, ny in [*directions(partner), *negated]:
+        if (nx, ny) in facets:
+            continue
+        top_n, top_d = support(partner, nx, ny, largest=True)
+        low_n, low_d = support(core, nx, ny, largest=False)
+        facets[(nx, ny)] = (nx, ny, top_n * low_d - low_n * top_d, top_d * low_d)
+    return list(facets.values())
+
+
+@dataclass(frozen=True)
+class Edge:
+    """A non-vertical edge: its polygon, its closed x range, and its line.
+
+    The line is `a x + b y + c = 0` with `b > 0`, so the ordinate at `x = X/W` is
+    `-(a X + c W) / (b W)`, a ratio with a positive denominator.
+    """
+
+    polygon: int
+    lo: Ratio
+    hi: Ratio
+    a: int
+    b: int
+    c: int
+
+
+Vertical = tuple[int, Ratio, Ratio]
+Section = tuple[Ratio, Ratio]
+
+
+def compile_edges(
+    polygons: Sequence[Sequence[HPoint]],
+) -> tuple[list[Edge], dict[Ratio, list[Vertical]]]:
+    """Every polygon's edges: the non-vertical ones as lines, the vertical ones by x."""
+    edges: list[Edge] = []
+    verticals: dict[Ratio, list[Vertical]] = {}
+    for index, polygon in enumerate(polygons):
+        count = len(polygon)
+        for i in range(count):
+            px, py, pz = polygon[i]
+            qx, qy, qz = polygon[(i + 1) % count]
+            a, b, c = py * qz - qy * pz, qx * pz - px * qz, px * qy - qx * py
+            if b == 0:
+                low, high = ratio_extremes([(py, pz), (qy, qz)])
+                verticals.setdefault(normalised(px, pz), []).append((index, low, high))
+                continue
+            if b < 0:
+                a, b, c = -a, -b, -c
+            low, high = ratio_extremes([(px, pz), (qx, qz)])
+            edges.append(Edge(index, low, high, a, b, c))
+    return edges, verticals
+
+
+def sweep_events(
+    polygons: Sequence[Sequence[HPoint]], edges: Sequence[Edge], left: Ratio, right: Ratio
+) -> list[Ratio]:
+    """Every vertex abscissa in `[left, right]` and every crossing of two edges there.
+
+    Edges are taken in order of their left end, against the edges whose x range still
+    reaches the current left end; two edges with the same slope never cross.
+    """
+    events: set[Ratio] = set()
+    for polygon in polygons:
+        for x, _, z in polygon:
+            if not ratio_lt((x, z), left) and not ratio_lt(right, (x, z)):
+                events.add(normalised(x, z))
+    order = sorted(range(len(edges)), key=lambda i: Q(*edges[i].lo))
+    active: list[int] = []
+    for i in order:
+        edge = edges[i]
+        if ratio_lt(edge.hi, left) or ratio_lt(right, edge.lo):
+            continue
+        active = [j for j in active if not ratio_lt(edges[j].hi, edge.lo)]
+        for j in active:
+            other = edges[j]
+            det = edge.a * other.b - edge.b * other.a
+            if det == 0:
+                continue
+            xn = edge.b * other.c - edge.c * other.b
+            if det < 0:
+                xn, det = -xn, -det
+            start = ratio_extremes([edge.lo, other.lo, left])[1]
+            stop = ratio_extremes([edge.hi, other.hi, right])[0]
+            if not ratio_lt((xn, det), start) and not ratio_lt(stop, (xn, det)):
+                events.add(normalised(xn, det))
+        active.append(i)
+    return sorted(events, key=lambda r: Q(*r))
+
+
+def section_covered(target: Section, spans: list[Section]) -> bool:
+    """Whether closed intervals cover the closed target, merging them by lower end.
+
+    The sort key is the float of each lower end; the order is then confirmed exactly on
+    every adjacent pair and redone with exact keys when it fails. The merge is exact,
+    and a mis-sorted list could only make it refuse, never accept.
+    """
+    if len(spans) > 1:
+        spans.sort(key=lambda span: span[0][0] / span[0][1])
+        if any(ratio_lt(spans[i + 1][0], spans[i][0]) for i in range(len(spans) - 1)):
+            spans.sort(key=lambda span: Q(*span[0]))
+    low, high = target
+    cursor = low
+    for span_low, span_high in spans:
+        if ratio_lt(span_high, cursor):
+            continue
+        if ratio_lt(cursor, span_low):
+            return False
+        if ratio_lt(cursor, span_high):
+            cursor = span_high
+        if not ratio_lt(cursor, high):
+            return True
+    return not ratio_lt(cursor, high)
+
+
+def _widen(found: Section | None, low: Ratio, high: Ratio) -> Section:
+    if found is None:
+        return low, high
+    return (
+        low if ratio_lt(low, found[0]) else found[0],
+        high if ratio_lt(found[1], high) else found[1],
+    )
+
+
+def covered_by_sweep(domain: list[Point], regions: list[list[Point]]) -> tuple[bool, Q | None]:
+    """Whether the closed convex regions cover the domain, by an exact vertical sweep.
+
+    Every polygon's vertex abscissa in the domain's x range and every crossing of two
+    non-vertical edges there is an event. Between two consecutive events no edge begins
+    or ends and no two edges cross, so the order of the edges' ordinates is constant on
+    the open slab and coverage of the vertical section at one interior abscissa decides
+    the whole slab; each event abscissa is checked on its own. At every probe the closed
+    sections of the regions must cover the closed section of the domain. Points and
+    segments cover no area and are left out; the regions are convex polygons in hull
+    order. Returns the first uncovered abscissa, or None.
+    """
+    polygons: list[tuple[HPoint, ...]] = [tuple(homogeneous(v) for v in domain)]
+    polygons.extend(
+        tuple(homogeneous(v) for v in region) for region in regions if len(region) >= 3
+    )
+    left, right = ratio_extremes([(x, z) for x, _, z in polygons[0]])
+    edges, verticals = compile_edges(polygons)
+    positions = sweep_events(polygons, edges, left, right)
+    require(
+        positions[0] == normalised(*left) and positions[-1] == normalised(*right),
+        "row domain endpoint missing",
+    )
+    probes = [positions[0]]
+    for a, b in pairwise(positions):
+        probes.extend((between(a, b), b))
+    starts = sorted(range(len(edges)), key=lambda i: Q(*edges[i].lo))
+    ends = sorted(range(len(edges)), key=lambda i: Q(*edges[i].hi))
+    live: set[int] = set()
+    started = ended = 0
+    for probe in probes:
+        while started < len(starts) and not ratio_lt(probe, edges[starts[started]].lo):
+            live.add(starts[started])
+            started += 1
+        while ended < len(ends) and ratio_lt(edges[ends[ended]].hi, probe):
+            live.discard(ends[ended])
+            ended += 1
+        xn, xd = probe
+        sections: dict[int, Section] = {}
+        for i in live:
+            edge = edges[i]
+            ordinate = (-(edge.a * xn + edge.c * xd), edge.b * xd)
+            sections[edge.polygon] = _widen(sections.get(edge.polygon), ordinate, ordinate)
+        for polygon, low, high in verticals.get(probe, ()):
+            sections[polygon] = _widen(sections.get(polygon), low, high)
+        target = sections.get(0)
+        require(target is not None, "coverage probe outside domain")
+        assert target is not None
+        spans = [section for polygon, section in sections.items() if polygon != 0]
+        if not section_covered(target, spans):
+            return False, Q(*probe)
+    return True, None
+
+
+@dataclass
+class CoverRow:
+    """A partner row's admitted pose cover, kept on the accepted row.
+
+    `domain_given` and `core_given` are the published lists exactly as admitted. A later
+    step that publishes the same lists for the same accepted row has the same proof; any
+    other publication is proved afresh. `minima` memoises the least value of `n . y`
+    over the domain by facet direction, a pure function of the admitted domain.
+    """
+
+    domain_given: object
+    core_given: object
+    domain: tuple[HPoint, ...]
+    core: tuple[HPoint, ...]
+    minima: dict[Direction, Ratio] = field(default_factory=dict[Direction, Ratio])
+
+    def minimum(self, nx: int, ny: int) -> Ratio:
+        found = self.minima.get((nx, ny))
+        if found is None:
+            found = self.minima[(nx, ny)] = support(self.domain, nx, ny, largest=False)
+        return found
+
+
+# ---------------------------------------------------------------------------
 # The cells, the objects and the state
 # ---------------------------------------------------------------------------
 
@@ -338,6 +655,11 @@ class Row:
     reference: Any
     outer: list[Point]
     residual: list[list[Point]]
+    cover: CoverRow | None = None
+
+
+CorePair = tuple[tuple[HPoint, ...], tuple[HPoint, ...]]
+HullPair = tuple[tuple[Point, ...], tuple[Point, ...]]
 
 
 @dataclass
@@ -349,9 +671,26 @@ class State:
     groups: dict[int, list[Point]] = field(default_factory=dict[int, list[Point]])
     rows: dict[int, list[Row]] = field(default_factory=dict[int, list[Row]])
     stats: dict[str, int] = field(default_factory=dict[str, int])
+    facets: dict[CorePair, list[Facet]] = field(default_factory=dict[CorePair, list[Facet]])
+    forbidden: dict[HullPair, list[Point]] = field(default_factory=dict[HullPair, list[Point]])
 
     def tick(self, key: str, amount: int = 1) -> None:
         self.stats[key] = self.stats.get(key, 0) + amount
+
+    def difference(self, partner: tuple[HPoint, ...], core: tuple[HPoint, ...]) -> list[Facet]:
+        """The facets of `partner - core`, computed once per pair of cores."""
+        found = self.facets.get((partner, core))
+        if found is None:
+            found = self.facets[(partner, core)] = difference_facets(partner, core)
+        return found
+
+    def forbidden_region(self, group: list[Point], core: list[Point]) -> list[Point]:
+        """`hull(group - core)`, computed once per pair of owned hull and core."""
+        key = (tuple(group), tuple(core))
+        found = self.forbidden.get(key)
+        if found is None:
+            found = self.forbidden[key] = minkowski_diff(group, core)
+        return found
 
 
 def check_frame(seed: dict[str, Any], node: dict[str, Any], cells: Cells) -> list[int]:
@@ -420,35 +759,51 @@ def check_seed(state: State, seed: dict[str, Any], node: dict[str, Any]) -> None
         )
 
 
-Partner = tuple[list[Point], list[Point], tuple[Q, Q]]
+def admit_cover(row: Row, item: dict[str, Any], si: int, pj: int) -> CoverRow:
+    """Prove one published partner row: its domain is the hull of the accepted row's
+    residual vertices, and its core is strictly inside the square over the row."""
+    vertices = [v for polygon in row.residual for v in polygon]
+    domain = hull(vertices)
+    require(
+        same_set(poly(item["domain"]), domain),
+        f"step {si} partner {pj} row {row.reference['row']} domain",
+    )
+    core = hull(poly(item["core"]))
+    require(len(core) >= 3 and area2(core) > 0, f"step {si}: partner {pj} core")
+    require(core_strict(core, *row.interval), f"step {si} partner {pj} core not strict")
+    return CoverRow(
+        item["domain"],
+        item["core"],
+        tuple(homogeneous(v) for v in domain),
+        tuple(homogeneous(v) for v in core),
+    )
 
 
-def check_partners(state: State, step: dict[str, Any], si: int) -> dict[int, list[Partner]]:
+def check_partners(state: State, step: dict[str, Any], si: int) -> dict[int, list[CoverRow]]:
     owner = step["owner"]
-    partners: dict[int, list[Partner]] = {}
+    partners: dict[int, list[CoverRow]] = {}
     for key, items in step["prior_partner_pose_covers"].items():
         pj = int(key)
         require(pj in state.mask and pj != owner, f"step {si}: partner {pj}")
         rows = state.rows[pj]
         require(len(items) == len(rows), f"step {si}: partner {pj} cover length")
-        live: list[Partner] = []
+        live: list[CoverRow] = []
         for item, r in zip(items, rows, strict=True):
             require(item["reference"] == r.reference, f"step {si}: partner {pj} reference")
             interval = (Q(item["interval"][0]), Q(item["interval"][1]))
             require(interval == r.interval, f"step {si}: partner {pj} interval")
-            vertices = [v for polygon in r.residual for v in polygon]
-            if not vertices:
+            if not any(r.residual):
                 require(item["domain"] == [] and item["core"] == [], f"step {si}: dead row")
                 continue
-            domain = hull(vertices)
-            require(
-                same_set(poly(item["domain"]), domain),
-                f"step {si} partner {pj} row {r.reference['row']} domain",
-            )
-            core = hull(poly(item["core"]))
-            require(len(core) >= 3 and area2(core) > 0, f"step {si}: partner {pj} core")
-            require(core_strict(core, *r.interval), f"step {si} partner {pj} core not strict")
-            live.append((domain, core, r.interval))
+            cover = r.cover
+            if (
+                cover is None
+                or cover.domain_given != item["domain"]
+                or cover.core_given != item["core"]
+            ):
+                cover = admit_cover(r, item, si, pj)
+                r.cover = cover
+            live.append(cover)
         require(bool(live), f"step {si}: empty partner cover")
         partners[pj] = live
         state.tick("partner_rows", len(live))
@@ -462,27 +817,33 @@ def check_collisions(
     where: str,
     core: list[Point],
     required: list[Point],
-    partners: dict[int, list[Partner]],
+    partners: dict[int, list[CoverRow]],
 ) -> list[list[Point]]:
     regions: list[list[Point]] = []
+    core_h = tuple(homogeneous(v) for v in core)
+    required_planes: list[Plane] | None = None
     for item in row["collision_regions"]:
         pj = item["partner"]
         require(pj in partners, f"{where}: collision partner {pj}")
         region = hull(poly(item["vertices"]))
         require(len(region) >= 3 and area2(region) > 0, f"{where}: degenerate region")
+        if required_planes is None:
+            required_planes = planes_of(required)
         require(
-            all(inside(required, v) for v in region),
+            all(a * v[0] + b * v[1] <= c for v in region for a, b, c in required_planes),
             f"{where}: collision region escapes the required domain",
         )
-        for domain, partner_core, _ in partners[pj]:
-            difference = minkowski_diff(partner_core, core)
-            require(len(difference) >= 3, f"{where}: degenerate difference")
-            for a, b, c in planes_of(difference):
-                bound = c + min(a * y[0] + b * y[1] for y in domain)
+        region_h = [homogeneous(v) for v in region]
+        for cover in partners[pj]:
+            facets = state.difference(cover.core, core_h)
+            require(len(facets) >= 3, f"{where}: degenerate difference")
+            for nx, ny, hn, hd in facets:
+                mn, md = cover.minimum(nx, ny)
+                bound_n, bound_d = hn * md + mn * hd, hd * md
                 state.tick("collision_facet_checks", len(region))
-                for v in region:
+                for x, y, z in region_h:
                     require(
-                        a * v[0] + b * v[1] <= bound,
+                        (nx * x + ny * y) * bound_d <= bound_n * z,
                         f"{where} partner {pj}: region escapes the collision set",
                     )
         regions.append(region)
@@ -502,14 +863,14 @@ def check_cover(
     """The required domain is covered by forbidden, collision and residual regions."""
     collisions, residual = regions
     forbidden = [
-        minkowski_diff(state.groups[oj], core)
+        state.forbidden_region(state.groups[oj], core)
         for oj in state.mask
         if oj != owner and state.groups[oj]
     ]
     every = forbidden + collisions + residual
     if area2(required) > 0:
-        ok, left = covered_by_area(required, every)
-        require(ok, f"{where}: required domain NOT covered (leftover pieces {left})")
+        ok, probe = covered_by_sweep(hull(required), every)
+        require(ok, f"{where}: required domain NOT covered (uncovered at x={probe})")
     else:
         points = list(required)
         if len(points) == 2:

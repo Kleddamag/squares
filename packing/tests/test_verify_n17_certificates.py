@@ -6,6 +6,8 @@ import copy
 import gzip
 import hashlib
 import json
+import math
+import random
 import shutil
 import subprocess
 import sys
@@ -162,6 +164,196 @@ def test_the_kernel_verifier_refuses_bytes_that_do_not_match_their_name(
     assert "digest" in receipt["failure"]
     with pytest.raises(kernel_verifier.VerificationError, match="digest"):
         _ = kernel_verifier.file_cells(tmp_path / "cells.json", "0" * 64)
+
+
+# ---------------------------------------------------------------------------
+# The kernel verifier's integer forms, against its Fraction forms
+# ---------------------------------------------------------------------------
+
+Point = tuple[Q, Q]
+
+
+def convex_polygon(rng: random.Random, vertices: int) -> list[Point]:
+    """A random convex polygon with at least three hull vertices, on a coarse grid."""
+    while True:
+        points = [
+            (Q(rng.randint(-20, 20), 64), Q(rng.randint(-20, 20), 64)) for _ in range(vertices)
+        ]
+        found = kernel_verifier.hull(points)
+        if len(found) >= 3:
+            return found
+
+
+def encode(polygon: list[Point]) -> list[list[str]]:
+    return [[str(x), str(y)] for x, y in polygon]
+
+
+def homogeneous(polygon: list[Point]) -> tuple[kernel_verifier.HPoint, ...]:
+    return tuple(kernel_verifier.homogeneous(v) for v in polygon)
+
+
+def canonical_plane(a: Q, b: Q, c: Q) -> tuple[int, int, Q]:
+    """`a x + b y <= c` with an integer normal in lowest terms, for comparing facet sets."""
+    scale = math.lcm(a.denominator, b.denominator)
+    ai, bi = int(a * scale), int(b * scale)
+    g = math.gcd(ai, bi)
+    return ai // g, bi // g, c * scale / g
+
+
+SQUARE = [(Q(-1, 4), Q(-1, 4)), (Q(1, 4), Q(-1, 4)), (Q(1, 4), Q(1, 4)), (Q(-1, 4), Q(1, 4))]
+
+
+def test_difference_facets_are_the_hull_facets() -> None:
+    rng = random.Random(7)
+    pairs = [(SQUARE, [(x / 2, y / 2) for x, y in SQUARE])]
+    pairs.extend(
+        (convex_polygon(rng, 3 + rng.randrange(5)), convex_polygon(rng, 3 + rng.randrange(4)))
+        for _ in range(40)
+    )
+    for partner, core in pairs:
+        difference = kernel_verifier.minkowski_diff(partner, core)
+        reference = {
+            canonical_plane(a, b, c) for a, b, c in kernel_verifier.planes_of(difference)
+        }
+        facets = kernel_verifier.difference_facets(homogeneous(partner), homogeneous(core))
+        assert {(nx, ny, Q(hn, hd)) for nx, ny, hn, hd in facets} == reference
+        assert len(facets) == len(reference)
+
+
+def tiling(rng: random.Random, domain: list[Point], cuts: int) -> list[list[Point]]:
+    """The domain cut by random lines into convex pieces that cover it exactly."""
+    pieces = [domain]
+    for _ in range(cuts):
+        a, b = Q(rng.randint(-5, 5)), Q(rng.randint(-5, 5))
+        if a == 0 and b == 0:
+            continue
+        inside = rng.choice(domain)
+        c = a * inside[0] + b * inside[1] + Q(rng.randint(-3, 3), 128)
+        out: list[list[Point]] = []
+        for piece in pieces:
+            for sign in (1, -1):
+                part = kernel_verifier.clip_closed(piece, sign * a, sign * b, sign * c)
+                if len(part) >= 3 and kernel_verifier.area2(part) > 0:
+                    out.append(kernel_verifier.hull(part))
+        pieces = out
+    return pieces
+
+
+def shifted(polygon: list[Point], dx: Q) -> list[Point]:
+    return kernel_verifier.hull([(x + dx, y) for x, y in polygon])
+
+
+def test_the_sweep_agrees_with_the_area_cover() -> None:
+    rng = random.Random(11)
+    verdicts: set[bool] = set()
+    rectangle = [(Q(0), Q(0)), (Q(2), Q(0)), (Q(2), Q(1)), (Q(0), Q(1))]
+    for trial in range(48):
+        domain = rectangle if trial % 6 == 0 else convex_polygon(rng, 4 + rng.randrange(4))
+        regions = tiling(rng, domain, 1 + rng.randrange(4))
+        kind = trial % 4
+        if kind == 1 and len(regions) > 1:
+            regions.pop(rng.randrange(len(regions)))
+        elif kind == 2:
+            index = rng.randrange(len(regions))
+            regions[index] = shifted(regions[index], Q(1, 2**30))
+        elif kind == 3:
+            regions.extend(convex_polygon(rng, 3 + rng.randrange(3)) for _ in range(2))
+            regions.append([(Q(0), Q(0)), (Q(1), Q(0))])
+        rng.shuffle(regions)
+        by_area = kernel_verifier.covered_by_area(domain, regions)[0]
+        by_sweep, probe = kernel_verifier.covered_by_sweep(domain, regions)
+        assert by_sweep == by_area, (trial, probe)
+        assert (probe is None) == by_sweep
+        verdicts.add(by_area)
+    assert verdicts == {True, False}
+
+
+def test_between_lies_strictly_inside_with_small_terms() -> None:
+    rng = random.Random(3)
+    pairs: list[tuple[tuple[int, int], tuple[int, int]]] = [
+        ((10**60, 3 * 10**60 + 1), (10**60 + 1, 3 * 10**60 + 1)),
+        ((-7, 2), (-3, 1)),
+        ((0, 1), (1, 10**9)),
+    ]
+    while len(pairs) < 200:
+        a = (rng.randint(-(10**6), 10**6), rng.randint(1, 10**6))
+        b = (rng.randint(-(10**6), 10**6), rng.randint(1, 10**6))
+        if kernel_verifier.ratio_lt(a, b):
+            pairs.append((a, b))
+    for a, b in pairs:
+        n, d = kernel_verifier.between(a, b)
+        assert d > 0
+        assert kernel_verifier.ratio_lt(a, (n, d))
+        assert kernel_verifier.ratio_lt((n, d), b)
+        assert d <= a[1] + b[1]
+
+
+def unit_cell() -> list[Point]:
+    return [(Q(1), Q(1)), (Q(2), Q(1)), (Q(2), Q(2)), (Q(1), Q(2))]
+
+
+def cover_state() -> tuple[kernel_verifier.State, kernel_verifier.Row, dict[str, Any]]:
+    """A state with one partner row whose published cover is sound."""
+    state = kernel_verifier.State(
+        cells=[unit_cell(), unit_cell()], cap=Q(3), bins=1, mask=[0, 1]
+    )
+    residual = kernel_verifier.hull(
+        [(Q(1), Q(1)), (Q(3, 2), Q(1)), (Q(3, 2), Q(3, 2)), (Q(1), Q(3, 2))]
+    )
+    row = kernel_verifier.Row(
+        (Q(0), Q(1)), {"kind": "wall_seed", "owner": 1, "row": 0}, residual, [residual]
+    )
+    state.rows[1] = [row]
+    item = {
+        "reference": row.reference,
+        "interval": ["0", "1"],
+        "domain": encode(residual),
+        "core": encode(SQUARE),
+    }
+    return state, row, item
+
+
+def step_with(item: dict[str, Any]) -> dict[str, Any]:
+    return {"owner": 0, "prior_partner_pose_covers": {"1": [item]}}
+
+
+def test_a_republished_partner_cover_is_reused_only_when_identical() -> None:
+    state, row, item = cover_state()
+    partners = kernel_verifier.check_partners(state, step_with(item), 0)
+    admitted = partners[1][0]
+    assert row.cover is admitted
+    again = kernel_verifier.check_partners(state, step_with(copy.deepcopy(item)), 1)
+    assert again[1][0] is admitted
+    assert state.stats["partner_rows"] == 2
+    shrunk = copy.deepcopy(item)
+    shrunk["domain"] = shrunk["domain"][:3]
+    with pytest.raises(kernel_verifier.VerificationError, match="domain"):
+        _ = kernel_verifier.check_partners(state, step_with(shrunk), 2)
+    wide = copy.deepcopy(item)
+    wide["core"] = encode([(2 * x, 2 * y) for x, y in SQUARE])
+    with pytest.raises(kernel_verifier.VerificationError, match="core not strict"):
+        _ = kernel_verifier.check_partners(state, step_with(wide), 3)
+    assert row.cover is admitted
+    replaced = kernel_verifier.hull(
+        [(Q(1), Q(1)), (Q(5, 4), Q(1)), (Q(5, 4), Q(5, 4)), (Q(1), Q(5, 4))]
+    )
+    state.rows[1] = [kernel_verifier.Row(row.interval, row.reference, replaced, [replaced])]
+    with pytest.raises(kernel_verifier.VerificationError, match="domain"):
+        _ = kernel_verifier.check_partners(state, step_with(item), 4)
+    assert state.rows[1][0].cover is None
+
+
+def test_the_facet_cache_keys_on_the_exact_cores() -> None:
+    state = kernel_verifier.State(cells=[], cap=Q(3), bins=1, mask=[])
+    partner = homogeneous(unit_cell())
+    core = homogeneous(SQUARE)
+    moved = homogeneous([(x + Q(1, 2**40), y) if x > 0 else (x, y) for x, y in SQUARE])
+    first = state.difference(partner, core)
+    second = state.difference(partner, moved)
+    assert state.difference(partner, core) is first
+    assert second == kernel_verifier.difference_facets(partner, moved)
+    assert first != second
+    assert len(state.facets) == 2
 
 
 # ---------------------------------------------------------------------------

@@ -1195,11 +1195,16 @@ it.
   gutters or `--site-table-max` (100rem, 1600 pixels), past which its columns would only
   spread apart and a row would be harder to follow.
   So nothing changes at 1280 pixels or narrower, and on a large screen a table’s text
-  columns wrap less. The Every Result table is 1104 pixels wide up to 1280, 1424 at 1600
-  and 1600 from about 1780 up; the frontier table, whose own track is 86rem, is the
-  page’s content area less its gutters up to 1456 pixels and goes from 1376 to 1600
-  above that. The rule takes any `.site-wide` that is or holds a `.site-table-wrap`, so a
-  new table bleeds with no rule of its own.
+  columns wrap less. The frontier table, whose own track is 86rem, is the page’s content
+  area less its gutters up to 1456 pixels and goes from 1376 to 1600 above that.
+  The tables of results are the one exception: since they hold eight columns
+  (2026-10-02, `think-ybt5`, `think-e4o3`), their floors come to 1139 pixels with every
+  row showing, more than the 1104 of the wide track, so they bleed from 74rem, 1184
+  pixels. They fit from about 1220, are 1200 pixels wide at 1280, as the frontier table
+  is there, 1520 at 1600 and 1600 from about 1680 up, and below 1220 they scroll in
+  their wrap: by 195 pixels at 1024 and 451 at 768 with every row showing.
+  The rule takes any `.site-wide` that is or holds a `.site-table-wrap`, so a new table
+  bleeds with no rule of its own.
 
 - **Atlas popover.** Pressing a cell opens the page’s one atlas popover on that case, a
   card popover in every other way (square corners, the scrim, the caps label, the close
@@ -1318,27 +1323,33 @@ it.
   The two tables of results, the overview’s recent table and the results page’s, are one
   table: one header (`result_head`) and one row (`result_table_row`), so the same
   columns in the same order.
-  They are the date; the result, its summary whole, method and all, with its records on
-  a quiet line under it; the cases, n; the credit, the finder first and “after …”, what
-  the result builds on, quiet after it, in full; the rungs, with the kind on a line
-  under them; the status line, its chips one under another (**Chips**, above); and the
+  They are the date; the result, its summary whole, method and all, and its star; the
+  cases, n; the credit, the finder first and “after …”, what the result builds on, quiet
+  after it, in full; the rungs, with the kind on a line under them; the status line, its
+  chips one under another (**Chips**, above); the details, the result’s records (its
+  case link, the register, its evidence, source and reviews), a link to a line; and the
   id, the last column and the row’s trigger, as narrow as an id, under the 6rem KPress
-  keeps a cell to. The owner set that order on 2026-10-02 (`think-t090`); the id led and
-  the date closed the row until then, and the status line stood under the kind until the
-  same day (`think-ybt5`). The status cell sorts on the status word.
+  keeps a cell to. The owner set that order on 2026-10-02: the id led and the date closed
+  the row until then (`think-t090`); the status line stood under the kind
+  (`think-ybt5`); and the records stood on a quiet line under the summary, a dot between
+  two links, where the result’s cell holds the claim alone now (`think-e4o3`). The
+  status cell sorts on the status word; the details do not sort.
   On a phone each row is a card that places its cells by class, not by column, so the
   card reads as before: the id, the cases and the rungs on its first line, the status
-  under the rungs, the claim, then the credit and the date.
+  under the rungs, the claim with its details on a line under it, a dot drawn between
+  two links, then the credit and the date.
   The tables are two filters of one table, and differ only in where the filter bar
   starts, which sets the rows that begin `hidden` and the count, and in a row’s key: on
   the results page a row is the result’s own address (`id="t-018"`), and on the overview
   it names the result as `data-result`. Every other byte of a row and of its popover is
-  the same, so each shows the result’s records under its summary, each opens its popover
+  the same, so each shows the result’s records in its details, each opens its popover
   from the id, and no row of one links to the other.
   The line under the overview’s table, “See all results”, is the one link between them.
   Both sort on any column whose header carries the sort pair.
   The widths follow from each column’s floor and from what the n column asks for.
-  The id, the rungs and the date are as narrow as what they hold.
+  The id, the rungs, the status, the details and the date are as narrow as what they
+  hold. The details are as wide as their widest link, 96 pixels, and a result with many
+  records is the tallest row: T-051’s nine links stand 239 pixels.
   The rungs column is as wide as its widest chip, since no chip wraps: the three rungs
   at 114 pixels, and the widest kind, “restricted optimality”, at 180 where a row with
   one shows. The kind takes a line under the rungs, and the status column is as wide as

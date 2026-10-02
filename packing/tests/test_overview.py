@@ -2352,10 +2352,10 @@ def test_every_result_shows_its_status_and_its_place_on_the_frontier(
             # The status line is a column of its own since 2026-10-02 (think-ybt5),
             # sorted on the status word, and the rungs' cell holds no part of it.
             # As a page serves it, KPress has labelled the cell, after its own attributes.
-            marks = re.escape(overview_sections.status_marks(result))
+            shown = re.escape(overview_sections.status_marks(result))
             cell = re.compile(
                 rf'<td class="site-col-status" data-value="{result.status}"[^>]*>'
-                rf'<span class="site-standing">{marks}</span></td>'
+                rf'<span class="site-standing">{shown}</span></td>'
             )
             assert len(cell.findall(row)) == 1, result.id
             rungs = row.split('<td class="site-rungs"', 1)[1].split("</td>", 1)[0]
@@ -2519,7 +2519,7 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     # The script that sorts and filters the results page's table wires this one too.
     assert "data-site-table" in recent
     heads = re.findall(r"<th[^>]*>([^<]+)</th>", recent.split("</thead>", 1)[0])
-    assert heads == ["Date", "Result", "n", "Credit", "Rungs", "Status", "ID"]
+    assert heads == ["Date", "Result", "n", "Credit", "Rungs", "Status", "Details", "ID"]
     newest = overview_sections.recent_results(overview)
     assert re.findall(r'<tr data-result="(t-\d+)"', recent) == [r.id.lower() for r in newest]
     for result in newest:
@@ -3420,9 +3420,10 @@ def test_both_tables_of_results_have_the_same_columns(
     (`id`) on the results page and `data-result` on the overview, and `hidden`, which is
     where each table's filters start. So the overview shows each result's records, as
     the results page does, and no row of one links to the other. Both sort and both
-    filter. A result's records are a line under its summary, no column. The columns run
-    date, result, cases, credit, rungs, status and id, the owner's order of 2026-10-02
-    (`think-t090`, `think-ybt5`)."""
+    filter. The columns run date, result, cases, credit, rungs, status, details and id,
+    the owner's order of 2026-10-02 (`think-t090`, `think-ybt5`, `think-e4o3`): a
+    result's records are its Details, a link to a line, and its result cell holds the
+    claim and its star alone."""
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
     head = overview_sections.result_head()
@@ -3436,10 +3437,11 @@ def test_both_tables_of_results_have_the_same_columns(
         "Credit",
         "Rungs",
         "Status",
+        "Details",
         "ID",
     ]
     sorts = ["data-sort=" in attributes for attributes, _ in heads]
-    assert sorts == [True, False, True, True, True, True, True]
+    assert sorts == [True, False, True, True, True, True, False, True]
     # As each page serves it, after KPress has labelled the cells.
     served = re.compile(r"<th[^>]*>([^<]+)</th>")
     on_overview = served.findall(_recent_table(page).split("</thead>", 1)[0])
@@ -3463,13 +3465,20 @@ def test_both_tables_of_results_have_the_same_columns(
             "site-col-credit",
             "site-rungs",
             "site-col-status",
+            "site-col-details",
             "site-col-id",
         ]
-        # The records close the result's own cell, after its summary and its star.
+        # The records are the Details cell, after the status and before the id, a link
+        # to a line with no dots between; the result's cell holds none of them.
         assert here.count('<div class="site-records">') == 1, result.id
         assert re.search(
-            r'<div class="site-records">.*?</div></td><td class="num site-col-n"', here
-        )
+            r'<td class="site-col-details"><div class="site-records">(<a [^>]*>[^<]+</a>)+'
+            r'</div></td><td class="site-col-id"',
+            here,
+        ), result.id
+        result_cell = here.split('<td class="site-col-result">', 1)[1].split("</td>", 1)[0]
+        assert "<a " not in result_cell, result.id
+        assert " · " not in here, result.id
         assert f'<tr id="{result.id.lower()}" ' in here
         assert f'<tr data-result="{result.id.lower()}" ' in there
         # The row is the same markup on both pages, as written and as each page serves
@@ -3530,7 +3539,7 @@ def test_both_tables_of_results_end_with_the_same_id_column(
     # On a phone the id opens the card, in both tables, and the date, the row's first
     # cell, still follows the credit there.
     assert "  .site-results .site-col-id {\n    font-weight: 650;\n    grid-area: 1 / 1;" in css
-    assert "    grid-column: 3;\n    order: 1;\n    text-align: end;" in css
+    assert "    grid-column: 3;\n    order: 2;\n    text-align: end;" in css
 
 
 def test_a_date_cell_leads_with_the_date_and_then_says_what_it_dates(
@@ -3592,18 +3601,12 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
     table = overview_sections.results_table(overview)
     recent = overview_sections.recent_table(overview)
     for result in overview.results:
-        # Each row, and where its star stands: after the result's own text, before the
-        # line of its records.
-        records = '<div class="site-records">'
+        # Each row, and where its star stands: after the result's own text, the last
+        # thing in its cell, since its records are a Details column (think-e4o3).
+        placed_here = overview_sections.result_text(result) + "{star}</td>"
         rows = (
-            (
-                _row(table, result.id),
-                overview_sections.result_text(result) + "{star}" + records,
-            ),
-            (
-                _recent_row(recent, result.id),
-                overview_sections.result_text(result) + "{star}" + records,
-            ),
+            (_row(table, result.id), placed_here),
+            (_recent_row(recent, result.id), placed_here),
         )
         for row, placed in rows:
             name = re.search(r' aria-label="([^"]*)"', row)

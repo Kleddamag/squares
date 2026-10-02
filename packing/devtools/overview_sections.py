@@ -525,7 +525,10 @@ def _detail(result: Result) -> str:
 
 
 def _records(result: Result) -> str:
-    return " · ".join(
+    """A result's records, its case link, the register, its evidence, source and reviews,
+    as its Details cell sets them: one link to a line on a wide screen, and on a phone a
+    line under the claim, a dot drawn between two links (`site.css`)."""
+    return "".join(
         f'<a href="{_esc(link.url)}"'
         + (f' title="{_esc(link.title)}"' if link.title else "")
         + f">{_esc(link.label)}</a>"
@@ -834,13 +837,14 @@ def result_filters(
 
 def result_head() -> str:
     """The header row of a table of results: the one set of columns both tables carry,
-    in one order. The date; the result, with its records under it; the cases; the
-    credit; the rungs, with the kind under them; the status; and the id, which is the
-    row's trigger. The owner set this order on 2026-10-02 (`think-t090`): the id led and
-    the date closed the row until then. The status had no column until the same day
-    (`think-ybt5`): it stood under the kind, in the rungs' cell, though it is where the
-    result stands and no rung. A column sorts where an order means something, on either
-    page."""
+    in one order. The date; the result; the cases; the credit; the rungs, with the kind
+    under them; the status; the details, the result's records a link to a line; and the
+    id, which is the row's trigger. The owner set this order on 2026-10-02: the id led
+    and the date closed the row until then (`think-t090`); the status stood under the
+    kind, in the rungs' cell, though it is where the result stands and no rung
+    (`think-ybt5`); and the records stood on a line under the summary, where the result's
+    cell holds the claim alone now (`think-e4o3`). A column sorts where an order means
+    something, on either page."""
     return (
         "<thead><tr>"
         '<th data-sort="text" title="Published, for a result by others; established, for '
@@ -853,6 +857,7 @@ def result_head() -> str:
         '<th data-sort="text" class="site-col-status" title="How far the work on it here '
         "has gone: recorded, reviewed, confirmed or incomplete; then who has the next "
         'move, and superseded where it is">Status</th>'
+        '<th class="site-col-details">Details</th>'
         '<th data-sort="text" class="site-col-id">ID</th>'
         "</tr></thead>"
     )
@@ -910,20 +915,17 @@ def date_cell(result: Result) -> str:
 def result_cells(result: Result, overview: Overview, detail: RowDetail) -> str:
     """A result's cells, one for each column of `result_head`, the same on both tables:
     its date (`date_cell`), its summary with the star a new result earns (`result_text`,
-    `new_result_star`) and its records on a quiet line under it, its cases
-    (`case_list`), its credit (`credit_cell`), its rung chips with its kind on a line
-    under them (`kind_chip`), its status line (`status_marks`), and its id (`id_cell`).
-    The status cell sorts on the status word alone. The records are no column of their
-    own: a column narrow enough to fit set them a link to a line, and under the summary
-    they take a line or two, in both tables."""
+    `new_result_star`), its cases (`case_list`), its credit (`credit_cell`), its rung
+    chips with its kind on a line under them (`kind_chip`), its status line
+    (`status_marks`), its records a link to a line (`_records`), and its id
+    (`id_cell`). The status cell sorts on the status word alone."""
     record = result.record
     standing = f'<span class="site-standing">{status_marks(result)}</span>'
     return (
         f'<td class="site-col-date" data-value="{_esc(result.dated[1])}">'
         f"{date_cell(result)}</td>"
         f'<td class="site-col-result">{result_text(result)}'
-        f"{new_result_star(result, overview)}"
-        f'<div class="site-records">{_records(result)}</div></td>'
+        f"{new_result_star(result, overview)}</td>"
         f'<td class="num site-col-n" data-value="{result.first_n}">{case_list(result)}</td>'
         f'<td class="site-col-credit" data-value="{_esc(result.credit)}">'
         f"{credit_cell(result.credit)}</td>"
@@ -931,6 +933,8 @@ def result_cells(result: Result, overview: Overview, detail: RowDetail) -> str:
         f'data-value="{_esc(record["confirmation"] + record["verification"])}">'
         f'{rung_chips(result)}<span class="site-kind">{kind_chip(result)}</span></td>'
         f'<td class="site-col-status" data-value="{_esc(result.status)}">{standing}</td>'
+        '<td class="site-col-details">'
+        f'<div class="site-records">{_records(result)}</div></td>'
         f"{id_cell(result, detail)}"
     )
 

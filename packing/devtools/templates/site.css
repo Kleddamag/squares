@@ -145,6 +145,15 @@ body {
   margin-inline: calc((var(--site-table-wide) - 100%) / -2);
   max-width: var(--site-table-wide);
 }
+/* The tables of results hold eight columns since 2026-10-02 (`think-ybt5`,
+   `think-e4o3`): 1139 pixels at their floors where every row shows, more than the wide
+   track's 1104 at a 1280-pixel window. So they bleed from 74rem (1184 pixels), fit from
+   about 1220, and are 1200 pixels wide at 1280, as wide as the frontier table there;
+   narrower, they scroll in their wrap, as any table does where its floors outrun the
+   window. */
+.site-page .site-wide:has(> .site-table-wrap .site-results) {
+  --site-table-bleed-from: 74rem;
+}
 .site-hero {
   text-align: center;
 }
@@ -1192,7 +1201,7 @@ body {
   }
   /* As narrow as its widest chip, like the other short columns: the spare width is the
      result's and the credit's. */
-  .site-results :is(.site-rungs, .site-col-status) {
+  .site-results :is(.site-rungs, .site-col-status, .site-col-details) {
     width: 0;
   }
 }
@@ -1236,9 +1245,16 @@ body {
 .site-results .site-col-result .kpress-math-inline {
   display: inline;
 }
-.site-results .site-col-result .site-records {
-  margin-block-start: 0.3rem;
+/* A result's records, its case link, the register, its evidence, source and reviews, are
+   its Details, a column of their own since 2026-10-02 (`think-e4o3`; they stood on a
+   line under the summary until then): one link to a line, the column as narrow as its
+   widest link, so the result's cell holds the claim alone. On a phone they are a line
+   under the claim again, a dot drawn between two links (below). */
+.site-results .site-col-details .site-records {
   min-width: 0;
+}
+.site-results .site-col-details .site-records a {
+  display: block;
 }
 
 .site-table .site-rungs {
@@ -1254,8 +1270,9 @@ body {
    then the claim with its records under it, and the credit and date; the status line
    sits under the rungs. The results page's table and the overview's recent table are the one
    table (`.site-results`), so both take it. The card places its cells by class, not by
-   column: the wide table's row opens with the date, which the card places after the
-   credit (`order`), so the card reads as it did before the columns were reordered. */
+   column, and orders them (`order`): the wide table's row opens with the date and sets
+   the credit before the status and the details, so the card reads as it did before the
+   columns were reordered. */
 @media (width < 40rem) {
   .site-results thead {
     display: none;
@@ -1299,15 +1316,13 @@ body {
   .site-results .site-rungs {
     grid-area: 1 / 3;
   }
-  /* The status stands under the rungs, in their track, before the claim: it follows the
-     rungs in the wide table's row, and the card places the claim first unless told
-     (`order: -1`). The track is as wide as its content, and a status line of three
-     chips (`recorded`, `waiting on third party`, `superseded`) would take the whole
-     card and leave the cases and the credit no room. So the cell stops at two chips'
-     width, and a third chip wraps under them. */
+  /* The status stands right under the rungs, in their track, on the card's second line,
+     as it did when it was in their cell. The track is as wide as its content, and a
+     status line of three chips (`recorded`, `waiting on third party`, `superseded`)
+     would take the whole card and leave the cases and the credit no room. So the cell
+     stops at two chips' width, and a third chip wraps under them. */
   .site-results .site-col-status {
-    grid-column: 3;
-    order: -1;
+    grid-area: 2 / 3;
   }
   .kpress .site-results td.site-col-status {
     max-width: 14.5rem;
@@ -1319,22 +1334,34 @@ body {
     color: var(--kpress-doc-muted);
     content: "n = ";
   }
-  /* A list of five values or more takes a line of its own under the id and the rungs,
-     the card's whole width, and wraps there from the start of the line: between them it
-     had under half of that. */
+  /* A list of five values or more takes a line of its own under the id, the rungs and
+     the status, the card's whole width, and wraps there from the start of the line:
+     between them it had under half of that. */
   .kpress .site-results td.site-col-n:has(.site-n-value:nth-child(5)) {
-    grid-area: 2 / 1 / auto / -1;
+    grid-area: 3 / 1 / auto / -1;
     text-align: start;
   }
-  .site-results :is(.site-col-result, .site-records) {
+  .site-results :is(.site-col-result, .site-col-details) {
     grid-column: 1 / -1;
   }
+  .site-results .site-col-details .site-records a {
+    display: inline;
+  }
+  .site-results .site-col-details .site-records a + a::before {
+    color: var(--kpress-doc-muted);
+    content: "·";
+    display: inline-block;
+    padding-inline: 0.35em;
+  }
+  /* The claim and its details come before the credit and the date, which the wide row
+     sets on either side of them. */
   .site-results .site-col-credit {
     grid-column: 1 / 3;
+    order: 1;
   }
   .site-results .site-col-date {
     grid-column: 3;
-    order: 1;
+    order: 2;
     text-align: end;
   }
   .site-results .site-date-kind {

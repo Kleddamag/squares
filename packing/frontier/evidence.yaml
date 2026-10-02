@@ -1222,10 +1222,11 @@ evidence:
       --full --pair-points over 64,800 roots (46,583,600 boxes), and zm_mixed.py
       --d4 --cert-mode in exact rationals over 129,600 roots, none uncertified. The
       directory's SHA256SUMS lists three run logs that are not in the published tree,
-      so the source's verify.sh stops at its first step on a fresh checkout. No
-      checker has been replayed here. No Lean statement exists for this cover and the
-      source says it has had no review outside its project. The grid gives the upper
-      bound.
+      so the source's verify.sh stops at its first step on a fresh checkout. This entry
+      preserves the source claim; the local zmx2 replay of 2 October 2026 is
+      E-n077-wand125-mixed-cover-zmx2-replay, and zm_mixed.py has not been run here. No
+      Lean statement exists for this cover and the source says it has had no review
+      outside its project. The grid gives the upper bound.
     external_review:
       state: informally-verified
       date: '2026-10-02'
@@ -1246,6 +1247,93 @@ evidence:
         machine-checked: both checkers' lemmas and programs, the host's IEEE-754 model,
         and the total and invariance.
     source_reviewed: '2026-10-01'
+  - id: E-n077-wand125-mixed-cover-zmx2-replay
+    claim: lower-bound
+    scope: {n_values: [77, 78]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 exact covers 2026-10-01]'
+    certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m4_n77_L9/n77_mixed_cover_9.txt.gz
+    replay: >-
+      From packing/, with cargo on PATH and python3 the project interpreter:
+      python3 -m devtools.replay_evand_zmx2 run --case 77 --mode d4 --work W --out OUT,
+      and the same with --mode full, run here in two halves of the root columns,
+      --x 0-44 and --x 45-89, each stopped by --time-limit 6600 and resumed until
+      complete. Each builds zmx2 from the retained zmx2.rs 6b7f0f79... (the 2026-09-28
+      evand packet, the version the source's verify.sh requires) with the 2026-09-26
+      packet's crate files, refusing any input whose SHA-256 is not the record's, and
+      runs it with --pair-points, as the source did. The d4 receipt must end VERIFIED-D4
+      over 8,100 roots and each full half REGION CLEAN over 32,400 roots, none
+      uncertified. Then python3 -m devtools.audit_evand_mixed_covers zmx2 --case 77
+      --mode d4 --atoms pairpts OUT/n77_zmx2_d4_pairpoints_roots.log, and
+      python3 -m devtools.audit_evand_mixed_covers zmx2 --case 77 --mode full --atoms
+      pairpts over the two halves' root logs read as one record, must each exit 0: every
+      root of the region once, 8,100 and 64,800, no uncertified or capped box, the
+      headers equal apart from the region, and the box total equal to the source's
+      statement; and devtools.audit_evand_mixed_covers cover --case 77 must report no
+      problem. The controls are python3 -m devtools.replay_evand_zmx2 control --case 77
+      --mutation M --work W --out OUT for M drop-heaviest-point and
+      drop-heaviest-segment, each of which must read NOT VERIFIED. Commands, walls and
+      CPU are in each receipt's header and footer, in the packet's receipts/ and its
+      README section Replay of s(77) = 9 Here.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m4_n77_L9/README.md
+      theorem: No 77 unit squares fit in a square of side below 9, and so no 78; with the 9 x 9 grid, s(77) = s(78) = 9.
+      scope: Unrestricted square packing with independent rotations, disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        certificates/k2m4_n77_L9/README.md; Daniel's certificates/s21/FORMAT.md (the mixed
+        format and the reduction) and search/ZMX2.md sections 2 to 7, retained in the
+        2026-09-28 evand packet; the 2 October review, sections 3, 4, 6, 8 and 9; the
+        replay receipts and controls in the packet.
+      assumptions:
+        - The mixed cover is nonnegative, exactly D4-invariant as a measure and totals 43347137744028965/2^49 < 77, which zmx2 d4, this repository's audit (receipts/n77_cover_audit.json) and the review's own parser each re-check.
+        - Every closed unit square in [0,9]^2 captures mass at least 1, a point on its boundary and a segment along one of its edges counting in full; zmx2 --full --pair-points certifies this over all 64,800 roots of the unreduced pose space, read as one record from two region runs, and zmx2 --d4 --pair-points over the 8,100 roots of the D4 region.
+        - The D4 reduction for measures carries the D4 region to every centre and angle (proved in Lean upstream for every side, not built here); the --full sweep does not use it.
+        - Scaling a packing of 77 at side s < 9 by 9/s makes 77 pairwise disjoint closed unit squares, so a total below 77 excludes it; a total below 78 excludes a packing of 78 the same way.
+        - zmx2's acceptances are exact integer tests on binary64 enclosures widened outward (its Lemma R), which assumes correctly rounded IEEE-754 arithmetic without contraction or wider evaluation, as Rust guarantees for f64 on x86-64; the program is not formally verified.
+      audit_record: docs/project/reviews/review-2026-10-02-wand125-s59-s77-mixed-covers.md
+    limitations: >-
+      Replays Evan Daniel's zmx2, which the source ran unchanged, on the retained bytes
+      on 2 October 2026, with --pair-points as the source's README and verify.sh state
+      (review finding F3). --d4: VERIFIED-D4, 8,100 roots, 5,810,824 boxes, maximum
+      depth 36, none uncertified (4,112 s wall, 12,154 CPU-s, three threads), on the
+      host and build of E-n059-wand125-mixed-cover-zmx2-replay: a shared 4-core x86-64
+      Linux container, rustc 1.97.0, binary cba78a9e.... --full: 64,800 roots, 46,583,600
+      boxes, maximum depth 36, none uncertified (34,255 s wall, 134,363 CPU-s, four
+      threads), run as two region runs over the root columns x 0-44 and 45-89, each on a
+      4-core container in three parts of at most 6,600 s, the later two resuming its root
+      log; each half ended REGION CLEAN over 32,400 roots with 23,291,800 boxes, the two
+      regions being mirror images under x -> 9 - x. zmx2 gives a region run no
+      whole-cover verdict, so the review's section 11 asked for one unrestricted run; the
+      whole-region decision here is instead devtools.audit_evand_mixed_covers, which reads
+      the two root logs as one record and finds every one of the 64,800 roots present
+      once, none uncertified or capped, the headers equal apart from the region, and the
+      box total equal to the one the source's README states. The full halves' receipts
+      name the retained zmx2.rs and cover digests but not the compiler or the binary
+      digest of their hosts. The source's logs and per-root records are not published,
+      so no root-for-root comparison was possible. The audit re-derives the cover's
+      exact total and D4 invariance with its own parser. The source's verify.sh cannot
+      pass as published, because its SHA256SUMS lists run logs the source repository's
+      .gitignore excludes and it stops at that first step on a fresh checkout (review
+      finding F2); its two zmx2 steps were run as this repository's own sequence with
+      the same flags, and its zm_mixed.py step was not run. Controls: the cover with its
+      heaviest point orbit removed, and with its heaviest segment orbit removed, are
+      each refused by zmx2 --d4 --pair-points in one centre cell (NOT VERIFIED, 455 and
+      234 uncertified boxes); the receipts are in the packet's receipts/controls/, held
+      by tests/test_replay_controls.py. Trust boundary: this is one author's checker,
+      Daniel's, and its sibling zm_mixed.py shares his authorship and architecture. The
+      evidence is interval-certified and rests on correctly rounded binary64 arithmetic
+      on the x86-64 hosts. The --d4 sweep rests on the D4 reduction, which the unreduced
+      --full sweep does not use, so the second cross-checks the first. The source's
+      zm_mixed.py sweep, about 94 CPU-hours at the source, would be a second machine
+      method (think-mx3k). No Lean statement exists for this cover. Its total, 76.99998,
+      is below 78 too, so the same sweeps also decide s(78) >= 9.
+    source_reviewed: '2026-10-02'
   - id: E-n037-wand125-mixed-644-report
     claim: lower-bound
     scope: {n_values: [37]}
@@ -1588,8 +1676,8 @@ evidence:
       recomputes the mass, the net, the centre domains and the candidate digest from the
       retained bytes, and mixed-fetch checked the pinned tarball, its file list, the
       driver's preconditions and that all 200 oblique inputs enclose the exact candidate;
-      no angle was replayed, and none of it decides coverage. The complete replay, about
-      2.2 CPU-hours by the packet's pricing, has not run.
+      none of it decides coverage. This entry preserves the source claim; the complete
+      replay here of 2 October 2026 is E-n076-wand125-mixed-894-source-replay.
     external_review:
       state: informally-verified
       date: '2026-10-02'
@@ -1600,6 +1688,75 @@ evidence:
       note: >-
         No blocking defect; coverage statements remain the source's until the replay
         passes.
+    source_reviewed: '2026-10-02'
+  - id: E-n076-wand125-mixed-894-source-replay
+    claim: lower-bound
+    scope: {n_values: [76]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds n76 2026-10-02]'
+    certificate: resources/web/wand125-mixed-bounds-n76-2026-10-02/square-packing-bounds/certificates/mixed_n76_L894/candidate.json.gz
+    replay: >-
+      From packing/, with the project CPython 3.14 environment and a C++17-capable c++ on
+      PATH: .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-replay n76
+      --range 0-200 --work W --workers 3 --via git, which fetches the tarball at
+      7975030a by Git, refuses it unless its SHA-256 is d804bb88... and its size
+      11,942,640 bytes, unpacks it afresh, checks its 621 listed file hashes and the
+      driver's preconditions, binds it to the packet, and replays each of the 201 net
+      directions with the shipped per-angle functions and the shipped compile of the
+      unchanged checker, each passing only if it returns the certificate's own record;
+      it must exit 0. Then .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed
+      mixed-merge n76 must print FULL_REPLAY_MATCHES_SHIPPED with no missing or refused
+      direction, and mixed-merge n76 --check RECEIPT_MATCHES on the retained receipts
+      (receipts/n76/ in the packet). The checker's controls are
+      .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-control n37
+      --work W, which must report CONTROLS_REFUSED.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
+      theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n76_L894; no 76 unit squares fit in a square of side below 447/50.
+      scope: Unrestricted square packing with disjoint interiors and arbitrary rotations.
+      pinpoints: >-
+        The theorem and interval-verifier correspondence of the 2026-09-22 Tokoharu review;
+        the departures of mixed_rotated_verify.cpp from verify.cpp (coverage one and the
+        per-node centre domain) read in the 2026-09-28 n = 50 verifier review; the
+        addendum on n = 76 of the 2 October review of the linear certificates; the replay
+        receipts in receipts/n76/ of the 2026-10-02 n = 76 packet and the exact audit
+        receipts/mixed-audit.json there.
+      assumptions:
+        - The rectangle density is nonnegative and exact, of total mass 7599999/100000 < 76, which this repository's exact audit recomputes from the retained candidate.
+        - All angles and legal centres are covered by the certified core net of 201 half-angles of step 83/40000 at core side 9977/10000 and the per-node centre domains, which the exact audit recomputes.
+        - Binary64 arithmetic has the reviewed IEEE-754 semantics, compiled by the shipped line with -ffp-contract=off and -fno-fast-math.
+        - The replayed interval inputs enclose the exact candidate, whose digest f2c25305... every replayed record carries.
+      audit_record: docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md
+    limitations: >-
+      Replays the source's mixed_rotated_verify.cpp (SHA-256 89b674a6..., byte-identical
+      to the n = 50 checker reviewed on 28 September) with the source's per-angle replay
+      functions, unchanged, on 2 October 2026, in one run of three workers on a shared
+      4-core x86-64 Linux container (Intel Xeon at 2.10 GHz, c++ 13.3.0, Python 3.14.7,
+      OPENBLAS_NUM_THREADS and OMP_NUM_THREADS 1, PYTHONOPTIMIZE unset): 201 of 201
+      directions, 3.64 CPU-hours and 81 minutes of wall time, against the 12,687 seconds
+      the bundle records for the source's oblique run. Every direction returned the
+      certificate's own record: the axis direction 3,225,616 cells with integer minimum
+      1.0075130139576551, and each oblique direction its node count and lower bound, the
+      least 1.000000000516032 at index 150 (FULL_REPLAY_MATCHES_SHIPPED). This is a
+      machine replay of the source's checker, not an independent decision of the
+      certificate: coverage is decided by the source's C++ alone, and the angle-zero
+      tables are a second implementation for one direction only. Controls: the checker,
+      with the same compile, accepts mixed_n37_L644 at its least-bound direction and
+      refuses two mutated copies there, every mass scaled by 99/100 and the heaviest
+      orbit at an exact witness centre deleted (receipts/n37/control.json of the
+      2026-10-01 point-and-mixed packet, held by tests/test_wand125_checker_controls.py);
+      no mutation of the n = 76 certificate itself was run. The review's addendum on
+      n = 76 found no defect and asked for this replay, the tarball, the 621 file hashes,
+      the axis cell count and minimum, every oblique record, two refused controls and the
+      cost; the source's statement that its second replay ran on a separate machine is
+      not checked, and the addendum leaves it to the replay here. The tarball is pinned
+      by digest and not retained.
     source_reviewed: '2026-10-02'
   - id: E-n083-wand125-linear-935-report
     claim: lower-bound

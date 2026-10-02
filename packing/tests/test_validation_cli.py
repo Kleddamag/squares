@@ -32,11 +32,12 @@ from tests import site_browser
 
 #: (proved, open) at each corpus the frontier-corpus step has summarized. 2026-10-02: the
 #: replayed zmx2 sweeps of the s(60) and s(59) mixed covers (T-062, T-063, T-066) proved
-#: n = 59, 60 and 61 in the formal lane, three more in every corpus.
+#: n = 59, 60 and 61 in the formal lane, three more in every corpus; later that day the
+#: completed sweeps of the s(77) cover (T-067) proved n = 77 and 78, two more.
 FRONTIER_LANE_SPLIT: dict[str, tuple[int, int]] = {
-    "n=1..100": (42, 58),
-    "n=1..200": (54, 146),
-    "n=1..324": (66, 258),
+    "n=1..100": (44, 56),
+    "n=1..200": (56, 144),
+    "n=1..324": (68, 256),
 }
 
 # Source-reported closures from T-062 to T-064, and T-066 and T-067 at n = 59 and 77,

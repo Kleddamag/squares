@@ -468,8 +468,8 @@ sources:
       parts of the work were produced with AI assistance under human direction.
       web/wand125-point-and-mixed-2026-10-01/acquisition/sources.json pins revision
       1a25a5ed745fdd905a52f48fcc48150a0669032d. Dated by that revision, 2026-10-01 UTC.
-      The s(59) cover's zmx2 sweeps were replayed here on 2026-10-02, with their receipts
-      in the packet.
+      The s(59) and s(77) covers' zmx2 sweeps were replayed here on 2026-10-02, with their
+      receipts in the packet.
   - key: '[wand125 mixed bounds 2026-10-01]'
     authors: [wand125]
     year: 2026
@@ -531,7 +531,7 @@ sources:
       were produced with AI assistance under human direction, and the commit names Claude as
       co-author. web/wand125-mixed-bounds-n76-2026-10-02/acquisition/sources.json pins
       revision 7975030a192607ef27edd1559aee4e98bd93047b. Dated by that revision, 2026-10-02
-      UTC.
+      UTC. Its complete replay ran here on 2026-10-02, with its receipts in the packet.
   - key: '[wand125 linear certificates 2026-10-02]'
     authors: [wand125]
     year: 2026

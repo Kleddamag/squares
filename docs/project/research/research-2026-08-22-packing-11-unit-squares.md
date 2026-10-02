@@ -1182,8 +1182,8 @@ Use the structured form to query or plot; use these tables to read.
 | 62 | `8` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 63 | `8` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 64 | `8` | perfect square | classical | proved |
-| 77 | `9` | counting | wand125 (2026) | proof audit pending |
-| 78 | `9` | counting | Evan Daniel (2026) | proof audit pending |
+| 77 | `9` | counting | wand125 (2026) | proved |
+| 78 | `9` | counting | Evan Daniel (2026) | proved |
 | 79 | `9` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 80 | `9` | Nagamochi | Hiroshi Nagamochi (2005) | proved |
 | 81 | `9` | perfect square | classical | proved |

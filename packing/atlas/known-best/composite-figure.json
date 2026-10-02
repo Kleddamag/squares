@@ -20,7 +20,7 @@
           "lower_bound_first_proved_here": 0,
           "lower_bound_recent_result": 44,
           "only_known_numerically": 5,
-          "proved_optimal": 42,
+          "proved_optimal": 44,
           "rigidity_catalogue_annotated": 2,
           "rigidity_established": 12
         }
@@ -44,7 +44,7 @@
           "lower_bound_first_proved_here": 0,
           "lower_bound_recent_result": 44,
           "only_known_numerically": 55,
-          "proved_optimal": 66,
+          "proved_optimal": 68,
           "rigidity_catalogue_annotated": 2,
           "rigidity_established": 20
         }
@@ -3687,15 +3687,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(76) ≥ 8.890000",
+          "display": "s(76) ≥ 8.940000",
           "evidence": [
-            "E-wand125-rectangle-source-replay"
+            "E-n076-wand125-mixed-894-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
           "shown": true,
-          "value": "8.89"
+          "value": "8.94"
         },
         "n": 76,
         "optimality": {
@@ -3718,50 +3718,10 @@
       {
         "badges": [
           {
-            "glyph": "=",
-            "meaning": "exact value known",
+            "glyph": "O",
+            "meaning": "proved optimal",
             "style": "solid"
-          }
-        ],
-        "exactness": {
-          "degree": 1,
-          "degree_provenance": "derived",
-          "degree_recorded_upstream": false,
-          "exact_form": "9",
-          "minimal_polynomial": "s - 9 = 0",
-          "state": "closed-form"
-        },
-        "lower": {
-          "display": "s(77) ≥ 8.890000",
-          "evidence": [
-            "E-wand125-rectangle-source-replay"
-          ],
-          "first_proved_here": false,
-          "provenance": "frontier",
-          "recent_result": true,
-          "shown": true,
-          "value": "8.89"
-        },
-        "n": 77,
-        "optimality": {
-          "provenance": "frontier",
-          "status": "open"
-        },
-        "rigidity": {
-          "basis": "none",
-          "evidence": null,
-          "provenance": "absent",
-          "state": "not-established"
-        },
-        "side": {
-          "display": "s(77) ≤ 9",
-          "provenance": "frontier",
-          "relation": "upper-bound",
-          "value": "9.0"
-        }
-      },
-      {
-        "badges": [
+          },
           {
             "glyph": "=",
             "meaning": "exact value known",
@@ -3777,20 +3737,20 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(78) ≥ 8.955000",
+          "display": "s(77) ≥ 9",
           "evidence": [
-            "E-wand125-rectangle-source-replay"
+            "E-n077-wand125-mixed-cover-zmx2-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
-          "shown": true,
-          "value": "8.955"
+          "shown": false,
+          "value": "9"
         },
-        "n": 78,
+        "n": 77,
         "optimality": {
           "provenance": "frontier",
-          "status": "open"
+          "status": "proved"
         },
         "rigidity": {
           "basis": "none",
@@ -3799,9 +3759,59 @@
           "state": "not-established"
         },
         "side": {
-          "display": "s(78) ≤ 9",
+          "display": "s(77) = 9",
           "provenance": "frontier",
-          "relation": "upper-bound",
+          "relation": "equality",
+          "value": "9.0"
+        }
+      },
+      {
+        "badges": [
+          {
+            "glyph": "O",
+            "meaning": "proved optimal",
+            "style": "solid"
+          },
+          {
+            "glyph": "=",
+            "meaning": "exact value known",
+            "style": "solid"
+          }
+        ],
+        "exactness": {
+          "degree": 1,
+          "degree_provenance": "derived",
+          "degree_recorded_upstream": false,
+          "exact_form": "9",
+          "minimal_polynomial": "s - 9 = 0",
+          "state": "closed-form"
+        },
+        "lower": {
+          "display": "s(78) ≥ 9",
+          "evidence": [
+            "E-n077-wand125-mixed-cover-zmx2-replay"
+          ],
+          "first_proved_here": false,
+          "provenance": "frontier",
+          "recent_result": true,
+          "shown": false,
+          "value": "9"
+        },
+        "n": 78,
+        "optimality": {
+          "provenance": "frontier",
+          "status": "proved"
+        },
+        "rigidity": {
+          "basis": "none",
+          "evidence": null,
+          "provenance": "absent",
+          "state": "not-established"
+        },
+        "side": {
+          "display": "s(78) = 9",
+          "provenance": "frontier",
+          "relation": "equality",
           "value": "9.0"
         }
       },
@@ -15096,7 +15106,7 @@
       "lower_bound_first_proved_here": 0,
       "lower_bound_recent_result": 44,
       "only_known_numerically": 55,
-      "proved_optimal": 66,
+      "proved_optimal": 68,
       "rigidity_catalogue_annotated": 2,
       "rigidity_established": 20
     }

@@ -1761,17 +1761,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-045"
+            "T-072"
           ],
-          "note": "(confirmed T-045)",
+          "note": "(confirmed T-072)",
           "recent": true,
           "result": null,
           "results": [
-            "T-045"
+            "T-072"
           ],
-          "source_key": "[wand125 rectangle bounds 2026]",
+          "source_key": "[wand125 mixed bounds n76 2026-10-02]",
           "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
-          "value": "8.89"
+          "value": "8.94"
         },
         "n": 76,
         "record": "n-076",
@@ -1782,17 +1782,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-045"
+            "T-067"
           ],
-          "note": "(confirmed T-045)",
+          "note": "(confirmed T-067)",
           "recent": true,
           "result": null,
           "results": [
-            "T-045"
+            "T-067"
           ],
-          "source_key": "[wand125 rectangle bounds 2026]",
-          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
-          "value": "8.89"
+          "source_key": "[wand125 exact covers 2026-10-01]",
+          "text": "wand125 after Daniel, Levy et al. 2026, GitHub",
+          "value": "9"
         },
         "n": 77,
         "record": "n-077",
@@ -1803,17 +1803,17 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [
-            "T-045"
+            "T-067"
           ],
-          "note": "(confirmed T-045)",
+          "note": "(confirmed T-067)",
           "recent": true,
           "result": null,
           "results": [
-            "T-045"
+            "T-067"
           ],
-          "source_key": "[wand125 rectangle bounds 2026]",
-          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
-          "value": "8.955"
+          "source_key": "[wand125 exact covers 2026-10-01]",
+          "text": "wand125 after Daniel, Levy et al. 2026, GitHub",
+          "value": "9"
         },
         "n": 78,
         "record": "n-078",

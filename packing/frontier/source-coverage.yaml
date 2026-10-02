@@ -550,6 +550,7 @@ sources:
       - E-n059-wand125-mixed-cover-report
       - E-n059-wand125-mixed-cover-zmx2-replay
       - E-n077-wand125-mixed-cover-report
+      - E-n077-wand125-mixed-cover-zmx2-replay
     notes: >-
       Revision 1a25a5ed745fdd905a52f48fcc48150a0669032d, retrieved at 2026-10-02T00:18Z for
       jlevy/squares#280 and #279. Two mixed covers in Evan Daniel's format, built from his
@@ -557,7 +558,9 @@ sources:
       b91d70b6, whose four checker files earlier packets here retain byte for byte. Both
       were recorded as reported exact values (T-066, T-067). On 2026-10-02 the s(59)
       cover's zmx2 sweeps were replayed here (E-n059-wand125-mixed-cover-zmx2-replay),
-      which put s(59) = 8 in the verified lane; the s(77) cover was not yet replayed. Each
+      which put s(59) = 8 in the verified lane, and later that day the s(77) cover's
+      (E-n077-wand125-mixed-cover-zmx2-replay), the unreduced sweep in two region runs read
+      as one record, which put s(77) = 9 and, by its total below 78, s(78) = 9 there. Each
       directory's SHA256SUMS lists run logs that are not in the published tree, so the
       source's verify.sh cannot pass its first step as published. The s(59) exact-rational
       evidence is two runs, the complete one ending NOT VERIFIED with six boxes. The same
@@ -630,15 +633,18 @@ sources:
     represented_by: [frontier/n-076.md]
     evidence:
       - E-n076-wand125-mixed-894-report
+      - E-n076-wand125-mixed-894-source-replay
     notes: >-
       Revision 7975030a192607ef27edd1559aee4e98bd93047b, retrieved at 2026-10-02T07:47Z for
       a comment of that day on jlevy/squares#282. One rectangle density checked at coverage
       one by the source's research copy of Tokoharu's verify.cpp, byte for byte the checker
       of its n = 50 certificate, of mass 76 - 1/100000. Recorded as a reported lower bound
       (T-072), above the source's rectangle certificate 357/40 (T-068), which it says it
-      supersedes. The exact audit and the replay's checks before its first angle pass; no
-      angle was replayed, and the complete replay, about 2.2 CPU-hours, has not run. The 2
-      October review of the linear certificates read it in an addendum, with no defect.
+      supersedes. The exact audit and the replay's checks before its first angle pass, and
+      the complete replay of 2 October matched the shipped run at all 201 directions
+      (E-n076-wand125-mixed-894-source-replay), which put s(76) >= 447/50 in the verified
+      lane. The 2 October review of the linear certificates read it in an addendum, with
+      no defect.
       The proof-bundle tarball is pinned by digest and not retained.
   - id: wand125-linear-certificates-2026-10-02
     title: Linear point, segment and rectangle certificates for n = 101 and 83

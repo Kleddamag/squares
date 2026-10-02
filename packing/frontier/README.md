@@ -135,7 +135,7 @@ The ones that carry the most weight:
   exactly only when `status` is `proved`.
 - `reported_status` is the source-set view; `status` is `proved` only when the verified
   bounds match exactly.
-  There are currently 66 proved and 258 open formal cases.
+  There are currently 68 proved and 256 open formal cases.
 - `reported_upper_bound.catalogue_rigid` transcribes what the catalogue says about
   rigidity, in the catalogue’s own three-valued vocabulary: `rigid`, `semi-rigid`, or
   `not-stated`. `not-stated` is source silence and never a claim that a packing can
@@ -459,25 +459,27 @@ lower-bound side has underused methods.
 
 Counts below are computed from the artifacts, not asserted.
 
-Of the 258 open cases, **221** have Nagamochi’s formula as their verified lower bound.
+Of the 256 open cases, **221** have Nagamochi’s formula as their verified lower bound.
 Two others use certificates already integrated into the register, the current external
 certificate bounds at $n = 12$ ($15680/3951$) and $n = 17$ ($116511/25000$). Complete
-interval and exact replays of external certificates hold the other 35: wand125’s point
-certificate at $n = 56$ ($381/50$), and wand125’s rectangle-density certificates,
-directly or by monotonicity, at $n = 18$ to 20, 26 to 31, 38 to 44, 52 to 55, 67 to 78,
-86 and 95. On 2026-10-02 those replays superseded this repository’s first-party bounds
-at $n = 18$, 19 and 20 ($4679/1000$, $24/5$ and $97/20$), Tokoharu’s at $n = 26$, 29 and
-30, wand125’s point certificates at $n = 39$ to 41, 52, 53, 55 and 68 to 72, and
-Nagamochi’s formula at 17 counts.
-$n = 32$ left the open cases on 2026-09-27, when a replayed external closed cover proved
-$s(32) = 6$, and $n = 21$ and $n = 45$ on 2026-09-29, when replayed external mixed
-covers proved $s(21) = 5$ and $s(45) = 7$; $n = 59$, 60 and 61 left them on 2026-10-02,
-when replayed mixed covers proved $s(59) = s(60) = s(61) = 8$. Within the original
-$n \le 100$ corpus, the corresponding Nagamochi count is 21. The count is checked
-against the case records by `devtools.check_nagamochi_bounds` (`D-430`), because earlier
-hand-maintained counts outlived their case promotions.
+interval and exact replays of external certificates hold the other 33: wand125’s point
+certificate at $n = 56$ ($381/50$), its mixed rectangle-measure certificate at $n = 76$
+($447/50$), and its rectangle-density certificates, directly or by monotonicity, at
+$n = 18$ to 20, 26 to 31, 38 to 44, 52 to 55, 67 to 75, 86 and 95. On 2026-10-02 those
+replays superseded this repository’s first-party bounds at $n = 18$, 19 and 20
+($4679/1000$, $24/5$ and $97/20$), Tokoharu’s at $n = 26$, 29 and 30, wand125’s point
+certificates at $n = 39$ to 41, 52, 53, 55 and 68 to 72, and Nagamochi’s formula at 17
+counts.
+$n = 32$ left the open cases on 2026-09-27, when a replayed external closed cover
+proved $s(32) = 6$, and $n = 21$ and $n = 45$ on 2026-09-29, when replayed external
+mixed covers proved $s(21) = 5$ and $s(45) = 7$; $n = 59$, 60 and 61 left them on
+2026-10-02, when replayed mixed covers proved $s(59) = s(60) = s(61) = 8$, and $n = 77$
+and 78 later that day, when the replayed $s(77)$ cover proved $s(77) = s(78) = 9$.
+Within the original $n \le 100$ corpus, the corresponding Nagamochi count is 21. The
+count is checked against the case records by `devtools.check_nagamochi_bounds`
+(`D-430`), because earlier hand-maintained counts outlived their case promotions.
 
-Of the 258 open cases, 113 are still held by the trivial grid.
+Of the 256 open cases, 111 are still held by the trivial grid.
 The other 145 carry non-grid constructions.
 Within $n \le 100$, the 33 non-grid open cases comprise 13 hand-built, 10 from simulated
 annealing (nine of the ten dated 2024–2026; $n = 53$ is Cantrell’s from 2002), 5
@@ -497,8 +499,8 @@ Ranked by gap—the best-known packing minus the verified lower bound, which is 
 | --- | --- | --- | --- |
 | 17 | 0.0151 | Bidwell | carried to $\frac{116511}{25000}$ by Guzhou0806 after Kleddamag |
 | 12 | 0.0314 | grid | $4^2 - 4$, carried to $\frac{15680}{3951}$ by Daniel after Burns, Massaccesi |
-| 78 | 0.0450 | grid | $9^2 - 3$, carried to $\frac{1791}{200}$ by wand125 after Tokoharu |
 | 97 | 0.0557 | grid | $10^2 - 3$ |
+| 76 | 0.0600 | grid | $9^2 - 5$, carried to $\frac{447}{50}$ by wand125 after Tokoharu |
 | 19 | 0.0706 | Wainwright | carried to $\frac{963}{200}$ by wand125 after Tokoharu |
 
 The $n = 17$ bound is Guzhou0806 / N17 project’s R068, continuing Kleddamag’s charge
@@ -511,16 +513,17 @@ and third with mass on the grid lines as well as on points.
 $n = 21$, in this table at $0.0050$ from 2026-09-27, left it with that proof.
 $n = 11$, which headed it at $0.0021$ once Kleddamag carried it to $31/8$, left it on
 2026-09-30, when T-060 proved $s(11)$ equal to Trump’s side, and $n = 61$ on 2026-10-02,
-when a replayed mixed cover proved $s(60) = 8$ and with it $s(61) = 8$.
+when a replayed mixed cover proved $s(60) = 8$ and with it $s(61) = 8$; $n = 78$ left it
+later that day, when another proved $s(77) = 9$ and with it $s(78) = 9$.
 
-$n = 97$ and $n = 78$ are unproved members of the family $s(m^2 - 3) = m$, which is
-**proved exactly for $m = 3, 4, 5, 6, 7, 8$** (that is
-`s(6), s(13), s(22), s(33), s(46), s(61)`) and reported by Evan Daniel for every larger
-$m$ (T-064), a claim not yet replayed here.
-Their gaps are small because their lower bounds are nearly tight, and their conjectured
-optima are **integers**—the case the existing proof technique is built for.
+$n = 97$ is the smallest unproved member of the family $s(m^2 - 3) = m$, which is
+**proved exactly for $m = 3, 4, 5, 6, 7, 8, 9$** (that is
+`s(6), s(13), s(22), s(33), s(46), s(61), s(78)`) and reported by Evan Daniel for every
+larger $m$ (T-064), a claim not yet replayed here.
+Its gap is small because its lower bound is nearly tight, and its conjectured optimum is
+an **integer**—the case the existing proof technique is built for.
 
-Their small gaps and integer conjectured optima make them candidates for the existing
+Its small gap and integer conjectured optimum make it a candidate for the existing
 technique; the retained source audit found little case-specific treatment.
 
 Among the cases with a *non-trivial* record, $n = 19$ follows $n = 17$ at $0.0706$, then

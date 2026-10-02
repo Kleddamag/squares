@@ -83,9 +83,9 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`73`](n-073.md) | `9` | `9` | `439/50` | `1737/200` | open | replayed here | formal lower differs from report | 2026-10-01 |
 | [`74`](n-074.md) | `9` | `9` | `3539/400` | `1737/200` | open | replayed here | formal lower differs from report | 2026-10-01 |
 | [`75`](n-075.md) | `9` | `9` | `89/10` | `889/100` | open | replayed here | formal lower differs from report | 2026-10-01 |
-| [`76`](n-076.md) | `9` | `9` | `447/50` | `889/100` | open | replayed here | formal lower differs from report | 2026-10-02 |
-| [`77`](n-077.md) | `9` | `9` | `9` | `889/100` | open | replayed here | formal lower differs from report; proof audit pending | 2026-10-01 |
-| [`78`](n-078.md) | `9` | `9` | `9` | `1791/200` | open | replayed here | formal lower differs from report; proof audit pending | 2026-10-01 |
+| [`76`](n-076.md) | `9` | `9` | `447/50` | `447/50` | open | replayed here | — | 2026-10-02 |
+| [`77`](n-077.md) | `9` | `9` | `9` | `9` | proved | replayed here | — | 2026-10-02 |
+| [`78`](n-078.md) | `9` | `9` | `9` | `9` | proved | replayed here | — | 2026-10-02 |
 | [`79`](n-079.md) | `9` | `9` | `9` | `9` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`80`](n-080.md) | `9` | `9` | `9` | `9` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`81`](n-081.md) | `9` | `9` | `9.0` | `9` | proved | replayed here, external proof | — | 2026-08-24 |

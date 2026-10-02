@@ -5465,8 +5465,8 @@
         "statements": {
           "closed_form": 3,
           "k2_minus_2_identity": 4,
-          "mentions": 11,
-          "qualified": 18,
+          "mentions": 14,
+          "qualified": 21,
           "relies": 3,
           "states": 20,
           "unqualified_states": 10
@@ -5607,7 +5607,7 @@
           "beside: proved": 1,
           "beside: proves": 1,
           "beside: theorem": 1,
-          "beside: verified": 8,
+          "beside: verified": 9,
           "closed-form: 2*floor(": 1,
           "closed-form: 2⌊": 3,
           "closed-form: min(ceil": 1,
@@ -5621,9 +5621,9 @@
           "closed_form": 5,
           "k2_minus_2_identity": 10,
           "mentions": 3,
-          "qualified": 32,
+          "qualified": 33,
           "relies": 8,
-          "states": 30,
+          "states": 31,
           "unqualified_states": 5
         }
       }
@@ -6295,7 +6295,7 @@
           ],
           "proofs": [
             {
-              "at": "packing/frontier/n-007.md:129",
+              "at": "packing/frontier/n-007.md:131",
               "label": "El Moumni’s Theorem 1",
               "source": "packing/resources/papers/el-moumni-1999-optimal-packings-unit-squares.pdf"
             }
@@ -6442,7 +6442,9 @@
           "nagamochi_excess": "0.171572875253"
         },
         "case_prose_published_proofs": {
-          "defects": [],
+          "defects": [
+            "D-516"
+          ],
           "proofs": [
             {
               "at": "packing/frontier/n-008.md:122",
@@ -7331,7 +7333,9 @@
           "nagamochi_excess": "0.258342613226"
         },
         "case_prose_published_proofs": {
-          "defects": [],
+          "defects": [
+            "D-516"
+          ],
           "proofs": [
             {
               "at": "packing/frontier/n-014.md:113",
@@ -7524,7 +7528,9 @@
           "nagamochi_excess": "0.127016653792"
         },
         "case_prose_published_proofs": {
-          "defects": [],
+          "defects": [
+            "D-516"
+          ],
           "proofs": [
             {
               "at": "packing/frontier/n-015.md:123",

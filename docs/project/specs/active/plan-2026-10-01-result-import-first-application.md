@@ -4,11 +4,12 @@
 
 **Author:** Claude (agent), for the repository owner
 
-**Status:** Proposal.
-Nothing in it has been run: no source is retained, no certificate replayed, no register
-entry made and no reply posted.
-Stage 1 of the process, triage, is done for all six requests bar the acknowledgements,
-which are the owner’s to post, and is what this plan reports.
+**Status:** In progress.
+Stage 1, triage, is done for all six requests bar the acknowledgements, which are the
+owner’s to post, and is what this plan reports.
+Step 2 below, stages 2 and 3 for all six, ran on 1 October in jlevy/squares#292: the
+sources are retained and the claims registered as reported, as `T-066` to `T-069`. No
+certificate has been replayed and no reply posted.
 
 **Workflow:** W10 planning, for six imports that each run a W1 phase and then a W2 phase
 

@@ -5,13 +5,13 @@ title: "Handoff: the website lane at the end of 1 October 2026 — what merged, 
 kind: task
 status: open
 priority: 1
-version: 3
+version: 4
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-10-02T01:05:01.478Z
-updated_at: 2026-10-02T04:49:39.834Z
+updated_at: 2026-10-02T04:51:49.582Z
 ---
 Handoff of the website lane (epic think-xjq4) at 2026-10-02 01:35 UTC, 18:35 PT on 1 October. Read this first, then the beads it names.
 
@@ -42,3 +42,9 @@ Update 2026-10-02 02:40 UTC (19:40 PT, 1 October), superseding the "In flight" l
 - Sparse worktree .claude/worktrees/v050-deployment (branch claude/v0.5.0-deployment, merged) can be removed.
 
 Update 02:55 UTC: think-pt1k is closed. The owner said GitHub releases matter only for generated assets (PDFs, films), so the v0.5.0 tag and release are not pending; the procedure text that still asks for them at every bump is tracked separately (see the newest child of think-xjq4 titled "Release procedure…"). The Overview restructure has a draft PR, jlevy/squares#299 on claude/overview-restructure; its agent was still running gates.
+
+Update 03:15 UTC. Three subagents are running, each to a draft PR that the coordinator reviews, marks ready and merges:
+1. think-f1tu: jlevy/squares#299 (claude/overview-restructure, internal worktree .claude/worktrees/overview-restructure). Its first hosted run failed typecheck on preview_site.py:589 (color_scheme typed str); the agent was told. Gates and shots were still pending.
+2. think-sib7: branch claude/validate-layout-tests in worktree audit-main; no PR yet.
+3. think-rgvr with think-be7y: papers individually versioned, and the release procedure without a routine tag and release; branch claude/paper-versions in worktree overview-papers; no PR yet. The owner's words are on think-rgvr.
+Possible overlap: #299 and the papers PR both edit render_overview.py (the papers one only the colophon); merge #299 first and have the other merge main.

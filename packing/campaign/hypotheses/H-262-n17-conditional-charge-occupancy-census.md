@@ -66,6 +66,21 @@ is affordable only if a cheaper engine removes almost all of the 20.2 million or
 first. This hypothesis measures the cheapest candidate: two settled small cases as
 subcontainer cuts, and per-cell floors of a charge certificate.
 
+## Outcome
+
+*Added 2026-10-02 by Session 167.*
+[exp-243](../series/series-000-smoke-and-calibration/experiments/exp-243-h262-n17-charge-floor-pilot.md)
+rejects this hypothesis without building the exact instrument.
+R068’s dictionary at $U$ excludes nothing: the smaller square slips between sites spaced
+for R068’s cores, and the 7,703,312 orbits the cuts leave all survive.
+For the registered class, a single D4-symmetric linear per-cell floor vector from any
+charge, an antipodal-pair argument leaves at least 30,966 orbits, so the claim of at
+most $10^4$ cannot hold.
+Asymmetric, multi-charge, orientation-refined and nonlinear floors escape that bound and
+are not tested here; the
+[pilot review](../../../docs/project/reviews/review-2026-10-02-n17-charge-floor-pilot.md)
+states the scope.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

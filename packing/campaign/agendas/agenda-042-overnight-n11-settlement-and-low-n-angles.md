@@ -1228,7 +1228,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: ready
+    state: complete
     priority: 0
     question: How many H260 occupancy orbits survive the s(6) and s(10) subcontainer cuts and exact conditional
       charge floors?
@@ -1252,7 +1252,9 @@ agenda:
     artifacts:
     - packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md
     note: Exploratory cut counts leave about 7.7 million orbits before any charge floor. At most 1e4 survivors
-      makes the hybrid route affordable; more than 1e5 sends the question back to W3.
+      makes the hybrid route affordable; more than 1e5 sends the question back to W3. Session 167 ran it as a one-sided pilot (exp-243, rejected). R068's charge collapses at U
+      and excludes nothing; 7,703,312 orbits survive the cuts. One D4-symmetric linear floor vector leaves at least
+      30,966 by theorem; asymmetric and nonlinear floors escape that bound and are open.
   - id: BC-409
     purpose: research
     owner_focus: correctness
@@ -1282,7 +1284,7 @@ agenda:
     owner_focus: insight
     instances:
     - 17
-    state: tentative
+    state: stopped
     priority: 2
     question: Which closed cover keeps the n17 endpoint family inside one occupancy state and leaves the
       fewest survivors?
@@ -1303,13 +1305,14 @@ agenda:
     artifacts:
     - packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md
     note: Square 9's centre is 0.0012 below an H259 seam; the cover was chosen without reference to the
-      endpoint.
+      endpoint. Stopped 2026-10-02 by the route review's own condition, since BC-408 left more than 1e5
+      orbits. The cover question returns with the bulk-exclusion design (Session 167 lane F).
   - id: BC-411
     purpose: research
     owner_focus: efficiency
     instances:
     - 17
-    state: tentative
+    state: stopped
     priority: 1
     question: What does one exact geometric exclusion of an n17 occupancy leaf cost, on a uniform sample
       of the residue at a cap at or above the endpoint?
@@ -1331,7 +1334,7 @@ agenda:
     artifacts:
     - packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md
     note: Re-scopes Session 165's handoff. A cap below the endpoint (the candidate 4.67) would leave sides
-      in (4.67, S*) uncovered; exclusions at a cap U >= S* apply to every smaller side.
+      in (4.67, S*) uncovered; exclusions at a cap U >= S* apply to every smaller side. Stopped 2026-10-02 with BC-410, since no residue small enough to sample exists yet.
 ---
 # Agenda 042: The n11 Settlement Ladder and Low-n Angles
 

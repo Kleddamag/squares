@@ -255,11 +255,11 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 400 | 202 complete; 63 stopped; 71 blocked; 28 ready; 23 tentative; 13 in progress |
+| Commitments | 400 | 204 complete; 65 stopped; 70 blocked; 26 ready; 21 tentative; 14 in progress |
 | Sessions | 166 | 103 completed; 63 stopped; all terminal |
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
-| Hypotheses | 200 | 39 confirmed; 32 refuted; 64 blocked; 17 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
-| Experiments | 170 | 53 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
+| Hypotheses | 200 | 40 confirmed; 33 refuted; 62 blocked; 17 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
+| Experiments | 172 | 54 accepted; 38 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
 | Frontier results | 65 | 65 registered, 37 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
@@ -522,6 +522,7 @@ case or experiment separately.
 | --- | --- | --- | --- | --- |
 | [Review: The Site’s Documentation Cards and the Records Behind Them](docs/project/reviews/review-2026-10-01-site-documentation-records.md) | dated review record | record | retained | — |
 | [n17 Capture Feasibility by Local Radius](docs/project/reviews/review-2026-10-02-n17-capture-feasibility.md) | dated review record | record | retained | — |
+| [n17 Charge-Floor Pilot Review](docs/project/reviews/review-2026-10-02-n17-charge-floor-pilot.md) | dated review record | record | retained | — |
 | [n17 Local Theorem Modulo Sliders — Argument Review and Instrument Recipe](docs/project/reviews/review-2026-10-02-n17-local-theorem-recipe.md) | dated review record | record | retained | — |
 | [n17 Optimality Route After PR 265](docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md) | dated review record | record | retained | — |
 | [X-048 Session 167 Pilots: Receipts](packing/campaign/explorations/X048-session-167-pilots/README.md) | research synthesis | record | retained | — |
@@ -5315,11 +5316,11 @@ round that names the hypothesis, control roles included.
 | [H-255](packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md) | confirmed | Exact existence and uniqueness of the contact-chart root in its fixed rational box; endpoint packing feasibility and capture remain separate | 1 | 1s wall |
 | [H-256](packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md) | confirmed | Exact endpoint packing at the H255 root with fixed interior sliders; all68 wall and136 pair obligations certified; global capture remains open | 1 | 43s wall |
 | [H-257](packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md) | confirmed | Complete exact-root feature inventory, independently audited:168owner-axis options,60active-wall corners,9tangent offsets | 1 | 42s wall |
-| [H-258](packing/campaign/hypotheses/H-258-n17-common-core-stress.md) | blocked | Fixed common-core stress; instrument stopped after three symbolic preparation failures, before target use | 0 | — |
+| [H-258](packing/campaign/hypotheses/H-258-n17-common-core-stress.md) | confirmed | Fixed common-core stress; first-order stationarity in both corner branches, after a polynomial-ring repair of the stalled instrument | 1 | exp-242 accepted: 52 exact identities; six zero and 52 positive weights |
 | [H-259](packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md) | confirmed | Exact mixed-capacity centre cover and finite occupancy census; no geometric exclusion | 1 | exp-240 accepted: 161,100,756 versus 8,597,496,600 |
 | [H-260](packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md) | confirmed | Closed-assignment D4 occupancy quotient; no geometric exclusion | 1 | exp-241 accepted: 20,155,518 orbits |
 | [H-261](packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md) | blocked | The n17 endpoint is a strict local minimum modulo its six slider directions at an explicit radius; the capture target; waits on H-258 and its instrument (BC-407) | 0 | — |
-| [H-262](packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md) | blocked | Settled-case cuts and conditional charge floors leave at most 10^4 of the 20,155,518 occupancy orbits; decides whether the hybrid route is affordable; instrument to build (BC-408) | 0 | — |
+| [H-262](packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md) | refuted | Settled-case cuts and per-cell charge floors leave at most 10^4 of the 20,155,518 occupancy orbits; one symmetric linear floor vector leaves at least 30,966 by theorem | 1 | exp-243 rejected: R068 at U excludes nothing; 7,703,312 orbits survive the cuts |
 | [H-263](packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md) | open question | Which closed cover keeps the whole endpoint family inside one occupancy state and leaves the fewest survivors (BC-410) | 0 | — |
 | [H-264](packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md) | open question | The cost of one exact geometric exclusion on a uniform residue sample at a cap at or above the endpoint; re-scopes think-11ma (BC-411) | 0 | — |
 | [H-265](packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md) | blocked | The certified chart endpoint is a root of the catalogue’s irreducible degree-18 polynomial; instrument to build (BC-409) | 0 | — |
@@ -5646,9 +5647,9 @@ The relevant generator writes the receipt, and the entry fills in on the next
 
 ## Experiments Conducted
 
-There are 170 rounds registered in `series-000`.
+There are 172 rounds registered in `series-000`.
 
-They record 2512.1 agent-minutes and 4020.8 wall-minutes.
+They record 2512.1 agent-minutes and 4023.5 wall-minutes.
 These totals exclude four historical annealing rounds with unrecorded timing; their wall
 and operator costs are unknown, not zero.
 Exp129 closed as blocked without invocation and contributes zero scientific elapsed
@@ -5860,6 +5861,8 @@ archive beside it.
 | [exp-239](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-239-h257-n17-endpoint-features.md) | 17 | target | H-257 | Exact owner-axis and active-wall feature inventory | Allfrozen counts, identities andstrictsigns pass;175interval records independently matched | accepted |
 | [exp-240](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-240-h259-n17-mixed-capacity-census.md) | 17 | target | H-259 | Mixed-capacity complete centre cover and exact census | 161,100,756 mixed patterns versus 8,597,496,600 baseline; independent audit | accepted |
 | [exp-241](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-241-h260-n17-closed-cell-symmetry.md) | 17 | target | H-260 | Closed-assignment D4 census | 20,155,518 orbits; all eight fixed counts independently agree | accepted |
+| [exp-242](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-242-h258-n17-core-stress.md) | 17 | target | H-258 | Polynomial-ring identity proof and 256-bit outward weight bounds for the fixed common-core stress | All 52 identities exact; six zero and 52 positive weights; independent review and clean replay | accepted |
+| [exp-243](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-243-h262-n17-charge-floor-pilot.md) | 17 | target | H-262 | One-sided charge-floor pilot on the H259 grid with the s(6) and s(10) cuts | R068 at U excludes nothing: 7,703,312 orbits survive; symmetric ceiling 30,966 | rejected |
 
 ### Cost and provenance
 
@@ -6035,10 +6038,12 @@ archive beside it.
 | exp-239 | 180 seconds; one worker | 41.80 s | — | criterion | `b34801483`; symbolic24.51s, interval andformatting16.09s |
 | exp-240 | 30 seconds; one worker | 0.35s | — | criterion | Full independent census agreement; geometry exclusions remain open |
 | exp-241 | 30 seconds; one worker | 0.14s | — | criterion | IndependentcompleteD4census; no geometricexclusion |
+| exp-242 | 300 seconds; one worker | 30.3 s | — | criterion | `2fbf8d293`; clean replay of run-001, identical outputs |
+| exp-243 | 900 seconds; two workers | 133 s | — | criterion | `1a8a5e4a5`; one-sided pilot, clean replay identical |
 
-### What the 170 rounds jointly establish
+### What the 172 rounds jointly establish
 
-The 170 rounds use 2512.1 agent-minutes and 4020.8 wall-minutes under the campaign’s
+The 172 rounds use 2512.1 agent-minutes and 4023.5 wall-minutes under the campaign’s
 retained effort accounting.
 The never-invoked exp129 adds no scientific result or execution time.
 Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is recorded

@@ -70,12 +70,18 @@ The findings, all read from the JSON:
   7,703,312 D4 orbits by Burnside.
   Adding the floor test leaves the same counts, 77 times H-262’s rejection threshold of
   $10^5$. The route review’s “about 7.7 million orbits” was states divided by eight.
-- **A charge-independent ceiling.** Among the cut survivors there are 2,375 class-count
-  vectors, and 5,970 orbits share the endpoint’s own vector $(4,4,3,2,4,0)$. An
-  antipodal-pair argument gives at least 30,966 surviving orbits for *any* D4-symmetric
-  per-cell floor vector, from any charge.
-  Per-cell floors cannot meet H-262’s $10^4$ threshold even with a charge designed for
-  this test.
+- **A ceiling for H-262’s registered class.** Among the cut survivors there are 2,375
+  class-count vectors, and 5,970 orbits share the endpoint’s own vector $(4,4,3,2,4,0)$.
+  An antipodal-pair argument shows that a single D4-symmetric linear per-cell floor
+  vector leaves at least 30,966 orbits whatever charge it comes from, so H-262 as
+  registered cannot be confirmed.
+  *Scope, corrected 2026-10-02 after the
+  [independent review](../../../../docs/project/reviews/review-2026-10-02-n17-charge-floor-pilot.md):*
+  this lane first stated the ceiling as charge-independent for all per-cell floors.
+  The review found that it holds only for one symmetric linear floor vector.
+  Asymmetric floors, families of charges, orientation-refined states and nonlinear pair
+  floors all escape it; an unconstrained search over asymmetric floor vectors reached 6
+  orbits, before asking whether any charge realises such a vector.
 
 Reproduce:
 `uv run --frozen --all-extras --group dev python -m devtools.pilot_n17_charge_floors --output FILE --workers 2`.

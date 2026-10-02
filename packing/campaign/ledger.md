@@ -870,16 +870,16 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-405 | research | 17 | complete | 0 | think-9fc1 | docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md |
 | BC-406 | research | 17 | ready | 0 | think-c7kv | docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md |
 | BC-407 | research | 17 | in_progress | 0 | think-n95s | packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md |
-| BC-408 | research | 17 | ready | 0 | think-j1uw | packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md |
+| BC-408 | research | 17 | complete | 0 | think-j1uw | packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md |
 | BC-409 | research | 17 | ready | 2 | think-e6y1 | packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md |
-| BC-410 | research | 17 | tentative | 2 | think-x4a6 | packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md |
-| BC-411 | research | 17 | tentative | 1 | think-11ma | packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md |
+| BC-410 | research | 17 | stopped | 2 | think-x4a6 | packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md |
+| BC-411 | research | 17 | stopped | 1 | think-11ma | packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md |
 
 ## Series
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 171 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 172 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1081,7 +1081,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-259 | confirmed | proof | At side cap1169/250, a closed5by5 centre grid has16 boundary cells of  |  | 1 |  | 0s wall |
 | H-260 | confirmed | proof | D4 acts on existential closed-cell assignments of the H259 cover and i |  | 1 |  | 0s wall |
 | H-261 | blocked | proof | For an explicit rational radius r > 0, every packing of 17 unit square |  | 0 |  |  |
-| H-262 | blocked | proof | On the H259 closed grid at cap 1169/250, the subcontainer cuts from s( |  | 0 |  |  |
+| H-262 | refuted | proof | On the H259 closed grid at cap 1169/250, the subcontainer cuts from s( |  | 1 |  | 2.2m wall |
 | H-263 | open question | proof | Which closed centre cover with proved cell capacities keeps every endp |  | 0 |  |  |
 | H-264 | open question | proof | On 10 to 20 closed-assignment D4 orbits drawn uniformly from the resid |  | 0 |  |  |
 | H-265 | blocked | proof | The side S* of the H255 chart root is a root of the degree-18 polynomi |  | 0 |  |  |
@@ -1094,7 +1094,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Rounds
 
-### rejected (37)
+### rejected (38)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1135,6 +1135,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-216 | series-000 | 21 | Claude session-144 (Fable lane, Opus port, Fable review) | H-226 | The registered proof strategy cannot close n=21: 3,461 D2-orbits of exceptional structures (for example red (1, 9/10) uncovered with blue (1/2, 9/10) and (9/2, 9/10) uncovered) leave at most four charging boxes on each vertical wall line with no confined partial box, and the paper's toolkit has no further move or contradiction to apply; s(21) = 5 itself is untouched, and the 22,603 needs-geometry orbits name the claim Q(i, j) a stronger lemma would need. |
 | exp-217 | series-000 | 32 | Claude session-144 (Fable lane, Opus port, Fable review) | H-227 | With the m=6 vertical budget 2(sqrt 2 - 1/2) + 1.6 + 3 sqrt 3 / 2 - 6 = 0.0265, any frozen row above a six-point row kills that row's shift and end-point move, so every structure whose red spare lies outside red row 1 or blue spare outside blue row 6 leaves at most five charges on every wall line and no shorter slide recovers a sixth; s(32) = 6 itself is untouched. |
 | exp-233 | series-000 | 12 | Claude Session 157 coordinator | H-241 | The row loop converged with covering value 11.980175 < 12, so no depth-one family reaching 12 exists on this support and the additive route at n12 is not shown dead above 3.9609; the converged value is a float LP, not a certificate, so it suggests rather than establishes a point certificate at 3.9609. |
+| exp-243 | series-000 | 17 | Claude Session 167; lane B built the pilot, the coordinator replayed it from a clean worktree | H-262 | The registered claim (at most 10^4 survivors) is false for every D4-symmetric per-cell floor vector by the ceiling theorem; R068's dictionary at U leaves 7,703,312, rejecting that engine outright. The exact six-sweep instrument is unnecessary. Asymmetric and nonlinear floors remain open and belong to a new hypothesis. |
 
 ### exhausted (1)
 
@@ -1346,7 +1347,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-171 rounds, 2512.1 agent-minutes, 4021.3 wall-minutes.
+172 rounds, 2512.1 agent-minutes, 4023.5 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

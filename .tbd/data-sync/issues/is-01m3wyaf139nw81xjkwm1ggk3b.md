@@ -5,7 +5,7 @@ title: "Import wand125: 34 rectangle-density lower bounds raised since T-046 (#2
 kind: task
 status: in_progress
 priority: 2
-version: 2
+version: 4
 spec_path: docs/project/specs/active/plan-2026-10-01-result-import-first-application.md
 labels:
   - packing
@@ -13,10 +13,10 @@ labels:
 dependencies: []
 parent_id: is-01m3wvgebtkjqb3km59h7768zx
 created_at: 2026-10-01T23:55:45.056Z
-updated_at: 2026-10-02T00:17:34.302Z
+updated_at: 2026-10-02T00:52:35.605Z
 ---
 Result import process from stage 1. New lower-bound entry for the 34 counts, under a key for the 1a25a5e release; T-046 keeps its claim. Needs a third Packet in audit_wand125_rectangles and a third Registration in apply_wand125_rectangles. Complete replay 148.5 upstream CPU-h, about 230 worker-hours here. Land the 21 stranded receipts first (think-0rrj, think-20mv): 14 are of certificates this issue raises and all 21 still beat the verified bound.
 
 ## Notes
 
-2026-10-01: W1 research-survey, correctness focus. Objective: stages 2 and 3 of the result import process (retain, record as reported). Artifact: a pull request stacked on jlevy/squares#290, branch claude/import-2026-10-01-requests. Check: validate_schemas, check_source_coverage, check_results, packing-validate --records.
+2026-10-01: stages 2 and 3 are in draft PR jlevy/squares#292 (branch claude/import-2026-10-01-requests, commit 2b7191461), stacked on #290. Stage 4 not started. The T-id is provisional until #292 is on main; quote it to no author before then.

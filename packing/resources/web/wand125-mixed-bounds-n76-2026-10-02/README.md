@@ -16,9 +16,11 @@ It is a packet of its own because its revision is later than the
 is a new packet. Both revisions fall on the same UTC date, so this one’s name carries the
 count. Its proposed Frontier key is **[wand125 mixed bounds n76 2026-10-02]**. The claim
 below is stated as the source states it.
-The certificate was not replayed here. What was checked is SHA-256 digests, Git blob
-ids, the exact premises the audit below recomputes from the retained bytes, and every
-check the replay makes before its first angle, run on the pinned tarball.
+At retention, what was checked is SHA-256 digests, Git blob ids, the exact premises the
+audit below recomputes from the retained bytes, and every check the replay makes before
+its first angle, run on the pinned tarball.
+The complete replay followed the same day, and its receipts are in
+[`receipts/n76/`](receipts/n76/).
 
 ## Source and Pin
 
@@ -145,7 +147,6 @@ candidate. The bundle’s records give the source’s own oblique run as 12,687 
 
 ## Replaying the Certificate
 
-The certificate has not been replayed.
 `devtools.audit_wand125_point_and_mixed` replays it by range, exactly as it does
 $n = 84$ and $85$; the
 [`52af997` packet](../wand125-mixed-bounds-2026-10-02/README.md#replaying-the-certificates)
@@ -164,6 +165,37 @@ uv run --frozen --all-extras --group dev python -m devtools.audit_wand125_point_
 `--via git` reads the tarball from a fetch of the pinned commit, which a proxy that
 truncates raw-file downloads cannot cut short. The receipts land in `receipts/n76/`.
 
+## Replay Here, 2 October 2026
+
+Stage 4 of the [result import](../../../campaign/result-import.md) ran the replay above
+once over all 201 directions, with three workers, on a shared 4-core x86-64 Linux
+container (Intel Xeon at 2.10 GHz, `c++` 13.3.0, Python 3.14.7, one BLAS and OpenMP
+thread, `PYTHONOPTIMIZE` unset).
+
+| Run | Directions | Refused | Verdict | Wall, CPU |
+| --- | ---: | ---: | --- | --- |
+| `mixed-replay n76 --range 0-200 --workers 3 --via git` | 201 | 0 | `FULL_REPLAY_MATCHES_SHIPPED` | 81 min, 3.64 h |
+
+- **The bundle** was fetched by Git at the pinned commit, with the pinned SHA-256 and
+  size, and bound to the packet: its 621 listed files and the ten `code/` files, the
+  driver’s preconditions, and the checker `89b674a6…` built by the shipped compile line.
+- **Every direction returned the certificate’s own record**
+  ([`receipts/n76/range-000-200/directions.jsonl`](receipts/n76/range-000-200/directions.jsonl)):
+  the axis direction its 3,225,616 cells and integer minimum $1.0075130139576551$, and
+  each oblique direction its node count and lower bound, the least
+  $1.000000000516032$ at index 150.
+  [`receipts/n76/merged.json`](receipts/n76/merged.json) is the merged verdict, and
+  `mixed-merge n76 --check` re-derives it.
+- **The cost** is 3.64 CPU-hours here, against the 12,687 seconds the bundle records for
+  the source’s oblique run.
+- **The controls** are the checker’s, made on the source’s $n = 37$ certificate of the
+  same kind with the same compile
+  ([October 1 packet](../wand125-point-and-mixed-2026-10-01/README.md#controls-for-the-mixed-checker)).
+  No mutation of this certificate was run.
+
+The replay runs the source’s own checker and per-angle functions, so it confirms the
+source’s run rather than deciding coverage a second way.
+
 ## Where the Request and the Retained Files Differ
 
 - **The least bound.** The directory README and the request give $1.0000000005$; the
@@ -177,9 +209,10 @@ truncates raw-file downloads cannot cut short. The receipts land in `receipts/n7
 
 ## Limitations
 
-- **Not replayed.** No angle of the 201 was replayed here. Every other statement above is
-  read from the retained files, recomputed by the exact audit, checked by `mixed-fetch`,
-  or a digest comparison.
+- **One implementation.** The replay here runs the source’s checker, so coverage is
+  decided by one C++ program; the axis tables are a second implementation for one
+  direction only. Every other statement above is read from the retained files,
+  recomputed by the exact audit, checked by `mixed-fetch`, or a digest comparison.
 - **The bundle is pinned and not held.** A replay needs the tarball from the source at
   the pinned revision, with the digest above.
 

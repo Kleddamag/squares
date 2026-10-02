@@ -789,7 +789,9 @@ def test_every_card_grid_sits_in_a_frame_it_can_measure(page: str) -> None:
     assert "site-cards-dimensions" not in page, "the rating ladders are no card grid"
 
 
-def test_the_page_cards_stand_two_over_three_at_one_column_width(page: str) -> None:
+def test_the_page_cards_stand_two_over_three_at_one_column_width(
+    page: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
     """The five page cards stand in two lines, the two papers over the tutorial, the
     workbench and the Frontier page (the owner, 2026-10-02, `think-ec5k`): one wrapping
     row would set four where the frame fits four and leave the fifth alone. A section set
@@ -818,8 +820,9 @@ def test_the_page_cards_stand_two_over_three_at_one_column_width(page: str) -> N
             f"--site-cards-line: min(var(--site-cards-{size}), {most});"
             in rule[: rule.index("}")]
         ), section
-    with pytest.raises(SystemExit, match="4 cards in lines of"):
-        overview_sections._cards(["<a></a>"] * 4, "pages")  # noqa: SLF001
+    monkeypatch.setitem(overview_sections.SECTION_CARD_LINES, "pages", (2, 2))
+    with pytest.raises(SystemExit, match="pages: 5 cards in lines of"):
+        overview_sections.page_cards()
 
 
 #: A container query naming how many cards of one size its frame fits to a line from a

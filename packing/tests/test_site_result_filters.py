@@ -142,13 +142,14 @@ def test_the_checkbox_starts_at_its_pages_default_and_the_table_with_it(
     )
     assert sorted(found["current"]) == current
     # What stays: every standing but superseded, and a result that is no bound whatever
-    # its evidence makes its standing, the limit of a method among them (T-003).
+    # its evidence makes its standing, the limit of a method among them (T-003). No
+    # result has stood as a reported second certificate since 2 October 2026, when
+    # T-055's replay made it a verified one.
     kept = [result for result in overview.results if result.id.lower() in current]
     assert {result.standing for result in kept} == {
         render_recent_results.HOLDS,
         render_recent_results.HOLDS_REPORTED,
         render_recent_results.SECOND_CERTIFICATE,
-        render_recent_results.SECOND_CERTIFICATE_REPORTED,
         render_recent_results.NO_STANDING,
         render_recent_results.SUPERSEDED,
     }

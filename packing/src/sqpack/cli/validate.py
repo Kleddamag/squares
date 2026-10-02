@@ -3143,6 +3143,16 @@ def _nagamochi_bounds(context: Context) -> str:
     return _module(context, "devtools.check_nagamochi_bounds")
 
 
+def _t007_consumer_audit(context: Context) -> str:
+    # About a second. Records tier for the same reason as the step above: Karakus 2026
+    # (arXiv:2609.37410) showed Nagamochi's published proof incomplete, and this keeps the
+    # inventory of every bound and document resting on T-007 in step with the record
+    # until the think-589i review settles what each one rests on now.
+    output = _module(context, "devtools.audit_t007_consumers", "--check")
+    _require_text(output, f"T-007 consumer audit current: {KNOWN_BEST_CORPUS.count} cases")
+    return output
+
+
 def _evidence_inventory(context: Context) -> str:
     # Sub-second: it reads one register and re-renders a table. Records tier because it is
     # a generated view of the record, and a generated view that has drifted from its source
@@ -4575,6 +4585,26 @@ STEPS: tuple[Step, ...] = (
         ),
     ),
     Step(
+        "the register's reliance on T-007 is inventoried",
+        _t007_consumer_audit,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "packing/devtools/audit_t007_consumers.py",
+            "packing/campaign/series/series-000-smoke-and-calibration/results/t007-consumer-audit.json",
+            "packing/frontier/*",
+            "packing/resources/papers/*",
+            "packing/resources/web/*",
+            "packing/devtools/templates/*",
+            "packing/devtools/generate_frontier_case.py",
+            "docs/project/research/*",
+            "SYNOPSIS.md",
+            "README.md",
+            "TUTORIAL.md",
+        ),
+    ),
+    Step(
         "the inventory agrees with the register",
         _evidence_inventory,
         fast=True,
@@ -5080,6 +5110,7 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "the branch cost rollup renders",
         "control anchors still resolve",
         "the borrowed lower bounds re-derive",
+        "the register's reliance on T-007 is inventoried",
         "the inventory agrees with the register",
         "results rungs are earned and the view agrees",
         "the synopsis headline carries every result",

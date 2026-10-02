@@ -28,8 +28,10 @@ sound. The general floor is proved only in the weaker form
 $s(N) \ge \tfrac12 + \sqrt{N - \lfloor\sqrt N\rfloor + \tfrac14}$ for nonsquare
 $N \ge 8$, strictly below Nagamochi’s value at every $N$ that is not $k^2-1$ (at
 $N = 14$: $3.854$ against $4$; at $N = 82$: $9.0586$ against $9.0623$). $s(k^2-2) = k$
-rests on chelokot’s Lean compensation proof alone, which is reported here and neither
-built nor read in its definitions.
+rests on chelokot’s Lean compensation proof alone, which is reported here: its final
+statement and the definitions it is written in were read and say what the claim says,
+and its continuous-integration build audits axioms mechanically, but nothing was built
+or replayed here and no receipt exists to read.
 I did not repair the scoring argument: the two mass-preserving local repairs each rescue
 Karakuş’s square and are each defeated by an axis-parallel square at the same corner,
 with both witnesses retained in the tool.
@@ -271,29 +273,97 @@ At $N = k^2 - 1$ both give $k$ (not in the table; the test checks $k = 3, \dots,
 
 ### chelokot’s Lean archive, reported
 
-The archive reports two theorems whose statements I read and whose definitions, build
-and axiom audit I did not:
+The archive claims, in `docs/nagamochi-compensation-proof.md` and
+`docs/nagamochi-2005-formalization.md`, a Lean proof of $s(n^2-2) = n$ for every integer
+$n \ge 2$, square containers only, dated 5 September 2026: the identity Karakuş’s own
+argument does not reach.
+This subsection says what that claim is, what stands behind it mechanically, and what it
+would take to earn a rung here.
+Nothing was built or replayed.
 
-- `Records.NearSquare.squareMinusOne_isMinimumSide`, $s(n^2-1) = n$ for every $n \ge 2$,
-  by an *augmented* measure that keeps Nagamochi’s area and extended lines and raises
-  each $Q$ weight from $0.45$ to $0.5$. Its total is $n^2 - 1.6$, enough for $n^2 - 1$
-  and not for $n^2 - 2$. The tool confirms the two facts that make this plausible: the
-  augmented measure scores both witness squares of the next section above one, and its
-  total is exactly $2/5$ above Nagamochi’s.
-- `Records.NearSquare.squareMinusTwo_isMinimumSide (size_lower : 2 ≤ size) :
-  IsMinimumSide (size * size - 2) size`, dated 5 September 2026, for square containers
-  only. The $n \ge 4$ argument keeps Nagamochi’s measure and compensates each square of
-  score at most one (every such square contains exactly one $Q$ point and no $P$ point)
-  by a credit from the terminal of a finite chain of owners along the boundary row, with
-  a $P$ terminal paying at most two chains and a $Q$ terminal one; $n = 2, 3$ are
-  separate proofs. The archive reports the axiom audit as `propext`, `Classical.choice`
-  and `Quot.sound` only.
+**What the theorem says.** `NagamochiPackingTheorem.lean` (102 lines) ends in
 
-The archive also reports, unchecked here: that removing the short extensions to pay for
-higher $Q$ weights fails even for an axis-aligned square; that exact linear inequalities
-from four squares exclude any repair that changes the four symmetric weights of the
-original markings at total $n^2 - 2$; that simple pairwise compensation fails; and that
-a 24-start numerical search found no packing of $62$ squares below side $8$.
+```text
+theorem Records.NearSquare.squareMinusTwo_isMinimumSide
+    {size : ℕ} (size_lower : 2 ≤ size) :
+    IsMinimumSide (size * size - 2) size
+```
+
+with `size = 2` discharged by `s2_eq_two`, `size = 3` by `Records.Square7.s7_eq_three`
+(two unavoidable point sets after Kearney and Shiu), and `size ≥ 4` by the grid packing
+and `Packing.squareMinusTwo_side_ge`, which rests on
+`Packing.squareMinusTwo_impossible_of_scaled_fits`: a packing of $n^2-2$ squares at side
+$L$ with $4 \le n$, a factor $1 < \lambda \le 101/100$ and $\lambda L \le n$ is
+contradictory. Instances `s14_eq_four`, `s62_eq_eight`, `s79_eq_nine`, `s98_eq_ten`
+follow by `simpa`. The definitions, in `Geometry.lean`: a `PlacedSquare` is a centre and
+an orthonormal `Frame` (a cosine and sine with $c^2 + s^2 = 1$), so rotation is
+arbitrary; `Contains` is the closed unit square ($|x'|, |y'| \le 1/2$ in local
+coordinates) and `InteriorContains` the open one; `Container.Contains side` is the
+closed square $[0, \mathrm{side}]^2$; `Packing n side` is $n$ placed squares, each with
+its closed square inside the closed container (`Fits`) and pairwise without a common
+interior point (`InteriorDisjoint`), so boundary contact is allowed; and
+`IsMinimumSide n s` is `HasPacking n s` together with $s \le s'$ for every $s'$ that has
+a packing. On my reading that is this register’s $s(N)$ exactly.
+The reading is mine, of the definitions only; it is not the human formalization review
+the ladder’s rung 5 names, and I read none of the proof files.
+
+**What is formalized, by the archive’s own account.** Its formalization note tabulates
+as kernel-checked: the resource measure and its total $n^2-2$; scaling, disjointness and
+finite-measure counting; the conditional near-square theorem from the per-square premise
+`ScoresDilatedSquares`, together with `not_scoresDilatedSquares_four`, that the premise
+is false at $n = 4$; the per-square inequality for centres in the inner rectangle (Cases
+1 to 4) and in the four corner regions (Case 5); the edge-strip inequality for squares
+containing no $Q$ point; the universal inequality for the *augmented* measure, which
+keeps Nagamochi’s area and extended lines and raises each $Q$ weight from $0.45$ to
+$0.5$, giving `Records.NearSquare.squareMinusOne_isMinimumSide`, $s(n^2-1) = n$ for
+every $n \ge 2$ (its total is $n^2 - 1.6$, enough for $n^2-1$ and not $n^2-2$, and the
+tool confirms that this measure scores both witness squares of the next section above
+one and sits exactly $2/5$ above Nagamochi’s total); and, for $n \ge 4$, the
+compensation argument.
+That argument keeps Nagamochi’s measure and shows every square of score at most one
+contains exactly one $Q$ point and no $P$ point, follows a finite chain of owners of the
+next marked points along that boundary row to a terminal, and pays the shortfall from
+the terminal, a $P$ terminal paying at most two chains and a $Q$ terminal one, so that
+after the transfers every square exceeds one while the total is unchanged.
+The note states that Cases 6 and 7 of the per-square inequality “cannot hold as stated”
+and that Nagamochi’s rectangular theorem “is not verified here.”
+The archive also reports, as prose: that removing the short extensions to pay for higher
+$Q$ weights fails even for an axis-aligned square; that exact linear inequalities from
+four squares exclude any repair that changes the four symmetric weights at total
+$n^2-2$; that simple pairwise compensation fails; and that a 24-start numerical search
+found no packing of $62$ squares below side $8$. None of that was checked here.
+
+**The axiom audit, and what exists of a receipt.** The archive’s CI
+(`.github/workflows/ci.yml`, job `lean`) builds the library with
+`leanprover/lean-action` at the pinned `leanprover/lean4:v4.33.0` with Mathlib at
+`db584cd6d46c92f209a44c0f1c829460d327499d` (the lakefile’s `rev = "v4.33.0"`), rejects
+any `sorry` by grep, runs `scripts/test_lean_axiom_policy.py`, and compiles the
+generated `ManifestEvidence.lean`. That file carries 79 `assert_standard_axioms`
+commands, one per theorem the archive’s manifest cites, among them `s14_eq_four`,
+`s62_eq_eight`, `s79_eq_nine` and `s98_eq_ten`, whose transitive axioms include those of
+the universal theorem, and `s63_eq_eight`, `s80_eq_nine`, `s99_eq_ten` and
+`s7_eq_three`. The command, twelve lines in `EvidenceAudit.lean`, collects transitive
+axioms with `Lean.collectAxioms` and fails the build on any outside `propext`,
+`Classical.choice` and `Quot.sound`; the policy test shows it rejects `sorryAx` and
+`native_decide`. So the audit the prose reports is mechanical at every upstream build,
+and the manifest cites the theorem for its records `exact-14-friedman`,
+`exact-62-nagamochi`, `exact-79-nagamochi` and `exact-98-nagamochi`. What does not exist
+is a receipt: no audit output is retained in the repository, the CI log was not fetched,
+and the archive lane here pinned the proof files by digest without retaining them.
+
+**What a replay would take.** `elan` with the pinned toolchain; the Mathlib build cache
+for the pinned revision (`lake exe cache get`, several gigabytes; building Mathlib from
+source instead is many CPU-hours); `lake build` in `formal/` at `753079eb` (277 Lean
+files, of which the 55 `Nagamochi*.lean` files are 16,603 lines; the lakefile sets
+`-j2`; tens of minutes after the cache is a guess, not a measurement); then `lake env
+lean --stdin` importing `SquarePackingArchive.EvidenceAudit` and
+`SquarePackingArchive.NagamochiPackingTheorem` and running `assert_standard_axioms` and
+`#print axioms` on
+`SquarePackingArchive.Records.NearSquare.squareMinusTwo_isMinimumSide`, with stdout
+retained as the axiom receipt; and a retained statement-fidelity note on `IsMinimumSide`
+and `Packing`. That is the ladder’s proof-assistant route to `V3`/`C3` for the result;
+`V5` needs a named human expert’s formalization review and `C5` two, with an open-review
+pointer, which the public repository already supports.
 
 Two of the three consumers therefore have proofs by two different methods each ($k^2-1$:
 a strip measure in a refereed-venue preprint and an augmented measure in Lean), one has
@@ -361,8 +431,15 @@ Theorem 1.1 and Corollaries 1.2, 6.1 and 6.2; Nagamochi’s Section 2 algebra; t
 location of the gap in Case 6 and the inapplicability of Lemma 6 to $K_t$; the hand
 computations in the repair section that are not in the tool.
 
-Reported, unverified here: everything the chelokot archive proves in Lean, its axiom
-audit, its negative results on repairs, and its numerical search.
+Reported, unverified here: everything the chelokot archive proves in Lean, which is the
+two near-square theorems, the per-square cases its note lists as kernel-checked and the
+counterexample theorem; the axiom audit those rest on, which its continuous integration
+performs at each build and which produced no receipt I could read; its negative results
+on repairs; and its numerical search.
+Read here and not replayed: the final theorem statements and the definitions
+`PlacedSquare`, `Frame`, `Contains`, `InteriorContains`, `Container.Contains`,
+`Packing`, `Fits`, `InteriorDisjoint`, `HasPacking` and `IsMinimumSide`, which on my
+reading state this register’s $s(N)$.
 
 Open, asserted by no one: Nagamochi’s Theorem 1 in full; Theorem 2(ii) at its full
 strength; $s(k^2-2) = k$ by any route other than the reported Lean proof.
@@ -381,7 +458,7 @@ replayed past it.
 | `T-007` as stated, Theorem 2’s closed form at every $4 \le N \le 100$ | A published proof with a refuted lemma; no replacement at full strength | `V0`/`C1`, status `incomplete`; `E-nagamochi-lower.external_review` to `defect-found` dated 2 October 2026 with this review as the record | `V3` means a checkable published proof; there is none. The read stands at `C1` and found the defect |
 | General floor at $N \notin \{k^2-1, k^2-2\}$, as a verified bound | Karakuş Cor. 6.2, read here | New evidence from arXiv:2609.37410, `published-proof`, `V3`/`C1`, at the weaker value; Nagamochi’s value stays as a reported bound | The replacement is published and audited; it is not machine-checked |
 | $s(k^2-1) = k$, $k \ge 3$ | Karakuş Cor. 1.2 (read here); chelokot’s augmented measure in Lean (reported) | `V3`/`C1` on the strip-measure proof; the Lean route stays reported until replayed | Two independent methods exist; one is audited |
-| $s(k^2-2) = k$, $k \ge 4$ | chelokot’s compensation proof in Lean only | Recorded, `V0`/`C0`, until the build is replayed at a pinned toolchain with an axiom receipt (then `V3`/`C3` by the proof-assistant route) and a human formalization review (`V5`); the verified floor at these $N$ falls to Karakuş’s value meanwhile | No published proof survives; a third-party formal claim earns a rung here only by replay |
+| $s(k^2-2) = k$, $k \ge 4$ | chelokot’s compensation proof in Lean only: statement read here, definitions read here, build and axioms not replayed, no retained receipt | Recorded, `V0`/`C0`, until the replay set out above (pinned `v4.33.0` and Mathlib `db584cd6`, `lake build` at `753079eb`, an `assert_standard_axioms` and `#print axioms` receipt on `squareMinusTwo_isMinimumSide`, a statement-fidelity note) is retained, which gives `V3`/`C3`; `V5` needs a human formalization review. Meanwhile the verified floor at $N = 14, 23, 34, 47, 62, 79, 98$ falls to Karakuş’s value and their optimality reads as reported | No published proof survives; a third-party formal claim earns a rung here only by replay, and an unreplayed Lean claim is not verified |
 | Lemma 1 of [Nagamochi 2005] is false | This tool, on Karakuş’s family and chelokot’s square | A `correction` result, `S3`, with the tool as exact-algebraic evidence (`replayed-here`) and the test as its control | The counterexample is a finite exact computation and is retained |
 
 `S3` for `T-007` is unchanged: the result is no less important for being unproved.

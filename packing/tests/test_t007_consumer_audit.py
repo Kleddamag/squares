@@ -259,8 +259,64 @@ def test_the_inventory_finds_the_statements_a_correction_must_reach() -> None:
             "Nagamochi’s $s(n^2 - 1) = s(n^2 - 2) = n$",
         ),
     )
+    groups = {path: group for group, path in audit.document_paths()}
     for path, needle in expected:
-        assert line_of(path, needle) in files[path]["unqualified_states_lines"], path
+        live = [
+            hit["line"]
+            for hit in audit.scan_document(groups[path], path)
+            if hit["tier"] == "states" and not hit["qualified"]
+        ]
+        assert line_of(path, needle) in live, path
+        assert files[path]["statements"]["unqualified_states"] == len(live), path
+
+
+def walk(node: object, key: str = "") -> list[str]:
+    """Every key in a JSON tree, so a test can ask what the record never carries."""
+    if isinstance(node, dict):
+        return [k for name, value in node.items() for k in (name, *walk(value, name))]
+    if isinstance(node, list):
+        return [k for value in node for k in walk(value, key)]
+    return []
+
+
+def test_the_retained_document_worklist_carries_no_line_numbers() -> None:
+    keys = walk(audit.build_document()["documents"])
+    assert not [key for key in keys if key == "line" or key.endswith("_lines")]
+    retained = audit.OUTPUT.read_text(encoding="utf-8")
+    assert '"line"' not in retained
+    assert "_lines" not in retained
+
+
+def test_a_document_entry_survives_edits_elsewhere_in_the_document() -> None:
+    lines = (
+        "Nagamochi proved s(k^2 - 2) = k.",
+        "",
+        "| 92 | 10 | Nagamochi | 0.34 |",
+        "",
+        "The floor here is Nagamochi’s closed form.",
+    )
+    text = "\n".join(lines)
+    edited = "A new opening paragraph.\n\nAnother, two lines\nlong.\n\n" + text + "\n\nCoda."
+    before = audit.document_entry("reader", "x.md", audit.scan_text(text))
+    after = audit.document_entry("reader", "x.md", audit.scan_text(edited))
+    assert before == after
+    assert before["statements"]["states"] == 1
+    assert before["phrases"] == {
+        "beside: floor": 1,
+        "k2-minus-2-identity: k^2 - 2": 1,
+        "lone table cell": 1,
+    }
+
+
+def test_check_fails_when_the_anchored_formula_is_gone(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setitem(audit.KARAKUS_AT, "explicit_bound_at", "a formula the archive lacks")
+    audit.build_document.cache_clear()
+    try:
+        assert audit.main(["--check"]) == 1
+    finally:
+        monkeypatch.undo()
+        audit.build_document.cache_clear()
+    assert audit.main(["--check"]) == 0
 
 
 def test_check_reports_a_stale_record(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

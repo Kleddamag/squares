@@ -646,8 +646,8 @@ results:
       local system -- the injective chart, all 400 base margins, the 20 active
       rows, the 128 strict conditions that cut out the neighbourhood, T-012's
       first-order cone and its non-negative self-stress with w . q < 0 -- is
-      machine-confirmed here and independently rebuilt by the reviewer (machine-checked
-      fragments, replayed here).
+      machine-confirmed here with the producer's code, devtools.assess_n5_rigidity, and
+      independently rebuilt by the reviewer (machine-checked fragments, replayed here).
 
       The two steps that close the argument, the cited Nash
       curve-selection lemma and the order-2m coefficient induction, are an
@@ -4327,7 +4327,7 @@ results:
       published: '2026-09-26'
     composition: >-
       Compound. The upper half is the 6 x 6 grid replayed exactly by the basic-bounds
-      checker (E-basic-grid-upper), a construction confirmed by its replay, so under
+      checker (E-basic-grid-upper), a construction its replay establishes, so under
       epistemics.md's Scope and Composition the equality takes the C of its lower half,
       which sets the rung.
 
@@ -5049,7 +5049,9 @@ results:
       Independent rotations and boundary contact are allowed.
 
       The proof, published by Queuingtheorydotcom on 29 September 2026, is confirmed here
-      through complete repository geometric executions and a mapped mathematical audit.
+      by a re-implementation sharing components with the source -- complete repository
+      geometric executions on kernels the source also bundles -- and a mapped mathematical
+      audit.
 
       Queuingtheorydotcom,
       [11SquaresOptimal](https://github.com/Queuingtheorydotcom/11SquaresOptimal/tree/f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c),

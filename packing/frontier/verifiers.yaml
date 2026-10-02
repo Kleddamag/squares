@@ -1,0 +1,1013 @@
+softschema:
+  contract: packing.squares:VerifierRegistry/v1
+  schema: verifiers.schema.yaml
+  status: enforced
+
+# Every verification program the evidence register names, external first and then this
+# repository's own. An evidence entry names the programs that verified it in `verifiers`,
+# and its `relationship_to_generator` says how they stand to the code its result's
+# producer used; epistemics.md (Confirmation) defines the relations and VERIFIERS.md is
+# the rendered view. `devtools.backfill_verifier_relation` fills `verifiers` from replay
+# commands, packets and digests, audits the relation, and prints what it cannot decide.
+
+last_reviewed: '2026-10-02'
+verifiers:
+  # --- External programs -------------------------------------------------------------
+  - id: V-tokoharu-verify-cpp
+    program: verify.cpp, run by its driver run_verify.py
+    author: Tokoharu
+    provenance: external
+    language: [C++, Python]
+    methods: [interval-certified]
+    role: decides
+    summary: >-
+      Decides a rectangle-density covering certificate over every net direction by
+      outward-rounded binary64 interval subdivision: every closed unit square in the
+      container carries mass at least one.
+    source:
+      - packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/src/verify.cpp
+      - packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/src/run_verify.py
+    versions:
+      - {sha256: a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602, note: verify.cpp}
+      - sha256: 7bce246763cac8a2bda9aa4cfd9944aa5e14cde9ac965e00686c25f21ae78261
+        path: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/src/run_verify.py
+        note: run_verify.py
+    note: >-
+      wand125's density and rectangle certificates ship byte-identical copies of both
+      files, so a replay of a wand125 rectangle certificate runs the code its producer
+      verified it with.
+
+  - id: V-wand125-mixed-rotated-verify-cpp
+    program: mixed_rotated_verify.cpp, with the source's per-angle replay functions
+    author: wand125
+    provenance: external
+    language: [C++, Python]
+    methods: [interval-certified]
+    role: decides
+    summary: >-
+      Decides a mixed point-and-rectangle certificate at each of the 201 net directions,
+      returning the direction's own record of cells and lower bound.
+    source:
+      - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp
+    versions:
+      - {sha256: 89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652}
+      - {revision: 7975030a, note: "the n = 76 bundle's tarball, fetched by Git and pinned by its own SHA-256"}
+
+  - id: V-wand125-verify-mixed-full-proof-py
+    program: verify_mixed_full_proof.py
+    author: wand125
+    provenance: external
+    language: [Python]
+    methods: [interval-certified]
+    role: decides
+    summary: >-
+      The source's driver for a complete mixed-certificate proof: it runs
+      mixed_rotated_verify.cpp over every net direction and joins the per-direction
+      records.
+    source:
+      - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/verify_mixed_full_proof.py
+    versions:
+      - {sha256: 2719e482cfdd87da2b64b50af626bbd0a68d58d95b746cf27467b2a7aca83648}
+    note: Retained and reviewed; no confirming entry runs it yet.
+
+  - id: V-wand125-unified-linear-verify-cpp
+    program: unified_linear_verify.cpp
+    author: wand125
+    provenance: external
+    language: [C++]
+    methods: [interval-certified]
+    role: decides
+    summary: >-
+      Decides a linear (segment) certificate at every net direction, the axis direction
+      included.
+    source:
+      - packing/resources/web/wand125-linear-certificates-2026-10-02/square-packing-bounds/certificates/mixed_n101_L1028/code/unified_linear_verify.cpp
+    versions:
+      - {sha256: 0249726ab1e67dc481e0c53f43b524902a48f95d051b1b08865a3cf3ef89a06d}
+    note: Its n = 101 replay receipts are retained; no evidence entry records the replay yet.
+
+  - id: V-wand125-verify-portable-py
+    program: verify_portable.py
+    author: wand125
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: The source's portable exact checker for its point-only n = 21 cover bundle.
+    source:
+      - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n21_L5/verify_portable.py
+    versions:
+      - {sha256: 2cea95ceac939fee8926eee413e1cfc049af25e98efb1dc8660b44cf14b6ed92}
+    note: Retained; no confirming entry runs it yet.
+
+  - id: V-wand125-check-with-sqpack
+    program: check_with_sqpack.py
+    author: wand125
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      wand125's adapter that expands its point certificates' direction rule and hands
+      them to this repository's exact verifier, sqpack.fractional.certificate, unmodified.
+    source:
+      - packing/resources/web/external-square-certificates-2026-09-22/wand125-points/src/check_with_sqpack.py
+    versions:
+      - {sha256: f64fe22eddfdd48a18e5b42fc8f7ad60be974753e088ca1052182bb9f932aaa1}
+      - {revision: 1398e42f17f23fe3744bc54425a589fab1f3542c}
+    note: >-
+      The producer verified its point certificates with this adapter and this
+      repository's verifier, so a replay of them is a replay of the producer's code even
+      though most of that code is first-party (V-sqpack-fractional-exact).
+
+  - id: V-wand125-valid7-checker
+    program: valid7-independent-check (Tier A, Tier B and the record checker)
+    author: wand125
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      Decides Valid7 for Evan Daniel's k = 7 cover: every closed unit square in
+      [0,7]^2, at every centre and angle, has mass at least one, by branch and bound in
+      Fraction and python-flint arithmetic with its own Sturm root isolation.
+    source:
+      - packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/src
+      - packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/verify.sh
+    versions:
+      - {revision: 38dd31b369991b0d96c917a4af0c7139b44a038d, note: "the repository's only commit, and its release records-v1"}
+    independence_record: packing/resources/web/wand125-valid7-independent-check-2026-10-02/valid7-independent-check/READ_LOG.md
+    note: >-
+      Its read log says Daniel's checker qx2_zm.py and his lemma write-ups were not read;
+      the two share the statement, the cover and its format specification.
+
+  - id: V-evand-zmx2
+    program: zmx2
+    author: Evan Daniel
+    provenance: external
+    language: [Rust]
+    methods: [interval-certified]
+    role: decides
+    summary: >-
+      Decides a zero-margin point-and-segment cover by branch and bound over centre and
+      angle boxes, each acceptance an exact integer test on outward-rounded binary64
+      enclosures, over the D4 region (--d4) or the unreduced pose space (--full).
+    source:
+      - packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/verify2/src/bin/zmx2.rs
+      - packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/square-packing/s12/verify2/src/bin/zmx2.rs
+    versions:
+      - sha256: 6b7f0f79466bf25c9a85f8fe2f3866de734935f0521ea188136818c2fb5b3fed
+        note: the 2026-09-28 packet's post-audit parser, which made the shipped records and which wand125's verify.sh pins
+      - sha256: 92a4cfe87b4e33d57ce132c9c517eded3fe62b4a5a2151b5ba250b8ee329fe64
+        revision: e4af291cf52711a3ef7cedfea262f001fa2cafe1
+        path: packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/square-packing/s12/verify2/src/bin/zmx2.rs
+        note: the --sym-atoms version, for the unreduced s(32) sweep
+    note: >-
+      wand125 verified its own covers with zmx2 as well, so a zmx2 replay of a wand125
+      cover is a replay of the producer's code.
+
+  - id: V-evand-zm-mixed-py
+    program: zm_mixed.py
+    author: Evan Daniel
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: The source's exact mixed point-and-segment cover checker, the predecessor zmx2 was checked against.
+    source:
+      - packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/search/zm_mixed.py
+    versions:
+      - {sha256: ee3e2915349b8795128417bca6414b205d526db9f01f88cd4cd32c32e8d760ac}
+    note: >-
+      Retained; its shipped run records are re-summarised by the source's verify.sh, but
+      no confirming entry runs the checker itself yet.
+
+  - id: V-evand-zeromargin-py
+    program: zeromargin.py, run by zm_d4_sweep.py
+    author: Evan Daniel
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: The source's exhaustive exact point-cover checker over the D4 region's root boxes.
+    source:
+      - packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/search/zeromargin.py
+      - packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/search/zm_d4_sweep.py
+    versions:
+      - {sha256: 640fe453c1a32f4aa580ca2b1261c6406923a4d7c131f65604a432c7fc2086ab, note: zeromargin.py}
+      - sha256: cc7fa8c70f7a39c5e1e920baa9efdc1af8feb68bc6eeb029dab4a99fc3f77fbe
+        path: packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/search/zm_d4_sweep.py
+        note: zm_d4_sweep.py
+
+  - id: V-evand-angle-net-verify
+    program: verify (the angle-net arrangement sweep)
+    author: Evan Daniel
+    provenance: external
+    language: [Rust]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      Decides a positive-margin weighted point cover over an angle net by an exact
+      arrangement sweep in each bin.
+    source:
+      - packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/verify/src/main.rs
+    versions:
+      - {sha256: 226ef3f1209933dadb986c963cc1c5b52b86a06686f546441157378311fcc94c}
+
+  - id: V-evand-xcheck-py
+    program: xcheck.py
+    author: Evan Daniel
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: The source's separately written exact Python re-check of the angle-net bins.
+    source:
+      - packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/xcheck.py
+    versions:
+      - {sha256: e18d79a8271993673d5c05bf7baec08fe82cf3b3747ff06c7f74bc29781b0866}
+
+  - id: V-evand-zmcheck
+    program: zmcheck (verify2/src/main.rs)
+    author: Evan Daniel
+    provenance: external
+    language: [Rust]
+    methods: [interval-certified]
+    role: decides
+    summary: >-
+      The source's separately written Rust point-cover checker, over the full domain or
+      the D4 region, sharing no code with zeromargin.py but its point-test formulation.
+    source:
+      - packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/verify2/src/main.rs
+    versions:
+      - {sha256: 94b7d83ecf6aeea64c20aea9d4f5c210c28577fb3870581d79169204c980c12b}
+
+  - id: V-evand-qx2-zm-py
+    program: qx2_zm.py
+    author: Evan Daniel
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      The source's exact-rational checker of Valid7, the finite statement its k^2 - 3
+      family rests on, over every root box of [0,7]^2 and tilt.
+    source:
+      - packing/resources/web/evand-square-packing-2026-10-01/source/s12/search/qx2_zm.py
+    versions:
+      - {sha256: 6294052a37ce66c5d84b55afd606e3a52f463e22b876bf44b5aa903aefb7e737}
+
+  - id: V-evand-lean
+    program: The source's Lean development (lean/), with gen_zmtree.py emitting a cover's box tree
+    author: Evan Daniel
+    provenance: external
+    language: [Lean 4, Python]
+    methods: [proof-assistant-checked]
+    role: decides
+    summary: >-
+      Kernel-checks a value of s(n) from a checker-cover hypothesis: for s(13) = 4 the
+      box tree itself, decided by the verified checker ZMTree.check inside Lean; for the
+      other covers and the k^2 - 3 family, the reduction from the hypothesis the source's
+      checkers decide.
+    source:
+      - packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/lean
+      - packing/resources/web/evand-square-packing-2026-10-01/source/s12/lean
+    versions:
+      - {revision: 6aa82ba457e9eaeaaa3af0833600f27f91a2fce3, note: "the s(13) build here, Lean 4.33.1 with Mathlib's official cache"}
+      - {revision: 08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5, note: "the k^2 - 3 reduction as retained, not built here"}
+
+  - id: V-kleddamag-n11-verify
+    program: verify.py, its Python checker and its JavaScript BigInt secondary checker
+    author: Kleddamag
+    provenance: external
+    language: [Python, JavaScript]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      Decides a weighted threshold certificate for n = 11 by two event-cell sweeps over
+      every parent interval, each covering every interval and agreeing on every minimum.
+    source:
+      - packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/verify.py
+      - packing/resources/web/wang-li-n11-2026-09-29/replay/kleddamag-verify-wang-li.py
+    versions:
+      - {sha256: aff03057c8416cda311ebf7aeef9e9ebf8cda981bc137661d961bc7123fd0c9d, revision: 6a733f339395c3514f2ab63d8c4aa64cf63c0b5a, note: v1.0.2}
+      - sha256: fbd452d62481581accf4bf2ad05bd987467f7cb918105b17373b436bd571ae1c
+        path: packing/resources/web/wang-li-n11-2026-09-29/replay/kleddamag-verify-wang-li.py
+        note: the launcher adapted here in three lines to Wang and Li's certificate
+
+  - id: V-kleddamag-n17-verify
+    program: verify.py, its Python checker and its Node BigInt checker
+    author: Kleddamag
+    provenance: external
+    language: [Python, JavaScript]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      Decides an n = 17 certified-bound charge certificate by a Python sweep and a
+      JavaScript BigInt sweep run together, each covering every interval and agreeing
+      on every minimum and cell count.
+    source:
+      - packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound/verify.py
+      - packing/resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound/bounds/4.640020/verify.py
+      - packing/resources/web/n17-kleddamag-466001-2026-09-27/kleddamag-17-squares-certified-bound/bounds/4.66001/verify.py
+    versions:
+      - {sha256: d620178d047a39d682eebb9c13f8e781de7f38455d6586f6d94e48fcf655fde3, note: 'v1.0.0, 461300/99853'}
+      - sha256: 6a027666c393033aac632b33419b182ef16677878fd1a6e3fd390d1603066258
+        path: packing/resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound/bounds/4.640020/verify.py
+        note: '4.640020'
+      - sha256: 2885bb142a31c461084269a2111235140a0628d746d437e572817554665f331a
+        path: packing/resources/web/n17-kleddamag-466001-2026-09-27/kleddamag-17-squares-certified-bound/bounds/4.66001/verify.py
+        note: '4.66001'
+    note: Guzhou0806's paired n = 17 launchers run Kleddamag's Node BigInt checker beside their own C++.
+
+  - id: V-wang-li-n11-verify
+    program: verify.py of the Zenodo release
+    author: Wang and Li
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      The authors' full replay of their improved n = 11 certificate: a primary event-cell
+      sweep and an independent sweep, which must agree on every row.
+    source:
+      - packing/resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29_stage10_doi_23038546-1.zip
+    versions:
+      - {sha256: 80381e22ab3535cdd113fb35f3a475b1071593af5d809ab65684af46ad98e648, note: 'the release archive, Zenodo 23038546 v1.0.0'}
+
+  - id: V-guzhou-r012-verify-py
+    program: certificates/R012/verify.py
+    author: Guzhou0806
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: The source's pure-Python exact checker of its R012 weighted catalogue certificate.
+    source:
+      - packing/resources/web/n17-weighted-certificates-2026-09-20/guzhou0806-n17-square-packing/certificates/R012/verify.py
+    versions:
+      - {sha256: c85c9d8f90c6bf9d3cc294ea4c8b4135725f8698774fb21f1c90b950c25a33e6, revision: 931a0dfd64302e277057006e99388fe5c00b7f53}
+
+  - id: V-guzhou-r052-verify-py
+    program: certificates/R052/verify.py, in records, containment, python-full and bigint-full modes
+    author: Guzhou0806
+    provenance: external
+    language: [Python, JavaScript]
+    methods: [exact-algebraic]
+    role: decides
+    summary: The source's checkers of its R052 charge certificate, a Python sweep and a BigInt sweep whose ledgers must agree.
+    source:
+      - packing/resources/web/n17-guzhou-r052-2026-09-25/n17-square-packing/certificates/R052/verify.py
+    versions:
+      - {sha256: 1ed3da8237a67857425a36857a6d4dde64e260eb5832f58b6f6b0fe4bbba4017}
+
+  - id: V-guzhou-n17-verify-cpp
+    program: verify.cpp, run by the paired launcher replay.js
+    author: Guzhou0806
+    provenance: external
+    language: [C++, JavaScript]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      The source's C++ exclusion checker, run interval by interval beside Kleddamag's
+      Node BigInt checker by the paired launcher, which requires both to pass.
+    source:
+      - packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/upstream/cpp/verify.cpp
+      - packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R067-4.66018/src/verify.cpp
+    versions:
+      - {sha256: 3ba09554cef0ea0ee15444c4d30476f0e2435144e18b1ec2c908970ca306532c, revision: 815b1626, note: identical bytes for R067 and R068}
+
+  - id: V-burns-n17-verify-py
+    program: verify-n17-lower-bound-4_4811.py
+    author: Burns
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Burns's exact-rational verifier of his 268-atom n = 17 certificate at 181 directions.
+    source:
+      - packing/resources/web/n17-lower-bounds-2026/burns-verify-n17-lower-bound-4_4811.py
+    versions:
+      - {sha256: 6d83c28634d42074a19df9e34572b0cba2ce203031004aa84a29aed76fbb2d7e}
+
+  - id: V-massaccesi-n17-verify-py
+    program: verify-n17-lower-bound-4_5058.py
+    author: Massaccesi
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Burns's verifier as modified by Massaccesi, deciding the 168-atom certificate at 181 directions.
+    source:
+      - packing/resources/web/n17-lower-bounds-2026/massaccesi-verify-n17-lower-bound-4_5058.py
+    versions:
+      - {sha256: 04531a54da9a654f2318401aff43222daf721bd99e948b2491f91c05bd0b5d3f}
+
+  - id: V-mira-17squares-point-checker
+    program: verify_certificate.py
+    author: Mira
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Mira's pure-Python integer checker of a point-and-triangle pose-space subdivision certificate.
+    source:
+      - packing/resources/web/n17-github-certificates-2026/mira-17squares/certificates/lower_bound_4p468292/verify_certificate.py
+    versions:
+      - {sha256: bfd186864c779f9d1a18d68f7c5cb3b27bcac24a3b41271e45223d86ba138f90, revision: 0872d3ac9a95bb4f8f628c8ee255d76eb27d6c2f}
+
+  - id: V-stanislavfort-17squares-point-checker
+    program: verify_certificate.py
+    author: Stanislav Fort
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Fort's pure-Python integer checker of a point-only pose-space subdivision certificate.
+    source:
+      - packing/resources/web/n17-github-certificates-2026/stanislavfort-17squares/certificates/lower_bound_4p456575/verify_certificate.py
+    versions:
+      - {sha256: 750da425ee2028f4a3c71bd5a7fb000ceb455645717fe398150255eb8a5e6095, revision: 853f7ee61e7d37c8284a3fe130d79831140ad507}
+
+  - id: V-queuingtheory-n11-verify
+    program: VERIFY.py, the publisher's n = 11 optimality driver and its component checkers
+    author: Queuingtheorydotcom
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      The publisher's advertised replay of its n = 11 optimality proof, binding every
+      component's final state by digest; four stale final-state digests keep it from
+      passing as published.
+    source:
+      - packing/resources/web/n11-optimality-2026-09-29/source/VERIFY.py
+    versions:
+      - {sha256: 14ce28b3cbebb4c8c43316beeb43c69460ae243e752de218ca1fa378c439c5e1, revision: f9e0de713a0949d1bc6a0fa6b59d96edf6c3d65c}
+
+  - id: V-wand125-tools
+    program: The wand125 tools repository's transfer/l_cap.py and general_pose_tree
+    author: wand125
+    provenance: external
+    language: [Python, Rust]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      The source's ceiling transfer for the fixed B = 9977/10000 and its general pose
+      tree, which reports exact per-row minima for Kleddamag's n = 11 certificate.
+    source:
+      - packing/resources/web/wand125-tools-2026-09-29/upstream.tar.gz
+    versions:
+      - {sha256: 6223f8c0ba26b0fffa3316ef3abab0e8d5494cc1c6247cda9d291b7e9e00ad91, note: the retained upstream tarball}
+
+  - id: V-schadt-n29-check-py
+    program: check.py
+    author: Schadt
+    provenance: external
+    language: [Python]
+    methods: [numerical-multiprecision]
+    role: decides
+    summary: The source's checker of its n = 29 packing, which accepts an epsilon overlap and does not require all 29 squares.
+    source:
+      - packing/resources/web/schadt-s29-2025/check.py
+    versions:
+      - {sha256: 7d77d0e8ac4c8fc0be2aff080710f5e8af832c9e748fc32332943fc53c09f93f}
+
+  - id: V-anabologyco-n17-checker
+    program: scripts/check_certificate.py and its event pipeline
+    author: anabologyco-maker
+    provenance: external
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: The source's checker of its 560-atom weighted fractional certificate for n = 17.
+    source:
+      - packing/resources/web/n17-github-certificates-2026/anabologyco-square17-lower-bound/scripts/check_certificate.py
+    versions:
+      - {sha256: 6d523f7bfae041d585af174aa1313454b97116a6ded6b8fbbe0ea60365b42f8d, revision: 396da6f7c112f49b50b5f4563ad2486ef38ac909}
+
+  # --- First-party programs: deciders ----------------------------------------------------
+  - id: V-check-basic-bounds
+    program: devtools.check_basic_bounds
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      Derives and checks the elementary bounds exactly: the grid upper bound, the area
+      lower bound, and monotone transfers between counts.
+    source: [packing/devtools/check_basic_bounds.py]
+
+  - id: V-optimal-moduli
+    program: cases.small_n.optimal_moduli
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Replays the exact optimal moduli for n = 2 to 4 and the side-2 lower bound.
+    source: [packing/cases/small_n/optimal_moduli.py]
+
+  - id: V-sqpack-verify
+    program: sqpack.verify, run by each case's verify_exact module and the packing-witness command
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic, interval-certified, numerical-multiprecision]
+    role: decides
+    summary: >-
+      Decides a packing pair by pair and wall by wall: by exact sign in a number field,
+      by outward-rounded enclosures, or at a declared precision and tolerance.
+    source:
+      - packing/src/sqpack/verify.py
+      - packing/src/sqpack/witness.py
+      - packing/src/sqpack/cli/witness.py
+    note: >-
+      The constructions it decides for others were published as figures and
+      coordinates without verification code, so it was written from the geometry.
+
+  - id: V-check-rational-witness-independent
+    program: devtools.check_rational_witness_independent
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Decides a rational-corner witness pair by pair and wall by wall in Fraction arithmetic.
+    source: [packing/devtools/check_rational_witness_independent.py]
+    independence_record: packing/devtools/check_rational_witness_independent.py
+    note: Its module statement says it shares no geometry or verification code with sqpack.witness or sqpack.verify.
+
+  - id: V-upper-bound-promotion
+    program: devtools.upper_bound_packets, the robust rational promotion and its exact separating-axis test
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Rounds a source's decimal pose to rationals and decides every pair and wall exactly.
+    source: [packing/devtools/upper_bound_packets.py]
+
+  - id: V-upper-bound-intervals
+    program: devtools.upper_bound_intervals
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [interval-certified]
+    role: decides
+    summary: >-
+      Decides a source's printed pose as printed, by outward-rounded decimal interval
+      arithmetic with each angle's cosine and sine enclosed.
+    source: [packing/devtools/upper_bound_intervals.py]
+
+  - id: V-sqpack-cover
+    program: sqpack.cover, the Bentz-lemma cell certifier, run by each case's verify_cover module
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      Certifies a point set unavoidable for unit squares in a container, cell by cell
+      under the lemmas of Bentz's method, exactly over the field the points need.
+    source:
+      - packing/src/sqpack/cover.py
+      - packing/cases/bentz46/verify_cover.py
+      - packing/cases/bentz13/verify_cover.py
+      - packing/cases/green17/verify_cover.py
+      - packing/cases/stromquist/repaired_cover.py
+    note: Bentz's and Stromquist's arguments are published proofs with no verification code.
+
+  - id: V-green17-interval-audit
+    program: cases.green17.interval_audit
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [interval-certified]
+    role: decides
+    summary: Decides the sixteen-point set's unavoidability by branch and bound over the full pose space in exact fixed-scale integers.
+    source: [packing/cases/green17/interval_audit.py]
+    independence_record: packing/cases/green17/interval_audit.py
+    note: It shares the point data with the cell certificate and nothing else.
+
+  - id: V-kingbird29-verify-svg
+    program: cases.kingbird29.verify_svg
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [numerical-multiprecision]
+    role: decides
+    summary: Reads Kingbird's n = 29 figure and checks its packing at a declared precision and tolerance.
+    source: [packing/cases/kingbird29/verify_svg.py]
+
+  - id: V-screen-translation-escape
+    program: devtools.screen_translation_escape
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [numerical-multiprecision]
+    role: decides
+    summary: Finds a feasible translation of one square in a retained configuration, which certifies it is not rigid.
+    source: [packing/devtools/screen_translation_escape.py]
+
+  - id: V-assess-n5-rigidity
+    program: devtools.assess_n5_rigidity
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Decides the first- and second-order motions of Göbel's n = 5 pose exactly over Q(sqrt 2).
+    source: [packing/devtools/assess_n5_rigidity.py]
+
+  - id: V-assess-n40-rigidity
+    program: devtools.assess_n40_rigidity
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Decides the first-order flexes of Göbel's n = 40 pose and refuses each at second order.
+    source: [packing/devtools/assess_n40_rigidity.py]
+
+  - id: V-rectangle-ceiling
+    program: devtools.certify_rectangle_ceiling, with sqpack.rectangle_ceiling
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      Decides each rectangle-density ceiling certificate's containment and pairwise
+      disjointness in exact rational arithmetic, and the numeric premises of the general
+      ceiling.
+    source: [packing/src/sqpack/rectangle_ceiling.py, packing/devtools/certify_rectangle_ceiling.py]
+
+  - id: V-assess-frontier-rigidity
+    program: devtools.assess_frontier_rigidity
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Decides rigidity for the perfect square tilings among the frontier cases.
+    source: [packing/devtools/assess_frontier_rigidity.py]
+
+  - id: V-trump11-tangent-cones
+    program: cases.trump11.tangent_cones
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Decides every branchwise linearized cone at Trump's exact n = 11 pose.
+    source: [packing/cases/trump11/tangent_cones.py]
+
+  - id: V-trump11-isolation-radius
+    program: cases.trump11.isolation_radius
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Recomputes the BC-199 isolation radius of Trump's n = 11 pose and every computed leaf of its record.
+    source: [packing/cases/trump11/isolation_radius.py]
+
+  - id: V-trump11-fixed-angle-tree-check
+    program: cases.trump11.fixed_angle_tree_check
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Reads the closed rung-0 fixed-angle cell tree and decides every leaf's certificate.
+    source: [packing/cases/trump11/fixed_angle_tree_check.py]
+
+  - id: V-review-trump-local-theorem
+    program: devtools.review_trump_local_theorem, the BC-241 checker
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Re-decides the local theorem's branch rows and its isolation radius inputs, refusing three falsifying mutations.
+    source: [packing/devtools/review_trump_local_theorem.py]
+    independence_record: packing/devtools/review_trump_local_theorem.py
+    note: Written source-distinct from the radius generator cases.trump11.isolation_radius.
+
+  - id: V-sqpack-fractional-exact
+    program: sqpack.fractional.certificate, the exact event-cell sweep, run by each case's fractional certificate module and devtools.decide_certificate
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      Decides a weighted point certificate's five conditions in exact rational
+      arithmetic, the last by an event-cell sweep at every net direction.
+    source:
+      - packing/src/sqpack/fractional/certificate.py
+      - packing/devtools/decide_certificate.py
+      - packing/resources/web/n17-weighted-certificates-2026-09-20/replay_mira_4613_first_party.py
+    note: >-
+      It predates the certificates others built from this project's method, and Mira's
+      ATTRIBUTION.md says her checker was newly written and not copied from it.
+
+  - id: V-sqpack-fractional-interval
+    program: sqpack.fractional.interval, the branch and bound over centre boxes
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [interval-certified]
+    role: decides
+    summary: >-
+      Decides Condition 5 of a weighted certificate by outward-rounded interval branch
+      and bound over centre boxes on the doubled net, with exact integer masses.
+    source:
+      - packing/src/sqpack/fractional/interval.py
+      - packing/resources/web/n17-weighted-certificates-2026-09-20/replay_guzhou_r012_first_party.py
+    note: >-
+      It shares the certificate loader and the closed-form Conditions 1 to 4 with the
+      exact sweep and no part of how Condition 5 is decided.
+
+  - id: V-sqpack-threshold-exact
+    program: sqpack.fractional.threshold, run by cases.n11_threshold_certificate and devtools.decide_threshold_certificate
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Decides a threshold certificate's conditions, Condition 5' by the exact event-cell sweep.
+    source:
+      - packing/src/sqpack/fractional/threshold.py
+      - packing/devtools/decide_threshold_certificate.py
+
+  - id: V-sqpack-threshold-interval
+    program: sqpack.fractional.threshold_interval
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [interval-certified]
+    role: decides
+    summary: Decides Condition 5' by interval branch and bound, a threshold atom counting only when k of its points cover the whole box.
+    source: [packing/src/sqpack/fractional/threshold_interval.py]
+
+  - id: V-dilation-corollary
+    program: devtools.dilation_corollary
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Re-decides a certificate's conditions and derives the exact sharpened containment family its dilation limit rests on.
+    source: [packing/devtools/dilation_corollary.py]
+
+  - id: V-n12-independent-verifier
+    program: cases/n12_fractional_certificate/independent_verify.py, run by replay_independent.py
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      A second exact decision of a weighted certificate's five conditions, in an
+      integer-scaled rotated frame with direct mass sums and exact polygon clipping.
+    source:
+      - packing/cases/n12_fractional_certificate/independent_verify.py
+      - packing/cases/n12_fractional_certificate/replay_independent.py
+    independence_record: packing/cases/n12_fractional_certificate/independent_verify.py
+    note: >-
+      A clean-room verifier: written from the theorem statement alone by a reviewer
+      given the certificate files and denied the project's implementation.
+
+  - id: V-n17-weighted-instrument
+    program: cases.n17_weighted_certificate, its source-faithful sweep and its clean-room direct membership sum
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Evaluates a hash-pinned n = 17 certificate at every direction by two accumulation paths whose manifests must be byte-identical.
+    source:
+      - packing/cases/n17_weighted_certificate
+      - packing/cases/n17_weighted_certificate_successor
+    independence_record: packing/cases/n17_weighted_certificate
+    note: It extracts the certificate's data from the source's script and runs none of its code.
+
+  - id: V-sqpack-parent-core-native
+    program: sqpack.fractional.parent_core_interval, run by the native parent-core drivers
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [interval-certified]
+    role: decides
+    summary: >-
+      Decides a threshold charge certificate's rows by direct closed-box interval
+      coverage, a different method from the sources' event-cell scans.
+    source:
+      - packing/src/sqpack/fractional/parent_core_interval.py
+      - packing/devtools/verify_kleddamag_n11_native.py
+      - packing/devtools/verify_n11_parent_core_native.py
+      - packing/devtools/verify_evand_angle_net_native.py
+
+  - id: V-replay-owner-footprint-cover
+    program: devtools.replay_owner_footprint_cover
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Replays the four-owner footprint cover's finite-net residual cover by an exact sweep.
+    source: [packing/devtools/replay_owner_footprint_cover.py]
+
+  - id: V-five-dot-independent-union
+    program: cases.n11_five_dot_cover.independent_union
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Generates the net again and decides the five-dot coverage by exact convex intersections and inclusion-exclusion.
+    source: [packing/cases/n11_five_dot_cover/independent_union.py]
+    independence_record: packing/cases/n11_five_dot_cover/independent_union.py
+    note: It imports no production residual-domain or event-grid geometry.
+
+  - id: V-wall-owner-footprints
+    program: devtools.wall_owner_footprints
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Constructs and compares the wall-owner footprints of the bottom-left classes exactly.
+    source: [packing/devtools/wall_owner_footprints.py]
+
+  - id: V-wall-owner-containment
+    program: devtools.wall_owner_containment
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: Tests component containment between the retained wall-owner and five-dot certificate families.
+    source: [packing/devtools/wall_owner_containment.py]
+
+  - id: V-n17-endpoint-checkers
+    program: devtools.check_n17_root_certificate and devtools.check_n17_endpoint_feasibility
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic, interval-certified]
+    role: decides
+    summary: Prove the n = 17 contact-chart root exists and is unique in its box, and certify the endpoint packing's walls and pairs.
+    source:
+      - packing/devtools/check_n17_root_certificate.py
+      - packing/devtools/check_n17_endpoint_feasibility.py
+
+  - id: V-n11-optimality-checkers
+    program: The devtools.check_n11_optimality, check_n11_capture and check_n11_generic component checkers
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      Consume the published n = 11 optimality proposals component by component and
+      decide each exclusion, capture node and local obligation.
+    source:
+      - packing/devtools/check_n11_optimality_d4.py
+      - packing/devtools/check_n11_optimality_local.py
+      - packing/devtools/check_n11_capture_root_chain.py
+      - packing/devtools/check_n11_generic_fresh.py
+    note: >-
+      Independent first-party consumers of the published proposals, not independent
+      implementations of every primitive: they share this repository's exact clipping,
+      closed-cover and collision kernels, which the source bundles too.
+
+  # --- First-party programs: premise checks and replay drivers ------------------------
+  - id: V-check-n11-final-composition
+    program: devtools.check_n11_final_composition
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: Reconciles the n = 11 component receipts' reviewed bindings; it reruns no geometry.
+    source: [packing/devtools/check_n11_final_composition.py]
+
+  - id: V-audit-n17-endpoint-receipt
+    program: devtools.audit_n17_endpoint_receipt
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic, interval-certified]
+    role: premises
+    summary: >-
+      Audits the n = 17 endpoint receipt and reconstructs every interval record, importing
+      neither the endpoint producer nor the root checker; it does not reprove the root.
+    source: [packing/devtools/audit_n17_endpoint_receipt.py]
+
+  - id: V-audit-tokoharu-density
+    program: devtools.audit_tokoharu_density
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      The exact preflight and replay driver for density certificates: it regenerates each
+      checker input from its candidate, checks orbit normalization, total mass, net and
+      shrink premises and the axis-event partition, then runs the retained verify.cpp.
+    source: [packing/devtools/audit_tokoharu_density.py]
+
+  - id: V-audit-wand125-rectangles
+    program: devtools.audit_wand125_rectangles
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      The exact preflight and replay driver for wand125's rectangle certificates: input
+      regeneration against the published digest, orbit normalization, exact mass, net
+      and smoothing premises, then Tokoharu's retained verify.cpp.
+    source: [packing/devtools/audit_wand125_rectangles.py]
+
+  - id: V-audit-wand125-point-and-mixed
+    program: devtools.audit_wand125_point_and_mixed
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Fetches, pins and binds wand125's point and mixed bundles, checks their exact
+      premises, drives the source's checker and compares its records with the shipped ones.
+    source: [packing/devtools/audit_wand125_point_and_mixed.py]
+
+  - id: V-audit-wand125-linear
+    program: devtools.audit_wand125_linear
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: The audit, replay driver and controls for wand125's linear certificates.
+    source: [packing/devtools/audit_wand125_linear.py]
+
+  - id: V-replay-evand-zmx2
+    program: devtools.replay_evand_zmx2
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: Builds zmx2 from the retained bytes, refuses any input whose SHA-256 is not the record's, and runs it and its controls.
+    source: [packing/devtools/replay_evand_zmx2.py]
+
+  - id: V-audit-evand-mixed-covers
+    program: devtools.audit_evand_mixed_covers
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Parses zmx2 root logs with its own code, requires every root once with none
+      uncertified, compares them with the source's records and re-derives the cover's
+      exact total and D4 invariance.
+    source: [packing/devtools/audit_evand_mixed_covers.py]
+
+  - id: V-compare-evand-s32-sweep
+    program: devtools.compare_evand_s32_sweep
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: Compares a fresh zeromargin.py sweep's root records with the source's shipped ones.
+    source: [packing/devtools/compare_evand_s32_sweep.py]
+
+  - id: V-audit-guzhou-r068
+    program: devtools.audit_guzhou_r068
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: Compares a fresh paired-launcher run's C++ and Node ledgers with the published ones row by row.
+    source: [packing/devtools/audit_guzhou_r068.py]
+
+  - id: V-audit-valid7-independent
+    program: devtools.audit_valid7_independent
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Checks what the Valid7 checker's verify.sh leaves out: the records are the
+      release's, their roots cover the pose grid once, and a sample of leaves
+      re-certifies. A diagnostic, not a replay.
+    source: [packing/devtools/audit_valid7_independent.py]

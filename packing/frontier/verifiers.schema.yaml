@@ -1,0 +1,109 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: packing.squares:VerifierRegistry/v1
+title: VerifierRegistry
+description: >-
+  Every verification program the evidence register names: each program a source says it
+  verified a result with, each program run here or by a third party to confirm one, and
+  each one retained for a run still to come. An evidence entry names its programs in
+  `verifiers`, by the ids below, and its `relationship_to_generator` says how they stand
+  to the code its result's producer used (epistemics.md, Confirmation). `devtools.validate_schemas` resolves every id and path;
+  `devtools.render_verifiers` renders the registry as `VERIFIERS.md`.
+type: object
+additionalProperties: false
+required: [last_reviewed, verifiers]
+properties:
+  last_reviewed: {type: string, pattern: '^\d{4}-\d{2}-\d{2}$'}
+  verifiers:
+    type: array
+    minItems: 1
+    items: {$ref: '#/$defs/verifier'}
+$defs:
+  version:
+    type: object
+    additionalProperties: false
+    description: >-
+      One version of an external program that ran: the SHA-256 of the retained bytes,
+      the upstream revision they were taken at, or both. A first-party program's
+      versions are this repository's commits, which Git holds (OR-16).
+    properties:
+      sha256: {type: string, pattern: '^[0-9a-f]{64}$'}
+      revision: {type: string, pattern: '^[0-9a-f]{7,40}$'}
+      path:
+        type: string
+        minLength: 1
+        description: The repository path of the file the digest is of, where it is not the first source path.
+      note: {type: string, minLength: 1}
+    anyOf:
+      - required: [sha256]
+      - required: [revision]
+  verifier:
+    type: object
+    additionalProperties: false
+    required: [id, program, author, provenance, language, methods, role, source, summary]
+    properties:
+      id:
+        type: string
+        pattern: '^V-[a-z0-9-]+$'
+      program:
+        type: string
+        minLength: 1
+        description: The program as its authors name it, with its driver where one runs it.
+      author:
+        type: string
+        minLength: 1
+        description: >-
+          Who wrote it, as people or the handles they publish under. This project's own
+          programs are `Squares Project (Levy)`, the form the atlas cites it by.
+      provenance:
+        enum: [external, first-party]
+        description: >-
+          external -- written outside this repository, by a result's producer or another
+          party. first-party -- written in this repository.
+      language:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items: {type: string, minLength: 1}
+      methods:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items:
+          enum: [numerical-f64, numerical-multiprecision, interval-certified, exact-algebraic, proof-audited, proof-assistant-checked]
+      role:
+        enum: [decides, premises]
+        description: >-
+          decides -- it decides the claim of the evidence that runs it, or the part of
+          the claim that entry carries. premises -- it checks inputs, digests, receipts,
+          exact premises or a sample, and leaves the decision to another program. An
+          entry's relationship_to_generator is read from the programs that decide; a
+          premise check rides with the entry and never sets it.
+      source:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        description: Repository paths that hold the program's source, in a retained packet or in the tree.
+        items: {type: string, minLength: 1}
+      versions:
+        type: array
+        minItems: 1
+        items: {$ref: '#/$defs/version'}
+      independence_record:
+        type: string
+        minLength: 1
+        description: >-
+          The repository path of the record of what the program's authors read and used:
+          a read log, a clean-room note, the module statement of what it shares, or the
+          review that established it. A new evidence entry whose
+          relationship_to_generator is independent-implementation names a deciding
+          program that has one, or carries its own independence_record.
+      summary:
+        type: string
+        minLength: 1
+        description: What the program decides, in a sentence or two.
+      note: {type: string, minLength: 1}
+    allOf:
+      - if:
+          properties: {provenance: {const: external}}
+        then:
+          required: [versions]

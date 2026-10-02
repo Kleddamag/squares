@@ -15,6 +15,7 @@ evidence:
     relationship_to_generator: independent-implementation
     source_key: '[Kleddamag n17 certified bound]'
     replay_status: passed
+    verifiers: [V-check-rational-witness-independent]
     source_reviewed: '2026-10-01'
     origin: replayed-here
     novelty: previously-published
@@ -42,6 +43,7 @@ evidence:
     relationship_to_generator: independent-implementation
     source_key: '[Kleddamag n17 certified bound]'
     replay_status: passed
+    verifiers: [V-n17-endpoint-checkers, V-audit-n17-endpoint-receipt]
     source_reviewed: '2026-10-01'
     origin: audited-here
     certificate: packing/campaign/series/series-000-smoke-and-calibration/results/exp-238-n17-endpoint-feasibility/run-001/certificate.json
@@ -87,6 +89,7 @@ evidence:
     source_key: '[evand square-packing 2026-10-01]'
     certificate: resources/web/evand-square-packing-2026-10-01/source/s12/certificates/s60/s60_mixed_cover_8.txt.gz
     replay_status: not-attempted
+    verifiers: [V-evand-zm-mixed-py, V-evand-zmx2]
     external_review:
       state: informally-verified
       date: '2026-10-02'
@@ -171,6 +174,7 @@ evidence:
     source_key: '[evand square-packing 2026-10-02]'
     certificate: resources/web/evand-square-packing-2026-10-02/square-packing/s12/search/s61_wand125/s61_wand125_cover_8.txt.gz
     replay_status: not-attempted
+    verifiers: [V-evand-zeromargin-py, V-evand-zmcheck, V-evand-zmx2]
     limitations: >-
       evand/square-packing at 7d6f46d9d0780241245dfbf77bad28aa1594c6b5 (the records were
       committed on 2026-10-01T03:20Z and are unchanged at this pin; Evan Daniel's comment of
@@ -219,6 +223,7 @@ evidence:
       read NOT VERIFIED. Commands, walls and CPU are in each receipt's header and footer,
       in the packet's receipts/ and its README section Replay of s(60) = 8 Here.
     replay_status: passed
+    verifiers: [V-evand-zmx2, V-replay-evand-zmx2, V-audit-evand-mixed-covers]
     proof:
       source: packing/resources/web/evand-square-packing-2026-10-01/source/s12/certificates/s60/README.md
       theorem: No 60 unit squares fit in a square of side below 8, and so no 61; with the 8 x 8 grid, s(60) = s(61) = 8.
@@ -280,6 +285,7 @@ evidence:
     source_key: '[evand square-packing 2026-10-01]'
     certificate: resources/web/evand-square-packing-2026-10-01/source/s12/certificates/k2m3/L4_k02_box7.txt
     replay_status: not-attempted
+    verifiers: [V-evand-qx2-zm-py, V-evand-lean]
     external_review:
       state: informally-verified
       date: '2026-10-01'
@@ -312,6 +318,7 @@ evidence:
     source_key: '[wand125 valid7 independent check 2026-10-02]'
     certificate: resources/web/evand-square-packing-2026-10-01/source/s12/certificates/k2m3/L4_k02_box7.txt
     replay_status: not-attempted
+    verifiers: [V-wand125-valid7-checker, V-audit-valid7-independent]
     limitations: >-
       wand125/valid7-independent-check at 38dd31b369991b0d96c917a4af0c7139b44a038d (its
       only commit, 2026-10-02T02:49:17Z) and its release records-v1 report that a separately
@@ -350,6 +357,7 @@ evidence:
     novelty: previously-published
     source_key: '[Queuingtheorydotcom n11 optimality 2026]'
     replay_status: not-attempted
+    verifiers: [V-queuingtheory-n11-verify]
     external_review:
       state: defect-found
       date: '2026-09-29'
@@ -380,7 +388,8 @@ evidence:
     assurance: verified
     method: exact-algebraic
     performed_by: repository
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: shared-components
+    shared_components: ["this repository's exact arithmetic and construction primitives (clipping, closed-cover and collision kernels), which the published source bundles"]
     origin: audited-here
     novelty: previously-published
     source_key: '[Queuingtheorydotcom n11 optimality 2026]'
@@ -394,6 +403,7 @@ evidence:
       to reconcile their reviewed bindings. The composition command alone does
       not rerun geometry.
     replay_status: passed
+    verifiers: [V-n11-optimality-checkers, V-check-n11-final-composition]
     proof:
       source: packing/resources/web/n11-optimality-2026-09-29/source/PROOF.md
       theorem: Global optimality of Trump's eleven-square packing
@@ -444,6 +454,7 @@ evidence:
     novelty: previously-published
     source_key: '[wand125 tools 2026]'
     replay_status: not-attempted
+    verifiers: [V-wand125-tools]
     external_review:
       state: defect-found
       date: '2026-09-29'
@@ -469,12 +480,14 @@ evidence:
     method: exact-algebraic
     performed_by: repository
     relationship_to_generator: independent-implementation
+    independence_record: docs/project/reviews/review-2026-10-02-wand125-ceiling-resolution.md
     origin: audited-here
     novelty: previously-published
     source_key: '[wand125 tools 2026]'
     certificate: resources/web/wand125-tools-2026-09-29/receipts/ceiling-certificates-2026-10-02.json.gz
     replay: uv run --frozen --all-extras --group dev python -m devtools.certify_rectangle_ceiling --check
     replay_status: passed
+    verifiers: [V-rectangle-ceiling]
     limitations: >-
       Performed by the repository's own verifier, sqpack.rectangle_ceiling (verify_ceiling
       and premise_checks), driven by devtools.certify_rectangle_ceiling; it is independent
@@ -503,6 +516,7 @@ evidence:
     novelty: previously-published
     source_key: '[wand125 tools 2026]'
     replay_status: not-attempted
+    verifiers: [V-wand125-tools]
     external_review:
       state: defect-found
       date: '2026-09-29'
@@ -530,7 +544,7 @@ evidence:
     assurance: verified
     method: exact-algebraic
     performed_by: repository
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: same-implementation
     origin: replayed-here
     novelty: previously-published
     source_key: '[wand125 point bounds 2026]'
@@ -549,6 +563,7 @@ evidence:
       packing/resources/web/external-square-certificates-2026-09-22/wand125-points/certificates/cert_n70_L855.json
       packing/resources/web/external-square-certificates-2026-09-22/wand125-points/certificates/cert_n72_L861.json
     replay_status: passed
+    verifiers: [V-wand125-check-with-sqpack, V-sqpack-fractional-exact]
     proof:
       source: packing/src/sqpack/fractional/certificate.py
       theorem: Exact weighted covering obstruction over the complete rational direction net
@@ -580,7 +595,7 @@ evidence:
     assurance: verified
     method: exact-algebraic
     performed_by: repository
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: same-implementation
     origin: audited-here
     source_key: '[wand125 point bounds 2026]'
     certificate: resources/web/external-square-certificates-2026-09-22/wand125-points/certificates/cert_n53_L738.json
@@ -589,6 +604,7 @@ evidence:
       packing/resources/web/external-square-certificates-2026-09-22/wand125-points/src/check_with_sqpack.py
       packing/resources/web/external-square-certificates-2026-09-22/wand125-points/certificates/cert_n53_L738.json
     replay_status: passed
+    verifiers: [V-wand125-check-with-sqpack, V-sqpack-fractional-exact]
     proof:
       source: packing/src/sqpack/fractional/certificate.py
       theorem: Weighted covering obstruction with the least integer above the exact mass
@@ -624,6 +640,7 @@ evidence:
     source_key: '[wand125 rectangle bounds 2026]'
     certificate: resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles/certificates
     replay_status: not-attempted
+    verifiers: [V-tokoharu-verify-cpp]
     limitations: >-
       Source ad43d29d96d0d9740b34643b5ac3fb960909cf9c, pushed 2026-09-26 and
       2026-09-27, reports one standing rectangle-density certificate in Tokoharu's
@@ -656,6 +673,7 @@ evidence:
     novelty: previously-published
     source_key: '[wand125 rectangle bounds 2026]'
     replay_status: not-attempted
+    verifiers: [V-tokoharu-verify-cpp]
     limitations: >-
       Reported-lane transfer: the source's n76 certificate at side 89/10 has exact mass
       7599/100 < 77, so it refutes 77 squares as well and gives s(77) >= 89/10; the
@@ -680,6 +698,7 @@ evidence:
       .venv/bin/python3 -m devtools.audit_wand125_rectangles --out "$wand125_replay_output"
       --replay --workers 2 --n 18 --n 19 --n 20 --n 26 --n 27 --n 30 --n 31 --n 40 --n 61 --n 75 --n 78
     replay_status: passed
+    verifiers: [V-tokoharu-verify-cpp, V-audit-wand125-rectangles]
     proof:
       source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
       theorem: Rectangle-density covering obstruction, applied to wand125's standing certificates
@@ -741,6 +760,7 @@ evidence:
     source_key: '[wand125 rectangle bounds 2026-09-28]'
     certificate: resources/web/wand125-rectangle-certificates-2026-09-28/wand125-rectangles/certificates
     replay_status: not-attempted
+    verifiers: [V-tokoharu-verify-cpp]
     limitations: >-
       Source 39d8ecc74d651b54ec977c331c8f2015b442a6c4, pushed between 2026-09-27 and
       2026-09-28 (UTC), reports one standing rectangle-density certificate in Tokoharu's
@@ -774,6 +794,7 @@ evidence:
     novelty: previously-published
     source_key: '[wand125 rectangle bounds 2026-09-28]'
     replay_status: not-attempted
+    verifiers: [V-tokoharu-verify-cpp]
     limitations: >-
       Reported-lane transfer at 39d8ecc: a certificate whose exact mass is below k
       refutes k squares as well, and deleting squares proves monotonicity, so each listed
@@ -802,6 +823,7 @@ evidence:
       .venv/bin/python3 -m devtools.audit_wand125_rectangles --packet 2026-09-28 --out "$wand125_replay_output"
       --replay --workers 2 --n 29 --n 38 --n 39 --n 41 --n 52 --n 53 --n 59 --n 67 --n 69 --n 71 --n 86 --n 95
     replay_status: passed
+    verifiers: [V-tokoharu-verify-cpp, V-audit-wand125-rectangles]
     proof:
       source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
       theorem: Rectangle-density covering obstruction, applied to wand125's standing certificates
@@ -851,6 +873,7 @@ evidence:
     source_key: '[wand125 rectangle bounds 2026-10-01]'
     certificate: resources/web/wand125-rectangle-certificates-2026-10-01/wand125-rectangles/certificates
     replay_status: not-attempted
+    verifiers: [V-tokoharu-verify-cpp]
     limitations: >-
       Source 1a25a5ed745fdd905a52f48fcc48150a0669032d, committed 2026-10-01 (UTC),
       reports one standing rectangle-density certificate in Tokoharu's format for each
@@ -904,12 +927,13 @@ evidence:
     assurance: reported
     reported_method: interval-certified
     performed_by: source-author
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: same-implementation
     origin: external
     novelty: previously-published
     source_key: '[wand125 point and mixed bounds 2026-09-28]'
     certificate: resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n45_L7/cover.txt.gz
     replay_status: not-attempted
+    verifiers: [V-evand-zmx2]
     limitations: >-
       wand125/square-packing-bounds at 39d8ecc74d651b54ec977c331c8f2015b442a6c4
       (2026-09-28T22:20:47Z by the author's clock) claims s(45) = 7 from a
@@ -937,7 +961,7 @@ evidence:
     assurance: verified
     method: interval-certified
     performed_by: repository
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: same-implementation
     origin: replayed-here
     novelty: previously-published
     source_key: '[wand125 point and mixed bounds 2026-09-28]'
@@ -955,6 +979,7 @@ evidence:
       must print MATCHES_SOURCE_REFERENCE. Commands, walls and outputs are in
       the packet README and receipts/n45/.
     replay_status: passed
+    verifiers: [V-evand-zmx2, V-audit-wand125-point-and-mixed]
     proof:
       source: packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n45_L7/README.md
       theorem: No 45 unit squares fit in a square of side below 7; with the 7 x 7 grid, s(45) = 7.
@@ -1019,6 +1044,7 @@ evidence:
     source_key: '[wand125 point and mixed bounds 2026-09-28]'
     certificate: resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n21_L5/certificates/n21-original.txt.gz
     replay_status: not-attempted
+    verifiers: [V-wand125-verify-portable-py]
     limitations: >-
       wand125/square-packing-bounds claims s(21) = 5 from a point-only,
       D4-invariant measure of 4,604 entries (4,520 positive) on Evan Daniel's
@@ -1086,6 +1112,7 @@ evidence:
       CONTROL_REFUSED. The receipts are receipts/n21/ and receipts/controls/ in the
       packet.
     replay_status: passed
+    verifiers: [V-wand125-verify-portable-py, V-audit-wand125-point-and-mixed]
     proof:
       source: packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n21_L5/README.md
       theorem: No 21 unit squares fit in a square of side below 5; with the 5 x 5 grid, s(21) = 5.
@@ -1139,6 +1166,7 @@ evidence:
     source_key: '[wand125 point and mixed bounds 2026-09-28]'
     certificate: resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/candidate.json.gz
     replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp]
     limitations: >-
       wand125/square-packing-bounds at 39d8ecc (introduced at 75dd0952,
       2026-09-28T22:16:21Z) claims s(50) >= 37/5 = 7.4 from a D4-expanded
@@ -1207,6 +1235,7 @@ evidence:
       FULL_REPLAY_MATCHES_SHIPPED. The receipts are receipts/n50/bundle_check.json and
       receipts/n50/full/ in the packet, and its README section Complete Replays Here.
     replay_status: passed
+    verifiers: [V-wand125-verify-mixed-full-proof-py, V-wand125-mixed-rotated-verify-cpp, V-audit-wand125-point-and-mixed]
     proof:
       source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
       theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n50_L740; no 50 unit squares fit in a square of side below 37/5, and so no 51.
@@ -1262,6 +1291,7 @@ evidence:
     source_key: '[wand125 exact covers 2026-10-01]'
     certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m5_n59_L8/n59_mixed_cover_8.txt.gz
     replay_status: not-attempted
+    verifiers: [V-evand-zm-mixed-py, V-evand-zmx2]
     limitations: >-
       wand125/square-packing-bounds at 1a25a5ed745fdd905a52f48fcc48150a0669032d (the
       directory's one commit, 2026-10-01T21:10:40Z) reports s(59) = 8 from a mixed cover
@@ -1340,6 +1370,7 @@ evidence:
       and footer, in the packet's receipts/ and its README section Replay of s(59) = 8
       Here.
     replay_status: passed
+    verifiers: [V-evand-zmx2, V-replay-evand-zmx2, V-audit-evand-mixed-covers]
     proof:
       source: packing/resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m5_n59_L8/README.md
       theorem: No 59 unit squares fit in a square of side below 8; with the 8 x 8 grid, s(59) = 8.
@@ -1402,6 +1433,7 @@ evidence:
     source_key: '[wand125 exact covers 2026-10-01]'
     certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m4_n77_L9/n77_mixed_cover_9.txt.gz
     replay_status: not-attempted
+    verifiers: [V-evand-zm-mixed-py, V-evand-zmx2]
     limitations: >-
       wand125/square-packing-bounds at 1a25a5ed745fdd905a52f48fcc48150a0669032d (the
       directory's one commit, bd4de4f6, 2026-10-01T20:23:50Z) reports s(77) = 9 from a
@@ -1481,6 +1513,7 @@ evidence:
       CPU are in each receipt's header and footer, in the packet's receipts/ and its
       README section Replay of s(77) = 9 Here.
     replay_status: passed
+    verifiers: [V-evand-zmx2, V-replay-evand-zmx2, V-audit-evand-mixed-covers]
     proof:
       source: packing/resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m4_n77_L9/README.md
       theorem: No 77 unit squares fit in a square of side below 9, and so no 78; with the 9 x 9 grid, s(77) = s(78) = 9.
@@ -1546,6 +1579,7 @@ evidence:
     source_key: '[wand125 mixed bounds 2026-10-01]'
     certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n37_L644/candidate.json.gz
     replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp]
     limitations: >-
       wand125/square-packing-bounds at 1a25a5ed745fdd905a52f48fcc48150a0669032d
       (introduced at baff9d23, 2026-09-30T13:08:55Z) reports s(37) >= 161/25 = 6.44 from a
@@ -1603,6 +1637,7 @@ evidence:
       devtools.audit_wand125_point_and_mixed mixed-control n37 --work W, which must
       report CONTROLS_REFUSED.
     replay_status: passed
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-audit-wand125-point-and-mixed]
     proof:
       source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
       theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n37_L644; no 37 unit squares fit in a square of side below 161/25.
@@ -1653,6 +1688,7 @@ evidence:
     source_key: '[wand125 mixed bounds 2026-10-01]'
     certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n65_L835/candidate.json.gz
     replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp]
     limitations: >-
       wand125/square-packing-bounds at 1a25a5ed745fdd905a52f48fcc48150a0669032d
       (introduced at c21d1bd5, 2026-09-29T13:37:05Z) reports s(65) >= 167/20 = 8.35 from a
@@ -1713,6 +1749,7 @@ evidence:
       devtools.audit_wand125_point_and_mixed mixed-control n37 --work W, which must
       report CONTROLS_REFUSED.
     replay_status: passed
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-audit-wand125-point-and-mixed]
     proof:
       source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
       theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n65_L835; no 65 unit squares fit in a square of side below 167/20.
@@ -1763,6 +1800,7 @@ evidence:
     source_key: '[wand125 mixed bounds 2026-10-01]'
     certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n66_L842/candidate.json.gz
     replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp]
     limitations: >-
       wand125/square-packing-bounds at 1a25a5ed745fdd905a52f48fcc48150a0669032d
       (introduced at 1807160d, 2026-10-01T08:20:08Z) reports s(66) >= 421/50 = 8.42 from a
@@ -1820,6 +1858,7 @@ evidence:
       devtools.audit_wand125_point_and_mixed mixed-control n37 --work W, which must
       report CONTROLS_REFUSED.
     replay_status: passed
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-audit-wand125-point-and-mixed]
     proof:
       source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
       theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n66_L842; no 66 unit squares fit in a square of side below 421/50.
@@ -1870,6 +1909,7 @@ evidence:
     source_key: '[wand125 mixed bounds 2026-10-01]'
     certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n90_L960/candidate.json.gz
     replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp]
     limitations: >-
       wand125/square-packing-bounds at 1a25a5ed745fdd905a52f48fcc48150a0669032d
       (introduced at 8038d64d, 2026-10-01T00:52:31Z) reports s(90) >= 48/5 = 9.6 from a
@@ -1929,6 +1969,7 @@ evidence:
       devtools.audit_wand125_point_and_mixed mixed-control n37 --work W, which must
       report CONTROLS_REFUSED.
     replay_status: passed
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-audit-wand125-point-and-mixed]
     proof:
       source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
       theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n90_L960; no 90 unit squares fit in a square of side below 48/5.
@@ -1979,6 +2020,7 @@ evidence:
     source_key: '[wand125 mixed bounds 2026-10-01]'
     certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n92_L969/candidate.json.gz
     replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp]
     limitations: >-
       wand125/square-packing-bounds at 1a25a5ed745fdd905a52f48fcc48150a0669032d
       (introduced at 8038d64d, 2026-10-01T00:52:31Z) reports s(92) >= 969/100 = 9.69 from a
@@ -2036,6 +2078,7 @@ evidence:
       devtools.audit_wand125_point_and_mixed mixed-control n37 --work W, which must
       report CONTROLS_REFUSED.
     replay_status: passed
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-audit-wand125-point-and-mixed]
     proof:
       source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
       theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n92_L969; no 92 unit squares fit in a square of side below 969/100.
@@ -2086,6 +2129,7 @@ evidence:
     source_key: '[wand125 mixed bounds 2026-10-02]'
     certificate: resources/web/wand125-mixed-bounds-2026-10-02/square-packing-bounds/certificates/mixed_n84_L940/candidate.json.gz
     replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp]
     limitations: >-
       wand125/square-packing-bounds at 52af997dc91c579658f0828bc8304e306ad9d95b (the
       directory's one commit, 2026-10-02T00:46:51Z) reports s(84) >= 47/5 = 9.4 from a
@@ -2155,6 +2199,7 @@ evidence:
       devtools.audit_wand125_point_and_mixed mixed-control n37 --work W, which must
       report CONTROLS_REFUSED.
     replay_status: passed
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-audit-wand125-point-and-mixed]
     proof:
       source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
       theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n84_L940; no 84 unit squares fit in a square of side below 47/5.
@@ -2205,6 +2250,7 @@ evidence:
     source_key: '[wand125 mixed bounds 2026-10-02]'
     certificate: resources/web/wand125-mixed-bounds-2026-10-02/square-packing-bounds/certificates/mixed_n85_L942/candidate.json.gz
     replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp]
     limitations: >-
       wand125/square-packing-bounds at 52af997dc91c579658f0828bc8304e306ad9d95b (the
       directory's one commit, 2026-10-02T00:46:51Z) reports s(85) >= 471/50 = 9.42 from a
@@ -2274,6 +2320,7 @@ evidence:
       devtools.audit_wand125_point_and_mixed mixed-control n37 --work W, which must
       report CONTROLS_REFUSED.
     replay_status: passed
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-audit-wand125-point-and-mixed]
     proof:
       source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
       theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n85_L942; no 85 unit squares fit in a square of side below 471/50, and so none of 86 or 87.
@@ -2327,6 +2374,7 @@ evidence:
     source_key: '[wand125 mixed bounds n76 2026-10-02]'
     certificate: resources/web/wand125-mixed-bounds-n76-2026-10-02/square-packing-bounds/certificates/mixed_n76_L894/candidate.json.gz
     replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp]
     limitations: >-
       wand125/square-packing-bounds at 7975030a192607ef27edd1559aee4e98bd93047b (the
       directory's one commit, 2026-10-02T01:39:38Z) reports s(76) >= 447/50 = 8.94 from a
@@ -2388,6 +2436,7 @@ evidence:
       .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-control n37
       --work W, which must report CONTROLS_REFUSED.
     replay_status: passed
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-audit-wand125-point-and-mixed]
     proof:
       source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
       theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n76_L894; no 76 unit squares fit in a square of side below 447/50.
@@ -2442,6 +2491,7 @@ evidence:
     source_key: '[wand125 linear certificates 2026-10-02]'
     certificate: resources/web/wand125-linear-certificates-2026-10-02/square-packing-bounds/certificates/mixed_n83_L935/candidate.json.gz
     replay_status: not-attempted
+    verifiers: [V-wand125-unified-linear-verify-cpp]
     limitations: >-
       wand125/square-packing-bounds at 0c35d909764997ead04dfd90081c9fe9af8d07f2 (the
       directory's one commit, 2026-10-02T05:26:52Z) reports s(83) >= 187/20 = 9.35 from a
@@ -2497,6 +2547,7 @@ evidence:
     source_key: '[wand125 linear certificates 2026-10-02]'
     certificate: resources/web/wand125-linear-certificates-2026-10-02/square-packing-bounds/certificates/mixed_n101_L1028/candidate.json.gz
     replay_status: not-attempted
+    verifiers: [V-wand125-unified-linear-verify-cpp]
     limitations: >-
       wand125/square-packing-bounds at 0c35d909764997ead04dfd90081c9fe9af8d07f2 (the
       directory was first committed at af1db07b, 2026-10-02T01:23:19Z, and is unchanged at
@@ -2556,6 +2607,7 @@ evidence:
     source_key: '[evand square-packing 2026-10-01]'
     certificate: resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s32/s32_closed_cover_6.txt.gz
     replay_status: not-attempted
+    verifiers: [V-evand-zmx2]
     limitations: >-
       evand/square-packing at 08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5 (the run's
       records entered at 044885da, 2026-10-01T01:12:00Z, and the author's comment on
@@ -2615,6 +2667,7 @@ evidence:
       "$N11_UPSTREAM_PYTHON" "$N11_SOURCE_TREE/verify.py"
       --output-dir "$N11_REPLAY_OUTPUT"
     replay_status: passed
+    verifiers: [V-kleddamag-n11-verify]
     proof:
       source: packing/resources/web/external-square-certificates-2026-09-22/kleddamag-11/PROOF.md
       theorem: Eleven independently rotated unit squares cannot fit in a square of side 31/8; compactness gives s(11) > 31/8.
@@ -2675,6 +2728,7 @@ evidence:
       uv run --frozen --all-extras --group dev python -m devtools.verify_kleddamag_n11_native
       --all --workers 2 --output /tmp/kleddamag-native-replay.json
     replay_status: passed
+    verifiers: [V-sqpack-parent-core-native]
     proof:
       source: packing/src/sqpack/fractional/parent_core.py
       theorem: Eleven independently rotated unit squares cannot fit in a square of side 31/8; compactness gives s(11) > 31/8.
@@ -2730,6 +2784,7 @@ evidence:
     source_key: '[Kleddamag n11 2026]'
     certificate: resources/web/external-square-certificates-2026-09-22/kleddamag-11/global-certificate.json
     replay_status: not-attempted
+    verifiers: [V-kleddamag-n11-verify]
     limitations: >-
       Source release v1.0.2 at 6a733f339395c3514f2ab63d8c4aa64cf63c0b5a claims
       the strict global bound s(11) > 31/8 = 3.875, with independent square
@@ -2751,6 +2806,7 @@ evidence:
     source_key: '[Wang Li n11 2026]'
     certificate: resources/web/wang-li-n11-2026-09-29/n11_wang_li_zenodo_release_2026-09-29_stage10_doi_23038546-1.zip
     replay_status: not-attempted
+    verifiers: [V-wang-li-n11-verify, V-kleddamag-n11-verify]
     limitations: >-
       Zenodo record 23038546 (29 September 2026) claims the strict bound s(11) >
       3875000000/999999999 = 3.875000003875..., with independent rotations and boundary
@@ -2785,6 +2841,7 @@ evidence:
       PASS_FRESH_PORTABLE_FULL_VERIFICATION. The packet README (Replays Here, Reproduce)
       gives the commands and receipts.
     replay_status: passed
+    verifiers: [V-wang-li-n11-verify, V-kleddamag-n11-verify]
     proof:
       source: packing/resources/web/wang-li-n11-2026-09-29/n11_lower_bound_wang_li.pdf
       theorem: Eleven independently rotated unit squares cannot fit in a square of side 3875000000/999999999; compactness gives s(11) > 3875000000/999999999.
@@ -2843,6 +2900,7 @@ evidence:
       certificate/improved-global-certificate.json from inside the retained archive and must
       report PASS_COMPLETE; about 3 hours on two workers of an idle host, 5.2 hours here.
     replay_status: passed
+    verifiers: [V-sqpack-parent-core-native]
     proof:
       source: packing/src/sqpack/fractional/parent_core.py
       theorem: Eleven independently rotated unit squares cannot fit in a square of side 3875000000/999999999; compactness gives s(11) > 3875000000/999999999.
@@ -2892,6 +2950,7 @@ evidence:
     source_key: '[Tokoharu density 2026]'
     certificate: resources/web/external-square-certificates-2026-09-22/tokoharu-density/certificates
     replay_status: not-attempted
+    verifiers: [V-tokoharu-verify-cpp]
     limitations: >-
       Source b543990f7794b8c511cb46cf3854b7e8166c3674 reports s(11) >= 381/100,
       s(26) >= 1377/250 and s(29) >= 571/100 using nonnegative rectangle
@@ -2914,6 +2973,7 @@ evidence:
     source_key: '[wand125 point bounds 2026]'
     certificate: resources/web/external-square-certificates-2026-09-22/wand125-points/certificates
     replay_status: not-attempted
+    verifiers: [V-wand125-check-with-sqpack, V-sqpack-fractional-exact]
     limitations: >-
       The complete source tree at 1398e42f17f23fe3744bc54425a589fab1f3542c
       reports lower bounds 5.45, 5.57, 6.5, 6.5, 7.38, 7.54, 7.62, 8.41,
@@ -2935,6 +2995,7 @@ evidence:
     novelty: previously-published
     source_key: '[Tokoharu density 2026]'
     replay_status: not-attempted
+    verifiers: [V-tokoharu-verify-cpp]
     limitations: >-
       Reported-lane transfer: s(27) >= 1377/250 follows from the n26 source
       certificate; s(30), s(31) >= 571/100 follow from n29. Deleting squares
@@ -2954,6 +3015,7 @@ evidence:
     novelty: previously-published
     source_key: '[wand125 point bounds 2026]'
     replay_status: not-attempted
+    verifiers: [V-wand125-check-with-sqpack, V-sqpack-fractional-exact]
     limitations: >-
       Reported-lane transfer: s(41) >= 13/2 follows from n39 (also directly
       reported at n40); s(71) >= 171/20 follows from n70. Deleting squares
@@ -2978,6 +3040,7 @@ evidence:
       .venv/bin/python3 -m devtools.audit_tokoharu_density --out "$density_replay_output"
       --n 26 --n 29 --n 11 --replay --workers 4 --timeout 900
     replay_status: passed
+    verifiers: [V-tokoharu-verify-cpp, V-audit-tokoharu-density]
     proof:
       source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
       theorem: Rectangle-density covering obstruction at n11, n26 and n29
@@ -3151,6 +3214,7 @@ evidence:
     origin: external
     source_key: '[MacIver 2026 n17]'
     replay_status: public-certificate-missing
+    verifiers: []
     proof:
       source: packing/resources/web/maciver-square-packing-2026-09-07/maciver-2026-seventeen-unit-squares-lower-bound.pdf
       theorem: Theorem 1.1 and Corollary 1.2
@@ -3257,6 +3321,7 @@ evidence:
     relationship_to_generator: same-implementation
     source_key: '[UnitSquare 2026]'
     replay_status: public-certificate-missing
+    verifiers: []
     limitations: The release reports outward-rounded interval validation, but publishes no interval boxes, receipt, or checker that can replay that claim.
     blocker:
       kind: source-evidence
@@ -3275,6 +3340,7 @@ evidence:
     certificate: frontier/n-*.md verified_upper_bound fields
     replay: uv run --frozen python -m devtools.check_basic_bounds
     replay_status: passed
+    verifiers: [V-check-basic-bounds]
     limitations: Establishes the integer grid fallback, not any tighter reported packing.
     source_reviewed: '2026-09-07'
 
@@ -3290,6 +3356,7 @@ evidence:
     certificate: frontier/n-*.md verified_lower_bound fields
     replay: uv run --frozen python -m devtools.check_basic_bounds
     replay_status: passed
+    verifiers: [V-check-basic-bounds]
     limitations: Uses only area and is weaker than the recorded theorem for most cases.
     source_reviewed: '2026-09-07'
 
@@ -3374,11 +3441,12 @@ evidence:
     method: exact-algebraic
     performed_by: repository
     novelty: common-knowledge
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: same-implementation
     origin: replayed-here
     certificate: campaign/series/series-000-smoke-and-calibration/results/exp-014-h-032-n3-optimal-moduli.json
     replay: uv run --frozen python -m cases.small_n.optimal_moduli --n 3 --replay campaign/series/series-000-smoke-and-calibration/results/exp-014-h-032-n3-optimal-moduli.json --check-svg atlas/n-003-optimal-moduli.svg
     replay_status: passed
+    verifiers: [V-optimal-moduli]
     limitations: Proves the side-2 lower bound for at least two squares; it does not classify larger containers.
     source_reviewed: '2026-08-25'
 
@@ -3395,6 +3463,7 @@ evidence:
     certificate: cases/gobel5/packing.py
     replay: uv run --frozen python -m cases.gobel5.verify_exact
     replay_status: passed
+    verifiers: [V-sqpack-verify]
     limitations: Verifies the exact construction and upper bound, not optimality by itself.
     source_reviewed: '2026-08-25'
 
@@ -3465,6 +3534,7 @@ evidence:
     certificate: cases/gobel10/exact.py
     replay: uv run --frozen python -m cases.gobel10.verify_exact
     replay_status: passed
+    verifiers: [V-sqpack-verify]
     limitations: Verifies the exact construction and upper bound, not optimality by itself.
     source_reviewed: '2026-08-25'
 
@@ -3481,6 +3551,7 @@ evidence:
     certificate: cases/gobel40/packing.py
     replay: uv run --frozen python -m cases.gobel40.verify_exact
     replay_status: passed
+    verifiers: [V-sqpack-verify]
     limitations: >-
       Decides all 780 pairs by exact sign over Q(sqrt 2), with 48 corner coordinates exactly
       on the container boundary, so it establishes s(40) <= 4 + 2 sqrt(2) and nothing about
@@ -3500,6 +3571,7 @@ evidence:
     certificate: cases/gobel_family/packing.py
     replay: uv run --frozen python -m cases.gobel_family.verify_exact
     replay_status: passed
+    verifiers: [V-sqpack-verify]
     limitations: >-
       One replay decides both sizes, 2080 pairs at n = 65 and 3916 at n = 89, every one by
       exact sign over Q(sqrt 2). It establishes s(65) <= 5 + (5/2) sqrt(2) and
@@ -3521,6 +3593,7 @@ evidence:
     certificate: cases/gobel_strip/packing.py
     replay: uv run --frozen python -m cases.gobel_strip.verify_exact
     replay_status: passed
+    verifiers: [V-sqpack-verify]
     limitations: >-
       One replay decides all five sizes, every pair by exact sign over Q(sqrt 2),
       establishing s(n) <= a + 1 + sqrt(2)/2 for a = 4..8 and nothing about optimality
@@ -3545,6 +3618,7 @@ evidence:
     certificate: cases/lifted_q2/packing.py
     replay: uv run --frozen python -m cases.lifted_q2.verify_exact
     replay_status: passed
+    verifiers: [V-sqpack-verify]
     limitations: >-
       One replay decides both sizes, 171 pairs at n = 19 and 2145 at n = 66, every one
       by exact sign over Q(sqrt 2), establishing s(19) <= 3 + (4/3) sqrt(2) and
@@ -3568,6 +3642,7 @@ evidence:
     certificate: cases/lifted_q7/packing.py
     replay: uv run --frozen python -m cases.lifted_q7.verify_exact
     replay_status: passed
+    verifiers: [V-sqpack-verify]
     limitations: >-
       One replay decides both sizes, 153 pairs at n = 18 and 3655 at n = 86, every one
       by exact sign over Q(sqrt 7) -- the repository's first exact verification outside
@@ -3592,6 +3667,7 @@ evidence:
     certificate: cases/gobel_offcentre/packing.py
     replay: uv run --frozen python -m cases.gobel_offcentre.verify_exact
     replay_status: passed
+    verifiers: [V-sqpack-verify]
     limitations: >-
       One replay decides both sizes, 325 pairs at n = 26 and 3570 at n = 85, every one by
       exact sign over Q(sqrt 2), establishing s(26) <= 7/2 + (3/2) sqrt(2) and
@@ -3615,6 +3691,7 @@ evidence:
     certificate: cases/gobel82/packing.py
     replay: uv run --frozen python -m cases.gobel82.verify_exact
     replay_status: passed
+    verifiers: [V-sqpack-verify]
     limitations: >-
       Decides all 3321 pairs by exact sign over Q(sqrt 2), with 70 corner coordinates
       exactly on the container boundary, establishing s(82) <= 6 + (5/2) sqrt(2) and
@@ -3729,6 +3806,7 @@ evidence:
     certificate: cases/trump11/packing.py
     replay: uv run --frozen python -m cases.trump11.verify_exact
     replay_status: passed
+    verifiers: [V-sqpack-verify]
     limitations: Verifies this algebraic witness and upper bound, not global optimality.
     source_reviewed: '2026-08-24'
 
@@ -3738,11 +3816,12 @@ evidence:
     assurance: verified
     method: exact-algebraic
     performed_by: repository
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: same-implementation
     origin: replayed-here
     certificate: campaign/series/series-000-smoke-and-calibration/results/bc-049-n5-rigidity-certificates.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.assess_n5_rigidity --check
     replay_status: passed
+    verifiers: [V-assess-n5-rigidity]
     novelty: apparently-novel
     source_reviewed: '2026-08-30'
     novelty_basis:
@@ -3784,11 +3863,12 @@ evidence:
     assurance: verified
     method: proof-audited
     performed_by: repository
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: same-implementation
     origin: audited-here
     certificate: campaign/series/series-000-smoke-and-calibration/results/bc-049-n5-rigidity-certificates.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.assess_n5_rigidity --check
     replay_status: passed
+    verifiers: [V-assess-n5-rigidity]
     proof:
       source: >-
         campaign/explorations/X-012-one-chart-four-hundred-inequalities-and-an-order-2m-contradiction.md,
@@ -3894,11 +3974,12 @@ evidence:
     assurance: verified
     method: exact-algebraic
     performed_by: repository
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: same-implementation
     origin: replayed-here
     certificate: campaign/series/series-000-smoke-and-calibration/results/bc-049-n40-rigidity-bracket.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.assess_n40_rigidity --check
     replay_status: passed
+    verifiers: [V-assess-n40-rigidity]
     novelty: apparently-novel
     source_reviewed: '2026-08-30'
     novelty_basis:
@@ -3943,11 +4024,12 @@ evidence:
     assurance: verified
     method: exact-algebraic
     performed_by: repository
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: same-implementation
     origin: replayed-here
     certificate: campaign/series/series-000-smoke-and-calibration/results/exp-013-h-026-trump-tangent.json
     replay: uv run --frozen python -m cases.trump11.tangent_cones --replay campaign/series/series-000-smoke-and-calibration/results/exp-013-h-026-trump-tangent.json
     replay_status: passed
+    verifiers: [V-trump11-tangent-cones]
     novelty: apparently-novel
     source_reviewed: '2026-08-30'
     novelty_basis:
@@ -3968,12 +4050,13 @@ evidence:
     method: exact-algebraic
     performed_by: repository
     novelty: apparently-novel
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: same-implementation
     origin: replayed-here
     source_key: '[Stromquist 2003]'
     certificate: campaign/series/series-000-smoke-and-calibration/results/exp-017-h-041-stromquist-repaired-figure14.json
     replay: uv run --frozen python -m cases.stromquist.repaired_cover --replay campaign/series/series-000-smoke-and-calibration/results/exp-017-h-041-stromquist-repaired-figure14.json
     replay_status: passed
+    verifiers: [V-sqpack-cover]
     novelty_basis:
       corpus: >-
         packing/resources/ as retained on 2026-08-30: 27 papers (pdf plus faithful .raw.md transcription) and 22 archived web sources
@@ -3999,6 +4082,7 @@ evidence:
     certificate: E-n011-repaired-lower and monotonicity of s(n)
     replay: uv run --frozen python -m devtools.check_basic_bounds
     replay_status: passed
+    verifiers: [V-check-basic-bounds]
     limitations: Inherits only the verified n=11 lower bound; it does not prove s(12)=4.
     source_reviewed: '2026-08-24'
 
@@ -4012,6 +4096,7 @@ evidence:
     relationship_to_generator: generator
     source_key: '[Kingbird n=29 SVG]'
     replay_status: public-certificate-missing
+    verifiers: []
     limitations: The public SVG serializes a FindRoot result and supplies no formal certificate.
     blocker:
       kind: source-evidence
@@ -4031,6 +4116,7 @@ evidence:
     tolerance: '1e-80'
     replay: uv run --frozen python -m cases.kingbird29.verify_svg resources/papers/kingbird-square-29-provenance.svg
     replay_status: passed
+    verifiers: [V-kingbird29-verify-svg]
     limitations: Does not certify exact feasibility, the reported side, or optimality.
     blocker:
       kind: mathematics
@@ -4050,6 +4136,7 @@ evidence:
     tolerance: '1e-80'
     replay: uv run --frozen python -m cases.kingbird29.verify_svg resources/papers/kingbird-square-29-provenance.svg
     replay_status: passed
+    verifiers: [V-kingbird29-verify-svg]
     limitations: The class count is numerical and does not imply exact witness feasibility.
     blocker:
       kind: mathematics
@@ -4068,6 +4155,7 @@ evidence:
     precision: {decimal_digits: 300, rounding: source-defined}
     tolerance: '1e-100'
     replay_status: not-attempted
+    verifiers: [V-schadt-n29-check-py]
     limitations: The source checker accepts an epsilon overlap and does not enforce that all 29 squares are present.
     source_reviewed: '2026-08-25'
 
@@ -4085,6 +4173,7 @@ evidence:
     tolerance: '1e-100'
     replay: uv run --frozen packing-witness check witnesses/schadt-n029-2025-decimal.yaml --method numerical-multiprecision --precision 300 --tolerance 1e-100
     replay_status: passed
+    verifiers: [V-sqpack-verify]
     limitations: Thirteen best pair gaps are negative; the worst is about -8.81e-102 and is accepted only by the declared tolerance.
     source_reviewed: '2026-08-25'
 
@@ -4101,6 +4190,7 @@ evidence:
     certificate: witnesses/kingbird-n029-2026-interval.yaml
     replay: uv run --frozen packing-witness verify witnesses/kingbird-n029-2026-interval.yaml
     replay_status: passed
+    verifiers: [V-sqpack-verify]
     novelty_basis:
       corpus: >-
         packing/resources/ as retained on 2026-08-30: 27 papers (pdf plus faithful .raw.md transcription) and 22 archived web sources
@@ -4137,6 +4227,7 @@ evidence:
     certificate: witnesses/schadt-n029-2025-rational.yaml
     replay: uv run --frozen python -m devtools.check_rational_witness_independent witnesses/schadt-n029-2025-rational.yaml
     replay_status: passed
+    verifiers: [V-check-rational-witness-independent]
     novelty_basis:
       corpus: >-
         packing/resources/ as retained on 2026-08-30: 27 papers (pdf plus faithful .raw.md transcription) and 22 archived web sources
@@ -4156,11 +4247,12 @@ evidence:
     method: numerical-multiprecision
     performed_by: repository
     novelty: apparently-novel
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: same-implementation
     origin: replayed-here
     certificate: atlas/known-best/translation-escape-screen.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.screen_translation_escape --check
     replay_status: passed
+    verifiers: [V-screen-translation-escape]
     precision: {decimal_digits: 50, rounding: nearest-even}
     tolerance: '1e-8'
     novelty_basis:
@@ -4187,6 +4279,7 @@ evidence:
     certificate: devtools/assess_frontier_rigidity.py
     replay: uv run --frozen --all-extras --group dev python -m devtools.assess_frontier_rigidity --check
     replay_status: passed
+    verifiers: [V-assess-frontier-rigidity]
     limitations: 'Elementary and complete for these eighteen cases: k*k unit squares of total area k^2 sit in a k by k container of area k^2, so the packing is a tiling with no slack and no square admits any feasible motion. Global rather than local, and about the exact configuration rather than a materialization of it. It establishes rigidity and optimality independently for these n; the optimality half is not claimed here.'
     source_reviewed: '2026-09-07'
   - id: E-bentz46-theorem8-audit
@@ -4202,6 +4295,7 @@ evidence:
     certificate: cases/bentz46/verify_cover.py
     replay: uv run --frozen python -m cases.bentz46.verify_cover
     replay_status: passed
+    verifiers: [V-sqpack-cover]
     limitations: >-
       Machine-audits the complete s(46) >= 7 lower-bound argument as printed:
       the 45-point system certifies exactly over Q(sqrt 2, sqrt 3) -- 92 cells
@@ -4225,6 +4319,7 @@ evidence:
     certificate: cases/bentz13/verify_cover.py
     replay: uv run --frozen python -m cases.bentz13.verify_cover
     replay_status: passed
+    verifiers: [V-sqpack-cover]
     limitations: >-
       Partial audit of Theorem 9's apparatus, exact over pure rationals: the
       Figure 2 sixteen-point unavoidability certifies as printed, Lemma 10 is
@@ -4250,6 +4345,7 @@ evidence:
     certificate: cases/green17/verify_cover.py
     replay: uv run --frozen python -m cases.green17.verify_cover
     replay_status: passed
+    verifiers: [V-sqpack-cover]
     novelty_basis:
       corpus: >-
         The DS7 source register and the archived literature under
@@ -4289,6 +4385,7 @@ evidence:
     certificate: cases/green17/interval_audit.py
     replay: uv run --frozen python -m cases.green17.interval_audit
     replay_status: passed
+    verifiers: [V-green17-interval-audit]
     limitations: >-
       Proves the same closed-unit-square claim by exhaustive branch-and-bound
       over the full pose space in exact fixed-scale integer arithmetic,
@@ -4312,6 +4409,7 @@ evidence:
     certificate: resources/web/n17-lower-bounds-2026/massaccesi-verify-n17-lower-bound-4_5058.py
     replay: uv run --frozen python resources/web/n17-lower-bounds-2026/massaccesi-verify-n17-lower-bound-4_5058.py
     replay_status: passed
+    verifiers: [V-massaccesi-n17-verify-py]
     external_review:
       state: informally-verified
       date: '2026-09-03'
@@ -4371,6 +4469,7 @@ evidence:
     certificate: resources/web/n17-lower-bounds-2026/burns-verify-n17-lower-bound-4_4811.py
     replay: uv run --frozen python resources/web/n17-lower-bounds-2026/burns-verify-n17-lower-bound-4_4811.py
     replay_status: passed
+    verifiers: [V-burns-n17-verify-py]
     external_review:
       state: informally-verified
       date: '2026-09-07'
@@ -4425,6 +4524,7 @@ evidence:
     certificate: cases/n17_fractional_certificate/control-burns-4-4811.json
     replay: uv run --frozen python -m cases.n17_fractional_certificate --burns-control
     replay_status: passed
+    verifiers: [V-sqpack-fractional-exact]
     limitations: >-
       Burns's 268 atoms rebuilt in the repository's certificate schema from the
       constants of his proof note (cases/n17_fractional_certificate/build_burns_control.py,
@@ -4461,6 +4561,7 @@ evidence:
     certificate: resources/web/n17-github-certificates-2026/mira-17squares/certificates/lower_bound_4p468292/square17_lb_4p468292.cert.xz
     replay: uv run --frozen python resources/web/n17-github-certificates-2026/replay_mira_python.py
     replay_status: passed
+    verifiers: [V-mira-17squares-point-checker]
     external_review:
       state: not-reviewed
       date: '2026-09-07'
@@ -4513,6 +4614,7 @@ evidence:
     certificate: resources/web/n17-github-certificates-2026/stanislavfort-17squares/certificates/lower_bound_4p456575/square17_lb_4p456575.cert.xz
     replay: uv run --frozen python resources/web/n17-github-certificates-2026/replay_fort_python.py
     replay_status: passed
+    verifiers: [V-stanislavfort-17squares-point-checker]
     external_review:
       state: not-reviewed
       date: '2026-09-07'
@@ -4561,6 +4663,7 @@ evidence:
     certificate: resources/web/n17-github-certificates-2026/anabologyco-square17-lower-bound/data/atoms.csv
     replay: uv run --frozen python resources/web/n17-github-certificates-2026/replay_anabologyco_python_stages.py
     replay_status: not-attempted
+    verifiers: [V-anabologyco-n17-checker]
     external_review:
       state: not-reviewed
       date: '2026-09-07'
@@ -4636,6 +4739,7 @@ evidence:
     certificate: resources/web/n17-weighted-certificates-2026-09-20/mira-17squares/certificates/lower_bound_4p613/best-certificate.json
     replay: uv run --frozen --all-extras --group dev python resources/web/n17-weighted-certificates-2026-09-20/replay_mira_4613_first_party.py
     replay_status: passed
+    verifiers: [V-sqpack-fractional-exact]
     external_review:
       state: informally-verified
       date: '2026-09-20'
@@ -4682,6 +4786,7 @@ evidence:
     certificate: resources/web/n17-weighted-certificates-2026-09-20/mira-17squares/certificates/lower_bound_4p613/best-certificate.json
     replay: uv run --frozen --all-extras --group dev python resources/web/n17-weighted-certificates-2026-09-20/replay_mira_4613_first_party.py --interval
     replay_status: passed
+    verifiers: [V-sqpack-fractional-interval]
     limitations: >-
       The second decision of the same bytes, by sqpack.fractional.interval: branch and
       bound over boxes of centres in outward-rounded interval arithmetic with exact
@@ -4709,6 +4814,7 @@ evidence:
     source_key: '[Kleddamag n17 certified bound]'
     certificate: resources/web/n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound/global-certificate.json
     replay_status: not-attempted
+    verifiers: [V-kleddamag-n17-verify]
     limitations: >-
       Source v1.0.0 at a499e2c739ce7853fa04c8bcdc85caf1c2b01b37 claims the
       strict lower bound s(17) > 461300/99853 for independently rotated unit
@@ -4736,6 +4842,7 @@ evidence:
       a fresh output directory. The full recipe is in
       packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/README.md.
     replay_status: passed
+    verifiers: [V-kleddamag-n17-verify]
     proof:
       source: packing/resources/web/n17-kleddamag-certified-bound-2026-09-21/kleddamag-17-squares-certified-bound/PROOF.md
       theorem: Seventeen independently rotated unit squares cannot fit at side 461300/99853; compactness gives s(17) > 461300/99853.
@@ -4801,6 +4908,7 @@ evidence:
     source_key: '[Guzhou0806 n17 R052]'
     certificate: resources/web/n17-guzhou-r052-2026-09-25/n17-square-packing/certificates/R052/certificate/R052_CERTIFICATE.json.gz
     replay_status: not-attempted
+    verifiers: [V-guzhou-r052-verify-py]
     limitations: >-
       Guzhou0806 / N17 project's R052 release at
       3bf1095c68a28fb9b2750fb0bc99edd5c22b7a61 (2026-09-25) claims the strict
@@ -4845,6 +4953,7 @@ evidence:
       packing/resources/web/n17-guzhou-r052-2026-09-25/README.md and
       receipts/replays.json.
     replay_status: passed
+    verifiers: [V-guzhou-r052-verify-py]
     proof:
       source: packing/resources/web/n17-guzhou-r052-2026-09-25/n17-square-packing/certificates/R052/PROOF.md
       theorem: Seventeen independently rotated unit squares cannot fit at side 231001/50000; compactness gives s(17) > 231001/50000.
@@ -4916,6 +5025,7 @@ evidence:
     source_key: '[evand square-packing 2026]'
     certificate: resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s32/s32_closed_cover_6.txt.gz
     replay_status: not-attempted
+    verifiers: [V-evand-zeromargin-py, V-evand-zmcheck, V-evand-lean]
     limitations: >-
       evand/square-packing at 167d842cd27ba1451cb2833773ea930c80b9e65b
       (2026-09-26) claims s(32) = 6: a weighted closed cover of [0,6]^2, 13,085
@@ -4959,6 +5069,7 @@ evidence:
       OUT/roots.jsonl, which must exit 0. Commands, walls and output digests are
       in the packet README and receipts/replays.json.
     replay_status: passed
+    verifiers: [V-evand-zeromargin-py, V-compare-evand-s32-sweep]
     proof:
       source: packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s32/README.md
       theorem: No 32 unit squares fit in a square of side below 6; with the 6 x 6 grid, s(32) = 6.
@@ -5046,6 +5157,7 @@ evidence:
       retained receipts/s32_zmx2_d4_pairpoints_roots.log.gz. devtools.audit_evand_mixed_covers
       check re-reads the retained log and fails if it is missing.
     replay_status: passed
+    verifiers: [V-evand-zmx2, V-audit-evand-mixed-covers]
     proof:
       source: packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s32/README.md
       theorem: No 32 unit squares fit in a square of side below 6; with the 6 x 6 grid, s(32) = 6.
@@ -5160,6 +5272,7 @@ evidence:
       must exit 0, which requires the header line and every root's census equal to the
       source's zmx2_full_sym/roots.log.xz in the 2026-10-01 packet.
     replay_status: passed
+    verifiers: [V-evand-zmx2, V-replay-evand-zmx2, V-audit-evand-mixed-covers]
     proof:
       source: packing/resources/web/evand-square-packing-2026-10-01/source/s12/certificates/s32/README.md
       theorem: No 32 unit squares fit in a square of side below 6; with the 6 x 6 grid, s(32) = 6.
@@ -5248,6 +5361,7 @@ evidence:
     source_key: '[evand square-packing 2026]'
     certificate: resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s12_lower_3.9686.txt.gz
     replay_status: not-attempted
+    verifiers: [V-evand-angle-net-verify, V-evand-xcheck-py]
     limitations: >-
       evand/square-packing at 167d842cd27ba1451cb2833773ea930c80b9e65b claims
       s(12) >= 15680/3951 = 3.96861554 from a 1,736-point weighted certificate
@@ -5282,6 +5396,7 @@ evidence:
       exhaustive re-check). Commands, walls and outputs are in the packet README
       and receipts/replays.json.
     replay_status: passed
+    verifiers: [V-evand-angle-net-verify, V-evand-xcheck-py]
     proof:
       source: packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/README.md
       theorem: Twelve unit squares do not fit in a square of side below 15680/3951.
@@ -5339,6 +5454,7 @@ evidence:
       --case s12 --all --workers 1 --output /tmp/evand-s12-native.json, which must
       print PASS_COMPLETE.
     replay_status: passed
+    verifiers: [V-sqpack-parent-core-native]
     proof:
       source: packing/src/sqpack/fractional/parent_core.py
       theorem: Twelve independently rotated unit squares cannot fit in a square of side 15680/3951; the native theorem gives the strict s(12) > 15680/3951, which implies the source's s(12) >= 15680/3951.
@@ -5388,6 +5504,7 @@ evidence:
     source_key: '[evand square-packing 2026]'
     certificate: resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s21/s21_lower_4.9950.txt.gz
     replay_status: not-attempted
+    verifiers: [V-evand-angle-net-verify, V-evand-xcheck-py]
     limitations: >-
       evand/square-packing at 167d842cd27ba1451cb2833773ea930c80b9e65b claims
       s(21) >= 5000/1001 = 4.995004995 from a 4,604-point (580-orbit) weighted
@@ -5422,6 +5539,7 @@ evidence:
       k = 0, 684, 1368 and 2052, which include the binding bin. Commands, walls
       and outputs are in the packet README and receipts/replays.json.
     replay_status: passed
+    verifiers: [V-evand-angle-net-verify, V-evand-xcheck-py]
     proof:
       source: packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/search/S21_LB.md
       theorem: Twenty-one unit squares do not fit in a square of side below 5000/1001.
@@ -5481,6 +5599,7 @@ evidence:
     source_key: '[evand square-packing 2026]'
     certificate: resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/rung2/s13_closed_cover_4.txt.gz
     replay_status: not-attempted
+    verifiers: [V-evand-zeromargin-py, V-evand-zmcheck]
     limitations: >-
       evand/square-packing at 167d842cd27ba1451cb2833773ea930c80b9e65b reports
       a case-free proof of Bentz's s(13) = 4: one weighted closed cover of
@@ -5511,6 +5630,7 @@ evidence:
       print VERIFIED-D4 over all 1,600 roots with no uncertified box; then, from packing/,
       .venv/bin/python3 -m devtools.audit_evand_mixed_covers check must exit 0.
     replay_status: passed
+    verifiers: [V-evand-zmx2, V-audit-evand-mixed-covers]
     limitations: >-
       Replays the source's zmx2 on the retained case-free cover of [0,4]^2 on 2026-09-28:
       VERIFIED-D4, 1,600 roots, 47,162 boxes, 22,136 certified and 2,245 empty leaves,
@@ -5545,6 +5665,7 @@ evidence:
       SquarePacking.s13_eq_4, which must print [propext, Classical.choice, Quot.sound].
       About 1 h 45 min and up to 9.5 GB here with LEAN_NUM_THREADS=1.
     replay_status: passed
+    verifiers: [V-evand-lean]
     proof:
       source: packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/lean/LADDER.md
       theorem: 'SquarePacking.s13_eq_4, minSide 13 = 4, where minSide n is the infimum of the sides s of the closed square [0,s]^2 holding n closed unit squares with arbitrary independent rotations and pairwise disjoint open interiors.'
@@ -5598,6 +5719,7 @@ evidence:
     source_key: '[evand square-packing 2026-09-28]'
     certificate: resources/web/evand-square-packing-2026-09-28/square-packing/s12/certificates/s21/s21_mixed_cover_5.txt.gz
     replay_status: not-attempted
+    verifiers: [V-evand-zm-mixed-py, V-evand-zmx2, V-evand-lean]
     limitations: >-
       evand/square-packing at 6aa82ba457e9eaeaaa3af0833600f27f91a2fce3
       (2026-09-28; the s(21) bundle entered at 086a129a, 2026-09-27T19:56:22Z)
@@ -5650,6 +5772,7 @@ evidence:
       retained receipts. Commands, walls and output digests are in the packet
       README and receipts/replays.json.
     replay_status: passed
+    verifiers: [V-evand-zmx2, V-audit-evand-mixed-covers]
     proof:
       source: packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/certificates/s21/README.md
       theorem: No 21 unit squares fit in a square of side below 5; with the 5 x 5 grid, s(21) = 5.
@@ -5722,6 +5845,7 @@ evidence:
     source_key: '[evand square-packing 2026-09-28]'
     certificate: resources/web/evand-square-packing-2026-09-28/square-packing/s12/certificates/s45/s45_mixed_cover_7.txt.gz
     replay_status: not-attempted
+    verifiers: [V-evand-zm-mixed-py, V-evand-zmx2]
     limitations: >-
       evand/square-packing at 6aa82ba457e9eaeaaa3af0833600f27f91a2fce3
       (2026-09-28; the s(45) bundle entered at d2001582, 2026-09-28T04:33:10Z)
@@ -5773,6 +5897,7 @@ evidence:
       retained receipts. Commands, walls and output digests are in the packet
       README and receipts/replays.json.
     replay_status: passed
+    verifiers: [V-evand-zmx2, V-audit-evand-mixed-covers]
     proof:
       source: packing/resources/web/evand-square-packing-2026-09-28/square-packing/s12/certificates/s45/README.md
       theorem: No 45 unit squares fit in a square of side below 7; with the 7 x 7 grid, s(45) = 7.
@@ -5839,6 +5964,7 @@ evidence:
     source_key: '[Kleddamag n17 4.66001]'
     certificate: resources/web/n17-kleddamag-466001-2026-09-27/kleddamag-17-squares-certified-bound/bounds/4.66001/certificate.json
     replay_status: not-attempted
+    verifiers: [V-kleddamag-n17-verify]
     limitations: >-
       Commit 57519bb74085157cb7047ae94c599bce4a006430 of
       Kleddamag/17-squares-certified-bound (2026-09-27, untagged; the release's
@@ -5883,6 +6009,7 @@ evidence:
       packing/resources/web/n17-kleddamag-466001-2026-09-27/README.md and
       receipts/replays.json.
     replay_status: passed
+    verifiers: [V-kleddamag-n17-verify]
     proof:
       source: packing/resources/web/n17-kleddamag-466001-2026-09-27/kleddamag-17-squares-certified-bound/bounds/4.66001/PROOF.md
       theorem: Seventeen independently rotated unit squares cannot fit at side 466001/100000; compactness gives s(17) > 466001/100000.
@@ -5961,6 +6088,7 @@ evidence:
     source_key: '[Guzhou0806 n17 R068]'
     certificate: resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/accepted/4.66044/certificate.json.gz
     replay_status: not-attempted
+    verifiers: [V-guzhou-n17-verify-cpp, V-kleddamag-n17-verify]
     limitations: >-
       Guzhou0806 / N17 project's R068 release at
       815b16261f852e389968513eec94b4b9e5b3206d (2026-09-28T12:44:22Z) claims the
@@ -6019,6 +6147,7 @@ evidence:
       packing/resources/web/n17-guzhou-r068-2026-09-28/README.md and
       receipts/replays.json.
     replay_status: passed
+    verifiers: [V-guzhou-n17-verify-cpp, V-kleddamag-n17-verify, V-audit-guzhou-r068]
     proof:
       source: packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R068-C010/PROOF.md
       theorem: Seventeen independently rotated unit squares cannot fit at side 116511/25000; compactness gives s(17) > 116511/25000.
@@ -6109,6 +6238,7 @@ evidence:
       packing/resources/web/n17-guzhou-r068-2026-09-28/README.md and
       receipts/replays.json.
     replay_status: passed
+    verifiers: [V-guzhou-n17-verify-cpp, V-kleddamag-n17-verify, V-audit-guzhou-r068]
     proof:
       source: packing/resources/web/n17-guzhou-r068-2026-09-28/n17-square-packing/certificates/R067-4.66018/PROOF.md
       theorem: Seventeen independently rotated unit squares cannot fit at side 233009/50000; compactness gives s(17) > 233009/50000.
@@ -6166,6 +6296,7 @@ evidence:
     source_key: '[Kleddamag n17 4.640020]'
     certificate: resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound/bounds/4.640020/certificate.json
     replay_status: not-attempted
+    verifiers: [V-kleddamag-n17-verify]
     limitations: >-
       Kleddamag's v1.1.0 release at 13821ddfa24133a8d796648383464574404d5fa0
       (tag v1.1.0, 2026-09-26) claims the strict lower bound
@@ -6207,6 +6338,7 @@ evidence:
       packing/resources/web/n17-kleddamag-4640020-2026-09-26/README.md and
       receipts/replays.json.
     replay_status: passed
+    verifiers: [V-kleddamag-n17-verify]
     proof:
       source: packing/resources/web/n17-kleddamag-4640020-2026-09-26/kleddamag-17-squares-certified-bound/bounds/4.640020/PROOF.md
       theorem: Seventeen independently rotated unit squares cannot fit at side 232001/50000; compactness gives s(17) > 232001/50000.
@@ -6285,6 +6417,7 @@ evidence:
     certificate: resources/web/n17-weighted-certificates-2026-09-20/guzhou0806-n17-square-packing/certificates/R012/orbits.json
     replay: uv run --frozen python -X utf8 -B -S resources/web/n17-weighted-certificates-2026-09-20/guzhou0806-n17-square-packing/certificates/R012/verify.py --workers 4 --output "$(mktemp -d)/run"
     replay_status: passed
+    verifiers: [V-guzhou-r012-verify-py]
     external_review:
       state: informally-verified
       date: '2026-09-20'
@@ -6343,6 +6476,7 @@ evidence:
     certificate: resources/web/n17-weighted-certificates-2026-09-20/guzhou0806-n17-square-packing/certificates/R012/catalogue.json
     replay: uv run --frozen --all-extras --group dev python resources/web/n17-weighted-certificates-2026-09-20/replay_guzhou_r012_first_party.py --entries all --workers 4 --tag 001 --source-coverage resources/web/n17-weighted-certificates-2026-09-20/receipts/guzhou-r012-source-replay-2026-09-20.coverage.jsonl.xz
     replay_status: passed
+    verifiers: [V-sqpack-fractional-interval]
     limitations: >-
       A first-party decision of R012 that imports nothing from the source. The measure,
       the catalogue, contiguity from 0 to T with T^2 + 2T - 1 > 0, strict containment of
@@ -6389,6 +6523,7 @@ evidence:
     certificate: campaign/series/series-000-smoke-and-calibration/results/exp-059-h-052-n17-fresh-successor-completion.json
     replay: uv run --frozen python -m cases.n17_weighted_certificate_successor.run --status campaign/series/series-000-smoke-and-calibration/results/exp-059-h-052-n17-fresh-successor-completion.checkpoint.json
     replay_status: passed
+    verifiers: [V-n17-weighted-instrument]
     limitations: >-
       The repository's exact instrument (cases/n17_weighted_certificate, package
       manifest 309ec241...) statically extracts the hash-pinned certificate and
@@ -6444,6 +6579,7 @@ evidence:
     certificate: cases/n12_fractional_certificate/certificate.json
     replay: uv run --frozen --all-extras python -m cases.n12_fractional_certificate
     replay_status: passed
+    verifiers: [V-sqpack-fractional-exact]
     limitations: >-
       Decides Condition 1 to Condition 5 in exact rational arithmetic over the
       retained certificate at 99/25, which carries 2,097 atoms.
@@ -6500,6 +6636,7 @@ evidence:
     certificate: cases/n12_fractional_certificate/certificate-77-20.json
     replay: uv run --frozen --all-extras python cases/n12_fractional_certificate/replay_independent.py cases/n12_fractional_certificate/certificate-77-20.json
     replay_status: passed
+    verifiers: [V-n12-independent-verifier]
     limitations: >-
       A second exact decision of the same five conditions at the historical 19/5 and
       77/20 rungs, by a verifier written from the theorem statement alone and a reviewer
@@ -6569,6 +6706,7 @@ evidence:
     certificate: cases/n11_fractional_certificate/certificate.json
     replay: uv run --frozen --all-extras python -m cases.n11_fractional_certificate
     replay_status: passed
+    verifiers: [V-sqpack-fractional-exact]
     limitations: >-
       Decides five conditions in exact rational arithmetic over 1121 atoms on a
       D4-symmetric site set: the atom multiset is closed under the container's D4 group,
@@ -6659,6 +6797,7 @@ evidence:
     certificate: cases/n11_fractional_certificate/t-022-dilation-limit-corollary.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.dilation_corollary cases/n11_fractional_certificate/certificate.json --source-name packing/cases/n11_fractional_certificate/certificate.json --check-limit-record cases/n11_fractional_certificate/t-022-dilation-limit-corollary.json
     replay_status: passed
+    verifiers: [V-dilation-corollary]
     proof:
       source: cases/n11_fractional_certificate/t-022-dilation-limit-proof.md
       theorem: >-
@@ -6730,6 +6869,7 @@ evidence:
     certificate: cases/n11_fractional_certificate/certificate-381-100-net1440.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.decide_certificate cases/n11_fractional_certificate/certificate-381-100-net1440.json
     replay_status: passed
+    verifiers: [V-sqpack-fractional-exact]
     limitations: >-
       Decides five conditions in exact rational arithmetic over 1121 atoms on the
       D4-symmetric site set of the retained 381/100 certificate: the atom multiset is
@@ -6771,13 +6911,15 @@ evidence:
     assurance: verified
     method: interval-certified
     performed_by: repository
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: shared-components
+    shared_components: ["the certificate loader and object", "the closed-form Conditions 1 to 4"]
     origin: audited-here
     novelty: previously-published
     source_key: '[Burns–Massaccesi n17]'
     certificate: cases/n11_fractional_certificate/certificate-381-100-net1440.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.decide_certificate --quick cases/n11_fractional_certificate/certificate-381-100-net1440.json
     replay_status: passed
+    verifiers: [V-sqpack-fractional-interval]
     limitations: >-
       The second decision of the 1440-step rung's frozen bytes, by the interval
       verifier described under E-fractional-interval-decision: directed-rounding
@@ -6824,6 +6966,7 @@ evidence:
     certificate: cases/n11_fractional_certificate/t-024-net1440-dilation-limit-corollary.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.dilation_corollary cases/n11_fractional_certificate/certificate-381-100-net1440.json --source-name packing/cases/n11_fractional_certificate/certificate-381-100-net1440.json --check-limit-record cases/n11_fractional_certificate/t-024-net1440-dilation-limit-corollary.json
     replay_status: passed
+    verifiers: [V-dilation-corollary]
     proof:
       source: cases/n11_fractional_certificate/t-024-dilation-limit-proof.md
       theorem: >-
@@ -6888,6 +7031,7 @@ evidence:
     certificate: cases/n11_fractional_certificate/certificate-381-100-net720.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.decide_certificate cases/n11_fractional_certificate/certificate-381-100-net720.json
     replay_status: passed
+    verifiers: [V-sqpack-fractional-exact]
     limitations: >-
       Decides five conditions in exact rational arithmetic over 1121 atoms on the
       D4-symmetric site set of the retained 381/100 certificate: the atom multiset is
@@ -6942,6 +7086,7 @@ evidence:
     certificate: cases/n11_fractional_certificate/t-024-dilation-limit-corollary.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.dilation_corollary cases/n11_fractional_certificate/certificate-381-100-net720.json --source-name packing/cases/n11_fractional_certificate/certificate-381-100-net720.json --check-limit-record cases/n11_fractional_certificate/t-024-dilation-limit-corollary.json
     replay_status: passed
+    verifiers: [V-dilation-corollary]
     proof:
       source: cases/n11_fractional_certificate/t-024-dilation-limit-proof.md
       theorem: >-
@@ -7013,6 +7158,7 @@ evidence:
     certificate: cases/n11_threshold_certificate/certificate.json
     replay: uv run --frozen --all-extras --group dev python -m cases.n11_threshold_certificate
     replay_status: passed
+    verifiers: [V-sqpack-threshold-exact]
     proof:
       source: cases/n11_threshold_certificate/t-025-threshold-certificate-proof.md
       theorem: >-
@@ -7065,13 +7211,15 @@ evidence:
     assurance: verified
     method: interval-certified
     performed_by: repository
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: shared-components
+    shared_components: ["the certificate loader", "the closed-form conditions", "the weight scale", "the direction net"]
     origin: audited-here
     novelty: previously-published
     source_key: '[Burns–Massaccesi n17]'
     certificate: cases/n11_threshold_certificate/certificate.json
     replay: uv run --frozen --all-extras --group dev python -m cases.n11_threshold_certificate --quick
     replay_status: passed
+    verifiers: [V-sqpack-threshold-interval]
     limitations: >-
       The second decision of the retained threshold certificate's frozen bytes, by the
       interval branch and bound of sqpack.fractional.threshold_interval: directed-rounding
@@ -7129,6 +7277,7 @@ evidence:
     certificate: cases/n11_threshold_certificate/certificate-191-50-net1440.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.decide_threshold_certificate cases/n11_threshold_certificate/certificate-191-50-net1440.json
     replay_status: passed
+    verifiers: [V-sqpack-threshold-exact]
     limitations: >-
       Decides Conditions 1, 1', 2', 3 and 4 in closed form and Condition 5' by the exact
       event-cell sweep, over the 584 point atoms and 320 threshold atoms of the retained
@@ -7173,13 +7322,15 @@ evidence:
     assurance: verified
     method: interval-certified
     performed_by: repository
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: shared-components
+    shared_components: ["the certificate loader", "the closed-form conditions", "the weight scale", "the direction net"]
     origin: audited-here
     novelty: previously-published
     source_key: '[Burns–Massaccesi n17]'
     certificate: cases/n11_threshold_certificate/certificate-191-50-net1440.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.decide_threshold_certificate --quick cases/n11_threshold_certificate/certificate-191-50-net1440.json
     replay_status: passed
+    verifiers: [V-sqpack-threshold-interval]
     limitations: >-
       The second decision of the 1440-step threshold rung's frozen bytes, by the interval
       branch and bound of sqpack.fractional.threshold_interval described under
@@ -7230,6 +7381,7 @@ evidence:
     certificate: cases/n11_threshold_certificate/t-026-dilation-limit-corollary.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.dilation_corollary cases/n11_threshold_certificate/certificate-191-50-net1440.json --source-name packing/cases/n11_threshold_certificate/certificate-191-50-net1440.json --check-limit-record cases/n11_threshold_certificate/t-026-dilation-limit-corollary.json
     replay_status: passed
+    verifiers: [V-dilation-corollary]
     proof:
       source: cases/n11_threshold_certificate/t-026-dilation-limit-proof.md
       theorem: >-
@@ -7299,6 +7451,7 @@ evidence:
     certificate: cases/n11_threshold_certificate/certificate-191-50-net720.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.decide_threshold_certificate cases/n11_threshold_certificate/certificate-191-50-net720.json
     replay_status: passed
+    verifiers: [V-sqpack-threshold-exact]
     limitations: >-
       Decides Conditions 1, 1', 2', 3 and 4 in closed form and Condition 5' by the exact
       event-cell sweep, over the same 584 point atoms and 320 threshold atoms at the same
@@ -7354,6 +7507,7 @@ evidence:
     certificate: cases/n11_threshold_certificate/t-026-net720-dilation-limit-corollary.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.dilation_corollary cases/n11_threshold_certificate/certificate-191-50-net720.json --source-name packing/cases/n11_threshold_certificate/certificate-191-50-net720.json --check-limit-record cases/n11_threshold_certificate/t-026-net720-dilation-limit-corollary.json
     replay_status: passed
+    verifiers: [V-dilation-corollary]
     proof:
       source: cases/n11_threshold_certificate/t-026-dilation-limit-proof.md
       theorem: >-
@@ -7440,6 +7594,7 @@ evidence:
     certificate: cases/n11_threshold_certificate/certificate-191-50-net2880.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.decide_threshold_certificate cases/n11_threshold_certificate/certificate-191-50-net2880.json
     replay_status: passed
+    verifiers: [V-sqpack-threshold-exact]
     limitations: >-
       Decides Conditions 1, 1', 2', 3 and 4 in closed form and Condition 5' by the exact
       event-cell sweep, over the 584 point atoms and 320 threshold atoms of the retained
@@ -7498,13 +7653,15 @@ evidence:
     assurance: verified
     method: interval-certified
     performed_by: repository
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: shared-components
+    shared_components: ["the certificate loader", "the closed-form conditions", "the weight scale", "the direction net"]
     origin: audited-here
     novelty: previously-published
     source_key: '[Burns–Massaccesi n17]'
     certificate: cases/n11_threshold_certificate/certificate-191-50-net2880.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.decide_threshold_certificate --quick cases/n11_threshold_certificate/certificate-191-50-net2880.json
     replay_status: passed
+    verifiers: [V-sqpack-threshold-interval]
     limitations: >-
       The second decision of the 2880-step threshold rung's frozen bytes, by the interval
       branch and bound of sqpack.fractional.threshold_interval described under
@@ -7561,6 +7718,7 @@ evidence:
     certificate: cases/n11_threshold_certificate/t-033-dilation-limit-corollary.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.dilation_corollary cases/n11_threshold_certificate/certificate-191-50-net2880.json --source-name packing/cases/n11_threshold_certificate/certificate-191-50-net2880.json --check-limit-record cases/n11_threshold_certificate/t-033-dilation-limit-corollary.json
     replay_status: passed
+    verifiers: [V-dilation-corollary]
     proof:
       source: cases/n11_threshold_certificate/t-026-dilation-limit-proof.md
       theorem: >-
@@ -7673,6 +7831,7 @@ evidence:
     certificate: cases/n17_fractional_certificate/certificate.json
     replay: uv run --frozen --all-extras python -m cases.n17_fractional_certificate
     replay_status: passed
+    verifiers: [V-sqpack-fractional-exact]
     limitations: >-
       Decides five conditions in exact rational arithmetic over 1184 atoms on a
       D4-symmetric site set: the atom multiset is closed under the container's D4 group,
@@ -7746,6 +7905,7 @@ evidence:
     certificate: cases/n18_fractional_certificate/certificate-467-100.json
     replay: uv run --frozen --all-extras python -m cases.n18_fractional_certificate cases/n18_fractional_certificate/certificate-467-100.json
     replay_status: passed
+    verifiers: [V-sqpack-fractional-exact]
     limitations: >-
       Decides five conditions in exact rational arithmetic over 769 atoms on a
       D4-symmetric site set: the atom multiset is closed under the container's D4 group,
@@ -7816,6 +7976,7 @@ evidence:
     certificate: cases/n18_fractional_certificate/certificate-187-40.json
     replay: uv run --frozen --all-extras python -m cases.n18_fractional_certificate cases/n18_fractional_certificate/certificate-187-40.json
     replay_status: passed
+    verifiers: [V-sqpack-fractional-exact]
     limitations: >-
       Decides five conditions in exact rational arithmetic over 725 atoms on a
       D4-symmetric site set: the atom multiset is closed under the container's D4 group,
@@ -7886,6 +8047,7 @@ evidence:
     certificate: cases/n18_fractional_certificate/certificate-1871-400.json
     replay: uv run --frozen --all-extras python -m cases.n18_fractional_certificate cases/n18_fractional_certificate/certificate-1871-400.json
     replay_status: passed
+    verifiers: [V-sqpack-fractional-exact]
     limitations: >-
       Decides five conditions in exact rational arithmetic over 804 atoms on a
       D4-symmetric site set: the atom multiset is closed under the container's D4 group,
@@ -7958,6 +8120,7 @@ evidence:
     certificate: cases/n18_fractional_certificate/certificate.json
     replay: uv run --frozen --all-extras python -m cases.n18_fractional_certificate
     replay_status: passed
+    verifiers: [V-sqpack-fractional-exact]
     limitations: >-
       Decides five conditions in exact rational arithmetic over 957 atoms on a
       D4-symmetric site set: the atom multiset is closed under the container's D4 group,
@@ -8023,6 +8186,7 @@ evidence:
     certificate: cases/n20_fractional_certificate/certificate.json
     replay: uv run --frozen --all-extras python -m cases.n20_fractional_certificate
     replay_status: passed
+    verifiers: [V-sqpack-fractional-exact]
     limitations: >-
       Decides five conditions in exact rational arithmetic over 1680 atoms on a
       D4-symmetric site set: the atom multiset is closed under the container's D4 group,
@@ -8086,6 +8250,7 @@ evidence:
     certificate: cases/n20_fractional_certificate/certificate-24-5.json
     replay: uv run --frozen --all-extras python -m cases.n20_fractional_certificate cases/n20_fractional_certificate/certificate-24-5.json
     replay_status: passed
+    verifiers: [V-sqpack-fractional-exact]
     limitations: >-
       Decides five conditions in exact rational arithmetic over 2260 atoms on a
       D4-symmetric site set: the atom multiset is closed under the container's D4 group,
@@ -8154,6 +8319,7 @@ evidence:
     certificate: cases/n21_fractional_certificate/certificate.json
     replay: uv run --frozen --all-extras python -m cases.n21_fractional_certificate
     replay_status: passed
+    verifiers: [V-sqpack-fractional-exact]
     limitations: >-
       Decides five conditions in exact rational arithmetic over 1228 atoms on a
       D4-symmetric site set: the atom multiset is closed under the container's D4 group,
@@ -8197,13 +8363,15 @@ evidence:
     assurance: verified
     method: interval-certified
     performed_by: repository
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: shared-components
+    shared_components: ["the certificate loader and object", "the closed-form Conditions 1 to 4"]
     origin: audited-here
     novelty: previously-published
     source_key: '[Burns–Massaccesi n17]'
     certificate: cases/n11_fractional_certificate/certificate.json
     replay: uv run --frozen --all-extras --group dev pytest tests/test_fractional_interval.py
     replay_status: passed
+    verifiers: [V-sqpack-fractional-interval]
     limitations: >-
       A second decision of the same certificates by interval arithmetic with directed
       rounding, existing so that the two decisions can fail differently. Every operation
@@ -8284,6 +8452,7 @@ evidence:
       --max-atoms 1000 --max-event-cells 5000000 --max-total-event-cells 10000000
       --deadline-seconds 240 --output /tmp/squares-t023-replay.json
     replay_status: passed
+    verifiers: [V-replay-owner-footprint-cover]
     limitations: >-
       Exp144 at source 5195c94c checked all 361 unique canonical orientations, with
       exact minimum 1000001/1000000 at every direction for five dots of that common
@@ -8313,6 +8482,7 @@ evidence:
       --expect-directions 361 --max-subsets-per-direction 511 --deadline-seconds 240
       --output /tmp/squares-t023-independent-union.json
     replay_status: passed
+    verifiers: [V-five-dot-independent-union]
     limitations: >-
       Exp145 at c59d28a770d8261b39d030050d8dc3f0eb8dde43 independently generated the
       net and computed exact convex intersections and inclusion-exclusion. All 361
@@ -8339,6 +8509,7 @@ evidence:
       --expect-git-revision 915758898a97c92793f51e62b7a6b17f846895ca
       --deadline-seconds 240 --output /tmp/squares-wall-footprints-replay.json
     replay_status: passed
+    verifiers: [V-wall-owner-footprints]
     limitations: >-
       Run from a clean checkout of the declared source revision and use a fresh output.
       Exp146 completed all16 bottom-left classes at q=96/25, B=9977/10000 in25.69seconds:
@@ -8372,6 +8543,7 @@ evidence:
       --expect-coverage-blob 4688678bfd4e64d9cb345b48f065c1c82bebdea0 --expect-git-revision e72102e15897dc33e59fcd82818a7ca9174d3cd0
       --deadline-seconds 60 --output /tmp/squares-wall-containment-replay.json
     replay_status: passed
+    verifiers: [V-wall-owner-containment]
     limitations: 'Complete128-slot component-containment test at the declared clean source: eight containments,120failures,
       two baseline tuples, zero additional tuples. This is a bounded negative for inheriting either retained
       certificate family; it does not refute direct five-dot coverage or certify physical feasibility. Labels
@@ -8456,6 +8628,7 @@ evidence:
     certificate: cases/n11_corner_class_certificate/certificate.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.decide_certificate --corner-clip 1/2 cases/n11_corner_class_certificate/certificate.json
     replay_status: passed
+    verifiers: [V-sqpack-fractional-exact]
     limitations: >-
       The exact event-cell sweep of sqpack.fractional.certificate on the row domain
       clipped by the four corner triangles at depth 1/2, the clip entering as extra
@@ -8502,12 +8675,14 @@ evidence:
     assurance: verified
     method: interval-certified
     performed_by: repository
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: shared-components
+    shared_components: ["the certificate loader and object", "the closed-form Conditions 1 to 4"]
     origin: audited-here
     novelty: apparently-novel
     certificate: cases/n11_corner_class_certificate/certificate.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.decide_certificate --corner-clip 1/2 cases/n11_corner_class_certificate/certificate.json
     replay_status: passed
+    verifiers: [V-sqpack-fractional-interval]
     limitations: >-
       The second decision of the same frozen bytes by the interval branch and bound of
       sqpack.fractional.interval over boxes of centres on the doubled net, with a box
@@ -8554,6 +8729,7 @@ evidence:
       /Volumes/spud-ext1/agent-scratch/squares-archives/rung0-h236-2026-09-24/h236.jsonl.gz
       --workers 10
     replay_status: passed
+    verifiers: [V-trump11-fixed-angle-tree-check]
     proof:
       source: >-
         docs/project/reviews/review-2026-09-23-rung0-certificate-contract.md, the W2
@@ -8681,6 +8857,7 @@ evidence:
     certificate: campaign/series/series-000-smoke-and-calibration/results/bc-240-trump-local-theorem.json
     replay: uv run --frozen --all-extras --group dev python -m devtools.review_trump_local_theorem
     replay_status: passed
+    verifiers: [V-review-trump-local-theorem]
     proof:
       source: >-
         packing/cases/trump11/isolation-theorem.md, the BC-240 terminal author packet, with
@@ -8767,6 +8944,7 @@ evidence:
       cd packing && uv run --frozen --all-extras --group dev python -m cases.trump11.isolation_radius
       --replay campaign/series/series-000-smoke-and-calibration/results/bc-199-trump-isolation-radius.json
     replay_status: passed
+    verifiers: [V-trump11-isolation-radius]
     limitations: >-
       The radius rho_row = 808514697/200000000000 and every other computed value of the BC-199
       record, as exact rationals. The replay recomputes all 4,951 computed leaves of the record
@@ -8793,7 +8971,7 @@ evidence:
     assurance: verified
     method: exact-algebraic
     performed_by: repository
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: same-implementation
     origin: audited-here
     source_key: '[wand125 point bounds 2026]'
     certificate: resources/web/external-square-certificates-2026-09-22/wand125-points/certificates/cert_n69_L841.json
@@ -8802,6 +8980,7 @@ evidence:
       packing/resources/web/external-square-certificates-2026-09-22/wand125-points/src/check_with_sqpack.py
       packing/resources/web/external-square-certificates-2026-09-22/wand125-points/certificates/cert_n69_L841.json
     replay_status: passed
+    verifiers: [V-wand125-check-with-sqpack, V-sqpack-fractional-exact]
     proof:
       source: packing/src/sqpack/fractional/certificate.py
       theorem: Weighted covering obstruction with the least integer above the exact mass
@@ -8838,6 +9017,7 @@ evidence:
     novelty: previously-published
     source_key: '[franciscouzo square-packing 2026-09-27]'
     replay_status: not-attempted
+    verifiers: []
     limitations: >-
       Source f3c5a529c255b546db18605702b8da298132309f (2026-09-27) prints one packing per
       listed count as a text file of binary64 centres and angles, with the side on its
@@ -8868,6 +9048,7 @@ evidence:
       committed one, and decides the committed one again with
       devtools.check_rational_witness_independent; it must report every case VERIFIED.
     replay_status: passed
+    verifiers: [V-upper-bound-promotion, V-check-rational-witness-independent]
     limitations: >-
       Proves, for each listed count, s(n) at most the side of an exact rational packing
       decided pair by pair and wall by wall over Q, twice, by the promotion's exact
@@ -8906,6 +9087,7 @@ evidence:
       "every case and control decided as its receipt records". About six seconds on one
       worker.
     replay_status: passed
+    verifiers: [V-upper-bound-intervals]
     limitations: >-
       Proves, for each listed count, s(n) at most the same verified value that
       E-franciscouzo-2026-09-27-exact-replay gives, from the source's own pose as printed
@@ -8952,6 +9134,7 @@ evidence:
     novelty: previously-published
     source_key: '[de Winter n211 2026-09-16]'
     replay_status: public-certificate-missing
+    verifiers: []
     limitations: >-
       Source 702df9bb3b1e7fe13279a61a1fa89722aa2d496a (2026-09-16) reports 211 unit squares
       in a square of side 14.99796070496771500150, with 21-digit decimal poses and a
@@ -8981,6 +9164,7 @@ evidence:
       committed one, and decides it again with devtools.check_rational_witness_independent;
       it must report VERIFIED.
     replay_status: passed
+    verifiers: [V-upper-bound-promotion, V-check-rational-witness-independent]
     limitations: >-
       Proves s(211) <= 14.99796070496771500150, the printed side, from an exact rational
       packing of side 74989803524838470007/5000000000000000000, which is 2.1e-14 below it:
@@ -9011,6 +9195,7 @@ evidence:
       be what they record; it must print "every case and control decided as its receipt
       records".
     replay_status: passed
+    verifiers: [V-upper-bound-intervals]
     limitations: >-
       Proves s(211) <= 14.99796070496771500150, the printed side, from the source's own
       21-digit pose as printed, with each angle's true cosine and sine enclosed, by
@@ -9040,6 +9225,7 @@ evidence:
     novelty: previously-published
     source_key: '[griffcass square-packing 2026-09-23]'
     replay_status: not-attempted
+    verifiers: []
     limitations: >-
       Source 82661bc8777beeecf458312e8aca9179a969da4f, committed 2026-09-23 at 22:45
       UTC-6, reports 39 packings with at least 1e-10 pair clearance and 5e-12 wall

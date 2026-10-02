@@ -285,9 +285,13 @@ certificate’s replay command.
    The [evidence schema](frontier-evidence.schema.yaml) requires `id`, `claim`, `scope`,
    `assurance`, `performed_by`, `relationship_to_generator`, `replay_status`,
    `limitations`, and `source_reviewed`, plus the fields conditional on the method and
-   assurance. The rung is derived from them, so what each carries decides what the row
-   may declare: a machine entry has `method` `exact-algebraic` or `interval-certified`,
-   `origin` `audited-here` or `replayed-here`, `certificate`, `replay`, and
+   assurance. An entry whose method runs code, or that names a replay, lists the programs
+   that verified it in `verifiers`, by their ids in [`verifiers.yaml`](verifiers.yaml),
+   and its `relationship_to_generator` says whether they are the producer’s own code or
+   a re-implementation ([epistemics.md](../../epistemics.md#which-code-confirmed-it)).
+   The rung is derived from them, so what each carries decides what the row may declare:
+   a machine entry has `method` `exact-algebraic` or `interval-certified`, `origin`
+   `audited-here` or `replayed-here`, `certificate`, `replay`, and
    `replay_status: passed`, and counts toward `C3` only with all five.
    `assurance: verified` needs a formal method and may not carry `precision` or
    `tolerance`. Choose novelty from the retained source search, independently of who

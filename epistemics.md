@@ -108,6 +108,55 @@ A control path proves that a control is retained; the checker does not infer fro
 filename that the control is adversarial.
 The test suite, validation configuration, and review establish those stronger facts.
 
+### Which Code Confirmed It
+
+A confirmation either reproduces a result with the code its producer used or decides it
+again with other code, and the record says which.
+Every evidence entry whose method runs code, or that names a replay, lists its programs
+in `verifiers`, by their ids in [`verifiers.yaml`](packing/frontier/verifiers.yaml).
+Each program there is *external*, written outside this repository by a result’s producer
+or another party, or *first-party*, written here; it *decides* the entry’s claim or
+checks *premises* (inputs, digests, receipts, a sample) and leaves the decision to
+another program; and it carries the digests or revisions that ran and the retained path
+of its source. The entry’s `relationship_to_generator` says how the deciding programs
+stand to the code the result’s producer used:
+
+| Value | Read as | Meaning |
+| --- | --- | --- |
+| `same-implementation`, `generator` | reproduced with the producer’s code | The producer’s own checker ran again, identified by digest; for this project’s own results, the code that produced them. It shows that the result reproduces, not that a second implementation agrees. |
+| `shared-components` | re-implemented, sharing the producer’s components | Separately written code reused named parts of the producer’s code, which `shared_components` lists: a parser, the certificate loader, an arithmetic kernel. |
+| `independent-implementation` | independently re-implemented | Code that shares none of the producer’s verification code decided the claim, written from the mathematics and the certificate format. |
+| `not-applicable` | no relation | No code ran to compare: a published proof, a hand derivation, or a report. |
+
+A premise check rides with an entry and never sets its relation: an independent exact
+preflight run before the source’s own checker leaves the replay `same-implementation`,
+with the preflight listed among its programs.
+A new `independent-implementation` entry names the record of what its authors read and
+used, its own `independence_record` or a deciding program’s in the registry; a
+clean-room record, one that says the authors never read the producer’s code, is the
+strongest. The 32 such entries recorded before 2 October 2026 without one are exempt by
+name in [`devtools/verifier_registry.py`](packing/devtools/verifier_registry.py), a list
+that only shrinks.
+
+How a result was confirmed is the third attribute beside its rung, and the register
+prints it with the status: *confirmed (reproduced with the producer’s code)*. Each part
+of the claim takes the relation furthest from the producer’s code among the confirming
+runs that decide it, and the result takes the part closest to it, so an exact value is
+as independent as the less independent of its two halves: the grid’s replay never makes
+a lower half re-run with the source’s own checker read as re-implemented.
+[`VERIFIERS.md`](packing/frontier/VERIFIERS.md) lists every program and what it backs;
+[`RESULTS.md`](packing/frontier/RESULTS.md#verification-code) and each case record’s
+Verification Code section list the programs behind each result and each verified bound.
+
+**The word *confirmed* says which kind.** In a register claim, a case record, a review
+or a reply on an issue, *confirmed* is followed by which confirmation it was: reproduced
+with the producer’s code, re-implemented sharing named components, or independently
+re-implemented. The checker refuses a sentence of a register `claim`, `composition` or
+`next_rung` that says confirmed without one of those phrases; case records, reviews and
+replies are held to it in review
+([the result-import process, stage 4](packing/campaign/result-import.md#stage-4-validate)),
+because their prose also uses the word for things that are not results.
+
 ## Review Records
 
 A result’s `reviews` list the retained review documents the rungs rest on, each mapped
@@ -482,7 +531,8 @@ gate checks it.
 | Record | Holds | Reader view |
 | --- | --- | --- |
 | [`n-NNN.md`](packing/frontier/README.md) case records | Both lanes’ bounds for each case, with their evidence | [`STATUS.md`](packing/frontier/STATUS.md); the site’s [recent results](https://jlevy.github.io/squares/#recent-results) and [frontier survey](https://jlevy.github.io/squares/frontier.html); the superseded mark in `RESULTS.md` and in the site’s [results table](https://jlevy.github.io/squares/all-results.html) |
-| [`evidence.yaml`](packing/frontier/evidence.yaml) | Who performed each check, by which method, within which limits | [`INVENTORY.md`](packing/frontier/INVENTORY.md) |
+| [`evidence.yaml`](packing/frontier/evidence.yaml) | Who performed each check, by which method, within which limits, with which programs | [`INVENTORY.md`](packing/frontier/INVENTORY.md); each case record’s Verification Code section |
+| [`verifiers.yaml`](packing/frontier/verifiers.yaml) | Each verification program, external or first-party, with the versions that ran and where its source is retained | [`VERIFIERS.md`](packing/frontier/VERIFIERS.md); the Verification Code section of `RESULTS.md` |
 | [`results.yaml`](packing/frontier/results.yaml) | Each result’s kind, headline, claim, date, `V`/`C`/`S`, novelty, attribution and `activity` | [`RESULTS.md`](packing/frontier/RESULTS.md), grouped by lineage; the site’s [results table](https://jlevy.github.io/squares/all-results.html), each with the derived status |
 | [`bibliography.yaml`](packing/resources/bibliography.yaml) | Each source’s date, credit and lineage | The atlas citation line; the holders, credit and relation in `RESULTS.md` and on the site’s [overview](https://jlevy.github.io/squares/#recent-results) |
 | [`source-coverage.yaml`](packing/frontier/source-coverage.yaml) | Which sources were read, and when | None |
@@ -529,7 +579,9 @@ The checker:
   dated on or after 22 August 2026 that no register entry covering that $n$ cites;
 - holds an entry’s `activity` to its fields, a link that resolves and an age of at most
   30 days at the register’s last review, and reports how many results hold each
-  [status](#status); and
+  [status](#status);
+- refuses a sentence of a `claim`, `composition` or `next_rung` that says *confirmed*
+  without saying [which kind](#which-code-confirmed-it); and
 - rejects unknown `T-NNN` references in the README and synopsis.
 
 [`packing/frontier/results.yaml`](packing/frontier/results.yaml) states each result’s

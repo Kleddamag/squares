@@ -92,11 +92,9 @@ PUBLICATION_HISTORY = (
         version="v0.5.0",
         first_published="October 2, 2026",
         result_scope=(
-            "The website edition: the project gets a site of its own, with an overview, a "
-            "table that rates every result for significance, verification and "
-            "confirmation, and a frontier survey of $n = 1$ to $324$; the register takes "
-            "in the proof that $s(11) = 3.8770835…$ (T-060), reviewed in a second paper, "
-            "and the certified upper bound $s(17) ≤ 4.6755301$ (T-065)."
+            "The website edition: the project gets its own site, with a rated table of "
+            "results and a frontier survey to $n = 324$, and a second paper reviews the "
+            "proof that $s(11) = 3.8770835…$ (T-060)."
         ),
     ),
     PublicationHistoryEntry(

@@ -3123,6 +3123,7 @@ results:
       - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-042/bc382-isolation-radius-replay.json.gz
       - packing/campaign/series/series-000-smoke-and-calibration/results/agenda-042/bc382-capture-radius-replay.json.gz
       - packing/campaign/series/series-000-smoke-and-calibration/results/bc-199-isolation-radius-replay-receipt.json
+      - packing/cases/trump11/isolation_radius_replay.py
       - docs/project/reviews/review-2026-09-24-bc241-closure.md
     controls:
       - packing/tests/test_fixed_angle_tree.py

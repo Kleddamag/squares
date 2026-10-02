@@ -8792,8 +8792,9 @@ evidence:
       rows, all three falsifying mutations rejected. It also accepted at 99582155c on
       2026-09-24, retained as bc382-bc241-checker-rerun.json.gz.
       The proof's steps are prose, and only its radius computation is machine-checked.
-      The radius generator cases.trump11.isolation_radius gained a --replay mode on
-      2026-10-02, and the radius computation now carries its own entry,
+      The radius generator cases.trump11.isolation_radius gained a replay,
+      cases.trump11.isolation_radius_replay, on 2026-10-02, kept in its own module so the
+      generator keeps its reviewed bytes, and the radius computation now carries its own entry,
       E-n011-trump-isolation-radius, a same-implementation replay; the 2026-09-24 run
       (474.5 s, bc382-isolation-radius-replay.json.gz) was an independent execution, not
       an independent implementation.
@@ -8818,8 +8819,8 @@ evidence:
     source_reviewed: '2026-10-02'
     certificate: campaign/series/series-000-smoke-and-calibration/results/bc-199-trump-isolation-radius.json
     replay: >-
-      cd packing && uv run --frozen --all-extras --group dev python -m cases.trump11.isolation_radius
-      --replay campaign/series/series-000-smoke-and-calibration/results/bc-199-trump-isolation-radius.json
+      cd packing && uv run --frozen --all-extras --group dev python -m cases.trump11.isolation_radius_replay
+      campaign/series/series-000-smoke-and-calibration/results/bc-199-trump-isolation-radius.json
     replay_status: passed
     limitations: >-
       The radius rho_row = 808514697/200000000000 and every other computed value of the BC-199
@@ -8828,8 +8829,11 @@ evidence:
       from the retained exp-013 branch matrices and certificates with the generator that
       produced it, so it is a same-implementation replay: it shows the record is reproducible
       and that a perturbed radius, argmin-face witness, exact modulus coefficient or declared box
-      is refused (retained as bc-199-isolation-radius-replay-receipt.json, 478 s). It is not an
-      independent implementation. The capture_radius control (a second implementation of the
+      is refused (retained as bc-199-isolation-radius-replay-receipt.json, 478 s). The receipt
+      was written by a --replay mode inside the generator; the same functions were moved,
+      unchanged, into cases.trump11.isolation_radius_replay the same day, because the mode
+      broke the BC-241 checker's byte binding of the generator to its review revision. It is
+      not an independent implementation. The capture_radius control (a second implementation of the
       face layer, matching the weighted modulus on all 8,448 faces to 32 digits) and the
       source-distinct BC-241 checker are the independent legs, and both stay with
       E-n011-trump-local-theorem-first-clause. The recorded input digest of

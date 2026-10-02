@@ -696,16 +696,22 @@ Full figures are in
 
 | Family, certificate | Pieces after expansion | Directions timed | Boxes per direction | CPU per box | CPU per direction |
 | --- | ---: | --- | ---: | ---: | ---: |
-| T, wand125 `rect_n20_L48975` | 1,832 rectangles | 30, 98, 195 | 34,887 to 89,205 | 306 to 507 µs | 10.7 to 45.2 s |
-| M, wand125 `mixed_n76_L894` | 2,536 rectangles | 3, 101, 200 | 108,685 to 246,833 | 229 to 361 µs | 24.9 to 89.2 s |
-| L, wand125 `mixed_n101_L1028` | 9,872 (2,664 points, 7,176 segments, 32 rectangles) | 35, 113, and 0 (first 100,000 boxes) | 76,875 to 146,489 | 388 to 459 µs | 34.9 to 67.3 s |
+| T, wand125 `rect_n20_L48975` | 1,832 rectangles | 30, 98, 195 | 34,887 to 89,205 | 297 to 533 µs | 10.4 to 47.5 s |
+| M, wand125 `mixed_n76_L894` | 2,536 rectangles | 3, 101, 200 | 108,685 to 246,833 | 227 to 366 µs | 24.6 to 90.4 s |
+| L, wand125 `mixed_n101_L1028` | 9,872 (2,664 points, 7,176 segments, 32 rectangles) | 35, 113 | 76,875 to 146,489 | 457 to 467 µs | 35.2 to 68.4 s |
 
-The exact Python path on the same rectangle certificate and direction, in a first trial
-capped at 40 boxes, spent 57 ms of CPU per box, about 190 times the outward-rounded
-checker; the committed profile’s capped run is in `timings.json`. The replay receipts
-put whole certificates at 3.6 CPU-hours ($n = 76$) and 7.7 CPU-hours ($n = 101$) here,
-and the upstream records put `rect_n20_L48975` at 13.1 million boxes and 21 minutes on
-the author’s machine.
+The linear checker’s axis direction, timed over its first 100,000 boxes, costs 397 µs
+per box. Cost per box is flat with depth for the linear checker (456 µs over the first
+3,000 boxes of direction 35, 449 µs over 30,000) and rises with depth for the mixed one
+(49 µs over the first 3,000 boxes of direction 3, 136 µs over 30,000, 227 µs over all of
+it). A first run of the same directions an hour earlier agreed within about 5 per cent.
+
+The exact Python path on the same rectangle certificate and direction, capped at 400
+boxes, spent 55 ms of CPU per box, about 180 times the outward-rounded checker’s 297 µs
+on that direction.
+The replay receipts put whole certificates at 3.6 CPU-hours ($n = 76$)
+and 7.7 CPU-hours ($n = 101$) here, and the upstream records put `rect_n20_L48975` at
+13.1 million boxes and 21 minutes on the author’s machine.
 
 **Locality census.** On a 15 × 15 grid of centres over each timed direction’s domain, a
 float diagnostic (no proof authority) counted the pieces that a box of half-width
@@ -756,8 +762,8 @@ An estimate from first principles, not from the authors’ code: with inheritanc
 costs its straddling pieces plus a constant for bookkeeping.
 A rectangle’s area bound and its four edge chords in binary64 enclosures are a few
 hundred floating-point operations, on the order of 100 ns; a point or a segment is less.
-At 20 to 52 straddling pieces a box should cost 2 to 6 µs against the baseline’s 229 to
-507 µs, a factor of 40 to 250 per box.
+At 20 to 52 straddling pieces a box should cost 2 to 6 µs against the baseline’s 227 to
+533 µs, a factor of 40 to 250 per box.
 Bound quality, and so the node count, is of the same kind as the authors’ unless W2
 improves it. One to two orders of magnitude per core is therefore the plausible range;
 the acceptance target is thirty times on every family.
@@ -806,16 +812,21 @@ linear $n = 83$.
 ### 4.2 Controls
 
 Every mutation control already retained must be refused, at the same direction or root
-region: the rectangle controls of the 1 October packet (`scale-weights` and
-`drop-top-contributor` on `rect_n41_L676`), Tokoharu’s adversarial probes of 22
-September, the mixed control on $n = 37$, the linear control on $n = 101$, and the
-drop-heaviest controls on $s(32)$, $s(59)$, $s(60)$ and $s(77)$. The mutated inputs are
-data; the evidence lane regenerates them as files the implementer may read.
+region: the rectangle controls of the 1 October packet (every weight scaled by $99/100$,
+and the top contributor’s orbit dropped, on `rect_n41_L676` at direction 32), the two
+mixed controls on $n = 37$, the two linear controls on $n = 101$, and the controls that
+drop the heaviest point or the heaviest segment (for the point cover of $s(32)$, its
+heaviest or its second-heaviest point) on $s(32)$, $s(59)$, $s(60)$ and $s(77)$. The
+mutated inputs are data; the evidence lane regenerates them as files the implementer may
+read.
 In addition, the verifier must refuse: a measure with $M \ge n$; a $D_4$-mode cover
 whose invariance is broken by one point; a certificate whose threshold is raised above
 its true minimum at one direction; and a box-level fault injection that flips one inside
 classification. Each refusal of a mutation must come with an unresolved box containing,
-or an exact witness at, a pose whose exact capture is below $\Gamma$.
+or an exact witness at, a pose whose exact capture is below $\Gamma$. The differential
+tests of §1.8 cover, for rectangles, the axis direction, the first nonzero direction,
+intermediate ones and the last; and separation, tangency, near tangency, containment and
+partial overlap of a rectangle with a core.
 
 ### 4.3 Agreement With the Authors’ Checkers
 

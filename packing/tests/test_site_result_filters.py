@@ -241,7 +241,10 @@ def test_it_composes_with_status_and_neither_sets_the_other(
         by_status.setdefault(result.status, []).append(result.id.lower())
         if overview_sections.is_superseded(result):
             superseded.add(result.id.lower())
-    assert set(by_status) == set(result_status.STATUSES)
+    # No result has been incomplete since 2 October 2026, when the replays of T-058 and
+    # T-059 confirmed the last two, and Status offers only the statuses some result has.
+    assert set(by_status) == set(result_status.STATUSES) - {result_status.INCOMPLETE}
+    offered = [status for status in result_status.STATUSES if status in by_status]
     # Some confirmed results are superseded and some are not, so the two controls differ.
     assert set(by_status["confirmed"]) & superseded
     assert set(by_status["confirmed"]) - superseded
@@ -252,15 +255,16 @@ def test_it_composes_with_status_and_neither_sets_the_other(
         found = state(page)
         assert len(found["shown"]) == len(overview.results) - len(superseded)
         assert not set(found["shown"]) & superseded
-        for status in result_status.STATUSES:
+        for status in offered:
             page.locator(STATUS).select_option(status)
             found = state(page)
-            assert sorted(found["shown"]) == sorted(set(by_status[status]) - superseded), status
+            held = by_status[status]
+            assert sorted(found["shown"]) == sorted(set(held) - superseded), status
             assert found["count"] == count(len(found["shown"]), overview)
             assert found["checked"]
             box.uncheck()
             found = state(page)
-            assert sorted(found["shown"]) == sorted(by_status[status]), status
+            assert sorted(found["shown"]) == sorted(held), status
             assert page.locator(STATUS).input_value() == status
             box.check()
     finally:

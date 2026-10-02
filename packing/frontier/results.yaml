@@ -4993,7 +4993,7 @@ results:
   - id: T-059
     kind: audit
     registered: '2026-09-29'
-    headline: "Reported equality of 12028 n11 row minima awaits a complete bound replay"
+    headline: "Reported equality of 12028 n11 row minima reproduced by a complete bound replay"
     claim: >-
       wand125/square-packing-tools reports that its exact general_pose_tree checker reproduces
       all 12028 per-row core minima of Kleddamag's n11 certificate, release v1.0.2, with
@@ -5006,8 +5006,8 @@ results:
       29 September 2026, building on Tokoharu's rectangle method, solver and verifier and on
       Evan Daniel's point verifier. The source discloses Codex and Claude assistance.
     scope: {n_values: [11]}
-    verification: V0
-    confirmation: C1
+    verification: V3
+    confirmation: C3
     significance:
       score: 2
       rationale: A reusable independent row-checking implementation worth replaying; the existing n11 bound does not change.
@@ -5017,21 +5017,35 @@ results:
     attribution:
       source_keys: ['[wand125 tools 2026]']
       published: '2026-09-29'
-    evidence: [E-wand125-tools-n11-row-report]
+    evidence: [E-wand125-tools-n11-row-report, E-wand125-tools-n11-row-replay]
     artifacts:
       - packing/resources/web/wand125-tools-2026-09-29/README.md
       - docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md
       - docs/project/reviews/review-2026-09-29-rectangle-corner-bound.md
       - packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-sample-portable-summary.json
+      - packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full.jsonl.gz
+      - packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full-summary.json
+      - packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full-run.log
+      - packing/resources/web/wand125-tools-2026-09-29/receipts/n11-bound-cost-estimate-2026-10-02.json
       - docs/project/reviews/review-2026-09-22-native-n11-parent-core.md
+    controls:
+      - packing/tests/test_general_pose_tree_census.py
     next_rung: >-
-      think-11z6 under think-190a: replay all 12028 rows through the reviewed production-bound
-      wrapper. Retain the complete unique census and exact witness comparisons; three
-      freshly bound sample rows do not promote this claim.
+      V4 and C4 need a second, independent row-minimum method (the checker and the claim
+      share one implementation, so no method diversity is claimed) and the review record
+      the ladder requires. A separate branch-and-bound over the 12,028 rows is the natural
+      second method; the existing native parent-core branch and bound already decides the
+      same rows for the counting premise (T-037).
     notes: >-
-      V0 because the full claimed row-minimum equality has no retained complete replay;
-      C1 records the scoped source review and its journal-admission defects, not confirmation
-      of all row minima. The identical certificate already has complete native threshold coverage
+      2026-10-02: the reviewed first-party wrapper replayed all 12,028 rows in one
+      uninterrupted serial run against the pinned checker (COMPLETE_ROW_EQUALITY, global
+      minimum 999962528 equal to the reference, every witness replayed exactly, 11,295 s
+      wall). The checker is the source's own, so this is a same-implementation replay,
+      V3/C3 on the exact-algebraic entry, and it confirms row equality only. Before this,
+      the claim stood at V0/C1: the scoped source review and its journal-admission defects
+      without a complete replay.
+
+      The identical certificate already has complete native threshold coverage
       and reviewed global counting premises supporting the existing n11 bound, T-037 at V3/C3;
       that proof need not reproduce every exact row minimum and does not settle T-059.
       This claim was drafted as T-057 before the merge; T-059 is canonical because

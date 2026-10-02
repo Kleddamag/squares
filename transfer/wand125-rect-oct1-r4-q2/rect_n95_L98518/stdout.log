@@ -3,3 +3,13 @@
 {"completed": 30, "total": 201, "elapsed_seconds": 11855.629891395569, "nodes": 8779669}
 {"completed": 40, "total": 201, "elapsed_seconds": 12236.844400167465, "nodes": 9951349}
 {"completed": 50, "total": 201, "elapsed_seconds": 12661.973396539688, "nodes": 11176029}
+{"completed": 60, "total": 201, "elapsed_seconds": 13125.910259008408, "nodes": 12447317}
+{"completed": 70, "total": 201, "elapsed_seconds": 13612.429423809052, "nodes": 13752541}
+{"completed": 80, "total": 201, "elapsed_seconds": 14101.713112831116, "nodes": 15091193}
+{"completed": 90, "total": 201, "elapsed_seconds": 14646.545042991638, "nodes": 16476843}
+{"completed": 100, "total": 201, "elapsed_seconds": 15232.870671510696, "nodes": 17906783}
+{"completed": 110, "total": 201, "elapsed_seconds": 15859.622448682785, "nodes": 19373907}
+{"completed": 120, "total": 201, "elapsed_seconds": 16519.693398714066, "nodes": 20876693}
+{"completed": 130, "total": 201, "elapsed_seconds": 17225.500856876373, "nodes": 22412031}
+{"completed": 140, "total": 201, "elapsed_seconds": 17962.086597681046, "nodes": 23982743}
+{"completed": 150, "total": 201, "elapsed_seconds": 18723.87065386772, "nodes": 25592373}

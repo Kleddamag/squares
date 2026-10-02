@@ -7,6 +7,50 @@
   "cases": [
     {
       "status": "PASS",
+      "n": 88,
+      "L": "3791/400",
+      "B": "9977/10000",
+      "mass_exact": "8799/100",
+      "mass_below_n_exact": "1/100",
+      "net_safety_exact": "399908091/400000000",
+      "smoothing_safety_exact": "399968091/400000000",
+      "net_endpoint_polynomial_exact": "89/40000",
+      "positive_basis_rectangles": 687,
+      "expanded_rectangles": 5496,
+      "axis_event_count": 1671,
+      "axis_vertex_count": 2792241,
+      "certificate": "rect_n88_L94775",
+      "input_sha256": "fde93bac6c38b1127b69bd0276ff194f65bd4ba985b804c45b8c59f112edaf17",
+      "input_bytes": 1224484,
+      "upstream_nodes": 30817677,
+      "upstream_wall_seconds": "4212662044048309/1000000000000",
+      "replay": {
+        "status": "PASS",
+        "command": [
+          "/home/user/squares/packing/.venv/bin/python",
+          "run_verify.py",
+          "--workers",
+          "1"
+        ],
+        "working_directory": "temporary copy of retained certificate directory",
+        "elapsed_seconds_including_compile": 14012.055679224999,
+        "timeout_seconds": 86400,
+        "summary": {
+          "status": "VERIFIED",
+          "angle_cases": 201,
+          "target_lower_bound_exact": "10001/10000",
+          "nodes": 30817677,
+          "leaves": 16805059,
+          "minimum_printed_leaf_lower_bound": "2500250013612429/2500000000000000",
+          "wall_seconds": "14010683797359467/1000000000000",
+          "input_sha256": "fde93bac6c38b1127b69bd0276ff194f65bd4ba985b804c45b8c59f112edaf17",
+          "verifier_source_sha256": "a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602",
+          "method": "Outward-rounded binary64 intervals; certified inscribed polygon area; derivative bounds over center boxes; rational angular net."
+        }
+      }
+    },
+    {
+      "status": "PASS",
       "n": 94,
       "L": "1961/200",
       "B": "9977/10000",

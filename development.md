@@ -1198,9 +1198,13 @@ carried the site’s number while the two were one, so `EXPLAINER_HISTORY` keeps
 v0.4.0 and v0.3.0 at the site’s dates and drops v0.4.1 and v0.5.0, under which the
 article did not change; the comment on it records what changed in the paper under each
 and the commits read.
-`tests/test_release.py` holds the shared editions to the site’s record and the site-only
-ones out. Each entry’s sentence says what changed in the paper, and the explainer’s
-Version History is written from the list.
+v0.4.3 is the paper’s first number of its own, a patch revision for the changes the
+article took after the v0.4.2 deployment, dated by the deployment that first served it
+in that substance.
+`tests/test_release.py` holds the shared editions to the site’s record
+and the site-only ones out.
+Each entry’s sentence says what changed in the paper, and the explainer’s Version
+History is written from the list.
 
 **A release is cut only to host generated assets.** The site’s version is complete when
 the merge deploys and `check_published_site` passes; no tag and no GitHub release follow

@@ -194,6 +194,14 @@ def test_the_explainers_history_is_its_own_editions_at_their_published_numbers()
     assert "381/100" in first.result_scope
     assert EXPLAINER_HISTORY[0].version == EXPLAINER_VERSION
     assert EXPLAINER_FIRST_PUBLISHED == first.first_published == FIRST_PUBLISHED
+    # The paper's first number of its own (the owner, 2026-10-01: "a patch revision to
+    # the paper itself"), dated by the deployment that first served the article in its
+    # present substance, recorded in the comment on `EXPLAINER_HISTORY`.
+    dated = {entry.version: entry.first_published for entry in EXPLAINER_HISTORY}
+    scoped = {entry.version: entry.result_scope for entry in EXPLAINER_HISTORY}
+    assert dated["v0.4.3"] == "October 1, 2026"
+    assert "T-060" in scoped["v0.4.3"]
+    assert "V3/C3" in scoped["v0.4.3"]
 
 
 def test_a_papers_version_carries_no_data_hash_and_no_site_edition() -> None:

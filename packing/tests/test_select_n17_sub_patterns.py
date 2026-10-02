@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import itertools
 import json
+from dataclasses import replace
 from functools import cache
 from pathlib import Path
 from typing import Any
@@ -36,6 +37,7 @@ from devtools.select_n17_sub_patterns import (
     orbit,
     pattern_rng,
     polygon_distance,
+    recheck_flag,
     run,
     search,
     split_classes,
@@ -399,3 +401,57 @@ def test_receipts_name_the_bytes_imported_not_the_file_at_write_time(
     output = tmp_path / "count.json"
     assert main(["--count-only", "--max-arity", "1", "--output", str(output)]) == 0
     assert json.loads(output.read_text(encoding="utf-8"))["module_sha256"] == imported
+
+
+def test_the_finish_places_what_the_short_search_leaves() -> None:
+    # The endpoint's own state, warm started near its pose: every short attempt stalls
+    # near 2e-3, and one long descent from the best of them places it exactly.
+    point = endpoint()
+    rng = np.random.default_rng(0)
+    start = point["pose"].copy()
+    start[:, :2] += rng.normal(0.0, 0.03, (17, 2))
+    start[:, 2] += rng.normal(0.0, 0.05, 17)
+    short = Budget(starts=1, hops=0, deep_starts=0, deep_hops=0, finish=False)
+    cells = point["cells"]
+    unfinished = search(cover(), cells, np.random.default_rng(1), short, [(0, start)])
+    assert not unfinished.feasible
+    assert unfinished.violation > 1e-4
+    finished = search(
+        cover(),
+        cells,
+        np.random.default_rng(1),
+        replace(short, finish=True),
+        [(0, start)],
+    )
+    assert finished.feasible
+    assert finished.found_by == "finish"
+    assert finished.violation <= MARGIN
+    assert finished.attempts == unfinished.attempts + 1
+
+
+def test_without_the_finish_the_search_never_descends_long(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    calls: list[int] = []
+
+    def counted(_problem: Any, pose: Any) -> Any:
+        calls.append(1)
+        return pose
+
+    monkeypatch.setattr(selector, "finish", counted)
+    off = replace(QUICK, finish=False)
+    record = sweep(strip(), max_arity=3, seed=11, budget=off)
+    assert record["flagged_masks"] == [0b111]
+    assert calls == []
+    _ = sweep(strip(), max_arity=3, seed=11, budget=replace(QUICK, finish=True))
+    assert calls == [1]  # only the crowded triple is unplaced, and it is finished once
+
+
+def test_a_recheck_keeps_the_crowded_triple_and_places_a_pair() -> None:
+    kept = recheck_flag(strip(), 0b111, seed=1, budget=QUICK)
+    assert kept["status"] == "still-flagged"
+    assert kept["best_penetration"] > 0.1
+    assert kept["sub_pattern_witnesses"] == 3  # AB, BC and AC, each placed
+    placed = recheck_flag(strip(), 0b011, seed=1, budget=QUICK)
+    assert placed["status"] == "placed"
+    assert len(placed["pose"]) == 2

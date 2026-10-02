@@ -80,7 +80,6 @@ from typing import Any
 
 import numpy as np
 from numpy.typing import NDArray
-from scipy.optimize import minimize
 
 from devtools import select_n17_sub_patterns as selector
 
@@ -99,9 +98,10 @@ FLAG_SETS = {"arity7": (ARITY7,), "arity8": (ARITY8,)}
 EXPECTED_ORBITS = {"arity7": 5084, "arity8": 2256}
 KNOWLEDGE_RECEIPTS = (ARITY7, ARITY8)
 MARGIN = selector.MARGIN
-# One long descent of the selector's penalty. Measured on the endpoint's state: from the
-# selector's best attempt at 1.7e-3, 1,605 iterations reach a penalty of exactly zero.
-FINISH = {"maxiter": 20000, "ftol": 1e-30, "gtol": 1e-20, "maxcor": 30}
+# One long descent of the selector's penalty, which now lives in the selector. Measured on
+# the endpoint's state: from the selector's best attempt at 1.7e-3, 1,605 iterations reach
+# a penalty of exactly zero.
+FINISH = selector.FINISH
 BANDS = (
     ("<1e-6", 0.0, 1e-6),
     ("1e-6..1e-4", 1e-6, 1e-4),
@@ -367,15 +367,6 @@ class Placement:
     trace: list[dict[str, Any]] = field(default_factory=list[dict[str, Any]])
 
 
-def finish(problem: selector.Problem, pose: Floats) -> Floats:
-    """One long descent of the selector's penalty from a pose."""
-    with selector.single_thread_blas():
-        result = minimize(
-            problem.penalty, problem.pack(pose), jac=True, method="L-BFGS-B", options=FINISH
-        )
-    return problem.pose(np.asarray(result.x, dtype=np.float64))
-
-
 def signed_margins(problem: selector.Problem, pose: Floats) -> dict[str, float]:
     """Float clearances of a witness, positive when strict: separating axis, walls, cells.
 
@@ -445,7 +436,7 @@ def search_component(
         attempts += verdict.attempts
         value, pose, how = verdict.violation, verdict.pose, verdict.found_by
         if not verdict.feasible and effort.finish:
-            finished = finish(problem, pose)
+            finished = selector.finish(problem, pose)
             finished_value = problem.violation(finished)
             if finished_value < value:
                 value, pose, how = finished_value, finished, "finish"
@@ -469,7 +460,7 @@ def search_component(
             break
     assert best is not None
     if best.feasible and effort.finish and best.violation > 0.0:
-        finished = finish(problem, best.pose)
+        finished = selector.finish(problem, best.pose)
         if problem.violation(finished) < best.violation:
             best.pose, best.violation = finished, problem.violation(finished)
     best.attempts, best.searches, best.trace = attempts, 1, trace
@@ -1035,8 +1026,14 @@ def found_classes(
 
 def budget_of(text: str, margin: float) -> selector.Budget:
     starts, hops, deep_starts, deep_hops = (int(part) for part in text.split(","))
+    # The survey finishes its own rounds, so the selector's in-search finish stays off.
     return selector.Budget(
-        starts=starts, hops=hops, deep_starts=deep_starts, deep_hops=deep_hops, margin=margin
+        starts=starts,
+        hops=hops,
+        deep_starts=deep_starts,
+        deep_hops=deep_hops,
+        margin=margin,
+        finish=False,
     )
 
 

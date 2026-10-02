@@ -11,7 +11,7 @@ import numpy as np
 from devtools import select_n17_sub_patterns as selector
 from devtools import survey_n17_residue as survey
 
-QUICK = selector.Budget(starts=4, hops=4, deep_starts=4, deep_hops=4)
+QUICK = selector.Budget(starts=4, hops=4, deep_starts=4, deep_hops=4, finish=False)
 
 
 def box(x0: float, x1: float, y0: float, y1: float) -> np.ndarray:

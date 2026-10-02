@@ -50,7 +50,7 @@ it.
 | Part | What it must show for $n = 17$ | Status on 2026-10-02 |
 | --- | --- | --- |
 | Local half | Every packing of side at most $S^{\ast}$ in the known occupancy state, with its 45 non-slider coordinates within $1/5000$ of the family’s, lies on the family and has side $S^{\ast}$ | **proved**, as the capture-target theorem below |
-| Global half | Every packing of side at most $S^{\ast}$ lies in one of 346,104 occupancy states, and every state but the known one is impossible | the census is **verified**; two sub-pattern certificates are **pending admission**; the rest is open |
+| Global half | Every packing of side at most $S^{\ast}$ lies in one of 346,104 occupancy states, and every state but the known one is impossible | the census is **verified**; two sub-pattern certificates are **verified and admitted** ([exp-249](../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-249-h267-n17-first-certified-sub-patterns.md)); the rest is open |
 | Capture | Every packing in the known state at the capture cap lies within $1/5000$ of the family | a pilot is running and has not reported |
 
 ## The Cap
@@ -213,7 +213,10 @@ explains both engines and the admission rules.
 
 ### The first two certificates
 
-Both are **pending admission** as of 2026-10-02. The live source is the ledger,
+Both were admitted on 2026-10-02 in
+[exp-249](../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-249-h267-n17-first-certified-sub-patterns.md),
+after clean runs from a committed tree bound each certificate to the bytes that produced
+it. The live source is the ledger,
 [`certified-sub-patterns.yaml`](../../packing/campaign/explorations/X048-session-168-pilots/certified-sub-patterns.yaml),
 read by [`census_n17_certified.py`](../../packing/devtools/census_n17_certified.py),
 which counts only admitted entries.
@@ -224,16 +227,16 @@ which counts only admitted entries.
 | Prover | kernel, 64 rows per owner | branch and bound |
 | How it closed | 58 steps; the west wall pins first, then side-N0 loses every row to collision against side-W2’s nearly pinned cover | 41,598 nodes, 21,215 closed leaves, depth 31, no Farkas failure |
 | Wall time | 1,513 s | 569 s |
-| Excludes (projected) | 133,152 states, 16,701 orbits | 110,448 states, 13,897 orbits |
+| Excludes | 133,152 states, 16,701 orbits | 110,448 states, 13,897 orbits |
 | Fresh-process re-check | saved seed and node re-certified with the producer never imported, 27.3 min | the saved certificate, 53 MB in 84 chunks, re-checked by its author’s own exact verifier |
-| Independent verification | a verifier importing nothing from the kernel re-proved the seed, the hull chain, all 19,282 partner cover rows and 270 rows in full, the closing step entire | 3,553 nodes with every ancestor, all 378 trigonometric enclosures and the whole tree; the all-node run was in progress |
+| Independent verification | a verifier importing nothing from the kernel re-proved the seed, the hull chain, all 19,282 partner cover rows and all 3,712 rows (3,324 in full, 388 empty), with 7,752 collision regions by 30,952,184 exact facet inequalities, in 75 min | all 41,598 nodes in exact rationals, all 378 trigonometric enclosures, the tree’s coverage of the root and every piece and pair split, in 26 min |
 | Mutation suite | 25 of 26 unsound objects refused; the 26th ends unproved and excludes nothing | the certificate check rejects every one of twelve mutants that produced an invalid record, and all nine doctored certificates |
 | Falsifier controls | W7 minus side-N0, W7 minus interior-W, and the family’s own west-wall arity-7 pattern all stall | the family’s west, north and east sub-patterns and a placed class are not certified |
-| Review | [no blocking defect](reviews/review-2026-10-02-n17-w7-closure.md); admissible once the saved objects and a committed tool are bound, the re-check retained and widened, and the controls recorded | [no blocking defect](reviews/review-2026-10-02-n17-branch-and-bound-certifier.md); admissible once the committed receipt and manifest are bound, the re-check retained, and the controls’ limit stated |
+| Review | [no blocking defect](reviews/review-2026-10-02-n17-w7-closure.md); admitted once the saved objects were bound to a committed tool, the full re-check retained and the controls recorded | [no blocking defect](reviews/review-2026-10-02-n17-branch-and-bound-certifier.md); admitted once the committed receipt and manifest were bound and the re-check retained; the claim rests on the certificate check, not the controls |
 | The other prover | the branch and bound had closed 0.4% of W7’s tree after 30 minutes | the kernel stalls on A at 32 rows per owner |
 
-If both are admitted, 139,976 states and 17,690 orbits remain (projected, by the census
-tool). The family’s state contains no image of either pattern.
+With both admitted, the certified census is 139,976 states and 17,690 orbits.
+The family’s state contains no image of either pattern.
 
 ## Capture and Its Pilot
 
@@ -293,15 +296,16 @@ obvious speed-up; it is unbuilt and its gain unmeasured.
 
 Stated without a forecast, because none is on record.
 
-1. **Certify or refute the remaining flags.** W7 and A await admission, and 42 of the 44
-   flagged classes have no certificate.
+1. **Certify or refute the remaining flags.** W7 and A are admitted, and 42 of the 44
+   flagged classes have no certificate; the kernel stalled on the next three it tried.
    A flag the prover cannot close is either a false flag, in which case the search
    resumes, or a stall of the engine on a true pattern, which needs finer rows,
    splitting or the other prover.
-2. **A method for the residue.** 17,690 orbits remain if both certificates are admitted,
-   and 5,084 if every flag proves; each is a state that no small pattern excludes and
-   that must be excluded on its own, as $n = 11$ excluded 276 cases at about 636
-   CPU-seconds each. The $n = 17$ per-state method and its price are not established.
+2. **A method for the residue.** 17,690 certified orbits remain, and 5,084 if every flag
+   proves; each is a state that no small pattern excludes and that must be excluded on
+   its own, as $n = 11$ excluded 276 cases at about 636 CPU-seconds each.
+   The $n = 17$ per-state method and its price are not established; the
+   [residue process review](reviews/review-2026-10-02-n17-residue-process.md) plans one.
 3. **Capture.** The pilot measures the contraction factor, and the falsifier above
    decides whether the architecture holds.
 4. **Independent review of everything.** Each piece so far carries one review.
@@ -322,8 +326,8 @@ $n = 17$ lower-bound results and holds the bracket’s lower end.
 | --- | --- |
 | Proved | The depth-width wall lemma; the identity of the certified side with the catalogue polynomial; the stress; the capture-target theorem as the composition of exp-244, exp-248 and exp-247 |
 | Verified | The rational ceiling on the side; the R068 lower bound at `V3/C3`; the cover’s coverage, capacities, $D_4$ invariance, Burnside count and unique family state; the local minimum over $B_W'$ at $r = 1/5000$; the slide bounds |
-| Pending admission | The W7 and A certificates, each reviewed with no blocking defect and conditions set |
-| Projected | The states and orbits each certificate excludes, and the 17,690 orbits left if both are admitted |
+| Admitted | The W7 and A certificates, each re-proved in full by an independent verifier, and the certified census of 17,690 orbits ([exp-249](../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-249-h267-n17-first-certified-sub-patterns.md)) |
+| Projected | Nothing at present beyond the heuristic lines below |
 | Heuristic | Every selector flag, every best-penetration figure, and every orbit count conditional on flags proving |
 | Modelled | The feasible-set radii at the two caps; the capture cost table and its falsifier thresholds |
 | Not started or not reported | The capture pilot’s result; a per-state method for the residue; the composed proof and its review |

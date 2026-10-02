@@ -9,18 +9,22 @@ entries:
   - name: W7
     cells: [corner-SW, side-N0, side-W0, side-W1, side-W2, interior-SW, interior-W]
     certifier: kernel
-    receipt: packing/campaign/explorations/X048-session-168-pilots/receipts/kernel-closure-W7-check-saved.json
-    receipt_sha256: 3648f27b2c2239708c068222ef4f22768a5549d31633d1297f3d7ee5465f6957
+    # Admitted in exp-249: the saved objects re-certified by the checker alone in a clean
+    # worktree at 15df68ab, after a full-row independent re-check of all 3,712 rows.
+    receipt: packing/campaign/series/series-000-smoke-and-calibration/results/exp-249-n17-first-certified-sub-patterns/run-001/receipt.json
+    receipt_sha256: 24def832191d386807ad74eea5013875fc0a888f21bbdcb6c3ccd47b7e6846f1
     certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/W7
-    status: pending
-    evidence: null
+    status: admitted
+    evidence: docs/project/reviews/review-2026-10-02-n17-w7-closure.md
   - name: A
     cells: [interior-SW, interior-NW, interior-W, interior-S, interior-N, interior-SE]
     certifier: branch-and-bound
-    # Reproduced from the committed tool bytes f8da95e8 (a4a6b29a); the 53 MB certificate is
-    # held outside the repository until the independent review decides admission.
-    receipt: packing/campaign/explorations/X048-session-168-pilots/receipts/bb-A-certified.json
-    receipt_sha256: 87a8f03c3c758beb22e3620d6608f8cec660d2b175d43eb5e93c9421f769f6cb
-    certificate: null
-    status: pending
-    evidence: null
+    # Admitted in exp-249: certified again in a clean worktree at 15df68ab with a
+    # certificate byte-identical to the one the independent review re-checked in full
+    # (manifest 340492bd). The claim rests on that certificate check, not on the
+    # witness-path controls.
+    receipt: packing/campaign/series/series-000-smoke-and-calibration/results/exp-249-n17-first-certified-sub-patterns/run-002/receipt.json
+    receipt_sha256: 1b9e06258ece81572d59493cd048c08883d7d662950c9c76d4064e354bdb6301
+    certificate: packing/campaign/explorations/X048-session-168-pilots/certificates/A
+    status: admitted
+    evidence: docs/project/reviews/review-2026-10-02-n17-branch-and-bound-certifier.md

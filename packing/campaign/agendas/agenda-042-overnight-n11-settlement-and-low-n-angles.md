@@ -1452,7 +1452,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: ready
+    state: in_progress
     priority: 1
     question: Do certified isolated sub-patterns of arity at most seven leave at most 1e4 orbits on the H-266 cover?
     hypotheses:
@@ -1472,7 +1472,10 @@ agenda:
     - packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md
     note: >-
       n11 excluded 1,904 of 2,180 cases with 59 such certificates; an exploratory
-      arity-five proxy leaves 11,939 orbits on the 24-cell design.
+      arity-five proxy leaves 11,939 orbits on the 24-cell design. Session 168 built the
+      selector (44 flags to arity seven, 5,084 projected orbits), the kernel and an
+      independent branch and bound, and admitted W7 and A in exp-249: 17,690 certified
+      orbits. The residue process review plans the rest.
   - id: BC-417
     purpose: research
     owner_focus: correctness

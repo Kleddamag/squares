@@ -30,7 +30,7 @@ hypothesis:
     A heuristic selector (the bulk-exclusion lane's sampling and descent proxy as a
     retained tool), the n11 v9 kernel adapted to the n17 frame as prover, and an exact
     set-union consumer, to be built after H-266
-  instrument_ready: false
+  instrument_ready: true
   regime: >-
     n=17; cap 1169/250; the H-266 cover; sub-patterns of arity at most seven
   instance: {axis: n, point: 17}
@@ -70,6 +70,17 @@ A priority subset of arity eight adds 46 flags; with all 90 certified, 2,256 orb
 would survive, and the top five arity-eight classes carry 81% of that gain.
 The [selector receipts](../explorations/X048-session-168-pilots/README.md) hold the
 counts; none of them is a certificate.
+
+## First Certificates
+
+*Added 2026-10-02 by Session 168.* The first two flagged classes are certified and
+admitted in
+[exp-249](../series/series-000-smoke-and-calibration/experiments/exp-249-h267-n17-first-certified-sub-patterns.md):
+W7 by the kernel and A by an interval branch and bound, each re-proved in full by an
+independent verifier.
+The certified census is 17,690 orbits with the endpoint surviving.
+A’s prover is not one this claim names; its review admits the certificate as equivalent,
+and exp-249 records that as a deviation in the instrument.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

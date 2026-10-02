@@ -10,7 +10,7 @@ order rather than imposing one across them.
 
 ## The short version
 
-- **13** in_progress, **26** ready, **21** tentative, **70** blocked, **65** stopped, **212** complete.
+- **14** in_progress, **25** ready, **21** tentative, **70** blocked, **65** stopped, **212** complete.
 
 - **27 blocked commitments carry a manual condition** (`BC-016`, `BC-025`, `BC-033`, `BC-050`, `BC-115`, `BC-170`, `BC-204`, `BC-205`, `BC-212`, `BC-207`, `BC-208`, `BC-209`, `BC-215`, `BC-217`, `BC-221`, `BC-238`, `BC-248`, `BC-270`, `BC-306`, `BC-337`, `BC-327`, `BC-329`, `BC-330`, `BC-358`, `BC-364`, `BC-365`, `BC-396`). Dependency edges alone cannot make these ready; each condition is named in the table below and must be explicitly cleared.
 
@@ -75,7 +75,7 @@ Commitments a session may take now, in each agenda's declared order.
 | agenda-042 | `BC-388` | ready | 1 | insight | research | What is the least side f(theta) along the six-axis plus five-common-angle family at 200 tilts, and on which… | `think-91yk` |
 | agenda-042 | `BC-393` | ready | 1 | correctness | tool_validation | Does this repository's native coverage engine decide every one of the 2,168 rows of Kleddamag's 4.66001… | `think-0rbj` |
 | agenda-042 | `BC-394` | ready | 1 | insight | research | Do rectangle-density ladders from the trivial seed, with tokoharu's pinned push.py, reach 93/10 at n = 82 and… | `think-pr2b` |
-| agenda-042 | `BC-416` | ready | 1 | correctness | research | Do certified isolated sub-patterns of arity at most seven leave at most 1e4 orbits on the H-266 cover? | `think-1s3i` |
+| agenda-042 | `BC-416` | in_progress | 1 | correctness | research | Do certified isolated sub-patterns of arity at most seven leave at most 1e4 orbits on the H-266 cover? | `think-1s3i` |
 | agenda-042 | `BC-389` | ready | 2 | insight | research | Does a two-class parent-core counting certificate close the rung-1 box at 20 degrees, half-tangent [0.1758,… | `think-nho8` |
 | agenda-042 | `BC-390` | ready | 2 | correctness | research | Does the unchanged rung-0 instrument prove H-236's statement on the half-tangent box of half-width 10^-4… | `think-7c17` |
 | agenda-042 | `BC-395` | ready | 2 | insight | research | Does the rectangle-density ladder from the trivial seed pass Daniel's 3.968616 at n = 12 and reach 399/100? | `think-ujwy` |
@@ -218,7 +218,7 @@ A commitment whose exit another agenda's commitment satisfied. Recorded as an ed
 | agenda-037 | active | 1 |  | 1 | 1 | 1 | 1 | 5 |
 | agenda-040 | active |  | 1 |  | 2 | 1 | 3 | 7 |
 | agenda-041 | active | 4 |  |  |  |  | 2 | 6 |
-| agenda-042 | active |  | 10 |  | 2 | 4 | 29 | 45 |
+| agenda-042 | active | 1 | 9 |  | 2 | 4 | 29 | 45 |
 
 ## By program
 
@@ -528,7 +528,7 @@ Open frontier: `BC-306`.
 | agenda-042 | `BC-413` | complete | Can the conditional projection theorem be widened into a theorem whose premises capture can deliver? |
 | agenda-042 | `BC-414` | complete | What bulk exclusion engine could take the n17 census to a residue geometric exclusion can absorb? |
 | agenda-042 | `BC-415` | complete | Does a D4-symmetric capacity-one cover of at most 25 cells hold the n17 endpoint family in one… |
-| agenda-042 | `BC-416` | ready | Do certified isolated sub-patterns of arity at most seven leave at most 1e4 orbits on the H-266… |
+| agenda-042 | `BC-416` | in_progress | Do certified isolated sub-patterns of arity at most seven leave at most 1e4 orbits on the H-266… |
 | agenda-042 | `BC-417` | complete | Does square 6's H-266 cell keep the slides of squares 5 and 13 inside the box exp-244 certifies? |
 | agenda-042 | `BC-418` | ready | Can the n17 local theorem and cover be closed, and do sub-pattern exclusion and capture fit the… |
 

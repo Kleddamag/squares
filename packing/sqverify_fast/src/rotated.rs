@@ -34,6 +34,13 @@ pub struct Limits {
     pub max_nodes: u64,
     /// Depth budget; exceeding it leaves the direction unresolved.
     pub max_depth: u32,
+    /// Audit every `audit_every`-th box (counting from the root, which is always
+    /// audited) by recomputing its centre bound from the full rectangle list
+    /// with no classification; zero turns the audit off.
+    pub audit_every: u64,
+    /// A control hook: at this box (1-based), classify the first boundary
+    /// rectangle as inside. Never set outside a control run.
+    pub inject_fault_at: Option<u64>,
 }
 
 /// The verdict of one direction.
@@ -46,6 +53,10 @@ pub enum Verdict {
     CounterexampleCandidate,
     /// A budget ran out first.
     Unresolved,
+    /// An audited box's incremental centre bound disagreed with its full
+    /// recomputation: the search's bookkeeping is wrong, and nothing it
+    /// accepted can be trusted.
+    AuditFailed,
 }
 
 impl Verdict {
@@ -56,6 +67,7 @@ impl Verdict {
             Self::Verified => "verified",
             Self::CounterexampleCandidate => "counterexample-candidate",
             Self::Unresolved => "unresolved",
+            Self::AuditFailed => "audit-failed",
         }
     }
 }
@@ -84,6 +96,8 @@ pub struct DirectionResult {
     pub seconds: f64,
     /// Mean number of boundary rectangles per evaluated box.
     pub mean_boundary: f64,
+    /// Boxes audited against a full recomputation.
+    pub audits: u64,
 }
 
 /// Coefficients of the four boundary lines of a centred square, seen from a
@@ -411,6 +425,7 @@ pub fn verify_direction(
     let mut min_lower = f64::INFINITY;
     let mut argmin = None;
     let mut boundary_total = 0u64;
+    let mut audits = 0u64;
     let mut verdict = Verdict::Verified;
     let mut witness = None;
     while let Some(node) = stack.pop() {
@@ -432,12 +447,17 @@ pub fn verify_direction(
         };
         let mut inner = node.inner;
         let own_start = arena.len();
+        let mut inject = limits.inject_fault_at == Some(nodes);
         for position in node.parent_start..node.parent_end {
             let id = arena[position];
             let rect = &rects[id as usize];
             match classify(&fr, &g, rect) {
                 Class::Inside => inner = add_dn(inner, rect.mass.lo),
                 Class::Outside => {}
+                Class::Boundary if inject => {
+                    inject = false;
+                    inner = add_dn(inner, rect.mass.lo);
+                }
                 Class::Boundary => arena.push(id),
             }
         }
@@ -448,15 +468,17 @@ pub fn verify_direction(
             let rect = &rects[arena[position] as usize];
             value = add_dn(value, mul_dn(rect.rho.lo, area_dn(&fr, rect, x0, y0)));
         }
-        #[cfg(debug_assertions)]
-        {
-            let full = centre_lower_bound(cert, index, x0, y0)?;
-            assert!(
-                (full - value).abs() < 1e-9,
-                "incremental value {value} differs from full {full} at depth {} box {:?}",
-                node.depth,
-                (node.xl, node.xh, node.yl, node.yh)
-            );
+        // Lemma A3: the audit recomputes the centre bound from every rectangle,
+        // using no classification and nothing inherited; a disagreement means the
+        // incremental bookkeeping (R1's inheritance) is wrong, and stops the search.
+        if limits.audit_every > 0 && (nodes - 1).is_multiple_of(limits.audit_every) {
+            audits += 1;
+            let full = full_centre_bound(&fr, rects, x0, y0);
+            if (full - value).abs() > AUDIT_TOLERANCE * (1.0 + full.abs()) {
+                verdict = Verdict::AuditFailed;
+                witness = Some((x0, y0, value, dx, dy));
+                break;
+            }
         }
         // Lemma R3 with the parent's derivative bounds, valid on this sub-box:
         // a box that certifies with them needs no derivative work of its own.
@@ -554,6 +576,7 @@ pub fn verify_direction(
         witness,
         seconds: start.elapsed().as_secs_f64(),
         mean_boundary: boundary_total as f64 / nodes.max(1) as f64,
+        audits,
     })
 }
 
@@ -565,11 +588,21 @@ pub fn verify_direction(
 /// Returns a message if a constant cannot be enclosed.
 pub fn centre_lower_bound(cert: &Certificate, index: u32, x0: f64, y0: f64) -> Result<f64, String> {
     let fr = frame(cert, index)?;
+    Ok(full_centre_bound(&fr, &cert.rects, x0, y0))
+}
+
+/// The audit's tolerance, relative to the bound: the incremental and full sums
+/// differ only by rounding (inside masses enter as exact enclosures, the full
+/// sum through lemma R2), far below this.
+const AUDIT_TOLERANCE: f64 = 1e-9;
+
+/// The centre bound from every rectangle, by lemma R2 alone.
+fn full_centre_bound(fr: &Frame, rects: &[Rect], x0: f64, y0: f64) -> f64 {
     let mut value = 0.0;
-    for rect in &cert.rects {
-        value = add_dn(value, mul_dn(rect.rho.lo, area_dn(&fr, rect, x0, y0)));
+    for rect in rects {
+        value = add_dn(value, mul_dn(rect.rho.lo, area_dn(fr, rect, x0, y0)));
     }
-    Ok(value)
+    value
 }
 
 /// A certified lower bound over a whole box of centres, from the root's full

@@ -305,6 +305,25 @@ smaller of its parent’s and its own, per axis.
 Skipping a box’s own enclosure is only a choice of where to spend work: it never accepts
 a box (experiment exp-003).
 
+## The Release Audit
+
+**Lemma A3 (what the audit establishes).** At an audited box the centre bound is
+recomputed by R2 over every rectangle, with no classification and no inherited mass.
+Inside rectangles enter the incremental sum as their exact mass and the full sum through
+R2, which is within rounding of it; boundary and outside rectangles enter both the same
+way. So on a correct run the two agree to within `AUDIT_TOLERANCE` (relative $10^{-9}$),
+and a disagreement proves the incremental bookkeeping wrong at that box or at an
+ancestor whose inside mass it inherits.
+The search then stops with `audit-failed`, a refusal.
+The audit covers R1’s decisions and their inheritance, not the derivative enclosures,
+which `rotated_tests` and the box differential test check.
+The audit is sampled (the root and every $K$-th box, $K = 1024$ by default), so a wrong
+inside decision is caught when its box or a box in its subtree is audited;
+`--audit-every 1` audits every box.
+`--inject-fault-at-node N` classifies the first boundary rectangle at box $N$ as inside,
+the control of spec §4.2; the controls in `devtools/check_sqverify_fast.py` require the
+refusal.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

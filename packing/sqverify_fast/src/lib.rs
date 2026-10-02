@@ -122,6 +122,8 @@ fn run_direction_inner(
         "max_depth": result.max_depth,
         "min_certified_lower_bound": if result.min_lower.is_finite() { json!(result.min_lower) } else { Value::Null },
         "mean_boundary_rectangles": result.mean_boundary,
+        "audits": result.audits,
+        "audit_every": limits.audit_every,
         "seconds": result.seconds,
     });
     if let Some((x, y, dx, dy)) = result.argmin {

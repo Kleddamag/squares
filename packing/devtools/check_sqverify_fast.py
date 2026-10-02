@@ -305,6 +305,27 @@ def controls(binary: Path, scratch: Path, *, quick: bool) -> list[tuple[bool, st
                     f"control n32 drop-top at least box r={index32} refused ({verdict})",
                 )
             )
+    # Fault injection (spec 4.2): one boundary rectangle classified inside at one box.
+    # The audit must refuse: every box with --audit-every 1, and with the default
+    # sampling when the fault is high in the tree, where its subtree is audited.
+    for node, audit in ((2, "1"), (2, "1024"), (1000, "1")) if not quick else ((2, "1"),):
+        result = run_binary(
+            binary,
+            path32,
+            32,
+            "--directions",
+            "1",
+            "--audit-every",
+            audit,
+            "--inject-fault-at-node",
+            str(node),
+        )
+        rows = [json.loads(line) for line in result.stdout.splitlines() if line.startswith("{")]
+        row = next((r for r in rows if r.get("r") == 1), {})
+        ok = result.returncode == 1 and row.get("verdict") == "audit-failed"
+        outcomes.append(
+            (ok, f"fault at box {node}, audit every {audit}: refused ({row.get('verdict')})")
+        )
     # Admission refusals.
     mass = sum((Fraction(w) for w in raw32["weights"]), Fraction(0))
     malformed: list[tuple[str, dict[str, Any] | str]] = [

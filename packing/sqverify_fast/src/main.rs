@@ -49,6 +49,8 @@ fn parse_args() -> Result<Options, String> {
         limits: Limits {
             max_nodes: 50_000_000,
             max_depth: 60,
+            audit_every: 1024,
+            inject_fault_at: None,
         },
         receipts: None,
         confirm: false,
@@ -76,6 +78,18 @@ fn parse_args() -> Result<Options, String> {
                 options.limits.max_depth = value()?
                     .parse()
                     .map_err(|_| "--max-depth must be an integer")?;
+            }
+            "--audit-every" => {
+                options.limits.audit_every = value()?
+                    .parse()
+                    .map_err(|_| "--audit-every must be an integer")?;
+            }
+            "--inject-fault-at-node" => {
+                options.limits.inject_fault_at = Some(
+                    value()?
+                        .parse()
+                        .map_err(|_| "--inject-fault-at-node must be an integer")?,
+                );
             }
             "--receipts" => options.receipts = Some(PathBuf::from(value()?)),
             "--confirm" => options.confirm = true,

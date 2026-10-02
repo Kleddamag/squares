@@ -5,13 +5,13 @@ title: "Handoff: the website lane at the end of 1 October 2026 — what merged, 
 kind: task
 status: open
 priority: 1
-version: 1
+version: 2
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-10-02T01:05:01.478Z
-updated_at: 2026-10-02T01:05:01.478Z
+updated_at: 2026-10-02T04:30:20.996Z
 ---
 Handoff of the website lane (epic think-xjq4) at 2026-10-02 01:35 UTC, 18:35 PT on 1 October. Read this first, then the beads it names.
 
@@ -31,3 +31,12 @@ Handoff of the website lane (epic think-xjq4) at 2026-10-02 01:35 UTC, 18:35 PT 
 **How things work here** (also in the memory file project-site-pr-stack-2026-10-01): `gh pr merge N --merge` for a plain PR and `gh stack merge <top> --yes --merge` for a stack; `gh run rerun <id>` with no `--failed`; never change packing/pyproject.toml; data-path commits re-pin with `devtools.release_pin --update`; subagents on `model: fable` until the Opus limit resets on 4 October 23:00 PT; scratch on /Volumes/spud-ext1/agent-scratch (about 20 GB free). Housekeeping of worktrees and branches: think-d5l5.
 
 **Follow-up beads still open from the day:** think-gv85, think-dda6, think-irsg, think-54rr, think-c4as, think-9y87, think-k8xp, think-3qn8, think-zb0i, think-b245, think-h896.
+
+## Notes
+
+Update 2026-10-02 02:40 UTC (19:40 PT, 1 October), superseding the "In flight" list above where they differ.
+
+- v0.5.0 is live: 8aaa411dc deployed at 2026-10-02T01:07:03Z; every page prints v0.5.0-971e5f. #297 recorded the deployment above PUBLICATION_HISTORY and merged as 0848631a8. Main's runs at 8aaa411dc are green. Left on think-pt1k: the owner's tag and GitHub release, and the scope sentence's wording.
+- think-f1tu, the Overview restructure: the external drive dropped at about 01:30 UTC and killed the first subagent. Its uncommitted edits were recovered when the drive returned and saved as fa4eef763 on origin/claude/overview-structure (WIP, unreviewed). A second subagent works on the internal disk in /Users/levy/wrk/github/squares/.claude/worktrees/overview-restructure on branch claude/overview-restructure and was told to merge that commit and finish; a draft PR is to appear on that branch.
+- think-sib7, main's eleven failing layout tests on Linux: a subagent is diagnosing it in worktree audit-main on branch claude/validate-layout-tests, with a draft PR to come. Known so far: the PR suite shards install no Chromium, so those tests may never run with a browser on a pull request.
+- Sparse worktree .claude/worktrees/v050-deployment (branch claude/v0.5.0-deployment, merged) can be removed.

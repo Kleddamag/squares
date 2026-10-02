@@ -13,9 +13,11 @@ in Tokoharu's rectangle format:
 
 Later revisions add more ``certificates/mixed_n*`` directories of the same kind, with the
 same code byte for byte: n = 37, 65, 66, 90 and 92 at ``1a25a5ed``, n = 84 and 85 at
-``52af997`` and n = 76 at ``7975030``. `MIXED` names each with its packet and the source's
-statement. The linear certificates of ``af1db07`` and ``0c35d90``, which another checker
-decides, are `devtools.audit_wand125_linear`'s.
+``52af997``, n = 76 at ``7975030``, and n = 83, 85, 87, 91, 92 and 96 at ``b00fc70``.
+`MIXED` names each with its packet and the source's statement; a certificate at a count
+an earlier one already names is ``n85-L946``, its count and side. The linear certificates
+of ``af1db07``, ``0c35d90`` and ``b00fc70``, which another checker decides, are
+`devtools.audit_wand125_linear`'s.
 
 This tool is the first-party part. ``exact`` recomputes, from the 2026-09-28 packet's
 retained bytes and without importing any source code, every premise that is plain
@@ -1798,11 +1800,14 @@ F_PACKET = WEB / "wand125-point-and-mixed-2026-10-01"
 G_PACKET = WEB / "wand125-mixed-bounds-2026-10-02"
 H_REVISION = "7975030a192607ef27edd1559aee4e98bd93047b"
 H_PACKET = WEB / "wand125-mixed-bounds-n76-2026-10-02"
+I_REVISION = "b00fc70f1904e9b1b567afee056d347f911209e8"
+I_PACKET = WEB / "wand125-mixed-bounds-afternoon-2026-10-02"
 
 
 #: Every mixed certificate this tool audits and replays: n = 50 (T-048), the five of
-#: jlevy/squares#282 (T-069), the two of its comment of 2 October and the n = 76 of its
-#: later comment the same day (pinned at ``7975030``, its own packet). Each row is the
+#: jlevy/squares#282 (T-069), the two of its comment of 2 October, the n = 76 of its
+#: later comment the same day (pinned at ``7975030``, its own packet), and the six the
+#: source added that afternoon (UTC), pinned together at ``b00fc70``. Each row is the
 #: packet, the pinned revision, n, the side as the directory names it, the side, the
 #: rectangle count and the candidate digest, as the source states them.
 _MIXED_ROWS: tuple[tuple[Path, str, int, str, Fraction, int, str], ...] = (
@@ -1879,21 +1884,84 @@ _MIXED_ROWS: tuple[tuple[Path, str, int, str, Fraction, int, str], ...] = (
         317,
         "f2c2530552547a56a454c55bee99a196221ae1f4357570c3a0d524eddd5d9cdf",
     ),
+    (
+        I_PACKET,
+        I_REVISION,
+        83,
+        "9.37",
+        Fraction(937, 100),
+        728,
+        "a76336032928972d66d644c335cdfa62809ab2fef213474c86c36fd81ea7733a",
+    ),
+    (
+        I_PACKET,
+        I_REVISION,
+        85,
+        "9.46",
+        Fraction(473, 50),
+        525,
+        "d99031dfded8ab07e5cec0520f8d9b04c9f983cf846e29c17382803d970aca94",
+    ),
+    (
+        I_PACKET,
+        I_REVISION,
+        87,
+        "9.48",
+        Fraction(237, 25),
+        299,
+        "6b720d7b963bb104b45c5ad543a35c8fad4e1b70fd137969890d7645dd9179d4",
+    ),
+    (
+        I_PACKET,
+        I_REVISION,
+        91,
+        "9.70",
+        Fraction(97, 10),
+        288,
+        "6745b3740e0fbd9d1be94770868829c0c76d8081b472d47d59a8a779f60d6564",
+    ),
+    (
+        I_PACKET,
+        I_REVISION,
+        92,
+        "9.75",
+        Fraction(39, 4),
+        324,
+        "458d60ad8485c0e9aeabdfeefc21e93249e47666cbb60357465aa35d7e2e524c",
+    ),
+    (
+        I_PACKET,
+        I_REVISION,
+        96,
+        "9.96",
+        Fraction(249, 25),
+        279,
+        "a0cbba40370f94a0125f323c839c75dcb5b6145c32b1b81e80665fb75f27d561",
+    ),
 )
-MIXED: dict[str, MixedCertificate] = {
-    f"n{n}": MixedCertificate(
-        name=f"n{n}",
-        packet=packet,
-        revision=revision,
-        directory=Path(f"certificates/mixed_n{n}_L{label.replace('.', '')}"),
-        n=n,
-        side=side,
-        rectangles=count,
-        candidate_digest=digest,
-        tarball=f"n{n}-L{label}-proof-bundle.tar.gz",
-    )
-    for packet, revision, n, label, side, count, digest in _MIXED_ROWS
-}
+
+
+def _mixed_table() -> dict[str, MixedCertificate]:
+    """`_MIXED_ROWS` by name: ``n85``, or ``n85-L946`` for a later side at a named count."""
+    table: dict[str, MixedCertificate] = {}
+    for packet, revision, n, label, side, count, digest in _MIXED_ROWS:
+        digits = label.replace(".", "")
+        name = f"n{n}" if f"n{n}" not in table else f"n{n}-L{digits}"
+        table[name] = MixedCertificate(
+            name=name,
+            packet=packet,
+            revision=revision,
+            directory=Path(f"certificates/mixed_n{n}_L{digits}"),
+            n=n,
+            side=side,
+            rectangles=count,
+            candidate_digest=digest,
+            tarball=f"n{n}-L{label}-proof-bundle.tar.gz",
+        )
+    return table
+
+
+MIXED: dict[str, MixedCertificate] = _mixed_table()
 
 
 def _files_in(directory: Path) -> list[Path]:
@@ -3394,7 +3462,7 @@ def parse_range(text: str) -> tuple[int, int]:
 
 
 def _add_mixed_commands(commands: Any) -> None:
-    names = sorted(MIXED, key=lambda name: int(name[1:]))
+    names = sorted(MIXED, key=lambda name: (MIXED[name].n, MIXED[name].side))
     auditing = commands.add_parser(
         "mixed-audit", help="exact premises of a packet's mixed certs"
     )

@@ -1,8 +1,9 @@
 """Controls for the linear certificates of wand125/square-packing-bounds.
 
 `devtools.audit_wand125_linear` audits and replays the two of jlevy/squares#294,
-``mixed_n101_L1028`` and ``mixed_n83_L935``: measures of point masses, uniform segments and
-uniform rectangles decided by ``unified_linear_verify.cpp``. Five families of check stand
+``mixed_n101_L1028`` and ``mixed_n83_L935``, and its later ``mixed_n82_L932``, pinned in a
+packet of its own: measures of point masses, uniform segments and uniform rectangles
+decided by ``unified_linear_verify.cpp``. Five families of check stand
 between a certificate and a recorded replay, and each is held here to its positive case
 and to mutated controls it must refuse:
 
@@ -39,6 +40,7 @@ from devtools.audit_wand125_rectangles import CONTROL_FACTOR, net_rotation
 
 NAMES = ("n101", "n83")
 PACKET = linear.LINEAR_PACKET
+N82 = linear.LINEAR["n82"]
 CHECKER = (linear.LINEAR_CODE / "unified_linear_verify.cpp").read_bytes()
 
 
@@ -133,6 +135,100 @@ def test_the_packet_audit_recomputes_to_its_receipt() -> None:
 
 def test_the_packet_matches_its_acquisition_contract() -> None:
     assert acquire_source.check(PACKET, acquire_source.REPO) == []
+
+
+# --------------------------------------------------------------------------- n = 82
+
+
+@pytest.fixture(scope="module")
+def n82() -> dict[str, Any]:
+    return linear.linear_certificate(N82)
+
+
+def test_n82_is_pinned_in_its_own_packet_at_the_later_revision() -> None:
+    assert N82.packet == linear.N82_PACKET != PACKET
+    assert N82.revision == linear.N82_REVISION
+    assert {c.name for c in linear.LINEAR.values() if c.packet == PACKET} == set(NAMES)
+    assert acquire_source.check(linear.N82_PACKET, acquire_source.REPO) == []
+    receipt = linear.N82_PACKET / "receipts/linear-audit.json"
+    expected = json.dumps(linear.linear_audit(linear.N82_PACKET), indent=2, default=str) + "\n"
+    assert receipt.read_text(encoding="utf-8") == expected
+
+
+def test_n82_has_its_stated_exact_premises(n82: dict[str, Any]) -> None:
+    assert n82["orbits"] == {"rectangle": 774, "point": 86, "segment": 222}
+    assert n82["images"] == {"rectangle": 6192, "point": 688, "segment": 1776}
+    assert Fraction(n82["total_mass"]) == 82 - Fraction(1, 100000)
+    assert n82["code_files"] == 13
+    assert n82["checker_sha256"] == linear.LINEAR_CHECKER_SHA256
+    assert n82["nodes"] == 153579479
+    assert (n82["most_nodes"], n82["most_nodes_at"]) == (1178525, 199)
+    assert n82["centre_half_width_least_at"] == linear.LAST
+    assert n82["comparison"]["side_exceeds_green"]
+    assert n82["comparison"]["side_exceeds_nagamochi"]
+
+
+def test_n82_compares_with_the_upper_end_of_its_own_green_interval(n82: dict[str, Any]) -> None:
+    """Its audit names ``green_upper``, a true upper bound, unlike n = 83's rounded value."""
+    source = n82["source_audit"]
+    assert source["compared_field"] == "green_upper"
+    assert n82["comparison"]["source_value_exceeds_green"]
+    assert Fraction(source["improvement_lower"]) == Fraction(233, 25) - Fraction(
+        source["compared_with"]
+    )
+    n83 = linear.linear_certificate(linear.LINEAR["n83"])
+    assert "compared_field" not in n83["source_audit"]
+
+
+def test_an_n82_green_upper_off_its_interval_is_refused() -> None:
+    def change(audit: dict[str, Any]) -> None:
+        upper = Fraction(audit["green_upper"]) + Fraction(1, 10**6)
+        audit["green_upper"] = str(upper)
+        audit["improvement_lower"] = str(Fraction(233, 25) - upper)
+
+    _refused(N82, "completion-audit.json", change, "interval")
+
+
+def test_an_n82_audit_naming_another_bundle_is_refused() -> None:
+    def change(audit: dict[str, Any]) -> None:
+        audit["bundle"] = "n83-L9.35-proof-bundle.tar.gz"
+
+    _refused(N82, "completion-audit.json", change, "another measure")
+
+
+def test_n82s_support_is_n83s_scaled_by_the_ratio_of_the_sides() -> None:
+    """Same primitives in the same order, every coordinate times 932/935; masses re-solved."""
+    ours = json.loads(linear.linear_retained(N82)["candidate.json"])["primitives"]
+    theirs = json.loads(linear.linear_retained(linear.LINEAR["n83"])["candidate.json"])[
+        "primitives"
+    ]
+    scale = Fraction(932, 935)
+    assert len(ours) == len(theirs) == 1082
+    for a, b in zip(ours, theirs, strict=True):
+        assert a["kind"] == b["kind"]
+        scaled = [scale * Fraction(v) for v in b["geometry"]]
+        assert [Fraction(v) for v in a["geometry"]] == scaled
+    assert not any(a["mass"] == b["mass"] for a, b in zip(ours, theirs, strict=True))
+
+
+def test_the_n82_pre_replay_receipt_is_bound_to_the_pin() -> None:
+    record = json.loads((N82.receipts / "fetch.json").read_text())
+    assert record["status"] == "BUNDLE_READY"
+    assert (record["tarball"]["sha256"], record["tarball"]["bytes"]) == mixed.tarball_pin(N82)
+    assert record["bindings"]["files"] == 810
+    assert record["bindings"]["checker_copies"] == 202
+    assert record["preconditions"]["candidate_digest"] == N82.candidate_digest
+    assert record["inputs"]["status"] == "ALL_INPUTS_ENCLOSE_THE_CANDIDATE"
+    assert record["inputs"]["inputs"] == linear.LAST + 1
+
+
+def test_a_tarball_is_checked_only_against_its_own_packet(tmp_path: Path) -> None:
+    stray = tmp_path / N82.tarball
+    stray.write_bytes(b"not the bundle")
+    with pytest.raises(ValueError, match="is not a tarball"):
+        linear.linear_audit_supplements([stray], PACKET)
+    with pytest.raises(ValueError, match="the pin is"):
+        linear.linear_audit_supplements([stray], linear.N82_PACKET)
 
 
 def test_an_unpinned_change_is_refused() -> None:
@@ -655,6 +751,8 @@ def test_each_price_rests_on_its_own_samples() -> None:
         assert row["samples"], name
         assert 0 < row["host_over_upstream"] < 10
         assert row["cpu_hours"] > row["upstream_cpu_hours"] / 10
+    # n = 82 has no sampled angle, so it is listed with the source's seconds and no estimate.
+    assert price["n82"] == {"nodes": 153579479, "upstream_cpu_hours": 33.04}
 
 
 # --------------------------------------------------------------------------- the control

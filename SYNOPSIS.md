@@ -783,6 +783,8 @@ case or experiment separately.
 | [H-004: First-Leg Enclosures on Every Box](packing/benchmarks/measure-verifier/experiments/exp-009-h004-path-specific-gradient.md) | research synthesis | record | retained | — |
 | [H-009: Lazy First-Leg Enclosures](packing/benchmarks/measure-verifier/experiments/exp-010-h009-lazy-first-leg-enclosures.md) | research synthesis | record | retained | — |
 | [c2 Beside verify.cpp, Single Directions](packing/benchmarks/measure-verifier/experiments/exp-011-c2-cells-against-verify-cpp.md) | research synthesis | record | retained | — |
+| [H-010: Reciprocal Node Placement](packing/benchmarks/measure-verifier/experiments/exp-012-h010-reciprocal-node-placement.md) | research synthesis | record | retained | — |
+| [Reciprocals for Node Placement](packing/benchmarks/measure-verifier/hypotheses/H-010-reciprocal-node-placement.md) | implementation plan | supporting | maintained | — |
 | [Independence Record for sqverify-fast](packing/sqverify_fast/INDEPENDENCE.md) | research synthesis | record | maintained | — |
 | [PR 127 Integration Checkpoint Evidence](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/pr127-checkpoint/README.md) | research synthesis | record | retained | — |
 | [Correction: the stacking capacity bound in lane X3’s box sweep is false](packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-x3-box-sweep-capacity-correction.md) | dated review record | record | retained | — |

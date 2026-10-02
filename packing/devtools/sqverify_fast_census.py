@@ -131,7 +131,11 @@ def run(binary: Path, case: Case, out: Path, threads: int) -> dict[str, Any]:
     ]
     before = loadavg()
     start = time.monotonic()
-    raw = out / f"{case.certificate}.jsonl"
+    # The live output goes to a file outside the tree: a commit hook that hides
+    # unstaged changes once replaced a half-written receipt file under a running
+    # verifier, which kept writing to the orphaned file (rect_n69_L8575, first run).
+    scratch = tempfile.TemporaryDirectory(prefix="sqverify-fast-census-")
+    raw = Path(scratch.name) / f"{case.certificate}.jsonl"
     with raw.open("wb") as stdout, tempfile.TemporaryFile() as stderr:
         pid = os.posix_spawn(
             argv[0],
@@ -154,7 +158,7 @@ def run(binary: Path, case: Case, out: Path, threads: int) -> dict[str, Any]:
     body = "".join(json.dumps(line, sort_keys=True) + "\n" for line in [*rows, summary])
     with gzip.GzipFile(out / f"{case.certificate}.jsonl.gz", "wb", mtime=0) as packed:
         packed.write(body.encode())
-    raw.unlink()
+    scratch.cleanup()
     bounds = [
         row["min_certified_lower_bound"]
         for row in rows
@@ -191,7 +195,7 @@ def run(binary: Path, case: Case, out: Path, threads: int) -> dict[str, Any]:
         "L": case.side,
         "returncode": os.waitstatus_to_exitcode(status),
         "stderr_tail": error_text[-2000:],
-        "status": summary.get("status"),
+        "status": summary.get("status") if len(rows) == 201 else "INCOMPLETE",
         "directions_verified": sum(1 for row in rows if row.get("verdict") == "verified"),
         "refused_directions": summary.get("refused_directions"),
         "nodes": summary.get("nodes"),

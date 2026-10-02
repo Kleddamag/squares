@@ -16,6 +16,7 @@ experiments own.
 | registered | [H-007](hypotheses/H-007-branch-free-directed-steps.md) | Step outward by adding a scaled magnitude instead of calling `next_up` | The library step’s branches were three quarters of the edge enclosure |
 | registered | [H-008](hypotheses/H-008-skip-hopeless-own-gradient.md) | Split a box at once when its margin is far below its inherited penalty | Internal boxes compute an enclosure only to fail |
 | registered | [H-009](hypotheses/H-009-lazy-first-leg-enclosures.md) | Compute a first-leg enclosure only when the other leg fits in the margin | Exp-009’s node savings without paying at every box |
+| registered | [H-010](hypotheses/H-010-reciprocal-node-placement.md) | Place the area bound’s nodes with reciprocals, not divisions | Node positions need no accuracy |
 | registered | [H-005](hypotheses/H-005-error-budget-arithmetic.md) | Replace per-operation directed rounding in the edge enclosures by one a-priori error budget | Rounding steps are a large share of the hot loop |
 
 ## Raw
@@ -31,8 +32,6 @@ experiments own.
 - Continuous-angle boxes in place of the 201-direction net.
 - Skip a box’s own enclosure only when its margin is far below its parent’s *own*
   penalty (exp-008 showed the inherited bound is a bad predictor).
-- Multiply by precomputed reciprocals of the cosine and sine when placing the area
-  bound’s nodes, instead of dividing (node placement needs no accuracy).
 
 ## Parked
 

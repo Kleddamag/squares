@@ -18,7 +18,7 @@ from typing import Any
 import pytest
 
 from devtools import classify_known_best_families as families
-from devtools.classify_known_best_families import Geometry, Pose
+from devtools.classify_known_best_families import Geometry, Pose, json_differences
 
 HALF_ROOT_TWO = math.sqrt(2.0) / 2
 
@@ -297,3 +297,13 @@ def test_small_library_constants_are_what_the_detector_declares() -> None:
     assert families.CLOSED_FORM_DENOMINATORS == (1, 2, 3, 4)
     assert families.CLOSED_FORM_NUMERATOR_BOUND == 8
     assert Fraction(1, 2) in {form[2] for form in families.closed_form_library()}
+
+
+def test_a_stale_census_names_the_paths_that_moved() -> None:
+    retained = {"a": 1, "b": [1, 2], "c": {"d": 0.5}}
+    fresh = {"a": 2, "b": [1], "c": {"d": 0.5, "e": True}}
+    assert list(json_differences(retained, fresh)) == [
+        "$.a: retained 1, fresh 2",
+        "$.b: retained 2 items, fresh 1",
+        "$.c.e: present only in fresh",
+    ]

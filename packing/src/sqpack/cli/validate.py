@@ -2158,7 +2158,7 @@ def _known_best_family_and_shade_censuses(context: Context) -> str:
     _require_text(
         shades, f"contact-shade census check passed: {KNOWN_BEST_CORPUS.count} records"
     )
-    return families + shades
+    return f"{families.rstrip()}\n{shades}"
 
 
 def _prospective_source_map(context: Context) -> str:

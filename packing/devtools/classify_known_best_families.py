@@ -1415,10 +1415,42 @@ def update() -> None:
     print(f"family census updated: {len(manifest_entries())} records")
 
 
+def json_differences(retained: Any, expected: Any, path: str = "$") -> Iterator[str]:
+    """Each JSON path where the retained document and a fresh one disagree, with both values.
+
+    A byte comparison says only that the census moved; this says where, so a failure on a
+    runner nobody can reproduce on is diagnosed from its own log.
+    """
+    if isinstance(retained, dict) and isinstance(expected, dict):
+        for key in sorted(set(retained) | set(expected)):
+            if key not in retained or key not in expected:
+                side = "retained" if key in retained else "fresh"
+                yield f"{path}.{key}: present only in {side}"
+            else:
+                yield from json_differences(retained[key], expected[key], f"{path}.{key}")
+    elif isinstance(retained, list) and isinstance(expected, list):
+        if len(retained) != len(expected):
+            yield f"{path}: retained {len(retained)} items, fresh {len(expected)}"
+        for index, (left, right) in enumerate(zip(retained, expected, strict=False)):
+            yield from json_differences(left, right, f"{path}[{index}]")
+    elif retained != expected:
+        yield f"{path}: retained {retained!r}, fresh {expected!r}"
+
+
 def check() -> None:
-    expected = _text(expected_document())
-    if not OUTPUT.is_file() or OUTPUT.read_text(encoding="utf-8") != expected:
-        raise ValueError(f"{OUTPUT.relative_to(ROOT)} is missing or stale")
+    document = expected_document()
+    expected = _text(document)
+    if not OUTPUT.is_file():
+        raise ValueError(f"{OUTPUT.relative_to(ROOT)} is missing")
+    retained = OUTPUT.read_text(encoding="utf-8")
+    if retained != expected:
+        differences = list(
+            itertools.islice(json_differences(json.loads(retained), json.loads(expected)), 20)
+        )
+        raise ValueError(
+            f"{OUTPUT.relative_to(ROOT)} is stale; first differences:\n  "
+            + "\n  ".join(differences or ["the bytes differ but the parsed documents agree"])
+        )
     print(f"family census check passed: {len(manifest_entries())} records")
 
 

@@ -60,11 +60,12 @@ from __future__ import annotations
 
 import argparse
 import gzip
+import itertools
 import json
 import math
 import re
 from collections import Counter, defaultdict
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import dataclass, field
 from fractions import Fraction
 from pathlib import Path
@@ -1240,10 +1241,43 @@ def update() -> None:
     print(f"contact-shade census updated: {_records(document)} records")
 
 
+def json_differences(retained: Any, expected: Any, path: str = "$") -> Iterator[str]:
+    """Each JSON path where the retained document and a fresh one disagree, with both values.
+
+    A byte comparison says only that the census moved; this says where, so a failure on a
+    runner nobody can reproduce on is diagnosed from its own log.
+    """
+    if isinstance(retained, dict) and isinstance(expected, dict):
+        for key in sorted(set(retained) | set(expected)):
+            if key not in retained or key not in expected:
+                side = "retained" if key in retained else "fresh"
+                yield f"{path}.{key}: present only in {side}"
+            else:
+                yield from json_differences(retained[key], expected[key], f"{path}.{key}")
+    elif isinstance(retained, list) and isinstance(expected, list):
+        if len(retained) != len(expected):
+            yield f"{path}: retained {len(retained)} items, fresh {len(expected)}"
+        for index, (left, right) in enumerate(zip(retained, expected, strict=False)):
+            yield from json_differences(left, right, f"{path}[{index}]")
+    elif retained != expected:
+        yield f"{path}: retained {retained!r}, fresh {expected!r}"
+
+
 def check() -> None:
     document = expected_document()
-    if not OUTPUT.is_file() or OUTPUT.read_text(encoding="utf-8") != _text(document):
-        raise ValueError(f"{OUTPUT.relative_to(ROOT)} is missing or stale")
+    if not OUTPUT.is_file():
+        raise ValueError(f"{OUTPUT.relative_to(ROOT)} is missing")
+    retained = OUTPUT.read_text(encoding="utf-8")
+    if retained != _text(document):
+        differences = list(
+            itertools.islice(
+                json_differences(json.loads(retained), json.loads(_text(document))), 20
+            )
+        )
+        raise ValueError(
+            f"{OUTPUT.relative_to(ROOT)} is stale; first differences:\n  "
+            + "\n  ".join(differences or ["the bytes differ but the parsed documents agree"])
+        )
     print(f"contact-shade census check passed: {_records(document)} records")
 
 

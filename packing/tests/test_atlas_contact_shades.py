@@ -37,6 +37,7 @@ from devtools.census_atlas_contact_shades import (
     centre_rule_contacts,
     edge_rule_contacts,
     expected_document,
+    json_differences,
     load_case,
     make_square,
     manifest_entries,
@@ -297,3 +298,9 @@ def test_every_summary_total_rebuilds_from_the_retained_entry_rows() -> None:
             row["squares"].get("slack", 0) + row["squares"].get("within-band", 0)
             for row in rows
         )
+
+
+def test_a_stale_census_names_the_paths_that_moved() -> None:
+    assert list(json_differences({"rules": {"x": [0.1]}}, {"rules": {"x": [0.2]}})) == [
+        "$.rules.x[0]: retained 0.1, fresh 0.2"
+    ]

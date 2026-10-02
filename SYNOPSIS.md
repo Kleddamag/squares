@@ -528,6 +528,7 @@ case or experiment separately.
 | [X-048 Route Review: Exploratory Receipts](packing/campaign/explorations/X048-route-review/README.md) | research synthesis | record | retained | — |
 | [H259 Mixed-Capacity Census: Independent Output Review](packing/campaign/series/series-000-smoke-and-calibration/results/exp-240-n17-mixed-capacity-census/output-review.md) | dated review record | record | retained | — |
 | [October 1 Post-optimality Research Findings](docs/project/reviews/review-2026-10-01-post-optimality-morning.md) | dated review record | record | retained | — |
+| [H258 Common-Core Stress: Independent Output Review](packing/campaign/series/series-000-smoke-and-calibration/results/exp-242-n17-core-stress/output-review.md) | dated review record | record | retained | — |
 | [H260 Closed-Cell Symmetry: Independent Output Review](packing/campaign/series/series-000-smoke-and-calibration/results/exp-241-n17-closed-cell-symmetry/output-review.md) | dated review record | record | retained | — |
 | [n17 Symmetry of Closed-Cell Assignment States](docs/project/reviews/review-2026-10-01-n17-closed-cell-symmetry.md) | dated review record | record | retained | — |
 | [n17 Mixed-Capacity Centre Cover](docs/project/reviews/review-2026-10-01-n17-mixed-capacity-cover.md) | dated review record | record | retained | — |

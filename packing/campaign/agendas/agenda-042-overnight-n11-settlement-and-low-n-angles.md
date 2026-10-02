@@ -1049,7 +1049,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: ready
+    state: complete
     priority: 0
     question: Does the fixed analytic common-core stress exclude negative-side first-order directions
       in both n17corner branches?
@@ -1077,7 +1077,8 @@ agenda:
       find the candidate correct (exact identity at the exp-237 midpoint and three other rational points;
       all 58 weights nonnegative, exactly six zero); the stall was sympy.cancel expression swell. Repair
       the identity proof with polynomial-ring arithmetic or exact evaluation beyond the degree bound,
-      within the frozen criterion.
+      within the frozen criterion. Session 167 repaired it at 2fbf8d29 (polynomial-ring identities, 256-bit
+      outward bounds, denominator-factor guards); exp-242 accepted after independent review, with a clean replay.
   - id: BC-403
     purpose: research
     owner_focus: correctness
@@ -1197,7 +1198,7 @@ agenda:
     owner_focus: correctness
     instances:
     - 17
-    state: blocked
+    state: in_progress
     priority: 0
     question: Is the n17 endpoint a strict local minimum modulo its slider cone, with an explicit radius?
     hypotheses:
@@ -1211,7 +1212,6 @@ agenda:
     bead: think-n95s
     depends_on:
     - BC-402
-    blocked_on: H-258 acceptance; the H-261 instrument does not exist yet.
     next_evidence: packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md
     workflows:
     - pipeline-improvement
@@ -1221,7 +1221,8 @@ agenda:
     artifacts:
     - packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md
     note: Exploratory first-order estimate of the radius is 3e-4 (worst ratio 0.86); it defines the capture
-      target.
+      target. Session 167 accepted H-258 (exp-242); the recipe review fixes items C1-C12
+      and a uniform radius of about 1/5000 over the slider box; the checker's point half is at 11bdcd7c.
   - id: BC-408
     purpose: research
     owner_focus: correctness

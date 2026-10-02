@@ -864,12 +864,12 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-399 | research | 17 | complete | 0 | think-bj81 | packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md |
 | BC-400 | research | 17 | complete | 0 | think-bj81 | packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md |
 | BC-401 | research | 17 | complete | 0 | think-6dg0 | packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md |
-| BC-402 | research | 17 | ready | 0 | think-wrgx | packing/campaign/hypotheses/H-258-n17-common-core-stress.md |
+| BC-402 | research | 17 | complete | 0 | think-wrgx | packing/campaign/hypotheses/H-258-n17-common-core-stress.md |
 | BC-403 | research | 17 | complete | 0 | think-70sf | packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md |
 | BC-404 | research | 17 | complete | 0 | think-gr22 | packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md |
 | BC-405 | research | 17 | complete | 0 | think-9fc1 | docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md |
 | BC-406 | research | 17 | ready | 0 | think-c7kv | docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md |
-| BC-407 | research | 17 | blocked | 0 | think-n95s | packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md |
+| BC-407 | research | 17 | in_progress | 0 | think-n95s | packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md |
 | BC-408 | research | 17 | ready | 0 | think-j1uw | packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md |
 | BC-409 | research | 17 | ready | 2 | think-e6y1 | packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md |
 | BC-410 | research | 17 | tentative | 2 | think-x4a6 | packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md |
@@ -879,7 +879,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 170 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 171 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1077,7 +1077,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-255 | confirmed | proof | The two exact n17 chart polynomials have a unique real root in the fix |  | 1 |  | 1s wall |
 | H-256 | confirmed | proof | The H254 reconstruction at the unique H255 root, using the fixed centr |  | 1 | T-065 | 43s wall |
 | H-257 | confirmed | proof | At the accepted H255 root and H256 centroid packing, all owner-axis al |  | 1 |  | 42s wall |
-| H-258 | blocked | proof | The fixed analytic common-core stress at the accepted n17 endpoint has |  | 0 |  |  |
+| H-258 | confirmed | proof | The fixed analytic common-core stress at the accepted n17 endpoint has |  | 1 |  | 30s wall |
 | H-259 | confirmed | proof | At side cap1169/250, a closed5by5 centre grid has16 boundary cells of  |  | 1 |  | 0s wall |
 | H-260 | confirmed | proof | D4 acts on existential closed-cell assignments of the H259 cover and i |  | 1 |  | 0s wall |
 | H-261 | blocked | proof | For an explicit rational radius r > 0, every packing of 17 unit square |  | 0 |  |  |
@@ -1224,7 +1224,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-158 | series-000 | 11 | Codex BC303 T2 charge-sweep agent | H-160 | The September 14 strategy reset paused this route before the target charge ran; no target receipt or scientific verdict exists. |
 | exp-160 | series-000 | 11 | Codex BC303 H-162 retained-receipt analyst | H-162 | The September 14 strategy reset paused this route with no exp-158 target receipt; no H-162 comparison or scientific verdict exists. |
 
-### accepted (53)
+### accepted (54)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1281,6 +1281,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-239 | series-000 | 17 | Codex Session165 coordinator | H-257 | The exact-root geometric feature inventory is complete and independently audited. The two-branch first-order model now has its feature premises; stationarity and higher-order/global arguments remain separate. |
 | exp-240 | series-000 | 17 | Codex Session165 coordinator | H-259 | Reviewed complete cover and exact census agree independently. Raw occupancy reduction only; geometric realization and exclusion remain open. |
 | exp-241 | series-000 | 17 | Codex Session165 coordinator | H-260 | Complete independent eight-term audit and closed-assignment cover review pass. Necessaryoccupancyorbits only; no geometriccaseexcluded ornewbound. |
+| exp-242 | series-000 | 17 | Claude Session 167 coordinator; lane A1 built the instrument and run-001 | H-258 | Every criterion item is met. This is first-order stationarity of the complete local model in both corner branches; it is not local minimality, rigidity or global optimality. |
 
 ### baseline (12)
 
@@ -1345,7 +1346,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-170 rounds, 2512.1 agent-minutes, 4020.8 wall-minutes.
+171 rounds, 2512.1 agent-minutes, 4021.3 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

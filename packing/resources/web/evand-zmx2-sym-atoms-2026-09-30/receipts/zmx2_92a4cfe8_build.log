@@ -1,0 +1,6 @@
+   Compiling verify2 v0.1.0 (/tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/zmx2-92a4/verify2)
+    Finished `release` profile [optimized] target(s) in 10.52s
+
+real	0m10.581s
+user	0m9.508s
+sys	0m0.435s

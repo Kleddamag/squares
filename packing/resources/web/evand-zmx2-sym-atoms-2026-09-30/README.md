@@ -45,6 +45,42 @@ pin and every file’s digest. From `packing/`,
 `uv run --frozen --all-extras --group dev python -m devtools.acquire_source evand-zmx2-sym-atoms-2026-09-30 --check`
 re-derives the packet from its manifest.
 
+## Replay Here, 2 October 2026
+
+This checker, built from the retained `zmx2.rs` with the crate files of the September 26
+packet (rustc 1.97.0; [`zmx2_92a4cfe8_build.log`](receipts/zmx2_92a4cfe8_build.log)),
+replayed the source’s run on the retained cover as stage 4 of the
+[result import](../../../campaign/result-import.md):
+`zmx2 cert s32_closed_cover_6.txt --full --pair-points --sym-atoms --threads 3` on a
+4-core x86-64 Linux container, with its receipts written by `devtools.replay_receipt`.
+
+- **Two receipts, one sweep.** A container restart stopped the first run after 6,173
+  roots, so [`s32_zmx2_full_sym.log`](receipts/s32_zmx2_full_sym.log) has no closing
+  line. `zmx2` resumes from its own root log, and
+  [`s32_zmx2_full_sym_resume.log`](receipts/s32_zmx2_full_sym_resume.log) ran the other
+  22,627 roots: `VERIFIED` for the unreduced sweep, 28,800 roots, 11,268,760 boxes, none
+  uncertified, maximum depth 29, in 7,186 s of wall and 18,386 CPU-s.
+- **The audit** by `devtools.audit_evand_mixed_covers` finds the joined root log
+  covering the region once per root with no uncertified or capped box, the header’s
+  atoms `pairpts+sym` as required
+  ([`s32_zmx2_full_sym_audit.json`](receipts/s32_zmx2_full_sym_audit.json)), and every
+  one of the 28,800 roots identical to the source’s `roots.log.xz`, with identical
+  headers ([`s32_zmx2_full_sym_compare.json`](receipts/s32_zmx2_full_sym_compare.json)).
+  The box, certified and empty totals equal the source manifest’s.
+- **Controls.** The same checker refuses two mutated copies of the cover on the root
+  where each loss shows; the receipts are in [`receipts/controls/`](receipts/controls/),
+  held by `packing/tests/test_replay_controls.py`.
+
+## Compressed Files
+
+One replay receipt of more than 1,000 lines is stored as deterministic `gzip -9n`. The
+row gives the Git blob and SHA-256 of the decompressed bytes, as
+`devtools.retained_data` produces them.
+
+| Stored file | Origin | Git blob | SHA-256, decompressed |
+| --- | --- | --- | --- |
+| `receipts/s32_zmx2_full_sym_roots.log.gz` | receipt | `0122534263e2af09d2a7d734dcaf2d001f87db3d` | `f365bd82df96822bfe66d963f5ca7fbaccebc8c0ca6e9e13f99480de83aaff4f` |
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

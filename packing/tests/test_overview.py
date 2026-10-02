@@ -210,7 +210,9 @@ def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
     assert "data-atlas-grid" in atlas
     assert 'class="site-cards-frame' not in atlas
     assert 'class="site-card ' not in atlas
-    assert atlas.count('class="site-atlas-note"') == 1
+    # The grid's own note under the expander went on 2026-10-02 (think-l38m); the
+    # posters' note is the PDFs and Videos section's.
+    assert atlas.count('class="site-atlas-note"') == 0
     assert 'class="site-wide site-atlas-note"' not in atlas
     assert (
         page.index('id="the-atlas-of-square-packings"')
@@ -500,7 +502,8 @@ def test_the_atlas_grid_expands_from_100_to_324_with_one_button() -> None:
         "<span data-atlas-label>Show More</span>"
         f"{overview_sections.arrow_icon('double-down')}</button>"
     )
-    assert grid.index("data-atlas-toggle") < grid.index('class="site-atlas-note"')
+    # The expander's row ends the grid's block: no note follows it since 2026-10-02.
+    assert 'class="site-atlas-note"' not in grid
     script = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
     assert 'toggle.setAttribute("aria-expanded", String(open))' in script
     assert "toggle.dataset.nameLess : toggle.dataset.nameMore" in script
@@ -564,12 +567,21 @@ def test_the_atlas_is_rendered_as_the_grid_under_tabs_that_ship_hidden(page: str
         for mark in (
             "data-atlas-views",
             "<template data-atlas-first>",
-            'class="site-atlas-key"',
             "data-atlas-toggle",
-            'class="site-atlas-note"',
         )
     ]
     assert order == sorted(order)
+    # The triangle's key and the line under the expander are gone since 2026-10-02
+    # (the owner, think-l38m): the expander's row ends the block.
+    assert "site-atlas-key" not in atlas
+    assert 'class="site-atlas-note"' not in atlas
+    toggle_end = atlas.index("</button></p>", atlas.index("data-atlas-toggle")) + len(
+        "</button></p>"
+    )
+    assert atlas[toggle_end:].startswith("</div>")
+    assert not hasattr(overview_sections, "ATLAS_TRIANGLE_KEY")
+    for gone in ("Each row ends at a perfect square", "is also in the frontier survey"):
+        assert gone not in _seen(page), gone
     assert [key for key, _ in overview_sections.ATLAS_VIEWS] == ["grid", "triangle"]
     view = render_overview.ATLAS_VIEW_SCRIPT.read_text(encoding="utf-8")
     grid = render_overview.ATLAS_GRID_SCRIPT.read_text(encoding="utf-8")
@@ -589,8 +601,7 @@ def test_the_atlas_marks_each_perfect_square_and_nothing_else_on_a_tile(page: st
     assert [int(n) for n in squares] == [k * k for k in range(1, 19)]
     assert grid.count("data-atlas-square") == 18
     assert "style=" not in grid.split("<template data-atlas-first>", 1)[1].split("<svg", 1)[0]
-    key = re.findall(r'<p class="site-atlas-key">([^<]+)</p>', page)
-    assert key == [overview_sections.ATLAS_TRIANGLE_KEY]
+    assert 'class="site-atlas-key"' not in page
 
 
 def test_the_view_tabs_are_the_section_tabs_strip() -> None:

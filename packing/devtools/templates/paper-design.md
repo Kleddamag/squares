@@ -1074,16 +1074,18 @@ it.
   those are the cases whose best packing is the $k \times k$ grid itself, and their
   tiles are numbered in the text’s colour at the medium weight.
   Ten rows show the first hundred cases, the last 19 tiles wide; eighteen show all 324,
-  the last 35 wide. A one-line key under the triangle says what the rows are
-  (`ATLAS_TRIANGLE_KEY`). The view is in the address as `?atlas=triangle` (the grid has
-  no parameter), written with `history.replaceState` so every other parameter and the
-  fragment keep their places, and read before any tile is placed, so a linked triangle
-  never shows the grid first.
-  **Wrapping, by one rule at every width.** A line holds as many tiles as the block’s
-  width allows at the least tile width, `--site-atlas-tile-min` (1.625rem, 26px, which
-  keeps a tile over a pointer target’s 24px with its three-figure number legible under
-  it; 2.5rem, 40px, under 40rem or with a coarse pointer, for a finger), and never more
-  than the longest row holds.
+  the last 35 wide. A one-line key under the triangle said what the rows are until
+  2026-10-02, when the owner dropped it as obvious (`think-l38m`), with the line under
+  the expander that said every case is in the frontier survey and has a case record:
+  each tile opens its case record, and the Frontier page is a page card.
+  The view is in the address as `?atlas=triangle` (the grid has no parameter), written
+  with `history.replaceState` so every other parameter and the fragment keep their
+  places, and read before any tile is placed, so a linked triangle never shows the grid
+  first. **Wrapping, by one rule at every width.** A line holds as many tiles as the
+  block’s width allows at the least tile width, `--site-atlas-tile-min` (1.625rem, 26px,
+  which keeps a tile over a pointer target’s 24px with its three-figure number legible
+  under it; 2.5rem, 40px, under 40rem or with a coarse pointer, for a finger), and never
+  more than the longest row holds.
   A row wider than a line wraps in reading order, as text does: its first line is full,
   from the row’s first case at the left edge; further full lines follow, each from the
   left edge; and what is left over goes on its last line, right-aligned, so the row
@@ -1153,7 +1155,8 @@ it.
   It carries `aria-expanded` and `aria-controls` (the box of tiles, `ATLAS_PANEL`), and
   its name for assistive technology says what it does and how many cases that is, “Show
   more: all 324 cases” and “Show less: the first 100”, while the visible label stays
-  short; the total is also in the sentence under the grid.
+  short. The expander’s row ends the block: the sentence that followed it is gone since
+  2026-10-02 (`think-l38m`), and the next section’s heading brings its own space.
   It is the action under a table or grid (above), set `--site-atlas-toggle-space` below
   the grid. Cases 101 to 324 ship in a second `<template>` and are placed only the first
   time the grid expands, into one box the grid lays out as its own cells
@@ -1233,7 +1236,7 @@ it.
 
 - **Atlas cards.** The atlas’s posters and film have a section of their own, **PDFs and
   Videos**, an ordinary `h2`; **The Atlas of Square Packings** keeps the grid, its
-  expander and the grid’s own note, and holds no card.
+  expander, and holds no card and, since 2026-10-02, no note under the expander.
   The homepage’s sections run The Squares Project, Recent Results, The Atlas of Square
   Packings, The Frontier Survey directly after it, PDFs and Videos, Other Square Packing
   Projects and Squares Project Documentation, the owner’s order of 1 October less

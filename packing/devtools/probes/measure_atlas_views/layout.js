@@ -38,7 +38,6 @@
         animation.playState !== "finished",
     );
   const toggle = block.querySelector("[data-atlas-toggle]");
-  const key = block.querySelector(".site-atlas-key");
   return {
     view: block.dataset.atlasView ?? null,
     per_line: Number(cells.style.getPropertyValue("--site-atlas-per-line")) || null,
@@ -62,7 +61,6 @@
       font_px: round(Number.parseFloat(getComputedStyle(tab).fontSize)),
     })),
     expanded: toggle?.getAttribute("aria-expanded") ?? null,
-    key_shown: key !== null && key !== undefined && key.getClientRects().length > 0,
     search: location.search,
     hash: location.hash,
     focus:

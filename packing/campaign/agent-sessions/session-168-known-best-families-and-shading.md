@@ -102,7 +102,7 @@ session:
   delegations:
   - task: 'think-zfxi: literature survey of square-packing families by position relative to k^2 (W1-shaped,
       read-only).'
-    operator: Claude subagent (opus)
+    operator: Claude subagent
     status: completed
     recording: contemporaneous
     phase: 1
@@ -123,7 +123,7 @@ session:
     - scratchpad lane note, not retained
   - task: 'think-am9n: asymptotic behaviour of the families and the finite-versus-infinite pattern question
       (read-only mathematics).'
-    operator: Claude subagent (fable)
+    operator: Claude subagent
     status: completed
     recording: contemporaneous
     phase: 1
@@ -143,7 +143,7 @@ session:
     write_scope:
     - scratchpad lane note, not retained
   - task: 'think-jkhp: family census tool over the 324 known-best witnesses.'
-    operator: Claude subagent (opus)
+    operator: Claude subagent
     status: completed
     recording: contemporaneous
     phase: 1
@@ -166,7 +166,7 @@ session:
     - packing/tests/test_known_best_families.py
     - packing/campaign/explorations/X049-families-data/family-census.json
   - task: 'think-ea3f: contact-shade census replicating the atlas and workbench shading rules.'
-    operator: Claude subagent (opus)
+    operator: Claude subagent
     status: completed
     recording: contemporaneous
     phase: 1
@@ -191,7 +191,7 @@ session:
     - packing/tests/test_atlas_contact_shades.py
     - packing/campaign/explorations/X049-families-data/contact-shade-census.json
   - task: 'think-31v0: exact regularization feasibility and prototype.'
-    operator: Claude subagent (fable)
+    operator: Claude subagent
     status: completed
     recording: contemporaneous
     phase: 1

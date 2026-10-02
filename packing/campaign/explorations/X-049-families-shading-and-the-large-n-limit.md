@@ -9,7 +9,7 @@ exploration:
   id: X-049
   title: Families of Known-Best Packings, Contact Shading, and the Large-n Limit
   date: '2026-10-02'
-  author: Claude session-168 coordinator, with three Opus lanes (literature, family census, contact-shade census) and two Fable lanes (asymptotics, exact regularization)
+  author: Claude session-168 coordinator, with five delegated lanes (literature, family census, contact-shade census, asymptotics, exact regularization)
   campaign: packing.squares
   brief: >-
     The owner's questions after the atlas triangle view: have the families visible by

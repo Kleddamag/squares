@@ -52,8 +52,8 @@ case $n = 1\ldots324$, all generated from the record in this repository.
 The in-repository record is the [results register](packing/frontier/RESULTS.md), the
 per-case [status table](packing/frontier/STATUS.md), and
 [`epistemics.md`](epistemics.md), which defines how each claim is graded.
-The site, its papers and the atlas posters are at edition `v0.5.0`; the atlas films are
-the ones cut for the
+The site and the atlas posters are at edition `v0.5.0`; each paper carries a version of
+its own; the atlas films are the ones cut for the
 [`v0.4.2` release](https://github.com/jlevy/squares/releases/tag/v0.4.2).
 
 The site’s [papers](https://jlevy.github.io/squares/papers.html) explain the proofs.

@@ -78,9 +78,9 @@ DESCRIPTION = (
 #: The paper's front, in the two papers' one form (`devtools.paper_front`): the proof it
 #: explains, credited first by its author and address; then who oversaw the review and
 #: which agents wrote it; its own version, a draft at its first, with no history to
-#: link; and its dates, the day the source published the proof and the day the article
-#: last changed, both from `sqpack.release`. The head states the second to a link
-#: preview (`page_meta`).
+#: link, and never the site's edition; and its dates, the day the source published the
+#: proof and the day the article last changed, all from `sqpack.release`. The head
+#: states the second to a link preview (`page_meta`).
 FRONT = paper_front.check(
     paper_front.PaperFront(
         slug=SLUG,
@@ -162,8 +162,7 @@ RENDER_INPUTS = (
     PACKING / "atlas" / "rendering" / "trump11-overview.svg",
     PACKING / "devtools" / "packing_render_adapters.py",
     PACKING / "src" / "sqpack" / "render",
-    # The closing credit prints the shared version, which is pinned here, so a re-pin
-    # redraws the page, as it does the workbench's (`build_site.RENDER_INPUTS`).
+    # The front prints the paper's own version and dates, which are declared here.
     PACKING / "src" / "sqpack" / "release.py",
     PACKING / "cases" / "trump11" / "packing.py",
     PACKING / "resources/web/n11-optimality-2026-09-29/receipts/final-composition.json",
@@ -437,7 +436,9 @@ def render(
         "SITE_FAVICON": favicon_html(),
         "SITE_NAV_CSS": SITE_NAV_CSS.read_text(encoding="utf-8"),
         "SITE_NAV": nav_html("papers", root=SITE_ROOT),
-        "COLOPHON": colophon_lines(),
+        # A paper's closing credit carries no version: its own is in its credits, and
+        # the site's goes on no paper.
+        "COLOPHON": colophon_lines(edition=""),
         "SITE_EMBED": EMBED_SCRIPT.read_text(encoding="utf-8"),
         "SITE_THEME": THEME_SCRIPT.read_text(encoding="utf-8"),
         "THEME_BOOTSTRAP": render_n11_lower_bounds_explainer.theme_bootstrap(static),

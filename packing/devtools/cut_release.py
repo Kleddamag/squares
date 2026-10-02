@@ -1,12 +1,21 @@
 #!/usr/bin/env python3
-"""Prepare a version bump: name the edition, redraw the release assets, and check them.
+"""Prepare a site version bump: name the edition, redraw the release assets, check them.
 
 A version bump is when the large generated assets are rebuilt (the owner, 2026-10-01),
 and it was a paragraph of manual steps in `development.md`. This is those steps as one
 command. It edits `sqpack/release.py`, redraws the atlas posters, regenerates the claim
 documents and runs the checks that hold them, in that order, and stops at the first
-failure. It commits nothing, tags nothing and publishes nothing: those are the owner's,
-and it ends by printing them.
+failure. It commits nothing and publishes nothing: those are the owner's, and it ends by
+printing them.
+
+It bumps the site's version and nothing else. The papers are versioned on their own
+(the owner, 2026-10-01): a site bump adds no entry to any paper's history and changes no
+paper's version line, and a paper's own bump is an edit to its history in `release.py`
+(`development.md`, Bumping a paper's version). Nor is a tag or a GitHub release part of
+a bump: the site's version is complete when the merge deploys and `check_published_site`
+passes, and a release is cut only when there are generated assets that need a download
+address, the films (`render_overview.FILM_RELEASE`); the posters are served from the
+site itself.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.cut_release v0.5.0 \
@@ -45,8 +54,9 @@ HISTORY_OPEN = "PUBLICATION_HISTORY = (\n"
 REVISION_LINE = re.compile(r'^PUBLICATION_REVISION = "([0-9a-f]{7,40})"$', re.MULTILINE)
 #: How wide a line of the edition's scope may be once it is indented and quoted.
 SCOPE_WIDTH = 76
-#: The pull-request tests that hold an edition: the stamp, the page that prints it, the
-#: claim documents that link its revision, and the posters redrawn for it.
+#: The pull-request tests that hold an edition: the stamp, the posters redrawn for it and
+#: the explainer's figure of them, the entry points that name it, the claim documents
+#: that link its revision, and the dates.
 TESTS = (
     "tests/test_release.py",
     "tests/test_n11_lower_bounds_explainer.py",
@@ -132,24 +142,32 @@ def steps(version: str) -> list[tuple[str, tuple[str, ...]]]:
 
 
 def remaining(version: str) -> str:
-    """What the command leaves to the owner, as text to print."""
-    family = "packing/atlas/known-best/known-best-1-*"
+    """What the command leaves to the owner, as text to print.
+
+    No tag and no GitHub release: the site's version is complete when the merge deploys
+    and `check_published_site` passes. A release exists to give generated assets a
+    download address, which only the films need (`render_overview.FILM_RELEASE`); the
+    posters are served from the site. And no paper moves: each is versioned on its own.
+    """
     return textwrap.dedent(
         f"""\
         Left to do, none of it done here:
           1. Review the diff, then commit release.py, the eight atlas files and the
-             regenerated claim documents together, and merge.
+             regenerated claim documents together, and merge. README.md names the
+             site's edition; TUTORIAL.md names the explainer's own version, which
+             this bump does not move.
           2. Wait for the "Certificate page" workflow on main, then from packing/:
                python -m devtools.check_published_site --commit <merge commit>
+             The site's version {version} is complete when that passes. No tag and
+             no GitHub release: a release is cut only to host generated assets that
+             need a download address, and the films stay on the release that
+             carries them (render_overview.FILM_RELEASE) until they are cut again;
+             packages/workbench/README.md has that runbook.
           3. If the deployment's UTC date is not the one in PUBLICATION_HISTORY, correct
              it, and record the deployment in the comment above the history.
-          4. Tag the merge and create the release, with the posters attached:
-               git tag {version} <merge commit> && git push origin {version}
-               gh release create {version} --title {version} --notes-file <notes> \\
-                   {family}.pdf {family}.png
-          5. The films stay on the release that carries them
-             (render_overview.FILM_RELEASE) until they are cut again:
-             packages/workbench/README.md has that runbook."""
+          4. Neither paper's version changed: the papers are versioned on their own
+             (release.EXPLAINER_HISTORY, OPTIMALITY_REVIEW_VERSION), and a paper's
+             bump is development.md, Bumping a paper's version."""
     )
 
 

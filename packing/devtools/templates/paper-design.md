@@ -1962,12 +1962,15 @@ The front is, in order:
   The project’s repository is not a line of the credits on either paper: the footer
   every page carries names it, and so does the GITHUB chip.
 
-- **The version line.** The paper’s version, plain: the publication’s edition for the
-  explainer (`PUBLICATION_EDITION`, the stamp every artifact carries) and the review’s
-  own draft version (`OPTIMALITY_REVIEW_EDITION`), both from `sqpack.release`. A paper
-  that has had more than one edition links its version history, the section at the foot
-  of the explainer that lists every edition with the day each was first published; a
-  paper at its first version has no history to link.
+- **The version line.** The paper’s own version, plain: `EXPLAINER_VERSION` for the
+  explainer and `OPTIMALITY_REVIEW_EDITION` (“Draft v0.1.0”) for the review, both from
+  `sqpack.release`. Never the site’s edition and never the data hash: the site’s version
+  goes on no paper (the owner, 2026-10-01: papers are individually versioned, and a
+  paper’s version history reflects versions of the paper, not of the website).
+  A paper that has had more than one edition links its version history, the section at
+  the foot of the explainer that lists the paper’s own editions (`EXPLAINER_HISTORY`),
+  each with the day it was first published and what changed in the paper; a paper at its
+  first version has no history to link.
 
 - **The dates line.** One grammar on both: `<What> <Month D, YYYY>` parts joined by a
   middle dot, ending with “Last revised”, the day the article last changed.
@@ -1978,7 +1981,8 @@ The front is, in order:
 
 - **The closing.** The paper’s own last sections (the explainer’s version history, the
   review’s sources and verification record), then the footnotes, then the colophon every
-  page shares (`render_overview.colophon_lines`).
+  page shares (`render_overview.colophon_lines`), on a paper without its version part:
+  the project and its repository, then “Formatted and typeset with Flowmark and KPress”.
 
 In the Markdown edition the front is the title as a heading and the credits as a list,
 one item a line, bold and linked as the page is.

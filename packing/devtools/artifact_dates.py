@@ -182,10 +182,10 @@ def _paper_rows() -> list[Row]:
     return [
         Row(
             "explainer, First published",
-            release.FIRST_PUBLISHED,
-            "release.PUBLICATION_HISTORY, oldest edition",
+            release.EXPLAINER_FIRST_PUBLISHED,
+            "release.EXPLAINER_HISTORY, oldest edition",
             "the first Pages deployment, in UTC; typed, with the deployment beside it",
-            held_by="typed; test_release holds the history",
+            held_by="typed; test_release holds the paper's history to the site's",
         ),
         Row(
             "explainer, Last revised",

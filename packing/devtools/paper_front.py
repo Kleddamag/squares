@@ -14,9 +14,10 @@ GitHub; then the title; then the credits, in the owner's form (2026-10-01):
 
 Names in bold, addresses as plain links, the version plain, a line's space before a
 paper's own credits when it explains someone else's work, and a line's space before the
-dates. A paper without a source begins at its own credits. The version line links the
-paper's version history where it has one, which is where the explainer's editions are
-listed; a paper at its first version has no history to link.
+dates. A paper without a source begins at its own credits. The version is the paper's
+own, not the site's (`sqpack.release`, the papers' own versions), and the version line
+links the paper's version history where it has one, which is where the explainer's own
+editions are listed; a paper at its first version has no history to link.
 
 Each paper describes itself as a `PaperFront`, a small record of the values that differ
 between the two, and everything the reader sees at the top of either page, in its
@@ -95,8 +96,9 @@ class PaperFront(NamedTuple):
     oversight: tuple[Person, ...]
     agents: tuple[str, ...]
     version: str
-    """The version line, plain: the publication's edition, or a paper's own draft
-    version, from `sqpack.release`."""
+    """The version line, plain: the paper's own version from `sqpack.release`
+    (`EXPLAINER_VERSION`, `OPTIMALITY_REVIEW_EDITION`), never the site's edition and
+    never the data hash (the owner, 2026-10-01: papers are individually versioned)."""
     dates: tuple[Dated, ...]
     """The dates line, in order; the last is `REVISED`."""
     source: Source | None = None

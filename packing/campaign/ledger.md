@@ -885,7 +885,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 | id | status | title | rounds | opened because |
 | --- | --- | --- | --- | --- |
-| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 173 | First series. There is no prior instrument, so not |
+| series-000 | open | S0: smoke and calibration — prove the machinery, establish every baseline metric | 174 | First series. There is no prior instrument, so not |
 
 ## Registry
 
@@ -1091,7 +1091,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-263 | open question | proof | Which closed centre cover with proved cell capacities keeps every endp |  | 0 |  |  |
 | H-264 | open question | proof | On 10 to 20 closed-assignment D4 orbits drawn uniformly from the resid |  | 0 |  |  |
 | H-265 | blocked | proof | The side S* of the H255 chart root is a root of the degree-18 polynomi |  | 0 |  |  |
-| H-266 | blocked | proof | At cap U = 1169/250 there is a D4-symmetric closed cover of the centre |  | 0 |  |  |
+| H-266 | unresolved | proof | At cap U = 1169/250 there is a D4-symmetric closed cover of the centre |  | 1 |  | 1s wall |
 | H-267 | blocked | proof | On the H-266 cover, forbidden occupancy sub-patterns of arity at most  |  | 0 |  |  |
 | H-268 | blocked | proof | Every packing of 17 unit squares in [0,S]^2 with S <= S* whose occupan |  | 0 |  |  |
 
@@ -1161,7 +1161,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-162 | series-000 | 20 | Cursor session-140 | H-218 | The Session-140 research wall expired with no RETAINABLE freeze on the H-218 sweep. Closest masses were leftover n=20 971/200 at 19.910044 unconverged and leftover n=12 3969/1000 at 12.091168 after crossing 12. T-028 at n=18 does not confirm H-218. The unfinished float LPs remain unresolved; their objectives do not refute their site sets. |
 | exp-231 | series-000 | 11 | Claude Session 156, Opus extra-high lane and coordinator | H-236 | The declared caps ran out with 58 of 256 subtrees open and no counterexample candidate, so H-236 is neither confirmed nor refuted; the remaining subtrees are a bounded computation for the unchanged frozen instrument. |
 
-### unresolved (53)
+### unresolved (54)
 
 | id | series | instance | operator | hypotheses | reason |
 | --- | --- | --- | --- | --- | --- |
@@ -1218,6 +1218,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | exp-230 | series-000 | 12 | Claude Session 156, Opus high lane | H-241 | The loop ran to its time limits with the covering value unsettled just below 12 and no family reaching 12, so whether additive routes at n12 survive above 3.9609 is still open; a row objective of 11.98 is suggestive of a little headroom but is not a value. |
 | exp-234 | series-000 | 11 | Claude Session 158 coordinator | H-242 | No box closed at the cap, so rung 1's total cost is not measured, only bounded below; but the flat response to width and tilt shows the cost lives in the centre enumeration, so the stronger per-node relaxation, not more or narrower boxes, is the prerequisite for H-112, while wide boxes remain usable once it exists. |
 | exp-244 | series-000 | 17 | Claude Session 167; lanes A2-build and A2-build-2 built the instrument, the coordinator ran it from a clean worktree | H-261 | The mathematics, instrument and certificates have no blocking defect, and the local minimum modulo sliders is certified on the declared box B_W at r = 1/5000. The frozen claim covers the whole physical slider domain, which B_W does not, so H-261 as worded is neither confirmed nor refuted. Closing it needs a capture-side lemma that a <= 1/4 and z >= -1/8 whenever square 6 lies in its occupancy cell, or a wider box. |
+| exp-246 | series-000 | 17 | Claude Session 167; lane G built the instrument, the coordinator ran it from a clean worktree | H-266 | The cover itself is certified and the lemma reviewed, so the census of 43,593 orbits stands. The single-state purpose of the claim is not met while square 13 also lies in side cell S1, and square 6's domain is declared. Moving the tab or shrinking S1 by a few thousandths, and deriving square 6's range, would close both. |
 
 ### blocked (11)
 
@@ -1357,7 +1358,7 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 
 ## Effort
 
-173 rounds, 2512.1 agent-minutes, 4023.7 wall-minutes.
+174 rounds, 2512.1 agent-minutes, 4023.7 wall-minutes.
 
 These totals exclude 4 historical rounds with unrecorded timing; their cost is unknown, not zero.
 

@@ -37,7 +37,7 @@ hypothesis:
     depth-width wall lemma on closed rational angle intervals, exact squared diameters,
     exact coverage, the D4 action and Burnside count, and the endpoint family's seam
     margins, with an independent proof review of the wall lemma
-  instrument_ready: false
+  instrument_ready: true
   regime: >-
     n=17; cap 1169/250; the H256 endpoint family with its slider domain; closed cells
     with the H259 deterministic seam rule
@@ -63,6 +63,18 @@ after the free cuts are more than any per-case engine can absorb.
 n11 succeeded with a minimal capacity-one cover and isolated sub-pattern exclusions.
 This hypothesis asks whether n17 has a comparably small cover that also keeps the
 endpoint family in one occupancy state, so that capture works on a single case.
+
+## Outcome
+
+*Added 2026-10-02 by Session 167.*
+[exp-246](../series/series-000-smoke-and-calibration/experiments/exp-246-h266-n17-capacity-one-cover.md)
+certifies a 24-cell D4-symmetric capacity-one cover with 43,593 orbits, and the
+[wall-lemma review](../../../docs/project/reviews/review-2026-10-02-n17-depth-width-wall-lemma.md)
+proves the lemma its wall cells rely on.
+The verdict is unresolved: under the overlapping-cell convention the endpoint family
+also realises a second state through side cell S1, and square 6’s range is declared
+rather than derived.
+A small design change and a derived square-6 range would close both.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

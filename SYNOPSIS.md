@@ -258,8 +258,8 @@ hypothesis status and summarizes experiment verdicts, and the
 | Commitments | 406 | 207 complete; 65 stopped; 72 blocked; 26 ready; 21 tentative; 15 in progress |
 | Sessions | 166 | 103 completed; 63 stopped; all terminal |
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
-| Hypotheses | 203 | 40 confirmed; 33 refuted; 64 blocked; 18 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
-| Experiments | 173 | 54 accepted; 38 rejected; 53 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
+| Hypotheses | 203 | 40 confirmed; 33 refuted; 63 blocked; 19 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
+| Experiments | 174 | 54 accepted; 38 rejected; 54 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
 | Frontier results | 65 | 65 registered, 37 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
@@ -527,6 +527,7 @@ case or experiment separately.
 | [n17 Widened Projection Theorem, Scope and Instrument](docs/project/reviews/review-2026-10-02-n17-widened-projection-scope.md) | dated review record | record | retained | — |
 | [n17 Local Theorem Modulo Sliders — Argument Review and Instrument Recipe](docs/project/reviews/review-2026-10-02-n17-local-theorem-recipe.md) | dated review record | record | retained | — |
 | [n17 Local Theorem Modulo Sliders — Independent Review of the H-261 Instrument](docs/project/reviews/review-2026-10-02-n17-local-theorem-instrument.md) | dated review record | record | retained | — |
+| [n17 Depth-Width Wall Lemma](docs/project/reviews/review-2026-10-02-n17-depth-width-wall-lemma.md) | dated review record | record | retained | — |
 | [n17 Optimality Route After PR 265](docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md) | dated review record | record | retained | — |
 | [X-048 Session 167 Pilots: Receipts](packing/campaign/explorations/X048-session-167-pilots/README.md) | research synthesis | record | retained | — |
 | [X-048 Route Review: Exploratory Receipts](packing/campaign/explorations/X048-route-review/README.md) | research synthesis | record | retained | — |
@@ -5327,7 +5328,7 @@ round that names the hypothesis, control roles included.
 | [H-263](packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md) | open question | Which closed cover keeps the whole endpoint family inside one occupancy state and leaves the fewest survivors (BC-410) | 0 | — |
 | [H-264](packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md) | open question | The cost of one exact geometric exclusion on a uniform residue sample at a cap at or above the endpoint; re-scopes think-11ma (BC-411) | 0 | — |
 | [H-265](packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md) | blocked | The certified chart endpoint is a root of the catalogue’s irreducible degree-18 polynomial; instrument to build (BC-409) | 0 | — |
-| [H-266](packing/campaign/hypotheses/H-266-n17-minimal-capacity-one-cover.md) | blocked | A D4-symmetric capacity-one cover of at most 25 cells holds the endpoint family in one occupancy state; replaces the H259 grid; instrument to build | 0 | — |
+| [H-266](packing/campaign/hypotheses/H-266-n17-minimal-capacity-one-cover.md) | unresolved | A D4-symmetric capacity-one cover of at most 25 cells holds the endpoint family in one occupancy state; the 24-cell cover is certified, but the family also realises a second state through an overlapping cell | 1 | exp-246 unresolved: 43,593 orbits; family margin 0.013770 in its assigned cells |
 | [H-267](packing/campaign/hypotheses/H-267-n17-isolated-sub-pattern-residue.md) | blocked | Isolated sub-pattern certificates of arity at most seven leave at most 10^4 orbits on the H-266 cover; waits on H-266 | 0 | — |
 | [H-268](packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md) | blocked | With square 6 in its H-266 cell, the slides of squares 5 and 13 stay inside the box exp-244 certifies; closes H-261’s scope gap | 0 | — |
 
@@ -5653,7 +5654,7 @@ The relevant generator writes the receipt, and the entry fills in on the next
 
 ## Experiments Conducted
 
-There are 173 rounds registered in `series-000`.
+There are 174 rounds registered in `series-000`.
 
 They record 2512.1 agent-minutes and 4023.7 wall-minutes.
 These totals exclude four historical annealing rounds with unrecorded timing; their wall
@@ -5870,6 +5871,7 @@ archive beside it.
 | [exp-242](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-242-h258-n17-core-stress.md) | 17 | target | H-258 | Polynomial-ring identity proof and 256-bit outward weight bounds for the fixed common-core stress | All 52 identities exact; six zero and 52 positive weights; independent review and clean replay | accepted |
 | [exp-243](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-243-h262-n17-charge-floor-pilot.md) | 17 | target | H-262 | One-sided charge-floor pilot on the H259 grid with the s(6) and s(10) cuts | R068 at U excludes nothing: 7,703,312 orbits survive; symmetric ceiling 30,966 | rejected |
 | [exp-244](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-244-h261-n17-local-minimum.md) | 17 | target | H-261 | Focused-rectangle ratio test modulo sliders with per-cell affine duals over a declared slider box | All 90 coordinates pass at r = 1/5000, worst 0.925818; the certified box does not cover the claim’s physical slider domain | unresolved |
+| [exp-246](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-246-h266-n17-capacity-one-cover.md) | 17 | target | H-266 | Exact 24-cell D4-symmetric capacity-one cover with the depth-width wall lemma | 346,104 states, 43,593 orbits; the family realises two states through an overlapping side cell | unresolved |
 
 ### Cost and provenance
 
@@ -6048,10 +6050,11 @@ archive beside it.
 | exp-242 | 300 seconds; one worker | 30.3 s | — | criterion | `2fbf8d293`; clean replay of run-001, identical outputs |
 | exp-243 | 900 seconds; two workers | 133 s | — | criterion | `1a8a5e4a5`; one-sided pilot, clean replay identical |
 | exp-244 | 600 seconds; one worker | 15.2 s | — | criterion | `e91bd8597`; clean run at 603d5cb3, 93 cells |
+| exp-246 | 60 seconds; one worker | 0.77 s | — | criterion | `e1f8b14b4`; clean run at 603d5cb3 |
 
-### What the 173 rounds jointly establish
+### What the 174 rounds jointly establish
 
-The 173 rounds use 2512.1 agent-minutes and 4023.7 wall-minutes under the campaign’s
+The 174 rounds use 2512.1 agent-minutes and 4023.7 wall-minutes under the campaign’s
 retained effort accounting.
 The never-invoked exp129 adds no scientific result or execution time.
 Exp-114 contributes 2.46 seconds of target/replay effort; its readiness work is recorded

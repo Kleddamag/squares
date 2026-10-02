@@ -1438,7 +1438,10 @@ agenda:
     artifacts:
     - packing/campaign/hypotheses/H-266-n17-minimal-capacity-one-cover.md
     note: >-
-      Started in Session 167 as lanes G (checker) and G-proof (wall lemma).
+      Started in Session 167 as lanes G (checker) and G-proof (wall lemma). exp-246 certifies the tabbed 24-cell cover (43,593
+      orbits) and the review proves the wall lemma; unresolved because the family also realises a second
+      state through side cell S1 and square 6's range is declared. Next, a unique-state check and a derived
+      square-6 range.
   - id: BC-416
     purpose: research
     owner_focus: correctness

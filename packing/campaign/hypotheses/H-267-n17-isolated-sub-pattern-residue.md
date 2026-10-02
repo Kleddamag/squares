@@ -54,6 +54,17 @@ sub-patterns that cannot be realised at all, so one certificate excludes hundred
 cases. This hypothesis tests whether the same mechanism brings n17 to a residue that
 geometric exclusion at one to two CPU-hours per case can absorb.
 
+## Correction and Selector Results
+
+*Added 2026-10-02 by Session 168.* The exploratory arity-five numbers in the notes above
+are false: the retained selector `devtools.select_n17_sub_patterns` places every one of
+the proxy’s arity-five flags, and on the unique-state cover it flags nothing at arity
+five or below. At arity six it flags three interior-crowd classes; if all three are
+certified, 23,354 orbits survive, above this hypothesis’s threshold, so arity seven is
+the next measurement.
+The [selector receipts](../explorations/X048-session-168-pilots/README.md) hold the
+counts; none of them is a certificate.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

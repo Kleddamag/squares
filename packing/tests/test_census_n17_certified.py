@@ -16,6 +16,7 @@ from devtools.census_n17_certified import (
     DESIGN,
     KERNEL_FRAME,
     LEDGER_SCHEMA,
+    VERIFICATION_SCHEMA,
     RefusedError,
     census,
     cover_context,
@@ -23,6 +24,8 @@ from devtools.census_n17_certified import (
 
 W7 = ["corner-SW", "side-N0", "side-W0", "side-W1", "side-W2", "interior-SW", "interior-W"]
 A = ["interior-SW", "interior-NW", "interior-W", "interior-S", "interior-N", "interior-SE"]
+SEED, NODE, MANIFEST = "a" * 64, "b" * 64, "c" * 64
+ALLOWED = {"kernel": ["1" * 64], "branch-and-bound": ["2" * 64]}
 
 
 def write_json(root: Path, name: str, document: dict[str, Any]) -> tuple[str, str]:
@@ -34,7 +37,13 @@ def write_json(root: Path, name: str, document: dict[str, Any]) -> tuple[str, st
 
 
 def kernel_receipt(cells: list[str]) -> dict[str, Any]:
-    return {"status": "PASS_SAVED_CLOSED", "cells": cells, "frame": KERNEL_FRAME}
+    return {
+        "status": "PASS_SAVED_CLOSED",
+        "cells": cells,
+        "frame": KERNEL_FRAME,
+        "seed_sha256": SEED,
+        "node_sha256": NODE,
+    }
 
 
 def bb_receipt(cells: list[str], **extra: Any) -> dict[str, Any]:
@@ -44,8 +53,39 @@ def bb_receipt(cells: list[str], **extra: Any) -> dict[str, Any]:
         "pattern": cells,
         "verdict": BB_CERTIFIED,
         "control": False,
+        "certificate_manifest": MANIFEST,
         **extra,
     }
+
+
+def saved_certificate(root: Path, name: str) -> str:
+    """A certificate directory holding files with the names the receipts give."""
+    directory = root / "certificates" / name
+    directory.mkdir(parents=True, exist_ok=True)
+    for object_name in (f"seed-{SEED}", f"node-{NODE}", MANIFEST):
+        _ = (directory / f"{object_name}.json.gz").write_bytes(b"")
+    return f"certificates/{name}"
+
+
+def verification(root: Path, name: str, certifier: str, cells: list[str], **extra: Any) -> Any:
+    """A fabricated full, passing verification receipt from an allowed verifier."""
+    kernel = certifier == "kernel"
+    document = {
+        "schema": VERIFICATION_SCHEMA,
+        "verifier": certifier,
+        "verifier_sha256": ALLOWED[certifier][0],
+        "status": "PASS",
+        "mode": "full",
+        "certificate": (
+            {"seed_sha256": SEED, "node_sha256": NODE}
+            if kernel
+            else {"manifest_sha256": MANIFEST}
+        ),
+        "cells" if kernel else "pattern": cells,
+        **extra,
+    }
+    path, digest = write_json(root, f"verify-{name}.json", document)
+    return {"receipt": path, "sha256": digest}
 
 
 def entry(
@@ -66,7 +106,12 @@ def entry(
 
 def run_census(root: Path, entries: list[dict[str, Any]]) -> dict[str, Any]:
     ledger = root / "ledger.yaml"
-    document = {"schema": LEDGER_SCHEMA, "design": DESIGN, "entries": entries}
+    document = {
+        "schema": LEDGER_SCHEMA,
+        "design": DESIGN,
+        "verifiers": ALLOWED,
+        "entries": entries,
+    }
     _ = ledger.write_text(json.dumps(document), encoding="utf-8")  # JSON is YAML
     return census(ledger, root=root, selector_receipts=())
 
@@ -121,7 +166,15 @@ def test_only_admitted_entries_are_counted(tmp_path: Path) -> None:
     review = tmp_path / "review.md"
     _ = review.write_text("admits W7\n", encoding="utf-8")
     entries = [
-        entry("W7", W7, w7, status="admitted", evidence="review.md"),
+        entry(
+            "W7",
+            W7,
+            w7,
+            status="admitted",
+            evidence="review.md",
+            certificate=saved_certificate(tmp_path, "W7"),
+            verification=verification(tmp_path, "W7", "kernel", W7),
+        ),
         entry("A", A, a, certifier="branch-and-bound"),
     ]
     record = run_census(tmp_path, entries)
@@ -150,3 +203,68 @@ def test_uncertified_or_control_receipts_are_refused(tmp_path: Path) -> None:
     budget = write_json(tmp_path, "budget.json", bb_receipt(A, verdict="unresolved-at-budget"))
     with pytest.raises(RefusedError, match="not certified"):
         _ = run_census(tmp_path, [entry("A", A, budget, certifier="branch-and-bound")])
+
+
+@pytest.mark.parametrize(
+    ("change", "message"),
+    [
+        ({"verification": None}, "verification must name"),
+        ({"sha256": "0" * 64}, "verification digest"),
+        ({"status": "FAIL"}, "did not pass"),
+        ({"mode": "sample"}, "sample"),
+        ({"verifier_sha256": "9" * 64}, "allowlist"),
+        ({"verifier": "branch-and-bound"}, "not a kernel verification"),
+        ({"certificate": {"seed_sha256": SEED, "node_sha256": "d" * 64}}, "different"),
+        ({"checked_cells": A}, "another class"),
+        ({"certificate_path": None}, "saved certificate"),
+    ],
+)
+def test_an_admitted_entry_needs_its_full_passing_allowed_verification(
+    tmp_path: Path, change: dict[str, Any], message: str
+) -> None:
+    receipt = write_json(tmp_path, "w7.json", kernel_receipt(W7))
+    _ = (tmp_path / "review.md").write_text("admits W7\n", encoding="utf-8")
+    fields = {k: v for k, v in change.items() if k not in {"verification", "sha256"}}
+    certificate = fields.pop("certificate_path", saved_certificate(tmp_path, "W7"))
+    cells = fields.pop("checked_cells", W7)
+    checked = verification(tmp_path, "W7", "kernel", cells, **fields)
+    if "sha256" in change:
+        checked["sha256"] = change["sha256"]
+    if "verification" in change:
+        checked = change["verification"]
+    admitted = entry(
+        "W7",
+        W7,
+        receipt,
+        status="admitted",
+        evidence="review.md",
+        certificate=certificate,
+        verification=checked,
+    )
+    with pytest.raises(RefusedError, match=message):
+        _ = run_census(tmp_path, [admitted])
+
+
+def test_an_admitted_branch_and_bound_entry_counts_with_its_verification(
+    tmp_path: Path,
+) -> None:
+    receipt = write_json(tmp_path, "a.json", bb_receipt(A))
+    _ = (tmp_path / "review.md").write_text("admits A\n", encoding="utf-8")
+    admitted = entry(
+        "A",
+        A,
+        receipt,
+        certifier="branch-and-bound",
+        status="admitted",
+        evidence="review.md",
+        certificate=saved_certificate(tmp_path, "A"),
+        verification=verification(tmp_path, "A", "branch-and-bound", A),
+    )
+    record = run_census(tmp_path, [admitted])
+    assert record["certified"]["admitted"] == 1
+    assert record["certified"]["surviving_states"] == 346104 - 110448
+    assert record["certified"]["orbits"] == 43593 - 13897
+    assert (
+        record["entries"][0]["verification"]["verifier_sha256"]
+        == ALLOWED["branch-and-bound"][0]
+    )

@@ -17,6 +17,10 @@ The ledger. A YAML file declares one entry per certified class:
 - `certificate`: the saved proof objects, or null where the certifier keeps none.
 - `status`: `admitted` or `pending`, and `evidence`: the review document that admits the
   entry, required once it is admitted.
+- `verification`, required once admitted: the standing verifier's receipt and its SHA-256
+  (`verify_n17_kernel_certificate` or `verify_n17_bb_certificate`, written separately
+  from the producers). The ledger's header lists, under `verifiers`, the reviewed digests
+  of each verifier; a receipt from any other bytes does not count.
 
 Every path is repository-relative.
 
@@ -30,7 +34,11 @@ The checks. An entry is refused, and no count is reported at all, unless:
 - no D4 image of the pattern lies in the endpoint's state, which must survive;
 - a declared certificate exists, and for the kernel holds the seed and node the receipt
   names;
-- an admitted entry names review evidence that exists, and no class is declared twice.
+- an admitted entry names review evidence that exists, and no class is declared twice;
+- an admitted entry names a saved certificate and a verification receipt that exists, has
+  its declared digest, PASSes in full mode, comes from a verifier of the entry's kind
+  whose digest the header allows, names the certificate's own digests (the kernel's seed
+  and node, the branch and bound's manifest), and checked the declared class.
 
 The report. The certified line counts admitted entries only. Pending entries with a
 verified receipt are a separate projection, and pending entries still awaiting a receipt a
@@ -82,6 +90,7 @@ KERNEL_CLOSED = ("PASS_SAVED_CLOSED", "PASS_CERTIFIED_CLOSED")
 KERNEL_FRAME = f"n17-{DESIGN}"
 BB_SCHEMA = "n17-subpattern-bb-pilot/v1"
 BB_CERTIFIED = "certified-infeasible"
+VERIFICATION_SCHEMA = "n17-certificate-verification/v1"
 FIELDS = (
     "name",
     "cells",
@@ -180,10 +189,88 @@ def receipt_cells(
     return receipt.get("pattern")
 
 
-def check_entry(cover: Cover, entry: Any, root: Path, index: int) -> Entry:
+def certificate_digests(entry: dict[str, Any], receipt: dict[str, Any]) -> dict[str, Any]:
+    """The digests that name the entry's saved objects, as its producer receipt gives them."""
+    if entry["certifier"] == "kernel":
+        return {
+            "seed_sha256": receipt.get("seed_sha256"),
+            "node_sha256": receipt.get("node_sha256"),
+        }
+    return {"manifest_sha256": receipt.get("certificate_manifest")}
+
+
+def check_certificate(
+    entry: dict[str, Any], receipt: dict[str, Any], root: Path, where: str
+) -> dict[str, Any]:
+    """The declared certificate directory holds the objects the producer receipt names."""
+    saved = resolve(root, entry["certificate"], f"{where}: certificate")
+    digests = certificate_digests(entry, receipt)
+    if entry["certifier"] == "kernel":
+        names = [f"{kind}-{digests[f'{kind}_sha256']}.json.gz" for kind in ("seed", "node")]
+    else:
+        names = [f"{digests['manifest_sha256']}.json.gz"]
+    for name in names:
+        if not (saved / name).is_file():
+            raise RefusedError(f"{where}: the certificate holds no {name}")
+    return digests
+
+
+def check_verification(
+    cover: Cover,
+    entry: dict[str, Any],
+    context: tuple[Path, dict[str, list[str]], int, dict[str, Any]],
+    where: str,
+) -> dict[str, Any]:
+    """The standing verifier's receipt: full, passing, allowed, and about this certificate."""
+    root, allowed, mask, digests = context
+    declared = entry.get("verification")
+    if not isinstance(declared, dict) or set(declared) != {"receipt", "sha256"}:
+        raise RefusedError(f"{where}: verification must name a receipt and its sha256")
+    path = resolve(root, declared["receipt"], f"{where}: verification")
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    if digest != declared["sha256"]:
+        raise RefusedError(f"{where}: verification digest {digest} is not the declared one")
+    verification = json.loads(path.read_text(encoding="utf-8"))
+    certifier = entry["certifier"]
+    if not isinstance(verification, dict) or (
+        verification.get("schema") != VERIFICATION_SCHEMA
+        or verification.get("verifier") != certifier
+    ):
+        raise RefusedError(f"{where}: not a {certifier} verification receipt")
+    if verification.get("status") != "PASS":
+        raise RefusedError(f"{where}: the verification did not pass")
+    if verification.get("mode") != "full":
+        raise RefusedError(f"{where}: the verification is a sample, not a full check")
+    if verification.get("verifier_sha256") not in allowed.get(certifier, []):
+        raise RefusedError(
+            f"{where}: verifier {verification.get('verifier_sha256')} is not on the allowlist"
+        )
+    checked = verification.get("certificate") or {}
+    if any(checked.get(key) != value for key, value in digests.items()):
+        raise RefusedError(f"{where}: the verification names a different certificate")
+    names = verification.get("cells" if certifier == "kernel" else "pattern")
+    if class_mask(cover, names, f"{where}: verification") != mask:
+        raise RefusedError(f"{where}: the verification checked another class")
+    return {
+        "receipt": declared["receipt"],
+        "verifier_sha256": verification["verifier_sha256"],
+        "mode": "full",
+        "status": "PASS",
+        "certificate": digests,
+    }
+
+
+def check_entry(
+    cover: Cover, entry: Any, root: Path, index: int, allowed: dict[str, list[str]]
+) -> Entry:
     """Every check on one ledger entry; refuses on the first that fails."""
-    if not isinstance(entry, dict) or set(entry) != set(FIELDS):
-        raise RefusedError(f"entry {index}: fields must be exactly {', '.join(FIELDS)}")
+    if not isinstance(entry, dict) or not set(FIELDS) <= set(entry) <= {
+        *FIELDS,
+        "verification",
+    }:
+        raise RefusedError(
+            f"entry {index}: fields must be {', '.join(FIELDS)}, and optionally verification"
+        )
     where = f"entry {entry['name']!r}"
     if entry["certifier"] not in CERTIFIERS:
         raise RefusedError(f"{where}: certifier {entry['certifier']!r}")
@@ -206,6 +293,8 @@ def check_entry(cover: Cover, entry: Any, root: Path, index: int) -> Entry:
     if entry["receipt"] is None:
         if entry["status"] == "admitted" or entry["receipt_sha256"] is not None:
             raise RefusedError(f"{where}: only a pending entry may await its receipt")
+        if entry.get("verification") is not None:
+            raise RefusedError(f"{where}: a verification needs the producer receipt")
         record["verified"] = False
         return Entry(entry["name"], mask, entry["status"], entry["certifier"], record)
     path = resolve(root, entry["receipt"], f"{where}: receipt")
@@ -220,13 +309,16 @@ def check_entry(cover: Cover, entry: Any, root: Path, index: int) -> Entry:
     )
     if certified != mask:
         raise RefusedError(f"{where}: the receipt certifies another class")
+    admitted = entry["status"] == "admitted"
+    if admitted and entry["certificate"] is None:
+        raise RefusedError(f"{where}: an admitted entry names its saved certificate")
     if entry["certificate"] is not None:
-        saved = resolve(root, entry["certificate"], f"{where}: certificate")
-        if entry["certifier"] == "kernel":
-            for kind in ("seed", "node"):
-                name = f"{kind}-{receipt.get(f'{kind}_sha256')}.json.gz"
-                if not (saved / name).is_file():
-                    raise RefusedError(f"{where}: the certificate holds no {name}")
+        digests = check_certificate(entry, receipt, root, where)
+        if admitted or entry.get("verification") is not None:
+            context = (root, allowed, mask, digests)
+            record["verification"] = check_verification(cover, entry, context, where)
+    elif entry.get("verification") is not None:
+        raise RefusedError(f"{where}: a verification needs the saved certificate")
     kernel = entry["certifier"] == "kernel"
     record["verified"] = True
     record["receipt_status"] = receipt.get("status") if kernel else receipt.get("verdict")
@@ -243,7 +335,14 @@ def load_ledger(cover: Cover, ledger: Path, root: Path) -> list[Entry]:
     raw = document.get("entries") or []
     if not isinstance(raw, list):
         raise RefusedError(f"{ledger}: entries must be a list")
-    entries = [check_entry(cover, entry, root, index) for index, entry in enumerate(raw)]
+    allowed = document.get("verifiers") or {}
+    if not isinstance(allowed, dict) or not all(
+        isinstance(digests, list) for digests in allowed.values()
+    ):
+        raise RefusedError(f"{ledger}: verifiers must map a certifier to a list of digests")
+    entries = [
+        check_entry(cover, entry, root, index, allowed) for index, entry in enumerate(raw)
+    ]
     names = [entry.name for entry in entries]
     if len(set(names)) != len(names):
         raise RefusedError(f"{ledger}: entry names repeat")

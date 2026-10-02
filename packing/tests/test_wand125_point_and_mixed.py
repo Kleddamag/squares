@@ -11,6 +11,7 @@ replayed in the packet's receipts.
 
 from __future__ import annotations
 
+import hashlib
 import json
 from fractions import Fraction
 from pathlib import Path
@@ -185,3 +186,24 @@ def test_n21_collect_takes_a_receipts_path_relative_to_the_working_directory(
     assert result["stored"] == stored
     row = result["compressed_file_rows"][0]
     assert row.startswith("| `receipts/n21/root.log.gz` | receipt |")
+
+
+def test_n50_complete_replay_returns_every_shipped_record() -> None:
+    full = audit.PACKET / "receipts" / "n50" / "full"
+    retained = audit.SOURCE / audit.N50["L740"] / "certificate.json"
+    shipped = json.loads(read_retained_bytes(retained))
+    fresh_bytes = read_retained_bytes(full / "proof" / "certificate.json")
+    fresh = json.loads(fresh_bytes)
+    assert fresh["status"] == "ALL_ANGLES_VERIFIED_AND_REPLAYED"
+    assert fresh == shipped
+    progress = json.loads((full / "proof" / "replay-progress.json").read_text())
+    assert progress == {"done": audit.N50_LAST + 1, "total": audit.N50_LAST + 1}
+    axis = json.loads((full / "proof" / "axis" / "replayed.json").read_text())
+    assert axis == shipped["results"]["0"]
+    for index in range(1, audit.N50_LAST + 1):
+        replayed = full / "proof" / f"net{index:03}" / "replayed.json"
+        assert json.loads(replayed.read_text()) == shipped["results"][str(index)]
+    recorded = json.loads((full / "compare.json").read_text())
+    assert recorded["status"] == "FULL_REPLAY_MATCHES_SHIPPED"
+    assert recorded["oblique_angles_matching"] == audit.N50_LAST
+    assert recorded["certificate_sha256"] == hashlib.sha256(fresh_bytes).hexdigest()

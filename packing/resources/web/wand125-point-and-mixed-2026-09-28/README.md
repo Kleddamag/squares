@@ -243,6 +243,7 @@ with its exit status, wall and child CPU time.
 | `s(50)`, bundle bytes | `n50-bundle-check` on a pristine unpacking | 0.5 s | 0.4 s | All 621 entries of `files-sha256.json` match; nothing unlisted |
 | `s(50)`, inputs | `n50-inputs` on the same unpacking | 26 s | 18 s | Each of the 200 oblique inputs hashes to the digest its `result.json` records, and every interval in it encloses the exact datum recomputed here |
 | `s(50)`, sampled replay | `n50-replay BUNDLE --index 0 --index 1 --index 150 --index 200 --workers 2` | 852 s | 814 s, summed per angle | All four equal the shipped records; see below |
+| `s(50)`, the source’s full replay | `python3 code/verify_mixed_full_proof.py proof --workers 3` | 19,507 s | not recorded | `ALL_ANGLES_VERIFIED_AND_REPLAYED`, all 201 directions equal to the shipped records; see [Complete Replays](#complete-replays-here-29-september-2026) |
 
 **`s(45)`.** `verify.sh`, unchanged, ran `check_cover.py`, cloned `evand/square-packing`
 at `6e1223cf`, checked `zmx2.rs` against its pinned SHA-256 `6b7f0f79…`, built it with
@@ -316,11 +317,12 @@ The sample ran on an unpacking of the pinned tarball; a second, pristine unpacki
 of the same tarball matched all 621 listed digests.
 The oblique angles took 1.34 times their upstream seconds here, so the 200 oblique
 angles, 28,350 upstream seconds, would take about 10.5 CPU-hours: over this lane’s
-three-hour ceiling, so the complete replay was not run.
+three-hour ceiling, so the complete replay was not run that day.
+It ran on 29 September, by the procedure below.
 Every one of the bundle’s 201 records carries `gamma = 1` and status `ANGLE_VERIFIED` or
 `AXIS_VERIFIED` with an empty frontier, 80,719,306 oblique nodes in all.
 
-**Pending: the complete `L740` replay.** In a scratch directory `S`, with `c++` a C++17
+**The complete `L740` replay.** In a scratch directory `S`, with `c++` a C++17
 compiler and `python3` an interpreter with NumPy (the project’s `.venv/bin/python3` will
 do):
 
@@ -353,7 +355,8 @@ The driver rewrites `proof/certificate.json` with `results` in completion order,
 `n50-compare` compares it with the retained certificate field by field, checks every
 per-angle `replayed.json` against the shipped `result.json`, and must print
 `FULL_REPLAY_MATCHES_SHIPPED`. Budget about 10.5 CPU-hours by the sample above (7.88
-upstream), so at least three hours of wall on three idle workers.
+upstream), so at least three hours of wall on three idle workers; on the shared host it
+took five and a half.
 
 **Not replayed, by decision.** `L735` and `L7318` are superseded by `L740` and were not
 replayed; their files are retained and their tarballs pinned.
@@ -390,10 +393,11 @@ None of it decides coverage.
 
 ## Complete Replays Here, 29 September 2026
 
-The complete `s(21)` run ended on 29 September in the session that ran the checks of
+Both complete runs ended on 29 September in the session that ran the checks of
 [Replay Here](#replay-here), on the host [`receipts/host.json`](receipts/host.json)
-records. Its records came into this packet on 2 October from the transfer branch that
-held them, `claude/replay-wand125-n21-point`, and that day the compare step ran on the
+records. Their records came into this packet on 2 October from the transfer branches
+that held them, `claude/replay-wand125-n21-point` and
+`claude/replay-wand125-n50-l740-local`, and that day each compare step ran on the
 retained records under the project interpreter, with its receipt written by
 `devtools.replay_receipt`.
 
@@ -413,7 +417,30 @@ retained records under the project interpreter, with its receipt written by
   The run’s own `linkage.json` (22,317,976 bytes, SHA-256 `646c4369…`) is not retained,
   as the tool intends; [`comparison.json`](receipts/n21/comparison.json) records its
   digest.
-- **Controls.** The `s(21)` replay has none: no tool here runs `verify_portable.py` on a
+- **`s(50)`.** The shipped `verify_mixed_full_proof.py proof --workers 3`, with
+  `PYTHONOPTIMIZE` unset and one BLAS thread, ran on a fresh unpacking of the pinned
+  tarball from 01:29:37Z to 06:54:44Z, 19,507 s of wall; its CPU time was not recorded.
+  It printed `ALL_ANGLES_VERIFIED_AND_REPLAYED` for 201 of 201 directions
+  ([`run.log`](receipts/n50/full/run.log)), with the checker its own `compile_verifier`
+  built (`replay-verify`, 54,080 bytes, SHA-256 `e3643cb5…`, by GCC 13.3.0; not
+  retained). [`receipts/n50/full/proof/`](receipts/n50/full/proof/) keeps every other
+  file the driver wrote. `n50-compare`, on those files laid over a fresh unpacking with
+  the binary in place, printed `FULL_REPLAY_MATCHES_SHIPPED`
+  ([`compare.log`](receipts/n50/full/compare.log)): the rewritten certificate equals the
+  shipped one field by field, and the axis record and every oblique node count and lower
+  bound equal the shipped ones.
+  [`compare.json`](receipts/n50/full/compare.json) is byte-identical to the comparison
+  the transfer host wrote on 29 September.
+  Each `replayed.json` is also byte-identical to the one the shipped bundle carries,
+  since the replay writes the same record; the log, the progress file, the binary and the
+  certificate rewritten in completion order (`545de253…`, against the shipped
+  `3e96341b…`) are what show the run happened.
+- **Controls.** The `n = 50` checker, `mixed_rotated_verify.cpp` (`89b674a6…`), accepts
+  the `n = 37` certificate at its least-bound direction and refuses two mutated copies
+  there, in `receipts/n37/control.json` of the
+  [2026-10-01 packet](../wand125-point-and-mixed-2026-10-01/README.md), held by
+  `tests/test_wand125_checker_controls.py`; no mutation of the `n = 50` certificate was
+  run. The `s(21)` replay has no controls: no tool here runs `verify_portable.py` on a
   mutated certificate.
 
 ## Receipts
@@ -433,7 +460,10 @@ retained records under the project interpreter, with its receipt written by
   and exit record (the two frontier logs as `.gz`), and `comparison.json` with its
   receipt `comparison.log`.
 - [`receipts/n50/`](receipts/n50/): `bundle_check.json`, `inputs.json` and
-  `sample.json`, each with the log of the run that wrote it.
+  `sample.json`, each with the log of the run that wrote it; and `full/`, the complete
+  replay’s `run.log`, `start.txt` and `end.txt`, the driver’s outputs under `proof/`
+  (`certificate.json.gz`, `replay-progress.json` and the 201 `replayed.json`), and
+  `compare.json` with its receipt `compare.log`.
 
 The tool is
 [`devtools/audit_wand125_point_and_mixed.py`](../../../devtools/audit_wand125_point_and_mixed.py),
@@ -455,21 +485,23 @@ keeps its fast part true.
 - **Lean.** The `s(21)` Lean overlay was not built.
   Its data file was regenerated from the certificate and matched, and it was scanned for
   forbidden constructs, but the kernel checks and the axiom report are the source’s.
-- **`n = 50`.** Only four of 201 directions were replayed; the complete replay is
-  pending above. The soundness of the threshold and centre-domain changes is the subject
-  of the 2026-09-28 review, not of this packet.
-- **Controls.** The `s(21)` replay has none.
+- **`n = 50`.** The complete replay ran the source’s driver and checker again; the
+  angle-zero tables are a second implementation for one direction only. The soundness of
+  the threshold and centre-domain changes is the subject of the 2026-09-28 review, not of
+  this packet.
+- **Controls.** The `n = 50` checker’s controls were run on the `n = 37` certificate,
+  not on this one, and the `s(21)` replay has none.
 - **Priority.** For `s(21) = 5` and `s(45) = 7` Evan Daniel’s mixed point-and-segment
   proofs came first, and the source claims no priority; these are second, point-only
   routes.
 
 ## Compressed Files
 
-Fourteen data files of more than 1,000 lines are stored as deterministic gzip made by
+Fifteen data files of more than 1,000 lines are stored as deterministic gzip made by
 `gzip -9n`: eleven upstream files — the two `n = 21` point files with Daniel’s support
 file, the `n = 45` cover, and the `n = 50` candidates, certificates and audit record —
-and three receipts, the two `n = 21` frontier-shard logs and the `n = 45` per-root
-census.
+and four receipts, the two `n = 21` frontier-shard logs, the `n = 45` per-root census
+and the certificate the complete `n = 50` replay rewrote.
 Each has no file name or timestamp in its header, following the
 [R052 packet](../n17-guzhou-r052-2026-09-25/README.md).
 The table gives the Git blob and SHA-256 of the decompressed bytes, which for an
@@ -496,6 +528,7 @@ present, the repository’s readers require them to agree.
 | `receipts/n21/frontier-s0.log.gz` | receipt | `fe34f614c5824ff54dafc0b91e61bd8cd5486e9c` | `34950ceae8c6ed75d70ced698106bcbe7f2b487a194fb79927d9a5b582a041d6` |
 | `receipts/n21/frontier-s1.log.gz` | receipt | `2b352fad97f4e4d8aaa7b1382bcc357a6dd88d4e` | `8db8376070249d8c61499a39078cb5111df7437780c0ee0d2592c1bb0880cd0e` |
 | `receipts/n45/roots.log.gz` | receipt | `5da0ec48641158ac8100ad99044d472b110f709f` | `45c1c221013b019062b8d43e985886604656f8b4b1ff398853ab32fa2ef505bd` |
+| `receipts/n50/full/proof/certificate.json.gz` | receipt | `7a4eedbec1332f3a1e3822afc6e16aaee1888cbb` | `545de253151146e4977a03d8fe3524a9ae83382b51e6fe1d66f825534f260bf0` |
 | `square-packing-bounds/certificates/mixed_n50_L7318/candidate.json.gz` | upstream | `7d63faad0fc6ec167d077328fb14955726a7f84c` | `096a3219fb53574af28109d3cae2f6ad39aedb4b85bcf5333010b8dc2fe7a590` |
 | `square-packing-bounds/certificates/mixed_n50_L7318/certificate.json.gz` | upstream | `35afd2d15762cea809cf3e670d6bd28955ea769f` | `59c13465a2b1cd12626166879deb292598d1063b0655330a36c608d80212bc4d` |
 | `square-packing-bounds/certificates/mixed_n50_L735/candidate.json.gz` | upstream | `93036e5b3a87155f84854d79e0be19ae8d21c18b` | `ddb70daa1878a022585e1a585851a9ef2a92b9f1a1ff749e901e190992eef5cd` |

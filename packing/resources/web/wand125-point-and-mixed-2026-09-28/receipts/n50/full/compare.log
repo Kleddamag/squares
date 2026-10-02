@@ -1,0 +1,17 @@
+# command: .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed n50-compare /tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/laneS/compare/n50-L7.40-proof-bundle --out resources/web/wand125-point-and-mixed-2026-09-28/receipts/n50/full/compare.json
+# cwd: packing/ of the repository
+# python3: the project interpreter, CPython 3.14.7 (.venv/bin/python3)
+# host: 4 cores; load 5.19 4.39 3.10; started 2026-10-02T16:46:15Z
+{
+  "status": "FULL_REPLAY_MATCHES_SHIPPED",
+  "fresh_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+  "progress": {
+    "done": 201,
+    "total": 201
+  },
+  "differing_fields": [],
+  "oblique_angles_matching": 200,
+  "axis_matches": true,
+  "certificate_sha256": "545de253151146e4977a03d8fe3524a9ae83382b51e6fe1d66f825534f260bf0"
+}
+# finished 2026-10-02T16:46:15Z; exit 0; wall 0.266 s; CPU 0.2 s (user 0.200 + sys 0.006); load 5.19 4.39 3.10

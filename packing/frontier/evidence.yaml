@@ -8066,10 +8066,11 @@ evidence:
       rows, all three falsifying mutations rejected. It also accepted at 99582155c on
       2026-09-24, retained as bc382-bc241-checker-rerun.json.gz.
       The proof's steps are prose, and only its radius computation is machine-checked.
-      The radius generator cases.trump11.isolation_radius has no replay mode. Its full
-      2026-09-24 run, 474.5 s and value-for-value on all 4,954 retained values, is a
-      retained comparison (bc382-isolation-radius-replay.json.gz), not a replay command.
-      That run is an independent execution, not an independent implementation.
+      The radius generator cases.trump11.isolation_radius gained a --replay mode on
+      2026-10-02, and the radius computation now carries its own entry,
+      E-n011-trump-isolation-radius, a same-implementation replay; the 2026-09-24 run
+      (474.5 s, bc382-isolation-radius-replay.json.gz) was an independent execution, not
+      an independent implementation.
       capture_radius is a second implementation of the face layer only; the checker is
       source-distinct for rows, curvatures, stresses and the aggregate arithmetic.
       Two residuals from the closure review remain, and neither touches the rung leaves.
@@ -8077,6 +8078,42 @@ evidence:
       inactive-feature gap cap is single-source and does not bind.
       This entry makes no novelty statement. The novelty of the statement H-236 composes
       from it is assessed on E-n011-h236-rung0-reduction.
+
+  - id: E-n011-trump-isolation-radius
+    claim: derived-structure
+    scope:
+      n_values:
+        - 11
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    source_reviewed: '2026-10-02'
+    certificate: campaign/series/series-000-smoke-and-calibration/results/bc-199-trump-isolation-radius.json
+    replay: >-
+      cd packing && uv run --frozen --all-extras --group dev python -m cases.trump11.isolation_radius
+      --replay campaign/series/series-000-smoke-and-calibration/results/bc-199-trump-isolation-radius.json
+    replay_status: passed
+    limitations: >-
+      The radius rho_row = 808514697/200000000000 and every other computed value of the BC-199
+      record, as exact rationals. The replay recomputes all 4,951 computed leaves of the record
+      (its 4,954 non-timing leaves less the three input digests, compared separately)
+      from the retained exp-013 branch matrices and certificates with the generator that
+      produced it, so it is a same-implementation replay: it shows the record is reproducible
+      and that a perturbed radius, argmin-face witness, exact modulus coefficient or declared box
+      is refused (retained as bc-199-isolation-radius-replay-receipt.json, 478 s). It is not an
+      independent implementation. The capture_radius control (a second implementation of the
+      face layer, matching the weighted modulus on all 8,448 faces to 32 digits) and the
+      source-distinct BC-241 checker are the independent legs, and both stay with
+      E-n011-trump-local-theorem-first-clause. The recorded input digest of
+      cases/trump11/tangent_cones.py no longer matches the file: it moved after the record by a
+      lint-only edit that removed the unused field parameter of exact_pivot_rows. The replay
+      reports the drift and agrees on every computed value regardless. Per-face dual witnesses
+      other than the argmin face's exact vertex are recomputed in the replay, not retained. The
+      inactive-feature gap cap is single-source and does not bind. This entry carries the radius
+      computation only; BC-240's closing proof steps are prose and stay on the proof-audited
+      entry.
 
   - id: E-wand125-n068-derived-lower
     claim: lower-bound

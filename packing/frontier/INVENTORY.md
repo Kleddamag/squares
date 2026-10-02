@@ -8,9 +8,9 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **182** evidence records. **117** are formal; **111** of those were established here.
-- **56** rest on an argument made elsewhere, of which **8** have been read by nobody here.
-- **36** claim to be first established here. **12** make no novelty statement at all - not assessed, which is not the same as not novel.
+- **183** evidence records. **118** are formal; **112** of those were established here.
+- **56** rest on an argument made elsewhere, of which **7** have been read by nobody here.
+- **36** claim to be first established here. **13** make no novelty statement at all - not assessed, which is not the same as not novel.
 
 A formal claim on an unread external proof is still formal: the proof proves its
 claim whether or not we read it. The count above is not a doubt about those
@@ -72,11 +72,11 @@ results, it is a statement about what this repository has itself examined.
 | `E-tokoharu-density-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published |
 | `E-wand125-point-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published |
 | `E-tokoharu-density-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
-| `E-green-ds7-theorem9-reported-lower` | 31 | lower-bound | reported | - | elsewhere | not-reviewed | previously-published |
+| `E-green-ds7-theorem9-reported-lower` | 31 | lower-bound | reported | - | elsewhere | defect-found | previously-published |
 | `E-green-ds7-theorem10-reported-lower` | 0 | lower-bound | reported | - | elsewhere | not-reviewed | previously-published |
 | `E-friedman-ds7-table2-opaque-lower` | 0 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-n017-maciver-reported-lower` | 0 | lower-bound | reported | - | elsewhere | not-reviewed | previously-published |
-| `E-green26-reported-lower` | 0 | lower-bound | reported | - | - | - | previously-published |
+| `E-green26-reported-lower` | 0 | lower-bound | reported | - | - | defect-found | previously-published |
 | `E-kingbird-upper-register` | 177 | upper-bound | reported | - | - | - | previously-published |
 | `E-kingbird-grid-completeness` | 96 | upper-bound | reported | - | - | - | previously-published |
 | `E-unitsquare-release1-report` | 1 | upper-bound | reported | - | - | - | previously-published |
@@ -194,6 +194,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-n011-corner-class-96-25-interval-decision` | 0 | derived-structure | verified | strict inequalities only | here | - | apparently-novel |
 | `E-n011-h236-rung0-reduction` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | apparently-novel |
 | `E-n011-trump-local-theorem-first-clause` | 0 | derived-structure | verified | whatever its theorem states | here | - | *not assessed* |
+| `E-n011-trump-isolation-radius` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | *not assessed* |
 | `E-wand125-n068-derived-lower` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* |
 | `E-franciscouzo-2026-09-27-report` | 49 | upper-bound | reported | - | elsewhere | - | previously-published |
 | `E-franciscouzo-2026-09-27-exact-replay` | 49 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published |
@@ -205,9 +206,9 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 61, verified 117
-- **method**: exact-algebraic 79, interval-certified 28, numerical-multiprecision 4, proof-assistant-checked 1, proof-audited 3, published-proof 6, reported 61
-- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 12, previously-published 130
+- **assurance**: numerically-checked 4, reported 61, verified 118
+- **method**: exact-algebraic 80, interval-certified 28, numerical-multiprecision 4, proof-assistant-checked 1, proof-audited 3, published-proof 6, reported 61
+- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 13, previously-published 130
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 

@@ -1403,6 +1403,22 @@ certified orbits of 43,593. The
 plans the rest, and the [n17 explainer](docs/project/n17-optimality-explainer.md)
 explains the case from first principles.
 
+Session 168 is still open at this handoff.
+Its later results:
+- the [residue survey](packing/campaign/explorations/X048-session-168-pilots/README.md)
+  finds no surviving state feasible at the cap, and that each needs its own failing
+  sub-pattern of arity 8 to 15;
+- the first capture pilot met its falsifier, and its
+  [review](docs/project/reviews/review-2026-10-02-n17-capture-after-pilot.md) finds that
+  producer-limited;
+- standing independent verifiers now gate the certified census.
+
+In flight, each tracked by a bead under `think-tmz6`: capture pilot 2 (`think-g2qn`),
+the H-264 per-state pilot (`think-e17c`), the selector’s finish stage and flag re-search
+(`think-gygy`), two cost-reduction reviews aiming at hundreds of CPU-hours
+(`think-pqya`, `think-3jp4`), certifying the remaining flags (`think-j6qy`), and closing
+the session (`think-wcqs`).
+
 #### Previous: Session 166 n17 Route Review
 
 [Session 166](packing/campaign/agent-sessions/session-166-n17-route-after-pr265.md) ran

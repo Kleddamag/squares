@@ -88,7 +88,7 @@ and the source’s `31360/7900` control is the same integers over `7900`.
 
 On a four-core Linux container shared with other lanes, at load averages of 13 to 30
 throughout, so every wall time is contended.
-A container restart at about 19:20 UTC killed the first full runs of `verify` and of the
+A container restart between 18:07 and 19:22 UTC killed the first full runs of `verify` and of the
 native route; `verify` was rerun whole, and the native route resumed from its journal
 of the 1,810 rows it had certified on clean commit `119d1bab`, the same tool code, both
 reniced to 10.

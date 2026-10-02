@@ -1,0 +1,36 @@
+# command: /home/user/squares/packing/.venv/bin/python3 checker/qx2_zm.py L4_k02_box7.txt --depth 18 --nproc 4 --exact-umax 1/2 --exact-from 3 --progress 200 --cx-lo 0 --cx-hi 21/10 --cy-lo 0 --cy-hi 7/2 --resume runs/qx2_shard01_1.jsonl --dump-leaves
+# cwd: work dir staged by plan_valid7_replay
+# python3: packing/.venv/bin/python3, CPython 3.14.7 with numpy
+# host: 4 cores; load 0.88 0.28 0.10; started 2026-10-02T20:11:47Z
+zeromargin.py sha256 640fe453c1a32f4aa580ca2b1261c6406923a4d7c131f65604a432c7fc2086ab (= pinned)
+sha256 6294052a37ce66c5d84b55afd606e3a52f463e22b876bf44b5aa903aefb7e737  qx2_zm.py
+sha256 1fd203469bb43a55ca7ce376b9717437e0970eead31941ec7fa100ab24d5ba95  zm_mixed.py
+sha256 640fe453c1a32f4aa580ca2b1261c6406923a4d7c131f65604a432c7fc2086ab  zeromargin.py
+sha256 bb89de15ecf5821dd7e1a36ebab8a50d792a406b7fb0f5cb38059f99ef74aae5  mixed_cover.py
+sha256 c0a6750997897c21ffc693df6df97f89a248dd9eb588a2fe2b83bf359793694b  input
+argv: checker/qx2_zm.py L4_k02_box7.txt --depth 18 --nproc 4 --exact-umax 1/2 --exact-from 3 --progress 200 --cx-lo 0 --cx-hi 21/10 --cy-lo 0 --cy-hi 7/2 --resume runs/qx2_shard01_1.jsonl --dump-leaves
+container [0,7]^2, 0 points, 800 segments on 60 lines, Lebesgue square [9/5,26/5]^2; total 5701378693611/125000000000 = 45.611029548888
+D4 roots [0,m/2]^2 x u in [0,1/2]: 5880 roots (PARTIAL); depth 18; EXACT on for u1 <= 1/2
+  200/5880 roots, 200 boxes, uncert 0, 0s
+  400/5880 roots, 400 boxes, uncert 0, 0s
+  600/5880 roots, 600 boxes, uncert 0, 0s
+  800/5880 roots, 800 boxes, uncert 0, 0s
+  1000/5880 roots, 1000 boxes, uncert 0, 0s
+  1200/5880 roots, 1200 boxes, uncert 0, 0s
+  1400/5880 roots, 1400 boxes, uncert 0, 0s
+  1600/5880 roots, 1784 boxes, uncert 0, 104s
+  1800/5880 roots, 2318 boxes, uncert 0, 250s
+  2000/5880 roots, 2692 boxes, uncert 0, 293s
+  2200/5880 roots, 3068 boxes, uncert 0, 318s
+  2400/5880 roots, 3296 boxes, uncert 0, 325s
+  2600/5880 roots, 3496 boxes, uncert 0, 332s
+  2800/5880 roots, 3702 boxes, uncert 0, 341s
+  3000/5880 roots, 3904 boxes, uncert 0, 347s
+  3200/5880 roots, 4106 boxes, uncert 0, 355s
+  3400/5880 roots, 4408 boxes, uncert 0, 372s
+  3600/5880 roots, 5448 boxes, uncert 0, 478s
+  3800/5880 roots, 7002 boxes, uncert 0, 611s
+  4000/5880 roots, 8008 boxes, uncert 0, 831s
+  4200/5880 roots, 12674 boxes, uncert 0, 3097s
+  4400/5880 roots, 15594 boxes, uncert 0, 5198s
+  4600/5880 roots, 17462 boxes, uncert 0, 6872s

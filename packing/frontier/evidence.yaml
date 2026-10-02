@@ -494,6 +494,44 @@ evidence:
       kind: checker
       detail: Audit the point/threshold row contract and replay the complete pinned row census, then separately bind angle containment, D4 folding and the global budget.
     source_reviewed: '2026-09-29'
+  - id: E-wand125-tools-n11-row-replay
+    claim: derived-structure
+    scope: {n_values: [11]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 tools 2026]'
+    certificate: resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full.jsonl.gz
+    replay: >-
+      From packing/, with a clean checkout of wand125/square-packing-tools at
+      0d33ab61726c2ab03e3eb8f457dabaf22db8571f as CHECKER:
+      python3 -m devtools.check_general_pose_tree_census run
+      resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full.jsonl 0-12027
+      --checker CHECKER --certificate-dir
+      resources/web/external-square-certificates-2026-09-22/kleddamag-11 --leaf 10
+      --max-seconds 18000, one uninterrupted serial process, then python3 -m
+      devtools.check_general_pose_tree_census pack on that journal and validate
+      --require-complete on the .gz, which must exit 0 with verdict
+      COMPLETE_ROW_EQUALITY. The run, its summary and its host header and footer are
+      receipts/n11-bound-full-run.log and receipts/n11-bound-full-summary.json; the journal
+      is receipts/n11-bound-full.jsonl.gz.
+    replay_status: passed
+    limitations: >-
+      Replayed here on 2 October 2026 on a shared 4-core Linux container with Python 3.14.7:
+      12,028 of 12,028 rows, each pinned-checker minimum equal to Kleddamag's recorded row
+      minimum, global minimum 999962528 matching the reference, every witness re-evaluated
+      by the wrapper's own exact evaluator (11,295 s wall, 11,293 CPU-s against the
+      source's reported 9,446). The journal is retained gzipped, 3.9 MB, 12.6 MB inflated,
+      sha256 b7f3ebd4da4269d4ea74fc372f7d034a3855dc096de93a528800214b518ef7fc. The
+      minima are computed by the source's own branch and bound, so the search is the same
+      implementation as the claim; only attainment at the reported witness is checked
+      independently, and no independent proof of minimality is made. Row equality only: it
+      does not verify the angle folding, enclosure, counting budget or packing theorem,
+      and the n = 11 bound rests on T-037, not on this replay.
+    source_reviewed: '2026-10-02'
   - id: E-wand125-point-source-replay
     claim: lower-bound
     scope: {n_values: [26, 29, 39, 40, 41, 53, 55, 56, 69, 70, 71, 72]}

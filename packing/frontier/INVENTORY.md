@@ -8,7 +8,7 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **180** evidence records. **115** are formal; **109** of those were established here.
+- **181** evidence records. **116** are formal; **110** of those were established here.
 - **56** rest on an argument made elsewhere, of which **8** have been read by nobody here.
 - **36** claim to be first established here. **12** make no novelty statement at all - not assessed, which is not the same as not novel.
 
@@ -32,6 +32,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-n011-global-optimality-independent` | 1 | exact-value | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
 | `E-wand125-tools-ceiling-report` | 0 | derived-structure | reported | - | elsewhere | defect-found | previously-published |
 | `E-wand125-tools-n11-row-report` | 0 | derived-structure | reported | - | elsewhere | defect-found | previously-published |
+| `E-wand125-tools-n11-row-replay` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | previously-published |
 | `E-wand125-point-source-replay` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published |
 | `E-wand125-n052-derived-lower` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* |
 | `E-wand125-rectangle-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published |
@@ -203,9 +204,9 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 61, verified 115
-- **method**: exact-algebraic 79, interval-certified 26, numerical-multiprecision 4, proof-assistant-checked 1, proof-audited 3, published-proof 6, reported 61
-- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 12, previously-published 128
+- **assurance**: numerically-checked 4, reported 61, verified 116
+- **method**: exact-algebraic 80, interval-certified 26, numerical-multiprecision 4, proof-assistant-checked 1, proof-audited 3, published-proof 6, reported 61
+- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 12, previously-published 129
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 

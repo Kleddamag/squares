@@ -281,12 +281,31 @@ Stage 4 for [jlevy/squares#279](https://github.com/jlevy/squares/issues/279) run
 | Run | Roots | Boxes | Uncertified | Max depth | Verdict | Wall, CPU |
 | --- | ---: | ---: | ---: | ---: | --- | --- |
 | `zmx2 cert … --d4 --pair-points --threads 3` | 8,100 | 5,810,824 | 0 | 36 | `VERIFIED-D4` | 4,112 s, 12,154 s |
+| `zmx2 cert … --full --pair-points --threads 4`, in two halves | 64,800 | 46,583,600 | 0 | 36 | `REGION CLEAN` in each half | 34,255 s, 134,363 s |
 
-The d4 root log covers its region once per root with no uncertified or capped box, and
-its box total equals the one the source’s README states
-([`n77_zmx2_d4_pairpoints_audit.json`](receipts/n77_zmx2_d4_pairpoints_audit.json)). The
-unreduced sweep, `--full --pair-points` over 64,800 roots, runs in two halves of the root
-columns on two machines and is joined by the audit when both end.
+- **The d4 root log** covers its region once per root with no uncertified or capped
+  box, and its box total equals the one the source’s README states
+  ([`n77_zmx2_d4_pairpoints_audit.json`](receipts/n77_zmx2_d4_pairpoints_audit.json)).
+- **The unreduced sweep** was split by root column, `--xlo 0 --xhi 44` and
+  `--xlo 45 --xhi 89`, and run by `devtools.replay_evand_zmx2` from the same retained
+  `zmx2.rs` and cover on 4-core containers.
+  Each half ran in three parts of at most 6,600 s, the later two resuming its root log,
+  so each has a first receipt, `_resume1`, `_resume2` and a root log
+  ([`n77_zmx2_full_pairpoints_x0-44_y0-89.log`](receipts/n77_zmx2_full_pairpoints_x0-44_y0-89.log),
+  [`n77_zmx2_full_pairpoints_x45-89_y0-89.log`](receipts/n77_zmx2_full_pairpoints_x45-89_y0-89.log)).
+  Each half ended `REGION CLEAN` over 32,400 roots with 23,291,800 boxes and none
+  uncertified; the two regions are mirror images under $x \mapsto 9 - x$, and their
+  totals are equal.
+- **The audit** gives the whole-cover verdict, which `zmx2` does not give a region run:
+  [`n77_zmx2_full_pairpoints_audit.json`](receipts/n77_zmx2_full_pairpoints_audit.json)
+  reads the two root logs as one joined record and finds each of the 64,800 roots of
+  the unreduced region present once, none uncertified or capped, with headers equal
+  apart from the region and the box total the source’s README states.
+  The source’s logs are not published, so no root-for-root comparison is possible.
+- **The source’s `verify.sh` cannot pass as published**, for the reason given for
+  `s(59)`: its checksum step names three logs that are not in the tree.
+  Its two `zmx2` steps were run here as this repository’s own sequence, with the same
+  flags.
 
 ## Controls for the Mixed Checker
 
@@ -338,6 +357,8 @@ present, the acquisition check reports each as retained twice.
 | `receipts/n59_zmx2_d4_roots.log.gz` | receipt | `39dd994f89fc468d7fc35f235fa875afa413fb5f` | `8e012c81d21603dd8140dfc9fb4ccdde1ffbd3d38ad46ed4497319c4071d1261` |
 | `receipts/n59_zmx2_full_roots.log.gz` | receipt | `d64d9c33fd19f03ef842ce67d3b62c76a5c090ab` | `2d6c765a4a7120ed3d60d640acb77088b621a93c8f6a5475d05ced800208b79e` |
 | `receipts/n77_zmx2_d4_pairpoints_roots.log.gz` | receipt | `e6939fed684335c5916eed9576b8afa0fdff797b` | `8a8f54c4f353bf5712a3fa92511a3b3ed92b5c84e0d0d32fcc30c3bbeecafc6a` |
+| `receipts/n77_zmx2_full_pairpoints_x0-44_y0-89_roots.log.gz` | receipt | `f19c5c646611b85b1db0572a9799f9109564426e` | `fa3c979493b2d1eca106d2c6c2663d6ac04cc665c97731ac068b0a096e823663` |
+| `receipts/n77_zmx2_full_pairpoints_x45-89_y0-89_roots.log.gz` | receipt | `7c28864933444cd81abb75f58fd0df2eb744d0ba` | `dd5671350795bbb295d9943560cd7c5dddbaa11af98b2fad6c9df697914734cc` |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

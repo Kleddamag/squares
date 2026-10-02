@@ -102,6 +102,7 @@ from __future__ import annotations
 
 import argparse
 import functools
+import gzip
 import hashlib
 import importlib
 import json
@@ -222,15 +223,24 @@ def _with_prec(compute: Any) -> Any:
         iv.prec = saved
 
 
-@functools.cache
+TRIG: dict[float, tuple[Iv, Iv]] = {}
+
+
 def cos_sin(theta: float) -> tuple[Iv, Iv]:
-    """Enclosures of `cos theta` and `sin theta` at a float point (exactly representable)."""
+    """Enclosures of `cos theta` and `sin theta` at a float point (exactly representable).
+
+    Cached in `TRIG`, which a saved certificate writes out as its table of enclosures.
+    """
+    cached = TRIG.get(theta)
+    if cached is not None:
+        return cached
 
     def compute() -> tuple[Iv, Iv]:
         x = iv.mpf(theta)
         return _iv_float(iv.cos(x)), _iv_float(iv.sin(x))
 
     result: tuple[Iv, Iv] = _with_prec(compute)
+    TRIG[theta] = result
     return result
 
 
@@ -413,6 +423,11 @@ class PairTerm:
         default_factory=list[tuple[float, float, float]]
     )
     planes: list[tuple[float, float, float]] = field(
+        default_factory=list[tuple[float, float, float]]
+    )
+    # Every normal-angle piece `(lo, hi, m)` of the node within the window, alive or not,
+    # with the point `m` its planes use; what a saved certificate records for the pair.
+    pieces: list[tuple[float, float, float]] = field(
         default_factory=list[tuple[float, float, float]]
     )
 
@@ -742,6 +757,7 @@ class Solver:
         self.pair_cache: dict[tuple[Any, ...], PairTerm] = {}
         self.highs = highs._Highs()  # noqa: SLF001
         self.highs.setOptionValue("output_flag", False)  # noqa: FBT003
+        self.recorder: Recorder | None = None
         self.cell_rows: list[Row] = []
         for square, (exact, floats) in enumerate(
             zip(pattern.rows, pattern.lp_rows, strict=True)
@@ -811,13 +827,18 @@ class Solver:
                 if found:
                     alive.append(piece)
                     planes.extend(found)
+            recorded = [(lo, hi, _quantised(lo, hi)) for lo, hi in pieces]
             if not alive:
-                term = PairTerm("pair")
+                term = PairTerm("pair", pieces=recorded)
             else:
                 options = merge(alive, self.settings.merge_gap)
                 cuts = hull_cuts(planes, dx, dy)
                 term = PairTerm(
-                    "undecided" if len(options) > 1 else "decided", options, cuts, planes
+                    "undecided" if len(options) > 1 else "decided",
+                    options,
+                    cuts,
+                    planes,
+                    recorded,
                 )
         if len(self.pair_cache) > 400_000:
             self.pair_cache.clear()
@@ -831,6 +852,8 @@ class Solver:
             return Evaluation("cell")
         evaluation = Evaluation(None, boxes)
         for _ in range(self.settings.obbt_rounds + 1):
+            if self.recorder is not None:
+                self.recorder.begin_round(boxes)
             evaluation, rows = self.relaxation(node, boxes)
             if evaluation.pruned is None:
                 self.solve_lp(evaluation, rows)
@@ -847,7 +870,11 @@ class Solver:
         rows = list(self.cell_rows)
         for index in range(len(self.pattern.pairs)):
             term = self.pair_term(node, boxes, index)
+            if self.recorder is not None:
+                self.recorder.terms[index] = term
             if term.kind in ("disc", "pair"):
+                if self.recorder is not None:
+                    self.recorder.closed_by_pair(index, term.kind)
                 return Evaluation(term.kind, blame={index: 1.0}), rows
             if term.kind in ("decided", "undecided"):
                 terms.append((index, term))
@@ -862,6 +889,8 @@ class Solver:
             evaluation.pruned = "obbt"
             return None
         evaluation.boxes = tightened
+        if self.recorder is not None:
+            self.recorder.tightened(tightened)
         shrink = max(
             1.0 - (new[hi] - new[lo]) / max(old[hi] - old[lo], 1e-300)
             for new, old in zip(tightened, boxes, strict=True)
@@ -940,6 +969,8 @@ class Solver:
             return
         if dual_bound(rows, duals, evaluation.boxes, None) > 0.0:
             evaluation.pruned = "lp"
+            if self.recorder is not None:
+                self.recorder.farkas(rows, duals)
             total = sum(duals) or 1.0
             for row, weight in zip(rows, duals, strict=True):
                 if weight > 0.0:
@@ -967,18 +998,25 @@ class Solver:
                 current = tuple((b[0], b[1], b[2], b[3]) for b in bounds)
                 bound = dual_bound(rows, outcome[2], current, (column, sign))
                 slot = 2 * axis + (0 if sign > 0 else 1)
-                if sign > 0 and bound > bounds[square][slot]:
-                    bounds[square][slot] = bound
-                elif sign < 0 and -bound < bounds[square][slot]:
-                    bounds[square][slot] = -bound
+                improved = (sign > 0 and bound > bounds[square][slot]) or (
+                    sign < 0 and -bound < bounds[square][slot]
+                )
+                if improved:
+                    bounds[square][slot] = bound if sign > 0 else -bound
+                    if self.recorder is not None:
+                        self.recorder.bound(column, sign, bound, rows, outcome[2])
                 lo, hi = bounds[square][2 * axis], bounds[square][2 * axis + 1]
                 if lo > hi:
+                    if self.recorder is not None:
+                        self.recorder.emptied("bounds")
                     return None
                 self.highs.changeColBounds(column, lo, hi)
         boxes: list[Box] = []
         for index, b in enumerate(bounds):
             clipped = clip_to_box(self.pattern.polygons[index], (b[0], b[1], b[2], b[3]))
             if clipped is None:
+                if self.recorder is not None:
+                    self.recorder.emptied("cell")
                 return None
             boxes.append(clipped)
         return tuple(boxes)
@@ -1285,10 +1323,387 @@ def estimate(pattern: Pattern, settings: Settings, dives: int, seed: int = 1) ->
     }
 
 
-def search(pattern: Pattern, settings: Settings, *, progress: bool = False) -> dict[str, Any]:
+# ---------------------------------------------------------------------------
+# Saved certificates
+# ---------------------------------------------------------------------------
+
+CERTIFICATE_SCHEMA = "n17-subpattern-bb-certificate/v1"
+
+
+def rational(value: float | Fraction) -> str:
+    """An exact rational as "p/q" in lowest terms (a float is a dyadic rational)."""
+    if isinstance(value, Fraction):
+        return f"{value.numerator}/{value.denominator}"
+    numerator, denominator = value.as_integer_ratio()
+    return f"{numerator}/{denominator}"
+
+
+def canonical_bytes(document: Any) -> bytes:
+    return json.dumps(
+        document, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False
+    ).encode("ascii")
+
+
+def write_named(directory: Path, document: Any) -> str:
+    """Write gzipped canonical JSON named by the SHA-256 of its uncompressed bytes."""
+    data = canonical_bytes(document)
+    name = hashlib.sha256(data).hexdigest()
+    (directory / f"{name}.json.gz").write_bytes(gzip.compress(data, mtime=0))
+    return name
+
+
+def read_named(directory: Path, name: str) -> Any:
+    """Read a saved document, refusing one whose bytes do not hash to its name."""
+    data = gzip.decompress((directory / f"{name}.json.gz").read_bytes())
+    if hashlib.sha256(data).hexdigest() != name:
+        raise ValueError(f"{name}: content does not match its name")
+    return json.loads(data)
+
+
+def boxes_record(boxes: Sequence[Box]) -> list[list[str]]:
+    return [[rational(value) for value in box] for box in boxes]
+
+
+CERTIFICATE_README = """\
+n17 sub-pattern branch-and-bound certificate (schema n17-subpattern-bb-certificate/v1)
+Written by packing/devtools/pilot_n17_subpattern_bb.py --save-certificate.
+
+FILES
+Every *.json.gz file is gzip of canonical JSON (keys sorted, separators "," and ":",
+ASCII) and is named by the SHA-256 of its uncompressed bytes. The manifest names the
+enclosure table ("trig") and the node chunks ("chunks", in processing order); its
+"summary" gives the verdict, whether the tree is complete, and the node and leaf counts.
+Every number a check uses exactly is a string "p/q" in lowest terms. A value written from
+a binary64 float is that float's exact value. Integers (indices, signs) are JSON ints.
+
+CLAIM
+U = header.cap. Cell s is header.cells[s], a closed convex polygon with vertices listed
+counterclockwise; edge e runs from vertex e to vertex e+1 (cyclically). The claim: no k
+unit squares, square s centred in cell s, at any angles, all inside [0,U]^2, have
+pairwise disjoint interiors. Angles are taken modulo pi/2 in header.root_angles, a closed
+interval of width greater than pi/2. M_k = header.half_pi_multiples[k] is an enclosure
+[lo, hi] of k pi/2; "pi/2-lower" is M_1 lo.
+
+For a pair p, (i, j) = header.pairs[p] and d = c_j - c_i. The squares are disjoint iff
+n(phi) . d >= g for some phi in {theta_i + k pi/2, theta_j + k pi/2 : k = 0..3}, with
+n(phi) = (cos phi, sin phi), g = 1/2 + h(theta_j - theta_i), h(a) = (|cos a| + |sin a|)/2.
+
+ENCLOSURES
+trig[t] = [cos_lo, cos_hi, sin_lo, sin_hi, nx, ny] for each angle t (a key "p/q"):
+cos t and sin t lie in the two intervals (mpmath.iv at 120 bits, rounded outward to
+binary64); (nx, ny) is the float normal the planes at t use (any vector would do: the
+check charges its distance to the enclosure). A reader can confirm the enclosures with
+any rigorous sin and cos.
+
+TREE
+A node record: id, parent (null at the root), angles (per square [lo, hi]), windows
+([p, lo, hi]: pair p is separated along a normal whose angle, modulo 2 pi, is in
+[lo, hi]), rounds, closed (a reason, or null), and for an open node "split" and "final".
+The node's region: angles in its intervals, each windowed pair separated in its window,
+centres in its inherited boxes (header.root_boxes at the root, else the parent's final).
+  T1 The root has header.root_angles and no windows.
+  T2 A node with closed null has a split, and its children (records with parent = id):
+     "angle" [s, a]: two children equal to the node except square s's interval, which is
+     [lo, a] and [a, hi], with lo <= a <= hi.
+     "pair" [p, W]: one child per window in W, equal to the node except pair p's window,
+     which is that window; covering is checked by P4.
+  T3 A node with closed not null has no children; summary.complete is true and every
+     record is closed or split. Then every pose of the root lies in a closed leaf.
+
+ROUNDS (a node's rounds in order; round r relaxes over boxes B_r = "boxes")
+Boxes are [xl, xh, yl, yh] per square. A reader may keep its own exact boxes and only
+check that each recorded box contains them; every check below gets easier on smaller
+boxes, and every recomputed quantity below is at least as tight in exact arithmetic as
+the outward float it replaces.
+  B1 Round 0: from the inherited boxes, for square s with angle [a, b]: h_lo = 1/2 if
+     b - a >= pi/2-lower or [a, b] meets some M_k; otherwise the larger of 1/2 and
+     min over t in {a, b} of (|cos t| lower + |sin t| lower)/2 from trig (h is concave
+     between multiples of pi/2). Intersect with [h_lo, U - h_lo]^2, then with the cell
+     (exact clipping), take the bounding box; B_0 contains it. closed "cell" with no
+     rounds means this is empty for some square.
+  B2 "next" is B_{r+1}: the box after the round's "bounds", clipped to the cells as in B1.
+
+PAIRS IN A ROUND (for each pair listed in the round's "pairs")
+Dx = [xj_lo - xi_hi, xj_hi - xi_lo] and Dy likewise from B_r. With angle intervals
+[ai, bi] and [aj, bj]:
+  P1 g_lo = 1 if aj <= bi and ai <= bj, or bj - ai - (aj - bi) >= pi/2-lower, or
+     [aj - bi, bj - ai] meets some M_k. Otherwise g_lo = max(1, 1/2 + min of h at
+     aj - bi and at bj - ai), each h bounded below as in B1 from enclosures of cos and
+     sin of the difference: cos(p - q) = cos p cos q + sin p sin q and
+     sin(p - q) = sin p cos q - cos p sin q in interval arithmetic on trig.
+  P2 "pairs"[p] lists pieces [lo, hi, m] with lo <= m <= hi. For each family [a, b] in
+     {[ai, bi], [aj, bj]} and k = 0..3, the set {t + k pi/2 : t in [a, b]} meet the
+     pair's window (modulo 2 pi; no window means all angles) lies in the union of the
+     pieces' [lo, hi] (modulo 2 pi).
+  P3 Planes. eps(t) = max(cos_hi - cos_lo, sin_hi - sin_lo) and
+     E = max|Dx| + max|Dy|. A plane is nbar . d >= r with nbar = (nx, ny) of trig at its
+     angle. If hi - lo < pi/2-lower the piece has three planes, at lo, hi and m, with
+     base right sides g_lo, g_lo and g_lo (1 - x^2/2), x = max(m - lo, hi - m), and
+     r = base - eps(angle) E. Lemma (module docstring): every d with n(phi) . d >= g for
+     some phi in [lo, hi] satisfies one of n(lo) . d >= g, n(hi) . d >= g,
+     n(m) . d >= g cos x. Otherwise the piece has one plane at m with
+     r = g_lo - 2 tau (S + tau D) - eps(m) E, tau = max(m - lo, hi - m)/2,
+     S >= max over the d-box and the enclosure at m of |-sin(m) dx + cos(m) dy|,
+     D >= max |d| over the d-box. A plane is impossible when max over the d-box of
+     nbar . d < r, or (three-plane case) when max over the d-box and the enclosure at
+     its angle of n . d < base.
+  P4 For a "pair" split [p, W] (made on the last round): every piece of pair p lies in a
+     window of W (modulo 2 pi) or has every plane impossible.
+
+CLOSURES AND ROWS
+  C1 "closed_pair" [p, "disc"]: max |d|^2 over the d-box < 1. [p, "pair"]: every plane
+     of every piece of p is impossible.
+  C2 Row ["c", s, e]: a x_s + b y_s <= c for edge e of cell s from (x0, y0) to (x1, y1),
+     a = y1 - y0, b = x0 - x1, c = a x0 + b y0. Row ["u", t]: cuts[t] = [p, ux, uy, v]
+     reads ux (x_j - x_i) + uy (y_j - y_i) >= v, that is
+     ux x_i + uy y_i - ux x_j - uy y_j <= -v. It is valid when v <= min over every
+     possible plane of p (P3) of min over the d-box meet the plane of u . d.
+  C3 closed "lp": the last round's "farkas" [[row, y], ...] with y >= 0 satisfies
+     min over z in B_r of sum y (a_row . z - b_row) > 0, so the round's region is empty.
+  C4 "bounds", in order: [col, sign, value, [[row, y], ...]], col = 2 s + axis (axis 0
+     is x). sign z_col >= value holds when value <= min over the current box of
+     (sign e_col + sum y a_row) . z - sum y b_row. Then the current box's lower bound
+     (sign 1) becomes value, or its upper bound (sign -1) becomes -value. The current box
+     starts as B_r.
+  C5 closed "obbt": "emptied" is "bounds" (some lower bound exceeds its upper bound) or
+     "cell" (a tightened box misses its cell).
+"""
+
+
+class Recorder:
+    """Writes what an independent reader needs to re-verify every closure of a run.
+
+    One record per node, in processing order, in chunks; the format and the checks are in
+    the README this writes beside them (`CERTIFICATE_README`). Passive: it reads what the
+    solver computed and changes nothing the search does.
+    """
+
+    def __init__(self, directory: Path, solver: Solver, chunk_nodes: int = 500) -> None:
+        directory.mkdir(parents=True, exist_ok=True)
+        self.directory = directory
+        self.solver = solver
+        self.chunk_nodes = chunk_nodes
+        self.chunks: list[str] = []
+        self.buffer: list[dict[str, Any]] = []
+        self.cell_refs: dict[int, list[Any]] = {}
+        position = 0
+        for square, rows in enumerate(solver.pattern.rows):
+            for edge in range(len(rows)):
+                self.cell_refs[id(solver.cell_rows[position])] = ["c", square, edge]
+                position += 1
+        self.node: dict[str, Any] = {}
+        self.rounds: list[tuple[dict[str, Any], dict[int, PairTerm], set[int]]] = []
+        self.terms: dict[int, PairTerm] = {}
+        self.cut_index: dict[tuple[int, float, float, float], int] = {}
+
+    # -- per node and per round ----------------------------------------------------------
+
+    def begin_node(self, ident: int, parent: int | None, node: Node) -> None:
+        self.node = {
+            "id": ident,
+            "parent": parent,
+            "angles": [[rational(lo), rational(hi)] for lo, hi in node.angles],
+            "windows": [
+                [index, rational(window[0]), rational(window[1])]
+                for index, window in enumerate(node.windows)
+                if window is not None
+            ],
+        }
+        self.rounds = []
+
+    def begin_round(self, boxes: Sequence[Box]) -> None:
+        self.terms = {}
+        self.cut_index = {}
+        record: dict[str, Any] = {"boxes": boxes_record(boxes), "cuts": []}
+        self.rounds.append((record, self.terms, set()))
+
+    def ref(self, row: Row) -> list[Any]:
+        if row.owner < 0:
+            return self.cell_refs[id(row)]
+        record, _, referenced = self.rounds[-1]
+        key = (row.owner, row.values[0], row.values[1], row.rhs)
+        index = self.cut_index.get(key)
+        if index is None:
+            index = len(record["cuts"])
+            self.cut_index[key] = index
+            record["cuts"].append(
+                [
+                    row.owner,
+                    rational(row.values[0]),
+                    rational(row.values[1]),
+                    rational(-row.rhs),
+                ]
+            )
+            referenced.add(row.owner)
+        return ["u", index]
+
+    def multipliers(self, rows: Sequence[Row], duals: Sequence[float]) -> list[list[Any]]:
+        # Exactly the verified multipliers `dual_bound` applies: `weight / norm`.
+        return [
+            [self.ref(row), rational(weight / row.norm)]
+            for row, weight in zip(rows, duals, strict=True)
+            if weight > 0.0
+        ]
+
+    def farkas(self, rows: Sequence[Row], duals: Sequence[float]) -> None:
+        self.rounds[-1][0]["farkas"] = self.multipliers(rows, duals)
+
+    def bound(
+        self,
+        column: int,
+        sign: float,
+        value: float,
+        rows: Sequence[Row],
+        duals: Sequence[float],
+    ) -> None:
+        self.rounds[-1][0].setdefault("bounds", []).append(
+            [column, 1 if sign > 0 else -1, rational(value), self.multipliers(rows, duals)]
+        )
+
+    def emptied(self, how: str) -> None:
+        self.rounds[-1][0]["emptied"] = how
+
+    def tightened(self, boxes: Sequence[Box]) -> None:
+        self.rounds[-1][0]["next"] = boxes_record(boxes)
+
+    def closed_by_pair(self, index: int, kind: str) -> None:
+        record, _, referenced = self.rounds[-1]
+        record["closed_pair"] = [index, kind]
+        referenced.add(index)
+
+    def end_node(
+        self, closed: str | None, split: dict[str, Any] | None, final: Sequence[Box]
+    ) -> None:
+        rounds: list[dict[str, Any]] = []
+        for record, terms, referenced in self.rounds:
+            record["pairs"] = {
+                str(index): [
+                    [rational(lo), rational(hi), rational(m)]
+                    for lo, hi, m in terms[index].pieces
+                ]
+                for index in sorted(referenced)
+            }
+            rounds.append(record)
+        self.node["rounds"] = rounds
+        self.node["closed"] = closed
+        if split is not None:
+            self.node["split"] = split
+            self.node["final"] = boxes_record(final)
+        self.buffer.append(self.node)
+        if len(self.buffer) >= self.chunk_nodes:
+            self.flush()
+
+    def split_record(self, node: Node, how: str, kids: Sequence[Node]) -> dict[str, Any]:
+        if how == "angle":
+            square = next(
+                s for s in range(len(node.angles)) if kids[0].angles[s] != node.angles[s]
+            )
+            return {"angle": [square, rational(kids[0].angles[square][1])]}
+        index = next(
+            i for i in range(len(node.windows)) if kids[0].windows[i] != node.windows[i]
+        )
+        self.rounds[-1][2].add(index)
+        windows: list[list[str]] = []
+        for kid in kids:
+            window = kid.windows[index]
+            assert window is not None
+            windows.append([rational(window[0]), rational(window[1])])
+        return {"pair": [index, windows]}
+
+    # -- files -------------------------------------------------------------------------
+
+    def flush(self) -> None:
+        if self.buffer:
+            self.chunks.append(write_named(self.directory, {"nodes": self.buffer}))
+            self.buffer = []
+
+    def close(self, summary: dict[str, Any]) -> str:
+        """Write the remaining nodes, the enclosure table, the manifest and the README."""
+        self.flush()
+        solver, pattern = self.solver, self.solver.pattern
+        trig = write_named(
+            self.directory,
+            {
+                "trig": {
+                    rational(theta): [
+                        rational(c[0]),
+                        rational(c[1]),
+                        rational(s[0]),
+                        rational(s[1]),
+                        rational(0.5 * (c[0] + c[1])),
+                        rational(0.5 * (s[0] + s[1])),
+                    ]
+                    for theta, (c, s) in sorted(TRIG.items())
+                }
+            },
+        )
+        root = solver.root()
+        header = {
+            "pattern": list(pattern.names),
+            "cells": [
+                [[rational(x), rational(y)] for x, y in cover.convex_hull(list(polygon))]
+                for polygon in pattern.polygons
+            ],
+            "cap": rational(pattern.cap),
+            "pairs": [list(pair) for pair in pattern.pairs],
+            "root_angles": [[rational(lo), rational(hi)] for lo, hi in root.angles],
+            "root_boxes": boxes_record(root.boxes),
+            "half_pi_multiples": {
+                str(k): [rational(v[0]), rational(v[1])]
+                for k, v in sorted(HALF_PI_MULTIPLES.items())
+            },
+            "settings": {
+                "theta0": rational(solver.settings.theta0),
+                "split_ratio": solver.settings.split_ratio,
+                "obbt_rounds": solver.settings.obbt_rounds,
+                "obbt_repeat": solver.settings.obbt_repeat,
+                "merge_gap": solver.settings.merge_gap,
+                "floor": solver.settings.floor,
+            },
+            "module_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        }
+        manifest = write_named(
+            self.directory,
+            {
+                "schema": CERTIFICATE_SCHEMA,
+                "header": header,
+                "trig": trig,
+                "chunks": self.chunks,
+                "summary": summary,
+            },
+        )
+        (self.directory / "README.txt").write_text(
+            CERTIFICATE_README + f"\nThis certificate's manifest: {manifest}.json.gz\n",
+            encoding="utf-8",
+        )
+        return manifest
+
+
+def load_certificate(directory: Path, manifest: str) -> dict[str, Any]:
+    """The manifest, the enclosure table and every node record, each hash-checked."""
+    document = read_named(directory, manifest)
+    nodes: list[dict[str, Any]] = []
+    for chunk in document["chunks"]:
+        nodes.extend(read_named(directory, chunk)["nodes"])
+    return {
+        "manifest": document,
+        "trig": read_named(directory, document["trig"])["trig"],
+        "nodes": nodes,
+    }
+
+
+def search(
+    pattern: Pattern,
+    settings: Settings,
+    *,
+    progress: bool = False,
+    certificate: Path | None = None,
+) -> dict[str, Any]:
     wall, cpu = time.perf_counter(), time.process_time()
     solver = Solver(pattern, settings)
-    stack = [solver.root()]
+    recorder = None if certificate is None else Recorder(certificate, solver)
+    solver.recorder = recorder
+    stack: list[tuple[Node, int | None]] = [(solver.root(), None)]
     nodes = leaves = max_depth = 0
     reasons: dict[str, int] = {}
     branches: dict[str, int] = {}
@@ -1323,9 +1738,12 @@ def search(pattern: Pattern, settings: Settings, *, progress: bool = False) -> d
                 ),
                 flush=True,
             )
-        node = stack.pop()
+        node, parent = stack.pop()
+        ident = nodes
         nodes += 1
         max_depth = max(max_depth, node.depth)
+        if recorder is not None:
+            recorder.begin_node(ident, parent, node)
         evaluation = solver.assess(node)
         farkas_failures += int(evaluation.farkas_failed)
         if evaluation.pruned is not None:
@@ -1340,6 +1758,8 @@ def search(pattern: Pattern, settings: Settings, *, progress: bool = False) -> d
                 )
                 tally[label] = tally.get(label, 0.0) + share
             reasons[evaluation.pruned] = reasons.get(evaluation.pruned, 0) + 1
+            if recorder is not None:
+                recorder.end_node(evaluation.pruned, None, evaluation.boxes)
             continue
         width = max(hi - lo for lo, hi in node.angles)
         if smallest is None or width < smallest[0]:
@@ -1355,7 +1775,10 @@ def search(pattern: Pattern, settings: Settings, *, progress: bool = False) -> d
             break
         how, kids = outcome
         branches[how] = branches.get(how, 0) + 1
-        stack.extend(reversed(kids))
+        if recorder is not None:
+            split = recorder.split_record(node, how, kids)
+            recorder.end_node(None, split, evaluation.boxes)
+        stack.extend((kid, ident) for kid in reversed(kids))
     record: dict[str, Any] = {
         "verdict": verdict,
         "nodes": nodes,
@@ -1378,6 +1801,15 @@ def search(pattern: Pattern, settings: Settings, *, progress: bool = False) -> d
     if verdict != "certified-infeasible":
         record["stopped_at"] = stop
         record["smallest_unresolved"] = None if smallest is None else smallest[1]
+    if recorder is not None:
+        record["certificate_manifest"] = recorder.close(
+            {
+                "verdict": verdict,
+                "complete": verdict == "certified-infeasible",
+                "nodes": nodes,
+                "leaves": leaves,
+            }
+        )
     return record
 
 
@@ -1421,6 +1853,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--progress", action="store_true")
     parser.add_argument(
         "--estimate", type=int, default=0, help="Knuth dives instead of a full search"
+    )
+    parser.add_argument(
+        "--save-certificate",
+        type=Path,
+        default=None,
+        metavar="DIR",
+        help="write every closure, the tree and the enclosures for an independent check",
     )
     parser.add_argument(
         "--witness-selector",
@@ -1472,7 +1911,9 @@ def main(argv: list[str] | None = None) -> int:
     result = (
         {"verdict": "estimate-only", **estimate(pattern, settings, args.estimate, args.seed)}
         if args.estimate
-        else search(pattern, settings, progress=args.progress)
+        else search(
+            pattern, settings, progress=args.progress, certificate=args.save_certificate
+        )
     )
     receipt: dict[str, Any] = {
         "schema": SCHEMA,

@@ -5,6 +5,8 @@ from __future__ import annotations
 import math
 import random
 from fractions import Fraction
+from pathlib import Path
+from typing import Any
 
 import mpmath
 import pytest
@@ -222,3 +224,232 @@ def test_the_tree_estimate_matches_a_small_exact_count() -> None:
     exact = bb.search(pattern, bb.Settings())["nodes"]
     estimated = bb.estimate(pattern, bb.Settings(), dives=40)["estimated_nodes_mean"]
     assert abs(estimated - exact) <= 0.25 * exact
+
+
+def _row(
+    header: dict[str, Any], record: dict[str, Any], ref: list[Any]
+) -> tuple[dict[int, Q], Q]:
+    """A recorded row as exact coefficients by column and its right side (README C2)."""
+    if ref[0] == "c":
+        square, edge = ref[1], ref[2]
+        vertices = [(Q(x), Q(y)) for x, y in header["cells"][square]]
+        (x0, y0), (x1, y1) = vertices[edge], vertices[(edge + 1) % len(vertices)]
+        a, b = y1 - y0, x0 - x1
+        return {2 * square: a, 2 * square + 1: b}, a * x0 + b * y0
+    pair, ux, uy, v = record["cuts"][ref[1]]
+    i, j = header["pairs"][pair]
+    ux, uy = Q(ux), Q(uy)
+    return {2 * i: ux, 2 * i + 1: uy, 2 * j: -ux, 2 * j + 1: -uy}, -Q(v)
+
+
+def _least(combined: dict[int, Q], boxes: list[list[Q]]) -> Q:
+    total = Q(0)
+    for column, coefficient in combined.items():
+        box = boxes[column // 2]
+        lo, hi = (box[0], box[1]) if column % 2 == 0 else (box[2], box[3])
+        total += coefficient * (lo if coefficient > 0 else hi)
+    return total
+
+
+def _dual(
+    header: dict[str, Any],
+    record: dict[str, Any],
+    weights: list[Any],
+    boxes: list[list[Q]],
+    cost: tuple[int, int] | None = None,
+) -> Q:
+    """`min over the boxes of (cost + y A) . z - y b`, exactly (README C3 and C4)."""
+    combined: dict[int, Q] = {} if cost is None else {cost[0]: Q(cost[1])}
+    right = Q(0)
+    for ref, weight in weights:
+        y = Q(weight)
+        assert y >= 0
+        coefficients, rhs = _row(header, record, ref)
+        for column, value in coefficients.items():
+            combined[column] = combined.get(column, Q(0)) + y * value
+        right += y * rhs
+    return _least(combined, boxes) - right
+
+
+def _h_lower(cs: list[Q]) -> Q:
+    """(|cos| lower + |sin| lower)/2 from interval enclosures [cl, ch, sl, sh]."""
+
+    def least(lo: Q, hi: Q) -> Q:
+        return lo if lo >= 0 else (-hi if hi <= 0 else Q(0))
+
+    return (least(cs[0], cs[1]) + least(cs[2], cs[3])) / 2
+
+
+def _meets_multiple(lo: Q, hi: Q, multiples: dict[str, list[str]]) -> bool:
+    return any(lo <= Q(m[1]) and hi >= Q(m[0]) for m in multiples.values())
+
+
+def _gap_lower(ti: list[Q], tj: list[Q], trig: dict[str, list[Q]], header: dict[str, Any]) -> Q:
+    """README P1, in exact rationals; g_lo = 1 is always a valid fallback."""
+    lo, hi = tj[0] - ti[1], tj[1] - ti[0]
+    multiples = header["half_pi_multiples"]
+    if lo <= 0 <= hi or hi - lo >= Q(multiples["1"][0]) or _meets_multiple(lo, hi, multiples):
+        return Q(1)
+    values = []
+    for p_, q_ in ((tj[0], ti[1]), (tj[1], ti[0])):
+        cp, cq = trig[bb.rational(p_)], trig[bb.rational(q_)]
+
+        def product(a: tuple[Q, Q], b: tuple[Q, Q]) -> tuple[Q, Q]:
+            values_ = [x * y for x in a for y in b]
+            return min(values_), max(values_)
+
+        cos_p, sin_p, cos_q, sin_q = (
+            (cp[0], cp[1]),
+            (cp[2], cp[3]),
+            (cq[0], cq[1]),
+            (cq[2], cq[3]),
+        )
+        a, b = product(cos_p, cos_q), product(sin_p, sin_q)
+        c, d = product(sin_p, cos_q), product(cos_p, sin_q)
+        values.append(_h_lower([a[0] + b[0], a[1] + b[1], c[0] - d[1], c[1] - d[0]]))
+    return max(Q(1), Q(1, 2) + min(values))
+
+
+def _clip_min(u: tuple[Q, Q], plane: tuple[Q, Q, Q], dx: tuple[Q, Q], dy: tuple[Q, Q]) -> Q:
+    """Exact min of u . d over the d-box meet n . d >= r (vertices of the clipped box)."""
+    nx, ny, r = plane
+    corners = [(dx[0], dy[0]), (dx[1], dy[0]), (dx[1], dy[1]), (dx[0], dy[1])]
+    vertices = []
+    for index, start in enumerate(corners):
+        end = corners[(index + 1) % 4]
+        fs, fe = nx * start[0] + ny * start[1] - r, nx * end[0] + ny * end[1] - r
+        if fs >= 0:
+            vertices.append(start)
+        if fs * fe < 0:
+            t = fs / (fs - fe)
+            vertices.append(
+                (start[0] + t * (end[0] - start[0]), start[1] + t * (end[1] - start[1]))
+            )
+    assert vertices
+    return min(u[0] * x + u[1] * y for x, y in vertices)
+
+
+def _possible_planes(
+    pieces: list[list[str]],
+    g_lo: Q,
+    dx: tuple[Q, Q],
+    dy: tuple[Q, Q],
+    *,
+    trig: dict[str, list[Q]],
+    half_pi_lower: Q,
+) -> list[tuple[Q, Q, Q]]:
+    """README P3: every plane of the pieces that the d-box can meet, in exact rationals."""
+    span = max(-dx[0], dx[1]) + max(-dy[0], dy[1])
+    planes: list[tuple[Q, Q, Q]] = []
+
+    def sup(nx: tuple[Q, Q], ny: tuple[Q, Q]) -> Q:
+        return max(a * x for a in nx for x in dx) + max(b * y for b in ny for y in dy)
+
+    for lo_s, hi_s, m_s in pieces:
+        lo, hi, m = Q(lo_s), Q(hi_s), Q(m_s)
+        if hi - lo < half_pi_lower:
+            x = max(m - lo, hi - m)
+            candidates = [(lo_s, g_lo), (hi_s, g_lo), (m_s, g_lo * (1 - x * x / 2))]
+            for angle, base in candidates:
+                cl, ch, sl, sh, nx, ny = trig[angle]
+                r = base - max(ch - cl, sh - sl) * span
+                if sup((cl, ch), (sl, sh)) >= base and sup((nx, nx), (ny, ny)) >= r:
+                    planes.append((nx, ny, r))
+        else:
+            cl, ch, sl, sh, nx, ny = trig[m_s]
+            tau = max(m - lo, hi - m) / 2
+            perp = [
+                -s_ * x + c_ * y for s_ in (sl, sh) for c_ in (cl, ch) for x in dx for y in dy
+            ]
+            big = max(-dx[0], dx[1]) ** 2 + max(-dy[0], dy[1]) ** 2
+            root = Q(math.isqrt(int(big * 2**120)) + 1, 2**60)
+            r = g_lo - 2 * tau * (max(abs(v) for v in perp) + tau * root)
+            r -= max(ch - cl, sh - sl) * span
+            if sup((nx, nx), (ny, ny)) >= r:
+                planes.append((nx, ny, r))
+    return planes
+
+
+def _check_cuts(saved: dict[str, Any]) -> int:
+    """Every recorded cut re-derived from the saved pieces and enclosures (README C2)."""
+    header = saved["manifest"]["header"]
+    trig = {key: [Q(v) for v in value] for key, value in saved["trig"].items()}
+    half_pi_lower = Q(header["half_pi_multiples"]["1"][0])
+    checked = 0
+    for node in saved["nodes"]:
+        angles = [[Q(lo), Q(hi)] for lo, hi in node["angles"]]
+        for record in node["rounds"]:
+            boxes = [[Q(v) for v in box] for box in record["boxes"]]
+            for pair, ux, uy, v in record["cuts"]:
+                i, j = header["pairs"][pair]
+                dx = (boxes[j][0] - boxes[i][1], boxes[j][1] - boxes[i][0])
+                dy = (boxes[j][2] - boxes[i][3], boxes[j][3] - boxes[i][2])
+                g_lo = _gap_lower(angles[i], angles[j], trig, header)
+                planes = _possible_planes(
+                    record["pairs"][str(pair)],
+                    g_lo,
+                    dx,
+                    dy,
+                    trig=trig,
+                    half_pi_lower=half_pi_lower,
+                )
+                u = (Q(ux), Q(uy))
+                assert Q(v) <= min(_clip_min(u, plane, dx, dy) for plane in planes)
+                checked += 1
+    return checked
+
+
+@pytest.mark.parametrize("obbt_rounds", [0, 3])
+def test_a_certificate_round_trips_and_its_closures_recheck_exactly(
+    obbt_rounds: int, tmp_path: Path
+) -> None:
+    pattern = three_in_a_row(("2.80", "2.85"))
+    settings = bb.Settings(obbt_rounds=obbt_rounds)
+    result = bb.search(pattern, settings, certificate=tmp_path)
+    assert result["verdict"] == "certified-infeasible"
+    saved = bb.load_certificate(tmp_path, result["certificate_manifest"])
+    header, nodes = saved["manifest"]["header"], saved["nodes"]
+    assert saved["manifest"]["summary"]["complete"]
+    assert len(nodes) == result["nodes"]
+    assert (tmp_path / "README.txt").read_text(encoding="utf-8").count(
+        result["certificate_manifest"]
+    ) == 1
+    children: dict[int, list[dict[str, Any]]] = {}
+    for node in nodes:
+        if node["parent"] is not None:
+            children.setdefault(node["parent"], []).append(node)
+    roots = [node for node in nodes if node["parent"] is None]
+    assert len(roots) == 1
+    assert roots[0]["angles"] == header["root_angles"]
+    checked = {"lp": 0, "bounds": 0}
+    for node in nodes:
+        kids = children.get(node["id"], [])
+        if node["closed"] is None:
+            if "angle" in node["split"]:
+                square, at = node["split"]["angle"]
+                assert sorted(kid["angles"][square] for kid in kids) == sorted(
+                    [[node["angles"][square][0], at], [at, node["angles"][square][1]]]
+                )
+            else:
+                pair, windows = node["split"]["pair"]
+                assert sorted(
+                    [w[1], w[2]] for kid in kids for w in kid["windows"] if w[0] == pair
+                ) == sorted(windows)
+            continue
+        assert not kids
+        for record in node["rounds"]:
+            boxes = [[Q(v) for v in box] for box in record["boxes"]]
+            for column, sign, value, weights in record.get("bounds", []):
+                assert Q(value) <= _dual(header, record, weights, boxes, (column, sign))
+                slot = 2 * (column % 2) + (0 if sign > 0 else 1)
+                boxes[column // 2][slot] = Q(value) * sign
+                checked["bounds"] += 1
+            if "farkas" in record:
+                assert node["closed"] == "lp"
+                assert _dual(header, record, record["farkas"], boxes) > 0
+                checked["lp"] += 1
+    if obbt_rounds == 0:
+        assert checked["lp"] == result["prune_reasons"]["lp"] > 0
+    else:
+        assert checked["bounds"] > 0
+    assert _check_cuts(saved) > 0

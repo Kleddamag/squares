@@ -210,6 +210,40 @@ independent reader. The sharper falsifier is the useful one.
 It runs the same cascade as W7, so it exercises the collision path that closes W7, and
 without side-N0 it plateaus with side-W2 at 48 live rows rather than 12.
 
+## An Independent Certifier: Interval Branch and Bound
+
+Lane P2, Opus, built `devtools/pilot_n17_subpattern_bb.py`, which shares no code with
+the kernel or the selector beyond the cover’s exact cell polygons.
+It branches on the angles and decides the centres of each angle box by one LP over the
+exact cell rows, outward wall bounds and per-pair cuts.
+HiGHS only proposes multipliers: every pruning step is a dual bound evaluated with
+outward rounding, and sin and cos are enclosed by interval arithmetic.
+
+| Receipt | Pattern | Outcome | Wall |
+| --- | --- | --- | ---: |
+| `receipts/bb-A-certified.json` | A | **certified infeasible**: 41,598 nodes, 21,215 leaves, depth 31, no Farkas failure | 569 s |
+| `receipts/bb-control-endpoint-{west,north,east}.json` | Three endpoint sub-patterns | not certified; the witness path follows the endpoint’s pose to the resolution floor | 90 s each |
+| `receipts/bb-control-placed.json` | A class the selector placed | not certified; witness path passes | 90 s |
+| `receipts/bb-target-a7-0-W7-30min.json` | W7 | unresolved at 30 min, 0.4% of the tree closed | 1,800 s |
+| `receipts/bb-target-a6-{1-B,2-C}.json`, `bb-target-a7-{0,1,3,4,5}.json` | Other flags | unresolved at 10 min | 600 s each |
+
+The A receipt is a reproduction from a worktree at `0bc6a03b` with the certificate
+writer added. It imported the tool bytes this commit holds (`f8da95e8…`), and
+`bb-A-certified-imports.json` lists the digest of every module it imported.
+It matches the first run node for node.
+The controls and the 10-minute targets ran on an intermediate revision (`afe96ca8…`),
+and the W7 run on `7b77c4fd…`. They certify nothing and are planning evidence only.
+
+The saved certificate is 53 MB in 84 gzipped chunks: every node’s boxes, cut rows,
+Farkas multipliers and bound certificates in exact rationals, with a format README. P2’s
+own exact re-check passes all 4,504 Farkas closures, 639,609 bound certificates and
+324,934 cuts. It is held outside the repository until the independent review decides
+admission; the run is deterministic and regenerates it from these bytes.
+
+The two provers complement each other.
+The kernel closes W7 and stalls on A, and the branch and bound closes A and does not
+finish W7. A’s margin is large and its squares are interior; W7’s is a wall chain.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

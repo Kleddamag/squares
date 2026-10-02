@@ -5525,7 +5525,7 @@ in separate tables: their units differ, and the same work can appear in both.
 | [session-159](packing/campaign/agent-sessions/session-159-n17-guzhou-r052-intake.md) | 2 | 6 | 844 | 484 | 10 | 2.34 h |
 | [session-160](packing/campaign/agent-sessions/session-160-n17-4640020-evand-wand125-intake.md) | 3 | 28 | 5,648 | 3,354 | 161 | 42.62 h |
 | [session-161](packing/campaign/agent-sessions/session-161-wand125-update-and-sept-28-intake.md) | 2 | 10 | 2,617 | 1,468 | 27 | 11.09 h |
-| [session-168](packing/campaign/agent-sessions/session-168-known-best-families-and-shading.md) | 6 | 11 | 3,098 | 1,613 | 17 | 15.77 h |
+| [session-168](packing/campaign/agent-sessions/session-168-known-best-families-and-shading.md) | 7 | 11 | 3,098 | 1,613 | 17 | 15.77 h |
 | *shared by 53 sessions* | — | 8 | 25,382 | 13,685 | 285 | 355.07 h |
 
 | Codex interval receipt | declaring sessions | model responses | agent time | active union | wall window | live lower bound |

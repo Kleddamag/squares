@@ -10,7 +10,7 @@ session:
   title: Families of Known-Best Packings, Contact Shading, and the Large-n Limit
   date: '2026-10-02'
   started_at: '2026-10-02T05:15:20Z'
-  deadline_at: '2026-10-02T22:16:17Z'
+  deadline_at: '2026-10-02T23:50:30Z'
   branch: claude/ecstatic-archimedes-62hj6a
   primary_bead: think-los0
   status: in_progress
@@ -193,7 +193,7 @@ session:
       layer''s remaining scope (think-bgkz: the deferred --verify-atlas checkpoint, the dilation policy,
       the homepage toggle).'
     bead: think-xucp
-    status: in_progress
+    status: completed
     entered_by: user_request
     switch_reason: The owner asked for all the open work to continue, the T-007 re-grounding included.
     budget_minutes: 240
@@ -207,12 +207,46 @@ session:
       not recommend.
     fallback: Record the replay blocker, apply the re-grounding with s(k^2-2) at V0/C0, and leave the
       blocked layer items on think-bgkz with their reason.
+    outcome: 'All four lanes reached their exits and were integrated (dc7867f1f, 6200bcf23 and fixes through
+      730f4f2e1, green on every required check). The Lean replay passed, so s(k^2-2) = k stands at V3/C3
+      (T-069); T-007 is V0/C1 and 271 case records are re-grounded (T-066, T-067, T-068, D-516); the homepage
+      toggle, the deferred regularized-views job and the dilation decision (refusal kept) close think-bgkz
+      but for its first hosted measurement.'
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/receipt.json
+    - packing/frontier/results.yaml
+    - packing/atlas/known-best/regularized/rendering/
+    stop_reason: The owner asked that the Karakus-based floors stay marked new and be tagged as corrections
+      naming the published work they correct.
+    next_action: Add the corrects field and its tag, and cite D-516 in the case records' corrections.
+  - workflow: remediation
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    objective: 'Tag each recent lower bound that corrects a published result with the work it corrects
+      ("corrects Nagamochi 2005"), from a register field on the replacing results, on every surface that
+      marks a bound recent; and make every case record''s dated correction cite this register''s own defect
+      entry, D-516, so a correction of outside work and a correction of our own record stay distinct.'
+    bead: think-los0
+    status: in_progress
+    entered_by: user_request
+    switch_reason: The owner asked for the corrections to be marked as new and as corrections, naming the
+      previous work corrected, with corrections to our own record kept within our own process.
+    budget_minutes: 120
+    started_at: '2026-10-02T20:50:30Z'
+    deadline_at: '2026-10-02T22:50:30Z'
+    expected_output: A checked corrects field on T-066, T-067 and T-069; the tag on the frontier table,
+      case pages, homepage atlas popovers and the workbench stage; D-516 cited in every dated correction;
+      green hosted CI.
+    validation_command: cd packing && uv run --frozen --all-extras --group dev packing-validate --fast
+    kill_condition: A surface cannot carry the tag without dropping a citation or breaking a page ceiling.
+    fallback: Carry the tag in the data and on the surfaces that fit it, and list the rest on a bead.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Launch the lanes.
+    next_action: Launch the surfaces lane; add the D-516 references.
   budget:
-    wall_minutes: 1021
+    wall_minutes: 1116
     slice_minutes: 30
     finalization_minutes: 60
   stop_conditions:

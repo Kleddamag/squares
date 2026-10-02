@@ -322,6 +322,13 @@ NAGAMOCHI_NOTE = (
 KARAKUS_NOTE = "General bound: s(N) >= 1/2 + sqrt(N - floor(sqrt(N)) + 1/4)."
 #: Where the correction of 2026-10-02 is argued, from a case record's own directory.
 NAGAMOCHI_REVIEW = "../../docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md"
+#: The register's own part in the correction, kept apart from the published proof's: the
+#: review corrects Nagamochi 2005, and this register's having held that proof as verified
+#: is a defect in its own record, logged under its own process as D-516.
+OWN_RECORD_CORRECTION = (
+    "This register had recorded that proof as verified, its own error, logged as defect "
+    "[D-516](../../defects.md)."
+)
 UPPER_GAP_BLOCKER = "No formal certificate currently supports the tighter reported upper bound."
 
 #: The gap a UnitSquare case carries instead. The mathematics is the same -- a certified
@@ -1973,7 +1980,7 @@ def karakus_lower_section(n: int, payload: Mapping[str, Any]) -> list[str]:
             f"{same} at this `n` and is now recorded as a reported bound. Its published "
             "proof rests on Nagamochi’s Lemma 1, which Karakuş showed false; nothing is "
             "disproved, and no packing beating it is known "
-            f"([review of 2 October 2026]({NAGAMOCHI_REVIEW}))."
+            f"([review of 2 October 2026]({NAGAMOCHI_REVIEW})). {OWN_RECORD_CORRECTION}"
         ),
     ]
     return lines
@@ -1999,7 +2006,7 @@ def lean_lower_section(n: int, payload: Mapping[str, Any]) -> list[str]:
             "`s(N) ≥ min(⌈√N⌉, √(N − 2⌊√N⌋ + 1) + 1)`, which gives the same value at this "
             "`n` and is now recorded as a reported bound. Its published proof rests on "
             "Nagamochi’s Lemma 1, which Karakuş showed false, and chelokot’s proof does not "
-            f"use it ([review of 2 October 2026]({NAGAMOCHI_REVIEW}))."
+            f"use it ([review of 2 October 2026]({NAGAMOCHI_REVIEW})). {OWN_RECORD_CORRECTION}"
         ),
     ]
     return lines

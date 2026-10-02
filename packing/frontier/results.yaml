@@ -5407,6 +5407,10 @@ results:
     attribution:
       source_keys: ['[Karakuş 2026]']
       published: '2026-09-29'
+    corrects:
+      source_key: '[Nagamochi 2005]'
+      result: T-007
+      what: Lemma 1, on which Theorem 2's proof rests, is false
     evidence:
       - E-karakus-strip-lower
     artifacts:
@@ -5457,6 +5461,10 @@ results:
       Karakuş's published proof, read and re-derived here and not machine-checked. The
       checker derives C3 from the grid's entry; this note is why the declared confirmation
       is C1.
+    corrects:
+      source_key: '[Nagamochi 2005]'
+      result: T-007
+      what: Lemma 1, on which Theorem 2's proof rests, is false
     evidence:
       - E-karakus-strip-lower
       - E-basic-grid-upper
@@ -5561,6 +5569,10 @@ results:
       here with its axiom receipt. A kernel check is machine evidence at rung 3: rung 5
       also needs a human expert's review of the formalization, and the statement-fidelity
       reading retained here is the review lane's.
+    corrects:
+      source_key: '[Nagamochi 2005]'
+      result: T-007
+      what: Lemma 1, on which Theorem 2's proof rests, is false
     evidence:
       - E-chelokot-square-minus-two-lean
       - E-basic-grid-upper

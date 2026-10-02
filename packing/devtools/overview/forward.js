@@ -18,10 +18,13 @@
 // section's old fragment lands on it. Verification Ladders moved there too, on
 // 2026-10-02: its fragment, `#verification-ladders`, and the older
 // `#verification-at-a-glance`, which an empty anchor in its heading keeps, are sent
-// there the same way. The explainer was once the site's root, so any other fragment
-// that names nothing on the overview is sent to the explainer, query string and all. The
-// overview's own ids, the explainer's and the results page's are kept disjoint by a
-// test, so no old link is captured by the wrong page.
+// there the same way. The Frontier Survey section left the overview the same day, its
+// account the Frontier page's own: its fragment, `#the-frontier-survey`, and the older
+// `#the-survey` are sent to `frontier.html`, whose title carries the first. The explainer
+// was once the site's root, so any other fragment that names nothing on the overview is
+// sent to the explainer, query string and all. The overview's own ids, the explainer's
+// and the results page's are kept disjoint by a test, so no old link is captured by the
+// wrong page.
 (() => {
   /** @param {string} target */
   const forward = (target) => {
@@ -50,5 +53,11 @@
     id === "verification-ladders" ||
     id === "verification-at-a-glance" ||
     /^t-\d+$/.test(id);
-  forward(result ? "all-results.html" : "papers/n11-lower-bounds-explainer.html");
+  if (result) {
+    forward("all-results.html");
+  } else if (id === "the-frontier-survey" || id === "the-survey") {
+    forward("frontier.html");
+  } else {
+    forward("papers/n11-lower-bounds-explainer.html");
+  }
 })();

@@ -1,11 +1,13 @@
-"""H-268: square 6 in its H-266 cover cell keeps the n17 slides inside the box B_W.
+"""H-268: the n17 slides of any packing in the endpoint's state lie in a certified box.
 
-Claim. Take any packing of 17 unit squares in the endpoint's container whose 45
-non-slider coordinates lie within `r = 1/5000` of the endpoint family (exp-244's
-neighbourhood) and whose square 6 has its centre in the closed cover cell `side-S2`
-of `check_n17_capacity_one_cover`, at any orientation. Then the slides satisfy
-`a <= A`, `z >= Z` and `b <= B` for the thresholds passed (default the box `B_W` of
-`check_n17_local_minimum.DECLARED_BOX`: `A = 1/4`, `Z = -1/8`, `B = 1/12`).
+Claim. Take any packing of 17 unit squares in `[0, S]^2`, `S <= S*` (the H-258 frame:
+lower-left corner fixed), whose 45 non-slider coordinates lie within `r = 1/5000` of
+the endpoint family (exp-244's neighbourhood) and whose square 6 has its centre in the
+closed cell `side-S2` of `check_n17_capacity_one_cover`, at any orientation. Then the
+slides satisfy `0 <= a <= A`, `b* <= b <= B` and `Z <= z <= z*`, with `A`, `Z`, `B`
+the thresholds passed and `b*`, `z*` exact (closed forms below, enclosed over the root
+box). `--design` picks the cover (default the unique-state design; the tabbed one stays
+reproducible), and the endpoint's state on it must put square 6 in `side-S2`.
 
 Everything is in the cover frame (the endpoint embedded concentrically), with every
 endpoint quantity an exact interval over the exp-238 root box (`cover.endpoint`).
@@ -41,11 +43,22 @@ slide interval loses nothing on the face that squeezes square 6. The `(b, z)` do
 with `z` above the certified `Z`, is closed the same way by squares 11 and 13 without
 square 6.
 
+The other faces. `a >= 0` is the container (`a_floor`). `b >= b*` is the 9/11 face,
+which the local theorem drops but every packing obeys, through an exact separating-axis
+lemma (`separation_lemma`, `b_floor`); `b* = -1.68496 r`. `z <= z*` joins that bound
+to the 11/13 face (`z_ceiling`), with a pair cover above `Z_SPLIT`; `z* = 0.0241003`.
+Square 13's own cell in the endpoint's state gives a second, independent ceiling
+(`cell_slide_range`; `0.027916` on the unique design). The tight thresholds are then
+re-proved with `z` capped and `a` floored.
+
 Controls. Replacing the cell by every centre the container allows, or deleting square
-13, must leave an open box for the `a` bound.
+13, must leave an open box for the `a` bound; deleting square 9 must leave the ceiling
+cover open.
 
 Not covered. The exp-238 root box is used; the exp-237 midpoint the local theorem uses
-lies inside it. Squares 5, 11 and 13 turn by at most `r`, as in exp-244.
+lies inside it. Squares 5, 11 and 13 turn by at most `r`, as in exp-244. `b*` and `z*`
+are exact for the pairs they use; other contacts (9 on the left wall and on square 3)
+may make the true extremes less negative or lower.
 """
 
 from __future__ import annotations
@@ -65,8 +78,10 @@ from devtools import check_n17_capacity_one_cover as cover
 from devtools.check_n17_endpoint_feasibility import THETA_LABELS, Box
 from devtools.check_n17_local_minimum import DECLARED_BOX, DECLARED_RADIUS
 
-SCHEMA = "n17-slider-coverage/v1"
+SCHEMA = "n17-slider-coverage/v2"
 SIX_CELL = "side-S2"
+DEFAULT_DESIGN = cover.UNIQUE_24.name
+LEGACY_DESIGN = cover.TABBED_24.name
 SLIDERS = frozenset((5, 6, 11, 13))
 GRID = 2**40
 ANGLE_GRID = 2**32
@@ -76,6 +91,11 @@ SLIDE_STEP = Q(1, 2**12)
 SIX_STEP = Q(1, 2**11)
 SIX_NODE_LIMIT = 200_000
 CONTROL_NODE_LIMIT = 20_000
+Z_SPLIT = Q(1, 32)
+# The H-268 thresholds (a_max, z_min, b_max) over the whole physical z range, and the
+# tighter ones proved once z is capped by `z_ceiling` and a is floored by `a_floor`.
+THRESHOLDS = (Q(21, 100), Q(-1, 20), Q(3, 40))
+TIGHT = (Q(23, 200), Q(-49, 1000), Q(37, 500))
 NEAR = Q(3, 2)
 
 Interval = tuple[Q, Q]
@@ -204,11 +224,11 @@ class Scene:
     cell: tuple[Q, Q, Q, Q]
     fixed: dict[int, Rect]
     provenance: dict[str, Any]
+    design: str
 
 
-def _cell_box(name: str) -> tuple[Q, Q, Q, Q]:
-    design = cover.DESIGNS["ring-3-voronoi-8-tabbed"]
-    for cell in cover.build_cover(design):
+def _cell_box(name: str, design: str = DEFAULT_DESIGN) -> tuple[Q, Q, Q, Q]:
+    for cell in cover.build_cover(cover.DESIGNS[design]):
         if cell.name == name:
             xs = [x for x, _ in cell.vertices]
             ys = [y for _, y in cell.vertices]
@@ -218,7 +238,11 @@ def _cell_box(name: str) -> tuple[Q, Q, Q, Q]:
     raise ValueError(f"no cell {name}")
 
 
-def build_scene(radius: Q = DECLARED_RADIUS, cell: tuple[Q, Q, Q, Q] | None = None) -> Scene:
+def build_scene(
+    radius: Q = DECLARED_RADIUS,
+    cell: tuple[Q, Q, Q, Q] | None = None,
+    design: str = DEFAULT_DESIGN,
+) -> Scene:
     t_box, b_box, provenance = cover.load_root_box(cover.CERTIFICATE)
     point = cover.endpoint(t_box, b_box)
     aux = point.aux
@@ -238,7 +262,7 @@ def build_scene(radius: Q = DECLARED_RADIUS, cell: tuple[Q, Q, Q, Q] | None = No
     shift = Box.cast(point.shift)
     outer = (shift.lo, cover.U - shift.lo)
     half = Q(1, 2) - 2 * radius
-    six_cell = _cell_box(SIX_CELL) if cell is None else cell
+    six_cell = _cell_box(SIX_CELL, design) if cell is None else cell
     origin = (zero, zero)
     fixed = {
         label: rect
@@ -255,6 +279,7 @@ def build_scene(radius: Q = DECLARED_RADIUS, cell: tuple[Q, Q, Q, Q] | None = No
         cell=six_cell,
         fixed=fixed,
         provenance=provenance,
+        design=design,
     )
 
 
@@ -438,10 +463,21 @@ def slide_cover(
     *,
     without: frozenset[int] = frozenset(),
     node_limit: int = SIX_NODE_LIMIT,
+    z_cap: Q | None = None,
+    a_floor_value: Q | None = None,
 ) -> Outcome:
-    """Every `(a, z)` outside `a <= a_max, z >= z_min` is infeasible."""
+    """Every `(a, z)` outside `a <= a_max, z >= z_min` is infeasible.
+
+    `z_cap` and `a_floor_value` cut the domain at a ceiling and a floor already proved
+    for every packing in the premises (`z_ceiling`, `a_floor`); without them the whole
+    physical range is searched.
+    """
     a_range = physical_range(scene, 5, (Box.point(Q(-1)), Box.point(Q(0))))
     z_range = physical_range(scene, 13, scene.v)
+    if z_cap is not None:
+        z_range = (z_range[0], min(z_range[1], z_cap))
+    if a_floor_value is not None:
+        a_range = (max(a_range[0], a_floor_value), a_range[1])
     fixed = {label: rect for label, rect in scene.fixed.items() if label not in without}
     stack: list[tuple[Interval, Interval]] = [(a_range, z_range)]
     counts: dict[str, int] = {}
@@ -556,6 +592,312 @@ def b_cover(scene: Scene, b_max: Q, z_min: Q) -> Outcome:
 
 
 # ---------------------------------------------------------------------------
+# The faces square 6 does not reach: a >= 0, b >= b*, z <= z*
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class Trig:
+    """Outward rational bounds on `sin r`, `cos r`, `tan r` and `sec r`."""
+
+    sin: Box
+    cos: Box
+    tan: Box
+    sec: Box
+
+
+def trig_radius(radius: Q) -> Trig:
+    """Alternating Taylor bounds, valid for `0 < r <= 1`."""
+    if not 0 < radius <= 1:
+        raise ValueError("the turn radius must lie in (0, 1]")
+    sin = Box(radius - radius**3 / 6, radius)
+    cos = Box(1 - radius**2 / 2, 1 - radius**2 / 2 + radius**4 / 24)
+    return Trig(sin=sin, cos=cos, tan=sin / cos, sec=cos.reciprocal())
+
+
+@dataclass(frozen=True)
+class Stack:
+    """Square `upper` on square `lower` along `v`: `c_upper - c_lower = tau u + gap v`."""
+
+    upper: int
+    lower: int
+    tau: Box
+    gap: Box
+
+
+def stack(scene: Scene, upper: int, lower: int) -> Stack:
+    top, bottom = scene.poses[upper], scene.poses[lower]
+    dx, dy = top.cx - bottom.cx, top.cy - bottom.cy
+    ux, uy = bottom.ux, bottom.uy
+    vx, vy = scene.v
+    return Stack(upper, lower, ux * dx + uy * dy, vx * dx + vy * dy)
+
+
+def separation_lemma(lateral: Box, normal: Box, trig: Trig) -> bool:
+    """The hypotheses under which two frame squares can only separate along `+v`.
+
+    Two closed unit squares turned by at most `r` from the frame, with centre difference
+    `T u + D v` (`T` in `lateral`, `D` in `normal`), have disjoint interiors only through
+    a normal `R(omega) v` with `D cos omega - T sin omega >= 1`, provided
+    `|T| + |D| sin r < 1` (no `u`-type normal separates), `D > -1 + |T| sin r` (no
+    `-v`-type normal does) and `T <= -sin r` (so `(1 + T sin w)/cos w` falls on
+    `[-r, r]` and its least value is `sec r + T tan r`, at `w = r`).
+    """
+    t_abs = lateral.absolute().hi
+    d_abs = normal.absolute().hi
+    return (
+        t_abs + d_abs * trig.sin.hi < 1
+        and normal.lo > -1 + t_abs * trig.sin.hi
+        and lateral.hi <= -trig.sin.hi
+    )
+
+
+def _l1(first: Box, second: Box) -> Box:
+    """`|first| + |second|` as an interval."""
+    return first.absolute() + second.absolute()
+
+
+@dataclass
+class Face:
+    passed: bool
+    record: dict[str, Any]
+
+
+def endpoint_state(design: str) -> dict[int, cover.Cell]:
+    """The endpoint's occupancy state on the design: each label's assigned cell."""
+    cells = cover.build_cover(cover.DESIGNS[design])
+    t_box, b_box, _ = cover.load_root_box(cover.CERTIFICATE)
+    record = cover.family_state(cells, cover.endpoint(t_box, b_box), cover.ENDPOINT)
+    if not record["one_state"]:
+        raise ValueError(f"the endpoint has no state on {design}")
+    by_name = {cell.name: cell for cell in cells}
+    return {entry["label"]: by_name[entry["cell"]] for entry in record["squares"]}
+
+
+def cell_slide_range(
+    pose: Pose, cell: cover.Cell, step: tuple[Box, Box], wobble: tuple[Box, Box], radius: Q
+) -> Interval | None:
+    """Slides `w` with the centre `c + w step + eps wobble` (`|eps| <= r`) in the cell.
+
+    Each edge of the counterclockwise cell is a halfplane `cross(E, q - p) >= 0`; the
+    centre's unknown `eps` is taken at its worst, so the interval holds every member.
+    """
+    lows: list[Q] = []
+    highs: list[Q] = []
+    count = len(cell.vertices)
+    for index in range(count):
+        px, py = cell.vertices[index]
+        qx, qy = cell.vertices[(index + 1) % count]
+        ex, ey = qx - px, qy - py
+        base = (pose.cy - py) * ex - (pose.cx - px) * ey
+        slope = step[1] * ex - step[0] * ey
+        spread = (wobble[1] * ex - wobble[0] * ey).absolute().hi * radius
+        if slope.lo > 0:
+            numerator = -base.hi - spread
+            lows.append(numerator / (slope.hi if numerator >= 0 else slope.lo))
+        elif slope.hi < 0:
+            numerator = base.hi + spread
+            highs.append(numerator / (-slope.hi if numerator >= 0 else -slope.lo))
+        elif slope.lo != 0 or slope.hi != 0:
+            raise ValueError("slide direction straddles a cell edge")
+        elif base.hi + spread < 0:
+            return None
+    if not lows or not highs:
+        raise ValueError("the cell does not bound the slide on both sides")
+    return max(lows), min(highs)
+
+
+def a_floor(scene: Scene) -> Face:
+    """`a >= 0`: square 5 starts on the right wall, and a turn only widens its reach.
+
+    The H-258 frame keeps the container's lower-left corner at the origin, so a packing of
+    side `S <= S*` has its right wall at `S`. Square 5's centre is `x5* - a` with
+    `x5* = S* - 1/2` in `_layout`, and its reach to the right is
+    `h(omega5) = (|cos omega5| + |sin omega5|)/2 >= 1/2`, so
+    `S* - 1/2 - a + h(omega5) <= S <= S*` gives `a >= h(omega5) - 1/2 + (S* - S) >= 0`.
+    Neither `eta5` nor the size of `omega5` enters; equality holds at the endpoint itself.
+    The one datum, `x5* = S* - 1/2`, is checked exactly at the root box's rational
+    midpoint, where the layout's point intervals are exact (it is the literal entry
+    `(side - half, half)` of the H256 layout, so it holds at every root parameter).
+    """
+    t_mid = (Q(scene.provenance["t_box"][0]) + Q(scene.provenance["t_box"][1])) / 2
+    b_mid = (Q(scene.provenance["b_box"][0]) + Q(scene.provenance["b_box"][1])) / 2
+    point = cover.endpoint(Box.point(t_mid), Box.point(b_mid))
+    x5, y5 = point.centres[4]
+    shift = point.shift
+    wall = Box.point(cover.U) - shift
+    on_wall = (
+        all(box.lo == box.hi for box in (x5, y5, shift))
+        and x5 + Q(1, 2) == wall
+        and y5 - Q(1, 2) == shift
+    )
+    return Face(
+        passed=on_wall,
+        record={
+            "a_min": "0",
+            "exact": True,
+            "attained": "at the endpoint (omega5 = 0, S = S*)",
+            "square_5_on_right_wall_exact": on_wall,
+            "method": "container: a >= h(omega5) - 1/2 + (S* - S) >= 0",
+        },
+    )
+
+
+def b_floor(scene: Scene, b_top: Q) -> tuple[Face, Box]:
+    """`b >= b*` from the 9/11 face alone, and `b*` exactly (an interval over the root box).
+
+    Square 9 above square 11: `T = tau0 + u.delta9 - eps11`, `D = D0 + v.delta9 + b`,
+    with `delta9 = (xi9, eta9)` and `eps11 = u.V11` each within `r`. By
+    `separation_lemma` every packing has `D >= sec r + T tan r`, so
+    `b >= sec r - D0 + tau0 tan r - eps11 tan r + (tan r u - v).delta9`, linear in the
+    perturbations; its least value over the box is
+
+        b* = sec r - D0 + tau0 tan r - r tan r - r (|tan r ux - vx| + |tan r uy - vy|),
+
+    attained by two touching squares both turned by `+r`, square 11 moved `+r` along `u`
+    and square 9 by `-r sign(tan r u - v)`. The lemma's hypotheses are checked on the whole
+    range `b in [physical low, b_top]`.
+    """
+    trig = trig_radius(scene.radius)
+    pair = stack(scene, 9, 11)
+    r = scene.radius
+    pose = scene.poses[11]
+    ux, uy = pose.ux, pose.uy
+    vx, vy = scene.v
+    reach_u = r * _l1(ux, uy).hi
+    reach_v = r * _l1(vx, vy).hi
+    lateral = pair.tau + Box(-reach_u - r, reach_u + r)
+    b_low = physical_range(scene, 11, (-vx, -vy))[0]
+    normal = pair.gap + Box(-reach_v, reach_v) + Box(min(b_low, Q(0)), b_top)
+    lemma = separation_lemma(lateral, normal, trig)
+    weights = _l1(trig.tan * ux - vx, trig.tan * uy - vy)
+    exact = trig.sec - pair.gap + pair.tau * trig.tan - trig.tan * r - weights * r
+    return (
+        Face(
+            passed=lemma and exact.hi < 0,
+            record={
+                "b_star": _box_record(exact),
+                "b_star_over_r": [float(exact.lo / r), float(exact.hi / r)],
+                "certified_floor": str(_down(exact.lo)),
+                "lemma_hypotheses": lemma,
+                "lemma_range_b": [str(min(b_low, Q(0))), str(b_top)],
+                "tau0": _box_record(pair.tau),
+                "D0": _box_record(pair.gap),
+                "method": (
+                    "9/11 separating-axis lemma; least value at both squares turned by +r, "
+                    "eps11 = +r, delta9 = -r sign(tan r u - v)"
+                ),
+            },
+        ),
+        exact,
+    )
+
+
+def z_ceiling(
+    scene: Scene, b_floor_value: Q, b_max: Q, z_min: Q, z_split: Q
+) -> tuple[Face, Box]:
+    """`z <= z*` from the chain 9/11/13, closed above `z_split` by the pair cover.
+
+    Square 11 above square 13: `T' = tau1 + eps11 - eps13`, `D' = D1 - b - z`. For
+    `z in [z_min, z_split]` and `b in [b*, b_max]` the lemma gives
+    `z <= D1 - b - sec r - T' tan r`, and with the 9/11 bound on `b` (the same `eps11`
+    and `delta9`), `eps11` cancels:
+
+        z* = D1 + D0 - 2 sec r - (tau0 + tau1) tan r + r tan r
+             + r (|vx - tan r ux| + |vy - tan r uy|),
+
+    attained when 9, 11 and 13 touch in a column, all turned by `+r`. Above `z_split`
+    every `(b, z)` with `b in [b_floor, b_max]` is closed by an overlap of the inner
+    rectangles of 11 and 13 with each other, the non-sliders or the container.
+    """
+    trig = trig_radius(scene.radius)
+    low, high = stack(scene, 9, 11), stack(scene, 11, 13)
+    r = scene.radius
+    pose = scene.poses[11]
+    ux, uy = pose.ux, pose.uy
+    vx, vy = scene.v
+    lateral = high.tau + Box(-2 * r, 2 * r)
+    normal = high.gap - Box(b_floor_value, b_max) - Box(z_min, z_split)
+    lemma = separation_lemma(lateral, normal, trig)
+    weights = _l1(vx - trig.tan * ux, vy - trig.tan * uy)
+    exact = (
+        high.gap
+        + low.gap
+        - 2 * trig.sec
+        - (low.tau + high.tau) * trig.tan
+        + trig.tan * r
+        + weights * r
+    )
+    cover = z_cover(scene, (b_floor_value, b_max), z_split)
+    ceiling = _up(exact.hi)
+    return (
+        Face(
+            passed=lemma and ceiling < z_split and cover.passed,
+            record={
+                "z_star": _box_record(exact),
+                "certified_ceiling": str(ceiling),
+                "lemma_hypotheses": lemma,
+                "lemma_range": {
+                    "b": [str(b_floor_value), str(b_max)],
+                    "z": [str(z_min), str(z_split)],
+                },
+                "tau1": _box_record(high.tau),
+                "D1": _box_record(high.gap),
+                "z_split": str(z_split),
+                "above_split": _outcome_record(cover),
+                "method": (
+                    "11/13 and 9/11 separating-axis lemmas joined through b (eps11 cancels); "
+                    "pair cover of 11 and 13 above z_split"
+                ),
+            },
+        ),
+        exact,
+    )
+
+
+def z_cover(
+    scene: Scene, b: Interval, z_from: Q, *, without: frozenset[int] = frozenset()
+) -> Outcome:
+    """Every `(b, z)` with `b` in the interval and `z >= z_from` is infeasible."""
+    fixed = {label: rect for label, rect in scene.fixed.items() if label not in without}
+    z_range = physical_range(scene, 13, scene.v)
+    stack_: list[tuple[Interval, Interval]] = [(b, (z_from, max(z_from, z_range[1])))]
+    counts: dict[str, int] = {}
+    while stack_:
+        bb, zz = stack_.pop()
+        if zz[1] <= zz[0] or bb[1] <= bb[0]:
+            continue
+        wide = max(bb[1] - bb[0], zz[1] - zz[0])
+        if wide <= MAX_SLIDE_WIDTH:
+            candidates = (
+                ("11", along_v_rect(scene, 11, bb, -1)),
+                ("13", along_v_rect(scene, 13, zz, 1)),
+            )
+            rects = {name: rect for name, rect in candidates if rect is not None}
+            if _pair_reason(rects, fixed, scene.outer) is not None:
+                counts["pair"] = counts.get("pair", 0) + 1
+                continue
+            if wide <= SLIDE_STEP:
+                return Outcome(
+                    passed=False,
+                    leaves=counts,
+                    six_nodes=0,
+                    failure={"b": [str(bb[0]), str(bb[1])], "z": [str(zz[0]), str(zz[1])]},
+                )
+        if bb[1] - bb[0] >= zz[1] - zz[0]:
+            mid = (bb[0] + bb[1]) / 2
+            stack_ += [((bb[0], mid), zz), ((mid, bb[1]), zz)]
+        else:
+            mid = (zz[0] + zz[1]) / 2
+            stack_ += [(bb, (zz[0], mid)), (bb, (mid, zz[1]))]
+    return Outcome(passed=True, leaves=counts, six_nodes=0, failure=None)
+
+
+def _box_record(box: Box) -> dict[str, Any]:
+    return {"lo": float(box.lo), "hi": float(box.hi), "width": float(box.hi - box.lo)}
+
+
+# ---------------------------------------------------------------------------
 # Receipt
 # ---------------------------------------------------------------------------
 
@@ -569,74 +911,157 @@ def _outcome_record(outcome: Outcome) -> dict[str, Any]:
     }
 
 
+def _slide_ranges(scene: Scene, state: dict[int, cover.Cell]) -> dict[str, Interval | None]:
+    one, zero = Box.point(Q(1)), Box.point(Q(0))
+    vx, vy = scene.v
+    u = (scene.poses[11].ux, scene.poses[11].uy)
+    across = (zero, one)
+    return {
+        "a": cell_slide_range(scene.poses[5], state[5], (-one, zero), across, scene.radius),
+        "b": cell_slide_range(scene.poses[11], state[11], (-vx, -vy), u, scene.radius),
+        "z": cell_slide_range(scene.poses[13], state[13], (vx, vy), u, scene.radius),
+    }
+
+
+def _interval_record(interval: Interval | None) -> dict[str, Any] | None:
+    if interval is None:
+        return None
+    return {
+        "exact": [str(interval[0]), str(interval[1])],
+        "float": [float(interval[0]), float(interval[1])],
+    }
+
+
 def run(
     a_max: Q,
     z_min: Q,
     b_max: Q,
     *,
-    tight: tuple[Q, Q] | None = None,
+    design: str = DEFAULT_DESIGN,
+    tight: tuple[Q, Q, Q] | None = None,
+    z_split: Q = Z_SPLIT,
     controls: bool = True,
 ) -> dict[str, Any]:
     started = time.monotonic()
-    scene = build_scene()
+    scene = build_scene(design=design)
+    state = endpoint_state(design)
     timings: dict[str, float] = {}
     stage = time.monotonic()
     claim = slide_cover(scene, a_max, z_min)
     timings["a_z"] = time.monotonic() - stage
-    z_for_b = z_min
+    stage = time.monotonic()
+    b_outcome = b_cover(scene, b_max, z_min)
+    timings["b"] = time.monotonic() - stage
+
+    # The faces square 6 does not reach, and what the endpoint's cells give.
+    stage = time.monotonic()
+    a_face = a_floor(scene)
+    b_face, b_star = b_floor(scene, b_max)
+    b_low = _down(b_star.lo)
+    z_face, _ = z_ceiling(scene, b_low, b_max, z_min, z_split)
+    z_chain = Q(z_face.record["certified_ceiling"])
+    cells = _slide_ranges(scene, state)
+    z_cell = cells["z"]
+    caps = [z_chain] if z_face.passed and claim.passed and b_outcome.passed else []
+    if z_cell is not None:
+        caps.append(_up(z_cell[1]))
+    z_cap = min(caps) if caps else None
+    timings["faces"] = time.monotonic() - stage
+
     tight_record: dict[str, Any] | None = None
+    box_a, box_z, box_b = a_max, z_min, b_max
     if tight is not None:
         stage = time.monotonic()
-        tight_outcome = slide_cover(scene, *tight)
+        tight_a, tight_z, tight_b = tight
+        floor = Q(0) if a_face.passed else None
+        tight_az = slide_cover(scene, tight_a, tight_z, z_cap=z_cap, a_floor_value=floor)
+        tight_bz = b_cover(scene, tight_b, tight_z) if tight_az.passed else None
         timings["tight"] = time.monotonic() - stage
         tight_record = {
-            "a_max": str(tight[0]),
-            "z_min": str(tight[1]),
-            "margins": {
-                "a": str(DECLARED_BOX[0][1] - tight[0]),
-                "z": str(tight[1] - DECLARED_BOX[2][0]),
-            },
-            **_outcome_record(tight_outcome),
+            "a_max": str(tight_a),
+            "z_min": str(tight_z),
+            "b_max": str(tight_b),
+            "z_cap": None if z_cap is None else str(z_cap),
+            "a_z": _outcome_record(tight_az),
+            "b": None if tight_bz is None else _outcome_record(tight_bz),
         }
-        if tight_outcome.passed:
-            z_for_b = max(z_min, tight[1])
-    stage = time.monotonic()
-    b_outcome = b_cover(scene, b_max, z_for_b)
-    timings["b"] = time.monotonic() - stage
+        if tight_az.passed:
+            box_a, box_z = min(a_max, tight_a), max(z_min, tight_z)
+            if tight_bz is not None and tight_bz.passed:
+                box_b = min(b_max, tight_b)
+
     control_records: dict[str, Any] = {}
     if controls:
         stage = time.monotonic()
         lo, hi = scene.outer
         whole = (lo + Q(1, 2), hi - Q(1, 2), lo + Q(1, 2), hi - Q(1, 2))
-        whole_scene = build_scene(cell=whole)
+        whole_scene = build_scene(cell=whole, design=design)
         refused_whole = slide_cover(whole_scene, a_max, z_min, node_limit=CONTROL_NODE_LIMIT)
         refused_13 = slide_cover(scene, a_max, z_min, without=frozenset({13}))
+        free_b = physical_range(scene, 11, (-scene.v[0], -scene.v[1]))[0]
+        refused_floor = z_cover(scene, (free_b, b_max), z_split, without=frozenset({9}))
         control_records = {
             "whole_box_cell_refused": not refused_whole.passed,
             "whole_box_cell": _outcome_record(refused_whole),
             "without_13_refused": not refused_13.passed,
             "without_13": _outcome_record(refused_13),
+            "without_9_refused": not refused_floor.passed,
+            "without_9": _outcome_record(refused_floor),
         }
         timings["controls"] = time.monotonic() - stage
+
+    a_cell, b_cell = cells["a"], cells["b"]
+    certified: dict[str, Interval] = {
+        "a": (
+            max(Q(0), a_cell[0]) if a_cell else Q(0),
+            min(box_a, a_cell[1]) if a_cell else box_a,
+        ),
+        "b": (
+            max(b_low, b_cell[0]) if b_cell else b_low,
+            min(box_b, b_cell[1]) if b_cell else box_b,
+        ),
+        "z": (
+            max(box_z, z_cell[0]) if z_cell else box_z,
+            z_cap if z_cap is not None else Q(10),
+        ),
+    }
+    declared: dict[str, tuple[Q, Q]] = dict(zip(("a", "b", "z"), DECLARED_BOX, strict=True))
+    inside = {
+        name: declared[name][0] <= low and high <= declared[name][1]
+        for name, (low, high) in certified.items()
+    }
+    widened = {
+        name: [str(min(declared[name][0], low)), str(max(declared[name][1], high))]
+        for name, (low, high) in certified.items()
+    }
     checks = {
         "a_z_bound": claim.passed,
         "b_bound": b_outcome.passed,
+        "state_cell_of_6": state[6].name == SIX_CELL,
+        "a_floor": a_face.passed,
+        "b_floor": b_face.passed,
+        "z_ceiling": z_face.passed or (z_cell is not None and z_cap is not None),
     }
     if controls:
         checks["controls_refused"] = bool(
-            control_records["whole_box_cell_refused"] and control_records["without_13_refused"]
+            control_records["whole_box_cell_refused"]
+            and control_records["without_13_refused"]
+            and control_records["without_9_refused"]
         )
     timings["total"] = time.monotonic() - started
     source = Path(__file__).read_bytes()
     return {
         "schema": SCHEMA,
         "scope": (
-            "H-268 slide bounds from square 6's H-266 cell at any turn, the other "
-            "non-slider coordinates within the radius; exact rationals, outward intervals"
+            "H-268 slide bounds: square 6 in its cell of the endpoint's state at any turn, "
+            "the other non-slider coordinates within the radius, the container [0, S]^2 with "
+            "S <= S*; exact rationals, outward intervals"
         ),
         "module_sha256": hashlib.sha256(source).hexdigest(),
+        "design": design,
         "root": scene.provenance,
         "radius": str(scene.radius),
+        "state": {str(label): cell.name for label, cell in sorted(state.items())},
         "cell": {"name": SIX_CELL, "box": [str(v) for v in scene.cell]},
         "outer_container": [str(v) for v in scene.outer],
         "thresholds": {"a_max": str(a_max), "z_min": str(z_min), "b_max": str(b_max)},
@@ -646,8 +1071,45 @@ def run(
             "b": str(DECLARED_BOX[1][1] - b_max),
         },
         "a_z": _outcome_record(claim),
+        "b": {"z_min_used": str(z_min), **_outcome_record(b_outcome)},
+        "faces": {
+            "a_floor": a_face.record,
+            "b_floor": b_face.record,
+            "z_ceiling_chain": z_face.record,
+            "cells_of_the_state": {
+                "premise": (
+                    "each slider's centre in its own cell of the endpoint's state, with its "
+                    "u (or eta5) coordinate within the radius"
+                ),
+                "cells": {"a": state[5].name, "b": state[11].name, "z": state[13].name},
+                "ranges": {name: _interval_record(value) for name, value in cells.items()},
+            },
+            "z_cap": None if z_cap is None else str(z_cap),
+        },
+        "premise_by_face": {
+            "a_min": "container (square 5's cell gives only a >= -shift)",
+            "a_max": "square 6 in its cell, with z <= z_cap",
+            "b_min": "9/11 nonoverlap (square 11's cell gives far less)",
+            "b_max": "11/13 nonoverlap with z >= z_min",
+            "z_min": "square 6 in its cell",
+            "z_max": (
+                "least of square 13's cell and the 9/11/13 chain"
+                if z_cell is not None
+                else "the 9/11/13 chain"
+            ),
+        },
         "tight": tight_record,
-        "b": {"z_min_used": str(z_for_b), **_outcome_record(b_outcome)},
+        "certified_box": {
+            name: {
+                "exact": [str(low), str(high)],
+                "float": [float(low), float(high)],
+                "inside_declared": inside[name],
+            }
+            for name, (low, high) in certified.items()
+        },
+        "declared_box": {name: [str(v) for v in pair] for name, pair in declared.items()},
+        "inside_declared_box": all(inside.values()),
+        "smallest_containing_box": widened,
         "controls": control_records,
         "checks": checks,
         "passed": all(checks.values()),
@@ -657,23 +1119,28 @@ def run(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=(__doc__ or SCHEMA).splitlines()[0])
-    parser.add_argument("--a-max", type=Q, default=DECLARED_BOX[0][1])
-    parser.add_argument("--z-min", type=Q, default=DECLARED_BOX[2][0])
-    parser.add_argument("--b-max", type=Q, default=DECLARED_BOX[1][1])
-    parser.add_argument("--tight-a", type=Q, default=None)
-    parser.add_argument("--tight-z", type=Q, default=None)
+    parser.add_argument("--design", choices=sorted(cover.DESIGNS), default=DEFAULT_DESIGN)
+    parser.add_argument("--a-max", type=Q, default=THRESHOLDS[0])
+    parser.add_argument("--z-min", type=Q, default=THRESHOLDS[1])
+    parser.add_argument("--b-max", type=Q, default=THRESHOLDS[2])
+    parser.add_argument("--tight-a", type=Q, default=TIGHT[0])
+    parser.add_argument("--tight-z", type=Q, default=TIGHT[1])
+    parser.add_argument("--tight-b", type=Q, default=TIGHT[2])
+    parser.add_argument("--no-tight", action="store_true")
+    parser.add_argument("--z-split", type=Q, default=Z_SPLIT)
     parser.add_argument("--no-controls", action="store_true")
     parser.add_argument("--output", type=Path, default=None)
     args = parser.parse_args(argv)
-    tight = None
-    if args.tight_a is not None or args.tight_z is not None:
-        tight = (
-            args.a_max if args.tight_a is None else args.tight_a,
-            args.z_min if args.tight_z is None else args.tight_z,
-        )
+    tight = None if args.no_tight else (args.tight_a, args.tight_z, args.tight_b)
     try:
         receipt = run(
-            args.a_max, args.z_min, args.b_max, tight=tight, controls=not args.no_controls
+            args.a_max,
+            args.z_min,
+            args.b_max,
+            design=args.design,
+            tight=tight,
+            z_split=args.z_split,
+            controls=not args.no_controls,
         )
     except (ValueError, OSError, KeyError) as error:
         print(json.dumps({"schema": SCHEMA, "passed": False, "error": str(error)}))
@@ -681,8 +1148,11 @@ def main(argv: list[str] | None = None) -> int:
     encoded = json.dumps(receipt, sort_keys=True, indent=1)
     if args.output is not None:
         args.output.write_text(encoded + "\n")
-    summary = {key: receipt[key] for key in ("passed", "checks", "thresholds", "margins")}
-    summary["timing_seconds"] = receipt["timing_seconds"]
+    keys = ("passed", "design", "checks", "inside_declared_box", "timing_seconds")
+    summary = {key: receipt[key] for key in keys}
+    summary["certified_box"] = {
+        name: entry["exact"] for name, entry in receipt["certified_box"].items()
+    }
     sys.stdout.write(json.dumps(summary, sort_keys=True) + "\n")
     return 0 if receipt["passed"] else 1
 

@@ -61,8 +61,8 @@ What it proves is reported, with what that report rests on set out below.
 ## Lemma 1 as Printed, and the Square That Refutes It
 
 Nagamochi’s unavoidable set in $R = [0,a] \times [0,b]$, $a, b \ge 2$, is
-$R^* = [1, a-1] \times [1, b-1]$ with area density $1$; four segments of line density
-$1/2$, $L_1 = [(0.9, 1), (a-0.9, 1)]$, $L_2 = [(0.9, b-1), (a-0.9, b-1)]$,
+$R^{\ast} = [1, a-1] \times [1, b-1]$ with area density $1$; four segments of line
+density $1/2$, $L_1 = [(0.9, 1), (a-0.9, 1)]$, $L_2 = [(0.9, b-1), (a-0.9, b-1)]$,
 $L_3 = [(1, 0.9), (1, b-0.9)]$, $L_4 = [(a-1, 0.9), (a-1, b-0.9)]$; eight points $Q$ of
 weight $0.45$ at $(0.9, 1)$, $(a-0.9, 1)$, $(0.9, b-1)$, $(a-0.9, b-1)$, $(1, 0.9)$,
 $(1, b-0.9)$, $(a-1, 0.9)$, $(a-1, b-0.9)$; and $2\lceil a\rceil + 2\lceil b\rceil - 12$
@@ -76,18 +76,17 @@ For $\lambda > 1$ the paper shrinks $R$ and $U$ toward the origin by $\lambda^{-
 scores a unit square $S$ inside $\lambda^{-1}R$ by
 $\sigma(S) = \lambda^2\,\mathrm{area}(S \cap R^*) + \tfrac{\lambda}{2}\sum_i \mathrm{length}(S \cap L_i) + 0.45\,\#(S \cap Q) + 0.5\,\#(S \cap P)$,
 the objects being their shrunk copies.
-Lemma 1 reads, in full: *Any unit square $S$ inside $\lambda^{-1}R$ satisfies
-$\sigma(S) > 1$.* Theorem 1 follows by summing over a packing.
+Lemma 1 reads, in full: *Any unit square `S` inside $\lambda^{-1}R$ satisfies
+`σ(S) > 1`.* Theorem 1 follows by summing over a packing.
 The paper then states the equivalent form in which it argues and in which the
-counterexample is given: *any $\lambda \times \lambda$ square $S$ with
-$\lambda \in (1, 1.01]$ has $\sigma(S) > 1$ over the original $R$ and $U$*, with density
-$1$, $1/2$, $0.45$ and $0.5$ unscaled.
+counterexample is given: *any `λ × λ` square `S` with `λ ∈ (1, 1.01]` has `σ(S) > 1`
+over the original `R` and `U`*, with density $1$, $1/2$, $0.45$ and $0.5$ unscaled.
 The scaling is exact, so the two statements are the same.
 Whether a point on the boundary of $S$ counts is not specified; the counterexample is
 arranged so that it does not matter.
 
 Karakuş’s Section 4: fix $a > 3$, $b > 2$ and $0 < t \le 1/50$ with
-$t < \min\{10(a-3),\, b-2\}$. The contact square $K_t$ has vertices
+$t < \min\lbrace10(a-3),\thinspace b-2\rbrace$. The contact square $K_t$ has vertices
 
 $$
 A = \bigl(2 - \tfrac{9}{10}t,\ 0\bigr),\quad
@@ -97,11 +96,11 @@ D = \bigl(1 - \tfrac{9}{10}t,\ t\bigr),
 $$
 
 a square of side $\sqrt{1+t^2} \in (1, 1.01)$ with its corner $A$ on the $x$-axis,
-tilted by $\arctan t$. Its chord at height $0.9$ is $[1 - t^2, 2] \times \{0.9\}$, so
-$(1, 0.9)$ is interior and $(2, 0.9)$ lies on the edge $AB$; $B$ is on $y = 1$; the
-chord on $L_1$ has length $1 + t^2$; the chord on $L_3$ is $\{1\} \times [0.9, 0.9+t]$;
-the part above $y = 1$ is a triangle of area $t(1+t^2)/2$ inside $R^*$; no other
-weighted object is met.
+tilted by $\arctan t$. Its chord at height $0.9$ is
+$[1 - t^2, 2] \times \lbrace0.9\rbrace$, so $(1, 0.9)$ is interior and $(2, 0.9)$ lies
+on the edge $AB$; $B$ is on $y = 1$; the chord on $L_1$ has length $1 + t^2$; the chord
+on $L_3$ is $\lbrace1\rbrace \times [0.9, 0.9+t]$; the part above $y = 1$ is a triangle
+of area $t(1+t^2)/2$ inside $R^{\ast}$; no other weighted object is met.
 Hence $\sigma(K_t) = 29/20 + t + t^2/2 + t^3/2$ counting the boundary point, and
 
 $$
@@ -116,8 +115,9 @@ Shrinking $K_t$ about $A$ instead leaves $(2, 0.9)$ in the relative interior of 
 image of $AB$ while $y = 1$ cuts the images of $BC$ and $CD$: the edge carrying
 $(2, 0.9)$ is not one of the two cut by $y = 1$.
 
-The tool recomputes every sentence of that paragraph for $t \in \{1/50, 1/100, 1/1000,
-10^{-6}\}$ in the containers $[0,4]^2$, $[0, 7/2] \times [0, 5/2]$, $[0,10]^2$ and
+The tool recomputes every sentence of that paragraph for
+$t \in \lbrace1/50, 1/100, 1/1000,
+10^{-6}\rbrace$ in the containers $[0,4]^2$, $[0, 7/2] \times [0, 5/2]$, $[0,10]^2$ and
 $[0,33] \times [0,7]$, with shrink factor $\rho = 1 - t^2/8$, and finds each printed
 quantity exactly: the chord endpoints, the three lengths, the area, the polynomial, and
 the value $242551/250000$ at $t = 1/50$. The shrunken interior scores are $0.968916$,
@@ -142,14 +142,14 @@ public record of the defect, and Karakuş’s paper does not cite it.
 Section 5.5, Case 6: the centre of $S$ is in $[1, a-1] \times [0, 1]$ and $y = 1$ cuts
 two adjacent edges $e_1, e_2$. Its last subcase has $S$ containing $(1, 0.9)$, no point
 of $P$, none of $(0.9, 1)$, $(a-1, 0.9)$, $(2, 0.9)$ and, after the reduction, not
-$(1,1)$. The text: *To estimate the minimum $\sigma(S)$ in this case, we can assume that
-one corner of $S$ touches the $x$-axis and point $(2, 0.9)$ is on an edge of $S$*
-\[...\] *Then $\sigma(S) \ge d + 0.5c + 0.5 - 0.5c'$, which is greater than $1$ by Lemma
-6.* Lemma 6 assumes *two adjacent edges $e_1$ and $e_2$ of $S$ intersect line
-$L : y = 1$* and *point $(2, 0.9)$ is on an edge $e_2$ of $S$*, and its proof computes,
-for the configuration of Figure 4(b) in which $e_1$ and $e_2$ meet at the apex above
-$y = 1$, the cap area $d = t(1-t)/(1+t)$ and chord $c$ with $c + d = 1$ (the printed
-$c = (t+t^2)/(1+t)$ contradicts the paper’s own *$c = 1 - d$*; the apex geometry gives
+$(1,1)$. The text: *To estimate the minimum `σ(S)` in this case, we can assume that one
+corner of `S` touches the `x`-axis and point `(2, 0.9)` is on an edge of `S`* \[...\]
+*Then $\sigma(S) \ge d + 0.5c + 0.5 - 0.5c'$, which is greater than `1` by Lemma 6.*
+Lemma 6 assumes *two adjacent edges `e_1` and `e_2` of `S` intersect line `L : y = 1`*
+and *point `(2, 0.9)` is on an edge `e_2` of `S`*, and its proof computes, for the
+configuration of Figure 4(b) in which $e_1$ and $e_2$ meet at the apex above $y = 1$,
+the cap area $d = t(1-t)/(1+t)$ and chord $c$ with $c + d = 1$ (the printed
+$c = (t+t^2)/(1+t)$ contradicts the paper’s own *`c = 1 - d`*; the apex geometry gives
 $c = (1+t^2)/(1+t)$, and nothing here rests on it).
 In $K_t$ the point $(2, 0.9)$ is on $AB$, which does not cross $y = 1$ once the square
 is shrunk about $A$; the edges cut by $y = 1$ are $BC$ and $CD$. The reduction reaches a
@@ -172,17 +172,18 @@ The dependence is linear and complete.
 | --- | --- | --- |
 | Lemma 1, every $(a, b)$ | Cases 1 to 7 | False for all $a > 3$, $b > 2$; undecided for the rest |
 | Theorem 1, $\nu(a,b) < ab - \Delta(a) - \Delta(b)$ | Lemma 1 and additivity; no other argument in the paper | Unproved; not disproved |
-| Theorem 2(i), $s(N) = n$ for $N \in \{n^2, n^2-1, n^2-2\}$ | Theorem 1 at $a = b = n$ | Unproved for $n \ge 4$ by this paper; $n \le 3$ classical |
+| Theorem 2(i), $s(N) = n$ for $N \in \lbrace n^2, n^2-1, n^2-2\rbrace$ | Theorem 1 at $a = b = n$ | Unproved for $n \ge 4$ by this paper; $n \le 3$ classical |
 | Theorem 2(ii), $s(N) \ge \sqrt{N - 2\lfloor\sqrt N\rfloor + 1} + 1$ | Theorem 1 at $a = b = k + \alpha \in (k, k+1)$, $k = \lfloor \sqrt N\rfloor$ | Unproved for every $N \ge 10$ by this paper |
 | `T-007`’s closed form $\min(\lceil\sqrt N\rceil, \sqrt{N - 2\lfloor\sqrt N\rfloor + 1} + 1)$ | Both parts of Theorem 2 | Correct algebra on an unproved theorem |
 
 Here $\Delta(t) = t + 1 - \lceil t\rceil$. The Section 2 algebra, which the 30 August
 read re-derived, is untouched: with $\alpha = \sqrt{N - 2k + 1} + 1 - k$ the identity
 $(k+\alpha)^2 - 2\alpha = N$ holds, and the ceiling branch is exactly
-$N \in \{n^2, n^2-1,
-n^2-2\}$. For $N \in \{4, 5, 6, 7, 8, 9\}$ Theorem 2 is invoked at $a = b \in \{2,
-1+\sqrt2, 1+\sqrt3, 3, 3, 3\}$, where the family does not apply and where the values are
-classical in any case ($s(4) = 2$, $s(5) = 2 + 1/\sqrt2$, $s(6) = s(7) = 3$,
+$N \in \lbrace n^2, n^2-1,
+n^2-2\rbrace$. For $N \in \lbrace4, 5, 6, 7, 8, 9\rbrace$ Theorem 2 is invoked at
+$a = b \in \lbrace2,
+1+\sqrt2, 1+\sqrt3, 3, 3, 3\rbrace$, where the family does not apply and where the
+values are classical in any case ($s(4) = 2$, $s(5) = 2 + 1/\sqrt2$, $s(6) = s(7) = 3$,
 $s(8) = s(9)
 = 3$). For every $N \ge 10$ the parameter exceeds $3$ and the proof invoked is the
 refuted one.
@@ -202,13 +203,14 @@ and says so in its docstring.
 ### Karakuş’s strip measure, audited here
 
 Theorem 1.1 of the paper: for $a \ge 2$ and $b \ge 3$, $\nu(a,b) < ab - \Delta(a)$, and
-for $a, b \ge 3$, $\nu(a,b) < ab - \max\{\Delta(a), \Delta(b)\}$. The measure $\mu$ on
-$R$ is area density $1$ on the strip $H = [0,a] \times [1, b-1]$, line density $1/2$ on
-$L_- = [0,a] \times \{1\}$ and $L_+ = [0,a] \times \{b-1\}$, and mass $1/2$ at the
-points $(j, 4/5)$ and $(j, b - 4/5)$ for $j = 1, \dots, \lceil a\rceil - 1$; its total
-is $ab - \Delta(a)$. Proposition 5.1 says every square $S \subseteq R$ of side
-$\lambda \in (1, 1.01]$ has $\mu(S^\circ) > 1$, and the theorem follows by the same
-scale-and-sum as Nagamochi’s, with interiors so that nothing is counted twice.
+for $a, b \ge 3$, $\nu(a,b) < ab - \max\lbrace\Delta(a), \Delta(b)\rbrace$. The measure
+$\mu$ on $R$ is area density $1$ on the strip $H = [0,a] \times [1, b-1]$, line density
+$1/2$ on $L_- = [0,a] \times \lbrace1\rbrace$ and
+$L_+ = [0,a] \times \lbrace b-1\rbrace$, and mass $1/2$ at the points $(j, 4/5)$ and
+$(j, b - 4/5)$ for $j = 1, \dots, \lceil a\rceil - 1$; its total is $ab - \Delta(a)$.
+Proposition 5.1 says every square $S \subseteq R$ of side $\lambda \in (1, 1.01]$ has
+$\mu(S^\circ) > 1$, and the theorem follows by the same scale-and-sum as Nagamochi’s,
+with interiors so that nothing is counted twice.
 
 I read the proof in full and re-derived each step.
 Lemma 5.2 works with $h = \sin\theta + \cos\theta$ and
@@ -226,7 +228,8 @@ $y = 1$ and the chord on it, reduces in the two-opposite-sides case to
 $\lambda\sin\theta + \cos\theta \ge 1$ and in the cap case to
 $\lambda - h + p > (h-1)^2/2 \ge 0$; both algebraic reductions check.
 The open chord at height $4/5$ of length above one in $[0, a]$ contains an integer in
-$\{1, \dots, \lceil a\rceil - 1\}$, which is where the point row earns its $1/2$, and
+$\lbrace1, \dots, \lceil a\rceil - 1\rbrace$, which is where the point row earns its
+$1/2$, and
 $\mu(S^\circ) \ge \lambda^2 - \lambda/2 + 1/2 = 1 + (\lambda-1)(\lambda+\tfrac12)$
 follows for centres at height at most $1$, with the top of such a square below $2 \le
 b - 1$. For centres in the strip, the cap estimate (5.8) $D/\ell < 1/2$ and the three
@@ -379,12 +382,12 @@ axis-parallel square $[0.9, 1.91] \times [0, 1.01]$, whose left side lies on the
 of $(0.9, 1)$ so that point is on its boundary and uncounted.
 In $[0,4]^2$, Nagamochi’s measure gives $\alpha$ exactly $10191/10000$ and $\beta$
 $0.968916$. The square $\alpha$ collects $(1, 0.9)$, the whole of both extensions at the
-corner $(1,1)$ (the pieces $[0.9, 1] \times \{1\}$ and $\{1\} \times [0.9, 1]$, worth
-$0.05$ each) and little else; $\beta$ collects $(1, 0.9)$, a chord of length about one
-on $y = 1$, and only $t$ of the vertical extension because its tilted left edge slides
-off the line $x = 1$. The design pairs each $Q$ point ($0.45$) with its extension
-($0.05$) to make $0.5$; $\alpha$ needs the extensions, $\beta$ needs the point to carry
-the whole $0.5$.
+corner $(1,1)$ (the pieces $[0.9, 1] \times \lbrace1\rbrace$ and
+$\lbrace1\rbrace \times [0.9, 1]$, worth $0.05$ each) and little else; $\beta$ collects
+$(1, 0.9)$, a chord of length about one on $y = 1$, and only $t$ of the vertical
+extension because its tilted left edge slides off the line $x = 1$. The design pairs
+each $Q$ point ($0.45$) with its extension ($0.05$) to make $0.5$; $\alpha$ needs the
+extensions, $\beta$ needs the point to carry the whole $0.5$.
 
 The tool builds three variants and scores both squares:
 
@@ -456,7 +459,7 @@ replayed past it.
 | Claim | Rests on now | Recommended | Why |
 | --- | --- | --- | --- |
 | `T-007` as stated, Theorem 2’s closed form at every $4 \le N \le 100$ | A published proof with a refuted lemma; no replacement at full strength | `V0`/`C1`, status `incomplete`; `E-nagamochi-lower.external_review` to `defect-found` dated 2 October 2026 with this review as the record | `V3` means a checkable published proof; there is none. The read stands at `C1` and found the defect |
-| General floor at $N \notin \{k^2-1, k^2-2\}$, as a verified bound | Karakuş Cor. 6.2, read here | New evidence from arXiv:2609.37410, `published-proof`, `V3`/`C1`, at the weaker value; Nagamochi’s value stays as a reported bound | The replacement is published and audited; it is not machine-checked |
+| General floor at $N \notin \lbrace k^2-1, k^2-2\rbrace$, as a verified bound | Karakuş Cor. 6.2, read here | New evidence from arXiv:2609.37410, `published-proof`, `V3`/`C1`, at the weaker value; Nagamochi’s value stays as a reported bound | The replacement is published and audited; it is not machine-checked |
 | $s(k^2-1) = k$, $k \ge 3$ | Karakuş Cor. 1.2 (read here); chelokot’s augmented measure in Lean (reported) | `V3`/`C1` on the strip-measure proof; the Lean route stays reported until replayed | Two independent methods exist; one is audited |
 | $s(k^2-2) = k$, $k \ge 4$ | chelokot’s compensation proof in Lean only: statement read here, definitions read here, build and axioms not replayed, no retained receipt | Recorded, `V0`/`C0`, until the replay set out above (pinned `v4.33.0` and Mathlib `db584cd6`, `lake build` at `753079eb`, an `assert_standard_axioms` and `#print axioms` receipt on `squareMinusTwo_isMinimumSide`, a statement-fidelity note) is retained, which gives `V3`/`C3`; `V5` needs a human formalization review. Meanwhile the verified floor at $N = 14, 23, 34, 47, 62, 79, 98$ falls to Karakuş’s value and their optimality reads as reported | No published proof survives; a third-party formal claim earns a rung here only by replay, and an unreplayed Lean claim is not verified |
 | Lemma 1 of [Nagamochi 2005] is false | This tool, on Karakuş’s family and chelokot’s square | A `correction` result, `S3`, with the tool as exact-algebraic evidence (`replayed-here`) and the test as its control | The counterexample is a finite exact computation and is retained |

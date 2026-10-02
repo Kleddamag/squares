@@ -534,39 +534,47 @@ None is registered here; each names its falsifier.
 
 ## Corrections and Side Findings
 
-- **Nagamochi’s proof has a published gap.** H. Karakuş, “A counterexample to
-  Nagamochi’s scoring lemma and a new rectangle packing bound”,
-  [arXiv:2609.37410](https://arxiv.org/abs/2609.37410), 29 September 2026 (read by the
-  coordinator on 2026-10-02): counterexamples to the scoring assertion in Lemma 1 show
-  the published proof of the rectangle bound is incomplete, “but do not disprove the
-  bound itself”. An independent strip-measure proof recovers $s(k^2-1)=k$ for every
-  $k\ge 2$ and “does not establish … the identity $s(k^2-2)=k$”. T-007 is the verified
-  lower bound at 238 of the 261 open cases, and the $k^2-2$ exact values rest on it.
-  `think-589i` owns the review; no register value changes before it concludes.
-- **The Erdős–Graham transcription overstates the theorem.** The archived cleaned text
-  writes Theorem (1) as $w(\alpha)=\Theta(\alpha^{7/11})$; the paper prints
-  $W(\alpha)=O(\alpha^{7/11})$ (checked on the rendered page) and says it has no
-  nontrivial lower estimate.
-  `think-hzv3` owns the correction with the register’s other asymptotic citations.
+- **Nagamochi’s Lemma 1 is false, and T-007’s proof has a gap.** H. Karakuş, “A
+  counterexample to Nagamochi’s scoring lemma and a new rectangle packing bound”,
+  [arXiv:2609.37410](https://arxiv.org/abs/2609.37410), 29 September 2026, now
+  [archived](../../resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma.md).
+  The
+  [W2 review](../../../docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md)
+  verifies the counterexample family in exact arithmetic
+  (`devtools.check_nagamochi_lemma1_counterexample`) and finds that Theorem 1 rests on
+  Lemma 1 alone, so the gap reaches T-007 for every $N\ge 10$, not only through
+  $s(k^2-2)$. Karakuş’s independent strip measure, re-derived step by step with no gap
+  found, recovers $s(k^2-1)=k$ and a general floor
+  $s(N)\ge	frac12+\sqrt{N-\lfloor\sqrt N
+floor+	frac14}$ that is strictly weaker except at $N=m^2-1$. $s(k^2-2)=k$ now rests on
+  chelokot’s Lean proof, read but not replayed.
+  The inventory `devtools.audit_t007_consumers`, checked in the records tier, finds the
+  bound operative at 287 records, 224 of them beyond T-007’s registered 4–100 scope.
+  No register value has changed; `think-xucp` owns the re-grounding and `think-ym34` the
+  Lean replay.
+- **Two asymptotic transcriptions were wrong.** The Erdős–Graham cleaned text wrote
+  Theorem (1) as $\Theta(lpha^{7/11})$ where the paper prints $O(lpha^{7/11})$
+  (D-513), and the McClenagan text swapped Montgomery’s and Chung–Graham’s exponents,
+  which the n11 research report then charged to McClenagan (D-514). Both are corrected
+  with dated notes, and `asymptotic-waste-bounds.yaml` now records the Göbel origin of
+  the $10^{-100}$ constant, Wang–Dong–Li’s explicit constant and Kearney–Shiu’s
+  $\delta_k$ bounds.
 - **A quoted catalogue side disagrees with the atlas.** The literature lane quoted
   $s(301)=17.8689$; the atlas, which uses Couzo’s packet at 301, has 17.846667.
 
-## Follow-ups
+## Follow-ups and Their Dispositions
 
-Ranked by information value per cost.
-The named beads are children of `think-los0`.
+| Bead | Outcome | Disposition |
+| --- | --- | --- |
+| `think-589i` | Review concluded; inventory tool in the records tier | retire-success |
+| `think-xucp` (P1) | Re-ground the 287 floors and the $k^2-1$, $k^2-2$ values per the review | continue; awaits the owner’s choice of order with `think-ym34` |
+| `think-ym34` (P1) | Replay chelokot’s Lean proof of $s(n^2-2)=n$ with an axiom receipt | continue |
+| `think-ptt7` | H-269, H-270 and H-272 registered; $\beta=2/5$ parked under H-037 | retire-success |
+| `think-hzv3`, `think-1n8w` | Sources archived; D-513 and D-514 corrected | retire-success |
+| `think-bgkz` | Regularized-view layer | see its lane |
 
-1. `think-589i` (P1): the T-007 review against Karakuş 2026. It is the only finding here
-   that can change a register value.
-2. `think-bgkz`: a regularized-view layer for the atlas, built from the prototype after
-   the neighbour non-regression rule, as a W7 entry.
-3. `think-ptt7`: codify the four candidate hypotheses, starting with the $k^2+1$
-   crossover scan, which is cheap and decides how H-035 should be scoped.
-4. `think-hzv3`: the asymptotic-record corrections.
-5. `think-1n8w`: archive the sources found outside the archive.
-
-**Selected next entry:** `think-589i`, a W2 factual review, because it is the one result
-that bears on what the register already claims.
+**Selected next entry:** `think-ym34`, the Lean replay, because it decides whether the
+$k^2-2$ exact values survive the re-grounding in `think-xucp`.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

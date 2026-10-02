@@ -668,12 +668,13 @@ it.
   The site’s own statement follows under its own section heading, The Square Packing
   Project, an ordinary `h2` like the sections after it, and is the only prose the
   template holds there.
-  README’s next two paragraphs, what the project covers and its newest major result, are
-  a second shared block, `recent-progress`, which opens Recent Results
-  (`site_documents.overview_progress`); README keeps all four paragraphs together and in
-  order, parted only by the markers.
-  `devtools.check_readme` holds both blocks: each marked once, the second directly after
-  the first, prose alone with no heading or comment, and no case called the central one.
+  README’s next two paragraphs, what the project covers and its newest major result,
+  were a second shared block, `recent-progress`, that opened Recent Results until
+  2026-10-02; that section is one paragraph of the template’s own now (**Recent
+  results**, below), and README keeps its fuller account unshared, since a shared block
+  must read the same in both places and the two are meant to differ.
+  `devtools.check_readme` holds the one block: marked once, prose alone with no heading
+  or comment, and no case called the central one.
 
 - **Heading leading.** Every heading is set at one line height, 1.15
   (`--paper-heading-leading`, in `paper-type.css`), on screen: a page’s title (an `h1`,
@@ -1659,14 +1660,20 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   `tests/test_overview.py` holds each section’s prose to one paragraph of its own where
   this applies, the cards to their pages, and the three pages to saying each thing once.
 
-- **Recent results.** The overview’s Recent Results section opens with README’s
-  `recent-progress` block (**Page headings**, above), then one paragraph of its own on
-  what the table lists, with the star legend and where the filters start, and then one
-  table, not cards or a list: every result, by the date the table shows, newest first,
-  one row each (`recent_table`). It is the results page’s table, with its columns, its
-  rows, its sorting and its card-per-row form on a phone (**Tables**, above).
-  The ratings, the kinds and the statuses are defined on the Results page, which the
-  paragraph links; the section does not repeat them.
+- **Recent results.** The overview’s Recent Results section is one paragraph of 60 to 90
+  words before its table (the owner, 2026-10-02): the headline of recent progress,
+  eleven squares settled by T-060, seventeen squares bracketed by T-043 and T-065, the
+  new exact values at $n = 21$, $32$ and $45$, each id linked to its row and held to the
+  register by `check_results.READER_TIER`; then the star legend (`star_legend`) and one
+  sentence on where the filters start.
+  Then one table, not cards or a list: every result, by the date the table shows, newest
+  first, one row each (`recent_table`). It is the results page’s table, with its
+  columns, its rows, its sorting and its card-per-row form on a phone (**Tables**,
+  above). The ratings, the kinds, the statuses and the dating rule are defined on the
+  Results page, and a result’s rungs, review and retained packet are its row’s; the
+  section repeats none of them.
+  README’s two paragraphs on the same progress opened the section until that day and are
+  README’s own now (**Page headings**, above).
   The results page’s tools bar sits above it (**Result filters**, above), starting at
   significance S4 and up, a maximum age of 180 days and Hide superseded checked, with
   the count of rows shown out of the total at the bar’s end.

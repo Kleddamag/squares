@@ -37,23 +37,22 @@ and cite your work.
 
 ## Recent Results
 
-<!-- The section opens with README's next two paragraphs, what the project covers and
-     its newest major result, read from its recent-progress block
-     (site_documents.overview_progress). Edit them in README.md. -->
+<!-- One paragraph before the table (the owner, 2026-10-02): the headline of recent
+     progress with its result ids, which check_results.READER_TIER holds to the
+     register, then the star legend and where the table's filters start. README carries
+     its own fuller account of the same progress, and the two stopped being one shared
+     block that day (site_documents, think-ekw5). The ratings, the kinds, the statuses
+     and the dating rule are defined once, on the Results page; a result's rungs, review
+     and retained packet are its row's; and when a bound by others counts as verified is
+     said once, on the Frontier page. -->
 
-{{README_PROGRESS}}
-
-<!-- The ratings, the kinds, the statuses and the dating rule are defined once, on the
-     Results page, and when a bound by others counts as verified is said once, on the
-     Frontier page; this section says only what the table is and where its filters
-     start. -->
-
-The table lists every result, newest first: new bounds for particular numbers of
-squares, found here or by others, each with its credit, its ratings, its kind and its
-status, all defined on the [Results](all-results.html) page.
+Eleven squares is settled: $s(11) = 3.8770835\ldots$, the exact side of Trump’s 1979
+packing, by [T-060](all-results.html#t-060). Seventeen squares is bracketed by
+machine-checked bounds, [T-043](all-results.html#t-043) below and
+[T-065](all-results.html#t-065) above, and [$n = 21$](cases.html#n-21),
+[$32$](cases.html#n-32) and [$45$](cases.html#n-45) have new exact values.
 {{STAR_LEGEND}}
-The table starts with superseded results hidden, at significance S4 and up and a maximum
-age of 180 days; clear Hide superseded, choose All and clear Max age to see every row.
+The table starts at significance S4 and up, max age 180 days and superseded hidden.
 
 {{RECENT}}
 

@@ -12,8 +12,10 @@ in Tokoharu's rectangle format:
   ``verify.cpp`` that accepts coverage ``>= 1``.
 
 Later revisions add more ``certificates/mixed_n*`` directories of the same kind, with the
-same code byte for byte: n = 37, 65, 66, 90 and 92 at ``1a25a5ed`` and n = 84 and 85 at
-``52af997``. `MIXED` names each with its packet and the source's statement.
+same code byte for byte: n = 37, 65, 66, 90 and 92 at ``1a25a5ed``, n = 84 and 85 at
+``52af997`` and n = 76 at ``7975030``. `MIXED` names each with its packet and the source's
+statement. The linear certificates of ``af1db07`` and ``0c35d90``, which another checker
+decides, are `devtools.audit_wand125_linear`'s.
 
 This tool is the first-party part. ``exact`` recomputes, from the 2026-09-28 packet's
 retained bytes and without importing any source code, every premise that is plain
@@ -1294,10 +1296,13 @@ F_REVISION = "1a25a5ed745fdd905a52f48fcc48150a0669032d"
 G_REVISION = "52af997dc91c579658f0828bc8304e306ad9d95b"
 F_PACKET = WEB / "wand125-point-and-mixed-2026-10-01"
 G_PACKET = WEB / "wand125-mixed-bounds-2026-10-02"
+H_REVISION = "7975030a192607ef27edd1559aee4e98bd93047b"
+H_PACKET = WEB / "wand125-mixed-bounds-n76-2026-10-02"
 
 
 #: Every mixed certificate this tool audits and replays: n = 50 (T-048), the five of
-#: jlevy/squares#282 (T-069) and the two of its comment of 2 October. Each row is the
+#: jlevy/squares#282 (T-069), the two of its comment of 2 October and the n = 76 of its
+#: later comment the same day (pinned at ``7975030``, its own packet). Each row is the
 #: packet, the pinned revision, n, the side as the directory names it, the side, the
 #: rectangle count and the candidate digest, as the source states them.
 _MIXED_ROWS: tuple[tuple[Path, str, int, str, Fraction, int, str], ...] = (
@@ -1365,6 +1370,15 @@ _MIXED_ROWS: tuple[tuple[Path, str, int, str, Fraction, int, str], ...] = (
         587,
         "b95a0bb41a77cb00d8716c5256ae5bea71f1c668ce44047671e41e7f3f909a4c",
     ),
+    (
+        H_PACKET,
+        H_REVISION,
+        76,
+        "8.94",
+        Fraction(447, 50),
+        317,
+        "f2c2530552547a56a454c55bee99a196221ae1f4357570c3a0d524eddd5d9cdf",
+    ),
 )
 MIXED: dict[str, MixedCertificate] = {
     f"n{n}": MixedCertificate(
@@ -1394,7 +1408,7 @@ def mixed_retained(certificate: MixedCertificate) -> dict[str, bytes]:
     }
 
 
-def _green_facts(n: int, side: Fraction, compared: Fraction) -> dict[str, Any]:
+def green_facts(n: int, side: Fraction, compared: Fraction) -> dict[str, Any]:
     """Side and the source's comparison value against Green's and Nagamochi's bounds.
 
     Green's is the strongest value of the DS7 envelope at ``n`` (Theorem 9 or 10, or a
@@ -1427,7 +1441,7 @@ def _green_facts(n: int, side: Fraction, compared: Fraction) -> dict[str, Any]:
     }
 
 
-def _net_facts(net: dict[str, Any], core: Fraction) -> dict[str, str]:
+def net_facts(net: dict[str, Any], core: Fraction) -> dict[str, str]:
     """The source's net record against the containment facts recomputed here."""
     facts = n50_net(core)
     end = N50_STEP * N50_LAST
@@ -1563,7 +1577,7 @@ def mixed_certificate(
     )
     code = _code_facts(certificate, tree)
     _require(manifest["net"] == replay["net"], "the manifest and certificate nets differ")
-    net = _net_facts(manifest["net"], core)
+    net = net_facts(manifest["net"], core)
     _require(
         replay["status"] == "ALL_ANGLES_VERIFIED_AND_REPLAYED"
         and replay["n"] == n
@@ -1623,7 +1637,7 @@ def mixed_certificate(
             "compared_note": audit.get("compared_note"),
             "improvement_lower": str(improvement),
         },
-        "comparison": _green_facts(n, side, compared),
+        "comparison": green_facts(n, side, compared),
         "coverage_decided_here": False,
     }
 
@@ -2221,7 +2235,7 @@ def mutate_mixed(data: dict[str, Any], kind: str, row: int) -> dict[str, Any]:
     return mutated
 
 
-def _control_direction(binary: Path, folder: Path, nodes: int, timeout: int) -> dict[str, Any]:
+def control_direction(binary: Path, folder: Path, nodes: int, timeout: int) -> dict[str, Any]:
     """One net direction under the compiled shipped checker, with the replay's node limit."""
     command = [str(binary), "input.txt", str(nodes)]
     before = resource.getrusage(resource.RUSAGE_CHILDREN)
@@ -2344,7 +2358,7 @@ def mixed_control(
                 "mass": data["rectangles"][top]["mass"],
                 "contribution_at_witness_exact": str(contributions[top]),
             }
-        run = _control_direction(binary, folder, saved["nodes"], MIXED_CONTROL_TIMEOUT)
+        run = control_direction(binary, folder, saved["nodes"], MIXED_CONTROL_TIMEOUT)
         output = run.get("output") or {}
         if label == "original":
             matches = run.get("returncode") == 0 and run.get("frontier_boxes") == 0
@@ -2507,16 +2521,10 @@ def mixed_price() -> dict[str, Any]:
     }
 
 
-def mixed_plan(certificate: MixedCertificate, parts: int) -> dict[str, Any]:
-    """Split the 201 angles into ``parts`` contiguous ranges of about equal cost.
-
-    Each range is one ``mixed-replay`` command, for one session or one of several running
-    at once; the ranges' receipts merge with ``mixed-merge``.
-    """
-    _require(1 <= parts <= N50_LAST + 1, "parts must be between 1 and 201")
-    costs = direction_costs(certificate)
+def balanced_ranges(costs: list[float], parts: int) -> list[tuple[int, int]]:
+    """``parts`` contiguous ``(first, stop)`` index ranges of about equal summed cost."""
+    _require(1 <= parts <= len(costs), f"parts must be between 1 and {len(costs)}")
     total = sum(costs)
-    hours = estimated_cpu_hours(certificate)
     cuts = [0]
     running = 0.0
     for index, cost in enumerate(costs):
@@ -2526,9 +2534,20 @@ def mixed_plan(certificate: MixedCertificate, parts: int) -> dict[str, Any]:
         running += cost
     while len(cuts) < parts:
         cuts.append(cuts[-1] + 1)
-    bounds = [*cuts, N50_LAST + 1]
+    return list(itertools.pairwise([*cuts, len(costs)]))
+
+
+def mixed_plan(certificate: MixedCertificate, parts: int) -> dict[str, Any]:
+    """Split the 201 angles into ``parts`` contiguous ranges of about equal cost.
+
+    Each range is one ``mixed-replay`` command, for one session or one of several running
+    at once; the ranges' receipts merge with ``mixed-merge``.
+    """
+    costs = direction_costs(certificate)
+    total = sum(costs)
+    hours = estimated_cpu_hours(certificate)
     rows = []
-    for first, stop in itertools.pairwise(bounds):
+    for first, stop in balanced_ranges(costs, parts):
         share = sum(costs[first:stop]) / total
         command = (
             "uv run --frozen --all-extras --group dev python -m "
@@ -2869,7 +2888,7 @@ def host_facts() -> dict[str, Any]:
     }
 
 
-def _range(text: str) -> tuple[int, int]:
+def parse_range(text: str) -> tuple[int, int]:
     first, _, last = text.partition("-")
     return int(first), int(last or first)
 
@@ -2930,7 +2949,7 @@ def _add_mixed_commands(commands: Any) -> None:
     commands.add_parser("mixed-price", help="estimate every replay's CPU-hours")
 
 
-def _write_or_check(path: Path, result: dict[str, Any], *, check: bool) -> int:
+def write_or_check(path: Path, result: dict[str, Any], *, check: bool) -> int:
     text = json.dumps(result, indent=2, default=str) + "\n"
     if check:
         same = path.is_file() and path.read_text(encoding="utf-8") == text
@@ -2947,7 +2966,7 @@ def _mixed_main(args: argparse.Namespace) -> dict[str, Any] | int:
     if args.command == "mixed-audit":
         packet = WEB / args.packet
         out = args.out or packet / "receipts/mixed-audit.json"
-        status = _write_or_check(out, mixed_audit(packet), check=args.check)
+        status = write_or_check(out, mixed_audit(packet), check=args.check)
         supplements = mixed_audit_supplements(packet, args.tarball)
         print(json.dumps(supplements, indent=2))
         return status
@@ -2956,13 +2975,13 @@ def _mixed_main(args: argparse.Namespace) -> dict[str, Any] | int:
     if args.command == "mixed-merge":
         out = args.out or receipts / "merged.json"
         result = mixed_merge(certificate, receipts)
-        status = _write_or_check(out, result, check=args.check)
+        status = write_or_check(out, result, check=args.check)
         return status or int(result["status"] != "FULL_REPLAY_MATCHES_SHIPPED")
     if args.command == "mixed-plan":
         print(json.dumps(mixed_plan(certificate, args.parts), indent=2))
         return 0
     if args.command == "mixed-replay":
-        first, last = _range(args.range)
+        first, last = parse_range(args.range)
         return mixed_replay(
             certificate,
             args.work.resolve(),

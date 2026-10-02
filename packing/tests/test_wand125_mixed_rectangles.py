@@ -1,7 +1,8 @@
 """Controls for the mixed rectangle-measure certificates of wand125/square-packing-bounds.
 
-`devtools.audit_wand125_point_and_mixed` audits and replays eight of them: n = 50 (T-048),
-the five of jlevy/squares#282 (T-069) and the two of its comment of 2 October. Three
+`devtools.audit_wand125_point_and_mixed` audits and replays nine of them: n = 50 (T-048),
+the five of jlevy/squares#282 (T-069), the two of its comment of 2 October and the n = 76 of
+its later comment that day. Three
 families of check stand between a certificate and a recorded replay, and each is held
 here to its positive case and to two or more mutated controls that it must refuse:
 
@@ -42,6 +43,7 @@ from devtools import acquire_source
 from devtools import audit_wand125_point_and_mixed as audit
 
 G_PACKET = audit.G_PACKET
+H_PACKET = audit.H_PACKET
 NAMES = sorted(audit.MIXED, key=lambda name: int(name[1:]))
 
 
@@ -94,6 +96,7 @@ def test_the_least_bounds_are_the_ones_the_sources_state(
     assert least["n84"] == (1.0000000008975796, 175)
     assert least["n85"] == (1.0000000017271347, 44)
     assert least["n90"] == (1.000000000041986, 122)
+    assert least["n76"] == (1.000000000516032, 150)
 
 
 def test_n50_agrees_with_its_own_exact_audit(audits: dict[str, dict[str, Any]]) -> None:
@@ -117,14 +120,29 @@ def test_the_g_comparison_value_is_below_greens_bound(
         assert comparison["side_exceeds_green"]
 
 
-def test_the_g_packet_audit_recomputes_to_its_receipt() -> None:
-    receipt = G_PACKET / "receipts/mixed-audit.json"
-    expected = json.dumps(audit.mixed_audit(G_PACKET), indent=2, default=str) + "\n"
+def test_the_g_packet_matches_its_acquisition_contract() -> None:
+    assert acquire_source.check(G_PACKET, acquire_source.REPO) == []
+
+
+@pytest.mark.parametrize("packet", [G_PACKET, H_PACKET], ids=["g", "h"])
+def test_each_2_october_packet_audit_recomputes_to_its_receipt(packet: Path) -> None:
+    receipt = packet / "receipts/mixed-audit.json"
+    expected = json.dumps(audit.mixed_audit(packet), indent=2, default=str) + "\n"
     assert receipt.read_text(encoding="utf-8") == expected
 
 
-def test_the_g_packet_matches_its_acquisition_contract() -> None:
-    assert acquire_source.check(G_PACKET, acquire_source.REPO) == []
+def test_the_h_packet_matches_its_acquisition_contract() -> None:
+    assert acquire_source.check(H_PACKET, acquire_source.REPO) == []
+
+
+def test_the_h_comparison_is_the_sources_own_rectangle_value(
+    audits: dict[str, dict[str, Any]],
+) -> None:
+    """n = 76 compares with the source's 357/40 rectangle certificate, below 447/50."""
+    facts = audits["n76"]
+    assert facts["source_audit"]["compared_with"] == "357/40"
+    assert Fraction(facts["source_audit"]["improvement_lower"]) == Fraction(3, 200)
+    assert facts["comparison"]["side_exceeds_nagamochi"]
 
 
 def _with_heavier_rectangle(data: bytes) -> bytes:

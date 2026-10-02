@@ -5,7 +5,7 @@ title: Import, confirm and answer every reported result (2 October 2026 effort)
 kind: epic
 status: open
 priority: 1
-version: 26
+version: 28
 labels:
   - result-import
 dependencies: []
@@ -31,7 +31,7 @@ child_order_hints:
   - is-01m3ytdhr6h2xnsvj4f2nc2nk2
   - is-01m3z77bdhk8tn3epx63ywhxft
 created_at: 2026-10-02T16:51:15.917Z
-updated_at: 2026-10-02T22:57:32.800Z
+updated_at: 2026-10-02T23:33:49.612Z
 ---
 Umbrella for the 2 October 2026 effort: PRs #290 -> #292 -> #298 (imports and records), plus a stacked PR for verifier provenance and the independent verifier. Children track each lane; done when every reported result is confirmed or refuted (or has a bead naming exactly what remains), every issue has a current status reply, closeable issues are closed, and all PRs are merged.
 
@@ -104,3 +104,6 @@ Next steps for the next agent, in order:
 - New cloud lanes: RV session_01QGiY88KH4PgVRDMTUMsua1 (blind review of BB's s(12) >= 15680000/3949423, branch claude/lane-rv-s12-review, bead think-4srr); SP session_01Hqz93p1waL3UQYW44eKsWd (assemble the stacked verifier PR, branch claude/verifier-provenance-and-independent-verifier, bead think-tatg).
 - 22:57 m5 done: mixed n85-L946 FULL_REPLAY_MATCHES_SHIPPED (201 angles), receipts on claude/replay-wand125-afternoon-m5.
 - 22:57 LL done (claude/lane-ll-t064-lean @9e8e66f63): `lake build Sqpack.Bentz` exit 0 on leanprover/lean4:v4.33.1 with Mathlib cache; bentz_of_valid7, valid_of_valid7, box7Cover_measure, famCover_total, mass_shift print [propext, Classical.choice, Quot.sound]; receipts packing/resources/web/evand-square-packing-2026-10-01/receipts/lean/{build_bentz,axioms_bentz}.log; needs >13 GB RAM (swap). Evidence: proof-assistant-checked, performed_by repository, same-implementation, verifiers [V-lean4-4.33.1]; Valid7 stays a hypothesis until the qx2 replay (q1, q2) completes.
+- 23:28 T-068's 29 replayed rectangle certificates registered as T-074 at V3/C3 over 31 counts (497667314, re-pinned bbf2a6cbf). Container restarted again; records lane resumed to finish CI fixes from workflow_dispatch run 37075005561 (frontier-table count, rectangle-audit test, suite-file record, h236 T-036 evidence list, and the slow-lane digest mismatch: lane CC's replay mode edited packing/cases/trump11/isolation_radius.py whose bytes a retained review pins — the mode must live in its own module). Then afternoon V0 registration and #309.
+- W2: release audit with fault injection pushed (241f0a32a); Milestone B next. Headline benchmark on an idle runner: session_019VVW5gkewSCGv5ggVDmR3q, branch claude/bench-sqverify-fast-headline.
+- 23:33 EE done (claude/lane-ee-t059-census @4972a842c): T-059 census 12,028/12,028 rows COMPLETE_ROW_EQUALITY, global minimum 999962528 = reference, every witness replayed; T-059 V0/C1 -> V3/C3 (replayed-here, same-implementation); think-pgrx fixed (gzipped journals). To merge into #298 by the records lane; also update plan-2026-10-01-result-status.md, which still says the replay is queued. Close think-11z6/think-pgrx after merge.

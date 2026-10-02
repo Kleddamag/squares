@@ -91,6 +91,9 @@ Triage decides what the import is before anything is retained, in an hour or les
   author’s repository.
   A later revision is a new packet; files added later from the same revision join the
   packet they belong to.
+  [`devtools.acquire_source`](../devtools/acquire_source.py) writes a packet from a
+  declaration kept in its `acquisition/` directory, and its `--check` re-derives the
+  packet from its manifest.
 - **The bibliography key** carries the date of the pinned revision as `dated`, and is
   defined in the [resources README](../resources/README.md) as well.
   Credit is read from the source’s own files, now and not after the review.

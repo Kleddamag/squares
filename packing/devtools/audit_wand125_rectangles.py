@@ -18,11 +18,11 @@ upstream bytes, and a tree restored with ``gunzip -k`` reads the same.
 
 Each retained pin of the source is one `Packet`: a directory under ``resources/web/``,
 the revision, and the standing (highest) certificate for each count at that revision.
-A packet with a ``base`` retains only the files that are new at its pin. A file its base
-already retains byte for byte is read from the base packet, and the provenance check
-requires the digest this pin's tree manifest records for it. ``--packet`` chooses the
-packet by its date; the default is the first, so the commands its records give still
-mean what they said.
+A packet with a ``base`` retains only the files that are new at its pin. A file an
+earlier packet already retains byte for byte is read from there, through the base and
+that packet's own base in turn, and the provenance check requires the digest this pin's
+tree manifest records for it. ``--packet`` chooses the packet by its date; the default is
+the first, so the commands its records give still mean what they said.
 
 Global rotated coverage is still decided by the external C++ checker, so a replay is
 V4/C3 machine evidence, exactly as for Tokoharu's own certificates.
@@ -179,6 +179,65 @@ CASES_2026_09_28: dict[int, tuple[str, Fraction]] = {
     95: ("rect_n95_L98418", Fraction(49209, 5000)),
 }
 
+# The standing certificate for each n at 1a25a5e. Sixteen are unchanged since 39d8ecc
+# (n = 18, 21, 32, 37, 45, 51, 52, 57, 58, 60, 61, 67, 71, 72, 73, 91); 34 are raised and
+# three counts are new (n = 87, 90, 93).
+CASES_2026_10_01: dict[int, tuple[str, Fraction]] = {
+    18: ("rect_n18_L4695", Fraction(939, 200)),
+    19: ("rect_n19_L48175", Fraction(1927, 400)),
+    20: ("rect_n20_L48975", Fraction(1959, 400)),
+    21: ("rect_n21_L49875", Fraction(399, 80)),
+    26: ("rect_n26_L55325", Fraction(2213, 400)),
+    27: ("rect_n27_L5635", Fraction(1127, 200)),
+    28: ("rect_n28_L57225", Fraction(2289, 400)),
+    29: ("rect_n29_L57975", Fraction(2319, 400)),
+    30: ("rect_n30_L5875", Fraction(47, 8)),
+    31: ("rect_n31_L59525", Fraction(2381, 400)),
+    32: ("rect_n32_L595", Fraction(119, 20)),
+    37: ("rect_n37_L6425", Fraction(257, 40)),
+    38: ("rect_n38_L6545", Fraction(1309, 200)),
+    39: ("rect_n39_L6635", Fraction(1327, 200)),
+    40: ("rect_n40_L67", Fraction(67, 10)),
+    41: ("rect_n41_L676", Fraction(169, 25)),
+    42: ("rect_n42_L6815", Fraction(1363, 200)),
+    43: ("rect_n43_L68875", Fraction(551, 80)),
+    44: ("rect_n44_L69425", Fraction(2777, 400)),
+    45: ("rect_n45_L6955", Fraction(1391, 200)),
+    51: ("rect_n51_L74425", Fraction(2977, 400)),
+    52: ("rect_n52_L7535", Fraction(1507, 200)),
+    53: ("rect_n53_L76075", Fraction(3043, 400)),
+    54: ("rect_n54_L76725", Fraction(3069, 400)),
+    55: ("rect_n55_L77125", Fraction(617, 80)),
+    56: ("rect_n56_L77825", Fraction(3113, 400)),
+    57: ("rect_n57_L7835", Fraction(1567, 200)),
+    58: ("rect_n58_L789", Fraction(789, 100)),
+    59: ("rect_n59_L79325", Fraction(3173, 400)),
+    60: ("rect_n60_L794", Fraction(397, 50)),
+    61: ("rect_n61_L796", Fraction(199, 25)),
+    66: ("rect_n66_L8385", Fraction(1677, 200)),
+    67: ("rect_n67_L8455", Fraction(1691, 200)),
+    68: ("rect_n68_L851", Fraction(851, 100)),
+    69: ("rect_n69_L8585", Fraction(1717, 200)),
+    70: ("rect_n70_L8625", Fraction(69, 8)),
+    71: ("rect_n71_L8685", Fraction(1737, 200)),
+    72: ("rect_n72_L874", Fraction(437, 50)),
+    73: ("rect_n73_L878", Fraction(439, 50)),
+    74: ("rect_n74_L88475", Fraction(3539, 400)),
+    75: ("rect_n75_L89", Fraction(89, 10)),
+    76: ("rect_n76_L8925", Fraction(357, 40)),
+    77: ("rect_n77_L89325", Fraction(3573, 400)),
+    78: ("rect_n78_L8965", Fraction(1793, 200)),
+    86: ("rect_n86_L9365", Fraction(1873, 200)),
+    87: ("rect_n87_L941", Fraction(941, 100)),
+    88: ("rect_n88_L94775", Fraction(3791, 400)),
+    89: ("rect_n89_L9565", Fraction(1913, 200)),
+    90: ("rect_n90_L95775", Fraction(3831, 400)),
+    91: ("rect_n91_L9645", Fraction(1929, 200)),
+    93: ("rect_n93_L97225", Fraction(3889, 400)),
+    94: ("rect_n94_L9805", Fraction(1961, 200)),
+    95: ("rect_n95_L98518", Fraction(49259, 5000)),
+}
+
 
 @dataclass(frozen=True, slots=True)
 class Packet:
@@ -230,11 +289,33 @@ class Packet:
             )
         }
 
+    def holder(self, relative: Path) -> Packet | None:
+        """The packet that retains an upstream path: this one, or the nearest base."""
+        if retained_exists(self.source / relative):
+            return self
+        return None if self.base is None else self.base.holder(relative)
+
     def locate(self, relative: Path) -> Path | None:
         """The retained copy of an upstream path, in this packet or the nearest base."""
-        if retained_exists(self.source / relative):
-            return self.source / relative
-        return None if self.base is None else self.base.locate(relative)
+        holder = self.holder(relative)
+        return None if holder is None else holder.source / relative
+
+    def referenced_by_packet(self, paths: Iterable[Path]) -> dict[str, int] | None:
+        """How many of ``paths`` each earlier packet holds, when the base has a base.
+
+        A packet with one base reads every referenced file from it, which
+        ``referenced_path`` already says, so there is nothing more to record.
+        """
+        if self.base is None or self.base.base is None:
+            return None
+        counts: dict[str, int] = {}
+        for relative in paths:
+            holder = self.base.holder(relative)
+            if holder is None:
+                raise ValueError(f"missing retained file: {relative}")
+            name = str(holder.source.relative_to(holder.root))
+            counts[name] = counts.get(name, 0) + 1
+        return dict(sorted(counts.items()))
 
     def case_directory(self, source: Path, name: str) -> Path:
         """Where the audit reads a standing certificate from ``source``."""
@@ -292,8 +373,37 @@ SEPTEMBER_28 = Packet(
     ),
     base=SEPTEMBER_27,
 )
+OCTOBER_1 = Packet(
+    date="2026-10-01",
+    revision="1a25a5ed745fdd905a52f48fcc48150a0669032d",
+    cases=CASES_2026_10_01,
+    git_scope=(
+        "A depth-1 clone of the single public branch, so the checkout holds this revision's "
+        "tree and no history; git ls-remote lists only refs/heads/main, so there are no "
+        "tags, and the tree has no .gitmodules or .gitattributes. The GitHub API listed no "
+        "releases and no tags at 2026-10-02T00:28Z, and it is the source of every commit "
+        "date this packet states."
+    ),
+    retention_notes=(
+        "The whole tracked tree is pinned by per-file SHA-256 in the tree manifest. "
+        "Retained bytes are the top-level README, which changed since 39d8ecc, and for "
+        "each standing rectangle certificate new or raised since 39d8ecc its exact "
+        "candidate, metadata, upstream verification summary and per-angle rows. The "
+        "LICENSE, requirements, docs and the sixteen standing certificates unchanged "
+        "since 39d8ecc are byte-identical to files the 2026-09-28 and 2026-09-27 packets "
+        "retain, and are read from there against this tree's digests. Interval inputs are "
+        "regenerated from the candidates and bound to the recorded input SHA-256; "
+        "verify.cpp and run_verify.py are byte-identical to Tokoharu's retained copies. "
+        "Lower rungs, matching certificates, the point certificates, the point_n21_L5, "
+        "point_n45_L7 and point_n61_L8 bundles, the mixed_n* certificates, the k2m5_n59_L8 "
+        "and k2m4_n77_L9 covers and src/ are pinned by digest only."
+    ),
+    base=SEPTEMBER_28,
+)
 #: Every packet by its date, oldest first.
-PACKETS: dict[str, Packet] = {packet.date: packet for packet in (SEPTEMBER_27, SEPTEMBER_28)}
+PACKETS: dict[str, Packet] = {
+    packet.date: packet for packet in (SEPTEMBER_27, SEPTEMBER_28, OCTOBER_1)
+}
 DEFAULT_PACKET = SEPTEMBER_27.date
 
 
@@ -452,6 +562,11 @@ def source_provenance(packet: Packet, source: Path) -> dict[str, Any]:
         )
     ):
         raise ValueError("referenced files differ from the acquisition manifest")
+    by_packet = packet.referenced_by_packet(sorted(missing))
+    if kind == "verified-retained-subset" and by_packet != entry.get(
+        "referenced_files_by_packet"
+    ):
+        raise ValueError("referenced files per packet differ from the acquisition manifest")
     for name, _ in packet.cases.values():
         for file, digest in (("verify.cpp", VERIFY_SHA256), ("run_verify.py", RUNNER_SHA256)):
             if tree.get(Path("certificates") / name / file) != digest:
@@ -474,6 +589,8 @@ def source_provenance(packet: Packet, source: Path) -> dict[str, Any]:
             "files_referenced": referenced[0],
             "bytes_referenced": referenced[1],
         }
+    if by_packet is not None:
+        result["files_referenced_by_packet"] = by_packet
     return result
 
 
@@ -636,6 +753,8 @@ def acquire(packet: Packet, checkout: Path, retrieved_at: str) -> dict[str, Any]
                 (checkout / path).stat().st_size for path in referenced
             ),
         }
+    if (by_packet := packet.referenced_by_packet(referenced)) is not None:
+        entry["referenced_files_by_packet"] = by_packet
     entry |= {
         "license": "MIT",
         "branches": {"main": packet.revision},

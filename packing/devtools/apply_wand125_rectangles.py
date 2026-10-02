@@ -59,6 +59,7 @@ import yaml
 from strif import atomic_write_text
 
 from devtools.audit_wand125_rectangles import (
+    OCTOBER_1,
     PACKETS,
     SEPTEMBER_27,
     SEPTEMBER_28,
@@ -88,6 +89,10 @@ class Registration:
     replay: str
     #: Counts where a stronger bound from another source is registered separately, so
     #: this packet's certificate there is a superseded prior and moves neither lane.
+    #: `plans` skips such a count outright, so a replay of its certificate would not
+    #: reach the verified lane either: a count belongs here only once the other bound
+    #: holds both lanes. Where the stronger bound is only reported, `plans` already
+    #: leaves the reported field to it, and a replay still raises the verified one.
     superseded_priors: Mapping[int, str]
     #: The report entries to insert into ``evidence.yaml`` when missing; ``{scope}`` is
     #: filled with the cases that cite each one, and ``{certificate}`` with the packet's
@@ -188,6 +193,73 @@ _MONOTONE_2026_09_28 = """\
       source premise or substitute for its complete replay.
     source_reviewed: '2026-09-28'
 """
+_REPORT_2026_10_01 = """\
+  - id: E-wand125-rectangle-2026-10-01-report
+    claim: lower-bound
+    scope: {scope}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-10-01]'
+    certificate: {certificate}
+    replay_status: not-attempted
+    limitations: >-
+      Source 1a25a5ed745fdd905a52f48fcc48150a0669032d, committed 2026-10-01 (UTC),
+      reports one standing rectangle-density certificate in Tokoharu's format for each
+      listed count, each new or raised since 39d8ecc and first committed between
+      2026-09-29 and 2026-10-01 (UTC), accepted there by Tokoharu's unchanged interval
+      checker (verify.cpp SHA-256
+      a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602). The listed
+      sides run from 1927/400 at n19 to 49259/5000 at n95; the complete list is the
+      CASES_2026_10_01 table of devtools/audit_wand125_rectangles.py and the source's own
+      README. Registration was requested in jlevy/squares#281, which lists 34 of the 37
+      and leaves out n59, n77 and n78. The sixteen standing certificates the revision
+      left unchanged, at n18, 21, 32, 37, 45, 51, 52, 57, 58, 60, 61, 67, 71, 72, 73 and
+      91, are byte-identical to those E-wand125-rectangle-report and
+      E-wand125-rectangle-2026-09-28-report record, and their cases stay on those
+      entries. Each certificate's weights were multiplied by one exact rational factor,
+      between 1.00004 and 1.04329, to bring its mass to n - 1/100 before the recorded
+      run, which checked the scaled data. The n31 certificate, of mass 3099/100, also
+      gives s(32) >= 2381/400, above the unchanged direct n32 claim 119/20 and below
+      Evan Daniel's s(32) = 6. Lower rungs, matching certificates, the point
+      certificates and the point-only, exact-cover and mixed-measure bundles at the same
+      revision are pinned by digest only. This is the public-claim entry, not a local
+      verification receipt. At n59, n66, n77, n78 and n90 a stronger bound was
+      registered separately when this entry was written, so those five case records do
+      not cite this entry: the source's own exact covers s(59) = 8 and s(77) = 9, Evan
+      Daniel's s(78) = 9, and the source's mixed rectangle-measure certificates 421/50
+      at n66 and 48/5 at n90.
+    source_reviewed: '2026-10-01'
+"""
+_MONOTONE_2026_10_01 = """\
+  - id: E-wand125-rectangle-2026-10-01-monotone-report
+    claim: lower-bound
+    scope: {scope}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: repository
+    relationship_to_generator: not-applicable
+    origin: audited-here
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-10-01]'
+    replay_status: not-attempted
+    limitations: >-
+      Reported-lane transfer at 1a25a5e: a certificate whose exact mass is below k
+      refutes k squares as well, and deleting squares proves monotonicity, so each listed
+      count takes the strongest smaller-count certificate below whose mass it lies. Two
+      certificates new at this revision are the strongest below counts they do not
+      name: the n31 certificate at 2381/400, of mass 3099/100, passes the unchanged
+      direct n32 claim 119/20 and carries to n32 through n36, and the n78 certificate at
+      1793/200, of mass 7799/100, carries to n79 through n85. The direct n77 claim,
+      3573/400, now exceeds the n76 transfer 357/40, and n87 and n90 have certificates of
+      their own. The listed counts are those where the transfer beats every other
+      registered report. This derivation does not strengthen the assurance of its
+      source premise or substitute for its complete replay.
+    source_reviewed: '2026-10-01'
+"""
 
 SEPTEMBER_27_REGISTRATION = Registration(
     packet=SEPTEMBER_27,
@@ -220,8 +292,36 @@ SEPTEMBER_28_REGISTRATION = Registration(
         "E-wand125-rectangle-2026-09-28-monotone-report": _MONOTONE_2026_09_28,
     },
 )
+OCTOBER_1_REGISTRATION = Registration(
+    packet=OCTOBER_1,
+    source_key="[wand125 rectangle bounds 2026-10-01]",
+    report="E-wand125-rectangle-2026-10-01-report",
+    monotone_report="E-wand125-rectangle-2026-10-01-monotone-report",
+    replay="E-wand125-rectangle-2026-10-01-source-replay",
+    # The three counts where another source's bound holds both lanes, so no replay of the
+    # rectangle certificate could move either; all three certificates are unchanged since
+    # 39d8ecc. The counts whose stronger bound is only reported are deliberately absent:
+    # wand125's exact covers s(59) = 8 and s(77) = 9, evand's s(60) = s(61) = 8 and
+    # s(78) = 9, and wand125's mixed certificates at n37, n66 and n90 (n65 and n92 have no
+    # rectangle certificate). `plans` leaves their reported fields alone because the
+    # record holds more, and a replayed rectangle certificate still raises their
+    # verified lane, which sits at Nagamochi's bound until one of those claims is replayed.
+    superseded_priors={
+        21: "evand/square-packing s(21) = 5 supersedes 399/80",
+        32: "evand/square-packing s(32) = 6 supersedes 119/20 and the n31 transfer 2381/400",
+        45: "evand/square-packing s(45) = 7 supersedes 1391/200",
+    },
+    entries={
+        "E-wand125-rectangle-2026-10-01-report": _REPORT_2026_10_01,
+        "E-wand125-rectangle-2026-10-01-monotone-report": _MONOTONE_2026_10_01,
+    },
+)
 #: Oldest first; the order is the order of the packets' pins.
-REGISTRATIONS = (SEPTEMBER_27_REGISTRATION, SEPTEMBER_28_REGISTRATION)
+REGISTRATIONS = (
+    SEPTEMBER_27_REGISTRATION,
+    SEPTEMBER_28_REGISTRATION,
+    OCTOBER_1_REGISTRATION,
+)
 BY_DATE = {registration.date: registration for registration in REGISTRATIONS}
 OURS = frozenset().union(*(registration.ids for registration in REGISTRATIONS))
 if set(BY_DATE) != set(PACKETS):

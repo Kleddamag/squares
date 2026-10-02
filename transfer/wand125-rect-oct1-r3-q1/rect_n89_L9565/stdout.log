@@ -16,3 +16,18 @@
 {"completed": 160, "total": 201, "elapsed_seconds": 17436.05057501793, "nodes": 25592037}
 {"completed": 170, "total": 201, "elapsed_seconds": 18219.35130214691, "nodes": 27265187}
 {"completed": 180, "total": 201, "elapsed_seconds": 19048.033149957657, "nodes": 29017801}
+{"completed": 190, "total": 201, "elapsed_seconds": 19910.486526966095, "nodes": 30838083}
+{"completed": 200, "total": 201, "elapsed_seconds": 20788.935111761093, "nodes": 32700395}
+{"completed": 201, "total": 201, "elapsed_seconds": 20876.852746009827, "nodes": 32887546}
+{
+  "status": "VERIFIED",
+  "angle_cases": 201,
+  "target_lower_bound_exact": "10001/10000",
+  "nodes": 32887546,
+  "leaves": 19200425,
+  "minimum_printed_leaf_lower_bound": 1.0001000048260613,
+  "wall_seconds": 20876.853142261505,
+  "input_sha256": "169b675553fca7af9de79ec030c64728ab205d51dbf79da13fba8667d1e7c94c",
+  "verifier_source_sha256": "a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602",
+  "method": "Outward-rounded binary64 intervals; certified inscribed polygon area; derivative bounds over center boxes; rational angular net."
+}

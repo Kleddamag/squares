@@ -1520,6 +1520,7 @@ def _quick_lane_command(jobs: int, shard: int) -> tuple[str, ...]:
         "-q",
         *BEHAVIORAL_TEST_ROOTS,
         f"--ignore={BROWSER_FLOOR_LIVENESS_TESTS}",
+        *(f"--ignore={path}" for path in SITE_LAYOUT_TESTS),
         "-m",
         QUICK_TESTS,
         *distribution,
@@ -3713,8 +3714,9 @@ STEPS: tuple[Step, ...] = (
         touches=_WORKBENCH_INPUTS,
     ),
     # The two files that pin the tables' pixels (think-sib7, D-513): 40.5s locally for 74
-    # tests, 30s of it rendering three pages once each. Not in the quick lane, whose shards
-    # install no browser; the hosted reading is the frontend job's, pending its first.
+    # tests, 30s of it rendering three pages once each; 24.16s hosted, 74 passed, in a
+    # frontend wall of 93.16s (run 36967092452). Not in the quick lane, whose shards
+    # install no browser.
     Step(
         "site table layout in Chromium",
         _site_layout_tests,
@@ -5057,6 +5059,9 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "browser floor liveness tests",
         "browser code lives in files (embedded JavaScript, probes)",
         "workbench browser behavior in Chromium",
+        # The same shape as the workbench step: the tracked pages, rendered and measured
+        # in the pinned browser, with no clock, network or history consulted.
+        "site table layout in Chromium",
         "basin atlas",
         "basin event record and replay",
         "historical regressions",

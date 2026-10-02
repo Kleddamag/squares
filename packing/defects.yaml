@@ -17173,14 +17173,18 @@ defects:
     (SITE_LAYOUT_TESTS), and the new step "site table layout in Chromium" runs them in
     the frontend job, the one pull-request runner that installs Chromium, with the
     requirement set, so a shell that will not launch is a failed step and not a green
-    one. The thirteen other browser-backed test files still skip on pull requests: all
-    fifteen cost 203 s locally against the frontend tier's 150 s ceiling, so they wait
-    on a job of their own.
+    one. Read on Linux by that step's first hosted run: 74 passed in 23.87 s on
+    ubuntu-latest with the same "playwright install --with-deps --only-shell chromium"
+    as the validate job (run 36967092452, job 110713091091, PR 300). The thirteen
+    other browser-backed test files still skip on pull requests: all fifteen cost 203 s
+    locally against the frontend tier's 150 s ceiling, so they wait on a job of their
+    own.
   regression: >-
     tests/test_validation_cli.py holds the quick lane's two ignores, the step's command
     and its environment, that every job selecting the step installs Chromium on the
     event and no shard does, with a negative control that strips the install from the
     frontend job; tests/test_site_browser.py holds that launch_chromium carries the
     switch ahead of any other argument and that the launcher fails rather than skips
-    where required. The pull request's own frontend job is the Linux reading.
+    where required. The frontend job of every pull request is now a Linux reading of
+    the two files.
   recorded_in: packing/tests/site_browser.py

@@ -167,6 +167,12 @@ PRUNE = frozenset(
         ROOT / "atlas/known-best/known-best-1-324.pdf",
         ROOT / "atlas/known-best/known-best-1-324.png",
         ROOT / "atlas/known-best/rendering",
+        # The regularized layer's 51 drawings (think-bgkz, 2026-10-02), 11 MB of generated
+        # SVG that `regularized atlas drawings match their index` re-renders and compares,
+        # joined on the same grounds when they took the snapshot to 204,959,999 bytes
+        # against the 201,326,592 cap. No control names them; the layer's index and views
+        # beside them are small and stay.
+        ROOT / "atlas/known-best/regularized/rendering",
         # The pre-migration transition statistics are frozen historical output;
         # v2-transitions/NOTES.md records that the live builder now generates its
         # own statistics elsewhere. No registered control reads this old JSON,

@@ -1,3 +1,5 @@
 warning: The `UV_NATIVE_TLS` environment variable is deprecated and will be removed in a future release. Use `UV_SYSTEM_CERTS` instead.
 {"n": 41, "status": "PASS", "replay": true}
 {"n": 42, "status": "PASS", "replay": true}
+{"n": 29, "status": "PASS", "replay": true}
+EXIT 0

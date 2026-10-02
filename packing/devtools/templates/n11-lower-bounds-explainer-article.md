@@ -6,33 +6,17 @@ the opening tag and before the closing one, so the Markdown inside still renders
 inline run is a `<span class="…">`; figures are `<figure>` and `<figcaption>`, which kpress
 decorates with its own classes. Class names are kpress's where it styles the block (hero,
 subtitle, boxed-text) and the page's own only where it has none (deck, credits,
-conditions). No attribute sugar (`{.class}`), no `:::` containers. Figures and the credits
-carry canvas, SVG, controls and layout Markdown cannot express.
+conditions). No attribute sugar (`{.class}`), no `:::` containers. Figures carry canvas,
+SVG, controls and layout Markdown cannot express. The front of the paper, the formats
+row, the title and the credits, is the `FRONT_MATTER` slot, written for both papers by
+`devtools.paper_front` from this paper's record in its renderer.
 Math in Markdown text is `$…$` and `$$…$$`; math inside a raw HTML block is not seen by
 Markdown, so there it stays `<span class="tex">…</span>` for the page to typeset itself.
 `{{PLACEHOLDERS}}` are substituted before rendering. Each FIGURE block is stamped once
 per certificate; the prose is filled once, with the headline certificate's values.
 -->
 
-<div class="doc-links screen-only">
-  <a class="chip" href="{{SOURCE_URL}}" title="The Markdown this page is rendered from">MD</a>
-  <a class="chip" href="{{PDF_URL}}" title="The typeset PDF of this page">PDF</a>
-  <a class="chip" href="{{REPO_URL}}" title="The project on GitHub"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>GITHUB</a>
-</div>
-
-<div class="hero">
-
-# {{TITLE}}
-
-<div class="credits centred">
-  <span>Human oversight: <a href="https://x.com/ojoshe"><strong>Joshua Levy</strong></a></span>
-  <span>Agents: <strong>Opus 5</strong>, <strong>Fable 5.1</strong>, <strong>GPT 5.6 Sol</strong>, and <strong>GPT-6 Astra</strong></span>
-  <span><a href="https://github.com/jlevy/squares"><strong>github.com/jlevy/squares</strong></a></span>
-  <span class="publication-date">First published {{FIRST_PUBLISHED}} · Last revised {{LAST_REVISED}}</span>
-  <span class="edition">{{EDITION}} (<a href="#version-history">version history</a>)</span>
-</div>
-
-</div>
+{{FRONT_MATTER}}
 
 ## The Result and Proof Roadmap
 

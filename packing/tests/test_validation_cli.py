@@ -15,11 +15,12 @@ import signal
 import subprocess
 import sys
 import time
-from collections.abc import Callable
+from collections.abc import Callable, Mapping, Sequence
 from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 from textwrap import dedent
 from threading import Barrier, Lock
+from typing import Any
 
 import pytest
 
@@ -27,20 +28,24 @@ from sqpack import gate_budgets
 from sqpack.cli import validate
 from sqpack.cli.validate import main
 from sqpack.yamlio import safe_load
+from tests import site_browser
 
-#: (proved, open) at each corpus the frontier-corpus step has summarized.
+#: (proved, open) at each corpus the frontier-corpus step has summarized. 2026-10-02: the
+#: replayed zmx2 sweeps of the s(60) and s(59) mixed covers (T-062, T-063, T-066) proved
+#: n = 59, 60 and 61 in the formal lane, three more in every corpus.
 FRONTIER_LANE_SPLIT: dict[str, tuple[int, int]] = {
-    "n=1..100": (39, 61),
-    "n=1..200": (51, 149),
-    "n=1..324": (63, 261),
+    "n=1..100": (42, 58),
+    "n=1..200": (54, 146),
+    "n=1..324": (66, 258),
 }
 
-# Source-reported closures from T-062 to T-064 change this lane alone; the
-# verified/formal lane above remains open until certificate replay.
+# Source-reported closures from T-062 to T-064, and T-066 and T-067 at n = 59 and 77,
+# change this lane alone; the verified/formal lane above remains open until
+# certificate replay.
 REPORTED_LANE_SPLIT: dict[str, tuple[int, int]] = {
-    "n=1..100": (43, 57),
-    "n=1..200": (59, 141),
-    "n=1..324": (75, 249),
+    "n=1..100": (45, 55),
+    "n=1..200": (61, 139),
+    "n=1..324": (77, 247),
 }
 
 WORKFLOW = Path(__file__).resolve().parents[2] / ".github/workflows/packing-validation.yml"
@@ -769,6 +774,10 @@ def test_fast_behavioral_step_excludes_exhaustive_exact_tests(
         "-q",
         *validate.BEHAVIORAL_TEST_ROOTS,
         f"--ignore={validate.BROWSER_FLOOR_LIVENESS_TESTS}",
+        # The two files that pin the tables' pixels run where Chromium is installed, in
+        # `site table layout in Chromium`; a shard has no browser for them (D-513).
+        "--ignore=tests/test_site_result_columns.py",
+        "--ignore=tests/test_site_frontier_table.py",
         "-m",
         "not exhaustive_exact and not slow",
         "-n",
@@ -2161,8 +2170,9 @@ def test_frontier_contract_accepts_the_declared_schema_metadata(
         f"{corpus.count} artifacts, n = {corpus.label[2:]}; formal lane: "
         f"{proved} proved, {open_cases} open"
     ) in stdout
-    # T-062 to T-064 close twelve cases in the reported lane only. Keep this
-    # expectation independent of the production count tuple.
+    # T-062 to T-064, T-066 and T-067 close fourteen cases in the reported lane; three of
+    # them, n = 59, 60 and 61, are also closed in the formal lane since 2026-10-02.
+    # Keep this expectation independent of the production count tuple.
     reported_proved, reported_open = REPORTED_LANE_SPLIT[corpus.label]
     assert f"reported lane: {reported_proved} proved, {reported_open} open" in stdout
 
@@ -3192,6 +3202,7 @@ def test_the_pull_request_runs_its_sweeps_and_its_suite_apart() -> None:
         "browser floor (biome, eslint, tsc, node:test)",
         "browser floor liveness tests",
         "workbench browser behavior in Chromium",
+        "site table layout in Chromium",
     }
     assert {step.name for step in validate.STEPS if step.typecheck} == {
         "type floor (basedpyright)",
@@ -3536,6 +3547,130 @@ def test_browser_floor_liveness_runs_only_with_the_frontend_node_toolchain() -> 
         assert not any("npm ci" in str(step.get("run", "")) for step in steps)
 
 
+SITE_LAYOUT_STEP = "site table layout in Chromium"
+
+
+def _installs_chromium(job: Mapping[str, Any], *, pull_request: bool) -> bool:
+    """Whether a workflow job installs the pinned Chromium on this event: a `playwright
+    install` step whose own condition does not exclude the event."""
+    excluded = (
+        "github.event_name != 'pull_request'"
+        if pull_request
+        else "github.event_name == 'pull_request'"
+    )
+    return any(
+        "playwright install" in str(step.get("run", ""))
+        and excluded not in str(step.get("if", ""))
+        for step in job.get("steps", [])
+    )
+
+
+def test_the_site_layout_tests_run_only_where_chromium_is_installed() -> None:
+    """The site's table-layout tests measure pixels in Chromium, so the step that runs
+    them is selected only by jobs that install the pinned browser on the event -- the
+    frontend job on a pull request, the validate job after a merge -- and by no
+    behavioural shard, which installs none and where the tests could only skip, as they
+    did on every pull request until run 36943941580 read them on Linux (D-513)."""
+    document = safe_load(WORKFLOW.read_text(encoding="utf-8"))
+    for pull_request, expected in ((True, ["frontend"]), (False, ["validate"])):
+        selections = _workflow_selections(pull_request=pull_request)
+        owners = sorted(
+            name for name, selected in selections.items() if SITE_LAYOUT_STEP in selected
+        )
+        assert owners == expected, pull_request
+        for owner in owners:
+            assert _installs_chromium(document["jobs"][owner], pull_request=pull_request), owner
+    for job_name in ("suite-a", "suite-b", "suite-c", "suite-d"):
+        assert not _installs_chromium(document["jobs"][job_name], pull_request=True), job_name
+    assert set(validate.SITE_LAYOUT_TESTS) == {
+        "tests/test_site_result_columns.py",
+        "tests/test_site_frontier_table.py",
+    }
+    for path in validate.SITE_LAYOUT_TESTS:
+        assert (validate.PROJECT_ROOT / path).is_file(), path
+
+
+def test_a_frontend_job_without_chromium_is_detected() -> None:
+    """The negative control: the site's tests cannot move to a runner with no browser."""
+    document = safe_load(WORKFLOW.read_text(encoding="utf-8"))
+    assert _installs_chromium(document["jobs"]["frontend"], pull_request=True)
+    document["jobs"]["frontend"]["steps"] = [
+        step
+        for step in document["jobs"]["frontend"]["steps"]
+        if "playwright install" not in str(step.get("run", ""))
+    ]
+    assert not _installs_chromium(document["jobs"]["frontend"], pull_request=True)
+    # The validate job installs Chromium only after a merge, so on a pull request it
+    # counts as a job without one, which is why `--checks` must not select the step.
+    assert not _installs_chromium(document["jobs"]["validate"], pull_request=True)
+    assert _installs_chromium(document["jobs"]["validate"], pull_request=False)
+
+
+def test_the_site_layout_step_requires_a_chromium_and_runs_its_two_files(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The step fails rather than skips when no Chromium launches: it sets the name
+    `tests.site_browser` reads, for its command alone, and runs exactly the files the
+    quick lane ignores, one to a worker as the quick lane runs its own."""
+    observed: dict[str, Any] = {}
+
+    def capture(_context: validate.Context, command: Sequence[str], **options: Any) -> str:
+        observed["command"] = tuple(command)
+        observed["environment"] = options.get("extra_environment")
+        return ""
+
+    monkeypatch.setattr(validate, "_run", capture)
+    monkeypatch.setattr(validate, "_pytest_workers", lambda _jobs: 2)
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=1,
+        inner_jobs=1,
+        environment=os.environ.copy(),
+    )
+    validate._site_layout_tests(context)
+    assert observed["command"] == (
+        sys.executable,
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-n",
+        "2",
+        "--dist=loadfile",
+        *validate.SITE_LAYOUT_TESTS,
+    )
+    assert observed["environment"] == {validate.REQUIRE_CHROMIUM: "1"}
+    assert validate.REQUIRE_CHROMIUM == site_browser.REQUIRED
+
+
+def test_a_commands_extra_environment_reaches_only_that_command(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """`_run` lays the extra environment over the gate's for the one subprocess, and the
+    context the caller holds is unchanged."""
+    seen: list[dict[str, str]] = []
+
+    def run_command(context: validate.Context, *_args: Any, **_options: Any) -> str:
+        seen.append(dict(context.environment))
+        return ""
+
+    monkeypatch.setattr(validate, "_run_command", run_command)
+    monkeypatch.setattr(validate, "_artifact_directory", lambda _context: None)
+    context = validate.Context(
+        deep=False,
+        strict=False,
+        jobs=1,
+        inner_jobs=1,
+        environment={"KEPT": "1"},
+    )
+    validate._run(context, ("true",), extra_environment={"ADDED": "2"})
+    validate._run(context, ("true",))
+    assert seen == [{"KEPT": "1", "ADDED": "2"}, {"KEPT": "1"}]
+    assert context.environment == {"KEPT": "1"}
+
+
 def test_every_tier_band_is_declared_for_the_shape_ci_runs() -> None:
     """A `reference` that names no invocation CI makes is a band nothing ever enforces.
 
@@ -3830,6 +3965,7 @@ def test_broad_is_opt_out_so_a_new_step_joins_the_edit_tier() -> None:
         "fast behavioral tests, shard D",
         "browser floor liveness tests",
         "workbench browser behavior in Chromium",
+        "site table layout in Chromium",
         # Measured 2026-08-30: 31.6s in CI against a 43s edit tier, so carrying it there
         # would nearly double the tier for a record that changes when a witness is
         # retained -- which is to say rarely, and never from an edit. It still runs in

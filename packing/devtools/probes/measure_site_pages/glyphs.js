@@ -121,7 +121,7 @@
   const roles = [
     ["nav name", ".site-name-text"],
     ["nav link", ".site-nav a:not(.site-name)"],
-    ["section tab", ".site-tabs a"],
+    ["section tab", '.site-tabs :is(a, [role="tab"])'],
     ["source chip", ".doc-links .chip"],
     ["chip", ".site-chip"],
     ["page title", ".hero h1, .site-hero h1, .site-title"],

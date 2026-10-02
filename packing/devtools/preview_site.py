@@ -23,6 +23,8 @@ Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.preview_site
     uv run --frozen --all-extras --group dev python -m devtools.preview_site --serve
     uv run --frozen --all-extras --group dev python -m devtools.preview_site --shots DIR
+    uv run --frozen --all-extras --group dev python -m devtools.preview_site --shots DIR \
+        --scheme light --scheme dark --page index.html
     uv run --frozen --all-extras --group dev python -m devtools.preview_site --clips
 
 `--skip` leaves a slow build out, by its name: `n11-lower-bounds-explainer`,
@@ -61,7 +63,7 @@ from typing import TYPE_CHECKING, Any, Literal
 from devtools import check_published_site, render_overview, social_card
 
 if TYPE_CHECKING:
-    from playwright.sync_api import Page
+    from playwright.sync_api import Browser, Page, Playwright
 from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import probe
 
@@ -415,7 +417,7 @@ def clip_check(
     server = serve(output, port)
     try:
         with sync_playwright() as driver:
-            browser = driver.chromium.launch(executable_path=os.environ.get(BROWSER_OVERRIDE))
+            browser = launch_chromium(driver)
             for name in pages:
                 if not (output / name.partition("#")[0]).is_file():
                     continue
@@ -466,6 +468,25 @@ def split_problem(found: dict[str, Any]) -> str | None:
     return (
         f'"{" | ".join(pieces)}" is one word on {len(pieces)} lines in {where}{framed}: '
         f"{found['width']:g}px wide on a {found['line']:g}px line"
+    )
+
+
+#: What the headless shell is told about hinting. Its default is `HINTING_FULL`
+#: (`headless/public/headless_browser.h`), under which Linux rounds every glyph's advance
+#: to a whole pixel and a page measures wider than on macOS by up to a pixel a glyph: the
+#: overview's 24ch measure read 232 px against 224.8, 9 px a digit against 8.7, and the
+#: frontier table 1210.8 px in its 1200 px track (run 36943941580, D-513). `none` is the
+#: value that lifts it (`headless/lib/browser/command_line_handler.cc`); on macOS, where
+#: CoreText hints nothing, both tables measure the same with it as without.
+FONT_RENDER_HINTING = "--font-render-hinting=none"
+
+
+def launch_chromium(driver: Playwright, **options: Any) -> Browser:
+    """The Chromium the site is measured in: the pinned one, or the one `SQPACK_CHROMIUM`
+    names, with its text unhinted, so that a Linux reading is a macOS reading."""
+    arguments = [FONT_RENDER_HINTING, *options.pop("args", ())]
+    return driver.chromium.launch(
+        executable_path=os.environ.get(BROWSER_OVERRIDE), args=arguments, **options
     )
 
 
@@ -531,14 +552,34 @@ def press(page: Page, selector: str) -> list[str]:
     return page.evaluate(MATH_FACE)
 
 
+#: A colour scheme a page is shot in, as Playwright names the two the site styles.
+Scheme = Literal["light", "dark"]
+#: The colour schemes a page is shot in: light alone unless `--scheme` asks for dark too.
+SCHEMES: tuple[Scheme, ...] = ("light", "dark")
+
+
+def shot_name(name: str, width: int, scheme: Scheme = "light", press: int = 0) -> str:
+    """A screenshot's file name: the page's stem (`shot_stem`) and its width, `-dark`
+    when it is shot in the dark scheme, and `-press<n>` for what the n-th selector
+    pressed on it opened: `index-1280.png`, `index-390-dark.png`,
+    `frontier-1280-dark-press1.png`."""
+    dark = "-dark" if scheme == "dark" else ""
+    pressed = f"-press{press}" if press else ""
+    return f"{shot_stem(name)}-{width}{dark}{pressed}.png"
+
+
 def screenshots(
     output: Path,
     shots: Path,
     port: int,
     pages: Sequence[str] = render_overview.SITE_PAGES,
     presses: Sequence[str] = (),
+    *,
+    schemes: Sequence[Scheme] = SCHEMES[:1],
 ) -> list[str]:
-    """A full-page screenshot of every built page at each width, with what went wrong:
+    """A full-page screenshot of every built page at each width, in each of `schemes`
+    (light alone by default; a dark shot is named `-dark`, `shot_name`), with what went
+    wrong:
     console errors, math left untypeset or set in the other face from its text, a row of
     cards off the centre of its line, any page wider than its viewport, section tabs
     that do not stand under the bar's rule (`tabs_problems`), a bar whose type is not
@@ -557,19 +598,21 @@ def screenshots(
     server = serve(output, port)
     try:
         with sync_playwright() as driver:
-            browser = driver.chromium.launch(executable_path=os.environ.get(BROWSER_OVERRIDE))
+            browser = launch_chromium(driver)
             for name in pages:
                 if not (output / name.partition("#")[0]).is_file():
                     continue
-                for width in WIDTHS:
+                for width, scheme in itertools.product(WIDTHS, schemes):
+                    where = f"{name} @{width}" + (" dark" if scheme == "dark" else "")
                     page = browser.new_page(
                         viewport={"width": width, "height": 900},
                         reduced_motion=motion_for(name),
+                        color_scheme=scheme,
                     )
                     page.on(
                         "console",
-                        lambda message, name=name, width=width: (
-                            errors.append(f"{name} @{width}: {message.text}")
+                        lambda message, where=where: (
+                            errors.append(f"{where}: {message.text}")
                             if message.type == "error"
                             else None
                         ),
@@ -577,19 +620,18 @@ def screenshots(
                     page.goto(f"http://127.0.0.1:{port}/{name}", wait_until="networkidle")
                     pending = settle_math(page)
                     if pending:
-                        errors.append(f"{name} @{width}: {pending} math spans never typeset")
+                        errors.append(f"{where}: {pending} math spans never typeset")
                     faces: list[str] = page.evaluate(MATH_FACE)
-                    errors.extend(f"{name} @{width}: {mismatch}" for mismatch in faces)
+                    errors.extend(f"{where}: {mismatch}" for mismatch in faces)
                     errors.extend(
-                        f"{name} @{width}: {problem}"
-                        for problem in off_centre(page.evaluate(_CARDS))
+                        f"{where}: {problem}" for problem in off_centre(page.evaluate(_CARDS))
                     )
                     overflow = page.evaluate(_OVERFLOW)
                     if overflow > 0:
-                        errors.append(f"{name} @{width}: {overflow}px wider than the viewport")
+                        errors.append(f"{where}: {overflow}px wider than the viewport")
                     header = page.evaluate(HEADER)
                     errors.extend(
-                        f"{name} @{width}: {problem}"
+                        f"{where}: {problem}"
                         for problem in (
                             *tabs_problems(header),
                             *type_problems(header),
@@ -597,29 +639,28 @@ def screenshots(
                         )
                     )
                     cut = clipped(page)
-                    errors.extend(f"{name} @{width}: {problem}" for problem in cut)
-                    stem = shot_stem(name)
-                    target = shots / f"{stem}-{width}.png"
+                    errors.extend(f"{where}: {problem}" for problem in cut)
+                    target = shots / shot_name(name, width, scheme)
                     page.screenshot(path=str(target), full_page=True)
                     print(f"shot {target}")
                     for index, selector in enumerate(presses, start=1):
                         if not page.locator(selector).count():
                             continue
                         errors.extend(
-                            f"{name} @{width}, {selector} pressed: {mismatch}"
+                            f"{where}, {selector} pressed: {mismatch}"
                             for mismatch in press(page, selector)
                             if mismatch not in faces
                         )
                         errors.extend(
-                            f"{name} @{width}, {selector} pressed: {problem}"
+                            f"{where}, {selector} pressed: {problem}"
                             for problem in clipped(page)
                             if problem not in cut
                         )
                         errors.extend(
-                            f"{name} @{width}, {selector} pressed: {problem}"
+                            f"{where}, {selector} pressed: {problem}"
                             for problem in split_words(page)
                         )
-                        target = shots / f"{stem}-{width}-press{index}.png"
+                        target = shots / shot_name(name, width, scheme, index)
                         page.screenshot(path=str(target))
                         print(f"shot {target}")
                         page.keyboard.press("Escape")
@@ -660,6 +701,14 @@ def main(argv: list[str] | None = None) -> int:
         "that has one, then check and shoot what it opens; repeatable",
     )
     parser.add_argument(
+        "--scheme",
+        action="append",
+        choices=SCHEMES,
+        metavar="SCHEME",
+        help="with --shots: a colour scheme to shoot each page in, light or dark; "
+        "repeatable, light alone by default, and a dark shot is named -dark",
+    )
+    parser.add_argument(
         "--clips",
         action="store_true",
         help="lay every page out at 1024, 768 and 390 pixels and report each wide block an "
@@ -685,7 +734,15 @@ def main(argv: list[str] | None = None) -> int:
             status = 1
     if args.shots:
         pages = tuple(args.page or render_overview.SITE_PAGES)
-        problems = screenshots(output, args.shots.resolve(), args.port, pages, args.press)
+        problems = screenshots(
+            output,
+            args.shots.resolve(),
+            args.port,
+            pages,
+            args.press,
+            # Each scheme asked for, once, in `SCHEMES`' order: light before dark.
+            schemes=tuple(s for s in SCHEMES if s in (args.scheme or SCHEMES[:1])),
+        )
         problems += clip_check(output, args.port, pages)
         for error in problems:
             print(f"problem: {error}", file=sys.stderr)

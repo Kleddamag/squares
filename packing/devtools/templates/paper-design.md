@@ -558,6 +558,11 @@ it.
   `site-nav.css` rather than `site.css` because the workbench carries only the bar’s
   stylesheet. On the film’s page it opens the document; on the workbench it sits in the
   application shell under the bar, above the application.
+  The same strip also switches a view in place: there it is a `tablist` of buttons
+  (`role="tab"`), each stripped of a button’s own chrome and taking the strip’s type,
+  the selected one filled as the current page’s link is.
+  The homepage’s atlas uses it for its Grid and Triangle views (**Atlas views**, below);
+  `site-nav.css` draws both forms, and the header rules above take only the `nav` strip.
   From the top, both pages read bar, rule, tabs, content: the tabs stand under the rule
   that runs under the bar, never over it.
   They are in the header slot, whose lower border is that rule, so a header that holds
@@ -639,22 +644,22 @@ it.
   class for any block a reader does not see and a screen reader should).
   The film after the hidden title is the page’s first block, so on screen it brings no
   margin above and starts `--site-page-top` under the header.
-  A page that has a title (the Frontier page, the case records) sets it in the hero,
-  centred, with a subtitle under it.
-  The Frontier page’s title is “The Frontier Survey” and its subtitle “A survey of
-  everything known for cases $n = 1, \ldots, 324$”, the results page’s “A survey of all
-  reviewed results” and the Papers page’s “Papers and interactive explanations for
-  specific results”. The subtitle is the sans face at 1.1 times the sans base
+  A page that has a title (the Frontier page, the Results page, the Papers page, the
+  case records) sets it in the hero, centred.
+  The Frontier page’s title is “The Frontier Survey”, the Results page’s “Every Result”
+  and the Papers page’s “Papers”; each stood over a subtitle the owner dictated on 1
+  October (“A survey of everything known for cases $n = 1, \ldots, 324$”, “A survey of
+  all reviewed results”, “Papers and interactive explanations for specific results”) and
+  dropped on 2 October as adding little (`think-wz9d`); the page descriptions in each
+  `<head>` are their own constants and stay.
+  The case records’ page keeps its subtitle, “Every tracked case, n = 1 to 324, one
+  record each”, the one the owner did not name.
+  A subtitle, where a page has one, is the sans face at 1.1 times the sans base
   (`--site-subtitle-scale`, about 21px), in the page’s own text colour, never gray, with
-  the same space above it and below it (`--site-subtitle-space`, 1.5rem). A formula in a
-  subtitle is math, not `<var>` and digits: the subtitle is an HTML block, where KPress
-  leaves `$…$` literal, so the renderer fills it with KPress’s own math markup
-  (`render_frontier_page.math_html`), and it is set sans as the subtitle’s text is.
-  The atlas’s range is read from the case records, first and last, never typed.
-  A title with no subtitle, a document’s own `h1` among them, stands that space above
-  its first paragraph.
-  The page title style (every hero `h1`, and `.site-title`) is the sans face in upright
-  caps (not KPress’s italic `h2`) at 1.5 times the sans base, centred.
+  the same space above it and below it (`--site-subtitle-space`, 1.5rem). A title with
+  no subtitle, a document’s own `h1` among them, stands that space above its first
+  paragraph. The page title style (every hero `h1`, and `.site-title`) is the sans face
+  in upright caps (not KPress’s italic `h2`) at 1.5 times the sans base, centred.
   The homepage’s first section, The Square Packing Problem, takes it through
   `.site-title`, so it reads as the Frontier page’s title does.
   That section opens with README’s two opening paragraphs: the block between README’s
@@ -663,12 +668,13 @@ it.
   The site’s own statement follows under its own section heading, The Square Packing
   Project, an ordinary `h2` like the sections after it, and is the only prose the
   template holds there.
-  README’s next two paragraphs, what the project covers and its newest major result, are
-  a second shared block, `recent-progress`, which opens Recent Results
-  (`site_documents.overview_progress`); README keeps all four paragraphs together and in
-  order, parted only by the markers.
-  `devtools.check_readme` holds both blocks: each marked once, the second directly after
-  the first, prose alone with no heading or comment, and no case called the central one.
+  README’s next two paragraphs, what the project covers and its newest major result,
+  were a second shared block, `recent-progress`, that opened Recent Results until
+  2026-10-02; that section is one paragraph of the template’s own now (**Recent
+  results**, below), and README keeps its fuller account unshared, since a shared block
+  must read the same in both places and the two are meant to differ.
+  `devtools.check_readme` holds the one block: marked once, prose alone with no heading
+  or comment, and no case called the central one.
 
 - **Heading leading.** Every heading is set at one line height, 1.15
   (`--paper-heading-leading`, in `paper-type.css`), on screen: a page’s title (an `h1`,
@@ -697,7 +703,8 @@ it.
   The generated `STATUS.md`, served as `status.html`, is “the status table”.
   The homepage’s section was The Survey until 2026-10-01; an empty anchor in its heading
   keeps the old fragment, `#the-survey`, landing on it, as Verification Ladders keeps
-  `#verification-at-a-glance`.
+  `#verification-at-a-glance` on the Results page, where the section is since
+  2026-10-02.
 
 - **Report layout.** Every report page (the tutorial, the synopsis and the other
   documents) has one layout.
@@ -745,15 +752,16 @@ it.
   A popover card (`card`) is a button that opens a popover showing where it leads, and
   the popover ends in one button that goes there, centred at its foot.
   A direct card is instead itself the link (`link_card`), an `<a>` with no popover.
-  **A card whose target is a full page of the site navigates.** The overview’s five page
-  cards, the optimality paper, the explainer, the tutorial, the workbench and the
-  Frontier page, and the Papers page’s three paper cards lead to full pages the site
-  serves, so each is a direct card that goes to its page in the same tab
-  (`new_tab=False`), with the right arrow for its icon (`data-go="page"`) and nothing
-  framed (`think-bc5d`, `think-w82r`). Popovers are for records, targets that are not
-  site pages of their own: a result, a case, a repository document rendered for its
-  card’s popover. A direct card is a link and holds no other link, so what its note names
-  is linked from the prose beside it.
+  **A card whose target is a full page of the site navigates.** The overview’s four page
+  cards, the optimality paper, the explainer, the tutorial and the workbench, The
+  Frontier Survey’s two cards to the Frontier page (**Overview sections**, below), and
+  the Papers page’s three paper cards lead to full pages the site serves, so each is a
+  direct card that goes to its page in the same tab (`new_tab=False`), with the right
+  arrow for its icon (`data-go="page"`) and nothing framed (`think-bc5d`, `think-w82r`).
+  Popovers are for records, targets that are not site pages of their own: a result, a
+  case, a repository document rendered for its card’s popover.
+  A direct card is a link and holds no other link, so what its note names is linked from
+  the prose beside it.
   **Every other direct card opens its target in a new tab** (`target="_blank"`,
   `rel="noopener noreferrer"`), so the page the reader chose it from stays where they
   left it: a poster’s PDF, the Visualize page, another project.
@@ -832,9 +840,10 @@ it.
   rem, so medium steps at 33, 50, 67 and 84rem, as the grid did.
   A section declares one size for all its cards, in `SECTION_CARD_SIZES`
   (`overview_sections.py`), so its lines are one grid; the size is the one its typical
-  card’s text asks for, and `tests/test_overview.py` holds the two together.
-  The page cards, the atlas cards and the other projects are medium; the documents,
-  whose notes are a line, are small.
+  card’s text asks for, the median card’s, which for an even count is the mean of the
+  two middle lengths, and `tests/test_overview.py` holds the two together.
+  The page cards, the survey’s cards, the atlas cards and the other projects are medium;
+  the documents, whose notes are a line, are small.
   A card built without a size (`card()` or `link_card()` with no `size=`) takes the
   default for its own text: its headline and note, and a direct card’s address, counted
   as they read, a formula once.
@@ -932,12 +941,17 @@ it.
   themes. Each direction is that one drawing turned: **right** as drawn, **left** its
   mirror, **down** a quarter turn clockwise, **up** a quarter turn back, and
   **external** an eighth turn back, pointing up and to the right.
-  The one other shape is the sort pair, `--site-arrow-sort`, two small arrows up and
-  down in the same stroke.
+  The two other shapes are the sort pair, `--site-arrow-sort`, two small arrows up and
+  down in the same stroke, and the double chevron, `--site-arrow-double`, the arrow’s
+  open head twice, one over the other, in the same box and stroke: **double-down** as
+  drawn, for a control that shows more below, and **double-up** turned half round, for
+  one that shows less; the atlas’s expander carries them (**Action under a table or
+  grid**, below).
   - Inline markup carries `<span class="site-icon-arrow" data-arrow="right">`, written
     only by `overview_sections.arrow_icon(direction)`: the atlas popover’s stepper (left
     and right), a case record’s steps to its neighbours (left before the previous case,
-    right after the next) and the overview’s “See all results” line (right).
+    right after the next), the overview’s “See all results” button (right) and the
+    atlas’s expander (double-down, then double-up).
   - The icons CSS draws are pseudo-elements painted from the same token: a card’s corner
     icon and its popover’s button, chosen by `data-go` (down to a row on this page,
     external off the site, right to another page of the site, such as **See All
@@ -963,20 +977,30 @@ it.
   Under `prefers-reduced-motion: reduce` the duration is 0ms, so colours change at once
   and no arrow moves.
 
-- **Rating ladders.** Verification Ladders is one diagram, `.site-ladders`, which is
-  neither a set of cards nor the shared data table: a column for each scored dimension
-  of the rubric, in the order Significance, Verification, Confirmation, and a row for
-  each level, the highest at the top, so the rungs of the three ladders line up across a
-  row. A column is headed by the dimension’s name, which links to its section of
+- **Rating ladders.** Verification Ladders is a section of the Results page, under its
+  table, since 2026-10-02 (the owner, `think-hqb3`); it was the homepage’s section
+  between Recent Results and the atlas before that (**Results page**, below, for its
+  place and its lead).
+  Its diagram, `.site-ladders`, is one diagram, which is neither a set of cards nor the
+  shared data table: a column for each scored dimension of the rubric, in the order
+  Significance, Verification, Confirmation, and a row for each level, the highest at the
+  top, so the rungs of the three ladders line up across a row.
+  A column is headed by the dimension’s name, which links to its section of
   `epistemics.md`, and the question it answers, with no caps label.
   A cell holds the rung’s chip and a description of exactly two lines, and nothing else:
   the diagram says what each rung means, and carries no tally of the results at it.
   A ladder with no rung at a level leaves its cell empty: Significance has no level 0.
   The section was Verification at a Glance until 2026-10-01; an empty anchor in its
-  heading keeps the old fragment, `#verification-at-a-glance`, landing on it.
+  heading keeps the old fragment, `#verification-at-a-glance`, landing on it, and the
+  homepage’s `overview/forward.js` sends both that fragment and `#verification-ladders`
+  to the Results page, fragment kept.
   - **Rules.** One rule, in the text’s colour, stands under the column heads.
-    No rule stands between the rows: 1.5rem between one rung’s description and the next
-    rung (`--site-ladders-row-space`, 0.75rem, either side of a row) keeps them apart.
+    No rule stands between the rows: 0.8rem between one rung’s description and the next
+    rung (`--site-ladders-row-space`, 0.4rem, either side of a row) keeps them apart and
+    lets the rungs read as one ladder.
+  - **Heads.** Each column is headed by its name and one short question in the same
+    form: “How significant is the result?”, “How was it originally verified?”, “How has
+    it been confirmed?” (`DIMENSIONS`).
   - **Wording.** The chip’s `title` is the rubric’s full meaning, read from the tables
     in `epistemics.md` (`rung_meanings`). The description is that meaning, or a short
     form where the meaning does not fit two lines of the narrowest cell
@@ -988,10 +1012,10 @@ it.
   - **Rows.** Every rung is the same height at any one width, since each is a chip and a
     two-line box. A cell arranges the two by its own width.
     With 16.5rem or more it sets the chip in a 2.25rem rail, the chip’s own width, and
-    the description beside it, 0.75rem on, 75.3px a row: at 1280 and 1024 pixels, down
+    the description beside it, 0.75rem on, 64.1px a row: at 1280 and 1024 pixels, down
     to a 908-pixel window, and on a phone down to 296 pixels.
     Narrower, it sets the chip on a line of its own and the description under it across
-    the cell, 103.1px a row, from 907 pixels down to 716, so at 768. A description is
+    the cell, 91.8px a row, from 907 pixels down to 716, so at 768. A description is
     never set narrower than 13.5rem (`--site-ladders-meaning-min`).
   - **Columns.** The three columns are equal, and each keeps 0.75rem
     (`--site-ladders-inset`) clear after its words, before the next column’s chip.
@@ -1034,18 +1058,115 @@ it.
   The cells ship in a `<template>` and are placed only as the grid nears the viewport
   (`overview/atlas-grid.js`), so they add nothing to the first paint; each drawing is
   400 units across, fine enough to show large.
+  The grid is the atlas’s default view; the triangle is the other (**Atlas views**,
+  below).
+
+- **Atlas views.** The atlas is one set of tiles under two views, **Grid** and
+  **Triangle**, chosen by a strip over the tiles (`atlas_view_tabs`): the section tabs’
+  strip (**Section tabs**, above) as a `tablist` of two buttons, Grid selected by
+  default and the one tab in the page’s tab order, with the arrow keys, Home and End
+  moving between the two and selecting the tab the focus lands on
+  (`overview/atlas-view.js`). The grid is the stylesheet’s alone, and the page is
+  rendered in it; without scripting the strip stays `hidden`, as the expander’s row
+  does. The triangle sets the cases by the grid bound: row $k$ holds the $2k - 1$ cases
+  $n = (k - 1)^2 + 1$ to $k^2$, the ones that need a square of side $k$, and ends at
+  $k^2$ on the right edge, so the perfect squares $1, 4, 9, 16, \ldots$ run down it;
+  those are the cases whose best packing is the $k \times k$ grid itself, and their
+  tiles are numbered in the text’s colour at the medium weight.
+  Ten rows show the first hundred cases, the last 19 tiles wide; eighteen show all 324,
+  the last 35 wide. A one-line key under the triangle said what the rows are until
+  2026-10-02, when the owner dropped it as obvious (`think-l38m`), with the line under
+  the expander that said every case is in the frontier survey and has a case record:
+  each tile opens its case record, and the Frontier page is a page card.
+  The view is in the address as `?atlas=triangle` (the grid has no parameter), written
+  with `history.replaceState` so every other parameter and the fragment keep their
+  places, and read before any tile is placed, so a linked triangle never shows the grid
+  first. **Wrapping, by one rule at every width.** A line holds as many tiles as the
+  block’s width allows at the least tile width, `--site-atlas-tile-min` (1.625rem, 26px,
+  which keeps a tile over a pointer target’s 24px with its three-figure number legible
+  under it; 2.5rem, 40px, under 40rem or with a coarse pointer, for a finger), and never
+  more than the longest row holds.
+  A row wider than a line wraps in reading order, as text does: its first line is full,
+  from the row’s first case at the left edge; further full lines follow, each from the
+  left edge; and what is left over goes on its last line, right-aligned, so the row
+  still ends at $k^2$ on the right edge, in the same column as the rows that fit.
+  So 19 tiles at eight to a line are lines of 8, 8 and 3, the 3 ending at the square,
+  and a row that fits is one right-aligned line.
+  The next row always starts a new line, and where any row wraps the space over a new
+  row is 0.4 of a tile rather than 0.12, so a row’s lines read as one group.
+  Where some rows fit and the later ones wrap, as on a phone from row 5, the picture
+  reads as one column of squares down the right edge with the wrapped rows flowing in
+  from the left to meet it; the owner chose this over the earlier cut, which put the
+  remainder first and read back to front.
+  Where a case stands, `place(n, per)`, is one pure function of the case and the tiles a
+  line holds, tested in Node (`tests/node/overview_atlas_view`); the script writes each
+  tile’s line and column as custom properties, the stylesheet lays the tiles out from
+  them (`grid-area`), and the placement is redone on the frame after a resize and when
+  the expander opens or closes.
+  A tile is its line’s share of the block, `100cqi` over the tiles a line holds and no
+  wider than `--site-atlas-tile-max` (4.5rem), with its inset, its number and the space
+  over a row as fractions of it, so the triangle keeps its proportions.
+  Measured in Chromium: at 1280 pixels 63px tiles for the hundred and 34px for all 324,
+  no row wrapping; at 1024, 50 and 27px; at 768, 36px for the hundred, and 26px for all
+  324 with rows 14 to 18 wrapping at 26 to a line; at 390, 45px tiles at eight to a
+  line, rows 5 to 10 wrapping (`devtools.measure_atlas_views layout`). **The move.** A
+  change of view, and the expander’s change in either view, moves every tile from where
+  it was to where it is: one read of every tile’s box and of each element after the
+  tiles, the change of layout, one read more, then one Web Animation a tile on
+  `transform` alone, a translation and a scale about the tile’s corner, all started in
+  one batch for `--site-atlas-move-duration` (360ms) with `--site-atlas-move-easing` (an
+  ease-out). A tile outside the window before and after is not animated; a tile the
+  expander shows for the first time fades in; and what follows the tiles moves with
+  them, so nothing jumps under them.
+  Under `prefers-reduced-motion: reduce` the duration is 0ms and the view switches at
+  once. A second press mid-move reads the tiles where they have got to, cancels the first
+  move and starts from there, with the focus kept on the tab pressed.
+  The final layout is the stylesheet’s, correct with no animation at all, and nothing in
+  the block transitions its place (`transition: none` on the box of tiles, the drawings
+  and the numbers): KPress’s reduced-motion rule gives every classed element a 0.01ms
+  transition of every property, under which the triangle was laid out for one frame with
+  the grid’s gaps, 1344 pixels wide at 1280, before it settled.
+  `devtools.measure_atlas_views` measures the layouts (`layout`), times the moves
+  (`move`) and pictures both (`shots`); `tests/test_site_atlas_views.py` holds the page
+  to all of it in Chromium.
+  Timed at 1280 pixels, the median of five: the press’s handler runs 8ms for the hundred
+  cases and 24ms for all 324, with 64 and 225 tiles in the window moving over 383 and
+  420ms; the hundred miss no frame, and all 324 miss ten of 39 at 120Hz, the longest
+  18ms.
+
+- **Action under a table or grid.** Where one control follows a table or a grid, it is
+  the site’s one action button, `.site-action`, in a centred `.site-action-row`: the
+  look of a popover’s action (**Popovers**, the accent fill with the page’s background
+  for the text, the medium sans at the note size, `0.45rem 0.9rem` of padding and square
+  corners, darkened a step on hover and keyboard focus), with its icon from the one set
+  after the label at the label’s size, the arrow right where the control is a link that
+  navigates and the double chevron where it is a button that shows more or less in
+  place. Both forms share one rule in `site.css`, and the row sets `--site-action-space`
+  (1.2rem) above itself and nothing below, where the next heading’s own space begins.
+  The site has two: **See all results** under the homepage’s recent table, a link to the
+  results page with the arrow right, and the atlas’s expander, below.
+  The Frontier, Results and Papers pages end their tables with no action, so none
+  carries one. `tests/test_site_atlas_views.py` reads both in Chromium at 1280 and 390
+  pixels and holds their colours, type, height, padding and centring to each other.
 
 - **Atlas expander.** The grid shows n = 1 to 100 at first (`ATLAS_FIRST`). One button,
-  centred under it, reads **Show all 324** and expands the grid in place; it then reads
-  **Show 1 to 100** and collapses it, and carries `aria-expanded`. It is the site’s
-  action button, `.site-popover-action`, the same accent fill a popover’s button has,
-  set `--site-atlas-toggle-space` below the grid.
-  Cases 101 to 324 ship in a second `<template>` and are placed only the first time the
-  grid expands, into one box the grid lays out as its own cells (`display: contents`),
-  so collapsing is that box’s `hidden`. Collapsing keeps the button in view.
-  The atlas popover’s arrows still step through all 324 cases: stepping past the last
-  case shown expands the grid first, so the cell focus returns to is there.
-  Without scripting the button’s row stays `hidden`, since it would do nothing.
+  centred under it, reads **Show More** with the double chevron down and expands the
+  grid in place; it then reads **Show Less** with the chevron up and collapses it.
+  It carries `aria-expanded` and `aria-controls` (the box of tiles, `ATLAS_PANEL`), and
+  its name for assistive technology says what it does and how many cases that is, “Show
+  more: all 324 cases” and “Show less: the first 100”, while the visible label stays
+  short. The expander’s row ends the block: the sentence that followed it is gone since
+  2026-10-02 (`think-l38m`), and the next section’s heading brings its own space.
+  It is the action under a table or grid (above), set `--site-atlas-toggle-space` below
+  the grid. Cases 101 to 324 ship in a second `<template>` and are placed only the first
+  time the grid expands, into one box the grid lays out as its own cells
+  (`display: contents`), so collapsing is that box’s `hidden`. Collapsing keeps the
+  button in view. The atlas popover’s arrows still step through all 324 cases: stepping
+  past the last case shown expands the grid first, so the cell focus returns to is
+  there. Without scripting the button’s row stays `hidden`, since it would do nothing.
+  In the triangle, expanding changes how many tiles a line holds, since the longest row
+  grows from 19 to 35, so the hundred move into their smaller places as the rest fade
+  in, by the same move a change of view makes (**Atlas views**, above).
 
 - **Wide bleed.** A wide block (`.site-wide`) takes the wide track, `--site-wide`, less
   the page gutters (`--site-wide-gutter` on either side; **Spacing**, above).
@@ -1113,14 +1234,21 @@ it.
   only the record its fragment names (`overview/case-view.js`) and typesets that
   record’s math when it is shown; without scripting it lists every record.
 
-- **Atlas cards.** The atlas’s posters and film have a section of their own under The
-  Atlas, **PDFs and Videos**, an ordinary `h2`; The Atlas keeps the grid, its expander
-  and the grid’s own note, and holds no card.
-  They are three direct hero cards side by side, one card section (`atlas_cards`): the n
-  = 1 to 100 poster, headed by its landscape card image, opens its PDF; the n = 1 to 324
-  poster, headed by the top of the poster itself, opens its PDF; and the film, headed by
-  a frame of the n = 1 to 324 film at n = 290 (`ascent-n1-324-poster.png`), opens
-  `visualize.html`, the film alone at full size.
+- **Atlas cards.** The atlas’s posters and film have a section of their own, **PDFs and
+  Videos**, an ordinary `h2`; **The Atlas of Square Packings** keeps the grid, its
+  expander, and holds no card and, since 2026-10-02, no note under the expander.
+  The homepage’s sections run The Squares Project, Recent Results, The Atlas of Square
+  Packings, The Frontier Survey directly after it, PDFs and Videos, Other Square Packing
+  Projects and Squares Project Documentation, the owner’s order of 1 October less
+  Verification Ladders, which stood between Recent Results and the atlas until
+  2026-10-02 and is the Results page’s since; the atlas section was The Atlas until 1
+  October, and its heading keeps an empty anchor so `#the-atlas` still lands on it, as
+  The Frontier Survey keeps its own (`tests/test_overview.py` holds the order and the
+  anchor). They are three direct hero cards side by side, one card section
+  (`atlas_cards`): the n = 1 to 100 poster, headed by its landscape card image, opens
+  its PDF; the n = 1 to 324 poster, headed by the top of the poster itself, opens its
+  PDF; and the film, headed by a frame of the n = 1 to 324 film at n = 290
+  (`ascent-n1-324-poster.png`), opens `visualize.html`, the film alone at full size.
   A card’s caps label says what it is and the form it opens in, the heading’s two words:
   “Poster · PDF” twice and “Film · Video”.
   The note under the cards, the star, the shorter film, the release and the SVGs, is the
@@ -1514,22 +1642,62 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   `tests/test_overview.py` holds every row of the three pages to this markup and every
   cell free of `<details>`.
 
-- **Recent results.** The overview’s Recent Results section opens with README’s
-  `recent-progress` block (**Page headings**, above), then its own short prose on what
-  the table lists, and then one table, not cards or a list: every result, by the date
-  the table shows, newest first, one row each (`recent_table`). It is the results page’s
-  table, with its columns, its rows, its sorting and its card-per-row form on a phone
-  (**Tables**, above).
+- **Overview sections.** The homepage is an overview: each of its sections is a short
+  lead, one compact paragraph at most, the section’s key structural element where it has
+  one (the recent table, the atlas grid), and one way onward to the page that holds the
+  full account. A fact has one home.
+  What a page defines is stated on that page and nowhere else, and the overview names it
+  and links it: the Results page’s ratings, with the rating ladders that define every
+  rung (**Rating ladders**, above, the homepage’s own section until 2026-10-02), its
+  kinds, statuses and dating rule, with how many results stand at each status; the
+  Frontier page’s counts, its audit of its sources, the seventeen-square history before
+  this project, and when a bound by others counts as verified, which is the rule its
+  verified columns apply.
+  Each table keeps its own star legend, since a star without one reads as decoration,
+  and one function writes it (`star_legend`); the atlas note links the legend above the
+  recent table in place of a third.
+  The Frontier page opens with the survey’s account, its audit, its recent counts and
+  the seventeen-square history, and ends its prose with the key to its columns, beside
+  the table. The way onward follows the section’s shape: a section whose key element is a
+  table or a grid ends in the one action button (**Action under a table or grid**,
+  below), and a section that is prose leads on with direct cards (**Cards**, above), as
+  The Frontier Survey does with its two, every case and the recent cases
+  (`frontier.html?recent=true`, the query its table script presets a filter from).
+  The page cards under The Squares Project are the site’s reading and working pages, the
+  three papers and the workbench; the Results and Frontier pages are reached from their
+  own sections. The owner set this on 2026-10-02 (`think-f1tu`): the overview “a little
+  more structured and a little less verbose”, the survey’s account moved into the
+  Frontier page, Recent Results slimmed to the essentials and its table, and “cards that
+  point to the frontier and the results pages where appropriate”.
+  `tests/test_overview.py` holds each section’s prose to one paragraph of its own where
+  this applies, the cards to their pages, and the three pages to saying each thing once.
+
+- **Recent results.** The overview’s Recent Results section is one paragraph of 60 to
+  125 words before its table (the owner, 2026-10-02): the headline of recent progress,
+  eleven squares settled by T-060, seventeen squares bracketed by T-043 and T-065, the
+  new exact values at $n = 21$, $32$ and $45$, each id linked to its row and held to the
+  register by `check_results.READER_TIER`; then the star legend (`star_legend`); then
+  one sentence, in the legend’s manner, on what the three chips on a row indicate, in
+  the ladder heads’ words (how significant the result is, how it was originally
+  verified, how it has been confirmed), linking the Verification Ladders on the Results
+  page, which joined the paragraph when the ladders left the homepage (`think-hqb3`) and
+  raised its ceiling from 90 words; and one sentence on where the filters start.
+  Then one table, not cards or a list: every result, by the date the table shows, newest
+  first, one row each (`recent_table`). It is the results page’s table, with its
+  columns, its rows, its sorting and its card-per-row form on a phone (**Tables**,
+  above). The ratings, the kinds, the statuses and the dating rule are defined on the
+  Results page, and a result’s rungs, review and retained packet are its row’s; the
+  section repeats none of them.
+  README’s two paragraphs on the same progress opened the section until that day and are
+  README’s own now (**Page headings**, above).
   The results page’s tools bar sits above it (**Result filters**, above), starting at
   significance S4 and up, a maximum age of 180 days and Hide superseded checked, with
   the count of rows shown out of the total at the bar’s end.
   Those three defaults are all that make the table recent and current: no result is left
   out of it by a date or a status the page fixes, and none is listed anywhere but in it.
   A result reported and not yet replayed here is a row like any other, its status
-  `recorded`; the prose above the table counts the results not yet confirmed
-  (`status_counts`), each count the link to those rows on the results page.
-  A row shows its records and opens its result’s popover (**Row popovers**, above), as
-  the same row of the results page does, and links nowhere else.
+  `recorded`. A row shows its records and opens its result’s popover (**Row popovers**,
+  above), as the same row of the results page does, and links nowhere else.
   The section holds no card or bulleted list, and the “See all results” line, with the
   right arrow, follows the table.
 
@@ -1538,10 +1706,21 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   (`results.html` was `RESULTS.md` rendered as a reader document, so the table’s page
   took the other name; since 2026-10-01 `results.html` is a forwarder to this page.)
   The page has the Frontier page’s shape: a hero title, “Every Result”, whose id is
-  `every-result`, a subtitle, the prose that defines the ratings, kinds and statuses,
-  and the table under its filters (**Result filters**, above), which start with
-  significance at All, no maximum age and Hide superseded clear, so every result shows,
-  newest first, in one flat list.
+  `every-result`, a subtitle, the prose that names the three ratings and points at the
+  ladders, defines the kinds, statuses and dating rule, with how many results stand at
+  each status where the statuses are defined (`status_counts`, each count the link to
+  those rows), and the table under its filters (**Result filters**, above), which start
+  with significance at All, no maximum age and Hide superseded clear, so every result
+  shows, newest first, in one flat list.
+  Under the table stands **Verification Ladders** (`#verification-ladders`, with the
+  empty anchor `#verification-at-a-glance` the section carried on the homepage), since
+  2026-10-02 (the owner, `think-hqb3`): a lead that defines the three ratings once, S, V
+  and C in the ladder heads’ words, with the policy for results by others; the diagram
+  (**Rating ladders**, above); and then what the diagram does not show, the three
+  assurance labels on evidence, where finite precision falls short, and the audit of
+  published work. It stands under the table rather than above it so a reader meets the
+  table without a long preamble; the opening paragraph points down to it, and the
+  homepage’s Recent Results links it.
   Each row keeps its id, the result’s own (`#t-018`), which is where the overview’s
   recent table and each case record’s results link.
   A row opens its result’s popover, the full claim and its novelty label, with the id in
@@ -1549,11 +1728,11 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   The overview keeps the newest results and ends that table with a “See all results”
   line and the right arrow, in the sans face at the note size.
   The table used to be the overview’s Every Result section, and its old addresses still
-  arrive: the overview’s `overview/forward.js` sends `#every-result` and any `#t-nnn` to
-  the results page with the fragment kept, and every other fragment the overview lacks
-  to the explainer, as before.
-  `tests/node/overview_forward/` runs the forwarder, and `tests/test_overview.py` holds
-  every row id to the form it recognises.
+  arrive: the overview’s `overview/forward.js` sends `#every-result`, any `#t-nnn`,
+  `#verification-ladders` and `#verification-at-a-glance` to the results page with the
+  fragment kept, and every other fragment the overview lacks to the explainer, as
+  before. `tests/node/overview_forward/` runs the forwarder, and `tests/test_overview.py`
+  holds every row id to the form it recognises.
 
 - **Document cards and moved pages.** The overview’s documentation section has one card
   for each repository document the site renders, in the order of
@@ -1609,9 +1788,10 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   to the site’s root. Its page shares the explainer’s publication layer and
   `paper-type.css`, and keeps only its diagrams’ rules in
   [n11-optimality-review.css](n11-optimality-review.css).
-  There a table keeps to the column and scrolls inside its own wrap, the credits are one
-  column no wider than the page, and a diagram drawn in fixed ink keeps a light ground
-  on the dark theme, as the construction in its first figure does.
+  There a table keeps to the column and scrolls inside its own wrap, and a diagram drawn
+  in fixed ink keeps a light ground on the dark theme, as the construction in its first
+  figure does. Its front, the formats row, the title and the credits, is the two papers’
+  one component (**The Papers’ Front**, below).
 
   **The paper’s citations name a commit, the one exception to links on `main`.** A paper
   cites the evidence as it stood when it was typeset: its links carry anchors into
@@ -1766,6 +1946,90 @@ The 100-packing atlas is an explicit exception: it is a standalone SVG with its 
 dense grid, title, and labels.
 Enlarging every internal label to the figure-label size would obscure its cells.
 Its caption uses the shared role; the linked full-size PDF provides the detailed view.
+
+## The Papers’ Front
+
+Both papers open the same way, and one component writes it: `devtools.paper_front`, from
+a small record each renderer keeps (`PaperFront`: the slug, the title, who oversaw the
+paper, its agents, its version, its dates, and the source it explains where that is
+someone else’s work).
+The page, the Markdown edition and the PDF, which takes its title and its dates from the
+page, follow from that record; neither article carries a copy, only the slot
+`{{FRONT_MATTER}}`.
+
+The front is, in order:
+
+- **The formats row.** Three chips at the top corner of the page, on screen only: MD,
+  the Markdown the page is rendered from, and PDF, its typeset PDF, each beside the page
+  under its slug; then GITHUB, the project, with its mark.
+  The row is navigation, so the Markdown edition leaves it out.
+
+- **The title.** A Markdown `h1` in the hero, centred, in the page-title role.
+
+- **The credits.** One line each, in the owner’s form (2026-10-01): names in bold,
+  addresses as plain links, the version plain.
+
+  ```
+  From the original proof by **Queuingtheorydotcom**
+  github.com/Queuingtheorydotcom/11SquaresOptimal
+
+  Human oversight: **Joshua Levy**
+  Agents: **GPT-6 Astra** and **GPT-6 Sol**
+  Draft v0.1.0
+  Original proof September 29, 2026 · Last revised October 1, 2026
+  ```
+
+  A paper that explains someone else’s work credits its source first, by the author’s
+  name and the work’s address, and a line’s space sets the paper’s own credits apart; a
+  paper that explains the project’s own proofs begins at its own credits.
+  Then who oversaw it, the agents, the version line and the dates line, with a line’s
+  space before the dates.
+  The project’s repository is not a line of the credits on either paper: the footer
+  every page carries names it, and so does the GITHUB chip.
+
+- **The version line.** The paper’s own version, plain: `EXPLAINER_VERSION` for the
+  explainer and `OPTIMALITY_REVIEW_EDITION` (“Draft v0.1.0”) for the review, both from
+  `sqpack.release`. Never the site’s edition and never the data hash: the site’s version
+  goes on no paper (the owner, 2026-10-01: papers are individually versioned, and a
+  paper’s version history reflects versions of the paper, not of the website).
+  A paper that has had more than one edition links its version history, the section at
+  the foot of the explainer that lists the paper’s own editions (`EXPLAINER_HISTORY`),
+  each with the day it was first published and what changed in the paper; a paper at its
+  first version has no history to link.
+
+- **The dates line.** One grammar on both: `<What> <Month D, YYYY>` parts joined by a
+  middle dot, ending with “Last revised”, the day the article last changed.
+  A paper with a source leads with the day the source published its proof (“Original
+  proof September 29, 2026”); the explainer leads with the day its first edition went
+  live (“First published September 5, 2026”). Every value is `sqpack.release`’s, and
+  `devtools.artifact_dates` holds each to its rule.
+
+- **The closing.** The paper’s own last sections (the explainer’s version history, the
+  review’s sources and verification record), then the footnotes, then the colophon every
+  page shares (`render_overview.colophon_lines`), on a paper without its version part:
+  the project and its repository, then “Formatted and typeset with Flowmark and KPress”.
+
+In the Markdown edition the front is the title as a heading and the credits as a list,
+one item a line, bold and linked as the page is.
+In the head, the title is the paper’s name, a middle dot and the project’s name, and the
+revised day is `article:modified_time`; the explainer’s first publication is
+`article:published_time` too (**Page Metadata and Social Cards**, above).
+
+The credits are one grid column the width of the page (`.credits`, in the publication
+layer), an address in them may break anywhere, and the two lines’ spaces are `1lh`, on
+`.credits-source + .credits-own` and on `.publication-date`.
+
+`devtools.paper_structure` reads both rendered papers, from a built site or from the
+published one, and prints every structural axis side by side: the head, the formats row,
+the title, each line of the credits with what is bold and linked in it, the version and
+dates lines, the heading case, the figures and their captions, the tables, the
+footnotes, the closing, the Markdown edition’s opening and the PDF’s title, size and
+dates. A form axis is one both papers set one way; a content axis is each paper’s own,
+such as how many figures it has.
+`tests/test_paper_structure.py` fails when a form axis differs.
+`devtools.measure_site_pages credits` measures the front as laid out, the weight, the
+gap above and the width of every line and chip, and `tests/test_site_glyphs.py` holds
+the two papers’ fronts equal in a browser at 1280 and 390 pixels.
 
 ## Figures
 

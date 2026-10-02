@@ -40,7 +40,7 @@
   const header = document.querySelector(".kpress-site-header");
   const text = document.querySelector(".site-nav .site-name-text");
   const logo = document.querySelector(".site-nav .site-logo");
-  const tabs = document.querySelector(".site-tabs");
+  const tabs = document.querySelector("nav.site-tabs");
   /** @param {Element | null} el */
   const ruled = (el) =>
     el !== null && Number.parseFloat(getComputedStyle(el).borderBottomWidth) > 0;

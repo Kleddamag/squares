@@ -1,18 +1,26 @@
-"""The version this project's reader-facing artifacts carry, and the rule that keeps it true.
+"""The version this project's site and data carry, the rule that keeps it true, and the
+papers' own versions beside it.
 
-The explainer prints it in its credits and every site page in its footer, the workbench
-shows it on its stage, and the atlas posters and the films carry it too, so a release is
-stamped in one place and all of them follow. This is the publication's version, not the
-package's: `pyproject.toml` versions the code, and the two move for different reasons.
+Every site page prints the site's version in its footer, the workbench shows it on its
+stage, and the atlas posters and the films carry it too, so a release is stamped in one
+place and all of them follow. This is the publication's version, not the package's:
+`pyproject.toml` versions the code, and the two move for different reasons.
+
+**The papers do not carry it.** Each paper has a version of its own, declared at the foot
+of this module (`EXPLAINER_HISTORY`, `OPTIMALITY_REVIEW_EDITION`), and its front prints
+that (`devtools.paper_front`); the site's version and the data hash appear nowhere on a
+paper page, its Markdown edition or its PDF (the owner, 2026-10-01: "the repository
+version should not go on the papers anymore. Papers should be individually versioned").
 
 It is written `v0.4.1-f5e113` (the owner, 2026-09-22): the edition's semver core, then
 the first six characters of the last commit that changed the evidence and data. Two
 artifacts drawn from the same data carry the same version, whatever code commit built
 them. The rule that keeps that true without any artifact chasing its own hash:
 
-1. **Every page prints `PUBLICATION_EDITION`, whose hash is the pinned `DATA_REVISION`.**
-   Nothing reads git to stamp a version, so a render needs no history -- the deploy's
-   shallow checkout and a source tarball stamp the same string as a full clone.
+1. **Every site page prints `PUBLICATION_EDITION`, whose hash is the pinned
+   `DATA_REVISION`.** Nothing reads git to stamp a version, so a render needs no history
+   -- the deploy's shallow checkout and a source tarball stamp the same string as a full
+   clone.
 2. **`DATA_REVISION` must be what git says** -- `data_revision`, the last commit that
    changed `DATA_PATHS`. `tests/test_release.py` fails when the two differ, wherever git
    can answer; the pull-request behavioral shards check out full history, so every pull
@@ -54,14 +62,22 @@ from typing import NamedTuple
 
 
 class PublicationHistoryEntry(NamedTuple):
-    """One public edition, when it was first published, and its headline result."""
+    """One public edition, when it was first published, and what it changed: an edition
+    of the site and its data in `PUBLICATION_HISTORY`, or of one paper in that paper's
+    own history."""
 
     version: str
     first_published: str
     result_scope: str
 
 
-#: Every edition this publication has had, newest first, and NONE is ever removed.
+#: Every edition this publication, the site and its data, has had, newest first, and NONE
+#: is ever removed. It is the site's record: the posters and the films are stamped from
+#: it, the claim documents are regenerated at each entry, and `development.md` (Cutting
+#: an edition) is where a reader finds it. It is not a paper's history: a paper lists its
+#: own editions (`EXPLAINER_HISTORY`, below), which are the ones in which that paper
+#: changed. Until 2026-10-02 the explainer listed this whole record and called it its
+#: version history, so a site-only edition read as an edition of the paper.
 #:
 #: It used to be "the two editions retained in the explainer's short public history", and
 #: under that rule adding v0.4.1 on 2026-09-22 dropped v0.3.0 -- the first edition, and the
@@ -77,6 +93,7 @@ class PublicationHistoryEntry(NamedTuple):
 #: happened (the owner, 2026-09-22: "accurately record the date of when that was first
 #: published"). The deployment and commit behind each date, so it can be re-read:
 #:
+#:   v0.5.0  2026-10-02T01:07:03Z  8aaa411dc  the merge of PR 291, label and content together
 #:   v0.4.2  2026-09-28T06:11:35Z  c19e6c0e2  the merge of PR 239, label and content together
 #:   v0.4.1  2026-09-22T23:12:36Z  d5b1c2e1b  the merge of PR 218, label and content together
 #:   v0.4.0  2026-09-13T22:12:47Z  f2e24e07b  T-025's 191/50 and the v0.4.0 label first live;
@@ -88,6 +105,15 @@ class PublicationHistoryEntry(NamedTuple):
 #: Reproduce with `gh api "repos/jlevy/squares/deployments?environment=github-pages"` and,
 #: for each deployment's commit, what the page it built stated.
 PUBLICATION_HISTORY = (
+    PublicationHistoryEntry(
+        version="v0.5.0",
+        first_published="October 2, 2026",
+        result_scope=(
+            "The website edition: the project gets its own site, with a rated table of "
+            "results and a frontier survey to $n = 324$, and a second paper reviews the "
+            "proof that $s(11) = 3.8770835…$ (T-060)."
+        ),
+    ),
     PublicationHistoryEntry(
         version="v0.4.2",
         first_published="September 28, 2026",
@@ -125,8 +151,8 @@ PUBLICATION_HISTORY = (
     ),
 )
 
-#: The edition the figures and the explainer state. Choose at most one version bump per
-#: merge, and keep it fixed while revising that pull request.
+#: The edition the site's pages, the posters and the films state. Choose at most one
+#: version bump per merge, and keep it fixed while revising that pull request.
 PUBLICATION_VERSION = PUBLICATION_HISTORY[0].version
 
 #: Where the edition stands, said ahead of the version. Empty once it is final; the
@@ -200,18 +226,112 @@ def edition_at(revision: str) -> str:
 
 
 #: How the version is written wherever it is stamped: the stamp, with the status ahead
-#: of it while there is one. The site's footer, the explainer's credits and the workbench
-#: take this string whole, so none can disagree about whether the reader is holding a
-#: draft, nor about how the version is spelled.
+#: of it while there is one. The site's footer and the workbench take this string whole,
+#: so neither can disagree about whether the reader is holding a draft, nor about how
+#: the version is spelled. A paper's footer leaves it out (`render_overview.colophon_lines`).
 PUBLICATION_EDITION = edition_at(DATA_REVISION)
 
 #: When the current edition was first published, written the way a reader reads it.
 PUBLICATION_DATE = PUBLICATION_HISTORY[0].first_published
 
-#: When the publication itself was first published: its oldest edition's date, which the
-#: page puts at the top beside the current version, so a reader sees both how old the
-#: result is and how recently it was revised.
+#: When the publication itself was first published: its oldest edition's date. The site
+#: began as the explainer, so this is also that paper's first day (`EXPLAINER_FIRST_PUBLISHED`,
+#: which is what the paper's front prints).
 FIRST_PUBLISHED = PUBLICATION_HISTORY[-1].first_published
+
+# ---------------------------------------------------------------------------
+# The papers' own versions.
+#
+# Each paper is versioned on its own (the owner, 2026-10-01), and its version line and
+# version history reflect versions of the paper, not of the site or anything else. A
+# published number under which the paper changed stays exactly as published, number and
+# date, and is never renumbered; an edition under which the paper did not change is not
+# a version of the paper and is not in its history. `devtools.paper_front` writes the
+# front of both papers from these, and `tests/test_release.py` holds the rules.
+# ---------------------------------------------------------------------------
+
+#: The first paper's own editions, newest first. Through v0.5.0 the paper carried the
+#: site's number, so the entries up to v0.4.2 are the editions of the publication in
+#: which the paper itself changed, with the site's own number and date for each; v0.4.3
+#: is the paper's first number of its own. What changed in the paper under each, read
+#: from the article's history between the deployments listed above `PUBLICATION_HISTORY`
+#: on 2026-10-02:
+#:
+#:   v0.4.3  the frontier update of September 30 records T-060's proof that s(11) is
+#:           Trump's side, the T-026 rating moves from V4/C5 to V3/C3 under the ladder
+#:           of 2026-09-30, Figure 3 marks the settled endpoint, and a footnote records
+#:           the n = 12 and n = 17 bounds others have since raised (249d42c37,
+#:           d205561f0, 7862dc3e8, a6f630dd7); a patch revision of the paper (the owner,
+#:           2026-10-01), published under the v0.4.2 label until it was numbered
+#:   v0.4.2  the frontier update of September 22 records Kleddamag's verified
+#:           s(11) >= 3.875, built on T-026's certificate, and the paper presents T-026's
+#:           bound as historical; Figure 2's star marks every recent result
+#:   v0.4.0  the article rewritten around T-025 and T-026, the 381/100 proof kept as the
+#:           worked example
+#:   v0.3.0  the first edition
+#:
+#: Not versions of the paper: v0.4.1, under which the article did not change at all (the
+#: shared version stamp and the atlas's T-030), and v0.5.0, the website edition, which
+#: changed nothing in either paper. A new version of the paper goes on the front with its
+#: own number and the day it is first published; `EXPLAINER_REVISED` moves with the
+#: article either way.
+#:
+#: v0.4.3 is dated by the deployment that first served the article in its present
+#: substance, the last substantive change being the V3/C3 regrade (d205561f0):
+#:
+#:   v0.4.3  2026-10-01T08:01:58Z  f9a3409f0  the first deployment holding d205561f0;
+#:                                            the T-060 update was live from d44ec0408,
+#:                                            2026-09-30T17:44:28Z, and the cosmetic
+#:                                            changes after it (the slug, the credits
+#:                                            form, 9b459da65 and 97e4069d5) went live
+#:                                            on October 1 and 2, so the substantive
+#:                                            day is the one recorded
+EXPLAINER_HISTORY = (
+    PublicationHistoryEntry(
+        version="v0.4.3",
+        first_published="October 1, 2026",
+        result_scope=(
+            "The settled-case revision: the frontier update records T-060's proof that "
+            "$s(11)$ is Trump's side, Figure 3 marks the endpoint, T-026 is rated V3/C3, "
+            "and the raised $n = 12$ and $17$ bounds are noted."
+        ),
+    ),
+    PublicationHistoryEntry(
+        version="v0.4.2",
+        first_published="September 28, 2026",
+        result_scope=(
+            "The recent-results edition: a frontier update records Kleddamag's verified "
+            "$s(11) ≥ 3.875$, built on the T-026 certificate, so the paper presents "
+            "T-026's bound as historical, and the star on the atlas in Figure 2 marks "
+            "every recent result."
+        ),
+    ),
+    PublicationHistoryEntry(
+        version="v0.4.0",
+        first_published="September 13, 2026",
+        result_scope=(
+            "The T-025/T-026 proof edition: T-025 proves "
+            "$s(11) ≥ 191/50 = 3.82$, and T-026 proves "
+            "$s(11) ≥ 3.8264474…$."
+        ),
+    ),
+    PublicationHistoryEntry(
+        version="v0.3.0",
+        first_published="September 5, 2026",
+        result_scope=(
+            "The first edition: T-018's point certificate proves $s(11) ≥ 381/100 = 3.81$."
+        ),
+    ),
+)
+
+#: The first paper's version, plain, which its version line prints and links to its
+#: history: its newest edition's number, with no status ahead of it and no data hash.
+EXPLAINER_VERSION = EXPLAINER_HISTORY[0].version
+
+#: When the first paper was first published: its oldest edition's day, which its front
+#: puts beside the day it was last revised, so a reader sees both how old the result is
+#: and how recently it was revised.
+EXPLAINER_FIRST_PUBLISHED = EXPLAINER_HISTORY[-1].first_published
 
 #: When the explainer's own text last changed: the date its "Last revised" line prints.
 #: It is the author date of the last commit that changed the article
@@ -221,13 +341,39 @@ FIRST_PUBLISHED = PUBLICATION_HISTORY[-1].first_published
 #: moves between editions. Change it in the commit that changes the article.
 EXPLAINER_REVISED = "October 1, 2026"
 
+#: The optimality review's own version, and where it stands: the paper that explains
+#: T-060's proof is a draft at its first version, written on the two papers' one credits
+#: form (`devtools.paper_front`; the owner, 2026-10-01: "Draft v0.1.0", not bold). It
+#: is the review's version and not the site's, which was the first of #289's questions
+#: on think-cv22 and is settled: the site's edition goes on no paper. At its first
+#: version the review has no history to link; its second gets one as the explainer's
+#: (`EXPLAINER_HISTORY`), linked from its front (`PaperFront.history`). Joined as
+#: `edition_at` joins the publication's status and stamp, so going final is one edit
+#: here too.
+OPTIMALITY_REVIEW_STATUS = "Draft"
+OPTIMALITY_REVIEW_VERSION = "v0.1.0"
+OPTIMALITY_REVIEW_EDITION = " ".join(
+    part for part in (OPTIMALITY_REVIEW_STATUS, OPTIMALITY_REVIEW_VERSION) if part
+)
+
+#: When the optimality review's own text last changed: the date its "Last revised" line
+#: prints, by the rule `EXPLAINER_REVISED` follows -- the author date of the last commit
+#: that changed its article, `n11-optimality-review-article.md`, held to git by
+#: `devtools.artifact_dates`. Change it in the commit that changes the article.
+OPTIMALITY_REVIEW_REVISED = "October 1, 2026"
+
+#: The day the proof the review explains was published by its source, which the review's
+#: "Original proof" date prints. A fact about someone else's work, so it is typed, and
+#: held by `devtools.artifact_dates` to the day the register records for T-060.
+OPTIMALITY_PROOF_PUBLISHED = "September 29, 2026"
+
 #: The commit the committed claim documents link to
 #: (`render_n11_lower_bounds_explainer.edition_file`), at this repository's short length. It is
 #: pinned for the reason `DATA_REVISION` is: those documents are compared byte for byte with a
 #: fresh render, so a link naming the build commit would fail their drift check forever. It is
 #: in no version string. It moves when the claim documents are regenerated for an edition. It
 #: must be a commit on `main`; the site's own links name `main` itself (`devtools.repo_links`).
-PUBLICATION_REVISION = "0d7bb0fa"
+PUBLICATION_REVISION = "07f01438"
 
 
 def data_pathspec() -> tuple[str, ...]:

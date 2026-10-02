@@ -60,3 +60,48 @@ interface AtlasFact {
   record: string;
   cite: { lower: AtlasCitation | null; upper: AtlasCitation | null };
 }
+
+/** The atlas's two views (`atlas-view.js`): the grid, and the triangle of rows by k. */
+type AtlasView = "grid" | "triangle";
+
+/**
+ * Where a case stands in the triangle for the tiles a line holds: its row k, its line
+ * from the top of the triangle, its column from the left, and whether its line opens a
+ * row after the first.
+ */
+interface AtlasTrianglePlace {
+  row: number;
+  line: number;
+  column: number;
+  opens: boolean;
+}
+
+/** As much of a box as a move is worked out from: a `DOMRect` has all three. */
+interface AtlasBox {
+  left: number;
+  top: number;
+  width: number;
+}
+
+/** A tile's transform at the start of a move: a translation in pixels and a scale. */
+interface AtlasMove {
+  x: number;
+  y: number;
+  scale: number;
+}
+
+/** The pure functions of `atlas-view.js`, which the Node tests run with no document. */
+interface SiteAtlasViewApi {
+  row(n: number): number;
+  widest(last: number): number;
+  perLine(width: number, least: number, most: number): number;
+  place(n: number, per: number): AtlasTrianglePlace;
+  viewOf(search: string): AtlasView;
+  searchFor(search: string, view: AtlasView): string;
+  lengthPx(text: string, rootPx: number): number;
+  milliseconds(text: string): number;
+  moveFrom(first: AtlasBox, last: AtlasBox, holder: AtlasBox): AtlasMove;
+  still(move: AtlasMove): boolean;
+}
+
+declare var SiteAtlasView: SiteAtlasViewApi;

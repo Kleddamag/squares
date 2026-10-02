@@ -1932,8 +1932,20 @@ def _workbench_frontend(context: Context) -> str:
 
 
 def _type_floor(context: Context) -> str:
+    """BasedPyright over the project, threaded across the cpus the selection leaves free.
+
+    It is one process outer `--jobs` cannot divide, so the pull request runs it alone at
+    `--jobs 1`, and single-threaded it left three of the runner's four cpus idle. Its hosted
+    wall read 64 to 112 s on PR 307 as the n17 kernel grew, and 111.93 s in run
+    37012208677 failed the tier's 111 s ceiling with zero findings. `--threads` divides
+    the check inside the step, sized by the behavioural lane's rule (`_pytest_workers`,
+    `cpus - jobs + 1`), so beside other steps it stays at one thread and total
+    concurrency stays near the cpu count.
+    """
     basedpyright = _required_tool(context, "basedpyright")
-    output = _commands(context, ((basedpyright,),))
+    threads = _pytest_workers(context.jobs)
+    command = (basedpyright, "--threads", str(threads)) if threads > 1 else (basedpyright,)
+    output = _commands(context, (command,))
     _require_text(output, "0 errors, 0 warnings, 0 notes")
     return output
 

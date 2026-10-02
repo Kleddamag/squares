@@ -213,7 +213,12 @@ def test_the_posters_and_the_film_have_a_section_of_their_own_under_the_atlas(
         overview_sections.ATLAS_CARDS
     )
     note = section.split('<p class="site-wide site-atlas-note">', 1)[1].split("</p>", 1)[0]
-    assert note.startswith("The best packings known. A star marks")
+    # The star is explained once on the page, above the recent table (`star_legend`);
+    # the note links that legend and says it no second time.
+    assert note.startswith(
+        'The best packings known, each star a <a href="#recent-results">new result</a>.'
+    )
+    assert "22 August" not in note
     assert section.index('class="site-cards-frame') < section.index("site-atlas-note")
     for linked in ("ascent-n1-100-1080p60-citations.mp4", "known-best-1-324.svg"):
         assert linked in note, linked
@@ -322,12 +327,13 @@ def test_each_page_card_is_a_plain_link_to_its_page(page: str) -> None:
     cards = _page_cards(page)
     pages = overview_sections.PAGES
     assert [href for href, _, _ in cards] == [href for href, *_ in pages]
+    # The Frontier page's card is The Frontier Survey's own since 2026-10-02
+    # (`test_the_survey_is_the_frontier_survey_and_its_cards_lead_to_its_page`).
     assert [href for href, *_ in pages] == [
         "papers/n11-optimality-review.html",
         "papers/n11-lower-bounds-explainer.html",
         "tutorial.html",
         "workbench/",
-        "frontier.html",
     ]
     paper = overview_sections.PAPERS[0]
     assert pages[0][:3] == (overview_sections.OPTIMALITY_PAPER, paper.label, paper.title)
@@ -417,10 +423,13 @@ def test_every_other_direct_card_opens_in_a_new_tab(page: str) -> None:
     tab, on the site or off it, and never hands the new tab a way back to this one: a
     poster's PDF, the film, another project."""
     direct = re.findall(r'<a class="site-card[^"]*"[^>]*>', page)
-    assert len(direct) == len(overview_sections.PAGES) + len(
-        overview_sections.OTHER_PROJECTS
-    ) + len(overview_sections.ATLAS_CARDS)
-    for tag in direct[len(overview_sections.PAGES) :]:
+    same_tab = len(overview_sections.PAGES) + len(overview_sections.SURVEY_CARDS)
+    assert len(direct) == same_tab + len(overview_sections.OTHER_PROJECTS) + len(
+        overview_sections.ATLAS_CARDS
+    )
+    for tag in direct[:same_tab]:
+        assert 'target="_blank"' not in tag, tag
+    for tag in direct[same_tab:]:
         assert 'target="_blank"' in tag, tag
         assert 'rel="noopener noreferrer"' in tag, tag
 
@@ -852,6 +861,7 @@ def test_every_card_names_one_of_three_sizes(page: str) -> None:
     ), "a card with no size"
     assert [len(cards) for cards in sections.values()] == [
         len(overview_sections.PAGES),
+        len(overview_sections.SURVEY_CARDS),
         len(overview_sections.ATLAS_CARDS),
         len(overview_sections.OTHER_PROJECTS),
         len(overview_sections.DOCUMENTS),
@@ -861,6 +871,7 @@ def test_every_card_names_one_of_three_sizes(page: str) -> None:
         assert {size for size, _ in cards} == {declared}, name
     assert overview_sections.SECTION_CARD_SIZES == {
         "pages": "medium",
+        "survey": "medium",
         "atlas": "medium",
         "projects": "medium",
         "documents": "small",
@@ -885,10 +896,19 @@ def test_no_card_leaves_its_math_as_plain_text(page: str) -> None:
 def test_each_sections_size_is_what_its_typical_card_asks_for(page: str) -> None:
     """A section's declared size is the size its median card's text takes by default, so
     the sizes follow the text: a section whose cards grow or shrink past a threshold
-    fails here until its size is declared again."""
+    fails here until its size is declared again. The median of an even count is the
+    mean of its two middle lengths, as a median is: the four page cards, two short and
+    two long, are 71, 103, 171 and 206 characters since the Frontier card left the row
+    on 2026-10-02, and their typical card is the 137 of a medium card, not the 171 of a
+    large one that the upper middle value alone would say."""
     for name, cards in _card_sections(page).items():
         lengths = sorted(len(overview_sections.reading_text(text)) for _, text in cards)
-        typical = lengths[len(lengths) // 2]
+        middle = len(lengths) // 2
+        typical = (
+            lengths[middle]
+            if len(lengths) % 2
+            else (lengths[middle - 1] + lengths[middle]) // 2
+        )
         assert (
             overview_sections.size_for_length(typical)
             == overview_sections.SECTION_CARD_SIZES[name]
@@ -993,18 +1013,194 @@ def test_the_survey_is_the_frontier_survey_and_its_old_fragment_lands_on_it(
     contents = '{"href": "#the-frontier-survey", "level": 1, "title": "The Frontier Survey"}'
     assert contents in page
     section = page.split(heading, 1)[1].split("<h2", 1)[0]
-    assert _rendered_text(section).startswith("The frontier survey records the best-known")
-    assert '<a href="frontier.html">Frontier</a> page shows every case' in section
+    assert _rendered_text(section).startswith("The frontier survey is the record the atlas")
+    assert '<a href="frontier.html">Frontier</a> page lists every case' in section
     assert '<a data-page="frontier" href="frontier.html">Frontier</a>' in page
     frontier = rendered("frontier.html")
     assert "<title>The Frontier Survey · The Squares Project</title>" in frontier
     assert re.search(r"<h1[^>]*>The Frontier Survey</h1>", frontier)
-    card = next(body for href, _, body in _page_cards(page) if href == "frontier.html")
+    card = next(body for href, _, body in _survey_cards(page) if href == "frontier.html")
     assert '<span class="site-card-label">Frontier survey</span>' in card
     for name in ("index.html", "frontier.html", "cases.html", render_overview.RESULTS_PAGE):
         # What a reader sees or hears: the page without its inlined styles and programs.
         text = re.sub(r"<(script|style)\b.*?</\1>", "", rendered(name), flags=re.DOTALL)
         assert "frontier atlas" not in text.lower(), name
+
+
+def _survey_cards(page: str) -> list[tuple[str, str, str]]:
+    """The Frontier Survey section's cards: each card's address, the rest of its opening
+    tag, and its body."""
+    section = page.split('id="the-frontier-survey"', 1)[1].split("<h2", 1)[0]
+    frame = section.split('<div class="site-cards-frame', 1)[1].split("</div></div>", 1)[0]
+    return re.findall(
+        r'<a class="site-card site-card-link" href="([^"]+)"([^>]*)>(.*?)</a>', frame, re.DOTALL
+    )
+
+
+def test_the_survey_is_one_paragraph_and_its_cards_lead_to_the_frontier_page(
+    page: str, rendered: Callable[[str], str]
+) -> None:
+    """Since 2026-10-02 the homepage says the survey in one paragraph, what it records
+    and what the Frontier page adds, and leads there with two direct cards: every case,
+    and the page narrowed to the recent cases by the query its table script reads
+    (`recent=true`). Each is a page card, in the same tab, at the section's size. What
+    the section used to carry, the counts, how a certificate counts, the audit of its
+    sources and the seventeen-square history, is the Frontier page's own prose
+    (`test_the_frontier_page_opens_with_the_surveys_account`), so the section states
+    none of it: no count, no date, no author of a seventeen-square bound. Nor does it
+    say again what README's `recent-progress` block says higher on the page, that the
+    reported and the verified bounds are kept apart."""
+    section = page.split('id="the-frontier-survey"', 1)[1].split("<h2", 1)[0]
+    prose = section.split('<div class="site-cards-frame', 1)[0]
+    paragraphs = re.findall(r"<p>(.*?)</p>", prose, re.DOTALL)
+    assert len(paragraphs) == 1
+    text = _rendered_text(paragraphs[0])
+    assert text.startswith("The frontier survey is the record the atlas is drawn from")
+    assert text.endswith("when a bound by others counts as verified.")
+    for gone in (
+        "22 August",
+        "hundred",
+        "s(7)",
+        "Brandwijk",
+        "T-015",
+        "archive",
+        "kept separate",
+        "apart from",
+        "replayed",
+    ):
+        assert gone not in _rendered_text(section), gone
+    assert "kept separate" in _rendered_text(_progress(page))
+    cards = _survey_cards(page)
+    assert [href for href, _, _ in cards] == [
+        href for href, *_ in overview_sections.SURVEY_CARDS
+    ]
+    assert [href for href, *_ in overview_sections.SURVEY_CARDS] == [
+        "frontier.html",
+        "frontier.html?recent=true",
+    ]
+    size = overview_sections.SECTION_CARD_SIZES["survey"]
+    for (href, tag, body), (_, label, title, note) in zip(
+        cards, overview_sections.SURVEY_CARDS, strict=True
+    ):
+        assert overview_sections.is_site_page(href), href
+        assert tag == f' data-go="page" data-card-size="{size}"', href
+        assert 'target="_blank"' not in tag, href
+        assert f'<span class="site-card-label">{label}</span>' in body
+        assert _rendered_text(body.split('<span class="site-card-note">', 1)[1]) == note
+        assert overview_sections.reading_text(title.replace("n = 1", "n=1")) in (
+            overview_sections.reading_text(body)
+        )
+    # The section's prose names the page once and the cards hold no other link.
+    assert prose.count('href="frontier.html"') == 1
+    assert "frontier.html?recent=true" in rendered("index.html")
+    assert "section-tabs" not in section
+
+
+def test_the_frontier_page_opens_with_the_surveys_account(
+    rendered: Callable[[str], str], overview: overview_data.Overview
+) -> None:
+    """The Frontier page's prose, before its table, carries what the homepage's survey
+    section carried until 2026-10-02, refined, the survey's account first and the key to
+    the table's columns last, beside the table: what the survey records with the case
+    counts; the audit of its sources, with the $s(7) = 3$ example and the archive and
+    inventory links; the star and the survey's four counts, every number from the record
+    and the date written once; the seven authors' seventeen-square bounds before this
+    project, replayed as T-015 and T-016; then the columns, with the external
+    certificate's rule where the verified columns are defined. The run-in heads are the
+    page's own device, so the account groups without a sub-heading. The star's count
+    over every case is not written beside the starred cases' count among the first
+    hundred, since the two were the one number, 27, on 2026-10-02, and read as a
+    stutter."""
+    from devtools.render_frontier_page import (  # noqa: PLC0415
+        ARCHIVE_README,
+        EVIDENCE_INVENTORY,
+        recent_lower_bounds,
+        since_prose,
+        survey_counts,
+    )
+
+    page = rendered("frontier.html")
+    prose = page.split("</h1>", 1)[1].split('<div class="site-table-tools', 1)[0]
+    text = _rendered_text(prose)
+    heads = re.findall(r"<p><strong>([^<]+)</strong>", prose)
+    assert heads == [
+        "Audited sources.",
+        "Recent results.",
+        "Seventeen squares.",
+        "Reported and verified.",
+        "The other columns.",
+        "A row\u2019s details.",
+    ]
+    assert text.endswith("Click a column heading to sort; the filters narrow the rows.")
+    assert "An external certificate counts once it is replayed here in full" in text
+    assert "The survey audits what it records." in text
+    assert "The earliest published proof of $s(7) = 3$ carries four recorded defects" in text
+    assert 'href="cases.html#n-7"' in prose
+    # Each repository document is linked on `main`, in a new tab as every link off the
+    # site opens.
+    for path, words in (
+        (ARCHIVE_README, "literature archive"),
+        (EVIDENCE_INVENTORY, "evidence inventory"),
+    ):
+        assert (
+            f'<a href="{repo_url(path)}" target="_blank" rel="noopener noreferrer">{words}</a>'
+        ) in prose, words
+    # The star's date is written once, and the counts run "since then".
+    assert since_prose() == "22 August 2026"
+    assert text.count("22 August 2026") == 1
+    assert (
+        "A star marks a recent verified lower bound, one proved since 22 August 2026, "
+        "when this project\u2019s work began."
+    ) in text
+    assert "Recent holds the star." in text
+    counts = render_recent_results.recent_counts(render_recent_results.recent_rows())
+    assert overview.counts == counts
+    sentence = survey_counts(counts)
+    for number in counts:
+        assert f" {number} " in sentence, number
+    assert sentence.startswith(
+        f"Of the first hundred cases, {counts.cases} have a lower bound published or "
+        "proved since then"
+    )
+    assert f"{counts.verified} of those have a recent verified one, the starred cases" in text
+    assert sentence in text
+    starred = sum(recent_lower_bounds().values())
+    assert f"one of the {starred} verified" not in text
+    assert "Before this project\u2019s work began, seven authors had published" in text
+    for author in ("Brandwijk", "Burns", "MacIver", "Mira", "Fort", "Massaccesi"):
+        assert author in text, author
+    assert 'href="all-results.html#t-015">T-015</a>' in prose
+    assert 'href="all-results.html#t-016">T-016</a>' in prose
+    assert 'href="cases.html#n-17">seventeen-square record</a>' in prose
+    # Neither other page says any of this a second time: the Results page points to the
+    # policy for results by others and does not restate when a certificate counts. Each
+    # page's prose is read without its rows' popovers, whose detail may say a result
+    # was replayed here in full, which is that result's own account.
+    overview_page = rendered("index.html")
+    results_page = rendered(render_overview.RESULTS_PAGE)
+    for stated in ("audits what it records", "Brandwijk", "four recorded defects"):
+        assert stated not in overview_page, stated
+        assert stated not in results_page, stated
+    results_prose = results_page.split("</h1>", 1)[1].split('<div class="site-table-tools', 1)[
+        0
+    ]
+    overview_prose = _outside_row_popovers(
+        re.sub(r"<table.*?</table>", "", overview_page, flags=re.DOTALL)
+    )
+    for served in (overview_prose, results_prose):
+        assert "certificate is replayed here in full" not in served
+        assert "certificate counts once" not in served
+        assert "assumptions are discharged" not in served
+    results_text = _rendered_text(results_prose)
+    assert (
+        "are this repository\u2019s own verification of it, under the policy epistemics.md "
+        "states."
+    ) in results_text
+    assert (
+        "A result by others is dated by its publication, and this project\u2019s by the day "
+        "it was established."
+    ) in results_text
+    assert "dated by its publication" not in _rendered_text(overview_page)
 
 
 def test_verification_ladders_is_one_ladder_diagram_significance_first(page: str) -> None:
@@ -1250,7 +1446,9 @@ def test_on_github_links_open_the_latest_version(page: str) -> None:
     assert all(url.startswith(branch) for url in also)
 
 
-def test_the_document_cards_lead_with_readme_and_epistemics(page: str) -> None:
+def test_the_document_cards_lead_with_readme_and_epistemics(
+    page: str, rendered: Callable[[str], str]
+) -> None:
     """The documentation section's cards are the reader documents the site renders, in
     the order of `DOCUMENT_PAGES`: README and `epistemics.md` first. The results
     register, the status table and the defect log have no card and no page; the prose
@@ -1273,9 +1471,21 @@ def test_the_document_cards_lead_with_readme_and_epistemics(page: str) -> None:
         assert f'"{name}' not in page, name
     for gone in ("RESULTS.md", "STATUS.md", "defects.md"):
         assert f">Expand {gone}<" not in page, gone
-    # The survey's two case records are the site's own, not the files on GitHub.
-    assert '<a href="cases.html#n-17">seventeen-square record</a>' in page
-    assert 'packing/frontier/n-007.md"' not in page
+    # The survey's two case records are the site's own, not the files on GitHub; they
+    # are linked from the Frontier page's prose since 2026-10-02. The files are linked
+    # where a record is shown, the Records column and a result's popover, and from no
+    # prose of either page.
+    frontier = rendered("frontier.html")
+    assert '<a href="cases.html#n-17">seventeen-square record</a>' in frontier
+    assert '<a href="cases.html#n-7">record for seven squares</a>' in frontier
+    frontier_prose = frontier.split("</h1>", 1)[1].split('<div class="site-table-tools', 1)[0]
+    overview_prose = re.sub(
+        r'<div class="site-popover.*?</div>\s*</div>', "", page, flags=re.DOTALL
+    )
+    overview_prose = re.sub(r"<table.*?</table>", "", overview_prose, flags=re.DOTALL)
+    for served in (overview_prose, frontier_prose):
+        assert 'packing/frontier/n-007.md"' not in served
+        assert 'packing/frontier/n-017.md"' not in served
 
 
 def test_other_projects_include_every_source_repository_the_record_reviews() -> None:
@@ -2318,7 +2528,8 @@ def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_d
     text = " ".join(re.sub(r"<[^>]+>", "", section).split())
     assert (
         "The table lists every result, newest first: new bounds for particular numbers of "
-        "squares, found here or by others."
+        "squares, found here or by others, each with its credit, its ratings, its kind and "
+        "its status, all defined on the Results page."
     ) in text
     # The retired lead, not the date: a row's claim may cite a source of 21 August.
     assert "since 1 August" not in text
@@ -2575,7 +2786,8 @@ def test_recent_results_opens_with_readmes_progress_paragraphs(page: str) -> Non
     own = _rendered_text(section[after:tools])
     assert own.startswith(
         "The table lists every result, newest first: new bounds for particular numbers of "
-        "squares, found here or by others."
+        "squares, found here or by others, each with its credit, its ratings, its kind and "
+        "its status, all defined on the Results page."
     )
     assert own.endswith(
         "The table starts with superseded results hidden, at significance S4 and up and a "
@@ -2585,6 +2797,13 @@ def test_recent_results_opens_with_readmes_progress_paragraphs(page: str) -> Non
     assert own.count("The table lists every result") == 1
     assert " since " not in own
     assert "These are the recent results this project tracks" not in _rendered_text(section)
+    # One paragraph of its own: the kinds, the statuses and the rule for a result by
+    # others are defined on the Results page since 2026-10-02, and linked from here.
+    assert len(re.findall(r"<p>", section[after:tools])) == 1
+    assert '<a href="all-results.html">Results</a> page' in section[after:tools]
+    for defined_there in ("recorded", "reviewed", "incomplete", "replayed here in full"):
+        assert defined_there not in own, defined_there
+    assert "epistemics" not in section[after:tools]
 
 
 def test_recent_results_says_eleven_squares_is_settled(
@@ -3027,14 +3246,14 @@ def test_the_status_filter_offers_each_status_a_result_has(
     assert '<select data-filter="standing">' not in results
 
 
-def test_the_survey_counts_are_readmes(page: str, overview: overview_data.Overview) -> None:
-    counts = render_recent_results.recent_counts(render_recent_results.recent_rows())
-    assert overview.counts == counts
-    sentence = overview_sections.survey_counts(overview)
-    for number in counts:
-        assert f" {number} " in sentence, number
+def test_the_survey_counts_are_the_frontier_pages(page: str) -> None:
+    """The survey's four counts are the Frontier page's since 2026-10-02
+    (`test_the_frontier_page_opens_with_the_surveys_account`); the homepage states no
+    count of cases and names no sentence of them."""
+    assert not hasattr(overview_sections, "survey_counts")
     text = re.sub(r"<[^>]+>", "", page)
-    assert f"{counts.cases} have a lower bound published or proved since 22 August 2026" in text
+    assert "have a lower bound published or proved since" not in text
+    assert "SURVEY_COUNTS" not in render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
 
 
 def test_a_reported_bound_is_a_row_of_the_results_table_and_no_block_of_its_own(
@@ -3042,8 +3261,9 @@ def test_a_reported_bound_is_a_row_of_the_results_table_and_no_block_of_its_own(
 ) -> None:
     """Every recent case whose reported lower bound says more than its verified one is
     carried by register entries, and each of those is a row of both tables with its
-    status. The overview lists no case of them on its own: it says how many results are
-    not yet confirmed, each count the link to those rows (think-d04u)."""
+    status. The overview lists no case of them on its own; the results page, where the
+    statuses are defined, says how many results are not yet confirmed, each count the
+    link to those rows (think-d04u; on the results page since 2026-10-02)."""
     waiting = [row for row in overview.recent if row.shows_reported]
     assert waiting
     carrying = {
@@ -3066,19 +3286,22 @@ def test_a_reported_bound_is_a_row_of_the_results_table_and_no_block_of_its_own(
     held = Counter(result.status for result in overview.results)
     opening = f"Of the {len(overview.results)} results, {held['confirmed']} are confirmed"
     assert opening in sentence
+    assert sentence.endswith(".")
+    assert "this table shows" not in sentence
     for status, count in held.items():
         link = f"[{count} {status}](all-results.html?status={status})"
         assert (link in sentence) is (status != "confirmed"), status
         if status != "confirmed":
-            assert f'<a href="all-results.html?status={status}">{count} {status}</a>' in page
-    reference = overview_sections.reference_date(overview)
-    shown = sum(
-        overview_sections.shown_by_default(result, overview_sections.RECENT_DEFAULTS, reference)
-        for result in overview.results
-        if result.status != "confirmed"
-    )
-    words = {0: "none of them"}.get(shown, f"{shown} of them")
-    assert f"this table shows {words} until its filters are changed" in sentence
+            linked = f'<a href="all-results.html?status={status}">{count} {status}</a>'
+            assert linked in results
+            assert linked not in page
+    # It stands where the statuses are defined, between their definitions and the rule
+    # that the status is never set by hand.
+    prose = results.split("</h1>", 1)[1].split('<div class="site-table-tools', 1)[0]
+    text = _rendered_text(prose)
+    assert text.index("a defect found in it still open.") < text.index(opening)
+    assert text.index(opening) < text.index("The status follows the confirmation rung")
+    assert opening not in _rendered_text(page)
 
 
 def test_results_by_others_show_their_publication_date(

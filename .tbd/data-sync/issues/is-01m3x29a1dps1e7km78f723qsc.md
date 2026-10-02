@@ -5,13 +5,13 @@ title: "Handoff: the website lane at the end of 1 October 2026 — what merged, 
 kind: task
 status: open
 priority: 1
-version: 5
+version: 6
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-10-02T01:05:01.478Z
-updated_at: 2026-10-02T05:16:37.727Z
+updated_at: 2026-10-02T05:27:09.936Z
 ---
 Handoff of the website lane (epic think-xjq4) at 2026-10-02 01:35 UTC, 18:35 PT on 1 October. Read this first, then the beads it names.
 
@@ -51,3 +51,5 @@ Possible overlap: #299 and the papers PR both edit render_overview.py (the paper
 
 Update 05:30 UTC. Merged since the last note: jlevy/squares#299 (Overview restructure, 0b2fa368b, deployed and read live) and #300 (think-sib7 fixed: headless-shell font hinting on Linux; the two table-layout files now run in the PR frontend job; 8dbd2a77b). think-sv92, think-dj7y, think-sib7 and think-pt1k are closed. New follow-up: think-hatf (the other thirteen browser-backed test files still skip on pull requests).
 Still running: (1) think-ekw5 follow-up, branch claude/recent-results-lead in .claude/worktrees/overview-restructure, Recent Results on the Overview down to one compact paragraph; no PR yet. (2) think-rgvr with think-be7y, branch claude/paper-versions in worktree overview-papers on the external drive; no PR and no pushed commit at 05:00 UTC.
+
+Update 06:10 UTC. Merged: jlevy/squares#302 (Recent Results on the Overview as one paragraph, b75b08f99). think-ekw5 and think-f1tu closed; the restructure lane is finished and its open choices are on think-cv22. One lane left: jlevy/squares#301 (draft, claude/paper-versions, worktree overview-papers on the external drive), think-rgvr with think-be7y. Its code and tests are done and its hosted run was green at 139e64c33; pending in the PR: development.md and paper-design.md, the first paper's PDF page count with a three-entry history, shots, and a merge of main after #302. Its edition table: v0.3.0, v0.4.0 and v0.4.2 kept as published; v0.4.1 and v0.5.0 dropped (the article did not change). Owner question from it: the article changed in substance after the v0.4.2 deployment (T-060's settlement) under the v0.4.2 label; is that a new version of the paper, and under what number.

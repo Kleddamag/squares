@@ -23,6 +23,16 @@ states, builds the binary with ``cargo``, and runs ``zmx2 cert`` under
     ``<name>_resume<k>.log`` beside the first receipt. ``zmx2`` itself exits 0 whatever
     its verdict, so the verdict is read from the receipt (``REGION CLEAN``,
     ``VERIFIED``, ``NOT VERIFIED``, ``INCOMPLETE``).
+``control --case N --mutation KIND --work DIR --out OUT [--mode M] [--x LO-HI] [--y LO-HI]``
+    Stage 4's negative control: stages a mutated copy of the case's cover (``mutate``)
+    and runs the same ``zmx2 cert`` on it over a small root region where the mutation is
+    refused, writing ``OUT/<name>_control_<KIND>_zmx2_...log`` and its root log. Each
+    mutation in ``MUTATIONS`` removes whole D4 orbits or scales every mass, so a
+    D4-invariant cover stays invariant and ``--d4`` still applies. The mode and region
+    default to the retained control's (``CONTROLS``). The receipt's ``cwd`` line names
+    the mutated cover's SHA-256 beside the retained one's and the mass removed; a
+    retained control must read ``NOT VERIFIED`` with uncertified boxes, which
+    ``tests/test_replay_controls.py`` holds.
 
 What a run decides is read afterwards by ``devtools.audit_evand_mixed_covers``. This
 tool decides nothing about a cover: it only guarantees which bytes were run.
@@ -46,6 +56,7 @@ import subprocess
 import sys
 from collections.abc import Sequence
 from dataclasses import dataclass
+from fractions import Fraction
 from pathlib import Path
 
 from devtools import replay_receipt
@@ -218,20 +229,61 @@ def run_case(
 ) -> int:
     """Run ``zmx2 cert`` on case ``n`` and return its exit status."""
     case = CASES[n]
-    binary = build(case.checker, work)
-    cells = case.cells if mode == "full" else case.cells // 2
-    (x0, x1), (y0, y1) = root_span(x, cells), root_span(y, cells)
-    stage = work / "s12"
+    stage, data = _stage(case, work)
     cover = stage / "certificates" / case.cover.name.removesuffix(".gz")
+    _write_checked(cover, data)
+    return _sweep(
+        case,
+        mode,
+        cover,
+        name=case.name,
+        cwd_label=(
+            f"s12/ staged by devtools.replay_evand_zmx2: zmx2.rs "
+            f"{CHECKERS[case.checker][1]} built from retained bytes; cover {case.sha256} "
+            f"decompressed from {case.cover.relative_to(REPO)}"
+        ),
+        out=out,
+        threads=threads,
+        x=x,
+        y=y,
+        time_limit=time_limit,
+    )
+
+
+def _stage(case: Case, work: Path) -> tuple[Path, bytes]:
+    """Build the case's checker, link it into ``work/s12``; return that and the cover."""
+    binary = build(case.checker, work)
+    stage = work / "s12"
     data = gzip.decompress(case.cover.read_bytes())
-    _write_checked(cover, _checked(data, case.sha256, f"{case.cover} (decompressed)"))
+    _checked(data, case.sha256, f"{case.cover} (decompressed)")
     link = stage / "verify2"
     if link.is_symlink() or link.exists():
         link.unlink() if link.is_symlink() else shutil.rmtree(link)
+    stage.mkdir(parents=True, exist_ok=True)
     link.symlink_to(binary.parents[2], target_is_directory=True)
+    return stage, data
+
+
+def _sweep(
+    case: Case,
+    mode: str,
+    cover: Path,
+    *,
+    name: str,
+    cwd_label: str,
+    out: Path,
+    threads: int,
+    x: str | None,
+    y: str | None,
+    time_limit: float | None = None,
+) -> int:
+    """Run ``zmx2 cert`` on the staged ``cover`` under a receipt; return its exit status."""
+    cells = case.cells if mode == "full" else case.cells // 2
+    (x0, x1), (y0, y1) = root_span(x, cells), root_span(y, cells)
+    stage = cover.parents[1]
     flags = "".join("_" + flag.strip("-").replace("-", "") for flag in case.flags)
     region = "" if (x is None and y is None) else f"_x{x0}-{x1}_y{y0}-{y1}"
-    name = f"{case.name}_zmx2_{mode}{flags}{region}"
+    name = f"{name}_zmx2_{mode}{flags}{region}"
     roots = out / f"{name}_roots.log"
     receipt = out / f"{name}.log"
     resume = 0
@@ -254,17 +306,218 @@ def run_case(
     fields = replay_receipt.run(
         command,
         receipt=receipt,
-        cwd_label=(
-            f"s12/ staged by devtools.replay_evand_zmx2: zmx2.rs "
-            f"{CHECKERS[case.checker][1]} built from retained bytes; cover {case.sha256} "
-            f"decompressed from {case.cover.relative_to(REPO)}"
-            + (f"; resumes the root log of {name}.log" if resume else "")
-        ),
+        cwd_label=cwd_label + (f"; resumes the root log of {name}.log" if resume else ""),
         python_note="not used by this command",
         chdir=stage,
         time_limit=time_limit,
     )
     return int(fields["exit"])  # type: ignore[call-overload]
+
+
+# --- negative controls -----------------------------------------------------------------
+
+#: The mutations ``control`` applies; each removes whole D4 orbits, keeping invariance.
+MUTATIONS = ("drop-heaviest-point", "drop-second-heaviest-point", "drop-heaviest-segment")
+
+#: The eight symmetries of the square: (swap x and y, then reflect x, then reflect y).
+D4: tuple[tuple[bool, bool, bool], ...] = tuple(
+    (swap, flip_x, flip_y)
+    for swap in (False, True)
+    for flip_x in (False, True)
+    for flip_y in (False, True)
+)
+
+
+@dataclass(frozen=True, slots=True)
+class Mutation:
+    """A mutated cover: its text, the mass it lost, and what was done."""
+
+    text: str
+    #: The total mass removed, exactly, in the cover's own unit (the integers over ``W``).
+    removed: Fraction
+    #: The rows dropped.
+    rows: int
+    detail: str
+
+
+@dataclass(frozen=True, slots=True)
+class Control:
+    """A retained control: the mode it ran in and the root region that refuses it."""
+
+    mode: str
+    x: str
+    y: str
+
+
+#: The retained controls, in ``receipts/controls/`` of the packet holding each case's
+#: replay. Each region was found by running the mutated cover over the roots around the
+#: removed mass and keeping one refused root cell; s(32) runs ``--full`` with its
+#: source's flags, the configuration of the run that accepted it at ``92a4cfe8``.
+CONTROLS: dict[tuple[int, str], Control] = {
+    (32, "drop-heaviest-point"): Control("full", "27-27", "7-7"),
+    (32, "drop-second-heaviest-point"): Control("full", "17-17", "7-7"),
+    (59, "drop-heaviest-point"): Control("d4", "14-14", "24-24"),
+    (59, "drop-heaviest-segment"): Control("d4", "5-5", "38-38"),
+    (60, "drop-heaviest-point"): Control("d4", "16-16", "17-17"),
+    (60, "drop-heaviest-segment"): Control("d4", "5-5", "38-38"),
+    (77, "drop-heaviest-point"): Control("d4", "44-44", "44-44"),
+    (77, "drop-heaviest-segment"): Control("d4", "5-5", "41-41"),
+}
+
+
+def d4_image(
+    point: tuple[int, int], edge: int, symmetry: tuple[bool, bool, bool]
+) -> tuple[int, int]:
+    """The image of ``point`` under one symmetry of ``[0, edge]^2`` (see ``D4``)."""
+    swap, flip_x, flip_y = symmetry
+    x, y = (point[1], point[0]) if swap else point
+    return (edge - x if flip_x else x, edge - y if flip_y else y)
+
+
+def _rewrite(line: str, values: Sequence[int]) -> str:
+    """``line`` with its integers replaced, keeping any comment and the line ending."""
+    content = line.rstrip("\r\n")
+    _, mark, comment = content.partition("#")
+    return " ".join(map(str, values)) + (f" #{comment}" if mark else "") + line[len(content) :]
+
+
+def mutate(text: str, kind: str) -> Mutation:
+    """Apply mutation ``kind`` (one of ``MUTATIONS``) to a cover in plain or mixed format.
+
+    The rewrite is line-level, as ``zmx2`` reads the file: a row is a line with tokens
+    once its ``#`` comment is removed, and only the rows the mutation removes and the
+    count above them change. ``drop-heaviest-point`` removes every point at the D4
+    images of the location carrying the most point mass (ties to the least ``(X, Y)``),
+    ``drop-second-heaviest-point`` those of the heaviest location outside that orbit,
+    and ``drop-heaviest-segment`` every segment that is a D4 image of the heaviest one
+    with its weight. On a D4-invariant cover each removes the same mass at every image,
+    so the result is still invariant.
+    """
+    lines = text.splitlines(keepends=True)
+    rows = [(i, line.split("#", 1)[0].split()) for i, line in enumerate(lines)]
+    rows = [(i, tokens) for i, tokens in rows if tokens]
+    cursor = 1 if rows[0][1] == ["mixed", "1"] else 0
+    mixed = cursor == 1
+
+    def take(width: int) -> tuple[int, list[int]]:
+        nonlocal cursor
+        if cursor >= len(rows) or len(rows[cursor][1]) != width:
+            raise ValueError(f"expected a row of {width} integers at row {cursor}")
+        index, tokens = rows[cursor]
+        cursor += 1
+        return index, [int(token) for token in tokens]
+
+    _, (side_num, side_den) = take(2)
+    _, (denominator,) = take(1)
+    _, (mass_denominator,) = take(1)
+    point_count_row, (point_count,) = take(1)
+    points = [take(3) for _ in range(point_count)]
+    segment_count_row, segments = -1, []
+    if mixed:
+        segment_count_row, (segment_count,) = take(1)
+        segments = [take(5) for _ in range(segment_count)]
+        take(1)
+    if cursor != len(rows):
+        raise ValueError("trailing rows after the declared pieces")
+    edge, remainder = divmod(side_num * denominator, side_den)
+    if remainder:
+        raise ValueError("the side is not a multiple of 1/D")
+
+    if kind in ("drop-heaviest-point", "drop-second-heaviest-point"):
+        weights: dict[tuple[int, int], int] = {}
+        for _, (x, y, w) in points:
+            weights[(x, y)] = weights.get((x, y), 0) + w
+        ranked = sorted(weights, key=lambda p: (-weights[p], p))
+        if not ranked:
+            raise ValueError("the cover has no points")
+        heaviest = ranked[0]
+        orbit = {d4_image(heaviest, edge, g) for g in D4}
+        if kind == "drop-second-heaviest-point":
+            heaviest = next((p for p in ranked if p not in orbit), None)
+            if heaviest is None:
+                raise ValueError("the cover's points are one D4 orbit")
+            orbit = {d4_image(heaviest, edge, g) for g in D4}
+        dropped = [(i, v) for i, v in points if (v[0], v[1]) in orbit]
+        count_row, remaining = point_count_row, len(points) - len(dropped)
+        detail = (
+            f"drops the {len(dropped)} point rows at the {len(orbit)} D4 images of "
+            f"({heaviest[0]}, {heaviest[1]})/{denominator}, carrying "
+            f"{weights[heaviest]}/{mass_denominator} each"
+        )
+    elif kind == "drop-heaviest-segment":
+        if not segments:
+            raise ValueError("the cover has no segments")
+
+        def key(v: Sequence[int]) -> tuple[tuple[int, int], tuple[int, int], int]:
+            a, b = sorted(((v[0], v[1]), (v[2], v[3])))
+            return a, b, v[4]
+
+        a, b, w = min((key(v) for _, v in segments), key=lambda k: (-k[2], k[0], k[1]))
+        images = {(*sorted((d4_image(a, edge, g), d4_image(b, edge, g))), w) for g in D4}
+        dropped = [(i, v) for i, v in segments if key(v) in images]
+        count_row, remaining = segment_count_row, len(segments) - len(dropped)
+        detail = (
+            f"drops the {len(dropped)} segment rows at the {len(images)} D4 images of "
+            f"{a}-{b}/{denominator}, carrying {w}/{mass_denominator} each"
+        )
+    else:
+        raise ValueError(f"unknown mutation {kind!r}")
+    new: dict[int, str] = {i: "" for i, _ in dropped}
+    new[count_row] = _rewrite(lines[count_row], [remaining])
+    out = "".join(new.get(i, line) for i, line in enumerate(lines))
+    removed = sum(v[-1] for _, v in dropped)
+    return Mutation(out, Fraction(removed, mass_denominator), len(dropped), detail)
+
+
+def control_case(
+    n: int,
+    kind: str,
+    *,
+    work: Path,
+    out: Path,
+    threads: int,
+    mode: str | None = None,
+    x: str | None = None,
+    y: str | None = None,
+) -> int:
+    """Run ``zmx2 cert`` on case ``n``'s cover mutated by ``kind``; return its exit status.
+
+    The region and mode default to the retained control's; a mutated cover's run is
+    meant to end ``NOT VERIFIED``, which the caller reads from the receipt.
+    """
+    case = CASES[n]
+    retained = CONTROLS.get((n, kind))
+    mode = mode or (retained.mode if retained else "d4")
+    x = x or (retained.x if retained else None)
+    y = y or (retained.y if retained else None)
+    if x is None or y is None:
+        raise SystemExit("a control needs a region: give --x and --y")
+    stage, data = _stage(case, work)
+    mutation = mutate(data.decode("ascii"), kind)
+    mutated = mutation.text.encode("ascii")
+    digest = hashlib.sha256(mutated).hexdigest()
+    if digest == case.sha256:
+        raise SystemExit(f"{kind} left the cover's bytes unchanged")
+    stem = case.cover.name.removesuffix(".gz").removesuffix(".txt")
+    cover = stage / "certificates" / f"{stem}_{kind}.txt"
+    _write_checked(cover, mutated)
+    return _sweep(
+        case,
+        mode,
+        cover,
+        name=f"{case.name}_control_{kind}",
+        cwd_label=(
+            f"s12/ staged by devtools.replay_evand_zmx2 control: zmx2.rs "
+            f"{CHECKERS[case.checker][1]} built from retained bytes; cover {digest}, the "
+            f"{kind} mutation of {case.sha256} decompressed from "
+            f"{case.cover.relative_to(REPO)}: {mutation.detail}, removing mass "
+            f"{mutation.removed}"
+        ),
+        out=out,
+        threads=threads,
+        x=x,
+        y=y,
+    )
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -286,11 +539,31 @@ def main(argv: Sequence[str] | None = None) -> int:
         type=float,
         help="stop after this many seconds with exit 3; the same command resumes",
     )
+    control_parser = commands.add_parser("control", help="run a mutated cover (stage 4)")
+    control_parser.add_argument("--case", type=int, choices=sorted(CASES), required=True)
+    control_parser.add_argument("--mutation", choices=MUTATIONS, required=True)
+    control_parser.add_argument("--mode", choices=("d4", "full"), help="default: CONTROLS")
+    control_parser.add_argument("--work", type=Path, required=True)
+    control_parser.add_argument("--out", type=Path, required=True)
+    control_parser.add_argument("--threads", type=int, default=1)
+    control_parser.add_argument("--x", help="root columns LO-HI (default: CONTROLS)")
+    control_parser.add_argument("--y", help="root rows LO-HI (default: CONTROLS)")
     args = parser.parse_args(argv)
     try:
         if args.command == "build":
             print(build(args.checker, args.work.resolve()))
             return 0
+        if args.command == "control":
+            return control_case(
+                args.case,
+                args.mutation,
+                work=args.work.resolve(),
+                out=args.out.resolve(),
+                threads=args.threads,
+                mode=args.mode,
+                x=args.x,
+                y=args.y,
+            )
         return run_case(
             args.case,
             args.mode,
@@ -301,7 +574,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             y=args.y,
             time_limit=args.time_limit,
         )
-    except DigestError as error:
+    except (DigestError, ValueError) as error:
         print(f"refused: {error}", file=sys.stderr)
         return 2
 

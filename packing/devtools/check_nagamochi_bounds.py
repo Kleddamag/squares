@@ -9,8 +9,8 @@ cases `n = 17` through `n = 20`, where certificates displaced it; 18 open cases 
 retained external certificates were replayed on 2026-09-22; `n = 32`, proved on
 2026-09-27 by a replayed external closed cover; `n = 21` and `n = 45`, proved on
 2026-09-29 by replayed external mixed covers; and 17 open cases whose rectangle-density
-certificates, replayed in cloud batches on 2026-09-29, were merged on 2026-10-02. The next most-cited evidence record
-carries two.
+certificates, replayed in cloud batches on 2026-09-29, were merged on 2026-10-02. The
+next most-cited evidence record carries two.
 
 Nothing checked that the recorded values were what the theorem gives: `assurance.py`
 verifies that a bound cites verified evidence of the right claim and scope, which is a

@@ -229,12 +229,9 @@ def slide_limit(
     )
     for name, fixed in others:
         o_min_x, o_max_x, o_min_y, o_max_y = bounding_box(fixed)
-        if (
-            o_max_x <= swept[0]
-            or o_min_x >= swept[1]
-            or o_max_y <= swept[2]
-            or o_min_y >= swept[3]
-        ):
+        # Boxes that only touch the swept box are kept: a slide that ends in exact
+        # contact must report what it touches, which is how a move is judged.
+        if o_max_x < swept[0] or o_min_x > swept[1] or o_max_y < swept[2] or o_min_y > swept[3]:
             continue
         window = interior_overlap_interval(moving, direction, fixed)
         if window is None:
@@ -618,7 +615,8 @@ def compact(
                 move = _attempt_slide(index, axis, pieces, side, snap_tolerance=snap_tolerance)
                 if move is None:
                     continue
-                pieces[index].moves.append(move)
+                if move["accepted"] or move not in pieces[index].moves:
+                    pieces[index].moves.append(move)
                 if move["accepted"]:
                     moved_any = True
                     accepted += 1
@@ -676,55 +674,51 @@ def _face_contact(index: int, face: Direction, poses: Sequence[Pose], side: floa
     return False
 
 
+def at_lattice(piece: Piece, side: Fraction, axis: int) -> bool:
+    """Whether the square's centre sits exactly on its nearest lattice position on `axis`."""
+    position = centre(piece.corners)[axis]
+    return lattice_target(position, side) == position
+
+
 def classify_face(
     index: int, face: Direction, pieces: Sequence[Piece], poses: Sequence[Pose], side: Fraction
 ) -> str:
     """Why a face of an exact axis-aligned square has no counted contact.
 
-    `hole`: nothing within a side in front of the face and no wall there either.
-    `tilted-neighbour`: the nearest thing in front is a square outside the atlas angle
-    tolerance.  `offset`: an axis-aligned neighbour is in front within the gap but shifted
-    across by more.  `slack`: an axis-aligned neighbour is in front, aligned, but further
-    than the gap, so a compaction was blocked or refused.  `wall-slack`: the same for a
-    wall.
+    The face is pushed outward by up to one side with the same exact slide the
+    compaction uses, and what stops it decides the label.  `hole`: nothing within a side,
+    or a wall or an aligned axis-aligned square further than the gap while every square
+    involved already sits on its lattice, so the gap is the mismatch between the two
+    wall-seated lattices and no slide closes it.  `tilted-neighbour`: the first thing in
+    front is a square outside the atlas angle tolerance.  `offset`: an axis-aligned
+    square is in front but shifted across by more than the gap.  `slack`: an aligned
+    axis-aligned square is in front, further than the gap, and one of the two is off its
+    lattice, so a compaction was blocked or refused.  `wall-slack`: the same for a wall.
+    `untouched-neighbour`: the square in front is one the atlas calls axis-aligned but the
+    source tilts beyond the snap tolerance, so it was left as certified.  A gap wider
+    than half a side is a hole whatever is behind it: no lattice slot fits in it.
     """
     piece = pieces[index]
-    min_x, max_x, min_y, max_y = bounding_box(piece.corners)
-    fx, fy = face
-    nearest: tuple[Fraction, int] | None = None
-    for other, candidate in enumerate(pieces):
-        if other == index:
-            continue
-        o_min_x, o_max_x, o_min_y, o_max_y = bounding_box(candidate.corners)
-        if fx:
-            if o_max_y <= min_y or o_min_y >= max_y:
-                continue
-            gap = (o_min_x - max_x) if fx > 0 else (min_x - o_max_x)
-        else:
-            if o_max_x <= min_x or o_min_x >= max_x:
-                continue
-            gap = (o_min_y - max_y) if fy > 0 else (min_y - o_max_y)
-        if gap < 0 or gap >= 1:
-            continue
-        if nearest is None or gap < nearest[0]:
-            nearest = (gap, other)
-    wall_gap = {
-        (-1, 0): min_x,
-        (1, 0): side - max_x,
-        (0, -1): min_y,
-        (0, 1): side - max_y,
-    }[face]
-    if nearest is None or wall_gap < nearest[0]:
-        return "wall-slack" if wall_gap < 1 else "hole"
-    gap, other = nearest
-    if not pieces[other].atlas_axis:
+    others = [(p.square_id, p.corners) for i, p in enumerate(pieces) if i != index]
+    limit, blockers = slide_limit(piece.corners, face, Fraction(1), others, side)
+    stops = [b for b in blockers if b.kind != "target"]
+    if limit >= 1 or not stops:
+        return "hole"
+    axis = 0 if face[0] else 1
+    seated = at_lattice(piece, side, axis)
+    if any(b.kind == "wall" for b in stops):
+        return "hole" if seated or limit > HALF else "wall-slack"
+    by_id = {p.square_id: (i, p) for i, p in enumerate(pieces)}
+    other, neighbour = by_id[stops[0].name]
+    if not neighbour.atlas_axis:
         return "tilted-neighbour"
-    if float(gap) > ATLAS_GAP:
-        return "slack"
-    x, y, _ = poses[index]
-    ox, oy, _ = poses[other]
-    across = abs(oy - y) if fx else abs(ox - x)
-    return "offset" if across > ATLAS_GAP else "tilted-neighbour"
+    if not neighbour.exact_axis:
+        return "untouched-neighbour"
+    across = abs(poses[other][1 - axis] - poses[index][1 - axis])
+    if across > ATLAS_GAP:
+        return "offset"
+    both_seated = seated and at_lattice(neighbour, side, axis)
+    return "hole" if both_seated or limit > HALF else "slack"
 
 
 # --------------------------------------------------------------------------------------

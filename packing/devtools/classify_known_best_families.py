@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import bisect
+import itertools
 import json
 import math
 from collections import Counter
@@ -194,7 +195,7 @@ def square_indices(n: int) -> dict[str, int]:
 
 
 def _small_rationals(bound: int) -> list[Fraction]:
-    """Distinct rationals with a denominator in `CLOSED_FORM_DENOMINATORS`, |numerator| <= bound."""
+    """Distinct rationals over `CLOSED_FORM_DENOMINATORS` with |numerator| <= bound."""
     return sorted(
         {
             Fraction(numerator, denominator)
@@ -572,8 +573,10 @@ def shared_structure(current: Geometry, following: Geometry) -> dict[str, Any]:
     Each D4 image of `current` is translated so one container corner stays put while the
     side changes, then matched square by square. The best `(matched, matched_tilted)` is
     reported with the first transform and anchor reaching it; `max_tilted_matched` is the
-    best tilted count over all 32 alignments, which need not be the same one. `embeds`
-    says every square of `current` reappears: `following` is `current` plus one square.
+    best tilted count over all 32 alignments, which need not be the same one. Tilted here
+    means outside the loose axis band. `embeds` says every square of `current` reappears:
+    for consecutive n, `following` is `current` plus one square; for an L parent, the
+    child is the parent plus its L.
     """
     index = CenterIndex(following.poses)
     growth = following.side - current.side
@@ -586,8 +589,13 @@ def shared_structure(current: Geometry, following: Geometry) -> dict[str, Any]:
         for anchor, shift_x, shift_y in ANCHORS:
             matched = matched_tilted = 0
             for image, is_tilted in zip(images, tilted, strict=True):
-                moved = Pose(image.x + shift_x * growth, image.y + shift_y * growth, image.angle)
-                if index.match(moved, SHARED_CENTER_TOLERANCE, SHARED_ANGLE_DEGREES) is not None:
+                moved = Pose(
+                    image.x + shift_x * growth, image.y + shift_y * growth, image.angle
+                )
+                if (
+                    index.match(moved, SHARED_CENTER_TOLERANCE, SHARED_ANGLE_DEGREES)
+                    is not None
+                ):
                     matched += 1
                     matched_tilted += is_tilted
             max_tilted = max(max_tilted, matched_tilted)
@@ -615,6 +623,67 @@ def _equal_sides(left: float, right: float) -> bool:
     return abs(left - right) <= SIDE_TOLERANCE
 
 
+@cache
+def manifest_sides() -> dict[int, float]:
+    """Every atlas side by n, from the manifest's reported_side."""
+    return {n: float(entry["reported_side"]) for n, entry in manifest_entries().items()}
+
+
+def l_step(side: float) -> int:
+    """Squares the L construction adds to a packing of this side: 2*floor(side) + 1.
+
+    The L construction (DS7, section 2): if n' squares fit in side s', then
+    n' + 2*floor(s') + 1 fit in s' + 1, by laying an L of unit squares along two walls.
+    The floor is taken within `SIDE_TOLERANCE`, so a numerically integer side counts whole.
+    """
+    return 2 * math.floor(side + SIDE_TOLERANCE) + 1
+
+
+def l_candidates(n: int, sides: Mapping[int, float]) -> list[int]:
+    """Every smaller n' whose L construction lands on exactly n squares."""
+    return [parent for parent in range(1, n) if n - parent == l_step(sides[parent])]
+
+
+def l_parent(n: int, sides: Mapping[int, float]) -> int | None:
+    """The n' that n is an L-extension of: n - n' = 2*floor(side(n')) + 1 and side + 1.
+
+    At most one n' qualifies, since side(n) fixes floor(side(n')); the largest is taken
+    should a tolerance edge ever admit two.
+    """
+    parents = [
+        parent
+        for parent in l_candidates(n, sides)
+        if _equal_sides(sides[n] - sides[parent], 1.0)
+    ]
+    return max(parents) if parents else None
+
+
+def l_chain(n: int, sides: Mapping[int, float]) -> tuple[int, int]:
+    """`(root, length)`: follow `l_parent` down to a record that has none."""
+    current, length = n, 0
+    while (parent := l_parent(current, sides)) is not None:
+        current, length = parent, length + 1
+    return current, length
+
+
+def l_bound(n: int, sides: Mapping[int, float]) -> dict[str, Any] | None:
+    """The best side the L construction offers n from a smaller record, and the margin.
+
+    The margin is `side(n') + 1 - side(n)`: zero for an L-extension, positive where the
+    record beats the construction, and negative only if the atlas holds a side the
+    construction would improve on.
+    """
+    candidates = l_candidates(n, sides)
+    if not candidates:
+        return None
+    best = min(candidates, key=lambda parent: (sides[parent], -parent))
+    return {
+        "from": best,
+        "side": _rounded(sides[best] + 1.0),
+        "margin": _rounded(sides[best] + 1.0 - sides[n]),
+    }
+
+
 def entry_record(n: int, geometry_of: Callable[[int], Geometry]) -> dict[str, Any]:
     """Everything the census says about one n; reads n - 1 and n + 1 for the pair fields."""
     entries = manifest_entries()
@@ -637,6 +706,12 @@ def entry_record(n: int, geometry_of: Callable[[int], Geometry]) -> dict[str, An
         same_signature = same_tilt_signature(
             tilt_signature(profile), tilt_signature(angle_profile(following.poses))
         )
+    sides = manifest_sides()
+    parent = l_parent(n, sides)
+    root, length = l_chain(n, sides)
+    parent_embeds = (
+        None if parent is None else shared_structure(geometry_of(parent), geometry)["embeds"]
+    )
     return {
         "n": n,
         **indices,
@@ -658,6 +733,11 @@ def entry_record(n: int, geometry_of: Callable[[int], Geometry]) -> dict[str, An
         },
         "shared_with_next": shared,
         "same_tilt_signature_as_next": same_signature,
+        "l_parent": parent,
+        "l_chain_root": root,
+        "l_chain_length": length,
+        "l_bound": l_bound(n, sides),
+        "l_parent_embeds": parent_embeds,
         "source": {
             "kind": entry["source"]["kind"],
             "method": entry["witness"]["method"],
@@ -728,11 +808,17 @@ def _row(k: int, records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     smallest = min(held) if held else None
     small = [record for record in members if _closed_tier(record) == "small"]
     matched = [record for record in members if record["closed_form"] is not None]
+    widest = max(members, key=lambda record: (record["side_minus_sqrt_n"], -record["n"]))
+    mid = next((record for record in members if record["n"] == (k - 1) ** 2 + k - 1), None)
     return {
         "k": k,
         "first_n": first,
         "last_n": last,
         "count": len(members),
+        "row_max_excess": widest["side_minus_sqrt_n"],
+        "row_max_excess_n": widest["n"],
+        "mid_row_n": None if mid is None else mid["n"],
+        "mid_row_excess": None if mid is None else mid["side_minus_m"],
         "grid_held_width": len(held),
         "grid_held_smallest_n": smallest,
         "grid_held_contiguous_to_k_squared": bool(held)
@@ -777,6 +863,12 @@ def _pair(record: Mapping[str, Any], following: Mapping[str, Any]) -> dict[str, 
             tilt_signature(following["angles"]),
         ],
         "shared": shared,
+        "l_parent": [record["l_parent"], following["l_parent"]],
+        "l_chain": [
+            [record["l_chain_root"], record["l_chain_length"]],
+            [following["l_chain_root"], following["l_chain_length"]],
+        ],
+        "l_bound": [record["l_bound"], following["l_bound"]],
         "source_kinds": [record["source"]["kind"], following["source"]["kind"]],
     }
 
@@ -797,7 +889,14 @@ def _pairs_summary(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
         "equal_side": {
             "count": len(equal),
             "integer_side": sum(left["integer_side"] for left, _right in equal),
-            "non_integer": [_pair(left, right) for left, right in equal if not left["integer_side"]],
+            "integer_side_below_k_squared_minus_2": [
+                left["n"]
+                for left, _right in equal
+                if left["integer_side"] and left["ceil_sqrt"] ** 2 - left["n"] >= 3
+            ],
+            "non_integer": [
+                _pair(left, right) for left, right in equal if not left["integer_side"]
+            ],
             "integer_side_n": [left["n"] for left, _right in equal if left["integer_side"]],
         },
         "embeds_in_next": {
@@ -833,6 +932,97 @@ def _pairs_summary(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
 
 def _counts(values: Iterable[str]) -> dict[str, int]:
     return dict(sorted(Counter(values).items()))
+
+
+def _l_chains(records: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    """Every chain of one or more L steps, from its root, in root order.
+
+    A parent has at most one child, since the child is the parent plus a fixed count, so
+    chains are paths rather than trees.
+    """
+    by_n = {record["n"]: record for record in records}
+    children = {record["l_parent"]: record["n"] for record in records if record["l_parent"]}
+    chains = []
+    for record in records:
+        if record["l_parent"] is None and record["n"] in children:
+            chain = [record["n"]]
+            while chain[-1] in children:
+                chain.append(children[chain[-1]])
+            chains.append(
+                {
+                    "root": chain[0],
+                    "length": len(chain) - 1,
+                    "n": chain,
+                    "integer_side": by_n[chain[0]]["integer_side"],
+                    "parent_embeds": [by_n[member]["l_parent_embeds"] for member in chain[1:]],
+                }
+            )
+    return chains
+
+
+def _l_columns(records: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    """The left-justified triangle's columns, n = m^2 + j, and where L steps hold in them.
+
+    A non-integer side m' + f steps to (m' + 1)^2 + j, the same column one row down; an
+    integer side steps two columns right. So a break is a non-integer record whose column
+    predecessor is also non-integer and is not its L parent.
+    """
+    columns = []
+    for j in sorted({record["r"] for record in records}):
+        members = [record for record in records if record["r"] == j]
+        steps = list(itertools.pairwise(members))
+        breaks = [
+            {
+                "n": member["n"],
+                "predecessor": prior["n"],
+                "l_bound": member["l_bound"],
+            }
+            for prior, member in steps
+            if not member["integer_side"]
+            and not prior["integer_side"]
+            and member["l_parent"] != prior["n"]
+        ]
+        columns.append(
+            {
+                "j": j,
+                "n": [record["n"] for record in members],
+                "integer_side_n": [record["n"] for record in members if record["integer_side"]],
+                "l_from_predecessor_n": [
+                    member["n"] for prior, member in steps if member["l_parent"] == prior["n"]
+                ],
+                "breaks": breaks,
+                "closed_among_non_integer": not breaks,
+            }
+        )
+    return columns
+
+
+def _l_summary(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    extensions = [record for record in records if record["l_parent"] is not None]
+    non_integer = [record for record in extensions if not record["integer_side"]]
+    bounded = [record for record in records if record["l_bound"] is not None]
+    return {
+        "extensions": len(extensions),
+        "extensions_integer_side": len(extensions) - len(non_integer),
+        "extensions_non_integer": len(non_integer),
+        "non_integer_extension_n": [record["n"] for record in non_integer],
+        "non_integer_parent_embeds": _counts(
+            str(record["l_parent_embeds"]).lower() for record in non_integer
+        ),
+        "with_bound": len(bounded),
+        "beats_bound": [
+            {"n": record["n"], **record["l_bound"]}
+            for record in bounded
+            if record["l_bound"]["margin"] > SIDE_TOLERANCE
+        ],
+        "bound_violations": [
+            {"n": record["n"], **record["l_bound"]}
+            for record in bounded
+            if record["l_bound"]["margin"] < -SIDE_TOLERANCE
+        ],
+        "chains": _l_chains(records),
+        "columns": _l_columns(records),
+    }
 
 
 def _closed_form_families(records: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
@@ -934,6 +1124,13 @@ def summary(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
             ],
         },
         "consecutive": _pairs_summary(records),
+        "monotonicity_violations": [
+            record["n"]
+            for record in records
+            if record["n"] + 1 in by_n
+            and float(record["side"]) > float(by_n[record["n"] + 1]["side"]) + SIDE_TOLERANCE
+        ],
+        "l_construction": _l_summary(records),
         "queried_pairs": [
             _pair(by_n[left], by_n[right])
             for left, right in QUERIED_PAIRS
@@ -1019,6 +1216,29 @@ def expected_document(records: Sequence[Mapping[str, Any]] | None = None) -> dic
                 "both packings tilted, with the same non-axis loose angle classes: equal "
                 "counts at angles within 0.5 degrees"
             ),
+            "l_construction": {
+                "step": (
+                    "n' squares in side s' give n' + 2*floor(s') + 1 squares in s' + 1 (DS7 "
+                    "section 2), floor taken within the side tolerance"
+                ),
+                "l_parent": (
+                    "the n' < n with n - n' = 2*floor(side(n')) + 1 and side(n) - side(n') "
+                    f"= 1 within {SIDE_TOLERANCE}, else null"
+                ),
+                "l_chain_root": "l_parent followed until null; l_chain_length counts steps",
+                "l_bound": (
+                    "over every n' < n with n - n' = 2*floor(side(n')) + 1, the smallest "
+                    "side(n') + 1, its n', and margin = that bound - side(n)"
+                ),
+                "l_parent_embeds": (
+                    "every square of the parent reappears in n under shared_with_next's "
+                    "32 alignments"
+                ),
+                "column_break": (
+                    "in the left-justified column n = m^2 + j, a non-integer record whose "
+                    "non-integer column predecessor is not its l_parent"
+                ),
+            },
             "exact_grid_caveat": (
                 "exact-grid records are canonical row-major grid subsets; their arrangement, "
                 "symmetry, and sharing are a convention, and only the side is evidence"

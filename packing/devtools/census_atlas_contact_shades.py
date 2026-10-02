@@ -44,14 +44,15 @@ could apply:
   square's).
 
 A light square is `structural` if any face is one of the first three, `slack` if otherwise
-any face needs a slide beyond ten times the rule's tolerance, and `precision-band` if every
-non-contact face lies within ten times the tolerance: only those could plausibly be blamed
-on inexact arithmetic.
+any face needs a slide beyond ten times the rule's tolerance, and `within-band` if every
+non-contact face lies within ten times the tolerance. Under the house rule's `2e-6` only a
+`within-band` square could plausibly be blamed on inexact arithmetic; under the stage's
+`0.01` the band is itself a centimetre of a unit side, far above any arithmetic.
 
-Usage, from `packing/`:
-    uv run --frozen --all-extras --group dev python -m devtools.census_atlas_contact_shades --update
-    uv run --frozen --all-extras --group dev python -m devtools.census_atlas_contact_shades --check
-    uv run --frozen --all-extras --group dev python -m devtools.census_atlas_contact_shades --report
+Usage, from `packing/`, each after `uv run --frozen --all-extras --group dev`:
+    python -m devtools.census_atlas_contact_shades --update
+    python -m devtools.census_atlas_contact_shades --check
+    python -m devtools.census_atlas_contact_shades --report
 """
 
 from __future__ import annotations
@@ -91,6 +92,12 @@ STATIC_AXIS = 1e-12
 TIE = 1e-9
 """Obstacles reached within this of one another are simultaneous; the widest one wins."""
 NAMED_CASES = (102, 103, 106, 206, 268, 269)
+DETAILED_RULES = ("atlas-house", "workbench-stage")
+"""The rules whose named cases are published square by square; the studio's gap is a
+sensitivity check and is published as counts only."""
+PRECISION_SCALE = 1e-4
+"""A rule whose gap is at most this lists its band faces one by one: only there can the
+near-miss band be an arithmetic or precision question. Coarser rules tally them per n."""
 SIGNIFICANT = 4
 """Floats are published to this many significant digits, so a last-ulp difference in a
 platform's `cos` cannot move a byte of the retained document."""
@@ -105,6 +112,8 @@ BANDS = frozenset({"angle-near-miss", "near-miss", "rule-boundary"})
 STAGGER_ACROSS = 0.1
 """An aligned neighbour offset by more than this across the face is a staggered row."""
 DECADES = (2e-6, 2e-5, 1e-4, 1e-3, 1e-2, 1e-1, 0.5)
+SPECTRUM = (0.0, *(10.0**-power for power in range(15, 0, -1)), 0.5)
+"""The miss spectrum's edges: exactly zero, then every decade from 1e-15 to 0.1, then 0.5."""
 
 FILL_RE = re.compile(r'<polygon data-feature="square-fill" ([^>]*?)/>')
 ATTR_RE = re.compile(r'([\w-]+)="([^"]*)"')
@@ -201,7 +210,9 @@ class Sweep:
     """The obstacle's orientation against the square (the square's own tilt for a wall)."""
 
 
-def _project(points: Iterable[tuple[float, float]], ax: float, ay: float) -> tuple[float, float]:
+def _project(
+    points: Iterable[tuple[float, float]], ax: float, ay: float
+) -> tuple[float, float]:
     values = [px * ax + py * ay for px, py in points]
     return min(values), max(values)
 
@@ -274,7 +285,11 @@ def sweep_face(packing: Packing, grid: Grid, index: int, face: str) -> Sweep:
             q0, q1 = _project(target.corners, wx, wy)
             overlap = min(p1, q1) - max(p0, q0)
             key = (interval[0], -overlap, other)
-            if best is None or key[0] < best[0] - TIE or (abs(key[0] - best[0]) <= TIE and key[1:] < best[1:]):
+            if (
+                best is None
+                or key[0] < best[0] - TIE
+                or (abs(key[0] - best[0]) <= TIE and key[1:] < best[1:])
+            ):
                 best = key
         # A face whose nearest obstacle may lie past the bucketed reach scans everything.
         if attempt == 0 and (best is None or best[0] > reach - 1.5):
@@ -374,7 +389,9 @@ def edge_rule_contacts(packing: Packing, rule: Rule) -> list[list[Contact]]:
             ):
                 residual = max(abs(a[axis] - boundary), abs(b[axis] - boundary))
                 if residual <= rule.gap:
-                    candidates[index][edge].append(Contact(EDGE_FACES[edge], WALL_NAMES[face], residual))
+                    candidates[index][edge].append(
+                        Contact(EDGE_FACES[edge], WALL_NAMES[face], residual)
+                    )
     grid = Grid(squares)
     for left, first in enumerate(squares):
         for right in grid.near(first.x, first.y, 1.5):
@@ -389,10 +406,16 @@ def edge_rule_contacts(packing: Packing, rule: Rule) -> list[list[Contact]]:
                 for right_edge in range(4):
                     b0, b1 = second.corners[right_edge], second.corners[(right_edge + 1) % 4]
                     direct = max(
-                        abs(a0[0] - b0[0]), abs(a0[1] - b0[1]), abs(a1[0] - b1[0]), abs(a1[1] - b1[1])
+                        abs(a0[0] - b0[0]),
+                        abs(a0[1] - b0[1]),
+                        abs(a1[0] - b1[0]),
+                        abs(a1[1] - b1[1]),
                     )
                     reverse = max(
-                        abs(a0[0] - b1[0]), abs(a0[1] - b1[1]), abs(a1[0] - b0[0]), abs(a1[1] - b0[1])
+                        abs(a0[0] - b1[0]),
+                        abs(a0[1] - b1[1]),
+                        abs(a1[0] - b0[0]),
+                        abs(a1[1] - b0[1]),
                     )
                     residual = min(direct, reverse)
                     if residual > rule.gap:
@@ -404,7 +427,11 @@ def edge_rule_contacts(packing: Packing, rule: Rule) -> list[list[Contact]]:
                         Contact(EDGE_FACES[right_edge], first.ident, residual)
                     )
     return [
-        [min(edge, key=lambda contact: (contact.residual, contact.other)) for edge in edges if edge]
+        [
+            min(edge, key=lambda contact: (contact.residual, contact.other))
+            for edge in edges
+            if edge
+        ]
         for edges in candidates
     ]
 
@@ -451,7 +478,10 @@ def centre_rule_contacts(packing: Packing, rule: Rule) -> list[list[Contact]]:
             dx, dy = second.x - first.x, second.y - first.y
             if dx * dx + dy * dy > 2.5:
                 continue
-            if _js_angle_gap(_js_fold(first.angle), _js_fold(second.angle)) > rule.angle_tolerance:
+            if (
+                _js_angle_gap(_js_fold(first.angle), _js_fold(second.angle))
+                > rule.angle_tolerance
+            ):
                 continue
             cosine, sine = math.cos(first.angle), math.sin(first.angle)
             along = dx * cosine + dy * sine
@@ -493,7 +523,11 @@ def atlas_slots(angles_degrees: Sequence[float], tolerance_degrees: float) -> li
     for raw in angles_degrees:
         angle = fold(raw)
         match = next(
-            (i for i, rep in enumerate(representatives) if gap(angle, rep) <= tolerance_degrees),
+            (
+                i
+                for i, rep in enumerate(representatives)
+                if gap(angle, rep) <= tolerance_degrees
+            ),
             -1,
         )
         if match < 0:
@@ -516,7 +550,9 @@ def atlas_slots(angles_degrees: Sequence[float], tolerance_degrees: float) -> li
     result: list[int] = []
     for raw in angles_degrees:
         angle = fold(raw)
-        match = next((i for i, c in enumerate(centres) if gap(angle, c) <= tolerance_degrees), -1)
+        match = next(
+            (i for i, c in enumerate(centres) if gap(angle, c) <= tolerance_degrees), -1
+        )
         result.append(slots[match] if match >= 0 else pinned(angle))
     return result
 
@@ -560,7 +596,9 @@ def load_case(entry: dict[str, Any]) -> Case:
     six decimals, the angle in degrees modulo 90 rounded to four, the side to nine.
     """
     n = entry["n"]
-    data = yaml.load((ROOT / entry["witness"]["path"]).read_text(encoding="utf-8"), Loader=LOADER)
+    data = yaml.load(
+        (ROOT / entry["witness"]["path"]).read_text(encoding="utf-8"), Loader=LOADER
+    )
     witness = data["witness"]
     representation = witness["representation"]
     unit = witness["coordinates"]["angle_unit"]
@@ -615,21 +653,16 @@ def sig(value: float) -> float:
 
 def classify(sweep: Sweep, rule: Rule) -> str:
     """The first cause in the module's order that explains a face without a contact."""
-    if sweep.clearance > HOLE_CLEARANCE:
-        return "hole-or-open"
-    if sweep.tilt > BAND_FACTOR * rule.angle_tolerance:
-        return "tilted-neighbour"
-    if sweep.across > STAGGER_ACROSS:
-        return "offset"
-    if abs(sweep.clearance) > BAND_FACTOR * rule.gap:
-        return "slack"
-    if sweep.across > BAND_FACTOR * rule.gap:
-        return "misaligned"
-    if sweep.tilt > rule.angle_tolerance:
-        return "angle-near-miss"
-    if max(abs(sweep.clearance), sweep.across) > rule.gap:
-        return "near-miss"
-    return "rule-boundary"
+    tests = (
+        ("hole-or-open", sweep.clearance > HOLE_CLEARANCE),
+        ("tilted-neighbour", sweep.tilt > BAND_FACTOR * rule.angle_tolerance),
+        ("offset", sweep.across > STAGGER_ACROSS),
+        ("slack", abs(sweep.clearance) > BAND_FACTOR * rule.gap),
+        ("misaligned", sweep.across > BAND_FACTOR * rule.gap),
+        ("angle-near-miss", sweep.tilt > rule.angle_tolerance),
+        ("near-miss", slide(sweep) > rule.gap),
+    )
+    return next((cause for cause, holds in tests if holds), "rule-boundary")
 
 
 def square_kind(causes: Iterable[str]) -> str:
@@ -638,7 +671,7 @@ def square_kind(causes: Iterable[str]) -> str:
         return "structural"
     if present & SLIDES:
         return "slack"
-    return "precision-band"
+    return "within-band"
 
 
 @dataclass
@@ -652,7 +685,9 @@ class RuleResult:
     faces: dict[int, dict[str, tuple[str, Sweep]]] = field(default_factory=dict)
 
 
-def apply_rule(case: Case, rule: Rule, sweeps: dict[tuple[int, str], Sweep], grid: Grid) -> RuleResult:
+def apply_rule(
+    case: Case, rule: Rule, sweeps: dict[tuple[int, str], Sweep], grid: Grid
+) -> RuleResult:
     if rule.metric == "edge":
         contacts = edge_rule_contacts(case.witness, rule)
         green = [row["data-hue-index"] == "0" for row in case.rendering]
@@ -699,14 +734,15 @@ def distribution(values: Sequence[float]) -> dict[str, Any]:
     }
 
 
-def decades(values: Iterable[float]) -> dict[str, int]:
-    """How many values fall in each band `(previous edge, edge]` of `DECADES`."""
+def decades(values: Iterable[float], edges: Sequence[float] = DECADES) -> list[list[Any]]:
+    """How many values fall in each band `(previous edge, edge]` of `edges`, as ordered
+    `[label, count]` rows (a list, so sorted keys cannot reorder the bands)."""
     bins: Counter[str] = Counter()
     for value in values:
-        label = next((f"<={edge:g}" for edge in DECADES if value <= edge), f">{DECADES[-1]:g}")
+        label = next((f"<={edge:g}" for edge in edges if value <= edge), f">{edges[-1]:g}")
         bins[label] += 1
-    order = [f"<={edge:g}" for edge in DECADES] + [f">{DECADES[-1]:g}"]
-    return {label: bins[label] for label in order if bins[label]}
+    order = [f"<={edge:g}" for edge in edges] + [f">{edges[-1]:g}"]
+    return [[label, bins[label]] for label in order if bins[label]]
 
 
 def face_record(cause: str, sweep: Sweep) -> dict[str, Any]:
@@ -734,21 +770,27 @@ def square_record(case: Case, result: RuleResult, index: int) -> dict[str, Any]:
     }
 
 
+def slide(sweep: Sweep) -> float:
+    """How far a face is from a full shared side: its gap or its offset, whichever is more."""
+    return max(abs(sweep.clearance), sweep.across)
+
+
 def witness_class(entry: dict[str, Any]) -> str:
     witness = entry["witness"]
-    return f"{witness['method']}/{witness['coordinate_provenance']}/{witness.get('tolerance') or 'exact'}"
+    tolerance = witness.get("tolerance") or "exact"
+    return f"{witness['method']}/{witness['coordinate_provenance']}/{tolerance}"
 
 
 def entry_row(case: Case, result: RuleResult) -> dict[str, Any]:
     causes: Counter[str] = Counter()
     kinds: Counter[str] = Counter()
-    regular_clearance = 0.0
+    slides: list[float] = []
     for faces in result.faces.values():
         causes.update(cause for cause, _ in faces.values())
         kind = square_kind(cause for cause, _ in faces.values())
         kinds[kind] += 1
-        if kind == "regularizable":
-            regular_clearance = max(regular_clearance, *(sweep.clearance for _, sweep in faces.values()))
+        if kind != "structural":
+            slides.append(max(slide(sweep) for _, sweep in faces.values()))
     return {
         "n": case.n,
         "source_kind": case.entry["source"]["kind"],
@@ -757,7 +799,7 @@ def entry_row(case: Case, result: RuleResult) -> dict[str, Any]:
         "light": len(result.faces),
         "faces": dict(sorted(causes.items())),
         "squares": dict(sorted(kinds.items())),
-        "max_regularizable_clearance": sig(regular_clearance) if kinds["regularizable"] else None,
+        "max_regularizable_slide": sig(max(slides)) if slides else None,
     }
 
 
@@ -785,7 +827,11 @@ def vacancy_family(case: Case, results: dict[str, RuleResult]) -> dict[str, Any]
     cells: dict[tuple[int, int], int] = {}
     for index, square in enumerate(case.witness.squares):
         cell = (round(square.x - 0.5), round(square.y - 0.5))
-        if square.tilt != 0 or abs(square.x - 0.5 - cell[0]) > 1e-12 or abs(square.y - 0.5 - cell[1]) > 1e-12:
+        if (
+            square.tilt != 0
+            or abs(square.x - 0.5 - cell[0]) > 1e-12
+            or abs(square.y - 0.5 - cell[1]) > 1e-12
+        ):
             return None
         cells[cell] = index
     vacancies = sorted({(i, j) for i in range(k) for j in range(k)} - set(cells))
@@ -804,14 +850,24 @@ def vacancy_family(case: Case, results: dict[str, RuleResult]) -> dict[str, Any]
         "vacancy_neighbours": len(neighbours),
     }
     for name, result in results.items():
-        light = [index for index in range(case.n) if result.green[index] and result.shades[index] > 0]
+        light = [
+            index for index in range(case.n) if result.green[index] and result.shades[index] > 0
+        ]
         row[name] = {
             "light": len(light),
             "light_neighbours": sum(index in neighbours for index in light),
             "light_elsewhere": sum(index not in neighbours for index in light),
-            "neighbour_contacts": dict(sorted(Counter(str(result.counts[i]) for i in neighbours).items())),
+            "neighbour_contacts": dict(
+                sorted(Counter(str(result.counts[i]) for i in neighbours).items())
+            ),
             "neighbour_faces": dict(
-                sorted(Counter(cause for i in neighbours for cause, _ in result.faces.get(i, {}).values()).items())
+                sorted(
+                    Counter(
+                        cause
+                        for i in neighbours
+                        for cause, _ in result.faces.get(i, {}).values()
+                    ).items()
+                )
             ),
         }
     return row
@@ -824,12 +880,28 @@ class Collector:
     rows: dict[str, list[dict[str, Any]]] = field(default_factory=lambda: defaultdict(list))
     contact_residuals: dict[str, list[float]] = field(default_factory=lambda: defaultdict(list))
     green_residuals: dict[str, list[float]] = field(default_factory=lambda: defaultdict(list))
+    class_residuals: dict[str, dict[str, list[float]]] = field(
+        default_factory=lambda: defaultdict(lambda: defaultdict(list))
+    )
+    class_misses: dict[str, dict[str, list[float]]] = field(
+        default_factory=lambda: defaultdict(lambda: defaultdict(list))
+    )
     clearances: dict[str, dict[str, list[float]]] = field(
         default_factory=lambda: defaultdict(lambda: defaultdict(list))
     )
-    offsets: dict[str, list[float]] = field(default_factory=lambda: defaultdict(list))
-    band_faces: dict[str, list[dict[str, Any]]] = field(default_factory=lambda: defaultdict(list))
-    regularizable: dict[str, list[dict[str, Any]]] = field(default_factory=lambda: defaultdict(list))
+    obstacles: dict[str, Counter[str]] = field(default_factory=lambda: defaultdict(Counter))
+    across: dict[str, dict[str, list[float]]] = field(
+        default_factory=lambda: defaultdict(lambda: defaultdict(list))
+    )
+    tilts: dict[str, dict[str, list[float]]] = field(
+        default_factory=lambda: defaultdict(lambda: defaultdict(list))
+    )
+    band_faces: dict[str, list[dict[str, Any]]] = field(
+        default_factory=lambda: defaultdict(list)
+    )
+    regularizable: dict[str, list[dict[str, Any]]] = field(
+        default_factory=lambda: defaultdict(list)
+    )
     named: dict[str, dict[str, Any]] = field(default_factory=dict)
     vacancy: list[dict[str, Any]] = field(default_factory=list)
     replica: Counter[str] = field(default_factory=Counter)
@@ -848,7 +920,12 @@ def census_case(case: Case, collector: Collector) -> None:
         else:
             collector.replica["disagree"] += 1
             collector.replica_mismatches.append(
-                {"n": case.n, "id": case.witness.squares[index].ident, "replica": house.counts[index], "rendering": drawn}
+                {
+                    "n": case.n,
+                    "id": case.witness.squares[index].ident,
+                    "replica": house.counts[index],
+                    "rendering": drawn,
+                }
             )
     for rule in RULES:
         result = results[rule.name]
@@ -856,34 +933,56 @@ def census_case(case: Case, collector: Collector) -> None:
         for index, found in enumerate(result.contacts):
             residuals = [contact.residual for contact in found]
             collector.contact_residuals[rule.name].extend(residuals)
+            collector.class_residuals[rule.name][witness_class(case.entry)].extend(residuals)
             if result.green[index]:
                 collector.green_residuals[rule.name].extend(residuals)
         regular: list[list[Any]] = []
         for index, faces in result.faces.items():
             for face, (cause, sweep) in faces.items():
                 collector.clearances[rule.name][cause].append(sweep.clearance)
-                if cause == "offset":
-                    collector.offsets[rule.name].append(sweep.across)
-                if cause in {"near-miss", "angle-near-miss", "rule-boundary"}:
+                collector.obstacles[rule.name][f"{cause} / {sweep.obstacle}"] += 1
+                if cause not in STRUCTURAL:
+                    collector.class_misses[rule.name][witness_class(case.entry)].append(
+                        slide(sweep)
+                    )
+                if cause in {"offset", "misaligned"}:
+                    collector.across[rule.name][cause].append(sweep.across)
+                if cause in {"tilted-neighbour", "angle-near-miss"}:
+                    collector.tilts[rule.name][cause].append(sweep.tilt)
+                if cause in BANDS:
                     collector.band_faces[rule.name].append(
                         {"n": case.n, "id": case.witness.squares[index].ident, "face": face}
                         | face_record(cause, sweep)
                     )
-            if square_kind(cause for cause, _ in faces.values()) == "regularizable":
+            kind = square_kind(cause for cause, _ in faces.values())
+            if kind != "structural":
                 regular.append(
-                    [case.witness.squares[index].ident, sig(max(sweep.clearance for _, sweep in faces.values()))]
+                    [
+                        case.witness.squares[index].ident,
+                        kind,
+                        sig(max(abs(sweep.clearance) for _, sweep in faces.values())),
+                        sig(max(sweep.across for _, sweep in faces.values())),
+                    ]
                 )
         if regular:
             collector.regularizable[rule.name].append(
-                {"n": case.n, "squares": regular, "max_clearance": max(clearance for _, clearance in regular)}
+                {
+                    "n": case.n,
+                    "squares": regular,
+                    "max_slide": max(max(row[2], row[3]) for row in regular),
+                    "within_band_only": all(row[1] == "within-band" for row in regular),
+                }
             )
     if case.n in NAMED_CASES:
         collector.named[str(case.n)] = {
             "source_kind": case.entry["source"]["kind"],
             "witness_class": witness_class(case.entry),
         } | {
-            rule.name: [square_record(case, results[rule.name], index) for index in sorted(results[rule.name].faces)]
-            for rule in RULES
+            name: [
+                square_record(case, results[name], index)
+                for index in sorted(results[name].faces)
+            ]
+            for name in DETAILED_RULES
         }
     family = vacancy_family(case, results)
     if family is not None:
@@ -914,17 +1013,46 @@ def rule_summary(rule: Rule, collector: Collector) -> dict[str, Any]:
         "by_source_kind": {kind: _totals(group) for kind, group in sorted(by_source.items())},
         "by_witness_class": {kind: _totals(group) for kind, group in sorted(by_class.items())},
         "contact_residuals": distribution(collector.contact_residuals[rule.name]),
+        "contact_residuals_by_witness_class": {
+            kind: distribution(values)
+            for kind, values in sorted(collector.class_residuals[rule.name].items())
+        },
+        "miss_spectrum_by_witness_class": {
+            kind: {
+                "contact_residuals": decades(values, SPECTRUM),
+                "light_face_slides": decades(collector.class_misses[rule.name][kind], SPECTRUM),
+            }
+            for kind, values in sorted(collector.class_residuals[rule.name].items())
+        },
         "green_contact_residuals": distribution(collector.green_residuals[rule.name]),
         "light_face_clearance_decades": {
-            cause: decades(values) for cause, values in sorted(collector.clearances[rule.name].items())
+            cause: decades(values)
+            for cause, values in sorted(collector.clearances[rule.name].items())
         },
         "light_face_minimum_clearance": {
-            cause: sig(min(values)) for cause, values in sorted(collector.clearances[rule.name].items())
+            cause: sig(min(values))
+            for cause, values in sorted(collector.clearances[rule.name].items())
         },
         "offset_across_decades": decades(collector.offsets[rule.name]),
-        "band_faces": collector.band_faces[rule.name],
+        "faces_by_obstacle": dict(sorted(collector.obstacles[rule.name].items())),
+        "band_faces": (
+            collector.band_faces[rule.name]
+            if rule.gap <= PRECISION_SCALE
+            else {
+                str(n): count
+                for n, count in sorted(
+                    Counter(face["n"] for face in collector.band_faces[rule.name]).items()
+                )
+            }
+        ),
         "regularizable_records": [row["n"] for row in regular],
         "regularizable_squares": sum(len(row["squares"]) for row in regular),
+        "within_band_squares": sum(
+            item[1] == "within-band" for row in regular for item in row["squares"]
+        ),
+        "within_band_records": sorted(
+            {row["n"] for row in regular for item in row["squares"] if item[1] == "within-band"}
+        ),
     }
 
 
@@ -952,10 +1080,17 @@ def expected_document(entries: Sequence[dict[str, Any]] | None = None) -> dict[s
                 "buildAtlasMap slot 0 over the frame's angles in witness order"
             ),
             "light": "green and shaded lighter than four contacts",
+            "stagger_across": STAGGER_ACROSS,
             "kinds": (
                 "structural: some face is hole-or-open, tilted-neighbour or offset; "
-                "angle-mismatch: otherwise some face is angle-near-miss; regularizable: "
-                "every non-contact face is slack, near-miss or rule-boundary"
+                "slack: otherwise some face is slack or misaligned; within-band: every "
+                "non-contact face is angle-near-miss, near-miss or rule-boundary"
+            ),
+            "regularizable": (
+                "the slack and within-band squares: each non-contact face could meet an "
+                "aligned neighbour or wall by a slide (or, for angle-near-miss, a turn) of the "
+                "recorded size; face by face, not a claim that all can close at once. Rows are "
+                "[id, kind, max |clearance|, max across]"
             ),
         },
         "house_replica": {
@@ -996,17 +1131,22 @@ def report() -> None:
         totals = summary["totals"]
         print(
             f"{name}: {totals['light']} of {totals['green']} green squares light in "
-            f"{totals['records_with_light']} records; faces {totals['faces']}; squares {totals['squares']}"
+            f"{totals['records_with_light']} records; faces {totals['faces']}; "
+            f"squares {totals['squares']}"
         )
         print(f"  contact residuals {summary['contact_residuals']}")
         print(f"  band faces {len(summary['band_faces'])}")
 
 
 def parser() -> argparse.ArgumentParser:
-    command = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    command = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     mode = command.add_mutually_exclusive_group(required=True)
     mode.add_argument("--update", action="store_true", help="rewrite the retained census")
-    mode.add_argument("--check", action="store_true", help="require the retained census to match")
+    mode.add_argument(
+        "--check", action="store_true", help="require the retained census to match"
+    )
     mode.add_argument("--report", action="store_true", help="print the census summary")
     return command
 

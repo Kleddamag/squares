@@ -774,6 +774,27 @@ def test_the_document_is_kpress_viewport_with_its_contents_behaviours(page: str)
         assert f"/* kpress: js/{module} */" in page, module
 
 
+def test_the_big_tables_have_no_outer_border(
+    page: str, results: str, rendered: Callable[[str], str]
+) -> None:
+    """The site's tables, Recent Results, the Results page's table and the frontier
+    table, have no frame (the owner, 2026-10-02, `think-wadm`): KPress draws a border
+    round every `.kpress-table`, and the site's rule takes it off every `.site-table`,
+    keeping the rule under the header and the light rule under each row."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    assert ".kpress .site-table {\n  border: 0;\n}" in css
+    rows = css[css.index(".kpress .site-table tbody tr {") :]
+    assert "border-block-end: 1px solid var(--kpress-doc-border);" in rows[: rows.index("}")]
+    for name, html_page in (
+        ("index.html", page),
+        ("all-results.html", results),
+        ("frontier.html", rendered("frontier.html")),
+    ):
+        tables = re.findall(r'<table class="([^"]*)"', html_page)
+        assert tables, name
+        assert all("site-table" in classes.split() for classes in tables), (name, tables)
+
+
 def test_every_card_grid_sits_in_a_frame_it_can_measure(page: str) -> None:
     """A card is as wide as a column of the grid its frame fits, which it can know only by
     asking the frame, so every card section is a `.site-cards-frame` holding its grid

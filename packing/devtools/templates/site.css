@@ -923,9 +923,16 @@ body {
 .site-table-wrap {
   overflow-x: auto;
 }
+/* The site's tables, the results tables and the frontier table, have no frame: KPress
+   draws a border round every table, and on a long table it was clutter (the owner,
+   2026-10-02, `think-wadm`). The rule under the header and the light rule under each
+   row are all a table's lines. */
 .site-table {
   border-collapse: collapse;
   width: 100%;
+}
+.kpress .site-table {
+  border: 0;
 }
 .site-table thead th {
   position: sticky;

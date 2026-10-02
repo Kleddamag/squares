@@ -179,9 +179,11 @@ def test_the_table_fits_its_track_at_1280_and_scrolls_in_its_wrap_below(
     widths = {cell["words"]: cell["width"] for cell in wide["head"]}
     assert widths["n"] < 50
     assert widths["Recent"] < 96
+    # At 1280 the table is stretched to its track; below it keeps its own width, 1192
+    # pixels since the table has no frame (2026-10-02, think-wadm), 1194 before.
     for width in WIDTHS[1:]:
         assert laid[width]["scrolls"] > 0, width
-        assert laid[width]["table_width"] == pytest.approx(wide["table_width"], abs=8), width
+        assert laid[width]["table_width"] == pytest.approx(wide["table_width"], abs=10), width
     assert [laid[width]["page_scrolls"] for width in WIDTHS] == [0] * len(WIDTHS)
 
 

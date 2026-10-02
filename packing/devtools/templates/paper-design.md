@@ -1313,10 +1313,14 @@ it.
   have been a heading is a column or a filter.
   A row with detail opens its popover, and no cell expands on its own (**Row popovers**,
   below). Rows are separated by a light rule, not zebra stripes, and a row takes the wash
-  on hover. Cells are padded 0.55rem by 0.5rem, top-aligned, at line height 1.4 (the
-  frontier table centres its cells and keeps 0.4rem at their sides: **Frontier table**,
-  below). Headers sit at the bottom of their cell, aligned as their column is: text
-  columns to the start, number columns (`.num`, tabular figures) to the end.
+  on hover. The site’s tables have no outer frame: KPress draws a border round every
+  table, and on the results tables and the frontier table it was clutter (the owner,
+  2026-10-02, `think-wadm`), so the rule under the header and the rule under each row
+  are all their lines.
+  Cells are padded 0.55rem by 0.5rem, top-aligned, at line height 1.4 (the frontier
+  table centres its cells and keeps 0.4rem at their sides: **Frontier table**, below).
+  Headers sit at the bottom of their cell, aligned as their column is: text columns to
+  the start, number columns (`.num`, tabular figures) to the end.
   The short columns (the id, n and date, `.site-col-id`, `.site-col-n` and
   `.site-col-date`) are as narrow as their content, the id and the date on one line,
   which leaves the spare width to the long text column.

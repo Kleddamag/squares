@@ -3173,6 +3173,7 @@ def test_the_pull_request_runs_its_sweeps_and_its_suite_apart() -> None:
     assert {step.name for step in validate.STEPS if step.sweep} == {
         "prospective n=101..324 safe seed",
         "known-best chunk census",
+        "known-best family and contact-shade censuses",
         "translation escape screen records and sample",
         "known-best atlas records and sample",
     }
@@ -3855,6 +3856,9 @@ def test_broad_is_opt_out_so_a_new_step_joins_the_edit_tier() -> None:
         # step's 88.76s.
         "known-best atlas records and sample",  # 12.09s of records plus a sampled rebuild
         "known-best chunk census",  # 40.03s, pinned at CALIBRATION_CORPUS by D4
+        # X-049's descriptive censuses, 8.8s and 7.6s locally (2026-10-02), on the
+        # sweeps runner beside the seed.
+        "known-best family and contact-shade censuses",
         "prospective n=101..324 safe seed",  # 102.10s of the 102.56s
         "translation escape screen records and sample",  # the retained screen, plus a replay
         "historical regressions",  # 29.35s

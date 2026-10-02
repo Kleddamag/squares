@@ -2143,6 +2143,24 @@ def _known_best_chunk_census(context: Context) -> str:
     return output
 
 
+def _known_best_family_and_shade_censuses(context: Context) -> str:
+    """Re-derive X-049's two descriptive censuses of the n=1..324 atlas.
+
+    Both read every known-best witness and compare their retained JSON byte for byte: the
+    family census (sides, offsets, L chains, closed forms, symmetry) and the contact-shade
+    census (why axis-aligned squares render light, against the committed renderings).
+    Neither emits a verdict; the check is that the published numbers still follow from
+    the record.
+    """
+    families = _module(context, "devtools.classify_known_best_families", "--check")
+    _require_text(families, f"family census check passed: {KNOWN_BEST_CORPUS.count} records")
+    shades = _module(context, "devtools.census_atlas_contact_shades", "--check")
+    _require_text(
+        shades, f"contact-shade census check passed: {KNOWN_BEST_CORPUS.count} records"
+    )
+    return families + shades
+
+
 def _prospective_source_map(context: Context) -> str:
     """The audited source map for the prospective range, whose size it declares itself."""
     output = _module(context, "devtools.map_prospective_sources", "--check")
@@ -3776,6 +3794,25 @@ STEPS: tuple[Step, ...] = (
             "packing/resources/*",
         ),
     ),
+    # X-049's two censuses, 8.8s and 7.6s locally. A sweep because each re-derives a
+    # retained artifact from all 324 witnesses; on the sweeps runner it runs beside the
+    # prospective seed, which takes about 100s, so it adds to that job's CPU, not its wall.
+    Step(
+        "known-best family and contact-shade censuses",
+        _known_best_family_and_shade_censuses,
+        fast=True,
+        broad=True,
+        sweep=True,
+        touches=(
+            *_CORE,
+            "packing/devtools/classify_known_best_families.py",
+            "packing/devtools/census_atlas_contact_shades.py",
+            "packing/atlas/known-best/manifest.json",
+            "packing/atlas/known-best/rendering/*",
+            "packing/witnesses/*",
+            "packing/campaign/explorations/X049-families-data/*",
+        ),
+    ),
     # 0.39s locally, against 88.37s for the seed it used to share a step with. It is not
     # a sweep and does not belong on the second runner: it reads one source map.
     Step(
@@ -4988,6 +5025,7 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "deterministic SVG rendering",
         "known-best atlas records and sample",
         "known-best chunk census",
+        "known-best family and contact-shade censuses",
         "prospective n=101..324 source map",
         "prospective n=101..324 safe seed",
         "translation escape screen records and sample",

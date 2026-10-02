@@ -15,16 +15,19 @@ every summary total from the retained entry rows. The byte-for-byte `--check` ov
 
 from __future__ import annotations
 
+import gzip
 import json
 import math
 from collections import defaultdict
 from functools import cache
+from pathlib import Path
 from typing import Any
 
 import pytest
 
 from devtools.census_atlas_contact_shades import (
     OUTPUT,
+    ROOT,
     RULES,
     Case,
     RuleResult,
@@ -42,6 +45,7 @@ from devtools.census_atlas_contact_shades import (
     sweep_into,
     totals,
     vacancy_family,
+    witness_shades,
 )
 
 HOUSE, STAGE, _STUDIO = RULES
@@ -233,6 +237,26 @@ def test_the_house_replica_counts_what_the_committed_rendering_draws() -> None:
     case = load_case(entry)
     counts = [len(found) for found in edge_rule_contacts(case.witness, HOUSE)]
     assert counts == [int(row["data-contact-sides"]) for row in case.rendering]
+
+
+def test_a_witness_file_is_shaded_as_its_atlas_row_and_read_gzipped(tmp_path: Path) -> None:
+    """`--witness` must agree with the census on a record the census holds, so that a pose
+    outside the atlas, such as a regularized view, is shaded by the same rule."""
+    entry = next(entry for entry in manifest_entries() if entry["n"] == 102)
+    source = ROOT / entry["witness"]["path"]
+    compressed = tmp_path / "n-102.yaml.gz"
+    compressed.write_bytes(gzip.compress(source.read_bytes()))
+    rows = {
+        rule.name: {row["n"]: row for row in retained()["entries"][rule.name]} for rule in RULES
+    }
+    expected = {
+        "house_green": rows[HOUSE.name][102]["green"],
+        "house_light": rows[HOUSE.name][102]["light"],
+        "stage_green": rows[STAGE.name][102]["green"],
+        "stage_light": rows[STAGE.name][102]["light"],
+    }
+    assert witness_shades(source) == expected
+    assert witness_shades(compressed) == expected
 
 
 def test_a_sample_of_records_recomputes_to_the_retained_rows() -> None:

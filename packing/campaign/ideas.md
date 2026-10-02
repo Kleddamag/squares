@@ -846,6 +846,23 @@ these rows as BC-393 to BC-395 and retargeted BC-387.
 | 265 | Exact replay of the reported upper-bound packings for n = 68..307 (franciscouzo, griffcass, JoostdeWinter n211) | done 2026-09-29: T-056 and T-057 at V4/C3 | — | All 49 of Couzo’s packings and de Winter’s n211 promote at centre dilation 1 and pass the independent checker; the verified lane carries them, with conflicts at n = 206, 259, 305 where the certificate sits 2–3 units of the 15th decimal above the printed side. Casson’s 39 are larger at every shared n, so retained and superseded, not replayed. `devtools.upper_bound_packets`, the three packets under `resources/web/`, issue #227. |
 | 266 | A zero-margin additive spatial cover at the n12 endpoint | restricted by a reported exact dual; replay pending | — | Updated 2026-10-01: Daniel publishes a side-4 fractional packing of mass 24537607710/1999999999 > 12. If its closed-depth bound is reproduced, it rules out any nonnegative additive spatial cover of total mass below 12 that assigns mass at least one to every admissible closed unit square; point, segment and area covers are all included. The earlier measured LP plateau alone did not prove this. Guarded replay is think-q5tt; conditional and clique resources remain separate routes in [X-048](explorations/X-048-n17-optimality-after-n11.md#new-leads-from-the-october-evand-review). |
 
+## Families, Shading and the Large-n Limit — X-049
+
+[X-049](explorations/X-049-families-shading-and-the-large-n-limit.md) answered four
+owner questions after the atlas triangle view: the families visible by $n-k^2$ were
+studied one construction at a time and never classified; light green squares are
+geometry, not arithmetic; an exact regularized view darkens the slack ones; and every
+atlas family is transient as $n$ grows.
+These rows are its candidates for the codifier, none registered.
+
+| # | Idea | Status | H | Crux |
+| --- | --- | --- | --- | --- |
+| 267 | Periodic certificates for $s(k^2-4)=k$ and $s(k^2-5)=k$ at all large $k$ | shaped | — | Daniel’s periodic measure proves $d=3$ (reported); the first proof that $d_{\max}(k)\ge 4$ for all large $k$, and a test of Friedman’s Conjecture 1 ([X-049](explorations/X-049-families-shading-and-the-large-n-limit.md#candidate-hypotheses-for-the-codifier)). |
+| 268 | The $k^2+1$ crossover lies between $k=18$ and 42 | shaped | — | The atlas plateau $5/\sqrt2-3$ holds for $k=8..17$; Kearney–Shiu beat it at 42. An exact scan of their strip construction locates the start of the asymptotic regime and scopes H-035. |
+| 269 | $\beta=2/5$: $\delta_k\asymp k^{-2/5}$ | raw | — | Bui’s Question 1 restated on the cleanest family; paper mathematics, sharpening H-037 at its finite face. |
+| 270 | Symmetric atlas families are partly source artifacts | shaped | — | 68 of 97 Kingbird-derived records are symmetric and none of 50 optimizer packets; re-optimizing the symmetric ones separates construction families from optimum families. |
+| 271 | A regularized-view layer for the atlas | shaped, think-bgkz | — | The prototype cuts the six named cases’ light green squares from 545 to 242 with exact verification and no change of side; it needs a neighbour non-regression rule first. |
+
 ## Dead ends
 
 Killed without spending a round, with the reason.

@@ -71,13 +71,18 @@ The epic is `think-los0`; the session record is
    Graham–Lubachevsky and Nurmela–Östergård track pattern series against $k^2$. The
    [family census](#what-the-atlas-shows) is the first such classification here, and it
    is descriptive.
-2. **Is light shading inexact arithmetic?** PENDING the contact-shade census.
+2. **Is light shading inexact arithmetic?** No.
+   In the homepage atlas 7,725 of 45,468 green squares render light; 5,272 border a
+   tilted square, an empty region or a staggered row, and 2,419 sit beside a real gap or
+   sideways shift of $2\times10^{-5}$ to 0.5 in the retained coordinates.
+   Only 34, in nine optimizer-sourced records, miss every contact by less than ten times
+   the renderer’s $2\times10^{-6}$ tolerance, the one band where precision could be the
+   cause. See [Why Grid Squares Render Light](#why-grid-squares-render-light).
 3. **Can exact regularization fix it?** For the slack squares, yes, as a derived view
-   verified twice over $\mathbb Q$ at the certificate’s side: at the six named cases 79
-   of 317 light axis-aligned squares become dark, with no change of side.
-   The rest cannot and should not change, because they border tilted squares, offset
-   rows or holes. The view never replaces a witness; see
-   [Exact Regularization](#exact-regularization).
+   verified twice over $\mathbb Q$ at the certificate’s side: at the six named cases the
+   atlas’s light green squares fall from 545 to 242 with no change of side.
+   The rest border tilted squares, offset rows or holes, and should stay light.
+   The view never replaces a witness; see [Exact Regularization](#exact-regularization).
 4. **What happens as $n$ grows?** Every family visible in the atlas is transient.
    For fixed $d$, $s(k^2+d)-k\to 0$ at a rate between $k^{-1}$ and $k^{-2/5}$; for
    $d=ck$ the limit is exactly $c/2$; the integer-side region at the top of each row is
@@ -91,7 +96,7 @@ The epic is `think-los0`; the session record is
 | Tool | Output | Check | Cost |
 | --- | --- | --- | --- |
 | `devtools.classify_known_best_families` | [`family-census.json`](X049-families-data/family-census.json) | `--check`, byte for byte | 8.8 s for 324 records |
-| `devtools.census_atlas_contact_shades` | [`contact-shade-census.json`](X049-families-data/contact-shade-census.json) | `--check`, byte for byte | PENDING |
+| `devtools.census_atlas_contact_shades` | [`contact-shade-census.json`](X049-families-data/contact-shade-census.json) | `--check`, byte for byte; `--witness` shades any file | 7.6 s for 324 records |
 | `devtools.regularize_axis_components` | [`regularized/`](X049-families-data/regularized/) derived poses and receipt | exact feasibility twice over $\mathbb Q$ | 99 s for six cases |
 
 Run them from `packing/` with `uv run --frozen --all-extras --group dev python -m`. Both
@@ -113,14 +118,14 @@ convention under which the L step below keeps $r$ fixed.
 
 | Family | Side or statement | Status | Source |
 | --- | --- | --- | --- |
-| $k^2$, $k^2-1$, $k^2-2$ | $s=k$ | proved by Nagamochi 2005, Theorem 2; see the correction below | `nagamochi-2005-...raw.md` |
-| $k^2-3$ | $s=k$ | proved for $k=3,\dots,7$; reported for all $k\ge 6$ (T-064, `V0`) | Bentz 2010, 2016; `frontier/RESULTS.md` |
-| $k^2-4$ | $s=k$ | proved at $k=5,6,7$ (T-051–T-053) | `frontier/README.md` |
-| $n^2-n$ | $s(n^2-n)<n$ for $n\ge 12$ | proved by construction | Arslanov et al. 2021 |
-| Göbel strip | $a+1+1/\sqrt2$ at $n=a^2+a+3+\lfloor(a-1)\sqrt2\rfloor$ | best known for $a<44$ except $a=3$; proved at 5 and 10 | DS7 §2; Kingbird strips page |
-| Göbel square | $a+1+b/\sqrt2$ at $n=2a(a+1)+b^2$, $a-1<b/\sqrt2<a+1$ | best-known upper bounds | DS7 §2; Kingbird squares page |
+| $k^2$, $k^2-1$, $k^2-2$ | $s=k$ | proved by Nagamochi 2005, Theorem 2; see the correction below | [Nagamochi 2005](../../resources/papers/nagamochi-2005-packing-unit-squares-in-a-rectangle.raw.md) |
+| $k^2-3$ | $s=k$ | proved for $k=3,\dots,7$; reported for all $k\ge 6$ (T-064, `V0`) | [Bentz 2010](../../resources/papers/bentz-2010-optimal-packings-13-and-46.md), [Bentz 2016](../../resources/papers/bentz-2016-optimal-packings-22-and-33.md), [RESULTS](../../frontier/RESULTS.md) |
+| $k^2-4$ | $s=k$ | proved at $k=5,6,7$ (T-051–T-053) | [frontier README](../../frontier/README.md) |
+| $n^2-n$ | $s(n^2-n)<n$ for $n\ge 12$ | proved by construction | [Arslanov et al. 2021](../../resources/papers/arslanov-improved-packings-n-n-1.md) |
+| Göbel strip | $a+1+1/\sqrt2$ at $n=a^2+a+3+\lfloor(a-1)\sqrt2\rfloor$ | best known for $a<44$ except $a=3$; proved at 5 and 10 | [DS7](../../resources/papers/friedman-ds7-packing-unit-squares-in-squares.md) §2; [Kingbird strips](../../resources/web/kingbird-squares-in-squares-gobel-strips.md) |
+| Göbel square | $a+1+b/\sqrt2$ at $n=2a(a+1)+b^2$, $a-1<b/\sqrt2<a+1$ | best-known upper bounds | DS7 §2; [Kingbird squares](../../resources/web/kingbird-squares-in-squares-gobel-squares.md) |
 | Off-centre square plus column | $a+3/2+b/\sqrt2$ at $n=2a^2+4a+b^2+1$ | best known at 26, 85, 227 | DS7 §3 |
-| $n^2+1$, Pell subfamily | $\delta=k/\sqrt2-t\downarrow 1/2$ at $(2t+1)^2+1=2k^2$ | proved construction | Kearney–Shiu 2002 §4 |
+| $n^2+1$, Pell subfamily | $\delta=k/\sqrt2-t\downarrow 1/2$ at $(2t+1)^2+1=2k^2$ | proved construction | [Kearney–Shiu 2002](../../resources/papers/kearney-shiu-2002-efficient-packing-unit-squares.md) §4 |
 | $n^2+1$, general | $\delta_n<3/(2n)^{1/3}+3/(2n)^{2/3}$ | proved | Kearney–Shiu 2002 |
 | Friedman’s Conjecture 1 | $s(n^2-k)=n\Rightarrow s((n+1)^2-k)=n+1$ | conjecture | DS7 §3 |
 
@@ -161,9 +166,9 @@ $d_{\max}(k)$, the largest $d$ with $s(k^2-d)=k$ in the atlas, is $d_{\max}(k)=k
 $k\le 10$, then 10, 11, 12, 13, 13, 14, 15, 16 for $k=11,\dots,18$. These are best-known
 values, not proved ones: Nagamochi’s theorem reaches $d=2$, the register reaches $d=3$
 and 4 at a few $k$, and everything beyond is the grid holding because nobody has beaten
-it. So the owner’s “$k^2-1$ and $k^2-2$ are clean grids” holds, but the integer run is
-much wider than those two offsets: it is complete through $d=-13$ wherever the atlas
-reaches.
+it. So the owner’s observation that $k^2-1$ and $k^2-2$ are clean grids holds, but the
+integer run is much wider than those two offsets: it is complete through $d=-13$
+wherever the atlas reaches.
 
 ### The $k^2+1$ family
 
@@ -231,7 +236,78 @@ axis; at 301, 149 squares are exactly axis-aligned and 247 within half a degree.
 
 ## Why Grid Squares Render Light
 
-PENDING the contact-shade census.
+### Which rule draws the atlas
+
+Two renderers shade squares, with different rules, and the census replicates both.
+
+- **The homepage atlas**, Grid and Triangle views, copies its fills from the committed
+  house renderings `atlas/known-best/rendering/n-NNN.svg`, shaded by
+  `sqpack.render.color`. A side counts when an edge of the square coincides with a wall
+  or with a same-orientation square’s edge at both endpoints within $2\times10^{-6}$,
+  orientations agreeing within $10^{-6}$ radians, on the full-precision witness.
+  Shade is four minus the counted sides.
+- **The workbench catalogue stage** recomputes contacts in `core/geometry.ts` with a
+  0.01 gap and a half-degree angle class, on frames rounded to $10^{-6}$. Its animation
+  studio uses a 0.004 gap.
+
+The replicas agree with the originals on all 52,650 squares: the house replica with each
+SVG’s recorded contact count, and the stage replica with the TypeScript run under Node.
+For each light green square the census sweeps each face without a contact and names the
+first cause that applies: an empty region (`hole-or-open`), a tilted neighbour, an
+aligned neighbour offset by more than a tenth of a side, a slide of more than ten
+tolerances (`slack` or `misaligned`), or a miss within ten tolerances (the band).
+
+### What it found
+
+| Source of the witness | Records with light | Light of green | Structural | Slack | Within band |
+| --- | --- | --- | --- | --- | --- |
+| Exact grids | 158 of 176 | 1,110 of 27,570 | 1,110 (all holes) | 0 | 0 |
+| Kingbird-derived | 97 of 97 | 2,350 of 10,572 | 2,343 | 7 | 0 |
+| Packet-derived (Couzo, de Winter) | 50 of 50 | 4,234 of 7,284 | 1,800 | 2,400 | 34 |
+| UnitSquare rendering ($n=69$) | 1 of 1 | 31 of 42 | 19 | 12 | 0 |
+
+*House rule, from the census’s `rules` summary.*
+
+The contacts the renderer does detect carry residuals with a median of zero, a 99th
+percentile of $1.1\times10^{-12}$ and a maximum of $2.0\times10^{-6}$, so where squares
+touch, the arithmetic is fine.
+The light squares are light for four reasons:
+
+- **Vacancies in the grids.** In all 34 records at $k^2-1$ and $k^2-2$, exactly the
+  squares beside the one or two empty cells render light, 84 squares with three contacts
+  each, and nothing else does.
+  Every one of the 1,110 light squares in exact grids has a single non-contact face, and
+  it looks into an empty cell.
+- **Tilted neighbours.** In the Kingbird-derived records nearly every light square
+  (2,343 of 2,350) touches a tilted square, which by definition cannot share a full
+  side.
+- **Loose optimizer output.** In the packet-derived records contacts and misses form one
+  continuum from $10^{-13}$ to 0.1, and 90 percent of the light faces miss by $10^{-4}$
+  or more: fifty times the tolerance and eight decades above the witness’s $10^{-12}$
+  check. The source optimizer left these squares loose; the side is set by the tilted
+  structure, and the grid part has room.
+  At 102 every one of the 69 green squares is light: its top row sits 0.0298 from the
+  left wall and 0.0030 apart.
+- **A digitized record.** $n=69$ was read from a rendering at six decimals, and its 12
+  slack squares miss by $2\times10^{-5}$ to $3.5\times10^{-4}$. It is the one record
+  where coordinate precision plausibly explains the shading.
+
+The 34 within-band squares are in 102, 103, 130 (14 squares), 152, 199, 206, 236, 297
+and 307, all packet-derived, missing by $2\times10^{-6}$ to $2\times10^{-5}$. They are
+consistent with the optimizer stopping short of convergence, which is still not rounding
+in the record.
+
+On the workbench stage, whose 0.01 gap swallows small shifts, 6,043 of 45,743 green
+squares render light, 5,208 of them structurally.
+Its 822 within-band squares miss by 1 to 10 percent of a side, far above any arithmetic.
+The 265 near-axis squares, tilted between $10^{-6}$ radians and half a degree, are not
+green in the atlas at all; on the stage they are, and their tilt alone explains 6 light
+squares.
+
+The census also lists, per record, the squares a slide could darken: 2,453 squares in 54
+records under the house rule, 49 of them packet-derived.
+That list is face by face and does not show every face can close at once; the
+regularization prototype below is what tests it.
 
 ## Exact Regularization
 
@@ -246,8 +322,8 @@ A regularized view starts from the exact frame the record already certifies, not
 the decimal witness.
 All six named cases are Couzo packings (T-056) with rational certificates at 36 digits;
 the view uses the certificate’s exact side $S$, which equals the printed side at 102 and
-268 and lies one or two units of the fifteenth decimal above it at 103, 106, 206 and
-269\. Then:
+268 and lies above it by one or two units of the fifteenth decimal at the other four.
+Then:
 
 1. every square tilted more than $10^{-4}$ radians stays exactly as certified;
 2. every square within $10^{-4}$ radians is replaced by the exactly axis-aligned unit
@@ -263,7 +339,7 @@ the view uses the certificate’s exact side $S$, which equals the printed side 
 The view never replaces the source witness, never changes the side, and never promotes
 an evidence tier: it proves nothing the certificate had not already proved, and any
 drawing of it must say “regularized”.
-Where $S$ exceeds the printed side by a unit in the fifteenth decimal, the honest
+Where $S$ exceeds the printed side by a unit in the fifteenth decimal, the precise
 statement is “feasible at the verified upper bound”.
 
 Two facts make the definition necessary rather than fussy.
@@ -277,22 +353,27 @@ square, at 206.
 
 ### Results
 
-| $n$ | Axis-aligned | Light before | Light after | Became dark | Lost a contact | Largest move | Exact check | $S$ − printed side |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 102 | 73 | 49 | 26 | 23 | 0 | 0.163 | passed | $-1.1\times10^{-15}$ |
-| 103 | 65 | 48 | 31 | 17 | 0 | 0.192 | passed | $+1.5\times10^{-16}$ |
-| 106 | 83 | 21 | 21 | 0 | 0 | 0.0055 | passed | $+3.5\times10^{-16}$ |
-| 206 | 172 | 69 | 59 | 10 | 2 | 0.365 | passed | $+1.1\times10^{-15}$ |
-| 268 | 213 | 86 | 68 | 18 | 0 | 0.362 | passed | $-1.6\times10^{-15}$ |
-| 269 | 227 | 44 | 33 | 11 | 0 | 0.015 | passed | $+4.1\times10^{-16}$ |
+| $n$ | Atlas: light of green, before | after | Stage: light before | after | Largest move | Exact check | $S$ − printed side |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 102 | 69 of 69 | 24 of 70 | 49 | 26 | 0.163 | passed | $-1.1\times10^{-15}$ |
+| 103 | 56 of 61 | 29 of 61 | 48 | 31 | 0.192 | passed | $+1.5\times10^{-16}$ |
+| 106 | 41 of 83 | 21 of 83 | 21 | 21 | 0.0055 | passed | $+3.5\times10^{-16}$ |
+| 206 | 104 of 136 | 60 of 138 | 69 | 59 | 0.365 | passed | $+1.1\times10^{-15}$ |
+| 268 | 156 of 198 | 75 of 198 | 86 | 68 | 0.362 | passed | $-1.6\times10^{-15}$ |
+| 269 | 119 of 224 | 33 of 225 | 44 | 33 | 0.015 | passed | $+4.1\times10^{-16}$ |
 
-*“Light” means axis-aligned under the atlas rule with fewer than four counted sides.
-The two squares at 206 that lost a contact were already light and became one shade
-lighter; no dark square turned light.
-From [`run.txt`](X049-families-data/regularized/run.txt), the tool’s receipt for one run
-of 99 seconds over the six cases.
-The regularized poses are retained gzipped beside it; decompress one before passing it
-to `devtools.check_rational_witness_independent`, which on the 106 view reports 106
+*“Atlas” is the house rule the homepage atlas draws with; “stage” is the workbench rule
+the regularizer optimizes against.
+Under the atlas rule the six records go from 545 light green squares to 242; under the
+stage rule from 317 to 238. Straightening adds a few squares to the green family (102,
+206, 269). At 206 two already-light squares lost one contact on the stage; no dark
+square turned light.
+Moves and exact checks are from [`run.txt`](X049-families-data/regularized/run.txt), one
+99-second run; the shading is from
+[`shades.txt`](X049-families-data/regularized/shades.txt), the census’s `--witness` mode
+applied to the source and regularized files.
+The regularized poses are retained gzipped; decompress one before passing it to
+`devtools.check_rational_witness_independent`, which on the 106 view reports 106
 squares, 5,565 pairs and a minimum pair gap of zero.*
 
 The remaining light squares are what the packing looks like: faces against tilted
@@ -346,7 +427,8 @@ lane, checked by the coordinator):
   $\varepsilon>0$, and Roth–Vaughan’s bound tends to zero there.
   Göbel asked the question in 1979, p. 180.
 - **Across all $n$.** $s(n)-\sqrt n=O(n^{-1/5})$, and on the mid-row subsequence
-  $s(n)-\sqrt n\gg n^{-1/4}$. This is the finite-$n$ face of H-037’s exponent question.
+  $s(n)-\sqrt n\gg n^{-1/4}$. This is the face H-037’s exponent question shows at finite
+  $n$.
 
 ### What the finite data show
 
@@ -361,7 +443,8 @@ transient.
 | 12 | 0.5355 | 0.6009 | 0.6569 |
 | 17 | 0.5355 | 0.5355 | 0.5972 |
 
-*Excess $s(k^2+d)-k$ for selected rows, from the census’s `excess_table`.*
+The table gives the excess $s(k^2+d)-k$ for selected rows, from the census’s
+`excess_table`.
 
 - The $k^2+1$ plateau at 0.53553 holds for every $k$ from 8 to 17; the first known
   improvement is Kearney–Shiu’s at $k=42$.
@@ -375,7 +458,7 @@ transient.
 - Taking Wang–Dong–Li’s explicit constant $16\sqrt2+38$ at face value (their threshold
   $x_0$ is not printed), their construction beats the grid region only for
   $k>(16\sqrt2+38)^{8/3}\approx 5.7\times10^4$. Hand-tuned constructions do far better,
-  which is why the honest crossover estimate for $k^2+1$ is “between 18 and 42”.
+  which is why the crossover estimate for $k^2+1$ is “between 18 and 42”.
 
 ### Finite or infinite set of patterns
 
@@ -420,8 +503,8 @@ transient.
 | Asymptotic primitives at finite $n$ | [H-035](../hypotheses/H-035-asymptotic-primitive-finite-transfer.md) | predicts failure on the $k^2+1$ family below $k=42$; not stated |
 | Integer-side families | T-007, T-064, T-051–T-053, the frontier’s gap table | $d_{\max}(k)$ as a question; T-007’s proof gap (below) |
 | Structure of records | [H-044](../hypotheses/H-044-chunk-expressibility-of-records.md)–H-047, X-003, X-008, calibration-only at $n\le 100$ | no family taxonomy, no L-chain account, no source-symmetry confound |
-| Limits of families | nothing | fixed-$d$ rate, the $c/2$ limit, $s(k^2+k)>k+\tfrac12$, F1–F3 |
-| Atlas shading semantics | the page legend only | PENDING |
+| Limits of families | nothing | the rate at fixed $d$, the $c/2$ limit, $s(k^2+k)>k+\tfrac12$, F1–F3 |
+| Atlas shading semantics | the page legend only | the legend does not say that a light square can be loose rather than short of neighbours |
 
 ### Candidate hypotheses, for the codifier
 
@@ -467,13 +550,15 @@ None is registered here; each names its falsifier.
 
 ## Follow-ups
 
-Ranked by information value per cost; each is a bead under `think-los0`.
+Ranked by information value per cost.
+The named beads are children of `think-los0`.
 
 1. `think-589i` (P1): the T-007 review against Karakuş 2026. It is the only finding here
    that can change a register value.
-2. PENDING: the shading and regularization dispositions.
-3. Candidate hypothesis 2, the $k^2+1$ crossover scan, which is cheap and decides how
-   H-035 should be scoped.
+2. `think-bgkz`: a regularized-view layer for the atlas, built from the prototype after
+   the neighbour non-regression rule, as a W7 entry.
+3. `think-ptt7`: codify the four candidate hypotheses, starting with the $k^2+1$
+   crossover scan, which is cheap and decides how H-035 should be scoped.
 4. `think-hzv3`: the asymptotic-record corrections.
 5. `think-1n8w`: archive the sources found outside the archive.
 

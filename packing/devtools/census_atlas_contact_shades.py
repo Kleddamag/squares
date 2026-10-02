@@ -53,11 +53,13 @@ Usage, from `packing/`, each after `uv run --frozen --all-extras --group dev`:
     python -m devtools.census_atlas_contact_shades --update
     python -m devtools.census_atlas_contact_shades --check
     python -m devtools.census_atlas_contact_shades --report
+    python -m devtools.census_atlas_contact_shades --witness PATH...
 """
 
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 import math
 import re
@@ -1258,6 +1260,42 @@ def report() -> None:
         print(f"  band faces {len(summary['band_faces'])}")
 
 
+def witness_shades(path: Path) -> dict[str, int]:
+    """Light and dark axis-aligned squares of any Witness/v2 file under the house and stage
+    rules, with no rendering to read.
+
+    This is how a pose outside the atlas -- a regularized view, say -- is shaded the way
+    the atlas would shade it. Without a rendering, the house rule's green is a square
+    within its angle tolerance of the axes, which is the class `sqpack.render.color` pins
+    to hue 0; the stage's green is the atlas slot the page computes. A `.gz` file is read
+    decompressed.
+    """
+    raw = path.read_bytes()
+    text = (gzip.decompress(raw) if path.suffix == ".gz" else raw).decode("utf-8")
+    witness, frame, degrees = packings_from_witness(load_yaml(text)["witness"])
+    house, stage = RULES[0], RULES[1]
+    house_counts = [min(4, len(found)) for found in edge_rule_contacts(witness, house)]
+    house_green = [abs(square.tilt) <= house.angle_tolerance for square in witness.squares]
+    stage_counts = [min(4, len(found)) for found in centre_rule_contacts(frame, stage)]
+    tolerance_degrees = stage.angle_tolerance * 180 / math.pi
+    stage_green = [slot == 0 for slot in atlas_slots(degrees, tolerance_degrees)]
+    return {
+        "house_green": sum(house_green),
+        "house_light": sum(g and c < 4 for g, c in zip(house_green, house_counts, strict=True)),
+        "stage_green": sum(stage_green),
+        "stage_light": sum(g and c < 4 for g, c in zip(stage_green, stage_counts, strict=True)),
+    }
+
+
+def witness_report(paths: Sequence[Path]) -> None:
+    for path in paths:
+        shades = witness_shades(path)
+        print(
+            f"{path}: house {shades['house_light']} light of {shades['house_green']} green; "
+            f"stage {shades['stage_light']} light of {shades['stage_green']} green"
+        )
+
+
 def parser() -> argparse.ArgumentParser:
     command = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
@@ -1268,6 +1306,12 @@ def parser() -> argparse.ArgumentParser:
         "--check", action="store_true", help="require the retained census to match"
     )
     mode.add_argument("--report", action="store_true", help="print the census summary")
+    mode.add_argument(
+        "--witness",
+        nargs="+",
+        type=Path,
+        help="shade any Witness/v2 files (.yaml or .yaml.gz) under the house and stage rules",
+    )
     return command
 
 
@@ -1277,6 +1321,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         update()
     elif args.check:
         check()
+    elif args.witness:
+        witness_report(args.witness)
     else:
         report()
     return 0

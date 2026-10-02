@@ -487,7 +487,7 @@ Changing agents changes the driver, not the record or the evidence required for 
 evidence fields, provenance, corrections, and the boundary between machine checks and
 review.
 [`epistemics.md`](epistemics.md) owns whole-result classifications and the policy
-for results by others: their scope, credit, intake and reply.
+for results by others: their scope, credit, import and reply.
 [`operating-rules.md`](operating-rules.md) owns how sessions are conducted, and
 [`development.md`](development.md) owns the engineering and validation workflow.
 

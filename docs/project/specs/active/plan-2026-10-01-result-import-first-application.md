@@ -7,8 +7,8 @@
 **Status:** Proposal.
 Nothing in it has been run: no source is retained, no certificate replayed, no register
 entry made and no reply posted.
-Stage 1 of the process, triage, is done for all six requests and is what this plan
-reports.
+Stage 1 of the process, triage, is done for all six requests bar the acknowledgements,
+which are the owner’s to post, and is what this plan reports.
 
 **Workflow:** W10 planning, for six imports that each run a W1 phase and then a W2 phase
 
@@ -146,7 +146,7 @@ measure failed.
 |  | Verified lane | No bound enters it without a complete replay receipt on `main` and a mapped review with no blocking defect open |
 |  | Controls | Every certificate has two mutated controls refused under test |
 |  | Two lanes | Every review is committed before its lane sees the replay’s result |
-| Consistency | Sequence | All six beads declare W1, then W2 |
+| Consistency | Sequence | Every import declares W1 for stages 1 to 3 and W2 for stage 4 |
 |  | Packet | One README shape, with the facts stage 2 lists |
 |  | Dates | `published`, `dated` and `source_date` follow the runbook’s rule in every entry |
 |  | Replies | Every reply has the same parts and links only to `main` |

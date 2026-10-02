@@ -6,7 +6,7 @@ title: "<claim>: registration request"
 <!--
 What happens next is the result import process:
 https://github.com/jlevy/squares/blob/main/packing/campaign/result-import.md
-The source is retained at the revision you name, the claim is registered as reported,
+The source is retained at a pinned revision, the claim is registered as reported,
 the certificate is replayed and the argument reviewed here, and you are answered on
 this issue. The sections below are what makes that quick.
 -->

@@ -223,13 +223,16 @@ policy. To ask for a registration, open an issue with the
 The process relies on these rules of the records:
 
 - **The reported lane takes the literal public claim**, with a typed evidence entry of
-  `assurance: reported`. Disagreement is preserved as a conflict or a typed blocker; the
-  source’s claim is never edited to match a checker.
+  `assurance: reported` whose `novelty` is `previously-published`, which is what the
+  register’s coverage gate reads.
+  Disagreement is preserved as a conflict or a typed blocker; the source’s claim is
+  never edited to match a checker.
 - **The register entry is made when the result is imported**, at its derived rung, with
   a `kind`, a `headline`, `attribution` and a `next_rung` naming the replay and review
   it waits on. Its date is `attribution.published`; `established` is this project’s own
   results’ date and the checker refuses it here.
-  Its [status](../../epistemics.md#status) is derived and reads *recorded* from then on.
+  Its [status](../../epistemics.md#status) is derived, and reads *recorded* until a read
+  or a replay of it is on file.
 - **The `claim` is short paragraphs:** the statement, the certificate, how the source
   checked it, what was replayed here, and the credit with a link to the source.
   The revision and digests of the retained copy belong to the evidence entry and the

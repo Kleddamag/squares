@@ -48,6 +48,50 @@
           "method": "Outward-rounded binary64 intervals; certified inscribed polygon area; derivative bounds over center boxes; rational angular net."
         }
       }
+    },
+    {
+      "status": "PASS",
+      "n": 95,
+      "L": "49259/5000",
+      "B": "9977/10000",
+      "mass_exact": "9499/100",
+      "mass_below_n_exact": "1/100",
+      "net_safety_exact": "399908091/400000000",
+      "smoothing_safety_exact": "399968091/400000000",
+      "net_endpoint_polynomial_exact": "89/40000",
+      "positive_basis_rectangles": 880,
+      "expanded_rectangles": 7040,
+      "axis_event_count": 2366,
+      "axis_vertex_count": 5597956,
+      "certificate": "rect_n95_L98518",
+      "input_sha256": "a3145931a2226640eae01ff50f0c9b71f6ed93f7d74b7cd4927a1ba75a084b3c",
+      "input_bytes": 1577962,
+      "upstream_nodes": 34416768,
+      "upstream_wall_seconds": "1110160131263733/200000000000",
+      "replay": {
+        "status": "PASS",
+        "command": [
+          "/home/user/squares/packing/.venv/bin/python",
+          "run_verify.py",
+          "--workers",
+          "1"
+        ],
+        "working_directory": "temporary copy of retained certificate directory",
+        "elapsed_seconds_including_compile": 22936.555355257,
+        "timeout_seconds": 86400,
+        "summary": {
+          "status": "VERIFIED",
+          "angle_cases": 201,
+          "target_lower_bound_exact": "10001/10000",
+          "nodes": 34416768,
+          "leaves": 20007462,
+          "minimum_printed_leaf_lower_bound": "312531252775047/312500000000000",
+          "wall_seconds": "2866846601575613/125000000000",
+          "input_sha256": "a3145931a2226640eae01ff50f0c9b71f6ed93f7d74b7cd4927a1ba75a084b3c",
+          "verifier_source_sha256": "a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602",
+          "method": "Outward-rounded binary64 intervals; certified inscribed polygon area; derivative bounds over center boxes; rational angular net."
+        }
+      }
     }
   ],
   "provenance": {
@@ -67,5 +111,6 @@
     }
   },
   "platform": "Linux-6.18.44-fc-v51-x86_64-with-glibc2.39",
-  "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+  "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "status": "PASS"
 }

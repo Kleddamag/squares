@@ -1558,7 +1558,7 @@ evidence:
       source records is 1.0000000054. The source compares it with Green's reported 6.3506030; this record already reports wand125's own rectangle certificate 257/40 = 6.425 at this count. The source says the full 201-angle replay was
       run again from the published tarball before publication and that the replay is
       the same outward-rounded algorithm, not an independent implementation. The
-      tarball is pinned by digest and not retained. Nothing was replayed here.
+      tarball is pinned by digest and not retained. The complete replay here of 2 October 2026 is E-n037-wand125-mixed-644-source-replay.
     external_review:
       state: informally-verified
       date: '2026-10-02'
@@ -1574,6 +1574,73 @@ evidence:
         is reproduced here from the candidate. The 200 oblique coverage statements and the
         axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-01'
+  - id: E-n037-wand125-mixed-644-source-replay
+    claim: lower-bound
+    scope: {n_values: [37]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds 2026-10-01]'
+    certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n37_L644/candidate.json.gz
+    replay: >-
+      From packing/, with the project CPython 3.14 environment and a C++17-capable
+      c++ on PATH: .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed
+      mixed-replay n37 --range 0-200 --work W --workers 4 --via git, which may be
+      split into ranges across sessions and resumed, fetches the tarball at the
+      pinned revision by Git, refuses it unless its SHA-256 (1e3420bb...) and size
+      are the pinned ones, unpacks it afresh, binds its 621 listed files, candidate,
+      certificate, manifest and code to the packet, repeats the driver's
+      preconditions, compiles the shipped checker with the shipped compile_verifier,
+      and replays each net direction with the shipped per-angle functions, each
+      passing only if it returns the certificate's own record. Then
+      .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-merge n37
+      must print FULL_REPLAY_MATCHES_SHIPPED with no missing or refused direction,
+      and mixed-merge n37 --check RECEIPT_MATCHES on the retained receipts
+      (receipts/n37/ in the packet). The checker's controls are .venv/bin/python3 -m
+      devtools.audit_wand125_point_and_mixed mixed-control n37 --work W, which must
+      report CONTROLS_REFUSED.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
+      theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n37_L644; no 37 unit squares fit in a square of side below 161/25.
+      scope: Unrestricted square packing with disjoint interiors and arbitrary rotations.
+      pinpoints: >-
+        The theorem and interval-verifier correspondence of the 2026-09-22
+        Tokoharu review; the departures of mixed_rotated_verify.cpp from
+        verify.cpp (coverage one and the per-node centre domain) read in the
+        2026-09-28 n = 50 verifier review; the 2 October review of the mixed
+        rectangle-measure certificates; the replay receipts in receipts/n37/ of
+        the wand125-point-and-mixed-2026-10-01 packet and its exact audit
+        receipts/mixed-audit.json.
+      assumptions:
+        - The rectangle density is nonnegative and exact, of total mass 3699999/100000 < 37, which this repository's exact audit recomputes from the retained candidate.
+        - All angles and legal centres are covered by the certified core net of 201 half-angles of step 83/40000 at core side 9977/10000 and the per-node centre domains, which the exact audit recomputes.
+        - Binary64 arithmetic has the reviewed IEEE-754 semantics, compiled by the shipped line with -ffp-contract=off and -fno-fast-math.
+        - The replayed interval inputs enclose the exact candidate, whose digest every replayed record carries.
+      audit_record: docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md
+    limitations: >-
+      Replays the source's mixed_rotated_verify.cpp (SHA-256 89b674a6...,
+      byte-identical to the n = 50 checker reviewed on 28 September) with the
+      source's per-angle replay functions, unchanged, on 2 October 2026, in one run of
+      four workers on shared 4-core x86-64 Linux containers (Intel Xeon, c++ 13.3.0,
+      Python 3.14.7, one BLAS and OpenMP thread, PYTHONOPTIMIZE unset): 201 of 201
+      directions, 5.13 CPU-hours. Every direction returned the certificate's own
+      record: the axis direction 5,044,516 cells with integer minimum
+      1.010578471379292, and each oblique direction its node count and lower bound,
+      the least 1.000000005449259 at index 99 (FULL_REPLAY_MATCHES_SHIPPED). This is
+      a machine replay of the source's checker, not an independent decision of the
+      certificate: coverage is decided by the source's C++ alone, and the angle-zero
+      tables are a second implementation for one direction only. Controls: the
+      checker, with the same compile, accepts mixed_n37_L644 at its least-bound
+      direction and refuses two mutated copies there, every mass scaled by 99/100
+      and the heaviest orbit at an exact witness centre deleted
+      (receipts/n37/control.json of the 2026-10-01 point-and-mixed packet, held by
+      tests/test_wand125_checker_controls.py). The tarball is pinned by digest and
+      not retained.
+    source_reviewed: '2026-10-02'
   - id: E-n065-wand125-mixed-835-report
     claim: lower-bound
     scope: {n_values: [65]}
@@ -1598,7 +1665,7 @@ evidence:
       source records is 1.0000000004. It exceeds Green's reported 8.2899656, which is 2 sqrt(2) + 71/13, by more than 0.060034, by the source's exact comparison. The source says the full 201-angle replay was
       run again from the published tarball before publication and that the replay is
       the same outward-rounded algorithm, not an independent implementation. The
-      tarball is pinned by digest and not retained. Nothing was replayed here.
+      tarball is pinned by digest and not retained. The complete replay here of 2 October 2026 is E-n065-wand125-mixed-835-source-replay.
     external_review:
       state: informally-verified
       date: '2026-10-02'
@@ -1617,6 +1684,73 @@ evidence:
         coverage statements and the axis tables are the source's until the replay here
         passes.
     source_reviewed: '2026-10-01'
+  - id: E-n065-wand125-mixed-835-source-replay
+    claim: lower-bound
+    scope: {n_values: [65]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds 2026-10-01]'
+    certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n65_L835/candidate.json.gz
+    replay: >-
+      From packing/, with the project CPython 3.14 environment and a C++17-capable
+      c++ on PATH: .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed
+      mixed-replay n65 --range 0-200 --work W --workers 4 --via git, which may be
+      split into ranges across sessions and resumed, fetches the tarball at the
+      pinned revision by Git, refuses it unless its SHA-256 (016f32f6...) and size
+      are the pinned ones, unpacks it afresh, binds its 621 listed files, candidate,
+      certificate, manifest and code to the packet, repeats the driver's
+      preconditions, compiles the shipped checker with the shipped compile_verifier,
+      and replays each net direction with the shipped per-angle functions, each
+      passing only if it returns the certificate's own record. Then
+      .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-merge n65
+      must print FULL_REPLAY_MATCHES_SHIPPED with no missing or refused direction,
+      and mixed-merge n65 --check RECEIPT_MATCHES on the retained receipts
+      (receipts/n65/ in the packet). The checker's controls are .venv/bin/python3 -m
+      devtools.audit_wand125_point_and_mixed mixed-control n37 --work W, which must
+      report CONTROLS_REFUSED.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
+      theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n65_L835; no 65 unit squares fit in a square of side below 167/20.
+      scope: Unrestricted square packing with disjoint interiors and arbitrary rotations.
+      pinpoints: >-
+        The theorem and interval-verifier correspondence of the 2026-09-22
+        Tokoharu review; the departures of mixed_rotated_verify.cpp from
+        verify.cpp (coverage one and the per-node centre domain) read in the
+        2026-09-28 n = 50 verifier review; the 2 October review of the mixed
+        rectangle-measure certificates; the replay receipts in receipts/n65/ of
+        the wand125-point-and-mixed-2026-10-01 packet and its exact audit
+        receipts/mixed-audit.json.
+      assumptions:
+        - The rectangle density is nonnegative and exact, of total mass 6499999/100000 < 65, which this repository's exact audit recomputes from the retained candidate.
+        - All angles and legal centres are covered by the certified core net of 201 half-angles of step 83/40000 at core side 9977/10000 and the per-node centre domains, which the exact audit recomputes.
+        - Binary64 arithmetic has the reviewed IEEE-754 semantics, compiled by the shipped line with -ffp-contract=off and -fno-fast-math.
+        - The replayed interval inputs enclose the exact candidate, whose digest every replayed record carries.
+      audit_record: docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md
+    limitations: >-
+      Replays the source's mixed_rotated_verify.cpp (SHA-256 89b674a6...,
+      byte-identical to the n = 50 checker reviewed on 28 September) with the
+      source's per-angle replay functions, unchanged, on 2 October 2026, in three runs
+      of four workers on shared 4-core x86-64 Linux containers (Intel Xeon, c++
+      13.3.0, Python 3.14.7, one BLAS and OpenMP thread, PYTHONOPTIMIZE unset): 201
+      of 201 directions, 18.33 CPU-hours. Every direction returned the certificate's
+      own record: the axis direction 26,532,801 cells with integer minimum
+      1.005594099748123, and each oblique direction its node count and lower bound,
+      the least 1.0000000003683225 at index 104 (FULL_REPLAY_MATCHES_SHIPPED). This
+      is a machine replay of the source's checker, not an independent decision of
+      the certificate: coverage is decided by the source's C++ alone, and the
+      angle-zero tables are a second implementation for one direction only.
+      Controls: the checker, with the same compile, accepts mixed_n37_L644 at its
+      least-bound direction and refuses two mutated copies there, every mass scaled
+      by 99/100 and the heaviest orbit at an exact witness centre deleted
+      (receipts/n37/control.json of the 2026-10-01 point-and-mixed packet, held by
+      tests/test_wand125_checker_controls.py); no mutation of the n = 65 certificate
+      itself was run. The tarball is pinned by digest and not retained.
+    source_reviewed: '2026-10-02'
   - id: E-n066-wand125-mixed-842-report
     claim: lower-bound
     scope: {n_values: [66]}
@@ -1641,7 +1775,7 @@ evidence:
       source records is 1.0000000009. It exceeds the same release's rectangle certificate 1677/200 = 8.385 at this count. The source says the full 201-angle replay was
       run again from the published tarball before publication and that the replay is
       the same outward-rounded algorithm, not an independent implementation. The
-      tarball is pinned by digest and not retained. Nothing was replayed here.
+      tarball is pinned by digest and not retained. The complete replay here of 2 October 2026 is E-n066-wand125-mixed-842-source-replay.
     external_review:
       state: informally-verified
       date: '2026-10-02'
@@ -1657,6 +1791,73 @@ evidence:
         is reproduced here from the candidate. The 200 oblique coverage statements and the
         axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-01'
+  - id: E-n066-wand125-mixed-842-source-replay
+    claim: lower-bound
+    scope: {n_values: [66]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds 2026-10-01]'
+    certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n66_L842/candidate.json.gz
+    replay: >-
+      From packing/, with the project CPython 3.14 environment and a C++17-capable
+      c++ on PATH: .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed
+      mixed-replay n66 --range 0-200 --work W --workers 4 --via git, which may be
+      split into ranges across sessions and resumed, fetches the tarball at the
+      pinned revision by Git, refuses it unless its SHA-256 (0f06a42b...) and size
+      are the pinned ones, unpacks it afresh, binds its 621 listed files, candidate,
+      certificate, manifest and code to the packet, repeats the driver's
+      preconditions, compiles the shipped checker with the shipped compile_verifier,
+      and replays each net direction with the shipped per-angle functions, each
+      passing only if it returns the certificate's own record. Then
+      .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-merge n66
+      must print FULL_REPLAY_MATCHES_SHIPPED with no missing or refused direction,
+      and mixed-merge n66 --check RECEIPT_MATCHES on the retained receipts
+      (receipts/n66/ in the packet). The checker's controls are .venv/bin/python3 -m
+      devtools.audit_wand125_point_and_mixed mixed-control n37 --work W, which must
+      report CONTROLS_REFUSED.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
+      theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n66_L842; no 66 unit squares fit in a square of side below 421/50.
+      scope: Unrestricted square packing with disjoint interiors and arbitrary rotations.
+      pinpoints: >-
+        The theorem and interval-verifier correspondence of the 2026-09-22
+        Tokoharu review; the departures of mixed_rotated_verify.cpp from
+        verify.cpp (coverage one and the per-node centre domain) read in the
+        2026-09-28 n = 50 verifier review; the 2 October review of the mixed
+        rectangle-measure certificates; the replay receipts in receipts/n66/ of
+        the wand125-point-and-mixed-2026-10-01 packet and its exact audit
+        receipts/mixed-audit.json.
+      assumptions:
+        - The rectangle density is nonnegative and exact, of total mass 6599999/100000 < 66, which this repository's exact audit recomputes from the retained candidate.
+        - All angles and legal centres are covered by the certified core net of 201 half-angles of step 83/40000 at core side 9977/10000 and the per-node centre domains, which the exact audit recomputes.
+        - Binary64 arithmetic has the reviewed IEEE-754 semantics, compiled by the shipped line with -ffp-contract=off and -fno-fast-math.
+        - The replayed interval inputs enclose the exact candidate, whose digest every replayed record carries.
+      audit_record: docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md
+    limitations: >-
+      Replays the source's mixed_rotated_verify.cpp (SHA-256 89b674a6...,
+      byte-identical to the n = 50 checker reviewed on 28 September) with the
+      source's per-angle replay functions, unchanged, on 2 October 2026, in two runs
+      of four workers on shared 4-core x86-64 Linux containers (Intel Xeon, c++
+      13.3.0, Python 3.14.7, one BLAS and OpenMP thread, PYTHONOPTIMIZE unset): 201
+      of 201 directions, 11.69 CPU-hours. Every direction returned the certificate's
+      own record: the axis direction 17,530,969 cells with integer minimum
+      1.0031018132438783, and each oblique direction its node count and lower bound,
+      the least 1.0000000009256298 at index 10 (FULL_REPLAY_MATCHES_SHIPPED). This
+      is a machine replay of the source's checker, not an independent decision of
+      the certificate: coverage is decided by the source's C++ alone, and the
+      angle-zero tables are a second implementation for one direction only.
+      Controls: the checker, with the same compile, accepts mixed_n37_L644 at its
+      least-bound direction and refuses two mutated copies there, every mass scaled
+      by 99/100 and the heaviest orbit at an exact witness centre deleted
+      (receipts/n37/control.json of the 2026-10-01 point-and-mixed packet, held by
+      tests/test_wand125_checker_controls.py); no mutation of the n = 66 certificate
+      itself was run. The tarball is pinned by digest and not retained.
+    source_reviewed: '2026-10-02'
   - id: E-n090-wand125-mixed-960-report
     claim: lower-bound
     scope: {n_values: [90]}
@@ -1681,7 +1882,7 @@ evidence:
       source records is 1.000000000042. It exceeds the same release's rectangle certificate 3831/400 = 9.5775 at this count; it was obtained from the n = 89 rectangle certificate read with the budget of 90 and stretched. The source says the full 201-angle replay was
       run again from the published tarball before publication and that the replay is
       the same outward-rounded algorithm, not an independent implementation. The
-      tarball is pinned by digest and not retained. Nothing was replayed here.
+      tarball is pinned by digest and not retained. The complete replay here of 2 October 2026 is E-n090-wand125-mixed-960-source-replay.
     external_review:
       state: informally-verified
       date: '2026-10-02'
@@ -1699,6 +1900,73 @@ evidence:
         48/5 exceeds by 9/400 (MX-3). The 200 oblique coverage statements and the axis
         tables are the source's until the replay here passes.
     source_reviewed: '2026-10-01'
+  - id: E-n090-wand125-mixed-960-source-replay
+    claim: lower-bound
+    scope: {n_values: [90]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds 2026-10-01]'
+    certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n90_L960/candidate.json.gz
+    replay: >-
+      From packing/, with the project CPython 3.14 environment and a C++17-capable
+      c++ on PATH: .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed
+      mixed-replay n90 --range 0-200 --work W --workers 4 --via git, which may be
+      split into ranges across sessions and resumed, fetches the tarball at the
+      pinned revision by Git, refuses it unless its SHA-256 (98a828a0...) and size
+      are the pinned ones, unpacks it afresh, binds its 621 listed files, candidate,
+      certificate, manifest and code to the packet, repeats the driver's
+      preconditions, compiles the shipped checker with the shipped compile_verifier,
+      and replays each net direction with the shipped per-angle functions, each
+      passing only if it returns the certificate's own record. Then
+      .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-merge n90
+      must print FULL_REPLAY_MATCHES_SHIPPED with no missing or refused direction,
+      and mixed-merge n90 --check RECEIPT_MATCHES on the retained receipts
+      (receipts/n90/ in the packet). The checker's controls are .venv/bin/python3 -m
+      devtools.audit_wand125_point_and_mixed mixed-control n37 --work W, which must
+      report CONTROLS_REFUSED.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
+      theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n90_L960; no 90 unit squares fit in a square of side below 48/5.
+      scope: Unrestricted square packing with disjoint interiors and arbitrary rotations.
+      pinpoints: >-
+        The theorem and interval-verifier correspondence of the 2026-09-22
+        Tokoharu review; the departures of mixed_rotated_verify.cpp from
+        verify.cpp (coverage one and the per-node centre domain) read in the
+        2026-09-28 n = 50 verifier review; the 2 October review of the mixed
+        rectangle-measure certificates; the replay receipts in receipts/n90/ of
+        the wand125-point-and-mixed-2026-10-01 packet and its exact audit
+        receipts/mixed-audit.json.
+      assumptions:
+        - The rectangle density is nonnegative and exact, of total mass 8999999/100000 < 90, which this repository's exact audit recomputes from the retained candidate.
+        - All angles and legal centres are covered by the certified core net of 201 half-angles of step 83/40000 at core side 9977/10000 and the per-node centre domains, which the exact audit recomputes.
+        - Binary64 arithmetic has the reviewed IEEE-754 semantics, compiled by the shipped line with -ffp-contract=off and -fno-fast-math.
+        - The replayed interval inputs enclose the exact candidate, whose digest every replayed record carries.
+      audit_record: docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md
+    limitations: >-
+      Replays the source's mixed_rotated_verify.cpp (SHA-256 89b674a6...,
+      byte-identical to the n = 50 checker reviewed on 28 September) with the
+      source's per-angle replay functions, unchanged, on 2 October 2026, in two runs
+      of four workers on shared 4-core x86-64 Linux containers (Intel Xeon, c++
+      13.3.0, Python 3.14.7, one BLAS and OpenMP thread, PYTHONOPTIMIZE unset): 201
+      of 201 directions, 7.36 CPU-hours. Every direction returned the certificate's
+      own record: the axis direction 11,812,969 cells with integer minimum
+      1.0187419121321, and each oblique direction its node count and lower bound,
+      the least 1.000000000041986 at index 122 (FULL_REPLAY_MATCHES_SHIPPED). This
+      is a machine replay of the source's checker, not an independent decision of
+      the certificate: coverage is decided by the source's C++ alone, and the
+      angle-zero tables are a second implementation for one direction only.
+      Controls: the checker, with the same compile, accepts mixed_n37_L644 at its
+      least-bound direction and refuses two mutated copies there, every mass scaled
+      by 99/100 and the heaviest orbit at an exact witness centre deleted
+      (receipts/n37/control.json of the 2026-10-01 point-and-mixed packet, held by
+      tests/test_wand125_checker_controls.py); no mutation of the n = 90 certificate
+      itself was run. The tarball is pinned by digest and not retained.
+    source_reviewed: '2026-10-02'
   - id: E-n092-wand125-mixed-969-report
     claim: lower-bound
     scope: {n_values: [92]}
@@ -1723,7 +1991,7 @@ evidence:
       source records is 1.0000000034. It exceeds Nagamochi's 1 + sqrt(75) = 9.6602540; it was obtained from the n = 91 rectangle certificate read with the budget of 92 and stretched. The source says the full 201-angle replay was
       run again from the published tarball before publication and that the replay is
       the same outward-rounded algorithm, not an independent implementation. The
-      tarball is pinned by digest and not retained. Nothing was replayed here.
+      tarball is pinned by digest and not retained. The complete replay here of 2 October 2026 is E-n092-wand125-mixed-969-source-replay.
     external_review:
       state: informally-verified
       date: '2026-10-02'
@@ -1739,6 +2007,73 @@ evidence:
         is reproduced here from the candidate. The 200 oblique coverage statements and the
         axis tables are the source's until the replay here passes.
     source_reviewed: '2026-10-01'
+  - id: E-n092-wand125-mixed-969-source-replay
+    claim: lower-bound
+    scope: {n_values: [92]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds 2026-10-01]'
+    certificate: resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/mixed_n92_L969/candidate.json.gz
+    replay: >-
+      From packing/, with the project CPython 3.14 environment and a C++17-capable
+      c++ on PATH: .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed
+      mixed-replay n92 --range 0-200 --work W --workers 4 --via git, which may be
+      split into ranges across sessions and resumed, fetches the tarball at the
+      pinned revision by Git, refuses it unless its SHA-256 (52555aa3...) and size
+      are the pinned ones, unpacks it afresh, binds its 621 listed files, candidate,
+      certificate, manifest and code to the packet, repeats the driver's
+      preconditions, compiles the shipped checker with the shipped compile_verifier,
+      and replays each net direction with the shipped per-angle functions, each
+      passing only if it returns the certificate's own record. Then
+      .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-merge n92
+      must print FULL_REPLAY_MATCHES_SHIPPED with no missing or refused direction,
+      and mixed-merge n92 --check RECEIPT_MATCHES on the retained receipts
+      (receipts/n92/ in the packet). The checker's controls are .venv/bin/python3 -m
+      devtools.audit_wand125_point_and_mixed mixed-control n37 --work W, which must
+      report CONTROLS_REFUSED.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
+      theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n92_L969; no 92 unit squares fit in a square of side below 969/100.
+      scope: Unrestricted square packing with disjoint interiors and arbitrary rotations.
+      pinpoints: >-
+        The theorem and interval-verifier correspondence of the 2026-09-22
+        Tokoharu review; the departures of mixed_rotated_verify.cpp from
+        verify.cpp (coverage one and the per-node centre domain) read in the
+        2026-09-28 n = 50 verifier review; the 2 October review of the mixed
+        rectangle-measure certificates; the replay receipts in receipts/n92/ of
+        the wand125-point-and-mixed-2026-10-01 packet and its exact audit
+        receipts/mixed-audit.json.
+      assumptions:
+        - The rectangle density is nonnegative and exact, of total mass 9199999/100000 < 92, which this repository's exact audit recomputes from the retained candidate.
+        - All angles and legal centres are covered by the certified core net of 201 half-angles of step 83/40000 at core side 9977/10000 and the per-node centre domains, which the exact audit recomputes.
+        - Binary64 arithmetic has the reviewed IEEE-754 semantics, compiled by the shipped line with -ffp-contract=off and -fno-fast-math.
+        - The replayed interval inputs enclose the exact candidate, whose digest every replayed record carries.
+      audit_record: docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md
+    limitations: >-
+      Replays the source's mixed_rotated_verify.cpp (SHA-256 89b674a6...,
+      byte-identical to the n = 50 checker reviewed on 28 September) with the
+      source's per-angle replay functions, unchanged, on 2 October 2026, in two runs
+      of four workers on shared 4-core x86-64 Linux containers (Intel Xeon, c++
+      13.3.0, Python 3.14.7, one BLAS and OpenMP thread, PYTHONOPTIMIZE unset): 201
+      of 201 directions, 6.67 CPU-hours. Every direction returned the certificate's
+      own record: the axis direction 12,489,156 cells with integer minimum
+      1.0245720286547386, and each oblique direction its node count and lower bound,
+      the least 1.0000000034450072 at index 172 (FULL_REPLAY_MATCHES_SHIPPED). This
+      is a machine replay of the source's checker, not an independent decision of
+      the certificate: coverage is decided by the source's C++ alone, and the
+      angle-zero tables are a second implementation for one direction only.
+      Controls: the checker, with the same compile, accepts mixed_n37_L644 at its
+      least-bound direction and refuses two mutated copies there, every mass scaled
+      by 99/100 and the heaviest orbit at an exact witness centre deleted
+      (receipts/n37/control.json of the 2026-10-01 point-and-mixed packet, held by
+      tests/test_wand125_checker_controls.py); no mutation of the n = 92 certificate
+      itself was run. The tarball is pinned by digest and not retained.
+    source_reviewed: '2026-10-02'
   - id: E-n084-wand125-mixed-940-report
     claim: lower-bound
     scope: {n_values: [84]}
@@ -1771,8 +2106,8 @@ evidence:
       the exact audit (receipts/mixed-audit.json in the packet) recomputes the mass, the
       net, the centre domains and the candidate digest from the retained bytes, and net
       index 100 alone was replayed, to price the replay, returning the certificate's
-      record; neither decides coverage. The complete replay is running on cloud runners
-      with devtools.audit_wand125_point_and_mixed mixed-replay.
+      record; neither decides coverage. The complete replay here of 2 October 2026 is
+      E-n084-wand125-mixed-940-source-replay.
     external_review:
       state: informally-verified
       date: '2026-10-02'
@@ -1790,6 +2125,73 @@ evidence:
         and is not a lower bound (finding MX-2); the bound 47/5 is unaffected. The 200
         oblique coverage statements and the axis tables are the source's until the replay
         here passes.
+    source_reviewed: '2026-10-02'
+  - id: E-n084-wand125-mixed-940-source-replay
+    claim: lower-bound
+    scope: {n_values: [84]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds 2026-10-02]'
+    certificate: resources/web/wand125-mixed-bounds-2026-10-02/square-packing-bounds/certificates/mixed_n84_L940/candidate.json.gz
+    replay: >-
+      From packing/, with the project CPython 3.14 environment and a C++17-capable
+      c++ on PATH: .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed
+      mixed-replay n84 --range 0-200 --work W --workers 4 --via git, which may be
+      split into ranges across sessions and resumed, fetches the tarball at the
+      pinned revision by Git, refuses it unless its SHA-256 (723f167b...) and size
+      are the pinned ones, unpacks it afresh, binds its 621 listed files, candidate,
+      certificate, manifest and code to the packet, repeats the driver's
+      preconditions, compiles the shipped checker with the shipped compile_verifier,
+      and replays each net direction with the shipped per-angle functions, each
+      passing only if it returns the certificate's own record. Then
+      .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-merge n84
+      must print FULL_REPLAY_MATCHES_SHIPPED with no missing or refused direction,
+      and mixed-merge n84 --check RECEIPT_MATCHES on the retained receipts
+      (receipts/n84/ in the packet). The checker's controls are .venv/bin/python3 -m
+      devtools.audit_wand125_point_and_mixed mixed-control n37 --work W, which must
+      report CONTROLS_REFUSED.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
+      theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n84_L940; no 84 unit squares fit in a square of side below 47/5.
+      scope: Unrestricted square packing with disjoint interiors and arbitrary rotations.
+      pinpoints: >-
+        The theorem and interval-verifier correspondence of the 2026-09-22
+        Tokoharu review; the departures of mixed_rotated_verify.cpp from
+        verify.cpp (coverage one and the per-node centre domain) read in the
+        2026-09-28 n = 50 verifier review; the 2 October review of the mixed
+        rectangle-measure certificates; the replay receipts in receipts/n84/ of
+        the wand125-mixed-bounds-2026-10-02 packet and its exact audit
+        receipts/mixed-audit.json.
+      assumptions:
+        - The rectangle density is nonnegative and exact, of total mass 8399999/100000 < 84, which this repository's exact audit recomputes from the retained candidate.
+        - All angles and legal centres are covered by the certified core net of 201 half-angles of step 83/40000 at core side 9977/10000 and the per-node centre domains, which the exact audit recomputes.
+        - Binary64 arithmetic has the reviewed IEEE-754 semantics, compiled by the shipped line with -ffp-contract=off and -fno-fast-math.
+        - The replayed interval inputs enclose the exact candidate, whose digest every replayed record carries.
+      audit_record: docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md
+    limitations: >-
+      Replays the source's mixed_rotated_verify.cpp (SHA-256 89b674a6...,
+      byte-identical to the n = 50 checker reviewed on 28 September) with the
+      source's per-angle replay functions, unchanged, on 2 October 2026, in two runs
+      of four workers on shared 4-core x86-64 Linux containers (Intel Xeon, c++
+      13.3.0, Python 3.14.7, one BLAS and OpenMP thread, PYTHONOPTIMIZE unset): 201
+      of 201 directions, 12.29 CPU-hours. Every direction returned the certificate's
+      own record: the axis direction 18,198,756 cells with integer minimum
+      1.0083383947166207, and each oblique direction its node count and lower bound,
+      the least 1.0000000008975796 at index 175 (FULL_REPLAY_MATCHES_SHIPPED). This
+      is a machine replay of the source's checker, not an independent decision of
+      the certificate: coverage is decided by the source's C++ alone, and the
+      angle-zero tables are a second implementation for one direction only.
+      Controls: the checker, with the same compile, accepts mixed_n37_L644 at its
+      least-bound direction and refuses two mutated copies there, every mass scaled
+      by 99/100 and the heaviest orbit at an exact witness centre deleted
+      (receipts/n37/control.json of the 2026-10-01 point-and-mixed packet, held by
+      tests/test_wand125_checker_controls.py); no mutation of the n = 84 certificate
+      itself was run. The tarball is pinned by digest and not retained.
     source_reviewed: '2026-10-02'
   - id: E-n085-wand125-mixed-942-report
     claim: lower-bound
@@ -1823,8 +2225,8 @@ evidence:
       the exact audit (receipts/mixed-audit.json in the packet) recomputes the mass, the
       net, the centre domains and the candidate digest from the retained bytes, and net
       index 100 alone was replayed, to price the replay, returning the certificate's
-      record; neither decides coverage. The complete replay is running on cloud runners
-      with devtools.audit_wand125_point_and_mixed mixed-replay.
+      record; neither decides coverage. The complete replay here of 2 October 2026 is
+      E-n085-wand125-mixed-942-source-replay.
     external_review:
       state: informally-verified
       date: '2026-10-02'
@@ -1842,6 +2244,76 @@ evidence:
         and is not a lower bound (finding MX-2); the bound 471/50 is unaffected. The 200
         oblique coverage statements and the axis tables are the source's until the replay
         here passes.
+    source_reviewed: '2026-10-02'
+  - id: E-n085-wand125-mixed-942-source-replay
+    claim: lower-bound
+    scope: {n_values: [85, 86, 87]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds 2026-10-02]'
+    certificate: resources/web/wand125-mixed-bounds-2026-10-02/square-packing-bounds/certificates/mixed_n85_L942/candidate.json.gz
+    replay: >-
+      From packing/, with the project CPython 3.14 environment and a C++17-capable
+      c++ on PATH: .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed
+      mixed-replay n85 --range 0-200 --work W --workers 4 --via git, which may be
+      split into ranges across sessions and resumed, fetches the tarball at the
+      pinned revision by Git, refuses it unless its SHA-256 (c61c5108...) and size
+      are the pinned ones, unpacks it afresh, binds its 621 listed files, candidate,
+      certificate, manifest and code to the packet, repeats the driver's
+      preconditions, compiles the shipped checker with the shipped compile_verifier,
+      and replays each net direction with the shipped per-angle functions, each
+      passing only if it returns the certificate's own record. Then
+      .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-merge n85
+      must print FULL_REPLAY_MATCHES_SHIPPED with no missing or refused direction,
+      and mixed-merge n85 --check RECEIPT_MATCHES on the retained receipts
+      (receipts/n85/ in the packet). The checker's controls are .venv/bin/python3 -m
+      devtools.audit_wand125_point_and_mixed mixed-control n37 --work W, which must
+      report CONTROLS_REFUSED.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
+      theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n85_L942; no 85 unit squares fit in a square of side below 471/50, and so none of 86 or 87.
+      scope: Unrestricted square packing with disjoint interiors and arbitrary rotations; monotonic transfer to larger counts below which the certificate's mass lies.
+      pinpoints: >-
+        The theorem and interval-verifier correspondence of the 2026-09-22
+        Tokoharu review; the departures of mixed_rotated_verify.cpp from
+        verify.cpp (coverage one and the per-node centre domain) read in the
+        2026-09-28 n = 50 verifier review; the 2 October review of the mixed
+        rectangle-measure certificates; the replay receipts in receipts/n85/ of
+        the wand125-mixed-bounds-2026-10-02 packet and its exact audit
+        receipts/mixed-audit.json.
+      assumptions:
+        - The rectangle density is nonnegative and exact, of total mass 8499999/100000 < 85, which this repository's exact audit recomputes from the retained candidate.
+        - All angles and legal centres are covered by the certified core net of 201 half-angles of step 83/40000 at core side 9977/10000 and the per-node centre domains, which the exact audit recomputes.
+        - Binary64 arithmetic has the reviewed IEEE-754 semantics, compiled by the shipped line with -ffp-contract=off and -fno-fast-math.
+        - The replayed interval inputs enclose the exact candidate, whose digest every replayed record carries.
+      audit_record: docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md
+    limitations: >-
+      Replays the source's mixed_rotated_verify.cpp (SHA-256 89b674a6...,
+      byte-identical to the n = 50 checker reviewed on 28 September) with the
+      source's per-angle replay functions, unchanged, on 2 October 2026, in two runs
+      of four workers on shared 4-core x86-64 Linux containers (Intel Xeon, c++
+      13.3.0, Python 3.14.7, one BLAS and OpenMP thread, PYTHONOPTIMIZE unset): 201
+      of 201 directions, 9.77 CPU-hours. Every direction returned the certificate's
+      own record: the axis direction 15,784,729 cells with integer minimum
+      1.013816765469528, and each oblique direction its node count and lower bound,
+      the least 1.0000000017271347 at index 44 (FULL_REPLAY_MATCHES_SHIPPED). This
+      is a machine replay of the source's checker, not an independent decision of
+      the certificate: coverage is decided by the source's C++ alone, and the
+      angle-zero tables are a second implementation for one direction only.
+      Controls: the checker, with the same compile, accepts mixed_n37_L644 at its
+      least-bound direction and refuses two mutated copies there, every mass scaled
+      by 99/100 and the heaviest orbit at an exact witness centre deleted
+      (receipts/n37/control.json of the 2026-10-01 point-and-mixed packet, held by
+      tests/test_wand125_checker_controls.py); no mutation of the n = 85 certificate
+      itself was run. Its mass, below 86 and 87, carries the bound to n = 86, above
+      the replayed rectangle certificate 1871/200 there (T-070), and to n = 87,
+      above Nagamochi's closed form. The tarball is pinned by digest and not
+      retained.
     source_reviewed: '2026-10-02'
   - id: E-n076-wand125-mixed-894-report
     claim: lower-bound
@@ -2871,11 +3343,11 @@ evidence:
         lambda = 1 to estimate the minimum". That last is geometrically evident and is the
         only place the argument leans on something unargued. This promotes nothing: the
         method stays `published-proof`, and `proof-assistant-checked` is a different thing.
-        Separately `devtools/check_nagamochi_bounds.py` re-derives the 44 operative
+        Separately `devtools/check_nagamochi_bounds.py` re-derives the 36 operative
         verified-field values from Theorem 2 in the gate, so a transcription slip in a
         current bound is caught even though the proof behind them is not machine-checked.
         95 of the hundred case records cite this record and it supplies the operative
-        verified lower bound in 44 of them; the other 51 citations are historical or
+        verified lower bound in 36 of them; the other 59 citations are historical or
         reported context, and a citation count is not a count of current bounds.
     limitations: External published proof; its arithmetic is not independently replayed here.
     source_reviewed: '2026-08-24'

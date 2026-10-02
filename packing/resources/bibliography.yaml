@@ -492,7 +492,8 @@ sources:
       wand125's. The README says parts of the work were produced with AI assistance under
       human direction. web/wand125-point-and-mixed-2026-10-01/acquisition/sources.json pins
       revision 1a25a5ed745fdd905a52f48fcc48150a0669032d. Dated by that revision,
-      2026-10-01 UTC.
+      2026-10-01 UTC. Each certificate's complete replay ran here on 2026-10-02, with its
+      receipts in the packet.
   - key: '[wand125 mixed bounds 2026-10-02]'
     authors: [wand125]
     year: 2026
@@ -513,6 +514,8 @@ sources:
       produced with AI assistance under human direction, and the commit names Claude as
       co-author. web/wand125-mixed-bounds-2026-10-02/acquisition/sources.json pins revision
       52af997dc91c579658f0828bc8304e306ad9d95b. Dated by that revision, 2026-10-02 UTC.
+      Each certificate's complete replay ran here on 2026-10-02, with its receipts in the
+      packet.
   - key: '[wand125 mixed bounds n76 2026-10-02]'
     authors: [wand125]
     year: 2026

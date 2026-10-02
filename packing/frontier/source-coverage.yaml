@@ -577,23 +577,30 @@ sources:
     local: resources/web/wand125-point-and-mixed-2026-10-01/
     source_key: '[wand125 mixed bounds 2026-10-01]'
     scope: {n_values: [37, 65, 66, 90, 92]}
-    reviewed: '2026-10-01'
+    reviewed: '2026-10-02'
     source_date: '2026-10-01'
     disposition: current-report
     replay_disposition: case-specific
     represented_by: [frontier/n-037.md, frontier/n-065.md, frontier/n-066.md, frontier/n-090.md, frontier/n-092.md]
     evidence:
       - E-n037-wand125-mixed-644-report
+      - E-n037-wand125-mixed-644-source-replay
       - E-n065-wand125-mixed-835-report
+      - E-n065-wand125-mixed-835-source-replay
       - E-n066-wand125-mixed-842-report
+      - E-n066-wand125-mixed-842-source-replay
       - E-n090-wand125-mixed-960-report
+      - E-n090-wand125-mixed-960-source-replay
       - E-n092-wand125-mixed-969-report
+      - E-n092-wand125-mixed-969-source-replay
     notes: >-
       The same revision and packet, retained for jlevy/squares#282. Five rectangle
       densities checked at coverage one by the source's research copy of Tokoharu's
       verify.cpp, the checker of its s(50) certificate, each of mass n - 1/100000. All
-      five are recorded as reported lower bounds (T-069); nothing was replayed, and the
-      proof-bundle tarballs are pinned by digest and not retained. The revision also
+      five were recorded as reported lower bounds (T-069), and on 2026-10-02 each passed a
+      complete replay here, every direction returning the certificate's record, which put
+      all five in the verified lane; the proof-bundle tarballs are pinned by digest and not
+      retained. The revision also
       holds mixed_n87_L939 and mixed_n87_L940, below its rectangle certificate at n = 87,
       which are pinned and not registered; the request announces n = 82 to 85 to follow.
   - id: wand125-mixed-bounds-2026-10-02
@@ -602,15 +609,17 @@ sources:
     url: https://github.com/wand125/square-packing-bounds/tree/52af997dc91c579658f0828bc8304e306ad9d95b
     local: resources/web/wand125-mixed-bounds-2026-10-02/
     source_key: '[wand125 mixed bounds 2026-10-02]'
-    scope: {n_values: [84, 85]}
+    scope: {n_values: [84, 85, 86, 87]}
     reviewed: '2026-10-02'
     source_date: '2026-10-02'
     disposition: current-report
     replay_disposition: case-specific
-    represented_by: [frontier/n-084.md, frontier/n-085.md]
+    represented_by: [frontier/n-084.md, frontier/n-085.md, frontier/n-086.md, frontier/n-087.md]
     evidence:
       - E-n084-wand125-mixed-940-report
+      - E-n084-wand125-mixed-940-source-replay
       - E-n085-wand125-mixed-942-report
+      - E-n085-wand125-mixed-942-source-replay
     notes: >-
       Revision 52af997dc91c579658f0828bc8304e306ad9d95b, retrieved at 2026-10-02T01:12Z for
       a comment of that day on jlevy/squares#282. Two rectangle densities checked at
@@ -618,9 +627,10 @@ sources:
       the checker of its n = 50 certificate, each of mass n - 1/100000. Both are recorded
       as reported lower bounds (T-071), above Green's reported value at both counts; the
       n = 85 value is also above the rectangle certificates T-068 reports at n = 86 and
-      87. The exact audit passes, one net angle of each was replayed to price the replay,
-      and the complete replays are running; the proof-bundle tarballs are pinned by digest
-      and not retained. The source's improvement_lower at both counts is measured from a
+      87. The exact audit passes, and on 2026-10-02 both passed a complete replay here,
+      which put s(84) >= 47/5 and s(85) >= 471/50 in the verified lane, the second carried
+      by its mass to n = 86 and 87; the proof-bundle tarballs are pinned by digest and not
+      retained. The source's improvement_lower at both counts is measured from a
       value below Green's and is not a lower bound (review finding MX-2). A later revision,
       af1db07b, adds an n = 101 certificate by another verifier, which jlevy/squares#294
       requests and the wand125-linear-certificates-2026-10-02 packet pins.

@@ -6,3 +6,4 @@
 cover: s = 9/1, 28273 points, 6420 segments, total 43347137744028965/562949953421312 = 76.99998460003
 roots: 32400 in region, 0 already done (log), 32400 to run, 4 threads
 progress 25/32400 roots, 1s
+progress 50/32400 roots, 7s

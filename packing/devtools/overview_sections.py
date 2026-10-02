@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import base64
 import html
+import math
 import re
 import textwrap
 from collections.abc import Iterable, Sequence
@@ -2066,7 +2067,9 @@ def atlas_popover() -> str:
 
 #: The directions of the site's one arrow (paper-design.md, Arrows): each is the one
 #: drawing, `--site-arrow` in site.css, turned or mirrored by `data-arrow`.
-ARROW_DIRECTIONS = ("right", "left", "down", "up", "external")
+#: The arrow's five directions, and the double chevron's two: `double-down` for a control
+#: that shows more below, `double-up` for one that shows less.
+ARROW_DIRECTIONS = ("right", "left", "down", "up", "external", "double-down", "double-up")
 
 
 def arrow_icon(direction: str = "right") -> str:
@@ -2084,20 +2087,69 @@ def step_arrow(*, back: bool = False) -> str:
     return arrow_icon("left" if back else "right")
 
 
+#: The atlas's two views, in tab order: the key the block's `data-atlas-view` and the
+#: address's `?atlas=` take, and the tab's label. The first is the default and the one
+#: the page is rendered in; `overview/atlas-view.js` lays the other out.
+ATLAS_VIEWS: tuple[tuple[str, str], ...] = (("grid", "Grid"), ("triangle", "Triangle"))
+
+#: The id the script gives the box of tiles, which each view tab controls.
+ATLAS_PANEL = "atlas-cells"
+
+#: What the triangle's rows are, in words, under the triangle.
+ATLAS_TRIANGLE_KEY = (
+    "Each row ends at a perfect square, where the best packing is the plain grid, and "
+    "holds the cases that need a square of that side: 2 to 4 need side 2, 5 to 9 side 3, "
+    "and so on."
+)
+
+
+def atlas_view_tabs() -> str:
+    """The tabs over the atlas's tiles that choose its view, Grid or Triangle: the
+    section tabs' strip (`.site-tabs`), but a tablist of two buttons that rearrange the
+    one set of tiles in place, where the Visualize section's are links to two pages.
+
+    The first view is selected and is the only tab in the page's tab order; the arrow
+    keys move between the two (`overview/atlas-view.js`). The strip ships `hidden`, as
+    the expander's row does: without the script it would do nothing, and the script
+    shows it once the tiles are placed.
+    """
+    default = ATLAS_VIEWS[0][0]
+    tabs = "".join(
+        f'<button type="button" role="tab" id="atlas-view-{key}" data-atlas-tab="{key}" '
+        f'aria-selected="{"true" if key == default else "false"}" '
+        f'aria-controls="{ATLAS_PANEL}"{"" if key == default else ' tabindex="-1"'}>'
+        f"{_esc(label)}</button>"
+        for key, label in ATLAS_VIEWS
+    )
+    return (
+        '<div class="site-tabs site-atlas-views" role="tablist" aria-label="Atlas layout" '
+        f'data-atlas-views data-atlas-panel="{ATLAS_PANEL}" hidden>{tabs}</div>'
+    )
+
+
 def atlas_grid() -> str:
     """Every tracked case's known-best packing, n = 1 to 324, as a grid of drawings,
     each a link to its case record. With scripts, `overview/atlas-grid.js` opens a cell
     in the one atlas popover instead: what the ascent film's panel says about that n,
     from `atlas_film_facts`, beside the drawing shown large, with a button to the record.
 
+    The block is rendered in the grid view (`data-atlas-view`), under tabs that switch
+    it to the triangle (`atlas_view_tabs`). Both views are one set of tiles: the triangle
+    places each by properties the script writes, so a tile's markup is the same in both.
+    A perfect square's tile is marked `data-atlas-square`: it ends its row of the
+    triangle, on the right edge, and the triangle numbers it in the text's colour.
+
     The cells, about a megabyte of SVG, sit in two `<template>`s, which the browser
     parses but does not render. The script places the first `ATLAS_FIRST` when the grid
     nears the viewport, so the page opens as fast as it did without them, and the rest
-    only when the reader presses the button under the grid, "Show all 324", or steps the
-    popover past the last case shown. The button then reads "Show 1 to 100" and collapses
-    the grid again. Its row ships `hidden`, since without the script it would do
-    nothing. The facts are one JSON element, a tenth the size the same facts would take
-    as markup in every cell.
+    only when the reader presses the button under the grid, "Show More" with the double
+    chevron down, or steps the popover past the last case shown. The button then reads
+    "Show Less" with the chevron up and collapses the grid again; its name for assistive
+    technology says what each does and how many cases that is (`data-name-more`,
+    `data-name-less`), it controls the box of tiles (`ATLAS_PANEL`), and it is the site's
+    one action under a table or grid (`.site-action`, with "See all results"). Its row
+    ships `hidden`, since without the script it would do nothing. The facts are one JSON
+    element, a tenth the size the same facts would take as markup in every cell.
     """
     import json  # noqa: PLC0415
 
@@ -2109,25 +2161,32 @@ def atlas_grid() -> str:
     for case in cases:
         n = case["n"]
         status = case["status"]
+        square = " data-atlas-square" if math.isqrt(n) ** 2 == n else ""
         cells.append(
-            f'<a class="site-atlas-cell" href="{case_url(n)}" data-atlas-n="{n}" '
+            f'<a class="site-atlas-cell" href="{case_url(n)}" data-atlas-n="{n}"{square} '
             f'data-status="{_esc(status)}" aria-label="n = {n}, {_esc(status)}">'
             f"{frontier.packing_svg(n, units=ATLAS_UNITS)}"
             f'<span class="site-atlas-n">{n}</span></a>'
         )
     facts = json.dumps(atlas_film_facts(), ensure_ascii=False, separators=(",", ":"))
-    more, less = f"Show all {len(cases)}", f"Show 1 to {ATLAS_FIRST}"
+    more, less = "Show More", "Show Less"
+    name_more = f"Show more: all {len(cases)} cases"
+    name_less = f"Show less: the first {ATLAS_FIRST}"
     return (
-        '<div class="site-wide site-atlas-grid" data-atlas-grid>'
+        f'<div class="site-wide site-atlas-grid" data-atlas-view="{ATLAS_VIEWS[0][0]}" '
+        f"data-atlas-grid>{atlas_view_tabs()}"
         f"<template data-atlas-first>{''.join(cells[:ATLAS_FIRST])}</template>"
         f"<template data-atlas-rest>{''.join(cells[ATLAS_FIRST:])}</template>"
         '<script type="application/json" data-atlas-facts>'
         + facts.replace("</", "<\\/")
         + "</script>"
-        '<p class="site-atlas-toggle-row" hidden>'
-        '<button type="button" class="site-popover-action site-atlas-toggle" '
-        'data-atlas-toggle aria-expanded="false" '
-        f'data-label-more="{more}" data-label-less="{less}">{more}</button></p>'
+        f'<p class="site-atlas-key">{_esc(ATLAS_TRIANGLE_KEY)}</p>'
+        '<p class="site-action-row site-atlas-toggle-row" hidden>'
+        '<button type="button" class="site-action site-atlas-toggle" '
+        f'data-atlas-toggle aria-expanded="false" aria-controls="{ATLAS_PANEL}" '
+        f'aria-label="{name_more}" data-label-more="{more}" data-label-less="{less}" '
+        f'data-name-more="{name_more}" data-name-less="{name_less}">'
+        f"<span data-atlas-label>{more}</span>{arrow_icon('double-down')}</button></p>"
         '<p class="site-atlas-note">Every case from n = 1 to 324 is also in the '
         '<a href="frontier.html">frontier survey</a>, and each has a '
         f'<a href="{CASES_PAGE}">case record</a>.</p></div>{atlas_popover()}'

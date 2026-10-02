@@ -82,6 +82,10 @@ void test("a renamed section's old fragment stays while an anchor keeps its id",
   const survey = "#the-survey";
   assert.equal(forwarded(survey, { ids: ["the-frontier-survey", "the-survey"] }), null);
   assert.equal(forwarded(survey, { ids: ["the-frontier-survey"] }), `${EXPLAINER}${survey}`);
+  // The Atlas of Square Packings was `#the-atlas`, kept the same way.
+  const atlas = "#the-atlas";
+  assert.equal(forwarded(atlas, { ids: ["the-atlas-of-square-packings", "the-atlas"] }), null);
+  assert.equal(forwarded(atlas, { ids: ["the-atlas-of-square-packings"] }), `${EXPLAINER}${atlas}`);
 });
 
 void test("a forwarder page sends every visit where it names", () => {

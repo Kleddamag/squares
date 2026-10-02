@@ -558,6 +558,11 @@ it.
   `site-nav.css` rather than `site.css` because the workbench carries only the bar’s
   stylesheet. On the film’s page it opens the document; on the workbench it sits in the
   application shell under the bar, above the application.
+  The same strip also switches a view in place: there it is a `tablist` of buttons
+  (`role="tab"`), each stripped of a button’s own chrome and taking the strip’s type,
+  the selected one filled as the current page’s link is.
+  The homepage’s atlas uses it for its Grid and Triangle views (**Atlas views**, below);
+  `site-nav.css` draws both forms, and the header rules above take only the `nav` strip.
   From the top, both pages read bar, rule, tabs, content: the tabs stand under the rule
   that runs under the bar, never over it.
   They are in the header slot, whose lower border is that rule, so a header that holds
@@ -932,12 +937,17 @@ it.
   themes. Each direction is that one drawing turned: **right** as drawn, **left** its
   mirror, **down** a quarter turn clockwise, **up** a quarter turn back, and
   **external** an eighth turn back, pointing up and to the right.
-  The one other shape is the sort pair, `--site-arrow-sort`, two small arrows up and
-  down in the same stroke.
+  The two other shapes are the sort pair, `--site-arrow-sort`, two small arrows up and
+  down in the same stroke, and the double chevron, `--site-arrow-double`, the arrow’s
+  open head twice, one over the other, in the same box and stroke: **double-down** as
+  drawn, for a control that shows more below, and **double-up** turned half round, for
+  one that shows less; the atlas’s expander carries them (**Action under a table or
+  grid**, below).
   - Inline markup carries `<span class="site-icon-arrow" data-arrow="right">`, written
     only by `overview_sections.arrow_icon(direction)`: the atlas popover’s stepper (left
     and right), a case record’s steps to its neighbours (left before the previous case,
-    right after the next) and the overview’s “See all results” line (right).
+    right after the next), the overview’s “See all results” button (right) and the
+    atlas’s expander (double-down, then double-up).
   - The icons CSS draws are pseudo-elements painted from the same token: a card’s corner
     icon and its popover’s button, chosen by `data-go` (down to a row on this page,
     external off the site, right to another page of the site, such as **See All
@@ -1038,18 +1048,112 @@ it.
   The cells ship in a `<template>` and are placed only as the grid nears the viewport
   (`overview/atlas-grid.js`), so they add nothing to the first paint; each drawing is
   400 units across, fine enough to show large.
+  The grid is the atlas’s default view; the triangle is the other (**Atlas views**,
+  below).
+
+- **Atlas views.** The atlas is one set of tiles under two views, **Grid** and
+  **Triangle**, chosen by a strip over the tiles (`atlas_view_tabs`): the section tabs’
+  strip (**Section tabs**, above) as a `tablist` of two buttons, Grid selected by
+  default and the one tab in the page’s tab order, with the arrow keys, Home and End
+  moving between the two and selecting the tab the focus lands on
+  (`overview/atlas-view.js`). The grid is the stylesheet’s alone, and the page is
+  rendered in it; without scripting the strip stays `hidden`, as the expander’s row
+  does. The triangle sets the cases by the grid bound: row $k$ holds the $2k - 1$ cases
+  $n = (k - 1)^2 + 1$ to $k^2$, the ones that need a square of side $k$, and ends at
+  $k^2$ on the right edge, so the perfect squares $1, 4, 9, 16, \ldots$ run down it;
+  those are the cases whose best packing is the $k \times k$ grid itself, and their
+  tiles are numbered in the text’s colour at the medium weight.
+  Ten rows show the first hundred cases, the last 19 tiles wide; eighteen show all 324,
+  the last 35 wide. A one-line key under the triangle says what the rows are
+  (`ATLAS_TRIANGLE_KEY`). The view is in the address as `?atlas=triangle` (the grid has
+  no parameter), written with `history.replaceState` so every other parameter and the
+  fragment keep their places, and read before any tile is placed, so a linked triangle
+  never shows the grid first.
+  **Wrapping, by one rule at every width.** A line holds as many tiles as the block’s
+  width allows at the least tile width, `--site-atlas-tile-min` (1.625rem, 26px, which
+  keeps a tile over a pointer target’s 24px with its three-figure number legible under
+  it; 2.5rem, 40px, under 40rem or with a coarse pointer, for a finger), and never more
+  than the longest row holds.
+  A row wider than a line wraps in reading order, as text does: its first line is full,
+  from the row’s first case at the left edge; further full lines follow, each from the
+  left edge; and what is left over goes on its last line, right-aligned, so the row
+  still ends at $k^2$ on the right edge, in the same column as the rows that fit.
+  So 19 tiles at eight to a line are lines of 8, 8 and 3, the 3 ending at the square,
+  and a row that fits is one right-aligned line.
+  The next row always starts a new line, and where any row wraps the space over a new
+  row is 0.4 of a tile rather than 0.12, so a row’s lines read as one group.
+  Where some rows fit and the later ones wrap, as on a phone from row 5, the picture
+  reads as one column of squares down the right edge with the wrapped rows flowing in
+  from the left to meet it; the owner chose this over the earlier cut, which put the
+  remainder first and read back to front.
+  Where a case stands, `place(n, per)`, is one pure function of the case and the tiles a
+  line holds, tested in Node (`tests/node/overview_atlas_view`); the script writes each
+  tile’s line and column as custom properties, the stylesheet lays the tiles out from
+  them (`grid-area`), and the placement is redone on the frame after a resize and when
+  the expander opens or closes.
+  A tile is its line’s share of the block, `100cqi` over the tiles a line holds and no
+  wider than `--site-atlas-tile-max` (4.5rem), with its inset, its number and the space
+  over a row as fractions of it, so the triangle keeps its proportions.
+  Measured in Chromium: at 1280 pixels 63px tiles for the hundred and 34px for all 324,
+  no row wrapping; at 1024, 50 and 27px; at 768, 36px for the hundred, and 26px for all
+  324 with rows 14 to 18 wrapping at 26 to a line; at 390, 45px tiles at eight to a
+  line, rows 5 to 10 wrapping (`devtools.measure_atlas_views layout`). **The move.** A
+  change of view, and the expander’s change in either view, moves every tile from where
+  it was to where it is: one read of every tile’s box and of each element after the
+  tiles, the change of layout, one read more, then one Web Animation a tile on
+  `transform` alone, a translation and a scale about the tile’s corner, all started in
+  one batch for `--site-atlas-move-duration` (360ms) with `--site-atlas-move-easing` (an
+  ease-out). A tile outside the window before and after is not animated; a tile the
+  expander shows for the first time fades in; and what follows the tiles moves with
+  them, so nothing jumps under them.
+  Under `prefers-reduced-motion: reduce` the duration is 0ms and the view switches at
+  once. A second press mid-move reads the tiles where they have got to, cancels the first
+  move and starts from there, with the focus kept on the tab pressed.
+  The final layout is the stylesheet’s, correct with no animation at all, and nothing in
+  the block transitions its place (`transition: none` on the box of tiles, the drawings
+  and the numbers): KPress’s reduced-motion rule gives every classed element a 0.01ms
+  transition of every property, under which the triangle was laid out for one frame with
+  the grid’s gaps, 1344 pixels wide at 1280, before it settled.
+  `devtools.measure_atlas_views` measures the layouts (`layout`), times the moves
+  (`move`) and pictures both (`shots`); `tests/test_site_atlas_views.py` holds the page
+  to all of it in Chromium.
+  Timed at 1280 pixels, the median of five: the press’s handler runs 8ms for the hundred
+  cases and 24ms for all 324, with 64 and 225 tiles in the window moving over 383 and
+  420ms; the hundred miss no frame, and all 324 miss ten of 39 at 120Hz, the longest
+  18ms.
+
+- **Action under a table or grid.** Where one control follows a table or a grid, it is
+  the site’s one action button, `.site-action`, in a centred `.site-action-row`: the
+  look of a popover’s action (**Popovers**, the accent fill with the page’s background
+  for the text, the medium sans at the note size, `0.45rem 0.9rem` of padding and square
+  corners, darkened a step on hover and keyboard focus), with its icon from the one set
+  after the label at the label’s size, the arrow right where the control is a link that
+  navigates and the double chevron where it is a button that shows more or less in
+  place. Both forms share one rule in `site.css`, and the row sets `--site-action-space`
+  (1.2rem) above itself and nothing below, where the next heading’s own space begins.
+  The site has two: **See all results** under the homepage’s recent table, a link to the
+  results page with the arrow right, and the atlas’s expander, below.
+  The Frontier, Results and Papers pages end their tables with no action, so none
+  carries one. `tests/test_site_atlas_views.py` reads both in Chromium at 1280 and 390
+  pixels and holds their colours, type, height, padding and centring to each other.
 
 - **Atlas expander.** The grid shows n = 1 to 100 at first (`ATLAS_FIRST`). One button,
-  centred under it, reads **Show all 324** and expands the grid in place; it then reads
-  **Show 1 to 100** and collapses it, and carries `aria-expanded`. It is the site’s
-  action button, `.site-popover-action`, the same accent fill a popover’s button has,
-  set `--site-atlas-toggle-space` below the grid.
-  Cases 101 to 324 ship in a second `<template>` and are placed only the first time the
-  grid expands, into one box the grid lays out as its own cells (`display: contents`),
-  so collapsing is that box’s `hidden`. Collapsing keeps the button in view.
-  The atlas popover’s arrows still step through all 324 cases: stepping past the last
-  case shown expands the grid first, so the cell focus returns to is there.
-  Without scripting the button’s row stays `hidden`, since it would do nothing.
+  centred under it, reads **Show More** with the double chevron down and expands the
+  grid in place; it then reads **Show Less** with the chevron up and collapses it.
+  It carries `aria-expanded` and `aria-controls` (the box of tiles, `ATLAS_PANEL`), and
+  its name for assistive technology says what it does and how many cases that is, “Show
+  more: all 324 cases” and “Show less: the first 100”, while the visible label stays
+  short; the total is also in the sentence under the grid.
+  It is the action under a table or grid (above), set `--site-atlas-toggle-space` below
+  the grid. Cases 101 to 324 ship in a second `<template>` and are placed only the first
+  time the grid expands, into one box the grid lays out as its own cells
+  (`display: contents`), so collapsing is that box’s `hidden`. Collapsing keeps the
+  button in view. The atlas popover’s arrows still step through all 324 cases: stepping
+  past the last case shown expands the grid first, so the cell focus returns to is
+  there. Without scripting the button’s row stays `hidden`, since it would do nothing.
+  In the triangle, expanding changes how many tiles a line holds, since the longest row
+  grows from 19 to 35, so the hundred move into their smaller places as the rest fade
+  in, by the same move a change of view makes (**Atlas views**, above).
 
 - **Wide bleed.** A wide block (`.site-wide`) takes the wide track, `--site-wide`, less
   the page gutters (`--site-wide-gutter` on either side; **Spacing**, above).
@@ -1117,9 +1221,15 @@ it.
   only the record its fragment names (`overview/case-view.js`) and typesets that
   record’s math when it is shown; without scripting it lists every record.
 
-- **Atlas cards.** The atlas’s posters and film have a section of their own under The
-  Atlas, **PDFs and Videos**, an ordinary `h2`; The Atlas keeps the grid, its expander
-  and the grid’s own note, and holds no card.
+- **Atlas cards.** The atlas’s posters and film have a section of their own, **PDFs and
+  Videos**, an ordinary `h2`; **The Atlas of Square Packings** keeps the grid, its
+  expander and the grid’s own note, and holds no card.
+  The homepage’s sections run The Squares Project, Recent Results, Verification Ladders,
+  The Atlas of Square Packings, The Frontier Survey directly after it, PDFs and Videos,
+  Other Square Packing Projects and Squares Project Documentation, the owner’s order of
+  1 October; the atlas section was The Atlas until that day, and its heading keeps an
+  empty anchor so `#the-atlas` still lands on it, as Verification Ladders and The
+  Frontier Survey keep theirs (`tests/test_overview.py` holds the order and the anchor).
   They are three direct hero cards side by side, one card section (`atlas_cards`): the n
   = 1 to 100 poster, headed by its landscape card image, opens its PDF; the n = 1 to 324
   poster, headed by the top of the poster itself, opens its PDF; and the film, headed by

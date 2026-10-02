@@ -853,9 +853,9 @@ def overview_page() -> Page:
     """The front door: prose from its template, every fact from the record.
 
     Its first section, The Square Packing Problem, opens with README's two opening
-    paragraphs and its Recent Results with README's next two, read from README's
-    `project-intro` and `recent-progress` blocks and their links rewritten for the site
-    (`site_documents`).
+    paragraphs, read from README's `project-intro` block with their links rewritten for
+    the site (`site_documents`). Recent Results is one paragraph of the template's own
+    before its table; README keeps its fuller account of the same progress.
     """
     from devtools import overview_data, overview_sections, site_documents  # noqa: PLC0415
 
@@ -863,7 +863,6 @@ def overview_page() -> Page:
     values = {
         "HERO": overview_sections.hero(),
         "README_INTRO": site_documents.overview_intro(),
-        "README_PROGRESS": site_documents.overview_progress(),
         "NEW_ISSUE_URL": NEW_ISSUE_URL,
         "DOCUMENT_CARDS": overview_sections.document_cards(),
         "OTHER_PROJECTS": overview_sections.other_project_cards(overview),

@@ -24,12 +24,13 @@ Six checks:
    workflow entry points, the agent-session schema must be able to record them, the
    synopsis must define the work units those workflows produce, and retired workflow
    identifiers must not survive elsewhere in repository-owned text.
-6. **The introduction is marked.** The site's overview renders README's introduction
-   as its own prose, read from two blocks: the one between the `project-intro` markers
-   is its first section, and the one between the `recent-progress` markers opens its
-   Recent Results (`site_documents.shared_blocks`). Each block must be there once and
-   hold prose alone, with no heading or comment and no case called the central one,
-   and the second must follow the first directly.
+6. **The introduction is marked.** The site's overview renders README's opening as
+   its own prose, read from the block between the `project-intro` markers, which is
+   its first section (`site_documents.shared_blocks`). The block must be there once and
+   hold prose alone, with no heading or comment and no case called the central one.
+   README's next two paragraphs were a second shared block, `recent-progress`, until
+   2026-10-02; the overview's Recent Results is one paragraph of its own since, and
+   README's account is its own.
 
 Two more checks held README's New Results section to the register and its survey
 summary's recent-result counts to the records. Both went with those sections when the
@@ -515,8 +516,9 @@ def check_work_model(text: str) -> list[str]:
 
 
 def check_intro(text: str) -> list[str]:
-    """The two blocks of the introduction the site's overview renders are each marked
-    once, in order, and are prose alone."""
+    """The block of the introduction the site's overview renders, `project-intro`, is
+    marked once and is prose alone (`site_documents.SHARED_BLOCKS`; the second block,
+    `recent-progress`, stopped being shared on 2026-10-02)."""
     try:
         shared_blocks(text)
     except ValueError as error:

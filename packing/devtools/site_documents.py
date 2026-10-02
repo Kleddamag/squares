@@ -31,14 +31,15 @@ into a page against the ids the target page actually has. A target that does not
 resolve fails the render with the whole list, so a broken link is found when the page is
 built rather than by a reader.
 
-One document is also read in part. README's introduction is marked as two blocks, and
-each is prose of the overview: the block between the `project-intro` markers is the
-overview's first section, and the block between the `recent-progress` markers, the two
-paragraphs on what the project covers and on its newest major result, opens Recent
-Results. The overview's template holds a placeholder where each would be,
-`overview_intro` and `overview_progress` fill them, and `rewrite_overview_blocks` makes
-the blocks' links work on the site, as a document's are made to. The project is
-introduced in one text, on GitHub and on the site.
+One document is also read in part. README's opening is marked as one block, and it is
+prose of the overview: the block between the `project-intro` markers is the overview's
+first section. The overview's template holds a placeholder where it would be,
+`overview_intro` fills it, and `rewrite_overview_blocks` makes the block's links work on
+the site, as a document's are made to. The problem is introduced in one text, on GitHub
+and on the site. README's next two paragraphs, what the project covers and its newest
+major result, were a second shared block, `recent-progress`, that opened the overview's
+Recent Results until 2026-10-02; the overview says that in one paragraph of its own
+now, and README keeps its fuller account, so the two are not one text (think-ekw5).
 """
 
 from __future__ import annotations
@@ -93,11 +94,9 @@ class SharedBlock:
 #: README's two opening paragraphs, the problem and its bounds: the overview's first
 #: section.
 INTRO = SharedBlock("project-intro")
-#: README's next two paragraphs, what the project covers and its newest major result:
-#: the head of the overview's Recent Results.
-PROGRESS = SharedBlock("recent-progress")
-#: README's shared blocks, in the order README writes them.
-SHARED_BLOCKS = (INTRO, PROGRESS)
+#: README's shared blocks, in the order README writes them: one since 2026-10-02, when
+#: the `recent-progress` block stopped being shared (the module's docstring).
+SHARED_BLOCKS = (INTRO,)
 INTRO_BEGIN, INTRO_END = INTRO.begin, INTRO.end
 OVERVIEW_INTRO_OPEN, OVERVIEW_INTRO_CLOSE = INTRO.opened, INTRO.closed
 #: The framing the owner refused on 2026-09-30: eleven squares is a central case of the
@@ -456,8 +455,8 @@ def shared_blocks(readme: str) -> dict[str, str]:
 
     Raises `ValueError` for a block `shared_block` refuses, and unless the blocks follow
     one another in README in the order `SHARED_BLOCKS` lists them, with nothing but
-    blank lines between: the overview shows them in two sections, and README reads them
-    as one introduction.
+    blank lines between, so that README reads them as one introduction; with one block
+    the order holds of itself.
     """
     blocks = {block.name: shared_block(readme, block) for block in SHARED_BLOCKS}
     for first, second in pairwise(SHARED_BLOCKS):
@@ -472,12 +471,6 @@ def shared_blocks(readme: str) -> dict[str, str]:
 def intro_block(readme: str) -> str:
     """README's two opening paragraphs, the Markdown between its `project-intro` markers."""
     return shared_block(readme, INTRO)
-
-
-def progress_block(readme: str) -> str:
-    """README's two paragraphs on what the project covers and its newest major result,
-    the Markdown between its `recent-progress` markers."""
-    return shared_block(readme, PROGRESS)
 
 
 def _overview_block(block: SharedBlock) -> str:
@@ -495,22 +488,16 @@ def overview_intro() -> str:
     return _overview_block(INTRO)
 
 
-def overview_progress() -> str:
-    """README's coverage and newest-result paragraphs as the Markdown that opens the
-    overview's Recent Results."""
-    return _overview_block(PROGRESS)
-
-
 def rewrite_overview_blocks(page: str) -> str:
     """The rendered overview with the links of README's shared blocks made to work there.
 
-    The blocks are written for GitHub, so their links are repository paths. Each becomes
+    The block is written for GitHub, so its links are repository paths. Each becomes
     the site's own page for what it names where the site has one, by the rule every
     document's page follows (`record_aliases`, `_record_links`): a result's row in the
     results table, the results table for the register, the frontier atlas for the status
     table, a case's record for its case file, and a reader document's page. Any other
     path becomes its link on `main`, checked against the tree, as on a document's page.
-    Nothing outside the blocks is rewritten.
+    Nothing outside a shared block is rewritten.
     """
     for block in SHARED_BLOCKS:
         if page.count(block.opened) != 1 or page.count(block.closed) != 1:

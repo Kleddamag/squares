@@ -1048,8 +1048,8 @@ def test_the_survey_is_one_paragraph_and_its_cards_lead_to_the_frontier_page(
     sources and the seventeen-square history, is the Frontier page's own prose
     (`test_the_frontier_page_opens_with_the_surveys_account`), so the section states
     none of it: no count, no date, no author of a seventeen-square bound. Nor does it
-    say again what README's `recent-progress` block says higher on the page, that the
-    reported and the verified bounds are kept apart."""
+    say that the reported and the verified bounds are kept apart, which is the Frontier
+    page's Reported and verified."""
     section = page.split('id="the-frontier-survey"', 1)[1].split("<h2", 1)[0]
     prose = section.split('<div class="site-cards-frame', 1)[0]
     paragraphs = re.findall(r"<p>(.*?)</p>", prose, re.DOTALL)
@@ -1069,7 +1069,6 @@ def test_the_survey_is_one_paragraph_and_its_cards_lead_to_the_frontier_page(
         "replayed",
     ):
         assert gone not in _rendered_text(section), gone
-    assert "kept separate" in _rendered_text(_progress(page))
     cards = _survey_cards(page)
     assert [href for href, _, _ in cards] == [
         href for href, *_ in overview_sections.SURVEY_CARDS
@@ -2526,20 +2525,16 @@ def test_the_recent_table_lists_every_result_less_the_superseded_at_s4_and_180_d
     assert 0 < shown < len(overview.results)
     assert f"{shown} of {len(overview.results)} results</span>" in tools
     text = " ".join(re.sub(r"<[^>]+>", "", section).split())
-    assert (
-        "The table lists every result, newest first: new bounds for particular numbers of "
-        "squares, found here or by others, each with its credit, its ratings, its kind and "
-        "its status, all defined on the Results page."
-    ) in text
     # The retired lead, not the date: a row's claim may cite a source of 21 August.
     assert "since 1 August" not in text
     assert "every result since" not in text
+    # Where the bar starts, said once, in the bar's own words; the sentence on clearing
+    # the filters left with the rest of the detail on 2026-10-02.
     starts = (
-        "The table starts with superseded results hidden, at significance S4 and up and a "
-        "maximum age of 180 days; clear Hide superseded, choose All and clear Max age to "
-        "see every row."
+        "The table starts at significance S4 and up, max age 180 days and superseded hidden."
     )
     assert text.count(starts) == 1
+    assert "clear Hide superseded" not in text
     assert "It starts filtered" not in text
 
 
@@ -2665,9 +2660,11 @@ def _intro(page: str) -> str:
     return _shared(page, "project-intro")
 
 
-def _progress(page: str) -> str:
-    """README's coverage and newest-result paragraphs as Recent Results renders them."""
-    return _shared(page, "recent-progress")
+def _recent_lead(page: str) -> str:
+    """Recent Results' one paragraph, the markup between its heading and its filter
+    bar."""
+    section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
+    return section.split("</h2>", 1)[1].split('<div class="site-table-tools', 1)[0]
 
 
 #: One formula as kpress writes it: the TeX for KaTeX, then its MathML.
@@ -2715,42 +2712,38 @@ PROBLEM_STATEMENT = (
 )
 
 
-def test_the_overviews_two_sections_are_readmes_two_blocks(page: str) -> None:
-    """The overview says what README's introduction says, word for word and formula for
-    formula, in two places: the first section opens with README's `project-intro` block,
-    and Recent Results with its `recent-progress` block. Together they are README's four
-    paragraphs, in README's order: the problem and its bounds, then what the project
-    covers and its newest major result. The first block writes $s(n)$ once, since the
-    second uses it. The template holds a placeholder where each would be, and names no
-    registered result of its own in the first section."""
+def test_the_overviews_first_section_is_readmes_one_block(page: str) -> None:
+    """The overview says what README's opening says, word for word and formula for
+    formula, in one place: the first section opens with README's `project-intro` block,
+    the problem and its bounds, which writes $s(n)$ once. README's next two paragraphs,
+    what the project covers and its newest major result, were a second shared block
+    that opened Recent Results until 2026-10-02; they are README's own since, unmarked,
+    and no other block is shared. The template holds a placeholder where the block
+    goes, names no registered result of its own in the first section, and opens Recent
+    Results with a paragraph of its own."""
     from devtools import site_documents  # noqa: PLC0415
 
     readme = site_documents.README.read_text(encoding="utf-8")
     blocks = site_documents.shared_blocks(readme)
-    assert list(blocks) == ["project-intro", "recent-progress"]
+    assert list(blocks) == ["project-intro"]
+    assert site_documents.SHARED_BLOCKS == (site_documents.INTRO,)
     assert blocks["project-intro"] == site_documents.intro_block(readme)
-    assert blocks["recent-progress"] == site_documents.progress_block(readme)
     assert _rendered_text(_intro(page)) == _markdown_text(blocks["project-intro"])
-    assert _rendered_text(_progress(page)) == _markdown_text(blocks["recent-progress"])
     assert len(re.findall(r"<p>", _intro(page))) == 2
-    assert len(re.findall(r"<p>", _progress(page))) == 2
     problem, bounds = (
         _markdown_text(paragraph) for paragraph in blocks["project-intro"].split("\n\n")
     )
     assert problem == PROBLEM_STATEMENT[0]
     assert bounds == PROBLEM_STATEMENT[1]
     assert blocks["project-intro"].count("$s(n)$") == 1
-    assert _markdown_text(blocks["recent-progress"]).startswith(
-        "The project covers the problem at every $n$."
-    )
-    for block in blocks.values():
-        assert not re.search(r"^#", block, re.MULTILINE)
-        assert "<!--" not in block
-    # README keeps the four paragraphs together and in order: only the markers part them.
-    intro, progress = site_documents.INTRO, site_documents.PROGRESS
-    between = readme.split(intro.end, 1)[1].split(progress.begin, 1)[0]
-    assert between.strip() == ""
-    assert readme.index(intro.begin) < readme.index(intro.end) < readme.index(progress.end)
+    assert not re.search(r"^#", blocks["project-intro"], re.MULTILINE)
+    assert "<!--" not in blocks["project-intro"]
+    # README keeps its account of recent progress, unmarked, right after the block.
+    assert "recent-progress" not in readme
+    after_block = readme.split(site_documents.INTRO.end, 1)[1]
+    assert after_block.lstrip().startswith("The project covers the problem at every $n$.")
+    assert "A recent major result settles eleven squares" in after_block
+    assert "README recent-progress" not in page
 
     template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
     section = template.split('id="the-problem"', 1)[1].split("{{PAGE_CARDS}}", 1)[0]
@@ -2760,88 +2753,106 @@ def test_the_overviews_two_sections_are_readmes_two_blocks(page: str) -> None:
     assert not re.search(r"\bT-\d{3}\b", own)
     assert "eleven" not in own.lower()
     recent = template.split("## Recent Results", 1)[1].split("\n## ", 1)[0]
-    assert _template_paragraphs(recent)[0] == "{{README_PROGRESS}}"
+    assert "README_PROGRESS" not in template
+    assert _template_paragraphs(recent)[0].startswith("Eleven squares is settled:")
 
 
-def test_recent_results_opens_with_readmes_progress_paragraphs(page: str) -> None:
-    """Recent Results opens with README's two paragraphs, right under its heading and
-    above the section's own prose, the filter bar and the table; the first section no
-    longer holds them. The section has one opening: its own prose starts at the table,
-    which lists every result, and ends on where the filter bar under it starts."""
+def test_recent_results_is_one_paragraph_before_its_table(page: str) -> None:
+    """Recent Results is one paragraph of 60 to 90 words between its heading and the
+    filter bar (the owner, 2026-10-02): the headline of recent progress, the star
+    legend, and one sentence on where the filters start. What stood there until that
+    day, README's two paragraphs and a paragraph on the table, is gone from the page:
+    the rungs, review, packet and defects of T-060 are its row's, the ratings, kinds
+    and statuses the Results page's, and the sentence on clearing the filters is not
+    needed where the bar is."""
     problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
-    progress = _progress(page)
-    assert progress in section
-    assert progress not in problem
-    assert "The project covers the problem at every" not in _rendered_text(problem)
-    assert "settles eleven squares" not in _rendered_text(problem)
-    # Only the template's own note stands between the heading and README's block.
-    opening = section.split("</h2>", 1)[1].split("<!-- README recent-progress -->", 1)[0]
-    assert re.sub(r"<!--.*?-->", "", opening, flags=re.DOTALL).strip() == ""
-    # README's block, then the section's prose, then the filter bar, then the table.
+    lead = _recent_lead(page)
+    assert len(re.findall(r"<p>", lead)) == 1
+    assert re.sub(r"<!--.*?-->", "", lead.split("<p>", 1)[0], flags=re.DOTALL).strip() == ""
+    text = _rendered_text(lead)
+    assert text.startswith("Eleven squares is settled: $s(11) = 3.8770835\\ldots$")
+    assert text.endswith(
+        "The table starts at significance S4 and up, max age 180 days and superseded hidden."
+    )
+    words = len(text.split())
+    assert 60 <= words <= 90, words
+    legend = re.sub(r"<[^>]+>", "", overview_sections.star_legend())
+    assert legend in text
+    assert text.index("T-065") < text.index(legend) < text.index("The table starts")
+    # The lead, then the filter bar, then the table.
     tools = section.index('<div class="site-table-tools')
-    table = section.index(_recent_table(page))
-    after = section.index("<!-- /README recent-progress -->")
-    assert section.index(progress) < after < tools < table
-    own = _rendered_text(section[after:tools])
-    assert own.startswith(
-        "The table lists every result, newest first: new bounds for particular numbers of "
-        "squares, found here or by others, each with its credit, its ratings, its kind and "
-        "its status, all defined on the Results page."
-    )
-    assert own.endswith(
-        "The table starts with superseded results hidden, at significance S4 and up and a "
-        "maximum age of 180 days; clear Hide superseded, choose All and clear Max age to "
-        "see every row."
-    )
-    assert own.count("The table lists every result") == 1
-    assert " since " not in own
+    assert section.index(lead) < tools < section.index(_recent_table(page))
+    # The section's prose is the lead; its bar and rows name sources and credits of
+    # their own (Guzhou0806 is a Source option, Kleddamag a credit), so they are read
+    # out of the lead and the sections before it only.
+    for gone in (
+        "The project covers the problem at every",
+        "settles eleven squares",
+        "V3/C3/S5",
+        "retained packet",
+        "reproducibility defects",
+        "clear Hide superseded",
+        "The table lists every result",
+        "results register",
+        "Guzhou0806",
+        "Kleddamag",
+    ):
+        assert gone not in text, gone
+        assert gone not in _rendered_text(problem), gone
+    for gone in ("The project covers the problem at every", "retained packet", "clear Hide"):
+        assert gone not in _rendered_text(section), gone
     assert "These are the recent results this project tracks" not in _rendered_text(section)
-    # One paragraph of its own: the kinds, the statuses and the rule for a result by
-    # others are defined on the Results page since 2026-10-02, and linked from here.
-    assert len(re.findall(r"<p>", section[after:tools])) == 1
-    assert '<a href="all-results.html">Results</a> page' in section[after:tools]
     for defined_there in ("recorded", "reviewed", "incomplete", "replayed here in full"):
-        assert defined_there not in own, defined_there
-    assert "epistemics" not in section[after:tools]
+        assert defined_there not in text, defined_there
+    assert "epistemics" not in lead
 
 
-def test_recent_results_says_eleven_squares_is_settled(
+def test_recent_results_names_the_headline_results_at_their_rows(
     page: str, results: str, rendered: Callable[[str], str]
 ) -> None:
-    """Recent Results names T-060 and case 11 through README's `recent-progress` block,
-    each link at the site's own page for it, and README is in the reader tier, so the
-    gate refuses a result the section names that the register does not hold."""
+    """The paragraph names the results that settle eleven squares, bracket seventeen and
+    give the new exact values, each id at its row on the Results page and each case at
+    its record, and the template is in the reader tier, so the gate refuses a result
+    it names that the register does not hold. README is held the same way for its own
+    account."""
     from devtools import check_results, site_documents  # noqa: PLC0415
 
-    section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
-    intro = _progress(page)
-    assert intro in section
-    text = _rendered_text(intro)
-    assert "settles eleven squares" in text
-    assert "Trump\u2019s 1979 packing" in text
-    assert "$n = 1\\ldots324$" in text
-    assert '<a href="all-results.html#t-060">T-060</a>' in intro
-    assert '<a href="all-results.html#t-011">T-011</a>' in intro
-    assert '<a href="cases.html#n-11">case record</a>' in intro
-    assert '<a href="frontier.html">frontier</a>' in intro
-    assert '<a href="all-results.html">results register</a>' in intro
-    assert 'id="t-060"' in results
-    assert 'id="t-011"' in results
-    assert 'id="n-11"' in rendered("cases.html")
-    hrefs = re.findall(r'href="([^"]+)"', intro)
-    review = "docs/project/reviews/review-2026-09-29-n11-optimality.md"
-    assert f"{REPO_URL}/blob/{DEFAULT_BRANCH}/{review}" in hrefs
+    lead = _recent_lead(page)
+    text = _rendered_text(lead)
+    assert "the exact side of Trump\u2019s 1979 packing" in text
+    assert "Seventeen squares is bracketed by machine-checked bounds, T-043 below" in text
+    assert "new exact values" in text
+    for result in ("t-060", "t-043", "t-065"):
+        assert f'<a href="all-results.html#{result}">{result.upper()}</a>' in lead, result
+        assert f'id="{result}"' in results, result
+    assert re.findall(r"\bT-\d{3}\b", text) == ["T-060", "T-043", "T-065"]
+    cases = rendered("cases.html")
+    for n in (21, 32, 45):
+        assert f'<a href="cases.html#n-{n}">' in lead, n
+        assert f'id="n-{n}"' in cases, n
+    hrefs = re.findall(r'href="([^"]+)"', lead)
     for href in hrefs:
-        assert (
-            href.startswith("https://") or href.partition("#")[0] in render_overview.SITE_PAGES
-        ), href
+        assert href.partition("#")[0] in render_overview.SITE_PAGES, href
     assert site_documents.README in check_results.READER_TIER
     assert render_overview.OVERVIEW_ARTICLE in check_results.READER_TIER
-    # The reader tier holds both ids through README's own text, block markers and all.
-    readme = site_documents.README.read_text(encoding="utf-8")
-    for result in ("T-060", "T-011"):
-        assert result in site_documents.progress_block(readme), result
+    template = render_overview.OVERVIEW_ARTICLE.read_text(encoding="utf-8")
+    for result in ("T-060", "T-043", "T-065"):
+        assert result in template, result
+    # The register's own values, as the rows state them: the exact values the
+    # paragraph says are new, and the eleven-square side it writes.
+    by_id = {r.id: r for r in overview_data.load().results}
+    assert by_id["T-060"].record["kind"] == "optimality"
+    assert [by_id[t].record["scope"]["n_values"] for t in ("T-043", "T-065")] == [[17], [17]]
+    assert by_id["T-043"].record["kind"] == "lower-bound"
+    assert by_id["T-065"].record["kind"] == "upper-bound"
+    assert "3.8770835" in by_id["T-060"].record["claim"]
+    exact = {
+        r.first_n
+        for r in overview_data.load().results
+        if r.record["kind"] == "optimality" and r.first_n in (21, 32, 45)
+    }
+    assert exact == {21, 32, 45}
 
 
 #: The site's own statement, the owner's words of 2026-10-01 copy-edited. One phrase is

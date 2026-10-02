@@ -13,7 +13,6 @@ square for the tightest packing ever discovered) and a lower bound (a size below
 it is proved that no packing can exist).
 
 <!-- END SHARED: project-intro -->
-<!-- BEGIN SHARED: recent-progress (devtools.site_documents) -->
 
 The project covers the problem at every $n$. Its [frontier](packing/frontier/STATUS.md)
 keeps one record for each case $n = 1\ldots324$, with reported and verified bounds kept
@@ -39,8 +38,6 @@ The [case record](packing/frontier/n-011.md),
 [review](docs/project/reviews/review-2026-09-29-n11-optimality.md), and
 [retained packet](packing/resources/web/n11-optimality-2026-09-29/README.md) state what
 the confirmation depends on and the reproducibility defects found in the source.
-
-<!-- END SHARED: recent-progress -->
 
 **The results live on the project site,
 [Square Packing](https://jlevy.github.io/squares/).** It carries the

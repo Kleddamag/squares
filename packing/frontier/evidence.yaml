@@ -2370,21 +2370,39 @@ evidence:
         - This audit includes only base counts and receiving cases at most 324, hence k=1 through 17.
       audit_record: packing/devtools/audit_ds7_lower_bounds.py
     external_review:
-      state: not-reviewed
-      date: '2026-09-07'
-      note: The source statement, positive-integer specializations through k=17, and exact comparisons were checked; the missing proof was not reviewed.
+      state: defect-found
+      date: '2026-10-02'
+      reviewed_by: repository, on wand125's report in jlevy/squares#308
+      note: >-
+        The only argument the source publishes for this theorem is Figure 34: sixteen
+        points it calls unavoidable at side G_4 for n = 17. Reconstructed for every k,
+        as [wand125 Green DS7 Theorem 9 2026-10-02] and [MacIver 2026 n17] read it,
+        the pattern has width and height exactly G_k and matches the figure's dots to
+        a pixel, but it is not unavoidable. For every k from 4 to 17,
+        devtools.check_green_ds7 decides exactly that a closed unit square inside
+        [0, G_k]^2 misses every point, with slack (d - 1)/2 = 0.00545 at k = 4, where
+        d = sqrt(2 - 2u) > 1 is the long mesh edge; at k = 2 the side margin
+        sqrt(2) - 2/5 exceeds 1 and a wall strip is empty. Only k = 3 survives, the
+        scaled pattern certified unavoidable at side 3518321/10^6, 4.1e-6 below G_3.
+        So the published material proves Theorem 9 for no k >= 4. This is not a
+        counterexample: no packing below G_k is known, and Green's argument may differ.
+        At k = 2, 3 and 4 the values are proved by other routes (s(5), s(10) exact;
+        s(17) >= 116511/25000 verified). See
+        docs/project/reviews/review-2026-10-02-green-ds7-theorem9.md.
     limitations: >-
-      Reported only. Friedman's survey supplies no proof of this general result.
-      Exact rational radical enclosures verify its algebraic specializations and
-      their ordering, not the geometric theorem. The audited horizon is n<=324.
-      The printed Table 2 expression for n82-85, 2sqrt(2)+(288+12sqrt(3))/41,
-      contradicts its own 9.2667 decimal and the trivial upper bound 10.
-      The selected k=9 value (247+94sqrt(2))/41 comes from Theorem 9, not that
-      malformed table cell. Archived source bytes remain unchanged.
+      Reported only. Friedman's survey supplies no proof of this general result,
+      and the unavoidable-set argument its Figure 34 illustrates fails for every
+      k >= 4 checked, 4 through 17 (external_review). Exact rational radical
+      enclosures verify its algebraic specializations and their ordering, not the
+      geometric theorem. The audited horizon is n<=324. The printed Table 2
+      expression for n82-85, 2sqrt(2)+(288+12sqrt(3))/41, contradicts its own
+      9.2667 decimal and the trivial upper bound 10. The selected k=9 value
+      (247+94sqrt(2))/41 comes from Theorem 9, not that malformed table cell.
+      Archived source bytes remain unchanged.
     blocker:
       kind: source-evidence
-      detail: Recover Green's complete proof or independently verify substitute geometric certificates before any promotion to verified status.
-    source_reviewed: '2026-09-07'
+      detail: Recover Green's complete proof, which cannot be the Figure 34 pattern for any k >= 4, or independently verify substitute geometric certificates before any promotion to verified status.
+    source_reviewed: '2026-10-02'
 
   - id: E-green-ds7-theorem10-reported-lower
     claim: lower-bound
@@ -2502,16 +2520,28 @@ evidence:
     relationship_to_generator: unknown-historical
     source_key: '[Friedman DS7]'
     replay_status: public-certificate-missing
+    external_review:
+      state: defect-found
+      date: '2026-10-02'
+      reviewed_by: repository, on wand125's report in jlevy/squares#308
+      note: >-
+        This is E-green-ds7-theorem9-reported-lower at k = 5 and shares its review: the
+        Figure 34 pattern reconstructed at k = 5 has side exactly G_5 but is not
+        unavoidable there, an exactly checked closed unit square inside [0, G_5]^2
+        missing all 25 points with slack 0.0224. The verified lower bound here,
+        553/100, is above the value, so nothing rests on it. See
+        docs/project/reviews/review-2026-10-02-green-ds7-theorem9.md.
     limitations: >-
       Friedman's survey Theorem 9 at k=5 and Table 2 report
       s(26), s(27) >= 2sqrt(2)+(27+2sqrt(10))/13, approximately 5.3918,
       attributed to Trevor Green, reference [8], private communication (2000).
-      The survey supplies neither its proof nor the n26 point coordinates.
+      The survey supplies neither its proof nor the n26 point coordinates, and
+      the argument its Figure 34 illustrates fails at k=5 (external_review).
       A source statement and its algebraic specialization are not a verified lower bound.
     blocker:
       kind: source-evidence
       detail: Recover Green's proof and its geometric data, or build and independently verify a complete substitute certificate.
-    source_reviewed: '2026-09-07'
+    source_reviewed: '2026-10-02'
 
   - id: E-kingbird-upper-register
     claim: upper-bound

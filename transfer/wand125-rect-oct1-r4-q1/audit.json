@@ -1,0 +1,71 @@
+{
+  "kind": "wand125-rectangle-audit/v1",
+  "source_revision": "1a25a5ed745fdd905a52f48fcc48150a0669032d",
+  "source": "/home/user/squares/packing/resources/web/wand125-rectangle-certificates-2026-10-01/wand125-rectangles",
+  "python": "3.14.7 (main, Sep 29 2026, 15:01:40) [Clang 22.1.3 ]",
+  "scope": "Independent exact preconditions and input binding; optional upstream global interval replay",
+  "cases": [
+    {
+      "status": "PASS",
+      "n": 30,
+      "L": "47/8",
+      "B": "9977/10000",
+      "mass_exact": "2999/100",
+      "mass_below_n_exact": "1/100",
+      "net_safety_exact": "399908091/400000000",
+      "smoothing_safety_exact": "399968091/400000000",
+      "net_endpoint_polynomial_exact": "89/40000",
+      "positive_basis_rectangles": 261,
+      "expanded_rectangles": 2088,
+      "axis_event_count": 1668,
+      "axis_vertex_count": 2782224,
+      "certificate": "rect_n30_L5875",
+      "input_sha256": "1ae7d0a29923329b78674f59edb20507b6dcad45a2de24a6b91586b7e60d4586",
+      "input_bytes": 508758,
+      "upstream_nodes": 25234338,
+      "upstream_wall_seconds": "145750873118639/62500000000",
+      "replay": {
+        "status": "PASS",
+        "command": [
+          "/home/user/squares/packing/.venv/bin/python",
+          "run_verify.py",
+          "--workers",
+          "1"
+        ],
+        "working_directory": "temporary copy of retained certificate directory",
+        "elapsed_seconds_including_compile": 12782.607883794,
+        "timeout_seconds": 86400,
+        "summary": {
+          "status": "VERIFIED",
+          "angle_cases": 201,
+          "target_lower_bound_exact": "10001/10000",
+          "nodes": 25234338,
+          "leaves": 14008381,
+          "minimum_printed_leaf_lower_bound": "2500250003562673/2500000000000000",
+          "wall_seconds": "3194970259130001/250000000000",
+          "input_sha256": "1ae7d0a29923329b78674f59edb20507b6dcad45a2de24a6b91586b7e60d4586",
+          "verifier_source_sha256": "a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602",
+          "method": "Outward-rounded binary64 intervals; certified inscribed polygon area; derivative bounds over center boxes; rational angular net."
+        }
+      }
+    }
+  ],
+  "provenance": {
+    "kind": "verified-retained-subset",
+    "revision": "1a25a5ed745fdd905a52f48fcc48150a0669032d",
+    "tree_manifest": "packing/resources/web/wand125-rectangle-certificates-2026-10-01/acquisition/upstream-tree.sha256",
+    "upstream_files": 2897,
+    "files_verified": 149,
+    "bytes_verified": 18014301,
+    "checker": "packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/certificates/cert_n29_L571",
+    "referenced_path": "packing/resources/web/wand125-rectangle-certificates-2026-09-28/wand125-rectangles",
+    "files_referenced": 71,
+    "bytes_referenced": 5885321,
+    "files_referenced_by_packet": {
+      "packing/resources/web/wand125-rectangle-certificates-2026-09-27/wand125-rectangles": 23,
+      "packing/resources/web/wand125-rectangle-certificates-2026-09-28/wand125-rectangles": 48
+    }
+  },
+  "platform": "Linux-6.18.44-fc-v51-x86_64-with-glibc2.39",
+  "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+}

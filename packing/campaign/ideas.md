@@ -80,7 +80,7 @@ be reconciled before selecting its unfinished tasks.
 | [X-048 exact limiting configurations](explorations/X-048-n17-optimality-after-n11.md#new-leads-from-the-october-evand-review) | shaped | Derive exact contact-family constraints before sampling endpoint covers |
 | [X-048 continuum clique resources](explorations/X-048-n17-optimality-after-n11.md#new-leads-from-the-october-evand-review) | shaped | Test uniform charge across grazing contacts, using the existing evand construction |
 | [X-048 higher-order obstructions](explorations/X-048-n17-optimality-after-n11.md#new-leads-from-the-october-evand-review) | raw | Resolve zero-margin local plateaus beyond first-order constraints |
-| [X-048 periodic deficit-four family](explorations/X-048-n17-optimality-after-n11.md#new-leads-from-the-october-evand-review) | parked | Require exact deficit D > 1 before selecting the costly width-three coverage campaign |
+| [X-048 periodic deficit-four family](explorations/X-048-n17-optimality-after-n11.md#new-leads-from-the-october-evand-review) | registered as [H-269](hypotheses/H-269-periodic-certificates-k2-minus-4-and-5.md) | Require exact deficit D > 1 before selecting the costly width-three coverage campaign |
 
 The historical starting bracket for the program below was
 `3.875 < s(11) <= 3.877083590022814177...`. The strict lower end is Kleddamag’s verified
@@ -857,10 +857,10 @@ These rows are its candidates for the codifier, none registered.
 
 | # | Idea | Status | H | Crux |
 | --- | --- | --- | --- | --- |
-| 267 | Periodic certificates for $s(k^2-4)=k$ and $s(k^2-5)=k$ at all large $k$ | shaped | — | Daniel’s periodic measure proves $d=3$ (reported); the first proof that $d_{\max}(k)\ge 4$ for all large $k$, and a test of Friedman’s Conjecture 1 ([X-049](explorations/X-049-families-shading-and-the-large-n-limit.md#candidate-hypotheses-for-the-codifier)). |
-| 268 | The $k^2+1$ crossover lies between $k=18$ and 42 | shaped | — | The atlas plateau $5/\sqrt2-3$ holds for $k=8..17$; Kearney–Shiu beat it at 42. An exact scan of their strip construction locates the start of the asymptotic regime and scopes H-035. |
-| 269 | $\beta=2/5$: $\delta_k\asymp k^{-2/5}$ | raw | — | Bui’s Question 1 restated on the cleanest family; paper mathematics, sharpening H-037 at its finite face. |
-| 270 | Symmetric atlas families are partly source artifacts | shaped | — | 68 of 97 Kingbird-derived records are symmetric and none of 50 optimizer packets; re-optimizing the symmetric ones separates construction families from optimum families. |
+| 267 | Periodic certificates for $s(k^2-4)=k$ and $s(k^2-5)=k$ at all large $k$ | registered | [H-269](hypotheses/H-269-periodic-certificates-k2-minus-4-and-5.md) | Daniel’s width-two family proves $d=3$ (T-064, reported); the width-three program’s go/no-go is an exact corner deficit $D>1$, and $d=5$ needs $D>5/4$ at width four or more. Absorbs the X-048 deficit-four lead. |
+| 268 | The $k^2+1$ crossover lies between $k=18$ and 42 | registered | [H-270](hypotheses/H-270-k2-plus-1-crossover-kearney-shiu-strip.md) | The plateau $5/\sqrt2-3$ is the atlas upper bound at every $k\ge 8$; Kearney–Shiu tuned their strip only at 43. An exact scan of $k=18..41$ names the smallest $k$ it reaches and scopes H-035. |
+| 269 | $\beta=2/5$: $\delta_k\asymp k^{-2/5}$ | parked, subsumed by H-037 | — | No finite criterion decides an exponent; it is H-037’s $k^2+1$ face, and Bui’s Question 1 is in the 2025 wasted-area paper. The $\delta_k$ translation goes into H-037’s notes under think-hzv3. |
+| 270 | Symmetric atlas families are partly source artifacts | registered | [H-272](hypotheses/H-272-symmetric-kingbird-records-reoptimized.md) | 68 of 97 Kingbird-derived records are symmetric, 0 of 50 optimizer packets; a seeded symmetry-free quench, with the 44 pre-Couzo witnesses as the control, confirms if at least one in ten moves by more than $10^{-9}$. |
 | 271 | A regularized-view layer for the atlas | shaped, think-bgkz | — | The prototype cuts the six named cases’ light green squares from 545 to 242 with exact verification and no change of side; it needs a neighbour non-regression rule first. |
 
 ## Dead ends

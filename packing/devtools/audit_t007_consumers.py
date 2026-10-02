@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ruff: noqa: RUF001 -- the record's own typography (minus signs, superscripts) is matched as written.
+# ruff: noqa: RUF001 -- the record's typography (minus signs, superscripts) is matched as written.
 """Inventory what in the record rests on T-007, and what else holds each item up.
 
 T-007 is Nagamochi 2005, Theorem 2: `s(N) >= min(ceil(sqrt N), sqrt(N - 2 floor(sqrt N) + 1)
@@ -61,7 +61,7 @@ import json
 import math
 import re
 from collections import Counter
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Callable, Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from decimal import Decimal
 from fractions import Fraction
@@ -76,7 +76,9 @@ from sqpack.yamlio import load_yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 REPO = ROOT.parent
-OUTPUT = ROOT / "campaign/series/series-000-smoke-and-calibration/results/t007-consumer-audit.json"
+OUTPUT = (
+    ROOT / "campaign/series/series-000-smoke-and-calibration/results" / "t007-consumer-audit.json"
+)
 GENERATOR = "python -m devtools.audit_t007_consumers"
 RECORD = nagamochi.RECORD
 T007 = "T-007"
@@ -345,7 +347,7 @@ class Surd:
 
 
 _IMPLICIT_PRODUCT = re.compile(r"(?<=[0-9)])\s*(?=sqrt\(|\()")
-_BINARY = {
+_BINARY: dict[type[ast.operator], Callable[[Surd, Surd], Surd]] = {
     ast.Add: Surd.__add__,
     ast.Sub: Surd.__sub__,
     ast.Mult: Surd.__mul__,
@@ -419,7 +421,7 @@ def compare(left: Quantity, right: Quantity) -> int:
     )
 
 
-def exact(quantity: Quantity) -> dict[str, Any]:
+def quantity_entry(quantity: Quantity) -> dict[str, Any]:
     return {
         "exact": quantity.value.render(),
         "decimal": quantity.value.decimal(),
@@ -585,7 +587,9 @@ def monotone_best(sources: Mapping[int, Source], last: int) -> dict[int, list[So
 @cache
 def pointer(path: str, needle: str) -> str:
     """`path:line` of the first line containing `needle`; the needle must be there."""
-    for number, line in enumerate((REPO / path).read_text(encoding="utf-8").splitlines(), 1):
+    # Split on newlines only: `splitlines` also breaks at the form feeds pdfminer leaves in
+    # the archive, which would put the cited line out of step with every editor and grep.
+    for number, line in enumerate((REPO / path).read_text(encoding="utf-8").split("\n"), 1):
         if needle in line:
             return f"{path}:{number}"
     raise ValueError(f"{path} no longer contains {needle!r}")
@@ -639,7 +643,7 @@ def support_entry(
         return None
     quantity = sources[0].quantity
     entry = {
-        **exact(quantity),
+        **quantity_entry(quantity),
         "sources": [source_entry(source, n) for source in sources],
         "reaches_nagamochi": None if target is None else compare(quantity, target) >= 0,
     }
@@ -714,7 +718,7 @@ def classify(
         "class": WEAKENED,
         "reason": label,
         "weakened_to": {
-            **exact(best),
+            **quantity_entry(best),
             "source": label,
             "shortfall_below_nagamochi": (target.value - best.value).decimal(),
         },
@@ -756,14 +760,14 @@ def case_row(
     karakus_explicit = None
     if karakus is not None:
         karakus_explicit = {
-            **exact(karakus),
+            **quantity_entry(karakus),
             "reaches_nagamochi": None if target is None else compare(karakus, target) >= 0,
         }
         if target is not None:
             karakus_explicit["shortfall_below_nagamochi"] = (
                 target.value - karakus.value
             ).decimal()
-    area_entry: dict[str, Any] = exact(area)
+    area_entry: dict[str, Any] = quantity_entry(area)
     if target is not None:
         area_entry["nagamochi_excess"] = (target.value - area.value).decimal()
     primary = classify(
@@ -802,7 +806,7 @@ def case_row(
         },
         "nagamochi": None
         if target is None
-        else {**exact(target), "exact_case": shape is not None and shape[1] >= 2},
+        else {**quantity_entry(target), "exact_case": shape is not None and shape[1] >= 2},
         "exact_value_claim": case["status"] == "proved",
         "exact_value_lower_half_cites_t007": case["status"] == "proved" and cites,
         "support": {
@@ -883,7 +887,7 @@ def paragraphs(lines: Sequence[str]) -> list[int]:
 
 def scan_text(text: str, first_line: int = 1) -> list[dict[str, Any]]:
     """Every line that states the theorem or the identity, or names Nagamochi."""
-    lines = text.splitlines()
+    lines = text.split("\n")
     owner = paragraphs(lines)
     qualified_paragraphs = {owner[i] for i, line in enumerate(lines) if QUALIFIED.search(line)}
     hits: list[dict[str, Any]] = []
@@ -1050,9 +1054,9 @@ def summary(rows: Sequence[dict[str, Any]]) -> dict[str, Any]:
             "all": len(operative),
             "open": sum(row["status"] == "open" for row in operative),
             "proved": sum(row["status"] == "proved" for row in operative),
-            "outside_t007_registered_scope": [
-                row["n"] for row in operative if not row["operative_lower_bound"]["t007_scope_covers_n"]
-            ].__len__(),
+            "outside_t007_registered_scope": sum(
+                not row["operative_lower_bound"]["t007_scope_covers_n"] for row in operative
+            ),
             "outside_t007_registered_scope_n": ranges(
                 row["n"]
                 for row in operative
@@ -1144,7 +1148,7 @@ def build_document() -> dict[str, Any]:
                 "evidence_scope": record["scope"],
                 "verification": t007["verification"],
                 "confirmation": t007["confirmation"],
-                "archived": "packing/resources/papers/nagamochi-2005-packing-unit-squares-in-a-rectangle.pdf",
+                "archived": list(t007.get("artifacts") or ()),
             },
             "karakus": KARAKUS,
             "chelokot": {

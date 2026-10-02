@@ -48,7 +48,10 @@ exploration:
   - packing/resources/web/kingbird-squares-in-squares-gobel-strips.md
   - docs/project/research/research-2026-09-07-square-packing-sources-beyond-100.md
   - https://arxiv.org/abs/2609.37410
-  proposes: []
+  proposes:
+  - H-269
+  - H-270
+  - H-272
 ---
 # X-049: Families of Known-Best Packings, Contact Shading, and the Large-n Limit
 

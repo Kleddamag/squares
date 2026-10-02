@@ -1073,6 +1073,9 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-258 | blocked | proof | The fixed analytic common-core stress at the accepted n17 endpoint has |  | 0 |  |  |
 | H-259 | confirmed | proof | At side cap1169/250, a closed5by5 centre grid has16 boundary cells of  |  | 1 |  | 0s wall |
 | H-260 | confirmed | proof | D4 acts on existential closed-cell assignments of the H259 cover and i |  | 1 |  | 0s wall |
+| H-269 | blocked | proof | A fixed-profile periodic measure of the form behind T-064 (a corner mo | family: k^2-4 k^2-5 | 0 |  |  |
+| H-270 | blocked | search | For some integer k with 18 <= k <= 41, the strip construction of Kearn | k: 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 | 0 |  |  |
+| H-272 | blocked | search | Of the 68 non-grid known-best records whose witness derives from Kingb |  | 0 |  |  |
 
 ## Needs review — held for a human, not decided
 
@@ -1358,7 +1361,6 @@ These totals exclude 4 historical rounds with unrecorded timing; their cost is u
 - X-043 — New Lower-Bound Proof Directions After the External Advances
 - X-044 — Transfer Opportunities at the Lowest Open Square-Packing Cases
 - X-045 — N11 Global Capture and Exact Optimality
-- X-049 — Families of Known-Best Packings, Contact Shading, and the Large-n Limit
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

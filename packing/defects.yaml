@@ -11,7 +11,7 @@ softschema:
   schema: defects.schema.yaml
   envelope: null
   status: enforced
-count: 512
+count: 513
 defects:
 - id: D-001
   title: Fixed-side search never left the grid basin
@@ -17126,3 +17126,47 @@ defects:
     directories of both omitted trees, and renders the same in a partial checkout. The
     Pages workflow's verify-deployment job runs the check after every deploy.
   recorded_in: packing/devtools/repo_links.py
+- id: D-514
+  title: The Erdős–Graham transcription stated Theorem (1) as a two-sided bound the paper does not prove
+  date: '2026-10-02'
+  layer: docs
+  class: soundness
+  direction: flattering
+  detected_by: inspection
+  latent_for: >-
+    Forty-one days, from the flagged reconstruction of 2026-08-22 (2a0b00d61) to
+    2026-10-02. X-037's lane B listed "Erdős–Graham's Θ versus O" among notes for the
+    owner to file on 2026-09-17, and it was not filed.
+  severity: medium
+  status: fixed
+  bead: think-hzv3
+  what: >-
+    The archive's cleaned transcription of Erdős and Graham 1975 printed Theorem (1) as
+    w(α) = Θ(α^{7/11}), supplied as a flagged reconstruction because the extraction lost
+    the formula. Rendered PDF page 4 (printed page 2) prints W(α) = O(α^{7/11}), an
+    upper bound, and printed page 6 says the authors have no nontrivial lower estimate
+    for W and cannot rule out W(α) = O(1). The proof's two-sided notation is the paper's
+    own capital Omega, defined as bounded above and below by constant multiples; the
+    transcription had modernised it to Θ, so its closing "the total uncovered area of
+    S(α) is just Θ(α^{7/11})" read as a two-sided bound on the waste function when it
+    describes one construction.
+  consequence: >-
+    A reader quoting the archive would credit Erdős and Graham with a lower bound of
+    order α^{7/11} on the wasted area. That is false: the waste is zero at every integer
+    side, and the exponent 3/5 proved since (Bui 2025, McClenagan 2026) is below 7/11.
+    The only lower bound on record is Roth and Vaughan's, of order the square root. No
+    register value rested on the transcription: asymptotic-waste-bounds.yaml and the
+    research document state O(x^{7/11}) as an upper bound.
+  fix: >-
+    Read the theorem, the notation and every use of the symbol off the rendered pages
+    and corrected the cleaned transcription by addition (conventions section 7): (1) now
+    reads W(α) = O(α^{7/11}); the waste function is the printed capital W in its
+    definition, in (1) and in the closing paragraph; and the paper's Ω is restored at
+    the eleven places the transcription carries the symbol, ten printed as Θ and one,
+    the border triangles' area, as O. Three dated NOTE annotations give the transcribed
+    and the printed text and how to read the paper's Ω, beside the original
+    reconstruction note, which is kept. The file's banner and the archive README census
+    rise from 17 to 20. The .raw.md is unchanged. Most passages still marked GARBLED in
+    the proof are legible on the rendered pages and were not re-read.
+  regression: none
+  recorded_in: packing/campaign/explorations/X-049-families-shading-and-the-large-n-limit.md

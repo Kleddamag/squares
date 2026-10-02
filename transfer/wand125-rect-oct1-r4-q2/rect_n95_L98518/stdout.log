@@ -1,0 +1,5 @@
+{"completed": 10, "total": 201, "elapsed_seconds": 11253.357123374939, "nodes": 6560199}
+{"completed": 20, "total": 201, "elapsed_seconds": 11534.326709270477, "nodes": 7651929}
+{"completed": 30, "total": 201, "elapsed_seconds": 11855.629891395569, "nodes": 8779669}
+{"completed": 40, "total": 201, "elapsed_seconds": 12236.844400167465, "nodes": 9951349}
+{"completed": 50, "total": 201, "elapsed_seconds": 12661.973396539688, "nodes": 11176029}

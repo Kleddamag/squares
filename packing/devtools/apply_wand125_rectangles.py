@@ -60,6 +60,7 @@ from strif import atomic_write_text
 
 from devtools.audit_wand125_rectangles import (
     OCTOBER_1,
+    OCTOBER_2,
     PACKETS,
     SEPTEMBER_27,
     SEPTEMBER_28,
@@ -273,6 +274,67 @@ _MONOTONE_2026_10_01 = """\
       source premise or substitute for its complete replay.
     source_reviewed: '2026-10-01'
 """
+_REPORT_2026_10_02 = """\
+  - id: E-wand125-rectangle-2026-10-02-report
+    claim: lower-bound
+    scope: {scope}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-10-02]'
+    certificate: {certificate}
+    replay_status: not-attempted
+    limitations: >-
+      Source b00fc70f1904e9b1b567afee056d347f911209e8, committed 2026-10-02 (UTC),
+      reports one standing rectangle-density certificate in Tokoharu's format for each
+      listed count, each raised since 1a25a5e by three commits of 2026-10-02 (UTC),
+      06eeb40, 7d77022 and 4318bdf, and accepted there by Tokoharu's unchanged interval
+      checker (verify.cpp SHA-256
+      a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602). The seven sides
+      are 49/10 at n20, 2731/400 at n42, 127/16 at n59, 3451/400 at n70, 447/50 at n77,
+      3859/400 at n91 and 1947/200 at n93; the complete standing list is the
+      CASES_2026_10_02 table of devtools/audit_wand125_rectangles.py. No issue requests
+      them; the import of 2 October took them in from the source's own commits. The 46
+      standing certificates the revision left unchanged are byte-identical to those the
+      earlier rectangle entries record, and their cases stay on those entries. Each
+      certificate's weights were multiplied by one exact rational factor, between
+      1.00009 and 1.03993, to bring its mass to n - 1/100 before the recorded run, which
+      checked the scaled data. Lower rungs, matching certificates, the point
+      certificates and the point-only, exact-cover, mixed and linear bundles at the same
+      revision are pinned by digest only. This is the public-claim entry, not a local
+      verification receipt. At n59 and n77 a stronger bound was registered separately
+      when this entry was written, the source's own exact covers s(59) = 8 and
+      s(77) = 9, so those case records do not cite this entry; at n91 and n93 the same
+      revision's mixed rectangle-measure certificates, 97/10 at n91 and 39/4 at n92,
+      which carries to n93, are stronger wherever they are registered.
+    source_reviewed: '2026-10-02'
+"""
+_MONOTONE_2026_10_02 = """\
+  - id: E-wand125-rectangle-2026-10-02-monotone-report
+    claim: lower-bound
+    scope: {scope}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: repository
+    relationship_to_generator: not-applicable
+    origin: audited-here
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-10-02]'
+    replay_status: not-attempted
+    limitations: >-
+      Reported-lane transfer at b00fc70: a certificate whose exact mass is below k
+      refutes k squares as well, and deleting squares proves monotonicity, so each listed
+      count takes the strongest smaller-count certificate below whose mass it lies. The
+      one transfer new at this revision is the n91 certificate at 3859/400, of mass
+      9099/100, to n92, where the source's mixed certificates hold more. The listed
+      counts are those where the transfer beats every other registered report. This
+      derivation does not strengthen the assurance of its source premise or substitute
+      for its complete replay.
+    source_reviewed: '2026-10-02'
+"""
 
 SEPTEMBER_27_REGISTRATION = Registration(
     packet=SEPTEMBER_27,
@@ -329,11 +391,31 @@ OCTOBER_1_REGISTRATION = Registration(
         "E-wand125-rectangle-2026-10-01-monotone-report": _MONOTONE_2026_10_01,
     },
 )
+OCTOBER_2_REGISTRATION = Registration(
+    packet=OCTOBER_2,
+    source_key="[wand125 rectangle bounds 2026-10-02]",
+    report="E-wand125-rectangle-2026-10-02-report",
+    monotone_report="E-wand125-rectangle-2026-10-02-monotone-report",
+    replay="E-wand125-rectangle-2026-10-02-source-replay",
+    # The same three counts as at 1a25a5e, whose certificates are unchanged since 39d8ecc.
+    # The exact covers at n59 and n77 and the mixed certificates at n91 and n92 are only
+    # reported, so they are left to the comparison with the record, as before.
+    superseded_priors={
+        21: "evand/square-packing s(21) = 5 supersedes 399/80",
+        32: "evand/square-packing s(32) = 6 supersedes 119/20 and the n31 transfer 2381/400",
+        45: "evand/square-packing s(45) = 7 supersedes 1391/200",
+    },
+    entries={
+        "E-wand125-rectangle-2026-10-02-report": _REPORT_2026_10_02,
+        "E-wand125-rectangle-2026-10-02-monotone-report": _MONOTONE_2026_10_02,
+    },
+)
 #: Oldest first; the order is the order of the packets' pins.
 REGISTRATIONS = (
     SEPTEMBER_27_REGISTRATION,
     SEPTEMBER_28_REGISTRATION,
     OCTOBER_1_REGISTRATION,
+    OCTOBER_2_REGISTRATION,
 )
 BY_DATE = {registration.date: registration for registration in REGISTRATIONS}
 OURS = frozenset().union(*(registration.ids for registration in REGISTRATIONS))

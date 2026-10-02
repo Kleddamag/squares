@@ -290,6 +290,19 @@ CASES_2026_10_01: dict[int, tuple[str, Fraction]] = {
     95: ("rect_n95_L98518", Fraction(49259, 5000)),
 }
 
+# The standing certificate for each n at b00fc70. Seven are raised since 1a25a5e, by three
+# commits of 2 October (06eeb40, 7d77022 and 4318bdf); the other 46 are unchanged and no
+# count is new.
+CASES_2026_10_02: dict[int, tuple[str, Fraction]] = CASES_2026_10_01 | {
+    20: ("rect_n20_L49", Fraction(49, 10)),
+    42: ("rect_n42_L68275", Fraction(2731, 400)),
+    59: ("rect_n59_L79375", Fraction(127, 16)),
+    70: ("rect_n70_L86275", Fraction(3451, 400)),
+    77: ("rect_n77_L894", Fraction(447, 50)),
+    91: ("rect_n91_L96475", Fraction(3859, 400)),
+    93: ("rect_n93_L9735", Fraction(1947, 200)),
+}
+
 
 @dataclass(frozen=True, slots=True)
 class Packet:
@@ -452,9 +465,34 @@ OCTOBER_1 = Packet(
     ),
     base=SEPTEMBER_28,
 )
+OCTOBER_2 = Packet(
+    date="2026-10-02",
+    revision="b00fc70f1904e9b1b567afee056d347f911209e8",
+    cases=CASES_2026_10_02,
+    git_scope=(
+        "A depth-1 clone of the single public branch, so the checkout holds this revision's "
+        "tree and no history; git ls-remote lists only refs/heads/main, so there are no "
+        "tags, and the tree has no .gitmodules or .gitattributes. Commit dates are from a "
+        "blob-filtered clone of the full history, fetched in the same session."
+    ),
+    retention_notes=(
+        "The whole tracked tree is pinned by per-file SHA-256 in the tree manifest. "
+        "Retained bytes are the top-level README, which changed since 1a25a5e, and for "
+        "each standing rectangle certificate raised since 1a25a5e its exact candidate, "
+        "metadata, upstream verification summary and per-angle rows. The LICENSE, "
+        "requirements, docs and the 46 standing certificates unchanged since 1a25a5e are "
+        "byte-identical to files the 2026-10-01, 2026-09-28 and 2026-09-27 packets retain, "
+        "and are read from there against this tree's digests. Interval inputs are "
+        "regenerated from the candidates and bound to the recorded input SHA-256; "
+        "verify.cpp and run_verify.py are byte-identical to Tokoharu's retained copies. "
+        "Lower rungs, matching certificates, the point certificates, the point-only, "
+        "exact-cover, mixed and linear bundles and src/ are pinned by digest only."
+    ),
+    base=OCTOBER_1,
+)
 #: Every packet by its date, oldest first.
 PACKETS: dict[str, Packet] = {
-    packet.date: packet for packet in (SEPTEMBER_27, SEPTEMBER_28, OCTOBER_1)
+    packet.date: packet for packet in (SEPTEMBER_27, SEPTEMBER_28, OCTOBER_1, OCTOBER_2)
 }
 DEFAULT_PACKET = SEPTEMBER_27.date
 

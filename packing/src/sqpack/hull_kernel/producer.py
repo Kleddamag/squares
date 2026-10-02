@@ -49,6 +49,7 @@ from sqpack.hull_kernel.geometry import (
     area2,
     clip,
     intersect,
+    trig,
 )
 from sqpack.hull_kernel.induction import (
     common_core_planes,
@@ -226,13 +227,53 @@ def compress(original: Polygon) -> tuple[list[Point], list[dict[str, Any]]]:
     ]
 
 
+def octagon_core(frame: Frame, lo: Q, hi: Q) -> Polygon:
+    """A second-order strict core: the two end-angle squares' intersection, scaled in.
+
+    Both end squares have half-side `h = (B - slack)/2`. A unit vector `u` at an angle
+    between the ends is `(sin(b - x) u_a + sin(x - a) u_b)/sin(D)` for row width `D`, so for
+    a point `p` in both end squares `|p.u| <= h (sin(b - x) + sin(x - a))/sin(D)
+    <= h/cos(D/2)`, and the same holds for the normal direction. Scaling the octagon by
+    `cos^2(D/2) = (1 + cos D)/2`, which is rational in the half-angle chart, therefore puts
+    it strictly inside every square of the row, losing about `D^2/4` of its size where
+    the envelope core loses about `D/2`. `strict_core` checks it exactly all the same.
+    """
+    half = (frame.scale - frame.core_slack) / 2
+    (ca, sa), (cb, sb) = trig(lo), trig(hi)
+    square = [
+        (ca * u - sa * v, sa * u + ca * v)
+        for u, v in ((-half, -half), (half, -half), (half, half), (-half, half))
+    ]
+    octagon = intersect(
+        square, [(cb, sb, half), (-cb, -sb, half), (-sb, cb, half), (sb, -cb, half)]
+    )
+    shrink = (1 + ca * cb + sa * sb) / 2
+    core = hull([(shrink * x, shrink * y) for x, y in octagon])
+    strict_core(frame, core, lo, hi)
+    return core
+
+
+CORES = {"envelope": envelope_core, "octagon": octagon_core}
+
+
+class CoreCache(dict[tuple[Q, Q], Polygon]):
+    """Strict cores by row interval, all of one kind (`CORES`)."""
+
+    def __init__(self, kind: str = "envelope") -> None:
+        super().__init__()
+        if kind not in CORES:
+            raise RefusalError(f"unknown core kind: {kind}")
+        self.kind = kind
+
+
 def cached_core(
     frame: Frame, lo: Q, hi: Q, cores: dict[tuple[Q, Q], Polygon] | None
 ) -> Polygon:
+    build = CORES[cores.kind] if isinstance(cores, CoreCache) else envelope_core
     if cores is None:
-        return envelope_core(frame, lo, hi)
+        return build(frame, lo, hi)
     if (lo, hi) not in cores:
-        cores[(lo, hi)] = envelope_core(frame, lo, hi)
+        cores[(lo, hi)] = build(frame, lo, hi)
     return cores[(lo, hi)]
 
 
@@ -567,6 +608,7 @@ def produce(
     collision: bool = True,
     hull_limit: int | None = 16,
     stop_at: float | None = None,
+    core: str = "envelope",
 ) -> Production:
     """Seed, then round-robin complete steps until closure, a stall or the round cap."""
     seed = build_seed(frame, mask, bins=bins, budget=budget)
@@ -593,7 +635,7 @@ def produce(
     steps: list[dict[str, Any]] = []
     closure: dict[str, Any] | None = None
     production = Production(seed, {})
-    cores: dict[tuple[Q, Q], Polygon] = {}
+    cores = CoreCache(core)
     previous: list[dict[str, Any]] | None = None
     for round_index in range(max_rounds):
         for owner in mask:

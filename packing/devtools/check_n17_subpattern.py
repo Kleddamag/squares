@@ -205,6 +205,7 @@ def run(
     hull_limit: int | None = 16,
     producer_share: float = 0.5,
     save_objects: Path | None = None,
+    core: str = "envelope",
 ) -> dict[str, Any]:
     producer = importlib.import_module(PRODUCER)
     started = time.monotonic()
@@ -220,6 +221,7 @@ def run(
         collision=collision,
         hull_limit=hull_limit,
         stop_at=started + max_seconds * producer_share,
+        core=core,
         progress=lambda event: print(
             json.dumps({**event, "seconds": round(time.monotonic() - started, 1)}),
             file=sys.stderr,
@@ -255,6 +257,7 @@ def run(
         "collision_regions": collision,
         "hull_limit": hull_limit,
         "producer_share": producer_share,
+        "core": core,
         "producer_outcome": production.outcome,
         "certified": "closed" if closed else "stalled",
         "closure": trace.closure,
@@ -324,6 +327,12 @@ def main(argv: list[str] | None = None) -> int:
         help="the share of the wall ceiling after which the producer starts no new step",
     )
     parser.add_argument(
+        "--core",
+        choices=("envelope", "octagon"),
+        default="envelope",
+        help="the producer's strict core: the midpoint envelope square or the end octagon",
+    )
+    parser.add_argument(
         "--check-saved",
         type=Path,
         help="certify a saved seed and node with the checker alone; nothing is produced",
@@ -371,6 +380,7 @@ def main(argv: list[str] | None = None) -> int:
             hull_limit=args.hull_limit or None,
             producer_share=args.producer_share,
             save_objects=args.save_objects,
+            core=args.core,
         )
     except IncompleteError as error:
         result = {"status": "INCOMPLETE", "reason": str(error), "excluded_orbits": 0}

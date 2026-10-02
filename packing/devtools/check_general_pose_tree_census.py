@@ -9,13 +9,15 @@ enclosure, counting-budget, or packing theorem arguments.
 The ``run`` command snapshots the pinned checker and both inputs before execution,
 uses a wall timeout, checks that those bytes did not change, and tags every emitted
 row with that production-time binding.  ``validate`` refuses journals without that
-binding.  ``inspect`` can describe legacy JSONL, but always reports it as unbound
+binding.  ``pack`` gzips a journal deterministically for retention, and ``validate``
+reads the gzip directly, with every digest over the inflated bytes.  ``inspect`` can describe legacy JSONL, but always reports it as unbound
 inventory rather than as a verified replay.
 """
 
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import json
 import math
@@ -23,6 +25,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import zlib
 from dataclasses import dataclass
 from fractions import Fraction
 from pathlib import Path
@@ -39,6 +42,7 @@ EXPECTED_ROWS: Final = 12_028
 SCHEMA: Final = "sqpack.general-pose-tree-census.v1"
 MAX_INPUT_BYTES: Final = 64 * 1024 * 1024
 MAX_SOURCE_BYTES: Final = 2 * 1024 * 1024
+GZIP_MAGIC: Final = b"\x1f\x8b"
 CHECKER_FILES: Final = (
     "general_pose_tree/run_n11.py",
     "general_pose_tree/measure.py",
@@ -131,6 +135,61 @@ def _read_bytes(path: Path, *, limit: int = MAX_INPUT_BYTES) -> bytes:
         data = stream.read(limit + 1)
     _require(len(data) <= limit, f"input exceeds {limit} bytes: {path}")
     return data
+
+
+def _read_journal(path: Path, *, limit: int | None = None) -> bytes:
+    """Read a journal, inflating a gzip one under the same decompressed ceiling.
+
+    A complete 12,028-row journal is megabytes of repetitive JSON, so it is retained
+    gzipped; every digest in a summary is over the inflated bytes, never the archive.
+    """
+    limit = MAX_INPUT_BYTES if limit is None else limit
+    data = _read_bytes(path, limit=limit)
+    if not data.startswith(GZIP_MAGIC):
+        return data
+    inflater = zlib.decompressobj(wbits=31)
+    try:
+        inflated = inflater.decompress(data, limit + 1)
+    except zlib.error as error:
+        raise CensusError(f"malformed gzip journal: {path}: {error}") from error
+    _require(len(inflated) <= limit, f"journal inflates beyond {limit} bytes: {path}")
+    _require(inflater.eof and not inflater.unused_data, f"malformed gzip journal: {path}")
+    return inflated
+
+
+def pack_journal(journal: Path, output: Path) -> dict[str, object]:
+    """Write a deterministic gzip of ``journal`` whose inflated bytes match exactly."""
+    _require(output.suffix == ".gz", "packed journal must end in .gz")
+    _require(not output.exists(), "output already exists; fresh runs never overwrite evidence")
+    _require(output.resolve() != journal.resolve(), "output may not overwrite the journal")
+    inflated = _read_journal(journal)
+    _require(not _read_bytes(journal).startswith(GZIP_MAGIC), "journal is already gzipped")
+    packed = gzip.compress(inflated, compresslevel=9, mtime=0)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary_name = tempfile.mkstemp(
+        dir=output.parent, prefix=f".{output.name}.", suffix=".tmp"
+    )
+    temporary = Path(temporary_name)
+    try:
+        with os.fdopen(descriptor, "wb") as stream:
+            stream.write(packed)
+            stream.flush()
+            os.fsync(stream.fileno())
+        try:
+            os.link(temporary, output)
+        except FileExistsError as error:
+            raise CensusError(
+                "output appeared during packing; refusing to overwrite"
+            ) from error
+    finally:
+        temporary.unlink(missing_ok=True)
+    _require(_read_journal(output) == inflated, "packed journal does not round-trip")
+    return {
+        "journal_sha256": _sha256(inflated),
+        "inflated_bytes": len(inflated),
+        "packed_bytes": len(packed),
+        "packed_sha256": _sha256(packed),
+    }
 
 
 def _json(data: bytes, *, label: str) -> Any:
@@ -559,7 +618,7 @@ def inspect_legacy(
     expected_rows: int = EXPECTED_ROWS,
 ) -> dict[str, object]:
     """Structurally compare legacy rows without authenticating their producer."""
-    journal_bytes = _read_bytes(journal)
+    journal_bytes = _read_journal(journal)
     certificate_bytes = _read_bytes(certificate_path)
     reference_bytes = _read_bytes(reference_path)
     certificate = _json(certificate_bytes, label=str(certificate_path))
@@ -612,7 +671,7 @@ def validate_bound(
     checker_files: tuple[str, ...] = CHECKER_FILES,
 ) -> dict[str, object]:
     """Validate a wrapper-produced journal against its still-pinned sources."""
-    journal_bytes = _read_bytes(journal)
+    journal_bytes = _read_journal(journal)
     header, rows = _documents(journal_bytes, bound=True)
     assert header is not None
     snapshot = snapshot_sources(
@@ -848,6 +907,9 @@ def parser() -> argparse.ArgumentParser:
     validate.add_argument("journal", type=Path)
     _paths(validate)
     validate.add_argument("--require-complete", action="store_true")
+    pack = subcommands.add_parser("pack", help="gzip a journal deterministically for retention")
+    pack.add_argument("journal", type=Path)
+    pack.add_argument("output", type=Path)
     run = subcommands.add_parser("run", help="run the pinned checker and bind its rows")
     run.add_argument("output", type=Path)
     run.add_argument("rows")
@@ -867,6 +929,8 @@ def main(argv: list[str] | None = None) -> int:
                 directory / "global-certificate.json",
                 directory / "evidence/portable/python.json",
             )
+        elif arguments.command == "pack":
+            result = pack_journal(arguments.journal, arguments.output)
         elif arguments.command == "validate":
             directory = arguments.certificate_dir
             result = validate_bound(

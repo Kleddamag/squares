@@ -246,10 +246,11 @@ The Motion Lab is an exploratory instrument, not a citable research result.
 
 ## Reports
 
-These 21 research reports are the durable topical syntheses:
+These 22 research reports are the durable topical syntheses:
 
 | Report | Scope |
 | --- | --- |
+| [Where the Authors’ Measure Checkers Spend Their Time](docs/project/research/research-2026-10-02-author-checker-profile.md) | Function-level profiles of Tokoharu’s and wand125’s outward-rounded checkers on one certificate per family, and what they imply for an independent verifier; withheld from that verifier’s clean-room implementers |
 | [Exact Arithmetic for Independent Verifiers](docs/project/research/research-2026-09-30-exact-arithmetic-verifier-performance.md) | Source-level comparison of Python and Rust rational arithmetic, native-library options, sampled profiles, and a controlled experiment measuring redundant normalization |
 | [Fractional Packing, Duality, and the Next N11 Discriminators](docs/project/research/research-2026-09-10-x027-fractional-duality.md) | Exact full-unit transport, interior duality and density equivalence, finite witnesses, and the limits of fractional obstructions |
 | [Seven Corner Marks, Contact Components, and Relational Helpers](docs/project/research/research-2026-09-10-x027-structural-helpers.md) | New ownership and contact-component deductions, shared-owner consistency, and bounded segment-helper comparisons |

@@ -141,6 +141,9 @@ def test_dates_are_written_and_read_the_way_the_papers_write_them() -> None:
     assert artifact_dates.written_date("October 1, 2026") == date(2026, 10, 1)
     assert artifact_dates.written_date(release.EXPLAINER_REVISED) <= date.today()  # noqa: DTZ011
     assert artifact_dates.written_date(release.FIRST_PUBLISHED) == date(2026, 9, 5)
+    # The explainer's first day is its own history's oldest, and the site began as the
+    # explainer, so the two are one day.
+    assert artifact_dates.written_date(release.EXPLAINER_FIRST_PUBLISHED) == date(2026, 9, 5)
 
 
 def test_a_printed_pdf_is_dated_in_place_by_its_revision() -> None:

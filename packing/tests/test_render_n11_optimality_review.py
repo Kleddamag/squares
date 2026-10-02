@@ -107,19 +107,31 @@ def test_the_papers_head_is_the_sites_set_at_the_papers_own_address(
     assert paper_front.revised(paper.FRONT) == release.OPTIMALITY_REVIEW_REVISED
 
 
-def test_the_paper_ends_with_the_sites_closing_credit(rendered: tuple[str, str]) -> None:
+def test_the_paper_ends_with_the_sites_closing_credit_without_its_version(
+    rendered: tuple[str, str],
+) -> None:
     """The paper's closing paragraph holds the two lines every page's footer is made of,
-    the project and its repository, then the version and the credit to the two tools.
-    The version is pinned in `release.py`, which is therefore one of the paper's declared
-    inputs, so a re-pin puts the paper in the Pages workflow's scope."""
+    the project and its repository, then the credit to the two tools, with no version
+    between them: the paper's own version is in its credits, and the site's edition and
+    the data hash go nowhere on a paper (the owner, 2026-10-01). The paper's version and
+    dates are declared in `release.py`, which is therefore one of its declared inputs."""
     from devtools import render_overview  # noqa: PLC0415
-    from sqpack.release import PUBLICATION_EDITION  # noqa: PLC0415
+    from sqpack.release import (  # noqa: PLC0415
+        DATA_REVISION,
+        DATA_REVISION_LENGTH,
+        PUBLICATION_EDITION,
+    )
 
-    html, _ = rendered
-    footer = f'<p class="col colophon centred">{render_overview.colophon_lines()}</p>'
+    html, markdown = rendered
+    footer = f'<p class="col colophon centred">{render_overview.colophon_lines(edition="")}</p>'
     assert html.count(footer) == 1
     assert html.count('class="site-colophon-line"') == 2
-    assert f'<span class="site-colophon-part">{PUBLICATION_EDITION}</span>' in footer
+    assert footer.count('class="site-colophon-part"') == 3
+    assert "Formatted and typeset with" in footer
+    assert PUBLICATION_EDITION not in footer
+    assert PUBLICATION_EDITION not in html
+    assert PUBLICATION_EDITION not in markdown
+    assert DATA_REVISION[:DATA_REVISION_LENGTH] not in markdown
     assert paper.PACKING / "src" / "sqpack" / "release.py" in paper.RENDER_INPUTS
 
 

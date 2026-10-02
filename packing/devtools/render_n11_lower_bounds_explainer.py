@@ -94,10 +94,10 @@ from sqpack.fractional.model import Atom
 from sqpack.fractional.sweep import minimum_covered_mass, weight_scale
 from sqpack.probes import applied, probe
 from sqpack.release import (
+    EXPLAINER_FIRST_PUBLISHED,
+    EXPLAINER_HISTORY,
     EXPLAINER_REVISED,
-    FIRST_PUBLISHED,
-    PUBLICATION_EDITION,
-    PUBLICATION_HISTORY,
+    EXPLAINER_VERSION,
     PUBLICATION_REVISION,
 )
 from sqpack.render.style import SQUARE_HUE_PALETTE
@@ -402,11 +402,13 @@ THIRDPARTY = CASE / "thirdparty" / "README.md"
 THIRDPARTY_CERTIFICATE = THIRDPARTY.with_name("certificate.json")
 
 
-def publication_history_markdown() -> str:
-    """Every edition, newest first, each with the date it was first published."""
+def version_history_markdown() -> str:
+    """The paper's own editions, newest first, each with the date it was first published
+    and what changed in the paper: `sqpack.release.EXPLAINER_HISTORY`, not the site's
+    record, which lists editions in which this paper did not change."""
     return "\n".join(
         f"- **{entry.version} — {entry.first_published}.** {entry.result_scope}"
-        for entry in PUBLICATION_HISTORY
+        for entry in EXPLAINER_HISTORY
     )
 
 
@@ -2197,20 +2199,21 @@ TITLE = "New Lower Bounds for Square Packing for n = 11"
 #: Markdown edition writes it `$n = 11$`.
 HERO_TITLE = TITLE.replace("n = 11", '<span class="tex">n = 11</span>')
 #: The paper's front, in the two papers' one form (`devtools.paper_front`): who oversaw
-#: it and which agents wrote it; the publication's edition, which links the version
+#: it and which agents wrote it; the paper's own version, which links its version
 #: history at the foot of the page, since this paper has had several; and its dates,
-#: when the result was first published, the oldest edition's day, and when the article
-#: last changed (`sqpack.release`). It explains the project's own proofs, so it credits
-#: no source.
+#: when the paper was first published, its oldest edition's day, and when the article
+#: last changed (`sqpack.release`). The site's edition and the data hash are on no paper
+#: (the owner, 2026-10-01). It explains the project's own proofs, so it credits no
+#: source.
 FRONT = paper_front.check(
     paper_front.PaperFront(
         slug=SLUG,
         title=HERO_TITLE,
         oversight=(paper_front.Person("Joshua Levy", "https://x.com/ojoshe"),),
         agents=("Opus 5", "Fable 5.1", "GPT 5.6 Sol", "GPT-6 Astra"),
-        version=PUBLICATION_EDITION,
+        version=EXPLAINER_VERSION,
         dates=(
-            paper_front.Dated("First published", FIRST_PUBLISHED),
+            paper_front.Dated("First published", EXPLAINER_FIRST_PUBLISHED),
             paper_front.Dated(paper_front.REVISED, EXPLAINER_REVISED),
         ),
         history="version-history",
@@ -2378,13 +2381,12 @@ def shared_substitutions(facts: list[Facts], headline: Facts, default: Facts) ->
         "SITE_ROOT": SITE_ROOT,
         # The front of the paper, the two papers' one component: the formats row, which
         # offers the Markdown and the PDF beside the page under its slug, the title and
-        # the credits. The top of the page names when the result was first published,
-        # when the article last changed, and which edition is being read, the shared
-        # version taken whole, so the credits name the data rather than the commit that
-        # built the page; the full list of editions is linked rather than repeated
-        # there (the owner, 2026-09-22).
+        # the credits. The top of the page names when the paper was first published,
+        # when the article last changed, and which version of the paper is being read,
+        # the paper's own; the full list of the paper's editions is linked rather than
+        # repeated there (the owner, 2026-09-22).
         "FRONT_MATTER": paper_front.front_matter(FRONT),
-        "VERSION_HISTORY": publication_history_markdown(),
+        "VERSION_HISTORY": version_history_markdown(),
         "PRIOR_YEAR": str(PRIOR_YEAR),
         "YEARS_SINCE_PRIOR": str(RESULT_YEAR - PRIOR_YEAR),
         "PRIOR_MEMO_YEAR": str(PRIOR_MEMO_YEAR),
@@ -2489,7 +2491,9 @@ def shell_substitutions(static: Path, shared: dict[str, str], body: str) -> dict
         "KPRESS_CLIENT_SCRIPT": kpress_client_js(static),
         "SITE_NAV_CSS": SITE_NAV_CSS.read_text(encoding="utf-8"),
         "SITE_NAV": nav_html("papers", root=SITE_ROOT),
-        "COLOPHON": colophon_lines(),
+        # A paper's closing credit carries no version: its own is in its credits, and
+        # the site's goes on no paper.
+        "COLOPHON": colophon_lines(edition=""),
         **shared,
         "BODY_HTML": body,
     }

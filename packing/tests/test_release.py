@@ -4,11 +4,14 @@ The atlas footer and the explainer's credits each used to compose the stamp from
 parts, in two files and two languages, and the page named its build commit where the
 atlas named a pinned one. Hand-assembled spellings of one fact are how they come to
 disagree. What is pinned here is the shape, the single source, and the drift check that
-holds the pinned data revision to git.
+holds the pinned data revision to git. (The explainer's credits print the paper's own
+version since 2026-10-02; the stamp is the site's and the posters'.)
 
-The version history is held to two rules of its own: it only grows, back to the first
-edition, and each edition is dated by when it was first published rather than when its
-label was first written down.
+The site's version history is held to two rules of its own: it only grows, back to the
+first edition, and each edition is dated by when it was first published rather than when
+its label was first written down. The papers' own versions are held beside it: a paper's
+history lists the editions in which that paper changed, at the numbers and dates they
+were published under, and no paper's version carries the site's edition or the data hash.
 
 A re-pin is one line and rebuilds nothing (`devtools.release_pin`, with tests of its
 own). The posters and the films are stamped when they are drawn, with `edition_at` their
@@ -27,7 +30,12 @@ from sqpack.release import (
     COMPOSITES_MAY_TRAIL,
     DATA_REVISION,
     DATA_REVISION_LENGTH,
+    EXPLAINER_FIRST_PUBLISHED,
+    EXPLAINER_HISTORY,
+    EXPLAINER_VERSION,
     FIRST_PUBLISHED,
+    OPTIMALITY_REVIEW_EDITION,
+    OPTIMALITY_REVIEW_VERSION,
     PUBLICATION_DATE,
     PUBLICATION_EDITION,
     PUBLICATION_HISTORY,
@@ -147,6 +155,56 @@ def test_each_edition_is_dated_by_when_it_was_first_published() -> None:
     assert dated["v0.4.2"] == "September 28, 2026"
     assert PUBLICATION_HISTORY[0].first_published == PUBLICATION_DATE
     assert PUBLICATION_HISTORY[-1].first_published == FIRST_PUBLISHED
+
+
+#: The explainer's editions that were published under the site's numbering, before the
+#: papers were versioned on their own (the owner, 2026-10-01). Each keeps the number and
+#: the day it was published under, exactly: "we don't want to retroactively change any
+#: version number that we have published where there's a change of the paper".
+SHARED_PAPER_EDITIONS = {"v0.3.0", "v0.4.0", "v0.4.2"}
+#: The site's editions under which the paper did not change: a site and atlas edition
+#: (the shared version stamp and T-030) and the website edition. Not versions of the
+#: paper, so not in its history.
+SITE_ONLY_EDITIONS = {"v0.4.1", "v0.5.0"}
+
+
+def test_the_explainers_history_is_its_own_editions_at_their_published_numbers() -> None:
+    """The paper's history lists the editions in which the paper changed, newest first,
+    and nothing else: a published number under which the paper changed stays as
+    published, number and date, and an edition under which it did not is not a version
+    of the paper (the owner, 2026-10-01). The editions it shared with the site are held
+    to the site's record for both; the ones it drops are held out.
+    """
+    versions = [entry.version for entry in EXPLAINER_HISTORY]
+    assert len(set(versions)) == len(versions)
+    assert [_version(e) for e in EXPLAINER_HISTORY] == sorted(
+        (_version(e) for e in EXPLAINER_HISTORY), reverse=True
+    )
+    assert set(versions) >= SHARED_PAPER_EDITIONS
+    assert not SITE_ONLY_EDITIONS & set(versions)
+    site = {entry.version: entry for entry in PUBLICATION_HISTORY}
+    for entry in EXPLAINER_HISTORY:
+        assert re.fullmatch(r"v\d+\.\d+\.\d+", entry.version), entry.version
+        assert entry.result_scope.endswith("."), entry.version
+        assert "weak" not in entry.result_scope.lower()
+        if entry.version in SHARED_PAPER_EDITIONS:
+            assert entry.first_published == site[entry.version].first_published, entry.version
+    first = EXPLAINER_HISTORY[-1]
+    assert first.version == "v0.3.0"
+    assert "381/100" in first.result_scope
+    assert EXPLAINER_HISTORY[0].version == EXPLAINER_VERSION
+    assert EXPLAINER_FIRST_PUBLISHED == first.first_published == FIRST_PUBLISHED
+
+
+def test_a_papers_version_carries_no_data_hash_and_no_site_edition() -> None:
+    """A paper's version is its own, plain: the site's stamp and the six characters of
+    the data commit are the site's and the posters', and appear in no paper's version."""
+    for version in (EXPLAINER_VERSION, OPTIMALITY_REVIEW_EDITION):
+        assert STAMP.search(version) is None, version
+        assert DATA_REVISION[:DATA_REVISION_LENGTH] not in version
+        assert PUBLICATION_EDITION not in version
+    assert re.fullmatch(r"v\d+\.\d+\.\d+", OPTIMALITY_REVIEW_VERSION)
+    assert OPTIMALITY_REVIEW_EDITION.endswith(OPTIMALITY_REVIEW_VERSION)
 
 
 def test_the_stamp_is_a_version_and_a_data_revision_and_nothing_else() -> None:

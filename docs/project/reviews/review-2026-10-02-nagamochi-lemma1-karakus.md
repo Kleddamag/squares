@@ -74,10 +74,14 @@ The total is $ab - (a+1-\lceil a\rceil) - (b+1-\lceil b\rceil)$.
 
 For $\lambda > 1$ the paper shrinks $R$ and $U$ toward the origin by $\lambda^{-1}$ and
 scores a unit square $S$ inside $\lambda^{-1}R$ by
-$\sigma(S) = \lambda^2\,\mathrm{area}(S \cap R^*) + \tfrac{\lambda}{2}\sum_i \mathrm{length}(S \cap L_i) + 0.45\,\#(S \cap Q) + 0.5\,\#(S \cap P)$,
+
+$$
+\sigma(S) = \lambda^2 \mathrm{area}(S \cap R^{\ast}) + \tfrac{\lambda}{2}\sum_i \mathrm{length}(S \cap L_i) + 0.45 \mathrm{card}(S \cap Q) + 0.5 \mathrm{card}(S \cap P),
+$$
+
 the objects being their shrunk copies.
-Lemma 1 reads, in full: *Any unit square `S` inside $\lambda^{-1}R$ satisfies
-`σ(S) > 1`.* Theorem 1 follows by summing over a packing.
+Lemma 1 reads, in full: “Any unit square $S$ inside $\lambda^{-1}R$ satisfies
+$\sigma(S) > 1$.” Theorem 1 follows by summing over a packing.
 The paper then states the equivalent form in which it argues and in which the
 counterexample is given: *any `λ × λ` square `S` with `λ ∈ (1, 1.01]` has `σ(S) > 1`
 over the original `R` and `U`*, with density $1$, $1/2$, $0.45$ and $0.5$ unscaled.
@@ -144,9 +148,9 @@ two adjacent edges $e_1, e_2$. Its last subcase has $S$ containing $(1, 0.9)$, n
 of $P$, none of $(0.9, 1)$, $(a-1, 0.9)$, $(2, 0.9)$ and, after the reduction, not
 $(1,1)$. The text: *To estimate the minimum `σ(S)` in this case, we can assume that one
 corner of `S` touches the `x`-axis and point `(2, 0.9)` is on an edge of `S`* \[...\]
-*Then $\sigma(S) \ge d + 0.5c + 0.5 - 0.5c'$, which is greater than `1` by Lemma 6.*
-Lemma 6 assumes *two adjacent edges `e_1` and `e_2` of `S` intersect line `L : y = 1`*
-and *point `(2, 0.9)` is on an edge `e_2` of `S`*, and its proof computes, for the
+“Then $\sigma(S) \ge d + 0.5c + 0.5 - 0.5c'$, which is greater than 1 by Lemma 6.” Lemma
+6 assumes *two adjacent edges `e_1` and `e_2` of `S` intersect line `L : y = 1`* and
+*point `(2, 0.9)` is on an edge `e_2` of `S`*, and its proof computes, for the
 configuration of Figure 4(b) in which $e_1$ and $e_2$ meet at the apex above $y = 1$,
 the cap area $d = t(1-t)/(1+t)$ and chord $c$ with $c + d = 1$ (the printed
 $c = (t+t^2)/(1+t)$ contradicts the paper’s own *`c = 1 - d`*; the apex geometry gives

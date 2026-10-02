@@ -29,8 +29,8 @@
         "statements": {
           "closed_form": 1,
           "k2_minus_2_identity": 0,
-          "mentions": 4,
-          "qualified": 0,
+          "mentions": 5,
+          "qualified": 1,
           "relies": 7,
           "states": 1,
           "unqualified_states": 1

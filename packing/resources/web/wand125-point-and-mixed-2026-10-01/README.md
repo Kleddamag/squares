@@ -273,6 +273,21 @@ receipts are in [`receipts/`](receipts/).
   unpublished per-root records could. The review of 2 October found that blocking for
   recording that route as evidence, and the `zmx2` route above is the one recorded.
 
+## Replay of `s(77) = 9` Here, 2 October 2026
+
+Stage 4 for [jlevy/squares#279](https://github.com/jlevy/squares/issues/279) runs the two
+`zmx2` sweeps `verify.sh` names, with the checker built as for `s(59)` above.
+
+| Run | Roots | Boxes | Uncertified | Max depth | Verdict | Wall, CPU |
+| --- | ---: | ---: | ---: | ---: | --- | --- |
+| `zmx2 cert … --d4 --pair-points --threads 3` | 8,100 | 5,810,824 | 0 | 36 | `VERIFIED-D4` | 4,112 s, 12,154 s |
+
+The d4 root log covers its region once per root with no uncertified or capped box, and
+its box total equals the one the source’s README states
+([`n77_zmx2_d4_pairpoints_audit.json`](receipts/n77_zmx2_d4_pairpoints_audit.json)). The
+unreduced sweep, `--full --pair-points` over 64,800 roots, runs in two halves of the root
+columns on two machines and is joined by the audit when both end.
+
 ## Controls for the Mixed Checker
 
 [`receipts/n37/control.json`](receipts/n37/control.json) holds the stage-4 controls of
@@ -322,6 +337,7 @@ present, the acquisition check reports each as retained twice.
 | `receipts/n59_zmx2_full.log.gz` | receipt | `9ad580f1383546bc35f20d3ebef17bf42b9937b6` | `ce60c5f6e0644a0f437d30b838158c4f482a6a55699b2fa1cff02b14d85f73d9` |
 | `receipts/n59_zmx2_d4_roots.log.gz` | receipt | `39dd994f89fc468d7fc35f235fa875afa413fb5f` | `8e012c81d21603dd8140dfc9fb4ccdde1ffbd3d38ad46ed4497319c4071d1261` |
 | `receipts/n59_zmx2_full_roots.log.gz` | receipt | `d64d9c33fd19f03ef842ce67d3b62c76a5c090ab` | `2d6c765a4a7120ed3d60d640acb77088b621a93c8f6a5475d05ced800208b79e` |
+| `receipts/n77_zmx2_d4_pairpoints_roots.log.gz` | receipt | `e6939fed684335c5916eed9576b8afa0fdff797b` | `8a8f54c4f353bf5712a3fa92511a3b3ed92b5c84e0d0d32fcc30c3bbeecafc6a` |
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -112,6 +112,19 @@ class Registration:
         return f"../resources/web/{self.packet.directory.name}/README.md"
 
     @property
+    def head(self) -> str:
+        """How the paragraph this registration writes begins, and so how it is found.
+
+        The date alone is not enough: other sources' intakes of the same day open with the
+        same bold label, and a paragraph this tool did not write is never touched.
+        """
+        return f"{self.intake} wand125’s [rectangle-density source]({self.link})"
+
+    def wrote(self, paragraph: str) -> bool:
+        """Whether ``paragraph`` is this registration's, however Flowmark wrapped it."""
+        return " ".join(paragraph.split()).startswith(self.head)
+
+    @property
     def ids(self) -> frozenset[str]:
         return frozenset({self.report, self.monotone_report, self.replay})
 
@@ -606,18 +619,36 @@ def _verified_sentence(plan: Plan, registration: Registration) -> str | None:
     )
 
 
-def intake(plan: Plan, registration: Registration) -> str:
+def _field_side(field: Mapping[str, Any] | None) -> Fraction | None:
+    return None if not field else Fraction(Decimal(str(field["value"])))
+
+
+def intake(plan: Plan, registration: Registration, payload: Mapping[str, Any]) -> str:
+    """The registration's paragraph for one case, whose fields are ``payload`` before it.
+
+    A certificate's own side is written as a bound on ``s(n)`` only when it is what the
+    reported or verified field holds once the plan is applied, since `check_case_prose`
+    holds that form to the fields; otherwise it is "a direct certificate", and the
+    stronger bound another source registered keeps the field and its own paragraph.
+    """
     n = plan.n
     cases = registration.packet.cases
-    link = f"[rectangle-density source]({registration.link})"
-    head = f"{registration.intake} wand125’s {link}"
+    head = registration.head
     sentences: list[str] = []
     monotone = plan.reported is not None and plan.reported.source != n
     if n in cases:
         side = cases[n][1]
         mass = _mass(registration, n)
+        fields = (
+            plan.reported.side
+            if plan.reported is not None
+            else _field_side(payload.get("reported_lower_bound")),
+            plan.verified.side
+            if plan.verified is not None
+            else _field_side(payload.get("verified_lower_bound")),
+        )
         claim = f"`s({n}) >= {side} = {_decimal(side)}`"
-        if monotone:
+        if monotone or side not in fields:
             claim = f"a direct `{side} = {_decimal(side)}` certificate for this case"
         sentences.append(
             f"{head} reports {claim}, with total mass "
@@ -830,17 +861,27 @@ def apply_case(plan: Plan, registration: Registration, frontier: Path = FRONTIER
         )
     # The intake is written with code spans, and its mathematics made math by the rules
     # `devtools.migrate_math` applied to the rest of the body.
-    paragraph = markdown_math(intake(plan, registration))
+    paragraph = markdown_math(intake(plan, registration, payload))
     title, _, rest = body.partition("\n\n")
-    if rest.startswith(registration.intake):
-        existing_paragraph, _, rest = rest.partition("\n\n")
+    # This registration's paragraph is found by its source and packet, wherever it is;
+    # a new one goes under the title. Every other paragraph is someone else's or an
+    # earlier registration's, and only the latter's claims are ever retired.
+    parts = rest.split("\n\n")
+    mine = [index for index, part in enumerate(parts) if registration.wrote(part)]
+    if len(mine) > 1:
+        raise ValueError(f"n = {plan.n} holds {len(mine)} {registration.date} paragraphs")
+    place = mine[0] if mine else 0
+    if mine:
+        existing_paragraph = parts.pop(place)
         # Flowmark rewraps the paragraph at commit; the same words are the same paragraph.
         if " ".join(existing_paragraph.split()) == paragraph:
             paragraph = existing_paragraph
-    earlier = tuple(item.intake for item in REGISTRATIONS[: _index(registration)])
+    earlier = REGISTRATIONS[: _index(registration)]
     rest = "\n\n".join(
-        _retire_earlier_intake(part, plan, registration) if part.startswith(earlier) else part
-        for part in rest.split("\n\n")
+        _retire_earlier_intake(part, plan, registration)
+        if any(item.wrote(part) for item in earlier)
+        else part
+        for part in parts
     )
     if plan.reported is not None:
         rest = _retire_selected_report(rest, plan)
@@ -848,9 +889,17 @@ def apply_case(plan: Plan, registration: Registration, frontier: Path = FRONTIER
         rest = _retire_nagamochi_prose(
             rest, plan, str(payload["reported_upper_bound"]["value"])
         )
-    # Only what a retirement wrote is still code: the rest is migrated already.
-    body = f"{title}\n\n{paragraph}\n\n{markdown_math(rest)}"
-    return f"---\n{front}---\n{body}"
+    others = rest.split("\n\n")
+    if len(others) != len(parts):
+        raise ValueError(f"n = {plan.n}: rewriting the body changed its paragraphs")
+    # Only what a retirement wrote is still code: the rest is migrated already, and a
+    # paragraph no retirement changed is left exactly as it is.
+    others = [
+        markdown_math(new) if new != old else old
+        for new, old in zip(others, parts, strict=True)
+    ]
+    others.insert(place, paragraph)
+    return f"---\n{front}---\n{title}\n\n" + "\n\n".join(others)
 
 
 def _entry_span(text: str, identifier: str) -> tuple[int, int] | None:

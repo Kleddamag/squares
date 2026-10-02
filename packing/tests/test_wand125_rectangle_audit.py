@@ -30,6 +30,8 @@ from devtools.audit_wand125_rectangles import (
     source_provenance,
     standing,
 )
+from devtools.check_case_prose import bound_claims, check_bound_claim, parse_front_matter
+from devtools.migrate_math import markdown_math
 from devtools.retained_data import (
     candidates,
     check_packet,
@@ -680,3 +682,157 @@ def test_the_october_report_entry_says_what_the_packet_holds() -> None:
     assert Fraction("1.00004") < min(factors)
     assert max(factors) < Fraction("1.04329")
     assert "between 1.00004 and 1.04329" in text
+
+
+def _paragraphs(path: Path) -> tuple[str, list[str]]:
+    _, front, body = path.read_text(encoding="utf-8").split("---\n", 2)
+    title, _, rest = body.partition("\n\n")
+    return f"---\n{front}---\n{title}", rest.split("\n\n")
+
+
+def _write_paragraphs(path: Path, head: str, parts: list[str]) -> None:
+    path.write_text(f"{head}\n\n" + "\n\n".join(parts), encoding="utf-8")
+
+
+def _foreign(registration: apply.Registration, n: int) -> str:
+    """Another source's intake paragraph of the registration's own date, as the exact-cover
+    intakes of 1 October are at n = 59, 60, 61, 77 and 78."""
+    return (
+        f"{registration.intake} Another source\u2019s\n[exact-cover source](../x/README.md) "
+        f"reports $s({n}) = 9$,\nchecked there by its own checker."
+    )
+
+
+def _direct_plan(frontier: Path) -> apply.Plan:
+    newest = apply.REGISTRATIONS[-1]
+    return next(
+        plan
+        for plan in apply.plans(newest, frontier)
+        if plan.reported is not None and plan.reported.source == plan.n
+    )
+
+
+def test_an_intake_is_written_beside_another_sources_paragraph_of_its_date(
+    tmp_path: Path,
+) -> None:
+    """think-e26n: the paragraph is the registration's by source and packet, not by date.
+
+    Writing the 2026-10-01 paragraphs once replaced the exact-cover intakes of the same
+    day. Here the registration's own paragraph is gone and another source's of the same
+    date stands first under the title: the registration writes its paragraph above it
+    and leaves it, and every other paragraph, byte for byte.
+    """
+    frontier = tmp_path / "frontier"
+    shutil.copytree(FRONTIER, frontier)
+    newest = apply.REGISTRATIONS[-1]
+    plan = _direct_plan(frontier)
+    path = frontier / f"n-{plan.n:03d}.md"
+    head, parts = _paragraphs(path)
+    (own,) = [part for part in parts if newest.wrote(part)]
+    others = [part for part in parts if not newest.wrote(part)]
+    foreign = _foreign(newest, plan.n)
+    assert foreign.startswith(newest.intake)
+    assert not any(item.wrote(foreign) for item in apply.REGISTRATIONS)
+    _write_paragraphs(path, head, [foreign, *others])
+    rendered = apply.apply_case(plan, newest, frontier)
+    path.write_text(rendered, encoding="utf-8")
+    after_head, after = _paragraphs(path)
+    assert after_head == head
+    assert after[1:] == [foreign, *others]
+    assert newest.wrote(after[0])
+    assert " ".join(after[0].split()) == " ".join(own.split())
+    assert apply.apply_case(plan, newest, frontier) == rendered
+
+
+def test_an_intake_is_rewritten_in_place_below_a_foreign_one(tmp_path: Path) -> None:
+    """A same-date paragraph of another source above the registration's own stays above it.
+
+    The tool used to take the first paragraph of its date for its own: it would have
+    overwritten this one and left its own paragraph twice.
+    """
+    frontier = tmp_path / "frontier"
+    shutil.copytree(FRONTIER, frontier)
+    newest = apply.REGISTRATIONS[-1]
+    plan = _direct_plan(frontier)
+    path = frontier / f"n-{plan.n:03d}.md"
+    head, parts = _paragraphs(path)
+    _write_paragraphs(path, head, [_foreign(newest, plan.n), *parts])
+    before = path.read_text(encoding="utf-8")
+    assert apply.apply_case(plan, newest, frontier) == before
+
+
+def test_an_intake_beside_a_stronger_report_quotes_only_what_a_field_holds(
+    tmp_path: Path,
+) -> None:
+    """think-e26n's figures: a side no field holds is a direct certificate, not ``s(n) >=``.
+
+    At n = 59, 60, 77 and 78 another source's report held the reported field above the
+    certificate and a replayed smaller-count certificate the verified one, and the tool
+    wrote ``s(n) >= side``, which `check_case_prose` refuses, in a code span
+    `check_math_markup` refuses. The same arrangement here, at every count where a replay
+    gives a verified bound below the certificate's own side.
+    """
+    frontier = tmp_path / "frontier"
+    shutil.copytree(FRONTIER, frontier)
+    newest = apply.REGISTRATIONS[-1]
+    cases = newest.packet.cases
+    proofs = apply.replays(newest)
+    verified = monotone_bounds({n: side for n, (side, _) in proofs.items()}, upto=max(cases))
+    counts = [
+        n
+        for n, (_name, side) in cases.items()
+        if n in verified and verified[n][0] < side and n not in newest.superseded_priors
+    ]
+    assert counts
+    for n in counts:
+        _hold(frontier, n, cases[n][1] + Fraction(1, 1000))
+        path = frontier / f"n-{n:03d}.md"
+        _, front, body = path.read_text(encoding="utf-8").split("---\n", 2)
+        front, count = re.subn(
+            r"^  verified_lower_bound:\n(?:^    .*\n)*",
+            "  verified_lower_bound:\n    value: '1'\n    exact_form: '1'\n"
+            "    evidence:\n    - E-another-source\n",
+            front,
+            count=1,
+            flags=re.MULTILINE,
+        )
+        assert count == 1
+        path.write_text(f"---\n{front}---\n{body}", encoding="utf-8")
+    planned = {plan.n: plan for plan in apply.plans(newest, frontier)}
+    for n in counts:
+        plan = planned[n]
+        assert plan.reported is None
+        assert plan.verified is not None
+        path = frontier / f"n-{n:03d}.md"
+        path.write_text(apply.apply_case(plan, newest, frontier), encoding="utf-8")
+        _, parts = _paragraphs(path)
+        (own,) = [part for part in parts if newest.wrote(part)]
+        side = cases[n][1]
+        assert f"a direct ${side} = " in " ".join(own.split()), n
+        assert f"s({n}) >= {side}" not in own, n
+        assert markdown_math(own) == own, n
+        document = safe_load(path.read_text(encoding="utf-8").split("---\n", 2)[1])
+        front_matter = parse_front_matter(document)
+        claims = bound_claims(own, n)
+        assert [check_bound_claim(claim, front_matter) for claim in claims] == [None] * len(
+            claims
+        ), n
+
+
+def test_an_earlier_dated_paragraph_of_another_source_is_never_retired(tmp_path: Path) -> None:
+    """Only the registrations' own earlier paragraphs have their claims put in the past."""
+    frontier = tmp_path / "frontier"
+    shutil.copytree(FRONTIER, frontier)
+    newest = apply.REGISTRATIONS[-1]
+    plan = _direct_plan(frontier)
+    path = frontier / f"n-{plan.n:03d}.md"
+    earlier = apply.REGISTRATIONS[-2]
+    foreign = (
+        f"{earlier.intake} Another source reports `s({plan.n}) >= 1/1 = 1`, with total "
+        "mass `1/2 = 0.5 < 1`, by its own checker."
+    )
+    assert not any(item.wrote(foreign) for item in apply.REGISTRATIONS)
+    head, parts = _paragraphs(path)
+    _write_paragraphs(path, head, [*parts[:1], foreign, *parts[1:]])
+    before = path.read_text(encoding="utf-8")
+    assert apply.apply_case(plan, newest, frontier) == before

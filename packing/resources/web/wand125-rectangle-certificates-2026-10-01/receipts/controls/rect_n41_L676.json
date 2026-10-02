@@ -1,0 +1,152 @@
+{
+  "kind": "wand125-rectangle-control/v1",
+  "status": "CONTROLS_REFUSED",
+  "packet": "2026-10-01",
+  "source_revision": "1a25a5ed745fdd905a52f48fcc48150a0669032d",
+  "certificate": "rect_n41_L676",
+  "n": 41,
+  "L": "169/25",
+  "direction": 32,
+  "direction_choice": "the least lower bound of the upstream run's per-angle rows",
+  "upstream_row": {
+    "r": 32,
+    "nodes": 66387,
+    "leaves": 33194,
+    "lower_bound": 1.0001000008296257,
+    "seconds": 15.233871042,
+    "status": "verified"
+  },
+  "checker": {
+    "verify_cpp_sha256": "a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602",
+    "runner_sha256": "7bce246763cac8a2bda9aa4cfd9944aa5e14cde9ac965e00686c25f21ae78261",
+    "compile": [
+      "g++",
+      "-O2",
+      "-std=c++17",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "verify.cpp",
+      "-o",
+      "verify"
+    ],
+    "argv": [
+      "./verify",
+      "32",
+      "32"
+    ],
+    "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  },
+  "witness": {
+    "centre": [
+      "5195927/875437",
+      "1827947/298619"
+    ],
+    "t": "83/1250",
+    "cos": "1555611/1569389",
+    "sin": "207500/1569389",
+    "side": "9977/10000",
+    "domain": [
+      "169/50",
+      "194590834353/31387780000"
+    ],
+    "coverage_exact": "821260748135034650911/819032442775271494070",
+    "coverage": 1.0027206557925992,
+    "original_mass_exact": "4099/100"
+  },
+  "runs": [
+    {
+      "name": "original",
+      "input_sha256": "5ff737f38d0b885b35b05c2056adf730afa6ff6f0302ba4968d091d65c5b750c",
+      "mass_exact": "4099/100",
+      "rectangle_rows": 2503,
+      "witness_coverage_exact": "821260748135034650911/819032442775271494070",
+      "witness_coverage": 1.0027206557925992,
+      "run": {
+        "command": [
+          "./verify",
+          "32",
+          "32"
+        ],
+        "returncode": 0,
+        "stdout": "{\"r\":32,\"nodes\":66387,\"leaves\":33194,\"lower_bound\":1.0001000008296257,\"seconds\":19.847220143000001,\"status\":\"verified\"}\n",
+        "stderr": "",
+        "rows": [
+          {
+            "r": 32,
+            "nodes": 66387,
+            "leaves": 33194,
+            "lower_bound": 1.0001000008296257,
+            "seconds": 19.847220143,
+            "status": "verified"
+          }
+        ],
+        "cpu_seconds": 19.548,
+        "wall_seconds": 19.857,
+        "matches_upstream": true,
+        "verdict": "ACCEPTED"
+      }
+    },
+    {
+      "name": "scale-weights",
+      "input_sha256": "8c605155595f07a6fc322836fb6bc1635181ad616a35d85ff8551373ffdf3b89",
+      "mass_exact": "405801/10000",
+      "rectangle_rows": 2503,
+      "witness_coverage_exact": "81304814065368430440189/81903244277527149407000",
+      "witness_coverage": 0.9926934492346732,
+      "mutation": {
+        "factor": "99/100",
+        "recorded_least_bound_scaled": 0.9900990008213294
+      },
+      "run": {
+        "command": [
+          "./verify",
+          "32",
+          "32"
+        ],
+        "returncode": 3,
+        "stdout": "",
+        "stderr": "UNRESOLVED 32 90 0.992693\n",
+        "rows": [],
+        "cpu_seconds": 0.014,
+        "wall_seconds": 0.017,
+        "verdict": "REFUSED"
+      }
+    },
+    {
+      "name": "drop-top-contributor",
+      "input_sha256": "7e55ac3cb8012af35225fd4f67ebb7ed9114854dfcd5ea5451e9dbbca7a8e15d",
+      "mass_exact": "327000275803848208259293/8190324427752714940700",
+      "rectangle_rows": 2502,
+      "witness_coverage_exact": "603232685891645221911/819032442775271494070",
+      "witness_coverage": 0.7365186705518111,
+      "mutation": {
+        "row": 2463,
+        "rectangle": [
+          "3456881599534543/5000000000000000",
+          "9281280634027061/10000000000000000",
+          "7117859529668913/10000000000000000",
+          "9975208158066469/10000000000000000"
+        ],
+        "weight": "87211224897355771600/81903244277527149407",
+        "contribution_at_witness_exact": "21802806224338942900/81903244277527149407"
+      },
+      "run": {
+        "command": [
+          "./verify",
+          "32",
+          "32"
+        ],
+        "returncode": 3,
+        "stdout": "",
+        "stderr": "UNRESOLVED 32 90 0.736519\n",
+        "rows": [],
+        "cpu_seconds": 0.014,
+        "wall_seconds": 0.017,
+        "verdict": "REFUSED"
+      }
+    }
+  ],
+  "python": "3.14.7 (main, Sep 29 2026, 15:01:40) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.44-fc-v51-x86_64-with-glibc2.39",
+  "scope": "Stage-4 negative controls: the source's unchanged verify.cpp, compiled with run_verify.py's command, on one net direction. Each mutation leaves an exact witness centre covered below 1 at that angle, so the checker must refuse it."
+}

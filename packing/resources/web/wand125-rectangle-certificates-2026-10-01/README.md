@@ -249,6 +249,13 @@ It reuses the exact preflight of `devtools/audit_tokoharu_density.py`, with each
 certificate’s own pinned side, and requires the candidate’s own `n` to be the pinned
 count.
 
+- [`receipts/controls/rect_n41_L676.json`](receipts/controls/rect_n41_L676.json): the
+  stage-4 controls of 2 October. Tokoharu’s `verify.cpp`, compiled with `run_verify.py`’s
+  exact command, accepts `rect_n41_L676` at direction 32, its least recorded bound
+  (66,387 nodes, matching the upstream row), and refuses two mutated copies there: every
+  weight scaled by 99/100, and the heaviest orbit at a witness centre deleted, whose exact
+  coverage falls to 0.99269 and 0.73652. `tests/test_wand125_checker_controls.py` holds
+  them.
 - [`receipts/preflight/audit.json.gz`](receipts/preflight/audit.json.gz): the exact
   preflight of all 53 standing certificates, the 16 unchanged ones read from the earlier
   packets. For each, the regenerated input matches the published SHA-256, every interval

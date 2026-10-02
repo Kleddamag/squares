@@ -41,8 +41,12 @@ as each angle finishes, so that one certificate can be split across sessions;
 ``mixed-merge`` turns every range's receipts into the complete replay's verdict;
 ``mixed-plan`` splits the angles into ranges of equal estimated cost, and ``mixed-price``
 estimates every replay's CPU-hours from timed single angles; and ``mixed-compare``
-compares a complete run of the source's own driver. ``mixed-audit`` also checks any
-tarball it is given against the pin, and any replay receipts a certificate has.
+compares a complete run of the source's own driver. ``mixed-control`` is stage 4 of
+``campaign/result-import.md`` for the mixed checker: one certificate and two mutations of
+it, each provably uncovered at an exact witness centre, run on one net direction with the
+shipped export, checker and node limit; the original must be accepted and both refused.
+``mixed-audit`` also checks any tarball it is given against the pin, and any replay
+receipts a certificate has.
 
 A ``mixed-replay`` command is one batch: it downloads the tarball (from the raw-file
 address, then by Git) and checks its digest before use, appends each angle's receipt as
@@ -71,6 +75,7 @@ Usage, from ``packing/`` with the project interpreter::
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-plan n84 --parts 3
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-price
     .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-compare n84 BUNDLE --out F
+    .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed mixed-control n37 --work W
 
 Retained data files over 1,000 lines are stored as deterministic gzip, so every read goes
 through `devtools.retained_data.read_retained_bytes` and every digest is the upstream one.
@@ -106,6 +111,14 @@ from typing import Any, cast
 
 from strif import atomic_write_text
 
+from devtools.audit_wand125_rectangles import (
+    CONTROL_FACTOR,
+    coverage_exact,
+    heaviest,
+    least_covered,
+    net_rotation,
+    orbit_contributions,
+)
 from devtools.retained_data import (
     GZIP_SUFFIX,
     LINE_THRESHOLD,
@@ -2173,6 +2186,234 @@ def mixed_fetch(
     }
 
 
+# --------------------------------------------------------------------------- controls
+
+#: Stage 4 of ``campaign/result-import.md`` for the mixed checker: two mutated
+#: certificates refused on one net direction, beside the original accepted again there.
+MIXED_CONTROL_KIND = "wand125-mixed-control/v1"
+MIXED_MUTATIONS = ("scale-masses", "drop-top-contributor")
+MIXED_CONTROL_TIMEOUT = 3600
+
+
+def mutate_mixed(data: dict[str, Any], kind: str, row: int) -> dict[str, Any]:
+    """A copy of a mixed candidate with every mass scaled, or one rectangle row deleted.
+
+    The total is restated exactly, as the shipped ``expand`` requires. A row is one orbit
+    of eight images, so deleting it keeps the D4 symmetry the shipped export checks.
+    """
+    mutated = dict(data)
+    if kind == "scale-masses":
+        for key in ("rectangles", "points"):
+            mutated[key] = [
+                item | {"mass": str(Fraction(item["mass"]) * CONTROL_FACTOR)}
+                for item in data[key]
+            ]
+    elif kind == "drop-top-contributor":
+        mutated["rectangles"] = [
+            item for index, item in enumerate(data["rectangles"]) if index != row
+        ]
+    else:
+        raise ValueError(f"unknown mutation: {kind}")
+    masses = (
+        Fraction(item["mass"]) for key in ("rectangles", "points") for item in mutated[key]
+    )
+    mutated["total_mass"] = str(sum(masses, Fraction()))
+    return mutated
+
+
+def _control_direction(binary: Path, folder: Path, nodes: int, timeout: int) -> dict[str, Any]:
+    """One net direction under the compiled shipped checker, with the replay's node limit."""
+    command = [str(binary), "input.txt", str(nodes)]
+    before = resource.getrusage(resource.RUSAGE_CHILDREN)
+    started = time.monotonic()
+    try:
+        result = subprocess.run(
+            command, cwd=folder, capture_output=True, text=True, timeout=timeout, check=False
+        )
+    except subprocess.TimeoutExpired:
+        return {"verdict": "TIMEOUT", "timeout_seconds": timeout}
+    after = resource.getrusage(resource.RUSAGE_CHILDREN)
+    run: dict[str, Any] = {
+        "returncode": result.returncode,
+        "stderr": result.stderr,
+        "cpu_seconds": round(
+            after.ru_utime - before.ru_utime + after.ru_stime - before.ru_stime, 3
+        ),
+        "wall_seconds": round(time.monotonic() - started, 3),
+    }
+    if result.returncode == 0:
+        output = json.loads(result.stdout)
+        frontier = output.pop("frontier")
+        run |= {"output": output, "frontier_boxes": len(frontier)}
+        if frontier:
+            run["last_frontier_box"] = frontier[-1]
+            run["stopped_at"] = "node limit" if output["nodes"] >= nodes else "depth floor"
+    return run
+
+
+def mixed_control(
+    certificate: MixedCertificate,
+    work: Path,
+    supplied: Path | None = None,
+    via: str = "auto",
+    index: int | None = None,
+) -> dict[str, Any]:
+    """Run one mixed certificate and two mutations on one net direction: the receipt.
+
+    The bundle is fetched, bound and checked as for a replay. The direction defaults to
+    the oblique one with the least lower bound among the certificate's own records. A
+    witness centre is found at that angle (`least_covered`) and evaluated exactly;
+    ``scale-masses`` multiplies every mass by `CONTROL_FACTOR`, and
+    ``drop-top-contributor`` deletes the rectangle orbit contributing most there. Each
+    mutation must leave the witness covered below 1, so it is provably invalid at that
+    angle. Each variant is exported by the shipped ``export`` and run by the checker the
+    shipped ``compile_verifier`` builds, with the shipped record's node count as the
+    limit, which is what the shipped replay passes; the original must return that
+    record, and both mutations must stop unresolved.
+    """
+    runtime = replay_runtime()
+    tree = read_subtree_manifest(certificate.subtree)
+    tarball = fetch_tarball(certificate, work, supplied, via)
+    bundle = unpack_bundle(certificate, work / certificate.tarball, work / "unpacked")
+    bindings = bundle_bindings(certificate, bundle, tree)
+    driver = driver_preconditions(bundle)
+    _require(driver.model[-1] == certificate.candidate_digest, "the bundle's candidate differs")
+    shipped = shipped_results(certificate)
+    oblique = {i: shipped[str(i)] for i in range(1, driver.count)}
+    chosen = min(oblique, key=lambda i: (oblique[i]["lower"], i)) if index is None else index
+    _require(chosen in oblique, "a control runs one oblique net direction")
+    saved = check_angle_record(driver.root, chosen, driver.model[-1], driver.domains)
+    spec = saved["manifest"]
+    density = importlib.import_module("mixed_density_check")
+    net_audit = importlib.import_module("mixed_net_audit")
+    side, core, rects, points = driver.model[:4]
+    data = json.loads((driver.root / "candidate.json").read_text())
+    _require(not points, "the witness search reads rectangle measures only")
+    _require(len(rects) == 8 * len(data["rectangles"]), "eight images of each rectangle")
+    c, s = net_rotation(Fraction(spec["t"]))
+    domain = (side / 2, Fraction(spec["domain"]["centre_high"]))
+    centre = least_covered(rects, (c, s), core, domain)
+    orbits = {row: rects[8 * row : 8 * row + 8] for row in range(len(data["rectangles"]))}
+    contributions = orbit_contributions(orbits, centre, c, s, core)
+    top = heaviest(contributions)
+    if CONTROL_FACTOR * Fraction(saved["lower"]) >= 1:
+        raise ValueError("the scaling does not take the recorded least bound below 1")
+    variants = {"original": data} | {
+        kind: mutate_mixed(data, kind, top) for kind in MIXED_MUTATIONS
+    }
+    gamma = Fraction(spec["gamma"])
+    binary = work / "control-verify"
+    driver.rotated.compile_verifier(binary)
+    shipped_input = (driver.root / f"net{chosen:03}" / "input.txt").read_bytes()
+    runs: list[dict[str, Any]] = []
+    for label, variant in variants.items():
+        folder = work / "control" / label
+        shutil.rmtree(folder, ignore_errors=True)
+        folder.mkdir(parents=True)
+        atomic_write_text(folder / "candidate.json", json.dumps(variant, indent=2) + "\n")
+        model = density.expand(variant)
+        manifest = driver.rotated.export(
+            model, chosen, folder / "input.txt", gamma, net_audit.candidate_net(variant)
+        )
+        at_witness = coverage_exact(model[2], centre, c, s, core)
+        item: dict[str, Any] = {
+            "name": label,
+            "candidate_digest": model[-1],
+            "input_sha256": manifest["input_sha256"],
+            "total_mass": str(model[-2]),
+            "rectangle_rows": len(variant["rectangles"]),
+            "witness_coverage_exact": str(at_witness),
+            "witness_coverage": float(at_witness),
+        }
+        if label == "original":
+            _require(
+                manifest == spec and (folder / "input.txt").read_bytes() == shipped_input,
+                "the original's export is not the shipped proof's",
+            )
+        else:
+            _require(at_witness < 1, f"{label} leaves the witness covered")
+        if label == "scale-masses":
+            item["mutation"] = {
+                "factor": str(CONTROL_FACTOR),
+                "recorded_least_bound_scaled": float(CONTROL_FACTOR * Fraction(saved["lower"])),
+            }
+        elif label == "drop-top-contributor":
+            item["mutation"] = {
+                "row": top,
+                "rectangle": data["rectangles"][top]["rectangle"],
+                "mass": data["rectangles"][top]["mass"],
+                "contribution_at_witness_exact": str(contributions[top]),
+            }
+        run = _control_direction(binary, folder, saved["nodes"], MIXED_CONTROL_TIMEOUT)
+        output = run.get("output") or {}
+        if label == "original":
+            matches = run.get("returncode") == 0 and run.get("frontier_boxes") == 0
+            matches = matches and all(
+                output.get(key) == saved[key] for key in ("status", "nodes", "leaves", "lower")
+            )
+            run["verdict"] = "ACCEPTED" if matches else "NOT_ACCEPTED"
+        elif "verdict" not in run:
+            unresolved = output.get("status") == "ANGLE_UNRESOLVED" and run["frontier_boxes"]
+            run["verdict"] = "REFUSED" if unresolved else "ACCEPTED"
+            if run.get("stopped_at") == "depth floor":
+                z = [Fraction(v) for v in run["last_frontier_box"][:2]]
+                stop = (
+                    side / 2 + z[0] * Fraction(spec["E"]),
+                    side / 2 + z[1] * Fraction(spec["E"]),
+                )
+                at_stop = coverage_exact(model[2], stop, c, s, core)
+                run["stop_centre_coverage_exact"] = str(at_stop)
+                run["stop_centre_coverage"] = float(at_stop)
+        runs.append(item | {"run": run})
+        print(json.dumps({"name": label, "verdict": run["verdict"]}), flush=True)
+    original, *mutations = runs
+    passed = original["run"]["verdict"] == "ACCEPTED"
+    refused = all(item["run"]["verdict"] == "REFUSED" for item in mutations)
+    return {
+        "kind": MIXED_CONTROL_KIND,
+        "status": "CONTROLS_REFUSED" if passed and refused else "CONTROL_FAILED",
+        "certificate": certificate.name,
+        "directory": certificate.directory.as_posix(),
+        "revision": certificate.revision,
+        "n": certificate.n,
+        "side": str(certificate.side),
+        "index": chosen,
+        "index_choice": "the least lower bound of the certificate's oblique records"
+        if index is None
+        else "given",
+        "shipped_record": {key: saved[key] for key in ("status", "nodes", "leaves", "lower")},
+        "gamma": str(gamma),
+        "checker": {
+            "source_sha256": spec["source_sha256"],
+            "compile": "the shipped compile_verifier: c++ -O2 -std=c++17 -ffp-contract=off "
+            "-fno-fast-math",
+            "binary_sha256": _sha256(binary.read_bytes()),
+            "argv": ["verify", "input.txt", str(saved["nodes"])],
+        },
+        "witness": {
+            "centre": [str(v) for v in centre],
+            "t": spec["t"],
+            "cos": str(c),
+            "sin": str(s),
+            "side": str(core),
+            "domain": [str(v) for v in domain],
+            "coverage_exact": str(sum(contributions.values(), Fraction())),
+        },
+        "runs": runs,
+        "tarball": tarball,
+        "bindings": bindings,
+        "preconditions": driver.facts(),
+        "environment": runtime,
+        "host": host_facts(),
+        "scope": (
+            "Stage-4 negative controls: the shipped export and the C++ checker its "
+            "compile_verifier builds, on one net direction with the shipped replay's node "
+            "limit. Each mutation leaves an exact witness centre covered below 1 at that "
+            "angle, so the checker must not verify it."
+        ),
+    }
+
+
 def node_weight(index: int) -> float:
     """The relative cost of one checker node at a net index.
 
@@ -2672,6 +2913,17 @@ def _add_mixed_commands(commands: Any) -> None:
     comparing.add_argument("certificate", choices=names)
     comparing.add_argument("bundle", type=Path)
     comparing.add_argument("--out", type=Path, required=True)
+    controlling = commands.add_parser("mixed-control", help="refuse two mutations (stage 4)")
+    controlling.add_argument("certificate", choices=names)
+    controlling.add_argument("--work", type=Path, required=True, help="a scratch directory")
+    controlling.add_argument("--index", type=int, help="default: the least recorded bound's")
+    controlling.add_argument(
+        "--tarball", type=Path, help="use this file instead of downloading"
+    )
+    controlling.add_argument("--via", choices=TRANSPORTS, default="auto")
+    controlling.add_argument(
+        "--out", type=Path, help="default: PACKET/receipts/NAME/control.json"
+    )
     planning = commands.add_parser("mixed-plan", help="split a replay into balanced ranges")
     planning.add_argument("certificate", choices=names)
     planning.add_argument("--parts", type=int, default=1)
@@ -2725,7 +2977,15 @@ def _mixed_main(args: argparse.Namespace) -> dict[str, Any] | int:
     if args.command == "mixed-compare":
         shipped = json.loads(mixed_retained(certificate)["certificate.json"])
         return compare_driver_run(args.bundle, shipped)
-    return mixed_fetch(certificate, args.work.resolve(), args.tarball, args.via)
+    work = args.work.resolve()
+    if args.command == "mixed-control":
+        args.out = args.out or receipts / "control.json"
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+    return (
+        mixed_control(certificate, work, args.tarball, args.via, index=args.index)
+        if args.command == "mixed-control"
+        else mixed_fetch(certificate, work, args.tarball, args.via)
+    )
 
 
 def _run_mixed(args: argparse.Namespace) -> int:
@@ -2761,6 +3021,7 @@ PASSING = frozenset(
         "STAGE_FILES_COMPARED",
         "BUNDLE_READY",
         "RANGE_REPLAYED",
+        "CONTROLS_REFUSED",
     }
 )
 

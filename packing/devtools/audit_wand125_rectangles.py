@@ -43,6 +43,13 @@ count, each with the host it ran on, and is the same bytes whatever the order of
 inputs and however often it is rerun. ``--check`` checks the receipt in ``--out`` the
 same way and writes nothing; with ``--merge`` it is a dry run.
 
+``--control`` is stage 4 of ``campaign/result-import.md`` for this checker: it runs one
+standing certificate (``--n``) and two mutations of it on one net direction, by default
+the one with the least lower bound in the upstream run's per-angle rows, and writes
+``--out/NAME.json``. Each mutation leaves an exact witness centre covered below 1 at
+that angle; the original must be accepted with the upstream row's results and both
+mutations refused (`control`).
+
 Usage, from ``packing/``::
 
     .venv/bin/python3 -m devtools.audit_wand125_rectangles --packet 2026-09-28 \\
@@ -50,6 +57,8 @@ Usage, from ``packing/``::
         --merge BATCH_A/sep28 BATCH_B
     .venv/bin/python3 -m devtools.audit_wand125_rectangles --packet 2026-09-28 \\
         --out resources/web/wand125-rectangle-certificates-2026-09-28/receipts/replay --check
+    .venv/bin/python3 -m devtools.audit_wand125_rectangles --packet 2026-10-01 --control \\
+        --n 41 --out resources/web/wand125-rectangle-certificates-2026-10-01/receipts/controls
 """
 
 from __future__ import annotations
@@ -59,10 +68,12 @@ import hashlib
 import json
 import platform
 import re
+import resource
 import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from fractions import Fraction
@@ -1055,6 +1066,364 @@ def merge(
     }
 
 
+# --------------------------------------------------------------------------- controls
+
+#: Stage 4 of ``campaign/result-import.md``: mutated certificates refused by the checker
+#: that accepted the original, beside the original accepted again on the same direction.
+CONTROL_KIND = "wand125-rectangle-control/v1"
+#: The ``scale-weights`` mutation multiplies every weight by this.
+CONTROL_FACTOR = Fraction(99, 100)
+MUTATIONS = ("scale-weights", "drop-top-contributor")
+#: ``run_verify.py``'s compile command; the runner is pinned by `RUNNER_SHA256`.
+RUNNER_COMPILE = (
+    *("g++", "-O2", "-std=c++17", "-fno-fast-math", "-ffp-contract=off"),
+    *("verify.cpp", "-o", "verify"),
+)
+CONTROL_TIMEOUT = 3600
+FloatRect = tuple[float, float, float, float, float]
+
+
+def net_rotation(t: Fraction) -> tuple[Fraction, Fraction]:
+    """The exact cosine and sine of a net angle whose half-angle tangent is ``t``."""
+    return (1 - t * t) / (1 + t * t), 2 * t / (1 + t * t)
+
+
+def _float_area(rect: FloatRect, polygon: list[tuple[float, float]]) -> float:
+    """`audit_tokoharu_density.exact_area` in binary64: for a search, never for a claim."""
+    for axis, edge, sign in (
+        (0, rect[0], 1),
+        (0, rect[2], -1),
+        (1, rect[1], 1),
+        (1, rect[3], -1),
+    ):
+        clipped: list[tuple[float, float]] = []
+        if not polygon:
+            return 0.0
+        previous = polygon[-1]
+        previous_depth = sign * (previous[axis] - edge)
+        for current in polygon:
+            depth = sign * (current[axis] - edge)
+            if (depth >= 0) != (previous_depth >= 0):
+                ratio = previous_depth / (previous_depth - depth)
+                clipped.append(
+                    (
+                        previous[0] + ratio * (current[0] - previous[0]),
+                        previous[1] + ratio * (current[1] - previous[1]),
+                    )
+                )
+            if depth >= 0:
+                clipped.append(current)
+            previous, previous_depth = current, depth
+        polygon = clipped
+    pairs = zip(polygon, polygon[1:] + polygon[:1], strict=True)
+    return abs(sum(p[0] * q[1] - p[1] * q[0] for p, q in pairs)) / 2
+
+
+def _overlapping[T: (float, Fraction)](
+    rects: Iterable[tuple[T, T, T, T, T]], polygon: list[tuple[T, T]]
+) -> list[tuple[T, T, T, T, T]]:
+    xs, ys = [p[0] for p in polygon], [p[1] for p in polygon]
+    left, right, bottom, top = min(xs), max(xs), min(ys), max(ys)
+    return [r for r in rects if r[2] > left and r[0] < right and r[3] > bottom and r[1] < top]
+
+
+def coverage_exact(
+    rects: Iterable[tokoharu.Rect],
+    centre: tokoharu.Point,
+    c: Fraction,
+    s: Fraction,
+    side: Fraction,
+) -> Fraction:
+    """The exact mass a square of ``side`` at ``centre``, turned by ``(c, s)``, captures."""
+    polygon = tokoharu.square_polygon(*centre, c, s, side)
+    return sum(
+        (r[4] * tokoharu.exact_area(r, polygon) for r in _overlapping(rects, polygon)),
+        Fraction(),
+    )
+
+
+def least_covered(
+    rects: Iterable[tokoharu.Rect],
+    rotation: tuple[Fraction, Fraction],
+    side: Fraction,
+    domain: tuple[Fraction, Fraction],
+    *,
+    grid: int = 33,
+    rounds: int = 12,
+) -> tokoharu.Point:
+    """A centre in ``domain`` squared where the coverage at one angle is low.
+
+    A binary64 grid over the domain, then a pattern search around its least point, and
+    the result rounded to a rational in the domain. It is only a candidate: a control
+    evaluates it exactly, and nothing rests on it being the minimum.
+    """
+    floats: list[FloatRect] = [
+        (float(a), float(b), float(d), float(e), float(rho)) for a, b, d, e, rho in rects
+    ]
+    c, s, b = float(rotation[0]), float(rotation[1]), float(side)
+    low, high = float(domain[0]), float(domain[1])
+
+    def value(point: tuple[float, float]) -> float:
+        x, y = point
+        polygon = [
+            (x + b * (c * u - s * v) / 2, y + b * (s * u + c * v) / 2)
+            for u, v in ((-1, -1), (1, -1), (1, 1), (-1, 1))
+        ]
+        return sum(r[4] * _float_area(r, polygon) for r in _overlapping(floats, polygon))
+
+    step = (high - low) / (grid - 1)
+    best = min(
+        ((low + i * step, low + j * step) for i in range(grid) for j in range(grid)), key=value
+    )
+    for _ in range(rounds):
+        step /= 2
+        best = min(
+            (
+                (
+                    min(high, max(low, best[0] + i * step)),
+                    min(high, max(low, best[1] + j * step)),
+                )
+                for i in range(-2, 3)
+                for j in range(-2, 3)
+            ),
+            key=value,
+        )
+    x, y = (min(domain[1], max(domain[0], Fraction(v).limit_denominator(10**6))) for v in best)
+    return x, y
+
+
+def orbit_contributions(
+    orbits: Mapping[int, Iterable[tokoharu.Rect]],
+    centre: tokoharu.Point,
+    c: Fraction,
+    s: Fraction,
+    side: Fraction,
+) -> dict[int, Fraction]:
+    """Each orbit's exact share of the coverage at ``centre``, for those with any."""
+    found = {row: coverage_exact(images, centre, c, s, side) for row, images in orbits.items()}
+    return {row: value for row, value in found.items() if value}
+
+
+def heaviest(contributions: Mapping[int, Fraction]) -> int:
+    """The orbit contributing most, the lowest row on a tie."""
+    return min(contributions, key=lambda row: (-contributions[row], row))
+
+
+def mutate_candidate(candidate: dict[str, Any], kind: str, row: int) -> dict[str, Any]:
+    """A copy of a Tokoharu-format candidate with every weight scaled, or one row deleted.
+
+    Deleting a row deletes its whole orbit, the eight images the checker expands it to,
+    so the mutation keeps the symmetry the format assumes.
+    """
+    mutated = dict(candidate)
+    if kind == "scale-weights":
+        mutated["weights"] = [str(Fraction(w) * CONTROL_FACTOR) for w in candidate["weights"]]
+    elif kind == "drop-top-contributor":
+        for key in ("rectangles", "weights"):
+            mutated[key] = [item for index, item in enumerate(candidate[key]) if index != row]
+    else:
+        raise ValueError(f"unknown mutation: {kind}")
+    return mutated
+
+
+def candidate_orbits(
+    candidate: dict[str, Any], rects: list[tokoharu.Rect]
+) -> dict[int, list[tokoharu.Rect]]:
+    """Each positive-weight row's eight images, as `tokoharu.density` lists them."""
+    rows = [index for index, w in enumerate(candidate["weights"]) if Fraction(w) != 0]
+    if len(rects) != 8 * len(rows):
+        raise ValueError("the density does not hold eight images of each positive row")
+    return {row: rects[8 * k : 8 * k + 8] for k, row in enumerate(rows)}
+
+
+def _run_direction(folder: Path, binary: Path, direction: int, timeout: int) -> dict[str, Any]:
+    """One net direction under the compiled checker, as ``run_verify.py`` invokes it."""
+    shutil.copyfile(binary, folder / "verify")
+    (folder / "verify").chmod(0o755)
+    command = ["./verify", str(direction), str(direction)]
+    before = resource.getrusage(resource.RUSAGE_CHILDREN)
+    started = time.monotonic()
+    try:
+        result = subprocess.run(
+            command, cwd=folder, capture_output=True, text=True, timeout=timeout, check=False
+        )
+    except subprocess.TimeoutExpired:
+        return {"command": command, "verdict": "TIMEOUT", "timeout_seconds": timeout}
+    after = resource.getrusage(resource.RUSAGE_CHILDREN)
+    rows = [json.loads(line) for line in result.stdout.splitlines() if line.startswith("{")]
+    return {
+        "command": command,
+        "returncode": result.returncode,
+        "stdout": result.stdout,
+        "stderr": result.stderr,
+        "rows": rows,
+        "cpu_seconds": round(
+            after.ru_utime - before.ru_utime + after.ru_stime - before.ru_stime, 3
+        ),
+        "wall_seconds": round(time.monotonic() - started, 3),
+    }
+
+
+def control(
+    packet: Packet,
+    n: int,
+    out: Path,
+    direction: int | None = None,
+    timeout: int = CONTROL_TIMEOUT,
+) -> dict[str, Any]:
+    """Run one certificate and its two mutations on one net direction; write the receipt.
+
+    The direction defaults to the one with the least lower bound in the upstream
+    accepting run's per-angle rows. A witness centre is found at that angle
+    (`least_covered`) and evaluated exactly; ``scale-weights`` multiplies every weight
+    by `CONTROL_FACTOR`, and ``drop-top-contributor`` deletes the orbit contributing most
+    at the witness. Each mutation must leave the witness covered below 1, so the
+    mutated certificate is provably invalid at that angle before the checker runs; the
+    checker, compiled with the runner's command, must then accept the original with the
+    upstream row's results and refuse both mutations.
+    """
+    name, side = packet.cases[n]
+    case = packet.case_directory(packet.source, name)
+    rows = [
+        json.loads(line)
+        for line in read_retained_text(case / "verified_angles.jsonl").splitlines()
+    ]
+    least = min(rows, key=lambda row: (row["lower_bound"], row["r"]))
+    r = least["r"] if direction is None else direction
+    upstream = next(row for row in rows if row["r"] == r)
+    if not 0 < r < tokoharu.ANGLE_COUNT:
+        raise ValueError("a control runs one oblique net direction, 1 to 200")
+    runner = (CHECKER / "run_verify.py").read_text()
+    if (
+        _sha256(CHECKER / "verify.cpp") != VERIFY_SHA256
+        or _sha256(CHECKER / "run_verify.py") != RUNNER_SHA256
+        or repr(list(RUNNER_COMPILE)).replace(", ", ",") not in runner
+    ):
+        raise ValueError("the retained checker or runner is not the pinned one")
+    candidate = tokoharu.load_json(case / "certified_candidate.json")
+    _side, shrink, total, rects = tokoharu.density(candidate)
+    c, s = net_rotation(r * tokoharu.GAP)
+    domain = (side / 2, side - shrink * (c + s) / 2)
+    centre = least_covered(rects, (c, s), shrink, domain)
+    contributions = orbit_contributions(
+        candidate_orbits(candidate, rects), centre, c, s, shrink
+    )
+    covered = sum(contributions.values(), Fraction())
+    top = heaviest(contributions)
+    if CONTROL_FACTOR * Fraction(upstream["lower_bound"]) >= 1:
+        raise ValueError("the scaling does not take the recorded least bound below 1")
+    variants: dict[str, dict[str, Any]] = {"original": candidate}
+    variants |= {kind: mutate_candidate(candidate, kind, top) for kind in MUTATIONS}
+    runs: list[dict[str, Any]] = []
+    with tempfile.TemporaryDirectory(prefix="wand125-rect-control-") as directory:
+        scratch = Path(directory)
+        shutil.copyfile(CHECKER / "verify.cpp", scratch / "verify.cpp")
+        subprocess.run(list(RUNNER_COMPILE), cwd=scratch, check=True)
+        compiler = subprocess.run(
+            ["g++", "--version"], capture_output=True, text=True, check=True
+        )
+        binding = materialize(case, scratch / "published")
+        for label, variant in variants.items():
+            folder = scratch / label
+            folder.mkdir()
+            text = input_text(variant)
+            atomic_write_text(folder / "certificate_input.txt", text)
+            _side, _shrink, mass, mutated = tokoharu.density(variant)
+            at_witness = coverage_exact(mutated, centre, c, s, shrink)
+            item: dict[str, Any] = {
+                "name": label,
+                "input_sha256": hashlib.sha256(text.encode()).hexdigest(),
+                "mass_exact": str(mass),
+                "rectangle_rows": len(variant["rectangles"]),
+                "witness_coverage_exact": str(at_witness),
+                "witness_coverage": float(at_witness),
+            }
+            if label == "original":
+                if item["input_sha256"] != binding["input_sha256"]:
+                    raise ValueError("the original's input is not the published one")
+            elif at_witness >= 1:
+                raise ValueError(f"{label} leaves the witness covered: {float(at_witness)}")
+            if label == "scale-weights":
+                item["mutation"] = {
+                    "factor": str(CONTROL_FACTOR),
+                    "recorded_least_bound_scaled": float(
+                        CONTROL_FACTOR * Fraction(upstream["lower_bound"])
+                    ),
+                }
+            elif label == "drop-top-contributor":
+                item["mutation"] = {
+                    "row": top,
+                    "rectangle": [str(v) for v in candidate["rectangles"][top]],
+                    "weight": str(candidate["weights"][top]),
+                    "contribution_at_witness_exact": str(contributions[top]),
+                }
+            run = _run_direction(folder, scratch / "verify", r, timeout)
+            verified = [row for row in run.get("rows", []) if row.get("status") == "verified"]
+            if label == "original":
+                accepted = (
+                    run.get("returncode") == 0
+                    and len(verified) == 1
+                    and verified[0]["r"] == r
+                    and Fraction(verified[0]["lower_bound"]) >= tokoharu.TARGET
+                )
+                run["matches_upstream"] = accepted and all(
+                    verified[0][key] == upstream[key]
+                    for key in ("nodes", "leaves", "lower_bound")
+                )
+                run["verdict"] = "ACCEPTED" if accepted else "NOT_ACCEPTED"
+            elif "verdict" not in run:
+                refusal = run["returncode"] != 0 and not verified
+                run["verdict"] = "REFUSED" if refusal else "ACCEPTED"
+            runs.append(item | {"run": run})
+            print(json.dumps({"name": label, "verdict": run["verdict"]}), flush=True)
+    original, *mutations = runs
+    passed = original["run"]["verdict"] == "ACCEPTED" and original["run"]["matches_upstream"]
+    refused = all(item["run"]["verdict"] == "REFUSED" for item in mutations)
+    record = {
+        "kind": CONTROL_KIND,
+        "status": "CONTROLS_REFUSED" if passed and refused else "CONTROL_FAILED",
+        "packet": packet.date,
+        "source_revision": packet.revision,
+        "certificate": name,
+        "n": n,
+        "L": str(side),
+        "direction": r,
+        "direction_choice": "the least lower bound of the upstream run's per-angle rows"
+        if direction is None
+        else "given",
+        "upstream_row": upstream,
+        "checker": {
+            "verify_cpp_sha256": VERIFY_SHA256,
+            "runner_sha256": RUNNER_SHA256,
+            "compile": list(RUNNER_COMPILE),
+            "argv": ["./verify", str(r), str(r)],
+            "compiler": compiler.stdout.splitlines()[0],
+        },
+        "witness": {
+            "centre": [str(v) for v in centre],
+            "t": str(r * tokoharu.GAP),
+            "cos": str(c),
+            "sin": str(s),
+            "side": str(shrink),
+            "domain": [str(v) for v in domain],
+            "coverage_exact": str(covered),
+            "coverage": float(covered),
+            "original_mass_exact": str(total),
+        },
+        "runs": runs,
+        "python": sys.version,
+        "platform": platform.platform(),
+        "scope": (
+            "Stage-4 negative controls: the source's unchanged verify.cpp, compiled with "
+            "run_verify.py's command, on one net direction. Each mutation leaves an exact "
+            "witness centre covered below 1 at that angle, so the checker must refuse it."
+        ),
+    }
+    out.mkdir(parents=True, exist_ok=True)
+    atomic_write_text(out / f"{name}.json", json.dumps(record, indent=2) + "\n")
+    return record
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--packet", choices=tuple(PACKETS), default=DEFAULT_PACKET)
@@ -1081,6 +1450,12 @@ def main() -> int:
     parser.add_argument(
         "--check", action="store_true", help="check the replay receipt in --out; write nothing"
     )
+    parser.add_argument(
+        "--control",
+        action="store_true",
+        help="run one --n and its two mutations on one direction; write --out/NAME.json",
+    )
+    parser.add_argument("--direction", type=int, help="default: the least recorded bound's")
     args = parser.parse_args()
     packet = PACKETS[args.packet]
     source = packet.source if args.source is None else args.source
@@ -1091,6 +1466,16 @@ def main() -> int:
         return 0
     if args.out is None:
         parser.error("--out is required unless --acquire is given")
+    if args.control:
+        if len(args.n or ()) != 1 or args.replay or args.merge or args.check:
+            parser.error("--control takes one --n, --out and optionally --direction")
+        try:
+            record = control(packet, args.n[0], args.out, args.direction)
+        except (OSError, ValueError, subprocess.SubprocessError) as error:
+            print(str(error), file=sys.stderr)
+            return 1
+        print(json.dumps({key: record[key] for key in ("status", "certificate", "direction")}))
+        return 0 if record["status"] == "CONTROLS_REFUSED" else 1
     if args.merge or args.check:
         if args.replay or args.resume or args.n or args.source:
             parser.error("--merge and --check take only --packet and --out")

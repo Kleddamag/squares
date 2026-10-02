@@ -273,6 +273,16 @@ receipts are in [`receipts/`](receipts/).
   unpublished per-root records could. The review of 2 October found that blocking for
   recording that route as evidence, and the `zmx2` route above is the one recorded.
 
+## Controls for the Mixed Checker
+
+[`receipts/n37/control.json`](receipts/n37/control.json) holds the stage-4 controls of
+2 October for `mixed_rotated_verify.cpp`, made by
+`audit_wand125_point_and_mixed mixed-control n37` with the shipped compile: the checker
+accepts `mixed_n37_L644` at net index 99, its least recorded bound, matching the shipped
+record, and refuses two mutated copies there (`ANGLE_UNRESOLVED`): every mass scaled by
+99/100, and the heaviest orbit at a witness centre deleted, whose exact coverage falls to
+0.99918 and 0.97768. `tests/test_wand125_checker_controls.py` holds them.
+
 ## Compressed Files
 
 Twelve upstream data files of more than 1,000 lines are stored as deterministic gzip

@@ -14,7 +14,6 @@ session:
   primary_bead: think-c7kv
   status: stopped
   ended_at: '2026-10-02T06:38:38Z'
-  certification_pending: think-iuz2
   goal: >-
     Carry PR 283's route review onto current main and, over about three hours, make the
     highest-leverage progress toward an n17 optimality proof: dispatch BC-406's lanes,
@@ -446,6 +445,7 @@ session:
   - packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md
   - packing/campaign/agendas/agenda-042-overnight-n11-settlement-and-low-n-angles.md
   checks:
+  - 'full gate: fast at e51fce98983dc29beef931b52fd774ed58c976b8: passed (follow-up in Session 168 on PR 307: hosted Packing validation run 36979940992 and Certificate page run 36979940948; this head carries the session''s work unchanged)'
   - Every verdict rests on an independent review in code sharing nothing with the producer and on a clean committed-tree run whose outputs match the lane's run apart from timings.
   - The records tier passed at every integration commit.
   - packing-validate --push on the committed head ba95da0f, in a worktree, failed 8 of 3,562 tests and passed the rest; in the main checkout six of the eight pass (the worktree's symlinked node_modules and lane load), and the remaining two, the process-group reaping tests, fail identically on unchanged origin/main 8aaa411d in this container, as Session 166 recorded.

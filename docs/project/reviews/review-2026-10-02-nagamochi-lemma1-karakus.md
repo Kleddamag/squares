@@ -40,7 +40,7 @@ with both witnesses retained in the tool.
 | --- | --- | --- |
 | H. Karakuş, *A counterexample to Nagamochi’s scoring lemma and a new rectangle packing bound*, [arXiv:2609.37410](https://arxiv.org/abs/2609.37410) v1, submitted 29 September 2026 | PDF fetched 2 October 2026 from the arXiv `pdf` endpoint, SHA-256 `39ae2ae44f063e6555240c4a246b47f687578c57196b70a9f5d66953d5cf6513`; a sibling lane archives it | The whole paper; Lemma 5.2(i)'s printed range checked on the rendered page |
 | H. Nagamochi, *Packing Unit Squares in a Rectangle*, EJC 12 (2005) R37 | [retained PDF](../../../packing/resources/papers/nagamochi-2005-packing-unit-squares-in-a-rectangle.pdf) and its `.raw.md` | Sections 2 to 5 in full: Theorem 1, Theorem 2 and its proof, the set $U$, Lemmas 1 to 7, Cases 1 to 7 |
-| chelokot, [square-packing-archive](https://github.com/chelokot/square-packing-archive) | `main` at `753079eb37d8d16225a5dc1f56e493a3c3b243f4`, fetched 2 October 2026 | `docs/nagamochi-score-counterexample.md`, `docs/nagamochi-compensation-proof.md`, `docs/nagamochi-counterexample-search.md`; the theorem statements of `formal/SquarePackingArchive/NagamochiCounterexample.lean` and `NagamochiPackingTheorem.lean` |
+| chelokot, [square-packing-archive](https://github.com/chelokot/square-packing-archive) | `main` at `753079eb37d8d16225a5dc1f56e493a3c3b243f4` (committed 6 September 2026), fetched 2 October 2026 as a treeless clone; the counterexample note is retained by the archive lane in [`chelokot-nagamochi-counterexample-2026-10-02`](../../../packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md), the rest pinned there by digest only | `docs/nagamochi-score-counterexample.md`, `docs/nagamochi-compensation-proof.md`, `docs/nagamochi-counterexample-search.md`, `docs/nagamochi-2005-formalization.md`; the theorem statements of `formal/SquarePackingArchive/NagamochiCounterexample.lean` and `NagamochiPackingTheorem.lean`; the definitions they are stated in (`Geometry.lean`); `formal/lean-toolchain`, `formal/lakefile.toml`, `formal/lake-manifest.json`, `.github/workflows/ci.yml`, `scripts/test_lean_axiom_policy.py` and the generated `ManifestEvidence.lean` |
 | This repository | `T-007` and `E-nagamochi-lower` in the register, [`epistemics.md`](../../../epistemics.md), the [27 September evand review](review-2026-09-27-evand-s32-s12.md) section 5 | The claim, its read of 30 August 2026, the rubric |
 
 The retained instrument is
@@ -51,8 +51,10 @@ with
 findings. It scores a rational square against a measure of rectangles, axis-parallel
 segments and points with `Fraction` arithmetic only, so every printed quantity below is
 checked as an equality.
-The Lean archive was not built here, and no Lean definition was read; what it proves is
-reported.
+The Lean archive was not built here.
+Its final theorem statements and the definitions they are written in were read; its 55
+Nagamochi proof files, 16,603 lines, were not.
+What it proves is reported, with what that report rests on set out below.
 
 ## Lemma 1 as Printed, and the Square That Refutes It
 

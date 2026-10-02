@@ -52,6 +52,9 @@ register, the research reports, the site templates and the case-prose generator,
 `states` the theorem when it carries the closed form or a `k^2 - 2` identity or names
 Nagamochi beside a proof word, `relies` on it when it names him beside a bound or floor, and
 otherwise `mentions` him; a line is `qualified` once its paragraph names Karakuş's finding.
+The retained record keeps, per document, only the counts and the deciding phrases -- no line
+numbers, so an edit elsewhere in a document does not make it stale -- and `--report` scans
+afresh and prints the lines.
 
 Usage, from `packing/`:
     uv run --frozen --all-extras --group dev python -m devtools.audit_t007_consumers --update
@@ -994,21 +997,23 @@ def paragraphs(lines: Sequence[str]) -> list[int]:
     return index
 
 
-def tier(line: str, kinds: Sequence[str], before: str = "", after: str = "") -> str:
-    """`states`, `relies` or `mentions`, judged on the line or, in a table, on the cell.
+def tier(line: str, kinds: Sequence[str], before: str = "", after: str = "") -> tuple[str, str]:
+    """`states`, `relies` or `mentions`, and the phrase that decided it.
 
-    Cue words count only within `WINDOW` characters of his name -- reaching into the
-    neighbouring lines of the same paragraph, since prose wraps -- and in a table only inside
-    the cell naming him, so a lineage credit ("after Stromquist, Nagamochi, Burns") in a row
-    whose kind column says "lower bound" stays a mention. The identity and the closed form
-    state the theorem wherever they appear.
+    The line is judged as a whole or, in a table, cell by cell. Cue words count only within
+    `WINDOW` characters of his name -- reaching into the neighbouring lines of the same
+    paragraph, since prose wraps -- and in a table only inside the cell naming him, so a
+    lineage credit ("after Stromquist, Nagamochi, Burns") in a row whose kind column says
+    "lower bound" stays a mention. The identity and the closed form state the theorem
+    wherever they appear.
     """
-    if "k2-minus-2-identity" in kinds or "closed-form" in kinds:
-        return "states"
+    for kind, pattern in (("k2-minus-2-identity", IDENTITY), ("closed-form", CLOSED_FORM)):
+        if kind in kinds and (match := pattern.search(line)) is not None:
+            return "states", f"{kind}: {' '.join(match.group(0).split())}"
     if line.lstrip().startswith("|"):
         cells = line.split("|")
         if any(CELL.match(cell) for cell in cells):
-            return "relies"
+            return "relies", "lone table cell"
         contexts = [
             cell[max(0, match.start() - WINDOW) : match.end() + WINDOW]
             for cell in cells
@@ -1020,11 +1025,11 @@ def tier(line: str, kinds: Sequence[str], before: str = "", after: str = "") -> 
             joined[max(0, offset + match.start() - WINDOW) : offset + match.end() + WINDOW]
             for match in NAMES.finditer(line)
         ]
-    if any(STATES.search(context) for context in contexts):
-        return "states"
-    if any(RELIES.search(context) for context in contexts):
-        return "relies"
-    return "mentions"
+    for name, pattern in (("states", STATES), ("relies", RELIES)):
+        for context in contexts:
+            if (match := pattern.search(context)) is not None:
+                return name, f"beside: {match.group(0).lower()}"
+    return "mentions", "name only"
 
 
 def scan_text(text: str, first_line: int = 1) -> list[dict[str, Any]]:
@@ -1052,11 +1057,13 @@ def scan_text(text: str, first_line: int = 1) -> list[dict[str, Any]]:
             continue
         before = lines[i - 1] if i and owner[i - 1] == owner[i] else ""
         after = lines[i + 1] if i + 1 < len(lines) and owner[i + 1] == owner[i] else ""
+        decided, phrase = tier(line, kinds, before, after)
         hits.append(
             {
                 "line": first_line + i,
                 "kinds": kinds,
-                "tier": tier(line, kinds, before, after),
+                "tier": decided,
+                "phrase": phrase,
                 "qualified": owner[i] in qualified_paragraphs,
                 "excerpt": line.strip()[:EXCERPT],
             }
@@ -1075,7 +1082,8 @@ def document_paths() -> list[tuple[str, str]]:
     return found
 
 
-def scan_document(group: str, path: str) -> dict[str, Any] | None:
+def scan_document(group: str, path: str) -> list[dict[str, Any]]:
+    """The live hits in one document, with the line numbers `--report` prints."""
     text = (REPO / path).read_text(encoding="utf-8")
     first_line = 1
     if group == "case-record":
@@ -1083,33 +1091,41 @@ def scan_document(group: str, path: str) -> dict[str, Any] | None:
         _, front, body = text.split("---\n", 2)
         first_line = 1 + front.count("\n") + 2
         text = body
-    hits = scan_text(text, first_line)
-    if not hits:
-        return None
-    entry: dict[str, Any] = {
+    return scan_text(text, first_line)
+
+
+def worklist() -> list[tuple[str, str, list[dict[str, Any]]]]:
+    """Every scanned document with hits, as `(group, path, hits)`."""
+    return [
+        (group, path, hits)
+        for group, path in document_paths()
+        if (hits := scan_document(group, path))
+    ]
+
+
+def document_entry(group: str, path: str, hits: Sequence[dict[str, Any]]) -> dict[str, Any]:
+    """What the record keeps of one document: counts and phrases, never line numbers.
+
+    A line number moves whenever anyone edits the document above it, which would make the
+    retained inventory stale on every unrelated change; a count moves only when a statement
+    is added, removed or re-tiered. `--report` prints the lines.
+    """
+    statements = {name: sum(hit["tier"] == name for hit in hits) for name in TIERS}
+    statements |= {
+        "unqualified_states": sum(
+            hit["tier"] == "states" and not hit["qualified"] for hit in hits
+        ),
+        "qualified": sum(hit["qualified"] for hit in hits),
+        "k2_minus_2_identity": sum("k2-minus-2-identity" in hit["kinds"] for hit in hits),
+        "closed_form": sum("closed-form" in hit["kinds"] for hit in hits),
+    }
+    phrases = Counter(hit["phrase"] for hit in hits if hit["tier"] != "mentions")
+    return {
         "path": path,
         "group": group,
-        **{
-            f"{name}_lines": [hit["line"] for hit in hits if hit["tier"] == name]
-            for name in TIERS
-        },
-        "unqualified_states_lines": [
-            hit["line"] for hit in hits if hit["tier"] == "states" and not hit["qualified"]
-        ],
-        "qualified_lines": [hit["line"] for hit in hits if hit["qualified"]],
-        "k2_minus_2_identity_lines": [
-            hit["line"] for hit in hits if "k2-minus-2-identity" in hit["kinds"]
-        ],
-        "closed_form_lines": [hit["line"] for hit in hits if "closed-form" in hit["kinds"]],
+        "statements": statements,
+        "phrases": dict(sorted(phrases.items())),
     }
-    if group != "case-record":
-        # Case-record prose is generated from one template, so its lines are listed bare.
-        entry["statements"] = [
-            {key: hit[key] for key in ("line", "tier", "kinds", "qualified", "excerpt")}
-            for hit in hits
-            if hit["tier"] != "mentions"
-        ]
-    return entry
 
 
 def site_data() -> dict[str, Any]:
@@ -1129,21 +1145,19 @@ def site_data() -> dict[str, Any]:
 
 
 def documents() -> dict[str, Any]:
-    files = [
-        entry
-        for group, path in document_paths()
-        if (entry := scan_document(group, path)) is not None
-    ]
+    files = [document_entry(group, path, hits) for group, path, hits in worklist()]
     return {
         "method": (
-            "Lexical. A line is listed when it states a k^2 - 2 identity or Nagamochi's "
+            "Lexical. A line is counted when it states a k^2 - 2 identity or Nagamochi's "
             "closed form, or names Nagamochi. It `states` the theorem when it carries the "
             "identity or the closed form, or names him beside a proof or theorem word; it "
             "`relies` on it when it names him beside a bound, floor or formula word, or as a "
             "lone table cell; otherwise it `mentions` him. Table rows are judged on the cells "
             "naming him. A line is `qualified` when its paragraph, or its table row, already "
-            "carries a caveat word. Case-record front matter is excluded, since the per-case "
-            "rows inventory it."
+            "names Karakuş's finding. Case-record front matter is excluded, since the "
+            "per-case rows inventory it. The record keeps counts and the deciding phrases "
+            "per document and no line numbers, so an edit elsewhere in a document leaves it "
+            "current; `--report` prints the lines."
         ),
         "groups": {group: list(patterns) for group, patterns in DOCUMENT_GROUPS},
         "patterns": {
@@ -1158,7 +1172,7 @@ def documents() -> dict[str, Any]:
         "files": files,
         "files_stating_without_qualification": {
             group: sum(
-                entry["group"] == group and bool(entry["unqualified_states_lines"])
+                entry["group"] == group and entry["statements"]["unqualified_states"] > 0
                 for entry in files
             )
             for group, _ in DOCUMENT_GROUPS
@@ -1385,18 +1399,25 @@ def report(document: Mapping[str, Any]) -> str:
             f"{smallest['shortfall']} (n={smallest['n']}) to "
             f"{largest['shortfall']} (n={largest['n']})"
         )
-    files = document["documents"]["files"]
-    stating = [entry for entry in files if entry["unqualified_states_lines"]]
+    # Line numbers live only here, from a fresh scan; the record keeps counts.
+    stating = [
+        (
+            group,
+            path,
+            [hit["line"] for hit in hits if hit["tier"] == "states" and not hit["qualified"]],
+        )
+        for group, path, hits in worklist()
+    ]
+    stating = [item for item in stating if item[2]]
     lines.extend(
         ["", f"documents stating the theorem or an identity unqualified: {len(stating)}"]
     )
     lines.extend(
-        f"  {entry['path']}: {len(entry['unqualified_states_lines'])} line(s): "
-        + ranges(entry["unqualified_states_lines"])
-        for entry in stating
-        if entry["group"] != "case-record"
+        f"  {path}: {len(numbers)} line(s): {ranges(numbers)}"
+        for group, path, numbers in stating
+        if group != "case-record"
     )
-    cases = [entry for entry in stating if entry["group"] == "case-record"]
+    cases = [path for group, path, _ in stating if group == "case-record"]
     lines.append(f"  case-record bodies: {len(cases)} files")
     return "\n".join(lines)
 
@@ -1406,7 +1427,13 @@ def shown(path: Path) -> str:
 
 
 def check() -> int:
-    expected = render(build_document())
+    try:
+        expected = render(build_document())
+    except ValueError as error:
+        # A cited anchor that has gone -- (6.1)'s formula among them -- is a failed check,
+        # said in one line rather than a traceback.
+        print(f"T-007 consumer audit cannot be built: {error}")
+        return 1
     if not OUTPUT.is_file() or OUTPUT.read_text(encoding="utf-8") != expected:
         print(
             f"{shown(OUTPUT)} is missing or stale; "

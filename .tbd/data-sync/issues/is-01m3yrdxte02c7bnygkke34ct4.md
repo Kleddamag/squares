@@ -5,7 +5,7 @@ title: Import, confirm and answer every reported result (2 October 2026 effort)
 kind: epic
 status: open
 priority: 1
-version: 24
+version: 25
 labels:
   - result-import
 dependencies: []
@@ -31,7 +31,7 @@ child_order_hints:
   - is-01m3ytdhr6h2xnsvj4f2nc2nk2
   - is-01m3z77bdhk8tn3epx63ywhxft
 created_at: 2026-10-02T16:51:15.917Z
-updated_at: 2026-10-02T22:53:00.927Z
+updated_at: 2026-10-02T22:57:06.154Z
 ---
 Umbrella for the 2 October 2026 effort: PRs #290 -> #292 -> #298 (imports and records), plus a stacked PR for verifier provenance and the independent verifier. Children track each lane; done when every reported result is confirmed or refuted (or has a bead naming exactly what remains), every issue has a current status reply, closeable issues are closed, and all PRs are merged.
 
@@ -97,3 +97,8 @@ Next steps for the next agent, in order:
 4. Lane BB's own s(12) >= 15680000/3949423: blind review, then register (think-4srr).
 5. After the limit resets, resume the runners (session ids above) and collect: afternoon replays (m3, m4, m5, r5, n82 on r4 and the s(77) runner), T-046 leftovers (r1, r2), T-073 n83 (m1), T-064 qx2 (q1 had not pushed; q2 partial) and wand125 Valid7 shards (w1, w3, w5 partial; w2, w4 had not pushed), lane LL (pushed its Lean build commit: read its handoff), EE (census), FF (s(61)).
 6. Stacked verifier PR (think-tatg), then issue replies after merge (`check_requests --draft N`, owner's permission to post).
+
+### Update 2026-10-02 22:57 UTC: resumed after the limit reset
+- #298 shows "dirty" (conflicting) on GitHub although its base 91bd92b78 is an ancestor of the head and `git merge-tree` is clean; pull-request CI stopped triggering after 41ae96c22. packing-validation was dispatched by workflow_dispatch (run 37075005561) on 1dd6069eb. If the flag persists, investigate (diff is 871 files / ~77k lines vs base) rather than pushing empty commits.
+- All cloud runners and lanes were sent resume messages; the local records lane (T-068, afternoon V0, #309 register) and W2 resumed.
+- New cloud lanes: RV session_01QGiY88KH4PgVRDMTUMsua1 (blind review of BB's s(12) >= 15680000/3949423, branch claude/lane-rv-s12-review, bead think-4srr); SP session_01Hqz93p1waL3UQYW44eKsWd (assemble the stacked verifier PR, branch claude/verifier-provenance-and-independent-verifier, bead think-tatg).

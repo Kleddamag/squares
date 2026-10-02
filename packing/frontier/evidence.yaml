@@ -1555,6 +1555,166 @@ evidence:
         oblique coverage statements and the axis tables are the source's until the replay
         here passes.
     source_reviewed: '2026-10-02'
+  - id: E-n076-wand125-mixed-894-report
+    claim: lower-bound
+    scope: {n_values: [76]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds n76 2026-10-02]'
+    certificate: resources/web/wand125-mixed-bounds-n76-2026-10-02/square-packing-bounds/certificates/mixed_n76_L894/candidate.json.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at 7975030a192607ef27edd1559aee4e98bd93047b (the
+      directory's one commit, 2026-10-02T01:39:38Z) reports s(76) >= 447/50 = 8.94 from a
+      rectangle density of 317 uniform-density rectangles and no point mass, total mass
+      7599999/100000, core side B = 9977/10000 and 201 net half-angles of step 83/40000,
+      checked there by code/mixed_rotated_verify.cpp (SHA-256 89b674a6...), the research
+      copy of Tokoharu's verify.cpp that the n = 50 certificate uses: it accepts a centre
+      box at lower bound 1 instead of 10001/10000, with the axis direction decided by exact
+      integer tables. The least oblique lower bound the source records is
+      1.000000000516032, at net index 150, and the axis integer minimum 1.0075130139576551
+      over 3,225,616 cells. It exceeds the source's rectangle certificate at this count,
+      rect_n76_L8925 at 357/40 = 8.925 (E-wand125-rectangle-2026-10-01-report), which its
+      README says it supersedes, and Nagamochi's 1 + sqrt(61) = 8.8102.... The source
+      records its route as a structured fresh start at L = 8.94, full-net repair, 201-angle
+      verification and replay, and says the full replay was run again from the published
+      tarball and is the same algorithm, not an independent implementation; the bundle
+      records the source's oblique run as 12,687 seconds. The tarball is pinned by digest
+      and not retained. Here the exact audit (receipts/mixed-audit.json in the packet)
+      recomputes the mass, the net, the centre domains and the candidate digest from the
+      retained bytes, and mixed-fetch checked the pinned tarball, its file list, the
+      driver's preconditions and that all 200 oblique inputs enclose the exact candidate;
+      no angle was replayed, and none of it decides coverage. The complete replay, about
+      2.2 CPU-hours by the packet's pricing, has not run.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        Claude (model Fable) at extra-high thinking effort, review lane R4, prompted
+        separately from the replay lane with no shared context
+        (docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md)
+      note: >-
+        No blocking defect; coverage statements remain the source's until the replay
+        passes.
+    source_reviewed: '2026-10-02'
+  - id: E-n083-wand125-linear-935-report
+    claim: lower-bound
+    scope: {n_values: [83]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 linear certificates 2026-10-02]'
+    certificate: resources/web/wand125-linear-certificates-2026-10-02/square-packing-bounds/certificates/mixed_n83_L935/candidate.json.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at 0c35d909764997ead04dfd90081c9fe9af8d07f2 (the
+      directory's one commit, 2026-10-02T05:26:52Z) reports s(83) >= 187/20 = 9.35 from a
+      linear measure of 86 point, 222 segment and 774 rectangle orbits under D4, segment
+      mass uniform along its length, total mass 8299999/100000, core side B = 9977/10000
+      and 201 net half-angles of step 83/40000. It is checked there at all 201 angles, the
+      axis included, by code/unified_linear_verify.cpp (SHA-256 0249726a...), the source's
+      verifier of its superseded s(50) >= 147/20 certificate: an outward-rounded interval
+      branch and bound over centre boxes in one quadrant of the centre domain, which the
+      measure's quarter-turn symmetry makes stand for the whole, counting points in the
+      closed core, segments by the length inside and rectangles by the area inside; 137,090,913
+      nodes. It exceeds Green's reported 2 sqrt(2) + (247 + 12 sqrt(2))/41 = 9.2667335...,
+      which this case holds by monotonicity from n = 82, by 0.083266...: the source's "more
+      than 0.0833" is false, its improvement_lower of 833/10000 being measured from
+      92667/10000, below Green's value, and the bound is unaffected. The source says the
+      full replay was run again from the published tarball, by the same outward-rounded
+      implementation and not an independent one; the bundle records the source's run as
+      75,686 seconds. The tarball is pinned by digest and not retained. Here the exact
+      audit (receipts/linear-audit.json in the packet) recomputes the orbit counts, the D4
+      invariance, the mass, the net and the candidate digest from the retained bytes;
+      linear-fetch checked the pinned tarball, its 810 files, the replay driver's
+      preconditions and that all 201 inputs enclose the exact candidate; and net index 50
+      alone was replayed, to price the replay, returning the certificate's record. None of
+      it decides coverage. Its negative control is n = 101's, which shares the checker.
+      The checker, a kind this
+      record had not registered, was read by the 2 October review, which found its point and
+      segment capture bounds, the quadrant reduction and the angle-zero branch sound. Two of
+      its non-blocking findings bear on this entry. LC-2: the source's READMEs state the
+      quadrant fold's conclusion and not its hypothesis, the quarter-turn and reflection
+      symmetry of the expanded measure, which this repository's audit checks. LC-4: the
+      certificate's per-angle records carry only node counts and the input digest, so the
+      merged replay receipts should retain each direction's least lower bound.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        Claude (model Fable) at extra-high thinking effort, review lane R4, prompted
+        separately from the replay lane with no shared context
+        (docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md)
+      note: >-
+        No blocking defect; coverage statements remain the source's until the replay
+        passes.
+    source_reviewed: '2026-10-02'
+  - id: E-n101-wand125-linear-1028-report
+    claim: lower-bound
+    scope: {n_values: [101, 102, 103, 104, 105]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 linear certificates 2026-10-02]'
+    certificate: resources/web/wand125-linear-certificates-2026-10-02/square-packing-bounds/certificates/mixed_n101_L1028/candidate.json.gz
+    replay_status: not-attempted
+    limitations: >-
+      wand125/square-packing-bounds at 0c35d909764997ead04dfd90081c9fe9af8d07f2 (the
+      directory was first committed at af1db07b, 2026-10-02T01:23:19Z, and is unchanged at
+      the pin) reports s(101) >= 257/25 = 10.28 from a linear measure of 333 point, 897
+      segment and 4 rectangle orbits under D4, segment mass uniform along its length, total
+      mass 10099999/100000, core side B = 9977/10000 and 201 net half-angles of step
+      83/40000. It is checked there at all 201 angles, the axis included, by
+      code/unified_linear_verify.cpp (SHA-256 0249726a...), the source's verifier of its
+      superseded s(50) >= 147/20 certificate: an outward-rounded interval branch and bound
+      over centre boxes in one quadrant of the centre domain, which the measure's
+      quarter-turn symmetry makes stand for the whole, counting points in the closed core,
+      segments by the length inside and rectangles by the area inside; 55,222,823 nodes. It
+      exceeds Green's reported 2 sqrt(2) - 1 + (810 + 18 sqrt(5))/101 = 10.2467362...,
+      the reported lower bound at n = 101, by 0.0332637..., as the source states. A
+      packing of 102 to 105 squares contains one of 101, so the value is also the
+      strongest report at n = 102, 103 and 104, where this record held Green's value by
+      monotonicity, and at n = 105, where it held Nagamochi's 1 + sqrt(86) = 10.2736...; at
+      n = 106 Nagamochi's 10.3273... is higher. The source says the full replay was run
+      again from the published tarball, by the same outward-rounded implementation and not
+      an independent one; the bundle records the source's run as 31,304 seconds. The
+      tarball is pinned by digest and not retained. Here the exact audit
+      (receipts/linear-audit.json in the packet) recomputes the orbit counts, the D4
+      invariance, the mass, the net and the candidate digest from the retained bytes;
+      linear-fetch checked the pinned tarball, its 810 files, the replay driver's
+      preconditions and that all 201 inputs enclose the exact candidate; net index 150
+      alone was replayed, to price the replay, returning the certificate's record; and a
+      negative control at index 35 refused the measure with every mass scaled by 99/100
+      and with the segment orbit contributing most at a witness centre dropped
+      (receipts/n101/control.json). None of it decides coverage. The checker, a kind this
+      record had not registered, was read by the 2 October review, which found its point and
+      segment capture bounds, the quadrant reduction and the angle-zero branch sound. Two of
+      its non-blocking findings bear on this entry. LC-2: the source's READMEs state the
+      quadrant fold's conclusion and not its hypothesis, the quarter-turn and reflection
+      symmetry of the expanded measure, which this repository's audit checks. LC-4: the
+      certificate's per-angle records carry only node counts and the input digest, so the
+      merged replay receipts should retain each direction's least lower bound.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        Claude (model Fable) at extra-high thinking effort, review lane R4, prompted
+        separately from the replay lane with no shared context
+        (docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md)
+      note: >-
+        No blocking defect; coverage statements remain the source's until the replay
+        passes.
+    source_reviewed: '2026-10-02'
   - id: E-n032-evand-zmx2-full-sym-report
     claim: lower-bound
     scope: {n_values: [32]}

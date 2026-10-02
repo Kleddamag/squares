@@ -6097,3 +6097,194 @@ results:
       this entry's scope names only the counts it certifies. The source ships a completion
       audit and a certificate of its full replay for each count, which are retained; the
       proof-bundle tarballs are pinned by digest and not retained.
+
+  - id: T-072
+    kind: lower-bound
+    registered: '2026-10-02'
+    headline: "Mixed rectangle-measure lower bound reported at `n = 76`"
+    claim: >-
+      wand125/square-packing-bounds reports s(76) >= 447/50 = 8.94 from a rectangle density
+      checked at coverage one, published on 2 October 2026.
+
+      The certificate is a density of 317 uniform rectangles with no point mass, of total
+      mass 7599999/100000, at core side 9977/10000 on 201 net half-angles of step 83/40000.
+      The source reports it accepted at every oblique net angle by
+      code/mixed_rotated_verify.cpp, the research copy of Tokoharu's verify.cpp that its s(50)
+      certificate (T-048) and the certificates of T-069 and T-071 use, which accepts coverage
+      at least 1 where Tokoharu's requires 10001/10000, and at angle zero by exact integer
+      tables. The least oblique lower bound it records is 1.00000000051. It says the full
+      replay was run again from the published tarball before publication, by the same
+      algorithm and not an independent implementation.
+
+      The value exceeds the source's rectangle certificate at this count, 357/40 = 8.925
+      (T-068), which it says it supersedes, and Nagamochi's 1 + sqrt(61) = 8.8102....
+
+      Here the source was retained, its exact premises were recomputed from the retained
+      bytes, and the replay's checks before its first angle were run on the pinned tarball;
+      no angle was replayed. The value stands as reported, and the verified lower bound is
+      unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/7975030a192607ef27edd1559aee4e98bd93047b/certificates/mixed_n76_L894).
+      Registration was requested in a comment of 2 October 2026 on jlevy/squares#282. The
+      source says parts of the work were produced with AI assistance under human direction.
+    scope: {n_values: [76]}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replay passes, the strongest lower bound on record at
+        n = 76, by the certificate kind of T-048, T-069 and T-071. A further size from one
+        generator at S3; the score gates nothing, and V0/C1 says how far it stands. The
+        2 October review of the certificate confirmed S3.
+      scored: '2026-10-02'
+      by: 'think-09ag import, registering lane (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds n76 2026-10-02]']
+      published: '2026-10-02'
+    composition: >-
+      One claim on one certificate and its reported entry, at V0/C1: read by the 2 October
+      review, and not replayed. Coverage is decided by the source's C++ checker alone;
+      the axis tables are a second implementation for one direction and not a second method.
+    evidence:
+      - E-n076-wand125-mixed-894-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md
+        kind: adversarial
+        reviewer: Claude (model Fable) at extra-high thinking effort, review lane R4, prompted separately from the replay lane with no shared context
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-02'
+        scope: >-
+          wand125's linear certificates for s(101) >= 257/25 and s(83) >= 187/20 and their point-and-segment checker, unified_linear_verify.cpp: the argument from a linear measure to the bound, the point and segment capture bounds, the quadrant reduction by the measure's symmetry, the angle-zero branch, the hypotheses the checker assumes, and where the requests and the record differ; with an addendum on the n = 76 mixed certificate, against the kind and checker reviewed on 28 September and 2 October.
+        verdict: accepted
+        covers: [T-072]
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-n76-2026-10-02/README.md
+      - packing/resources/web/wand125-mixed-bounds-n76-2026-10-02/square-packing-bounds/certificates/mixed_n76_L894/README.md
+      - packing/resources/web/wand125-mixed-bounds-n76-2026-10-02/receipts/mixed-audit.json
+      - packing/devtools/audit_wand125_point_and_mixed.py
+    next_rung: >-
+      think-09ag: the complete replay of the certificate, about 2.2 CPU-hours by the
+      packet's pricing and one session at four workers, with
+      devtools.audit_wand125_point_and_mixed mixed-replay and mixed-merge, before the
+      verified lower bound is raised. The review is done: the 2 October review's addendum
+      on n = 76 found nothing that differs from the mixed certificates reviewed on 28
+      September and 2 October, with no defect.
+    notes: >-
+      V0 because the cited entry is the source's claim: assurance reported, replay not
+      attempted. C1 because the 2 October review of the linear certificates, in its addendum
+      on n = 76, is recorded as the report entry's external_review, with no defect found. A later
+      revision than T-071's, so a separate entry (result-import.md, register table). The
+      source ships a completion audit and a certificate of its full replay, which are
+      retained; the proof-bundle tarball is pinned by digest and not retained.
+
+  - id: T-073
+    kind: lower-bound
+    registered: '2026-10-02'
+    headline: "Linear-measure lower bounds reported at `n = 83` and `n = 101…105`"
+    claim: >-
+      wand125/square-packing-bounds reports two lower bounds from measures of points,
+      segments and rectangles, published on 2 October 2026: s(101) >= 257/25 = 10.28 and
+      s(83) >= 187/20 = 9.35. A packing of 102 to 105 squares contains one of 101, so the
+      first also gives s(102), s(103), s(104), s(105) >= 257/25.
+
+      Each certificate is a measure of a kind this record has not registered before: point
+      masses, segments of uniform density and rectangles of uniform density, given in D4
+      orbits with exact rational geometry, of total mass n - 1/100000, at core side
+      9977/10000 on 201 net half-angles of step 83/40000. It has 333 point, 897 segment and
+      4 rectangle orbits at n = 101, and 86, 222 and 774 at n = 83.
+
+      The source reports each accepted at all 201 net angles, the axis included, by
+      code/unified_linear_verify.cpp, the verifier of its superseded s(50) >= 147/20
+      certificate: an outward-rounded interval branch and bound over centre boxes in one
+      quadrant of the centre domain, which the measure's quarter-turn symmetry makes stand
+      for the whole, counting points in the closed core, segments by the length inside and
+      rectangles by the area inside. It says each full replay was run again from the
+      published tarball, by the same implementation and not an independent one.
+
+      At n = 101 the value exceeds Green's reported 2 sqrt(2) - 1 + (810 + 18 sqrt(5))/101 =
+      10.2467362..., by more than 0.0332, and so it does at n = 102 to 104, where this record
+      held that value by monotonicity; at n = 105 it exceeds Nagamochi's 10.2736.... At
+      n = 83 it exceeds Green's reported 9.2667335..., held here by monotonicity from
+      n = 82, by 0.083266...; the source's "more than 0.0833" is measured from 9.2667, below
+      Green's value, and is false, though the bound is unaffected.
+
+      Here the source was retained, its exact premises were recomputed from the retained
+      bytes, and the replay's checks before its first angle were run on both pinned
+      tarballs; one angle of each certificate was replayed, to price the replay, and a
+      negative control at n = 101 refused two mutated measures. None of it decides coverage.
+      The values stand as reported, and the verified lower bounds are unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/0c35d909764997ead04dfd90081c9fe9af8d07f2/certificates).
+      Registration was requested in jlevy/squares#294 and its comment of 2 October 2026.
+      The source says parts of the work were produced with AI assistance under human
+      direction.
+    scope: {n_values: [83, 101, 102, 103, 104, 105]}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the checker survives review and the replays pass, the
+        strongest lower bounds on record at six counts, past Green's reported values at
+        n = 83 and n = 101 and past Nagamochi's at n = 105, by a certificate kind new to
+        this record that adds points and segments to the rectangle densities. Further sizes
+        from one generator at S3; the score gates nothing, and V0/C1 says how far they
+        stand. The 2 October review of the certificates confirmed S3: the kind is new here,
+        but the technique is the measure argument with Tokoharu's net and checker, extended
+        by two capture bounds.
+      scored: '2026-10-02'
+      by: 'think-m7cm import, registering lane (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 linear certificates 2026-10-02]']
+      published: '2026-10-02'
+    composition: >-
+      One claim per certificate, each on its own reported entry; n = 102 to 105 take the
+      n = 101 certificate directly, its mass being below them, so no step is added. Every
+      part stands at V0/C1: read by the 2 October review, and not replayed. Coverage is
+      decided by the source's C++ checker alone, which that review read function by
+      function.
+    evidence:
+      - E-n083-wand125-linear-935-report
+      - E-n101-wand125-linear-1028-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md
+        kind: adversarial
+        reviewer: Claude (model Fable) at extra-high thinking effort, review lane R4, prompted separately from the replay lane with no shared context
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-02'
+        scope: >-
+          wand125's linear certificates for s(101) >= 257/25 and s(83) >= 187/20 and their point-and-segment checker, unified_linear_verify.cpp: the argument from a linear measure to the bound, the point and segment capture bounds, the quadrant reduction by the measure's symmetry, the angle-zero branch, the hypotheses the checker assumes, and where the requests and the record differ; with an addendum on the n = 76 mixed certificate, against the kind and checker reviewed on 28 September and 2 October.
+        verdict: accepted
+        covers: [T-073]
+    artifacts:
+      - packing/resources/web/wand125-linear-certificates-2026-10-02/README.md
+      - packing/resources/web/wand125-linear-certificates-2026-10-02/square-packing-bounds/certificates/mixed_n101_L1028/README.md
+      - packing/resources/web/wand125-linear-certificates-2026-10-02/square-packing-bounds/certificates/mixed_n83_L935/README.md
+      - packing/resources/web/wand125-linear-certificates-2026-10-02/square-packing-bounds/certificates/mixed_n101_L1028/code/unified_linear_verify.cpp
+      - packing/resources/web/wand125-linear-certificates-2026-10-02/receipts/linear-audit.json
+      - packing/resources/web/wand125-linear-certificates-2026-10-02/receipts/n101/control.json
+      - packing/devtools/audit_wand125_linear.py
+    next_rung: >-
+      think-m7cm: the complete replays, about 8.1 CPU-hours for n = 101 and 23.0 for n = 83
+      by the packet's pricing, with devtools.audit_wand125_linear linear-replay and
+      linear-merge, before any verified lower bound is raised, each with two mutated
+      controls refused and its merged receipt keeping each direction's least lower bound
+      (finding LC-4). The review of the new checker is done (2 October): its point and
+      segment capture bounds, the quadrant reduction by the measure's symmetry and the
+      angle-zero branch were read against the code, with no blocking defect.
+    notes: >-
+      V0 because every cited entry is the source's claim: assurance reported, replay not
+      attempted. C1 because the 2 October review of the certificates and their checker is
+      recorded as the two report entries' external_review, with no blocking defect; its
+      findings LC-2 and LC-4 are in the entries' limitations, and LC-1 is the n = 83 margin
+      the claim corrects. The checker's only earlier use is the source's superseded s(50)
+      >= 147/20 certificate, which this record did not register. A new certificate kind, so a separate entry. The
+      source ships a completion audit and a certificate of its full replay for each count,
+      which are retained; the proof-bundle tarballs are pinned by digest and not retained.

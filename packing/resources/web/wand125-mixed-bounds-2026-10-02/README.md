@@ -40,7 +40,10 @@ October 1 packets pin is unchanged at this revision.
 source added `af1db07b9516e5d45508bb89481014a65a51d12d`, which adds
 `certificates/mixed_n101_L1028` ($s(101) \ge 257/25$, checked by a different verifier,
 `unified_linear_verify.cpp`) and 14 lines of root `README.md`, and changes nothing in
-this packet’s scope. No request names it; it is not pinned here.
+this packet’s scope. It is not pinned here: [jlevy/squares#294](https://github.com/jlevy/squares/issues/294)
+requests its certificate, which the
+[linear packet](../wand125-linear-certificates-2026-10-02/README.md) pins at a later
+revision.
 
 Both directories have exactly one commit, the pinned one, with equal author and committer
 dates. The dates come from the clone’s full history.

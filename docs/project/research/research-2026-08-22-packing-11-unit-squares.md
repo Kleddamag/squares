@@ -929,9 +929,9 @@ Use the structured form to query or plot; use these tables to read.
 | 73 | 9 | grid | — | 8.78 | counting | 0.22 |
 | 74 | 9 | grid | — | 8.8475 | counting | 0.1525 |
 | 75 | 9 | grid | — | 8.9 | counting | 0.1 |
-| 76 | 9 | grid | — | 8.925 | counting | 0.075 |
+| 76 | 9 | grid | — | 8.94 | counting | 0.06 |
 | 82 | `6 + (5/2)√2` = 9.53553391 | hand | — | 9.266734 | unavoidable points | 0.2688 |
-| 83 | 9.63482562 | extension | 24 | 9.266734 | monotone | 0.3681 |
+| 83 | 9.63482562 | extension | 24 | 9.35 | counting | 0.2848 |
 | 84 | `9 + (1/2)√2` = 9.70710678 | strip | — | 9.4 | counting | 0.3071 |
 | 85 | `(11/2) + 3 √2` = 9.74264069 | hand | — | 9.42 | counting | 0.3226 |
 | 86 | `(17/2) + (1/2)√7` = 9.82287566 | extension | — | 9.365 | counting | 0.4579 |
@@ -945,11 +945,11 @@ Use the structured form to query or plot; use these tables to read.
 | 94 | 10 | grid | — | 9.805 | counting | 0.195 |
 | 95 | 10 | grid | — | 9.8518 | counting | 0.1482 |
 | 96 | 10 | grid | — | 9.888194 | Nagamochi | 0.1118 |
-| 101 | `7 + (5/2)√2` = 10.53553391 | extension | — | 10.246736 | unavoidable points | 0.2888 |
-| 102 | 10.60717468 | — | — | 10.246736 | monotone | 0.3604 |
-| 103 | 10.70351676 | — | — | 10.246736 | monotone | 0.4568 |
-| 104 | `10 + (1/2)√2` = 10.70710678 | strip | — | 10.246736 | monotone | 0.4604 |
-| 105 | 10.80607787 | — | — | 10.273618 | Nagamochi | 0.5325 |
+| 101 | `7 + (5/2)√2` = 10.53553391 | extension | — | 10.28 | counting | 0.2555 |
+| 102 | 10.60717468 | — | — | 10.28 | monotone from `s(101)` | 0.3272 |
+| 103 | 10.70351676 | — | — | 10.28 | monotone from `s(101)` | 0.4235 |
+| 104 | `10 + (1/2)√2` = 10.70710678 | strip | — | 10.28 | monotone from `s(101)` | 0.4271 |
+| 105 | 10.80607787 | — | — | 10.28 | monotone from `s(101)` | 0.5261 |
 | 106 | 10.82290804 | — | — | 10.327379 | Nagamochi | 0.4955 |
 | 107 | `10 - (1/2)√2 + sqrt(1 + √2)` = 10.84666719 | — | — | 10.380832 | Nagamochi | 0.4658 |
 | 108 | 10.92591939 | extension | 144 | 10.433981 | Nagamochi | 0.4919 |

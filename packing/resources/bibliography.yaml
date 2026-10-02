@@ -512,6 +512,47 @@ sources:
       produced with AI assistance under human direction, and the commit names Claude as
       co-author. web/wand125-mixed-bounds-2026-10-02/acquisition/sources.json pins revision
       52af997dc91c579658f0828bc8304e306ad9d95b. Dated by that revision, 2026-10-02 UTC.
+  - key: '[wand125 mixed bounds n76 2026-10-02]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-02'
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
+    lineage: builds-on-project
+    note: >-
+      The mixed rectangle-measure certificate for n = 76 that wand125/square-packing-bounds
+      added on 2026-10-02 (certificates/mixed_n76_L894), requested for registration in a
+      comment of that day on jlevy/squares#282: a rectangle density of mass 76 - 1/100000
+      checked at coverage one by code/mixed_rotated_verify.cpp, byte for byte the checker
+      of the source's n = 50 certificate and of the [wand125 mixed bounds 2026-10-02]
+      certificates. A later revision than those, so a key of its own. Credited as they are,
+      on the root README's unchanged Attribution section; the README says parts of the work
+      were produced with AI assistance under human direction, and the commit names Claude as
+      co-author. web/wand125-mixed-bounds-n76-2026-10-02/acquisition/sources.json pins
+      revision 7975030a192607ef27edd1559aee4e98bd93047b. Dated by that revision, 2026-10-02
+      UTC.
+  - key: '[wand125 linear certificates 2026-10-02]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-02'
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
+    lineage: builds-on-project
+    note: >-
+      The linear certificates for n = 101 and 83 that wand125/square-packing-bounds added on
+      2026-10-02 (certificates/mixed_n101_L1028, first committed at af1db07b, and
+      certificates/mixed_n83_L935), requested for registration in jlevy/squares#294 and its
+      comment of that day: measures of point masses, uniform segments and uniform
+      rectangles in D4 orbits, of mass n - 1/100000, checked by
+      code/unified_linear_verify.cpp, the verifier of the source's superseded n = 50
+      certificate mixed_n50_L735, a certificate kind this record had not registered.
+      Credited as the source's mixed keys are, on the root README's unchanged Attribution
+      section; the README says parts of the work were produced with AI assistance under
+      human direction, and the commits name Claude as co-author.
+      web/wand125-linear-certificates-2026-10-02/acquisition/sources.json pins revision
+      0c35d909764997ead04dfd90081c9fe9af8d07f2. Dated by that revision, 2026-10-02 UTC.
   - key: '[wand125 valid7 independent check 2026-10-02]'
     authors: [wand125]
     year: 2026

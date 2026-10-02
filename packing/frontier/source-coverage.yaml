@@ -614,8 +614,61 @@ sources:
       and the complete replays are running; the proof-bundle tarballs are pinned by digest
       and not retained. The source's improvement_lower at both counts is measured from a
       value below Green's and is not a lower bound (review finding MX-2). A later revision,
-      af1db07b, adds an n = 101 certificate by another verifier; no request names it, and
-      it is not pinned.
+      af1db07b, adds an n = 101 certificate by another verifier, which jlevy/squares#294
+      requests and the wand125-linear-certificates-2026-10-02 packet pins.
+  - id: wand125-mixed-bounds-n76-2026-10-02
+    title: Mixed rectangle-measure certificate for n = 76
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/7975030a192607ef27edd1559aee4e98bd93047b
+    local: resources/web/wand125-mixed-bounds-n76-2026-10-02/
+    source_key: '[wand125 mixed bounds n76 2026-10-02]'
+    scope: {n_values: [76]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-02'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-076.md]
+    evidence:
+      - E-n076-wand125-mixed-894-report
+    notes: >-
+      Revision 7975030a192607ef27edd1559aee4e98bd93047b, retrieved at 2026-10-02T07:47Z for
+      a comment of that day on jlevy/squares#282. One rectangle density checked at coverage
+      one by the source's research copy of Tokoharu's verify.cpp, byte for byte the checker
+      of its n = 50 certificate, of mass 76 - 1/100000. Recorded as a reported lower bound
+      (T-072), above the source's rectangle certificate 357/40 (T-068), which it says it
+      supersedes. The exact audit and the replay's checks before its first angle pass; no
+      angle was replayed, and the complete replay, about 2.2 CPU-hours, has not run. The 2
+      October review of the linear certificates read it in an addendum, with no defect.
+      The proof-bundle tarball is pinned by digest and not retained.
+  - id: wand125-linear-certificates-2026-10-02
+    title: Linear point, segment and rectangle certificates for n = 101 and 83
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/0c35d909764997ead04dfd90081c9fe9af8d07f2
+    local: resources/web/wand125-linear-certificates-2026-10-02/
+    source_key: '[wand125 linear certificates 2026-10-02]'
+    scope: {n_values: [83, 101, 102, 103, 104, 105]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-02'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-083.md, frontier/n-101.md, frontier/n-102.md, frontier/n-103.md, frontier/n-104.md, frontier/n-105.md]
+    evidence:
+      - E-n083-wand125-linear-935-report
+      - E-n101-wand125-linear-1028-report
+    notes: >-
+      Revision 0c35d909764997ead04dfd90081c9fe9af8d07f2, retrieved at 2026-10-02T07:47Z for
+      jlevy/squares#294 (the n = 101 certificate, first committed at af1db07b) and its
+      comment of that day (n = 83). Measures of points, uniform segments and uniform
+      rectangles checked by code/unified_linear_verify.cpp, a certificate kind this record
+      had not registered. Both are recorded as reported lower bounds (T-073), above Green's
+      reported values at n = 83 and 101; by monotonicity the n = 101 value is also the
+      strongest report at n = 102 to 105, and at n = 106 Nagamochi's is higher. The exact
+      audit and the replay's checks before its first angle pass, one angle of each was
+      replayed, and a negative control refused two mutated n = 101 measures. The 2 October
+      review read the certificates and the checker, with no blocking defect (T-073 at C1). The source's margin over Green at n = 83, "more than 0.0833", is
+      false (it is 0.083266...); the bound is unaffected. The issue announces n = 82 at 9.32,
+      which no revision publishes yet. A later revision, 06eeb40c, adds three
+      Tokoharu-format rectangle certificates; no request names it, and it is not pinned.
   - id: wand125-valid7-independent-check-2026-10-02
     title: Independent exact checker of Valid7 for s(k^2 - 3) = k
     role: source-repository

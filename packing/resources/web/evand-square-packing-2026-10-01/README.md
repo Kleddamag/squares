@@ -189,6 +189,32 @@ interval checker on the retained cover. The receipts are in [`receipts/`](receip
   source, which is the same author’s second checker and is recorded as a second route
   when it runs (`think-mx3k`).
 
+## `T-064`: Checks and Plans Here, 2 October 2026
+
+Stage 4 of the result import for `T-064`, Valid7 and the Lean reduction.
+The [method review](../../../../docs/project/reviews/review-2026-10-02-valid7-independent-checker.md)
+explains each of these; none is a complete replay of either checker.
+
+- [`receipts/valid7/k2m3_verify_fast.log`](receipts/valid7/k2m3_verify_fast.log): the
+  bundle’s fast `verify.sh` on `source/s12` as retained, exit 0. That covers the hashes,
+  the cover’s total and D4 invariance, the family rebuilding the cover, Lemma Z re-run
+  and identical to `lemmaZ.out`, the run V3 record re-checked, and `BentzData.lean`
+  regenerated identical. It recomputes no positive-tilt leaf.
+- [`receipts/valid7/qx2_calibration_x27-28_y23-24.log`](receipts/valid7/qx2_calibration_x27-28_y23-24.log)
+  and [`qx2_calibration_compare.json`](receipts/valid7/qx2_calibration_compare.json):
+  one centre cell of `qx2_zm.py` with run V3’s settings, 8 roots, 123.6 CPU-s against
+  122.5 recorded, every leaf list equal to V3’s.
+- [`receipts/valid7/qx2_replay_plan.json`](receipts/valid7/qx2_replay_plan.json): the
+  full replay priced and split into two 4-core shards by
+  [`devtools.plan_valid7_replay`](../../../devtools/plan_valid7_replay.py), 22.8 CPU-hours
+  here.
+- [`receipts/lean/bentz_stage.json`](receipts/lean/bentz_stage.json): the import closure
+  of `bentz_of_valid7` staged by
+  [`devtools.stage_evand_bentz_lean`](../../../devtools/stage_evand_bentz_lean.py), every
+  file at its `08e8a5fa` blob. `S32Data.lean` was regenerated from the September 26
+  packet’s $s(32)$ cover. It was not built: this container lacked the disk for the
+  toolchain and Mathlib’s cache.
+
 ## Compressed Files
 
 Five `s60` files have more than 1,000 lines and were compressed locally with `gzip -9n`,

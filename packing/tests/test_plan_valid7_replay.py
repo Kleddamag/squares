@@ -235,3 +235,21 @@ def test_the_calibrations_reproduce_published_leaves_and_bound_the_speed() -> No
     assert forkserver < 1.0
     compare = json.loads((WAND_RECEIPTS / "valid7_calibration_compare.json").read_text("utf-8"))
     assert (compare["ok"], compare["roots_matching_published_leaves"]) == (True, 64)
+
+
+def test_the_fast_verify_and_the_leaf_recheck_receipts() -> None:
+    _, fast = _footer(EVAND_RECEIPTS / "k2m3_verify_fast.log")
+    for line in (
+        "    cover: CLEAN",
+        "    FAMILY CHECK OK",
+        "    identical to the shipped qx2_zm/lemmaZ.out",
+        "    record: CLEAN",
+        "    identical to lean/Sqpack/BentzData.lean",
+        "s(k^2 - 3) = k bundle: OK",
+    ):
+        assert line in fast.splitlines()
+    recheck_cpu, recheck = _footer(WAND_RECEIPTS / "valid7_leaf_recheck_x54-55_y63-64.log")
+    assert "--recheck 2425 --recheck-b 438" in recheck
+    assert "RECORD OK" in recheck.splitlines()
+    search_cpu, _ = _footer(WAND_RECEIPTS / "valid7_calibration_x54-55_y63-64.log")
+    assert recheck_cpu >= search_cpu

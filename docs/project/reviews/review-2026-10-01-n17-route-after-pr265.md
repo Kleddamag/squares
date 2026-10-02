@@ -347,6 +347,23 @@ the n11 native audit.
 The outputs are planning evidence: each number still needs an admitted instrument before
 it enters a hypothesis verdict.
 
+## Correction After the Capture Review
+
+*Added 2026-10-02 by Session 167.* The comparison with n11 in
+[The Endpoint Is a First-Order Minimum Modulo Its Sliders](#the-endpoint-is-a-first-order-minimum-modulo-its-sliders)
+misreads n11’s radius.
+PROOF.md line 425 says only that n11’s focused coordinate radii lie *within* the
+analytic working box of radius $1/64$. The accepted radii in n11’s pose-inclusion
+receipt (`receipts/pose-inclusion/result.json` under the archived n11 source) are about
+$9\times10^{-4}$ to $2.3\times10^{-3}$, and the
+[capture feasibility review](review-2026-10-02-n17-capture-feasibility.md) reads
+$6.5\times10^{-4}$ to $3.3\times10^{-3}$ in position and $1.5\times10^{-3}$ to
+$6.8\times10^{-3}$ in angle across all of them.
+The exploratory n17 radius of $3\times10^{-4}$ is therefore about 1.5 to 16 times finer
+than n11’s, not about 50 times.
+The capture review concludes that capture cost is only logarithmic in the radius, so
+enlarging the local radius is no longer a precondition for capture work.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

@@ -5646,11 +5646,13 @@ results:
       rational arithmetic over 129,600 roots, none uncertified. It has no Lean statement,
       and the source says it has had no review outside its project.
 
-      Here the source was retained and its report read into the record, and nothing was
-      replayed: no checker was run, and the cover's mass and symmetry were not recomputed.
-      The source's own verification script cannot pass as published, because its checksum
-      file lists run logs that are not in the repository. The value stands as reported, and
-      the case's verified lower bound is unchanged.
+      Here the source was retained, the cover's exact total and D4 invariance were
+      recomputed, and the source's zmx2 --d4 --pair-points sweep was replayed on the
+      retained bytes on 2 October 2026: 8,100 roots, none uncertified, its box total equal to
+      the one the source states. The unreduced --full --pair-points sweep is still running,
+      and until it ends the value stands as reported and the case's verified lower bound is
+      unchanged. The source's own verification script cannot pass as published, because its
+      checksum file lists run logs that are not in the repository.
 
       wand125,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/1a25a5ed745fdd905a52f48fcc48150a0669032d/certificates/k2m4_n77_L9),
@@ -5679,7 +5681,8 @@ results:
       Compound, and the minimum is set by the lower half. The upper half is the 9 x 9 grid,
       E-basic-grid-upper, replayed exactly here; the lower half is
       E-n077-wand125-mixed-cover-report, the source's claim, read here by the 2 October
-      review and not replayed. The checker derives V3 and C3 from the grid's entry; this
+      review, whose D4-reduced sweep has been replayed and whose unreduced sweep has not
+      yet. The checker derives V3 and C3 from the grid's entry; this
       note is why the declared rungs are V0 and C1.
     evidence:
       - E-n077-wand125-mixed-cover-report

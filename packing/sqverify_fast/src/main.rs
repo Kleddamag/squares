@@ -147,8 +147,8 @@ fn probe(
         return Err("--probe takes r,x,y or r,x,y,dx,dy".into());
     }
     let index: u32 = parts[0].parse().map_err(|_| "bad probe direction")?;
-    if index == 0 || index >= cert.angle_count {
-        return Err("probe direction must be a rotated net index".into());
+    if index >= cert.angle_count {
+        return Err("probe direction must be a net index".into());
     }
     let numbers: Vec<f64> = parts[1..]
         .iter()

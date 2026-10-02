@@ -54,16 +54,21 @@ fn locate(events: &[BigRational], p: &BigRational) -> Result<usize, usize> {
     events.binary_search_by(|e| e.cmp(p))
 }
 
-/// Verify the axis direction at `threshold` (an enclosure's upper end is used).
+/// Verify the axis direction at `threshold` (an enclosure's upper end is used)
+/// on the quadrant `[L/2, upper]^2`, `upper` the format's domain end.
 ///
 /// # Errors
 ///
 /// Returns a message if an exact event cannot be enclosed in binary64.
-pub fn verify_axis(cert: &Certificate, threshold_hi: f64) -> Result<AxisResult, String> {
+pub fn verify_axis(
+    cert: &Certificate,
+    threshold_hi: f64,
+    upper: &BigRational,
+) -> Result<AxisResult, String> {
     let two = BigRational::from_integer(BigInt::from(2));
     let h = &cert.core / &two;
     let lower = &cert.side / &two;
-    let upper = &cert.side - &h;
+    let upper = upper.clone();
     let in_range = |p: &BigRational| p >= &lower && p <= &upper;
     let mut xs = vec![lower.clone(), upper.clone()];
     let mut ys = vec![lower.clone(), upper.clone()];

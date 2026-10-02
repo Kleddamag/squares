@@ -34,10 +34,15 @@ worker count it ran with, so it is not a CPU figure.
 | `rect_n53_L7595` | 53 | VERIFIED | 201 | 15,481,454 | 5,522,500 | 21,079,926 | 1.0001000005722172 | clears | 202.9 | 9.0 | 6619 (4) |
 | `rect_n59_L792` | 59 | VERIFIED | 201 | 21,473,592 | 6,646,084 | 28,400,348 | 1.0001000019592972 | clears | 191.2 | 10.5 | 7007 (4) |
 | `rect_n61_L796` | 61 | VERIFIED | 201 | 17,479,486 | 2,907,025 | 20,526,671 | 1.000100005068861 | clears | 109.0 | 12.1 | 2042 (4) |
+| `rect_n67_L8455` | 67 | VERIFIED | 201 | 20,822,002 | 4,297,329 | 25,217,361 | 1.0001000007618854 | clears | 257.1 | 18.1 | 6438 (4) |
+| `rect_n69_L8575` | 69 | VERIFIED | 201 | 21,597,710 | 4,761,124 | 26,472,386 | 1.0001000005653509 | clears | 307.7 | 1.4 | 8403 (4) |
+| `rect_n71_L8685` | 71 | VERIFIED | 201 | 21,961,900 | 4,687,225 | 26,773,005 | 1.0001000016144455 | clears | 317.3 | 3.2 | 7826 (4) |
 | `rect_n75_L889` | 75 | VERIFIED | 201 | 25,338,836 | 2,286,144 | 27,766,278 | 1.000100000092212 | clears | 291.2 | 13.1 | 3524 (4) |
 | `rect_n78_L8955` | 78 | VERIFIED | 201 | 28,132,328 | 2,039,184 | 30,376,068 | 1.0001000000494495 | clears | 271.1 | 10.4 | 4208 (4) |
+| `rect_n86_L9355` | 86 | VERIFIED | 201 | 25,602,784 | 2,941,225 | 28,780,525 | 1.0001000005089622 | clears | 213.3 | 11.9 | 3920 (4) |
+| `rect_n95_L98418` | 95 | VERIFIED | 201 | 28,687,314 | 5,822,569 | 34,659,569 | 1.0001000007374712 | clears | 283.4 | 8.2 | 12283 (4) |
 
-22 of 22 certificates verified; 2994 CPU seconds in all.
+27 of 27 certificates verified; 4373 CPU seconds in all.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

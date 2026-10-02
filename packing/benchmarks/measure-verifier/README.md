@@ -95,10 +95,10 @@ estimate only.
 
 The standing build is c2 (exp-003, exp-004 and exp-005 accepted on v0). On this loaded
 host it used 43 times less CPU than `verify.cpp` on the whole of `rect_n32_L595`
-(exp-006) and 29 times less on six single directions (exp-011). Six hypotheses were
-rejected: H-001, H-005, H-008, H-004, H-009 and H-010. The two first-leg rounds found a
-real 27 to 37% cut in boxes that costs as much again in enclosures; it is the most
-promising open lead.
+(exp-006) and 29 times less on six single directions (exp-011). Seven hypotheses were
+rejected: H-001, H-005, H-008, H-004, H-009, H-010 and H-011. The two first-leg rounds
+found a real 27 to 37% cut in boxes that costs as much again in enclosures; it is the
+most promising open lead.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

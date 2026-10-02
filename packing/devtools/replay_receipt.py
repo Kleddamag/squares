@@ -38,6 +38,9 @@ from collections.abc import Sequence
 from datetime import UTC, datetime
 from pathlib import Path
 
+#: The exit field of a run killed at its time limit; ``zmx2`` exits 0, 1 or 2 itself.
+TIME_LIMIT_EXIT = 3
+
 
 def _utc() -> str:
     return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -55,8 +58,14 @@ def run(
     cwd_label: str,
     python_note: str,
     chdir: Path | None,
+    time_limit: float | None = None,
 ) -> dict[str, object]:
-    """Run ``argv`` with its output streamed into ``receipt``; return the footer fields."""
+    """Run ``argv`` with its output streamed into ``receipt``; return the footer fields.
+
+    With ``time_limit`` (seconds) the command is killed when it is reached, the footer
+    says so, and the exit field is ``TIME_LIMIT_EXIT``: a stopped run, not a failed one,
+    for a checker that resumes from its own log.
+    """
     receipt.parent.mkdir(parents=True, exist_ok=True)
     started = _utc()
     load_start = _load()
@@ -68,17 +77,24 @@ def run(
         out.write(f"# python3: {python_note}\n")
         out.write(f"# host: {os.cpu_count()} cores; load {load_start}; started {started}\n")
         out.flush()
-        proc = subprocess.run(
-            argv, cwd=chdir, stdout=out, stderr=subprocess.STDOUT, check=False
-        )
+        stopped = False
+        proc = subprocess.Popen(argv, cwd=chdir, stdout=out, stderr=subprocess.STDOUT)
+        try:
+            status = proc.wait(timeout=time_limit)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            proc.wait()
+            stopped, status = True, TIME_LIMIT_EXIT
         wall = time.monotonic() - t0
         after = resource.getrusage(resource.RUSAGE_CHILDREN)
         user = after.ru_utime - before.ru_utime
         system = after.ru_stime - before.ru_stime
         finished = _utc()
         load_end = _load()
+        if stopped:
+            out.write(f"# stopped at the time limit of {time_limit:g} s\n")
         out.write(
-            f"# finished {finished}; exit {proc.returncode}; wall {wall:.3f} s; "
+            f"# finished {finished}; exit {status}; wall {wall:.3f} s; "
             f"CPU {user + system:.1f} s (user {user:.3f} + sys {system:.3f}); load {load_end}\n"
         )
     return {
@@ -87,7 +103,7 @@ def run(
         "started_utc": started,
         "load_average_at_start": load_start,
         "ended_utc": finished,
-        "exit": proc.returncode,
+        "exit": status,
         "wall_seconds": round(wall, 1),
         "cpu_seconds": round(user + system, 1),
     }

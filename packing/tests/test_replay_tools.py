@@ -40,6 +40,21 @@ def test_receipt_keeps_a_failed_command_failed(tmp_path: Path) -> None:
     assert "; exit 3; " in (tmp_path / "r.log").read_text(encoding="utf-8")
 
 
+def test_receipt_stops_a_run_at_its_time_limit(tmp_path: Path) -> None:
+    fields = replay_receipt.run(
+        ["sleep", "30"],
+        receipt=tmp_path / "r.log",
+        cwd_label="x",
+        python_note="not used by this command",
+        chdir=None,
+        time_limit=0.5,
+    )
+    assert fields["exit"] == replay_receipt.TIME_LIMIT_EXIT
+    text = (tmp_path / "r.log").read_text(encoding="utf-8")
+    assert "# stopped at the time limit of 0.5 s" in text
+    assert float(str(fields["wall_seconds"])) < 10
+
+
 def test_driver_refuses_a_checker_whose_digest_differs(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

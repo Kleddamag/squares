@@ -16,9 +16,13 @@ states, builds the binary with ``cargo``, and runs ``zmx2 cert`` under
     Runs the case's cover with the flags its source used (``CASES``), writing the
     receipt ``OUT/<name>.log`` and the root log ``OUT/<name>_roots.log``. ``--x`` and
     ``--y`` restrict the root region, so one sweep can be split across machines; the
-    region is in the file name. Running the same command again resumes from the root log,
-    which ``zmx2`` reads before it starts, so an interrupted run loses at most the roots
-    in flight; the resumed run writes ``<name>_resume<k>.log`` beside the first receipt.
+    region is in the file name. ``--time-limit S`` stops the run after ``S`` seconds
+    with exit 3, so a session can push partial receipts. Running the same command again
+    resumes from the root log, which ``zmx2`` reads before it starts, so an interrupted
+    run loses at most the roots in flight; the resumed run writes
+    ``<name>_resume<k>.log`` beside the first receipt. ``zmx2`` itself exits 0 whatever
+    its verdict, so the verdict is read from the receipt (``REGION CLEAN``,
+    ``VERIFIED``, ``NOT VERIFIED``, ``INCOMPLETE``).
 
 What a run decides is read afterwards by ``devtools.audit_evand_mixed_covers``. This
 tool decides nothing about a cover: it only guarantees which bytes were run.
@@ -210,6 +214,7 @@ def run_case(
     threads: int,
     x: str | None,
     y: str | None,
+    time_limit: float | None = None,
 ) -> int:
     """Run ``zmx2 cert`` on case ``n`` and return its exit status."""
     case = CASES[n]
@@ -257,6 +262,7 @@ def run_case(
         ),
         python_note="not used by this command",
         chdir=stage,
+        time_limit=time_limit,
     )
     return int(fields["exit"])  # type: ignore[call-overload]
 
@@ -275,6 +281,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     run_parser.add_argument("--threads", type=int, default=4)
     run_parser.add_argument("--x", help="root columns LO-HI (inclusive)")
     run_parser.add_argument("--y", help="root rows LO-HI (inclusive)")
+    run_parser.add_argument(
+        "--time-limit",
+        type=float,
+        help="stop after this many seconds with exit 3; the same command resumes",
+    )
     args = parser.parse_args(argv)
     try:
         if args.command == "build":
@@ -288,6 +299,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             threads=args.threads,
             x=args.x,
             y=args.y,
+            time_limit=args.time_limit,
         )
     except DigestError as error:
         print(f"refused: {error}", file=sys.stderr)

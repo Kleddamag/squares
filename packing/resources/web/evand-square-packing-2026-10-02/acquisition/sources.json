@@ -1,0 +1,79 @@
+{
+  "format": "external-source-acquisition-v1",
+  "retrieved_at_utc": "2026-10-02T07:44Z",
+  "git_scope": "A blobless clone of the public repository, fetched when main was this commit, with a sparse checkout of the declared paths; the rest of the tree is pinned by the commit.",
+  "sources": [
+    {
+      "id": "evand-square-packing",
+      "source_url": "https://github.com/evand/square-packing",
+      "source_ref": "7d6f46d9d0780241245dfbf77bad28aa1594c6b5",
+      "source_commit": "7d6f46d9d0780241245dfbf77bad28aa1594c6b5",
+      "committed_utc": "2026-10-02T01:10:42Z",
+      "git_tree": "1694f28eb529b70145b4fb49f172a00b9f9f2012",
+      "archived_path": "packing/resources/web/evand-square-packing-2026-10-02/square-packing",
+      "subtree_manifest": "packing/resources/web/evand-square-packing-2026-10-02/acquisition/upstream-subtree.sha256",
+      "subtree_scope": [
+        "s12/search/s61_wand125",
+        "s12/search/S61_WAND125_REPLAY.md",
+        "s12/search/zm_mixed.py",
+        "s12/search/dual_exact.py",
+        "s12/search/DUAL_EXACT.md",
+        "s12/search/dual_exact_3.99_support.txt",
+        "s12/search/cqx_PURE99_support.txt",
+        "s12/lean/Sqpack/AnchorLemma2.lean",
+        "s12/notes/clique-family.md",
+        "s12/certificates/k2m3/README.md",
+        "s12/certificates/k2m3/verify.sh",
+        "s12/certificates/s21/FORMAT.md",
+        "site/notes/lower-bounds-notes.md",
+        "s12/README.md",
+        "s12/CREDITS.md",
+        "s12/LICENSE"
+      ],
+      "subtree_file_count": 33,
+      "subtree_total_bytes": 1328506,
+      "retained_file_count": 29,
+      "retained_total_bytes": 1158245,
+      "compressed": [
+        "square-packing/s12/search/s61_wand125/s61_wand125_cover_8.txt.gz"
+      ],
+      "pinned_only": [
+        {
+          "path": "s12/LICENSE",
+          "bytes": 1068,
+          "sha256": "c51886c0f7e6724a7d89fc22cb237a1688ba1bbff04cb21a13b8e1a01fb15578",
+          "reason": "byte-identical to the 2026-10-01 evand packet's copy",
+          "identical_to": "packing/resources/web/evand-square-packing-2026-10-01/source/s12/LICENSE"
+        },
+        {
+          "path": "s12/search/s61_wand125/MANIFEST.txt",
+          "bytes": 3545,
+          "sha256": "bd584efe835af84d3e5dd8c3e6b787fddedd4c3e2307528f54798866f113c591",
+          "reason": "byte-identical to the 2026-10-01 evand packet's copy",
+          "identical_to": "packing/resources/web/evand-square-packing-2026-10-01/source/s12/search/s61_wand125/MANIFEST.txt"
+        },
+        {
+          "path": "s12/search/s61_wand125/zeromargin_d4/checker/zeromargin.py",
+          "bytes": 79383,
+          "sha256": "640fe453c1a32f4aa580ca2b1261c6406923a4d7c131f65604a432c7fc2086ab",
+          "reason": "byte-identical to the 2026-09-26 evand packet's search/zeromargin.py, SHA-256 640fe453",
+          "identical_to": "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/search/zeromargin.py"
+        },
+        {
+          "path": "s12/search/zm_mixed.py",
+          "bytes": 86265,
+          "sha256": "1fd203469bb43a55ca7ce376b9717437e0970eead31941ec7fa100ab24d5ba95",
+          "reason": "byte-identical to the 2026-10-01 evand packet's copy, SHA-256 1fd20346, the version the s21, s45 and s60 bundles are re-pinned to",
+          "identical_to": "packing/resources/web/evand-square-packing-2026-10-01/source/s12/search/zm_mixed.py"
+        }
+      ],
+      "license": "MIT (s12/LICENSE, byte-identical to the 2026-10-01 evand packet's copy)",
+      "claims": [
+        "zeromargin.py certifies all 12,800 D4 roots of wand125's point-only s(61) cover (2 after a depth-30 rerun) and zmcheck --d4 with ZM_MIXPAIR=1 all 6,400, so s(61) >= 8 by a point-only measure (s12/search/S61_WAND125_REPLAY.md, s12/search/s61_wand125/)",
+        "Lemma 2 of the clique family (transversal threshold at a wall) is kernel-checked in Lean, both directions (s12/lean/Sqpack/AnchorLemma2.lean)",
+        "dual_exact.py check asserts L > N in its exit status, and the side-3.99 supports are published (s12/search/dual_exact.py, dual_exact_3.99_support.txt, cqx_PURE99_support.txt)",
+        "Claims audit: the k2m3 fast verify.sh recomputes no positive-tilt leaf; checker independence restated as 'separately written'; Nagamochi 2005 Lemma 1 false, so its published proofs are incomplete (s12/certificates/k2m3/README.md, s12/certificates/s21/FORMAT.md, site/notes/lower-bounds-notes.md)"
+      ]
+    }
+  ]
+}

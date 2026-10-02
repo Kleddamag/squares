@@ -1,0 +1,89 @@
+{
+  "kind": "valid7-independent-records-audit/v1",
+  "ok": true,
+  "problems": [],
+  "records": [
+    {
+      "name": "full.jsonl",
+      "sha256_compressed": "f553751df065f06708ea4226b1e18cb36a47f6fb1a47f0f0afd9ba0b628a4845",
+      "sha256_decompressed": "bff065feffed8551fcbb636c00417061417fee14164368296f2ece3ccc8d5ba6",
+      "header_argv": [
+        "src/run_all.py",
+        "cover/L4_k02_box7.txt",
+        "--nproc",
+        "32",
+        "--record",
+        "runs/full.jsonl"
+      ],
+      "header_sha256": {
+        "cover/L4_k02_box7.txt": "c0a6750997897c21ffc693df6df97f89a248dd9eb588a2fe2b83bf359793694b",
+        "src/run_all.py": "bc3bf0a55322163d57644bc3b1ce6bb26eb8dd817826677f1dcb2253ed1f3be3",
+        "src/tier_a.py": "bb23e935a2e30901d1f9bc6e455ff60c6045826dfb8edf1807c065fdf1a4c9b1",
+        "src/tier_b.py": "ca72a14909e3d242ad2006a782a795fb9cb5a27d81df1422f28aa882049505bb",
+        "src/tier_b2.py": "36e97e6129f683f3a614dc38de168e84c17a17db7c596223969a17e9ee5b58db",
+        "src/solver.py": "aa462c15f72309912da3ef231d443ea6690ecccf4cbc9f94a5bd7797681b674c",
+        "src/rf.py": "c527689cec0072e3f1263b2cb5654b1df196b9295cd7e70a49c151276146e4a5",
+        "src/cover.py": "bdaee4f0390d76d0286251660a4b3aba802f28935c64f9290eed8c52a50bf3e6"
+      },
+      "roots": 123200,
+      "leaves": {
+        "CORE": 6263260,
+        "EMPTY": 50633,
+        "TIERB2": 2867365
+      },
+      "uncertified": 0,
+      "counterexamples": 0,
+      "cpu_core_hours": 611.28
+    },
+    {
+      "name": "full_b.jsonl",
+      "sha256_compressed": "8eaf90f342429cae3245965a18e08452f73b9270b1f61aa9b129e08de45d6a4f",
+      "sha256_decompressed": "e0fb45b60ed9e4986f7dd7dba3ff6b01787a7f5943387d1dd6a57231fd10123a",
+      "header_argv": [
+        "src/run_all.py",
+        "cover/L4_k02_box7.txt",
+        "--centers",
+        "11/2",
+        "7",
+        "0",
+        "7",
+        "--nproc",
+        "32",
+        "--record",
+        "runs/full_b.jsonl"
+      ],
+      "header_sha256": {
+        "cover/L4_k02_box7.txt": "c0a6750997897c21ffc693df6df97f89a248dd9eb588a2fe2b83bf359793694b",
+        "src/run_all.py": "899144f999e69cb0b1e95063e6e9c208cca6eedca51d11c139cfd84d229ca476",
+        "src/tier_a.py": "bb23e935a2e30901d1f9bc6e455ff60c6045826dfb8edf1807c065fdf1a4c9b1",
+        "src/tier_b.py": "ca72a14909e3d242ad2006a782a795fb9cb5a27d81df1422f28aa882049505bb",
+        "src/tier_b2.py": "ebd2a1d0a47a84815008deea35e684231e050f941445d9f6f6c400a7556d9941",
+        "src/solver.py": "aa462c15f72309912da3ef231d443ea6690ecccf4cbc9f94a5bd7797681b674c",
+        "src/rf.py": "c527689cec0072e3f1263b2cb5654b1df196b9295cd7e70a49c151276146e4a5",
+        "src/cover.py": "bdaee4f0390d76d0286251660a4b3aba802f28935c64f9290eed8c52a50bf3e6"
+      },
+      "roots": 33600,
+      "leaves": {
+        "CORE": 410830,
+        "EMPTY": 29294,
+        "TIERB2": 18678
+      },
+      "uncertified": 0,
+      "counterexamples": 0,
+      "cpu_core_hours": 15.07
+    }
+  ],
+  "grid_roots": 156800,
+  "leaves": 9640060,
+  "leaf_kinds": {
+    "CORE": 6674090,
+    "EMPTY": 79927,
+    "TIERB2": 2886043
+  },
+  "cpu_core_hours": 626.36,
+  "stated": {
+    "leaves": 9640060,
+    "core_hours": 626
+  },
+  "not_checked": "No leaf's bound is recomputed here; check_record.py --recheck/--recheck-b re-certify a sample, and the run itself is the source's."
+}

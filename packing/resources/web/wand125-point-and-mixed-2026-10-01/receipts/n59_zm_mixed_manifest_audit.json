@@ -1,0 +1,52 @@
+{
+ "records_audited": false,
+ "complete_run": {
+  "manifest": "packing/resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m5_n59_L8/zm_mixed_d4/manifest.json",
+  "header_sha256_match_retained_files": true,
+  "header_total_equals_stated": true,
+  "settings_as_required_apart_from_depth": true,
+  "depth": 24,
+  "region": {},
+  "roots_in_declared_region": 102400,
+  "roots_stated": 102400,
+  "uncertified_boxes_stated": 6,
+  "verdict_stated": "NOT VERIFIED",
+  "records_retained": false,
+  "consistent": true
+ },
+ "deep_run": {
+  "manifest": "packing/resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m5_n59_L8/zm_mixed_root/manifest.json",
+  "header_sha256_match_retained_files": true,
+  "header_total_equals_stated": true,
+  "settings_as_required_apart_from_depth": true,
+  "depth": 34,
+  "region": {
+   "cx_lo": "27/20",
+   "cx_hi": "7/5",
+   "cy_lo": "13/10",
+   "cy_hi": "27/20",
+   "u_lo": "1/4",
+   "u_hi": "9/32"
+  },
+  "roots_in_declared_region": 1,
+  "roots_stated": 1,
+  "uncertified_boxes_stated": 0,
+  "verdict_stated": "VERIFIED-D4 (PARTIAL)",
+  "records_retained": false,
+  "consistent": true,
+  "header_sha256_equal_complete_run": true,
+  "settings_equal_apart_from_depth_and_region": true,
+  "roots_of_declared_region": [
+   "27/20,7/5,13/10,27/20,1/4,9/32"
+  ]
+ },
+ "states_complete_verification": false,
+ "consistent": true,
+ "verdict": "undecided",
+ "decided_from_manifests": [
+  "both runs name the case's checker files and the retained cover by SHA-256 and state its total",
+  "the complete run has the certificate-mode D4 settings at depth 24 over the whole region and states 102400 roots, the number the region holds, and 6 uncertified boxes",
+  "the deeper run has the same settings apart from depth (34) and region, its region holds 1 root(s), 27/20,7/5,13/10,27/20,1/4,9/32, and it states no uncertified box"
+ ],
+ "undecided": "whether the 6 uncertified boxes lie in the deeper run's region: no manifest says which roots hold them; that is written only in the complete run's per-root records and log, neither published"
+}

@@ -1,0 +1,51 @@
+{
+ "log": "resources/web/evand-zmx2-sym-atoms-2026-09-30/receipts/s32_zmx2_full_sym_roots.log",
+ "sha256": "f365bd82df96822bfe66d963f5ca7fbaccebc8c0ca6e9e13f99480de83aaff4f",
+ "header": "# zmx2 cert hash=c4c8c3ab717e9aab mode=full atoms=pairpts+sym depth=40 node_cap=20000000 kappa=1.5 K=30 region=x0-59,y0-59,bins0-3",
+ "mode": "full",
+ "atoms": "pairpts+sym",
+ "flags": {
+  "pair_points": true,
+  "no_atoms": false,
+  "sym_atoms": true,
+  "mirror_only": false,
+  "first_order": false
+ },
+ "header_settings": {
+  "depth": "40",
+  "node_cap": "20000000",
+  "kappa": "1.5",
+  "K": "30"
+ },
+ "header_unrecognised": [],
+ "headers_equal_apart_from_region": true,
+ "mode_in_header": true,
+ "region_in_header": true,
+ "joined": false,
+ "runs": [
+  {
+   "log": "resources/web/evand-zmx2-sym-atoms-2026-09-30/receipts/s32_zmx2_full_sym_roots.log",
+   "line": 1,
+   "region": "x0-59,y0-59,bins0-3",
+   "roots": 28800
+  }
+ ],
+ "roots_in_region": 28800,
+ "roots_present": 28800,
+ "roots_missing": 0,
+ "roots_outside_region": 0,
+ "roots_outside_their_runs_limits": 0,
+ "roots_recorded_more_than_once": 0,
+ "repeated_roots": [],
+ "root_ids_inconsistent": 0,
+ "unparsed_lines": 0,
+ "boxes": 11268760,
+ "certified_leaves": 5507496,
+ "empty_leaves": 141284,
+ "uncertified_boxes": 0,
+ "uncert_lines": 0,
+ "capped_roots": 0,
+ "max_depth": 29,
+ "atoms_required": "pairpts+sym",
+ "atoms_as_required": true
+}

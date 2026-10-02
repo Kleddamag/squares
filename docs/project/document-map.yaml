@@ -75,6 +75,7 @@ documents:
   - {path: docs/project/specs/active/plan-2026-09-30-epistemics-ladder-review.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/specs/active/plan-2026-10-01-result-kinds.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/specs/active/plan-2026-10-01-result-status.md, role: plan, authority: current, lifecycle: transient}
+  - {path: docs/project/specs/active/plan-2026-10-01-result-import-first-application.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/reviews/review-2026-09-13-n11-bc329-source-distinct-reader.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-09-13-n11-bc329-reader-rereview.md, role: review, authority: record, lifecycle: retained}
@@ -349,6 +350,7 @@ documents:
   - {path: development.md, role: development-guide, authority: definitive, lifecycle: maintained}
   - {path: packing/campaign/README.md, role: research-runbook, authority: definitive, lifecycle: maintained}
   - {path: packing/campaign/documentation-pass.md, role: documentation-runbook, authority: definitive, lifecycle: maintained}
+  - {path: packing/campaign/result-import.md, role: import-runbook, authority: definitive, lifecycle: maintained}
   - {path: packing/campaign/remediation-pass.md, role: remediation-runbook, authority: definitive, lifecycle: maintained}
   - {path: packing/campaign/review-planning-oversight.md, role: oversight-runbook, authority: definitive, lifecycle: maintained}
   - {path: packing/campaign/agent-sessions/README.md, role: session-guide, authority: definitive, lifecycle: maintained}
@@ -766,6 +768,13 @@ documents:
     role: review
     authority: record
     lifecycle: retained
+  - {path: docs/project/reviews/review-2026-10-01-result-import-process.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-evand-s32-no-fold-run.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-wand125-s59-s77-mixed-covers.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-wand125-rectangle-bounds-t068.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md, role: review, authority: record, lifecycle: retained}
   - path: docs/project/reviews/review-2026-09-28-density-solver-comparison.md
     role: review
     authority: record

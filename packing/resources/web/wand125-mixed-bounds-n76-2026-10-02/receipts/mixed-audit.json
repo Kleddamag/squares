@@ -1,0 +1,65 @@
+{
+  "kind": "wand125-mixed-certificate-audit/v1",
+  "packet": "wand125-mixed-bounds-n76-2026-10-02",
+  "source_revision": "7975030a192607ef27edd1559aee4e98bd93047b",
+  "certificates": {
+    "n76": {
+      "directory": "certificates/mixed_n76_L894",
+      "side": "447/50",
+      "side_float": 8.94,
+      "core": "9977/10000",
+      "rectangles": 317,
+      "total_mass": "7599999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "f2c2530552547a56a454c55bee99a196221ae1f4357570c3a0d524eddd5d9cdf",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[447/100, 211/25]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 3225616,
+      "axis_integer_minimum": 1.0075130139576551,
+      "oblique_nodes": 38762302,
+      "least_lower": 1.000000000516032,
+      "least_lower_at": 150,
+      "tarball": "certificates/mixed_n76_L894/n76-L8.94-proof-bundle.tar.gz",
+      "tarball_sha256": "d804bb88f0fa5fd5cfa11aeccb4977f708a015879917c189c6d6511f1bbbef63",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "357/40",
+        "compared_note": "published rectangle n76 8.925 (Nagamochi 8.810250)",
+        "improvement_lower": "3/200"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=8, from n = 65",
+        "green_interval_float": [
+          8.289965586284652,
+          8.289965586284652
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(61)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    }
+  },
+  "scope": "Exact premises only, from the retained files: pinned digests, the measure's count, side, core, nonnegativity and total n - 1/100000, the candidate digest by the source's rule, the net containment, the checker and code identity, a replay record at threshold one for each of the 201 angles, and the source audit's certificate and tarball digests. Coverage is decided by the source's checker, whose replay is recorded separately."
+}

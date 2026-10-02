@@ -204,15 +204,23 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-041](packing/frontier/RESULTS.md) | 17 | `V3` | `C3` | `S3` | `previously-published` | s(17) > 466001/100000 = 4.66001, by the bounds/4.66001/ package of Kleddamag’s 17-squares-certified-bound, published untagged on 27 September 2026. |
 | [T-043](packing/frontier/RESULTS.md) | 17 | `V3` | `C3` | `S3` | `previously-published` | s(17) > 116511/25000 = 4.66044, by Guzhou0806 / N17 project’s R068 release of 28 September 2026, continuing Kleddamag’s public 4.66001 charge (T-041). |
 | [T-044](packing/frontier/RESULTS.md) | 26, 29, 39, 40, 41, 52, 53, 55, 56, 68, 69, 70, 71, 72 | `V3` | `C3` | `S3` | `previously-published` | Ten exact weighted point certificates in wand125/square-packing-bounds, of 22 September 2026, prove s(26) >= 109/20, s(29) >= 557/100, s(39) >= 13/2, s(40) >= 13/2, s(53) >= 369/50, s(55) >= 377/50, s(56) >= 381/50, s(69) >= 841/100, s(70) >= 171/20 and s(72) >= 861/100. |
-| [T-045](packing/frontier/RESULTS.md) | 27, 28, 31, 32 | `V3` | `C3` | `S3` | `previously-published` | s(27) >= 28/5, s(28) >= 28/5, s(31) >= 148/25 and s(32) >= 119/20, by three rectangle-density certificates in wand125/square-packing-bounds, added on 26 and 27 September 2026: rect_n27_L56, rect_n31_L592 and rect_n32_L595. |
+| [T-045](packing/frontier/RESULTS.md) | 18, 19, 20, 26, 27, 28, 30, 31, 32, 40, 61, 75, 76, 77, 78 | `V3` | `C3` | `S3` | `previously-published` | Twelve rectangle-density certificates in wand125/square-packing-bounds, added on 26 and 27 September 2026, prove s(18) >= 939/200, s(19) >= 963/200, s(20) >= 979/200, s(26) >= 553/100, s(27) >= 28/5, s(30) >= 1173/200, s(31) >= 148/25, s(32) >= 119/20, s(40) >= 1339/200, s(61) >= 199/25, s(75) >= 889/100 and s(78) >= 1791/200. |
 | [T-049](packing/frontier/RESULTS.md) | 12 | `V3` | `C3` | `S3` | `previously-published` | s(12) >= 15680/3951 = 3.9686155 …, by Evan Daniel’s weighted point certificate, published on 25 August 2026 and first seen here on 27 September. |
 | [T-050](packing/frontier/RESULTS.md) | 21 | `V3` | `C3` | `S3` | `previously-published` | s(21) >= 5000/1001 = 4.995004995 …, by Evan Daniel’s weighted point certificate of 23 September 2026. |
 | [T-056](packing/frontier/RESULTS.md) | 68, 102, 103, 105, 106, 110, 123, 130, 131, 132, 152, 154, 155, 156, 172, 177, 180, 181, 182, 199, 206, 207, 208, 209, 210, 228, 236, 237, 238, 239, 240, 241, 259, 263, 268, 269, 270, 271, 272, 273, 292, 297, 301, 302, 303, 304, 305, 306, 307 | `V3` | `C3` | `S3` | `previously-published` | For each of 49 counts n from 68 to 307, s(n) is at most the verified upper bound its case record carries, from Francisco Couzo’s packings as published on 27 September 2026. |
 | [T-057](packing/frontier/RESULTS.md) | 211 | `V3` | `C3` | `S3` | `previously-published` | s(211) <= 14.99796070496771500150 < 15, by Joost de Winter’s packing of 16 September 2026: 211 unit squares in a square of that side. |
+| [T-062](packing/frontier/RESULTS.md) | 60 | `V3` | `C3` | `S3` | `previously-published` | s(60) = 8: the lower half by Evan Daniel’s mixed cover of 28 September 2026, the upper half by the 8 x 8 grid. |
 | [T-065](packing/frontier/RESULTS.md) | 17 | `V3` | `C3` | `S3` | `previously-published` | s(17) <= 4.6755300936045509516342148538535054: seventeen unit squares fit in a square of at most that side. |
+| [T-066](packing/frontier/RESULTS.md) | 59 | `V3` | `C3` | `S3` | `previously-published` | s(59) = 8: the lower half by wand125’s mixed cover of 1 October 2026, the upper half by the 8 x 8 grid. |
+| [T-067](packing/frontier/RESULTS.md) | 77, 78 | `V3` | `C3` | `S3` | `previously-published` | s(77) = 9: the lower half by wand125’s mixed cover of 1 October 2026, the upper half by the 9 x 9 grid. |
+| [T-070](packing/frontier/RESULTS.md) | 29, 38, 39, 41, 42, 43, 44, 52, 53, 54, 55, 59, 60, 67, 68, 69, 70, 71, 72, 73, 74, 86, 95 | `V3` | `C3` | `S3` | `previously-published` | Twelve rectangle-density certificates in wand125/square-packing-bounds, added or raised on 27 and 28 September 2026, prove s(29) >= 579/100, s(38) >= 327/50, s(39) >= 663/100, s(41) >= 1351/200, s(52) >= 1507/200, s(53) >= 1519/200, s(59) >= 198/25, s(67) >= 1691/200, s(69) >= 343/40, s(71) >= 1737/200, s(86) >= 1871/200 and s(95) >= 49209/5000. |
+| [T-072](packing/frontier/RESULTS.md) | 76 | `V3` | `C3` | `S3` | `previously-published` | s(76) >= 447/50 = 8.94, by a rectangle density of wand125/square-packing-bounds checked at coverage one, published on 2 October 2026. |
 | [T-036](packing/frontier/RESULTS.md) | 11 | `V3` | `C2` | `S3` | `apparently-novel` | Every packing of eleven unit squares in a square container, six at orientation 0 and five sharing one orientation modulo pi/2 with half-tangent in [91442076901/250000000000, 73154061521/200000000000] (an interval containing [t* - 10^-6, t* + 10^-6] for Trump’s exact half-tangent t*), has container side at least U = 3.877083590022814 …, the exact side of Trump’s packing, and a packing in the family has side exactly U only if it is a quarter-turn image of Trump’s pose with the squares relabelled within the two classes. |
 | [T-007](packing/frontier/RESULTS.md) | 4-100 | `V3` | `C1` | `S3` | `previously-published` | For every integer 4 <= N <= 100, Nagamochi 2005, Theorem 2 gives s(N) >= min(ceil(sqrt(N)), sqrt(N - 2*floor(sqrt(N)) + 1) + 1). |
-| [T-062](packing/frontier/RESULTS.md) | 60 | `V0` | `C1` | `S3` | `previously-published` | Evan Daniel reports s(60) = 8, published on 28 September 2026: the lower half by a mixed cover of the side-8 square, the upper half by the 8 x 8 grid. |
+| [T-068](packing/frontier/RESULTS.md) | 19, 20, 26, 27, 28, 29, 30, 31, 38, 39, 40, 41, 42, 43, 44, 53, 54, 55, 56, 66, 68, 69, 70, 74, 75, 76, 86, 87, 88, 89, 90, 93, 94, 95 | `V0` | `C1` | `S3` | `previously-published` | wand125/square-packing-bounds reports a higher standing rectangle-density certificate at each of 34 counts from n = 19 to n = 95, published between 29 September and 1 October 2026. |
+| [T-069](packing/frontier/RESULTS.md) | 37, 65, 66, 90, 92 | `V0` | `C1` | `S3` | `previously-published` | wand125/square-packing-bounds reports five lower bounds from rectangle densities checked at coverage one, published between 29 September and 1 October 2026: s(37) >= 161/25 = 6.44, s(65) >= 167/20 = 8.35, s(66) >= 421/50 = 8.42, s(90) >= 48/5 = 9.6 and s(92) >= 969/100 = 9.69. |
+| [T-071](packing/frontier/RESULTS.md) | 84, 85 | `V0` | `C1` | `S3` | `previously-published` | wand125/square-packing-bounds reports two lower bounds from rectangle densities checked at coverage one, published on 2 October 2026: s(84) >= 47/5 = 9.4 and s(85) >= 471/50 = 9.42. |
+| [T-073](packing/frontier/RESULTS.md) | 83, 101, 102, 103, 104, 105 | `V0` | `C1` | `S3` | `previously-published` | wand125/square-packing-bounds reports two lower bounds from measures of points, segments and rectangles, published on 2 October 2026: s(101) >= 257/25 = 10.28 and s(83) >= 187/20 = 9.35. |
 | [T-046](packing/frontier/RESULTS.md) | 18, 19, 20, 26, 27, 28, 29, 30, 31, 37, 38, 39, 40, 41, 42, 43, 44, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 86, 88, 89, 90, 91, 94, 95 | `V0` | `C0` | `S3` | `previously-published` | wand125/square-packing-bounds reports one standing rectangle-density certificate for each of 48 counts from n = 18 to n = 95, added or raised between 26 and 28 September 2026. |
 | [T-048](packing/frontier/RESULTS.md) | 50 | `V0` | `C0` | `S3` | `previously-published` | On 28 September 2026 wand125/square-packing-bounds reported s(50) >= 37/5 = 7.4. |
 | [T-003](packing/frontier/RESULTS.md) | 17, 18 | `V3` | `C3` | `S2` | `apparently-novel` | The sixteen-point set’s unavoidability ceiling lies in [4426213/1000000, 4427/1000): certification at the left endpoint, an exact escaping pose at the right, with the top strips’ a + 2b <= 2*sqrt(2) hypothesis identifying the closing mechanism at 753/250 + sqrt(2), inside the bracket. |
@@ -225,7 +233,7 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-058](packing/frontier/RESULTS.md) | 1-100 | `V0` | `C1` | `S2` | `previously-published` | wand125/square-packing-tools claims that rectangle-density certificates using core side B=9977/10000 cannot meet mass<n when L>=B*UB(n), for the n=1..100 witness table. |
 | [T-059](packing/frontier/RESULTS.md) | 11 | `V0` | `C1` | `S2` | `previously-published` | wand125/square-packing-tools reports that its exact general_pose_tree checker reproduces all 12028 per-row core minima of Kleddamag’s n11 certificate, release v1.0.2, with global row minimum 999962528 units and all witnesses replayed. |
 | [T-055](packing/frontier/RESULTS.md) | 21 | `V0` | `C0` | `S2` | `previously-published` | wand125/square-packing-bounds reports s(21) = 5 by a point-only route, completed on 28 September 2026 with a Lean 4 reduction; the upper half is the 5 x 5 grid. |
-| [T-063](packing/frontier/RESULTS.md) | 61 | `V0` | `C1` | `S1` | `previously-published` | Evan Daniel reports s(61) = 8 as a corollary of the reported s(60) = 8 (T-062), published with it on 28 September 2026. |
+| [T-063](packing/frontier/RESULTS.md) | 61 | `V3` | `C3` | `S1` | `previously-published` | s(61) = 8, as a corollary of s(60) = 8 (T-062), which Evan Daniel published with it on 28 September 2026. |
 
 | Significance | What [`epistemics.md`](epistemics.md#significance-and-novelty) anchors it to |
 | --- | --- |
@@ -260,7 +268,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 195 | 39 confirmed; 32 refuted; 61 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 170 | 53 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
-| Frontier results | 65 | 65 registered, 37 by others |
+| Frontier results | 73 | 73 registered, 45 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
 
@@ -586,6 +594,7 @@ case or experiment separately.
 | [Plan: Revising the Verification and Confirmation Ladders](docs/project/specs/active/plan-2026-09-30-epistemics-ladder-review.md) | implementation plan | current | transient | — |
 | [Plan: A Kind for Every Registered Result](docs/project/specs/active/plan-2026-10-01-result-kinds.md) | implementation plan | current | transient | — |
 | [Plan: A Workflow Status for Every Result, and No Separate Block for Reported Ones](docs/project/specs/active/plan-2026-10-01-result-status.md) | implementation plan | current | transient | — |
+| [Plan: The First Application of the Result Import Process](docs/project/specs/active/plan-2026-10-01-result-import-first-application.md) | implementation plan | current | transient | — |
 | [Feature: A Top-Level Overview Page for the Published Site](docs/project/specs/active/plan-2026-09-29-github-pages-overview.md) | implementation plan | current | transient | — |
 | [BC329 Calibration Reader: Source-Distinct Review](docs/project/reviews/review-2026-09-13-n11-bc329-source-distinct-reader.md) | dated review record | record | retained | — |
 | [BC329 Reader Repair: Exact-Commit Rereview](docs/project/reviews/review-2026-09-13-n11-bc329-reader-rereview.md) | dated review record | record | retained | — |
@@ -860,6 +869,7 @@ case or experiment separately.
 | [Packing Development Guide](development.md) | engineering and validation rules | definitive | maintained | — |
 | [The `s(n)` Research Campaign: W6 Runbook](packing/campaign/README.md) | W6 experiment mechanics | definitive | maintained | — |
 | [The W8 Documentation Pass: Runbook](packing/campaign/documentation-pass.md) | W8 documentation reconciliation | definitive | maintained | — |
+| [The Result Import Process: Runbook](packing/campaign/result-import.md) | importing, validating and rating a result by others | definitive | maintained | — |
 | [W9 Remediation Pass](packing/campaign/remediation-pass.md) | systematic defect and issue-backlog remediation | definitive | maintained | — |
 | [W10 Review, Planning, and Oversight](packing/campaign/review-planning-oversight.md) | post-agenda disposition, document review, and replanning | definitive | maintained | — |
 | [Agent Sessions](packing/campaign/agent-sessions/README.md) | escalated session and recovery contract | definitive | maintained | — |
@@ -1031,6 +1041,13 @@ case or experiment separately.
 | [Post-optimality W3: First Discriminators](docs/project/reviews/review-2026-10-01-post-optimality-w3-opening.md) | dated review record | record | retained | — |
 | [Evan Daniel’s October Proof Pages: Source Coverage and Intake](docs/project/reviews/review-2026-10-01-evand-source-coverage.md) | dated review record | record | retained | — |
 | [Evand: Mathematical Review and Transfer to Low-n Research](docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md) | dated review record | record | retained | — |
+| [The Result Import Process: Process Review](docs/project/reviews/review-2026-10-01-result-import-process.md) | dated review record | record | retained | — |
+| [Proof Review: The Geometric Premises of Evan Daniel’s `s(60) = 8` and `s(61) = 8`](docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md) | dated review record | record | retained | — |
+| [Proof Review: Evan Daniel’s `s(32)` Cover Certified Without the D4 Fold, and What the Checkers Share](docs/project/reviews/review-2026-10-02-evand-s32-no-fold-run.md) | dated review record | record | retained | — |
+| [Proof Review: wand125’s `s(59) = 8` and `s(77) = 9` by Mixed Covers](docs/project/reviews/review-2026-10-02-wand125-s59-s77-mixed-covers.md) | dated review record | record | retained | — |
+| [wand125 Rectangle Certificates of 1 October: Review of T-068](docs/project/reviews/review-2026-10-02-wand125-rectangle-bounds-t068.md) | dated review record | record | retained | — |
+| [wand125 Mixed Rectangle-Measure Certificates: Review of T-069 and of n = 84, 85](docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md) | dated review record | record | retained | — |
+| [wand125 Linear Certificates: Review of `s(101) ≥ 257/25`, `s(83) ≥ 187/20` and the Point-and-Segment Checker, with an Addendum on n = 76](docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md) | dated review record | record | retained | — |
 | [Density Solvers Compared: Tokoharu’s and wand125’s Rectangle-Density Tools Against This Repository’s Certificate Stack](docs/project/reviews/review-2026-09-28-density-solver-comparison.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R067 and R068, `s(17) > 233009/50000` and `s(17) > 116511/25000`](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) | dated review record | record | retained | — |
 | [Proof Review: wand125’s Point-Only Certificates for `s(45) = 7` and `s(21) = 5`](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) | dated review record | record | retained | — |
@@ -1162,18 +1179,24 @@ routine task.
 
 | ID | Workflow | Enter with | Work boundary | Durable exit | Default handoff |
 | --- | --- | --- | --- | --- | --- |
-| W1 | `research-survey` | A bounded question, source corpus, and identified coverage gap | Survey and source the state of knowledge; do not run a new experiment or turn untested connections into campaign verdicts | A pinned source packet, stable claim IDs, proof obligations, source notes, explicit conflicts, and unresolved gaps | W2 audits the claims; W3 may mine supported gaps |
-| W2 | `factual-review` | A fixed artifact set, its sources, and the claims to audit | Correctness only; read-only by default, but an authorized review may apply an obvious bounded correction whose evidence and scope are unchanged; do not invent successor theory or redesign the process inside the review | Claim-by-claim dispositions, focused confirmation receipts, unresolved coverage, measured cost, authorized corrections, or defects with exact evidence | W5 for measured confirmation bottlenecks; required before promoted, novel, disputed, or high-risk claims; otherwise W3 for new hypotheses or W4 for a process failure |
+| W1 | `research-survey` | A bounded question, source corpus, and identified coverage gap; or a result reported by others | Survey and source the state of knowledge, and record a reported result as reported; do not run a new experiment or turn untested connections into campaign verdicts | A pinned source packet, stable claim IDs, proof obligations, source notes, explicit conflicts, and unresolved gaps; for a reported result, its register entry at the rungs its evidence derives | W2 audits the claims; W3 may mine supported gaps |
+| W2 | `factual-review` | A fixed artifact set, its sources, and the claims to audit | Correctness only; it never changes what the source claims, and writes only the confirmation it produces (replay evidence, the review, the rungs and score they support, and the register entry’s account of them) and an authorized, obvious bounded correction whose evidence and scope are unchanged; do not invent successor theory or redesign the process inside the review | Claim-by-claim dispositions, focused confirmation receipts, unresolved coverage, measured cost, authorized corrections, or defects with exact evidence; for an imported result, its derived rungs and the verified lane | W5 for measured confirmation bottlenecks; required before promoted, novel, disputed, or high-risk claims; otherwise W3 for new hypotheses or W4 for a process failure |
 | W3 | `insight-iteration` | Current synopsis, idea board, ledger, negative results, and a sharp frontier | Generate explanations and hypotheses freely; do not certify them or spend an undeclared experiment budget | `X-NNN` reports and candidate `H-NNN` items with mechanism, falsifier, expected information, and limits | Codification, then W6 |
 | W4 | `process-review` | Artifacts, beads, logs, checks, and a reconstructability or discipline question | Inspect ownership, handoffs, refusals, and controls; do not substitute process polish for a scientific result | Review findings, beads, and narrowly scoped contract or checker changes | W5 for a measured bottleneck or the next workflow that owns the result |
 | W5 | `efficiency-loop` | A measured baseline, profile, target metric, and equivalence or validity guard | Improve time, cost, or throughput under the same regime; never relax correctness or provenance to win | Benchmark record, change or rejection, measured delta, and preserved guards | Return to the originating workflow (W2, W6 or W7) with the measured improvement or rejection; W4 if the process contract is wrong |
 | W6 | `research-loop` | A registered hypothesis, fixed criterion, regime, budget, stop rule, and instrument contract | Build or repair the bounded instrument, freeze it before measurement, then use creative effort inside the registered scope to execute the smallest fair test; never change the criterion, suppress a failure, or improvise a replacement hypothesis mid-round | Frozen instrument, `exp-NNN`, raw data or proof record, verdict, regenerated views, and the next bounded question | W2 before promoted or high-risk claims; otherwise W3 or another W6 slice |
 | W7 | `pipeline-improvement` | Named packing-research consumers, the smallest reusable capability or cleanup they need, controls or an independent oracle, a budget, and expected comparability impact | Add, strengthen, simplify, or repair only the bounded packing pipeline surface; do not collect a target verdict while it is mutable, optimize an unchanged implementation without a W5 baseline, or generalize beyond named consumers | Code, entry point or refactor; replayable positive and negative controls; exact validation command; cost and complexity receipt; evidence limits; and a readiness or retained-blocker decision | W2 before a new or materially changed trust boundary reaches W6; W5 if measured throughput remains the blocker; otherwise W6 |
-| W8 | `documentation-pass` | A period of research that closed several commitments, the artifacts it left, and the reader-facing documents that have not caught up | Reconcile the root tier — README, tutorial, synopsis, and the conventions they cite — against the artifacts and against each other; correct, cut, reorder and clarify, but never introduce a claim the record does not already carry, and never soften a claim boundary to make a document read better | A checklist run over each root document, every drift either fixed or filed as a defect, generated views regenerated, and an explicit statement of what was checked and what was left | W2 for any claim the pass could not verify against an artifact; otherwise the next owning workflow |
+| W8 | `documentation-pass` | A period of research that closed several commitments, the artifacts it left, and the reader-facing documents that have not caught up; or a confirmed result that warrants a review paper | Reconcile the root tier — README, tutorial, synopsis, and the conventions they cite — against the artifacts and against each other, or explain a registered result in a paper; correct, cut, reorder and clarify, but never introduce a claim the record does not already carry, and never soften a claim boundary to make a document read better | A checklist run over each root document, every drift either fixed or filed as a defect, generated views regenerated, and an explicit statement of what was checked and what was left; or a review paper with its exposition review | W2 for any claim the pass could not verify against an artifact; otherwise the next owning workflow |
 | W9 | `remediation` | A confirmed defect or issue inventory, risk ordering, owning beads, and a bounded repair wave | Triage and repair defects systematically without changing scientific criteria or hiding unresolved evidence; group only compatible work and preserve each item’s independent disposition | Fixed items with regressions, contained items with evidence, rerouted evidence work, explicit blockers, regenerated defect views, and validation receipts | W10 reviews the wave and selects what follows |
 | W10 | `review-planning-oversight` | A launch or checkpoint scope, source ideas and H-items, stable evidence, agenda and beads; all writers terminal for full closeout | Assess mathematical directions, codify questions, and select bounded parallel work; at terminal closeout also reconcile every outcome and document impact. Do not execute the selected successors here. | H-linked agenda commitments, priorities, prerequisites, owners and one coordinating next entry; a linked tbd plan may retain rationale. Terminal work additionally records outcomes, dispositions and documentation decisions. | The selected coordinating entry dispatches the owning workflows, including independent BCs in parallel |
 
-### W1/W2 Intake and Efficient Confirmation
+### Result Import and Efficient Confirmation
+
+A result published by others, arriving as an issue or a link, enters the record through
+the [result import process](packing/campaign/result-import.md), a standard sequence of
+phases and not a workflow of its own.
+That runbook owns the stages and their exits; this section says what W1 and W2 each
+contribute.
 
 W1 turns an incoming result into a reviewable source packet: maintained repository and
 license, immutable source identity, precise claim and assumptions, certificate format,
@@ -1186,7 +1209,7 @@ verification (`V`), confirmation (`C`), significance (`S`) and novelty assignmen
 [Epistemics](epistemics.md).
 Record the significance rationale, assessment date and scorer, and explain the evidence
 and limitations supporting the verification and confirmation levels.
-These assignments are required at intake, including when the result remains `V0/C0`;
+These assignments are required at import, including when the result remains `V0/C0`;
 useful tooling or a promising claim does not earn a higher verification level.
 Keep each assignment attached to its precise claim, not to an entire repository or
 provider. Its W2 handoff names the proof obligations, existing evidence, missing checks,
@@ -1265,6 +1288,10 @@ becomes the tidy one.
 Schedule it after a run that closed several commitments rather than continuously; the
 documents are meant to trail the record slightly, and a pass with nothing to reconcile
 is a pass that should not have been opened.
+Registering a result does not open one: the change that moves the record runs
+[New Result Publication](packing/campaign/documentation-pass.md#new-result-publication)
+itself. W8 also owns a review paper that explains a confirmed result; the paper states
+nothing the register does not hold, and its exposition gets a W2 review.
 
 W9 owns bounded repair waves over confirmed defects and issues.
 It does not turn a large backlog into one undifferentiated implementation phase: risk is
@@ -1317,6 +1344,8 @@ W4 process-review ──> W7 pipeline-improvement ──> W2 ──> W6 research
 launch/checkpoint ────> W10 review/planning/oversight ──> coordinated parallel work
 W1–W9 terminal work ──> W10 terminal closeout ──────────> selected coordinator
 confirmed defect wave ──> W9 remediation ────────────────┘
+
+result by others ──> W1 import ──> W2 validate ──> publish ──> answer the author
 ```
 
 At any checkpoint, the human operator may choose the next phase, narrow the question, or
@@ -4065,8 +4094,8 @@ Where the program has spent effort, and what came of it.
 | **12** | open; $4$ believed optimal | $4$ | **open-case calibration** | Two rounds. Returns exactly $4.0$ on all five seeds, which is baseline evidence rather than a known-answer guard. Also where the search and proof lanes are planned to meet |
 | 16 | proved, $4$ | $4$ | proved not-below control | The valid replacement for the old $n=12$ guard: any reported side below $4$ is known to be invalid |
 | 17 | open | $4.67553009\ldots$ (Bidwell 1998) | mechanism-matched calibration | The nearest case whose record uses genuinely oblique structure—tilts of $0^{\circ}$, $+39.80496^{\circ}$, and $-36.62379^{\circ}$. One round: [exp-011](packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-011-h-020-n17.md) reports $5.0$, the trivial $5\times5$ grid, on all five binary64 screening seeds |
-| 61, 78, 97 | open, $m^2 - 3$ | $8$, $9$, $10$ (grids) | opportunistic slot | The narrowest gaps in the table. An analytic Cleemann-style attempt at $\arctan(3/4)$ is registered and **not yet made** |
-| 1–324 | 63 proved, 261 open | — | the corpus | One schema-validated artifact per case in [`frontier/`](packing/frontier/README.md); see the [Frontier corpus summary](packing/frontier/README.md#what-the-corpus-shows) for the current aggregate lower-bound counts |
+| 97 | open, $m^2 - 3$ | $10$ (grid) | opportunistic slot | One of the narrowest gaps in the table; $n = 61$ and $n = 78$, the other two of the slot, were proved on 2026-10-02 by replayed mixed covers. An analytic Cleemann-style attempt at $\arctan(3/4)$ is registered and **not yet made** |
+| 1–324 | 68 proved, 256 open | — | the corpus | One schema-validated artifact per case in [`frontier/`](packing/frontier/README.md); see the [Frontier corpus summary](packing/frontier/README.md#what-the-corpus-shows) for the current aggregate lower-bound counts |
 
 Three facts about this table drive the strategy.
 

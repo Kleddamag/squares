@@ -634,9 +634,15 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
     ),
     # A parallel packing certified here: the finder's line, confirmed by the register
     # entry whose replay it is (T-056), where the UnitSquare release stood until then.
+    # Below it, wand125's rectangle bound replayed as T-070, which took the case from the
+    # point bound of T-044 on 2026-10-02.
     68: (
         ("Couzo 2026, GitHub (confirmed T-056)", "external", "verified"),
-        ("wand125 after Levy et al. 2026, GitHub (confirmed T-044)", "external", "verified"),
+        (
+            "wand125 after Tokoharu, Levy et al. 2026, GitHub (confirmed T-070)",
+            "external",
+            "verified",
+        ),
     ),
     # The catalogue credits nobody, so the line cites the catalogue by its compilers.
     101: (
@@ -673,8 +679,10 @@ def test_the_recorded_register_gives_these_lines(n: int) -> None:
     [
         (11, "Queuingtheorydotcom after Levy et al.", "Web", "T-060"),
         (17, "Guzhou0806 after Kleddamag et al.", "GitHub", "T-043"),
-        (26, "Tokoharu after Levy, wand125 et al.", "GitHub", "T-047"),
-        (29, "Tokoharu after Levy, wand125 et al.", "GitHub", "T-047"),
+        # Tokoharu's T-047 held n = 26 and 29 until 2026-10-02, when wand125's merged
+        # rectangle replays raised both: n = 26 under T-045 and n = 29 under T-070.
+        (26, "wand125 after Tokoharu, Levy et al.", "GitHub", "T-045"),
+        (29, "wand125 after Tokoharu, Levy et al.", "GitHub", "T-070"),
     ],
 )
 def test_promoted_external_bounds_keep_the_sources_credit(
@@ -734,8 +742,10 @@ RECORDED_LINKS: dict[tuple[int, str], tuple[list[str], list[str]]] = {
     # The register records Nagamochi's theorem below 100 without replaying it.
     (7, "lower"): (["T-007"], []),
     (101, "lower"): ([], []),
-    # This project's own bound: established, not confirmed.
-    (18, "lower"): (["T-030"], []),
+    # This project's own bound, established rather than confirmed, was T-030's until
+    # 2026-10-02 (`test_a_novel_first_party_bound_cites_this_project_and_its_result` keeps
+    # that shape); since then it is wand125's rectangle bound, which T-045 replays.
+    (18, "lower"): (["T-045"], ["T-045"]),
 }
 
 
@@ -874,7 +884,11 @@ def test_the_project_lower_bounds_are_exactly_those_first_proved_here() -> None:
         if entry["lower"] is not None and entry["lower"]["basis"] == "project"
     }
     assert project == proved
-    assert proved
+    # The guard against a vacuous pass was `assert proved` until 2026-10-02, when the
+    # merged rectangle replays raised n = 18, 19 and 20 above T-030, T-020 and T-021, the
+    # last lower bounds first proved here. The synthetic test above holds a project line's
+    # shape; when a project lower bound stands again, this pin fails and the guard returns.
+    assert proved == set()
 
 
 def test_the_star_marks_recent_results_whoever_proved_them() -> None:
@@ -882,7 +896,9 @@ def test_the_star_marks_recent_results_whoever_proved_them() -> None:
 
     Kleddamag's 3.875, developed from T-026, preceded the exact T-060 proof. Credit
     is the line's business: joint work names this project after the author, other work
-    names only its own lineage, and this project's sole work names the project.
+    names only its own lineage, and this project's sole work names the project. n = 18
+    was this project's (T-030) until 2026-10-02 and is wand125's rectangle bound since,
+    starred all the same.
     """
     lines = {entry["n"]: entry["lower"] for entry in _record()["entries"]}
     assert lines[11]["recent"]
@@ -890,7 +906,7 @@ def test_the_star_marks_recent_results_whoever_proved_them() -> None:
     assert lines[12]["recent"]
     assert lines[12]["text"].startswith("Daniel after Burns")
     assert lines[18]["recent"]
-    assert lines[18]["text"].startswith(citations.PROJECT_NAME)
+    assert lines[18]["text"] == "wand125 after Tokoharu, Levy et al. 2026, GitHub"
     assert all(line["recent"] for line in lines.values() if line and line["basis"] == "project")
     assert not lines[4]["recent"]  # Nagamochi 2005
 

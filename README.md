@@ -392,16 +392,20 @@ transition contracts.
 
 | ID | Workflow | Enter when | Durable result | Usual handoff |
 | --- | --- | --- | --- | --- |
-| W1 | `research-survey` | The sourced state of knowledge is incomplete | A pinned source packet, claim IDs, proof obligations, source notes, conflicts, and explicit gaps | W2 |
-| W2 | `factual-review` | Existing claims need efficient confirmation and a correctness audit | Focused proof receipts, explicit unresolved obligations, measured cost, and findings; no new theory smuggled into the review | W5 for bottlenecks; W3 or W4 otherwise |
+| W1 | `research-survey` | The sourced state of knowledge is incomplete, or someone else has reported a result | A pinned source packet, claim IDs, proof obligations, source notes, conflicts, and explicit gaps; a reported result registered as reported | W2 |
+| W2 | `factual-review` | Existing claims need efficient confirmation and a correctness audit | Focused proof receipts, explicit unresolved obligations, measured cost, and findings; for an imported result, its derived rungs; no new theory smuggled into the review | W5 for bottlenecks; W3 or W4 otherwise |
 | W3 | `insight-iteration` | Current evidence needs new explanations or hypotheses | Candidate `X-NNN`/`H-NNN` items with mechanisms, falsifiers, and information value | W6 |
 | W4 | `process-review` | Work is hard to reconstruct or the discipline itself needs review | Process findings, beads, and narrowly scoped contract or check changes | W5 or the next owning workflow |
 | W5 | `efficiency-loop` | A measured bottleneck limits useful iterations | A baseline, profile, equivalence-safe change, and measured decision | Return to the originating workflow (W2, W6 or W7) |
 | W6 | `research-loop` | A registered hypothesis has a fixed criterion, regime, budget, and instrument contract | A frozen instrument and one or more `exp-NNN` records, raw evidence, verdicts, and a current ledger | W2 for promoted or high-risk claims; otherwise W3 or another W6 slice |
 | W7 | `pipeline-improvement` | A named packing-pipeline surface or research consumer needs a new, stronger, simpler, or repaired capability | A bounded implementation or refactor, executable controls, explicit evidence limits, cost receipt, and readiness decision; no scientific verdict | W2 before a materially changed trust boundary reaches W6; otherwise W5 or W6 |
-| W8 | `documentation-pass` | A period of research has left the reader-facing documents behind what the record now says | Reconciled root documents—README, tutorial, synopsis—checked against the artifacts and against each other, with every drift either fixed or logged as a defect; no new claim introduced | W2 for any claim the pass could not verify; otherwise the next owning workflow |
+| W8 | `documentation-pass` | A period of research has left the reader-facing documents behind what the record now says, or a confirmed result warrants a review paper | Reconciled root documents—README, tutorial, synopsis—checked against the artifacts and against each other, with every drift either fixed or logged as a defect, or a review paper with its exposition review; no new claim introduced | W2 for any claim the pass could not verify; otherwise the next owning workflow |
 | W9 | `remediation` | Confirmed defects or issue backlogs need a systematic repair wave | Risk-ranked dispositions, bounded repairs, regression checks, updated defect records, and rerouted blockers; no scientific verdict | W10 |
 | W10 | `review-planning-oversight` | An agenda or consequential session has ended and its results must change the plan | Result and stop-reason classifications, actionable dispositions, reader-document review, a reprioritized candidate set, and one selected next entry | The selected workflow; W9 or W8 when remediation or documentation work wins |
+
+A result published by others, arriving as an issue or a link, follows the
+[result import process](packing/campaign/result-import.md), a standard sequence of these
+phases.
 
 Use `general-improvement` only for repository maintenance that fits none of W1–W10.
 Routine work records a workflow, bounded objective, intended artifact, and focused
@@ -468,6 +472,7 @@ Changing agents changes the driver, not the record or the evidence required for 
 | [`conventions.md`](conventions.md) | IDs, filenames, artifact shape, evidence fields, provenance, and corrections |
 | [`operating-rules.md`](operating-rules.md) | How sessions choose, divide, validate, and hand off work |
 | [Campaign runbook](packing/campaign/README.md) | Hypothesis and experiment mechanics, clocks, budgets, verdicts, and routing |
+| [Result import process](packing/campaign/result-import.md) | Importing, recording, validating, rating and publishing a result by others, and answering its author |
 | [W8 documentation pass](packing/campaign/documentation-pass.md) | Source-first reader-document reconciliation and the checked synopsis roll-up |
 | [W9 remediation pass](packing/campaign/remediation-pass.md) | Systematic defect and issue-backlog triage, repair waves, and terminal dispositions |
 | [W10 review, planning, and oversight](packing/campaign/review-planning-oversight.md) | Post-agenda result classification, document review, reprioritization, and next-entry selection |
@@ -481,7 +486,7 @@ Changing agents changes the driver, not the record or the evidence required for 
 evidence fields, provenance, corrections, and the boundary between machine checks and
 review.
 [`epistemics.md`](epistemics.md) owns whole-result classifications and the policy
-for results by others: their scope, credit, intake and reply.
+for results by others: their scope, credit, import and reply.
 [`operating-rules.md`](operating-rules.md) owns how sessions are conducted, and
 [`development.md`](development.md) owns the engineering and validation workflow.
 

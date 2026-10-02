@@ -2,7 +2,7 @@
 
 This document defines the four classifications attached to whole results in this
 repository, the kind each result carries, and the policy for results by others: their
-scope, credit and intake.
+scope, credit and import.
 [`conventions.md`](conventions.md) owns field formats and identifiers;
 [`packing/frontier/evidence.yaml`](packing/frontier/evidence.yaml) holds the evidence
 entries; and the results register holds each classified claim in
@@ -275,6 +275,19 @@ The score guides reading order and never changes validation behavior.
 
 The `scored` field dates the current assessment; Git retains earlier values.
 
+Three rules govern scoring:
+
+- **The score is of the claim.** It says what the result establishes if it is correct;
+  `V` and `C` say whether it is.
+  A reported result and a confirmed one take the same score.
+- **The registering lane drafts and the reviewing lane confirms.** A score set when a
+  result is registered is a draft, and `by` says so.
+  The lane that reviews the result’s mathematics compares it with the entries nearest to
+  it, keeps or changes it, and `by` then names that review.
+- **A score follows the claim, not the frontier.** It is revisited when the entry’s
+  claim or scope changes.
+  A later result that supersedes the entry does not lower it.
+
 Novelty uses four labels:
 
 | Label | Meaning |
@@ -439,13 +452,12 @@ to credit it as carefully as this project’s own.
   The coverage gate below checks lower bounds only, so the register entry for an upper
   bound by others is kept by hand.
 
-### Intake, Integration, and Reply
+### Import, Integration, and Reply
 
-The procedure is
-[Adding or Reviewing a Result](packing/frontier/README.md#adding-or-reviewing-a-result)
-in the frontier README. Its three end points are fixed here.
+The procedure is the [result import process](packing/campaign/result-import.md).
+Its three end points are fixed here.
 
-1. **Taken in.** The source is retained at a pinned revision, with a coverage entry.
+1. **Imported.** The source is retained at a pinned revision, with a coverage entry.
    Its bibliography key carries `dated`, `credit` and `lineage`. Its literal claim is in
    the reported lane, and its register entry is at the derived rung with a `next_rung`.
 2. **Integrated.** A complete replay here and a review of the mathematics have
@@ -456,6 +468,7 @@ in the frontier README. Its three end points are fixed here.
    otherwise, has been told what was registered, at which rung, what was replayed, and
    what remains. The answer goes on their issue, which stays open while work they asked
    for is still queued; the owner posts it, or an agent does at the owner’s request.
+   An answer is kept true: when an id or a rung it states changes, a follow-up says so.
 
 ### Where the Frontier Is Recorded
 

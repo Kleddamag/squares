@@ -11,7 +11,7 @@ softschema:
   schema: defects.schema.yaml
   envelope: null
   status: enforced
-count: 513
+count: 514
 defects:
 - id: D-001
   title: Fixed-side search never left the grid basin
@@ -17170,3 +17170,46 @@ defects:
     the proof are legible on the rendered pages and were not re-read.
   regression: none
   recorded_in: packing/campaign/explorations/X-049-families-shading-and-the-large-n-limit.md
+- id: D-514
+  title: The McClenagan transcription swapped Montgomery's exponent, and the record then faulted McClenagan for it
+  date: '2026-10-02'
+  layer: docs
+  class: soundness
+  direction: flattering
+  detected_by: inspection
+  latent_for: >-
+    Forty-one days: the transcription (aa1847e0e) and the research document's claim and
+    register note built on it (e8f8fd925) both date from 2026-08-22, and nothing read
+    the rendered page until 2026-10-02.
+  severity: medium
+  status: fixed
+  bead: think-hzv3
+  what: >-
+    The raw extraction of McClenagan 2026 lost the three exponents in its introduction's
+    history paragraph and left their fragments displaced. The cleaned transcription put
+    them back in the wrong order, giving Montgomery's bound as O(x^{(3+sqrt(2))/7}) and
+    the bound "brought back" after the 2020 error as O(x^{(3-sqrt(3))/2} sqrt(log x)).
+    It also wrote sqrt(log x) for Chung and Graham's 2009 factor. Rendered PDF page 1
+    prints Montgomery as O(x^{(3-sqrt(3))/2}) and both other bounds as
+    O(x^{(3+sqrt(2))/7} log x). Only the second exponent carried a GARBLED flag, and it
+    was the wrong one. The research document and asymptotic-waste-bounds.yaml then
+    recorded, from that transcription, that McClenagan misattributes (3+sqrt(2))/7 to
+    Montgomery. The research document listed this as a false claim in its corrections
+    table.
+  consequence: >-
+    The record published a correction against a paper that is right. That credits this
+    project with finding an error McClenagan never made, and it would have misled anyone
+    who repeated the correction. The exponents and verdicts the record itself relies on
+    were unaffected: Montgomery's (3-sqrt(3))/2 + eps, from Roth and Vaughan, and
+    Chung-Graham 2009 with log x, from Wang-Dong-Li, were stated correctly throughout.
+  fix: >-
+    Read the paragraph off the rendered page and corrected by addition (conventions
+    section 7). The transcription now prints the page's three bounds, with two dated NOTE
+    annotations beside the original GARBLED flag; its banner and the archive README
+    census rise from 2 to 4, and the .raw.md is unchanged. The research document's
+    sentence and corrections-table row keep the withdrawn claim struck through, with a
+    dated correction saying what stands, and its status paragraph names the
+    withdrawal. The register's Montgomery and Chung-Graham 2009 notes carry dated
+    corrections.
+  regression: none
+  recorded_in: packing/resources/papers/mcclenagan-2026-optimally-packing-large-square.md

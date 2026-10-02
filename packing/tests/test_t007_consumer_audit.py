@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import math
 from fractions import Fraction
 from pathlib import Path
@@ -142,7 +143,7 @@ def classify(**overrides: Any) -> dict[str, Any]:
 def test_classification_follows_its_declared_order() -> None:
     assert classify(cites_t007=False)["reason"] == "operative-bound-independent"
     assert classify(area=8)["reason"] == "area-bound"
-    assert classify(registered=8)["reason"] == "registered-verified-bound"
+    assert classify(registered=8)["reason"] == "registered-verified-bound-covers-it"
     assert classify(registered=8, shape=("k^2-1", 9))["class"] == audit.UNAFFECTED
     assert classify(shape=("k^2-1", 9))["class"] == audit.REPROVED
     assert classify()["class"] == audit.ONLY
@@ -190,7 +191,7 @@ def test_case_rows_carry_each_kind_of_support_separately() -> None:
         ["T-062"],
         ["T-063"],
     ]
-    assert n62["support"]["chelokot_lean_reported"]["status"] == "reported-unchecked"
+    assert n62["support"]["chelokot_lean_reported"]["verified"] is False
     assert by_n[63]["exposure_class"] == audit.REPROVED
     assert by_n[63]["support"]["karakus_k2_minus_1"]["value"] == 8
     assert by_n[16]["exposure_reason"] == "area-bound"
@@ -270,3 +271,22 @@ def test_check_reports_a_stale_record(tmp_path: Path, monkeypatch: pytest.Monkey
     assert audit.main(["--check"]) == 0
     target.write_text(target.read_text(encoding="utf-8") + " ", encoding="utf-8")
     assert audit.main(["--check"]) == 1
+
+
+def test_the_archived_preprint_is_the_one_whose_statements_are_used() -> None:
+    karakus = audit.build_document()["sources"]["karakus"]
+    pdf = REPO / next(path for path in karakus["archived"] if path.endswith(".pdf"))
+    assert hashlib.sha256(pdf.read_bytes()).hexdigest() == karakus["pdf_sha256"]
+    path, line = karakus["explicit_bound_at"].rsplit(":", 1)
+    printed = (REPO / path).read_text(encoding="utf-8").split("\n")[int(line) - 1]
+    assert "\\tag{6.1}" in printed
+
+
+def test_chelokot_is_listed_at_every_k2_minus_2_case_and_never_verified() -> None:
+    by_n = rows()
+    for k in range(2, 19):
+        entry = by_n[k * k - 2]["support"]["chelokot_lean_reported"]
+        assert entry["kind"] == "reported, unreplayed Lean claim"
+        assert entry["verified"] is False
+        assert entry["claims"][0]["value"] == k
+    assert by_n[322]["exposure_class_without_karakus"] == audit.ONLY

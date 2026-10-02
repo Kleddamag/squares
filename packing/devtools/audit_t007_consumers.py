@@ -16,13 +16,14 @@ the same value or a weaker one.
 Independent support is kept in separate fields, never merged:
 
 - Karakuş's Corollary 1.2 (`s(k^2 - 1) = k`) and Corollary 6.2's explicit bound (6.1), as
-  the preprint states them. Nothing here replays them.
+  the archived preprint states them, each cited by its line there. Nothing here replays them.
 - The register's own lower bounds at every `m <= n` whose evidence does not cite
   `E-nagamochi-lower`, carried to `n` by monotonicity (`s` is nondecreasing: delete squares).
   The verified and reported lanes stay apart; only the verified lane can clear a case.
 - The area bound `sqrt(n)`, and Nagamochi's excess over it.
-- chelokot's reported Lean re-proof of `s(n^2 - 2) = n`, located in the archived Evand
-  sources that report it. The Lean archive itself is neither archived nor checked here.
+- chelokot's reported Lean re-proof of `s(n^2 - 2) = n`, located in his archived note and
+  the archived Evand sources that report it. Its Lean source is not run here, so it is a
+  reported, unreplayed claim: listed for every `k^2 - 2` case, never deciding a class.
 - Published proofs a case's own lower-bound prose cites without an evidence record (El
   Moumni 1999, Friedman's DS7 theorems), with any defect the same section names.
 - Where an independent proof imports one of Nagamochi's auxiliary lemmas (Bentz 2010 and
@@ -101,17 +102,16 @@ CLASSES = (UNAFFECTED, REPROVED, WEAKENED, ONLY)
 #: Result kinds that carry a lower bound on `s(n)`, for the per-case list of other results.
 LOWER_KINDS = frozenset({"lower-bound", "optimality", "simplification", "audit", "correction"})
 
+KARAKUS_ARCHIVE = "packing/resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma"
+KARAKUS_TEXT = f"{KARAKUS_ARCHIVE}.md"
 KARAKUS = {
     "citation": (
         "H. Karakuş, A counterexample to Nagamochi's scoring lemma and a new rectangle "
         "packing bound, arXiv:2609.37410v1 [math.CO], 29 September 2026"
     ),
     "url": "https://arxiv.org/abs/2609.37410",
-    "pdf": "https://arxiv.org/pdf/2609.37410",
-    "retrieved": "2026-10-02",
-    "pdf_bytes": 356551,
+    "archived": [f"{KARAKUS_ARCHIVE}.{suffix}" for suffix in ("pdf", "md", "raw.md")],
     "pdf_sha256": "39ae2ae44f063e6555240c4a246b47f687578c57196b70a9f5d66953d5cf6513",
-    "archived_here": False,
     "status": (
         "Unrefereed preprint. Its mathematics is audited separately; nothing in this "
         "inventory replays it, and its two statements are used exactly as printed."
@@ -147,6 +147,19 @@ KARAKUS = {
         "lower bound of Nagamochi's Theorem 2 (Section 7, printed pp. 12-13)."
     ),
 }
+#: Where each statement above sits in the archived transcription. The needles are the
+#: printed text, so the inventory fails rather than cite a formula the archive no longer
+#: carries -- (6.1)'s needle is the formula `karakus_bound` evaluates.
+KARAKUS_AT = {
+    "defect_at": "edge-incidence condition missing from the application of [1, Lemma 6]",
+    "k2_minus_1_at": "**Corollary 1.2.** *For every integer $k \\geq 2$, $s(k^2-1) = k$.*",
+    "explicit_bound_at": (
+        "s(N) \\geq \\frac{1}{2}+\\sqrt{N-\\lfloor\\sqrt{N}\\rfloor+\\frac{1}{4}} > \\sqrt{N}. "
+        "\\tag{6.1}"
+    ),
+    "explicit_bound_endpoint_at": "the lower bound in (6.1) is exactly $n$",
+    "not_established_at": "The present argument does not establish or disprove",
+}
 
 LITERATURE = (
     "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/"
@@ -155,9 +168,35 @@ LITERATURE = (
 SOURCES_PAGE = (
     "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html"
 )
-#: Where the archived Evand sources report chelokot's Lean work. Each needle must occur in
-#: its file, and the line it is found on is what the inventory cites.
+CHELOKOT_ARCHIVE = "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02"
+CHELOKOT_NOTE = f"{CHELOKOT_ARCHIVE}/upstream/docs/nagamochi-score-counterexample.md"
+CHELOKOT_README = f"{CHELOKOT_ARCHIVE}/README.md"
+CHELOKOT = {
+    "repository": "https://github.com/chelokot/square-packing-archive",
+    "archived": CHELOKOT_ARCHIVE,
+    "kind": "reported, unreplayed Lean claim",
+    "claim": (
+        "A closed Lean theorem, Records.NearSquare.squareMinusTwo_isMinimumSide, that "
+        "s(n^2 - 2) = n for every integer n >= 2, compensating low-scoring squares with "
+        "other squares of the packing instead of assuming Nagamochi's Lemma 1."
+    ),
+    "claim_document": (
+        "docs/nagamochi-compensation-proof.md at upstream head 753079eb, pinned by digest in "
+        "the archive README and not retained; neither it nor the Lean source was run here"
+    ),
+    "status": "Never verified here; it is listed beside the classes and never decides one.",
+}
+#: Where the archived sources report chelokot's Lean claim. Each needle must occur in its
+#: file, and the line it is found on is what the inventory cites.
 CHELOKOT_REPORTS = (
+    (
+        CHELOKOT_NOTE,
+        "The square-container result now has a [separate Lean proof]",
+    ),
+    (
+        CHELOKOT_README,
+        "closed Lean theorem, `Records.NearSquare.squareMinusTwo_isMinimumSide`",
+    ),
     (
         LITERATURE,
         "s(n²-2) = n re-proved by a replacement argument",
@@ -673,7 +712,7 @@ def chelokot_entry(n: int) -> dict[str, Any] | None:
     if shape is not None and shape[0] in {"k^2-2", "k^2-1"} and shape[1] >= 2:
         claims.append(
             {
-                "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+                "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
                 "applies": "direct" if shape[0] == "k^2-2" else "monotonicity from s(k^2 - 2)",
                 "value": shape[1],
                 "reported_at": [pointer(path, needle) for path, needle in CHELOKOT_REPORTS],
@@ -691,7 +730,7 @@ def chelokot_entry(n: int) -> dict[str, Any] | None:
             )
     if not claims:
         return None
-    return {"status": "reported-unchecked", "claims": claims}
+    return {"kind": CHELOKOT["kind"], "verified": False, "claims": claims}
 
 
 _PAPER_LINK = re.compile(r"\[([^\]]+)\]\(\.\./resources/papers/([^)#]+)\)")
@@ -756,7 +795,11 @@ def classify(
     if compare(area, target) >= 0:
         return {"class": UNAFFECTED, "reason": "area-bound", "weakened_to": None}
     if registered is not None and compare(registered, target) >= 0:
-        return {"class": UNAFFECTED, "reason": "registered-verified-bound", "weakened_to": None}
+        return {
+            "class": UNAFFECTED,
+            "reason": "registered-verified-bound-covers-it",
+            "weakened_to": None,
+        }
     if shape is not None and shape[0] == "k^2-1" and shape[1] >= 2:
         return {"class": REPROVED, "reason": "karakus-corollary-1.2", "weakened_to": None}
     candidates: list[tuple[str, Quantity]] = []
@@ -1184,9 +1227,16 @@ def summary(rows: Sequence[dict[str, Any]]) -> dict[str, Any]:
         "classes_open": tally(open_rows, "exposure_class"),
         "classes_without_karakus": tally(rows, "exposure_class_without_karakus"),
         "classes_open_without_karakus": tally(open_rows, "exposure_class_without_karakus"),
-        "exposure_reasons": dict(
-            sorted(Counter(row["exposure_reason"] for row in rows).items())
-        ),
+        "exposure_reasons": {
+            name: dict(
+                sorted(
+                    Counter(
+                        row["exposure_reason"] for row in rows if row["exposure_class"] == name
+                    ).items()
+                )
+            )
+            for name in CLASSES
+        },
         "exact_value_claims_citing_t007": [row["n"] for row in exact_claims],
         "exact_value_claims_by_class": by_class(exact_claims, "exposure_class"),
         "exact_value_claims_by_class_without_karakus": by_class(
@@ -1265,11 +1315,12 @@ def build_document() -> dict[str, Any]:
                 "confirmation": t007["confirmation"],
                 "archived": list(t007.get("artifacts") or ()),
             },
-            "karakus": KARAKUS,
+            "karakus": {
+                **KARAKUS,
+                **{key: pointer(KARAKUS_TEXT, needle) for key, needle in KARAKUS_AT.items()},
+            },
             "chelokot": {
-                "repository": "https://github.com/chelokot/square-packing-archive",
-                "archived_here": False,
-                "status": "reported-unchecked",
+                **CHELOKOT,
                 "reported_at": [pointer(path, needle) for path, needle in CHELOKOT_REPORTS],
             },
         },

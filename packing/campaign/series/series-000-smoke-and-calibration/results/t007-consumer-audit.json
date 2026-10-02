@@ -8120,37 +8120,34 @@
       },
       {
         "closed_form_lines": [
-          734
+          737
         ],
         "group": "research",
         "k2_minus_2_identity_lines": [
-          711,
-          737,
-          1310,
-          1384,
-          2266,
-          2555
+          714,
+          740,
+          1313,
+          1387,
+          2274,
+          2563
         ],
         "mentions_lines": [
-          1281,
-          1398,
-          1943,
-          2225,
-          2300,
-          2422,
-          2549
+          1284,
+          1401,
+          1951,
+          2233,
+          2308,
+          2430,
+          2557
         ],
         "path": "docs/project/research/research-2026-08-22-packing-11-unit-squares.md",
         "qualified_lines": [],
         "relies_lines": [
-          720,
-          940,
-          945,
-          946,
+          723,
+          943,
+          948,
           949,
-          954,
-          955,
-          956,
+          952,
           957,
           958,
           959,
@@ -8161,9 +8158,9 @@
           964,
           965,
           966,
-          971,
-          972,
-          973,
+          967,
+          968,
+          969,
           974,
           975,
           976,
@@ -8176,9 +8173,9 @@
           983,
           984,
           985,
-          990,
-          991,
-          992,
+          986,
+          987,
+          988,
           993,
           994,
           995,
@@ -8193,9 +8190,9 @@
           1004,
           1005,
           1006,
-          1011,
-          1012,
-          1013,
+          1007,
+          1008,
+          1009,
           1014,
           1015,
           1016,
@@ -8212,9 +8209,9 @@
           1027,
           1028,
           1029,
-          1034,
-          1035,
-          1036,
+          1030,
+          1031,
+          1032,
           1037,
           1038,
           1039,
@@ -8233,9 +8230,9 @@
           1052,
           1053,
           1054,
-          1059,
-          1060,
-          1061,
+          1055,
+          1056,
+          1057,
           1062,
           1063,
           1064,
@@ -8256,9 +8253,9 @@
           1079,
           1080,
           1081,
-          1087,
-          1088,
-          1089,
+          1082,
+          1083,
+          1084,
           1090,
           1091,
           1092,
@@ -8280,9 +8277,9 @@
           1108,
           1109,
           1110,
-          1116,
-          1117,
-          1118,
+          1111,
+          1112,
+          1113,
           1119,
           1120,
           1121,
@@ -8306,36 +8303,39 @@
           1139,
           1140,
           1141,
-          1168,
-          1173,
-          1178,
-          1179,
-          1183,
-          1184,
+          1142,
+          1143,
+          1144,
+          1171,
+          1176,
+          1181,
+          1182,
+          1186,
           1187,
-          1188,
+          1190,
           1191,
-          1192,
+          1194,
           1195,
-          1196,
+          1198,
           1199,
-          1200,
+          1202,
           1203,
-          1204,
+          1206,
           1207,
-          1208,
+          1210,
           1211,
-          1212,
+          1214,
           1215,
-          1216,
+          1218,
           1219,
-          1220,
+          1222,
           1223,
-          1224,
-          1236,
-          1245,
-          2442,
-          2607
+          1226,
+          1227,
+          1239,
+          1248,
+          2450,
+          2615
         ],
         "statements": [
           {
@@ -8344,7 +8344,7 @@
               "k2-minus-2-identity",
               "names-nagamochi"
             ],
-            "line": 711,
+            "line": 714,
             "qualified": false,
             "tier": "states"
           },
@@ -8353,7 +8353,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 720,
+            "line": 723,
             "qualified": false,
             "tier": "relies"
           },
@@ -8362,7 +8362,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 722,
+            "line": 725,
             "qualified": false,
             "tier": "states"
           },
@@ -8371,7 +8371,7 @@
             "kinds": [
               "closed-form"
             ],
-            "line": 734,
+            "line": 737,
             "qualified": false,
             "tier": "states"
           },
@@ -8380,7 +8380,7 @@
             "kinds": [
               "k2-minus-2-identity"
             ],
-            "line": 737,
+            "line": 740,
             "qualified": false,
             "tier": "states"
           },
@@ -8389,7 +8389,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 847,
+            "line": 850,
             "qualified": false,
             "tier": "states"
           },
@@ -8398,7 +8398,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 849,
+            "line": 852,
             "qualified": false,
             "tier": "states"
           },
@@ -8407,7 +8407,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 872,
+            "line": 875,
             "qualified": false,
             "tier": "states"
           },
@@ -8416,7 +8416,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 940,
+            "line": 943,
             "qualified": false,
             "tier": "relies"
           },
@@ -8425,7 +8425,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 945,
+            "line": 948,
             "qualified": false,
             "tier": "relies"
           },
@@ -8434,7 +8434,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 946,
+            "line": 949,
             "qualified": false,
             "tier": "relies"
           },
@@ -8443,7 +8443,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 949,
+            "line": 952,
             "qualified": false,
             "tier": "relies"
           },
@@ -8452,7 +8452,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 954,
+            "line": 957,
             "qualified": false,
             "tier": "relies"
           },
@@ -8461,7 +8461,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 955,
+            "line": 958,
             "qualified": false,
             "tier": "relies"
           },
@@ -8470,7 +8470,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 956,
+            "line": 959,
             "qualified": false,
             "tier": "relies"
           },
@@ -8479,7 +8479,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 957,
+            "line": 960,
             "qualified": false,
             "tier": "relies"
           },
@@ -8488,7 +8488,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 958,
+            "line": 961,
             "qualified": false,
             "tier": "relies"
           },
@@ -8497,7 +8497,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 959,
+            "line": 962,
             "qualified": false,
             "tier": "relies"
           },
@@ -8506,7 +8506,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 960,
+            "line": 963,
             "qualified": false,
             "tier": "relies"
           },
@@ -8515,7 +8515,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 961,
+            "line": 964,
             "qualified": false,
             "tier": "relies"
           },
@@ -8524,7 +8524,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 962,
+            "line": 965,
             "qualified": false,
             "tier": "relies"
           },
@@ -8533,7 +8533,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 963,
+            "line": 966,
             "qualified": false,
             "tier": "relies"
           },
@@ -8542,7 +8542,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 964,
+            "line": 967,
             "qualified": false,
             "tier": "relies"
           },
@@ -8551,7 +8551,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 965,
+            "line": 968,
             "qualified": false,
             "tier": "relies"
           },
@@ -8560,7 +8560,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 966,
+            "line": 969,
             "qualified": false,
             "tier": "relies"
           },
@@ -8569,7 +8569,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 971,
+            "line": 974,
             "qualified": false,
             "tier": "relies"
           },
@@ -8578,7 +8578,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 972,
+            "line": 975,
             "qualified": false,
             "tier": "relies"
           },
@@ -8587,7 +8587,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 973,
+            "line": 976,
             "qualified": false,
             "tier": "relies"
           },
@@ -8596,7 +8596,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 974,
+            "line": 977,
             "qualified": false,
             "tier": "relies"
           },
@@ -8605,7 +8605,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 975,
+            "line": 978,
             "qualified": false,
             "tier": "relies"
           },
@@ -8614,7 +8614,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 976,
+            "line": 979,
             "qualified": false,
             "tier": "relies"
           },
@@ -8623,7 +8623,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 977,
+            "line": 980,
             "qualified": false,
             "tier": "relies"
           },
@@ -8632,7 +8632,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 978,
+            "line": 981,
             "qualified": false,
             "tier": "relies"
           },
@@ -8641,7 +8641,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 979,
+            "line": 982,
             "qualified": false,
             "tier": "relies"
           },
@@ -8650,7 +8650,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 980,
+            "line": 983,
             "qualified": false,
             "tier": "relies"
           },
@@ -8659,7 +8659,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 981,
+            "line": 984,
             "qualified": false,
             "tier": "relies"
           },
@@ -8668,7 +8668,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 982,
+            "line": 985,
             "qualified": false,
             "tier": "relies"
           },
@@ -8677,7 +8677,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 983,
+            "line": 986,
             "qualified": false,
             "tier": "relies"
           },
@@ -8686,7 +8686,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 984,
+            "line": 987,
             "qualified": false,
             "tier": "relies"
           },
@@ -8695,7 +8695,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 985,
+            "line": 988,
             "qualified": false,
             "tier": "relies"
           },
@@ -8704,7 +8704,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 990,
+            "line": 993,
             "qualified": false,
             "tier": "relies"
           },
@@ -8713,7 +8713,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 991,
+            "line": 994,
             "qualified": false,
             "tier": "relies"
           },
@@ -8722,7 +8722,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 992,
+            "line": 995,
             "qualified": false,
             "tier": "relies"
           },
@@ -8731,7 +8731,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 993,
+            "line": 996,
             "qualified": false,
             "tier": "relies"
           },
@@ -8740,7 +8740,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 994,
+            "line": 997,
             "qualified": false,
             "tier": "relies"
           },
@@ -8749,7 +8749,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 995,
+            "line": 998,
             "qualified": false,
             "tier": "relies"
           },
@@ -8758,7 +8758,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 996,
+            "line": 999,
             "qualified": false,
             "tier": "relies"
           },
@@ -8767,7 +8767,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 997,
+            "line": 1000,
             "qualified": false,
             "tier": "relies"
           },
@@ -8776,7 +8776,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 998,
+            "line": 1001,
             "qualified": false,
             "tier": "relies"
           },
@@ -8785,7 +8785,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 999,
+            "line": 1002,
             "qualified": false,
             "tier": "relies"
           },
@@ -8794,7 +8794,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1000,
+            "line": 1003,
             "qualified": false,
             "tier": "relies"
           },
@@ -8803,7 +8803,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1001,
+            "line": 1004,
             "qualified": false,
             "tier": "relies"
           },
@@ -8812,7 +8812,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1002,
+            "line": 1005,
             "qualified": false,
             "tier": "relies"
           },
@@ -8821,7 +8821,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1003,
+            "line": 1006,
             "qualified": false,
             "tier": "relies"
           },
@@ -8830,7 +8830,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1004,
+            "line": 1007,
             "qualified": false,
             "tier": "relies"
           },
@@ -8839,7 +8839,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1005,
+            "line": 1008,
             "qualified": false,
             "tier": "relies"
           },
@@ -8848,7 +8848,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1006,
+            "line": 1009,
             "qualified": false,
             "tier": "relies"
           },
@@ -8857,7 +8857,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1011,
+            "line": 1014,
             "qualified": false,
             "tier": "relies"
           },
@@ -8866,7 +8866,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1012,
+            "line": 1015,
             "qualified": false,
             "tier": "relies"
           },
@@ -8875,7 +8875,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1013,
+            "line": 1016,
             "qualified": false,
             "tier": "relies"
           },
@@ -8884,7 +8884,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1014,
+            "line": 1017,
             "qualified": false,
             "tier": "relies"
           },
@@ -8893,7 +8893,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1015,
+            "line": 1018,
             "qualified": false,
             "tier": "relies"
           },
@@ -8902,7 +8902,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1016,
+            "line": 1019,
             "qualified": false,
             "tier": "relies"
           },
@@ -8911,7 +8911,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1017,
+            "line": 1020,
             "qualified": false,
             "tier": "relies"
           },
@@ -8920,7 +8920,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1018,
+            "line": 1021,
             "qualified": false,
             "tier": "relies"
           },
@@ -8929,7 +8929,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1019,
+            "line": 1022,
             "qualified": false,
             "tier": "relies"
           },
@@ -8938,7 +8938,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1020,
+            "line": 1023,
             "qualified": false,
             "tier": "relies"
           },
@@ -8947,7 +8947,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1021,
+            "line": 1024,
             "qualified": false,
             "tier": "relies"
           },
@@ -8956,7 +8956,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1022,
+            "line": 1025,
             "qualified": false,
             "tier": "relies"
           },
@@ -8965,7 +8965,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1023,
+            "line": 1026,
             "qualified": false,
             "tier": "relies"
           },
@@ -8974,7 +8974,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1024,
+            "line": 1027,
             "qualified": false,
             "tier": "relies"
           },
@@ -8983,7 +8983,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1025,
+            "line": 1028,
             "qualified": false,
             "tier": "relies"
           },
@@ -8992,7 +8992,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1026,
+            "line": 1029,
             "qualified": false,
             "tier": "relies"
           },
@@ -9001,7 +9001,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1027,
+            "line": 1030,
             "qualified": false,
             "tier": "relies"
           },
@@ -9010,7 +9010,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1028,
+            "line": 1031,
             "qualified": false,
             "tier": "relies"
           },
@@ -9019,7 +9019,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1029,
+            "line": 1032,
             "qualified": false,
             "tier": "relies"
           },
@@ -9028,7 +9028,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1034,
+            "line": 1037,
             "qualified": false,
             "tier": "relies"
           },
@@ -9037,7 +9037,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1035,
+            "line": 1038,
             "qualified": false,
             "tier": "relies"
           },
@@ -9046,7 +9046,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1036,
+            "line": 1039,
             "qualified": false,
             "tier": "relies"
           },
@@ -9055,7 +9055,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1037,
+            "line": 1040,
             "qualified": false,
             "tier": "relies"
           },
@@ -9064,7 +9064,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1038,
+            "line": 1041,
             "qualified": false,
             "tier": "relies"
           },
@@ -9073,7 +9073,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1039,
+            "line": 1042,
             "qualified": false,
             "tier": "relies"
           },
@@ -9082,7 +9082,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1040,
+            "line": 1043,
             "qualified": false,
             "tier": "relies"
           },
@@ -9091,7 +9091,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1041,
+            "line": 1044,
             "qualified": false,
             "tier": "relies"
           },
@@ -9100,7 +9100,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1042,
+            "line": 1045,
             "qualified": false,
             "tier": "relies"
           },
@@ -9109,7 +9109,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1043,
+            "line": 1046,
             "qualified": false,
             "tier": "relies"
           },
@@ -9118,7 +9118,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1044,
+            "line": 1047,
             "qualified": false,
             "tier": "relies"
           },
@@ -9127,7 +9127,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1045,
+            "line": 1048,
             "qualified": false,
             "tier": "relies"
           },
@@ -9136,7 +9136,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1046,
+            "line": 1049,
             "qualified": false,
             "tier": "relies"
           },
@@ -9145,7 +9145,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1047,
+            "line": 1050,
             "qualified": false,
             "tier": "relies"
           },
@@ -9154,7 +9154,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1048,
+            "line": 1051,
             "qualified": false,
             "tier": "relies"
           },
@@ -9163,7 +9163,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1049,
+            "line": 1052,
             "qualified": false,
             "tier": "relies"
           },
@@ -9172,7 +9172,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1050,
+            "line": 1053,
             "qualified": false,
             "tier": "relies"
           },
@@ -9181,7 +9181,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1051,
+            "line": 1054,
             "qualified": false,
             "tier": "relies"
           },
@@ -9190,7 +9190,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1052,
+            "line": 1055,
             "qualified": false,
             "tier": "relies"
           },
@@ -9199,7 +9199,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1053,
+            "line": 1056,
             "qualified": false,
             "tier": "relies"
           },
@@ -9208,7 +9208,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1054,
+            "line": 1057,
             "qualified": false,
             "tier": "relies"
           },
@@ -9217,7 +9217,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1059,
+            "line": 1062,
             "qualified": false,
             "tier": "relies"
           },
@@ -9226,7 +9226,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1060,
+            "line": 1063,
             "qualified": false,
             "tier": "relies"
           },
@@ -9235,7 +9235,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1061,
+            "line": 1064,
             "qualified": false,
             "tier": "relies"
           },
@@ -9244,7 +9244,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1062,
+            "line": 1065,
             "qualified": false,
             "tier": "relies"
           },
@@ -9253,7 +9253,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1063,
+            "line": 1066,
             "qualified": false,
             "tier": "relies"
           },
@@ -9262,7 +9262,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1064,
+            "line": 1067,
             "qualified": false,
             "tier": "relies"
           },
@@ -9271,7 +9271,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1065,
+            "line": 1068,
             "qualified": false,
             "tier": "relies"
           },
@@ -9280,7 +9280,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1066,
+            "line": 1069,
             "qualified": false,
             "tier": "relies"
           },
@@ -9289,7 +9289,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1067,
+            "line": 1070,
             "qualified": false,
             "tier": "relies"
           },
@@ -9298,7 +9298,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1068,
+            "line": 1071,
             "qualified": false,
             "tier": "relies"
           },
@@ -9307,7 +9307,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1069,
+            "line": 1072,
             "qualified": false,
             "tier": "relies"
           },
@@ -9316,7 +9316,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1070,
+            "line": 1073,
             "qualified": false,
             "tier": "relies"
           },
@@ -9325,7 +9325,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1071,
+            "line": 1074,
             "qualified": false,
             "tier": "relies"
           },
@@ -9334,7 +9334,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1072,
+            "line": 1075,
             "qualified": false,
             "tier": "relies"
           },
@@ -9343,7 +9343,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1073,
+            "line": 1076,
             "qualified": false,
             "tier": "relies"
           },
@@ -9352,7 +9352,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1074,
+            "line": 1077,
             "qualified": false,
             "tier": "relies"
           },
@@ -9361,7 +9361,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1075,
+            "line": 1078,
             "qualified": false,
             "tier": "relies"
           },
@@ -9370,7 +9370,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1076,
+            "line": 1079,
             "qualified": false,
             "tier": "relies"
           },
@@ -9379,7 +9379,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1077,
+            "line": 1080,
             "qualified": false,
             "tier": "relies"
           },
@@ -9388,7 +9388,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1078,
+            "line": 1081,
             "qualified": false,
             "tier": "relies"
           },
@@ -9397,7 +9397,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1079,
+            "line": 1082,
             "qualified": false,
             "tier": "relies"
           },
@@ -9406,7 +9406,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1080,
+            "line": 1083,
             "qualified": false,
             "tier": "relies"
           },
@@ -9415,7 +9415,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1081,
+            "line": 1084,
             "qualified": false,
             "tier": "relies"
           },
@@ -9424,7 +9424,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1087,
+            "line": 1090,
             "qualified": false,
             "tier": "relies"
           },
@@ -9433,7 +9433,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1088,
+            "line": 1091,
             "qualified": false,
             "tier": "relies"
           },
@@ -9442,7 +9442,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1089,
+            "line": 1092,
             "qualified": false,
             "tier": "relies"
           },
@@ -9451,7 +9451,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1090,
+            "line": 1093,
             "qualified": false,
             "tier": "relies"
           },
@@ -9460,7 +9460,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1091,
+            "line": 1094,
             "qualified": false,
             "tier": "relies"
           },
@@ -9469,7 +9469,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1092,
+            "line": 1095,
             "qualified": false,
             "tier": "relies"
           },
@@ -9478,7 +9478,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1093,
+            "line": 1096,
             "qualified": false,
             "tier": "relies"
           },
@@ -9487,7 +9487,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1094,
+            "line": 1097,
             "qualified": false,
             "tier": "relies"
           },
@@ -9496,7 +9496,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1095,
+            "line": 1098,
             "qualified": false,
             "tier": "relies"
           },
@@ -9505,7 +9505,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1096,
+            "line": 1099,
             "qualified": false,
             "tier": "relies"
           },
@@ -9514,7 +9514,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1097,
+            "line": 1100,
             "qualified": false,
             "tier": "relies"
           },
@@ -9523,7 +9523,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1098,
+            "line": 1101,
             "qualified": false,
             "tier": "relies"
           },
@@ -9532,7 +9532,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1099,
+            "line": 1102,
             "qualified": false,
             "tier": "relies"
           },
@@ -9541,7 +9541,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1100,
+            "line": 1103,
             "qualified": false,
             "tier": "relies"
           },
@@ -9550,7 +9550,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1101,
+            "line": 1104,
             "qualified": false,
             "tier": "relies"
           },
@@ -9559,7 +9559,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1102,
+            "line": 1105,
             "qualified": false,
             "tier": "relies"
           },
@@ -9568,7 +9568,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1103,
+            "line": 1106,
             "qualified": false,
             "tier": "relies"
           },
@@ -9577,7 +9577,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1104,
+            "line": 1107,
             "qualified": false,
             "tier": "relies"
           },
@@ -9586,7 +9586,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1105,
+            "line": 1108,
             "qualified": false,
             "tier": "relies"
           },
@@ -9595,7 +9595,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1106,
+            "line": 1109,
             "qualified": false,
             "tier": "relies"
           },
@@ -9604,7 +9604,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1107,
+            "line": 1110,
             "qualified": false,
             "tier": "relies"
           },
@@ -9613,7 +9613,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1108,
+            "line": 1111,
             "qualified": false,
             "tier": "relies"
           },
@@ -9622,7 +9622,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1109,
+            "line": 1112,
             "qualified": false,
             "tier": "relies"
           },
@@ -9631,7 +9631,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1110,
+            "line": 1113,
             "qualified": false,
             "tier": "relies"
           },
@@ -9640,7 +9640,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1116,
+            "line": 1119,
             "qualified": false,
             "tier": "relies"
           },
@@ -9649,7 +9649,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1117,
+            "line": 1120,
             "qualified": false,
             "tier": "relies"
           },
@@ -9658,7 +9658,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1118,
+            "line": 1121,
             "qualified": false,
             "tier": "relies"
           },
@@ -9667,7 +9667,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1119,
+            "line": 1122,
             "qualified": false,
             "tier": "relies"
           },
@@ -9676,7 +9676,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1120,
+            "line": 1123,
             "qualified": false,
             "tier": "relies"
           },
@@ -9685,7 +9685,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1121,
+            "line": 1124,
             "qualified": false,
             "tier": "relies"
           },
@@ -9694,7 +9694,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1122,
+            "line": 1125,
             "qualified": false,
             "tier": "relies"
           },
@@ -9703,7 +9703,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1123,
+            "line": 1126,
             "qualified": false,
             "tier": "relies"
           },
@@ -9712,7 +9712,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1124,
+            "line": 1127,
             "qualified": false,
             "tier": "relies"
           },
@@ -9721,7 +9721,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1125,
+            "line": 1128,
             "qualified": false,
             "tier": "relies"
           },
@@ -9730,7 +9730,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1126,
+            "line": 1129,
             "qualified": false,
             "tier": "relies"
           },
@@ -9739,7 +9739,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1127,
+            "line": 1130,
             "qualified": false,
             "tier": "relies"
           },
@@ -9748,7 +9748,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1128,
+            "line": 1131,
             "qualified": false,
             "tier": "relies"
           },
@@ -9757,7 +9757,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1129,
+            "line": 1132,
             "qualified": false,
             "tier": "relies"
           },
@@ -9766,7 +9766,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1130,
+            "line": 1133,
             "qualified": false,
             "tier": "relies"
           },
@@ -9775,7 +9775,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1131,
+            "line": 1134,
             "qualified": false,
             "tier": "relies"
           },
@@ -9784,7 +9784,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1132,
+            "line": 1135,
             "qualified": false,
             "tier": "relies"
           },
@@ -9793,7 +9793,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1133,
+            "line": 1136,
             "qualified": false,
             "tier": "relies"
           },
@@ -9802,7 +9802,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1134,
+            "line": 1137,
             "qualified": false,
             "tier": "relies"
           },
@@ -9811,7 +9811,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1135,
+            "line": 1138,
             "qualified": false,
             "tier": "relies"
           },
@@ -9820,7 +9820,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1136,
+            "line": 1139,
             "qualified": false,
             "tier": "relies"
           },
@@ -9829,7 +9829,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1137,
+            "line": 1140,
             "qualified": false,
             "tier": "relies"
           },
@@ -9838,7 +9838,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1138,
+            "line": 1141,
             "qualified": false,
             "tier": "relies"
           },
@@ -9847,7 +9847,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1139,
+            "line": 1142,
             "qualified": false,
             "tier": "relies"
           },
@@ -9856,7 +9856,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1140,
+            "line": 1143,
             "qualified": false,
             "tier": "relies"
           },
@@ -9865,7 +9865,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1141,
+            "line": 1144,
             "qualified": false,
             "tier": "relies"
           },
@@ -9874,7 +9874,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1168,
+            "line": 1171,
             "qualified": false,
             "tier": "relies"
           },
@@ -9883,7 +9883,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1173,
+            "line": 1176,
             "qualified": false,
             "tier": "relies"
           },
@@ -9892,7 +9892,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1178,
+            "line": 1181,
             "qualified": false,
             "tier": "relies"
           },
@@ -9901,7 +9901,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1179,
+            "line": 1182,
             "qualified": false,
             "tier": "relies"
           },
@@ -9910,7 +9910,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1183,
+            "line": 1186,
             "qualified": false,
             "tier": "relies"
           },
@@ -9919,7 +9919,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1184,
+            "line": 1187,
             "qualified": false,
             "tier": "relies"
           },
@@ -9928,7 +9928,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1187,
+            "line": 1190,
             "qualified": false,
             "tier": "relies"
           },
@@ -9937,7 +9937,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1188,
+            "line": 1191,
             "qualified": false,
             "tier": "relies"
           },
@@ -9946,7 +9946,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1191,
+            "line": 1194,
             "qualified": false,
             "tier": "relies"
           },
@@ -9955,7 +9955,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1192,
+            "line": 1195,
             "qualified": false,
             "tier": "relies"
           },
@@ -9964,7 +9964,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1195,
+            "line": 1198,
             "qualified": false,
             "tier": "relies"
           },
@@ -9973,7 +9973,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1196,
+            "line": 1199,
             "qualified": false,
             "tier": "relies"
           },
@@ -9982,7 +9982,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1199,
+            "line": 1202,
             "qualified": false,
             "tier": "relies"
           },
@@ -9991,7 +9991,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1200,
+            "line": 1203,
             "qualified": false,
             "tier": "relies"
           },
@@ -10000,7 +10000,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1203,
+            "line": 1206,
             "qualified": false,
             "tier": "relies"
           },
@@ -10009,7 +10009,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1204,
+            "line": 1207,
             "qualified": false,
             "tier": "relies"
           },
@@ -10018,7 +10018,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1207,
+            "line": 1210,
             "qualified": false,
             "tier": "relies"
           },
@@ -10027,7 +10027,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1208,
+            "line": 1211,
             "qualified": false,
             "tier": "relies"
           },
@@ -10036,7 +10036,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1211,
+            "line": 1214,
             "qualified": false,
             "tier": "relies"
           },
@@ -10045,7 +10045,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1212,
+            "line": 1215,
             "qualified": false,
             "tier": "relies"
           },
@@ -10054,7 +10054,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1215,
+            "line": 1218,
             "qualified": false,
             "tier": "relies"
           },
@@ -10063,7 +10063,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1216,
+            "line": 1219,
             "qualified": false,
             "tier": "relies"
           },
@@ -10072,7 +10072,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1219,
+            "line": 1222,
             "qualified": false,
             "tier": "relies"
           },
@@ -10081,7 +10081,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1220,
+            "line": 1223,
             "qualified": false,
             "tier": "relies"
           },
@@ -10090,7 +10090,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1223,
+            "line": 1226,
             "qualified": false,
             "tier": "relies"
           },
@@ -10099,7 +10099,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1224,
+            "line": 1227,
             "qualified": false,
             "tier": "relies"
           },
@@ -10108,7 +10108,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1236,
+            "line": 1239,
             "qualified": false,
             "tier": "relies"
           },
@@ -10117,7 +10117,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 1245,
+            "line": 1248,
             "qualified": false,
             "tier": "relies"
           },
@@ -10126,7 +10126,7 @@
             "kinds": [
               "k2-minus-2-identity"
             ],
-            "line": 1310,
+            "line": 1313,
             "qualified": false,
             "tier": "states"
           },
@@ -10136,7 +10136,7 @@
               "k2-minus-2-identity",
               "names-nagamochi"
             ],
-            "line": 1384,
+            "line": 1387,
             "qualified": false,
             "tier": "states"
           },
@@ -10146,7 +10146,7 @@
               "k2-minus-2-identity",
               "names-nagamochi"
             ],
-            "line": 2266,
+            "line": 2274,
             "qualified": false,
             "tier": "states"
           },
@@ -10155,7 +10155,7 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 2442,
+            "line": 2450,
             "qualified": false,
             "tier": "relies"
           },
@@ -10164,7 +10164,7 @@
             "kinds": [
               "k2-minus-2-identity"
             ],
-            "line": 2555,
+            "line": 2563,
             "qualified": false,
             "tier": "states"
           },
@@ -10173,36 +10173,36 @@
             "kinds": [
               "names-nagamochi"
             ],
-            "line": 2607,
+            "line": 2615,
             "qualified": false,
             "tier": "relies"
           }
         ],
         "states_lines": [
-          711,
-          722,
-          734,
+          714,
+          725,
           737,
-          847,
-          849,
-          872,
-          1310,
-          1384,
-          2266,
-          2555
+          740,
+          850,
+          852,
+          875,
+          1313,
+          1387,
+          2274,
+          2563
         ],
         "unqualified_states_lines": [
-          711,
-          722,
-          734,
+          714,
+          725,
           737,
-          847,
-          849,
-          872,
-          1310,
-          1384,
-          2266,
-          2555
+          740,
+          850,
+          852,
+          875,
+          1313,
+          1387,
+          2274,
+          2563
         ]
       },
       {
@@ -10712,15 +10712,18 @@
             {
               "applies": "direct",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 2
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": null,
         "karakus_k2_minus_1": null,
@@ -10805,15 +10808,18 @@
             {
               "applies": "monotonicity from s(k^2 - 2)",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 2
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": null,
         "karakus_k2_minus_1": {
@@ -11134,8 +11140,8 @@
       "exact_value_lower_half_cites_t007": true,
       "exposure_class": "unaffected",
       "exposure_class_without_karakus": "unaffected",
-      "exposure_reason": "registered-verified-bound",
-      "exposure_reason_without_karakus": "registered-verified-bound",
+      "exposure_reason": "registered-verified-bound-covers-it",
+      "exposure_reason_without_karakus": "registered-verified-bound-covers-it",
       "family": {
         "form": "k^2-2",
         "k": 3
@@ -11193,15 +11199,18 @@
             {
               "applies": "direct",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 3
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": null,
         "karakus_k2_minus_1": null,
@@ -11264,8 +11273,8 @@
       "exact_value_lower_half_cites_t007": true,
       "exposure_class": "unaffected",
       "exposure_class_without_karakus": "unaffected",
-      "exposure_reason": "registered-verified-bound",
-      "exposure_reason_without_karakus": "registered-verified-bound",
+      "exposure_reason": "registered-verified-bound-covers-it",
+      "exposure_reason_without_karakus": "registered-verified-bound-covers-it",
       "family": {
         "form": "k^2-1",
         "k": 3
@@ -11326,15 +11335,18 @@
             {
               "applies": "monotonicity from s(k^2 - 2)",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 3
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -12032,8 +12044,8 @@
       "exact_value_lower_half_cites_t007": true,
       "exposure_class": "unaffected",
       "exposure_class_without_karakus": "unaffected",
-      "exposure_reason": "registered-verified-bound",
-      "exposure_reason_without_karakus": "registered-verified-bound",
+      "exposure_reason": "registered-verified-bound-covers-it",
+      "exposure_reason_without_karakus": "registered-verified-bound-covers-it",
       "family": {
         "form": "k^2-2",
         "k": 4
@@ -12089,15 +12101,18 @@
             {
               "applies": "direct",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 4
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -12191,8 +12206,8 @@
       "exact_value_lower_half_cites_t007": true,
       "exposure_class": "unaffected",
       "exposure_class_without_karakus": "unaffected",
-      "exposure_reason": "registered-verified-bound",
-      "exposure_reason_without_karakus": "registered-verified-bound",
+      "exposure_reason": "registered-verified-bound-covers-it",
+      "exposure_reason_without_karakus": "registered-verified-bound-covers-it",
       "family": {
         "form": "k^2-1",
         "k": 4
@@ -12253,15 +12268,18 @@
             {
               "applies": "monotonicity from s(k^2 - 2)",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 4
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -13317,8 +13335,8 @@
       "exact_value_lower_half_cites_t007": true,
       "exposure_class": "unaffected",
       "exposure_class_without_karakus": "unaffected",
-      "exposure_reason": "registered-verified-bound",
-      "exposure_reason_without_karakus": "registered-verified-bound",
+      "exposure_reason": "registered-verified-bound-covers-it",
+      "exposure_reason_without_karakus": "registered-verified-bound-covers-it",
       "family": {
         "form": "k^2-2",
         "k": 5
@@ -13364,11 +13382,13 @@
             {
               "applies": "direct",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 5
             },
             {
@@ -13388,7 +13408,8 @@
               "value": 5
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -13482,8 +13503,8 @@
       "exact_value_lower_half_cites_t007": true,
       "exposure_class": "unaffected",
       "exposure_class_without_karakus": "unaffected",
-      "exposure_reason": "registered-verified-bound",
-      "exposure_reason_without_karakus": "registered-verified-bound",
+      "exposure_reason": "registered-verified-bound-covers-it",
+      "exposure_reason_without_karakus": "registered-verified-bound-covers-it",
       "family": {
         "form": "k^2-1",
         "k": 5
@@ -13529,15 +13550,18 @@
             {
               "applies": "monotonicity from s(k^2 - 2)",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 5
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -14747,8 +14771,8 @@
       "exact_value_lower_half_cites_t007": true,
       "exposure_class": "unaffected",
       "exposure_class_without_karakus": "unaffected",
-      "exposure_reason": "registered-verified-bound",
-      "exposure_reason_without_karakus": "registered-verified-bound",
+      "exposure_reason": "registered-verified-bound-covers-it",
+      "exposure_reason_without_karakus": "registered-verified-bound-covers-it",
       "family": {
         "form": "k^2-2",
         "k": 6
@@ -14794,11 +14818,13 @@
             {
               "applies": "direct",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 6
             },
             {
@@ -14818,7 +14844,8 @@
               "value": 6
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -14913,8 +14940,8 @@
       "exact_value_lower_half_cites_t007": true,
       "exposure_class": "unaffected",
       "exposure_class_without_karakus": "unaffected",
-      "exposure_reason": "registered-verified-bound",
-      "exposure_reason_without_karakus": "registered-verified-bound",
+      "exposure_reason": "registered-verified-bound-covers-it",
+      "exposure_reason_without_karakus": "registered-verified-bound-covers-it",
       "family": {
         "form": "k^2-1",
         "k": 6
@@ -14960,15 +14987,18 @@
             {
               "applies": "monotonicity from s(k^2 - 2)",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 6
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -16434,8 +16464,8 @@
       "exact_value_lower_half_cites_t007": true,
       "exposure_class": "unaffected",
       "exposure_class_without_karakus": "unaffected",
-      "exposure_reason": "registered-verified-bound",
-      "exposure_reason_without_karakus": "registered-verified-bound",
+      "exposure_reason": "registered-verified-bound-covers-it",
+      "exposure_reason_without_karakus": "registered-verified-bound-covers-it",
       "family": {
         "form": "k^2-2",
         "k": 7
@@ -16481,11 +16511,13 @@
             {
               "applies": "direct",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 7
             },
             {
@@ -16497,7 +16529,8 @@
               "value": 7
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -16600,8 +16633,8 @@
       "exact_value_lower_half_cites_t007": true,
       "exposure_class": "unaffected",
       "exposure_class_without_karakus": "unaffected",
-      "exposure_reason": "registered-verified-bound",
-      "exposure_reason_without_karakus": "registered-verified-bound",
+      "exposure_reason": "registered-verified-bound-covers-it",
+      "exposure_reason_without_karakus": "registered-verified-bound-covers-it",
       "family": {
         "form": "k^2-1",
         "k": 7
@@ -16647,11 +16680,13 @@
             {
               "applies": "monotonicity from s(k^2 - 2)",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 7
             },
             {
@@ -16663,7 +16698,8 @@
               "value": 7
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -18413,15 +18449,18 @@
             {
               "applies": "direct",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 8
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -18548,15 +18587,18 @@
             {
               "applies": "monotonicity from s(k^2 - 2)",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 8
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -20397,15 +20439,18 @@
             {
               "applies": "direct",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 9
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -20519,15 +20564,18 @@
             {
               "applies": "monotonicity from s(k^2 - 2)",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 9
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -22483,15 +22531,18 @@
             {
               "applies": "direct",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 10
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -22605,15 +22656,18 @@
             {
               "applies": "monotonicity from s(k^2 - 2)",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 10
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -24653,15 +24707,18 @@
             {
               "applies": "direct",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 11
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -24773,15 +24830,18 @@
             {
               "applies": "monotonicity from s(k^2 - 2)",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 11
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -27021,15 +27081,18 @@
             {
               "applies": "direct",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 12
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -27141,15 +27204,18 @@
             {
               "applies": "monotonicity from s(k^2 - 2)",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 12
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -29591,15 +29657,18 @@
             {
               "applies": "direct",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 13
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -29711,15 +29780,18 @@
             {
               "applies": "monotonicity from s(k^2 - 2)",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 13
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -32363,15 +32435,18 @@
             {
               "applies": "direct",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 14
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -32483,15 +32558,18 @@
             {
               "applies": "monotonicity from s(k^2 - 2)",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 14
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -35337,15 +35415,18 @@
             {
               "applies": "direct",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 15
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -35457,15 +35538,18 @@
             {
               "applies": "monotonicity from s(k^2 - 2)",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 15
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -38513,15 +38597,18 @@
             {
               "applies": "direct",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 16
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -38633,15 +38720,18 @@
             {
               "applies": "monotonicity from s(k^2 - 2)",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 16
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -41891,15 +41981,18 @@
             {
               "applies": "direct",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 17
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -42011,15 +42104,18 @@
             {
               "applies": "monotonicity from s(k^2 - 2)",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 17
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -45471,15 +45567,18 @@
             {
               "applies": "direct",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 18
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -45591,15 +45690,18 @@
             {
               "applies": "monotonicity from s(k^2 - 2)",
               "reported_at": [
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+                "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
                 "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
                 "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
               ],
-              "statement": "s(n^2 - 2) = n, kernel-checked in Lean by a replacement argument",
+              "statement": "s(n^2 - 2) = n for every n >= 2, by a Lean compensation proof",
               "value": 18
             }
           ],
-          "status": "reported-unchecked"
+          "kind": "reported, unreplayed Lean claim",
+          "verified": false
         },
         "karakus_explicit_bound": {
           "basis": "karakus-6.1",
@@ -45768,35 +45870,46 @@
   },
   "sources": {
     "chelokot": {
-      "archived_here": false,
+      "archived": "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02",
+      "claim": "A closed Lean theorem, Records.NearSquare.squareMinusTwo_isMinimumSide, that s(n^2 - 2) = n for every integer n >= 2, compensating low-scoring squares with other squares of the packing instead of assuming Nagamochi's Lemma 1.",
+      "claim_document": "docs/nagamochi-compensation-proof.md at upstream head 753079eb, pinned by digest in the archive README and not retained; neither it nor the Lean source was run here",
+      "kind": "reported, unreplayed Lean claim",
       "reported_at": [
+        "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/upstream/docs/nagamochi-score-counterexample.md:135",
+        "packing/resources/web/chelokot-nagamochi-counterexample-2026-10-02/README.md:79",
         "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:35",
         "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/notes/literature-s32.md:94",
         "packing/resources/web/evand-square-packing-2026-10-01/source/site/www/sources.html:136"
       ],
       "repository": "https://github.com/chelokot/square-packing-archive",
-      "status": "reported-unchecked"
+      "status": "Never verified here; it is listed beside the classes and never decides one."
     },
     "karakus": {
-      "archived_here": false,
+      "archived": [
+        "packing/resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma.pdf",
+        "packing/resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma.md",
+        "packing/resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma.raw.md"
+      ],
       "citation": "H. Karakuş, A counterexample to Nagamochi's scoring lemma and a new rectangle packing bound, arXiv:2609.37410v1 [math.CO], 29 September 2026",
       "defect": "Counterexamples to the scoring assertion of Nagamochi's Lemma 1, from an edge-incidence condition missing where Nagamochi's Lemma 6 is applied in his Section 5.5, Case 6 (Karakuş, Section 1, printed p. 3; construction in Section 4). They show the published proof incomplete and do not disprove the bound.",
+      "defect_at": "packing/resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma.md:63",
       "explicit_bound": {
         "exact_form_used_here": "1/2 + (1/2)*sqrt(4*N - 4*floor(sqrt(N)) + 1)",
         "location": "Corollary 6.2, eq. (6.1), printed p. 12",
         "note": "At N = k^2 - 1 with k >= 3 the bound is exactly k (printed p. 12).",
         "statement": "s(N) >= 1/2 + sqrt(N - floor(sqrt(N)) + 1/4) > sqrt(N) for every nonsquare integer N >= 8"
       },
+      "explicit_bound_at": "packing/resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma.md:365",
+      "explicit_bound_endpoint_at": "packing/resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma.md:391",
       "k2_minus_1": {
         "location": "Corollary 1.2, printed p. 3; proved in Section 6 from Corollary 6.1 (printed pp. 11-12)",
         "note": "k = 2, s(3) = 2, is the classical case the paper cites to Friedman [4, Theorem 1]; the new proof covers k >= 3.",
         "statement": "s(k^2 - 1) = k for every integer k >= 2"
       },
+      "k2_minus_1_at": "packing/resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma.md:79",
       "not_established": "Nagamochi's full rectangle bound, the identity s(k^2 - 2) = k, and the general lower bound of Nagamochi's Theorem 2 (Section 7, printed pp. 12-13).",
-      "pdf": "https://arxiv.org/pdf/2609.37410",
-      "pdf_bytes": 356551,
+      "not_established_at": "packing/resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma.md:401",
       "pdf_sha256": "39ae2ae44f063e6555240c4a246b47f687578c57196b70a9f5d66953d5cf6513",
-      "retrieved": "2026-10-02",
       "status": "Unrefereed preprint. Its mathematics is audited separately; nothing in this inventory replays it, and its two statements are used exactly as printed.",
       "url": "https://arxiv.org/abs/2609.37410"
     },
@@ -46049,11 +46162,19 @@
       323
     ],
     "exposure_reasons": {
-      "area-bound": 17,
-      "karakus-6.1": 246,
-      "karakus-corollary-1.2": 11,
-      "operative-bound-independent": 37,
-      "registered-verified-bound": 13
+      "k2-minus-1-reproved": {
+        "karakus-corollary-1.2": 11
+      },
+      "rests-on-t007-only": {},
+      "unaffected": {
+        "area-bound": 17,
+        "operative-bound-independent": 37,
+        "registered-verified-bound-covers-it": 10
+      },
+      "weakened-to": {
+        "karakus-6.1": 246,
+        "registered-verified-bound": 3
+      }
     },
     "open_cases": 261,
     "operative_cites_t007": {

@@ -180,7 +180,9 @@ def test_karakus_bound_at_review_values() -> None:
     for n, text in expected.items():
         values = compare_bounds(n)
         area, nagamochi, karakus = values["area"], values["nagamochi"], values["karakus"]
-        assert area is not None and nagamochi is not None and karakus is not None
+        assert area is not None
+        assert nagamochi is not None
+        assert karakus is not None
         assert f"{karakus:.6f}" == text
         assert area < karakus <= nagamochi
 

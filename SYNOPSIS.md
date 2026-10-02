@@ -6215,12 +6215,12 @@ table above.
 
 Kept with the same discipline as the experiment record, because the aggregate says
 things no individual bug report can.
-The log contains 512 defects, [one line each](defects.md), generated from `defects.yaml`
+The log contains 514 defects, [one line each](defects.md), generated from `defects.yaml`
 and checked in the gate.
 
 | Class | Count | The system … |
 | --- | ---: | --- |
-| soundness | 104 | asserted something false about the mathematics |
+| soundness | 106 | asserted something false about the mathematics |
 | validity | 127 | was correct, but the measurement did not bear on the question |
 | bookkeeping | 192 | recorded something its own evidence contradicts |
 | robustness | 70 | did not finish, or finished only by luck |
@@ -6244,11 +6244,11 @@ That allocation remains unimplemented and needs measurement.
 
 Two observations the log exists to make.
 
-**80 of the 104 soundness defects pointed in the *flattering* direction**, where the
+**82 of the 106 soundness defects pointed in the *flattering* direction**, where the
 error looks like a success.
 That is the dangerous class, and it is the majority of it.
 
-**The automated gate has caught eighty-one defects in 512, and no soundness defect
+**The automated gate has caught eighty-one defects in 514, and no soundness defect
 ever.** Every soundness failure was found by a control cell whose answer was known in
 advance, a rule written down before the measurement, a generated view contradicting its
 source, or someone reading carefully.
@@ -6614,7 +6614,7 @@ It is contained rather than fixed — such delegations are recorded on completio
 `read_only` flag is better than permitting an empty list that would be ambiguous between
 “writes nothing” and “nobody filled this in”.
 
-119 fixes left no regression check behind.
+121 fixes left no regression check behind.
 [D-300](defects.md) remains open: the yielded session id, output, timeout/final poll,
 and exit survived, but invalid `gdate` precision left the start and end fields empty, so
 [D-202](defects.md), [D-217](defects.md), and `think-b3bm` remain open.

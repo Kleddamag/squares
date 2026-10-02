@@ -404,6 +404,8 @@ def test_cli_ratio_mode_without_the_n11_replay(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
     monkeypatch.setattr(local, "_check_frozen_root_bytes", lambda _raw: None)
+    # C11 has its own test; a stub keeps this wiring test fast and shows it is load-bearing.
+    monkeypatch.setattr(local, "stress_audit", lambda _family, _box: {"passed": False})
     output = tmp_path / "ratio.json"
     partial = ["--direction", "omega11:-1", "--direction", "u11:1"]
     command = ["--ratio", "--no-n11", "--midpoint-only", *partial, "--output", str(output)]
@@ -416,6 +418,8 @@ def test_cli_ratio_mode_without_the_n11_replay(
     # A partial run cannot pass: two of 90 directions, and no root-box items.
     assert not receipt["checks"]["c8_c9_replayed_from_certificates"]
     assert not receipt["checks"]["c8i_root_box"]
+    assert not receipt["checks"]["c11_stress_on_the_box"]
+    assert receipt["checks"]["c1_roster_binding"]
     assert json.loads(capsys.readouterr().out)["passed"] is False
     assert local.main(["--ratio", "--radius", "1/10"]) == 2
     assert "radius" in json.loads(capsys.readouterr().out)["error"]
@@ -480,3 +484,53 @@ def test_slides_leave_every_retained_contact_and_anchor_unchanged() -> None:
         "bottom": [1, 2, 5],
         "top": [4, 8, 15],
     }
+
+
+def test_recomputed_stress_is_a_nonnegative_stress_on_the_whole_box() -> None:
+    audit = local.stress_audit(_family(), local.DECLARED_BOX)
+    assert audit["passed"]
+    assert all(audit["checks"].values())
+    assert audit["rows_reaching_zero"] == []
+    assert audit["vertex_ranks_mod_p"] == [46] * 8
+    assert audit["least_weight"]["row"] == "pair:11:12:1"
+    assert audit["least_weight"]["vertex"] == ["0", "1/12", "-1/8"]
+    assert Q(1, 250) < Q(audit["least_weight"]["value_decimal"]) < Q(1, 200)
+    # Only the midpoint's two F2 columns (omega12, omega16) are off zero, as in H-258.
+    assert set(audit["origin_residual_columns"]) == {
+        str(local.column(12, "angle")),
+        str(local.column(16, "angle")),
+    }
+
+
+def test_family_stress_needs_the_wall_rebalancing_when_square_5_slides() -> None:
+    family = _family()
+    origin = (Q(0), Q(0), Q(0))
+    _, reference = local.family_stress(family, origin)
+    corner = (Q(1, 4), Q(0), Q(0))
+    _, unbalanced = local.family_stress(family, corner)
+    moved = {c for c, (x, y) in enumerate(zip(unbalanced, reference, strict=True)) if x != y}
+    assert moved == {local.column(5, "angle"), local.column(7, "angle")}
+    stress, balanced = local.family_stress(family, corner, reference)
+    assert balanced == reference
+    assert all(stress[key] == 0 for key in local.ZERO_WEIGHT_KEYS)
+
+
+def test_roster_is_bound_to_the_accepted_h257_inventory() -> None:
+    audit = local.roster_binding_audit(_family())
+    assert audit["passed"]
+    assert (audit["retained_pairs"], audit["retained_walls"]) == (19, 13)
+    assert audit["retained_identity_options"] == 27
+    raw = local.FEATURE_CERTIFICATE.read_bytes()
+    tampered = local.roster_binding_audit(
+        _family(), raw.replace(b'"pairs": 21', b'"pairs": 22')
+    )
+    assert not tampered["checks"]["certificate_blob_is_frozen"]
+    assert not tampered["checks"]["manifest_reproduces_counts"]
+    assert not tampered["passed"]
+
+
+def test_restoring_the_non_tight_9_11_row_fails_slide_invariance() -> None:
+    audit = local.slide_invariance_audit(_family(), restore=frozenset({(9, 11)}))
+    assert not audit["passed"]
+    assert audit["identity_options"] == 29
+    assert audit["not_invariant"] == ["9/11:11:v:-1", "9/11:9:v:-1"]

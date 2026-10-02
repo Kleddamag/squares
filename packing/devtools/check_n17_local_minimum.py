@@ -12,7 +12,9 @@ radius (1/5000): the rows rebuilt at the moving base point `x*(w)` with
 parameters), the tau branches (C3), the curvature constants (C7), the 125 unavailable
 options' Taylor margins (C6), per-cell affine duals with exact residual bounds on an
 adaptive cell partition (C8, root-box residual folded in) and the strict ratio test
-(C9), spanning (C10), the slide half of C2, and the C12 refusal controls with the n11
+(C9), spanning (C10), the slide half of C2, the roster bound to the H-257 inventory
+(C1), the H-258 stress recomputed along the family and nonnegative on the box with the
+kernel re-checked at every vertex (C11), and the C12 refusal controls with the n11
 replay. Its receipt is planning evidence, not an H-261 verdict: the recipe's lemmas are
 hand proofs and tightness at `x*(0)` is H-257's.
 
@@ -102,6 +104,7 @@ from scipy.optimize import linprog
 from devtools.check_n17_contact_chart import ANCHORS, CONTACTS
 from devtools.check_n17_core_stress import (
     DIMENSION,
+    FROZEN_FEATURE_REF,
     Dyadic,
     ExactField,
     _pair_rows,
@@ -109,6 +112,8 @@ from devtools.check_n17_core_stress import (
     _wall_rows,
     common_rows,
     complete_stress,
+    deterministic_weights,
+    force_roster,
 )
 from devtools.check_n17_endpoint_feasibility import (
     FROZEN_ROOT_REF,
@@ -1310,7 +1315,9 @@ def spanning_audit() -> dict[str, Any]:
     return {"anchors": gaps, "walls": walls, "checks": checks, "passed": all(checks.values())}
 
 
-def slide_invariance_audit(family: Family) -> dict[str, Any]:
+def slide_invariance_audit(
+    family: Family, *, restore: frozenset[tuple[int, int]] = frozenset()
+) -> dict[str, Any]:
     """C2, the slide half: every retained contact margin is unchanged along the family.
 
     For the 27 identity options of the 19 retained pairs (the tight owner features),
@@ -1319,6 +1326,8 @@ def slide_invariance_audit(family: Family) -> dict[str, Any]:
     the anchor wall gaps are C10. So tightness along the family reduces to tightness
     at `x*(0)`, which is H-257's at the root. At the rational midpoint those margins
     are reported exactly; nonzero ones carry the midpoint's closing residual.
+    `restore` puts dropped pairs back: the C12 control restores 9/11, whose face opens
+    as square 11 slides (`b > 0`), and must be refused.
     """
     field = ExactField()
     t, beta = field.generator("t"), field.generator("b")
@@ -1343,7 +1352,7 @@ def slide_invariance_audit(family: Family) -> dict[str, Any]:
     midpoint: dict[str, str] = {}
     for option in option_manifest():
         pair = (int(option["left"]), int(option["right"]))
-        if option["kind"] != "identity" or pair in DROPPED_PAIRS:
+        if option["kind"] != "identity" or (pair in DROPPED_PAIRS and pair not in restore):
             continue
         label = f"{pair[0]}/{pair[1]}:{option['owner']}:{option['axis']}:{option['sign']}"
         difference = margin(aux, moved, option) - margin(aux, centres, option)
@@ -1356,8 +1365,254 @@ def slide_invariance_audit(family: Family) -> dict[str, Any]:
     return {
         "identity_options": len(invariant),
         "slide_invariant": sum(invariant.values()),
+        "not_invariant": sorted(label for label, ok in invariant.items() if not ok),
         "nonzero_at_midpoint": midpoint,
         "passed": len(invariant) == 27 and all(invariant.values()),
+    }
+
+
+FEATURE_CERTIFICATE = (
+    REPO
+    / "packing/campaign/series/series-000-smoke-and-calibration/results"
+    / "exp-239-n17-endpoint-features/run-001/certificate.json"
+)
+FEATURE_CERTIFICATE_BLOB = "d6047456ac143da0c5aaf6b25e286db75d4497ea"
+FEATURE_CERTIFICATE_SHA256 = "f6ba220a66dfe13c4b6fbf1d1aaebc14fc21652b87610d13be3feb09ca09203b"
+
+
+def git_blob(data: bytes) -> str:
+    """Git's blob id of some bytes, computed without Git."""
+    return hashlib.sha1(b"blob %d\0" % len(data) + data, usedforsecurity=False).hexdigest()
+
+
+def roster_binding_audit(family: Family, raw: bytes | None = None) -> dict[str, Any]:
+    """C1: the 52-row roster is the accepted H-257 inventory minus the dropped items.
+
+    The exp-239 feature certificate (H-257) must be the frozen blob at
+    `FROZEN_FEATURE_REF`, pass its criterion and carry the inventory counts the
+    feature manifest reproduces. The roster's pairs must be H-257's zero pairs minus
+    2/3 and 9/11, its walls the 15 active wall incidences minus 5-right and 6-bottom,
+    and its rows one per wall corner pair (two, except 9's smooth left wall), two per
+    face and one per nonparallel identity option.
+    """
+    data = FEATURE_CERTIFICATE.read_bytes() if raw is None else raw
+    document = json.loads(data, object_pairs_hook=_object_unique)
+    options = option_manifest()
+    zero_pairs = {(int(o["left"]), int(o["right"])) for o in options if o["kind"] == "identity"}
+    identity = [o for o in options if o["kind"] == "identity"]
+    pairs = {(int(key[1]), int(key[2])) for key in family.keys if key[0] == "pair"}
+    walls = {(int(key[1]), str(key[2])) for key in family.keys if key[0] == "wall"}
+    retained_identity = [
+        o for o in identity if (int(o["left"]), int(o["right"])) not in DROPPED_PAIRS
+    ]
+    contact_pairs = {tuple(sorted((left, right))) for left, right, _, _ in CONTACTS}
+    expected_rows = (
+        sum(1 if label == 9 else 2 for label, _ in walls)
+        + 2 * len(pairs & PARALLEL_PAIRS)
+        + len(pairs - PARALLEL_PAIRS)
+    )
+    counts = document.get("inventory", {}).get("counts", {})
+    checks = {
+        "certificate_blob_is_frozen": git_blob(data) == FEATURE_CERTIFICATE_BLOB,
+        "certificate_sha256": hashlib.sha256(data).hexdigest() == FEATURE_CERTIFICATE_SHA256,
+        "certificate_accepted": document.get("schema") == "n17-endpoint-feature-certificate/v1"
+        and document.get("criterion_passed") is True
+        and document.get("root_git_ref") == FROZEN_ROOT_REF,
+        "manifest_reproduces_counts": counts.get("pairs") == len(zero_pairs) == 21
+        and counts.get("pair_zero") == len(identity) == 33
+        and counts.get("pair_options") == len(options) == 168
+        and counts.get("active_wall_incidences") == len(ANCHORS) == 15
+        and counts.get("parallel_pairs") == len(PARALLEL_PAIRS) == 9,
+        "pairs_are_zero_pairs_minus_dropped": {tuple(sorted(p)) for p in pairs}
+        == zero_pairs - DROPPED_PAIRS
+        and zero_pairs - {(2, 3)} == contact_pairs,
+        "walls_are_active_walls_minus_dropped": walls
+        == set(ANCHORS) - {(5, "right"), (6, "bottom")},
+        "rows_match_the_retained_options": len(family.keys) == expected_rows == 52
+        and len(retained_identity) == 27,
+    }
+    return {
+        "certificate": str(FEATURE_CERTIFICATE.relative_to(REPO)),
+        "certificate_git_ref": FROZEN_FEATURE_REF,
+        "certificate_blob": git_blob(data),
+        "retained_pairs": len(pairs),
+        "retained_walls": len(walls),
+        "retained_identity_options": len(retained_identity),
+        "checks": checks,
+        "passed": all(checks.values()),
+    }
+
+
+STRESS_REBALANCED = (("wall", 5, "bottom"), ("wall", 7, "right"))
+
+
+def family_stress(
+    family: Family, w: Point, reference: Sequence[Q] | None = None
+) -> tuple[dict[RowKey, Q], list[Q]]:
+    """The H-258 stress recomputed at `x*(w)`, and its residual on the 52 columns.
+
+    `deterministic_weights` runs unchanged on the family rows and moved centres: the
+    forces do not depend on `w`, and its moment loop over squares 9 to 14 absorbs the
+    `b` and `z` slides. Two changes follow the family: the 5/7 face is split with
+    `k = (1 - a)/2` instead of 1/2, and, since `tau_{5,7} = -a` moves the 5/7 torque
+    on squares 5 and 7, the moments of the 5-bottom and 7-right walls (each a pair of
+    rows with angle coefficients -1/2, +1/2) absorb the change in the omega_5 and
+    omega_7 columns relative to `reference`, the residual at `w = 0`, without changing
+    any force or the side column.
+    """
+    rows = family_rows(family, w)
+    centres = moved_centres(family, w)
+    weights, scales, moments, _ = deterministic_weights(
+        rows, family.side, family.aux, centres, HALF
+    )
+    stress = {key: Q(value) for key, value in weights.items()}
+    forces, _ = force_roster(family.aux, scales)
+    force, moment, scale = Q(forces[5, 7]), Q(moments[5, 7]), Q(scales["K"])
+    tau = face_offset((5, 7), "ey", family.aux, centres)
+    k = (1 - family.branches[5, 7] * tau) / 2
+    stress["pair", 5, 7, 0] = (force + moment / k) / 2 / scale
+    stress["pair", 5, 7, 1] = (force - moment / k) / 2 / scale
+
+    def residual() -> list[Q]:
+        return [
+            sum((stress[key] * row[c] for key, row in rows.items()), Q(0))
+            - (1 if c == SIDE else 0)
+            for c in range(DIMENSION)
+        ]
+
+    if reference is not None:
+        current = residual()
+        for _, label, wall in STRESS_REBALANCED:
+            change = current[column(label, "angle")] - reference[column(label, "angle")]
+            stress["wall", label, wall, 0] += change
+            stress["wall", label, wall, 1] -= change
+    return stress, residual()
+
+
+def _face_arm(family: Family, key: RowKey, w: Point) -> Q:
+    """The positive arm `k(w)` dividing a face row's weight, 1 for other rows."""
+    pair = (int(key[1]), int(key[2])) if key[0] == "pair" else None
+    if pair is None or pair not in PARALLEL_PAIRS:
+        return Q(1)
+    axis = next(axis for left, right, axis, _ in CONTACTS if (left, right) == pair)
+    tau = face_offset(pair, axis, family.aux, moved_centres(family, w))
+    return (1 - family.branches[pair] * tau) / 2
+
+
+def stress_audit(family: Family, box: Sequence[tuple[Q, Q]]) -> dict[str, Any]:
+    """C11: the recomputed stress is a nonnegative stress on the whole slider box.
+
+    Every column sum of `lambda(w)^T A(w)` is affine in `w` (forces are constant; a
+    face pair contributes `F tau/2 +- m` to its angle columns whatever its arm `k`;
+    wall moments and the 9-14 moments are affine), so equality with the `w = 0`
+    residual, checked exactly at the eight vertices, the centre and two interior
+    points, holds on the box. Each weight is `N(w)/k(w)` with `N` affine and `k > 0`
+    (`k` the face arm, or 1): `N` is checked affine at the extra points, so its sign,
+    and the least value of the weight (linear-fractional), are decided at vertices.
+    At `w = 0` the stress is H-258's own, which binds it to the accepted ring proof.
+    The kernel of the 52 positive rows is re-checked at every vertex: the six slider
+    generators are annihilated exactly and the rank modulo a prime is 46, so the rank
+    over Q is exactly 46 and the kernel is their span.
+    """
+    origin = (Q(0), Q(0), Q(0))
+    _, frozen_weights, _, frozen_residuals = complete_stress(family.t, family.beta, HALF)
+    base, reference = family_stress(family, origin)
+    bound = (
+        set(base) == set(frozen_weights)
+        and all(base[key] == Q(frozen_weights[key]) for key in base)
+        and reference == [Q(value) for value in frozen_residuals]
+    )
+    vertices = box_vertices(box)
+    low = (box[0][0], box[1][0], box[2][0])
+    pins = [low] + [
+        tuple(box[k][1] if k == index else low[k] for k in range(3)) for index in range(3)
+    ]
+    extra = [
+        tuple((lo + hi) / 2 for lo, hi in box),
+        tuple(lo + (hi - lo) * Q(1, 3) for lo, hi in box),
+        tuple(
+            lo + (hi - lo) * f
+            for (lo, hi), f in zip(box, (Q(5, 7), Q(2, 9), Q(8, 11)), strict=True)
+        ),
+    ]
+    numerators: dict[Point, dict[RowKey, Q]] = {}
+    weights_at: dict[Point, dict[RowKey, Q]] = {}
+    balanced = True
+    for point in [*vertices, *extra]:
+        w = (point[0], point[1], point[2])
+        stress, residual = family_stress(family, w, reference)
+        balanced = balanced and residual == reference
+        weights_at[w] = stress
+        numerators[w] = {key: stress[key] * _face_arm(family, key, w) for key in stress}
+    pinned = [numerators[(p[0], p[1], p[2])] for p in pins]
+    affine = True
+    for point in extra:
+        w = (point[0], point[1], point[2])
+        for key in base:
+            value = pinned[0][key] + sum(
+                (
+                    (w[k] - low[k])
+                    / (box[k][1] - box[k][0])
+                    * (pinned[k + 1][key] - pinned[0][key])
+                    for k in range(3)
+                ),
+                Q(0),
+            )
+            affine = affine and value == numerators[w][key]
+    positive = family.keys
+    least: tuple[Q, RowKey, Point] | None = None
+    for vertex in vertices:
+        for key in positive:
+            value = weights_at[vertex][key]
+            if least is None or value < least[0]:
+                least = (value, key, vertex)
+    if least is None:
+        raise ValueError("the slider box has no vertices")
+    vanishing = sorted(
+        row_label(key) for key in positive if any(numerators[v][key] <= 0 for v in vertices)
+    )
+    zeros_exact = all(weights_at[v][key] == 0 for v in vertices for key in ZERO_WEIGHT_KEYS)
+    kernel_ok = True
+    ranks: list[int] = []
+    for vertex in vertices:
+        rows = family_rows(family, vertex)
+        positive_rows = [rows[key] for key in family.keys]
+        vx, vy = (Q(value) for value in family.aux["v"])
+        generators = [
+            {column(5, "x"): Q(1)},
+            {column(6, "x"): Q(1)},
+            {column(6, "y"): Q(1)},
+            {column(6, "angle"): Q(1)},
+            {column(11, "x"): vx, column(11, "y"): vy},
+            {column(13, "x"): vx, column(13, "y"): vy},
+        ]
+        annihilated = all(_apply(row, g) == 0 for row in positive_rows for g in generators)
+        rank = modular_rank(positive_rows)
+        ranks.append(rank)
+        kernel_ok = kernel_ok and annihilated and rank == EXPECTED_RANK_POSITIVE
+    checks = {
+        "origin_is_the_h258_stress": bound,
+        "balanced_like_the_origin_at_eleven_points": balanced,
+        "numerators_affine": affine,
+        "positive_rows_stay_positive": not vanishing,
+        "prescribed_zeros_stay_zero": zeros_exact,
+        "kernel_is_the_slider_span_at_every_vertex": kernel_ok,
+    }
+    return {
+        "rebalanced_wall_moments": [f"{label}:{wall}" for _, label, wall in STRESS_REBALANCED],
+        "origin_residual_columns": {
+            str(c): decimal(value, 6) for c, value in enumerate(reference) if value != 0
+        },
+        "least_weight_at_origin_decimal": decimal(min(base[key] for key in positive), 12),
+        "least_weight": {
+            "value_decimal": decimal(least[0], 12),
+            "row": row_label(least[1]),
+            "vertex": [_fraction_string(value) for value in least[2]],
+        },
+        "rows_reaching_zero": vanishing,
+        "vertex_ranks_mod_p": ranks,
+        "checks": checks,
+        "passed": all(checks.values()),
     }
 
 
@@ -2510,6 +2765,8 @@ def ratio_certify(
         deviation, root_audit = root_box_audit(family, enclosure, box, matrix)
     slides = slide_invariance_audit(family)
     spanning = spanning_audit()
+    roster = roster_binding_audit(family)
+    stress = stress_audit(family, box)
     radii = dict.fromkeys(family.names, radius)
     curvature, curvature_detail = curvature_audit(family, box, radii, enclosure)
     options = unavailable_option_audit(family, box, radii, enclosure=enclosure)
@@ -2579,6 +2836,15 @@ def ratio_certify(
         else []
     )
     if controls:
+        restored = slide_invariance_audit(family, restore=frozenset({(9, 11)}))
+        control_rows.append(
+            {
+                "control": "non-tight-row-9/11-restored",
+                "check": "C2",
+                "not_invariant": restored["not_invariant"],
+                "control_passed": not restored["passed"],
+            }
+        )
         flipped = unavailable_option_audit(family, box, radii, largest_corner=True)
         control_rows.append(
             {
@@ -2596,6 +2862,8 @@ def ratio_certify(
         "c4_symbolic_in_root_parameters": symbolic["passed"],
         "c2_slide_invariance": slides["passed"],
         "c10_spanning": spanning["passed"],
+        "c1_roster_binding": roster["passed"],
+        "c11_stress_on_the_box": stress["passed"],
         "c8i_root_box": root_audit["passed"],
         "c8_c9_every_direction": passed_all,
         "c8_cells_tile_the_box": tiled,
@@ -2623,6 +2891,8 @@ def ratio_certify(
         "c4_symbolic": symbolic,
         "c2_slide_invariance": slides,
         "c10_spanning": spanning,
+        "c1_roster_binding": roster,
+        "c11_stress": stress,
         "c8i_root_box": root_audit,
         "c6_unavailable_options": options,
         "c7_curvature": curvature_detail,
@@ -2845,9 +3115,10 @@ def ratio_main(args: argparse.Namespace) -> int:
     receipt = {
         "schema": RATIO_SCHEMA,
         "scope": (
-            "H-261 recipe items C3, C4, C6, C7, C8 (with the root-box residual), C9, C10, "
-            "C12 and the slide half of C2 over the declared slider box, certificates exact "
-            "at the exp-237 root-box midpoint; planning evidence, not an H-261 verdict"
+            "H-261 recipe items C1 (roster binding), C3, C4, C6, C7, C8 (with the root-box "
+            "residual), C9, C10, C11, C12 and the slide half of C2 over the declared slider "
+            "box, certificates exact at the exp-237 root-box midpoint; planning evidence, "
+            "not an H-261 verdict"
         ),
         "inputs": {
             "root_certificate": str(args.root_certificate),

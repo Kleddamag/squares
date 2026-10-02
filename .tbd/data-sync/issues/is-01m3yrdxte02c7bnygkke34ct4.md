@@ -5,7 +5,7 @@ title: Import, confirm and answer every reported result (2 October 2026 effort)
 kind: epic
 status: open
 priority: 1
-version: 23
+version: 24
 labels:
   - result-import
 dependencies: []
@@ -31,7 +31,7 @@ child_order_hints:
   - is-01m3ytdhr6h2xnsvj4f2nc2nk2
   - is-01m3z77bdhk8tn3epx63ywhxft
 created_at: 2026-10-02T16:51:15.917Z
-updated_at: 2026-10-02T21:10:03.726Z
+updated_at: 2026-10-02T22:53:00.927Z
 ---
 Umbrella for the 2 October 2026 effort: PRs #290 -> #292 -> #298 (imports and records), plus a stacked PR for verifier provenance and the independent verifier. Children track each lane; done when every reported result is confirmed or refuted (or has a bead naming exactly what remains), every issue has a current status reply, closeable issues are closed, and all PRs are merged.
 
@@ -84,3 +84,16 @@ Fetch the branches above; `tbd show think-20pp` (and children) for per-item next
 - Push A landed on #298 (0586bacb3): merges of lanes Q, Z, T, V, CC, DD; T-048 and T-055 at V3/C3. Push B in progress (40d83d262: receipts for n37, n65, n66, n90, n92, n84, n85, all FULL_REPLAY_MATCHES_SHIPPED).
 - #309 (lane AA) done: all three checkers accept 31360/7901 at N=24000; branch worktree-agent-a398285876beb6313 @b33e5b390 is LOCAL ONLY (its push was refused by the permission classifier); handoff saved in think-gh2o notes; records lane will merge and register.
 - Lane BB done: s(12) >= 15680000/3949423 = 3.9702002 by re-weighting (this project's own result), on claude/lane-bb-s12-improvement; needs an independent review before registering: think-4srr.
+
+### Update 2026-10-02 ~22:30 UTC: weekly usage limit reached (resets 2026-10-07 04:00 UTC)
+The local records lane and the fast-verifier lane W2 were stopped by the limit; cloud runners and lanes stopped pushing between about 20:20 and 21:10 UTC (their sessions cannot wake until the limit resets; resend a short "resume" message to each after the reset).
+
+On #298's branch now (pushed, head 1dd6069eb): T-048 and T-055 at V3/C3; T-069 (n37, 65, 66, 90, 92) and T-071 (n84, 85) at V3/C3 with seven replay evidence entries (9f8ec8b83, re-pinned in 5186ebdee); lanes Q, Z, T, V, CC, DD and AA merged. Validated with packing-validate --records and --edit (both clean); the push tier's reachable tests time out on this container under load, so hosted CI on #298 is the gate: check it first.
+
+Next steps for the next agent, in order:
+1. T-068: merge the 30 rectangle transfer dirs (claude/replay-wand125-rect-oct1-r1..r4, transfer/wand125-rect-oct1-rN-qM; all EXIT 0) with `audit_wand125_rectangles --packet 2026-10-01 --out packing/resources/web/wand125-rectangle-certificates-2026-10-01/receipts/replay --merge <dirs>`, then `apply_wand125_rectangles`; render, re-pin (release.py DATA_REVISION = the records commit), validate, push.
+2. Register the ten afternoon wand125 certificates at V0/C1 (lane V's review): mixed entry first (n83, 85-88, 91-93, 96), then linear n82, then `apply_wand125_rectangles --packet 2026-10-02` (finding AF-6 fixes the order).
+3. Register #309 from think-gh2o's notes (squarepacker after Evan Daniel, S2).
+4. Lane BB's own s(12) >= 15680000/3949423: blind review, then register (think-4srr).
+5. After the limit resets, resume the runners (session ids above) and collect: afternoon replays (m3, m4, m5, r5, n82 on r4 and the s(77) runner), T-046 leftovers (r1, r2), T-073 n83 (m1), T-064 qx2 (q1 had not pushed; q2 partial) and wand125 Valid7 shards (w1, w3, w5 partial; w2, w4 had not pushed), lane LL (pushed its Lean build commit: read its handoff), EE (census), FF (s(61)).
+6. Stacked verifier PR (think-tatg), then issue replies after merge (`check_requests --draft N`, owner's permission to post).

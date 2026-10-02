@@ -1,0 +1,7 @@
+# command: verify2/target/release/zmx2 cert certificates/n77_mixed_cover_9.txt --full --pair-points --threads 4 --log /home/user/squares/transfer/n77-full/n77_zmx2_full_pairpoints_x45-89_y0-89_roots.log --xlo 45 --xhi 89 --ylo 0 --yhi 89
+# cwd: s12/ staged by devtools.replay_evand_zmx2: zmx2.rs 6b7f0f79466bf25c9a85f8fe2f3866de734935f0521ea188136818c2fb5b3fed built from retained bytes; cover 47b57cfe38cbfdbcf5320e59caffe712f4ef32df8aad42b0d7f697de6d26cdd7 decompressed from packing/resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m4_n77_L9/n77_mixed_cover_9.txt.gz; resumes the root log of n77_zmx2_full_pairpoints_x45-89_y0-89.log
+# python3: not used by this command
+# host: 4 cores; load 3.62 3.92 3.97; started 2026-10-02T13:02:51Z
+# zmx2 cert hash=f69807b8322a68fb mode=full atoms=pairpts depth=40 node_cap=20000000 kappa=1.5 K=30 region=x45-89,y0-89,bins0-3
+cover: s = 9/1, 28273 points, 6420 segments, total 43347137744028965/562949953421312 = 76.99998460003
+roots: 32400 in region, 20251 already done (log), 12149 to run, 4 threads

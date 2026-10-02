@@ -75,6 +75,8 @@ def run(
     max_rounds: int,
     max_seconds: float,
     cover: str,
+    collision: bool = True,
+    hull_limit: int | None = 16,
 ) -> dict[str, Any]:
     started = time.monotonic()
     mask = sorted(frame.cell_names.index(cell) for cell in cells)
@@ -86,6 +88,9 @@ def run(
         max_rounds=max_rounds,
         budget=budget,
         node_id=f"n17-{name}",
+        collision=collision,
+        hull_limit=hull_limit,
+        stop_at=started + max_seconds / 2,
         progress=lambda event: print(
             json.dumps({**event, "seconds": round(time.monotonic() - started, 1)}),
             file=sys.stderr,
@@ -114,6 +119,8 @@ def run(
         "bins": bins,
         "max_rounds": max_rounds,
         "cover_backend": cover,
+        "collision_regions": collision,
+        "hull_limit": hull_limit,
         "producer_outcome": production.outcome,
         "certified": "closed" if closed else "stalled",
         "closure": trace.closure,
@@ -171,6 +178,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--max-rounds", type=int, default=6)
     parser.add_argument("--cover", choices=sorted(sequential.COVERS), default="indexed")
     parser.add_argument("--max-seconds", type=float, default=1800.0)
+    parser.add_argument("--no-collision", action="store_true", help="no partner collisions")
+    parser.add_argument("--hull-limit", type=int, default=16, help="0 keeps every vertex")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
     if not math.isfinite(args.max_seconds) or args.max_seconds <= 0:
@@ -190,6 +199,8 @@ def main(argv: list[str] | None = None) -> int:
             max_rounds=args.max_rounds,
             max_seconds=args.max_seconds,
             cover=args.cover,
+            collision=not args.no_collision,
+            hull_limit=args.hull_limit or None,
         )
     except IncompleteError as error:
         result = {"status": "INCOMPLETE", "reason": str(error), "excluded_orbits": 0}

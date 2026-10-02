@@ -307,6 +307,12 @@ def check_row(
 
 def compressed(step: Mapping[str, Any], prior: Polygon, kernel: Polygon) -> Polygon:
     """The owner's new hull: the prior hull and grid points proved convex combinations."""
+    return hull(prior + compression_points(step, prior, kernel))
+
+
+def compression_points(step: Mapping[str, Any], prior: Polygon, kernel: Polygon) -> Polygon:
+    """The step's grid points, each proved an exact convex combination of at most three
+    vertices of the hull of the prior hull and the promoted kernel."""
     original = hull(prior + kernel)
     require(
         same(points(step["compression_source_hull"]), original),
@@ -336,7 +342,7 @@ def compressed(step: Mapping[str, Any], prior: Polygon, kernel: Polygon) -> Poly
             and point == combination,
             "compressed point is not a proved convex combination",
         )
-    return hull(prior + new_points)
+    return new_points
 
 
 @dataclass

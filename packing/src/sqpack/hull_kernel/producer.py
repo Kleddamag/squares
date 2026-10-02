@@ -19,8 +19,9 @@ node closes. The policy is the adaptation spec's first producer (section 5, slic
   promoted by grid points (denominator `2^20`) inside the hull of the prior hull and the
   kernel, each an exact convex combination of at most three of its vertices.
 
-It stops at the first closure it sees, after `max_rounds` rounds, or when a round
-changes no owner's rows or hull.
+It stops at the first closure it sees, after `max_rounds` rounds, when a round changes
+no owner's rows or hull, or at `stop_at`, leaving the checker time to certify the steps
+made so far (a node without closure is a stall, and excludes nothing).
 """
 
 from __future__ import annotations
@@ -33,7 +34,7 @@ from dataclasses import dataclass, field
 from fractions import Fraction as Q
 from typing import Any
 
-from sqpack.hull_kernel.collision import SUPPORT_NORMALS, outward_round
+from sqpack.hull_kernel.collision import SUPPORT_NORMALS, facets, outward_round
 from sqpack.hull_kernel.counting import row_envelope
 from sqpack.hull_kernel.covers import convex_halfplanes
 from sqpack.hull_kernel.frame import Frame
@@ -224,6 +225,144 @@ def compress(original: Polygon) -> tuple[list[Point], list[dict[str, Any]]]:
     ]
 
 
+def cached_core(
+    frame: Frame, lo: Q, hi: Q, cores: dict[tuple[Q, Q], Polygon] | None
+) -> Polygon:
+    if cores is None:
+        return envelope_core(frame, lo, hi)
+    if (lo, hi) not in cores:
+        cores[(lo, hi)] = envelope_core(frame, lo, hi)
+    return cores[(lo, hi)]
+
+
+def collision_region(
+    core: Polygon, domain: Polygon, partner_rows: list[tuple[Polygon, Polygon]]
+) -> Polygon:
+    """A convex part of `domain` every centre of which collides with every partner pose.
+
+    The exact set is the domain cut by every facet `n.p <= h + min over D_r of n.y` of
+    every live partner row's `Q_r - Q_i`. It is located in floating point; the region
+    returned is the hull of grid points pulled inside it, each checked exactly against
+    every one of those halfplanes and the domain's, together with the domain's own vertices
+    that pass the same exact check, so a domain that collides everywhere is removed whole;
+    the checker verifies the same inequalities itself.
+    """
+    if not _float_collision(core, domain, partner_rows):
+        return []
+    planes: list[Halfplane] = []
+    for partner_domain, partner_core in partner_rows:
+        difference = hull([(x - qx, y - qy) for x, y in partner_core for qx, qy in core])
+        planes.extend(
+            (nx, ny, upper + min(nx * x + ny * y for x, y in partner_domain))
+            for nx, ny, upper in facets(difference)
+        )
+    region = [(float(x), float(y)) for x, y in domain]
+    for a, b, c in planes:
+        region = _float_clip(region, float(a), float(b), float(c))
+        if len(region) < 3:
+            return []
+    planes.extend(convex_halfplanes(domain))
+    cx = sum(x for x, _ in region) / len(region)
+    cy = sum(y for _, y in region) / len(region)
+    kept = [
+        vertex
+        for vertex in domain
+        if all(a * vertex[0] + b * vertex[1] <= c for a, b, c in planes)
+    ]
+    for x, y in region:
+        for pull in (2.0**-12, 2.0**-6, 2.0**-3):
+            point = (
+                Q(round((x + (cx - x) * pull) * GRID), GRID),
+                Q(round((y + (cy - y) * pull) * GRID), GRID),
+            )
+            if all(a * point[0] + b * point[1] <= c for a, b, c in planes):
+                kept.append(point)
+                break
+    polygon = hull(kept)
+    return polygon if len(polygon) >= 3 and area2(polygon) > 0 else []
+
+
+def _float_hull(points_: list[tuple[float, float]]) -> list[tuple[float, float]]:
+    ordered = sorted(set(points_))
+    if len(ordered) <= 2:
+        return ordered
+
+    def turn(a: tuple[float, float], b: tuple[float, float], c: tuple[float, float]) -> float:
+        return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])
+
+    lower: list[tuple[float, float]] = []
+    upper: list[tuple[float, float]] = []
+    for point in ordered:
+        while len(lower) >= 2 and turn(lower[-2], lower[-1], point) <= 0:
+            lower.pop()
+        lower.append(point)
+    for point in reversed(ordered):
+        while len(upper) >= 2 and turn(upper[-2], upper[-1], point) <= 0:
+            upper.pop()
+        upper.append(point)
+    return lower[:-1] + upper[:-1]
+
+
+def _float_collision(
+    core: Polygon, domain: Polygon, partner_rows: list[tuple[Polygon, Polygon]]
+) -> bool:
+    """Whether the collision set meets the domain in floating point: a cheap prefilter
+    that only decides whether the exact construction is worth attempting."""
+    query = [(float(x), float(y)) for x, y in core]
+    region = [(float(x), float(y)) for x, y in domain]
+    for partner_domain, partner_core in partner_rows:
+        centres = [(float(x), float(y)) for x, y in partner_domain]
+        difference = _float_hull(
+            [(float(x) - qx, float(y) - qy) for x, y in partner_core for qx, qy in query]
+        )
+        for a, b in zip(difference, difference[1:] + difference[:1], strict=True):
+            nx, ny = b[1] - a[1], a[0] - b[0]
+            bound = nx * a[0] + ny * a[1] + min(nx * x + ny * y for x, y in centres)
+            region = _float_clip(region, nx, ny, bound)
+            if len(region) < 3:
+                return False
+    return True
+
+
+def partner_cover(
+    frame: Frame, accepted: list[Row], cores: dict[tuple[Q, Q], Polygon]
+) -> tuple[list[dict[str, Any]], list[tuple[Polygon, Polygon]]]:
+    """A partner's complete pose cover in the grammar, and its live rows."""
+    given: list[dict[str, Any]] = []
+    live: list[tuple[Polygon, Polygon]] = []
+    for row in accepted:
+        vertices = [
+            vertex for polygon in row["residual_polygons"] for vertex in points(polygon)
+        ]
+        item: dict[str, Any] = {
+            "reference": row["reference"],
+            "interval": row["interval"],
+            "domain": [],
+            "core": [],
+        }
+        if vertices:
+            lo, hi = (Q(value) for value in row["interval"])
+            domain, core = hull(vertices), cached_core(frame, lo, hi, cores)
+            item["domain"], item["core"] = encode(domain), encode(core)
+            live.append((domain, core))
+        given.append(item)
+    return given, live
+
+
+def bounded_vertices(original: Polygon, limit: int) -> list[int]:
+    """Indices of at most `limit` vertices, dropping the one that costs least area first."""
+    kept = list(range(len(original)))
+    while len(kept) > max(limit, 3):
+        losses = []
+        for position, index in enumerate(kept):
+            a = original[kept[position - 1]]
+            b = original[index]
+            c = original[kept[(position + 1) % len(kept)]]
+            losses.append(abs((b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])))
+        kept.pop(losses.index(min(losses)))
+    return kept
+
+
 def produce_row(
     frame: Frame,
     *,
@@ -233,6 +372,8 @@ def produce_row(
     owner: int,
     predecessor: Row,
     groups: dict[int, Polygon],
+    partners: dict[int, list[tuple[Polygon, Polygon]]] | None = None,
+    cores: dict[tuple[Q, Q], Polygon] | None = None,
 ) -> tuple[dict[str, Any], Row, list[Halfplane]]:
     lo, hi = (Q(value) for value in predecessor["interval"])
     reference = {"kind": "phase3", "node": node_id, "step": step_index, "row": row_index}
@@ -257,11 +398,17 @@ def produce_row(
     }
     if not required:
         return row, accepted, []
-    core = envelope_core(frame, lo, hi)
+    core = cached_core(frame, lo, hi, cores)
     row["core_vertices"] = encode(core)
     pieces = [list(required)]
     positive = area2(required) > 0
-    for region in [region for region in forbidden_regions(groups, owner, core) if region]:
+    removed = [region for region in forbidden_regions(groups, owner, core) if region]
+    for partner, live in sorted((partners or {}).items()):
+        region = collision_region(core, required, live)
+        if region:
+            row["collision_regions"].append({"partner": partner, "vertices": encode(region)})
+            removed.append(region)
+    for region in removed:
         pieces = subtract(pieces, region, keep_area_only=positive)
         if not pieces:
             break
@@ -352,6 +499,9 @@ def produce(
     budget: Budget,
     node_id: str = "n17-subpattern",
     progress: Callable[[dict[str, Any]], None] | None = None,
+    collision: bool = True,
+    hull_limit: int | None = 16,
+    stop_at: float | None = None,
 ) -> Production:
     """Seed, then round-robin complete steps until closure, a stall or the round cap."""
     seed = build_seed(frame, mask, bins=bins, budget=budget)
@@ -378,13 +528,25 @@ def produce(
     steps: list[dict[str, Any]] = []
     closure: dict[str, Any] | None = None
     production = Production(seed, {})
+    cores: dict[tuple[Q, Q], Polygon] = {}
     previous: list[dict[str, Any]] | None = None
     for round_index in range(max_rounds):
         for owner in mask:
             if time.monotonic() >= budget.deadline:
                 raise IncompleteError("producer wall ceiling")
+            if stop_at is not None and steps and time.monotonic() >= stop_at:
+                production.outcome = "time_cap"
+                break
             step_index = len(steps)
             prior_hulls = {str(other): encode(groups[other]) for other in mask}
+            covers: dict[str, list[dict[str, Any]]] = {}
+            partners: dict[int, list[tuple[Polygon, Polygon]]] = {}
+            if collision:
+                for other in mask:
+                    if other != owner:
+                        given, live = partner_cover(frame, rows[other], cores)
+                        if live:
+                            covers[str(other)], partners[other] = given, live
             produced = [
                 produce_row(
                     frame,
@@ -394,6 +556,8 @@ def produce(
                     owner=owner,
                     predecessor=predecessor,
                     groups=groups,
+                    partners=partners,
+                    cores=cores,
                 )
                 for index, predecessor in enumerate(rows[owner])
             ]
@@ -403,7 +567,7 @@ def produce(
                 "index": step_index,
                 "owner": owner,
                 "allowed_half_angle": ["0", "1"],
-                "prior_partner_pose_covers": {},
+                "prior_partner_pose_covers": covers,
                 "prior_owned_hulls": prior_hulls,
                 "rows": [row for row, _, _ in produced],
                 "complete": True,
@@ -414,15 +578,27 @@ def produce(
             ):
                 original = hull(groups[owner] + kernel)
                 new_points, witnesses = compress(original)
-                step["compression_source_hull"] = encode(original)
-                step["inner_grid_compression"] = {
+                receipt: dict[str, Any] = {
                     "vertices": [_encode_point(point) for point in new_points],
                     "witnesses": witnesses,
                     "denominator": GRID,
                     "original_vertices": len(original),
                     "retained_vertices": len(new_points),
                 }
-                groups[owner] = hull(groups[owner] + new_points)
+                if hull_limit is not None and new_points == original:
+                    keep = bounded_vertices(original, hull_limit)
+                    new_points = [original[index] for index in keep]
+                    receipt.update(
+                        vertices=[_encode_point(point) for point in new_points],
+                        witnesses=[witnesses[index] for index in keep],
+                        retained_vertices=len(new_points),
+                        mode="replace",
+                    )
+                    groups[owner] = hull(new_points)
+                else:
+                    groups[owner] = hull(groups[owner] + new_points)
+                step["compression_source_hull"] = encode(original)
+                step["inner_grid_compression"] = receipt
             rows[owner] = [accepted for _, accepted, _ in produced]
             steps.append(step)
             if progress is not None:
@@ -442,6 +618,8 @@ def produce(
         production.rounds.append(
             {"round": round_index, "steps": len(steps), "extents": extents}
         )
+        if production.outcome == "time_cap":
+            break
         if closure is not None:
             production.outcome = "closed"
             break

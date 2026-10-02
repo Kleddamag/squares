@@ -32,7 +32,7 @@ from dataclasses import dataclass, field
 from fractions import Fraction as Q
 from typing import Any
 
-from sqpack.hull_kernel.collision import self_hull_cuts
+from sqpack.hull_kernel.collision import integer_universal_collision, self_hull_cuts
 from sqpack.hull_kernel.covers import (
     closed_degenerate_cover,
     convex_halfplanes,
@@ -58,6 +58,7 @@ from sqpack.hull_kernel.node import (
     admit_final_state,
     admit_header,
     compressed,
+    compression_points,
     node_mask,
     points,
     remaining,
@@ -113,8 +114,16 @@ def check_row(
     predecessor: Mapping[str, Any],
     budget: Budget,
     cover: str = "reference",
+    partners: Mapping[int, list[tuple[Polygon, Polygon]]] | None = None,
 ) -> RowResult:
-    """One closed row of the sequential grammar, from its accepted predecessor."""
+    """One closed row of the sequential grammar, from its accepted predecessor.
+
+    A collision region names an admitted partner; it is accepted only if every vertex lies
+    in the row's legal domain and, for every live row `(D_r, Q_r)` of that partner's
+    complete pose cover, in every facet `n.p <= h + min over D_r of n.y` of `Q_r - Q_i`
+    (`integer_universal_collision`): square `i` centred there overlaps the partner in
+    every pose the partner can still take.
+    """
     row = step["rows"][row_index]
     owner = step["owner"]
     require(row["prior_reference"] == predecessor["reference"], "row predecessor reference")
@@ -158,16 +167,30 @@ def check_row(
     domain = required
     core = convex(points(row["core_vertices"]))
     strict_core(frame, core, lo, hi)
-    require(
-        row["collision_regions"] == [], "collision regions are not lifted into this grammar"
-    )
+    collisions: list[Polygon] = []
+    collision_checks = 0
+    for item in row["collision_regions"]:
+        partner = item["partner"]
+        require(partners is not None and partner in partners, "collision partner not admitted")
+        assert partners is not None
+        region = convex(points(item["vertices"]))
+        collision_checks += integer_universal_collision(
+            core, domain, partners[partner], region, budget=budget
+        )
+        collisions.append(region)
     forbidden = [region for region in forbidden_regions(prior, owner, core) if region]
     residual = [convex(points(poly)) for poly in row["residual_polygons"]]
+    regions = forbidden + collisions + residual
     coverage = (
-        COVERS[cover](domain, forbidden + residual, budget=budget)
+        COVERS[cover](domain, regions, budget=budget)
         if area2(domain) > 0
-        else closed_degenerate_cover(domain, forbidden + residual, budget=budget)
+        else closed_degenerate_cover(domain, regions, budget=budget)
     )
+    coverage = {
+        **coverage,
+        "collision_regions": len(collisions),
+        "collision_checks": collision_checks,
+    }
     vertices = [point for poly in residual for point in poly]
     expected = common_core_planes(core, vertices)
     actual = [
@@ -249,6 +272,57 @@ def owner_extents(
     }
 
 
+def admit_partner_covers(
+    frame: Frame,
+    step: Mapping[str, Any],
+    rows: Mapping[int, list[Row]],
+    *,
+    mask: Sequence[int],
+) -> dict[int, list[tuple[Polygon, Polygon]]]:
+    """Each named partner's complete pose cover, row for row from its accepted state.
+
+    A cover row cites the partner's accepted row by reference and interval; its domain is
+    the hull of that row's residual vertices, which holds every centre the partner can
+    take at those angles; its core is proved strictly inside the partner's square at every
+    angle of the row. Rows with no residual are empty (no pose there). A partner with no
+    live row would be a closure already, so an empty cover is refused, never quantified.
+    """
+    covers = step["prior_partner_pose_covers"]
+    require(isinstance(covers, dict), "partner covers must be a mapping")
+    admitted: dict[int, list[tuple[Polygon, Polygon]]] = {}
+    for key, given in covers.items():
+        partner = int(key)
+        require(
+            str(partner) == key and partner in mask and partner != step["owner"],
+            "partner cover names no other owner",
+        )
+        accepted = rows[partner]
+        require(isinstance(given, list) and len(given) == len(accepted), "partner cover rows")
+        live: list[tuple[Polygon, Polygon]] = []
+        for item, row in zip(given, accepted, strict=True):
+            require(
+                item["reference"] == row["reference"] and item["interval"] == row["interval"],
+                "partner cover row differs from the accepted row",
+            )
+            vertices = [
+                vertex for polygon in row["residual_polygons"] for vertex in points(polygon)
+            ]
+            if not vertices:
+                require(
+                    item["domain"] == [] and item["core"] == [], "empty partner row has a pose"
+                )
+                continue
+            domain = hull(vertices)
+            require(same(points(item["domain"]), domain), "partner cover domain differs")
+            lo, hi = (Q(value) for value in row["interval"])
+            core = convex(points(item["core"]))
+            strict_core(frame, core, lo, hi)
+            live.append((domain, core))
+        require(bool(live), "an empty partner cover is a closure, not a quantifier")
+        admitted[partner] = live
+    return admitted
+
+
 @dataclass
 class SequentialTrace:
     """What the replay accepted: per-step coverage, the state, closure or stall extents."""
@@ -301,10 +375,8 @@ def replay_sequential(
             "step owner/order",
         )
         require(
-            step["allowed_half_angle"] == ["0", "1"]
-            and step["prior_partner_pose_covers"] == {}
-            and step["complete"] is True,
-            "unsupported angle, partner or incomplete step",
+            step["allowed_half_angle"] == ["0", "1"] and step["complete"] is True,
+            "unsupported angle or incomplete step",
         )
         require(
             set(step["prior_owned_hulls"]) == set(map(str, mask))
@@ -312,6 +384,7 @@ def replay_sequential(
             "step previous accepted state",
         )
         predecessors = complete_refinement(step["rows"], rows[owner], max_rows=budget.max_nodes)
+        partners = admit_partner_covers(frame, step, rows, mask=mask)
         results = [
             check_row(
                 frame,
@@ -322,6 +395,7 @@ def replay_sequential(
                 predecessor=predecessor,
                 budget=budget,
                 cover=cover,
+                partners=partners,
             )
             for row_index, predecessor in enumerate(predecessors)
         ]
@@ -335,7 +409,11 @@ def replay_sequential(
                 "promoted point lacks full-row ownership proof",
             )
         if all_vertices and (groups[owner] or kernel):
-            groups[owner] = compressed(step, groups[owner], kernel)
+            groups[owner] = (
+                hull(compression_points(step, groups[owner], kernel))
+                if step["inner_grid_compression"].get("mode") == "replace"
+                else compressed(step, groups[owner], kernel)
+            )
         else:
             require("inner_grid_compression" not in step, "nothing to promote, yet compression")
         rows[owner] = [result[3] for result in results]
@@ -346,6 +424,10 @@ def replay_sequential(
                 "rows": len(results),
                 "events": sum(result[0]["events"] for result in results),
                 "probes": sum(result[0]["probes"] for result in results),
+                "collision_regions": sum(
+                    result[0].get("collision_regions", 0) for result in results
+                ),
+                "partners": sorted(partners),
                 "live_rows": sum(1 for result in results if result[3]["residual_polygons"]),
                 "owned_hull_vertices": len(groups[owner]),
             }

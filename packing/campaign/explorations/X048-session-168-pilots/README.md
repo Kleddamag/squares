@@ -95,6 +95,35 @@ unchanged and exact on the same kernel.
 Reproduce, from `packing/`:
 `uv run --frozen --all-extras --group dev python -m devtools.check_n17_subpattern --pattern W7 --bins 64 --max-rounds 6 --output FILE`.
 
+### With Collision Regions
+
+The second kernel slice wired collision regions into the sequential grammar.
+A partner’s complete pose cover is admitted row for row, and every region is verified
+exactly before it joins a cover.
+It also caps owned hulls at 16 vertices, and adds a producer time cap whose partial node
+is certified as a stall.
+The tool’s SHA-256 is now `3b9e9264…`. A fast test closes a two-cell pattern through
+collision alone, where neither owner holds a point and nothing closes without collision.
+
+| Receipt | Pattern | Bins | Outcome | Wall |
+| --- | --- | ---: | --- | ---: |
+| `receipts/kernel-collision-A-bins32.json` | A | 32 | time cap after round 5, still contracting | 404 s |
+| `receipts/kernel-collision-W7-bins32.json` | W7 | 32 | time cap after round 7, contraction mostly over by round 4 | 1,016 s |
+| `receipts/kernel-collision-B-bins16.json` | B | 16 | stall, round 1 equals round 0 | 45 s |
+| `receipts/kernel-collision-endpoint6-bins64.json` | Control | 64 | stall, as required | 573 s |
+
+Collision reaches A’s blind owner: interior-N now owns points.
+A contracts hard at 32 bins.
+interior-W falls from 32 live rows to 12, and its residual from $0.78\times0.35$ to
+$0.66\times0.23$. interior-NW falls to 16 rows and $0.59\times0.13$, and interior-SE to
+23 rows and $0.20\times0.59$. It is the likeliest first closure, if run without the time
+cap.
+W7 at 32 bins with capped hulls contracts less than the uncapped 64-bin run did, and
+side-N0 never moves.
+The two changes are confounded.
+B does not move: four of its six owners never own a point.
+Collision cost now dominates, and exact plane construction is most of it.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import base64
 import html
+import itertools
 import math
 import re
 import textwrap
@@ -191,11 +192,20 @@ CARD_LARGE_FROM = 160
 #: one-line notes are small; the rest carry a sentence and are medium.
 SECTION_CARD_SIZES: dict[str, CardSize] = {
     "pages": "medium",
-    "survey": "medium",
     "atlas": "medium",
     "projects": "medium",
     "documents": "small",
 }
+
+#: A section set in lines of its own, as counts of its cards in order, where one
+#: wrapping row would not set them as they are meant to read: the five page cards stand
+#: one, two and two, the Frontier page alone at the top, then the two papers, then the
+#: tutorial and the workbench (the owner, 2026-10-02, `think-ns3d`; they stood two over
+#: three from `think-ec5k` the same day, the Frontier page's card last). Each line is a
+#: row of its own, and none sets more cards to a line than the longest line holds, so the
+#: lines share one column width, half the frame's. The stylesheet holds each longest line
+#: here to a rule.
+SECTION_CARD_LINES: dict[str, tuple[int, ...]] = {"pages": (1, 2, 2)}
 
 
 #: Elements with no end tag, which open nothing a parser must later close.
@@ -374,9 +384,18 @@ def card(
     )
 
 
-def _cards(cards: list[str]) -> str:
-    frame = '<div class="site-cards-frame site-wide"><div class="site-cards">'
-    return frame + "".join(cards) + "</div></div>"
+def _cards(cards: list[str], section: str = "") -> str:
+    """A card section's frame and its cards: one wrapping row, or for a section of
+    `SECTION_CARD_LINES` a row per line, each no wider than its longest line."""
+    lines = SECTION_CARD_LINES.get(section, (len(cards),))
+    if sum(lines) != len(cards):
+        raise SystemExit(f"{section}: {len(cards)} cards in lines of {lines}")
+    most = f' data-cards-most="{max(lines)}"' if section in SECTION_CARD_LINES else ""
+    rows = "".join(
+        f'<div class="site-cards"{most}>{"".join(cards[end - count : end])}</div>'
+        for count, end in zip(lines, itertools.accumulate(lines), strict=True)
+    )
+    return f'<div class="site-cards-frame site-wide">{rows}</div>'
 
 
 # ---------- Row popovers: the one way a table row shows its detail ----------
@@ -508,7 +527,10 @@ def _detail(result: Result) -> str:
 
 
 def _records(result: Result) -> str:
-    return " · ".join(
+    """A result's records, its case link, the register, its evidence, source and reviews,
+    as its Details cell sets them: one link to a line on a wide screen, and on a phone a
+    line under the claim, a dot drawn between two links (`site.css`)."""
+    return "".join(
         f'<a href="{_esc(link.url)}"'
         + (f' title="{_esc(link.title)}"' if link.title else "")
         + f">{_esc(link.label)}</a>"
@@ -817,26 +839,34 @@ def result_filters(
 
 def result_head() -> str:
     """The header row of a table of results: the one set of columns both tables carry,
-    in one order. The id, which is the row's trigger; the cases; the result, with its
-    records under it; the credit; the rungs, with the kind under them and the status
-    under that; and the date. A column sorts where an order means something, on either
-    page."""
+    in one order. The date; the result; the cases; the credit; the rungs, with the kind
+    under them; the status; the details, the result's records a link to a line; and the
+    id, which is the row's trigger. The owner set this order on 2026-10-02: the id led
+    and the date closed the row until then (`think-t090`); the status stood under the
+    kind, in the rungs' cell, though it is where the result stands and no rung
+    (`think-ybt5`); and the records stood on a line under the summary, where the result's
+    cell holds the claim alone now (`think-e4o3`). A column sorts where an order means
+    something, on either page."""
     return (
         "<thead><tr>"
-        '<th data-sort="text" class="site-col-id">ID</th>'
-        '<th data-sort="num" class="num site-col-n">n</th>'
-        '<th class="site-col-result">Result</th>'
-        '<th data-sort="text">Credit</th>'
-        '<th data-sort="text" title="Significance, verification and confirmation, then '
-        'what the result is, and how far the work on it here has gone">Rungs</th>'
         '<th data-sort="text" title="Published, for a result by others; established, for '
         f'this project{APOSTROPHE}s">Date</th>'
+        '<th class="site-col-result">Result</th>'
+        '<th data-sort="num" class="num site-col-n">n</th>'
+        '<th data-sort="text">Credit</th>'
+        '<th data-sort="text" title="Significance, verification and confirmation, then '
+        'what the result is">Rungs</th>'
+        '<th data-sort="text" class="site-col-status" title="How far the work on it here '
+        "has gone: recorded, reviewed, confirmed or incomplete; then who has the next "
+        'move, and superseded where it is">Status</th>'
+        '<th class="site-col-details">Details</th>'
+        '<th data-sort="text" class="site-col-id">ID</th>'
         "</tr></thead>"
     )
 
 
 def id_cell(result: Result, detail: RowDetail) -> str:
-    """A result's id cell, the first of its row in both tables of results: the id in a
+    """A result's id cell, the last of its row in both tables of results: the id in a
     column of its own (`.site-col-id`), as the row's native trigger, which opens the
     row's popover without scripts (`row_detail`)."""
     return f'<td class="site-col-id" data-value="{_esc(result.id)}">{detail.trigger}</td>'
@@ -886,29 +916,28 @@ def date_cell(result: Result) -> str:
 
 def result_cells(result: Result, overview: Overview, detail: RowDetail) -> str:
     """A result's cells, one for each column of `result_head`, the same on both tables:
-    its id (`id_cell`), its cases (`case_list`), its summary with the star a new result
-    earns (`result_text`, `new_result_star`) and its records on a quiet line under it,
-    its credit (`credit_cell`), its rung chips with its kind on a line under them
-    (`kind_chip`) and its status line under that (`status_marks`), and its date
-    (`date_cell`). The records are no column of their own: a column narrow enough to fit
-    set them a link to a line, and under the summary they take a line or two, in both
-    tables."""
+    its date (`date_cell`), its summary with the star a new result earns (`result_text`,
+    `new_result_star`), its cases (`case_list`), its credit (`credit_cell`), its rung
+    chips with its kind on a line under them (`kind_chip`), its status line
+    (`status_marks`), its records a link to a line (`_records`), and its id
+    (`id_cell`). The status cell sorts on the status word alone."""
     record = result.record
     standing = f'<span class="site-standing">{status_marks(result)}</span>'
     return (
-        f"{id_cell(result, detail)}"
-        f'<td class="num site-col-n" data-value="{result.first_n}">{case_list(result)}</td>'
+        f'<td class="site-col-date" data-value="{_esc(result.dated[1])}">'
+        f"{date_cell(result)}</td>"
         f'<td class="site-col-result">{result_text(result)}'
-        f"{new_result_star(result, overview)}"
-        f'<div class="site-records">{_records(result)}</div></td>'
+        f"{new_result_star(result, overview)}</td>"
+        f'<td class="num site-col-n" data-value="{result.first_n}">{case_list(result)}</td>'
         f'<td class="site-col-credit" data-value="{_esc(result.credit)}">'
         f"{credit_cell(result.credit)}</td>"
         f'<td class="site-rungs" '
         f'data-value="{_esc(record["confirmation"] + record["verification"])}">'
-        f'{rung_chips(result)}<span class="site-kind">{kind_chip(result)}</span>'
-        f"{standing}</td>"
-        f'<td class="site-col-date" data-value="{_esc(result.dated[1])}">'
-        f"{date_cell(result)}</td>"
+        f'{rung_chips(result)}<span class="site-kind">{kind_chip(result)}</span></td>'
+        f'<td class="site-col-status" data-value="{_esc(result.status)}">{standing}</td>'
+        '<td class="site-col-details">'
+        f'<div class="site-records">{_records(result)}</div></td>'
+        f"{id_cell(result, detail)}"
     )
 
 
@@ -1107,17 +1136,48 @@ def verification_block() -> str:
     page in its own scroller and restyles it as `.kpress-table`, which this diagram is
     not. Each name links to that section of `epistemics.md`.
     """
-    levels = {scale: {level for level, _ in rungs} for scale, rungs in rubric_levels().items()}
-    heads = "".join(
-        f'<div class="site-ladders-head" role="columnheader" data-ladder="{scale}">'
-        f'<a class="site-ladders-name" href="epistemics.html#{section}">{_esc(name)}</a> '
-        f'<span class="site-ladders-question">{_esc(question)}</span></div>'
+    heads = {
+        scale: (
+            f'<a class="site-ladders-name" href="epistemics.html#{section}">{_esc(name)}</a> '
+            f'<span class="site-ladders-question">{_esc(question)}</span>'
+        )
         for scale, name, section, question in DIMENSIONS
+    }
+    names = ", ".join(name.lower() for _, name, _, _ in DIMENSIONS)
+    return _ladder_grid(heads, f"Verification ladders by level: {names}", "site-ladders-frame")
+
+
+def rung_key() -> str:
+    """The overview's key to the three ratings on a row of its table: the rating ladders'
+    grid (`verification_block`) with each column headed by its rating and its letter
+    alone, no question and no link, each rung its chip and its short meaning. It stands
+    under Recent Results' account of the ratings (the owner, 2026-10-02, `think-tgjv`);
+    the ladders themselves, with what each rating asks, are the Results page's."""
+    heads = {
+        scale: f'<span class="site-ladders-name">{_esc(name)} ({scale})</span>'
+        for scale, name, _, _ in DIMENSIONS
+    }
+    names = ", ".join(name.lower() for _, name, _, _ in DIMENSIONS)
+    return _ladder_grid(
+        heads, f"The ratings' rungs by level: {names}", "site-ladders-frame site-ladders-key"
+    )
+
+
+def _ladder_grid(heads: dict[str, str], label: str, frame: str) -> str:
+    """The ladders' grid under `heads`, each column's head by its letter: a header row,
+    then a row per level, the highest at the top, each cell a rung (`_ladder_cell`) or
+    empty where a ladder has no rung at that level, in a frame of class `frame` in the
+    wide track."""
+    levels = {scale: {level for level, _ in rungs} for scale, rungs in rubric_levels().items()}
+    columns = "".join(
+        f'<div class="site-ladders-head" role="columnheader" data-ladder="{scale}">'
+        f"{heads[scale]}</div>"
+        for scale, *_ in DIMENSIONS
     )
     rows = [
         (
             '<div class="site-ladders-row" role="row">'
-            f'<span class="site-ladders-level" role="columnheader">Level</span>{heads}</div>'
+            f'<span class="site-ladders-level" role="columnheader">Level</span>{columns}</div>'
         )
     ]
     every = sorted({level for scale, *_ in DIMENSIONS for level in levels[scale]}, reverse=True)
@@ -1134,10 +1194,8 @@ def verification_block() -> str:
             f'<span class="site-ladders-level" role="rowheader">Level {level}</span>'
             f"{cells}</div>"
         )
-    names = ", ".join(name.lower() for _, name, _, _ in DIMENSIONS)
-    label = f"Verification ladders by level: {names}"
     return (
-        '<div class="site-ladders-frame site-wide">'
+        f'<div class="{frame} site-wide">'
         f'<div class="site-ladders" role="table" aria-label="{label}">'
         f"{''.join(rows)}</div></div>"
     )
@@ -1374,12 +1432,20 @@ def paper_cards() -> str:
 #: there. Both are register prose, so a bound in either is written in ASCII
 #: (`s(11) >= 3.8264…`) and set as math. The explainer's card takes its paper's words;
 #: the optimality paper's and the tutorial's keep a shorter line here. The optimality
-#: paper is first, as on the Papers page: it explains the result that stands. Every
+#: paper leads the papers, as on the Papers page: it explains the result that stands. Every
 #: address is a full page the site serves, the paper's a directory below the root, so
-#: its card links straight to it. The Frontier page's card stood here until 2026-10-02
-#: and is The Frontier Survey's own (`SURVEY_CARDS`), as the Results page's pointer is
-#: Recent Results' own.
+#: its card links straight to it. The Frontier page's card is first, on a line of its
+#: own (`SECTION_CARD_LINES`, `think-ns3d`): it stood in The Frontier Survey section,
+#: beside a card to the recent cases, until the owner dropped that section on 2026-10-02
+#: and moved the card to every case up here (`think-ec5k`), last of the five at first.
+#: The Results page is reached from Recent Results, whose pointer is its own.
 PAGES: tuple[tuple[str, str, str, str], ...] = (
+    (
+        "frontier.html",
+        "Frontier survey",
+        "Every case from n = 1 to 324",
+        "Reported and verified bounds side by side, with their sources.",
+    ),
     (
         OPTIMALITY.href,
         OPTIMALITY.label,
@@ -1406,41 +1472,9 @@ PAGES: tuple[tuple[str, str, str, str], ...] = (
 
 
 def page_cards() -> str:
-    """One card per page of `PAGES`. Each card is the link itself and goes to its page
-    in the same tab: the target is a full page the site serves, so no popover previews
-    it (`link_card`, `new_tab=False`)."""
-    return _page_cards(PAGES, "pages")
-
-
-#: The Frontier Survey section's way onward: the Frontier page, every case, and the same
-#: page narrowed to the cases whose verified lower bound is recent, the ones the atlas
-#: stars, through the query its table script presets a filter from (`recent=true`,
-#: `overview/table.js`). The section's one paragraph says what the survey is; the counts
-#: and the rest of its account are the Frontier page's own prose.
-SURVEY_CARDS: tuple[tuple[str, str, str, str], ...] = (
-    (
-        "frontier.html",
-        "Frontier survey",
-        "Every case from n = 1 to 324",
-        "Reported and verified bounds side by side, with their sources.",
-    ),
-    (
-        "frontier.html?recent=true",
-        "Frontier survey",
-        "The recent cases",
-        "Every case whose verified lower bound was proved since this project began.",
-    ),
-)
-
-
-def survey_cards() -> str:
-    """The Frontier Survey section's two cards, each the link to its view of the
-    Frontier page in the same tab (`SURVEY_CARDS`)."""
-    return _page_cards(SURVEY_CARDS, "survey")
-
-
-def _page_cards(cards: tuple[tuple[str, str, str, str], ...], section: str) -> str:
-    """A section of direct cards to pages of the site, at the section's declared size."""
+    """One card per page of `PAGES`, at the section's declared size. Each card is the
+    link itself and goes to its page in the same tab: the target is a full page the site
+    serves, so no popover previews it (`link_card`, `new_tab=False`)."""
     return _cards(
         [
             link_card(
@@ -1448,11 +1482,12 @@ def _page_cards(cards: tuple[tuple[str, str, str, str], ...], section: str) -> s
                 label,
                 tex_bounds(title),
                 tex_bounds(note),
-                size=SECTION_CARD_SIZES[section],
+                size=SECTION_CARD_SIZES["pages"],
                 new_tab=False,
             )
-            for href, label, title, note in cards
-        ]
+            for href, label, title, note in PAGES
+        ],
+        "pages",
     )
 
 

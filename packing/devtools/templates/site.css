@@ -145,6 +145,15 @@ body {
   margin-inline: calc((var(--site-table-wide) - 100%) / -2);
   max-width: var(--site-table-wide);
 }
+/* The tables of results hold eight columns since 2026-10-02 (`think-ybt5`,
+   `think-e4o3`): 1139 pixels at their floors where every row shows, more than the wide
+   track's 1104 at a 1280-pixel window. So they bleed from 74rem (1184 pixels), fit from
+   about 1220, and are 1200 pixels wide at 1280, as wide as the frontier table there;
+   narrower, they scroll in their wrap, as any table does where its floors outrun the
+   window. */
+.site-page .site-wide:has(> .site-table-wrap .site-results) {
+  --site-table-bleed-from: 74rem;
+}
 .site-hero {
   text-align: center;
 }
@@ -226,7 +235,8 @@ body {
    `--site-cards-small`, `-medium` and `-large` are those counts, each stepped by its own
    container queries: n columns of minimum m and n - 1 gaps need (m + 1)n - 1 rem. A card
    that names no size is medium. On screen the cards are one wrapping row that centres
-   every line it does not fill, a short section and the last line of a long one alike.
+   every line it does not fill, a short section and the last line of a long one alike;
+   a section set in lines of its own is one such row per line.
    Print keeps the plain grid of medium columns, filled from the left. A card's popover
    is its sibling but never in the row: closed it is not displayed, and open it is in the
    top layer. */
@@ -242,6 +252,11 @@ body {
   display: grid;
   gap: var(--site-card-gap);
   grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+}
+/* Each line of a section set in lines of its own is a row of its cards, a gap below the
+   line before it. */
+.site-cards + .site-cards {
+  margin-block-start: var(--site-card-gap);
 }
 @container (width >= 25rem) {
   .site-cards {
@@ -320,6 +335,12 @@ body {
   }
   .site-cards > .site-card[data-card-size="large"] {
     --site-cards-line: var(--site-cards-large);
+  }
+  /* A section set in lines of its own (`SECTION_CARD_LINES`) sets no more cards to a
+     line than its longest line holds, so its lines share one column width: the page
+     cards stand one, two and two, at the width of two to a line. */
+  .site-cards[data-cards-most="2"] > .site-card {
+    --site-cards-line: min(var(--site-cards-medium), 2);
   }
 }
 /* A card is a clean summary with square corners. Most cards are a button that opens a
@@ -1118,14 +1139,15 @@ body {
   display: block;
   margin-block-start: 0.3rem;
 }
-/* A result's status sits under its kind, on a line of its own: the status chip, then
-   who has the next move where the register records it, then `superseded` where the
-   result is. The chips wrap between themselves, one under another where the cell is too
-   narrow, and never inside one: the column is as wide as its widest chip. */
+/* A result's status has a column of its own, after the rungs (`think-ybt5`; it sat
+   under the kind until 2026-10-02): the status chip, then who has the next move where
+   the register records it, then `superseded` where the result is. The chips wrap
+   between themselves, one under another where the cell is too narrow, a kind's gap
+   apart, and never inside one: the column is as wide as its widest chip. */
 .site-table .site-standing {
-  display: block;
-  margin-block-start: 0.3rem;
-  white-space: normal;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
 }
 
 .kpress .site-table {
@@ -1179,7 +1201,7 @@ body {
   }
   /* As narrow as its widest chip, like the other short columns: the spare width is the
      result's and the credit's. */
-  .site-results .site-rungs {
+  .site-results :is(.site-rungs, .site-col-status, .site-col-details) {
     width: 0;
   }
 }
@@ -1223,9 +1245,16 @@ body {
 .site-results .site-col-result .kpress-math-inline {
   display: inline;
 }
-.site-results .site-col-result .site-records {
-  margin-block-start: 0.3rem;
+/* A result's records, its case link, the register, its evidence, source and reviews, are
+   its Details, a column of their own since 2026-10-02 (`think-e4o3`; they stood on a
+   line under the summary until then): one link to a line, the column as narrow as its
+   widest link, so the result's cell holds the claim alone. On a phone they are a line
+   under the claim again, a dot drawn between two links (below). */
+.site-results .site-col-details .site-records {
   min-width: 0;
+}
+.site-results .site-col-details .site-records a {
+  display: block;
 }
 
 .site-table .site-rungs {
@@ -1240,7 +1269,10 @@ body {
    wrong trade: each row becomes a small card, id, cases and rungs on its first line,
    then the claim with its records under it, and the credit and date; the status line
    sits under the rungs. The results page's table and the overview's recent table are the one
-   table (`.site-results`), so both take it. */
+   table (`.site-results`), so both take it. The card places its cells by class, not by
+   column, and orders them (`order`): the wide table's row opens with the date and sets
+   the credit before the status and the details, so the card reads as it did before the
+   columns were reordered. */
 @media (width < 40rem) {
   .site-results thead {
     display: none;
@@ -1281,14 +1313,18 @@ body {
   .site-results .site-col-n {
     grid-area: 1 / 2;
   }
-  /* The rungs' track is as wide as its content, and a status line of three chips
-     (`recorded`, `waiting on third party`, `superseded`) would take the whole card and
-     leave the cases and the credit no room. So the cell stops at two chips' width, and
-     a third chip wraps under them. */
   .site-results .site-rungs {
     grid-area: 1 / 3;
   }
-  .kpress .site-results td.site-rungs {
+  /* The status stands right under the rungs, in their track, on the card's second line,
+     as it did when it was in their cell. The track is as wide as its content, and a
+     status line of three chips (`recorded`, `waiting on third party`, `superseded`)
+     would take the whole card and leave the cases and the credit no room. So the cell
+     stops at two chips' width, and a third chip wraps under them. */
+  .site-results .site-col-status {
+    grid-area: 2 / 3;
+  }
+  .kpress .site-results td.site-col-status {
     max-width: 14.5rem;
   }
   .site-results td.site-col-n {
@@ -1298,21 +1334,34 @@ body {
     color: var(--kpress-doc-muted);
     content: "n = ";
   }
-  /* A list of five values or more takes a line of its own under the id and the rungs,
-     the card's whole width, and wraps there from the start of the line: between them it
-     had under half of that. */
+  /* A list of five values or more takes a line of its own under the id, the rungs and
+     the status, the card's whole width, and wraps there from the start of the line:
+     between them it had under half of that. */
   .kpress .site-results td.site-col-n:has(.site-n-value:nth-child(5)) {
-    grid-area: 2 / 1 / auto / -1;
+    grid-area: 3 / 1 / auto / -1;
     text-align: start;
   }
-  .site-results :is(.site-col-result, .site-records) {
+  .site-results :is(.site-col-result, .site-col-details) {
     grid-column: 1 / -1;
   }
+  .site-results .site-col-details .site-records a {
+    display: inline;
+  }
+  .site-results .site-col-details .site-records a + a::before {
+    color: var(--kpress-doc-muted);
+    content: "·";
+    display: inline-block;
+    padding-inline: 0.35em;
+  }
+  /* The claim and its details come before the credit and the date, which the wide row
+     sets on either side of them. */
   .site-results .site-col-credit {
     grid-column: 1 / 3;
+    order: 1;
   }
   .site-results .site-col-date {
     grid-column: 3;
+    order: 2;
     text-align: end;
   }
   .site-results .site-date-kind {

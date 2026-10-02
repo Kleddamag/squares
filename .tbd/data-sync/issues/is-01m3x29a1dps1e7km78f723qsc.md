@@ -5,13 +5,13 @@ title: "Handoff: the website lane at the end of 1 October 2026 — what merged, 
 kind: task
 status: open
 priority: 1
-version: 8
+version: 11
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-10-02T01:05:01.478Z
-updated_at: 2026-10-02T05:43:52.070Z
+updated_at: 2026-10-02T05:57:27.462Z
 ---
 Handoff of the website lane (epic think-xjq4) at 2026-10-02 01:35 UTC, 18:35 PT on 1 October. Read this first, then the beads it names.
 
@@ -58,3 +58,14 @@ Update 07:00 UTC. Merged: jlevy/squares#301 (papers individually versioned; rele
 What is left is the owner's list on think-cv22 (new from #301: whether the first paper's changes since v0.4.2 are a new version of the paper and under what number; the poster's site stamp visible inside the paper's Figure 2; whether the site's edition history is shown anywhere on the site), think-hatf (thirteen browser-backed test files still skip on pull requests), think-t7k5 (suite_d's recorded measurement, due 2026-10-08), think-d5l5 (housekeeping of worktrees and merged branches), and the older follow-up beads listed in the description.
 
 Update 07:15 UTC. One lane reopened by an owner answer: think-1qk8, the first paper becomes v0.4.3 (a patch revision for its changes since the v0.4.2 deployment). The papers subagent works on branch claude/explainer-v0.4.3 in worktree overview-papers; a small draft PR is to come (gh pr list --head claude/explainer-v0.4.3). Review, mark ready, merge when green.
+
+Update 07:40 UTC. A second lane opened by the owner: think-hqb3, the Verification Ladders section moves from the Overview to the Results page, and Recent Results gains one sentence on what the S, V, C chips indicate, linking there. The restructure subagent works on branch claude/ladders-to-results in .claude/worktrees/overview-restructure; draft PR to come (gh pr list --head claude/ladders-to-results). In flight beside it: think-1qk8 (first paper v0.4.3) on claude/explainer-v0.4.3. Open placement question for the owner: PDFs and Videos sits after The Frontier Survey now, not directly below the atlas.
+
+Correction, 05:50 UTC by the machine's clock: the "Update HH:MM UTC" labels above from 04:20 onward were estimated and run fast by up to two hours; their order is right. jlevy/squares#301's deployment (4030cb43b) is live: the first paper prints v0.4.2 with a history of v0.3.0, v0.4.0, v0.4.2, the review prints Draft v0.1.0, and the site's own pages print v0.5.0-971e5f.
+
+Update 06:15 UTC (machine clock). Merged: jlevy/squares#303, the first paper v0.4.3 (7a1e92e24); think-1qk8 closed. One lane in flight, one PR to come on branch claude/ladders-to-results (worktree .claude/worktrees/overview-restructure, the restructure subagent), carrying four owner requests of 2 October, each its own bead and commit:
+- think-hqb3: Verification Ladders moves to the Results page; Recent Results gains one sentence on what the S, V, C chips indicate, linking there.
+- think-wz9d: the subtitle lines under the Results, Papers and Frontier page titles are dropped.
+- think-l38m: the two notes under the Overview's atlas grid are dropped (the triangle's row key; "Every case from n = 1 to 324 is also in the frontier survey…").
+- think-ec5k: the Overview's Frontier Survey section is dropped; one Frontier Survey card joins the page cards under The Squares Project, laid out in two rows.
+Resulting Overview order: The Square Packing Problem, The Squares Project (two rows of cards), Recent Results, The Atlas of Square Packings, PDFs and Videos, Other Square Packing Projects, Squares Project Documentation.

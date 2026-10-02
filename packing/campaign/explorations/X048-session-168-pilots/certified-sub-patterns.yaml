@@ -17,9 +17,10 @@ entries:
   - name: A
     cells: [interior-SW, interior-NW, interior-W, interior-S, interior-N, interior-SE]
     certifier: branch-and-bound
-    # Lane P2's reproduction from the committed bytes is in progress; its receipt goes here.
-    receipt: null
-    receipt_sha256: null
+    # Reproduced from the committed tool bytes f8da95e8 (a4a6b29a); the 53 MB certificate is
+    # held outside the repository until the independent review decides admission.
+    receipt: packing/campaign/explorations/X048-session-168-pilots/receipts/bb-A-certified.json
+    receipt_sha256: 87a8f03c3c758beb22e3620d6608f8cec660d2b175d43eb5e93c9421f769f6cb
     certificate: null
     status: pending
     evidence: null

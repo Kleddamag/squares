@@ -16,13 +16,14 @@ Daniel and others were taken in, and for the process of importing, recording,
 validating, rating and documenting such results to be written down so that it can be
 repeated for every new issue.
 
-The work on each result was sound and followed one shape.
-The process around it did not: it was written in four places under no one name, each
-import declared a different sequence of workflows or none, and three of its steps had no
-owner. The consequences are visible on the issues.
+The work on each result followed one shape.
+The process around it did not: it was written in four places under no one name, no two
+consecutive imports declared the same sequence of workflows, the reply was never a
+declared phase, and no workflow owned a review paper.
+The consequences are visible on the issues.
 Every rung an author has been told is now different on `main`, one author was given a
-`T-NNN` that now names another result, five requests have no reply, and about 45
-CPU-hours of replay never reached the record.
+`T-NNN` that now names another result, five issues and a comment on issue 238 have no
+reply, and about 45 CPU-hours of replay never reached the record.
 
 This change writes the process down once, as
 [the result import process](../../../packing/campaign/result-import.md), and fits it to
@@ -38,8 +39,8 @@ applies it to the six requests now waiting.
 - **Records:** the 29 register entries `T-037` to `T-065`, all of which carry an
   `attribution`, with their evidence, packets, coverage entries, bibliography keys, case
   records and review documents, at `origin/main` `eaa1a4b45`.
-- **History:** the session records from 149 on, the eleven pull requests that carried
-  imports, and the commits behind each stage.
+- **History:** the session records from 149 on, the pull requests that carried imports,
+  and the commits behind each stage.
 
 Three lanes worked without shared context.
 One built a step-by-step fidelity matrix for the 29 entries and read every checker that
@@ -57,19 +58,23 @@ the reviewed tree, so every gap below is one the gate accepts today.
 
 | Step of the procedure | Followed | Gaps |
 | --- | --- | --- |
-| Source retained at a pinned revision | All 17 packets exist, have a README and record a pin | Nine packet shapes; no schema for the acquisition record, which three tools write with different fields; the directory date is the source’s date in six packets and the retrieval date in the rest |
+| Source retained at a pinned revision | All 17 packets exist, have a README and record a pin | Nine packet shapes; no schema for the acquisition record, which three tools write with different fields; the directory date is the source’s date in at least six packets and the retrieval date in the rest |
 | Coverage entry | 18 of 20 source keys | None for `[wand125 rectangle bounds 2026-09-28]` (`T-046`) or `[wand125 tools 2026]` (`T-058`, `T-059`) |
-| Bibliography key with `dated`, `credit`, `lineage` | 20 of 20 | The three dates of a source disagree on nine entries with no stated rule; credit lines were corrected after the fact in at least six commits |
+| Bibliography key with `dated`, `credit`, `lineage` | 20 of 20 | The three dates of a source, `published`, `dated` and `source_date`, disagree on nine entries, and the schema explains only why `published` precedes the other two; credit lines were corrected after the fact in four commits |
 | Reported lane and typed evidence | Every entry that holds a lane is cited there | `T-055` is reported and not in the reported lane; `T-045` claims $n = 32$ with no evidence entry covering it; no case record cites `T-058` or `T-059` |
 | Register entry at import | All required fields on 29 of 29 | `T-037` to `T-055` were registered in one batch on 29 September, up to eight days after they were acted on; three entries were renumbered after id collisions |
 | Verified lane after replay and review | Every entry in a verified lane has a mapped review | The review is linked in four different places and typed in `reviews` on one entry; `T-056` and `T-057` replay entries name no review |
 | Disagreement preserved | `T-056` carries three typed conflicts | Nothing for a reported lower bound awaiting replay |
 | Author answered | Issues 227, 238 and 247 | Issue 170 was never answered and its author closed it; issue 256 was registered as `T-062` and `T-063` with no reply; every answer given is now stale |
 
-Six steps are held by no check: that a packet and a coverage entry exist; that credit
-comes from the source’s files; that an upper bound by others is registered; that
-evidence covers an entry’s scope; that the verified lane waits for a replay here and a
-review; and that the author is answered.
+The audit lists eleven items that no check enforces: that a coverage entry exists; that
+a packet exists at a pinned revision; that credit is present and comes from the source’s
+files; that an upper bound by others is registered; that the literal claim is in the
+reported lane and evidence covers an entry’s scope; that the source’s AI statement is
+made for a key outside the hard-coded list; that `activity` is set while work is under
+way; that the verified lane waits for a replay here; that it waits for a mathematics
+review; that a disagreement on a lower bound is preserved; and that the author is
+answered.
 
 ## How the Work Was Run
 
@@ -80,7 +85,8 @@ Until 29 September it had six steps, no register entry at import and no reply st
 Each import did the same five things: retain the source at a pin; replay the certificate
 and review the mathematics in parallel; register and regenerate the views; merge `main`,
 renumber and re-pin; and, sometimes, reply.
-The declared workflows varied every time.
+No two consecutive imports declared the same sequence; with the planning and remediation
+phases set aside, two sequences recur, W1 then W2 and W2 alone.
 
 | Import | Declared sequence |
 | --- | --- |
@@ -92,12 +98,12 @@ The declared workflows varied every time.
 | Session 161, wand125’s update and the 28 September results | W1 → W2 |
 | Session 162, wand125 tools | W2 → W7 → W8 → W8, reconstructed afterwards |
 | Session 164, including the `T-060` source | W7 throughout |
-| Pull requests 243, 245, 248, 249, 258 | None |
-| Pull request 267, Daniel’s October survey | W1 and W2, named in its review documents only |
+| Pull requests 243, 245, 248, 249, 258 | None, apart from one row of pull request 249 labelled W1 |
+| Pull request 267, Daniel’s October survey | W1 and W2, named in its review documents, a pull request comment and the register’s scorer field |
 
 Retention was declared as W1 in three sessions and done inside W2 elsewhere.
 Registration and publication were declared as W8 twice and done inside W2 elsewhere.
-Integration and the reply were never a declared phase.
+The reply was never a declared phase; integration was declared only as W7 or W9 work.
 
 | Import | Source public to first seen here | First seen to `main` | Request to first reply |
 | --- | --- | --- | --- |
@@ -111,7 +117,7 @@ Integration and the reply were never a declared phase.
 
 ## Failure Modes
 
-Ordered by how often each recurred.
+The audit found seven.
 `packing/defects.yaml` records none of them, since its scope is the toolchain.
 
 1. **Text left stale by a later change.** Every rung quoted in a reply is now wrong on
@@ -130,8 +136,8 @@ Ordered by how often each recurred.
    Issues 170 and 227 waited eight and six days.
    The runbook’s answer: triage starts when an issue is opened, with an acknowledgement
    within a day.
-4. **Credit corrected after the fact**, in at least six commits, one of them correcting
-   its predecessor 25 minutes later.
+4. **Credit corrected after the fact**, in four commits, one of them correcting its
+   predecessor 25 minutes later.
    The runbook’s answer: credit is read from the source’s attribution files at the pin,
    during stage 2.
 5. **Identifier collisions.** `T-031`, `T-056` and `T-057`, and `T-058` each collided
@@ -143,14 +149,18 @@ Ordered by how often each recurred.
    data revision or re-stamped the atlas.
    The runbook’s answer: a small import pull request that merges the same day.
    Since pull request 285 the re-pin is one line.
-7. **Missing session records.** Five import pull requests had none, and session 162’s
-   was reconstructed. The runbook’s answer: one bead for each import.
+7. **Missing session records.** Five import pull requests declared no workflow, six had
+   no session record of their own, and session 162’s was reconstructed.
+   The runbook’s answer: one bead for each import.
    A routine import needs no session record, as the synopsis already says.
 
 ## How the Ratings Were Assessed
 
-**Verification and confirmation.** A hand derivation from the predicates agrees with the
-declared rungs on 30 of 31 entries.
+**Verification and confirmation.** A hand derivation from the predicates covered 31
+entries, the 29 plus `T-006` and `T-032`, and under the reading the checker uses it
+agrees with the declared rungs on 30; the exception is `T-045`. Under the other written
+reading of `V`, eight entries would change: the six named below would rise, and `T-056`
+and `T-057` would fall.
 Two ambiguities remain.
 
 - `epistemics.md` defines `V` twice.
@@ -196,7 +206,7 @@ The workflow contracts answer it.
 | A workflow is one contiguous phase | It pauses for hours or days while a replay runs: 20 CPU-hours for $s(60)$, 94 for $s(77)$, 126 for $s(59)$, by the sources’ own figures |
 | A workflow has one kind of durable output | It has three: a source packet with a reported entry, which is W1’s stated exit; replay evidence with a review and derived rungs, which is W2’s; and reader documents, which is W8’s |
 | One primary focus and one level of model | Retention is mechanical, the mathematics review takes the strongest model, and the two lanes of validation must share no context |
-| “Workflow selection should reduce context, not create paperwork” | An eleventh workflow would add an enum value to three schemas, a row to two tables and a count to a check, and would still contain a survey, a review and a documentation step |
+| “Workflow selection should reduce context, not create paperwork” | An eleventh workflow would add an enum value to three schemas and a row to two tables, raise `EXPECTED_NUMBERED_WORKFLOWS` in `packing/devtools/check_readme.py`, and would still contain a survey, a review and a documentation step |
 
 Three options were weighed.
 
@@ -225,8 +235,8 @@ what any workflow owns.
 
 ## What This Change Codifies
 
-The runbook restates nothing another document owns: the rungs, the credit policy and the
-end points stay in `epistemics.md`, the record rules in the frontier README, the
+The runbook points to the documents that own the rest: the rungs, the credit policy and
+the end points stay in `epistemics.md`, the record rules in the frontier README, the
 workflow contracts in the synopsis, and the render and check commands in the W8 runbook.
 It holds the sequence and the rules that had no home: the entry from an issue or a link,
 one bead and two pull requests for each import, the claim map, the packet’s name and
@@ -265,7 +275,7 @@ requests already use.
 5. **Who posts replies.** Policy says the owner, or an agent at the owner’s request.
    The runbook has the agent draft each reply when the pull request merges.
    A standing permission for the three routine replies would remove the step at which
-   five requests are now waiting.
+   six requests are now waiting.
 6. **An acknowledgement within a day.** The first replies so far took 16 hours to 6.4
    days.
 7. **Whether this project’s review of another author’s result counts toward rung 4.**
@@ -288,8 +298,9 @@ Each is a bead under `think-z9wy`, labelled `result-import`.
 | `think-nr59` | Three truncated `significance.by` values; three entries whose claim and `activity` disagree |
 | `think-qh3s` | The rescoring pass over the draft scores |
 
-Beads that already track the stranded replays are `think-20mv`, `think-nnlg`,
-`think-ifsv`, `think-wcex`, `think-0rrj` and `think-l6la`.
+`think-20mv`, `think-nnlg`, `think-ifsv` and `think-0rrj` already track the stranded
+replays, `think-l6la` the lost re-sweeps, and `think-wcex` the reviews not yet recorded
+as `external_review`.
 
 ## Limits
 

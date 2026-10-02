@@ -186,6 +186,39 @@ QUICK_TESTS = "not exhaustive_exact and not slow"
 #: Browser-floor liveness follows the Node toolchain to the frontend job rather than
 #: making every behavioural shard install Node.
 BROWSER_FLOOR_LIVENESS_TESTS = "tests/test_browser_floor_contract.py"
+#: The site's table-layout tests pin pixel widths measured in Chromium, and they measure
+#: the same on Linux as on macOS only when the headless shell is told not to hint: its
+#: default is `HINTING_FULL` (`headless/public/headless_browser.h`), which on Linux
+#: rounds every glyph's advance to a whole pixel, and run 36943941580 read a 24ch measure
+#: at 232 px against the 224.8 px the same page measures on macOS (D-513). They follow
+#: Chromium to the frontend job, the one pull-request runner that installs it, and the
+#: quick lane ignores them: in a shard, with no browser, they could only skip, which is
+#: what they did on every pull request until that run.
+SITE_LAYOUT_TESTS = (
+    "tests/test_site_result_columns.py",
+    "tests/test_site_frontier_table.py",
+)
+#: Set for the step that owns them, and read by `tests.site_browser`: a Chromium that does
+#: not launch fails the test rather than skipping it.
+REQUIRE_CHROMIUM = "SQPACK_REQUIRE_CHROMIUM"
+#: What a site table is laid out from: the renderers, templates and probes, the record
+#: the overview reads, the tests, and KPress, whose faces the tables are set in.
+_SITE_INPUTS = (
+    "packing/devtools/*",
+    "packing/tests/test_site_*.py",
+    "packing/tests/site_*.py",
+    "packing/tests/probes/*",
+    "packing/frontier/*",
+    "packing/atlas/*",
+    "packing/witnesses/*",
+    "packing/campaign/*",
+    "packing/resources/*",
+    "packing/defects.yaml",
+    "packing/pyproject.toml",
+    "packing/uv.lock",
+    "vendor/kpress/*",
+    "*.md",
+)
 SLOW_TESTS = "slow and not exhaustive_exact"
 EXHAUSTIVE_TESTS = "exhaustive_exact"
 BEHAVIORAL_TEST_ROOTS = ("tests", "../packages/workbench/tests")
@@ -939,7 +972,12 @@ def _run(
     *,
     cwd: Path = PROJECT_ROOT,
     timeout_seconds: float | None = None,
+    extra_environment: Mapping[str, str] | None = None,
 ) -> str:
+    """Run `command` as a step's subprocess; `extra_environment` is laid over the gate's
+    environment for this command alone."""
+    if extra_environment:
+        context = replace(context, environment={**context.environment, **extra_environment})
     directory = _artifact_directory(context)
     if directory is None:
         return _run_command(context, command, cwd=cwd, timeout_seconds=timeout_seconds)
@@ -1482,6 +1520,7 @@ def _quick_lane_command(jobs: int, shard: int) -> tuple[str, ...]:
         "-q",
         *BEHAVIORAL_TEST_ROOTS,
         f"--ignore={BROWSER_FLOOR_LIVENESS_TESTS}",
+        *(f"--ignore={path}" for path in SITE_LAYOUT_TESTS),
         "-m",
         QUICK_TESTS,
         *distribution,
@@ -1798,6 +1837,33 @@ def _browser_floor_liveness(context: Context) -> str:
             "no:cacheprovider",
             BROWSER_FLOOR_LIVENESS_TESTS,
         ),
+    )
+
+
+def _site_layout_tests(context: Context) -> str:
+    """Measure the site's tables in the Chromium the frontend runner installs.
+
+    `SITE_LAYOUT_TESTS` pin pixel widths, which no behavioural shard can measure, so they
+    run here, one file to an xdist worker as the quick lane runs its files, and they fail
+    rather than skip when no Chromium launches: `REQUIRE_CHROMIUM` is set for this command
+    alone, and `tests.site_browser` reads it.
+    """
+    distribution = _xdist_distribution(context.jobs)
+    loadfile = ("--dist=loadfile",) if distribution else ()
+    return _run(
+        context,
+        (
+            sys.executable,
+            "-m",
+            "pytest",
+            "-q",
+            "-p",
+            "no:cacheprovider",
+            *distribution,
+            *loadfile,
+            *SITE_LAYOUT_TESTS,
+        ),
+        extra_environment={REQUIRE_CHROMIUM: "1"},
     )
 
 
@@ -3647,6 +3713,18 @@ STEPS: tuple[Step, ...] = (
         start_early=True,
         touches=_WORKBENCH_INPUTS,
     ),
+    # The two files that pin the tables' pixels (think-sib7, D-513): 40.5s locally for 74
+    # tests, 30s of it rendering three pages once each; 24.16s hosted, 74 passed, in a
+    # frontend wall of 93.16s (run 36967092452). Not in the quick lane, whose shards
+    # install no browser.
+    Step(
+        "site table layout in Chromium",
+        _site_layout_tests,
+        fast=True,
+        broad=True,
+        frontend=True,
+        touches=(*_CORE, *_SITE_INPUTS),
+    ),
     # 9.63s.
     Step(
         "basin atlas",
@@ -4981,6 +5059,9 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "browser floor liveness tests",
         "browser code lives in files (embedded JavaScript, probes)",
         "workbench browser behavior in Chromium",
+        # The same shape as the workbench step: the tracked pages, rendered and measured
+        # in the pinned browser, with no clock, network or history consulted.
+        "site table layout in Chromium",
         "basin atlas",
         "basin event record and replay",
         "historical regressions",

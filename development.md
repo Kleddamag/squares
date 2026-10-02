@@ -165,22 +165,22 @@ alone is not full pre-merge evidence.
 
 | Tier | Who runs it, and when | Steps | Ceiling | Cost when last measured |
 | --- | --- | ---: | ---: | --- |
-| `--records` | contributor, before touching a registry; also every pull request | 38 of 88 | 300 s | 11.0 s |
-| `--edit` | contributor, in the edit loop | 53 of 88 | 240 s | 59.4 s |
+| `--records` | contributor, before touching a registry; also every pull request | 38 of 89 | 300 s | 11.0 s |
+| `--edit` | contributor, in the edit loop | 53 of 89 | 240 s | 59.4 s |
 | `--push` | contributor, once before a push — the edit tier plus tests reachable from the diff (`--since`) | varies with the diff | 1800 s | about a minute for a narrow code change; an implicitly configured broad diff selects the whole suite and assigns one outer job so pytest can use the host, see below |
-| `--fast` | contributor, at a block boundary; the union of the nine tiers below | 77 of 88 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
-| `--checks` | **CI, on every pull request**, in the `validate` job | 56 of 88 | 140 s | 103.70 s, the geometric mean of thirty-three hosted readings on 2026-09-30 and 10-01, with the band 59.4–137.1 s (2.31x) the runner pool spanned on unchanged steps; the 114.34 s two-attempt record stays in the register as history |
-| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 3 of 88 | 150 s | 104.74 s, the geometric mean of 32 hosted readings from 27 to 30 September (70.97–134.86 s, 1.90x); 85.25 s from two readings stays in the register as history |
-| `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 88 | 111 s | 76.5 s, the centre of eighteen hosted readings, with the band 56.67–92.27 s that its two runner regimes span |
-| `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 88 | 180 s | 98.07 s, the geometric mean of fourteen hosted readings, with the band 58.75–116.19 s that its two runner regimes span |
-| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 88 | 131 s | 114.58 s, the geometric mean of twelve hosted readings on 2026-10-01 of the three-shard partition after the day’s growth, band 83.91–128.65 s (1.53x); two more walls that day, 131.58 and 132.67 s, were over the ceiling with every test green and are named, not averaged; the 85.03 s two-reading record stays in the register as history |
-| `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 88 | 154 s | 114.38 s, the geometric mean of eleven hosted readings on 2026-10-01 of the same partition, band 79.30–139.35 s (1.76x); the 104.65 s single reading stays as history |
-| `--suite-c` | **CI, on every pull request**, in the `suite-c` job, concurrently | 1 of 88 | 154 s | 132.05 s, the geometric mean of eleven hosted readings on 2026-10-01 after the day’s files landed in it, band 90.34–147.16 s (1.63x); the 102.94 s thirty-one-reading record and the 88.59 s first reading stay as history |
-| `--suite-d` | **CI, on every pull request**, in the `suite-d` job, concurrently | 1 of 88 | 131 s | pending its first hosted cohort under `think-t7k5`; the record’s cohort predicts about 84 s for its 278.9 test-second share |
-| `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 4 of 88 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
-| *(no flag)* | Full checkpoint before final review and at block close; main, dispatch, and daily CI | 88 of 88 | 3600 s | integration plus nine deferred workers; new whole-wall measurement pending |
+| `--fast` | contributor, at a block boundary; the union of the nine tiers below | 78 of 89 | 600 s | record cleared 2026-09-07 when the corpus widened; 229.1 s locally, only the ceiling applies |
+| `--checks` | **CI, on every pull request**, in the `validate` job | 56 of 89 | 140 s | 103.70 s, the geometric mean of thirty-three hosted readings on 2026-09-30 and 10-01, with the band 59.4–137.1 s (2.31x) the runner pool spanned on unchanged steps; the 114.34 s two-attempt record stays in the register as history |
+| `--frontend` | **CI, on every pull request**, in the `frontend` job, concurrently | 4 of 89 | 150 s | 104.74 s, the geometric mean of 32 hosted readings from 27 to 30 September (70.97–134.86 s, 1.90x); 85.25 s from two readings stays in the register as history |
+| `--typecheck` | **CI, on every pull request**, in the `typecheck` job, concurrently | 1 of 89 | 111 s | 76.5 s, the centre of eighteen hosted readings, with the band 56.67–92.27 s that its two runner regimes span |
+| `--geometry` | **CI, on every pull request**, in the `geometry` job, concurrently | 9 of 89 | 180 s | 98.07 s, the geometric mean of fourteen hosted readings, with the band 58.75–116.19 s that its two runner regimes span |
+| `--suite-a` | **CI, on every pull request**, in the `suite-a` job, concurrently | 1 of 89 | 131 s | 114.58 s, the geometric mean of twelve hosted readings on 2026-10-01 of the three-shard partition after the day’s growth, band 83.91–128.65 s (1.53x); two more walls that day, 131.58 and 132.67 s, were over the ceiling with every test green and are named, not averaged; the 85.03 s two-reading record stays in the register as history |
+| `--suite-b` | **CI, on every pull request**, in the `suite-b` job, concurrently | 1 of 89 | 154 s | 114.38 s, the geometric mean of eleven hosted readings on 2026-10-01 of the same partition, band 79.30–139.35 s (1.76x); the 104.65 s single reading stays as history |
+| `--suite-c` | **CI, on every pull request**, in the `suite-c` job, concurrently | 1 of 89 | 154 s | 132.05 s, the geometric mean of eleven hosted readings on 2026-10-01 after the day’s files landed in it, band 90.34–147.16 s (1.63x); the 102.94 s thirty-one-reading record and the 88.59 s first reading stay as history |
+| `--suite-d` | **CI, on every pull request**, in the `suite-d` job, concurrently | 1 of 89 | 131 s | pending its first hosted cohort under `think-t7k5`; the record’s cohort predicts about 84 s for its 278.9 test-second share |
+| `--sweeps` | **CI, on every pull request**, in the `sweeps` job, concurrently | 4 of 89 | 200 s | 101.51 s, the geometric mean of six 4-of-80 hosted readings (66.36–130.77 s, spread 1.97x); the 119.72 s seven-reading mean and PR 180’s 138.84 s predecessor remain in the register as history |
+| *(no flag)* | Full checkpoint before final review and at block close; main, dispatch, and daily CI | 89 of 89 | 3600 s | integration plus nine deferred workers; new whole-wall measurement pending |
 
-Step counts describe the current 88-step registry.
+Step counts describe the current 89-step registry.
 Dated costs retain their measured source and resource shape; they are not fresh
 measurements of the new scheduling.
 
@@ -211,9 +211,16 @@ The current surface therefore runs pre-collection shards, four since 2026-10-01.
 `devtools.suite_files` packs recorded per-file costs longest-first across them; a file
 absent from the record uses a stable `crc32(path) mod 4` fallback.
 Each file belongs to exactly one shard and each runner imports only its own files.
-The shard jobs retain full Git history for history-reading tests, but none installs
-Node. Browser-floor liveness runs under `--frontend`, on the runner that owns the pinned
-Node toolchain. Each shard writes a per-file cost report beside its JUnit and timing
+The shard jobs retain full Git history for history-reading tests, but none installs Node
+or a browser.
+Browser-floor liveness runs under `--frontend`, on the runner that owns the
+pinned Node toolchain, and so does `site table layout in Chromium`, the two test files
+that pin the tables’ pixels, on the runner that installs the pinned Chromium.
+They launch it with `--font-render-hinting=none`: the headless shell hints text at
+`HINTING_FULL` by default, which on Linux rounds every glyph’s advance to a whole pixel,
+and the pins were read on macOS, where nothing is hinted ([D-513](defects.md)). Where no
+Chromium launches they fail rather than skip, because a skip on that runner is a hole in
+the surface. Each shard writes a per-file cost report beside its JUnit and timing
 artifacts; the recorder accepts complete coherent cohorts and rejects failed, partial,
 duplicated, coverage-mismatched, and mixed-provenance evidence, and a cohort recorded at
 one shard count may be packed into another, which is how the lane is repartitioned.
@@ -413,7 +420,7 @@ test satisfies exactly one, so no test can be in two lanes and none can be in ze
 
 | Lane | Marker | Tests at last count | Runs in | Bound |
 | --- | --- | ---: | --- | --- |
-| quick | neither | 9,389 file-shard tests (9,193 passed; 196 skipped) | PR fast surface: file shards in `suite-a`, `suite-b`, `suite-c` and `suite-d`, browser-floor liveness in `frontend` | fails a test whose `call` phase reaches 12 s |
+| quick | neither | 9,389 file-shard tests (9,193 passed; 196 skipped) | PR fast surface: file shards in `suite-a`, `suite-b`, `suite-c` and `suite-d`, browser-floor liveness and the site table layout in `frontend` | fails a test whose `call` phase reaches 12 s |
 | slow | `slow` | 97 | full checkpoint, under xdist in CI | fails a test whose `call` phase is under 1 s |
 | exhaustive | `exhaustive_exact` | 55 | its own CI job | its own 3600 s budget |
 

@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:FrontierEvidenceSet/v1
   schema: frontier-evidence.schema.yaml
   status: enforced
-last_reviewed: '2026-10-01'
+last_reviewed: '2026-10-02'
 evidence:
   - id: E-n017-kleddamag-rational-upper
     claim: upper-bound
@@ -460,7 +460,7 @@ evidence:
 
   - id: E-wand125-rectangle-source-replay
     claim: lower-bound
-    scope: {n_values: [27, 28, 31]}
+    scope: {n_values: [18, 19, 20, 26, 27, 28, 30, 31, 40, 61, 75, 76, 77, 78]}
     assurance: verified
     method: interval-certified
     performed_by: repository
@@ -472,7 +472,7 @@ evidence:
     replay: >-
       wand125_replay_output="$(mktemp -d "${TMPDIR:-/tmp}/wand125-rectangle-replay.XXXXXX")" &&
       .venv/bin/python3 -m devtools.audit_wand125_rectangles --out "$wand125_replay_output"
-      --replay --workers 2 --n 27 --n 31
+      --replay --workers 2 --n 18 --n 19 --n 20 --n 26 --n 27 --n 30 --n 31 --n 40 --n 61 --n 75 --n 78
     replay_status: passed
     proof:
       source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
@@ -514,9 +514,11 @@ evidence:
       smoothing premises and the complete axis-event partition for all 44 standing
       certificates; that receipt is receipts/preflight/audit.json. Global rotated
       coverage is still decided by the source C++ checker, so this is machine replay
-      evidence at V4/C3, not C4. The remaining standing certificates keep their
-      reported entry until their replay passes; about 102 CPU hours are needed for all
-      44, by the upstream per-angle times. Run the replay from packing/ with the project
+      evidence, not an independent decision. Eleven certificates of this packet passed
+      the complete replay: n27 and n31 here on 2026-09-27, and n18, 19, 20, 26, 30, 40, 61,
+      75 and 78 in the cloud batches b02, b07 and b08 of 2026-09-29, whose receipts were
+      folded into receipts/replay/audit.json by --merge on 2026-10-02. The remaining
+      standing certificates keep their reported entry until their replay passes. Run the replay from packing/ with the project
       CPython 3.14 environment and a C++17-capable g++ on PATH; --resume continues a
       partial output directory.
     source_reviewed: '2026-09-27'
@@ -576,6 +578,59 @@ evidence:
       "(also n = 90)". The listed counts are those where the transfer beats every other
       registered report. This derivation does not strengthen the assurance of its
       source premise or substitute for its complete replay.
+    source_reviewed: '2026-09-28'
+
+  - id: E-wand125-rectangle-2026-09-28-source-replay
+    claim: lower-bound
+    scope: {n_values: [29, 38, 39, 41, 42, 43, 44, 52, 53, 54, 55, 59, 60, 67, 68, 69, 70, 71, 72, 73, 74, 86, 95]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-09-28]'
+    certificate: resources/web/wand125-rectangle-certificates-2026-09-28/wand125-rectangles/certificates
+    replay: >-
+      wand125_replay_output="$(mktemp -d "${TMPDIR:-/tmp}/wand125-rectangle-replay.XXXXXX")" &&
+      .venv/bin/python3 -m devtools.audit_wand125_rectangles --packet 2026-09-28 --out "$wand125_replay_output"
+      --replay --workers 2 --n 29 --n 38 --n 39 --n 41 --n 52 --n 53 --n 59 --n 67 --n 69 --n 71 --n 86 --n 95
+    replay_status: passed
+    proof:
+      source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
+      theorem: Rectangle-density covering obstruction, applied to wand125's standing certificates
+      scope: Unrestricted square packing with disjoint interiors and arbitrary rotations; monotonic transfer to larger counts below which a certificate's mass lies.
+      pinpoints: >-
+        The theorem and interval-verifier correspondence audited in the linked review;
+        the byte-identical verify.cpp and run_verify.py retained with Tokoharu's packet;
+        per-case preflight and replay records in receipts/preflight/audit.json.gz and
+        receipts/replay/audit.json of the 2026-09-28 wand125 rectangle packet.
+      assumptions:
+        - Nonnegative exact rational rectangle densities have total mass strictly below the target square count.
+        - All angles and legal centres are covered by the certified core net and interval subdivision.
+        - Binary64 arithmetic has the reviewed IEEE-754 semantics, without fast math or FMA contraction.
+        - The replayed interval input is the one regenerated from the exact candidate, whose SHA-256 equals the digest the upstream accepting run recorded.
+      audit_record: docs/project/reviews/review-2026-09-22-tokoharu-density-mathematics.md
+    limitations: >-
+      The scope lists the counts whose verified lower bound this entry carries: each is
+      a count whose own standing certificate at 39d8ecc passed the complete 201-direction
+      replay, or a larger count reached by monotonicity from one. The replays ran in four
+      cloud batches on 2026-09-29 (b02, b04, b08 and b09, 4 workers each); their
+      receipts sat unmerged on claude/replay-wand125-rect-bNN until 2026-10-02, when they
+      were folded into the packet's
+      receipts/replay/audit.json by devtools.audit_wand125_rectangles --merge, which
+      checks each case against the packet's own preflight, the published input digest and
+      the reviewed checker digest; every replay reproduced the upstream accepting run's
+      nodes, leaves and lower bound angle by angle. Global rotated coverage is still
+      decided by the source C++ checker, so this is a machine replay of the source's
+      checker, not an independent decision of the certificate. Sides above 1791/200 (n86
+      at 1871/200 and n95 at 49209/5000) and orbit counts above 812 (n69, n71 and n95)
+      are beyond the sizes the 2026-09-27 checker-scaling review examined. The
+      2026-10-02 review of T-068 read the same checker for the 1 October certificates at
+      sides up to 49259/5000 and 926 orbits, which spans these sizes, but neither review
+      read these certificates or their receipts, so no external_review is recorded
+      here; the rung does not rest on one. Run the replay from packing/
+      with the project CPython 3.14 environment and a C++17-capable g++ on PATH.
     source_reviewed: '2026-09-28'
 
   - id: E-wand125-rectangle-2026-10-01-report

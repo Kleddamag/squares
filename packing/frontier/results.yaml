@@ -4874,21 +4874,25 @@ results:
   - id: T-058
     kind: method-limit
     registered: '2026-09-29'
-    headline: "Reported `B·UB(n)` rectangle-certificate ceiling has unresolved premises"
+    headline: "Rectangle-certificate ceiling `α·UB(n)` proved for n = 1..100; `B·UB(n)` on 64 grid rows"
     claim: >-
-      wand125/square-packing-tools claims that rectangle-density certificates using
-      core side B=9977/10000 cannot meet mass<n when L>=B*UB(n), for the n=1..100
-      witness table. The unrestricted argument is disputed: the B-scaled witness
-      squares need net-aligned orientations, and the table's rounded floats are not
-      certified upper bounds. Recorded for review, with no adopted impossibility theorem.
+      A rectangle-density certificate with core side B = 9977/10000 and the 201-direction
+      net of step D = 83/40000 cannot have mass below n at any side L >= α U, where U is
+      the side of any packing of n unit squares and α = B(1 + D) = 399908091/400000000;
+      if every orientation of that packing lies in the net's D4 orbit, L >= B U suffices.
+      For each n = 1..100 an exact certificate of n disjoint net cores proves the ceiling
+      at a side no larger than the corrected value of the source's update, B UB(n) at the
+      64 integer-grid rows of its table and α UB(n) at the other 36, with UB(n) the
+      table's rounded value. The source's original B UB(n) is proved at the 64 grid rows
+      only; at the 36 others it is neither proved nor refuted.
 
       wand125,
       [square-packing-tools](https://github.com/wand125/square-packing-tools/tree/0d33ab61726c2ab03e3eb8f457dabaf22db8571f),
       29 September 2026, building on Tokoharu's rectangle method, solver and verifier and on
       Evan Daniel's point verifier. The source discloses Codex and Claude assistance.
     scope: {n_min: 1, n_max: 100}
-    verification: V0
-    confirmation: C1
+    verification: V3
+    confirmation: C3
     significance:
       score: 2
       rationale: A tooling limit that could prematurely stop searches; resolving its premises affects safe integration but establishes no new packing bound.
@@ -4898,17 +4902,39 @@ results:
     attribution:
       source_keys: ['[wand125 tools 2026]']
       published: '2026-09-29'
-    evidence: [E-wand125-tools-ceiling-report]
+    evidence: [E-wand125-tools-ceiling-certificates, E-wand125-tools-ceiling-report]
     artifacts:
+      - packing/resources/web/wand125-tools-2026-09-29/receipts/ceiling-certificates-2026-10-02.json.gz
+      - packing/resources/web/wand125-tools-2026-09-29/receipts/ceiling-certificates-2026-10-02.json
+      - packing/src/sqpack/rectangle_ceiling.py
+      - packing/devtools/certify_rectangle_ceiling.py
+      - docs/project/reviews/review-2026-10-02-wand125-ceiling-resolution.md
       - packing/resources/web/wand125-tools-2026-09-29/README.md
       - docs/project/reviews/review-2026-09-29-wand125-tools-mathematics.md
+    controls:
+      - packing/tests/test_rectangle_ceiling.py
     next_rung: >-
-      think-xgjo: discharge net orientation and exact upper-witness assumptions, or
-      replace the ceiling with the reviewed sufficient angular-containment correction.
-      Keep l_cap a search heuristic until then.
+      Rung 4 needs two retained adversarial reviews of the ceiling lemma and the exact
+      verifier, by distinct reviewers, and a human oversight record. Separately, and moving
+      no rung: decide whether a certificate with mass below n exists between B UB(n) and the
+      proved ceiling at the 36 non-grid rows.
     notes: >-
-      V0 records an unestablished source claim; C1 records a source-level review
-      finding a missing premise, not a machine refutation or a verified theorem.
+      2026-10-02 (think-xgjo): the 29 September review's three findings are settled in
+      review-2026-10-02-wand125-ceiling-resolution.md. The net-orientation premise is
+      discharged: B U holds for net-aligned packings, and U B max(cos δ + sin δ) <= α U for
+      any packing, with every numeric premise decided exactly by
+      sqpack.rectangle_ceiling.premise_checks. The rounded-table premise is made moot: each
+      proved ceiling is an exact rational from cores verified by
+      sqpack.rectangle_ceiling.verify_ceiling, and never reads the table.
+
+
+      The admission defect of the source's original scaling wrapper, coverage accepted at
+      mass 289/10 for n = 1, is refused by sqpack.rectangle_density.parse_candidate on the
+      strict 0 < M < n budget, pinned by packing/tests/test_rectangle_ceiling.py. V3/C3
+      rest on the exact certificates; the lemma joining them to the mass bound is reviewed
+      prose. Before this, V0/C1 recorded the unrestricted claim as unestablished.
+
+
       This claim was drafted as T-056 before the merge; T-058 is canonical because
       the merged upstream had already allocated T-056. Archived intake evidence
       retains its original provisional label.

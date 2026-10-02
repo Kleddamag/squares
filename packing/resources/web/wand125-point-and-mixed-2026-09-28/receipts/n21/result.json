@@ -1,0 +1,85 @@
+{
+  "status": "FRESH_ALL_DOMAIN_REPLAY_VERIFIED",
+  "candidate_sha256": "84a7dae793f05ff72de52ddcd3058e8518c1f84c461f94d11305adefe6137679",
+  "root_count": 5000,
+  "sieve_count": 8758,
+  "frontier_count": 31678,
+  "excluded_count": 7052,
+  "threshold": "249987/250000",
+  "mass": "2624862500021/125000000000",
+  "strict_gap": "999979/125000000000",
+  "worker_exits": [
+    {
+      "stage": "root",
+      "shard": null,
+      "argv": [
+        "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/venv/bin/python",
+        "-u",
+        "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/src/point_n21_L5/bundle/portable_replay.py",
+        "--stage",
+        "root",
+        "--out",
+        "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/n21-replay/root"
+      ],
+      "exit_code": 0,
+      "seconds": 299.50265143199977
+    },
+    {
+      "stage": "sieve",
+      "shard": null,
+      "argv": [
+        "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/venv/bin/python",
+        "-u",
+        "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/src/point_n21_L5/bundle/portable_replay.py",
+        "--stage",
+        "sieve",
+        "--out",
+        "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/n21-replay/sieve"
+      ],
+      "exit_code": 0,
+      "seconds": 811.8449462030003
+    },
+    {
+      "stage": "frontier",
+      "shard": 0,
+      "argv": [
+        "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/venv/bin/python",
+        "-u",
+        "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/src/point_n21_L5/bundle/portable_replay.py",
+        "--stage",
+        "frontier",
+        "--out",
+        "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/n21-replay/frontier-s0",
+        "--shard",
+        "0",
+        "--shards",
+        "2"
+      ],
+      "exit_code": 0,
+      "seconds": 12626.133432487
+    },
+    {
+      "stage": "frontier",
+      "shard": 1,
+      "argv": [
+        "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/venv/bin/python",
+        "-u",
+        "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/src/point_n21_L5/bundle/portable_replay.py",
+        "--stage",
+        "frontier",
+        "--out",
+        "/tmp/claude-0/-home-user-squares/b85b7ecf-955c-5223-9481-e5200885a948/scratchpad/lane3/n21-replay/frontier-s1",
+        "--shard",
+        "1",
+        "--shards",
+        "2"
+      ],
+      "exit_code": 0,
+      "seconds": 12575.268026299
+    }
+  ],
+  "seconds": 13772.729971290002,
+  "linkage_sha256": "646c4369836c8352ca7726c6bc7515bd54479282ca0512e8cd58c3255dd8330d",
+  "independent_external_review": false,
+  "formal_verification": false
+}

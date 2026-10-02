@@ -1483,6 +1483,11 @@ OTHER_PROJECTS: tuple[tuple[str, str, str], ...] = (
         "Weighted point and rectangle-density lower-bound certificates across many n.",
     ),
     (
+        "https://github.com/wand125/valid7-independent-check",
+        "wand125",
+        "A second, independent exact checker of Valid7, the finite step of s(k² \u2212 3) = k.",
+    ),
+    (
         "https://github.com/tokoharu/square-packing-density-bounds",
         "Tokoharu",
         "Rectangle-density lower-bound certificates.",

@@ -30,19 +30,23 @@ from sqpack.cli.validate import main
 from sqpack.yamlio import safe_load
 from tests import site_browser
 
-#: (proved, open) at each corpus the frontier-corpus step has summarized.
+#: (proved, open) at each corpus the frontier-corpus step has summarized. 2026-10-02: the
+#: replayed zmx2 sweeps of the s(60) and s(59) mixed covers (T-062, T-063, T-066) proved
+#: n = 59, 60 and 61 in the formal lane, three more in every corpus; later that day the
+#: completed sweeps of the s(77) cover (T-067) proved n = 77 and 78, two more.
 FRONTIER_LANE_SPLIT: dict[str, tuple[int, int]] = {
-    "n=1..100": (39, 61),
-    "n=1..200": (51, 149),
-    "n=1..324": (63, 261),
+    "n=1..100": (44, 56),
+    "n=1..200": (56, 144),
+    "n=1..324": (68, 256),
 }
 
-# Source-reported closures from T-062 to T-064 change this lane alone; the
-# verified/formal lane above remains open until certificate replay.
+# Source-reported closures from T-062 to T-064, and T-066 and T-067 at n = 59 and 77,
+# change this lane alone; the verified/formal lane above remains open until
+# certificate replay.
 REPORTED_LANE_SPLIT: dict[str, tuple[int, int]] = {
-    "n=1..100": (43, 57),
-    "n=1..200": (59, 141),
-    "n=1..324": (75, 249),
+    "n=1..100": (45, 55),
+    "n=1..200": (61, 139),
+    "n=1..324": (77, 247),
 }
 
 WORKFLOW = Path(__file__).resolve().parents[2] / ".github/workflows/packing-validation.yml"
@@ -2167,8 +2171,9 @@ def test_frontier_contract_accepts_the_declared_schema_metadata(
         f"{corpus.count} artifacts, n = {corpus.label[2:]}; formal lane: "
         f"{proved} proved, {open_cases} open"
     ) in stdout
-    # T-062 to T-064 close twelve cases in the reported lane only. Keep this
-    # expectation independent of the production count tuple.
+    # T-062 to T-064, T-066 and T-067 close fourteen cases in the reported lane; three of
+    # them, n = 59, 60 and 61, are also closed in the formal lane since 2026-10-02.
+    # Keep this expectation independent of the production count tuple.
     reported_proved, reported_open = REPORTED_LANE_SPLIT[corpus.label]
     assert f"reported lane: {reported_proved} proved, {reported_open} open" in stdout
 

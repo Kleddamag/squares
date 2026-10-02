@@ -73,14 +73,10 @@ For each result, complete this sequence before declaring the change ready to lan
    `results.yaml`, as applicable, with the accepted claim, verification level,
    provenance, and retained receipts.
    Preserve earlier rungs and historical decisions.
-   A result by others is registered too, when the case record acts on it: add a `T-NNN`
-   entry with its `attribution` (source keys and published date) at intake, or extend
-   the entry that already covers its release, and give each new source key a `lineage`
-   in `resources/bibliography.yaml`
-   ([epistemics.md → Results by Others](../../epistemics.md#results-by-others)). It
-   enters as reported (`V0/C0`, or `C1` once a review has read it) and its rungs rise
-   with the replay and review; `check_results` fails while a recent case lower bound has
-   no entry. Validate those source records before rendering, from `packing/`:
+   A result by others is registered too, when the case record acts on it, by stage 3 of
+   the [result import process](result-import.md); `check_results` fails while a recent
+   case lower bound has no entry.
+   Validate those source records before rendering, from `packing/`:
 
    ```shell
    uv run --frozen python -m devtools.validate_schemas

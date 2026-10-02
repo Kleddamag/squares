@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import dataclasses
 import json
+import re
 import shutil
 from decimal import Decimal
 from fractions import Fraction
@@ -15,7 +17,10 @@ from devtools import audit_tokoharu_density as tokoharu
 from devtools.audit_wand125_rectangles import (
     CASES,
     CASES_2026_09_28,
+    CASES_2026_10_01,
+    OCTOBER_1,
     PACKETS,
+    REPO,
     SEPTEMBER_27,
     SEPTEMBER_28,
     audit_case,
@@ -25,6 +30,8 @@ from devtools.audit_wand125_rectangles import (
     source_provenance,
     standing,
 )
+from devtools.check_case_prose import bound_claims, check_bound_claim, parse_front_matter
+from devtools.migrate_math import markdown_math
 from devtools.retained_data import (
     candidates,
     check_packet,
@@ -39,6 +46,20 @@ FRONTIER = Path(__file__).resolve().parents[1] / "frontier"
 SMALL = (21, 32)
 #: The standing certificates 39d8ecc left byte-identical to ad43d29's.
 UNCHANGED = (18, 19, 20, 26, 27, 30, 32, 40, 45, 61, 75, 78)
+#: The standing certificates 1a25a5e left byte-identical to 39d8ecc's, by the packet
+#: that retains each: four are unchanged since ad43d29.
+UNCHANGED_2026_10_01 = {
+    "2026-09-27": (18, 32, 45, 61),
+    "2026-09-28": (21, 37, 51, 52, 57, 58, 60, 67, 71, 72, 73, 91),
+}
+#: The counts jlevy/squares#281 asks to register. The revision's standing table changed
+#: at three more, n = 59, 77 and 78, which the issue leaves to exact values.
+ISSUE_281 = (
+    *(19, 20, 26, 27, 28, 29, 30, 31, 38, 39, 40, 41, 42, 43, 44, 53, 54, 55, 56),
+    *(66, 68, 69, 70, 74, 75, 76, 86, 87, 88, 89, 90, 93, 94, 95),
+)
+#: One of the smallest interval inputs among the certificates new at 1a25a5e.
+SMALL_2026_10_01 = 20
 
 
 def _payload(n: int, frontier: Path = FRONTIER) -> dict:
@@ -52,7 +73,11 @@ def _value(field: dict) -> Fraction:
 
 @pytest.mark.parametrize(
     ("date", "upstream", "retained", "referenced"),
-    [("2026-09-27", 1367, 184, None), ("2026-09-28", 2295, 153, 55)],
+    [
+        ("2026-09-27", 1367, 184, None),
+        ("2026-09-28", 2295, 153, 55),
+        ("2026-10-01", 2897, 149, 71),
+    ],
 )
 def test_retained_subset_matches_the_pinned_tree(
     date: str, upstream: int, retained: int, referenced: int | None
@@ -73,6 +98,39 @@ def test_the_later_pin_only_adds_files_except_its_readme() -> None:
     }
 
 
+def test_the_october_pin_only_adds_files_except_three_readmes() -> None:
+    earlier = read_tree_manifest(SEPTEMBER_28.tree_manifest)
+    later = read_tree_manifest(OCTOBER_1.tree_manifest)
+    assert {path for path, digest in earlier.items() if later.get(path) != digest} == {
+        Path("README.md"),
+        Path("point_n21_L5/README.md"),
+        Path("point_n21_L5/lean/README.md"),
+    }
+    assert len(later) - len(earlier) == 602
+
+
+def test_no_rectangle_directory_at_the_october_pin_carries_an_archive() -> None:
+    """Issue 281 says each directory holds a tarball; each holds the same seven files."""
+    tree = read_tree_manifest(OCTOBER_1.tree_manifest)
+    for name, _side in CASES_2026_10_01.values():
+        assert {path.name for path in tree if path.parts[:2] == ("certificates", name)} == {
+            "certificate_input.txt",
+            "certificate_metadata.json",
+            "certified_candidate.json",
+            "run_verify.py",
+            "verification_summary.json",
+            "verified_angles.jsonl",
+            "verify.cpp",
+        }
+    assert not [
+        path
+        for path in tree
+        if path.parts[0] == "certificates"
+        and path.parts[1].startswith("rect_")
+        and path.suffix in {".tar", ".tgz", ".gz", ".xz", ".zip"}
+    ]
+
+
 def test_unchanged_certificates_are_read_from_the_earlier_packet() -> None:
     same = {n for n, case in CASES_2026_09_28.items() if CASES.get(n) == case}
     assert same == set(UNCHANGED)
@@ -84,6 +142,76 @@ def test_unchanged_certificates_are_read_from_the_earlier_packet() -> None:
         assert SEPTEMBER_28.case_directory(SEPTEMBER_28.source, name) == (
             expected / "certificates" / name
         )
+
+
+def test_the_october_pin_reads_unchanged_certificates_from_both_earlier_packets() -> None:
+    same = {n for n, case in CASES_2026_10_01.items() if CASES_2026_09_28.get(n) == case}
+    assert same == {n for counts in UNCHANGED_2026_10_01.values() for n in counts}
+    changed = set(CASES_2026_10_01) - same
+    assert changed == {*ISSUE_281, 59, 77, 78}
+    assert len(ISSUE_281) == 34
+    assert set(CASES_2026_10_01) - set(CASES_2026_09_28) == {87, 90, 93}
+    held = {n: date for date, counts in UNCHANGED_2026_10_01.items() for n in counts}
+    for n, (name, side) in CASES_2026_10_01.items():
+        assert n not in CASES_2026_09_28 or side >= CASES_2026_09_28[n][1]
+        assert (OCTOBER_1.source / "certificates" / name).is_dir() == (n in changed)
+        expected = PACKETS[held[n]] if n in same else OCTOBER_1
+        assert OCTOBER_1.holder(Path("certificates") / name / "verified_angles.jsonl") is (
+            expected
+        )
+        assert OCTOBER_1.case_directory(OCTOBER_1.source, name) == (
+            expected.source / "certificates" / name
+        )
+
+
+def test_the_october_manifest_says_which_packet_holds_each_referenced_file() -> None:
+    provenance = source_provenance(OCTOBER_1, OCTOBER_1.source)
+    assert provenance["referenced_path"] == str(SEPTEMBER_28.source.relative_to(REPO))
+    # Four files per unchanged certificate; the licence, the requirements and the five
+    # files of docs/ are unchanged since ad43d29.
+    assert provenance["files_referenced_by_packet"] == {
+        str(SEPTEMBER_27.source.relative_to(REPO)): 4 * 4 + 7,
+        str(SEPTEMBER_28.source.relative_to(REPO)): 4 * 12,
+    }
+    entry = json.loads(OCTOBER_1.manifest.read_text())["sources"][0]
+    assert entry["referenced_files_by_packet"] == provenance["files_referenced_by_packet"]
+    assert entry["claims"] == [
+        f"s({n}) >= {side}" for n, (_name, side) in sorted(CASES_2026_10_01.items())
+    ]
+    # A packet with a single base says nothing more than its ``referenced_path``.
+    assert "files_referenced_by_packet" not in source_provenance(
+        SEPTEMBER_28, SEPTEMBER_28.source
+    )
+
+
+def test_a_retained_file_that_differs_from_the_pinned_tree_is_refused(tmp_path: Path) -> None:
+    """The October subset rebuilt elsewhere, with one per-angle row changed."""
+    scratch = dataclasses.replace(OCTOBER_1, root=tmp_path)
+    shutil.copytree(OCTOBER_1.directory, scratch.directory)
+    assert source_provenance(scratch, scratch.source)["files_verified"] == 149
+    name, _side = CASES_2026_10_01[SMALL_2026_10_01]
+    rows = scratch.source / "certificates" / name / "verified_angles.jsonl"
+    rows.write_text(rows.read_text().replace('"verified"', '"failed"', 1))
+    with pytest.raises(ValueError, match="SHA-256 mismatch against the pinned tree"):
+        source_provenance(scratch, scratch.source)
+
+
+def test_a_certificate_new_at_the_october_pin_binds_to_its_published_input(
+    tmp_path: Path,
+) -> None:
+    n = SMALL_2026_10_01
+    name, side = CASES_2026_10_01[n]
+    case = OCTOBER_1.source / "certificates" / name
+    binding = materialize(case, tmp_path / name)
+    tree = read_tree_manifest(OCTOBER_1.tree_manifest)
+    assert (
+        binding["input_sha256"] == tree[Path("certificates") / name / "certificate_input.txt"]
+    )
+    report = tokoharu.preflight(tmp_path / name, n, side)
+    assert report["status"] == "PASS"
+    assert Fraction(report["mass_exact"]) == n - Fraction(1, 100)
+    with pytest.raises(ValueError, match="side mismatch"):
+        tokoharu.preflight(tmp_path / name, n, CASES_2026_09_28[n][1])
 
 
 @pytest.mark.parametrize("date", tuple(PACKETS))
@@ -172,6 +300,18 @@ def test_monotone_transfers_follow_the_mass() -> None:
         93: 91,
     }
     assert monotone_bounds({27: Fraction(28, 5)}, upto=29)[29] == (Fraction(28, 5), 27)
+    # At 1a25a5e the n31 certificate passes the unchanged direct one at n32, and every
+    # other count with a certificate, n77 included, is its own strongest source.
+    newest = monotone_bounds({n: side for n, (_name, side) in CASES_2026_10_01.items()})
+    assert newest[32] == (Fraction(2381, 400), 31)
+    assert {n: newest[n][1] for n in newest if newest[n][1] != n} == {
+        **dict.fromkeys(range(22, 26), 21),
+        **dict.fromkeys(range(32, 37), 31),
+        **dict.fromkeys(range(46, 51), 45),
+        **dict.fromkeys(range(62, 66), 61),
+        **dict.fromkeys(range(79, 86), 78),
+        92: 91,
+    }
 
 
 @pytest.mark.parametrize("date", tuple(PACKETS))
@@ -234,7 +374,12 @@ def test_replay_receipt_records_complete_accepting_runs(date: str) -> None:
 
 def test_frontier_records_carry_exactly_the_certified_bounds() -> None:
     """Reported lane: every standing certificate; verified lane: only replayed ones."""
-    registration = apply.registered()
+    _assert_records_carry_the_certified_bounds(apply.registered(), FRONTIER)
+
+
+def _assert_records_carry_the_certified_bounds(
+    registration: apply.Registration, frontier: Path
+) -> None:
     cases = registration.packet.cases
     reported = monotone_bounds({n: side for n, (_name, side) in cases.items()})
     proofs = apply.replays(registration)
@@ -244,7 +389,7 @@ def test_frontier_records_carry_exactly_the_certified_bounds() -> None:
         else {}
     )
     for n, (side, source) in reported.items():
-        payload = _payload(n)
+        payload = _payload(n, frontier)
         field = payload["reported_lower_bound"]
         if not set(field["evidence"]) & apply.OURS:
             # Another source's report holds here, at least as strong.
@@ -325,3 +470,369 @@ def test_registering_the_newest_packet_is_idempotent_and_never_lowers(tmp_path: 
         body = (frontier / f"n-{n:03d}.md").read_text(encoding="utf-8").split("---\n", 2)[2]
         assert newest.intake in body
     assert _register(newest, frontier) == []
+    assert apply.registered(frontier) is newest
+    _assert_records_carry_the_certified_bounds(newest, frontier)
+    # The report entry covers every certificate this packet is the first to retain, and
+    # every case that cites it; the monotone entry exists only if a case cites it.
+    entries = {
+        entry["id"]: entry
+        for entry in safe_load((frontier / "evidence.yaml").read_text(encoding="utf-8"))[
+            "evidence"
+        ]
+    }
+    owned = {
+        n for n, (name, _side) in newest.packet.cases.items() if apply.owner(name) is newest
+    }
+    citing = {identifier: _citing(frontier, identifier) for identifier in newest.entries}
+    assert set(entries[newest.report]["scope"]["n_values"]) == owned | citing[newest.report]
+    assert citing[newest.report] <= owned
+    assert entries[newest.report]["source_key"] == newest.source_key
+    if citing[newest.monotone_report]:
+        assert (
+            set(entries[newest.monotone_report]["scope"]["n_values"])
+            == (citing[newest.monotone_report])
+        )
+    else:
+        assert newest.monotone_report not in entries
+
+
+def _citing(frontier: Path, identifier: str) -> set[int]:
+    return {
+        int(path.stem.removeprefix("n-"))
+        for path in frontier.glob("n-*.md")
+        if f"- {identifier}\n" in path.read_text(encoding="utf-8").split("---\n", 2)[1]
+    }
+
+
+def test_the_newest_plan_never_lowers_a_bound(tmp_path: Path) -> None:
+    """``--plan`` on a copy of the records: every write it announces is a rise or a tie."""
+    frontier = tmp_path / "frontier"
+    shutil.copytree(FRONTIER, frontier)
+    newest = apply.REGISTRATIONS[-1]
+    reported = monotone_bounds({n: side for n, (_name, side) in newest.packet.cases.items()})
+    selected = {plan.n: plan for plan in apply.plans(newest, frontier)}
+    for n, plan in selected.items():
+        payload = _payload(n, frontier)
+        if plan.reported is not None:
+            assert plan.reported.side == reported[n][0]
+            assert plan.reported.side >= _value(payload["reported_lower_bound"]), n
+        if plan.verified is not None:
+            assert plan.verified.side >= _value(payload["verified_lower_bound"]), n
+    rows = {
+        int(cells[1]): cells[5].strip()
+        for line in apply.decision_table(newest, frontier).splitlines()[2:]
+        if (cells := line.split("|"))
+    }
+    assert set(rows) == set(reported)
+    for n, decision in rows.items():
+        writes = n in selected and selected[n].reported is not None
+        assert decision.startswith("write reported") == writes, n
+        if n in newest.superseded_priors:
+            assert decision.startswith("superseded prior"), n
+
+
+def _hold(frontier: Path, n: int, value: Fraction) -> None:
+    """Give case ``n`` a reported lower bound held by another source's evidence."""
+    path = frontier / f"n-{n:03d}.md"
+    _, front, body = path.read_text(encoding="utf-8").split("---\n", 2)
+    block = (
+        "  reported_lower_bound:\n"
+        f"    value: '{float(value)}'\n"
+        f"    exact_form: '{value}'\n"
+        "    evidence:\n"
+        "    - E-another-source\n"
+    )
+    front, count = re.subn(
+        r"^  reported_lower_bound:\n(?:^    .*\n)*", block, front, count=1, flags=re.MULTILINE
+    )
+    assert count == 1
+    path.write_text(f"---\n{front}---\n{body}", encoding="utf-8")
+
+
+#: Bounds registered separately from the rectangle certificates of the packet dated by
+#: the key, each stronger than what that packet's certificates give at the count:
+#: wand125's exact covers at n59 and n77, Evan Daniel's at n60, n61 and n78, and
+#: wand125's mixed rectangle-measure certificates at n37, n65, n66, n90 and n92.
+STRONGER_REPORTS = {
+    "2026-10-01": {
+        37: Fraction(161, 25),
+        59: Fraction(8),
+        60: Fraction(8),
+        61: Fraction(8),
+        65: Fraction(167, 20),
+        66: Fraction(421, 50),
+        77: Fraction(9),
+        78: Fraction(9),
+        90: Fraction(48, 5),
+        92: Fraction(969, 100),
+    },
+}
+
+
+def test_a_stronger_report_from_another_source_keeps_its_field(tmp_path: Path) -> None:
+    """The newest registration leaves alone every count another source reports higher.
+
+    Each certificate the packet is the first to retain is tried against a report just
+    above it, and the packet's named stronger reports against their own values. Neither
+    needs a superseded prior: the comparison with the record decides.
+    """
+    frontier = tmp_path / "frontier"
+    shutil.copytree(FRONTIER, frontier)
+    newest = apply.REGISTRATIONS[-1]
+    cases = newest.packet.cases
+    reported = monotone_bounds({n: side for n, (_name, side) in cases.items()})
+    named = STRONGER_REPORTS.get(newest.date, {})
+    held = {
+        n: side + Fraction(1, 1000)
+        for n, (side, source) in reported.items()
+        if apply.owner(cases[source][0]) is newest
+    } | named
+    for n, value in named.items():
+        assert value > reported[n][0], n
+        assert n not in newest.superseded_priors, n
+    for n, value in held.items():
+        _hold(frontier, n, value)
+    assert not [plan.n for plan in apply.plans(newest, frontier) if plan.reported is not None]
+    for n, value in held.items():
+        assert _value(_payload(n, frontier)["reported_lower_bound"]) == value
+    _register(newest, frontier)
+    for n, value in held.items():
+        assert _value(_payload(n, frontier)["reported_lower_bound"]) == value, n
+
+
+@pytest.mark.parametrize("registration", apply.REGISTRATIONS, ids=lambda item: item.date)
+def test_a_superseded_prior_hides_no_bound_the_record_lacks(
+    registration: apply.Registration,
+) -> None:
+    """A prior skips its count in both lanes, so both must already hold at least as much.
+
+    Where a stronger bound is only reported, the count is left out of the priors: the
+    comparison with the record keeps the reported field, and a replayed rectangle
+    certificate can still raise the verified one.
+    """
+    cases = registration.packet.cases
+    reported = monotone_bounds({n: side for n, (_name, side) in cases.items()})
+    for n in registration.superseded_priors:
+        assert n in cases
+        payload = _payload(n)
+        for field in ("reported_lower_bound", "verified_lower_bound"):
+            assert _value(payload[field]) >= reported[n][0], (n, field)
+            assert not set(payload[field]["evidence"]) & apply.OURS, (n, field)
+
+
+def test_every_packet_has_one_registration_with_its_own_entries() -> None:
+    assert [item.date for item in apply.REGISTRATIONS] == list(PACKETS)
+    identifiers = [identifier for item in apply.REGISTRATIONS for identifier in item.ids]
+    assert len(identifiers) == len(set(identifiers)) == 3 * len(PACKETS)
+    assert len({item.source_key for item in apply.REGISTRATIONS}) == len(PACKETS)
+    october = apply.BY_DATE["2026-10-01"]
+    assert october.packet is OCTOBER_1
+    assert october.source_key == "[wand125 rectangle bounds 2026-10-01]"
+    assert (october.report, october.monotone_report, october.replay) == (
+        "E-wand125-rectangle-2026-10-01-report",
+        "E-wand125-rectangle-2026-10-01-monotone-report",
+        "E-wand125-rectangle-2026-10-01-source-replay",
+    )
+    for item in apply.REGISTRATIONS:
+        if not item.entries:
+            continue
+        assert set(item.entries) == {item.report, item.monotone_report}
+        for identifier, template in item.entries.items():
+            filled = template.replace("{scope}", "{n_values: [1]}").replace(
+                "{certificate}", "resources/web/x"
+            )
+            (entry,) = safe_load("evidence:\n" + filled)["evidence"]
+            assert entry["id"] == identifier
+            assert entry["source_key"] == item.source_key
+            assert entry["source_reviewed"] == item.date
+            assert entry["assurance"] == "reported"
+            assert item.packet.revision[:7] in entry["limitations"]
+
+
+def test_the_october_report_entry_says_what_the_packet_holds() -> None:
+    """Every figure the entry's prose states, against the table and the receipt."""
+    october = apply.BY_DATE["2026-10-01"]
+    text = " ".join(october.entries[october.report].split())
+    changed = {n for n, case in CASES_2026_10_01.items() if CASES_2026_09_28.get(n) != case}
+    same = sorted(set(CASES_2026_10_01) - changed)
+    assert f"lists 34 of the {len(changed)}" in text
+    first, last = min(changed), max(changed)
+    assert (
+        f"from {CASES_2026_10_01[first][1]} at n{first} to "
+        f"{CASES_2026_10_01[last][1]} at n{last}" in text
+    )
+    listed = ", ".join(str(n) for n in same[:-1]) + f" and {same[-1]}"
+    assert f"The sixteen standing certificates the revision left unchanged, at n{listed}," in (
+        text
+    )
+    record = json.loads(
+        read_retained_text(OCTOBER_1.directory / "receipts/preflight/audit.json")
+    )
+    masses = {case["n"]: Fraction(case["mass_exact"]) for case in record["cases"]}
+    assert all(masses[n] == n - Fraction(1, 100) for n in changed)
+    assert masses[31] == Fraction(3099, 100) < 32
+    assert "The n31 certificate, of mass 3099/100, also gives s(32) >= 2381/400" in text
+    factors = []
+    for n in changed:
+        name, _side = CASES_2026_10_01[n]
+        candidate = tokoharu.load_json(
+            OCTOBER_1.source / "certificates" / name / "certified_candidate.json"
+        )
+        factors.append(Fraction(candidate["scaling_experiment"]["factor_exact"]))
+    assert Fraction("1.00004") < min(factors)
+    assert max(factors) < Fraction("1.04329")
+    assert "between 1.00004 and 1.04329" in text
+
+
+def _paragraphs(path: Path) -> tuple[str, list[str]]:
+    _, front, body = path.read_text(encoding="utf-8").split("---\n", 2)
+    title, _, rest = body.partition("\n\n")
+    return f"---\n{front}---\n{title}", rest.split("\n\n")
+
+
+def _write_paragraphs(path: Path, head: str, parts: list[str]) -> None:
+    path.write_text(f"{head}\n\n" + "\n\n".join(parts), encoding="utf-8")
+
+
+def _foreign(registration: apply.Registration, n: int) -> str:
+    """Another source's intake paragraph of the registration's own date, as the exact-cover
+    intakes of 1 October are at n = 59, 60, 61, 77 and 78."""
+    return (
+        f"{registration.intake} Another source\u2019s\n[exact-cover source](../x/README.md) "
+        f"reports $s({n}) = 9$,\nchecked there by its own checker."
+    )
+
+
+def _direct_plan(frontier: Path) -> apply.Plan:
+    newest = apply.REGISTRATIONS[-1]
+    return next(
+        plan
+        for plan in apply.plans(newest, frontier)
+        if plan.reported is not None and plan.reported.source == plan.n
+    )
+
+
+def test_an_intake_is_written_beside_another_sources_paragraph_of_its_date(
+    tmp_path: Path,
+) -> None:
+    """think-e26n: the paragraph is the registration's by source and packet, not by date.
+
+    Writing the 2026-10-01 paragraphs once replaced the exact-cover intakes of the same
+    day. Here the registration's own paragraph is gone and another source's of the same
+    date stands first under the title: the registration writes its paragraph above it
+    and leaves it, and every other paragraph, byte for byte.
+    """
+    frontier = tmp_path / "frontier"
+    shutil.copytree(FRONTIER, frontier)
+    newest = apply.REGISTRATIONS[-1]
+    plan = _direct_plan(frontier)
+    path = frontier / f"n-{plan.n:03d}.md"
+    head, parts = _paragraphs(path)
+    (own,) = [part for part in parts if newest.wrote(part)]
+    others = [part for part in parts if not newest.wrote(part)]
+    foreign = _foreign(newest, plan.n)
+    assert foreign.startswith(newest.intake)
+    assert not any(item.wrote(foreign) for item in apply.REGISTRATIONS)
+    _write_paragraphs(path, head, [foreign, *others])
+    rendered = apply.apply_case(plan, newest, frontier)
+    path.write_text(rendered, encoding="utf-8")
+    after_head, after = _paragraphs(path)
+    assert after_head == head
+    assert after[1:] == [foreign, *others]
+    assert newest.wrote(after[0])
+    assert " ".join(after[0].split()) == " ".join(own.split())
+    assert apply.apply_case(plan, newest, frontier) == rendered
+
+
+def test_an_intake_is_rewritten_in_place_below_a_foreign_one(tmp_path: Path) -> None:
+    """A same-date paragraph of another source above the registration's own stays above it.
+
+    The tool used to take the first paragraph of its date for its own: it would have
+    overwritten this one and left its own paragraph twice.
+    """
+    frontier = tmp_path / "frontier"
+    shutil.copytree(FRONTIER, frontier)
+    newest = apply.REGISTRATIONS[-1]
+    plan = _direct_plan(frontier)
+    path = frontier / f"n-{plan.n:03d}.md"
+    head, parts = _paragraphs(path)
+    _write_paragraphs(path, head, [_foreign(newest, plan.n), *parts])
+    before = path.read_text(encoding="utf-8")
+    assert apply.apply_case(plan, newest, frontier) == before
+
+
+def test_an_intake_beside_a_stronger_report_quotes_only_what_a_field_holds(
+    tmp_path: Path,
+) -> None:
+    """think-e26n's figures: a side no field holds is a direct certificate, not ``s(n) >=``.
+
+    At n = 59, 60, 77 and 78 another source's report held the reported field above the
+    certificate and a replayed smaller-count certificate the verified one, and the tool
+    wrote ``s(n) >= side``, which `check_case_prose` refuses, in a code span
+    `check_math_markup` refuses. The same arrangement here, at every count where a replay
+    gives a verified bound below the certificate's own side.
+    """
+    frontier = tmp_path / "frontier"
+    shutil.copytree(FRONTIER, frontier)
+    newest = apply.REGISTRATIONS[-1]
+    cases = newest.packet.cases
+    proofs = apply.replays(newest)
+    verified = monotone_bounds({n: side for n, (side, _) in proofs.items()}, upto=max(cases))
+    counts = [
+        n
+        for n, (_name, side) in cases.items()
+        if n in verified and verified[n][0] < side and n not in newest.superseded_priors
+    ]
+    assert counts
+    for n in counts:
+        _hold(frontier, n, cases[n][1] + Fraction(1, 1000))
+        path = frontier / f"n-{n:03d}.md"
+        _, front, body = path.read_text(encoding="utf-8").split("---\n", 2)
+        front, count = re.subn(
+            r"^  verified_lower_bound:\n(?:^    .*\n)*",
+            "  verified_lower_bound:\n    value: '1'\n    exact_form: '1'\n"
+            "    evidence:\n    - E-another-source\n",
+            front,
+            count=1,
+            flags=re.MULTILINE,
+        )
+        assert count == 1
+        path.write_text(f"---\n{front}---\n{body}", encoding="utf-8")
+    planned = {plan.n: plan for plan in apply.plans(newest, frontier)}
+    for n in counts:
+        plan = planned[n]
+        assert plan.reported is None
+        assert plan.verified is not None
+        path = frontier / f"n-{n:03d}.md"
+        path.write_text(apply.apply_case(plan, newest, frontier), encoding="utf-8")
+        _, parts = _paragraphs(path)
+        (own,) = [part for part in parts if newest.wrote(part)]
+        side = cases[n][1]
+        assert f"a direct ${side} = " in " ".join(own.split()), n
+        assert f"s({n}) >= {side}" not in own, n
+        assert markdown_math(own) == own, n
+        document = safe_load(path.read_text(encoding="utf-8").split("---\n", 2)[1])
+        front_matter = parse_front_matter(document)
+        claims = bound_claims(own, n)
+        assert [check_bound_claim(claim, front_matter) for claim in claims] == [None] * len(
+            claims
+        ), n
+
+
+def test_an_earlier_dated_paragraph_of_another_source_is_never_retired(tmp_path: Path) -> None:
+    """Only the registrations' own earlier paragraphs have their claims put in the past."""
+    frontier = tmp_path / "frontier"
+    shutil.copytree(FRONTIER, frontier)
+    newest = apply.REGISTRATIONS[-1]
+    plan = _direct_plan(frontier)
+    path = frontier / f"n-{plan.n:03d}.md"
+    earlier = apply.REGISTRATIONS[-2]
+    foreign = (
+        f"{earlier.intake} Another source reports `s({plan.n}) >= 1/1 = 1`, with total "
+        "mass `1/2 = 0.5 < 1`, by its own checker."
+    )
+    assert not any(item.wrote(foreign) for item in apply.REGISTRATIONS)
+    head, parts = _paragraphs(path)
+    _write_paragraphs(path, head, [*parts[:1], foreign, *parts[1:]])
+    before = path.read_text(encoding="utf-8")
+    assert apply.apply_case(plan, newest, frontier) == before

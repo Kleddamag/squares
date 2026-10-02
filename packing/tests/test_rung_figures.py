@@ -712,6 +712,18 @@ def test_every_case_page_binds_the_certificate_its_own_evidence_names() -> None:
             "T-034 remains valid evidence after Evan Daniel's replayed 5000/1001 "
             "superseded it on 2026-09-27; that certificate is in the source's own format"
         ),
+        18: (
+            "T-030 remains valid evidence after wand125's replayed 939/200 (T-045) "
+            "superseded it on 2026-10-02; that certificate is in the source's own format"
+        ),
+        19: (
+            "T-020 remains valid evidence after wand125's replayed 963/200 (T-045) "
+            "superseded it on 2026-10-02; that certificate is in the source's own format"
+        ),
+        20: (
+            "T-021 remains valid evidence after wand125's replayed 979/200 (T-045) "
+            "superseded it on 2026-10-02; that certificate is in the source's own format"
+        ),
     }
 
     evidence = _evidence_by_id()
@@ -800,6 +812,23 @@ def test_every_case_page_binds_the_certificate_its_own_evidence_names() -> None:
     # Non-vacuity, itself derived: every case the interval decision declares in its own
     # scope must be bound this way, so the contract cannot quietly empty out.
     assert bound == expected - set(external_reduction) - set(superseded_current_bound)
+
+    # Since 2026-10-02 that is every case in the scope, so the exemptions are held to the
+    # numbers rather than to their reasons: at each, the verified lower bound has left the
+    # interval decision and sits above every side a certificate in this repository's
+    # schema proves there, which is what superseded means.
+    for n in superseded_current_bound:
+        lower = _front_matter(RESULTS.parent / f"n-{n:03d}.md")["verified_lower_bound"]
+        assert "E-fractional-interval-decision" not in lower["evidence"], n
+        sides = [
+            figures.outer_side
+            for entry in evidence.values()
+            if n in ((entry.get("scope") or {}).get("n_values") or [])
+            and isinstance(entry.get("certificate"), str)
+            and (figures := load_certificate(PACKING / entry["certificate"])) is not None
+        ]
+        assert sides, f"n = {n}: no certificate of its own was superseded"
+        assert max(sides) < Fraction(Decimal(str(lower["value"]))), n
 
 
 def test_t026_historical_limit_still_binds_its_frozen_threshold_artifact() -> None:

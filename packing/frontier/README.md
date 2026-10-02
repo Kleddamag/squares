@@ -135,7 +135,7 @@ The ones that carry the most weight:
   exactly only when `status` is `proved`.
 - `reported_status` is the source-set view; `status` is `proved` only when the verified
   bounds match exactly.
-  There are currently 63 proved and 261 open formal cases.
+  There are currently 68 proved and 256 open formal cases.
 - `reported_upper_bound.catalogue_rigid` transcribes what the catalogue says about
   rigidity, in the catalogue’s own three-valued vocabulary: `rigid`, `semi-rigid`, or
   `not-stated`. `not-stated` is source silence and never a claim that a packing can
@@ -214,50 +214,43 @@ This is an audit of those named sources, not every publication.
 
 ## Adding or Reviewing a Result
 
-This is the procedure for a result from any source, this project’s parallel projects
-included.
-What counts as taken in, integrated and answered, and how a result by others is
-credited, is policy in
-[epistemics.md → Results by Others](../../epistemics.md#results-by-others).
+A result from any source, this project’s parallel projects included, enters these
+records through the [result import process](../campaign/result-import.md), and
+[epistemics.md → Results by Others](../../epistemics.md#results-by-others) is its
+policy. To ask for a registration, open an issue with the
+[registration request form](../../.github/ISSUE_TEMPLATE/result-registration.md).
 
-1. Retain the first-party source at a pinned revision, in a dated packet under
-   [`../resources/web/`](../resources/README.md), and add or update its dated coverage
-   entry.
-2. Give the source a bibliography key with `dated`, `credit` and `lineage`, read from
-   its own attribution files.
-3. Put the literal public claim in the reported lane and give it typed evidence.
-   A result by others that the record acts on gets its `T-NNN` register entry now, at
-   its derived rung, with a `kind`, a `headline`, `attribution` and a `next_rung` naming
-   the replay and review it waits on.
-   Its date is `attribution.published`; `established` is this project’s own results’
-   date and the checker refuses it here.
-   Write the `claim` in short paragraphs: the statement, the certificate, how the source
-   checked it, what was replayed here, and the credit with a link to the source.
-   The revision and digests of the retained copy belong to the evidence entry and the
-   packet, not to the claim or the case record’s prose;
-   [`devtools.check_prose_ceremony`](../devtools/check_prose_ceremony.py) holds both to
-   that. Its [status](../../epistemics.md#status) is derived and reads *recorded* from
-   this step on. Once a replay or review of it is under way here, or a question about it
-   is with its authors, say so in the entry’s `activity`, dated and linked to the bead
-   or issue that shows it, and remove it when the work lands or the answer arrives.
-4. If geometry is available, adapt it once to
-   [`Witness/v2`](../witnesses/witness.schema.yaml), then use `packing-witness inspect`
-   or `check` with explicit arithmetic, precision, and tolerance.
-5. Put a value in the verified lane only after an exact proof, exact witness replay, or
-   rigorous interval certificate discharges its assumptions.
-   For a result by others, that is a complete replay here and a review of its
-   mathematics under [`docs/project/reviews/`](../../docs/project/reviews/). Record
-   external evidence and a local replay separately.
-6. Preserve disagreement as a conflict or typed blocker.
-   Do not edit the source claim to match the checker.
-7. Render the reader views and run the schema, source-coverage, results and exact-replay
-   checks. Then bring the README, synopsis and atlas up to date through the
-   [documentation pass](../campaign/documentation-pass.md), with the source’s credit and
-   the result’s `T-NNN`.
-8. Answer an author who asked for the registration.
-   If they opened an issue here, reply on it, at the owner’s request, with the `T-NNN`,
-   the rung, what was replayed and what remains, and leave it open while work they asked
-   for is still queued.
+The process relies on these rules of the records:
+
+- **The reported lane takes the literal public claim**, with a typed evidence entry of
+  `assurance: reported` whose `novelty` is `previously-published`, which is what the
+  register’s coverage gate reads.
+  Disagreement is preserved as a conflict or a typed blocker; the source’s claim is
+  never edited to match a checker.
+- **The register entry is made when the result is imported**, at its derived rung, with
+  a `kind`, a `headline`, `attribution` and a `next_rung` naming the replay and review
+  it waits on. Its date is `attribution.published`; `established` is this project’s own
+  results’ date and the checker refuses it here.
+  Its [status](../../epistemics.md#status) is derived, and reads *recorded* until a read
+  or a replay of it is on file.
+- **The `claim` is short paragraphs:** the statement, the certificate, how the source
+  checked it, what was replayed here, and the credit with a link to the source.
+  The revision and digests of the retained copy belong to the evidence entry and the
+  packet, not to the claim or the case record’s prose;
+  [`devtools.check_prose_ceremony`](../devtools/check_prose_ceremony.py) holds both to
+  that.
+- **`activity` says who has the next move.** Once a replay or review is under way here,
+  or a question is with the authors, the entry says so, dated and linked to the bead or
+  issue that shows it, and the line is removed when the work lands or the answer
+  arrives.
+- **Geometry is adapted once** to [`Witness/v2`](../witnesses/witness.schema.yaml), and
+  then checked with `packing-witness inspect` or `check` under explicit arithmetic,
+  precision, and tolerance.
+- **The verified lane takes a value only after** an exact proof, exact witness replay,
+  or rigorous interval certificate discharges its assumptions.
+  For a result by others, that is a complete replay here and a review of its mathematics
+  under [`docs/project/reviews/`](../../docs/project/reviews/). External evidence and a
+  local replay are recorded as separate entries.
 
 ## Registering a First-Party Result
 
@@ -466,24 +459,28 @@ lower-bound side has underused methods.
 
 Counts below are computed from the artifacts, not asserted.
 
-Of the 261 open cases, **238** have Nagamochi’s formula as their verified lower bound.
-Five others use certificates already integrated into the register: current external
-certificate bounds at $n = 12$ ($15680/3951$) and $n = 17$ ($116511/25000$), plus the
-first-party bounds at $n = 18$ ($4679/1000$), $n = 19$ ($24/5$) and $n = 20$ ($97/20$).
-Complete interval and exact replays add 18 more external-certificate cases: $n = 26$ at
-$1377/250$ and $n = 29,30$ at $571/100$ (Tokoharu); $n = 27,28$ at $28/5$ and $n = 31$
-at $148/25$ (wand125’s rectangle certificates); $n = 39,40,41$ at $13/2$; $n = 52,53$ at
-$369/50$; $n = 55$ at $377/50$; $n = 56$ at $381/50$; $n = 68,69$ at $841/100$;
-$n = 70,71$ at $171/20$; and $n = 72$ at $861/100$. $n = 32$ left the open cases on
-2026-09-27, when a replayed external closed cover proved $s(32) = 6$, and $n = 21$ and
-$n = 45$ on 2026-09-29, when replayed external mixed covers proved $s(21) = 5$ and
-$s(45) = 7$. Within the original $n \le 100$ corpus, the corresponding Nagamochi count
-is 38. The count is checked against the case records by
-`devtools.check_nagamochi_bounds` (`D-430`), because earlier hand-maintained counts
-outlived their case promotions.
+Of the 256 open cases, **221** have Nagamochi’s formula as their verified lower bound.
+Two others use certificates already integrated into the register, the current external
+certificate bounds at $n = 12$ ($15680/3951$) and $n = 17$ ($116511/25000$). Complete
+interval and exact replays of external certificates hold the other 33: wand125’s point
+certificate at $n = 56$ ($381/50$), its mixed rectangle-measure certificate at $n = 76$
+($447/50$), and its rectangle-density certificates, directly or by monotonicity, at
+$n = 18$ to 20, 26 to 31, 38 to 44, 52 to 55, 67 to 75, 86 and 95. On 2026-10-02 those
+replays superseded this repository’s first-party bounds at $n = 18$, 19 and 20
+($4679/1000$, $24/5$ and $97/20$), Tokoharu’s at $n = 26$, 29 and 30, wand125’s point
+certificates at $n = 39$ to 41, 52, 53, 55 and 68 to 72, and Nagamochi’s formula at 17
+counts.
+$n = 32$ left the open cases on 2026-09-27, when a replayed external closed cover
+proved $s(32) = 6$, and $n = 21$ and $n = 45$ on 2026-09-29, when replayed external
+mixed covers proved $s(21) = 5$ and $s(45) = 7$; $n = 59$, 60 and 61 left them on
+2026-10-02, when replayed mixed covers proved $s(59) = s(60) = s(61) = 8$, and $n = 77$
+and 78 later that day, when the replayed $s(77)$ cover proved $s(77) = s(78) = 9$.
+Within the original $n \le 100$ corpus, the corresponding Nagamochi count is 21. The
+count is checked against the case records by `devtools.check_nagamochi_bounds`
+(`D-430`), because earlier hand-maintained counts outlived their case promotions.
 
-Of the 261 open cases, 117 are still held by the trivial grid.
-The other 144 carry non-grid constructions.
+Of the 256 open cases, 111 are still held by the trivial grid.
+The other 145 carry non-grid constructions.
 Within $n \le 100$, the 33 non-grid open cases comprise 13 hand-built, 10 from simulated
 annealing (nine of the ten dated 2024–2026; $n = 53$ is Cantrell’s from 2002), 5
 diagonal strips, 3 extensions of smaller records, and 2 whose method the source does not
@@ -503,8 +500,8 @@ Ranked by gap—the best-known packing minus the verified lower bound, which is 
 | 17 | 0.0151 | Bidwell | carried to $\frac{116511}{25000}$ by Guzhou0806 after Kleddamag |
 | 12 | 0.0314 | grid | $4^2 - 4$, carried to $\frac{15680}{3951}$ by Daniel after Burns, Massaccesi |
 | 97 | 0.0557 | grid | $10^2 - 3$ |
-| 78 | 0.0627 | grid | $9^2 - 3$ |
-| 61 | 0.0718 | grid | $8^2 - 3$ |
+| 76 | 0.0600 | grid | $9^2 - 5$, carried to $\frac{447}{50}$ by wand125 after Tokoharu |
+| 19 | 0.0706 | Wainwright | carried to $\frac{963}{200}$ by wand125 after Tokoharu |
 
 The $n = 17$ bound is Guzhou0806 / N17 project’s R068, continuing Kleddamag’s charge
 (Kleddamag building on Squares Project (Joshua Levy), Mira and Guzhou0806): an exact
@@ -515,19 +512,22 @@ and $s(45) = 7$, proved by Evan Daniel on the same method’s zero-margin form, 
 and third with mass on the grid lines as well as on points.
 $n = 21$, in this table at $0.0050$ from 2026-09-27, left it with that proof.
 $n = 11$, which headed it at $0.0021$ once Kleddamag carried it to $31/8$, left it on
-2026-09-30, when T-060 proved $s(11)$ equal to Trump’s side.
+2026-09-30, when T-060 proved $s(11)$ equal to Trump’s side, and $n = 61$ on 2026-10-02,
+when a replayed mixed cover proved $s(60) = 8$ and with it $s(61) = 8$; $n = 78$ left it
+later that day, when another proved $s(77) = 9$ and with it $s(78) = 9$.
 
-$n = 97$, $n = 78$ and $n = 61$ are three consecutive unproved members of the family
-$s(m^2 - 3) = m$, which is **proved exactly for $m = 3, 4, 5, 6, 7$** (that is
-`s(6), s(13), s(22), s(33), s(46)`) and conjectured beyond.
-Their gaps are small because Nagamochi’s bound is nearly tight there, and their
-conjectured optima are **integers**—the case the existing proof technique is built for.
+$n = 97$ is the smallest unproved member of the family $s(m^2 - 3) = m$, which is
+**proved exactly for $m = 3, 4, 5, 6, 7, 8, 9$** (that is
+`s(6), s(13), s(22), s(33), s(46), s(61), s(78)`) and reported by Evan Daniel for every
+larger $m$ (T-064), a claim not yet replayed here.
+Its gap is small because its lower bound is nearly tight, and its conjectured optimum is
+an **integer**—the case the existing proof technique is built for.
 
-Their small gaps and integer conjectured optima make them candidates for the existing
+Its small gap and integer conjectured optimum make it a candidate for the existing
 technique; the retained source audit found little case-specific treatment.
 
-Among the cases with a *non-trivial* record, $n = 19$ follows $n = 17$ at $0.0856$, then
-$n = 27$ at $0.1071$, $n = 26$ at $0.1133$ and $n = 18$ at $0.1439$. First-party
+Among the cases with a *non-trivial* record, $n = 19$ follows $n = 17$ at $0.0706$, then
+$n = 26$ at $0.0913$, $n = 27$ at $0.1071$ and $n = 18$ at $0.1279$. First-party
 certificates moved $n = 11$, $17$, $18$ and $19$ beginning on 2026-09-04; the retained
 $n = 18$ ladder reached $4.679$ on 2026-09-19. External certificates now carry $n = 11$,
 $17$, $26$ and $27$, and wand125’s reported rectangle bounds stand above the verified

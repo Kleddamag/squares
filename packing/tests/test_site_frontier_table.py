@@ -43,8 +43,9 @@ WIDTHS = (1280, 1024, 768, 390)
 #: The rows read: a row of whole numbers (the shortest a row can be), a radical with its
 #: credit, the proved case with a root shown as a decimal and the longest credited name,
 #: a fraction that is a recent bound, a verified bound printed beside the reported one,
-#: and a three-digit case with a rational upper bound.
-CASES = (1, 5, 11, 12, 18, 230)
+#: and a three-digit case with a rational upper bound. The fraction was n = 18's until
+#: 2026-10-02, when its verified bound rose to the reported one.
+CASES = (1, 5, 11, 12, 19, 230)
 ROWS = [f"n-{n}" for n in CASES]
 #: The drawing's side before it had a column: 2.6rem.
 OLD_THUMB = 41.6
@@ -199,8 +200,11 @@ def test_a_fraction_shows_its_decimal_and_a_name_stays_whole(
     assert 0 < exact - shown < Fraction(1, 10**8)
     assert [cell["approx"] for cell in rows["n-12"]["cells"]].count([]) == len(COLUMNS) - 2
     assert rows["n-12"]["cells"][column("Gap")]["approx"] == ["≈ 0.03138445…"]
-    assert rows["n-18"]["cells"][column("Verified lower")]["approx"] == ["= 4.679"]
-    assert rows["n-18"]["cells"][column("Reported lower")]["approx"] == ["= 4.695"]
+    # A terminating fraction shows its exact decimal in either column. The example was
+    # n = 18 until 2026-10-02, when T-045's replay raised its verified bound to the
+    # reported 939/200 and the cell became "same"; n = 19 still shows both.
+    assert rows["n-19"]["cells"][column("Verified lower")]["approx"] == ["= 4.815"]
+    assert rows["n-19"]["cells"][column("Reported lower")]["approx"] == ["= 4.8175"]
     assert all(cell["approx"] == [] for cell in rows["n-1"]["cells"])
     assert rows["n-11"]["cells"][column("Reported lower")]["broken"] == []
 
@@ -228,9 +232,11 @@ def test_the_table_still_sorts_filters_and_opens(page: Any, laid: dict[int, Any]
     # The heading with no words sorts nothing and is no tab stop.
     assert page.locator("#frontier-table thead th.site-thumb").get_attribute("tabindex") is None
 
+    # 27 recent cases until 2026-10-02, when the merged rectangle replays (T-045, T-070)
+    # and s(59), s(60) and s(61) made 44, the cases `recent_lower_bounds` names.
     page.get_by_label("recent only").check()
-    assert page.locator(".site-table-tools .site-count").inner_text() == "27 of 324 cases"
-    assert shown.count() == 27
+    assert page.locator(".site-table-tools .site-count").inner_text() == "44 of 324 cases"
+    assert shown.count() == 44
     assert shown.first.get_attribute("id") == "n-11"
     page.get_by_label("recent only").uncheck()
     assert shown.count() == 324

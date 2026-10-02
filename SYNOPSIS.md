@@ -1039,6 +1039,11 @@ case or experiment separately.
 | [Evan Daniel’s October Proof Pages: Source Coverage and Intake](docs/project/reviews/review-2026-10-01-evand-source-coverage.md) | dated review record | record | retained | — |
 | [Evand: Mathematical Review and Transfer to Low-n Research](docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md) | dated review record | record | retained | — |
 | [The Result Import Process: Process Review](docs/project/reviews/review-2026-10-01-result-import-process.md) | dated review record | record | retained | — |
+| [Proof Review: The Geometric Premises of Evan Daniel’s `s(60) = 8` and `s(61) = 8`](docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md) | dated review record | record | retained | — |
+| [Proof Review: Evan Daniel’s `s(32)` Cover Certified Without the D4 Fold, and What the Checkers Share](docs/project/reviews/review-2026-10-02-evand-s32-no-fold-run.md) | dated review record | record | retained | — |
+| [Proof Review: wand125’s `s(59) = 8` and `s(77) = 9` by Mixed Covers](docs/project/reviews/review-2026-10-02-wand125-s59-s77-mixed-covers.md) | dated review record | record | retained | — |
+| [wand125 Rectangle Certificates of 1 October: Review of T-068](docs/project/reviews/review-2026-10-02-wand125-rectangle-bounds-t068.md) | dated review record | record | retained | — |
+| [wand125 Mixed Rectangle-Measure Certificates: Review of T-069 and of n = 84, 85](docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md) | dated review record | record | retained | — |
 | [Density Solvers Compared: Tokoharu’s and wand125’s Rectangle-Density Tools Against This Repository’s Certificate Stack](docs/project/reviews/review-2026-09-28-density-solver-comparison.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R067 and R068, `s(17) > 233009/50000` and `s(17) > 116511/25000`](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) | dated review record | record | retained | — |
 | [Proof Review: wand125’s Point-Only Certificates for `s(45) = 7` and `s(21) = 5`](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) | dated review record | record | retained | — |

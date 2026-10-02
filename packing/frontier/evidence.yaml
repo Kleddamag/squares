@@ -1797,11 +1797,11 @@ evidence:
         lambda = 1 to estimate the minimum". That last is geometrically evident and is the
         only place the argument leans on something unargued. This promotes nothing: the
         method stays `published-proof`, and `proof-assistant-checked` is a different thing.
-        Separately `devtools/check_nagamochi_bounds.py` re-derives the 63 operative
+        Separately `devtools/check_nagamochi_bounds.py` re-derives the 46 operative
         verified-field values from Theorem 2 in the gate, so a transcription slip in a
         current bound is caught even though the proof behind them is not machine-checked.
         95 of the hundred case records cite this record and it supplies the operative
-        verified lower bound in 63 of them; the other 32 citations are historical or
+        verified lower bound in 46 of them; the other 49 citations are historical or
         reported context, and a citation count is not a count of current bounds.
     limitations: External published proof; its arithmetic is not independently replayed here.
     source_reviewed: '2026-08-24'

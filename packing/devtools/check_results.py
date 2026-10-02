@@ -54,14 +54,17 @@ EVIDENCE = ROOT / "frontier" / "evidence.yaml"
 BIBLIOGRAPHY = ROOT / "resources" / "bibliography.yaml"
 FRONTIER = ROOT / "frontier"
 #: The reader documents whose result mentions must name registered results: README, the
-#: synopsis, and the site's overview and papers prose. The overview's Recent Results
-#: opens with README's `recent-progress` block (`site_documents.overview_progress`), so
-#: the T-060 and T-011 it names are held here through README; each template is held for
-#: the results its own prose names, as the papers page names T-060.
+#: synopsis, and the site's overview, results, frontier and papers prose. The overview's
+#: Recent Results opens with README's `recent-progress` block
+#: (`site_documents.overview_progress`), so the T-060 and T-011 it names are held here
+#: through README; each template is held for the results its own prose names, as the
+#: papers page names T-060 and the Frontier page T-015 and T-016.
 READER_TIER = (
     REPO / "README.md",
     REPO / "SYNOPSIS.md",
     ROOT / "devtools" / "templates" / "overview-article.md",
+    ROOT / "devtools" / "templates" / "all-results-article.md",
+    ROOT / "devtools" / "templates" / "frontier-article.md",
     ROOT / "devtools" / "templates" / "papers-article.md",
 )
 DOCUMENT_MAP = REPO / "docs" / "project" / "document-map.yaml"

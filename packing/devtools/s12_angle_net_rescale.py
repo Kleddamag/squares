@@ -39,6 +39,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import os
 import platform
 import re
@@ -233,6 +234,7 @@ def run_verifier(
     bins: tuple[int, int] | None = None,
     n: int = 12,
     extra_env: dict[str, str] | None = None,
+    witnesses: Path | None = None,
 ) -> tuple[Verdict, str]:
     env = dict(os.environ)
     for name in ("VERIFY_BINS", "TIGHT_DUMP", "TIGHT_THRESH", "TIGHT_MAX", "VERIFY_FULLSWEEP"):
@@ -240,8 +242,12 @@ def run_verifier(
     env.update(extra_env or {})
     if bins is not None:
         env["VERIFY_BINS"] = f"{bins[0]}:{bins[1]}"
+    command = [str(binary), str(certificate), str(n), str(net), str(threads)]
+    if witnesses is not None:
+        # one witness per failing bin: the verdict is unchanged, the file says where it failed
+        command += ["1", str(witnesses)]
     done = subprocess.run(
-        [str(binary), str(certificate), str(n), str(net), str(threads)],
+        command,
         env=env,
         capture_output=True,
         text=True,
@@ -282,6 +288,16 @@ def screen(
     }
 
 
+def failing_bins(witness_text: str, net: int) -> list[int]:
+    """Bins of the source's witness lines ``value theta cx cy flag``, ``k = N tan(theta/2)``."""
+    bins: set[int] = set()
+    for line in witness_text.splitlines():
+        fields = line.split()
+        if len(fields) >= 2:
+            bins.add(round(net * math.tan(float(fields[1]) / 2)))
+    return sorted(bins)
+
+
 def _git(*arguments: str) -> str:
     return subprocess.run(
         ["git", *arguments], cwd=REPO, check=True, capture_output=True, text=True
@@ -294,8 +310,14 @@ def verify(
     cert = parse_certificate(certificate.read_bytes())
     binary = binary_path(work, overflow_checked=overflow_checked)
     started = time.monotonic()
-    verdict, output = run_verifier(binary, certificate, net, threads=threads)
+    witnesses = certificate.with_suffix(".witnesses.txt")
+    verdict, output = run_verifier(
+        binary, certificate, net, threads=threads, witnesses=witnesses
+    )
     seconds = time.monotonic() - started
+    failing = (
+        failing_bins(witnesses.read_text(encoding="ascii"), net) if witnesses.exists() else []
+    )
     margin = None if verdict.least_weight is None else str(Fraction(verdict.least_weight) - 1)
     return {
         "schema": "S12AngleNetRescaleReceipt/v1",
@@ -313,6 +335,7 @@ def verify(
         "least_weight": verdict.least_weight,
         "least_bin": verdict.least_bin,
         "margin": margin,
+        "failing_bins": failing,
         "verdict": asdict(verdict),
         "stdout_tail": output.strip().splitlines()[-6:],
         "threads": threads,

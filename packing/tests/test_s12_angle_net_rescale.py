@@ -9,6 +9,7 @@ exact cell membership, and the retained candidate's well-formedness and total.
 from __future__ import annotations
 
 import json
+import math
 from fractions import Fraction
 from pathlib import Path
 
@@ -20,6 +21,7 @@ from devtools.s12_angle_net_rescale import (
     RESCALED_309,
     Certificate,
     bin_count,
+    failing_bins,
     load_source,
     parse_certificate,
     parse_output,
@@ -142,3 +144,10 @@ def test_retained_candidate_is_well_formed() -> None:
     assert all(w >= 0 for _, _, w in cert.points)
     assert all(0 <= x <= cert.side * cert.denominator for x, _, _ in cert.points)
     d4_orbits(cert)  # D4-symmetric, so the source's [0, 45] reduction applies
+
+
+def test_failing_bins_from_witness_lines() -> None:
+    net = 6000
+    theta = 2 * math.atan(17 / net)
+    text = f"0.98 {theta} 1.0 2.0 0\n0.99 {theta} 1.5 2.0 0\n0.97 0.0 0.5 0.5 0\n"
+    assert failing_bins(text, net) == [0, 17]

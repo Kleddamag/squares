@@ -269,6 +269,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--slack", type=float, default=0.004, help="dump cells below 1 + slack")
     parser.add_argument("--margin", type=float, default=2e-6, help="LP rows ask for 1 + margin")
     parser.add_argument("--workers", type=int, default=4)
+    parser.add_argument(
+        "--rows-cache", type=Path, help="coverage rows kept between runs (.npy)"
+    )
+    parser.add_argument(
+        "--focus", type=str, default="", help="bins swept every round, comma-separated"
+    )
     parser.add_argument("--start", type=Path, help="weights to start from (default: Daniel's)")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--log", type=Path, required=True)
@@ -287,6 +293,13 @@ def main(argv: list[str] | None = None) -> int:
         orbit_of[list(orbit)] = o
     sizes = np.array([len(o) for o in orbits], dtype=np.float64)
     rows = Rows(orbit_of, len(orbits))
+    if args.rows_cache is not None and args.rows_cache.exists():
+        for row in np.load(args.rows_cache):
+            key = row.tobytes()
+            if key not in rows.seen:
+                rows.seen.add(key)
+                rows.rows.append(row)
+    focus = sorted({int(k) for k in args.focus.split(",") if k.strip()})
     current = scaled
     last = bin_count(args.net)
     args.log.parent.mkdir(parents=True, exist_ok=True)
@@ -296,8 +309,7 @@ def main(argv: list[str] | None = None) -> int:
         candidate.write_text(current.text(), encoding="ascii")
         offset = (round_index * 7) % args.stride
         bins = list(range(offset, last, args.stride))
-        if 0 not in bins:
-            bins.insert(0, 0)
+        bins = sorted(set(bins) | {0} | {k for k in focus if 0 <= k < last})
         threshold = int(current.weight_scale * (1 + args.slack))
         cells, least = dump_rows(
             args.work, candidate, args.net, bins, threshold, workers=args.workers
@@ -328,6 +340,8 @@ def main(argv: list[str] | None = None) -> int:
             handle.write(json.dumps(record) + "\n")
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(current.text(), encoding="ascii")
+        if args.rows_cache is not None:
+            np.save(args.rows_cache, np.vstack(rows.rows))
         if added == 0 and least is not None and Fraction(least) >= 1:
             break
     return 0 if current.total_weight < 12 else 1

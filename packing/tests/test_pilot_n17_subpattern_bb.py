@@ -166,7 +166,7 @@ def test_dual_bound_is_below_the_exact_value() -> None:
             )
         weights = [rng.random() for _ in rows]
         cost = (rng.randrange(4), rng.choice((1.0, -1.0)))
-        bound = bb.dual_bound(rows, weights, boxes, cost)
+        bound = bb.dual_bound(rows, weights, bb.column_spans(boxes), cost)
         combined = [Q(0)] * 4
         combined[cost[0]] = Q(cost[1])
         right = Q(0)
@@ -463,3 +463,147 @@ def test_a_certificate_round_trips_and_its_closures_recheck_exactly(
     else:
         assert checked["bounds"] > 0
     assert _check_cuts(saved) > 0
+
+
+# ---------------------------------------------------------------------------
+# The Taylor relaxation (opt-in) and the interval form's unchanged certificates
+# ---------------------------------------------------------------------------
+
+
+def _h(angle: float) -> float:
+    mpmath.mp.prec = 100
+    value = (abs(mpmath.cos(angle)) + abs(mpmath.sin(angle))) / 2
+    return float(value)
+
+
+def test_taylor_lines_lie_below_the_supports() -> None:
+    """`constant + h(centre + t) >= a + b t` for every line, every |t| <= rho."""
+    rng = random.Random(21)
+    checked = 0
+    for _ in range(300):
+        centre = rng.uniform(-1.8, 1.8)
+        rho = rng.choice((1e-3, 0.02, 0.1, 0.4)) * rng.random()
+        span = (centre - rho, centre + rho)
+        lines = bb.taylor_lines(*bb.cos_sin(centre), rho, span, constant=0.5)
+        assert lines
+        for _ in range(30):
+            t = rng.uniform(-rho, rho)
+            for _, _, a, b in lines:
+                assert 0.5 + _h(centre + t) >= a + b * t - 1e-15
+                checked += 1
+    assert checked > 5000
+
+
+def _taylor_pair_solver(
+    rng: random.Random,
+) -> tuple[bb.Solver, bb.Node, tuple[bb.Box, ...]] | None:
+    """Two small cells near each other, a narrow angle box each, in Taylor mode."""
+    ci = (Q(rng.randint(150, 200), 100), Q(rng.randint(150, 200), 100))
+    offset = (Q(rng.randint(-130, 130), 100), Q(rng.randint(-130, 130), 100))
+    cj = (ci[0] + offset[0], ci[1] + offset[1])
+    size = Q(rng.randint(5, 30), 100)
+    polygons = tuple(
+        ((x, y), (x + size, y), (x + size, y + size), (x, y + size)) for x, y in (ci, cj)
+    )
+    solver = bb.Solver(bb.Pattern(("i", "j"), polygons, bb.cover.U), bb.Settings(taylor=True))
+    width = rng.choice((0.3, 0.08, 0.02))
+    angles = tuple(
+        (start, start + width)
+        for start in (rng.uniform(0.4, 1.9 - width), rng.uniform(0.4, 1.9 - width))
+    )
+    node = bb.Node(angles, solver.cell_boxes, (None,), 0)
+    boxes = solver.contract(node)
+    return None if boxes is None else (solver, node, boxes)
+
+
+def test_disjoint_pair_poses_satisfy_every_taylor_cut() -> None:
+    rng = random.Random(4)
+    checked = 0
+    for _ in range(120):
+        made = _taylor_pair_solver(rng)
+        if made is None:
+            continue
+        solver, node, boxes = made
+        term = solver.pair_term(node, boxes, 0)
+        if not term.taylor:
+            continue
+        centres = [0.5 * (lo + hi) for lo, hi in node.angles]
+        for _ in range(40):
+            pose = [
+                (rng.uniform(b[0], b[1]), rng.uniform(b[2], b[3]), rng.uniform(*a))
+                for b, a in zip(boxes, node.angles, strict=True)
+            ]
+            if separated(pose[0], pose[1]) < 0:
+                continue
+            dx, dy = pose[1][0] - pose[0][0], pose[1][1] - pose[0][1]
+            dt = (pose[1][2] - centres[1]) - (pose[0][2] - centres[0])
+            for ux, uy, w, v, _ in term.taylor:
+                assert ux * dx + uy * dy - w * dt >= v - 1e-12
+                checked += 1
+    assert checked > 200
+
+
+def test_contained_squares_satisfy_every_wall_row() -> None:
+    rng = random.Random(8)
+    cap = float(bb.cover.U)
+    checked = 0
+    for _ in range(80):
+        x0 = rng.choice((0.5, 0.55, cap - 0.8))
+        cell = (
+            (Q(x0), Q(2)),
+            (Q(x0) + Q(1, 4), Q(2)),
+            (Q(x0) + Q(1, 4), Q(9, 4)),
+            (Q(x0), Q(9, 4)),
+        )
+        solver = bb.Solver(bb.Pattern(("s",), (cell,), bb.cover.U), bb.Settings(taylor=True))
+        lo = rng.uniform(0.4, 1.9)
+        node = bb.Node(((lo, lo + rng.choice((0.4, 0.1, 0.02))),), solver.cell_boxes, (), 0)
+        solver.taylor = solver.taylor_context(node)
+        rows = solver.wall_rows(solver.cell_boxes)
+        centre = solver.taylor.centres[0]
+        for _ in range(60):
+            theta = rng.uniform(*node.angles[0])
+            half = (abs(math.cos(theta)) + abs(math.sin(theta))) / 2
+            z = (rng.uniform(half, cap - half), rng.uniform(half, cap - half))
+            point = {0: z[0], 1: z[1], 2: theta - centre}
+            for row in rows:
+                value = sum(
+                    c * point[col] for col, c in zip(row.columns, row.values, strict=True)
+                )
+                assert value <= row.rhs + 1e-12
+                checked += 1
+    assert checked > 500
+
+
+def test_taylor_mode_certifies_crowded_rows_and_never_a_feasible_one() -> None:
+    for right in (("2.80", "2.85"), ("2.94", "2.99")):
+        result = bb.search(three_in_a_row(right), bb.Settings(taylor=True, max_seconds=20))
+        assert result["verdict"] == "certified-infeasible"
+        assert result["farkas_failures"] == 0
+    feasible = bb.search(
+        three_in_a_row(("3.05", "3.10")),
+        bb.Settings(taylor=True, max_seconds=1, max_nodes=200),
+    )
+    assert feasible["verdict"] != "certified-infeasible"
+
+
+# Chunk names of interval certificates written by the tool before the Taylor option; an
+# interval run must still write exactly these bytes. (The enclosure table holds every
+# angle the process has evaluated, so its name is not pinned.)
+UNCHANGED_CHUNKS = {
+    ("2.80", 0): "27d6798960522cace2fb3e33f16cf7676df68df4ca39a0b60cec38f3d8053a64",
+    ("2.80", 3): "3c55b054898682ab4b10deb12c645b29f7e664e45edac61ccfe08aa6cb913370",
+    ("2.94", 3): "f85e95fb536920f128c001d1ca1c2b7e2ec0a47d6ba0577ad81ad676c975f497",
+}
+
+
+@pytest.mark.parametrize(("right", "obbt_rounds"), sorted(UNCHANGED_CHUNKS))
+def test_interval_certificates_are_unchanged_by_the_taylor_option(
+    right: str, obbt_rounds: int, tmp_path: Path
+) -> None:
+    pattern = three_in_a_row((str(float(Q(right))), str(float(Q(right) + Q("0.05")))))
+    result = bb.search(pattern, bb.Settings(obbt_rounds=obbt_rounds), certificate=tmp_path)
+    saved = bb.load_certificate(tmp_path, result["certificate_manifest"])
+    assert saved["manifest"]["chunks"] == [UNCHANGED_CHUNKS[right, obbt_rounds]]
+    assert saved["manifest"]["schema"] == bb.CERTIFICATE_SCHEMA
+    assert "taylor" not in saved["manifest"]["header"]["settings"]

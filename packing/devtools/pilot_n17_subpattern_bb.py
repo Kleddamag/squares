@@ -58,6 +58,21 @@ act together:
   maximised over the same rows (warm re-solves), each bound made valid by the same dual
   check with the coordinate as the cost, the boxes are clipped to the cells again, and
   the node is re-relaxed while a box shrinks by 5 percent; children inherit the boxes.
+* Taylor option (`--taylor`, off by default; interval runs write the same bytes). The
+  interval rows enter the gap `g = 1/2 + h(theta_j - theta_i)` and the walls' `h(theta)`
+  through their least values over the angle box, a first-order loss wherever `h` slopes
+  (corner-to-edge contacts, tilted wall squares). With the option the angle offsets
+  `t_s = theta_s - c_s` about the box centres become LP columns, and each support gets
+  lines through the centre: `h` is the largest of the four sinusoids
+  `f = (s1 cos + s2 sin)/2`, each with `|f''| <= sqrt 2/2`, so
+  `h(c + t) >= f(c) + f'(c) t - (sqrt 2/4) t^2` for every sign pair, and the two lines
+  either side of a kink keep its V. Every plane also reads `nbar . d >= c g - o` at the
+  pose's own gap, so a pair gets cuts `u . d - w (t_j - t_i) >= v`, with `u` an interval
+  hull facet, `w` a secant slope and `v` a rigorous three-variable Lagrangian bound over
+  every plane; a square gets wall rows `x_s - b t_s >= a`. The interval rows stay, so a
+  Taylor node is never weaker than the interval one. Certificates carry the centres and
+  the lines' slopes (schema v2), and `verify_n17_bb_certificate` re-proves every Taylor
+  cut and wall line in exact rationals.
 * Other closures. A centre box missing its cell or walls; a pair with no possible option,
   or with `|d| < 1` throughout. A pair with `|d| >= sqrt 2` throughout is dropped.
 * Branching. The undecided pair the LP point violates most is split by option.
@@ -135,10 +150,17 @@ VIOLATED = 1e-9
 DEFAULT_FLOOR = 1e-6
 DEFAULT_THETA0 = 0.4
 DEFAULT_SPLIT_RATIO = 0.25
+# A bound on |f''|/2 for f = (s1 cos + s2 sin)/2, where |f''| = |f| <= sqrt(2)/2: the
+# remainder constant of the Taylor rows, at least sqrt(2)/4 = 0.35355339...
+TAYLOR_K = 0.35356
 MAX_DEPTH = 2000
 
 Iv = tuple[float, float]
 Box = tuple[float, float, float, float]
+# A plane `(nx, ny, r, c, o)`: `nbar . d >= r`, and `nbar . d >= c g - o` at the pose's gap.
+TaylorPlane = tuple[float, float, float, float, float]
+# (s1, s2, a, b): `constant + (s1 cos + s2 sin)/2 >= a + b t` for every offset |t| <= rho.
+TaylorLine = tuple[int, int, float, float]
 # Untyped third-party surfaces: mpmath's interval context, and the HiGHS bindings scipy
 # bundles (a warm re-solve there with a new objective costs about 20 microseconds).
 iv: Any = mpmath.iv
@@ -224,6 +246,9 @@ def _with_prec(compute: Any) -> Any:
 
 
 TRIG: dict[float, tuple[Iv, Iv]] = {}
+# The angles a recording run evaluates, so that its certificate's table holds exactly
+# those (the cache also holds whatever earlier work in the process evaluated).
+TRIG_USED: set[float] | None = None
 
 
 def cos_sin(theta: float) -> tuple[Iv, Iv]:
@@ -231,6 +256,8 @@ def cos_sin(theta: float) -> tuple[Iv, Iv]:
 
     Cached in `TRIG`, which a saved certificate writes out as its table of enclosures.
     """
+    if TRIG_USED is not None:
+        TRIG_USED.add(theta)
     cached = TRIG.get(theta)
     if cached is not None:
         return cached
@@ -430,6 +457,10 @@ class PairTerm:
     pieces: list[tuple[float, float, float]] = field(
         default_factory=list[tuple[float, float, float]]
     )
+    # Taylor mode only: cuts `u . d - w (t_j - t_i) >= v` as `(ux, uy, w, v, line)`.
+    taylor: list[tuple[float, float, float, float, TaylorLine]] = field(
+        default_factory=list[tuple[float, float, float, float, TaylorLine]]
+    )
 
 
 @dataclass(frozen=True)
@@ -447,22 +478,33 @@ class Row:
     norm: float
     exact: tuple[Iv, ...]
     exact_rhs: Iv
-    owner: int = -1  # the pair a cut row belongs to; -1 for a cell row
+    owner: int = -1  # the pair a cut row belongs to; -1 for a cell row, -2 for a wall row
+    # Taylor mode only: the certificate entry of a Taylor cut or a wall row.
+    record: tuple[Any, ...] | None = None
+
+
+def column_spans(boxes: Sequence[Box], offsets: Sequence[Iv] = ()) -> list[Iv]:
+    """The LP's column ranges: x and y per square, then (Taylor mode) the angle offsets."""
+    spans: list[Iv] = []
+    for box in boxes:
+        spans.extend(((box[0], box[1]), (box[2], box[3])))
+    spans.extend(offsets)
+    return spans
 
 
 def dual_bound(
     rows: Sequence[Row],
     multipliers: Sequence[float],
-    boxes: Sequence[Box],
+    spans: Sequence[Iv],
     cost: tuple[int, float] | None,
 ) -> float:
     """A lower bound of `sign z[column]` (or of 0) over the node, from any `y >= 0`.
 
     At a feasible pose `y . (A z - b) <= 0`, so `sign z_c >= (sign e_c + y A) . z - y b`,
-    whose least value over the centre box is enclosed outward here. With no cost, a
+    whose least value over the column ranges is enclosed outward here. With no cost, a
     positive result says the node holds no feasible pose (the Farkas check).
     """
-    combined: list[Iv] = [(0.0, 0.0)] * (2 * len(boxes))
+    combined: list[Iv] = [(0.0, 0.0)] * len(spans)
     if cost is not None:
         combined[cost[0]] = (cost[1], cost[1])
     right: Iv = (0.0, 0.0)
@@ -475,9 +517,7 @@ def dual_bound(
             combined[column] = iadd(combined[column], imul(scaled, coefficient))
         right = iadd(right, imul(scaled, row.exact_rhs))
     least = 0.0
-    for column, coefficient in enumerate(combined):
-        box = boxes[column // 2]
-        span = (box[0], box[1]) if column % 2 == 0 else (box[2], box[3])
+    for coefficient, span in zip(combined, spans, strict=True):
         least = dn(least + imul(coefficient, span)[0])
     return dn(least - right[1])
 
@@ -558,20 +598,167 @@ def option_halfplanes(
     """Float half-planes `nx dx + ny dy >= r`, one of which holds at every pose using
     the option, restricted to those the d-box can meet (empty: the option is impossible).
     """
+    return [plane[:3] for plane in option_planes(lo, hi, dx, dy, d_max=d_max, g_lo=g_lo)]
+
+
+def chord_factor(lo: float, hi: float) -> float:
+    """The chord plane's factor `dn(1 - x^2/2) <= cos x`, as `chord_pieces` computes it."""
+    m = _quantised(lo, hi)
+    x = up(max(up(m - lo), up(hi - m)))
+    return dn(1.0 - up(x * x) / 2)
+
+
+def option_planes(
+    lo: float, hi: float, dx: Iv, dy: Iv, *, d_max: float, g_lo: float
+) -> list[TaylorPlane]:
+    """The half-planes of `option_halfplanes`, each with its factor and offset.
+
+    Each `(nx, ny, r, c, o)` has `r = c g_lo - o` up to outward rounding, and every pose
+    that uses it satisfies `nbar . d >= c g - o` at its own gap `g`: `c = 1` and
+    `o` the enclosure slack for an end plane, `c` the chord factor for the chord plane,
+    `c = 1` and `o` the whole loss for the relaxed plane of a wide option.
+    """
     pieces = chord_pieces(lo, hi, g_lo)
+    found: list[tuple[Option, float]] = []
     if pieces:
-        options = [
-            piece_option(lo, hi, angle, rhs, dx=dx, dy=dy)
-            for angle, rhs in pieces
+        factors = (1.0, 1.0, chord_factor(lo, hi))
+        found = [
+            (piece_option(lo, hi, angle, rhs, dx=dx, dy=dy), factor)
+            for (angle, rhs), factor in zip(pieces, factors, strict=True)
             if piece_possible(angle, rhs, dx, dy)
         ]
     else:
-        options = [relax(lo, hi, dx, dy, d_max=d_max, g_lo=g_lo)]
+        found = [(relax(lo, hi, dx, dy, d_max=d_max, g_lo=g_lo), 1.0)]
     return [
-        (option.nx, option.ny, option.bound)
-        for option in options
+        (option.nx, option.ny, option.bound, factor, option.loss)
+        for option, factor in found
         if option_possible(option, dx, dy)
     ]
+
+
+# ---------------------------------------------------------------------------
+# The Taylor relaxation of the trigonometric coefficients (opt-in)
+# ---------------------------------------------------------------------------
+
+
+def offset_span(span: Iv, centre: float) -> Iv:
+    """An enclosure of `theta - centre` for theta in `span`."""
+    return dn(span[0] - centre), up(span[1] - centre)
+
+
+def possible_signs(value: Iv, lo: float, hi: float, parity: int) -> list[int]:
+    """Signs a sinusoid can take on [lo, hi]: both if it may vanish there.
+
+    `parity` 1 is the cosine (zero at odd multiples of pi/2), 0 the sine (even ones);
+    `value` encloses it at a point of the interval.
+    """
+    vanishes = up(hi - lo) >= HALF_PI[0] or any(
+        k % 2 == parity and might_contain(lo, hi, multiple)
+        for k, multiple in HALF_PI_MULTIPLES.items()
+    )
+    if vanishes or value[0] <= 0.0 <= value[1]:
+        return [1, -1]
+    return [1] if value[0] > 0.0 else [-1]
+
+
+def taylor_lines(c: Iv, s: Iv, rho: float, span: Iv, *, constant: float) -> list[TaylorLine]:
+    """Lines below `constant + h` over an angle interval, from its centre's enclosures.
+
+    `h(a) = (|cos a| + |sin a|)/2` is the largest of `f(a) = (s1 cos a + s2 sin a)/2`
+    over the four sign pairs, so `h >= f` for each, and `f'' = -f`, `|f''| <= sqrt 2/2`.
+    At the centre `f(t) >= f(0) + f'(0) t - TAYLOR_K t^2`, and with the float slope `b`
+    in the enclosure of `f'(0)`, `f'(0) t >= b t - |f'(0) - b| rho`. One line per sign
+    pair `h` can follow on `span` (where `cos`, `sin` keep a sign, one; across a zero,
+    both, which together keep the kink).
+    """
+    lines: list[TaylorLine] = []
+    for s1 in possible_signs(c, span[0], span[1], 1):
+        for s2 in possible_signs(s, span[0], span[1], 0):
+            cos_part = c if s1 > 0 else ineg(c)
+            sin_part = s if s2 > 0 else ineg(s)
+            f = iadd(cos_part, sin_part)
+            # f' = (s2 cos - s1 sin)/2; both halvings below are exact.
+            slope = isub(c if s2 > 0 else ineg(c), s if s1 > 0 else ineg(s))
+            f = (0.5 * f[0], 0.5 * f[1])
+            slope = (0.5 * slope[0], 0.5 * slope[1])
+            b = 0.5 * (slope[0] + slope[1])
+            spread = max(up(slope[1] - b), up(b - slope[0]))
+            loss = up_add(up_mul(spread, rho), up_mul(TAYLOR_K, up_mul(rho, rho)))
+            lines.append((s1, s2, dn(dn(constant + f[0]) - loss), b))
+    return lines
+
+
+def taylor_plane_min(
+    u: tuple[float, float],
+    w: float,
+    plane: TaylorPlane,
+    line: TaylorLine,
+    boxes: tuple[Iv, Iv, Iv],
+) -> float:
+    """A lower bound of `u . d - w t` over the boxes meet `nbar . d - c b t >= c a - o`.
+
+    For any `lam >= 0` the objective is at least `(u - lam nbar) . d + (lam c b - w) t +
+    lam (c a - o)`, bounded below over the boxes; the candidates are 0 and the multipliers
+    that cancel one coefficient, which include the optimal one.
+    """
+    nx, ny, _, c, o = plane
+    _, _, a, b = line
+    dx, dy, dt = boxes
+    candidates = [0.0]
+    for numerator, denominator in ((u[0], nx), (u[1], ny), (w, c * b)):
+        if denominator != 0.0:
+            candidates.append(numerator / denominator)
+    best = -INF
+    for lam in candidates:
+        if not lam >= 0.0 or math.isinf(lam):
+            continue
+        scaled = (lam, lam)
+        cx = isub((u[0], u[0]), imul(scaled, (nx, nx)))
+        cy = isub((u[1], u[1]), imul(scaled, (ny, ny)))
+        ct = isub(imul(imul(scaled, (c, c)), (b, b)), (w, w))
+        constant = imul(scaled, isub(imul((c, c), (a, a)), (o, o)))
+        value = iadd(iadd(imul(cx, dx), imul(cy, dy)), iadd(imul(ct, dt), constant))[0]
+        best = max(best, value)
+    return best
+
+
+def taylor_cuts(
+    facets: list[Halfplane],
+    planes: list[TaylorPlane],
+    lines: list[TaylorLine],
+    boxes: tuple[Iv, Iv, Iv],
+) -> list[tuple[float, float, float, float, TaylorLine]]:
+    """Valid cuts `u . d - w t >= v` per gap line, for each interval hull facet `u`.
+
+    `w` is the secant slope of the facet's float value across the offset box, a choice;
+    `v` is the rigorous least value over every plane (`taylor_plane_min`).
+    """
+    dx, dy, dt = boxes
+    cuts: list[tuple[float, float, float, float, TaylorLine]] = []
+    for line in lines:
+        _, _, a, b = line
+        if not dn(a - up_mul(abs(b), magnitude(dt))) > 0.0:
+            # The line must stay positive over the offsets: a reader's exact chord factor
+            # and gap constant are then at least these, and its half-spaces lie inside.
+            continue
+        for ux, uy, _ in facets:
+            u = (ux, uy)
+
+            def level(
+                t: float, u: tuple[float, float] = u, a: float = a, b: float = b
+            ) -> float:
+                return min(
+                    plane_min(u, (nx, ny, c * (a + b * t) - o), dx, dy)
+                    for nx, ny, _, c, o in planes
+                )
+
+            w = (level(dt[1]) - level(dt[0])) / (dt[1] - dt[0]) if dt[1] > dt[0] else 0.0
+            if not math.isfinite(w):
+                w = 0.0
+            v = min(taylor_plane_min(u, w, plane, line, boxes) for plane in planes)
+            if math.isfinite(v):
+                cuts.append((ux, uy, w, v, line))
+    return cuts
 
 
 def clip_box(dx: Iv, dy: Iv, plane: Halfplane) -> list[tuple[float, float]]:
@@ -743,6 +930,16 @@ class Settings:
     split_ratio: float = DEFAULT_SPLIT_RATIO
     obbt_rounds: int = 3
     obbt_repeat: float = 0.05
+    taylor: bool = False
+
+
+@dataclass(frozen=True)
+class TaylorContext:
+    """A node's angle centres, offset ranges and wall lines (Taylor mode)."""
+
+    centres: tuple[float, ...]
+    offsets: tuple[Iv, ...]
+    walls: tuple[tuple[TaylorLine, ...], ...]
 
 
 class Solver:
@@ -758,6 +955,7 @@ class Solver:
         self.highs = highs._Highs()  # noqa: SLF001
         self.highs.setOptionValue("output_flag", False)  # noqa: FBT003
         self.recorder: Recorder | None = None
+        self.taylor: TaylorContext | None = None
         self.cell_rows: list[Row] = []
         for square, (exact, floats) in enumerate(
             zip(pattern.rows, pattern.lp_rows, strict=True)
@@ -821,12 +1019,14 @@ class Solver:
                 for part in in_window(piece, node.windows[index])
             ]
             planes: list[Halfplane] = []
+            full: list[TaylorPlane] = []
             alive: list[Iv] = []
             for piece in pieces:
-                found = option_halfplanes(*piece, dx, dy, d_max=d_max, g_lo=g_lo)
+                found = option_planes(*piece, dx, dy, d_max=d_max, g_lo=g_lo)
                 if found:
                     alive.append(piece)
-                    planes.extend(found)
+                    planes.extend(plane[:3] for plane in found)
+                    full.extend(found)
             recorded = [(lo, hi, _quantised(lo, hi)) for lo, hi in pieces]
             if not alive:
                 term = PairTerm("pair", pieces=recorded)
@@ -839,14 +1039,113 @@ class Solver:
                     cuts,
                     planes,
                     recorded,
+                    self.pair_taylor(node, (i, j), cuts, full, (dx, dy))
+                    if self.settings.taylor
+                    else [],
                 )
         if len(self.pair_cache) > 400_000:
             self.pair_cache.clear()
         self.pair_cache[key] = term
         return term
 
+    # -- the Taylor relaxation ------------------------------------------------------------
+
+    def taylor_context(self, node: Node) -> TaylorContext:
+        """Each square's centre angle, offset range and wall lines `h >= a + b t`."""
+        centres = tuple(0.5 * (lo + hi) for lo, hi in node.angles)
+        offsets = tuple(
+            offset_span(span, centre) for span, centre in zip(node.angles, centres, strict=True)
+        )
+        walls = tuple(
+            tuple(taylor_lines(*cos_sin(centre), magnitude(offset), span, constant=0.0))
+            for span, centre, offset in zip(node.angles, centres, offsets, strict=True)
+        )
+        return TaylorContext(centres, offsets, walls)
+
+    def pair_taylor(
+        self,
+        node: Node,
+        pair: tuple[int, int],
+        facets: list[Halfplane],
+        planes: list[TaylorPlane],
+        d_box: tuple[Iv, Iv],
+    ) -> list[tuple[float, float, float, float, TaylorLine]]:
+        """Taylor cuts of one pair: gap lines at the centre relative angle, then cuts."""
+        i, j = pair
+        ti, tj = node.angles[i], node.angles[j]
+        ci, cj = 0.5 * (ti[0] + ti[1]), 0.5 * (tj[0] + tj[1])
+        oi, oj = offset_span(ti, ci), offset_span(tj, cj)
+        dt = (dn(oj[0] - oi[1]), up(oj[1] - oi[0]))
+        relative = (dn(tj[0] - ti[1]), up(tj[1] - ti[0]))
+        lines = taylor_lines(*cos_sin_difference(cj, ci), magnitude(dt), relative, constant=0.5)
+        return taylor_cuts(facets, planes, lines, (d_box[0], d_box[1], dt))
+
+    def taylor_row(self, index: int, cut: tuple[float, float, float, float, TaylorLine]) -> Row:
+        """`u . (c_j - c_i) - w (t_j - t_i) >= v` as a row `<= -v`."""
+        i, j = self.pattern.pairs[index]
+        k = self.pattern.k
+        ux, uy, w, v, (s1, s2, _, b) = cut
+        values = (ux, uy, -ux, -uy, -w, w)
+        return Row(
+            (2 * i, 2 * i + 1, 2 * j, 2 * j + 1, 2 * k + i, 2 * k + j),
+            values,
+            -v,
+            1.0,
+            tuple((value, value) for value in values),
+            (-v, -v),
+            index,
+            ("u", index, ux, uy, v, w, s1, s2, b),
+        )
+
+    def wall_rows(self, boxes: tuple[Box, ...]) -> list[Row]:
+        """`h(theta_s) <= x_s, y_s <= U - h(theta_s)` through each wall line, unless slack."""
+        assert self.taylor is not None
+        k = self.pattern.k
+        cap_lo = lower_float(self.pattern.cap)
+        rows: list[Row] = []
+        for s, (box, lines, offset) in enumerate(
+            zip(boxes, self.taylor.walls, self.taylor.offsets, strict=True)
+        ):
+            reach = magnitude(offset)
+            for s1, s2, a, b in lines:
+                swing = abs(b) * reach
+                for axis, (lo, hi) in enumerate(((box[0], box[1]), (box[2], box[3]))):
+                    column = 2 * s + axis
+                    if lo <= a + swing + 1e-9:
+                        rows.append(
+                            Row(
+                                (column, 2 * k + s),
+                                (-1.0, b),
+                                -a,
+                                1.0,
+                                ((-1.0, -1.0), (b, b)),
+                                (-a, -a),
+                                -2,
+                                ("w", s, axis, 1, s1, s2, b, a),
+                            )
+                        )
+                    if hi >= self.cap_hi - a - swing - 1e-9:
+                        rhs = (dn(cap_lo - a), up(self.cap_hi - a))
+                        rows.append(
+                            Row(
+                                (column, 2 * k + s),
+                                (1.0, b),
+                                rhs[1],
+                                1.0,
+                                ((1.0, 1.0), (b, b)),
+                                rhs,
+                                -2,
+                                ("w", s, axis, -1, s1, s2, b, a),
+                            )
+                        )
+        return rows
+
+    def spans(self, boxes: Sequence[Box]) -> list[Iv]:
+        return column_spans(boxes, self.taylor.offsets if self.taylor is not None else ())
+
     def assess(self, node: Node) -> Evaluation:
         """Contract, relax, solve and tighten until the boxes stop shrinking."""
+        self.taylor = self.taylor_context(node) if self.settings.taylor else None
         boxes = self.contract(node)
         if boxes is None:
             return Evaluation("cell")
@@ -879,6 +1178,9 @@ class Solver:
             if term.kind in ("decided", "undecided"):
                 terms.append((index, term))
                 rows.extend(self.cut_row(index, cut) for cut in term.cuts)
+                rows.extend(self.taylor_row(index, cut) for cut in term.taylor)
+        if self.taylor is not None:
+            rows.extend(self.wall_rows(boxes))
         return Evaluation(None, boxes, terms), rows
 
     def next_boxes(self, evaluation: Evaluation, rows: list[Row]) -> tuple[Box, ...] | None:
@@ -915,30 +1217,37 @@ class Solver:
             index,
         )
 
+    def columns(self) -> int:
+        """Centres, then angle offsets in Taylor mode, then the LP's slack `t`."""
+        return (3 if self.taylor is not None else 2) * self.pattern.k + 1
+
     def load(self, rows: list[Row], boxes: tuple[Box, ...]) -> None:
-        k = self.pattern.k
+        n = self.columns()
         lp = highs.HighsLp()
-        lp.num_col_ = 2 * k + 1
+        lp.num_col_ = n
         lp.num_row_ = len(rows)
-        cost = np.zeros(2 * k + 1)
+        cost = np.zeros(n)
         cost[-1] = 1.0
         lp.col_cost_ = cost
-        lp.col_lower_ = np.array([*self._interleave(boxes, 0), -1.0])
-        lp.col_upper_ = np.array([*self._interleave(boxes, 1), highs.kHighsInf])
+        offsets = self.taylor.offsets if self.taylor is not None else ()
+        lp.col_lower_ = np.array([*self._interleave(boxes, 0), *(o[0] for o in offsets), -1.0])
+        lp.col_upper_ = np.array(
+            [*self._interleave(boxes, 1), *(o[1] for o in offsets), highs.kHighsInf]
+        )
         lp.row_lower_ = np.full(len(rows), -highs.kHighsInf)
         lp.row_upper_ = np.array([row.rhs for row in rows])
         starts, indices, values = [0], [], []
         for row in rows:
             indices.extend(row.columns)
             values.extend(row.values)
-            indices.append(2 * k)
+            indices.append(n - 1)
             values.append(-1.0)
             starts.append(len(indices))
         lp.a_matrix_.format_ = highs.MatrixFormat.kRowwise
         lp.a_matrix_.start_ = np.array(starts, dtype=np.int32)
         lp.a_matrix_.index_ = np.array(indices, dtype=np.int32)
         lp.a_matrix_.value_ = np.array(values, dtype=np.float64)
-        lp.a_matrix_.num_col_ = 2 * k + 1
+        lp.a_matrix_.num_col_ = n
         lp.a_matrix_.num_row_ = len(rows)
         self.highs.passModel(lp)
 
@@ -967,7 +1276,7 @@ class Solver:
         evaluation.point = point[: 2 * self.pattern.k]
         if value <= LP_POSITIVE:
             return
-        if dual_bound(rows, duals, evaluation.boxes, None) > 0.0:
+        if dual_bound(rows, duals, self.spans(evaluation.boxes), None) > 0.0:
             evaluation.pruned = "lp"
             if self.recorder is not None:
                 self.recorder.farkas(rows, duals)
@@ -983,20 +1292,21 @@ class Solver:
     def tighten(self, evaluation: Evaluation, rows: list[Row]) -> tuple[Box, ...] | None:
         """Bound every centre coordinate over the relaxation; None when one is empty."""
         k = self.pattern.k
+        n = self.columns()
         bounds = [list(box) for box in evaluation.boxes]
-        self.highs.changeColBounds(2 * k, 0.0, 0.0)
-        columns = np.arange(2 * k + 1, dtype=np.int32)
+        self.highs.changeColBounds(n - 1, 0.0, 0.0)
+        columns = np.arange(n, dtype=np.int32)
         for column in range(2 * k):
             square, axis = divmod(column, 2)
             for sign in (1.0, -1.0):
-                cost = np.zeros(2 * k + 1)
+                cost = np.zeros(n)
                 cost[column] = sign
-                self.highs.changeColsCost(2 * k + 1, columns, cost)
+                self.highs.changeColsCost(n, columns, cost)
                 outcome = self.run()
                 if outcome is None:
                     continue
                 current = tuple((b[0], b[1], b[2], b[3]) for b in bounds)
-                bound = dual_bound(rows, outcome[2], current, (column, sign))
+                bound = dual_bound(rows, outcome[2], self.spans(current), (column, sign))
                 slot = 2 * axis + (0 if sign > 0 else 1)
                 improved = (sign > 0 and bound > bounds[square][slot]) or (
                     sign < 0 and -bound < bounds[square][slot]
@@ -1328,6 +1638,7 @@ def estimate(pattern: Pattern, settings: Settings, dives: int, seed: int = 1) ->
 # ---------------------------------------------------------------------------
 
 CERTIFICATE_SCHEMA = "n17-subpattern-bb-certificate/v1"
+TAYLOR_SCHEMA = "n17-subpattern-bb-certificate/v2"
 
 
 def rational(value: float | Fraction) -> str:
@@ -1470,6 +1781,36 @@ CLOSURES AND ROWS
 """
 
 
+TAYLOR_README = """
+TAYLOR MODE (schema n17-subpattern-bb-certificate/v2; header.settings.taylor is true)
+The angles enter the LP. K = header.settings.taylor_k must be at least sqrt(2)/4.
+  X1 Each node has "taylor": {"centres": [c_s]}. Column 2k + s of every row is the
+     offset t_s = theta_s - c_s, ranging over T_s = [lo_s - c_s, hi_s - c_s]; the Farkas
+     and bound checks (C3, C4) take their minimum over these ranges too.
+  X2 A gap line of pair p = (i, j) for signs (s1, s2) and slope b: with
+     alpha0 = c_j - c_i, A = [T_j lo - T_i hi, T_j hi - T_i lo], rho = max(-A lo, A hi),
+     f = (s1 cos + s2 sin)/2 and f' = (s2 cos - s1 sin)/2 at alpha0,
+     a = 1/2 + f - |f' - b| rho - K rho^2 (each term bounded below). Then
+     g >= a + b (t_j - t_i) at every pose of the node, since h >= f for every sign pair
+     and |f''| = |f| <= sqrt(2)/2.
+  X3 Every possible plane of P3 also reads nbar . d >= c g - o at the pose's own gap g:
+     c = 1 and o = eps E for an end plane, c = 1 - x^2/2 and o = eps E for the chord
+     plane, c = 1 and o = 2 tau (S + tau D) + eps E for a wide piece's plane.
+  X4 A cut with eight fields [p, ux, uy, v, w, s1, s2, b] is a Taylor cut:
+     ux (x_j - x_i) + uy (y_j - y_i) - w (t_j - t_i) >= v. It is valid when v <= the
+     least, over every possible plane of p, of u . d - w t over d in the d-box, t in A
+     and nbar . d >= c (a + b t) - o, with a from X2 at (s1, s2, b). Each least value is
+     a three-variable LP with one constraint: the largest of its Lagrangian bounds at
+     lambda = 0 and at the lambdas cancelling one coefficient. The pilot writes one only
+     when a - |b| rho > 0, so exact recomputation only shrinks the planes.
+  X5 A row ["w", t] reads walls[t] = [s, axis, side, s1, s2, b, a]: a wall line of
+     square s about c_s with constant 0, valid when a <= f - |f' - b| rho_s - K rho_s^2
+     (X2 with f, f' at c_s and rho_s = max(-T_s lo, T_s hi)). With z = x_s (axis 0) or
+     y_s (axis 1), side 1 is -z + b t_s <= -a (z >= h >= a + b t_s) and side -1 is
+     z + b t_s <= U - a.
+"""
+
+
 class Recorder:
     """Writes what an independent reader needs to re-verify every closure of a run.
 
@@ -1479,6 +1820,8 @@ class Recorder:
     """
 
     def __init__(self, directory: Path, solver: Solver, chunk_nodes: int = 500) -> None:
+        global TRIG_USED  # noqa: PLW0603 - the recording window of the enclosure cache
+        TRIG_USED = set()
         directory.mkdir(parents=True, exist_ok=True)
         self.directory = directory
         self.solver = solver
@@ -1494,7 +1837,7 @@ class Recorder:
         self.node: dict[str, Any] = {}
         self.rounds: list[tuple[dict[str, Any], dict[int, PairTerm], set[int]]] = []
         self.terms: dict[int, PairTerm] = {}
-        self.cut_index: dict[tuple[int, float, float, float], int] = {}
+        self.cut_index: dict[tuple[Any, ...], int] = {}
 
     # -- per node and per round ----------------------------------------------------------
 
@@ -1509,6 +1852,10 @@ class Recorder:
                 if window is not None
             ],
         }
+        if self.solver.settings.taylor:
+            self.node["taylor"] = {
+                "centres": [rational(0.5 * (lo + hi)) for lo, hi in node.angles]
+            }
         self.rounds = []
 
     def begin_round(self, boxes: Sequence[Box]) -> None:
@@ -1518,6 +1865,8 @@ class Recorder:
         self.rounds.append((record, self.terms, set()))
 
     def ref(self, row: Row) -> list[Any]:
+        if row.record is not None:
+            return self.taylor_ref(row.record)
         if row.owner < 0:
             return self.cell_refs[id(row)]
         record, _, referenced = self.rounds[-1]
@@ -1536,6 +1885,36 @@ class Recorder:
             )
             referenced.add(row.owner)
         return ["u", index]
+
+    def taylor_ref(self, entry: tuple[Any, ...]) -> list[Any]:
+        """A Taylor cut (into `cuts`, eight fields) or a wall row (into `walls`)."""
+        record, _, referenced = self.rounds[-1]
+        index = self.cut_index.get(entry)
+        if index is not None:
+            return [entry[0], index]
+        if entry[0] == "u":
+            _, pair, ux, uy, v, w, s1, s2, b = entry
+            index = len(record["cuts"])
+            record["cuts"].append(
+                [
+                    pair,
+                    rational(ux),
+                    rational(uy),
+                    rational(v),
+                    rational(w),
+                    s1,
+                    s2,
+                    rational(b),
+                ]
+            )
+            referenced.add(pair)
+        else:
+            _, square, axis, side, s1, s2, b, a = entry
+            walls = record.setdefault("walls", [])
+            index = len(walls)
+            walls.append([square, axis, side, s1, s2, rational(b), rational(a)])
+        self.cut_index[entry] = index
+        return [entry[0], index]
 
     def multipliers(self, rows: Sequence[Row], duals: Sequence[float]) -> list[list[Any]]:
         # Exactly the verified multipliers `dual_bound` applies: `weight / norm`.
@@ -1619,7 +1998,9 @@ class Recorder:
 
     def close(self, summary: dict[str, Any]) -> str:
         """Write the remaining nodes, the enclosure table, the manifest and the README."""
+        global TRIG_USED  # the recording window of the enclosure cache closes here
         self.flush()
+        used, TRIG_USED = TRIG_USED or set(), None
         solver, pattern = self.solver, self.solver.pattern
         trig = write_named(
             self.directory,
@@ -1634,6 +2015,7 @@ class Recorder:
                         rational(0.5 * (s[0] + s[1])),
                     ]
                     for theta, (c, s) in sorted(TRIG.items())
+                    if theta in used
                 }
             },
         )
@@ -1662,18 +2044,24 @@ class Recorder:
             },
             "module_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         }
+        taylor = solver.settings.taylor
+        if taylor:
+            # Only in Taylor mode, so that an interval certificate's bytes do not change.
+            header["settings"]["taylor"] = True
+            header["settings"]["taylor_k"] = rational(TAYLOR_K)
         manifest = write_named(
             self.directory,
             {
-                "schema": CERTIFICATE_SCHEMA,
+                "schema": TAYLOR_SCHEMA if taylor else CERTIFICATE_SCHEMA,
                 "header": header,
                 "trig": trig,
                 "chunks": self.chunks,
                 "summary": summary,
             },
         )
+        readme = CERTIFICATE_README + (TAYLOR_README if taylor else "")
         (self.directory / "README.txt").write_text(
-            CERTIFICATE_README + f"\nThis certificate's manifest: {manifest}.json.gz\n",
+            readme + f"\nThis certificate's manifest: {manifest}.json.gz\n",
             encoding="utf-8",
         )
         return manifest
@@ -1848,6 +2236,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--merge-gap", type=float, default=0.0)
     parser.add_argument("--split-ratio", type=float, default=DEFAULT_SPLIT_RATIO)
     parser.add_argument("--obbt-rounds", type=int, default=3)
+    parser.add_argument(
+        "--taylor",
+        action="store_true",
+        help="first-order Taylor rows for the gap and wall supports (angles enter the LP)",
+    )
     parser.add_argument("--seed", type=int, default=1, help="seed of the --estimate dives")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--progress", action="store_true")
@@ -1895,6 +2288,7 @@ def main(argv: list[str] | None = None) -> int:
         max_nodes=args.max_nodes,
         split_ratio=args.split_ratio,
         obbt_rounds=args.obbt_rounds,
+        taylor=args.taylor,
     )
     witness = None
     if args.witness_endpoint:
@@ -1932,6 +2326,7 @@ def main(argv: list[str] | None = None) -> int:
             "max_nodes": settings.max_nodes,
             "split_ratio": settings.split_ratio,
             "obbt_rounds": settings.obbt_rounds,
+            "taylor": settings.taylor,
         },
         "module_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         **result,

@@ -1,4 +1,4 @@
-"""Standing verifier of n17 branch-and-bound certificates (schema v1), in exact rationals.
+"""Standing verifier of n17 branch-and-bound certificates (schemas v1, v2), in exact rationals.
 
 Retained from lane R4's review verifier (exp-249, `audit-A/verify_cert.py.txt`), with its
 mathematics unchanged and its independence kept: it imports nothing from the branch and
@@ -19,6 +19,16 @@ parent's final boxes).
 Modes. Full, the default, checks every node and every enclosure and is what admission
 requires. `--sample N` checks the deepest closed nodes, `N` random closed nodes of each
 kind and all their ancestors, and `--trig-sample M` enclosures: a planning check.
+
+Taylor certificates (schema v2, `header.settings.taylor`). The angles are LP columns
+`t_s = theta_s - c_s` about recorded centres, over the exact ranges `[lo - c, hi - c]`.
+Checks X1 to X5 of the README's Taylor section: the remainder constant is at least
+sqrt(2)/4; every gap line is recomputed here (`h >= (s1 cos + s2 sin)/2`, Taylor at the
+centre relative angle with this module's own sine and cosine); every Taylor cut's right
+side is at most the exact least value of a three-variable LP per possible plane (the
+largest Lagrangian bound over the multipliers that cancel a coefficient, which is the LP's
+value); every wall line's constant is at most the recomputed one. The Farkas and bound
+checks then run over the centre boxes and the offset ranges together.
 
 The receipt names the manifest's digest, the cells' source, the pattern, the mode and the
 counts, this module's SHA-256 read at import, and PASS or FAIL with the failures.
@@ -47,7 +57,10 @@ Point = tuple[Q, Q]
 Box = tuple[Q, Q, Q, Q]
 Span = tuple[Q, Q]
 Plane = tuple[Q, Q, Q]
+# A possible plane `(nx, ny, r, c, o)`: `nbar . d >= r`, and `>= c g - o` at the pose's gap.
+FullPlane = tuple[Q, Q, Q, Q, Q]
 Node = dict[str, Any]
+SQRT2_OVER_4_SQUARED_TIMES_16 = 2  # K >= sqrt(2)/4 iff 16 K^2 >= 2 for K >= 0
 
 
 class CertificateError(Exception):
@@ -116,14 +129,22 @@ def cos_sin(t: Q) -> tuple[Q, Q, Q, Q]:
     cached = _TRIG.get(t)
     if cached is not None:
         return cached
+    result = cos_sin_bits(t, KBITS)
+    _TRIG[t] = result
+    return result
+
+
+def cos_sin_bits(t: Q, bits: int) -> tuple[Q, Q, Q, Q]:
+    """The same enclosures in `bits`-bit integer fixed point, width about 2^(2 - bits)."""
+    scale = 1 << bits
     num, den = t.numerator, t.denominator
-    # Terms t^n / n! scaled by 2^KBITS, as integer intervals [floor, ceil].
+    # Terms t^n / n! scaled by 2^bits, as integer intervals [floor, ceil].
     c_lo = c_hi = s_lo = s_hi = 0
     power_num, power_den = 1, 1
     fact = 1
     n = 0
     while True:
-        value_num = power_num * SCALE
+        value_num = power_num * scale
         value_den = power_den * fact
         lo, hi = value_num // value_den, -((-value_num) // value_den)
         if n % 2 == 0:
@@ -144,19 +165,22 @@ def cos_sin(t: Q) -> tuple[Q, Q, Q, Q]:
         power_den *= den
         fact *= n
         # The Lagrange remainder of the next term, |t|^n / n!, rounded up.
-        tail = -((-abs(power_num) * SCALE) // (power_den * fact)) + 1
+        tail = -((-abs(power_num) * scale) // (power_den * fact)) + 1
         if tail <= 2 and n > 2:
             break
     # The remainders for cos (next even term) and sin (next odd term) are both at most the
     # tail at the current n, since the terms decrease once |t| < n.
-    result = (
-        Q(c_lo - tail, SCALE),
-        Q(c_hi + tail, SCALE),
-        Q(s_lo - tail, SCALE),
-        Q(s_hi + tail, SCALE),
+    return (
+        Q(c_lo - tail, scale),
+        Q(c_hi + tail, scale),
+        Q(s_lo - tail, scale),
+        Q(s_hi + tail, scale),
     )
-    _TRIG[t] = result
-    return result
+
+
+# An enclosure narrower than the default precision can resolve (a float sine near an
+# exact zero is 2^-1074 wide) is re-checked at this precision before it is refused.
+PRECISE_BITS = 2400
 
 
 def least_abs(lo: Q, hi: Q) -> Q:
@@ -390,6 +414,9 @@ class Verifier:
                 a, b = y1 - y0, x0 - x1
                 rows.append((a, b, a * x0 + b * y0))
             self.rows_of_cell.append(rows)
+        settings = header.get("settings", {})
+        self.taylor = bool(settings.get("taylor", False))
+        self.taylor_k = parse(settings["taylor_k"]) if self.taylor else Q(0)
         self.failures: list[str] = []
         self.counts: dict[str, int] = {}
 
@@ -415,6 +442,18 @@ class Verifier:
                 o, a, b = cell[e], cell[(e + 1) % n], cell[(e + 2) % n]
                 if cross(o, a, b) <= 0:
                     self.fail(f"header cell {name} is not strictly counterclockwise")
+        schema = self.manifest.get("schema")
+        expected_schema = (
+            "n17-subpattern-bb-certificate/v2"
+            if self.taylor
+            else "n17-subpattern-bb-certificate/v1"
+        )
+        if schema != expected_schema:
+            self.fail(f"schema {schema} does not match the Taylor setting {self.taylor}")
+        if self.taylor and not (
+            self.taylor_k >= 0 and 16 * self.taylor_k**2 >= SQRT2_OVER_4_SQUARED_TIMES_16
+        ):
+            self.fail(f"taylor_k {self.taylor_k} is below sqrt(2)/4")
         expected_pairs = [(i, j) for i in range(self.k) for j in range(i + 1, self.k)]
         if self.pairs != expected_pairs:
             self.fail("header pairs are not all pairs")
@@ -442,6 +481,9 @@ class Verifier:
             c_lo, c_hi, s_lo, s_hi, nx, ny = (parse(v) for v in trig[key])
             mine = cos_sin(t)
             ok = c_lo <= mine[0] and mine[1] <= c_hi and s_lo <= mine[2] and mine[3] <= s_hi
+            if not ok:
+                mine = cos_sin_bits(t, PRECISE_BITS)
+                ok = c_lo <= mine[0] and mine[1] <= c_hi and s_lo <= mine[2] and mine[3] <= s_hi
             ok = ok and c_lo <= nx <= c_hi and s_lo <= ny <= s_hi
             if not ok:
                 bad += 1
@@ -454,17 +496,19 @@ class Verifier:
 
     def planes_of_piece(
         self, piece: tuple[Q, Q, Q], g_lo: Q, dx: Span, dy: Span
-    ) -> list[Plane]:
-        """The possible half-planes `(nx, ny, r)`, `nbar . d >= r`, of one piece."""
+    ) -> list[FullPlane]:
+        """The possible half-planes of one piece, `(nx, ny, r, c, o)`: `nbar . d >= r`
+        with `r = c g_lo - o`, and `nbar . d >= c g - o` at every pose's own gap (X3)."""
         lo, hi, m = piece
         if not lo <= m <= hi:
             raise CertificateError(f"piece point {m} outside [{lo}, {hi}]")
         reach = most_abs(*dx) + most_abs(*dy)
-        planes: list[Plane] = []
+        planes: list[FullPlane] = []
         if hi - lo < HP_LO:
             x = max(m - lo, hi - m)
-            chord = g_lo * (1 - x * x / 2)
-            for angle, base in ((lo, g_lo), (hi, g_lo), (m, chord)):
+            factor = 1 - x * x / 2
+            for angle, c in ((lo, Q(1)), (hi, Q(1)), (m, factor)):
+                base = g_lo * c
                 c_lo, c_hi, s_lo, s_hi = cos_sin(angle)
                 if enclosed_max((c_lo, c_hi), (s_lo, s_hi), dx, dy) < base:
                     continue
@@ -473,7 +517,7 @@ class Verifier:
                 r = base - eps * reach
                 if box_max_linear(nx, ny, dx, dy) < r:
                     continue
-                planes.append((nx, ny, r))
+                planes.append((nx, ny, r, c, eps * reach))
         else:
             c_lo, c_hi, s_lo, s_hi = cos_sin(m)
             tau = max(m - lo, hi - m) / 2
@@ -483,9 +527,10 @@ class Verifier:
             length = sqrt_upper(most_abs(*dx) ** 2 + most_abs(*dy) ** 2)
             nx, ny = (c_lo + c_hi) / 2, (s_lo + s_hi) / 2
             eps = max(c_hi - c_lo, s_hi - s_lo)
-            r = g_lo - 2 * tau * (spread + tau * length) - eps * reach
+            offset = 2 * tau * (spread + tau * length) + eps * reach
+            r = g_lo - offset
             if box_max_linear(nx, ny, dx, dy) >= r:
-                planes.append((nx, ny, r))
+                planes.append((nx, ny, r, Q(1), offset))
         return planes
 
     def check_pieces_cover(
@@ -527,7 +572,7 @@ class Verifier:
 
     def pair_planes(
         self, node: Node, round_record: dict[str, Any], pair: int, boxes: list[Box]
-    ) -> tuple[list[list[Plane]], list[tuple[Q, Q, Q]], Span, Span]:
+    ) -> tuple[list[list[FullPlane]], list[tuple[Q, Q, Q]], Span, Span]:
         """Every possible plane of a pair in a round, after checking P2, and the d-box."""
         i, j = self.pairs[pair]
         dx = (boxes[j][0] - boxes[i][1], boxes[j][1] - boxes[i][0])
@@ -552,7 +597,7 @@ class Verifier:
     def row_of(
         self,
         ref: list[Any],
-        cuts: list[tuple[int, Q, Q, Q]],
+        cuts: list[tuple[Any, ...]],
         context: tuple[Node, dict[str, Any], list[Box], dict[int, Any]],
     ) -> tuple[tuple[int, ...], tuple[Q, ...], Q]:
         """`(columns, coefficients, rhs)` of a referenced row; a cut is checked by C2."""
@@ -561,7 +606,11 @@ class Verifier:
             s, e = ref[1], ref[2]
             a, b, c = self.rows_of_cell[s][e]
             return ((2 * s, 2 * s + 1), (a, b), c)
+        if ref[0] == "w":
+            return self.wall_row(node, round_record["walls"][ref[1]])
         t = ref[1]
+        if len(cuts[t]) == 8:
+            return self.taylor_cut_row(node, cuts[t], context)
         p, ux, uy, v = cuts[t]
         i, j = self.pairs[p]
         if p not in plane_cache:
@@ -570,7 +619,7 @@ class Verifier:
         least: Q | None = None
         for planes in per_piece:
             for plane in planes:
-                value = plane_box_min((ux, uy), plane, dx, dy)
+                value = plane_box_min((ux, uy), plane[:3], dx, dy)
                 if value is not None and (least is None or value < least):
                     least = value
         if least is None:
@@ -583,16 +632,100 @@ class Verifier:
         self.tick("cut_ok")
         return ((2 * i, 2 * i + 1, 2 * j, 2 * j + 1), (ux, uy, -ux, -uy), -v)
 
+    # -- Taylor rows (X1 to X5) ---------------------------------------------------------
+
+    def gap_line_constant(
+        self, node: Node, pair: int, s1: int, s2: int, b: Q
+    ) -> tuple[Q, Span]:
+        """X2: the largest valid `a` of the gap line `(s1, s2, b)`, and the offset range A."""
+        i, j = self.pairs[pair]
+        centres, offsets = node["centres_q"], node["offsets_q"]
+        span = (offsets[j][0] - offsets[i][1], offsets[j][1] - offsets[i][0])
+        rho = max(-span[0], span[1])
+        constant = Q(1, 2) + self.line_constant(centres[j] - centres[i], s1, s2, b, rho)
+        return constant, span
+
+    def line_constant(self, angle: Q, s1: int, s2: int, b: Q, rho: Q) -> Q:
+        """`min f - max |f' - b| rho - K rho^2` at `angle`, f = (s1 cos + s2 sin)/2."""
+        if s1 not in (1, -1) or s2 not in (1, -1):
+            raise CertificateError(f"line signs ({s1}, {s2}) are not +-1")
+        c_lo, c_hi, s_lo, s_hi = cos_sin(angle)
+        cos_part = (c_lo, c_hi) if s1 > 0 else (-c_hi, -c_lo)
+        sin_part = (s_lo, s_hi) if s2 > 0 else (-s_hi, -s_lo)
+        f_lo = (cos_part[0] + sin_part[0]) / 2
+        # f' = (s2 cos - s1 sin)/2
+        cos_d = (c_lo, c_hi) if s2 > 0 else (-c_hi, -c_lo)
+        sin_d = (s_lo, s_hi) if s1 > 0 else (-s_hi, -s_lo)
+        d_lo, d_hi = (cos_d[0] - sin_d[1]) / 2, (cos_d[1] - sin_d[0]) / 2
+        spread = max(d_hi - b, b - d_lo)
+        return f_lo - spread * rho - self.taylor_k * rho * rho
+
+    def taylor_cut_row(
+        self,
+        node: Node,
+        cut: tuple[Any, ...],
+        context: tuple[Node, dict[str, Any], list[Box], dict[int, Any]],
+    ) -> tuple[tuple[int, ...], tuple[Q, ...], Q]:
+        """X4: a Taylor cut's row, after checking its right side against every plane."""
+        _, round_record, boxes, plane_cache = context
+        if not self.taylor:
+            raise CertificateError(
+                f"node {node['id']}: a Taylor cut in an interval certificate"
+            )
+        p, ux, uy, v, w, s1, s2, b = cut
+        i, j = self.pairs[p]
+        a, span = self.gap_line_constant(node, p, s1, s2, b)
+        if p not in plane_cache:
+            plane_cache[p] = self.pair_planes(node, round_record, p, boxes)
+        per_piece, _, dx, dy = plane_cache[p]
+        least: Q | None = None
+        for planes in per_piece:
+            for plane in planes:
+                value = taylor_plane_min((ux, uy), w, plane, (a, b), (dx, dy, span))
+                if least is None or value < least:
+                    least = value
+        if least is None:
+            self.tick("vacuous_cut")
+        elif v > least:
+            raise CertificateError(
+                f"node {node['id']} Taylor cut of pair {p}: v={float(v)} > min {float(least)}"
+            )
+        self.tick("taylor_cut_ok")
+        k = self.k
+        return (
+            (2 * i, 2 * i + 1, 2 * j, 2 * j + 1, 2 * k + i, 2 * k + j),
+            (ux, uy, -ux, -uy, -w, w),
+            -v,
+        )
+
+    def wall_row(self, node: Node, wall: list[Any]) -> tuple[tuple[int, ...], tuple[Q, ...], Q]:
+        """X5: a wall line's row, after checking its constant."""
+        if not self.taylor:
+            raise CertificateError(f"node {node['id']}: a wall row in an interval certificate")
+        s, axis, side = wall[0], wall[1], wall[2]
+        s1, s2, b, a = wall[3], wall[4], parse(wall[5]), parse(wall[6])
+        if axis not in (0, 1) or side not in (1, -1):
+            raise CertificateError(f"node {node['id']}: malformed wall row {wall}")
+        offset = node["offsets_q"][s]
+        rho = max(-offset[0], offset[1])
+        if a > self.line_constant(node["centres_q"][s], s1, s2, b, rho):
+            raise CertificateError(f"node {node['id']}: wall line of square {s} too high")
+        self.tick("wall_ok")
+        columns = (2 * s + axis, 2 * self.k + s)
+        if side == 1:
+            return (columns, (Q(-1), b), -a)
+        return (columns, (Q(1), b), self.cap - a)
+
     def combination_min(
         self,
         multipliers: list[Any],
         cost: tuple[int, Q] | None,
-        cuts: list[tuple[int, Q, Q, Q]],
+        cuts: list[tuple[Any, ...]],
         context: tuple[Node, dict[str, Any], list[Box], dict[int, Any]],
     ) -> Q:
         """The min over the box of `(cost + sum y a_row) . z - sum y b_row`, exactly."""
         node, _, boxes, _ = context
-        combined = [Q(0)] * (2 * self.k)
+        combined = [Q(0)] * ((3 if self.taylor else 2) * self.k)
         if cost is not None:
             combined[cost[0]] += cost[1]
         right = Q(0)
@@ -606,8 +739,11 @@ class Verifier:
             right += y * rhs
         least = Q(0)
         for column, coefficient in enumerate(combined):
-            box = boxes[column // 2]
-            lo, hi = (box[0], box[1]) if column % 2 == 0 else (box[2], box[3])
+            if column < 2 * self.k:
+                box = boxes[column // 2]
+                lo, hi = (box[0], box[1]) if column % 2 == 0 else (box[2], box[3])
+            else:
+                lo, hi = node["offsets_q"][column - 2 * self.k]
             least += coefficient * (lo if coefficient >= 0 else hi)
         return least - right
 
@@ -697,9 +833,7 @@ class Verifier:
                     raise CertificateError(
                         f"node {node['id']}: round {r} box of square {s} too small"
                     )
-            cuts = [
-                (c[0], parse(c[1]), parse(c[2]), parse(c[3])) for c in record.get("cuts", [])
-            ]
+            cuts = [parsed_cut(c) for c in record.get("cuts", [])]
             context = (node, record, boxes, {})
             if "closed_pair" in record:
                 self.check_closed_pair(node, record, boxes)
@@ -731,7 +865,7 @@ class Verifier:
         node: Node,
         record: dict[str, Any],
         boxes: list[Box],
-        cuts: list[tuple[int, Q, Q, Q]],
+        cuts: list[tuple[Any, ...]],
         context: tuple[Node, dict[str, Any], list[Box], dict[int, Any]],
     ) -> list[Box] | None:
         """C4 and C5 for one round: the next round's boxes, or None when it closes."""
@@ -784,6 +918,56 @@ class Verifier:
             if not box_contains(following[s], tightened[s]):
                 raise CertificateError(f"node {node['id']}: next box of square {s} too small")
         return following
+
+
+def parsed_cut(cut: list[Any]) -> tuple[Any, ...]:
+    """An interval cut `(p, ux, uy, v)` or a Taylor cut `(p, ux, uy, v, w, s1, s2, b)`."""
+    if len(cut) == 4:
+        return (cut[0], parse(cut[1]), parse(cut[2]), parse(cut[3]))
+    if len(cut) == 8:
+        return (
+            cut[0],
+            parse(cut[1]),
+            parse(cut[2]),
+            parse(cut[3]),
+            parse(cut[4]),
+            cut[5],
+            cut[6],
+            parse(cut[7]),
+        )
+    raise CertificateError(f"a cut with {len(cut)} fields")
+
+
+def span_min(coefficient: Q, span: Span) -> Q:
+    return coefficient * (span[0] if coefficient >= 0 else span[1])
+
+
+def taylor_plane_min(
+    u: Point, w: Q, plane: FullPlane, line: tuple[Q, Q], boxes: tuple[Span, Span, Span]
+) -> Q:
+    """The least `u . d - w t` over the boxes meet `nbar . d - c b t >= c a - o` (X4).
+
+    One general constraint: the Lagrangian bound `(u - lam nbar) . d + (lam c b - w) t +
+    lam (c a - o)` is concave and piecewise linear in `lam >= 0`, so its largest value,
+    the LP's value when the region is nonempty and a lower bound in any case, is at 0 or
+    at a multiplier cancelling one coefficient.
+    """
+    nx, ny, _, c, o = plane
+    a, b = line
+    dx, dy, dt = boxes
+    candidates = [Q(0)]
+    for numerator, denominator in ((u[0], nx), (u[1], ny), (w, c * b)):
+        if denominator != 0:
+            lam = numerator / denominator
+            if lam >= 0:
+                candidates.append(lam)
+    return max(
+        span_min(u[0] - lam * nx, dx)
+        + span_min(u[1] - lam * ny, dy)
+        + span_min(lam * c * b - w, dt)
+        + lam * (c * a - o)
+        for lam in candidates
+    )
 
 
 def box_of(values: list[str]) -> Box:
@@ -919,6 +1103,12 @@ def choose_nodes(tree: Tree, sample: int | None, deepest: int, seed: int) -> set
 
 def prepared(node: Node) -> Node:
     node["angles_q"] = [(parse(lo), parse(hi)) for lo, hi in node["angles"]]
+    if "taylor" in node:
+        centres = [parse(c) for c in node["taylor"]["centres"]]
+        node["centres_q"] = centres
+        node["offsets_q"] = [
+            (lo - c, hi - c) for (lo, hi), c in zip(node["angles_q"], centres, strict=True)
+        ]
     node["window_map"] = {w[0]: (parse(w[1]), parse(w[2])) for w in node["windows"]}
     if node.get("final") is not None:
         node["final_q"] = [box_of(box) for box in node["final"]]

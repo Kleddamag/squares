@@ -13,7 +13,7 @@ from typing import Any
 import pytest
 
 from devtools import pilot_n17_capture as pilot
-from sqpack.hull_kernel import Budget, node, sequential
+from sqpack.hull_kernel import Budget, RefusalError, node, sequential
 from sqpack.hull_kernel.frame import Frame
 from sqpack.hull_kernel.geometry import area2, trig
 from sqpack.hull_kernel.induction import strict_core
@@ -372,3 +372,39 @@ def test_the_review_falsifier_and_the_contraction_start_are_read_from_rounds() -
     assert reading["contraction_start"]["round"] == 2
     assert reading["contraction_start"]["max_row_to_extent_before"] == 0.08
     assert reading["g_after_start_geometric_mean"] == pytest.approx(0.5)
+
+
+def test_a_checkpoint_resumes_the_next_round_and_refuses_other_settings(
+    endpoint: pilot.Endpoint, frame: Frame, tmp_path: Path
+) -> None:
+    boxed, renumbered = pilot.box_frame(frame, endpoint, Q(1, 64))
+    settings: dict[str, Any] = {
+        "bins": 2,
+        "max_live": 4,
+        "min_width": Q(1, 64),
+        "hull_limit": 16,
+        "max_seconds": 120,
+        "progress": False,
+    }
+    first = pilot.run_pilot(boxed, renumbered, max_rounds=1, checkpoints=tmp_path, **settings)
+    saved = tmp_path / "checkpoint-round-001.json.gz"
+    assert saved.exists()
+    assert first.endpoint_lost is None
+    resumed = pilot.run_pilot(
+        boxed,
+        renumbered,
+        max_rounds=2,
+        max_steps=len(first.node["steps"]) + 1,
+        resume=saved,
+        **{**settings, "max_live": 8},
+    )
+    assert resumed.resumed is not None
+    assert resumed.resumed["round"] == 1
+    assert resumed.rounds[:2] == first.rounds
+    assert resumed.node["steps"][: len(first.node["steps"])] == first.node["steps"]
+    assert len(resumed.node["steps"]) == len(first.node["steps"]) + 1
+    assert resumed.endpoint_lost is None
+    with pytest.raises(RefusalError, match="settings differ"):
+        pilot.run_pilot(
+            boxed, renumbered, max_rounds=2, resume=saved, **{**settings, "bins": 8}
+        )

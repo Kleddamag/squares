@@ -57,6 +57,15 @@ A capture step knows more: it knows which cover cell holds square 6. This hypoth
 turns that knowledge into the bound the local theorem needs, so that the certified box
 and the captured state fit together.
 
+## Progress
+
+*Added 2026-10-02 by Session 167.* `devtools.check_n17_slider_coverage` proves
+$a\le21/100$, $z\ge-1/20$ and $b\le3/40$ exactly, with square 6 in the tabbed design’s
+cell side-S2. The unique-state design shifts that cell left by $0.01$, so the bound must
+be re-run on it before review.
+The exp-244 box also has faces $a\ge0$, $b\ge0$ and $z\le1/16$, which this claim does
+not cover; $b\ge0$ rests on the 9/11 contact, which the local theorem drops.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

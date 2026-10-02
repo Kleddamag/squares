@@ -1372,7 +1372,12 @@ It first closes H-266’s single-state item and H-268’s slide bound, then re-r
 and H-266 with review.
 In parallel it builds the H-267 selector and adapts n11’s kernel as prover, with n11’s
 mask 0 as the method control, and pilots the capture contraction rate on the endpoint’s
-occupancy state. Session 167 stops with hosted certification pending under `think-iuz2`.
+occupancy state. Two closing tools are already built and await review.
+One is a unique-state 24-cell cover with 43,593 orbits.
+The other proves the H-268 slide bounds $a\le21/100$, $z\ge-1/20$ and $b\le3/40$ on the
+earlier design’s square-6 cell, and must be re-run on the unique design.
+The certified slider box’s faces $a\ge0$, $b\ge0$ and $z\le1/16$ still need their own
+argument. Session 167 stops with hosted certification pending under `think-iuz2`.
 
 #### Previous: Session 166 n17 Route Review
 
@@ -5540,9 +5545,9 @@ in separate tables: their units differ, and the same work can appear in both.
 
 | Rollups | count | turns | tool calls | errors | one-off code | wall |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| claimed by a session | 276 | 66,342 | 36,751 | 797 | 5,364 | 573.29 h |
+| claimed by a session | 276 | 66,468 | 36,803 | 798 | 5,386 | 574.78 h |
 | claimed by none | 65 | 14,196 | 8,149 | 185 | 1,184 | 67.13 h |
-| **measured** | **341** | **80,538** | **44,900** | **982** | **6,548** | **640.42 h** |
+| **measured** | **341** | **80,664** | **44,952** | **983** | **6,570** | **641.91 h** |
 
 | Session | Phases | Rollups | Turns | Tool calls | Errors | Wall |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -5599,7 +5604,7 @@ in separate tables: their units differ, and the same work can appear in both.
 | [session-160](packing/campaign/agent-sessions/session-160-n17-4640020-evand-wand125-intake.md) | 3 | 28 | 5,648 | 3,354 | 161 | 42.62 h |
 | [session-161](packing/campaign/agent-sessions/session-161-wand125-update-and-sept-28-intake.md) | 2 | 10 | 2,617 | 1,468 | 27 | 11.09 h |
 | [session-166](packing/campaign/agent-sessions/session-166-n17-route-after-pr265.md) | 2 | 4 | 515 | 342 | 8 | 5.02 h |
-| [session-167](packing/campaign/agent-sessions/session-167-n17-parallel-lanes-after-route-review.md) | 2 | 18 | 1,849 | 1,015 | 16 | 11.19 h |
+| [session-167](packing/campaign/agent-sessions/session-167-n17-parallel-lanes-after-route-review.md) | 2 | 18 | 1,975 | 1,067 | 17 | 12.68 h |
 | *shared by 54 sessions* | — | 8 | 25,382 | 13,685 | 285 | 355.07 h |
 
 | Codex interval receipt | declaring sessions | model responses | agent time | active union | wall window | live lower bound |

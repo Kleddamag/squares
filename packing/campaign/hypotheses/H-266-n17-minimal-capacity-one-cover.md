@@ -76,6 +76,12 @@ also realises a second state through side cell S1, and square 6’s range is dec
 rather than derived.
 A small design change and a derived square-6 range would close both.
 
+*Later on 2026-10-02.* Session 167’s lane G2 added a `unique_state` check, which the
+tabbed design fails on squares 13 and 11. It also built
+`ring-3-voronoi-8-tabbed-unique`, which passes every check with a unique family state
+(least margin $0.002111$) and keeps 43,593 orbits.
+It awaits review and a recorded run.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

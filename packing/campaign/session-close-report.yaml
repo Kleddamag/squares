@@ -15,11 +15,11 @@ totals:
   sessions_unmeasured: 54
   attributed:
     rollups: 276
-    turns: 66342
-    tool_calls: 36751
-    tool_errors: 797
-    one_off_code: 5364
-    wall_hours: 573.29
+    turns: 66468
+    tool_calls: 36803
+    tool_errors: 798
+    one_off_code: 5386
+    wall_hours: 574.78
   unattributed:
     rollups: 65
     turns: 14196
@@ -29,11 +29,11 @@ totals:
     wall_hours: 67.13
   measured:
     rollups: 341
-    turns: 80538
-    tool_calls: 44900
-    tool_errors: 982
-    one_off_code: 6548
-    wall_hours: 640.42
+    turns: 80664
+    tool_calls: 44952
+    tool_errors: 983
+    one_off_code: 6570
+    wall_hours: 641.91
 codex_receipts:
   attributed: 68
   unattributed: 2
@@ -2899,9 +2899,9 @@ sessions:
   - packing/campaign/resource-usage/agent-abeb1a31ad979cecd.yaml
   - packing/campaign/resource-usage/agent-ae8abe09a3292e894.yaml
   - packing/campaign/resource-usage/agent-af4a13e9dbcb00142.yaml
-  turns: 1849
-  tool_calls: 1015
-  tool_errors: 16
-  one_off_code: 252
-  wall_hours: 11.19
+  turns: 1975
+  tool_calls: 1067
+  tool_errors: 17
+  one_off_code: 274
+  wall_hours: 12.68
   codex_receipts: []

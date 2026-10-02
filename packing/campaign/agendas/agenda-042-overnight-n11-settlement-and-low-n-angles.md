@@ -1443,7 +1443,7 @@ agenda:
       Started in Session 167 as lanes G (checker) and G-proof (wall lemma). exp-246 certifies the tabbed 24-cell cover (43,593
       orbits) and the review proves the wall lemma; unresolved because the family also realises a second
       state through side cell S1 and square 6's range is declared. Next, a unique-state check and a derived
-      square-6 range.
+      square-6 range. Lane G2 then built the unique-state design (0dabde12), unreviewed.
   - id: BC-416
     purpose: research
     owner_focus: correctness
@@ -1499,7 +1499,9 @@ agenda:
     - packing/campaign/hypotheses/H-268-n17-local-theorem-slider-coverage.md
     note: >-
       Closes H-261's scope gap. With square 6 at its centroid the review's float scan keeps a
-      below 0.037 and z above -0.0235, well inside the box.
+      below 0.037 and z above -0.0235, well inside the box. Lane H proved a <= 21/100, z >= -1/20, b <= 3/40 on
+      the tabbed design's S2 (7cd4e652); re-run on the unique design and review remain, and the box's
+      faces a >= 0, b >= 0, z <= 1/16 need their own argument.
   - id: BC-418
     purpose: research
     owner_focus: correctness

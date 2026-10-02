@@ -5,23 +5,28 @@ title: "Papers are individually versioned: the repository's version no longer ap
 kind: feature
 status: in_progress
 priority: 2
-version: 3
+version: 4
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-10-02T04:50:26.294Z
-updated_at: 2026-10-02T04:51:49.125Z
+updated_at: 2026-10-02T04:59:21.332Z
 ---
 Owner, 2026-10-01: 'And the repository version should not go on the papers anymore. Papers should be individually versioned in the future.' Today the first paper's credits print the publication's edition and data hash ('v0.5.0-971e5f (version history)'), its Version History lists every publication edition including site-only ones (v0.5.0, 'The website edition'), and the site's colophon with the repository version closes each paper and its PDF; the review already carries its own 'Draft v0.1.0'. Wanted: each paper has its own version and its own history in sqpack.release, written by devtools.paper_front; no repository version or data hash anywhere on a paper page, its Markdown edition or its PDF; the site's pages keep the repository version in their footer. This settles the first of #289's four questions on think-cv22 (the review keeps its own version). Done together with think-be7y in one PR, since both change devtools.cut_release and development.md's Cutting an edition.
 
 ## Notes
 
-State at 2026-10-02 03:15 UTC (20:15 PT, 1 October). A Fable subagent started at 03:05 UTC in worktree /Volumes/spud-ext1/agent-scratch/worktrees/overview-papers on branch claude/paper-versions (from origin/main at 0848631a8), covering this bead and think-be7y in one PR. It is told to push after each step and open a draft PR early; find it with `gh pr list --head claude/paper-versions`.
+Edition table for the first paper (n11-lower-bounds-explainer), established from git on 2026-10-02 by diffing the article template between each edition's deployment commit (the commits in the comment above `PUBLICATION_HISTORY`): f060b1d78 (v0.3.0), f2e24e07b (v0.4.0), d5b1c2e1b (v0.4.1), c19e6c0e2 (v0.4.2), 8aaa411dc (v0.5.0). The article was `certificate_page.md` at v0.3.0, `explainer-article.md` from ca9013cff to 9b459da65, and `n11-lower-bounds-explainer-article.md` since.
 
-The owner's further words, same evening:
-- "at least for the new papers. for the original explainer it has its own versinos but they can be detached from the repo now, and probably we should droip the one "0.4.x" version on that paper if it didn't actually reflect a change in that paper"
-- "The version history on any paper and the versions on the paper should reflect versions of the paper, not of the website or anything else."
-- "But we don't want to retroactively change any version number that we have published where there's a change of the paper."
+| Edition | First published | What changed in the paper | Kept or dropped |
+| --- | --- | --- | --- |
+| v0.3.0 | September 5, 2026 | The first edition: T-018's point certificate proves s(11) >= 381/100. | Kept, as published |
+| v0.4.0 | September 13, 2026 | The article rewritten around T-025 (191/50) and T-026 (3.8264474...), the 381/100 proof kept as the worked example (904 lines in, 484 out; no T-025 mention at v0.3.0, twelve at v0.4.0). | Kept, as published |
+| v0.4.1 | September 22, 2026 | None. `git diff f2e24e07b d5b1c2e1b -- explainer-article.md` is empty. The window's renderer commits are the shared version stamp, the browser-floor refactor and the atlas's bound citations (a4bdfae4c, ad65a52fa, be84f7c8d); the atlas added T-030. | Dropped: a site and atlas edition |
+| v0.4.2 | September 28, 2026 | A frontier update (September 22) records Kleddamag's verified s(11) >= 3.875 built on T-026 and presents T-026's bound as historical; the V4/C5 line names T-026; Figure 2's caption marks every recent result and gains the film; the credits gain First published / Last revised (1c27f8408, e070cf1ab, 42fc48fc0, 30222e632, e1ef6cf89, d48006f9c). | Kept, as published; the scope sentence trimmed to the paper's part. A judgement: the proofs did not change, the paper's statements of status did |
+| v0.5.0 | October 2, 2026 | None in PR 291 (release.py, posters, claim documents, README, TUTORIAL). | Dropped: the website edition |
 
-So: a published edition under which the paper changed keeps its number and date; an edition under which it did not change (v0.5.0 for certain, and whichever 0.4.x the git history shows) leaves the paper's history; the paper's current version is its last kept number. The repository's version stays the site's (footers, posters, claim documents).
+Question for the owner: between the v0.4.2 deployment (27 September) and the v0.5.0 cut, the article changed in substance under the v0.4.2 label: the frontier update of September 30 reports T-060's s(11) = 3.8770835... (249d42c37), the T-026 rating moved from V4/C5 to V3/C3 under the ladder of 2026-09-30 (d205561f0), "what was then the smallest open case", Figure 3's verified mark, and the n = 12 and n = 17 supersession footnote (a6f630dd7, 7862dc3e8, 2c1afe6b0). The PR keeps the paper at v0.4.2 (its last published number under which it changed) with "Last revised October 1, 2026", and does not invent a number for those changes; whether they are a version of the paper (v0.4.3, or the paper's own v0.5.0) is the owner's.
+
+Colophon on a paper: the two lines without the version part ("The Squares Project · github.com/jlevy/squares" and "Formatted and typeset with Flowmark and KPress").

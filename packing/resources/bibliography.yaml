@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:Bibliography/v1
   schema: bibliography.schema.yaml
   status: enforced
-last_reviewed: '2026-09-29'
+last_reviewed: '2026-10-02'
 # The citation fields a generator needs, keyed by the source keys the frontier records
 # use. The Markdown tables in README.md stay the human index; this file holds only what
 # a line of citation text is built from, for the keys something cites.
@@ -97,6 +97,12 @@ sources:
     authors: [Göbel]
     year: 1979
     venue: Math. Centre Tracts 106
+  - key: '[Karakuş 2026]'
+    authors: [Karakuş]
+    year: 2026
+    venue: arXiv:2609.37410
+    dated: '2026-09-29'
+    lineage: independent
   - key: '[Kearney–Shiu 2002]'
     authors: [Kearney, Shiu]
     year: 2002

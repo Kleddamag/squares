@@ -338,9 +338,9 @@ body {
   }
   /* A section set in lines of its own (`SECTION_CARD_LINES`) sets no more cards to a
      line than its longest line holds, so its lines share one column width: the page
-     cards stand two over three, at the width of three to a line. */
-  .site-cards[data-cards-most="3"] > .site-card {
-    --site-cards-line: min(var(--site-cards-medium), 3);
+     cards stand one, two and two, at the width of two to a line. */
+  .site-cards[data-cards-most="2"] > .site-card {
+    --site-cards-line: min(var(--site-cards-medium), 2);
   }
 }
 /* A card is a clean summary with square corners. Most cards are a button that opens a

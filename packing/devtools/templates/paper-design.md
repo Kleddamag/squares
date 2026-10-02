@@ -845,24 +845,22 @@ it.
   The page cards, the atlas cards and the other projects are medium; the documents,
   whose notes are a line, are small.
   A section can also be set in lines of its own, in `SECTION_CARD_LINES`, where one
-  wrapping row would leave a card alone on its last line: the five page cards stand two
-  over three, the two papers over the tutorial, the workbench and the Frontier page,
-  where one row would set four at 1280 pixels and the fifth alone.
-  Each line is a grid of its own in the section’s one frame, a gap below the line
-  before, and none sets more cards to a line than the longest line holds
+  wrapping row would not set its cards as they are meant to read: the five page cards
+  stand one, two and two, the Frontier page alone at the top, then the two papers, then
+  the tutorial and the workbench, where one row would set four at 1280 pixels and the
+  fifth alone. Each line is a grid of its own in the section’s one frame, a gap below the
+  line before, and none sets more cards to a line than the longest line holds
   (`data-cards-most`, at which the stylesheet caps its size’s count), so the lines share
-  one column width and each centres in it: three medium columns of 357px at 1280 pixels,
-  the papers’ two centred over the other three.
-  Where the frame fits two medium cards, from 33 to 50rem, the second line is two and
-  then one, as five cards of one width two to a line must end; on a phone every card
-  takes the line. The owner asked for the page cards in two rows on 2026-10-02
-  (`think-ec5k`), and two over three was chosen over three over two from screenshots at
-  1280 pixels: both fill two lines with no card alone, but two over three keeps the
-  papers’ long notes on one line and the three short notes on the other, where three
-  over two stretched the tutorial’s card to the explainer’s height and left half of it
-  empty. A card built without a size (`card()` or `link_card()` with no `size=`) takes
-  the default for its own text: its headline and note, and a direct card’s address,
-  counted as they read, a formula once.
+  one column width and each centres in it: two medium columns of 544px at 1280 pixels,
+  the Frontier page’s card centred over the papers.
+  Wherever the frame fits two medium cards, from 33rem, every line stands as set; on a
+  phone every card takes the line.
+  The owner asked for the page cards in two rows on 2026-10-02 (`think-ec5k`), and two
+  over three was chosen over three over two from screenshots at 1280 pixels; later the
+  same day the owner set the Frontier page’s card on a line of its own at the top and
+  the rest two and two (`think-ns3d`). A card built without a size (`card()` or
+  `link_card()` with no `size=`) takes the default for its own text: its headline and
+  note, and a direct card’s address, counted as they read, a formula once.
 
 - **Card foot.** A direct card may end with a line that holds links of its own
   (`link_card(foot=)`), as an other project’s card ends with its tally of results.
@@ -1699,8 +1697,8 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   below), and a section that is prose leads on with direct cards (**Cards**, above), as
   The Squares Project does with its page cards.
   The page cards under The Squares Project are the site’s reading and working pages, the
-  three papers, the workbench and the Frontier page, set two over three (**Card sizes**,
-  above); the Results page is reached from Recent Results.
+  Frontier page alone on the first line, then the three papers and the workbench two to
+  a line (**Card sizes**, above); the Results page is reached from Recent Results.
   The owner set this shape on 2026-10-02 (`think-f1tu`): the overview “a little more
   structured and a little less verbose”, the survey’s account moved into the Frontier
   page, Recent Results slimmed to the essentials and its table, and “cards that point to

@@ -329,25 +329,26 @@ def test_each_page_card_is_a_plain_link_to_its_page(page: str) -> None:
     """The overview's five page cards lead to full pages the site serves, so each card
     is the link itself and goes there in the same tab: an `<a href>` with the page icon
     (`data-go="page"`), no popover, no framed preview and no new tab. Each keeps its
-    label, headline, note and size. The optimality paper is first, as on the Papers
-    page: its card carries the Papers card's label and title, a shorter note within what
-    T-060's rungs allow, and an address a directory below the site's root."""
+    label, headline, note and size. The optimality paper leads the papers, as on the
+    Papers page: its card carries the Papers card's label and title, a shorter note
+    within what T-060's rungs allow, and an address a directory below the site's root."""
     cards = _page_cards(page)
     pages = overview_sections.PAGES
     assert [href for href, _, _ in cards] == [href for href, *_ in pages]
-    # The Frontier page's card is last, up from The Frontier Survey's section since
-    # 2026-10-02 (`test_the_frontier_survey_is_the_frontier_pages_and_its_card_is_a_page_card`).
+    # The Frontier page's card is first, alone on its line, up from The Frontier Survey's
+    # section since 2026-10-02 (think-ec5k, think-ns3d;
+    # `test_the_frontier_survey_is_the_frontier_pages_and_its_card_is_a_page_card`).
     assert [href for href, *_ in pages] == [
+        "frontier.html",
         "papers/n11-optimality-review.html",
         "papers/n11-lower-bounds-explainer.html",
         "tutorial.html",
         "workbench/",
-        "frontier.html",
     ]
     paper = overview_sections.PAPERS[0]
-    assert pages[0][:3] == (overview_sections.OPTIMALITY_PAPER, paper.label, paper.title)
+    assert pages[1][:3] == (overview_sections.OPTIMALITY_PAPER, paper.label, paper.title)
     assert overview_sections.OPTIMALITY is paper
-    note = pages[0][3]
+    note = pages[1][3]
     assert note.startswith("Explains the accepted proof that Trump\u2019s packing")
     assert "(T-060)" in note
     assert "formal" not in note.lower()
@@ -789,25 +790,27 @@ def test_every_card_grid_sits_in_a_frame_it_can_measure(page: str) -> None:
     assert "site-cards-dimensions" not in page, "the rating ladders are no card grid"
 
 
-def test_the_page_cards_stand_two_over_three_at_one_column_width(
+def test_the_page_cards_stand_one_two_and_two_at_one_column_width(
     page: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """The five page cards stand in two lines, the two papers over the tutorial, the
-    workbench and the Frontier page (the owner, 2026-10-02, `think-ec5k`): one wrapping
-    row would set four where the frame fits four and leave the fifth alone. A section set
-    in lines of its own (`SECTION_CARD_LINES`) is one frame holding a grid per line, a
-    gap apart, each marked with its longest line's count, which the stylesheet caps a
-    line of its size at, so the lines share one column width and each centres in it.
-    Lines that do not count the section's cards are refused."""
-    assert overview_sections.SECTION_CARD_LINES == {"pages": (2, 3)}
+    """The five page cards stand in three lines: the Frontier page alone at the top, then
+    the two papers, then the tutorial and the workbench (the owner, 2026-10-02,
+    `think-ns3d`; two over three from `think-ec5k` the same day). One wrapping row would
+    set four where the frame fits four and leave the fifth alone. A section set in lines
+    of its own (`SECTION_CARD_LINES`) is one frame holding a grid per line, a gap apart,
+    each marked with its longest line's count, which the stylesheet caps a line of its
+    size at, so the lines share one column width and each centres in it. Lines that do
+    not count the section's cards are refused."""
+    assert overview_sections.SECTION_CARD_LINES == {"pages": (1, 2, 2)}
     assert len(overview_sections.PAGES) == 5
     frame = page.split('<div class="site-cards-frame site-wide">', 1)[1]
-    rows = re.findall(r'<div class="site-cards" data-cards-most="3">(.*?)</div>', frame)
+    rows = re.findall(r'<div class="site-cards" data-cards-most="2">(.*?)</div>', frame)
     assert [
         re.findall(r'class="site-card site-card-link" href="([^"]+)"', row) for row in rows
     ] == [
+        ["frontier.html"],
         ["papers/n11-optimality-review.html", "papers/n11-lower-bounds-explainer.html"],
-        ["tutorial.html", "workbench/", "frontier.html"],
+        ["tutorial.html", "workbench/"],
     ]
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     gap = css[css.index(".site-cards + .site-cards {") :]
@@ -1113,8 +1116,9 @@ def test_the_frontier_survey_is_the_frontier_pages_and_its_card_is_a_page_card(
 ) -> None:
     """The homepage had a section headed The Frontier Survey, one paragraph and two cards
     to the Frontier page, until the owner dropped it on 2026-10-02 (`think-ec5k`): its
-    account is the Frontier page's own prose, and its card to every case is the last of
-    the page cards under The Squares Project; the card to the recent cases went with it.
+    account is the Frontier page's own prose, and its card to every case is the first of
+    the page cards under The Squares Project, alone on its line (`think-ns3d`); the card
+    to the recent cases went with it.
     The section's two fragments, `#the-frontier-survey` and the older `#the-survey`, name
     nothing on the homepage, so `forward.js` sends them to the Frontier page, whose title
     carries the first. One vocabulary holds in what a reader sees: the page and its bar
@@ -1127,7 +1131,7 @@ def test_the_frontier_survey_is_the_frontier_pages_and_its_card_is_a_page_card(
     assert "The frontier survey is the record the atlas" not in _seen(page)
     assert "frontier.html?recent=true" not in page
     assert '<a data-page="frontier" href="frontier.html">Frontier</a>' in page
-    href, tag, body = _page_cards(page)[-1]
+    href, tag, body = _page_cards(page)[0]
     assert (href, tag) == ("frontier.html", ' data-go="page" data-card-size="medium"')
     assert '<span class="site-card-label">Frontier survey</span>' in body
     frontier = rendered("frontier.html")

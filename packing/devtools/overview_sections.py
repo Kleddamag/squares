@@ -198,12 +198,14 @@ SECTION_CARD_SIZES: dict[str, CardSize] = {
 }
 
 #: A section set in lines of its own, as counts of its cards in order, where one
-#: wrapping row would leave a card alone on its last line: the five page cards stand two
-#: over three, the two papers over the tutorial, the workbench and the Frontier page,
-#: rather than four and one (the owner, 2026-10-02, `think-ec5k`). Each line is a row of
-#: its own, and none sets more cards to a line than the longest line holds, so the lines
-#: share one column width. The stylesheet holds each longest line here to a rule.
-SECTION_CARD_LINES: dict[str, tuple[int, ...]] = {"pages": (2, 3)}
+#: wrapping row would not set them as they are meant to read: the five page cards stand
+#: one, two and two, the Frontier page alone at the top, then the two papers, then the
+#: tutorial and the workbench (the owner, 2026-10-02, `think-ns3d`; they stood two over
+#: three from `think-ec5k` the same day, the Frontier page's card last). Each line is a
+#: row of its own, and none sets more cards to a line than the longest line holds, so the
+#: lines share one column width, half the frame's. The stylesheet holds each longest line
+#: here to a rule.
+SECTION_CARD_LINES: dict[str, tuple[int, ...]] = {"pages": (1, 2, 2)}
 
 
 #: Elements with no end tag, which open nothing a parser must later close.
@@ -1401,13 +1403,20 @@ def paper_cards() -> str:
 #: there. Both are register prose, so a bound in either is written in ASCII
 #: (`s(11) >= 3.8264…`) and set as math. The explainer's card takes its paper's words;
 #: the optimality paper's and the tutorial's keep a shorter line here. The optimality
-#: paper is first, as on the Papers page: it explains the result that stands. Every
+#: paper leads the papers, as on the Papers page: it explains the result that stands. Every
 #: address is a full page the site serves, the paper's a directory below the root, so
-#: its card links straight to it. The Frontier page's card is last: it stood in The
-#: Frontier Survey section, beside a card to the recent cases, until the owner dropped
-#: that section on 2026-10-02 and moved the card to every case up here (`think-ec5k`).
+#: its card links straight to it. The Frontier page's card is first, on a line of its
+#: own (`SECTION_CARD_LINES`, `think-ns3d`): it stood in The Frontier Survey section,
+#: beside a card to the recent cases, until the owner dropped that section on 2026-10-02
+#: and moved the card to every case up here (`think-ec5k`), last of the five at first.
 #: The Results page is reached from Recent Results, whose pointer is its own.
 PAGES: tuple[tuple[str, str, str, str], ...] = (
+    (
+        "frontier.html",
+        "Frontier survey",
+        "Every case from n = 1 to 324",
+        "Reported and verified bounds side by side, with their sources.",
+    ),
     (
         OPTIMALITY.href,
         OPTIMALITY.label,
@@ -1429,12 +1438,6 @@ PAGES: tuple[tuple[str, str, str, str], ...] = (
         "Workbench",
         "Pack squares by hand",
         "Move squares yourself and watch the known packings.",
-    ),
-    (
-        "frontier.html",
-        "Frontier survey",
-        "Every case from n = 1 to 324",
-        "Reported and verified bounds side by side, with their sources.",
     ),
 )
 

@@ -459,25 +459,25 @@ lower-bound side has underused methods.
 
 Counts below are computed from the artifacts, not asserted.
 
-Of the 256 open cases, **221** have Nagamochi’s formula as their verified lower bound.
+Of the 256 open cases, **219** have Nagamochi’s formula as their verified lower bound.
 Two others use certificates already integrated into the register, the current external
 certificate bounds at $n = 12$ ($15680/3951$) and $n = 17$ ($116511/25000$). Complete
-interval and exact replays of external certificates hold the other 33: wand125’s point
-certificate at $n = 56$ ($381/50$), its mixed rectangle-measure certificate at $n = 76$
-($447/50$), and its rectangle-density certificates, directly or by monotonicity, at
-$n = 18$ to 20, 26 to 31, 38 to 44, 52 to 55, 67 to 75, 86 and 95. On 2026-10-02 those
-replays superseded this repository’s first-party bounds at $n = 18$, 19 and 20
-($4679/1000$, $24/5$ and $97/20$), Tokoharu’s at $n = 26$, 29 and 30, wand125’s point
-certificates at $n = 39$ to 41, 52, 53, 55 and 68 to 72, and Nagamochi’s formula at 17
-counts.
-$n = 32$ left the open cases on 2026-09-27, when a replayed external closed cover
-proved $s(32) = 6$, and $n = 21$ and $n = 45$ on 2026-09-29, when replayed external
-mixed covers proved $s(21) = 5$ and $s(45) = 7$; $n = 59$, 60 and 61 left them on
-2026-10-02, when replayed mixed covers proved $s(59) = s(60) = s(61) = 8$, and $n = 77$
-and 78 later that day, when the replayed $s(77)$ cover proved $s(77) = s(78) = 9$.
-Within the original $n \le 100$ corpus, the corresponding Nagamochi count is 21. The
-count is checked against the case records by `devtools.check_nagamochi_bounds`
-(`D-430`), because earlier hand-maintained counts outlived their case promotions.
+interval and exact replays of external certificates hold the other 35: wand125’s point
+certificate at $n = 56$ ($381/50$), its mixed rectangle-measure certificates at $n = 50$
+and, by monotonicity, $n = 51$ ($37/5$) and at $n = 76$ ($447/50$), and its
+rectangle-density certificates, directly or by monotonicity, at $n = 18$ to 20, 26 to
+31, 38 to 44, 52 to 55, 67 to 75, 86 and 95. On 2026-10-02 those replays superseded this
+repository’s first-party bounds at $n = 18$, 19 and 20 ($4679/1000$, $24/5$ and
+$97/20$), Tokoharu’s at $n = 26$, 29 and 30, wand125’s point certificates at $n = 39$ to
+41, 52, 53, 55 and 68 to 72, and Nagamochi’s formula at 19 counts.
+$n = 32$ left the open cases on 2026-09-27, when a replayed external closed cover proved
+$s(32) = 6$, and $n = 21$ and $n = 45$ on 2026-09-29, when replayed external mixed
+covers proved $s(21) = 5$ and $s(45) = 7$; $n = 59$, 60 and 61 left them on 2026-10-02,
+when replayed mixed covers proved $s(59) = s(60) = s(61) = 8$, and $n = 77$ and 78 later
+that day, when the replayed $s(77)$ cover proved $s(77) = s(78) = 9$. Within the
+original $n \le 100$ corpus, the corresponding Nagamochi count is 19. The count is
+checked against the case records by `devtools.check_nagamochi_bounds` (`D-430`), because
+earlier hand-maintained counts outlived their case promotions.
 
 Of the 256 open cases, 111 are still held by the trivial grid.
 The other 145 carry non-grid constructions.

@@ -83,10 +83,12 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # completed zmx2 replay of the s(77) mixed cover (T-067) proved n = 77 and, by its
     # total below 78, n = 78; both were reported-proved and neither Nagamochi-bounded,
     # so formal-open falls by two in every corpus. The replayed s(76) >= 447/50 (T-072)
-    # leaves n = 76 open.
-    "n=1..100": (56, 55, 21),
-    "n=1..200": (144, 139, 109),
-    "n=1..324": (256, 247, 221),
+    # leaves n = 76 open. 2026-10-02, the merged replay of wand125's n = 50 mixed
+    # certificate (T-048) took n = 50 and, by its mass, n = 51 off Nagamochi's bound;
+    # both stay open in both lanes, so only the Nagamochi-bounded count falls by two.
+    "n=1..100": (56, 55, 19),
+    "n=1..200": (144, 139, 107),
+    "n=1..324": (256, 247, 219),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
 #: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the

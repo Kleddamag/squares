@@ -18,7 +18,7 @@
           "degree_recorded_upstream": 11,
           "exact_value_known": 95,
           "lower_bound_first_proved_here": 0,
-          "lower_bound_recent_result": 44,
+          "lower_bound_recent_result": 46,
           "only_known_numerically": 5,
           "proved_optimal": 44,
           "rigidity_catalogue_annotated": 2,
@@ -42,7 +42,7 @@
           "degree_recorded_upstream": 21,
           "exact_value_known": 269,
           "lower_bound_first_proved_here": 0,
-          "lower_bound_recent_result": 44,
+          "lower_bound_recent_result": 46,
           "only_known_numerically": 55,
           "proved_optimal": 68,
           "rigidity_catalogue_annotated": 2,
@@ -2482,15 +2482,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(50) ≥ 7.082762",
+          "display": "s(50) ≥ 7.400000",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-n050-wand125-mixed-740-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "7.0827625303"
+          "value": "7.4"
         },
         "n": 50,
         "optimality": {
@@ -2527,15 +2527,15 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "display": "s(51) ≥ 7.164414",
+          "display": "s(51) ≥ 7.400000",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-n050-wand125-mixed-740-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "7.16441400297"
+          "value": "7.4"
         },
         "n": 51,
         "optimality": {
@@ -15104,7 +15104,7 @@
       "degree_recorded_upstream": 21,
       "exact_value_known": 269,
       "lower_bound_first_proved_here": 0,
-      "lower_bound_recent_result": 44,
+      "lower_bound_recent_result": 46,
       "only_known_numerically": 55,
       "proved_optimal": 68,
       "rigidity_catalogue_annotated": 2,

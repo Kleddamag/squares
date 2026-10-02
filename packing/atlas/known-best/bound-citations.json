@@ -1098,16 +1098,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-048"
+          ],
+          "note": "(confirmed T-048)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-048"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "7.0827625303"
+          "source_key": "[wand125 point and mixed bounds 2026-09-28]",
+          "text": "wand125 after Daniel et al. 2026, GitHub",
+          "value": "7.4"
         },
         "n": 50,
         "record": "n-050",
@@ -1127,16 +1129,18 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "note": null,
-          "recent": false,
+          "confirmed_by": [
+            "T-048"
+          ],
+          "note": "(confirmed T-048)",
+          "recent": true,
           "result": null,
           "results": [
-            "T-007"
+            "T-048"
           ],
-          "source_key": "[Nagamochi 2005]",
-          "text": "Nagamochi 2005, Electron. J. Combin. 12, #R37",
-          "value": "7.16441400297"
+          "source_key": "[wand125 point and mixed bounds 2026-09-28]",
+          "text": "wand125 after Daniel et al. 2026, GitHub",
+          "value": "7.4"
         },
         "n": 51,
         "record": "n-051",

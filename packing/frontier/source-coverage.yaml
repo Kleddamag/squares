@@ -487,17 +487,19 @@ sources:
     url: https://github.com/wand125/square-packing-bounds/tree/39d8ecc74d651b54ec977c331c8f2015b442a6c4
     local: resources/web/wand125-point-and-mixed-2026-09-28/
     source_key: '[wand125 point and mixed bounds 2026-09-28]'
-    scope: {n_values: [21, 45, 50]}
-    reviewed: '2026-09-28'
+    scope: {n_values: [21, 45, 50, 51]}
+    reviewed: '2026-10-02'
     source_date: '2026-09-28'
     disposition: current-report
     replay_disposition: case-specific
-    represented_by: [frontier/n-021.md, frontier/n-045.md, frontier/n-050.md]
+    represented_by: [frontier/n-021.md, frontier/n-045.md, frontier/n-050.md, frontier/n-051.md]
     evidence:
       - E-n045-wand125-point-cover-report
       - E-n045-wand125-point-cover-source-replay
       - E-n021-wand125-point-endpoint-report
+      - E-n021-wand125-point-endpoint-source-replay
       - E-n050-wand125-mixed-740-report
+      - E-n050-wand125-mixed-740-source-replay
     notes: >-
       Revision 39d8ecc74d651b54ec977c331c8f2015b442a6c4 of the same repository
       as the rectangle certificates, retained on 2026-09-28 as 64 files of a
@@ -507,10 +509,13 @@ sources:
       second method. A point-only s(21) = 5 on Daniel's support, decided by the
       source's own rational replay, and s(50) >= 37/5, checked by a research
       copy of Tokoharu's verify.cpp at threshold one, are recorded as reported
-      bounds; their complete replays were running when this entry was written
-      (the s(21) root and sieve stages, and four of the n = 50 directions,
-      matched the source's records). The source claims no priority for s(21)
-      or s(45). The superseded n = 50 rungs 147/20 and 3659/500 are retained
+      bounds when this entry was written. Both complete replays passed here on
+      2026-09-29 and came into the packet on 2026-10-02
+      (E-n021-wand125-point-endpoint-source-replay, matching the source's M1
+      run; E-n050-wand125-mixed-740-source-replay, equal to the shipped record
+      at all 201 directions), which put s(50) >= 37/5 and, by its mass, s(51)
+      >= 37/5 in the verified lane and gave s(21) = 5 a second, point-only
+      route there. The source claims no priority for s(21) or s(45). The superseded n = 50 rungs 147/20 and 3659/500 are retained
       and not registered.
   - id: wand125-rectangles-2026-10-01
     title: Rectangle-density certificates raised or added since 28 September

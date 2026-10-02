@@ -409,7 +409,7 @@ sources:
     venue: GitHub
     dated: '2026-09-28'
     credit: wand125 after Daniel, Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
-    short_credit: wand125 after Daniel, Tokoharu, Levy et al.
+    short_credit: wand125 after Daniel et al.
     lineage: credits-project
     note: >-
       The point-only s(21) = 5 and s(45) = 7 certificates and the mixed-rectangle
@@ -428,7 +428,8 @@ sources:
       528-529 and 635-650), so this project is credited second-hand.
       web/wand125-point-and-mixed-2026-09-28/acquisition/sources.json pins revision
       39d8ecc74d651b54ec977c331c8f2015b442a6c4 and every file of the five claim
-      directories. Dated by that revision, 2026-09-28.
+      directories. Dated by that revision, 2026-09-28. The complete s(21) and n = 50
+      replays ran here on 2026-09-29, with their receipts in the packet.
   - key: '[wand125 rectangle bounds 2026-10-01]'
     authors: [wand125]
     year: 2026

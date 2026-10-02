@@ -321,10 +321,10 @@ results:
       score: 3
       rationale: >-
         The workhorse lower bound: 95 of the hundred case records cite this result,
-        and it supplies the operative verified lower bound in 46 of them. The count was
+        and it supplies the operative verified lower bound in 44 of them. The count was
         88 until 2026-08-31, when this project's certificates began displacing it; replayed
         external certificates displaced 18 more case values on 2026-09-22, one more,
-        n = 32, on 2026-09-27, another, n = 45, on 2026-09-29, and 17 more on 2026-10-02.
+        n = 32, on 2026-09-27, another, n = 45, on 2026-09-29, and 19 more on 2026-10-02.
       scored: '2026-08-31'
       by: session-061 review (repository)
     novelty: previously-published
@@ -338,8 +338,8 @@ results:
       - packing/devtools/check_nagamochi_bounds.py
     next_rung: >-
       The proof itself is C1 with four named unverified items in the read;
-      the 46 operative verified-field values are separately re-derived in the gate (a replay
-      of the transcriptions, which by itself would read at C2), while the other 49 citations
+      the 44 operative verified-field values are separately re-derived in the gate (a replay
+      of the transcriptions, which by itself would read at C2), while the other 51 citations
       carry historical or
       reported context and are not current bounds. C3 needs a machine check of Theorem 1's
       unavoidable-set capacity argument.
@@ -4030,38 +4030,40 @@ results:
   - id: T-048
     kind: lower-bound
     registered: '2026-09-29'
-    headline: "`s(50) ≥ 37/5 = 7.4`, reported"
+    headline: "`s(50) ≥ 37/5 = 7.4`"
     claim: >-
-      On 28 September 2026 wand125/square-packing-bounds reported s(50) >= 37/5 = 7.4. It
-      exceeds Green's reported 2 sqrt(2) + 101/25 + 3 sqrt(14)/25 = 7.3174260 by more
-      than 0.0825739888.
+      s(50) >= 37/5 = 7.4, by wand125's mixed rectangle-density certificate of 28 September
+      2026. It exceeds Green's reported 2 sqrt(2) + 101/25 + 3 sqrt(14)/25 = 7.3174260 by
+      more than 0.0825739888. The certificate's mass is below 51 too, so it gives s(51) >=
+      37/5 as well.
 
       The certificate is a D4-expanded rectangle density of 553 orbit representatives, total
       mass 4999999/100000 < 50, core side 9977/10000 and 201 net half-angles of step 83/40000.
-      The source reports it accepted at every oblique net angle by
-      code/mixed_rotated_verify.cpp, a research copy of Tokoharu's verify.cpp that accepts
-      coverage at least 1 instead of 10001/10000 and checks each net node's unit-square centre
-      domain, and at angle zero by exact integer tables.
+      It is accepted at every oblique net angle by code/mixed_rotated_verify.cpp, a research
+      copy of Tokoharu's verify.cpp that accepts coverage at least 1 instead of 10001/10000
+      and checks each net node's unit-square centre domain, and at angle zero by exact integer
+      tables.
 
-      Here this repository's exact audit checked the premises, the integrity of all 621 bundle
-      files and all 200 oblique inputs, and a sampled replay of four of the 201 angles
-      reproduced the shipped records. The complete replay has not finished, so the bound
-      stands as reported.
+      The source's complete replay was run here on 29 September 2026 on the pinned bundle,
+      with the source's driver and checker unchanged: all 201 directions, each equal to the
+      shipped record. This repository's exact audit checked the premises and the integrity
+      of all 621 bundle files and all 200 oblique inputs. The replay runs the source's own
+      algorithm and is not an independent decision of coverage.
 
       wand125 after Evan Daniel and Tokoharu,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/39d8ecc74d651b54ec977c331c8f2015b442a6c4/certificates/mixed_n50_L740),
       the n = 50 measure resting on Tokoharu's format and checker. The source says parts of
       the work were produced with AI assistance under human direction.
-    scope: {n_values: [50]}
-    verification: V0
-    confirmation: C0
+    scope: {n_values: [50, 51]}
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
-        Scored as a claim: if the replay passes, a lower bound 0.0826 above Green's reported
-        value and 0.317 above Nagamochi's verified closed form. The two changes to Tokoharu's
-        checker were read and found legitimate on 2026-09-28. A substantive case result at
-        S3; the score gates nothing and V0/C0 says how far it stands.
+        Raised the verified lower bound at n = 50 by 0.317 over Nagamochi's closed form, and
+        at n = 51 by 0.236, and stands 0.0826 above Green's reported value at n = 50. The
+        two changes to Tokoharu's checker were read and found legitimate on 2026-09-28. A
+        substantive case result at S3.
       scored: '2026-09-29'
       by: session-161 (repository; draft)
     novelty: previously-published
@@ -4070,41 +4072,60 @@ results:
       published: '2026-09-28'
     produced_by:
       session: session-161
+    composition: >-
+      One certificate. E-n050-wand125-mixed-740-source-replay replays it in full with the
+      source's own driver and checker: one interval-certified method, replayed here, C3.
+      Coverage is decided by the source's C++ checker alone, and the axis tables are a
+      second implementation for one direction and not a second method. n = 51 takes the
+      same certificate directly, its mass being below 51, so no step is added.
     evidence:
       - E-n050-wand125-mixed-740-report
+      - E-n050-wand125-mixed-740-source-replay
+    reviews:
+      - path: docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
+        kind: adversarial
+        reviewer: AI review sub-agent at maximum thinking effort, the correctness lane (W2 factual review) of the 2026-09-28 wand125 intake
+        reviewer_kind: ai
+        relation: project
+        date: '2026-09-28'
+        scope: >-
+          wand125's n = 50 mixed certificates (L740, L735 and L7318) and their threshold-one verifier, against Tokoharu's verify.cpp line by line: what the 10001/10000 margin pays for, the containment argument and the per-node centre domain in exact arithmetic, the certificate language, and what the replay lane must check.
+        verdict: accepted
+        covers: [T-048]
     artifacts:
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/README.md
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code/mixed_rotated_verify.cpp
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/completion-audit.json
+      - packing/resources/web/wand125-point-and-mixed-2026-09-28/receipts/n50/bundle_check.json
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/receipts/n50/sample.json
+      - packing/resources/web/wand125-point-and-mixed-2026-09-28/receipts/n50/full/compare.json
+      - packing/resources/web/wand125-point-and-mixed-2026-09-28/receipts/n50/full/run.log
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/receipts/exact-audit.json
       - packing/devtools/audit_wand125_point_and_mixed.py
       - docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
+    controls:
+      - packing/tests/test_wand125_checker_controls.py
+      - packing/resources/web/wand125-point-and-mixed-2026-10-01/receipts/n37/control.json
     next_rung: >-
-      The complete L740 replay, about 10.5 CPU-hours on three workers, by the procedure the
-      packet README gives (verify_mixed_full_proof.py, then n50-compare, which must print
-      FULL_REPLAY_MATCHES_SHIPPED), recorded as an interval-certified replay entry, which
-      would derive V3/C3. C1 before that, by recording the 2026-09-28 verifier review as an
-      external_review on the report entry.
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record; one adversarial review is retained. A second machine method would be a
+      method-distinct decision of rotated coverage; the replay here runs the source's own
+      checker. The checker's controls were made on the n = 37 certificate of the same
+      kind; devtools.audit_wand125_point_and_mixed mixed-control on this certificate would
+      bind them to this measure as well.
     notes: >-
-      V0 because the one cited entry is the source's claim, assurance reported, replay not
-      attempted. The source reports running the full replay twice, the second from the
-      published tarball, and ships completion-audit.json; four sampled angles, including the
-      one carrying the least recorded bound and the slowest, reproduced here. C0 because the
-      2026-09-28 verifier review is not recorded as an external_review on the report entry.
-      The same day's 147/20 and 3659/500 rungs are superseded within the release and are not
-      registered.
-    activity:
-      state: in-analysis
-      what: >-
-        The complete L740 replay passed here on 2026-09-29 at all 201 angles
-        (ALL_ANGLES_VERIFIED_AND_REPLAYED, FULL_REPLAY_MATCHES_SHIPPED), with receipts on
-        the transfer branch claude/replay-wand125-n50-l740-local. Its evidence entry, the
-        verified lane of n = 50 and the monotone transfers to n = 51 to 53 are not yet in
-        the record.
-      since: '2026-09-29'
-      link: think-nnlg
+      Raised from V0/C0 on 2 October 2026, when the complete replay of 29 September
+      (think-nnlg) came into the packet from its transfer branch and n50-compare printed
+      FULL_REPLAY_MATCHES_SHIPPED, and the 2026-09-28 verifier review was recorded as the
+      report entry's external_review and in reviews. The review found both changes to
+      Tokoharu's checker legitimate and no blocking finding.
+
+      The review named monotone transfers to n = 52 and 53 as well. Those cases have since
+      been raised above 37/5 by replayed rectangle certificates (T-070), so the certificate
+      carries the verified bound to n = 51 alone, where it is above Nagamochi's closed form;
+      the reported bound there, 2977/400, is higher and stays reported. The same day's
+      147/20 and 3659/500 rungs are superseded within the release and are not registered.
 
   - id: T-049
     kind: lower-bound
@@ -4646,10 +4667,11 @@ results:
   - id: T-055
     kind: simplification
     registered: '2026-09-29'
-    headline: "`s(21) = 5` by a point-only route, reported"
+    headline: "`s(21) = 5` by a point-only route"
     claim: >-
-      wand125/square-packing-bounds reports s(21) = 5 by a point-only route, completed on 28
-      September 2026 with a Lean 4 reduction; the upper half is the 5 x 5 grid.
+      s(21) = 5 by a second, point-only route: the lower half by wand125's point-only
+      measure, completed on 28 September 2026 with a Lean 4 reduction, the upper half by the
+      5 x 5 grid.
 
       The lower half is Evan Daniel's s21_lower_4.9950.txt support (T-050) scaled by 1001/1000
       and re-weighted, 4,604 D4-invariant entries of total 2624862500021/125000000000, with
@@ -4660,24 +4682,24 @@ results:
       certificate tree over 5,000 root boxes, and Lean proves minSide 21 = 5 from that one
       hypothesis.
 
-      Here the exact data audit, the bundle's files and the Lean overlay's data generation
-      were checked, and the root and sieve stages of the full replay passed with proof files
-      byte-identical to the source's. The frontier stage had not finished, so the result
-      stands as reported.
+      That replay was run here in full on 29 September 2026, the source's runner unchanged:
+      every stage passed, and its records match the source's M1 run, 45,436 of the 45,446
+      output files byte for byte and the rest in every certified quantity. The Lean overlay
+      was not built here.
 
       wand125 after Evan Daniel,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/39d8ecc74d651b54ec977c331c8f2015b442a6c4/point_n21_L5).
       The source names Daniel's mixed-cover proof (T-052) as first, claims no priority, and
       says its code was developed with Codex.
     scope: {n_values: [21]}
-    verification: V0
-    confirmation: C0
+    verification: V3
+    confirmation: C3
     significance:
       score: 2
       rationale: >-
         A second, point-only route to a value T-052 already holds, with a positive-margin
         threshold rather than a zero-margin cover and a Lean reduction of its own. A citable
-        detail that changes no theorem, and reported only.
+        detail that changes no theorem.
       scored: '2026-09-29'
       by: session-161 (repository; draft)
     novelty: previously-published
@@ -4685,46 +4707,56 @@ results:
       source_keys: ['[wand125 point and mixed bounds 2026-09-28]']
       published: '2026-09-28'
     composition: >-
-      Compound, and the minimum is set by the lower half. The upper half is the grid,
-      E-basic-grid-upper, at V3/C3; the lower half is E-n021-wand125-point-endpoint-report,
-      the source's claim at V0/C0, whose replay here is incomplete. The checker derives V3 and
-      C3 from the grid's entry; this note is why the declared rungs are V0 and C0.
+      Compound, and the minimum is set by the lower half. The lower half is
+      E-n021-wand125-point-endpoint-source-replay (exact-algebraic, the source's runner
+      replayed here), the upper half the grid (E-basic-grid-upper); the equality is C3. The
+      runner is the source's, so the replay confirms the source's run rather than adding a
+      second method, and the Lean reduction, not built here, adds nothing to the rung.
     produced_by:
       session: session-161
     evidence:
       - E-n021-wand125-point-endpoint-report
+      - E-n021-wand125-point-endpoint-source-replay
       - E-basic-grid-upper
+    reviews:
+      - path: docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md
+        kind: adversarial
+        reviewer: AI review sub-agent at maximum thinking effort, the mathematical reviewer of Session 161's W2 factual review, correctness lane
+        reviewer_kind: ai
+        relation: project
+        date: '2026-09-28'
+        scope: >-
+          wand125's point-only certificates for s(45) = 7 and s(21) = 5: for s(21), the argument with a capture threshold below 1, what the portable runner replays and what makes each numerical stage rigorous, the lemma map sampled, and the Lean overlay term for term; zmx2's own soundness taken from the companion review of Daniel's covers.
+        verdict: accepted
+        covers: [T-055]
     artifacts:
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/README.md
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n21_L5/certificates/n21-original.txt.gz
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n21_L5/README.md
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/receipts/n21/stage_comparison.json
+      - packing/resources/web/wand125-point-and-mixed-2026-09-28/receipts/n21/result.json
+      - packing/resources/web/wand125-point-and-mixed-2026-09-28/receipts/n21/comparison.json
       - packing/resources/web/wand125-point-and-mixed-2026-09-28/receipts/exact-audit.json
       - packing/devtools/audit_wand125_point_and_mixed.py
+      - packing/devtools/check_basic_bounds.py
       - docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md
+    controls:
+      - packing/tests/test_wand125_checker_controls.py
+      - packing/resources/web/wand125-point-and-mixed-2026-09-28/receipts/controls/n21_control_drop-heaviest-point.log
+      - packing/resources/web/wand125-point-and-mixed-2026-09-28/receipts/controls/n21_control_move-point.log
     next_rung: >-
-      Finish the complete local replay (verify_portable.py --workers 2, which must end
-      FRESH_ALL_DOMAIN_REPLAY_VERIFIED, then n21-compare against the pinned M1 linkage) and
-      record it as an exact-algebraic replay entry, which would derive V3/C3 for the lower
-      half. C1 before that, by recording the 2026-09-28 point-only review as an
-      external_review on the report entry.
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record; one adversarial review is retained. A build of the Lean overlay with its axiom
+      receipt, and the runner's lemmas formalised (review F10), would be the road to rung 5.
+      The controls end at the first root box that holds a pose, so neither exercises the
+      sieve or frontier stages; a control refused deeper in the tree would test more of the
+      runner.
     notes: >-
-      V0 because the lower half rests on the source's claim alone, assurance reported,
-      replay not attempted to completion. The source reports its full replay taking 8,577 s
-      on two workers of an M1 and pins the acceptance linkage; here the root stage (5,000
-      roots) and sieve stage (8,758 parents) passed with every proof file byte-identical to
-      that run, and two frontier shards of 15,839 parents each were still running. C0
-      because the 2026-09-28 point-only review is recorded as an external_review on the
-      n = 45 replay entry only. The Lean build was not run here.
-    activity:
-      state: in-analysis
-      what: >-
-        The complete portable replay passed here on 2026-09-29, both frontier shards
-        included (FRESH_ALL_DOMAIN_REPLAY_VERIFIED), with receipts on the transfer branch
-        claude/replay-wand125-n21-point. The comparison with the pinned linkage
-        (n21-compare) and the replay's evidence entry are not yet in the record.
-      since: '2026-09-29'
-      link: think-ifsv
+      Raised from V0/C0 on 2 October 2026, when the complete replay of 29 September
+      (think-ifsv) came into the packet from its transfer branch and n21-compare printed
+      MATCHES_SOURCE_M1_RECORD, the two mutated covers were refused, and the 2026-09-28
+      point-only review was recorded as the report entry's external_review and in reviews.
+      The review found no blocking defect. The Lean build was not run here.
 
   - id: T-056
     kind: upper-bound

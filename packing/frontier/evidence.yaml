@@ -1038,8 +1038,93 @@ evidence:
       write-up says the code was developed with Codex. The upper bound is the
       grid. The complete local replay was still running when this entry was
       written (its root and sieve stages passed, every proof file
-      byte-identical to the source's M1 run), so no verified entry is recorded.
-      This entry preserves the source claim.
+      byte-identical to the source's M1 run). This entry preserves the source
+      claim; the complete replay here of 29 September 2026 is
+      E-n021-wand125-point-endpoint-source-replay.
+    external_review:
+      state: informally-verified
+      date: '2026-09-28'
+      reviewed_by: >-
+        AI review sub-agent at maximum thinking effort, the mathematical reviewer of
+        Session 161's W2 factual review, correctness lane
+        (docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md)
+      note: >-
+        Sound as stated, given a passing complete replay. Every acceptance in the runner
+        is an exact rational comparison: floating point appears only in proposal code the
+        replay never calls, and each retained proof object is re-derived and compared
+        before it counts. The Lean overlay states the standard s(21) from one hypothesis
+        that matches the runner's domain term for term, and the review's own exact probes
+        find the least captured mass at 1.00105, above the certified threshold. No
+        blocking finding; the notes are that q < 1 is a checker artefact (F6), that the
+        lemma map is not the replay closure (F7), that the runner replays a certificate
+        tree rather than deciding the cover (F8), and that its lemmas are unformalised
+        (F10). Not machine-checked: the runner's lemmas and program.
+    source_reviewed: '2026-09-28'
+
+  - id: E-n021-wand125-point-endpoint-source-replay
+    claim: lower-bound
+    scope: {n_values: [21]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 point and mixed bounds 2026-09-28]'
+    certificate: resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n21_L5/certificates/n21-original.txt.gz
+    replay: >-
+      In a copy of the source's point_n21_L5 directory at 39d8ecc with its 464 MB proof
+      bundle unpacked from the pinned archive (the packet README, Replay Here), under
+      CPython 3.12 or later: python verify_portable.py --workers 2 --out OUT, which runs
+      the root, sieve and two frontier stages of portable_replay.py and must print
+      FRESH_ALL_DOMAIN_REPLAY_VERIFIED with every stage exiting zero. Then, from packing/,
+      .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed n21-compare OUT
+      --m1-linkage M1 --collect receipts/n21 --out F, against the source's pinned M1
+      linkage (SHA-256 0d93072b...), must print MATCHES_SOURCE_M1_RECORD. The controls
+      are .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed n21-control for the
+      mutations drop-heaviest-point and move-point, each of which must end
+      CONTROL_REFUSED. The receipts are receipts/n21/ and receipts/controls/ in the
+      packet.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/point_n21_L5/README.md
+      theorem: No 21 unit squares fit in a square of side below 5; with the 5 x 5 grid, s(21) = 5.
+      scope: Unrestricted square packing with independent rotations, disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        point_n21_L5/README.md and its PROOF-LEMMAS.md; section 4 of the 2026-09-28
+        point-only review (the argument with a threshold below 1, what the runner
+        replays, every numerical stage and the Lean overlay term for term); the packet
+        README, Complete Replays Here, and receipts/n21/.
+      assumptions:
+        - The point measure is nonnegative and D4-invariant, 4,604 entries of total 2624862500021/125000000000, and 21q exceeds it for q = 249987/250000, which the packet's exact audit (receipts/exact-audit.json) recomputes.
+        - Every closed unit square in [0,5]^2 captures mass at least q, a point on its boundary counting; the replay re-derives each retained proof object of the certificate tree in exact rational arithmetic, over 5,000 root boxes, 8,758 sieve and 31,678 frontier parents, with 7,052 parents above t = 5/12 excluded.
+        - Scaling a packing of 21 at side s < 5 by 5/s gives 21 pairwise disjoint closed unit squares in [0,5]^2, which would capture at least 21q, more than the total.
+        - The runner's lemmas, in PROOF-LEMMAS.md, are prose read by the 2026-09-28 review and not formalised; the Lean overlay proves minSide 21 = 5 from the one capture hypothesis and was not built here.
+      audit_record: docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md
+    limitations: >-
+      Replays the source's own runner, verify_portable.py (SHA-256 2cea95ce...) with
+      assemble_portable.py (88888adc...) and portable_replay.py, wand125's and unchanged,
+      on 29 September 2026, on a shared 4-core x86-64 Linux container under CPython
+      3.14.7, with two workers, from 00:24:41Z to 04:14:14Z: 13,773 s of wall and 20,765
+      CPU-s, against the 8,577 s the source reports on an M1. Every stage exited zero and
+      it printed FRESH_ALL_DOMAIN_REPLAY_VERIFIED: 5,000 roots, 8,758 sieve and 31,678
+      frontier parents, 7,052 excluded (receipts/n21/result.json). n21-compare, run on 2
+      October against the source's pinned M1 linkage, printed MATCHES_SOURCE_M1_RECORD:
+      every certified quantity agrees, and 45,436 of the 45,446 output files are
+      byte-identical to the M1 run's; the other ten are stage bookkeeping that carries
+      paths or timings (receipts/n21/comparison.json). Every acceptance in the runner is
+      an exact rational comparison, so the evidence is exact-algebraic; but the runner is
+      the source's, so this replays the source's run and adds no second method. The
+      threshold q < 1 is a checker artefact, and what is certified is capture of at least
+      q (review F6); the lemma map is not the replay closure (F7). Controls: on 2 October
+      the same runner refused two mutated covers on a hard-linked copy of the bundle
+      re-bound to each, the heaviest point orbit zeroed and the orbit at (1, 0.7) moved by
+      1/1000, each leaving the closed square [0, 1]^2 below q, exactly; both ended at the
+      root stage's witness replay at root 832, so neither exercises the sieve or frontier
+      stages (receipts/controls/, held by tests/test_wand125_checker_controls.py). The
+      Lean overlay was not built here. Evan Daniel's mixed-cover proof of s(21) = 5 came
+      first and is the case's verified bound; this is a second, point-only route,
+      recorded without priority.
     source_reviewed: '2026-09-28'
 
   - id: E-n050-wand125-mixed-740-report
@@ -1074,10 +1159,95 @@ evidence:
       review found both changes to Tokoharu's checker legitimate and no
       blocking finding. Here the exact audit, the pristine bundle's 621
       digests, all 200 oblique inputs and a sampled replay of indices 0, 1,
-      150 and 200 (each equal to the shipped record) passed; the complete
-      replay, about 10.5 CPU-hours here, had not finished when this entry was
-      written, so no verified entry is recorded. This entry preserves the
-      source claim.
+      150 and 200 (each equal to the shipped record) passed. This entry
+      preserves the source claim; the complete replay here of 29 September
+      2026 is E-n050-wand125-mixed-740-source-replay.
+    external_review:
+      state: informally-verified
+      date: '2026-09-28'
+      reviewed_by: >-
+        AI review sub-agent at maximum thinking effort, the correctness lane (W2 factual
+        review) of the 2026-09-28 wand125 intake
+        (docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md)
+      note: >-
+        Sound as stated, given a passing local replay of the shipped checker. The
+        checker is Tokoharu's verify.cpp with two changes of substance, the acceptance
+        threshold read as 1 instead of 10001/10000 and the centre domain at each net
+        angle cut to the centres whose orientation the net assigns to it, and both are
+        legitimate: every compared quantity is a rigorously rounded bound with no dropped
+        term, which the review re-derived step by step, and an exact one-sided control
+        against the compiled checker found no violation in 72 boxes. Six non-blocking
+        findings, MV-1 to MV-6, among them that the C++ exits zero on an unresolved angle
+        with every check an assert (MV-1) and that the shipped replay proves determinism,
+        not direction (MV-4). Not machine-checked: the checker's program and the host's
+        IEEE-754 model.
+    source_reviewed: '2026-09-28'
+
+  - id: E-n050-wand125-mixed-740-source-replay
+    claim: lower-bound
+    scope: {n_values: [50, 51]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 point and mixed bounds 2026-09-28]'
+    certificate: resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/candidate.json.gz
+    replay: >-
+      On a fresh unpacking of the pinned proof bundle n50-L7.40-proof-bundle.tar.gz
+      (SHA-256 90621d1a...), whose 621 listed files .venv/bin/python3 -m
+      devtools.audit_wand125_point_and_mixed n50-bundle-check BUNDLE --out F must report
+      BUNDLE_FILES_MATCH, with PYTHONOPTIMIZE unset and one BLAS thread: python3
+      verify_mixed_full_proof.py proof --workers 3 in the bundle, which compiles the
+      shipped mixed_rotated_verify.cpp with its own compile_verifier and must print
+      ALL_ANGLES_VERIFIED_AND_REPLAYED for 201 of 201 directions. Then, from packing/,
+      .venv/bin/python3 -m devtools.audit_wand125_point_and_mixed n50-compare BUNDLE
+      --out F, with the run's outputs laid over the bundle, must print
+      FULL_REPLAY_MATCHES_SHIPPED. The receipts are receipts/n50/bundle_check.json and
+      receipts/n50/full/ in the packet, and its README section Complete Replays Here.
+    replay_status: passed
+    proof:
+      source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
+      theorem: Rectangle-density covering obstruction at coverage one, applied to wand125's mixed_n50_L740; no 50 unit squares fit in a square of side below 37/5, and so no 51.
+      scope: Unrestricted square packing with disjoint interiors and arbitrary rotations; monotonic transfer to n = 51, below which the certificate's mass lies.
+      pinpoints: >-
+        The theorem and interval-verifier correspondence of the 2026-09-22 Tokoharu review;
+        the threshold-one and per-node centre-domain changes of mixed_rotated_verify.cpp,
+        sections 2 to 5 of the 2026-09-28 n = 50 verifier review; the packet README,
+        Complete Replays Here, and receipts/n50/.
+      assumptions:
+        - The rectangle density is nonnegative and exact, of total mass 4999999/100000 < 50, which the packet's exact audit (receipts/exact-audit.json) recomputes.
+        - All angles and legal centres are covered by the certified core net of 201 half-angles of step 83/40000 at core side 9977/10000 and the per-node centre domains, the containment argument the 2026-09-28 review re-derived in exact arithmetic.
+        - Binary64 arithmetic has the reviewed IEEE-754 semantics, compiled by the shipped line without fast math or FMA contraction.
+        - The replayed interval inputs enclose the exact candidate, whose digest fdfaed93... every replayed record carries; the packet's n50-inputs check binds all 200 oblique inputs to it.
+      audit_record: docs/project/reviews/review-2026-09-28-wand125-n50-mixed-verifier.md
+    limitations: >-
+      Replays the source's driver verify_mixed_full_proof.py and its checker
+      mixed_rotated_verify.cpp (SHA-256 89b674a6...), both wand125's and unchanged, on
+      29 September 2026, on a shared 4-core x86-64 Linux container (Intel Xeon at 2.10
+      GHz, CPython 3.14.7, c++ 13.3.0; receipts/host.json), with three workers, from
+      01:29:37Z to 06:54:44Z, 19,507 s of wall; its CPU time was not recorded. The binary
+      the driver compiled (replay-verify, SHA-256 e3643cb5...) is pinned by digest and not
+      retained. It printed ALL_ANGLES_VERIFIED_AND_REPLAYED for 201 of 201 directions, and
+      n50-compare, run on 2 October on the retained records laid over a fresh unpacking,
+      printed FULL_REPLAY_MATCHES_SHIPPED: the axis record (13,205,956 cells, integer
+      minimum 1.0084468491077132) and every oblique node count and lower bound equal the
+      shipped ones, the least 1.0000000004625813 at index 150. This is a machine replay
+      of the source's checker, not an independent decision of the certificate: the
+      source itself calls the oblique replay the same outward-rounded algorithm run
+      again, and the angle-zero tables are a second implementation for one direction
+      only (review MV-4). The checker exits zero on an unresolved angle and checks by
+      assert (review MV-1), so the verdict here is read from the driver's status and the
+      record comparison, with PYTHONOPTIMIZE unset. Controls: the same checker, with the
+      same compile, accepts the source's n = 37 certificate at its least-bound direction
+      and refuses two mutated copies there, every mass scaled by 99/100 and the heaviest
+      orbit at an exact witness centre deleted (receipts/n37/control.json of the
+      2026-10-01 point-and-mixed packet, held by tests/test_wand125_checker_controls.py);
+      no mutation of the n = 50 certificate itself was run. The mass, below 51, carries
+      the bound to n = 51, where it is above Nagamochi's closed form; at n = 52 and 53
+      the replayed rectangle certificates of T-070 are higher, so it carries nothing
+      there. The tarball is pinned by digest and not retained.
     source_reviewed: '2026-09-28'
 
   - id: E-n059-wand125-mixed-cover-report
@@ -2701,11 +2871,11 @@ evidence:
         lambda = 1 to estimate the minimum". That last is geometrically evident and is the
         only place the argument leans on something unargued. This promotes nothing: the
         method stays `published-proof`, and `proof-assistant-checked` is a different thing.
-        Separately `devtools/check_nagamochi_bounds.py` re-derives the 46 operative
+        Separately `devtools/check_nagamochi_bounds.py` re-derives the 44 operative
         verified-field values from Theorem 2 in the gate, so a transcription slip in a
         current bound is caught even though the proof behind them is not machine-checked.
         95 of the hundred case records cite this record and it supplies the operative
-        verified lower bound in 46 of them; the other 49 citations are historical or
+        verified lower bound in 44 of them; the other 51 citations are historical or
         reported context, and a citation count is not a count of current bounds.
     limitations: External published proof; its arithmetic is not independently replayed here.
     source_reviewed: '2026-08-24'

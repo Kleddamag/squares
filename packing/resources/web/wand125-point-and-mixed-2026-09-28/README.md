@@ -276,9 +276,9 @@ then exact assembly.
   repairs the assembler requires.
   All 8,758 of its per-parent proof files are byte-identical to the M1 run’s; the same
   four stage files differ.
-- The frontier stage was still running when this packet was first written, and ended
-  the same night: both shards exited zero, after 12,626 s and 12,575 s (7,873 s and
-  7,968 s on the M1), and the run ended `FRESH_ALL_DOMAIN_REPLAY_VERIFIED`.
+- The frontier stage was still running when this packet was first written, and ended the
+  same night: both shards exited zero, after 12,626 s and 12,575 s (7,873 s and 7,968 s
+  on the M1), and the run ended `FRESH_ALL_DOMAIN_REPLAY_VERIFIED`.
   [Complete Replays](#complete-replays-here-29-september-2026) gives what it printed.
 
 The run must end with `FRESH_ALL_DOMAIN_REPLAY_VERIFIED`. Then, from `packing/`,
@@ -322,9 +322,8 @@ It ran on 29 September, by the procedure below.
 Every one of the bundle’s 201 records carries `gamma = 1` and status `ANGLE_VERIFIED` or
 `AXIS_VERIFIED` with an empty frontier, 80,719,306 oblique nodes in all.
 
-**The complete `L740` replay.** In a scratch directory `S`, with `c++` a C++17
-compiler and `python3` an interpreter with NumPy (the project’s `.venv/bin/python3` will
-do):
+**The complete `L740` replay.** In a scratch directory `S`, with `c++` a C++17 compiler
+and `python3` an interpreter with NumPy (the project’s `.venv/bin/python3` will do):
 
 ```sh
 cd S && sha256sum n50-L7.40-proof-bundle.tar.gz   # 90621d1a7ceb27267ef7b4bf3ffb5906f50e259ac28c955ec6679e64c604638f
@@ -395,11 +394,11 @@ None of it decides coverage.
 
 Both complete runs ended on 29 September in the session that ran the checks of
 [Replay Here](#replay-here), on the host [`receipts/host.json`](receipts/host.json)
-records. Their records came into this packet on 2 October from the transfer branches
-that held them, `claude/replay-wand125-n21-point` and
-`claude/replay-wand125-n50-l740-local`, and that day each compare step ran on the
-retained records under the project interpreter, with its receipt written by
-`devtools.replay_receipt`.
+records.
+Their records came into this packet on 2 October from the transfer branches that
+held them, `claude/replay-wand125-n21-point` and `claude/replay-wand125-n50-l740-local`,
+and that day each compare step ran on the retained records under the project
+interpreter, with its receipt written by `devtools.replay_receipt`.
 
 - **`s(21)`.** `verify_portable.py --workers 2 --out OUT` ran from 00:24:41Z to
   04:14:14Z, 13,773 s of wall and 20,765 CPU-s against the M1’s 8,577 s
@@ -410,13 +409,12 @@ retained records under the project interpreter, with its receipt written by
   pinned M1 linkage fetched at `39d8ecc` (SHA-256 `0d93072b…`), printed
   `MATCHES_SOURCE_M1_RECORD` ([`comparison.log`](receipts/n21/comparison.log)): every
   certified quantity agrees with `m1-full-replay.json`, and 45,436 of the 45,446 output
-  files are byte-identical to the M1 run’s.
-  The other ten are stage bookkeeping that carries absolute paths or timings:
-  `inputs.json`, `portable-reads.json`, `progress.json` and `result.json` of the root
-  and sieve stages, and each frontier shard’s `result.json`.
-  The run’s own `linkage.json` (22,317,976 bytes, SHA-256 `646c4369…`) is not retained,
-  as the tool intends; [`comparison.json`](receipts/n21/comparison.json) records its
-  digest.
+  files are byte-identical to the M1 run’s. The other ten are stage bookkeeping that
+  carries absolute paths or timings: `inputs.json`, `portable-reads.json`,
+  `progress.json` and `result.json` of the root and sieve stages, and each frontier
+  shard’s `result.json`. The run’s own `linkage.json` (22,317,976 bytes, SHA-256
+  `646c4369…`) is not retained, as the tool intends;
+  [`comparison.json`](receipts/n21/comparison.json) records its digest.
 - **`s(50)`.** The shipped `verify_mixed_full_proof.py proof --workers 3`, with
   `PYTHONOPTIMIZE` unset and one BLAS thread, ran on a fresh unpacking of the pinned
   tarball from 01:29:37Z to 06:54:44Z, 19,507 s of wall; its CPU time was not recorded.
@@ -424,24 +422,46 @@ retained records under the project interpreter, with its receipt written by
   ([`run.log`](receipts/n50/full/run.log)), with the checker its own `compile_verifier`
   built (`replay-verify`, 54,080 bytes, SHA-256 `e3643cb5…`, by GCC 13.3.0; not
   retained). [`receipts/n50/full/proof/`](receipts/n50/full/proof/) keeps every other
-  file the driver wrote. `n50-compare`, on those files laid over a fresh unpacking with
-  the binary in place, printed `FULL_REPLAY_MATCHES_SHIPPED`
+  file the driver wrote.
+  `n50-compare`, on those files laid over a fresh unpacking with the binary in place,
+  printed `FULL_REPLAY_MATCHES_SHIPPED`
   ([`compare.log`](receipts/n50/full/compare.log)): the rewritten certificate equals the
   shipped one field by field, and the axis record and every oblique node count and lower
   bound equal the shipped ones.
   [`compare.json`](receipts/n50/full/compare.json) is byte-identical to the comparison
   the transfer host wrote on 29 September.
   Each `replayed.json` is also byte-identical to the one the shipped bundle carries,
-  since the replay writes the same record; the log, the progress file, the binary and the
-  certificate rewritten in completion order (`545de253…`, against the shipped
+  since the replay writes the same record; the log, the progress file, the binary and
+  the certificate rewritten in completion order (`545de253…`, against the shipped
   `3e96341b…`) are what show the run happened.
 - **Controls.** The `n = 50` checker, `mixed_rotated_verify.cpp` (`89b674a6…`), accepts
   the `n = 37` certificate at its least-bound direction and refuses two mutated copies
   there, in `receipts/n37/control.json` of the
   [2026-10-01 packet](../wand125-point-and-mixed-2026-10-01/README.md), held by
   `tests/test_wand125_checker_controls.py`; no mutation of the `n = 50` certificate was
-  run. The `s(21)` replay has no controls: no tool here runs `verify_portable.py` on a
-  mutated certificate.
+  run.
+- **`s(21)` controls.** On 2 October `n21-control` ran the accepting run’s
+  `verify_portable.py` (`2cea95ce…`) and `assemble_portable.py` (`88888adc…`), with
+  `--workers 2`, on two mutated covers; [`receipts/controls/`](receipts/controls/) holds
+  them and `tests/test_wand125_checker_controls.py` regenerates each mutation and checks
+  its receipt. Each mutation changes one D4 orbit of eight entries and keeps every entry
+  in place, because the proof records index entries by position: `drop-heaviest-point`
+  sets the weight at `(0.63, 1)` and its images, `50893799989/10^12` each, to zero, and
+  `move-point` moves `(1, 0.7)` and its images by `1/1000`. The closed square `[0, 1]²`
+  at angle zero, which holds `1001050000003/10^12` of the original, then holds
+  `0.89926…` or `0.90966…`, exactly, below `q = 249987/250000`, so neither mutated cover
+  is a certificate. The bundle’s records name the cover by its SHA-256, so the source’s
+  own checks would refuse any changed cover by digest before any arithmetic.
+  The tool therefore runs each mutation on a hard-linked copy of the pinned bundle
+  re-bound to it: the 37,222 records that name the cover’s digest and the manifest are
+  rewritten with the new digest, and the Python is not touched (one script that names
+  the digest, `n21_L5_refit29_scoped_gate/check.py`, is not on the replay’s path).
+  The runner has no subset mode, so each run went to its first failure, and both ended
+  in the root-stage witness replay’s own refusal at root 832, the first of the 5,000
+  root boxes, in the order the stage runs them, that holds an admissible pose (the
+  corner square itself): `ValueError: Insufficient witness mass` for the dropped orbit
+  and `ValueError: Point containment not proved: 66` for the moved one, entry 66 being
+  `(1, 0.7)` itself. Each run took about six seconds of wall and three of CPU.
 
 ## Receipts
 
@@ -464,12 +484,18 @@ retained records under the project interpreter, with its receipt written by
   replay’s `run.log`, `start.txt` and `end.txt`, the driver’s outputs under `proof/`
   (`certificate.json.gz`, `replay-progress.json` and the 201 `replayed.json`), and
   `compare.json` with its receipt `compare.log`.
+- [`receipts/controls/`](receipts/controls/): the two `s(21)` controls, each as the
+  runner’s receipt `n21_control_KIND.log`, the root stage’s own log
+  `n21_control_KIND_root.log`, and `n21_control_KIND.json`: the mutation, the exact
+  witness, the re-binding and how the run ended.
 
 The tool is
 [`devtools/audit_wand125_point_and_mixed.py`](../../../devtools/audit_wand125_point_and_mixed.py),
 and
 [`tests/test_wand125_point_and_mixed.py`](../../../tests/test_wand125_point_and_mixed.py)
-keeps its fast part true.
+keeps its fast part true;
+[`tests/test_wand125_checker_controls.py`](../../../tests/test_wand125_checker_controls.py)
+holds the controls.
 
 ## Limitations
 
@@ -486,11 +512,13 @@ keeps its fast part true.
   Its data file was regenerated from the certificate and matched, and it was scanned for
   forbidden constructs, but the kernel checks and the axiom report are the source’s.
 - **`n = 50`.** The complete replay ran the source’s driver and checker again; the
-  angle-zero tables are a second implementation for one direction only. The soundness of
-  the threshold and centre-domain changes is the subject of the 2026-09-28 review, not of
-  this packet.
+  angle-zero tables are a second implementation for one direction only.
+  The soundness of the threshold and centre-domain changes is the subject of the
+  2026-09-28 review, not of this packet.
 - **Controls.** The `n = 50` checker’s controls were run on the `n = 37` certificate,
-  not on this one, and the `s(21)` replay has none.
+  not on this one. The `s(21)` controls run on a bundle re-bound to each mutated cover,
+  which is what lets them reach the replay’s arithmetic; both are refused at the first
+  root box that holds a pose, so neither exercises the sieve or frontier stages.
 - **Priority.** For `s(21) = 5` and `s(45) = 7` Evan Daniel’s mixed point-and-segment
   proofs came first, and the source claims no priority; these are second, point-only
   routes.

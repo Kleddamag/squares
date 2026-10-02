@@ -4252,12 +4252,16 @@ results:
 
       The complete zeromargin.py sweep was replayed here on 27 September 2026 with the
       source's runner, checker and settings: all 7,200 roots certified, 164,130 boxes, every
-      root's census equal to the source's. The source's third checker, zmx2, was run here on
-      the same cover on 29 September 2026 with --pair-points: all 3,600 roots of the D4 region
-      certified, 1,405,342 boxes, none uncertified. zmx2 is a second implementation of the
-      same subdivision by the same author and agent. It shares zeromargin.py's point test, D4
-      fold and region, but closes germs by its own pair lemma and decides by exact integer
-      tests on outward-rounded binary64 enclosures of chord ends.
+      root's census equal to the source's.
+
+      The source's third checker, zmx2, was run here on the same cover on 29 September 2026
+      with --pair-points: all 3,600 roots of the D4 region certified, 1,405,342 boxes, none
+      uncertified. zmx2 is a second implementation of the same subdivision by the same author
+      and agent. Its point test derives from zeromargin.py's, but it closes germs by its own
+      pair lemma and decides by exact integer tests on outward-rounded binary64 enclosures of
+      chord ends. On 2 October 2026 zmx2 was run here again with --sym-atoms, without the D4
+      fold, over all 28,800 roots of the whole pose space: none uncertified, and every root's
+      census equal to the source's run.
 
       Evan Daniel,
       [evand/square-packing](https://github.com/evand/square-packing/tree/167d842cd27ba1451cb2833773ea930c80b9e65b/s12/certificates/s32),
@@ -4286,23 +4290,38 @@ results:
       epistemics.md's Scope and Composition the equality takes the C of its lower half,
       which sets the rung.
 
-      The lower half rests on two complete replays here of the source's
-      zero-margin pose-space subdivision, E-n032-evand-closed-cover-source-run
-      (zeromargin.py, exact-algebraic) and E-n032-evand-closed-cover-zmx2-replay (zmx2,
-      interval-certified), whose method values differ; that is C3, with the two methods shown
-      beside the rung.
+      The lower half rests on complete replays here of the source's zero-margin pose-space
+      subdivision by two checkers whose method values differ: zeromargin.py, exact-algebraic,
+      over the 7,200 roots of the D4 fundamental region
+      (E-n032-evand-closed-cover-source-run), and zmx2, interval-certified, over the 3,600
+      roots of the D4 region (E-n032-evand-closed-cover-zmx2-replay) and, with
+      --sym-atoms and no fold, over all 28,800 roots of the whole pose space
+      (E-n032-evand-zmx2-full-sym-replay). That is C3, with the two methods shown beside the
+      rung.
 
-      The two checkers differ
-      in how germs are closed (zmx2's pair lemma Z and pair dynamic programme over lines one
-      unit apart, against zeromargin.py's monotone chains) and in arithmetic. They share the
-      author and AI agent, the point-in-square test (zmx2's Lemma P is zeromargin.py's
-      G0-G3), the D4 fold, the region and the branch-and-bound architecture, which are the
-      common mode.
+      The two checkers differ in how germs are closed (zmx2's pair lemma Z and pair dynamic
+      programme over lines one unit apart, against zeromargin.py's monotone chains), in
+      arithmetic and in their parsers. Taken as zeromargin.py's run and zmx2's run without
+      the fold, they no longer share the D4 fold, the region or any symmetry premise: the
+      zmx2 side rests on its own Lemma A (search/ZMX2.md section 4.9, proved, and checked
+      against the code by the 2 October review) where zeromargin.py's rests on the fold,
+      which the source's Lean development kernel-checks, and nothing in zeromargin.py
+      corresponds to Lemma A.
 
-      On 1 October 2026 the source reported a zmx2 run that certifies the cover without the
-      fold, and stated that zmx2's author was permitted to read zeromargin.py
-      (E-n032-evand-zmx2-full-sym-report, jlevy/squares#238). That run has not been replayed
-      here, so the fold stays in the common mode as this record has confirmed it.
+      The common mode is what remains shared: the author and AI agent and the statement
+      decided; the point-in-square formulation, G0-G3 with the corner-and-vertex rule, one
+      design in two arithmetics, which for a point cover is the primitive that decides most
+      leaves; the pose parametrisation; and the branch-and-bound architecture. The source's
+      Lean development kernel-checks the formulation on zeromargin.py's side, which bounds
+      the common mode and does not remove it. The two checkers are separately written, not
+      independent.
+
+      The point test is shared by derivation: on 1 October 2026 the source stated that zmx2
+      was written to be independent of zm_mixed.py only and that its author was permitted to
+      read zeromargin.py, so Lemma P derives from zeromargin.py's G0-G3 (jlevy/squares#238,
+      retained as
+      packing/resources/web/evand-square-packing-2026-10-01/issue-238-author-2026-10-01.json).
+      The brief that governed that reading is not public and was not seen here.
     reviews:
       - path: docs/project/reviews/review-2026-10-02-evand-s32-no-fold-run.md
         kind: adversarial
@@ -4321,6 +4340,7 @@ results:
       - E-n032-evand-closed-cover-source-run
       - E-n032-evand-closed-cover-zmx2-replay
       - E-n032-evand-zmx2-full-sym-report
+      - E-n032-evand-zmx2-full-sym-replay
       - E-basic-grid-upper
     artifacts:
       - packing/resources/web/evand-square-packing-2026-09-26/README.md
@@ -4336,9 +4356,16 @@ results:
       - docs/project/reviews/review-2026-09-27-evand-s32-s12.md
       - docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md
       - docs/project/reviews/review-2026-10-02-evand-s32-no-fold-run.md
+      - packing/resources/web/evand-square-packing-2026-10-01/issue-238-author-2026-10-01.json
+      - packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/README.md
+      - packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/receipts/s32_zmx2_full_sym_resume.log
+      - packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/receipts/s32_zmx2_full_sym_audit.json
+      - packing/resources/web/evand-zmx2-sym-atoms-2026-09-30/receipts/s32_zmx2_full_sym_compare.json
+      - packing/devtools/replay_evand_zmx2.py
     controls:
       - packing/tests/test_evand_square_packing.py
       - packing/tests/test_evand_mixed_covers.py
+      - packing/tests/test_replay_controls.py
     notes: >-
       2026-09-30: held V4/C4 under the ladder in force from 2026-08-31 to 2026-09-30 (V4
       machine-verified; C4 confirmed by distinct methods). Rung 4 now needs two
@@ -4358,11 +4385,12 @@ results:
       puts s32_eq_6 at 14 to 28 CPU-hours emitted in about 320 parts of about 4 GB each,
       with 8 to 10 GB for the generator (think-angg).
 
-      Beside the rung, think-48e1 replays the source's zmx2 --full --pair-points --sym-atoms
-      run, which would take the D4 fold out of what the two checkers share. The 2 October
-      review of that run found it sound and its Lemma A proved, with no blocking defect;
-      the composition's account of what the checkers share is rewritten when the replay
-      lands.
+      Beside the rung, the source's zmx2 --full --pair-points --sym-atoms run was replayed
+      here on 2 October (think-48e1, E-n032-evand-zmx2-full-sym-replay), which took the D4
+      fold out of what the two checkers share. It changes neither rung: it is evidence of
+      the kind already held, a machine replay of the source's own checker with a mapped
+      review, as section 8 of the 2 October review says, and what it changes is the
+      composition that rung 4's reviewers and oversight record will read.
 
   - id: T-052
     kind: optimality
@@ -5266,8 +5294,10 @@ results:
       whose scope takes in n = 61 because the cover's total is below 61; monotonicity by
       deletion, E-n061-evand-derived-report, read and found sound; and the 8 x 8 grid,
       E-basic-grid-upper. It stands at T-062's V3/C3 and never above it. wand125's s(59) =
-      8 (T-066) is a second route under the same checker; its separate point-only route to
-      s(61) = 8 is another source's claim and no evidence for this entry.
+      8 (T-066) is a second route under the same checker. wand125's separate point-only
+      cover for s(61) = 8, which Evan Daniel reports certifying with zeromargin.py and
+      zmcheck (E-n061-wand125-point-cover-evand-replay-report), is a report not replayed
+      here, so it sets nothing.
     reviews:
       - path: docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md
         kind: adversarial
@@ -5283,6 +5313,7 @@ results:
       - E-n060-evand-mixed-cover-report
       - E-n060-evand-mixed-cover-zmx2-replay
       - E-n061-evand-derived-report
+      - E-n061-wand125-point-cover-evand-replay-report
       - E-basic-grid-upper
     artifacts:
       - packing/frontier/n-061.md
@@ -5291,12 +5322,18 @@ results:
       - docs/project/reviews/review-2026-10-01-evand-source-coverage.md
       - docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
       - docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md
+      - packing/resources/web/evand-square-packing-2026-10-02/README.md
+      - packing/resources/web/evand-square-packing-2026-10-02/square-packing/s12/search/S61_WAND125_REPLAY.md
     controls:
       - packing/tests/test_replay_controls.py
       - packing/tests/test_audit_evand_mixed_covers.py
     next_rung: >-
-      Nothing of its own: this entry rises with T-062. think-hxrz tracks the intake of
-      wand125's separate point-only source for the same value.
+      Nothing of its own: this entry rises with T-062. A point-only route stands beside it
+      as a report, Evan Daniel's replay of wand125's point-only cover by zeromargin.py and
+      zmcheck (E-n061-wand125-point-cover-evand-replay-report). Replaying either of those
+      checkers here on the retained cover, with the intake of wand125's own source
+      (think-hxrz), would give s(61) = 8 a route that rests neither on zmx2 nor on T-062's
+      cover.
     notes: >-
       Raised from V0/C1 with T-062 on 2 October 2026. The deduction was read on 1 October
       and again in the review of the geometric premises (section 4.9), which found it sound
@@ -5325,18 +5362,27 @@ results:
 
       The source's Lean development takes Valid7 as a hypothesis and, the source reports,
       kernel-checks that it implies the theorem for every k >= 6; it does not prove Valid7.
-      Valid7 is the claim of one exact-rational Python checker, qx2_zm.py, which the source
-      reports accepting all 9,800 root boxes in 32,079 leaves, with the axis-parallel poses
-      decided by a separate exact enumeration. The source says the tilted part has no
-      second implementation, and reports six adversarial reviews of the certificate by AI
-      agents and none by outside mathematicians.
+      Valid7 is the claim of the source's exact-rational Python checker, qx2_zm.py, which
+      the source reports accepting all 9,800 root boxes in 32,079 leaves, with the
+      axis-parallel poses decided by a separate exact enumeration; it reports six
+      adversarial reviews of the certificate by AI agents and none by outside
+      mathematicians.
+
+      On 2 October 2026 wand125 published a second, separately written exact-rational
+      checker of Valid7 on the same cover, which reports all 156,800 root boxes of the
+      unreduced pose space certified in 9,640,060 leaves, about 626 core-hours, and says
+      Daniel's checker and lemma write-ups were not read. The two share the statement, the
+      cover and its format.
 
       Here the Lean reduction, the checker and the finite-box argument were read, and
-      nothing was replayed: the checker was not run and the Lean development was not built.
+      nothing was replayed: neither checker's run was repeated and the Lean development was
+      not built. The second checker's records were checked by its own verify.sh and an
+      audit, which re-certify sampled leaves and bind the records to the retained code.
       Every value stands as reported. s(33) = 6 and s(46) = 7 are proved cases of this
       record already, on Bentz's proofs, and their standing does not change; the eleven
       values from k = 8 on are new reports, and k = 8 is also T-063's. The k = 9 value, s(78)
-      = 9, would also follow by monotonicity from wand125's reported s(77) = 9 (T-067).
+      = 9, has a second route by monotonicity through wand125's s(77) = 9 (T-067) once that
+      is confirmed here.
 
       Evan Daniel,
       [evand/square-packing](https://github.com/evand/square-packing/tree/08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5/s12/certificates/k2m3),
@@ -5362,13 +5408,16 @@ results:
       Compound, and the minimum is set by the lower half. The upper half is the k x k grid,
       E-basic-grid-upper, replayed exactly here; the lower half is
       E-k2m3-evand-family-report, the source's claim, which rests on the finite Valid7
-      premise, decided by one source checker, and on the Lean reduction from it, neither
+      premise and on the Lean reduction from it. Valid7 is decided by the source's checker
+      and, by its own report, by wand125's separately written one
+      (E-k2m3-wand125-valid7-independent); neither checker's run nor the reduction was
       replayed here. The checker derives V3 and C3 from the grid's entry; this note is why
       the declared rungs are V0 and C1. The scope lists the cases this record holds, since a
       scope is a set of cases; the theorem's own domain is every k >= 6, and a scope that
       can say so is think-kqi1.
     evidence:
       - E-k2m3-evand-family-report
+      - E-k2m3-wand125-valid7-independent
       - E-basic-grid-upper
     artifacts:
       - packing/resources/web/evand-square-packing-2026-10-01/README.md
@@ -5377,11 +5426,17 @@ results:
       - packing/resources/web/evand-square-packing-2026-10-01/source/s12/lean/Sqpack/Bentz.lean
       - docs/project/reviews/review-2026-10-01-evand-source-coverage.md
       - docs/project/reviews/review-2026-10-01-evand-mathematical-transfer.md
+      - packing/resources/web/wand125-valid7-independent-check-2026-10-02/README.md
+      - packing/resources/web/wand125-valid7-independent-check-2026-10-02/receipts/valid7_verify.log
+      - packing/resources/web/wand125-valid7-independent-check-2026-10-02/receipts/valid7_records_audit.json
+      - packing/devtools/audit_valid7_independent.py
     next_rung: >-
-      think-4k80: replay the exact Valid7 checker on the retained box cover, review its
-      pose-space coverage, and build the Lean reduction with its axiom receipt, before any
-      case's verified bound is raised. think-kqi1 tracks a scope that can state an infinite
-      family.
+      think-4k80: a complete replay of one Valid7 checker on the retained cover, a review of
+      the independent checker's method (its DESIGN.md and module docstrings: the closure
+      argument at theta = 0, the core bound and the fixed-angle lemmas), and the Lean
+      reduction's build with its axiom receipt, before any case's verified bound is raised.
+      think-kqi1 tracks a scope that can state an infinite family. s(78) = 9 gains a second
+      route through s(77) = 9 when T-067 is confirmed.
     notes: >-
       V0 because the lower half rests on the source's claim alone: assurance reported, replay
       not attempted. The Lean reduction is conditional on Valid7 and was not built here, and
@@ -5389,7 +5444,9 @@ results:
       recorded. C1 because the 1 October mathematical
       review read the reduction, the checker and the finite-box argument and found no
       blocking defect; a read is no kind of verification, which is why C1 may stand above
-      V0.
+      V0. wand125's independent checker of 2 October moves no rung: its report is a second
+      reported implementation of Valid7, its records were checked here and its run not
+      repeated, and its method has not been reviewed.
 
   - id: T-065
     kind: upper-bound
@@ -5652,6 +5709,12 @@ results:
       on one line, a 2^-49 weight unit, and --pair-points partner lines) and found no
       defect; the cover has no point on a loaded line, so that is not what is new (finding
       F5).
+
+      The --d4 --pair-points sweep passed here on 2 October (VERIFIED-D4, 8,100 roots,
+      5,810,824 boxes, none uncertified, its box total equal to the source's; the
+      wand125-point-and-mixed-2026-10-01 packet README, "Replay of s(77) = 9 Here"), and
+      the unreduced --full --pair-points sweep over 64,800 roots is running, so the rungs
+      wait for it.
     notes: >-
       V0 because the lower half rests on the source's claim alone: assurance reported, replay
       not attempted. C1 because the 2 October review of the s(59) and s(77) covers is
@@ -5933,3 +5996,101 @@ results:
       here (n = 86 at 1871/200, n = 95 at 49209/5000, up to 907 orbits at n = 69), but
       neither review read these certificates or their receipts. The counts were reported
       under T-046, which keeps its claim.
+
+  - id: T-071
+    kind: lower-bound
+    registered: '2026-10-02'
+    headline: "Mixed rectangle-measure lower bounds reported at `n = 84, 85`"
+    claim: >-
+      wand125/square-packing-bounds reports two lower bounds from rectangle densities
+      checked at coverage one, published on 2 October 2026: s(84) >= 47/5 = 9.4 and s(85) >=
+      471/50 = 9.42.
+
+      Each certificate is a density of uniform rectangles with no point mass, of total mass
+      n - 1/100000, at core side 9977/10000 on 201 net half-angles of step 83/40000: 661
+      rectangles at n = 84 and 587 at n = 85. The source reports each accepted at every
+      oblique net angle by code/mixed_rotated_verify.cpp, the research copy of Tokoharu's
+      verify.cpp that its s(50) certificate (T-048) and the five certificates of T-069 use,
+      which accepts coverage at least 1 where Tokoharu's requires 10001/10000, and at angle
+      zero by exact integer tables. The least oblique lower bounds it records are
+      1.00000000089 at n = 84 and 1.0000000017 at n = 85. It says each full replay was run
+      again from the published tarball before publication, by the same algorithm and not an
+      independent implementation.
+
+      Both values exceed Green's reported 2 sqrt(2) + (247 + 12 sqrt(2))/41 = 9.2667335...,
+      which this record holds at both counts by monotonicity from n = 82, by more than 0.1332
+      and 0.1532; the source's own improvement figures are measured from 9.2667, below
+      Green's value, and are not lower bounds. Since a packing of 86 or 87 squares contains
+      one of 85, the n = 85 value is also above the rectangle certificates T-068 reports at n
+      = 86 and 87, 1873/200 and 941/100.
+
+      Here the source was retained, its exact premises were recomputed from the retained
+      bytes, and its report was read into the record; one net angle of each certificate was
+      replayed, to price the replay, and decides nothing. The values stand as reported, and
+      the verified lower bounds are unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/52af997dc91c579658f0828bc8304e306ad9d95b/certificates).
+      Registration was requested in a comment of 2 October 2026 on jlevy/squares#282. The
+      source says parts of the work were produced with AI assistance under human direction.
+    scope: {n_values: [84, 85]}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replays pass, the strongest lower bounds on record at two
+        counts, past Green's reported value by the widest margins over it on record, by the
+        certificate kind of T-048 and T-069. Further sizes from one generator at S3; the
+        score gates nothing, and V0/C1 says how far they stand. The 2 October review of these
+        certificates proposed S3.
+      scored: '2026-10-02'
+      by: 'think-fb6h import, registering lane (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 mixed bounds 2026-10-02]']
+      published: '2026-10-02'
+    composition: >-
+      One claim per count, each on its own certificate and its own reported entry. Every
+      part stands at V0/C1: read by the 2 October review, and not replayed. Coverage is
+      decided by the source's C++ checker alone; the axis tables are a second implementation
+      for one direction and not a second method.
+    evidence:
+      - E-n084-wand125-mixed-940-report
+      - E-n085-wand125-mixed-942-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md
+        kind: adversarial
+        reviewer: Claude (model Fable) at extra-high thinking effort, review lane R3, prompted separately from the replay lane with no shared context
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-02'
+        scope: >-
+          The five mixed rectangle-measure certificates T-069 registers, at n = 37, 65, 66, 90 and 92, and the two of 2 October at n = 84 and 85, against the certificate kind and checker reviewed on 28 September for s(50) >= 37/5: the argument from certificate to bound, the hypotheses the checker assumes, its trust boundary, and what changed since.
+        verdict: accepted
+        covers: [T-071]
+    artifacts:
+      - packing/resources/web/wand125-mixed-bounds-2026-10-02/README.md
+      - packing/resources/web/wand125-mixed-bounds-2026-10-02/square-packing-bounds/certificates/mixed_n84_L940/README.md
+      - packing/resources/web/wand125-mixed-bounds-2026-10-02/square-packing-bounds/certificates/mixed_n85_L942/README.md
+      - packing/resources/web/wand125-mixed-bounds-2026-10-02/receipts/mixed-audit.json
+      - packing/devtools/audit_wand125_point_and_mixed.py
+      - docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md
+    next_rung: >-
+      think-fb6h: the complete replay of both certificates, about 11.7 and 10.2 CPU-hours by
+      the packet's pricing, before either verified lower bound is raised. It is running on
+      cloud runners, split by net angle with devtools.audit_wand125_point_and_mixed
+      mixed-replay, and mixed-merge joins the ranges when all 201 angles of a certificate
+      have passed. The review of what differs from the s(50) certificate reviewed on
+      2026-09-28 is done (2 October), with no blocking defect.
+    notes: >-
+      V0 because every cited entry is the source's claim: assurance reported, replay not
+      attempted. C1 because the 2 October review is recorded as the two report entries'
+      external_review, with no blocking defect; its finding MX-2, that the source's
+      improvement_lower at n = 84 and 85 is not a lower bound, is corrected in the entries'
+      text. A later release than T-069's, so a separate entry (result-import.md, register
+      table). The n = 85 value is above T-068's certificates at n = 86 and 87 by
+      monotonicity; those case records keep their own counts' reported certificates, and
+      this entry's scope names only the counts it certifies. The source ships a completion
+      audit and a certificate of its full replay for each count, which are retained; the
+      proof-bundle tarballs are pinned by digest and not retained.

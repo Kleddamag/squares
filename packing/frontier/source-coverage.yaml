@@ -52,6 +52,7 @@ sources:
       - E-n032-evand-closed-cover-report
       - E-n032-evand-closed-cover-source-run
       - E-n032-evand-closed-cover-zmx2-replay
+      - E-n032-evand-zmx2-full-sym-replay
       - E-n012-evand-15680-3951-report
       - E-n012-evand-15680-3951-source-replay
       - E-n012-evand-15680-3951-native-parent-core
@@ -79,7 +80,9 @@ sources:
       is below the verified 31/8 and is retained in the packet but not registered.
       On 2026-09-29 the same repository's s(21) = 5
       (evand-square-packing-2026-09-28) superseded its s(21) >= 5000/1001,
-      which is kept as the previous verified bound.
+      which is kept as the previous verified bound. On 2026-10-02 zmx2's run on the s(32)
+      cover without the D4 fold, from the checker source retained in
+      evand-zmx2-sym-atoms-2026-09-30, was replayed here (E-n032-evand-zmx2-full-sym-replay).
   - id: evand-square-packing-2026-09-28
     title: square-packing, mixed covers for s(21) = 5 and s(45) = 7
     role: source-repository
@@ -148,6 +151,7 @@ sources:
       - E-n061-evand-derived-report
       - E-k2m3-evand-family-report
       - E-n032-evand-zmx2-full-sym-report
+      - E-n032-evand-zmx2-full-sym-replay
     notes: >-
       Pinned source 08e8a5faa54c0a7b0bb1cb0134c77d3565ce40c5 reports s(60) = 8
       by a mixed cover checked there by zm_mixed.py and zmx2, and hence s(61) = 8 by
@@ -171,7 +175,34 @@ sources:
       On 2026-10-02 the s(60) cover's zmx2 sweeps were replayed here, root for root equal
       to the source's records (E-n060-evand-mixed-cover-zmx2-replay), which put s(60) = 8
       and s(61) = 8 in the verified lane (T-062, T-063); zm_mixed.py and the k2m3 family
-      were not replayed.
+      were not replayed. The same day the s(32) cover's zmx2 run without the D4 fold was
+      replayed here, every root equal to the source's records
+      (E-n032-evand-zmx2-full-sym-replay), from the zmx2 source that made it, retained in
+      the evand-zmx2-sym-atoms-2026-09-30 packet; it moved no rung of T-051.
+  - id: evand-square-packing-2026-10-02
+    title: square-packing, the point-only s(61) replay and claims audit
+    role: source-repository
+    url: https://github.com/evand/square-packing/tree/7d6f46d9d0780241245dfbf77bad28aa1594c6b5
+    local: resources/web/evand-square-packing-2026-10-02/square-packing/s12/
+    source_key: '[evand square-packing 2026-10-02]'
+    scope: {n_values: [61]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-02'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/evidence.yaml]
+    evidence:
+      - E-n061-wand125-point-cover-evand-replay-report
+    notes: >-
+      Revision 7d6f46d9d0780241245dfbf77bad28aa1594c6b5, retrieved at 2026-10-02T07:44Z
+      for Evan Daniel's comment of 2 October on jlevy/squares#238. It reports his replay
+      of wand125's point-only s(61) = 8 cover by zeromargin.py and zmcheck, recorded as a
+      reported route beside T-063 and not replayed here; the cover and every checker its
+      manifest names are retained. The same pin holds Lemma 2 of the clique family in Lean,
+      the dual_exact.py fixes and the claims audit, which restates that the source's
+      checkers share the point-test formulation, says T-064's fast check is structure only,
+      and records that Nagamochi's Lemma 1 is false; none of these moves a value this record
+      holds, and the s(k^2 - 2) = k corollary it states is not registered.
   - id: kleddamag-n17-466001-2026
     title: Seventeen unit squares — a certified lower bound, 4.66001 package
     role: source-repository
@@ -557,6 +588,57 @@ sources:
       proof-bundle tarballs are pinned by digest and not retained. The revision also
       holds mixed_n87_L939 and mixed_n87_L940, below its rectangle certificate at n = 87,
       which are pinned and not registered; the request announces n = 82 to 85 to follow.
+  - id: wand125-mixed-bounds-2026-10-02
+    title: Mixed rectangle-measure certificates for n = 84, 85
+    role: source-repository
+    url: https://github.com/wand125/square-packing-bounds/tree/52af997dc91c579658f0828bc8304e306ad9d95b
+    local: resources/web/wand125-mixed-bounds-2026-10-02/
+    source_key: '[wand125 mixed bounds 2026-10-02]'
+    scope: {n_values: [84, 85]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-02'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/n-084.md, frontier/n-085.md]
+    evidence:
+      - E-n084-wand125-mixed-940-report
+      - E-n085-wand125-mixed-942-report
+    notes: >-
+      Revision 52af997dc91c579658f0828bc8304e306ad9d95b, retrieved at 2026-10-02T01:12Z for
+      a comment of that day on jlevy/squares#282. Two rectangle densities checked at
+      coverage one by the source's research copy of Tokoharu's verify.cpp, byte for byte
+      the checker of its n = 50 certificate, each of mass n - 1/100000. Both are recorded
+      as reported lower bounds (T-071), above Green's reported value at both counts; the
+      n = 85 value is also above the rectangle certificates T-068 reports at n = 86 and
+      87. The exact audit passes, one net angle of each was replayed to price the replay,
+      and the complete replays are running; the proof-bundle tarballs are pinned by digest
+      and not retained. The source's improvement_lower at both counts is measured from a
+      value below Green's and is not a lower bound (review finding MX-2). A later revision,
+      af1db07b, adds an n = 101 certificate by another verifier; no request names it, and
+      it is not pinned.
+  - id: wand125-valid7-independent-check-2026-10-02
+    title: Independent exact checker of Valid7 for s(k^2 - 3) = k
+    role: source-repository
+    url: https://github.com/wand125/valid7-independent-check/tree/38dd31b369991b0d96c917a4af0c7139b44a038d
+    local: resources/web/wand125-valid7-independent-check-2026-10-02/
+    source_key: '[wand125 valid7 independent check 2026-10-02]'
+    scope: {n_values: [33, 46, 61, 78, 97, 118, 141, 166, 193, 222, 253, 286, 321]}
+    reviewed: '2026-10-02'
+    source_date: '2026-10-02'
+    disposition: current-report
+    replay_disposition: case-specific
+    represented_by: [frontier/evidence.yaml]
+    evidence:
+      - E-k2m3-wand125-valid7-independent
+    notes: >-
+      Revision 38dd31b369991b0d96c917a4af0c7139b44a038d with its release records-v1,
+      retrieved at 2026-10-02T07:42Z for jlevy/squares#296. A second, separately written
+      exact-rational checker of Valid7, the finite premise of T-064, run on the cover T-064
+      cites: 156,800 root boxes of the unreduced pose space, none uncertified. Recorded as
+      an evidence update to T-064, which moves no rung: the source's verify.sh and
+      devtools.audit_valid7_independent checked the records here, re-certifying sampled
+      leaves, and the 626 core-hour run was not repeated; the method has not been reviewed.
+      The scope is T-064's projection of the family onto the cases this record holds.
   - id: franciscouzo-square-packing-2026
     title: Square packings better than the published records
     role: source-repository

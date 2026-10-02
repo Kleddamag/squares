@@ -932,8 +932,8 @@ Use the structured form to query or plot; use these tables to read.
 | 76 | 9 | grid | — | 8.925 | counting | 0.075 |
 | 82 | `6 + (5/2)√2` = 9.53553391 | hand | — | 9.266734 | unavoidable points | 0.2688 |
 | 83 | 9.63482562 | extension | 24 | 9.266734 | monotone | 0.3681 |
-| 84 | `9 + (1/2)√2` = 9.70710678 | strip | — | 9.266734 | monotone | 0.4404 |
-| 85 | `(11/2) + 3 √2` = 9.74264069 | hand | — | 9.266734 | monotone | 0.4759 |
+| 84 | `9 + (1/2)√2` = 9.70710678 | strip | — | 9.4 | counting | 0.3071 |
+| 85 | `(11/2) + 3 √2` = 9.74264069 | hand | — | 9.42 | counting | 0.3226 |
 | 86 | `(17/2) + (1/2)√7` = 9.82287566 | extension | — | 9.365 | counting | 0.4579 |
 | 87 | 9.83881744 | annealing | 44 | 9.41 | counting | 0.4288 |
 | 88 | 9.88815305 | hand | 20 | 9.4775 | counting | 0.4107 |

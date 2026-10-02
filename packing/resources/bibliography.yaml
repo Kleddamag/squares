@@ -274,6 +274,23 @@ sources:
       No fresh certificate replay is implied by the source audit; the s(60) cover's zmx2
       sweeps were replayed here on 2026-10-02, with their receipts in the packet
       (web/evand-square-packing-2026-10-01/README.md).
+  - key: '[evand square-packing 2026-10-02]'
+    authors: [Daniel]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-02'
+    credit: Daniel after Burns, Massaccesi
+    lineage: independent
+    note: >-
+      evand/square-packing at 7d6f46d9d0780241245dfbf77bad28aa1594c6b5
+      (2026-10-02T01:10:42Z), the files Evan Daniel's comment of 2 October on
+      jlevy/squares#238 points to: his replay of wand125's point-only cover for s(61) = 8
+      with zeromargin.py and zmcheck (search/s61_wand125/ and search/S61_WAND125_REPLAY.md,
+      committed 2026-10-01T03:20Z and unchanged at this pin), Lemma 2 of the clique family
+      in Lean, the dual_exact.py fixes and the claims audit. Its CREDITS.md still says the
+      work was produced by Claude (Anthropic) in a single session under human direction.
+      The selective packet web/evand-square-packing-2026-10-02/ retains them; nothing was
+      replayed. Dated by that revision, 2026-10-02 UTC.
   - key: '[Kleddamag n11 2026]'
     authors: [Kleddamag]
     year: 2026
@@ -475,6 +492,45 @@ sources:
       human direction. web/wand125-point-and-mixed-2026-10-01/acquisition/sources.json pins
       revision 1a25a5ed745fdd905a52f48fcc48150a0669032d. Dated by that revision,
       2026-10-01 UTC.
+  - key: '[wand125 mixed bounds 2026-10-02]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-02'
+    credit: wand125 after Tokoharu, Levy, Stromquist, Nagamochi, Burns, Massaccesi
+    short_credit: wand125 after Tokoharu, Levy et al.
+    lineage: builds-on-project
+    note: >-
+      The mixed rectangle-measure certificates for n = 84 and 85 that
+      wand125/square-packing-bounds added on 2026-10-02 (certificates/mixed_n84_L940 and
+      certificates/mixed_n85_L942), requested for registration in a comment of that day on
+      jlevy/squares#282: rectangle densities of mass n - 1/100000 checked at coverage one by
+      code/mixed_rotated_verify.cpp, the source's research copy of Tokoharu's verify.cpp,
+      byte for byte the checker of its n = 50 certificate and of the 2026-10-01 five.
+      Credited as the 2026-10-01 mixed key is, on the root README's unchanged Attribution
+      section, which opens "The method is not ours."; the README says parts of the work were
+      produced with AI assistance under human direction, and the commit names Claude as
+      co-author. web/wand125-mixed-bounds-2026-10-02/acquisition/sources.json pins revision
+      52af997dc91c579658f0828bc8304e306ad9d95b. Dated by that revision, 2026-10-02 UTC.
+  - key: '[wand125 valid7 independent check 2026-10-02]'
+    authors: [wand125]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-02'
+    credit: wand125 after Daniel
+    lineage: independent
+    note: >-
+      wand125/valid7-independent-check at 38dd31b369991b0d96c917a4af0c7139b44a038d, the
+      repository's only commit (2026-10-02T02:49:17Z; its author name is Hiroaki Hosono,
+      and LICENSE reads "Copyright (c) 2026 wand125"), with its release records-v1: a
+      second, separately written exact-rational checker of Evan Daniel's finite statement
+      Valid7, on which T-064's lower half rests, run on Daniel's own k = 7 cover (NOTICE:
+      taken unchanged from evand/square-packing d9f79bc1, MIT). Its READ_LOG.md says the
+      source checker and its lemma write-ups were not read. Requested in jlevy/squares#296.
+      The repository has no credit or AI-assistance statement beyond LICENSE, NOTICE and
+      READ_LOG.md. web/wand125-valid7-independent-check-2026-10-02/acquisition/sources.json
+      pins the revision, and the release records are pinned by SHA-256. Dated by that
+      revision, 2026-10-02 UTC.
   - key: '[franciscouzo square-packing 2026-09-27]'
     authors: [Couzo]
     year: 2026

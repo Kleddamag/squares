@@ -3,15 +3,19 @@ type: is
 id: is-01m3xj6w3z3jbrc3yrc1ddc1vj
 title: "First paper: v0.4.3, a patch revision for its changes since the v0.4.2 deployment"
 kind: task
-status: in_progress
+status: closed
 priority: 2
-version: 3
+version: 4
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
 created_at: 2026-10-02T05:43:18.909Z
-updated_at: 2026-10-02T05:49:22.465Z
+updated_at: 2026-10-02T05:56:49.645Z
+closed_at: 2026-10-02T05:56:49.644Z
+close_reason: "Merged as jlevy/squares#303 (commit 660e5a3a5): the first paper is v0.4.3, first published October 1, 2026 (the deployment f9a3409f0 at 2026-10-01T08:01:58Z, the first to hold the last substantive change, d205561f0). Its sentence: 'The settled-case revision: the frontier update records T-060's proof that s(11) is Trump's side, Figure 3 marks the endpoint, T-026 is rated V3/C3, and the raised n = 12 and 17 bounds are noted.' v0.4.2, v0.4.0 and v0.3.0 untouched; the PDF stays 22 pages; TUTORIAL names v0.4.3."
+resolution: null
+duplicate_of: null
 ---
 Owner, 2026-10-01, answering the question from jlevy/squares#301 (the article changed in substance after the v0.4.2 deployment under the v0.4.2 label: the T-060 frontier update of 30 September, 249d42c37; the V4/C5 to V3/C3 regrade, d205561f0; Figure 3's verified mark; the n = 12 and n = 17 supersession footnote): 'it could be a patch revision to the paper itself'. So the first paper becomes v0.4.3: a new entry at the head of EXPLAINER_HISTORY in packing/src/sqpack/release.py saying what changed in the paper, dated by the UTC day that content was first live on the site (read from the Pages deployments), following the procedure #301 put in development.md. The paper's front reads v0.4.3 (version history); v0.4.2 and earlier stay as published. The PDF must stay within its page-count guard (22), so the sentence is at most three lines in the version history.
 

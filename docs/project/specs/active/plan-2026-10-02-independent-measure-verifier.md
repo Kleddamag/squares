@@ -46,9 +46,10 @@ new verifier in the `verifiers` registry field, with an independence record that
 anyone audit the claim of independence.
 
 The baseline profile measured the authors’ checkers on this host at 0.2 to 0.5 ms of CPU
-per centre box, 40 to 280 ns for every piece of the measure, while on the same
-certificates a box can see only 20 to 50 pieces that are neither certainly inside nor
-certainly outside every core.
+per centre box, while on the same certificates a box at the scale of the leaves has only
+20 to 52 pieces that are neither certainly inside nor certainly outside every core, out
+of 1,832 to 9,872. A box whose work is proportional to that count, at on the order of
+100 ns per piece in binary64 enclosures, costs a few microseconds.
 That gap, and nothing cleverer, is why a speedup of one to two orders of magnitude per
 core is plausible.
 
@@ -223,8 +224,8 @@ because $(1 + 2z)(1 + z^2) - (1 + 2z - z^2) = 2z^2 + 2z^3 \ge 0$.
 for every $\theta \in [0, \pi/4]$ and any $r$ with $|t - t_r| \le D/2$, the closed core
 $C_B(c, \theta_r)$ lies in the open interior of $Q(c, \theta)$. *Proof.* In the frame of
 $Q$, the core is a square of side $B$ turned by $\delta$; its half-extent along each
-axis of $Q$ is $\tfrac B2(\cos\delta + \sin\delta) \le \tfrac B2(1 +
-D) < \tfrac12$ by N2 and N3. ∎
+axis of $Q$ is $\tfrac B2(\cos\delta + \sin\delta) \le \tfrac B2(1 + D) < \tfrac12$ by
+N2 and N3. ∎
 
 **Lemma N5 (orientation fold).** If $\mu$ is invariant under a reflection of $K$ that
 maps orientation $\theta$ to $\pi/2 - \theta$ (the diagonal $\tau$, or $\sigma_x$, which
@@ -310,12 +311,12 @@ Equivalently, test the four corners of $X$, since $u_p$ and $v_p$ are affine in 
 *Obligation:* the inequalities certified for every $c \in X$, exactly or with
 enclosures.
 
-**B3 (segment by convexity).** Let $\Lambda(X) = \lbrace \lambda \in [0, 1] : P(\lambda)
-\in C(c) \ \forall c \in X\rbrace$. It is a closed interval:
-$\Lambda(X) = [0,1] \cap \lbrace \lambda : |u_{P(\lambda)}(c^\ast)| \le B/2 - e_u\rbrace \cap
-\lbrace \lambda : |v_{P(\lambda)}(c^\ast)| \le B/2 - e_v\rbrace$, an intersection of
-intervals because $u$ and $v$ are affine in $\lambda$. The segment contributes at least
-$w\,|\Lambda(X)|$, and at least $w(\lambda_1 - \lambda_0)$ for any
+**B3 (segment by convexity).** Let
+$\Lambda(X) = \lbrace \lambda \in [0, 1] : P(\lambda) \in C(c) \ \forall c \in X\rbrace$.
+It is a closed interval:
+$\Lambda(X) = [0,1] \cap \lbrace \lambda : |u_{P(\lambda)}(c^\ast)| \le B/2 - e_u\rbrace \cap \lbrace \lambda : |v_{P(\lambda)}(c^\ast)| \le B/2 - e_v\rbrace$,
+an intersection of intervals because $u$ and $v$ are affine in $\lambda$. The segment
+contributes at least $w\,|\Lambda(X)|$, and at least $w(\lambda_1 - \lambda_0)$ for any
 $[\lambda_0, \lambda_1] \subseteq \Lambda(X)$: if $P(\lambda_0)$ and $P(\lambda_1)$ lie
 in the convex set $C(c)$, so does every point between them, and uniform mass by length
 is uniform in $\lambda$. *Obligation:* either compute $\Lambda(X)$ exactly, or choose
@@ -350,8 +351,8 @@ Any of the following is a valid lower bound on $\inf_X F$, and so is their maxim
   derivative sums over the whole box (each chord length enclosed over $X$; cancellation
   inside the sum is allowed).
 - **(b) Common core.** The set
-  $K(X) = c^\ast + R_{\theta_r}\big([-(B/2 - e_u), B/2 - e_u] \times [-(B/2 - e_v), B/2 -
-  e_v]\big)$, when both half-sides are positive, lies in $C(c)$ for every $c \in X$, so
+  $K(X) = c^\ast + R_{\theta_r}\big([-(B/2 - e_u), B/2 - e_u] \times [-(B/2 - e_v), B/2 - e_v]\big)$,
+  when both half-sides are positive, lies in $C(c)$ for every $c \in X$, so
   $F(c) \ge \sum_R \rho_R |R \cap K(X)|$. This is the bound `sqpack.rectangle_density`
   uses as `common-core`. *Obligation:* the area of each $R \cap K(X)$ bounded below.
 - **(c) Corner minimum.** For convex $R$ and $C_0$, $c \mapsto |R \cap (C_0 + c)|^{1/2}$
@@ -381,18 +382,17 @@ the margin in the scale direction may be zero, so the comparison with $1$ must b
 or certified.
 
 **Poses and admissibility.** Use $u = \tan(\theta/2)$, so
-$C = \cos\theta = (1 - u^2)/(1 +
-u^2)$ and $S = \sin\theta = 2u/(1 + u^2)$ are rational in $u$. Let $w(u) = C + S = (1 +
-2u
-- u^2)/(1 + u^2)$. The pose $(c, u)$ is **admissible**, $Q \subseteq [0, s]^2$, iff
-$w/2 \le c_x, c_y \le s - w/2$. Inadmissible poses are exempt.
+$C = \cos\theta = (1 - u^2)/(1 + u^2)$ and $S = \sin\theta = 2u/(1 + u^2)$ are rational
+in $u$. Let $w(u) = C + S = (1 + 2u - u^2)/(1 + u^2)$. The pose $(c, u)$ is
+**admissible**, $Q \subseteq [0, s]^2$, iff $w/2 \le c_x, c_y \le s - w/2$. Inadmissible
+poses are exempt.
 
 **Regions.**
 
 - *$D_4$ mode.* If $\mu$ is invariant, as a measure (point masses aggregated by
-  coordinate, line densities merged), under $x \mapsto s - x$ and $(x, y) \mapsto (y,
-  x)$, then every pose is equivalent to one with $c \in [0, s/2]^2$ and $\theta \in [0,
-  \pi/4]$, and $u \in [0, \tfrac12]$ contains $\tan(\pi/8)$. Region:
+  coordinate, line densities merged), under $x \mapsto s - x$ and
+  $(x, y) \mapsto (y, x)$, then every pose is equivalent to one with $c \in [0, s/2]^2$
+  and $\theta \in [0, \pi/4]$, and $u \in [0, \tfrac12]$ contains $\tan(\pi/8)$. Region:
   $[0, s/2]^2 \times [0, \tfrac12]$.
 - *Full mode*, no symmetry assumed: all centres with $u \in [0, \tfrac12]$ for $\mu$,
   and the same for $\mu$ reflected by $y \mapsto s - y$. The reflection maps
@@ -448,18 +448,17 @@ $u$.
 **Line measures.** A line $x = \ell$ carries $\nu_\ell$: the uniform densities of the
 segments lying on it (overlapping segments add), with continuous, nondecreasing,
 piecewise-linear cumulative
-$F_\ell(y) = \nu_\ell^{\text{seg}}(\lbrace \ell\rbrace \times
-(-\infty, y])$, plus the **atoms**: points on the line assigned to it.
+$F_\ell(y) = \nu_\ell^{\text{seg}}(\lbrace \ell\rbrace \times (-\infty, y])$, plus the
+**atoms**: points on the line assigned to it.
 Each point is assigned to at most one line or to none (an ordinary point).
 The assignment is free: soundness needs only that the parts $\mu_{\text{ord}}$ and
 $\nu_\ell$ are nonnegative measures summing to $\mu$, which holds because a vertical and
 a horizontal line meet in a point, where segment densities put no mass.
 
 **Lemma S (one line).** If, at every pose of the box with $u > 0$, the chord contains
-$[y_{\text{lo}}, y_{\text{hi}}]$, then $\nu^{\text{seg}}*\ell(Q) \ge
-(F*\ell(y_{\text{hi}})
-- F_\ell(y_{\text{lo}}))^+$. An atom counts if all four of its conditions (Lemma P) are
-proved on the box.
+$[y_{\text{lo}}, y_{\text{hi}}]$, then
+$\nu^{\text{seg}}_\ell(Q) \ge (F_\ell(y_{\text{hi}}) - F_\ell(y_{\text{lo}}))^+$. An
+atom counts if all four of its conditions (Lemma P) are proved on the box.
 *Obligation:* $y_{\text{lo}} \ge \sup (c_y + \max(f_1, g_1))$ and
 $y_{\text{hi}} \le \inf (c_y + \min(f_2, g_2))$ over the box, certified.
 
@@ -695,11 +694,11 @@ node count, and where recorded its leaves and printed bound.
 Full figures are in
 [`timings.json`](../../../../packing/benchmarks/results/author-checker-profile-2026-10-02/timings.json).
 
-| Family, certificate | Pieces after expansion | Directions timed | Boxes per direction | CPU per box | CPU per box and piece |
+| Family, certificate | Pieces after expansion | Directions timed | Boxes per direction | CPU per box | CPU per direction |
 | --- | ---: | --- | ---: | ---: | ---: |
-| T, wand125 `rect_n20_L48975` | 1,832 rectangles | 30, 98, 195 | 34,887 to 89,205 | 306 to 507 µs | 167 to 277 ns |
-| M, wand125 `mixed_n76_L894` | 2,536 rectangles | 3, 101, 200 | 108,685 to 246,833 | 229 to 361 µs | 90 to 142 ns |
-| L, wand125 `mixed_n101_L1028` | 9,872 (2,664 points, 7,176 segments, 32 rectangles) | 35, 113, and 0 (first 100,000 boxes) | 76,875 to 146,489 | 388 to 459 µs | 39 to 47 ns |
+| T, wand125 `rect_n20_L48975` | 1,832 rectangles | 30, 98, 195 | 34,887 to 89,205 | 306 to 507 µs | 10.7 to 45.2 s |
+| M, wand125 `mixed_n76_L894` | 2,536 rectangles | 3, 101, 200 | 108,685 to 246,833 | 229 to 361 µs | 24.9 to 89.2 s |
+| L, wand125 `mixed_n101_L1028` | 9,872 (2,664 points, 7,176 segments, 32 rectangles) | 35, 113, and 0 (first 100,000 boxes) | 76,875 to 146,489 | 388 to 459 µs | 34.9 to 67.3 s |
 
 The exact Python path on the same rectangle certificate and direction, in a first trial
 capped at 40 boxes, spent 57 ms of CPU per box, about 190 times the outward-rounded
@@ -721,18 +720,22 @@ every core:
 
 ### 3.2 What the Baseline Justifies
 
-- **Classification with inheritance and a spatial index (B1): justified.** The authors’
-  cost per box grows with the total piece count, while a leaf-scale box has only tens of
-  straddling pieces. Inheriting the inside mass and the straddling list from parent to
-  child, and finding a root’s candidates through a uniform grid over the container with
-  cells about one core wide, makes the per-box work proportional to the straddling
-  count. The ratio of total to straddling pieces, roughly 40 to 400 on these
-  certificates, is the headroom.
-- **Outward-rounded binary64 enclosures for the bulk: justified.** The authors’ checkers
-  already decide these certificates in binary64 enclosures, and the least certified leaf
-  bounds sit $4 \times 10^{-11}$ to $10^{-4}$ above $\Gamma$, far above the
-  $10^{-13}$-scale width of an enclosure of a sum of a few hundred terms.
-  In Rust, `next_up` and `next_down` are inline bit operations.
+- **Classification with inheritance and a spatial index (B1): justified.** A leaf-scale
+  box has 20 to 52 straddling pieces on these certificates, against 72 to 158 whose
+  bounding boxes meet the swept core and 1,832 to 9,872 in all.
+  Inheriting the inside mass and the straddling list from parent to child, and finding a
+  root’s candidates through a uniform grid over the container with cells about one core
+  wide, makes the per-box work proportional to the straddling count and independent of
+  the measure’s size. A bounding-box filter alone leaves 1.4 to 8 times more pieces to
+  evaluate.
+- **Outward-rounded binary64 enclosures for the bulk: justified.** Binary64 enclosures
+  already decide these certificates, and the least certified leaf bounds the authors
+  record sit between $4 \times 10^{-11}$ (mixed, $n = 90$) and about $2 \times 10^{-7}$
+  (`rect_n20_L48975`) above $\Gamma$, while an enclosure of a sum of a few hundred terms
+  of order one is about $10^{-13}$ wide.
+  Widening by one ulp costs an inline bit operation in Rust (`next_up`, `next_down`);
+  widening once per compound expression, where a proved rounding-error bound allows it,
+  rather than after every operation, is a further constant factor worth measuring.
 - **An exact fallback near the threshold: justified as a safety net, not as a hot
   path.** Use the exact mode only for boxes whose enclosure straddles $\Gamma$ at the
   depth floor, and as the differential oracle of §1.8. The exact path costs two orders
@@ -749,16 +752,20 @@ every core:
 
 ### 3.3 Where the Speedup Comes From
 
-Per box, the authors’ checkers do work proportional to every piece of the measure.
-With inheritance, the work is proportional to the straddling pieces plus a constant for
-bookkeeping. At tens of straddling pieces and similar per-piece arithmetic, a box should
-cost a few microseconds rather than hundreds, a factor of 50 to 300. Bound quality, and
-so node count, is the same kind as the authors’ unless W2 improves it.
-One to two orders of magnitude per core is therefore the plausible range, and the
-acceptance target is thirty times on every family.
+An estimate from first principles, not from the authors’ code: with inheritance, a box
+costs its straddling pieces plus a constant for bookkeeping.
+A rectangle’s area bound and its four edge chords in binary64 enclosures are a few
+hundred floating-point operations, on the order of 100 ns; a point or a segment is less.
+At 20 to 52 straddling pieces a box should cost 2 to 6 µs against the baseline’s 229 to
+507 µs, a factor of 40 to 250 per box.
+Bound quality, and so the node count, is of the same kind as the authors’ unless W2
+improves it. One to two orders of magnitude per core is therefore the plausible range;
+the acceptance target is thirty times on every family.
+Family M has the least headroom, since its straddling count is the largest and closest
+to its near count, so it is the family to watch.
 The axis direction of family T is separate: its vertex grid (B5) has millions of
-vertices, and evaluating each vertex against only the rectangles near it removes the
-same factor there.
+vertices, and evaluating each vertex against only the rectangles whose breakpoints
+surround it removes the same factor there.
 
 ### 3.4 Recommended Module Boundaries
 

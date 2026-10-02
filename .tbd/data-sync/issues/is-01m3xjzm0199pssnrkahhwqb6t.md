@@ -5,13 +5,15 @@ title: "Overview: drop The Frontier Survey section; one Frontier Survey card joi
 kind: task
 status: closed
 priority: 2
-version: 6
+version: 7
 spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
 labels: []
 dependencies: []
 parent_id: is-01m3p52z585a2zb9jmy19b0r96
+child_order_hints:
+  - is-01m3yrqjwzmyheqrc7wecfhrxq
 created_at: 2026-10-02T05:56:49.792Z
-updated_at: 2026-10-02T16:27:37.871Z
+updated_at: 2026-10-02T16:56:32.407Z
 closed_at: 2026-10-02T16:27:37.864Z
 close_reason: "Merged in jlevy/squares#306 (322ef34cd and 7b1142497): The Frontier Survey section is gone from the Overview, its card to every case is the fifth page card, and the page cards stand two over three; forward.js sends the section's two fragments to frontier.html."
 resolution: null

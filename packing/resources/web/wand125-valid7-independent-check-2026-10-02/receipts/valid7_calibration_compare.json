@@ -1,0 +1,14 @@
+{
+  "kind": "valid7-sharded-replay-compare/v1",
+  "checker": "wand125",
+  "ok": true,
+  "problems": [],
+  "shards": [
+    "wand125_calibration_fork.jsonl",
+    "wand125_calibration_tierb.jsonl"
+  ],
+  "roots": 64,
+  "roots_matching_published_leaves": 64,
+  "roots_not_compared": 31825,
+  "partial": true
+}

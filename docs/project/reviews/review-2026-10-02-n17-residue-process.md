@@ -37,6 +37,9 @@ no sample by the time this review closed; section 9 says what its sample must sh
   2; under the 90 flags, 1,826 of the 2,256 survivors are within distance 6 of the
   endpoint, and 95 of the 117 one-square moves survive.
   The residue is where margins are thinnest, by construction.
+  *Added 2026-10-02:* Q1’s survey does not bear that last clause out: in float search
+  every sampled state is infeasible by at least $9.1\times10^{-3}$, and 43 of 44 by more
+  than $10^{-2}$ (section “Q1’s Measurement”).
 - **Structure, not margin, separates the two closures from the eight stalls.** The one
   wall-anchored chain (W7) closed under the kernel and defeated the branch and bound;
   the one all-interior crowd (A) closed under the branch and bound and defeated the
@@ -51,28 +54,45 @@ no sample by the time this review closed; section 9 says what its sample must sh
   $[S^{\ast},U]$, which the kernel’s frame already supports through `capture_cap`, and
   the near-endpoint states are treated as far leaves of the capture at the capture cap
   $U'$. This is a design, not yet a measurement.
+  *Added 2026-10-02:* the measurement finds no support for the conjecture: 0 of 9
+  sampled distance-2 states fit at $U$, the best penetration is $9.1\times10^{-3}$, and
+  the 95% upper bound is about 27 of 95. The ladder stays as the thin-flag retry and as
+  insurance; stage 5 may be empty.
 - **The pipeline has six stages**, ordered by what each costs per orbit removed: the
   exact consumer, the selection of a minimal failing sub-pattern per surviving orbit,
   sub-pattern certification routed by structure, per-state seventeen-owner exclusion for
   orbits with no certifiable small sub-pattern, near-endpoint exclusion at $U'$, and
   capture. Each stage has one certificate kind, one independent checker and one admission
-  rule, in section 5.
+  rule, in section 5. *Added 2026-10-02:* Q1’s minimal failing sub-patterns are arity 8
+  to 15, median 11, all new and never recurring, so the weight moves from stage 5.3 to
+  stage 5.4.
 - **Admission scales by promoting the two review-written verifiers to standing tools and
   reviewing by weight.** Every certificate gets an automated full re-check by a verifier
   that shares no code with its producer; a human reads the batch record, the controls
   and every certificate whose marginal removal exceeds 1% of the census; a 5% random
   sample is read as well.
   The ledger becomes a directory of per-certificate records with a generated index.
+  *Added 2026-10-02:* the standing verifiers exist (commit `55656158`), the census
+  requires a passing full verification for an admitted entry, and W7 and A are admitted
+  under exp-249.
 - **Cost, on today’s tools, is $4\times10^3$ to $4\times10^4$ CPU-hours**, dominated by
   per-state exclusions at 5 to 15 CPU-hours each.
   A compiled exact backend for the kernel’s collision and sweep steps would cut it by
   ten to fifty times. The critical path is not CPU: it is Q1’s residue sample, H-264’s
   per-state pilot and the capture pilot’s contraction rate, in that order.
+  *Added 2026-10-02:* the totals stand and the shape changes: several hundred to about a
+  thousand sub-pattern certificates of arity 8 to 15 at 2 to 9 CPU-hours each replace
+  the 100 to 500 small classes, stage 5 falls to 0 to 150 states, and the first gate is
+  passed.
 - **Three measurements would end this route**: fewer than half of H-264’s sampled states
   closing within 2 CPU-hours; a contraction factor above $0.95$ at the $10^{-3}$ scale
   in the capture pilot; or more than about 10% of Q1’s sampled states holding a
   seventeen-square placement at the census cap.
   Section 8 names the fallback for each.
+  *Added 2026-10-02:* the third did not occur (0 of 44 sampled states fit); the second
+  occurred at the capture pilot’s row budget and the follow-up review reads it as
+  producer-limited, with a second pilot specified; the first has two preliminary
+  45-minute stalls from lane K2 and no verdict.
 
 ## 1. What n11 Did With Its Residue
 
@@ -502,6 +522,9 @@ are answered by Q1’s sample before any certificate is produced.
 
 ## 9. What Q1’s Sample Must Show
 
+*Added 2026-10-02:* the sample landed after the review was committed; the section “Q1’s
+Measurement” below reads it against these conditions, all of which it meets.
+
 The survey had no sample when this review closed.
 Its first `summary.md` must report, over a uniform sample of surviving orbits under the
 90 flags with the sample size stated:
@@ -527,10 +550,115 @@ With those numbers the cost table’s three unknown counts (Q1’s classes, the 
 count and the near-endpoint count) become measurements, and the pipeline’s next action
 is the batch that the queue puts first.
 
+## Q1’s Measurement
+
+*Added 2026-10-02, after the review was committed (`f501ec08`).* Lane Q1’s survey landed
+at `0e110249`: `devtools/survey_n17_residue.py`, the receipts
+`receipts/residue-survey-arity8-seed1.json` and `residue-survey-calibration.json`, and
+the section “The Residue Survey” in the
+[X048 Session 168 README](../../../packing/campaign/explorations/X048-session-168-pilots/README.md).
+It sampled 44 orbits surviving the 90 flags, stratified by corner and interior counts
+and by distance from the endpoint, plus the endpoint as control; for each it searched a
+full seventeen-square placement at $U$ and, failing that, shrank the state by deletion
+to a minimal failing sub-pattern, confirmed by a second search.
+Every number below is a float search result, planning evidence with the receipt’s own
+status line: placements are witnesses, failures are searches that found none, and
+minimal sub-patterns are candidates a prover must certify.
+Section 9’s conditions are met: the control places the endpoint’s state blind, 3 of 6
+seeds in one round and 6 of 6 by round 5, at penetration exactly $0$.
+
+**Feasibility at $U$ is not supported.** No sampled state other than the endpoint’s fits
+at $U$: 0 of 44, including 9 distinct states at distance 2. The best full-state
+penetration is $9.1\times10^{-3}$, at a distance-2 state, and 43 of 44 exceed $10^{-2}$;
+the sample’s worst is $7.1\times10^{-2}$. The 95% upper bound from a sample with no
+placement is about 27 of the 95 distance-2 orbits and about 148 of all 2,256. This
+changes section 2’s reading that the residue’s margins are of the order of the cap
+slack: in float search they are at least twenty times larger, in the range where W7 and
+A were certified. Section 4’s conjecture that some distance-2 states hold packings of
+side in $(S^{\ast},U]$ finds no support; section 3’s fourth axis, closeness as a
+predictor of thin margins, is not borne out by this sample.
+The cap ladder keeps two uses: the retry of thin wall-anchored flags at $U'$, and
+insurance for whatever the upper bound leaves open.
+Stage 5.5 is now sized at 0 to about 150 orbits rather than 100 to 200, and may be
+empty.
+
+**Minimal failing sub-patterns are large, new and unrepeated.** Of 21 reductions, 19 are
+confirmed by the second search; their arity runs from 8 to 15 with median 11, and their
+best penetrations from $3.8\times10^{-4}$ to $1.6\times10^{-2}$. Every one is a new
+class, absent from the selector’s 90 flags, and no class was found twice.
+Certified together, the 19 would take the projected 2,256 orbits to 987; the largest is
+an arity-8 north-wall crowd (corner-NW, corner-NE, side-N0, side-N1, side-N2, side-W2,
+side-E2, interior-NW) at penetration $4.1\times10^{-3}$, deferred by the arity-8
+priority subset, which alone removes 539 orbits; the rest remove 4 to 237 each, and the
+median class about 40. Two readings follow for section 5. Stage 5.3’s queue has a head
+worth certifying, since the top class is one certificate for a quarter of the residue,
+and the sampling is size-biased toward exactly such classes, so later draws will remove
+fewer. Past the head, a class of arity 11 to 15 that removes ten orbits is a per-state
+certificate with fewer owners, so the weight moves from stage 5.3 to stage 5.4, and the
+cost model’s stage-3 count of 100 to 500 classes becomes several hundred to about a
+thousand certificates of arity 8 to 15, at a unit cost between the seven-owner and the
+seventeen-owner figures.
+Section 3’s second axis, arity, is now the cost driver: nothing of arity above seven has
+been certified by either prover, and the branch and bound’s angle dimension at arity 11
+is beyond its measured range.
+The survey itself costs about 209 seconds per state for the full-state search, about
+$3.3\times10^{5}$ seconds over the residue, and as much again for the reductions: about
+180 CPU-hours to run stage 5.2 over all 2,256 orbits.
+
+**The selector’s flags may include false ones.** The selector’s descent stops at 600
+iterations and polishes only below $10^{-4}$, so on the endpoint’s own state it stalls
+near $2\times10^{-3}$, where one long descent from its best pose places the state
+exactly. Its flags with best penetration between $10^{-4}$ and $10^{-2}$ never had that
+descent. Lane S2 is re-searching the 90 flags with a finish stage; until that lands,
+section 2’s thin-flag sensitivities (2,256 to 2,350 without the ten below $10^{-3}$) are
+a lower bound on what a false flag costs, and the selector’s penetrations stay search
+results, not margins, as both certifier reviews said.
+
+**Two per-state runs, preliminary.** Lane K2’s per-state pilot has run the
+seventeen-owner kernel on two residue states, F1 at distance 6 and N1 at distance 4, at
+32 bins under a 45-minute wall ceiling; the receipts are in the session scratchpad
+(`lanes/k2/h-F1.json`, `h-N1.json`) and not yet committed.
+Both are certified stalls at the producer’s time cap, after four to five complete
+rounds: F1 after 94 steps in 2,473 seconds with 11 of 17 owners owning no point at the
+seed and live rows nearly unchanged (corner-SE 32 to 23, side-E2 32 to 29, every other
+owner at 32); N1 after 81 steps in 2,694 seconds with 14 of 17 owners owning nothing at
+the seed and contraction beginning in round 3 (side-S2 and interior-S to 6 live rows,
+side-S0 to 24, side-W2 to 25). Neither is a true stall in the sense of a round equal to
+its predecessor, so neither decides H-264; what they show is that a seventeen-owner node
+at 32 bins does not close within 0.7 CPU-hours, and that the owned-point predictor of
+section 3 reads these states the way it read B: most owners own nothing from their
+cells.
+
+**What else changed since the review.** The capture pilot met its falsifier (commit
+`cea300a4`; README, “The Capture Pilot”): position contraction $g=1.000$ at every scale
+over 14 rounds and 224 certified updates at a $1/1024$ box, the turns contracting and
+then stalling.
+The [follow-up review](review-2026-10-02-n17-capture-after-pilot.md) reads
+the result as producer-limited, at the pilot’s cap of 24 live rows per owner, and
+specifies a second pilot; so section 7’s third gate has been measured once and not yet
+decided. The standing verifiers of section 6 exist
+(`devtools/verify_n17_kernel_certificate.py` and `verify_n17_bb_certificate.py`, commit
+`55656158`), the census counts an admitted entry only with a passing full verification,
+and W7 and A are admitted under exp-249.
+
+**The cost model, revised.** The totals stand; the shape does not.
+Stage 3 grows from 100 to 500 classes at 1 to 3 CPU-hours to several hundred to about a
+thousand classes of arity 8 to 15 at 2 to 9 CPU-hours with verification, so 600 to 9,000
+CPU-hours; stage 4 keeps whatever that leaves, which the two K2 runs put above 0.7
+CPU-hours per state and H-264 has yet to price; stage 5 falls to 0 to 150 states; stage
+2 adds about 180 CPU-hours of search.
+The range $4\times10^{3}$ to $4\times10^{4}$ CPU-hours still holds, with the middle of
+the range likelier than before.
+The critical path is unchanged in order, with the first gate passed: no sampled state is
+feasible at $U$, and the second gate, H-264, is the one the two preliminary stalls bear
+on.
+
 ## Evidence Status
 
 | Kind | Items |
 | --- | --- |
+| Measured by Q1’s survey (added 2026-10-02) | 0 of 44 sampled states placed at $U$; best penetration $9.1\times10^{-3}$; the 95% bounds; 21 reductions, 19 confirmed, arity 8 to 15; the 987-orbit projection; the control; the per-state search cost |
+| Preliminary, uncommitted (added 2026-10-02) | K2’s F1 and N1 stalls at the 45-minute cap |
 | Measured from the n11 record | the 1,904 and 276 split; the 273, 1 and 2 recipes; the batch and case costs; the admission by batch; $U-T$ |
 | Measured from n17 receipts | every row of the prover table; the selector’s counts and penetrations; the Knuth estimates; the two reviews’ verification costs and mutation counts |
 | Measured here, planning evidence | the residue profile: interior and corner counts, distance histogram, the 95 distance-2 orbits, the thin-flag sensitivities |

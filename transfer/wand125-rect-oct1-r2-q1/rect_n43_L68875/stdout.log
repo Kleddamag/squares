@@ -8,3 +8,26 @@
 {"completed": 80, "total": 201, "elapsed_seconds": 11742.132111549377, "nodes": 18726226}
 {"completed": 90, "total": 201, "elapsed_seconds": 12216.89749455452, "nodes": 19967524}
 {"completed": 100, "total": 201, "elapsed_seconds": 12728.314472198486, "nodes": 21249614}
+{"completed": 110, "total": 201, "elapsed_seconds": 13280.72488117218, "nodes": 22582054}
+{"completed": 120, "total": 201, "elapsed_seconds": 13874.756710767746, "nodes": 23963492}
+{"completed": 130, "total": 201, "elapsed_seconds": 14493.003834486008, "nodes": 25388116}
+{"completed": 140, "total": 201, "elapsed_seconds": 15126.733068943024, "nodes": 26853448}
+{"completed": 150, "total": 201, "elapsed_seconds": 15783.920431137085, "nodes": 28349002}
+{"completed": 160, "total": 201, "elapsed_seconds": 16469.789526939392, "nodes": 29900944}
+{"completed": 170, "total": 201, "elapsed_seconds": 17188.2327811718, "nodes": 31504348}
+{"completed": 180, "total": 201, "elapsed_seconds": 17936.438281536102, "nodes": 33179968}
+{"completed": 190, "total": 201, "elapsed_seconds": 18727.584866046906, "nodes": 34919408}
+{"completed": 200, "total": 201, "elapsed_seconds": 19539.255683898926, "nodes": 36695306}
+{"completed": 201, "total": 201, "elapsed_seconds": 19620.063304901123, "nodes": 36873467}
+{
+  "status": "VERIFIED",
+  "angle_cases": 201,
+  "target_lower_bound_exact": "10001/10000",
+  "nodes": 36873467,
+  "leaves": 23675918,
+  "minimum_printed_leaf_lower_bound": 1.0001000003753155,
+  "wall_seconds": 19620.063693761826,
+  "input_sha256": "9092a72c41821761cab6759aeeb4b2d402d814ece24670f4da4813f452d3ef8c",
+  "verifier_source_sha256": "a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602",
+  "method": "Outward-rounded binary64 intervals; certified inscribed polygon area; derivative bounds over center boxes; rational angular net."
+}

@@ -3153,6 +3153,16 @@ def _t007_consumer_audit(context: Context) -> str:
     return output
 
 
+def _regularized_atlas(context: Context) -> str:
+    # About a tenth of a second: the derived regularized views (X-049, think-bgkz) are
+    # compared with their index and their source witnesses by digest, re-verifying
+    # nothing. Re-deriving them exactly is `--verify-atlas`, about five minutes, which
+    # belongs to a deferred checkpoint rather than here.
+    output = _module(context, "devtools.regularize_axis_components", "--check-atlas")
+    _require_text(output, "regularized atlas check passed")
+    return output
+
+
 def _evidence_inventory(context: Context) -> str:
     # Sub-second: it reads one register and re-renders a table. Records tier because it is
     # a generated view of the record, and a generated view that has drifted from its source
@@ -4585,6 +4595,19 @@ STEPS: tuple[Step, ...] = (
         ),
     ),
     Step(
+        "regularized atlas views match their index",
+        _regularized_atlas,
+        fast=True,
+        records=True,
+        touches=(
+            *_CORE,
+            "packing/devtools/regularize_axis_components.py",
+            "packing/atlas/known-best/regularized/*",
+            "packing/atlas/known-best/manifest.json",
+            "packing/witnesses/*",
+        ),
+    ),
+    Step(
         "the register's reliance on T-007 is inventoried",
         _t007_consumer_audit,
         fast=True,
@@ -5111,6 +5134,7 @@ TREE_REUSABLE_FAST_STEPS = frozenset(
         "control anchors still resolve",
         "the borrowed lower bounds re-derive",
         "the register's reliance on T-007 is inventoried",
+        "regularized atlas views match their index",
         "the inventory agrees with the register",
         "results rungs are earned and the view agrees",
         "the synopsis headline carries every result",

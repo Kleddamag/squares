@@ -97,7 +97,7 @@ session:
       acquisition and the asymptotic-record corrections; think-ptt7, codifying the four candidate hypotheses;
       and think-bgkz, the regularized-view layer.'
     bead: think-589i
-    status: in_progress
+    status: completed
     entered_by: user_request
     switch_reason: The owner asked to follow up on all follow-up beads with sub-agents.
     budget_minutes: 240
@@ -110,10 +110,46 @@ session:
     kill_condition: The review finds a register value that is false and cannot be scoped without a decision
       from the owner.
     fallback: Record the finding, keep register values unchanged, and hand the decision to the owner.
+    outcome: 'All five lanes reached their exits and the coordinator verified each. think-589i: the W2
+      review finds Nagamochi Lemma 1 false for every a > 3, b > 2 (Karakus K_t, checked exactly), the
+      gap reaching T-007 for every N >= 10, Karakus Theorem 1.1 sound as read, s(k^2-1) = k recovered
+      and s(k^2-2) = k resting on an unreplayed Lean proof; the consumer inventory finds the bound operative
+      at 287 records. No register value changed; think-xucp and think-ym34 own the changes and the Lean
+      replay. think-1n8w and think-hzv3: sources archived, D-513 and D-514 corrected. think-ptt7: H-269,
+      H-270 and H-272 registered. think-bgkz: a regularized-view layer for 51 records cuts the atlas light
+      green squares from 7,725 to 5,475 with no square lighter; the homepage toggle remains.'
+    evidence:
+    - docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md
+    - packing/campaign/series/series-000-smoke-and-calibration/results/t007-consumer-audit.json
+    - packing/atlas/known-best/regularized/index.json
+    - packing/campaign/hypotheses/H-269-periodic-certificates-k2-minus-4-and-5.md
+    - packing/campaign/hypotheses/H-270-k2-plus-1-crossover-kearney-shiu-strip.md
+    - packing/campaign/hypotheses/H-272-symmetric-kingbird-records-reoptimized.md
+    stop_reason: Every lane exit reached; the register changes need the owner to choose their order with
+      the Lean replay.
+    next_action: Certify the integration commit and close, once the owner decides the cost-rollup question.
+  - workflow: review-planning-oversight
+    focus: process
+    recording: contemporaneous
+    clock_role: work
+    objective: Integrate and push the follow-up block, hand the owner the two decisions it raised, then
+      certify the final commit and close.
+    bead: think-los0
+    status: in_progress
+    entered_by: planned_checkpoint
+    switch_reason: Every follow-up lane reached its exit.
+    budget_minutes: 60
+    started_at: '2026-10-02T07:21:03Z'
+    deadline_at: '2026-10-02T08:21:03Z'
+    expected_output: A pushed, green pull request; the owner decisions recorded; a certified terminal
+      record.
+    validation_command: cd packing && uv run --frozen --all-extras --group dev packing-validate --fast
+    kill_condition: The owner defers the decisions, leaving the record open.
+    fallback: Stop with certification pending under think-los0 and the decisions named.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Dispatch the five follow-up lanes.
+    next_action: Push the follow-up block and await the owner decisions.
   budget:
     wall_minutes: 420
     slice_minutes: 30
@@ -127,9 +163,10 @@ session:
     before: The atlas shows 324 known-best packings and their contact shading; nothing in the record classifies
       them into families, explains the light shading, or connects the families to the asymptotic waste
       register.
-    after: X-049 answers the four questions at their evidential scope with three retained tools; two censuses
-      run on every pull request; follow-ups think-589i, think-hzv3, think-1n8w, think-bgkz and think-ptt7
-      are open.
+    after: 'X-049 answers the four questions; the follow-up block reviewed T-007 (gap reaches every N
+      >= 10), archived the sources, corrected two transcriptions, registered three hypotheses and built
+      a regularized-view layer. Open: think-xucp and think-ym34 (register re-grounding and Lean replay),
+      the homepage toggle under think-bgkz.'
   delegations:
   - task: 'think-zfxi: literature survey of square-packing families by position relative to k^2 (W1-shaped,
       read-only).'
@@ -244,6 +281,128 @@ session:
     write_scope:
     - packing/devtools/regularize_axis_components.py
     - packing/tests/test_regularize_axis_components.py
+  - task: 'think-589i lane A: audit Nagamochi Lemma 1 against Karakus 2026.'
+    operator: Claude subagent
+    status: completed
+    recording: contemporaneous
+    phase: 3
+    elapsed_quality: platform_measured
+    outcome: Lemma 1 false for a > 3, b > 2; gap reaches T-007 for N >= 10; Karakus Theorem 1.1 re-derived;
+      recommended statuses.
+    evidence:
+    - docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md
+    files:
+    - docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md
+    - packing/devtools/check_nagamochi_lemma1_counterexample.py
+    - packing/tests/test_nagamochi_lemma1_counterexample.py
+    checks:
+    - coordinator ran the checker (0.23 s) and its 35 tests, read the review, and checked Karakus Corollary
+      6.2 in the archive
+    uncertainty: chelokot Lean archive not built; Karakus proof read, not machine-checked.
+    elapsed_seconds: 1968.0
+    next_action: Integrated by the coordinator.
+    write_scope:
+    - docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md
+    - packing/devtools/check_nagamochi_lemma1_counterexample.py
+    - packing/tests/test_nagamochi_lemma1_counterexample.py
+  - task: 'think-589i lane B: inventory everything resting on T-007.'
+    operator: Claude subagent
+    status: completed
+    recording: contemporaneous
+    phase: 3
+    elapsed_quality: platform_measured
+    outcome: 287 records cite the bound (238 open, 49 proved; 224 beyond the registered scope); exposure
+      classes; document worklist without line numbers.
+    evidence:
+    - packing/campaign/series/series-000-smoke-and-calibration/results/t007-consumer-audit.json
+    files:
+    - packing/devtools/audit_t007_consumers.py
+    - packing/tests/test_t007_consumer_audit.py
+    - packing/campaign/series/series-000-smoke-and-calibration/results/t007-consumer-audit.json
+    checks:
+    - coordinator ran --check through the gate (1.15 s) and the 33 tests
+    uncertainty: Document scan is word-based; Bentz borrowings from Nagamochi not decided.
+    elapsed_seconds: 1890.0
+    next_action: Integrated by the coordinator.
+    write_scope:
+    - packing/devtools/audit_t007_consumers.py
+    - packing/tests/test_t007_consumer_audit.py
+    - packing/campaign/series/series-000-smoke-and-calibration/results/t007-consumer-audit.json
+  - task: 'think-1n8w and think-hzv3: archive sources and correct the asymptotic record.'
+    operator: Claude subagent
+    status: completed
+    recording: contemporaneous
+    phase: 3
+    elapsed_quality: platform_measured
+    outcome: Karakus, chelokot and five Kingbird pages archived; D-513 (Erdos-Graham) and D-514 (McClenagan)
+      corrected; register notes added.
+    evidence:
+    - packing/defects.yaml
+    - packing/frontier/asymptotic-waste-bounds.yaml
+    files:
+    - packing/resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma.md
+    - packing/defects.yaml
+    - packing/frontier/asymptotic-waste-bounds.yaml
+    checks:
+    - coordinator checked the McClenagan page and Karakus Corollary 6.2 against the PDFs
+    uncertainty: Book-only sources have no bibliography entry.
+    elapsed_seconds: 1697.0
+    next_action: Integrated by the coordinator.
+    write_scope:
+    - packing/resources/
+    - packing/defects.yaml
+    - defects.md
+    - packing/frontier/asymptotic-waste-bounds.yaml
+    - docs/project/research/research-2026-08-22-packing-11-unit-squares.md
+  - task: 'think-ptt7: codify the X-049 candidate hypotheses.'
+    operator: Claude subagent
+    status: completed
+    recording: contemporaneous
+    phase: 3
+    elapsed_quality: platform_measured
+    outcome: H-269, H-270 and H-272 registered; the beta exponent parked under H-037.
+    evidence:
+    - packing/campaign/hypotheses/H-270-k2-plus-1-crossover-kearney-shiu-strip.md
+    files:
+    - packing/campaign/hypotheses/H-269-periodic-certificates-k2-minus-4-and-5.md
+    - packing/campaign/hypotheses/H-270-k2-plus-1-crossover-kearney-shiu-strip.md
+    - packing/campaign/hypotheses/H-272-symmetric-kingbird-records-reoptimized.md
+    checks:
+    - coordinator ran the ledger check after updating ideas.md and SYNOPSIS
+    uncertainty: H-269 relies on a source-reported LP deficit; H-270 hand estimate unmeasured.
+    elapsed_seconds: 1001.0
+    next_action: Integrated by the coordinator.
+    write_scope:
+    - packing/campaign/hypotheses/
+  - task: 'think-bgkz: build the regularized-view layer.'
+    operator: Claude subagent
+    status: completed
+    recording: contemporaneous
+    phase: 3
+    elapsed_quality: platform_measured
+    outcome: 51 records regularized with a non-regression rule; atlas light green 7,725 to 5,475; legends
+      updated; toggle left as a design note.
+    evidence:
+    - packing/atlas/known-best/regularized/index.json
+    files:
+    - packing/devtools/regularize_axis_components.py
+    - packing/tests/test_regularize_axis_components.py
+    - packing/atlas/known-best/regularized/index.json
+    - packages/workbench/src/application.js
+    - packing/devtools/overview_sections.py
+    checks:
+    - coordinator ran the 11 tests and --check-atlas (0.10 s), and the edit tier passed with the layer
+      in the tree
+    uncertainty: Workbench Chromium step not runnable here (Playwright build mismatch); 89 Kingbird records
+      refused at dilation 1.
+    elapsed_seconds: 2302.0
+    next_action: Integrated by the coordinator.
+    write_scope:
+    - packing/devtools/regularize_axis_components.py
+    - packing/tests/test_regularize_axis_components.py
+    - packing/atlas/known-best/regularized/
+    - packages/workbench/src/application.js
+    - packing/devtools/overview_sections.py
   outputs:
   - packing/campaign/explorations/X-049-families-shading-and-the-large-n-limit.md
   - packing/campaign/explorations/X049-families-data/family-census.json
@@ -255,15 +414,24 @@ session:
   - packing/devtools/regularize_axis_components.py
   - packing/src/sqpack/cli/validate.py
   - packing/campaign/ideas.md
+  - docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md
+  - packing/devtools/check_nagamochi_lemma1_counterexample.py
+  - packing/devtools/audit_t007_consumers.py
+  - packing/atlas/known-best/regularized/index.json
+  - packing/resources/papers/karakus-2026-counterexample-nagamochi-scoring-lemma.md
+  - packing/campaign/hypotheses/H-269-periodic-certificates-k2-minus-4-and-5.md
   checks:
   - packing-validate --only "known-best family and contact-shade censuses" passed in 16.42 s.
   - 'pytest over the four touched test files: 64 passed; tests/test_validation_cli.py, test_validation_report.py
     and test_validation_timing.py: 185 passed.'
   - 'ruff check, ruff format and basedpyright: zero findings on every new or changed Python file.'
   - 'devtools.check_math_markup: clean, backlog 0.'
+  - packing-validate --edit passed (54 steps) with the follow-up lanes in the tree, 187 s.
+  - 'packing-validate --records passed after integration; new steps: the T-007 inventory (1.15 s) and
+    the regularized atlas check (0.11 s).'
   stop_reason: null
-  next_action: Dispatch the five follow-up lanes; certify the final commit with packing-validate --fast
-    before closing.
+  next_action: 'Owner decisions: the order of think-xucp and think-ym34, and how the cost rollups are
+    retained; then certify and close.'
 ---
 # Families of Known-Best Packings, Contact Shading, and the Large-n Limit
 

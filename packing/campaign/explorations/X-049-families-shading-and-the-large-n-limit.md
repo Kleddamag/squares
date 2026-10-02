@@ -385,19 +385,41 @@ squares, rows offset by part of a side, holes where the two walls’ lattices di
 tilted between 0.01 and 0.39 degrees that the atlas’s half-degree colour class calls
 axis-aligned. No case needed a change of side.
 
-### What applying it across the atlas would take
+### The atlas-wide layer
 
-A derived layer, never a witness change: a regularized pose per decimal record, a
-manifest field naming it, a `--check` mode comparing digests, and a workbench toggle
-that draws it with a “regularized” badge and shades from it.
-Before an atlas-wide run it needs a neighbour non-regression rule (at 206 two untouched
-near-axis squares lost a contact when a neighbour moved onto its lattice), a separate
-colour class for squares tilted by a hundredth of a degree rather than straightening
-them, and a decision on the algebraic-field witnesses, where the same algorithm runs in
-$\mathbb Q(\alpha)$ but was not prototyped.
-Interval-enclosure witnesses admit no exact lattice statement at all.
-The lane estimates 20 to 40 serial minutes over the 148 decimal records, which places
-the check outside the fast gate.
+The prototype above became a derived layer under `think-bgkz`, retained in
+[`atlas/known-best/regularized/`](../../atlas/known-best/regularized/index.json): one
+gzipped view per regularized record and an index of digests and counts, never a witness
+change. Two rules were added first.
+A move that costs any other square a contact, under either the house rule or the stage
+rule, is undone and the run repeats from the exact frame until no count falls; and a
+slide may not lower its own square’s count under either rule.
+
+| Measure | Value |
+| --- | --- |
+| Records regularized | 51: all 50 packet-derived records and $n=26$ |
+| Unchanged | 183, including all 176 exact grids |
+| Refused | 90: 89 Kingbird-derived records whose 36-digit pose overlaps at dilation 1, and $n=69$, whose corners are decimal |
+| Light green squares, house rule | 7,725 → 5,475 |
+| Light green squares, stage rule | 6,043 → 5,466 |
+| Squares made lighter | 0; 57 squares in 9 records are held by the non-regression rule |
+| Six named cases, house rule | 545 → 246 (the prototype’s 242 included moves the rule now holds) |
+
+*From the index’s totals and `devtools.regularize_axis_components --check-atlas`.*
+
+`--check-atlas` compares digests in about a tenth of a second and runs in the records
+tier; `--verify-atlas` re-derives every view in about five minutes and is not yet wired
+into a deferred checkpoint.
+The prototype’s six-case receipt above is superseded for 206 by the layer, which holds
+three squares there.
+Still open under `think-bgkz`: the homepage toggle that draws the views with a
+“regularized” badge (a design note is in the lane record), the deferred `--verify-atlas`
+step, and whether a view may use the smallest verifying dilation, which would open the
+89 refused Kingbird records.
+Algebraic-field witnesses, where the same algorithm runs in $\mathbb Q(\alpha)$, were
+not prototyped; interval-enclosure witnesses admit no exact lattice statement at all.
+Both legends now say that a lighter grid square can be loose in the source packing
+rather than short of neighbours.
 
 ## The Large-n Limit
 

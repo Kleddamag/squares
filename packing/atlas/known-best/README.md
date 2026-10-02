@@ -76,6 +76,18 @@ uv run --frozen --all-extras --group dev python -m devtools.build_known_best_atl
 [The playbook](FIGURE-PLAYBOOK.md#the-two-composites) has the measurements and what each
 one bought.
 
+## The regularized views
+
+[`regularized/`](regularized/index.json) holds exact derived views of 51 records,
+written by `python -m devtools.regularize_axis_components --update-atlas`, checked by
+digest with `--check-atlas` and re-derived with `--verify-atlas`. A view straightens
+near-axis squares and slides axis-aligned ones into exact contact at the certified side,
+verified twice over the rationals; it never replaces a witness, changes a side or
+promotes a tier, and is drawn only with a “regularized” label.
+Exploration
+[X-049](../../campaign/explorations/X-049-families-shading-and-the-large-n-limit.md#exact-regularization)
+explains why and what it changes.
+
 ## What the drawings are drawn from
 
 The pipeline has four separate layers:

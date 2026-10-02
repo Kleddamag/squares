@@ -65,6 +65,7 @@ REPO = Path(__file__).resolve().parents[2]
 WEB = REPO / "packing/resources/web"
 CRATE = WEB / "evand-square-packing-2026-09-26/square-packing/s12/verify2"
 WAND125 = WEB / "wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates"
+WAND125_N61 = WEB / "wand125-point-n61-2026-09-30/square-packing-bounds/point_n61_L8"
 
 #: The crate files every checker version builds with: path in the crate, retained copy, SHA-256.
 CRATE_FILES = (
@@ -147,6 +148,14 @@ CASES = {
         "6b7f0f79",
         ("--pair-points",),
         90,
+    ),
+    61: Case(
+        "n61",
+        WAND125_N61 / "cover.txt.gz",
+        "bcb66c7910ef844ce8d39c423d7a5a419bd530a344689331f7665ba6971d0374",
+        "6b7f0f79",
+        ("--pair-points",),
+        80,
     ),
 }
 
@@ -362,6 +371,8 @@ CONTROLS: dict[tuple[int, str], Control] = {
     (60, "drop-heaviest-segment"): Control("d4", "5-5", "38-38"),
     (77, "drop-heaviest-point"): Control("d4", "44-44", "44-44"),
     (77, "drop-heaviest-segment"): Control("d4", "5-5", "41-41"),
+    (61, "drop-heaviest-point"): Control("d4", "26-26", "8-8"),
+    (61, "drop-second-heaviest-point"): Control("d4", "36-36", "36-36"),
 }
 
 

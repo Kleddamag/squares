@@ -31,6 +31,7 @@ PACKETS = {
     32: WEB / "evand-zmx2-sym-atoms-2026-09-30",
     59: WEB / "wand125-point-and-mixed-2026-10-01",
     60: WEB / "evand-square-packing-2026-10-01",
+    61: WEB / "wand125-point-n61-2026-09-30",
     77: WEB / "wand125-point-and-mixed-2026-10-01",
 }
 
@@ -39,6 +40,7 @@ BUILDS = {
     WEB / "evand-zmx2-sym-atoms-2026-09-30": "92a4cfe8",
     WEB / "wand125-point-and-mixed-2026-10-01": "6b7f0f79",
     WEB / "evand-square-packing-2026-10-01": "6b7f0f79",
+    WEB / "wand125-point-n61-2026-09-30": "6b7f0f79",
 }
 
 CWD = re.compile(

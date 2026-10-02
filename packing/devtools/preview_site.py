@@ -63,7 +63,7 @@ from typing import TYPE_CHECKING, Any, Literal
 from devtools import check_published_site, render_overview, social_card
 
 if TYPE_CHECKING:
-    from playwright.sync_api import Page
+    from playwright.sync_api import Browser, Page, Playwright
 from devtools.render_n11_lower_bounds_explainer_pdf import BROWSER_OVERRIDE
 from sqpack.probes import probe
 
@@ -417,7 +417,7 @@ def clip_check(
     server = serve(output, port)
     try:
         with sync_playwright() as driver:
-            browser = driver.chromium.launch(executable_path=os.environ.get(BROWSER_OVERRIDE))
+            browser = launch_chromium(driver)
             for name in pages:
                 if not (output / name.partition("#")[0]).is_file():
                     continue
@@ -468,6 +468,25 @@ def split_problem(found: dict[str, Any]) -> str | None:
     return (
         f'"{" | ".join(pieces)}" is one word on {len(pieces)} lines in {where}{framed}: '
         f"{found['width']:g}px wide on a {found['line']:g}px line"
+    )
+
+
+#: What the headless shell is told about hinting. Its default is `HINTING_FULL`
+#: (`headless/public/headless_browser.h`), under which Linux rounds every glyph's advance
+#: to a whole pixel and a page measures wider than on macOS by up to a pixel a glyph: the
+#: overview's 24ch measure read 232 px against 224.8, 9 px a digit against 8.7, and the
+#: frontier table 1210.8 px in its 1200 px track (run 36943941580, D-513). `none` is the
+#: value that lifts it (`headless/lib/browser/command_line_handler.cc`); on macOS, where
+#: CoreText hints nothing, both tables measure the same with it as without.
+FONT_RENDER_HINTING = "--font-render-hinting=none"
+
+
+def launch_chromium(driver: Playwright, **options: Any) -> Browser:
+    """The Chromium the site is measured in: the pinned one, or the one `SQPACK_CHROMIUM`
+    names, with its text unhinted, so that a Linux reading is a macOS reading."""
+    arguments = [FONT_RENDER_HINTING, *options.pop("args", ())]
+    return driver.chromium.launch(
+        executable_path=os.environ.get(BROWSER_OVERRIDE), args=arguments, **options
     )
 
 
@@ -579,7 +598,7 @@ def screenshots(
     server = serve(output, port)
     try:
         with sync_playwright() as driver:
-            browser = driver.chromium.launch(executable_path=os.environ.get(BROWSER_OVERRIDE))
+            browser = launch_chromium(driver)
             for name in pages:
                 if not (output / name.partition("#")[0]).is_file():
                     continue

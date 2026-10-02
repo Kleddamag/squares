@@ -553,6 +553,13 @@ tiers:
   # jlevy/squares#249's README-only head failed at 128.50 s. The 32 readings span 1.90x.
   # A point record at their geometric mean holds every one of them inside the 0.6x
   # stale rule and the 1.5x drift rule (0.678x to 1.288x), so this tier needs no band.
+  #
+  # 2026-10-02 (think-sib7, D-513): a fourth step, `site table layout in Chromium`,
+  # joined the tier: the two test files that pin the tables' pixels, 40.5 s locally,
+  # which the behavioural shards could only skip. Its first hosted reading was 24.16 s
+  # in a tier wall of 93.16 s (run 36967092452, job 110713091091), inside the record's
+  # band. The entry below names three steps and stays as the reading it was; the
+  # four-step cohort re-takes it.
   ceiling_seconds: 150.0
   measured_seconds: 104.74
   measured_on: '2026-09-30'

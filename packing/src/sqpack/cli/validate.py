@@ -3204,8 +3204,13 @@ def _nagamochi_bounds(context: Context) -> str:
 def _evidence_inventory(context: Context) -> str:
     # Sub-second: it reads one register and re-renders a table. Records tier because it is
     # a generated view of the record, and a generated view that has drifted from its source
-    # is the thing this repository logs defects about most often.
-    return _module(context, "devtools.render_evidence_inventory", "--check")
+    # is the thing this repository logs defects about most often. The verifier registry's
+    # view and each case record's verification-code section are views of the same
+    # evidence, re-rendered beside it.
+    inventory = _module(context, "devtools.render_evidence_inventory", "--check")
+    verifiers = _module(context, "devtools.render_verifiers", "--check")
+    cases = _module(context, "devtools.render_case_verifiers", "--check")
+    return f"{inventory}\n{verifiers}\n{cases}"
 
 
 def _results_register(context: Context) -> str:
@@ -4633,8 +4638,15 @@ STEPS: tuple[Step, ...] = (
         touches=(
             *_CORE,
             "packing/devtools/render_evidence_inventory.py",
+            "packing/devtools/render_verifiers.py",
+            "packing/devtools/render_case_verifiers.py",
+            "packing/devtools/verifier_registry.py",
             "packing/frontier/evidence.yaml",
+            "packing/frontier/verifiers.yaml",
+            "packing/frontier/results.yaml",
+            "packing/frontier/n-*.md",
             "packing/frontier/INVENTORY.md",
+            "packing/frontier/VERIFIERS.md",
         ),
     ),
     Step(

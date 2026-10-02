@@ -49,7 +49,7 @@ LABELS = {
     SAME: f"reproduced with the producer{APOSTROPHE}s code",
     SHARED: f"re-implemented, sharing the producer{APOSTROPHE}s components",
     INDEPENDENT: "independently re-implemented",
-    NOT_APPLICABLE: "no verification code",
+    NOT_APPLICABLE: "no relation: a proof, a derivation or a report",
     UNKNOWN: "relation not recorded",
 }
 #: The labels in rank order, once each, for a legend.
@@ -277,3 +277,77 @@ def result_programs(
             order[verifier.id],
         ),
     )
+
+
+#: The relations as a narrow table cell prints them.
+SHORT_LABELS = {
+    GENERATOR: f"producer{APOSTROPHE}s code",
+    SAME: f"producer{APOSTROPHE}s code",
+    SHARED: "shared components",
+    INDEPENDENT: "independent",
+    NOT_APPLICABLE: "no code",
+    UNKNOWN: "unknown",
+}
+#: The order a list of programs is grouped in: deciders before premise checks, external
+#: before first-party.
+_GROUPS = ((EXTERNAL, True), (FIRST_PARTY, True), (EXTERNAL, False), (FIRST_PARTY, False))
+_CODE_METHODS = frozenset(
+    {
+        "numerical-f64",
+        "numerical-multiprecision",
+        "interval-certified",
+        "exact-algebraic",
+        "proof-assistant-checked",
+    }
+)
+_PROOFS = frozenset({"published-proof", "proof-audited"})
+
+
+def runs_code(entry: Mapping[str, Any]) -> bool:
+    """Whether an entry's verification is a program run: a computational method, as
+    performed or as reported, or a replay."""
+    method = entry.get("method") or entry.get("reported_method")
+    return method in _CODE_METHODS or bool(entry.get("replay"))
+
+
+def run_label(entry: Mapping[str, Any]) -> str:
+    """Who ran an entry's verification, in a few words."""
+    labels = {
+        "replayed-here": "replayed here",
+        "audited-here": "audited here",
+        "independently-external": "replayed by a third party",
+    }
+    if (origin := entry.get("origin")) in labels:
+        return labels[str(origin)]
+    if entry.get("performed_by") == "independent-external":
+        return f"a third party{APOSTROPHE}s run"
+    if (entry.get("method") or entry.get("reported_method")) in _PROOFS:
+        return "a published proof"
+    return f"the source{APOSTROPHE}s own run"
+
+
+def programs_text(entry: Mapping[str, Any], verifiers: Mapping[str, Verifier]) -> str:
+    """An entry's programs, grouped by provenance and role:
+    `` `V-a`, `V-b` (external); `V-c` (first-party, premises) ``, or why it names none."""
+    named = [verifiers[v] for v in entry.get("verifiers") or [] if v in verifiers]
+    if not named:
+        return "no program held" if runs_code(entry) else "no verification code"
+    parts = []
+    for provenance, decides in _GROUPS:
+        group = [v for v in named if v.provenance == provenance and v.decides == decides]
+        if group:
+            label = provenance if decides else f"{provenance}, premises"
+            parts.append(", ".join(f"`{v.id}`" for v in group) + f" ({label})")
+    return "; ".join(parts)
+
+
+def entry_line(entry: Mapping[str, Any], verifiers: Mapping[str, Verifier]) -> str:
+    """One evidence entry's verification code in a line: who ran it, how its code stands
+    to the producer's where anything ran beyond the source's own run, and its programs."""
+    relation = entry.get("relationship_to_generator")
+    beyond = (
+        entry.get("origin") in CONFIRMING_ORIGINS
+        or entry.get("performed_by") == "independent-external"
+    )
+    how = f", {LABELS[str(relation)]}" if beyond and relation in RANK else ""
+    return f"`{entry['id']}`, {run_label(entry)}{how}: {programs_text(entry, verifiers)}"

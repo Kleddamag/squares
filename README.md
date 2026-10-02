@@ -404,10 +404,9 @@ transition contracts.
 | W9 | `remediation` | Confirmed defects or issue backlogs need a systematic repair wave | Risk-ranked dispositions, bounded repairs, regression checks, updated defect records, and rerouted blockers; no scientific verdict | W10 |
 | W10 | `review-planning-oversight` | An agenda or consequential session has ended and its results must change the plan | Result and stop-reason classifications, actionable dispositions, reader-document review, a reprioritized candidate set, and one selected next entry | The selected workflow; W9 or W8 when remediation or documentation work wins |
 
-A result published by others follows the
+A result published by others, arriving as an issue or a link, follows the
 [result import process](packing/campaign/result-import.md), a standard sequence of these
-phases: W1 imports it as reported, W2 validates and rates it, the record publishes it,
-and its author is answered.
+phases.
 
 Use `general-improvement` only for repository maintenance that fits none of W1–W10.
 Routine work records a workflow, bounded objective, intended artifact, and focused

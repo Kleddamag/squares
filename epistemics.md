@@ -454,8 +454,7 @@ to credit it as carefully as this project’s own.
 
 ### Import, Integration, and Reply
 
-The procedure is the [result import process](packing/campaign/result-import.md): import
-the result as reported, validate and rate it, publish it, and answer its author.
+The procedure is the [result import process](packing/campaign/result-import.md).
 Its three end points are fixed here.
 
 1. **Imported.** The source is retained at a pinned revision, with a coverage entry.

@@ -215,29 +215,16 @@ This is an audit of those named sources, not every publication.
 ## Adding or Reviewing a Result
 
 A result from any source, this project’s parallel projects included, enters these
-records through the [result import process](../campaign/result-import.md).
-Its source is retained at a pinned revision, its literal claim is recorded as reported
-with a `T-NNN` register entry, its certificate is replayed and its mathematics reviewed
-here before the verified lane carries it, and its author is answered.
-What counts as imported, integrated and answered, and how a result by others is
-credited, is policy in
-[epistemics.md → Results by Others](../../epistemics.md#results-by-others).
+records through the [result import process](../campaign/result-import.md), and
+[epistemics.md → Results by Others](../../epistemics.md#results-by-others) is its
+policy. To ask for a registration, open an issue with the
+[registration request form](../../.github/ISSUE_TEMPLATE/result-registration.md).
 
-**To ask for a registration,** open an issue.
-The requests that have been quickest to check state:
+The process relies on these rules of the records:
 
-- the claim, and what the record holds now at those counts;
-- the certificate, where it is, and the revision of the source to pin;
-- each checker that accepted it: its arithmetic, the counts it reports and what it cost;
-- what the checkers share, such as an author, a point test or a symmetry reduction;
-- what has not been done;
-- the work it builds on, and whether AI assisted it.
-
-The rules of these records that the process relies on:
-
-- **The reported lane takes the literal public claim**, with typed evidence.
-  Disagreement is preserved as a conflict or a typed blocker; the source’s claim is
-  never edited to match a checker.
+- **The reported lane takes the literal public claim**, with a typed evidence entry of
+  `assurance: reported`. Disagreement is preserved as a conflict or a typed blocker; the
+  source’s claim is never edited to match a checker.
 - **The register entry is made when the result is imported**, at its derived rung, with
   a `kind`, a `headline`, `attribution` and a `next_rung` naming the replay and review
   it waits on. Its date is `attribution.published`; `established` is this project’s own

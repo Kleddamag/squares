@@ -144,8 +144,8 @@ Ordered by how often each recurred.
    The runbook’s answer: a small import pull request that merges the same day.
    Since pull request 285 the re-pin is one line.
 7. **Missing session records.** Five import pull requests had none, and session 162’s
-   was reconstructed. The runbook’s answer: a routine import records its four facts in
-   its bead and needs no session record.
+   was reconstructed. The runbook’s answer: one bead for each import.
+   A routine import needs no session record, as the synopsis already says.
 
 ## How the Ratings Were Assessed
 
@@ -225,45 +225,24 @@ what any workflow owns.
 
 ## What This Change Codifies
 
-Restated from existing documents: the retention, bibliography, reported-lane and
-verified-lane rules; the register fields; the derivation of `V` and `C`; the credit
-policy; and the three end points, with *taken in* renamed *imported*.
+The runbook restates nothing another document owns: the rungs, the credit policy and the
+end points stay in `epistemics.md`, the record rules in the frontier README, the
+workflow contracts in the synopsis, and the render and check commands in the W8 runbook.
+It holds the sequence and the rules that had no home: the entry from an issue or a link,
+one bead and two pull requests for each import, the claim map, the packet’s name and
+README, which date is the publication date, when the `T-NNN` is taken, how a replay is
+run and its receipts kept, what a review states, the exit commit, when a review paper is
+written, and when the author is answered.
 
-New in the runbook, for the owner’s review:
-
-1. The name, the three parts and the seven stages, each with its workflow and its exit.
-2. Two pull requests for one import: stages 1 to 3 on the day the result is seen, and
-   stage 4 when its replay and review are done.
-3. One bead for each import, labelled `result-import`, carrying the claim map and a
-   checklist.
-4. A triage stage that lists every claim a release makes, maps each to the register by
-   an eight-row table, and prices the validation.
-5. The contents of a packet README, and the packet named for the date of its pinned
-   revision.
-6. Which date goes where: `attribution.published` is the claim’s first appearance in the
-   source, and bibliography `dated` and coverage `source_date` are the pinned
-   revision’s.
-7. The `T-NNN` is taken last and is stated nowhere outside the repository until it is on
-   `main`.
-8. What a complete replay is, two negative controls, and receipts committed when the run
-   ends.
-9. What a mathematics review states, and that it is recorded both as `external_review`
-   and in the entry’s `reviews`.
-10. An exit commit that rewrites `claim`, `notes`, `next_rung` and `activity` together.
-11. Rules for later releases, growing families, unbounded families, corollaries,
-    derivative certificates, authors’ answers and rolling requests.
-12. When a review paper is written and what it contains.
-13. The reply: after the merge, from `main`, once for each end point, corrected when the
-    record moves, and the issue closed with a final comment.
-
-New in `epistemics.md`: three rules for scoring significance.
-New in the frontier README: what a registration request should state, taken from the
-form Daniel’s and wand125’s requests already use.
+Outside the runbook, `epistemics.md` gains three rules for scoring significance, and
+`.github/` gains a registration request form in the shape Daniel’s and wand125’s
+requests already use.
 
 ## Decisions for the Owner
 
 1. **What `V` is for a result whose source ships a machine certificate and its own
-   passing run.** The runbook states the rule in force, `V0` at import.
+   passing run.** `epistemics.md` states the rule in force, `V0/C0` for a reported
+   result, and the runbook defers to it.
    The recommendation is `V3/C0` where the packet retains the certificate, the command
    and the source’s run record, which is what the axis definition and the `V3` predicate
    say. It should follow `think-mt6e`, because the verified lane today admits any

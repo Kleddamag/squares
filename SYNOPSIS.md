@@ -1178,13 +1178,11 @@ routine task.
 
 ### Result Import and Efficient Confirmation
 
-A result published by others enters the record through the
-[result import process](packing/campaign/result-import.md).
-It is a standard sequence of phases, not a workflow of its own: a W1 phase imports the
-result as reported, a W2 phase validates it, the publication sequence brings the reader
-documents up to date, and the author is answered.
-That runbook owns the stages, their exits and the reply; this section says what W1 and
-W2 each contribute.
+A result published by others, arriving as an issue or a link, enters the record through
+the [result import process](packing/campaign/result-import.md), a standard sequence of
+phases and not a workflow of its own.
+That runbook owns the stages and their exits; this section says what W1 and W2 each
+contribute.
 
 W1 turns an incoming result into a reviewable source packet: maintained repository and
 license, immutable source identity, precise claim and assumptions, certificate format,
@@ -1276,13 +1274,10 @@ becomes the tidy one.
 Schedule it after a run that closed several commitments rather than continuously; the
 documents are meant to trail the record slightly, and a pass with nothing to reconcile
 is a pass that should not have been opened.
-Registering a result does not open one: the phase that changes the record renders the
-generated tables and re-pins the data in the same change, through
-[New Result Publication](packing/campaign/documentation-pass.md#new-result-publication).
-W8 also owns a review paper, which explains a confirmed result and this project’s review
-of it to a reader outside the project.
-The paper is held to the same first boundary, since it states nothing the register does
-not hold, and its exposition is reviewed in a W2 phase of its own.
+Registering a result does not open one: the change that moves the record runs
+[New Result Publication](packing/campaign/documentation-pass.md#new-result-publication)
+itself. W8 also owns a review paper that explains a confirmed result; the paper states
+nothing the register does not hold, and its exposition gets a W2 review.
 
 W9 owns bounded repair waves over confirmed defects and issues.
 It does not turn a large backlog into one undifferentiated implementation phase: risk is

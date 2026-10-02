@@ -141,13 +141,13 @@ measure failed.
 
 | Quality | Measure | Passes when |
 | --- | --- | --- |
-| Rigor | Checklist | Every import’s bead closes with each line citing a commit or a comment |
+| Rigor | Exits | Every stage’s exit is met, and the import’s bead cites the commit or comment for each |
 |  | Rungs | Every declared rung equals what `check_results` derives |
 |  | Verified lane | No bound enters it without a complete replay receipt on `main` and a mapped review with no blocking defect open |
 |  | Controls | Every certificate has two mutated controls refused under test |
 |  | Two lanes | Every review is committed before its lane sees the replay’s result |
 | Consistency | Sequence | All six beads declare W1, then W2 |
-|  | Packet | One README shape, with the six facts of stage 2 |
+|  | Packet | One README shape, with the facts stage 2 lists |
 |  | Dates | `published`, `dated` and `source_date` follow the runbook’s rule in every entry |
 |  | Replies | Every reply has the same parts and links only to `main` |
 | Efficiency | Import | Each request is on `main` as reported on the day its pull request opens |

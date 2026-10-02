@@ -73,10 +73,12 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # from the n=1..324 reported-open count. T-062 and T-063 report exact values
     # at n=60 and n=61, while T-064 reports the k^2-3 family. Its ten new open
     # instances n=78..321 bring the reported-open count down without changing
-    # the formal-open or Nagamochi-bounded counts.
-    "n=1..100": (61, 57, 38),
-    "n=1..200": (149, 141, 126),
-    "n=1..324": (261, 249, 238),
+    # the formal-open or Nagamochi-bounded counts. 2026-10-01: T-066 and T-067 report
+    # s(59) = 8 and s(77) = 9 from mixed covers not yet replayed here, so both left the
+    # reported-open count in every corpus and stay formal-open.
+    "n=1..100": (61, 55, 38),
+    "n=1..200": (149, 139, 126),
+    "n=1..324": (261, 247, 238),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
 #: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the

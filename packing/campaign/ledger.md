@@ -180,6 +180,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-163](agent-sessions/session-163-native-bounds-and-census.md) | stopped | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 5 | think-8cps | Under think-niqx, merge current main and certify the resulting PR head through required local and hosted checks. The mathematical obligations identified above remain separate after this integration debt is discharged. |
 | [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | completed | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 39 | think-3i74 | After the reviewed helper cleanup lands, implement the bounded fresh-ensemble replay entry point under think-e2ot; preserve the accepted historical evidence. PR 249 reconciliation, optional Rust performance and later exposition remain separate tracks. |
 | [session-165](agent-sessions/session-165-post-optimality-overnight.md) | completed | contemporaneous | `insight-iteration` (insight) | `pipeline-improvement` (correctness) | 36 | think-kaqh | think-11ma: in a separately scheduled W3 block, preregister a small exact geometric-exclusion pilot below the certified endpoint. The overnight heartbeat is to be paused by15:00UTC; no new overnight research or H258 retry. |
+| [session-166](agent-sessions/session-166-n17-route-after-pr265.md) | stopped | mixed | `review-planning-oversight` (insight) | `review-planning-oversight` (process) | 2 | think-9fc1 | BC-406 (think-c7kv): dispatch the route review's lanes A1, B and C in parallel, then lane A2 once H-258 is accepted. Hosted certification of this handoff is owned by think-od9c. |
 
 ### Workflow summary
 
@@ -196,7 +197,7 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `pipeline-improvement` | 38 | 2 | 208 | 6 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
 | `remediation` | 2 | 1 | 2 | 3 |
-| `review-planning-oversight` | 6 | 0 | 40 | 2 |
+| `review-planning-oversight` | 6 | 1 | 41 | 3 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 
 ## Experiment agendas
@@ -863,9 +864,16 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | BC-399 | research | 17 | complete | 0 | think-bj81 | packing/campaign/hypotheses/H-255-n17-exact-polynomial-root.md |
 | BC-400 | research | 17 | complete | 0 | think-bj81 | packing/campaign/hypotheses/H-256-n17-exact-endpoint-feasibility.md |
 | BC-401 | research | 17 | complete | 0 | think-6dg0 | packing/campaign/hypotheses/H-257-n17-endpoint-contact-features.md |
-| BC-402 | research | 17 | blocked | 0 | think-wrgx | packing/campaign/hypotheses/H-258-n17-common-core-stress.md |
+| BC-402 | research | 17 | ready | 0 | think-wrgx | packing/campaign/hypotheses/H-258-n17-common-core-stress.md |
 | BC-403 | research | 17 | complete | 0 | think-70sf | packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md |
 | BC-404 | research | 17 | complete | 0 | think-gr22 | packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md |
+| BC-405 | research | 17 | complete | 0 | think-9fc1 | docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md |
+| BC-406 | research | 17 | ready | 0 | think-c7kv | docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md |
+| BC-407 | research | 17 | blocked | 0 | think-n95s | packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md |
+| BC-408 | research | 17 | ready | 0 | think-j1uw | packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md |
+| BC-409 | research | 17 | ready | 2 | think-e6y1 | packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md |
+| BC-410 | research | 17 | tentative | 2 | think-x4a6 | packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md |
+| BC-411 | research | 17 | tentative | 1 | think-11ma | packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md |
 
 ## Series
 
@@ -1072,6 +1080,11 @@ Status: **active**. Turn PR 230's W3 review and the two explorations it led to, 
 | H-258 | blocked | proof | The fixed analytic common-core stress at the accepted n17 endpoint has |  | 0 |  |  |
 | H-259 | confirmed | proof | At side cap1169/250, a closed5by5 centre grid has16 boundary cells of  |  | 1 |  | 0s wall |
 | H-260 | confirmed | proof | D4 acts on existential closed-cell assignments of the H259 cover and i |  | 1 |  | 0s wall |
+| H-261 | blocked | proof | For an explicit rational radius r > 0, every packing of 17 unit square |  | 0 |  |  |
+| H-262 | blocked | proof | On the H259 closed grid at cap 1169/250, the subcontainer cuts from s( |  | 0 |  |  |
+| H-263 | open question | proof | Which closed centre cover with proved cell capacities keeps every endp |  | 0 |  |  |
+| H-264 | open question | proof | On 10 to 20 closed-assignment D4 orbits drawn uniformly from the resid |  | 0 |  |  |
+| H-265 | blocked | proof | The side S* of the H255 chart root is a root of the degree-18 polynomi |  | 0 |  |  |
 
 ## Needs review — held for a human, not decided
 

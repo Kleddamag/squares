@@ -255,10 +255,10 @@ hypothesis status and summarizes experiment verdicts, and the
 | Record | Count | State at the cutoff |
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
-| Commitments | 393 | 201 complete; 63 stopped; 71 blocked; 24 ready; 21 tentative; 13 in progress |
-| Sessions | 165 | 103 completed; 62 stopped; all terminal |
+| Commitments | 400 | 202 complete; 63 stopped; 71 blocked; 28 ready; 23 tentative; 13 in progress |
+| Sessions | 166 | 103 completed; 63 stopped; all terminal |
 | Explorations | 46 | 27 linked to proposed hypotheses; 19 uncodified |
-| Hypotheses | 195 | 39 confirmed; 32 refuted; 61 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
+| Hypotheses | 200 | 39 confirmed; 32 refuted; 64 blocked; 17 unresolved; 9 open; 34 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 170 | 53 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
 | Frontier results | 65 | 65 registered, 37 by others |
 
@@ -521,6 +521,8 @@ case or experiment separately.
 | Document or collection | Role | Authority | Lifecycle | Current replacement |
 | --- | --- | --- | --- | --- |
 | [Review: The Site’s Documentation Cards and the Records Behind Them](docs/project/reviews/review-2026-10-01-site-documentation-records.md) | dated review record | record | retained | — |
+| [n17 Optimality Route After PR 265](docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md) | dated review record | record | retained | — |
+| [X-048 Route Review: Exploratory Receipts](packing/campaign/explorations/X048-route-review/README.md) | research synthesis | record | retained | — |
 | [H259 Mixed-Capacity Census: Independent Output Review](packing/campaign/series/series-000-smoke-and-calibration/results/exp-240-n17-mixed-capacity-census/output-review.md) | dated review record | record | retained | — |
 | [October 1 Post-optimality Research Findings](docs/project/reviews/review-2026-10-01-post-optimality-morning.md) | dated review record | record | retained | — |
 | [H260 Closed-Cell Symmetry: Independent Output Review](packing/campaign/series/series-000-smoke-and-calibration/results/exp-241-n17-closed-cell-symmetry/output-review.md) | dated review record | record | retained | — |
@@ -1325,6 +1327,30 @@ controller, not permission to blur contracts.
 
 ### Current Handoff
 
+[Session 166](packing/campaign/agent-sessions/session-166-n17-route-after-pr265.md) ran
+a W10 checkpoint on the merged PR 265 record with two Fable extra-high lanes.
+The [route review](docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md)
+holds the assessment, the evidence status and the reading order for the next agent.
+Neither lane found a mathematical error.
+In exploratory checks the stalled H258 stress is valid, and the kernel of its 52
+positive rows is exactly the six slider and rattler directions, so the local theorem
+needs no second-order analysis.
+Its first-order radius estimate is $3\times10^{-4}$. The global half has a census and no
+exclusions; settled-case cuts alone leave about 7.7 million of the 20,155,518 orbits.
+The conditional minimum holds only for sides in $[4.675,4.676]$ and cannot be the
+terminal theorem; the morning report and projection review carry dated scope notes.
+No bound, frontier field or verdict changed.
+
+**Selected next entry:** `think-c7kv`, the BC-406 coordinator.
+It dispatches three disjoint lanes in parallel: BC-402 repairs the H258 identity proof
+(then BC-407 proves H-261, the local minimum modulo the slider cone); BC-408 measures
+H-262, the survivors under settled-case cuts and conditional charge floors; and BC-409
+identifies the endpoint with the catalogue polynomial (H-265). BC-410 and BC-411, which
+now owns the re-scoped `think-11ma`, wait for BC-408. Session 166 stops with hosted
+certification pending under `think-od9c`.
+
+#### Previous: Session 165 Post-optimality Overnight
+
 [Session 165](packing/campaign/agent-sessions/session-165-post-optimality-overnight.md)
 completed seven independently reviewed n17 rounds: exp-235 through exp-239, exp-240 and
 exp-241. The known packing now has a certified exact chart endpoint and an attained
@@ -1338,11 +1364,9 @@ H258 stopped after three preparation failures without a target stress verdict.
 The [morning report](docs/project/reviews/review-2026-10-01-post-optimality-morning.md)
 records the mathematics, independent-checker boundaries, costs and remaining gaps.
 
-**Selected next entry:** `think-11ma`, preregister a small exact geometric-exclusion
-pilot below the certified endpoint.
-Keep all orientations and closed-cell assignments; measure certified exclusions and
-unresolved cases before attempting a broad census.
-The overnight execution is complete, and no successor is launched by this handoff.
+Session 165 selected `think-11ma`, a small exact geometric-exclusion pilot below the
+certified endpoint. Session 166 re-scoped it to a cap at or above the endpoint, as
+BC-411.
 
 #### Previous n11 Intake and Verification
 
@@ -5290,6 +5314,11 @@ round that names the hypothesis, control roles included.
 | [H-258](packing/campaign/hypotheses/H-258-n17-common-core-stress.md) | blocked | Fixed common-core stress; instrument stopped after three symbolic preparation failures, before target use | 0 | — |
 | [H-259](packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md) | confirmed | Exact mixed-capacity centre cover and finite occupancy census; no geometric exclusion | 1 | exp-240 accepted: 161,100,756 versus 8,597,496,600 |
 | [H-260](packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md) | confirmed | Closed-assignment D4 occupancy quotient; no geometric exclusion | 1 | exp-241 accepted: 20,155,518 orbits |
+| [H-261](packing/campaign/hypotheses/H-261-n17-local-minimum-modulo-sliders.md) | blocked | The n17 endpoint is a strict local minimum modulo its six slider directions at an explicit radius; the capture target; waits on H-258 and its instrument (BC-407) | 0 | — |
+| [H-262](packing/campaign/hypotheses/H-262-n17-conditional-charge-occupancy-census.md) | blocked | Settled-case cuts and conditional charge floors leave at most 10^4 of the 20,155,518 occupancy orbits; decides whether the hybrid route is affordable; instrument to build (BC-408) | 0 | — |
+| [H-263](packing/campaign/hypotheses/H-263-n17-endpoint-adapted-cover.md) | open question | Which closed cover keeps the whole endpoint family inside one occupancy state and leaves the fewest survivors (BC-410) | 0 | — |
+| [H-264](packing/campaign/hypotheses/H-264-n17-geometric-exclusion-cost-per-leaf.md) | open question | The cost of one exact geometric exclusion on a uniform residue sample at a cap at or above the endpoint; re-scopes think-11ma (BC-411) | 0 | — |
+| [H-265](packing/campaign/hypotheses/H-265-n17-catalogue-polynomial-identity.md) | blocked | The certified chart endpoint is a root of the catalogue’s irreducible degree-18 polynomial; instrument to build (BC-409) | 0 | — |
 
 ### Confirmed
 
@@ -5459,9 +5488,9 @@ in separate tables: their units differ, and the same work can appear in both.
 
 | Rollups | count | turns | tool calls | errors | one-off code | wall |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| claimed by a session | 254 | 63,978 | 35,394 | 773 | 5,088 | 557.08 h |
+| claimed by a session | 258 | 64,493 | 35,736 | 781 | 5,112 | 562.1 h |
 | claimed by none | 65 | 14,196 | 8,149 | 185 | 1,184 | 67.13 h |
-| **measured** | **319** | **78,174** | **43,543** | **958** | **6,272** | **624.21 h** |
+| **measured** | **323** | **78,689** | **43,885** | **966** | **6,296** | **629.23 h** |
 
 | Session | Phases | Rollups | Turns | Tool calls | Errors | Wall |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -5517,7 +5546,8 @@ in separate tables: their units differ, and the same work can appear in both.
 | [session-159](packing/campaign/agent-sessions/session-159-n17-guzhou-r052-intake.md) | 2 | 6 | 844 | 484 | 10 | 2.34 h |
 | [session-160](packing/campaign/agent-sessions/session-160-n17-4640020-evand-wand125-intake.md) | 3 | 28 | 5,648 | 3,354 | 161 | 42.62 h |
 | [session-161](packing/campaign/agent-sessions/session-161-wand125-update-and-sept-28-intake.md) | 2 | 10 | 2,617 | 1,468 | 27 | 11.09 h |
-| *shared by 52 sessions* | — | 8 | 25,382 | 13,685 | 285 | 355.07 h |
+| [session-166](packing/campaign/agent-sessions/session-166-n17-route-after-pr265.md) | 2 | 4 | 515 | 342 | 8 | 5.02 h |
+| *shared by 53 sessions* | — | 8 | 25,382 | 13,685 | 285 | 355.07 h |
 
 | Codex interval receipt | declaring sessions | model responses | agent time | active union | wall window | live lower bound |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
@@ -5594,9 +5624,9 @@ in separate tables: their units differ, and the same work can appear in both.
 
 | Coverage | sessions |
 | --- | ---: |
-| measured | 111 |
+| measured | 112 |
 | unmeasured | 54 |
-| **total** | **165** |
+| **total** | **166** |
 
 <!-- END GENERATED: session-close-report -->
 

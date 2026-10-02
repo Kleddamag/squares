@@ -967,6 +967,10 @@ def test_the_slow_marker_is_declared_only_by_measured_nodes() -> None:
         "test_n17_endpoint_features.py": {
             "test_symbolic_zero_options_and_displacement_refusal",  # 28.33s
         },
+        # The fully substituted H-258 ring proof, measured 2026-10-02 (Session 167).
+        "test_n17_core_stress.py": {
+            "test_substituted_normalized_identity_completes_within_wall_bound",  # 7.10s
+        },
         # 18s of call time across 3.
         "test_audit_n54_source_formula.py": {
             "test_n54_source_formula_cli_agrees_under_optimization",  # 7.8s

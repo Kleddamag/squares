@@ -5,7 +5,7 @@ title: "Codify the result import process: one runbook for importing, recording, 
 kind: task
 status: in_progress
 priority: 1
-version: 14
+version: 20
 labels:
   - packing
   - results-register
@@ -25,8 +25,14 @@ child_order_hints:
   - is-01m3x1f6dzrazg1eftvr2b9v5m
   - is-01m3x1f8tme361sddwbbbb7fdt
   - is-01m3x1fagrtcdtyfv1bcj0jtx1
+  - is-01m3xrx5xc165z1jkhccsrasc9
+  - is-01m3xrx6p081zyj7efn8tjkqw0
+  - is-01m3xrx7fwv86ykdkyqcrrx762
+  - is-01m3xrx8b86kp8t1k6gj71p4ej
+  - is-01m3xvdvhf7hsd6x6svf0x81zj
+  - is-01m3yrdxte02c7bnygkke34ct4
 created_at: 2026-10-01T23:06:35.248Z
-updated_at: 2026-10-02T00:52:31.675Z
+updated_at: 2026-10-02T16:53:39.861Z
 ---
 W4 process-review, process focus. Owner request 2026-10-01: review the last GitHub issues (170, 227, 238, 247, 256, 279-282) and the ingestion done for evand's and others' results; audit how well the written intake procedure was followed; decide systematically whether result import is its own workflow or a standard sequence of existing W flows; codify it as 'the result import process', covering import, recording, validation, S/V/C assessment, documentation, the optional published review paper (precedent: n11-optimality-review), and the reply to the author. Artifact: a runbook plus clarified flow definitions. Check: documentation and records gates. Branch claude/result-intake-procedure.
 

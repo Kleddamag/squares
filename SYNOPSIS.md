@@ -520,6 +520,7 @@ case or experiment separately.
 
 | Document or collection | Role | Authority | Lifecycle | Current replacement |
 | --- | --- | --- | --- | --- |
+| [The n = 17 Optimality Proof, Explained](docs/project/n17-optimality-explainer.md) | first-principles tutorial | supporting | maintained | — |
 | [Review: The Site’s Documentation Cards and the Records Behind Them](docs/project/reviews/review-2026-10-01-site-documentation-records.md) | dated review record | record | retained | — |
 | [n17 Capture Feasibility by Local Radius](docs/project/reviews/review-2026-10-02-n17-capture-feasibility.md) | dated review record | record | retained | — |
 | [n17 Charge-Floor Pilot Review](docs/project/reviews/review-2026-10-02-n17-charge-floor-pilot.md) | dated review record | record | retained | — |
@@ -531,6 +532,8 @@ case or experiment separately.
 | [n17 Unique-State Capacity-One Cover](docs/project/reviews/review-2026-10-02-n17-unique-state-cover.md) | dated review record | record | retained | — |
 | [n17 Kernel Adaptation Specification](docs/project/reviews/review-2026-10-02-n17-kernel-adaptation-spec.md) | dated review record | record | retained | — |
 | [n17 Local Half — Composition of the Local Theorem, the Slide Coverage and the Cover](docs/project/reviews/review-2026-10-02-n17-local-half-composition.md) | dated review record | record | retained | — |
+| [n17 W7 Closure Review](docs/project/reviews/review-2026-10-02-n17-w7-closure.md) | dated review record | record | retained | — |
+| [n17 Branch-and-Bound Certifier Review](docs/project/reviews/review-2026-10-02-n17-branch-and-bound-certifier.md) | dated review record | record | retained | — |
 | [n17 Optimality Route After PR 265](docs/project/reviews/review-2026-10-01-n17-route-after-pr265.md) | dated review record | record | retained | — |
 | [X-048 Session 168 Pilots: Receipts](packing/campaign/explorations/X048-session-168-pilots/README.md) | research synthesis | record | retained | — |
 | [X-048 Session 167 Pilots: Receipts](packing/campaign/explorations/X048-session-167-pilots/README.md) | research synthesis | record | retained | — |

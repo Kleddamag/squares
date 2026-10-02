@@ -89,6 +89,17 @@ class PublicationHistoryEntry(NamedTuple):
 #: for each deployment's commit, what the page it built stated.
 PUBLICATION_HISTORY = (
     PublicationHistoryEntry(
+        version="v0.5.0",
+        first_published="October 2, 2026",
+        result_scope=(
+            "The website edition: the project gets a site of its own, with an overview, a "
+            "table that rates every result for significance, verification and "
+            "confirmation, and a frontier survey of $n = 1$ to $324$; the register takes "
+            "in the proof that $s(11) = 3.8770835…$ (T-060), reviewed in a second paper, "
+            "and the certified upper bound $s(17) ≤ 4.6755301$ (T-065)."
+        ),
+    ),
+    PublicationHistoryEntry(
         version="v0.4.2",
         first_published="September 28, 2026",
         result_scope=(
@@ -251,7 +262,7 @@ OPTIMALITY_PROOF_PUBLISHED = "September 29, 2026"
 #: fresh render, so a link naming the build commit would fail their drift check forever. It is
 #: in no version string. It moves when the claim documents are regenerated for an edition. It
 #: must be a commit on `main`; the site's own links name `main` itself (`devtools.repo_links`).
-PUBLICATION_REVISION = "0d7bb0fa"
+PUBLICATION_REVISION = "07f01438"
 
 
 def data_pathspec() -> tuple[str, ...]:

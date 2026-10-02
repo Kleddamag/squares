@@ -61,14 +61,14 @@ The source publishes no code for its exact checks.
 
 ## The Claims, as the Source States Them
 
-1. DS7’s Figure 34 points for $n = 17$ are not unavoidable at side $G_4 = (40\sqrt2 +
-   19)/17$: a unit square inside the container contains none of them, “checked in exact
-   rational arithmetic”.
+1. DS7’s Figure 34 points for $n = 17$ are not unavoidable at side
+   $G_4 = (40\sqrt2 + 19)/17$: a unit square inside the container contains none of
+   them, “checked in exact rational arithmetic”.
 2. The pattern reconstructed for every $k$ — $k$ rows at heights $m_y + jt$, even rows
    at offsets $0, u, u+1, \ldots, u+k-2$ and odd rows at $0, 1, \ldots, k-2, u+k-2$ from
-   $m_x$, with $t^2 + u^2 = 1$, $kt - u = k - 1$, $m_x = \sqrt2 - t/2$ and $m_y =
-   \sqrt2 - 1/2$ — has width and height exactly $G_k$, and matches Figure 34 up to the
-   reflection $y \mapsto G_4 - y$.
+   $m_x$, with $t^2 + u^2 = 1$, $kt - u = k - 1$, $m_x = \sqrt2 - t/2$ and
+   $m_y = \sqrt2 - 1/2$ — has width and height exactly $G_k$, and matches Figure 34 up
+   to the reflection $y \mapsto G_4 - y$.
 3. For $k \ge 4$ the mesh edges $(1-u, t)$ have length $d = \sqrt{2-2u} > 1$, so DS7’s
    Lemma 3 does not apply to their triangles, and the unit square $Q_k$ centred at the
    midpoint of such an edge and aligned with it misses every point with slack $(d-1)/2$.
@@ -87,30 +87,35 @@ comparison exactly; the
 [review of 2 October](../../../../docs/project/reviews/review-2026-10-02-green-ds7-theorem9.md)
 gives its findings in full. In short:
 
-- Claims 2 and 3 hold for every $k$ from 4 to 12: the identities are exact, $Q_k$ fits in
-  the closed container and misses every point, with slack $(d-1)/2$, and the square the
-  source publishes for $k = 4$ does too, its centre read in container coordinates as its
-  Figure 1 draws it. An independent search finds no wider empty square at any of these
-  $k$. Claim 1 follows.
+- Claims 2 and 3 hold for every $k$ from 4 to 17, the range this record’s entry
+  covers: the identities are exact, $Q_k$ fits in the closed container and misses every
+  point, with slack $(d-1)/2$, and the square the source publishes for $k = 4$ does
+  too, its centre read in container coordinates as its Figure 1 draws it. An
+  independent search finds no wider empty square at any of these $k$. Claim 1 follows.
 - The GIF in `ds7-fig34-L17.svg` is DS7’s own, and its sixteen dots sit within 0.9 pixel
   of the reconstructed $k = 4$ points at 38.2 pixels per unit, row $j = 0$ at the top of
   the image as claim 2 says.
 - Claim 4 holds for $k = 3$ and fails for $k = 2$. At $k = 3$ the scaled pattern is
-  certified unavoidable a thousandth below $G_3$. At $k = 2$, $t = 4/5$ and the side
-  margin $m_x = \sqrt2 - 2/5$ exceeds 1, so a unit square in the strip along either
-  side wall contains no point. Theorem 9 at $k = 2$ is still true, because $s(5) = 2 +
-  1/\sqrt2$ exceeds $G_2 = 2\sqrt2 - 1/5$, but this pattern does not prove it.
+  certified unavoidable a thousandth below $G_3$ in the receipt’s run, and
+  $4.1 \times 10^{-6}$ below it in a longer run the review reports. At $k = 2$,
+  $t = 4/5$ and the side margin $m_x = \sqrt2 - 2/5$ exceeds 1, so a unit square in the
+  strip along either side wall contains no point. Theorem 9 at $k = 2$ is still true,
+  because $s(5) = 2 + 1/\sqrt2$ exceeds $G_2 = 2\sqrt2 - 1/5$, but this pattern does
+  not prove it.
 - Claim 5 agrees with this record’s `E-green-ds7-theorem9-reported-lower`, which has
   excluded the printed Table 2 cell since 7 September.
 
-The tool’s run of 2 October is in [`receipts/`](receipts/).
+The tool’s run of 2 October for $k = 2$ to $17$ is in [`receipts/`](receipts/):
+[`check_green_ds7.log`](receipts/check_green_ds7.log), written by
+`devtools.replay_receipt`, and [`check_green_ds7.json`](receipts/check_green_ds7.json),
+one record per $k$ with every checked square’s exact centre and rotation.
 
 ## Limitations
 
 The write-up reconstructs one argument from DS7’s figure and statement.
 Green’s own proof is unpublished, so the source shows, and this packet’s check confirms,
-only that the argument the published material suggests does not prove Theorem 9 for $k
-\ge 4$; neither says the bound is false. The ceiling the check reports is an upper bound
+only that the argument the published material suggests does not prove Theorem 9 for
+$k \ge 4$; neither says the bound is false. The ceiling the check reports is an upper bound
 on what this one pattern, scaled, can prove, not on $s(k^2+1)$.
 
 <!-- This document follows common-doc-guidelines.md.

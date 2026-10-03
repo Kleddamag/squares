@@ -17,7 +17,8 @@ The ledger. A YAML file declares one entry per certified class:
 - `certificate`: the saved proof objects, or null where the certifier keeps none.
 - `status`: `admitted` or `pending`, and `evidence`: the document that admits the entry, a
   review or the experiment record holding a reviewed verifier's full pass, required once it
-  is admitted.
+  is admitted. The census checks only that the file exists. It is a pointer for readers,
+  not a check: what admits an entry is its verification.
 - `verification`, required once admitted: the standing verifier's receipt
   (`verify_n17_kernel_certificate` or `verify_n17_bb_certificate`, written separately
   from the producers). A receipt records the verifier's path and the revision it ran at
@@ -29,6 +30,13 @@ review}`: the file, the revision a review admitted, and the review document. A
 verification counts when it ran at a listed revision of a listed path, or at any revision
 at which that file is the listed revision's file, and not on uncommitted bytes. Git says
 what the file was at each revision; no digest the repository wrote is compared.
+
+A listing may also carry `admits`, the names of the only entries it may verify; a
+verification at it for any other entry is refused. This keeps a revision later found
+unsound to the receipts it already wrote, on which the unsound branch is shown not to
+have run. The kernel listings before 318c28c42 carry it: they accept an uncovered
+zero-area row, and those from e0b66f07b on an uncovered one-point section, and neither
+branch ran on W7, SW9 or N1.
 
 Every path is repository-relative.
 
@@ -42,10 +50,19 @@ The checks. An entry is refused, and no count is reported at all, unless:
 - no D4 image of the pattern lies in the endpoint's state, which must survive;
 - a declared certificate exists, and for the kernel holds the seed and node the receipt
   names;
-- an admitted entry names evidence that exists, and no class is declared twice;
+- an admitted entry names evidence that exists (existence is all that is checked), and
+  no class is declared twice;
 - an admitted entry names a saved certificate and a verification receipt that exists,
-  PASSes in full mode, comes from a verifier of the entry's kind at a reviewed revision,
-  names the entry's certificate directory, and checked the declared class.
+  PASSes in full mode, comes from a verifier of the entry's kind at a reviewed revision
+  whose listing admits the entry, checked the declared class, and checked the
+  certificate's objects.
+
+Objects are matched by content id: the `<id>` in `seed-<id>.json.gz` and
+`node-<id>.json.gz`, or in the manifest's `<id>.json.gz` for the branch and bound, as the
+producer and verification receipts name them. The ids are compared as names; no file is
+hashed. The directory the verification ran in is not compared, so a certificate
+directory can be renamed without verifying it again, while a verification of other
+objects is refused.
 
 The report. The certified line counts admitted entries only. Pending entries with a
 verified receipt are a separate projection, and pending entries still awaiting a receipt a
@@ -55,7 +72,7 @@ one, what it would remove from the certified survivors. Last, every class the fl
 selector flagged in the given receipts and the ledger does not admit is listed with the
 states and orbits it would remove from the certified survivors, and the survivors if all
 of them were certified. Those are heuristic projections and never enter the certified
-count.
+count. The report's `evidence_note` repeats that `evidence` is checked only to exist.
 """
 
 from __future__ import annotations
@@ -101,6 +118,10 @@ BB_CERTIFIED = "certified-infeasible"
 VERIFICATION_SCHEMA = "n17-certificate-verification/v1"
 FIELDS = ("name", "cells", "certifier", "receipt", "certificate", "status", "evidence")
 VERIFIER_FIELDS = {"path", "revision", "review"}
+EVIDENCE_NOTE = (
+    "each entry's evidence is a pointer for readers to the document that admits it; the "
+    "census checks only that the file exists"
+)
 PROVENANCE = provenance(Path(__file__))
 
 States = NDArray[np.int64]
@@ -189,21 +210,30 @@ def receipt_cells(
     return receipt.get("pattern")
 
 
+def object_names(certifier: str, ids: Any, manifest: str) -> list[str]:
+    """The file names of a certificate's objects, from the content ids a receipt gives them:
+    `seed-<id>.json.gz` and `node-<id>.json.gz` for the kernel, `<id>.json.gz` for the
+    branch and bound's manifest, whose id the receipt holds under the key `manifest`.
+
+    The ids are names here, and are matched as names; nothing is hashed (OR-16).
+    """
+    named: dict[str, Any] = ids if isinstance(ids, dict) else {}
+    if certifier == "kernel":
+        return [f"{kind}-{named.get(f'{kind}_sha256')}.json.gz" for kind in ("seed", "node")]
+    return [f"{named.get(manifest)}.json.gz"]
+
+
 def check_certificate(
     entry: dict[str, Any], receipt: dict[str, Any], root: Path, where: str
-) -> None:
-    """The declared certificate directory holds the objects the producer receipt names.
-
-    The producers name saved objects by content id; the names are looked up as names.
-    """
+) -> list[str]:
+    """The declared certificate directory holds the objects the producer receipt names;
+    their file names."""
     saved = resolve(root, entry["certificate"], f"{where}: certificate")
-    if entry["certifier"] == "kernel":
-        names = [f"{kind}-{receipt.get(f'{kind}_sha256')}.json.gz" for kind in ("seed", "node")]
-    else:
-        names = [f"{receipt.get('certificate_manifest')}.json.gz"]
+    names = object_names(entry["certifier"], receipt, "certificate_manifest")
     for name in names:
         if not (saved / name).is_file():
             raise RefusedError(f"{where}: the certificate holds no {name}")
+    return names
 
 
 def file_at(root: Path, revision: str, path: str) -> str | None:
@@ -221,14 +251,24 @@ def file_at(root: Path, revision: str, path: str) -> str | None:
     return completed.stdout.strip() if completed.returncode == 0 else None
 
 
-def load_verifiers(root: Path, declared: Any, ledger: Path) -> list[dict[str, str]]:
-    """The header's reviewed verifiers, each a path, a revision and a review that exist."""
+def load_verifiers(root: Path, declared: Any, ledger: Path) -> list[dict[str, Any]]:
+    """The header's reviewed verifiers, each a path, a revision and a review that exist, and
+    optionally `admits`, the only entries the listing may verify."""
     if not isinstance(declared, list) or not all(
-        isinstance(item, dict) and set(item) == VERIFIER_FIELDS for item in declared
+        isinstance(item, dict) and VERIFIER_FIELDS <= set(item) <= {*VERIFIER_FIELDS, "admits"}
+        for item in declared
     ):
-        raise RefusedError(f"{ledger}: verifiers must be a list of {{path, revision, review}}")
+        raise RefusedError(
+            f"{ledger}: verifiers must be a list of {{path, revision, review}}, each "
+            "optionally with admits"
+        )
     for item in declared:
         where = f"verifier {item['path']} at {item['revision']}"
+        admits = item.get("admits", [])
+        if not isinstance(admits, list) or not all(
+            isinstance(name, str) and name for name in admits
+        ):
+            raise RefusedError(f"{where}: admits must be a list of entry names")
         _ = resolve(root, item["review"], f"{where}: review")
         if file_at(root, str(item["revision"]), str(item["path"])) is None:
             raise RefusedError(f"{where}: the revision holds no such file")
@@ -260,26 +300,46 @@ def verifier_of(
 
 
 def reviewed(
-    root: Path, path: str, revision: str, verifiers: list[dict[str, str]]
-) -> dict[str, str] | None:
-    """The listed verifier whose file is the file at `revision`, or None."""
+    root: Path, path: str, revision: str, verifiers: list[dict[str, Any]], name: str
+) -> dict[str, Any]:
+    """The listing whose file is the file at `revision` and that admits the entry `name`.
+
+    Refuses when no listing has that file, or none that has it admits `name`.
+    """
     found = file_at(root, revision, path)
-    if found is None:
-        return None
-    for item in verifiers:
-        if item["path"] == path and file_at(root, str(item["revision"]), path) == found:
+    listed = (
+        []
+        if found is None
+        else [
+            item
+            for item in verifiers
+            if item["path"] == path and file_at(root, str(item["revision"]), path) == found
+        ]
+    )
+    for item in listed:
+        if "admits" not in item or name in item["admits"]:
             return item
-    return None
+    if not listed:
+        raise RefusedError(f"entry {name!r}: {path} at {revision} is not a reviewed verifier")
+    limits = "; ".join(
+        f"{str(item['revision'])[:9]} admits {', '.join(item['admits']) or 'no entry'}"
+        for item in listed
+    )
+    raise RefusedError(
+        f"entry {name!r}: {path} at {revision} is reviewed only for other entries ({limits}); "
+        "verify this entry at a listed revision without admits"
+    )
 
 
 def check_verification(
     cover: Cover,
     entry: dict[str, Any],
-    context: tuple[Path, list[dict[str, str]], int],
+    context: tuple[Path, list[dict[str, Any]], int, list[str]],
     where: str,
 ) -> dict[str, Any]:
-    """The standing verifier's receipt: full, passing, reviewed, about this certificate."""
-    root, verifiers, mask = context
+    """The standing verifier's receipt: full, passing, reviewed for this entry, and about
+    this certificate's objects, named by their file names."""
+    root, verifiers, mask, objects = context
     declared = entry.get("verification")
     if not isinstance(declared, dict) or not {"receipt"} <= set(declared) <= {
         "receipt",
@@ -299,11 +359,13 @@ def check_verification(
     if verification.get("mode") != "full":
         raise RefusedError(f"{where}: the verification is a sample, not a full check")
     verifier, revision = verifier_of(declared, verification, where)
-    admitted = reviewed(root, verifier, revision, verifiers)
-    if admitted is None:
-        raise RefusedError(f"{where}: {verifier} at {revision} is not a reviewed verifier")
-    if verification.get("directory") != entry["certificate"]:
-        raise RefusedError(f"{where}: the verification names a different certificate")
+    admitted = reviewed(root, verifier, revision, verifiers, str(entry["name"]))
+    checked = object_names(certifier, verification.get("certificate"), "manifest_sha256")
+    if checked != objects:
+        raise RefusedError(
+            f"{where}: the verification checked other objects ({', '.join(checked)}) than "
+            f"the certificate's ({', '.join(objects)})"
+        )
     names = verification.get("cells" if certifier == "kernel" else "pattern")
     if class_mask(cover, names, f"{where}: verification") != mask:
         raise RefusedError(f"{where}: the verification checked another class")
@@ -317,7 +379,7 @@ def check_verification(
 
 
 def check_entry(
-    cover: Cover, entry: Any, root: Path, index: int, verifiers: list[dict[str, str]]
+    cover: Cover, entry: Any, root: Path, index: int, verifiers: list[dict[str, Any]]
 ) -> Entry:
     """Every check on one ledger entry; refuses on the first that fails."""
     if not isinstance(entry, dict) or not set(FIELDS) <= set(entry) <= {
@@ -366,9 +428,9 @@ def check_entry(
     if admitted and entry["certificate"] is None:
         raise RefusedError(f"{where}: an admitted entry names its saved certificate")
     if entry["certificate"] is not None:
-        check_certificate(entry, receipt, root, where)
+        objects = check_certificate(entry, receipt, root, where)
         if admitted or entry.get("verification") is not None:
-            context = (root, verifiers, mask)
+            context = (root, verifiers, mask, objects)
             record["verification"] = check_verification(cover, entry, context, where)
     elif entry.get("verification") is not None:
         raise RefusedError(f"{where}: a verification needs the saved certificate")
@@ -501,6 +563,7 @@ def census(
         "ledger": str(ledger.relative_to(root)) if ledger.is_relative_to(root) else str(ledger),
         "census": full,
         "entries": rows,
+        "evidence_note": EVIDENCE_NOTE,
         "certified": {"admitted": len(admitted), **certified},
         "pending_verified_projection": {
             "entries": len(verified),

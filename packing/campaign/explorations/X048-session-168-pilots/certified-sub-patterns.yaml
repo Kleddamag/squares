@@ -3,18 +3,25 @@
 # entries marked `admitted`; a `pending` entry is a projection, reported on its own line.
 # Every path is repository-relative. Admitting an entry means setting `status: admitted`
 # and naming the document that admits it in `evidence`: since OR-16's amendment, the
-# experiment record holding the full pass of a reviewed standing verifier.
+# experiment record holding the full pass of a reviewed standing verifier. The census
+# checks only that `evidence` exists. It is a pointer for readers, not a check; what
+# admits an entry is its `verification`.
 schema: n17-certified-sub-patterns/v2
 design: ring-3-voronoi-8-tabbed-unique
 # The standing verifiers, written separately from the producers, at the revisions a review
 # admitted. An admitted entry counts only with a full, passing verification by a listed
-# verifier at a listed revision, or at a later one at which its file is unchanged.
+# verifier at a listed revision, or at a later one at which its file is unchanged. A
+# listing with `admits` may verify only the entries it names; the 318c28c42 listing says
+# why the earlier kernel listings carry it. A verification is matched to its certificate
+# by the content ids in the objects' file names (seed and node, or the manifest), not by
+# directory, so a certificate directory can be renamed without verifying it again.
 verifiers:
   # The review verifiers retained at 556561586: lane R3's for the kernel (W7's receipt),
   # lane R4's for the branch and bound (A's receipt).
   - path: packing/devtools/verify_n17_kernel_certificate.py
     revision: 556561586095f1eaf7952e32199f40a4d3360d20
     review: docs/project/reviews/review-2026-10-02-n17-w7-closure.md
+    admits: [W7]
   - path: packing/devtools/verify_n17_bb_certificate.py
     revision: 556561586095f1eaf7952e32199f40a4d3360d20
     review: docs/project/reviews/review-2026-10-02-n17-branch-and-bound-certifier.md
@@ -24,6 +31,7 @@ verifiers:
   - path: packing/devtools/verify_n17_kernel_certificate.py
     revision: e0b66f07b1d5daa04da0edc07dd591d7c17d9c47
     review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
+    admits: []  # no receipt in this ledger ran at this file
   - path: packing/devtools/verify_n17_bb_certificate.py
     revision: ff5471e8902aeab0a9247501e9a3de380619d56a
     review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
@@ -33,15 +41,20 @@ verifiers:
   - path: packing/devtools/verify_n17_kernel_certificate.py
     revision: 575795e029151abc52d892126acd05e23795641d
     review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
+    admits: []  # no receipt in this ledger ran at this file
   # 25c1cdef6 changed only I/O and recording since 575795e02 (no file-name read-back; provenance
   # for the module digest). Its mathematical checks are unchanged; the 47 condition tests pass.
   - path: packing/devtools/verify_n17_kernel_certificate.py
     revision: 25c1cdef690f4c1d398364a13e3cf96281c01c17
     review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md
-  # The kernel verifier with exact point and segment covers (lane V1, after n11's finding
-  # C2). Every earlier listed kernel revision accepts an uncovered zero-area row; the
-  # admitted receipts above stand because on W7, SW9 and N1 that branch never ran (review
-  # section 6). New admissions should be verified at this revision.
+    # SW9's and N1's receipts ran at fd2c9602e and ae4f5fb43, where the file is this one.
+    admits: [SW9, N1]
+  # The kernel verifier with exact point and segment covers (lane V1, after the n11
+  # review's finding C2). Every earlier listed kernel revision accepts an uncovered
+  # zero-area row, and those from e0b66f07b on also an uncovered one-point section. On W7,
+  # SW9 and N1 neither branch ran (review section 6.2), so their receipts stand, and each
+  # earlier kernel listing admits only the entries whose receipts it wrote. A new entry
+  # must be verified at this revision or a later one at which the file is unchanged.
   - path: packing/devtools/verify_n17_kernel_certificate.py
     revision: 318c28c42afaa4128c07dcbc785d717adbaf95a9
     review: docs/project/reviews/review-2026-10-03-n17-verifier-rewrites.md

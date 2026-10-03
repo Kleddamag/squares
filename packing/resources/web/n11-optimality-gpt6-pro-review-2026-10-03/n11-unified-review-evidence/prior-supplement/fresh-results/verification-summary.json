@@ -1,0 +1,98 @@
+{
+  "d4_trace_regenerated": false,
+  "dependency_versions": {
+    "mpmath": "1.3.0",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "sympy": "1.14.0"
+  },
+  "field_component": "Exact finite-set and 44-subset minimum verification from the 59 recorded fresh geometry receipts.",
+  "field_geometry_rerun": false,
+  "global_optimality_proved": false,
+  "local_component": "Both exact implementations rerun; all 8,448 residual margins and all 88 negative features checked in each.",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "scope": "This is the review supplement, not an end-to-end replay of all 2,180 exclusions or the capture graph. It does not discharge those omitted global premises.",
+  "seconds": 29.26907256800041,
+  "source_manifest_sha256": "be0e69e6b03832be13fa0b03af9b45063e096917e6c1c665cff3447561be4965",
+  "stages": [
+    {
+      "exit_code": 0,
+      "log": "fresh-results/logs/endpoint-root-and-cap.txt",
+      "script": "independent_endpoint_check.py",
+      "seconds": 0.03113194800062047,
+      "stage": "endpoint-root-and-cap"
+    },
+    {
+      "exit_code": 0,
+      "log": "fresh-results/logs/short-rational-cap.txt",
+      "script": "independent_cap_short_certificate.py",
+      "seconds": 0.024287103999995452,
+      "stage": "short-rational-cap"
+    },
+    {
+      "exit_code": 0,
+      "log": "fresh-results/logs/parameter-irreducibility.txt",
+      "script": "independent_irreducibility.py",
+      "seconds": 0.022429151999858732,
+      "stage": "parameter-irreducibility"
+    },
+    {
+      "exit_code": 0,
+      "log": "fresh-results/logs/side-irreducibility.txt",
+      "script": "independent_side_irreducibility.py",
+      "seconds": 0.023267538999789394,
+      "stage": "side-irreducibility"
+    },
+    {
+      "exit_code": 0,
+      "log": "fresh-results/logs/exact-witness.txt",
+      "script": "independent_exact_witness.py",
+      "seconds": 0.45299994299966784,
+      "stage": "exact-witness"
+    },
+    {
+      "exit_code": 0,
+      "log": "fresh-results/logs/symbolic-closing-contact.txt",
+      "script": "independent_witness_simplify.py",
+      "seconds": 0.7758831690007355,
+      "stage": "symbolic-closing-contact"
+    },
+    {
+      "exit_code": 0,
+      "log": "fresh-results/logs/d4-read-only-incidence.txt",
+      "script": "verify_d4_review.py",
+      "seconds": 0.12820737399943027,
+      "stage": "d4-read-only-incidence"
+    },
+    {
+      "exit_code": 0,
+      "log": "fresh-results/logs/d4-independent-geometry.txt",
+      "script": "d4_independent_geometry.py",
+      "seconds": 0.5783237010000448,
+      "stage": "d4-independent-geometry"
+    },
+    {
+      "exit_code": 0,
+      "log": "fresh-results/logs/simplified-local-first-implementation.txt",
+      "script": "local-isolation-audit/verify_simplified_local.py",
+      "seconds": 16.630940766000094,
+      "stage": "simplified-local-first-implementation"
+    },
+    {
+      "exit_code": 0,
+      "log": "fresh-results/logs/simplified-local-second-implementation.txt",
+      "script": "second_review_simplified_local.py",
+      "seconds": 10.184979405999911,
+      "stage": "simplified-local-second-implementation"
+    },
+    {
+      "exit_code": 0,
+      "log": "fresh-results/logs/field-subset-finite-check.txt",
+      "script": "verify_field_subset.py",
+      "seconds": 0.32290753300003416,
+      "stage": "field-subset-finite-check"
+    }
+  ],
+  "status": "PASS_REVIEW_SUPPLEMENT_COMPONENTS",
+  "whole_global_proof_replayed": false
+}

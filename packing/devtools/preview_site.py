@@ -31,7 +31,7 @@ Usage, from `packing/`:
 `n11-optimality-review` or `workbench`. A link to it then points at a missing page, which
 the link check reports rather than fails on, and a build already in `--output` stays.
 `--page` shoots only the pages it
-names, each with any fragment (`cases.html#n-11` is one case's record), and `--press`
+names, each with any fragment (`frontier.html#n-11` is one case's row), and `--press`
 names an element to press on each page that has one (a card, an atlas cell), so what it
 opens is checked and shot too: its math, its wide blocks, and its words, none of which
 may be broken across lines inside the word (`split_problem`). Every page is also laid
@@ -183,11 +183,13 @@ def build(output: Path, skip: set[str]) -> None:
     if "pages" not in skip:
         pages = render_overview.render_all()
         fragments = render_overview.result_fragments()
+        records = render_overview.case_records()
         forwarders = render_overview.forwarder_pages()
-        render_overview.write_site(output, [*pages, *fragments, *forwarders])
+        render_overview.write_site(output, [*pages, *fragments, *records, *forwarders])
         for page in pages:
             print(f"wrote {output / page.name}")
         print(f"wrote {len(fragments)} result overviews beside them")
+        print(f"wrote {len(records)} case record files under {output / 'cases'}")
         for forwarder in forwarders:
             print(f"wrote {output / forwarder.name}, a forwarder")
         print(f"wrote {social_card.write(output)}, the link preview's card")
@@ -271,8 +273,9 @@ def serve(output: Path, port: int) -> ThreadingHTTPServer:
 
 def shot_stem(name: str) -> str:
     """A page's screenshot name, less its width: `workbench/index.html` is `workbench`,
-    `cases.html#n-11` is `cases-n-11`, and a page in a directory keeps the directory's
-    name, so every shot lands in the one folder."""
+    `frontier.html#n-11` is `frontier-n-11`, `cases/index.html#n-11` is `cases-n-11`, and
+    a page in a directory keeps the directory's name, so every shot lands in the one
+    folder."""
     stem = name.replace("/index.html", "").replace(".html", "")
     return stem.replace("#", "-").replace("/", "-")
 
@@ -540,7 +543,7 @@ def _pending(page: Page) -> int:
 
 def press(page: Page, selector: str) -> list[str]:
     """Press the first element `selector` matches and wait for what it opens to typeset
-    its math, a page it frames included (the case popover frames `cases.html`); returns
+    its math, a page it frames included (a card's popover frames its page); returns
     the formulas then set in the wrong face. A popover's math is only typeset once it
     opens, so the page's own check cannot see it."""
     page.locator(selector).first.click()

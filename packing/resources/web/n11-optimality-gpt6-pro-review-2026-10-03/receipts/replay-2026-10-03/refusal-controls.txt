@@ -1,0 +1,8 @@
+$ venv/bin/python -O -B n11-unified-review-evidence/verify_reconciliation.py --hashes-only
+RuntimeError: This mathematical checker refuses Python -O/-OO.
+exit=1
+
+# A copy of the extracted archive with one space appended to source-reviews/report-A.md:
+$ venv/bin/python -B <copy>/verify_reconciliation.py --hashes-only
+REFUSED: Input identity mismatch: source-reviews/report-A.md
+exit=2

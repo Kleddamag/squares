@@ -1,6 +1,6 @@
 // Every open popover as laid out: its box, the window it is in, the margin the window
 // keeps above and below it and at its sides, and how much of what it holds it shows
-// without scrolling. A popover that frames a page (the case popover frames `cases.html`)
+// without scrolling. A popover that frames a page (a card's popover frames its page)
 // scrolls inside its frame, not itself, so its share is the frame's: the frame's height
 // over the height of the page in it. Lengths are CSS pixels and a share is from 0 to 1.
 () => {

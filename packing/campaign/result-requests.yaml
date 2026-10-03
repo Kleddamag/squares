@@ -113,19 +113,31 @@ issues:
     opened: '2026-10-02'
     state: open
     kind: defect-report
-    triage: pending
+    triage: done
     summary: >-
       The sixteen points of Friedman's Figure 34, the unavoidable set behind Green's
       Theorem 9 (DS7), are not unavoidable: a unit square in the container of side G_4
       misses them, checked in exact rational arithmetic, and the reconstructed pattern
       fails the same way for every k >= 4. Not a counterexample to the bound itself.
     read_through: '2026-10-02T14:06:26Z'
-    results: []
+    results:
+      - key: green-ds7-theorem9
+        claim: >-
+          Figure 34's pattern, the only argument DS7 publishes for Green's Theorem 9, is not
+          an unavoidable set for any k >= 4, so the theorem's bound is unproved there
+        source: body
+        evidence: [E-green-ds7-theorem9-reported-lower]
+        defect: true
     asks:
       - what: >-
           Record on E-green-ds7-theorem9-reported-lower that the published argument fails
           for k >= 4, for example in its external_review
-        state: queued
+        state: done
+        note: >-
+          Its external_review is defect-found (2026-10-02): devtools.check_green_ds7
+          decides exactly, for every k from 4 to 17, that a closed unit square inside
+          [0, G_k]^2 misses every point of the reconstructed pattern, and the entry's
+          blocker asks for Green's complete proof before any promotion.
     beads: [think-abie, think-r7yt]
     answer_bead: think-xoob
     replies: []
@@ -134,8 +146,9 @@ issues:
       E-green-ds7-theorem9-reported-lower or the report is refuted, and a reply says
       which.
     notes: >-
-      Lane T is triaging it (think-abie). The certificates the issue lists above G_k at
-      k = 4 to 10 are already registered or queued under #281, #282 and #294.
+      Triaged by lane T (think-abie): the defect is recorded on the evidence entry. The
+      certificates the issue lists above G_k at k = 4 to 10 are already registered or
+      queued under #281, #282 and #294.
 
   - number: 296
     title: 'T-064 (s(k² − 3) = k): an independent second checker for Valid7, with public records'
@@ -326,7 +339,7 @@ issues:
       - key: rect-34
         claim: Rectangle-density lower bounds raised at 34 counts in n = 19…95 (1a25a5e)
         source: body
-        register: [T-068]
+        register: [T-068, T-074]
     beads: [think-6ei5]
     answer_bead: think-pmxk
     replies: []

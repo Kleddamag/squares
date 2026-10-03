@@ -234,7 +234,7 @@ DEFAULT_PAGES = (
     "epistemics.html",
     "readme.html",
     "index.html",
-    "cases.html#n-11",
+    "cases/index.html#n-11",
 )
 #: How long a load may take to finish its math before it is reported as it stands.
 WAIT_MS = 35_000

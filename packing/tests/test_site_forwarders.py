@@ -129,6 +129,7 @@ def _arrivals(root: str) -> dict[str, str]:
         "explainer.html": f"{root}/{LOWER_BOUNDS_PAPER}",
         "n11-optimality/t-060-explainer.html": f"{root}/{OPTIMALITY_PAPER}",
         "n11-optimality/index.html": f"{root}/{OPTIMALITY_PAPER}",
+        "cases.html": f"{root}/cases/index.html",
     }
 
 

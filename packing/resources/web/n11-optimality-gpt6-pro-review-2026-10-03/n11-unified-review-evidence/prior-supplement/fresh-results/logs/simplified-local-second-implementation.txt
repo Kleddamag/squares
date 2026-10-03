@@ -1,0 +1,110 @@
+{
+  "status": "PASS_SECOND_REVIEW_SIMPLIFIED_LOCAL",
+  "scope": "New simplified local box/constants only; original shared branch inventory retained",
+  "original_rectangle_nested": true,
+  "enlarged_angle_coordinates": [
+    29,
+    32
+  ],
+  "enlarged_square_indices": [
+    9,
+    10
+  ],
+  "working_box": "1/64",
+  "pair_K_over_r2": {
+    "(1, 1)": "21/2",
+    "(1, 2)": "57/4",
+    "(2, 1)": "99/4",
+    "(2, 2)": "30"
+  },
+  "wall_K_over_r2": [
+    "3/4",
+    "3"
+  ],
+  "all_elementary_functions_reconstructed": 1936,
+  "available_features": 24,
+  "unavailable_features": 88,
+  "raw_branch_selections": 512,
+  "distinct_branches": 128,
+  "distinct_row_gradients": 56,
+  "matched_tied_elementary_functions": 62,
+  "row_alias_groups_with_multiple_functions": 6,
+  "needed_pairs": [
+    [
+      0,
+      6
+    ],
+    [
+      1,
+      9
+    ],
+    [
+      2,
+      8
+    ],
+    [
+      2,
+      10
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      3,
+      5
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      4,
+      8
+    ],
+    [
+      5,
+      6
+    ],
+    [
+      6,
+      7
+    ],
+    [
+      6,
+      8
+    ],
+    [
+      7,
+      9
+    ],
+    [
+      8,
+      9
+    ],
+    [
+      9,
+      10
+    ]
+  ],
+  "negative_features_checked": 88,
+  "smallest_negative_margin_float": 0.005897503722317347,
+  "smallest_negative_feature": [
+    4,
+    8,
+    4,
+    0,
+    "second-before-first",
+    2
+  ],
+  "independent_residuals_and_dual_margins_checked": 8448,
+  "maximum_residual": "577537361855137/200000000000000000000000",
+  "worst_ratio": "237880431895517578125000/249999999158632916515561",
+  "worst_ratio_float": 0.9515217307843866,
+  "worst_at": [
+    105,
+    31,
+    -1
+  ],
+  "seconds": 9.731166182999914
+}

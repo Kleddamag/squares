@@ -194,7 +194,7 @@ def _record_context(base: str = "") -> LinkContext:
             f"{REPO_URL}/blob/{BRANCH}/defects.md",
         ),
         # A case file is that case's record.
-        ('<a href="packing/frontier/n-011.md"><code>n-011</code></a>', "", "cases.html#n-11"),
+        ('<a href="packing/frontier/n-011.md"><code>n-011</code></a>', "", "cases/11.html"),
     ],
 )
 def test_a_link_to_a_record_reaches_the_page_that_shows_it(
@@ -348,7 +348,9 @@ def test_the_pages_render_self_contained_with_a_toc(
 
 
 def test_no_relative_repository_link_survives(pages: dict[str, render_overview.Page]) -> None:
-    served = {"./", *render_overview.SITE_PAGES}
+    from devtools.render_case_pages import case_url  # noqa: PLC0415
+
+    served = {"./", *render_overview.SITE_PAGES, *(case_url(n) for n in range(1, 325))}
     for name, page in pages.items():
         article = re.search(r"<article\b.*?</article>", page.html, re.DOTALL)
         assert article is not None
@@ -542,7 +544,7 @@ def test_the_introductions_links_reach_the_sites_own_pages(
         ("all-results.html#t-060", "T-060"),
         ("all-results.html", "results register"),
         ("frontier.html", "frontier"),
-        ("cases.html#n-11", "case record"),
+        ("cases/11.html", "case record"),
         ("epistemics.html", "the rungs"),
         (f"{REPO_URL}/blob/{BRANCH}/docs/review.md", "review"),
         ("https://example.org/proof", "the proof"),

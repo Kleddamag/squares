@@ -95,6 +95,15 @@ DECLARED_CONSUMERS = {
         "and blocker wherever that trails the report; it reads the field as a ceiling and "
         "never as s(n)"
     ),
+    "packing/devtools/render_stack_results.py": (
+        "counts the case records whose verified_upper_bound value differs between two "
+        "revisions, for a pull request's description; it compares the stored strings and "
+        "reads no value as s(n) or as anything but the ceiling the record holds"
+    ),
+    "packing/tests/test_render_stack_results.py": (
+        "builds two case records whose ceiling is the same and checks the rendered count of "
+        "changed ceilings is zero; it asserts nothing about s(n)"
+    ),
     "packing/tests/test_upper_bound_packets.py": (
         "checks that each certified case's ceiling cites its replay and agrees with the "
         "report exactly where the receipt says it does; it asserts nothing about s(n)"
@@ -311,6 +320,11 @@ DECLARED_CONSUMERS = {
     "packing/tests/test_frontier_page.py": (
         "builds the frontier page's cells from the real records and asserts their text; "
         "it reads the ceiling only as the page does"
+    ),
+    "packing/tests/test_overview.py": (
+        "holds the homepage introduction's upper-bound example for n = 29 at or above the "
+        "verified ceiling as well as the reported bound, so the example is itself a proved "
+        "ceiling; it reads the field as a ceiling, never as s(n)"
     ),
     "docs/project/specs/active/plan-2026-09-29-github-pages-overview.md": (
         "the plan for the overview and frontier pages, naming the field as the verified "

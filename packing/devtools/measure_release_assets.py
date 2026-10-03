@@ -143,18 +143,19 @@ def _atlas_pdfs() -> None:
 
 
 def _site_pages(scratch: Path) -> None:
-    """The site's own pages, result overviews, forwarders and link-preview card, as
-    `preview_site.build` writes them."""
+    """The site's own pages, result overviews, case record files, forwarders and
+    link-preview card, as `preview_site.build` writes them."""
     from devtools import render_overview, social_card  # noqa: PLC0415
 
     pages = render_overview.render_all()
     fragments = render_overview.result_fragments()
+    records = render_overview.case_records()
     forwarders = render_overview.forwarder_pages()
-    render_overview.write_site(scratch, [*pages, *fragments, *forwarders])
+    render_overview.write_site(scratch, [*pages, *fragments, *records, *forwarders])
     card = social_card.write(scratch)
     print(
         f"wrote {len(pages)} pages, {len(fragments)} result overviews, "
-        f"{len(forwarders)} forwarders and {card.name}"
+        f"{len(records)} case records, {len(forwarders)} forwarders and {card.name}"
     )
 
 

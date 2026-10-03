@@ -99,7 +99,7 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # Nagamochi-bounded count falls, by three in every corpus. 0 Nagamochi-bounded since
     # 2026-10-02, independently: Nagamochi's Lemma 1 is false (think-589i), so no
     # verified floor rests on T-007 any more; the open cases' floors are Karakus 2026's,
-    # and s(k^2-2) = k rests on the replayed Lean proof (T-083), so no case opened. The
+    # and s(k^2-2) = k rests on the replayed Lean proof (T-085), so no case opened. The
     # two lines merged on 2026-10-03: the formal-open and reported-open counts are the
     # replays' above, and the Nagamochi-bounded count is the correction's, zero.
     "n=1..100": (55, 55, 0),

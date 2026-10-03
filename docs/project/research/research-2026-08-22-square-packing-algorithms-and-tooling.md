@@ -655,8 +655,8 @@ how many unit squares fit in an $a \times b$ rectangle.
 false for every container with $a > 3$ and $b > 2$ (Karakuş 2026; chelokot 2026), so the
 family is unproved by that paper.
 Karakuş proves $s(n^2 - 1) = n$ again by a strip measure; $s(n^2 - 2) = n$ rests on
-chelokot’s Lean proof alone, and the register records where each stands (T-007, T-081,
-T-082, T-083; [review](../reviews/review-2026-10-02-nagamochi-lemma1-karakus.md)).
+chelokot’s Lean proof alone, and the register records where each stands (T-007, T-083,
+T-084, T-085; [review](../reviews/review-2026-10-02-nagamochi-lemma1-karakus.md)).
 
 The lemmas themselves are single-variable calculus — minimise $D(\theta)$,
 differentiate, find the critical angle — done by hand.
@@ -801,7 +801,7 @@ $s(n)$ is proved for
   family, which subsumes 2, 3, 7, 8, 14, 15, 23, 24, 34, 35, 47, 48, 62, 63, …, 322,
   323; (**Corrected 2 October 2026:** Nagamochi’s proof is incomplete, its Lemma 1 being
   false; $k^2 - 1$ is proved again by Karakuş 2026, and $k^2 - 2$ rests on chelokot’s
-  Lean proof alone; see T-081 and T-083.)
+  Lean proof alone; see T-083 and T-085.)
 - $n = k^2 - 3$ for $k = 3, 4, 5, 6, 7$ only: 6 (Kearney–Shiu 2002), 13 and 46 (Bentz
   2010), 22 and 33 (Bentz, arXiv 2016);
 - $n = 5$ (Göbel 1979) and $n = 10$ (Stromquist 2003).

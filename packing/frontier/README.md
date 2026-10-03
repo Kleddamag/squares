@@ -464,13 +464,13 @@ lower-bound side has underused methods.
 Counts below are computed from the artifacts, not asserted.
 
 Of the 247 open cases, **0** have Nagamochi’s formula as their verified lower bound, and
-**193** have Karakuş’s weaker general bound in its place (T-080). Until 2 October 2026
+**193** have Karakuş’s weaker general bound in its place (T-082). Until 2 October 2026
 those 193 rested on Nagamochi’s formula; that day his Lemma 1 was found false
 ([review](../../docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md),
-T-082), so his formula became a reported bound and each verified floor it held fell to
+T-084), so his formula became a reported bound and each verified floor it held fell to
 the strongest registered bound below it: Karakuş’s general bound, wand125’s registered
 point bounds carried by monotonicity at $n = 54, 57, 73$ (T-044), which the formula had
-masked, and Bašić and Slivková’s piercing bound at $n = 37, 61$ (T-084), registered on 3
+masked, and Bašić and Slivková’s piercing bound at $n = 37, 61$ (T-086), registered on 3
 October 2026. Replayed certificates recorded in parallel and merged on 3 October 2026
 have since raised all five of those, and 40 more of the Karakuş floors, above them; they
 are counted below. Two others use certificates already integrated into the register: at
@@ -543,7 +543,7 @@ $m \ge 3$**.
 **Corrected 2 October 2026.** The gaps this section quoted against Nagamochi’s closed
 form for the last unproved members of $s(m^2 - 3) = m$, $0.0557$ at $n = 97$ (above),
 $0.0627$ at $n = 78$ and $0.0718$ at $n = 61$, were measured from a floor whose
-published proof rests on his Lemma 1, which Karakuş showed false (T-082); against
+published proof rests on his Lemma 1, which Karakuş showed false (T-084); against
 Karakuş’s verified floor they were $0.1059$, $0.1185$ and $0.1345$. All three cases are
 proved now, so `devtools.gap_ranking`, which ranks the cases still open, leaves them
 out.

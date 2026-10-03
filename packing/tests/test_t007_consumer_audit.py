@@ -191,11 +191,11 @@ def test_no_exact_value_rests_on_t007_and_each_family_names_its_new_proof() -> N
         minus_two = by_n[k * k - 2]["operative_lower_bound"]
         assert (minus_two["evidence"], minus_two["results"]) == (
             ["E-chelokot-square-minus-two-lean"],
-            ["T-083"],
+            ["T-085"],
         )
         minus_one = by_n[k * k - 1]["operative_lower_bound"]
         assert minus_one["evidence"] == ["E-karakus-strip-lower"]
-        assert "T-081" in minus_one["results"]
+        assert "T-083" in minus_one["results"]
 
 
 def test_case_rows_carry_each_kind_of_support_separately() -> None:
@@ -211,7 +211,7 @@ def test_case_rows_carry_each_kind_of_support_separately() -> None:
     assert [s["results"] for s in n62["support"]["registered_verified"]["sources"]] == [
         ["T-066"],
         ["T-062"],
-        ["T-083"],
+        ["T-085"],
     ]
     assert n62["support"]["registered_reported"]["reaches_nagamochi"] is True
     assert [s["results"] for s in n62["support"]["registered_reported"]["sources"]] == [
@@ -234,7 +234,7 @@ def test_an_independent_route_through_a_nagamochi_lemma_says_so() -> None:
     assert [(source["n"], source["results"]) for source in sources] == [
         (45, ["T-053"]),
         (46, ["T-004", "T-008"]),
-        (47, ["T-083"]),
+        (47, ["T-085"]),
     ]
     assert "shares_a_nagamochi_lemma" not in sources[0]
     caveat = sources[1]["shares_a_nagamochi_lemma"]

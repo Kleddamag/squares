@@ -209,7 +209,7 @@ def test_a_correcting_bound_keeps_its_star_and_names_what_it_corrects(
     with no link; the row names the register's record of that work in `data-corrects`
     (the owner, 2026-10-02). Which bounds those are is the citation record's to say."""
     corrected = frontier.corrected_lower_bounds()
-    # 265 since n = 37 and 61 moved onto Bašić and Slivková's bound (T-084) on 2026-10-03;
+    # 265 since n = 37 and 61 moved onto Bašić and Slivková's bound (T-086) on 2026-10-03;
     # 225 since the merge of the same day, when replayed certificates and covers recorded
     # in parallel took 40 of the corrected floors, none of them correcting anything.
     assert len(corrected) == 225

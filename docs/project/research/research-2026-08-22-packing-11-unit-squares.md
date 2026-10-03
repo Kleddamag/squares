@@ -749,8 +749,8 @@ bound, so the closed form above and both exact families are unproved by this pap
 every `N ≥ 10`. Nothing is disproved, and no packing beating any of its values is known.
 Karakuş proves the weaker `s(N) ≥ 1/2 + √(N − ⌊√N⌋ + 1/4)` for every nonsquare `N ≥ 8`
 and, with it, `s(m² − 1) = m`; `s(m² − 2) = m` rests on chelokot’s Lean proof alone.
-The register now holds Nagamochi’s values as reported bounds, and `T-007`, `T-080`,
-`T-081`, `T-082` and `T-083` record where each part stands
+The register now holds Nagamochi’s values as reported bounds, and `T-007`, `T-082`,
+`T-083`, `T-084` and `T-085` record where each part stands
 ([review](../reviews/review-2026-10-02-nagamochi-lemma1-karakus.md)). This section is
 kept as written.
 

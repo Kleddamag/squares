@@ -6,10 +6,10 @@ counts describe it. 95 of the hundred case records cite this result; since 2026-
 supplies the operative verified lower bound in 0 of them. Until that date it supplied 63
 there and 287 in the whole corpus: an adversarial review found the paper's Lemma 1, from
 which its Theorem 1 is summed, false for every container with `a > 3` and `b > 2`
-(Karakuş 2026, chelokot 2026; `T-082`), the evidence record became `reported`, and its
+(Karakuş 2026, chelokot 2026; `T-084`), the evidence record became `reported`, and its
 values moved to the reported lane. The verified floors were re-grounded on the area bound
 at the perfect squares and on Karakuş's Corollaries 1.2 and 6.2 elsewhere
-(`E-karakus-strip-lower`, `T-080`, `T-081`).
+(`E-karakus-strip-lower`, `T-082`, `T-083`).
 
 Replayed certificates recorded in parallel on 2 and 3 October 2026, and merged with the
 correction on 3 October, have since raised 45 of those 287 floors above the corrected
@@ -233,7 +233,7 @@ def prose_counts(found: dict[int, dict]) -> list[str]:
     return problems
 
 
-#: The verified lower bound that replaced Theorem 2 on 2026-10-02 (`T-080`, `T-081`).
+#: The verified lower bound that replaced Theorem 2 on 2026-10-02 (`T-082`, `T-083`).
 KARAKUS = "E-karakus-strip-lower"
 #: The lanes a borrowed lower bound may sit in, and the theorem each record's values obey.
 LANES = ("verified_lower_bound", "reported_lower_bound")

@@ -423,7 +423,7 @@ Kernel-checks Records.NearSquare.squareMinusTwo_isMinimumSide, s(n^2 - 2) = n fo
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
-| `E-chelokot-square-minus-two-lean` | replayed here | producer’s code | T-083 |
+| `E-chelokot-square-minus-two-lean` | replayed here | producer’s code | T-085 |
 
 ### `V-kleddamag-n11-verify`
 
@@ -650,7 +650,7 @@ Derives and checks the elementary bounds exactly: the grid upper bound, the area
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
-| `E-basic-grid-upper` | replayed here | independent | T-008, T-051, T-052, T-053, T-054, T-055, T-062, T-063, T-064, T-066, T-067, T-081, T-083 |
+| `E-basic-grid-upper` | replayed here | independent | T-008, T-051, T-052, T-053, T-054, T-055, T-062, T-063, T-064, T-066, T-067, T-083, T-085 |
 | `E-basic-area-lower` | replayed here | independent | - |
 | `E-n012-monotonicity-lower` | replayed here | independent | - |
 
@@ -723,7 +723,7 @@ Scores Karakuş's squares K_t and chelokot's square against Nagamochi 2005's mea
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
-| `E-nagamochi-lemma1-counterexample` | replayed here | independent | T-082 |
+| `E-nagamochi-lemma1-counterexample` | replayed here | independent | T-084 |
 
 ### `V-upper-bound-promotion`
 
@@ -1265,7 +1265,7 @@ Clones chelokot's archive at the pinned commit, checks the toolchain, manifest, 
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
-| `E-chelokot-square-minus-two-lean` | replayed here | producer’s code | T-083 |
+| `E-chelokot-square-minus-two-lean` | replayed here | producer’s code | T-085 |
 
 ### `V-replay-evand-zmx2`
 

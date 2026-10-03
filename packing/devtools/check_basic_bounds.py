@@ -130,7 +130,7 @@ def check_case_basic_bounds(case: Mapping[str, object]) -> list[str]:
         expected = "1" if n == 1 else f"sqrt({n})"
         # At a perfect square the area bound is the integer itself, written as the integer
         # so that it meets the grid's exact form and the case can be proved. The perfect
-        # squares moved here from Nagamochi's closed form on 2026-10-02 (T-082).
+        # squares moved here from Nagamochi's closed form on 2026-10-02 (T-084).
         if math.isqrt(n) ** 2 == n:
             expected = str(math.isqrt(n))
         if lower.get("exact_form") != expected:

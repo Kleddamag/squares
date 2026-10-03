@@ -1024,7 +1024,7 @@ def test_corrects_names_a_published_result_that_no_longer_stands() -> None:
         "attribution": {"source_keys": ["[Nagamochi 2005]"]},
     }
     record = {
-        "id": "T-080",
+        "id": "T-082",
         "corrects": {"source_key": "[Nagamochi 2005]", "result": "T-007", "what": "Lemma 1"},
     }
     assert check_results.corrects_problems(record, sources, {"T-007": corrected}) == []

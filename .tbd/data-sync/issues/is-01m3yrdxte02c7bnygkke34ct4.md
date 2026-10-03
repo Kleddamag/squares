@@ -5,7 +5,7 @@ title: Import, confirm and answer every reported result (2 October 2026 effort)
 kind: epic
 status: open
 priority: 1
-version: 30
+version: 31
 labels:
   - result-import
 dependencies: []
@@ -31,7 +31,7 @@ child_order_hints:
   - is-01m3ytdhr6h2xnsvj4f2nc2nk2
   - is-01m3z77bdhk8tn3epx63ywhxft
 created_at: 2026-10-02T16:51:15.917Z
-updated_at: 2026-10-03T00:13:00.866Z
+updated_at: 2026-10-03T00:29:27.397Z
 ---
 Umbrella for the 2 October 2026 effort: PRs #290 -> #292 -> #298 (imports and records), plus a stacked PR for verifier provenance and the independent verifier. Children track each lane; done when every reported result is confirmed or refuted (or has a bead naming exactly what remains), every issue has a current status reply, closeable issues are closed, and all PRs are merged.
 
@@ -109,3 +109,5 @@ Next steps for the next agent, in order:
 - 23:33 EE done (claude/lane-ee-t059-census @4972a842c): T-059 census 12,028/12,028 rows COMPLETE_ROW_EQUALITY, global minimum 999962528 = reference, every witness replayed; T-059 V0/C1 -> V3/C3 (replayed-here, same-implementation); think-pgrx fixed (gzipped journals). To merge into #298 by the records lane; also update plan-2026-10-01-result-status.md, which still says the replay is queued. Close think-11z6/think-pgrx after merge.
 - 23:5x CI fixes pushed (ce615a6ec: isolation_radius.py restored to reviewed bytes, replay mode in cases.trump11.isolation_radius_replay; test and suite-record fixes); lane EE merged (48a840593, T-059 V3/C3), re-pinned 79d6c91b5. Dispatched run 37078567481 on ce615a6ec: slow-lane green; validate pending. T-044 now superseded by T-074. Records lane next: afternoon V0 registrations, then #309.
 - 2026-10-03 00:0x T-075 registered (V0/C1, S3): the six afternoon mixed certificates (n83 937/100; n85 473/50 -> n86; n87 237/25 -> n88; n91 97/10; n92 39/4 -> n93; n96 249/25); pushed a82c464e4; CI run 37081079279 dispatched. Run 37078567481 on ce615a6ec: all green except one stale count already fixed in 48a840593. Next: linear n82 as T-076, then #309, then neutralize model names this branch added to reviewer strings.
+- 2026-10-03 00:30 idle-host headline (branch claude/bench-sqverify-fast-headline, 4-CPU Xeon 2.1 GHz, load ~1): whole certificates rect_n32_L595 verify.cpp 1359.5 CPU-s vs sqverify-fast 28.0 (48.6x), rect_n31_L592 2127.5 vs 39.7 (53.6x); per-direction sample 33.7x (14-35x per cell), same verdicts, node counts within a few percent (the gain is per-box cost).
+- 00:30 check-in: T-064 qx2 shard 2 COMPLETE (claude/replay-valid7-qx2-s2), shard 1 partial; Valid7 wand125 w1-w5 pushing; m4 and r5 partial; m1, m3, r1, r2, r4, the s(77) runner and FF have not pushed since the 22:56 resume (runs push after ~1.6-1.8 h; recheck at 01:45). CI run 37081079279 in progress; #298 still 'dirty' on GitHub. Records lane: T-076 (linear n82, V0) pushed ee5806d82; T-077 rectangles, #309 and the model-name cleanup next.

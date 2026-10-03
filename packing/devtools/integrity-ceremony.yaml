@@ -86,6 +86,9 @@ allowlist:
 # The third merge of origin/main on 2026-10-03 brought in more tools written on
 # main before OR-16's amendment reached it, many replaying third-party certificates whose
 # pins may be real boundaries. Recorded as inherited; their review is think-vre9.
+# The fourth merge of origin/main on 2026-10-03 (e8aee5177) brought in
+# plan_valid9_replay.py, main's ValidTilt9 replay planner, which pins its record and
+# cover by digest as plan_valid7_replay.py does. Recorded as inherited under think-vre9.
 baseline:
   packages/workbench/tools/workbench_tools/check_candidate.py: 1
   packing/benchmarks/bench_n11_fast_cover.py: 3
@@ -192,6 +195,7 @@ baseline:
   packing/devtools/n11_optimality_overview_figures.py: 7
   packing/devtools/pilot_n17_subpattern_bb.py: 3
   packing/devtools/plan_valid7_replay.py: 6
+  packing/devtools/plan_valid9_replay.py: 6
   packing/devtools/prepare_n11_field_manifest.py: 3
   packing/devtools/prepare_n11_nonfield_batch.py: 8
   packing/devtools/prepare_n11_nonfield_manifest.py: 13

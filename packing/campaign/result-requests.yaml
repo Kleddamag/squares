@@ -315,11 +315,6 @@ issues:
           - result: n83
             id: T-073
           - result: n82
-        outdated:
-          - >-
-            each direction's least bound matched the shipped record; the linear
-            certificate's per-direction records hold no least bound (review finding LC-4),
-            and what matched at every direction was its status, input digest and node count
     close_when: T-073 is confirmed or refuted, and the n = 82 certificate is imported and settled.
 
   - number: 282
@@ -589,6 +584,13 @@ issues:
     notes: >-
       The author's comment of 2 October corrects the issue's citation of Nagamochi's
       general bounds (see #295); nothing in the claim uses them.
+
+      The follow-up of 3 October (issuecomment-5972549384) first said each direction's
+      least bound matched the shipped record, which the linear records cannot show: they
+      carry no per-direction least bound (review finding LC-4). It was edited in place at
+      19:12Z that day, with a visible note, to say the replay matched each direction's
+      status, input digest and node count, so the reply as it stands states nothing
+      outdated.
 
   - number: 247
     title: 'New exact lower bound for s(11): 3.875000003875... with reproducible certificate'

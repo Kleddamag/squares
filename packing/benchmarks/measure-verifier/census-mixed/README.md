@@ -18,6 +18,7 @@ those directions. CPU on a shared host whose load average is given.
 | --- | ---: | --- | --- | ---: | ---: | --- | --- | ---: | ---: | --- | ---: | ---: | ---: |
 | `mixed_n37_L644` | 37 | M | VERIFIED | 201 | 49,002,652 | 1.000000001365918 | clears | 621.1 | 1.8 | all 201 | 18,462 | 620.9 | 30x |
 | `mixed_n65_L835` | 65 | M | VERIFIED | 201 | 91,946,228 | 1.000000000539362 | clears | 1629.0 | 2.0 | all 201 | 65,879 | 1628.5 | 40x |
+| `mixed_n66_L842` | 66 | M | VERIFIED | 201 | 87,565,608 | 1.0000000000012201 | clears | 1460.1 | 4.0 | all 201 | 42,065 | 1459.8 | 29x |
 | `mixed_n76_L894` | 76 | M | VERIFIED | 201 | 32,989,364 | 1.0000000029480338 | clears | 758.5 | 4.9 | all 201 | 13,096 | 758.3 | 17x |
 | `mixed_n82_L932` | 82 | L | VERIFIED | 201 | 150,629,171 | 1.0000000001085079 | clears | 3387.6 | 2.0 | none: first complete check here | - | - | - |
 | `mixed_n83_L935` | 83 | L | VERIFIED | 201 | 134,172,189 | 1.0000000006450585 | clears | 3068.8 | 4.9 | 50 | 273 | 11.1 | 25x |
@@ -26,12 +27,14 @@ those directions. CPU on a shared host whose load average is given.
 | `mixed_n85_L942` | 85 | M | VERIFIED | 201 | 89,192,514 | 1.0000000002558 | clears | 1595.6 | 2.8 | all 201 | 35,181 | 1595.2 | 22x |
 | `mixed_n85_L946` | 85 | M | VERIFIED | 201 | 72,746,810 | 1.000000000416021 | clears | 1549.7 | 1.9 | none: first complete check here | - | - | - |
 | `mixed_n87_L948` | 87 | M | VERIFIED | 201 | 32,682,134 | 1.0000000000698703 | clears | 451.1 | 1.9 | none: first complete check here | - | - | - |
+| `mixed_n90_L960` | 90 | M | VERIFIED | 201 | 57,975,508 | 1.0000000000508447 | clears | 525.6 | 4.7 | all 201 | 26,494 | 525.2 | 50x |
 | `mixed_n91_L970` | 91 | M | VERIFIED | 201 | 25,333,138 | 1.0000000012160961 | clears | 418.2 | 2.1 | none: first complete check here | - | - | - |
+| `mixed_n92_L969` | 92 | M | VERIFIED | 201 | 57,457,538 | 1.0000000041386434 | clears | 580.7 | 5.8 | all 201 | 24,022 | 580.3 | 41x |
 | `mixed_n92_L975` | 92 | M | VERIFIED | 201 | 26,872,130 | 1.0000000045215391 | clears | 443.0 | 2.0 | none: first complete check here | - | - | - |
 | `mixed_n96_L996` | 96 | M | VERIFIED | 201 | 26,793,520 | 1.000000000121414 | clears | 456.4 | 2.1 | none: first complete check here | - | - | - |
 | `mixed_n101_L1028` | 101 | L | VERIFIED | 201 | 53,145,987 | 1.000000000300333 | clears | 128.4 | 4.0 | all 201 | 27,669 | 128.0 | 216x |
 
-14 of 14 certificates verified; 18315 CPU seconds in all.
+17 of 17 certificates verified; 20882 CPU seconds in all.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

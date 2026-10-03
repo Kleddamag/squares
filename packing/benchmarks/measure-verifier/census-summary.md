@@ -39,6 +39,7 @@ check of the certificate here, which the last column says.
 | `rect_n59_L79375` | T | 59 | 127/16 | VERIFIED | 320.8 | 1.000100002281957 | none | yes |
 | `rect_n61_L796` | T | 61 | 199/25 | VERIFIED | 109.0 | 1.000100005068861 | complete | no |
 | `mixed_n65_L835` | M | 65 | 167/20 | VERIFIED | 1629.0 | 1.000000000539362 | complete | no |
+| `mixed_n66_L842` | M | 66 | 421/50 | VERIFIED | 1460.1 | 1.0000000000012201 | complete | no |
 | `rect_n67_L8455` | T | 67 | 1691/200 | VERIFIED | 257.1 | 1.0001000007618854 | complete | no |
 | `rect_n69_L8575` | T | 69 | 343/40 | VERIFIED | 307.7 | 1.0001000005653509 | complete | no |
 | `rect_n70_L86275` | T | 70 | 3451/400 | VERIFIED | 371.0 | 1.0001000000371736 | none | yes |
@@ -55,15 +56,17 @@ check of the certificate here, which the last column says.
 | `mixed_n85_L946` | M | 85 | 473/50 | VERIFIED | 1549.7 | 1.000000000416021 | none | yes |
 | `rect_n86_L9355` | T | 86 | 1871/200 | VERIFIED | 213.3 | 1.0001000005089622 | complete | no |
 | `mixed_n87_L948` | M | 87 | 237/25 | VERIFIED | 451.1 | 1.0000000000698703 | none | yes |
+| `mixed_n90_L960` | M | 90 | 48/5 | VERIFIED | 525.6 | 1.0000000000508447 | complete | no |
 | `mixed_n91_L970` | M | 91 | 97/10 | VERIFIED | 418.2 | 1.0000000012160961 | none | yes |
 | `rect_n91_L96475` | T | 91 | 3859/400 | VERIFIED | 322.9 | 1.0001000002583975 | none | yes |
+| `mixed_n92_L969` | M | 92 | 969/100 | VERIFIED | 580.7 | 1.0000000041386434 | complete | no |
 | `mixed_n92_L975` | M | 92 | 39/4 | VERIFIED | 443.0 | 1.0000000045215391 | none | yes |
 | `rect_n93_L9735` | T | 93 | 1947/200 | VERIFIED | 337.4 | 1.0001000018920165 | none | yes |
 | `rect_n95_L98418` | T | 95 | 49209/5000 | VERIFIED | 283.4 | 1.0001000007374712 | complete | no |
 | `mixed_n96_L996` | M | 96 | 249/25 | VERIFIED | 456.4 | 1.000000000121414 | none | yes |
 | `mixed_n101_L1028` | L | 101 | 257/25 | VERIFIED | 128.4 | 1.000000000300333 | complete | no |
 
-48 of 48 certificates verified; 15 of them are the first complete check of their
+51 of 51 certificates verified; 15 of them are the first complete check of their
 certificate in this repository.
 
 <!-- This document follows common-doc-guidelines.md.

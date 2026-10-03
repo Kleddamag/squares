@@ -388,6 +388,9 @@
       node.replaceChildren();
       if (line !== null) {
         node.append(element("span", `site-atlas-pop-which is-${which}`, which), line.text);
+        if (line.corrects !== null) {
+          node.append(" ", element("span", "site-corrects", line.corrects));
+        }
         if (line.note !== null) {
           node.append(" ", element("span", "site-atlas-pop-note", line.note));
         }

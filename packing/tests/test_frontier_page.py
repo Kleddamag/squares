@@ -27,6 +27,10 @@ from tests import site_renders
 #: the closed forms their decimals, and at 4,183,093 after: 25,748 bytes of room, then
 #: 11,211. Each cell KPress writes carries `data-col` and `data-col-index`, 128,050
 #: bytes of the page that nothing on the site reads (think-k8xp).
+#: Measured at 4,172,283 bytes on 2026-10-02, and at 4,186,245 once the 267 lower bounds
+#: that correct Nagamochi 2005 carried their tag and `data-corrects`: 21 KB of tags, of
+#: which 8 KB came back from the star's tooltip, now said once by the column's heading.
+#: That left 8,059 bytes of room.
 PAGE_CEILING_BYTES = 4 * 1024 * 1024
 
 #: The columns as a reader meets them: the drawing under no heading, the case, the star,
@@ -187,7 +191,73 @@ def test_the_columns_run_drawing_case_star_and_then_what_is_known(parsed: Rows) 
         assert number["class"] == "num site-col-n", n
         assert number["tags"] == "a", n
         assert number["words"] == n
-        assert star["words"] == ("★" if attributes["data-recent"] == "true" else ""), n
+        # The star, and after it the tag of a bound that corrects a published result.
+        shown = "★" if attributes["data-recent"] == "true" else ""
+        if "data-corrects" in attributes:
+            shown += "corrects Nagamochi 2005"
+        assert star["words"] == shown, n
+
+
+def test_a_correcting_bound_keeps_its_star_and_names_what_it_corrects(
+    rows, parsed: Rows
+) -> None:
+    """A verified lower bound that corrects a published result is still recent, so its
+    row keeps the star, and the same cell says which work it corrects, in one short span
+    with no link; the row names the register's record of that work in `data-corrects`
+    (the owner, 2026-10-02). Which bounds those are is the citation record's to say."""
+    corrected = frontier.corrected_lower_bounds()
+    assert len(corrected) == 267
+    seen = 0
+    for attributes, cells in rows:
+        n = int(attributes["data-n"] or 0)
+        star = cells[column("Recent")]
+        if n not in corrected:
+            assert "data-corrects" not in attributes, n
+            assert (star["tags"] or "") in ("", "span"), n
+            continue
+        seen += 1
+        assert attributes["data-corrects"] == corrected[n]["result"] == "T-007", n
+        assert attributes["data-recent"] == "true", n
+        assert star["data-value"] == "1", n
+        assert star["tags"] == "span span", n
+        assert star["words"] == f"★corrects {corrected[n]['credit']}", n
+    assert seen == len(corrected)
+    evidence = tables.load_evidence()
+    case = next(case for case in tables.load_cases() if case["n"] == 37)
+    row, _ = frontier.case_row(case, evidence, recent=True, corrects=corrected[37])
+    assert (
+        '<td data-value="1"><span class="site-star">★</span>'
+        '<span class="site-corrects">corrects Nagamochi 2005</span></td>'
+    ) in row
+    assert ' data-recent="true" data-corrects="T-007" ' in row
+    plain, _ = frontier.case_row(case, evidence, recent=True)
+    assert '<td data-value="1"><span class="site-star">★</span></td>' in plain
+    assert "data-corrects" not in plain
+    # The star's tooltip is said once, by its column's heading, not on every star.
+    (recent,) = [cell for cell in parsed.head if (cell["words"] or "").strip() == "Recent"]
+    assert recent["title"] == frontier.HEADER_TITLES["Recent"]
+    assert all("title" not in cell for cell in parsed.head if cell is not recent)
+
+
+def test_the_page_says_once_what_the_tag_means_and_links_the_corrected_result(
+    page: str,
+) -> None:
+    """The rows repeat the tag without a link; the Recent results paragraph says what it
+    means once, with the count from the citation record, the register's record of the
+    corrected work linked to its row, and the register's words for what failed."""
+    sentence = frontier.corrections_prose()
+    assert sentence == (
+        "Beside 267 of the stars, *corrects Nagamochi 2005* says the bound stands in for "
+        "a published result found unsound, the register\u2019s [T-007](all-results.html#t-007): "
+        "Lemma 1, on which Theorem 2\u2019s proof rests, is false."
+    )
+    prose = page[: page.index('id="frontier-table"')]
+    assert (
+        "Beside 267 of the stars, <em>corrects Nagamochi 2005</em> says the bound stands in"
+    ) in prose
+    assert '<a href="all-results.html#t-007">T-007</a>' in prose
+    table = page[page.index("<tbody>") : page.index("</tbody>")]
+    assert "all-results.html#t-007" not in table
 
 
 def test_the_gap_is_exact_where_both_bounds_are(rows, cases) -> None:

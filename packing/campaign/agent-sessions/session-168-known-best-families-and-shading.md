@@ -10,7 +10,7 @@ session:
   title: Families of Known-Best Packings, Contact Shading, and the Large-n Limit
   date: '2026-10-02'
   started_at: '2026-10-02T05:15:20Z'
-  deadline_at: '2026-10-02T23:50:30Z'
+  deadline_at: '2026-10-03T07:51:15Z'
   branch: claude/ecstatic-archimedes-62hj6a
   primary_bead: think-los0
   status: in_progress
@@ -228,7 +228,7 @@ session:
       marks a bound recent; and make every case record''s dated correction cite this register''s own defect
       entry, D-516, so a correction of outside work and a correction of our own record stay distinct.'
     bead: think-los0
-    status: in_progress
+    status: stopped
     entered_by: user_request
     switch_reason: The owner asked for the corrections to be marked as new and as corrections, naming the
       previous work corrected, with corrections to our own record kept within our own process.
@@ -241,12 +241,37 @@ session:
     validation_command: cd packing && uv run --frozen --all-extras --group dev packing-validate --fast
     kill_condition: A surface cannot carry the tag without dropping a citation or breaking a page ceiling.
     fallback: Carry the tag in the data and on the surfaces that fit it, and list the rest on a bead.
+    outcome: 'Half done: the corrects field and its check, and D-516 in all 293 dated corrections, are pushed
+      (9bed45b36, green); the surfaces lane wrote the data field, the composite count, the case pages and
+      the frontier table before the account''s weekly usage limit stopped it at about 21:05Z.'
+    evidence:
+    - packing/frontier/results.yaml
+    stop_reason: The surfaces lane hit the account's weekly usage limit, and no further delegation was possible.
+    next_action: Finish the tag on the remaining surfaces in the coordinator's own hand.
+  - workflow: remediation
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    objective: 'Finish the correction tag the surfaces lane left: the workbench stage and the homepage atlas
+      popover, the frontier tests, and the gate; then integrate, re-pin and push.'
+    bead: think-los0
+    status: in_progress
+    entered_by: user_request
+    switch_reason: The owner asked to try again after the usage limit stopped the surfaces lane.
+    budget_minutes: 120
+    started_at: '2026-10-03T04:51:15Z'
+    deadline_at: '2026-10-03T06:51:15Z'
+    expected_output: The tag on every surface that marks a bound recent, each with a test, and green hosted
+      CI.
+    validation_command: cd packing && uv run --frozen --all-extras --group dev packing-validate --fast
+    kill_condition: A surface cannot carry the tag without dropping a citation or breaking a page ceiling.
+    fallback: Carry the tag on the surfaces that fit it and list the rest on a bead.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Launch the surfaces lane; add the D-516 references.
+    next_action: Commit the finished surfaces and run the gate.
   budget:
-    wall_minutes: 1116
+    wall_minutes: 1596
     slice_minutes: 30
     finalization_minutes: 60
   stop_conditions:
@@ -647,6 +672,35 @@ session:
     - packing/devtools/
     - packing/tests/
     - packing/campaign/series/series-000-smoke-and-calibration/results/t007-consumer-audit.json
+  - task: 'Correction tag: carry the corrects field into bound-citations.json and draw "corrects Nagamochi
+      2005" beside every recent lower bound on the site and the stage.'
+    operator: Claude subagent
+    status: canceled
+    recording: contemporaneous
+    phase: 7
+    elapsed_quality: operator_reported_approximate
+    outcome: 'Stopped by the account''s weekly usage limit at about 21:05Z, after writing the data field and
+      its schema, the composite figure''s correction count, the case pages'' and frontier table''s tag with
+      their tests, and the frontier page''s explanatory sentence. The coordinator verified that work (168
+      tests passed) and finished the stage and the homepage popover in phase 8.'
+    evidence:
+    - packing/atlas/known-best/bound-citations.json
+    files:
+    - packing/devtools/build_bound_citations.py
+    - packing/devtools/render_frontier_page.py
+    - packing/devtools/render_case_pages.py
+    - packing/devtools/build_composite_figure_data.py
+    checks:
+    - coordinator ran build_bound_citations and build_composite_figure_data --check and the citation, frontier
+      page, case page and composite tests (168 passed) on the lane's tree
+    uncertainty: The lane left no report; what it changed is read from the working tree.
+    elapsed_seconds: 900.0
+    next_action: Finished by the coordinator.
+    write_scope:
+    - packing/devtools/
+    - packing/atlas/known-best/bound-citations.json
+    - packing/atlas/known-best/composite-figure.json
+    - packing/tests/
   outputs:
   - packing/campaign/explorations/X-049-families-shading-and-the-large-n-limit.md
   - packing/campaign/explorations/X049-families-data/family-census.json

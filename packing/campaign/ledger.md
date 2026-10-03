@@ -180,7 +180,7 @@ Each entry summarizes one user-level research window. Cycle slots are wall-clock
 | [session-163](agent-sessions/session-163-native-bounds-and-census.md) | stopped | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 5 | think-8cps | Under think-niqx, merge current main and certify the resulting PR head through required local and hosted checks. The mathematical obligations identified above remain separate after this integration debt is discharged. |
 | [session-164](agent-sessions/session-164-upstream-merge-and-certification.md) | completed | contemporaneous | `pipeline-improvement` (correctness) | `pipeline-improvement` (correctness) | 39 | think-3i74 | After the reviewed helper cleanup lands, implement the bounded fresh-ensemble replay entry point under think-e2ot; preserve the accepted historical evidence. PR 249 reconciliation, optional Rust performance and later exposition remain separate tracks. |
 | [session-165](agent-sessions/session-165-post-optimality-overnight.md) | completed | contemporaneous | `insight-iteration` (insight) | `pipeline-improvement` (correctness) | 36 | think-kaqh | think-11ma: in a separately scheduled W3 block, preregister a small exact geometric-exclusion pilot below the certified endpoint. The overnight heartbeat is to be paused by15:00UTC; no new overnight research or H258 retry. |
-| [session-168](agent-sessions/session-168-known-best-families-and-shading.md) | in_progress | contemporaneous | `insight-iteration` (insight) | `remediation` (correctness) | 7 | think-los0 | Owner decisions: the order of think-xucp and think-ym34; the owner replaces the eleven rollups' withheld model labels with the originals; then certify and close. |
+| [session-168](agent-sessions/session-168-known-best-families-and-shading.md) | in_progress | contemporaneous | `insight-iteration` (insight) | `remediation` (correctness) | 8 | think-los0 | Owner decisions: the order of think-xucp and think-ym34; the owner replaces the eleven rollups' withheld model labels with the originals; then certify and close. |
 
 ### Workflow summary
 
@@ -196,7 +196,7 @@ Declared counts are contemporaneous contracts; retrospective counts are reconstr
 | `research-loop` | 31 | 4 | 115 | 8 |
 | `pipeline-improvement` | 38 | 2 | 208 | 6 |
 | `documentation-pass` | 1 | 0 | 29 | 3 |
-| `remediation` | 2 | 1 | 4 | 3 |
+| `remediation` | 2 | 1 | 5 | 3 |
 | `review-planning-oversight` | 6 | 0 | 42 | 2 |
 | `general-improvement` | 1 | 0 | 7 | 1 |
 

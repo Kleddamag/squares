@@ -946,10 +946,12 @@ def test_the_atlas_popover_carries_what_the_film_shows_for_each_case(page: str) 
     assert eleven["record"] == "n-011"
     assert eleven["cite"]["lower"] == {
         "text": "Queuingtheorydotcom after Levy et al. 2026, Web",
+        "corrects": None,
         "note": "(confirmed T-060)",
     }
     assert eleven["cite"]["upper"] == {
         "text": "Trump 1979, Squares in Squares",
+        "corrects": None,
         "note": "(confirmed T-011)",
     }
     seventeen = facts[17]
@@ -957,6 +959,9 @@ def test_the_atlas_popover_carries_what_the_film_shows_for_each_case(page: str) 
     assert (seventeen["lower"], seventeen["upper"]) == ("4.660440", "4.675531")
     assert seventeen["open"] == ["optimality"]
     assert seventeen["cite"]["lower"]["note"] == "(confirmed T-043)"
+    # A floor that stands in for Nagamochi 2005's withdrawn bound names the work it corrects.
+    assert facts[150]["cite"]["lower"]["corrects"] == "corrects Nagamochi 2005"
+    assert facts[150]["cite"]["upper"]["corrects"] is None
     assert facts[1] == {**facts[1], "exact": True, "upper": "1", "lower": None, "open": []}
     assert page.count('id="pop-atlas" popover') == 1
     assert page.count(" data-atlas-popover ") == 1

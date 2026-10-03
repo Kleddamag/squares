@@ -28,12 +28,14 @@ from __future__ import annotations
 
 import html
 import re
+from collections.abc import Mapping
 from functools import cache
 from pathlib import Path
 from typing import Any
 
 from devtools import render_frontier_page as frontier
 from devtools import render_research_tables as tables
+from devtools.build_bound_citations import CORRECTS
 
 PACKING = Path(__file__).resolve().parents[1]
 TEMPLATES = PACKING / "devtools" / "templates"
@@ -500,12 +502,40 @@ def _upper_panel(case: dict[str, Any]) -> str:
     return _panel("Best known packing", _value_block(upper), rows, long_polynomial)
 
 
-def _verified_panel(label: str, verified: dict[str, Any], reported: dict[str, Any]) -> str:
+def corrected_work(corrects: Mapping[str, str]) -> str:
+    """The published work a lower bound corrects, `Nagamochi 2005`, linked to the
+    register's record of it in the results table."""
+    from devtools.overview_sections import result_url  # noqa: PLC0415
+
+    return f'<a href="{_esc(result_url(corrects["result"]))}">{_esc(corrects["credit"])}</a>'
+
+
+def corrects_tag(corrects: Mapping[str, str] | None) -> str:
+    """The tag beside a correcting lower bound's star in a record's head, `corrects
+    Nagamochi 2005`, with the work linked; nothing for a bound that corrects nothing."""
+    if not corrects:
+        return ""
+    return f' <span class="site-corrects">{CORRECTS} {corrected_work(corrects)}</span>'
+
+
+def _verified_panel(
+    label: str,
+    verified: dict[str, Any],
+    reported: dict[str, Any],
+    corrects: Mapping[str, str] | None = None,
+) -> str:
+    """A verified bound's panel. The lower bound's names the published result it
+    corrects, where it corrects one, ahead of its evidence (the owner, 2026-10-02)."""
     from sqpack.assurance import bounds_agree_at_declared_precision  # noqa: PLC0415
 
     same = bounds_agree_at_declared_precision(reported, verified)
     note = '<p class="site-case-same">The reported value, verified here.</p>' if same else ""
-    rows = _row("Evidence", frontier.evidence_links(verified["evidence"]))
+    corrected = (
+        f"{corrected_work(corrects)} ({_esc(corrects['result'])})" if corrects else ""
+    )
+    rows = _row("Corrects", corrected) + _row(
+        "Evidence", frontier.evidence_links(verified["evidence"])
+    )
     return _panel(label, _value_block(verified) + note, rows)
 
 
@@ -676,8 +706,17 @@ def _sources(case: dict[str, Any]) -> str:
     return f'<ul class="site-case-list site-case-sources">{"".join(items)}</ul>'
 
 
-def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) -> str:
-    """The record's head and its structured part, as one HTML block."""
+def record_head(
+    case: dict[str, Any],
+    *,
+    recent: bool,
+    first: int,
+    last: int,
+    corrects: Mapping[str, str] | None = None,
+) -> str:
+    """The record's head and its structured part, as one HTML block. A recent lower
+    bound's star in the head is followed, where the bound corrects a published result,
+    by the tag naming that work (`corrects_tag`)."""
     from devtools.overview_sections import arrow_icon  # noqa: PLC0415
     from devtools.repo_links import branch_file  # noqa: PLC0415
 
@@ -688,6 +727,7 @@ def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) ->
     if case["reported_status"] != status:
         chip += f' <span class="site-credit">reported {_esc(case["reported_status"])}</span>'
     star = ' <span class="site-star" title="Recent lower bound">\u2605</span>' if recent else ""
+    star += corrects_tag(corrects)
     previous = (
         f'<a href="#n-{n - 1}" rel="prev">{arrow_icon("left")}n = {n - 1}</a>'
         if n > first
@@ -718,7 +758,7 @@ def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) ->
         f"{_upper_panel(case)}"
         f"{_verified_panel('Verified upper bound', case['verified_upper_bound'], upper)}"
         f"{_lower_panel(case)}"
-        f"{_verified_panel('Verified lower bound', case['verified_lower_bound'], lower)}"
+        f"{_verified_panel('Verified lower bound', case['verified_lower_bound'], lower, corrects)}"
         f"{_gap_panel(case)}</div></div>"
         f'<div class="site-case-more" data-kpress-prose-font="sans">'
         f'<h3 class="site-case-heading">Results in the register</h3>{results_block(n)}'
@@ -742,15 +782,23 @@ def _body(n: int) -> tuple[str, str]:
     return heading, rest
 
 
-def record_markdown(case: dict[str, Any], *, recent: bool, first: int, last: int) -> str:
+def record_markdown(
+    case: dict[str, Any],
+    *,
+    recent: bool,
+    first: int,
+    last: int,
+    corrects: Mapping[str, str] | None = None,
+) -> str:
     """One case's record: its head and structured part, then the case file's prose."""
     n = case["n"]
     heading, prose = _body(n)
     shown = prose_markdown(f"# {heading}\n") if heading else ""
+    head = record_head(case, recent=recent, first=first, last=last, corrects=corrects)
     return (
         f'<section class="site-case" id="n-{n}" data-n="{n}" '
         f'data-status="{_esc(case["status"])}">\n'
-        f"{record_head(case, recent=recent, first=first, last=last)}\n\n"
+        f"{head}\n\n"
         f"{shown.strip()}\n\n{prose_markdown(prose)}\n\n</section>"
     )
 
@@ -771,9 +819,16 @@ def cases_markdown(fill: Any) -> str:
     """The article: its prose from the template, the index and every record."""
     cases = frontier.frontier_cases()
     recent = frontier.recent_lower_bounds()
+    corrected = frontier.corrected_lower_bounds()
     first, last = min(c["n"] for c in cases), max(c["n"] for c in cases)
     records = "\n\n".join(
-        record_markdown(case, recent=recent.get(case["n"], False), first=first, last=last)
+        record_markdown(
+            case,
+            recent=recent.get(case["n"], False),
+            first=first,
+            last=last,
+            corrects=corrected.get(case["n"]),
+        )
         for case in cases
     )
     values = {

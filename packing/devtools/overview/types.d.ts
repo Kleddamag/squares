@@ -42,9 +42,11 @@ declare function __SQUARES_KPRESS_CLIENT_JS__(): void;
 /** kpress's math enhancement, a classic script's top-level function. */
 declare function enhanceMath(): Promise<void> | undefined;
 
-/** One bound's source as the film cites it: the reference and this project's note. */
+/** One bound's source as the film cites it: the reference, the published work a lower bound
+ * corrects (`corrects Nagamochi 2005`) where it corrects one, and this project's note. */
 interface AtlasCitation {
   text: string;
+  corrects: string | null;
   note: string | null;
 }
 

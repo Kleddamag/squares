@@ -17,6 +17,7 @@
           "degree_known": 95,
           "degree_recorded_upstream": 11,
           "exact_value_known": 95,
+          "lower_bound_correction": 51,
           "lower_bound_first_proved_here": 3,
           "lower_bound_recent_result": 81,
           "only_known_numerically": 5,
@@ -41,6 +42,7 @@
           "degree_known": 269,
           "degree_recorded_upstream": 21,
           "exact_value_known": 269,
+          "lower_bound_correction": 267,
           "lower_bound_first_proved_here": 3,
           "lower_bound_recent_result": 297,
           "only_known_numerically": 55,
@@ -78,6 +80,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(1) ≥ 1",
           "evidence": [
             "E-basic-area-lower"
@@ -128,6 +131,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(2) ≥ 2",
           "evidence": [
             "E-side2-center-lower"
@@ -178,6 +182,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(3) ≥ 2",
           "evidence": [
             "E-side2-center-lower"
@@ -233,6 +238,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(4) ≥ 2",
           "evidence": [
             "E-basic-area-lower"
@@ -288,6 +294,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(5) ≥ 2.707106",
           "evidence": [
             "E-n005-gobel-proof"
@@ -338,6 +345,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(6) ≥ 3",
           "evidence": [
             "E-n006-kearney-shiu-proof"
@@ -388,6 +396,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(7) ≥ 3",
           "evidence": [
             "E-chelokot-square-minus-two-lean"
@@ -438,6 +447,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(8) ≥ 3",
           "evidence": [
             "E-karakus-strip-lower"
@@ -493,6 +503,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(9) ≥ 3",
           "evidence": [
             "E-basic-area-lower"
@@ -543,6 +554,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(10) ≥ 3.707106",
           "evidence": [
             "E-n010-stromquist-proof"
@@ -598,6 +610,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": false,
           "display": "s(11) ≥ 3.877083",
           "evidence": [
             "E-n011-global-optimality-independent"
@@ -643,6 +656,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(12) ≥ 3.968615",
           "evidence": [
             "E-n012-evand-15680-3951-native-parent-core",
@@ -694,6 +708,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(13) ≥ 4",
           "evidence": [
             "E-bentz-2010-proof"
@@ -744,6 +759,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(14) ≥ 4",
           "evidence": [
             "E-chelokot-square-minus-two-lean"
@@ -794,6 +810,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(15) ≥ 4",
           "evidence": [
             "E-karakus-strip-lower"
@@ -849,6 +866,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(16) ≥ 4",
           "evidence": [
             "E-basic-area-lower"
@@ -894,6 +912,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": false,
           "display": "s(17) ≥ 4.660440",
           "evidence": [
             "E-n017-guzhou-r068-source-replay"
@@ -939,6 +958,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(18) ≥ 4.679000",
           "evidence": [
             "E-fractional-interval-decision",
@@ -985,6 +1005,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(19) ≥ 4.800000",
           "evidence": [
             "E-fractional-interval-decision",
@@ -1031,6 +1052,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(20) ≥ 4.850000",
           "evidence": [
             "E-fractional-interval-decision",
@@ -1082,6 +1104,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(21) ≥ 5",
           "evidence": [
             "E-n021-evand-mixed-cover-zmx2-replay"
@@ -1132,6 +1155,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(22) ≥ 5",
           "evidence": [
             "E-bentz-2016-proof"
@@ -1182,6 +1206,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(23) ≥ 5",
           "evidence": [
             "E-chelokot-square-minus-two-lean"
@@ -1232,6 +1257,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(24) ≥ 5",
           "evidence": [
             "E-karakus-strip-lower"
@@ -1287,6 +1313,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(25) ≥ 5",
           "evidence": [
             "E-basic-area-lower"
@@ -1332,6 +1359,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(26) ≥ 5.508000",
           "evidence": [
             "E-tokoharu-density-source-replay"
@@ -1377,6 +1405,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(27) ≥ 5.600000",
           "evidence": [
             "E-wand125-rectangle-source-replay"
@@ -1427,6 +1456,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": false,
           "display": "s(28) ≥ 5.600000",
           "evidence": [
             "E-wand125-rectangle-source-replay"
@@ -1472,6 +1502,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": false,
           "display": "s(29) ≥ 5.710000",
           "evidence": [
             "E-tokoharu-density-source-replay"
@@ -1517,6 +1548,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(30) ≥ 5.710000",
           "evidence": [
             "E-tokoharu-density-source-replay"
@@ -1562,6 +1594,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(31) ≥ 5.920000",
           "evidence": [
             "E-wand125-rectangle-source-replay"
@@ -1612,6 +1645,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(32) ≥ 6",
           "evidence": [
             "E-n032-evand-closed-cover-source-run",
@@ -1663,6 +1697,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(33) ≥ 6",
           "evidence": [
             "E-bentz-2016-proof"
@@ -1713,6 +1748,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(34) ≥ 6",
           "evidence": [
             "E-chelokot-square-minus-two-lean"
@@ -1763,6 +1799,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(35) ≥ 6",
           "evidence": [
             "E-karakus-strip-lower"
@@ -1818,6 +1855,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(36) ≥ 6",
           "evidence": [
             "E-basic-area-lower"
@@ -1863,6 +1901,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": true,
           "display": "s(37) ≥ 6.090169",
           "evidence": [
             "E-karakus-strip-lower"
@@ -1908,6 +1947,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(38) ≥ 6.178908",
           "evidence": [
             "E-karakus-strip-lower"
@@ -1953,6 +1993,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": false,
           "display": "s(39) ≥ 6.500000",
           "evidence": [
             "E-wand125-point-source-replay"
@@ -2003,6 +2044,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(40) ≥ 6.500000",
           "evidence": [
             "E-wand125-point-source-replay"
@@ -2048,6 +2090,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": false,
           "display": "s(41) ≥ 6.500000",
           "evidence": [
             "E-wand125-point-source-replay"
@@ -2093,6 +2136,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(42) ≥ 6.520797",
           "evidence": [
             "E-karakus-strip-lower"
@@ -2138,6 +2182,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(43) ≥ 6.603277",
           "evidence": [
             "E-karakus-strip-lower"
@@ -2183,6 +2228,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(44) ≥ 6.684658",
           "evidence": [
             "E-karakus-strip-lower"
@@ -2233,6 +2279,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(45) ≥ 7",
           "evidence": [
             "E-n045-evand-mixed-cover-zmx2-replay"
@@ -2283,6 +2330,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(46) ≥ 7",
           "evidence": [
             "E-bentz-2010-proof",
@@ -2334,6 +2382,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(47) ≥ 7",
           "evidence": [
             "E-chelokot-square-minus-two-lean"
@@ -2384,6 +2433,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(48) ≥ 7",
           "evidence": [
             "E-karakus-strip-lower"
@@ -2439,6 +2489,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(49) ≥ 7",
           "evidence": [
             "E-basic-area-lower"
@@ -2484,6 +2535,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(50) ≥ 7.076473",
           "evidence": [
             "E-karakus-strip-lower"
@@ -2529,6 +2581,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": true,
           "display": "s(51) ≥ 7.152067",
           "evidence": [
             "E-karakus-strip-lower"
@@ -2574,6 +2627,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(52) ≥ 7.380000",
           "evidence": [
             "E-wand125-n052-derived-lower"
@@ -2619,6 +2673,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(53) ≥ 7.380000",
           "evidence": [
             "E-wand125-point-source-replay"
@@ -2664,6 +2719,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(54) ≥ 7.380000",
           "evidence": [
             "E-wand125-point-source-replay"
@@ -2709,6 +2765,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": false,
           "display": "s(55) ≥ 7.540000",
           "evidence": [
             "E-wand125-point-source-replay"
@@ -2754,6 +2811,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(56) ≥ 7.620000",
           "evidence": [
             "E-wand125-point-source-replay"
@@ -2799,6 +2857,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(57) ≥ 7.620000",
           "evidence": [
             "E-wand125-point-source-replay"
@@ -2844,6 +2903,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(58) ≥ 7.658910",
           "evidence": [
             "E-karakus-strip-lower"
@@ -2889,6 +2949,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(59) ≥ 7.728416",
           "evidence": [
             "E-karakus-strip-lower"
@@ -2934,6 +2995,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(60) ≥ 7.797259",
           "evidence": [
             "E-karakus-strip-lower"
@@ -2979,6 +3041,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(61) ≥ 7.865459",
           "evidence": [
             "E-karakus-strip-lower"
@@ -3029,6 +3092,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(62) ≥ 8",
           "evidence": [
             "E-chelokot-square-minus-two-lean"
@@ -3079,6 +3143,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(63) ≥ 8",
           "evidence": [
             "E-karakus-strip-lower"
@@ -3134,6 +3199,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(64) ≥ 8",
           "evidence": [
             "E-basic-area-lower"
@@ -3179,6 +3245,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(65) ≥ 8.066372",
           "evidence": [
             "E-karakus-strip-lower"
@@ -3224,6 +3291,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(66) ≥ 8.132168",
           "evidence": [
             "E-karakus-strip-lower"
@@ -3269,6 +3337,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(67) ≥ 8.197402",
           "evidence": [
             "E-karakus-strip-lower"
@@ -3314,6 +3383,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": false,
           "display": "s(68) ≥ 8.410000",
           "evidence": [
             "E-wand125-n068-derived-lower"
@@ -3359,6 +3429,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": false,
           "display": "s(69) ≥ 8.410000",
           "evidence": [
             "E-wand125-point-source-replay"
@@ -3404,6 +3475,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": false,
           "display": "s(70) ≥ 8.550000",
           "evidence": [
             "E-wand125-point-source-replay"
@@ -3449,6 +3521,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": false,
           "display": "s(71) ≥ 8.550000",
           "evidence": [
             "E-wand125-point-source-replay"
@@ -3494,6 +3567,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(72) ≥ 8.610000",
           "evidence": [
             "E-wand125-point-source-replay"
@@ -3539,6 +3613,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(73) ≥ 8.610000",
           "evidence": [
             "E-wand125-point-source-replay"
@@ -3584,6 +3659,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(74) ≥ 8.639410",
           "evidence": [
             "E-karakus-strip-lower"
@@ -3629,6 +3705,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(75) ≥ 8.700609",
           "evidence": [
             "E-karakus-strip-lower"
@@ -3674,6 +3751,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(76) ≥ 8.761355",
           "evidence": [
             "E-karakus-strip-lower"
@@ -3719,6 +3797,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(77) ≥ 8.821658",
           "evidence": [
             "E-karakus-strip-lower"
@@ -3764,6 +3843,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(78) ≥ 8.881527",
           "evidence": [
             "E-karakus-strip-lower"
@@ -3814,6 +3894,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(79) ≥ 9",
           "evidence": [
             "E-chelokot-square-minus-two-lean"
@@ -3864,6 +3945,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(80) ≥ 9",
           "evidence": [
             "E-karakus-strip-lower"
@@ -3919,6 +4001,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(81) ≥ 9",
           "evidence": [
             "E-basic-area-lower"
@@ -3964,6 +4047,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(82) ≥ 9.058621",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4009,6 +4093,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": true,
           "display": "s(83) ≥ 9.116843",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4054,6 +4139,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(84) ≥ 9.174675",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4099,6 +4185,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(85) ≥ 9.232124",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4144,6 +4231,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(86) ≥ 9.289197",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4189,6 +4277,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": true,
           "display": "s(87) ≥ 9.345903",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4234,6 +4323,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": true,
           "display": "s(88) ≥ 9.402246",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4279,6 +4369,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(89) ≥ 9.458236",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4324,6 +4415,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(90) ≥ 9.513878",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4369,6 +4461,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(91) ≥ 9.569178",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4414,6 +4507,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(92) ≥ 9.624143",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4459,6 +4553,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(93) ≥ 9.678779",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4504,6 +4599,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(94) ≥ 9.733092",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4549,6 +4645,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(95) ≥ 9.787087",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4594,6 +4691,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(96) ≥ 9.840770",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4639,6 +4737,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(97) ≥ 9.894147",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4689,6 +4788,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(98) ≥ 10",
           "evidence": [
             "E-chelokot-square-minus-two-lean"
@@ -4739,6 +4839,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(99) ≥ 10",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4794,6 +4895,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(100) ≥ 10",
           "evidence": [
             "E-basic-area-lower"
@@ -4839,6 +4941,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(101) ≥ 10.052486",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4884,6 +4987,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(102) ≥ 10.104686",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4929,6 +5033,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(103) ≥ 10.156603",
           "evidence": [
             "E-karakus-strip-lower"
@@ -4974,6 +5079,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(104) ≥ 10.208243",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5019,6 +5125,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(105) ≥ 10.259610",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5064,6 +5171,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(106) ≥ 10.310708",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5109,6 +5217,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(107) ≥ 10.361541",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5154,6 +5263,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": true,
           "display": "s(108) ≥ 10.412113",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5199,6 +5309,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(109) ≥ 10.462429",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5244,6 +5355,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(110) ≥ 10.512492",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5289,6 +5401,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(111) ≥ 10.562305",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5334,6 +5447,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(112) ≥ 10.611874",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5379,6 +5493,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(113) ≥ 10.661200",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5424,6 +5539,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(114) ≥ 10.710288",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5469,6 +5585,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(115) ≥ 10.759142",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5514,6 +5631,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(116) ≥ 10.807764",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5559,6 +5677,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(117) ≥ 10.856157",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5604,6 +5723,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(118) ≥ 10.904326",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5654,6 +5774,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(119) ≥ 11",
           "evidence": [
             "E-chelokot-square-minus-two-lean"
@@ -5704,6 +5825,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(120) ≥ 11",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5759,6 +5881,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(121) ≥ 11",
           "evidence": [
             "E-basic-area-lower"
@@ -5804,6 +5927,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(122) ≥ 11.047511",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5849,6 +5973,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(123) ≥ 11.094810",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5894,6 +6019,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(124) ≥ 11.141898",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5939,6 +6065,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(125) ≥ 11.188779",
           "evidence": [
             "E-karakus-strip-lower"
@@ -5984,6 +6111,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(126) ≥ 11.235455",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6029,6 +6157,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(127) ≥ 11.281929",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6074,6 +6203,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": true,
           "display": "s(128) ≥ 11.328203",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6119,6 +6249,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": true,
           "display": "s(129) ≥ 11.374281",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6164,6 +6295,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(130) ≥ 11.420164",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6209,6 +6341,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(131) ≥ 11.465856",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6254,6 +6387,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(132) ≥ 11.511357",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6299,6 +6433,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(133) ≥ 11.556672",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6344,6 +6479,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(134) ≥ 11.601801",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6389,6 +6525,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(135) ≥ 11.646748",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6434,6 +6571,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(136) ≥ 11.691514",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6479,6 +6617,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(137) ≥ 11.736102",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6524,6 +6663,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(138) ≥ 11.780514",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6569,6 +6709,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(139) ≥ 11.824751",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6614,6 +6755,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(140) ≥ 11.868817",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6659,6 +6801,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(141) ≥ 11.912712",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6709,6 +6852,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(142) ≥ 12",
           "evidence": [
             "E-chelokot-square-minus-two-lean"
@@ -6759,6 +6903,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(143) ≥ 12",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6814,6 +6959,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(144) ≥ 12",
           "evidence": [
             "E-basic-area-lower"
@@ -6859,6 +7005,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(145) ≥ 12.043396",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6904,6 +7051,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": true,
           "display": "s(146) ≥ 12.086630",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6949,6 +7097,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(147) ≥ 12.129703",
           "evidence": [
             "E-karakus-strip-lower"
@@ -6994,6 +7143,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(148) ≥ 12.172617",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7039,6 +7189,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(149) ≥ 12.215374",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7084,6 +7235,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(150) ≥ 12.257976",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7129,6 +7281,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(151) ≥ 12.300423",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7174,6 +7327,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(152) ≥ 12.342719",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7219,6 +7373,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": true,
           "display": "s(153) ≥ 12.384864",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7264,6 +7419,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(154) ≥ 12.426860",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7309,6 +7465,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(155) ≥ 12.468709",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7354,6 +7511,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(156) ≥ 12.510412",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7399,6 +7557,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(157) ≥ 12.551970",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7444,6 +7603,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(158) ≥ 12.593386",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7489,6 +7649,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(159) ≥ 12.634661",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7534,6 +7695,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(160) ≥ 12.675795",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7579,6 +7741,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(161) ≥ 12.716791",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7624,6 +7787,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(162) ≥ 12.757650",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7669,6 +7833,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(163) ≥ 12.798373",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7714,6 +7879,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(164) ≥ 12.838962",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7759,6 +7925,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(165) ≥ 12.879418",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7804,6 +7971,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(166) ≥ 12.919742",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7854,6 +8022,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(167) ≥ 13",
           "evidence": [
             "E-chelokot-square-minus-two-lean"
@@ -7904,6 +8073,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(168) ≥ 13",
           "evidence": [
             "E-karakus-strip-lower"
@@ -7959,6 +8129,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(169) ≥ 13",
           "evidence": [
             "E-basic-area-lower"
@@ -8004,6 +8175,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(170) ≥ 13.039936",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8049,6 +8221,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(171) ≥ 13.079745",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8094,6 +8267,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(172) ≥ 13.119429",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8139,6 +8313,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(173) ≥ 13.158988",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8184,6 +8359,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(174) ≥ 13.198425",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8229,6 +8405,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(175) ≥ 13.237739",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8274,6 +8451,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(176) ≥ 13.276932",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8319,6 +8497,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(177) ≥ 13.316005",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8364,6 +8543,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(178) ≥ 13.354960",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8409,6 +8589,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": true,
           "display": "s(179) ≥ 13.393796",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8454,6 +8635,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(180) ≥ 13.432517",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8499,6 +8681,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(181) ≥ 13.471121",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8544,6 +8727,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(182) ≥ 13.509611",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8589,6 +8773,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(183) ≥ 13.547988",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8634,6 +8819,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(184) ≥ 13.586252",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8679,6 +8865,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(185) ≥ 13.624404",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8724,6 +8911,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(186) ≥ 13.662446",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8769,6 +8957,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(187) ≥ 13.700378",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8814,6 +9003,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(188) ≥ 13.738202",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8859,6 +9049,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(189) ≥ 13.775918",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8904,6 +9095,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(190) ≥ 13.813526",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8949,6 +9141,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(191) ≥ 13.851029",
           "evidence": [
             "E-karakus-strip-lower"
@@ -8994,6 +9187,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(192) ≥ 13.888427",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9039,6 +9233,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(193) ≥ 13.925721",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9089,6 +9284,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(194) ≥ 14",
           "evidence": [
             "E-chelokot-square-minus-two-lean"
@@ -9139,6 +9335,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(195) ≥ 14",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9194,6 +9391,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(196) ≥ 14",
           "evidence": [
             "E-basic-area-lower"
@@ -9239,6 +9437,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(197) ≥ 14.036986",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9284,6 +9483,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(198) ≥ 14.073871",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9329,6 +9529,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(199) ≥ 14.110657",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9374,6 +9575,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(200) ≥ 14.147344",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9419,6 +9621,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(201) ≥ 14.183932",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9464,6 +9667,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(202) ≥ 14.220422",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9509,6 +9713,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(203) ≥ 14.256816",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9554,6 +9759,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(204) ≥ 14.293114",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9599,6 +9805,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": true,
           "display": "s(205) ≥ 14.329316",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9644,6 +9851,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(206) ≥ 14.365424",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9689,6 +9897,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(207) ≥ 14.401438",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9734,6 +9943,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(208) ≥ 14.437359",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9779,6 +9989,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(209) ≥ 14.473188",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9824,6 +10035,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(210) ≥ 14.508925",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9869,6 +10081,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(211) ≥ 14.544571",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9914,6 +10127,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(212) ≥ 14.580127",
           "evidence": [
             "E-karakus-strip-lower"
@@ -9959,6 +10173,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(213) ≥ 14.615594",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10004,6 +10219,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(214) ≥ 14.650971",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10049,6 +10265,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(215) ≥ 14.686260",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10094,6 +10311,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(216) ≥ 14.721462",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10139,6 +10357,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(217) ≥ 14.756577",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10184,6 +10403,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(218) ≥ 14.791605",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10229,6 +10449,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(219) ≥ 14.826548",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10274,6 +10495,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(220) ≥ 14.861406",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10319,6 +10541,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(221) ≥ 14.896180",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10364,6 +10587,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(222) ≥ 14.930869",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10414,6 +10638,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(223) ≥ 15",
           "evidence": [
             "E-chelokot-square-minus-two-lean"
@@ -10464,6 +10689,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(224) ≥ 15",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10519,6 +10745,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(225) ≥ 15",
           "evidence": [
             "E-basic-area-lower"
@@ -10564,6 +10791,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(226) ≥ 15.034441",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10609,6 +10837,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(227) ≥ 15.068802",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10654,6 +10883,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(228) ≥ 15.103081",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10699,6 +10929,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(229) ≥ 15.137281",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10744,6 +10975,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(230) ≥ 15.171400",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10789,6 +11021,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(231) ≥ 15.205441",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10834,6 +11067,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(232) ≥ 15.239402",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10879,6 +11113,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(233) ≥ 15.273286",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10924,6 +11159,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(234) ≥ 15.307092",
           "evidence": [
             "E-karakus-strip-lower"
@@ -10969,6 +11205,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": true,
           "display": "s(235) ≥ 15.340822",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11014,6 +11251,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(236) ≥ 15.374474",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11059,6 +11297,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(237) ≥ 15.408051",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11104,6 +11343,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(238) ≥ 15.441552",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11149,6 +11389,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(239) ≥ 15.474979",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11194,6 +11435,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(240) ≥ 15.508331",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11239,6 +11481,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(241) ≥ 15.541608",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11284,6 +11527,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(242) ≥ 15.574813",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11329,6 +11573,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(243) ≥ 15.607944",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11374,6 +11619,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(244) ≥ 15.641003",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11419,6 +11665,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(245) ≥ 15.673990",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11464,6 +11711,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(246) ≥ 15.706906",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11509,6 +11757,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(247) ≥ 15.739750",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11554,6 +11803,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(248) ≥ 15.772524",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11599,6 +11849,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(249) ≥ 15.805227",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11644,6 +11895,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(250) ≥ 15.837861",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11689,6 +11941,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(251) ≥ 15.870426",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11734,6 +11987,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(252) ≥ 15.902921",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11779,6 +12033,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(253) ≥ 15.935349",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11829,6 +12084,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(254) ≥ 16",
           "evidence": [
             "E-chelokot-square-minus-two-lean"
@@ -11879,6 +12135,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(255) ≥ 16",
           "evidence": [
             "E-karakus-strip-lower"
@@ -11934,6 +12191,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(256) ≥ 16",
           "evidence": [
             "E-basic-area-lower"
@@ -11979,6 +12237,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(257) ≥ 16.032224",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12024,6 +12283,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(258) ≥ 16.064382",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12069,6 +12329,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(259) ≥ 16.096473",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12114,6 +12375,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(260) ≥ 16.128499",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12159,6 +12421,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(261) ≥ 16.160459",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12204,6 +12467,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(262) ≥ 16.192354",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12249,6 +12513,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(263) ≥ 16.224185",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12294,6 +12559,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(264) ≥ 16.255951",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12339,6 +12605,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(265) ≥ 16.287653",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12384,6 +12651,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": true,
           "display": "s(266) ≥ 16.319292",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12429,6 +12697,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(267) ≥ 16.350867",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12474,6 +12743,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(268) ≥ 16.382380",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12519,6 +12789,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(269) ≥ 16.413830",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12564,6 +12835,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(270) ≥ 16.445218",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12609,6 +12881,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(271) ≥ 16.476545",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12654,6 +12927,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(272) ≥ 16.507810",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12699,6 +12973,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(273) ≥ 16.539014",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12744,6 +13019,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(274) ≥ 16.570158",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12789,6 +13065,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(275) ≥ 16.601242",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12834,6 +13111,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(276) ≥ 16.632265",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12879,6 +13157,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(277) ≥ 16.663229",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12924,6 +13203,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(278) ≥ 16.694134",
           "evidence": [
             "E-karakus-strip-lower"
@@ -12969,6 +13249,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(279) ≥ 16.724980",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13014,6 +13295,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(280) ≥ 16.755768",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13059,6 +13341,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(281) ≥ 16.786497",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13104,6 +13387,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(282) ≥ 16.817168",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13149,6 +13433,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(283) ≥ 16.847782",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13194,6 +13479,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(284) ≥ 16.878339",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13239,6 +13525,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(285) ≥ 16.908839",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13284,6 +13571,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(286) ≥ 16.939282",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13334,6 +13622,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(287) ≥ 17",
           "evidence": [
             "E-chelokot-square-minus-two-lean"
@@ -13384,6 +13673,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(288) ≥ 17",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13439,6 +13729,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(289) ≥ 17",
           "evidence": [
             "E-basic-area-lower"
@@ -13484,6 +13775,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(290) ≥ 17.030275",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13529,6 +13821,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(291) ≥ 17.060495",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13574,6 +13867,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(292) ≥ 17.090660",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13619,6 +13913,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(293) ≥ 17.120770",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13664,6 +13959,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(294) ≥ 17.150825",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13709,6 +14005,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(295) ≥ 17.180827",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13754,6 +14051,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(296) ≥ 17.210774",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13799,6 +14097,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(297) ≥ 17.240669",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13844,6 +14143,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(298) ≥ 17.270509",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13889,6 +14189,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(299) ≥ 17.300297",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13934,6 +14235,7 @@
           "state": "minimal-polynomial"
         },
         "lower": {
+          "correction": true,
           "display": "s(300) ≥ 17.330032",
           "evidence": [
             "E-karakus-strip-lower"
@@ -13979,6 +14281,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(301) ≥ 17.359715",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14024,6 +14327,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(302) ≥ 17.389345",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14069,6 +14373,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(303) ≥ 17.418924",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14114,6 +14419,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(304) ≥ 17.448451",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14159,6 +14465,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(305) ≥ 17.477926",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14204,6 +14511,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(306) ≥ 17.507351",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14249,6 +14557,7 @@
           "state": "numeric-only"
         },
         "lower": {
+          "correction": true,
           "display": "s(307) ≥ 17.536725",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14294,6 +14603,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(308) ≥ 17.566048",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14339,6 +14649,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(309) ≥ 17.595320",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14384,6 +14695,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(310) ≥ 17.624543",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14429,6 +14741,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(311) ≥ 17.653716",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14474,6 +14787,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(312) ≥ 17.682840",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14519,6 +14833,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(313) ≥ 17.711914",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14564,6 +14879,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(314) ≥ 17.740939",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14609,6 +14925,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(315) ≥ 17.769916",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14654,6 +14971,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(316) ≥ 17.798843",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14699,6 +15017,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(317) ≥ 17.827723",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14744,6 +15063,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(318) ≥ 17.856554",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14789,6 +15109,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(319) ≥ 17.885338",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14834,6 +15155,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(320) ≥ 17.914074",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14879,6 +15201,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(321) ≥ 17.942763",
           "evidence": [
             "E-karakus-strip-lower"
@@ -14929,6 +15252,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(322) ≥ 18",
           "evidence": [
             "E-chelokot-square-minus-two-lean"
@@ -14979,6 +15303,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": true,
           "display": "s(323) ≥ 18",
           "evidence": [
             "E-karakus-strip-lower"
@@ -15034,6 +15359,7 @@
           "state": "closed-form"
         },
         "lower": {
+          "correction": false,
           "display": "s(324) ≥ 18",
           "evidence": [
             "E-basic-area-lower"
@@ -15080,6 +15406,7 @@
       "degree_known": 269,
       "degree_recorded_upstream": 21,
       "exact_value_known": 269,
+      "lower_bound_correction": 267,
       "lower_bound_first_proved_here": 3,
       "lower_bound_recent_result": 297,
       "only_known_numerically": 55,

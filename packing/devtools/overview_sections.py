@@ -2002,6 +2002,7 @@ def atlas_film_facts() -> list[dict[str, object]]:
     """
     import json  # noqa: PLC0415
 
+    from devtools.build_bound_citations import corrects_tag  # noqa: PLC0415
     from devtools.overview_data import CITATIONS, COMPOSITE  # noqa: PLC0415
 
     figure = json.loads(COMPOSITE.read_text(encoding="utf-8"))["figure"]["entries"]
@@ -2030,10 +2031,17 @@ def atlas_film_facts() -> list[dict[str, object]]:
         if entry["exactness"]["state"] not in ("closed-form", "minimal-polynomial"):
             open_items.append("exact value")
         record = cited[n]
+        # A lower bound standing in for a published result found unsound names that work,
+        # `corrects Nagamochi 2005`, between its reference and its note (the owner,
+        # 2026-10-02); it names outside work, never a correction to this register.
         citations = {
             bound: None
             if record.get(bound) is None
-            else {"text": record[bound]["text"], "note": record[bound]["note"]}
+            else {
+                "text": record[bound]["text"],
+                "corrects": corrects_tag(record[bound].get("corrects")),
+                "note": record[bound]["note"],
+            }
             for bound in ("lower", "upper")
         }
         facts.append(

@@ -6614,7 +6614,7 @@ results:
         scope: >-
           The fourteen certificates wand125/square-packing-bounds published between 05:58 and 15:16 UTC on 2 October, pinned at b00fc70f: six mixed rectangle densities, the linear s(82) >= 233/25 and seven rectangle rungs, against checkers byte-identical to ones already reviewed; what the new measures add, their sizes, structure and records; a review of the mathematics and the records, blind to the replay and not to retention.
         verdict: accepted
-        covers: [T-075, T-076]
+        covers: [T-075, T-076, T-077]
     artifacts:
       - packing/resources/web/wand125-mixed-bounds-afternoon-2026-10-02/README.md
       - packing/resources/web/wand125-mixed-bounds-afternoon-2026-10-02/receipts/mixed-audit.json
@@ -6701,7 +6701,7 @@ results:
         scope: >-
           The fourteen certificates wand125/square-packing-bounds published between 05:58 and 15:16 UTC on 2 October, pinned at b00fc70f: six mixed rectangle densities, the linear s(82) >= 233/25 and seven rectangle rungs, against checkers byte-identical to ones already reviewed; what the new measures add, their sizes, structure and records; a review of the mathematics and the records, blind to the replay and not to retention.
         verdict: accepted
-        covers: [T-075, T-076]
+        covers: [T-075, T-076, T-077]
     artifacts:
       - packing/resources/web/wand125-linear-n82-2026-10-02/README.md
       - packing/resources/web/wand125-linear-n82-2026-10-02/receipts/linear-audit.json
@@ -6722,3 +6722,87 @@ results:
       reviews entry says; the checker's own reading is the separately prompted 2 October
       review of the linear certificates (T-073). A later revision than T-073's, so a separate
       entry.
+
+  - id: T-077
+    kind: lower-bound
+    registered: '2026-10-03'
+    headline: "Rectangle-density lower bounds raised at `n = 20`, 42 and 70, reported"
+    claim: >-
+      wand125/square-packing-bounds reports raised standing rectangle-density certificates at
+      n = 20, 42 and 70, published on 2 October 2026: s(20) >= 49/10 = 4.9, s(42) >=
+      2731/400 = 6.8275 and s(70) >= 3451/400 = 8.6275. Each raises the certificate T-068
+      reports at its count, which T-074 replayed, by 0.0025 to 0.0125.
+
+      The certificates were built with Tokoharu's solver, their weights scaled by one exact
+      factor each to mass n - 1/100, and the source reports each accepted at all 201 net
+      directions by Tokoharu's unchanged interval checker, verify.cpp, run by its
+      run_verify.py. The same revision raised four more rungs, at n = 59, 77, 91 and 93,
+      which are below what this record holds there: the exact values s(59) = 8 and s(77) =
+      9, and the same revision's mixed certificates at n = 91 and 92, the latter carried to
+      n = 93 (T-075).
+
+      Here this repository's exact preflight checked that every checker input is the one the
+      upstream run recorded, and checked the mass, net and partition premises. None of it
+      decides coverage, and no direction was replayed. The values stand as reported, and the
+      verified lower bounds are unchanged.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/b00fc70f1904e9b1b567afee056d347f911209e8).
+      No issue requests these certificates; the import of 2 October took them in from the
+      source's own commits. The source says parts of the work were produced with AI
+      assistance under human direction.
+    scope: {n_values: [20, 42, 70]}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 3
+      rationale: >-
+        Scored as a claim: if the replays pass, the strongest rectangle-density lower bounds
+        on record at three counts. Raised rungs from one generator, as T-068's were, at S3;
+        the 2 October review of the afternoon certificates proposed S3, and the score gates
+        nothing.
+      scored: '2026-10-03'
+      by: 'think-r7yt import, registering lane (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 rectangle bounds 2026-10-02]']
+      published: '2026-10-02'
+    composition: >-
+      One claim per count, each on its own certificate at one source revision. Every part
+      stands at V0/C1: read by the 2 October review of the afternoon certificates, and not
+      replayed.
+    evidence:
+      - E-wand125-rectangle-2026-10-02-report
+    reviews:
+      - path: docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md
+        kind: adversarial
+        reviewer: AI agent, lane V of the 2026-10-02 result import, written after retaining the packets and before any replay; the retaining lane's own review, not prompted separately from it; model unstated
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-02'
+        scope: >-
+          The fourteen certificates wand125/square-packing-bounds published between 05:58 and 15:16 UTC on 2 October, pinned at b00fc70f: six mixed rectangle densities, the linear s(82) >= 233/25 and seven rectangle rungs, against checkers byte-identical to ones already reviewed; what the new measures add, their sizes, structure and records; a review of the mathematics and the records, blind to the replay and not to retention.
+        verdict: accepted
+        covers: [T-075, T-076, T-077]
+    artifacts:
+      - packing/resources/web/wand125-rectangle-certificates-2026-10-02/README.md
+      - packing/resources/web/wand125-rectangle-certificates-2026-10-02/receipts/preflight/audit.json.gz
+      - packing/devtools/audit_wand125_rectangles.py
+      - packing/devtools/apply_wand125_rectangles.py
+      - docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md
+      - docs/project/reviews/review-2026-10-02-wand125-rectangle-bounds-t068.md
+    next_rung: >-
+      think-r7yt: the complete replays of rect_n42_L68275, rect_n70_L86275 and rect_n20_L49,
+      whose upstream per-angle times sum to 5.25, 3.56 and 1.36 CPU-hours, with
+      devtools.audit_wand125_rectangles --packet 2026-10-02 --replay and --merge, each
+      reproducing the published node count, leaf count and least leaf bound at every
+      direction, before any verified lower bound is raised; then a replayed entry, as T-074
+      is for T-068.
+    notes: >-
+      V0 because the cited entry is the source's public claim: assurance reported, replay
+      not attempted. C1 because the 2 October review of the afternoon certificates is
+      recorded as the report entry's external_review, with no defect found. That review was
+      written by the retaining lane itself and not by a separately prompted reviewer, which
+      its reviews entry says. Registered after T-075, as the review's finding AF-6 advises,
+      so the rungs at n = 91 and 93 wrote nothing. The report entry's scope is the seven
+      raised counts, by apply_wand125_rectangles' rule, and only n = 20, 42 and 70 cite it.

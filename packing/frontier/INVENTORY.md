@@ -8,8 +8,8 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **202** evidence records. **130** are formal; **124** of those were established here.
-- **63** rest on an argument made elsewhere, of which **7** have been read by nobody here.
+- **203** evidence records. **130** are formal; **124** of those were established here.
+- **64** rest on an argument made elsewhere, of which **7** have been read by nobody here.
 - **36** claim to be first established here. **13** make no novelty statement at all - not assessed, which is not the same as not novel.
 
 A formal claim on an unread external proof is still formal: the proof proves its
@@ -42,8 +42,9 @@ results, it is a statement about what this repository has itself examined.
 | `E-wand125-rectangle-2026-09-28-report` | 8 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-wand125-rectangle-2026-09-28-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published |
 | `E-wand125-rectangle-2026-09-28-source-replay` | 5 | lower-bound | verified | strict inequalities only | here | - | previously-published |
-| `E-wand125-rectangle-2026-10-01-report` | 27 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
+| `E-wand125-rectangle-2026-10-01-report` | 24 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-wand125-rectangle-2026-10-01-source-replay` | 31 | lower-bound | verified | strict inequalities only | here | - | previously-published |
+| `E-wand125-rectangle-2026-10-02-report` | 3 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
 | `E-n045-wand125-point-cover-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published |
 | `E-n045-wand125-point-cover-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published |
 | `E-n021-wand125-point-endpoint-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published |
@@ -225,9 +226,9 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 68, verified 130
-- **method**: exact-algebraic 83, interval-certified 37, numerical-multiprecision 4, proof-assistant-checked 1, proof-audited 3, published-proof 6, reported 68
-- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 13, previously-published 149
+- **assurance**: numerically-checked 4, reported 69, verified 130
+- **method**: exact-algebraic 83, interval-certified 37, numerical-multiprecision 4, proof-assistant-checked 1, proof-audited 3, published-proof 6, reported 69
+- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 13, previously-published 150
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 

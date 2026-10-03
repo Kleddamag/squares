@@ -990,6 +990,62 @@ evidence:
       project CPython 3.14 environment and a C++17-capable g++ on PATH.
     source_reviewed: '2026-10-01'
 
+  - id: E-wand125-rectangle-2026-10-02-report
+    claim: lower-bound
+    scope: {n_values: [20, 42, 59, 70, 77, 91, 93]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-10-02]'
+    certificate: resources/web/wand125-rectangle-certificates-2026-10-02/wand125-rectangles/certificates
+    replay_status: not-attempted
+    limitations: >-
+      Source b00fc70f1904e9b1b567afee056d347f911209e8, committed 2026-10-02 (UTC),
+      reports one standing rectangle-density certificate in Tokoharu's format for each
+      listed count, each raised since 1a25a5e by three commits of 2026-10-02 (UTC),
+      06eeb40, 7d77022 and 4318bdf, and accepted there by Tokoharu's unchanged interval
+      checker (verify.cpp SHA-256
+      a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602). The seven sides
+      are 49/10 at n20, 2731/400 at n42, 127/16 at n59, 3451/400 at n70, 447/50 at n77,
+      3859/400 at n91 and 1947/200 at n93; the complete standing list is the
+      CASES_2026_10_02 table of devtools/audit_wand125_rectangles.py. No issue requests
+      them; the import of 2 October took them in from the source's own commits. The 46
+      standing certificates the revision left unchanged are byte-identical to those the
+      earlier rectangle entries record, and their cases stay on those entries. Each
+      certificate's weights were multiplied by one exact rational factor, between
+      1.00009 and 1.03993, to bring its mass to n - 1/100 before the recorded run, which
+      checked the scaled data. Lower rungs, matching certificates, the point
+      certificates and the point-only, exact-cover, mixed and linear bundles at the same
+      revision are pinned by digest only. This is the public-claim entry, not a local
+      verification receipt. At n59 and n77 a stronger bound was registered separately
+      when this entry was written, the source's own exact covers s(59) = 8 and
+      s(77) = 9, so those case records do not cite this entry; at n91 and n93 the same
+      revision's mixed rectangle-measure certificates, 97/10 at n91 and 39/4 at n92,
+      which carries to n93, are stronger wherever they are registered. Here
+      devtools.audit_wand125_rectangles --packet 2026-10-02 regenerated each checker input
+      from the candidate, matched it to the digest the upstream accepting run recorded, and
+      checked the enclosure, the axis-event partition, the orbit normalization and the mass
+      of all 53 standing certificates (receipts/preflight/audit.json.gz in the packet); the
+      preflight does not decide rotated coverage, which the source's verify.cpp, run by its
+      run_verify.py, alone decides, and no direction was replayed here.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        AI agent, lane V of the 2026-10-02 result import, after retaining the packets and
+        before any replay; the retaining lane's own review, not prompted separately from
+        it; model unstated
+        (docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md)
+      note: >-
+        No blocking defect. Every verify.cpp and run_verify.py of the seven rungs is byte
+        for byte Tokoharu's checker read on 22 and 27 September and 2 October, and the
+        orbit counts, sides and scaling factors are within what the 1 October certificates
+        reached. Coverage statements remain the source's until the replays here pass.
+    source_reviewed: '2026-10-02'
+
   - id: E-n045-wand125-point-cover-report
     claim: lower-bound
     scope: {n_values: [45]}

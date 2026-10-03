@@ -2850,14 +2850,15 @@ PROBLEM_STATEMENT = (
         "for most $n$. In many cases, $s(n)$ is known only to lie between an upper bound "
         "(the size of the enclosing square for the tightest packing ever discovered, such "
         "as $s(29) \\le 5.934$) and a lower bound (a size below which it is proved that no "
-        "packing can exist, such as the reported $s(29) \\ge 5.79$)."
+        "packing can exist, such as the reported $s(29) \\ge 5.7975$)."
     ),
 )
 
 
 def test_the_intros_examples_are_the_records() -> None:
     """The introduction's two examples are case 29's current bounds: its lower example
-    is the reported lower bound, wand125's 5.79 of 2026-09-28 when this was written,
+    is the reported lower bound, wand125's 5.79 of 2026-09-28 when this was written and
+    its 2319/400 = 5.7975 of 1 October (T-074) since,
     and its upper example is the reported upper bound rounded up, which also stands at
     or above the verified ceiling, so it is itself a proved ceiling. A new bound at
     $n = 29$ that leaves an example stale fails here rather than on the page."""

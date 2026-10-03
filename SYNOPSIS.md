@@ -1350,6 +1350,25 @@ Keep all orientations and closed-cell assignments; measure certified exclusions 
 unresolved cases before attempting a broad census.
 The overnight execution is complete, and no successor is launched by this handoff.
 
+#### Session 168: Families, the T-007 Correction and T-070
+
+[Session 168](packing/campaign/agent-sessions/session-168-known-best-families-and-shading.md)
+answered the owner’s four questions about the $n = 1..324$ atlas in
+[X-049](packing/campaign/explorations/X-049-families-shading-and-the-large-n-limit.md):
+the families were never classified by $n - k^2$, light green squares are geometry rather
+than arithmetic, an exact regularized layer darkens them on the homepage toggle, and the
+large-$n$ pattern set is open.
+Its literature lane found Nagamochi 2005’s Lemma 1 false, so T-007 is `V0` and 271 case
+records were re-grounded with dated corrections and defect D-516: 233 open floors fell
+to Karakuş’s general bound (T-066), $s(k^2-1) = k$ rests on Karakuş (T-067),
+$s(k^2-2) = k$ on chelokot’s Lean proof replayed here with an axiom receipt (T-069), and
+$n = 37, 61$ on Bašić and Slivková’s piercing bound (T-070). Floors that correct
+Nagamochi’s work say so on every surface, as “corrects Nagamochi 2005”. Its open items
+are the owner’s restoring commit for the withheld model labels (`think-wqfw`), and its
+identifiers T-066 to T-070 and session-168 collide with open PRs 292, 298, 307 and 311,
+which the one landing second renumbers.
+The selected next entry above is unchanged.
+
 #### Previous n11 Intake and Verification
 
 **T-060 is machine-checked at `V3/C3/S5` under the current epistemics rubric.** Its

@@ -86,7 +86,8 @@ each side separately. The after-pilot review's falsifier is read every round: th
 rounds in a row with every contracting owner's widest live row under a twentieth of its
 position extent and no two-sided position extent down by a tenth means the architecture
 is wrong; otherwise the run records the round positions start contracting, the ratio at
-which they did, and `g` after it.
+which they did, and `g` after it. `devtools.score_n17_capture` reads a run's logs, receipts
+and checkpoints back against that falsifier and the local-radius target.
 """
 
 from __future__ import annotations
@@ -1337,22 +1338,7 @@ def run_pilot(
             pilot.outcome = "guard"
             break
         if progress:
-            print(
-                json.dumps(
-                    {
-                        "round": round_index,
-                        "worst": round(summary["worst"], 6),
-                        "extent": f"{summary['worst_position_extent']:.4e}",
-                        "min_g_extent": summary["min_g_extent"],
-                        "row_to_extent": round(summary["max_row_to_extent"], 4),
-                        "volume": f"{summary['total_volume']:.4e}",
-                        "live": sum(summary["live_rows"].values()),
-                        "splits": round_splits,
-                    }
-                ),
-                file=sys.stderr,
-                flush=True,
-            )
+            print(json.dumps(round_line(summary, round_splits)), file=sys.stderr, flush=True)
         fine_rounds = (
             fine_rounds + 1 if summary["rows_fine"] and summary["no_extent_drop"] else 0
         )
@@ -1538,6 +1524,27 @@ def write_partial(path: Path, pilot: Pilot) -> None:
         json.dumps(record, sort_keys=True, default=str) + "\n", encoding="utf-8"
     )
     temporary.replace(path)
+
+
+def round_line(summary: Mapping[str, Any], splits: int) -> dict[str, Any]:
+    """A complete round's progress line, as `score_n17_capture` reads it back: the
+    aggregates, the owner with the largest widest-row-to-extent ratio, and the falsifier's
+    two exact flags (`fine`, every ratio under a twentieth; `flat`, no two-sided extent down
+    by a tenth), which the ratio rounded to four places cannot always decide."""
+    ratios: Mapping[str, float] = summary["row_to_extent"]
+    return {
+        "round": summary["round"],
+        "worst": round(summary["worst"], 6),
+        "extent": f"{summary['worst_position_extent']:.4e}",
+        "min_g_extent": summary["min_g_extent"],
+        "row_to_extent": round(summary["max_row_to_extent"], 4),
+        "binding": max(ratios, key=ratios.__getitem__),
+        "fine": summary["rows_fine"],
+        "flat": summary["no_extent_drop"],
+        "volume": f"{summary['total_volume']:.4e}",
+        "live": sum(summary["live_rows"].values()),
+        "splits": splits,
+    }
 
 
 def contraction_start(rounds: Sequence[Mapping[str, Any]]) -> dict[str, Any] | None:

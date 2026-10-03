@@ -281,8 +281,14 @@ The second pilot raised the cap.
 Its $n = 11$ control reproduced the recorded contraction ($g \approx 0.80$ against
 $0.84$). At 128 rows no $n = 17$ position contracted, but the widest-row ratio stalled
 at a fifth on side-N2, so the falsifier could be neither met nor cleared.
-At 256 rows the ratio reached a tenth at round 10, where the model says positions should
-begin to move, and the run continues (modelled and measured; not yet decided).
+At 256 rows, 15 of the 16 owners were under a tenth by round 10, where the model says
+positions should begin to move, but side-N2 held at 0.1002, and over 13 rounds no
+two-sided position extent moved off the box.
+The [capture scorer](../../packing/devtools/score_n17_capture.py) reads the falsifier as
+undecided at that cap: side-N2 needs two more bisections, about 528 rows, to pass a
+twentieth. A run at 576 rows resumed from round 13 (modelled at about 2.8 hours a round,
+14 hours to read the falsifier); rows allotted per owner by need would take about 5.6
+hours, but the pilot does not allot them yet (measured to round 13; not yet decided).
 
 The target itself is larger than $1/5000$ per coordinate.
 Following $n = 11$'s two-radius result, a
@@ -343,8 +349,8 @@ Stated without a forecast, because none is on record.
    CPU-seconds each. The kernel has excluded one such state, N1, in 3,723 s, but the
    $n = 17$ per-state method and its price are not established; the
    [residue process review](reviews/review-2026-10-02-n17-residue-process.md) plans one.
-3. **Capture.** The 256-row pilot has just reached the row width where contraction
-   should start, and the review’s falsifier decides whether the architecture holds.
+3. **Capture.** At 256 rows the review’s falsifier cannot be read; the 576-row run
+   resumed from round 13 decides whether the architecture holds.
    If it holds, the per-coordinate target above is the next pilot’s goal, registered as
    a hypothesis with its vector and box frozen.
    If it fails, the widened projection theorem is the fallback.

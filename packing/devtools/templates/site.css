@@ -1243,8 +1243,20 @@ body {
    wraps inside itself and sends the words after it to a new line, which then began with
    the summary's comma. In the line, a formula ends a line where KaTeX lets one end,
    after a relation or a binary operator at its top level, and the words after it follow
-   on. */
-.site-results .site-col-result .kpress-math-inline {
+   on.
+
+   The formula's last piece is set in the line too. KaTeX sets each piece as a box
+   (`.base`, an inline block), and a browser may end a line after a box whatever follows
+   it, so a formula whose last piece filled its line sent the comma after it to the
+   next: T-078's, once T-079 joined the table (3 October 2026). A word joiner between
+   them does not stop Chromium. In the line, the piece is a run of text a line cannot
+   end inside, as it was, and the comma, stop or bracket after it keeps to it as it does
+   to a word: the line ends after the formula's last relation or operator instead, and
+   the last piece and its comma go on together. Nothing in the piece moves, and every
+   other piece stays a box, so the formula still ends a line only where KaTeX lets it.
+   Across windows of 320 to 1600 pixels no line of either table begins with punctuation
+   after a formula, where with the last piece a box 148 of 214 widths had one. */
+.site-results .site-col-result :is(.kpress-math-inline, .katex-html > .base:last-child) {
   display: inline;
 }
 /* A result's records, its case link, the register, its evidence, source and reviews, are

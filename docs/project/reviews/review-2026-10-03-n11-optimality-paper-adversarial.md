@@ -371,12 +371,89 @@ Each of these follows from the accepted premises and needs no new geometric comp
   80-digit local recomputation and pose inclusion (`local/`). They are not retained
   controls.
 
+## Changes That Would Simplify Validation or Prepare a Formal Proof
+
+These go beyond the paper.
+Each names what it would remove and what it would cost; none is required for the result
+as it stands.
+
+**Validation today.** The fast components replay in about two minutes in this checkout
+(D4 1.3 s, census 0.2 s, local isolation 22 s, dual residuals 18 s, pose inclusion 15 s,
+composition 3 s), the 46 accepted field packets take about fifteen minutes, and the rest
+is the 276 generic exclusions and the capture: the last 32 exclusion cases alone took
+5.7 CPU-hours, the near node 303 s and the root node 892 s. A fresh end-to-end replay is
+therefore an overnight job, and it cannot yet start from one command, because the child
+capture checkers pin their parent receipts byte for byte, timing fields included
+(`think-e2ot`).
+
+1. **Bind states, not receipts.** Have every consumer pin a canonical digest of the
+   mathematical content it depends on (the parent’s final state, the certificate bytes)
+   and put timings in a sidecar.
+   A fresh parent would then rebind automatically, the publisher’s four stale digests
+   could not recur, and the composer could run the whole ensemble from one command.
+   This is the one change that makes the record re-executable rather than only
+   re-readable.
+2. **Publish the minimal input closure.** The upstream driver materializes all 2,638 LFS
+   payloads, 11.3 GB decoded, before its first stage; the non-field manifest already
+   names the 924 objects (2.12 GB) those exclusions need, and the field packets add
+   little. A standalone release with that closure, the checkers at pinned revisions and
+   one runner (`think-22uw`) is what an outside verifier would download.
+3. **One certificate language with few rule kinds.** About forty checker and helper
+   modules implement roughly a dozen distinct mathematical rules: cover diameter, mask
+   census, strict-core quadratics, Minkowski cuts, universal partner collision, residual
+   coverage, hull promotion and compression, initial ownership, charge features, mask
+   transfer, the D4 overlay search, branch predicates, pose inclusion and the local dual
+   argument. Formalization cost scales with the number of rules, not the number of
+   instances. The largest saving is in residual coverage, which has four arrangement
+   implementations (reference, fast, indexed and degenerate) and an integer backend:
+   replace the arrangement check by a triangulation certificate, in which the producer
+   supplies triangles, each tagged with the forbidden region or residual containing it,
+   and the checker verifies only vertex-in-halfplane facts and that the triangles tile
+   the required domain.
+   Section 13 of the original proof already allows this substitution.
+4. **Drop the field frame from the data.** Convert every stored center to the physical
+   cap frame once, so the proof has two frames (normalized cells and physical) instead
+   of three, and the inverse map in pose inclusion loses its division by $B$.
+5. **State the local theorem at the quarter-turned construction.** The capture target
+   and the local pose are then the same labeled object and the alignment $Q^{-1}$
+   disappears. The dual certificates transform by a coordinate permutation; the 22-second
+   local check would confirm them.
+6. **Give the local rectangle slack.** The radii fit the captured domains to within
+   $10^{-11}$, so any change upstream breaks inclusion.
+   The local certificates have room: with every radius multiplied by 1.2 the worst dual
+   ratio is 0.81, by 1.4 it is 0.95, and the 88 feature margins stay positive through
+   1.5, where the ratio reaches 1.015 and the argument fails.
+   Inflating the radii by 1.3 costs one 22-second rerun and lets a formal inclusion
+   proof use coarse rational bounds for the arctangent.
+7. **One angle chart.** Doing the local theorem in $t$ rather than radians would make
+   every quantity in the proof rational or algebraic and remove the arctangent bounds;
+   it needs the curvature constants rederived in the $t$ chart.
+8. **Exclude cases 2175 and 2176 directly**, by a center partition as for case 1383,
+   removing the only exclusions that depend on another exclusion set, the halfplane
+   support theorem behind them, and the acyclicity obligation.
+9. **Trim the certificate grammar to what is used.** In all 46 accepted field packets
+   $P\subseteq O$ and the charged thresholds exceed the budget on their own, so the
+   transfer rule can drop $P$; 13 of the 59 source field certificates are redundant and
+   can be left out of a release.
+10. **Retain the first-principles recomputations as controls**, so that the endpoint and
+    the local theorem’s arithmetic have a second implementation sharing no code with the
+    publisher; the shared-primitive caveat then applies only to the geometry rules.
+
+A formalization is best ordered by rule family: the exact witness and local theorem
+first (an algebraic number of degree eight, 128 rational linear systems, Taylor bounds),
+then the cover, census and D4 overlay (finite rational geometry), then the charge
+certificates, then the generic induction, which is the largest, and last the composition
+in section 10 of the original proof, which is a few lines of logic.
+
 ## Follow-Ups
 
-1. Apply the ten corrections of section 1.1 to the article; items 1, 2 and 3 first.
-2. Adopt the seven expository simplifications of section 2.1, in particular the identity
-   $u=\tan(a/2)$, the origin of the polynomial and the symmetry images of the
-   construction.
+1. The ten corrections of section 1.1 and the expository simplifications of section 2.1
+   were applied to the article in the commit that carries this section, together with
+   definitions of the terms section 3.2 lists, each placed before the term’s first use.
+   The paper keeps the general transfer rule, which Figure 7 draws, and states the
+   half-turn and the reduced form beside it.
+2. The verification level is now stated once, in the paper’s closing section, with the
+   note that the linked reviews predate the ladder change.
 3. Promote two of the scratchpad recomputations to retained controls under
    `packing/devtools/`: the exact $\mathbb Q(u)$ endpoint and census check, and the
    first-principles local recomputation.

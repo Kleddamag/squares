@@ -177,6 +177,7 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-052](packing/frontier/RESULTS.md) | 21 | `V3` | `C3` | `S4` | `previously-published` | s(21) = 5: the lower half by Evan Daniel’s mixed cover of 27 September 2026, the upper half by the 5 x 5 grid. |
 | [T-053](packing/frontier/RESULTS.md) | 45 | `V3` | `C3` | `S4` | `previously-published` | s(45) = 7: the lower half by Evan Daniel’s mixed cover of 27 September 2026, the upper half by the 7 x 7 grid. |
 | [T-064](packing/frontier/RESULTS.md) | 33, 46, 61, 78, 97, 118, 141, 166, 193, 222, 253, 286, 321 | `V3` | `C3` | `S4` | `previously-published` | Evan Daniel’s theorem s(k^2 - 3) = k for every integer k >= 6, dated 29 September 2026 by the source and public in its repository on 30 September: the lower half by one family of periodic measures, the upper half by the k x k grid. |
+| [T-081](packing/frontier/RESULTS.md) | 21, 32, 45, 60, 77, 96, 117, 140, 165, 192, 221, 252, 285, 320 | `V0` | `C1` | `S4` | `previously-published` | Evan Daniel’s theorem s(k^2 - 4) = k for every integer k >= 5, published in his repository on 3 October 2026: the lower half at k = 5, 6 and 7 by his s(21), s(32) and s(45) certificates, and at every k >= 8 by one family of periodic measures; the upper half by the k x k grid. |
 | [T-001](packing/frontier/RESULTS.md) | 17 | `V3` | `C3` | `S3` | `apparently-novel` | Sixteen points make [0, 4426213/1000000]^2 unavoidable for open squares of side above one, so s(17) >= 4426213/1000000 = 4.426213. |
 | [T-002](packing/frontier/RESULTS.md) | 18 | `V3` | `C3` | `S3` | `apparently-novel` | s(18) >= 4426213/1000000, by monotonicity from T-001 (a packing of 18 unit squares contains a packing of 17). |
 | [T-004](packing/frontier/RESULTS.md) | 46 | `V3` | `C3` | `S3` | `previously-published` | Bentz 2010, Theorem 8: the printed 45-point unavoidable-set argument for s(46) >= 7 is correct as printed, machine-audited in full. |
@@ -221,6 +222,7 @@ action for each are in [`frontier/RESULTS.md`](packing/frontier/RESULTS.md); the
 | [T-074](packing/frontier/RESULTS.md) | 19, 20, 26, 27, 28, 29, 30, 31, 38, 39, 40, 41, 42, 43, 44, 53, 54, 55, 56, 57, 58, 68, 69, 70, 74, 75, 88, 89, 93, 94, 95 | `V3` | `C3` | `S3` | `previously-published` | Twenty-nine rectangle-density certificates in wand125/square-packing-bounds, raised or added between 29 September and 1 October 2026, prove s(19) >= 1927/400, s(20) >= 1959/400, s(26) >= 2213/400, s(27) >= 1127/200, s(28) >= 2289/400, s(29) >= 2319/400, s(30) >= 47/8, s(31) >= 2381/400, s(38) >= 1309/200, s(39) >= 1327/200, s(40) >= 67/10, s(41) >= 169/25, s(42) >= 1363/200, s(43) >= 551/80, s(44) >= 2777/400, s(53) >= 3043/400, s(54) >= 3069/400, s(55) >= 617/80, s(56) >= 3113/400, s(68) >= 851/100, s(69) >= 1717/200, s(70) >= 69/8, s(74) >= 3539/400, s(75) >= 89/10, s(88) >= 3791/400, s(89) >= 1913/200, s(93) >= 3889/400, s(94) >= 1961/200 and s(95) >= 49259/5000. |
 | [T-075](packing/frontier/RESULTS.md) | 83, 85, 86, 87, 88, 91, 92, 93, 96 | `V3` | `C3` | `S3` | `previously-published` | Six rectangle-density certificates that wand125/square-packing-bounds published on the afternoon of 2 October 2026 prove s(83) >= 937/100 = 9.37, s(85) >= 473/50 = 9.46, s(87) >= 237/25 = 9.48, s(91) >= 97/10 = 9.7, s(92) >= 39/4 = 9.75 and s(96) >= 249/25 = 9.96. |
 | [T-079](packing/frontier/RESULTS.md) | 12 | `V3` | `C3` | `S3` | `apparently-novel` | s(12) >= 15680000/3949423 = 3.97020020 …, by re-weighting Evan Daniel’s 1,736 points. |
+| [T-080](packing/frontier/RESULTS.md) | 101, 102, 103, 104, 105 | `V3` | `C3` | `S3` | `previously-published` | A measure of points, segments and rectangles that wand125/square-packing-bounds published on 2 October 2026 proves s(101) >= 257/25 = 10.28. |
 | [T-084](packing/frontier/RESULTS.md) | 10-324 | `V3` | `C3` | `S3` | `previously-published` | Lemma 1 of Nagamochi 2005 -- every square of side in (1, 1.01] inside [0,a] x [0,b] scores more than one against the paper’s unavoidable set -- is false for every container with a > 3 and b > 2. |
 | [T-085](packing/frontier/RESULTS.md) | 7, 14, 23, 34, 47, 62, 79, 98, 119, 142, 167, 194, 223, 254, 287, 322 | `V3` | `C3` | `S3` | `previously-published` | s(k^2 - 2) = k for every integer k >= 2: chelokot’s Lean theorem Records.NearSquare.squareMinusTwo_isMinimumSide, kernel-checked here. |
 | [T-036](packing/frontier/RESULTS.md) | 11 | `V3` | `C2` | `S3` | `apparently-novel` | Every packing of eleven unit squares in a square container, six at orientation 0 and five sharing one orientation modulo pi/2 with half-tangent in [91442076901/250000000000, 73154061521/200000000000] (an interval containing [t* - 10^-6, t* + 10^-6] for Trump’s exact half-tangent t*), has container side at least U = 3.877083590022814 …, the exact side of Trump’s packing, and a packing in the family has side exactly U only if it is a quarter-turn image of Trump’s pose with the squares relabelled within the two classes. |
@@ -279,7 +281,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 198 | 39 confirmed; 32 refuted; 64 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 170 | 53 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
-| Frontier results | 84 | 84 registered, 55 by others |
+| Frontier results | 86 | 86 registered, 57 by others |
 
 <!-- END CURRENT-RESEARCH-STATUS -->
 
@@ -1115,6 +1117,7 @@ case or experiment separately.
 | [Method Review: wand125’s Independent Checker of Valid7 (`T-064`)](docs/project/reviews/review-2026-10-02-valid7-independent-checker.md) | dated review record | record | retained | — |
 | [Soundness Review: The Clean-Room Measure Verifier `sqverify-fast`](docs/project/reviews/review-2026-10-03-sqverify-fast-soundness.md) | dated review record | record | retained | — |
 | [sqverify-fast: Adversarial Testing and Independence Audit](docs/project/reviews/review-2026-10-03-sqverify-fast-testing-and-independence.md) | dated review record | record | retained | — |
+| [Claim-Chain Review: Evan Daniel’s `s(k² − 4) = k` for Every `k ≥ 5`](docs/project/reviews/review-2026-10-03-evand-k2m4-claim-chain.md) | dated review record | record | retained | — |
 | [Density Solvers Compared: Tokoharu’s and wand125’s Rectangle-Density Tools Against This Repository’s Certificate Stack](docs/project/reviews/review-2026-09-28-density-solver-comparison.md) | dated review record | record | retained | — |
 | [Proof Review: Guzhou0806’s R067 and R068, `s(17) > 233009/50000` and `s(17) > 116511/25000`](docs/project/reviews/review-2026-09-28-n17-guzhou-r067-r068.md) | dated review record | record | retained | — |
 | [Proof Review: wand125’s Point-Only Certificates for `s(45) = 7` and `s(21) = 5`](docs/project/reviews/review-2026-09-28-wand125-point-only-s21-s45.md) | dated review record | record | retained | — |
@@ -1456,7 +1459,8 @@ $n = 37, 61$ on Bašić and Slivková’s piercing bound (T-086). Floors that co
 Nagamochi’s work say so on every surface, as “corrects Nagamochi 2005”. Merged on 3
 October 2026 with main’s replayed certificates and covers (T-066 to T-079, and T-062 to
 T-064 raised to `V3/C3`), 45 of those floors moved higher, $n = 37$ and $61$ among them,
-so T-086 stays registered and holds neither; 193 open floors rest on Karakuş, and 225
+so T-086 stays registered and holds neither; the second merge that day, with T-080 and
+T-081, raised five more at $n = 101$ to 105, so 188 open floors rest on Karakuş and 220
 carry the tag. Its open item is the owner’s restoring commit for the withheld model
 labels (`think-wqfw`); its result identifiers, first T-066 to T-070 and then T-080 to
 T-084, were renumbered T-082 to T-086 when main took T-066 to T-081. The selected next
@@ -5408,7 +5412,7 @@ round that names the hypothesis, control roles included.
 | [H-258](packing/campaign/hypotheses/H-258-n17-common-core-stress.md) | blocked | Fixed common-core stress; instrument stopped after three symbolic preparation failures, before target use | 0 | — |
 | [H-259](packing/campaign/hypotheses/H-259-n17-mixed-capacity-cover.md) | confirmed | Exact mixed-capacity centre cover and finite occupancy census; no geometric exclusion | 1 | exp-240 accepted: 161,100,756 versus 8,597,496,600 |
 | [H-260](packing/campaign/hypotheses/H-260-n17-closed-cell-symmetry.md) | confirmed | Closed-assignment D4 occupancy quotient; no geometric exclusion | 1 | exp-241 accepted: 20,155,518 orbits |
-| [H-269](packing/campaign/hypotheses/H-269-periodic-certificates-k2-minus-4-and-5.md) | blocked | A periodic measure of T-064’s form proves $s(k^2-4)=k$ and $s(k^2-5)=k$ for all large $k$; the go/no-go is an exact corner deficit $D>1$ (X-049) | 0 | — |
+| [H-269](packing/campaign/hypotheses/H-269-periodic-certificates-k2-minus-4-and-5.md) | blocked | A periodic measure of T-064’s form proves $s(k^2-4)=k$ and $s(k^2-5)=k$ for all large $k$; the go/no-go is an exact corner deficit $D>1$ (X-049). Since 3 October 2026 T-081 reports the $d=4$ cell at $D\approx 1.074$, pending its replay (`think-8hk1`); $d=5$ stays open | 0 | — |
 | [H-270](packing/campaign/hypotheses/H-270-k2-plus-1-crossover-kearney-shiu-strip.md) | blocked | Some $k$ in 18..41 has a Kearney–Shiu strip packing of $k^2+1$ squares below the plateau $k+5/\sqrt2-3$ (X-049) | 0 | — |
 | [H-272](packing/campaign/hypotheses/H-272-symmetric-kingbird-records-reoptimized.md) | blocked | At least 7 of the 68 symmetric Kingbird-derived records re-optimize without symmetry to a verified smaller side (X-049) | 0 | — |
 

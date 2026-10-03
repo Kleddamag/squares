@@ -2929,18 +2929,16 @@ evidence:
       (receipts/linear-audit.json in the packet) recomputes the orbit counts, the D4
       invariance, the mass, the net and the candidate digest from the retained bytes;
       linear-fetch checked the pinned tarball, its 810 files, the replay driver's
-      preconditions and that all 201 inputs enclose the exact candidate; net index 150
-      alone was replayed, to price the replay, returning the certificate's record; and a
+      preconditions and that all 201 inputs enclose the exact candidate; net index 150 alone was replayed first, to price the replay, returning the certificate's record; and a
       negative control at index 35 refused the measure with every mass scaled by 99/100
       and with the segment orbit contributing most at a witness centre dropped
-      (receipts/n101/control.json). None of it decides coverage. The checker, a kind this
+      (receipts/n101/control.json). None of it decides coverage. The complete replay here of 2 October 2026 is E-n101-wand125-linear-1028-source-replay. The checker, a kind this
       record had not registered, was read by the 2 October review, which found its point and
       segment capture bounds, the quadrant reduction and the angle-zero branch sound. Two of
       its non-blocking findings bear on this entry. LC-2: the source's READMEs state the
       quadrant fold's conclusion and not its hypothesis, the quarter-turn and reflection
       symmetry of the expanded measure, which this repository's audit checks. LC-4: the
-      certificate's per-angle records carry only node counts and the input digest, so the
-      merged replay receipts should retain each direction's least lower bound.
+      certificate's per-angle records carry only node counts and the input digest, so the merged replay receipts should retain each direction's least lower bound; the records hold none for them to keep.
     external_review:
       state: informally-verified
       date: '2026-10-02'
@@ -2949,9 +2947,77 @@ evidence:
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md)
       note: >-
-        No blocking defect; coverage statements remain the source's until the replay
-        passes.
+        No blocking defect; coverage statements remained the source's until the replay passed on 2 October.
     source_reviewed: '2026-10-02'
+  - id: E-n101-wand125-linear-1028-source-replay
+    claim: lower-bound
+    scope: {n_values: [101, 102, 103, 104, 105]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 linear certificates 2026-10-02]'
+    certificate: resources/web/wand125-linear-certificates-2026-10-02/square-packing-bounds/certificates/mixed_n101_L1028/candidate.json.gz
+    replay: >-
+      From packing/, with the project CPython 3.14 environment and a C++17-capable c++
+      on PATH: .venv/bin/python3 -m devtools.audit_wand125_linear linear-replay n101
+      --range 0-200 --work W --workers 4 --via git, which may be split into ranges
+      across sessions and resumed, fetches the tarball at the pinned revision by Git,
+      refuses it unless its SHA-256 (c32bba42...) and size are the pinned ones, unpacks
+      it afresh, binds the bundle to the packet, rebuilds code/ from the retained
+      copies, repeats the replay driver's preconditions, binds each input of the range
+      to the candidate, builds the checker with the shipped compile_verifier, and calls
+      the shipped replay_angle unchanged, each direction passing only if it returns
+      exactly the record the retained certificate.json holds. Then .venv/bin/python3 -m
+      devtools.audit_wand125_linear linear-merge n101 must print
+      FULL_REPLAY_MATCHES_SHIPPED with no missing or refused direction, and linear-merge
+      n101 --check RECEIPT_MATCHES on the retained receipts (receipts/n101/ in the
+      packet). The controls are .venv/bin/python3 -m devtools.audit_wand125_linear
+      linear-control n101 --work W, which must report CONTROLS_REFUSED
+      (receipts/n101/control.json).
+    replay_status: passed
+    verifiers: [V-wand125-unified-linear-verify-cpp, V-audit-wand125-linear]
+    proof:
+      source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
+      theorem: Linear-measure covering obstruction at coverage one, applied to wand125's mixed_n101_L1028 of points, segments and rectangles; no 101 unit squares fit in a square of side below 257/25, and so none of 102 to 105.
+      scope: Unrestricted square packing with disjoint interiors and arbitrary rotations; monotonic transfer to larger counts below which the certificate's mass lies.
+      pinpoints: >-
+        The measure argument of the 2026-09-22 Tokoharu review, with the point and
+        segment capture bounds, the quadrant reduction by the measure's symmetry and the
+        angle-zero branch read against unified_linear_verify.cpp in the 2 October review
+        of the linear certificates; the replay receipts in receipts/n101/ of the
+        wand125-linear-certificates-2026-10-02 packet, its control
+        receipts/n101/control.json and its exact audit receipts/linear-audit.json.
+      assumptions:
+        - The measure is nonnegative and exact, of total mass 10099999/100000 < 101, quarter-turn and reflection invariant, which this repository's exact audit recomputes from the retained candidate.
+        - All angles and legal centres are covered by the certified core net of 201 half-angles of step 83/40000 at core side 9977/10000, and the checker's quadrant of the centre domain stands for the whole by that symmetry.
+        - Binary64 arithmetic has the reviewed IEEE-754 semantics, compiled by the shipped line with -ffp-contract=off and -fno-fast-math.
+        - The replayed interval inputs enclose the exact candidate, whose digest every replayed record carries.
+      audit_record: docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md
+    limitations: >-
+      Replays the source's code/unified_linear_verify.cpp (SHA-256 0249726a...) with the
+      source's replay_angle, unchanged, on 2 October 2026, in one run of four workers
+      over directions 0 to 200 on a shared 4-core x86-64 Linux container (Intel Xeon at
+      2.10 GHz, c++ 13.3.0, Python 3.14.7, one BLAS and OpenMP thread, PYTHONOPTIMIZE
+      unset), with net index 150 replayed alone beforehand to price it: 201 of 201
+      directions, 7.69 CPU-hours, the axis direction 949.5 CPU-seconds of it. Every
+      direction returned the certificate's own record, its status, input digest and node
+      count (FULL_REPLAY_MATCHES_SHIPPED). The records hold no per-direction least lower
+      bound, so the receipts cannot keep one (the review's finding LC-4); acceptance at
+      each direction is the checker's own verdict. This is a machine replay of the
+      source's checker, not an independent decision of the certificate: coverage is
+      decided by the source's C++ alone. Controls: at net index 35, the oblique
+      direction with the fewest recorded nodes, the checker accepts the exported
+      original and refuses both mutations, every mass scaled by 99/100 and the segment
+      orbit contributing most at a witness centre dropped, which leave that witness
+      covered 0.99198... and 0.95298... (receipts/n101/control.json). The mass,
+      10099999/100000, is below 102 to 105, so the bound carries to those counts; at n =
+      106 Nagamochi's 10.3273... is higher, and so is Karakuş's 10.3107..., the verified
+      floor there since Karakuş's finding (T-084, merged 2026-10-03). The tarball is
+      pinned by digest and not retained.
+    source_reviewed: '2026-10-03'
   - id: E-n083-wand125-mixed-937-report
     claim: lower-bound
     scope: {n_values: [83]}
@@ -10940,3 +11006,101 @@ evidence:
       here and none was replayed; the retained files and the dates of both sources are in
       the packets. No optimality is claimed.
     source_reviewed: '2026-09-29'
+  - id: E-k2m4-evand-family-report
+    claim: lower-bound
+    scope: {n_values: [21, 32, 45, 60, 77, 96, 117, 140, 165, 192, 221, 252, 285, 320]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-10-03]'
+    certificate: resources/web/evand-square-packing-2026-10-03/square-packing/s12/certificates/k2m4/K4_k008_box9.txt.gz
+    replay_status: not-attempted
+    verifiers: [V-evand-qx2-zm-py, V-evand-lean]
+    limitations: >-
+      evand/square-packing at 2eb15455a6f178213287a84ab4d0576c060baabe, committed
+      2026-10-03T17:15:04Z, reports s(k^2 - 4) = k for every integer k >= 5, and asks for
+      its registration in jlevy/squares#316. The lower halves at k = 5, 6 and 7 are the
+      source's s(21), s(32) and s(45) bundles, which this record holds as T-052, T-051 and
+      T-053. Every k >= 8 rests on one family of measures on [0,k]^2: a corner module on
+      [0,3]^2 at each corner, a wall band of width 3 with a profile of period 1 on the
+      lines of the 1/5-grid, and Lebesgue measure on [14/5, k - 14/5]^2, of total mass
+      k^2 - 4D with D = 214770225571/200000000000 > 1. The source reduces every k >= 8 to
+      the 9 x 9 box by integer shifts, the box cover being K4_k008_box9.txt (2,076 unit
+      segments on 80 lines and the Lebesgue square [14/5, 31/5]^2, mass 81 - 4D), and
+      states that every closed unit square in [0,9]^2 has mass at least 1 (Valid9). This
+      is the public-claim entry; the source's run and Lean reduction are the two entries
+      after it. The scope is the projection onto the cases this record holds, n <= 324,
+      which is k = 5 to 18; the reported theorem does not end at k = 18. Nothing here has
+      replayed the positive-tilt run.
+    external_review:
+      state: informally-verified
+      date: '2026-10-03'
+      reviewed_by: >-
+        Claude (AI review; model unstated), claim-chain review lane of the 3 October import
+        of #316, separately prompted
+        (docs/project/reviews/review-2026-10-03-evand-k2m4-claim-chain.md)
+      note: >-
+        Re-derived the chain from the box certificate to every k >= 8: the total 81 - 4D
+        exactly, the localisation by integer shifts, the dilation, and that the Lean
+        hypothesis ValidTilt9 is no stronger than the run's region. Its own parser found the
+        cover D4-invariant with 16 doubled segments on the band's end lines. No blocking
+        defect; four wording and documentation items, R-1 to R-4. Unchecked: every tilted
+        leaf, which waits on the full replay, and the Lean build.
+    source_reviewed: '2026-10-03'
+  - id: E-k2m4-evand-validtilt9-qx2-report
+    claim: lower-bound
+    scope: {n_values: [60, 77, 96, 117, 140, 165, 192, 221, 252, 285, 320]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-10-03]'
+    certificate: resources/web/evand-square-packing-2026-10-03/record/run_k4x_k008_leaves.jsonl.gz
+    replay_status: not-attempted
+    verifiers: [V-evand-qx2-zm-py]
+    limitations: >-
+      The source's exact-rational checker qx2_zm.py (SHA-256 6294052a…, byte-identical to
+      the k^2 - 3 checker that T-064's Valid7 replay ran) reports ValidTilt9, the tilted
+      part of Valid9, in its run qx2_k4x_k008: 16,200 of 16,200 root boxes over centres in
+      [0, 9/2]^2 and u = tan(theta/2) in [0, 1/2], 214,336 boxes, 115,268 leaves, none
+      uncertified, 815,343 CPU-s at the source (56,808 s on 15 processes). The axis face
+      theta = 0 is Lemma Z, an exact enumeration of 1,600 one-sided limit corners by the
+      same program. The run's record, retained byte for byte, lists every leaf. Here the
+      bundle's fast verify.sh ran on the retained bytes on 3 October 2026 and passed
+      (receipts/k2m4_verify_fast.log in the packet): the bundle's hashes, the cover's exact
+      total 3835229774429/50000000000 < 77 and its D4 invariance, the family rebuilding the
+      cover, Lemma Z re-run identical to the shipped output, the record's settings, roots,
+      leaves and coverage by the source's qx2_records.py, and the Lean data regenerated
+      identical. It recomputes no positive-tilt leaf, so it is a diagnostic and not a
+      replay. ValidTilt9 has one implementation; no second checker has run on this cover.
+    source_reviewed: '2026-10-03'
+  - id: E-k2m4-evand-lean-report
+    claim: lower-bound
+    scope: {n_values: [60, 77, 96, 117, 140, 165, 192, 221, 252, 285, 320]}
+    assurance: reported
+    reported_method: proof-assistant-checked
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[evand square-packing 2026-10-03]'
+    certificate: resources/web/evand-square-packing-2026-10-03/square-packing/s12/lean/Sqpack/ValidSplit9.lean
+    replay_status: not-attempted
+    verifiers: [V-evand-lean]
+    limitations: >-
+      The source reports that Lean 4 with Mathlib, toolchain v4.33.1, kernel-checks
+      SquarePacking.Bentz4.bentz4_of_validTilt9 : ValidTilt9 -> forall k >= 8,
+      minSide (k^2 - 4) = k on the standard axioms with no sorry: the family for every k,
+      that it is the box file at k = 9, its total, the localisation to the box, the
+      dilation, the D4 reduction (valid9_of_tilt_axis) and the axis face (validAxis9).
+      ValidTilt9, every closed unit square in [0,9]^2 with centre in [0, 9/2]^2 and
+      0 < theta <= 45 degrees has mass at least 1 under the box cover, is a hypothesis the
+      Lean does not prove; the source's run decides it. The Lean is the source's own, the
+      same implementation as the claim. A build here from the retained bytes is recorded in
+      the packet, and is not cited until stage 4.
+    source_reviewed: '2026-10-03'

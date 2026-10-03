@@ -307,6 +307,22 @@ sources:
       work was produced by Claude (Anthropic) in a single session under human direction.
       The selective packet web/evand-square-packing-2026-10-02/ retains them; nothing was
       replayed. Dated by that revision, 2026-10-02 UTC.
+  - key: '[evand square-packing 2026-10-03]'
+    authors: [Daniel]
+    year: 2026
+    venue: GitHub
+    dated: '2026-10-03'
+    credit: Daniel after Burns, Massaccesi
+    lineage: independent
+    note: >-
+      evand/square-packing at 2eb15455a6f178213287a84ab4d0576c060baabe
+      (2026-10-03T17:15:04Z), the commit jlevy/squares#316 names: the k2m4 bundle for
+      s(k^2 - 4) = k for every k >= 5, with the box-9 cover, its family, the qx2_zm.py run
+      record over 16,200 roots, and the Lean reduction bentz4_of_validTilt9 conditional on
+      the finite statement ValidTilt9. Its CREDITS.md still says the work was produced by
+      Claude (Anthropic) in a single session under human direction. The packet
+      web/evand-square-packing-2026-10-03/ retains the bundle, the record and the Lean
+      closure; the bundle's fast verify.sh was run here and the full run was not.
   - key: '[squarepacker s12 2026]'
     authors: [Ryu]
     year: 2026
@@ -613,6 +629,8 @@ sources:
       human direction, and the commits name Claude as co-author.
       web/wand125-linear-certificates-2026-10-02/acquisition/sources.json pins revision
       0c35d909764997ead04dfd90081c9fe9af8d07f2. Dated by that revision, 2026-10-02 UTC.
+      The n = 101 certificate's complete replay ran here on 2026-10-02, with its receipts
+      in the packet.
   - key: '[wand125 valid7 independent check 2026-10-02]'
     authors: [wand125]
     year: 2026

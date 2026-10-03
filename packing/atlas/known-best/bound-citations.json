@@ -2426,21 +2426,19 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "corrects": {
-            "credit": "Nagamochi 2005",
-            "result": "T-007",
-            "source_key": "[Nagamochi 2005]"
-          },
-          "note": null,
+          "confirmed_by": [
+            "T-080"
+          ],
+          "corrects": null,
+          "note": "(confirmed T-080)",
           "recent": true,
           "result": null,
           "results": [
-            "T-082"
+            "T-080"
           ],
-          "source_key": "[Karakuş 2026]",
-          "text": "Karakus 2026, arXiv:2609.37410",
-          "value": "10.0524865872"
+          "source_key": "[wand125 linear certificates 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "10.28"
         },
         "n": 101,
         "record": "n-101",
@@ -2460,21 +2458,19 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "corrects": {
-            "credit": "Nagamochi 2005",
-            "result": "T-007",
-            "source_key": "[Nagamochi 2005]"
-          },
-          "note": null,
+          "confirmed_by": [
+            "T-080"
+          ],
+          "corrects": null,
+          "note": "(confirmed T-080)",
           "recent": true,
           "result": null,
           "results": [
-            "T-082"
+            "T-080"
           ],
-          "source_key": "[Karakuş 2026]",
-          "text": "Karakus 2026, arXiv:2609.37410",
-          "value": "10.1046863561"
+          "source_key": "[wand125 linear certificates 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "10.28"
         },
         "n": 102,
         "record": "n-102",
@@ -2498,21 +2494,19 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "corrects": {
-            "credit": "Nagamochi 2005",
-            "result": "T-007",
-            "source_key": "[Nagamochi 2005]"
-          },
-          "note": null,
+          "confirmed_by": [
+            "T-080"
+          ],
+          "corrects": null,
+          "note": "(confirmed T-080)",
           "recent": true,
           "result": null,
           "results": [
-            "T-082"
+            "T-080"
           ],
-          "source_key": "[Karakuş 2026]",
-          "text": "Karakus 2026, arXiv:2609.37410",
-          "value": "10.1566039579"
+          "source_key": "[wand125 linear certificates 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "10.28"
         },
         "n": 103,
         "record": "n-103",
@@ -2536,21 +2530,19 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "corrects": {
-            "credit": "Nagamochi 2005",
-            "result": "T-007",
-            "source_key": "[Nagamochi 2005]"
-          },
-          "note": null,
+          "confirmed_by": [
+            "T-080"
+          ],
+          "corrects": null,
+          "note": "(confirmed T-080)",
           "recent": true,
           "result": null,
           "results": [
-            "T-082"
+            "T-080"
           ],
-          "source_key": "[Karakuş 2026]",
-          "text": "Karakus 2026, arXiv:2609.37410",
-          "value": "10.2082439194"
+          "source_key": "[wand125 linear certificates 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "10.28"
         },
         "n": 104,
         "record": "n-104",
@@ -2570,21 +2562,19 @@
         "lower": {
           "assurance": "verified",
           "basis": "external",
-          "confirmed_by": [],
-          "corrects": {
-            "credit": "Nagamochi 2005",
-            "result": "T-007",
-            "source_key": "[Nagamochi 2005]"
-          },
-          "note": null,
+          "confirmed_by": [
+            "T-080"
+          ],
+          "corrects": null,
+          "note": "(confirmed T-080)",
           "recent": true,
           "result": null,
           "results": [
-            "T-082"
+            "T-080"
           ],
-          "source_key": "[Karakuş 2026]",
-          "text": "Karakus 2026, arXiv:2609.37410",
-          "value": "10.2596106479"
+          "source_key": "[wand125 linear certificates 2026-10-02]",
+          "text": "wand125 after Tokoharu, Levy et al. 2026, GitHub",
+          "value": "10.28"
         },
         "n": 105,
         "record": "n-105",

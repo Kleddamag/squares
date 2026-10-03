@@ -26,7 +26,7 @@ second implementation agrees.
 ## The Short Version
 
 - **78** programs: **31** external and **47** first-party; **64** decide claims and **14** check premises.
-- **200** of **223** evidence entries name the programs that verified them: 138 reproduced with the producer’s code, 46 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **204** of **227** evidence entries name the programs that verified them: 142 reproduced with the producer’s code, 46 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -35,7 +35,7 @@ second implementation agrees.
 | [`V-tokoharu-verify-cpp`](#v-tokoharu-verify-cpp) | verify.cpp | Tokoharu | external | decides | 12 | 7 |
 | [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 30 | 5 |
 | [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 7 | 2 |
-| [`V-wand125-unified-linear-verify-cpp`](#v-wand125-unified-linear-verify-cpp) | unified_linear_verify.cpp | wand125 | external | decides | 3 | 2 |
+| [`V-wand125-unified-linear-verify-cpp`](#v-wand125-unified-linear-verify-cpp) | unified_linear_verify.cpp | wand125 | external | decides | 4 | 3 |
 | [`V-wand125-verify-portable-py`](#v-wand125-verify-portable-py) | verify_portable.py | wand125 | external | decides | 2 | 1 |
 | [`V-wand125-check-with-sqpack`](#v-wand125-check-with-sqpack) | check_with_sqpack.py | wand125 | external | decides | 5 | 1 |
 | [`V-wand125-valid7-checker`](#v-wand125-valid7-checker) | valid7-independent-check (Tier A, Tier B and the record checker) | wand125 | external | decides | 1 | 1 |
@@ -45,8 +45,8 @@ second implementation agrees.
 | [`V-evand-angle-net-verify`](#v-evand-angle-net-verify) | verify (the angle-net arrangement sweep) | Evan Daniel | external | decides | 8 | 4 |
 | [`V-evand-xcheck-py`](#v-evand-xcheck-py) | xcheck.py | Evan Daniel | external | decides | 4 | 2 |
 | [`V-evand-zmcheck`](#v-evand-zmcheck) | zmcheck (verify2/src/main.rs) | Evan Daniel | external | decides | 3 | 2 |
-| [`V-evand-qx2-zm-py`](#v-evand-qx2-zm-py) | qx2_zm.py | Evan Daniel | external | decides | 2 | 1 |
-| [`V-evand-lean`](#v-evand-lean) | The source's Lean development (lean/) | Evan Daniel | external | decides | 5 | 4 |
+| [`V-evand-qx2-zm-py`](#v-evand-qx2-zm-py) | qx2_zm.py | Evan Daniel | external | decides | 4 | 2 |
+| [`V-evand-lean`](#v-evand-lean) | The source's Lean development (lean/) | Evan Daniel | external | decides | 7 | 5 |
 | [`V-chelokot-lean`](#v-chelokot-lean) | The source's Lean development (formal/) | chelokot | external | decides | 1 | 1 |
 | [`V-kleddamag-n11-verify`](#v-kleddamag-n11-verify) | verify.py | Kleddamag | external | decides | 4 | 2 |
 | [`V-kleddamag-n17-verify`](#v-kleddamag-n17-verify) | verify.py | Kleddamag | external | decides | 9 | 5 |
@@ -63,7 +63,7 @@ second implementation agrees.
 | [`V-squarepacker-indep-check-cpp`](#v-squarepacker-indep-check-cpp) | indep_check.cpp | squarepacker | external | decides | 2 | 1 |
 | [`V-schadt-n29-check-py`](#v-schadt-n29-check-py) | check.py | Schadt | external | decides | 1 | 0 |
 | [`V-anabologyco-n17-checker`](#v-anabologyco-n17-checker) | scripts/check_certificate.py and its event pipeline | anabologyco-maker | external | decides | 1 | 0 |
-| [`V-check-basic-bounds`](#v-check-basic-bounds) | devtools.check_basic_bounds | Squares Project (Levy) | first-party | decides | 3 | 13 |
+| [`V-check-basic-bounds`](#v-check-basic-bounds) | devtools.check_basic_bounds | Squares Project (Levy) | first-party | decides | 3 | 14 |
 | [`V-optimal-moduli`](#v-optimal-moduli) | cases.small_n.optimal_moduli | Squares Project (Levy) | first-party | decides | 1 | 0 |
 | [`V-sqpack-verify`](#v-sqpack-verify) | sqpack.verify | Squares Project (Levy) | first-party | decides | 12 | 2 |
 | [`V-check-rational-witness-independent`](#v-check-rational-witness-independent) | devtools.check_rational_witness_independent | Squares Project (Levy) | first-party | decides | 4 | 3 |
@@ -102,7 +102,7 @@ second implementation agrees.
 | [`V-audit-tokoharu-density`](#v-audit-tokoharu-density) | devtools.audit_tokoharu_density | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-wand125-rectangles`](#v-audit-wand125-rectangles) | devtools.audit_wand125_rectangles | Squares Project (Levy) | first-party | premises | 3 | 3 |
 | [`V-audit-wand125-point-and-mixed`](#v-audit-wand125-point-and-mixed) | devtools.audit_wand125_point_and_mixed | Squares Project (Levy) | first-party | premises | 17 | 7 |
-| [`V-audit-wand125-linear`](#v-audit-wand125-linear) | devtools.audit_wand125_linear | Squares Project (Levy) | first-party | premises | 0 | 0 |
+| [`V-audit-wand125-linear`](#v-audit-wand125-linear) | devtools.audit_wand125_linear | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-replay-chelokot-lean`](#v-replay-chelokot-lean) | devtools.replay_chelokot_lean | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-replay-evand-zmx2`](#v-replay-evand-zmx2) | devtools.replay_evand_zmx2 | Squares Project (Levy) | first-party | premises | 5 | 5 |
 | [`V-audit-evand-mixed-covers`](#v-audit-evand-mixed-covers) | devtools.audit_evand_mixed_covers | Squares Project (Levy) | first-party | premises | 9 | 8 |
@@ -213,7 +213,8 @@ Decides a linear (segment) certificate at every net direction, the axis directio
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-n083-wand125-linear-935-report` | the source’s own run | producer’s code | T-073 |
-| `E-n101-wand125-linear-1028-report` | the source’s own run | producer’s code | T-073 |
+| `E-n101-wand125-linear-1028-report` | the source’s own run | producer’s code | T-073, T-080 |
+| `E-n101-wand125-linear-1028-source-replay` | replayed here | producer’s code | T-080 |
 | `E-n082-wand125-linear-932-report` | the source’s own run | producer’s code | T-076 |
 
 ### `V-wand125-verify-portable-py`
@@ -393,6 +394,8 @@ The source's exact-rational checker of Valid7, the finite statement its k^2 - 3 
 | --- | --- | --- | --- |
 | `E-k2m3-evand-family-report` | the source’s own run | producer’s code | T-064 |
 | `E-k2m3-evand-valid7-qx2-replay` | replayed here | producer’s code | T-064 |
+| `E-k2m4-evand-family-report` | the source’s own run | producer’s code | T-081 |
+| `E-k2m4-evand-validtilt9-qx2-report` | the source’s own run | producer’s code | T-081 |
 
 ### `V-evand-lean`
 
@@ -410,6 +413,8 @@ Kernel-checks a value of s(n) from a checker-cover hypothesis: for s(13) = 4 the
 | `E-n032-evand-closed-cover-report` | the source’s own run | producer’s code | T-051 |
 | `E-n013-evand-casefree-cover-lean-kernel` | replayed here | producer’s code | T-006 |
 | `E-n021-evand-mixed-cover-report` | the source’s own run | producer’s code | T-052 |
+| `E-k2m4-evand-family-report` | the source’s own run | producer’s code | T-081 |
+| `E-k2m4-evand-lean-report` | the source’s own run | producer’s code | T-081 |
 
 ### `V-chelokot-lean`
 
@@ -650,7 +655,7 @@ Derives and checks the elementary bounds exactly: the grid upper bound, the area
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
-| `E-basic-grid-upper` | replayed here | independent | T-008, T-051, T-052, T-053, T-054, T-055, T-062, T-063, T-064, T-066, T-067, T-083, T-085 |
+| `E-basic-grid-upper` | replayed here | independent | T-008, T-051, T-052, T-053, T-054, T-055, T-062, T-063, T-064, T-066, T-067, T-081, T-083, T-085 |
 | `E-basic-area-lower` | replayed here | independent | - |
 | `E-n012-monotonicity-lower` | replayed here | independent | - |
 
@@ -1252,7 +1257,9 @@ The audit, replay driver and controls for wand125's linear certificates.
 - Source: [`packing/devtools/audit_wand125_linear.py`](../../packing/devtools/audit_wand125_linear.py)
 - Versions run: this repository's commits, which Git holds
 
-No evidence entry names it yet.
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-n101-wand125-linear-1028-source-replay` | replayed here | producer’s code | T-080 |
 
 ### `V-replay-chelokot-lean`
 

@@ -764,12 +764,17 @@ RECORDED: dict[int, tuple[tuple[str, str, str] | None, tuple[str, str, str] | No
             "verified",
         ),
     ),
-    # The catalogue credits nobody, so the line cites the catalogue by its compilers.
-    # Since 2026-10-02 the verified floors past 100 are Karakuş's, which replaced
-    # Nagamochi's when his Lemma 1 was found false (T-084), and the line says so.
+    # The catalogue credits nobody, so the line cites the catalogue by its compilers. The
+    # lower line was Nagamochi's until 3 October 2026, when the replayed linear
+    # certificate of 2 October was recorded (T-080); on PR 305's line it was Karakuş's from
+    # 2 October (T-082) until the two lines merged.
     101: (
         ("Friedman & Ellsworth, Squares in Squares (reported)", "external", "reported"),
-        ("Karakus 2026, arXiv:2609.37410 corrects Nagamochi 2005", "external", "verified"),
+        (
+            "wand125 after Tokoharu, Levy et al. 2026, GitHub (confirmed T-080)",
+            "external",
+            "verified",
+        ),
     ),
     # Three finders and two improvers gave "Arslanov et al." with no year here until
     # Couzo's certified packing took the case; the synthetic test above keeps that shape.
@@ -864,8 +869,10 @@ RECORDED_LINKS: dict[tuple[int, str], tuple[list[str], list[str]]] = {
     (13, "lower"): (["T-005", "T-006"], []),
     # chelokot's Lean proof, replayed here with its axiom receipt, since 2026-10-02.
     (7, "lower"): (["T-085"], ["T-085"]),
-    # Karakuş's general bound, read here and not replayed, since 2026-10-02.
-    (101, "lower"): (["T-082"], []),
+    # Karakuş's general bound, read here and not replayed, since 2026-10-02; n = 101 stood
+    # here until its linear certificate's replay was recorded (T-080) on 3 October.
+    (106, "lower"): (["T-082"], []),
+    (101, "lower"): (["T-080"], ["T-080"]),
     # This project's own bound, established rather than confirmed, was T-030's until
     # 2026-10-02 (`test_a_novel_first_party_bound_cites_this_project_and_its_result` keeps
     # that shape); since then it is wand125's rectangle bound, which T-045 replays.
@@ -1098,8 +1105,9 @@ def test_the_corrections_on_record_are_recent_and_name_nagamochi_2005() -> None:
     # Slivková's 2018 piercing bound (T-086), which corrects nothing; 225 since the merge
     # of the same day, when replayed certificates and covers recorded in parallel
     # (T-048, T-062, T-064, T-066, T-067, T-069 to T-072, T-074 and T-075) took 40 of the
-    # corrected floors, none of them correcting anything.
-    assert len(corrected) == 225
+    # corrected floors, none of them correcting anything; 220 since the second merge that
+    # day, when wand125's replayed linear certificate (T-080) took n = 101 to 105.
+    assert len(corrected) == 220
     assert 37 not in corrected
     assert 61 not in corrected
     assert all(line["recent"] for line in corrected.values())

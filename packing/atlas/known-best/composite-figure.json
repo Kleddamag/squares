@@ -42,7 +42,7 @@
           "degree_known": 269,
           "degree_recorded_upstream": 21,
           "exact_value_known": 269,
-          "lower_bound_correction": 225,
+          "lower_bound_correction": 220,
           "lower_bound_first_proved_here": 1,
           "lower_bound_recent_result": 297,
           "only_known_numerically": 55,
@@ -4970,16 +4970,16 @@
           "state": "closed-form"
         },
         "lower": {
-          "correction": true,
-          "display": "s(101) ≥ 10.052486",
+          "correction": false,
+          "display": "s(101) ≥ 10.280000",
           "evidence": [
-            "E-karakus-strip-lower"
+            "E-n101-wand125-linear-1028-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
           "shown": true,
-          "value": "10.0524865872"
+          "value": "10.28"
         },
         "n": 101,
         "optimality": {
@@ -5016,16 +5016,16 @@
           "state": "numeric-only"
         },
         "lower": {
-          "correction": true,
-          "display": "s(102) ≥ 10.104686",
+          "correction": false,
+          "display": "s(102) ≥ 10.280000",
           "evidence": [
-            "E-karakus-strip-lower"
+            "E-n101-wand125-linear-1028-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
           "shown": true,
-          "value": "10.1046863561"
+          "value": "10.28"
         },
         "n": 102,
         "optimality": {
@@ -5062,16 +5062,16 @@
           "state": "numeric-only"
         },
         "lower": {
-          "correction": true,
-          "display": "s(103) ≥ 10.156603",
+          "correction": false,
+          "display": "s(103) ≥ 10.280000",
           "evidence": [
-            "E-karakus-strip-lower"
+            "E-n101-wand125-linear-1028-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
           "shown": true,
-          "value": "10.1566039579"
+          "value": "10.28"
         },
         "n": 103,
         "optimality": {
@@ -5108,16 +5108,16 @@
           "state": "closed-form"
         },
         "lower": {
-          "correction": true,
-          "display": "s(104) ≥ 10.208243",
+          "correction": false,
+          "display": "s(104) ≥ 10.280000",
           "evidence": [
-            "E-karakus-strip-lower"
+            "E-n101-wand125-linear-1028-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
           "shown": true,
-          "value": "10.2082439194"
+          "value": "10.28"
         },
         "n": 104,
         "optimality": {
@@ -5154,16 +5154,16 @@
           "state": "numeric-only"
         },
         "lower": {
-          "correction": true,
-          "display": "s(105) ≥ 10.259610",
+          "correction": false,
+          "display": "s(105) ≥ 10.280000",
           "evidence": [
-            "E-karakus-strip-lower"
+            "E-n101-wand125-linear-1028-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
           "recent_result": true,
           "shown": true,
-          "value": "10.2596106479"
+          "value": "10.28"
         },
         "n": 105,
         "optimality": {
@@ -15483,7 +15483,7 @@
       "degree_known": 269,
       "degree_recorded_upstream": 21,
       "exact_value_known": 269,
-      "lower_bound_correction": 225,
+      "lower_bound_correction": 220,
       "lower_bound_first_proved_here": 1,
       "lower_bound_recent_result": 297,
       "only_known_numerically": 55,

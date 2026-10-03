@@ -3275,7 +3275,11 @@ def test_recent_results_names_the_headline_results_at_their_rows(
 #: bounds, from 2026-08-31, after it began on 2026-08-22), and one phrase narrowed to
 #: what the register holds: the project tabulates every known new result and verifies
 #: the proofs behind them, without claiming every one is checked, since some registered
-#: results are recorded and not yet replayed here.
+#: results are recorded and not yet replayed here. The sentence after Queuingtheorydotcom's
+#: is the owner's of the same day (`think-nlyc`): the top-line results by others, Evan
+#: Daniel's family T-064 and his exact values T-052, T-051 and T-053, in a sentence of
+#: their own because the bibliography files them as independent of this project, and
+#: without a significance score, since they are S4 and only n = 11's results are S5.
 SITE_STATEMENT = (
     (
         "Work on the square packing problem has exploded in the summer of 2026 thanks to "
@@ -3283,10 +3287,13 @@ SITE_STATEMENT = (
         "August 2026 with some initial explorations that obtained new lower bounds for "
         "$n = 11, 17, 18, 19, 20$ and other low values. Now several others have obtained "
         "results building on this work, including a landmark new proof by "
-        "Queuingtheorydotcom of the optimality of the famous case of 11 squares. This "
-        "project now independently tabulates all known new results and does AI-assisted "
-        "verification of the proofs and certificates behind them, to encourage open "
-        "collaboration on open questions and formalizations of current proofs."
+        "Queuingtheorydotcom of the optimality of the famous case of 11 squares. "
+        "Separately, Evan Daniel has proved the optimality of a whole infinite family, "
+        "$s(k^2 - 3) = k$ for every $k \\ge 6$, along with exact values at 21, 32 and 45 "
+        "squares. This project now independently tabulates all known new results and "
+        "does AI-assisted verification of the proofs and certificates behind them, to "
+        "encourage open collaboration on open questions and formalizations of current "
+        "proofs."
     ),
     (
         "If you have new results or know of newer results, please file an issue to "
@@ -3296,14 +3303,22 @@ SITE_STATEMENT = (
 )
 
 
-def test_the_sites_own_statement_follows_readmes_introduction(page: str) -> None:
+def test_the_sites_own_statement_follows_readmes_introduction(
+    page: str, results: str, case_pages: dict[str, str]
+) -> None:
     """After README's introduction the section has two paragraphs of its own (the
     owner, 2026-10-03): how the project began and what it does now, and where to
     report a result it lacks and how to join its chat. The first links the project's
     founder, the explainer that holds its first lower bounds, the case record of
-    $n = 11$, and the ladders that show how far each result is checked, and does not
-    claim every proof is; the second opens a new issue on the repository and links
-    the founder's account on X."""
+    $n = 11$, Evan Daniel's family $s(k^2 - 3) = k$ at its row on the Results page and
+    his exact values at the case records of 21, 32 and 45, and the ladders that show how
+    far each result is checked, and does not claim every proof is; the second opens a
+    new issue on the repository and links the founder's account on X. Each result the
+    first names is the register's, with the credit it gives: T-060 Queuingtheorydotcom's
+    and building on this project, T-064, T-052, T-051 and T-053 Daniel's and independent
+    of it, which is why his results stand in a sentence of their own; each is an
+    optimality result at V3/C3 or above, so "proved" holds. No significance score is
+    named, since only n = 11's results are S5 (the owner, 2026-10-03, think-nlyc)."""
     from devtools import site_documents  # noqa: PLC0415
 
     problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
@@ -3316,9 +3331,36 @@ def test_the_sites_own_statement_follows_readmes_introduction(page: str) -> None
         f"{founder}Joshua Levy</a>",
         '<a href="papers/n11-lower-bounds-explainer.html">new lower bounds</a>',
         f'<a href="{render_case_pages.case_url(11)}" data-case="11">case of 11 squares</a>',
+        '<a href="all-results.html#t-064">a whole infinite family</a>',
+        *(
+            f'<a href="{render_case_pages.case_url(n)}" data-case="{n}">{n}</a>'
+            for n in (21, 32, 45)
+        ),
         '<a href="all-results.html#verification-ladders">AI-assisted verification</a>',
     ):
         assert link in paragraphs[0], link
+    # Every link lands: a case at its record, a result at its row on the Results page.
+    for n in (11, 21, 32, 45):
+        assert render_case_pages.case_url(n) in case_pages, n
+    assert 'id="t-064"' in results
+    # The register's own facts, as the sentences state them.
+    by_id = {r.id: r for r in overview_data.load().results}
+    groups = dict(OTHERS)
+    assert by_id["T-060"].credit.startswith("Queuingtheorydotcom after Levy")
+    assert by_id["T-060"].group == groups["builds-on-project"]
+    exact = {"T-064": None, "T-052": [21], "T-051": [32], "T-053": [45]}
+    for result, n_values in exact.items():
+        record = by_id[result].record
+        assert by_id[result].credit.startswith("Daniel"), result
+        assert by_id[result].group == groups["independent"], result
+        assert record["kind"] == "optimality", result
+        assert int(record["verification"][1:]) >= 3, result
+        assert int(record["confirmation"][1:]) >= 3, result
+        assert n_values is None or record["scope"]["n_values"] == n_values, result
+    assert "s(k^2 - 3) = k for every integer k >= 6" in by_id["T-064"].record["claim"]
+    assert "Evan Daniel" in by_id["T-064"].record["claim"]
+    for score in ("S4", "S5"):
+        assert score not in " ".join(SITE_STATEMENT), score
     assert "all proofs" not in " ".join(SITE_STATEMENT)
     assert 'id="verification-ladders"' not in page
     assert render_overview.NEW_ISSUE_URL == "https://github.com/jlevy/squares/issues/new"
@@ -4984,8 +5026,11 @@ def test_a_result_rows_popover_body_comes_from_one_function(
 #: index.html's ceiling was 4,300,000 until the merge of main into PR 305 on 2026-10-03:
 #: PR 305's tip rendered it at 4,187,329 bytes (the regularized atlas drawings among
 #: them) and main's at 4,092,191, each under it, and the merge at 4,448,100. Raised to
-#: 4,700,000, which still fails a page that carries the overviews.
-PAGE_CEILINGS = {"index.html": 4_700_000, render_overview.RESULTS_PAGE: 2_800_000}
+#: 4,700,000, which still fails a page that carries the overviews. The results page's
+#: was 2,800,000 until the second such merge that day (#320, #322): PR 305 rendered it at
+#: 2,792,593 and main at 2,764,245, and the merge, with 86 results, at 2,823,439. Raised
+#: to 3,000,000 on the same reasoning.
+PAGE_CEILINGS = {"index.html": 4_700_000, render_overview.RESULTS_PAGE: 3_000_000}
 
 
 def test_no_page_carries_a_result_overview(

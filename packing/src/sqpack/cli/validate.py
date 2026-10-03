@@ -96,15 +96,21 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # formal-open and Nagamochi-bounded counts fall together, by one, five and nine. The
     # same day the replays of wand125's six afternoon mixed certificates (T-075) took
     # n = 83, 91 and 96 off Nagamochi's bound, all open in both lanes, so only the
-    # Nagamochi-bounded count falls, by three in every corpus. 0 Nagamochi-bounded since
+    # Nagamochi-bounded count falls, by three in every corpus. Then the n = 101 linear
+    # certificate's replay of 2 October, recorded as T-080, took n = 101 to 105 off it,
+    # all open in both lanes, so that count falls by five in the two larger corpora. The
+    # same day Daniel's reported s(k^2 - 4) = k (T-081) made n = 96, 117, 140, 165, 192,
+    # 221, 252, 285 and 320 reported-proved and left their verified lanes alone, so only
+    # the reported-open count falls, by one, five and nine. 0 Nagamochi-bounded since
     # 2026-10-02, independently: Nagamochi's Lemma 1 is false (think-589i), so no
     # verified floor rests on T-007 any more; the open cases' floors are Karakus 2026's,
     # and s(k^2-2) = k rests on the replayed Lean proof (T-085), so no case opened. The
-    # two lines merged on 2026-10-03: the formal-open and reported-open counts are the
-    # replays' above, and the Nagamochi-bounded count is the correction's, zero.
-    "n=1..100": (55, 55, 0),
-    "n=1..200": (139, 139, 0),
-    "n=1..324": (247, 247, 0),
+    # lines merged on 2026-10-03: the formal-open and reported-open counts are the
+    # replays' and reports' above, and the Nagamochi-bounded count is the correction's,
+    # zero.
+    "n=1..100": (55, 54, 0),
+    "n=1..200": (139, 134, 0),
+    "n=1..324": (247, 238, 0),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
 #: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the

@@ -94,6 +94,12 @@ DECIMAL_PLACES = 8
 #: An exact gap longer than this, in TeX, is shown as its decimal: a difference of two
 #: long closed forms is exact and unreadable.
 GAP_SHOWN = 44
+#: A rational gap whose numerator or denominator has more digits than this is shown as
+#: its decimal too: `327174680178947/1000000000000000`, Couzo's ceiling at n = 102 less
+#: the linear 257/25, is short in TeX and still too wide to read, and widened the column
+#: past the table's track at 1280 pixels; n = 68's `4512425581603/15625000000000` reads
+#: no better.
+GAP_DIGITS = 8
 #: A closed form longer than this, in TeX, is shown as its decimal. The longest structured
 #: form runs to 45 characters; a 30-digit rational certificate value does not read as one.
 VALUE_SHOWN = 56
@@ -257,7 +263,10 @@ def gap(case: dict[str, Any]) -> tuple[str, str]:
         tex = sympy.latex(difference, order="rev-lex")
         if difference.is_Integer:
             return html.escape(str(difference)), sort_value
-        if len(tex) <= GAP_SHOWN:
+        long_rational = difference.is_Rational and any(
+            len(str(abs(part))) > GAP_DIGITS for part in (difference.p, difference.q)
+        )
+        if len(tex) <= GAP_SHOWN and not long_rational:
             return math_html(cell_tex(tex)) + approx_html(difference), sort_value
         return f'<span class="site-decimal">{decimal_text(numeric)}</span>', sort_value
     numeric = Decimal(str(upper["value"])) - Decimal(str(lower["value"]))

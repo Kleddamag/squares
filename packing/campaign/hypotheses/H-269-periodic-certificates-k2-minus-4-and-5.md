@@ -92,7 +92,17 @@ hypothesis:
     duplicate of H-037: FRIEDMAN.md section 0 and X-049 both note that Roth-Vaughan's
     bound tends to zero at integer sides and cannot decide whether d_max(k) tends to
     infinity, so a fixed-profile family with growing D(w) is the only route on record to
-    that question, and this is its first cell.
+    that question, and this is its first cell. Update 2026-10-03: Evan Daniel's
+    s(k^2 - 4) = k for every k >= 5, registered as T-081 (V0/C1, reported), is the d = 4
+    cell as stated here: a family of this form at w = 3 on the base box [0, 9]^2 with
+    exact deficit D = 214770225571/200000000000 = 1.07385... > 1, reduced in Lean from
+    ValidTilt9 to every k >= 8, with s(21), s(32) and s(45) below that. It settles the
+    k^2 - 4 half as the source reports it, so no round of this hypothesis will run for
+    d = 4. By this hypothesis's own direction the cell is confirmed here only when the
+    full replay of qx2_zm.py on the box-9 cover (think-8hk1) completes with zero
+    uncertified boxes; the reduction was built here from the retained bytes on 3 October
+    and the claim chain reviewed (T-081's artifacts). The d = 5 cell, D > 5/4 at w <= 5,
+    stays open; Daniel's D is below 5/4, so his family does not decide it.
 ---
 # H-269: Periodic Certificates for the k² − 4 and k² − 5 Families
 
@@ -116,6 +126,17 @@ $D\le 1$ at widths three and four says the fixed-profile class at those widths c
 reach $d=4$, which also removes the first data point of the $D(w)\to\infty$ route toward
 $d_{\max}(k)\to\infty$. A verified packing of $k^2-4$ squares below side $k$ at any
 $k\ge 5$ ends both the family statement and Friedman’s conjecture at $c=4$.
+
+**Update, 3 October 2026.** Evan Daniel reports the $d=4$ cell as this hypothesis states
+it: $s(k^2-4)=k$ for every $k\ge 5$, from a family of this form at width three on the
+base box $[0,9]^2$ with exact corner deficit
+$D=214770225571/200000000000\approx 1.0739>1$, its finite premise `ValidTilt9` reduced
+in Lean to every $k\ge 8$ ([T-081](../../frontier/RESULTS.md), registered `V0/C1`). That
+settles the $k^2-4$ half as the source reports it, so no round here will run for $d=4$;
+by the direction above the cell is confirmed here once the full replay of the box-9
+cover under `think-8hk1` finishes with no uncertified box.
+The $d=5$ cell ($D>5/4$ at width at most five) stays open: Daniel’s deficit is below
+$5/4$, so his family does not reach it.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

@@ -149,7 +149,7 @@ def verification_code(
     for record in sorted(results, key=lambda item: item["id"]):
         held = status(record, evidence)
         how = confirmed_how(record, evidence) if held == CONFIRMED else ""
-        lines.append(f"- **{record['id']}** — {held}{f' ({how})' if how else ''}")
+        lines.append(f"- **{record['id']}** — {held}{f', {how}' if how else ''}")
         lines.extend(
             f"  - {entry_line(evidence[ref], verifiers)}"
             for ref in record["evidence"]

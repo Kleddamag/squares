@@ -151,13 +151,13 @@ def status_line(
 ) -> str:
     """A result's status as one cell of a Markdown table: the status, then its activity
     and `superseded` where it is one (`render_recent_results.position_marks`), the
-    marks the site draws as chips beside it. A confirmed result says how, in `how`:
-    reproduced with the producer's code, or re-implemented (epistemics.md,
-    Confirmation)."""
+    marks the site draws as chips beside it. A confirmed result says how, in `how`, as
+    the mark after the status: reproduced with the producer's code, or re-implemented
+    (epistemics.md, Confirmation). The status stays the first mark, so the cell reads
+    the same way whatever follows it."""
     held = status(record, evidence)
-    if held == CONFIRMED and how:
-        held = f"{held} ({how})"
-    marks = [held, activity_label(record.get("activity")), *position]
+    qualifier = how if held == CONFIRMED else ""
+    marks = [held, qualifier, activity_label(record.get("activity")), *position]
     return ", ".join(mark for mark in marks if mark)
 
 

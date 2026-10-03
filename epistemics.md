@@ -139,14 +139,15 @@ name in [`devtools/verifier_registry.py`](packing/devtools/verifier_registry.py)
 that only shrinks.
 
 How a result was confirmed is the third attribute beside its rung, and the register
-prints it with the status: *confirmed (reproduced with the producer’s code)*. Each part
-of the claim takes the relation furthest from the producer’s code among the confirming
-runs that decide it, and the result takes the part closest to it, so an exact value is
-as independent as the less independent of its two halves: the grid’s replay never makes
-a lower half re-run with the source’s own checker read as re-implemented.
-[`VERIFIERS.md`](packing/frontier/VERIFIERS.md) lists every program and what it backs;
-[`RESULTS.md`](packing/frontier/RESULTS.md#verification-code) and each case record’s
-Verification Code section list the programs behind each result and each verified bound.
+prints it as the mark after the status: *confirmed, reproduced with the producer’s
+code*. Each part of the claim takes the relation furthest from the producer’s code among
+the confirming runs that decide it, and the result takes the part closest to it, so an
+exact value is as independent as the less independent of its two halves: the grid’s
+replay never makes a lower half re-run with the source’s own checker read as
+re-implemented. [`VERIFIERS.md`](packing/frontier/VERIFIERS.md) lists every program and
+what it backs; [`RESULTS.md`](packing/frontier/RESULTS.md#verification-code) and each
+case record’s Verification Code section list the programs behind each result and each
+verified bound.
 
 **The word *confirmed* says which kind.** In a register claim, a case record, a review
 or a reply on an issue, *confirmed* is followed by which confirmation it was: reproduced

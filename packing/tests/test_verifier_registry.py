@@ -284,14 +284,14 @@ def test_a_confirmed_status_says_how() -> None:
     line = result_status.status_line(
         record, EVIDENCE, how="reproduced with the producer\u2019s code"
     )
-    assert line == "confirmed (reproduced with the producer\u2019s code)"
+    assert line == "confirmed, reproduced with the producer\u2019s code"
     reviewed = RESULTS["T-064"]
     assert result_status.status_line(reviewed, EVIDENCE, how="anything") == "reviewed"
 
 
 def test_results_md_names_the_programs_behind_each_result() -> None:
     text = render_results.render()
-    assert "| confirmed (reproduced with the producer\u2019s code) |" in text
+    assert "| confirmed, reproduced with the producer\u2019s code |" in text
     assert "## Verification Code" in text
     assert (
         "  - `E-n060-evand-mixed-cover-zmx2-replay`, replayed here, reproduced with the "

@@ -3441,7 +3441,7 @@ def test_both_tables_of_results_have_the_same_columns(
         assert classes.findall(here) == classes.findall(there), result.id
         assert classes.findall(here) == [
             "site-col-id",
-            "num site-col-n",
+            overview_sections.case_cell_class(result),
             "site-col-result",
             "site-col-credit",
             "site-rungs",

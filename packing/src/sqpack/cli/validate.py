@@ -88,10 +88,12 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # both stay open in both lanes, so only the Nagamochi-bounded count falls by two. The
     # same day the replayed mixed certificates of T-069 and T-071 took n = 37, 65, 66, 84,
     # 85, 87, 90 and 92 off it, eight more, all open in both lanes; n = 86 moved too, from
-    # a rectangle certificate.
-    "n=1..100": (56, 55, 11),
-    "n=1..200": (144, 139, 99),
-    "n=1..324": (256, 247, 211),
+    # a rectangle certificate. Then the merged replays of wand125's rectangle
+    # certificates of 1 October (T-074) took n = 57, 58, 88, 89, 93 and 94 off it, six
+    # more, all open in both lanes.
+    "n=1..100": (56, 55, 5),
+    "n=1..200": (144, 139, 93),
+    "n=1..324": (256, 247, 205),
 }
 #: n = 68, 103, 105, 110 and 131 left the exclusions on 2026-09-29, when their records
 #: moved from UnitSquare renderings to Francisco Couzo's packings (T-056); n = 69 is the

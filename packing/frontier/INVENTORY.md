@@ -8,8 +8,8 @@ ours, which rest on someone else's argument, and how far each has been checked.
 
 ## The short version
 
-- **193** evidence records. **128** are formal; **122** of those were established here.
-- **56** rest on an argument made elsewhere, of which **7** have been read by nobody here.
+- **206** evidence records. **132** are formal; **126** of those were established here.
+- **65** rest on an argument made elsewhere, of which **7** have been read by nobody here.
 - **36** claim to be first established here. **13** make no novelty statement at all - not assessed, which is not the same as not novel.
 
 A formal claim on an unread external proof is still formal: the proof proves its
@@ -35,15 +35,18 @@ results, it is a statement about what this repository has itself examined.
 | `E-wand125-tools-ceiling-report` | 0 | derived-structure | reported | - | elsewhere | defect-found | previously-published | no code | `V-wand125-tools` |
 | `E-wand125-tools-ceiling-certificates` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-rectangle-ceiling` |
 | `E-wand125-tools-n11-row-report` | 0 | derived-structure | reported | - | elsewhere | defect-found | previously-published | independent | `V-wand125-tools` |
-| `E-wand125-point-source-replay` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-wand125-check-with-sqpack`, `V-sqpack-fractional-exact` |
+| `E-wand125-tools-n11-row-replay` | 0 | derived-structure | verified | equalities and inequalities, no tolerance | here | - | previously-published | producer’s code | `V-wand125-tools`, `V-check-general-pose-tree-census` |
+| `E-wand125-point-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-wand125-check-with-sqpack`, `V-sqpack-fractional-exact` |
 | `E-wand125-n052-derived-lower` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | *not assessed* | producer’s code | `V-wand125-check-with-sqpack`, `V-sqpack-fractional-exact` |
 | `E-wand125-rectangle-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-tokoharu-verify-cpp` |
 | `E-wand125-rectangle-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published | no code | `V-tokoharu-verify-cpp` |
-| `E-wand125-rectangle-source-replay` | 10 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published | producer’s code | `V-tokoharu-verify-cpp`, `V-audit-wand125-rectangles` |
-| `E-wand125-rectangle-2026-09-28-report` | 9 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-tokoharu-verify-cpp` |
+| `E-wand125-rectangle-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published | producer’s code | `V-tokoharu-verify-cpp`, `V-audit-wand125-rectangles` |
+| `E-wand125-rectangle-2026-09-28-report` | 8 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-tokoharu-verify-cpp` |
 | `E-wand125-rectangle-2026-09-28-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published | no code | `V-tokoharu-verify-cpp` |
-| `E-wand125-rectangle-2026-09-28-source-replay` | 20 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-tokoharu-verify-cpp`, `V-audit-wand125-rectangles` |
-| `E-wand125-rectangle-2026-10-01-report` | 31 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-tokoharu-verify-cpp` |
+| `E-wand125-rectangle-2026-09-28-source-replay` | 5 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-tokoharu-verify-cpp`, `V-audit-wand125-rectangles` |
+| `E-wand125-rectangle-2026-10-01-report` | 24 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-tokoharu-verify-cpp` |
+| `E-wand125-rectangle-2026-10-01-source-replay` | 31 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-tokoharu-verify-cpp`, `V-audit-wand125-rectangles` |
+| `E-wand125-rectangle-2026-10-02-report` | 3 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-tokoharu-verify-cpp` |
 | `E-n045-wand125-point-cover-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-zmx2` |
 | `E-n045-wand125-point-cover-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published | producer’s code | `V-evand-zmx2`, `V-audit-wand125-point-and-mixed` |
 | `E-n021-wand125-point-endpoint-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-verify-portable-py` |
@@ -62,16 +65,23 @@ results, it is a statement about what this repository has itself examined.
 | `E-n066-wand125-mixed-842-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
 | `E-n090-wand125-mixed-960-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp` |
 | `E-n090-wand125-mixed-960-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
-| `E-n092-wand125-mixed-969-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp` |
+| `E-n092-wand125-mixed-969-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp` |
 | `E-n092-wand125-mixed-969-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
 | `E-n084-wand125-mixed-940-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp` |
 | `E-n084-wand125-mixed-940-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
-| `E-n085-wand125-mixed-942-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp` |
+| `E-n085-wand125-mixed-942-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp` |
 | `E-n085-wand125-mixed-942-source-replay` | 3 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
 | `E-n076-wand125-mixed-894-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp` |
 | `E-n076-wand125-mixed-894-source-replay` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-audit-wand125-point-and-mixed` |
-| `E-n083-wand125-linear-935-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-unified-linear-verify-cpp` |
+| `E-n083-wand125-linear-935-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-unified-linear-verify-cpp` |
 | `E-n101-wand125-linear-1028-report` | 5 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-unified-linear-verify-cpp` |
+| `E-n083-wand125-mixed-937-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n085-wand125-mixed-946-report` | 2 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n087-wand125-mixed-948-report` | 2 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n091-wand125-mixed-970-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n092-wand125-mixed-975-report` | 2 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n096-wand125-mixed-996-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-mixed-rotated-verify-cpp`, `V-wand125-verify-mixed-full-proof-py` |
+| `E-n082-wand125-linear-932-report` | 1 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-wand125-unified-linear-verify-cpp` |
 | `E-n032-evand-zmx2-full-sym-report` | 0 | lower-bound | reported | - | elsewhere | informally-verified | previously-published | producer’s code | `V-evand-zmx2` |
 | `E-n011-kleddamag-3875-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-kleddamag-n11-verify` |
 | `E-n011-kleddamag-3875-native-parent-core` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published | independent | `V-sqpack-parent-core-native` |
@@ -84,7 +94,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-tokoharu-density-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published | no code | `V-tokoharu-verify-cpp` |
 | `E-wand125-point-monotone-report` | 0 | lower-bound | reported | - | here | - | previously-published | no code | `V-wand125-check-with-sqpack`, `V-sqpack-fractional-exact` |
 | `E-tokoharu-density-source-replay` | 0 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published | producer’s code | `V-tokoharu-verify-cpp`, `V-audit-tokoharu-density` |
-| `E-green-ds7-theorem9-reported-lower` | 31 | lower-bound | reported | - | elsewhere | defect-found | previously-published | unknown | - |
+| `E-green-ds7-theorem9-reported-lower` | 30 | lower-bound | reported | - | elsewhere | defect-found | previously-published | unknown | - |
 | `E-green-ds7-theorem10-reported-lower` | 0 | lower-bound | reported | - | elsewhere | not-reviewed | previously-published | unknown | - |
 | `E-friedman-ds7-table2-opaque-lower` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | unknown | - |
 | `E-n017-maciver-reported-lower` | 0 | lower-bound | reported | - | elsewhere | not-reviewed | previously-published | unknown | *none held* |
@@ -94,7 +104,7 @@ results, it is a statement about what this repository has itself examined.
 | `E-unitsquare-release1-report` | 1 | upper-bound | reported | - | - | - | previously-published | producer’s code | *none held* |
 | `E-basic-grid-upper` | 254 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | independent | `V-check-basic-bounds` |
 | `E-basic-area-lower` | 18 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | independent | `V-check-basic-bounds` |
-| `E-nagamochi-lower` | 260 | lower-bound | verified | whatever its theorem states | elsewhere | informally-verified | previously-published | no code | - |
+| `E-nagamochi-lower` | 254 | lower-bound | verified | whatever its theorem states | elsewhere | informally-verified | previously-published | no code | - |
 | `E-migrated-lower-report` | 6 | lower-bound | reported | - | - | - | *not assessed* | unknown | - |
 | `E-side2-center-lower` | 2 | lower-bound | verified | equalities and inequalities, no tolerance | here | - | common-knowledge | producer’s code | `V-optimal-moduli` |
 | `E-n005-gobel-upper` | 1 | upper-bound | verified | equalities and inequalities, no tolerance | here | - | previously-published | independent | `V-sqpack-verify` |
@@ -147,9 +157,12 @@ results, it is a statement about what this repository has itself examined.
 | `E-n032-evand-closed-cover-source-run` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-evand-zeromargin-py`, `V-compare-evand-s32-sweep` |
 | `E-n032-evand-closed-cover-zmx2-replay` | 1 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published | producer’s code | `V-evand-zmx2`, `V-audit-evand-mixed-covers` |
 | `E-n032-evand-zmx2-full-sym-replay` | 1 | lower-bound | verified | strict inequalities only | here | informally-verified | previously-published | producer’s code | `V-evand-zmx2`, `V-replay-evand-zmx2`, `V-audit-evand-mixed-covers` |
-| `E-n012-evand-15680-3951-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-angle-net-verify`, `V-evand-xcheck-py` |
-| `E-n012-evand-15680-3951-source-replay` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-evand-angle-net-verify`, `V-evand-xcheck-py` |
-| `E-n012-evand-15680-3951-native-parent-core` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-sqpack-parent-core-native` |
+| `E-n012-evand-15680-3951-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-angle-net-verify`, `V-evand-xcheck-py` |
+| `E-n012-evand-15680-3951-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-evand-angle-net-verify`, `V-evand-xcheck-py` |
+| `E-n012-evand-15680-3951-native-parent-core` | 0 | lower-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-sqpack-parent-core-native` |
+| `E-n012-squarepacker-31360-7901-report` | 1 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-angle-net-verify`, `V-squarepacker-indep-check-cpp` |
+| `E-n012-squarepacker-31360-7901-source-replay` | 1 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-evand-angle-net-verify`, `V-squarepacker-indep-check-cpp` |
+| `E-n012-squarepacker-31360-7901-native-parent-core` | 1 | lower-bound | verified | strict inequalities only | here | - | previously-published | independent | `V-sqpack-parent-core-native` |
 | `E-n021-evand-5000-1001-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-angle-net-verify`, `V-evand-xcheck-py` |
 | `E-n021-evand-5000-1001-source-replay` | 0 | lower-bound | verified | equalities and inequalities, no tolerance | here | informally-verified | previously-published | producer’s code | `V-evand-angle-net-verify`, `V-evand-xcheck-py` |
 | `E-n013-evand-casefree-cover-report` | 0 | lower-bound | reported | - | elsewhere | - | previously-published | producer’s code | `V-evand-zeromargin-py`, `V-evand-zmcheck` |
@@ -218,10 +231,10 @@ results, it is a statement about what this repository has itself examined.
 
 ## What the register rests on
 
-- **assurance**: numerically-checked 4, reported 61, verified 128
-- **method**: exact-algebraic 82, interval-certified 36, numerical-multiprecision 4, proof-assistant-checked 1, proof-audited 3, published-proof 6, reported 61
-- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 13, previously-published 140
-- **relationship to the producer's code**: generator 4, independent-implementation 43, not-applicable 16, same-implementation 117, shared-components 7, unknown-historical 6
+- **assurance**: numerically-checked 4, reported 70, verified 132
+- **method**: exact-algebraic 84, interval-certified 38, numerical-multiprecision 4, proof-assistant-checked 1, proof-audited 3, published-proof 6, reported 70
+- **novelty**: apparently-novel 36, common-knowledge 4, not assessed 13, previously-published 153
+- **relationship to the producer's code**: generator 4, independent-implementation 44, not-applicable 16, same-implementation 129, shared-components 7, unknown-historical 6
 
 The `cases` column is how many frontier records cite each piece of evidence, and it is the reason to read this table rather than count records. Ranked below are the *formal* records only: a `reported` record cited across the frontier may be a shared catalogue and is labelled as such, which is the register working rather than risk. The risk is a verified claim resting on an argument nobody has examined.
 
@@ -272,13 +285,13 @@ The `n` column is what each covers and `cases` is how many frontier records cite
 
 | evidence | cases | whose work | read here |
 | --- | ---: | --- | --- |
-| `E-nagamochi-lower` | 260 | elsewhere | informally-verified |
 | `E-basic-grid-upper` | 254 | here | - |
+| `E-nagamochi-lower` | 254 | elsewhere | informally-verified |
 | `E-franciscouzo-2026-09-27-exact-replay` | 49 | here | - |
 | `E-franciscouzo-2026-09-27-interval-replay` | 49 | here | - |
-| `E-wand125-rectangle-2026-09-28-source-replay` | 20 | here | - |
+| `E-wand125-rectangle-2026-10-01-source-replay` | 31 | here | - |
 
-The most-cited argument this repository did not produce is `E-nagamochi-lower`, carrying 260 frontier cases. It is an external proof, and it has been read here: its record carries the review, what was re-derived, and the four things that were not. The arithmetic is what picked it out for reading -- being cited this heavily is the reason to open an argument, not a reason to trust it.
+The most-cited argument this repository did not produce is `E-nagamochi-lower`, carrying 254 frontier cases. It is an external proof, and it has been read here: its record carries the review, what was re-derived, and the four things that were not. The arithmetic is what picked it out for reading -- being cited this heavily is the reason to open an argument, not a reason to trust it.
 
 `[Stromquist 2003]` is why that matters rather than being a formality: its `n = 11` argument needed a source-distinct repair, which `E-n011-repaired-lower` supplies.
 

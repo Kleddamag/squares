@@ -375,6 +375,16 @@ REPLAY_RULES: tuple[Rule, ...] = (
         runs(("V-wand125-verify-portable-py", "V-audit-wand125-point-and-mixed"), PRODUCER),
     ),
     (
+        "Daniel's s12 verify and squarepacker's indep_check.cpp",
+        _in_replay(r"indep_check"),
+        runs(("V-evand-angle-net-verify", "V-squarepacker-indep-check-cpp"), PRODUCER),
+    ),
+    (
+        "wand125's general pose tree under the row census",
+        _in_replay(r"check_general_pose_tree_census"),
+        runs(("V-wand125-tools", "V-check-general-pose-tree-census"), PRODUCER),
+    ),
+    (
         "wand125's unified_linear_verify.cpp through the bundle driver",
         _in_replay(r"audit_wand125_linear"),
         runs(("V-wand125-unified-linear-verify-cpp", "V-audit-wand125-linear"), PRODUCER),
@@ -671,6 +681,11 @@ SOURCE_RULES: tuple[Rule, ...] = (
         "wand125's point certificates, checked by its adapter and this repository's verifier",
         _source(r"^\[wand125 point bounds 2026\]"),
         runs(("V-wand125-check-with-sqpack", "V-sqpack-fractional-exact"), PRODUCER),
+    ),
+    (
+        "Daniel's s12 verify and the source's indep_check.cpp",
+        _source(r"^\[squarepacker s12"),
+        runs(("V-evand-angle-net-verify", "V-squarepacker-indep-check-cpp"), PRODUCER),
     ),
     ("wand125's tools", _source(r"^\[wand125 tools"), runs(("V-wand125-tools",), None)),
     (

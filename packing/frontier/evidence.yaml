@@ -94,10 +94,10 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at maximum thinking effort, review lane R2, prompted separately
+        Claude (AI review; model unstated) at maximum thinking effort, review lane R2, prompted separately
         from the replay lane
         (docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md), after
-        GPT-6 Astra's 2026-10-01 mathematical-transfer read
+        another AI reviewer's 2026-10-01 mathematical-transfer read (model unstated)
       note: >-
         The 2 October review of the geometric premises found every premise holding and no
         blocking defect: the cover is a finite nonnegative measure on the closed container
@@ -141,10 +141,10 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at maximum thinking effort, review lane R2, prompted separately
+        Claude (AI review; model unstated) at maximum thinking effort, review lane R2, prompted separately
         from the replay lane
         (docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md), after
-        GPT-6 Astra's 2026-10-01 mathematical-transfer read
+        another AI reviewer's 2026-10-01 mathematical-transfer read (model unstated)
       note: >-
         Both reads found the deduction sound as stated: s(61) >= s(60) by deleting a
         square, and s(61) <= 8 by the grid. The 2 October review of the geometric premises
@@ -538,6 +538,45 @@ evidence:
       kind: checker
       detail: Audit the point/threshold row contract and replay the complete pinned row census, then separately bind angle containment, D4 folding and the global budget.
     source_reviewed: '2026-09-29'
+  - id: E-wand125-tools-n11-row-replay
+    claim: derived-structure
+    scope: {n_values: [11]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 tools 2026]'
+    certificate: resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full.jsonl.gz
+    replay: >-
+      From packing/, with a clean checkout of wand125/square-packing-tools at
+      0d33ab61726c2ab03e3eb8f457dabaf22db8571f as CHECKER:
+      .venv/bin/python3 -m devtools.check_general_pose_tree_census run
+      resources/web/wand125-tools-2026-09-29/receipts/n11-bound-full.jsonl 0-12027
+      --checker CHECKER --certificate-dir
+      resources/web/external-square-certificates-2026-09-22/kleddamag-11 --leaf 10
+      --max-seconds 18000, one uninterrupted serial process, then .venv/bin/python3 -m
+      devtools.check_general_pose_tree_census pack on that journal and validate
+      --require-complete on the .gz, which must exit 0 with verdict
+      COMPLETE_ROW_EQUALITY. The run, its summary and its host header and footer are
+      receipts/n11-bound-full-run.log and receipts/n11-bound-full-summary.json; the journal
+      is receipts/n11-bound-full.jsonl.gz.
+    replay_status: passed
+    verifiers: [V-wand125-tools, V-check-general-pose-tree-census]
+    limitations: >-
+      Replayed here on 2 October 2026 on a shared 4-core Linux container with Python 3.14.7:
+      12,028 of 12,028 rows, each pinned-checker minimum equal to Kleddamag's recorded row
+      minimum, global minimum 999962528 matching the reference, every witness re-evaluated
+      by the wrapper's own exact evaluator (11,295 s wall, 11,293 CPU-s against the
+      source's reported 9,446). The journal is retained gzipped, 3.9 MB, 12.6 MB inflated,
+      sha256 b7f3ebd4da4269d4ea74fc372f7d034a3855dc096de93a528800214b518ef7fc. The
+      minima are computed by the source's own branch and bound, so the search is the same
+      implementation as the claim; only attainment at the reported witness is checked
+      independently, and no independent proof of minimality is made. Row equality only: it
+      does not verify the angle folding, enclosure, counting budget or packing theorem,
+      and the n = 11 bound rests on T-037, not on this replay.
+    source_reviewed: '2026-10-02'
   - id: E-wand125-point-source-replay
     claim: lower-bound
     scope: {n_values: [26, 29, 39, 40, 41, 53, 55, 56, 69, 70, 71, 72]}
@@ -904,7 +943,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R3, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-rectangle-bounds-t068.md)
       note: >-
@@ -920,6 +959,118 @@ evidence:
         and n78 lie outside the claim (R3E-3). The 200 oblique coverage statements and the
         axis tables are the source's until the replays here pass.
     source_reviewed: '2026-10-01'
+
+  - id: E-wand125-rectangle-2026-10-01-source-replay
+    claim: lower-bound
+    scope: {n_values: [19, 20, 26, 27, 28, 29, 30, 31, 38, 39, 40, 41, 42, 43, 44, 53, 54, 55, 56, 57, 58, 68, 69, 70, 74, 75, 88, 89, 93, 94, 95]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-10-01]'
+    certificate: resources/web/wand125-rectangle-certificates-2026-10-01/wand125-rectangles/certificates
+    replay: >-
+      wand125_replay_output="$(mktemp -d "${TMPDIR:-/tmp}/wand125-rectangle-replay.XXXXXX")" &&
+      .venv/bin/python3 -m devtools.audit_wand125_rectangles --packet 2026-10-01 --out "$wand125_replay_output"
+      --replay --workers 2 --n 19 --n 20 --n 26 --n 27 --n 28 --n 29 --n 30 --n 31 --n 38 --n 39 --n 40 --n 41 --n 42 --n 43 --n 44 --n 53 --n 54 --n 55 --n 56 --n 68 --n 69 --n 70 --n 74 --n 75 --n 88 --n 89 --n 93 --n 94 --n 95
+    replay_status: passed
+    verifiers: [V-tokoharu-verify-cpp, V-audit-wand125-rectangles]
+    proof:
+      source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
+      theorem: Rectangle-density covering obstruction, applied to wand125's standing certificates of 1 October 2026
+      scope: Unrestricted square packing with disjoint interiors and arbitrary rotations; monotonic transfer to larger counts below which a certificate's mass lies.
+      pinpoints: >-
+        The theorem and interval-verifier correspondence audited in the linked review;
+        the byte-identical verify.cpp and run_verify.py retained with Tokoharu's packet;
+        per-case preflight and replay records in receipts/preflight/audit.json.gz and
+        receipts/replay/audit.json.gz of the 2026-10-01 wand125 rectangle packet.
+      assumptions:
+        - Nonnegative exact rational rectangle densities have total mass strictly below the target square count.
+        - All angles and legal centres are covered by the certified core net and interval subdivision.
+        - Binary64 arithmetic has the reviewed IEEE-754 semantics, without fast math or FMA contraction.
+        - The replayed interval input is the one regenerated from the exact candidate, whose SHA-256 equals the digest the upstream accepting run recorded.
+      audit_record: docs/project/reviews/review-2026-09-22-tokoharu-density-mathematics.md
+    limitations: >-
+      The scope lists the counts whose verified lower bound this entry carries: each is
+      a count whose own standing certificate at 1a25a5ed passed the complete
+      201-direction replay, or a larger count reached by monotonicity from one. Thirty
+      certificates were replayed with Tokoharu's unchanged verify.cpp (SHA-256
+      a75140df...) through run_verify.py, one worker each, in sixteen cloud batches on 2
+      October 2026 (claude/replay-wand125-rect-oct1-r1 to -r4, four batches each), about
+      143 hours of wall in all; their receipts were folded into the packet's
+      receipts/replay/audit.json.gz by devtools.audit_wand125_rectangles --merge, which
+      checks each case against the packet's own preflight, the published input digest and
+      the reviewed checker digest; every replay reproduced the upstream accepting run's
+      nodes, leaves and lower bound angle by angle. The transfer branches are not merged
+      and transfer/ is not in the tree. Global rotated coverage is still decided by the
+      source C++ checker, so this is a machine replay of the source's checker, not an
+      independent decision of the certificate. The 2026-10-02 review of T-068 read the
+      same checker for these certificates, at sides up to 49259/5000 and 926 orbits, and
+      found no defect; it read them before their replays, so the rung does not rest on it.
+      The controls are Tokoharu's checker's on rect_n41_L676 of this packet
+      (receipts/controls/rect_n41_L676.json, held by
+      tests/test_wand125_checker_controls.py). Run the replay from packing/ with the
+      project CPython 3.14 environment and a C++17-capable g++ on PATH.
+    source_reviewed: '2026-10-01'
+
+  - id: E-wand125-rectangle-2026-10-02-report
+    claim: lower-bound
+    scope: {n_values: [20, 42, 59, 70, 77, 91, 93]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 rectangle bounds 2026-10-02]'
+    certificate: resources/web/wand125-rectangle-certificates-2026-10-02/wand125-rectangles/certificates
+    replay_status: not-attempted
+    verifiers: [V-tokoharu-verify-cpp]
+    limitations: >-
+      Source b00fc70f1904e9b1b567afee056d347f911209e8, committed 2026-10-02 (UTC),
+      reports one standing rectangle-density certificate in Tokoharu's format for each
+      listed count, each raised since 1a25a5e by three commits of 2026-10-02 (UTC),
+      06eeb40, 7d77022 and 4318bdf, and accepted there by Tokoharu's unchanged interval
+      checker (verify.cpp SHA-256
+      a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602). The seven sides
+      are 49/10 at n20, 2731/400 at n42, 127/16 at n59, 3451/400 at n70, 447/50 at n77,
+      3859/400 at n91 and 1947/200 at n93; the complete standing list is the
+      CASES_2026_10_02 table of devtools/audit_wand125_rectangles.py. No issue requests
+      them; the import of 2 October took them in from the source's own commits. The 46
+      standing certificates the revision left unchanged are byte-identical to those the
+      earlier rectangle entries record, and their cases stay on those entries. Each
+      certificate's weights were multiplied by one exact rational factor, between
+      1.00009 and 1.03993, to bring its mass to n - 1/100 before the recorded run, which
+      checked the scaled data. Lower rungs, matching certificates, the point
+      certificates and the point-only, exact-cover, mixed and linear bundles at the same
+      revision are pinned by digest only. This is the public-claim entry, not a local
+      verification receipt. At n59 and n77 a stronger bound was registered separately
+      when this entry was written, the source's own exact covers s(59) = 8 and
+      s(77) = 9, so those case records do not cite this entry; at n91 and n93 the same
+      revision's mixed rectangle-measure certificates, 97/10 at n91 and 39/4 at n92,
+      which carries to n93, are stronger wherever they are registered. Here
+      devtools.audit_wand125_rectangles --packet 2026-10-02 regenerated each checker input
+      from the candidate, matched it to the digest the upstream accepting run recorded, and
+      checked the enclosure, the axis-event partition, the orbit normalization and the mass
+      of all 53 standing certificates (receipts/preflight/audit.json.gz in the packet); the
+      preflight does not decide rotated coverage, which the source's verify.cpp, run by its
+      run_verify.py, alone decides, and no direction was replayed here.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        AI agent, lane V of the 2026-10-02 result import, after retaining the packets and
+        before any replay; the retaining lane's own review, not prompted separately from
+        it; model unstated
+        (docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md)
+      note: >-
+        No blocking defect. Every verify.cpp and run_verify.py of the seven rungs is byte
+        for byte Tokoharu's checker read on 22 and 27 September and 2 October, and the
+        orbit counts, sides and scaling factors are within what the 1 October certificates
+        reached. Coverage statements remain the source's until the replays here pass.
+    source_reviewed: '2026-10-02'
 
   - id: E-n045-wand125-point-cover-report
     claim: lower-bound
@@ -1320,7 +1471,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at maximum thinking effort, review lane R1, prompted separately
+        Claude (AI review; model unstated) at maximum thinking effort, review lane R1, prompted separately
         from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-s59-s77-mixed-covers.md)
       note: >-
@@ -1463,7 +1614,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at maximum thinking effort, review lane R1, prompted separately
+        Claude (AI review; model unstated) at maximum thinking effort, review lane R1, prompted separately
         from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-s59-s77-mixed-covers.md)
       note: >-
@@ -1597,7 +1748,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R3, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md)
       note: >-
@@ -1706,7 +1857,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R3, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md)
       note: >-
@@ -1818,7 +1969,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R3, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md)
       note: >-
@@ -1927,7 +2078,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R3, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md)
       note: >-
@@ -2038,7 +2189,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R3, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md)
       note: >-
@@ -2156,7 +2307,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R3, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md)
       note: >-
@@ -2277,7 +2428,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R3, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R3, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md)
       note: >-
@@ -2402,7 +2553,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R4, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R4, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md)
       note: >-
@@ -2528,7 +2679,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R4, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R4, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md)
       note: >-
@@ -2588,11 +2739,407 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at extra-high thinking effort, review lane R4, prompted
+        Claude (AI review; model unstated) at extra-high thinking effort, review lane R4, prompted
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md)
       note: >-
         No blocking defect; coverage statements remain the source's until the replay
+        passes.
+    source_reviewed: '2026-10-02'
+  - id: E-n083-wand125-mixed-937-report
+    claim: lower-bound
+    scope: {n_values: [83]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds afternoon 2026-10-02]'
+    certificate: resources/web/wand125-mixed-bounds-afternoon-2026-10-02/square-packing-bounds/certificates/mixed_n83_L937/candidate.json.gz
+    replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-wand125-verify-mixed-full-proof-py]
+    limitations: >-
+      wand125/square-packing-bounds at b00fc70f1904e9b1b567afee056d347f911209e8 (the
+      directory's one commit is 25c421d5, 2026-10-02T14:46:34Z) reports s(83) >=
+      937/100 = 9.37 from a rectangle density of 728 uniform-density rectangles and no
+      point mass, total mass 8299999/100000, core side B = 9977/10000 and 201 net
+      half-angles of step 83/40000, checked there by code/mixed_rotated_verify.cpp
+      (SHA-256 89b674a6...), the research copy of Tokoharu's verify.cpp that the n =
+      50 certificate uses: it accepts a centre box at lower bound 1 instead of
+      10001/10000, with the axis direction decided by exact integer tables in
+      code/verify_axis_certificate.py, both run by the driver
+      code/verify_mixed_full_proof.py. The least oblique lower bound the source
+      records is 1.0000000002030356, at net index 165, and the axis integer minimum
+      1.0063110587189603 over 21,808,900 cells; its oblique run took 44,833 seconds
+      over 122,070,074 nodes. It exceeds Green's reported 2 sqrt(2) + (247 + 12
+      sqrt(2))/41 = 9.2667335..., which this case held by monotonicity from n = 82,
+      and the linear s(83) >= 187/20 the record reports (T-073), by 0.02. The source's
+      improvement_lower, 1033/10000, is measured from 92667/10000, below Green's
+      value, and is not a lower bound on the improvement, which is 0.10326646...
+      (review finding AF-1); its comparison note names a "published rectangle" value
+      of 9.15 that nothing here holds (AF-2). The source says the full replay was run
+      again from the published tarball on a fresh machine, by the same implementation
+      and not an independent one; that was not checked here. The tarball (SHA-256
+      cbf81b21...) is pinned by digest and not retained. Here
+      devtools.audit_wand125_point_and_mixed mixed-audit (receipts/mixed-audit.json in
+      the packet) recomputes the mass, the net, the centre domains and the candidate
+      digest from the retained bytes, and its mixed-fetch checked the pinned tarball,
+      its 621 listed files, the driver's preconditions and that all 200 oblique inputs
+      enclose the exact candidate; none of it decides coverage, and no angle was
+      replayed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        AI agent, lane V of the 2026-10-02 result import, after retaining the
+        packets and before any replay; the retaining lane's own review, not prompted
+        separately from it; model unstated
+        (docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md)
+      note: >-
+        No blocking defect. The code/ directory is byte for byte the mixed checker
+        read on 28 September and 2 October, and every exact premise readable from
+        the retained files holds; the review re-derived only what the new measure
+        adds, its size, structure and records. The 200 oblique coverage statements
+        and the axis tables are the source's until the replay here passes.
+    source_reviewed: '2026-10-02'
+  - id: E-n085-wand125-mixed-946-report
+    claim: lower-bound
+    scope: {n_values: [85, 86]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds afternoon 2026-10-02]'
+    certificate: resources/web/wand125-mixed-bounds-afternoon-2026-10-02/square-packing-bounds/certificates/mixed_n85_L946/candidate.json.gz
+    replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-wand125-verify-mixed-full-proof-py]
+    limitations: >-
+      wand125/square-packing-bounds at b00fc70f1904e9b1b567afee056d347f911209e8 (the
+      directory's one commit is 028b9155, 2026-10-02T11:38:12Z) reports s(85) >=
+      473/50 = 9.46 from a rectangle density of 525 uniform-density rectangles and no
+      point mass, total mass 8499999/100000, core side B = 9977/10000 and 201 net
+      half-angles of step 83/40000, checked there by code/mixed_rotated_verify.cpp
+      (SHA-256 89b674a6...), the research copy of Tokoharu's verify.cpp that the n =
+      50 certificate uses: it accepts a centre box at lower bound 1 instead of
+      10001/10000, with the axis direction decided by exact integer tables in
+      code/verify_axis_certificate.py, both run by the driver
+      code/verify_mixed_full_proof.py. The least oblique lower bound the source
+      records is 1.0000000021147502, at net index 182, and the axis integer minimum
+      1.0025322687268394 over 12,694,969 cells; its oblique run took 27,379 seconds
+      over 87,731,796 nodes. It supersedes the source's mixed_n85_L942, s(85) >=
+      471/50, which this case holds verified (T-071), and exceeds Green's reported
+      9.2667335...; the source's improvement_lower, 1933/10000, is measured from
+      92667/10000, below Green's value, and is not a lower bound on the improvement,
+      which is 0.19326646... (review finding AF-1); its comparison note names a
+      "published rectangle" value of 9.2325 that nothing here holds (AF-2). Its mass
+      is below 86, so by monotonicity it bounds n = 86 as well, above the rectangle
+      certificate reported there, 1873/200 (T-068), and the verified 471/50. The
+      source says the full replay was run again from the published tarball on a fresh
+      machine, by the same implementation and not an independent one; that was not
+      checked here. The tarball (SHA-256 d518b3a9...) is pinned by digest and not
+      retained. Here devtools.audit_wand125_point_and_mixed mixed-audit
+      (receipts/mixed-audit.json in the packet) recomputes the mass, the net, the
+      centre domains and the candidate digest from the retained bytes, and its
+      mixed-fetch checked the pinned tarball, its 621 listed files, the driver's
+      preconditions and that all 200 oblique inputs enclose the exact candidate; none
+      of it decides coverage, and no angle was replayed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        AI agent, lane V of the 2026-10-02 result import, after retaining the
+        packets and before any replay; the retaining lane's own review, not prompted
+        separately from it; model unstated
+        (docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md)
+      note: >-
+        No blocking defect. The code/ directory is byte for byte the mixed checker
+        read on 28 September and 2 October, and every exact premise readable from
+        the retained files holds; the review re-derived only what the new measure
+        adds, its size, structure and records. The 200 oblique coverage statements
+        and the axis tables are the source's until the replay here passes.
+    source_reviewed: '2026-10-02'
+  - id: E-n087-wand125-mixed-948-report
+    claim: lower-bound
+    scope: {n_values: [87, 88]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds afternoon 2026-10-02]'
+    certificate: resources/web/wand125-mixed-bounds-afternoon-2026-10-02/square-packing-bounds/certificates/mixed_n87_L948/candidate.json.gz
+    replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-wand125-verify-mixed-full-proof-py]
+    limitations: >-
+      wand125/square-packing-bounds at b00fc70f1904e9b1b567afee056d347f911209e8 (the
+      directory's one commit is 6e4e9786, 2026-10-02T13:49:30Z) reports s(87) >=
+      237/25 = 9.48 from a rectangle density of 299 uniform-density rectangles and no
+      point mass, total mass 8699999/100000, core side B = 9977/10000 and 201 net
+      half-angles of step 83/40000, checked there by code/mixed_rotated_verify.cpp
+      (SHA-256 89b674a6...), the research copy of Tokoharu's verify.cpp that the n =
+      50 certificate uses: it accepts a centre box at lower bound 1 instead of
+      10001/10000, with the axis direction decided by exact integer tables in
+      code/verify_axis_certificate.py, both run by the driver
+      code/verify_mixed_full_proof.py. The least oblique lower bound the source
+      records is 1.0000000089739896, at net index 176, and the axis integer minimum
+      1.013387013743792 over 2,866,249 cells; its oblique run took 7,758 seconds over
+      37,506,392 nodes. It exceeds the rectangle certificate the record reports at n =
+      87, 941/100 (T-068), and the verified 471/50 carried from n = 85 (T-071). The
+      source compares with 92667/10000 and calls 9.46, carried from its n = 85
+      certificate, the record; its improvement_lower, 2133/10000, is not a lower bound
+      on the improvement over Green's 9.2667335..., which is 0.21326646... (review
+      finding AF-1). Its mass is below 88, so by monotonicity it bounds n = 88 as
+      well, above the replayed rectangle certificate 3791/400 there (T-074) by 0.0025.
+      The source says the full replay was run again from the published tarball on a
+      fresh machine, by the same implementation and not an independent one; that was
+      not checked here. The tarball (SHA-256 c77d8ea1...) is pinned by digest and not
+      retained. Here devtools.audit_wand125_point_and_mixed mixed-audit
+      (receipts/mixed-audit.json in the packet) recomputes the mass, the net, the
+      centre domains and the candidate digest from the retained bytes, and its
+      mixed-fetch checked the pinned tarball, its 621 listed files, the driver's
+      preconditions and that all 200 oblique inputs enclose the exact candidate; none
+      of it decides coverage, and no angle was replayed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        AI agent, lane V of the 2026-10-02 result import, after retaining the
+        packets and before any replay; the retaining lane's own review, not prompted
+        separately from it; model unstated
+        (docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md)
+      note: >-
+        No blocking defect. The code/ directory is byte for byte the mixed checker
+        read on 28 September and 2 October, and every exact premise readable from
+        the retained files holds; the review re-derived only what the new measure
+        adds, its size, structure and records. The 200 oblique coverage statements
+        and the axis tables are the source's until the replay here passes.
+    source_reviewed: '2026-10-02'
+  - id: E-n091-wand125-mixed-970-report
+    claim: lower-bound
+    scope: {n_values: [91]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds afternoon 2026-10-02]'
+    certificate: resources/web/wand125-mixed-bounds-afternoon-2026-10-02/square-packing-bounds/certificates/mixed_n91_L970/candidate.json.gz
+    replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-wand125-verify-mixed-full-proof-py]
+    limitations: >-
+      wand125/square-packing-bounds at b00fc70f1904e9b1b567afee056d347f911209e8 (the
+      directory's one commit is 6e4e9786, 2026-10-02T13:49:30Z) reports s(91) >= 97/10
+      = 9.7 from a rectangle density of 288 uniform-density rectangles and no point
+      mass, total mass 9099999/100000, core side B = 9977/10000 and 201 net
+      half-angles of step 83/40000, checked there by code/mixed_rotated_verify.cpp
+      (SHA-256 89b674a6...), the research copy of Tokoharu's verify.cpp that the n =
+      50 certificate uses: it accepts a centre box at lower bound 1 instead of
+      10001/10000, with the axis direction decided by exact integer tables in
+      code/verify_axis_certificate.py, both run by the driver
+      code/verify_mixed_full_proof.py. The least oblique lower bound the source
+      records is 1.0000000003906073, at net index 191, and the axis integer minimum
+      1.005778849360574 over 2,748,964 cells; its oblique run took 7,792 seconds over
+      30,125,436 nodes. It exceeds the source's own rectangle certificate the record
+      reports at n = 91, 1929/200, with which the source compares it, by 0.055, and
+      Nagamochi's verified 1 + sqrt(74) = 9.6023.... The source says the full replay
+      was run again from the published tarball on a fresh machine, by the same
+      implementation and not an independent one; that was not checked here. The
+      tarball (SHA-256 56174c72...) is pinned by digest and not retained. Here
+      devtools.audit_wand125_point_and_mixed mixed-audit (receipts/mixed-audit.json in
+      the packet) recomputes the mass, the net, the centre domains and the candidate
+      digest from the retained bytes, and its mixed-fetch checked the pinned tarball,
+      its 621 listed files, the driver's preconditions and that all 200 oblique inputs
+      enclose the exact candidate; none of it decides coverage, and no angle was
+      replayed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        AI agent, lane V of the 2026-10-02 result import, after retaining the
+        packets and before any replay; the retaining lane's own review, not prompted
+        separately from it; model unstated
+        (docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md)
+      note: >-
+        No blocking defect. The code/ directory is byte for byte the mixed checker
+        read on 28 September and 2 October, and every exact premise readable from
+        the retained files holds; the review re-derived only what the new measure
+        adds, its size, structure and records. The 200 oblique coverage statements
+        and the axis tables are the source's until the replay here passes.
+    source_reviewed: '2026-10-02'
+  - id: E-n092-wand125-mixed-975-report
+    claim: lower-bound
+    scope: {n_values: [92, 93]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds afternoon 2026-10-02]'
+    certificate: resources/web/wand125-mixed-bounds-afternoon-2026-10-02/square-packing-bounds/certificates/mixed_n92_L975/candidate.json.gz
+    replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-wand125-verify-mixed-full-proof-py]
+    limitations: >-
+      wand125/square-packing-bounds at b00fc70f1904e9b1b567afee056d347f911209e8 (the
+      directory's one commit is 6e4e9786, 2026-10-02T13:49:30Z) reports s(92) >= 39/4
+      = 9.75 from a rectangle density of 324 uniform-density rectangles and no point
+      mass, total mass 9199999/100000, core side B = 9977/10000 and 201 net
+      half-angles of step 83/40000, checked there by code/mixed_rotated_verify.cpp
+      (SHA-256 89b674a6...), the research copy of Tokoharu's verify.cpp that the n =
+      50 certificate uses: it accepts a centre box at lower bound 1 instead of
+      10001/10000, with the axis direction decided by exact integer tables in
+      code/verify_axis_certificate.py, both run by the driver
+      code/verify_mixed_full_proof.py. The least oblique lower bound the source
+      records is 1.0000000022907243, at net index 191, and the axis integer minimum
+      1.008723611315222 over 3,560,769 cells; its oblique run took 6,744 seconds over
+      32,377,010 nodes. It supersedes the source's mixed_n92_L969, s(92) >= 969/100,
+      which this case holds verified (T-069) and with which the source compares it, by
+      0.06. Its mass is below 93, so by monotonicity it bounds n = 93 as well, above
+      the replayed rectangle certificate 3889/400 there (T-074) by 0.0275. The source
+      says the full replay was run again from the published tarball on a fresh
+      machine, by the same implementation and not an independent one; that was not
+      checked here. The tarball (SHA-256 1f61a640...) is pinned by digest and not
+      retained. Here devtools.audit_wand125_point_and_mixed mixed-audit
+      (receipts/mixed-audit.json in the packet) recomputes the mass, the net, the
+      centre domains and the candidate digest from the retained bytes, and its
+      mixed-fetch checked the pinned tarball, its 621 listed files, the driver's
+      preconditions and that all 200 oblique inputs enclose the exact candidate; none
+      of it decides coverage, and no angle was replayed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        AI agent, lane V of the 2026-10-02 result import, after retaining the
+        packets and before any replay; the retaining lane's own review, not prompted
+        separately from it; model unstated
+        (docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md)
+      note: >-
+        No blocking defect. The code/ directory is byte for byte the mixed checker
+        read on 28 September and 2 October, and every exact premise readable from
+        the retained files holds; the review re-derived only what the new measure
+        adds, its size, structure and records. The 200 oblique coverage statements
+        and the axis tables are the source's until the replay here passes.
+    source_reviewed: '2026-10-02'
+  - id: E-n096-wand125-mixed-996-report
+    claim: lower-bound
+    scope: {n_values: [96]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 mixed bounds afternoon 2026-10-02]'
+    certificate: resources/web/wand125-mixed-bounds-afternoon-2026-10-02/square-packing-bounds/certificates/mixed_n96_L996/candidate.json.gz
+    replay_status: not-attempted
+    verifiers: [V-wand125-mixed-rotated-verify-cpp, V-wand125-verify-mixed-full-proof-py]
+    limitations: >-
+      wand125/square-packing-bounds at b00fc70f1904e9b1b567afee056d347f911209e8 (the
+      pinned revision is the directory's one commit, 2026-10-02T15:16:36Z) reports
+      s(96) >= 249/25 = 9.96 from a rectangle density of 279 uniform-density
+      rectangles and no point mass, total mass 9599999/100000, core side B =
+      9977/10000 and 201 net half-angles of step 83/40000, checked there by
+      code/mixed_rotated_verify.cpp (SHA-256 89b674a6...), the research copy of
+      Tokoharu's verify.cpp that the n = 50 certificate uses: it accepts a centre box
+      at lower bound 1 instead of 10001/10000, with the axis direction decided by
+      exact integer tables in code/verify_axis_certificate.py, both run by the driver
+      code/verify_mixed_full_proof.py. The least oblique lower bound the source
+      records is 1.0000000030392873, at net index 122, and the axis integer minimum
+      1.0056403520432675 over 1,420,864 cells; its oblique run took 8,827 seconds over
+      31,529,330 nodes. It exceeds Nagamochi's 1 + sqrt(79) = 9.8882..., which this
+      case holds verified, by 0.0718, the first certificate in this record above that
+      value, and supersedes the source's mixed_n96_L992 of the same day, 248/25, which
+      is pinned and not registered. The source's audit calls Nagamochi's value
+      unproven and cites jlevy/squares#295 (review finding AF-3); the certificate does
+      not rest on it. Its mass is below 97, where the record reports 10. The source
+      says the full replay was run again from the published tarball on a fresh
+      machine, by the same implementation and not an independent one; that was not
+      checked here. The tarball (SHA-256 5fc6195b...) is pinned by digest and not
+      retained. Here devtools.audit_wand125_point_and_mixed mixed-audit
+      (receipts/mixed-audit.json in the packet) recomputes the mass, the net, the
+      centre domains and the candidate digest from the retained bytes, and its
+      mixed-fetch checked the pinned tarball, its 621 listed files, the driver's
+      preconditions and that all 200 oblique inputs enclose the exact candidate; none
+      of it decides coverage, and no angle was replayed.
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        AI agent, lane V of the 2026-10-02 result import, after retaining the
+        packets and before any replay; the retaining lane's own review, not prompted
+        separately from it; model unstated
+        (docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md)
+      note: >-
+        No blocking defect. The code/ directory is byte for byte the mixed checker
+        read on 28 September and 2 October, and every exact premise readable from
+        the retained files holds; the review re-derived only what the new measure
+        adds, its size, structure and records. The 200 oblique coverage statements
+        and the axis tables are the source's until the replay here passes.
+    source_reviewed: '2026-10-02'
+  - id: E-n082-wand125-linear-932-report
+    claim: lower-bound
+    scope: {n_values: [82]}
+    assurance: reported
+    reported_method: interval-certified
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[wand125 linear n82 2026-10-02]'
+    certificate: resources/web/wand125-linear-n82-2026-10-02/square-packing-bounds/certificates/mixed_n82_L932/candidate.json.gz
+    replay_status: not-attempted
+    verifiers: [V-wand125-unified-linear-verify-cpp]
+    limitations: >-
+      wand125/square-packing-bounds at b00fc70f1904e9b1b567afee056d347f911209e8 (the
+      directory's one commit is 58f153f8, 2026-10-02T12:33:44Z) reports s(82) >=
+      233/25 = 9.32 from a linear measure of 86 point, 222 segment and 774 rectangle
+      orbits under D4, segment mass uniform along its length, total mass
+      8199999/100000, core side B = 9977/10000 and 201 net half-angles of step
+      83/40000. Its 1,082 primitives are those of the source's mixed_n83_L935 (T-073),
+      every coordinate scaled by exactly 932/935, with the masses solved again. It is
+      checked there at all 201 angles, the axis included, by
+      code/unified_linear_verify.cpp (SHA-256 0249726a...), run by the driver
+      code/replay_linear_bundle.py, the checker of the source's n = 83 and n = 101
+      linear certificates: an outward-rounded interval branch and bound over centre
+      boxes in one quadrant of the centre domain, which the measure's quarter-turn
+      symmetry makes stand for the whole; 153,579,479 nodes, and the bundle records
+      the source's run as 118,941.6 seconds, resumed and merged across machines. It
+      exceeds Green's reported 2 sqrt(2) + (247 + 12 sqrt(2))/41 = 9.2667335..., the
+      value this case reports, by 0.0532664..., which is the source's
+      improvement_lower, measured from the upper end of its own 90-digit enclosure of
+      Green's value and so a true lower bound on the margin. The source says Green's
+      bound is a reported value whose published argument does not establish DS7
+      Theorem 9 for k >= 4 (jlevy/squares#308); this certificate does not rest on it.
+      Its mass is below 83, where the source's mixed s(83) >= 937/100 is higher. The
+      source says the full replay was run again from the published tarball on a fresh
+      machine, by the same implementation and not an independent one; that was not
+      checked here. The tarball (SHA-256 296d8f09...) is pinned by digest and not
+      retained. Here devtools.audit_wand125_linear linear-audit
+      (receipts/linear-audit.json in the packet) recomputes the orbit counts, the D4
+      invariance, the mass, the net and the candidate digest from the retained bytes,
+      and its linear-fetch checked the pinned tarball, its 810 files, the replay
+      driver's preconditions and that all 201 inputs enclose the exact candidate; none
+      of it decides coverage, and no angle was replayed. Its negative control is n =
+      101's, which shares the checker byte for byte. The source audit names its bundle
+      by the tarball's file name (review finding AF-4).
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: >-
+        AI agent, lane V of the 2026-10-02 result import, after retaining the
+        packets and before any replay; the retaining lane's own review, not prompted
+        separately from it; model unstated
+        (docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md)
+      note: >-
+        No blocking defect. The checker is byte for byte the linear checker read on
+        2 October, and the measure is n = 83's support scaled by the ratio of the
+        sides with its masses solved again, so that review's reading applies
+        unchanged. Coverage statements remain the source's until the replay here
         passes.
     source_reviewed: '2026-10-02'
   - id: E-n032-evand-zmx2-full-sym-report
@@ -2632,7 +3179,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at maximum thinking effort, review lane R2, prompted separately
+        Claude (AI review; model unstated) at maximum thinking effort, review lane R2, prompted separately
         from the replay lane
         (docs/project/reviews/review-2026-10-02-evand-s32-no-fold-run.md)
       note: >-
@@ -3410,11 +3957,11 @@ evidence:
         lambda = 1 to estimate the minimum". That last is geometrically evident and is the
         only place the argument leans on something unargued. This promotes nothing: the
         method stays `published-proof`, and `proof-assistant-checked` is a different thing.
-        Separately `devtools/check_nagamochi_bounds.py` re-derives the 36 operative
+        Separately `devtools/check_nagamochi_bounds.py` re-derives the 30 operative
         verified-field values from Theorem 2 in the gate, so a transcription slip in a
         current bound is caught even though the proof behind them is not machine-checked.
         95 of the hundred case records cite this record and it supplies the operative
-        verified lower bound in 36 of them; the other 59 citations are historical or
+        verified lower bound in 30 of them; the other 65 citations are historical or
         reported context, and a citation count is not a count of current bounds.
     limitations: External published proof; its arithmetic is not independently replayed here.
     source_reviewed: '2026-08-24'
@@ -5295,7 +5842,7 @@ evidence:
       state: informally-verified
       date: '2026-10-02'
       reviewed_by: >-
-        Claude (model Fable) at maximum thinking effort, review lane R2, prompted separately
+        Claude (AI review; model unstated) at maximum thinking effort, review lane R2, prompted separately
         from the replay lane
         (docs/project/reviews/review-2026-10-02-evand-s32-no-fold-run.md)
       note: >-
@@ -5491,6 +6038,142 @@ evidence:
       and the reader takes that set from the SHA-256-pinned bytes. The exact value remains
       open.
     source_reviewed: '2026-09-27'
+
+  - id: E-n012-squarepacker-31360-7901-report
+    claim: lower-bound
+    scope: {n_values: [12]}
+    assurance: reported
+    reported_method: exact-algebraic
+    performed_by: source-author
+    relationship_to_generator: same-implementation
+    origin: external
+    novelty: previously-published
+    source_key: '[squarepacker s12 2026]'
+    certificate: resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/s12_lower_3.969118.txt.gz
+    replay_status: not-attempted
+    verifiers: [V-evand-angle-net-verify, V-squarepacker-indep-check-cpp]
+    limitations: >-
+      squarepacker/s12-lower-bound at 8c53049025b94bb589ed25a90203f0a34c2945e4 (Zenodo
+      10.5281/zenodo.23106582, v1.0 = 7acf812c, same certificate) claims s(12) >=
+      31360/7901 = 3.96911783 from Evan Daniel's s12_lower_3.9686.txt (T-049) with every
+      coordinate and the container multiplied by 7902/7901, weights unchanged, total
+      11.9738036 < 12, first committed at be1871bd on 2026-10-02. The source reports
+      Daniel's verify refusing it at N = 6000 (least 9849809/10^7) and 12000
+      (9867834/10^7) and accepting it at 24000 (10000056/10^7), also with overflow checks,
+      and its own indep_check.cpp, which sweeps [0, 90] degrees with no symmetry, agreeing
+      on every net and accepting at 48000 and 96000. This entry preserves the source
+      claim; the local replays are recorded separately.
+    source_reviewed: '2026-10-02'
+
+  - id: E-n012-squarepacker-31360-7901-source-replay
+    claim: lower-bound
+    scope: {n_values: [12]}
+    assurance: verified
+    method: exact-algebraic
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[squarepacker s12 2026]'
+    certificate: resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/s12_lower_3.969118.txt.gz
+    replay: >-
+      With the certificate restored from the packet's .gz: build Daniel's verifier from
+      packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/verify
+      with cargo build --release (CARGO_TARGET_DIR outside the packet) and run verify
+      s12_lower_3.969118.txt 12 24000 2 0, which must print VERIFIED; build the packet's
+      tools/indep_check.cpp with g++ -O2 and run indep_check s12_lower_3.969118.txt 24000,
+      which must print VERIFIED. The packet README (Replays Here, Reproduce) gives the
+      commands; the receipts are its receipts/daniel-verify-N24000.log and
+      receipts/indep-check-N24000.log.
+    replay_status: passed
+    verifiers: [V-evand-angle-net-verify, V-squarepacker-indep-check-cpp]
+    proof:
+      source: packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/README.md
+      theorem: Twelve unit squares do not fit in a square of side below 31360/7901.
+      scope: Unrestricted square packing with independent rotations, disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        The source README, "Why the certificate proves the bound" and "Verification";
+        tools/indep_check.cpp; Daniel's s12/verify/src/main.rs (26 September evand packet);
+        devtools.audit_s12_rescaled_certificate and its receipt receipts/preflight.json.
+      assumptions:
+        - The certificate is Daniel's T-049 certificate with every coordinate and the side times 7902/7901, weights unchanged, nonnegative, D4-invariant, total 119738036/10^7 < 12 (decided exactly by devtools.audit_s12_rescaled_certificate).
+        - A unit square at any angle in [2 arctan(k/N), 2 arctan((k+1)/N)] contains the concentric square of side 1/(cos d + sin d) at the left angle, and its admissible centres lie in the box for the smaller bounding width at the two ends.
+        - Each sweep computes the least captured weight over every admissible centre at each net angle of N = 24000; a pass at one net is a complete check, and refusals at coarser nets are not counterexamples.
+      audit_record: docs/project/reviews/review-2026-10-02-s12-rescaled-certificate.md
+    external_review:
+      state: informally-verified
+      date: '2026-10-02'
+      reviewed_by: An AI agent of this project, lane AA of the 2 October import effort, which also ran the replays (docs/project/reviews/review-2026-10-02-s12-rescaled-certificate.md).
+      note: >-
+        Sound as stated; no blocking defect. The rescaling identity was decided exactly,
+        the angle-net argument re-derived, indep_check.cpp read line by line, and the
+        refusals at N = 6000 and 12000 shown consistent with the pass at 24000.
+    limitations: >-
+      Replays the producer's two checkers on the retained bytes on 2026-10-02 on a shared
+      four-core Linux host. Daniel's verify, built by cargo 1.97.0 from the retained
+      sources (main.rs blob 0e8035a3, the same at 7d6f46d9, which the source names), at
+      N = 24000 on two threads: VERIFIED, least 10000056/10^7 at bin 0, 982 CPU-s, every printed line equal to the source's log (a first run was killed by a container restart and rerun whole).
+      squarepacker's indep_check.cpp, built by g++ 13.3.0 -O2, at N = 24000: VERIFIED,
+      least 10000056/10^7 at bin 0, 67.7 CPU-s, every printed line equal to the source's
+      log; at N = 6000 and 12000 it refuses with the source's values, and verify refuses
+      at the same values over bin windows. The overflow-checked build of verify and the
+      N = 48000 and 96000 runs were not repeated. Both are arrangement sweeps of one
+      angle-net method and both are the producer's code (Daniel's verifier, which the
+      source used, and squarepacker's own checker), so this entry supports V3/C3 by
+      itself; the method-distinct decision is
+      E-n012-squarepacker-31360-7901-native-parent-core. Two mutated certificates (side
+      31360/7900; every weight lowered by 57/10^7) are refused by both
+      (receipts/controls/). Advance over T-049: 15680/31216851, about 0.000502; gap to
+      the grid's 4: 244/7901, about 0.0309.
+    source_reviewed: '2026-10-02'
+
+  - id: E-n012-squarepacker-31360-7901-native-parent-core
+    claim: lower-bound
+    scope: {n_values: [12]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: independent-implementation
+    independence_record: docs/project/reviews/review-2026-09-22-native-n11-parent-core.md
+    origin: audited-here
+    novelty: previously-published
+    source_key: '[squarepacker s12 2026]'
+    certificate: resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/s12_lower_3.969118.txt.gz
+    replay: >-
+      uv run --frozen --all-extras --group dev python -m devtools.verify_evand_angle_net_native
+      --case s12-rescaled --all --workers 2 --output OUT.json, from packing/, which must
+      print PASS_COMPLETE.
+    replay_status: passed
+    verifiers: [V-sqpack-parent-core-native]
+    proof:
+      source: packing/src/sqpack/fractional/parent_core.py
+      theorem: Twelve independently rotated unit squares cannot fit in a square of side 31360/7901; the native theorem gives the strict s(12) > 31360/7901, which implies the source's s(12) >= 31360/7901.
+      scope: Unrestricted square packing with disjoint interiors and boundary contact allowed.
+      pinpoints: >-
+        devtools/verify_evand_angle_net_native.py, case s12-rescaled, which reads the
+        source's integer certificate into ParentCoreCertificate rows [k/N, (k+1)/N, k/N,
+        sigma_k] at N = 24000 with parent side 1 and minimum charge 1; validate_parent_core
+        and parent_core_interval.py verify_parent_core_rows; the receipt and row journal
+        receipts/native-parent-core-N24000.json and .rows.jsonl in the squarepacker packet.
+      assumptions:
+        - The 1,736 point charges are exact, nonnegative and D4 invariant, and total 29934509/2500000 < 12, a counting gap of 65491/2500000.
+        - The 9,942 contiguous half-tangent rows [k/24000, (k+1)/24000] cover the folded parent orientations up to tan(pi/8), and each row's closed core of side sigma_k at half-tangent k/24000 lies strictly inside every unit parent of the row, which validate_parent_core proves in exact rational arithmetic (least containment numerator 11625067/4095488160000000000).
+        - Directed-rounding boxes cover each row's entire parent-centre domain and count only sites surely inside the closed core; every row certifies at the exact threshold of one unit with no stalled or exhausted box.
+        - Disjoint parent interiors make their closed cores disjoint, so twelve parents would capture at least 12 from a total below 12.
+      audit_record: docs/project/reviews/review-2026-09-22-native-n11-parent-core.md
+    limitations: >-
+      The complete native run of 2026-10-02 accepted all 9,942 rows at the one-unit threshold with 89,403,350 boxes, zero stalls, no exhausted budget and no refutation: 1,810 rows on clean commit 119d1bab, the rest resumed from that journal on clean commit 44cf3444 with the tool unchanged after a container restart (2,856 CPU-s for the resumed part). The coverage decision is this repository's interval branch and bound
+      over centre boxes, which shares no code with Daniel's verify or squarepacker's
+      indep_check.cpp; with E-n012-squarepacker-31360-7901-source-replay it gives two
+      complete methods, shown beside C3. All three rest on the certificate, the counting
+      theorem and the shrink lemma on the same net: the native rows are Daniel's bins and
+      sigma_k by design. The transfer theorem and engine were reviewed for Kleddamag's
+      n = 11 certificate (the audit record above) and applied to T-049; the reader's
+      s12-rescaled case changes only the net and the pinned file. Both mutated
+      certificates are refuted at the rows where the sweeps refuse them, with admissible
+      witnesses of charge below one (receipts/controls/native-*.json). The exact value
+      remains open.
+    source_reviewed: '2026-10-02'
 
   - id: E-n021-evand-5000-1001-report
     claim: lower-bound
@@ -8915,8 +9598,9 @@ evidence:
       rows, all three falsifying mutations rejected. It also accepted at 99582155c on
       2026-09-24, retained as bc382-bc241-checker-rerun.json.gz.
       The proof's steps are prose, and only its radius computation is machine-checked.
-      The radius generator cases.trump11.isolation_radius gained a --replay mode on
-      2026-10-02, and the radius computation now carries its own entry,
+      The radius generator cases.trump11.isolation_radius gained a replay,
+      cases.trump11.isolation_radius_replay, on 2026-10-02, kept in its own module so the
+      generator keeps its reviewed bytes, and the radius computation now carries its own entry,
       E-n011-trump-isolation-radius, a same-implementation replay; the 2026-09-24 run
       (474.5 s, bc382-isolation-radius-replay.json.gz) was an independent execution, not
       an independent implementation.
@@ -8941,8 +9625,8 @@ evidence:
     source_reviewed: '2026-10-02'
     certificate: campaign/series/series-000-smoke-and-calibration/results/bc-199-trump-isolation-radius.json
     replay: >-
-      cd packing && uv run --frozen --all-extras --group dev python -m cases.trump11.isolation_radius
-      --replay campaign/series/series-000-smoke-and-calibration/results/bc-199-trump-isolation-radius.json
+      cd packing && uv run --frozen --all-extras --group dev python -m cases.trump11.isolation_radius_replay
+      campaign/series/series-000-smoke-and-calibration/results/bc-199-trump-isolation-radius.json
     replay_status: passed
     verifiers: [V-trump11-isolation-radius]
     limitations: >-
@@ -8952,8 +9636,11 @@ evidence:
       from the retained exp-013 branch matrices and certificates with the generator that
       produced it, so it is a same-implementation replay: it shows the record is reproducible
       and that a perturbed radius, argmin-face witness, exact modulus coefficient or declared box
-      is refused (retained as bc-199-isolation-radius-replay-receipt.json, 478 s). It is not an
-      independent implementation. The capture_radius control (a second implementation of the
+      is refused (retained as bc-199-isolation-radius-replay-receipt.json, 478 s). The receipt
+      was written by a --replay mode inside the generator; the same functions were moved,
+      unchanged, into cases.trump11.isolation_radius_replay the same day, because the mode
+      broke the BC-241 checker's byte binding of the generator to its review revision. It is
+      not an independent implementation. The capture_radius control (a second implementation of the
       face layer, matching the weighted modulus on all 8,448 faces to 32 digits) and the
       source-distinct BC-241 checker are the independent legs, and both stay with
       E-n011-trump-local-theorem-first-clause. The recorded input digest of

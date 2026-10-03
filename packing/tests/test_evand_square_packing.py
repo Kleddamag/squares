@@ -109,7 +109,10 @@ def _case(n: int) -> dict:
 #: The claims whose certified side the frontier still carries. s(21) >= 5000/1001 was the
 #: n = 21 bound until the same source's mixed cover proved s(21) = 5 on 2026-09-29; its
 #: certificate stays above as a well-formed control, and the test below holds the value.
-CURRENT_CLAIMS = tuple(claim for claim in CLAIMS if claim[1] != 21)
+#: s(12) >= 15680/3951 was the n = 12 bound until squarepacker's rescaling of the same
+#: certificate by 7902/7901 replaced it on 2026-10-03 (T-078), which the test after the
+#: next holds.
+CURRENT_CLAIMS = tuple(claim for claim in CLAIMS if claim[1] not in (12, 21))
 
 
 @pytest.mark.parametrize(("name", "n", "side", "total"), CURRENT_CLAIMS)
@@ -122,6 +125,21 @@ def test_frontier_records_the_certified_side(
     assert Fraction(verified["exact_form"]) == side
     assert any("evand" in e for e in verified["evidence"])
     assert case["reported_lower_bound"]["source_key"] == "[evand square-packing 2026]"
+
+
+def test_the_n12_bound_is_daniels_certificate_rescaled() -> None:
+    """s(12) >= 31360/7901 (T-078) is Daniel's certificate for 15680/3951 with every
+    coordinate and the side multiplied by 7902/7901: the frontier carries the rescaled
+    side, from squarepacker's replayed and natively decided certificate."""
+    (side,) = (claim[2] for claim in CLAIMS if claim[1] == 12)
+    case = _case(12)
+    verified = case["verified_lower_bound"]
+    assert Fraction(verified["exact_form"]) == side * Fraction(7902, 7901)
+    assert verified["evidence"] == [
+        "E-n012-squarepacker-31360-7901-source-replay",
+        "E-n012-squarepacker-31360-7901-native-parent-core",
+    ]
+    assert case["reported_lower_bound"]["source_key"] == "[squarepacker s12 2026]"
 
 
 @pytest.mark.parametrize("n", [21, 45])

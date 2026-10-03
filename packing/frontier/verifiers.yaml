@@ -460,6 +460,21 @@ verifiers:
     versions:
       - {sha256: 6223f8c0ba26b0fffa3316ef3abab0e8d5494cc1c6247cda9d291b7e9e00ad91, note: the retained upstream tarball}
 
+  - id: V-squarepacker-indep-check-cpp
+    program: indep_check.cpp
+    author: squarepacker
+    provenance: external
+    language: [C++]
+    methods: [exact-algebraic]
+    role: decides
+    summary: >-
+      The source's own checker of its scaled n = 12 point certificate, an angle-net sweep
+      over [0, 90] degrees with no symmetry reduction.
+    source:
+      - packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/tools/indep_check.cpp
+    versions:
+      - {sha256: 21527e8d86214dd5612e523217a6266f56dfa95beb11ade34d66e20303d2ea96}
+
   - id: V-schadt-n29-check-py
     program: check.py
     author: Schadt
@@ -643,6 +658,18 @@ verifiers:
       disjointness in exact rational arithmetic, and the numeric premises of the general
       ceiling.
     source: [packing/src/sqpack/rectangle_ceiling.py, packing/devtools/certify_rectangle_ceiling.py]
+
+  - id: V-check-general-pose-tree-census
+    program: devtools.check_general_pose_tree_census
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Runs the pinned general pose tree on every row of Kleddamag's n = 11 certificate,
+      binds the inputs, requires row-minimum equality and re-evaluates each witness exactly.
+    source: [packing/devtools/check_general_pose_tree_census.py]
 
   - id: V-assess-frontier-rigidity
     program: devtools.assess_frontier_rigidity

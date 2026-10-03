@@ -25,24 +25,24 @@ second implementation agrees.
 
 ## The Short Version
 
-- **72** programs: **29** external and **43** first-party; **61** decide claims and **11** check premises.
-- **172** of **193** evidence entries name the programs that verified them: 114 reproduced with the producer’s code, 43 independently re-implemented, 8 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **74** programs: **30** external and **44** first-party; **62** decide claims and **12** check premises.
+- **185** of **206** evidence entries name the programs that verified them: 126 reproduced with the producer’s code, 44 independently re-implemented, 8 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
 | id | program | author | provenance | role | evidence | results |
 | --- | --- | --- | --- | --- | ---: | ---: |
-| [`V-tokoharu-verify-cpp`](#v-tokoharu-verify-cpp) | verify.cpp | Tokoharu | external | decides | 10 | 5 |
-| [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 18 | 4 |
-| [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 1 | 1 |
-| [`V-wand125-unified-linear-verify-cpp`](#v-wand125-unified-linear-verify-cpp) | unified_linear_verify.cpp | wand125 | external | decides | 2 | 1 |
+| [`V-tokoharu-verify-cpp`](#v-tokoharu-verify-cpp) | verify.cpp | Tokoharu | external | decides | 12 | 7 |
+| [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 24 | 5 |
+| [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 7 | 2 |
+| [`V-wand125-unified-linear-verify-cpp`](#v-wand125-unified-linear-verify-cpp) | unified_linear_verify.cpp | wand125 | external | decides | 3 | 2 |
 | [`V-wand125-verify-portable-py`](#v-wand125-verify-portable-py) | verify_portable.py | wand125 | external | decides | 2 | 1 |
 | [`V-wand125-check-with-sqpack`](#v-wand125-check-with-sqpack) | check_with_sqpack.py | wand125 | external | decides | 5 | 1 |
 | [`V-wand125-valid7-checker`](#v-wand125-valid7-checker) | valid7-independent-check (Tier A, Tier B and the record checker) | wand125 | external | decides | 1 | 1 |
 | [`V-evand-zmx2`](#v-evand-zmx2) | zmx2 | Evan Daniel | external | decides | 17 | 9 |
 | [`V-evand-zm-mixed-py`](#v-evand-zm-mixed-py) | zm_mixed.py | Evan Daniel | external | decides | 5 | 6 |
 | [`V-evand-zeromargin-py`](#v-evand-zeromargin-py) | zeromargin.py | Evan Daniel | external | decides | 4 | 2 |
-| [`V-evand-angle-net-verify`](#v-evand-angle-net-verify) | verify (the angle-net arrangement sweep) | Evan Daniel | external | decides | 4 | 2 |
+| [`V-evand-angle-net-verify`](#v-evand-angle-net-verify) | verify (the angle-net arrangement sweep) | Evan Daniel | external | decides | 6 | 3 |
 | [`V-evand-xcheck-py`](#v-evand-xcheck-py) | xcheck.py | Evan Daniel | external | decides | 4 | 2 |
 | [`V-evand-zmcheck`](#v-evand-zmcheck) | zmcheck (verify2/src/main.rs) | Evan Daniel | external | decides | 3 | 2 |
 | [`V-evand-qx2-zm-py`](#v-evand-qx2-zm-py) | qx2_zm.py | Evan Daniel | external | decides | 1 | 1 |
@@ -58,7 +58,8 @@ second implementation agrees.
 | [`V-mira-17squares-point-checker`](#v-mira-17squares-point-checker) | verify_certificate.py | Mira | external | decides | 1 | 0 |
 | [`V-stanislavfort-17squares-point-checker`](#v-stanislavfort-17squares-point-checker) | verify_certificate.py | Stanislav Fort | external | decides | 1 | 0 |
 | [`V-queuingtheory-n11-verify`](#v-queuingtheory-n11-verify) | VERIFY.py | Queuingtheorydotcom | external | decides | 1 | 1 |
-| [`V-wand125-tools`](#v-wand125-tools) | The wand125 tools repository's transfer/l_cap.py and general_pose_tree | wand125 | external | decides | 2 | 2 |
+| [`V-wand125-tools`](#v-wand125-tools) | The wand125 tools repository's transfer/l_cap.py and general_pose_tree | wand125 | external | decides | 3 | 2 |
+| [`V-squarepacker-indep-check-cpp`](#v-squarepacker-indep-check-cpp) | indep_check.cpp | squarepacker | external | decides | 2 | 1 |
 | [`V-schadt-n29-check-py`](#v-schadt-n29-check-py) | check.py | Schadt | external | decides | 1 | 0 |
 | [`V-anabologyco-n17-checker`](#v-anabologyco-n17-checker) | scripts/check_certificate.py and its event pipeline | anabologyco-maker | external | decides | 1 | 0 |
 | [`V-check-basic-bounds`](#v-check-basic-bounds) | devtools.check_basic_bounds | Squares Project (Levy) | first-party | decides | 3 | 11 |
@@ -74,6 +75,7 @@ second implementation agrees.
 | [`V-assess-n5-rigidity`](#v-assess-n5-rigidity) | devtools.assess_n5_rigidity | Squares Project (Levy) | first-party | decides | 2 | 2 |
 | [`V-assess-n40-rigidity`](#v-assess-n40-rigidity) | devtools.assess_n40_rigidity | Squares Project (Levy) | first-party | decides | 1 | 1 |
 | [`V-rectangle-ceiling`](#v-rectangle-ceiling) | devtools.certify_rectangle_ceiling | Squares Project (Levy) | first-party | decides | 1 | 1 |
+| [`V-check-general-pose-tree-census`](#v-check-general-pose-tree-census) | devtools.check_general_pose_tree_census | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-assess-frontier-rigidity`](#v-assess-frontier-rigidity) | devtools.assess_frontier_rigidity | Squares Project (Levy) | first-party | decides | 1 | 0 |
 | [`V-trump11-tangent-cones`](#v-trump11-tangent-cones) | cases.trump11.tangent_cones | Squares Project (Levy) | first-party | decides | 1 | 0 |
 | [`V-trump11-isolation-radius`](#v-trump11-isolation-radius) | cases.trump11.isolation_radius | Squares Project (Levy) | first-party | decides | 1 | 1 |
@@ -86,7 +88,7 @@ second implementation agrees.
 | [`V-dilation-corollary`](#v-dilation-corollary) | devtools.dilation_corollary | Squares Project (Levy) | first-party | decides | 6 | 4 |
 | [`V-n12-independent-verifier`](#v-n12-independent-verifier) | cases/n12_fractional_certificate/independent_verify.py | Squares Project (Levy) | first-party | decides | 1 | 0 |
 | [`V-n17-weighted-instrument`](#v-n17-weighted-instrument) | cases.n17_weighted_certificate | Squares Project (Levy) | first-party | decides | 1 | 2 |
-| [`V-sqpack-parent-core-native`](#v-sqpack-parent-core-native) | sqpack.fractional.parent_core_interval | Squares Project (Levy) | first-party | decides | 3 | 3 |
+| [`V-sqpack-parent-core-native`](#v-sqpack-parent-core-native) | sqpack.fractional.parent_core_interval | Squares Project (Levy) | first-party | decides | 4 | 4 |
 | [`V-replay-owner-footprint-cover`](#v-replay-owner-footprint-cover) | devtools.replay_owner_footprint_cover | Squares Project (Levy) | first-party | decides | 1 | 1 |
 | [`V-five-dot-independent-union`](#v-five-dot-independent-union) | cases.n11_five_dot_cover.independent_union | Squares Project (Levy) | first-party | decides | 1 | 1 |
 | [`V-wall-owner-footprints`](#v-wall-owner-footprints) | devtools.wall_owner_footprints | Squares Project (Levy) | first-party | decides | 1 | 0 |
@@ -96,7 +98,7 @@ second implementation agrees.
 | [`V-check-n11-final-composition`](#v-check-n11-final-composition) | devtools.check_n11_final_composition | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-n17-endpoint-receipt`](#v-audit-n17-endpoint-receipt) | devtools.audit_n17_endpoint_receipt | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-tokoharu-density`](#v-audit-tokoharu-density) | devtools.audit_tokoharu_density | Squares Project (Levy) | first-party | premises | 1 | 1 |
-| [`V-audit-wand125-rectangles`](#v-audit-wand125-rectangles) | devtools.audit_wand125_rectangles | Squares Project (Levy) | first-party | premises | 2 | 2 |
+| [`V-audit-wand125-rectangles`](#v-audit-wand125-rectangles) | devtools.audit_wand125_rectangles | Squares Project (Levy) | first-party | premises | 3 | 3 |
 | [`V-audit-wand125-point-and-mixed`](#v-audit-wand125-point-and-mixed) | devtools.audit_wand125_point_and_mixed | Squares Project (Levy) | first-party | premises | 11 | 6 |
 | [`V-audit-wand125-linear`](#v-audit-wand125-linear) | devtools.audit_wand125_linear | Squares Project (Levy) | first-party | premises | 0 | 0 |
 | [`V-replay-evand-zmx2`](#v-replay-evand-zmx2) | devtools.replay_evand_zmx2 | Squares Project (Levy) | first-party | premises | 4 | 5 |
@@ -126,6 +128,8 @@ Decides a rectangle-density covering certificate over every net direction by out
 | `E-wand125-rectangle-2026-09-28-monotone-report` | audited here | no code | T-046 |
 | `E-wand125-rectangle-2026-09-28-source-replay` | replayed here | producer’s code | T-070 |
 | `E-wand125-rectangle-2026-10-01-report` | the source’s own run | producer’s code | T-068 |
+| `E-wand125-rectangle-2026-10-01-source-replay` | replayed here | producer’s code | T-074 |
+| `E-wand125-rectangle-2026-10-02-report` | the source’s own run | producer’s code | T-077 |
 | `E-tokoharu-density-report` | the source’s own run | producer’s code | T-047 |
 | `E-tokoharu-density-monotone-report` | audited here | no code | T-047 |
 | `E-tokoharu-density-source-replay` | replayed here | producer’s code | T-047 |
@@ -159,6 +163,12 @@ Decides a mixed point-and-rectangle certificate at each of the 201 net direction
 | `E-n085-wand125-mixed-942-source-replay` | replayed here | producer’s code | T-071 |
 | `E-n076-wand125-mixed-894-report` | the source’s own run | producer’s code | T-072 |
 | `E-n076-wand125-mixed-894-source-replay` | replayed here | producer’s code | T-072 |
+| `E-n083-wand125-mixed-937-report` | the source’s own run | producer’s code | T-075 |
+| `E-n085-wand125-mixed-946-report` | the source’s own run | producer’s code | T-075 |
+| `E-n087-wand125-mixed-948-report` | the source’s own run | producer’s code | T-075 |
+| `E-n091-wand125-mixed-970-report` | the source’s own run | producer’s code | T-075 |
+| `E-n092-wand125-mixed-975-report` | the source’s own run | producer’s code | T-075 |
+| `E-n096-wand125-mixed-996-report` | the source’s own run | producer’s code | T-075 |
 
 ### `V-wand125-verify-mixed-full-proof-py`
 
@@ -173,6 +183,12 @@ The source's driver for a complete mixed-certificate proof: it runs mixed_rotate
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-n050-wand125-mixed-740-source-replay` | replayed here | producer’s code | T-048 |
+| `E-n083-wand125-mixed-937-report` | the source’s own run | producer’s code | T-075 |
+| `E-n085-wand125-mixed-946-report` | the source’s own run | producer’s code | T-075 |
+| `E-n087-wand125-mixed-948-report` | the source’s own run | producer’s code | T-075 |
+| `E-n091-wand125-mixed-970-report` | the source’s own run | producer’s code | T-075 |
+| `E-n092-wand125-mixed-975-report` | the source’s own run | producer’s code | T-075 |
+| `E-n096-wand125-mixed-996-report` | the source’s own run | producer’s code | T-075 |
 
 ### `V-wand125-unified-linear-verify-cpp`
 
@@ -188,6 +204,7 @@ Decides a linear (segment) certificate at every net direction, the axis directio
 | --- | --- | --- | --- |
 | `E-n083-wand125-linear-935-report` | the source’s own run | producer’s code | T-073 |
 | `E-n101-wand125-linear-1028-report` | the source’s own run | producer’s code | T-073 |
+| `E-n082-wand125-linear-932-report` | the source’s own run | producer’s code | T-076 |
 
 ### `V-wand125-verify-portable-py`
 
@@ -314,6 +331,8 @@ Decides a positive-margin weighted point cover over an angle net by an exact arr
 | --- | --- | --- | --- |
 | `E-n012-evand-15680-3951-report` | the source’s own run | producer’s code | T-049 |
 | `E-n012-evand-15680-3951-source-replay` | replayed here | producer’s code | T-049 |
+| `E-n012-squarepacker-31360-7901-report` | the source’s own run | producer’s code | T-078 |
+| `E-n012-squarepacker-31360-7901-source-replay` | replayed here | producer’s code | T-078 |
 | `E-n021-evand-5000-1001-report` | the source’s own run | producer’s code | T-050 |
 | `E-n021-evand-5000-1001-source-replay` | replayed here | producer’s code | T-050 |
 
@@ -549,6 +568,21 @@ The source's ceiling transfer for the fixed B = 9977/10000 and its general pose 
 | --- | --- | --- | --- |
 | `E-wand125-tools-ceiling-report` | a published proof | no code | T-058 |
 | `E-wand125-tools-n11-row-report` | the source’s own run | independent | T-059 |
+| `E-wand125-tools-n11-row-replay` | replayed here | producer’s code | T-059 |
+
+### `V-squarepacker-indep-check-cpp`
+
+**indep_check.cpp** · squarepacker · external · decides · C++ · exact-algebraic
+
+The source's own checker of its scaled n = 12 point certificate, an angle-net sweep over [0, 90] degrees with no symmetry reduction.
+
+- Source: [`packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/tools/indep_check.cpp`](../../packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/tools/indep_check.cpp)
+- Versions run: SHA-256 `21527e8d8621…`
+
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-n012-squarepacker-31360-7901-report` | the source’s own run | producer’s code | T-078 |
+| `E-n012-squarepacker-31360-7901-source-replay` | replayed here | producer’s code | T-078 |
 
 ### `V-schadt-n29-check-py`
 
@@ -774,6 +808,19 @@ Decides each rectangle-density ceiling certificate's containment and pairwise di
 | --- | --- | --- | --- |
 | `E-wand125-tools-ceiling-certificates` | audited here | independent | T-058 |
 
+### `V-check-general-pose-tree-census`
+
+**devtools.check_general_pose_tree_census** · Squares Project (Levy) · first-party · checks premises · Python · exact-algebraic
+
+Runs the pinned general pose tree on every row of Kleddamag's n = 11 certificate, binds the inputs, requires row-minimum equality and re-evaluates each witness exactly.
+
+- Source: [`packing/devtools/check_general_pose_tree_census.py`](../../packing/devtools/check_general_pose_tree_census.py)
+- Versions run: this repository's commits, which Git holds
+
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-wand125-tools-n11-row-replay` | replayed here | producer’s code | T-059 |
+
 ### `V-assess-frontier-rigidity`
 
 **devtools.assess_frontier_rigidity** · Squares Project (Levy) · first-party · decides · Python · exact-algebraic
@@ -985,6 +1032,7 @@ Decides a threshold charge certificate's rows by direct closed-box interval cove
 | `E-n011-kleddamag-3875-native-parent-core` | audited here | independent | T-037 |
 | `E-n011-wang-li-native-parent-core` | replayed here | independent | T-061 |
 | `E-n012-evand-15680-3951-native-parent-core` | audited here | independent | T-049 |
+| `E-n012-squarepacker-31360-7901-native-parent-core` | audited here | independent | T-078 |
 
 ### `V-replay-owner-footprint-cover`
 
@@ -1119,6 +1167,7 @@ The exact preflight and replay driver for wand125's rectangle certificates: inpu
 | --- | --- | --- | --- |
 | `E-wand125-rectangle-source-replay` | replayed here | producer’s code | T-045 |
 | `E-wand125-rectangle-2026-09-28-source-replay` | replayed here | producer’s code | T-070 |
+| `E-wand125-rectangle-2026-10-01-source-replay` | replayed here | producer’s code | T-074 |
 
 ### `V-audit-wand125-point-and-mixed`
 

@@ -1,0 +1,16 @@
+{
+  "status": "AUDITED_AND_PACKAGED",
+  "n": 90,
+  "L": "389/40",
+  "total_mass": "8999999/100000",
+  "compared_with": "97/10",
+  "compared_note": "our certified n90 9.70 (record 9.60)",
+  "improvement_lower": "1/40",
+  "candidate_digest": "a251cc29c19c2a27b3458e2dac67aad8190050317d9f19c7f47099a45b924bd8",
+  "all_angles": 201,
+  "certificate_sha256": "4f4985699aed6d668dc42a91d8dabe0478aeb980e6a2958694f65d18f7966687",
+  "bundle": "n90-L9.725-proof-bundle",
+  "archive_sha256": "1744a7d62585b31ddeda36bd76a00c21eee21b8232a15a7b105d0d4d7e48cb58",
+  "route": "n90 fresh structured Green init n90-9725 at L9.725, rectangles full-net repair, 201-angle verification and replay.",
+  "scope": "All centres at all 201 net angles plus strict core containment for every orientation; independent axis replay, same-algorithm outward-rounded oblique replay."
+}

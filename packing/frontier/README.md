@@ -467,10 +467,12 @@ lower-bound side has underused methods.
 Counts below are computed from the artifacts, not asserted.
 
 Of the 261 open cases, **0** have Nagamochi’s formula as their verified lower bound,
-**235** have Karakuş’s weaker general bound in its place (T-066), and $n = 54, 57, 73$
-have wand125’s registered point bounds carried by monotonicity (T-044), which the
-formula had masked. Until 2 October 2026 those 238 rested on Nagamochi’s formula; that
-day his Lemma 1 was found false
+**233** have Karakuş’s weaker general bound in its place (T-066), $n = 54, 57, 73$ have
+wand125’s registered point bounds carried by monotonicity (T-044), which the formula had
+masked, and $n = 37, 61$ have Bašić and Slivková’s piercing bound (T-070), registered on
+3 October 2026, which is stronger there than both.
+Until 2 October 2026 those 238 rested on Nagamochi’s formula; that day his Lemma 1 was
+found false
 ([review](../../docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md),
 T-068), so his formula became a reported bound and each of the 238 verified floors fell
 to the strongest registered bound below it.

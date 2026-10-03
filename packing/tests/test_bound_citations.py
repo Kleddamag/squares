@@ -1072,7 +1072,11 @@ def test_the_corrections_on_record_are_recent_and_name_nagamochi_2005() -> None:
     records as T-007, now V0. No other bound is tagged."""
     lines = {entry["n"]: entry["lower"] for entry in _record()["entries"] if entry["lower"]}
     corrected = {n: line for n, line in lines.items() if line["corrects"]}
-    assert len(corrected) == 267
+    # 267 on 2026-10-02; 265 since 3 October, when n = 37 and 61 moved onto Bašić and
+    # Slivková's 2018 piercing bound (T-070), which corrects nothing.
+    assert len(corrected) == 265
+    assert 37 not in corrected
+    assert 61 not in corrected
     assert all(line["recent"] for line in corrected.values())
     assert {line["source_key"] for line in corrected.values()} == {
         "[Karakuş 2026]",

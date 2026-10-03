@@ -1614,6 +1614,58 @@ evidence:
       in its 277 .lean files, and the archive's 79 axiom assertions pass.
     source_reviewed: '2026-10-02'
 
+  - id: E-basic-slivkova-piercing-lower
+    claim: lower-bound
+    scope: {n_values: [37, 61]}
+    assurance: verified
+    method: published-proof
+    performed_by: source-author
+    relationship_to_generator: not-applicable
+    origin: external
+    novelty: previously-published
+    source_key: '[Basic-Slivkova 2018]'
+    replay_status: not-attempted
+    proof:
+      source: resources/papers/basic-slivkova-2018-optimal-piercing-square.pdf
+      theorem: >-
+        Theorem 7 (with Proposition 8): no more than B(x) unit squares fit in a square of
+        side x, where B(x) = floor(x)(m + 2), plus floor((m + 2)/2) when frac(x) >= 1/2,
+        and m = floor((2/sqrt 3)(x + 1 - 2 sqrt 2)). Theorem 10 applies it at n = 61:
+        s(61) >= 7 sqrt(3)/2 + 2 sqrt(2) - 1. The same theorem gives
+        s(37) >= 5 sqrt(3)/2 + 2 sqrt(2) - 1, which the paper does not state.
+      scope: >-
+        Open unit squares with arbitrary rotations inside a square of side x; Proposition 8
+        turns a piercing set into a packing bound, since two packed squares cannot share
+        an interior point.
+      pinpoints: >-
+        Lemma 2 and Theorem 3 with its proof in Section 3, printed pp. 8-12; Theorem 7 and
+        its proof, p. 14; Proposition 8 and Theorem 10 in Section 5, pp. 15-17.
+      assumptions:
+        - Packings permit arbitrary orientations and boundary contact.
+        - The proof uses no result of Nagamochi 2005; that paper is cited only in Table 2 for values the method reproduces.
+    external_review:
+      state: informally-verified
+      date: '2026-10-03'
+      reviewed_by: repository
+      note: >-
+        Read on the rendered pages, the text extraction being garbled at every display.
+        Lemma 2 holds as stated; Theorem 3's lattice count and its limit (3) were checked,
+        and the closing inequality (4) re-derived: g(1) = 3/2 - sqrt 2 > 0 and
+        g(sqrt 2) = delta/2 > 0. Theorem 7's two cases follow from the even rows' extra
+        point exactly when frac(x) >= 1/2. devtools/check_piercing_lower_bounds.py
+        replays the arithmetic exactly in sympy: it reproduces Table 1's bounds at
+        n = 7, 8 and 10 and Theorem 10's value, and evaluates the theorem at every case,
+        which is how n = 37 was found; it replays no geometry. This is a read, not a
+        machine check.
+    limitations: >-
+      A refereed published proof (Discrete Applied Mathematics 247, 2018), read and
+      re-derived here and not machine-checked. The reduction of an unpierced unit square
+      to the proof's three cases is argued informally in the paper, as in its Theorem 1,
+      and was read, not formalized. At n = 37 the bound is Theorem 7 evaluated here, not a
+      value the authors state; at n = 61 it is their Theorem 10. Weaker than the reported
+      lower bound at n = 37 (257/40).
+    source_reviewed: '2026-10-03'
+
   - id: E-migrated-lower-report
     claim: lower-bound
     scope: {n_min: 1, n_max: 100}

@@ -783,20 +783,16 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [],
-          "corrects": {
-            "credit": "Nagamochi 2005",
-            "result": "T-007",
-            "source_key": "[Nagamochi 2005]"
-          },
+          "corrects": null,
           "note": null,
-          "recent": true,
+          "recent": false,
           "result": null,
           "results": [
-            "T-066"
+            "T-070"
           ],
-          "source_key": "[Karakuş 2026]",
-          "text": "Karakus 2026, arXiv:2609.37410",
-          "value": "6.09016994374"
+          "source_key": "[Basic-Slivkova 2018]",
+          "text": "Basic & Slivková 2018, Discrete Appl. Math. 247",
+          "value": "6.15855414366"
         },
         "n": 37,
         "record": "n-037",
@@ -1434,20 +1430,16 @@
           "assurance": "verified",
           "basis": "external",
           "confirmed_by": [],
-          "corrects": {
-            "credit": "Nagamochi 2005",
-            "result": "T-007",
-            "source_key": "[Nagamochi 2005]"
-          },
+          "corrects": null,
           "note": null,
-          "recent": true,
+          "recent": false,
           "result": null,
           "results": [
-            "T-066"
+            "T-070"
           ],
-          "source_key": "[Karakuş 2026]",
-          "text": "Karakus 2026, arXiv:2609.37410",
-          "value": "7.86545993132"
+          "source_key": "[Basic-Slivkova 2018]",
+          "text": "Basic & Slivková 2018, Discrete Appl. Math. 247",
+          "value": "7.89060495123"
         },
         "n": 61,
         "record": "n-061",

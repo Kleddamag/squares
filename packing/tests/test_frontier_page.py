@@ -206,7 +206,8 @@ def test_a_correcting_bound_keeps_its_star_and_names_what_it_corrects(
     with no link; the row names the register's record of that work in `data-corrects`
     (the owner, 2026-10-02). Which bounds those are is the citation record's to say."""
     corrected = frontier.corrected_lower_bounds()
-    assert len(corrected) == 267
+    # 265 since n = 37 and 61 moved onto Bašić and Slivková's bound (T-070) on 2026-10-03.
+    assert len(corrected) == 265
     seen = 0
     for attributes, cells in rows:
         n = int(attributes["data-n"] or 0)
@@ -223,8 +224,8 @@ def test_a_correcting_bound_keeps_its_star_and_names_what_it_corrects(
         assert star["words"] == f"★corrects {corrected[n]['credit']}", n
     assert seen == len(corrected)
     evidence = tables.load_evidence()
-    case = next(case for case in tables.load_cases() if case["n"] == 37)
-    row, _ = frontier.case_row(case, evidence, recent=True, corrects=corrected[37])
+    case = next(case for case in tables.load_cases() if case["n"] == 38)
+    row, _ = frontier.case_row(case, evidence, recent=True, corrects=corrected[38])
     assert (
         '<td data-value="1"><span class="site-star">★</span>'
         '<span class="site-corrects">corrects Nagamochi 2005</span></td>'
@@ -247,14 +248,14 @@ def test_the_page_says_once_what_the_tag_means_and_links_the_corrected_result(
     corrected work linked to its row, and the register's words for what failed."""
     sentence = frontier.corrections_prose()
     assert sentence == (
-        "Beside 267 of the stars, *corrects Nagamochi 2005* says the bound stands in for "
+        "Beside 265 of the stars, *corrects Nagamochi 2005* says the bound stands in for "
         "a published result found unsound, the register\u2019s "
         "[T-007](all-results.html#t-007): "
         "Lemma 1, on which Theorem 2\u2019s proof rests, is false."
     )
     prose = page[: page.index('id="frontier-table"')]
     assert (
-        "Beside 267 of the stars, <em>corrects Nagamochi 2005</em> says the bound stands in"
+        "Beside 265 of the stars, <em>corrects Nagamochi 2005</em> says the bound stands in"
     ) in prose
     assert '<a href="all-results.html#t-007">T-007</a>' in prose
     table = page[page.index("<tbody>") : page.index("</tbody>")]

@@ -44,7 +44,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`34`](n-034.md) | `6` | `6` | `6` | `6` | proved | replayed here | — | 2026-08-24 |
 | [`35`](n-035.md) | `6` | `6` | `6.0` | `6` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`36`](n-036.md) | `6` | `6` | `6.0` | `6` | proved | replayed here | — | 2026-08-24 |
-| [`37`](n-037.md) | `6.59861960924436` | `7` | `257/40` | `1/2 + sqrt(37 - floor(√37) + 1/4)` | open | replayed here, external proof | formal upper trails report; formal lower differs from report | 2026-09-28 |
+| [`37`](n-037.md) | `6.59861960924436` | `7` | `257/40` | `5*√3/2 + 2*√2 - 1` | open | replayed here, external proof | formal upper trails report; formal lower differs from report | 2026-09-28 |
 | [`38`](n-038.md) | `6 + (1/2)√2` | `6 + (1/2)√2` | `327/50` | `1/2 + sqrt(38 - floor(√38) + 1/4)` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
 | [`39`](n-039.md) | `6.81072208306864` | `7` | `663/100` | `13/2` | open | replayed here | formal upper trails report; formal lower differs from report | 2026-09-28 |
 | [`40`](n-040.md) | `4 + 2 √2` | `4 + 2 √2` | `1339/200` | `13/2` | open | replayed here | formal lower differs from report | 2026-09-27 |
@@ -68,7 +68,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`58`](n-058.md) | `8` | `8` | `789/100` | `1/2 + sqrt(58 - floor(√58) + 1/4)` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
 | [`59`](n-059.md) | `8` | `8` | `198/25` | `1/2 + sqrt(59 - floor(√59) + 1/4)` | open | replayed here, external proof | formal lower differs from report | 2026-09-28 |
 | [`60`](n-060.md) | `8` | `8` | `8` | `1/2 + sqrt(60 - floor(√60) + 1/4)` | open | replayed here, external proof | formal lower differs from report; proof audit pending | 2026-10-01 |
-| [`61`](n-061.md) | `8` | `8` | `8` | `1/2 + sqrt(61 - floor(√61) + 1/4)` | open | replayed here, external proof | formal lower differs from report; proof audit pending | 2026-10-01 |
+| [`61`](n-061.md) | `8` | `8` | `8` | `7*√3/2 + 2*√2 - 1` | open | replayed here, external proof | formal lower differs from report; proof audit pending | 2026-10-01 |
 | [`62`](n-062.md) | `8` | `8` | `8` | `8` | proved | replayed here | — | 2026-08-24 |
 | [`63`](n-063.md) | `8` | `8` | `8` | `8` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`64`](n-064.md) | `8` | `8` | `8.0` | `8` | proved | replayed here | — | 2026-08-24 |

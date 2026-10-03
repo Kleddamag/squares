@@ -74,6 +74,16 @@ sources:
     authors: [Bentz]
     year: 2016
     venue: arXiv:1606.03746
+  - key: '[Basic-Slivkova 2018]'
+    authors: [Bašić, Slivková]
+    year: 2018
+    venue: Discrete Appl. Math. 247
+    lineage: independent
+    note: >-
+      "On optimal piercing of a square", Discrete Applied Mathematics 247 (2018). Its
+      Theorem 7 bounds the number of unit squares a square of side x holds by a lattice
+      piercing set; Theorem 10 applies it at n = 61. Archived as
+      resources/papers/basic-slivkova-2018-optimal-piercing-square.pdf.
   - key: '[Trump 2023]'
     authors: [Trump]
     year: 2023

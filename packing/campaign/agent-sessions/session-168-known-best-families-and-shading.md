@@ -10,7 +10,7 @@ session:
   title: Families of Known-Best Packings, Contact Shading, and the Large-n Limit
   date: '2026-10-02'
   started_at: '2026-10-02T05:15:20Z'
-  deadline_at: '2026-10-03T07:51:15Z'
+  deadline_at: '2026-10-03T09:30:00Z'
   branch: claude/ecstatic-archimedes-62hj6a
   primary_bead: think-los0
   status: in_progress
@@ -255,7 +255,7 @@ session:
     objective: 'Finish the correction tag the surfaces lane left: the workbench stage and the homepage atlas
       popover, the frontier tests, and the gate; then integrate, re-pin and push.'
     bead: think-los0
-    status: in_progress
+    status: completed
     entered_by: user_request
     switch_reason: The owner asked to try again after the usage limit stopped the surfaces lane.
     budget_minutes: 120
@@ -266,12 +266,39 @@ session:
     validation_command: cd packing && uv run --frozen --all-extras --group dev packing-validate --fast
     kill_condition: A surface cannot carry the tag without dropping a citation or breaking a page ceiling.
     fallback: Carry the tag on the surfaces that fit it and list the rest on a bead.
+    outcome: 'The tag reads "corrects Nagamochi 2005" on the frontier table, case pages, homepage atlas
+      popover and workbench stage (e2ba1accd, 075d91dbf); hosted CI green on every required check, the
+      workbench browser check included.'
+    evidence:
+    - packing/atlas/known-best/bound-citations.json
+    stop_reason: The owner asked to proceed with all remaining items.
+    next_action: Register Basic-Slivkova's bound (think-jkeu), measure the deferred job, close the session.
+  - workflow: remediation
+    focus: correctness
+    recording: contemporaneous
+    clock_role: work
+    objective: 'Every remaining item: register Basic and Slivkova''s piercing bound by the new result publication
+      sequence (think-jkeu), measure the deferred regularized-views job on hosted runners (think-bgkz),
+      and close session-168 with its rollups and a certifying gate.'
+    bead: think-jkeu
+    status: in_progress
+    entered_by: user_request
+    switch_reason: The owner asked to proceed with all remaining items, following the full standard process
+      for recording new results.
+    budget_minutes: 180
+    started_at: '2026-10-03T05:30:00Z'
+    deadline_at: '2026-10-03T08:30:00Z'
+    expected_output: T-070 registered and published through every surface; the deferred job's first hosted
+      reading in gate-budgets.yaml; a terminal session record.
+    validation_command: cd packing && uv run --frozen --all-extras --group dev packing-validate --fast
+    kill_condition: The published proof does not survive the read, or the deferred job cannot be dispatched.
+    fallback: Record the finding on think-jkeu, or leave the measurement on think-bgkz with its blocker.
     outcome: null
     evidence: []
     stop_reason: null
-    next_action: Commit the finished surfaces and run the gate.
+    next_action: Commit the registration, re-pin, and dispatch the deep gate.
   budget:
-    wall_minutes: 1596
+    wall_minutes: 1696
     slice_minutes: 30
     finalization_minutes: 60
   stop_conditions:

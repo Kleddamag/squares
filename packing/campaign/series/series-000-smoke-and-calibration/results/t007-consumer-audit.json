@@ -385,7 +385,8 @@
         "group": "case-record",
         "path": "packing/frontier/n-037.md",
         "phrases": {
-          "beside: bound": 1,
+          "beside: bound": 2,
+          "beside: theorem": 1,
           "beside: verified": 1,
           "closed-form: 2\\lfloor": 1
         },
@@ -393,9 +394,9 @@
           "closed_form": 1,
           "k2_minus_2_identity": 0,
           "mentions": 0,
-          "qualified": 3,
-          "relies": 1,
-          "states": 2,
+          "qualified": 5,
+          "relies": 2,
+          "states": 3,
           "unqualified_states": 0
         }
       },
@@ -801,8 +802,8 @@
         "statements": {
           "closed_form": 1,
           "k2_minus_2_identity": 0,
-          "mentions": 1,
-          "qualified": 2,
+          "mentions": 2,
+          "qualified": 3,
           "relies": 1,
           "states": 3,
           "unqualified_states": 1
@@ -5400,7 +5401,7 @@
         "phrases": {
           "beside: family": 1,
           "beside: theorem": 2,
-          "beside: verified": 2,
+          "beside: verified": 3,
           "closed-form: min(ceil": 2,
           "k2-minus-2-identity: k^2 - 2": 1,
           "k2-minus-2-identity: m^2 - 2": 1
@@ -5409,9 +5410,9 @@
           "closed_form": 2,
           "k2_minus_2_identity": 2,
           "mentions": 8,
-          "qualified": 4,
+          "qualified": 5,
           "relies": 0,
-          "states": 9,
+          "states": 10,
           "unqualified_states": 5
         }
       },
@@ -5455,7 +5456,7 @@
           "beside: exact value": 1,
           "beside: family": 3,
           "beside: theorem": 3,
-          "beside: verified": 6,
+          "beside: verified": 7,
           "closed-form: 2⌊": 1,
           "closed-form: min(ceil": 2,
           "k2-minus-2-identity: k^2 - 2": 1,
@@ -5466,9 +5467,9 @@
           "closed_form": 3,
           "k2_minus_2_identity": 4,
           "mentions": 14,
-          "qualified": 21,
+          "qualified": 22,
           "relies": 3,
-          "states": 20,
+          "states": 21,
           "unqualified_states": 10
         }
       },
@@ -5477,6 +5478,7 @@
         "path": "packing/frontier/evidence.yaml",
         "phrases": {
           "beside: bound": 1,
+          "beside: boundary": 1,
           "beside: bounds": 1,
           "beside: closed form": 9,
           "beside: exact value": 1,
@@ -5494,7 +5496,7 @@
           "k2_minus_2_identity": 5,
           "mentions": 14,
           "qualified": 9,
-          "relies": 11,
+          "relies": 12,
           "states": 12,
           "unqualified_states": 5
         }
@@ -11029,14 +11031,14 @@
       "operative_lower_bound": {
         "cites_t007": false,
         "evidence": [
-          "E-karakus-strip-lower"
+          "E-basic-slivkova-piercing-lower"
         ],
-        "exact_form": "1/2 + sqrt(37 - floor(sqrt(37)) + 1/4)",
+        "exact_form": "5*sqrt(3)/2 + 2*sqrt(2) - 1",
         "results": [
-          "T-066"
+          "T-070"
         ],
         "t007_scope_covers_n": true,
-        "value": "6.09016994374"
+        "value": "6.15855414366"
       },
       "reported_lower_bound": {
         "cites_t007": false,
@@ -11082,6 +11084,12 @@
             "id": "T-068",
             "kind": "correction",
             "verification": "V3"
+          },
+          {
+            "confirmation": "C1",
+            "id": "T-070",
+            "kind": "lower-bound",
+            "verification": "V3"
           }
         ],
         "registered_reported": {
@@ -11108,18 +11116,18 @@
         },
         "registered_verified": {
           "basis": "exact-form",
-          "decimal": "6.090169943749",
-          "exact": "1/2 + (5/2)*sqrt(5)",
-          "reaches_nagamochi": false,
-          "shortfall_below_nagamochi": "0.008849569843",
+          "decimal": "6.158554143668",
+          "exact": "-1 + 2*sqrt(2) + (5/2)*sqrt(3)",
+          "reaches_nagamochi": true,
+          "shortfall_below_nagamochi": "-0.059534630076",
           "sources": [
             {
               "evidence": [
-                "E-karakus-strip-lower"
+                "E-basic-slivkova-piercing-lower"
               ],
               "n": 37,
               "results": [
-                "T-066"
+                "T-070"
               ],
               "via": "direct"
             }
@@ -14250,14 +14258,14 @@
       "operative_lower_bound": {
         "cites_t007": false,
         "evidence": [
-          "E-karakus-strip-lower"
+          "E-basic-slivkova-piercing-lower"
         ],
-        "exact_form": "1/2 + sqrt(61 - floor(sqrt(61)) + 1/4)",
+        "exact_form": "7*sqrt(3)/2 + 2*sqrt(2) - 1",
         "results": [
-          "T-066"
+          "T-070"
         ],
         "t007_scope_covers_n": true,
-        "value": "7.86545993132"
+        "value": "7.89060495123"
       },
       "reported_lower_bound": {
         "cites_t007": false,
@@ -14315,6 +14323,12 @@
             "id": "T-068",
             "kind": "correction",
             "verification": "V3"
+          },
+          {
+            "confirmation": "C1",
+            "id": "T-070",
+            "kind": "lower-bound",
+            "verification": "V3"
           }
         ],
         "registered_reported": {
@@ -14354,18 +14368,18 @@
         },
         "registered_verified": {
           "basis": "exact-form",
-          "decimal": "7.865459931328",
-          "exact": "1/2 + (1/2)*sqrt(217)",
+          "decimal": "7.890604951237",
+          "exact": "-1 + 2*sqrt(2) + (7/2)*sqrt(3)",
           "reaches_nagamochi": false,
-          "shortfall_below_nagamochi": "0.062743298947",
+          "shortfall_below_nagamochi": "0.037598279038",
           "sources": [
             {
               "evidence": [
-                "E-karakus-strip-lower"
+                "E-basic-slivkova-piercing-lower"
               ],
               "n": 61,
               "results": [
-                "T-066"
+                "T-070"
               ],
               "via": "direct"
             }

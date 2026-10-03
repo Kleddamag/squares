@@ -17,9 +17,9 @@
           "degree_known": 95,
           "degree_recorded_upstream": 11,
           "exact_value_known": 95,
-          "lower_bound_correction": 51,
+          "lower_bound_correction": 49,
           "lower_bound_first_proved_here": 3,
-          "lower_bound_recent_result": 81,
+          "lower_bound_recent_result": 79,
           "only_known_numerically": 5,
           "proved_optimal": 39,
           "rigidity_catalogue_annotated": 2,
@@ -42,9 +42,9 @@
           "degree_known": 269,
           "degree_recorded_upstream": 21,
           "exact_value_known": 269,
-          "lower_bound_correction": 267,
+          "lower_bound_correction": 265,
           "lower_bound_first_proved_here": 3,
-          "lower_bound_recent_result": 297,
+          "lower_bound_recent_result": 295,
           "only_known_numerically": 55,
           "proved_optimal": 63,
           "rigidity_catalogue_annotated": 2,
@@ -1901,16 +1901,16 @@
           "state": "minimal-polynomial"
         },
         "lower": {
-          "correction": true,
-          "display": "s(37) ≥ 6.090169",
+          "correction": false,
+          "display": "s(37) ≥ 6.158554",
           "evidence": [
-            "E-karakus-strip-lower"
+            "E-basic-slivkova-piercing-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": true,
+          "recent_result": false,
           "shown": true,
-          "value": "6.09016994374"
+          "value": "6.15855414366"
         },
         "n": 37,
         "optimality": {
@@ -3041,16 +3041,16 @@
           "state": "closed-form"
         },
         "lower": {
-          "correction": true,
-          "display": "s(61) ≥ 7.865459",
+          "correction": false,
+          "display": "s(61) ≥ 7.890604",
           "evidence": [
-            "E-karakus-strip-lower"
+            "E-basic-slivkova-piercing-lower"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": true,
+          "recent_result": false,
           "shown": true,
-          "value": "7.86545993132"
+          "value": "7.89060495123"
         },
         "n": 61,
         "optimality": {
@@ -15406,9 +15406,9 @@
       "degree_known": 269,
       "degree_recorded_upstream": 21,
       "exact_value_known": 269,
-      "lower_bound_correction": 267,
+      "lower_bound_correction": 265,
       "lower_bound_first_proved_here": 3,
-      "lower_bound_recent_result": 297,
+      "lower_bound_recent_result": 295,
       "only_known_numerically": 55,
       "proved_optimal": 63,
       "rigidity_catalogue_annotated": 2,

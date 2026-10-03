@@ -2,7 +2,7 @@ softschema:
   contract: packing.squares:ResultsRegister/v1
   schema: results.schema.yaml
   status: enforced
-last_reviewed: '2026-10-02'
+last_reviewed: '2026-10-03'
 results:
   - id: T-001
     kind: lower-bound
@@ -5587,3 +5587,50 @@ results:
       Rung 4 needs two adversarial AI reviews by distinct reviewers and a human oversight
       record; rung 5 needs a named human expert's review of the formalization, and C5 two,
       with the open-review pointer the public repository already supports.
+  - id: T-070
+    kind: lower-bound
+    registered: '2026-10-03'
+    headline: "`s(37) ≥ 5√3/2 + 2√2 − 1` and `s(61) ≥ 7√3/2 + 2√2 − 1`, by optimal piercing"
+    claim: >-
+      Bašić and Slivková 2018, Theorem 7 with Proposition 8: no more than B(x) unit squares
+      fit in a square of side x, where B(x) counts the points of an equilateral-lattice
+      piercing set, floor(x)(m + 2) plus floor((m + 2)/2) when frac(x) >= 1/2, with
+      m = floor((2/sqrt 3)(x + 1 - 2 sqrt 2)). Just below 7 sqrt(3)/2 + 2 sqrt(2) - 1 it
+      is 60, so s(61) >= 7 sqrt(3)/2 + 2 sqrt(2) - 1, about 7.8906 (their Theorem 10);
+      just below 5 sqrt(3)/2 + 2 sqrt(2) - 1 it is 36, so s(37) >= 5 sqrt(3)/2 +
+      2 sqrt(2) - 1, about 6.1586, which the paper does not state.
+
+      Both are above Karakuş's general floor, T-066, which they replace as the verified
+      lower bound at these two cases; at every other case the theorem is weaker than the
+      verified floor already held. The proof uses nothing of Nagamochi 2005. It was read
+      and re-derived here and is not machine-checked; its arithmetic is replayed exactly
+      for every case by devtools/check_piercing_lower_bounds.py. Bašić and Slivková,
+      Discrete Applied Mathematics 247 (2018).
+    scope: {n_values: [37, 61]}
+    verification: V3
+    confirmation: C1
+    significance:
+      score: 3
+      rationale: >-
+        Since 3 October 2026 the verified lower bound at n = 37 and n = 61, the only two
+        cases where the piercing bound beats the floor the register already held. S3 by
+        the anchor "a substantive case result or machine audit"; the score is the
+        theorem's, not ours.
+      scored: '2026-10-03'
+      by: session-168 registration (repository)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[Basic-Slivkova 2018]']
+      published: '2018'
+    evidence:
+      - E-basic-slivkova-piercing-lower
+    artifacts:
+      - packing/resources/papers/basic-slivkova-2018-optimal-piercing-square.pdf
+      - packing/devtools/check_piercing_lower_bounds.py
+      - packing/campaign/series/series-000-smoke-and-calibration/results/piercing-lower-bounds.json
+    controls:
+      - packing/tests/test_piercing_lower_bounds.py
+    next_rung: >-
+      C2 and above need a replay of the geometry, not only the arithmetic: a machine check
+      that the lattice of Theorem 7 pierces every unit square in the square of side x, or
+      a formalization of the three-case reduction in Theorem 3's proof.

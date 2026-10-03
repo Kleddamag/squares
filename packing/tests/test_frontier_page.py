@@ -25,8 +25,10 @@ from tests import site_renders
 #: to grow a little; a change that crosses it should shrink something rather than lift it.
 #: Measured at 4,168,556 bytes on 2026-10-01 before the drawing took its own column and
 #: the closed forms their decimals, and at 4,183,093 after: 25,748 bytes of room, then
-#: 11,211. Each cell KPress writes carries `data-col` and `data-col-index`, 128,050
-#: bytes of the page that nothing on the site reads (think-k8xp).
+#: 11,211. Each cell KPress writes carried `data-col` and `data-col-index`, 128,050
+#: bytes of the page that nothing on the site reads; every page drops them since
+#: 2026-10-02 (think-k8xp), which left the page 4,070,117 bytes with the status chips'
+#: fills of the same day.
 PAGE_CEILING_BYTES = 4 * 1024 * 1024
 
 #: The columns as a reader meets them: the drawing under no heading, the case, the star,
@@ -334,6 +336,9 @@ def test_the_page_is_self_contained_and_under_its_ceiling(page: str) -> None:
     assert_self_contained("frontier.html", page)
     size = len(page.encode("utf-8"))
     assert size < PAGE_CEILING_BYTES, f"frontier.html is {size:,} bytes"
+    # KPress's per-cell column labels, which nothing on the site reads, are dropped.
+    assert "data-col=" not in page
+    assert "data-col-index=" not in page
 
 
 def test_the_page_carries_the_table_script_and_its_controls(page: str) -> None:

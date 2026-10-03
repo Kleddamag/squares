@@ -744,6 +744,7 @@ def kpress_page(
     prose = 'class="kpress-prose kpress-long-text'
     page = page.replace(prose + '"', prose + ' site-page"', 1)
     page = _document_scrolls(name, page)
+    page = _KPRESS_CELL_LABELS.sub("", page)
     if rewrite_body is not None:
         page = rewrite_body(page)
     programs = f"\n{kpress_client_script()}" + "".join(
@@ -753,6 +754,13 @@ def kpress_page(
     page = page.replace("</body>", f"{math_scripts}{programs}\n</body>", 1)
     assert_self_contained(name, page)
     return Page(name, page)
+
+
+#: The column label and position kpress writes on every table cell, `data-col` and
+#: `data-col-index`, hooks for a downstream decorator (`kpress.contract`) that nothing on
+#: the site reads: about 128 KB of the frontier page, whose size has a ceiling, and a
+#: little of every page with a table. Every page drops them (`think-k8xp`).
+_KPRESS_CELL_LABELS = re.compile(r' data-col="[^"]*" data-col-index="\d+"')
 
 
 #: What kpress's standalone shell writes of a page's identity: its own link-preview tags,

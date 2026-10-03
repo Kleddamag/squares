@@ -209,10 +209,11 @@ def test_a_correcting_bound_keeps_its_star_and_names_what_it_corrects(
     with no link; the row names the register's record of that work in `data-corrects`
     (the owner, 2026-10-02). Which bounds those are is the citation record's to say."""
     corrected = frontier.corrected_lower_bounds()
-    # 265 since n = 37 and 61 moved onto Bašić and Slivková's bound (T-084) on 2026-10-03;
+    # 265 since n = 37 and 61 moved onto Bašić and Slivková's bound (T-086) on 2026-10-03;
     # 225 since the merge of the same day, when replayed certificates and covers recorded
-    # in parallel took 40 of the corrected floors, none of them correcting anything.
-    assert len(corrected) == 225
+    # in parallel took 40 of the corrected floors, none of them correcting anything; 220
+    # since the second merge that day, when T-080's replayed certificate took n = 101 to 105.
+    assert len(corrected) == 220
     seen = 0
     for attributes, cells in rows:
         n = int(attributes["data-n"] or 0)
@@ -254,14 +255,14 @@ def test_the_page_says_once_what_the_tag_means_and_links_the_corrected_result(
     corrected work linked to its row, and the register's words for what failed."""
     sentence = frontier.corrections_prose()
     assert sentence == (
-        "Beside 225 of the stars, *corrects Nagamochi 2005* says the bound stands in for "
+        "Beside 220 of the stars, *corrects Nagamochi 2005* says the bound stands in for "
         "a published result found unsound, the register\u2019s "
         "[T-007](all-results.html#t-007): "
         "Lemma 1, on which Theorem 2\u2019s proof rests, is false."
     )
     prose = page[: page.index('id="frontier-table"')]
     assert (
-        "Beside 225 of the stars, <em>corrects Nagamochi 2005</em> says the bound stands in"
+        "Beside 220 of the stars, <em>corrects Nagamochi 2005</em> says the bound stands in"
     ) in prose
     assert '<a href="all-results.html#t-007">T-007</a>' in prose
     table = page[page.index("<tbody>") : page.index("</tbody>")]

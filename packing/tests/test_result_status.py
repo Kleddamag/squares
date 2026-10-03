@@ -208,9 +208,9 @@ def test_superseded_is_marked_on_a_bound_and_on_nothing_else() -> None:
     # of their counts; thirty-two since 3 October, when squarepacker's rescaling (T-078)
     # superseded Daniel's s(12) >= 15680/3951 (T-049); thirty-three since the merge of the
     # same day, when the replays recorded in parallel (T-063, T-069) beat Bašić and
-    # Slivková's piercing bound (T-084) at both of its counts.
+    # Slivková's piercing bound (T-086) at both of its counts.
     assert len(marked) == 33
-    assert {"T-020", "T-021", "T-030", "T-044", "T-047", "T-049", "T-084"} <= set(marked)
+    assert {"T-020", "T-021", "T-030", "T-044", "T-047", "T-049", "T-086"} <= set(marked)
     assert {str(records.results[entry]["kind"]) for entry in marked} == {"lower-bound"}
 
 

@@ -327,7 +327,7 @@ results:
         certificates displaced 18 more case values on 2026-09-22, one more, n = 32, on
         2026-09-27, and another, n = 45, on 2026-09-29, leaving 63 at n <= 100 and 287 in
         all when its proof was found incomplete. Replayed certificates recorded in parallel
-        and merged on 2026-10-03 have since raised 45 of those floors, 37 of them at
+        and merged on 2026-10-03 have since raised 50 of those floors, 37 of them at
         n <= 100, above the ones that replaced it. Its values remain recorded as reported
         bounds.
       scored: '2026-08-31'
@@ -353,25 +353,24 @@ results:
     notes: >-
       2026-10-02: held V3/C1 from its registration, V3 on the published proof and C1 on the
       read of 2026-08-30. Lemma 1 of the paper, from which Theorem 1 is summed, is false for
-      every container with a > 3 and b > 2 (Karakuş 2026 and chelokot 2026; T-082), and the
+      every container with a > 3 and b > 2 (Karakuş 2026 and chelokot 2026; T-084), and the
       paper has no other proof of Theorem 1, so at every N >= 10 this result has no
       checkable proof. It is recorded, V0, and the read that found the defect keeps C1,
       which makes its status incomplete. Nothing is disproved, and no packing beating any of
       its values is known.
 
       The verified floors that rested on it were re-grounded the same day: the perfect
-      squares on the area bound, s(m^2 - 1) = m on Karakuş's Corollary 1.2 (T-081),
-      s(m^2 - 2) = m on chelokot's Lean proof, replayed here (T-083), and the general floor
-      on Karakuş's weaker Corollary 6.2 (T-080), except at n = 54, 57 and 73, where
+      squares on the area bound, s(m^2 - 1) = m on Karakuş's Corollary 1.2 (T-083),
+      s(m^2 - 2) = m on chelokot's Lean proof, replayed here (T-085), and the general floor
+      on Karakuş's weaker Corollary 6.2 (T-082), except at n = 54, 57 and 73, where
       registered T-044 bounds it had masked are stronger. Its values stay in the case
       records as reported bounds. The record of the finding is the review of 2 October
       2026 listed among the artifacts.
 
       2026-10-03: merged with the replayed certificates recorded in parallel on 2 and 3
-      October, which raised 45 of those re-grounded floors, n = 54, 57 and 73 among them:
-      wand125's rectangle-density and mixed certificates (T-048, T-069 to T-072, T-074 and
-      T-075),
-      the mixed covers proving s(59), s(60), s(61) = 8 and s(77), s(78) = 9 (T-062, T-063,
+      October, which raised 50 of those re-grounded floors, n = 54, 57 and 73 among them:
+      wand125's rectangle-density, mixed and linear certificates (T-048, T-069 to T-072,
+      T-074, T-075 and, at n = 101 to 105, T-080), the mixed covers proving s(59), s(60), s(61) = 8 and s(77), s(78) = 9 (T-062, T-063,
       T-066, T-067), and the s(k^2 - 3) = k family (T-064). None of them rests on this
       result.
   - id: T-008
@@ -3704,7 +3703,7 @@ results:
       Three more follow by monotonicity since 2 October 2026: s(54) >= 369/50 from the n = 53
       file, s(57) >= 381/50 from the n = 56 file and s(73) >= 861/100 from the n = 72 file.
       Nagamochi's closed form, stronger at those counts, had held their verified fields until
-      its published proof was found incomplete (T-082).
+      its published proof was found incomplete (T-084).
 
       Every file was replayed here in full on 22 September 2026 by this repository's exact
       verifier, sqpack.fractional.certificate, over the complete 201-direction net through the
@@ -3761,7 +3760,7 @@ results:
       pending. The oversight record restores the rung.
 
       2026-10-02: n = 54, 57 and 73 added by monotonicity, when Nagamochi's closed form left
-      the verified lane (T-082); the bounds were registered here all along and the closed
+      the verified lane (T-084); the bounds were registered here all along and the closed
       form had masked them.
     next_rung: >-
       V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
@@ -3774,7 +3773,7 @@ results:
       wand125's replayed rectangle certificates superseded these as the
       verified lower bound on 2026-10-02 at n = 40 (T-045), at n = 39, 41, 52, 53, 55
       and 68 to 72 (T-070), and at n = 56 (T-074), the last count they held then.
-      The three counts this entry took the same day when Karakuş's finding (T-082) moved
+      The three counts this entry took the same day when Karakuş's finding (T-084) moved
       Nagamochi's closed form out of the verified lane, n = 54, 57 and 73, were superseded
       too, at n = 54 and 57 by
       T-074 and at n = 73 by T-070, as the two lines were merged on 2026-10-03; it holds
@@ -3862,7 +3861,7 @@ results:
       n = 18, 19, 20, 26, 30, 40, 61, 75 and 78 and, by mass, 76 and 77, where they raise
       the verified lower bound by 0.015 to 0.195. They superseded T-030 at n = 18, T-020 at
       n = 19, T-021 at n = 20, T-047 at n = 26 and 30, T-044 at n = 40 and Nagamochi's
-      closed form at n = 61 and 75 to 78, which Karakuş's finding (T-082, merged
+      closed form at n = 61 and 75 to 78, which Karakuş's finding (T-084, merged
       2026-10-03) has since moved to the reported lane. The S3 score of 2026-09-29 is kept: the added
       counts are further case results of the same method. The 28 September release's
       certificates replayed the same day are a later release and are registered as T-070.
@@ -4109,7 +4108,7 @@ results:
         at n = 51 by 0.236, and stands 0.0826 above Green's reported value at n = 50. The
         two changes to Tokoharu's checker were read and found legitimate on 2026-09-28. A
         substantive case result at S3. The closed form has been a reported bound since
-        Karakuş's finding (T-082, merged 2026-10-03), so the margins over the verified
+        Karakuş's finding (T-084, merged 2026-10-03), so the margins over the verified
         floor it left, Karakuş's general bound, are larger.
       scored: '2026-09-29'
       by: session-161 (repository; draft)
@@ -4171,7 +4170,7 @@ results:
       The review named monotone transfers to n = 52 and 53 as well. Those cases have since
       been raised above 37/5 by replayed rectangle certificates (T-070), so the certificate
       carries the verified bound to n = 51 alone, where it is above Nagamochi's closed form,
-      a reported bound since Karakuş's finding (T-082);
+      a reported bound since Karakuş's finding (T-084);
       the reported bound there, 2977/400, is higher and stays reported. The same day's
       147/20 and 3659/500 rungs are superseded within the release and are not registered.
 
@@ -6053,7 +6052,7 @@ results:
         Raised the verified lower bound at five counts, by 0.03 to 0.34 over Nagamochi's
         closed form, two of them past Green's and Nagamochi's reported values, by the
         certificate kind of T-048. Further sizes from one generator at S3; the 2 October
-        review of these certificates confirmed S3. Since Karakuş's finding (T-082, merged
+        review of these certificates confirmed S3. Since Karakuş's finding (T-084, merged
         2026-10-03) the closed form is itself a reported bound, and the margins over the
         verified floor it left behind, Karakuş's general bound, are larger.
       scored: '2026-10-02'
@@ -6166,7 +6165,7 @@ results:
         over wand125's weighted point certificates (T-044), Tokoharu's n = 29 certificate
         (T-047) and Nagamochi's closed form, on Tokoharu's method with larger certificates.
         Substantive case results, S3, as T-045. The closed form has been a reported bound
-        since Karakuş's finding (T-082, merged 2026-10-03).
+        since Karakuş's finding (T-084, merged 2026-10-03).
       scored: '2026-10-02'
       by: think-6ei5 stage 4, registering lane (repository; draft)
     novelty: previously-published
@@ -6454,9 +6453,10 @@ results:
 
       Here the source was retained, its exact premises were recomputed from the retained
       bytes, and the replay's checks before its first angle were run on both pinned
-      tarballs; one angle of each certificate was replayed, to price the replay, and a
-      negative control at n = 101 refused two mutated measures. None of it decides coverage.
-      The values stand as reported, and the verified lower bounds are unchanged.
+      tarballs, and a negative control at n = 101 refused two mutated measures. The
+      n = 101 certificate's complete replay passed here on 2 October 2026, and its five
+      counts are registered again as replayed (T-080); at n = 83 one angle was replayed,
+      to price the replay, which decides nothing, and that value stands as reported.
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/0c35d909764997ead04dfd90081c9fe9af8d07f2/certificates).
@@ -6486,7 +6486,8 @@ results:
     composition: >-
       One claim per certificate, each on its own reported entry; n = 102 to 105 take the
       n = 101 certificate directly, its mass being below them, so no step is added. Every
-      part stands at V0/C1: read by the 2 October review, and not replayed. Coverage is
+      part stands at V0/C1 here: read by the 2 October review. n = 101's replay is cited
+      by T-080, which carries those five counts in the verified lane. Coverage is
       decided by the source's C++ checker alone, which that review read function by
       function.
     evidence:
@@ -6512,16 +6513,20 @@ results:
       - packing/resources/web/wand125-linear-certificates-2026-10-02/receipts/n101/control.json
       - packing/devtools/audit_wand125_linear.py
     next_rung: >-
-      think-m7cm: the complete replays, about 8.1 CPU-hours for n = 101 and 23.0 for n = 83
-      by the packet's pricing, with devtools.audit_wand125_linear linear-replay and
-      linear-merge, before any verified lower bound is raised, each with two mutated
-      controls refused and its merged receipt keeping each direction's least lower bound
-      (finding LC-4). The review of the new checker is done (2 October): its point and
+      think-m7cm: the complete replay at n = 83, about 23.0 CPU-hours by the packet's
+      pricing, with devtools.audit_wand125_linear linear-replay and linear-merge, with
+      two mutated controls refused; n = 101's passed on 2 October and is T-080. The
+      certificates' records carry no per-direction least lower bound for a merged
+      receipt to keep (finding LC-4). The review of the new checker is done (2 October): its point and
       segment capture bounds, the quadrant reduction by the measure's symmetry and the
       angle-zero branch were read against the code, with no blocking defect.
     notes: >-
-      V0 because every cited entry is the source's claim: assurance reported, replay not
-      attempted. C1 because the 2 October review of the certificates and their checker is
+      V0 because every cited entry is the source's claim: assurance reported. The counts
+      T-080 carries are in both entries, because a case's reported field cites this
+      entry's report evidence while its verified field cites the replay. At n = 83 the
+      afternoon's mixed 937/100 (T-075) is above this value in both lanes.
+
+      C1 because the 2 October review of the certificates and their checker is
       recorded as the two report entries' external_review, with no blocking defect; its
       findings LC-2 and LC-4 are in the entries' limitations, and LC-1 is the n = 83 margin
       the claim corrects. The checker's only earlier use is the source's superseded s(50)
@@ -6576,7 +6581,7 @@ results:
         Nagamochi's closed form at n = 57 and 58, on Tokoharu's method with larger
         certificates. Substantive case results, S3, as T-045 and T-070; the 2 October review
         of T-068 confirmed S3 for these certificates. The closed form has been a reported
-        bound since Karakuş's finding (T-082, merged 2026-10-03); the floors it left at
+        bound since Karakuş's finding (T-084, merged 2026-10-03); the floors it left at
         n = 57 and 58, T-044's 381/50 and Karakuş's general bound, are lower still.
       scored: '2026-10-02'
       by: think-6ei5 stage 4, registering lane (repository; draft)
@@ -7145,7 +7150,210 @@ results:
       Supersedes T-078 at n = 12. squarepacker's rescaling is credited in the claim and not
       in builds_on: the registered certificate rests on Daniel's points and verifier, and
       the Route A rescaling it implies is not separately registered.
+
   - id: T-080
+    kind: lower-bound
+    registered: '2026-10-03'
+    headline: "Linear-measure lower bound replayed at `n = 101…105`"
+    claim: >-
+      A measure of points, segments and rectangles that wand125/square-packing-bounds
+      published on 2 October 2026 proves s(101) >= 257/25 = 10.28. Its mass is below 102 to
+      105, and a packing of any of those counts contains one of 101, so it also gives s(102),
+      s(103), s(104), s(105) >= 257/25: five counts in all.
+
+      The measure is 333 point, 897 segment and 4 rectangle orbits under D4, with exact
+      rational geometry, of total mass 10099999/100000, at core side 9977/10000 on 201 net
+      half-angles of step 83/40000. It is accepted at all 201 net angles, the axis included,
+      by code/unified_linear_verify.cpp: an outward-rounded interval branch and bound over
+      centre boxes in one quadrant of the centre domain, which the measure's quarter-turn
+      symmetry makes stand for the whole, counting points in the closed core, segments by
+      the length inside and rectangles by the area inside.
+
+      The value exceeds Green's reported 10.2467362... at n = 101 to 104, by more than
+      0.0332, and Nagamochi's 1 + sqrt(86) = 10.2736... at n = 105. It passed a complete
+      replay here on 2 October 2026 of the source's unchanged checker and replay functions
+      on its pinned tarball: all 201 directions, each returning the certificate's own
+      record. The replay runs the source's own algorithm and is not an independent decision
+      of coverage.
+
+      wand125 after Tokoharu and Levy,
+      [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/0c35d909764997ead04dfd90081c9fe9af8d07f2/certificates/mixed_n101_L1028).
+      Registration was requested in jlevy/squares#294. The source says parts of the work were
+      produced with AI assistance under human direction.
+    scope: {n_values: [101, 102, 103, 104, 105]}
+    verification: V3
+    confirmation: C3
+    significance:
+      score: 3
+      rationale: >-
+        Raised the verified lower bound at five counts, n = 101 to 105, from Nagamochi's
+        closed form past Green's reported values, by a certificate kind new to this record
+        that adds points and segments to the rectangle densities. Further sizes from one
+        generator at S3, as T-073; the 2 October review of the certificates confirmed S3.
+        Nagamochi's closed form has been a reported bound since Karakuş's finding (T-084,
+        merged 2026-10-03); the verified floor it left at these counts, Karakuş's general
+        bound (T-082), is lower still.
+      scored: '2026-10-03'
+      by: think-xex7, the records lane at stage 4 (repository)
+    novelty: previously-published
+    attribution:
+      source_keys: ['[wand125 linear certificates 2026-10-02]']
+      published: '2026-10-02'
+    composition: >-
+      One primary certificate, on its reported entry and its replay entry. n = 102 to 105
+      take it directly, its mass being below them, so no step is added. The replay runs the
+      source's C++ checker unchanged: one interval-certified method, replayed here, C3.
+      Coverage is decided by that checker alone.
+    evidence:
+      - E-n101-wand125-linear-1028-report
+      - E-n101-wand125-linear-1028-source-replay
+    reviews:
+      - path: docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md
+        kind: adversarial
+        reviewer: Claude (AI review; model unstated) at extra-high thinking effort, review lane R4, prompted separately from the replay lane with no shared context
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-02'
+        scope: >-
+          wand125's linear certificates for s(101) >= 257/25 and s(83) >= 187/20 and their point-and-segment checker, unified_linear_verify.cpp: the argument from a linear measure to the bound, the point and segment capture bounds, the quadrant reduction by the measure's symmetry, the angle-zero branch, the hypotheses the checker assumes, and where the requests and the record differ; read before the replay this entry records.
+        verdict: accepted
+        covers: [T-073, T-080]
+    artifacts:
+      - packing/resources/web/wand125-linear-certificates-2026-10-02/README.md
+      - packing/resources/web/wand125-linear-certificates-2026-10-02/square-packing-bounds/certificates/mixed_n101_L1028/README.md
+      - packing/resources/web/wand125-linear-certificates-2026-10-02/square-packing-bounds/certificates/mixed_n101_L1028/code/unified_linear_verify.cpp
+      - packing/resources/web/wand125-linear-certificates-2026-10-02/receipts/linear-audit.json
+      - packing/resources/web/wand125-linear-certificates-2026-10-02/receipts/n101/merged.json
+      - packing/devtools/audit_wand125_linear.py
+      - docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md
+    controls:
+      - packing/resources/web/wand125-linear-certificates-2026-10-02/receipts/n101/control.json
+      - packing/tests/test_wand125_linear_certificates.py
+    next_rung: >-
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record; one adversarial review is retained, read before the replay. A second machine
+      method would be a method-distinct decision of rotated coverage for a linear measure;
+      the replay here runs the source's own checker.
+    notes: >-
+      Registered at stage 4 of T-073's import (think-xex7) on 3 October, from the complete
+      replay of 2 October (think-m7cm), whose receipts were committed that day and not
+      entered as evidence until now. A replayed release is registered again as its own
+      entry, as T-045, T-070 and T-074 were, because the reported entry keeps a count no
+      replay here carries yet: T-073's n = 83. T-073 keeps its claim.
+
+  - id: T-081
+    kind: optimality
+    registered: '2026-10-03'
+    headline: "`s(k² − 4) = k` for every integer `k` from 5 up; `k = 5…18` are the cases held here"
+    claim: >-
+      Evan Daniel's theorem s(k^2 - 4) = k for every integer k >= 5, published in his
+      repository on 3 October 2026: the lower half at k = 5, 6 and 7 by his s(21), s(32) and
+      s(45) certificates, and at every k >= 8 by one family of periodic measures; the upper
+      half by the k x k grid.
+
+      This entry's scope is the projection of that theorem onto the cases this record
+      holds, n <= 324, which is k = 5 to 18: s(21) = 5, s(32) = 6, s(45) = 7, s(60) = 8,
+      s(77) = 9, s(96) = 10, s(117) = 11, s(140) = 12, s(165) = 13, s(192) = 14, s(221) =
+      15, s(252) = 16, s(285) = 17 and s(320) = 18. The reported theorem does not end at
+      k = 18. New to this record are k = 10 to 18; s(21), s(32) and s(45) are T-052, T-051
+      and T-053, with T-054 a second route at k = 7, s(60) = 8 is T-062, and wand125 published s(77) = 9 first, on 1 October
+      (T-067).
+
+      For each k >= 8 the measure on [0,k]^2 is a corner module on [0,3]^2 in each corner,
+      a profile of period one in a band of width 3 along each wall, and Lebesgue measure on
+      [14/5, k - 14/5]^2, of total mass k^2 - 4D with D = 214770225571/200000000000, so
+      that 4D exceeds 4. The source states that every closed unit square in [0,k]^2 has mass
+      at least one, and reduces that, for every k >= 8, to one finite statement on the
+      9 x 9 box, Valid9.
+
+      Its Lean development kernel-checks, the source reports, that the
+      tilted part, ValidTilt9, implies the theorem for every k >= 8, with the D4 reduction
+      and the axis-parallel face proved; it does not prove ValidTilt9. ValidTilt9 is the
+      claim of the source's exact-rational checker qx2_zm.py, the program that decided
+      T-064's Valid7, which the source reports accepting all 16,200 root boxes in 115,268
+      leaves. The source reports three adversarial reviews of the certificate by AI agents
+      and none by outside mathematicians.
+
+      Here the bundle's fast verify.sh passed on the retained bytes; it recomputes no
+      tilted leaf. Nothing here has yet replayed the run or built the reduction into this
+      record's evidence, and the verified lower bounds are unchanged.
+
+      Evan Daniel,
+      [evand/square-packing](https://github.com/evand/square-packing/tree/2eb15455a6f178213287a84ab4d0576c060baabe/s12/certificates/k2m4),
+      building on Burns's and Massaccesi's method, at the request of jlevy/squares#316. The
+      source's CREDITS.md says the work was produced by Claude (Anthropic) in a single
+      session under human direction.
+    scope: {n_values: [21, 32, 45, 60, 77, 96, 117, 140, 165, 192, 221, 252, 285, 320]}
+    verification: V0
+    confirmation: C1
+    significance:
+      score: 4
+      rationale: >-
+        Scored as a claim: a bound family, the deficit-4 case of Friedman's conjecture,
+        which would settle nine open cases of this record, k = 10 to 18, and every later k
+        if the finite premise and its reduction pass replay and review here. S4 by the
+        anchor "a reusable technique, bound family", as T-064 is; not S5, since no case it
+        settles is central to this project. The score gates nothing.
+      scored: '2026-10-03'
+      by: 'think-8hk1 import, registering lane (repository; draft)'
+    novelty: previously-published
+    attribution:
+      source_keys: ['[evand square-packing 2026-10-03]']
+      published: '2026-10-03'
+    composition: >-
+      Compound, and the minimum is set by the lower half at k >= 8. The upper half is the
+      k x k grid, E-basic-grid-upper. At k = 5, 6 and 7 the lower half is the source's
+      earlier certificates, which this record holds as T-052, T-051 and T-053 (with T-054
+      beside it at k = 7), and this entry adds no evidence to them. At k >= 8 it is two parts in series: the finite
+      premise ValidTilt9, reported by the source's run (E-k2m4-evand-validtilt9-qx2-report),
+      and the reduction from it to every k >= 8, reported by the source's Lean
+      (E-k2m4-evand-lean-report). Both are the source's reports, not replayed here, so the
+      entry is V0, and the claim-chain review of 3 October reads it, C1. The scope lists the cases this record holds; the theorem's own
+      domain is every k >= 5, and a scope that can say so is think-kqi1.
+    evidence:
+      - E-k2m4-evand-family-report
+      - E-k2m4-evand-validtilt9-qx2-report
+      - E-k2m4-evand-lean-report
+      - E-basic-grid-upper
+    reviews:
+      - path: docs/project/reviews/review-2026-10-03-evand-k2m4-claim-chain.md
+        kind: adversarial
+        reviewer: Claude (AI review; model unstated), claim-chain review lane of the 3 October import of #316, separately prompted
+        reviewer_kind: ai
+        relation: project
+        date: '2026-10-03'
+        scope: >-
+          The claim chain from the box-9 certificate to s(k^2 - 4) = k for every k >= 5: the split by k, the family's total, the localisation, the dilation, the D4 reduction and Lemma Z, the Lean statement of ValidTilt9 against the run's region, each checker's trust boundary, and the route to an independent check.
+        verdict: accepted
+        covers: [T-081]
+    artifacts:
+      - packing/resources/web/evand-square-packing-2026-10-03/README.md
+      - packing/resources/web/evand-square-packing-2026-10-03/square-packing/s12/certificates/k2m4/README.md
+      - packing/resources/web/evand-square-packing-2026-10-03/square-packing/s12/lean/Sqpack/ValidSplit9.lean
+      - packing/resources/web/evand-square-packing-2026-10-03/receipts/k2m4_verify_fast.log
+      - packing/resources/web/evand-square-packing-2026-10-03/receipts/valid9/qx2_replay_plan.json
+      - packing/devtools/plan_valid9_replay.py
+      - packing/resources/web/evand-square-packing-2026-10-03/receipts/lean/build_bentz4.log
+      - packing/resources/web/evand-square-packing-2026-10-03/receipts/lean/axioms_bentz4.log
+    next_rung: >-
+      think-8hk1: the full replay of qx2_zm.py on the box-9 cover, about 226 CPU-hours at
+      the source, in the shards the packet's replay plan gives, compared root for root with
+      the published record; the Lean reduction built from the retained bytes with its axiom
+      receipt; the claim chain is reviewed already. Then a replayed entry for each part
+      and the verified lower bounds at k = 10 to 18.
+      A second, independent check of ValidTilt9 would build on the clean-room verifier's
+      Milestone C (docs/project/specs/active/plan-2026-10-03-measure-verifier-milestone-c.md),
+      which plans points and segments only; box 9 also needs a uniform-polygon primitive
+      and an exact argument inside the Lebesgue block, where every square has mass exactly
+      one.
+    notes: >-
+      V0 because every cited entry is the source's report: assurance reported, replay not
+      attempted. C1 because the claim-chain review of 3 October is recorded as the report
+      entry's external_review, with no blocking defect. By monotonicity the theorem
+      also gives s(k^2 - 3) = k for every k >= 5, which T-064 registers for k >= 6 and
+      Bentz's s(22) = 5 holds at k = 5; it adds no entry, and T-064 gains a sentence naming
+      this route when this one is replayed. Ids here are provisional until merged.
+  - id: T-082
     kind: lower-bound
     registered: '2026-10-02'
     headline: "`s(n) ≥ 1/2 + √(n − ⌊√n⌋ + 1/4)` for every nonsquare `8 ≤ n ≤ 324`"
@@ -7156,7 +7364,7 @@ results:
       The bound is his rectangle bound, Theorem 1.1, at a square container whose side t
       solves t^2 - (t - floor(sqrt(N))) = N. The rectangle bound is proved by a strip
       measure that uses neither the scoring lemma nor the technical lemmas of Nagamochi
-      2005. It equals ceil(sqrt(N)) exactly at N = m^2 - 1, which is T-081, and is strictly
+      2005. It equals ceil(sqrt(N)) exactly at N = m^2 - 1, which is T-083, and is strictly
       below Nagamochi's Theorem 2, T-007, at every other nonsquare N.
 
       The proof was read in full and re-derived here, and is not machine-checked. Hakan
@@ -7190,7 +7398,7 @@ results:
       C2 and above need a replay: a machine check of Proposition 5.1, that every square of
       side in (1, 1.01] gets more than one from the strip measure, over its three-parameter
       pose space. A stronger floor at any n is a new result, not a rung change.
-  - id: T-081
+  - id: T-083
     kind: optimality
     registered: '2026-10-02'
     headline: "`s(k² − 1) = k` for every integer `k ≥ 3`; `k = 3…18` are the cases held here"
@@ -7204,7 +7412,7 @@ results:
       s(24) = 5, s(35) = 6, s(48) = 7, s(63) = 8, s(80) = 9, s(99) = 10, s(120) = 11,
       s(143) = 12, s(168) = 13, s(195) = 14, s(224) = 15, s(255) = 16, s(288) = 17 and
       s(323) = 18. Nagamochi 2005 stated the family first (T-007); Nagamochi's Lemma 1, on
-      which that proof rests, is false (T-082), and Karakuş's proof uses neither that lemma
+      which that proof rests, is false (T-084), and Karakuş's proof uses neither that lemma
       nor the paper's technical lemmas.
 
       The proof was read in full and re-derived here, and is not machine-checked. Hakan
@@ -7246,7 +7454,7 @@ results:
       C2 and above need a replay of the lower half: a machine check of Proposition 5.1, or a
       replay of chelokot's Lean proof of the same family by an augmented measure, which is
       reported and was not built here.
-  - id: T-082
+  - id: T-084
     kind: correction
     registered: '2026-10-02'
     headline: "Nagamochi 2005, Lemma 1 is false for every container with `a > 3` and `b > 2`"
@@ -7261,7 +7469,7 @@ results:
 
       What holds in its place is Karakuş's strip measure, of total ab - (a + 1 - ceil a),
       which gives every such square more than one for a >= 2 and b >= 3 (his Proposition
-      5.1), and the rectangle bound it yields (T-080, T-081). Nagamochi's Theorem 1 at full
+      5.1), and the rectangle bound it yields (T-082, T-083). Nagamochi's Theorem 1 at full
       strength, and so T-007, is unproved and not disproved.
 
       Every printed quantity of both counterexamples was recomputed here in exact rational
@@ -7297,7 +7505,7 @@ results:
       Rung 4 on either axis needs two adversarial AI reviews by distinct reviewers and a
       retained human oversight record. Whether Lemma 1 holds for a = 3 or for a, b in
       [2, 3) is undecided; the family does not reach those containers.
-  - id: T-083
+  - id: T-085
     kind: optimality
     registered: '2026-10-02'
     headline: "`s(k² − 2) = k` for every integer `k ≥ 2`; `k = 3…18` are the cases held here"
@@ -7306,7 +7514,7 @@ results:
       Records.NearSquare.squareMinusTwo_isMinimumSide, kernel-checked here. The lower half
       compensates each square of score at most one under Nagamochi's measure from other
       squares of the packing, so it does not use Nagamochi's Lemma 1, which is false
-      (T-082); the upper half is the k x k grid with two squares removed.
+      (T-084); the upper half is the k x k grid with two squares removed.
 
       This entry's scope is the cases this record holds, k = 3 to 18: s(7) = 3, s(14) = 4,
       s(23) = 5, s(34) = 6, s(47) = 7, s(62) = 8, s(79) = 9, s(98) = 10, s(119) = 11,
@@ -7356,7 +7564,7 @@ results:
       Rung 4 needs two adversarial AI reviews by distinct reviewers and a human oversight
       record; rung 5 needs a named human expert's review of the formalization, and C5 two,
       with the open-review pointer the public repository already supports.
-  - id: T-084
+  - id: T-086
     kind: lower-bound
     registered: '2026-10-03'
     headline: "`s(37) ≥ 5√3/2 + 2√2 − 1` and `s(61) ≥ 7√3/2 + 2√2 − 1`, by optimal piercing"
@@ -7369,7 +7577,7 @@ results:
       just below 5 sqrt(3)/2 + 2 sqrt(2) - 1 it is 36, so s(37) >= 5 sqrt(3)/2 +
       2 sqrt(2) - 1, about 6.1586, which the paper does not state.
 
-      Both are above Karakuş's general floor, T-080; at every other case the theorem is
+      Both are above Karakuş's general floor, T-082; at every other case the theorem is
       weaker than the verified floor already held. The proof uses nothing of Nagamochi
       2005. It was read
       and re-derived here and is not machine-checked; its arithmetic is replayed exactly

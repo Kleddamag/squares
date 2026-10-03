@@ -17,7 +17,7 @@ hold without going stale is the relation: a case cites the theorem only where it
 is the theorem's, and no case a retained certificate reaches still cites it.
 
 Since 2026-10-02 no verified lower bound cites the record at all: Nagamochi's Lemma 1 was
-found false (`T-082`), the record became `reported`, and its values moved to the reported
+found false (`T-084`), the record became `reported`, and its values moved to the reported
 lane, where the same relation is held. The verified floors it carried are Karakuş's
 (`E-karakus-strip-lower`) or the area bound, and the checker re-derives Karakuş's too.
 """
@@ -81,7 +81,7 @@ def test_it_covers_the_cases_it_claims_to() -> None:
     evening of 2026-09-04; each time it moved, the literal here outlived the
     record it described (`D-444`). What holds is the relation.
     """
-    # No verified lower bound has cited the record since 2026-10-02 (T-082); its values
+    # No verified lower bound has cited the record since 2026-10-02 (T-084); its values
     # sit in the reported lane, which is held to the same relation.
     assert not citing()
     covered = citing(lane="reported_lower_bound")

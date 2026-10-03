@@ -438,3 +438,149 @@ fn the_per_bin_domain_checks_the_tangent_form_of_the_shrink_premise() {
     let retained = ratio(9977, 10000);
     assert!(&retained * (&one + &d / (&one - &d * &d / ratio(4, 1))) < one);
 }
+
+// ------------------------------------------- re-review of 3 October, evening
+
+/// Limits for the re-review's searches: small, since only the verdict's kind
+/// matters, never the time to reach it.
+const SMALL: Limits = Limits {
+    max_nodes: 20_000,
+    max_depth: 40,
+    audit_every: 1,
+    inject_fault_at: None,
+};
+
+#[test]
+fn overflow_in_the_rotated_search_is_never_verified() {
+    // S1's raised densities in the branch and bound (r = 1, 100, 200) and in its
+    // direction-zero branch (a point mass forces it): each must refuse, and any
+    // non-finite value must stop the search rather than drop out.
+    let threshold = parse_rational("1").unwrap();
+    let cert = overflow_cert(&ratio(49, 20));
+    for index in [1u32, 100, 200] {
+        let report = sqverify_fast::run_direction(&cert, index, &threshold, SMALL, false).unwrap();
+        assert!(!report.verified, "r={index} verified: {}", report.receipt);
+    }
+    let mut with_point = cert;
+    with_point.points.push(sqverify_fast::certificate::Point {
+        x: 0.5,
+        y: 0.5,
+        mass: sqverify_fast::interval::Iv::point(1e-9),
+    });
+    let report = sqverify_fast::run_direction(&with_point, 0, &threshold, SMALL, false).unwrap();
+    assert!(
+        !report.verified,
+        "r=0 (branch and bound) verified: {}",
+        report.receipt
+    );
+}
+
+/// The S1 shape with every sliver at just under lemma F3's density cap and of
+/// height 2^-60, below a unit in the last place of its ordinate: the steps of
+/// about 2^96 meet event widths that straddle zero.
+fn capped_overflow_value() -> Value {
+    let y2 = ratio(49, 20);
+    let y1 = &y2 - BigRational::new(BigInt::from(1), BigInt::from(1) << 60usize);
+    let mut rects = vec![json!(["0", "3/2", "4", "5/2"])];
+    let mut weights = vec![json!("16")];
+    for k in 0..20 {
+        rects.push(json!([
+            text(&ratio(k, 1000)),
+            text(&y1),
+            text(&(ratio(4, 1) - ratio(k, 1000))),
+            text(&y2)
+        ]));
+        // 0.99 * 2^40: the merged density w / (4 area) stays below 2^96.
+        weights.push(json!("1088516511498"));
+    }
+    json!({"L": "4", "B": "9/10", "rectangles": rects, "weights": weights})
+}
+
+#[test]
+fn the_s1_shape_at_the_density_cap_is_refused_and_finite() {
+    let cert = admit_value(&capped_overflow_value(), 1_000_000_000_000_000)
+        .expect("densities at the cap are admissible");
+    let exact = coverage(
+        &cert,
+        &ratio(7, 2),
+        &ratio(7, 2),
+        &ratio(1, 1),
+        &ratio(0, 1),
+    );
+    assert_eq!(exact, ratio(0, 1));
+    let threshold = parse_rational("1").unwrap();
+    for index in [0u32, 1, 200] {
+        let report = sqverify_fast::run_direction(&cert, index, &threshold, SMALL, false).unwrap();
+        assert!(!report.verified, "r={index} verified: {}", report.receipt);
+        // Lemma F3: an admitted certificate never produces a non-finite value.
+        assert_ne!(
+            report.receipt["verdict"], "non-finite",
+            "r={index}: {}",
+            report.receipt
+        );
+    }
+}
+
+#[test]
+fn lemma_f3_holds_at_its_extremes() {
+    // Side 1000, the finest net the caps admit (2^16 directions, so the smallest
+    // step and the smallest s_1), and rectangles at the density cap: every
+    // searched direction must end without a non-finite value.
+    let side = 1000;
+    let mut rects = Vec::new();
+    let mut weights = Vec::new();
+    for k in 0..8 {
+        // [500 + k, 500 + k + 1/2] x [600, 600 + 2^-40]: area 2^-41, density
+        // w / (8 area) = 2^96 at w = 2^58.
+        let y2 = ratio(600, 1) + BigRational::new(BigInt::from(1), BigInt::from(1) << 40usize);
+        rects.push(json!([
+            text(&ratio(1000 + 2 * k, 2)),
+            "600",
+            text(&ratio(1001 + 2 * k, 2)),
+            text(&y2)
+        ]));
+        weights.push(json!((1u64 << 58).to_string()));
+    }
+    // t_max = (N - 1) D just past tan(pi/8) with N = 2^16: the smallest D.
+    let count = 1u32 << 16;
+    let step = BigRational::new(
+        BigInt::from(41_422),
+        BigInt::from(100_000u64 * u64::from(count - 1)),
+    );
+    let value = json!({"L": side.to_string(), "B": "9/10", "rectangles": rects, "weights": weights,
+        "certificate": {"D": text(&step), "angle_count": count}});
+    let cert = admit_value(&value, u64::MAX).expect("the extreme certificate is admissible");
+    let threshold = parse_rational("1").unwrap();
+    for index in [0u32, 1, 2, count - 1] {
+        let report = sqverify_fast::run_direction(&cert, index, &threshold, SMALL, false).unwrap();
+        assert_ne!(
+            report.receipt["verdict"], "non-finite",
+            "r={index}: {}",
+            report.receipt
+        );
+        assert!(!report.verified, "r={index} verified: {}", report.receipt);
+    }
+}
+
+#[test]
+fn fmin_and_fmax_are_exact_on_finite_operands_and_poison_on_failure() {
+    use sqverify_fast::interval::{fmax, fmin};
+    for (a, b) in [
+        (1.0, 2.0),
+        (2.0, 1.0),
+        (-0.0, 0.0),
+        (-3.5, -3.5),
+        (1e300, -1e300),
+    ] {
+        assert_eq!(fmin(a, b), f64::min(a, b));
+        assert_eq!(fmax(a, b), f64::max(a, b));
+    }
+    for bad in [f64::NAN, f64::INFINITY, f64::NEG_INFINITY] {
+        assert!(fmin(bad, 1.0).is_nan() && fmax(bad, 1.0).is_nan());
+    }
+    assert!(fmin(1.0, f64::NAN).is_nan() && fmax(1.0, f64::NAN).is_nan());
+    // An infinite second operand selects correctly; it cannot arise on the
+    // certification path (lemma F3), and a wrong selection is not possible.
+    assert_eq!(fmin(1.0, f64::INFINITY), 1.0);
+    assert_eq!(fmax(1.0, f64::NEG_INFINITY), 1.0);
+}

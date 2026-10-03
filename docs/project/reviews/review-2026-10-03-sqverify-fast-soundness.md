@@ -17,7 +17,8 @@ it.
 **In one line:** the mathematics is sound, but the build is not.
 Its axis sweep at direction zero lets a non-finite intermediate drop vertices from the
 minimum, and an admissible certificate whose direction-zero domain contains a centre of
-exact capture zero is reported `verified`. **Reject until S1 is fixed.** Every lemma of
+exact capture zero is reported `verified`. **Reject until S1 is fixed.** (Superseded: S1
+to S5 were fixed and the build is accepted on re-review; see §7.) Every lemma of
 `SOUNDNESS.md` holds as stated for finite arithmetic.
 One proof step (N2) is too weak for format M’s domain, though the code is right under
 the spec’s fold. The rotated branch and bound survives the same overflow attack, because
@@ -292,6 +293,129 @@ would show first.
 - The S3 edit to `SOUNDNESS.md`.
 - `packing-validate --only "measure verifier Rust"` clean, and the census unchanged: the
   fix touches no finite path, so every recorded verdict should reproduce bit for bit.
+
+## 7. Re-Review, 3 October Evening
+
+Re-reviewed by the same lane, Claude (adversarial AI review, soundness), at the lane W2
+head `4ddf37d9c`, which merges this branch.
+The fixes are `cfb653a2f`, for S1 to S4, and `61acc9dcb`, for review RB’s TI-1 to TI-3
+and the per-bin question.
+Read in full: the diff of `src/` since `0e38246a9`, and the new or changed text of
+`SOUNDNESS.md` (N2, N3, F3 and the tests list).
+The coordinator asked four questions; each is answered below.
+
+**Verdict: accept.** S1 to S5 are closed.
+One note is new, R1, on the wording of N2, and it changes no conclusion.
+A second, R2, is about the audit, which is not a lemma.
+
+### 7.1 Each fix closes its defect
+
+- **S1.** `verify_axis` now stops a column at the first vertex whose enclosure is not
+  finite, records `non_finite`, and accepts only when `min_lower` is finite and at least
+  the threshold. Both of W2’s reproducers end `non-finite`: the original, with the
+  overflow in the initial slope, and a second whose slivers end at ordinate 3, so the
+  overflow arises in a `delta[j]` inside the domain.
+  Admission now refuses the original certificate outright, because its densities exceed
+  $2^{96}$. The reproducers therefore raise the densities after admission, which tests
+  the sweep itself. Variants added here:
+  - `overflow_in_the_rotated_search_is_never_verified` raises the same densities in the
+    branch and bound at $r \in \{1, 100, 200\}$, and in its direction-zero branch,
+    forced with a point mass.
+    None is verified.
+  - `the_s1_shape_at_the_density_cap_is_refused_and_finite` builds the S1 shape just
+    under the cap, with slivers $2^{-60}$ high: below a unit in the last place of their
+    ordinate, so every event width straddles zero.
+    Admission accepts it.
+    Direction 0 is `refused` with a finite minimum of about $-10^{17}$, and $r = 1$ and
+    $r = 200$ stop as counterexample candidates.
+    None is `non-finite`. The exact capture at $(7/2, 7/2)$ is $0$.
+- **S2.** `run_direction` turns any verified receipt from a fault-injected run into
+  `fault-injected`, unverified, and records `fault_injected_at_box` in it and in the
+  summary. `a_fault_injected_run_is_never_verified` holds it.
+- **S3.** N2 now folds at $\pi/4$ and says that lemma D depends on the fold.
+- **S4.** `fmin` and `fmax` replace `f64::min` and `f64::max` in every interval
+  primitive and in R2, Z1 and Z2. Each selects with one comparison, which keeps a `NaN`
+  second operand, then adds $0 \cdot a$, which is `NaN` when the first operand is `NaN`
+  or infinite. On finite operands both return exactly `f64::min` and `f64::max`,
+  including the signed zeros, which
+  `fmin_and_fmax_are_exact_on_finite_operands_and_poison_on_failure` checks.
+  An infinite second operand is selected correctly, so the primitives never turn a
+  failure into a finite wrong value.
+  `area_dn` now carries a `NaN` trapezoid sum into the total instead of skipping it.
+  The search refuses a box whose centre bound, atom bound or own derivative enclosure is
+  not finite. The inherited-bound path needs no check: its parent’s bounds were checked,
+  and a `NaN` penalty fails `>=`.
+- **S5.** `SOUNDNESS.md` now names commit `abf0a592b`, where the plan can still be read.
+
+### 7.2 Lemma F3 and the caps
+
+The caps are a side of at most 1,000, at most $2^{16}$ directions, a last tangent of at
+most $1/2$, at most $10^6$ rows, an expanded density of at most $2^{96}$ (checked after
+merging, per key), and a total mass below $n < 2^{64}$. Every step of F3 was rechecked
+against them:
+
+- **Line coefficients.** $D > 	an(\pi/8)/2^{16} > 2^{-18}$, so $s_1 > 2^{-18}$; with
+  $c \ge 3/5$, each line coefficient is below $2^{19}$, and each R5 term is below
+  $2^{12} \cdot 2^{19}$.
+- **Sweep events.** There are at most $4 \cdot 8 \cdot 10^6 + 2 < 2^{25}$ of them, so
+  column weights, slopes and vertex values sit far below $2^{1024}$.
+- **Outward rounding.** The growth factor over $2^{40}$ steps is about $e^{2^{-11}}$.
+- **Atoms.** Points and segments carry no density, only mass below $2^{64}$.
+- **Division.** The divisor in `lambda_range` is bounded below and its quotient is
+  clamped, as F3 says.
+
+`lemma_f3_holds_at_its_extremes` admits the extreme corner: $L = 1000$, $2^{16}$
+directions at the smallest step the endpoint polynomial allows, and rectangles at
+exactly $2^{96}$. It searches $r \in \{0, 1, 2, 2^{16} - 1\}$. No direction ends
+`non-finite`.
+
+F3 is sound. The caps cost the retained certificates nothing: W2’s census at `4ddf37d9c`
+reproduces the earlier nodes and least bounds wherever both runs exist.
+
+### 7.3 Format M’s shrink step
+
+Bin $r$ takes half-angle tangents $t$ with $|t - t_r| \le D/2$. Then
+$z = 	an(\delta/2) = |t - t_r|/(1 + t t_r) \le D/2$, and
+$\cos\delta + \sin\delta = (1 + 2z - z^2)/(1 + z^2) \le 1 + 2z \le 1 + D$, because the
+difference $2z^2 + 2z^3$ is nonnegative.
+So $B(1 + D) < 1$ suffices, and the half-angle form of N3 is sound for both domains.
+The extra admission check $B(1 + D/(1 - D^2/4)) < 1$ for format M is stronger than
+needed. It is harmless at $B = 9977/10000$, where the two limits are $0.997929\ldots$,
+and it can only refuse.
+Admission now also pins format M’s and format L’s net to step $83/40000$ with 201
+directions, so metadata cannot move the bins lemma D assumes.
+
+### 7.4 No new path to a false `verified`
+
+Every changed decision only adds refusals: the non-finite stops, the fault-injection
+override, the gzip checks, the net pin, and the per-bin premise.
+`fmin` and `fmax` agree with the old selections on every finite input, so no finite
+verdict can change; the census confirms this.
+The only change that loosens anything is the audit’s new `representation_slack` (R2
+below), and the audit decides refusals only.
+
+### R1. N2 still ends “so $\delta \le rctan D$” (note, proof text)
+
+Under the half-angle assignment, $\delta$ can reach $2rctan(D/2)$, which is larger than
+$rctan D$, as N3 itself now says.
+The sentence in N2 is therefore false, and N3’s first chain,
+$B\cos\delta(1 + 	an\delta) \le B(1 + D)$, rests on it.
+The half-angle form in N3 makes both domains sound without it.
+Edit N2 to conclude $	an(\delta/2) \le D/2$, and let N3 use only the half-angle form.
+
+### R2. The audit’s tolerance can become vacuous for extreme slivers (note)
+
+To end false `audit-failed` refusals (RB’s TI-1), `representation_slack` widens the
+tolerance by each rectangle’s density times the gap between its outer and inner
+representable rectangles.
+Near the $2^{96}$ cap that gap times the density can exceed the bound itself, and then
+the audit cannot detect a bookkeeping error at that box.
+This is not a soundness gap: the audit (A3) is defense in depth, and no acceptance rests
+on it. `SOUNDNESS.md` should still say that the audit is weakest where densities are
+extreme.
+
+Commands: `cargo fmt`, `cargo clippy --release --all-targets` (clean),
+`cargo test --release` (all pass, none ignored), and `packing-validate --edit` (clean).
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

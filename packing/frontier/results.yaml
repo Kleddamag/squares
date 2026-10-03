@@ -7015,7 +7015,7 @@ results:
       arrangement sweep (exact-algebraic), run by the producing lane and replayed by the
       review lane, and this repository's directed-rounding interval coverage of every row
       (interval-certified); that is C3, with two methods shown beside the rung. The exact
-      audit of the file is well-formedness only. All rest on the certificate, the counting
+      audit of the file is a premise check, well-formedness only, and decides nothing. All rest on the certificate, the counting
       step and the shrink lemma on the net N = 96000, and the native rows are the sweep's
       bins and sigma_k by design.
     evidence:

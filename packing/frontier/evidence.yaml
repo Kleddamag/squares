@@ -6413,7 +6413,7 @@ evidence:
     assurance: verified
     method: exact-algebraic
     performed_by: repository
-    relationship_to_generator: independent-implementation
+    relationship_to_generator: not-applicable
     origin: audited-here
     novelty: apparently-novel
     novelty_basis:
@@ -6432,19 +6432,23 @@ evidence:
     source_key: '[evand square-packing 2026]'
     certificate: cases/n12_beyond_rescaling/certificate.txt.gz
     replay: >-
-      From packing/: .venv/bin/python3 -m devtools.audit_s12_reweighted --output OUT, which
-      must print PASS for all 18 checks (cases/n12_beyond_rescaling/receipts/review-audit.json);
+      A premise check, not a replay of the coverage decision. From packing/:
+      .venv/bin/python3 -m devtools.audit_s12_reweighted --output OUT, which must print PASS
+      for all 18 checks (cases/n12_beyond_rescaling/receipts/review-audit.json);
       with --control-dir DIR it also writes both controls, whose digests must equal
       receipts/controls.json.
     replay_status: passed
     limitations: >-
-      Well-formedness only, decided in integers and Fraction by review lane RV's own parser,
-      which imports nothing from lane BB's tools: the digest, the header (s =
+      Premise evidence only: well-formedness and the counting step's inputs, checked in
+      integers and Fraction by review lane RV's parser, with no bearing on coverage: the
+      digest, the header (s =
       15680000/3949423, D = 3949423, W = 10^7, m = 1,736) and canonical bytes, nonnegative
       integer weights (120 zero), every point in the closed container, the total
       14970347/1250000 < 12, each point Daniel's in file order with both coordinates times
       1000, D4 invariance over 223 orbits, every weight changed from Daniel's, and both
-      controls rebuilt from their descriptions. It decides no coverage; the two sweeps do.
+      controls rebuilt from their descriptions. It decides no coverage and is no route to the
+      bound; the source verifier's sweep and the native interval run decide it, and the
+      rungs rest on those two.
     source_reviewed: '2026-10-02'
 
   - id: E-n021-evand-5000-1001-report

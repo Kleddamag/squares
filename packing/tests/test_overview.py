@@ -2823,10 +2823,10 @@ def _template_paragraphs(section: str) -> list[str]:
 
 #: README's `project-intro` block, the owner's words of 2026-10-03 (`think-8lyq`): the
 #: question after a colon, the lower bound glossed as a size below which no packing can
-#: exist, and an example of each bound at $n = 29$. The owner's lower example, 5.79, is
-#: wand125's reported bound, not yet replayed here; the example is the verified 5.71,
-#: which the case record and the atlas show, and both are written as the record writes
-#: them, with $\le$ and $\ge$ (`test_the_intros_examples_are_the_records`).
+#: exist, and an example of each bound at $n = 29$, the case's current bounds as the
+#: record reports them (the owner, 2026-10-03: "make the examples current"), each
+#: written as the record writes it, with $\le$ and $\ge$
+#: (`test_the_intros_examples_are_the_records`).
 PROBLEM_STATEMENT = (
     (
         "The square packing problem is a simple and long-standing problem in geometry: "
@@ -2839,26 +2839,27 @@ PROBLEM_STATEMENT = (
         "for most $n$. In many cases, $s(n)$ is known only to lie between an upper bound "
         "(the size of the enclosing square for the tightest packing ever discovered, such "
         "as $s(29) \\le 5.934$) and a lower bound (a size below which it is proved that no "
-        "packing can exist, such as $s(29) \\ge 5.71$)."
+        "packing can exist, such as $s(29) \\ge 5.79$)."
     ),
 )
 
 
 def test_the_intros_examples_are_the_records() -> None:
-    """The introduction's two examples are case 29's verified bounds, rounded outward:
-    its upper example is at or above the verified upper bound, so it still holds, and
-    its lower example is the verified lower bound itself. A new bound at $n = 29$ that
-    leaves an example stale fails here rather than on the page."""
+    """The introduction's two examples are case 29's current bounds: its lower example
+    is the reported lower bound, wand125's 5.79 of 2026-09-28 when this was written,
+    and its upper example is the reported upper bound rounded up, which also stands at
+    or above the verified ceiling, so it is itself a proved ceiling. A new bound at
+    $n = 29$ that leaves an example stale fails here rather than on the page."""
     from devtools import overview_data, site_documents  # noqa: PLC0415
 
     block = site_documents.intro_block(site_documents.README.read_text(encoding="utf-8"))
     upper = Decimal(re.findall(r"\$s\(29\) \\le ([\d.]+)\$", block)[0])
     lower = Decimal(re.findall(r"\$s\(29\) \\ge ([\d.]+)\$", block)[0])
     case = overview_data.load().cases[29]
-    verified_upper = Decimal(case["verified_upper_bound"]["value"])
-    verified_lower = Decimal(case["verified_lower_bound"]["value"])
-    assert verified_upper <= upper < verified_upper + Decimal("0.001")
-    assert lower == verified_lower
+    reported_upper = Decimal(case["reported_upper_bound"]["value"])
+    ceiling = Decimal(case["verified_upper_bound"]["value"])
+    assert max(reported_upper, ceiling) <= upper < reported_upper + Decimal("0.001")
+    assert lower == Decimal(case["reported_lower_bound"]["value"])
 
 
 def test_the_overviews_first_section_is_readmes_one_block(page: str) -> None:

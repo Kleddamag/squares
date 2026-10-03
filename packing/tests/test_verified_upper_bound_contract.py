@@ -309,8 +309,8 @@ DECLARED_CONSUMERS = {
     ),
     "packing/tests/test_overview.py": (
         "holds the homepage introduction's upper-bound example for n = 29 at or above the "
-        "verified ceiling, so the example is itself a proved ceiling; it reads the field "
-        "as a ceiling, never as s(n)"
+        "verified ceiling as well as the reported bound, so the example is itself a proved "
+        "ceiling; it reads the field as a ceiling, never as s(n)"
     ),
     "docs/project/specs/active/plan-2026-09-29-github-pages-overview.md": (
         "the plan for the overview and frontier pages, naming the field as the verified "

@@ -45,6 +45,7 @@ def numerical_evidence() -> dict[str, object]:
             "resources/papers/kingbird-square-29-provenance.svg"
         ),
         "replay_status": "passed",
+        "verifiers": ["V-kingbird29-verify-svg"],
         "limitations": "Does not certify exact feasibility or optimality.",
         "blocker": {"kind": "mathematics", "detail": "No formal existence certificate."},
         "source_reviewed": "2026-08-24",
@@ -65,6 +66,7 @@ def verified_evidence() -> dict[str, object]:
         "certificate": "frontier/n-029.md#verified-upper-bound",
         "replay": "uv run --frozen python -m devtools.check_basic_bounds",
         "replay_status": "passed",
+        "verifiers": ["V-check-basic-bounds"],
         "limitations": "Establishes the grid fallback, not the reported record.",
         "source_reviewed": "2026-08-24",
     }

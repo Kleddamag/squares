@@ -414,6 +414,7 @@ PRUNE = frozenset(
         ROOT / "resources",
         ROOT / "sqsearch/target",
         ROOT / "sqverify_exact/target",
+        ROOT / "sqverify_fast/target",
         ROOT / "witnesses/prospective",
         # The exact certificates of T-056 and T-057 join on 2026-09-29, when their intake
         # (jlevy/squares#227) put the snapshot at 174,743,423 bytes against the
@@ -461,7 +462,12 @@ PRUNE = frozenset(
 BUILD_CACHES = frozenset(
     {"__pycache__", ".pytest_cache", ".ruff_cache", "dist", "node_modules"}
 )
-LINK_BACK = (Path(".venv"), Path("sqsearch/target"), Path("sqverify_exact/target"))
+LINK_BACK = (
+    Path(".venv"),
+    Path("sqsearch/target"),
+    Path("sqverify_exact/target"),
+    Path("sqverify_fast/target"),
+)
 # Individual files rescued from `PRUNE` because a check that runs inside a worker reads
 # that exact path. `clone_tree` copies precisely this tuple and `snapshot_source_bytes`
 # counts precisely this tuple, so the two cannot drift; adding a rescue is one line.
@@ -732,7 +738,7 @@ def _clone_into(src: Path, dst: Path) -> None:
 
 
 INLINE_LINK = re.compile(r"\]\(([^)#\s]+)\)")
-# Omitted sources a checked document may legitimately link into. `.venv` and the two
+# Omitted sources a checked document may legitimately link into. `.venv` and the three
 # cargo `target` directories are symlinked back whole, and `.gate-running` is a
 # marker, so the linked-file copy covers only the content prunes and referenced
 # workflows.
@@ -747,6 +753,7 @@ LINKED_PRUNE_ROOTS = (
             ROOT / ".venv",
             ROOT / "sqsearch/target",
             ROOT / "sqverify_exact/target",
+            ROOT / "sqverify_fast/target",
         }
     ),
     REPO / ".github/workflows",

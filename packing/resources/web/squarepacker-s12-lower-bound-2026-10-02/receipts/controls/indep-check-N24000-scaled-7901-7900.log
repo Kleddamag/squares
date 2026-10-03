@@ -1,0 +1,11 @@
+# command: /tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/aa/indep/indep_check scaled-7901-7900.txt 24000
+# cwd: scratch controls directory; scaled-7901-7900.txt written by devtools.audit_s12_rescaled_certificate --write-controls, sha256 04d7105c (byte for byte the reporter's controls/scaled_further_31360_7900.txt); indep_check as in receipts/indep-check-build.log, binary sha256 e7748f8b
+# python3: not used by this command
+# host: 4 cores; load 24.59 24.80 19.29; started 2026-10-02T17:39:30Z
+certificate: s = 31360/7900 = 3.969620253, D = 7900, W = 10000000, m = 1736
+total weight = 119738036/10000000 = 11.973803600   (n = 12: total < n)
+angle net N = 24000, bins k = 0..23999 covering [0,90] deg (no symmetry assumed), grid Q = 1000000000000000
+min captured weight over all bins = 9849809/10000000 = 0.984980900   (bin k=3894, 18.4319 deg)
+  near centre (0.630795, 2.464860) at angle 18.431861 deg (diagnostic, floating point)
+NOT VERIFIED
+# finished 2026-10-02T17:43:41Z; exit 1; wall 251.562 s; CPU 68.1 s (user 65.134 + sys 2.945); load 27.67 26.07 21.09

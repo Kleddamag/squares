@@ -1,0 +1,36 @@
+{
+  "format": "external-source-acquisition-v1",
+  "retrieved_at_utc": "2026-10-02T16:41:34Z",
+  "git_scope": "A full clone of the gist's Git repository, whose history is three commits on 2 October 2026; its four files are the whole scope.",
+  "sources": [
+    {
+      "id": "wand125-green-ds7-theorem9",
+      "source_url": "https://gist.github.com/9e5f27e25607c0966c4f91bc1253ce8b.git",
+      "source_ref": "master",
+      "source_commit": "9d6de784d98169b90a1af8d5e57c0499cfb12874",
+      "committed_utc": "2026-10-02T12:35:13Z",
+      "git_tree": "51a98c0693f54aeaf5d961d2e44013dec0a5c8a2",
+      "archived_path": "packing/resources/web/wand125-green-ds7-theorem9-2026-10-02/green-theorem9-gist",
+      "subtree_manifest": "packing/resources/web/wand125-green-ds7-theorem9-2026-10-02/acquisition/upstream-subtree.sha256",
+      "subtree_scope": [
+        "ds7-fig34-L17.svg",
+        "fig1-k4.svg",
+        "fig2-k10-zoom.svg",
+        "green-theorem9.md"
+      ],
+      "subtree_file_count": 4,
+      "subtree_total_bytes": 47975,
+      "retained_file_count": 4,
+      "retained_total_bytes": 47975,
+      "compressed": [],
+      "pinned_only": [],
+      "license": "None stated: the gist carries no licence file or notice",
+      "claims": [
+        "The 16 points of DS7 Figure 34 for n = 17 are not an unavoidable set: a closed unit square in the container of side G_4 = (40 sqrt 2 + 19)/17 contains none of them, checked in exact rational interval arithmetic",
+        "Reconstructing Green's point pattern for every k reproduces G_k = 2 sqrt 2 - 1 + (k(k-1)^2 + (k-1) sqrt(2k))/(k^2 + 1) exactly, and the same failure occurs for every k >= 4, so DS7 Theorem 9 is not established for k >= 4; this is not a counterexample to the bound",
+        "For k = 2 and 3 every mesh edge has length at most 1 and the argument works",
+        "DS7 Table 2's n = 82-85 expression 2 sqrt 2 + (288 + 12 sqrt 3)/41 is a typo for the k = 9 specialization 2 sqrt 2 + (247 + 12 sqrt 2)/41"
+      ]
+    }
+  ]
+}

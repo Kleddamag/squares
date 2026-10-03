@@ -1,0 +1,24 @@
+{"status": "AXIS_CERTIFICATE_REPLAYED", "digest": "fdfaed937a788e0f2dcd45689927c59ffe62b1436aa06a4363a0ea6dd1a53fda", "cells": 13205956, "gamma": "1", "integer_minimum": 1.0084468491077132, "scope": "Net angle zero only, no full packing certification."}
+{"replayed": 10, "total": 201}
+{"replayed": 20, "total": 201}
+{"replayed": 30, "total": 201}
+{"replayed": 40, "total": 201}
+{"replayed": 50, "total": 201}
+{"replayed": 60, "total": 201}
+{"replayed": 70, "total": 201}
+{"replayed": 80, "total": 201}
+{"replayed": 90, "total": 201}
+{"replayed": 100, "total": 201}
+{"replayed": 110, "total": 201}
+{"replayed": 120, "total": 201}
+{"replayed": 130, "total": 201}
+{"replayed": 140, "total": 201}
+{"replayed": 150, "total": 201}
+{"replayed": 160, "total": 201}
+{"replayed": 170, "total": 201}
+{"replayed": 180, "total": 201}
+{"replayed": 190, "total": 201}
+{"replayed": 200, "total": 201}
+{"replayed": 201, "total": 201}
+{"status": "ALL_ANGLES_VERIFIED_AND_REPLAYED", "n": 50, "L": "7.4", "B": "0.9977", "total_mass": "4999999/100000", "budget_gap": "1/100000", "candidate_digest": "fdfaed937a788e0f2dcd45689927c59ffe62b1436aa06a4363a0ea6dd1a53fda", "angle_count": 201, "theorem": "No packing of n closed unit squares in the closed square of side L: choose disjoint interior closed cores at net angles; each has measure >=1 but total measure <n.", "replay_scope": "Independent axis integer-table checker; oblique verification uses regenerated input and the same outward-rounded algorithm. Not a separate independent oblique implementation.", "point_mass": "0"}
+exit=0

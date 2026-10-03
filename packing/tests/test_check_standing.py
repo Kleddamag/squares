@@ -213,8 +213,9 @@ def _entry(records: view.Records, entry: str, **changed: Any) -> Mapping[str, An
 
 def test_a_superseded_entry_whose_bound_still_stands_is_refused(records: view.Records) -> None:
     """The mismatch one way: marked superseded, and still the best on record. T-043
-    holds the verified bound at n = 17, and T-048's reported 37/5 is above the verified
-    bound at n = 50. The reported lane is held too: n = 11's record reports the proved
+    holds the verified bound at n = 17, and T-048's 37/5 is the verified bound at n = 50
+    since its replay was recorded on 2026-10-02. The reported lane is held too: n = 11's
+    record reports the proved
     value as the source rounds it, below the verified one."""
     assert view.standing(records.results["T-043"], records) == view.HOLDS
     for entry, n in (("T-043", 17), ("T-048", 50)):
@@ -244,14 +245,17 @@ def test_a_standing_entry_whose_every_bound_is_beaten_is_refused(records: view.R
 
 
 def test_an_entry_that_holds_one_case_of_several_stands(records: view.Records) -> None:
-    """T-047 is beaten at n = 11, 27, 28 and 31 and holds n = 26, 29 and 30. It still
-    holds a case bound, so it is not superseded, and the summary names both."""
-    record = records.results["T-047"]
+    """T-045 is beaten at fourteen of its fifteen counts and holds n = 18. It still
+    holds a case bound, so it is not superseded, and the summary names both. The example
+    was T-047 until 2026-10-02, when the rectangle replays raised n = 26, 29 and 30, the
+    last three it held, and then T-044 until the replays of 1 October's certificates
+    (T-074) raised n = 56, the last count it held, later that day."""
+    record = records.results["T-045"]
     assert view.standing(record, records) == view.HOLDS
     assert check_standing.problems(record, view.HOLDS, records) == []
     line = check_standing.summary(record, view.HOLDS, records)
-    assert "equals the verified bound at n = 26, 29, 30" in line
-    assert "beaten at n = 11, 27, 28, 31" in line
+    assert "equals the verified bound at n = 18 " in line
+    assert "beaten at n = 19, 20, 26\u201328, 30\u201332, 40, 61, 75\u201378" in line
     assert check_standing.problems(record, view.SUPERSEDED, records)
 
 

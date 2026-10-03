@@ -95,6 +95,15 @@ DECLARED_CONSUMERS = {
         "and blocker wherever that trails the report; it reads the field as a ceiling and "
         "never as s(n)"
     ),
+    "packing/devtools/render_stack_results.py": (
+        "counts the case records whose verified_upper_bound value differs between two "
+        "revisions, for a pull request's description; it compares the stored strings and "
+        "reads no value as s(n) or as anything but the ceiling the record holds"
+    ),
+    "packing/tests/test_render_stack_results.py": (
+        "builds two case records whose ceiling is the same and checks the rendered count of "
+        "changed ceilings is zero; it asserts nothing about s(n)"
+    ),
     "packing/tests/test_upper_bound_packets.py": (
         "checks that each certified case's ceiling cites its replay and agrees with the "
         "report exactly where the receipt says it does; it asserts nothing about s(n)"
@@ -103,6 +112,11 @@ DECLARED_CONSUMERS = {
         "reads only the evidence ids a case's bound fields cite, to derive whether a "
         "registered result still holds a case bound; it takes no value from the field and "
         "never reads the ceiling as s(n)"
+    ),
+    "packing/devtools/render_case_verifiers.py": (
+        "reads only the evidence ids the field cites, to name the programs behind a case "
+        "record's verified upper bound in its Verification Code table; it takes no value "
+        "from the field and never reads the ceiling as s(n)"
     ),
     "packing/devtools/render_case_pages.py": (
         "shows the field in each case record's own panel, labelled the verified upper bound, "

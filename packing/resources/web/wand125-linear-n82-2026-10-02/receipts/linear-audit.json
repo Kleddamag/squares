@@ -1,0 +1,71 @@
+{
+  "kind": "wand125-linear-certificate-audit/v1",
+  "packet": "wand125-linear-n82-2026-10-02",
+  "source_revision": "b00fc70f1904e9b1b567afee056d347f911209e8",
+  "certificates": {
+    "n82": {
+      "directory": "certificates/mixed_n82_L932",
+      "side": "233/25",
+      "side_float": 9.32,
+      "core": "9977/10000",
+      "orbits": {
+        "rectangle": 774,
+        "point": 86,
+        "segment": 222
+      },
+      "images": {
+        "rectangle": 6192,
+        "point": 688,
+        "segment": 1776
+      },
+      "d4_invariant": true,
+      "total_mass": "8199999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "5ddb7ed328ca3250e8d0ffaab577a68acd8a2debfa600a43500e05e5ee019606",
+      "checker_sha256": "0249726ab1e67dc481e0c53f43b524902a48f95d051b1b08865a3cf3ef89a06d",
+      "code_files": 13,
+      "code_retained_in": [
+        "packing/resources/web/wand125-linear-certificates-2026-10-02/square-packing-bounds/certificates/mixed_n101_L1028/code",
+        "packing/resources/web/wand125-point-and-mixed-2026-09-28/square-packing-bounds/certificates/mixed_n50_L740/code"
+      ],
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_half_width_least": "3708469953/937780000",
+      "centre_half_width_least_at": 200,
+      "certificate_status": "ALL_LINEAR_ANGLES_VERIFIED_AND_REPLAYED",
+      "nodes": 153579479,
+      "most_nodes": 1178525,
+      "most_nodes_at": 199,
+      "axis_nodes": 585699,
+      "tarball": "certificates/mixed_n82_L932/n82-L9.32-proof-bundle.tar.gz",
+      "tarball_sha256": "296d8f09f6d9a49ecb7ee3438b31585788403044b4a60644a4ef93262476506f",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "green_upper",
+        "compared_with": "189968037431535467293679370037855809692774578142716559439303947685564426487719030825968214141/20500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_note": null,
+        "improvement_lower": "1091962568464532706320629962144190307225421857283440560696052314435573512280969174031785859/20500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(65)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    }
+  },
+  "scope": "Exact premises only, from the retained files: pinned digests, the measure's count, side, core, orbit counts, containment, nonnegativity and total n - 1/100000, its D4 invariance, the candidate digest by the source's rule, the net containment and centre domains, the checker and code identity, a replay record for each of the 201 angles, and the source audit's certificate and tarball digests. Coverage is decided by the source's checker, whose replay is recorded separately."
+}

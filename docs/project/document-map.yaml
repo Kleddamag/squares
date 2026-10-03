@@ -10,6 +10,7 @@ scope: >
   current project documentation rules.
 documents:
   - {path: docs/project/n17-optimality-explainer.md, role: tutorial, authority: supporting, lifecycle: maintained}
+  - {path: docs/project/reviews/review-2026-10-02-wand125-s61-point-cover.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-03-n11-optimality-upstream-delta.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-03-n11-gpt6-pro-review-integration.md, role: review, authority: record, lifecycle: retained}
@@ -57,7 +58,9 @@ documents:
   - {path: docs/project/specs/active/plan-2026-10-01-post-optimality-w3-session.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/specs/active/plan-2026-10-01-release-assets-on-demand.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/reviews/review-2026-09-30-n11-explainer-intuition.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/research/research-2026-10-02-s12-beyond-rescaling.md, role: research-report, authority: record, lifecycle: retained}
   - {path: docs/project/research/research-2026-09-30-exact-arithmetic-verifier-performance.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: docs/project/research/research-2026-10-02-author-checker-profile.md, role: research-report, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-09-29-n11-optimality.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-09-29-n11-optimality-census-contract.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-09-30-n11-expository-simplification.md, role: review, authority: record, lifecycle: retained}
@@ -105,7 +108,9 @@ documents:
   - {path: docs/project/specs/active/plan-2026-09-30-epistemics-ladder-review.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/specs/active/plan-2026-10-01-result-kinds.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/specs/active/plan-2026-10-01-result-status.md, role: plan, authority: current, lifecycle: transient}
+  - {path: docs/project/specs/active/plan-2026-10-02-independent-measure-verifier.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/specs/active/plan-2026-10-01-result-import-first-application.md, role: plan, authority: current, lifecycle: transient}
+  - {path: docs/project/specs/active/plan-2026-10-03-measure-verifier-milestone-c.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/reviews/review-2026-09-13-n11-bc329-source-distinct-reader.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-09-13-n11-bc329-reader-rereview.md, role: review, authority: record, lifecycle: retained}
@@ -269,6 +274,43 @@ documents:
   - {path: packing/benchmarks/math-startup/README.md, role: component-guide, authority: supporting, lifecycle: maintained}
   - {path: packing/benchmarks/math-startup/ideas.md, role: plan, authority: supporting, lifecycle: maintained}
   - {path: packing/benchmarks/math-startup/ledger.md, role: generated-view, authority: generated, lifecycle: generated}
+  - {path: packing/benchmarks/measure-verifier/README.md, role: component-guide, authority: supporting, lifecycle: maintained}
+  - {path: packing/benchmarks/measure-verifier/ideas.md, role: plan, authority: supporting, lifecycle: maintained}
+  - {path: packing/benchmarks/measure-verifier/hypotheses/H-001-edge-classification.md, role: plan, authority: supporting, lifecycle: maintained}
+  - {path: packing/benchmarks/measure-verifier/hypotheses/H-002-cheap-admission.md, role: plan, authority: supporting, lifecycle: maintained}
+  - {path: packing/benchmarks/measure-verifier/hypotheses/H-003-merged-jump-segments.md, role: plan, authority: supporting, lifecycle: maintained}
+  - {path: packing/benchmarks/measure-verifier/hypotheses/H-004-path-specific-gradient.md, role: plan, authority: supporting, lifecycle: maintained}
+  - {path: packing/benchmarks/measure-verifier/hypotheses/H-005-error-budget-arithmetic.md, role: plan, authority: supporting, lifecycle: maintained}
+  - {path: packing/benchmarks/measure-verifier/hypotheses/H-006-inherited-derivative-bound.md, role: plan, authority: supporting, lifecycle: maintained}
+  - {path: packing/benchmarks/measure-verifier/hypotheses/H-007-branch-free-directed-steps.md, role: plan, authority: supporting, lifecycle: maintained}
+  - {path: packing/benchmarks/measure-verifier/experiments/exp-001-baseline-v0-against-verify-cpp.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/benchmarks/measure-verifier/experiments/exp-002-h001-edge-classification.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/benchmarks/measure-verifier/experiments/exp-003-h006-inherited-derivative-bound.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/benchmarks/measure-verifier/experiments/exp-004-h002-cheap-admission.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/benchmarks/measure-verifier/experiments/exp-005-h007-branch-free-directed-steps.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/sqverify_fast/SOUNDNESS.md, role: component-guide, authority: definitive, lifecycle: maintained}
+  - {path: packing/sqverify_fast/README.md, role: component-guide, authority: supporting, lifecycle: maintained}
+  - {path: packing/benchmarks/measure-verifier/census/README.md, role: generated-view, authority: generated, lifecycle: generated}
+  - {path: packing/benchmarks/measure-verifier/census-mixed/README.md, role: generated-view, authority: generated, lifecycle: generated}
+  - {path: packing/benchmarks/measure-verifier/census-summary.md, role: generated-view, authority: generated, lifecycle: generated}
+  - {path: packing/benchmarks/measure-verifier/experiments/exp-006-whole-certificate-n32.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/benchmarks/measure-verifier/experiments/exp-007-h005-error-budget.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/benchmarks/measure-verifier/experiments/exp-008-h008-skip-hopeless-own-gradient.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/benchmarks/measure-verifier/hypotheses/H-008-skip-hopeless-own-gradient.md, role: plan, authority: supporting, lifecycle: maintained}
+  - {path: packing/benchmarks/measure-verifier/hypotheses/H-009-lazy-first-leg-enclosures.md, role: plan, authority: supporting, lifecycle: maintained}
+  - {path: packing/benchmarks/measure-verifier/experiments/exp-009-h004-path-specific-gradient.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/benchmarks/measure-verifier/experiments/exp-010-h009-lazy-first-leg-enclosures.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/benchmarks/measure-verifier/experiments/exp-011-c2-cells-against-verify-cpp.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/benchmarks/measure-verifier/experiments/exp-012-h010-reciprocal-node-placement.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/benchmarks/measure-verifier/hypotheses/H-010-reciprocal-node-placement.md, role: plan, authority: supporting, lifecycle: maintained}
+  - {path: packing/benchmarks/measure-verifier/hypotheses/H-011-sign-definite-side-start.md, role: plan, authority: supporting, lifecycle: maintained}
+  - {path: packing/benchmarks/measure-verifier/hypotheses/H-012-fused-first-leg-enclosures.md, role: plan, authority: supporting, lifecycle: maintained}
+  - {path: packing/benchmarks/measure-verifier/experiments/exp-013-h011-sign-definite-side-start.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/benchmarks/measure-verifier/experiments/exp-014-release-audit-cost.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/benchmarks/measure-verifier/experiments/exp-015-milestone-b-cost.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/benchmarks/measure-verifier/experiments/exp-016-h012-fused-first-leg-enclosures.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/benchmarks/measure-verifier/experiments/exp-017-nan-fatal-cost.md, role: research-report, authority: record, lifecycle: retained}
+  - {path: packing/sqverify_fast/INDEPENDENCE.md, role: research-report, authority: record, lifecycle: maintained}
   - {path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/pr127-checkpoint/README.md, role: research-report, authority: record, lifecycle: retained}
   - {path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-x3-box-sweep-capacity-correction.md, role: review, authority: record, lifecycle: retained}
   - {path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a6-structural-sites-and-the-depth-one-certificate.md, role: research-report, authority: record, lifecycle: retained}
@@ -461,6 +503,7 @@ documents:
   - {path: packing/frontier/STATUS.md, role: generated-view, authority: generated, lifecycle: generated}
   - {path: packing/frontier/INVENTORY.md, role: generated-view, authority: generated, lifecycle: generated}
   - {path: packing/frontier/RESULTS.md, role: generated-view, authority: generated, lifecycle: generated}
+  - {path: packing/frontier/VERIFIERS.md, role: generated-view, authority: generated, lifecycle: generated}
   - {path: packing/frontier/CERTIFICATE-REACH.md, role: generated-view, authority: generated, lifecycle: generated}
   - {path: packing/resources/README.md, role: source-index, authority: definitive, lifecycle: maintained}
   - {path: defects.md, role: generated-view, authority: generated, lifecycle: generated}
@@ -799,6 +842,20 @@ documents:
     authority: record
     lifecycle: retained
   - {path: docs/project/reviews/review-2026-10-01-result-import-process.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-evand-s60-geometric-premises.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-s12-reweighted-certificate.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-evand-s32-no-fold-run.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-wand125-s59-s77-mixed-covers.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-wand125-rectangle-bounds-t068.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-wand125-ceiling-resolution.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-wand125-mixed-rectangle-bounds.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-green-ds7-theorem9.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-wand125-afternoon-certificates.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-s12-rescaled-certificate.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-02-valid7-independent-checker.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-03-sqverify-fast-soundness.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-03-sqverify-fast-testing-and-independence.md, role: review, authority: record, lifecycle: retained}
   - path: docs/project/reviews/review-2026-09-28-density-solver-comparison.md
     role: review
     authority: record

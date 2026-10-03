@@ -1490,7 +1490,10 @@ it.
   (`overview_data.breakable_quotients`), so a line may end after it: four results state
   one of 33 to 40 digits, which as one piece is up to 395 pixels wide.
   A formula in a summary is set in the line and not in KPress’s inline box, so the words
-  after it follow on the same line and no line begins with the comma after a formula.
+  after it follow on the same line.
+  Its last piece is set in the line too: a browser may end a line after any box, even
+  before a comma, so the comma after a formula goes on with the formula’s last piece and
+  no line begins with it.
   The n column holds a result’s cases, each count or range in a box a line cannot end
   inside (`overview_sections.case_list`), so a range is never cut at its dash, and it
   reads from the start of the cell, as text does.

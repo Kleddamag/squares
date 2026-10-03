@@ -1,0 +1,11 @@
+# command: /tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/aa/indep/indep_check s12_lower_3.969118.txt 24000
+# cwd: scratch run directory holding s12_lower_3.969118.txt restored from this packet (sha256 6ad9b0e8...7578); indep_check built by g++ 13.3.0 -O2 from this packet's tools/indep_check.cpp (sha256 21527e8d), binary sha256 e7748f8b
+# python3: not used by this command
+# host: 4 cores; load 23.26 17.32 14.13; started 2026-10-02T17:32:02Z
+certificate: s = 31360/7901 = 3.969117833, D = 7901, W = 10000000, m = 1736
+total weight = 119738036/10000000 = 11.973803600   (n = 12: total < n)
+angle net N = 24000, bins k = 0..23999 covering [0,90] deg (no symmetry assumed), grid Q = 1000000000000000
+min captured weight over all bins = 10000056/10000000 = 1.000005600   (bin k=0, 0.0000 deg)
+  near centre (0.542990, 0.542990) at angle 0.000000 deg (diagnostic, floating point)
+VERIFIED: every closed unit square inside the container captures weight >= 1, and total weight < n
+# finished 2026-10-02T17:36:51Z; exit 0; wall 289.685 s; CPU 67.7 s (user 64.679 + sys 3.004); load 30.21 24.88 18.25

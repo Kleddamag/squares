@@ -1,0 +1,13 @@
+{
+  "kind": "valid7-sharded-replay-compare/v1",
+  "checker": "qx2",
+  "ok": true,
+  "problems": [],
+  "shards": [
+    "qx2_calibration.jsonl"
+  ],
+  "roots": 8,
+  "roots_matching_published_leaves": 8,
+  "roots_not_compared": 0,
+  "partial": true
+}

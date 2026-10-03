@@ -1,0 +1,51 @@
+{
+  "schema": "S12RescaledPreflight/v1",
+  "status": "PASS",
+  "issue": "https://github.com/jlevy/squares/issues/309",
+  "certificate": "packing/resources/web/squarepacker-s12-lower-bound-2026-10-02/s12-lower-bound/s12_lower_3.969118.txt",
+  "certificate_sha256": "6ad9b0e8257166687f4e861b97f024f4993d7b2125897173b2f5e9f6e2167578",
+  "daniel_certificate": "packing/resources/web/evand-square-packing-2026-09-26/square-packing/s12/certificates/s12_lower_3.9686.txt",
+  "daniel_sha256": "75f1cc891a8b8739b92b50c7ddbd85a493efa58cf2e921d58ce4ac7c2dcabe78",
+  "checks": {
+    "certificate_digest": true,
+    "daniel_digest": true,
+    "container_is_31360_over_7901": true,
+    "daniel_container_is_15680_over_3951": true,
+    "same_point_count": true,
+    "same_weight_scale": true,
+    "pointwise_daniel_times_7902_over_7901": true,
+    "integers_are_twice_daniels": true,
+    "weights_nonnegative": true,
+    "points_in_container": true,
+    "d4_invariant": true,
+    "total_below_n": true,
+    "total_equals_daniels": true,
+    "reporter_control_is_new_times_7901_over_7900": true,
+    "first_control_is_the_reporters": true,
+    "rendering_is_byte_exact": true
+  },
+  "side": "31360/7901",
+  "daniel_side": "15680/3951",
+  "factor": "7902/7901",
+  "advance": "15680/31216851",
+  "points": 1736,
+  "zero_weight_points": 0,
+  "least_weight": "1178/10000000",
+  "total_weight": "119738036/10000000",
+  "counting_gap": "65491/2500000",
+  "controls": {
+    "scaled-7901-7900": {
+      "sha256": "04d7105c5b6d8b85cd0655f544b5c59163f9a36fa86814601a30c4114d1526f1",
+      "side": "1568/395",
+      "total_weight": "119738036/10000000",
+      "d4_invariant": true
+    },
+    "weights-minus-57": {
+      "sha256": "61b48f23825383cb1b9894a9cd8167789c11c51e382dbcf4815be065c552cab8",
+      "side": "31360/7901",
+      "total_weight": "119639084/10000000",
+      "d4_invariant": true
+    }
+  },
+  "weight_step": "57/10000000"
+}

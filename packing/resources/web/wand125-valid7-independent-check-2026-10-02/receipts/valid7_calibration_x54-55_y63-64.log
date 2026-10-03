@@ -1,0 +1,8 @@
+# command: /tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/v7/venv/bin/python -c 'import multiprocessing, runpy, sys; multiprocessing.set_start_method('"'"'fork'"'"'); sys.path.insert(0, '"'"'src'"'"'); sys.argv = ['"'"'src/run_all.py'"'"', '"'"'cover/L4_k02_box7.txt'"'"', '"'"'--centers'"'"', '"'"'27/5'"'"', '"'"'11/2'"'"', '"'"'63/10'"'"', '"'"'32/5'"'"', '"'"'--nproc'"'"', '"'"'2'"'"', '"'"'--record'"'"', '"'"'runs/wand125_calibration_tierb.jsonl'"'"', '"'"'--resume'"'"']; runpy.run_path('"'"'src/run_all.py'"'"', run_name='"'"'__main__'"'"')'
+# cwd: a work dir staged by devtools.plan_valid7_replay stage --checker wand125; run_all.py unmodified, launched with the multiprocessing start method set to fork so that its workers' CPU reaches the receipt
+# python3: a scratch venv: CPython 3.14.7 with python-flint 0.9.0, as requirements.txt pins
+# host: 4 cores; load 19.13 22.02 21.19; started 2026-10-02T17:50:28Z
+roots 32, already done 0
+new roots 32 leaves {'EMPTY': 153, 'CORE': 2425, 'TIERB2': 438} uncertified 0 counterexamples 0 cpu 376.4s
+VERIFIED
+# finished 2026-10-02T17:55:05Z; exit 0; wall 277.190 s; CPU 92.4 s (user 92.211 + sys 0.191); load 31.80 25.74 22.75

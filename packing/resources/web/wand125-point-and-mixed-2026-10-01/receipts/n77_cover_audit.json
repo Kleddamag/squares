@@ -1,0 +1,48 @@
+{
+ "cover": "packing/resources/web/wand125-point-and-mixed-2026-10-01/square-packing-bounds/certificates/k2m4_n77_L9/n77_mixed_cover_9.txt",
+ "sha256": "47b57cfe38cbfdbcf5320e59caffe712f4ef32df8aad42b0d7f697de6d26cdd7",
+ "side": "9",
+ "coordinate_denominator": 1000,
+ "mass_denominator": 562949953421312,
+ "points": 28273,
+ "segments": 6420,
+ "polygons": 0,
+ "lines_carrying_segments": {
+  "x": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5",
+   "6",
+   "7",
+   "8"
+  ],
+  "y": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5",
+   "6",
+   "7",
+   "8"
+  ]
+ },
+ "segment_lengths": {
+  "1/500": 100,
+  "1/50": 5952,
+  "1/8": 368
+ },
+ "point_mass": "14960853555792685/562949953421312",
+ "segment_mass": "3548285523529535/70368744177664",
+ "total": "43347137744028965/562949953421312",
+ "total_decimal": "76.999984600",
+ "total_equals_stated": true,
+ "total_below_n": true,
+ "counts_as_stated": true,
+ "d4_invariant_entry_by_entry": true,
+ "d4_invariant_as_measure": true,
+ "points_on_segment_lines": 0,
+ "problems": []
+}

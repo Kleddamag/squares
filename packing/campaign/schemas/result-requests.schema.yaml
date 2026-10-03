@@ -1,0 +1,217 @@
+# One entry per GitHub issue that reports a result, a defect or a correction to this
+# record, joined to the register entries and evidence it maps to and to the replies
+# posted on it.
+#
+# The register says how far each result is validated; this record says who asked for it
+# and what they have been told. `devtools.check_requests` derives the rest -- each
+# result's state, whether a reply is due, whether the issue can be closed -- from the two
+# together, so nothing here restates a rung as current fact. A rung appears only inside a
+# reply's `reported`, where it is the rung that reply stated, which is what makes "the
+# record has moved past the last reply" decidable.
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: packing.squares:ResultRequests/v1
+title: Result requests received as GitHub issues
+type: object
+additionalProperties: false
+required: [repository, owner, last_reviewed, issues]
+properties:
+  repository:
+    type: string
+    pattern: "^[\\w.-]+/[\\w.-]+$"
+    description: The GitHub repository the issues are on, as owner/name.
+  owner:
+    type: string
+    minLength: 1
+    description: >-
+      The login whose comments are this project's replies. A comment by anyone else
+      counts as a reply only when it ends in the Claude Code footer and is not by the
+      issue's author.
+  last_reviewed:
+    type: string
+    format: date
+    description: The day the record was last compared with the live issues.
+  issues:
+    type: array
+    minItems: 1
+    items: {$ref: '#/$defs/issue'}
+$defs:
+  bead:
+    type: string
+    pattern: "^think-[a-z0-9]{4}$"
+  issue:
+    type: object
+    additionalProperties: false
+    required:
+      - number
+      - title
+      - author
+      - opened
+      - state
+      - kind
+      - triage
+      - summary
+      - read_through
+      - results
+      - beads
+      - answer_bead
+      - replies
+      - close_when
+    properties:
+      number: {type: integer, minimum: 1}
+      title: {type: string, minLength: 1}
+      author: {type: string, minLength: 1, description: The issue author's GitHub login.}
+      opened: {type: string, format: date}
+      state: {enum: [open, closed]}
+      closed: {type: string, format: date}
+      kind:
+        enum: [result-report, defect-report, correction, other]
+        description: >-
+          What the issue is: a result to register, a defect in something the record
+          holds, a correction of the record's text, or anything else.
+      triage:
+        enum: [pending, done]
+        description: >-
+          Stage 1 of the result import process. While pending, `results` may be empty
+          and the only reply due is the acknowledgement that follows triage.
+      summary: {type: string, minLength: 1, description: What the issue reports, in a sentence or two.}
+      read_through:
+        type: string
+        format: date-time
+        description: >-
+          The creation time of the latest comment read into this entry, or the issue's
+          own when it has none. `check_requests --github` lists later comments as unread.
+      results:
+        type: array
+        items: {$ref: '#/$defs/result'}
+      asks:
+        type: array
+        description: >-
+          What the author asked for beyond registering the results above: a change to
+          the record's text, an evidence update, a decision. An issue is closeable only
+          when none is queued.
+        items:
+          type: object
+          additionalProperties: false
+          required: [what, state]
+          properties:
+            what: {type: string, minLength: 1}
+            state: {enum: [queued, done, declined]}
+            note: {type: string, minLength: 1}
+      beads:
+        type: array
+        uniqueItems: true
+        items: {$ref: '#/$defs/bead'}
+        description: The import, replay and review beads that track the issue's results.
+      answer_bead:
+        $ref: '#/$defs/bead'
+        description: The bead that owns the replies due and the close.
+      replies:
+        type: array
+        items: {$ref: '#/$defs/reply'}
+      close_when: {type: string, minLength: 1}
+      notes: {type: string, minLength: 1}
+    allOf:
+      - if:
+          properties: {state: {const: closed}}
+          required: [state]
+        then:
+          required: [closed]
+        else:
+          not: {required: [closed]}
+  result:
+    type: object
+    additionalProperties: false
+    required: [key, claim]
+    description: >-
+      One thing the issue reports. It maps to register entries or evidence entries, or
+      says why it is not registered and whether it is queued for import.
+    properties:
+      key:
+        type: string
+        pattern: "^[a-z0-9][a-z0-9.-]*$"
+        description: A short name unique within the issue, which replies refer to.
+      claim: {type: string, minLength: 1}
+      source:
+        type: string
+        minLength: 1
+        description: Where the issue states it, `body` or a comment URL.
+      register:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items: {type: string, pattern: "^T-[0-9]{3}$"}
+      evidence:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items: {type: string, pattern: "^E-[A-Za-z0-9.-]+$"}
+      defect:
+        type: boolean
+        description: >-
+          True when the result is that a mapped entry is wrong. It is settled when the
+          record holds the defect against one of them, not when they are confirmed.
+      not_registered:
+        type: string
+        minLength: 1
+        description: Why no register entry or evidence entry holds it.
+      queued:
+        type: boolean
+        description: With `not_registered`, whether an import of it is queued.
+    oneOf:
+      - anyOf:
+          - required: [register]
+          - required: [evidence]
+        not:
+          anyOf:
+            - required: [not_registered]
+            - required: [queued]
+      - required: [not_registered, queued]
+        not:
+          anyOf:
+            - required: [register]
+            - required: [evidence]
+            - required: [defect]
+  reply:
+    type: object
+    additionalProperties: false
+    required: [url, date, by, kind, reported]
+    properties:
+      url:
+        type: string
+        pattern: "^https://github\\.com/[\\w.-]+/[\\w.-]+/issues/[0-9]+#issuecomment-[0-9]+$"
+      date: {type: string, format: date}
+      by: {type: string, minLength: 1}
+      kind:
+        enum: [acknowledgement, import, confirmation, defect, follow-up, correction, final, other]
+      reported:
+        type: array
+        description: >-
+          What the reply stated about each result: the result's key, and where it named
+          one, the register or evidence id with the rungs it gave. An item with no `id`
+          says the reply acknowledged the result without naming an entry. `as` is the id
+          the reply used when the entry has since been renumbered.
+        items:
+          type: object
+          additionalProperties: false
+          required: [result]
+          properties:
+            result: {type: string, minLength: 1}
+            id: {type: string, pattern: "^(T-[0-9]{3}|E-[A-Za-z0-9.-]+)$"}
+            as: {type: string, pattern: "^T-[0-9]{3}$"}
+            verification: {type: string, pattern: "^V[0-5]$"}
+            confirmation: {type: string, pattern: "^C[0-5]$"}
+            status: {enum: [recorded, reviewed, confirmed, incomplete, refuted]}
+      outdated:
+        type: array
+        description: >-
+          Statements in this reply that have since gone out of date for a reason the
+          register cannot show, such as a link into a branch that has gone. Each is a
+          reply due until a later reply names this one in `corrects`.
+        items: {type: string, minLength: 1}
+      corrects:
+        type: array
+        uniqueItems: true
+        description: The earlier replies on the issue whose `outdated` statements this one corrects.
+        items:
+          type: string
+          pattern: "^https://github\\.com/[\\w.-]+/[\\w.-]+/issues/[0-9]+#issuecomment-[0-9]+$"

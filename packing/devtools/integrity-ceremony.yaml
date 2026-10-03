@@ -83,6 +83,9 @@ allowlist:
 # The merge of origin/main at f864a576a brought in four n = 11 tools written on main before
 # OR-16's amendment reached it. Their sites are recorded here as inherited, not new; their
 # removal is its own slice (think-vre9).
+# The third merge of origin/main on 2026-10-03 brought in more tools written on
+# main before OR-16's amendment reached it, many replaying third-party certificates whose
+# pins may be real boundaries. Recorded as inherited; their review is think-vre9.
 baseline:
   packages/workbench/tools/workbench_tools/check_candidate.py: 1
   packing/benchmarks/bench_n11_fast_cover.py: 3
@@ -93,6 +96,7 @@ baseline:
   packing/benchmarks/bench_rectangle_rust_transport.py: 2
   packing/benchmarks/bench_rectangle_rust_verifier_ab.py: 5
   packing/benchmarks/bench_rectangle_verifier_parity.py: 20
+  packing/benchmarks/profile_author_measure_checkers.py: 14
   packing/benchmarks/profile_n11_collision.py: 3
   packing/benchmarks/profile_n11_sequential.py: 12
   packing/benchmarks/profile_rectangle_verifier_hotspots.py: 11
@@ -112,15 +116,22 @@ baseline:
   packing/cases/n17_weighted_certificate_parallel/runner.py: 11
   packing/cases/n17_weighted_certificate_resume/run.py: 4
   packing/cases/n17_weighted_certificate_successor/run.py: 12
+  packing/cases/trump11/isolation_radius_replay.py: 1
   packing/cases/unitsquare_precision/production/run.py: 1
   packing/cases/unitsquare_precision/production/verify.py: 4
   packing/cases/unitsquare_precision/refusal/run.py: 3
   packing/cases/unitsquare_precision/refusal/verify.py: 3
+  packing/devtools/acquire_source.py: 3
   packing/devtools/admit_threshold_compression.py: 1
   packing/devtools/audit_kleddamag_n11_native.py: 1
   packing/devtools/audit_n17_endpoint_features.py: 1
   packing/devtools/audit_n17_endpoint_receipt.py: 1
+  packing/devtools/audit_s12_rescaled_certificate.py: 3
+  packing/devtools/audit_s12_reweighted.py: 5
+  packing/devtools/audit_valid7_independent.py: 4
+  packing/devtools/audit_wand125_linear.py: 20
   packing/devtools/calibrate_fixed_core_packet.py: 8
+  packing/devtools/check_green_ds7.py: 1
   packing/devtools/check_hull_kernel_case2095.py: 12
   packing/devtools/check_hull_kernel_mask0.py: 8
   packing/devtools/check_n11_baseline_d4_cuts.py: 17
@@ -180,6 +191,7 @@ baseline:
   packing/devtools/n11_optimality_mechanism_figures.py: 9
   packing/devtools/n11_optimality_overview_figures.py: 7
   packing/devtools/pilot_n17_subpattern_bb.py: 3
+  packing/devtools/plan_valid7_replay.py: 6
   packing/devtools/prepare_n11_field_manifest.py: 3
   packing/devtools/prepare_n11_nonfield_batch.py: 8
   packing/devtools/prepare_n11_nonfield_manifest.py: 13
@@ -187,10 +199,14 @@ baseline:
   packing/devtools/prototype_n17_bb_coupled.py: 2
   packing/devtools/read_fixed_core_calibration_profile.py: 1
   packing/devtools/render_composite_pdf.py: 2
+  packing/devtools/replay_evand_zmx2.py: 1
   packing/devtools/replay_n17_rational_upper.py: 1
   packing/devtools/run_fixed_core_calibration_profiles.py: 9
   packing/devtools/run_n11_nonfield_batch.py: 1
+  packing/devtools/s12_angle_net_rescale.py: 1
   packing/devtools/select_n11_field_minimum.py: 4
+  packing/devtools/sqverify_fast_census.py: 2
+  packing/devtools/stage_evand_bentz_lean.py: 1
   packing/devtools/suite_files.py: 1
   packing/devtools/summarize_n11_nonfield_costs.py: 4
   packing/devtools/upper_bound_intervals.py: 1

@@ -1,0 +1,996 @@
+{
+  "child_cpu_seconds": {
+    "attribution_runs": 972.4,
+    "exact_python": 22.008,
+    "timed_runs": 431.2
+  },
+  "clean_room": "Implementer-readable: timings, counts and totals only. Function-level attribution of the authors' checkers is in attribution/, which implementers do not read.",
+  "created": "2026-10-02T18:03:06Z",
+  "exact_python": {
+    "accepted_leaves": 194,
+    "bound_mode": "common-core",
+    "checker": "sqpack.rectangle_density:native-exact-v2",
+    "checker_source_sha256": "1cc7ae158856a443fe9c51be2e9b9b04f4d7dc40fe663bfbd7337cb6fe7e1c7c",
+    "direction": 30,
+    "microseconds_per_box": 54566.1,
+    "node_limit": 400,
+    "nodes": 400,
+    "note": "Exact rationals, common-core bound (no derivative term), Python backend: a different bound and a different traversal, so the comparable figure is time per box, not nodes per direction.",
+    "process_cpu_seconds": 22.008,
+    "status": "INCONCLUSIVE",
+    "stop_cause": "node_limit",
+    "verification_cpu_seconds": 21.826
+  },
+  "families": {
+    "linear": {
+      "build": {
+        "argv": [
+          "g++",
+          "-O2",
+          "-std=c++17",
+          "-fno-fast-math",
+          "-ffp-contract=off",
+          "-g",
+          "unified_linear_verify.cpp",
+          "-o",
+          "checker"
+        ],
+        "binary_sha256": "aa236ebbaaf3019db0e2045856dce52a38ccfa0f347d59b271c3002e695ecea7",
+        "seconds": 1.873
+      },
+      "callgrind_totals": {
+        "cpu_seconds_under_valgrind": 120.199,
+        "direction": 35,
+        "instructions": 25268251167,
+        "instructions_per_box": 5053650,
+        "instructions_per_box_piece": 511.92,
+        "node_limit": 5000,
+        "nodes": 5000
+      },
+      "certificate": "wand125 mixed_n101_L1028 (2026-10-02; points, segments, rectangles): s(101) >= 257/25",
+      "checker_sha256": "0249726ab1e67dc481e0c53f43b524902a48f95d051b1b08865a3cf3ef89a06d",
+      "locality": [
+        {
+          "direction": 35,
+          "domain_half_width": 4.574307,
+          "grid": 15,
+          "half_width_E_over_2^5": {
+            "inside": {
+              "max": 83,
+              "mean": 44.72
+            },
+            "near": {
+              "max": 396,
+              "mean": 223.21
+            },
+            "straddling": {
+              "max": 256,
+              "mean": 150.72
+            }
+          },
+          "half_width_E_over_2^9": {
+            "inside": {
+              "max": 146,
+              "mean": 95.59
+            },
+            "near": {
+              "max": 232,
+              "mean": 153.24
+            },
+            "straddling": {
+              "max": 52,
+              "mean": 25.54
+            }
+          },
+          "pieces": 9872
+        },
+        {
+          "direction": 113,
+          "domain_half_width": 4.471399,
+          "grid": 15,
+          "half_width_E_over_2^5": {
+            "inside": {
+              "max": 73,
+              "mean": 37.24
+            },
+            "near": {
+              "max": 462,
+              "mean": 310.72
+            },
+            "straddling": {
+              "max": 283,
+              "mean": 177.61
+            }
+          },
+          "half_width_E_over_2^9": {
+            "inside": {
+              "max": 135,
+              "mean": 94.82
+            },
+            "near": {
+              "max": 310,
+              "mean": 193.66
+            },
+            "straddling": {
+              "max": 57,
+              "mean": 30.17
+            }
+          },
+          "pieces": 9872
+        }
+      ],
+      "notes": [
+        "Inputs regenerated from the retained candidate and required to hash to the certificate's per-direction input_sha256. The certificate records node counts only, so nodes are what is matched. Direction 0 is a bounded 100,000-box prefix: a rate, not a match."
+      ],
+      "piece_kinds": {
+        "point": 2664,
+        "rectangle": 32,
+        "segment": 7176
+      },
+      "pieces": 9872,
+      "runs": [
+        {
+          "boxes_per_cpu_second": 2186.9,
+          "cpu_seconds": 35.152,
+          "direction": 35,
+          "input": {
+            "E": "5885994924897/1286751220000",
+            "input_sha256": "f0332414c7ba5c5c87934a35dd532dc48eb8c8a0345b574d2b5a3525cf49f8a0"
+          },
+          "load_after": [
+            19.931,
+            15.692,
+            13.167
+          ],
+          "load_before": [
+            16.189,
+            14.097,
+            12.477
+          ],
+          "matches_record": true,
+          "max_rss_kib": 69008,
+          "microseconds_per_box": 457.262,
+          "nanoseconds_per_box_piece": 46.319,
+          "node_limit": 76875,
+          "observed": {
+            "frontier_boxes": 0,
+            "leaves": 38438,
+            "lower": 1.0000007651931844,
+            "nodes": 76875,
+            "status": "ANGLE_VERIFIED"
+          },
+          "recorded": {
+            "nodes": 76875,
+            "status": "ANGLE_VERIFIED"
+          },
+          "recording_run_seconds": null,
+          "returncode": 0,
+          "scope": "complete",
+          "timed_out": false,
+          "wall_seconds": 83.575
+        },
+        {
+          "boxes_per_cpu_second": 2141.4,
+          "cpu_seconds": 68.408,
+          "direction": 113,
+          "input": {
+            "E": "150951358455057/33759312820000",
+            "input_sha256": "1a2b89e53e3cbc9b3c573554cfa8f1170bb329b533e1e97a2722fad5bd9384c9"
+          },
+          "load_after": [
+            13.826,
+            14.845,
+            13.125
+          ],
+          "load_before": [
+            18.94,
+            15.129,
+            12.919
+          ],
+          "matches_record": true,
+          "max_rss_kib": 71132,
+          "microseconds_per_box": 466.984,
+          "nanoseconds_per_box_piece": 47.304,
+          "node_limit": 146489,
+          "observed": {
+            "frontier_boxes": 0,
+            "leaves": 73245,
+            "lower": 1.0000000429766687,
+            "nodes": 146489,
+            "status": "ANGLE_VERIFIED"
+          },
+          "recorded": {
+            "nodes": 146489,
+            "status": "ANGLE_VERIFIED"
+          },
+          "recording_run_seconds": null,
+          "returncode": 0,
+          "scope": "complete",
+          "timed_out": false,
+          "wall_seconds": 126.61
+        },
+        {
+          "boxes_per_cpu_second": 2519.8,
+          "cpu_seconds": 39.686,
+          "direction": 0,
+          "input": {
+            "E": "92823/20000",
+            "input_sha256": "5af1448e80c02dfe7faf5a8e203c8e65a86dad292a965365e8dcbbd12087e46c"
+          },
+          "load_after": [
+            15.229,
+            15.165,
+            13.179
+          ],
+          "load_before": [
+            19.931,
+            15.692,
+            13.167
+          ],
+          "matches_record": null,
+          "max_rss_kib": 71132,
+          "microseconds_per_box": 396.86,
+          "nanoseconds_per_box_piece": 40.201,
+          "node_limit": 100000,
+          "observed": {
+            "frontier_boxes": 19,
+            "leaves": 49991,
+            "lower": 1.0000076619417435,
+            "nodes": 100000,
+            "status": "ANGLE_UNRESOLVED"
+          },
+          "recorded": {
+            "nodes": 2072307
+          },
+          "recording_run_seconds": null,
+          "returncode": 0,
+          "scope": "bounded to 100000 nodes",
+          "timed_out": false,
+          "wall_seconds": 71.276
+        },
+        {
+          "boxes_per_cpu_second": 2193.0,
+          "cpu_seconds": 1.368,
+          "direction": 35,
+          "input": {
+            "E": "5885994924897/1286751220000",
+            "input_sha256": "f0332414c7ba5c5c87934a35dd532dc48eb8c8a0345b574d2b5a3525cf49f8a0"
+          },
+          "load_after": [
+            15.229,
+            15.165,
+            13.179
+          ],
+          "load_before": [
+            15.229,
+            15.165,
+            13.179
+          ],
+          "matches_record": null,
+          "max_rss_kib": 71132,
+          "microseconds_per_box": 456.0,
+          "nanoseconds_per_box_piece": 46.191,
+          "node_limit": 3000,
+          "observed": {
+            "frontier_boxes": 9,
+            "leaves": 1496,
+            "lower": 1.0000095821837702,
+            "nodes": 3000,
+            "status": "ANGLE_UNRESOLVED"
+          },
+          "recorded": {
+            "nodes": 76875,
+            "status": "ANGLE_VERIFIED"
+          },
+          "recording_run_seconds": null,
+          "returncode": 0,
+          "scope": "bounded to 3000 nodes",
+          "timed_out": false,
+          "wall_seconds": 2.467
+        },
+        {
+          "boxes_per_cpu_second": 2225.4,
+          "cpu_seconds": 13.481,
+          "direction": 35,
+          "input": {
+            "E": "5885994924897/1286751220000",
+            "input_sha256": "f0332414c7ba5c5c87934a35dd532dc48eb8c8a0345b574d2b5a3525cf49f8a0"
+          },
+          "load_after": [
+            13.826,
+            14.845,
+            13.125
+          ],
+          "load_before": [
+            15.229,
+            15.165,
+            13.179
+          ],
+          "matches_record": null,
+          "max_rss_kib": 71132,
+          "microseconds_per_box": 449.367,
+          "nanoseconds_per_box_piece": 45.519,
+          "node_limit": 30000,
+          "observed": {
+            "frontier_boxes": 13,
+            "leaves": 14994,
+            "lower": 1.0000007651931844,
+            "nodes": 30000,
+            "status": "ANGLE_UNRESOLVED"
+          },
+          "recorded": {
+            "nodes": 76875,
+            "status": "ANGLE_VERIFIED"
+          },
+          "recording_run_seconds": null,
+          "returncode": 0,
+          "scope": "bounded to 30000 nodes",
+          "timed_out": false,
+          "wall_seconds": 24.019
+        }
+      ]
+    },
+    "mixed": {
+      "build": {
+        "argv": [
+          "g++",
+          "-O2",
+          "-std=c++17",
+          "-fno-fast-math",
+          "-ffp-contract=off",
+          "-g",
+          "mixed_rotated_verify.cpp",
+          "-o",
+          "checker"
+        ],
+        "binary_sha256": "121900bb608e375b1f85aafa62664d9d1f86aabae9e0f36dcedf49f1c3031bf8",
+        "seconds": 1.715
+      },
+      "callgrind_totals": {
+        "cpu_seconds_under_valgrind": 218.887,
+        "direction": 3,
+        "instructions": 34894649460,
+        "instructions_per_box": 1163155,
+        "instructions_per_box_piece": 458.66,
+        "node_limit": 30000,
+        "nodes": 30000
+      },
+      "certificate": "wand125 mixed_n76_L894 (2026-10-02, rectangles only): s(76) >= 447/50",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "locality": [
+        {
+          "direction": 3,
+          "domain_half_width": 3.96484,
+          "grid": 15,
+          "half_width_E_over_2^5": {
+            "inside": {
+              "max": 18,
+              "mean": 8.78
+            },
+            "near": {
+              "max": 155,
+              "mean": 96.82
+            },
+            "straddling": {
+              "max": 144,
+              "mean": 86.6
+            }
+          },
+          "half_width_E_over_2^9": {
+            "inside": {
+              "max": 33,
+              "mean": 18.63
+            },
+            "near": {
+              "max": 115,
+              "mean": 71.72
+            },
+            "straddling": {
+              "max": 100,
+              "mean": 52.2
+            }
+          },
+          "pieces": 2536
+        },
+        {
+          "direction": 101,
+          "domain_half_width": 3.811829,
+          "grid": 15,
+          "half_width_E_over_2^5": {
+            "inside": {
+              "max": 15,
+              "mean": 7.2
+            },
+            "near": {
+              "max": 211,
+              "mean": 136.92
+            },
+            "straddling": {
+              "max": 157,
+              "mean": 104.8
+            }
+          },
+          "half_width_E_over_2^9": {
+            "inside": {
+              "max": 29,
+              "mean": 17.83
+            },
+            "near": {
+              "max": 186,
+              "mean": 114.28
+            },
+            "straddling": {
+              "max": 118,
+              "mean": 65.17
+            }
+          },
+          "pieces": 2536
+        },
+        {
+          "direction": 200,
+          "domain_half_width": 3.762893,
+          "grid": 15,
+          "half_width_E_over_2^5": {
+            "inside": {
+              "max": 13,
+              "mean": 6.88
+            },
+            "near": {
+              "max": 224,
+              "mean": 147.77
+            },
+            "straddling": {
+              "max": 155,
+              "mean": 108.6
+            }
+          },
+          "half_width_E_over_2^9": {
+            "inside": {
+              "max": 29,
+              "mean": 18.09
+            },
+            "near": {
+              "max": 195,
+              "mean": 126.99
+            },
+            "straddling": {
+              "max": 116,
+              "mean": 68.89
+            }
+          },
+          "pieces": 2536
+        }
+      ],
+      "notes": [
+        "Inputs regenerated from the retained candidate at Gamma = 1; the record's node count is the node limit, as the shipped replay passes it. Angle zero is decided by a separate integer-table program and is not profiled."
+      ],
+      "piece_kinds": {
+        "rectangle": 2536
+      },
+      "pieces": 2536,
+      "runs": [
+        {
+          "boxes_per_cpu_second": 4410.4,
+          "cpu_seconds": 24.643,
+          "direction": 3,
+          "input": {
+            "E": "101502623833/25600688900",
+            "input_sha256": "361c566a08a08e976e00d03919a942346f944b4cb472060b6280e68d9d28257e"
+          },
+          "load_after": [
+            9.323,
+            11.738,
+            11.495
+          ],
+          "load_before": [
+            8.467,
+            11.881,
+            11.533
+          ],
+          "matches_record": true,
+          "max_rss_kib": 56348,
+          "microseconds_per_box": 226.738,
+          "nanoseconds_per_box_piece": 89.408,
+          "node_limit": 108685,
+          "observed": {
+            "frontier_boxes": 0,
+            "leaves": 54343,
+            "lower": 1.000000411708057,
+            "nodes": 108685,
+            "status": "ANGLE_VERIFIED"
+          },
+          "recorded": {
+            "lower": 1.000000411708057,
+            "nodes": 108685,
+            "status": "ANGLE_VERIFIED"
+          },
+          "recording_run_seconds": null,
+          "returncode": 0,
+          "scope": "complete",
+          "timed_out": false,
+          "wall_seconds": 33.414
+        },
+        {
+          "boxes_per_cpu_second": 2982.1,
+          "cpu_seconds": 69.126,
+          "direction": 101,
+          "input": {
+            "E": "2545662277033/667832248900",
+            "input_sha256": "a5e5c14ec20b262402ac96677fed9789555233708e4c50597849328220e840ff"
+          },
+          "load_after": [
+            15.561,
+            13.912,
+            12.4
+          ],
+          "load_before": [
+            9.323,
+            11.738,
+            11.495
+          ],
+          "matches_record": true,
+          "max_rss_kib": 56464,
+          "microseconds_per_box": 335.337,
+          "nanoseconds_per_box_piece": 132.231,
+          "node_limit": 206139,
+          "observed": {
+            "frontier_boxes": 0,
+            "leaves": 103070,
+            "lower": 1.0000010174983565,
+            "nodes": 206139,
+            "status": "ANGLE_VERIFIED"
+          },
+          "recorded": {
+            "lower": 1.0000010174983565,
+            "nodes": 206139,
+            "status": "ANGLE_VERIFIED"
+          },
+          "recording_run_seconds": null,
+          "returncode": 0,
+          "scope": "complete",
+          "timed_out": false,
+          "wall_seconds": 151.849
+        },
+        {
+          "boxes_per_cpu_second": 2729.1,
+          "cpu_seconds": 90.445,
+          "direction": 200,
+          "input": {
+            "E": "2820941637433/749673568900",
+            "input_sha256": "3f9664918227a0bb2d1a2c2f96c125e02182b20e988765586bd3466c51d9ba37"
+          },
+          "load_after": [
+            18.94,
+            15.129,
+            12.919
+          ],
+          "load_before": [
+            12.841,
+            12.417,
+            11.722
+          ],
+          "matches_record": true,
+          "max_rss_kib": 57488,
+          "microseconds_per_box": 366.422,
+          "nanoseconds_per_box_piece": 144.488,
+          "node_limit": 246833,
+          "observed": {
+            "frontier_boxes": 0,
+            "leaves": 123417,
+            "lower": 1.0000004195368302,
+            "nodes": 246833,
+            "status": "ANGLE_VERIFIED"
+          },
+          "recorded": {
+            "lower": 1.0000004195368302,
+            "nodes": 246833,
+            "status": "ANGLE_VERIFIED"
+          },
+          "recording_run_seconds": null,
+          "returncode": 0,
+          "scope": "complete",
+          "timed_out": false,
+          "wall_seconds": 202.505
+        },
+        {
+          "boxes_per_cpu_second": 20547.9,
+          "cpu_seconds": 0.146,
+          "direction": 3,
+          "input": {
+            "E": "101502623833/25600688900",
+            "input_sha256": "361c566a08a08e976e00d03919a942346f944b4cb472060b6280e68d9d28257e"
+          },
+          "load_after": [
+            15.561,
+            13.912,
+            12.4
+          ],
+          "load_before": [
+            15.561,
+            13.912,
+            12.4
+          ],
+          "matches_record": null,
+          "max_rss_kib": 57616,
+          "microseconds_per_box": 48.667,
+          "nanoseconds_per_box_piece": 19.19,
+          "node_limit": 3000,
+          "observed": {
+            "frontier_boxes": 11,
+            "leaves": 1495,
+            "lower": 1.0000387939293571,
+            "nodes": 3000,
+            "status": "ANGLE_UNRESOLVED"
+          },
+          "recorded": {
+            "lower": 1.000000411708057,
+            "nodes": 108685,
+            "status": "ANGLE_VERIFIED"
+          },
+          "recording_run_seconds": null,
+          "returncode": 0,
+          "scope": "bounded to 3000 nodes",
+          "timed_out": false,
+          "wall_seconds": 0.206
+        },
+        {
+          "boxes_per_cpu_second": 7329.6,
+          "cpu_seconds": 4.093,
+          "direction": 3,
+          "input": {
+            "E": "101502623833/25600688900",
+            "input_sha256": "361c566a08a08e976e00d03919a942346f944b4cb472060b6280e68d9d28257e"
+          },
+          "load_after": [
+            16.189,
+            14.097,
+            12.477
+          ],
+          "load_before": [
+            15.561,
+            13.912,
+            12.4
+          ],
+          "matches_record": null,
+          "max_rss_kib": 57616,
+          "microseconds_per_box": 136.433,
+          "nanoseconds_per_box_piece": 53.799,
+          "node_limit": 30000,
+          "observed": {
+            "frontier_boxes": 9,
+            "leaves": 14996,
+            "lower": 1.0000037482862778,
+            "nodes": 30000,
+            "status": "ANGLE_UNRESOLVED"
+          },
+          "recorded": {
+            "lower": 1.000000411708057,
+            "nodes": 108685,
+            "status": "ANGLE_VERIFIED"
+          },
+          "recording_run_seconds": null,
+          "returncode": 0,
+          "scope": "bounded to 30000 nodes",
+          "timed_out": false,
+          "wall_seconds": 9.087
+        }
+      ]
+    },
+    "rectangle": {
+      "build": {
+        "argv": [
+          "g++",
+          "-O2",
+          "-std=c++17",
+          "-fno-fast-math",
+          "-ffp-contract=off",
+          "-g",
+          "verify.cpp",
+          "-o",
+          "checker"
+        ],
+        "binary_sha256": "ab389a06d6d544f670b74078cd3e0833a7ec0932e8bea6195d3a3ff9b819a881",
+        "seconds": 2.41
+      },
+      "callgrind_totals": {
+        "cpu_seconds_under_valgrind": 602.304,
+        "direction": 30,
+        "instructions": 100497329054,
+        "instructions_per_box": 2880653,
+        "instructions_per_box_piece": 1572.41,
+        "node_limit": null,
+        "nodes": 34887
+      },
+      "certificate": "wand125 rect_n20_L48975 (2026-10-01 packet, T-068): s(20) >= 1959/400",
+      "checker_sha256": "a75140df1b484ad104a214d2e8de87afda9fca5929341ec40121afde0c1af602",
+      "locality": [
+        {
+          "direction": 30,
+          "domain_half_width": 1.891884,
+          "grid": 15,
+          "half_width_E_over_2^5": {
+            "inside": {
+              "max": 170,
+              "mean": 86.41
+            },
+            "near": {
+              "max": 452,
+              "mean": 184.56
+            },
+            "straddling": {
+              "max": 258,
+              "mean": 73.63
+            }
+          },
+          "half_width_E_over_2^9": {
+            "inside": {
+              "max": 201,
+              "mean": 111.13
+            },
+            "near": {
+              "max": 356,
+              "mean": 157.83
+            },
+            "straddling": {
+              "max": 73,
+              "mean": 20.03
+            }
+          },
+          "pieces": 1832
+        },
+        {
+          "direction": 98,
+          "domain_half_width": 1.794692,
+          "grid": 15,
+          "half_width_E_over_2^5": {
+            "inside": {
+              "max": 166,
+              "mean": 87.28
+            },
+            "near": {
+              "max": 526,
+              "mean": 256.37
+            },
+            "straddling": {
+              "max": 234,
+              "mean": 89.22
+            }
+          },
+          "half_width_E_over_2^9": {
+            "inside": {
+              "max": 214,
+              "mean": 117.12
+            },
+            "near": {
+              "max": 492,
+              "mean": 222.12
+            },
+            "straddling": {
+              "max": 64,
+              "mean": 24.36
+            }
+          },
+          "pieces": 1832
+        },
+        {
+          "direction": 195,
+          "domain_half_width": 1.743365,
+          "grid": 15,
+          "half_width_E_over_2^5": {
+            "inside": {
+              "max": 188,
+              "mean": 88.38
+            },
+            "near": {
+              "max": 566,
+              "mean": 304.19
+            },
+            "straddling": {
+              "max": 209,
+              "mean": 97.78
+            }
+          },
+          "half_width_E_over_2^9": {
+            "inside": {
+              "max": 242,
+              "mean": 120.96
+            },
+            "near": {
+              "max": 534,
+              "mean": 265.9
+            },
+            "straddling": {
+              "max": 62,
+              "mean": 26.69
+            }
+          },
+          "pieces": 1832
+        }
+      ],
+      "notes": [
+        "The rectangle checker takes no node limit, so its bounded profiles run the least oblique direction to completion.",
+        "Input regenerated from the retained candidate and required to hash to the published input digest d6d69acf3d52d3beeefaee7f49d60629ccee23470e1a752882253507d33e5c85."
+      ],
+      "piece_kinds": {
+        "rectangle": 1832
+      },
+      "pieces": 1832,
+      "runs": [
+        {
+          "boxes_per_cpu_second": 3365.8,
+          "cpu_seconds": 10.365,
+          "direction": 30,
+          "input": {
+            "input_sha256": "d6d69acf3d52d3beeefaee7f49d60629ccee23470e1a752882253507d33e5c85"
+          },
+          "load_after": [
+            8.955,
+            12.202,
+            11.627
+          ],
+          "load_before": [
+            8.846,
+            12.351,
+            11.666
+          ],
+          "matches_record": true,
+          "max_rss_kib": 54420,
+          "microseconds_per_box": 297.102,
+          "nanoseconds_per_box_piece": 162.174,
+          "node_limit": null,
+          "observed": {
+            "leaves": 17444,
+            "lower": 1.00010018628991,
+            "nodes": 34887,
+            "status": "verified"
+          },
+          "recorded": {
+            "leaves": 17444,
+            "lower_bound": 1.00010018628991,
+            "nodes": 34887,
+            "status": "verified"
+          },
+          "recording_run_seconds": 5.032687667,
+          "returncode": 0,
+          "scope": "complete",
+          "timed_out": false,
+          "wall_seconds": 15.401
+        },
+        {
+          "boxes_per_cpu_second": 2135.9,
+          "cpu_seconds": 26.77,
+          "direction": 98,
+          "input": {
+            "input_sha256": "d6d69acf3d52d3beeefaee7f49d60629ccee23470e1a752882253507d33e5c85"
+          },
+          "load_after": [
+            8.467,
+            11.881,
+            11.533
+          ],
+          "load_before": [
+            8.846,
+            12.351,
+            11.666
+          ],
+          "matches_record": true,
+          "max_rss_kib": 54420,
+          "microseconds_per_box": 468.179,
+          "nanoseconds_per_box_piece": 255.556,
+          "node_limit": null,
+          "observed": {
+            "leaves": 28590,
+            "lower": 1.0001017607669265,
+            "nodes": 57179,
+            "status": "verified"
+          },
+          "recorded": {
+            "leaves": 28590,
+            "lower_bound": 1.0001017607669265,
+            "nodes": 57179,
+            "status": "verified"
+          },
+          "recording_run_seconds": 11.483495791,
+          "returncode": 0,
+          "scope": "complete",
+          "timed_out": false,
+          "wall_seconds": 33.377
+        },
+        {
+          "boxes_per_cpu_second": 1876.2,
+          "cpu_seconds": 47.546,
+          "direction": 195,
+          "input": {
+            "input_sha256": "d6d69acf3d52d3beeefaee7f49d60629ccee23470e1a752882253507d33e5c85"
+          },
+          "load_after": [
+            12.841,
+            12.417,
+            11.722
+          ],
+          "load_before": [
+            8.955,
+            12.202,
+            11.627
+          ],
+          "matches_record": true,
+          "max_rss_kib": 54556,
+          "microseconds_per_box": 532.997,
+          "nanoseconds_per_box_piece": 290.937,
+          "node_limit": null,
+          "observed": {
+            "leaves": 44603,
+            "lower": 1.000100212435172,
+            "nodes": 89205,
+            "status": "verified"
+          },
+          "recorded": {
+            "leaves": 44603,
+            "lower_bound": 1.000100212435172,
+            "nodes": 89205,
+            "status": "verified"
+          },
+          "recording_run_seconds": 20.088393625,
+          "returncode": 0,
+          "scope": "complete",
+          "timed_out": false,
+          "wall_seconds": 65.34
+        }
+      ]
+    }
+  },
+  "host": {
+    "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+    "gprof": "GNU gprof (GNU Binutils for Ubuntu) 2.42",
+    "gxx": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "logical_cpus": 4,
+    "perf": null,
+    "platform": "Linux-6.18.44-fc-v51-x86_64-with-glibc2.39",
+    "python": "3.14.7",
+    "valgrind": "valgrind-3.22.0"
+  },
+  "kind": "author-measure-checker-profile/v1",
+  "refusals": [],
+  "scope": "Measurements of the authors' checkers and the repository's exact path on this host, one process per direction, child CPU from wait4. Complete directions must reproduce the recorded node counts; bounded runs are rates only. No bound is verified or moved by this profile.",
+  "status": "PROFILE_RETAINED",
+  "summary": {
+    "linear": {
+      "complete_directions": [
+        35,
+        113
+      ],
+      "cpu_seconds": 103.56,
+      "microseconds_per_box": 463.64,
+      "nodes": 223364,
+      "pieces": 9872
+    },
+    "mixed": {
+      "complete_directions": [
+        3,
+        101,
+        200
+      ],
+      "cpu_seconds": 184.214,
+      "microseconds_per_box": 327.98,
+      "nodes": 561657,
+      "pieces": 2536
+    },
+    "rectangle": {
+      "complete_directions": [
+        30,
+        98,
+        195
+      ],
+      "cpu_seconds": 84.681,
+      "exact_python_microseconds_per_box": 54566.1,
+      "exact_python_over_author_checker_per_box": 116.8,
+      "microseconds_per_box": 467.15,
+      "nodes": 181271,
+      "pieces": 1832
+    }
+  },
+  "tool": "packing/benchmarks/profile_author_measure_checkers.py",
+  "tool_sha256": "bc11dc666dd20b2807aa3dd4f36784d33b2fdffe399c64d41a4ef24f4a8eff49",
+  "wall_seconds_total": 2364.4,
+  "workers": 2
+}

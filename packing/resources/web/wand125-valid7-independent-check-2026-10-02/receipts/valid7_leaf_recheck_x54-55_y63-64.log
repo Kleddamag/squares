@@ -1,0 +1,7 @@
+# command: /tmp/claude-0/-home-user-squares/4ea49914-96b4-51a9-a2a9-c5603fe593f4/scratchpad/v7/venv/bin/python src/check_record.py cover/L4_k02_box7.txt runs/wand125_calibration_tierb.jsonl --partial --recheck 2425 --recheck-b 438
+# cwd: the staged wand125 work dir
+# python3: scratch venv, CPython 3.14.7, python-flint 0.9.0
+# host: 4 cores; load 21.96 16.29 8.49; started 2026-10-02T19:34:15Z
+roots 32 leaf kinds {'EMPTY': 153, 'CORE': 2425, 'TIERB2': 438}
+RECORD OK
+# finished 2026-10-02T19:38:47Z; exit 0; wall 272.766 s; CPU 94.5 s (user 94.421 + sys 0.120); load 20.42 19.35 11.86

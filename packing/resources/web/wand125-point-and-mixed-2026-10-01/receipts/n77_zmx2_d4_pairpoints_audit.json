@@ -1,0 +1,55 @@
+{
+ "log": "resources/web/wand125-point-and-mixed-2026-10-01/receipts/n77_zmx2_d4_pairpoints_roots.log",
+ "sha256": "8a8f54c4f353bf5712a3fa92511a3b3ed92b5c84e0d0d32fcc30c3bbeecafc6a",
+ "header": "# zmx2 cert hash=f69807b8322a68fb mode=d4 atoms=pairpts depth=40 node_cap=20000000 kappa=1.5 K=30 region=x0-44,y0-44,bins0-3",
+ "mode": "d4",
+ "atoms": "pairpts",
+ "flags": {
+  "pair_points": true,
+  "no_atoms": false,
+  "sym_atoms": false,
+  "mirror_only": false,
+  "first_order": false
+ },
+ "header_settings": {
+  "depth": "40",
+  "node_cap": "20000000",
+  "kappa": "1.5",
+  "K": "30"
+ },
+ "header_unrecognised": [],
+ "headers_equal_apart_from_region": true,
+ "mode_in_header": true,
+ "region_in_header": true,
+ "joined": false,
+ "runs": [
+  {
+   "log": "resources/web/wand125-point-and-mixed-2026-10-01/receipts/n77_zmx2_d4_pairpoints_roots.log",
+   "line": 1,
+   "region": "x0-44,y0-44,bins0-3",
+   "roots": 8100
+  }
+ ],
+ "roots_in_region": 8100,
+ "roots_present": 8100,
+ "roots_missing": 0,
+ "roots_outside_region": 0,
+ "roots_outside_their_runs_limits": 0,
+ "roots_recorded_more_than_once": 0,
+ "repeated_roots": [],
+ "root_ids_inconsistent": 0,
+ "unparsed_lines": 0,
+ "boxes": 5810824,
+ "certified_leaves": 2883850,
+ "empty_leaves": 25612,
+ "uncertified_boxes": 0,
+ "uncert_lines": 0,
+ "capped_roots": 0,
+ "max_depth": 36,
+ "atoms_source_ran": "pairpts",
+ "atoms_as_source_ran": true,
+ "boxes_stated_by_source": 5810824,
+ "boxes_equal_source_statement": true,
+ "atoms_required": "pairpts",
+ "atoms_as_required": true
+}

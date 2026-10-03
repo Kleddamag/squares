@@ -1,0 +1,92 @@
+{
+ "header": {
+  "kind": "zm_mixed cert header",
+  "version": 2,
+  "sha256": {
+   "zm_mixed.py": "1fd203469bb43a55ca7ce376b9717437e0970eead31941ec7fa100ab24d5ba95",
+   "mixed_cover.py": "bb89de15ecf5821dd7e1a36ebab8a50d792a406b7fb0f5cb38059f99ef74aae5",
+   "zeromargin.py": "640fe453c1a32f4aa580ca2b1261c6406923a4d7c131f65604a432c7fc2086ab",
+   "input": "2d0e456ea86cceeadc92d9f8fa7d468ba570a16d00d7343ebfbfb0b3b3b12a41"
+  },
+  "input": "certificates/s60/s60_mixed_cover_8.txt",
+  "total": "748233441/12500000",
+  "settings": {
+   "mode": "D4",
+   "depth": 24,
+   "pitch": "1/20",
+   "ubins": 16,
+   "chain": true,
+   "chain_from": 0,
+   "theta_bias": 4,
+   "clip": true,
+   "lemma_T": true,
+   "lemma_L": true,
+   "split": true,
+   "cert_mode": true,
+   "tprime": false,
+   "split_maxchain": 400,
+   "reach": "442/625",
+   "region": {
+    "cx_lo": null,
+    "cx_hi": null,
+    "cy_lo": null,
+    "cy_hi": null,
+    "u_lo": null,
+    "u_hi": null
+   }
+  }
+ },
+ "argv": [
+  "search/zm_mixed.py",
+  "cert",
+  "certificates/s60/s60_mixed_cover_8.txt",
+  "--d4",
+  "--cert-mode",
+  "--disj",
+  "--chain-from",
+  "0",
+  "--depth",
+  "24",
+  "--pitch",
+  "1/20",
+  "--ubins",
+  "16",
+  "--nproc",
+  "8",
+  "--progress",
+  "5000",
+  "--resume",
+  "runs/rerun_0929/s60/roots.jsonl",
+  "--manifest",
+  "runs/rerun_0929/s60/manifest.json"
+ ],
+ "created": "2026-09-30 00:42:56",
+ "result": {
+  "roots": 102400,
+  "census": {
+   "ADM": 132043,
+   "CORE": 0,
+   "P1": 0,
+   "MIX": 0,
+   "CHAIN": 72081,
+   "TRI": 0,
+   "PIECE": 8666,
+   "EMPTY": 29410,
+   "UNCERT": 0,
+   "boxes": 500134,
+   "maxdepth": 18,
+   "THR": 51244,
+   "LIN": 219739,
+   "TPTS": 0,
+   "SPLIT": 59067,
+   "cpu": 71978.76160753562
+  },
+  "uncertified": 0,
+  "wall_s": 9024.2,
+  "verdict": "VERIFIED-D4"
+ },
+ "records": {
+  "path": "certificates/s60/zm_mixed_d4/roots.jsonl",
+  "sha256": "8b4019ce7a47904e7846be81cf929290a79e98ac9e5e453494f0cee5663c7810"
+ }
+}

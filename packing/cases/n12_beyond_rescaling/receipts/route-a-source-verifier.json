@@ -1,0 +1,57 @@
+{
+  "schema": "S12AngleNetRescaleReceipt/v1",
+  "status": "VERIFIED",
+  "verifier": "evand/square-packing s12/verify (the producer's arrangement sweep), built from the retained source",
+  "binary": "shipped",
+  "binary_sha256": "9e79ec32c92e902846b3eacbf79950e8757c328aa15da996d135b0f342272b40",
+  "certificate_sha256": "93ccef6363b0814ec34c66e94ac8bc83b707e3f7430955c9ccd9ab250e8ae235",
+  "container": "1568000/395039",
+  "total_weight": "29934509/2500000",
+  "points": 1736,
+  "net": 96000,
+  "bins": 39765,
+  "least_weight": "10000056/10000000",
+  "least_bin": 0,
+  "margin": "7/1250000",
+  "verdict": {
+    "verified": true,
+    "partial": false,
+    "least_weight": "10000056/10000000",
+    "least_bin": 0,
+    "last_bin": 39765,
+    "net": 96000,
+    "exit_code": 0
+  },
+  "stdout_tail": [
+    "s = 1568000/395039 = 3.969228",
+    "angles: k=0..39765 (N=96000), covering [0,45deg]",
+    "min covered weight over ALL placements = 10000056/10000000 = 1.000006  (at angle k=0)",
+    "VERIFIED: every CLOSED unit square inside C covers weight >= 1, and total weight < 12.",
+    "==> 12 unit squares cannot be packed into any square of side < 1568000/395039 = 3.969228355,",
+    "    i.e.  s(12) >= 3.969228355"
+  ],
+  "threads": 4,
+  "wall_seconds": 811.5,
+  "provenance": {
+    "git_commit": "6e56cf0fcd9cb39af7154e571afb74c141775d9e",
+    "python": "3.14.7",
+    "platform": "Linux-6.18.44-fc-v51-x86_64-with-glibc2.39",
+    "cpus": 4,
+    "source_url": "https://github.com/evand/square-packing",
+    "source_commit": "167d842cd27ba1451cb2833773ea930c80b9e65b",
+    "command": [
+      "packing/devtools/s12_angle_net_rescale.py",
+      "verify",
+      "--work",
+      "WORK",
+      "--certificate",
+      "WORK/m3950390.txt",
+      "--net",
+      "96000",
+      "--threads",
+      "4",
+      "--output",
+      "WORK/r3950390_96000.json"
+    ]
+  }
+}

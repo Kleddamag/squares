@@ -455,3 +455,43 @@ def test_a_recheck_keeps_the_crowded_triple_and_places_a_pair() -> None:
     placed = recheck_flag(strip(), 0b011, seed=1, budget=QUICK)
     assert placed["status"] == "placed"
     assert len(placed["pose"]) == 2
+
+
+def test_the_vectorised_penalty_is_the_penalty() -> None:
+    rng = np.random.default_rng(3)
+    for cells in ((0, 4, 16, 18), (0, 5, 6, 10, 14, 16, 18, 17)):
+        problem = Problem(cover(), cells)
+        for _ in range(10):
+            pose = problem.random_pose(rng)
+            z = problem.pack(pose) + rng.normal(0.0, 0.05, 3 * problem.k + 2 * problem.p)
+            value, gradient = problem.penalty(z)
+            fast_value, fast_gradient = problem.penalty_vectorised(z)
+            assert abs(fast_value - value) <= 1e-12 * max(1.0, value)
+            assert np.max(np.abs(fast_gradient - gradient)) <= 1e-12 * max(
+                1.0, float(np.max(np.abs(gradient)))
+            )
+
+
+def test_an_early_stop_ends_a_descent_only_once_it_is_placed() -> None:
+    problem = Problem(strip(), (0, 1))
+    start = problem.random_pose(np.random.default_rng(5))
+    stopped = problem.descend(start, polish=False, early_stop=True)
+    assert problem.violation(stopped) <= MARGIN
+    crowded = Problem(strip(), (0, 1, 2))
+    stalled = crowded.descend(crowded.random_pose(np.random.default_rng(5)), polish=False)
+    early = crowded.descend(
+        crowded.random_pose(np.random.default_rng(5)), polish=False, early_stop=True
+    )
+    assert np.array_equal(stalled, early)  # never negligible, so never stopped early
+
+
+def test_the_witness_cache_changes_no_verdict() -> None:
+    cache: dict[Any, Any] = {}
+    plain = recheck_flag(strip(), 0b111, seed=1, budget=QUICK)
+    first = recheck_flag(strip(), 0b111, seed=1, budget=QUICK, witness_cache=cache)
+    second = recheck_flag(strip(), 0b111, seed=1, budget=QUICK, witness_cache=cache)
+    for record in (first, second):
+        assert record["status"] == plain["status"]
+        assert record["best_penetration"] == plain["best_penetration"]
+        assert record["pose"] == plain["pose"]
+    assert second["sub_pattern_attempts"] == 0

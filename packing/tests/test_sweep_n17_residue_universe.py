@@ -124,3 +124,18 @@ def test_a_sweep_resumes_where_it_stopped_with_the_same_verdicts(
         old.pop("seconds")
         new.pop("seconds")
         assert old == new
+
+
+def test_the_random_first_stage_places_cheaply_and_passes_the_rest_on_unchanged() -> None:
+    first = tool.Levers(first=tool.FIRST)
+    plain = tool.search_class(toy(), 0b00011, seed=1, screen=QUICK, full=QUICK)
+    quick = tool.search_class(toy(), 0b00011, seed=1, screen=QUICK, full=QUICK, levers=first)
+    assert plain["status"] == quick["status"] == "placed"
+    assert quick["found_by"] == "random-first"
+    crowded = tool.search_class(toy(), 0b00111, seed=1, screen=QUICK, full=QUICK)
+    again = tool.search_class(
+        toy(), 0b00111, seed=1, screen=QUICK, full=QUICK, levers=first, cache={}
+    )
+    assert crowded["status"] == again["status"] == "flagged"
+    assert crowded["best_penetration"] == again["best_penetration"]
+    assert crowded["pose"] == again["pose"]

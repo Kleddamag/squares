@@ -34,7 +34,7 @@ import hashlib
 import json
 import time
 from collections.abc import Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any
 
@@ -53,6 +53,48 @@ STATUS = (
 MODULE_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 SCREEN = selector.Budget(starts=12, hops=24, deep_starts=48, deep_hops=48)
 FULL = selector.Budget()
+# The random-first stage: a few random starts on a stream the old search never draws from,
+# no hops, no deep stage, no finish. A placement there is a placement; a class it cannot
+# place goes on to the old search, unchanged.
+FIRST_STREAM = 1
+FIRST_PLAIN = selector.Budget(starts=4, hops=0, deep_starts=0, deep_hops=0, finish=False)
+FIRST = replace(FIRST_PLAIN, early_stop=True, fast_penalty=True)
+
+
+@dataclass(frozen=True)
+class Levers:
+    """Cuts to the sweep's search time, each measurable on its own.
+
+    `first` is the random-first stage; `cache` keeps every sub-pattern witness for the
+    process, keyed by its exact mask and budget, so a verdict is the one the uncached search
+    gives, byte for byte; `early_stop` and `fast_penalty` change the screen's and the full
+    budget's descents, so they change poses at the level of rounding and are measured
+    for verdict equivalence rather than assumed.
+    """
+
+    first: selector.Budget | None = None
+    cache: bool = False
+    early_stop: bool = False
+    fast_penalty: bool = False
+
+    def record(self) -> dict[str, Any]:
+        return {
+            "first": None if self.first is None else budget_record(self.first),
+            "cache": self.cache,
+            "early_stop": self.early_stop,
+            "fast_penalty": self.fast_penalty,
+        }
+
+
+LEVERS = {
+    "baseline": Levers(),
+    "first": Levers(first=FIRST_PLAIN),
+    "cache": Levers(cache=True),
+    "early-stop": Levers(early_stop=True),
+    "fast-penalty": Levers(fast_penalty=True),
+    "combined": Levers(first=FIRST, cache=True),
+    "combined-fast": Levers(first=FIRST, cache=True, early_stop=True, fast_penalty=True),
+}
 ARITIES = (8, 9, 10)
 PRIORITY_TESTED = (8, 2)  # the arity-8 priority sweep searched every class up to 2 missing
 QUEUES: tuple[tuple[str, int, int, int | None], ...] = (
@@ -248,17 +290,44 @@ def search_class(
     seed: int,
     screen: selector.Budget,
     full: selector.Budget,
+    levers: Levers | None = None,
+    cache: dict[tuple[int, selector.Budget], selector.Verdict] | None = None,
 ) -> dict[str, Any]:
-    """The screen, then the full budget for a class the screen cannot place."""
+    """The screen, then the full budget for a class the screen cannot place.
+
+    With the random-first lever, a few random starts on their own stream come first, and a
+    class they place is placed; any other class gets the search below unchanged.
+    """
     clock = time.perf_counter()
-    screened = selector.recheck_flag(geometry, mask, seed=seed, budget=screen)
+    levers = levers or Levers()
+    if levers.first is not None:
+        stream = np.random.default_rng(np.random.SeedSequence([seed, mask, FIRST_STREAM]))
+        quick = selector.search(geometry, selector.cells_of(mask), stream, levers.first)
+        if quick.feasible:
+            return {
+                "screen": "placed",
+                "screen_attempts": quick.attempts,
+                "status": "placed",
+                "best_penetration": quick.violation,
+                "attempts": quick.attempts,
+                "found_by": "random-first",
+                "seconds": round(time.perf_counter() - clock, 3),
+            }
+    tuned = {"early_stop": levers.early_stop, "fast_penalty": levers.fast_penalty}
+    screen, full = replace(screen, **tuned), replace(full, **tuned)
+    kept = cache if levers.cache else None
+    screened = selector.recheck_flag(
+        geometry, mask, seed=seed, budget=screen, witness_cache=kept
+    )
     row: dict[str, Any] = {
         "screen": screened["status"],
         "screen_attempts": screened["attempts"],
     }
     final = screened
     if screened["status"] != "placed":
-        final = selector.recheck_flag(geometry, mask, seed=seed, budget=full)
+        final = selector.recheck_flag(
+            geometry, mask, seed=seed, budget=full, witness_cache=kept
+        )
     row.update(
         status="placed" if final["status"] == "placed" else "flagged",
         best_penetration=final["best_penetration"],
@@ -280,8 +349,11 @@ def sweep(
     geometry: selector.Geometry | None = None,
     screen: selector.Budget = SCREEN,
     full: selector.Budget = FULL,
+    levers: Levers | None = None,
 ) -> list[int]:
     """Search the planned queue chunk by chunk, skipping chunks already written."""
+    levers = levers or Levers()
+    cache: dict[tuple[int, selector.Budget], selector.Verdict] = {}
     plan_path = directory / "plan.json"
     planned = json.loads(plan_path.read_text(encoding="utf-8"))
     plan_digest = digest_of(plan_path)
@@ -300,7 +372,9 @@ def sweep(
         for mask, arity, missing, coverage, queue_index in queue[
             index * chunk : (index + 1) * chunk
         ]:
-            found = search_class(geometry, mask, seed=seed, screen=screen, full=full)
+            found = search_class(
+                geometry, mask, seed=seed, screen=screen, full=full, levers=levers, cache=cache
+            )
             rows.append(
                 {
                     "mask": mask,
@@ -322,6 +396,7 @@ def sweep(
                 "seed": seed,
                 "screen": budget_record(screen),
                 "full": budget_record(full),
+                **({} if levers == Levers() else {"levers": levers.record()}),
                 "classes": rows,
                 "module_sha256": MODULE_SHA256,
                 "selector_sha256": selector.MODULE_SHA256,
@@ -433,16 +508,178 @@ def summary(directory: Path, flags_path: Path) -> dict[str, Any]:
     }
 
 
+def make_bench_set(directory: Path, flags_path: Path, *, chunks: int) -> dict[str, Any]:
+    """A fixed test set with the old verdicts: the first chunks, every class the sweep has
+    flagged so far, and every class of the re-check receipt."""
+    classes: dict[int, dict[str, Any]] = {}
+    for path in sorted(directory.glob("chunk-*.json")):
+        document = json.loads(path.read_text(encoding="utf-8"))
+        for row in document["classes"]:
+            if document["chunk"] < chunks or row["status"] == "flagged":
+                classes.setdefault(
+                    row["mask"],
+                    {
+                        "mask": row["mask"],
+                        "arity": row["arity"],
+                        "old": row["status"],
+                        "old_seconds": row["seconds"],
+                        "source": f"chunk {document['chunk']}",
+                    },
+                )
+    geometry = selector.cover_geometry()
+    rechecked = json.loads(flags_path.read_text(encoding="utf-8"))["rechecked"]
+    for row in rechecked:
+        mask = selector.canonical(selector.mask_of(row["indices"]), geometry.group)
+        classes.setdefault(
+            mask,
+            {
+                "mask": mask,
+                "arity": row["arity"],
+                "old": "flagged" if row["status"] == "still-flagged" else "placed",
+                "old_seconds": None,
+                "source": "re-check",
+            },
+        )
+    return {
+        "chunks": chunks,
+        "flags_source": {"path": str(flags_path), "sha256": digest_of(flags_path)},
+        "classes": list(classes.values()),
+    }
+
+
+def bench(
+    set_path: Path,
+    results: Path,
+    *,
+    levers: Levers,
+    seed: int = 1,
+    max_seconds: float = 540.0,
+) -> int:
+    """Search the test set under the levers, appending a line per class; resumes."""
+    clock = time.perf_counter()
+    test_set = json.loads(set_path.read_text(encoding="utf-8"))["classes"]
+    done: set[int] = set()
+    if results.exists():
+        done = {
+            json.loads(line)["mask"]
+            for line in results.read_text(encoding="utf-8").splitlines()
+        }
+    geometry = selector.cover_geometry()
+    cache: dict[tuple[int, selector.Budget], selector.Verdict] = {}
+    written = 0
+    with results.open("a", encoding="utf-8") as stream:
+        for entry in test_set:
+            if entry["mask"] in done:
+                continue
+            if time.perf_counter() - clock > max_seconds:
+                break
+            cpu = time.process_time()
+            found = search_class(
+                geometry,
+                entry["mask"],
+                seed=seed,
+                screen=SCREEN,
+                full=FULL,
+                levers=levers,
+                cache=cache,
+            )
+            line = {
+                "mask": entry["mask"],
+                "status": found["status"],
+                "found_by": found["found_by"],
+            }
+            line.update(
+                seconds=found["seconds"],
+                cpu_seconds=round(time.process_time() - cpu, 3),
+                penetration=found["best_penetration"],
+            )
+            _ = stream.write(json.dumps(line) + "\n")
+            stream.flush()
+            written += 1
+    return written
+
+
+def compare(set_path: Path, results: Path) -> dict[str, Any]:
+    """The new verdicts against the old: every disagreement, class by class."""
+    test_set = {
+        e["mask"]: e for e in json.loads(set_path.read_text(encoding="utf-8"))["classes"]
+    }
+    new = {
+        line["mask"]: line
+        for line in (json.loads(t) for t in results.read_text(encoding="utf-8").splitlines())
+    }
+    wrongly_flagged = [
+        m
+        for m, row in new.items()
+        if row["status"] == "flagged" and test_set[m]["old"] == "placed"
+    ]
+    newly_placed = [
+        m
+        for m, row in new.items()
+        if row["status"] == "placed" and test_set[m]["old"] == "flagged"
+    ]
+    return {
+        "set": str(set_path),
+        "results": str(results),
+        "searched": len(new),
+        "of": len(test_set),
+        "old_placed_new_flagged": [{**test_set[m], **new[m]} for m in sorted(wrongly_flagged)],
+        "old_flagged_new_placed": [{**test_set[m], **new[m]} for m in sorted(newly_placed)],
+        "agree": len(new) - len(wrongly_flagged) - len(newly_placed),
+        "seconds_by_old_verdict": {
+            verdict: round(
+                sum(r["seconds"] for m, r in new.items() if test_set[m]["old"] == verdict), 1
+            )
+            for verdict in ("placed", "flagged")
+        },
+        "count_by_old_verdict": {
+            verdict: sum(1 for m in new if test_set[m]["old"] == verdict)
+            for verdict in ("placed", "flagged")
+        },
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    _ = parser.add_argument("command", choices=("plan", "sweep", "summary"))
+    _ = parser.add_argument(
+        "command", choices=("plan", "sweep", "summary", "bench-set", "bench", "compare")
+    )
     _ = parser.add_argument("--flags", type=Path, required=True, help="the re-check receipt")
     _ = parser.add_argument("--directory", type=Path, required=True, help="plan and chunks")
+    _ = parser.add_argument("--levers", choices=sorted(LEVERS), default="baseline")
+    _ = parser.add_argument("--set", type=Path, help="bench: the fixed test set")
+    _ = parser.add_argument("--results", type=Path, help="bench: one line per class")
+    _ = parser.add_argument("--bench-chunks", type=int, default=3)
+    _ = parser.add_argument("--max-seconds", type=float, default=540.0)
     _ = parser.add_argument("--chunk", type=int, default=500)
     _ = parser.add_argument("--seed", type=int, default=1)
     _ = parser.add_argument("--limit-chunks", type=int, default=None)
     _ = parser.add_argument("--output", type=Path, help="the summary's receipt")
     arguments = parser.parse_args(argv)
+    if arguments.command == "bench-set":
+        record = make_bench_set(
+            arguments.directory, arguments.flags, chunks=arguments.bench_chunks
+        )
+        write_atomic(arguments.set, record)
+        old = [c["old"] for c in record["classes"]]
+        print(json.dumps({"classes": len(old), "flagged": old.count("flagged")}))
+        return 0
+    if arguments.command == "bench":
+        written = bench(
+            arguments.set,
+            arguments.results,
+            levers=LEVERS[arguments.levers],
+            seed=arguments.seed,
+            max_seconds=arguments.max_seconds,
+        )
+        print(json.dumps({"levers": arguments.levers, "classes": written}))
+        return 0
+    if arguments.command == "compare":
+        record = compare(arguments.set, arguments.results)
+        if arguments.output is not None:
+            write_atomic(arguments.output, record)
+        print(json.dumps(record, indent=1, sort_keys=True))
+        return 0
     planned = plan(arguments.flags, arguments.directory)
     if arguments.command == "plan":
         print(json.dumps({k: planned[k] for k in ("residue", "universe", "queues", "seconds")}))
@@ -453,6 +690,7 @@ def main(argv: list[str] | None = None) -> int:
             chunk=arguments.chunk,
             seed=arguments.seed,
             limit_chunks=arguments.limit_chunks,
+            levers=LEVERS[arguments.levers],
         )
         return 0
     record = summary(arguments.directory, arguments.flags)

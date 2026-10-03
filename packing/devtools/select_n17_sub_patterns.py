@@ -361,7 +361,9 @@ class Problem:
     `cells`. The descent vector adds a normal angle and an offset per interacting pair.
     """
 
-    def __init__(self, geometry: Geometry, cells: tuple[int, ...]) -> None:
+    def __init__(
+        self, geometry: Geometry, cells: tuple[int, ...], *, fast: bool = False
+    ) -> None:
         self.cap = geometry.cap
         self.cells = cells
         k = len(cells)
@@ -387,6 +389,14 @@ class Problem:
         self.polygons = [geometry.polygons[cell] for cell in cells]
         self.lower = geometry.lower[list(cells)]
         self.upper = geometry.upper[list(cells)]
+        # The vectorised penalty: both ends of every pair in one array, the scatter to the
+        # squares as one product with an incidence matrix. Equal to `penalty` up to the
+        # order of floating-point sums.
+        self.ends = np.concatenate([self.first, self.second])
+        self.side = np.concatenate([np.ones(self.p), -np.ones(self.p)])[:, None]
+        self.incidence = np.zeros((k, 2 * self.p))
+        self.incidence[self.ends, np.arange(2 * self.p)] = 1.0
+        self.objective = self.penalty_vectorised if fast else self.penalty
 
     def pack(self, pose: Floats) -> Floats:
         """The descent vector of a pose, each pair's line through the centres' midpoint."""
@@ -453,6 +463,46 @@ class Problem:
         grad_t = (grad_vy * ox - grad_vx * oy).sum(axis=1)
         return value, np.concatenate([grad_x, grad_y, grad_t, grad_phi, grad_offset])
 
+    def penalty_vectorised(self, z: Floats) -> tuple[float, Floats]:
+        """`penalty` with fewer array operations; equal up to rounding of the sums."""
+        k, p, cap = self.k, self.p, self.cap
+        x, y, angle = z[:k], z[k : 2 * k], z[2 * k : 3 * k]
+        cos_t, sin_t = np.cos(angle)[:, None], np.sin(angle)[:, None]
+        ox = cos_t * CORNER_X - sin_t * CORNER_Y
+        oy = sin_t * CORNER_X + cos_t * CORNER_Y
+        vx, vy = x[:, None] + ox, y[:, None] + oy
+        out_x = vx - np.clip(vx, 0.0, cap)
+        out_y = vy - np.clip(vy, 0.0, cap)
+        excess = np.maximum(
+            self.plane_a * x[:, None] + self.plane_b * y[:, None] - self.plane_c, 0.0
+        )
+        value = float(np.vdot(out_x, out_x) + np.vdot(out_y, out_y) + np.vdot(excess, excess))
+        grad_vx, grad_vy = 2.0 * out_x, 2.0 * out_y
+        grad_x = 2.0 * (excess * self.plane_a).sum(axis=1)
+        grad_y = 2.0 * (excess * self.plane_b).sum(axis=1)
+        grad_phi = np.zeros(p)
+        grad_offset = np.zeros(p)
+        if p:
+            phi, offset = z[3 * k : 3 * k + p], z[3 * k + p :]
+            nx = np.tile(np.cos(phi), 2)[:, None]
+            ny = np.tile(np.sin(phi), 2)[:, None]
+            ends_x, ends_y = vx[self.ends], vy[self.ends]
+            over = np.maximum(
+                self.side * (nx * ends_x + ny * ends_y - np.tile(offset, 2)[:, None]), 0.0
+            )
+            value += float(np.vdot(over, over))
+            weight = 2.0 * self.side * over
+            grad_vx += self.incidence @ (weight * nx)
+            grad_vy += self.incidence @ (weight * ny)
+            turn = (weight * (nx * ends_y - ny * ends_x)).sum(axis=1)
+            pull = weight.sum(axis=1)
+            grad_phi = turn[:p] + turn[p:]
+            grad_offset = -(pull[:p] + pull[p:])
+        grad_x += grad_vx.sum(axis=1)
+        grad_y += grad_vy.sum(axis=1)
+        grad_t = (grad_vy * ox - grad_vx * oy).sum(axis=1)
+        return value, np.concatenate([grad_x, grad_y, grad_t, grad_phi, grad_offset])
+
     def violations(self, pose: Floats) -> dict[str, float]:
         """True violations of a pose in length units: pair, container and cell."""
         x, y, angle = pose[:, 0], pose[:, 1], pose[:, 2]
@@ -513,16 +563,36 @@ class Problem:
         pose[:, 2] = rng.uniform(0.0, np.pi / 2, self.k)
         return pose
 
-    def descend(self, pose: Floats, *, polish: bool) -> Floats:
+    def descend(self, pose: Floats, *, polish: bool, early_stop: bool = False) -> Floats:
+        """One L-BFGS-B descent; with `early_stop`, it ends once the penalty is negligible.
+
+        A penalty at most `EARLY_STOP_PENALTY` bounds every hinge term by its square root,
+        1e-7, so every wall, cell and separating-line excursion is below a tenth of the
+        margin, and the pose is placed whatever further descent would do.
+        """
         options: dict[str, Any] = (
             {"maxiter": 1500, "ftol": 1e-24, "gtol": 1e-18, "maxcor": 30}
             if polish
             else {"maxiter": 600, "ftol": 1e-15, "gtol": 1e-12, "maxcor": 20}
         )
+        callback = _stop_when_negligible if early_stop else None
         result = minimize(
-            self.penalty, self.pack(pose), jac=True, method="L-BFGS-B", options=options
+            self.objective,
+            self.pack(pose),
+            jac=True,
+            method="L-BFGS-B",
+            options=options,
+            callback=callback,
         )
         return self.pose(np.asarray(result.x, dtype=np.float64))
+
+
+EARLY_STOP_PENALTY = 1e-14
+
+
+def _stop_when_negligible(intermediate_result: Any) -> None:
+    if intermediate_result.fun <= EARLY_STOP_PENALTY:
+        raise StopIteration
 
 
 @functools.cache
@@ -607,13 +677,15 @@ class Budget:
     wide_angle: float = 0.8
     margin: float = MARGIN
     finish: bool = True
+    early_stop: bool = False
+    fast_penalty: bool = False
 
 
 def finish(problem: Problem, pose: Floats) -> Floats:
     """One long descent of the selector's penalty from a pose (`FINISH`)."""
     with single_thread_blas():
         result = minimize(
-            problem.penalty, problem.pack(pose), jac=True, method="L-BFGS-B", options=FINISH
+            problem.objective, problem.pack(pose), jac=True, method="L-BFGS-B", options=FINISH
         )
     return problem.pose(np.asarray(result.x, dtype=np.float64))
 
@@ -637,17 +709,17 @@ def _search(
     budget: Budget,
     warm: list[tuple[int, Floats]] | None,
 ) -> Verdict:
-    problem = Problem(geometry, cells)
+    problem = Problem(geometry, cells, fast=budget.fast_penalty)
     best: tuple[float, Floats] | None = None
     attempts = 0
 
     def attempt(start: Floats, how: str) -> Verdict | None:
         nonlocal best, attempts
         attempts += 1
-        pose = problem.descend(start, polish=False)
+        pose = problem.descend(start, polish=False, early_stop=budget.early_stop)
         value = problem.violation(pose)
         if budget.margin < value < POLISH_BELOW:
-            polished = problem.descend(pose, polish=True)
+            polished = problem.descend(pose, polish=True, early_stop=budget.early_stop)
             polished_value = problem.violation(polished)
             if polished_value < value:
                 pose, value = polished, polished_value
@@ -1391,7 +1463,14 @@ def run(
 # ---------------------------------------------------------------------------
 
 
-def recheck_flag(geometry: Geometry, mask: int, *, seed: int, budget: Budget) -> dict[str, Any]:
+def recheck_flag(
+    geometry: Geometry,
+    mask: int,
+    *,
+    seed: int,
+    budget: Budget,
+    witness_cache: dict[tuple[int, Budget], Verdict] | None = None,
+) -> dict[str, Any]:
     """One flagged class searched again: sub-pattern witnesses first, then the class."""
     cells = cells_of(mask)
     sub_budget = replace(budget, deep_starts=0, deep_hops=0)
@@ -1401,8 +1480,15 @@ def recheck_flag(geometry: Geometry, mask: int, *, seed: int, budget: Budget) ->
         sub = cells[:row] + cells[row + 1 :]
         if not connected(geometry, sub):
             continue
-        found = search(geometry, sub, pattern_rng(seed, mask_of(sub)), sub_budget)
-        sub_attempts += found.attempts
+        key = (mask_of(sub), sub_budget)
+        cached = None if witness_cache is None else witness_cache.get(key)
+        if cached is None:
+            found = search(geometry, sub, pattern_rng(seed, mask_of(sub)), sub_budget)
+            if witness_cache is not None:
+                witness_cache[key] = found
+            sub_attempts += found.attempts
+        else:
+            found = cached
         if found.feasible:
             witnesses[mask_of(sub)] = found.pose
     rng = pattern_rng(seed, mask)

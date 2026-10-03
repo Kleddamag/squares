@@ -199,8 +199,10 @@ def test_a_fraction_shows_its_decimal_and_a_name_stays_whole(
     assert lower == ["≈ 3.96911783…"]
     exact, shown = Fraction(31360, 7901), Fraction(lower[0][2:-1])
     assert 0 < exact - shown < Fraction(1, 10**8)
-    assert [cell["approx"] for cell in rows["n-12"]["cells"]].count([]) == len(COLUMNS) - 2
-    assert rows["n-12"]["cells"][column("Gap")]["approx"] == ["≈ 0.03088216…"]
+    # Three closed forms since 3 October 2026, when T-079's verified lower bound parted
+    # from the reported one: the two lower bounds and the gap.
+    assert [cell["approx"] for cell in rows["n-12"]["cells"]].count([]) == len(COLUMNS) - 3
+    assert rows["n-12"]["cells"][column("Gap")]["approx"] == ["≈ 0.02979979…"]
     # A terminating fraction shows its exact decimal in either column. The example was
     # n = 18 until 2026-10-02, when T-045's replay raised its verified bound to the
     # reported 939/200 and the cell became "same", and then n = 19 until T-074's did the

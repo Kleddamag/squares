@@ -21,9 +21,12 @@ committed in four revisions between 11:38 and 15:16 UTC and are pinned together 
 last, which holds all six unchanged. Its proposed Frontier key is
 **[wand125 mixed bounds afternoon 2026-10-02]**. The claims below are stated as the
 source states them.
-None was replayed here. What was checked is SHA-256 digests, Git blob ids, the exact
-premises the audit below recomputes from the retained bytes, and every check the replay
-makes before its first angle, run on each pinned tarball.
+Five of the six were replayed here in full on 2 and 3 October, every direction matching
+the source’s record: `mixed_n83_L937`, `mixed_n85_L946`, `mixed_n87_L948`,
+`mixed_n92_L975` and `mixed_n96_L996`. `mixed_n91_L970` has not been. Before any replay,
+what was checked is SHA-256 digests, Git blob ids, the exact premises the audit below
+recomputes from the retained bytes, and every check the replay makes before its first
+angle, run on each pinned tarball.
 
 ## Source and Pin
 
@@ -203,7 +206,7 @@ names the scratch directory it was unpacked in.
 
 ## Replaying the Certificates
 
-None of the six has been replayed here. The source’s check is its driver
+Five of the six have been replayed here; see the next section. The source’s check is its driver
 `code/verify_mixed_full_proof.py`, run from the unpacked tarball.
 `devtools.audit_wand125_point_and_mixed` runs the same check split by net angle, as for
 the earlier mixed packets. The tool names the six `n83`, `n85-L946`, `n87`, `n91`,
@@ -228,6 +231,34 @@ certificate’s own node counts: about 16.0 CPU-hours for $n = 83$, 8.3 for $n =
 ranges of equal estimated cost; for $n = 83$ four parts are 0–86, 87–135, 136–171 and
 172–200, about 4 CPU-hours each, and for $n = 85$ two are 0–134 and 135–200. On a busier
 guest $n = 50$’s complete replay took twice its estimate.
+
+## Complete Replays Here, 2 and 3 October 2026
+
+Five certificates were replayed over all 201 directions in `mixed-replay` runs of four
+workers on shared 4-core x86-64 Linux containers (Intel Xeon at 2.1 or 2.8 GHz, `c++`
+13.3.0 at `-O2 -ffp-contract=off -fno-fast-math`, one BLAS and OpenMP thread,
+`PYTHONOPTIMIZE` unset), each run bound to the pinned tarball, and `mixed-merge` printed
+`FULL_REPLAY_MATCHES_SHIPPED`: every direction returned the record the certificate holds,
+the axis direction its cells and integer minimum and each oblique direction its node
+count and lower bound. $n = 83$ ran as the four ranges of `mixed-plan n83 --parts 4` in
+two sessions and $n = 85$ as two ranges; the others ran whole.
+
+| Certificate | Directions | Least oblique bound (index) | Axis cells, minimum | CPU-hours | Receipts |
+| --- | ---: | --- | --- | ---: | --- |
+| `mixed_n83_L937` | 201 | $1.0000000002030356$ (165) | 21,808,900, $1.0063110587189603$ | 16.26 | [`receipts/n83/`](receipts/n83/) |
+| `mixed_n85_L946` | 201 | $1.0000000021147502$ (182) | 12,694,969, $1.0025322687268394$ | 9.74 | [`receipts/n85-L946/`](receipts/n85-L946/) |
+| `mixed_n87_L948` | 201 | $1.0000000089739896$ (176) | 2,866,249, $1.013387013743792$ | 2.66 | [`receipts/n87/`](receipts/n87/) |
+| `mixed_n92_L975` | 201 | $1.0000000022907243$ (191) | 3,560,769, $1.008723611315222$ | 2.67 | [`receipts/n92-L975/`](receipts/n92-L975/) |
+| `mixed_n96_L996` | 201 | $1.0000000030392873$ (122) | 1,420,864, $1.0056403520432675$ | 2.43 | [`receipts/n96/`](receipts/n96/) |
+
+Each `merged.json` is the merged verdict, and `mixed-merge NAME --check` re-derives it;
+`mixed-audit wand125-mixed-bounds-afternoon-2026-10-02 --check` reads all five as
+`FULL_REPLAY_MATCHES_SHIPPED`. The runs replay the source’s own checker and per-angle
+functions, so they confirm the source’s runs rather than deciding coverage a second way.
+The checker’s controls are the $n = 37$ ones of the
+[October 1 packet](../wand125-point-and-mixed-2026-10-01/README.md#controls-for-the-mixed-checker),
+made with the same checker bytes and compile; no mutation of these certificates was run.
+`mixed_n91_L970`, about 1.6 CPU-hours by the pricing above, has no receipt yet.
 
 ## What `23e2284` Changed
 
@@ -273,9 +304,10 @@ retained file, receipt or claim changes. The six bundles of this packet were bui
 
 ## Limitations
 
-- **None of the six was replayed.** Every statement above is read from the retained
-  files, recomputed by the exact audit, or one of the pre-replay checks on the pinned
-  tarballs.
+- **`mixed_n91_L970` was not replayed.** What this packet says of it is read from the
+  retained files, recomputed by the exact audit, or one of the pre-replay checks on its
+  pinned tarball. The other five replays run the source’s own checker, so coverage is
+  decided by that checker alone.
 - **The bundles are pinned and not held.** A replay needs each tarball from the source at
   the pinned revision, with the digest above. `--via git` fetches it by Git; the raw-file
   address has been refused by a session proxy before.

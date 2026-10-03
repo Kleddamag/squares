@@ -44,8 +44,9 @@ issues:
         state: done
         note: >-
           Replayed here by Daniel's verifier and the author's indep_check.cpp at N = 24000,
-          and decided by the native parent-core route; the n = 12 record holds 31360/7901
-          verified since 3 October (T-078).
+          and decided by the native parent-core route; T-078 verified 31360/7901 on 3
+          October, and the same day this project's re-weighting of Daniel's points (T-079)
+          raised the verified bound past it, so 31360/7901 is the n = 12 reported bound.
     beads: [think-gh2o]
     answer_bead: think-5mkr
     replies: []

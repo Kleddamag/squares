@@ -198,13 +198,13 @@ def test_the_gap_is_exact_where_both_bounds_are(rows, cases) -> None:
     for n, case in cases.items():
         if case["status"] == "proved":
             assert gaps[n] == "0", n
-    # s(12): verified upper 4, verified lower 31360/7901 since 3 October 2026 (T-078;
-    # 15680/3951 before it), so the gap is 244/7901.
+    # s(12): verified upper 4, verified lower 15680000/3949423 since 3 October 2026 (T-079;
+    # 31360/7901 and 15680/3951 before it), so the gap is 117692/3949423.
     assert gaps[12] is not None
-    assert abs(float(gaps[12]) - 244 / 7901) < 1e-15
+    assert abs(float(gaps[12]) - 117692 / 3949423) < 1e-15
     html_12, _ = frontier.gap(cases[12])
-    assert r"\dfrac{244}{7901}" in html_12
-    assert html_12.endswith('<span class="site-approx">≈ 0.03088216…</span>')
+    assert r"\dfrac{117692}{3949423}" in html_12
+    assert html_12.endswith('<span class="site-approx">≈ 0.02979979…</span>')
 
 
 def _exact(form: str) -> Any:
@@ -281,8 +281,10 @@ def test_the_tables_cells_carry_those_decimals(page: str, cases) -> None:
     row_12 = page[page.index('<tr id="n-12"') : page.index('<tr id="n-13"')]
     assert [found.group(0) for found in APPROX.finditer(row_12)] == [
         '<span class="site-approx">≈ 3.96911783…</span>',
-        '<span class="site-approx">≈ 0.03088216…</span>',
+        '<span class="site-approx">≈ 3.97020020…</span>',
+        '<span class="site-approx">≈ 0.02979979…</span>',
     ]
+    assert r"\(\dfrac{15680000}{3949423}\)</span>" in row_12
     assert r"\(\dfrac{31360}{7901}\)</span>" in row_12
     table = page[page.index("<tbody>") : page.index("</tbody>")]
     expected = sum(

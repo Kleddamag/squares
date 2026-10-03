@@ -464,16 +464,17 @@ lower-bound side has underused methods.
 Counts below are computed from the artifacts, not asserted.
 
 Of the 247 open cases, **196** have Nagamochi’s formula as their verified lower bound.
-Two others use certificates already integrated into the register, the current external
-certificate bounds at $n = 12$ ($31360/7901$) and $n = 17$ ($116511/25000$). Complete
-interval and exact replays of external certificates hold the other 49: wand125’s mixed
-rectangle-measure certificates at $n = 37$, 50, 65, 66, 76, 84, 85, 90 and 92, and by
-monotonicity at $n = 51$ from $n = 50$ and at $n = 86$ and 87 from $n = 85$, and its
-rectangle-density certificates, directly or by monotonicity, at $n = 18$ to 20, 26 to
-31, 38 to 44, 52 to 58, 67 to 75, 88, 89 and 93 to 95. On 2026-10-02 those replays
-superseded this repository’s first-party bounds at $n = 18$, 19 and 20 ($4679/1000$,
-$24/5$ and $97/20$), Tokoharu’s at $n = 26$, 29 and 30, wand125’s point certificates at
-$n = 39$ to 41, 52, 53, 55, 56 and 68 to 72, and Nagamochi’s formula at 33 counts.
+Two others use certificates already integrated into the register: at $n = 12$ this
+project’s re-weighting of Evan Daniel’s points ($15680000/3949423$), and at $n = 17$ the
+current external certificate bound ($116511/25000$). Complete interval and exact replays
+of external certificates hold the other 49: wand125’s mixed rectangle-measure
+certificates at $n = 37$, 50, 65, 66, 76, 84, 85, 90 and 92, and by monotonicity at
+$n = 51$ from $n = 50$ and at $n = 86$ and 87 from $n = 85$, and its rectangle-density
+certificates, directly or by monotonicity, at $n = 18$ to 20, 26 to 31, 38 to 44, 52 to
+58, 67 to 75, 88, 89 and 93 to 95. On 2026-10-02 those replays superseded this
+repository’s first-party bounds at $n = 18$, 19 and 20 ($4679/1000$, $24/5$ and
+$97/20$), Tokoharu’s at $n = 26$, 29 and 30, wand125’s point certificates at $n = 39$ to
+41, 52, 53, 55, 56 and 68 to 72, and Nagamochi’s formula at 33 counts.
 $n = 32$ left the open cases on 2026-09-27, when a replayed external closed cover proved
 $s(32) = 6$, and $n = 21$ and $n = 45$ on 2026-09-29, when replayed external mixed
 covers proved $s(21) = 5$ and $s(45) = 7$; $n = 59$, 60 and 61 left them on 2026-10-02,
@@ -505,7 +506,7 @@ Ranked by gap—the best-known packing minus the verified lower bound, which is 
 | $n$ | gap | record | note |
 | --- | --- | --- | --- |
 | 17 | 0.0151 | Bidwell | carried to $\frac{116511}{25000}$ by Guzhou0806 after Kleddamag |
-| 12 | 0.0309 | grid | $4^2 - 4$, carried to $\frac{31360}{7901}$ by squarepacker after Daniel |
+| 12 | 0.0298 | grid | $4^2 - 4$, carried to $\frac{15680000}{3949423}$ by Levy after Daniel |
 | 31 | 0.0475 | grid | $6^2 - 5$, carried to $\frac{2381}{400}$ by wand125 after Tokoharu |
 | 44 | 0.0575 | grid | $7^2 - 5$, carried to $\frac{2777}{400}$ by wand125 after Tokoharu |
 | 76 | 0.0600 | grid | $9^2 - 5$, carried to $\frac{447}{50}$ by wand125 after Tokoharu |

@@ -1,0 +1,13 @@
+# command: ./verify/target/release/verify cert.txt 12 96000 2
+# cwd: scratch copy of the retained s12/verify crate (main.rs 226ef3f1), built with cargo build --release --locked and CARGO_PROFILE_RELEASE_OVERFLOW_CHECKS=true; binary sha256 60279b2ccbe3c9ff4157385f1531582437c2b33c2556046477046193e0bbd683; certificate = zcat certificate.txt.gz, sha256 6823e8e8
+# python3: not used by this command
+# host: 4 cores; load 1.01 0.50 0.21; started 2026-10-02T23:00:46Z
+D4-symmetric atom set: true  -> angles cover [0,45] deg
+atoms=1736 total weight = 119762776/10000000 = 11.976278
+s = 15680000/3949423 = 3.970200
+angles: k=0..39765 (N=96000), covering [0,45deg]
+min covered weight over ALL placements = 10000045/10000000 = 1.000004  (at angle k=0)
+VERIFIED: every CLOSED unit square inside C covers weight >= 1, and total weight < 12.
+==> 12 unit squares cannot be packed into any square of side < 15680000/3949423 = 3.970200204,
+    i.e.  s(12) >= 3.970200204
+# finished 2026-10-02T23:28:09Z; exit 0; wall 1642.496 s; CPU 2912.7 s (user 2903.882 + sys 8.818); load 4.00 4.14 3.94

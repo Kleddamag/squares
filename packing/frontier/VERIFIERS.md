@@ -25,8 +25,8 @@ second implementation agrees.
 
 ## The Short Version
 
-- **74** programs: **30** external and **44** first-party; **62** decide claims and **12** check premises.
-- **188** of **209** evidence entries name the programs that verified them: 129 reproduced with the producer’s code, 44 independently re-implemented, 8 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **75** programs: **30** external and **45** first-party; **62** decide claims and **13** check premises.
+- **192** of **213** evidence entries name the programs that verified them: 131 reproduced with the producer’s code, 45 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -42,7 +42,7 @@ second implementation agrees.
 | [`V-evand-zmx2`](#v-evand-zmx2) | zmx2 | Evan Daniel | external | decides | 18 | 9 |
 | [`V-evand-zm-mixed-py`](#v-evand-zm-mixed-py) | zm_mixed.py | Evan Daniel | external | decides | 5 | 6 |
 | [`V-evand-zeromargin-py`](#v-evand-zeromargin-py) | zeromargin.py | Evan Daniel | external | decides | 4 | 2 |
-| [`V-evand-angle-net-verify`](#v-evand-angle-net-verify) | verify (the angle-net arrangement sweep) | Evan Daniel | external | decides | 6 | 3 |
+| [`V-evand-angle-net-verify`](#v-evand-angle-net-verify) | verify (the angle-net arrangement sweep) | Evan Daniel | external | decides | 8 | 4 |
 | [`V-evand-xcheck-py`](#v-evand-xcheck-py) | xcheck.py | Evan Daniel | external | decides | 4 | 2 |
 | [`V-evand-zmcheck`](#v-evand-zmcheck) | zmcheck (verify2/src/main.rs) | Evan Daniel | external | decides | 3 | 2 |
 | [`V-evand-qx2-zm-py`](#v-evand-qx2-zm-py) | qx2_zm.py | Evan Daniel | external | decides | 2 | 1 |
@@ -88,7 +88,7 @@ second implementation agrees.
 | [`V-dilation-corollary`](#v-dilation-corollary) | devtools.dilation_corollary | Squares Project (Levy) | first-party | decides | 6 | 4 |
 | [`V-n12-independent-verifier`](#v-n12-independent-verifier) | cases/n12_fractional_certificate/independent_verify.py | Squares Project (Levy) | first-party | decides | 1 | 0 |
 | [`V-n17-weighted-instrument`](#v-n17-weighted-instrument) | cases.n17_weighted_certificate | Squares Project (Levy) | first-party | decides | 1 | 2 |
-| [`V-sqpack-parent-core-native`](#v-sqpack-parent-core-native) | sqpack.fractional.parent_core_interval | Squares Project (Levy) | first-party | decides | 4 | 4 |
+| [`V-sqpack-parent-core-native`](#v-sqpack-parent-core-native) | sqpack.fractional.parent_core_interval | Squares Project (Levy) | first-party | decides | 5 | 5 |
 | [`V-replay-owner-footprint-cover`](#v-replay-owner-footprint-cover) | devtools.replay_owner_footprint_cover | Squares Project (Levy) | first-party | decides | 1 | 1 |
 | [`V-five-dot-independent-union`](#v-five-dot-independent-union) | cases.n11_five_dot_cover.independent_union | Squares Project (Levy) | first-party | decides | 1 | 1 |
 | [`V-wall-owner-footprints`](#v-wall-owner-footprints) | devtools.wall_owner_footprints | Squares Project (Levy) | first-party | decides | 1 | 0 |
@@ -103,6 +103,7 @@ second implementation agrees.
 | [`V-audit-wand125-linear`](#v-audit-wand125-linear) | devtools.audit_wand125_linear | Squares Project (Levy) | first-party | premises | 0 | 0 |
 | [`V-replay-evand-zmx2`](#v-replay-evand-zmx2) | devtools.replay_evand_zmx2 | Squares Project (Levy) | first-party | premises | 5 | 5 |
 | [`V-audit-evand-mixed-covers`](#v-audit-evand-mixed-covers) | devtools.audit_evand_mixed_covers | Squares Project (Levy) | first-party | premises | 9 | 8 |
+| [`V-audit-s12-reweighted`](#v-audit-s12-reweighted) | devtools.audit_s12_reweighted | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-compare-evand-s32-sweep`](#v-compare-evand-s32-sweep) | devtools.compare_evand_s32_sweep | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-guzhou-r068`](#v-audit-guzhou-r068) | devtools.audit_guzhou_r068 | Squares Project (Levy) | first-party | premises | 2 | 2 |
 | [`V-audit-valid7-independent`](#v-audit-valid7-independent) | devtools.audit_valid7_independent | Squares Project (Levy) | first-party | premises | 1 | 1 |
@@ -334,6 +335,8 @@ Decides a positive-margin weighted point cover over an angle net by an exact arr
 | `E-n012-evand-15680-3951-source-replay` | replayed here | producer’s code | T-049 |
 | `E-n012-squarepacker-31360-7901-report` | the source’s own run | producer’s code | T-078 |
 | `E-n012-squarepacker-31360-7901-source-replay` | replayed here | producer’s code | T-078 |
+| `E-n012-levy-15680000-3949423-generator` | audited here | producer’s code | T-079 |
+| `E-n012-levy-15680000-3949423-source-replay` | replayed here | producer’s code | T-079 |
 | `E-n021-evand-5000-1001-report` | the source’s own run | producer’s code | T-050 |
 | `E-n021-evand-5000-1001-source-replay` | replayed here | producer’s code | T-050 |
 
@@ -1036,6 +1039,7 @@ Decides a threshold charge certificate's rows by direct closed-box interval cove
 | `E-n011-wang-li-native-parent-core` | replayed here | independent | T-061 |
 | `E-n012-evand-15680-3951-native-parent-core` | audited here | independent | T-049 |
 | `E-n012-squarepacker-31360-7901-native-parent-core` | audited here | independent | T-078 |
+| `E-n012-levy-15680000-3949423-native-parent-core` | audited here | independent | T-079 |
 
 ### `V-replay-owner-footprint-cover`
 
@@ -1243,6 +1247,21 @@ Parses zmx2 root logs with its own code, requires every root once with none unce
 | `E-n013-evand-casefree-cover-zmx2-replay` | replayed here | producer’s code | T-006 |
 | `E-n021-evand-mixed-cover-zmx2-replay` | replayed here | producer’s code | T-052 |
 | `E-n045-evand-mixed-cover-zmx2-replay` | replayed here | producer’s code | T-053 |
+
+### `V-audit-s12-reweighted`
+
+**devtools.audit_s12_reweighted** · Squares Project (Levy) · first-party · checks premises · Python · exact-algebraic
+
+Decides everything the re-weighted s(12) certificate rests on but coverage, in integers and Fraction: its bytes, the source format, the total weight below 12, the side and scale, each point against Daniel's, D4 invariance, and both controls.
+
+- Source: [`packing/devtools/audit_s12_reweighted.py`](../../packing/devtools/audit_s12_reweighted.py)
+- Versions run: this repository's commits, which Git holds
+- What its authors read and used: [`packing/devtools/audit_s12_reweighted.py`](../../packing/devtools/audit_s12_reweighted.py)
+- Note: Its module statement says it shares no code with the tools that made the certificate.
+
+| evidence | run | code | results |
+| --- | --- | --- | --- |
+| `E-n012-levy-15680000-3949423-audit` | audited here | no code | T-079 |
 
 ### `V-compare-evand-s32-sweep`
 

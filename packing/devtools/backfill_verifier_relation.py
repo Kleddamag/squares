@@ -170,6 +170,17 @@ FIXES: dict[str, Fix] = {
             "already uses it. The pattern of E-n045-wand125-point-cover-source-replay"
         ),
     ),
+    # Owner decision 2026-10-03 for T-079; the records lane makes the same correction on
+    # #298, and once it arrives this fix is redundant and is removed.
+    "E-n012-levy-15680000-3949423-audit": Fix(
+        INDEPENDENT,
+        NOT_APPLICABLE,
+        (
+            "T-079's composition calls the exact audit well-formedness only, and the audit's "
+            "docstring leaves coverage to the verifier: it checks the premises and decides "
+            "nothing, so it has no relation to the producer's decision"
+        ),
+    ),
     "E-n045-wand125-point-cover-report": Fix(
         INDEPENDENT,
         SAME,
@@ -277,6 +288,29 @@ DECISIONS: dict[str, tuple[Classification, str]] = {
             "Its replay stages the source's own qx2_zm.py at the hashes run V3 names and runs "
             "it here; plan_valid7_replay only copies, shards and compares leaves, and decides "
             "nothing. The record says same-implementation."
+        ),
+    ),
+    "E-n012-levy-15680000-3949423-generator": (
+        runs(("V-evand-angle-net-verify",), None, "decision"),
+        (
+            "This project re-weighted Daniel's points and decided the result with Daniel's "
+            "own angle-net verify (main.rs 226ef3f1), built by s12_angle_net_rescale; the "
+            "record names the producer's run."
+        ),
+    ),
+    "E-n012-levy-15680000-3949423-source-replay": (
+        runs(("V-evand-angle-net-verify",), SAME, "decision"),
+        (
+            "It rebuilds the retained s12/verify crate at main.rs 226ef3f1 with overflow "
+            "checks and runs it on the certificate: the producer's verifier re-run."
+        ),
+    ),
+    "E-n012-levy-15680000-3949423-audit": (
+        runs(("V-audit-s12-reweighted",), NOT_APPLICABLE, "decision"),
+        (
+            "devtools.audit_s12_reweighted checks the certificate's premises in integers "
+            "and Fraction and leaves coverage to the verifier: a premise check, neither a "
+            "replay of the decision nor an implementation of it."
         ),
     ),
     "E-n032-evand-zmx2-full-sym-report": (
@@ -806,6 +840,8 @@ def compatible(expected: str | None, entry: Entry) -> bool:
     if expected is None:
         return True
     if recorded == NOT_APPLICABLE and not entry.get("replay"):
+        return True
+    if recorded == NOT_APPLICABLE and expected == NOT_APPLICABLE:
         return True
     if recorded in RANK and expected in RANK:
         return RANK[recorded] == RANK[expected]

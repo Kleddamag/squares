@@ -202,6 +202,19 @@ def load_case(case: Case) -> ParentCoreCertificate:
     return parse_certificate(case.n, values, case.net)
 
 
+def file_case(path: Path, n: int, net: int) -> str:
+    """Register a certificate file in the source's format as a case of its own.
+
+    For certificates derived from the source's, such as a rescaled or re-weighted s(12)
+    file, decided over the net ``net``. The digest is the file's own, so a journal or
+    receipt names exactly the bytes it decided; there is no recorded source minimum.
+    """
+    data, _ = read_source(path, None)
+    name = f"file:{path.name}:{net}"
+    CASES[name] = Case(n, path, hashlib.sha256(data).hexdigest(), "", -1, net)
+    return name
+
+
 def _shown(path: Path) -> str:
     return str(path.relative_to(REPO)) if path.is_relative_to(REPO) else str(path)
 
@@ -363,7 +376,11 @@ def run(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--case", choices=sorted(CASES), required=True)
+    parser.add_argument(
+        "--case",
+        choices=sorted(CASES),
+        help="a pinned case; without it, --certificate is a case of its own (--n, --net)",
+    )
     select = parser.add_mutually_exclusive_group(required=True)
     select.add_argument("--rows", nargs="+", type=int)
     select.add_argument("--pilot", action="store_true", help="first, source-minimum, last row")
@@ -375,9 +392,20 @@ def main() -> int:
     parser.add_argument(
         "--certificate", type=Path, help="decide this file at the case's net, e.g. a control"
     )
-    parser.add_argument("--certificate-sha256", help="the digest --certificate must have")
+    parser.add_argument(
+        "--certificate-sha256", help="with --case, the digest --certificate must have"
+    )
+    parser.add_argument("--n", type=int, default=12, help="with --certificate and no --case")
+    parser.add_argument("--net", type=int, default=NET, help="with --certificate and no --case")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    if args.case is None:
+        if args.certificate is None:
+            parser.error("give --case, --certificate, or both")
+        # A file decided as a case of its own, at the net it names, pinned by its own
+        # digest; with --case, a file is decided at that case's net and pinned digest.
+        args.case = file_case(args.certificate.resolve(), args.n, args.net)
+        args.certificate = None
     source_state = _git("rev-parse", "HEAD"), bool(_git("status", "--porcelain"))
     case = resolve_case(args.case, args.certificate, args.certificate_sha256)
     if args.premises:
@@ -397,7 +425,7 @@ def main() -> int:
             rows = None
         elif args.pilot:
             last = len(net_rows(case.net)) - 1
-            rows = tuple(sorted({0, case.source_bin, last}))
+            rows = tuple(sorted({0, case.source_bin, last} - {-1}))
         else:
             rows = tuple(args.rows)
         resumed = (

@@ -182,7 +182,9 @@ def evidence_problems(
 ) -> list[str]:
     """What is wrong with the evidence entries' verifier fields, given the registry: every
     id resolves; a replay names a program that decides, since a premise check never
-    decides alone; an independent implementation names the record of what its authors
+    decides alone, unless the entry claims no relation to the producer's decision
+    (`not-applicable`), which is what a premise check recorded on its own is; an
+    independent implementation names the record of what its authors
     read, unless it is grandfathered; an entry's own independence record resolves."""
     problems: list[str] = []
     for entry in evidence:
@@ -195,7 +197,12 @@ def evidence_problems(
             problems.append(f"{eid}: independence_record {record} {problem}")
         if unknown:
             continue
-        if entry.get("replay") and named and not any(verifiers[v].decides for v in named):
+        if (
+            entry.get("replay")
+            and named
+            and entry.get("relationship_to_generator") != NOT_APPLICABLE
+            and not any(verifiers[v].decides for v in named)
+        ):
             problems.append(
                 f"{eid}: its replay names no program that decides; a premise check never "
                 "decides a claim alone"

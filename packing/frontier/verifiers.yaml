@@ -1006,6 +1006,21 @@ verifiers:
       exact total and D4 invariance.
     source: [packing/devtools/audit_evand_mixed_covers.py]
 
+  - id: V-audit-s12-reweighted
+    program: devtools.audit_s12_reweighted
+    author: Squares Project (Levy)
+    provenance: first-party
+    language: [Python]
+    methods: [exact-algebraic]
+    role: premises
+    summary: >-
+      Decides everything the re-weighted s(12) certificate rests on but coverage, in
+      integers and Fraction: its bytes, the source format, the total weight below 12, the
+      side and scale, each point against Daniel's, D4 invariance, and both controls.
+    source: [packing/devtools/audit_s12_reweighted.py]
+    independence_record: packing/devtools/audit_s12_reweighted.py
+    note: Its module statement says it shares no code with the tools that made the certificate.
+
   - id: V-compare-evand-s32-sweep
     program: devtools.compare_evand_s32_sweep
     author: Squares Project (Levy)

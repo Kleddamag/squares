@@ -704,6 +704,7 @@ sources:
     represented_by: [frontier/n-083.md, frontier/n-101.md, frontier/n-102.md, frontier/n-103.md, frontier/n-104.md, frontier/n-105.md]
     evidence:
       - E-n083-wand125-linear-935-report
+      - E-n083-wand125-linear-935-source-replay
       - E-n101-wand125-linear-1028-report
       - E-n101-wand125-linear-1028-source-replay
     notes: >-
@@ -718,7 +719,9 @@ sources:
       refused two mutated n = 101 measures. The n = 101 certificate's complete replay of 2
       October matched the shipped run at all 201 directions
       (E-n101-wand125-linear-1028-source-replay), which put n = 101 to 105 in the verified
-      lane (T-080); at n = 83 one angle was replayed, to price the replay. The 2 October
+      lane (T-080); n = 83's of 3 October matched too
+      (E-n083-wand125-linear-935-source-replay), which puts T-073 at V3/C3 and moves no
+      case value, the replayed mixed 937/100 being higher there. The 2 October
       review read the certificates and the checker, with no blocking defect (T-073 at C1). The source's margin over Green at n = 83, "more than 0.0833", is
       false (it is 0.083266...); the bound is unaffected. The issue announces n = 82 at 9.32,
       which no revision publishes yet. A later revision, 06eeb40c, adds three
@@ -793,13 +796,14 @@ sources:
     local: resources/web/wand125-linear-n82-2026-10-02/
     source_key: '[wand125 linear n82 2026-10-02]'
     scope: {n_values: [82]}
-    reviewed: '2026-10-02'
+    reviewed: '2026-10-03'
     source_date: '2026-10-02'
     disposition: current-report
     replay_disposition: case-specific
     represented_by: [frontier/n-082.md]
     evidence:
       - E-n082-wand125-linear-932-report
+      - E-n082-wand125-linear-932-source-replay
     notes: >-
       Revision b00fc70f1904e9b1b567afee056d347f911209e8, retrieved at 2026-10-02T16:53Z for a
       comment of that day on jlevy/squares#294; the directory was first committed at
@@ -807,8 +811,10 @@ sources:
       of the source's n = 83 linear certificate scaled by 932/935, checked by
       code/unified_linear_verify.cpp, byte for byte the checker of T-073. Recorded as a
       reported lower bound (T-076), above Green's reported value, which the case reported
-      before it. The exact audit and the replay's checks before its first angle pass; no
-      angle was replayed, and the proof-bundle tarball is pinned by digest and not retained.
+      before it. The exact audit and the replay's checks before its first angle pass, and the complete
+      replay of 3 October matched the shipped run at all 201 directions
+      (E-n082-wand125-linear-932-source-replay), which put s(82) >= 233/25 in the verified
+      lane; the proof-bundle tarball is pinned by digest and not retained.
   - id: squarepacker-s12-lower-bound-2026-10-02
     title: Daniel's s(12) certificate rescaled by 7902/7901
     role: source-repository

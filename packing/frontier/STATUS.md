@@ -89,7 +89,7 @@ Follow the `n` link for full provenance, numerical evidence, conflicts, and bloc
 | [`79`](n-079.md) | `9` | `9` | `9` | `9` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`80`](n-080.md) | `9` | `9` | `9` | `9` | proved | replayed here, external proof | — | 2026-08-24 |
 | [`81`](n-081.md) | `9` | `9` | `9.0` | `9` | proved | replayed here, external proof | — | 2026-08-24 |
-| [`82`](n-082.md) | `6 + (5/2)√2` | `6 + (5/2)√2` | `233/25` | `1 + √65` | open | replayed here, external proof | formal lower differs from report | 2026-10-02 |
+| [`82`](n-082.md) | `6 + (5/2)√2` | `6 + (5/2)√2` | `233/25` | `233/25` | open | replayed here | — | 2026-10-02 |
 | [`83`](n-083.md) | `9.63482562092335` | `10` | `937/100` | `937/100` | open | replayed here | formal upper trails report; catalogue ahead, intake pending | 2026-10-02 |
 | [`84`](n-084.md) | `9 + (1/2)√2` | `9 + (1/2)√2` | `47/5` | `47/5` | open | replayed here | — | 2026-10-02 |
 | [`85`](n-085.md) | `(11/2) + 3 √2` | `(11/2) + 3 √2` | `473/50` | `473/50` | open | replayed here | — | 2026-10-02 |

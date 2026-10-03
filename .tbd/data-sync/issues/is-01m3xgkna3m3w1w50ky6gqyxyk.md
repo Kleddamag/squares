@@ -5,7 +5,7 @@ title: "Families of the n = 1..324 known-best packings: patterns, contact shadin
 kind: epic
 status: in_progress
 priority: 2
-version: 19
+version: 20
 labels:
   - research
 dependencies: []
@@ -26,8 +26,9 @@ child_order_hints:
   - is-01m3xqak9dr1e1r1z9ydv5gdf7
   - is-01m3yqvdgvgy8pbdg53j9xb7pj
   - is-01m3z2p86sfyxcc595rne126t7
+  - is-01m41cx3q2pckpmsmmwq1rsngz
 created_at: 2026-10-02T05:15:20.771Z
-updated_at: 2026-10-03T15:46:59.981Z
+updated_at: 2026-10-03T17:27:33.847Z
 ---
 Owner question, 2026-10-02, after the atlas triangle view (think-kbo4) put all 324 known-best packings side by side.
 

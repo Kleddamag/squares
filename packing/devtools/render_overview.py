@@ -1155,11 +1155,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     output = args.output.resolve()
     pages = render_all()
     fragments = result_fragments()
+    records = case_records()
     forwarders = forwarder_pages()
     if args.check:
         stale = [
             p.name
-            for p in (*pages, *fragments, *forwarders)
+            for p in (*pages, *fragments, *records, *forwarders)
             if not (output / p.name).is_file()
             or (output / p.name).read_text(encoding="utf-8") != p.html
         ]
@@ -1167,11 +1168,11 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"stale or missing: {', '.join(stale)}", file=sys.stderr)
             return 1
         print(
-            f"{len(pages)} pages, {len(fragments)} result overviews and "
-            f"{len(forwarders)} forwarders match a fresh render"
+            f"{len(pages)} pages, {len(fragments)} result overviews, {len(records)} case "
+            f"records and {len(forwarders)} forwarders match a fresh render"
         )
         return 0
-    write_site(output, [*pages, *fragments, *forwarders])
+    write_site(output, [*pages, *fragments, *records, *forwarders])
     for page in pages:
         print(f"wrote {output / page.name} ({len(page.html) // 1024} KB)")
     for forwarder in forwarders:
@@ -1181,6 +1182,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     print(
         f"wrote {len(fragments)} result overviews under "
         f"{', '.join(f'{place}/' for place in places)} ({total // 1024} KB in all)"
+    )
+    kept = sum(len(record.html.encode("utf-8")) for record in records)
+    print(
+        f"wrote {len(records)} case records under {output / 'cases'}/ "
+        f"({kept // 1024} KB in all)"
     )
     return 0
 

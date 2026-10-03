@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from devtools import check_published_site, render_overview
+from devtools import check_published_site, render_case_pages, render_overview
 from devtools import render_n11_lower_bounds_explainer_pdf as pdf
 from devtools.check_published_site import (
     LINK_CHECKED_PAGES,
@@ -20,6 +20,7 @@ from devtools.check_published_site import (
     OPTIMALITY_PAPER_FILES,
     OPTIMALITY_PAPER_MARKDOWN,
     PAPERS_CURRENT,
+    RECORD_FILE_SAMPLE,
     RECORD_LINK_PAGES,
     RECORD_LINK_SAMPLE,
     SERVED,
@@ -103,6 +104,10 @@ def source_receipt(page: bytes) -> bytes:
     return f"\n%sqpack-source-html-sha256: {hashlib.sha256(page).hexdigest()}\n".encode()
 
 
+#: How many cases the fake deploy's record page indexes.
+CASE_COUNT = 324
+
+
 def page(
     canonical: str,
     *,
@@ -113,11 +118,16 @@ def page(
 ) -> bytes:
     """A served page as the check reads one: the head of the page served at `canonical`,
     with its canonical link, then for a paper its bar's current entry (`bar`), the stamp
-    and a repository link."""
+    and a repository link; the record page also indexes every case's record file."""
     path = canonical.removeprefix(render_overview.SITE_URL) or "index.html"
+    index = (
+        "".join(f'<a href="{n}.html" data-case="{n}">{n}</a>' for n in range(1, CASE_COUNT + 1))
+        if path == render_case_pages.CASES_HOME
+        else ""
+    )
     return (
         f"{head(path)}{bar}"
-        f'<p>({stamp})</p><a href="{REPO_URL}/blob/{ref}/{link}">Repository</a>'
+        f'<p>({stamp})</p><a href="{REPO_URL}/blob/{ref}/{link}">Repository</a>{index}'
     ).encode()
 
 
@@ -131,6 +141,13 @@ def explainer_page(canonical: str = PAGE_URL, **kwargs: str) -> bytes:
 
 #: The result overviews the fixture's results table names, by address beside the pages.
 OVERVIEWS = ("result/t-001.html", "result/t-002.html")
+
+
+def case_record(n: int) -> bytes:
+    """A case's record file as it is served: its record, which names its case."""
+    return (
+        f'<html data-case="{n}"><article class="site-case" data-case="{n}"></article>'.encode()
+    )
 
 
 def result_overview(
@@ -201,6 +218,9 @@ def site_naming(named: Sequence[str], /, **overrides: bytes) -> dict[str, bytes]
         for name in SITE_PAGES
     }
     pages[EXPLAINER] = explainer_page()
+    # The record files a check samples, beside the record page that indexes them all.
+    for n in {1, RECORD_FILE_SAMPLE, CASE_COUNT}:
+        pages[render_case_pages.case_url(n)] = case_record(n)
     for address in OVERVIEWS:
         pages[address] = result_overview(address.rsplit("/", 1)[1].removesuffix(".html"))
     pages[OPTIMALITY_PAPER] = optimality_paper()
@@ -415,8 +435,10 @@ def test_check_requires_each_page_to_name_its_own_canonical_url(
 
     for name in SITE_PAGES:
         wrong = site_pages(**{name: page(PAGE_URL)})
-        (failure,) = failures(monkeypatch, fake_site(wrong))
-        assert f"{name} names canonical URL" in failure, name
+        found = failures(monkeypatch, fake_site(wrong))
+        assert any(f"{name} names canonical URL" in line for line in found), name
+        # The record page served as another page has lost its index of record files too.
+        assert len(found) == (2 if name == render_case_pages.CASES_PAGE else 1), found
 
     missing = site_pages(**{"index.html": b"<p>(" + PUBLICATION_EDITION.encode() + b")</p>"})
     found = failures(monkeypatch, fake_site(missing))
@@ -854,10 +876,11 @@ def test_check_requires_a_forwarder_at_every_address_a_page_used_to_have(
     """A page that moved or was withdrawn is still served at its old address, as a
     forwarder naming where a visit goes now (`render_overview.MOVED_PAGES`): the three
     repository documents that left the site, the papers, which moved under `papers/`,
-    and the one page of every case record, whose records moved under `cases/`. A deploy without one 404s every link written before the change. It fails
-    when an old address is gone, when the page there still is the old page, and when a
-    forwarder leads anywhere but where a visit should go, in any one of the four places
-    it says where that is."""
+    and the one page of every case record, whose records moved under `cases/`. A deploy
+    without one 404s every link written before the change. It fails when an old address
+    is gone, when the page there still is the old page, and when a forwarder leads
+    anywhere but where a visit should go, in any one of the four places it says where
+    that is."""
     moved = dict(render_overview.MOVED_PAGES)
     assert set(moved) == {
         "results.html",

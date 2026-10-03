@@ -94,7 +94,13 @@ from urllib.parse import urljoin
 from playwright.sync_api import Browser, BrowserContext, sync_playwright
 from playwright.sync_api import Error as PlaywrightError
 
-from devtools import overview_data, render_overview, result_overview, social_card
+from devtools import (
+    overview_data,
+    render_case_pages,
+    render_overview,
+    result_overview,
+    social_card,
+)
 from devtools.overview_sections import LOWER_BOUNDS_PAPER, OPTIMALITY_PAPER, result_fragment
 from devtools.render_n11_lower_bounds_explainer import (
     COMPOSITE_ASSETS,
@@ -124,6 +130,14 @@ CANONICAL = re.compile(r'<link\s+rel="canonical"\s+href="([^"]*)"')
 #: result's overview opens: the one block it is, naming its result.
 ROW_SOURCE = re.compile(r'data-row-pop-src="([^"]+)"')
 RESULT_OVERVIEW = re.compile(r'\A<div class="site-result" data-result-overview="(t-\d{3})">')
+#: The record page's index, each case's link to its record file beside it, and the
+#: record a record file holds (`render_case_pages`).
+CASE_INDEX_LINK = re.compile(r'href="(\d+)\.html" data-case="(\d+)"')
+CASE_RECORD = re.compile(r'<article class="site-case" data-case="(\d+)"')
+#: The record files a deploy check fetches: the first and last cases indexed and the
+#: settled n = 11. The record page and every case popover fetch these files, so a deploy
+#: that wrote none shows every record as a failed fetch, which no page fetch reveals.
+RECORD_FILE_SAMPLE = 11
 
 #: The lower-bounds explainer's Markdown edition and its PDF, by path under the site's
 #: root: beside the page, under the paper's slug.
@@ -973,6 +987,7 @@ def check(
     heads: dict[str, str] = {}
     forwarded: dict[str, tuple[str, str]] = {}
     canonicals = forwarder_canonicals()
+    indexed: list[int] = []
     for name in SITE_PAGES:
         url = site if name == "index.html" else site + name
         _, text = served_page(name, url, render_overview.canonical_url(name))
@@ -984,6 +999,8 @@ def check(
             tables[name] = text
         if name == render_overview.RESULTS_PAGE:
             overviews = sorted(set(ROW_SOURCE.findall(text)))
+        if name == render_case_pages.CASES_PAGE:
+            indexed = [int(n) for n, case in CASE_INDEX_LINK.findall(text) if n == case]
 
     # The result overviews are files beside the pages, fetched when a row is opened: a
     # deploy that lost one would show only as a popover that keeps its short detail.
@@ -1009,6 +1026,30 @@ def check(
         bodies.append(fragment)
     if bodies:
         links_main("the result overviews", "\n".join(bodies))
+
+    # The case records are files beside the record page, which it and every case popover
+    # fetch: the index names each in order, and a sample of them is fetched.
+    results.append(
+        (
+            bool(indexed) and indexed == list(range(1, len(indexed) + 1)),
+            f"{render_case_pages.CASES_PAGE} indexes {len(indexed)} case records in order",
+        )
+    )
+    sample = (
+        sorted({indexed[0], RECORD_FILE_SAMPLE, indexed[-1]} & set(indexed)) if indexed else []
+    )
+    for n in sample:
+        address = render_case_pages.case_url(n)
+        status, body = fetch(site + address, timeout=timeout)
+        found = CASE_RECORD.search(body.decode("utf-8", errors="replace"))
+        holds = None if found is None else int(found.group(1))
+        results.append(
+            (
+                status == 200 and holds == n,
+                f"case record {address}: HTTP {status}, {len(body)} bytes"
+                + ("" if holds == n else f", but it holds {holds!r}"),
+            )
+        )
 
     # Every link above resolves; whether every link is there is asked of the renderer.
     try:

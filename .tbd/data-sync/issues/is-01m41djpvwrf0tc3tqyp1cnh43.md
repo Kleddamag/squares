@@ -5,15 +5,15 @@ title: "Page metadata: audit OpenGraph, Twitter and head metadata on every publi
 kind: task
 status: open
 priority: 2
-version: 2
+version: 3
 labels: []
 dependencies: []
 parent_id: is-01m41d7edgm9wc99zdrkaa5ehy
 created_at: 2026-10-03T17:39:21.596Z
-updated_at: 2026-10-03T23:02:48.022Z
+updated_at: 2026-10-03T23:40:25.477Z
 ---
 Owner, 2026-10-03: https://jlevy.github.io/squares/papers/n11-optimality-review.html shows no OpenGraph image or details when shared. Audit every page the Pages build publishes (site pages, papers, the explainer, forwarders, case records, result fragments excluded as not pages): title, description, canonical, og:title/description/type/url/site_name/locale/image (+alt, width, height, type), twitter card tags, and favicon; list what each lacks.
 
 ## Notes
 
-State 2026-10-03 23:10 UTC: in jlevy/squares#319 at 5216f82e8; MERGEABLE/CLEAN, 29 checks pass, 28 skipped by design; merges cleanly into main at 0ca18df47; no GitHub review. Closes when #319 merges.
+State 2026-10-03 ~23:55 UTC: in jlevy/squares#319 at 5216f82e8; MERGEABLE/CLEAN, 29 checks pass, 28 skipped by design; merges cleanly into main at 0ca18df47. No review on GitHub and no agent review this session. Closes when #319 merges.

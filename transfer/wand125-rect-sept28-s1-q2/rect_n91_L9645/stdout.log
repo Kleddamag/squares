@@ -1,7 +1,0 @@
-{"completed": 10, "total": 201, "elapsed_seconds": 4954.83976316452, "nodes": 4030840}
-{"completed": 20, "total": 201, "elapsed_seconds": 5160.29926109314, "nodes": 5047422}
-{"completed": 30, "total": 201, "elapsed_seconds": 5385.619771242142, "nodes": 6074720}
-{"completed": 40, "total": 201, "elapsed_seconds": 5631.005200386047, "nodes": 7106948}
-{"completed": 50, "total": 201, "elapsed_seconds": 5898.135424613953, "nodes": 8155050}
-{"completed": 60, "total": 201, "elapsed_seconds": 6192.706723451614, "nodes": 9235814}
-{"completed": 70, "total": 201, "elapsed_seconds": 6525.68591427803, "nodes": 10362206}

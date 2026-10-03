@@ -491,10 +491,11 @@ RETAINED_EQUALITIES = frozenset(
         *range(98, 101),
     }
 )
-#: What a rebuild from the current records prints: the poster's 39, and the five cases
+#: What a rebuild from the current records prints: the poster's 39, the five cases
 #: proved here on 2026-10-02 by replayed mixed covers, s(59) = s(60) = s(61) = 8 and
-#: s(77) = s(78) = 9.
-REBUILT_EQUALITIES = RETAINED_EQUALITIES | {59, 60, 61, 77, 78}
+#: s(77) = s(78) = 9, and s(97) = 10, proved on 2026-10-03 as the case k = 10 of T-064's
+#: s(k^2 - 3) = k, the one count up to 100 that family adds.
+REBUILT_EQUALITIES = RETAINED_EQUALITIES | {59, 60, 61, 77, 78, 97}
 
 
 def _assert_current_composite_equalities(bounds: list[str], expected: frozenset[int]) -> None:

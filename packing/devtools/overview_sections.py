@@ -1303,8 +1303,9 @@ def status_chips(result: Result) -> str:
 
 def recent_table(overview: Overview, defaults: FilterDefaults = RECENT_DEFAULTS) -> str:
     """The overview's Recent Results: the results page's table (`table_of_results`), its
-    bar starting at the recent defaults. The line under it, "See all results", is the
-    one link from this table to the other."""
+    bar starting at the recent defaults. The line under it, "See all results", links to
+    the other table, as a status line's superseding results do, each to its row there
+    (`supersession_marks`)."""
     return table_of_results(overview, defaults, here=False)
 
 

@@ -988,6 +988,63 @@ def test_a_declared_supersession_names_a_later_result_on_a_shared_case() -> None
     ]
 
 
+def test_a_result_a_case_bound_rests_on_is_never_superseded_whole() -> None:
+    """A result a case bound still rests on stays in the tables, so no declaration hides
+    it as superseded whole, though one may supersede it in part (`think-rf21`): T-004, an
+    audit at n = 46, carried that case's lower bound when this was found."""
+    dated = {"T-036": "2026-09-24", "T-060": "2026-09-29"}
+    scopes = {"T-036": {11}, "T-060": {11}}
+    holding = frozenset({"T-036"})
+    problems = check_results.superseded_by_problems
+    assert problems(_superseded_by(("T-060", "whole")), dated, scopes, holding) == [
+        (
+            "T-036: superseded_by names T-060 as superseding all of it, but a case bound "
+            "still rests on it"
+        )
+    ]
+    assert problems(_superseded_by(("T-060", "part")), dated, scopes, holding) == []
+    assert problems(_superseded_by(("T-060", "whole")), dated, scopes) == []
+    # The register's own holders: every case bound rests on a registered result, and none
+    # of the results declared superseded whole is among them.
+    holders = check_results.holding_results()
+    register = safe_load(check_results.RESULTS.read_text(encoding="utf-8"))["results"]
+    assert holders <= {record["id"] for record in register}
+    whole = {
+        record["id"]
+        for record in register
+        for item in record.get("superseded_by") or []
+        if item["extent"] == "whole"
+    }
+    assert whole == {"T-031"}
+    assert not whole & holders
+
+
+def test_declared_supersessions_never_lead_back() -> None:
+    """Two results of one day could each declare the other supersedes them, and both rows
+    would be hidden; a cycle is named once, from its first result (`think-rf21`)."""
+
+    def declaring(rid: str, *later: str) -> dict:
+        items = [{"result": other, "extent": "whole", "what": "All."} for other in later]
+        return {"id": rid, "superseded_by": items}
+
+    cycles = check_results.superseded_by_cycles
+    assert cycles([declaring("T-035", "T-036"), declaring("T-036", "T-035")]) == [
+        "T-035: superseded_by leads back to it, T-035 to T-036 to T-035"
+    ]
+    three = [
+        declaring("T-001", "T-002"),
+        declaring("T-002", "T-003"),
+        declaring("T-003", "T-001"),
+    ]
+    assert cycles(three) == [
+        "T-001: superseded_by leads back to it, T-001 to T-002 to T-003 to T-001"
+    ]
+    assert cycles([declaring("T-035", "T-036"), declaring("T-036")]) == []
+    assert cycles([declaring("T-036", "T-036")]) == []
+    register = safe_load(check_results.RESULTS.read_text(encoding="utf-8"))["results"]
+    assert cycles(register) == []
+
+
 def test_a_bound_never_declares_what_supersedes_it() -> None:
     """A bound's supersession is derived from the case records, so a declaration on one
     is refused: two accounts of it could disagree."""

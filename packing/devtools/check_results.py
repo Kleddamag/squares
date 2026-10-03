@@ -727,7 +727,10 @@ def _earlier(date_of: str, than: str) -> bool:
 
 
 def superseded_by_problems(
-    record: dict, dated: Mapping[str, str], scopes: Mapping[str, set[int]]
+    record: dict,
+    dated: Mapping[str, str],
+    scopes: Mapping[str, set[int]],
+    holding: frozenset[str] = frozenset(),
 ) -> list[str]:
     """What is wrong with a result's `superseded_by`, the later results it declares
     imply it in whole or in part.
@@ -737,8 +740,11 @@ def superseded_by_problems(
     beside it would be a second account that could disagree. Each named result is in
     the register, is not this one, appears once, is dated no earlier than this one
     (`result_date`: when its source published it or this project established it, not
-    when it was registered), and shares a case with it. `dated` and `scopes` are every
-    result's date and cases.
+    when it was registered), and shares a case with it. A result a case bound still
+    rests on is not superseded as a whole, whatever implies it, since the tables would
+    hide the row a case's bound cites; it may be superseded in part. `dated` and
+    `scopes` are every result's date and cases, and `holding` the results a case bound
+    rests on now (`holding_results`).
     """
     rid = record["id"]
     declared = record.get("superseded_by") or []
@@ -773,7 +779,53 @@ def superseded_by_problems(
             )
         if not scopes.get(rid, set()) & scopes.get(other, set()):
             problems.append(f"{rid}: superseded_by names {other}, which shares no case with it")
+        if item.get("extent") == "whole" and rid in holding:
+            problems.append(
+                f"{rid}: superseded_by names {other} as superseding all of it, but a case "
+                "bound still rests on it"
+            )
     return problems
+
+
+def superseded_by_cycles(results: Iterable[Mapping[str, Any]]) -> list[str]:
+    """The declared supersessions that lead back to where they start. A result is
+    superseded only by one dated no earlier than itself (`superseded_by_problems`), so
+    two results of one day could each declare the other, and both rows would be hidden
+    for a supersession neither has. Each cycle is named once, from its first result in
+    the register, and a result that names itself is `superseded_by_problems`' to say."""
+    later = {
+        str(record["id"]): [str(item["result"]) for item in record.get("superseded_by") or []]
+        for record in results
+    }
+    problems: list[str] = []
+    found: set[frozenset[str]] = set()
+    for start in later:
+        paths: list[tuple[str, ...]] = [(start,)]
+        while paths:
+            path = paths.pop()
+            for other in later.get(path[-1], []):
+                if other == start and len(path) > 1 and frozenset(path) not in found:
+                    found.add(frozenset(path))
+                    problems.append(
+                        f"{start}: superseded_by leads back to it, "
+                        f"{' to '.join((*path, start))}"
+                    )
+                elif other not in path:
+                    paths.append((*path, other))
+    return problems
+
+
+def holding_results() -> frozenset[str]:
+    """Every result a case bound rests on now, lower or upper, verified or reported:
+    `render_recent_results.held` over every case record."""
+    from devtools.render_recent_results import held, load_records  # noqa: PLC0415
+
+    records = load_records()
+    holders: set[str] = set()
+    for n in records.cases:
+        case = held(n, records)
+        holders |= case.lower_holders | case.upper_holders
+    return frozenset(holders)
 
 
 def established_problems(record: dict, last_reviewed: str) -> list[str]:
@@ -955,6 +1007,8 @@ def main() -> int:
         problems.append(f"register ids are not contiguous T-001..: {actual_ids}")
     scopes = {record["id"]: scope_values(record["scope"]) for record in results}
     dated = {record["id"]: result_date(record) for record in results}
+    holding = holding_results()
+    problems.extend(superseded_by_cycles(results))
 
     standings: dict[str, Standing] = {}
     for record in results:
@@ -984,7 +1038,7 @@ def main() -> int:
         problems.extend(registered_problems(record, str(register["last_reviewed"])))
         problems.extend(headline_problems(record))
         problems.extend(kind_problems(record, cited, scopes))
-        problems.extend(superseded_by_problems(record, dated, scopes))
+        problems.extend(superseded_by_problems(record, dated, scopes, holding))
         problems.extend(established_problems(record, register["last_reviewed"]))
         problems.extend(activity_problems(record, str(register["last_reviewed"])))
         problems.extend(confirmation_prose_problems(record))
@@ -1067,7 +1121,8 @@ def main() -> int:
         f"{len(results)} registered results: every declared rung passes its "
         "structural checks, every path, source and produced_by id resolves, every "
         "headline and date holds, every kind agrees with its claim and evidence, every "
-        "declared supersession names a result no earlier on a shared case, every "
+        "declared supersession names a result no earlier on a shared case, never "
+        "supersedes all of a result a case bound rests on and never leads back, every "
         "recent case lower bound is covered, every reader-tier mention exists; by status, "
         + ", ".join(f"{held.count(name)} {name}" for name in STATUSES)
     )

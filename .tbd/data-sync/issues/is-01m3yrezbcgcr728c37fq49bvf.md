@@ -3,9 +3,9 @@ type: is
 id: is-01m3yrezbcgcr728c37fq49bvf
 title: "Independent fast measure verifier: a clean-room, high-performance checker for net-direction and continuous-angle certificates"
 kind: epic
-status: closed
+status: open
 priority: 1
-version: 16
+version: 17
 labels:
   - verifiers
 dependencies: []
@@ -22,7 +22,7 @@ child_order_hints:
   - is-01m3z566ftxbm195y6f68b3chw
   - is-01m415rr01msa2hqba0pqxhczx
 created_at: 2026-10-02T16:51:50.251Z
-updated_at: 2026-10-03T20:38:31.239Z
+updated_at: 2026-10-03T20:45:20.628Z
 closed_at: 2026-10-03T20:38:31.238Z
 close_reason: null
 resolution: null

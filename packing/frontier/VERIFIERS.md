@@ -390,8 +390,8 @@ The source's exact-rational checker of Valid7, the finite statement its k^2 - 3 
 | --- | --- | --- | --- |
 | `E-k2m3-evand-family-report` | the source’s own run | producer’s code | T-064 |
 | `E-k2m3-evand-valid7-qx2-replay` | replayed here | producer’s code | T-064 |
-| `E-k2m4-evand-family-report` | the source’s own run | producer’s code | T-080 |
-| `E-k2m4-evand-validtilt9-qx2-report` | the source’s own run | producer’s code | T-080 |
+| `E-k2m4-evand-family-report` | the source’s own run | producer’s code | T-081 |
+| `E-k2m4-evand-validtilt9-qx2-report` | the source’s own run | producer’s code | T-081 |
 
 ### `V-evand-lean`
 
@@ -409,8 +409,8 @@ Kernel-checks a value of s(n) from a checker-cover hypothesis: for s(13) = 4 the
 | `E-n032-evand-closed-cover-report` | the source’s own run | producer’s code | T-051 |
 | `E-n013-evand-casefree-cover-lean-kernel` | replayed here | producer’s code | T-006 |
 | `E-n021-evand-mixed-cover-report` | the source’s own run | producer’s code | T-052 |
-| `E-k2m4-evand-family-report` | the source’s own run | producer’s code | T-080 |
-| `E-k2m4-evand-lean-report` | the source’s own run | producer’s code | T-080 |
+| `E-k2m4-evand-family-report` | the source’s own run | producer’s code | T-081 |
+| `E-k2m4-evand-lean-report` | the source’s own run | producer’s code | T-081 |
 
 ### `V-kleddamag-n11-verify`
 
@@ -637,7 +637,7 @@ Derives and checks the elementary bounds exactly: the grid upper bound, the area
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
-| `E-basic-grid-upper` | replayed here | independent | T-008, T-051, T-052, T-053, T-054, T-055, T-062, T-063, T-064, T-066, T-067, T-080 |
+| `E-basic-grid-upper` | replayed here | independent | T-008, T-051, T-052, T-053, T-054, T-055, T-062, T-063, T-064, T-066, T-067, T-081 |
 | `E-basic-area-lower` | replayed here | independent | - |
 | `E-n012-monotonicity-lower` | replayed here | independent | - |
 

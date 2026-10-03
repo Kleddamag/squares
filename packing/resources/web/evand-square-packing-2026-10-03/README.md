@@ -8,7 +8,7 @@ the run record of its finite premise, and the Lean closure of its reduction.
 
 The claims are stated as the source states them.
 What the frontier makes of them is decided in the frontier records, where the claim is
-`T-080` (provisional until merged).
+`T-081` (provisional until merged).
 
 ## Source and Pin
 

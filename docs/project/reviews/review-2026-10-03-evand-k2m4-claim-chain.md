@@ -3,7 +3,7 @@
 **Date:** 2026-10-03. **Lane:** the review lane of the W2 phase that is stage 4 of the
 [result import runbook](../../../packing/campaign/result-import.md) for issue
 [316](https://github.com/jlevy/squares/issues/316), bead `think-8hk1`; the entry is
-provisionally `T-080`. **Reviewer:** Claude (AI review; model unstated), claim-chain
+provisionally `T-081`. **Reviewer:** Claude (AI review; model unstated), claim-chain
 review lane of the 3 October import of #316, separately prompted.
 This lane shared no context with the replay or registering lanes.
 
@@ -34,7 +34,7 @@ The upper half is the $k \times k$ grid at every $k$. The lower half differs by 
 | 5 | 21 | The s21 mixed cover; `zmx2` and `zm_mixed.py`, which share point-test lineage; Lean reduction conditional on the checkers’ region statement | `T-052` | V3/C3; `zmx2` replayed in full here, `zm_mixed.py` only sampled; no retained review |
 | 6 | 32 | The s32 point cover; `zeromargin.py` and `zmx2`; hypothesis-free Lean `s32_eq_6` at the source | `T-051` | V3/C3; both checkers replayed here; `s32_eq_6` not built here |
 | 7 | 45 | The s45 mixed cover; `zm_mixed.py` and `zmx2`; **not in Lean** | `T-053`, second route `T-054` | V3/C3 each; `zmx2` replayed in full for both covers, `zm_mixed.py` only sampled; no retained review |
-| ≥ 8 | 60, 77, 96, … | The family below, through `Valid9` | provisionally `T-080` | V0/C0 as drafted |
+| ≥ 8 | 60, 77, 96, … | The family below, through `Valid9` | provisionally `T-081` | V0/C0 as drafted |
 
 At $k = 7$ the source says “two separately written exact checkers”.
 The record is narrower.
@@ -234,7 +234,7 @@ None touches the mathematics of the claim.
   records).** The draft claim and composition name only `T-053` for $k = 7$. `T-054` is
   a second route there, decided by the same `zmx2`. None of `T-052`, `T-053` and `T-054`
   carries a retained review.
-  A reader of `T-080` should see that the $k = 5$ to $7$ cases stand at those entries’
+  A reader of `T-081` should see that the $k = 5$ to $7$ cases stand at those entries’
   rungs.
 - **R-3. A carried-over assumption overstates exactness (non-blocking; records).**
   `E-k2m3-evand-valid7-qx2-replay` assumes `qx2_zm.py` makes “no decision on a
@@ -270,7 +270,7 @@ unstated), claim-chain review lane of the 3 October import of #316, separately p
 `reviewer_kind: ai`; `relation: project`; `date: '2026-10-03'`; `scope`: the claim chain
 from the box-9 certificate to $s(k^2-4) = k$, the Lean statement of `ValidTilt9` against
 the run’s region, each checker’s trust boundary, and the per-$k$ split; `verdict:
-accepted`; `covers: [T-080]` (provisional id).
+accepted`; `covers: [T-081]` (provisional id).
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

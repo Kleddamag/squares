@@ -7093,7 +7093,7 @@ results:
       in builds_on: the registered certificate rests on Daniel's points and verifier, and
       the Route A rescaling it implies is not separately registered.
 
-  - id: T-080
+  - id: T-081
     kind: optimality
     registered: '2026-10-03'
     headline: "`s(k² − 4) = k` for every integer `k` from 5 up; `k = 5…18` are the cases held here"
@@ -7177,7 +7177,7 @@ results:
         scope: >-
           The claim chain from the box-9 certificate to s(k^2 - 4) = k for every k >= 5: the split by k, the family's total, the localisation, the dilation, the D4 reduction and Lemma Z, the Lean statement of ValidTilt9 against the run's region, each checker's trust boundary, and the route to an independent check.
         verdict: accepted
-        covers: [T-080]
+        covers: [T-081]
     artifacts:
       - packing/resources/web/evand-square-packing-2026-10-03/README.md
       - packing/resources/web/evand-square-packing-2026-10-03/square-packing/s12/certificates/k2m4/README.md

@@ -97,7 +97,7 @@ FRONTIER_COUNTS: dict[str, tuple[int, int, int]] = {
     # same day the replays of wand125's six afternoon mixed certificates (T-075) took
     # n = 83, 91 and 96 off Nagamochi's bound, all open in both lanes, so only the
     # Nagamochi-bounded count falls, by three in every corpus. The same day Daniel's
-    # reported s(k^2 - 4) = k (T-080) made n = 96, 117, 140, 165, 192, 221, 252, 285 and
+    # reported s(k^2 - 4) = k (T-081) made n = 96, 117, 140, 165, 192, 221, 252, 285 and
     # 320 reported-proved and left their verified lanes alone, so only the reported-open
     # count falls, by one, five and nine.
     "n=1..100": (55, 54, 1),

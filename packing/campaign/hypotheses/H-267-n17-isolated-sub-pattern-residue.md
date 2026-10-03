@@ -82,6 +82,14 @@ The certified census is 17,690 orbits with the endpoint surviving.
 A’s prover is not one this claim names; its review admits the certificate as equivalent,
 and exp-249 records that as a deviation in the instrument.
 
+*Added 2026-10-03 by Session 168.*
+[exp-250](../series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md)
+admits two more kernel certificates on the standing verifier’s full pass: flag 3, an
+arity-9 class named SW9, and N1, a whole 17-cell residue state.
+The certified census is 15,953 orbits with the endpoint surviving.
+Neither certificate is of arity at most seven, so they move the census but not this
+claim’s criterion.
+
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.
 -->

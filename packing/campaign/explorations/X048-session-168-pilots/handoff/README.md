@@ -5,7 +5,7 @@ that resets on 2026-10-07. This folder keeps what those lanes had produced but n
 committed, so that nothing is lost.
 Each item names its bead under `think-tmz6`.
 
-Nothing here is admitted or reviewed.
+Nothing here was admitted or reviewed when it was filed; N1 has since been admitted.
 Code patches apply cleanly to commit `5ac81e86` with `git apply`.
 
 ## H-264 Per-State Pilot (`think-e17c`)
@@ -22,12 +22,12 @@ with collision on and hull limit 16. The states were sampled in `k2/h-sample.jso
 N1’s two-hour run is the first per-state exclusion of a residue state.
 Its seed and node are in `../certificates/N1-state-pending/`, named by their SHA-256.
 
-Before N1 can be admitted:
-
-1. Run `check_n17_subpattern --check-saved` on those objects in a fresh process.
-2. Run `verify_n17_kernel_certificate` in full mode.
-3. Repeat the closure from a clean worktree.
-4. Have it independently reviewed.
+N1 is admitted in
+[exp-250](../../../series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md).
+Of the four conditions first set here, the fresh-process `--check-saved` run
+(`check-saved.json`) and the standing verifier’s full pass (`verification.json`) were
+met. Under OR-16 as amended on 2026-10-03 that full pass is the admission check, so the
+clean-worktree repeat and a review of this certificate were not required.
 
 H-264’s falsifier still needs more states: fewer than half of 10 to 20 sampled orbits
 closing within two CPU-hours each.

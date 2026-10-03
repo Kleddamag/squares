@@ -15,8 +15,9 @@ The ledger. A YAML file declares one entry per certified class:
 - `receipt`: the certifier's receipt. A `pending` entry may leave it null while its
   receipt is being produced.
 - `certificate`: the saved proof objects, or null where the certifier keeps none.
-- `status`: `admitted` or `pending`, and `evidence`: the review document that admits the
-  entry, required once it is admitted.
+- `status`: `admitted` or `pending`, and `evidence`: the document that admits the entry, a
+  review or the experiment record holding a reviewed verifier's full pass, required once it
+  is admitted.
 - `verification`, required once admitted: the standing verifier's receipt
   (`verify_n17_kernel_certificate` or `verify_n17_bb_certificate`, written separately
   from the producers). A receipt records the verifier's path and the revision it ran at
@@ -41,7 +42,7 @@ The checks. An entry is refused, and no count is reported at all, unless:
 - no D4 image of the pattern lies in the endpoint's state, which must survive;
 - a declared certificate exists, and for the kernel holds the seed and node the receipt
   names;
-- an admitted entry names review evidence that exists, and no class is declared twice;
+- an admitted entry names evidence that exists, and no class is declared twice;
 - an admitted entry names a saved certificate and a verification receipt that exists,
   PASSes in full mode, comes from a verifier of the entry's kind at a reviewed revision,
   names the entry's certificate directory, and checked the declared class.

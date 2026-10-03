@@ -1475,7 +1475,8 @@ agenda:
       arity-five proxy leaves 11,939 orbits on the 24-cell design. Session 168 built the
       selector (44 flags to arity seven, 5,084 projected orbits), the kernel and an
       independent branch and bound, and admitted W7 and A in exp-249: 17,690 certified
-      orbits. The residue process review plans the rest.
+      orbits. exp-250 admitted SW9 (arity 9) and the state N1 on the standing verifier's
+      full pass: 15,953. The residue process review plans the rest.
   - id: BC-417
     purpose: research
     owner_focus: correctness

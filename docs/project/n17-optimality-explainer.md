@@ -236,7 +236,11 @@ which counts only admitted entries.
 | The other prover | the branch and bound had closed 0.4% of W7’s tree after 30 minutes | the kernel stalls on A at 32 rows per owner |
 
 With both admitted, the certified census is 139,976 states and 17,690 orbits.
-The family’s state contains no image of either pattern.
+[exp-250](../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md)
+then admitted two more kernel certificates on the standing verifier’s full pass: flag 3,
+an arity-9 class named SW9, and N1, a whole 17-cell residue state.
+The certified census is now 126,168 states and 15,953 orbits.
+The family’s state contains no image of any admitted pattern.
 
 ## Capture and Its Pilot
 
@@ -301,10 +305,11 @@ Stated without a forecast, because none is on record.
    A flag the prover cannot close is either a false flag, in which case the search
    resumes, or a stall of the engine on a true pattern, which needs finer rows,
    splitting or the other prover.
-2. **A method for the residue.** 17,690 certified orbits remain, and 5,084 if every flag
-   proves; each is a state that no small pattern excludes and that must be excluded on
-   its own, as $n = 11$ excluded 276 cases at about 636 CPU-seconds each.
-   The $n = 17$ per-state method and its price are not established; the
+2. **A method for the residue.** 15,953 certified orbits remain, and at most 5,084 if
+   every flag of arity seven proves; each is a state that no small pattern excludes and
+   that must be excluded on its own, as $n = 11$ excluded 276 cases at about 636
+   CPU-seconds each. The kernel has excluded one such state, N1, in 3,723 s, but the
+   $n = 17$ per-state method and its price are not established; the
    [residue process review](reviews/review-2026-10-02-n17-residue-process.md) plans one.
 3. **Capture.** The pilot measures the contraction factor, and the falsifier above
    decides whether the architecture holds.
@@ -326,7 +331,7 @@ $n = 17$ lower-bound results and holds the bracket’s lower end.
 | --- | --- |
 | Proved | The depth-width wall lemma; the identity of the certified side with the catalogue polynomial; the stress; the capture-target theorem as the composition of exp-244, exp-248 and exp-247 |
 | Verified | The rational ceiling on the side; the R068 lower bound at `V3/C3`; the cover’s coverage, capacities, $D_4$ invariance, Burnside count and unique family state; the local minimum over $B_W'$ at $r = 1/5000$; the slide bounds |
-| Admitted | The W7 and A certificates, each re-proved in full by an independent verifier, and the certified census of 17,690 orbits ([exp-249](../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-249-h267-n17-first-certified-sub-patterns.md)) |
+| Admitted | The W7 and A certificates, each re-proved in full by an independent verifier ([exp-249](../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-249-h267-n17-first-certified-sub-patterns.md)); the SW9 and N1 kernel certificates, each re-proved in full by the standing verifier; and the certified census of 15,953 orbits ([exp-250](../../packing/campaign/series/series-000-smoke-and-calibration/experiments/exp-250-h267-n17-standing-verifier-admissions.md)) |
 | Projected | Nothing at present beyond the heuristic lines below |
 | Heuristic | Every selector flag, every best-penetration figure, and every orbit count conditional on flags proving |
 | Modelled | The feasible-set radii at the two caps; the capture cost table and its falsifier thresholds |

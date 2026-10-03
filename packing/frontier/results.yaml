@@ -6373,12 +6373,12 @@ results:
   - id: T-073
     kind: lower-bound
     registered: '2026-10-02'
-    headline: "Linear-measure lower bounds reported at `n = 83` and `n = 101…105`"
+    headline: "Linear-measure lower bounds replayed at `n = 83` and `n = 101…105`"
     claim: >-
-      wand125/square-packing-bounds reports two lower bounds from measures of points,
-      segments and rectangles, published on 2 October 2026: s(101) >= 257/25 = 10.28 and
-      s(83) >= 187/20 = 9.35. A packing of 102 to 105 squares contains one of 101, so the
-      first also gives s(102), s(103), s(104), s(105) >= 257/25.
+      Two measures of points, segments and rectangles that wand125/square-packing-bounds
+      published on 2 October 2026 prove s(101) >= 257/25 = 10.28 and s(83) >= 187/20 =
+      9.35. A packing of 102 to 105 squares contains one of 101, so the first also gives
+      s(102), s(103), s(104), s(105) >= 257/25.
 
       Each certificate is a measure of a kind this record has not registered before: point
       masses, segments of uniform density and rectangles of uniform density, given in D4
@@ -6403,10 +6403,12 @@ results:
 
       Here the source was retained, its exact premises were recomputed from the retained
       bytes, and the replay's checks before its first angle were run on both pinned
-      tarballs, and a negative control at n = 101 refused two mutated measures. The
-      n = 101 certificate's complete replay passed here on 2 October 2026, and its five
-      counts are registered again as replayed (T-080); at n = 83 one angle was replayed,
-      to price the replay, which decides nothing, and that value stands as reported.
+      tarballs, and a negative control at n = 101 refused two mutated measures. Each certificate passed a complete replay here of the source's unchanged checker
+      and replay functions on its pinned tarball, n = 101's on 2 October 2026 and
+      n = 83's on 3 October: all 201 directions, each returning the certificate's own
+      record. The replays run the source's own algorithm and are not an independent
+      decision of coverage. n = 101's five counts are also registered as replayed in
+      their own entry (T-080).
 
       wand125 after Tokoharu and Levy,
       [square-packing-bounds](https://github.com/wand125/square-packing-bounds/tree/0c35d909764997ead04dfd90081c9fe9af8d07f2/certificates).
@@ -6414,17 +6416,16 @@ results:
       The source says parts of the work were produced with AI assistance under human
       direction.
     scope: {n_values: [83, 101, 102, 103, 104, 105]}
-    verification: V0
-    confirmation: C1
+    verification: V3
+    confirmation: C3
     significance:
       score: 3
       rationale: >-
-        Scored as a claim: if the checker survives review and the replays pass, the
+        Raised the verified lower bound at five counts, n = 101 to 105 (T-080), and
+        confirmed n = 83's value below the replayed 937/100 there; when registered, the
         strongest lower bounds on record at six counts, past Green's reported values at
         n = 83 and n = 101 and past Nagamochi's at n = 105, by a certificate kind new to
-        this record that adds points and segments to the rectangle densities. Further sizes
-        from one generator at S3; the score gates nothing, and V0/C1 says how far they
-        stand. The 2 October review of the certificates confirmed S3: the kind is new here,
+        this record that adds points and segments to the rectangle densities. Further sizes from one generator at S3. The 2 October review of the certificates confirmed S3: the kind is new here,
         but the technique is the measure argument with Tokoharu's net and checker, extended
         by two capture bounds.
       scored: '2026-10-02'
@@ -6435,13 +6436,15 @@ results:
       published: '2026-10-02'
     composition: >-
       One claim per certificate, each on its own reported entry; n = 102 to 105 take the
-      n = 101 certificate directly, its mass being below them, so no step is added. Every
-      part stands at V0/C1 here: read by the 2 October review. n = 101's replay is cited
-      by T-080, which carries those five counts in the verified lane. Coverage is
-      decided by the source's C++ checker alone, which that review read function by
-      function.
+      n = 101 certificate directly, its mass being below them, so no step is added. Each
+      replay runs the source's C++ checker unchanged: one interval-certified method,
+      replayed here, C3. Coverage is decided by that checker alone, which the 2 October
+      review read function by function. n = 83's replay entry is cited here; n = 101's
+      is entered once, in T-080, which carries n = 101 to 105 in the verified lane, so a
+      case's citation names one result.
     evidence:
       - E-n083-wand125-linear-935-report
+      - E-n083-wand125-linear-935-source-replay
       - E-n101-wand125-linear-1028-report
     reviews:
       - path: docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md
@@ -6460,29 +6463,33 @@ results:
       - packing/resources/web/wand125-linear-certificates-2026-10-02/square-packing-bounds/certificates/mixed_n83_L935/README.md
       - packing/resources/web/wand125-linear-certificates-2026-10-02/square-packing-bounds/certificates/mixed_n101_L1028/code/unified_linear_verify.cpp
       - packing/resources/web/wand125-linear-certificates-2026-10-02/receipts/linear-audit.json
-      - packing/resources/web/wand125-linear-certificates-2026-10-02/receipts/n101/control.json
+      - packing/resources/web/wand125-linear-certificates-2026-10-02/receipts/n83/merged.json
+      - packing/resources/web/wand125-linear-certificates-2026-10-02/receipts/n101/merged.json
       - packing/devtools/audit_wand125_linear.py
+    controls:
+      - packing/resources/web/wand125-linear-certificates-2026-10-02/receipts/n101/control.json
+      - packing/tests/test_wand125_linear_certificates.py
     next_rung: >-
-      think-m7cm: the complete replay at n = 83, about 23.0 CPU-hours by the packet's
-      pricing, with devtools.audit_wand125_linear linear-replay and linear-merge, with
-      two mutated controls refused; n = 101's passed on 2 October and is T-080. The
-      certificates' records carry no per-direction least lower bound for a merged
-      receipt to keep (finding LC-4). The review of the new checker is done (2 October): its point and
-      segment capture bounds, the quadrant reduction by the measure's symmetry and the
-      angle-zero branch were read against the code, with no blocking defect.
+      V4 and C4 need two adversarial AI reviews by distinct reviewers and a human oversight
+      record; one adversarial review is retained, read before the replays. A second machine
+      method would be a method-distinct decision of rotated coverage for a linear measure;
+      the replays here run the source's own checker. linear-control n83 would put a
+      negative control on that certificate itself; the checker's controls are n = 101's.
     notes: >-
-      V0 because every cited entry is the source's claim: assurance reported. The counts
-      T-080 carries are in both entries, because a case's reported field cites this
-      entry's report evidence while its verified field cites the replay. At n = 83 the
-      afternoon's mixed 937/100 (T-075) is above this value in both lanes.
+      Raised from V0/C1 on 3 October 2026, when n = 83's complete replay (think-m7cm,
+      runner l83) matched the shipped run at all 201 directions, 26.15 CPU-hours here, n =
+      101's having passed on 2 October (7.69 CPU-hours). The 2 October review of the
+      certificates and their checker had found no blocking defect; its findings LC-2 and
+      LC-4 are in the entries' limitations, and LC-1 is the n = 83 margin the claim
+      corrects.
 
-      C1 because the 2 October review of the certificates and their checker is
-      recorded as the two report entries' external_review, with no blocking defect; its
-      findings LC-2 and LC-4 are in the entries' limitations, and LC-1 is the n = 83 margin
-      the claim corrects. The checker's only earlier use is the source's superseded s(50)
-      >= 147/20 certificate, which this record did not register. A new certificate kind, so a separate entry. The
-      source ships a completion audit and a certificate of its full replay for each count,
-      which are retained; the proof-bundle tarballs are pinned by digest and not retained.
+      The counts T-080 carries are in both entries. At n = 83 the afternoon's replayed
+      mixed 937/100 (T-075) is higher in both lanes, so this entry moves no case value
+      there. The checker's only earlier use is the source's superseded s(50) >= 147/20
+      certificate, which this record did not register. A new certificate kind, so a
+      separate entry. The source ships a completion audit and a certificate of its full
+      replay for each count, which are retained; the proof-bundle tarballs are pinned by
+      digest and not retained.
 
   - id: T-074
     kind: lower-bound
@@ -7189,8 +7196,9 @@ results:
       Registered at stage 4 of T-073's import (think-xex7) on 3 October, from the complete
       replay of 2 October (think-m7cm), whose receipts were committed that day and not
       entered as evidence until now. A replayed release is registered again as its own
-      entry, as T-045, T-070 and T-074 were, because the reported entry keeps a count no
-      replay here carries yet: T-073's n = 83. T-073 keeps its claim.
+      entry, as T-045, T-070 and T-074 were, because the reported entry then kept a count
+      no replay here carried: T-073's n = 83. That replay passed later on 3 October and
+      raised T-073 to V3/C3 as well; both entries keep their claims.
 
   - id: T-081
     kind: optimality

@@ -704,6 +704,7 @@ sources:
     represented_by: [frontier/n-083.md, frontier/n-101.md, frontier/n-102.md, frontier/n-103.md, frontier/n-104.md, frontier/n-105.md]
     evidence:
       - E-n083-wand125-linear-935-report
+      - E-n083-wand125-linear-935-source-replay
       - E-n101-wand125-linear-1028-report
       - E-n101-wand125-linear-1028-source-replay
     notes: >-
@@ -718,7 +719,9 @@ sources:
       refused two mutated n = 101 measures. The n = 101 certificate's complete replay of 2
       October matched the shipped run at all 201 directions
       (E-n101-wand125-linear-1028-source-replay), which put n = 101 to 105 in the verified
-      lane (T-080); at n = 83 one angle was replayed, to price the replay. The 2 October
+      lane (T-080); n = 83's of 3 October matched too
+      (E-n083-wand125-linear-935-source-replay), which puts T-073 at V3/C3 and moves no
+      case value, the replayed mixed 937/100 being higher there. The 2 October
       review read the certificates and the checker, with no blocking defect (T-073 at C1). The source's margin over Green at n = 83, "more than 0.0833", is
       false (it is 0.083266...); the bound is unaffected. The issue announces n = 82 at 9.32,
       which no revision publishes yet. A later revision, 06eeb40c, adds three

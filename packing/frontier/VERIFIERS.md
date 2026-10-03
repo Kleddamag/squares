@@ -26,7 +26,7 @@ second implementation agrees.
 ## The Short Version
 
 - **75** programs: **30** external and **45** first-party; **62** decide claims and **13** check premises.
-- **203** of **224** evidence entries name the programs that verified them: 142 reproduced with the producer’s code, 45 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
+- **204** of **225** evidence entries name the programs that verified them: 143 reproduced with the producer’s code, 45 independently re-implemented, 9 no relation: a proof, a derivation or a report, 7 re-implemented, sharing the producer’s components.
 
 ## Programs
 
@@ -35,7 +35,7 @@ second implementation agrees.
 | [`V-tokoharu-verify-cpp`](#v-tokoharu-verify-cpp) | verify.cpp | Tokoharu | external | decides | 12 | 7 |
 | [`V-wand125-mixed-rotated-verify-cpp`](#v-wand125-mixed-rotated-verify-cpp) | mixed_rotated_verify.cpp | wand125 | external | decides | 30 | 5 |
 | [`V-wand125-verify-mixed-full-proof-py`](#v-wand125-verify-mixed-full-proof-py) | verify_mixed_full_proof.py | wand125 | external | decides | 7 | 2 |
-| [`V-wand125-unified-linear-verify-cpp`](#v-wand125-unified-linear-verify-cpp) | unified_linear_verify.cpp | wand125 | external | decides | 5 | 3 |
+| [`V-wand125-unified-linear-verify-cpp`](#v-wand125-unified-linear-verify-cpp) | unified_linear_verify.cpp | wand125 | external | decides | 6 | 3 |
 | [`V-wand125-verify-portable-py`](#v-wand125-verify-portable-py) | verify_portable.py | wand125 | external | decides | 2 | 1 |
 | [`V-wand125-check-with-sqpack`](#v-wand125-check-with-sqpack) | check_with_sqpack.py | wand125 | external | decides | 5 | 1 |
 | [`V-wand125-valid7-checker`](#v-wand125-valid7-checker) | valid7-independent-check (Tier A, Tier B and the record checker) | wand125 | external | decides | 1 | 1 |
@@ -100,7 +100,7 @@ second implementation agrees.
 | [`V-audit-tokoharu-density`](#v-audit-tokoharu-density) | devtools.audit_tokoharu_density | Squares Project (Levy) | first-party | premises | 1 | 1 |
 | [`V-audit-wand125-rectangles`](#v-audit-wand125-rectangles) | devtools.audit_wand125_rectangles | Squares Project (Levy) | first-party | premises | 3 | 3 |
 | [`V-audit-wand125-point-and-mixed`](#v-audit-wand125-point-and-mixed) | devtools.audit_wand125_point_and_mixed | Squares Project (Levy) | first-party | premises | 17 | 7 |
-| [`V-audit-wand125-linear`](#v-audit-wand125-linear) | devtools.audit_wand125_linear | Squares Project (Levy) | first-party | premises | 2 | 2 |
+| [`V-audit-wand125-linear`](#v-audit-wand125-linear) | devtools.audit_wand125_linear | Squares Project (Levy) | first-party | premises | 3 | 3 |
 | [`V-replay-evand-zmx2`](#v-replay-evand-zmx2) | devtools.replay_evand_zmx2 | Squares Project (Levy) | first-party | premises | 5 | 5 |
 | [`V-audit-evand-mixed-covers`](#v-audit-evand-mixed-covers) | devtools.audit_evand_mixed_covers | Squares Project (Levy) | first-party | premises | 9 | 8 |
 | [`V-audit-s12-reweighted`](#v-audit-s12-reweighted) | devtools.audit_s12_reweighted | Squares Project (Levy) | first-party | premises | 1 | 1 |
@@ -210,6 +210,7 @@ Decides a linear (segment) certificate at every net direction, the axis directio
 | evidence | run | code | results |
 | --- | --- | --- | --- |
 | `E-n083-wand125-linear-935-report` | the source’s own run | producer’s code | T-073 |
+| `E-n083-wand125-linear-935-source-replay` | replayed here | producer’s code | T-073 |
 | `E-n101-wand125-linear-1028-report` | the source’s own run | producer’s code | T-073, T-080 |
 | `E-n101-wand125-linear-1028-source-replay` | replayed here | producer’s code | T-080 |
 | `E-n082-wand125-linear-932-report` | the source’s own run | producer’s code | T-076 |
@@ -1228,6 +1229,7 @@ The audit, replay driver and controls for wand125's linear certificates.
 
 | evidence | run | code | results |
 | --- | --- | --- | --- |
+| `E-n083-wand125-linear-935-source-replay` | replayed here | producer’s code | T-073 |
 | `E-n101-wand125-linear-1028-source-replay` | replayed here | producer’s code | T-080 |
 | `E-n082-wand125-linear-932-source-replay` | replayed here | producer’s code | T-076 |
 

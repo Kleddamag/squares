@@ -1,0 +1,16 @@
+{
+  "status": "AUDITED_AND_PACKAGED",
+  "n": 52,
+  "L": "151/20",
+  "total_mass": "5199999/100000",
+  "compared_with": "1507/200",
+  "compared_note": "record n52 7.535",
+  "improvement_lower": "3/200",
+  "candidate_digest": "bc1ec3a1934ae09852d588da55b6a11183287000246c2522b2cdbbc72ded684d",
+  "all_angles": 201,
+  "certificate_sha256": "4bf2a57de562c822faa281c3c884bdf3c252c3da83e5570183fb0a16787d2a8e",
+  "bundle": "n52-L7.55-proof-bundle",
+  "archive_sha256": "f9f12c579f2dfd2236e7f2c99a38965f1349439fbd9f321a3c101749e6e329bb",
+  "route": "n52 Green structured fresh at L7.55 (rectangles), full-net repair, 201-angle verification and replay (moved off Osaka after preemptions).",
+  "scope": "All centres at all 201 net angles plus strict core containment for every orientation; independent axis replay, same-algorithm outward-rounded oblique replay."
+}

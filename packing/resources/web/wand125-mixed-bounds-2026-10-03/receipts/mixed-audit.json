@@ -1,0 +1,1262 @@
+{
+  "kind": "wand125-mixed-certificate-audit/v1",
+  "packet": "wand125-mixed-bounds-2026-10-03",
+  "source_revision": "2aff2076c492d62340e986c84f60a0a29eb668df",
+  "certificates": {
+    "n51": {
+      "directory": "certificates/mixed_n51_L746",
+      "side": "373/50",
+      "side_float": 7.46,
+      "core": "9977/10000",
+      "rectangles": 446,
+      "total_mass": "5099999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "503278fd59bd1f04d7563a77cb16d80aec47df36e1a9b79e329c6cbd97334872",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[373/100, 174/25]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 9048064,
+      "axis_integer_minimum": 1.009964249145509,
+      "oblique_nodes": 69985426,
+      "least_lower": 1.0000000003200482,
+      "least_lower_at": 107,
+      "tarball": "certificates/mixed_n51_L746/n51-L7.46-proof-bundle.tar.gz",
+      "tarball_sha256": "0729dce38e99f6a82d43ead611f5a8dda66708a1ec10066e38b0264b620deade",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "2977/400",
+        "compared_note": "record n51 7.4425",
+        "improvement_lower": "7/400"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=7, from n = 50",
+        "green_interval_float": [
+          7.317426011159063,
+          7.317426011159063
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(38)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n52": {
+      "directory": "certificates/mixed_n52_L755",
+      "side": "151/20",
+      "side_float": 7.55,
+      "core": "9977/10000",
+      "rectangles": 455,
+      "total_mass": "5199999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "bc1ec3a1934ae09852d588da55b6a11183287000246c2522b2cdbbc72ded684d",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[151/40, 141/20]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 8862529,
+      "axis_integer_minimum": 1.0061071116246354,
+      "oblique_nodes": 74571040,
+      "least_lower": 1.0000000004141971,
+      "least_lower_at": 170,
+      "tarball": "certificates/mixed_n52_L755/n52-L7.55-proof-bundle.tar.gz",
+      "tarball_sha256": "f9f12c579f2dfd2236e7f2c99a38965f1349439fbd9f321a3c101749e6e329bb",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "1507/200",
+        "compared_note": "record n52 7.535",
+        "improvement_lower": "3/200"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=7, from n = 50",
+        "green_interval_float": [
+          7.317426011159063,
+          7.317426011159063
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(39)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n55": {
+      "directory": "certificates/mixed_n55_L7728",
+      "side": "966/125",
+      "side_float": 7.728,
+      "core": "9977/10000",
+      "rectangles": 303,
+      "total_mass": "5499999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "6131cd0a67d3499df1ca62abe1088a1b9d3bc5961b69656fb0f0cedb72a6e605",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[483/125, 1807/250]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 3837681,
+      "axis_integer_minimum": 1.0076941602220786,
+      "oblique_nodes": 77422814,
+      "least_lower": 1.0000000014125006,
+      "least_lower_at": 114,
+      "tarball": "certificates/mixed_n55_L7728/n55-L7.728-proof-bundle.tar.gz",
+      "tarball_sha256": "cf91a3fee5311a9da61cd918ae2c2fd7eef29059a97ee2002ef5a4d3ede8bef9",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "617/80",
+        "compared_note": "record n55 7.7125",
+        "improvement_lower": "31/2000"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=7, from n = 50",
+        "green_interval_float": [
+          7.317426011159063,
+          7.317426011159063
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(42)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n58": {
+      "directory": "certificates/mixed_n58_L7905",
+      "side": "1581/200",
+      "side_float": 7.905,
+      "core": "9977/10000",
+      "rectangles": 319,
+      "total_mass": "5799999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "96727aa1681161ab21e0a9677739fd32badc0ddd8933f8c7daf1d6192ba14754",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[1581/400, 1481/200]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 4239481,
+      "axis_integer_minimum": 1.0070002486141336,
+      "oblique_nodes": 36266794,
+      "least_lower": 1.0000000036417236,
+      "least_lower_at": 109,
+      "tarball": "certificates/mixed_n58_L7905/n58-L7.905-proof-bundle.tar.gz",
+      "tarball_sha256": "d11b4d3fd9e37d535a6d8dced02a036748f94684ee6cc676ddbff847b73d5abe",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "789/100",
+        "compared_note": "record n58 7.89",
+        "improvement_lower": "3/200"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=7, from n = 50",
+        "green_interval_float": [
+          7.317426011159063,
+          7.317426011159063
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(45)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n69": {
+      "directory": "certificates/mixed_n69_L8612",
+      "side": "2153/250",
+      "side_float": 8.612,
+      "core": "9977/10000",
+      "rectangles": 556,
+      "total_mass": "6899999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "9965c638aa6dadaeb5fd08eadd905529c175116ff6c3d1d87447d947f20d1a1e",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[2153/500, 1014/125]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 12482089,
+      "axis_integer_minimum": 1.0028461704678193,
+      "oblique_nodes": 99544986,
+      "least_lower": 1.0000000003818312,
+      "least_lower_at": 180,
+      "tarball": "certificates/mixed_n69_L8612/n69-L8.612-proof-bundle.tar.gz",
+      "tarball_sha256": "0468c96aaf8ca3e75dfa85ade7961f44a451ed4e6b1f736d5cfa202ca5b4c155",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "1717/200",
+        "compared_note": "record n69 8.585",
+        "improvement_lower": "27/1000"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=8, from n = 65",
+        "green_interval_float": [
+          8.289965586284652,
+          8.289965586284652
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(54)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n70": {
+      "directory": "certificates/mixed_n70_L86475",
+      "side": "3459/400",
+      "side_float": 8.6475,
+      "core": "9977/10000",
+      "rectangles": 495,
+      "total_mass": "6999999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "41af9ea74a3bf12d1971832120fdba2526b899b789068ef706475f38c8312ab2",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[3459/800, 3259/400]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 10771524,
+      "axis_integer_minimum": 1.0037504910100976,
+      "oblique_nodes": 100441798,
+      "least_lower": 1.000000002986998,
+      "least_lower_at": 112,
+      "tarball": "certificates/mixed_n70_L86475/n70-L8.6475-proof-bundle.tar.gz",
+      "tarball_sha256": "fa020a0c5fff5422c6e01bfe0a78c7f1689076736b2cc1d959cd16ee49d06bbf",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "8639/1000",
+        "compared_note": "our certified n70 8.639 (record 8.6275)",
+        "improvement_lower": "17/2000"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=8, from n = 65",
+        "green_interval_float": [
+          8.289965586284652,
+          8.289965586284652
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(55)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n71": {
+      "directory": "certificates/mixed_n71_L8705",
+      "side": "1741/200",
+      "side_float": 8.705,
+      "core": "9977/10000",
+      "rectangles": 471,
+      "total_mass": "7099999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "8d8f26610731ec3e553f20d46687339937967b057f4dff725bd4456addabaefa",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[1741/400, 1641/200]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 9418761,
+      "axis_integer_minimum": 1.007609519559992,
+      "oblique_nodes": 100569226,
+      "least_lower": 1.0000000001991776,
+      "least_lower_at": 177,
+      "tarball": "certificates/mixed_n71_L8705/n71-L8.705-proof-bundle.tar.gz",
+      "tarball_sha256": "a94ffa642007d4e1b4cf5f1ce827b93f12d99750001549efc13f7bc40825706e",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "87/10",
+        "compared_note": "our certified n71 8.70 (record 8.685)",
+        "improvement_lower": "1/200"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=8, from n = 65",
+        "green_interval_float": [
+          8.289965586284652,
+          8.289965586284652
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(56)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n73": {
+      "directory": "certificates/mixed_n73_L8809",
+      "side": "8809/1000",
+      "side_float": 8.809,
+      "core": "9977/10000",
+      "rectangles": 450,
+      "total_mass": "7299999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "5684ebfd1f061a11ab9ae84c3568d22586a0acc3df1192df3dd08e2af38144f9",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[8809/2000, 8309/1000]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 8952064,
+      "axis_integer_minimum": 1.0046099418362586,
+      "oblique_nodes": 100339538,
+      "least_lower": 1.000000000044086,
+      "least_lower_at": 79,
+      "tarball": "certificates/mixed_n73_L8809/n73-L8.809-proof-bundle.tar.gz",
+      "tarball_sha256": "17668509e00d1509a431ba40fd563c9c01fbf6e30c91ed9dbd60fccfc040c205",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "439/50",
+        "compared_note": "record n73 8.78",
+        "improvement_lower": "29/1000"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=8, from n = 65",
+        "green_interval_float": [
+          8.289965586284652,
+          8.289965586284652
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(58)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n74": {
+      "directory": "certificates/mixed_n74_L88675",
+      "side": "3547/400",
+      "side_float": 8.8675,
+      "core": "9977/10000",
+      "rectangles": 505,
+      "total_mass": "7399999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "d9b1c057c7e9337e041e96f662aa5c7b63de4124624aa69b70308487e8841d48",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[3547/800, 3347/400]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 11553201,
+      "axis_integer_minimum": 1.0053919510575358,
+      "oblique_nodes": 90044046,
+      "least_lower": 1.000000001545537,
+      "least_lower_at": 17,
+      "tarball": "certificates/mixed_n74_L88675/n74-L8.8675-proof-bundle.tar.gz",
+      "tarball_sha256": "edc1ff8481a2d9a0f8b51aa5070766f6c556466f89331536c6f0c8b170221903",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "3539/400",
+        "compared_note": "record n74 8.8475",
+        "improvement_lower": "1/50"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=8, from n = 65",
+        "green_interval_float": [
+          8.289965586284652,
+          8.289965586284652
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(59)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n75": {
+      "directory": "certificates/mixed_n75_L892",
+      "side": "223/25",
+      "side_float": 8.92,
+      "core": "9977/10000",
+      "rectangles": 340,
+      "total_mass": "7499999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "cea59cc4cde834867b66a5c5b64d0affd9718172cee53ae92557c2874fed984e",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[223/50, 421/50]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 4206601,
+      "axis_integer_minimum": 1.0042340709582527,
+      "oblique_nodes": 39920680,
+      "least_lower": 1.000000006207448,
+      "least_lower_at": 177,
+      "tarball": "certificates/mixed_n75_L892/n75-L8.92-proof-bundle.tar.gz",
+      "tarball_sha256": "75330dd35018a18faa13375712a1b983b0282d0ae9e5b80413398790811fd06a",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "89/10",
+        "compared_note": "record n75 8.9",
+        "improvement_lower": "1/50"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=8, from n = 65",
+        "green_interval_float": [
+          8.289965586284652,
+          8.289965586284652
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(60)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n76-L896": {
+      "directory": "certificates/mixed_n76_L896",
+      "side": "224/25",
+      "side_float": 8.96,
+      "core": "9977/10000",
+      "rectangles": 341,
+      "total_mass": "7599999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "c990078499a592dccb6336f69b956077046ca1fde498577f511c8c43f2c78a40",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[112/25, 423/50]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 3783025,
+      "axis_integer_minimum": 1.0052760168457555,
+      "oblique_nodes": 45154982,
+      "least_lower": 1.0000000015320276,
+      "least_lower_at": 7,
+      "tarball": "certificates/mixed_n76_L896/n76-L8.96-proof-bundle.tar.gz",
+      "tarball_sha256": "85cc7e1e5f6a2ea89d3e294adbd765dcd3187a31adae4cec82ce2020a80192c7",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "447/50",
+        "compared_note": "our published n76 8.94",
+        "improvement_lower": "1/50"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=8, from n = 65",
+        "green_interval_float": [
+          8.289965586284652,
+          8.289965586284652
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(61)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n86": {
+      "directory": "certificates/mixed_n86_L950",
+      "side": "19/2",
+      "side_float": 9.5,
+      "core": "9977/10000",
+      "rectangles": 509,
+      "total_mass": "8599999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "a042af995541097298a2c6b44970d072a1b7eb7bcbcc41d0e4d8965c3dcb82fa",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[19/4, 9]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 10562500,
+      "axis_integer_minimum": 1.0061406086120193,
+      "oblique_nodes": 94779600,
+      "least_lower": 1.0000000001438667,
+      "least_lower_at": 171,
+      "tarball": "certificates/mixed_n86_L950/n86-L9.50-proof-bundle.tar.gz",
+      "tarball_sha256": "1f72d911584f7e57b866e74740ef5d533b2b2774338f997fe553817e8fd20ad8",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "473/50",
+        "compared_note": "record n86 9.46 (via n85 9.46 monotonicity)",
+        "improvement_lower": "1/25"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(69)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n87-L955": {
+      "directory": "certificates/mixed_n87_L955",
+      "side": "191/20",
+      "side_float": 9.55,
+      "core": "9977/10000",
+      "rectangles": 509,
+      "total_mass": "8699999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "f1e27ede3e2b29a87f4da9493d17a2258334a28c01b81ecffd157d2b0eda6b76",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[191/40, 181/20]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 10426441,
+      "axis_integer_minimum": 1.0011071121810646,
+      "oblique_nodes": 86412558,
+      "least_lower": 1.0000000015515935,
+      "least_lower_at": 13,
+      "tarball": "certificates/mixed_n87_L955/n87-L9.55-proof-bundle.tar.gz",
+      "tarball_sha256": "f8f4a19d25ecbe06df49fc2cd4244f3d9a17a2e97abe56467c70f8e76925f771",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "237/25",
+        "compared_note": "our certified n87 9.48 (record 9.46 via n85 monotonicity)",
+        "improvement_lower": "7/100"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(70)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n88": {
+      "directory": "certificates/mixed_n88_L960",
+      "side": "48/5",
+      "side_float": 9.6,
+      "core": "9977/10000",
+      "rectangles": 443,
+      "total_mass": "8799999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "7a0f3594ce03191207646bcc2db5af878c5bbc390641625b7e0837d0d2ebb9ab",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[24/5, 91/10]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 7096896,
+      "axis_integer_minimum": 1.0065197740201668,
+      "oblique_nodes": 92907150,
+      "least_lower": 1.0000000014645312,
+      "least_lower_at": 185,
+      "tarball": "certificates/mixed_n88_L960/n88-L9.60-proof-bundle.tar.gz",
+      "tarball_sha256": "7e4305f16e3eac95ad72025870f513c16e71c2ac6d239d1beccfb763d3200f10",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "3791/400",
+        "compared_note": "record n88 9.4775",
+        "improvement_lower": "49/400"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(71)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n89": {
+      "directory": "certificates/mixed_n89_L965",
+      "side": "193/20",
+      "side_float": 9.65,
+      "core": "9977/10000",
+      "rectangles": 416,
+      "total_mass": "8899999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "fff74c43cbd5fe435f70b45b157b4d5da9fbd7bb17a11202bad37dab1a42aa77",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[193/40, 183/20]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 6507601,
+      "axis_integer_minimum": 1.003735180782793,
+      "oblique_nodes": 109970334,
+      "least_lower": 1.0000000007032546,
+      "least_lower_at": 186,
+      "tarball": "certificates/mixed_n89_L965/n89-L9.65-proof-bundle.tar.gz",
+      "tarball_sha256": "75e1549d5633ecd29025f7fe53c44c2af1570dcdab57f0918467d3ca828598ee",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "48/5",
+        "compared_note": "our certified n89 9.60 (record 9.565)",
+        "improvement_lower": "1/20"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(72)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n90-L9725": {
+      "directory": "certificates/mixed_n90_L9725",
+      "side": "389/40",
+      "side_float": 9.725,
+      "core": "9977/10000",
+      "rectangles": 571,
+      "total_mass": "8999999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "a251cc29c19c2a27b3458e2dac67aad8190050317d9f19c7f47099a45b924bd8",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[389/80, 369/40]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 13271449,
+      "axis_integer_minimum": 1.003701651702754,
+      "oblique_nodes": 110810810,
+      "least_lower": 1.0000000003009648,
+      "least_lower_at": 194,
+      "tarball": "certificates/mixed_n90_L9725/n90-L9.725-proof-bundle.tar.gz",
+      "tarball_sha256": "1744a7d62585b31ddeda36bd76a00c21eee21b8232a15a7b105d0d4d7e48cb58",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "97/10",
+        "compared_note": "our certified n90 9.70 (record 9.60)",
+        "improvement_lower": "1/40"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(73)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n91-L975": {
+      "directory": "certificates/mixed_n91_L975",
+      "side": "39/4",
+      "side_float": 9.75,
+      "core": "9977/10000",
+      "rectangles": 457,
+      "total_mass": "9099999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "c4c175eb7af4a7964758e89dc33d91bd3e375b35765b6511f4b33c8d8d28ff9d",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[39/8, 37/4]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 8450649,
+      "axis_integer_minimum": 1.0042708355544132,
+      "oblique_nodes": 128561314,
+      "least_lower": 1.0000000008354386,
+      "least_lower_at": 119,
+      "tarball": "certificates/mixed_n91_L975/n91-L9.75-proof-bundle.tar.gz",
+      "tarball_sha256": "fa6f3a9cb2f6205cf3186b6d661d4826d261d426cc622fcbd6e08892312b467d",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "97/10",
+        "compared_note": "our certified n91 9.70 (record 9.645)",
+        "improvement_lower": "1/20"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(74)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n92-L977": {
+      "directory": "certificates/mixed_n92_L977",
+      "side": "977/100",
+      "side_float": 9.77,
+      "core": "9977/10000",
+      "rectangles": 345,
+      "total_mass": "9199999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "d1aafdd22771b24ada660b6f741044a6564a7921aaae95bb8bf5cb8d59bbb4d9",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[977/200, 927/100]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 4347225,
+      "axis_integer_minimum": 1.002664031677061,
+      "oblique_nodes": 37604722,
+      "least_lower": 1.0000000055876297,
+      "least_lower_at": 156,
+      "tarball": "certificates/mixed_n92_L977/n92-L9.77-proof-bundle.tar.gz",
+      "tarball_sha256": "6e7bbb35ee8fff68308f5da171f0a3ee55c19ebfbd013d962082c06065a1dfed",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "39/4",
+        "compared_note": "our certified n92 9.75",
+        "improvement_lower": "1/50"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(75)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n93": {
+      "directory": "certificates/mixed_n93_L986",
+      "side": "493/50",
+      "side_float": 9.86,
+      "core": "9977/10000",
+      "rectangles": 443,
+      "total_mass": "9299999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "dd3da64f729a011c79c9e570d53a4986bba80572d1cf42c15fc4b14d3cd0a858",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[493/100, 234/25]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 8139609,
+      "axis_integer_minimum": 1.0051573923000485,
+      "oblique_nodes": 94366242,
+      "least_lower": 1.0000000019291797,
+      "least_lower_at": 183,
+      "tarball": "certificates/mixed_n93_L986/n93-L9.86-proof-bundle.tar.gz",
+      "tarball_sha256": "10e608e2703da81ed008866dab811aa2c4f04c860acd9c01f5a4eb8b52c780ff",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "973/100",
+        "compared_note": "record n93 9.73",
+        "improvement_lower": "13/100"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(76)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n94": {
+      "directory": "certificates/mixed_n94_L992",
+      "side": "248/25",
+      "side_float": 9.92,
+      "core": "9977/10000",
+      "rectangles": 488,
+      "total_mass": "9399999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "f974716d36c4a841610e80585b8d4d8ef5c62080a75d7bd770afbfd37f359ff9",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[124/25, 471/50]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 8300161,
+      "axis_integer_minimum": 1.0052232564352899,
+      "oblique_nodes": 57370560,
+      "least_lower": 1.0000000002005007,
+      "least_lower_at": 191,
+      "tarball": "certificates/mixed_n94_L992/n94-L9.92-proof-bundle.tar.gz",
+      "tarball_sha256": "b866b117904cf01f2c50cc8d9b988c103cb54145bcce5249719acb7ce879f45f",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "247/25",
+        "compared_note": "our certified n94 9.88 (record 9.805)",
+        "improvement_lower": "1/25"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(77)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n95": {
+      "directory": "certificates/mixed_n95_L996",
+      "side": "249/25",
+      "side_float": 9.96,
+      "core": "9977/10000",
+      "rectangles": 438,
+      "total_mass": "9499999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "9e3220d8e292b7aa693cadf50b24c998f8a9d348c23afca9bb38e16d359a866e",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[249/50, 473/50]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 5175625,
+      "axis_integer_minimum": 1.005856765307342,
+      "oblique_nodes": 53447460,
+      "least_lower": 1.0000000006841734,
+      "least_lower_at": 186,
+      "tarball": "certificates/mixed_n95_L996/n95-L9.96-proof-bundle.tar.gz",
+      "tarball_sha256": "1f7b67cdcff13efaec9b2d1391bed3134f434183874ad44de1150084e4c683f6",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "248/25",
+        "compared_note": "our certified n95 9.92 (record 9.8518)",
+        "improvement_lower": "1/25"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(78)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    },
+    "n96-L997": {
+      "directory": "certificates/mixed_n96_L997",
+      "side": "997/100",
+      "side_float": 9.97,
+      "core": "9977/10000",
+      "rectangles": 376,
+      "total_mass": "9599999/100000",
+      "budget_gap": "1/100000",
+      "candidate_digest": "5e89a1ae869f6f4a12b2fadfffd7996048e856c1ec5206939fbb8ff9d6cf5b69",
+      "checker_sha256": "89b674a6feabe24d91c29431de1624907c4bff83280ceb481475455686693652",
+      "code_files": 10,
+      "code_identical_to_n50": true,
+      "net": {
+        "step": "83/40000",
+        "count": "201",
+        "endpoint_check": "89/40000",
+        "rotated_side_upper": "399908091/400000000",
+        "side_margin": "91909/400000000"
+      },
+      "centre_domains": {
+        "nodes": 200,
+        "eliminated_width_min": "24678449934996538617/204801102240949166420000",
+        "eliminated_width_min_float": 0.00012049959529007936,
+        "eliminated_width_max": "11437689778285417/7030288794430420000",
+        "eliminated_width_max_float": 0.00162691606457855,
+        "axis_domain": "[997/200, 947/100]^2"
+      },
+      "certificate_status": "ALL_ANGLES_VERIFIED_AND_REPLAYED",
+      "axis_cells": 3489424,
+      "axis_integer_minimum": 1.0085332557761764,
+      "oblique_nodes": 72598690,
+      "least_lower": 1.0000000012288544,
+      "least_lower_at": 157,
+      "tarball": "certificates/mixed_n96_L997/n96-L9.97-proof-bundle.tar.gz",
+      "tarball_sha256": "486bad8c9932a53ccdb16b39f627801c5871692b201f729ee23046f022b53303",
+      "source_audit": {
+        "status": "AUDITED_AND_PACKAGED",
+        "certificate_sha256_matches": true,
+        "archive_sha256_matches": true,
+        "compared_field": "compared_with",
+        "compared_with": "249/25",
+        "compared_note": "our published n96 9.96",
+        "improvement_lower": "1/100"
+      },
+      "comparison": {
+        "green": "Theorem 9, k=9, from n = 82",
+        "green_interval_float": [
+          9.266733533245633,
+          9.266733533245633
+        ],
+        "side_exceeds_green": true,
+        "source_value_exceeds_green": true,
+        "nagamochi": "1 + sqrt(79)",
+        "side_exceeds_nagamochi": true
+      },
+      "coverage_decided_here": false
+    }
+  },
+  "scope": "Exact premises only, from the retained files: pinned digests, the measure's count, side, core, nonnegativity and total n - 1/100000, the candidate digest by the source's rule, the net containment, the checker and code identity, a replay record at threshold one for each of the 201 angles, and the source audit's certificate and tarball digests. Coverage is decided by the source's checker, whose replay is recorded separately."
+}

@@ -1,0 +1,16 @@
+{
+  "status": "AUDITED_AND_PACKAGED",
+  "n": 87,
+  "L": "191/20",
+  "total_mass": "8699999/100000",
+  "compared_with": "237/25",
+  "compared_note": "our certified n87 9.48 (record 9.46 via n85 monotonicity)",
+  "improvement_lower": "7/100",
+  "candidate_digest": "f1e27ede3e2b29a87f4da9493d17a2258334a28c01b81ecffd157d2b0eda6b76",
+  "all_angles": 201,
+  "certificate_sha256": "1e02d8c0a086d89ea209e43dbf7252c9492da6fbaaf59861862363fafae319e8",
+  "bundle": "n87-L9.55-proof-bundle",
+  "archive_sha256": "f8f4a19d25ecbe06df49fc2cd4244f3d9a17a2e97abe56467c70f8e76925f771",
+  "route": "n87 fresh structured Green init n87-955 at L9.55, rectangles full-net repair, 201-angle verification and replay.",
+  "scope": "All centres at all 201 net angles plus strict core containment for every orientation; independent axis replay, same-algorithm outward-rounded oblique replay."
+}

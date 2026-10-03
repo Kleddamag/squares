@@ -22,7 +22,7 @@ complete source and Git LFS object store required for the upstream driver.
 | --- | --- | --- |
 | Exact root and $T$, a rational cap $U>T$, and an attaining unit-square witness | [Construction and algebra](source/PROOF.md#2-exact-construction-and-upper-bound) | [Exact witness checker](../../../cases/trump11/verify_exact.py) and [fixed-$T$ local check](receipts/local-isolation/result.json) |
 | Closed Voronoi center-cell cover, strict cell-diameter bound, and all 2,184 canonical masks with ties retained | [Coordinate framework and case partition](source/PROOF.md#4-closed-center-cover-and-the-2184-cases) | [Case census](receipts/case-census/result.json) and [independent D4 geometry](receipts/d4-independent/result.json) |
-| Complete exclusion of 2,180 masks, including whole-angle strict cores, degenerate legal-domain residuals, median-projection field capacity and strict budget, early D4 cuts from the accepted 1,931-case baseline, and both closed center branches | [Exact exclusion rule](source/PROOF.md#5-what-an-exact-case-exclusion-certificate-proves) | [Execution inventory](receipts/exclusion-inventory.json) and [center partition](receipts/center-partition-1383-indexed/provenance.json) |
+| Complete exclusion of 2,180 masks, including whole-angle strict cores, degenerate legal-domain residuals, median-projection field capacity and strict budget, early D4 cuts from the accepted 1,931-case baseline, and both closed center branches | [Exact exclusion rule](source/PROOF.md#5-what-an-exact-case-exclusion-certificate-proves), and for the field charge the paper’s charge lemma, since the original states none; its [section 12](source/PROOF.md#12-how-the-23-verification-stages-support-the-theorem) names the certificates and the transfer rule | [Execution inventory](receipts/exclusion-inventory.json) and [center partition](receipts/center-partition-1383-indexed/provenance.json) |
 | D4 reduction of the surviving masks to case 438 | [D4 argument](source/PROOF.md#6-the-exact-d4-reduction-to-case438) | [Independent D4 result](receipts/d4-independent/result.json) |
 | Fourteen-round root induction, ten capture nodes and nine state joins, closed branch endpoints, three far contradictions, and the near enclosure | [Capture argument](source/PROOF.md#8-complete-case438-capture-and-the-exact-u-to-t-bridge) | [Root chain](receipts/capture-root-chain/result.json), [near leaf](receipts/capture-child-near/result.json), and [final composition](receipts/final-composition.json) |
 | Fixed-$T$ local theorem over all contact branches and signed-coordinate residual and curvature obligations | [Contact and local theorem](source/PROOF.md#7-local-contact-analysis-and-the-focused-isolation-rectangle) | [Local isolation](receipts/local-isolation/result.json) |
@@ -260,6 +260,17 @@ public derivative has not received a fresh full geometric replay.
 The retained [audit-binding refusal](receipts/capture-ancestry/refusal-result.json)
 records four stale final-state digests in that derivative; it is a public replay
 obstacle, not a counterexample to the packing theorem.
+The four, by leaf, with the prefix the publisher states and the prefix of the object as
+observed and bound by the [source graph](receipts/source-graph/result.json), for whoever
+rebinds them in a corrected release:
+
+| Leaf | Publisher’s final-state digest | Observed final-state digest |
+| --- | --- | --- |
+| Far 15 | `3b7f1ea0` | `9e28b092` |
+| Far 13 | `f83eb23c` | `87482985` |
+| Far 2 | `7551646f` | `11d4a28e` |
+| Near | `81002706` | `a6d45c0c` |
+
 
 The independent child capture checkers pin byte-exact historical parent receipts,
 including timing fields.

@@ -116,10 +116,17 @@ def steps(limit: int) -> tuple[sympy.Expr, ...]:
     return tuple(sorted(inside, key=lambda point: sympy.N(point, 50)))
 
 
+@cache
+def step_values(limit: int) -> tuple[tuple[sympy.Expr, int], ...]:
+    """Each step and `B` at it, evaluated once: `B` is nondecreasing, so every case reads
+    its bound from this one table rather than walking the steps again."""
+    return tuple((point, pierce_bound(point)) for point in steps(limit))
+
+
 def piercing_bound(n: int, limit: int = 40) -> sympy.Expr:
     """The largest `x` the paper proves `s(n) ≥ x` for: the first step with `B ≥ n`."""
-    for point in steps(limit):
-        if pierce_bound(point) >= n:
+    for point, value in step_values(limit):
+        if value >= n:
             return point
     raise ValueError(f"n = {n}: no step of B up to {limit} reaches {n}")
 

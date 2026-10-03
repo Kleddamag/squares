@@ -1074,12 +1074,13 @@ it.
   table, since 2026-10-02 (the owner, `think-hqb3`); it was the homepage’s section
   between Recent Results and the atlas before that (**Results page**, below, for its
   place and its lead).
-  The homepage keeps a key of the same grid under Recent Results (`rung_key`, the same
-  day, `think-tgjv`), its heads the ratings’ names and letters alone (**Recent
-  results**, below). Its diagram, `.site-ladders`, is one diagram, which is neither a set
-  of cards nor the shared data table: a column for each scored dimension of the rubric,
-  in the order Significance, Verification, Confirmation, and a row for each level, the
-  highest at the top, so the rungs of the three ladders line up across a row.
+  A table of results carries a legend of every rung’s mark right above it, which links
+  this section (**Recent results**, below; `think-42dx`, in place of the key of the same
+  grid the homepage kept under its table from 2026-10-02). Its diagram, `.site-ladders`,
+  is one diagram, which is neither a set of cards nor the shared data table: a column
+  for each scored dimension of the rubric, in the order Significance, Verification,
+  Confirmation, and a row for each level, the highest at the top, so the rungs of the
+  three ladders line up across a row.
   A column is headed by the dimension’s name, which links to its section of
   `epistemics.md`, and the question it answers, with no caps label.
   A cell holds the rung’s chip and a description of exactly two lines, and nothing else:
@@ -1925,20 +1926,15 @@ pointer and by keyboard, and measures its label at 1280, 768 and 390 pixels.
   The first paragraph, 50 to 100 words, is the headline of recent progress, eleven
   squares settled by T-060, seventeen squares bracketed by T-043 and T-065, the new
   exact values at $n = 21$, $32$ and $45$, each id linked to its row and held to the
-  register by `check_results.READER_TIER`; then the star legend (`star_legend`); then
-  one sentence on where the table above starts.
-  The second, at most 130 words, says what the three ratings on a row mean, a sentence
-  to each: significance, S1 to S5, how much the result matters; verification, V0 to V5,
-  how it was first established; confirmation, C0 to C5, how far it has been checked
-  since; each with its lowest and highest rungs, and V3 and C1 to C3 between, in the
-  rubric’s words shortened.
-  It links the Verification Ladders on the Results page, which define each rung in full
-  (`think-hqb3` moved them there the same day).
-  The key under it (`rung_key`) is the ladders’ grid (**Rating ladders**, above) without
-  their questions or links: a column per rating headed by its name and its letter, a row
-  per level with the highest at the top, each rung the chip the table draws beside its
-  short meaning, the same cells as the ladders’ own, so the two never disagree; it
-  stacks a rating to a block on a narrow screen, as the ladders do.
+  register by `check_results.READER_TIER`; then one sentence on where the table above
+  starts. The homepage no longer explains the ratings (the owner, 2026-10-03,
+  `think-42dx`): the paragraph that said what each rating means and the key of every
+  rung under the table are gone, and the Results page carries both.
+  The legend right above the table (`rung_legend`, on the results page’s table too) is
+  three short lines in the support colour at the note size: every significance mark, S1
+  to S5; every verification and confirmation chip, V0 to C5, each titled with the
+  rubric’s meaning; and the star, “new result”, with a link, “What each rung means”, to
+  the Verification Ladders on the Results page.
   The table is one table, not cards or a list: every result, by the date the table
   shows, newest first, one row each (`recent_table`). It is the results page’s table,
   with its columns, its rows, its sorting and its card-per-row form on a phone

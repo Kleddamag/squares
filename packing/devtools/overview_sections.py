@@ -1025,10 +1025,54 @@ def table_of_results(overview: Overview, defaults: FilterDefaults, *, here: bool
         popovers.append(popover)
     return (
         f'<div class="site-wide">{result_filters(overview, results, defaults)}'
+        f"{rung_legend(here=here)}"
         '<div class="site-table-wrap">'
         '<table class="kpress-table site-table site-results" data-site-table>'
         f"{result_head()}"
         f"<tbody>{''.join(body)}</tbody></table></div>{''.join(popovers)}</div>"
+    )
+
+
+#: Where the rating ladders define every rung in full: the Results page's section.
+LADDERS_SECTION = "verification-ladders"
+
+
+def rung_legend(*, here: bool) -> str:
+    """The legend right above a table of results, three short lines: every significance
+    mark, S1 to S5; every verification and confirmation chip, V0 to C5; and the star,
+    with a link to where the ladders define each rung in full, on the results page
+    (`here`) or from another page. Each mark and chip is titled with the rubric's
+    meaning. It took the place, on 2026-10-03, of the whole ladder grid the overview
+    set under its table (the owner, `think-42dx`)."""
+    meanings = rung_meanings()
+    levels = rubric_levels()
+
+    def chips(scale: str) -> str:
+        return " ".join(
+            f'<span class="site-chip site-rung-fill" title="{_esc(meanings[label])}" '
+            f"{_fill(label)}>{label}</span>"
+            for label in (f"{scale}{level}" for level, _ in sorted(levels[scale]))
+        )
+
+    names = {scale: name for scale, name, _, _ in DIMENSIONS}
+    marks = " ".join(
+        significance_mark(level, meanings[f"S{level}"]) for level, _ in sorted(levels["S"])
+    )
+    href = f"#{LADDERS_SECTION}" if here else f"{RESULTS_PAGE}#{LADDERS_SECTION}"
+    star = f'<span class="site-star" aria-hidden="true">{STAR}</span>'
+    def group(scale: str, shown: str) -> str:
+        return (
+            '<span class="site-rung-legend-group">'
+            f'<span class="site-rung-legend-name">{_esc(names[scale])}</span> {shown}</span>'
+        )
+
+    return (
+        '<div class="site-rung-legend" role="note" aria-label="What a row\u2019s marks mean">'
+        f"<p>{group('S', marks)}</p>"
+        f"<p>{group('V', chips('V'))} {group('C', chips('C'))}</p>"
+        f'<p><span class="site-rung-legend-group">{star} {NEW_RESULT}</span> '
+        f'<a href="{href}">What each rung means</a></p>'
+        "</div>"
     )
 
 
@@ -1189,22 +1233,6 @@ def verification_block() -> str:
     }
     names = ", ".join(name.lower() for _, name, _, _ in DIMENSIONS)
     return _ladder_grid(heads, f"Verification ladders by level: {names}", "site-ladders-frame")
-
-
-def rung_key() -> str:
-    """The overview's key to the three ratings on a row of its table: the rating ladders'
-    grid (`verification_block`) with each column headed by its rating and its letter
-    alone, no question and no link, each rung its chip and its short meaning. It stands
-    under Recent Results' account of the ratings (the owner, 2026-10-02, `think-tgjv`);
-    the ladders themselves, with what each rating asks, are the Results page's."""
-    heads = {
-        scale: f'<span class="site-ladders-name">{_esc(name)} ({scale})</span>'
-        for scale, name, _, _ in DIMENSIONS
-    }
-    names = ", ".join(name.lower() for _, name, _, _ in DIMENSIONS)
-    return _ladder_grid(
-        heads, f"The ratings' rungs by level: {names}", "site-ladders-frame site-ladders-key"
-    )
 
 
 def _ladder_grid(heads: dict[str, str], label: str, frame: str) -> str:

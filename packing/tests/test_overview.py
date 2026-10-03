@@ -1094,34 +1094,43 @@ def _ladders(results: str) -> str:
     return section.split('<div class="site-ladders-frame site-wide">', 1)[1].split("<p", 1)[0]
 
 
-def test_recent_results_keys_every_rung_with_its_chip_and_short_meaning(page: str) -> None:
-    """Under Recent Results' account of the ratings stands a key to them (the owner,
-    2026-10-02, `think-tgjv`): the rating ladders' grid, a column per rating headed by
-    its name and its letter alone, a row per level with the highest at the top, each
-    rung the chip the table draws beside its short meaning. Its cells are the ladders'
-    own (`_ladder_cell`), so the key and the Results page's diagram never disagree; what
-    each rating asks, and the links to `epistemics.md`, are the diagram's alone."""
-    key = overview_sections.rung_key()
-    assert key.startswith('<div class="site-ladders-frame site-ladders-key site-wide">')
-    heads = re.findall(r'<span class="site-ladders-name">([^<]+)</span>', key)
-    assert heads == ["Significance (S)", "Verification (V)", "Confirmation (C)"]
-    assert "href=" not in key
-    assert "site-ladders-question" not in key
-    meanings = overview_sections.rung_short_meanings()
-    cells = re.findall(r'<div class="site-ladders-cell" role="cell".*?</div></div>', key)
-    assert len(cells) == len(meanings) == 17
-    for label, meaning in meanings.items():
-        assert f">{label}</span>" in key, label
-        assert (
-            f'<span class="site-ladders-meaning">{html.escape(meaning, quote=False)}</span>'
-            in (key)
-        ), label
-    diagram = overview_sections.verification_block()
-    assert cells == re.findall(
-        r'<div class="site-ladders-cell" role="cell".*?</div></div>', diagram
-    )
-    section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
-    assert section.count(" site-ladders-key ") == 1
+def _legend(served: str) -> str:
+    """The legend over a page's table of results (`rung_legend`)."""
+    return served.split('<div class="site-rung-legend"', 1)[1].split("</div>", 1)[0]
+
+
+def test_a_table_of_results_opens_with_a_legend_of_every_rungs_mark(
+    page: str, results: str
+) -> None:
+    """Right above each table of results, under its bar, stands a legend of three short
+    lines (the owner, 2026-10-03, `think-42dx`): every significance mark, S1 to S5;
+    every verification and confirmation chip, V0 to C5, each titled with the rubric's
+    meaning; and the star, a new result, with a link to the Verification Ladders that
+    define each rung in full. It took the place of the key of the ladders' whole grid
+    the homepage set under its table."""
+    assert not hasattr(overview_sections, "rung_key")
+    meanings = overview_sections.rung_meanings()
+    expected = [
+        f"{scale}{level}"
+        for scale in "SVC"
+        for level, _ in sorted(overview_sections.rubric_levels()[scale])
+    ]
+    for served, href in (
+        (page, "all-results.html#verification-ladders"),
+        (results, "#verification-ladders"),
+    ):
+        assert served.count('<div class="site-rung-legend"') == 1
+        bar = served.index('<div class="site-table-tools')
+        at = served.index('<div class="site-rung-legend"')
+        assert bar < at < served.index('<table class="kpress-table site-table site-results"')
+        legend = _legend(served)
+        assert legend.count("<p>") == 3
+        assert RUNG_CHIP.findall(legend) == expected
+        for label in expected:
+            assert f'title="{html.escape(meanings[label], quote=True)}"' in legend, label
+        assert f'<a href="{href}">What each rung means</a>' in legend
+        assert f"{overview_sections.STAR}</span> {overview_sections.NEW_RESULT}" in legend
+    assert "site-ladders-key" not in page
 
 
 def test_the_ladders_are_the_results_pages_and_the_overview_points_to_them(
@@ -1129,10 +1138,9 @@ def test_the_ladders_are_the_results_pages_and_the_overview_points_to_them(
 ) -> None:
     """Verification Ladders left the overview for the results page on 2026-10-02 (the
     owner, think-hqb3): the section stands under the table there, headed as it was, with
-    the empty anchor of its older fragment; the overview has no ladders section, and its
-    Recent Results says what the three ratings on a row mean, links the section, and
-    shows every rung in a key, the ladders' grid without their questions or links
-    (think-tgjv). The results page's
+    the empty anchor of its older fragment; the overview has no ladders section, and the
+    legend over its table links the section (think-42dx), its account of the ratings and
+    its key of every rung gone since 2026-10-03. The results page's
     opening paragraph points at the section, so a reader meets the table first and the
     account of the ratings is written once, as the section's lead."""
     heading = (
@@ -1173,17 +1181,10 @@ def test_the_ladders_are_the_results_pages_and_the_overview_points_to_them(
         '<a class="site-ladders-name"',
     ):
         assert gone not in page, gone
-    assert page.count('class="site-ladders"') == 1
-    assert page.count('<div class="site-ladders-frame site-ladders-key site-wide">') == 1
-    # The overview names the ladders once, in the chips' sentence, and nowhere else a
-    # reader sees: its inlined stylesheet and the templates' comments name them too.
-    assert _seen(page).count("Verification Ladders") == 1
-    ladders = "the Verification Ladders on the Results page define each one in full."
-    assert ladders in _rendered_text(_recent_prose(page))
-    assert (
-        '<a href="all-results.html#verification-ladders">Verification Ladders</a>'
-        in _recent_prose(page)
-    )
+    assert 'class="site-ladders"' not in page
+    # The overview names the ladders nowhere a reader sees: its legend links them.
+    assert _seen(page).count("Verification Ladders") == 0
+    assert '<a href="all-results.html#verification-ladders">' in _legend(page)
     for scale, _, _, question in overview_sections.DIMENSIONS:
         assert question in results, scale
 
@@ -2275,7 +2276,8 @@ def test_every_small_label_is_one_chip(name: str, rendered: Callable[[str], str]
 #: A rung as the site draws it, its label the one group: a V or C chip, or the
 #: significance mark, S1 to S5 with its bars (`overview_sections.significance_mark`).
 RUNG_CHIP = re.compile(
-    r'<span class="(?:site-chip site-rung-fill" data-rung="[VC]" data-level="\d'
+    r'<span class="(?:site-chip site-rung-fill"(?: title="[^"]*")? data-rung="[VC]" '
+    r'data-level="\d'
     r'|site-significance" data-level="\d" role="img" aria-label="[^"]*"(?: title="[^"]*")?>'
     r'<span class="site-significance-label" aria-hidden="true)">([SVC]\d)</span>'
     r'(?:<span class="site-significance-bars" aria-hidden="true">'
@@ -2324,6 +2326,9 @@ def test_every_page_lists_significance_first(name: str, rendered: Callable[[str]
     before them (`test_each_results_row_shows_its_rungs_significance_first`). No run
     repeats a scale or puts a later one first."""
     shown = site_renders.case_records()[name] if name.startswith("cases/") else rendered(name)
+    # The legend over a table of results lists every mark of a ladder in a row, by
+    # design, and is no result's rungs (`test_a_table_of_results_opens_with_a_legend`).
+    shown = re.sub(r'<div class="site-rung-legend".*?</div>', "", shown, flags=re.DOTALL)
     runs = [run for run in _rung_runs(shown) if len(run) > 1]
     if name.startswith("cases/"):
         assert any(len(run) == len(RUNG_ORDER) for run in runs), name
@@ -2885,11 +2890,11 @@ def _intro(page: str) -> str:
 
 
 def _recent_prose(page: str) -> str:
-    """Recent Results' two paragraphs, the markup under its table's action and over its
-    key to the ratings (`rung_key`)."""
+    """Recent Results' paragraph, the markup under its table's action, the comments
+    after it set aside."""
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
     after = section.split('<p class="site-action-row site-more">', 1)[1].split("</p>", 1)[1]
-    return after.split('<div class="site-ladders-frame site-ladders-key', 1)[0]
+    return re.sub(r"<!--.*?-->", "", after, flags=re.DOTALL).strip()
 
 
 #: One formula as kpress writes it: the TeX for KaTeX, then its MathML.
@@ -3011,16 +3016,15 @@ def test_the_overviews_first_section_is_readmes_one_block(page: str) -> None:
 def test_recent_results_opens_with_its_table_and_says_what_it_shows_under_it(
     page: str,
 ) -> None:
-    """Recent Results opens with its table, and under the table's one action stand two
-    short paragraphs and a key (the owner, 2026-10-02, `think-tgjv`; one paragraph stood
-    between the heading and the filter bar until then). The first is the headline of
-    recent progress, the star legend and where the filters start; the second says what
-    the three ratings on a row mean, rung by rung in brief, links the Verification
-    Ladders on the Results page, and leads to the key (`rung_key`), which shows every
-    chip with its short meaning. What stood there before 2026-10-02, README's two
-    paragraphs and a paragraph on the table, is gone from the page: the rungs, review,
-    packet and defects of T-060 are its row's, and the kinds and statuses the Results
-    page's."""
+    """Recent Results opens with its table, its legend over it, and under the table's one
+    action stands one short paragraph (the owner, 2026-10-02, `think-tgjv`; one
+    paragraph stood between the heading and the filter bar until then): the headline of
+    recent progress and where the filters start. The paragraph on what the ratings mean,
+    the star's sentence and the key of every rung went on 2026-10-03 (`think-42dx`): the
+    legend shows every mark, and the Results page explains them. What stood there before
+    2026-10-02, README's two paragraphs and a paragraph on the table, is gone from the
+    page: the rungs, review, packet and defects of T-060 are its row's, and the kinds and
+    statuses the Results page's."""
     problem = page.split('id="the-problem"', 1)[1].split('id="recent-results"', 1)[0]
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
     head = section.split("</h2>", 1)[1]
@@ -3032,35 +3036,27 @@ def test_recent_results_opens_with_its_table_and_says_what_it_shows_under_it(
     assert before.strip() == '<div class="site-wide">'
     lead = _recent_prose(page)
     paragraphs = re.findall(r"<p>(.*?)</p>", lead, re.DOTALL)
-    assert len(paragraphs) == 2
-    first, second = (_rendered_text(paragraph) for paragraph in paragraphs)
+    assert len(paragraphs) == 1
+    first = _rendered_text(paragraphs[0])
     assert first.startswith("Eleven squares is settled: $s(11) = 3.8770835\\ldots$")
     assert first.endswith(
         "The table above starts at significance S3 and up, max age 180 days and "
         "superseded hidden."
     )
-    assert 50 <= len(first.split()) <= 100, len(first.split())
-    legend = re.sub(r"<[^>]+>", "", overview_sections.star_legend())
-    assert first.index("T-065") < first.index(legend) < first.index("The table above")
-    assert second.startswith("Each row carries three ratings, each a rung of its own ladder.")
-    for scale in (
-        "Significance, S1 to S5,",
-        "Verification, V0 to V5,",
-        "Confirmation, C0 to C5,",
-    ):
-        assert scale in second, scale
-    assert second.endswith("on the Results page define each one in full.")
-    assert len(second.split()) <= 130, len(second.split())
-    # The table, its action, the two paragraphs, then the key.
+    assert 40 <= len(first.split()) <= 100, len(first.split())
+    for gone in ("Each row carries three ratings", "marks a new result", "S1 to S5"):
+        assert gone not in _seen(section), gone
+    assert "site-ladders" not in section
+    # The bar, the legend, the table, its action, then the paragraph.
     order = [
         section.index('<div class="site-table-tools'),
+        section.index('<div class="site-rung-legend"'),
         section.index(_recent_table(page)),
         section.index('<p class="site-action-row site-more">'),
         section.index(lead),
-        section.index('<div class="site-ladders-frame site-ladders-key'),
     ]
     assert order == sorted(order)
-    text = first + " " + second
+    text = first
     # The section's prose is the lead; its bar and rows name sources and credits of
     # their own (Guzhou0806 is a Source option, Kleddamag a credit), so they are read
     # out of the lead and the sections before it only.
@@ -3859,12 +3855,16 @@ def test_a_new_result_is_starred_in_both_tables_by_the_atlas_rule(
         "case rests on it now, and it was proved or published on or after 22 August 2026."
     )
     for served in (page, results):
-        assert legend in re.sub(r"<[^>]+>", "", served)
         assert len(ROW_STAR.findall(served)) == len(starred)
-    # The results page says it before its table; the overview, under its table since
-    # 2026-10-02 (think-tgjv), with the rest of what the table shows.
+        # The legend over each table says what the star marks, in two words.
+        assert f"{overview_sections.STAR}</span> {overview_sections.NEW_RESULT}" in _legend(
+            served
+        )
+    # The results page says it in full before its table; the overview says no more than
+    # its legend since 2026-10-03 (think-42dx).
+    assert legend in re.sub(r"<[^>]+>", "", results)
     assert results.index("marks a new result") < results.index('<div class="site-table-tools')
-    assert page.index(_recent_table(page)) < page.index("marks a new result")
+    assert legend not in re.sub(r"<[^>]+>", "", page)
     css = render_overview.SITE_CSS.read_text(encoding="utf-8")
     # The star's colour is a token (`think-zhlc`), and it sits after the significance
     # mark's bars in the significance cell, no longer hung after the result's text.

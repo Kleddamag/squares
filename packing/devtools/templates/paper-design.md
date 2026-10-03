@@ -1273,6 +1273,18 @@ it.
   which every atlas cell opened until 2026-10-03, when the case popover took its place
   (the owner, `think-7aar`, `think-necq`).
 
+- **Case badges.** A case’s properties have one mark on the site, the film’s badges:
+  optimal (O), exact (=), numerical (≈) and rigid (R, outlined when it is the
+  catalogue’s), each its glyph in a small square, solid or outlined
+  (`.site-atlas-badge`, `result_overview.badge_glyph`); a new result is the star and
+  what is open the outlined “?”. The visual summary lists them with their words.
+  Where a case is one line, a record’s head beside its status chip, a frontier row and a
+  broad result’s list of cases under it, they are the glyphs alone, each named for a
+  screen reader and in a tooltip (`result_overview.case_badges`, `.site-case-badges`;
+  the owner, 2026-10-03, `think-7cbx`). In a table they are a step smaller, 1rem, and a
+  block of their own under the chip, so a row of whole numbers stays the two lines its
+  drawing is high.
+
 - **Case records.** Every case has one record at an address of its own, `cases/11.html`,
   and every way to a case opens that record: an atlas tile, a frontier row and a link
   (the owner, 2026-10-02 and 03, `think-t21m`).

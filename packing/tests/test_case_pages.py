@@ -23,8 +23,8 @@ PROBES = Path(__file__).resolve().parent / "probes"
 #: it fetches each record file. Measured at about 1.9 MB on 2026-10-03.
 PAGE_CEILING_BYTES = 2_500_000
 #: One record file is the record alone, with no styles or shell. Measured on 2026-10-03:
-#: from 27 KB (n = 1) to 227 KB (n = 11, whose prose and results are the longest, and
-#: n = 17 close behind), 14 MB for all 324.
+#: from 16 KB (n = 1) to 217 KB (n = 11, whose prose and results are the longest, and
+#: n = 17 close behind), 10.4 MB for all 324.
 RECORD_CEILING_BYTES = 300_000
 
 
@@ -382,6 +382,36 @@ def test_the_prose_sets_formulas_and_keeps_names() -> None:
     assert "$$\ns (61) > 7 \\sqrt{3} / 2 + 2 \\sqrt{2} - 1\n$$" in shown
     assert "```bash\nuv run x\n```" in shown
     assert "footer" not in shown
+
+
+def test_a_cases_badges_are_one_mark_wherever_a_case_is_drawn(
+    records: dict[str, str], frontier: str
+) -> None:
+    """The film's badges, optimal, exact, numerical and rigid, are the site's one mark
+    for a case's properties (the owner, 2026-10-03, think-7cbx): the visual summary lists
+    them with their words, and where a case is one line, a record's head and a frontier
+    row, they stand after its status chip as glyphs alone, each named, from one builder
+    (`result_overview.case_badges`)."""
+    from devtools import result_overview  # noqa: PLC0415
+
+    facts = result_overview.film_facts()
+    assert [label for _, _, label in facts[11]["badges"]] == ["optimal", "exact", "rigid"]
+    badges = result_overview.case_badges(11)
+    for glyph, style, label in facts[11]["badges"]:
+        named = result_overview.badge_glyph(glyph, style, label, named=True)
+        assert f'role="img" aria-label="{label}" title="{label}">' in named
+        assert named in badges
+        # The summary's list draws the same square, its word beside it.
+        listed = result_overview.badge_glyph(glyph, style, label)
+        assert f"{listed}{label}</li>" in _record(records, 11)
+    head = _record(records, 11).split("</header>", 1)[0]
+    assert badges in head
+    row = frontier.split('<tr id="n-11" ', 1)[1].split("</tr>", 1)[0]
+    assert badges in row
+    # A case with no property the film marks has no row of them.
+    plain = [n for n, fact in facts.items() if not fact["badges"]]
+    if plain:
+        assert result_overview.case_badges(plain[0]) == ""
 
 
 def test_each_record_steps_to_its_neighbours_with_the_sites_arrows(

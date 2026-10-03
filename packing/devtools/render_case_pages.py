@@ -797,6 +797,7 @@ def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) ->
     and each record file writes them again from its own directory (`rebase_links`)."""
     from devtools.overview_sections import arrow_icon, case_status_chip  # noqa: PLC0415
     from devtools.repo_links import branch_file  # noqa: PLC0415
+    from devtools.result_overview import case_badges  # noqa: PLC0415
 
     n = case["n"]
     status = case["status"]
@@ -823,7 +824,7 @@ def record_head(case: dict[str, Any], *, recent: bool, first: int, last: int) ->
         f'<header class="site-case-head" data-kpress-prose-font="sans">'
         f'<nav class="site-case-steps" aria-label="Cases">{previous}'
         f'<a href="{CASES_HOME}" data-case-index>All cases</a>{following}</nav>'
-        f'<p class="site-case-title"><b>n = {n}</b> {chip}{star}</p>'
+        f'<p class="site-case-title"><b>n = {n}</b> {chip}{star}{case_badges(n)}</p>'
         f'<p class="site-case-interval">{_math(interval_tex(case))}</p></header>'
         f"{visual_summary(n, upper=upper)}"
         '<div class="site-case-data" data-kpress-prose-font="sans">'

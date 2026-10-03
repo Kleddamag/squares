@@ -2051,6 +2051,29 @@ body {
   justify-content: center;
   line-height: 1;
 }
+/* A case's badges where a case is one line, a table's row or a record's head: the
+   glyphs alone, in a row after the case's status chip, each named for a screen reader
+   and on hover (`result_overview.case_badges`). In a table they are a step smaller, to
+   sit on the row's line. */
+.site-case-badges {
+  display: inline-flex;
+  gap: 0.25rem;
+  margin-inline-start: 0.4rem;
+  vertical-align: middle;
+}
+/* In a table cell the row is its own block under the chip, as tall as its glyphs and no
+   taller, so a row of whole numbers keeps the two lines its drawing is high. Its small
+   margin is under it, matching the chip's line's leading above, so the cell's content
+   is centred on the row. */
+:is(.site-table, .site-result-cases) .site-case-badges {
+  display: flex;
+  margin: 0 0 0.1rem;
+}
+:is(.site-table, .site-result-cases) .site-case-badges .site-atlas-badge {
+  block-size: 1rem;
+  font-size: 0.7rem;
+  inline-size: 1rem;
+}
 .site-atlas-badge[data-style="solid"] {
   background: var(--kpress-doc-muted);
   color: var(--kpress-doc-bg);

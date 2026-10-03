@@ -452,6 +452,7 @@ def case_row(case: dict[str, Any], *, recent: bool) -> str:
     what is known."""
     from devtools.overview_sections import case_status_chip  # noqa: PLC0415
     from devtools.render_case_pages import case_link, case_url  # noqa: PLC0415
+    from devtools.result_overview import case_badges  # noqa: PLC0415
 
     n = case["n"]
     case_file = repo_url(tables.FRONTIER / f"n-{n:03d}.md")
@@ -470,7 +471,7 @@ def case_row(case: dict[str, Any], *, recent: bool) -> str:
             classes="num site-col-n",
         ),
         _cell(star, value="1" if recent else "0"),
-        _cell(shown_status, value=status),
+        _cell(f"{shown_status}{case_badges(n)}", value=status),
         _bound_cell(upper, credit(upper.get("found_by"), upper.get("found_year"))),
         _verified_cell(case["verified_upper_bound"], upper),
         _bound_cell(lower, credit(lower.get("proved_by"), lower.get("proved_year"))),

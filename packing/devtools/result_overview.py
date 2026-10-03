@@ -361,12 +361,35 @@ def film_bound(fact: dict[str, Any]) -> str:
     return f'<p class="site-atlas-pop-bound">{"".join(parts)}</p>'
 
 
+def badge_glyph(glyph: str, style: str, text: str, *, named: bool = False) -> str:
+    """One of the film's badges, the site's one mark for a property of a case (optimal,
+    exact, numerical, rigid, a new result, something open): its glyph in a small square,
+    solid or outlined (`.site-atlas-badge`). `named`, where no word follows it, gives it
+    its word as its name and its tooltip."""
+    name = (
+        f'role="img" aria-label="{_esc(text)}" title="{_esc(text)}"'
+        if named
+        else 'aria-hidden="true"'
+    )
+    return (
+        f'<span class="site-atlas-badge" data-style="{_esc(style)}" {name}>{_esc(glyph)}</span>'
+    )
+
+
 def _badge(glyph: str, style: str, text: str, classes: str = "") -> str:
     item = f"site-atlas-pop-item {classes}".strip()
-    return (
-        f'<li class="{item}"><span class="site-atlas-badge" data-style="{_esc(style)}" '
-        f'aria-hidden="true">{_esc(glyph)}</span>{_esc(text)}</li>'
+    return f'<li class="{item}">{badge_glyph(glyph, style, text)}{_esc(text)}</li>'
+
+
+def case_badges(n: int) -> str:
+    """Case `n`'s property badges as the film draws them, each named, in a row of their
+    own and without their words: the same marks the visual summary lists with words,
+    where a case is one line, as in a table's row or a record's head (think-7cbx)."""
+    marks = "".join(
+        badge_glyph(glyph, style, text, named=True)
+        for glyph, style, text in film_facts()[n]["badges"]
     )
+    return f'<span class="site-case-badges">{marks}</span>' if marks else ""
 
 
 def film_facts_html(fact: dict[str, Any]) -> str:
@@ -521,7 +544,7 @@ def case_list(cases: Sequence[int], overview: Overview) -> str:
                         f'<span class="is-upper">{_esc(fact["upper"])}</span>', classes="num"
                     ),
                     _cell(_esc(gap), classes="num"),
-                    _cell(case_status_chip(status)),
+                    _cell(case_status_chip(status) + case_badges(n)),
                     _cell(
                         f'<a href="frontier.html#n-{n}">frontier</a> '
                         f'<a href="{_esc(repo_url(case_file(n)))}">'

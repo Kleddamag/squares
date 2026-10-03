@@ -5,7 +5,7 @@ title: "N17 Session169: profile and bound obsolete producer PartnerMemo generati
 kind: task
 status: in_progress
 priority: 1
-version: 3
+version: 6
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 assignee: Guzhou0806
 delegate: guzhou0806-codex-t0
@@ -15,7 +15,7 @@ parent_id: is-01m3xkd6zmq1jqwtn628h2k7zy
 hold: null
 hold_until: null
 created_at: 2026-10-03T20:49:44.645Z
-updated_at: 2026-10-03T21:02:12.240Z
+updated_at: 2026-10-03T21:41:01.043Z
 started_at: 2026-10-03T20:50:09.807Z
 ---
 Own only Session 169's bounded W3/W10 decision and W5 PartnerMemo lifecycle profile on PR 307 head 234a07f4e22edb3b8e4074356236e4137b1ec19d, branch guzhou/n17-p01-partner-memo. Operator Guzhou0806-Codex-T0; one primary executor after the user's token-budget addendum.
@@ -30,4 +30,4 @@ Session A starts 2026-10-04T04:31:41+08:00 and ends by 08:31:41; each command an
 
 ## Notes
 
-Draft PR https://github.com/jlevy/squares/pull/325 formally linked in stack326. Single primary executor. Frozen A/16/12 baseline and cProfile completed: obsolete memo736/656 and domain45056/40960; candidate bytes identical, producer peak165134336 to130379776B. Independent checker/review/controls pending. No parent edits or new exclusions. Parent has independently advanced; relevant producer source unchanged.
+Final scoped delivery complete. PR325 head d1c1a778c: all reported CI checks terminal, no failures; packing-required/pages-required/merges-into-main SUCCESS.83 targeted current-parent tests pass. Await review/merge; bead intentionally remains open until merge. Session169 administrative closeout preserves parent coordinator think-tmz6. Our layer adds evidence/instrument/regression, no producer or verifier edits versus601bbf110. No active worker, Session B, background computation or merge.

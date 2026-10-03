@@ -1,0 +1,16 @@
+---
+type: is
+id: is-01m4020pk2fbz1s3zjfewn0tn1
+title: "Optimality paper: figures too wide at phone widths"
+kind: bug
+status: in_progress
+priority: 2
+version: 2
+spec_path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md
+labels: []
+dependencies: []
+parent_id: is-01m3p52z585a2zb9jmy19b0r96
+created_at: 2026-10-03T04:58:02.721Z
+updated_at: 2026-10-03T05:35:08.282Z
+---
+Owner, 2026-10-03: 'the figures on the n=11 optimal proof explainer page are very wide on mobile widths' (papers/n11-optimality-review.html). Measure each figure's width at 390 and 320, find what sets it (an intrinsic SVG width, a min-width, a wide table or a fixed-size canvas), and make every figure fit the column or scroll inside its own box; shots at 390 and 1280, a geometry test.

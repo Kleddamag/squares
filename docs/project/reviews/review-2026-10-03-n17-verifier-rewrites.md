@@ -830,6 +830,18 @@ of the facts the refinement rests on, and a row’s interval is now whatever the
 certificate says it is.
 The conditions change no byte of the verifier.
 
+**Conditions made.** At the coordinator’s request the five tests are written, as five
+more entries of `test_the_kernel_verifier_refuses_a_doctored_refinement` on the blind
+pair (`start_above_zero`, and `grow_core_by_a_half_strict_point` and
+`grow_partner_core_by_a_half_strict_point` for each half, with
+`point_strict_on_one_half` as the search), in `refinement/r6-condition-tests.patch`
+against `575795e02`; each runs in under a second here, and no test asserts a digest.
+The whole file passes on the unmutated verifier (47 tests,
+`worktree-tests-with-conditions.log`), and against the extended file every one of the
+twenty mutants fails at least one committed test except the equivalent
+`duplicate-accepted-unchecked` (`refinement-mutants-after-tests.log`): the five that
+were missed now fail exactly the test written for each.
+
 ### 5.5 The Row Count
 
 The verifier caps nothing: `predecessors` accepts any nonempty partition.

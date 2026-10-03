@@ -132,8 +132,8 @@ def test_each_papers_credits_follow_the_owners_form(
     # site's edition or the data hash.
     assert explainer[-2].text == f"{release.EXPLAINER_VERSION} (version history)"
     assert explainer[-2].links == (("version history", "#version-history"),)
-    assert review[-2].text == release.OPTIMALITY_REVIEW_EDITION
-    assert review[-2].links == ()
+    assert review[-2].text == f"{release.OPTIMALITY_REVIEW_EDITION} (version history)"
+    assert review[-2].links == (("version history", "#version-history"),)
     for lines in (explainer, review):
         assert release.PUBLICATION_EDITION not in lines[-2].text
         assert release.DATA_REVISION[: release.DATA_REVISION_LENGTH] not in lines[-2].text

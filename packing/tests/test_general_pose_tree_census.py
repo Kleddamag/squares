@@ -390,7 +390,11 @@ def test_timeout_retains_bound_partial_rows_without_complete_admission(tmp_path:
         certificate,
         output,
         "0-2",
-        max_seconds=0.2,
+        # The fake checker sleeps 60 s after its first row, so the timeout still fires
+        # after at least one row; two seconds leaves a loaded runner the headroom to
+        # start `python -I`, read the certificate and append that row first. At 0.2 s a
+        # pull-request runner on 2026-10-03 produced an empty journal instead.
+        max_seconds=2.0,
         expected_rows=3,
         expected_revision=None,
         expected_certificate_sha256=None,

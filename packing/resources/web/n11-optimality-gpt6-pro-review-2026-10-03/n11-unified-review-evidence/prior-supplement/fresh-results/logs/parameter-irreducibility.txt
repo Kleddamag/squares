@@ -1,0 +1,1 @@
+{'prime': 29, 'degree': 8, 'x_to_p4_mod_P': [12, 8, 22, 18, 21, 21, 10, 17], 'gcd_P_x_to_p4_minus_x': [1], 'x_to_p8_mod_P': [0, 1], 'irreducible_mod_29': True, 'irreducible_over_Q': True}

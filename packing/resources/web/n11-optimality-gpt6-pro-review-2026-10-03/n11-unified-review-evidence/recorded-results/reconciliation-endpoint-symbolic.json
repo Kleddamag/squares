@@ -1,0 +1,7 @@
+{
+  "closing_gap_identity_holds_without_using_P_eq_0": true,
+  "factored_gap": "(5*u**8 - 10*u**7 - 2*u**6 + 14*u**5 + 12*u**4 - 6*u**3 + 2*u**2 + 2*u - 1)/(2*u*(u - 1)*(u + 1)*(u**2 + 1)*(u**2 - 2*u - 1))",
+  "derivative_termwise_lower": "10398878171521/2500000000000",
+  "unique_root_count": 1,
+  "scope": "Rational-function identity and local root isolation only; no global geometric replay."
+}

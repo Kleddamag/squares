@@ -30,8 +30,9 @@ The rounds. `sqpack.hull_kernel.producer` builds the seed and every row
 (`produce_row`, with collision regions from other owners' complete pose covers and owned
 hulls capped in replace mode, as `producer.produce` does). The one thing capture needs
 that the producer lacks is angle refinement: before an owner's update, every live row is
-bisected in the half-angle chart while the owner stays within `max_live` live rows (the
-widest first when it would not), and no row narrower than `min_width`. Every child
+bisected in the half-angle chart while the owner stays within `max_live` live rows, or
+its own cap in `max_live_for` (the widest first when it would not), and no row narrower
+than `min_width`. Every child
 cites its parent row, which is the refinement the sequential grammar already admits
 (`sequential.complete_refinement`). The rest are producer choices, none new to the
 grammar:
@@ -1126,6 +1127,7 @@ def run_pilot(
     max_seconds: float,
     seed_grid: int = 0,
     max_steps: int | None = None,
+    max_live_for: Mapping[str, int] | None = None,
     core_kind: str = "octagon",
     rounds_after_start: int | None = None,
     node_id: str = "n17-capture-pilot",
@@ -1141,11 +1143,21 @@ def run_pilot(
     under a twentieth of its position extent and no two-sided extent down by a tenth), or
     `rounds_after_start` rounds after positions start contracting (the worst owner's
     two-sided position extent down by a tenth in one round).
+
+    `max_live_for` caps named owners' live rows at their own values instead of
+    `max_live`, so rows go where an owner's widest-row ratio needs them (lane C2's
+    `rows_needed`) rather than to every owner alike. Caps change only how far rows are
+    refined, never what a step proves, so a checkpoint resumes under any caps.
     """
     started = time.monotonic()
     budget = Budget(started + max_seconds, MAX_EVENTS)
     targets = endpoint.by_owner()
     mask = sorted(targets)
+    caps = dict(max_live_for or {})
+    owners = {frame.cell_names[owner] for owner in mask}
+    for name, cap in caps.items():
+        require(name in owners, f"max_live_for names no owner {name!r}")
+        require(cap > 0, f"max_live_for gives {name} no rows")
     coarse = next(
         (target.owner for target in endpoint.targets if target.label == endpoint.coarse), None
     )
@@ -1251,7 +1263,7 @@ def run_pilot(
                 groups=groups,
                 rows=rows,
                 cores=cores,
-                max_live=max_live,
+                max_live=caps.get(frame.cell_names[owner], max_live),
                 min_width=min_width,
                 hull_limit=hull_limit,
                 core_kind=core_kind,
@@ -1372,7 +1384,7 @@ def run_pilot(
                 {
                     "schema": f"{SCHEMA}/checkpoint",
                     "provenance": PROVENANCE,
-                    "settings": {**settings, "max_live": max_live},
+                    "settings": {**settings, "max_live": max_live, "max_live_for": caps},
                     "round": round_index,
                     "seed": seed,
                     "initial": initial,
@@ -1488,7 +1500,11 @@ def load_checkpoint(path: Path, settings: Mapping[str, Any]) -> dict[str, Any]:
     """
     record = json.loads(gzip.decompress(path.read_bytes()))
     require(record.get("schema") == f"{SCHEMA}/checkpoint", "not a pilot checkpoint")
-    then = {key: value for key, value in record["settings"].items() if key != "max_live"}
+    then = {
+        key: value
+        for key, value in record["settings"].items()
+        if key not in {"max_live", "max_live_for"}
+    }
     require(then == json.loads(json.dumps(dict(settings))), "the checkpoint's settings differ")
     written = record.get("provenance")
     record["drift"] = (
@@ -1545,6 +1561,19 @@ def round_line(summary: Mapping[str, Any], splits: int) -> dict[str, Any]:
         "live": sum(summary["live_rows"].values()),
         "splits": splits,
     }
+
+
+def parse_caps(given: Sequence[str]) -> dict[str, int]:
+    """`--max-live-for CELL=N` values, as a mapping from cell name to live rows."""
+    caps: dict[str, int] = {}
+    for item in given:
+        name, separator, value = item.partition("=")
+        require(
+            bool(separator) and value.isdigit(), f"--max-live-for wants CELL=N, not {item!r}"
+        )
+        require(name not in caps, f"--max-live-for names {name} twice")
+        caps[name] = int(value)
+    return caps
 
 
 def contraction_start(rounds: Sequence[Mapping[str, Any]]) -> dict[str, Any] | None:
@@ -1693,6 +1722,7 @@ def run(
     partial: Path | None = None,
     checkpoints: Path | None = None,
     resume: Path | None = None,
+    max_live_for: Mapping[str, int] | None = None,
 ) -> dict[str, Any]:
     started, cpu = time.monotonic(), time.process_time()
     if system == "n11":
@@ -1714,6 +1744,7 @@ def run(
         bins=bins,
         max_rounds=max_rounds,
         max_live=max_live,
+        max_live_for=max_live_for,
         min_width=min_width,
         hull_limit=hull_limit,
         max_seconds=pilot_seconds,
@@ -1785,6 +1816,7 @@ def run(
             "bins": bins,
             "max_rounds": max_rounds,
             "max_live": max_live,
+            "max_live_for": dict(max_live_for or {}),
             "min_width": str(min_width),
             "hull_limit": hull_limit,
             "collision": True,
@@ -1841,6 +1873,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--bins", type=int, default=32)
     parser.add_argument("--max-rounds", type=int, default=12)
     parser.add_argument("--max-live", type=int, default=128, help="live rows per owner")
+    parser.add_argument(
+        "--max-live-for",
+        action="append",
+        default=[],
+        metavar="CELL=N",
+        help="live rows for one owner, overriding --max-live; repeatable",
+    )
     parser.add_argument("--min-width-log2", type=int, default=22, help="rows >= 2^-N wide")
     parser.add_argument("--hull-limit", type=int, default=48, help="0 keeps every vertex")
     parser.add_argument("--core", choices=("octagon", "envelope"), default="octagon")
@@ -1893,6 +1932,7 @@ def main(argv: list[str] | None = None) -> int:
         partial=None if args.output is None else args.output.with_suffix(".partial.json"),
         checkpoints=args.checkpoints,
         resume=args.resume,
+        max_live_for=parse_caps(args.max_live_for),
     )
     encoded = json.dumps(result, indent=1, sort_keys=True, default=str) + "\n"
     if args.output:

@@ -167,6 +167,51 @@ def test_two_certified_steps_keep_the_endpoint_and_replay_agrees(
     assert len(written["updates"]) == 2
 
 
+def test_a_per_owner_cap_refines_only_the_owners_it_allows(
+    endpoint: pilot.Endpoint, frame: Frame
+) -> None:
+    """`max_live_for` holds a named owner at its own live-row cap while the others refine
+    to `max_live`; the steps are certified as before."""
+    result = pilot.run_pilot(
+        frame,
+        endpoint,
+        bins=4,
+        max_rounds=1,
+        max_live=8,
+        max_live_for={"corner-SW": 4},
+        min_width=Q(1, 64),
+        hull_limit=16,
+        max_seconds=120,
+        max_steps=2,
+        progress=False,
+    )
+    assert result.endpoint_lost is None
+    splits = {update["cell"]: (update["splits"], update["rows"]) for update in result.updates}
+    assert splits == {"corner-SW": (0, 4), "corner-SE": (4, 8)}
+    with pytest.raises(RefusalError, match="names no owner"):
+        pilot.run_pilot(
+            frame,
+            endpoint,
+            bins=4,
+            max_rounds=1,
+            max_live=8,
+            max_live_for={"nowhere": 4},
+            min_width=Q(1, 64),
+            hull_limit=16,
+            max_seconds=120,
+            max_steps=1,
+            progress=False,
+        )
+
+
+def test_per_owner_caps_parse_from_the_command_line() -> None:
+    assert pilot.parse_caps(["side-N2=576", "side-W2=400"]) == {"side-N2": 576, "side-W2": 400}
+    assert pilot.parse_caps([]) == {}
+    for bad in (["side-N2"], ["side-N2=x"], ["side-N2=-1"], ["side-N2=4", "side-N2=8"]):
+        with pytest.raises(RefusalError):
+            pilot.parse_caps(bad)
+
+
 def test_turns_are_read_modulo_a_quarter_turn() -> None:
     assert pilot.turn_deviation(0.0, 0.0) == 0
     assert pilot.turn_deviation(1.0, 0.0) < 1e-15

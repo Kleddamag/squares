@@ -42,7 +42,7 @@
           "degree_recorded_upstream": 21,
           "exact_value_known": 269,
           "lower_bound_first_proved_here": 1,
-          "lower_bound_recent_result": 72,
+          "lower_bound_recent_result": 77,
           "only_known_numerically": 55,
           "proved_optimal": 77,
           "rigidity_catalogue_annotated": 2,
@@ -4868,15 +4868,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(101) ≥ 10.055385",
+          "display": "s(101) ≥ 10.280000",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-n101-wand125-linear-1028-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.0553851381"
+          "value": "10.28"
         },
         "n": 101,
         "optimality": {
@@ -4913,15 +4913,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(102) ≥ 10.110433",
+          "display": "s(102) ≥ 10.280000",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-n101-wand125-linear-1028-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.1104335791"
+          "value": "10.28"
         },
         "n": 102,
         "optimality": {
@@ -4958,15 +4958,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(103) ≥ 10.165151",
+          "display": "s(103) ≥ 10.280000",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-n101-wand125-linear-1028-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.1651513899"
+          "value": "10.28"
         },
         "n": 103,
         "optimality": {
@@ -5003,15 +5003,15 @@
           "state": "closed-form"
         },
         "lower": {
-          "display": "s(104) ≥ 10.219544",
+          "display": "s(104) ≥ 10.280000",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-n101-wand125-linear-1028-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.2195444573"
+          "value": "10.28"
         },
         "n": 104,
         "optimality": {
@@ -5048,15 +5048,15 @@
           "state": "numeric-only"
         },
         "lower": {
-          "display": "s(105) ≥ 10.273618",
+          "display": "s(105) ≥ 10.280000",
           "evidence": [
-            "E-nagamochi-lower"
+            "E-n101-wand125-linear-1028-source-replay"
           ],
           "first_proved_here": false,
           "provenance": "frontier",
-          "recent_result": false,
+          "recent_result": true,
           "shown": true,
-          "value": "10.2736184955"
+          "value": "10.28"
         },
         "n": 105,
         "optimality": {
@@ -15158,7 +15158,7 @@
       "degree_recorded_upstream": 21,
       "exact_value_known": 269,
       "lower_bound_first_proved_here": 1,
-      "lower_bound_recent_result": 72,
+      "lower_bound_recent_result": 77,
       "only_known_numerically": 55,
       "proved_optimal": 77,
       "rigidity_catalogue_annotated": 2,

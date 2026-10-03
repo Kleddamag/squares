@@ -80,6 +80,9 @@ allowlist:
 # The baseline: every other file holding sites, by count. First seeded on 2026-10-03 from
 # the tree at f4642c051; `--inventory` prints the current total. Only growth is a finding:
 # a fall passes, and `--update` rewrites everything after this comment whenever convenient.
+# The merge of origin/main at f864a576a brought in four n = 11 tools written on main before
+# OR-16's amendment reached it. Their sites are recorded here as inherited, not new; their
+# removal is its own slice (think-vre9).
 baseline:
   packages/workbench/tools/workbench_tools/check_candidate.py: 1
   packing/benchmarks/bench_n11_fast_cover.py: 3
@@ -139,12 +142,14 @@ baseline:
   packing/devtools/check_n11_optimality_capture_ancestry.py: 16
   packing/devtools/check_n11_optimality_case_census.py: 15
   packing/devtools/check_n11_optimality_d4.py: 5
+  packing/devtools/check_n11_optimality_d4_incidence.py: 5
   packing/devtools/check_n11_optimality_field_mask0.py: 10
   packing/devtools/check_n11_optimality_field_mask202.py: 7
   packing/devtools/check_n11_optimality_field_runner.py: 7
   packing/devtools/check_n11_optimality_local.py: 4
   packing/devtools/check_n11_optimality_local_dual.py: 7
   packing/devtools/check_n11_optimality_local_isolation.py: 9
+  packing/devtools/check_n11_optimality_local_two_radius.py: 6
   packing/devtools/check_n11_optimality_pose_inclusion.py: 9
   packing/devtools/check_n11_optimality_source_graph.py: 12
   packing/devtools/check_n17_capacity_one_cover.py: 1
@@ -173,7 +178,7 @@ baseline:
   packing/devtools/n11_nonfield_special_assignment.py: 6
   packing/devtools/n11_optimality_figures.py: 3
   packing/devtools/n11_optimality_mechanism_figures.py: 9
-  packing/devtools/n11_optimality_overview_figures.py: 1
+  packing/devtools/n11_optimality_overview_figures.py: 7
   packing/devtools/pilot_n17_subpattern_bb.py: 3
   packing/devtools/prepare_n11_field_manifest.py: 3
   packing/devtools/prepare_n11_nonfield_batch.py: 8
@@ -185,6 +190,7 @@ baseline:
   packing/devtools/replay_n17_rational_upper.py: 1
   packing/devtools/run_fixed_core_calibration_profiles.py: 9
   packing/devtools/run_n11_nonfield_batch.py: 1
+  packing/devtools/select_n11_field_minimum.py: 4
   packing/devtools/suite_files.py: 1
   packing/devtools/summarize_n11_nonfield_costs.py: 4
   packing/devtools/upper_bound_intervals.py: 1

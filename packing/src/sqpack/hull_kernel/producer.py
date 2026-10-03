@@ -7,8 +7,8 @@ node closes. The policy is the adaptation spec's first producer (section 5, slic
 
 * the seed owns grid points near each cell's vertex centroid, each kept only if
   `ownership` proves it from the cell alone, and gives every owner `bins` uniform rows;
-* owners update round-robin in mask order, one complete step each, with no splitting
-  and no self-hull cuts or collision regions;
+* owners update round-robin in mask order, one complete step each, with no self-hull
+  cuts; rows stay uniform unless a `SplitPolicy` bisects them at round ends;
 * a row's core is the envelope square: side `(B - slack)/factor` turned to the row's
   midpoint angle, the counting mode's strict core, kept only if `strict_core` accepts it;
 * a row's residual is its legal domain minus every other owner's forbidden region
@@ -590,9 +590,16 @@ def produce_row(
     partners: dict[int, list[PartnerRow]] | None = None,
     cores: dict[tuple[Q, Q], Polygon] | None = None,
     terms: CollisionTerms | None = None,
+    interval: tuple[Q, Q] | None = None,
 ) -> tuple[dict[str, Any], Row, list[Halfplane]]:
-    lo, hi = (Q(value) for value in predecessor["interval"])
-    key: RowKey = (predecessor["interval"][0], predecessor["interval"][1])
+    """One row from its accepted predecessor: over the predecessor's own interval, or,
+    for a refined row, over `interval`, which lies inside it."""
+    if interval is None:
+        lo, hi = (Q(value) for value in predecessor["interval"])
+        key: RowKey = (predecessor["interval"][0], predecessor["interval"][1])
+    else:
+        lo, hi = interval
+        key = (str(lo), str(hi))
     reference = {"kind": "phase3", "node": node_id, "step": step_index, "row": row_index}
     required = intersect(hull(points(predecessor["outer_domain"])), wall_lines(frame, lo, hi))
     accepted: Row = {
@@ -699,6 +706,117 @@ def kernel_points(frame: Frame, planes: list[Halfplane]) -> list[Point]:
     ]
 
 
+AXIS_PEAK = math.sqrt(2) - 1  # the half-angle of the diagonal, where (cos + sin)/2 peaks
+
+
+def _half_extent(t: float) -> float:
+    """A unit square's axis-parallel half-extent `(cos + sin)/2` at half-angle `t`."""
+    return (1 - t * t + 2 * t) / (2 * (1 + t * t))
+
+
+def wall_loss(frame: Frame, lo: Q, hi: Q, residual: Sequence[Point]) -> float:
+    """How much nearer a wall a row's legal box lets a centre sit than its own turn allows,
+    when a residual vertex lies in that band; zero otherwise.
+
+    The legal box of `[lo, hi]` uses the least half-extent over the row, so a square turned
+    elsewhere in the row may sit up to the difference into the wall, about half the row's
+    angular width near an axis and nothing at the diagonal. A split priority only, in
+    floating point: nothing here is evidence.
+    """
+    a, b = float(lo), float(hi)
+    least = min(_half_extent(a), _half_extent(b))
+    most = (
+        _half_extent(AXIS_PEAK) if a < AXIS_PEAK < b else max(_half_extent(a), _half_extent(b))
+    )
+    scale, offset = float(frame.scale), float((frame.cap - frame.inner_cap) / 2)
+    low, high = scale * (offset + most), scale * (float(frame.cap) - offset - most)
+    near = any(
+        min(float(x), float(y)) < low or max(float(x), float(y)) > high for x, y in residual
+    )
+    return most - least if near else 0.0
+
+
+@dataclass(frozen=True)
+class SplitPolicy:
+    """Opt-in adaptive rows; without one every owner keeps the seed's uniform rows.
+
+    At a round's end, a live row whose outer domain has not shrunk for `patience` rounds
+    running (a new half against the row it refines) is a candidate if its halves are no
+    narrower than `1/floor` in `t`. Candidates are bisected, the widest wall loss first
+    (`wall_loss`), then the widest row, while the rows over all owners stay within
+    `max_rows`. At the owner's next step both halves cite the split row as their accepted
+    predecessor, which is the refinement the checker's `complete_refinement` admits.
+    """
+
+    floor: int
+    max_rows: int
+    patience: int = 1
+
+    def __post_init__(self) -> None:
+        if self.floor <= 0 or self.max_rows <= 0 or self.patience <= 0:
+            raise RefusalError("a split policy needs a positive floor, ceiling and patience")
+
+
+Plan = list[tuple[tuple[Q, Q] | None, Row]]
+"""An owner's next step: each row's interval (None for the predecessor's own) and the
+accepted row it refines."""
+
+
+def split_rows(
+    frame: Frame,
+    mask: Sequence[int],
+    *,
+    rows: dict[int, list[Row]],
+    plans: dict[int, Plan],
+    history: dict[tuple[int, str, str], tuple[Q, int]],
+    policy: SplitPolicy,
+) -> int:
+    """Bisect the round's stuck rows into `plans`, by `SplitPolicy`; return how many.
+
+    `history` holds, by owner and interval, the outer-domain area a row is measured
+    against and how many rounds running it has not shrunk; it is updated in place.
+    """
+    candidates: list[tuple[float, Q, int, Q, int, int]] = []
+    for position, owner in enumerate(mask):
+        for index, row in enumerate(rows[owner]):
+            key = (owner, row["interval"][0], row["interval"][1])
+            outer = points(row["outer_domain"])
+            area = area2(hull(outer)) if outer else Q()
+            before = history.get(key)
+            stuck = (
+                before[1] + 1
+                if row["residual_polygons"] and before is not None and area >= before[0]
+                else 0
+            )
+            history[key] = (area, stuck)
+            lo, hi = (Q(value) for value in row["interval"])
+            if stuck >= policy.patience and (hi - lo) * policy.floor >= 2:
+                residual = [v for poly in row["residual_polygons"] for v in points(poly)]
+                weight = wall_loss(frame, lo, hi, residual)
+                candidates.append((-weight, lo - hi, position, lo, owner, index))
+    room = policy.max_rows - sum(len(plans[owner]) for owner in mask)
+    chosen = sorted(candidates)[: max(room, 0)]
+    by_owner: dict[int, set[int]] = {}
+    for *_, owner, index in chosen:
+        by_owner.setdefault(owner, set()).add(index)
+    for owner, indices in by_owner.items():
+        plan: Plan = []
+        for index, row in enumerate(rows[owner]):
+            if index not in indices:
+                plan.append((None, row))
+                continue
+            lo, hi = (Q(value) for value in row["interval"])
+            middle = (lo + hi) / 2
+            for half in ((lo, middle), (middle, hi)):
+                plan.append((half, row))
+                history[(owner, str(half[0]), str(half[1]))] = (
+                    history[(owner, row["interval"][0], row["interval"][1])][0],
+                    0,
+                )
+        plans[owner] = plan
+    return len(chosen)
+
+
 @dataclass
 class Production:
     seed: dict[str, Any]
@@ -720,8 +838,13 @@ def produce(
     hull_limit: int | None = 16,
     stop_at: float | None = None,
     core: str = "envelope",
+    split: SplitPolicy | None = None,
 ) -> Production:
-    """Seed, then round-robin complete steps until closure, a stall or the round cap."""
+    """Seed, then round-robin complete steps until closure, a stall or the round cap.
+
+    With `split`, rows are refined at round ends (`split_rows`), and a round that changes
+    nothing stalls only if it split nothing either.
+    """
     seed = build_seed(frame, mask, bins=bins, budget=budget)
     seed_sha = content_sha256(seed)
     groups = {owner: hull(points(seed["groups"][str(owner)])) for owner in mask}
@@ -750,6 +873,8 @@ def produce(
     terms = CollisionTerms()
     memo: PartnerMemo = {}
     previous: list[dict[str, Any]] | None = None
+    plans: dict[int, Plan] = {owner: [(None, row) for row in rows[owner]] for owner in mask}
+    history: dict[tuple[int, str, str], tuple[Q, int]] = {}
     for round_index in range(max_rounds):
         for owner in mask:
             if time.monotonic() >= budget.deadline:
@@ -779,8 +904,9 @@ def produce(
                     partners=partners,
                     cores=cores,
                     terms=terms,
+                    interval=interval,
                 )
-                for index, predecessor in enumerate(rows[owner])
+                for index, (interval, predecessor) in enumerate(plans[owner])
             ]
             planes = [plane for _, _, row_planes in produced for plane in row_planes]
             kernel = kernel_points(frame, planes)
@@ -821,30 +947,38 @@ def produce(
                 step["compression_source_hull"] = encode(original)
                 step["inner_grid_compression"] = receipt
             rows[owner] = [accepted for _, accepted, _ in produced]
+            plans[owner] = [(None, row) for row in rows[owner]]
             steps.append(step)
             if progress is not None:
-                progress(
-                    {
-                        "round": round_index,
-                        "step": step_index,
-                        "owner": frame.cell_names[owner],
-                        "live_rows": sum(1 for row in rows[owner] if row["residual_polygons"]),
-                        "owned_hull_vertices": len(groups[owner]),
-                    }
-                )
+                event: dict[str, Any] = {
+                    "round": round_index,
+                    "step": step_index,
+                    "owner": frame.cell_names[owner],
+                    "live_rows": sum(1 for row in rows[owner] if row["residual_polygons"]),
+                    "owned_hull_vertices": len(groups[owner]),
+                }
+                if split is not None:
+                    event["rows"] = len(rows[owner])
+                progress(event)
             closure = derived_closure(owner, step_index, groups, rows)
             if closure is not None:
                 break
         extents = [owner_extents(frame, owner, rows[owner], groups[owner]) for owner in mask]
-        production.rounds.append(
-            {"round": round_index, "steps": len(steps), "extents": extents}
-        )
+        record: dict[str, Any] = {"round": round_index, "steps": len(steps), "extents": extents}
+        production.rounds.append(record)
         if production.outcome == "time_cap":
             break
         if closure is not None:
             production.outcome = "closed"
             break
-        if extents == previous:
+        splits = 0
+        if split is not None:
+            splits = split_rows(
+                frame, mask, rows=rows, plans=plans, history=history, policy=split
+            )
+            record["splits"] = splits
+            record["planned_rows"] = sum(len(plans[owner]) for owner in mask)
+        if extents == previous and not splits:
             production.outcome = "stalled"
             break
         previous = extents

@@ -30,6 +30,7 @@ import json
 import math
 import sys
 import time
+from fractions import Fraction as Q
 from pathlib import Path
 from typing import Any
 
@@ -216,7 +217,11 @@ def run(
     producer_share: float = 0.5,
     save_objects: Path | None = None,
     core: str = "envelope",
+    split: dict[str, int] | None = None,
 ) -> dict[str, Any]:
+    """Produce, save if asked, then certify with the checker. `split` (keys `floor`,
+    `max_rows`, `patience`) turns on the producer's adaptive rows; without it the rows
+    stay the seed's uniform bins and nothing in the output changes."""
     producer = importlib.import_module(PRODUCER)
     started = time.monotonic()
     mask = sorted(frame.cell_names.index(cell) for cell in cells)
@@ -232,6 +237,7 @@ def run(
         hull_limit=hull_limit,
         stop_at=started + max_seconds * producer_share,
         core=core,
+        split=None if split is None else producer.SplitPolicy(**split),
         progress=lambda event: print(
             json.dumps({**event, "seconds": round(time.monotonic() - started, 1)}),
             file=sys.stderr,
@@ -292,6 +298,15 @@ def run(
                     e["cell"]: e["owned_hull_vertices"] for e in entry["extents"]
                 },
             }
+            | (
+                {}
+                if split is None
+                else {
+                    "rows": {e["cell"]: e["rows"] for e in entry["extents"]},
+                    "splits": entry.get("splits"),
+                    "planned_rows": entry.get("planned_rows"),
+                }
+            )
             for entry in production.rounds
         ],
         "final_extents": trace.extents,
@@ -300,6 +315,15 @@ def run(
         "producer_seconds": produced - started,
         "checker_seconds": checked - produced,
     }
+    if split is not None:
+        result["split"] = dict(split)
+        result["finest_row"] = str(
+            min(
+                Q(row["interval"][1]) - Q(row["interval"][0])
+                for step in production.node["steps"]
+                for row in step["rows"]
+            )
+        )
     if closed:
         excluded = frame.states_containing(mask)
         result["excluded_orbits"] = len(excluded)
@@ -343,6 +367,21 @@ def main(argv: list[str] | None = None) -> int:
         help="the producer's strict core: the midpoint envelope square or the end octagon",
     )
     parser.add_argument(
+        "--split-floor",
+        type=int,
+        default=0,
+        help="adaptive rows: bisect stuck rows down to 1/N in t (0, the default, is off)",
+    )
+    parser.add_argument(
+        "--max-rows", type=int, default=0, help="with --split-floor: rows over all owners"
+    )
+    parser.add_argument(
+        "--split-patience",
+        type=int,
+        default=1,
+        help="with --split-floor: rounds a row must stay unshrunk before it is split",
+    )
+    parser.add_argument(
         "--check-saved",
         type=Path,
         help="certify a saved seed and node with the checker alone; nothing is produced",
@@ -355,6 +394,10 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("bins and rounds must be positive")
     if not 0 < args.producer_share < 1:
         parser.error("the producer share must lie in (0, 1)")
+    if args.split_floor < 0 or (
+        args.split_floor and (args.max_rows <= 0 or args.split_patience <= 0)
+    ):
+        parser.error("--split-floor needs a positive --max-rows and --split-patience")
     name = "custom" if args.cells else args.pattern
     cells = tuple(args.cells) if args.cells else PATTERNS[args.pattern]
     start, cpu = time.monotonic(), time.process_time()
@@ -393,6 +436,15 @@ def main(argv: list[str] | None = None) -> int:
             producer_share=args.producer_share,
             save_objects=args.save_objects,
             core=args.core,
+            split=(
+                {
+                    "floor": args.split_floor,
+                    "max_rows": args.max_rows,
+                    "patience": args.split_patience,
+                }
+                if args.split_floor
+                else None
+            ),
         )
     except IncompleteError as error:
         result = {"status": "INCOMPLETE", "reason": str(error), "excluded_orbits": 0}

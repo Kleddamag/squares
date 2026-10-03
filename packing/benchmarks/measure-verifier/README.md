@@ -103,8 +103,11 @@ Milestone B adds points, segments and formats M and L. Against the authors’ re
 replays, at all 201 directions on a host with load average 4 to 5, `sqverify-fast` used
 758 CPU seconds on `mixed_n76_L894` (format M; the replay used 13,096, 17 times more)
 and 128 on `mixed_n101_L1028` (format L; the replay used 27,669, 216 times more), and
-3.5 seconds at the linear certificate’s direction zero, where the replay spent 950. The
+3.5 seconds at the linear certificate’s direction zero, where the replay spent 950. All
+six replayed mixed and linear certificates verify at all 201 directions; on the single
+directions replayed for the other four, the replay used 22 to 29 times more CPU. The
 per-certificate table is [census-mixed/README.md](census-mixed/README.md).
+
 Eight hypotheses were rejected: H-001, H-005, H-008, H-004, H-009, H-010, H-011 and
 H-012. The three first-leg rounds (exp-009, exp-010, exp-016) found a real 27 to 37% cut
 in boxes that costs as much again in enclosures, eagerly, lazily or fused with the box’s

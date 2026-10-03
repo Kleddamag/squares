@@ -16,9 +16,12 @@ those directions. CPU on a shared host whose load average is given.
 | --- | ---: | --- | --- | ---: | ---: | --- | --- | ---: | ---: | --- | ---: | ---: | ---: |
 | `mixed_n65_L835` | 65 | M | VERIFIED | 201 | 91,946,228 | 1.000000000539362 | clears | 1645.7 | 1.1 | 100 | 237 | 8.3 | 29x |
 | `mixed_n76_L894` | 76 | M | VERIFIED | 201 | 32,989,364 | 1.0000000029480338 | clears | 758.5 | 4.9 | all 201 | 13,096 | 758.3 | 17x |
+| `mixed_n83_L935` | 83 | L | VERIFIED | 201 | 134,172,189 | 1.0000000006450585 | clears | 3068.8 | 4.9 | 50 | 273 | 11.1 | 25x |
+| `mixed_n84_L940` | 84 | M | VERIFIED | 201 | 95,206,764 | 1.0000000000038998 | clears | 1753.7 | 9.4 | 100 | 196 | 8.8 | 22x |
+| `mixed_n85_L942` | 85 | M | VERIFIED | 201 | 89,192,514 | 1.0000000002558 | clears | 1595.6 | 2.8 | 100 | 182 | 8.2 | 22x |
 | `mixed_n101_L1028` | 101 | L | VERIFIED | 201 | 53,145,987 | 1.000000000300333 | clears | 128.4 | 4.0 | all 201 | 27,669 | 128.0 | 216x |
 
-3 of 3 certificates verified; 2533 CPU seconds in all.
+6 of 6 certificates verified; 8951 CPU seconds in all.
 
 <!-- This document follows common-doc-guidelines.md.
 See github.com/jlevy/practical-prose and review guidelines before editing.

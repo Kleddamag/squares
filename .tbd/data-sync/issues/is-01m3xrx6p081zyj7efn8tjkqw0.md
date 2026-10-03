@@ -3,9 +3,9 @@ type: is
 id: is-01m3xrx6p081zyj7efn8tjkqw0
 title: "Import wand125: linear point/segment certificates s(101) >= 257/25 and s(83) >= 187/20 (#294)"
 kind: task
-status: open
+status: closed
 priority: 2
-version: 6
+version: 7
 labels:
   - result-import
   - packing
@@ -14,7 +14,11 @@ dependencies:
     target: is-01m3yrzkz80qd1wv5sjr0kkkv0
 parent_id: is-01m3yrdxte02c7bnygkke34ct4
 created_at: 2026-10-02T07:40:22.080Z
-updated_at: 2026-10-03T20:58:53.957Z
+updated_at: 2026-10-03T22:39:34.811Z
+closed_at: 2026-10-03T22:39:34.810Z
+close_reason: "T-073 n83 V3/C3 (e79ca3ac7) and T-080 n101-105 V3/C3 on main via #327 (9927035b6)."
+resolution: null
+duplicate_of: null
 ---
 Result import process, I. New certificate kind: point masses + uniform segments + rectangles, D4, mass n - 1/100000, checked by code/unified_linear_verify.cpp (the verifier of mixed_n50_L735), 201 net angles. n101 at af1db07, n83 at 0c35d90; n82 (9.32) announced. Stage 2 packet, stage 3 entry V0/C0, stage 4 replay + review (new checker: review needed). Compared with Green G_10 = 10.2467.
 

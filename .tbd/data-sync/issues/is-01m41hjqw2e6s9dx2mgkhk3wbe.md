@@ -3,15 +3,19 @@ type: is
 id: is-01m41hjqw2e6s9dx2mgkhk3wbe
 title: "result-requests.yaml: record the 13 final replies of 2026-10-03 and the nine closures"
 kind: task
-status: open
+status: closed
 priority: 2
-version: 1
+version: 2
 labels:
   - records
 dependencies: []
 parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 created_at: 2026-10-03T18:49:16.930Z
-updated_at: 2026-10-03T18:49:16.930Z
+updated_at: 2026-10-03T22:39:35.282Z
+closed_at: 2026-10-03T22:39:35.281Z
+close_reason: "Recorded in packing/campaign/result-requests.yaml via #327 (9927035b6)."
+resolution: null
+duplicate_of: null
 ---
 238 https://github.com/jlevy/squares/issues/238#issuecomment-5972353213
 309 https://github.com/jlevy/squares/issues/309#issuecomment-5972353362

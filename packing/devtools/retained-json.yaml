@@ -149,38 +149,3 @@ exempt:
     devtools/audit_kleddamag_n11_native.py calls it the immutable coverage receipt of a
     historical run, and frontier/results.yaml lists it as evidence; whether its layout
     may change is the owner's call (think-k131).
-
-# --- Conversions not yet made ----------------------------------------------------------
-# Batch A: the atlas and frontier records, one data commit and one re-pin.
-- path: packing/atlas/known-best/chunk-components.json
-  reason: pending
-  bound_by: Nothing; devtools.census_known_best_chunks writes it.
-  bead: think-k131
-- path: packing/atlas/known-best/chunk-partitions.json
-  reason: pending
-  bound_by: Nothing; devtools.census_known_best_chunks writes it.
-  bead: think-k131
-- path: packing/atlas/known-best/translation-escape-screen.json
-  reason: pending
-  bound_by: Nothing; devtools.screen_translation_escape writes it.
-  bead: think-k131
-- path: packing/atlas/known-best/composite-figure.json
-  reason: pending
-  bound_by: Nothing; devtools.build_composite_figure_data writes it.
-  bead: think-k131
-- path: packing/atlas/known-best/manifest.json
-  reason: pending
-  bound_by: Nothing; devtools.build_known_best_atlas writes it.
-  bead: think-k131
-- path: packing/atlas/known-best/bound-citations.json
-  reason: pending
-  bound_by: Nothing; devtools.build_bound_citations writes it.
-  bead: think-k131
-- path: packing/frontier/ds7-lower-bound-audit.json
-  reason: pending
-  bound_by: Nothing; devtools.audit_ds7_lower_bounds --output wrote it.
-  bead: think-k131
-- path: packing/atlas/enumerated/contact-scaffolds-size5.json
-  reason: pending
-  bound_by: Nothing; devtools.build_contact_scaffold_atlas writes it.
-  bead: think-k131

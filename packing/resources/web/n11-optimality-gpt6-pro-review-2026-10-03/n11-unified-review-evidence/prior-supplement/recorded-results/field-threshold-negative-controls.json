@@ -1,0 +1,49 @@
+[
+  {
+    "control": "census missing one baseline case",
+    "refused": true,
+    "reason": "A1 baseline: expected 1931 IDs, got 1930"
+  },
+  {
+    "control": "field omitted closed t=0 endpoint",
+    "refused": true,
+    "reason": "cell 1: angle endpoints missing"
+  },
+  {
+    "control": "field omitted one angle row",
+    "refused": true,
+    "reason": "row proposal count changed"
+  },
+  {
+    "control": "ownership point only on actual square boundary at t=0",
+    "refused": true,
+    "reason": "ownership depth ceiling: interval=(0,1/1048576), nodes=21"
+  },
+  {
+    "control": "overbroad core row with hidden interior angle maximum",
+    "refused": true,
+    "reason": "full-angle core envelope fails"
+  },
+  {
+    "control": "weighted cover with a one-billionth gap",
+    "refused": true,
+    "reason": "weighted row uncovered at exact (x,y)=(0,1000000001/2000000000)"
+  },
+  {
+    "property": "signed range-add tree vs plain vector",
+    "operations": 6000,
+    "passed": true
+  },
+  {
+    "property": "finite median-normal region vs extra directions",
+    "inequalities_checked": 12951,
+    "site_set_trials": 36,
+    "passed": true
+  },
+  {
+    "property": "optimized threshold sweep vs full geometric arrangement",
+    "trials": 35,
+    "positive_area_cells": 5364,
+    "passed": true
+  }
+]

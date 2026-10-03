@@ -1,0 +1,29 @@
+{
+  "global_optimality_proved": false,
+  "records_checked": 648,
+  "scope": "Conditional final D4 incidence component; geometry is independently reconstructed in a separate check.",
+  "status": "PASS_READ_ONLY_D4_INCIDENCE_TRACE",
+  "summary": {
+    "999": {
+      "initial_contradictions": 168,
+      "maximum_operations": 19,
+      "propagated_contradictions": 47,
+      "survivors": 1
+    },
+    "1462": {
+      "initial_contradictions": 198,
+      "maximum_operations": 15,
+      "propagated_contradictions": 17,
+      "survivors": 1
+    },
+    "1659": {
+      "initial_contradictions": 196,
+      "maximum_operations": 7,
+      "propagated_contradictions": 20,
+      "survivors": 0
+    }
+  },
+  "trace_regenerated": false,
+  "trace_schema": "independent_d4_bijection_trace_v2",
+  "trace_sha256": "6aae8c0fc1cc1ed057177377a4708b9e29d0862061f6bd3202e080b93c450406"
+}

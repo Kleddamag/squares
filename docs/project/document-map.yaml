@@ -10,6 +10,9 @@ scope: >
   current project documentation rules.
 documents:
   - {path: docs/project/reviews/review-2026-10-02-nagamochi-lemma1-karakus.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-03-n11-optimality-adversarial-gpt6-pro-unified.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-03-n11-gpt6-pro-review-integration.md, role: review, authority: record, lifecycle: retained}
+  - {path: docs/project/reviews/review-2026-10-03-n11-optimality-paper-adversarial.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-01-site-documentation-records.md, role: review, authority: record, lifecycle: retained}
   - {path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-240-n17-mixed-capacity-census/output-review.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-10-01-post-optimality-morning.md, role: review, authority: record, lifecycle: retained}
@@ -76,6 +79,7 @@ documents:
   - {path: docs/project/specs/active/plan-2026-09-30-epistemics-ladder-review.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/specs/active/plan-2026-10-01-result-kinds.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/specs/active/plan-2026-10-01-result-status.md, role: plan, authority: current, lifecycle: transient}
+  - {path: docs/project/specs/active/plan-2026-10-01-result-import-first-application.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/specs/active/plan-2026-09-29-github-pages-overview.md, role: plan, authority: current, lifecycle: transient}
   - {path: docs/project/reviews/review-2026-09-13-n11-bc329-source-distinct-reader.md, role: review, authority: record, lifecycle: retained}
   - {path: docs/project/reviews/review-2026-09-13-n11-bc329-reader-rereview.md, role: review, authority: record, lifecycle: retained}
@@ -350,6 +354,7 @@ documents:
   - {path: development.md, role: development-guide, authority: definitive, lifecycle: maintained}
   - {path: packing/campaign/README.md, role: research-runbook, authority: definitive, lifecycle: maintained}
   - {path: packing/campaign/documentation-pass.md, role: documentation-runbook, authority: definitive, lifecycle: maintained}
+  - {path: packing/campaign/result-import.md, role: import-runbook, authority: definitive, lifecycle: maintained}
   - {path: packing/campaign/remediation-pass.md, role: remediation-runbook, authority: definitive, lifecycle: maintained}
   - {path: packing/campaign/review-planning-oversight.md, role: oversight-runbook, authority: definitive, lifecycle: maintained}
   - {path: packing/campaign/agent-sessions/README.md, role: session-guide, authority: definitive, lifecycle: maintained}
@@ -767,6 +772,7 @@ documents:
     role: review
     authority: record
     lifecycle: retained
+  - {path: docs/project/reviews/review-2026-10-01-result-import-process.md, role: review, authority: record, lifecycle: retained}
   - path: docs/project/reviews/review-2026-09-28-density-solver-comparison.md
     role: review
     authority: record

@@ -341,17 +341,62 @@ EXPLAINER_FIRST_PUBLISHED = EXPLAINER_HISTORY[-1].first_published
 #: moves between editions. Change it in the commit that changes the article.
 EXPLAINER_REVISED = "October 1, 2026"
 
-#: The optimality review's own version, and where it stands: the paper that explains
-#: T-060's proof is a draft at its first version, written on the two papers' one credits
-#: form (`devtools.paper_front`; the owner, 2026-10-01: "Draft v0.1.0", not bold). It
-#: is the review's version and not the site's, which was the first of #289's questions
-#: on think-cv22 and is settled: the site's edition goes on no paper. At its first
-#: version the review has no history to link; its second gets one as the explainer's
-#: (`EXPLAINER_HISTORY`), linked from its front (`PaperFront.history`). Joined as
+#: The optimality review's own editions, newest first, each with the day it was first
+#: published and what changed in the paper: the review's history, as `EXPLAINER_HISTORY`
+#: is the explainer's, linked from its front (`PaperFront.history`). v0.1.0 is dated by
+#: the commit that published it (620ffff54); the day it first went live is not recorded
+#: (think-2cqu).
+OPTIMALITY_REVIEW_HISTORY = (
+    PublicationHistoryEntry(
+        version="v0.1.3",
+        first_published="October 3, 2026",
+        result_scope=(
+            "The closing section explains what a receipt is, the three depths at which "
+            "a reader can verify the retained evidence, and the four checked components "
+            "the reviews of October 3 added beside the accepted ones; the receipts "
+            "register is linked."
+        ),
+    ),
+    PublicationHistoryEntry(
+        version="v0.1.2",
+        first_published="October 3, 2026",
+        result_scope=(
+            "The second reviewed revision: GPT-6 Pro's unified adversarial review of "
+            "October 3 is applied. The invariant is stated row by row with ownership "
+            "quantified over valid packings, the field citation names the original's "
+            "§12 and a worked mask-0 certificate, the separation features are written "
+            "as a disjunction of conjunctions, the isolation lemma carries the weighted "
+            "residual, the five-site charge gains its ten-hull form, the root is "
+            "certified unique on its interval, the uniqueness corollary is stated "
+            "conditionally, and the frames, roles, radii and cover sites are tabulated."
+        ),
+    ),
+    PublicationHistoryEntry(
+        version="v0.1.1",
+        first_published="October 3, 2026",
+        result_scope=(
+            "The reviewed revision: the adversarial review of October 3 is applied, every "
+            "term is defined before its first use, the transfer rule states the half-turn, "
+            "the final deduction names the symmetry image, and the paper explains the tilt "
+            "$u=\\tan(a/2)$, the polynomial as one contact and the four survivors as the "
+            "construction under the eight symmetries."
+        ),
+    ),
+    PublicationHistoryEntry(
+        version="v0.1.0",
+        first_published="September 30, 2026",
+        result_scope="The first edition: the explainer of T-060's proof, with its figures.",
+    ),
+)
+
+#: Where the review stands, and its version line: a draft, written on the two papers'
+#: one credits form (`devtools.paper_front`; the owner, 2026-10-01: "Draft v0.1.0", not
+#: bold). It is the review's version and not the site's, which was the first of #289's
+#: questions on think-cv22 and is settled: the site's edition goes on no paper. Joined as
 #: `edition_at` joins the publication's status and stamp, so going final is one edit
 #: here too.
 OPTIMALITY_REVIEW_STATUS = "Draft"
-OPTIMALITY_REVIEW_VERSION = "v0.1.0"
+OPTIMALITY_REVIEW_VERSION = OPTIMALITY_REVIEW_HISTORY[0].version
 OPTIMALITY_REVIEW_EDITION = " ".join(
     part for part in (OPTIMALITY_REVIEW_STATUS, OPTIMALITY_REVIEW_VERSION) if part
 )
@@ -360,7 +405,7 @@ OPTIMALITY_REVIEW_EDITION = " ".join(
 #: prints, by the rule `EXPLAINER_REVISED` follows -- the author date of the last commit
 #: that changed its article, `n11-optimality-review-article.md`, held to git by
 #: `devtools.artifact_dates`. Change it in the commit that changes the article.
-OPTIMALITY_REVIEW_REVISED = "October 1, 2026"
+OPTIMALITY_REVIEW_REVISED = "October 3, 2026"
 
 #: The day the proof the review explains was published by its source, which the review's
 #: "Original proof" date prints. A fact about someone else's work, so it is typed, and

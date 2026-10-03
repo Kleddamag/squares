@@ -261,7 +261,7 @@ hypothesis status and summarizes experiment verdicts, and the
 | --- | ---: | --- |
 | Agendas | 39 | 19 active; 14 completed; 5 paused; 1 superseded |
 | Commitments | 393 | 201 complete; 63 stopped; 71 blocked; 24 ready; 21 tentative; 13 in progress |
-| Sessions | 166 | 103 completed; 62 stopped; 1 nonterminal |
+| Sessions | 166 | 104 completed; 62 stopped; all terminal |
 | Explorations | 47 | 28 linked to proposed hypotheses; 19 uncodified |
 | Hypotheses | 198 | 39 confirmed; 32 refuted; 64 blocked; 17 unresolved; 9 open; 32 open questions; 2 result registered; 2 abandoned; 0 running; 1 exhausted |
 | Experiments | 170 | 53 accepted; 37 rejected; 52 unresolved; 12 baseline; 11 blocked; 4 abandoned; 0 in progress; 1 exhausted |
@@ -1357,7 +1357,7 @@ answered the owner’s four questions about the $n = 1..324$ atlas in
 [X-049](packing/campaign/explorations/X-049-families-shading-and-the-large-n-limit.md):
 the families were never classified by $n - k^2$, light green squares are geometry rather
 than arithmetic, an exact regularized layer darkens them on the homepage toggle, and the
-large-$n$ pattern set is open.
+pattern set at large $n$ is open.
 Its literature lane found Nagamochi 2005’s Lemma 1 false, so T-007 is `V0` and 271 case
 records were re-grounded with dated corrections and defect D-516: 233 open floors fell
 to Karakuş’s general bound (T-066), $s(k^2-1) = k$ rests on Karakuş (T-067),

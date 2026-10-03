@@ -13,7 +13,8 @@ session:
   deadline_at: '2026-10-03T09:30:00Z'
   branch: claude/ecstatic-archimedes-62hj6a
   primary_bead: think-los0
-  status: in_progress
+  status: completed
+  ended_at: '2026-10-03T06:02:00Z'
   goal: 'Answer the owner''s four questions about the n = 1..324 atlas as one W3 exploration, X-049: whether
     the structural families visible by position relative to k^2 have been studied; whether lighter-than-dark-green
     axis-aligned squares are inexact arithmetic; whether an exact regularization can fix the ones that
@@ -281,7 +282,7 @@ session:
       sequence (think-jkeu), measure the deferred regularized-views job on hosted runners (think-bgkz),
       and close session-168 with its rollups and a certifying gate.'
     bead: think-jkeu
-    status: in_progress
+    status: completed
     entered_by: user_request
     switch_reason: The owner asked to proceed with all remaining items, following the full standard process
       for recording new results.
@@ -293,10 +294,17 @@ session:
     validation_command: cd packing && uv run --frozen --all-extras --group dev packing-validate --fast
     kill_condition: The published proof does not survive the read, or the deferred job cannot be dispatched.
     fallback: Record the finding on think-jkeu, or leave the measurement on think-bgkz with its blocker.
-    outcome: null
-    evidence: []
-    stop_reason: null
-    next_action: Commit the registration, re-pin, and dispatch the deep gate.
+    outcome: 'Basic and Slivkova''s Theorem 7 was read and re-derived and registered as T-070 by the new
+      result publication sequence: the verified floor at n = 37 (6.158554, not stated in the paper) and
+      n = 61 (7.890604, their Theorem 10), the only cases where it beat the held floor. The deep gate''s
+      first dispatch measured regularized-views at 310 s of job wall, recorded in gate-budgets.yaml. The
+      sixteen rollups are committed with model labels withheld. Hosted CI is green at dd636b4cc.'
+    evidence:
+    - packing/frontier/results.yaml
+    - packing/campaign/series/series-000-smoke-and-calibration/results/piercing-lower-bounds.json
+    - packing/devtools/gate-budgets.yaml
+    stop_reason: Every remaining item done but the owner's restoring commit for the withheld model labels.
+    next_action: 'Owner: think-wqfw, the restoring commit for the sixteen rollups'' withheld model labels.'
   budget:
     wall_minutes: 1696
     slice_minutes: 30
@@ -310,10 +318,11 @@ session:
     before: The atlas shows 324 known-best packings and their contact shading; nothing in the record classifies
       them into families, explains the light shading, or connects the families to the asymptotic waste
       register.
-    after: 'X-049 answers the four questions; the follow-up block reviewed T-007 (gap reaches every N
-      >= 10), archived the sources, corrected two transcriptions, registered three hypotheses and built
-      a regularized-view layer. Open: think-xucp and think-ym34 (register re-grounding and Lean replay),
-      the homepage toggle under think-bgkz.'
+    after: 'X-049 answers the four questions. Nagamochi 2005''s Lemma 1 is false, so T-007 is V0 and
+      271 case records are re-grounded with dated corrections citing D-516; s(k^2-2) = k stands on a
+      replayed Lean proof (T-069), the open floors on Karakus (T-066, T-067), n = 37 and 61 on Basic and
+      Slivkova (T-070), and each correcting floor says "corrects Nagamochi 2005". The regularized layer
+      has its homepage toggle and a measured deferred job. Open: think-wqfw, the owner''s restoring commit.'
   delegations:
   - task: 'think-zfxi: literature survey of square-packing families by position relative to k^2 (W1-shaped,
       read-only).'
@@ -730,6 +739,11 @@ session:
     - packing/tests/
   outputs:
   - packing/campaign/explorations/X-049-families-shading-and-the-large-n-limit.md
+  - packing/devtools/replay_chelokot_lean.py
+  - packing/campaign/series/series-000-smoke-and-calibration/results/chelokot-lean-replay/receipt.json
+  - packing/devtools/render_regularized_atlas.py
+  - packing/devtools/check_piercing_lower_bounds.py
+  - packing/frontier/results.yaml
   - packing/campaign/explorations/X049-families-data/family-census.json
   - packing/campaign/explorations/X049-families-data/contact-shade-census.json
   - packing/campaign/explorations/X049-families-data/regularized/run.txt
@@ -754,6 +768,11 @@ session:
   - packing-validate --edit passed (54 steps) with the follow-up lanes in the tree, 187 s.
   - 'packing-validate --records passed after integration; new steps: the T-007 inventory (1.15 s) and
     the regularized atlas check (0.11 s).'
+  - 'packing-validate --records passed 42 of 42 at the T-070 registration; build_known_best_atlas --check
+    --sample passed (36 of 324 rebuilt, composites trailing the pin as allowed until the next version).'
+  - 'full gate: fast at dd636b4ccaea8dff8b7c083cb32ff90d1dbc5e71: passed (hosted Packing validation run
+    37101500066: validate, frontend, typecheck, geometry, suite-a to suite-d and sweeps, the nine
+    pull-request jobs that together are the fast tier, all succeeded; Certificate page 37101500127 too)'
   resource_rollups:
   - packing/campaign/resource-usage/6179239e-fec5-52e8-aabb-a0e229f3f822.yaml
   - packing/campaign/resource-usage/agent-a30ab1dd97b959c63.yaml
@@ -771,9 +790,12 @@ session:
   - packing/campaign/resource-usage/agent-a5e0eae4c2694a29b.yaml
   - packing/campaign/resource-usage/agent-a72b23ec598f03d8c.yaml
   - packing/campaign/resource-usage/agent-a0ce03a4c2b6775a7.yaml
-  stop_reason: null
-  next_action: 'Owner decisions: the order of think-xucp and think-ym34; the owner replaces the eleven
-    rollups'' withheld model labels with the originals; then certify and close.'
+  stop_reason: The owner's questions are answered and every follow-up bead is closed, with hosted CI green
+    at the certified commit, but think-wqfw, the owner's restoring commit for the sixteen rollups' withheld
+    model labels.
+  next_action: 'Selected next entry unchanged: think-11ma, the exact geometric-exclusion pilot below the
+    certified n17 endpoint. Identifiers T-066 to T-070 and session-168 collide with open PRs 292, 298,
+    307 and 311; the one landing second renumbers.'
 ---
 # Families of Known-Best Packings, Contact Shading, and the Large-n Limit
 

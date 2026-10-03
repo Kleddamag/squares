@@ -2859,7 +2859,7 @@ sessions:
     snapshot_incomplete: true
 - id: session-168
   title: "Families of Known-Best Packings, Contact Shading, and the Large-n Limit"
-  status: in_progress
+  status: completed
   primary_bead: think-los0
   phases: 9
   measured: true

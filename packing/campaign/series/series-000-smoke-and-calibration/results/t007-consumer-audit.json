@@ -18,22 +18,23 @@
         "group": "reader",
         "path": "SYNOPSIS.md",
         "phrases": {
-          "beside: bound": 1,
+          "beside: bound": 2,
           "beside: boundary": 1,
           "beside: closed form": 2,
           "beside: closed-form": 1,
           "beside: floor": 1,
           "beside: floors": 1,
           "closed-form: min(ceil": 1,
-          "k2-minus-2-identity: k^2 - 2": 1
+          "k2-minus-2-identity: k^2 - 2": 1,
+          "k2-minus-2-identity: k^2-2": 1
         },
         "statements": {
           "closed_form": 1,
-          "k2_minus_2_identity": 1,
-          "mentions": 6,
-          "qualified": 2,
-          "relies": 7,
-          "states": 2,
+          "k2_minus_2_identity": 2,
+          "mentions": 7,
+          "qualified": 5,
+          "relies": 8,
+          "states": 3,
           "unqualified_states": 2
         }
       },

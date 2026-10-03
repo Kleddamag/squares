@@ -19,7 +19,7 @@ from devtools import (
     result_overview,
 )
 from devtools.render_case_pages import BROAD_RESULT
-from devtools.render_recent_results import HOLDS, SUPERSEDED
+from devtools.render_recent_results import HOLDS, NO_STANDING, SUPERSEDED
 from devtools.repo_links import DEFAULT_BRANCH, REPO, REPO_URL
 from sqpack.yamlio import safe_load
 from tests import site_renders
@@ -327,6 +327,20 @@ def test_a_result_superseded_in_part_stays_current_in_its_chain(
     t036 = bodies[SETTLED].split('data-step="t-036"', 1)[1].split("</li>", 1)[0]
     in_part = 'data-standing="superseded-in-part">superseded</span>'
     assert f'{in_part} <span class="site-cell-quiet">in part by {t060}' in t036
+
+
+def test_a_result_that_is_no_bound_is_not_set_back_in_its_chain(
+    overview: overview_data.Overview, bodies: dict[str, str]
+) -> None:
+    """T-003, the limit of a method, derives `superseded` from the bound it cites, and no
+    later bound supersedes a method's limit: its row is current, and its step in n = 17's
+    chain is not set back as a superseded step is (`think-rf21`)."""
+    limit = _result(overview, "T-003")
+    assert limit.standing == SUPERSEDED
+    assert not overview_sections.is_superseded(limit)
+    steps = dict(STEP.findall(bodies["T-043"]))
+    assert steps["t-003"] == overview_sections.standing_key(NO_STANDING)
+    assert steps["t-019"] == overview_sections.standing_key(SUPERSEDED)
 
 
 def test_a_chain_names_only_the_successors_on_its_own_cases(bodies: dict[str, str]) -> None:

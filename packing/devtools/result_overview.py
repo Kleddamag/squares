@@ -759,7 +759,12 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
         standing_key,
         status_chips,
     )
-    from devtools.render_recent_results import SUPERSEDED, listed  # noqa: PLC0415
+    from devtools.render_recent_results import (  # noqa: PLC0415
+        NO_STANDING,
+        SUPERSEDED,
+        listed,
+        superseded,
+    )
 
     wanted = set(cases)
     shared = [n for n in scope(other) if n in wanted]
@@ -791,9 +796,17 @@ def step(other: Result, current: Result, cases: Sequence[int]) -> str:
         chips += f' <span class="site-cell-quiet">{on_case}, {said}</span>'
     chip_line = f'<p class="site-result-step-chips">{chips}</p>'
     cites = [_esc(other.credit), *citations(other)]
-    # A result its entry declares superseded as a whole is set back as a superseded
-    # bound is, whatever its standing.
-    dimmed = SUPERSEDED if any(mark.mark == SUPERSEDED for mark in marks) else here
+    # A step is set back where its result is superseded here as its row would be
+    # (`render_recent_results.superseded`): a bound no case bound here rests on, or a
+    # result its entry declares superseded as a whole, whatever its standing. A result
+    # of another kind that derives `superseded` from the bound it cites (T-003, a
+    # method's limit) is current, and its step is not set back.
+    if any(mark.mark == SUPERSEDED for mark in marks):
+        dimmed = SUPERSEDED
+    elif here == SUPERSEDED and not superseded(other.record, here):
+        dimmed = NO_STANDING
+    else:
+        dimmed = here
     return (
         f'<li class="site-result-step" data-step="{_esc(other.id.lower())}" '
         f'data-standing="{_esc(standing_key(dimmed))}"{current_mark}>'

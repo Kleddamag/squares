@@ -1528,9 +1528,11 @@ it.
   starts, which sets the rows that begin `hidden` and the count, and in a row’s key: on
   the results page a row is the result’s own address (`id="t-018"`), and on the overview
   it names the result as `data-result`. Every other byte of a row and of its popover is
-  the same, so each shows the result’s records in its details, each opens its popover
-  from the id, and no row of one links to the other.
-  The line under the overview’s table, “See all results”, is the one link between them.
+  the same, so each shows the result’s records in its details and each opens its popover
+  from the id. The line under the overview’s table, “See all results”, links the overview
+  to the results page, and so does a status line that names the results superseding its
+  own: each named result links to its row on the results page
+  (`overview_sections.result_url`), in place there and across from the overview.
   Both sort on any column whose header carries the sort pair.
   The widths follow from each column’s floor and from what the n column asks for.
   The id, the significance, the rungs, the status, the details and the date are as

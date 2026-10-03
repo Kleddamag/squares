@@ -2671,8 +2671,9 @@ def test_recent_results_is_one_table_not_cards_or_a_list(
     page: str, overview: overview_data.Overview
 ) -> None:
     """The section is one `.site-table` of the recent results, one row each, with the
-    columns every table of results has; no row links across to the results page, no card
-    or list is left in it, and its only popovers are its rows' own. What a row's popover
+    columns every table of results has; a row links across to the results page only
+    where its status names the results that supersede it, no card or list is left in
+    it, and its only popovers are its rows' own. What a row's popover
     holds is the popover's own business, so the section is read without them."""
     section = page.split('id="recent-results"', 1)[1].split("<h2", 1)[0]
     recent = _recent_table(page)

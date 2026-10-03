@@ -5,7 +5,7 @@ title: "BC-418: coordinate the n17 phase after Session 167 (close H-261/H-266, b
 kind: task
 status: open
 priority: 0
-version: 16
+version: 19
 spec_path: docs/project/reviews/review-2026-10-02-n17-bulk-exclusion-design.md
 labels: []
 dependencies: []
@@ -25,8 +25,11 @@ child_order_hints:
   - is-01m3zq1e2jrzc7w09gkzt9qx4c
   - is-01m40534rntkem2mt8qgh88fe2
   - is-01m4055fqdnsc95js0egq5sc1t
+  - is-01m419sfatnjnd5wv80eprxnke
+  - is-01m419sh85070rqeecj1gvj2aw
+  - is-01m41c9wf2h05agc5kv2hmy425
 created_at: 2026-10-02T06:04:15.220Z
-updated_at: 2026-10-03T05:53:05.260Z
+updated_at: 2026-10-03T17:17:03.841Z
 ---
 Selected next entry after Session 167. Lanes: (1) close H-266's single-state item and H-268's slide bound, then re-record H-261 and H-266 for acceptance with independent review; (2) build the H-267 sub-pattern selector as a retained tool and adapt the n11 v9 kernel as prover, with n11 mask 0 as method control; (3) a capture contraction-rate pilot on the endpoint's H-266 occupancy state; (4) optionally the widened-projection dual-sheet certificate on a coarse patching (patch count only). Read the Session 167 record first.
 

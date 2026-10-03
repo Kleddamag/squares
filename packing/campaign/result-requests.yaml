@@ -19,6 +19,57 @@ repository: jlevy/squares
 owner: jlevy
 last_reviewed: '2026-10-03'
 issues:
+  - number: 316
+    title: >-
+      s(k² − 4) = k for every k ≥ 5: registration request (external certificate + Lean
+      reduction)
+    author: evand
+    opened: '2026-10-03'
+    state: open
+    kind: result-report
+    triage: done
+    summary: >-
+      s(k^2 - 4) = k for every k >= 5: k = 5, 6 and 7 by the author's s(21), s(32) and s(45)
+      bundles, and every k >= 8 by one family of measures reduced to the 9 x 9 box, whose
+      tilted premise ValidTilt9 qx2_zm.py certifies over 16,200 D4 roots and whose reduction
+      bentz4_of_validTilt9 is kernel-checked in Lean; by monotonicity also s(k^2 - 3) = k for
+      k >= 5.
+    read_through: '2026-10-03T17:29:23Z'
+    results:
+      - key: k2m4
+        claim: s(k^2 - 4) = k for every integer k >= 5
+        source: body
+        register: [T-081]
+      - key: k2m3-by-monotonicity
+        claim: s(k^2 - 3) = k for every integer k >= 5, by monotonicity from s(k^2 - 4) = k
+        source: body
+        register: [T-064]
+    asks:
+      - what: An independent check of ValidTilt9, by wand125's checker on box 9 or otherwise
+        state: queued
+        note: >-
+          wand125's Valid7 checker has not been run on box 9. This repository's clean-room
+          verifier sqverify_fast does not yet cover continuous-angle closed covers; its
+          Milestone C (docs/project/specs/active/plan-2026-10-03-measure-verifier-milestone-c.md)
+          is the route.
+    beads: [think-8hk1]
+    answer_bead: think-ws87
+    replies:
+      - url: https://github.com/jlevy/squares/issues/316#issuecomment-5971664755
+        date: '2026-10-03'
+        by: jlevy
+        kind: acknowledgement
+        reported:
+          - result: k2m4
+          - result: k2m3-by-monotonicity
+    close_when: >-
+      T-081 is confirmed and the reply saying so is posted from main, and the independent
+      check of ValidTilt9 is done or declined.
+    notes: >-
+      The k^2 - 3 corollary is registered by T-064 for k >= 6, and its k = 5 case, s(22) =
+      5, is Bentz's; the issue's route adds no entry for it. Ids are provisional until
+      merged.
+
   - number: 309
     title: >-
       New lower bound for s(12): 31360/7901 = 3.969117833… (Daniel's certificate rescaled,
@@ -49,7 +100,13 @@ issues:
           raised the verified bound past it, so 31360/7901 is the n = 12 reported bound.
     beads: [think-gh2o]
     answer_bead: think-5mkr
-    replies: []
+    replies:
+      - url: https://github.com/jlevy/squares/issues/309#issuecomment-5971664953
+        date: '2026-10-03'
+        by: jlevy
+        kind: acknowledgement
+        reported:
+          - result: s12-31360-7901
     close_when: >-
       T-078 is confirmed, which it is at V3/C3, and the reply saying so is posted from
       main.
@@ -89,7 +146,14 @@ issues:
           blocker asks for Green's complete proof before any promotion.
     beads: [think-abie, think-r7yt]
     answer_bead: think-xoob
-    replies: []
+    replies:
+      - url: https://github.com/jlevy/squares/issues/308#issuecomment-5971665066
+        date: '2026-10-03'
+        by: jlevy
+        kind: acknowledgement
+        reported:
+          - result: green-ds7-theorem9
+            id: E-green-ds7-theorem9-reported-lower
     close_when: >-
       Triage has mapped the claim, the record holds the defect against
       E-green-ds7-theorem9-reported-lower or the report is refuted, and a reply says
@@ -134,7 +198,18 @@ issues:
         state: done
     beads: [think-e3tq, think-4k80]
     answer_bead: think-wtz3
-    replies: []
+    replies:
+      - url: https://github.com/jlevy/squares/issues/296#issuecomment-5971665176
+        date: '2026-10-03'
+        by: jlevy
+        kind: acknowledgement
+        reported:
+          - result: valid7-independent
+            id: T-064
+            verification: V3
+            confirmation: C3
+            status: confirmed
+          - result: s78-second-route
     close_when: >-
       T-064 is confirmed (a complete replay of one Valid7 checker, a review of the
       independent checker's method and the Lean reduction built with its axiom receipt) or
@@ -182,7 +257,16 @@ issues:
         state: queued
     beads: [think-bkqm, think-bmze]
     answer_bead: think-bmze
-    replies: []
+    replies:
+      - url: https://github.com/jlevy/squares/issues/295#issuecomment-5971665348
+        date: '2026-10-03'
+        by: jlevy
+        kind: acknowledgement
+        reported:
+          - result: lemma1-false
+            id: T-007
+          - result: karakus-2026
+          - result: chelokot-2026
     close_when: >-
       The record holds the Lemma 1 defect against T-007, the values it supplies are
       re-derived, and the two replacement sources are registered or declined.
@@ -203,7 +287,7 @@ issues:
       - key: n101
         claim: s(101) >= 257/25 = 10.28 (mixed_n101_L1028, af1db07), and s(102..105) by monotonicity
         source: body
-        register: [T-073]
+        register: [T-073, T-080]
       - key: n83
         claim: s(83) >= 187/20 = 9.35 (mixed_n83_L935, 0c35d90)
         source: https://github.com/jlevy/squares/issues/294#issuecomment-5946131807
@@ -291,7 +375,13 @@ issues:
         register: [T-068, T-074]
     beads: [think-6ei5]
     answer_bead: think-pmxk
-    replies: []
+    replies:
+      - url: https://github.com/jlevy/squares/issues/281#issuecomment-5971665493
+        date: '2026-10-03'
+        by: jlevy
+        kind: acknowledgement
+        reported:
+          - result: rect-34
     close_when: >-
       T-068 is confirmed or refuted at all 34 counts. Counts that pass move to replayed
       entries, as T-045 and T-070 did for T-046; add each such entry to this result.
@@ -314,7 +404,13 @@ issues:
         register: [T-066]
     beads: [think-oy3i]
     answer_bead: think-aan5
-    replies: []
+    replies:
+      - url: https://github.com/jlevy/squares/issues/280#issuecomment-5971665606
+        date: '2026-10-03'
+        by: jlevy
+        kind: acknowledgement
+        reported:
+          - result: s59
     close_when: T-066 is confirmed, and the reply saying so is posted from main.
 
   - number: 279

@@ -233,15 +233,18 @@ def test_full_corpus_check_is_reachable_and_rejects_an_omitted_source(
     original_read = ds7.read_case
     read_cases: set[int] = set()
 
-    def omit_101(repo: Path, revision: str | None, n: int) -> dict[str, Any]:
+    # The omitted source is n = 122's, where Green's DS7 value is the reported lower bound
+    # above the verified one. It was n = 101's until 3 October 2026, when T-080's replayed
+    # linear certificate made the two fields equal there, so omitting it changed nothing.
+    def omit_122(repo: Path, revision: str | None, n: int) -> dict[str, Any]:
         read_cases.add(n)
         case = original_read(repo, revision, n)
-        if n == 101:
+        if n == 122:
             case["reported_lower_bound"] = deepcopy(case["verified_lower_bound"])
         return case
 
-    monkeypatch.setattr(ds7, "read_case", omit_101)
-    with pytest.raises(SystemExit, match=r"exact=\[101\]"):
+    monkeypatch.setattr(ds7, "read_case", omit_122)
+    with pytest.raises(SystemExit, match=r"exact=\[122\]"):
         ds7.main(["--check"])
     assert read_cases == set(range(1, 325))
 

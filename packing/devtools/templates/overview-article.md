@@ -26,6 +26,10 @@ and other low values.
 Now several others have obtained results building on this work, including a landmark new
 proof by Queuingtheorydotcom of the optimality of the famous
 [case of 11 squares](cases/11.html).
+Separately, Evan Daniel has proved the optimality of
+[a whole infinite family](all-results.html#t-064), $s(k^2 - 3) = k$ for every $k \ge 6$,
+along with exact values at [21](cases/21.html), [32](cases/32.html) and
+[45](cases/45.html) squares.
 This project now independently tabulates all known new results and does
 [AI-assisted verification](all-results.html#verification-ladders) of the proofs and
 certificates behind them, to encourage open collaboration on open questions and
@@ -41,9 +45,18 @@ Contact [ojoshe](https://x.com/ojoshe) if you wish to join.
      2026-08-22; its own lower bounds are at
      n = 11, 12 and 17 to 21 (T-001 to T-034); the explainer the link names is n = 11's,
      and it lists the bounds at 12, 17 and 19 that its method gave; and the optimality
-     of n = 11 is T-060, Queuingtheorydotcom's. "AI-assisted verification" links the
-     ladders, which say how far each result is checked; the sentence does not say every
-     result is checked, since some are recorded and not yet replayed here. -->
+     of n = 11 is T-060, Queuingtheorydotcom's. The sentence after it names the
+     top-line results by others (the owner, 2026-10-03, think-nlyc), each checked the
+     same way: s(k^2 - 3) = k for every k >= 6 is T-064, and s(21) = 5, s(32) = 6 and
+     s(45) = 7 are T-052, T-051 and T-053, all four credited to Daniel after Burns,
+     Massaccesi and all at V3/C3, T-064 by the full replay of the source's Valid7
+     checker and the Lean reduction built here. The bibliography files their sources as
+     independent of this project, so they stand in a sentence of their own and not
+     among the results building on this work, and the sentence gives no significance
+     score, since only n = 11's results are S5 and these are S4. "AI-assisted
+     verification" links the ladders, which say how far each result is checked; the
+     sentence does not say every result is checked, since some are recorded and not
+     yet replayed here. -->
 
 {{PAGE_CARDS}}
 

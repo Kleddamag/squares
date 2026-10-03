@@ -928,8 +928,29 @@ body {
 .site-table-tools input[data-bound="age"] {
   inline-size: 4.5rem;
 }
-.site-table-tools .site-count {
+/* A control at its no-filter value, a select's "All" or an empty field showing its
+   placeholder, is gray; a control that filters is the text colour, so the bar says at a
+   glance what narrows the table (the owner, 2026-10-02, `think-pcei`). It follows the
+   reader's changes with no script: `:checked` is the option shown. A checkbox's words
+   are its value, gray unchecked and the text colour checked. The menu's own options
+   keep the text colour. The labels before the controls stay gray. */
+.site-table-tools select:has(option[value=""]:checked) {
   color: var(--site-support-color);
+}
+.site-table-tools select option {
+  color: var(--kpress-doc-text);
+}
+.site-table-tools input::placeholder {
+  color: var(--site-support-color);
+  opacity: 1;
+}
+.site-table-tools label:has(input[type="checkbox"]:checked) {
+  color: var(--kpress-doc-text);
+}
+/* The count, what the table holds now ("324 cases", "7 of 65 results"), is the bar's
+   one result, so it is the text colour, not the labels' gray. */
+.site-table-tools .site-count {
+  color: var(--kpress-doc-text);
   margin-inline-start: auto;
 }
 .site-table-wrap {

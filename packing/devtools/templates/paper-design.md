@@ -1498,6 +1498,13 @@ it.
   owner, 2026-10-02, `think-gwcu`; it was the support size).
   On a touch screen a field keeps 16 pixels at least, under which a phone’s browser
   zooms the page into it.
+  A control at its no-filter value, a select’s “All” (every bar’s no-filter choice is
+  its empty value) or an empty field’s placeholder, is gray, and a control that filters
+  is the text colour, so the bar says at a glance what narrows the table; a checkbox’s
+  words are its value, gray unchecked and the text colour checked.
+  The count at the bar’s end, what the table holds now, is the text colour, where the
+  labels are gray (the owner, 2026-10-02, `think-pcei`). It is the stylesheet’s alone,
+  with no script.
   - **Facets.** A result’s row carries each facet as an attribute
     (`overview_sections.result_facets`), and the bar has one control for each:
 

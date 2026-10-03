@@ -3970,6 +3970,36 @@ def test_a_tables_filter_bar_is_set_a_step_under_its_tables_text() -> None:
     ) in coarse[: coarse.index("\n}\n")]
 
 
+def test_a_filter_at_its_default_is_gray_and_one_that_filters_is_the_text_colour(
+    page: str, results: str, rendered: Callable[[str], str]
+) -> None:
+    """A control at its no-filter value is gray and a control that filters is the text
+    colour, so the bar says what narrows the table (the owner, 2026-10-02,
+    `think-pcei`): a select showing its empty-valued "All", an empty field's placeholder
+    and an unchecked checkbox's words are gray, and the count is the text colour. Every
+    select in every bar has its no-filter choice as the empty value the rule reads."""
+    css = render_overview.SITE_CSS.read_text(encoding="utf-8")
+    for rule, colour in (
+        ('.site-table-tools select:has(option[value=""]:checked) {', "--site-support-color"),
+        (".site-table-tools select option {", "--kpress-doc-text"),
+        (".site-table-tools input::placeholder {", "--site-support-color"),
+        ('.site-table-tools label:has(input[type="checkbox"]:checked) {', "--kpress-doc-text"),
+        (".site-table-tools .site-count {", "--kpress-doc-text"),
+    ):
+        block = css[css.index(rule) :]
+        assert f"color: var({colour});" in block[: block.index("}")], rule
+    for name, html_page in (
+        ("index.html", page),
+        ("all-results.html", results),
+        ("frontier.html", rendered("frontier.html")),
+    ):
+        bar = html_page.split('<div class="site-table-tools', 1)[1].split("</div>", 1)[0]
+        selects = re.findall(r"<select[^>]*>(.*?)</select>", bar, re.DOTALL)
+        assert selects, name
+        for options in selects:
+            assert options.startswith('<option value=""'), (name, options[:60])
+
+
 def test_every_table_stands_one_shared_space_from_the_text_around_it() -> None:
     """The space above and below a table is one token: above the filter bar of a table
     that has one, below every table's wrap, and around a document's own table, which

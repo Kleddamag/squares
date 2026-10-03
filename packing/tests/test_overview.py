@@ -1417,8 +1417,8 @@ def test_the_ladder_diagram_says_what_the_rubric_says(results: str) -> None:
     assert set(cells) == set(meanings)
     for label, cell in cells.items():
         assert (cell["ladder"], cell["scale"], cell["level"]) == (label[0], label[0], label[1])
-        assert html.unescape(cell["title"]) == meanings[label], label
-        assert html.unescape(cell["meaning"]) == short[label], label
+        assert html.unescape(cell["title"] or "") == meanings[label], label
+        assert html.unescape(cell["meaning"] or "") == short[label], label
 
 
 def test_every_rung_has_a_description_that_fits_two_lines(
@@ -1497,7 +1497,7 @@ def test_every_rung_chip_in_the_diagram_is_titled_with_the_rubrics_meaning(
     title, the 2026-09-30 meanings included, and the tables' chips stay bare."""
     meanings = overview_sections.rung_meanings()
     titled = {
-        cell["label"]: html.unescape(cell["title"])
+        cell["label"]: html.unescape(cell["title"] or "")
         for cell in _LADDER_CELL.finditer(_ladders(results))
         if cell["label"]
     }

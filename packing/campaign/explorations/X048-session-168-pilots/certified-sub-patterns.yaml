@@ -8,7 +8,13 @@ design: ring-3-voronoi-8-tabbed-unique
 # The reviewed digests of the standing verifiers, written separately from the producers.
 # An admitted entry counts only with a full, passing verification by one of these.
 verifiers:
-  kernel: [26bd5b41a8a3ae66bfb6b597b30d640cc74c7386f654626202743cfc3b521985]
+  # 26bd5b41: the review verifier retained at 55656158 (W7's receipt). 5c550f7c: the
+  # same obligations with the collision facets and the row cover on homogeneous integers
+  # and the partner covers memoised (e0b66f07b), admitted by the verifier-rewrites review
+  # of 2026-10-03 once its three test conditions were met.
+  kernel:
+    - 26bd5b41a8a3ae66bfb6b597b30d640cc74c7386f654626202743cfc3b521985
+    - 5c550f7c1e4cd1f71039bd8daa4475e91330e3845ca25e50789abadb1e2455c3
   # 4a93c74c: the reviewed verifier retained at 55656158 (A's receipt). 9ca8df6f: the
   # same interval-path obligations plus a 2,400-bit enclosure retry and the opt-in Taylor
   # checks (ff5471e89), admitted by the verifier-rewrites review of 2026-10-03.

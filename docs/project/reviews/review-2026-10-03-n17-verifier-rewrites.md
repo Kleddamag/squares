@@ -29,7 +29,9 @@ with `mutant_plugin.py.txt` (21 mutants of the verifier’s new code, each run a
 harness, the committed tests and the doctored certificates), `bb_trig_retry.py.txt` (the
 2,400-bit retry on crafted enclosure tables), and the agreement runs whose receipts and
 logs sit beside them (`w7-*.json`, `n1-*.json`, `a-*.json`). Nothing in the repository
-was edited except this document and that directory; the ledger is untouched.
+was edited except this document, that directory and, at the coordinator’s request, the
+test file `packing/tests/test_verify_n17_certificates.py` (section 2.8); the verifiers
+and the ledger are untouched.
 
 ## Verdicts
 
@@ -42,10 +44,12 @@ was edited except this document and that directory; the ledger is untouched.
   the reviewed verifier on the same sampled rows of W7 and of N1, refuses all 33 unsound
   doctored certificates, and every weakening mutant of its new code is caught by at
   least one check in this review.
-  The conditions (section 2.8) are three test additions, not verifier changes: the
-  committed tests miss three weakening mutants that only this review’s own cases catch,
-  and the digest should not be listed until the suite that guards the next rewrite sees
-  them. The verifier’s bytes, and so the digest, are unchanged by the conditions.
+  The conditions (section 2.8) were three test additions, not verifier changes: the
+  committed tests missed three weakening mutants that only this review’s own cases
+  caught, and the digest should not be listed until the suite that guards the next
+  rewrite sees them. They are met: the tests are in the committed file, each of the five
+  mutants named in section 2.8 now fails at least one committed test, the unmutated
+  verifier passes all 27, and the verifier’s bytes, and so the digest, are unchanged.
 - **Branch-and-bound verifier `9ca8df6f…`: ADMIT.** The interval-mode (schema v1) path
   is unchanged in effect, and now stricter in three places; the 2,400-bit retry of a
   failed enclosure cannot accept an enclosure that excludes the true value; the Taylor
@@ -428,61 +432,70 @@ row meets two facet normals with equal $n_x$ and different $n_y$ in a way that c
 verdict, and the committed code’s key `(nx, ny)` is the full input of `support` over a
 fixed domain, which is what establishes it.
 
-### 2.8 Conditions: Three Test Additions
+### 2.8 Conditions: Three Test Additions, Made
 
-Three weakening mutants pass the committed tests and are caught only by cases written
-for this review. A verifier whose tests do not see a dropped quantifier in its collision
-loop, or a sweep that probes only at events, is guarded by this review alone, and the
-next rewrite would start from the same blind spots.
-The digest `5c550f7c…` should be listed once the following are in
-`packing/tests/test_verify_n17_certificates.py`; none changes the verifier’s bytes.
+Three weakening mutants passed the committed tests as they stood and were caught only by
+cases written for this review.
+A verifier whose tests do not see a dropped quantifier in its collision loop, or a sweep
+that probes only at events, is guarded by this review alone, and the next rewrite would
+start from the same blind spots.
+I judged the test additions a condition of listing the digest rather than a follow-up,
+and at the coordinator’s request made them myself, so that the author of the verifier
+and the author of its guard stay separate:
+`packing/tests/test_verify_n17_certificates.py` now holds 27 tests (from 23), passes
+`ruff format`, `ruff check` and `basedpyright`, and the verifier’s bytes are unchanged
+(`sha256sum` gives `5c550f7c…` after the edit).
+`verifier-mutants-tests.log` runs the whole extended file against the five mutants named
+below (`run_verifier_mutants.py.txt --whole-file --skip-harness --skip-certs`) and
+against the unmutated verifier:
 
-1. **Mutant `sweep-no-mid-slab-probes`** (`probes.extend((between(a, b), b))` →
-   `probes.extend((b,))`) and **mutant `sweep-no-crossing-events`** (every edge pair
-   treated as parallel).
-   Caught by the harness cases `lens-2^-40`, `lens-2^-60` and `lens-1/8`. Minimal
-   addition, in `test_the_sweep_agrees_with_the_area_cover` or a test of its own: with
-   $\varepsilon = 2^{-40}$,
-   ```python
-   big = [(Q(0), Q(0)), (Q(4), Q(0)), (Q(4), Q(4)), (Q(0), Q(4))]
-   left = [(Q(0), Q(0)), (Q(1), Q(0)), (Q(1), Q(4)), (Q(0), Q(4))]
-   right = [(Q(3), Q(0)), (Q(4), Q(0)), (Q(4), Q(4)), (Q(3), Q(4))]
-   below = hull([(Q(1), Q(0)), (Q(3), Q(0)), (Q(3), Q(2)), (Q(2), Q(9, 4)), (Q(1), Q(2))])
-   above = hull([(Q(1), Q(4)), (Q(3), Q(4)), (Q(3), 2 + 2 * eps), (Q(2), 2 + 2 * eps - Q(1, 4)), (Q(1), 2 + 2 * eps)])
-   assert covered_by_sweep(big, [left, right, below, above])[0] is False   # eps = 2^-40
-   assert covered_by_sweep(big, [left, right, below, closed])[0] is True   # closed: eps = 0, V through (2, 7/4)
-   ```
-   The gap lies over $x \in (1, 1 + 4\varepsilon)$: at $x = 1$ the left block covers the
-   whole section, at the crossing the two sections touch, and no other event lies
-   between, so only an interior probe of that slab sees it.
-   Both mutants return `True` on it; the committed verifier returns `False`.
-2. **Mutant `collision-first-partner-row-only`** (`for cover in partners[pj]` →
-   `partners[pj][:1]`). Caught by the doctored certificate
-   `region-vertex-pushed-later-row-only-2^-40`. Minimal addition: a fifth edit in
-   `test_the_kernel_verifier_refuses_a_doctored_closure`, expecting “escapes the
-   collision set”, that takes the blind pair’s closing step, replays the verifier’s
-   state to it (`check_frame`, `check_seed`, `check_step` with `full=set()`,
-   `compress`), takes the row’s first collision region and its partner’s live covers,
-   finds among the facets of `planes_of(minkowski_diff(partner_core, core))` of every
-   live row but the first the (vertex, facet) of least slack, and **appends** to the
-   region the vertex moved along that facet’s normal by slack $+ 2^{-40}$, provided the
-   moved point satisfies every facet of the first live row and lies in the required
-   domain (otherwise the next candidate).
-   Appending rather than moving keeps the region a superset of the old one, so the row’s
-   cover still holds and only the collision check can refuse.
-   `mutate_cert.py.txt::region_pushed_later_row_only` is this procedure; the blind
-   pair’s partner has sixteen live rows, so a candidate exists.
-   The mutant accepts the edit; the committed verifier refuses it at the intended check.
+| Verifier | Result of the extended test file |
+| --- | --- |
+| unmutated `5c550f7c` | 27 passed |
+| `sweep-no-mid-slab-probes` | `test_the_sweep_sees_a_gap_hidden_between_events` fails, 26 pass |
+| `sweep-no-crossing-events` | `test_the_sweep_sees_a_gap_hidden_between_events` fails, 26 pass |
+| `collision-first-partner-row-only` | `test_the_kernel_verifier_checks_every_live_partner_row` fails, 26 pass |
+| `cache-forbidden-key-hull-only` | `test_the_forbidden_region_cache_keys_on_the_exact_core` and the partner-row test fail, 25 pass |
+| `cache-minimum-key-nx-only` | `test_the_row_minimum_memo_keys_on_the_whole_direction` fails, 26 pass |
 
-Two cheaper additions that I recommend in the same change, though I do not make them
-conditions, since both mutants are established by reading and one is caught by the
-doctored certificates: for `cache-forbidden-key-hull-only`, the analogue of
-`test_the_facet_cache_keys_on_the_exact_cores` for `State.forbidden_region` (the same
-hull with two cores must give two regions); for `cache-minimum-key-nx-only`, a unit test
-that `CoverRow.minimum(0, 1)` followed by `minimum(0, -1)` returns
-`support(domain, 0, -1, largest=False)`. For `cache-cover-survives-restep`, a doctored
-closure with a stale relabelled cover expecting “domain” would catch it in the committed
-style (the mutant then fails elsewhere, and the message assertion fails).
+1. **The sweep mutants** (`probes.extend((between(a, b), b))` → `probes.extend((b,))`,
+   and every edge pair treated as parallel), caught by the harness cases `lens-2^-40`,
+   `lens-2^-60` and `lens-1/8`. `lens_regions(eps)` builds the construction of section
+   2.2 on the square $[0, 4]^2$: a left block to $x = 1$, a right block from $x = 3$, a
+   region whose roof rises from $(1, 2)$ to $(2, 9/4)$ and a region whose V-shaped floor
+   starts $2\varepsilon$ above it at $x = 1$ and crosses it at $x = 1 + 4\varepsilon$.
+   `test_the_sweep_sees_a_gap_hidden_between_events` asserts that the area cover and the
+   sweep both refuse it at $\varepsilon = 2^{-40}, 2^{-60}$ and $1/8$, that the sweep’s
+   reported abscissa lies in $(1, 1 + 4\varepsilon)$, and that both accept the closed
+   version ($\varepsilon = 0$). Both mutants return `True` on the open one.
+2. **The collision-loop mutant** (`for cover in partners[pj]` → `partners[pj][:1]`),
+   caught by the doctored certificate `region-vertex-pushed-later-row-only-2^-40`. A
+   fifth doctored blind-pair closure cannot see it: on the blind pair the first live
+   partner row’s collision set, cut to the required domain, lies inside every later
+   row’s set in all 16 regions (`blind_pair_first_row_equivalence.py.txt`), so a
+   verifier that stopped at the first row is equivalent to the full one there.
+   `test_the_kernel_verifier_checks_every_live_partner_row` therefore produces W7 at 8
+   bins once per module (the fixture of section 2.6, 14 steps, about 4 s), replays the
+   verifier’s state to the step with the verifier’s own functions, cuts a row’s required
+   domain by the first live partner row’s facets in the reviewed hull form, takes a
+   vertex of the cut that violates a facet of a later row, appends it to the collision
+   region (so the region still contains the old one and the row’s cover is untouched),
+   and expects “escapes the collision set”; the undoctored objects must pass
+   `verify_objects` as a stall.
+   The test produces the objects with lane K2’s producer, as the blind pair’s test does;
+   the verifier under test imports neither.
+3. **The two cache tests** I had recommended as cheaper additions, made in the same
+   change: `test_the_forbidden_region_cache_keys_on_the_exact_core` (the same owned hull
+   with two cores $2^{-40}$ apart gives two cached regions, the second equal to a fresh
+   `minkowski_diff`) and `test_the_row_minimum_memo_keys_on_the_whole_direction` (five
+   directions, among them $(0, 1)$ and $(0, -1)$ and $(1, 0)$ and $(1, 2)$, each
+   returning `support` over the domain, with five entries cached).
+   The second catches the one mutant nothing in this review had seen (section 2.7).
+
+For `cache-cover-survives-restep`, which the doctored certificates only weaken, a
+doctored closure with a stale relabelled cover expecting “domain” would catch it in the
+committed style (the mutant then fails elsewhere, and the message assertion fails); I
+leave it as a follow-up.
 
 ### What I Looked For and Did Not Find
 
@@ -643,11 +656,12 @@ argument and by measurement against the reviewed ones, and the memos cannot retu
 result for an input they were not computed for.
 It re-proves the admitted W7 certificate with the admitted counts in 184 seconds, and
 the two verifiers agree row for row on the W7 and N1 samples.
-Admit it once the three test additions of section 2.8 are in, which change no byte of
-the verifier; I judge them a condition of listing the digest rather than a follow-up,
-because the committed suite is what stands between this review and the next rewrite, and
-it does not see a dropped quantifier in the collision loop or a sweep that probes only
-at events.
+The three test additions of section 2.8 are in, they change no byte of the verifier, and
+each mutant they were written for now fails a committed test; I judged them a condition
+of listing the digest rather than a follow-up, because the committed suite is what
+stands between this review and the next rewrite, and as it stood it did not see a
+dropped quantifier in the collision loop or a sweep that probes only at events.
+With them in, admit it.
 
 The branch-and-bound verifier `9ca8df6f…` is sound for interval-mode certificates, with
 three new refusals and no new acceptance on that path, and its Taylor path is sound as
@@ -657,13 +671,14 @@ verification and review as A’s did.
 
 Three non-blocking follow-ups for the kernel verifier: the one-line guard on a one-point
 target in `section_covered`; a comment at `covered_by_sweep` stating that regions must
-be convex and in hull order; and the two cheap cache unit tests of section 2.8.
+be convex and in hull order; and a doctored closure with a stale relabelled cover for
+`cache-cover-survives-restep`.
 
 ## Evidence Status
 
 | Kind | Items |
 | --- | --- |
-| Measured, this review | the facet, sweep, `between` and section audits; the W7 full run and the W7 and N1 sampled agreement runs; the 34 doctored certificates; the 21 verifier mutants against three checks; the sampled agreement run on A; the four crafted enclosure tables; the 35 committed tests |
+| Measured, this review | the facet, sweep, `between` and section audits; the W7 full run and the W7 and N1 sampled agreement runs; the 34 doctored certificates; the 21 verifier mutants against three checks; the extended test file against the five mutants it was written for; the blind-pair equivalence of the first-row-only mutant; the sampled agreement run on A; the four crafted enclosure tables; the 35 committed tests, now 39 |
 | Read from code, this review | the diffs of both verifiers; the arguments of sections 2.1 to 2.3 and 3.2 to 3.4 |
 | Taken from the record | the admitted W7 receipt and F2’s receipt; N1’s `check-saved.json`; A’s admitted receipt; the prior reviews’ line numbers and mutation lists |
 | Not checked here | the kernel’s checker and producer (reviewed by R3); HiGHS and `mpmath` (nothing in either verifier depends on them); the Taylor producer’s floats (the verifier recomputes every Taylor quantity it uses) |

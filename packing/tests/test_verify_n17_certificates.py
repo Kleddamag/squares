@@ -20,6 +20,7 @@ from typing import Any
 
 import pytest
 
+from devtools import check_hull_kernel_mask0 as mask0_tool
 from devtools import pilot_n17_subpattern_bb as bb
 from devtools import verify_n17_bb_certificate as bb_verifier
 from devtools import verify_n17_kernel_certificate as kernel_verifier
@@ -135,6 +136,117 @@ def drop_collision_region(node: dict[str, Any]) -> None:
     collision_row(node)["collision_regions"] = []
 
 
+Point = tuple[Q, Q]
+
+
+def decode(polygon: Any) -> list[Point]:
+    return [(Q(x), Q(y)) for x, y in polygon]
+
+
+def replayed_state(
+    seed: dict[str, Any], node: dict[str, Any], cells: kernel_verifier.Cells, upto: int
+) -> kernel_verifier.State:
+    """The verifier's own state just before step `upto`, replayed without the full-row
+    checks."""
+    state = kernel_verifier.State(
+        [list(polygon) for polygon in cells.polygons],
+        cells.cap,
+        seed["bins"],
+        list(seed["mask"]),
+    )
+    kernel_verifier.check_seed(state, seed, node)
+    for si, step in enumerate(node["steps"][:upto]):
+        rows, planes, any_live = kernel_verifier.check_step(
+            state, step, si, node["node_id"], set()
+        )
+        kernel_verifier.compress(state, step, si, planes, any_live=any_live)
+        state.rows[step["owner"]] = rows
+    return state
+
+
+def facet_bounds(cover: kernel_verifier.CoverRow, core: list[Point]) -> list[tuple[Q, Q, Q]]:
+    """`(a, b, bound)` per facet of partner core minus core, with the row's domain minimum
+    added, by the reviewed hull form rather than the verifier's edge merge."""
+    partner_core = [(Q(x, z), Q(y, z)) for x, y, z in cover.core]
+    domain = [(Q(x, z), Q(y, z)) for x, y, z in cover.domain]
+    difference = kernel_verifier.minkowski_diff(partner_core, core)
+    return [
+        (a, b, c + min(a * y[0] + b * y[1] for y in domain))
+        for a, b, c in kernel_verifier.planes_of(difference)
+    ]
+
+
+def add_point_colliding_in_the_first_row_alone(
+    node: dict[str, Any], seed: dict[str, Any], cells: kernel_verifier.Cells
+) -> None:
+    """A point of a row's required domain that collides with the partner in its first
+    live row (every facet of that row's collision set holds) but not in some later row
+    (a facet of that row's set fails), appended to a collision region so that the row's
+    cover is untouched: only the collision check can refuse it, and a verifier that
+    checked the first live partner row alone would accept it. The point is a vertex of
+    the required domain cut by the first row's facets, so one exists exactly when that
+    cut is not inside every later row's set."""
+    for si in range(len(node["steps"]) - 1, -1, -1):
+        step = node["steps"][si]
+        state = replayed_state(seed, node, cells, si)
+        partners = kernel_verifier.check_partners(state, step, si)
+        for ri, row in enumerate(step["rows"]):
+            if not row["collision_regions"]:
+                continue
+            core = kernel_verifier.hull(decode(row["core_vertices"]))
+            prior = state.rows[step["owner"]][ri]
+            lo, hi = Q(row["interval"][0]), Q(row["interval"][1])
+            required = kernel_verifier.intersect_convex(
+                list(prior.outer), kernel_verifier.wall_box(lo, hi, cells.cap)
+            )
+            for item in row["collision_regions"]:
+                covers = partners[item["partner"]]
+                if len(covers) < 2:
+                    continue
+                per_cover = [facet_bounds(cover, core) for cover in covers]
+                first = list(required)
+                for a, b, bound in per_cover[0]:
+                    first = kernel_verifier.clip_closed(first, a, b, bound)
+                for px, py in kernel_verifier.hull(first):
+                    if any(
+                        a * px + b * py > bound
+                        for facets in per_cover[1:]
+                        for a, b, bound in facets
+                    ):
+                        item["vertices"] = [*item["vertices"], [str(px), str(py)]]
+                        return
+    raise AssertionError("every first-row collision set lies inside the later rows' sets")
+
+
+W7 = ("corner-SW", "side-N0", "side-W0", "side-W1", "side-W2", "interior-SW", "interior-W")
+
+
+@cache
+def w7_stall_objects() -> tuple[dict[str, Any], dict[str, Any]]:
+    """W7 at 8 bins: a stall of 14 steps and 257 collision regions in which a later live
+    partner row cuts a region the first live row does not. On the blind pair the first
+    live row's collision set is the tightest in all 16 regions, so a verifier that stopped
+    at the first row would be equivalent to the full one there and no doctored blind-pair
+    closure can tell them apart."""
+    frame = mask0_tool.n17_unique_frame()
+    mask = sorted(frame.cell_names.index(cell) for cell in W7)
+    budget = Budget(time.monotonic() + 600, 5_000_000)
+    production = producer.produce(frame, mask, bins=8, max_rounds=6, budget=budget)
+    return production.seed, production.node
+
+
+def test_the_kernel_verifier_checks_every_live_partner_row(tmp_path: Path) -> None:
+    seed, node = w7_stall_objects()
+    cells = kernel_verifier.cover_cells()
+    doctored = copy.deepcopy(node)
+    add_point_colliding_in_the_first_row_alone(doctored, seed, cells)
+    save_certificate(tmp_path / "sound", seed, node)
+    save_certificate(tmp_path / "doctored", seed, doctored)
+    assert kernel_verifier.verify_objects(tmp_path / "sound", cells)["closed"] is False
+    with pytest.raises(kernel_verifier.VerificationError, match="escapes the collision set"):
+        _ = kernel_verifier.verify_objects(tmp_path / "doctored", cells)
+
+
 @pytest.mark.parametrize(
     ("edit", "message"),
     [
@@ -169,8 +281,6 @@ def test_the_kernel_verifier_refuses_bytes_that_do_not_match_their_name(
 # ---------------------------------------------------------------------------
 # The kernel verifier's integer forms, against its Fraction forms
 # ---------------------------------------------------------------------------
-
-Point = tuple[Q, Q]
 
 
 def convex_polygon(rng: random.Random, vertices: int) -> list[Point]:
@@ -268,6 +378,44 @@ def test_the_sweep_agrees_with_the_area_cover() -> None:
     assert verdicts == {True, False}
 
 
+def lens_regions(eps: Q) -> tuple[list[Point], list[list[Point]]]:
+    """A square domain under four regions that cover it except for a sliver hidden
+    strictly between two sweep events.
+
+    The left block's vertical edge covers the whole section at x = 1 and the right block's
+    at x = 3. Between them a region whose roof rises from (1, 2) to (2, 9/4) sits under a
+    region whose V-shaped floor starts `2 eps` above the roof at x = 1 and crosses it at
+    x = 1 + 4 eps. The gap over (1, 1 + 4 eps) is invisible at every event abscissa (the
+    vertex abscissae and the crossing, where the two sections touch) and visible only on
+    the open slab between them, so a sweep that probed events alone, or that did not
+    treat crossings as events, would pass it. With eps = 0 the four regions cover exactly.
+    """
+    big = [(Q(0), Q(0)), (Q(4), Q(0)), (Q(4), Q(4)), (Q(0), Q(4))]
+    left = [(Q(0), Q(0)), (Q(1), Q(0)), (Q(1), Q(4)), (Q(0), Q(4))]
+    right = [(Q(3), Q(0)), (Q(4), Q(0)), (Q(4), Q(4)), (Q(3), Q(4))]
+    below = kernel_verifier.hull(
+        [(Q(1), Q(0)), (Q(3), Q(0)), (Q(3), Q(2)), (Q(2), Q(9, 4)), (Q(1), Q(2))]
+    )
+    top = 2 + 2 * eps
+    above = kernel_verifier.hull(
+        [(Q(1), Q(4)), (Q(3), Q(4)), (Q(3), top), (Q(2), top - Q(1, 4)), (Q(1), top)]
+    )
+    return big, [left, right, below, above]
+
+
+def test_the_sweep_sees_a_gap_hidden_between_events() -> None:
+    for eps in (Q(1, 2**40), Q(1, 2**60), Q(1, 8)):
+        domain, regions = lens_regions(eps)
+        assert kernel_verifier.covered_by_area(domain, regions)[0] is False
+        covered, probe = kernel_verifier.covered_by_sweep(domain, regions)
+        assert covered is False
+        assert probe is not None
+        assert 1 < probe < 1 + 4 * eps
+    domain, regions = lens_regions(Q(0))
+    assert kernel_verifier.covered_by_area(domain, regions)[0] is True
+    assert kernel_verifier.covered_by_sweep(domain, regions) == (True, None)
+
+
 def test_between_lies_strictly_inside_with_small_terms() -> None:
     rng = random.Random(3)
     pairs: list[tuple[tuple[int, int], tuple[int, int]]] = [
@@ -354,6 +502,28 @@ def test_the_facet_cache_keys_on_the_exact_cores() -> None:
     assert second == kernel_verifier.difference_facets(partner, moved)
     assert first != second
     assert len(state.facets) == 2
+
+
+def test_the_forbidden_region_cache_keys_on_the_exact_core() -> None:
+    state = kernel_verifier.State(cells=[], cap=Q(3), bins=1, mask=[])
+    group = unit_cell()
+    moved = [(x + Q(1, 2**40), y) if x > 0 else (x, y) for x, y in SQUARE]
+    first = state.forbidden_region(group, SQUARE)
+    second = state.forbidden_region(group, moved)
+    assert state.forbidden_region(group, SQUARE) is first
+    assert second == kernel_verifier.minkowski_diff(group, moved)
+    assert first != second
+    assert len(state.forbidden) == 2
+
+
+def test_the_row_minimum_memo_keys_on_the_whole_direction() -> None:
+    domain = homogeneous(unit_cell())
+    cover = kernel_verifier.CoverRow([], [], domain, homogeneous(SQUARE))
+    for nx, ny in ((0, 1), (0, -1), (1, 0), (1, 2), (-1, 2)):
+        assert cover.minimum(nx, ny) == kernel_verifier.support(domain, nx, ny, largest=False)
+    assert cover.minimum(0, 1) != cover.minimum(0, -1)
+    assert cover.minimum(1, 0) != cover.minimum(1, 2)
+    assert len(cover.minima) == 5
 
 
 # ---------------------------------------------------------------------------

@@ -148,9 +148,40 @@ up as `AGENTS.md` describes:
 where `NPROC=4 sh certificates/k2m4/verify.sh --full` runs the bundle’s own unsharded
 check, about 265 CPU-hours here.
 
-## Lean Build
+## Lean Build Here, 3 October 2026
 
-Pending.
+The reduction
+`SquarePacking.Bentz4.bentz4_of_validTilt9 : ValidTilt9 → ∀ k ≥ 8, minSide (k² − 4) = k`
+was built in this container from retained bytes.
+[`devtools.stage_evand_bentz4_lean`](../../../devtools/stage_evand_bentz4_lean.py) staged
+the sixteen-module closure of `Sqpack.ValidSplit9`, each file at its `2eb15455` Git blob
+([`receipts/lean/bentz4_stage.json`](receipts/lean/bentz4_stage.json)). It regenerated
+`Bentz4Data`, `ValidSplitData`, `BentzData` and `S32Data` with the source’s own
+generators, each byte-identical to the retained module, and found no kernel-escape token
+(`sorry`, `axiom`, `native_decide` and the rest).
+Two inputs come from earlier packets at the same blobs: `L4_k02_family.txt` from the
+October 1 packet and the $s(32)$ cover from the September 26 packet.
+elan installed `leanprover/lean4:v4.33.1`, and Mathlib came from `lake exe cache get`
+(8,690 files).
+
+- **Build:** `lake build Sqpack.ValidSplit9` finished with exit 0 and 8,721 jobs, no
+  `sorry`, and 13 linter or deprecation warnings only (`longLine`, `open Classical`,
+  deprecated `push_neg` and `Set.mem_setOf_eq`). Wall 1,933 s.
+  Receipt: [`receipts/lean/build_bentz4.log`](receipts/lean/build_bentz4.log).
+- **Axioms:** `#print axioms` for `bentz4_of_validTilt9`, `valid9_of_tilt`,
+  `valid9_of_tilt_axis`, `validAxis9`, `box9_grid`, `d4_box9`, `bentz4_of_valid9`,
+  `box9Cover_measure`, `famCover_total4`, `ValidSplit.valid_of_tilt_axis` and
+  `ValidSplit.validAxis_packed` each print `[propext, Classical.choice, Quot.sound]`.
+  Receipt: [`receipts/lean/axioms_bentz4.log`](receipts/lean/axioms_bentz4.log), from
+  the staged `AxiomsBentz4.lean`, which also prints `ValidTilt9`, `Valid9`, `minSide`
+  and `Packs`.
+- **Memory:** `Sqpack/Bentz.lean` again dominates, at 1,487 s and about 13 GB resident;
+  with `LEAN_NUM_THREADS=1` and a 10 GB swapfile, up to about 9.6 GB of swap was in use,
+  sampled every 20 s outside the receipt. On a 16 GB host without swap, plan for swap.
+- **Scope:** the Lean source compiles against Mathlib and uses only the three standard
+  axioms. `ValidTilt9`, the tilted part, stays a hypothesis; the axis face `validAxis9`
+  and the D4 reduction are proved. It is the source’s own Lean, so this is the same
+  implementation as the source, not an independent statement of the theorem.
 
 ## Compressed Files
 

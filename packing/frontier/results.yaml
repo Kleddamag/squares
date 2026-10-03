@@ -7185,6 +7185,8 @@ results:
       - packing/resources/web/evand-square-packing-2026-10-03/receipts/k2m4_verify_fast.log
       - packing/resources/web/evand-square-packing-2026-10-03/receipts/valid9/qx2_replay_plan.json
       - packing/devtools/plan_valid9_replay.py
+      - packing/resources/web/evand-square-packing-2026-10-03/receipts/lean/build_bentz4.log
+      - packing/resources/web/evand-square-packing-2026-10-03/receipts/lean/axioms_bentz4.log
     next_rung: >-
       think-8hk1: the full replay of qx2_zm.py on the box-9 cover, about 226 CPU-hours at
       the source, in the shards the packet's replay plan gives, compared root for root with

@@ -1,0 +1,264 @@
+# Retained JSON is one record per line: the threshold, and the files that keep their bytes.
+#
+# Read by `devtools.check_retained_json`, where the rule is argued. Every JSON file the
+# repository tracks with more lines than `threshold_lines` must equal its re-layout by
+# `sqpack.retained_json.dumps`, unless an entry below exempts it. Each entry is a `path`
+# or a `glob` (repository-relative; `**` crosses directories), a `reason`, and `bound_by`,
+# what holds its bytes where they are. A `pending` entry is a conversion not yet made, and
+# names its bead. An entry that no longer exempts anything fails the check.
+#
+# Run, from `packing/`:
+#   uv run --frozen --all-extras --group dev python -m devtools.check_retained_json
+#   uv run --frozen --all-extras --group dev python -m devtools.check_retained_json --inventory
+
+# 5,000 lines is where the 2026-10-03 inventory (think-k131) drew the line: 99 tracked
+# JSON files over it, 1.5 million lines of them retained results written a scalar a line.
+# The 65 files between 2,001 and 5,000 lines are the next band to inventory, and a lower
+# threshold is the ratchet once they are decided.
+threshold_lines: 5000
+
+exempt:
+
+# --- Archived source -------------------------------------------------------------------
+- glob: packing/resources/**
+  reason: archive
+  bound_by: >-
+    Archived source material is never edited (AGENTS.md, Conventions). A large
+    third-party file there is stored with devtools.retained_data as deterministic gzip
+    instead, which keeps its bytes.
+
+# --- Certificates ----------------------------------------------------------------------
+- glob: packing/cases/*_certificate/*.json
+  reason: certificate
+  bound_by: >-
+    The certificates the cases/*_certificate verifiers read. Their SHA-256 is pinned by
+    cases/n11_threshold_certificate/replay.py (FROZEN_SHA256),
+    cases/n11_fractional_certificate/minimal_verify.py, the dilation-limit corollary
+    records and frontier/evidence.yaml; cases/n17_fractional_certificate/certificate.json
+    is byte-identical to four archived copies under packing/resources.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-040/exp-218-n17-23-5-covering.json
+  reason: certificate
+  bound_by: A fractional certificate in the family's indent=1 layout, read by its verifier.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-039/n29-548-100-auto-windows5-certificate.json
+  reason: certificate
+  bound_by: A fractional certificate in the family's indent=1 layout, read by its verifier.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-041/exp-225-n27-548-100-bump103-certificate.json
+  reason: certificate
+  bound_by: A fractional certificate in the family's indent=1 layout, read by its verifier.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-041/exp-225-n28-548-100-bump103-certificate.json
+  reason: certificate
+  bound_by: A fractional certificate in the family's indent=1 layout, read by its verifier.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-041/exp-225-n29-548-100-bump103-certificate.json
+  reason: certificate
+  bound_by: A fractional certificate in the family's indent=1 layout, read by its verifier.
+
+# --- Bytes a pin in code or a test enforces --------------------------------------------
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-033/exp-146-wall-owner-footprints.json
+  reason: digest-bound
+  bound_by: >-
+    WALL_BLOB in devtools/wall_owner_parent_experiment.py, a ReceiptPin on its Git blob,
+    which frontier/evidence.yaml and the exp-147..153 records quote too.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-x4-survivors-16.json
+  reason: digest-bound
+  bound_by: >-
+    git_blob_binding in devtools/replay_h157_geometry.py and the h157 source manifests;
+    byte-identical to h157-independent-review/replayed/survivors-16.json.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/h157-independent-review/replayed/survivors-16.json
+  reason: digest-bound
+  bound_by: >-
+    git_blob_binding in devtools/replay_h157_geometry.py and the h157 source manifests;
+    byte-identical to agenda-034/lane-x4-survivors-16.json.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-leg-01-family.json
+  reason: digest-bound
+  bound_by: >-
+    Its Git blob is pinned by tests/test_audit_corner_dual_salvage.py and
+    tests/test_screen_corner_dual_salvage.py, and quoted by the exp-137, 138 and 141
+    records.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-b-threshold-candidate-191-50.json
+  reason: digest-bound
+  bound_by: >-
+    SHA-256 and Git blob in devtools/fixed_core_packet.py; byte-identical to
+    cases/n11_threshold_certificate/certificate.json, whose SHA-256
+    cases/n11_threshold_certificate/replay.py pins.
+
+# --- Bytes a dated record, review or archive names -------------------------------------
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-041/exp-221-n17-kleddamag-unrestricted-net1440.json
+  reason: digest-bound
+  bound_by: SHA-256 in results/agenda-041/exp-221-n17-kleddamag-unrestricted-receipt.md.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-041/exp-221-n17-kleddamag-unrestricted-net288.json
+  reason: digest-bound
+  bound_by: SHA-256 in results/agenda-041/exp-221-n17-kleddamag-unrestricted-receipt.md.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a6-atoms-2566-orbits.json
+  reason: digest-bound
+  bound_by: >-
+    Git blob in results/agenda-034/lane-a6-independent-source-record.json and SHA-256 in
+    results/agenda-034/lane-a6-structural-sites-and-the-depth-one-certificate.md.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-033/exp-153-direct-sixth-site-feasibility.json
+  reason: digest-bound
+  bound_by: Git blob in cases/n11_five_dot_cover/after-direct-family-decision.md.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-033/exp-147-wall-owner-containment.json
+  reason: digest-bound
+  bound_by: >-
+    Git blob in the exp-148 record and result and in
+    cases/n11_five_dot_cover/after-exp148-strategy.md.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-013-h-026-trump-tangent.json
+  reason: digest-bound
+  bound_by: >-
+    SHA-256 in agendas 024 and 026, cases/trump11/isolation-theorem.md, the bc-199,
+    bc-240 and exp-227 results, and the archived n11 research bundle's source packet.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/bc-199-trump-isolation-radius.json
+  reason: digest-bound
+  bound_by: >-
+    SHA-256 in agendas 024 and 026, cases/trump11/isolation-theorem.md,
+    results/bc-240-trump-local-theorem.json and the archived n11 research bundle's source
+    packet.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-x4-survivor-families.json
+  reason: digest-bound
+  bound_by: Git blob in results/agenda-034/h157-independent-review/source-manifest.json.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a2-threshold-certificate-191-50-net360.json
+  reason: digest-bound
+  bound_by: SHA-256 in results/agenda-034/lane-a2-threshold-certificate-on-finer-nets.md.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-041/exp-226-n11-threshold-191-50-net2880-certificate.json
+  reason: digest-bound
+  bound_by: >-
+    SHA-256 in frontier/evidence.yaml and
+    cases/n11_threshold_certificate/t-033-dilation-limit-corollary.json; byte-identical to
+    cases/n11_threshold_certificate/certificate-191-50-net2880.json.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-042/exp-229-n21-C-covering-declared.json
+  reason: digest-bound
+  bound_by: >-
+    SHA-256 in frontier/evidence.yaml, the exp-229 record and its review; byte-identical
+    to cases/n21_fractional_certificate/certificate.json.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-042/exp-229-n21-C-covering.json
+  reason: digest-bound
+  bound_by: SHA-256 in results/agenda-042/exp-229-n21-122-25-receipt.md.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-035/exp-157-bc303-literal-t1-witness.json
+  reason: digest-bound
+  bound_by: >-
+    Git blob in docs/project/reviews/review-2026-09-13-bc303-floor-normalized-t2-independent.md.
+
+# --- Frozen output and open decisions --------------------------------------------------
+- path: packing/atlas/known-best/video/spikes/v2-transitions/transition-stats.json
+  reason: frozen
+  bound_by: >-
+    Frozen historical output of a retired spike (v2-transitions/NOTES.md), written by
+    its own compact layout; re-laying it would lengthen it.
+- path: packing/campaign/agent-sessions/session-153-native-full.json
+  reason: owner-decision
+  bound_by: >-
+    devtools/audit_kleddamag_n11_native.py calls it the immutable coverage receipt of a
+    historical run, and frontier/results.yaml lists it as evidence; whether its layout
+    may change is the owner's call (think-k131).
+
+# --- Conversions not yet made ----------------------------------------------------------
+# Batch A: the atlas and frontier records, one data commit and one re-pin.
+- path: packing/atlas/known-best/chunk-components.json
+  reason: pending
+  bound_by: Nothing; devtools.census_known_best_chunks writes it.
+  bead: think-k131
+- path: packing/atlas/known-best/chunk-partitions.json
+  reason: pending
+  bound_by: Nothing; devtools.census_known_best_chunks writes it.
+  bead: think-k131
+- path: packing/atlas/known-best/translation-escape-screen.json
+  reason: pending
+  bound_by: Nothing; devtools.screen_translation_escape writes it.
+  bead: think-k131
+- path: packing/atlas/known-best/composite-figure.json
+  reason: pending
+  bound_by: Nothing; devtools.build_composite_figure_data writes it.
+  bead: think-k131
+- path: packing/atlas/known-best/manifest.json
+  reason: pending
+  bound_by: Nothing; devtools.build_known_best_atlas writes it.
+  bead: think-k131
+- path: packing/atlas/known-best/bound-citations.json
+  reason: pending
+  bound_by: Nothing; devtools.build_bound_citations writes it.
+  bead: think-k131
+- path: packing/frontier/ds7-lower-bound-audit.json
+  reason: pending
+  bound_by: Nothing; devtools.audit_ds7_lower_bounds --output wrote it.
+  bead: think-k131
+- path: packing/atlas/enumerated/contact-scaffolds-size5.json
+  reason: pending
+  bound_by: Nothing; devtools.build_contact_scaffold_atlas writes it.
+  bead: think-k131
+# Batch B: the n5 case results, replayed by value.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-042-h-023-n5-endpoint-aware-rotating-paths.json
+  reason: pending
+  bound_by: Nothing; cases.n5.rotating_release_paths --record writes it.
+  bead: think-k131
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-039-h-023-n5-fixed-angle-polytope.json
+  reason: pending
+  bound_by: Nothing; cases.n5.fixed_angle_polytope --record writes it.
+  bead: think-k131
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-035-h-023-n5-tangent-cones.json
+  reason: pending
+  bound_by: Nothing; cases.n5.tangent_cones --record writes it.
+  bead: think-k131
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/exp-038-h-023-n5-tangent-inventory.json
+  reason: pending
+  bound_by: Nothing; cases.n5.tangent_inventory --record writes it.
+  bead: think-k131
+# Batch C: one-shot campaign results.
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-040/one-spare-inventory-n32.json
+  reason: pending
+  bound_by: Nothing; devtools.bentz2016.one_spare_inventory wrote it.
+  bead: think-k131
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-031/bc-306-unit-state-at-q.json
+  reason: pending
+  bound_by: Nothing; devtools.transport_ceiling_family wrote it.
+  bead: think-k131
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-030/pr127-unit-control.json
+  reason: pending
+  bound_by: Nothing; devtools.transport_ceiling_family wrote it.
+  bead: think-k131
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a6-structural-sites-153-40.json
+  reason: pending
+  bound_by: Nothing; its writer was never committed.
+  bead: think-k131
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-a6-independent-atom-membership.json
+  reason: pending
+  bound_by: Nothing; devtools.admit_threshold_atom_orbits printed it.
+  bead: think-k131
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-035/exp-156-unit-parent-saved-residual.json
+  reason: pending
+  bound_by: Nothing; devtools.wall_owner_parent_experiment wrote it.
+  bead: think-k131
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-e-completion-61-16-receipt.json
+  reason: pending
+  bound_by: Nothing; devtools.run_fixed_site_completion wrote it.
+  bead: think-k131
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/bc-201-n11-tight-cell-census.json
+  reason: pending
+  bound_by: Nothing; devtools.census_tight_cells wrote it.
+  bead: think-k131
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/plateau-reader-191-50.json
+  reason: pending
+  bound_by: Nothing; devtools.plateau_reader wrote it.
+  bead: think-k131
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-034/lane-e-cutting-191-50-family.json
+  reason: pending
+  bound_by: Nothing; devtools.run_fractional_cutting wrote it.
+  bead: think-k131
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-234-scalar-61-16-leg-01-family.json
+  reason: pending
+  bound_by: Nothing; devtools.run_fractional_cutting wrote it.
+  bead: think-k131
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/agenda-025/bc-232-leg-02-recovery-01-family.json
+  reason: pending
+  bound_by: Nothing; devtools.run_fractional_cutting wrote it.
+  bead: think-k131
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/bc-200-family-191-50.json
+  reason: pending
+  bound_by: Nothing; devtools.run_fractional_cutting wrote it.
+  bead: think-k131
+- path: packing/campaign/series/series-000-smoke-and-calibration/results/bc-200-family-77-20.json
+  reason: pending
+  bound_by: Nothing; devtools.run_fractional_cutting wrote it.
+  bead: think-k131
+- path: packing/campaign/results/annealing/summaries.json
+  reason: pending
+  bound_by: Nothing; workbench_tools.summarize_annealing wrote it.
+  bead: think-k131

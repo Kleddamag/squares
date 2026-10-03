@@ -114,6 +114,26 @@ def test_the_head_states_the_result_as_the_site_does(
     assert f'data-novelty="{result.novelty}"' in head
 
 
+def test_the_head_says_what_a_declared_later_result_implies(bodies: dict[str, str]) -> None:
+    """A result whose entry declares a later result that implies it (`superseded_by`)
+    says so under its claim, with the later result linked and what it implies: T-060
+    implies T-036's bound clause and not its equality clause (think-7df0). A superseded
+    bound says nothing there; its chip names its successors."""
+    head = bodies["T-036"].split("</header>", 1)[0]
+    later = (
+        '<p class="site-result-claim site-result-superseded"><strong>Superseded in part by '
+        f'<a href="{overview_sections.result_url("T-060")}">T-060</a>.</strong> The first '
+        "clause"
+    )
+    assert later in head
+    assert "is not implied, since T-060 makes no claim of uniqueness." in head
+    assert head.index(later) > head.index('<p class="site-result-claim">')
+    assert head.index(later) < head.index('<details class="site-result-more">')
+    assert "site-result-superseded" not in bodies["T-037"]
+    successor = f'by <a href="{overview_sections.result_url("T-060")}">T-060</a>'
+    assert successor in bodies["T-037"].split("</header>", 1)[0]
+
+
 @pytest.mark.parametrize("result_id", [SETTLED, EARLIER])
 def test_a_single_case_shows_the_films_panel_and_the_packing(
     result_id: str, bodies: dict[str, str]

@@ -944,6 +944,88 @@ def test_a_simplification_names_a_result_on_a_case_it_shares() -> None:
     assert check_results.kind_problems(silent, cited, {"T-999": {45}}) == unnamed
 
 
+def _superseded_by(*later: tuple[str, str], kind: str = "case-exclusion") -> dict:
+    """A result of `kind`, registered 2026-09-24 on n = 11, declaring `later` results."""
+    return {
+        "id": "T-036",
+        "kind": kind,
+        "registered": "2026-09-24",
+        "superseded_by": [
+            {"result": other, "extent": extent, "what": "The bound."} for other, extent in later
+        ],
+    }
+
+
+def test_a_declared_supersession_names_a_later_result_on_a_shared_case() -> None:
+    """A result whose kind is no bound declares the later results that imply it
+    (`superseded_by`); each is registered, later, on a case it shares, and named once
+    (think-nlo0)."""
+    problems = check_results.superseded_by_problems
+    registered = {"T-036": "2026-09-24", "T-035": "2026-09-24", "T-060": "2026-09-29"}
+    registered |= {"T-020": "2026-09-05"}
+    scopes = {"T-036": {11}, "T-035": {11}, "T-060": {11}, "T-020": {19}}
+    assert problems({"id": "T-036", "kind": "case-exclusion"}, registered, scopes) == []
+    assert problems(_superseded_by(("T-060", "part")), registered, scopes) == []
+    assert problems(_superseded_by(("T-035", "whole")), registered, scopes) == []
+    assert problems(_superseded_by(("T-036", "whole")), registered, scopes) == [
+        "T-036: superseded_by names the result itself"
+    ]
+    assert problems(
+        _superseded_by(("T-060", "part"), ("T-060", "whole")), registered, scopes
+    ) == ["T-036: superseded_by names T-060 twice"]
+    assert problems(_superseded_by(("T-099", "part")), registered, scopes) == [
+        "T-036: superseded_by names T-099, which is not registered"
+    ]
+    assert problems(_superseded_by(("T-020", "part")), registered, scopes) == [
+        (
+            "T-036: superseded_by names T-020, registered 2026-09-05, before this result's "
+            "2026-09-24"
+        ),
+        "T-036: superseded_by names T-020, which shares no case with it",
+    ]
+
+
+def test_a_bound_never_declares_what_supersedes_it() -> None:
+    """A bound's supersession is derived from the case records, so a declaration on one
+    is refused: two accounts of it could disagree."""
+    registered = {"T-036": "2026-09-24", "T-060": "2026-09-29"}
+    scopes = {"T-036": {11}, "T-060": {11}}
+    for kind in check_results.BOUND_KINDS:
+        later = _superseded_by(("T-060", "whole"), kind=kind)
+        assert check_results.superseded_by_problems(later, registered, scopes) == [
+            (
+                f"T-036: declares superseded_by, but a {check_results.kind_label(kind)}'s "
+                "supersession is derived from the case records and never declared"
+            )
+        ], kind
+
+
+def test_a_declared_supersession_on_a_bound_fails_the_register_gate(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    later = [{"result": "T-060", "extent": "whole", "what": "s(11) = T."}]
+    monkeypatch.setattr(
+        check_results, "RESULTS", _changed_result(tmp_path, "T-037", superseded_by=later)
+    )
+    assert check_results.main() == 1
+    assert "T-037: declares superseded_by, but a lower bound's supersession is derived" in (
+        capsys.readouterr().out
+    )
+
+
+def test_t036_is_superseded_in_part_by_t060() -> None:
+    """T-060's `s(11) = T` implies T-036's bound clause for every packing; its equality
+    clause is not implied, since T-060 makes no claim of uniqueness (think-7df0)."""
+    record, _, _ = _live_record("T-036")
+    assert record["superseded_by"] == [
+        {"result": "T-060", "extent": "part", "what": record["superseded_by"][0]["what"]}
+    ]
+    what = " ".join(record["superseded_by"][0]["what"].split())
+    assert what.startswith("The first clause")
+    assert "equality clause" in what
+    assert "is not implied" in what
+
+
 def test_results_md_labels_every_result_by_its_kind() -> None:
     register = safe_load(render_results.RESULTS.read_text(encoding="utf-8"))
     committed = render_results.OUTPUT.read_text(encoding="utf-8")

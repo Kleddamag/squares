@@ -3111,6 +3111,23 @@ results:
       consume, and with C4 a second adversarial AI review by a distinct reviewer and a human
       oversight record. Retaining the per-face dual witnesses and recomputing the gap cap
       from distinct source are the closure review's two bounded residual tasks.
+    notes: >-
+      2026-10-03: T-060, which confirms that s(11) is Trump's exact side U (its T), implies
+      this result's first clause for every packing of eleven squares, so that clause is
+      superseded. The equality clause still stands alone: T-060 rules out only a smaller
+      side and makes no claim that Trump's pose is the only packing at U (the optimality
+      paper, Closing the Gap Between the Rational Cap and the Exact Optimum), so this
+      result remains the register's one statement that a packing of eleven squares is
+      unique, for the six-plus-five family near Trump's tilt.
+    superseded_by:
+      - result: T-060
+        extent: part
+        what: >-
+          The first clause, that every packing in the family has side at least U, which
+          T-060 gives for every packing of eleven squares. The equality clause, that a
+          packing in the family attains U only as a quarter-turn image of Trump's pose with
+          the squares relabelled within the two classes, is not implied, since T-060 makes
+          no claim of uniqueness.
 
   - id: T-037
     kind: lower-bound

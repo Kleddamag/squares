@@ -966,8 +966,15 @@ it.
   move (`data-activity`): `in analysis` for a replay or review under way here,
   `waiting on source` for a request with another party; its title says what is in hand
   and since when. Last is `superseded` (`data-standing`), on a bound that no case bound
-  rests on now. A result that still stands draws no chip for that: `current best` is the
-  default, so it is left unsaid.
+  rests on now, followed in quiet type by the results that supersede it, each a link to
+  its row: “by T-060”, the results its cases’ bounds rest on now
+  (`overview_sections.supersession_marks`). A result of a kind that is no bound draws it
+  only where its entry declares a later result that implies it (`superseded_by`), and
+  `superseded in part` where that result implies some of it, as `T-060` does `T-036`’s
+  bound and not its equality case.
+  A chip and its links are one unit, so a narrow cell wraps between marks and not inside
+  one. A result that still stands draws no chip for that: `current best` is the default,
+  so it is left unsaid.
   That a bound is only reported is no chip of its own: it is the status `recorded`. A
   second proof of a value another result holds says so by its kind, `simplification`,
   and a result that bounds nothing by its kind too.
@@ -1689,13 +1696,15 @@ Max age is a number of days, and empty is no limit. There is no date range.
 
 - **Hide superseded.** One checkbox, straight after Status, hides exactly the superseded
   results: the bounds no case bound rests on now, because a later or a stronger result
-  holds the case (`overview_sections.is_superseded`). Every other result stays: one that
-  still holds a bound, verified or reported, and a result of a kind that is no bound,
-  such as a rigidity, a simplification or the limit of a method, which no better bound
-  supersedes. A result that holds one case of several is not superseded.
-  The word is derived from the case records (`render_recent_results.standing`), so the
-  checkbox and the `superseded` chip cannot disagree, and `devtools.check_standing`
-  holds it to the bounds each entry states.
+  holds the case (`overview_sections.is_superseded`), and the results of other kinds
+  whose entries declare a later result that implies the whole of them.
+  Every other result stays: one that still holds a bound, verified or reported, a result
+  of a kind that is no bound, such as a rigidity, a simplification or the limit of a
+  method, which no better bound supersedes, and one superseded only in part.
+  A result that holds one case of several is not superseded.
+  For a bound the word is derived from the case records
+  (`render_recent_results.standing`), so the checkbox and the `superseded` chip cannot
+  disagree, and `devtools.check_standing` holds it to the bounds each entry states.
   A row carries the answer as `data-current`, `false` where it is superseded.
   Superseded is the result’s place on the frontier and no status, so the checkbox and
   Status ask different questions and compose as every pair of controls does: a confirmed
@@ -2044,8 +2053,10 @@ names.
   the overview lands. The body opens with the S, V and C rung chips, the kind chip and
   the status line, as the tables show them; then the date and what it dates, in the
   tables’ order (`date_cell`), the credit and the cases, in the support colour; the
-  claim at the note size; and a closed disclosure with the significance, composition,
-  next rung and novelty.
+  claim at the note size; where the entry declares a later result that implies it
+  (`superseded_by`), a paragraph under the claim that opens “Superseded in part by
+  T-060.”, the later result linked, and says what it implies and what still stands; and
+  a closed disclosure with the significance, composition, next rung and novelty.
 - **The case.** A result about one case, or up to four, shows each case’s visual summary
   as the case’s record opens with it (**Visual summary**, above), smaller and with no
   caption under the drawing: the packing drawn at the atlas’s scale

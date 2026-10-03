@@ -587,17 +587,29 @@ def where(cases: Sequence[int]) -> str:
 
 
 def head(result: Result, cases: Sequence[int]) -> str:
-    """The chips, the date and credit, and the claim. The date leads and what it dates
-    follows, as a table's date cell sets it (`overview_sections.date_cell`). The id and
-    the headline are the popover's own, above the body (`overview_sections.result_row`)."""
+    """The chips, the date and credit, the claim, and what a later result its entry
+    declares implies of it (`superseded_by`). The date leads and what it dates follows,
+    as a table's date cell sets it (`overview_sections.date_cell`). The id and the
+    headline are the popover's own, above the body (`overview_sections.result_row`)."""
     from devtools.overview_sections import (  # noqa: PLC0415
         date_cell,
         novelty_labels,
+        result_url,
         status_chips,
     )
 
     record = result.record
     claim = prose_html(record["claim"], between='</p><p class="site-result-claim">')
+    # A later result its entry declares implies it says what it implies, under the
+    # claim it bears on; a superseded bound's chip names its successors, which need no
+    # sentence, since their bounds are the case's.
+    superseded = "".join(
+        '<p class="site-result-claim site-result-superseded"><strong>'
+        f"{'Superseded' if item['extent'] == 'whole' else 'Superseded in part'} by "
+        f'<a href="{_esc(result_url(str(item["result"])))}">{_esc(str(item["result"]))}</a>.'
+        f"</strong> {prose_html(item['what'])}</p>"
+        for item in record.get("superseded_by") or []
+    )
     more = [
         ("Significance", record["significance"]["rationale"]),
         ("Composition", record.get("composition")),
@@ -617,6 +629,7 @@ def head(result: Result, cases: Sequence[int]) -> str:
         f'<p class="site-result-meta">{date_cell(result)} \u00b7 {_esc(result.credit)} '
         f"\u00b7 {where(cases)}</p>"
         f'<p class="site-result-claim">{claim}</p>'
+        f"{superseded}"
         '<details class="site-result-more"><summary>Significance, composition and next '
         f'rung</summary><dl class="site-detail">{rows}</dl></details>'
         "</header>"

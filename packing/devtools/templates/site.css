@@ -1221,6 +1221,11 @@ body {
   flex-wrap: wrap;
   gap: 0.3rem;
 }
+/* The results that supersede one are named by their ids, and an id never breaks at its
+   hyphen: `T-` at the end of one line and `020` on the next reads as two things. */
+:is(.site-superseded, .site-result-superseded) a {
+  white-space: nowrap;
+}
 
 .kpress .site-table {
   font-size: var(--site-font-size-note);

@@ -148,8 +148,9 @@ def activity_label(activity: Mapping[str, Any] | None) -> str:
 
 def status_line(record: Record, evidence: Evidence, position: Sequence[str] = ()) -> str:
     """A result's status as one cell of a Markdown table: the status, then its activity
-    and `superseded` where it is one (`render_recent_results.position_marks`), the
-    marks the site draws as chips beside it."""
+    and `superseded` or `superseded in part` where it is one, with what supersedes it
+    (`render_recent_results.position_marks`), the marks the site draws as chips beside
+    it."""
     marks = [status(record, evidence), activity_label(record.get("activity")), *position]
     return ", ".join(mark for mark in marks if mark)
 
@@ -215,7 +216,8 @@ def activity_problems(record: Mapping[str, Any], last_reviewed: str) -> list[str
 
 def listing() -> list[str]:
     """Every result's status as a Markdown table, in id order: the standing it had, the
-    status, the fact that decides it, whether it is superseded, and its activity."""
+    status, the fact that decides it, whether it is superseded and by what, and its
+    activity."""
     # `render_recent_results` reads `check_results`, which reads this module.
     from devtools.render_recent_results import (  # noqa: PLC0415
         load_records,
@@ -238,7 +240,7 @@ def listing() -> list[str]:
         lines.append(
             f"| {record['id']} | {stands} | {status(record, evidence)} "
             f"| {decided_by(record, evidence)} "
-            f"| {', '.join(position_marks(record, stands))} "
+            f"| {', '.join(position_marks(record, stands, records))} "
             f"| {doing} |"
         )
     return lines

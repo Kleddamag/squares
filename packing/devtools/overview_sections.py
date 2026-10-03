@@ -45,7 +45,7 @@ from devtools.render_overview import (
     SITE_PAGES,
     paper_path,
 )
-from devtools.render_recent_results import SUPERSEDED, superseded
+from devtools.render_recent_results import listed, superseded
 from devtools.repo_links import branch_file
 from devtools.result_status import CONFIRMED, STATUSES
 from sqpack.yamlio import safe_load
@@ -75,20 +75,21 @@ def standing_key(standing: str) -> str:
 
 
 def is_superseded(result: Result) -> bool:
-    """Whether a result is no longer the best: it is a bound, and no case bound rests on
-    it now (`render_recent_results.superseded`). The standing is derived from the case
-    records, and `devtools.check_standing` holds it to the numbers. A result that still
-    holds a bound, a second proof of a value another result holds, and a result that is
-    no bound are all current. A row says so as `data-current`, which the bar's "Hide
-    superseded" reads (`result_filters`), and draws the `superseded` chip
-    (`status_marks`)."""
+    """Whether a result is no longer the best (`render_recent_results.superseded`): it
+    is a bound, and no case bound rests on it now, which is derived from the case
+    records and held to the numbers by `devtools.check_standing`; or it is a result of
+    another kind whose register entry declares a later result that implies the whole of
+    it (`superseded_by`). A result that still holds a bound, a second proof of a value
+    another result holds, a result that is no bound, and one superseded only in part
+    are all current. A row says so as `data-current`, which the bar's "Hide superseded"
+    reads (`result_filters`), and draws the `superseded` chip (`supersession_marks`)."""
     return superseded(result.record, result.standing)
 
 
 def standing_chip(standing: str) -> str:
-    """A result's standing as a chip, the plain gray one. A table draws one, `superseded`
-    (`status_marks`); it is the kind's and the status's own chip and differs from them
-    only in its word."""
+    """A result's standing as a chip, the plain gray one. A table draws two,
+    `superseded` and `superseded in part` (`supersession_marks`); it is the kind's and
+    the status's own chip and differs from them only in its word."""
     return (
         f'<span class="site-chip" data-standing="{_esc(standing_key(standing))}">'
         f"{_esc(standing)}</span>"
@@ -1236,12 +1237,31 @@ def rung_chips(result: Result) -> str:
     return " ".join(_rung(rung) for rung in result_rungs(result))
 
 
+def supersession_marks(result: Result) -> str:
+    """Whether a result is superseded, and by what, as its status line ends: the
+    `superseded` chip where it is (`is_superseded`), then `superseded in part` where a
+    later result implies some of it, each followed by the results that supersede it as
+    links to their rows (`Result.supersessions`): the results a superseded bound's cases
+    rest on now, or those a result of another kind declares imply it. Each mark and its
+    results are one unit, so a narrow cell wraps between marks and not inside one."""
+    marks = []
+    for mark in result.supersessions:
+        by = ""
+        if mark.by:
+            links = [
+                f'<a href="{_esc(result_url(other))}">{_esc(other)}</a>' for other in mark.by
+            ]
+            by = f' <span class="site-cell-quiet">by {listed(links)}</span>'
+        marks.append(f'<span class="site-superseded">{standing_chip(mark.mark)}{by}</span>')
+    return " ".join(marks)
+
+
 def status_marks(result: Result) -> str:
     """A result's status line: its status chip, always; who has the next move, where
-    the register records it (`activity_chip`); and `superseded`, where it is a bound
-    that no case bound rests on now (`is_superseded`)."""
-    mark = standing_chip(SUPERSEDED) if is_superseded(result) else ""
-    return " ".join(filter(None, (status_chip(result.status), activity_chip(result), mark)))
+    the register records it (`activity_chip`); and whether it is superseded, with the
+    results that supersede it (`supersession_marks`)."""
+    marks = (status_chip(result.status), activity_chip(result), supersession_marks(result))
+    return " ".join(filter(None, marks))
 
 
 def kind_and_status(result: Result) -> str:

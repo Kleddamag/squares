@@ -3,15 +3,19 @@ type: is
 id: is-01m41d119fg9qt56rzre0fz6vj
 title: "result-requests.yaml: record the seven acknowledgements posted 2026-10-03 (#316, #309, #308, #296, #295, #281, #280) and add #316's request entry"
 kind: task
-status: open
+status: closed
 priority: 2
-version: 1
+version: 2
 labels:
   - records
 dependencies: []
 parent_id: is-01m41csdc2gp36ry5p6n7c2x2y
 created_at: 2026-10-03T17:29:42.447Z
-updated_at: 2026-10-03T17:29:42.447Z
+updated_at: 2026-10-03T19:04:04.889Z
+closed_at: 2026-10-03T19:04:04.889Z
+close_reason: null
+resolution: null
+duplicate_of: null
 ---
 Posted 2026-10-03 ~17:45 UTC on the owner's instruction ("follow up on all issues"):
 - #316 https://github.com/jlevy/squares/issues/316#issuecomment-5971664755 (acknowledgement, import plan)

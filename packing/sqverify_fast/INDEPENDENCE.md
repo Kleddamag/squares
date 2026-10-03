@@ -45,6 +45,13 @@ Mathematics (reviews under `docs/project/reviews/`):
   Lines 86–161 of the linear review name functions of the authors’ Python driver
   (`unified_measure.py`) in prose; nothing here uses them.
   No passage quoting or paraphrasing checker code line by line was read.
+- For the Milestone C plan, §§3–4 (lines 86–233) of
+  `review-2026-10-02-wand125-s59-s77-mixed-covers.md`, at the coordinator’s direction:
+  the statement, the measure’s closed conventions, the scaling reduction, the pose space
+  and its $D_4$ fold, and §4’s account of what the authors’ continuous-angle checker
+  decides and assumes, which names its lemmas, limits and two function names but quotes
+  no code. The specification’s §1.7 (the same lemmas) was read from the copy checked out
+  earlier.
 
 Lane W1’s clean outputs, checked out from its branch `worktree-agent-a9b6885d64664dd01`
 at the coordinator’s instruction (these two files only; the research note, the
@@ -108,6 +115,13 @@ Certificate data and summaries (packets under `packing/resources/web/`):
 - `cargo build`, `cargo test`, `cargo clippy`, `valgrind --tool=callgrind` and
   `callgrind_annotate` on this crate only.
 - `packing-validate --edit` and `--only` on this worktree.
+- For the census of every retained certificate: a merge of the updated base branch
+  (which brought the afternoon packets of 2 October), the `receipts/` summaries of every
+  wand125 rectangle and mixed packet (`audit.json`, `audit.json.gz`, `mixed-audit.json`,
+  `linear-audit.json`, `exact-audit.json`, `fetch.json`, and the n50 replay’s
+  `compare.json` and `inputs.json`) for replay status only, and the census tool over
+  every `certified_candidate.json.gz` and `candidate.json.gz` there.
+  `ls` listed the `code/` folders beside some certificates; none was opened.
 - For Milestone B: `sqverify-fast` on the mixed and linear candidates and on their
   mutations; `python -m devtools.check_sqverify_fast --only mixed` and
   `python -m devtools.sqverify_fast_census --family mixed`; a throwaway build of this

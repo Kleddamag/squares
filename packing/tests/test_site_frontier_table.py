@@ -190,17 +190,17 @@ def test_the_table_fits_its_track_at_1280_and_scrolls_in_its_wrap_below(
 def test_a_fraction_shows_its_decimal_and_a_name_stays_whole(
     laid: dict[int, dict[str, Any]],
 ) -> None:
-    """The reported lower bound of n = 12 is `15680/3951`, and the cell prints its
-    decimal under it: the fraction's value cut after eight places, which is not the
-    `3.968615` the record holds. The row's other closed form is its gap. A credit's
-    longest name, in the row above, is set on one line."""
+    """The reported lower bound of n = 12 is `31360/7901` (`15680/3951` until 3 October
+    2026), and the cell prints its decimal under it: the fraction's value cut after eight
+    places, which is not the `3.969117` the record holds. The row's other closed form is
+    its gap. A credit's longest name, in the row above, is set on one line."""
     rows = {row["id"]: row for row in laid[1280]["rows"]}
     lower = rows["n-12"]["cells"][column("Reported lower")]["approx"]
-    assert lower == ["≈ 3.96861554…"]
-    exact, shown = Fraction(15680, 3951), Fraction(lower[0][2:-1])
+    assert lower == ["≈ 3.96911783…"]
+    exact, shown = Fraction(31360, 7901), Fraction(lower[0][2:-1])
     assert 0 < exact - shown < Fraction(1, 10**8)
     assert [cell["approx"] for cell in rows["n-12"]["cells"]].count([]) == len(COLUMNS) - 2
-    assert rows["n-12"]["cells"][column("Gap")]["approx"] == ["≈ 0.03138445…"]
+    assert rows["n-12"]["cells"][column("Gap")]["approx"] == ["≈ 0.03088216…"]
     # A terminating fraction shows its exact decimal in either column. The example was
     # n = 18 until 2026-10-02, when T-045's replay raised its verified bound to the
     # reported 939/200 and the cell became "same", and then n = 19 until T-074's did the

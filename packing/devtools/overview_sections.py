@@ -1494,6 +1494,11 @@ OTHER_PROJECTS: tuple[tuple[str, str, str], ...] = (
         "Exact weighted certificates and zero-margin closed covers, closing n = 21, 32 and 45.",
     ),
     (
+        "https://github.com/squarepacker/s12-lower-bound",
+        "Ryu Sungjoon",
+        "Evan Daniel's s(12) certificate rescaled by 7902/7901, a bound for twelve squares.",
+    ),
+    (
         "https://github.com/wand125/square-packing-bounds",
         "wand125",
         "Weighted point and rectangle-density lower-bound certificates across many n.",

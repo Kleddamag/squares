@@ -1006,7 +1006,12 @@ it.
   only where its entry declares a later result that implies it (`superseded_by`), and
   `superseded in part` where that result implies some of it, as `T-060` does `T-036`’s
   bound and not its equality case.
-  An id never breaks at its hyphen.
+  That mark’s chip says `superseded` too, and `in part` leads the quiet text after it,
+  so the line reads “superseded in part by T-060”, the register’s words; the chip keeps
+  its own standing, `data-standing="superseded-in-part"`, and the row stays current.
+  The four words as one chip were 150 pixels, the widest chip of the status line, and
+  set the column 52 pixels wider than `superseded` does (`think-kmi4`). An id never
+  breaks at its hyphen.
   A result that still stands draws no chip for that: `current best` is the default, so
   it is left unsaid. That a bound is only reported is no chip of its own: it is the
   status `recorded`. A second proof of a value another result holds says so by its kind,
@@ -1738,6 +1743,9 @@ Max age is a number of days, and empty is no limit. There is no date range.
   For a bound the word is derived from the case records
   (`render_recent_results.standing`), so the checkbox and the `superseded` chip cannot
   disagree, and `devtools.check_standing` holds it to the bounds each entry states.
+  A result superseded in part draws the same `superseded` chip with “in part” after it,
+  and the checkbox keeps its row: the chip’s `data-standing`, `superseded-in-part`,
+  tells the two marks apart.
   A row carries the answer as `data-current`, `false` where it is superseded.
   Superseded is the result’s place on the frontier and no status, so the checkbox and
   Status ask different questions and compose as every pair of controls does: a confirmed

@@ -782,6 +782,7 @@ case or experiment separately.
 | [sqverify-fast](packing/sqverify_fast/README.md) | component scope and use | supporting | maintained | — |
 | [Milestone A Census](packing/benchmarks/measure-verifier/census/README.md) | generated status view | generated | generated | — |
 | [Milestone B Census](packing/benchmarks/measure-verifier/census-mixed/README.md) | generated status view | generated | generated | — |
+| [Census Summary](packing/benchmarks/measure-verifier/census-summary.md) | generated status view | generated | generated | — |
 | [Whole `rect_n32_L595`: c2 Against verify.cpp](packing/benchmarks/measure-verifier/experiments/exp-006-whole-certificate-n32.md) | research synthesis | record | retained | — |
 | [H-005: One Error Budget per Edge](packing/benchmarks/measure-verifier/experiments/exp-007-h005-error-budget.md) | research synthesis | record | retained | — |
 | [H-008: Skipping Hopeless Boxes’ Own Enclosures](packing/benchmarks/measure-verifier/experiments/exp-008-h008-skip-hopeless-own-gradient.md) | research synthesis | record | retained | — |

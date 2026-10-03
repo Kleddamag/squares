@@ -258,6 +258,7 @@ documents:
   - {path: packing/sqverify_fast/README.md, role: component-guide, authority: supporting, lifecycle: maintained}
   - {path: packing/benchmarks/measure-verifier/census/README.md, role: generated-view, authority: generated, lifecycle: generated}
   - {path: packing/benchmarks/measure-verifier/census-mixed/README.md, role: generated-view, authority: generated, lifecycle: generated}
+  - {path: packing/benchmarks/measure-verifier/census-summary.md, role: generated-view, authority: generated, lifecycle: generated}
   - {path: packing/benchmarks/measure-verifier/experiments/exp-006-whole-certificate-n32.md, role: research-report, authority: record, lifecycle: retained}
   - {path: packing/benchmarks/measure-verifier/experiments/exp-007-h005-error-budget.md, role: research-report, authority: record, lifecycle: retained}
   - {path: packing/benchmarks/measure-verifier/experiments/exp-008-h008-skip-hopeless-own-gradient.md, role: research-report, authority: record, lifecycle: retained}

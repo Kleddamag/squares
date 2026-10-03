@@ -203,7 +203,7 @@ issues:
       - key: n101
         claim: s(101) >= 257/25 = 10.28 (mixed_n101_L1028, af1db07), and s(102..105) by monotonicity
         source: body
-        register: [T-073]
+        register: [T-073, T-080]
       - key: n83
         claim: s(83) >= 187/20 = 9.35 (mixed_n83_L935, 0c35d90)
         source: https://github.com/jlevy/squares/issues/294#issuecomment-5946131807

@@ -2924,18 +2924,16 @@ evidence:
       (receipts/linear-audit.json in the packet) recomputes the orbit counts, the D4
       invariance, the mass, the net and the candidate digest from the retained bytes;
       linear-fetch checked the pinned tarball, its 810 files, the replay driver's
-      preconditions and that all 201 inputs enclose the exact candidate; net index 150
-      alone was replayed, to price the replay, returning the certificate's record; and a
+      preconditions and that all 201 inputs enclose the exact candidate; net index 150 alone was replayed first, to price the replay, returning the certificate's record; and a
       negative control at index 35 refused the measure with every mass scaled by 99/100
       and with the segment orbit contributing most at a witness centre dropped
-      (receipts/n101/control.json). None of it decides coverage. The checker, a kind this
+      (receipts/n101/control.json). None of it decides coverage. The complete replay here of 2 October 2026 is E-n101-wand125-linear-1028-source-replay. The checker, a kind this
       record had not registered, was read by the 2 October review, which found its point and
       segment capture bounds, the quadrant reduction and the angle-zero branch sound. Two of
       its non-blocking findings bear on this entry. LC-2: the source's READMEs state the
       quadrant fold's conclusion and not its hypothesis, the quarter-turn and reflection
       symmetry of the expanded measure, which this repository's audit checks. LC-4: the
-      certificate's per-angle records carry only node counts and the input digest, so the
-      merged replay receipts should retain each direction's least lower bound.
+      certificate's per-angle records carry only node counts and the input digest, so the merged replay receipts should retain each direction's least lower bound; the records hold none for them to keep.
     external_review:
       state: informally-verified
       date: '2026-10-02'
@@ -2944,9 +2942,76 @@ evidence:
         separately from the replay lane with no shared context
         (docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md)
       note: >-
-        No blocking defect; coverage statements remain the source's until the replay
-        passes.
+        No blocking defect; coverage statements remained the source's until the replay passed on 2 October.
     source_reviewed: '2026-10-02'
+  - id: E-n101-wand125-linear-1028-source-replay
+    claim: lower-bound
+    scope: {n_values: [101, 102, 103, 104, 105]}
+    assurance: verified
+    method: interval-certified
+    performed_by: repository
+    relationship_to_generator: same-implementation
+    origin: replayed-here
+    novelty: previously-published
+    source_key: '[wand125 linear certificates 2026-10-02]'
+    certificate: resources/web/wand125-linear-certificates-2026-10-02/square-packing-bounds/certificates/mixed_n101_L1028/candidate.json.gz
+    replay: >-
+      From packing/, with the project CPython 3.14 environment and a C++17-capable c++
+      on PATH: .venv/bin/python3 -m devtools.audit_wand125_linear linear-replay n101
+      --range 0-200 --work W --workers 4 --via git, which may be split into ranges
+      across sessions and resumed, fetches the tarball at the pinned revision by Git,
+      refuses it unless its SHA-256 (c32bba42...) and size are the pinned ones, unpacks
+      it afresh, binds the bundle to the packet, rebuilds code/ from the retained
+      copies, repeats the replay driver's preconditions, binds each input of the range
+      to the candidate, builds the checker with the shipped compile_verifier, and calls
+      the shipped replay_angle unchanged, each direction passing only if it returns
+      exactly the record the retained certificate.json holds. Then .venv/bin/python3 -m
+      devtools.audit_wand125_linear linear-merge n101 must print
+      FULL_REPLAY_MATCHES_SHIPPED with no missing or refused direction, and linear-merge
+      n101 --check RECEIPT_MATCHES on the retained receipts (receipts/n101/ in the
+      packet). The controls are .venv/bin/python3 -m devtools.audit_wand125_linear
+      linear-control n101 --work W, which must report CONTROLS_REFUSED
+      (receipts/n101/control.json).
+    replay_status: passed
+    verifiers: [V-wand125-unified-linear-verify-cpp, V-audit-wand125-linear]
+    proof:
+      source: packing/resources/web/external-square-certificates-2026-09-22/tokoharu-density/docs/continuous-density-certificate.ja.md
+      theorem: Linear-measure covering obstruction at coverage one, applied to wand125's mixed_n101_L1028 of points, segments and rectangles; no 101 unit squares fit in a square of side below 257/25, and so none of 102 to 105.
+      scope: Unrestricted square packing with disjoint interiors and arbitrary rotations; monotonic transfer to larger counts below which the certificate's mass lies.
+      pinpoints: >-
+        The measure argument of the 2026-09-22 Tokoharu review, with the point and
+        segment capture bounds, the quadrant reduction by the measure's symmetry and the
+        angle-zero branch read against unified_linear_verify.cpp in the 2 October review
+        of the linear certificates; the replay receipts in receipts/n101/ of the
+        wand125-linear-certificates-2026-10-02 packet, its control
+        receipts/n101/control.json and its exact audit receipts/linear-audit.json.
+      assumptions:
+        - The measure is nonnegative and exact, of total mass 10099999/100000 < 101, quarter-turn and reflection invariant, which this repository's exact audit recomputes from the retained candidate.
+        - All angles and legal centres are covered by the certified core net of 201 half-angles of step 83/40000 at core side 9977/10000, and the checker's quadrant of the centre domain stands for the whole by that symmetry.
+        - Binary64 arithmetic has the reviewed IEEE-754 semantics, compiled by the shipped line with -ffp-contract=off and -fno-fast-math.
+        - The replayed interval inputs enclose the exact candidate, whose digest every replayed record carries.
+      audit_record: docs/project/reviews/review-2026-10-02-wand125-linear-certificates-and-n76.md
+    limitations: >-
+      Replays the source's code/unified_linear_verify.cpp (SHA-256 0249726a...) with the
+      source's replay_angle, unchanged, on 2 October 2026, in one run of four workers
+      over directions 0 to 200 on a shared 4-core x86-64 Linux container (Intel Xeon at
+      2.10 GHz, c++ 13.3.0, Python 3.14.7, one BLAS and OpenMP thread, PYTHONOPTIMIZE
+      unset), with net index 150 replayed alone beforehand to price it: 201 of 201
+      directions, 7.69 CPU-hours, the axis direction 949.5 CPU-seconds of it. Every
+      direction returned the certificate's own record, its status, input digest and node
+      count (FULL_REPLAY_MATCHES_SHIPPED). The records hold no per-direction least lower
+      bound, so the receipts cannot keep one (the review's finding LC-4); acceptance at
+      each direction is the checker's own verdict. This is a machine replay of the
+      source's checker, not an independent decision of the certificate: coverage is
+      decided by the source's C++ alone. Controls: at net index 35, the oblique
+      direction with the fewest recorded nodes, the checker accepts the exported
+      original and refuses both mutations, every mass scaled by 99/100 and the segment
+      orbit contributing most at a witness centre dropped, which leave that witness
+      covered 0.99198... and 0.95298... (receipts/n101/control.json). The mass,
+      10099999/100000, is below 102 to 105, so the bound carries to those counts; at n =
+      106 Nagamochi's 10.3273... is higher. The tarball is pinned by digest and not
+      retained.
+    source_reviewed: '2026-10-03'
   - id: E-n083-wand125-mixed-937-report
     claim: lower-bound
     scope: {n_values: [83]}
